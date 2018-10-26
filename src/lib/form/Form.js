@@ -192,7 +192,6 @@ class Form extends Component {
       this.fieldProp(name, {cardType: cardType});
     }
     this.formProp({error: false, updated: true});
-    let ccxpire = this.state.fields.hasOwnProperty('ccexpire') ? this.state.fields.ccexpire : null;
 
     if ((field.cardType === 'amex' && apiValue.length === 15) ||
       (field.cardType !== 'noCardType' && apiValue.length === 16)) {
@@ -218,7 +217,6 @@ class Form extends Component {
 
   onFocus(e) {
     e.preventDefault();
-    let value = e.target.value;
     let name = e.target.name;
     let field = this.state.fields[name];
     if (field.debug) console.log('onFocus', name, field);
@@ -401,11 +399,9 @@ class Form extends Component {
   }
 
   creditCardGroup(params) {
-    let ccnumber = this.state.fields.hasOwnProperty('ccnumber') ? this.state.fields.ccnumber : null;
-    let ccxpire = this.state.fields.hasOwnProperty('ccexpire') ? this.state.fields.ccexpire : null;
     let defaultParams = cloneObj(this.defaultInputParams);
-    let ccnumberField = this.state.fields.hasOwnProperty('ccnumber') ? this.state.fields.ccnumber : null;
-    let hideCardsAccepted = ccnumberField ? ccnumberField.cardType !== 'noCardType' ? true : false : false;
+    const ccnumberField = this.state.fields.hasOwnProperty('ccnumber') ? this.state.fields.ccnumber : null;
+    const hideCardsAccepted = ccnumberField ? ccnumberField.cardType !== 'noCardType' ? true : false : false;
 
     params = Object.assign({}, defaultParams, {
       className: '',

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { CSSTransition } from 'react-transition-group';
-import {msgs} from '../form/formValidate';
+import { msgs } from '../form/formValidate';
 
 export class Alert extends Component {
 
@@ -18,6 +18,8 @@ export class Alert extends Component {
         return <Error msg={msg} />
       case 'success':
         return <Success msg={msg} />
+
+      // no default
     }
   }
 

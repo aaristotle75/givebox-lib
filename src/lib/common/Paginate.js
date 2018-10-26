@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import {getAPI} from '../api/actions';
-import {toTitleCase, isResourceLoaded} from './utility';
+import { getAPI } from '../actions/actions';
+import { isResourceLoaded } from './utility';
 
 class Paginate extends Component{
 	constructor(props){
@@ -49,7 +49,7 @@ class Paginate extends Component{
 
   handlePageSelected(selected, e) {
 		e.preventDefault();
-		var selected = parseInt(selected);
+		selected = parseInt(selected);
 		if (this.props.activePage !== selected) {
 			var resource = this.props.resource;
 			var endpoint = resource.endpoint.replace('page='+this.props.activePage, 'page='+selected);
@@ -150,19 +150,10 @@ class Paginate extends Component{
 	render() {
 		const {
 			align,
-			name,
-			resource,
-      previousLabel,
-      nextLabel,
-      breakLabel,
-      breakClassName,
 			count,
-			max,
       pages,
       activePage,
       containerClassName,
-      pageClassName,
-      activeClassName,
       previousClassName,
       nextClassName,
       disabledClassName

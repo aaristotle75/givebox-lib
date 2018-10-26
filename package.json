@@ -2,20 +2,27 @@
   "name": "givebox-lib",
   "main": "dist/index.js",
   "module": "dist/index.js",
-  "files": [ "dist", "README.md" ],
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/aaristotle75/givebox-lib.git"
   },
+  "license": "MIT",
   "version": "0.1.0",
   "dependencies": {
+    "axios": "^0.18.0",
     "draft-js": "^0.10.5",
     "draft-js-export-html": "^1.2.0",
     "draft-js-import-html": "^1.2.1",
-    "moment": "^2.22.2"
+    "flatpickr": "^4.5.2",
+    "moment": "^2.22.2",
+    "react-flatpickr": "^3.6.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "PORT=4000 react-scripts start",
     "build": "rm -rf dist && NODE_ENV=production babel src/lib --out-dir dist --copy-files --ignore __tests__,spec.js,test.js,__snapshots__",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -30,17 +37,19 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "react-scripts": "2.0.5",
+    "@babel/cli": "^7.0.0",
+    "ajv": "^6.0.0",
+    "babel-core": "^7.0.0-bridge.0",
     "node-sass": "^4.9.4",
-    "redux-devtools-extension": "^2.13.5",
-    "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.3.0",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
     "react-prefixr": "^0.1.0",
     "react-redux": "^5.1.0",
+    "react-scripts": "2.0.5",
     "react-transition-group": "^2.5.0",
-    "redux": "^4.0.1"
+    "redux": "^4.0.1",
+    "redux-devtools-extension": "^2.13.5",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.3.0"
   }
 }

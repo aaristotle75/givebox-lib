@@ -33,21 +33,15 @@ class CalendarField extends Component {
 
     const {
       name,
-      className,
       style,
-      onChange,
-      selected,
       allowInput,
       inline,
       enableTime,
-      altInputClass,
       staticOption,
       clickOpens,
       label,
       customLabel,
-      error,
       step,
-      defaultValue
     } = this.props;
 
     const {

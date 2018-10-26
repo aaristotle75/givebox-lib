@@ -1,4 +1,5 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
+import { isEmpty } from '../common/utility';
 
 class Select extends Component {
 
@@ -9,10 +10,11 @@ class Select extends Component {
 
   listOptions() {
     var items = [];
-    if (!_.isEmpty(this.props.options)) {
-      _.each(this.props.options, function(value, key) {
+    const options = this.props.options;
+    if (!isEmpty(options)) {
+      Object.keys(options).forEach(function(key) {
         items.push(
-          <option key={key} value={value.value}>{value.primaryText}</option>
+          <option key={options[key]} value={options[key].value}>{options[key].primaryText}</option>
         );
       });
     }
@@ -25,11 +27,9 @@ class Select extends Component {
       name,
       className,
       style,
-      buttonLabel,
       onChange,
       selected,
-      required,
-      value
+      required
     } = this.props;
 
     return (

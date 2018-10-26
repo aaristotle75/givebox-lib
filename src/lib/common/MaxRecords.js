@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import Select from '../form/Select';
-import {getAPI} from '../api/actions';
-import {sortByField, isResourceLoaded} from './utility';
+import { getAPI } from '../actions/actions';
+import { sortByField, isResourceLoaded } from './utility';
 
 class MaxRecords extends Component {
 
@@ -30,8 +30,14 @@ class MaxRecords extends Component {
   }
 
   setOptions() {
-    var items = [];
-    var records = _.union(this.props.records, this.props.max && [parseInt(this.props.max)]);
+    let items = [];
+    const records = this.props.records;
+    const extraRecords = (this.props.max && this.props.max && [parseInt(this.props.max)]) || [];
+    extraRecords.forEach(function(val) {
+      if (records.indexOf(val) === -1) {
+        records.push(val);
+      }
+    });
     for (let i=0; i<records.length; i++) {
       items.push(
         { primaryText: records[i], value: records[i] }
@@ -44,7 +50,6 @@ class MaxRecords extends Component {
   render() {
 
     const {
-      resource,
       align,
       style,
       textStyle,
@@ -74,9 +79,9 @@ function mapStateToProps(state, props) {
 	let resource = state.resource[props.name] ? state.resource[props.name] : {};
   let max, error, count;
   if (!isResourceLoaded(state.resource, [props.name])) {
-    max = resource.search.hasOwnProperty('max') ? resource.search.max : '',
-    count = resource.meta.hasOwnProperty('total') ? resource.meta.total : ''
-    error = resource.error ? true : false
+    max = resource.search.hasOwnProperty('max') ? resource.search.max : null;
+    count = resource.meta.hasOwnProperty('total') ? resource.meta.total : null;
+    error = !!resource.error;
   }
 
   return {

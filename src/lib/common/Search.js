@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import TextField from '../form/TextField';
-import {getAPI} from '../api/actions';
-import {toTitleCase, isResourceLoaded} from './utility';
-
+import { getAPI } from '../actions/actions';
+import { toTitleCase, isResourceLoaded, sortByField } from './utility';
 
 class Search extends Component {
 
@@ -59,8 +58,15 @@ class Search extends Component {
   }
 
   setOptions() {
-    var items = [];
-    var records = _.union(this.props.records, [parseInt(this.props.resource.search.max)]);
+    let items = [];
+    const records = this.props.records;
+    const extraRecords = [parseInt(this.props.resource.search.max)];
+    extraRecords.forEach(function(val) {
+      if (records.indexOf(val) === -1) {
+        records.push(val);
+      }
+    });
+
     for (let i=0; i<records.length; i++) {
       items.push(
         { primaryText: records[i], value: records[i] }
@@ -73,7 +79,6 @@ class Search extends Component {
   render() {
 
     const {
-      resource,
       align,
       style,
       name,

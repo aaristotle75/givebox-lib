@@ -15,24 +15,18 @@ class CreditCard extends Component {
   render() {
 
     const {
-      id,
       name,
-      type,
       cardType,
       placeholder,
       autoFocus,
       required,
-      step,
       readOnly,
       style,
-      labelStyle,
-      label,
       className,
       error,
       errorType,
       maxLength,
       value,
-      apiValue,
       checked
     } = this.props;
 
@@ -61,7 +55,7 @@ class CreditCard extends Component {
             {error}
             <i></i>
           </div>
-          <div className={`errorMsg ${!error || errorType !== 'normal' && 'displayNone'}`}>{error}</div>
+          <div className={`errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`}>{error}</div>
         </div>
     );
   }

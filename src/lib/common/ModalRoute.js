@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Modal from './Modal';
 import Portal from './Portal';
 import Loader from "./Loader";
-import {toggleModal} from "./actions";
+import {toggleModal} from "../actions/actions";
 
 class ModalRoute extends Component {
 

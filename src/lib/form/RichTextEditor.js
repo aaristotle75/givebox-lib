@@ -9,12 +9,15 @@ class ContentEditor extends Component{
 		let contentState = this.props.content ? stateFromHTML(this.props.content) : null;
 		this.state = {editorState: contentState ? EditorState.createWithContent(contentState) : EditorState.createEmpty()};
 		this.onChange = this.onChange.bind(this);
-		this.focus = () => this.refs.editor.focus();
-
+    this.inputRef = React.createRef();
 		this.handleKeyCommand = (command) => this._handleKeyCommand(command);
 		this.onTab = (e) => this._onTab(e);
 		this.toggleBlockType = (type) => this._toggleBlockType(type);
 		this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
+	}
+
+	componentDidMount() {
+		this.inputRef.current.focus();
 	}
 
 	onChange(editorState) {
@@ -91,7 +94,7 @@ class ContentEditor extends Component{
 						onChange={this.onChange}
 						onTab={this.onTab}
 						placeholder={placeholder ? placeholder : 'Enter text...'}
-						ref="editor"
+						ref={this.inputRef}
 						spellCheck={true}
 					/>
 				</div>

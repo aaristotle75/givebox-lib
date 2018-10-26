@@ -1,13 +1,12 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import Loader from "./Loader";
 import Paginate from "./Paginate";
 import MaxRecords from "./MaxRecords";
 import Search from "./Search";
 import NoRecords from "./NoRecords";
 import ExportLink from "./ExportLink";
-import {getAPI} from '../api/actions';
-import {translateSort, isResourceLoaded} from './utility';
+import { getAPI } from '../actions/actions';
+import { translateSort, isResourceLoaded, isEmpty} from './utility';
 
 class Table extends Component {
 
@@ -125,9 +124,7 @@ class Table extends Component {
   render() {
 
     const {
-      name,
       className,
-      tableStyle,
       searchAbove,
       searchBelow,
       exportAbove,
@@ -136,14 +133,6 @@ class Table extends Component {
       maxRecordsBelow,
       paginationAbove,
       paginationBelow,
-      searchAlign,
-      searchStyle,
-      searchPlaceholder,
-      maxRecordsStyle,
-      maxRecordsTextStyle,
-      maxRecordsAlign,
-      maxRecords,
-      paginateAlign,
       data,
       sort,
       order
@@ -218,10 +207,10 @@ const TableHead = ({ headers, sortColumn, sort, order }) => {
   let desc = <span className="icon icon-triangle-down"></span>;
   let asc = <span className="icon icon-triangle-up"></span>;
   let items = [];
-  if (!_.isEmpty(headers)) {
-    _.each(headers, function(value, key) {
+  if (!isEmpty(headers)) {
+    Object.keys(headers).forEach(function(key) {
       items.push(
-        <th onClick={() => sortColumn(value.sort)} className={`${value.sort && 'sort'}`} align={value.align || "left"} style={{width: value.width}} key={key}>{value.name} {sort === value.sort ? order === 'desc' ? desc : asc : ''}</th>
+        <th onClick={() => sortColumn(headers[key].sort)} className={`${headers[key].sort && 'sort'}`} align={headers[key].align || "left"} style={{width: headers[key].width}} key={key}>{headers[key].name} {sort === headers[key].sort ? order === 'desc' ? desc : asc : ''}</th>
       );
     });
   }
@@ -236,11 +225,11 @@ const TableHead = ({ headers, sortColumn, sort, order }) => {
 
 const TableBody = ({ rows, length }) => {
   let items = [];
-  if (!_.isEmpty(rows)) {
-    _.each(rows, function(value, key) {
+  if (!isEmpty(rows)) {
+    Object.keys(rows).forEach(function(key) {
       var td = [];
-      for (let i=0; i<value.length; i++) {
-        td.push(<td key={i}>{value[i]}</td>);
+      for (let i=0; i<rows[key].length; i++) {
+        td.push(<td key={i}>{rows[key][i]}</td>);
       }
       var tr = <tr key={key}>{td}</tr>;
       items.push(tr);
@@ -259,10 +248,10 @@ const TableBody = ({ rows, length }) => {
 
 const TableFoot = ({ footer }) => {
   let items = [];
-  if (!_.isEmpty(footer)) {
-    _.each(footer, function(value, key) {
+  if (!isEmpty(footer)) {
+    Object.keys(footer).forEach(function(key) {
       items.push(
-        <td key={key} align={value.align || "left"} colSpan={value.colspan || 1}>{value.name}</td>
+        <td key={key} align={footer[key].align || "left"} colSpan={footer[key].colspan || 1}>{footer[key].name}</td>
       );
     });
   }

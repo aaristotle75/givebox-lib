@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import  * as types  from './actionTypes';
 
-function resource(state = {
+export function resource(state = {
   isFetching: false
 }, action) {
   switch (action.type) {
@@ -72,7 +72,7 @@ function resource(state = {
 }
 
 
-function send(state = {
+export function send(state = {
   isSending: false
 }, action) {
   switch (action.type) {
@@ -119,11 +119,11 @@ export function modal(state = {
 
 const appReducer = combineReducers({
   resource,
-  send,
-  modal
+  modal,
+  send
 })
 
-const rootReducer = (state, action) => {
+const rootReducers = (state, action) => {
   /*
   if (action.type === 'USER_LOGOUT') {
     const { routing } = state;
@@ -133,4 +133,4 @@ const rootReducer = (state, action) => {
   return appReducer(state, action);
 }
 
-export default rootReducer;
+export default rootReducers;
