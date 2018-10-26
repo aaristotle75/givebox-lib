@@ -1,0 +1,14 @@
+// API Resource Actions
+export const NEW_REQUEST_RESOURCE = 'NEW_REQUEST_RESOURCE';
+export const RELOAD_REQUEST_RESOURCE = 'RELOAD_REQUEST_RESOURCE';
+export const RECEIVE_RESOURCE = 'RECEIVE_RESOURCE';
+export const RESOURCE_CATCH_ERROR = 'RESOURCE_CATCH_ERROR';
+export const SET_RESOURCE_PROP = 'SET_RESOURCE_PROP';
+
+
+// API Send Actions
+export const SEND_REQUEST = 'SEND_REQUEST';
+export const SEND_RESPONSE = 'SEND_RESPONSE';
+
+// Modal Actions
+export const TOGGLE_MODAL = 'TOGGLE_MODAL';

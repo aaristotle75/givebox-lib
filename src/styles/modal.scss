@@ -1,0 +1,79 @@
+@import 'variables.scss';
+
+/*----------- MODAL --------------*/
+.modal {
+
+  .modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: auto;
+    perspective: 1300;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 9999998;
+  	overflow-x: hidden !important;
+  }
+
+  .modalContent {
+    position: relative;
+    box-sizing: border-box;
+    width: 60%;
+    height: auto;
+    margin: 5% auto;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .3);
+    z-index: 9999999;
+  	overflow-x: hidden !important;
+  }
+
+  .modalWrapper {
+    padding: 10px;
+  }
+
+  .modalCloseBtn {
+  	position: absolute;
+  	top: 10px;
+  	right: 10px;
+  	cursor: pointer;
+  	z-index: 99999999;
+  	color: $light-med-gray;
+  }
+
+  .modalCloseBtn .icon {
+    color: $light-med-gray;
+  	font-size: 14px;
+  }
+
+  .modalCloseBtn:hover .icon {
+  	color: $med-gray;
+  }
+
+  .actionBtnsContainer {
+  	display: block;
+  	position: relative;
+  	height: 50px;
+  	width: auto;
+  }
+
+  .actionBtns {
+  	position: absolute;
+  	bottom: 10px;
+  	right: 20px;
+  	margin: 0 auto;
+  	width: 100%;
+  	height: auto;
+  	text-align: right;
+  }
+
+  .actionBtns button {
+  	padding: 10px 15px 10px 15px;
+  	margin: 0 5px 0 5px;
+  }
+
+  .actionBtns .primary button {
+  }
+
+}

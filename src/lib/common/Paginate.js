@@ -1,0 +1,239 @@
+import React, {Component} from 'react';
+import { connect } from 'react-redux';
+import {getAPI} from '../api/actions';
+import {toTitleCase, isResourceLoaded} from './utility';
+
+class Paginate extends Component{
+	constructor(props){
+		super(props);
+    this.onPageClick = this.onPageClick.bind(this);
+    this.pagination = this.pagination.bind(this);
+    this.handlePreviousPage = this.handlePreviousPage.bind(this);
+    this.handleNextPage = this.handleNextPage.bind(this);
+		this.setRecordCount =this.setRecordCount.bind(this);
+		this.state = {
+			range1: 0,
+			range2: 0,
+			count: 0
+		};
+	}
+
+	componentDidMount() {
+		this.setRecordCount(this.props);
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if ((this.props.activePage !== nextProps.activePage) || (this.props.max !== nextProps.max) || (this.props.count !== nextProps.count)) {
+			this.setRecordCount(nextProps);
+		}
+	}
+
+  onPageClick(e) {
+		e.preventDefault();
+    var getSelectedPage = e.currentTarget.id.split('-', 2);
+		var page = getSelectedPage[1];
+    this.handlePageSelected(page, e)
+  }
+
+  handlePreviousPage(e) {
+    if (this.props.activePage > 1) {
+      this.handlePageSelected(this.props.activePage - 1, e);
+    }
+  }
+
+  handleNextPage(e) {
+		if (this.props.activePage < this.props.pages) {
+      this.handlePageSelected(this.props.activePage + 1, e);
+    }
+  }
+
+  handlePageSelected(selected, e) {
+		e.preventDefault();
+		var selected = parseInt(selected);
+		if (this.props.activePage !== selected) {
+			var resource = this.props.resource;
+			var endpoint = resource.endpoint.replace('page='+this.props.activePage, 'page='+selected);
+			var search = Object.assign(resource.search, {page: selected});
+			this.props.getAPI(this.props.name, endpoint, search, null, true);
+		}
+  }
+
+  pagination() {
+    var items = [];
+    var activePage = this.props.activePage;
+    var pages = this.props.pages;
+    var id, page, breakView;
+    var pageRange = this.props.pageRange;
+    var marginPages = this.props.marginPages;
+    if (this.props.pages <= pageRange) {
+      for (var i=1; i <= pages; i++) {
+        id = 'page-'+i;
+        page = (
+					<li key={id} id={id} onClick={(e) => this.onPageClick(e)} className={`${this.props.pageClassName} ${(activePage === i ? this.props.activeClassName : '')}`}>
+						{i}
+					</li>
+        );
+        items.push(page);
+      }
+    } else {
+      var leftSide = (pageRange / 2);
+      var rightSide = (pageRange / 2);
+
+      if (activePage > pages - pageRange / 2) {
+        rightSide = pages - activePage;
+        leftSide = pageRange - rightSide;
+      } else if (activePage < pageRange / 2) {
+        leftSide = activePage;
+        rightSide = pageRange - leftSide;
+      }
+      for (let i=1; i <= pages; i++) {
+        id = 'page-'+i;
+        page = (
+            <li key={id} id={id} onClick={(e) => this.onPageClick(e)} className={`${this.props.pageClassName} ${(activePage === i ? this.props.activeClassName : '')}`}>
+              {i}
+            </li>
+        );
+        if (i <= marginPages) {
+          items.push(page);
+          continue;
+        }
+        if (i > pages - marginPages) {
+          items.push(page);
+          continue;
+        }
+        if ((i >= activePage - leftSide) && (i <= activePage + rightSide)) {
+          items.push(page);
+          continue;
+        }
+
+        let keys = Object.keys(items);
+        let breakLabelKey = keys[keys.length-1];
+        let breakLabelValue = items[breakLabelKey];
+        if (breakLabelValue !== breakView) {
+					var breakId = breakId === 'leftSide' ? breakId = 'rightSide' : 'leftSide';
+          breakView = (
+            <li onClick={breakId ==='leftSide' ? (e) => this.handlePreviousPage(e) : (e) => this.handleNextPage(e)} id={breakId} key={`breakView-${i}`} className={this.props.breakClassName}>{this.props.breakLabel}</li>
+          );
+          items.push(breakView);
+        }
+      }
+    }
+    return items;
+  }
+
+	setRecordCount(props) {
+		var count = props.count;
+		var max = props.max;
+		var page = props.activePage;
+		var range2, range1 = 1;
+		if (max < count) {
+			range2 = max;
+		} else {
+			range2 = count;
+		}
+
+		if (page > 1) {
+			range1 += (max * page) - max;
+			if ((max * page) < count) {
+				range2 = page * max;
+			} else {
+				range2 = count;
+			}
+		}
+		this.setState({
+			range1: range1,
+			range2: range2,
+			count: count
+		});
+	}
+
+	render() {
+		const {
+			align,
+			name,
+			resource,
+      previousLabel,
+      nextLabel,
+      breakLabel,
+      breakClassName,
+			count,
+			max,
+      pages,
+      activePage,
+      containerClassName,
+      pageClassName,
+      activeClassName,
+      previousClassName,
+      nextClassName,
+      disabledClassName
+    } = this.props;
+
+		const {
+			range1,
+			range2
+		} = this.state;
+
+		if (!parseInt(count)) {
+			return ( <div></div> )
+		}
+
+		return (
+			<div className={`paginate ${align}`}>
+				{count &&
+					<div className="recordCount">
+						<span>Showing {range1}-{range2} of {count}</span>
+					</div>
+				}
+				{pages > 1 ?
+				<div>
+		      <ul className={containerClassName}>
+		        <li onClick={(e) => this.handlePreviousPage(e)} className={`page ${previousClassName} ${activePage <= 1? disabledClassName:''}`}><span className="icon-arrow-left"></span></li>
+		        {this.pagination()}
+		        <li onClick={(e) => this.handleNextPage(e)} className={`page ${nextClassName} ${activePage >= pages? disabledClassName:''}`}><span className="icon-arrow-right"></span></li>
+		      </ul>
+				</div>
+				: <div></div>}
+			</div>
+		)
+	}
+};
+
+Paginate.defaultProps = {
+	align: 'center',
+  previousLabel: '<',
+  nextLabel: '>',
+  breakLabel: '...',
+  breakClassName: 'break',
+  pageRange: 3,
+  marginPages: 1,
+  containerClassName: 'pagination',
+  pageClassName: 'page',
+  activeClassName: 'active',
+  previousClassName: 'previous',
+  nextClassName: 'next',
+  disabledClassName: 'disabled',
+}
+
+function mapStateToProps(state, props) {
+	let resource = state.resource[props.name] ? state.resource[props.name] : {};
+	let count, max, pages, activePage;
+  if (!isResourceLoaded(state.resource, [props.name])) {
+		count = parseInt(resource.meta.total);
+		max = parseInt(resource.search.max);
+		pages = Math.ceil(count/max).toFixed(0);
+		activePage = parseInt(resource.search.page);
+	}
+
+  return {
+    resource: resource,
+		count: count,
+		max: max,
+		pages: pages,
+		activePage: activePage
+  }
+}
+
+
+export default connect(mapStateToProps, {
+	getAPI
+})(Paginate)

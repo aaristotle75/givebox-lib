@@ -1,0 +1,138 @@
+@import 'variables.scss';
+
+$border-radius: 2px;
+$box-shadow: 0px 0px 0px $light-med-gray;
+//$disabled-bg: $light-gray;
+$disabled-bg: none;
+$disabled-text: $light-med-gray;
+$page-text: $primary;
+//$page-bg: $white;
+$page-bg: none;
+$hover-text: $white;
+$hover-bg: $primary;
+$active-text: $light-med-gray;
+$active-bg: $white;
+
+
+/*--------- Pagination ---------*/
+.paginate {
+	margin: 20px 0;
+}
+
+.pagination {
+	padding: 10px 0;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.pagination a:focus {
+	background: none;
+	outline: 0;
+	border: none;
+}
+
+.pagination ul {
+}
+
+.pagination li {
+	padding: 5px 2px;
+  display: inline-block;
+	text-decoration: none;
+	font-size: $small-text-size;
+	font-weight: 500;
+	text-align: center;
+	-moz-box-shadow: $box-shadow;
+	-webkit-box-shadow: $box-shadow;
+	box-shadow: $box-shadow;
+	width: 5%;
+	cursor: pointer;
+}
+
+.pagination .break {
+	width: 20px;
+	color: $page-text;
+	background: $page-bg;
+	cursor: pointer;
+}
+
+.pagination .break:hover {
+	color: $hover-text;
+	background: $hover-bg;
+	transition-duration: .5s;
+	-webkit-transition-duration: .5s;
+}
+
+.pagination .page {
+	color: $page-text;
+	background: $page-bg;
+}
+
+.pagination .page:hover {
+	color: $hover-text;
+	background: $hover-bg;
+	transition-duration: .5s;
+	-webkit-transition-duration: .5s;
+}
+
+.pagination .next {
+	color: $page-text;
+	background: $page-bg;
+	border-top-right-radius: $border-radius;
+	border-bottom-right-radius: $border-radius;
+}
+
+.pagination .next:hover {
+	color: $hover-text;
+	background: $hover-bg;
+}
+
+
+.pagination .previous {
+	border-top-left-radius: $border-radius;
+	border-bottom-left-radius: $border-radius;
+}
+
+.pagination .previous:hover {
+	color: $hover-text;
+	background: $hover-bg;
+}
+
+.pagination .active {
+	color: $active-text;
+	background: $active-bg;
+	cursor: not-allowed;
+}
+
+.pagination .active:hover {
+	color: $active-text;
+	background: $active-bg;
+	cursor: not-allowed;
+}
+
+.pagination .disabled {
+	color: $disabled-text;
+	background: $disabled-bg;
+	cursor: not-allowed;
+}
+
+.pagination .disabled:hover {
+	color: $disabled-text;
+	background: $disabled-bg;
+	cursor: not-allowed;
+}
+
+@media only screen and (max-width: 1000px) {
+	.pagination li {
+		width: 7%;
+	}
+}
+
+@media only screen and (max-width: 600px) {
+	.pagination li {
+		width: 10%;
+	}
+}
