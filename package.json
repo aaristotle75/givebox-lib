@@ -1,5 +1,12 @@
 {
   "name": "givebox-lib",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "files": [ "dist", "README.md" ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aaristotle75/givebox-lib.git"
+  },
   "version": "0.1.0",
   "dependencies": {
     "draft-js": "^0.10.5",
