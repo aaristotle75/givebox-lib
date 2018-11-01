@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Routes from './Routes';
 import Loadable from 'react-loadable';
-import { resourceProp, Loader, getResource, reloadResource, util } from './lib';
+import has from 'has';
+import { resourceProp, Loader, getResource, reloadResource } from './lib';
 
 export const AppContext = React.createContext();
 
@@ -28,20 +29,21 @@ class App extends Component {
     this.props.getResource('session', {callback: this.authenticate});
   }
 
-  /* Action function to set state while keeping current state
+  /**
+  * Action function to set state while keeping current state
   * @params (string) key
   * @params (mixed) value
   */
   setIndexState(key, value) {
-    const merged = Object.assign({}, this.state[key], value);
-    this.setState(Object.assign({}, this.state, {
+    const merged = {...this.state[key], ...value};
+    this.setState({
       ...this.state,
       [key]: merged
-    }));
+    });
   }
 
 
-  /*
+  /**
   * A callback from getting the session to authenticate the user
   * and set the selected org ID to either the user's default org or
   * if a masquerade set it to the mask org ID
@@ -55,26 +57,27 @@ class App extends Component {
       console.log('Err No session found', err);
     } else {
       // Check if an organization has been returned, if not redirect to main signin
-      if (!res.hasOwnProperty('organization')) {
+      if (!has(res, 'organization')) {
         console.log('redirect to signin');
       } else {
         // Set the selected org
         this.props.resourceProp('orgID', res.organization.ID);
         this.setIndexState('org', { name: res.organization.name });
 
-        let user;
         // Check if this is a masquerade
-        if (res.hasOwnProperty('masker')) user = res.masker;
+        let user;
+        if (has(res, 'masker')) user = res.masker;
         else user = res.user;
 
         this.props.resourceProp('userID', user.ID);
+
         // Set user info
         this.setIndexState('user', {
           userID: user.ID,
           fullName: user.firstName + ' ' + user.lastName,
           email: user.email,
           role: user.role,
-          masker: res.hasOwnProperty('masker') ? true : false,
+          masker: has(res, 'masker') ? true : false,
           theme: user.preferences ? user.preferences.cloudTheme : 'light',
           animations: user.preferences ? user.preferences.animations : false
         });
@@ -96,16 +99,32 @@ class App extends Component {
     )
   }
 
-  loadComponent(module, customParams = {}) {
-    const defaultParams = { routeProps: null, props: null, callback: null, className: 'content' };
-    const params = Object.assign({}, defaultParams, customParams);
+  /**
+  * Dynamically load components by module path
+  * @param {string} path to component to load
+  * @param {object} opt - see options for possible params
+  *
+  * // Options //
+  * @param {object} routeProps props sent by the Router
+  * @param {object} props additional props
+  * @param {function} callback
+  * @param {string} className
+  */
+  loadComponent(path, opt = {}) {
+    const defaults = {
+      routeProps: null,
+      props: null,
+      callback: null,
+      className: 'content'
+    };
+    const options = { ...defaults, ...opt };
     let modal = false;
-    let moduleToLoad = module;
+    let moduleToLoad = path;
 
     // If module path begins with modal/ display as modal
-    if (module.indexOf('modal/') !== -1) {
+    if (moduleToLoad.indexOf('modal/') !== -1) {
       modal = true;
-      params.className = 'modalWrapper';
+      options.className = 'modalWrapper';
       moduleToLoad = moduleToLoad.replace('modal/', '');
     }
 
@@ -114,11 +133,11 @@ class App extends Component {
       loading: () => modal ? '' : this.loader(`Trying to load component ${moduleToLoad}`)
     });
     return (
-      <div id={`root-${params.className}`} className={params.className}>
+      <div id={`root-${options.className}`} className={options.className}>
         <Component
-          {...params.props}
+          {...options.props}
           loader={this.loader}
-          routeProps={params.routeProps}
+          routeProps={options.routeProps}
           mobile={this.state.mobile}
         />
       </div>

@@ -33,11 +33,17 @@ class ItemForm extends Component {
 
   processForm(fields) {
     let data = {};
-    fields.forEach(function(value, key) {
+    Object.entries(fields).forEach(([key, value]) => {
       if (value.autoReturn) data[key] = value.value;
     });
-    this.props.sendResource({name: 'customers', id: fields.cusID.value, method: 'patch'}, data, this.processCallback.bind(this));
-    return;
+    this.props.sendResource(
+      'orgCustomer',
+      {
+        id: ['org', this.props.id],
+        method: 'patch',
+        data: data,
+        callback: this.processCallback.bind(this)
+      });
   }
 
   render() {
@@ -47,7 +53,7 @@ class ItemForm extends Component {
       item
     } = this.props;
 
-    if (util.isLoading(item, true)) {
+    if (util.isLoading(item, this.props.id)) {
       return this.props.loader(`trying to load customer resource from ${routeProps.match.url}`);
     }
 

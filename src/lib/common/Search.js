@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { util, TextField } from '../';
 import { getAPI } from '../actions/actions';
+import has from 'has';
 
 class Search extends Component {
 
@@ -121,7 +122,7 @@ function mapStateToProps(state, props) {
 	let resource = state.resource[props.name] ? state.resource[props.name] : {};
   let query;
   if (!util.isLoading(resource)) {
-    query = resource.search.hasOwnProperty('query') ? resource.search.query : ''
+    query = has(resource.search, 'query') ? resource.search.query : ''
   }
 
   return {

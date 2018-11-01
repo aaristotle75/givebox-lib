@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import  * as types  from './actionTypes';
+import has from 'has';
 
 export function resource(state = {
   isFetching: false
@@ -33,7 +34,7 @@ export function resource(state = {
       });
     case types.RECEIVE_RESOURCE:
       var data, meta;
-      if (action.data.hasOwnProperty('data')) {
+      if (has(action.data, 'data')) {
         data = action.data.data;
         delete action.data['data'];
         meta = action.data;

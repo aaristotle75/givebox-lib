@@ -7,6 +7,7 @@ import NoRecords from "./NoRecords";
 import ExportLink from "./ExportLink";
 import { util } from '../';
 import { getAPI } from '../actions/actions';
+import has from 'has';
 
 class Table extends Component {
 
@@ -186,8 +187,8 @@ function mapStateToProps(state, props) {
 	let resource = state.resource[props.name] ? state.resource[props.name] : {};
   let endpoint, sort, order;
   if (!util.isLoading(resource)) {
-    sort = resource.search.hasOwnProperty('sort') ? resource.search.sort : '';
-    order = resource.search.hasOwnProperty('order') ? resource.search.order : '';
+    sort = has(resource.search, 'sort') ? resource.search.sort : '';
+    order = has(resource.search, 'order') ? resource.search.order : '';
   }
 
   return {

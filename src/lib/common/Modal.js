@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
 import * as Effect from './ModalEffect';
 import { cloneObj, isEmpty } from "./utility";
 const prefix = require('react-prefixr');
@@ -150,19 +149,21 @@ class Modal extends Component {
     if (!transition) {
       transition = defaultTransition;
     } else {
-      transition = Object.assign({},defaultTransition,transition);
+      transition = { ...defaultTransition,transition };
     }
-    let transition_style = {
-      	'transition': transition.property+' '+(transition.duration / 1000) + 's'+' '+transition.timingfunction
-    };
 
-    var closeBtn = mobile ? true : closeBtnShow;
+    const transition_style = {
+      transition: `${transition.property} ${(transition.duration/1000)}s ${transition.timiingfunction}`
+    }
 
-    var defaultOverlay = cloneObj(defaultOverlayStyle);
-    var overlayStyle = customOverlay ? Object.assign(defaultOverlay, customOverlay) : defaultOverlayStyle;
 
-    var defaultStyle = cloneObj(defaultContentStyle);
-    var contentStyle = customStyle ? Object.assign(defaultStyle, customStyle) : defaultContentStyle;
+    const closeBtn = mobile ? true : closeBtnShow;
+
+    const defaultOverlay = cloneObj(defaultOverlayStyle);
+    const overlayStyle = customOverlay ? { ...defaultOverlay, ...customOverlay } : defaultOverlayStyle;
+
+    const defaultStyle = cloneObj(defaultContentStyle);
+    let contentStyle = customStyle ? { ...defaultStyle, ...customStyle } : defaultContentStyle;
     if (mobile) {
       contentStyle = cloneObj(contentStyle);
       contentStyle.width = '100%';
@@ -173,15 +174,22 @@ class Modal extends Component {
       contentStyle.overflow = 'auto';
     }
 
+    const modalOverlayStyle = {
+      transition: `opacity ${(transition.duration/1000)}s linear`,
+      opacity: open ? 1 : 0
+    }
+
+    const openEffect = open ? effect.end : effect.begin;
+
     return (
       <div className={className}>
         <div
           onClick={() => this.closeModal(closeCallback)}
-          className={`modalOverlay`} style={prefix(Object.assign({}, overlayStyle, { transition: 'opacity '+(transition.duration / 1000) + 's'+' linear',opacity: open ? 1 : 0}))}
+          className={`modalOverlay`} style={prefix({ ...overlayStyle, ...modalOverlayStyle})}
           >
           <div
             className={`modalContent`}
-            style={prefix(Object.assign({},contentStyle, transition_style, open ? effect.end : effect.begin))}
+            style={prefix({ ...contentStyle, ...transition_style, openEffect })}
             onClick={stopPropagation}
           >
             {this.renderChildren()}

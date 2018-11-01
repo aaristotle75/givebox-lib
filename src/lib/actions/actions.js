@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as types from './actionTypes';
+import has from 'has';
 
 export function toggleModal(identifier, open) {
   return {
@@ -80,7 +81,7 @@ export function getAPI(resource, endpoint, search, callback, reload) {
 
 function shouldGetAPI(state, resource, reload) {
   let shouldGet = true;
-  if (state.resource.hasOwnProperty(resource)) {
+  if (has(state.resource, resource)) {
     if (state.resource[resource].isFetching) shouldGet = false;
     if (!reload) shouldGet = false;
   }
@@ -106,7 +107,8 @@ function sendResponse(resource, response, error) {
   }
 }
 
-export function sendAPI(resource, endpoint, method = 'post', data, callback, reloadResource) {
+export function sendAPI(resource, endpoint, method, data, callback, reloadResource) {
+  console.log('reloadResource', reloadResource);
   let csrf_token = document.querySelector('meta[name="csrf_token"]') ? document.querySelector('meta[name="csrf_token"]')['content'] : '';
   return (dispatch, getState) => {
     method = method.toLowerCase();
@@ -149,7 +151,7 @@ export function sendAPI(resource, endpoint, method = 'post', data, callback, rel
 
 function shouldSendAPI(state, resource) {
   let shouldSend = true;
-  if (state.send.hasOwnProperty(resource)) {
+  if (has(state.send, resource)) {
     if (state.send[resource].isSending) shouldSend = false;
   }
   return shouldSend;

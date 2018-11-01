@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { util, Select } from '../';
 import { getAPI } from '../actions/actions';
+import has from 'has';
 
 class MaxRecords extends Component {
 
@@ -17,14 +18,17 @@ class MaxRecords extends Component {
   onChange(e) {
     const selected = e.currentTarget.value;
     const resource = this.props.resource;
-		let endpoint = resource.endpoint.replace('max='+resource.search.max, 'max='+selected);
     const pages = Math.ceil(resource.meta.total/selected).toFixed(0);
+		let endpoint = resource.endpoint.replace('max='+resource.search.max, 'max='+selected);
     let page = resource.search.page;
+
     if (resource.search.page > pages) {
       page = 1;
 		  endpoint = endpoint.replace('page='+resource.search.page, 'page='+page);
     }
-		const search = Object.assign({}, resource.search, {max: selected, page: page});
+
+    const merge = { max: selected, page: page };
+    const search = { ...resource.search, ...merge };
 		this.props.getAPI(this.props.name, endpoint, search, null, true);
   }
 
@@ -78,8 +82,8 @@ function mapStateToProps(state, props) {
 	let resource = state.resource[props.name] ? state.resource[props.name] : {};
   let max, error, count;
   if (!util.isLoading(resource)) {
-    max = resource.search.hasOwnProperty('max') ? resource.search.max : null;
-    count = resource.meta.hasOwnProperty('total') ? resource.meta.total : null;
+    max = has(resource.search, 'max') ? resource.search.max : null;
+    count = has(resource.meta, 'total') ? resource.meta.total : null;
     error = !!resource.error;
   }
 

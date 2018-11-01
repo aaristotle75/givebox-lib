@@ -1,4 +1,5 @@
 import Moment from 'moment';
+import has from 'has';
 
 export var imageUrlWithStyle = function(imageURL, style) {
   if (imageURL) {
@@ -101,7 +102,7 @@ export function splitName(str) {
 export function objectLength( object ) {
     var length = 0;
     for( var key in object ) {
-        if( object.hasOwnProperty(key) ) {
+        if(has(object, key)) {
             ++length;
         }
     }
@@ -354,7 +355,7 @@ export function onLoaded(element,callback){
 };
 
 export function cloneObj(obj) {
-  return Object.assign({}, obj);
+  return { ...obj };
 }
 
 
@@ -377,25 +378,31 @@ export function makeAPIQuery(obj) {
 }
 
 
-/*
-* Check if an array of resources has been loaded
+/**
+* Check if a resource has been loaded
 *
 * @param {object} resource props to check
-* @param {bool} checkForData A boolean if data should be loaded
+* @param {int} id of the resource, if id is passed check resource data is not empty
+*   and if id doesn't match and isFetching show loading
 */
-export function isLoading(resource, checkForData = false) {
-  var loading = false;
+export function isLoading(resource, id = null) {
+  let loading = false;
   if (!resource) {
     loading = true;
   } else {
-    if (!resource.hasOwnProperty('data')
-      || !resource.hasOwnProperty('search')
-      || !resource.hasOwnProperty('meta')) {
+    if (!has(resource, 'data')
+      || !has(resource, 'search')
+      || !has(resource, 'meta')) {
       loading = true;
     } else {
-      if (checkForData) {
-        if (isEmpty(resource.data)) loading = true;
-        if (resource.isFetching) loading = true;
+      if (id) {
+        if (isEmpty(resource.data)) {
+          loading = true;
+        } else {
+          if (has(resource.data, 'ID')) {
+            if (resource.data.ID !== parseInt(id) && resource.isFetching) loading = true;
+          }
+        }
       }
     }
   }

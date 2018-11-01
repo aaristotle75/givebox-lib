@@ -9,6 +9,7 @@ import * as _v from './formValidate';
 import Loader from '../common/Loader';
 import { Alert } from '../common/Alerts';
 import { cloneObj } from '../common/utility';
+import has from 'has';
 
 class Form extends Component {
 
@@ -83,44 +84,44 @@ class Form extends Component {
 		ref.current.focus();
 	}
 
-  createField(name, params) {
-    if (params.parent) params.autoReturn = false;
-    this.setState(Object.assign(this.state, {
+  createField(name, args) {
+    console.log(this.state.fields);
+    if (args.parent) args.autoReturn = false;
+    const fields = { ...this.state.fields, [name]: args };
+    this.setState({
       ...this.state,
-      fields: {
-        ...this.state.fields,
-        [name]: params
-      }
-    }));
-    if (params.parent) this.fieldProp(params.parent, {[name]: params.value});
-    return;
+      fields : fields
+    });
+    if (args.parent) this.fieldProp(args.parent, {[name]: args.value});
+    console.log(name, fields, this.state);
   }
 
-  createRadioField(name, params) {
-    let field = this.state.fields[name] || null;
+  createRadioField(name, args) {
+    const field = has(this.state.fields, name);
     if (!field) {
-      this.createField(name, params);
+      this.createField(name, args);
     }
   }
 
-  fieldProp(name, params) {
-    let field = this.state.fields[name];
-    params = Object.assign(this.state.fields[name], params);
-    this.setState(Object.assign(this.state, {
-      ...this.state,
-      fields: {
-        ...this.state.fields,
-        [name]: params
+  fieldProp(name, args) {
+    const field = has.call(this.state.fields, name);
+    if (field) {
+      const values = { ...this.state.fields[name], ...args };
+      this.setState({
+        ...this.state,
+        fields: {
+          ...this.state.fields,
+          [name]: values
+        }
+      });
+      if (field.parent) {
+        if (has(values, 'value')) this.fieldProp(field.parent, {[name]: values.value});
       }
-    }));
-    if (field.parent) {
-      if (params.hasOwnProperty('value')) this.fieldProp(field.parent, {[name]: params.value});
     }
-    return;
   }
 
-  formProp(params) {
-    this.setState(Object.assign(this.state, params));
+  formProp(args) {
+    this.setState({ ...this.state, ...args });
     return;
   }
 
@@ -131,13 +132,14 @@ class Form extends Component {
 
   onChange(e) {
     e.preventDefault();
+    const name = e.target.name;
+    const field = this.state.fields[name];
     let value = e.target.value;
-    let name = e.target.name;
-    let field = this.state.fields[name];
     if (field.validate === 'taxID') value = _v.formatTaxID(value);
     if (field.validate === 'ssn') value = _v.formatSSN(value);
     if (field.validate === 'phone') value = _v.formatPhone(value);
     if (field.validate === 'ccexpire') value = _v.formatCCExpire(value);
+
     this.fieldProp(name, {value: value, error: false});
     this.formProp({error: false, updated: true});
     if (field.debug) console.log('onChange', name, field);
@@ -145,7 +147,7 @@ class Form extends Component {
   }
 
   onChangeDropdown(name, value) {
-    let field = this.state.fields[name];
+    const field = this.state.fields[name];
     this.fieldProp(name, {value: value, error: false});
     this.formProp({error: false, updated: true});
     if (field.debug) console.log('onChangeDropdown', name, field);
@@ -153,7 +155,7 @@ class Form extends Component {
   }
 
   onChangeCheckbox(name) {
-    let field = this.state.fields[name];
+    const field = this.state.fields[name];
     let checked = field.checked ? false : true;
     this.fieldProp(name, {checked: checked, value: checked, error: false});
     this.formProp({error: false, updated: true});
@@ -223,7 +225,7 @@ class Form extends Component {
   }
 
   choice(name, params) {
-    let field = this.state.fields.hasOwnProperty(name) ? this.state.fields[name] : null;
+    let field = has(this.state.fields, name) ? this.state.fields[name] : null;
     let defaultParams = cloneObj(this.defaultInputParams);
     params = Object.assign({}, defaultParams, {
       type: 'checkbox',
@@ -266,7 +268,7 @@ class Form extends Component {
   }
 
   dropdown(name, params) {
-    let field = this.state.fields.hasOwnProperty(name) ? this.state.fields[name] : null;
+    let field = has(this.state.fields, name) ? this.state.fields[name] : null;
     let defaultParams = cloneObj(this.defaultInputParams);
     params = Object.assign({}, defaultParams, {
     }, params);
@@ -293,7 +295,7 @@ class Form extends Component {
   }
 
   textField(name, params) {
-    let field = this.state.fields.hasOwnProperty(name) ? this.state.fields[name] : null;
+    let field = has(this.state.fields, name) ? this.state.fields[name] : null;
     let defaultParams = cloneObj(this.defaultInputParams);
     params = Object.assign({}, defaultParams, {
       className: '',
@@ -326,7 +328,7 @@ class Form extends Component {
   }
 
   richText(name, params) {
-    let field = this.state.fields.hasOwnProperty(name) ? this.state.fields[name] : null;
+    let field = has(this.state.fields, name) ? this.state.fields[name] : null;
     let defaultParams = cloneObj(this.defaultInputParams);
     params = Object.assign({}, defaultParams, {
       className: '',
@@ -359,7 +361,7 @@ class Form extends Component {
   }
 
   creditCard(name, params) {
-    let field = this.state.fields.hasOwnProperty(name) ? this.state.fields[name] : null;
+    let field = has(this.state.fields, name) ? this.state.fields[name] : null;
     let defaultParams = cloneObj(this.defaultInputParams);
     params = Object.assign({}, defaultParams, {
       className: '',
@@ -399,7 +401,7 @@ class Form extends Component {
 
   creditCardGroup(params) {
     let defaultParams = cloneObj(this.defaultInputParams);
-    const ccnumberField = this.state.fields.hasOwnProperty('ccnumber') ? this.state.fields.ccnumber : null;
+    const ccnumberField = has(this.state.fields, 'ccnumber') ? this.state.fields.ccnumber : null;
     const hideCardsAccepted = ccnumberField ? ccnumberField.cardType !== 'noCardType' ? true : false : false;
 
     params = Object.assign({}, defaultParams, {
@@ -419,9 +421,9 @@ class Form extends Component {
 
   checkForErrors(fields, group) {
     var error = false;
-    Object.keys(fields).forEach(function(key) {
-      if (fields[key].group === group || fields[key].group === 'all') {
-        if (fields[key].error) error = true;
+    Object.entries(fields).forEach(([key, value]) => {
+      if (value.group === group || value.group === 'all') {
+        if (value.error) error = true;
       }
     });
     this.formProp({error: error});
@@ -431,10 +433,10 @@ class Form extends Component {
   getErrors(err) {
     let errors;
     if (err) {
-      if (err.hasOwnProperty('errors')) {
+      if (has(err, 'errors')) {
         errors = err.errors;
         this.formProp({error: `Error saving: ${errors[0].message}`});
-        if (this.state.fields.hasOwnProperty(errors[0].field)) this.fieldProp(errors[0].field, {error: `The following error occurred while saving, ${errors[0].message}`});
+        if (has(this.state.fields, errors[0].field)) this.fieldProp(errors[0].field, {error: `The following error occurred while saving, ${errors[0].message}`});
       }
     }
     return errors;
@@ -471,7 +473,7 @@ class Form extends Component {
 
   fieldError(name, msg) {
     let error = false;
-    if (this.state.fields.hasOwnProperty(name)) {
+    if (has(this.state.fields, name)) {
       if (this.state.fields[name].error) error = this.state.fields[name].error;
     }
     return (
@@ -484,13 +486,13 @@ class Form extends Component {
 		e.preventDefault();
     let fields = this.state.fields;
     var groupFields = {};
-    Object.keys(fields).forEach(function(key) {
-      if ((fields[key].group === group || fields[key].group === 'all') && fields[key].autoReturn) {
-        groupFields[key] = fields[key];
-        if (fields[key].required && !fields[key].value) {
+    Object.entries(fields).forEach(([key, value]) => {
+      if ((value.group === group || value.group === 'all') && value.autoReturn) {
+        groupFields[key] = value;
+        if (value.required && !value.value) {
           bindthis.fieldProp(key, {error: _v.msgs.required});
         } else {
-          if (fields[key].value) bindthis.validateField(key, fields[key].validate, fields[key].value);
+          if (value.value) bindthis.validateField(key, value.validate, value.value);
         }
       }
     });
@@ -592,7 +594,7 @@ Form.defaultProps = {
 function mapStateToProps(state, props) {
   let id = props.name + '-form';
   let responseData;
-  if (state.send.hasOwnProperty(props.name)) responseData = state.send[props.name].response;
+  if (has(state.send, props.name)) responseData = state.send[props.name].response;
   return {
     id: id,
     isSending: state.send.isSending,
