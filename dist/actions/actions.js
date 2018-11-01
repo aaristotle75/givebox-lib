@@ -42,10 +42,14 @@ function resourceCatchError(resource, error) {
 }
 
 export function getAPI(resource, endpoint, search, callback, reload) {
+  var csrf_token = document.querySelector('meta[name="csrf_token"]') ? document.querySelector('meta[name="csrf_token"]')['content'] : '';
   return function (dispatch, getState) {
     if (shouldGetAPI(getState(), resource, reload)) {
       dispatch(requestResource(resource, reload));
       axios.get(endpoint, {
+        headers: {
+          'X-CSRF-Token': csrf_token
+        },
         withCredentials: true,
         transformResponse: function transformResponse(data) {
           return JSON.parse(data);

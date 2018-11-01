@@ -16,11 +16,13 @@ import Portal from './common/Portal';
 import Search from './common/Search';
 import Table from './common/Table';
 import * as types from './common/types';
-import * as utility from './common/utility';
+import * as util from './common/utility';
 import { toggleModal, resourceProp, getAPI, sendAPI } from './actions/actions';
 import { resource, send, modal } from './actions/reducers';
+import * as giveboxAPI from './api/givebox';
 export { // Form
 Form, formValidate, selectOptions, // actions
 toggleModal, resourceProp, getAPI, sendAPI, // reducers
 resource, send, modal, // common
-Alert, Error, Export, ExportLink, GBLink, Loader, MaxRecords, ModalLink, ModalRoute, NoRecords, Paginate, Portal, Search, Table, types, utility };
+Alert, Error, Export, ExportLink, GBLink, Loader, MaxRecords, ModalLink, ModalRoute, NoRecords, Paginate, Portal, Search, Table, types, util, // APIs
+giveboxAPI };

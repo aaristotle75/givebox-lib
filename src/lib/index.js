@@ -1,4 +1,6 @@
 import Form from './form/Form';
+import Select from './form/Select';
+import TextField from './form/TextField';
 import * as formValidate from './form/formValidate';
 import * as selectOptions from './form/selectOptions';
 
@@ -17,7 +19,7 @@ import Portal from './common/Portal';
 import Search from './common/Search';
 import Table from './common/Table';
 import * as types from './common/types';
-import * as utility from './common/utility';
+import * as util from './common/utility';
 
 import {
   toggleModal,
@@ -28,18 +30,32 @@ import {
 
 import { resource, send, modal } from './actions/reducers';
 
+import * as giveboxAPI from './api/givebox';
+import {
+  getResource,
+  reloadResource,
+  sendResource
+} from './api';
 
 export {
   // Form
   Form,
   formValidate,
   selectOptions,
+  Select,
+  TextField,
 
   // actions
   toggleModal,
   resourceProp,
   getAPI,
   sendAPI,
+
+  // API
+  giveboxAPI,
+  getResource,
+  reloadResource,
+  sendResource,
 
   // reducers
   resource,
@@ -62,5 +78,5 @@ export {
   Search,
   Table,
   types,
-  utility
+  util
 };

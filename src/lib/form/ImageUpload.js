@@ -1,14 +1,13 @@
 import React, {Component} from 'react';
 import Dropzone from 'react-dropzone';
-import {mime} from 'common/types';
-import {formatBytes} from 'common/utility';
+import {mime} from '../common/types';
+import {formatBytes} from '../common/utility';
 
 class ImageUpload extends Component {
 
   constructor(props) {
     super(props);
     this.onDrop = this.onDrop.bind(this);
-    this.
     this.state = {
       accepted: [],
       rejected: []

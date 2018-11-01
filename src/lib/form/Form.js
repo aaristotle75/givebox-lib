@@ -125,7 +125,6 @@ class Form extends Component {
   }
 
   onChangeCalendar(ts) {
-    var value = ts;
     console.log('onChangeCalendar', ts);
     return;
   }
@@ -550,7 +549,8 @@ class Form extends Component {
         responseData: this.props.responseData,
         fieldError: this.fieldError,
         errorAlert: this.errorAlert,
-        successAlert: this.successAlert
+        successAlert: this.successAlert,
+        name: this.props.name
       })
     );
     return childrenWithProps;

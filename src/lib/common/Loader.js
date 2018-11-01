@@ -20,13 +20,13 @@ export default class Loader extends Component {
 	}
 
 	createSVG() {
-		var svg = <img className={`loaderSVG ${this.state.end ? 'fadeOut' : ''}`} src="https://s3-us-west-1.amazonaws.com/givebox/public/gb-logo3.svg" type="image/svg+xml" />
+		var svg = <img alt="Givebox loader" className={`loaderSVG ${this.state.end ? 'fadeOut' : ''}`} src="https://s3-us-west-1.amazonaws.com/givebox/public/gb-logo3.svg" type="image/svg+xml" />
 		return svg;
 	}
 
   render() {
 
-		const { msg, primaryColor, className, textColor, forceText } = this.props;
+		const { msg, textColor, forceText } = this.props;
 
     if (!this.state.rootEl) return ( <div></div> );
 		var showMsg = !!forceText;

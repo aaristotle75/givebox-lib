@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
+import { util } from '../';
 import { getAPI } from '../actions/actions';
-import { isResourceLoaded } from './utility';
 
 class Paginate extends Component{
 	constructor(props){
@@ -208,7 +208,7 @@ Paginate.defaultProps = {
 function mapStateToProps(state, props) {
 	let resource = state.resource[props.name] ? state.resource[props.name] : {};
 	let count, max, pages, activePage;
-  if (!isResourceLoaded(state.resource, [props.name])) {
+  if (!util.isLoading(resource)) {
 		count = parseInt(resource.meta.total);
 		max = parseInt(resource.search.max);
 		pages = Math.ceil(count/max).toFixed(0);

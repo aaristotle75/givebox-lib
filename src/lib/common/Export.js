@@ -1,10 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { getAPI } from '../actions/actions';
-import { isResourceLoaded } from './utility';
 import CalendarRange from '../form/CalendarRange';
-import Select from '../form/Select';
-import { Error } from './Alerts';
+import { Error, getAPI, Select } from '../';
 
 class Export extends Component {
 
@@ -70,8 +67,6 @@ Export.defaultProps = {
 
 function mapStateToProps(state, props) {
 	let resource = state.resource[props.name] ? state.resource[props.name] : {};
-  if (!isResourceLoaded(state.resource, [props.name])) {
-  }
 
   return {
     resource: resource

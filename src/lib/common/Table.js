@@ -5,8 +5,8 @@ import MaxRecords from "./MaxRecords";
 import Search from "./Search";
 import NoRecords from "./NoRecords";
 import ExportLink from "./ExportLink";
+import { util } from '../';
 import { getAPI } from '../actions/actions';
-import { translateSort, isResourceLoaded, isEmpty} from './utility';
 
 class Table extends Component {
 
@@ -30,8 +30,8 @@ class Table extends Component {
     var resource = this.props.resource;
     var currentOrder = resource.search.order;
     var order = currentOrder === 'desc' ? 'asc' : 'desc';
-    var sortToReplace = 'sort=' + translateSort(currentOrder) + resource.search.sort;
-    var replaceSort = 'sort=' + translateSort(order) + sort;
+    var sortToReplace = 'sort=' + util.translateSort(currentOrder) + resource.search.sort;
+    var replaceSort = 'sort=' + util.translateSort(order) + sort;
     var endpoint = resource.endpoint.replace(sortToReplace, replaceSort);
     var search = Object.assign(resource.search, {sort: sort, order: order});
 		this.props.getAPI(this.props.name, endpoint, search, null, true);
@@ -185,7 +185,7 @@ function mapStateToProps(state, props) {
 
 	let resource = state.resource[props.name] ? state.resource[props.name] : {};
   let endpoint, sort, order;
-  if (!isResourceLoaded(state.resource, [props.name])) {
+  if (!util.isLoading(resource)) {
     sort = resource.search.hasOwnProperty('sort') ? resource.search.sort : '';
     order = resource.search.hasOwnProperty('order') ? resource.search.order : '';
   }
@@ -207,7 +207,7 @@ const TableHead = ({ headers, sortColumn, sort, order }) => {
   let desc = <span className="icon icon-triangle-down"></span>;
   let asc = <span className="icon icon-triangle-up"></span>;
   let items = [];
-  if (!isEmpty(headers)) {
+  if (!util.isEmpty(headers)) {
     Object.keys(headers).forEach(function(key) {
       items.push(
         <th onClick={() => sortColumn(headers[key].sort)} className={`${headers[key].sort && 'sort'}`} align={headers[key].align || "left"} style={{width: headers[key].width}} key={key}>{headers[key].name} {sort === headers[key].sort ? order === 'desc' ? desc : asc : ''}</th>
@@ -225,7 +225,7 @@ const TableHead = ({ headers, sortColumn, sort, order }) => {
 
 const TableBody = ({ rows, length }) => {
   let items = [];
-  if (!isEmpty(rows)) {
+  if (!util.isEmpty(rows)) {
     Object.keys(rows).forEach(function(key) {
       var td = [];
       for (let i=0; i<rows[key].length; i++) {
@@ -248,7 +248,7 @@ const TableBody = ({ rows, length }) => {
 
 const TableFoot = ({ footer }) => {
   let items = [];
-  if (!isEmpty(footer)) {
+  if (!util.isEmpty(footer)) {
     Object.keys(footer).forEach(function(key) {
       items.push(
         <td key={key} align={footer[key].align || "left"} colSpan={footer[key].colspan || 1}>{footer[key].name}</td>

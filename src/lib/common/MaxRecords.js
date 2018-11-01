@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import Select from '../form/Select';
+import { util, Select } from '../';
 import { getAPI } from '../actions/actions';
-import { sortByField, isResourceLoaded } from './utility';
 
 class MaxRecords extends Component {
 
@@ -16,16 +15,16 @@ class MaxRecords extends Component {
   }
 
   onChange(e) {
-    var selected = e.currentTarget.value;
-    var resource = this.props.resource;
-		var endpoint = resource.endpoint.replace('max='+resource.search.max, 'max='+selected);
-    var pages = Math.ceil(resource.meta.total/selected).toFixed(0);
-    var page = resource.search.page;
+    const selected = e.currentTarget.value;
+    const resource = this.props.resource;
+		let endpoint = resource.endpoint.replace('max='+resource.search.max, 'max='+selected);
+    const pages = Math.ceil(resource.meta.total/selected).toFixed(0);
+    let page = resource.search.page;
     if (resource.search.page > pages) {
       page = 1;
 		  endpoint = endpoint.replace('page='+resource.search.page, 'page='+page);
     }
-		var search = Object.assign(resource.search, {max: selected, page: page});
+		const search = Object.assign({}, resource.search, {max: selected, page: page});
 		this.props.getAPI(this.props.name, endpoint, search, null, true);
   }
 
@@ -43,7 +42,7 @@ class MaxRecords extends Component {
         { primaryText: records[i], value: records[i] }
       );
     }
-    items = sortByField(items, 'value', 'ASC');
+    items = util.sortByField(items, 'value', 'ASC');
     return items;
   }
 
@@ -78,7 +77,7 @@ MaxRecords.defaultProps = {
 function mapStateToProps(state, props) {
 	let resource = state.resource[props.name] ? state.resource[props.name] : {};
   let max, error, count;
-  if (!isResourceLoaded(state.resource, [props.name])) {
+  if (!util.isLoading(resource)) {
     max = resource.search.hasOwnProperty('max') ? resource.search.max : null;
     count = resource.meta.hasOwnProperty('total') ? resource.meta.total : null;
     error = !!resource.error;

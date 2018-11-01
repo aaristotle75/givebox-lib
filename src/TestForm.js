@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {states} from './lib/form/selectOptions';
 
 export default class TestForm extends Component {
 
@@ -21,15 +20,9 @@ export default class TestForm extends Component {
 
   processForm(fields) {
     console.log(fields);
-    let data = {};
   }
 
   render() {
-
-    let formState;
-    if (this.props.hasOwnProperty('formState')) {
-      let formState = this.props.formState;
-    }
 
     return (
       <div>

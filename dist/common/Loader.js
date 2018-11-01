@@ -42,6 +42,7 @@ function (_Component) {
     key: "createSVG",
     value: function createSVG() {
       var svg = React.createElement("img", {
+        alt: "Givebox loader",
         className: "loaderSVG ".concat(this.state.end ? 'fadeOut' : ''),
         src: "https://s3-us-west-1.amazonaws.com/givebox/public/gb-logo3.svg",
         type: "image/svg+xml"
@@ -53,8 +54,6 @@ function (_Component) {
     value: function render() {
       var _this$props = this.props,
           msg = _this$props.msg,
-          primaryColor = _this$props.primaryColor,
-          className = _this$props.className,
           textColor = _this$props.textColor,
           forceText = _this$props.forceText;
       if (!this.state.rootEl) return React.createElement("div", null);

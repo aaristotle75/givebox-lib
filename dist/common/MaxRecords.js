@@ -43,7 +43,7 @@ function (_Component) {
         endpoint = endpoint.replace('page=' + resource.search.page, 'page=' + page);
       }
 
-      var search = Object.assign(resource.search, {
+      var search = Object.assign({}, resource.search, {
         max: selected,
         page: page
       });

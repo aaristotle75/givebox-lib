@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import TextField from '../form/TextField';
+import { util, TextField } from '../';
 import { getAPI } from '../actions/actions';
-import { toTitleCase, isResourceLoaded, sortByField } from './utility';
 
 class Search extends Component {
 
@@ -72,7 +71,7 @@ class Search extends Component {
         { primaryText: records[i], value: records[i] }
       );
     }
-    items = sortByField(items, 'value', 'ASC');
+    items = util.sortByField(items, 'value', 'ASC');
     return items;
   }
 
@@ -90,7 +89,7 @@ class Search extends Component {
     } = this.state;
 
     let searchName = name + 'Search';
-    let defaultPlaceholder = 'Search ' + toTitleCase(name);
+    let defaultPlaceholder = 'Search';
 
     return (
       <div style={style} className={`search ${align}`}>
@@ -121,7 +120,7 @@ Search.defaultProps = {
 function mapStateToProps(state, props) {
 	let resource = state.resource[props.name] ? state.resource[props.name] : {};
   let query;
-  if (!isResourceLoaded(state.resource, [props.name])) {
+  if (!util.isLoading(resource)) {
     query = resource.search.hasOwnProperty('query') ? resource.search.query : ''
   }
 

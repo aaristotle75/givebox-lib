@@ -29,11 +29,12 @@ function (_Component) {
       var options = this.props.options;
 
       if (!isEmpty(options)) {
-        Object.keys(options).forEach(function (key) {
+        options.forEach(function (value, key) {
+          console.log(key, value);
           items.push(React.createElement("option", {
-            key: options[key],
-            value: options[key].value
-          }, options[key].primaryText));
+            key: key,
+            value: value.value
+          }, value.primaryText));
         });
       }
 

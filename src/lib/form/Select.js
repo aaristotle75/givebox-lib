@@ -12,9 +12,9 @@ class Select extends Component {
     var items = [];
     const options = this.props.options;
     if (!isEmpty(options)) {
-      Object.keys(options).forEach(function(key) {
+      options.forEach(function(value, key) {
         items.push(
-          <option key={options[key]} value={options[key].value}>{options[key].primaryText}</option>
+          <option key={key} value={value.value}>{value.primaryText}</option>
         );
       });
     }

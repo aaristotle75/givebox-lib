@@ -160,11 +160,9 @@ export function convertArrayOfObjectsToCSV(args) {
 }
 
 export function createCSV(arr, name) {
-  var data, filename;
-  var csv = convertArrayOfObjectsToCSV({data: arr});
+  let data;
+  let csv = convertArrayOfObjectsToCSV({data: arr});
   if (csv == null) return;
-
-  filename = name || 'export.csv';
 
   if (!csv.match(/^data:text\/csv/i)) {
       csv = 'data:text/csv;charset=utf-8,' + csv;
@@ -201,10 +199,10 @@ export function getCookie(cname) {
     var ca = document.cookie.split(';');
     for(var i = 0; i < ca.length; i++) {
         var c = ca[i];
-        while (c.charAt(0) == ' ') {
+        while (c.charAt(0) === ' ') {
             c = c.substring(1);
         }
-        if (c.indexOf(name) == 0) {
+        if (c.indexOf(name) === 0) {
             return c.substring(name.length, c.length);
         }
     }
@@ -240,7 +238,6 @@ export function encodeBlob(imageUrl, callback) {
   xhr.onload = function() {
     var data;
     var type = {type: 'image/jpeg'}; // xhr.response["content-type"];
-    var binary = '';
   	var bytes = new Uint8Array(xhr.response);
     var blob = new Blob([bytes], type);
     var blobUrl = URL.createObjectURL(blob);
@@ -276,12 +273,10 @@ export function b64toBlob(b64Data, contentType, sliceSize) {
 
 export function getBlob(objectUrl, callback, data, fileName, imageCallback, fieldName) {
   var xhr = new XMLHttpRequest();
-  var data = data;
-  var fileName = fileName;
   xhr.open('GET', objectUrl, true);
   xhr.responseType = 'blob';
   xhr.onload = function(e) {
-    if (this.status == 200) {
+    if (this.status === 200) {
       var blob = this.response;
       callback(blob, data, fileName, imageCallback, fieldName);
     }
@@ -381,29 +376,26 @@ export function makeAPIQuery(obj) {
   return str;
 }
 
+
 /*
-* Func to determine if data has been loaded before rendering component
-* @params
-* @arr - array of resources to check and if they should contain data to continue
+* Check if an array of resources has been loaded
+*
+* @param {object} resource props to check
+* @param {bool} checkForData A boolean if data should be loaded
 */
-export function isResourceLoaded(props, arr, checkForData = false) {
+export function isLoading(resource, checkForData = false) {
   var loading = false;
-  if (!isEmpty(arr)) {
-    for (var i=0; i<arr.length; i++) {
-      if (!props.hasOwnProperty(arr[i])) {
-        loading = true;
-      } else {
-        if (!props[arr[i]].hasOwnProperty('data')) {
-          loading = true;
-        } else {
-          if (checkForData && isEmpty(props[arr[i]].data)) loading = true;
-        }
-        if (!props[arr[i]].hasOwnProperty('search')) {
-          loading = true;
-        }
-        if (!props[arr[i]].hasOwnProperty('meta')) {
-          loading = true;
-        }
+  if (!resource) {
+    loading = true;
+  } else {
+    if (!resource.hasOwnProperty('data')
+      || !resource.hasOwnProperty('search')
+      || !resource.hasOwnProperty('meta')) {
+      loading = true;
+    } else {
+      if (checkForData) {
+        if (isEmpty(resource.data)) loading = true;
+        if (resource.isFetching) loading = true;
       }
     }
   }
@@ -427,5 +419,6 @@ export function isEmpty(value){
   return  value === undefined ||
           value === null ||
           (typeof value === "object" && Object.keys(value).length === 0) ||
-          (typeof value === "string" && value.trim().length === 0)
+          (typeof value === "string" && value.trim().length === 0) ||
+          value.length === 0
 }

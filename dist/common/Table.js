@@ -158,19 +158,7 @@ function (_Component) {
       var footer = tableData.footer;
       return React.createElement("div", {
         className: className
-      }, searchAbove && this.renderSearch(), exportAbove && this.renderExport(), maxRecordsAbove && this.renderMaxRecords(), paginationAbove && this.renderPagination(), React.createElement("table", {
-        style: this.props.tableStyle
-      }, React.createElement(TableHead, {
-        headers: headers,
-        sortColumn: this.sortColumn,
-        sort: sort,
-        order: order
-      }), React.createElement(TableBody, {
-        rows: rows,
-        length: headers.length
-      }), React.createElement(TableFoot, {
-        footer: footer
-      })), searchBelow && this.renderSearch(), exportBelow && this.renderExport(), maxRecordsBelow && this.renderMaxRecords(), paginationBelow && this.renderPagination());
+      });
     }
   }]);
 
