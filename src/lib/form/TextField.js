@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 
-const ref = React.createRef();
-
 class TextField extends Component {
 
   constructor(props) {
@@ -10,7 +8,8 @@ class TextField extends Component {
   }
 
   componentDidMount() {
-    let params = Object.assign({}, this.props.params, {ref: this.inputRef});
+    const params = Object.assign({}, this.props.params, { ref: this.inputRef });
+    if (params.type === 'hidden') params.required = false;
     if (this.props.createField) this.props.createField(this.props.name, params);
   }
 
@@ -23,10 +22,8 @@ class TextField extends Component {
       placeholder,
       autoFocus,
       required,
-      step,
       readOnly,
       style,
-      labelStyle,
       label,
       className,
       error,
@@ -45,7 +42,7 @@ class TextField extends Component {
             name={name}
             type={type}
             placeholder={placeholder}
-            required={required}
+            required={type === 'hidden' ? false : required}
             readOnly={readOnly}
             onChange={this.props.onChange}
             onBlur={this.props.onBlur}
@@ -59,7 +56,7 @@ class TextField extends Component {
             {error}
             <i></i>
           </div>
-          <div className={`errorMsg ${!error || errorType !== 'normal' && 'displayNone'}`}>{error}</div>
+          <div className={`errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`}>{error}</div>
         </div>
     );
   }

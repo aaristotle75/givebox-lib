@@ -35,13 +35,12 @@ class App extends Component {
   * @params (mixed) value
   */
   setIndexState(key, value) {
-    const merged = {...this.state[key], ...value};
-    this.setState({
+    const merge = {...this.state[key], ...value};
+    this.setState(Object.assign({
       ...this.state,
-      [key]: merged
-    });
+      [key]: merge
+    }));
   }
-
 
   /**
   * A callback from getting the session to authenticate the user
@@ -151,7 +150,7 @@ class App extends Component {
         <div id="app-root">
           <AppContext.Provider
             value={{
-              title: "Givebox Lib - Tests"
+              title: `Givebox lib - ${this.state.org.name}`
             }}
           >
             <Routes

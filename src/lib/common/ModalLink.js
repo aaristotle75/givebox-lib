@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { toggleModal } from "../actions/actions";
+import { toggleModal } from '../actions/actions';
+import GBLink from './GBLink';
 
 class ModalLink extends Component {
 
@@ -26,9 +27,9 @@ class ModalLink extends Component {
     } = this.props;
 
     return (
-      <a onClick={() => this.onClick(id)}>
+      <GBLink className='link' type="button" onClick={() => this.onClick(id)}>
         {this.props.children}
-      </a>
+      </GBLink>
     )
   }
 }

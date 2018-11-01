@@ -15,15 +15,14 @@ const defaultTransition = {
 
 const stopPropagation = (e) => e.stopPropagation();
 
-let onClose;
-
 class Modal extends Component {
 
 	constructor(props){
 		super(props);
     this.closeModal = this.closeModal.bind(this);
     this.renderActions = this.renderActions.bind(this);
-    var effect;
+    this.onClose = this.onClose.bind(this);
+    let effect;
     if (props.mobile) effect = '3DFlipVert';
     else effect = props.effect;
     const effects = {
@@ -52,18 +51,19 @@ class Modal extends Component {
 
   componentDidMount() {
     //window.addEventListener('resize', this.handleResize.bind(this));
-    const transitionTimeMS = this.getTransitionDuration();
     setTimeout(() => this.setState({open: this.props.open}),0);
-    onClose = (callback) => {
-       this.setState({open: false}, () => {
-         this.closeTimer = setTimeout(callback, transitionTimeMS);
-       });
-    };
+    this.onClose();
   }
 
   componentWillUnmount() {
-    onClose = null;
     clearTimeout(this.closeTimer);
+  }
+
+  onClose(callback) {
+    const transitionTimeMS = this.getTransitionDuration();
+    this.setState({open: false}, () => {
+       this.closeTimer = setTimeout(callback, transitionTimeMS);
+    });
   }
 
   /* Set width and height of screen */
@@ -193,7 +193,7 @@ class Modal extends Component {
             onClick={stopPropagation}
           >
             {this.renderChildren()}
-            {(closeBtn) && <a style={closeBtnStyle} className="modalCloseBtn" onClick={() => this.closeModal(closeCallback)}><span className="icon icon-close"></span></a>}
+            {(closeBtn) && <button style={closeBtnStyle} className="modalCloseBtn" onClick={() => this.closeModal(closeCallback)}><span className="icon icon-close"></span></button>}
             {this.renderActions()}
           </div>
         </div>

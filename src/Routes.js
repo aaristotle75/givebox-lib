@@ -36,12 +36,12 @@ class Routes extends Component {
                   <TransitionGroup>
                     <CSSTransition key={location.key} classNames="fade" timeout={300}>
                       <Switch location={location}>
-                        <Route path="/dashboard" render={(props) => loadComponent('pages/Dashboard')}  />
-                        <Route exact path="/list" render={(props) => loadComponent('pages/ItemsList', {routeProps: props})}  />
-                        <Route exact path="/list/:itemID" render={(props) => loadComponent('pages/Item', {routeProps: props})} />
-                        <Route exact path={`/list/:itemID/:action`} render={(props) => loadComponent('pages/Item', {routeProps: props})} />
-                        <Route path="/about" render={(props) => loadComponent('pages/About')}  />
-                        <Route path="/contact" render={(props) => loadComponent('pages/Contact')}  />
+                        <Route path="/dashboard" render={(props) => loadComponent('demo/Dashboard')}  />
+                        <Route exact path="/list" render={(props) => loadComponent('demo/ItemsList', {routeProps: props})}  />
+                        <Route exact path="/list/:itemID" render={(props) => loadComponent('demo/Item', {routeProps: props})} />
+                        <Route exact path={`/list/:itemID/:action`} render={(props) => loadComponent('demo/Item', {routeProps: props})} />
+                        <Route path="/about" render={(props) => loadComponent('demo/About')}  />
+                        <Route path="/contact" render={(props) => loadComponent('demo/Contact')}  />
                         <Route render={() => <div>Error</div>} />
                       </Switch>
                     </CSSTransition>

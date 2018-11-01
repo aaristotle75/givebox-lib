@@ -28,10 +28,14 @@ export default class TestForm extends Component {
       <div>
         <h2>Form Elements</h2>
         <div className="formWrapper">
-        {this.props.textField('custID', { type: 'hidden'})}
-        {this.props.textField('name', {placeholder: 'Enter Name', required: false, errorType: 'normal'})}
-        {this.props.creditCardGroup({debug: true})}
-        {this.props.richText('content', {label: 'Rich Text', placeholder: 'Please write something...', required: true, modal: true, modalLabel: 'Open content editor'})}
+        {this.props.textField('custID', { type: 'hidden' })}
+        {this.props.textField('name', { placeholder: 'Enter Name' })}
+        {this.props.creditCardGroup({ required: false, debug: false})}
+        {this.props.richText('content', { required: false, label: 'Rich Text', placeholder: 'Please write something...', modal: true, modalLabel: 'Open content editor' })}
+        {this.props.choice('choice', { label: 'Choice 1', value: 'choice1', type: 'radio', checked: 'choice2', debug: false })}
+        {this.props.choice('choice', { label: 'Choice 2', value: 'choice2', type: 'radio' })}
+        {this.props.choice('choice', { label: 'Choice 3', value: 'choice3', type: 'radio' })}
+        {this.props.dropdown('status', {options: [{primaryText: 'Active', value: 'active'}, {primaryText: 'Deactivated', value: 'deactivated'}, {primaryText: 'Suspended', value: 'suspended'}], defaultLabel: 'Select Status'})}        
         {/*
         {this.props.textField('amount1', { label: 'Enter Amount', placeholder: '0.00', validate: 'money' })}
         {this.props.choice('amount1-enabled', { parent: 'amount1', label: 'Amount 1 enabled', checked: true })}
@@ -44,10 +48,6 @@ export default class TestForm extends Component {
         {this.props.choice('amount-default', { label: 'Amount 2 Default', type: 'radio', value: 'amount2'})}
         {this.props.choice('enabled', {label: 'Enable this resource', checked: true, errorType: 'custom', style: {marginBottom: 0}, debug: false})}
         {this.props.fieldError('enabled', 'You must enable to continue.')}
-        {this.props.dropdown('status', {options: [{primaryText: 'Active', value: 'active'}, {primaryText: 'Deactivated', value: 'deactivated'}, {primaryText: 'Suspended', value: 'suspended'}], defaultLabel: 'Select Status'})}
-        {this.props.choice('choice', {label: 'Choice 1', value: 'choice1', type: 'radio', checked: 'choice2', debug: false})}
-        {this.props.choice('choice', {label: 'Choice 2', value: 'choice2', type: 'radio'})}
-        {this.props.choice('choice', {label: 'Choice 3', value: 'choice3', type: 'radio'})}
         {this.props.textField('email', {placeholder: 'Enter Email', validate: 'email'})}
         {this.props.textField('taxID', {placeholder: 'Enter Tax ID', validate: 'taxID', maxLength: 10})}
         {this.props.textField('ssn', {placeholder: 'Enter Social Security Number', validate: 'ssn', maxLength: 11})}
