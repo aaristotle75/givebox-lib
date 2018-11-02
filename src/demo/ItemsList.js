@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import { getResource, reloadResource, util, Table } from '../lib';
 
 class ItemsList extends Component {
@@ -21,17 +21,17 @@ class ItemsList extends Component {
     //let footer = [];
 
     headers.push(
-      { name: "Since", width: "10%", sort: "createdAt" },
-      { name: "First Name", width: "15%", sort: "firstName" },
-      { name: "Last Name", width: "15%", sort: "lastName" },
-      { name: "Email", width: "30%", sort: "email" },
-      { name: "", width: "10%", sort: "" }
+      { name: 'Since', width: '10%', sort: 'createdAt' },
+      { name: 'First Name', width: '15%', sort: 'firstName' },
+      { name: 'Last Name', width: '15%', sort: 'lastName' },
+      { name: 'Email', width: '30%', sort: 'email' },
+      { name: '', width: '10%', sort: '' }
     );
     fdata.headers = headers;
 
     if (!util.isEmpty(data)) {
       data.forEach(function(value, key) {
-        let createdAt = util.getDate(value.createdAt, "MM/DD/YYYY");
+        let createdAt = util.getDate(value.createdAt, 'MM/DD/YYYY');
         rows.push([createdAt, value.firstName, value.lastName, value.email ? value.email : 'n/a', <ActionsMenu match={match} id={value.ID} />]);
       });
     }
@@ -39,8 +39,8 @@ class ItemsList extends Component {
 
     /*
     footer.push(
-      { name: <div style={{textAlign: "right"}}>Totals</div>, colspan: 3 },
-      { name: "$1,123.42", colspan: 1}
+      { name: <div style={{textAlign: 'right'}}>Totals</div>, colspan: 3 },
+      { name: '$1,123.42', colspan: 1}
     );
     fdata.footer = footer;
     */

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { GBLink } from '../';
 
 export default class NoRecords extends Component {
 
@@ -12,8 +13,8 @@ export default class NoRecords extends Component {
 
     return (
       <div className={`noRecords ${align}`}>
-        <span className="normalText">No records found</span>
-        {link && <a onClick={link}>{label}</a>}
+        <span className='normalText'>No records found</span>
+        {link && <GBLink onClick={link}>{label}</GBLink>}
       </div>
     )
   }

@@ -20,8 +20,8 @@ class Search extends Component {
 
 	componentDidMount() {
 		const bindthis = this;
-		const input = document.getElementById("search");
-		input.addEventListener("keyup", function(e) {
+		const input = document.getElementById('search');
+		input.addEventListener('keyup', function(e) {
 			e.preventDefault();
 			if (e.keyCode === 13) {
 				bindthis.onSearch(e);
@@ -97,16 +97,16 @@ class Search extends Component {
       <div style={style} className={`search ${align}`}>
         <div style={{width: '25%', display: 'inline-block'}}>
         <TextField
-          id="search"
+          id='search'
           name={searchName}
           placeholder={placeholder ? placeholder : defaultPlaceholder}
           onChange={this.onChange}
           value={searchValue}
           autoFocus={searchValue ? true : false}
         >
-          <div className="input-button">
-            <button className="searchBtn" id="searchBtn" onClick={this.onSearch} type="button"><span className="icon icon-search-input"></span></button>
-            <button className={`searchResetBtn ${!searchValue && 'displayNone'}`} onClick={this.resetSearch} type="button"><span className="icon icon-close"></span></button>
+          <div className='input-button'>
+            <button className='searchBtn' id='searchBtn' onClick={this.onSearch} type='button'><span className='icon icon-search-input'></span></button>
+            <button className={`searchResetBtn ${!searchValue && 'displayNone'}`} onClick={this.resetSearch} type='button'><span className='icon icon-close'></span></button>
           </div>
         </TextField>
         </div>

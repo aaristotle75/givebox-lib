@@ -10,12 +10,6 @@ class ModalLink extends Component {
     this.onClick = this.onClick.bind(this);
   }
 
-  componentDidMount() {
-  }
-
-  componentWillUnmount() {
-  }
-
   onClick(id) {
     this.props.toggleModal(id, true);
   }
@@ -27,7 +21,7 @@ class ModalLink extends Component {
     } = this.props;
 
     return (
-      <GBLink className='link' type="button" onClick={() => this.onClick(id)}>
+      <GBLink className='link' type='button' onClick={() => this.onClick(id)}>
         {this.props.children}
       </GBLink>
     )

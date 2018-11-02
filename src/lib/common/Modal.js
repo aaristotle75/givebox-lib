@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import * as Effect from './ModalEffect';
-import { cloneObj, isEmpty } from "./utility";
+import { cloneObj, isEmpty } from './utility';
 const prefix = require('react-prefixr');
 
 const defaultOverlayStyle = {};
@@ -89,8 +89,8 @@ class Modal extends Component {
     }
     if (!isEmpty(actions)) {
       return (
-        <div className="actionBtnsContainer">
-          <div className="actionBtns">
+        <div className='actionBtnsContainer'>
+          <div className='actionBtns'>
             {actions}
           </div>
         </div>
@@ -193,7 +193,7 @@ class Modal extends Component {
             onClick={stopPropagation}
           >
             {this.renderChildren()}
-            {(closeBtn) && <button style={closeBtnStyle} className="modalCloseBtn" onClick={() => this.closeModal(closeCallback)}><span className="icon icon-close"></span></button>}
+            {(closeBtn) && <button style={closeBtnStyle} className='modalCloseBtn' onClick={() => this.closeModal(closeCallback)}><span className='icon icon-close'></span></button>}
             {this.renderActions()}
           </div>
         </div>

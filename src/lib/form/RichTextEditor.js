@@ -22,7 +22,7 @@ class ContentEditor extends Component{
 
 	onChange(editorState) {
 		this.setState({editorState});
-		var content = editorState.getCurrentContent();
+		const content = editorState.getCurrentContent();
 		this.props.onChange(this.props.fieldName, stateToHTML(content), content.hasText());
 	}
 
@@ -68,7 +68,7 @@ class ContentEditor extends Component{
 		// If the user changes block type before entering any text, we can
 		// either style the placeholder or hide it. Let's just hide it now.
 		let className = 'RichEditor-editor';
-		var contentState = editorState.getCurrentContent();
+		const contentState = editorState.getCurrentContent();
 		if (!contentState.hasText()) {
 			if (contentState.getBlockMap().first().getType() !== 'unstyled') {
 				className += ' RichEditor-hidePlaceholder';
@@ -76,7 +76,7 @@ class ContentEditor extends Component{
 		}
 
 		return (
-			<div className="RichEditor-root">
+			<div className='RichEditor-root'>
 				<BlockStyleControls
 					editorState={editorState}
 					onToggle={this.toggleBlockType}
@@ -103,11 +103,11 @@ class ContentEditor extends Component{
 	}
 }
 
-// Custom overrides for "code" style.
+// Custom overrides for 'code' style.
 const styleMap = {
 	CODE: {
 		backgroundColor: 'rgba(0, 0, 0, 0.05)',
-		fontFamily: '"CenturyGothic", "sans-serif"',
+		fontFamily: `'CenturyGothic', 'sans-serif'`,
 		fontSize: 14,
 		padding: 2,
 	},
@@ -159,7 +159,7 @@ const BlockStyleControls = (props) => {
 		.getType();
 
 	return (
-		<div className="RichEditor-controls">
+		<div className='RichEditor-controls'>
 			{BLOCK_TYPES.map((type) =>
 				<StyleButton
 					key={type.label}
@@ -173,16 +173,16 @@ const BlockStyleControls = (props) => {
 	);
 };
 
-var INLINE_STYLES = [
+const INLINE_STYLES = [
 	{label: 'Bold', style: 'BOLD'},
 	{label: 'Italic', style: 'ITALIC'},
 	{label: 'Underline', style: 'UNDERLINE'}
 ];
 
 const InlineStyleControls = (props) => {
-	var currentStyle = props.editorState.getCurrentInlineStyle();
+	const currentStyle = props.editorState.getCurrentInlineStyle();
 	return (
-		<div className="RichEditor-controls">
+		<div className='RichEditor-controls'>
 			{INLINE_STYLES.map(type =>
 				<StyleButton
 					key={type.label}

@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import Paginate from "./Paginate";
-import MaxRecords from "./MaxRecords";
-import Search from "./Search";
-import NoRecords from "./NoRecords";
-import ExportLink from "./ExportLink";
+import Paginate from './Paginate';
+import MaxRecords from './MaxRecords';
+import Search from './Search';
+import NoRecords from './NoRecords';
+import ExportLink from './ExportLink';
 import { util } from '../';
 import { getAPI } from '../actions/actions';
 import has from 'has';
@@ -45,12 +45,12 @@ class Table extends Component {
     let startOffset;
 
     Array.prototype.forEach.call(
-      document.querySelectorAll("table th"),
+      document.querySelectorAll('table th'),
       function (th) {
         th.style.position = 'relative';
 
         const grip = document.createElement('div');
-        grip.innerHTML = "&nbsp;";
+        grip.innerHTML = '&nbsp;';
         grip.style.top = '0';
         grip.style.right = 0;
         grip.style.bottom = 0;
@@ -137,14 +137,7 @@ class Table extends Component {
       data,
       sort,
       order
-
     } = this.props;
-
-    /*
-    if (!search.sort || !seach.order) {
-      return ( <div></div> );
-    }
-    */
 
     const tableData = data();
     const headers = tableData.headers;
@@ -204,13 +197,13 @@ export default connect(mapStateToProps, {
 
 
 const TableHead = ({ headers, sortColumn, sort, order }) => {
-  const desc = <span className="icon icon-triangle-down"></span>;
-  const asc = <span className="icon icon-triangle-up"></span>;
+  const desc = <span className='icon icon-triangle-down'></span>;
+  const asc = <span className='icon icon-triangle-up'></span>;
   const items = [];
   if (!util.isEmpty(headers)) {
     Object.keys(headers).forEach(function(key) {
       items.push(
-        <th onClick={() => sortColumn(headers[key].sort)} className={`${headers[key].sort && 'sort'}`} align={headers[key].align || "left"} style={{width: headers[key].width}} key={key}>{headers[key].name} {sort === headers[key].sort ? order === 'desc' ? desc : asc : ''}</th>
+        <th onClick={() => sortColumn(headers[key].sort)} className={`${headers[key].sort && 'sort'}`} align={headers[key].align || 'left'} style={{width: headers[key].width}} key={key}>{headers[key].name} {sort === headers[key].sort ? order === 'desc' ? desc : asc : ''}</th>
       );
     });
   }
@@ -236,7 +229,7 @@ const TableBody = ({ rows, length }) => {
     });
   } else {
     items.push(
-      <tr key={0}><td colSpan={length || 1} align="center"><NoRecords /></td></tr>
+      <tr key={0}><td colSpan={length || 1} align='center'><NoRecords /></td></tr>
     );
   }
   return (
@@ -251,7 +244,7 @@ const TableFoot = ({ footer }) => {
   if (!util.isEmpty(footer)) {
     Object.entries(footer).forEach(([key, value]) => {
       items.push(
-        <td key={key} align={value.align || "left"} colSpan={value.colspan || 1}>{value.name}</td>
+        <td key={key} align={value.align || 'left'} colSpan={value.colspan || 1}>{value.name}</td>
       );
     });
   }

@@ -1,14 +1,7 @@
 import React, {Component} from 'react';
-import ModalLink from "./ModalLink";
+import ModalLink from './ModalLink';
 
 export default class ExportLink extends Component {
-
-  constructor(props) {
-    super(props);
-  }
-
-  componentWillUnmount() {
-  }
 
   render() {
 
@@ -19,7 +12,7 @@ export default class ExportLink extends Component {
 
     return (
       <div style={style} className={`exportRecordsLink ${align}`}>
-        <ModalLink id="exportRecords">Export Report <span className="icon icon-download"></span></ModalLink>
+        <ModalLink id='exportRecords'>Export Report <span className='icon icon-download'></span></ModalLink>
       </div>
     );
   }

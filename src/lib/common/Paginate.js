@@ -173,16 +173,16 @@ class Paginate extends Component{
 		return (
 			<div className={`paginate ${align}`}>
 				{count &&
-					<div className="recordCount">
+					<div className='recordCount'>
 						<span>Showing {range1}-{range2} of {count}</span>
 					</div>
 				}
 				{pages > 1 ?
 				<div>
 		      <ul className={containerClassName}>
-		        <li onClick={(e) => this.handlePreviousPage(e)} className={`page ${previousClassName} ${activePage <= 1? disabledClassName:''}`}><span className="icon-arrow-left"></span></li>
+		        <li onClick={(e) => this.handlePreviousPage(e)} className={`page ${previousClassName} ${activePage <= 1? disabledClassName:''}`}><span className='icon-arrow-left'></span></li>
 		        {this.pagination()}
-		        <li onClick={(e) => this.handleNextPage(e)} className={`page ${nextClassName} ${activePage >= pages? disabledClassName:''}`}><span className="icon-arrow-right"></span></li>
+		        <li onClick={(e) => this.handleNextPage(e)} className={`page ${nextClassName} ${activePage >= pages? disabledClassName:''}`}><span className='icon-arrow-right'></span></li>
 		      </ul>
 				</div>
 				: <div></div>}

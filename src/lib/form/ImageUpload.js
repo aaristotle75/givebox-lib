@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
-import {mime} from '../common/types';
-import {formatBytes} from '../common/utility';
+import { mime } from '../common/types';
+import { formatBytes } from '../common/utility';
 
 class ImageUpload extends Component {
 
@@ -29,28 +29,24 @@ class ImageUpload extends Component {
   render() {
 
     const {
-      name,
       label,
       className,
       style,
-      onChange,
       error,
       errorType
     } = this.props;
 
-    let id = `${name}-image-upload`;
-
-    let mimes = mime.image + ',' + mime.text + ',' + mime.applications;
+    const mimes = mime.image + ',' + mime.text + ',' + mime.applications;
 
     return (
       <div style={style} className={`input-group ${className || ''}  ${error ? 'error tooltip' : ''}`}>
         {label && <label>{label}</label>}
         <Dropzone
-          className="dropzone"
+          className='dropzone'
           onDrop={this.onDrop}
           accept={mimes}
         >
-          <span className="text">Upload files</span>
+          <span className='text'>Upload files</span>
         </Dropzone>
         <span>Accepted Files:</span>
         <ul>
@@ -64,7 +60,7 @@ class ImageUpload extends Component {
           {this.props.error}
           <i></i>
         </div>
-        <div className={`errorMsg ${!error || errorType !== 'normal' && 'displayNone'}`}>{error}</div>
+        <div className={`errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`}>{error}</div>
       </div>
     );
   }

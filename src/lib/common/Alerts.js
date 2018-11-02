@@ -34,10 +34,10 @@ export class Alert extends Component {
       <CSSTransition
         in={msg ? true : false}
         timeout={300}
-        classNames="alertMsg"
+        classNames='alertMsg'
         unmountOnExit
       >
-        <div className="alertMsg">
+        <div className='alertMsg'>
           {this.renderAlert(alert, msg)}
         </div>
       </CSSTransition>
@@ -49,7 +49,7 @@ export class Alert extends Component {
 export const Error = ({msg}) => {
   return (
     <div className={`error`}>
-      <span className="msgText"><span className="icon icon-error-circle"></span> {typeof msg === 'string' ? msg : msgs.error}</span>
+      <span className='msgText'><span className='icon icon-error-circle'></span> {typeof msg === 'string' ? msg : msgs.error}</span>
     </div>
   )
 }
@@ -57,7 +57,7 @@ export const Error = ({msg}) => {
 export const Success = ({msg}) => {
   return (
     <div className={`success`}>
-      <span className="msgText"><span className="icon icon-checkmark-circle"></span> {typeof msg === 'string' ? msg : msgs.success}</span>
+      <span className='msgText'><span className='icon icon-checkmark-circle'></span> {typeof msg === 'string' ? msg : msgs.success}</span>
     </div>
   )
 }

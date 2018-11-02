@@ -67,7 +67,7 @@ class MaxRecords extends Component {
 
     return (
       <div style={style} className={`maxRecords ${align}`}>
-        <span style={textStyle} className="smallText inline">Records</span> <Select selected={max} onChange={this.onChange} options={this.setOptions()} />
+        <span style={textStyle} className='smallText inline'>Records</span> <Select selected={max} onChange={this.onChange} options={this.setOptions()} />
       </div>
     );
   }

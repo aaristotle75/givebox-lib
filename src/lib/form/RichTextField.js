@@ -1,13 +1,9 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import RichTextEditor from './RichTextEditor';
 import ModalRoute from '../common/ModalRoute';
 import ModalLink from '../common/ModalLink';
 
 class ContentField extends Component {
-
-  constructor(props) {
-    super(props);
-  }
 
   componentDidMount() {
     if (this.props.createField) this.props.createField(this.props.name, this.props.params);
@@ -22,13 +18,7 @@ class ContentField extends Component {
   render() {
 
     const {
-      params,
       name,
-      value,
-      placeholder,
-      onChange,
-      onBlur,
-      required,
       style,
       label,
       className,
@@ -43,14 +33,14 @@ class ContentField extends Component {
     return (
       <div style={style} className={`input-group ${className || ''} richtext-group ${error ? 'error tooltip' : ''}`}>
         {label && <label>{label}</label>}
-        <div className={`errorMsg ${!error || errorType !== 'normal' && 'displayNone'}`}>{error}</div>
+        <div className={`errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`}>{error}</div>
         {modal ?
-          <div className="richtext-modal">
+          <div className='richtext-modal'>
             <ModalRoute id={id} component={() => this.renderEditor(this.props)} />
             <ModalLink id={id}>{modalLabel}</ModalLink>
           </div>
         :
-          <div className="richtext-embed">
+          <div className='richtext-embed'>
             <Editor {...this.props} />
           </div>
         }

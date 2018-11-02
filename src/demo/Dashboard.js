@@ -9,7 +9,7 @@ export default class Dashboard extends Component {
     return (
       <div>
         Dashboard
-        <Form name="testForm" options={{ required: true }}>
+        <Form name='testForm' options={{ required: true }}>
           <TestForm />
         </Form>
       </div>

@@ -3,10 +3,6 @@ import { cloneObj } from '../common/utility';
 
 class Choice extends Component {
 
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     let params = cloneObj(this.props.params);
     let value = params.value === params.checked ? params.value : params.checked;
@@ -51,7 +47,7 @@ class Choice extends Component {
             {this.props.error}
             <i></i>
           </div>
-          <div className={`errorMsg ${!error || errorType !== 'normal' && 'displayNone'}`}>{error}</div>
+          <div className={`errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`}>{error}</div>
       </div>
     );
   }

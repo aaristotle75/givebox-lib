@@ -33,7 +33,7 @@ export function getSplitStr(str, delimiter, num, index) {
 }
 
 export function toFixed(n,precision) {
-  var match=RegExp("(\\d+\\.\\d{1,"+precision+"})(\\d)?").exec(n);
+  var match=RegExp('(\\d+\\.\\d{1,'+precision+'})(\\d)?').exec(n);
   if(match===null||match[2]===undefined) {
       return n.toFixed(precision);
       }
@@ -45,7 +45,7 @@ export function toFixed(n,precision) {
 
 export function numberWithCommas(x) {
   if (!x || isNaN(x)) return 0;
-  else return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  else return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
 export function getRand(min, max, int = true) {
@@ -88,7 +88,7 @@ export function splitName(str) {
   var arr = [];
   var value = {};
   if (!str) return false;
-  arr = str.split(" ");
+  arr = str.split(' ');
   if (arr.length > 1) {
     value.last = arr.pop();
     value.first = arr.length > 1 ? arr.join(' ') : arr[0];
@@ -110,7 +110,7 @@ export function objectLength( object ) {
 };
 
 export function hexToRgb(hex) {
-    // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+    // Expand shorthand form (e.g. '03F') to full form (e.g. '0033FF')
     var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
     hex = hex.replace(shorthandRegex, function(m, r, g, b) {
         return r + r + g + g + b + b;
@@ -186,17 +186,17 @@ export function calcAmountDonated(amount, fee, passFees, gross = false) {
 export function setCookie(cname, cvalue, exdays) {
     var d = new Date();
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    var expires = "expires="+d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    var expires = 'expires='+d.toUTCString();
+    document.cookie = cname + '=' + cvalue + ';' + expires + ';path=/';
 }
 
 export function deleteCookie(cname) {
-    var expires = "expires=Thu, 01 Jan 1970 00:00:00 UTC";
-    document.cookie = cname + "=" + expires + ";path=/";
+    var expires = 'expires=Thu, 01 Jan 1970 00:00:00 UTC';
+    document.cookie = cname + '=' + expires + ';path=/';
 }
 
 export function getCookie(cname) {
-    var name = cname + "=";
+    var name = cname + '=';
     var ca = document.cookie.split(';');
     for(var i = 0; i < ca.length; i++) {
         var c = ca[i];
@@ -207,20 +207,20 @@ export function getCookie(cname) {
             return c.substring(name.length, c.length);
         }
     }
-    return "";
+    return '';
 }
 
 export function makeHash(length) {
-    var text = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    var text = '';
+    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     for( var i=0; i <= length; i++ )
         text += possible.charAt(Math.floor(Math.random() * possible.length));
     return text;
 }
 
 export function randomPassword(length) {
-    var chars = "abcdefghijklmnopqrstuvwxyz!@#$%^&*()-+<>ABCDEFGHIJKLMNOP1234567890";
-    var pass = "";
+    var chars = 'abcdefghijklmnopqrstuvwxyz!@#$%^&*()-+<>ABCDEFGHIJKLMNOP1234567890';
+    var pass = '';
     for (var x = 0; x < length; x++) {
         var i = Math.floor(Math.random() * chars.length);
         pass += chars.charAt(i);
@@ -235,10 +235,10 @@ export function toTitleCase(str) {
 export function encodeBlob(imageUrl, callback) {
   var xhr = new XMLHttpRequest();
   xhr.open('GET', imageUrl);
-  xhr.responseType = "arraybuffer"
+  xhr.responseType = 'arraybuffer'
   xhr.onload = function() {
     var data;
-    var type = {type: 'image/jpeg'}; // xhr.response["content-type"];
+    var type = {type: 'image/jpeg'}; // xhr.response['content-type'];
   	var bytes = new Uint8Array(xhr.response);
     var blob = new Blob([bytes], type);
     var blobUrl = URL.createObjectURL(blob);
@@ -288,17 +288,17 @@ export function getBlob(objectUrl, callback, data, fileName, imageCallback, fiel
 export function encodeDataURI(imageUrl, callback) {
   var xhr = new XMLHttpRequest();
   xhr.open('GET', imageUrl);
-  xhr.responseType = "arraybuffer"
+  xhr.responseType = 'arraybuffer'
   xhr.onload = function() {
     var data;
-    var type = 'image/jpeg'; // xhr.response["content-type"];
+    var type = 'image/jpeg'; // xhr.response['content-type'];
     var binary = '';
   	var bytes = new Uint8Array(xhr.response);
     var len = bytes.byteLength;
   	for (var i = 0; i < len; i++) {
   		binary += String.fromCharCode( bytes[ i ] );
   	}
-    var prefix = "data:" + type + ";base64,";
+    var prefix = 'data:' + type + ';base64,';
     data = prefix + window.btoa( binary );
     callback(data);
   }
@@ -425,7 +425,7 @@ export function formatBytes(bytes,decimals) {
 export function isEmpty(value){
   return  value === undefined ||
           value === null ||
-          (typeof value === "object" && Object.keys(value).length === 0) ||
-          (typeof value === "string" && value.trim().length === 0) ||
+          (typeof value === 'object' && Object.keys(value).length === 0) ||
+          (typeof value === 'string' && value.trim().length === 0) ||
           value.length === 0
 }

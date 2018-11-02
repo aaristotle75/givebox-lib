@@ -74,12 +74,6 @@ class Form extends Component {
     this.defaults = { ...this.defaultOptions, ...props.options };
   }
 
-  componentDidMount() {
-  }
-
-  componentWillUnmount() {
-  }
-
 	focusInput(ref) {
 		ref.current.focus();
 	}
@@ -394,21 +388,20 @@ class Form extends Component {
     )
   }
 
-  creditCardGroup(params) {
-    let defaultParams = cloneObj(this.defaults);
+  creditCardGroup(args) {
+    const defaults = cloneObj(this.defaults);
     const ccnumberField = has(this.state.fields, 'ccnumber') ? this.state.fields.ccnumber : null;
     const hideCardsAccepted = ccnumberField ? ccnumberField.cardType !== 'noCardType' ? true : false : false;
-
-    params = Object.assign({}, defaultParams, {
+    const params = Object.assign({}, defaults, {
       className: '',
       required: true
-    }, params);
+    }, args);
 
     return (
-      <div className="creditCard-group">
+      <div className='creditCard-group'>
         <div className={`cardsAccepted ${hideCardsAccepted && 'displayNone'}`}></div>
         {this.creditCard('ccnumber', {required: params.required, debug: params.debug})}
-        {this.textField('ccexpire', {placeholder: "MM/YY", className: "ccexpire", required: params.required, validate: 'ccexpire', maxLength: 5,  debug: params.debug})}
+        {this.textField('ccexpire', {placeholder: 'MM/YY', className: 'ccexpire', required: params.required, validate: 'ccexpire', maxLength: 5,  debug: params.debug})}
       </div>
     )
   }
@@ -449,19 +442,19 @@ class Form extends Component {
 
   saveButton(callback, label = 'Save', style = {}) {
     return (
-      <button className="button" style={style} type="button" disabled={this.state.updated ? false : true} onClick={(e) => this.validateForm(e, callback)}>{label}</button>
+      <button className='button' style={style} type='button' disabled={this.state.updated ? false : true} onClick={(e) => this.validateForm(e, callback)}>{label}</button>
     )
   }
 
   errorAlert() {
     return (
-      <Alert alert="error" msg={this.state.error} />
+      <Alert alert='error' msg={this.state.error} />
     );
   }
 
   successAlert() {
     return (
-      <Alert alert="success" msg={this.state.saved} />
+      <Alert alert='success' msg={this.state.saved} />
     );
   }
 
@@ -563,7 +556,7 @@ class Form extends Component {
 
     return (
       <form
-        autoComplete="new-password"
+        autoComplete='new-password'
         name={name}
         id={id}
         className={`${id} ${className || ''}`}

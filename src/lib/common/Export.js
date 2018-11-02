@@ -33,26 +33,26 @@ class Export extends Component {
     } = this.props;
 
     return (
-      <div id="exportRecords" style={style} className={`exportRecords`}>
+      <div id='exportRecords' style={style} className={`exportRecords`}>
         <Error msg={'Please fix the following errors to continue.'} />
-        <div className="row">
-          <div className="col right">
-            <label className="side">Time Period</label>
+        <div className='row'>
+          <div className='col right'>
+            <label className='side'>Time Period</label>
           </div>
-          <div  className="col left">
+          <div  className='col left'>
             <Select options={this.setOptions()} onChange={this.onChange} />
           </div>
         </div>
-        <div className="row">
-          <div className="col">
-            <label className="side">Date</label>
+        <div className='row'>
+          <div className='col'>
+            <label className='side'>Date</label>
           </div>
-          <div className="col">
+          <div className='col'>
             <CalendarRange
               enableTime={false}
-              nameFrom="exportRange1"
+              nameFrom='exportRange1'
               labelFrom={'From'}
-              nameTo="exportRange2"
+              nameTo='exportRange2'
               labelTo={'To'}
             />
           </div>

@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {lookup, isEmpty} from '../common/utility';
+import React, { Component } from 'react';
+import { lookup, isEmpty } from '../common/utility';
 
 class Dropdown extends Component {
 
@@ -41,8 +41,8 @@ class Dropdown extends Component {
 
   onClick(e) {
     e.preventDefault();
-    let value = e.currentTarget.getAttribute("data-value");
-    let selected = e.currentTarget.getAttribute("data-selected");
+    let value = e.currentTarget.getAttribute('data-value');
+    let selected = e.currentTarget.getAttribute('data-selected');
     this.setState({
       open: false,
       value: value,
@@ -88,8 +88,8 @@ class Dropdown extends Component {
     return (
       <div style={style} className={`input-group dropdown-group ${className || ''} ${error ? 'error tooltip' : ''}`}>
         {label && <label>{label}</label>}
-        <div className="dropdown" style={style}>
-          <button type="button" onClick={open ? this.closeMenu : this.openMenu}>{!selected ? <span className="label">{selectLabel}</span> : selected}<span className="icon icon-triangle-down"></span></button>
+        <div className='dropdown' style={style}>
+          <button type='button' onClick={open ? this.closeMenu : this.openMenu}>{!selected ? <span className='label'>{selectLabel}</span> : selected}<span className='icon icon-triangle-down'></span></button>
           <div className={`dropdown-content ${!open ? 'displayNone' : ''}`}>
             {this.listOptions()}
           </div>

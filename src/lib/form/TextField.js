@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 class TextField extends Component {
 
@@ -47,7 +47,7 @@ class TextField extends Component {
             onChange={this.props.onChange}
             onBlur={this.props.onBlur}
             onFocus={this.props.onFocus}
-            autoComplete="new-password"
+            autoComplete='new-password'
             value={value}
             maxLength={maxLength}
           />

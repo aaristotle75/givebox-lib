@@ -44,12 +44,12 @@ class CreditCard extends Component {
             onChange={this.props.onChange}
             onBlur={this.props.onBlur}
             onFocus={this.props.onFocus}
-            autoComplete="new-password"
+            autoComplete='new-password'
             value={value}
             maxLength={maxLength}
           />
           <div className={`checkmark ${!checked && 'displayNone'}`}>
-              <i className="icon icon-checkmark"></i>
+              <i className='icon icon-checkmark'></i>
           </div>
           <div className={`tooltipTop ${errorType !=='tooltip' && 'displayNone'}`}>
             {error}

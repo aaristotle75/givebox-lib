@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Modal from './Modal';
 import Portal from './Portal';
-import Loader from "./Loader";
-import {toggleModal} from "../actions/actions";
+import Loader from './Loader';
+import { toggleModal } from '../actions/actions';
 
 class ModalRoute extends Component {
 
@@ -45,7 +45,7 @@ class ModalRoute extends Component {
     return (
       <div>
         { open &&
-          <Portal rootEl={modalRoot} className="modal">
+          <Portal rootEl={modalRoot} className='modal'>
             <Modal
               identifier={id}
               effect={effect}

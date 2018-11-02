@@ -16,7 +16,7 @@ class GBLink extends Component{
 		const mergeStyle = { ...style, ...color };
 
 		return (
-      <button type="button" id={id} className={className} href={href} onClick={onClick} style={mergeStyle} target={target}>
+      <button type='button' id={id} className={className} href={href} onClick={onClick} style={mergeStyle} target={target}>
         {this.props.children}
       </button>
 		)

@@ -3,10 +3,6 @@ import CalendarField from '../form/CalendarField';
 
 export default class CalendarRange extends Component {
 
-  constructor(props) {
-    super(props);
-  }
-
   componentWillUnmount() {
   }
 
@@ -14,7 +10,6 @@ export default class CalendarRange extends Component {
 
     const {
       style,
-      className,
       nameTo,
       labelTo,
       nameFrom,
@@ -30,7 +25,7 @@ export default class CalendarRange extends Component {
             label={labelFrom || 'From'}
             error={'Please tell us a valid date (mm/dd/yyyy) or use the calendar to choose a date.'}
             name={nameFrom}
-            defaultValue={new Date}
+            defaultValue={new Date()}
           />
         </div>
         <div className="col">
@@ -38,7 +33,7 @@ export default class CalendarRange extends Component {
             enableTime={enableTime}
             label={labelTo || 'To'}
             name={nameTo}
-            defaultValue={new Date}            
+            defaultValue={new Date()}
           />
         </div>
       </div>

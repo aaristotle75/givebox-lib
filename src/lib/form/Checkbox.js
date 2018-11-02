@@ -2,10 +2,6 @@ import React, {Component} from 'react';
 
 class Checkbox extends Component {
 
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     if (this.props.createField) this.props.createField(this.props.name, this.props.params);
   }
@@ -28,11 +24,11 @@ class Checkbox extends Component {
     return (
       <div style={style} className={`input-group ${className || ''} checkbox-group  ${error ? 'error tooltip' : ''}`}>
         <input
-          type="checkbox"
+          type='checkbox'
           name={name}
           onChange={() => onChange(name)}
           checked={checked}
-          className="checkbox"
+          className='checkbox'
           id={id}
         />
           <label htmlFor={id}></label>
@@ -41,7 +37,7 @@ class Checkbox extends Component {
             {this.props.error}
             <i></i>
           </div>
-          <div className={`errorMsg ${!error || errorType !== 'normal' && 'displayNone'}`}>{error}</div>
+          <div className={`errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`}>{error}</div>
       </div>
     );
   }

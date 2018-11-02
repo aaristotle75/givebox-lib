@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 export default class Sidebar extends Component {
 
   render() {
 
     return (
-      <nav className="sideBar">
+      <nav className='sideBar'>
         <ul>
-          <NavLink to="/dashboard">Dashboard</NavLink>
-          <NavLink to="/list">List Items</NavLink>          
-          <NavLink to="/about">About</NavLink>
-          <NavLink to="/contact">Contact</NavLink>
+          <NavLink to='/dashboard'>Dashboard</NavLink>
+          <NavLink to='/list'>List Items</NavLink>
+          <NavLink to='/about'>About</NavLink>
+          <NavLink to='/contact'>Contact</NavLink>
         </ul>
       </nav>
     )
@@ -20,6 +20,6 @@ export default class Sidebar extends Component {
 
 const NavLink = props => (
   <li>
-    <Link {...props} style={{ color: "inherit" }} />
+    <Link {...props} style={{ color: 'inherit' }} />
   </li>
 );

@@ -40,7 +40,7 @@ class Select extends Component {
         onChange={onChange}
         value={selected}
         required={required}
-        autoComplete="off"
+        autoComplete='off'
       >
         {this.listOptions()}
       </select>

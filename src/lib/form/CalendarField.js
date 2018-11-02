@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import 'flatpickr/dist/themes/light.css';
 import Flatpickr from 'react-flatpickr';
 import Moment from 'moment';
@@ -66,23 +66,23 @@ class CalendarField extends Component {
           wrap: true
         }}
       >
-        <div className="flatpickr">
-          <label className="top" style={labelStyle} >{label}</label>
+        <div className='flatpickr'>
+          <label className='top' style={labelStyle} >{label}</label>
           <div className={`input-group ${this.props.error && 'error tooltip'}`}>
             <input
               name={name}
               style={style}
-              type="text"
-              placeholder="mm/dd/yyyy"
+              type='text'
+              placeholder='mm/dd/yyyy'
               data-input
               onBlur={this.onBlur}
               onFocus={this.onFocus}
               step={step}
             />
-            <button type="button" className="input-button" title="toggle" data-toggle>
-                <i className="icon icon-calendar"></i>
+            <button type='button' className='input-button' title='toggle' data-toggle>
+                <i className='icon icon-calendar'></i>
             </button>
-            <div className="tooltipTop">
+            <div className='tooltipTop'>
               {this.props.error}
               <i></i>
             </div>

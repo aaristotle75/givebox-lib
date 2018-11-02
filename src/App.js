@@ -147,7 +147,7 @@ class App extends Component {
 
     return (
       <div className={this.state.mobile ? 'mobile' : 'desktop'}>
-        <div id="app-root">
+        <div id='app-root'>
           <AppContext.Provider
             value={{
               title: `Givebox lib - ${this.state.org.name}`
@@ -160,7 +160,7 @@ class App extends Component {
             />
           </AppContext.Provider>
         </div>
-        <div id="modal-root"></div>
+        <div id='modal-root'></div>
       </div>
     );
   }
