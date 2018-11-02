@@ -35,7 +35,7 @@ import {
   getResource,
   reloadResource,
   sendResource
-} from './api';
+} from './api/actions';
 
 export {
   // Form
