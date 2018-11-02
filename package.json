@@ -11,7 +11,7 @@
     "url": "https://github.com/aaristotle75/givebox-lib.git"
   },
   "license": "MIT",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "dependencies": {
     "react-prefixr": "^0.1.0",
     "react-scripts": "2.0.5",
