@@ -10,10 +10,10 @@ var Checkbox =
 function (_Component) {
   _inherits(Checkbox, _Component);
 
-  function Checkbox(props) {
+  function Checkbox() {
     _classCallCheck(this, Checkbox);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(Checkbox).call(this, props));
+    return _possibleConstructorReturn(this, _getPrototypeOf(Checkbox).apply(this, arguments));
   }
 
   _createClass(Checkbox, [{
@@ -55,7 +55,7 @@ function (_Component) {
       }, label), React.createElement("div", {
         className: "tooltipTop ".concat(errorType !== 'tooltip' && 'displayNone')
       }, this.props.error, React.createElement("i", null)), React.createElement("div", {
-        className: "errorMsg ".concat(!error || errorType !== 'normal' && 'displayNone')
+        className: "errorMsg ".concat((!error || errorType !== 'normal') && 'displayNone')
       }, error));
     }
   }]);

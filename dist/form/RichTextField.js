@@ -13,10 +13,10 @@ var ContentField =
 function (_Component) {
   _inherits(ContentField, _Component);
 
-  function ContentField(props) {
+  function ContentField() {
     _classCallCheck(this, ContentField);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(ContentField).call(this, props));
+    return _possibleConstructorReturn(this, _getPrototypeOf(ContentField).apply(this, arguments));
   }
 
   _createClass(ContentField, [{
@@ -35,13 +35,7 @@ function (_Component) {
       var _this = this;
 
       var _this$props = this.props,
-          params = _this$props.params,
           name = _this$props.name,
-          value = _this$props.value,
-          placeholder = _this$props.placeholder,
-          onChange = _this$props.onChange,
-          onBlur = _this$props.onBlur,
-          required = _this$props.required,
           style = _this$props.style,
           label = _this$props.label,
           className = _this$props.className,
@@ -54,7 +48,7 @@ function (_Component) {
         style: style,
         className: "input-group ".concat(className || '', " richtext-group ").concat(error ? 'error tooltip' : '')
       }, label && React.createElement("label", null, label), React.createElement("div", {
-        className: "errorMsg ".concat(!error || errorType !== 'normal' && 'displayNone')
+        className: "errorMsg ".concat((!error || errorType !== 'normal') && 'displayNone')
       }, error), modal ? React.createElement("div", {
         className: "richtext-modal"
       }, React.createElement(ModalRoute, {

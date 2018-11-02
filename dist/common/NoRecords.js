@@ -4,6 +4,7 @@ import _possibleConstructorReturn from "/Users/aaron/Sites/projects/givebox/give
 import _getPrototypeOf from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/getPrototypeOf";
 import _inherits from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/inherits";
 import React, { Component } from 'react';
+import { GBLink } from '../';
 
 var NoRecords =
 /*#__PURE__*/
@@ -27,7 +28,7 @@ function (_Component) {
         className: "noRecords ".concat(align)
       }, React.createElement("span", {
         className: "normalText"
-      }, "No records found"), link && React.createElement("a", {
+      }, "No records found"), link && React.createElement(GBLink, {
         onClick: link
       }, label));
     }

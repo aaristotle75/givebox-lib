@@ -25,12 +25,6 @@ function (_Component) {
   }
 
   _createClass(ModalLink, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {}
-  }, {
-    key: "componentWillUnmount",
-    value: function componentWillUnmount() {}
-  }, {
     key: "onClick",
     value: function onClick(id) {
       this.props.toggleModal(id, true);

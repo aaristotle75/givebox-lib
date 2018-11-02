@@ -1,182 +1,182 @@
 export var states = [{
-  value: "AL",
-  primaryText: "Alabama"
+  value: 'AL',
+  primaryText: 'Alabama'
 }, {
-  value: "AK",
-  primaryText: "Alaska"
+  value: 'AK',
+  primaryText: 'Alaska'
 }, {
-  value: "AZ",
-  primaryText: "Arizona"
+  value: 'AZ',
+  primaryText: 'Arizona'
 }, {
-  value: "AR",
-  primaryText: "Arkansas"
+  value: 'AR',
+  primaryText: 'Arkansas'
 }, {
-  value: "CA",
-  primaryText: "California"
+  value: 'CA',
+  primaryText: 'California'
 }, {
-  value: "CO",
-  primaryText: "Colorado"
+  value: 'CO',
+  primaryText: 'Colorado'
 }, {
-  value: "CT",
-  primaryText: "Connecticut"
+  value: 'CT',
+  primaryText: 'Connecticut'
 }, {
-  value: "DE",
-  primaryText: "Delaware"
+  value: 'DE',
+  primaryText: 'Delaware'
 }, {
-  value: "DC",
-  primaryText: "Dist of Columbia"
+  value: 'DC',
+  primaryText: 'Dist of Columbia'
 }, {
-  value: "FL",
-  primaryText: "Florida"
+  value: 'FL',
+  primaryText: 'Florida'
 }, {
-  value: "GA",
-  primaryText: "Georgia"
+  value: 'GA',
+  primaryText: 'Georgia'
 }, {
-  value: "HI",
-  primaryText: "Hawaii"
+  value: 'HI',
+  primaryText: 'Hawaii'
 }, {
-  value: "ID",
-  primaryText: "Idaho"
+  value: 'ID',
+  primaryText: 'Idaho'
 }, {
-  value: "IL",
-  primaryText: "Illinois"
+  value: 'IL',
+  primaryText: 'Illinois'
 }, {
-  value: "IN",
-  primaryText: "Indiana"
+  value: 'IN',
+  primaryText: 'Indiana'
 }, {
-  value: "IA",
-  primaryText: "Iowa"
+  value: 'IA',
+  primaryText: 'Iowa'
 }, {
-  value: "KS",
-  primaryText: "Kansas"
+  value: 'KS',
+  primaryText: 'Kansas'
 }, {
-  value: "KY",
-  primaryText: "Kentucky"
+  value: 'KY',
+  primaryText: 'Kentucky'
 }, {
-  value: "LA",
-  primaryText: "Louisiana"
+  value: 'LA',
+  primaryText: 'Louisiana'
 }, {
-  value: "ME",
-  primaryText: "Maine"
+  value: 'ME',
+  primaryText: 'Maine'
 }, {
-  value: "MD",
-  primaryText: "Maryland"
+  value: 'MD',
+  primaryText: 'Maryland'
 }, {
-  value: "MA",
-  primaryText: "Massachusetts"
+  value: 'MA',
+  primaryText: 'Massachusetts'
 }, {
-  value: "MI",
-  primaryText: "Michigan"
+  value: 'MI',
+  primaryText: 'Michigan'
 }, {
-  value: "MN",
-  primaryText: "Minnesota"
+  value: 'MN',
+  primaryText: 'Minnesota'
 }, {
-  value: "MS",
-  primaryText: "Mississippi"
+  value: 'MS',
+  primaryText: 'Mississippi'
 }, {
-  value: "MO",
-  primaryText: "Missouri"
+  value: 'MO',
+  primaryText: 'Missouri'
 }, {
-  value: "MT",
-  primaryText: "Montana"
+  value: 'MT',
+  primaryText: 'Montana'
 }, {
-  value: "NE",
-  primaryText: "Nebraska"
+  value: 'NE',
+  primaryText: 'Nebraska'
 }, {
-  value: "NV",
-  primaryText: "Nevada"
+  value: 'NV',
+  primaryText: 'Nevada'
 }, {
-  value: "NH",
-  primaryText: "New Hampshire"
+  value: 'NH',
+  primaryText: 'New Hampshire'
 }, {
-  value: "NJ",
-  primaryText: "New Jersey"
+  value: 'NJ',
+  primaryText: 'New Jersey'
 }, {
-  value: "NM",
-  primaryText: "New Mexico"
+  value: 'NM',
+  primaryText: 'New Mexico'
 }, {
-  value: "NY",
-  primaryText: "New York"
+  value: 'NY',
+  primaryText: 'New York'
 }, {
-  value: "NC",
-  primaryText: "North Carolina"
+  value: 'NC',
+  primaryText: 'North Carolina'
 }, {
-  value: "ND",
-  primaryText: "North Dakota"
+  value: 'ND',
+  primaryText: 'North Dakota'
 }, {
-  value: "OH",
-  primaryText: "Ohio"
+  value: 'OH',
+  primaryText: 'Ohio'
 }, {
-  value: "OK",
-  primaryText: "Oklahoma"
+  value: 'OK',
+  primaryText: 'Oklahoma'
 }, {
-  value: "OR",
-  primaryText: "Oregon"
+  value: 'OR',
+  primaryText: 'Oregon'
 }, {
-  value: "PA",
-  primaryText: "Pennsylvania"
+  value: 'PA',
+  primaryText: 'Pennsylvania'
 }, {
-  value: "RI",
-  primaryText: "Rhode Island"
+  value: 'RI',
+  primaryText: 'Rhode Island'
 }, {
-  value: "SC",
-  primaryText: "South Carolina"
+  value: 'SC',
+  primaryText: 'South Carolina'
 }, {
-  value: "SD",
-  primaryText: "South Dakota"
+  value: 'SD',
+  primaryText: 'South Dakota'
 }, {
-  value: "TN",
-  primaryText: "Tennessee"
+  value: 'TN',
+  primaryText: 'Tennessee'
 }, {
-  value: "TX",
-  primaryText: "Texas"
+  value: 'TX',
+  primaryText: 'Texas'
 }, {
-  value: "UT",
-  primaryText: "Utah"
+  value: 'UT',
+  primaryText: 'Utah'
 }, {
-  value: "VT",
-  primaryText: "Vermont"
+  value: 'VT',
+  primaryText: 'Vermont'
 }, {
-  value: "VA",
-  primaryText: "Virginia"
+  value: 'VA',
+  primaryText: 'Virginia'
 }, {
-  value: "WA",
-  primaryText: "Washington"
+  value: 'WA',
+  primaryText: 'Washington'
 }, {
-  value: "WV",
-  primaryText: "West Virginia"
+  value: 'WV',
+  primaryText: 'West Virginia'
 }, {
-  value: "WI",
-  primaryText: "Wisconsin"
+  value: 'WI',
+  primaryText: 'Wisconsin'
 }, {
-  value: "WY",
-  primaryText: "Wyoming"
+  value: 'WY',
+  primaryText: 'Wyoming'
 }];
-export var legalTypes = [//{ value: "INDIVIDUAL_SOLE_PROPRIETORSHIP", primaryText: "Sole Proprietor" },
+export var legalTypes = [//{ value: 'INDIVIDUAL_SOLE_PROPRIETORSHIP', primaryText: 'Sole Proprietor' },
 {
-  value: "CORPORATION",
-  primaryText: "Corporation"
+  value: 'CORPORATION',
+  primaryText: 'Corporation'
 }, {
-  value: "LIMITED_LIABILITY_COMPANY",
-  primaryText: "Limited Liability Company"
-}, //{ value: "PARTNERSHIP", primaryText: "Partnership" },
+  value: 'LIMITED_LIABILITY_COMPANY',
+  primaryText: 'Limited Liability Company'
+}, //{ value: 'PARTNERSHIP', primaryText: 'Partnership' },
 {
-  value: "TAX_EXEMPT_ORGANIZATION",
-  primaryText: "Tax Exempt Organization"
+  value: 'TAX_EXEMPT_ORGANIZATION',
+  primaryText: 'Tax Exempt Organization'
 }];
 export var articleKinds = [{
-  value: "fundraiser",
-  primaryText: "Fundraiser"
+  value: 'fundraiser',
+  primaryText: 'Fundraiser'
 }, {
-  value: "event",
-  primaryText: "Event"
+  value: 'event',
+  primaryText: 'Event'
 }, {
-  value: "invoice",
-  primaryText: "Invoice"
+  value: 'invoice',
+  primaryText: 'Invoice'
 }, {
-  value: "membership",
-  primaryText: "Membership"
+  value: 'membership',
+  primaryText: 'Membership'
 }, {
-  value: "sweepstake",
-  primaryText: "Sweepstake"
+  value: 'sweepstake',
+  primaryText: 'Sweepstake'
 }];

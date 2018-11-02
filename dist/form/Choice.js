@@ -11,10 +11,10 @@ var Choice =
 function (_Component) {
   _inherits(Choice, _Component);
 
-  function Choice(props) {
+  function Choice() {
     _classCallCheck(this, Choice);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(Choice).call(this, props));
+    return _possibleConstructorReturn(this, _getPrototypeOf(Choice).apply(this, arguments));
   }
 
   _createClass(Choice, [{
@@ -66,7 +66,7 @@ function (_Component) {
       }, label), React.createElement("div", {
         className: "tooltipTop ".concat(errorType !== 'tooltip' && 'displayNone')
       }, this.props.error, React.createElement("i", null)), React.createElement("div", {
-        className: "errorMsg ".concat(!error || errorType !== 'normal' && 'displayNone')
+        className: "errorMsg ".concat((!error || errorType !== 'normal') && 'displayNone')
       }, error));
     }
   }]);

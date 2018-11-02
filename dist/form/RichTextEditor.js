@@ -131,13 +131,13 @@ function (_Component) {
   }]);
 
   return ContentEditor;
-}(Component); // Custom overrides for "code" style.
+}(Component); // Custom overrides for 'code' style.
 
 
 var styleMap = {
   CODE: {
     backgroundColor: 'rgba(0, 0, 0, 0.05)',
-    fontFamily: '"CenturyGothic", "sans-serif"',
+    fontFamily: "'CenturyGothic', 'sans-serif'",
     fontSize: 14,
     padding: 2
   }

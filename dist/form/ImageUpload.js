@@ -46,14 +46,11 @@ function (_Component) {
     key: "render",
     value: function render() {
       var _this$props = this.props,
-          name = _this$props.name,
           label = _this$props.label,
           className = _this$props.className,
           style = _this$props.style,
-          onChange = _this$props.onChange,
           error = _this$props.error,
           errorType = _this$props.errorType;
-      var id = "".concat(name, "-image-upload");
       var mimes = mime.image + ',' + mime.text + ',' + mime.applications;
       return React.createElement("div", {
         style: style,
@@ -75,7 +72,7 @@ function (_Component) {
       })), React.createElement("div", {
         className: "tooltipTop ".concat(errorType !== 'tooltip' && 'displayNone')
       }, this.props.error, React.createElement("i", null)), React.createElement("div", {
-        className: "errorMsg ".concat(!error || errorType !== 'normal' && 'displayNone')
+        className: "errorMsg ".concat((!error || errorType !== 'normal') && 'displayNone')
       }, error));
     }
   }]);

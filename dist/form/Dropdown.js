@@ -65,8 +65,8 @@ function (_Component) {
     key: "onClick",
     value: function onClick(e) {
       e.preventDefault();
-      var value = e.currentTarget.getAttribute("data-value");
-      var selected = e.currentTarget.getAttribute("data-selected");
+      var value = e.currentTarget.getAttribute('data-value');
+      var selected = e.currentTarget.getAttribute('data-selected');
       this.setState({
         open: false,
         value: value,

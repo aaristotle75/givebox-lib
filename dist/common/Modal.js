@@ -7,7 +7,7 @@ import _inherits from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modu
 import _assertThisInitialized from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/assertThisInitialized";
 import React, { Component } from 'react';
 import * as Effect from './ModalEffect';
-import { cloneObj, isEmpty } from "./utility";
+import { cloneObj, isEmpty } from './utility';
 
 var prefix = require('react-prefixr');
 

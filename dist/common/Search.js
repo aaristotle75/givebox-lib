@@ -36,8 +36,8 @@ function (_Component) {
     key: "componentDidMount",
     value: function componentDidMount() {
       var bindthis = this;
-      var input = document.getElementById("search");
-      input.addEventListener("keyup", function (e) {
+      var input = document.getElementById('search');
+      input.addEventListener('keyup', function (e) {
         e.preventDefault();
 
         if (e.keyCode === 13) {

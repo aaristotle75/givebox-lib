@@ -43,7 +43,7 @@ function resourceCatchError(resource, error) {
 }
 
 export function getAPI(resource, endpoint, search, callback, reload) {
-  var csrf_token = document.querySelector('meta[name="csrf_token"]') ? document.querySelector('meta[name="csrf_token"]')['content'] : '';
+  var csrf_token = document.querySelector("meta[name='csrf_token']") ? document.querySelector("meta[name='csrf_token']")['content'] : '';
   return function (dispatch, getState) {
     if (shouldGetAPI(getState(), resource, reload)) {
       dispatch(requestResource(resource, reload));
@@ -108,7 +108,7 @@ function sendResponse(resource, response, error) {
 
 export function sendAPI(resource, endpoint, method, data, callback, reloadResource) {
   console.log('reloadResource', reloadResource);
-  var csrf_token = document.querySelector('meta[name="csrf_token"]') ? document.querySelector('meta[name="csrf_token"]')['content'] : '';
+  var csrf_token = document.querySelector("meta[name='csrf_token']") ? document.querySelector("meta[name='csrf_token']")['content'] : '';
   return function (dispatch, getState) {
     method = method.toLowerCase();
 

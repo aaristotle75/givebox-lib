@@ -93,12 +93,6 @@ function (_Component) {
   }
 
   _createClass(Form, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {}
-  }, {
-    key: "componentWillUnmount",
-    value: function componentWillUnmount() {}
-  }, {
     key: "focusInput",
     value: function focusInput(ref) {
       ref.current.focus();
@@ -469,14 +463,14 @@ function (_Component) {
     }
   }, {
     key: "creditCardGroup",
-    value: function creditCardGroup(params) {
-      var defaultParams = cloneObj(this.defaults);
+    value: function creditCardGroup(args) {
+      var defaults = cloneObj(this.defaults);
       var ccnumberField = has(this.state.fields, 'ccnumber') ? this.state.fields.ccnumber : null;
       var hideCardsAccepted = ccnumberField ? ccnumberField.cardType !== 'noCardType' ? true : false : false;
-      params = Object.assign({}, defaultParams, {
+      var params = Object.assign({}, defaults, {
         className: '',
         required: true
-      }, params);
+      }, args);
       return React.createElement("div", {
         className: "creditCard-group"
       }, React.createElement("div", {
@@ -485,8 +479,8 @@ function (_Component) {
         required: params.required,
         debug: params.debug
       }), this.textField('ccexpire', {
-        placeholder: "MM/YY",
-        className: "ccexpire",
+        placeholder: 'MM/YY',
+        className: 'ccexpire',
         required: params.required,
         validate: 'ccexpire',
         maxLength: 5,

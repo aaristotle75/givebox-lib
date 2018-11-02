@@ -11,10 +11,10 @@ var CalendarRange =
 function (_Component) {
   _inherits(CalendarRange, _Component);
 
-  function CalendarRange(props) {
+  function CalendarRange() {
     _classCallCheck(this, CalendarRange);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(CalendarRange).call(this, props));
+    return _possibleConstructorReturn(this, _getPrototypeOf(CalendarRange).apply(this, arguments));
   }
 
   _createClass(CalendarRange, [{
@@ -25,7 +25,6 @@ function (_Component) {
     value: function render() {
       var _this$props = this.props,
           style = _this$props.style,
-          className = _this$props.className,
           nameTo = _this$props.nameTo,
           labelTo = _this$props.labelTo,
           nameFrom = _this$props.nameFrom,

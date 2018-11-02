@@ -4,23 +4,20 @@ import _possibleConstructorReturn from "/Users/aaron/Sites/projects/givebox/give
 import _getPrototypeOf from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/getPrototypeOf";
 import _inherits from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/inherits";
 import React, { Component } from 'react';
-import ModalLink from "./ModalLink";
+import ModalLink from './ModalLink';
 
 var ExportLink =
 /*#__PURE__*/
 function (_Component) {
   _inherits(ExportLink, _Component);
 
-  function ExportLink(props) {
+  function ExportLink() {
     _classCallCheck(this, ExportLink);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(ExportLink).call(this, props));
+    return _possibleConstructorReturn(this, _getPrototypeOf(ExportLink).apply(this, arguments));
   }
 
   _createClass(ExportLink, [{
-    key: "componentWillUnmount",
-    value: function componentWillUnmount() {}
-  }, {
     key: "render",
     value: function render() {
       var _this$props = this.props,

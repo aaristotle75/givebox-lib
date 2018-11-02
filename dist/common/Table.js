@@ -7,11 +7,11 @@ import _inherits from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modu
 import _assertThisInitialized from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/assertThisInitialized";
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Paginate from "./Paginate";
-import MaxRecords from "./MaxRecords";
-import Search from "./Search";
-import NoRecords from "./NoRecords";
-import ExportLink from "./ExportLink";
+import Paginate from './Paginate';
+import MaxRecords from './MaxRecords';
+import Search from './Search';
+import NoRecords from './NoRecords';
+import ExportLink from './ExportLink';
 import { util } from '../';
 import { getAPI } from '../actions/actions';
 import has from 'has';
@@ -65,10 +65,10 @@ function (_Component) {
     value: function headerResizer() {
       var thElm;
       var startOffset;
-      Array.prototype.forEach.call(document.querySelectorAll("table th"), function (th) {
+      Array.prototype.forEach.call(document.querySelectorAll('table th'), function (th) {
         th.style.position = 'relative';
         var grip = document.createElement('div');
-        grip.innerHTML = "&nbsp;";
+        grip.innerHTML = '&nbsp;';
         grip.style.top = '0';
         grip.style.right = 0;
         grip.style.bottom = 0;
@@ -148,12 +148,6 @@ function (_Component) {
           data = _this$props.data,
           sort = _this$props.sort,
           order = _this$props.order;
-      /*
-      if (!search.sort || !seach.order) {
-        return ( <div></div> );
-      }
-      */
-
       var tableData = data();
       var headers = tableData.headers;
       var rows = tableData.rows;
@@ -230,7 +224,7 @@ var TableHead = function TableHead(_ref) {
           return sortColumn(headers[key].sort);
         },
         className: "".concat(headers[key].sort && 'sort'),
-        align: headers[key].align || "left",
+        align: headers[key].align || 'left',
         style: {
           width: headers[key].width
         },
@@ -288,7 +282,7 @@ var TableFoot = function TableFoot(_ref5) {
 
       items.push(React.createElement("td", {
         key: key,
-        align: value.align || "left",
+        align: value.align || 'left',
         colSpan: value.colspan || 1
       }, value.name));
     });
