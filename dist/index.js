@@ -22,7 +22,7 @@ import * as util from './common/utility';
 import { toggleModal, resourceProp, getAPI, sendAPI } from './actions/actions';
 import { resource, send, modal } from './actions/reducers';
 import * as giveboxAPI from './api/givebox';
-import { getResource, reloadResource, sendResource } from './api';
+import { getResource, reloadResource, sendResource } from './api/actions';
 export { // Form
 Form, formValidate, selectOptions, Select, TextField, // actions
 toggleModal, resourceProp, getAPI, sendAPI, // API
