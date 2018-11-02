@@ -1,0 +1,82 @@
+@import 'variables.scss';
+
+.RichEditor-root {
+  background: none;
+	font-family: $font-family;
+  font-size: $normal-text-size;
+  padding: 10px 0;
+}
+
+.RichEditor-root h1 {
+}
+
+.RichEditor-root h2 {
+}
+
+.RichEditor-root h3 {
+}
+
+.RichEditor-root h4 {
+}
+
+.RichEditor-editor {
+  cursor: text;
+  font-size: $normal-text-size;
+  margin-top: 10px;
+  text-align: left;
+  color: $dark;
+}
+
+.RichEditor-editor .public-DraftEditorPlaceholder-root,
+.RichEditor-editor .public-DraftEditor-content {
+  padding: 10px 0;
+}
+
+.RichEditor-editor .public-DraftEditor-content {
+  min-height: 100px;
+}
+
+.RichEditor-hidePlaceholder .public-DraftEditorPlaceholder-root {
+  display: none;
+}
+
+.RichEditor-editor .public-DraftEditorPlaceholder-inner {
+  color: $med-gray;
+}
+
+.RichEditor-editor .RichEditor-blockquote {
+  border-left: 5px solid #eee;
+  color: #fff;
+  font-family: $font-family;
+  font-style: italic;
+  margin: 16px 0;
+  padding: 10px 20px;
+}
+
+.RichEditor-editor .public-DraftStyleDefault-pre {
+  background-color: rgba(0, 0, 0, 0.05);
+  font-family: $font-family;
+  font-size: 14px;
+  padding: 20px;
+}
+
+.RichEditor-controls {
+  display: block;
+  font-family: $font-family;
+  font-size: $normal-text-size;
+  margin-bottom: 5px;
+  user-select: none;
+}
+
+.RichEditor-styleButton {
+  color: $primary;
+  cursor: pointer;
+  margin-right: 16px;
+  padding: 2px 0;
+  display: inline-block;
+}
+
+.RichEditor-activeButton {
+  color: transparentize($primary, .5);
+  text-decoration: underline;
+}

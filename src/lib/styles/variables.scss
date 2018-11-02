@@ -1,0 +1,44 @@
+/*----- Defaults --------*/
+$font-family: CenturyGothic, sans-serif;
+$header-weight: 500;
+$font-weight: 500;
+$large-text-size: 1.17em;
+$normal-text-size: 1.00em;
+$small-text-size: 0.83em;
+$tiny-text-size: 0.67em;
+
+/*----- Define Colors --------*/
+$white: #FFFFFF;
+$off-white: #FCFCFC;
+$light: #F5F5F5;
+$light-gray: #eceff1;
+$light-med-gray: #B0BEC5;
+$med-gray: #4e6471;
+$dark-gray: #263238;
+$dark: #151515;
+$red: #e83b2e;
+$orange: #ecab1f;
+$green: #32bd52;
+$primary: #4365d4;
+$secondary: #273b7d;
+
+$mobile-width: 800px;
+
+@mixin box-shadow($shadows...) {
+  -moz-box-shadow: $shadows;
+  -webkit-box-shadow: $shadows;
+  box-shadow: $shadows;
+}
+
+@mixin default-transition($transitions...) {
+  transition-duration: $transitions;
+  -webkit-transition-duration: $transitions;
+}
+
+@mixin browser($browsers) {
+  @each $browser in $browsers {
+    html[data-browser*="#{$browser}"] & {
+      @content;
+    }
+  }
+}

@@ -1,0 +1,30 @@
+@import 'variables.scss';
+
+.dropZone {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+	width: 146px;
+	height: 146px;
+	border-radius: 5px;
+	border: 3px dashed transparentize($primary, .5);
+	background-color: $light-gray;
+	cursor: pointer;
+}
+
+.dropZone:hover {
+	background-color: transparentize($primary, .5);
+	border: 3px dashed #fff;
+  @include default-transition(.5s);
+}
+
+.dropZone .text {
+	font-size: $normal-text-size;
+	font-weight: 500;
+  color: $primary;
+}
+
+.dropZone:hover .text {
+  color: #fff;
+}

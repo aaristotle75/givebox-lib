@@ -1,0 +1,159 @@
+@import 'variables.scss';
+
+/*-------- Common -----------*/
+body {
+  height: 100%;
+  overflow: hidden;
+  margin: 0px;
+  display: flex;
+  box-sizing: border-box;
+  background: $white;
+  font-family: $font-family;
+  color: $dark;
+}
+
+article, aside, h1, h2, h3, h4, h5, h6, hgroup, nav, section, .largeText, .normalText, .smallText {
+  display: block;
+}
+
+h1 { margin: 0.67em 0; font-size: 2.00em; font-weight: $header-weight; }
+h2 { margin: 0.83em 0; font-size: 1.50em; font-weight: $header-weight; }
+h3 { margin: 1.00em 0; font-size: 1.17em; font-weight: $header-weight; }
+h4 { margin: 1.33em 0; font-size: 1.00em; font-weight: $header-weight; }
+h5 { margin: 1.67em 0; font-size: 0.83em; font-weight: $header-weight; }
+h6 { margin: 2.33em 0; font-size: 0.67em; font-weight: $header-weight; }
+
+p { margin: 1.67em 0; font-size: $normal-text-size; font-weight: $font-weight; }
+.largeText { font-size: $large-text-size; font-weight: $font-weight; }
+.normalText { font-size: $normal-text-size; font-weight: $font-weight; }
+.smallText { font-size: $small-text-size; font-weight: $font-weight; }
+.tinyText { font-size: $tiny-text-size; font-weight: $font-weight; }
+.inline { display: inline; }
+.left { text-align: left; }
+.right { text-align: right; }
+.center { text-align: center; }
+
+.visible {
+	visibility: visible !important;
+}
+
+.hidden {
+	visibility: hidden !important;
+}
+
+.displayNone {
+	display: none !important;
+}
+
+a {
+  color: $primary;
+  cursor: pointer;
+}
+
+a:hover {
+  color: $secondary;
+  @include default-transition(.5s);
+}
+
+/*-------- Button --------*/
+button {
+	background: transparent;
+	box-shadow: none;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  @include default-transition(.5s);
+}
+
+button:focus {
+	outline:0;
+}
+
+button.link {
+  background: none;
+  color: $primary;
+  border: none;
+  padding: 0 !important;
+  margin: 0;
+  font-family: $font-family;
+  font-size: $normal-text-size;
+}
+
+button.link:hover {
+  color: transparentize($primary, .3);
+}
+
+button.button {
+  font-size: 12px;
+  letter-spacing: .5px;
+  font-family: $font-family;
+  color: $white;
+  display: inline-block;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px 10px 20px;
+  line-height: 17px;
+  text-transform: none;
+  background-color: $primary;
+  cursor: pointer;
+  font-weight: 600;
+  @include box-shadow(0px 1px 2px 0px rgba(0,0,0,0.55));
+}
+
+button.button:hover {
+  background-color: $secondary;
+}
+
+button.button:disabled {
+  cursor: not-allowed;
+  background-color: transparentize($primary, .5);
+}
+
+button.button:hover:disabled {
+  background-color: transparentize($primary, .5);
+}
+
+/*------- Lists ----------*/
+ul {
+  list-style-type: none;
+}
+
+li {
+}
+
+ul.selectable {
+  li {
+    background: $off-white;
+    margin: 5px 0;
+    padding: 5px 0; // overwirde padding in component style
+    cursor: pointer;
+  }
+
+  li:nth-child(even) {
+    background: $light;
+  }
+
+  li:hover {
+    background: $light-gray;
+    cursor: pointer;
+  	-webkit-transition-duration: .5s;
+  	transition-duration: .5s;
+  }
+
+  img {
+    display: inline-block;
+    height: 50px;
+    width: 50px;
+    padding: 0 5px;
+    margin-right: 5px;
+    vertical-align: middle;
+  }
+
+  .liContent {
+    vertical-align: top;
+    display: inline-block;
+  }
+
+}

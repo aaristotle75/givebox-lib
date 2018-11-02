@@ -1,0 +1,113 @@
+@import 'variables.scss';
+
+/*--------- Table --------*/
+
+table {
+  width: 100%;
+  margin: 20px 0;
+}
+
+th {
+  color: $light-med-gray;
+  font-weight: 500;
+  background: $white;
+  font-size: $small-text-size;
+  padding: 15px 5px;
+}
+
+th.sort:hover {
+  cursor: pointer;
+  color: $white;
+  background: transparentize($primary, 0.4);
+  @include default-transition(.5s);
+}
+
+th-grip {
+  background: red;
+}
+
+tr {
+  background: $white;
+}
+
+tr:nth-child(even) {
+  background: $off-white;
+}
+
+tr:hover {
+  background: $light-gray;
+  @include default-transition(.5s);
+}
+
+td {
+  padding: 10px 5px;
+  font-size: $normal-text-size;
+}
+
+/*--------- Search ----------*/
+.search {
+	margin: 20px 0;
+
+	button {
+		width: 20px;
+		height: 20px;
+		padding: 0 5px;
+		margin: 0;
+	}
+
+	.icon {
+		color: $light-med-gray;
+		font-size: 16px;
+	}
+
+	.icon:hover {
+		color: $med-gray;
+	}
+
+	.searchBtn {
+
+    display: inline-block;
+
+    .icon {
+  		font-weight: 700;
+  	 }
+  }
+}
+
+/*--------- Max Records --------*/
+.maxRecords {
+	margin: 10px 0;
+}
+
+.recordCount {
+	font-size: $tiny-text-size;
+}
+
+.noRecords {
+	padding: 10px 0;
+
+	a {
+		margin: 10px 0;
+		display: block;
+		font-size: $small-text-size;
+	}
+}
+
+
+/*--------- Export --------*/
+.exportRecordsLink {
+  a {
+    font-size: $small-text-size;
+  }
+}
+
+.exportRecords {
+  padding: 10px;
+  width: 98%;
+  margin: 0 auto;
+  text-align: center;
+
+  .row {
+    margin: 10px 0;
+  }
+}
