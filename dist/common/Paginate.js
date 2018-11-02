@@ -7,7 +7,7 @@ import _assertThisInitialized from "/Users/aaron/Sites/projects/givebox/givebox-
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { util } from '../';
-import { getAPI } from '../actions/actions';
+import { getAPI } from '../redux/actions';
 
 var Paginate =
 /*#__PURE__*/

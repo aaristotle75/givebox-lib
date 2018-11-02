@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import Modal from './Modal';
 import Portal from './Portal';
 import Loader from './Loader';
-import { toggleModal } from '../actions/actions';
+import { toggleModal } from '../redux/actions';
 
 var ModalRoute =
 /*#__PURE__*/

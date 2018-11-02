@@ -19,8 +19,8 @@ import Search from './common/Search';
 import Table from './common/Table';
 import * as types from './common/types';
 import * as util from './common/utility';
-import { toggleModal, resourceProp, getAPI, sendAPI } from './actions/actions';
-import { resource, send, modal } from './actions/reducers';
+import { toggleModal, resourceProp, getAPI, sendAPI } from './redux/actions';
+import { resource, send, modal } from './redux/reducers';
 import * as giveboxAPI from './api/givebox';
 import { getResource, reloadResource, sendResource } from './api/actions';
 export { // Form

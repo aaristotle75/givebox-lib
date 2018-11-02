@@ -13,7 +13,7 @@ import Search from './Search';
 import NoRecords from './NoRecords';
 import ExportLink from './ExportLink';
 import { util } from '../';
-import { getAPI } from '../actions/actions';
+import { getAPI } from '../redux/actions';
 import has from 'has';
 
 var Table =

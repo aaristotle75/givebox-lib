@@ -6,8 +6,8 @@ import _inherits from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modu
 import _assertThisInitialized from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/assertThisInitialized";
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { toggleModal } from '../actions/actions';
-import GBLink from './GBLink';
+import { toggleModal } from '../redux/actions';
+import { GBLink } from '../';
 
 var ModalLink =
 /*#__PURE__*/

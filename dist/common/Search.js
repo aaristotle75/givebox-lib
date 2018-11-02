@@ -7,7 +7,7 @@ import _assertThisInitialized from "/Users/aaron/Sites/projects/givebox/givebox-
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { util, TextField } from '../';
-import { getAPI } from '../actions/actions';
+import { getAPI } from '../redux/actions';
 import has from 'has';
 
 var Search =

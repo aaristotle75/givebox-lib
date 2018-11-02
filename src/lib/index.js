@@ -26,9 +26,9 @@ import {
   resourceProp,
   getAPI,
   sendAPI
-} from './actions/actions';
+} from './redux/actions';
 
-import { resource, send, modal } from './actions/reducers';
+import { resource, send, modal } from './redux/reducers';
 
 import * as giveboxAPI from './api/givebox';
 import {
