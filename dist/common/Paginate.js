@@ -6,8 +6,8 @@ import _inherits from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modu
 import _assertThisInitialized from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/assertThisInitialized";
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { util } from '../';
 import { getAPI } from '../actions/actions';
-import { isResourceLoaded } from './utility';
 
 var Paginate =
 /*#__PURE__*/
@@ -69,14 +69,14 @@ function (_Component) {
     }
   }, {
     key: "handlePageSelected",
-    value: function handlePageSelected(selected, e) {
+    value: function handlePageSelected(sel, e) {
       e.preventDefault();
-      selected = parseInt(selected);
+      var selected = parseInt(sel);
 
       if (this.props.activePage !== selected) {
         var resource = this.props.resource;
         var endpoint = resource.endpoint.replace('page=' + this.props.activePage, 'page=' + selected);
-        var search = Object.assign(resource.search, {
+        var search = Object.assign({}, resource.search, {
           page: selected
         });
         this.props.getAPI(this.props.name, endpoint, search, null, true);
@@ -89,10 +89,10 @@ function (_Component) {
 
       var items = [];
       var activePage = this.props.activePage;
-      var pages = this.props.pages;
-      var id, page, breakView;
       var pageRange = this.props.pageRange;
       var marginPages = this.props.marginPages;
+      var pages = this.props.pages;
+      var id, page, breakView;
 
       if (this.props.pages <= pageRange) {
         for (var i = 1; i <= pages; i++) {
@@ -174,8 +174,8 @@ function (_Component) {
       var count = props.count;
       var max = props.max;
       var page = props.activePage;
-      var range2,
-          range1 = 1;
+      var range2 = 1;
+      var range1 = 1;
 
       if (max < count) {
         range2 = max;
@@ -269,7 +269,7 @@ function mapStateToProps(state, props) {
   var resource = state.resource[props.name] ? state.resource[props.name] : {};
   var count, max, pages, activePage;
 
-  if (!isResourceLoaded(state.resource, [props.name])) {
+  if (!util.isLoading(resource)) {
     count = parseInt(resource.meta.total);
     max = parseInt(resource.search.max);
     pages = Math.ceil(count / max).toFixed(0);

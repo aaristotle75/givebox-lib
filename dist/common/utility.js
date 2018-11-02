@@ -1,4 +1,6 @@
+import _objectSpread from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/objectSpread";
 import Moment from 'moment';
+import has from 'has';
 export var imageUrlWithStyle = function imageUrlWithStyle(imageURL, style) {
   if (imageURL) {
     return imageURL.replace(/original$/i, style);
@@ -102,7 +104,7 @@ export function objectLength(object) {
   var length = 0;
 
   for (var key in object) {
-    if (object.hasOwnProperty(key)) {
+    if (has(object, key)) {
       ++length;
     }
   }
@@ -152,12 +154,11 @@ export function convertArrayOfObjectsToCSV(args) {
   return result;
 }
 export function createCSV(arr, name) {
-  var data, filename;
+  var data;
   var csv = convertArrayOfObjectsToCSV({
     data: arr
   });
   if (csv == null) return;
-  filename = name || 'export.csv';
 
   if (!csv.match(/^data:text\/csv/i)) {
     csv = 'data:text/csv;charset=utf-8,' + csv;
@@ -192,11 +193,11 @@ export function getCookie(cname) {
   for (var i = 0; i < ca.length; i++) {
     var c = ca[i];
 
-    while (c.charAt(0) == ' ') {
+    while (c.charAt(0) === ' ') {
       c = c.substring(1);
     }
 
-    if (c.indexOf(name) == 0) {
+    if (c.indexOf(name) === 0) {
       return c.substring(name.length, c.length);
     }
   }
@@ -240,7 +241,6 @@ export function encodeBlob(imageUrl, callback) {
       type: 'image/jpeg'
     }; // xhr.response["content-type"];
 
-    var binary = '';
     var bytes = new Uint8Array(xhr.response);
     var blob = new Blob([bytes], type);
     var blobUrl = URL.createObjectURL(blob);
@@ -275,13 +275,11 @@ export function b64toBlob(b64Data, contentType, sliceSize) {
 }
 export function getBlob(objectUrl, callback, data, fileName, imageCallback, fieldName) {
   var xhr = new XMLHttpRequest();
-  var data = data;
-  var fileName = fileName;
   xhr.open('GET', objectUrl, true);
   xhr.responseType = 'blob';
 
   xhr.onload = function (e) {
-    if (this.status == 200) {
+    if (this.status === 200) {
       var blob = this.response;
       callback(blob, data, fileName, imageCallback, fieldName);
     }
@@ -363,7 +361,7 @@ export function onLoaded(element, callback) {
 }
 ;
 export function cloneObj(obj) {
-  return Object.assign({}, obj);
+  return _objectSpread({}, obj);
 }
 export function makeAPIQuery(obj) {
   var sort,
@@ -386,33 +384,31 @@ export function makeAPIQuery(obj) {
   if (obj.query) str = str + '&q=' + obj.query;
   return str;
 }
-/*
-* Func to determine if data has been loaded before rendering component
-* @params
-* @arr - array of resources to check and if they should contain data to continue
+/**
+* Check if a resource has been loaded
+*
+* @param {object} resource props to check
+* @param {int} id of the resource, if id is passed check resource data is not empty
+*   and if id doesn't match and isFetching show loading
 */
 
-export function isResourceLoaded(props, arr) {
-  var checkForData = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+export function isLoading(resource) {
+  var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
   var loading = false;
 
-  if (!isEmpty(arr)) {
-    for (var i = 0; i < arr.length; i++) {
-      if (!props.hasOwnProperty(arr[i])) {
-        loading = true;
-      } else {
-        if (!props[arr[i]].hasOwnProperty('data')) {
+  if (!resource) {
+    loading = true;
+  } else {
+    if (!has(resource, 'data') || !has(resource, 'search') || !has(resource, 'meta')) {
+      loading = true;
+    } else {
+      if (id) {
+        if (isEmpty(resource.data)) {
           loading = true;
         } else {
-          if (checkForData && isEmpty(props[arr[i]].data)) loading = true;
-        }
-
-        if (!props[arr[i]].hasOwnProperty('search')) {
-          loading = true;
-        }
-
-        if (!props[arr[i]].hasOwnProperty('meta')) {
-          loading = true;
+          if (has(resource.data, 'ID')) {
+            if (resource.data.ID !== parseInt(id) && resource.isFetching) loading = true;
+          }
         }
       }
     }
@@ -433,5 +429,5 @@ export function formatBytes(bytes, decimals) {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 }
 export function isEmpty(value) {
-  return value === undefined || value === null || typeof value === "object" && Object.keys(value).length === 0 || typeof value === "string" && value.trim().length === 0;
+  return value === undefined || value === null || typeof value === "object" && Object.keys(value).length === 0 || typeof value === "string" && value.trim().length === 0 || value.length === 0;
 }

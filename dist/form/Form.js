@@ -1,3 +1,4 @@
+import _slicedToArray from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/slicedToArray";
 import _defineProperty from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/defineProperty";
 import _objectSpread from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/objectSpread";
 import _classCallCheck from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/classCallCheck";
@@ -17,6 +18,7 @@ import * as _v from './formValidate';
 import Loader from '../common/Loader';
 import { Alert } from '../common/Alerts';
 import { cloneObj } from '../common/utility';
+import has from 'has';
 
 var Form =
 /*#__PURE__*/
@@ -62,7 +64,7 @@ function (_Component) {
       updated: false,
       fields: {}
     };
-    _this.defaultInputParams = {
+    _this.defaultOptions = {
       parent: false,
       label: '',
       className: '',
@@ -86,7 +88,7 @@ function (_Component) {
       modal: false,
       debug: false
     };
-    _this.defaultInputParams = Object.assign(_this.defaultInputParams, props.defaults);
+    _this.defaults = _objectSpread({}, _this.defaultOptions, props.options);
     return _this;
   }
 
@@ -103,28 +105,30 @@ function (_Component) {
     }
   }, {
     key: "createField",
-    value: function createField(name, params) {
-      if (params.parent) params.autoReturn = false;
+    value: function createField(name, args) {
+      if (args.parent) args.autoReturn = false;
+
+      var merge = _objectSpread({}, this.state.fields, _defineProperty({}, name, args));
+
       this.setState(Object.assign(this.state, _objectSpread({}, this.state, {
-        fields: _objectSpread({}, this.state.fields, _defineProperty({}, name, params))
+        fields: merge
       })));
-      if (params.parent) this.fieldProp(params.parent, _defineProperty({}, name, params.value));
-      return;
+      if (args.parent) this.fieldProp(args.parent, _defineProperty({}, name, args.value));
     }
   }, {
     key: "createRadioField",
-    value: function createRadioField(name, params) {
-      var field = this.state.fields[name] || null;
+    value: function createRadioField(name, args) {
+      var field = has(this.state.fields, name);
 
       if (!field) {
-        this.createField(name, params);
+        this.createField(name, args);
       }
     }
   }, {
     key: "fieldProp",
-    value: function fieldProp(name, params) {
-      var field = this.state.fields[name];
-      params = Object.assign(this.state.fields[name], params);
+    value: function fieldProp(name, args) {
+      var field = has.call(this.state.fields, name);
+      var params = Object.assign(this.state.fields[name], args);
       this.setState(Object.assign(this.state, _objectSpread({}, this.state, {
         fields: _objectSpread({}, this.state.fields, _defineProperty({}, name, params))
       })));
@@ -132,19 +136,16 @@ function (_Component) {
       if (field.parent) {
         if (params.hasOwnProperty('value')) this.fieldProp(field.parent, _defineProperty({}, name, params.value));
       }
-
-      return;
     }
   }, {
     key: "formProp",
-    value: function formProp(params) {
-      this.setState(Object.assign(this.state, params));
+    value: function formProp(args) {
+      this.setState(Object.assign(this.state, args));
       return;
     }
   }, {
     key: "onChangeCalendar",
     value: function onChangeCalendar(ts) {
-      var value = ts;
       console.log('onChangeCalendar', ts);
       return;
     }
@@ -152,9 +153,9 @@ function (_Component) {
     key: "onChange",
     value: function onChange(e) {
       e.preventDefault();
-      var value = e.target.value;
       var name = e.target.name;
       var field = this.state.fields[name];
+      var value = e.target.value;
       if (field.validate === 'taxID') value = _v.formatTaxID(value);
       if (field.validate === 'ssn') value = _v.formatSSN(value);
       if (field.validate === 'phone') value = _v.formatPhone(value);
@@ -218,8 +219,8 @@ function (_Component) {
     }
   }, {
     key: "onChangeRichText",
-    value: function onChangeRichText(name, value, hasText) {
-      value = hasText ? value : _v.clearRichTextIfShouldBeEmpty(value);
+    value: function onChangeRichText(name, val, hasText) {
+      var value = hasText ? val : _v.clearRichTextIfShouldBeEmpty(val);
       var field = this.state.fields[name];
       this.fieldProp(name, {
         value: value,
@@ -239,10 +240,10 @@ function (_Component) {
 
       var obj = _v.formatCreditCard(e.target.value);
 
-      var value = obj.value;
-      var apiValue = obj.apiValue;
       var name = e.target.name;
       var field = this.state.fields[name];
+      var value = obj.value;
+      var apiValue = obj.apiValue;
       this.fieldProp(name, {
         value: value,
         apiValue: apiValue,
@@ -279,15 +280,14 @@ function (_Component) {
       }
 
       if (field.debug) console.log('onChangeCreditCard', name, field);
-      return;
     }
   }, {
     key: "onBlur",
     value: function onBlur(e) {
       e.preventDefault();
-      var value = e.target.value;
       var name = e.target.name;
       var field = this.state.fields[name];
+      var value = e.target.value;
       if (field.validate === 'url') this.fieldProp(name, {
         value: _v.checkHTTP(value)
       });
@@ -306,9 +306,9 @@ function (_Component) {
   }, {
     key: "choice",
     value: function choice(name, params) {
-      var field = this.state.fields.hasOwnProperty(name) ? this.state.fields[name] : null;
-      var defaultParams = cloneObj(this.defaultInputParams);
-      params = Object.assign({}, defaultParams, {
+      var field = has(this.state.fields, name) ? this.state.fields[name] : null;
+      var defaults = cloneObj(this.defaults);
+      params = Object.assign({}, defaults, {
         type: 'checkbox',
         value: '',
         className: ''
@@ -347,10 +347,10 @@ function (_Component) {
     }
   }, {
     key: "dropdown",
-    value: function dropdown(name, params) {
-      var field = this.state.fields.hasOwnProperty(name) ? this.state.fields[name] : null;
-      var defaultParams = cloneObj(this.defaultInputParams);
-      params = Object.assign({}, defaultParams, {}, params);
+    value: function dropdown(name, args) {
+      var field = has(this.state.fields, name) ? this.state.fields[name] : null;
+      var defaults = cloneObj(this.defaults);
+      var params = Object.assign({}, defaults, {}, args);
       return React.createElement(Dropdown, {
         name: name,
         options: params.options,
@@ -371,13 +371,12 @@ function (_Component) {
     }
   }, {
     key: "textField",
-    value: function textField(name, params) {
-      var field = this.state.fields.hasOwnProperty(name) ? this.state.fields[name] : null;
-      var defaultParams = cloneObj(this.defaultInputParams);
-      params = Object.assign({}, defaultParams, {
+    value: function textField(name, args) {
+      var field = has(this.state.fields, name) ? this.state.fields[name] : null;
+      var params = Object.assign({}, cloneObj(this.defaults), {
         className: '',
         type: 'text'
-      }, params);
+      }, args);
       return React.createElement(TextField, {
         name: name,
         className: params.className,
@@ -403,8 +402,8 @@ function (_Component) {
   }, {
     key: "richText",
     value: function richText(name, params) {
-      var field = this.state.fields.hasOwnProperty(name) ? this.state.fields[name] : null;
-      var defaultParams = cloneObj(this.defaultInputParams);
+      var field = has(this.state.fields, name) ? this.state.fields[name] : null;
+      var defaultParams = cloneObj(this.defaults);
       params = Object.assign({}, defaultParams, {
         className: '',
         type: 'richText',
@@ -434,8 +433,8 @@ function (_Component) {
   }, {
     key: "creditCard",
     value: function creditCard(name, params) {
-      var field = this.state.fields.hasOwnProperty(name) ? this.state.fields[name] : null;
-      var defaultParams = cloneObj(this.defaultInputParams);
+      var field = has(this.state.fields, name) ? this.state.fields[name] : null;
+      var defaultParams = cloneObj(this.defaults);
       params = Object.assign({}, defaultParams, {
         className: '',
         type: 'text',
@@ -471,12 +470,11 @@ function (_Component) {
   }, {
     key: "creditCardGroup",
     value: function creditCardGroup(params) {
-      var defaultParams = cloneObj(this.defaultInputParams);
-      var ccnumberField = this.state.fields.hasOwnProperty('ccnumber') ? this.state.fields.ccnumber : null;
+      var defaultParams = cloneObj(this.defaults);
+      var ccnumberField = has(this.state.fields, 'ccnumber') ? this.state.fields.ccnumber : null;
       var hideCardsAccepted = ccnumberField ? ccnumberField.cardType !== 'noCardType' ? true : false : false;
       params = Object.assign({}, defaultParams, {
         className: '',
-        type: 'text',
         required: true
       }, params);
       return React.createElement("div", {
@@ -499,9 +497,13 @@ function (_Component) {
     key: "checkForErrors",
     value: function checkForErrors(fields, group) {
       var error = false;
-      Object.keys(fields).forEach(function (key) {
-        if (fields[key].group === group || fields[key].group === 'all') {
-          if (fields[key].error) error = true;
+      Object.entries(fields).forEach(function (_ref) {
+        var _ref2 = _slicedToArray(_ref, 2),
+            key = _ref2[0],
+            value = _ref2[1];
+
+        if (value.group === group || value.group === 'all') {
+          if (value.error) error = true;
         }
       });
       this.formProp({
@@ -515,12 +517,12 @@ function (_Component) {
       var errors;
 
       if (err) {
-        if (err.hasOwnProperty('errors')) {
+        if (has(err, 'errors')) {
           errors = err.errors;
           this.formProp({
             error: "Error saving: ".concat(errors[0].message)
           });
-          if (this.state.fields.hasOwnProperty(errors[0].field)) this.fieldProp(errors[0].field, {
+          if (has(this.state.fields, errors[0].field)) this.fieldProp(errors[0].field, {
             error: "The following error occurred while saving, ".concat(errors[0].message)
           });
         }
@@ -559,6 +561,7 @@ function (_Component) {
       var label = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'Save';
       var style = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
       return React.createElement("button", {
+        className: "button",
         style: style,
         type: "button",
         disabled: this.state.updated ? false : true,
@@ -588,7 +591,7 @@ function (_Component) {
     value: function fieldError(name, msg) {
       var error = false;
 
-      if (this.state.fields.hasOwnProperty(name)) {
+      if (has(this.state.fields, name)) {
         if (this.state.fields[name].error) error = this.state.fields[name].error;
       }
 
@@ -604,16 +607,20 @@ function (_Component) {
       e.preventDefault();
       var fields = this.state.fields;
       var groupFields = {};
-      Object.keys(fields).forEach(function (key) {
-        if ((fields[key].group === group || fields[key].group === 'all') && fields[key].autoReturn) {
-          groupFields[key] = fields[key];
+      Object.entries(fields).forEach(function (_ref3) {
+        var _ref4 = _slicedToArray(_ref3, 2),
+            key = _ref4[0],
+            value = _ref4[1];
 
-          if (fields[key].required && !fields[key].value) {
+        if ((value.group === group || value.group === 'all') && value.autoReturn) {
+          groupFields[key] = value;
+
+          if (value.required && !value.value) {
             bindthis.fieldProp(key, {
               error: _v.msgs.required
             });
           } else {
-            if (fields[key].value) bindthis.validateField(key, fields[key].validate, fields[key].value);
+            if (value.value) bindthis.validateField(key, value.validate, value.value);
           }
         }
       });
@@ -622,8 +629,6 @@ function (_Component) {
       if (!this.state.error) {
         if (callback) callback(groupFields);
       }
-
-      return;
     }
   }, {
     key: "validateField",
@@ -698,7 +703,8 @@ function (_Component) {
           responseData: _this4.props.responseData,
           fieldError: _this4.fieldError,
           errorAlert: _this4.errorAlert,
-          successAlert: _this4.successAlert
+          successAlert: _this4.successAlert,
+          name: _this4.props.name
         });
       });
       return childrenWithProps;
@@ -736,7 +742,7 @@ Form.defaultProps = {
 function mapStateToProps(state, props) {
   var id = props.name + '-form';
   var responseData;
-  if (state.send.hasOwnProperty(props.name)) responseData = state.send[props.name].response;
+  if (has(state.send, props.name)) responseData = state.send[props.name].response;
   return {
     id: id,
     isSending: state.send.isSending,

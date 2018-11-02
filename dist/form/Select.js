@@ -30,7 +30,6 @@ function (_Component) {
 
       if (!isEmpty(options)) {
         options.forEach(function (value, key) {
-          console.log(key, value);
           items.push(React.createElement("option", {
             key: key,
             value: value.value

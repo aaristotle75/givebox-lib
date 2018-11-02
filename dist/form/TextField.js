@@ -4,7 +4,6 @@ import _possibleConstructorReturn from "/Users/aaron/Sites/projects/givebox/give
 import _getPrototypeOf from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/getPrototypeOf";
 import _inherits from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/inherits";
 import React, { Component } from 'react';
-var ref = React.createRef();
 
 var TextField =
 /*#__PURE__*/
@@ -27,6 +26,7 @@ function (_Component) {
       var params = Object.assign({}, this.props.params, {
         ref: this.inputRef
       });
+      if (params.type === 'hidden') params.required = false;
       if (this.props.createField) this.props.createField(this.props.name, params);
     }
   }, {
@@ -39,10 +39,8 @@ function (_Component) {
           placeholder = _this$props.placeholder,
           autoFocus = _this$props.autoFocus,
           required = _this$props.required,
-          step = _this$props.step,
           readOnly = _this$props.readOnly,
           style = _this$props.style,
-          labelStyle = _this$props.labelStyle,
           label = _this$props.label,
           className = _this$props.className,
           error = _this$props.error,
@@ -59,7 +57,7 @@ function (_Component) {
         name: name,
         type: type,
         placeholder: placeholder,
-        required: required,
+        required: type === 'hidden' ? false : required,
         readOnly: readOnly,
         onChange: this.props.onChange,
         onBlur: this.props.onBlur,
@@ -70,7 +68,7 @@ function (_Component) {
       }), this.props.children, React.createElement("div", {
         className: "tooltipTop ".concat(errorType !== 'tooltip' && 'displayNone')
       }, error, React.createElement("i", null)), React.createElement("div", {
-        className: "errorMsg ".concat(!error || errorType !== 'normal' && 'displayNone')
+        className: "errorMsg ".concat((!error || errorType !== 'normal') && 'displayNone')
       }, error));
     }
   }]);

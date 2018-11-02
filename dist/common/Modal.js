@@ -1,3 +1,4 @@
+import _objectSpread from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/objectSpread";
 import _classCallCheck from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/classCallCheck";
 import _createClass from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/createClass";
 import _possibleConstructorReturn from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/possibleConstructorReturn";
@@ -5,7 +6,6 @@ import _getPrototypeOf from "/Users/aaron/Sites/projects/givebox/givebox-lib/nod
 import _inherits from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/inherits";
 import _assertThisInitialized from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/assertThisInitialized";
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import * as Effect from './ModalEffect';
 import { cloneObj, isEmpty } from "./utility";
 
@@ -23,8 +23,6 @@ var stopPropagation = function stopPropagation(e) {
   return e.stopPropagation();
 };
 
-var onClose;
-
 var Modal =
 /*#__PURE__*/
 function (_Component) {
@@ -38,6 +36,7 @@ function (_Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Modal).call(this, props));
     _this.closeModal = _this.closeModal.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.renderActions = _this.renderActions.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.onClose = _this.onClose.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     var effect;
     if (props.mobile) effect = '3DFlipVert';else effect = props.effect;
     var effects = {
@@ -70,26 +69,29 @@ function (_Component) {
       var _this2 = this;
 
       //window.addEventListener('resize', this.handleResize.bind(this));
-      var transitionTimeMS = this.getTransitionDuration();
       setTimeout(function () {
         return _this2.setState({
           open: _this2.props.open
         });
       }, 0);
-
-      onClose = function onClose(callback) {
-        _this2.setState({
-          open: false
-        }, function () {
-          _this2.closeTimer = setTimeout(callback, transitionTimeMS);
-        });
-      };
+      this.onClose();
     }
   }, {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
-      onClose = null;
       clearTimeout(this.closeTimer);
+    }
+  }, {
+    key: "onClose",
+    value: function onClose(callback) {
+      var _this3 = this;
+
+      var transitionTimeMS = this.getTransitionDuration();
+      this.setState({
+        open: false
+      }, function () {
+        _this3.closeTimer = setTimeout(callback, transitionTimeMS);
+      });
     }
     /* Set width and height of screen */
 
@@ -166,7 +168,7 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this3 = this;
+      var _this4 = this;
 
       var _this$state = this.state,
           open = _this$state.open,
@@ -184,17 +186,19 @@ function (_Component) {
       if (!transition) {
         transition = defaultTransition;
       } else {
-        transition = Object.assign({}, defaultTransition, transition);
+        transition = _objectSpread({}, defaultTransition, {
+          transition: transition
+        });
       }
 
       var transition_style = {
-        'transition': transition.property + ' ' + transition.duration / 1000 + 's' + ' ' + transition.timingfunction
+        transition: "".concat(transition.property, " ").concat(transition.duration / 1000, "s ").concat(transition.timiingfunction)
       };
       var closeBtn = mobile ? true : closeBtnShow;
       var defaultOverlay = cloneObj(defaultOverlayStyle);
-      var overlayStyle = customOverlay ? Object.assign(defaultOverlay, customOverlay) : defaultOverlayStyle;
+      var overlayStyle = customOverlay ? _objectSpread({}, defaultOverlay, customOverlay) : defaultOverlayStyle;
       var defaultStyle = cloneObj(defaultContentStyle);
-      var contentStyle = customStyle ? Object.assign(defaultStyle, customStyle) : defaultContentStyle;
+      var contentStyle = customStyle ? _objectSpread({}, defaultStyle, customStyle) : defaultContentStyle;
 
       if (mobile) {
         contentStyle = cloneObj(contentStyle);
@@ -206,26 +210,30 @@ function (_Component) {
         contentStyle.overflow = 'auto';
       }
 
+      var modalOverlayStyle = {
+        transition: "opacity ".concat(transition.duration / 1000, "s linear"),
+        opacity: open ? 1 : 0
+      };
+      var openEffect = open ? effect.end : effect.begin;
       return React.createElement("div", {
         className: className
       }, React.createElement("div", {
         onClick: function onClick() {
-          return _this3.closeModal(closeCallback);
+          return _this4.closeModal(closeCallback);
         },
         className: "modalOverlay",
-        style: prefix(Object.assign({}, overlayStyle, {
-          transition: 'opacity ' + transition.duration / 1000 + 's' + ' linear',
-          opacity: open ? 1 : 0
-        }))
+        style: prefix(_objectSpread({}, overlayStyle, modalOverlayStyle))
       }, React.createElement("div", {
         className: "modalContent",
-        style: prefix(Object.assign({}, contentStyle, transition_style, open ? effect.end : effect.begin)),
+        style: prefix(_objectSpread({}, contentStyle, transition_style, {
+          openEffect: openEffect
+        })),
         onClick: stopPropagation
-      }, this.renderChildren(), closeBtn && React.createElement("a", {
+      }, this.renderChildren(), closeBtn && React.createElement("button", {
         style: closeBtnStyle,
         className: "modalCloseBtn",
         onClick: function onClick() {
-          return _this3.closeModal(closeCallback);
+          return _this4.closeModal(closeCallback);
         }
       }, React.createElement("span", {
         className: "icon icon-close"

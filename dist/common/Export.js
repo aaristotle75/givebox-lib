@@ -6,11 +6,8 @@ import _inherits from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modu
 import _assertThisInitialized from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/assertThisInitialized";
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getAPI } from '../actions/actions';
-import { isResourceLoaded } from './utility';
 import CalendarRange from '../form/CalendarRange';
-import Select from '../form/Select';
-import { Error } from './Alerts';
+import { Error, getAPI, Select } from '../';
 
 var Export =
 /*#__PURE__*/
@@ -94,9 +91,6 @@ Export.defaultProps = {};
 
 function mapStateToProps(state, props) {
   var resource = state.resource[props.name] ? state.resource[props.name] : {};
-
-  if (!isResourceLoaded(state.resource, [props.name])) {}
-
   return {
     resource: resource
   };

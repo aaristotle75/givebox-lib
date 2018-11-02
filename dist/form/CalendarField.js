@@ -8,6 +8,7 @@ import React, { Component } from 'react';
 import 'flatpickr/dist/themes/light.css';
 import Flatpickr from 'react-flatpickr';
 import Moment from 'moment';
+import { util } from '../';
 
 var CalendarField =
 /*#__PURE__*/
@@ -63,7 +64,7 @@ function (_Component) {
           step = _this$props.step;
       var date = this.state.date;
       var dateFormat = enableTime ? 'm/d/Y H:i' : 'm/d/Y';
-      var labelStyle = Object.assign({}, customLabel);
+      var labelStyle = util.cloneObj(customLabel);
       return React.createElement(Flatpickr, {
         value: date,
         onChange: this.onChange,
@@ -92,7 +93,8 @@ function (_Component) {
         onBlur: this.onBlur,
         onFocus: this.onFocus,
         step: step
-      }), React.createElement("a", {
+      }), React.createElement("button", {
+        type: "button",
         className: "input-button",
         title: "toggle",
         "data-toggle": true

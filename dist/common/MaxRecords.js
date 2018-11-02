@@ -1,3 +1,4 @@
+import _objectSpread from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/objectSpread";
 import _classCallCheck from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/classCallCheck";
 import _createClass from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/createClass";
 import _possibleConstructorReturn from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/possibleConstructorReturn";
@@ -6,9 +7,9 @@ import _inherits from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modu
 import _assertThisInitialized from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/assertThisInitialized";
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Select from '../form/Select';
+import { util, Select } from '../';
 import { getAPI } from '../actions/actions';
-import { sortByField, isResourceLoaded } from './utility';
+import has from 'has';
 
 var MaxRecords =
 /*#__PURE__*/
@@ -34,8 +35,8 @@ function (_Component) {
     value: function onChange(e) {
       var selected = e.currentTarget.value;
       var resource = this.props.resource;
-      var endpoint = resource.endpoint.replace('max=' + resource.search.max, 'max=' + selected);
       var pages = Math.ceil(resource.meta.total / selected).toFixed(0);
+      var endpoint = resource.endpoint.replace('max=' + resource.search.max, 'max=' + selected);
       var page = resource.search.page;
 
       if (resource.search.page > pages) {
@@ -43,10 +44,13 @@ function (_Component) {
         endpoint = endpoint.replace('page=' + resource.search.page, 'page=' + page);
       }
 
-      var search = Object.assign({}, resource.search, {
+      var merge = {
         max: selected,
         page: page
-      });
+      };
+
+      var search = _objectSpread({}, resource.search, merge);
+
       this.props.getAPI(this.props.name, endpoint, search, null, true);
     }
   }, {
@@ -68,7 +72,7 @@ function (_Component) {
         });
       }
 
-      items = sortByField(items, 'value', 'ASC');
+      items = util.sortByField(items, 'value', 'ASC');
       return items;
     }
   }, {
@@ -112,9 +116,9 @@ function mapStateToProps(state, props) {
   var resource = state.resource[props.name] ? state.resource[props.name] : {};
   var max, error, count;
 
-  if (!isResourceLoaded(state.resource, [props.name])) {
-    max = resource.search.hasOwnProperty('max') ? resource.search.max : null;
-    count = resource.meta.hasOwnProperty('total') ? resource.meta.total : null;
+  if (!util.isLoading(resource)) {
+    max = has(resource.search, 'max') ? resource.search.max : null;
+    count = has(resource.meta, 'total') ? resource.meta.total : null;
     error = !!resource.error;
   }
 

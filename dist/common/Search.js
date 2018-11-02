@@ -6,9 +6,9 @@ import _inherits from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modu
 import _assertThisInitialized from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/assertThisInitialized";
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import TextField from '../form/TextField';
+import { util, TextField } from '../';
 import { getAPI } from '../actions/actions';
-import { toTitleCase, isResourceLoaded, sortByField } from './utility';
+import has from 'has';
 
 var Search =
 /*#__PURE__*/
@@ -57,7 +57,7 @@ function (_Component) {
       if (resource.search.query) endpoint = endpoint.split('&q')[0];
       ;
       endpoint = value ? endpoint + '&q=' + value : endpoint;
-      var search = Object.assign(resource.search, {
+      var search = Object.assign({}, resource.search, {
         query: value,
         page: 1
       });
@@ -103,7 +103,7 @@ function (_Component) {
         });
       }
 
-      items = sortByField(items, 'value', 'ASC');
+      items = util.sortByField(items, 'value', 'ASC');
       return items;
     }
   }, {
@@ -116,7 +116,7 @@ function (_Component) {
           placeholder = _this$props.placeholder;
       var searchValue = this.state.searchValue;
       var searchName = name + 'Search';
-      var defaultPlaceholder = 'Search ' + toTitleCase(name);
+      var defaultPlaceholder = 'Search';
       return React.createElement("div", {
         style: style,
         className: "search ".concat(align)
@@ -162,8 +162,8 @@ function mapStateToProps(state, props) {
   var resource = state.resource[props.name] ? state.resource[props.name] : {};
   var query;
 
-  if (!isResourceLoaded(state.resource, [props.name])) {
-    query = resource.search.hasOwnProperty('query') ? resource.search.query : '';
+  if (!util.isLoading(resource)) {
+    query = has(resource.search, 'query') ? resource.search.query : '';
   }
 
   return {

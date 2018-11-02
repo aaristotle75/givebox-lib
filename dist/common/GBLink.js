@@ -1,3 +1,4 @@
+import _objectSpread from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/objectSpread";
 import _classCallCheck from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/classCallCheck";
 import _createClass from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/createClass";
 import _possibleConstructorReturn from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/possibleConstructorReturn";
@@ -10,20 +11,19 @@ var GBLink =
 function (_Component) {
   _inherits(GBLink, _Component);
 
-  function GBLink(props) {
+  function GBLink() {
     _classCallCheck(this, GBLink);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(GBLink).call(this, props));
+    return _possibleConstructorReturn(this, _getPrototypeOf(GBLink).apply(this, arguments));
   }
 
   _createClass(GBLink, [{
     key: "linkStyle",
-    value: function linkStyle(primaryColor) {
-      var primaryColor = this.props.primaryColor;
+    value: function linkStyle() {
       var style = {
-        color: "".concat(primaryColor)
+        color: "".concat(this.props.primaryColor)
       };
-      return Object.assign(style, this.props.style);
+      return _objectSpread({}, style, this.props.style);
     }
   }, {
     key: "render",
@@ -32,15 +32,23 @@ function (_Component) {
           id = _this$props.id,
           onClick = _this$props.onClick,
           href = _this$props.href,
-          primaryColor = _this$props.primaryColor,
           target = _this$props.target,
-          className = _this$props.className;
-      return React.createElement("a", {
+          className = _this$props.className,
+          style = _this$props.style,
+          primaryColor = _this$props.primaryColor;
+      var color = primaryColor ? {
+        color: primaryColor
+      } : {};
+
+      var mergeStyle = _objectSpread({}, style, color);
+
+      return React.createElement("button", {
+        type: "button",
         id: id,
         className: className,
         href: href,
         onClick: onClick,
-        style: this.linkStyle,
+        style: mergeStyle,
         target: target
       }, this.props.children);
     }
@@ -51,6 +59,7 @@ function (_Component) {
 
 ;
 GBLink.defaultProps = {
-  primaryColor: "#00BCD4"
+  primaryColor: '',
+  style: {}
 };
 export default GBLink;

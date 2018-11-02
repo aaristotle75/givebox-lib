@@ -1,4 +1,6 @@
 import Form from './form/Form';
+import Select from './form/Select';
+import TextField from './form/TextField';
 import * as formValidate from './form/formValidate';
 import * as selectOptions from './form/selectOptions';
 import { Alert } from './common/Alerts';
@@ -20,9 +22,10 @@ import * as util from './common/utility';
 import { toggleModal, resourceProp, getAPI, sendAPI } from './actions/actions';
 import { resource, send, modal } from './actions/reducers';
 import * as giveboxAPI from './api/givebox';
+import { getResource, reloadResource, sendResource } from './api';
 export { // Form
-Form, formValidate, selectOptions, // actions
-toggleModal, resourceProp, getAPI, sendAPI, // reducers
+Form, formValidate, selectOptions, Select, TextField, // actions
+toggleModal, resourceProp, getAPI, sendAPI, // API
+giveboxAPI, getResource, reloadResource, sendResource, // reducers
 resource, send, modal, // common
-Alert, Error, Export, ExportLink, GBLink, Loader, MaxRecords, ModalLink, ModalRoute, NoRecords, Paginate, Portal, Search, Table, types, util, // APIs
-giveboxAPI };
+Alert, Error, Export, ExportLink, GBLink, Loader, MaxRecords, ModalLink, ModalRoute, NoRecords, Paginate, Portal, Search, Table, types, util };

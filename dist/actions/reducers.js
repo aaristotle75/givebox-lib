@@ -2,6 +2,7 @@ import _defineProperty from "/Users/aaron/Sites/projects/givebox/givebox-lib/nod
 import _objectSpread from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/objectSpread";
 import { combineReducers } from 'redux';
 import * as types from './actionTypes';
+import has from 'has';
 export function resource() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
     isFetching: false
@@ -34,7 +35,7 @@ export function resource() {
     case types.RECEIVE_RESOURCE:
       var data, meta;
 
-      if (action.data.hasOwnProperty('data')) {
+      if (has(action.data, 'data')) {
         data = action.data.data;
         delete action.data['data'];
         meta = action.data;

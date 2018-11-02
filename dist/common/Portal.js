@@ -3,7 +3,7 @@ import _createClass from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_m
 import _possibleConstructorReturn from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/possibleConstructorReturn";
 import _getPrototypeOf from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/getPrototypeOf";
 import _inherits from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/inherits";
-import React, { Component } from 'react';
+import { Component } from 'react';
 import ReactDOM from 'react-dom';
 
 var Portal =

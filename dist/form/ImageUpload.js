@@ -6,8 +6,8 @@ import _inherits from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modu
 import _assertThisInitialized from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/assertThisInitialized";
 import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
-import { mime } from 'common/types';
-import { formatBytes } from 'common/utility';
+import { mime } from '../common/types';
+import { formatBytes } from '../common/utility';
 
 var ImageUpload =
 /*#__PURE__*/
@@ -21,7 +21,7 @@ function (_Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(ImageUpload).call(this, props));
     _this.onDrop = _this.onDrop.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.this.state = {
+    _this.state = {
       accepted: [],
       rejected: []
     };

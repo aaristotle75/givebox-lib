@@ -1,25 +1,12 @@
 /*
-* Get the prefix of the resource to auto determine the primary ID
-* @param (string) resource
-*
-* The resource should always include the priamry identifer (e.g. org, user, super) and be
-* separated by dashes. The first index shoud always contain the prefix
-* (e.g. org-customers where "org" is the prefix to automatically use to the orgID)
-*/
-export var prefix = function getResourcePrefix(resource) {
-  var arr = resource.split("-");
-  return arr[0];
-};
-/*
 * Get a Givebox API endpoint
 *
 * @param (string) resource The name of the resource
 * @param (array) ids An array of ID's in order used in the endpoint
 *
 */
-
 export var endpoint = function getAPIEndpoint(resource) {
-  var ids = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+  var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
   var endpoint;
 
   switch (resource) {
@@ -30,28 +17,28 @@ export var endpoint = function getAPIEndpoint(resource) {
         break;
       }
 
-    case 'user-memberships':
+    case 'userMemberships':
       {
-        endpoint = "users/".concat(ids[0], "/memberships");
+        endpoint = "users/".concat(id[0], "/memberships");
         break;
       }
     // Organization
 
     case 'org':
       {
-        endpoint = "orgs/".concat(ids[0]);
+        endpoint = "orgs/".concat(id[0]);
         break;
       }
 
-    case 'org-customers':
+    case 'orgCustomers':
       {
-        endpoint = "orgs/".concat(ids[0], "/customers");
+        endpoint = "orgs/".concat(id[0], "/customers");
         break;
       }
 
-    case 'org-customer':
+    case 'orgCustomer':
       {
-        endpoint = "orgs/".concat(ids[0], "/customers/").concat(ids[1]);
+        endpoint = "orgs/".concat(id[0], "/customers/").concat(id[1]);
         break;
       }
     // no default

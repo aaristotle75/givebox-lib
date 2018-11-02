@@ -1,3 +1,4 @@
+import _slicedToArray from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/slicedToArray";
 import _classCallCheck from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/classCallCheck";
 import _createClass from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/createClass";
 import _possibleConstructorReturn from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/possibleConstructorReturn";
@@ -11,8 +12,9 @@ import MaxRecords from "./MaxRecords";
 import Search from "./Search";
 import NoRecords from "./NoRecords";
 import ExportLink from "./ExportLink";
+import { util } from '../';
 import { getAPI } from '../actions/actions';
-import { translateSort, isResourceLoaded, isEmpty } from './utility';
+import has from 'has';
 
 var Table =
 /*#__PURE__*/
@@ -46,8 +48,8 @@ function (_Component) {
         var resource = this.props.resource;
         var currentOrder = resource.search.order;
         var order = currentOrder === 'desc' ? 'asc' : 'desc';
-        var sortToReplace = 'sort=' + translateSort(currentOrder) + resource.search.sort;
-        var replaceSort = 'sort=' + translateSort(order) + sort;
+        var sortToReplace = 'sort=' + util.translateSort(currentOrder) + resource.search.sort;
+        var replaceSort = 'sort=' + util.translateSort(order) + sort;
         var endpoint = resource.endpoint.replace(sortToReplace, replaceSort);
         var search = Object.assign(resource.search, {
           sort: sort,
@@ -158,7 +160,19 @@ function (_Component) {
       var footer = tableData.footer;
       return React.createElement("div", {
         className: className
-      });
+      }, searchAbove && this.renderSearch(), exportAbove && this.renderExport(), maxRecordsAbove && this.renderMaxRecords(), paginationAbove && this.renderPagination(), React.createElement("table", {
+        style: this.props.tableStyle
+      }, React.createElement(TableHead, {
+        headers: headers,
+        sortColumn: this.sortColumn,
+        sort: sort,
+        order: order
+      }), React.createElement(TableBody, {
+        rows: rows,
+        length: headers.length
+      }), React.createElement(TableFoot, {
+        footer: footer
+      })), searchBelow && this.renderSearch(), exportBelow && this.renderExport(), maxRecordsBelow && this.renderMaxRecords(), paginationBelow && this.renderPagination());
     }
   }]);
 
@@ -178,16 +192,15 @@ Table.defaultProps = {
 
 function mapStateToProps(state, props) {
   var resource = state.resource[props.name] ? state.resource[props.name] : {};
-  var endpoint, sort, order;
+  var sort, order;
 
-  if (!isResourceLoaded(state.resource, [props.name])) {
-    sort = resource.search.hasOwnProperty('sort') ? resource.search.sort : '';
-    order = resource.search.hasOwnProperty('order') ? resource.search.order : '';
+  if (!util.isLoading(resource)) {
+    sort = has(resource.search, 'sort') ? resource.search.sort : '';
+    order = has(resource.search, 'order') ? resource.search.order : '';
   }
 
   return {
     resource: resource,
-    endpoint: endpoint,
     sort: sort,
     order: order
   };
@@ -210,7 +223,7 @@ var TableHead = function TableHead(_ref) {
   });
   var items = [];
 
-  if (!isEmpty(headers)) {
+  if (!util.isEmpty(headers)) {
     Object.keys(headers).forEach(function (key) {
       items.push(React.createElement("th", {
         onClick: function onClick() {
@@ -234,16 +247,18 @@ var TableBody = function TableBody(_ref2) {
       length = _ref2.length;
   var items = [];
 
-  if (!isEmpty(rows)) {
-    Object.keys(rows).forEach(function (key) {
+  if (!util.isEmpty(rows)) {
+    Object.entries(rows).forEach(function (_ref3) {
+      var _ref4 = _slicedToArray(_ref3, 2),
+          key = _ref4[0],
+          value = _ref4[1];
+
       var td = [];
-
-      for (var i = 0; i < rows[key].length; i++) {
+      value.forEach(function (value, key) {
         td.push(React.createElement("td", {
-          key: i
-        }, rows[key][i]));
-      }
-
+          key: key
+        }, value));
+      });
       var tr = React.createElement("tr", {
         key: key
       }, td);
@@ -261,17 +276,21 @@ var TableBody = function TableBody(_ref2) {
   return React.createElement("tbody", null, items);
 };
 
-var TableFoot = function TableFoot(_ref3) {
-  var footer = _ref3.footer;
+var TableFoot = function TableFoot(_ref5) {
+  var footer = _ref5.footer;
   var items = [];
 
-  if (!isEmpty(footer)) {
-    Object.keys(footer).forEach(function (key) {
+  if (!util.isEmpty(footer)) {
+    Object.entries(footer).forEach(function (_ref6) {
+      var _ref7 = _slicedToArray(_ref6, 2),
+          key = _ref7[0],
+          value = _ref7[1];
+
       items.push(React.createElement("td", {
         key: key,
-        align: footer[key].align || "left",
-        colSpan: footer[key].colspan || 1
-      }, footer[key].name));
+        align: value.align || "left",
+        colSpan: value.colspan || 1
+      }, value.name));
     });
   }
 
