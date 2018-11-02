@@ -28,28 +28,28 @@ class Table extends Component {
 
   sortColumn(sort) {
     if (sort) {
-    var resource = this.props.resource;
-    var currentOrder = resource.search.order;
-    var order = currentOrder === 'desc' ? 'asc' : 'desc';
-    var sortToReplace = 'sort=' + util.translateSort(currentOrder) + resource.search.sort;
-    var replaceSort = 'sort=' + util.translateSort(order) + sort;
-    var endpoint = resource.endpoint.replace(sortToReplace, replaceSort);
-    var search = Object.assign(resource.search, {sort: sort, order: order});
+    const resource = this.props.resource;
+    const currentOrder = resource.search.order;
+    const order = currentOrder === 'desc' ? 'asc' : 'desc';
+    const sortToReplace = 'sort=' + util.translateSort(currentOrder) + resource.search.sort;
+    const replaceSort = 'sort=' + util.translateSort(order) + sort;
+    const endpoint = resource.endpoint.replace(sortToReplace, replaceSort);
+    const search = Object.assign(resource.search, { sort: sort, order: order });
 		this.props.getAPI(this.props.name, endpoint, search, null, true);
     }
     return;
   }
 
   headerResizer() {
-    var thElm;
-    var startOffset;
+    let thElm;
+    let startOffset;
 
     Array.prototype.forEach.call(
       document.querySelectorAll("table th"),
       function (th) {
         th.style.position = 'relative';
 
-        var grip = document.createElement('div');
+        const grip = document.createElement('div');
         grip.innerHTML = "&nbsp;";
         grip.style.top = '0';
         grip.style.right = 0;
@@ -59,9 +59,9 @@ class Table extends Component {
         grip.style.cursor = 'col-resize';
         grip.addEventListener('mousedown', function (e) {
             thElm = th;
-            let xCord = e.clientX;
-            let xPerc = Math.round((xCord/window.innerWidth)*100);
-            let offset = Math.round((th.offsetWidth/window.innerWidth)*100);
+            const xCord = e.clientX;
+            const xPerc = Math.round((xCord/window.innerWidth)*100);
+            const offset = Math.round((th.offsetWidth/window.innerWidth)*100);
             startOffset = offset - xPerc;
         });
 
@@ -70,8 +70,8 @@ class Table extends Component {
 
     document.addEventListener('mousemove', function (e) {
       if (thElm) {
-        let xCord = e.clientX;
-        let xPerc = Math.round((xCord/window.innerWidth)*100);
+        const xCord = e.clientX;
+        const xPerc = Math.round((xCord/window.innerWidth)*100);
         thElm.style.width = startOffset + xPerc + '%';
       }
     });
@@ -146,10 +146,10 @@ class Table extends Component {
     }
     */
 
-    let tableData = data();
-    let headers = tableData.headers;
-    let rows = tableData.rows;
-    let footer = tableData.footer;
+    const tableData = data();
+    const headers = tableData.headers;
+    const rows = tableData.rows;
+    const footer = tableData.footer;
 
     return (
       <div className={className}>
@@ -184,8 +184,8 @@ Table.defaultProps = {
 
 function mapStateToProps(state, props) {
 
-	let resource = state.resource[props.name] ? state.resource[props.name] : {};
-  let endpoint, sort, order;
+	const resource = state.resource[props.name] ? state.resource[props.name] : {};
+  let sort, order;
   if (!util.isLoading(resource)) {
     sort = has(resource.search, 'sort') ? resource.search.sort : '';
     order = has(resource.search, 'order') ? resource.search.order : '';
@@ -193,7 +193,6 @@ function mapStateToProps(state, props) {
 
   return {
     resource: resource,
-    endpoint: endpoint,
     sort: sort,
     order: order
   }
@@ -205,9 +204,9 @@ export default connect(mapStateToProps, {
 
 
 const TableHead = ({ headers, sortColumn, sort, order }) => {
-  let desc = <span className="icon icon-triangle-down"></span>;
-  let asc = <span className="icon icon-triangle-up"></span>;
-  let items = [];
+  const desc = <span className="icon icon-triangle-down"></span>;
+  const asc = <span className="icon icon-triangle-up"></span>;
+  const items = [];
   if (!util.isEmpty(headers)) {
     Object.keys(headers).forEach(function(key) {
       items.push(
@@ -225,14 +224,14 @@ const TableHead = ({ headers, sortColumn, sort, order }) => {
 }
 
 const TableBody = ({ rows, length }) => {
-  let items = [];
+  const items = [];
   if (!util.isEmpty(rows)) {
-    Object.keys(rows).forEach(function(key) {
-      var td = [];
-      for (let i=0; i<rows[key].length; i++) {
-        td.push(<td key={i}>{rows[key][i]}</td>);
-      }
-      var tr = <tr key={key}>{td}</tr>;
+    Object.entries(rows).forEach(([key, value]) => {
+      let td = [];
+      value.forEach((value, key) => {
+        td.push(<td key={key}>{value}</td>);
+      });
+      let tr = <tr key={key}>{td}</tr>;
       items.push(tr);
     });
   } else {
@@ -250,9 +249,9 @@ const TableBody = ({ rows, length }) => {
 const TableFoot = ({ footer }) => {
   let items = [];
   if (!util.isEmpty(footer)) {
-    Object.keys(footer).forEach(function(key) {
+    Object.entries(footer).forEach(([key, value]) => {
       items.push(
-        <td key={key} align={footer[key].align || "left"} colSpan={footer[key].colspan || 1}>{footer[key].name}</td>
+        <td key={key} align={value.align || "left"} colSpan={value.colspan || 1}>{value.name}</td>
       );
     });
   }

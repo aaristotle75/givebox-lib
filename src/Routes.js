@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
-import { util } from './lib';
+import { util, ModalRoute } from './lib';
 import Sidebar from "./common/Sidebar";
 import Header from "./common/Header";
 
@@ -21,6 +21,7 @@ class Routes extends Component {
 
     return (
       <div>
+        <ModalRoute id="exportRecords" component={() => loadComponent('modal/lib/common/Export', {useProjectRoot: false})} effect="superScaled" style={{minHeight: 100}}  />
         <Router>
           <Route
             render={({ location }) => (

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import 'flatpickr/dist/themes/light.css';
 import Flatpickr from 'react-flatpickr';
 import Moment from 'moment';
+import { util } from '../';
 
 class CalendarField extends Component {
 
@@ -48,9 +49,8 @@ class CalendarField extends Component {
       date
     } = this.state;
 
-    let dateFormat = enableTime ? 'm/d/Y H:i' : 'm/d/Y';
-
-    let labelStyle = Object.assign({}, customLabel);
+    const dateFormat = enableTime ? 'm/d/Y H:i' : 'm/d/Y';
+    const labelStyle = util.cloneObj(customLabel);
 
     return (
       <Flatpickr
@@ -79,9 +79,9 @@ class CalendarField extends Component {
               onFocus={this.onFocus}
               step={step}
             />
-            <a className="input-button" title="toggle" data-toggle>
+            <button type="button" className="input-button" title="toggle" data-toggle>
                 <i className="icon icon-calendar"></i>
-            </a>
+            </button>
             <div className="tooltipTop">
               {this.props.error}
               <i></i>
