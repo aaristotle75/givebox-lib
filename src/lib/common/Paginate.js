@@ -47,24 +47,25 @@ class Paginate extends Component{
     }
   }
 
-  handlePageSelected(selected, e) {
+  handlePageSelected(sel, e) {
 		e.preventDefault();
-		selected = parseInt(selected);
+		const selected = parseInt(sel);
 		if (this.props.activePage !== selected) {
-			var resource = this.props.resource;
-			var endpoint = resource.endpoint.replace('page='+this.props.activePage, 'page='+selected);
-			var search = Object.assign(resource.search, {page: selected});
+			const resource = this.props.resource;
+			const endpoint = resource.endpoint.replace('page='+this.props.activePage, 'page='+selected);
+			const search = Object.assign({}, resource.search, { page: selected });
 			this.props.getAPI(this.props.name, endpoint, search, null, true);
 		}
   }
 
   pagination() {
-    var items = [];
-    var activePage = this.props.activePage;
-    var pages = this.props.pages;
-    var id, page, breakView;
-    var pageRange = this.props.pageRange;
-    var marginPages = this.props.marginPages;
+    const items = [];
+    const activePage = this.props.activePage;
+    const pageRange = this.props.pageRange;
+    const marginPages = this.props.marginPages;
+    let pages = this.props.pages;
+    let id, page, breakView;
+
     if (this.props.pages <= pageRange) {
       for (var i=1; i <= pages; i++) {
         id = 'page-'+i;
@@ -122,10 +123,11 @@ class Paginate extends Component{
   }
 
 	setRecordCount(props) {
-		var count = props.count;
-		var max = props.max;
-		var page = props.activePage;
-		var range2, range1 = 1;
+		const count = props.count;
+		const max = props.max;
+		const page = props.activePage;
+		let range2 = 1;
+		let range1 = 1;
 		if (max < count) {
 			range2 = max;
 		} else {

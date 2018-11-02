@@ -56,6 +56,20 @@ a:hover {
 }
 
 /*-------- Button --------*/
+button {
+	background: transparent;
+	box-shadow: none;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  @include default-transition(.5s);
+}
+
+button:focus {
+	outline:0;
+}
 
 button.link {
   background: none;
@@ -65,12 +79,10 @@ button.link {
   margin: 0;
   font-family: $font-family;
   font-size: $normal-text-size;
-  cursor: pointer;
 }
 
 button.link:hover {
   color: transparentize($primary, .3);
-  @include default-transition(.5s);
 }
 
 button.button {
@@ -92,11 +104,6 @@ button.button {
 
 button.button:hover {
   background-color: $secondary;
-  @include default-transition(.5s);
-}
-
-button:focus {
-	outline:0;
 }
 
 button.button:disabled {

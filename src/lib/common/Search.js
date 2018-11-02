@@ -19,8 +19,8 @@ class Search extends Component {
   }
 
 	componentDidMount() {
-		var bindthis = this;
-		var input = document.getElementById("search");
+		const bindthis = this;
+		const input = document.getElementById("search");
 		input.addEventListener("keyup", function(e) {
 			e.preventDefault();
 			if (e.keyCode === 13) {
@@ -33,28 +33,29 @@ class Search extends Component {
   }
 
   getSearch(value) {
-    var resource = this.props.resource;
+    const resource = this.props.resource;
+    let endpoint = resource.endpoint;
 
-    var endpoint = resource.endpoint;
 		if (resource.search.page > 1) endpoint = endpoint.replace('page='+resource.search.page, 'page=1');
     if (resource.search.query) endpoint = endpoint.split('&q')[0];;
-		endpoint = value ? endpoint + '&q=' + value : endpoint;
-    var search = Object.assign(resource.search, {query: value, page: 1});
+
+    endpoint = value ? endpoint + '&q=' + value : endpoint;
+    const search = Object.assign({}, resource.search, { query: value, page: 1 });
 		this.props.getAPI(this.props.name, endpoint, search, null, true);
   }
 
   onSearch(e) {
-    var value = this.state.searchValue;
+    const value = this.state.searchValue;
     this.getSearch(value);
   }
 
   onChange(e) {
-    this.setState({searchValue: e.currentTarget.value});
+    this.setState({ searchValue: e.currentTarget.value });
   }
 
   resetSearch() {
     this.getSearch('');
-    this.setState({searchValue: ''});
+    this.setState({ searchValue: '' });
   }
 
   setOptions() {
@@ -89,8 +90,8 @@ class Search extends Component {
       searchValue
     } = this.state;
 
-    let searchName = name + 'Search';
-    let defaultPlaceholder = 'Search';
+    const searchName = name + 'Search';
+    const defaultPlaceholder = 'Search';
 
     return (
       <div style={style} className={`search ${align}`}>
@@ -119,7 +120,7 @@ Search.defaultProps = {
 }
 
 function mapStateToProps(state, props) {
-	let resource = state.resource[props.name] ? state.resource[props.name] : {};
+	const resource = state.resource[props.name] ? state.resource[props.name] : {};
   let query;
   if (!util.isLoading(resource)) {
     query = has(resource.search, 'query') ? resource.search.query : ''
