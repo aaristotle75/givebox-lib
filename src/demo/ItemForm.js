@@ -37,7 +37,7 @@ class ItemForm extends Component {
       if (value.autoReturn) data[key] = value.value;
     });
     this.props.sendResource(
-      'orgCustomer',
+      'bankAccount',
       {
         id: ['org', this.props.id],
         method: 'patch',
@@ -61,12 +61,11 @@ class ItemForm extends Component {
 
     return (
       <div>
-        <h2>Customer Form</h2>
-        {this.props.textField('cusID', {type: 'hidden', value: data.ID})}
-        {this.props.textField('firstName', {placeholder: 'Enter First Name', required: true, value: data.firstName})}
-        {this.props.textField('lastName', {placeholder: 'Enter Last Name', required: true, value: data.lastName})}
-        {this.props.textField('email', {placeholder: 'Enter Email', required: true, value: data.email})}
-        {this.props.textField('notes', {placeholder: 'Enter Notes', maxLength: 255, value: data.notes})}
+        <h2>Form {this.props.id}</h2>
+        {this.props.textField('bankAccountID', {type: 'hidden', value: data.ID})}
+        {this.props.textField('name', {placeholder: 'Enter Account Name', required: true, value: data.name})}
+        {this.props.textField('last4', {placeholder: 'Account Number', required: true, value: data.last4})}
+        {this.props.textField('routingNumber', {placeholder: 'Routing Number', required: true, value: data.routingNumber, maxLength: 9})}
         {this.props.saveButton(this.processForm)}
       </div>
     )

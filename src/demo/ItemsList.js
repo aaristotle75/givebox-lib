@@ -15,24 +15,25 @@ class ItemsList extends Component {
   }
 
   formatTableData(data, match) {
-    let fdata = {};
-    let headers = [];
-    let rows = [];
+    const fdata = {};
+    const headers = [];
+    const rows = [];
     //let footer = [];
 
     headers.push(
       { name: 'Since', width: '10%', sort: 'createdAt' },
-      { name: 'First Name', width: '15%', sort: 'firstName' },
-      { name: 'Last Name', width: '15%', sort: 'lastName' },
-      { name: 'Email', width: '30%', sort: 'email' },
+      { name: 'Account Name', width: '30%', sort: 'name' },
+      { name: 'Account Number', width: '15%', sort: 'last4' },
+      { name: 'Routing #', width: '15%', sort: 'routingNumber' },
       { name: '', width: '10%', sort: '' }
     );
     fdata.headers = headers;
 
     if (!util.isEmpty(data)) {
       data.forEach(function(value, key) {
-        let createdAt = util.getDate(value.createdAt, 'MM/DD/YYYY');
-        rows.push([createdAt, value.firstName, value.lastName, value.email ? value.email : 'n/a', <ActionsMenu match={match} id={value.ID} />]);
+        const createdAt = util.getDate(value.createdAt, 'MM/DD/YYYY');
+        const accountNumber = `xxxxxxx${value.last4}`;
+        rows.push([createdAt, value.name, accountNumber, value.routingNumber, <ActionsMenu match={match} id={value.ID} />]);
       });
     }
     fdata.rows = rows;
@@ -57,7 +58,7 @@ class ItemsList extends Component {
 
     return (
       <div>
-        {this.props.isFetching && this.props.loader(`Loading Customers data`)}
+        {this.props.isFetching && this.props.loader(`Loading data`)}
         <Table name={listResource} data={() => this.formatTableData(list, routeProps.match)} />
       </div>
     )
@@ -65,12 +66,12 @@ class ItemsList extends Component {
 }
 
 ItemsList.defaultProps = {
-  listResource: 'orgCustomers'
+  listResource: 'bankAccounts'
 }
 
 function mapStateToProps(state, props) {
   return {
-    list: state.resource.orgCustomers ? state.resource.orgCustomers.data : {},
+    list: state.resource.bankAccounts ? state.resource.bankAccounts.data : {},
     isFetching: state.resource.isFetching
   }
 }

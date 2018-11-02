@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import { Link } from "react-router-dom";
-import { Form } from "../lib";
-import ItemForm from "./ItemForm";
-import { AppContext } from "../App";
+import { Link } from 'react-router-dom';
+import { Form } from '../lib';
+import ItemForm from './ItemForm';
+import { AppContext } from '../App';
 
 export default class Item extends Component {
 
@@ -21,7 +21,7 @@ export default class Item extends Component {
       case 'edit': {
         return (
           <Form
-            name="orgCustomer"
+            name='bankAccount'
           >
             <ItemForm id={match.params.itemID} {...this.props} />
           </Form>
@@ -51,7 +51,7 @@ export default class Item extends Component {
       <div>
         {id !== 'new' &&
         <div>
-          <Link to={`/list/${id}`}>Details for customer {id}</Link>
+          <Link to={`/list/${id}`}>Details {id}</Link>
           <ul>
             <li><Link to={`/list/${id}/edit`}>Edit</Link></li>
             <li><Link to={`/list/${id}/delete`}>Delete</Link></li>

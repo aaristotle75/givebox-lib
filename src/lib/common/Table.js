@@ -177,7 +177,7 @@ Table.defaultProps = {
 
 function mapStateToProps(state, props) {
 
-	const resource = state.resource[props.name] ? state.resource[props.name] : {};
+  const resource = state.resource[props.name] ? state.resource[props.name] : {};
   let sort, order;
   if (!util.isLoading(resource)) {
     sort = has(resource.search, 'sort') ? resource.search.sort : '';
@@ -192,7 +192,7 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
-	getAPI
+  getAPI
 })(Table)
 
 

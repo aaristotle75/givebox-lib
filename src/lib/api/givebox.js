@@ -31,6 +31,14 @@ export const endpoint = function getAPIEndpoint(resource, id = []) {
       endpoint = `orgs/${id[0]}/customers/${id[1]}`;
       break;
     }
+    case 'bankAccounts': {
+      endpoint = `orgs/${id[0]}/bank-accounts`;
+      break;
+    }
+    case 'bankAccount': {
+      endpoint = `orgs/${id[0]}/bank-accounts/${id[1]}`;
+      break;
+    }
 
     // no default
   }
