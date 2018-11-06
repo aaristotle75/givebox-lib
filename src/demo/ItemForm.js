@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { getResource, sendResource, util } from '../lib';
+import { getResource, sendResource, util, removeResource } from '../lib';
 
 class ItemForm extends Component {
 
@@ -11,7 +11,11 @@ class ItemForm extends Component {
   }
 
   componentDidMount() {
-    this.props.getResource(this.props.name, {id: ['org', this.props.id]});
+    if (this.props.id !== 'new') {
+      this.props.getResource(this.props.name, {id: [this.props.id]});
+    } else {
+      this.props.removeResource(this.props.name);
+    }
   }
 
   componentWillUnmount() {
@@ -39,7 +43,7 @@ class ItemForm extends Component {
     this.props.sendResource(
       'bankAccount',
       {
-        id: ['org', this.props.id],
+        id: [this.props.id],
         method: 'patch',
         data: data,
         callback: this.processCallback.bind(this)
@@ -62,10 +66,11 @@ class ItemForm extends Component {
     return (
       <div>
         <h2>Form {this.props.id}</h2>
-        {this.props.textField('bankAccountID', {type: 'hidden', value: data.ID})}
-        {this.props.textField('name', {placeholder: 'Enter Account Name', required: true, value: data.name})}
-        {this.props.textField('last4', {placeholder: 'Account Number', required: true, value: data.last4})}
-        {this.props.textField('routingNumber', {placeholder: 'Routing Number', required: true, value: data.routingNumber, maxLength: 9})}
+        {this.props.textField('bankAccountID', {type: 'hidden', value: util.getValue(data, 'ID')})}
+        {this.props.dropdown('kind', {options: [{primaryText: 'Deposit Account', value: 'deposit'}, {primaryText: 'Vendor Account', value: 'payee'}], value: util.getValue(data, 'kind'), defaultLabel: 'Select Account'})}
+        {this.props.textField('name', {placeholder: 'Enter Account Name', required: true, value: util.getValue(data, 'name')})}
+        {this.props.textField('number', {placeholder: 'Account Number', required: true, value: util.getValue(data, 'last4')})}
+        {this.props.textField('routingNumber', {placeholder: 'Routing Number', required: true, value: util.getValue(data, 'routingNumber'), maxLength: 9})}
         {this.props.saveButton(this.processForm)}
       </div>
     )
@@ -78,8 +83,8 @@ function mapStateToProps(state, props) {
   }
 }
 
-
 export default connect(mapStateToProps, {
   getResource,
-  sendResource
+  sendResource,
+  removeResource
 })(ItemForm)

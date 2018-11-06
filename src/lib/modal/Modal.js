@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import * as Effect from './ModalEffect';
-import { cloneObj, isEmpty } from './utility';
+import { cloneObj, isEmpty } from '../common/utility';
 const prefix = require('react-prefixr');
 
 const defaultOverlayStyle = {};
@@ -146,14 +146,15 @@ class Modal extends Component {
     } = this.props;
 
     let transition = effect.transition;
+
     if (!transition) {
       transition = defaultTransition;
     } else {
-      transition = { ...defaultTransition,transition };
+      transition = { ...defaultTransition, ...transition };
     }
 
     const transition_style = {
-      transition: `${transition.property} ${(transition.duration/1000)}s ${transition.timiingfunction}`
+      transition: `${transition.property} ${(transition.duration/1000)}s ${transition.timingfunction}`
     }
 
 
@@ -189,7 +190,7 @@ class Modal extends Component {
           >
           <div
             className={`modalContent`}
-            style={prefix({ ...contentStyle, ...transition_style, openEffect })}
+            style={prefix({ ...contentStyle, ...transition_style, ...openEffect })}
             onClick={stopPropagation}
           >
             {this.renderChildren()}

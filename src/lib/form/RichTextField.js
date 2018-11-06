@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import RichTextEditor from './RichTextEditor';
-import ModalRoute from '../common/ModalRoute';
-import ModalLink from '../common/ModalLink';
+import { ModalRoute, ModalLink } from '../';
 
 class ContentField extends Component {
 

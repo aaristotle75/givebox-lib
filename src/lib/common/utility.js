@@ -386,6 +386,7 @@ export function makeAPIQuery(obj) {
 *   and if id doesn't match and isFetching show loading
 */
 export function isLoading(resource, id = null) {
+  if (id === 'new') return false;
   let loading = false;
   if (!resource) {
     loading = true;
@@ -428,4 +429,10 @@ export function isEmpty(value){
           (typeof value === 'object' && Object.keys(value).length === 0) ||
           (typeof value === 'string' && value.trim().length === 0) ||
           value.length === 0
+}
+
+export function getValue(obj, prop) {
+  if (isEmpty(obj)) return '';
+  if (has(obj, prop)) return obj[prop];
+  else return '';
 }

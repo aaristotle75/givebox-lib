@@ -48,6 +48,7 @@ p { margin: 1.67em 0; font-size: $normal-text-size; font-weight: $font-weight; }
 a {
   color: $primary;
   cursor: pointer;
+  text-decoration: none;
 }
 
 a:hover {
@@ -113,6 +114,14 @@ button.button:disabled {
 
 button.button:hover:disabled {
   background-color: transparentize($primary, .5);
+}
+
+button.button.secondary {
+  background-color: $light-med-gray;
+}
+
+button.button.secondary:hover {
+  background-color: transparentize($light-med-gray, .5);
 }
 
 /*------- Lists ----------*/

@@ -48,7 +48,7 @@ class Dropdown extends Component {
       value: value,
       selected: selected
     });
-    this.props.onChangeDropdown(this.props.name, value);
+    this.props.onChange(this.props.name, value);
   }
 
   setSelected(selected) {

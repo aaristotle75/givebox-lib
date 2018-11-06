@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
-import { Form } from '../lib';
+import { Form, ModalRoute, ModalLink } from '../lib';
 import ItemForm from './ItemForm';
 import { AppContext } from '../App';
 
@@ -27,9 +27,6 @@ export default class Item extends Component {
           </Form>
         )
       }
-      case 'delete': {
-        return ( <Delete match={match} /> )
-      }
       case 'history': {
         return ( <History match={match} /> )
       }
@@ -42,11 +39,12 @@ export default class Item extends Component {
   render() {
 
     const {
-      routeProps
+      routeProps,
+      loadComponent
     } = this.props;
 
-    let id = routeProps.match.params.itemID;
-
+    const id = routeProps.match.params.itemID;
+    const modalID = `bankaccount-delete-${id}`;
     return (
       <div>
         {id !== 'new' &&
@@ -54,7 +52,10 @@ export default class Item extends Component {
           <Link to={`/list/${id}`}>Details {id}</Link>
           <ul>
             <li><Link to={`/list/${id}/edit`}>Edit</Link></li>
-            <li><Link to={`/list/${id}/delete`}>Delete</Link></li>
+            <li>
+              <ModalRoute  id={modalID} component={() => loadComponent('modal/lib/common/Delete', { useProjectRoot: false, props: { id, resource: 'bankAccount', desc: `Bank account ${id}`, modalID: modalID, history: routeProps.history, redirect: '/list' } })} effect='3DFlipVert' style={{ width: '50%' }} />
+              <ModalLink id={modalID}>Delete</ModalLink>
+            </li>
             <li><Link to={`/list/${id}/history`}>View History</Link></li>
           </ul>
         </div>
@@ -63,12 +64,6 @@ export default class Item extends Component {
       </div>
     )
   }
-}
-
-const Delete = ({ match }) => {
-  return (
-    <div>Delete {match.params.itemID}</div>
-  );
 }
 
 const History = ({ match }) => {

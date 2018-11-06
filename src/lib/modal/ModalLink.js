@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { toggleModal } from '../redux/actions';
+import { toggleModal } from '../api/actions';
 import { GBLink } from '../';
 
 class ModalLink extends Component {

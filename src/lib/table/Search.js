@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { util, TextField } from '../';
-import { getAPI } from '../redux/actions';
+import { getAPI } from '../api/actions';
 import has from 'has';
 
 class Search extends Component {

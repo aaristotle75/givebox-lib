@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { util } from '../';
-import { getAPI } from '../redux/actions';
+import { getAPI } from '../api/actions';
 
 class Paginate extends Component{
 	constructor(props){

@@ -7,8 +7,8 @@ import RichTextField from './RichTextField';
 import CreditCard from './CreditCard';
 import * as _v from './formValidate';
 import Loader from '../common/Loader';
-import { Alert } from '../common/Alerts';
-import { cloneObj } from '../common/utility';
+import { Alert } from '../common/Alert';
+import { cloneObj, isEmpty } from '../common/utility';
 import has from 'has';
 
 class Form extends Component {
@@ -270,7 +270,7 @@ class Form extends Component {
         required={field ? field.required : params.required}
         group={field ? field.group : params.group}
         readOnly={field ? field.readOnly : params.readOnly}
-        onChangeDropdown={this.onChangeDropdown}
+        onChange={this.onChangeDropdown}
         defaultValue={params.value}
         selectLabel={params.selectLabel}
         label={params.label}
@@ -417,16 +417,52 @@ class Form extends Component {
     return error;
   }
 
+  /**
+  * Get Errors returned from the API
+  * @param {object} err Error response returned
+  *
+  * TODO: get this cleaned up on the API side to have consistent responses
+  */
   getErrors(err) {
-    let errors;
-    if (err) {
-      if (has(err, 'errors')) {
-        errors = err.errors;
-        this.formProp({error: `Error saving: ${errors[0].message}`});
-        if (has(this.state.fields, errors[0].field)) this.fieldProp(errors[0].field, {error: `The following error occurred while saving, ${errors[0].message}`});
+    let error = false;
+    if (has(err, 'response')) {
+      // Make sure the err has response prop before continuing
+
+      if (has(err.response, 'data')) {
+        // Make sure the response has data prop before continuing
+
+        // Handle single error
+        if (has(err.response.data, 'message')) {
+          if (err.response.data.code === 'vantiv_payfac' && this.props.hideVantivErrors) {
+            // Show the hideVantivErrors message
+            this.formProp({ error: `${this.props.hideVantivErrors}` });
+            error = this.props.hideVantivErrors;
+          } else {
+            this.formProp({ error: `${err.response.data.message}` });
+            error = err.response.data.message;
+          }
+        }
+
+        if (has(err.response.data, 'errors')) {
+          // Handle multiple errors
+          const errors = err.response.data.errors;
+          for (let i=0; i <= errors.length; i++) {
+            if (!isEmpty(errors[i])) {
+              if (has(errors[i], 'field')) {
+                if (has(this.state.fields, errors[i].field)) {
+                  this.fieldProp(errors[i].field, { error: `The following error occurred while saving, ${errors[i].message}` });
+                }
+              }
+              if (has(errors[i], 'message')) {
+                error = i === 0 ? errors[0].message : `${error}, ${errors[i].message}`;
+              }
+            }
+          }
+          this.formProp({ error: `Error saving: ${error}` });
+        }
       }
     }
-    return errors;
+    return error;
   }
 
   formSaved(callback, timeout = 2500) {
@@ -574,7 +610,8 @@ class Form extends Component {
 
 Form.defaultProps = {
   errorMsg: true,
-  successMsg: true
+  successMsg: true,
+  hideVantivErrors: false
 }
 
 function mapStateToProps(state, props) {

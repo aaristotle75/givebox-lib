@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { util, Select } from '../';
-import { getAPI } from '../redux/actions';
+import { getAPI } from '../api/actions';
 import has from 'has';
 
 class MaxRecords extends Component {

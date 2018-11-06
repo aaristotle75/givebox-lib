@@ -27,7 +27,7 @@ class CalendarField extends Component {
   onChange(selectedDates, dateStr, instance) {
     let dateFormat = this.props.enableTime ? 'MM/DD/YYYY H:mm' : 'MM/DD/YYYY';
     var ts = Moment(dateStr, dateFormat).valueOf();
-    if (this.props.onChangeCalendar) this.props.onChangeCalendar(ts);
+    if (this.props.onChangeCalendar) this.props.onChangeCalendar(ts, dateStr, dateFormat);
   }
 
   render() {
@@ -52,6 +52,7 @@ class CalendarField extends Component {
     const dateFormat = enableTime ? 'm/d/Y H:i' : 'm/d/Y';
     const labelStyle = util.cloneObj(customLabel);
 
+    console.log(date);
     return (
       <Flatpickr
         value={date}

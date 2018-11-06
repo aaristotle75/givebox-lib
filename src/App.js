@@ -89,7 +89,7 @@ class App extends Component {
 
   initResources() {
     // Get the org
-    this.props.getResource('org', {id: ['org']});
+    this.props.getResource('org');
   }
 
   loader(msg) {
@@ -138,6 +138,7 @@ class App extends Component {
           loader={this.loader}
           routeProps={options.routeProps}
           mobile={this.state.mobile}
+          loadComponent={this.loadComponent}
         />
       </div>
     )
