@@ -12,7 +12,6 @@ class Export extends Component {
     super(props);
     this.setOptions = this.setOptions.bind(this);
     this.onChange = this.onChange.bind(this);
-    this.cancel = this.cancel.bind(this);
     this.onChangeRange1 = this.onChangeRange1.bind(this);
     this.onChangeRange2 = this.onChangeRange2.bind(this);
     this.state = {
@@ -26,10 +25,6 @@ class Export extends Component {
 
   componentDidMount() {
     this.makeLink();
-  }
-
-  cancel() {
-    this.props.toggleModal(this.props.id, false);
   }
 
   onChange(name, value) {
@@ -102,7 +97,6 @@ class Export extends Component {
         </div>
         <div className='row'>
           <div className='button-group'>
-            <button className="button secondary" type="button" onClick={this.cancel}>Cancel</button>
             <a href={this.state.link} rel='noopener noreferrer' target='_blank' className="button">Download Report</a>
           </div>
         </div>

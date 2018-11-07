@@ -32,7 +32,6 @@ class Dropdown extends Component {
     e.stopPropagation();
     this.setState({open: true});
     document.addEventListener('click', this.closeMenu);
-    console.log('openMenu');
   }
 
   closeMenu() {

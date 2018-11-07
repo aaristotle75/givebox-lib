@@ -10,7 +10,6 @@ class Delete extends Component {
     super(props);
     this.confirm = this.confirm.bind(this);
     this.confirmCallback = this.confirmCallback.bind(this);
-    this.cancel = this.cancel.bind(this);
     this.state = {
       success: ''
     }
@@ -42,10 +41,6 @@ class Delete extends Component {
       });
   }
 
-  cancel() {
-    this.props.toggleModal(this.props.modalID, false);
-  }
-
   render() {
 
     const {
@@ -57,8 +52,7 @@ class Delete extends Component {
         <Alert alert='success' msg={this.state.success} />
         <h3>You are about to delete<br /> {desc}</h3>
         <div className='button-group'>
-          <button className="button secondary" type="button" onClick={this.cancel}>Cancel</button>
-          <button className="button" type="button" onClick={this.confirm}>Delete</button>
+          <button className="button" type="button" onClick={this.confirm}>Confirm Delete</button>
         </div>
       </div>
     )
