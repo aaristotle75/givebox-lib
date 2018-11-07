@@ -79,12 +79,12 @@ a.button:hover {
   background-color: $secondary;
 }
 
-a.button:disabled {
+a.button.disabled {
   cursor: not-allowed;
   background-color: transparentize($primary, .5);
 }
 
-a.button:hover:disabled {
+a.button:hover.disabled {
   background-color: transparentize($primary, .5);
 }
 

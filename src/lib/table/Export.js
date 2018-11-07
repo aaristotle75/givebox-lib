@@ -14,6 +14,7 @@ class Export extends Component {
     this.onChange = this.onChange.bind(this);
     this.onChangeRange1 = this.onChangeRange1.bind(this);
     this.onChangeRange2 = this.onChangeRange2.bind(this);
+    this.onClick = this.onClick.bind(this);
     this.state = {
       link: null,
       error: '',
@@ -50,6 +51,11 @@ class Export extends Component {
   makeLink(range1, range2, all = true) {
     const range1utc = Moment.unix(range1 || this.state.range1).startOf('day').unix();
     const range2utc = Moment.unix(range2 || this.state.range2).endOf('day').unix();
+    if (range1utc > range2utc && !all) {
+      this.setState({ error: `Please enter a valid date range.` });
+    } else {
+      if (this.state.error) this.setState({ error: '' });
+    }
     let filter = '';
     if (!all) {
       filter = `createdAt:>d${range1utc}%3BcreatedAt:<d${range2utc}`;
@@ -62,6 +68,10 @@ class Export extends Component {
       range2: range2 || this.state.range2,
       link
     })
+  }
+
+  onClick() {
+    window.open(this.state.link, '_blank');
   }
 
   render() {
@@ -97,7 +107,7 @@ class Export extends Component {
         </div>
         <div className='row'>
           <div className='button-group'>
-            <a href={this.state.link} rel='noopener noreferrer' target='_blank' className="button">Download Report</a>
+            <button onClick={this.onClick} className={`button`} disabled={!!this.state.error}>Download Report</button>
           </div>
         </div>
       </div>
