@@ -5,23 +5,27 @@ import Export from './Export';
 
 export default class ExportLink extends Component {
 
-  renderExport() {
+  renderExport(desc, name, id) {
     return (
-      <Export />
+      <Export desc={desc} name={name} id={id} />
     )
   }
 
   render() {
 
     const {
+      desc,
       style,
-      align
+      align,
+      name
     } = this.props;
+
+    const id = `exportRecords-${name}`;
 
     return (
       <div style={style} className={`exportRecordsLink ${align}`}>
-        <ModalRoute id='exportRecords' component={() => this.renderExport()} effect='superScaled' style={{minHeight: 200}}  />
-        <ModalLink id='exportRecords'>Export Report <span className='icon icon-download'></span></ModalLink>
+        <ModalRoute id={id} component={() => this.renderExport(desc, name, id)} effect='superScaled' style={{ minHeight: 200 }}  />
+        <ModalLink id={id}>Export Report <span className='icon icon-download'></span></ModalLink>
       </div>
     );
   }

@@ -31,12 +31,13 @@ class Dropdown extends Component {
   openMenu(e) {
     e.stopPropagation();
     this.setState({open: true});
-    window.addEventListener('click', this.closeMenu);
+    document.addEventListener('click', this.closeMenu);
+    console.log('openMenu');
   }
 
   closeMenu() {
     this.setState({open: false });
-    window.removeEventListener('click', this.closeMenu);
+    document.removeEventListener('click', this.closeMenu);
   }
 
   onClick(e) {

@@ -31,10 +31,12 @@ export default class CalendarRange extends Component {
       labelFrom,
       enableTime,
       range1Value,
-      range2Value
+      range2Value,
+      range1Error,
+      range2Error
     } = this.props;
 
-    const dateFormat = enableTime ? 'm/d/Y H:i' : 'm/d/Y';
+    const dateFormat = enableTime ? 'MM/DD/YYYY H:mm' : 'MM/DD/YYYY';
 
     return (
       <div style={style} className={`dateRange`}>
@@ -42,7 +44,7 @@ export default class CalendarRange extends Component {
           <CalendarField
             enableTime={enableTime}
             label={labelFrom || 'From'}
-            error={'Please tell us a valid date (mm/dd/yyyy) or use the calendar to choose a date.'}
+            error={range1Error}
             name={nameFrom}
             defaultValue={Moment.unix(range1Value).format(dateFormat)}
             onChangeCalendar={this.onChangeRange1}
@@ -52,6 +54,7 @@ export default class CalendarRange extends Component {
           <CalendarField
             enableTime={enableTime}
             label={labelTo || 'To'}
+            error={range2Error}
             name={nameTo}
             defaultValue={Moment.unix(range2Value).format(dateFormat)}
             onChangeCalendar={this.onChangeRange2}

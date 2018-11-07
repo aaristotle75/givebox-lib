@@ -5,8 +5,6 @@ import { Alert, Dropdown } from '../';
 import { getResource } from '../api/helpers';
 import { toggleModal } from '../api/actions';
 import Moment from 'moment';
-const browser = require('detect-browser');
-const browserName = browser.name;
 
 class Export extends Component {
 
@@ -14,84 +12,80 @@ class Export extends Component {
     super(props);
     this.setOptions = this.setOptions.bind(this);
     this.onChange = this.onChange.bind(this);
-    this.confirm = this.confirm.bind(this);
     this.cancel = this.cancel.bind(this);
     this.onChangeRange1 = this.onChangeRange1.bind(this);
     this.onChangeRange2 = this.onChangeRange2.bind(this);
     this.state = {
       link: null,
-      error: 'Please fix errors to continue',
+      error: '',
       all: true,
-      range1: Moment().subtract(3, 'months').unix(),
+      range1: Moment().subtract(3, 'month').unix(),
       range2: Moment().unix()
     }
   }
 
   componentDidMount() {
-    const link = this.props.getResource('orgCustomers', { csv: true });
-    this.setState({ link });
-  }
-
-  confirm() {
-    const endpoint = this.props.getResource('orgCustomers', { csv: true });
-    console.log('confirm', endpoint);
+    this.makeLink();
   }
 
   cancel() {
-    this.props.toggleModal('exportRecords', false);
+    this.props.toggleModal(this.props.id, false);
   }
 
   onChange(name, value) {
-    console.log(name, value);
-    this.setState({ all: value === 'all' ? true : false });
+    this.makeLink(null, null, value === 'all' ? true : false);
   }
 
   onChangeRange1(ts) {
-    console.log('onChangeRange1', ts);
-    this.setState({ range1: ts });
+    this.makeLink(ts/1000, null, false);
   }
 
   onChangeRange2(ts) {
-    console.log('onChangeRange2', ts);
-    this.setState({ range2: ts });
+    this.makeLink(null, ts/1000, false);
   }
 
   setOptions() {
     var items = [
-      { primaryText: 'All Transactions', value: 'all' },
+      { primaryText: 'All Records', value: 'all' },
       { primaryText: 'Specific date range', value: 'daterange' }
     ];
     return items;
   }
 
-  makeLink() {
+  makeLink(range1, range2, all = true) {
+    const range1utc = Moment.unix(range1 || this.state.range1).startOf('day').unix();
+    const range2utc = Moment.unix(range2 || this.state.range2).endOf('day').unix();
     let filter = '';
-    if (!this.state.all) {
-      filter = 'createdAt:>d'+this.state.range1+'%3BcreatedAt:<d'+this.state.range2;
+    if (!all) {
+      filter = `createdAt:>d${range1utc}%3BcreatedAt:<d${range2utc}`;
     }
-    return this.props.getResource('orgCustomers', { csv: true, search: { filter } });
+    const link = this.props.getResource(this.props.name, { csv: true, search: { filter, max: 100000000 } });
+
+    this.setState({
+      all: all,
+      range1: range1 || this.state.range1,
+      range2: range2 || this.state.range2,
+      link
+    })
   }
 
   render() {
 
     const {
-      style
+      style,
+      desc
     } = this.props;
-
-    console.log(this.state.range1, this.state.range2);
 
     return (
       <div id='exportRecords' style={style} className={`exportRecords`}>
         <Alert alert='error' msg={this.state.error} />
         <div className='row'>
+          <h3>{desc}</h3>
           <div className='col center' style={{ width: '50%' }}>
             <Dropdown options={this.setOptions()} defaultValue={'all'} onChange={this.onChange} />
           </div>
         </div>
         <div className={`row ${this.state.all && 'displayNone'}`}>
-          <div className='col'>
-            <label className='side'>Date</label>
-          </div>
           <div className='col'>
             <CalendarRange
               enableTime={false}
@@ -109,7 +103,7 @@ class Export extends Component {
         <div className='row'>
           <div className='button-group'>
             <button className="button secondary" type="button" onClick={this.cancel}>Cancel</button>
-            <a href={this.state.link} className="button">Download Report</a>
+            <a href={this.state.link} rel='noopener noreferrer' target='_blank' className="button">Download Report</a>
           </div>
         </div>
       </div>

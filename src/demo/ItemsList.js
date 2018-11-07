@@ -77,7 +77,11 @@ class ItemsList extends Component {
       <div>
         {this.props.isFetching && this.props.loader(`Loading data`)}
         <Link to="/list/new/add">New Item</Link>
-        <Table name={resourceName} data={() => this.formatTableData()} />
+        <Table
+          name={resourceName}
+          data={() => this.formatTableData()}
+          exportDesc='Export Bank Account Records'
+        />
       </div>
     )
   }

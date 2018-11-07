@@ -45,6 +45,8 @@ p { margin: 1.67em 0; font-size: $normal-text-size; font-weight: $font-weight; }
 	display: none !important;
 }
 
+/*-------- Links ------------*/
+
 a {
   color: $primary;
   cursor: pointer;
@@ -54,6 +56,36 @@ a {
 a:hover {
   color: $secondary;
   @include default-transition(.5s);
+}
+
+a.button {
+  font-size: 12px;
+  letter-spacing: .5px;
+  font-family: $font-family;
+  color: $white;
+  display: inline-block;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px 10px 20px;
+  line-height: 17px;
+  text-transform: none;
+  background-color: $primary;
+  cursor: pointer;
+  font-weight: 500;
+  @include box-shadow(0px 1px 2px 0px rgba(0,0,0,0.55));
+}
+
+a.button:hover {
+  background-color: $secondary;
+}
+
+a.button:disabled {
+  cursor: not-allowed;
+  background-color: transparentize($primary, .5);
+}
+
+a.button:hover:disabled {
+  background-color: transparentize($primary, .5);
 }
 
 /*-------- Button --------*/
@@ -99,7 +131,7 @@ button.button {
   text-transform: none;
   background-color: $primary;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 500;
   @include box-shadow(0px 1px 2px 0px rgba(0,0,0,0.55));
 }
 
@@ -117,11 +149,12 @@ button.button:hover:disabled {
 }
 
 button.button.secondary {
-  background-color: $light-med-gray;
+  background-color: $off-white;
+  color: $light-med-gray;
 }
 
 button.button.secondary:hover {
-  background-color: transparentize($light-med-gray, .5);
+  background-color: transparentize($light-gray, .5);
 }
 
 /*------- Lists ----------*/

@@ -52,7 +52,6 @@ class CalendarField extends Component {
     const dateFormat = enableTime ? 'm/d/Y H:i' : 'm/d/Y';
     const labelStyle = util.cloneObj(customLabel);
 
-    console.log(date);
     return (
       <Flatpickr
         value={date}
@@ -68,7 +67,7 @@ class CalendarField extends Component {
         }}
       >
         <div className='flatpickr'>
-          <label className='top' style={labelStyle} >{label}</label>
+          <label style={labelStyle} >{label}</label>
           <div className={`input-group ${this.props.error && 'error tooltip'}`}>
             <input
               name={name}

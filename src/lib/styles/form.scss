@@ -57,6 +57,7 @@ input:not(.checkbox) {
 label, .label {
   color: $med-gray;
   vertical-align: middle;
+  text-align: left;
 }
 
 /*------------- Rich Text ----------*/
@@ -217,7 +218,7 @@ label, .label {
     z-index: 1;
     animation-name: slideIn;
     animation-duration: 1s;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
     margin-bottom: 20px;
   }

@@ -118,6 +118,7 @@ class Table extends Component {
       <ExportLink
         name={this.props.name}
         align={this.props.exportAlign}
+        desc={this.props.exportDesc}
       />
     );
   }
@@ -126,14 +127,10 @@ class Table extends Component {
 
     const {
       className,
-      searchAbove,
-      searchBelow,
-      exportAbove,
-      exportBelow,
-      maxRecordsAbove,
-      maxRecordsBelow,
-      paginationAbove,
-      paginationBelow,
+      searchDisplay,
+      exportDisplay,
+      maxRecordsDisplay,
+      paginationDisplay,
       data,
       sort,
       order
@@ -146,33 +143,29 @@ class Table extends Component {
 
     return (
       <div className={className}>
-        {searchAbove && this.renderSearch()}
-        {exportAbove && this.renderExport()}
-        {maxRecordsAbove && this.renderMaxRecords()}
-        {paginationAbove && this.renderPagination()}
+        {(searchDisplay === 'top' || searchDisplay === 'both') && this.renderSearch()}
+        {(exportDisplay === 'top' || exportDisplay === 'both') &&  this.renderExport()}
+        {(maxRecordsDisplay === 'top' || maxRecordsDisplay === 'both') && this.renderMaxRecords()}
+        {(paginationDisplay === 'top' || paginationDisplay === 'both') && this.renderPagination()}
         <table style={this.props.tableStyle}>
           <TableHead headers={headers} sortColumn={this.sortColumn} sort={sort} order={order} />
           <TableBody rows={rows} length={headers.length} />
           <TableFoot footer={footer} />
         </table>
-        {searchBelow && this.renderSearch()}
-        {exportBelow && this.renderExport()}
-        {maxRecordsBelow && this.renderMaxRecords()}
-        {paginationBelow && this.renderPagination()}
+        {(searchDisplay === 'bottom' || searchDisplay === 'both') && this.renderSearch()}
+        {(exportDisplay === 'bottom' || exportDisplay === 'both') &&  this.renderExport()}
+        {(maxRecordsDisplay === 'bottom' || maxRecordsDisplay === 'both') && this.renderMaxRecords()}
+        {(paginationDisplay === 'bottom' || paginationDisplay === 'both') && this.renderPagination()}
       </div>
     )
   }
 }
 
 Table.defaultProps = {
-  searchAbove: true,
-  searchBelow: false,
-  paginationAbove: true,
-  paginationBelow: true,
-  maxRecordsAbove: true,
-  maxRecordsBelow: true,
-  exportAbove: true,
-  exportBelow: false
+  searchDisplay: 'top',
+  exportDisplay: 'top',
+  maxRecordsDisplay: 'top',
+  paginationDisplay: 'bottom'
 }
 
 function mapStateToProps(state, props) {
