@@ -15,7 +15,7 @@ class Routes extends Component {
       org
     } = this.props;
 
-    if (util.isLoading(session) || util.isLoading(org)) {
+    if (util.isLoading(session) || util.isLoading(org, true)) {
       return this.props.loader('Trying to load initial resources: session and org');
     }
 
