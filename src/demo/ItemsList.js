@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getResource, reloadResource, util, Table, ModalRoute, ModalLink } from '../lib';
+import { getResource, reloadResource, util, Table, ModalRoute, ModalLink, ActionsMenu } from '../lib';
 
 class ItemsList extends Component {
 
@@ -18,7 +18,8 @@ class ItemsList extends Component {
     const {
       data,
       routeProps,
-      loadComponent
+      loadComponent,
+      resourceName
     } = this.props;
 
     const fdata = {};
@@ -40,6 +41,20 @@ class ItemsList extends Component {
       data.forEach(function(value, key) {
         const createdAt = util.getDate(value.createdAt, 'MM/DD/YYYY');
         const accountNumber = `xxxxxxx${value.last4}`;
+
+        // Actions Menu Options
+        const modalID = `${resourceName}-delete-${value.ID}`;
+        const desc= `Bank account ${value.name} (xxxxxx${value.last4})`;
+        const options = [];
+        options.push(<Link to={`${routeProps.match.url}/${value.ID}/edit`}>Edit</Link>);
+        options.push(
+          <div>
+            <ModalRoute  id={modalID} component={() => loadComponent('modal/lib/common/Delete', { useProjectRoot: false, props: { id: value.ID, resource: resourceName, desc: desc, modalID: modalID, match: routeProps.match } })} effect='3DFlipVert' style={{ width: '50%' }} />
+            <ModalLink id={modalID}>Delete</ModalLink>
+          </div>
+        );
+        options.push(<Link to={`${routeProps.match.url}/${value.ID}/detail`}>Detail</Link>);
+
         rows.push([
           createdAt,
           value.name,
@@ -47,10 +62,7 @@ class ItemsList extends Component {
           value.routingNumber,
           value.kind,
           <ActionsMenu
-            loadComponent={loadComponent}
-            match={routeProps.match}
-            id={value.ID}
-            desc={`Bank account ${value.name} (xxxxxx${value.last4})`}
+            options={options}
           />
         ]);
       });
@@ -88,12 +100,13 @@ class ItemsList extends Component {
 }
 
 ItemsList.defaultProps = {
-  resourceName: 'bankAccounts'
+  resourceName: 'orgBankAccounts'
 }
 
 function mapStateToProps(state, props) {
+
   return {
-    data: state.resource.bankAccounts ? state.resource.bankAccounts.data : {},
+    data: state.resource.orgBankAccounts ? state.resource.orgBankAccounts.data : {},
     isFetching: state.resource.isFetching
   }
 }
@@ -102,27 +115,3 @@ export default connect(mapStateToProps, {
   getResource,
   reloadResource
 })(ItemsList);
-
-
-const ActionsMenu = (props) => {
-
-  const {
-    match,
-    id,
-    loadComponent,
-    desc
-  } = props;
-
-  const modalID = `bankaccount-delete-${id}`;
-
-  return (
-    <ul>
-      <li><Link to={`${match.url}/${id}/edit`}>Edit</Link></li>
-      <li>
-        <ModalRoute  id={modalID} component={() => loadComponent('modal/lib/common/Delete', { useProjectRoot: false, props: { id, resource: 'bankAccount', desc: desc, modalID: modalID, match: match } })} effect='3DFlipVert' style={{ width: '50%' }} />
-        <ModalLink id={modalID}>Delete</ModalLink>
-      </li>
-      <li><Link to={`${match.url}/${id}/detail`}>Detail</Link></li>
-    </ul>
-  )
-};

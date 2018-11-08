@@ -12,7 +12,7 @@ th {
   font-weight: 500;
   background: $white;
   font-size: $small-text-size;
-  padding: 15px 5px;
+  padding: 15px 15px 15px 5px;
 }
 
 th.sort:hover {
@@ -20,6 +20,14 @@ th.sort:hover {
   color: $white;
   background: transparentize($primary, 0.4);
   @include default-transition(.5s);
+}
+
+th.sort .icon {
+  position: absolute;
+  top: 15px;
+  right: 2px;
+  bottom: 0;
+  font-size: $small-text-size;
 }
 
 th-grip {
@@ -34,8 +42,12 @@ tr:nth-child(even) {
   background: $off-white;
 }
 
+.altRow {
+  background: $off-white;
+}
+
 tr:hover {
-  background: $light-gray;
+  background: transparentize($primary, 0.4);
   @include default-transition(.5s);
 }
 
@@ -110,4 +122,123 @@ td {
   .row {
     margin: 10px 0;
   }
+}
+
+/*----------- Column Specific -----------*/
+.description {
+
+  .line {
+    padding: 3px 0;
+    display: block;
+  }
+
+}
+
+tr.detailsRow {
+
+  background: $light-gray;
+  padding: 0;
+  margin: 0;
+
+  td {
+    padding: 0;
+    margin: 0;
+  }
+
+}
+
+.details {
+  padding: 10px 20px 20px 20px;
+}
+
+.detailsTitle {
+  width: 100%;
+  border-bottom: 1px solid $light-med-gray;
+  padding: 5px 20px 10px 20px;
+  margin-bottom: 10px;
+}
+
+.detailsContent {
+  width: 100%;
+  padding: 15px 20px 10px 20px;
+}
+
+/*----------- Table Buttons ----------*/
+table button .icon {
+  font-size: $large-text-size;
+  background: transparent;
+}
+
+
+/*------------ Actions Menu -----------*/
+.actionsMenu {
+
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  clear: both;
+
+  .icon {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    bottom: 0;
+    color: $med-gray;
+    font-size: $small-text-size;
+  }
+
+  button.menuLabel {
+    background: $white;
+    color: $med-gray;
+    padding: 5px;
+    font-family: $font-family;
+    font-size: $small-text-size;
+    font-weight: $font-weight;
+    letter-spacing: 0;
+    border-radius: 2px;
+    border: none;
+    cursor: pointer;
+    @include box-shadow(0px 1px 2px 0px rgba(0,0,0,0.2));
+    width: 100%;
+    text-align: left;
+    margin: 0;
+  }
+
+  button.menuLabel:disabled {
+    color: transparentize($med-gray, 0.4);
+  }
+
+  button.menuLabel:disabled .icon {
+    color: transparentize($med-gray, 0.4);
+  }
+
+  .actionsMenu-content {
+    display: block;
+    position: absolute;
+    background-color: $off-white;
+    min-width: 75px;
+    width: 100%;
+    max-height: 300px;
+    @include box-shadow(0px 4px 8px 0px rgba(0,0,0,0.2));
+    z-index: 1;
+    animation-name: slideIn;
+    animation-duration: 1s;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-bottom: 20px;
+  }
+
+  .actionsMenu-item {
+    padding: 10px 5px;
+    display: block;
+    width: auto;
+    color: $dark;
+    font-size: $small-text-size;
+  }
+
+  .actionsMenu-item:hover {
+    //background: transparentize($primary, 0.4);
+  }
+
+  .actionsMenu-item.selected { color: $primary; }
 }

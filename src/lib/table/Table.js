@@ -7,6 +7,7 @@ import NoRecords from './NoRecords';
 import ExportLink from './ExportLink';
 import { util } from '../';
 import { getAPI } from '../api/actions';
+import AnimateHeight from 'react-animate-height';
 import has from 'has';
 
 class Table extends Component {
@@ -149,7 +150,7 @@ class Table extends Component {
         {(paginationDisplay === 'top' || paginationDisplay === 'both') && this.renderPagination()}
         <table style={this.props.tableStyle}>
           <TableHead headers={headers} sortColumn={this.sortColumn} sort={sort} order={order} />
-          <TableBody rows={rows} length={headers.length} />
+          <TableBody rows={rows} length={headers.length} detailsLink={this.detailsLink} />
           <TableFoot footer={footer} />
         </table>
         {(searchDisplay === 'bottom' || searchDisplay === 'both') && this.renderSearch()}
@@ -194,10 +195,14 @@ const TableHead = ({ headers, sortColumn, sort, order }) => {
   const asc = <span className='icon icon-triangle-up'></span>;
   const items = [];
   if (!util.isEmpty(headers)) {
-    Object.keys(headers).forEach(function(key) {
-      items.push(
-        <th onClick={() => sortColumn(headers[key].sort)} className={`${headers[key].sort && 'sort'}`} align={headers[key].align || 'left'} style={{width: headers[key].width}} key={key}>{headers[key].name} {sort === headers[key].sort ? order === 'desc' ? desc : asc : ''}</th>
-      );
+    Object.entries(headers).forEach(([key, value]) => {
+      if (value.name === '*details') {
+        items.push(<th key={key} style={{width: value.width}}></th>);
+      } else {
+        items.push(
+          <th onClick={() => sortColumn(value.sort)} className={`${value.sort && 'sort'}`} align={value.align || 'left'} style={{width: value.width}} key={key}>{value.name} {sort === value.sort ? order === 'desc' ? desc : asc : ''}</th>
+        );
+      }
     });
   }
   return (
@@ -209,27 +214,90 @@ const TableHead = ({ headers, sortColumn, sort, order }) => {
   );
 }
 
-const TableBody = ({ rows, length }) => {
-  const items = [];
-  if (!util.isEmpty(rows)) {
-    Object.entries(rows).forEach(([key, value]) => {
-      let td = [];
-      value.forEach((value, key) => {
-        td.push(<td key={key}>{value}</td>);
-      });
-      let tr = <tr key={key}>{td}</tr>;
-      items.push(tr);
-    });
-  } else {
-    items.push(
-      <tr key={0}><td colSpan={length || 1} align='center'><NoRecords /></td></tr>
-    );
+class TableBody extends Component {
+
+  constructor(props) {
+    super(props);
+    this.renderItems = this.renderItems.bind(this);
+    this.detailsLink = this.detailsLink.bind(this);
+    this.state = {
+      details: []
+    }
   }
-  return (
-    <tbody>
-      {items}
-    </tbody>
-  );
+
+  detailsLink(ref) {
+    const current = ref.current;
+    const selected = current.id;
+    const details = this.state.details;
+    const index = details.findIndex(function(el) {
+      return el === selected;
+    });
+    if (index === -1) details.push(selected);
+    else details.splice(index, 1);
+    this.setState({ ...this.state, ...details });
+  }
+
+  renderItems() {
+    const {
+      rows,
+      length
+    } = this.props;
+
+    const bindthis = this;
+    const items = [];
+
+    if (!util.isEmpty(rows)) {
+      Object.entries(rows).forEach(([key, value]) => {
+        const td = [];
+        const id = `${key}-${value.createdAt}-details`;
+        const details = [];
+        const length = value.length;
+        value.forEach((value, key) => {
+          if (!has(value, 'details')) {
+            td.push(<td key={key}>{value}</td>);
+          } else {
+            const ref = React.createRef();
+            const link = <button id={id} onClick={() => bindthis.detailsLink(ref)} className='link'><span className={`icon ${bindthis.state.details.includes(id) ? 'icon-minus-circle-fill' : 'icon-plus-circle-fill'}`}></span></button>;
+            td.push(<td key={key}>{link}</td>);
+            details.push(
+              <tr ref={ref} className={`detailsRow`} id={id} key={id}>
+                <td colSpan={length}>
+                  <AnimateHeight
+                    duration={500}
+                    height={bindthis.state.details.includes(id) ? 'auto' : 0}
+                  >
+                    <div className="details" style={{paddingRight: has(value, 'width') ? value.width : '', paddingLeft: has(value, 'width') ? value.width : 0}}>
+                      <div className="detailsTitle">Details</div>
+                      <div className="detailsContent">{value.details}</div>
+                    </div>
+                  </AnimateHeight>
+                </td>
+              </tr>
+            );
+          }
+        });
+        let tr = <tr className={`${key%2===0 ? '' : 'altRow'}`} key={key}>{td}</tr>;
+        items.push(tr);
+        if (!util.isEmpty(details)) items.push(details);
+
+      });
+    } else {
+      items.push(
+        <tr key={0}><td colSpan={length || 1} align='center'><NoRecords /></td></tr>
+      );
+    }
+
+    return items;
+  }
+
+  render() {
+    return (
+      <tbody>
+        {this.renderItems()}
+      </tbody>
+    )
+  }
+
 }
 
 const TableFoot = ({ footer }) => {

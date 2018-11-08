@@ -41,12 +41,16 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       endpoint = `orgs/${orgID}/customers/${id[0]}`;
       break;
     }
-    case 'bankAccounts': {
+    case 'orgBankAccounts': {
       endpoint = `orgs/${orgID}/bank-accounts`;
       break;
     }
-    case 'bankAccount': {
+    case 'orgBankAccount': {
       endpoint = `orgs/${orgID}/bank-accounts/${id[0]}`;
+      break;
+    }
+    case 'orgTransactions': {
+      endpoint = `orgs/${orgID}/transactions`;
       break;
     }
 

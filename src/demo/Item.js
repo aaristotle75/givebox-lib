@@ -21,7 +21,7 @@ export default class Item extends Component {
       case 'edit': {
         return (
           <Form
-            name='bankAccount'
+            name={this.props.resourceName}
           >
             <ItemForm id={match.params.itemID} {...this.props} />
           </Form>
@@ -39,12 +39,13 @@ export default class Item extends Component {
   render() {
 
     const {
+      resourceName,
       routeProps,
       loadComponent
     } = this.props;
 
     const id = routeProps.match.params.itemID;
-    const modalID = `bankaccount-delete-${id}`;
+    const modalID = `${resourceName}-delete-${id}`;
     return (
       <div>
         {id !== 'new' &&
@@ -53,7 +54,7 @@ export default class Item extends Component {
           <ul>
             <li><Link to={`/list/${id}/edit`}>Edit</Link></li>
             <li>
-              <ModalRoute  id={modalID} component={() => loadComponent('modal/lib/common/Delete', { useProjectRoot: false, props: { id, resource: 'bankAccount', desc: `Bank account ${id}`, modalID: modalID, history: routeProps.history, redirect: '/list' } })} effect='3DFlipVert' style={{ width: '50%' }} />
+              <ModalRoute  id={modalID} component={() => loadComponent('modal/lib/common/Delete', { useProjectRoot: false, props: { id, resource: resourceName, desc: `Bank account ${id}`, modalID: modalID, history: routeProps.history, redirect: '/list' } })} effect='3DFlipVert' style={{ width: '50%' }} />
               <ModalLink id={modalID}>Delete</ModalLink>
             </li>
             <li><Link to={`/list/${id}/history`}>View History</Link></li>
@@ -64,6 +65,10 @@ export default class Item extends Component {
       </div>
     )
   }
+}
+
+Item.defaultProps = {
+  resourceName: 'orgBankAccount'
 }
 
 const History = ({ match }) => {

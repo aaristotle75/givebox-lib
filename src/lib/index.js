@@ -8,6 +8,7 @@ import * as selectOptions from './form/selectOptions';
 import ModalLink from './modal/ModalLink';
 import ModalRoute from './modal/ModalRoute';
 
+import ActionsMenu from './table/ActionsMenu';
 import Search from './table/Search';
 import Table from './table/Table';
 import MaxRecords from './table/MaxRecords';
@@ -75,6 +76,7 @@ export {
   ModalRoute,
 
   // Table
+  ActionsMenu,
   Search,
   Table,
   MaxRecords,

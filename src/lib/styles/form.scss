@@ -184,10 +184,11 @@ label, .label {
 
   .icon {
     position: absolute;
-    top: 5px;
+    top: 8px;
     right: 10px;
     bottom: 0;
     color: $med-gray;
+    font-size: $small-text-size;
   }
 
   button {
@@ -236,16 +237,6 @@ label, .label {
   }
 
   .dropdown-item.selected { color: $primary; }
-}
-
-.dropdown-open {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: transparent;
-  overflow: hidden;
 }
 
 /*----------- Errors ------------*/

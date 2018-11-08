@@ -1,3 +1,4 @@
+import React from 'react';
 import Moment from 'moment';
 import has from 'has';
 
@@ -173,16 +174,6 @@ export function createCSV(arr, name) {
   return data;
 }
 
-export function calcAmountDonated(amount, fee, passFees, gross = false) {
-  if (passFees) {
-    if (gross) return parseFloat((amount/100)+(fee/100)).toFixed(2);
-    else return parseFloat(amount/100).toFixed(2);
-  } else {
-    if (gross) return parseFloat(amount/100).toFixed(2);
-    else return parseFloat((amount/100)-(fee/100)).toFixed(2);
-  }
-}
-
 export function setCookie(cname, cvalue, exdays) {
     var d = new Date();
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
@@ -303,6 +294,20 @@ export function encodeDataURI(imageUrl, callback) {
     callback(data);
   }
   xhr.send();
+}
+
+export function calcAmount(amount, fee, passFees, gross = false) {
+  if (passFees) {
+    if (gross) return parseFloat((amount/100)+(fee/100)).toFixed(2);
+    else return parseFloat(amount/100).toFixed(2);
+  } else {
+    if (gross) return parseFloat(amount/100).toFixed(2);
+    else return parseFloat((amount/100)-(fee/100)).toFixed(2);
+  }
+}
+
+export function money(amount, symbol = '$') {
+  return <span className='moneyAmount'><span className='symbol'>{symbol}</span>{numberWithCommas(amount)}</span>;
 }
 
 export function formatMoneyForAPI(amount) {

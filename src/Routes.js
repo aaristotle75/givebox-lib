@@ -41,6 +41,7 @@ class Routes extends Component {
                         <Route exact path='/list/:itemID' render={(props) => loadComponent('demo/Item', {routeProps: props})} />
                         <Route exact path={`/list/:itemID/:action`} render={(props) => loadComponent('demo/Item', {routeProps: props})} />
                         <Route path='/charts' render={(props) => loadComponent('demo/Charts')}  />
+                        <Route exact path='/transactions' render={(props) => loadComponent('demo/Transactions', {routeProps: props})}  />                        
                         <Route path='/about' render={(props) => loadComponent('demo/About')}  />
                         <Route path='/contact' render={(props) => loadComponent('demo/Contact')}  />
                         <Route render={() => <div>Error</div>} />

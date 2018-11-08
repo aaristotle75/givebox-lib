@@ -41,7 +41,7 @@ class ItemForm extends Component {
       if (value.autoReturn) data[key] = value.value;
     });
     this.props.sendResource(
-      'bankAccount',
+      this.props.name,
       {
         id: [this.props.id],
         method: 'patch',
