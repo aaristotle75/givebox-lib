@@ -2,7 +2,12 @@ import Form from './form/Form';
 import Select from './form/Select';
 import Dropdown from './form/Dropdown';
 import TextField from './form/TextField';
-import * as formValidate from './form/formValidate';
+import RichTextField from './form/RichTextField';
+import Choice from './form/Choice';
+import CalendarField from './form/CalendarField';
+import CalendarRange from './form/CalendarRange';
+import Checkbox from './form/Checkbox';
+import * as _v from './form/formValidate';
 import * as selectOptions from './form/selectOptions';
 
 import ModalLink from './modal/ModalLink';
@@ -26,6 +31,8 @@ import Portal from './common/Portal';
 import * as types from './common/types';
 import * as util from './common/utility';
 
+import FeesGlossary from './glossary/Fees';
+
 import {
   toggleModal,
   removeResource,
@@ -47,11 +54,16 @@ import * as giveboxAPI from './api/givebox';
 export {
   // Form
   Form,
-  formValidate,
+  _v,
   selectOptions,
   Select,
   TextField,
   Dropdown,
+  RichTextField,
+  Choice,
+  CalendarField,
+  CalendarRange,
+  Checkbox,
 
   // actions
   toggleModal,
@@ -93,5 +105,8 @@ export {
   Loader,
   Portal,
   types,
-  util
+  util,
+
+  // Glossary
+  FeesGlossary
 };

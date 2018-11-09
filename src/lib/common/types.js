@@ -66,3 +66,21 @@ export function source(source) {
   }
   return str;
 }
+
+export function txAccount(txAccount) {
+  let str;
+  switch (txAccount) {
+    case 'donation': {
+      str = 'Charitable Donation';
+      break;
+    }
+
+    case 'commerce': {
+      str = 'Sales Transaction';
+      break;
+    }
+
+    // no default
+  }
+  return str;
+}

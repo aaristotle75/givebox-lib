@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import { util } from './lib';
+import { util, ModalRoute } from './lib';
 import Sidebar from './common/Sidebar';
 import Header from './common/Header';
 
@@ -21,6 +21,7 @@ class Routes extends Component {
 
     return (
       <div>
+        <ModalRoute  id='feesGlossary' component={() => loadComponent('modal/lib/glossary/Fees', {useProjectRoot: false})} effect='3DFlipVert' style={{ width: '50%' }} />
         <Router>
           <Route
             render={({ location }) => (
@@ -32,7 +33,7 @@ class Routes extends Component {
                 />
                 <Header />
                 <Sidebar />
-                <div className='contentContainer'>
+                <div id='contentContainer' className='contentContainer'>
                   <TransitionGroup>
                     <CSSTransition key={location.key} classNames='fade' timeout={300}>
                       <Switch location={location}>
@@ -41,7 +42,7 @@ class Routes extends Component {
                         <Route exact path='/list/:itemID' render={(props) => loadComponent('demo/Item', {routeProps: props})} />
                         <Route exact path={`/list/:itemID/:action`} render={(props) => loadComponent('demo/Item', {routeProps: props})} />
                         <Route path='/charts' render={(props) => loadComponent('demo/Charts')}  />
-                        <Route exact path='/transactions' render={(props) => loadComponent('demo/Transactions', {routeProps: props})}  />                        
+                        <Route exact path='/transactions' render={(props) => loadComponent('demo/Transactions', {routeProps: props})}  />
                         <Route path='/about' render={(props) => loadComponent('demo/About')}  />
                         <Route path='/contact' render={(props) => loadComponent('demo/Contact')}  />
                         <Route render={() => <div>Error</div>} />

@@ -178,6 +178,15 @@ export function clearRichTextIfShouldBeEmpty(value) {
   return value;
 }
 
+export function formatDate(value, time = false) {
+  const regex = time ? /(\d{0,2})(\d{0,2})(\d{0,4})(\d{0,2})(\d{0,2})/ : /(\d{0,2})(\d{0,2})(\d{0,4})/;
+  const x = value.replace(/\D/g, '').match(regex);
+  let str;
+  if (time) str = !x[2] ? x[1] : x[1] + '/' + x[2] + (x[3] ? '/' + x[3] : '') + (x[4] ? ' ' + x[4] : '') + (x[5] ? ':' + x[5] : '');
+  else str = !x[2] ? x[1] : x[1] + '/' + x[2] + (x[3] ? '/' + x[3] : '');
+  return str;
+}
+
 export const msgs = {
   required: 'Field is required.',
   email: 'Please enter a valid email address.',

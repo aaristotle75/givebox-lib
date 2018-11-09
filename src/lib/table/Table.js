@@ -5,6 +5,7 @@ import MaxRecords from './MaxRecords';
 import Search from './Search';
 import NoRecords from './NoRecords';
 import ExportLink from './ExportLink';
+import Filter from './Filter';
 import { util } from '../';
 import { getAPI } from '../api/actions';
 import AnimateHeight from 'react-animate-height';
@@ -134,7 +135,8 @@ class Table extends Component {
       paginationDisplay,
       data,
       sort,
-      order
+      order,
+      name
     } = this.props;
 
     const tableData = data();
@@ -146,6 +148,14 @@ class Table extends Component {
       <div className={className}>
         {(searchDisplay === 'top' || searchDisplay === 'both') && this.renderSearch()}
         {(exportDisplay === 'top' || exportDisplay === 'both') &&  this.renderExport()}
+        <Filter
+          name={name}
+          options={[
+            { field: 'calendarRange' },
+            { field: 'dropdown', name: 'test', options: [{primaryText: 'Test 1', value: 'test1'}, {primaryText: 'Test 2', value: 'test2'}, {primaryText: 'Test 3', value: 'test3'}, {primaryText: 'Test 4', value: 'test4'}], selectLabel: 'Select Test' },
+            { field: 'dropdown', name: 'duck', options: [{primaryText: 'Duck 1', value: 'duck1'}, {primaryText: 'Duck 2', value: 'duck2'}], selectLabel: 'Select Duck' }
+          ]}
+        />
         {(maxRecordsDisplay === 'top' || maxRecordsDisplay === 'both') && this.renderMaxRecords()}
         {(paginationDisplay === 'top' || paginationDisplay === 'both') && this.renderPagination()}
         <table style={this.props.tableStyle}>
@@ -249,13 +259,13 @@ class TableBody extends Component {
     if (!util.isEmpty(rows)) {
       Object.entries(rows).forEach(([key, value]) => {
         const td = [];
-        const id = `${key}-${value.createdAt}-details`;
         const details = [];
         const length = value.length;
+        const passkey = key;
         value.forEach((value, key) => {
-          if (!has(value, 'details')) {
-            td.push(<td key={key}>{value}</td>);
-          } else {
+          if (has(value, 'details')) {
+            if (!has(value, 'key')) console.error('Add a key property for proper handling');
+            const id = `${passkey}-${value.key}-details`;
             const ref = React.createRef();
             const link = <button id={id} onClick={() => bindthis.detailsLink(ref)} className='link'><span className={`icon ${bindthis.state.details.includes(id) ? 'icon-minus-circle-fill' : 'icon-plus-circle-fill'}`}></span></button>;
             td.push(<td key={key}>{link}</td>);
@@ -274,9 +284,11 @@ class TableBody extends Component {
                 </td>
               </tr>
             );
+          } else {
+            td.push(<td key={key}>{value}</td>);
           }
         });
-        let tr = <tr className={`${key%2===0 ? '' : 'altRow'}`} key={key}>{td}</tr>;
+        const tr = <tr className={`${key%2===0 ? '' : 'altRow'}`} key={key}>{td}</tr>;
         items.push(tr);
         if (!util.isEmpty(details)) items.push(details);
 

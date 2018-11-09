@@ -45,6 +45,10 @@ p { margin: 1.67em 0; font-size: $normal-text-size; font-weight: $font-weight; }
 	display: none !important;
 }
 
+.clear {
+  clear: both !important;
+}
+
 /*-------- Links ------------*/
 
 a {

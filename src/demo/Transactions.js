@@ -14,7 +14,7 @@ class Transactions extends Component {
   }
 
   /**
-  * Set Description and Details
+  * Set Description, Details, Credit and Debit Amounts
   * @param {string} txType credit or debit
   * @param {object} data
   */
@@ -22,24 +22,66 @@ class Transactions extends Component {
     const data = txData[txType];
     const item = {
       desc: [],
-      details: []
+      details: [],
+      debit: (0).toFixed(2),
+      credit: (0).toFixed(2)
     };
     switch (txType) {
       case 'credit': {
+        const amountText = txData.txAccount === 'donation' ? 'Donation' : 'Sale';
+        let feeText = data.passFees ? 'Customer paid bank fee' : `Bank fee deducted from ${amountText}`;
+        let status = data.state.toUpperCase();
+        let returnAmount;
+        item.credit = util.calcAmount(data.amount, data.fee, data.passFees);
+
+        switch (data.state) {
+          case 'refunded': {
+            feeText = data.freeRefund ? 'Transaction VOIDED and no fee debited' : 'Bank fee debited from available balance';
+            status = data.freeRefund ? 'VOIDED' : status;
+            item.debit = util.calcAmount(data.amount, data.fee, data.passFees, data.freeRefund ? false : true);
+            returnAmount = util.money(util.calcAmount(data.amount, data.fee, data.passFees, true));
+            break;
+          }
+
+          case 'chargeback': {
+            feeText = 'Bank fee debited from available balance';
+            item.debit = util.calcAmount(data.amount, data.fee, data.passFees, true);
+            returnAmount = util.money(util.calcAmount(data.amount, data.fee, data.passFees, true));
+            break;
+          }
+
+          // no default
+        }
+
         item.desc.push(
           <div key={`${txType}-${data.ID}`} className='description'>
-            <span className='line'>{data.cardName || `${data.cusFirstName} ${data.cusLastName}`}{data.cardType ? `, ${data.cardType.toUpperCase()} ${data.cardLast4} - ${data.state.toUpperCase()}` : ''}</span>
+            <span className='line'>{data.cardName || `${data.cusFirstName} ${data.cusLastName}`}{data.cardType ? `, ${data.cardType.toUpperCase()} ${data.cardLast4} ${data.state !== 'approved' ? ` - ${status}` : ''}` : ''}</span>
           </div>
         );
+
         let commerceDesc = '';
-        if (txData.txAccount === 'commerce') commerceDesc = `per, Qty ${data.articleUnitQuantity} x ${data.articleUnitDescription}`;
+        if (txData.txAccount === 'commerce') commerceDesc = `${data.articleUnitDescription ? `${data.articleUnitDescription} x ` : ''}Qty ${data.articleUnitQuantity}`;
         item.details.push(
           <div key={`${txType}-${data.ID}-details`} className='description'>
-            <span className='line'>Transaction ID: {data.transactionID}</span>
-            <span className='line'>{data.articleTitle.toUpperCase()}</span>
-            <span className='line'>{types.kind(data.articleKind).txName} from {types.source(data.sourceType)}</span>
-            <span className='line'>{data.cusEmail}</span>
-            {commerceDesc && <span className='line'>{util.money(parseFloat(data.articleUnitPrice/100).toFixed(2))} {commerceDesc}</span>}
+            <div className='leftCol'>
+              <span className='line'>ID: {data.transactionID}</span>
+              <span className='line'>Type: {types.txAccount(txData.txAccount)}</span>
+              <span className='line'>{data.articleTitle.toUpperCase()}</span>
+              <span className='line'>{types.kind(data.articleKind).txName} from {types.source(data.sourceType)}</span>
+              {commerceDesc && <span className='line'>{commerceDesc} @ {util.money(parseFloat(data.articleUnitPrice/100).toFixed(2))} each</span>}
+              <span className='line'>{data.cusEmail}</span>
+            </div>
+            <div className='rightCol'>
+              <span className='line'>Status: {status}</span>
+              <span className='line'>{data.cardType.toUpperCase()}</span>
+              {data.cardLast4 && <span className='line'>xxxxxxxxxxxx{data.cardLast4}</span>}
+              <span className='line'>{amountText}: {util.money(util.calcAmount(data.amount, data.fee, data.passFees))}</span>
+              <span className='line'><ModalLink id='feesGlossary'>Interchange/Bank Fee:</ModalLink> {util.money(parseFloat(data.fee/100).toFixed(2))}*</span>
+              <span className='line'>Processed: {util.money(util.calcAmount(data.amount, data.fee, data.passFees, true))}</span>
+              {returnAmount && <span className='line'>Returned: {returnAmount}</span>}
+              <span style={{marginTop: 5}} className='link smallText'>*{feeText}</span>
+            </div>
+            <div className='clear'></div>
           </div>
         );
         break;
@@ -51,16 +93,26 @@ class Transactions extends Component {
           case 'deposit': {
             item.desc.push(
               <div key={`${txType}-${data.ID}`} className='description'>
-                <span className='line'>{data.kind === 'deposit' ? 'WITHDRAWAL' : 'PAYMENT'} to xxxxxx{data.dstAccount.last4} - {data.status.toUpperCase()}</span>
+                <span className='line'>{data.kind === 'deposit' ? 'WITHDRAWAL' : 'PAYMENT'} to xxxxxx{data.dstAccount.last4} {data.status !== 'approved' ? `- ${data.status.toUpperCase()}` : ''}</span>
               </div>
             );
             item.details.push(
               <div key={`${txType}-${data.ID}-details`} className='description'>
-                <span className='line'>{data.dstAccount.name}</span>
-                <span className='line'>Account: xxxxxx{data.dstAccount.last4}</span>
-                <span className='line'>Routing: {data.dstAccount.routingNumber}</span>
+                <div className='leftCol'>
+                  <span className='line'>{data.dstAccount.name}</span>
+                  <span className='line'>Account: xxxxxx{data.dstAccount.last4}</span>
+                  <span className='line'>Routing: {data.dstAccount.routingNumber}</span>
+                </div>
+                <div className='rightCol'>
+                  <span className='line'>Status: {data.status.toUpperCase()}</span>
+                  <span className='line'>Request Amount: {util.money(parseFloat(data.amount/100).toFixed(2))}</span>
+                  <span className='line'>Amount Transferred: {util.money(parseFloat(data.status === 'approved' ? data.amount/100 : 0).toFixed(2))}</span>
+                  <span className='line'><ModalLink id='feesGlossary'>Interchange/Bank Fee:</ModalLink> {util.money(parseFloat(0).toFixed(2))}</span>
+                </div>
+                <div className='clear'></div>
               </div>
             );
+            if (data.status !== 'canceled' && data.status !== 'error') item.debit = parseFloat(data.amount/100).toFixed(2);
             break;
           }
 
@@ -72,9 +124,9 @@ class Transactions extends Component {
             );
             item.details.push(
               <div key={`${txType}-${data.ID}-details`} className='description'>
-                <span className='line'>Transaction ID: {data.transactionID}</span>
               </div>
             );
+            item.debit = parseFloat(data.amount/100).toFixed(2);
             break;
           }
 
@@ -97,7 +149,7 @@ class Transactions extends Component {
     const fdata = {};
     const headers = [];
     const rows = [];
-    //let footer = [];
+    //const footer = [];
 
     headers.push(
       { name: '*details', width: '5%', sort: '' },
@@ -125,11 +177,11 @@ class Transactions extends Component {
         }
 
         rows.push([
-          { details: desc.details, width: '6%' },
+          { details: desc.details, width: '6%', key: data.ID },
           createdAt,
           desc.desc,
-          value.txType === 'credit' ? util.money(util.calcAmount(data.amount, data.fee, data.passFees)) : '',
-          value.txType === 'debit' ? util.money(parseFloat(data.amount/100).toFixed(2)) : '',
+          desc.credit !== '0.00' || value.txType === 'credit' ? util.money(desc.credit) : '',
+          desc.debit !== '0.00' || value.txType === 'debit' ? util.money(desc.debit) : '',
           <ActionsMenu
             options={options}
           />

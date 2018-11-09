@@ -28,6 +28,10 @@ class Dropdown extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.closeMenu();
+  }
+
   openMenu(e) {
     e.stopPropagation();
     this.setState({open: true});

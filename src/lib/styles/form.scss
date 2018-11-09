@@ -4,8 +4,6 @@ form {
   padding: 10px 0;
 }
 
-form:not(.clean) .input-group { margin: 20px 0 0 0; }
-
 form button {
   margin: 20px 0 0 0;
 }
@@ -15,6 +13,10 @@ form button {
 }
 
 /*-------------- Input -----------------*/
+
+.input-group {
+  position: relative;
+}
 
 input {
   font-size: $normal-text-size;
@@ -38,15 +40,12 @@ input[type=text]::-ms-input-placeholder {
   color: $med-gray;
 }
 
-.input-group {
-  position: relative;
-}
-
 .input-button {
   position: absolute;
   top: 3px;
   right: 5px;
   bottom: 0;
+  margin: 0 !important;
 }
 
 input:not(.checkbox) {
@@ -216,7 +215,7 @@ label, .label {
     width: 100%;
     max-height: 300px;
     @include box-shadow(0px 4px 8px 0px rgba(0,0,0,0.2));
-    z-index: 1;
+    z-index: 10;
     animation-name: slideIn;
     animation-duration: 1s;
     overflow-y: auto;

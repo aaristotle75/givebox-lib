@@ -5,6 +5,7 @@ import Dropdown from './Dropdown';
 import Choice from './Choice';
 import RichTextField from './RichTextField';
 import CreditCard from './CreditCard';
+import CalendarField from './CalendarField';
 import * as _v from './formValidate';
 import Loader from '../common/Loader';
 import { Alert } from '../common/Alert';
@@ -26,6 +27,7 @@ class Form extends Component {
     this.onFocus = this.onFocus.bind(this);
     this.validateForm = this.validateForm.bind(this);
     this.validateField = this.validateField.bind(this);
+    this.calendarField = this.calendarField.bind(this);
     this.textField = this.textField.bind(this);
     this.dropdown = this.dropdown.bind(this);
     this.choice = this.choice.bind(this);
@@ -115,8 +117,11 @@ class Form extends Component {
     return;
   }
 
-  onChangeCalendar(ts) {
-    console.log('onChangeCalendar', ts);
+  onChangeCalendar(ts, name) {
+    const field = this.state.fields[name];
+    this.fieldProp(name, { value: ts, error: false });
+    this.formProp({ error: false, updated: true });
+    if (field.debug) console.log('onChange', name, field);
     return;
   }
 
@@ -214,14 +219,68 @@ class Form extends Component {
     return;
   }
 
-  choice(name, params) {
+  calendarField(name, opts) {
     const field = has(this.state.fields, name) ? this.state.fields[name] : null;
     const defaults = cloneObj(this.defaults);
-    params = Object.assign({}, defaults, {
+    const params = Object.assign({}, defaults, {
+      enableTime: false
+    }, opts);
+
+    return (
+      <CalendarField
+        name={name}
+        required={field ? field.required : params.required}
+        enableTime={field ? field.enableTime : params.enableTime}
+        group={field ? field.group : params.group}
+        readOnly={field ? field.readOnly : params.readOnly}
+        onChangeCalendar={this.onChangeCalendar}
+        defaultValue={params.value}
+        label={params.label}
+        style={params.style}
+        className={params.className}
+        error={field ? field.error : params.error }
+        errorType={params.errorType}
+        createField={this.createField}
+        params={params}
+      />
+    )
+  }
+
+  calendarRange(opts) {
+    const defaults = cloneObj(this.defaults);
+    const params = Object.assign({}, defaults, {
+      className: '',
+      enableTime: false,
+      range1Name: 'range1',
+      range1Label: 'Range 1',
+      range1Value: '',
+      range2Name: 'range2',
+      range2Label: 'Range 2',
+      range2Value: '',
+      colWidth: '45%'
+    }, opts);
+
+    return (
+      <div style={params.style} className={`dateRange`}>
+        <div style={{width: params.colWidth}} className='col'>
+          {this.calendarField(params.range1Name, { enableTime: params.enableTime, value: params.range1Value, label: params.range1Label, range: 'start', rangeEndField: params.range2Name, debug: params.debug })}
+        </div>
+        <div style={{width: params.colWidth}} className='col'>
+          {this.calendarField(params.range2Name, { enableTime: params.enableTime, value: params.range2Value, label: params.range2Label, range: 'end', rangeStartField: params.range1Name, debug: params.debug })}
+        </div>
+        <div className='clear'></div>
+      </div>
+    )
+  }
+
+  choice(name, opts) {
+    const field = has(this.state.fields, name) ? this.state.fields[name] : null;
+    const defaults = cloneObj(this.defaults);
+    const params = Object.assign({}, defaults, {
       type: 'checkbox',
       value: '',
       className: ''
-    }, params);
+    }, opts);
 
     let onChange, createField;
     switch (params.type) {
@@ -257,11 +316,11 @@ class Form extends Component {
     )
   }
 
-  dropdown(name, args) {
+  dropdown(name, opts) {
     const field = has(this.state.fields, name) ? this.state.fields[name] : null;
     const defaults = cloneObj(this.defaults);
     const params = Object.assign({}, defaults, {
-    }, args);
+    }, opts);
 
     return (
       <Dropdown
@@ -284,12 +343,12 @@ class Form extends Component {
     )
   }
 
-  textField(name, args) {
+  textField(name, opts) {
     const field = has(this.state.fields, name) ? this.state.fields[name] : null;
     const params = Object.assign({}, cloneObj(this.defaults), {
       className: '',
       type: 'text'
-    }, args);
+    }, opts);
 
     return (
       <TextField
@@ -316,14 +375,14 @@ class Form extends Component {
     )
   }
 
-  richText(name, params) {
-    let field = has(this.state.fields, name) ? this.state.fields[name] : null;
-    let defaultParams = cloneObj(this.defaults);
-    params = Object.assign({}, defaultParams, {
+  richText(name, opts) {
+    const field = has(this.state.fields, name) ? this.state.fields[name] : null;
+    const defaultParams = cloneObj(this.defaults);
+    const params = Object.assign({}, defaultParams, {
       className: '',
       type: 'richText',
       errorType: 'normal'
-    }, params);
+    }, opts);
 
     return (
       <RichTextField
@@ -349,17 +408,17 @@ class Form extends Component {
     )
   }
 
-  creditCard(name, params) {
-    let field = has(this.state.fields, name) ? this.state.fields[name] : null;
-    let defaultParams = cloneObj(this.defaults);
-    params = Object.assign({}, defaultParams, {
+  creditCard(name, opts) {
+    const field = has(this.state.fields, name) ? this.state.fields[name] : null;
+    const defaultParams = cloneObj(this.defaults);
+    const params = Object.assign({}, defaultParams, {
       className: '',
       type: 'text',
       cardType: 'noCardType',
       placeholder: 'xxxx xxxx xxxx xxxx',
       validate: 'creditcard',
       maxLength: 19
-    }, params);
+    }, opts);
 
     return (
       <CreditCard
@@ -388,14 +447,14 @@ class Form extends Component {
     )
   }
 
-  creditCardGroup(args) {
+  creditCardGroup(opts) {
     const defaults = cloneObj(this.defaults);
     const ccnumberField = has(this.state.fields, 'ccnumber') ? this.state.fields.ccnumber : null;
     const hideCardsAccepted = ccnumberField ? ccnumberField.cardType !== 'noCardType' ? true : false : false;
     const params = Object.assign({}, defaults, {
       className: '',
       required: true
-    }, args);
+    }, opts);
 
     return (
       <div className='creditCard-group'>
@@ -569,6 +628,8 @@ class Form extends Component {
         creditCardGroup: this.creditCardGroup,
         dropdown: this.dropdown,
         choice: this.choice,
+        calendarField: this.calendarField,
+        calendarRange: this.calendarRange,
         savingErrorMsg: _v.msgs.savingError,
         responseData: this.props.responseData,
         fieldError: this.fieldError,
