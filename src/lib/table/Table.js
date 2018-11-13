@@ -136,7 +136,8 @@ class Table extends Component {
       data,
       sort,
       order,
-      name
+      name,
+      filters
     } = this.props;
 
     const tableData = data();
@@ -148,14 +149,10 @@ class Table extends Component {
       <div className={className}>
         {(searchDisplay === 'top' || searchDisplay === 'both') && this.renderSearch()}
         {(exportDisplay === 'top' || exportDisplay === 'both') &&  this.renderExport()}
-        <Filter
+        {filters && <Filter
           name={name}
-          options={[
-            { field: 'calendarRange' },
-            { field: 'dropdown', name: 'test', options: [{primaryText: 'Test 1', value: 'test1'}, {primaryText: 'Test 2', value: 'test2'}, {primaryText: 'Test 3', value: 'test3'}, {primaryText: 'Test 4', value: 'test4'}], selectLabel: 'Select Test' },
-            { field: 'dropdown', name: 'duck', options: [{primaryText: 'Duck 1', value: 'duck1'}, {primaryText: 'Duck 2', value: 'duck2'}], selectLabel: 'Select Duck' }
-          ]}
-        />
+          options={filters}
+        />}
         {(maxRecordsDisplay === 'top' || maxRecordsDisplay === 'both') && this.renderMaxRecords()}
         {(paginationDisplay === 'top' || paginationDisplay === 'both') && this.renderPagination()}
         <table style={this.props.tableStyle}>

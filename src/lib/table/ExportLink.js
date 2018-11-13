@@ -24,7 +24,7 @@ export default class ExportLink extends Component {
 
     return (
       <div style={style} className={`exportRecordsLink ${align}`}>
-        <ModalRoute id={id} component={() => this.renderExport(desc, name, id)} effect='superScaled' style={{ minHeight: 200 }}  />
+        <ModalRoute id={id} component={() => this.renderExport(desc, name, id)} effect='scaleUp' style={{ minHeight: 200 }}  />
         <ModalLink id={id}>Export Report <span className='icon icon-download'></span></ModalLink>
       </div>
     );

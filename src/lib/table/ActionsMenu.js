@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { util } from '../';
+import AnimateHeight from 'react-animate-height';
 
 class ActionsMenu extends Component {
 
@@ -65,8 +66,13 @@ class ActionsMenu extends Component {
     return (
       <div className='actionsMenu' style={style}>
         <button disabled={!!util.isEmpty(this.props.options)} className='menuLabel' type='button' onClick={open ? this.closeMenu : this.openMenu}>{label}<span className='icon icon-triangle-down'></span></button>
-        <div className={`actionsMenu-content ${!open ? 'displayNone' : ''}`}>
-          {this.listOptions()}
+        <div className={`actionsMenu-content`}>
+          <AnimateHeight
+            duration={200}
+            height={open ? 'auto' : 0}
+          >
+              {this.listOptions()}
+          </AnimateHeight>
         </div>
       </div>
     );

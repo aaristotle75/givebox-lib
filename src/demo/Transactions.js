@@ -206,6 +206,45 @@ class Transactions extends Component {
       resourceName
     } = this.props;
 
+    const filters = [
+      { field: 'calendarRange', name: 'createdAt' },
+      {
+        field: 'dropdown',
+        name: 'txAccount',
+        options: [
+        {
+          primaryText: 'All Types',
+          value: 'all'
+        },
+        {
+          primaryText: 'Charitable Donations',
+          value: 'donation'
+        },
+        {
+          primaryText: 'Sales',
+          value: 'commerce'
+        }],
+        value: 'all'
+      },
+      {
+        field: 'dropdown',
+        name: 'txType',
+        options: [{
+          primaryText: 'All Transactions',
+          value: 'all'
+        },
+        {
+          primaryText: 'Deposits/Credits',
+          value: 'credit'
+        },
+        {
+          primaryText: 'Withdrawals/Debits',
+          value: 'debit'
+        }],
+        value: 'all'
+      }
+    ];
+
     return (
       <div>
         {this.props.isFetching && this.props.loader(`Loading data`)}
@@ -213,6 +252,7 @@ class Transactions extends Component {
           name={resourceName}
           data={() => this.formatTableData()}
           exportDesc='Export Transaction Records'
+          filters={filters}
         />
       </div>
     )

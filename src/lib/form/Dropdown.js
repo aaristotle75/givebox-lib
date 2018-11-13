@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { lookup, isEmpty } from '../common/utility';
+import AnimateHeight from 'react-animate-height';
 
 class Dropdown extends Component {
 
@@ -94,9 +95,14 @@ class Dropdown extends Component {
         {label && <label>{label}</label>}
         <div className='dropdown' style={style}>
           <button type='button' onClick={open ? this.closeMenu : this.openMenu}>{!selected ? <span className='label'>{selectLabel}</span> : selected}<span className='icon icon-triangle-down'></span></button>
-          <div className={`dropdown-content ${!open ? 'displayNone' : ''}`}>
-            {this.listOptions()}
-          </div>
+          <div className={`dropdown-content`}>
+            <AnimateHeight
+              duration={200}
+              height={open ? 'auto' : 0}
+            >
+                {this.listOptions()}
+            </AnimateHeight>
+          </div>          
         </div>
         <div className={`tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`}>
           {this.props.error}

@@ -246,7 +246,7 @@ class Form extends Component {
     )
   }
 
-  calendarRange(opts) {
+  calendarRange(name, opts) {
     const defaults = cloneObj(this.defaults);
     const params = Object.assign({}, defaults, {
       className: '',
@@ -263,10 +263,10 @@ class Form extends Component {
     return (
       <div style={params.style} className={`dateRange`}>
         <div style={{width: params.colWidth}} className='col'>
-          {this.calendarField(params.range1Name, { enableTime: params.enableTime, value: params.range1Value, label: params.range1Label, range: 'start', rangeEndField: params.range2Name, debug: params.debug })}
+          {this.calendarField(params.range1Name, { enableTime: params.enableTime, value: params.range1Value, label: params.range1Label, range: 'start', rangeEndField: params.range2Name, debug: params.debug, filter: name })}
         </div>
         <div style={{width: params.colWidth}} className='col'>
-          {this.calendarField(params.range2Name, { enableTime: params.enableTime, value: params.range2Value, label: params.range2Label, range: 'end', rangeStartField: params.range1Name, debug: params.debug })}
+          {this.calendarField(params.range2Name, { enableTime: params.enableTime, value: params.range2Value, label: params.range2Label, range: 'end', rangeStartField: params.range1Name, debug: params.debug, filter: name })}
         </div>
         <div className='clear'></div>
       </div>
