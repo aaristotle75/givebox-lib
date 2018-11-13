@@ -18,7 +18,7 @@ export default class Charts extends Component {
     return (
       <div>
         Charts
-        <ResponsiveContainer width='100%' minHeight={200} minWidth='480'>        
+        <ResponsiveContainer width='100%' minHeight={200} minWidth='480'>
           <AreaChart width={730} height={250} data={data}
             margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
             <defs>
