@@ -227,6 +227,17 @@ label, .label {
     width: auto;
     color: $dark;
     text-align: left;
+
+    .icon {
+      position: relative;
+      display: inline-block;
+      top: 0;
+      right: 0;
+      margin-left: 0;
+      margin-right: 5px;
+      color: $primary;
+      font-size: $normal-text-size;
+    }
   }
 
   .dropdown-item:hover {

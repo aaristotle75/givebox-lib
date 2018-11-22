@@ -20,6 +20,8 @@ import MaxRecords from './table/MaxRecords';
 import NoRecords from './table/NoRecords';
 import Paginate from './table/Paginate';
 import Export from './table/Export';
+import Filter from './table/Filter';
+import StatBlock from './table/StatBlock';
 
 import { Alert } from './common/Alert';
 import Delete from './common/Delete';
@@ -94,6 +96,8 @@ export {
   NoRecords,
   Paginate,
   Export,
+  Filter,
+  StatBlock,
 
   // common
   Alert,

@@ -19,29 +19,37 @@ class Filter extends Component {
 
   makeFilter(field) {
     let filter = '';
-    let value = field.value && field.value !== 'all' ? field.value : '';
-    if (value) {
-      if (field.range) {
-        switch (field.range) {
-          case 'start': {
-            value = Moment.unix(value).startOf('day').unix();
-            value = `>d${value}`;
-            break;
-          }
-          case 'end': {
-            value = Moment.unix(value).endOf('day').unix();
-            value = `<d${value}`;
-            break;
-          }
-
-          // no default
+    if (field.multi && Array.isArray(field.value)) {
+      let filters = '';
+      field.value.forEach(function(value) {
+        if (value && !field.value.includes('all')) {
+          filter = `${field.filter}:${isNaN(value) ? `"${value}"` : value}`;
         }
-      } else if (isNaN(value)) {
-        value = `"${value}"`;
-      }
-      filter = `${field.filter}:${value}`;
-    }
+        filters = filter ? !filters ? filter : `${filters}%2C${filter}` : filters;
+      });
+      filter = filters;
+    } else {
+      let value = field.value && field.value !== 'all' ? field.value : '';
+      if (value) {
+        if (field.range) {
+          switch (field.range) {
+            case 'start': {
+              value = Moment.unix(value).startOf('day').unix();
+              value = `>d${value}`;
+              break;
+            }
+            case 'end': {
+              value = Moment.unix(value).endOf('day').unix();
+              value = `<d${value}`;
+              break;
+            }
 
+            // no default
+          }
+        }
+        filter = `${field.filter}:${isNaN(value) ? `"${value}"` : value}`;
+      }
+    }
     return filter;
   }
 
@@ -56,11 +64,9 @@ class Filter extends Component {
   processForm(fields) {
     const bindthis = this;
     const resource = this.props.resource;
-    const data = {};
     let filters = '';
     Object.entries(fields).forEach(([key, value]) => {
       if (value.autoReturn) {
-        data[key] = value.value;
         let filter = bindthis.makeFilter(value);
         filters = filter ? !filters ? filter : `${filters}%3B${filter}` : filters;
       }
@@ -79,7 +85,17 @@ class Filter extends Component {
       }
 
       case 'dropdown': {
-        return <div key={key} className='col' style={{ width: '45%', margin: 5}}>{this.props.dropdown(value.name, { options: value.options, selectLabel: value.selectLabel, filter: value.name, value: value.value })}</div>;
+        return <div key={key} className='col' style={{ width: '45%', margin: 5}}>
+          {this.props.dropdown(
+            value.name, {
+              options: value.options,
+              selectLabel: value.selectLabel,
+              filter: value.name,
+              value: value.value,
+              multi: value.multi,
+              debug: value.debug
+          })}
+          </div>;
       }
 
       case 'filler': {

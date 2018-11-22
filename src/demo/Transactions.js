@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getResource, reloadResource, util, Table, ModalRoute, ModalLink, ActionsMenu, types } from '../lib';
+import { getResource, reloadResource, util, Table, ModalLink, StatBlock, ActionsMenu, types } from '../lib';
 
 class Transactions extends Component {
 
@@ -71,7 +71,7 @@ class Transactions extends Component {
               {commerceDesc && <span className='line'>{commerceDesc} @ {util.money(parseFloat(data.articleUnitPrice/100).toFixed(2))} each</span>}
               {data.cusFirstName && <span className='line'>{`${data.cusFirstName} ${data.cusLastName}`}</span>}
               <span className='line'>{data.cusEmail}</span>
-              {data.cardName && <span className='line'>Name on Card: {data.cardName}</span>}              
+              {data.cardName && <span className='line'>Name on Card: {data.cardName}</span>}
             </div>
             <div className='rightCol'>
               <span className='line'>Status: {status}</span>
@@ -151,7 +151,7 @@ class Transactions extends Component {
     const fdata = {};
     const headers = [];
     const rows = [];
-    //const footer = [];
+    const footer = [];
 
     headers.push(
       { name: '*details', width: '5%', sort: '' },
@@ -192,13 +192,14 @@ class Transactions extends Component {
     }
     fdata.rows = rows;
 
-    /*
     footer.push(
-      { name: <div style={{textAlign: 'right'}}>Totals</div>, colspan: 3 },
-      { name: '$1,123.42', colspan: 1}
+      { name: '', colspan: 1},
+      { name: <div style={{textAlign: 'left'}}>TOTALS</div>, colspan: 2 },
+      { name: <div>{util.money(1123.42)}</div>, colspan: 1},
+      { name: <div>{util.money(1123.42)}</div>, colspan: 1}
     );
     fdata.footer = footer;
-    */
+
     return fdata;
   }
 
@@ -261,7 +262,7 @@ class Transactions extends Component {
             value: 'approved'
           },
           {
-            primaryText: 'Refunded',
+            primaryText: 'Refunded/Voided',
             value: 'refunded'
           },
           {
@@ -279,6 +280,26 @@ class Transactions extends Component {
     return (
       <div>
         {this.props.isFetching && this.props.loader(`Loading data`)}
+        <StatBlock
+          label='left'
+          style={{
+            display: 'inline-block',
+            textAlign: 'center',
+            width: '50%',
+            height: 500,
+            background: 'red'
+          }}
+        />
+        <StatBlock
+          label='right'
+          style={{
+            display: 'inline-block',
+            textAlign: 'center',
+            width: '50%',
+            height: 500,
+            background: 'red'
+          }}
+        />
         <Table
           name={resourceName}
           data={() => this.formatTableData()}

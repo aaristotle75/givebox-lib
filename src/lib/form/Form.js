@@ -147,7 +147,20 @@ class Form extends Component {
 
   onChangeDropdown(name, value) {
     const field = this.state.fields[name];
-    this.fieldProp(name, {value: value, error: false});
+    const arr = [];
+    if (field.multi) {
+      if (Array.isArray(field.value)) {
+        arr.push(...field.value);
+      } else {
+        if (field.value) arr.push(field.value);
+      }
+      if (arr.includes(value)) {
+        arr.splice(arr.indexOf(value), 1);
+      } else {
+        arr.push(value);
+      }
+    }
+    this.fieldProp(name, {value: field.multi ? arr : value, error: false});
     this.formProp({error: false, updated: true});
     if (field.debug) console.log('onChangeDropdown', name, field);
   }
@@ -336,9 +349,11 @@ class Form extends Component {
         label={params.label}
         style={params.style}
         className={params.className}
-        error={field ? field.error : params.error }
+        error={field ? field.error : params.error}
         errorType={params.errorType}
         createField={this.createField}
+        multi={field ? field.multi : params.multi}
+        value={field ? field.value : ''}
         params={params}
       />
     )

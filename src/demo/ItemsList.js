@@ -92,7 +92,7 @@ class ItemsList extends Component {
         <Table
           name={resourceName}
           data={() => this.formatTableData()}
-          exportDesc='Export Bank Account Records'
+          exportDisplay='None'
         />
       </div>
     )

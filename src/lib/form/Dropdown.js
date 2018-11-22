@@ -36,7 +36,7 @@ class Dropdown extends Component {
   openMenu(e) {
     e.stopPropagation();
     this.setState({open: true});
-    document.addEventListener('click', this.closeMenu);
+    if (!this.props.multi) document.addEventListener('click', this.closeMenu);
   }
 
   closeMenu() {
@@ -48,8 +48,9 @@ class Dropdown extends Component {
     e.preventDefault();
     let value = e.currentTarget.getAttribute('data-value');
     let selected = e.currentTarget.getAttribute('data-selected');
+    const open = this.props.multi ? true : false;
     this.setState({
-      open: false,
+      open: open,
       value: value,
       selected: selected
     });
@@ -65,9 +66,9 @@ class Dropdown extends Component {
     var selectedValue = this.state.value;
     let items = [];
     this.props.options.forEach(function(value) {
-      let selected = selectedValue === value.value ? true : false;
+      let selected = bindthis.props.multi ? bindthis.props.value.includes(value.value) ? true : false : selectedValue === value.value ? true : false;
       items.push(
-        <div data-selected={value.primaryText} data-value={value.value} onClick={(e) => bindthis.onClick(e)} className={`dropdown-item ${selected ? 'selected' : ''}`} key={value.value}>{value.primaryText}</div>
+        <div data-selected={value.primaryText} data-value={value.value} onClick={(e) => bindthis.onClick(e)} className={`dropdown-item ${selected ? 'selected' : ''}`} key={value.value}>{bindthis.props.multi && selected && <span className='icon icon-checkmark'></span>} {value.primaryText}</div>
       );
     });
 
@@ -82,7 +83,8 @@ class Dropdown extends Component {
       style,
       selectLabel,
       error,
-      errorType
+      errorType,
+      multi
     } = this.props;
 
     const {
@@ -90,11 +92,13 @@ class Dropdown extends Component {
       selected
     } = this.state;
 
+    let selectedValue = multi ? open ? 'Close Menu' : selectLabel : selected || selectLabel;
+
     return (
       <div style={style} className={`input-group dropdown-group ${className || ''} ${error ? 'error tooltip' : ''}`}>
         {label && <label>{label}</label>}
         <div className='dropdown' style={style}>
-          <button type='button' onClick={open ? this.closeMenu : this.openMenu}>{!selected ? <span className='label'>{selectLabel}</span> : selected}<span className='icon icon-triangle-down'></span></button>
+          <button type='button' onClick={open ? this.closeMenu : this.openMenu}><span className='label'>{selectedValue}</span><span className={`icon ${open ? multi ? 'icon-close' : 'icon-triangle-down' : 'icon-triangle-right'}`}></span></button>
           <div className={`dropdown-content`}>
             <AnimateHeight
               duration={200}
@@ -102,7 +106,7 @@ class Dropdown extends Component {
             >
                 {this.listOptions()}
             </AnimateHeight>
-          </div>          
+          </div>
         </div>
         <div className={`tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`}>
           {this.props.error}
@@ -115,7 +119,9 @@ class Dropdown extends Component {
 }
 
 Dropdown.defaultProps = {
-  name: 'defaultSelect'
+  name: 'defaultSelect',
+  multi: false,
+  selectLabel: 'Please select'
 }
 
 export default Dropdown;
