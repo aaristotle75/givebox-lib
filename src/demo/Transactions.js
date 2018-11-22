@@ -69,7 +69,9 @@ class Transactions extends Component {
               <span className='line'>{data.articleTitle.toUpperCase()}</span>
               <span className='line'>{types.kind(data.articleKind).txName} from {types.source(data.sourceType)}</span>
               {commerceDesc && <span className='line'>{commerceDesc} @ {util.money(parseFloat(data.articleUnitPrice/100).toFixed(2))} each</span>}
+              {data.cusFirstName && <span className='line'>{`${data.cusFirstName} ${data.cusLastName}`}</span>}
               <span className='line'>{data.cusEmail}</span>
+              {data.cardName && <span className='line'>Name on Card: {data.cardName}</span>}              
             </div>
             <div className='rightCol'>
               <span className='line'>Status: {status}</span>
@@ -212,36 +214,65 @@ class Transactions extends Component {
         field: 'dropdown',
         name: 'txAccount',
         options: [
-        {
-          primaryText: 'All Types',
-          value: 'all'
-        },
-        {
-          primaryText: 'Charitable Donations',
-          value: 'donation'
-        },
-        {
-          primaryText: 'Sales',
-          value: 'commerce'
-        }],
+          {
+            primaryText: 'All Types',
+            value: 'all'
+          },
+          {
+            primaryText: 'Charitable Donations',
+            value: 'donation'
+          },
+          {
+            primaryText: 'Sales',
+            value: 'commerce'
+          }
+        ],
         value: 'all'
       },
       {
         field: 'dropdown',
         name: 'txType',
-        options: [{
-          primaryText: 'All Transactions',
-          value: 'all'
-        },
-        {
-          primaryText: 'Deposits/Credits',
-          value: 'credit'
-        },
-        {
-          primaryText: 'Withdrawals/Debits',
-          value: 'debit'
-        }],
+        options: [
+          {
+            primaryText: 'All Transactions',
+            value: 'all'
+          },
+          {
+            primaryText: 'Deposits/Credits',
+            value: 'credit'
+          },
+          {
+            primaryText: 'Withdrawals/Debits',
+            value: 'debit'
+          }
+        ],
         value: 'all'
+      },
+      {
+        field: 'dropdown',
+        name: 'state',
+        options: [
+          {
+            primaryText: 'All Status',
+            value: 'all'
+          },
+          {
+            primaryText: 'Approved',
+            value: 'approved'
+          },
+          {
+            primaryText: 'Refunded',
+            value: 'refunded'
+          },
+          {
+            primaryText: 'Chargeback',
+            value: 'chargeback'
+          }
+        ],
+        value: 'all'
+      },
+      {
+        field: 'filler'
       }
     ];
 

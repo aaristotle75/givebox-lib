@@ -114,15 +114,21 @@ class Form extends Component {
 
   formProp(args) {
     this.setState(Object.assign(this.state, args));
-    return;
   }
 
   onChangeCalendar(ts, name) {
     const field = this.state.fields[name];
-    this.fieldProp(name, { value: ts, error: false });
+    this.fieldProp(name, { value: ts/field.reduceTS, error: false });
     this.formProp({ error: false, updated: true });
+    if (has(field, 'rangeStartField')) {
+      let required = ts ? true : false;
+      this.fieldProp(field.rangeStartField, {error: false, required: required});
+    }
+    if (has(field, 'rangeEndField')) {
+      let required = ts ? true : false;
+      this.fieldProp(field.rangeEndField, {error: false, required: required});
+    }
     if (field.debug) console.log('onChange', name, field);
-    return;
   }
 
   onChange(e) {
@@ -134,11 +140,9 @@ class Form extends Component {
     if (field.validate === 'ssn') value = _v.formatSSN(value);
     if (field.validate === 'phone') value = _v.formatPhone(value);
     if (field.validate === 'ccexpire') value = _v.formatCCExpire(value);
-
     this.fieldProp(name, {value: value, error: false});
     this.formProp({error: false, updated: true});
     if (field.debug) console.log('onChange', name, field);
-    return;
   }
 
   onChangeDropdown(name, value) {
@@ -146,7 +150,6 @@ class Form extends Component {
     this.fieldProp(name, {value: value, error: false});
     this.formProp({error: false, updated: true});
     if (field.debug) console.log('onChangeDropdown', name, field);
-    return;
   }
 
   onChangeCheckbox(name) {
@@ -170,7 +173,6 @@ class Form extends Component {
     this.fieldProp(name, {value: value, error: false});
     this.formProp({error: false, updated: true});
     if (field.debug) console.log('onChange', name, field);
-    return;
   }
 
   onChangeCreditCard(e) {
@@ -208,7 +210,6 @@ class Form extends Component {
     let value = e.target.value;
     if (field.validate === 'url') this.fieldProp(name, {value: _v.checkHTTP(value)});
     if (field.debug) console.log('onBlur', name, field);
-    return;
   }
 
   onFocus(e) {
@@ -216,14 +217,14 @@ class Form extends Component {
     const name = e.target.name;
     const field = this.state.fields[name];
     if (field.debug) console.log('onFocus', name, field);
-    return;
   }
 
   calendarField(name, opts) {
     const field = has(this.state.fields, name) ? this.state.fields[name] : null;
     const defaults = cloneObj(this.defaults);
     const params = Object.assign({}, defaults, {
-      enableTime: false
+      enableTime: false,
+      reduceTS: 1000
     }, opts);
 
     return (
@@ -252,10 +253,10 @@ class Form extends Component {
       className: '',
       enableTime: false,
       range1Name: 'range1',
-      range1Label: 'Range 1',
+      range1Label: 'Start Date',
       range1Value: '',
       range2Name: 'range2',
-      range2Label: 'Range 2',
+      range2Label: 'End Date',
       range2Value: '',
       colWidth: '45%'
     }, opts);
@@ -263,10 +264,10 @@ class Form extends Component {
     return (
       <div style={params.style} className={`dateRange`}>
         <div style={{width: params.colWidth}} className='col'>
-          {this.calendarField(params.range1Name, { enableTime: params.enableTime, value: params.range1Value, label: params.range1Label, range: 'start', rangeEndField: params.range2Name, debug: params.debug, filter: name })}
+          {this.calendarField(params.range1Name, { enableTime: params.enableTime, value: params.range1Value, label: params.range1Label, range: 'start', rangeEndField: params.range2Name, debug: params.debug, filter: name, validate: 'calendarRange' })}
         </div>
         <div style={{width: params.colWidth}} className='col'>
-          {this.calendarField(params.range2Name, { enableTime: params.enableTime, value: params.range2Value, label: params.range2Label, range: 'end', rangeStartField: params.range1Name, debug: params.debug, filter: name })}
+          {this.calendarField(params.range2Name, { enableTime: params.enableTime, value: params.range2Value, label: params.range2Label, range: 'end', rangeStartField: params.range1Name, debug: params.debug, filter: name, validate: 'calendarRange' })}
         </div>
         <div className='clear'></div>
       </div>
@@ -606,6 +607,9 @@ class Form extends Component {
         break;
       case 'money':
         if (!_v.validateMoney(value, _v.limits.txMin, _v.limits.txMax)) this.fieldProp(key, {error: _v.msgs.money});
+        break;
+      case 'calendarRange':
+        if (!_v.validateCalendarRange(key, this.state.fields)) this.fieldProp(key, {error: _v.msgs.calendarRange});
         break;
 
       // no default

@@ -24,12 +24,12 @@ class Filter extends Component {
       if (field.range) {
         switch (field.range) {
           case 'start': {
-            value = Moment.unix(value/1000).startOf('day').unix();
+            value = Moment.unix(value).startOf('day').unix();
             value = `>d${value}`;
             break;
           }
           case 'end': {
-            value = Moment.unix(value/1000).endOf('day').unix();
+            value = Moment.unix(value).endOf('day').unix();
             value = `<d${value}`;
             break;
           }
@@ -65,10 +65,10 @@ class Filter extends Component {
         filters = filter ? !filters ? filter : `${filters}%3B${filter}` : filters;
       }
     });
-    let endpoint = resource.search.filter ? resource.endpoint.replace(`filter=${resource.search.filter}`, `filter=${filters}`) : filters ? `${resource.endpoint}&filter=${filters}` : resource.endpoint;
-    endpoint = endpoint.replace('page='+resource.search.page, 'page=1');
-    const merge = { filter: filters, page: 1 };
-    const search = { ...resource.search, ...merge };
+    const search = { ...resource.search };
+    search.filter = filters || '';
+		if (resource.search.page > 1) search.page = 1;
+    const endpoint = resource.endpoint.split('?')[0] + util.makeAPIQuery(search);
 		this.props.getAPI(this.props.name, endpoint, search, null, true);
   }
 
@@ -79,7 +79,11 @@ class Filter extends Component {
       }
 
       case 'dropdown': {
-        return <div key={key} className='col' style={{width: '45%', margin: 5}}>{this.props.dropdown(value.name, { options: value.options, selectLabel: value.selectLabel, filter: value.name, value: value.value })}</div>;
+        return <div key={key} className='col' style={{ width: '45%', margin: 5}}>{this.props.dropdown(value.name, { options: value.options, selectLabel: value.selectLabel, filter: value.name, value: value.value })}</div>;
+      }
+
+      case 'filler': {
+        return <div key={key} className='col' style={{ width: '45%', margin: 5}}></div>;
       }
 
       // no default

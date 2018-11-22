@@ -65,7 +65,7 @@ class ActionsMenu extends Component {
 
     return (
       <div className='actionsMenu' style={style}>
-        <button disabled={!!util.isEmpty(this.props.options)} className='menuLabel' type='button' onClick={open ? this.closeMenu : this.openMenu}>{label}<span className='icon icon-triangle-down'></span></button>
+        <button disabled={!!util.isEmpty(this.props.options)} className='menuLabel' type='button' onClick={open ? this.closeMenu : this.openMenu}>{!util.isEmpty(this.props.options) ? label : 'No Actions'}<span className={`icon ${open ? 'icon-triangle-down' : 'icon-triangle-right'} ${util.isEmpty(this.props.options) && 'displayNone'}`}></span></button>
         <div className={`actionsMenu-content`}>
           <AnimateHeight
             duration={200}

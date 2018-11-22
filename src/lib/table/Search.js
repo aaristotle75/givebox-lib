@@ -34,13 +34,10 @@ class Search extends Component {
 
   getSearch(value) {
     const resource = this.props.resource;
-    let endpoint = resource.endpoint;
-
-		if (resource.search.page > 1) endpoint = endpoint.replace('page='+resource.search.page, 'page=1');
-    if (resource.search.query) endpoint = endpoint.split('&q')[0];;
-
-    endpoint = value ? endpoint + '&q=' + value : endpoint;
-    const search = Object.assign({}, resource.search, { query: value, page: 1 });
+    const search = { ...resource.search };
+    search.query = value;
+		if (resource.search.page > 1) search.page = 1;
+    const endpoint = resource.endpoint.split('?')[0] + util.makeAPIQuery(search);
 		this.props.getAPI(this.props.name, endpoint, search, null, true);
   }
 

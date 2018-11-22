@@ -20,7 +20,6 @@ import MaxRecords from './table/MaxRecords';
 import NoRecords from './table/NoRecords';
 import Paginate from './table/Paginate';
 import Export from './table/Export';
-import ExportLink from './table/ExportLink';
 
 import { Alert } from './common/Alert';
 import Delete from './common/Delete';
@@ -95,7 +94,6 @@ export {
   NoRecords,
   Paginate,
   Export,
-  ExportLink,
 
   // common
   Alert,

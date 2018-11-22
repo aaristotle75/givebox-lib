@@ -23,7 +23,10 @@ class Paginate extends Component{
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if ((this.props.activePage !== nextProps.activePage) || (this.props.max !== nextProps.max) || (this.props.count !== nextProps.count)) {
+		if ((this.props.activePage !== nextProps.activePage)
+				|| (this.props.max !== nextProps.max)
+				|| (this.props.count !== nextProps.count)
+			) {
 			this.setRecordCount(nextProps);
 		}
 	}
@@ -52,8 +55,9 @@ class Paginate extends Component{
 		const selected = parseInt(sel);
 		if (this.props.activePage !== selected) {
 			const resource = this.props.resource;
-			const endpoint = resource.endpoint.replace('page='+this.props.activePage, 'page='+selected);
-			const search = Object.assign({}, resource.search, { page: selected });
+	    const search = { ...resource.search };
+	    search.page = selected;
+	    const endpoint = resource.endpoint.split('?')[0] + util.makeAPIQuery(search);
 			this.props.getAPI(this.props.name, endpoint, search, null, true);
 		}
   }

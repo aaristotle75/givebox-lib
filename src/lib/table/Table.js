@@ -4,7 +4,7 @@ import Paginate from './Paginate';
 import MaxRecords from './MaxRecords';
 import Search from './Search';
 import NoRecords from './NoRecords';
-import ExportLink from './ExportLink';
+import Export from './Export';
 import Filter from './Filter';
 import { util } from '../';
 import { getAPI } from '../api/actions';
@@ -30,16 +30,13 @@ class Table extends Component {
 
   sortColumn(sort) {
     if (sort) {
-    const resource = this.props.resource;
-    const currentOrder = resource.search.order;
-    const order = currentOrder === 'desc' ? 'asc' : 'desc';
-    const sortToReplace = 'sort=' + util.translateSort(currentOrder) + resource.search.sort;
-    const replaceSort = 'sort=' + util.translateSort(order) + sort;
-    const endpoint = resource.endpoint.replace(sortToReplace, replaceSort);
-    const search = Object.assign(resource.search, { sort: sort, order: order });
-		this.props.getAPI(this.props.name, endpoint, search, null, true);
+      const resource = this.props.resource;
+      const search = { ...resource.search };
+      search.order = resource.search.order === 'desc' ? 'asc' : 'desc';
+      search.sort = sort;
+      const endpoint = resource.endpoint.split('?')[0] + util.makeAPIQuery(search);
+  		this.props.getAPI(this.props.name, endpoint, search, null, true);
     }
-    return;
   }
 
   headerResizer() {
@@ -117,7 +114,7 @@ class Table extends Component {
 
   renderExport() {
     return (
-      <ExportLink
+      <Export
         name={this.props.name}
         align={this.props.exportAlign}
         desc={this.props.exportDesc}

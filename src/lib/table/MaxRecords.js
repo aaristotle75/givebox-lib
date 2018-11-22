@@ -19,16 +19,10 @@ class MaxRecords extends Component {
     const selected = e.currentTarget.value;
     const resource = this.props.resource;
     const pages = Math.ceil(resource.meta.total/selected).toFixed(0);
-		let endpoint = resource.endpoint.replace('max='+resource.search.max, 'max='+selected);
-    let page = resource.search.page;
-
-    if (resource.search.page > pages) {
-      page = 1;
-		  endpoint = endpoint.replace('page='+resource.search.page, 'page='+page);
-    }
-
-    const merge = { max: selected, page: page };
-    const search = { ...resource.search, ...merge };
+    const search = { ...resource.search };
+    search.page = resource.search.page > pages ? 1 : resource.search.page;
+    search.max = selected;
+    const endpoint = resource.endpoint.split('?')[0] + util.makeAPIQuery(search);
 		this.props.getAPI(this.props.name, endpoint, search, null, true);
   }
 
