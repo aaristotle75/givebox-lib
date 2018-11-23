@@ -46,8 +46,8 @@ class Dropdown extends Component {
 
   onClick(e) {
     e.preventDefault();
-    let value = e.currentTarget.getAttribute('data-value');
-    let selected = e.currentTarget.getAttribute('data-selected');
+    const value = e.currentTarget.getAttribute('data-value');
+    const selected = e.currentTarget.getAttribute('data-selected');
     const open = this.props.multi ? true : false;
     this.setState({
       open: open,
@@ -62,9 +62,9 @@ class Dropdown extends Component {
   }
 
   listOptions() {
-    let bindthis = this;
-    var selectedValue = this.state.value;
-    let items = [];
+    const bindthis = this;
+    const selectedValue = this.state.value;
+    const items = [];
     this.props.options.forEach(function(value) {
       let selected = bindthis.props.multi ? bindthis.props.value.includes(value.value) ? true : false : selectedValue === value.value ? true : false;
       items.push(

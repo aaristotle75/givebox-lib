@@ -1,0 +1,44 @@
+@import 'variables.scss';
+
+.tabs {
+
+  vertical-align: top;
+
+  .panel {
+    margin: 10px 0;
+
+    .panelItem {
+      margin: 0 10px 0 0;
+      display: inline-block;
+    }
+
+  }
+
+  .tab {
+  }
+
+}
+
+/*-------- Demo purposes ------*/
+.statsTab {
+
+  text-align: left;
+
+  .panelTab {
+    color: $light-med-gray;
+    padding: 10px;
+    background: transparentize($primary, .8);
+  }
+
+  .panelTab:hover {
+    background: $primary;
+  }
+
+  .panelTab.selected {
+    color: $dark;
+  }
+
+  .panel {
+    border-bottom: 1px solid transparentize($primary, .8);
+  }
+}

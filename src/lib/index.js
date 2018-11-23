@@ -21,7 +21,9 @@ import NoRecords from './table/NoRecords';
 import Paginate from './table/Paginate';
 import Export from './table/Export';
 import Filter from './table/Filter';
-import StatBlock from './table/StatBlock';
+
+import StatBlock from './block/StatBlock';
+import ActionBar from './block/ActionBar';
 
 import { Alert } from './common/Alert';
 import Delete from './common/Delete';
@@ -29,6 +31,7 @@ import Error from './common/Error';
 import GBLink from './common/GBLink';
 import Loader from './common/Loader';
 import Portal from './common/Portal';
+import Tabs, { Tab } from './common/Tabs';
 import * as types from './common/types';
 import * as util from './common/utility';
 
@@ -97,7 +100,10 @@ export {
   Paginate,
   Export,
   Filter,
+
+  // Block
   StatBlock,
+  ActionBar,
 
   // common
   Alert,
@@ -106,6 +112,8 @@ export {
   GBLink,
   Loader,
   Portal,
+  Tabs,
+  Tab,
   types,
   util,
 

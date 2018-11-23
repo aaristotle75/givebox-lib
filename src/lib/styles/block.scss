@@ -1,0 +1,78 @@
+@import 'variables.scss';
+
+/*------- Action Bar --------*/
+ul.actionBar {
+  vertical-align: top;
+  text-align: left;
+  padding: 5px;
+  width: 100%;
+  height: 100px;
+
+  li {
+    display: inline-block;
+    padding: 10px;
+    vertical-align: top;
+    text-align: center;
+    cursor: pointer;
+    color: $primary;
+  }
+
+  li:hover {
+    cursor: pointer;
+    color: transparentize($primary, .3);
+  	-webkit-transition-duration: .5s;
+  	transition-duration: .5s;
+  }
+
+  .icon {
+    vertical-align: top;
+    display: block;
+    font-size: $huge-text-size;
+    margin: 5px;
+  }
+
+  .text {
+    vertical-align: top;
+    display: block;
+    font-size: $tiny-text-size;
+  }
+
+}
+
+/*-------- Stat Block --------*/
+.statBlock {
+  vertical-align: top;
+  padding: 5px;
+  width: 100%;
+  height: 100px;
+
+  h4 {
+    text-align: left;
+    margin: 5px 0;
+  }
+
+  li {
+    background: $off-white;
+    margin: 5px 0;
+    padding: 5px 0; // overwirde padding in component style
+  }
+
+  li:nth-child(even) {
+    background: $light;
+  }
+
+  .label {
+    display: inline-block;
+    vertical-align: top;
+    text-align: left;
+    width: 70%;
+  }
+
+  .value {
+    display: inline-block;
+    vertical-align: top;
+    text-align: right;
+    width: 25%;
+  }
+
+}

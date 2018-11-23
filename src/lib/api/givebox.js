@@ -53,6 +53,10 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       endpoint = `orgs/${orgID}/transactions`;
       break;
     }
+    case 'orgFinanceStats': {
+      endpoint = `orgs/${orgID}/finance-stats`;
+      break;
+    }
 
     default:
       console.error('No endpoint found.');

@@ -24,6 +24,7 @@ h5 { margin: 1.67em 0; font-size: 0.83em; font-weight: $header-weight; }
 h6 { margin: 2.33em 0; font-size: 0.67em; font-weight: $header-weight; }
 
 p { margin: 1.67em 0; font-size: $normal-text-size; font-weight: $font-weight; }
+.hugeText { font-size: $huge-text-size; font-weight: $font-weight; }
 .largeText { font-size: $large-text-size; font-weight: $font-weight; }
 .normalText { font-size: $normal-text-size; font-weight: $font-weight; }
 .smallText { font-size: $small-text-size; font-weight: $font-weight; }

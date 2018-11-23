@@ -1,6 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getResource, reloadResource, util, Table, ModalLink, StatBlock, ActionsMenu, types } from '../lib';
+import {
+  getResource,
+  reloadResource,
+  util,
+  Table,
+  ModalLink,
+  ModalRoute,
+  StatBlock,
+  ActionsMenu,
+  ActionBar,
+  types,
+  Tabs,
+  Tab
+} from '../lib';
+import Moment from 'moment';
 
 class Transactions extends Component {
 
@@ -11,6 +25,7 @@ class Transactions extends Component {
 
   componentDidMount() {
     this.props.getResource(this.props.resourceName);
+    this.props.getResource('orgFinanceStats');
   }
 
   /**
@@ -144,9 +159,11 @@ class Transactions extends Component {
 
   formatTableData() {
     const {
-      data
+      transactions
     } = this.props;
 
+    const data = transactions.data;
+    const meta = transactions.meta;
     const bindthis = this;
     const fdata = {};
     const headers = [];
@@ -195,8 +212,8 @@ class Transactions extends Component {
     footer.push(
       { name: '', colspan: 1},
       { name: <div style={{textAlign: 'left'}}>TOTALS</div>, colspan: 2 },
-      { name: <div>{util.money(1123.42)}</div>, colspan: 1},
-      { name: <div>{util.money(1123.42)}</div>, colspan: 1}
+      { name: <div>{util.money(parseFloat(meta.netTotal/100).toFixed(2))}</div>, colspan: 1},
+      { name: <div>{util.money(parseFloat(meta.withdrawalTotal/100).toFixed(2))}</div>, colspan: 1}
     );
     fdata.footer = footer;
 
@@ -206,9 +223,12 @@ class Transactions extends Component {
   render() {
 
     const {
-      resourceName
+      resourceName,
+      financeStats,
+      transactions
     } = this.props;
 
+    const meta = transactions.meta;
     const filters = [
       { field: 'calendarRange', name: 'createdAt' },
       {
@@ -277,29 +297,80 @@ class Transactions extends Component {
       }
     ];
 
+    if (util.isEmpty(financeStats)) return this.props.loader('Loading Stats');
+    const stats = financeStats.aggregate;
+
     return (
       <div>
         {this.props.isFetching && this.props.loader(`Loading data`)}
-        <StatBlock
-          label='left'
-          style={{
-            display: 'inline-block',
-            textAlign: 'center',
-            width: '50%',
-            height: 500,
-            background: 'red'
-          }}
-        />
-        <StatBlock
-          label='right'
-          style={{
-            display: 'inline-block',
-            textAlign: 'center',
-            width: '50%',
-            height: 500,
-            background: 'red'
-          }}
-        />
+        <div style={{textAlign: 'center'}}>
+          <Tabs
+            default='tab1'
+            className='statsTab'
+            style={{
+              display: 'inline-block',
+              width: '48%',
+              marginRight: '2%'
+            }}
+          >
+            <Tab id='tab1' label={<span><span className='icon-checkmark'></span> Lifetime</span>}>
+              <StatBlock
+                options={[
+                  <div className='item'>
+                    <div className='label'><ModalLink id='financeGlossary' className='glossary'>Lifetime NET Deposits</ModalLink> as of {Moment().format('MM/DD/YYYY')}</div>
+                    <div className='value'>{util.money(parseFloat(stats.netTotal/100).toFixed(2))}</div>
+                  </div>,
+                  <div className='item'>
+                    <div className='label'>Lifetime Withdrawals</div>
+                    <div className='value'>{util.money(parseFloat(stats.withdrawalTotal/100).toFixed(2))}</div>
+                  </div>
+                ]}
+              />
+            </Tab>
+            <Tab id='tab2' label='Results'>
+              <StatBlock
+                options={[
+                  <div className='item'>
+                    <div className='label'><ModalLink id='financeGlossary' className='glossary'>Results NET Deposits</ModalLink></div>
+                    <div className='value'>{util.money(parseFloat(meta.netTotal/100).toFixed(2))}</div>
+                  </div>,
+                  <div className='item'>
+                    <div className='label'>Results Withdrawals</div>
+                    <div className='value'>{util.money(parseFloat(meta.withdrawalTotal/100).toFixed(2))}</div>
+                  </div>
+                ]}
+              />
+            </Tab>
+          </Tabs>
+          <div
+            style={{
+              display: 'inline-block',
+              textAlign: 'left',
+              width: '48%',
+              marginLeft: '2%'
+            }}
+          >
+            <ActionBar
+              options={[
+                <div className='item'>
+                  <ModalRoute  id='addBank' component={() => this.props.loadComponent('modal/demo/AddBank', {useProjectRoot: false})} effect='3DFlipVert' style={{ width: '50%' }} />
+                  <ModalLink id='addBank'>
+                    <span className='icon icon-bank'></span>
+                    <span className='text'>Add Bank Account</span>
+                  </ModalLink>
+                </div>,
+                <div className='item'>
+                  <span className='icon icon-withdraw'></span>
+                  <span className='text'>Withdrawal Money</span>
+                </div>,
+                <div className='item'>
+                  <span className='icon icon-payment'></span>
+                  <span className='text'>Send Payment</span>
+                </div>
+              ]}
+            />
+          </div>
+        </div>
         <Table
           name={resourceName}
           data={() => this.formatTableData()}
@@ -317,7 +388,8 @@ Transactions.defaultProps = {
 
 function mapStateToProps(state, props) {
   return {
-    data: state.resource.orgTransactions ? state.resource.orgTransactions.data : {},
+    transactions: state.resource.orgTransactions ? state.resource.orgTransactions : {},
+    financeStats: state.resource.orgFinanceStats ? state.resource.orgFinanceStats.data : {},
     isFetching: state.resource.isFetching
   }
 }

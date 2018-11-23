@@ -52,7 +52,7 @@ class Filter extends Component {
 
     return (
       <div className='filter' style={style}>
-        <button className='link' type='button' onClick={open ? this.closeMenu : this.openMenu}>{label}<span className={`icon ${open ? 'icon-triangle-down': 'icon-triangle-right'}`}></span></button>
+        <button className='link' type='button' onClick={open ? this.closeMenu : this.openMenu}>{label}<span className={`icon-normal ${open ? 'icon-triangle-down': 'icon-triangle-right'}`}></span></button>
         <AnimateHeight
           duration={500}
           height={this.state.open ? 'auto' : 0}

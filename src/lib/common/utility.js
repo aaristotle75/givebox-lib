@@ -399,7 +399,7 @@ export function isLoading(resource, id = null) {
     if (!has(resource, 'data')
       || !has(resource, 'search')
       || !has(resource, 'meta')) {
-      loading = true;
+      loading = true;           
     } else {
       if (id) {
         if (isEmpty(resource.data)) {

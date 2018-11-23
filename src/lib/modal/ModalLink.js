@@ -17,11 +17,12 @@ class ModalLink extends Component {
   render() {
 
     const {
-      id
+      id,
+      className
     } = this.props;
 
     return (
-      <GBLink className='link' type='button' onClick={() => this.onClick(id)}>
+      <GBLink className={`link ${className}`} type='button' onClick={() => this.onClick(id)}>
         {this.props.children}
       </GBLink>
     )
