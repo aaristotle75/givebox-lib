@@ -307,7 +307,12 @@ export function calcAmount(amount, fee, passFees, gross = false) {
 }
 
 export function money(amount, symbol = '$') {
-  return <span className='moneyAmount'><span className='symbol'>{symbol}</span>{numberWithCommas(amount)}</span>;
+  let negative = false;
+  if (amount < 0) {
+    amount = Math.abs(amount);
+    negative = true;
+  }
+  return <span className={`moneyAmount ${negative && 'negativeAmount'}`}>{negative && '('}<span className='symbol'>{symbol}</span>{numberWithCommas(amount)}{negative && ')'}</span>;
 }
 
 export function formatMoneyForAPI(amount) {
@@ -399,7 +404,7 @@ export function isLoading(resource, id = null) {
     if (!has(resource, 'data')
       || !has(resource, 'search')
       || !has(resource, 'meta')) {
-      loading = true;           
+      loading = true;
     } else {
       if (id) {
         if (isEmpty(resource.data)) {

@@ -256,6 +256,7 @@ class TableBody extends Component {
         const details = [];
         const length = value.length;
         const passkey = key;
+        let options = {};
         value.forEach((value, key) => {
           if (has(value, 'details')) {
             if (!has(value, 'key')) console.error('Add a key property for proper handling');
@@ -279,10 +280,11 @@ class TableBody extends Component {
               </tr>
             );
           } else {
-            td.push(<td key={key}>{value}</td>);
+            if (has(value, 'options')) options = value.options;
+            else td.push(<td key={key}>{value}</td>);
           }
         });
-        const tr = <tr className={`${key%2===0 ? '' : 'altRow'}`} key={key}>{td}</tr>;
+        const tr = <tr className={`${key%2===0 ? '' : 'altRow'} ${options.grayout && 'grayout'}`} key={key}>{td}</tr>;
         items.push(tr);
         if (!util.isEmpty(details)) items.push(details);
 

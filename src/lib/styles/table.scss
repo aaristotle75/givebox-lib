@@ -132,6 +132,11 @@ tfoot {
 }
 
 /*----------- Description and Details -----------*/
+.grayout {
+  background: $light-gray;
+  color: $light-med-gray;
+}
+
 .description {
 
   .line {

@@ -21,6 +21,8 @@ class Transactions extends Component {
   constructor(props) {
     super(props);
     this.formatTableData = this.formatTableData.bind(this);
+    this.tabsCallbackBefore = this.tabsCallbackBefore.bind(this);
+    this.tabsCallbackAfter = this.tabsCallbackAfter.bind(this);
   }
 
   componentDidMount() {
@@ -53,14 +55,16 @@ class Transactions extends Component {
           case 'refunded': {
             feeText = data.freeRefund ? 'Transaction VOIDED and no fee debited' : 'Bank fee debited from available balance';
             status = data.freeRefund ? 'VOIDED' : status;
-            item.debit = util.calcAmount(data.amount, data.fee, data.passFees, data.freeRefund ? false : true);
+            item.credit = -Math.abs(util.calcAmount(data.amount, data.fee, data.passFees, data.freeRefund ? false : true));
+            //item.credit = -Math.abs(data.fee/100);
             returnAmount = util.money(util.calcAmount(data.amount, data.fee, data.passFees, true));
             break;
           }
 
           case 'chargeback': {
             feeText = 'Bank fee debited from available balance';
-            item.debit = util.calcAmount(data.amount, data.fee, data.passFees, true);
+            item.credit = -Math.abs(util.calcAmount(data.amount, data.fee, data.passFees, true));
+            //item.credit = -Math.abs(data.fee/100);
             returnAmount = util.money(util.calcAmount(data.amount, data.fee, data.passFees, true));
             break;
           }
@@ -70,7 +74,7 @@ class Transactions extends Component {
 
         item.desc.push(
           <div key={`${txType}-${data.ID}`} className='description'>
-            <span className='line'>{data.cardName || `${data.cusFirstName} ${data.cusLastName}`}{data.cardType ? `, ${data.cardType.toUpperCase()} ${data.cardLast4} ${data.state !== 'approved' ? ` - ${status}` : ''}` : ''}</span>
+            <span className='line'>{data.cardName || `${data.cusFirstName} ${data.cusLastName}`}{data.cardType ? `, ${data.cardType.toUpperCase()} ${data.cardLast4} ${data.state !== 'approved' ? ` - ${status}` : txData.txState === 'pending' ? ` - ${txData.txState.toUpperCase()}` : ''}` : ''}</span>
           </div>
         );
 
@@ -89,7 +93,7 @@ class Transactions extends Component {
               {data.cardName && <span className='line'>Name on Card: {data.cardName}</span>}
             </div>
             <div className='rightCol'>
-              <span className='line'>Status: {status}</span>
+              <span className='line'>Status: {data.state === 'approved' ? <ModalLink id='financeGlossary'>{txData.txState.toUpperCase()}</ModalLink> : <ModalLink id='financeGlossary'>{status}</ModalLink>}</span>
               <span className='line'>{data.cardType.toUpperCase()}</span>
               {data.cardLast4 && <span className='line'>xxxxxxxxxxxx{data.cardLast4}</span>}
               <span className='line'>{amountText}: {util.money(util.calcAmount(data.amount, data.fee, data.passFees))}</span>
@@ -196,6 +200,7 @@ class Transactions extends Component {
         }
 
         rows.push([
+          { options: { grayout: value.txState === 'pending' ? true : false } },
           { details: desc.details, width: '6%', key: data.ID },
           createdAt,
           desc.desc,
@@ -218,6 +223,14 @@ class Transactions extends Component {
     fdata.footer = footer;
 
     return fdata;
+  }
+
+  tabsCallbackBefore(key) {
+    return true;
+  }
+
+  tabsCallbackAfter(key) {
+    return true;
   }
 
   render() {
@@ -293,8 +306,24 @@ class Transactions extends Component {
         value: 'all'
       },
       {
-        field: 'filler'
-      }
+        field: 'dropdown',
+        name: 'txState',
+        options: [
+          {
+            primaryText: 'Pending and Posted',
+            value: 'all'
+          },
+          {
+            primaryText: 'Pending',
+            value: 'pending'
+          },
+          {
+            primaryText: 'Posted',
+            value: 'posted'
+          }
+        ],
+        value: 'all'
+      },
     ];
 
     if (util.isEmpty(financeStats)) return this.props.loader('Loading Stats');
@@ -312,6 +341,8 @@ class Transactions extends Component {
               width: '48%',
               marginRight: '2%'
             }}
+            callbackBefore={this.tabsCallbackBefore}
+            callbackAfter={this.tabsCallbackAfter}
           >
             <Tab id='tab1' label={<span><span className='icon-checkmark'></span> Lifetime</span>}>
               <StatBlock

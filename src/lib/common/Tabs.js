@@ -16,8 +16,19 @@ class Tabs extends Component {
   componentDidMount() {
   }
 
-  onTabClick(key) {
-    this.setState({selectedTab: key});
+  async onTabClick(key) {
+    const promise = new Promise((resolve, reject) => {
+      let validate = true;
+      if (this.props.callbackBefore) {
+        if (!this.props.callbackBefore(key)) validate = false;
+      }
+      resolve(validate);
+    });
+    let validate = await promise;
+    if (validate) {
+      this.setState({selectedTab: key});
+      if (this.props.callbackAfter) this.props.callbackAfter(key);
+    }
   }
 
   renderTabPanel() {
@@ -60,6 +71,11 @@ class Tabs extends Component {
       </div>
     );
   }
+}
+
+Tabs.defaultProps = {
+  callbackBefore: null,
+  callbackAfter: null
 }
 
 export default Tabs;
