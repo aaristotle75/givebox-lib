@@ -132,7 +132,7 @@ class App extends Component {
       loading: () => modal ? '' : this.loader(`Trying to load component ${moduleToLoad}`)
     });
     return (
-      <div id={`root-${options.className}`} className={options.className}>
+      <div id={`root-content`} className={options.className}>
         <Component
           {...options.props}
           loader={this.loader}

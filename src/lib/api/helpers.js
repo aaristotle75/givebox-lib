@@ -29,6 +29,7 @@ export function getResource(resource, opt = {}) {
     let reload = options.reload;
     const orgID = has(getState().resource, 'orgID') ? getState().resource.orgID : null;
     const userID = has(getState().resource, 'userID') ? getState().resource.userID : null;
+    const affiliateID = has(getState().resource, 'affiliateID') ? getState().resource.affiliateID : null;
 
     // Reload if resource exists and a new ID is requested
     if (has(getState().resource, resource)) {
@@ -58,7 +59,7 @@ export function getResource(resource, opt = {}) {
     const search = { ...defaultSearch, ...options.search };
 
     // Get the API endpoint and add search obj to query string
-    let endpoint = API_URL + giveboxAPI.endpoint(resource, id, { orgID, userID });
+    let endpoint = API_URL + giveboxAPI.endpoint(resource, id, { orgID, userID, affiliateID });
     if (options.csv) endpoint = endpoint + '.csv';
     endpoint = endpoint + util.makeAPIQuery(search);
     if (options.csv) return endpoint;

@@ -446,3 +446,21 @@ export function getValue(obj, prop) {
   if (has(obj, prop)) return obj[prop];
   else return '';
 }
+
+export function setHeight(e, id) {
+    const arr = e.data.split('-');
+    const el = document.getElementById(id);
+    if (el) {
+      if (!isEmpty(arr)) {
+        switch (arr[0]) {
+          case 'height': {
+            const height = `${parseInt(arr[1]) + 50}px`;
+            el.style.height = height;
+            break;
+          }
+
+          // no default
+        }
+      }
+    }
+  }
