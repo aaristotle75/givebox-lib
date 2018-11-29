@@ -6,6 +6,7 @@ import _inherits from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modu
 import _assertThisInitialized from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/assertThisInitialized";
 import React, { Component } from 'react';
 import { lookup, isEmpty } from '../common/utility';
+import AnimateHeight from 'react-animate-height';
 
 var Dropdown =
 /*#__PURE__*/
@@ -45,13 +46,18 @@ function (_Component) {
       }
     }
   }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      this.closeMenu();
+    }
+  }, {
     key: "openMenu",
     value: function openMenu(e) {
       e.stopPropagation();
       this.setState({
         open: true
       });
-      window.addEventListener('click', this.closeMenu);
+      if (!this.props.multi) document.addEventListener('click', this.closeMenu);
     }
   }, {
     key: "closeMenu",
@@ -59,7 +65,7 @@ function (_Component) {
       this.setState({
         open: false
       });
-      window.removeEventListener('click', this.closeMenu);
+      document.removeEventListener('click', this.closeMenu);
     }
   }, {
     key: "onClick",
@@ -67,12 +73,13 @@ function (_Component) {
       e.preventDefault();
       var value = e.currentTarget.getAttribute('data-value');
       var selected = e.currentTarget.getAttribute('data-selected');
+      var open = this.props.multi ? true : false;
       this.setState({
-        open: false,
+        open: open,
         value: value,
         selected: selected
       });
-      this.props.onChangeDropdown(this.props.name, value);
+      this.props.onChange(this.props.name, value);
     }
   }, {
     key: "setSelected",
@@ -88,7 +95,7 @@ function (_Component) {
       var selectedValue = this.state.value;
       var items = [];
       this.props.options.forEach(function (value) {
-        var selected = selectedValue === value.value ? true : false;
+        var selected = bindthis.props.multi ? bindthis.props.value.includes(value.value) ? true : false : selectedValue === value.value ? true : false;
         items.push(React.createElement("div", {
           "data-selected": value.primaryText,
           "data-value": value.value,
@@ -97,7 +104,9 @@ function (_Component) {
           },
           className: "dropdown-item ".concat(selected ? 'selected' : ''),
           key: value.value
-        }, value.primaryText));
+        }, bindthis.props.multi && selected && React.createElement("span", {
+          className: "icon icon-checkmark"
+        }), " ", value.primaryText));
       });
       return items ? items : React.createElement("option", null, "None");
     }
@@ -110,10 +119,12 @@ function (_Component) {
           style = _this$props.style,
           selectLabel = _this$props.selectLabel,
           error = _this$props.error,
-          errorType = _this$props.errorType;
+          errorType = _this$props.errorType,
+          multi = _this$props.multi;
       var _this$state = this.state,
           open = _this$state.open,
           selected = _this$state.selected;
+      var selectedValue = multi ? open ? 'Close Menu' : selectLabel : selected || selectLabel;
       return React.createElement("div", {
         style: style,
         className: "input-group dropdown-group ".concat(className || '', " ").concat(error ? 'error tooltip' : '')
@@ -123,13 +134,16 @@ function (_Component) {
       }, React.createElement("button", {
         type: "button",
         onClick: open ? this.closeMenu : this.openMenu
-      }, !selected ? React.createElement("span", {
+      }, React.createElement("span", {
         className: "label"
-      }, selectLabel) : selected, React.createElement("span", {
-        className: "icon icon-triangle-down"
+      }, selectedValue), React.createElement("span", {
+        className: "icon ".concat(open ? multi ? 'icon-close' : 'icon-triangle-down' : 'icon-triangle-right')
       })), React.createElement("div", {
-        className: "dropdown-content ".concat(!open ? 'displayNone' : '')
-      }, this.listOptions())), React.createElement("div", {
+        className: "dropdown-content"
+      }, React.createElement(AnimateHeight, {
+        duration: 200,
+        height: open ? 'auto' : 0
+      }, this.listOptions()))), React.createElement("div", {
         className: "tooltipTop ".concat(errorType !== 'tooltip' && 'displayNone')
       }, this.props.error, React.createElement("i", null)), React.createElement("div", {
         className: "errorMsg ".concat((!error || errorType !== 'normal') && 'displayNone')
@@ -141,6 +155,8 @@ function (_Component) {
 }(Component);
 
 Dropdown.defaultProps = {
-  name: 'defaultSelect'
+  name: 'defaultSelect',
+  multi: false,
+  selectLabel: 'Please select'
 };
 export default Dropdown;

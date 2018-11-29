@@ -125,13 +125,27 @@
   transition:0s
 }
 
+.fade-appear, .fade-appear-active {
+	opacity: 0;
+}
+
 .fade-enter {
   opacity: 0;
   z-index: 1;
 }
 
-.fade-enter.fade-enter-active {
+.fade-enter-active {
   opacity: 1;
+  transition: opacity 250ms ease-in;
+}
+
+.fade-exit {
+  opacity: 1;
+  z-index: 1;
+}
+
+.fade-exit-done {
+  opacity: 0;
   transition: opacity 250ms ease-in;
 }
 

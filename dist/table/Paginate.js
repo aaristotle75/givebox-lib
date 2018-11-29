@@ -1,3 +1,4 @@
+import _objectSpread from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/objectSpread";
 import _classCallCheck from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/classCallCheck";
 import _createClass from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/createClass";
 import _possibleConstructorReturn from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/possibleConstructorReturn";
@@ -7,7 +8,7 @@ import _assertThisInitialized from "/Users/aaron/Sites/projects/givebox/givebox-
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { util } from '../';
-import { getAPI } from '../redux/actions';
+import { getAPI } from '../api/actions';
 
 var Paginate =
 /*#__PURE__*/
@@ -75,10 +76,11 @@ function (_Component) {
 
       if (this.props.activePage !== selected) {
         var resource = this.props.resource;
-        var endpoint = resource.endpoint.replace('page=' + this.props.activePage, 'page=' + selected);
-        var search = Object.assign({}, resource.search, {
-          page: selected
-        });
+
+        var search = _objectSpread({}, resource.search);
+
+        search.page = selected;
+        var endpoint = resource.endpoint.split('?')[0] + util.makeAPIQuery(search);
         this.props.getAPI(this.props.name, endpoint, search, null, true);
       }
     }

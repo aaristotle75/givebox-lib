@@ -1,10 +1,16 @@
 import React, {Component} from 'react';
+import Fade from '../common/Fade';
 
 class CreditCard extends Component {
 
   constructor(props) {
     super(props);
+    this.onFocus = this.onFocus.bind(this);
+    this.onBlur = this.onBlur.bind(this);
     this.inputRef = React.createRef();
+    this.state = {
+      status: 'idle'
+    }
   }
 
   componentDidMount() {
@@ -12,10 +18,25 @@ class CreditCard extends Component {
     if (this.props.createField) this.props.createField(this.props.name, params);
   }
 
+  onFocus(e) {
+    e.preventDefault();
+    this.setState({status: 'active'});
+    if (this.props.onFocus) this.props.onFocus(e);
+  }
+
+  onBlur(e) {
+    e.preventDefault();
+    this.setState({status: 'idle'});
+    if (this.props.onBlur) this.props.onBlur(e);
+  }
+
+
   render() {
 
     const {
       name,
+      label,
+      fixedLabel,
       cardType,
       placeholder,
       autoFocus,
@@ -30,27 +51,38 @@ class CreditCard extends Component {
       checked
     } = this.props;
 
+    const hideCardsAccepted = value ? cardType !== 'noCardType' ? true : false : false;
+
     return (
         <div style={style} className={`input-group ${className || ''} creditCard ${error ? 'error tooltip' : ''}`}>
-          <div className={`cardType ${cardType}`}></div>
-          <input
-            autoFocus={autoFocus}
-            ref={this.inputRef}
-            name={name}
-            type={'text'}
-            readOnly={readOnly}
-            required={required}
-            placeholder={placeholder}
-            onChange={this.props.onChange}
-            onBlur={this.props.onBlur}
-            onFocus={this.props.onFocus}
-            autoComplete='new-password'
-            value={value}
-            maxLength={maxLength}
-          />
-          <div className={`checkmark ${!checked && 'displayNone'}`}>
-              <i className='icon icon-checkmark'></i>
+          <Fade in={hideCardsAccepted ? false : true}>
+            <div className={`cardsAccepted`}></div>
+          </Fade>
+          <div className={`floating-label ${fixedLabel && 'fixed'}`}>
+            <Fade in={cardType ? true : false}><div className={`cardType ${cardType}`}></div></Fade>
+            <input
+              autoFocus={autoFocus}
+              ref={this.inputRef}
+              name={name}
+              type={'text'}
+              readOnly={readOnly}
+              required={required}
+              placeholder={placeholder}
+              onChange={this.props.onChange}
+              onBlur={this.onBlur}
+              onFocus={this.onFocus}
+              autoComplete='new-password'
+              value={value}
+              maxLength={maxLength}
+            />
+            {label && <label htmlFor={name}>{label}</label>}
+            <div className={`input-bottom ${error ? 'error' : this.state.status}`}></div>
           </div>
+          <Fade duration={200} in={checked ? true : false}>
+            <div className={`checkmark`}>
+                <i className='icon icon-checkmark'></i>
+            </div>
+          </Fade>
           <div className={`tooltipTop ${errorType !=='tooltip' && 'displayNone'}`}>
             {error}
             <i></i>

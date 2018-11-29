@@ -53,6 +53,7 @@ class Form extends Component {
     this.defaultOptions = {
       parent: false,
       label: '',
+      fixedLabel: false,
       className: '',
       style: {},
       required: false,
@@ -237,7 +238,8 @@ class Form extends Component {
     const defaults = cloneObj(this.defaults);
     const params = Object.assign({}, defaults, {
       enableTime: false,
-      reduceTS: 1000
+      reduceTS: 1000,
+      fixedLabel: true
     }, opts);
 
     return (
@@ -250,6 +252,7 @@ class Form extends Component {
         onChangeCalendar={this.onChangeCalendar}
         defaultValue={params.value}
         label={params.label}
+        fixedLabel={params.fixedLabel}
         style={params.style}
         className={params.className}
         error={field ? field.error : params.error }
@@ -271,11 +274,11 @@ class Form extends Component {
       range2Name: 'range2',
       range2Label: 'End Date',
       range2Value: '',
-      colWidth: '45%'
+      colWidth: '50%'
     }, opts);
 
     return (
-      <div style={params.style} className={`dateRange`}>
+      <div style={params.style} className={`field-group`}>
         <div style={{width: params.colWidth}} className='col'>
           {this.calendarField(params.range1Name, { enableTime: params.enableTime, value: params.range1Value, label: params.range1Label, range: 'start', rangeEndField: params.range2Name, debug: params.debug, filter: name, validate: 'calendarRange' })}
         </div>
@@ -371,6 +374,7 @@ class Form extends Component {
         name={name}
         className={params.className}
         label={params.label}
+        fixedLabel={params.fixedLabel}
         style={params.style}
         placeholder={field ? field.placeholder : params.placeholder}
         type={field ? field.type : params.type}
@@ -432,7 +436,7 @@ class Form extends Component {
       type: 'text',
       cardType: 'noCardType',
       placeholder: 'xxxx xxxx xxxx xxxx',
-      validate: 'creditcard',
+      validate: 'creditCard',
       maxLength: 19
     }, opts);
 
@@ -443,6 +447,7 @@ class Form extends Component {
         cardType={field ? field.cardType : params.cardType}
         checked={field ? field.checked : params.checked}
         label={params.label}
+        fixedLabel={params.fixedLabel}
         style={params.style}
         placeholder={field ? field.placeholder : params.placeholder}
         type={field ? field.type : params.type}
@@ -465,18 +470,21 @@ class Form extends Component {
 
   creditCardGroup(opts) {
     const defaults = cloneObj(this.defaults);
-    const ccnumberField = has(this.state.fields, 'ccnumber') ? this.state.fields.ccnumber : null;
-    const hideCardsAccepted = ccnumberField ? ccnumberField.cardType !== 'noCardType' ? true : false : false;
     const params = Object.assign({}, defaults, {
       className: '',
       required: true
     }, opts);
 
     return (
-      <div className='creditCard-group'>
-        <div className={`cardsAccepted ${hideCardsAccepted && 'displayNone'}`}></div>
-        {this.creditCard('ccnumber', {required: params.required, debug: params.debug})}
-        {this.textField('ccexpire', {placeholder: 'MM/YY', className: 'ccexpire', required: params.required, validate: 'ccexpire', maxLength: 5,  debug: params.debug})}
+
+      <div style={params.style} className={`field-group creditCard-group`}>
+        <div style={{width: '75%'}} className='col'>
+          {this.creditCard('ccnumber', {label: params.ccnumberLabel || 'Credit Card', fixedLabel: params.ccnumberfixedLabel || true, required: params.required, debug: params.debug})}
+        </div>
+        <div style={{width: '25%'}} className='col'>
+          {this.textField('ccexpire', {label: params.ccxpireLabel || 'Expiration', fixedLabel: params.ccexpirefixedLabel || true, placeholder: 'MM/YY', required: params.required, validate: 'ccexpire', maxLength: 5,  debug: params.debug})}
+        </div>
+        <div className='clear'></div>
       </div>
     )
   }
@@ -625,6 +633,9 @@ class Form extends Component {
         break;
       case 'calendarRange':
         if (!_v.validateCalendarRange(key, this.state.fields)) this.fieldProp(key, {error: _v.msgs.calendarRange});
+        break;
+      case 'creditCard':
+        if (!_v.validateCardTypes(value)) this.fieldProp(key, {error: _v.msgs.creditCard});
         break;
 
       // no default

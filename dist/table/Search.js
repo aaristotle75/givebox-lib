@@ -1,3 +1,4 @@
+import _objectSpread from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/objectSpread";
 import _classCallCheck from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/classCallCheck";
 import _createClass from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/createClass";
 import _possibleConstructorReturn from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/possibleConstructorReturn";
@@ -7,7 +8,7 @@ import _assertThisInitialized from "/Users/aaron/Sites/projects/givebox/givebox-
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { util, TextField } from '../';
-import { getAPI } from '../redux/actions';
+import { getAPI } from '../api/actions';
 import has from 'has';
 
 var Search =
@@ -52,15 +53,12 @@ function (_Component) {
     key: "getSearch",
     value: function getSearch(value) {
       var resource = this.props.resource;
-      var endpoint = resource.endpoint;
-      if (resource.search.page > 1) endpoint = endpoint.replace('page=' + resource.search.page, 'page=1');
-      if (resource.search.query) endpoint = endpoint.split('&q')[0];
-      ;
-      endpoint = value ? endpoint + '&q=' + value : endpoint;
-      var search = Object.assign({}, resource.search, {
-        query: value,
-        page: 1
-      });
+
+      var search = _objectSpread({}, resource.search);
+
+      search.query = value;
+      if (resource.search.page > 1) search.page = 1;
+      var endpoint = resource.endpoint.split('?')[0] + util.makeAPIQuery(search);
       this.props.getAPI(this.props.name, endpoint, search, null, true);
     }
   }, {

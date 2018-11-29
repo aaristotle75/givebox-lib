@@ -31,8 +31,6 @@ function (_Component) {
       var _this$props = this.props,
           id = _this$props.id,
           onClick = _this$props.onClick,
-          href = _this$props.href,
-          target = _this$props.target,
           className = _this$props.className,
           style = _this$props.style,
           primaryColor = _this$props.primaryColor;
@@ -45,11 +43,9 @@ function (_Component) {
       return React.createElement("button", {
         type: "button",
         id: id,
-        className: className,
-        href: href,
+        className: className || 'link',
         onClick: onClick,
-        style: mergeStyle,
-        target: target
+        style: mergeStyle
       }, this.props.children);
     }
   }]);

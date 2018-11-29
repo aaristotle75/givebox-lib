@@ -9,54 +9,135 @@ form button {
 }
 
 .formWrapper {
-  width: 70%;
+  width: 100%;
+}
+
+.field-group {
+ display: inline;
+ width: 100%;
+
+ .col {
+  display: inline-block;
+ }
 }
 
 /*-------------- Input -----------------*/
 
-.input-group {
+.input-group:not(.hidden) {
   position: relative;
+  padding: 20px 0;
+  margin: 0 5px;
 }
 
 input {
   font-size: $normal-text-size;
   font-family: $font-family;
+  height: 40px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid $light-med-gray;
+  box-sizing: border-box;
+  transition: all .3s linear;
   @media screen and (max-width: $mobile-width) {
     font-size: 16px;
   }
 }
 
-input[type=text]::-webkit-input-placeholder {
+input::-webkit-input-placeholder {
   font-size: $normal-text-size;
   font-family: $font-family;
   color: $med-gray;
 }
-input[type=text]::-moz-placeholder {
+input::-moz-placeholder {
   font-size: $normal-text-size;
   color: $med-gray;
 }
-input[type=text]::-ms-input-placeholder {
+input::-ms-input-placeholder {
   font-size: $normal-text-size;
   color: $med-gray;
 }
 
-.input-button {
+input:focus {
+  outline: 0;
+}
+
+.input-bottom {
   position: absolute;
-  top: 3px;
-  right: 5px;
+  height: 2px;
+  z-index: 101;
+  width: 100%;
   bottom: 0;
-  margin: 0 !important;
+}
+
+.input-bottom.idle {
+  background: $light-med-gray;
+  transform: scaleX(0);
+  -webkit-transform: scaleX(0);
+  @include default-transition(.25s);
+}
+
+.input-bottom.active {
+  background: $primary;
+  transform: scaleX(1);
+  -webkit-transform: scaleX(1);
+  @include default-transition(.25s);
+}
+
+.input-bottom.error {
+  background: $red;
+  transform: scaleX(1);
+  -webkit-transform: scaleX(1);
+  @include default-transition(.25s);
 }
 
 input:not(.checkbox) {
   width: 100%;
 }
 
+// Icon button on the right side of an input field
+.input-button {
+  position: absolute;
+  top: 12px;
+  right: 5px;
+  bottom: 0;
+  margin: 0 !important;
+}
+
+.input-button .icon {
+  font-size: $huge-text-size;
+}
+
 /*----------- Labels ---------------*/
 label, .label {
   color: $med-gray;
-  vertical-align: middle;
-  text-align: left;
+  font-size: $small-text-size;
+}
+
+.floating-label {
+  position: relative;
+  margin-bottom: 0px;
+}
+
+.floating-label label {
+  position: absolute;
+  top: calc(50% - 20px);
+  left: 0;
+  opacity: 0;
+  transition: all .3s ease;
+}
+
+.floating-label.fixed label {
+  opacity: 1;
+  transform: translateY(-10px);
+}
+
+.floating-label input:not(:placeholder-shown) + label {
+  transform: translateY(-10px);
+  opacity: 1;
+}
+
+.floating-label.active label {
+  color: $primary;
 }
 
 /*------------- Rich Text ----------*/
@@ -78,11 +159,21 @@ label, .label {
 
 }
 
+/********** CHOICE GROUP **************/
+.choice-group {
+  position: relative;
+  padding: 10px 5px;
+}
+
 /*--------------- Checkbox ---------------*/
 .checkbox-group {
   label {
     cursor: pointer;
     display: inline;
+  }
+
+  label.label {
+    margin-left: 10px;
   }
 }
 
@@ -98,6 +189,7 @@ label, .label {
 	border-radius: 3px;
 	display: inline-block;
 	position: relative;
+  vertical-align: middle;
 }
 
 .checkbox + label:active, .checkbox:checked + label:active {
@@ -131,6 +223,10 @@ label, .label {
     cursor: pointer;
     display: inline;
   }
+
+  label.label {
+    margin-left: 10px;
+  }
 }
 
 .radio {
@@ -146,6 +242,7 @@ label, .label {
 	border-radius: 50px;
 	display: inline-block;
 	position: relative;
+  vertical-align: middle;
 }
 
 .radio:checked + label:after {
@@ -191,20 +288,23 @@ label, .label {
   }
 
   button {
-    background-color: $white;
+    background-color: transparent;
     color: $med-gray;
-    padding: 5px;
+    padding: 5px 0;
     font-family: $font-family;
     font-size: $normal-text-size;
     font-weight: $font-weight;
     letter-spacing: 0;
-    border-radius: 2px;
-    border: none;
+    border-radius: 0px;
+    border-bottom: 1px solid $light-med-gray;
     cursor: pointer;
-    @include box-shadow(0px 1px 2px 0px rgba(0,0,0,0.2));
     width: 100%;
     text-align: left;
     margin: 0;
+  }
+
+  .label {
+    font-size: $normal-text-size;
   }
 
   .dropdown-content {
@@ -255,18 +355,24 @@ label, .label {
     display: block;
   }
 
-  input {
+  label { color: $red; }
+
+  .floating-label input:focus + label {
     color: $red;
-    border: 2px solid $red;
   }
 
-  input[type=text]::-webkit-input-placeholder {
+  input {
+    color: $red;
+    border: none;
+  }
+
+  input::-webkit-input-placeholder {
     color: $red !important;
   }
-  input[type=text]::-moz-placeholder {
+  input::-moz-placeholder {
     color: $red !important;
   }
-  input[type=text]::-ms-input-placeholder {
+  input::-ms-input-placeholder {
     color: $red !important;
   }
 
@@ -326,30 +432,22 @@ label, .label {
 .creditCard-group {
 
   position: relative;
-  margin: 20px 0 0 0;
-
-  .creditCard {
-    display: inline-block;
-    width: 80%;
-  }
-
-  .ccexpire {
-    display: inline-block;
-    width: 20%;
-  }
 
   .cardsAccepted {
   	position: absolute;
   	height: 50px;
   	width: 160px;
-  	top: -5px;
-  	left: 5px;
+  	top: -20px;
+  	left: -5px;
   	background-image: url('https://s3-us-west-1.amazonaws.com/givebox/public/images/cards-accepted3.png');
   	background-image: url('https://s3-us-west-1.amazonaws.com/givebox/public/images/cards-accepted3.svg');
   	background-repeat: no-repeat;
   	background-size: 130px 21px;
   }
+}
 
+.input-group.creditCard {
+  margin-top: 20px;
 }
 
 .creditCard {
@@ -360,8 +458,8 @@ label, .label {
 
   .checkmark {
     position: absolute;
-    top: 3px;
-    right: 5px;
+    top: 30px;
+    right: 50px;
     bottom: 0;
 
     .icon {
@@ -370,8 +468,8 @@ label, .label {
   }
   .cardType {
   	position: absolute;
-  	top: 3px;
-  	left: 10px;
+  	top: 10px;
+  	left: 0px;
   	width: 35px;
   	height: 22px;
   	background-repeat: no-repeat;
@@ -388,6 +486,7 @@ label, .label {
 .noCardType {
   background-image: url('https://s3-us-west-1.amazonaws.com/givebox/public/images/card-default3.png');
   background-image: url('https://s3-us-west-1.amazonaws.com/givebox/public/images/card-default3.svg');
+  opacity: .5;
 }
 
 .visa {

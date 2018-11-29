@@ -1,4 +1,5 @@
 import _slicedToArray from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/slicedToArray";
+import _toConsumableArray from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/toConsumableArray";
 import _defineProperty from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/defineProperty";
 import _objectSpread from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/objectSpread";
 import _classCallCheck from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/classCallCheck";
@@ -14,10 +15,11 @@ import Dropdown from './Dropdown';
 import Choice from './Choice';
 import RichTextField from './RichTextField';
 import CreditCard from './CreditCard';
+import CalendarField from './CalendarField';
 import * as _v from './formValidate';
 import Loader from '../common/Loader';
-import { Alert } from '../common/Alerts';
-import { cloneObj } from '../common/utility';
+import { Alert } from '../common/Alert';
+import { cloneObj, isEmpty } from '../common/utility';
 import has from 'has';
 
 var Form =
@@ -42,6 +44,7 @@ function (_Component) {
     _this.onFocus = _this.onFocus.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.validateForm = _this.validateForm.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.validateField = _this.validateField.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.calendarField = _this.calendarField.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.textField = _this.textField.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.dropdown = _this.dropdown.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.choice = _this.choice.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -135,13 +138,38 @@ function (_Component) {
     key: "formProp",
     value: function formProp(args) {
       this.setState(Object.assign(this.state, args));
-      return;
     }
   }, {
     key: "onChangeCalendar",
-    value: function onChangeCalendar(ts) {
-      console.log('onChangeCalendar', ts);
-      return;
+    value: function onChangeCalendar(ts, name) {
+      var field = this.state.fields[name];
+      this.fieldProp(name, {
+        value: ts / field.reduceTS,
+        error: false
+      });
+      this.formProp({
+        error: false,
+        updated: true
+      });
+
+      if (has(field, 'rangeStartField')) {
+        var required = ts ? true : false;
+        this.fieldProp(field.rangeStartField, {
+          error: false,
+          required: required
+        });
+      }
+
+      if (has(field, 'rangeEndField')) {
+        var _required = ts ? true : false;
+
+        this.fieldProp(field.rangeEndField, {
+          error: false,
+          required: _required
+        });
+      }
+
+      if (field.debug) console.log('onChange', name, field);
     }
   }, {
     key: "onChange",
@@ -163,14 +191,29 @@ function (_Component) {
         updated: true
       });
       if (field.debug) console.log('onChange', name, field);
-      return;
     }
   }, {
     key: "onChangeDropdown",
     value: function onChangeDropdown(name, value) {
       var field = this.state.fields[name];
+      var arr = [];
+
+      if (field.multi) {
+        if (Array.isArray(field.value)) {
+          arr.push.apply(arr, _toConsumableArray(field.value));
+        } else {
+          if (field.value) arr.push(field.value);
+        }
+
+        if (arr.includes(value)) {
+          arr.splice(arr.indexOf(value), 1);
+        } else {
+          arr.push(value);
+        }
+      }
+
       this.fieldProp(name, {
-        value: value,
+        value: field.multi ? arr : value,
         error: false
       });
       this.formProp({
@@ -178,7 +221,6 @@ function (_Component) {
         updated: true
       });
       if (field.debug) console.log('onChangeDropdown', name, field);
-      return;
     }
   }, {
     key: "onChangeCheckbox",
@@ -225,7 +267,6 @@ function (_Component) {
         updated: true
       });
       if (field.debug) console.log('onChange', name, field);
-      return;
     }
   }, {
     key: "onChangeCreditCard",
@@ -286,7 +327,6 @@ function (_Component) {
         value: _v.checkHTTP(value)
       });
       if (field.debug) console.log('onBlur', name, field);
-      return;
     }
   }, {
     key: "onFocus",
@@ -295,18 +335,93 @@ function (_Component) {
       var name = e.target.name;
       var field = this.state.fields[name];
       if (field.debug) console.log('onFocus', name, field);
-      return;
+    }
+  }, {
+    key: "calendarField",
+    value: function calendarField(name, opts) {
+      var field = has(this.state.fields, name) ? this.state.fields[name] : null;
+      var defaults = cloneObj(this.defaults);
+      var params = Object.assign({}, defaults, {
+        enableTime: false,
+        reduceTS: 1000
+      }, opts);
+      return React.createElement(CalendarField, {
+        name: name,
+        required: field ? field.required : params.required,
+        enableTime: field ? field.enableTime : params.enableTime,
+        group: field ? field.group : params.group,
+        readOnly: field ? field.readOnly : params.readOnly,
+        onChangeCalendar: this.onChangeCalendar,
+        defaultValue: params.value,
+        label: params.label,
+        style: params.style,
+        className: params.className,
+        error: field ? field.error : params.error,
+        errorType: params.errorType,
+        createField: this.createField,
+        params: params
+      });
+    }
+  }, {
+    key: "calendarRange",
+    value: function calendarRange(name, opts) {
+      var defaults = cloneObj(this.defaults);
+      var params = Object.assign({}, defaults, {
+        className: '',
+        enableTime: false,
+        range1Name: 'range1',
+        range1Label: 'Start Date',
+        range1Value: '',
+        range2Name: 'range2',
+        range2Label: 'End Date',
+        range2Value: '',
+        colWidth: '45%'
+      }, opts);
+      return React.createElement("div", {
+        style: params.style,
+        className: "dateRange"
+      }, React.createElement("div", {
+        style: {
+          width: params.colWidth
+        },
+        className: "col"
+      }, this.calendarField(params.range1Name, {
+        enableTime: params.enableTime,
+        value: params.range1Value,
+        label: params.range1Label,
+        range: 'start',
+        rangeEndField: params.range2Name,
+        debug: params.debug,
+        filter: name,
+        validate: 'calendarRange'
+      })), React.createElement("div", {
+        style: {
+          width: params.colWidth
+        },
+        className: "col"
+      }, this.calendarField(params.range2Name, {
+        enableTime: params.enableTime,
+        value: params.range2Value,
+        label: params.range2Label,
+        range: 'end',
+        rangeStartField: params.range1Name,
+        debug: params.debug,
+        filter: name,
+        validate: 'calendarRange'
+      })), React.createElement("div", {
+        className: "clear"
+      }));
     }
   }, {
     key: "choice",
-    value: function choice(name, params) {
+    value: function choice(name, opts) {
       var field = has(this.state.fields, name) ? this.state.fields[name] : null;
       var defaults = cloneObj(this.defaults);
-      params = Object.assign({}, defaults, {
+      var params = Object.assign({}, defaults, {
         type: 'checkbox',
         value: '',
         className: ''
-      }, params);
+      }, opts);
       var onChange, createField;
 
       switch (params.type) {
@@ -341,17 +456,17 @@ function (_Component) {
     }
   }, {
     key: "dropdown",
-    value: function dropdown(name, args) {
+    value: function dropdown(name, opts) {
       var field = has(this.state.fields, name) ? this.state.fields[name] : null;
       var defaults = cloneObj(this.defaults);
-      var params = Object.assign({}, defaults, {}, args);
+      var params = Object.assign({}, defaults, {}, opts);
       return React.createElement(Dropdown, {
         name: name,
         options: params.options,
         required: field ? field.required : params.required,
         group: field ? field.group : params.group,
         readOnly: field ? field.readOnly : params.readOnly,
-        onChangeDropdown: this.onChangeDropdown,
+        onChange: this.onChangeDropdown,
         defaultValue: params.value,
         selectLabel: params.selectLabel,
         label: params.label,
@@ -360,17 +475,19 @@ function (_Component) {
         error: field ? field.error : params.error,
         errorType: params.errorType,
         createField: this.createField,
+        multi: field ? field.multi : params.multi,
+        value: field ? field.value : '',
         params: params
       });
     }
   }, {
     key: "textField",
-    value: function textField(name, args) {
+    value: function textField(name, opts) {
       var field = has(this.state.fields, name) ? this.state.fields[name] : null;
       var params = Object.assign({}, cloneObj(this.defaults), {
         className: '',
         type: 'text'
-      }, args);
+      }, opts);
       return React.createElement(TextField, {
         name: name,
         className: params.className,
@@ -395,14 +512,14 @@ function (_Component) {
     }
   }, {
     key: "richText",
-    value: function richText(name, params) {
+    value: function richText(name, opts) {
       var field = has(this.state.fields, name) ? this.state.fields[name] : null;
       var defaultParams = cloneObj(this.defaults);
-      params = Object.assign({}, defaultParams, {
+      var params = Object.assign({}, defaultParams, {
         className: '',
         type: 'richText',
         errorType: 'normal'
-      }, params);
+      }, opts);
       return React.createElement(RichTextField, {
         name: name,
         className: params.className,
@@ -426,17 +543,17 @@ function (_Component) {
     }
   }, {
     key: "creditCard",
-    value: function creditCard(name, params) {
+    value: function creditCard(name, opts) {
       var field = has(this.state.fields, name) ? this.state.fields[name] : null;
       var defaultParams = cloneObj(this.defaults);
-      params = Object.assign({}, defaultParams, {
+      var params = Object.assign({}, defaultParams, {
         className: '',
         type: 'text',
         cardType: 'noCardType',
         placeholder: 'xxxx xxxx xxxx xxxx',
         validate: 'creditcard',
         maxLength: 19
-      }, params);
+      }, opts);
       return React.createElement(CreditCard, {
         name: name,
         className: params.className,
@@ -463,14 +580,14 @@ function (_Component) {
     }
   }, {
     key: "creditCardGroup",
-    value: function creditCardGroup(args) {
+    value: function creditCardGroup(opts) {
       var defaults = cloneObj(this.defaults);
       var ccnumberField = has(this.state.fields, 'ccnumber') ? this.state.fields.ccnumber : null;
       var hideCardsAccepted = ccnumberField ? ccnumberField.cardType !== 'noCardType' ? true : false : false;
       var params = Object.assign({}, defaults, {
         className: '',
         required: true
-      }, args);
+      }, opts);
       return React.createElement("div", {
         className: "creditCard-group"
       }, React.createElement("div", {
@@ -505,24 +622,66 @@ function (_Component) {
       });
       return error;
     }
+    /**
+    * Get Errors returned from the API
+    * @param {object} err Error response returned
+    *
+    * TODO: get this cleaned up on the API side to have consistent responses
+    */
+
   }, {
     key: "getErrors",
     value: function getErrors(err) {
-      var errors;
+      var error = false;
 
-      if (err) {
-        if (has(err, 'errors')) {
-          errors = err.errors;
-          this.formProp({
-            error: "Error saving: ".concat(errors[0].message)
-          });
-          if (has(this.state.fields, errors[0].field)) this.fieldProp(errors[0].field, {
-            error: "The following error occurred while saving, ".concat(errors[0].message)
-          });
+      if (has(err, 'response')) {
+        // Make sure the err has response prop before continuing
+        if (has(err.response, 'data')) {
+          // Make sure the response has data prop before continuing
+          // Handle single error
+          if (has(err.response.data, 'message')) {
+            if (err.response.data.code === 'vantiv_payfac' && this.props.hideVantivErrors) {
+              // Show the hideVantivErrors message
+              this.formProp({
+                error: "".concat(this.props.hideVantivErrors)
+              });
+              error = this.props.hideVantivErrors;
+            } else {
+              this.formProp({
+                error: "".concat(err.response.data.message)
+              });
+              error = err.response.data.message;
+            }
+          }
+
+          if (has(err.response.data, 'errors')) {
+            // Handle multiple errors
+            var errors = err.response.data.errors;
+
+            for (var i = 0; i <= errors.length; i++) {
+              if (!isEmpty(errors[i])) {
+                if (has(errors[i], 'field')) {
+                  if (has(this.state.fields, errors[i].field)) {
+                    this.fieldProp(errors[i].field, {
+                      error: "The following error occurred while saving, ".concat(errors[i].message)
+                    });
+                  }
+                }
+
+                if (has(errors[i], 'message')) {
+                  error = i === 0 ? errors[0].message : "".concat(error, ", ").concat(errors[i].message);
+                }
+              }
+            }
+
+            this.formProp({
+              error: "Error saving: ".concat(error)
+            });
+          }
         }
       }
 
-      return errors;
+      return error;
     }
   }, {
     key: "formSaved",
@@ -669,6 +828,12 @@ function (_Component) {
             error: _v.msgs.money
           });
           break;
+
+        case 'calendarRange':
+          if (!_v.validateCalendarRange(key, this.state.fields)) this.fieldProp(key, {
+            error: _v.msgs.calendarRange
+          });
+          break;
         // no default
       }
 
@@ -693,6 +858,8 @@ function (_Component) {
           creditCardGroup: _this4.creditCardGroup,
           dropdown: _this4.dropdown,
           choice: _this4.choice,
+          calendarField: _this4.calendarField,
+          calendarRange: _this4.calendarRange,
           savingErrorMsg: _v.msgs.savingError,
           responseData: _this4.props.responseData,
           fieldError: _this4.fieldError,
@@ -730,7 +897,8 @@ function (_Component) {
 
 Form.defaultProps = {
   errorMsg: true,
-  successMsg: true
+  successMsg: true,
+  hideVantivErrors: false
 };
 
 function mapStateToProps(state, props) {

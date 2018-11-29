@@ -8,7 +8,7 @@ import React, { Component } from 'react';
 import 'flatpickr/dist/themes/light.css';
 import Flatpickr from 'react-flatpickr';
 import Moment from 'moment';
-import { util } from '../';
+import { util, _v } from '../';
 
 var CalendarField =
 /*#__PURE__*/
@@ -24,13 +24,20 @@ function (_Component) {
     _this.onFocus = _this.onFocus.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.onBlur = _this.onBlur.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.onChange = _this.onChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.onChangeInput = _this.onChangeInput.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.state = {
-      date: _this.props.defaultValue ? _this.props.defaultValue : ''
+      date: _this.props.defaultValue ? _this.props.defaultValue : '',
+      value: _this.props.defaultValue ? _this.props.defaultValue : ''
     };
     return _this;
   }
 
   _createClass(CalendarField, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      if (this.props.createField) this.props.createField(this.props.name, this.props.params);
+    }
+  }, {
     key: "onFocus",
     value: function onFocus() {}
   }, {
@@ -46,7 +53,22 @@ function (_Component) {
     value: function onChange(selectedDates, dateStr, instance) {
       var dateFormat = this.props.enableTime ? 'MM/DD/YYYY H:mm' : 'MM/DD/YYYY';
       var ts = Moment(dateStr, dateFormat).valueOf();
-      if (this.props.onChangeCalendar) this.props.onChangeCalendar(ts);
+      this.setState({
+        value: dateStr
+      });
+      if (this.props.onChangeCalendar) this.props.onChangeCalendar(ts, this.props.name);
+    }
+  }, {
+    key: "onChangeInput",
+    value: function onChangeInput(e) {
+      var value = _v.formatDate(e.currentTarget.value, this.props.enableTime);
+
+      var dateFormat = this.props.enableTime ? 'MM/DD/YYYY H:mm' : 'MM/DD/YYYY';
+      var ts = Moment(value, dateFormat).valueOf();
+      this.setState({
+        value: value
+      });
+      if (this.props.onChangeCalendar) this.props.onChangeCalendar(ts, this.props.name);
     }
   }, {
     key: "render",
@@ -61,7 +83,9 @@ function (_Component) {
           clickOpens = _this$props.clickOpens,
           label = _this$props.label,
           customLabel = _this$props.customLabel,
-          step = _this$props.step;
+          step = _this$props.step,
+          error = _this$props.error,
+          errorType = _this$props.errorType;
       var date = this.state.date;
       var dateFormat = enableTime ? 'm/d/Y H:i' : 'm/d/Y';
       var labelStyle = util.cloneObj(customLabel);
@@ -73,6 +97,7 @@ function (_Component) {
           allowInput: allowInput,
           dateFormat: dateFormat,
           enableTime: enableTime,
+          minuteIncrement: 1,
           static: staticOption,
           clickOpens: clickOpens,
           wrap: true
@@ -80,19 +105,21 @@ function (_Component) {
       }, React.createElement("div", {
         className: "flatpickr"
       }, React.createElement("label", {
-        className: "top",
         style: labelStyle
       }, label), React.createElement("div", {
-        className: "input-group ".concat(this.props.error && 'error tooltip')
+        className: "input-group ".concat(error && 'error tooltip')
       }, React.createElement("input", {
         name: name,
         style: style,
         type: "text",
-        placeholder: "mm/dd/yyyy",
+        placeholder: enableTime ? 'mm/dd/yyyy hh:mm' : 'mm/dd/yyyy',
         "data-input": true,
         onBlur: this.onBlur,
         onFocus: this.onFocus,
-        step: step
+        step: step,
+        onChange: this.onChangeInput,
+        value: this.state.value,
+        maxLength: 16
       }), React.createElement("button", {
         type: "button",
         className: "input-button",
@@ -101,8 +128,10 @@ function (_Component) {
       }, React.createElement("i", {
         className: "icon icon-calendar"
       })), React.createElement("div", {
-        className: "tooltipTop"
-      }, this.props.error, React.createElement("i", null)))));
+        className: "tooltipTop ".concat(errorType !== 'tooltip' && 'displayNone')
+      }, this.props.error, React.createElement("i", null)), React.createElement("div", {
+        className: "errorMsg ".concat((!error || errorType !== 'normal') && 'displayNone')
+      }, error))));
     }
   }]);
 

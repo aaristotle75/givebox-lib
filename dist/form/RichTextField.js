@@ -5,8 +5,7 @@ import _getPrototypeOf from "/Users/aaron/Sites/projects/givebox/givebox-lib/nod
 import _inherits from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/inherits";
 import React, { Component } from 'react';
 import RichTextEditor from './RichTextEditor';
-import ModalRoute from '../common/ModalRoute';
-import ModalLink from '../common/ModalLink';
+import { ModalRoute, ModalLink } from '../';
 
 var ContentField =
 /*#__PURE__*/

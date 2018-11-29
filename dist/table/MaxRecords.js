@@ -8,7 +8,7 @@ import _assertThisInitialized from "/Users/aaron/Sites/projects/givebox/givebox-
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { util, Select } from '../';
-import { getAPI } from '../redux/actions';
+import { getAPI } from '../api/actions';
 import has from 'has';
 
 var MaxRecords =
@@ -36,21 +36,12 @@ function (_Component) {
       var selected = e.currentTarget.value;
       var resource = this.props.resource;
       var pages = Math.ceil(resource.meta.total / selected).toFixed(0);
-      var endpoint = resource.endpoint.replace('max=' + resource.search.max, 'max=' + selected);
-      var page = resource.search.page;
 
-      if (resource.search.page > pages) {
-        page = 1;
-        endpoint = endpoint.replace('page=' + resource.search.page, 'page=' + page);
-      }
+      var search = _objectSpread({}, resource.search);
 
-      var merge = {
-        max: selected,
-        page: page
-      };
-
-      var search = _objectSpread({}, resource.search, merge);
-
+      search.page = resource.search.page > pages ? 1 : resource.search.page;
+      search.max = selected;
+      var endpoint = resource.endpoint.split('?')[0] + util.makeAPIQuery(search);
       this.props.getAPI(this.props.name, endpoint, search, null, true);
     }
   }, {

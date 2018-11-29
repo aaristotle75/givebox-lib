@@ -1,129 +1,180 @@
-import _objectSpread from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/objectSpread";
-import { getAPI, sendAPI, util, giveboxAPI } from '../';
+import axios from 'axios';
+import * as types from './actionTypes';
 import has from 'has';
-var API_URL = process.env.REACT_APP_API_URL;
-/**
-* GET a resource from the API
-*
-* @param {string} resource Name of resource
-* @param {object} opt
-*
-* // Options //
-* @param {array} id Each ID should be entered in the order of the endpoint
-* @param {object} search Search options, max, page, sort, order, filter, query, queryOnly
-* @param {function} callback
-* @param {bool} reload If the resource should be reloaded
-*/
-
-export function getResource(resource) {
-  var opt = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  var defaults = {
-    id: [],
-    search: {},
-    callback: null,
-    reload: false
-  };
-
-  var options = _objectSpread({}, defaults, opt);
-
-  return function (dispatch, getState) {
-    var id = options.id;
-    var reload = options.reload;
-
-    if (!util.isEmpty(id)) {
-      if (id.indexOf('org') !== -1) id[0] = getState().resource.orgID;
-      if (id.indexOf('user') !== -1) id[0] = getState().resource.userID;
-    } // Reload if resource exists and a new ID is requested
-
-
-    if (has(getState().resource, resource)) {
-      if (!util.isEmpty(id)) {
-        id.forEach(function (value, key) {
-          if (has(getState().resource[resource].search, 'id')) {
-            if (!util.isEmpty(getState().resource[resource].search.id[key])) {
-              if (getState().resource[resource].search.id[key] !== id[key]) reload = true;
-            }
-          }
-        });
-      }
-    } // Set default search params and merge custom search which can override defaults
-
-
-    var defaultSearch = {
-      max: 50,
-      page: 1,
-      sort: 'createdAt',
-      order: 'desc',
-      filter: '',
-      query: '',
-      queryOnly: false,
-      id: id
-    };
-
-    var search = _objectSpread({}, defaultSearch, options.search); // Get the API endpoint and add search obj to query string
-
-
-    var endpoint = API_URL + giveboxAPI.endpoint(resource, id);
-    endpoint = endpoint + util.makeAPIQuery(search);
-    return dispatch(getAPI(resource, endpoint, search, options.callback, reload));
+export function toggleModal(identifier, open) {
+  return {
+    type: types.TOGGLE_MODAL,
+    identifier: identifier,
+    open: open
   };
 }
-/**
-* Reload the resource from an existing endpoint
-*
-* @param {string} name Name of resource to reload
-* @param {function} callback
-* @param {bool} reloadAfterSend If a single item should be included in the reload
-*/
+export function resourceProp(key, value) {
+  return {
+    type: types.SET_RESOURCE_PROP,
+    key: key,
+    value: value
+  };
+}
 
-export function reloadResource(name, callback) {
-  var reloadAfterSend = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+function requestResource(resource, reload) {
+  return {
+    type: reload ? types.RELOAD_REQUEST_RESOURCE : types.NEW_REQUEST_RESOURCE,
+    resource: resource
+  };
+}
+
+function receiveResource(resource, endpoint, data, error, search) {
+  return {
+    type: types.RECEIVE_RESOURCE,
+    resource: resource,
+    endpoint: endpoint,
+    data: data,
+    search: search,
+    error: error
+  };
+}
+
+function resourceCatchError(resource, error) {
+  return {
+    type: types.RESOURCE_CATCH_ERROR,
+    resource: resource,
+    error: error
+  };
+}
+
+export function getAPI(resource, endpoint, search, callback, reload) {
+  var csrf_token = document.querySelector("meta[name='csrf_token']") ? document.querySelector("meta[name='csrf_token']")['content'] : '';
   return function (dispatch, getState) {
-    var resource = has(getState().resource, name) ? getState().resource[name] : null;
-    if (resource) dispatch(getAPI(name, resource.endpoint, resource.search, callback, true)); // Reload the list after updating a single item
+    if (shouldGetAPI(getState(), resource, reload)) {
+      dispatch(requestResource(resource, reload));
+      axios.get(endpoint, {
+        headers: {
+          'X-CSRF-Token': csrf_token
+        },
+        withCredentials: true,
+        transformResponse: function transformResponse(data) {
+          return JSON.parse(data);
+        }
+      }).then(function (response) {
+        switch (response.status) {
+          case 200:
+            dispatch(receiveResource(resource, endpoint, response.data, null, search));
+            if (callback) callback(response.data, null);
+            break;
 
-    if (reloadAfterSend) {
-      var listName = name + 's';
-      var resourceList = has(getState().resource, listName) ? getState().resource[listName] : null;
-      if (resourceList) dispatch(getAPI(listName, resourceList.endpoint, resourceList.search, callback, true));
+          default:
+            // pass response as error
+            dispatch(receiveResource(resource, endpoint, {}, response, search));
+            if (callback) callback(null, response);
+            break;
+        }
+      }).catch(function (error) {
+        dispatch(resourceCatchError(resource, error));
+        if (callback) callback(null, error);
+      });
     }
   };
 }
-/**
-* POST, PUT, PATCH a resource to the API
-*
-* @params (string) resource
-* @params {object} opt
-*
-* // Options //
-* @param {array} id Each ID should be entered in the order of the endpoint
-* @param {object} data
-* @param {string} method
-* @param {function} callback
-* @param {bool} reload If the resource should be reloaded
-*/
 
-export function sendResource(resource) {
-  var opt = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  var defaults = {
-    id: [],
-    data: null,
-    method: 'post',
-    callback: null,
-    reload: true
+function shouldGetAPI(state, resource, reload) {
+  var shouldGet = true;
+
+  if (has(state.resource, resource)) {
+    if (state.resource[resource].isFetching) shouldGet = false;
+    if (!reload) shouldGet = false;
+  }
+
+  return shouldGet;
+}
+
+function sendRequest(resource, endpoint, method, data) {
+  return {
+    type: types.SEND_REQUEST,
+    resource: resource,
+    endpoint: endpoint,
+    method: method,
+    data: data
   };
+}
 
-  var options = _objectSpread({}, defaults, opt);
+function sendResponse(resource, response, error) {
+  return {
+    type: types.SEND_RESPONSE,
+    resource: resource,
+    response: response,
+    error: error
+  };
+}
 
+export function sendAPI(resource, endpoint, method, data, callback, reloadResource) {
+  var csrf_token = document.querySelector("meta[name='csrf_token']") ? document.querySelector("meta[name='csrf_token']")['content'] : '';
   return function (dispatch, getState) {
-    var id = options.id;
+    method = method.toLowerCase();
 
-    if (!util.isEmpty(id)) {
-      if (id.indexOf('org') !== -1) id[0] = getState().resource.orgID;
-      if (id.indexOf('user') !== -1) id[0] = getState().resource.userID;
+    if (shouldSendAPI(getState(), resource)) {
+      dispatch(sendRequest(resource, endpoint, method, data));
+      axios({
+        method: method,
+        url: endpoint,
+        data: data,
+        withCredentials: true,
+        headers: {
+          'X-CSRF-Token': csrf_token
+        },
+        transformResponse: function transformResponse(data) {
+          return data ? JSON.parse(data) : '';
+        }
+      }).then(function (response) {
+        switch (response.status) {
+          case 200:
+          case 201:
+          case 204:
+            dispatch(sendResponse(resource, has(response, 'data') ? response.data : response, null));
+            if (callback) callback(has(response, 'data') ? response.data : null, null);
+            if (reloadResource) dispatch(reloadResource(resource, null, true));
+            break;
+
+          default:
+            // pass response as error
+            dispatch(sendResponse(resource, {}, response));
+            if (callback) callback(null, response);
+            break;
+        }
+      }).catch(function (error) {
+        dispatch(sendResponse(resource, {}, error));
+        if (callback) callback(null, error);
+      });
     }
+  };
+}
 
-    var endpoint = API_URL + giveboxAPI.endpoint(resource, id);
-    return dispatch(sendAPI(resource, endpoint, options.method, options.data, options.callback, options.reload ? reloadResource : null));
+function shouldSendAPI(state, resource) {
+  var shouldSend = true;
+
+  if (has(state.send, resource)) {
+    if (state.send[resource].isSending) shouldSend = false;
+  }
+
+  return shouldSend;
+}
+
+export function removeResource(resource) {
+  return function (dispatch, getState) {
+    if (shouldRemoveResource(getState(), resource)) dispatch(remove(resource));
+  };
+}
+
+function shouldRemoveResource(state, resource) {
+  if (has(state.resource, resource)) {
+    return true;
+  }
+
+  return false;
+}
+
+function remove(resource) {
+  return {
+    type: types.REMOVE_RESOURCE,
+    resource: resource
   };
 }

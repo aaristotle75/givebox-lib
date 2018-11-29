@@ -4,8 +4,6 @@ form {
   padding: 10px 0;
 }
 
-form:not(.clean) .input-group { margin: 20px 0 0 0; }
-
 form button {
   margin: 20px 0 0 0;
 }
@@ -15,6 +13,10 @@ form button {
 }
 
 /*-------------- Input -----------------*/
+
+.input-group {
+  position: relative;
+}
 
 input {
   font-size: $normal-text-size;
@@ -38,15 +40,12 @@ input[type=text]::-ms-input-placeholder {
   color: $med-gray;
 }
 
-.input-group {
-  position: relative;
-}
-
 .input-button {
   position: absolute;
   top: 3px;
   right: 5px;
   bottom: 0;
+  margin: 0 !important;
 }
 
 input:not(.checkbox) {
@@ -57,6 +56,7 @@ input:not(.checkbox) {
 label, .label {
   color: $med-gray;
   vertical-align: middle;
+  text-align: left;
 }
 
 /*------------- Rich Text ----------*/
@@ -183,10 +183,11 @@ label, .label {
 
   .icon {
     position: absolute;
-    top: 5px;
+    top: 8px;
     right: 10px;
     bottom: 0;
     color: $med-gray;
+    font-size: $small-text-size;
   }
 
   button {
@@ -214,12 +215,9 @@ label, .label {
     width: 100%;
     max-height: 300px;
     @include box-shadow(0px 4px 8px 0px rgba(0,0,0,0.2));
-    z-index: 1;
-    animation-name: slideIn;
-    animation-duration: 1s;
-    overflow-y: scroll;
+    z-index: 10;
+    overflow-y: auto;
     overflow-x: hidden;
-    margin-bottom: 20px;
   }
 
   .dropdown-item {
@@ -228,6 +226,18 @@ label, .label {
     display: block;
     width: auto;
     color: $dark;
+    text-align: left;
+
+    .icon {
+      position: relative;
+      display: inline-block;
+      top: 0;
+      right: 0;
+      margin-left: 0;
+      margin-right: 5px;
+      color: $primary;
+      font-size: $normal-text-size;
+    }
   }
 
   .dropdown-item:hover {
@@ -235,16 +245,6 @@ label, .label {
   }
 
   .dropdown-item.selected { color: $primary; }
-}
-
-.dropdown-open {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: transparent;
-  overflow: hidden;
 }
 
 /*----------- Errors ------------*/

@@ -65,6 +65,12 @@ export function resource() {
         meta: {}
       })));
 
+    case types.REMOVE_RESOURCE:
+      delete state[action.resource];
+      return Object.assign({}, state, _objectSpread({
+        isFetching: false
+      }, state));
+
     default:
       return state;
   }

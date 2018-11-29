@@ -1,3 +1,4 @@
+import Moment from 'moment';
 export function validateEmail(email) {
   var regex = /^(([^<>()[\]\\.,;:\s@']+(\.[^<>()[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return regex.test(email);
@@ -174,6 +175,43 @@ export function clearRichTextIfShouldBeEmpty(value) {
   if (typeof value === 'string') value = value.replace('<p><br></p>', '');
   return value;
 }
+export function validateCalendarRange(key, fields) {
+  var validate = true;
+  var range = {};
+
+  switch (fields[key].range) {
+    case 'start':
+      {
+        range.start = fields[key].value;
+        range.end = fields[fields[key].rangeEndField].value;
+        break;
+      }
+
+    case 'end':
+      {
+        range.start = fields[fields[key].rangeStartField].value;
+        range.end = fields[key].value;
+        break;
+      }
+    // no default
+  }
+
+  if (fields[key].enableTime) {
+    if (range.start > range.end) validate = false;
+  } else {
+    if (Moment.unix(range.start).startOf('day').unix() > Moment.unix(range.end).endOf('day').unix()) validate = false;
+  }
+
+  return validate;
+}
+export function formatDate(value) {
+  var time = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+  var regex = time ? /(\d{0,2})(\d{0,2})(\d{0,4})(\d{0,2})(\d{0,2})/ : /(\d{0,2})(\d{0,2})(\d{0,4})/;
+  var x = value.replace(/\D/g, '').match(regex);
+  var str;
+  if (time) str = !x[2] ? x[1] : x[1] + '/' + x[2] + (x[3] ? '/' + x[3] : '') + (x[4] ? ' ' + x[4] : '') + (x[5] ? ':' + x[5] : '');else str = !x[2] ? x[1] : x[1] + '/' + x[2] + (x[3] ? '/' + x[3] : '');
+  return str;
+}
 export var msgs = {
   required: 'Field is required.',
   email: 'Please enter a valid email address.',
@@ -185,7 +223,8 @@ export var msgs = {
   money: 'Please enter a valid amount between 1 to 25,000 with or without a comma and decimal point.',
   success: 'Saved successfully.',
   error: 'Please fix the following errors to continue.',
-  savingError: 'There was a system error trying to save. Please contact support@givebox.com if this error persists.'
+  savingError: 'There was a system error trying to save. Please contact support@givebox.com if this error persists.',
+  calendarRange: 'Start date must be equal to or less than End date.'
 };
 export var limits = {
   txMin: 1,

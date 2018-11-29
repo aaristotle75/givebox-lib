@@ -10,24 +10,44 @@ class CalendarField extends Component {
     super(props);
     this.onFocus = this.onFocus.bind(this);
     this.onBlur = this.onBlur.bind(this);
+    this.onOpen = this.onOpen.bind(this);
+    this.onClose = this.onClose.bind(this);
     this.onChange = this.onChange.bind(this);
     this.onChangeInput = this.onChangeInput.bind(this);
     this.state = {
       date: this.props.defaultValue ? this.props.defaultValue : '',
-      value: this.props.defaultValue ? this.props.defaultValue : ''
+      value: this.props.defaultValue ? this.props.defaultValue : '',
+      status: 'idle'
     }
+    this.inputRef = React.createRef();
   }
 
   componentDidMount() {
     if (this.props.createField) this.props.createField(this.props.name, this.props.params);
   }
 
-  onFocus() {
+  onFocus(e) {
+    if (!this.props.enableTime) {
+      if (e.currentTarget.value) this.onChange('', e.currentTarget.value);
+    }
+    this.setState({status: 'active'});
   }
 
   onBlur(e) {
-    this.setState({date: e.currentTarget.value});
+    this.setState({
+      date: e.currentTarget.value,
+      status: 'idle'
+    });
     if (this.props.onBlur) this.props.onBlur(e);
+  }
+
+  onOpen() {
+    this.setState({status: 'active'});
+  }
+
+  onClose() {
+    this.setState({status: 'idle'});
+    console.log(this.inputRef);
   }
 
   onChange(selectedDates, dateStr, instance) {
@@ -56,6 +76,7 @@ class CalendarField extends Component {
       staticOption,
       clickOpens,
       label,
+      fixedLabel,
       customLabel,
       step,
       error,
@@ -72,6 +93,8 @@ class CalendarField extends Component {
       <Flatpickr
         value={date}
         onChange={this.onChange}
+        onOpen={this.onOpen}
+        onClose={this.onClose}
         options={{
           inline: inline,
           allowInput: allowInput,
@@ -84,21 +107,25 @@ class CalendarField extends Component {
         }}
       >
         <div className='flatpickr'>
-          <label style={labelStyle} >{label}</label>
           <div className={`input-group ${error && 'error tooltip'}`}>
-            <input
-              name={name}
-              style={style}
-              type='text'
-              placeholder={enableTime ? 'mm/dd/yyyy hh:mm' : 'mm/dd/yyyy'}
-              data-input
-              onBlur={this.onBlur}
-              onFocus={this.onFocus}
-              step={step}
-              onChange={this.onChangeInput}
-              value={this.state.value}
-              maxLength={16}
-            />
+            <div className={`floating-label ${this.state.status} ${fixedLabel && 'fixed'}`}>
+              <input
+                ref={this.inputRef}
+                name={name}
+                style={style}
+                type='text'
+                placeholder={enableTime ? 'mm/dd/yyyy hh:mm' : 'mm/dd/yyyy'}
+                data-input
+                onBlur={this.onBlur}
+                onFocus={this.onFocus}
+                step={step}
+                onChange={this.onChangeInput}
+                value={this.state.value}
+                maxLength={16}
+              />
+              <label htmlFor={name} style={labelStyle} >{label}</label>
+              <div className={`input-bottom ${error ? 'error' : this.state.status}`}></div>
+            </div>
             <button type='button' className='input-button' title='toggle' data-toggle>
                 <i className='icon icon-calendar'></i>
             </button>

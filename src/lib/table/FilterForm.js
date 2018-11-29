@@ -47,7 +47,7 @@ class Filter extends Component {
             // no default
           }
         }
-        filter = `${field.filter}:${isNaN(value) ? `"${value}"` : value}`;
+        filter = `${field.filter}:${isNaN(value) && !field.range ? `"${value}"` : value}`;
       }
     }
     return filter;
@@ -81,11 +81,11 @@ class Filter extends Component {
   getField(key, value) {
     switch (value.field) {
       case 'calendarRange': {
-        return <div key={key} className='col' style={{ width: '100%', margin: 5}}>{this.props.calendarRange(value.name, { options: value.options })}</div>;
+        return <div key={key} className='col' style={{ width: '100%'}}>{this.props.calendarRange(value.name, { options: value.options, colWidth: '50%' })}</div>;
       }
 
       case 'dropdown': {
-        return <div key={key} className='col' style={{ width: '45%', margin: 5}}>
+        return <div key={key} className='col' style={{ width: '50%'}}>
           {this.props.dropdown(
             value.name, {
               options: value.options,

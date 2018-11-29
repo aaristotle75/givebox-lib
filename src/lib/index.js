@@ -28,6 +28,7 @@ import ActionBar from './block/ActionBar';
 import { Alert } from './common/Alert';
 import Delete from './common/Delete';
 import Error from './common/Error';
+import Fade from './common/Fade';
 import GBLink from './common/GBLink';
 import Loader from './common/Loader';
 import Portal from './common/Portal';
@@ -109,6 +110,7 @@ export {
   Alert,
   Delete,
   Error,
+  Fade,
   GBLink,
   Loader,
   Portal,

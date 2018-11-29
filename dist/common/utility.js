@@ -1,4 +1,5 @@
 import _objectSpread from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/objectSpread";
+import React from 'react';
 import Moment from 'moment';
 import has from 'has';
 export var imageUrlWithStyle = function imageUrlWithStyle(imageURL, style) {
@@ -167,15 +168,6 @@ export function createCSV(arr, name) {
   data = encodeURI(csv);
   return data;
 }
-export function calcAmountDonated(amount, fee, passFees) {
-  var gross = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-
-  if (passFees) {
-    if (gross) return parseFloat(amount / 100 + fee / 100).toFixed(2);else return parseFloat(amount / 100).toFixed(2);
-  } else {
-    if (gross) return parseFloat(amount / 100).toFixed(2);else return parseFloat(amount / 100 - fee / 100).toFixed(2);
-  }
-}
 export function setCookie(cname, cvalue, exdays) {
   var d = new Date();
   d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
@@ -311,6 +303,30 @@ export function encodeDataURI(imageUrl, callback) {
 
   xhr.send();
 }
+export function calcAmount(amount, fee, passFees) {
+  var gross = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+
+  if (passFees) {
+    if (gross) return parseFloat(amount / 100 + fee / 100).toFixed(2);else return parseFloat(amount / 100).toFixed(2);
+  } else {
+    if (gross) return parseFloat(amount / 100).toFixed(2);else return parseFloat(amount / 100 - fee / 100).toFixed(2);
+  }
+}
+export function money(amount) {
+  var symbol = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '$';
+  var negative = false;
+
+  if (amount < 0) {
+    amount = Math.abs(amount);
+    negative = true;
+  }
+
+  return React.createElement("span", {
+    className: "moneyAmount ".concat(negative && 'negativeAmount')
+  }, negative && '(', React.createElement("span", {
+    className: "symbol"
+  }, symbol), numberWithCommas(amount), negative && ')');
+}
 export function formatMoneyForAPI(amount) {
   if (!amount) return 0;
   amount = amount.toString();
@@ -394,6 +410,7 @@ export function makeAPIQuery(obj) {
 
 export function isLoading(resource) {
   var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+  if (id === 'new') return false;
   var loading = false;
 
   if (!resource) {
@@ -430,4 +447,8 @@ export function formatBytes(bytes, decimals) {
 }
 export function isEmpty(value) {
   return value === undefined || value === null || typeof value === 'object' && Object.keys(value).length === 0 || typeof value === 'string' && value.trim().length === 0 || value.length === 0;
+}
+export function getValue(obj, prop) {
+  if (isEmpty(obj)) return '';
+  if (has(obj, prop)) return obj[prop];else return '';
 }

@@ -31,7 +31,7 @@ class Choice extends Component {
     if (type === 'radio') isChecked = checked === value ? true : false;
 
     return (
-      <div style={style} className={`input-group ${className || ''} ${type}-group  ${error ? 'error tooltip' : ''}`}>
+      <div style={style} className={`choice-group ${className || ''} ${type}-group  ${error ? 'error tooltip' : ''}`}>
         <input
           type={type}
           name={name}
@@ -42,7 +42,7 @@ class Choice extends Component {
           value={value || checked}
         />
           <label htmlFor={id}></label>
-          {label && <label onClick={() => onChange(name, value)}>{label}</label>}
+          {label && <label className='label' onClick={() => onChange(name, value)}>{label}</label>}
           <div className={`tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`}>
             {this.props.error}
             <i></i>

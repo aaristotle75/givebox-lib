@@ -39,7 +39,7 @@ export default class CalendarRange extends Component {
     const dateFormat = enableTime ? 'MM/DD/YYYY H:mm' : 'MM/DD/YYYY';
 
     return (
-      <div style={style} className={`dateRange`}>
+      <div style={style} className={`field-group`}>
         <div className="col">
           <CalendarField
             enableTime={enableTime}

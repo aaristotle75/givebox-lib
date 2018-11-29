@@ -1,3 +1,26 @@
+/*
+.pageTrans {
+  height: 100vh;
+  padding: calc(15% + 1.5em) 5% 5%;
+  overflow-y: auto;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  -webkit-overflow-scrolling: touch;
+  transition: transform 1s ease-in-out;
+}
+
+.pageTrans-enter {
+  transform: translate(-100%, 0);
+}
+.pageTrans-enter-active {
+  transform: translate(0, 0);
+}
+.pageTrans-exit {
+  transform: translate(-100%, 0);
+}
+*/
+
 .loader {
 	position: absolute;
 	top: 0px;

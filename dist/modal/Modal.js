@@ -7,7 +7,7 @@ import _inherits from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modu
 import _assertThisInitialized from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/assertThisInitialized";
 import React, { Component } from 'react';
 import * as Effect from './ModalEffect';
-import { cloneObj, isEmpty } from './utility';
+import { cloneObj, isEmpty } from '../common/utility';
 
 var prefix = require('react-prefixr');
 
@@ -186,13 +186,11 @@ function (_Component) {
       if (!transition) {
         transition = defaultTransition;
       } else {
-        transition = _objectSpread({}, defaultTransition, {
-          transition: transition
-        });
+        transition = _objectSpread({}, defaultTransition, transition);
       }
 
       var transition_style = {
-        transition: "".concat(transition.property, " ").concat(transition.duration / 1000, "s ").concat(transition.timiingfunction)
+        transition: "".concat(transition.property, " ").concat(transition.duration / 1000, "s ").concat(transition.timingfunction)
       };
       var closeBtn = mobile ? true : closeBtnShow;
       var defaultOverlay = cloneObj(defaultOverlayStyle);
@@ -225,9 +223,7 @@ function (_Component) {
         style: prefix(_objectSpread({}, overlayStyle, modalOverlayStyle))
       }, React.createElement("div", {
         className: "modalContent",
-        style: prefix(_objectSpread({}, contentStyle, transition_style, {
-          openEffect: openEffect
-        })),
+        style: prefix(_objectSpread({}, contentStyle, transition_style, openEffect)),
         onClick: stopPropagation
       }, this.renderChildren(), closeBtn && React.createElement("button", {
         style: closeBtnStyle,

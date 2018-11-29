@@ -6,7 +6,7 @@ import _inherits from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modu
 import _assertThisInitialized from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/assertThisInitialized";
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { toggleModal } from '../redux/actions';
+import { toggleModal } from '../api/actions';
 import { GBLink } from '../';
 
 var ModalLink =
@@ -34,9 +34,11 @@ function (_Component) {
     value: function render() {
       var _this2 = this;
 
-      var id = this.props.id;
+      var _this$props = this.props,
+          id = _this$props.id,
+          className = _this$props.className;
       return React.createElement(GBLink, {
-        className: "link",
+        className: "link ".concat(className),
         type: "button",
         onClick: function onClick() {
           return _this2.onClick(id);
