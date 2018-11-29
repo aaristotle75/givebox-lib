@@ -46,7 +46,7 @@ function (_Component) {
       if (type === 'radio') isChecked = checked === value ? true : false;
       return React.createElement("div", {
         style: style,
-        className: "input-group ".concat(className || '', " ").concat(type, "-group  ").concat(error ? 'error tooltip' : '')
+        className: "choice-group ".concat(className || '', " ").concat(type, "-group  ").concat(error ? 'error tooltip' : '')
       }, React.createElement("input", {
         type: type,
         name: name,
@@ -60,6 +60,7 @@ function (_Component) {
       }), React.createElement("label", {
         htmlFor: id
       }), label && React.createElement("label", {
+        className: "label",
         onClick: function onClick() {
           return _onChange(name, value);
         }

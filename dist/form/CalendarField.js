@@ -23,12 +23,16 @@ function (_Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(CalendarField).call(this, props));
     _this.onFocus = _this.onFocus.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.onBlur = _this.onBlur.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.onOpen = _this.onOpen.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.onClose = _this.onClose.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.onChange = _this.onChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.onChangeInput = _this.onChangeInput.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.state = {
       date: _this.props.defaultValue ? _this.props.defaultValue : '',
-      value: _this.props.defaultValue ? _this.props.defaultValue : ''
+      value: _this.props.defaultValue ? _this.props.defaultValue : '',
+      status: 'idle'
     };
+    _this.inputRef = React.createRef();
     return _this;
   }
 
@@ -39,14 +43,38 @@ function (_Component) {
     }
   }, {
     key: "onFocus",
-    value: function onFocus() {}
+    value: function onFocus(e) {
+      if (!this.props.enableTime) {
+        if (e.currentTarget.value) this.onChange('', e.currentTarget.value);
+      }
+
+      this.setState({
+        status: 'active'
+      });
+    }
   }, {
     key: "onBlur",
     value: function onBlur(e) {
       this.setState({
-        date: e.currentTarget.value
+        date: e.currentTarget.value,
+        status: 'idle'
       });
       if (this.props.onBlur) this.props.onBlur(e);
+    }
+  }, {
+    key: "onOpen",
+    value: function onOpen() {
+      this.setState({
+        status: 'active'
+      });
+    }
+  }, {
+    key: "onClose",
+    value: function onClose() {
+      this.setState({
+        status: 'idle'
+      });
+      console.log(this.inputRef);
     }
   }, {
     key: "onChange",
@@ -82,6 +110,7 @@ function (_Component) {
           staticOption = _this$props.staticOption,
           clickOpens = _this$props.clickOpens,
           label = _this$props.label,
+          fixedLabel = _this$props.fixedLabel,
           customLabel = _this$props.customLabel,
           step = _this$props.step,
           error = _this$props.error,
@@ -92,6 +121,8 @@ function (_Component) {
       return React.createElement(Flatpickr, {
         value: date,
         onChange: this.onChange,
+        onOpen: this.onOpen,
+        onClose: this.onClose,
         options: {
           inline: inline,
           allowInput: allowInput,
@@ -104,11 +135,12 @@ function (_Component) {
         }
       }, React.createElement("div", {
         className: "flatpickr"
-      }, React.createElement("label", {
-        style: labelStyle
-      }, label), React.createElement("div", {
+      }, React.createElement("div", {
         className: "input-group ".concat(error && 'error tooltip')
+      }, React.createElement("div", {
+        className: "floating-label ".concat(this.state.status, " ").concat(fixedLabel && 'fixed')
       }, React.createElement("input", {
+        ref: this.inputRef,
         name: name,
         style: style,
         type: "text",
@@ -120,7 +152,12 @@ function (_Component) {
         onChange: this.onChangeInput,
         value: this.state.value,
         maxLength: 16
-      }), React.createElement("button", {
+      }), React.createElement("label", {
+        htmlFor: name,
+        style: labelStyle
+      }, label), React.createElement("div", {
+        className: "input-bottom ".concat(error ? 'error' : this.state.status)
+      })), React.createElement("button", {
         type: "button",
         className: "input-button",
         title: "toggle",

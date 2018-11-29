@@ -1,16 +1,5 @@
 @import 'variables.scss';
 
-/*-------- Date Range ----------*/
-.dateRange {
- display: inline;
- width: 100%;
-
- .col {
-  display: inline-block;
-  margin-right: 10px;
- }
-}
-
 /*------- Flat Pickr overrides -----*/
 .flatpickr {
   width: 100%;

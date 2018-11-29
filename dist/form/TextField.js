@@ -3,6 +3,7 @@ import _createClass from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_m
 import _possibleConstructorReturn from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/possibleConstructorReturn";
 import _getPrototypeOf from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/getPrototypeOf";
 import _inherits from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/inherits";
+import _assertThisInitialized from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/assertThisInitialized";
 import React, { Component } from 'react';
 
 var TextField =
@@ -16,7 +17,12 @@ function (_Component) {
     _classCallCheck(this, TextField);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(TextField).call(this, props));
+    _this.onFocus = _this.onFocus.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.onBlur = _this.onBlur.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.inputRef = React.createRef();
+    _this.state = {
+      status: 'idle'
+    };
     return _this;
   }
 
@@ -28,6 +34,24 @@ function (_Component) {
       });
       if (params.type === 'hidden') params.required = false;
       if (this.props.createField) this.props.createField(this.props.name, params);
+    }
+  }, {
+    key: "onFocus",
+    value: function onFocus(e) {
+      e.preventDefault();
+      this.setState({
+        status: 'active'
+      });
+      if (this.props.onFocus) this.props.onFocus(e);
+    }
+  }, {
+    key: "onBlur",
+    value: function onBlur(e) {
+      e.preventDefault();
+      this.setState({
+        status: 'idle'
+      });
+      if (this.props.onBlur) this.props.onBlur(e);
     }
   }, {
     key: "render",
@@ -42,6 +66,7 @@ function (_Component) {
           readOnly = _this$props.readOnly,
           style = _this$props.style,
           label = _this$props.label,
+          fixedLabel = _this$props.fixedLabel,
           className = _this$props.className,
           error = _this$props.error,
           errorType = _this$props.errorType,
@@ -49,8 +74,10 @@ function (_Component) {
           value = _this$props.value;
       return React.createElement("div", {
         style: style,
-        className: "input-group ".concat(className || '', " textfield-group ").concat(error ? 'error tooltip' : '')
-      }, label && React.createElement("label", null, label), React.createElement("input", {
+        className: "input-group ".concat(className || '', " textfield-group ").concat(error ? 'error tooltip' : '', " ").concat(type === 'hidden' && 'hidden')
+      }, React.createElement("div", {
+        className: "floating-label ".concat(this.state.status, " ").concat(fixedLabel && 'fixed')
+      }, React.createElement("input", {
         autoFocus: autoFocus,
         id: id || name,
         ref: this.inputRef,
@@ -60,12 +87,16 @@ function (_Component) {
         required: type === 'hidden' ? false : required,
         readOnly: readOnly,
         onChange: this.props.onChange,
-        onBlur: this.props.onBlur,
-        onFocus: this.props.onFocus,
+        onBlur: this.onBlur,
+        onFocus: this.onFocus,
         autoComplete: "new-password",
         value: value,
         maxLength: maxLength
-      }), this.props.children, React.createElement("div", {
+      }), label && React.createElement("label", {
+        htmlFor: name
+      }, label), React.createElement("div", {
+        className: "input-bottom ".concat(error ? 'error' : this.state.status)
+      }), this.props.children), React.createElement("div", {
         className: "tooltipTop ".concat(errorType !== 'tooltip' && 'displayNone')
       }, error, React.createElement("i", null)), React.createElement("div", {
         className: "errorMsg ".concat((!error || errorType !== 'normal') && 'displayNone')

@@ -71,7 +71,7 @@ function (_Component) {
             }
           }
 
-          filter = "".concat(field.filter, ":").concat(isNaN(value) ? "\"".concat(value, "\"") : value);
+          filter = "".concat(field.filter, ":").concat(isNaN(value) && !field.range ? "\"".concat(value, "\"") : value);
         }
       }
 
@@ -124,11 +124,11 @@ function (_Component) {
               key: key,
               className: "col",
               style: {
-                width: '100%',
-                margin: 5
+                width: '100%'
               }
             }, this.props.calendarRange(value.name, {
-              options: value.options
+              options: value.options,
+              colWidth: '50%'
             }));
           }
 
@@ -138,8 +138,7 @@ function (_Component) {
               key: key,
               className: "col",
               style: {
-                width: '45%',
-                margin: 5
+                width: '50%'
               }
             }, this.props.dropdown(value.name, {
               options: value.options,

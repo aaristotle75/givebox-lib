@@ -24,6 +24,7 @@ import ActionBar from './block/ActionBar';
 import { Alert } from './common/Alert';
 import Delete from './common/Delete';
 import Error from './common/Error';
+import Fade from './common/Fade';
 import GBLink from './common/GBLink';
 import Loader from './common/Loader';
 import Portal from './common/Portal';
@@ -43,5 +44,5 @@ resource, send, modal, // Modal
 ModalLink, ModalRoute, // Table
 ActionsMenu, Search, Table, MaxRecords, NoRecords, Paginate, Export, Filter, // Block
 StatBlock, ActionBar, // common
-Alert, Delete, Error, GBLink, Loader, Portal, Tabs, Tab, types, util, // Glossary
+Alert, Delete, Error, Fade, GBLink, Loader, Portal, Tabs, Tab, types, util, // Glossary
 FeesGlossary };

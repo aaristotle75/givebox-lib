@@ -54,7 +54,7 @@ function (_Component) {
       var dateFormat = enableTime ? 'MM/DD/YYYY H:mm' : 'MM/DD/YYYY';
       return React.createElement("div", {
         style: style,
-        className: "dateRange"
+        className: "field-group"
       }, React.createElement("div", {
         className: "col"
       }, React.createElement(CalendarField, {
