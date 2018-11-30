@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import PasswordStrength from './PasswordStrength';
+import CharacterCount from './CharacterCount';
+import Fade from '../common/Fade';
 
 class TextField extends Component {
 
@@ -47,7 +50,9 @@ class TextField extends Component {
       error,
       errorType,
       maxLength,
-      value
+      value,
+      strength,
+      count
     } = this.props;
 
     return (
@@ -72,8 +77,14 @@ class TextField extends Component {
             {label && <label htmlFor={name}>{label}</label>}
             <div className={`input-bottom ${error ? 'error' : this.state.status}`}></div>
             {this.props.children}
+            {strength && <PasswordStrength password={value} error={error} />}
+  			    {count && type !== 'password' && type !== 'hidden' &&
+              <Fade in={this.state.status === 'active' && value ? true : false} duration={200}>
+                <CharacterCount max={maxLength} count={value.length} />
+              </Fade>
+            }
           </div>
-          <div className={`tooltipTop ${errorType !=='tooltip' && 'displayNone'}`}>
+          <div className={`tooltipTop ${(errorType !=='tooltip' || strength) && 'displayNone'}`}>
             {error}
             <i></i>
           </div>

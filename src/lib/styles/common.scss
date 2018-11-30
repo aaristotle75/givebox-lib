@@ -50,6 +50,11 @@ p { margin: 1.67em 0; font-size: $normal-text-size; font-weight: $font-weight; }
   clear: both !important;
 }
 
+.yellow { color: $yellow !important; background: $yellow !important; }
+.green { color: $green !important; background: $green !important; }
+.orange { color: $orange !important; background: $orange !important; }
+.red { color: $red !important; background: $red !important; }
+
 /*-------- Links ------------*/
 
 a {

@@ -44,7 +44,7 @@ export function identifyCardTypes(ccnumber) {
 // validate the full length card number
 export function validateCardTypes(value) {
   const ccnumber = value.split(' ').join('');
-  
+
   // Check VISA
   if (/^4[0-9]{12}(?:[0-9]{3})$/.test(ccnumber)) {
     return true
@@ -216,6 +216,13 @@ export function formatDate(value, time = false) {
   return str;
 }
 
+export function validatePassword(value) {
+  let validate = true;
+  if (value.length < 8) validate = false;
+  console.log(value, validate);
+  return validate;
+}
+
 export const msgs = {
   required: 'Field is required.',
   email: 'Please enter a valid email address.',
@@ -229,7 +236,8 @@ export const msgs = {
   error: 'Please fix the following errors to continue.',
   savingError: 'There was a system error trying to save. Please contact support@givebox.com if this error persists.',
   calendarRange: 'Start date must be equal to or less than End date.',
-  creditCard: 'Please enter a valid credit card number.'
+  creditCard: 'Please enter a valid credit card number.',
+  password: 'Passwords must be at least 8 characters long.'
 }
 
 export const limits = {

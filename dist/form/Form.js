@@ -90,7 +90,9 @@ function (_Component) {
       options: [],
       selectLabel: 'Select One',
       modal: false,
-      debug: false
+      debug: false,
+      strength: false,
+      count: false
     };
     _this.defaults = _objectSpread({}, _this.defaultOptions, props.options);
     return _this;
@@ -511,7 +513,9 @@ function (_Component) {
         errorType: params.errorType,
         maxLength: field ? field.maxLength : params.maxLength,
         createField: this.createField,
-        params: params
+        params: params,
+        strength: params.strength,
+        count: params.count
       });
     }
   }, {
@@ -616,6 +620,7 @@ function (_Component) {
         required: params.required,
         validate: 'ccexpire',
         maxLength: 5,
+        count: false,
         debug: params.debug
       })), React.createElement("div", {
         className: "clear"
@@ -807,6 +812,12 @@ function (_Component) {
         case 'email':
           if (!_v.validateEmail(value)) this.fieldProp(key, {
             error: _v.msgs.email
+          });
+          break;
+
+        case 'password':
+          if (!_v.validatePassword(value)) this.fieldProp(key, {
+            error: _v.msgs.password
           });
           break;
 

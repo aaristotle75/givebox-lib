@@ -33,12 +33,13 @@ export default class TestForm extends Component {
         {this.props.textField('custID', { type: 'hidden' })}
         <div className='row'>
           <div className='col' style={{width: '50%'}}>
-            {this.props.textField('name', { placeholder: 'Enter Name', label: 'Name', fixedLabel: true })}
+            {this.props.textField('name', { placeholder: 'Enter Name', label: 'Name', fixedLabel: true, count: true })}
           </div>
           <div className='col' style={{width: '50%'}}>
             {this.props.textField('email', {placeholder: 'Enter Email', label: 'Email', validate: 'email'})}
           </div>
         </div>
+        {this.props.textField('password', {label: 'Password', placeholder: 'Enter password', validate: 'password', type: 'password', maxLength:32, strength: true})}
         {this.props.textField('website', {label: 'Website URL', placeholder: 'Enter Website URL', validate: 'url', maxLength:128})}
         {this.props.creditCardGroup({ required: false, debug: false})}
         {this.props.richText('content', { required: false, label: 'Rich Text', placeholder: 'Please write something...', modal: true, modalLabel: 'Open content editor' })}

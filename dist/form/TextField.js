@@ -5,6 +5,9 @@ import _getPrototypeOf from "/Users/aaron/Sites/projects/givebox/givebox-lib/nod
 import _inherits from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/inherits";
 import _assertThisInitialized from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/assertThisInitialized";
 import React, { Component } from 'react';
+import PasswordStrength from './PasswordStrength';
+import CharacterCount from './CharacterCount';
+import Fade from '../common/Fade';
 
 var TextField =
 /*#__PURE__*/
@@ -71,7 +74,9 @@ function (_Component) {
           error = _this$props.error,
           errorType = _this$props.errorType,
           maxLength = _this$props.maxLength,
-          value = _this$props.value;
+          value = _this$props.value,
+          strength = _this$props.strength,
+          count = _this$props.count;
       return React.createElement("div", {
         style: style,
         className: "input-group ".concat(className || '', " textfield-group ").concat(error ? 'error tooltip' : '', " ").concat(type === 'hidden' && 'hidden')
@@ -96,8 +101,17 @@ function (_Component) {
         htmlFor: name
       }, label), React.createElement("div", {
         className: "input-bottom ".concat(error ? 'error' : this.state.status)
-      }), this.props.children), React.createElement("div", {
-        className: "tooltipTop ".concat(errorType !== 'tooltip' && 'displayNone')
+      }), this.props.children, strength && React.createElement(PasswordStrength, {
+        password: value,
+        error: error
+      }), count && type !== 'password' && type !== 'hidden' && React.createElement(Fade, {
+        in: this.state.status === 'active' && value ? true : false,
+        duration: 200
+      }, React.createElement(CharacterCount, {
+        max: maxLength,
+        count: value.length
+      }))), React.createElement("div", {
+        className: "tooltipTop ".concat((errorType !== 'tooltip' || strength) && 'displayNone')
       }, error, React.createElement("i", null)), React.createElement("div", {
         className: "errorMsg ".concat((!error || errorType !== 'normal') && 'displayNone')
       }, error));

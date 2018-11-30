@@ -26,6 +26,7 @@ import Delete from './common/Delete';
 import Error from './common/Error';
 import Fade from './common/Fade';
 import GBLink from './common/GBLink';
+import LinearBar from './common/LinearBar';
 import Loader from './common/Loader';
 import Portal from './common/Portal';
 import Tabs, { Tab } from './common/Tabs';
@@ -44,5 +45,5 @@ resource, send, modal, // Modal
 ModalLink, ModalRoute, // Table
 ActionsMenu, Search, Table, MaxRecords, NoRecords, Paginate, Export, Filter, // Block
 StatBlock, ActionBar, // common
-Alert, Delete, Error, Fade, GBLink, Loader, Portal, Tabs, Tab, types, util, // Glossary
+Alert, Delete, Error, Fade, GBLink, LinearBar, Loader, Portal, Tabs, Tab, types, util, // Glossary
 FeesGlossary };

@@ -72,7 +72,9 @@ class Form extends Component {
       options: [],
       selectLabel: 'Select One',
       modal: false,
-      debug: false
+      debug: false,
+      strength: false,
+      count: false
     }
     this.defaults = { ...this.defaultOptions, ...props.options };
   }
@@ -391,6 +393,8 @@ class Form extends Component {
         maxLength={field ? field.maxLength : params.maxLength}
         createField={this.createField}
         params={params}
+        strength={params.strength}
+        count={params.count}
       />
     )
   }
@@ -482,7 +486,7 @@ class Form extends Component {
           {this.creditCard('ccnumber', {label: params.ccnumberLabel || 'Credit Card', fixedLabel: params.ccnumberfixedLabel || true, required: params.required, debug: params.debug})}
         </div>
         <div style={{width: '25%'}} className='col'>
-          {this.textField('ccexpire', {label: params.ccxpireLabel || 'Expiration', fixedLabel: params.ccexpirefixedLabel || true, placeholder: 'MM/YY', required: params.required, validate: 'ccexpire', maxLength: 5,  debug: params.debug})}
+          {this.textField('ccexpire', {label: params.ccxpireLabel || 'Expiration', fixedLabel: params.ccexpirefixedLabel || true, placeholder: 'MM/YY', required: params.required, validate: 'ccexpire', maxLength: 5, count: false, debug: params.debug})}
         </div>
         <div className='clear'></div>
       </div>
@@ -612,6 +616,9 @@ class Form extends Component {
     switch (validate) {
       case 'email':
         if (!_v.validateEmail(value)) this.fieldProp(key, {error: _v.msgs.email});
+        break;
+      case 'password':
+        if (!_v.validatePassword(value)) this.fieldProp(key, {error: _v.msgs.password});
         break;
       case 'taxID':
         if (!_v.validateTaxID(value)) this.fieldProp(key, {error: _v.msgs.taxID});

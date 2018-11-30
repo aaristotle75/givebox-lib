@@ -213,6 +213,12 @@ export function formatDate(value) {
   if (time) str = !x[2] ? x[1] : x[1] + '/' + x[2] + (x[3] ? '/' + x[3] : '') + (x[4] ? ' ' + x[4] : '') + (x[5] ? ':' + x[5] : '');else str = !x[2] ? x[1] : x[1] + '/' + x[2] + (x[3] ? '/' + x[3] : '');
   return str;
 }
+export function validatePassword(value) {
+  var validate = true;
+  if (value.length < 8) validate = false;
+  console.log(value, validate);
+  return validate;
+}
 export var msgs = {
   required: 'Field is required.',
   email: 'Please enter a valid email address.',
@@ -226,7 +232,8 @@ export var msgs = {
   error: 'Please fix the following errors to continue.',
   savingError: 'There was a system error trying to save. Please contact support@givebox.com if this error persists.',
   calendarRange: 'Start date must be equal to or less than End date.',
-  creditCard: 'Please enter a valid credit card number.'
+  creditCard: 'Please enter a valid credit card number.',
+  password: 'Passwords must be at least 8 characters long.'
 };
 export var limits = {
   txMin: 1,

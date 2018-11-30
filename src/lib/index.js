@@ -30,6 +30,7 @@ import Delete from './common/Delete';
 import Error from './common/Error';
 import Fade from './common/Fade';
 import GBLink from './common/GBLink';
+import LinearBar from './common/LinearBar';
 import Loader from './common/Loader';
 import Portal from './common/Portal';
 import Tabs, { Tab } from './common/Tabs';
@@ -112,6 +113,7 @@ export {
   Error,
   Fade,
   GBLink,
+  LinearBar,
   Loader,
   Portal,
   Tabs,
