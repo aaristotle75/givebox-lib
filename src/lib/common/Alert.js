@@ -57,7 +57,7 @@ export const Error = ({msg}) => {
 export const Success = ({msg}) => {
   return (
     <div className={`success`}>
-      <span className='msgText'><span className='icon icon-checkmark-circle'></span> {typeof msg === 'string' ? msg : msgs.success}</span>
+      <span className='msgText'><span className='icon icon-checkmark-circle'></span> {msg}</span>
     </div>
   )
 }

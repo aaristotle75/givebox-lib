@@ -79,6 +79,16 @@ class Form extends Component {
     this.defaults = { ...this.defaultOptions, ...props.options };
   }
 
+  /* Debug lifecycle
+  componentDidMount() {
+    console.log('execute givebox-lib Form mounted');
+  }
+
+  componentWillUnmount() {
+    console.log('execute givebox-lib Form unmounted');
+  }
+  */
+
 	focusInput(ref) {
 		ref.current.focus();
 	}
@@ -570,8 +580,8 @@ class Form extends Component {
     return error;
   }
 
-  formSaved(callback, timeout = 2500) {
-    this.formProp({saved: true, updated: false });
+  formSaved(callback, msg = '', timeout = 2500) {
+    this.formProp({saved: msg || _v.msgs.success, updated: false });
     if (timeout) {
       setTimeout(() => {
         this.formProp({saved: false});

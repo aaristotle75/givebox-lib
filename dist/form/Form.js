@@ -97,6 +97,15 @@ function (_Component) {
     _this.defaults = _objectSpread({}, _this.defaultOptions, props.options);
     return _this;
   }
+  /* Debug lifecycle
+  componentDidMount() {
+    console.log('execute givebox-lib Form mounted');
+  }
+   componentWillUnmount() {
+    console.log('execute givebox-lib Form unmounted');
+  }
+  */
+
 
   _createClass(Form, [{
     key: "focusInput",
@@ -732,9 +741,10 @@ function (_Component) {
     value: function formSaved(callback) {
       var _this2 = this;
 
-      var timeout = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 2500;
+      var msg = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+      var timeout = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 2500;
       this.formProp({
-        saved: true,
+        saved: msg || _v.msgs.success,
         updated: false
       });
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { util } from '../lib';
+import { Loader, util } from '../lib';
 
 export default class LoginTest extends Component {
 
@@ -26,7 +26,10 @@ export default class LoginTest extends Component {
   render() {
 
     return (
-      <iframe ref={this.iframeRef} title='givebox-login' id='givebox-login' width='100%' src='http://localhost:4010/login' />
+      <div>
+        {!this.state.iframeLoaded && <Loader />}
+        <iframe ref={this.iframeRef} title='givebox-login' id='givebox-login' width='100%' src='http://localhost:4010/login' />
+      </div>
     )
   }
 }

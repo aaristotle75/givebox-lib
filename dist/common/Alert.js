@@ -78,5 +78,5 @@ export var Success = function Success(_ref2) {
     className: "msgText"
   }, React.createElement("span", {
     className: "icon icon-checkmark-circle"
-  }), " ", typeof msg === 'string' ? msg : msgs.success));
+  }), " ", msg));
 };
