@@ -947,37 +947,37 @@ export var endpoint = function getAPIEndpoint(resource) {
 
     case 'inappOrgSubscriptions':
       {
-        endpoint = "orgs/".concat(orgID, "/inapp/subscriptions");
+        endpoint = "orgs/".concat(id[0], "/inapp/subscriptions");
         break;
       }
 
     case 'inappOrgSubscription':
       {
-        endpoint = "orgs/".concat(orgID, "/inapp/subscriptions/").concat(id[0]);
+        endpoint = "orgs/".concat(id[0], "/inapp/subscriptions/").concat(id[1]);
         break;
       }
 
     case 'inappOrgCredits':
       {
-        endpoint = "orgs/".concat(orgID, "/inapp/store-credits");
+        endpoint = "orgs/".concat(id[0], "/inapp/store-credits");
         break;
       }
 
     case 'inappOrgCredit':
       {
-        endpoint = "orgs/".concat(orgID, "/inapp/store-credits/").concat(id[0]);
+        endpoint = "orgs/".concat(id[0], "/inapp/store-credits/").concat(id[1]);
         break;
       }
 
     case 'inappOrgTransactions':
       {
-        endpoint = "orgs/".concat(orgID, "/inapp/transactions");
+        endpoint = "orgs/".concat(id[0], "/inapp/transactions");
         break;
       }
 
     case 'inappOrgBalance':
       {
-        endpoint = "orgs/".concat(orgID, "/inapp/balance");
+        endpoint = "orgs/".concat(id[0], "/inapp/balance");
         break;
       }
     // MISC
@@ -996,7 +996,7 @@ export var endpoint = function getAPIEndpoint(resource) {
 
     case 'wepayLabel':
       {
-        endpoint = "wepay/".concat(orgID, "/account-update-uri");
+        endpoint = "wepay/".concat(id[0], "/account-update-uri");
         break;
       }
 
