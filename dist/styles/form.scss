@@ -113,6 +113,10 @@ label, .label {
   font-size: $small-text-size;
 }
 
+label.idle, .label.idle {
+  color: $med-gray !important;
+}
+
 .floating-label {
   position: relative;
   margin-bottom: 0px;
@@ -293,7 +297,6 @@ label, .label {
     padding: 5px 0;
     font-family: $font-family;
     font-size: $normal-text-size;
-    font-weight: $font-weight;
     letter-spacing: 0;
     border-radius: 0px;
     border-bottom: 1px solid $light-med-gray;
@@ -304,6 +307,7 @@ label, .label {
   }
 
   .label {
+    color: $dark;
     font-size: $normal-text-size;
   }
 

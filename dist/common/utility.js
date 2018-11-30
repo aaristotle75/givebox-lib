@@ -2,6 +2,7 @@ import _objectSpread from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_
 import React from 'react';
 import Moment from 'moment';
 import has from 'has';
+import Loadable from 'react-loadable';
 export var imageUrlWithStyle = function imageUrlWithStyle(imageURL, style) {
   if (imageURL) {
     return imageURL.replace(/original$/i, style);
@@ -451,4 +452,22 @@ export function isEmpty(value) {
 export function getValue(obj, prop) {
   if (isEmpty(obj)) return '';
   if (has(obj, prop)) return obj[prop];else return '';
+}
+export function setHeight(e, id) {
+  var arr = e.data.split('-');
+  var el = document.getElementById(id);
+
+  if (el) {
+    if (!isEmpty(arr)) {
+      switch (arr[0]) {
+        case 'height':
+          {
+            var height = "".concat(parseInt(arr[1]) + 20, "px");
+            el.style.height = height;
+            break;
+          }
+        // no default
+      }
+    }
+  }
 }

@@ -125,6 +125,7 @@ function (_Component) {
           open = _this$state.open,
           selected = _this$state.selected;
       var selectedValue = multi ? open ? 'Close Menu' : selectLabel : selected || selectLabel;
+      var idleLabel = selectedValue === 'Close Menu' || selectedValue === selectLabel;
       return React.createElement("div", {
         style: style,
         className: "input-group dropdown-group ".concat(className || '', " ").concat(error ? 'error tooltip' : '')
@@ -135,7 +136,7 @@ function (_Component) {
         type: "button",
         onClick: open ? this.closeMenu : this.openMenu
       }, React.createElement("span", {
-        className: "label"
+        className: "label ".concat(idleLabel && 'idle')
       }, selectedValue), React.createElement("span", {
         className: "icon ".concat(open ? multi ? 'icon-close' : 'icon-triangle-down' : 'icon-triangle-right')
       })), React.createElement("div", {

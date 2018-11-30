@@ -31,7 +31,8 @@ export function getResource(resource) {
     var id = options.id;
     var reload = options.reload;
     var orgID = has(getState().resource, 'orgID') ? getState().resource.orgID : null;
-    var userID = has(getState().resource, 'userID') ? getState().resource.userID : null; // Reload if resource exists and a new ID is requested
+    var userID = has(getState().resource, 'userID') ? getState().resource.userID : null;
+    var affiliateID = has(getState().resource, 'affiliateID') ? getState().resource.affiliateID : null; // Reload if resource exists and a new ID is requested
 
     if (has(getState().resource, resource)) {
       if (!util.isEmpty(id)) {
@@ -57,15 +58,16 @@ export function getResource(resource) {
       id: id
     };
 
-    var search = _objectSpread({}, defaultSearch, options.search); // Get the API endpoint and add search obj to query string
+    var search = _objectSpread({}, defaultSearch, options.search); // Get the API endpoint
 
 
     var endpoint = API_URL + giveboxAPI.endpoint(resource, id, {
       orgID: orgID,
-      userID: userID
+      userID: userID,
+      affiliateID: affiliateID
     });
-    if (options.csv) endpoint = endpoint + '.csv';
-    endpoint = endpoint + util.makeAPIQuery(search);
+    endpoint = "".concat(endpoint).concat(options.csv ? '.csv' : '').concat(util.makeAPIQuery(search)); // If CSV return the endpoint else dispatch the API
+
     if (options.csv) return endpoint;else return dispatch(getAPI(resource, endpoint, search, options.callback, reload));
   };
 }
@@ -74,7 +76,7 @@ export function getResource(resource) {
 *
 * @param {string} name Name of resource to reload
 * @param {function} callback
-* @param {bool} reloadAfterSend If a single item should be included in the reload
+* @param {bool} reloadAfterSend If the resource list should be included in the reload
 */
 
 export function reloadResource(name, callback) {
@@ -127,7 +129,8 @@ export function sendResource(resource) {
     }); // If endpoint is create new than slice off new and set method to POST
 
     if (endpoint.slice(-3) === 'new') {
-      method = 'POST';
+      method = 'POST'; // This slices off the /new from the endpoint
+
       endpoint = endpoint.slice(0, -4);
     }
 
