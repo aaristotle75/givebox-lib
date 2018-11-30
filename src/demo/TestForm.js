@@ -46,7 +46,7 @@ export default class TestForm extends Component {
         {this.props.choice('choice', { label: 'Choice 1', value: 'choice1', type: 'radio', checked: 'choice2', debug: false })}
         {this.props.choice('choice', { label: 'Choice 2', value: 'choice2', type: 'radio' })}
         {this.props.choice('choice', { label: 'Choice 3', value: 'choice3', type: 'radio' })}
-        {this.props.dropdown('status', {options: [{primaryText: 'Active', value: 'active'}, {primaryText: 'Deactivated', value: 'deactivated'}, {primaryText: 'Suspended', value: 'suspended'}], defaultLabel: 'Select Status'})}
+        {this.props.dropdown('status', {options: [{primaryText: 'Active', value: 'active'}, {primaryText: 'Deactivated', value: 'deactivated'}, {primaryText: 'Suspended', value: 'suspended'}], selectLabel: 'Select Status'})}
         {this.props.textField('amount1', { label: 'Enter Amount', placeholder: '0.00', validate: 'money' })}
         {this.props.choice('amount1-enabled', { parent: 'amount1', label: 'Amount 1 enabled', checked: true })}
         {this.props.richText('amount1-desc', { parent: 'amount1', label: 'Amount 1 Description', modal: true, modalLabel: 'Edit Description'})}
@@ -62,7 +62,7 @@ export default class TestForm extends Component {
         {this.props.textField('phone', {placeholder: 'Enter Phone', validate: 'phone'})}
         {this.props.textField('descriptor', {placeholder: 'Enter Billing Descriptor', validate: 'descriptor', maxLength:21})}
         {this.props.dropdown('states', {options: selectOptions.states, value: 'CA'})}
-        {this.props.dropdown('status', {options: [{primaryText: 'Active', value: 'active'}, {primaryText: 'Deactivated', value: 'deactivated'}, {primaryText: 'Suspended', value: 'suspended'}], defaultLabel: 'Select Status'})}
+        {this.props.dropdown('status', {options: [{primaryText: 'Active', value: 'active'}, {primaryText: 'Deactivated', value: 'deactivated'}, {primaryText: 'Suspended', value: 'suspended'}], selectLabel: 'Select Status'})}
         {this.props.saveButton(this.processForm)}
         </div>
       </div>

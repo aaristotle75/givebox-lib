@@ -646,27 +646,27 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'inappOrgSubscriptions': {
-      endpoint = `orgs/${orgID}/inapp/subscriptions`;
+      endpoint = `orgs/${id[0]}/inapp/subscriptions`;
       break;
     }
     case 'inappOrgSubscription': {
-      endpoint = `orgs/${orgID}/inapp/subscriptions/${id[0]}`;
+      endpoint = `orgs/${id[0]}/inapp/subscriptions/${id[1]}`;
       break;
     }
     case 'inappOrgCredits': {
-      endpoint = `orgs/${orgID}/inapp/store-credits`;
+      endpoint = `orgs/${id[0]}/inapp/store-credits`;
       break;
     }
     case 'inappOrgCredit': {
-      endpoint = `orgs/${orgID}/inapp/store-credits/${id[0]}`;
+      endpoint = `orgs/${id[0]}/inapp/store-credits/${id[1]}`;
       break;
     }
     case 'inappOrgTransactions': {
-      endpoint = `orgs/${orgID}/inapp/transactions`;
+      endpoint = `orgs/${id[0]}/inapp/transactions`;
       break;
     }
     case 'inappOrgBalance': {
-      endpoint = `orgs/${orgID}/inapp/balance`;
+      endpoint = `orgs/${id[0]}/inapp/balance`;
       break;
     }
 
@@ -680,7 +680,7 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'wepayLabel': {
-      endpoint = `wepay/${orgID}/account-update-uri`;
+      endpoint = `wepay/${id[0]}/account-update-uri`;
       break;
     }
     case 'recaptcha': {

@@ -319,7 +319,7 @@ label.idle, .label.idle {
     width: 100%;
     max-height: 300px;
     @include box-shadow(0px 4px 8px 0px rgba(0,0,0,0.2));
-    z-index: 10;
+    z-index: 1000000;
     overflow-y: auto;
     overflow-x: hidden;
   }
@@ -387,8 +387,15 @@ label.idle, .label.idle {
   .dropdown {
 
     button {
-      border: 2px solid $red;
+      border: none;
+      border-bottom: 2px solid $red;
       color: $red;
+    }
+
+    .label .idle,
+    label .idle,
+    .label {
+      color: $red !important;
     }
   }
 }

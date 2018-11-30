@@ -237,7 +237,8 @@ export const msgs = {
   savingError: 'There was a system error trying to save. Please contact support@givebox.com if this error persists.',
   calendarRange: 'Start date must be equal to or less than End date.',
   creditCard: 'Please enter a valid credit card number.',
-  password: 'Passwords must be at least 8 characters long.'
+  password: 'Passwords must be at least 8 characters long.',
+  account: 'There was an error creating your account. Please contact support@givebox.com.'
 }
 
 export const limits = {
