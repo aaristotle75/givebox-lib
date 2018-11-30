@@ -23,7 +23,7 @@ export function getResource(resource, opt = {}) {
     reload: false,
     csv: false
   }
-  const options = {...defaults, ...opt};
+  const options = { ...defaults, ...opt };
   return (dispatch, getState) => {
     let id = options.id;
     let reload = options.reload;
@@ -58,10 +58,11 @@ export function getResource(resource, opt = {}) {
 
     const search = { ...defaultSearch, ...options.search };
 
-    // Get the API endpoint and add search obj to query string
+    // Get the API endpoint
     let endpoint = API_URL + giveboxAPI.endpoint(resource, id, { orgID, userID, affiliateID });
-    if (options.csv) endpoint = endpoint + '.csv';
-    endpoint = endpoint + util.makeAPIQuery(search);
+    endpoint = `${endpoint}${options.csv ? '.csv' : ''}${util.makeAPIQuery(search)}`;
+
+    // If CSV return the endpoint else dispatch the API
     if (options.csv) return endpoint;
     else return dispatch(getAPI(resource, endpoint, search, options.callback, reload));
   }
@@ -72,7 +73,7 @@ export function getResource(resource, opt = {}) {
 *
 * @param {string} name Name of resource to reload
 * @param {function} callback
-* @param {bool} reloadAfterSend If a single item should be included in the reload
+* @param {bool} reloadAfterSend If the resource list should be included in the reload
 */
 export function reloadResource(name, callback, reloadAfterSend = false) {
   return (dispatch, getState) => {
@@ -121,6 +122,8 @@ export function sendResource(resource, opt = {}) {
     // If endpoint is create new than slice off new and set method to POST
     if (endpoint.slice(-3) === 'new') {
       method = 'POST';
+
+      // This slices off the /new from the endpoint
       endpoint = endpoint.slice(0, -4);
     }
     return dispatch(sendAPI(

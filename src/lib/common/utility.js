@@ -1,6 +1,7 @@
 import React from 'react';
 import Moment from 'moment';
 import has from 'has';
+import Loadable from 'react-loadable';
 
 export var imageUrlWithStyle = function(imageURL, style) {
   if (imageURL) {
@@ -448,19 +449,19 @@ export function getValue(obj, prop) {
 }
 
 export function setHeight(e, id) {
-    const arr = e.data.split('-');
-    const el = document.getElementById(id);
-    if (el) {
-      if (!isEmpty(arr)) {
-        switch (arr[0]) {
-          case 'height': {
-            const height = `${parseInt(arr[1]) + 50}px`;
-            el.style.height = height;
-            break;
-          }
-
-          // no default
+  const arr = e.data.split('-');
+  const el = document.getElementById(id);
+  if (el) {
+    if (!isEmpty(arr)) {
+      switch (arr[0]) {
+        case 'height': {
+          const height = `${parseInt(arr[1]) + 20}px`;
+          el.style.height = height;
+          break;
         }
+
+        // no default
       }
     }
   }
+}

@@ -92,13 +92,14 @@ class Dropdown extends Component {
       selected
     } = this.state;
 
-    let selectedValue = multi ? open ? 'Close Menu' : selectLabel : selected || selectLabel;
+    const selectedValue = multi ? open ? 'Close Menu' : selectLabel : selected || selectLabel;
+    const idleLabel = selectedValue === 'Close Menu' || selectedValue === selectLabel;
 
     return (
       <div style={style} className={`input-group dropdown-group ${className || ''} ${error ? 'error tooltip' : ''}`}>
         {label && <label>{label}</label>}
         <div className='dropdown' style={style}>
-          <button type='button' onClick={open ? this.closeMenu : this.openMenu}><span className='label'>{selectedValue}</span><span className={`icon ${open ? multi ? 'icon-close' : 'icon-triangle-down' : 'icon-triangle-right'}`}></span></button>
+          <button type='button' onClick={open ? this.closeMenu : this.openMenu}><span className={`label ${idleLabel && 'idle'}`}>{selectedValue}</span><span className={`icon ${open ? multi ? 'icon-close' : 'icon-triangle-down' : 'icon-triangle-right'}`}></span></button>
           <div className={`dropdown-content`}>
             <AnimateHeight
               duration={200}

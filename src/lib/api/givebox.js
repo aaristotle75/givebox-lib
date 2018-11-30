@@ -308,7 +308,7 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'orgMemberPermission': {
-      endpoint = `orgs/${orgID}/members/${id[0]}/permissions/${id[0]}`;
+      endpoint = `orgs/${orgID}/members/${id[0]}/permissions/${id[1]}`;
       break;
     }
     case 'orgPrincipals': {
@@ -456,7 +456,7 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'orgEventTicket': {
-      endpoint = `orgs/${orgID}/events/${id[0]}/tickets/${id[0]}`;
+      endpoint = `orgs/${orgID}/events/${id[0]}/tickets/${id[1]}`;
       break;
     }
     case 'orgEventPublish': {
@@ -496,7 +496,7 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'orgSweepstakeTicket': {
-      endpoint = `orgs/${orgID}/sweepstakes/${id[0]}/tickets/${id[0]}`;
+      endpoint = `orgs/${orgID}/sweepstakes/${id[0]}/tickets/${id[1]}`;
       break;
     }
     case 'orgSweepstakePublish': {
@@ -524,7 +524,7 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'orgMembershipSubscription': {
-      endpoint = `orgs/${orgID}/memberships/${id[0]}/subscriptions/{sub_id`;
+      endpoint = `orgs/${orgID}/memberships/${id[0]}/subscriptions/${id[1]}`;
       break;
     }
     case 'orgMembershioPublish': {
@@ -540,7 +540,7 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'orgEmailList': {
-      endpoint = `orgs/${orgID}/email-lists/{list_id}`;
+      endpoint = `orgs/${orgID}/email-lists/${id[0]}`;
       break;
     }
     case 'orgEmailBlasts': {
@@ -548,7 +548,7 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'orgEmailBlast': {
-      endpoint = `orgs/${orgID}/email-blasts/{blast_id}`;
+      endpoint = `orgs/${orgID}/email-blasts/${id[0]}`;
       break;
     }
     case 'orgAlerts': {
