@@ -37,7 +37,7 @@ class LinearBar extends Component{
 			style
 		} = this.props;
 
-		var finalstyle = {
+		const finalstyle = {
 			style,
 			width: this.props.progress + '%'
 		};

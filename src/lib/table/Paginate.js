@@ -33,8 +33,8 @@ class Paginate extends Component{
 
   onPageClick(e) {
 		e.preventDefault();
-    var getSelectedPage = e.currentTarget.id.split('-', 2);
-		var page = getSelectedPage[1];
+    const getSelectedPage = e.currentTarget.id.split('-', 2);
+		const page = getSelectedPage[1];
     this.handlePageSelected(page, e)
   }
 
@@ -71,7 +71,7 @@ class Paginate extends Component{
     let id, page, breakView;
 
     if (this.props.pages <= pageRange) {
-      for (var i=1; i <= pages; i++) {
+      for (let i=1; i <= pages; i++) {
         id = 'page-'+i;
         page = (
 					<li key={id} id={id} onClick={(e) => this.onPageClick(e)} className={`${this.props.pageClassName} ${(activePage === i ? this.props.activeClassName : '')}`}>
@@ -81,8 +81,8 @@ class Paginate extends Component{
         items.push(page);
       }
     } else {
-      var leftSide = (pageRange / 2);
-      var rightSide = (pageRange / 2);
+      let leftSide = (pageRange / 2);
+      let rightSide = (pageRange / 2);
 
       if (activePage > pages - pageRange / 2) {
         rightSide = pages - activePage;

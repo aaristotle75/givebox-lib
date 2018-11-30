@@ -47,7 +47,6 @@ class CalendarField extends Component {
 
   onClose() {
     this.setState({status: 'idle'});
-    console.log(this.inputRef);
   }
 
   onChange(selectedDates, dateStr, instance) {

@@ -55,13 +55,14 @@ function (_Component) {
       var _this$props = this.props,
           msg = _this$props.msg,
           textColor = _this$props.textColor,
-          forceText = _this$props.forceText;
+          forceText = _this$props.forceText,
+          className = _this$props.className;
       if (!this.state.rootEl) return React.createElement("div", null);
       var showMsg = !!forceText;
       return React.createElement(Portal, {
         rootEl: this.state.rootEl
       }, React.createElement("div", {
-        className: "loader"
+        className: "loader ".concat(className)
       }), React.createElement("div", {
         className: "loaderContent"
       }, React.createElement("div", {

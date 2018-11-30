@@ -6,8 +6,8 @@ export function validateEmail(email) {
 export function validateMoney(value, min, max) {
   var decimal = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
   var validate = true;
-  if (!value) value = 0;
   var moneyRegex = /^\$?(([1-9]{1}[0-9]*(?:,[0-9]{3})*)|(?:0))(?:\.[0-9]{1,2})?$/;
+  if (!value) value = 0;
 
   if (!decimal) {
     moneyRegex = /^\$?(([1-9]{1}[0-9]*(?:,[0-9]{3})*)|(?:0))$/;

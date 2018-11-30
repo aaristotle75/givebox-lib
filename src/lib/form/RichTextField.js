@@ -5,7 +5,9 @@ import { ModalRoute, ModalLink } from '../';
 class ContentField extends Component {
 
   componentDidMount() {
-    if (this.props.createField) this.props.createField(this.props.name, this.props.params);
+    if (this.props.createField) {
+      this.props.createField(this.props.name, this.props.params);
+    }
   }
 
   renderEditor(props) {

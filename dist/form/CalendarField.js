@@ -74,7 +74,6 @@ function (_Component) {
       this.setState({
         status: 'idle'
       });
-      console.log(this.inputRef);
     }
   }, {
     key: "onChange",

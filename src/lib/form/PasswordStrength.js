@@ -19,11 +19,11 @@ class PasswordStrength extends Component{
   }
 
   checkStrength(password) {
-    var strength = 0;
-    var progress = 0;
-    var text = '';
-    var color = '';
-    var validate = false
+    let strength = 0;
+    let progress = 0;
+    let text = '';
+    let color = '';
+    let validate = false
     if (password.length > 7) validate = true;
     strength += validate ? 1 : 0;
     strength += /[A-Z]/.test(password) && validate ? 1 : 0;
@@ -53,7 +53,7 @@ class PasswordStrength extends Component{
         break;
       default:
         if (password.length > 0) {
-          var needed = 8 - parseInt(password.length);
+          const needed = 8 - parseInt(password.length);
           progress += password.length * 3;
           color = 'red';
           text = 'enter ' + needed + ' more characters';

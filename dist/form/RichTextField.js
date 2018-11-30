@@ -21,7 +21,9 @@ function (_Component) {
   _createClass(ContentField, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      if (this.props.createField) this.props.createField(this.props.name, this.props.params);
+      if (this.props.createField) {
+        this.props.createField(this.props.name, this.props.params);
+      }
     }
   }, {
     key: "renderEditor",

@@ -33,7 +33,7 @@ export function resource(state = {
         }
       });
     case types.RECEIVE_RESOURCE:
-      var data, meta;
+      let data, meta;
       if (has(action.data, 'data')) {
         data = action.data.data;
         delete action.data['data'];

@@ -20,20 +20,20 @@ export default class Loader extends Component {
 	}
 
 	createSVG() {
-		var svg = <img alt='Givebox loader' className={`loaderSVG ${this.state.end ? 'fadeOut' : ''}`} src='https://s3-us-west-1.amazonaws.com/givebox/public/gb-logo3.svg' type='image/svg+xml' />
+		const svg = <img alt='Givebox loader' className={`loaderSVG ${this.state.end ? 'fadeOut' : ''}`} src='https://s3-us-west-1.amazonaws.com/givebox/public/gb-logo3.svg' type='image/svg+xml' />
 		return svg;
 	}
 
   render() {
 
-		const { msg, textColor, forceText } = this.props;
+		const { msg, textColor, forceText, className } = this.props;
 
     if (!this.state.rootEl) return ( <div></div> );
-		var showMsg = !!forceText;
+		const showMsg = !!forceText;
 
     return (
       <Portal rootEl={this.state.rootEl}>
-				<div className='loader' />
+				<div className={`loader ${className}`} />
 				<div className='loaderContent'>
 					<div className='loadingText'>
 					 	<div>{this.createSVG()}</div>

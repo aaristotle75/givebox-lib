@@ -42,7 +42,7 @@ export default class TestForm extends Component {
         {this.props.textField('password', {label: 'Password', placeholder: 'Enter password', validate: 'password', type: 'password', maxLength:32, strength: true})}
         {this.props.textField('website', {label: 'Website URL', placeholder: 'Enter Website URL', validate: 'url', maxLength:128})}
         {this.props.creditCardGroup({ required: false, debug: false})}
-        {this.props.richText('content', { required: false, label: 'Rich Text', placeholder: 'Please write something...', modal: true, modalLabel: 'Open content editor' })}
+        {this.props.richText('contentabc', { required: false, label: 'Rich Text', placeholder: 'Please write something...', modal: false, modalLabel: 'Open content editor' })}
         {this.props.choice('choice', { label: 'Choice 1', value: 'choice1', type: 'radio', checked: 'choice2', debug: false })}
         {this.props.choice('choice', { label: 'Choice 2', value: 'choice2', type: 'radio' })}
         {this.props.choice('choice', { label: 'Choice 3', value: 'choice3', type: 'radio' })}

@@ -49,7 +49,7 @@ class Tabs extends Component {
   }
 
   renderChildren() {
-    var childrenWithProps = React.Children.map(this.props.children,
+    const childrenWithProps = React.Children.map(this.props.children,
       (child) => React.cloneElement(child, {
         selectedTab: this.state.selectedTab
       })

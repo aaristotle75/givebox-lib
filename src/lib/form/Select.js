@@ -9,7 +9,7 @@ class Select extends Component {
   }
 
   listOptions() {
-    var items = [];
+    const items = [];
     const options = this.props.options;
     if (!isEmpty(options)) {
       options.forEach(function(value, key) {

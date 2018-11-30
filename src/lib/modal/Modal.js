@@ -68,7 +68,7 @@ class Modal extends Component {
 
   /* Set width and height of screen */
   handleResize(e) {
-    var mobile = window.innerWidth < this.props.mobileBreakpoint ? true : false;
+    const mobile = window.innerWidth < this.props.mobileBreakpoint ? true : false;
     this.setState({
       windowWidth: window.innerWidth,
       windowHeight: window.innerHeight,
@@ -77,7 +77,7 @@ class Modal extends Component {
   }
 
   renderActions() {
-    var actions = [];
+    const actions = [];
     if (this.props.actions) {
       this.props.actions.forEach(function(value) {
         actions.push(
@@ -111,7 +111,7 @@ class Modal extends Component {
   }
 
   closeModal(callback) {
-    var bindthis = this;
+    const bindthis = this;
     const transitionTimeMS = this.getTransitionDuration();
     this.setState({open: false});
     setTimeout(function() {
@@ -121,7 +121,7 @@ class Modal extends Component {
   }
 
   renderChildren() {
-    var childrenWithProps = React.Children.map(this.props.children,
+    const childrenWithProps = React.Children.map(this.props.children,
       (child) => React.cloneElement(child, {
       })
     );

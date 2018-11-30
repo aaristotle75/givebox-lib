@@ -1,23 +1,23 @@
 import Moment from 'moment';
 
 export function validateEmail(email) {
-  var regex = /^(([^<>()[\]\\.,;:\s@']+(\.[^<>()[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const regex = /^(([^<>()[\]\\.,;:\s@']+(\.[^<>()[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return regex.test(email);
 }
 
 export function validateMoney(value, min, max, decimal = true) {
-  var validate = true;
+  let validate = true;
+  let moneyRegex = /^\$?(([1-9]{1}[0-9]*(?:,[0-9]{3})*)|(?:0))(?:\.[0-9]{1,2})?$/;
   if (!value) value = 0;
-  var moneyRegex = /^\$?(([1-9]{1}[0-9]*(?:,[0-9]{3})*)|(?:0))(?:\.[0-9]{1,2})?$/;
   if (!decimal) {
     moneyRegex = /^\$?(([1-9]{1}[0-9]*(?:,[0-9]{3})*)|(?:0))$/;
   }
-  var match = moneyRegex.exec(value);
+  const match = moneyRegex.exec(value);
   if (match === null) {
     validate = false;
   }
   if (match) {
-    var amount = parseFloat(match[0].replace(/,/g, ''));
+    const amount = parseFloat(match[0].replace(/,/g, ''));
     if ((amount < min) || (amount > max)) {
       validate = false;
     }
@@ -77,12 +77,12 @@ export function formatCCExpire(value) {
 }
 
 export function validateEmailList(value, optional = false) {
-  var validate = true;
+  let validate = true;
   if (optional && !value) {
     return validate;
   }
-  var arr = value.split(/,/);
-  for (var i=0; i < arr.length; i++) {
+  const arr = value.split(/,/);
+  for (let i=0; i < arr.length; i++) {
     if (!validateEmail(arr[i].trim())) {
       validate = false;
     }
@@ -91,15 +91,15 @@ export function validateEmailList(value, optional = false) {
 }
 
 export function validateURL(url) {
-  var validate = true;
-  var regex = /^((https?|s?ftp):\/\/)?(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!$&'()*+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!$&'()*+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!$&'()*+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!$&'()*+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!$&'()*+,;=]|:|@)|\/|\?)*)?$/i;
+  let validate = true;
+  const regex = /^((https?|s?ftp):\/\/)?(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!$&'()*+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!$&'()*+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!$&'()*+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!$&'()*+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!$&'()*+,;=]|:|@)|\/|\?)*)?$/i;
   validate = regex.test(url);
   if (url.substr(0,7) !== 'http://' && url.substr(0,8) !== 'https://') validate = false;
   return validate;
 }
 
 export function validateTaxID(value) {
-  var regex = /^(?:\d{3}-\d{2}-\d{4}|\d{2}-\d{7})$/;
+  const regex = /^(?:\d{3}-\d{2}-\d{4}|\d{2}-\d{7})$/;
   return regex.test(value);
 }
 
@@ -143,12 +143,12 @@ export function formatSSN(value) {
 }
 
 export function validateDescriptor(value) {
-  var regex = /^([a-zA-Z0-9,-.]){3,21}$/;
+  const regex = /^([a-zA-Z0-9,-.]){3,21}$/;
   return regex.test(value);
 }
 
 export function validateDL(value) {
-  var regex = /^([a-zA-Z0-9]){6,25}$/;
+  const regex = /^([a-zA-Z0-9]){6,25}$/;
   return regex.test(value);
 }
 
@@ -157,12 +157,12 @@ export function validatePhone(value) {
 	value = value.replace(')', '');
 	value = value.replace(' ' , '');
 	value = value.replace('-', '');
-  var regex = /\d{10}/g;
+  const regex = /\d{10}/g;
   return regex.test(value);
 }
 
 export function formatPhone(value) {
-  var x = value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
+  const x = value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
   value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
   return value;
 }

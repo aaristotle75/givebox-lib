@@ -2,7 +2,6 @@ import _objectSpread from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_
 import React from 'react';
 import Moment from 'moment';
 import has from 'has';
-import Loadable from 'react-loadable';
 export var imageUrlWithStyle = function imageUrlWithStyle(imageURL, style) {
   if (imageURL) {
     return imageURL.replace(/original$/i, style);
@@ -229,7 +228,6 @@ export function encodeBlob(imageUrl, callback) {
   xhr.responseType = 'arraybuffer';
 
   xhr.onload = function () {
-    var data;
     var type = {
       type: 'image/jpeg'
     }; // xhr.response['content-type'];
@@ -237,7 +235,7 @@ export function encodeBlob(imageUrl, callback) {
     var bytes = new Uint8Array(xhr.response);
     var blob = new Blob([bytes], type);
     var blobUrl = URL.createObjectURL(blob);
-    data = blobUrl;
+    var data = blobUrl;
     callback(data);
   };
 
@@ -287,9 +285,9 @@ export function encodeDataURI(imageUrl, callback) {
 
   xhr.onload = function () {
     var data;
+    var binary = '';
     var type = 'image/jpeg'; // xhr.response['content-type'];
 
-    var binary = '';
     var bytes = new Uint8Array(xhr.response);
     var len = bytes.byteLength;
 

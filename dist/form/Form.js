@@ -118,7 +118,7 @@ function (_Component) {
   }, {
     key: "createRadioField",
     value: function createRadioField(name, args) {
-      var field = has(this.state.fields, name);
+      var field = has(this.state.fields, name) ? this.state.fields[name] : null;
 
       if (!field) {
         this.createField(name, args);
@@ -127,14 +127,19 @@ function (_Component) {
   }, {
     key: "fieldProp",
     value: function fieldProp(name, args) {
-      var field = has.call(this.state.fields, name);
-      var params = Object.assign(this.state.fields[name], args);
-      this.setState(Object.assign(this.state, _objectSpread({}, this.state, {
-        fields: _objectSpread({}, this.state.fields, _defineProperty({}, name, params))
-      })));
+      var field = has(this.state.fields, name) ? this.state.fields[name] : null;
 
-      if (field.parent) {
-        if (params.hasOwnProperty('value')) this.fieldProp(field.parent, _defineProperty({}, name, params.value));
+      if (field) {
+        var params = Object.assign(this.state.fields[name], args);
+        this.setState(Object.assign(this.state, _objectSpread({}, this.state, {
+          fields: _objectSpread({}, this.state.fields, _defineProperty({}, name, params))
+        })));
+
+        if (field.parent) {
+          if (has(params, 'value')) this.fieldProp(field.parent, _defineProperty({}, name, params.value));
+        }
+      } else {
+        console.error("Error in fieldProp: ".concat(name));
       }
     }
   }, {
@@ -145,131 +150,149 @@ function (_Component) {
   }, {
     key: "onChangeCalendar",
     value: function onChangeCalendar(ts, name) {
-      var field = this.state.fields[name];
-      this.fieldProp(name, {
-        value: ts / field.reduceTS,
-        error: false
-      });
-      this.formProp({
-        error: false,
-        updated: true
-      });
+      var field = has(this.state.fields, name) ? this.state.fields[name] : null;
 
-      if (has(field, 'rangeStartField')) {
-        var required = ts ? true : false;
-        this.fieldProp(field.rangeStartField, {
-          error: false,
-          required: required
+      if (field) {
+        this.fieldProp(name, {
+          value: ts / field.reduceTS,
+          error: false
         });
-      }
-
-      if (has(field, 'rangeEndField')) {
-        var _required = ts ? true : false;
-
-        this.fieldProp(field.rangeEndField, {
+        this.formProp({
           error: false,
-          required: _required
+          updated: true
         });
-      }
 
-      if (field.debug) console.log('onChange', name, field);
+        if (has(field, 'rangeStartField')) {
+          var required = ts ? true : false;
+          this.fieldProp(field.rangeStartField, {
+            error: false,
+            required: required
+          });
+        }
+
+        if (has(field, 'rangeEndField')) {
+          var _required = ts ? true : false;
+
+          this.fieldProp(field.rangeEndField, {
+            error: false,
+            required: _required
+          });
+        }
+
+        if (field.debug) console.log('onChangeCalendar', name, field);
+      }
     }
   }, {
     key: "onChange",
     value: function onChange(e) {
       e.preventDefault();
       var name = e.target.name;
-      var field = this.state.fields[name];
-      var value = e.target.value;
-      if (field.validate === 'taxID') value = _v.formatTaxID(value);
-      if (field.validate === 'ssn') value = _v.formatSSN(value);
-      if (field.validate === 'phone') value = _v.formatPhone(value);
-      if (field.validate === 'ccexpire') value = _v.formatCCExpire(value);
-      this.fieldProp(name, {
-        value: value,
-        error: false
-      });
-      this.formProp({
-        error: false,
-        updated: true
-      });
-      if (field.debug) console.log('onChange', name, field);
+      var field = has(this.state.fields, name) ? this.state.fields[name] : null;
+
+      if (field) {
+        var value = e.target.value;
+        if (field.validate === 'taxID') value = _v.formatTaxID(value);
+        if (field.validate === 'ssn') value = _v.formatSSN(value);
+        if (field.validate === 'phone') value = _v.formatPhone(value);
+        if (field.validate === 'ccexpire') value = _v.formatCCExpire(value);
+        this.fieldProp(name, {
+          value: value,
+          error: false
+        });
+        this.formProp({
+          error: false,
+          updated: true
+        });
+        if (field.debug) console.log('onChange', name, field);
+      }
     }
   }, {
     key: "onChangeDropdown",
     value: function onChangeDropdown(name, value) {
-      var field = this.state.fields[name];
-      var arr = [];
+      var field = has(this.state.fields, name) ? this.state.fields[name] : null;
 
-      if (field.multi) {
-        if (Array.isArray(field.value)) {
-          arr.push.apply(arr, _toConsumableArray(field.value));
-        } else {
-          if (field.value) arr.push(field.value);
+      if (field) {
+        var arr = [];
+
+        if (field.multi) {
+          if (Array.isArray(field.value)) {
+            arr.push.apply(arr, _toConsumableArray(field.value));
+          } else {
+            if (field.value) arr.push(field.value);
+          }
+
+          if (arr.includes(value)) {
+            arr.splice(arr.indexOf(value), 1);
+          } else {
+            arr.push(value);
+          }
         }
 
-        if (arr.includes(value)) {
-          arr.splice(arr.indexOf(value), 1);
-        } else {
-          arr.push(value);
-        }
+        this.fieldProp(name, {
+          value: field.multi ? arr : value,
+          error: false
+        });
+        this.formProp({
+          error: false,
+          updated: true
+        });
+        if (field.debug) console.log('onChangeDropdown', name, field);
       }
-
-      this.fieldProp(name, {
-        value: field.multi ? arr : value,
-        error: false
-      });
-      this.formProp({
-        error: false,
-        updated: true
-      });
-      if (field.debug) console.log('onChangeDropdown', name, field);
     }
   }, {
     key: "onChangeCheckbox",
     value: function onChangeCheckbox(name) {
-      var field = this.state.fields[name];
-      var checked = field.checked ? false : true;
-      this.fieldProp(name, {
-        checked: checked,
-        value: checked,
-        error: false
-      });
-      this.formProp({
-        error: false,
-        updated: true
-      });
-      if (field.debug) console.log('onChangeCheckbox', name, field);
+      var field = has(this.state.fields, name) ? this.state.fields[name] : null;
+
+      if (field) {
+        var checked = field.checked ? false : true;
+        this.fieldProp(name, {
+          checked: checked,
+          value: checked,
+          error: false
+        });
+        this.formProp({
+          error: false,
+          updated: true
+        });
+        if (field.debug) console.log('onChangeCheckbox', name, field);
+      }
     }
   }, {
     key: "onChangeRadio",
     value: function onChangeRadio(name, value) {
-      var field = this.state.fields[name];
-      this.fieldProp(name, {
-        checked: value,
-        value: value,
-        error: false
-      });
-      this.formProp({
-        error: false,
-        updated: true
-      });
-      if (field.debug) console.log('onChangeRadio', name, field);
+      var field = has(this.state.fields, name) ? this.state.fields[name] : null;
+
+      if (field) {
+        this.fieldProp(name, {
+          checked: value,
+          value: value,
+          error: false
+        });
+        this.formProp({
+          error: false,
+          updated: true
+        });
+        if (field.debug) console.log('onChangeRadio', name, field);
+      }
     }
   }, {
     key: "onChangeRichText",
     value: function onChangeRichText(name, val, hasText) {
-      var value = hasText ? val : _v.clearRichTextIfShouldBeEmpty(val);
-      var field = this.state.fields[name];
-      this.fieldProp(name, {
-        value: value,
-        error: false
-      });
-      this.formProp({
-        error: false,
-        updated: true
-      });
-      if (field.debug) console.log('onChange', name, field);
+      var field = has(this.state.fields, name) ? this.state.fields[name] : null;
+
+      if (field) {
+        var value = hasText ? val : _v.clearRichTextIfShouldBeEmpty(val);
+        this.fieldProp(name, {
+          value: value,
+          error: false
+        });
+        this.formProp({
+          error: false,
+          updated: true
+        });
+        if (field.debug) console.log('onChangeRichText', name, field);
+      }
     }
   }, {
     key: "onChangeCreditCard",
@@ -654,12 +677,11 @@ function (_Component) {
   }, {
     key: "getErrors",
     value: function getErrors(err) {
-      var error = false;
+      var error = false; // Make sure the err has response prop before continuing
 
       if (has(err, 'response')) {
-        // Make sure the err has response prop before continuing
+        // Make sure the response has data prop before continuing
         if (has(err.response, 'data')) {
-          // Make sure the response has data prop before continuing
           // Handle single error
           if (has(err.response.data, 'message')) {
             if (err.response.data.code === 'vantiv_payfac' && this.props.hideVantivErrors) {
@@ -735,8 +757,9 @@ function (_Component) {
 
       var label = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'Save';
       var style = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+      var className = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '';
       return React.createElement("button", {
-        className: "button",
+        className: "button ".concat(className),
         style: style,
         type: "button",
         disabled: this.state.updated ? false : true,
@@ -778,8 +801,8 @@ function (_Component) {
     key: "validateForm",
     value: function validateForm(e, callback) {
       var group = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'default';
-      var bindthis = this;
       e.preventDefault();
+      var bindthis = this;
       var fields = this.state.fields;
       var groupFields = {};
       Object.entries(fields).forEach(function (_ref3) {
@@ -870,8 +893,6 @@ function (_Component) {
           break;
         // no default
       }
-
-      return;
     }
   }, {
     key: "renderChildren",

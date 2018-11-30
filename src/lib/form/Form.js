@@ -94,24 +94,28 @@ class Form extends Component {
   }
 
   createRadioField(name, args) {
-    const field = has(this.state.fields, name);
+    const field = has(this.state.fields, name) ? this.state.fields[name] : null;
     if (!field) {
       this.createField(name, args);
     }
   }
 
   fieldProp(name, args) {
-    const field = has.call(this.state.fields, name);
-    const params = Object.assign(this.state.fields[name], args);
-    this.setState(Object.assign(this.state, {
-      ...this.state,
-      fields: {
-        ...this.state.fields,
-        [name]: params
+    const field = has(this.state.fields, name) ? this.state.fields[name] : null;
+    if (field) {
+      const params = Object.assign(this.state.fields[name], args);
+      this.setState(Object.assign(this.state, {
+        ...this.state,
+        fields: {
+          ...this.state.fields,
+          [name]: params
+        }
+      }));
+      if (field.parent) {
+        if (has(params, 'value')) this.fieldProp(field.parent, {[name]: params.value});
       }
-    }));
-    if (field.parent) {
-      if (params.hasOwnProperty('value')) this.fieldProp(field.parent, {[name]: params.value});
+    } else {
+      console.error(`Error in fieldProp: ${name}`);
     }
   }
 
@@ -120,75 +124,87 @@ class Form extends Component {
   }
 
   onChangeCalendar(ts, name) {
-    const field = this.state.fields[name];
-    this.fieldProp(name, { value: ts/field.reduceTS, error: false });
-    this.formProp({ error: false, updated: true });
-    if (has(field, 'rangeStartField')) {
-      let required = ts ? true : false;
-      this.fieldProp(field.rangeStartField, {error: false, required: required});
+    const field = has(this.state.fields, name) ? this.state.fields[name] : null;
+    if (field) {
+      this.fieldProp(name, { value: ts/field.reduceTS, error: false });
+      this.formProp({ error: false, updated: true });
+      if (has(field, 'rangeStartField')) {
+        let required = ts ? true : false;
+        this.fieldProp(field.rangeStartField, {error: false, required: required});
+      }
+      if (has(field, 'rangeEndField')) {
+        let required = ts ? true : false;
+        this.fieldProp(field.rangeEndField, {error: false, required: required});
+      }
+      if (field.debug) console.log('onChangeCalendar', name, field);
     }
-    if (has(field, 'rangeEndField')) {
-      let required = ts ? true : false;
-      this.fieldProp(field.rangeEndField, {error: false, required: required});
-    }
-    if (field.debug) console.log('onChange', name, field);
   }
 
   onChange(e) {
     e.preventDefault();
     const name = e.target.name;
-    const field = this.state.fields[name];
-    let value = e.target.value;
-    if (field.validate === 'taxID') value = _v.formatTaxID(value);
-    if (field.validate === 'ssn') value = _v.formatSSN(value);
-    if (field.validate === 'phone') value = _v.formatPhone(value);
-    if (field.validate === 'ccexpire') value = _v.formatCCExpire(value);
-    this.fieldProp(name, {value: value, error: false});
-    this.formProp({error: false, updated: true});
-    if (field.debug) console.log('onChange', name, field);
+    const field = has(this.state.fields, name) ? this.state.fields[name] : null;
+    if (field) {
+      let value = e.target.value;
+      if (field.validate === 'taxID') value = _v.formatTaxID(value);
+      if (field.validate === 'ssn') value = _v.formatSSN(value);
+      if (field.validate === 'phone') value = _v.formatPhone(value);
+      if (field.validate === 'ccexpire') value = _v.formatCCExpire(value);
+      this.fieldProp(name, {value: value, error: false});
+      this.formProp({error: false, updated: true});
+      if (field.debug) console.log('onChange', name, field);
+    }
   }
 
   onChangeDropdown(name, value) {
-    const field = this.state.fields[name];
-    const arr = [];
-    if (field.multi) {
-      if (Array.isArray(field.value)) {
-        arr.push(...field.value);
-      } else {
-        if (field.value) arr.push(field.value);
+    const field = has(this.state.fields, name) ? this.state.fields[name] : null;
+    if (field) {
+      const arr = [];
+      if (field.multi) {
+        if (Array.isArray(field.value)) {
+          arr.push(...field.value);
+        } else {
+          if (field.value) arr.push(field.value);
+        }
+        if (arr.includes(value)) {
+          arr.splice(arr.indexOf(value), 1);
+        } else {
+          arr.push(value);
+        }
       }
-      if (arr.includes(value)) {
-        arr.splice(arr.indexOf(value), 1);
-      } else {
-        arr.push(value);
-      }
+      this.fieldProp(name, {value: field.multi ? arr : value, error: false});
+      this.formProp({error: false, updated: true});
+      if (field.debug) console.log('onChangeDropdown', name, field);
     }
-    this.fieldProp(name, {value: field.multi ? arr : value, error: false});
-    this.formProp({error: false, updated: true});
-    if (field.debug) console.log('onChangeDropdown', name, field);
   }
 
   onChangeCheckbox(name) {
-    const field = this.state.fields[name];
-    const checked = field.checked ? false : true;
-    this.fieldProp(name, {checked: checked, value: checked, error: false});
-    this.formProp({error: false, updated: true});
-    if (field.debug) console.log('onChangeCheckbox', name, field);
+    const field = has(this.state.fields, name) ? this.state.fields[name] : null;
+    if (field) {
+      const checked = field.checked ? false : true;
+      this.fieldProp(name, {checked: checked, value: checked, error: false});
+      this.formProp({error: false, updated: true});
+      if (field.debug) console.log('onChangeCheckbox', name, field);
+    }
   }
 
   onChangeRadio(name, value) {
-    const field = this.state.fields[name];
-    this.fieldProp(name, {checked: value, value: value, error: false});
-    this.formProp({error: false, updated: true});
-    if (field.debug) console.log('onChangeRadio', name, field);
+    const field = has(this.state.fields, name) ? this.state.fields[name] : null;
+    if (field) {
+      this.fieldProp(name, {checked: value, value: value, error: false});
+      this.formProp({error: false, updated: true});
+      if (field.debug) console.log('onChangeRadio', name, field);
+    }
   }
 
   onChangeRichText(name, val, hasText) {
-    const value = hasText ? val : _v.clearRichTextIfShouldBeEmpty(val);
-    const field = this.state.fields[name];
-    this.fieldProp(name, {value: value, error: false});
-    this.formProp({error: false, updated: true});
-    if (field.debug) console.log('onChange', name, field);
+    const field = has(this.state.fields, name) ? this.state.fields[name] : null;
+    if (field) {
+      const value = hasText ? val : _v.clearRichTextIfShouldBeEmpty(val);
+      this.fieldProp(name, {value: value, error: false});
+      this.formProp({error: false, updated: true});
+      if (field.debug) console.log('onChangeRichText', name, field);
+    }
   }
 
   onChangeCreditCard(e) {
@@ -494,7 +510,7 @@ class Form extends Component {
   }
 
   checkForErrors(fields, group) {
-    var error = false;
+    let error = false;
     Object.entries(fields).forEach(([key, value]) => {
       if (value.group === group || value.group === 'all') {
         if (value.error) error = true;
@@ -512,11 +528,12 @@ class Form extends Component {
   */
   getErrors(err) {
     let error = false;
-    if (has(err, 'response')) {
-      // Make sure the err has response prop before continuing
 
+    // Make sure the err has response prop before continuing
+    if (has(err, 'response')) {
+
+      // Make sure the response has data prop before continuing
       if (has(err.response, 'data')) {
-        // Make sure the response has data prop before continuing
 
         // Handle single error
         if (has(err.response.data, 'message')) {
@@ -531,6 +548,7 @@ class Form extends Component {
         }
 
         if (has(err.response.data, 'errors')) {
+
           // Handle multiple errors
           const errors = err.response.data.errors;
           for (let i=0; i <= errors.length; i++) {
@@ -563,9 +581,9 @@ class Form extends Component {
     return;
   }
 
-  saveButton(callback, label = 'Save', style = {}) {
+  saveButton(callback, label = 'Save', style = {}, className = '') {
     return (
-      <button className='button' style={style} type='button' disabled={this.state.updated ? false : true} onClick={(e) => this.validateForm(e, callback)}>{label}</button>
+      <button className={`button ${className}`} style={style} type='button' disabled={this.state.updated ? false : true} onClick={(e) => this.validateForm(e, callback)}>{label}</button>
     )
   }
 
@@ -592,10 +610,10 @@ class Form extends Component {
   }
 
   validateForm(e, callback, group = 'default') {
-    let bindthis = this;
 		e.preventDefault();
+    let bindthis = this;
     let fields = this.state.fields;
-    var groupFields = {};
+    const groupFields = {};
     Object.entries(fields).forEach(([key, value]) => {
       if ((value.group === group || value.group === 'all') && value.autoReturn) {
         groupFields[key] = value;
@@ -647,11 +665,10 @@ class Form extends Component {
 
       // no default
     }
-    return;
   }
 
   renderChildren() {
-    var childrenWithProps = React.Children.map(this.props.children,
+    const childrenWithProps = React.Children.map(this.props.children,
       (child) => React.cloneElement(child, {
         validateForm: this.validateForm,
         formProp: this.formProp,

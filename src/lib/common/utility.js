@@ -1,9 +1,8 @@
 import React from 'react';
 import Moment from 'moment';
 import has from 'has';
-import Loadable from 'react-loadable';
 
-export var imageUrlWithStyle = function(imageURL, style) {
+export const imageUrlWithStyle = function(imageURL, style) {
   if (imageURL) {
     return imageURL.replace(/original$/i, style);
   } else {
@@ -12,15 +11,15 @@ export var imageUrlWithStyle = function(imageURL, style) {
 }
 
 export function lookup(arr, field, value) {
-  var item;
-  for (var i = 0; i < arr.length; i++) {
+  let item;
+  for (let i = 0; i < arr.length; i++) {
     if (arr[i][field] === value) item = arr[i];
   }
   return item;
 }
 
 export function getSplitStr(str, delimiter, num, index) {
-  var arr;
+  let arr;
   str = !isNaN(str) ? str.toString() : str;
   if (str.indexOf(delimiter) !== -1) {
     arr = str.split(delimiter, num);
@@ -35,7 +34,7 @@ export function getSplitStr(str, delimiter, num, index) {
 }
 
 export function toFixed(n,precision) {
-  var match=RegExp('(\\d+\\.\\d{1,'+precision+'})(\\d)?').exec(n);
+  const match = RegExp('(\\d+\\.\\d{1,'+precision+'})(\\d)?').exec(n);
   if(match===null||match[2]===undefined) {
       return n.toFixed(precision);
       }
@@ -55,7 +54,7 @@ export function getRand(min, max, int = true) {
 }
 
 export function translateSort(sort) {
-  var str = '';
+  let str = '';
   if (sort === 'desc') str = '-';
   return str;
 }
@@ -87,8 +86,8 @@ function propCompare(prop, direction) {
 }
 
 export function splitName(str) {
-  var arr = [];
-  var value = {};
+  let arr = [];
+  const value = {};
   if (!str) return false;
   arr = str.split(' ');
   if (arr.length > 1) {
@@ -102,8 +101,8 @@ export function splitName(str) {
 }
 
 export function objectLength( object ) {
-    var length = 0;
-    for( var key in object ) {
+    let length = 0;
+    for( let key in object ) {
         if(has(object, key)) {
             ++length;
         }
@@ -113,12 +112,12 @@ export function objectLength( object ) {
 
 export function hexToRgb(hex) {
     // Expand shorthand form (e.g. '03F') to full form (e.g. '0033FF')
-    var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
     hex = hex.replace(shorthandRegex, function(m, r, g, b) {
         return r + r + g + g + b + b;
     });
 
-    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result ? {
         r: parseInt(result[1], 16),
         g: parseInt(result[2], 16),
@@ -132,7 +131,7 @@ export function removeElement(element) {
 }
 
 export function convertArrayOfObjectsToCSV(args) {
-  var result, ctr, keys, columnDelimiter, lineDelimiter, data;
+  let result, ctr, keys, columnDelimiter, lineDelimiter, data;
 
   data = args.data || null;
   if (data == null || !data.length) {
@@ -176,22 +175,22 @@ export function createCSV(arr, name) {
 }
 
 export function setCookie(cname, cvalue, exdays) {
-    var d = new Date();
+    const d = new Date();
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    var expires = 'expires='+d.toUTCString();
+    const expires = 'expires='+d.toUTCString();
     document.cookie = cname + '=' + cvalue + ';' + expires + ';path=/';
 }
 
 export function deleteCookie(cname) {
-    var expires = 'expires=Thu, 01 Jan 1970 00:00:00 UTC';
+    const expires = 'expires=Thu, 01 Jan 1970 00:00:00 UTC';
     document.cookie = cname + '=' + expires + ';path=/';
 }
 
 export function getCookie(cname) {
-    var name = cname + '=';
-    var ca = document.cookie.split(';');
-    for(var i = 0; i < ca.length; i++) {
-        var c = ca[i];
+    const name = cname + '=';
+    const ca = document.cookie.split(';');
+    for(let i = 0; i < ca.length; i++) {
+        let c = ca[i];
         while (c.charAt(0) === ' ') {
             c = c.substring(1);
         }
@@ -203,18 +202,18 @@ export function getCookie(cname) {
 }
 
 export function makeHash(length) {
-    var text = '';
-    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for( var i=0; i <= length; i++ )
+    let text = '';
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    for( let i=0; i <= length; i++ )
         text += possible.charAt(Math.floor(Math.random() * possible.length));
     return text;
 }
 
 export function randomPassword(length) {
-    var chars = 'abcdefghijklmnopqrstuvwxyz!@#$%^&*()-+<>ABCDEFGHIJKLMNOP1234567890';
-    var pass = '';
-    for (var x = 0; x < length; x++) {
-        var i = Math.floor(Math.random() * chars.length);
+    const chars = 'abcdefghijklmnopqrstuvwxyz!@#$%^&*()-+<>ABCDEFGHIJKLMNOP1234567890';
+    let pass = '';
+    for (let x = 0; x < length; x++) {
+        let i = Math.floor(Math.random() * chars.length);
         pass += chars.charAt(i);
     }
     return pass;
@@ -225,16 +224,15 @@ export function toTitleCase(str) {
 }
 
 export function encodeBlob(imageUrl, callback) {
-  var xhr = new XMLHttpRequest();
+  const xhr = new XMLHttpRequest();
   xhr.open('GET', imageUrl);
   xhr.responseType = 'arraybuffer'
   xhr.onload = function() {
-    var data;
-    var type = {type: 'image/jpeg'}; // xhr.response['content-type'];
-  	var bytes = new Uint8Array(xhr.response);
-    var blob = new Blob([bytes], type);
-    var blobUrl = URL.createObjectURL(blob);
-    data = blobUrl;
+    const type = {type: 'image/jpeg'}; // xhr.response['content-type'];
+  	const bytes = new Uint8Array(xhr.response);
+    const blob = new Blob([bytes], type);
+    const blobUrl = URL.createObjectURL(blob);
+    const data = blobUrl;
     callback(data);
   }
   xhr.send();
@@ -244,33 +242,33 @@ export function b64toBlob(b64Data, contentType, sliceSize) {
   contentType = contentType || '';
   sliceSize = sliceSize || 512;
 
-  var byteCharacters = atob(b64Data);
-  var byteArrays = [];
+  let byteCharacters = atob(b64Data);
+  let byteArrays = [];
 
-  for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-    var slice = byteCharacters.slice(offset, offset + sliceSize);
+  for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+    const slice = byteCharacters.slice(offset, offset + sliceSize);
 
-    var byteNumbers = new Array(slice.length);
-    for (var i = 0; i < slice.length; i++) {
+    const byteNumbers = new Array(slice.length);
+    for (let i = 0; i < slice.length; i++) {
       byteNumbers[i] = slice.charCodeAt(i);
     }
 
-    var byteArray = new Uint8Array(byteNumbers);
+    const byteArray = new Uint8Array(byteNumbers);
 
     byteArrays.push(byteArray);
   }
 
-  var blob = new Blob(byteArrays, {type: contentType});
+  const blob = new Blob(byteArrays, {type: contentType});
   return blob;
 }
 
 export function getBlob(objectUrl, callback, data, fileName, imageCallback, fieldName) {
-  var xhr = new XMLHttpRequest();
+  const xhr = new XMLHttpRequest();
   xhr.open('GET', objectUrl, true);
   xhr.responseType = 'blob';
   xhr.onload = function(e) {
     if (this.status === 200) {
-      var blob = this.response;
+      const blob = this.response;
       callback(blob, data, fileName, imageCallback, fieldName);
     }
   };
@@ -278,19 +276,19 @@ export function getBlob(objectUrl, callback, data, fileName, imageCallback, fiel
 }
 
 export function encodeDataURI(imageUrl, callback) {
-  var xhr = new XMLHttpRequest();
+  const xhr = new XMLHttpRequest();
   xhr.open('GET', imageUrl);
   xhr.responseType = 'arraybuffer'
   xhr.onload = function() {
-    var data;
-    var type = 'image/jpeg'; // xhr.response['content-type'];
-    var binary = '';
-  	var bytes = new Uint8Array(xhr.response);
-    var len = bytes.byteLength;
-  	for (var i = 0; i < len; i++) {
+    let data;
+    let binary = '';
+    const type = 'image/jpeg'; // xhr.response['content-type'];
+  	const bytes = new Uint8Array(xhr.response);
+    const len = bytes.byteLength;
+  	for (let i = 0; i < len; i++) {
   		binary += String.fromCharCode( bytes[ i ] );
   	}
-    var prefix = 'data:' + type + ';base64,';
+    const prefix = 'data:' + type + ';base64,';
     data = prefix + window.btoa( binary );
     callback(data);
   }
@@ -320,9 +318,9 @@ export function formatMoneyForAPI(amount) {
   if (!amount) return 0;
   amount = amount.toString();
   amount = amount.replace(/,/g, '');
-  var arr = getSplitStr(amount, '.', 2, -1);
-  var dollar;
-  var cents = 0;
+  const arr = getSplitStr(amount, '.', 2, -1);
+  let dollar;
+  let cents = 0;
   if (Array.isArray(arr)) {
     dollar = parseInt(arr[0]*100)
     if (1 in arr) {
@@ -335,19 +333,19 @@ export function formatMoneyForAPI(amount) {
   } else {
     dollar = parseInt(arr)*100;
   }
-  var v = parseInt(dollar + cents);
+  const v = parseInt(dollar + cents);
   return v;
 }
 
 export function onLoaded(element,callback){
- var self = element;
- var h = self.clientHeight;
- var w = self.clientWidth;
- var txt = self.innerText;
- var html = self.innerHTML;
+ const self = element;
+ let h = self.clientHeight;
+ let w = self.clientWidth;
+ let txt = self.innerText;
+ let html = self.innerHTML;
  (function flux(){
     setTimeout(function(){
-        var done =
+        const done =
           h === self.clientHeight &&
           w === self.clientWidth &&
           txt === self.innerText &&
@@ -371,7 +369,7 @@ export function cloneObj(obj) {
 
 
 export function makeAPIQuery(obj) {
-  var sort, order, str = '?s=cloud';
+  let sort, order, str = '?s=cloud';
   if (obj.queryOnly) {
     return '&q=' + obj.query;
   }
@@ -427,7 +425,7 @@ export function getDate(timestamp, format = 'MM/DD/YYYY HH:mm') {
 
 export function formatBytes(bytes,decimals) {
    if(bytes === 0) return '0 Bytes';
-   var k = 1024,
+   const k = 1024,
        dm = decimals <= 0 ? 0 : decimals || 2,
        sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
        i = Math.floor(Math.log(bytes) / Math.log(k));
