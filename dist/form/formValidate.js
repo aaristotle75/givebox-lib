@@ -216,7 +216,6 @@ export function formatDate(value) {
 export function validatePassword(value) {
   var validate = true;
   if (value.length < 8) validate = false;
-  console.log(value, validate);
   return validate;
 }
 export var msgs = {
