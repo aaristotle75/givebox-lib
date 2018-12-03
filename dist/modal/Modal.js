@@ -152,7 +152,7 @@ function (_Component) {
       this.setState({
         open: false
       });
-      setTimeout(function () {
+      this.closeTimer = setTimeout(function () {
         window.postMessage(bindthis.props.identifier, '*');
         if (callback) callback();
       }, transitionTimeMS);

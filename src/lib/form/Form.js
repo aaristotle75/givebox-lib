@@ -16,6 +16,7 @@ class Form extends Component {
 
   constructor(props) {
     super(props);
+    this.onEnterKeypress = this.onEnterKeypress.bind(this);
     this.onChange = this.onChange.bind(this);
     this.onChangeCalendar = this.onChangeCalendar.bind(this);
     this.onChangeDropdown = this.onChangeDropdown.bind(this);
@@ -46,7 +47,9 @@ class Form extends Component {
     this.fieldError = this.fieldError.bind(this);
     this.state = {
       error: false,
+      errorMsg: '',
       saved: false,
+      savedMsg: '',
       updated: false,
       fields: {}
     }
@@ -79,15 +82,24 @@ class Form extends Component {
     this.defaults = { ...this.defaultOptions, ...props.options };
   }
 
-  /* Debug lifecycle
   componentDidMount() {
-    console.log('execute givebox-lib Form mounted');
+    window.addEventListener('keyup', this.onEnterKeypress);
   }
 
   componentWillUnmount() {
-    console.log('execute givebox-lib Form unmounted');
+    if (this.formSavedTimeout) {
+      clearTimeout(this.formSavedTimeout);
+      this.formSavedTimeout = null;
+    }
+    window.removeEventListener('keyup', this.onEnterKeypress);
   }
-  */
+
+  onEnterKeypress(e) {
+    e.preventDefault();
+    if (e.keyCode === 13) {
+      document.getElementById(`${this.props.id}-saveButton`).click();
+    }
+  }
 
 	focusInput(ref) {
 		ref.current.focus();
@@ -137,7 +149,7 @@ class Form extends Component {
     const field = has(this.state.fields, name) ? this.state.fields[name] : null;
     if (field) {
       this.fieldProp(name, { value: ts/field.reduceTS, error: false });
-      this.formProp({ error: false, updated: true });
+      this.formProp({ error: false, errorMsg: '', updated: true });
       if (has(field, 'rangeStartField')) {
         let required = ts ? true : false;
         this.fieldProp(field.rangeStartField, {error: false, required: required});
@@ -549,10 +561,10 @@ class Form extends Component {
         if (has(err.response.data, 'message')) {
           if (err.response.data.code === 'vantiv_payfac' && this.props.hideVantivErrors) {
             // Show the hideVantivErrors message
-            this.formProp({ error: `${this.props.hideVantivErrors}` });
+            this.formProp({ error: true, errorMsg: `${this.props.hideVantivErrors}` });
             error = this.props.hideVantivErrors;
           } else {
-            this.formProp({ error: `${err.response.data.message}` });
+            this.formProp({ error: true, errorMsg: `${err.response.data.message}` });
             error = err.response.data.message;
           }
         }
@@ -573,7 +585,7 @@ class Form extends Component {
               }
             }
           }
-          this.formProp({ error: `Error saving: ${error}` });
+          this.formProp({ error: true, errorMsg: `Error saving: ${error}` });
         }
       }
     }
@@ -581,11 +593,12 @@ class Form extends Component {
   }
 
   formSaved(callback, msg = '', timeout = 2500) {
-    this.formProp({saved: msg || _v.msgs.success, updated: false });
+    this.formProp({saved: true, savedMsg: msg || _v.msgs.success, updated: false });
     if (timeout) {
-      setTimeout(() => {
-        this.formProp({saved: false});
+      this.formSavedTimeout = setTimeout(() => {
         if (callback) callback();
+        this.formProp({saved: false, savedMsg: this.state.savedMsg});
+        this.formSavedTimeout = null;
       }, timeout);
     }
     return;
@@ -593,19 +606,19 @@ class Form extends Component {
 
   saveButton(callback, label = 'Save', style = {}, className = '') {
     return (
-      <button className={`button ${className}`} style={style} type='button' disabled={this.state.updated ? false : true} onClick={(e) => this.validateForm(e, callback)}>{label}</button>
+      <button id={`${this.props.id}-saveButton`} className={`button ${className}`} style={style} type='button' disabled={this.state.updated ? false : true} onClick={(e) => this.validateForm(e, callback)}>{label}</button>
     )
   }
 
   errorAlert() {
     return (
-      <Alert alert='error' msg={this.state.error} />
+      <Alert alert='error' display={this.state.error} msg={this.state.errorMsg} />
     );
   }
 
   successAlert() {
     return (
-      <Alert alert='success' msg={this.state.saved} />
+      <Alert alert='success' display={this.state.saved} msg={this.state.savedMsg} />
     );
   }
 

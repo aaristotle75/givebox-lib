@@ -30,6 +30,14 @@ function (_Component) {
   }
 
   _createClass(Delete, [{
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      if (this.timeout) {
+        clearTimeout(this.timeout);
+        this.timeout = null;
+      }
+    }
+  }, {
     key: "confirmCallback",
     value: function confirmCallback(res, err) {
       var _this2 = this;
@@ -41,12 +49,14 @@ function (_Component) {
 
         if (this.props.redirect) {
           if (this.props.history) {
-            setTimeout(function () {
+            this.timeout = setTimeout(function () {
               _this2.props.removeResource(_this2.props.resource);
 
               _this2.props.toggleModal(_this2.props.modalID, false);
 
               _this2.props.history.push(_this2.props.redirect);
+
+              _this2.timeout = null;
             }, 2000);
           } else {
             console.error('Must pass Router history props to redirect.');

@@ -18,10 +18,6 @@ class ItemForm extends Component {
     }
   }
 
-  componentWillUnmount() {
-    console.log('componentWillUnmount');
-  }
-
   formSavedCallback() {
     console.log('formSavedCallback', this.props.responseData);
     return;

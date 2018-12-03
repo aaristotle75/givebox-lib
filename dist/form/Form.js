@@ -33,6 +33,7 @@ function (_Component) {
     _classCallCheck(this, Form);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Form).call(this, props));
+    _this.onEnterKeypress = _this.onEnterKeypress.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.onChange = _this.onChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.onChangeCalendar = _this.onChangeCalendar.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.onChangeDropdown = _this.onChangeDropdown.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -97,17 +98,32 @@ function (_Component) {
     _this.defaults = _objectSpread({}, _this.defaultOptions, props.options);
     return _this;
   }
-  /* Debug lifecycle
-  componentDidMount() {
-    console.log('execute givebox-lib Form mounted');
-  }
-   componentWillUnmount() {
-    console.log('execute givebox-lib Form unmounted');
-  }
-  */
-
 
   _createClass(Form, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      window.addEventListener('keyup', this.onEnterKeypress);
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      if (this.formSavedTimeout) {
+        clearTimeout(this.formSavedTimeout);
+        this.formSavedTimeout = null;
+      }
+
+      window.removeEventListener('keyup', this.onEnterKeypress);
+    }
+  }, {
+    key: "onEnterKeypress",
+    value: function onEnterKeypress(e) {
+      e.preventDefault();
+
+      if (e.keyCode === 13) {
+        document.getElementById("".concat(this.props.id, "-saveButton")).click();
+      }
+    }
+  }, {
     key: "focusInput",
     value: function focusInput(ref) {
       ref.current.focus();
@@ -749,12 +765,14 @@ function (_Component) {
       });
 
       if (timeout) {
-        setTimeout(function () {
+        this.formSavedTimeout = setTimeout(function () {
+          if (callback) callback();
+
           _this2.formProp({
             saved: false
           });
 
-          if (callback) callback();
+          _this2.formSavedTimeout = null;
         }, timeout);
       }
 
@@ -769,6 +787,7 @@ function (_Component) {
       var style = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
       var className = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '';
       return React.createElement("button", {
+        id: "".concat(this.props.id, "-saveButton"),
         className: "button ".concat(className),
         style: style,
         type: "button",
@@ -789,6 +808,7 @@ function (_Component) {
   }, {
     key: "successAlert",
     value: function successAlert() {
+      console.log('successAlert execute', this.state.saved);
       return React.createElement(Alert, {
         alert: "success",
         msg: this.state.saved

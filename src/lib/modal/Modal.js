@@ -114,7 +114,7 @@ class Modal extends Component {
     const bindthis = this;
     const transitionTimeMS = this.getTransitionDuration();
     this.setState({open: false});
-    setTimeout(function() {
+    this.closeTimer = setTimeout(function() {
 		  window.postMessage(bindthis.props.identifier, '*');
       if (callback) callback();
     }, transitionTimeMS);

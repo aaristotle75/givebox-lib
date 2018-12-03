@@ -15,15 +15,23 @@ class Delete extends Component {
     }
   }
 
+  componentWillUnmount() {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+      this.timeout = null;
+    }
+  }
+
   confirmCallback(res, err) {
     if (!err) {
       this.setState({ success: 'Deleted successfully.' });
       if (this.props.redirect) {
         if (this.props.history) {
-          setTimeout(() => {
+          this.timeout = setTimeout(() => {
             this.props.removeResource(this.props.resource);
             this.props.toggleModal(this.props.modalID, false);
             this.props.history.push(this.props.redirect);
+            this.timeout = null;
           }, 2000);
         } else {
           console.error('Must pass Router history props to redirect.');

@@ -27,12 +27,13 @@ export class Alert extends Component {
 
     const {
       alert,
-      msg
+      msg,
+      display
     } = this.props;
 
     return (
       <CSSTransition
-        in={msg ? true : false}
+        in={display ? true : false}
         timeout={300}
         classNames='alertMsg'
         unmountOnExit
@@ -49,7 +50,7 @@ export class Alert extends Component {
 export const Error = ({msg}) => {
   return (
     <div className={`error`}>
-      <span className='msgText'><span className='icon icon-error-circle'></span> {typeof msg === 'string' ? msg : msgs.error}</span>
+      <span className='msgText'><span className='icon icon-error-circle'></span> {msg || msgs.error}</span>
     </div>
   )
 }
