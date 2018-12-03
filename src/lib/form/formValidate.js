@@ -219,7 +219,6 @@ export function formatDate(value, time = false) {
 export function validatePassword(value) {
   let validate = true;
   if (value.length < 8) validate = false;
-  console.log(value, validate);
   return validate;
 }
 
