@@ -64,7 +64,9 @@ function (_Component) {
     _this.fieldError = _this.fieldError.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.state = {
       error: false,
+      errorMsg: '',
       saved: false,
+      savedMsg: '',
       updated: false,
       fields: {}
     };
@@ -184,6 +186,7 @@ function (_Component) {
         });
         this.formProp({
           error: false,
+          errorMsg: '',
           updated: true
         });
 
@@ -712,12 +715,14 @@ function (_Component) {
             if (err.response.data.code === 'vantiv_payfac' && this.props.hideVantivErrors) {
               // Show the hideVantivErrors message
               this.formProp({
-                error: "".concat(this.props.hideVantivErrors)
+                error: true,
+                errorMsg: "".concat(this.props.hideVantivErrors)
               });
               error = this.props.hideVantivErrors;
             } else {
               this.formProp({
-                error: "".concat(err.response.data.message)
+                error: true,
+                errorMsg: "".concat(err.response.data.message)
               });
               error = err.response.data.message;
             }
@@ -744,7 +749,8 @@ function (_Component) {
             }
 
             this.formProp({
-              error: "Error saving: ".concat(error)
+              error: true,
+              errorMsg: "Error saving: ".concat(error)
             });
           }
         }
@@ -760,7 +766,8 @@ function (_Component) {
       var msg = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
       var timeout = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 2500;
       this.formProp({
-        saved: msg || _v.msgs.success,
+        saved: true,
+        savedMsg: msg || _v.msgs.success,
         updated: false
       });
 
@@ -769,7 +776,8 @@ function (_Component) {
           if (callback) callback();
 
           _this2.formProp({
-            saved: false
+            saved: false,
+            savedMsg: _this2.state.savedMsg
           });
 
           _this2.formSavedTimeout = null;
@@ -802,16 +810,17 @@ function (_Component) {
     value: function errorAlert() {
       return React.createElement(Alert, {
         alert: "error",
-        msg: this.state.error
+        display: this.state.error,
+        msg: this.state.errorMsg
       });
     }
   }, {
     key: "successAlert",
     value: function successAlert() {
-      console.log('successAlert execute', this.state.saved);
       return React.createElement(Alert, {
         alert: "success",
-        msg: this.state.saved
+        display: this.state.saved,
+        msg: this.state.savedMsg
       });
     }
   }, {

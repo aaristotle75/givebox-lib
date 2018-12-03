@@ -46,9 +46,10 @@ function (_Component) {
     value: function render() {
       var _this$props = this.props,
           alert = _this$props.alert,
-          msg = _this$props.msg;
+          msg = _this$props.msg,
+          display = _this$props.display;
       return React.createElement(CSSTransition, {
-        in: msg ? true : false,
+        in: display ? true : false,
         timeout: 300,
         classNames: "alertMsg",
         unmountOnExit: true
@@ -68,7 +69,7 @@ export var Error = function Error(_ref) {
     className: "msgText"
   }, React.createElement("span", {
     className: "icon icon-error-circle"
-  }), " ", typeof msg === 'string' ? msg : msgs.error));
+  }), " ", msg || msgs.error));
 };
 export var Success = function Success(_ref2) {
   var msg = _ref2.msg;
