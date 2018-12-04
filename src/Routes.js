@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import { util, ModalRoute } from './lib';
-import Sidebar from './common/Sidebar';
-import Header from './common/Header';
+import Sidebar from './demo/Sidebar';
+import Header from './demo/Header';
 
 class Routes extends Component {
 
