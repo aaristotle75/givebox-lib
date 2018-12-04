@@ -37,6 +37,10 @@
 	margin: 0 auto;
 }
 
+.loader.authenticating {
+	background: transparent;
+}
+
 .loaderContent {
 	display: table;
 	position: absolute;

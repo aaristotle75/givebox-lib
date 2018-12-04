@@ -92,9 +92,9 @@ class App extends Component {
     this.props.getResource('org');
   }
 
-  loader(msg) {
+  loader(msg, className = '') {
     return (
-      <Loader msg={msg} forceText={process.env.NODE_ENV !== 'production' && true} />
+      <Loader className={className} msg={msg} forceText={process.env.NODE_ENV !== 'production' && true} />
     )
   }
 
