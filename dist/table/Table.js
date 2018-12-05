@@ -345,7 +345,7 @@ function (_Component2) {
               } else {
                 if (has(value, 'actions')) td.push(React.createElement("td", {
                   key: key
-                }, value.actions.component));else td.push(React.createElement("td", {
+                }, value.actions));else td.push(React.createElement("td", {
                   onClick: function onClick() {
                     return ref ? bindthis.detailsLink(ref) : '';
                   },

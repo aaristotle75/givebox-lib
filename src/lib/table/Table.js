@@ -268,7 +268,7 @@ class TableBody extends Component {
             id = `${passkey}-${value.key}-details`;
             ref = React.createRef();
             const icon = <span className={`icon ${bindthis.state.details.includes(id) ? 'icon-minus-circle-fill' : 'icon-plus-circle-fill'}`}></span>;
-            td.push(<td onClick={() => ref ? bindthis.detailsLink(ref) : ''} className={'hasDetails'} key={key}>{icon}</td>);
+            td.push(<td onClick={() => ref ? bindthis.detailsLink(ref) : ''} className={'detailsIcon hasDetails'} key={key}>{icon}</td>);
             details.push(
               <tr ref={ref} className={`detailsRow`} id={id} key={id}>
                 <td colSpan={length}>
