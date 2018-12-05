@@ -312,6 +312,10 @@ function (_Component2) {
                 className: "icon ".concat(bindthis.state.details.includes(id) ? 'icon-minus-circle-fill' : 'icon-plus-circle-fill')
               });
               td.push(React.createElement("td", {
+                onClick: function onClick() {
+                  return ref ? bindthis.detailsLink(ref) : '';
+                },
+                className: 'hasDetails',
                 key: key
               }, icon));
               details.push(React.createElement("tr", {
@@ -336,16 +340,23 @@ function (_Component2) {
                 className: "detailsContent"
               }, value.details))))));
             } else {
-              if (has(value, 'options')) options = value.options;else td.push(React.createElement("td", {
-                key: key
-              }, value));
+              if (has(value, 'options')) {
+                options = value.options;
+              } else {
+                if (has(value, 'actions')) td.push(React.createElement("td", {
+                  key: key
+                }, value.actions.component));else td.push(React.createElement("td", {
+                  onClick: function onClick() {
+                    return ref ? bindthis.detailsLink(ref) : '';
+                  },
+                  className: "".concat(ref && 'hasDetails'),
+                  key: key
+                }, value));
+              }
             }
           });
           var tr = React.createElement("tr", {
-            onClick: function onClick() {
-              return ref ? bindthis.detailsLink(ref) : '';
-            },
-            className: "".concat(key % 2 === 0 ? '' : 'altRow', " ").concat(options.grayout && 'grayout', " ").concat(ref && 'hasDetails'),
+            className: "".concat(key % 2 === 0 ? '' : 'altRow', " ").concat(options.grayout && 'grayout'),
             key: key
           }, td);
           items.push(tr);
