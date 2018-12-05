@@ -288,7 +288,7 @@ class TableBody extends Component {
             if (has(value, 'options')) {
               options = value.options;
             } else {
-              if (has(value, 'actions')) td.push(<td key={key}>{value.actions.component}</td>);
+              if (has(value, 'actions')) td.push(<td key={key}>{value.actions}</td>);
               else td.push(<td onClick={() => ref ? bindthis.detailsLink(ref) : ''} className={`${ref && 'hasDetails'}`} key={key}>{value}</td>);
             }
           }

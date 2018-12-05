@@ -206,11 +206,10 @@ class Transactions extends Component {
           desc.desc,
           desc.credit !== '0.00' || value.txType === 'credit' ? util.money(desc.credit) : '',
           desc.debit !== '0.00' || value.txType === 'debit' ? util.money(desc.debit) : '',
-          { actions: { component:
+          { actions:
             <ActionsMenu
               options={options}
-              />
-            }
+            />
           }
         ]);
       });
