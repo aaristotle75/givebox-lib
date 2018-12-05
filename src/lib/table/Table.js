@@ -241,6 +241,10 @@ class TableBody extends Component {
     this.setState({ ...this.state, ...details });
   }
 
+  test(ref) {
+    console.log('clicked', ref.current.id);
+  }
+
   renderItems() {
     const {
       rows,
@@ -257,13 +261,14 @@ class TableBody extends Component {
         const length = value.length;
         const passkey = key;
         let options = {};
+        let ref, id;
         value.forEach((value, key) => {
           if (has(value, 'details')) {
             if (!has(value, 'key')) console.error('Add a key property for proper handling');
-            const id = `${passkey}-${value.key}-details`;
-            const ref = React.createRef();
-            const link = <button id={id} onClick={() => bindthis.detailsLink(ref)} className='link'><span className={`icon ${bindthis.state.details.includes(id) ? 'icon-minus-circle-fill' : 'icon-plus-circle-fill'}`}></span></button>;
-            td.push(<td key={key}>{link}</td>);
+            id = `${passkey}-${value.key}-details`;
+            ref = React.createRef();
+            const icon = <span className={`icon ${bindthis.state.details.includes(id) ? 'icon-minus-circle-fill' : 'icon-plus-circle-fill'}`}></span>;
+            td.push(<td key={key}>{icon}</td>);
             details.push(
               <tr ref={ref} className={`detailsRow`} id={id} key={id}>
                 <td colSpan={length}>
@@ -284,7 +289,7 @@ class TableBody extends Component {
             else td.push(<td key={key}>{value}</td>);
           }
         });
-        const tr = <tr className={`${key%2===0 ? '' : 'altRow'} ${options.grayout && 'grayout'}`} key={key}>{td}</tr>;
+        const tr = <tr onClick={() => ref ? bindthis.detailsLink(ref) : ''} className={`${key%2===0 ? '' : 'altRow'} ${options.grayout && 'grayout'} ${ref && 'hasDetails'}`} key={key}>{td}</tr>;
         items.push(tr);
         if (!util.isEmpty(details)) items.push(details);
 
