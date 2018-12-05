@@ -315,7 +315,7 @@ function (_Component2) {
                 onClick: function onClick() {
                   return ref ? bindthis.detailsLink(ref) : '';
                 },
-                className: 'hasDetails',
+                className: 'detailsIcon hasDetails',
                 key: key
               }, icon));
               details.push(React.createElement("tr", {
