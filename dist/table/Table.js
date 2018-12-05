@@ -278,6 +278,11 @@ function (_Component2) {
       this.setState(_objectSpread({}, this.state, details));
     }
   }, {
+    key: "test",
+    value: function test(ref) {
+      console.log('clicked', ref.current.id);
+    }
+  }, {
     key: "renderItems",
     value: function renderItems() {
       var _this$props2 = this.props,
@@ -297,23 +302,18 @@ function (_Component2) {
           var length = value.length;
           var passkey = key;
           var options = {};
+          var ref, id;
           value.forEach(function (value, key) {
             if (has(value, 'details')) {
               if (!has(value, 'key')) console.error('Add a key property for proper handling');
-              var id = "".concat(passkey, "-").concat(value.key, "-details");
-              var ref = React.createRef();
-              var link = React.createElement("button", {
-                id: id,
-                onClick: function onClick() {
-                  return bindthis.detailsLink(ref);
-                },
-                className: "link"
-              }, React.createElement("span", {
+              id = "".concat(passkey, "-").concat(value.key, "-details");
+              ref = React.createRef();
+              var icon = React.createElement("span", {
                 className: "icon ".concat(bindthis.state.details.includes(id) ? 'icon-minus-circle-fill' : 'icon-plus-circle-fill')
-              }));
+              });
               td.push(React.createElement("td", {
                 key: key
-              }, link));
+              }, icon));
               details.push(React.createElement("tr", {
                 ref: ref,
                 className: "detailsRow",
@@ -342,7 +342,10 @@ function (_Component2) {
             }
           });
           var tr = React.createElement("tr", {
-            className: "".concat(key % 2 === 0 ? '' : 'altRow', " ").concat(options.grayout && 'grayout'),
+            onClick: function onClick() {
+              return ref ? bindthis.detailsLink(ref) : '';
+            },
+            className: "".concat(key % 2 === 0 ? '' : 'altRow', " ").concat(options.grayout && 'grayout', " ").concat(ref && 'hasDetails'),
             key: key
           }, td);
           items.push(tr);

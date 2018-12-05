@@ -268,7 +268,7 @@ class TableBody extends Component {
             id = `${passkey}-${value.key}-details`;
             ref = React.createRef();
             const icon = <span className={`icon ${bindthis.state.details.includes(id) ? 'icon-minus-circle-fill' : 'icon-plus-circle-fill'}`}></span>;
-            td.push(<td key={key}>{icon}</td>);
+            td.push(<td onClick={() => ref ? bindthis.detailsLink(ref) : ''} className={'hasDetails'} key={key}>{icon}</td>);
             details.push(
               <tr ref={ref} className={`detailsRow`} id={id} key={id}>
                 <td colSpan={length}>
@@ -285,11 +285,15 @@ class TableBody extends Component {
               </tr>
             );
           } else {
-            if (has(value, 'options')) options = value.options;
-            else td.push(<td key={key}>{value}</td>);
+            if (has(value, 'options')) {
+              options = value.options;
+            } else {
+              if (has(value, 'actions')) td.push(<td key={key}>{value.actions.component}</td>);
+              else td.push(<td onClick={() => ref ? bindthis.detailsLink(ref) : ''} className={`${ref && 'hasDetails'}`} key={key}>{value}</td>);
+            }
           }
         });
-        const tr = <tr onClick={() => ref ? bindthis.detailsLink(ref) : ''} className={`${key%2===0 ? '' : 'altRow'} ${options.grayout && 'grayout'} ${ref && 'hasDetails'}`} key={key}>{td}</tr>;
+        const tr = <tr className={`${key%2===0 ? '' : 'altRow'} ${options.grayout && 'grayout'}`} key={key}>{td}</tr>;
         items.push(tr);
         if (!util.isEmpty(details)) items.push(details);
 

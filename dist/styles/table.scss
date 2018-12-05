@@ -169,6 +169,10 @@ tr.detailsRow {
 
 }
 
+tr.hasDetails {
+  cursor: pointer;
+}
+
 .details {
   background: $light-gray;
   padding: 10px 20px 20px 20px;
