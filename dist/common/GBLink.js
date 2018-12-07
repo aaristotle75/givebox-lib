@@ -31,6 +31,8 @@ function (_Component) {
       var _this$props = this.props,
           id = _this$props.id,
           onClick = _this$props.onClick,
+          onMouseEnter = _this$props.onMouseEnter,
+          onMouseLeave = _this$props.onMouseLeave,
           className = _this$props.className,
           style = _this$props.style,
           primaryColor = _this$props.primaryColor;
@@ -45,6 +47,8 @@ function (_Component) {
         id: id,
         className: className || 'link',
         onClick: onClick,
+        onMouseEnter: onMouseEnter,
+        onMouseLeave: onMouseLeave,
         style: mergeStyle
       }, this.props.children);
     }

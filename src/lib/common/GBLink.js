@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 class GBLink extends Component {
-	
+
 	linkStyle() {
 		const style = {
 			color: `${this.props.primaryColor}`
@@ -10,13 +10,13 @@ class GBLink extends Component {
 	}
 
 	render() {
-		const { id, onClick, className, style, primaryColor } = this.props;
+		const { id, onClick, onMouseEnter, onMouseLeave, className, style, primaryColor } = this.props;
 
 		const color = primaryColor ? { color: primaryColor } : {};
 		const mergeStyle = { ...style, ...color };
 
 		return (
-      <button type='button' id={id} className={className || 'link'} onClick={onClick} style={mergeStyle}>
+      <button type='button' id={id} className={className || 'link'} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} style={mergeStyle}>
         {this.props.children}
       </button>
 		)

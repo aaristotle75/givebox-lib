@@ -49,10 +49,11 @@ p { margin: 1.67em 0; font-size: $normal-text-size; font-weight: $font-weight; }
   clear: both !important;
 }
 
-.yellow { color: $yellow !important; background: $yellow !important; }
-.green { color: $green !important; background: $green !important; }
-.orange { color: $orange !important; background: $orange !important; }
-.red { color: $red !important; background: $red !important; }
+.yellow { color: $yellow !important; }
+.green { color: $green !important; }
+.orange { color: $orange !important; }
+.red { color: $red !important; }
+.gray { color: $light-med-gray !important; }
 
 /*-------- Links ------------*/
 
@@ -64,7 +65,7 @@ a {
 
 a:hover {
   color: transparentize($primary, .3);
-  @include default-transition(.5s);
+  @include default-transition(.25s);
 }
 
 a.button {
@@ -86,6 +87,7 @@ a.button {
 
 a.button:hover {
   background-color: $secondary;
+  @include default-transition(.25s);
 }
 
 a.button.disabled {
@@ -106,7 +108,7 @@ button {
 }
 
 button:hover {
-  @include default-transition(.5s);
+  @include default-transition(.25s);
 }
 
 button:focus {
@@ -125,6 +127,7 @@ button.link {
 
 button.link:hover {
   color: transparentize($primary, .3);
+  @include default-transition(.25s);
 }
 
 button.button {
@@ -146,6 +149,7 @@ button.button {
 
 button.button:hover {
   background-color: $secondary;
+  @include default-transition(.25s);
 }
 
 button.button:disabled {
@@ -164,6 +168,7 @@ button.button.secondary {
 
 button.button.secondary:hover {
   background-color: transparentize($light-gray, .5);
+  @include default-transition(.25s);
 }
 
 /*------- Lists ----------*/
@@ -189,16 +194,13 @@ ul.selectable {
   li:hover {
     background: $light-gray;
     cursor: pointer;
-  	-webkit-transition-duration: .5s;
-  	transition-duration: .5s;
+    @include default-transition(.25s);
   }
 
   img {
     display: inline-block;
     height: 50px;
     width: 50px;
-    padding: 0 5px;
-    margin-right: 5px;
     vertical-align: middle;
   }
 

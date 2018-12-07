@@ -36,19 +36,30 @@ function (_Component) {
 
       var _this$props = this.props,
           id = _this$props.id,
-          className = _this$props.className;
-      return React.createElement(GBLink, {
+          className = _this$props.className,
+          li = _this$props.li;
+      var component = li ? React.createElement("li", {
+        className: className,
+        onClick: function onClick() {
+          return _this2.onClick(id);
+        }
+      }, this.props.children) : React.createElement(GBLink, {
         className: "link ".concat(className),
         type: "button",
         onClick: function onClick() {
           return _this2.onClick(id);
         }
       }, this.props.children);
+      return component;
     }
   }]);
 
   return ModalLink;
 }(Component);
+
+ModalLink.defaultProps = {
+  li: false
+};
 
 function mapStateToProps(state) {
   return {};

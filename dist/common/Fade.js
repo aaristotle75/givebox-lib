@@ -3,9 +3,9 @@ import React from 'react';
 import Transition from 'react-transition-group/Transition';
 
 var Fade = function Fade(props) {
-  var duration = 500;
+  var duration = props.duration || 300;
   var defaultStyle = {
-    transition: "opacity ".concat(props.duration || 300, "ms ease-in-out"),
+    transition: "opacity ".concat(duration, "ms ease-in-out"),
     opacity: 0
   };
   var transitionStyles = {
