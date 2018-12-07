@@ -19,14 +19,14 @@ class ModalLink extends Component {
     const {
       id,
       className,
-      li
+      type
     } = this.props;
 
     const component =
-      li ?
+      type === 'li' ?
       <li className={className} onClick={() => this.onClick(id)}>{this.props.children}</li>
       :
-      <GBLink className={`link ${className}`} type='button' onClick={() => this.onClick(id)}>
+      <GBLink className={`${type} ${className}`} type='button' onClick={() => this.onClick(id)}>
         {this.props.children}
       </GBLink>
     ;
@@ -38,14 +38,13 @@ class ModalLink extends Component {
 }
 
 ModalLink.defaultProps = {
-  li: false
+  type: 'link'
 }
 
 function mapStateToProps(state) {
   return {
   }
 }
-
 
 export default connect(mapStateToProps, {
   toggleModal

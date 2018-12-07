@@ -92,7 +92,6 @@ class Search extends Component {
 
     return (
       <div style={style} className={`search ${align}`}>
-        <div style={{width: '25%', display: 'inline-block'}}>
         <TextField
           id='search'
           name={searchName}
@@ -106,7 +105,6 @@ class Search extends Component {
             <button className={`searchResetBtn ${!searchValue && 'displayNone'}`} onClick={this.resetSearch} type='button'><span className='icon icon-close'></span></button>
           </div>
         </TextField>
-        </div>
       </div>
     );
   }

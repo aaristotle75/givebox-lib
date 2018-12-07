@@ -118,11 +118,6 @@ function (_Component) {
       return React.createElement("div", {
         style: style,
         className: "search ".concat(align)
-      }, React.createElement("div", {
-        style: {
-          width: '25%',
-          display: 'inline-block'
-        }
       }, React.createElement(TextField, {
         id: "search",
         name: searchName,
@@ -145,7 +140,7 @@ function (_Component) {
         type: "button"
       }, React.createElement("span", {
         className: "icon icon-close"
-      }))))));
+      })))));
     }
   }]);
 
