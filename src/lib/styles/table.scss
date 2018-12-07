@@ -172,6 +172,10 @@ td.hasDetails {
   cursor: pointer;
 }
 
+tr.detailsOpen {
+  background: $light-gray;
+}
+
 .details {
   background: $light-gray;
   padding: 10px 20px 20px 20px;

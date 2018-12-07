@@ -356,7 +356,7 @@ function (_Component2) {
             }
           });
           var tr = React.createElement("tr", {
-            className: "".concat(key % 2 === 0 ? '' : 'altRow', " ").concat(options.grayout && 'grayout'),
+            className: "".concat(bindthis.state.details.includes(id) && 'detailsOpen', " ").concat(key % 2 === 0 ? '' : 'altRow', " ").concat(options.grayout && 'grayout'),
             key: key
           }, td);
           items.push(tr);

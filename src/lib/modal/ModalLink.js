@@ -26,7 +26,7 @@ class ModalLink extends Component {
       type === 'li' ?
       <li className={className} onClick={() => this.onClick(id)}>{this.props.children}</li>
       :
-      <GBLink className={`${type} ${className}`} type='button' onClick={() => this.onClick(id)}>
+      <GBLink className={`${className}`} type='button' onClick={() => this.onClick(id)}>
         {this.props.children}
       </GBLink>
     ;
@@ -38,7 +38,8 @@ class ModalLink extends Component {
 }
 
 ModalLink.defaultProps = {
-  type: 'link'
+  type: 'link',
+  className: ''
 }
 
 function mapStateToProps(state) {

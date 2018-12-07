@@ -293,7 +293,7 @@ class TableBody extends Component {
             }
           }
         });
-        const tr = <tr className={`${key%2===0 ? '' : 'altRow'} ${options.grayout && 'grayout'}`} key={key}>{td}</tr>;
+        const tr = <tr className={`${bindthis.state.details.includes(id) && 'detailsOpen'} ${key%2===0 ? '' : 'altRow'} ${options.grayout && 'grayout'}`} key={key}>{td}</tr>;
         items.push(tr);
         if (!util.isEmpty(details)) items.push(details);
 
