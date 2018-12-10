@@ -81,11 +81,11 @@ class Filter extends Component {
   getField(key, value) {
     switch (value.field) {
       case 'calendarRange': {
-        return <div key={key} className='col' style={{ width: '100%'}}>{this.props.calendarRange(value.name, { options: value.options, colWidth: '50%' })}</div>;
+        return <div key={key} className='col rangeCol'>{this.props.calendarRange(value.name, { options: value.options, colWidth: '50%' })}</div>;
       }
 
       case 'dropdown': {
-        return <div key={key} className='col' style={{ width: '50%'}}>
+        return <div key={key} className='col dropdownCol'>
           {this.props.dropdown(
             value.name, {
               options: value.options,
@@ -99,7 +99,7 @@ class Filter extends Component {
       }
 
       case 'filler': {
-        return <div key={key} className='col' style={{ width: '45%', margin: 5}}></div>;
+        return <div key={key} className='col fillerCol'></div>;
       }
 
       // no default

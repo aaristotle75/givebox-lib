@@ -235,14 +235,14 @@ function (_Component) {
         },
         className: "page ".concat(previousClassName, " ").concat(activePage <= 1 ? disabledClassName : '')
       }, React.createElement("span", {
-        className: "icon-arrow-left"
+        className: this.props.previousIcon
       })), this.pagination(), React.createElement("li", {
         onClick: function onClick(e) {
           return _this3.handleNextPage(e);
         },
         className: "page ".concat(nextClassName, " ").concat(activePage >= pages ? disabledClassName : '')
       }, React.createElement("span", {
-        className: "icon-arrow-right"
+        className: this.props.nextIcon
       })))) : React.createElement("div", null));
     }
   }]);
@@ -263,6 +263,8 @@ Paginate.defaultProps = {
   pageClassName: 'page',
   activeClassName: 'active',
   previousClassName: 'previous',
+  previousIcon: 'icon-arrow-left',
+  nextIcon: 'icon-arrow-right',
   nextClassName: 'next',
   disabledClassName: 'disabled'
 };

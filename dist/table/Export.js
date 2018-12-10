@@ -72,14 +72,15 @@ function (_Component) {
     value: function render() {
       var _this$props = this.props,
           style = _this$props.style,
-          align = _this$props.align;
+          align = _this$props.align,
+          desc = _this$props.desc;
       return React.createElement("div", {
         style: style,
         className: "exportRecordsLink ".concat(align)
       }, React.createElement("button", {
         onClick: this.onClick,
         className: "link"
-      }, "Export Report"));
+      }, desc));
     }
   }]);
 
@@ -87,7 +88,8 @@ function (_Component) {
 }(Component);
 
 ExportLink.defaultProps = {
-  align: 'center'
+  align: 'center',
+  desc: 'Export Report'
 };
 
 function mapStateToProps(state, props) {

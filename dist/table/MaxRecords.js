@@ -7,7 +7,8 @@ import _inherits from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modu
 import _assertThisInitialized from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/assertThisInitialized";
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { util, Select } from '../';
+import { util } from '../';
+import Dropdown from '../form/Dropdown';
 import { getAPI } from '../api/actions';
 import has from 'has';
 
@@ -32,8 +33,8 @@ function (_Component) {
     value: function componentWillUnmount() {}
   }, {
     key: "onChange",
-    value: function onChange(e) {
-      var selected = e.currentTarget.value;
+    value: function onChange(name, value) {
+      var selected = value;
       var resource = this.props.resource;
       var pages = Math.ceil(resource.meta.total / selected).toFixed(0);
 
@@ -72,7 +73,6 @@ function (_Component) {
       var _this$props = this.props,
           align = _this$props.align,
           style = _this$props.style,
-          textStyle = _this$props.textStyle,
           max = _this$props.max,
           count = _this$props.count,
           error = _this$props.error;
@@ -84,11 +84,10 @@ function (_Component) {
       return React.createElement("div", {
         style: style,
         className: "maxRecords ".concat(align)
-      }, React.createElement("span", {
-        style: textStyle,
-        className: "smallText inline"
-      }, "Records"), " ", React.createElement(Select, {
-        selected: max,
+      }, React.createElement(Dropdown, {
+        name: "maxRecords",
+        label: "Records per page",
+        defaultValue: max,
         onChange: this.onChange,
         options: this.setOptions()
       }));

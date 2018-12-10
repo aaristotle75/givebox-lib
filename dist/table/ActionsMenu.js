@@ -107,6 +107,7 @@ function (_Component) {
 }(Component);
 
 ActionsMenu.defaultProps = {
-  label: 'Actions'
+  label: 'Actions',
+  className: ''
 };
 export default ActionsMenu;

@@ -119,7 +119,9 @@ function (_Component) {
     value: function renderPagination() {
       return React.createElement(Paginate, {
         name: this.props.name,
-        align: this.props.paginateAlign
+        align: this.props.paginateAlign,
+        nextIcon: this.props.nextIcon,
+        previousIcon: this.props.previousIcon
       });
     }
   }, {
@@ -175,9 +177,9 @@ function (_Component) {
 }(Component);
 
 Table.defaultProps = {
-  searchDisplay: 'top',
-  exportDisplay: 'top',
-  maxRecordsDisplay: 'top',
+  searchDisplay: 'none',
+  exportDisplay: 'none',
+  maxRecordsDisplay: 'bottom',
   paginationDisplay: 'bottom'
 };
 
@@ -324,6 +326,7 @@ function (_Component2) {
                 id: id,
                 key: id
               }, React.createElement("td", {
+                className: "detailsRow",
                 colSpan: length
               }, React.createElement(AnimateHeight, {
                 duration: 500,
@@ -349,9 +352,9 @@ function (_Component2) {
                   onClick: function onClick() {
                     return ref ? bindthis.detailsLink(ref) : '';
                   },
-                  className: "".concat(ref && 'hasDetails'),
+                  className: "".concat(ref && 'hasDetails', " ").concat(value.primary && 'primaryRow'),
                   key: key
-                }, value));
+                }, value.value));
               }
             }
           });

@@ -56,7 +56,7 @@ class ActionsMenu extends Component {
 
     const {
       style,
-      label,
+      label
     } = this.props;
 
     const {
@@ -80,7 +80,8 @@ class ActionsMenu extends Component {
 }
 
 ActionsMenu.defaultProps = {
-  label: 'Actions'
+  label: 'Actions',
+  className: ''
 }
 
 export default ActionsMenu;

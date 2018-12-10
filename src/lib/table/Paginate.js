@@ -184,9 +184,9 @@ class Paginate extends Component{
 				{pages > 1 ?
 				<div>
 		      <ul className={containerClassName}>
-		        <li onClick={(e) => this.handlePreviousPage(e)} className={`page ${previousClassName} ${activePage <= 1? disabledClassName:''}`}><span className='icon-arrow-left'></span></li>
+		        <li onClick={(e) => this.handlePreviousPage(e)} className={`page ${previousClassName} ${activePage <= 1? disabledClassName:''}`}><span className={this.props.previousIcon}></span></li>
 		        {this.pagination()}
-		        <li onClick={(e) => this.handleNextPage(e)} className={`page ${nextClassName} ${activePage >= pages? disabledClassName:''}`}><span className='icon-arrow-right'></span></li>
+		        <li onClick={(e) => this.handleNextPage(e)} className={`page ${nextClassName} ${activePage >= pages? disabledClassName:''}`}><span className={this.props.nextIcon}></span></li>
 		      </ul>
 				</div>
 				: <div></div>}
@@ -207,6 +207,8 @@ Paginate.defaultProps = {
   pageClassName: 'page',
   activeClassName: 'active',
   previousClassName: 'previous',
+	previousIcon: 'icon-arrow-left',
+	nextIcon: 'icon-arrow-right',
   nextClassName: 'next',
   disabledClassName: 'disabled',
 }

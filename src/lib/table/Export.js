@@ -45,19 +45,21 @@ class ExportLink extends Component {
 
     const {
       style,
-      align
+      align,
+      desc
     } = this.props;
 
     return (
       <div style={style} className={`exportRecordsLink ${align}`}>
-        <button onClick={this.onClick} className={`link`}>Export Report</button>
+        <button onClick={this.onClick} className={`link`}>{desc}</button>
       </div>
     );
   }
 }
 
 ExportLink.defaultProps = {
-	align: 'center'
+	align: 'center',
+  desc: 'Export Report'
 }
 
 function mapStateToProps(state, props) {

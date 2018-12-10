@@ -6,6 +6,7 @@ import _inherits from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modu
 import _assertThisInitialized from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/assertThisInitialized";
 import React, { Component } from 'react';
 import { lookup, isEmpty } from '../common/utility';
+import GBLink from '../common/GBLink';
 import AnimateHeight from 'react-animate-height';
 
 var Dropdown =
@@ -95,6 +96,7 @@ function (_Component) {
       var selectedValue = this.state.value;
       var items = [];
       this.props.options.forEach(function (value) {
+        if (Number.isInteger(value.value)) selectedValue = parseInt(selectedValue);
         var selected = bindthis.props.multi ? bindthis.props.value.includes(value.value) ? true : false : selectedValue === value.value ? true : false;
         items.push(React.createElement("div", {
           "data-selected": value.primaryText,
@@ -117,6 +119,7 @@ function (_Component) {
           label = _this$props.label,
           className = _this$props.className,
           style = _this$props.style,
+          dropdownStyle = _this$props.dropdownStyle,
           selectLabel = _this$props.selectLabel,
           error = _this$props.error,
           errorType = _this$props.errorType,
@@ -128,10 +131,12 @@ function (_Component) {
       var idleLabel = selectedValue === 'Close Menu' || selectedValue === selectLabel;
       return React.createElement("div", {
         style: style,
-        className: "input-group dropdown-group ".concat(className || '', " ").concat(error ? 'error tooltip' : '')
-      }, label && React.createElement("label", null, label), React.createElement("div", {
+        className: "input-group ".concat(className || '', " ").concat(error ? 'error tooltip' : '')
+      }, label && React.createElement("label", null, React.createElement(GBLink, {
+        onClick: open ? this.closeMenu : this.openMenu
+      }, label)), React.createElement("div", {
         className: "dropdown",
-        style: style
+        style: dropdownStyle
       }, React.createElement("button", {
         type: "button",
         onClick: open ? this.closeMenu : this.openMenu

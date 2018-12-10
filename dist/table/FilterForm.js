@@ -122,10 +122,7 @@ function (_Component) {
           {
             return React.createElement("div", {
               key: key,
-              className: "col",
-              style: {
-                width: '100%'
-              }
+              className: "col rangeCol"
             }, this.props.calendarRange(value.name, {
               options: value.options,
               colWidth: '50%'
@@ -136,10 +133,7 @@ function (_Component) {
           {
             return React.createElement("div", {
               key: key,
-              className: "col",
-              style: {
-                width: '50%'
-              }
+              className: "col dropdownCol"
             }, this.props.dropdown(value.name, {
               options: value.options,
               selectLabel: value.selectLabel,
@@ -154,11 +148,7 @@ function (_Component) {
           {
             return React.createElement("div", {
               key: key,
-              className: "col",
-              style: {
-                width: '45%',
-                margin: 5
-              }
+              className: "col fillerCol"
             });
           }
         // no default

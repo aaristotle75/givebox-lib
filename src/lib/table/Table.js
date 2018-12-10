@@ -108,6 +108,8 @@ class Table extends Component {
       <Paginate
         name={this.props.name}
         align={this.props.paginateAlign}
+        nextIcon={this.props.nextIcon}
+        previousIcon={this.props.previousIcon}
       />
     );
   }
@@ -167,8 +169,8 @@ class Table extends Component {
 }
 
 Table.defaultProps = {
-  searchDisplay: 'top',
-  exportDisplay: 'top',
+  searchDisplay: 'none',
+  exportDisplay: 'none',
   maxRecordsDisplay: 'bottom',
   paginationDisplay: 'bottom'
 }
@@ -271,7 +273,7 @@ class TableBody extends Component {
             td.push(<td onClick={() => ref ? bindthis.detailsLink(ref) : ''} className={'detailsIcon hasDetails'} key={key}>{icon}</td>);
             details.push(
               <tr ref={ref} className={`detailsRow`} id={id} key={id}>
-                <td colSpan={length}>
+                <td className='detailsRow' colSpan={length}>
                   <AnimateHeight
                     duration={500}
                     height={bindthis.state.details.includes(id) ? 'auto' : 0}
@@ -289,7 +291,7 @@ class TableBody extends Component {
               options = value.options;
             } else {
               if (has(value, 'actions')) td.push(<td key={key}>{value.actions}</td>);
-              else td.push(<td onClick={() => ref ? bindthis.detailsLink(ref) : ''} className={`${ref && 'hasDetails'}`} key={key}>{value}</td>);
+              else td.push(<td onClick={() => ref ? bindthis.detailsLink(ref) : ''} className={`${ref && 'hasDetails'} ${value.primary && 'primaryRow'}`} key={key}>{value.value}</td>);
             }
           }
         });

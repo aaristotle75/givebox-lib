@@ -56,11 +56,11 @@ class ItemsList extends Component {
         options.push(<Link to={`${routeProps.match.url}/${value.ID}/detail`}>Detail</Link>);
 
         rows.push([
-          createdAt,
-          value.name,
-          accountNumber,
-          value.routingNumber,
-          value.kind,
+          { value: createdAt },
+          { value: value.name },
+          { value: accountNumber },
+          { value: value.routingNumber },
+          { value: value.kind },
           <ActionsMenu
             options={options}
           />
