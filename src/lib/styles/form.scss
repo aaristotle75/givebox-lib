@@ -351,6 +351,38 @@ label.idle, .label.idle {
   .dropdown-item.selected { color: $primary; }
 }
 
+/*----------- Max Records Dropdown -------------*/
+.maxRecords {
+  .input-group {
+    margin: 0;
+    vertical-align: middle;
+    text-align: center;
+    margin-left: 55px;
+    padding-bottom: 0px;
+  }
+
+  .dropdown {
+    width: 75px;
+
+    .icon { display: none; }
+
+    button { border-bottom: none; }
+
+    .dropdown-content { min-width: 75px; }
+
+    .label { color: $primary; font-size: $small-text-size; }
+  }
+
+  button.link,
+  button.link:hover { color: $med-gray; }
+
+  label {
+    font-size: $tiny-text-size;
+    margin-right: 10px;
+  }
+
+}
+
 /*----------- Errors ------------*/
 .error {
   color: $red;

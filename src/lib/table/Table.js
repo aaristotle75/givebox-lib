@@ -169,7 +169,7 @@ class Table extends Component {
 Table.defaultProps = {
   searchDisplay: 'top',
   exportDisplay: 'top',
-  maxRecordsDisplay: 'top',
+  maxRecordsDisplay: 'bottom',
   paginationDisplay: 'bottom'
 }
 

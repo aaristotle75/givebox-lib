@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { lookup, isEmpty } from '../common/utility';
+import GBLink from '../common/GBLink';
 import AnimateHeight from 'react-animate-height';
 
 class Dropdown extends Component {
@@ -63,9 +64,10 @@ class Dropdown extends Component {
 
   listOptions() {
     const bindthis = this;
-    const selectedValue = this.state.value;
+    let selectedValue = this.state.value;
     const items = [];
     this.props.options.forEach(function(value) {
+      if (Number.isInteger(value.value)) selectedValue = parseInt(selectedValue);
       let selected = bindthis.props.multi ? bindthis.props.value.includes(value.value) ? true : false : selectedValue === value.value ? true : false;
       items.push(
         <div data-selected={value.primaryText} data-value={value.value} onClick={(e) => bindthis.onClick(e)} className={`dropdown-item ${selected ? 'selected' : ''}`} key={value.value}>{bindthis.props.multi && selected && <span className='icon icon-checkmark'></span>} {value.primaryText}</div>
@@ -81,6 +83,7 @@ class Dropdown extends Component {
       label,
       className,
       style,
+      dropdownStyle,
       selectLabel,
       error,
       errorType,
@@ -96,9 +99,9 @@ class Dropdown extends Component {
     const idleLabel = selectedValue === 'Close Menu' || selectedValue === selectLabel;
 
     return (
-      <div style={style} className={`input-group dropdown-group ${className || ''} ${error ? 'error tooltip' : ''}`}>
-        {label && <label>{label}</label>}
-        <div className='dropdown' style={style}>
+      <div style={style} className={`input-group ${className || ''} ${error ? 'error tooltip' : ''}`}>
+        {label && <label><GBLink onClick={open ? this.closeMenu : this.openMenu}>{label}</GBLink></label>}
+        <div className='dropdown' style={dropdownStyle}>
           <button type='button' onClick={open ? this.closeMenu : this.openMenu}><span className={`label ${idleLabel && 'idle'}`}>{selectedValue}</span><span className={`icon ${open ? multi ? 'icon-close' : 'icon-triangle-down' : 'icon-triangle-right'}`}></span></button>
           <div className={`dropdown-content`}>
             <AnimateHeight

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { util, Select } from '../';
+import { util } from '../';
+import Dropdown from '../form/Dropdown';
 import { getAPI } from '../api/actions';
 import has from 'has';
 
@@ -15,8 +16,8 @@ class MaxRecords extends Component {
   componentWillUnmount() {
   }
 
-  onChange(e) {
-    const selected = e.currentTarget.value;
+  onChange(name, value) {
+    const selected = value;
     const resource = this.props.resource;
     const pages = Math.ceil(resource.meta.total/selected).toFixed(0);
     const search = { ...resource.search };
@@ -49,7 +50,6 @@ class MaxRecords extends Component {
     const {
       align,
       style,
-      textStyle,
       max,
       count,
       error
@@ -61,7 +61,13 @@ class MaxRecords extends Component {
 
     return (
       <div style={style} className={`maxRecords ${align}`}>
-        <span style={textStyle} className='smallText inline'>Records</span> <Select selected={max} onChange={this.onChange} options={this.setOptions()} />
+        <Dropdown
+          name='maxRecords'
+          label='Records per page'
+          defaultValue={max}
+          onChange={this.onChange}
+          options={this.setOptions()}
+        />
       </div>
     );
   }
