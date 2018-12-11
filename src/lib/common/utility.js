@@ -311,7 +311,7 @@ export function money(amount, symbol = '$') {
     amount = Math.abs(amount);
     negative = true;
   }
-  return <span className={`moneyAmount ${negative && 'negativeAmount'}`}>{negative && '('}<span className='symbol'>{symbol}</span>{numberWithCommas(amount)}{negative && ')'}</span>;
+  return <span className={`moneyAmount ${negative && 'negativeAmount'}`}>{negative && '( '}<span className='symbol'>{symbol}</span>{numberWithCommas(amount)}{negative && ' )'}</span>;
 }
 
 export function formatMoneyForAPI(amount) {

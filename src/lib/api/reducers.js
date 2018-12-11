@@ -116,7 +116,10 @@ export function modal(state = {
     case types.TOGGLE_MODAL:
       return Object.assign({}, state, {
         ...state.modals,
-        [action.identifier] : action.open
+        [action.identifier] : {
+          open: action.open,
+          opts: action.opts
+        }
       });
     default:
       return state

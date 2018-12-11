@@ -14,7 +14,7 @@ class Delete extends Component {
       success: ''
     }
   }
-
+  
   componentWillUnmount() {
     if (this.timeout) {
       clearTimeout(this.timeout);

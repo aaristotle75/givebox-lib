@@ -43,6 +43,11 @@ $mobile-width: 800px;
   -webkit-transition: $transitions;
 }
 
+@mixin animation($animations...) {
+  animation: $animations;
+  -webkit-animation: $animations;
+}
+
 @mixin browser($browsers) {
   @each $browser in $browsers {
     html[data-browser*="#{$browser}"] & {

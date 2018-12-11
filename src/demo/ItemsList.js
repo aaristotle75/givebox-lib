@@ -49,8 +49,7 @@ class ItemsList extends Component {
         options.push(<Link to={`${routeProps.match.url}/${value.ID}/edit`}>Edit</Link>);
         options.push(
           <div>
-            <ModalRoute  id={modalID} component={() => loadComponent('modal/lib/common/Delete', { useProjectRoot: false, props: { id: value.ID, resource: 'orgBankAccount', desc: desc, modalID: modalID, match: routeProps.match } })} effect='3DFlipVert' style={{ width: '50%' }} />
-            <ModalLink id={modalID}>Delete</ModalLink>
+            <ModalLink id={'bankDelete'} opts={{ id: value.ID, resource: 'orgBankAccount', desc: desc, modalID: modalID, match: routeProps.match }}>Delete</ModalLink>
           </div>
         );
         options.push(<Link to={`${routeProps.match.url}/${value.ID}/detail`}>Detail</Link>);
@@ -61,9 +60,10 @@ class ItemsList extends Component {
           { value: accountNumber },
           { value: value.routingNumber },
           { value: value.kind },
-          <ActionsMenu
+          { actions: <ActionsMenu
             options={options}
           />
+          }
         ]);
       });
     }

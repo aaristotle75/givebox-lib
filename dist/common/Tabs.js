@@ -97,7 +97,7 @@ function (_Component) {
             key: key,
             className: "panelItem"
           }, React.createElement(GBLink, {
-            className: "panelTab ".concat(value.props.id === bindthis.state.selectedTab && 'selected'),
+            className: "ripple panelTab ".concat(value.props.id === bindthis.state.selectedTab && 'selected'),
             style: bindthis.props.tabsStyle,
             onClick: function onClick() {
               return bindthis.onTabClick(value.props.id);
@@ -146,6 +146,6 @@ Tabs.defaultProps = {
 export default Tabs;
 export var Tab = function Tab(props) {
   return React.createElement("div", {
-    className: "tab ".concat(props.id !== props.selectedTab && 'displayNone')
+    className: "tab ".concat(props.id !== props.selectedTab && 'displayNone', " ").concat(props.className || '')
   }, props.children);
 };

@@ -10,8 +10,8 @@ class ModalLink extends Component {
     this.onClick = this.onClick.bind(this);
   }
 
-  onClick(id) {
-    this.props.toggleModal(id, true);
+  onClick(id, opts) {
+    this.props.toggleModal(id, true, opts);
   }
 
   render() {
@@ -19,14 +19,15 @@ class ModalLink extends Component {
     const {
       id,
       className,
-      type
+      type,
+      opts
     } = this.props;
 
     const component =
       type === 'li' ?
-      <li className={className} onClick={() => this.onClick(id)}>{this.props.children}</li>
+      <li className={className} onClick={() => this.onClick(id, opts)}>{this.props.children}</li>
       :
-      <GBLink className={`${className}`} type='button' onClick={() => this.onClick(id)}>
+      <GBLink className={`${className}`} type='button' onClick={() => this.onClick(id, opts)}>
         {this.props.children}
       </GBLink>
     ;

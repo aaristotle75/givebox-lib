@@ -38,7 +38,7 @@ class Tabs extends Component {
       Object.entries(this.props.children).forEach(([key, value]) => {
         items.push(
           <div style={bindthis.props.tabStyle} key={key} className={`panelItem`}>
-            <GBLink className={`panelTab ${(value.props.id === bindthis.state.selectedTab) && 'selected'}`} style={bindthis.props.tabsStyle} onClick={() => bindthis.onTabClick(value.props.id)}>{value.props.label}</GBLink>
+            <GBLink className={`ripple panelTab ${(value.props.id === bindthis.state.selectedTab) && 'selected'}`} style={bindthis.props.tabsStyle} onClick={() => bindthis.onTabClick(value.props.id)}>{value.props.label}</GBLink>
           </div>
         );
       });
@@ -83,7 +83,7 @@ export default Tabs;
 
 export const Tab = (props) => {
   return (
-    <div className={`tab ${(props.id !== props.selectedTab) && 'displayNone'}`}>
+    <div className={`tab ${(props.id !== props.selectedTab) && 'displayNone'} ${props.className || ''}`}>
       {props.children}
     </div>
   );

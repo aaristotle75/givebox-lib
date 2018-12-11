@@ -2,10 +2,11 @@ import axios from 'axios';
 import * as types from './actionTypes';
 import has from 'has';
 
-export function toggleModal(identifier, open) {
+export function toggleModal(identifier, open, opts = {}) {
   return {
     type: types.TOGGLE_MODAL,
     identifier: identifier,
+    opts: opts,
     open: open
   }
 }

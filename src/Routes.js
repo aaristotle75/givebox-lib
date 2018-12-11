@@ -22,6 +22,7 @@ class Routes extends Component {
       <div>
         <ModalRoute  id='feesGlossary' component={() => loadComponent('modal/lib/glossary/Fees', {useProjectRoot: false})} effect='3DFlipVert' style={{ width: '50%' }} />
         <ModalRoute  id='financeGlossary' component={() => loadComponent('modal/lib/glossary/Finance', {useProjectRoot: false})} effect='3DFlipVert' style={{ width: '50%' }} />
+        <ModalRoute  id='bankDelete' component={(props) => loadComponent('modal/lib/common/Delete', { useProjectRoot: false, props: props })} effect='3DFlipVert' style={{ width: '50%' }} />   
         <Router>
           <Route
             render={({ location }) => (

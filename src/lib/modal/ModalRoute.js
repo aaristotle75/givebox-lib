@@ -4,6 +4,7 @@ import Modal from './Modal';
 import Portal from '../common/Portal';
 import Loader from '../common/Loader';
 import { toggleModal } from '../api/actions';
+import has from 'has';
 
 class ModalRoute extends Component {
 
@@ -33,7 +34,8 @@ class ModalRoute extends Component {
       style,
       open,
       component,
-      id
+      id,
+      opts
     } = this.props;
 
     const modalRoot = document.getElementById('modal-root');
@@ -53,7 +55,7 @@ class ModalRoute extends Component {
               closeBtnShow={closeBtnShow}
               customStyle={style}
             >
-              {component()}
+              {component(opts)}
             </Modal>
           </Portal>
         }
@@ -63,8 +65,17 @@ class ModalRoute extends Component {
 }
 
 function mapStateToProps(state, props) {
+
+  let open = false;
+  let opts = {};
+  if (has(state.modal, props.id)) {
+    open = state.modal[props.id].open;
+    opts = state.modal[props.id].opts;
+  }
+
   return {
-    open: !!state.modal[props.id]
+    open: open,
+    opts: opts
   }
 }
 

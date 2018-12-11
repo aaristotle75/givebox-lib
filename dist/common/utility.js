@@ -322,9 +322,9 @@ export function money(amount) {
 
   return React.createElement("span", {
     className: "moneyAmount ".concat(negative && 'negativeAmount')
-  }, negative && '(', React.createElement("span", {
+  }, negative && '( ', React.createElement("span", {
     className: "symbol"
-  }, symbol), numberWithCommas(amount), negative && ')');
+  }, symbol), numberWithCommas(amount), negative && ' )');
 }
 export function formatMoneyForAPI(amount) {
   if (!amount) return 0;
