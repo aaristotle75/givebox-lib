@@ -26,8 +26,8 @@ function (_Component) {
 
   _createClass(ModalLink, [{
     key: "onClick",
-    value: function onClick(id) {
-      this.props.toggleModal(id, true);
+    value: function onClick(id, opts) {
+      this.props.toggleModal(id, true, opts);
     }
   }, {
     key: "render",
@@ -37,17 +37,18 @@ function (_Component) {
       var _this$props = this.props,
           id = _this$props.id,
           className = _this$props.className,
-          type = _this$props.type;
+          type = _this$props.type,
+          opts = _this$props.opts;
       var component = type === 'li' ? React.createElement("li", {
         className: className,
         onClick: function onClick() {
-          return _this2.onClick(id);
+          return _this2.onClick(id, opts);
         }
       }, this.props.children) : React.createElement(GBLink, {
         className: "".concat(className),
         type: "button",
         onClick: function onClick() {
-          return _this2.onClick(id);
+          return _this2.onClick(id, opts);
         }
       }, this.props.children);
       return component;

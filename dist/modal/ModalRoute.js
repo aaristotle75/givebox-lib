@@ -10,6 +10,7 @@ import Modal from './Modal';
 import Portal from '../common/Portal';
 import Loader from '../common/Loader';
 import { toggleModal } from '../api/actions';
+import has from 'has';
 
 var ModalRoute =
 /*#__PURE__*/
@@ -50,7 +51,8 @@ function (_Component) {
           style = _this$props.style,
           open = _this$props.open,
           component = _this$props.component,
-          id = _this$props.id;
+          id = _this$props.id,
+          opts = _this$props.opts;
       var modalRoot = document.getElementById('modal-root');
 
       if (!modalRoot) {
@@ -66,7 +68,7 @@ function (_Component) {
         open: open,
         closeBtnShow: closeBtnShow,
         customStyle: style
-      }, component())));
+      }, component(opts))));
     }
   }]);
 
@@ -74,8 +76,17 @@ function (_Component) {
 }(Component);
 
 function mapStateToProps(state, props) {
+  var open = false;
+  var opts = {};
+
+  if (has(state.modal, props.id)) {
+    open = state.modal[props.id].open;
+    opts = state.modal[props.id].opts;
+  }
+
   return {
-    open: !!state.modal[props.id]
+    open: open,
+    opts: opts
   };
 }
 

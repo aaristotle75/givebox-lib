@@ -2,9 +2,11 @@ import axios from 'axios';
 import * as types from './actionTypes';
 import has from 'has';
 export function toggleModal(identifier, open) {
+  var opts = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
   return {
     type: types.TOGGLE_MODAL,
     identifier: identifier,
+    opts: opts,
     open: open
   };
 }
