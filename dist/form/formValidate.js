@@ -1,26 +1,25 @@
 import Moment from 'moment';
 export function validateEmail(email) {
-  var regex = /^(([^<>()[\]\\.,;:\s@']+(\.[^<>()[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const regex = /^(([^<>()[\]\\.,;:\s@']+(\.[^<>()[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return regex.test(email);
 }
-export function validateMoney(value, min, max) {
-  var decimal = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
-  var validate = true;
-  var moneyRegex = /^\$?(([1-9]{1}[0-9]*(?:,[0-9]{3})*)|(?:0))(?:\.[0-9]{1,2})?$/;
+export function validateMoney(value, min, max, decimal = true) {
+  let validate = true;
+  let moneyRegex = /^\$?(([1-9]{1}[0-9]*(?:,[0-9]{3})*)|(?:0))(?:\.[0-9]{1,2})?$/;
   if (!value) value = 0;
 
   if (!decimal) {
     moneyRegex = /^\$?(([1-9]{1}[0-9]*(?:,[0-9]{3})*)|(?:0))$/;
   }
 
-  var match = moneyRegex.exec(value);
+  const match = moneyRegex.exec(value);
 
   if (match === null) {
     validate = false;
   }
 
   if (match) {
-    var amount = parseFloat(match[0].replace(/,/g, ''));
+    const amount = parseFloat(match[0].replace(/,/g, ''));
 
     if (amount < min || amount > max) {
       validate = false;
@@ -45,7 +44,7 @@ export function identifyCardTypes(ccnumber) {
 } // validate the full length card number
 
 export function validateCardTypes(value) {
-  var ccnumber = value.split(' ').join(''); // Check VISA
+  const ccnumber = value.split(' ').join(''); // Check VISA
 
   if (/^4[0-9]{12}(?:[0-9]{3})$/.test(ccnumber)) {
     return true; // Check Mastercard
@@ -60,27 +59,26 @@ export function validateCardTypes(value) {
   }
 }
 export function formatCreditCard(value) {
-  var obj = {
+  let obj = {
     value: value.replace(/[^0-9]/g, '').replace(/\s/g, '').replace(/(\d{4})/g, '$1 ').trim(),
     apiValue: value.split(' ').join('')
   };
   return obj;
 }
 export function formatCCExpire(value) {
-  var ccexpirevalue = value.replace(/[^0-9]/g, '').replace(/\//g, '').replace(/(\d{2})/g, '$1/').replace(/\/$/, '');
+  let ccexpirevalue = value.replace(/[^0-9]/g, '').replace(/\//g, '').replace(/(\d{2})/g, '$1/').replace(/\/$/, '');
   return ccexpirevalue;
 }
-export function validateEmailList(value) {
-  var optional = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-  var validate = true;
+export function validateEmailList(value, optional = false) {
+  let validate = true;
 
   if (optional && !value) {
     return validate;
   }
 
-  var arr = value.split(/,/);
+  const arr = value.split(/,/);
 
-  for (var i = 0; i < arr.length; i++) {
+  for (let i = 0; i < arr.length; i++) {
     if (!validateEmail(arr[i].trim())) {
       validate = false;
     }
@@ -89,21 +87,21 @@ export function validateEmailList(value) {
   return validate;
 }
 export function validateURL(url) {
-  var validate = true;
-  var regex = /^((https?|s?ftp):\/\/)?(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!$&'()*+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!$&'()*+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!$&'()*+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!$&'()*+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!$&'()*+,;=]|:|@)|\/|\?)*)?$/i;
+  let validate = true;
+  const regex = /^((https?|s?ftp):\/\/)?(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!$&'()*+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!$&'()*+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!$&'()*+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!$&'()*+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!$&'()*+,;=]|:|@)|\/|\?)*)?$/i;
   validate = regex.test(url);
   if (url.substr(0, 7) !== 'http://' && url.substr(0, 8) !== 'https://') validate = false;
   return validate;
 }
 export function validateTaxID(value) {
-  var regex = /^(?:\d{3}-\d{2}-\d{4}|\d{2}-\d{7})$/;
+  const regex = /^(?:\d{3}-\d{2}-\d{4}|\d{2}-\d{7})$/;
   return regex.test(value);
 }
 export function formatTaxID(value) {
-  var length = value.length;
+  let length = value.length;
   if (length > 10) return '';
-  var val = value.replace(/\D/g, '');
-  var newVal = '';
+  let val = value.replace(/\D/g, '');
+  let newVal = '';
 
   if (val.length > 2) {
     this.value = val;
@@ -119,10 +117,10 @@ export function formatTaxID(value) {
   return value;
 }
 export function formatSSN(value) {
-  var length = value.length;
+  let length = value.length;
   if (length > 11) return '';
-  var val = value.replace(/\D/g, '');
-  var newVal = '';
+  let val = value.replace(/\D/g, '');
+  let newVal = '';
 
   if (val.length > 4) {
     this.value = val;
@@ -144,11 +142,11 @@ export function formatSSN(value) {
   return value;
 }
 export function validateDescriptor(value) {
-  var regex = /^([a-zA-Z0-9,-.]){3,21}$/;
+  const regex = /^([a-zA-Z0-9,-.]){3,21}$/;
   return regex.test(value);
 }
 export function validateDL(value) {
-  var regex = /^([a-zA-Z0-9]){6,25}$/;
+  const regex = /^([a-zA-Z0-9]){6,25}$/;
   return regex.test(value);
 }
 export function validatePhone(value) {
@@ -156,11 +154,11 @@ export function validatePhone(value) {
   value = value.replace(')', '');
   value = value.replace(' ', '');
   value = value.replace('-', '');
-  var regex = /\d{10}/g;
+  const regex = /\d{10}/g;
   return regex.test(value);
 }
 export function formatPhone(value) {
-  var x = value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
+  const x = value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
   value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
   return value;
 }
@@ -177,8 +175,8 @@ export function clearRichTextIfShouldBeEmpty(value) {
   return value;
 }
 export function validateCalendarRange(key, fields) {
-  var validate = true;
-  var range = {};
+  let validate = true;
+  const range = {};
 
   switch (fields[key].range) {
     case 'start':
@@ -205,20 +203,19 @@ export function validateCalendarRange(key, fields) {
 
   return validate;
 }
-export function formatDate(value) {
-  var time = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-  var regex = time ? /(\d{0,2})(\d{0,2})(\d{0,4})(\d{0,2})(\d{0,2})/ : /(\d{0,2})(\d{0,2})(\d{0,4})/;
-  var x = value.replace(/\D/g, '').match(regex);
-  var str;
+export function formatDate(value, time = false) {
+  const regex = time ? /(\d{0,2})(\d{0,2})(\d{0,4})(\d{0,2})(\d{0,2})/ : /(\d{0,2})(\d{0,2})(\d{0,4})/;
+  const x = value.replace(/\D/g, '').match(regex);
+  let str;
   if (time) str = !x[2] ? x[1] : x[1] + '/' + x[2] + (x[3] ? '/' + x[3] : '') + (x[4] ? ' ' + x[4] : '') + (x[5] ? ':' + x[5] : '');else str = !x[2] ? x[1] : x[1] + '/' + x[2] + (x[3] ? '/' + x[3] : '');
   return str;
 }
 export function validatePassword(value) {
-  var validate = true;
+  let validate = true;
   if (value.length < 8) validate = false;
   return validate;
 }
-export var msgs = {
+export const msgs = {
   required: 'Field is required.',
   email: 'Please enter a valid email address.',
   taxID: 'Please enter a valid Tax ID. It should be in the format of xx-xxxxxxx and have 9 digits.',
@@ -235,7 +232,7 @@ export var msgs = {
   password: 'Passwords must be at least 8 characters long.',
   account: 'There was an error creating your account. Please contact support@givebox.com.'
 };
-export var limits = {
+export const limits = {
   txMin: 1,
   txMax: 25000
 };

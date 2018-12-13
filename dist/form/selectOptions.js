@@ -1,4 +1,4 @@
-export var states = [{
+export const states = [{
   value: 'AL',
   primaryText: 'Alabama'
 }, {
@@ -152,7 +152,7 @@ export var states = [{
   value: 'WY',
   primaryText: 'Wyoming'
 }];
-export var legalTypes = [//{ value: 'INDIVIDUAL_SOLE_PROPRIETORSHIP', primaryText: 'Sole Proprietor' },
+export const legalTypes = [//{ value: 'INDIVIDUAL_SOLE_PROPRIETORSHIP', primaryText: 'Sole Proprietor' },
 {
   value: 'CORPORATION',
   primaryText: 'Corporation'
@@ -164,7 +164,7 @@ export var legalTypes = [//{ value: 'INDIVIDUAL_SOLE_PROPRIETORSHIP', primaryTex
   value: 'TAX_EXEMPT_ORGANIZATION',
   primaryText: 'Tax Exempt Organization'
 }];
-export var articleKinds = [{
+export const articleKinds = [{
   value: 'fundraiser',
   primaryText: 'Fundraiser'
 }, {

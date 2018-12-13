@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getResource, reloadResource, util, Table, ModalRoute, ModalLink, ActionsMenu } from '../lib';
+import { getResource, reloadResource, util, Table, ModalLink, ActionsMenu } from '../lib';
 
 class ItemsList extends Component {
 
@@ -18,7 +18,6 @@ class ItemsList extends Component {
     const {
       data,
       routeProps,
-      loadComponent,
       resourceName
     } = this.props;
 

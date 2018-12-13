@@ -1,11 +1,11 @@
-export var mime = {
+export const mime = {
   image: 'image/jpeg, image/gif, image/png, image/bmp, image/tiff, image/x-icon',
   video: 'video/ogg, video/webm, video/mp4, video/mpeg, video/quicktime',
   text: 'text/plain, text/csv, text/tab-separated-values, text/richtext, text/css',
   applications: 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.apple.keynote, application/vnd.apple.numbers, application/vnd.apple.pages, application/vnd.oasis.opendocument.text, application/rtf, application/vnd.ms-excel'
 };
 export function kind(kind) {
-  var obj = {};
+  const obj = {};
 
   switch (kind) {
     case 'event':
@@ -48,7 +48,7 @@ export function kind(kind) {
   return obj;
 }
 export function source(source) {
-  var str;
+  let str;
 
   switch (source) {
     case 'web':
@@ -75,7 +75,7 @@ export function source(source) {
   return str;
 }
 export function txAccount(txAccount) {
-  var str;
+  let str;
 
   switch (txAccount) {
     case 'donation':

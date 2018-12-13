@@ -1,10 +1,3 @@
-import _objectSpread from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/objectSpread";
-import _classCallCheck from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/classCallCheck";
-import _createClass from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/createClass";
-import _possibleConstructorReturn from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/possibleConstructorReturn";
-import _getPrototypeOf from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/getPrototypeOf";
-import _inherits from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/inherits";
-import _assertThisInitialized from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/assertThisInitialized";
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { util } from '../';
@@ -12,90 +5,74 @@ import Dropdown from '../form/Dropdown';
 import { getAPI } from '../api/actions';
 import has from 'has';
 
-var MaxRecords =
-/*#__PURE__*/
-function (_Component) {
-  _inherits(MaxRecords, _Component);
-
-  function MaxRecords(props) {
-    var _this;
-
-    _classCallCheck(this, MaxRecords);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(MaxRecords).call(this, props));
-    _this.setOptions = _this.setOptions.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.onChange = _this.onChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    return _this;
+class MaxRecords extends Component {
+  constructor(props) {
+    super(props);
+    this.setOptions = this.setOptions.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
 
-  _createClass(MaxRecords, [{
-    key: "componentWillUnmount",
-    value: function componentWillUnmount() {}
-  }, {
-    key: "onChange",
-    value: function onChange(name, value) {
-      var selected = value;
-      var resource = this.props.resource;
-      var pages = Math.ceil(resource.meta.total / selected).toFixed(0);
+  componentWillUnmount() {}
 
-      var search = _objectSpread({}, resource.search);
+  onChange(name, value) {
+    const selected = value;
+    const resource = this.props.resource;
+    const pages = Math.ceil(resource.meta.total / selected).toFixed(0);
+    const search = { ...resource.search
+    };
+    search.page = resource.search.page > pages ? 1 : resource.search.page;
+    search.max = selected;
+    const endpoint = resource.endpoint.split('?')[0] + util.makeAPIQuery(search);
+    this.props.getAPI(this.props.name, endpoint, search, null, true);
+  }
 
-      search.page = resource.search.page > pages ? 1 : resource.search.page;
-      search.max = selected;
-      var endpoint = resource.endpoint.split('?')[0] + util.makeAPIQuery(search);
-      this.props.getAPI(this.props.name, endpoint, search, null, true);
-    }
-  }, {
-    key: "setOptions",
-    value: function setOptions() {
-      var items = [];
-      var records = this.props.records;
-      var extraRecords = this.props.max && this.props.max && [parseInt(this.props.max)] || [];
-      extraRecords.forEach(function (val) {
-        if (records.indexOf(val) === -1) {
-          records.push(val);
-        }
+  setOptions() {
+    let items = [];
+    const records = this.props.records;
+    const extraRecords = this.props.max && this.props.max && [parseInt(this.props.max)] || [];
+    extraRecords.forEach(function (val) {
+      if (records.indexOf(val) === -1) {
+        records.push(val);
+      }
+    });
+
+    for (let i = 0; i < records.length; i++) {
+      items.push({
+        primaryText: records[i],
+        value: records[i]
       });
-
-      for (var i = 0; i < records.length; i++) {
-        items.push({
-          primaryText: records[i],
-          value: records[i]
-        });
-      }
-
-      items = util.sortByField(items, 'value', 'ASC');
-      return items;
     }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this$props = this.props,
-          align = _this$props.align,
-          style = _this$props.style,
-          max = _this$props.max,
-          count = _this$props.count,
-          error = _this$props.error;
 
-      if (!count || error) {
-        return React.createElement("div", null);
-      }
+    items = util.sortByField(items, 'value', 'ASC');
+    return items;
+  }
 
-      return React.createElement("div", {
-        style: style,
-        className: "maxRecords ".concat(align)
-      }, React.createElement(Dropdown, {
-        name: "maxRecords",
-        label: "Records per page",
-        defaultValue: max,
-        onChange: this.onChange,
-        options: this.setOptions()
-      }));
+  render() {
+    const {
+      align,
+      style,
+      max,
+      count,
+      error
+    } = this.props;
+
+    if (!count || error) {
+      return React.createElement("div", null);
     }
-  }]);
 
-  return MaxRecords;
-}(Component);
+    return React.createElement("div", {
+      style: style,
+      className: `maxRecords ${align}`
+    }, React.createElement(Dropdown, {
+      name: "maxRecords",
+      label: "Records per page",
+      defaultValue: max,
+      onChange: this.onChange,
+      options: this.setOptions()
+    }));
+  }
+
+}
 
 MaxRecords.defaultProps = {
   align: 'center',
@@ -103,8 +80,8 @@ MaxRecords.defaultProps = {
 };
 
 function mapStateToProps(state, props) {
-  var resource = state.resource[props.name] ? state.resource[props.name] : {};
-  var max, error, count;
+  let resource = state.resource[props.name] ? state.resource[props.name] : {};
+  let max, error, count;
 
   if (!util.isLoading(resource)) {
     max = has(resource.search, 'max') ? resource.search.max : null;
@@ -121,5 +98,5 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
-  getAPI: getAPI
+  getAPI
 })(MaxRecords);

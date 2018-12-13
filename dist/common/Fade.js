@@ -1,14 +1,13 @@
-import _objectSpread from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/objectSpread";
 import React from 'react';
 import Transition from 'react-transition-group/Transition';
 
-var Fade = function Fade(props) {
-  var duration = props.duration || 300;
-  var defaultStyle = {
-    transition: "opacity ".concat(duration, "ms ease-in-out"),
+const Fade = props => {
+  const duration = props.duration || 300;
+  const defaultStyle = {
+    transition: `opacity ${duration}ms ease-in-out`,
     opacity: 0
   };
-  var transitionStyles = {
+  const transitionStyles = {
     entering: {
       opacity: 0
     },
@@ -19,11 +18,11 @@ var Fade = function Fade(props) {
   return React.createElement(Transition, {
     in: props.in,
     timeout: duration
-  }, function (state) {
-    return React.createElement("div", {
-      style: _objectSpread({}, defaultStyle, transitionStyles[state])
-    }, props.children);
-  });
+  }, state => React.createElement("div", {
+    style: { ...defaultStyle,
+      ...transitionStyles[state]
+    }
+  }, props.children));
 };
 
 export default Fade;

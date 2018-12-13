@@ -1,7 +1,8 @@
-import _objectSpread from "/Users/aaron/Sites/projects/givebox/givebox-lib/node_modules/@babel/runtime/helpers/esm/objectSpread";
-import { getAPI, sendAPI, util, giveboxAPI } from '../';
+import { getAPI, sendAPI } from './actions';
+import * as giveboxAPI from './givebox';
+import * as util from '../common/utility';
 import has from 'has';
-var API_URL = process.env.REACT_APP_API_URL;
+const API_URL = process.env.REACT_APP_API_URL;
 /**
 * GET a resource from the API
 *
@@ -15,9 +16,8 @@ var API_URL = process.env.REACT_APP_API_URL;
 * @param {bool} reload If the resource should be reloaded
 */
 
-export function getResource(resource) {
-  var opt = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  var defaults = {
+export function getResource(resource, opt = {}) {
+  const defaults = {
     id: [],
     search: {},
     callback: null,
@@ -25,15 +25,15 @@ export function getResource(resource) {
     csv: false,
     customName: null
   };
-
-  var options = _objectSpread({}, defaults, opt);
-
-  return function (dispatch, getState) {
-    var id = options.id;
-    var reload = options.reload;
-    var orgID = has(getState().resource, 'orgID') ? getState().resource.orgID : null;
-    var userID = has(getState().resource, 'userID') ? getState().resource.userID : null;
-    var affiliateID = has(getState().resource, 'affiliateID') ? getState().resource.affiliateID : null; // Reload if resource exists and a new ID is requested
+  const options = { ...defaults,
+    ...opt
+  };
+  return (dispatch, getState) => {
+    let id = options.id;
+    let reload = options.reload;
+    const orgID = has(getState().resource, 'orgID') ? getState().resource.orgID : null;
+    const userID = has(getState().resource, 'userID') ? getState().resource.userID : null;
+    const affiliateID = has(getState().resource, 'affiliateID') ? getState().resource.affiliateID : null; // Reload if resource exists and a new ID is requested
 
     if (has(getState().resource, resource)) {
       if (!util.isEmpty(id)) {
@@ -48,7 +48,7 @@ export function getResource(resource) {
     } // Set default search params and merge custom search which can override defaults
 
 
-    var defaultSearch = {
+    const defaultSearch = {
       max: 50,
       page: 1,
       sort: 'createdAt',
@@ -58,16 +58,16 @@ export function getResource(resource) {
       queryOnly: false,
       id: id
     };
+    const search = { ...defaultSearch,
+      ...options.search
+    }; // Get the API endpoint
 
-    var search = _objectSpread({}, defaultSearch, options.search); // Get the API endpoint
-
-
-    var endpoint = API_URL + giveboxAPI.endpoint(resource, id, {
-      orgID: orgID,
-      userID: userID,
-      affiliateID: affiliateID
+    let endpoint = API_URL + giveboxAPI.endpoint(resource, id, {
+      orgID,
+      userID,
+      affiliateID
     });
-    endpoint = "".concat(endpoint).concat(options.csv ? '.csv' : '').concat(util.makeAPIQuery(search)); // If CSV return the endpoint else dispatch the API
+    endpoint = `${endpoint}${options.csv ? '.csv' : ''}${util.makeAPIQuery(search)}`; // If CSV return the endpoint else dispatch the API
 
     if (options.csv) return endpoint;else return dispatch(getAPI(resource, endpoint, search, options.callback, reload, options.customName));
   };
@@ -80,15 +80,14 @@ export function getResource(resource) {
 * @param {bool} reloadAfterSend If the resource list should be included in the reload
 */
 
-export function reloadResource(name, callback) {
-  var reloadAfterSend = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-  return function (dispatch, getState) {
-    var resource = has(getState().resource, name) ? getState().resource[name] : null;
+export function reloadResource(name, callback, reloadAfterSend = false) {
+  return (dispatch, getState) => {
+    let resource = has(getState().resource, name) ? getState().resource[name] : null;
     if (resource) dispatch(getAPI(name, resource.endpoint, resource.search, callback, true)); // Reload the list after updating a single item
 
     if (reloadAfterSend) {
-      var listName = name + 's';
-      var resourceList = has(getState().resource, listName) ? getState().resource[listName] : null;
+      let listName = name + 's';
+      let resourceList = has(getState().resource, listName) ? getState().resource[listName] : null;
       if (resourceList) dispatch(getAPI(listName, resourceList.endpoint, resourceList.search, callback, true));
     }
   };
@@ -107,9 +106,8 @@ export function reloadResource(name, callback) {
 * @param {bool} reload If the resource should be reloaded
 */
 
-export function sendResource(resource) {
-  var opt = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  var defaults = {
+export function sendResource(resource, opt = {}) {
+  const defaults = {
     id: [],
     data: null,
     method: 'post',
@@ -117,17 +115,17 @@ export function sendResource(resource) {
     reload: true,
     customName: null
   };
-
-  var options = _objectSpread({}, defaults, opt);
-
-  return function (dispatch, getState) {
-    var id = options.id;
-    var method = options.method;
-    var orgID = has(getState().resource, 'orgID') ? getState().resource.orgID : null;
-    var userID = has(getState().resource, 'userID') ? getState().resource.userID : null;
-    var endpoint = API_URL + giveboxAPI.endpoint(resource, id, {
-      orgID: orgID,
-      userID: userID
+  const options = { ...defaults,
+    ...opt
+  };
+  return (dispatch, getState) => {
+    let id = options.id;
+    let method = options.method;
+    const orgID = has(getState().resource, 'orgID') ? getState().resource.orgID : null;
+    const userID = has(getState().resource, 'userID') ? getState().resource.userID : null;
+    let endpoint = API_URL + giveboxAPI.endpoint(resource, id, {
+      orgID,
+      userID
     }); // If endpoint is create new than slice off new and set method to POST
 
     if (endpoint.slice(-3) === 'new') {

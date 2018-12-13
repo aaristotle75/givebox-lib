@@ -1,4 +1,4 @@
-export var ScaleUp = {
+export const ScaleUp = {
   transition: {
     property: 'all',
     duration: 300,
@@ -13,7 +13,7 @@ export var ScaleUp = {
     'opacity': 1
   }
 };
-export var SlideFromRight = {
+export const SlideFromRight = {
   transition: {
     property: 'all',
     duration: 300,
@@ -28,7 +28,7 @@ export var SlideFromRight = {
     'opacity': 1
   }
 };
-export var SlideFromBottom = {
+export const SlideFromBottom = {
   transition: {
     property: 'all',
     duration: 300,
@@ -43,7 +43,7 @@ export var SlideFromBottom = {
     'opacity': 1
   }
 };
-export var Newspaper = {
+export const Newspaper = {
   transition: {
     property: 'all',
     duration: 500,
@@ -58,7 +58,7 @@ export var Newspaper = {
     'opacity': 1
   }
 };
-export var Fall = {
+export const Fall = {
   transition: {
     property: 'all',
     duration: 300,
@@ -75,7 +75,7 @@ export var Fall = {
     'opacity': 1
   }
 };
-export var SideFall = {
+export const SideFall = {
   transition: {
     property: 'all',
     duration: 300,
@@ -92,7 +92,7 @@ export var SideFall = {
     'opacity': 1
   }
 };
-export var FlipHorizontal3D = {
+export const FlipHorizontal3D = {
   transition: {
     property: 'all',
     duration: 300,
@@ -109,7 +109,7 @@ export var FlipHorizontal3D = {
     'opacity': 1
   }
 };
-export var FlipVertical3D = {
+export const FlipVertical3D = {
   transition: {
     property: 'all',
     duration: 300,
@@ -126,7 +126,7 @@ export var FlipVertical3D = {
     'opacity': 1
   }
 };
-export var Sign3D = {
+export const Sign3D = {
   transition: {
     property: 'all',
     duration: 300,
@@ -145,7 +145,7 @@ export var Sign3D = {
     'opacity': 1
   }
 };
-export var SuperScaled = {
+export const SuperScaled = {
   transition: {
     property: 'all',
     duration: 300,
@@ -160,7 +160,7 @@ export var SuperScaled = {
     'opacity': 1
   }
 };
-export var RotateFromBottom3D = {
+export const RotateFromBottom3D = {
   transition: {
     property: 'all',
     duration: 300,
@@ -179,7 +179,7 @@ export var RotateFromBottom3D = {
     'opacity': 1
   }
 };
-export var RotateFromLeft3D = {
+export const RotateFromLeft3D = {
   transition: {
     property: 'all',
     duration: 300,

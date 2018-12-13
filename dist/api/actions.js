@@ -1,8 +1,7 @@
 import axios from 'axios';
 import * as types from './actionTypes';
 import has from 'has';
-export function toggleModal(identifier, open) {
-  var opts = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+export function toggleModal(identifier, open, opts = {}) {
   return {
     type: types.TOGGLE_MODAL,
     identifier: identifier,
@@ -45,8 +44,8 @@ function resourceCatchError(resource, error) {
 }
 
 export function getAPI(resource, endpoint, search, callback, reload, customName) {
-  var csrf_token = document.querySelector("meta[name='csrf_token']") ? document.querySelector("meta[name='csrf_token']")['content'] : '';
-  return function (dispatch, getState) {
+  let csrf_token = document.querySelector(`meta[name='csrf_token']`) ? document.querySelector(`meta[name='csrf_token']`)['content'] : '';
+  return (dispatch, getState) => {
     if (shouldGetAPI(getState(), customName || resource, reload)) {
       dispatch(requestResource(customName || resource, reload));
       axios.get(endpoint, {
@@ -54,7 +53,7 @@ export function getAPI(resource, endpoint, search, callback, reload, customName)
           'X-CSRF-Token': csrf_token
         },
         withCredentials: true,
-        transformResponse: function transformResponse(data) {
+        transformResponse: data => {
           return JSON.parse(data);
         }
       }).then(function (response) {
@@ -79,7 +78,7 @@ export function getAPI(resource, endpoint, search, callback, reload, customName)
 }
 
 function shouldGetAPI(state, resource, reload) {
-  var shouldGet = true;
+  let shouldGet = true;
 
   if (has(state.resource, resource)) {
     if (state.resource[resource].isFetching) shouldGet = false;
@@ -109,8 +108,8 @@ function sendResponse(resource, response, error) {
 }
 
 export function sendAPI(resource, endpoint, method, data, callback, reloadResource, customName) {
-  var csrf_token = document.querySelector("meta[name='csrf_token']") ? document.querySelector("meta[name='csrf_token']")['content'] : '';
-  return function (dispatch, getState) {
+  let csrf_token = document.querySelector(`meta[name='csrf_token']`) ? document.querySelector(`meta[name='csrf_token']`)['content'] : '';
+  return (dispatch, getState) => {
     method = method.toLowerCase();
 
     if (shouldSendAPI(getState(), resource)) {
@@ -123,7 +122,7 @@ export function sendAPI(resource, endpoint, method, data, callback, reloadResour
         headers: {
           'X-CSRF-Token': csrf_token
         },
-        transformResponse: function transformResponse(data) {
+        transformResponse: data => {
           return data ? JSON.parse(data) : '';
         }
       }).then(function (response) {
@@ -151,7 +150,7 @@ export function sendAPI(resource, endpoint, method, data, callback, reloadResour
 }
 
 function shouldSendAPI(state, resource) {
-  var shouldSend = true;
+  let shouldSend = true;
 
   if (has(state.send, resource)) {
     if (state.send[resource].isSending) shouldSend = false;
@@ -161,7 +160,7 @@ function shouldSendAPI(state, resource) {
 }
 
 export function removeResource(resource) {
-  return function (dispatch, getState) {
+  return (dispatch, getState) => {
     if (shouldRemoveResource(getState(), resource)) dispatch(remove(resource));
   };
 }

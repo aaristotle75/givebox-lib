@@ -1,4 +1,9 @@
-import { getAPI, sendAPI, util, giveboxAPI } from '../';
+import {
+  getAPI,
+  sendAPI
+} from './actions';
+import * as giveboxAPI from './givebox';
+import * as util from '../common/utility';
 import has from 'has';
 
 const API_URL = process.env.REACT_APP_API_URL;

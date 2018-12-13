@@ -11,998 +11,998 @@
 * @param {int} articleID
 *
 */
-export var endpoint = function getAPIEndpoint(resource) {
-  var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
-  var opts = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-  var userID = opts.userID,
-      orgID = opts.orgID,
-      affiliateID = opts.affiliateID;
-  var endpoint;
+export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
+  const {
+    userID,
+    orgID,
+    affiliateID
+  } = opts;
+  let endpoint;
 
   switch (resource) {
     // SUPER
     case 'superFeeSettings':
       {
-        endpoint = "super/fee-settings";
+        endpoint = `super/fee-settings`;
         break;
       }
 
     case 'superCustomers':
       {
-        endpoint = "super/customers";
+        endpoint = `super/customers`;
         break;
       }
 
     case 'superFinanceStats':
       {
-        endpoint = "super/finance-stats";
+        endpoint = `super/finance-stats`;
         break;
       }
 
     case 'superTransactions':
       {
-        endpoint = "super/transactions";
+        endpoint = `super/transactions`;
         break;
       }
 
     case 'superMoneyTransfers':
       {
-        endpoint = "super/money-transfers";
+        endpoint = `super/money-transfers`;
         break;
       }
 
     case 'superRecurring':
       {
-        endpoint = "super/recurring";
+        endpoint = `super/recurring`;
         break;
       }
 
     case 'superStats':
       {
-        endpoint = "super/stats";
+        endpoint = `super/stats`;
         break;
       }
 
     case 'superTimeline':
       {
-        endpoint = "super/timeline";
+        endpoint = `super/timeline`;
         break;
       }
 
     case 'superPaymethodsBlock':
       {
-        endpoint = "paymethods/".concat(id[0], "/block");
+        endpoint = `paymethods/${id[0]}/block`;
         break;
       }
 
     case 'superScamProfilesBlock':
       {
-        endpoint = "scam-profiles/".concat(id[0], "/block");
+        endpoint = `scam-profiles/${id[0]}/block`;
         break;
       }
 
     case 'superChargebackTransactions':
       {
-        endpoint = "super/chargeback-transactions";
+        endpoint = `super/chargeback-transactions`;
         break;
       }
 
     case 'superChargebackStatus':
       {
-        endpoint = "super/chargeback-transactions/".concat(id[0]);
+        endpoint = `super/chargeback-transactions/${id[0]}`;
         break;
       }
     // USER
 
     case 'users':
       {
-        endpoint = "users";
+        endpoint = `users`;
         break;
       }
 
     case 'singleUser':
       {
-        endpoint = "users/".concat(userID);
+        endpoint = `users/${userID}`;
         break;
       }
 
     case 'session':
       {
-        endpoint = "session";
+        endpoint = `session`;
         break;
       }
 
     case 'sessionMembership':
       {
-        endpoint = "session/membership/".concat(id[0]);
+        endpoint = `session/membership/${id[0]}`;
         break;
       }
 
     case 'masquerade':
       {
-        endpoint = "masquerade";
+        endpoint = `masquerade`;
         break;
       }
 
     case 'clientsIdentityTokens':
       {
-        endpoint = "clients/identity-tokens";
+        endpoint = `clients/identity-tokens`;
         break;
       }
 
     case '2fauth':
       {
-        endpoint = "2fauth";
+        endpoint = `2fauth`;
         break;
       }
 
     case 'passwordReset':
       {
-        endpoint = "password-reset";
+        endpoint = `password-reset`;
         break;
       }
 
     case 'checkPasswordReset':
       {
-        endpoint = "password-reset/".concat(id[0]);
+        endpoint = `password-reset/${id[0]}`;
         break;
       }
 
     case 'changePassword':
       {
-        endpoint = "password-change/".concat(id[0]);
+        endpoint = `password-change/${id[0]}`;
         break;
       }
 
     case 'userMemberships':
       {
-        endpoint = "users/".concat(userID, "/memberships");
+        endpoint = `users/${userID}/memberships`;
         break;
       }
 
     case 'userMembership':
       {
-        endpoint = "users/".concat(userID, "/memberships/").concat(id[0]);
+        endpoint = `users/${userID}/memberships/${id[0]}`;
         break;
       }
 
     case 'userMembershipDefault':
       {
-        endpoint = "users/".concat(userID, "/memberships/default");
+        endpoint = `users/${userID}/memberships/default`;
         break;
       }
 
     case 'userPreferences':
       {
-        endpoint = "users/".concat(userID, "/preferences");
+        endpoint = `users/${userID}/preferences`;
         break;
       }
 
     case 'userAddresses':
       {
-        endpoint = "users/".concat(userID, "/addresses");
+        endpoint = `users/${userID}/addresses`;
         break;
       }
 
     case 'userAddresse':
       {
-        endpoint = "users/".concat(userID, "/addresses/").concat(id[0]);
+        endpoint = `users/${userID}/addresses/${id[0]}`;
         break;
       }
 
     case 'userDonations':
       {
-        endpoint = "users/".concat(userID, "/donations");
+        endpoint = `users/${userID}/donations`;
         break;
       }
 
     case 'userPurchases':
       {
-        endpoint = "users/".concat(userID, "/purchases");
+        endpoint = `users/${userID}/purchases`;
         break;
       }
 
     case 'purchaseRefund':
       {
-        endpoint = "users/".concat(userID, "/purchases/").concat(id[0], "/refunds");
+        endpoint = `users/${userID}/purchases/${id[0]}/refunds`;
         break;
       }
 
     case 'purchaseReceipt':
       {
-        endpoint = "users/".concat(userID, "/purchases/").concat(id[0], "/receipt");
+        endpoint = `users/${userID}/purchases/${id[0]}/receipt`;
         break;
       }
 
     case 'transactionReceipt':
       {
-        endpoint = "users/".concat(userID, "/transactions/").concat(id[0], "/receipt");
+        endpoint = `users/${userID}/transactions/${id[0]}/receipt`;
         break;
       }
 
     case 'userRecurringOrders':
       {
-        endpoint = "users/".concat(userID, "/recurring");
+        endpoint = `users/${userID}/recurring`;
         break;
       }
 
     case 'userRecurringOrder':
       {
-        endpoint = "users/".concat(userID, "/recurring/").concat(id[0]);
+        endpoint = `users/${userID}/recurring/${id[0]}`;
         break;
       }
 
     case 'userPaymethods':
       {
-        endpoint = "users/".concat(userID, "/paymethods");
+        endpoint = `users/${userID}/paymethods`;
         break;
       }
 
     case 'userPaymethod':
       {
-        endpoint = "users/".concat(userID, "/paymethods/").concat(id[0]);
+        endpoint = `users/${userID}/paymethods/${id[0]}`;
         break;
       }
     // AFFILIATE
 
     case 'affiliates':
       {
-        endpoint = "affiliates";
+        endpoint = `affiliates`;
         break;
       }
 
     case 'affiliate':
       {
-        endpoint = "affiliates/".concat(affiliateID);
+        endpoint = `affiliates/${affiliateID}`;
         break;
       }
 
     case 'affiliateLegalEntity':
       {
-        endpoint = "affiliates/".concat(affiliateID, "/legal-entity");
+        endpoint = `affiliates/${affiliateID}/legal-entity`;
         break;
       }
 
     case 'affiliatePrincipals':
       {
-        endpoint = "affiliates/".concat(affiliateID, "/principals");
+        endpoint = `affiliates/${affiliateID}/principals`;
         break;
       }
 
     case 'affiliatePrincipal':
       {
-        endpoint = "affiliates/".concat(affiliateID, "/principals/").concat(id[0], " ");
+        endpoint = `affiliates/${affiliateID}/principals/${id[0]} `;
         break;
       }
 
     case 'affiliateOwner':
       {
-        endpoint = "affiliates/".concat(affiliateID, "/owner");
+        endpoint = `affiliates/${affiliateID}/owner`;
         break;
       }
 
     case 'affiliateKeys':
       {
-        endpoint = "affiliates/".concat(affiliateID, "/api-keys");
+        endpoint = `affiliates/${affiliateID}/api-keys`;
         break;
       }
 
     case 'affiliateSelectOrg':
       {
-        endpoint = "affiliates/".concat(affiliateID, "/orgs/").concat(id[0]);
+        endpoint = `affiliates/${affiliateID}/orgs/${id[0]}`;
         break;
       }
 
     case 'affiliateOrgs':
       {
-        endpoint = "affiliates/".concat(affiliateID, "/orgs");
+        endpoint = `affiliates/${affiliateID}/orgs`;
         break;
       }
 
     case 'affiliateFeeSettings':
       {
-        endpoint = "affiliates/".concat(affiliateID, "/fee-settings");
+        endpoint = `affiliates/${affiliateID}/fee-settings`;
         break;
       }
 
     case 'affiliateBankAccounts':
       {
-        endpoint = "affiliates/".concat(affiliateID, "/bank-accounts");
+        endpoint = `affiliates/${affiliateID}/bank-accounts`;
         break;
       }
 
     case 'affiliateBankAccount':
       {
-        endpoint = "affiliates/".concat(affiliateID, "/bank-accounts/").concat(id[0]);
+        endpoint = `affiliates/${affiliateID}/bank-accounts/${id[0]}`;
         break;
       }
 
     case 'affiliateMoneyTransfers':
       {
-        endpoint = "affiliates/".concat(affiliateID, "/money-transfers");
+        endpoint = `affiliates/${affiliateID}/money-transfers`;
         break;
       }
 
     case 'affiliateAddresses':
       {
-        endpoint = "affiliates/".concat(affiliateID, "/addresses");
+        endpoint = `affiliates/${affiliateID}/addresses`;
         break;
       }
 
     case 'affiliateAddress':
       {
-        endpoint = "affiliates/".concat(affiliateID, "/addresses/").concat(id[0]);
+        endpoint = `affiliates/${affiliateID}/addresses/${id[0]}`;
         break;
       }
 
     case 'affiliateActivities':
       {
-        endpoint = "affiliates/".concat(affiliateID, "/activities");
+        endpoint = `affiliates/${affiliateID}/activities`;
         break;
       }
 
     case 'affiliateCustomers':
       {
-        endpoint = "affiliates/".concat(affiliateID, "/customers");
+        endpoint = `affiliates/${affiliateID}/customers`;
         break;
       }
 
     case 'affiliateFinanceStats':
       {
-        endpoint = "affiliates/".concat(affiliateID, "/finance-stats");
+        endpoint = `affiliates/${affiliateID}/finance-stats`;
         break;
       }
 
     case 'affiliateTransactions':
       {
-        endpoint = "affiliates/".concat(affiliateID, "/transactions");
+        endpoint = `affiliates/${affiliateID}/transactions`;
         break;
       }
 
     case 'affiliateStats':
       {
-        endpoint = "affiliates/".concat(affiliateID, "/stats");
+        endpoint = `affiliates/${affiliateID}/stats`;
         break;
       }
 
     case 'affiliateTimeline':
       {
-        endpoint = "affiliates/".concat(affiliateID, "/timeline");
+        endpoint = `affiliates/${affiliateID}/timeline`;
         break;
       }
     // ORGANIZATION
 
     case 'orgs':
       {
-        endpoint = "orgs";
+        endpoint = `orgs`;
         break;
       }
 
     case 'org':
       {
-        endpoint = "orgs/".concat(orgID);
+        endpoint = `orgs/${orgID}`;
         break;
       }
 
     case 'orgOwner':
       {
-        endpoint = "orgs/".concat(orgID, "/owner");
+        endpoint = `orgs/${orgID}/owner`;
         break;
       }
 
     case 'orgImage':
       {
-        endpoint = "orgs/".concat(orgID, "/image");
+        endpoint = `orgs/${orgID}/image`;
         break;
       }
 
     case 'orgNotify':
       {
-        endpoint = "orgs/".concat(orgID, "/volunteers/").concat(id[0], "/notify");
+        endpoint = `orgs/${orgID}/volunteers/${id[0]}/notify`;
         break;
       }
 
     case 'orgLegalEntity':
       {
-        endpoint = "orgs/".concat(orgID, "/legal-entity");
+        endpoint = `orgs/${orgID}/legal-entity`;
         break;
       }
 
     case 'categories':
       {
-        endpoint = "categories";
+        endpoint = `categories`;
         break;
       }
 
     case 'category':
       {
-        endpoint = "categories/".concat(id[0]);
+        endpoint = `categories/${id[0]}`;
         break;
       }
 
     case 'orgRoles':
       {
-        endpoint = "orgs/".concat(orgID, "/roles");
+        endpoint = `orgs/${orgID}/roles`;
         break;
       }
 
     case 'orgRole':
       {
-        endpoint = "orgs/".concat(orgID, "/roles/").concat(id[0]);
+        endpoint = `orgs/${orgID}/roles/${id[0]}`;
         break;
       }
 
     case 'orgMembers':
       {
-        endpoint = "orgs/".concat(orgID, "/members");
+        endpoint = `orgs/${orgID}/members`;
         break;
       }
 
     case 'orgMember':
       {
-        endpoint = "orgs/".concat(orgID, "/members/").concat(id[0]);
+        endpoint = `orgs/${orgID}/members/${id[0]}`;
         break;
       }
 
     case 'orgMemberPermission':
       {
-        endpoint = "orgs/".concat(orgID, "/members/").concat(id[0], "/permissions/").concat(id[1]);
+        endpoint = `orgs/${orgID}/members/${id[0]}/permissions/${id[1]}`;
         break;
       }
 
     case 'orgPrincipals':
       {
-        endpoint = "orgs/".concat(orgID, "/principals");
+        endpoint = `orgs/${orgID}/principals`;
         break;
       }
 
     case 'orgPrincipal':
       {
-        endpoint = "orgs/".concat(orgID, "/principals/").concat(id[0]);
+        endpoint = `orgs/${orgID}/principals/${id[0]}`;
         break;
       }
 
     case 'orgCustomers':
       {
-        endpoint = "orgs/".concat(orgID, "/customers");
+        endpoint = `orgs/${orgID}/customers`;
         break;
       }
 
     case 'orgCustomer':
       {
-        endpoint = "orgs/".concat(orgID, "/customers/").concat(id[0]);
+        endpoint = `orgs/${orgID}/customers/${id[0]}`;
         break;
       }
 
     case 'orgKeys':
       {
-        endpoint = "orgs/".concat(orgID, "/apikeys");
+        endpoint = `orgs/${orgID}/apikeys`;
         break;
       }
 
     case 'orgPermissions':
       {
-        endpoint = "org-permissions";
+        endpoint = `org-permissions`;
         break;
       }
 
     case 'orgPermission':
       {
-        endpoint = "org-permissions/".concat(id[0]);
+        endpoint = `org-permissions/${id[0]}`;
         break;
       }
 
     case 'orgBankAccounts':
       {
-        endpoint = "orgs/".concat(orgID, "/bank-accounts");
+        endpoint = `orgs/${orgID}/bank-accounts`;
         break;
       }
 
     case 'orgBankAccount':
       {
-        endpoint = "orgs/".concat(orgID, "/bank-accounts/").concat(id[0]);
+        endpoint = `orgs/${orgID}/bank-accounts/${id[0]}`;
         break;
       }
 
     case 'orgAddresses':
       {
-        endpoint = "orgs/".concat(orgID, "/addresses");
+        endpoint = `orgs/${orgID}/addresses`;
         break;
       }
 
     case 'orgAddress':
       {
-        endpoint = "orgs/".concat(orgID, "/addresses/").concat(id[0]);
+        endpoint = `orgs/${orgID}/addresses/${id[0]}`;
         break;
       }
 
     case 'orgStats':
       {
-        endpoint = "orgs/".concat(orgID, "/stats");
+        endpoint = `orgs/${orgID}/stats`;
         break;
       }
 
     case 'orgTimeline':
       {
-        endpoint = "orgs/".concat(orgID, "/timeline");
+        endpoint = `orgs/${orgID}/timeline`;
         break;
       }
 
     case 'orgUnderwriting':
       {
-        endpoint = "orgs/".concat(orgID, "/underwriting");
+        endpoint = `orgs/${orgID}/underwriting`;
         break;
       }
 
     case 'orgStatus':
       {
-        endpoint = "orgs/".concat(orgID, "/status");
+        endpoint = `orgs/${orgID}/status`;
         break;
       }
 
     case 'orgContactRequest':
       {
-        endpoint = "orgs/".concat(orgID, "/contact-request");
+        endpoint = `orgs/${orgID}/contact-request`;
         break;
       }
 
     case 'orgChargebacks':
       {
-        endpoint = "orgs/".concat(orgID, "/chargeback-transactions");
+        endpoint = `orgs/${orgID}/chargeback-transactions`;
         break;
       }
 
     case 'orgDonations':
       {
-        endpoint = "orgs/".concat(orgID, "/donations");
+        endpoint = `orgs/${orgID}/donations`;
         break;
       }
 
     case 'orgRefundDonation':
       {
-        endpoint = "orgs/".concat(orgID, "/refunds/").concat(id[0]);
+        endpoint = `orgs/${orgID}/refunds/${id[0]}`;
         break;
       }
 
     case 'orgRecurringOrders':
       {
-        endpoint = "orgs/".concat(orgID, "/recurring");
+        endpoint = `orgs/${orgID}/recurring`;
         break;
       }
 
     case 'orgRecurringOrder':
       {
-        endpoint = "orgs/".concat(orgID, "/recurring/").concat(id[0]);
+        endpoint = `orgs/${orgID}/recurring/${id[0]}`;
         break;
       }
 
     case 'orgTransactions':
       {
-        endpoint = "orgs/".concat(orgID, "/transactions");
+        endpoint = `orgs/${orgID}/transactions`;
         break;
       }
 
     case 'orgFinanceStats':
       {
-        endpoint = "orgs/".concat(orgID, "/finance-stats");
+        endpoint = `orgs/${orgID}/finance-stats`;
         break;
       }
 
     case 'orgMoneyTransfers':
       {
-        endpoint = "orgs/".concat(orgID, "/money-transfers");
+        endpoint = `orgs/${orgID}/money-transfers`;
         break;
       }
 
     case 'orgPurchases':
       {
-        endpoint = "orgs/".concat(orgID, "/purchases");
+        endpoint = `orgs/${orgID}/purchases`;
         break;
       }
 
     case 'orgRefundPurchase':
       {
-        endpoint = "orgs/".concat(orgID, "/purchases/").concat(id[0], "/refunds");
+        endpoint = `orgs/${orgID}/purchases/${id[0]}/refunds`;
         break;
       }
 
     case 'orgPurchaseReceipt':
       {
-        endpoint = "orgs/".concat(orgID, "/purchases/").concat(id[0], "/receipt");
+        endpoint = `orgs/${orgID}/purchases/${id[0]}/receipt`;
         break;
       }
 
     case 'orgSources':
       {
-        endpoint = "orgs/".concat(orgID, "/sources");
+        endpoint = `orgs/${orgID}/sources`;
         break;
       }
 
     case 'orgFundraisers':
       {
-        endpoint = "orgs/".concat(orgID, "/fundraisers");
+        endpoint = `orgs/${orgID}/fundraisers`;
         break;
       }
 
     case 'orgFundraiser':
       {
-        endpoint = "orgs/".concat(orgID, "/fundraisers/").concat(id[0]);
+        endpoint = `orgs/${orgID}/fundraisers/${id[0]}`;
         break;
       }
 
     case 'orgFundraiserPublish':
       {
-        endpoint = "orgs/".concat(orgID, "/fundraisers/").concat(id[0], "/published");
+        endpoint = `orgs/${orgID}/fundraisers/${id[0]}/published`;
         break;
       }
 
     case 'orgTestFundraiser':
       {
-        endpoint = "orgs/".concat(orgID, "/test-fundraiser");
+        endpoint = `orgs/${orgID}/test-fundraiser`;
         break;
       }
 
     case 'orgFundraiserInvite':
       {
-        endpoint = "orgs/".concat(orgID, "/fundraisers/").concat(id[0], "/send");
+        endpoint = `orgs/${orgID}/fundraisers/${id[0]}/send`;
         break;
       }
 
     case 'orgEvents':
       {
-        endpoint = "orgs/".concat(orgID, "/events");
+        endpoint = `orgs/${orgID}/events`;
         break;
       }
 
     case 'orgEvent':
       {
-        endpoint = "orgs/".concat(orgID, "/events/").concat(id[0]);
+        endpoint = `orgs/${orgID}/events/${id[0]}`;
         break;
       }
 
     case 'orgEventTickets':
       {
-        endpoint = "orgs/".concat(orgID, "/events/").concat(id[0], "/tickets");
+        endpoint = `orgs/${orgID}/events/${id[0]}/tickets`;
         break;
       }
 
     case 'orgEventTicket':
       {
-        endpoint = "orgs/".concat(orgID, "/events/").concat(id[0], "/tickets/").concat(id[1]);
+        endpoint = `orgs/${orgID}/events/${id[0]}/tickets/${id[1]}`;
         break;
       }
 
     case 'orgEventPublish':
       {
-        endpoint = "orgs/".concat(orgID, "/events/").concat(id[0], "/published");
+        endpoint = `orgs/${orgID}/events/${id[0]}/published`;
         break;
       }
 
     case 'orgEventInvite':
       {
-        endpoint = "orgs/".concat(orgID, "/events/").concat(id[0], "/send");
+        endpoint = `orgs/${orgID}/events/${id[0]}/send`;
         break;
       }
 
     case 'orgInvoices':
       {
-        endpoint = "orgs/".concat(orgID, "/invoices");
+        endpoint = `orgs/${orgID}/invoices`;
         break;
       }
 
     case 'orgInvoice':
       {
-        endpoint = "orgs/".concat(orgID, "/invoices/").concat(id[0]);
+        endpoint = `orgs/${orgID}/invoices/${id[0]}`;
         break;
       }
 
     case 'orgInvoicePublish':
       {
-        endpoint = "orgs/".concat(orgID, "/invoices/").concat(id[0], "/published");
+        endpoint = `orgs/${orgID}/invoices/${id[0]}/published`;
         break;
       }
 
     case 'orgInvoiceSend':
       {
-        endpoint = "orgs/".concat(orgID, "/invoices/").concat(id[0], "/send");
+        endpoint = `orgs/${orgID}/invoices/${id[0]}/send`;
         break;
       }
 
     case 'orgSweepstakes':
       {
-        endpoint = "orgs/".concat(orgID, "/sweepstakes");
+        endpoint = `orgs/${orgID}/sweepstakes`;
         break;
       }
 
     case 'orgSweepstake':
       {
-        endpoint = "orgs/".concat(orgID, "/sweepstakes/").concat(id[0]);
+        endpoint = `orgs/${orgID}/sweepstakes/${id[0]}`;
         break;
       }
 
     case 'orgSweepstakeTickets':
       {
-        endpoint = "orgs/".concat(orgID, "/sweepstakes/").concat(id[0], "/tickets");
+        endpoint = `orgs/${orgID}/sweepstakes/${id[0]}/tickets`;
         break;
       }
 
     case 'orgSweepstakeTicket':
       {
-        endpoint = "orgs/".concat(orgID, "/sweepstakes/").concat(id[0], "/tickets/").concat(id[1]);
+        endpoint = `orgs/${orgID}/sweepstakes/${id[0]}/tickets/${id[1]}`;
         break;
       }
 
     case 'orgSweepstakePublish':
       {
-        endpoint = "orgs/".concat(orgID, "/sweepstakes/").concat(id[0], "/published");
+        endpoint = `orgs/${orgID}/sweepstakes/${id[0]}/published`;
         break;
       }
 
     case 'orgSweepstakeWinner':
       {
-        endpoint = "orgs/".concat(orgID, "/sweepstakes/").concat(id[0], "/winner");
+        endpoint = `orgs/${orgID}/sweepstakes/${id[0]}/winner`;
         break;
       }
 
     case 'orgSweepstakeInvite':
       {
-        endpoint = "orgs/".concat(orgID, "/sweepstakes/").concat(id[0], "/send");
+        endpoint = `orgs/${orgID}/sweepstakes/${id[0]}/send`;
         break;
       }
 
     case 'orgMemberships':
       {
-        endpoint = "orgs/".concat(orgID, "/memberships");
+        endpoint = `orgs/${orgID}/memberships`;
         break;
       }
 
     case 'orgMembership':
       {
-        endpoint = "orgs/".concat(orgID, "/memberships/").concat(id[0]);
+        endpoint = `orgs/${orgID}/memberships/${id[0]}`;
         break;
       }
 
     case 'orgMembershipSubscriptions':
       {
-        endpoint = "orgs/".concat(orgID, "/memberships/").concat(id[0], "/subscriptions");
+        endpoint = `orgs/${orgID}/memberships/${id[0]}/subscriptions`;
         break;
       }
 
     case 'orgMembershipSubscription':
       {
-        endpoint = "orgs/".concat(orgID, "/memberships/").concat(id[0], "/subscriptions/").concat(id[1]);
+        endpoint = `orgs/${orgID}/memberships/${id[0]}/subscriptions/${id[1]}`;
         break;
       }
 
     case 'orgMembershioPublish':
       {
-        endpoint = "orgs/".concat(orgID, "/memberships/").concat(id[0], "/published");
+        endpoint = `orgs/${orgID}/memberships/${id[0]}/published`;
         break;
       }
 
     case 'orgMembershipInvite':
       {
-        endpoint = "orgs/".concat(orgID, "/memberships/").concat(id[0], "/send");
+        endpoint = `orgs/${orgID}/memberships/${id[0]}/send`;
         break;
       }
 
     case 'orgEmailLists':
       {
-        endpoint = "orgs/".concat(orgID, "/email-lists");
+        endpoint = `orgs/${orgID}/email-lists`;
         break;
       }
 
     case 'orgEmailList':
       {
-        endpoint = "orgs/".concat(orgID, "/email-lists/").concat(id[0]);
+        endpoint = `orgs/${orgID}/email-lists/${id[0]}`;
         break;
       }
 
     case 'orgEmailBlasts':
       {
-        endpoint = "orgs/".concat(orgID, "/email-blasts");
+        endpoint = `orgs/${orgID}/email-blasts`;
         break;
       }
 
     case 'orgEmailBlast':
       {
-        endpoint = "orgs/".concat(orgID, "/email-blasts/").concat(id[0]);
+        endpoint = `orgs/${orgID}/email-blasts/${id[0]}`;
         break;
       }
 
     case 'orgAlerts':
       {
-        endpoint = "orgs/".concat(orgID, "/subscriptions");
+        endpoint = `orgs/${orgID}/subscriptions`;
         break;
       }
 
     case 'orgAlert':
       {
-        endpoint = "orgs/".concat(orgID, "/subscriptions/").concat(id[0]);
+        endpoint = `orgs/${orgID}/subscriptions/${id[0]}`;
         break;
       }
     // ORDERS
 
     case 'purchaseOrder':
       {
-        endpoint = "orders";
+        endpoint = `orders`;
         break;
       }
     // ARTICLES
 
     case 'articles':
       {
-        endpoint = "articles";
+        endpoint = `articles`;
         break;
       }
 
     case 'article':
       {
-        endpoint = "articles/".concat(id[0]);
+        endpoint = `articles/${id[0]}`;
         break;
       }
 
     case 'articleView':
       {
-        endpoint = "articles/".concat(id[0], "/views");
+        endpoint = `articles/${id[0]}/views`;
         break;
       }
 
     case 'articleAvailable':
       {
-        endpoint = "articles/".concat(id[0], "/availability");
+        endpoint = `articles/${id[0]}/availability`;
         break;
       }
 
     case 'articleFeeSettings':
       {
-        endpoint = "articles/".concat(id[0], "/fee-settings");
+        endpoint = `articles/${id[0]}/fee-settings`;
         break;
       }
 
     case 'fundraisers':
       {
-        endpoint = "fundraisers";
+        endpoint = `fundraisers`;
         break;
       }
 
     case 'activities':
       {
-        endpoint = "activities";
+        endpoint = `activities`;
         break;
       }
 
     case 'articleComments':
       {
-        endpoint = "articles/".concat(id[0], "/comments");
+        endpoint = `articles/${id[0]}/comments`;
         break;
       }
 
     case 'articleComment':
       {
-        endpoint = "articles/".concat(id[0], "/comments/").concat(id[0]);
+        endpoint = `articles/${id[0]}/comments/${id[0]}`;
         break;
       }
 
     case 'articleFollows':
       {
-        endpoint = "articles/".concat(id[0], "/follows");
+        endpoint = `articles/${id[0]}/follows`;
         break;
       }
 
     case 'articleLikes':
       {
-        endpoint = "articles/".concat(id[0], "/likes");
+        endpoint = `articles/${id[0]}/likes`;
         break;
       }
 
     case 'articleSaves':
       {
-        endpoint = "articles/".concat(id[0], "/saves");
+        endpoint = `articles/${id[0]}/saves`;
         break;
       }
 
     case 'articleShares':
       {
-        endpoint = "articles/".concat(id[0], "/shares");
+        endpoint = `articles/${id[0]}/shares`;
         break;
       }
     // IN APP
 
     case 'inappFeatures':
       {
-        endpoint = "inapp/features";
+        endpoint = `inapp/features`;
         break;
       }
 
     case 'inappFeature':
       {
-        endpoint = "inapp/features/".concat(id[0]);
+        endpoint = `inapp/features/${id[0]}`;
         break;
       }
 
     case 'inappProducts':
       {
-        endpoint = "inapp/products";
+        endpoint = `inapp/products`;
         break;
       }
 
     case 'inappProduct':
       {
-        endpoint = "inapp/products/".concat(id[0]);
+        endpoint = `inapp/products/${id[0]}`;
         break;
       }
 
     case 'inappPackages':
       {
-        endpoint = "inapp/packages";
+        endpoint = `inapp/packages`;
         break;
       }
 
     case 'inappPackage':
       {
-        endpoint = "inapp/packages/".concat(id[0]);
+        endpoint = `inapp/packages/${id[0]}`;
         break;
       }
 
     case 'inappOrgSubscriptions':
       {
-        endpoint = "orgs/".concat(id[0], "/inapp/subscriptions");
+        endpoint = `orgs/${id[0]}/inapp/subscriptions`;
         break;
       }
 
     case 'inappOrgSubscription':
       {
-        endpoint = "orgs/".concat(id[0], "/inapp/subscriptions/").concat(id[1]);
+        endpoint = `orgs/${id[0]}/inapp/subscriptions/${id[1]}`;
         break;
       }
 
     case 'inappOrgCredits':
       {
-        endpoint = "orgs/".concat(id[0], "/inapp/store-credits");
+        endpoint = `orgs/${id[0]}/inapp/store-credits`;
         break;
       }
 
     case 'inappOrgCredit':
       {
-        endpoint = "orgs/".concat(id[0], "/inapp/store-credits/").concat(id[1]);
+        endpoint = `orgs/${id[0]}/inapp/store-credits/${id[1]}`;
         break;
       }
 
     case 'inappOrgTransactions':
       {
-        endpoint = "orgs/".concat(id[0], "/inapp/transactions");
+        endpoint = `orgs/${id[0]}/inapp/transactions`;
         break;
       }
 
     case 'inappOrgBalance':
       {
-        endpoint = "orgs/".concat(id[0], "/inapp/balance");
+        endpoint = `orgs/${id[0]}/inapp/balance`;
         break;
       }
     // MISC
 
     case 's3UploadForm':
       {
-        endpoint = "s3/upload-form";
+        endpoint = `s3/upload-form`;
         break;
       }
 
     case 'contact':
       {
-        endpoint = "contact";
+        endpoint = `contact`;
         break;
       }
 
     case 'wepayLabel':
       {
-        endpoint = "wepay/".concat(id[0], "/account-update-uri");
+        endpoint = `wepay/${id[0]}/account-update-uri`;
         break;
       }
 
     case 'recaptcha':
       {
-        endpoint = "recaptcha/v3";
+        endpoint = `recaptcha/v3`;
         break;
       }
     // DEFAULT
