@@ -214,15 +214,13 @@ function (_Component) {
       };
       var openEffect = open ? effect.end : effect.begin;
       return React.createElement("div", {
-        className: className
-      }, React.createElement("div", {
         onClick: function onClick() {
           return _this4.closeModal(closeCallback);
         },
         className: "modalOverlay",
         style: prefix(_objectSpread({}, overlayStyle, modalOverlayStyle))
       }, React.createElement("div", {
-        className: "modalContent",
+        className: "modalContent ".concat(className),
         style: prefix(_objectSpread({}, contentStyle, transition_style, openEffect)),
         onClick: stopPropagation
       }, this.renderChildren(), closeBtn && React.createElement("button", {
@@ -233,7 +231,7 @@ function (_Component) {
         }
       }, React.createElement("span", {
         className: "icon icon-close"
-      })), this.renderActions())));
+      })), this.renderActions()));
     }
   }]);
 

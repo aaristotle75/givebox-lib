@@ -52,7 +52,8 @@ function (_Component) {
           open = _this$props.open,
           component = _this$props.component,
           id = _this$props.id,
-          opts = _this$props.opts;
+          opts = _this$props.opts,
+          className = _this$props.className;
       var modalRoot = document.getElementById('modal-root');
 
       if (!modalRoot) {
@@ -63,6 +64,7 @@ function (_Component) {
         rootEl: modalRoot,
         className: "modal"
       }, React.createElement(Modal, {
+        className: className,
         identifier: id,
         effect: effect,
         open: open,
@@ -74,6 +76,10 @@ function (_Component) {
 
   return ModalRoute;
 }(Component);
+
+ModalRoute.defaultProps = {
+  className: ''
+};
 
 function mapStateToProps(state, props) {
   var open = false;

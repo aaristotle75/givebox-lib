@@ -347,19 +347,20 @@ function (_Component2) {
                 options = value.options;
               } else {
                 if (has(value, 'actions')) td.push(React.createElement("td", {
+                  className: "actionsRow",
                   key: key
                 }, value.actions));else td.push(React.createElement("td", {
                   onClick: function onClick() {
                     return ref ? bindthis.detailsLink(ref) : '';
                   },
-                  className: "".concat(ref && 'hasDetails', " ").concat(value.primary && 'primaryRow'),
+                  className: "".concat(ref ? 'hasDetails' : '', " ").concat(value.primary ? 'primaryRow' : ''),
                   key: key
                 }, value.value));
               }
             }
           });
           var tr = React.createElement("tr", {
-            className: "".concat(bindthis.state.details.includes(id) && 'detailsOpen', " ").concat(key % 2 === 0 ? '' : 'altRow', " ").concat(options.grayout && 'grayout'),
+            className: "".concat(bindthis.state.details.includes(id) ? 'detailsOpen' : '', " ").concat(key % 2 === 0 ? '' : 'altRow', " ").concat(options.grayout ? 'grayout' : ''),
             key: key
           }, td);
           items.push(tr);

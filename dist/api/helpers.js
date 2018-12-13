@@ -22,7 +22,8 @@ export function getResource(resource) {
     search: {},
     callback: null,
     reload: false,
-    csv: false
+    csv: false,
+    customName: null
   };
 
   var options = _objectSpread({}, defaults, opt);
@@ -68,7 +69,7 @@ export function getResource(resource) {
     });
     endpoint = "".concat(endpoint).concat(options.csv ? '.csv' : '').concat(util.makeAPIQuery(search)); // If CSV return the endpoint else dispatch the API
 
-    if (options.csv) return endpoint;else return dispatch(getAPI(resource, endpoint, search, options.callback, reload));
+    if (options.csv) return endpoint;else return dispatch(getAPI(resource, endpoint, search, options.callback, reload, options.customName));
   };
 }
 /**
@@ -113,7 +114,8 @@ export function sendResource(resource) {
     data: null,
     method: 'post',
     callback: null,
-    reload: true
+    reload: true,
+    customName: null
   };
 
   var options = _objectSpread({}, defaults, opt);
@@ -134,6 +136,6 @@ export function sendResource(resource) {
       endpoint = endpoint.slice(0, -4);
     }
 
-    return dispatch(sendAPI(resource, endpoint, method, options.data, options.callback, options.reload ? reloadResource : null));
+    return dispatch(sendAPI(resource, endpoint, method, options.data, options.callback, options.reload ? reloadResource : null, options.customName));
   };
 }

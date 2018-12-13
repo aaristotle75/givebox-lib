@@ -44,11 +44,11 @@ function resourceCatchError(resource, error) {
   };
 }
 
-export function getAPI(resource, endpoint, search, callback, reload) {
+export function getAPI(resource, endpoint, search, callback, reload, customName) {
   var csrf_token = document.querySelector("meta[name='csrf_token']") ? document.querySelector("meta[name='csrf_token']")['content'] : '';
   return function (dispatch, getState) {
-    if (shouldGetAPI(getState(), resource, reload)) {
-      dispatch(requestResource(resource, reload));
+    if (shouldGetAPI(getState(), customName || resource, reload)) {
+      dispatch(requestResource(customName || resource, reload));
       axios.get(endpoint, {
         headers: {
           'X-CSRF-Token': csrf_token
@@ -60,18 +60,18 @@ export function getAPI(resource, endpoint, search, callback, reload) {
       }).then(function (response) {
         switch (response.status) {
           case 200:
-            dispatch(receiveResource(resource, endpoint, response.data, null, search));
+            dispatch(receiveResource(customName || resource, endpoint, response.data, null, search));
             if (callback) callback(response.data, null);
             break;
 
           default:
             // pass response as error
-            dispatch(receiveResource(resource, endpoint, {}, response, search));
+            dispatch(receiveResource(customName || resource, endpoint, {}, response, search));
             if (callback) callback(null, response);
             break;
         }
       }).catch(function (error) {
-        dispatch(resourceCatchError(resource, error));
+        dispatch(resourceCatchError(customName || resource, error));
         if (callback) callback(null, error);
       });
     }
@@ -108,7 +108,7 @@ function sendResponse(resource, response, error) {
   };
 }
 
-export function sendAPI(resource, endpoint, method, data, callback, reloadResource) {
+export function sendAPI(resource, endpoint, method, data, callback, reloadResource, customName) {
   var csrf_token = document.querySelector("meta[name='csrf_token']") ? document.querySelector("meta[name='csrf_token']")['content'] : '';
   return function (dispatch, getState) {
     method = method.toLowerCase();
@@ -133,7 +133,7 @@ export function sendAPI(resource, endpoint, method, data, callback, reloadResour
           case 204:
             dispatch(sendResponse(resource, has(response, 'data') ? response.data : response, null));
             if (callback) callback(has(response, 'data') ? response.data : null, null);
-            if (reloadResource) dispatch(reloadResource(resource, null, true));
+            if (reloadResource) dispatch(reloadResource(customName || resource, null, true));
             break;
 
           default:

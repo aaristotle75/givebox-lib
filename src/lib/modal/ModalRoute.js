@@ -35,7 +35,8 @@ class ModalRoute extends Component {
       open,
       component,
       id,
-      opts
+      opts,
+      className
     } = this.props;
 
     const modalRoot = document.getElementById('modal-root');
@@ -49,6 +50,7 @@ class ModalRoute extends Component {
         { open &&
           <Portal rootEl={modalRoot} className='modal'>
             <Modal
+              className={className}
               identifier={id}
               effect={effect}
               open={open}
@@ -62,6 +64,10 @@ class ModalRoute extends Component {
       </div>
     )
   }
+}
+
+ModalRoute.defaultProps = {
+  className: ''
 }
 
 function mapStateToProps(state, props) {

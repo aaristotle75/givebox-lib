@@ -95,7 +95,8 @@ function (_Component) {
       modal: false,
       debug: false,
       strength: false,
-      count: false
+      count: false,
+      meta: {}
     };
     _this.defaults = _objectSpread({}, _this.defaultOptions, props.options);
     return _this;
@@ -566,7 +567,8 @@ function (_Component) {
         createField: this.createField,
         params: params,
         strength: params.strength,
-        count: params.count
+        count: params.count,
+        meta: params.meta
       });
     }
   }, {

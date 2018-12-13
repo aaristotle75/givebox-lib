@@ -65,11 +65,12 @@ function (_Component) {
     key: "listOptions",
     value: function listOptions() {
       var items = [];
+      var bindthis = this;
 
       if (!util.isEmpty(this.props.options)) {
         this.props.options.forEach(function (value, key) {
           items.push(React.createElement("div", {
-            className: "actionsMenu-item",
+            className: "actionsMenu-item ".concat(bindthis.props.itemClass),
             key: key
           }, value));
         });
@@ -108,6 +109,7 @@ function (_Component) {
 
 ActionsMenu.defaultProps = {
   label: 'Actions',
-  className: ''
+  className: '',
+  itemClass: 'button'
 };
 export default ActionsMenu;

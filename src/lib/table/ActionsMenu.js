@@ -40,11 +40,12 @@ class ActionsMenu extends Component {
   }
 
   listOptions() {
-    let items = [];
+    const items = [];
+    const bindthis = this;
     if (!util.isEmpty(this.props.options)) {
       this.props.options.forEach(function(value, key) {
         items.push(
-          <div className={`actionsMenu-item`} key={key}>{value}</div>
+          <div className={`actionsMenu-item ${bindthis.props.itemClass}`} key={key}>{value}</div>
         );
       });
     }
@@ -81,7 +82,8 @@ class ActionsMenu extends Component {
 
 ActionsMenu.defaultProps = {
   label: 'Actions',
-  className: ''
+  className: '',
+  itemClass: 'button'
 }
 
 export default ActionsMenu;

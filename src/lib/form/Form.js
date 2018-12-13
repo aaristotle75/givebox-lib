@@ -77,7 +77,8 @@ class Form extends Component {
       modal: false,
       debug: false,
       strength: false,
-      count: false
+      count: false,
+      meta: {}
     }
     this.defaults = { ...this.defaultOptions, ...props.options };
   }
@@ -433,6 +434,7 @@ class Form extends Component {
         params={params}
         strength={params.strength}
         count={params.count}
+        meta={params.meta}
       />
     )
   }

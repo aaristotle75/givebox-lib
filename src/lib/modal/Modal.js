@@ -183,20 +183,18 @@ class Modal extends Component {
     const openEffect = open ? effect.end : effect.begin;
 
     return (
-      <div className={className}>
+      <div
+        onClick={() => this.closeModal(closeCallback)}
+        className={`modalOverlay`} style={prefix({ ...overlayStyle, ...modalOverlayStyle})}
+        >
         <div
-          onClick={() => this.closeModal(closeCallback)}
-          className={`modalOverlay`} style={prefix({ ...overlayStyle, ...modalOverlayStyle})}
-          >
-          <div
-            className={`modalContent`}
-            style={prefix({ ...contentStyle, ...transition_style, ...openEffect })}
-            onClick={stopPropagation}
-          >
-            {this.renderChildren()}
-            {(closeBtn) && <button style={closeBtnStyle} className='modalCloseBtn' onClick={() => this.closeModal(closeCallback)}><span className='icon icon-close'></span></button>}
-            {this.renderActions()}
-          </div>
+          className={`modalContent ${className}`}
+          style={prefix({ ...contentStyle, ...transition_style, ...openEffect })}
+          onClick={stopPropagation}
+        >
+          {this.renderChildren()}
+          {(closeBtn) && <button style={closeBtnStyle} className='modalCloseBtn' onClick={() => this.closeModal(closeCallback)}><span className='icon icon-close'></span></button>}
+          {this.renderActions()}
         </div>
       </div>
     )

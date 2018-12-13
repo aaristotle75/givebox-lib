@@ -290,12 +290,12 @@ class TableBody extends Component {
             if (has(value, 'options')) {
               options = value.options;
             } else {
-              if (has(value, 'actions')) td.push(<td key={key}>{value.actions}</td>);
-              else td.push(<td onClick={() => ref ? bindthis.detailsLink(ref) : ''} className={`${ref && 'hasDetails'} ${value.primary && 'primaryRow'}`} key={key}>{value.value}</td>);
+              if (has(value, 'actions')) td.push(<td className='actionsRow' key={key}>{value.actions}</td>);
+              else td.push(<td onClick={() => ref ? bindthis.detailsLink(ref) : ''} className={`${ref ? 'hasDetails' : ''} ${value.primary ? 'primaryRow' : ''}`} key={key}>{value.value}</td>);
             }
           }
         });
-        const tr = <tr className={`${bindthis.state.details.includes(id) && 'detailsOpen'} ${key%2===0 ? '' : 'altRow'} ${options.grayout && 'grayout'}`} key={key}>{td}</tr>;
+        const tr = <tr className={`${bindthis.state.details.includes(id) ? 'detailsOpen' : ''} ${key%2===0 ? '' : 'altRow'} ${options.grayout ? 'grayout' : ''}`} key={key}>{td}</tr>;
         items.push(tr);
         if (!util.isEmpty(details)) items.push(details);
 

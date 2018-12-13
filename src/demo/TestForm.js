@@ -61,7 +61,7 @@ export default class TestForm extends Component {
         {this.props.textField('ssn', {placeholder: 'Enter Social Security Number', validate: 'ssn', maxLength: 11})}
         {this.props.textField('phone', {placeholder: 'Enter Phone', validate: 'phone'})}
         {this.props.textField('descriptor', {placeholder: 'Enter Billing Descriptor', validate: 'descriptor', maxLength:21})}
-        {this.props.dropdown('states', {options: selectOptions.states, value: 'CA'})}
+        {this.props.dropdown('states', {label: 'States', options: selectOptions.states, value: 'CA'})}
         {this.props.dropdown('status', {options: [{primaryText: 'Active', value: 'active'}, {primaryText: 'Deactivated', value: 'deactivated'}, {primaryText: 'Suspended', value: 'suspended'}], selectLabel: 'Select Status'})}
         {this.props.saveButton(this.processForm)}
         </div>
