@@ -80,7 +80,9 @@ class ActionsMenu extends Component {
     }, React.createElement(AnimateHeight, {
       duration: 200,
       height: open ? 'auto' : 0
-    }, this.listOptions())));
+    }, React.createElement("div", {
+      className: "actionsMenu-text"
+    }, this.listOptions()))));
   }
 
 }

@@ -1,0 +1,689 @@
+@import 'variables.scss';
+
+/*------- Common ----------*/
+body {
+  color: $dark-gray;
+}
+
+h1 { font-size: 1.5em }
+h2 { font-size: 1.3em }
+
+a, button.link, button.button {
+  color: $mainColor;
+}
+
+a:hover, button.link:hover, button.button:hover {
+  color: $mainColor2;
+}
+
+.detailsIcon .icon {
+  color: $light-gray;
+  font-size: 1.5em;
+  vertical-align: middle;
+}
+
+.date {
+  font-size: $small-text-size;
+  color: $med-dark-gray;
+  font-weight: 300;
+}
+
+/*------- LAYOUT ----------*/
+
+.layout {
+  display: flex;
+  min-height: 100vh;
+  height: 100vh;
+  width: 100%;
+}
+
+.flexBetween {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.column {
+  display: block;
+  width: 100%;
+}
+
+.column50 {
+  display: inline-block;
+  width: 50%;
+}
+
+.column33 {
+  display: inline-block;
+  width: 33%;
+}
+
+/*------- Header -----------*/
+header.navbar {
+  min-height: 56px;
+  padding: 16px;
+  padding-top: 8px;
+  padding-right: 32px;
+  border: 0 solid $light;
+  border-bottom: 1px solid $light-gray;
+  @include transition(border-bottom-width .2s linear,background-color .2s linear);
+  background: $white;
+
+  .left-menu-open {
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: 2px;
+    margin-right: 10px;
+
+    button:hover .icon {
+      color: $mainColor2;
+      @include default-transition(.25s);
+    }
+
+    .icon {
+      font-size: 2em;
+      color: $mainColor;
+    }
+  }
+
+  .title {
+    h2 {
+      vertical-align: middle;
+      display: inline-block;
+    }
+  }
+
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1176px;
+    margin-left: 0;
+  }
+}
+
+/*-------- Sub Header --------*/
+header.subNav {
+  min-height: 56px;
+  border: 0 solid transparent;
+  border-bottom: 1px solid $light-gray;
+  transition: border-bottom-width 0s linear,background-color .2s linear;
+  background: $white;
+
+  .container {
+    max-width: 1176px;
+    margin-left: 0;
+  }
+
+  button.button {
+    margin: 0 5px;
+  }
+
+  .actionsMenu button.menuLabel {
+    width: 200px;
+    text-align: center;
+    font-size: 12px;
+    letter-spacing: .5px;
+    font-family: $font-family;
+    color: $white;
+    display: inline-block;
+    border: none;
+    border-radius: 0px;
+    padding: 10px 20px 10px 20px;
+    line-height: 17px;
+    text-transform: none;
+    background-color: $mainColor;
+    cursor: pointer;
+    font-weight: 500;
+    @include box-shadow(none);
+    border: 1px solid transparent;
+  }
+
+  .actionsMenu button.menuLabel:hover {
+    color: $white;
+    background-color: $mainColor2;
+    @include default-transition(.25s);
+  }
+
+  .actionsMenu button.menuLabel .icon { display: none; }
+
+  .filter {
+    text-align: right;
+  }
+}
+
+/*------- Left Side ---------*/
+.layout-left {
+  width: 264px;
+  max-height: 100vh;
+  overflow-y: auto;
+  @include transition(width .5s);
+}
+
+.layout-top {
+  position: fixed;
+  top: 0;
+  width: 264px;
+  max-height: 100vh;
+  overflow-y: auto;
+  backface-visibility: hidden;
+  background: $secondary;
+  @include transition(width .5s);
+  z-index: 1002;
+}
+
+.layout-left .layout-top {
+  background-image: url(https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/left-side-bg.png);
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  background-size: 264px auto;
+  height: 100vh;
+}
+
+.layout-left-container {
+
+  .logo img {
+    width: 165px;
+    height: 30px;
+    margin-top: 13px;
+    margin-bottom: 21px;
+  }
+
+  .nav ul {
+    position: relative;
+    width: 100%;
+  }
+
+  .nav li {
+    padding: 15px;
+    padding-left: 30px;
+    color: $white;
+    font-weight: 300;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+  }
+
+  .nav li:hover {
+    color: $mainColor;
+    @include default-transition(.25s);
+  }
+
+  .nav li.active {
+    background: $tertiary;
+    border-left: 3px solid $mainColor;
+    color: $mainColor;
+  }
+}
+
+/*--------- Main Container -------*/
+.layout-main {
+  flex: 1;
+  overflow-y: auto;
+  width: 100%;
+}
+
+.layout-main-wrapper {
+
+  .container {
+    max-width: 1176px;
+    padding: 20px;
+  }
+
+}
+
+.layout-cover {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  display: pointer;
+  cursor: pointer;
+  background: $dark-blue-gray;
+  @include transition(opacity .35s ease);
+  opacity: 0;
+  z-index: 1000;
+}
+
+/*------ Lists --------*/
+ul.selectable {
+
+  li {
+    display: flex;
+    background: $light-gray;
+    border: none;
+    border-top: 1px solid $light-med-gray;
+    margin: 0;
+  }
+
+  li:nth-child(even) {
+    background: $light-gray;
+  }
+
+  li:hover {
+    background: $white;
+  }
+
+  img {
+    border-radius: 50%;
+    display: inline;
+  }
+
+  .liContent {
+    margin-left: 10px;
+  }
+
+}
+
+/*--------- Button, Links, Menus --------*/
+
+button.button {
+  font-size: 12px;
+  letter-spacing: .5px;
+  font-family: $font-family;
+  color: $white;
+  display: inline-block;
+  border: none;
+  border-radius: 0px;
+  padding: 10px 20px 10px 20px;
+  line-height: 17px;
+  text-transform: none;
+  background-color: $mainColor;
+  cursor: pointer;
+  font-weight: 500;
+  @include box-shadow(none);
+  border: 1px solid transparent;
+}
+
+button.button:hover {
+  color: $white;
+  background-color: $mainColor2;
+  @include default-transition(.25s);
+}
+
+button.button:disabled {
+  cursor: not-allowed;
+  background-color: transparentize($mainColor, .5);
+}
+
+button.button:hover:disabled {
+  background-color: transparentize($mainColor, .5);
+}
+
+button.button.secondary {
+  background-color: $white;
+  color: $mainColor;
+  border: 1px solid $mainColor;
+  font-weight: 600;
+}
+
+button.button.secondary:hover {
+  background-color: $mainColor;
+  color: $white;
+  @include default-transition(.25s);
+}
+
+.actionsMenu button.menuLabel {
+  background: transparent;
+  color: $mainColor;
+  padding: 5px;
+  font-family: Circular, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.83em;
+  font-weight: 400;
+  letter-spacing: 0;
+  border-radius: 2px;
+  border: none;
+  cursor: pointer;
+  box-shadow: none;
+  width: 100%;
+  text-align: left;
+  margin: 0;
+
+  .icon {
+    color: $mainColor;
+  }
+}
+
+.actionsMenu button:hover.menuLabel {
+  color: $mainColor2;
+}
+
+.actionsMenu button.menuLabel:disabled {
+  display: none;
+}
+
+.actionsMenu button:hover .icon {
+  color: $mainColor2;
+}
+
+.actionsMenu {
+
+  white-space: nowrap;
+
+  .icon {
+    position: relative;
+    display: inline-block;
+    top: 0px;
+    right: 0px;
+    bottom: 0;
+    color: $med-gray;
+    font-size: $small-text-size;
+    margin-left: 5px;
+  }
+
+  .actionsMenu-item.button {
+    margin: 0;
+    padding: 0;
+  }
+
+  .actionsMenu-item {
+    button {
+      padding: 10px;
+      text-align: left;
+      width: 100%;
+      color: $med-dark-gray;
+      background: transparent;
+      margin: 0;
+    }
+
+    button:hover {
+      color: $white;
+      background: $mainColor;
+    }
+  }
+}
+
+/*------- Table ----------*/
+th, tr {
+  background: $light-gray;
+}
+
+th {
+  font-weight: 400;
+}
+
+th.sort:hover {
+  color: $med-gray;
+  background: $light-gray;
+}
+
+
+tbody tr:not(:first-child):not(.detailsRow) {
+  border-top: 1px solid $light-med-gray;
+}
+
+tbody tr:hover {
+  background: $white;
+}
+
+tbody td {
+  vertical-align: middle;
+  padding: 20px 5px;
+}
+
+tr:nth-child(even) {
+  background: $light-gray;
+}
+
+.altRow {
+  background: $light-gray;
+}
+
+tr.detailsRow {
+  border-top: none;
+}
+
+.details {
+  background: $white;
+}
+
+tr.detailsOpen {
+  background: $white;
+}
+
+.detailsTitle {
+  font-weight: 300;
+  color: $light-med-gray;
+  border-bottom: 1px solid $light-gray;
+}
+
+tfoot tr {
+  font-size: $large-text-size;
+  font-weight: 300;
+
+  td {
+    padding-top: 30px;
+  }
+}
+
+.description {
+  .column50 {
+    vertical-align: top;
+  }
+}
+
+/*---------- Filter -----------*/
+.filter {
+
+  margin-top: 5px;
+
+  button.link {
+    color: $med-gray;
+    font-size: $small-text-size;
+    font-weight: 300;
+  }
+
+  .filter-content {
+    box-shadow: none;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+    background: transparent;
+  }
+}
+
+/*----------- Max Records Dropdown -------------*/
+.maxRecords {
+
+  .dropdown {
+    .label { color: $mainColor; }
+  }
+
+  button.link,
+  button.link:hover {
+    font-weight: 400;
+    color: $dark-gray;
+  }
+}
+
+/*----------- Tabs -------------*/
+.statsTab {
+  .panel {
+    border-bottom: none;
+  }
+  .panelTab {
+    color: $med-gray;
+    background: transparent;
+    border-bottom: 2px solid transparent;
+    min-width: 100px;
+  }
+
+  button.panelTab.selected {
+    color: $mainColor;
+    background: transparent;
+    border-bottom: 2px solid $mainColor;
+    @include default-transition(1s);
+  }
+
+  .panelTab:hover {
+    background: transparent;
+  }
+
+  button {
+    font-size: $normal-text-size;
+  }
+
+}
+
+/*------- Stat Block --------*/
+.statBlock {
+
+  .value,
+  label,
+  .label,
+  button.glossary {
+    font-size: $normal-text-size;
+    font-weight: 300;
+  }
+
+  button {
+    margin: 0;
+    padding: 0;
+  }
+
+  li,
+  li:nth-child(even) {
+    background: $light-gray;
+  }
+
+}
+
+/*--------- Form ----------*/
+.search {
+  .input-group:not(.hidden) {
+    position: relative;
+    padding: 0;
+    margin: 0;
+  }
+
+  input {
+    padding-right: 45px;
+    height: 35px;
+    border-bottom: 1px solid $light-gray;
+  }
+
+  .input-bottom.idle {
+    background: $light-gray;
+  }
+
+  .icon {
+    color: $light-med-gray;
+  }
+}
+
+.input-bottom.active {
+  background: $mainColor;
+  transform: scaleX(1);
+  -webkit-transform: scaleX(1);
+  @include default-transition(.25s);
+}
+
+input::-webkit-input-placeholder {
+  font-size: $normal-text-size;
+  font-family: $font-family;
+  color: $med-gray;
+}
+input::-moz-placeholder {
+  font-size: $normal-text-size;
+  color: $med-gray;
+}
+input::-ms-input-placeholder {
+  font-size: $normal-text-size;
+  color: $med-gray;
+}
+
+.floating-label.active label {
+  color: $mainColor;
+}
+
+.dropdown .dropdown-item.selected {
+  color: $mainColor;
+}
+
+.dropdown .dropdown-item:hover {
+  background: transparentize($mainColor, .7);
+}
+
+.flatpickr-day.selected, .flatpickr-day.selected:hover {
+  background: $mainColor !important;
+  border-color: $mainColor !important;
+}
+
+.alertMsg {
+
+  margin-bottom: 20px;
+
+  .error {
+    text-align: center;
+  }
+}
+
+.formBtn-group {
+  width: 100%;
+  clear: both;
+}
+
+/*-------- Dashboard ----------*/
+.dashboard {
+
+  .top {
+    display: flex;
+  }
+
+  .left {
+    width: 200px;
+  }
+
+}
+
+/*-------- Money ------------*/
+
+.txState {
+  font-weight: 300;
+  color: $med-gray;
+}
+
+.txState.chargeback {
+  color: $red;
+}
+
+.balance {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  h1 {
+    color: $med-dark-gray;
+    margin: 0;
+    margin-bottom: 5px;
+    font-size: 3.5em;
+    font-weight: 300;
+  }
+}
+
+.descAmount {
+  display: none;
+}
+
+/*-------- Modal ----------*/
+.modal .modalWrapper {
+  margin: 0;
+  padding: 10px;
+  background: $light-gray;
+
+  h2 {
+    font-weight: 300;
+  }
+
+}
+
+.modal {
+  h2 {
+    margin-top: 0px;
+  }
+}
+
+.modalFormContainer {
+  padding: 40px;
+}

@@ -9,8 +9,7 @@ table {
 
 th {
   color: $light-med-gray;
-  font-weight: 500;
-  background: $white;
+  background: transparent;
   font-size: $small-text-size;
   padding: 15px 15px 15px 5px;
   overflow: hidden;
@@ -246,11 +245,11 @@ table button .icon {
   }
 
   .actionsMenu-content {
-    display: block;
     position: absolute;
     background-color: $off-white;
-    min-width: 75px;
     width: 100%;
+    min-width: 75px;
+    max-width: 150px;
     max-height: 300px;
     @include box-shadow(0px 4px 8px 0px rgba(0,0,0,0.2));
     z-index: 100000;
@@ -259,6 +258,11 @@ table button .icon {
     overflow-y: auto;
     overflow-x: hidden;
     margin-bottom: 20px;
+  }
+
+  .actionsMenu-text {
+    position: relative;
+    width: 100%;
   }
 
   .actionsMenu-item {
@@ -319,7 +323,7 @@ table button .icon {
     overflow-y: auto;
     overflow-x: hidden;
     margin-bottom: 20px;
-    padding: 20px;
+    padding: 30px 20px;
   }
 
   .filter-item {

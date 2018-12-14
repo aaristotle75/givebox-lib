@@ -307,7 +307,7 @@ label.idle, .label.idle {
   }
 
   .label {
-    color: $dark;
+    color: $dark-gray;
     font-size: $normal-text-size;
   }
 
@@ -329,7 +329,7 @@ label.idle, .label.idle {
     cursor: pointer;
     display: block;
     width: auto;
-    color: $dark;
+    color: $dark-gray;
     text-align: left;
 
     .icon {

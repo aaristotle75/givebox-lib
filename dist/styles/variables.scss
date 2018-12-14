@@ -12,18 +12,30 @@ $tiny-text-size: 0.67em;
 /*----- Define Colors --------*/
 $white: #FFFFFF;
 $off-white: #FCFCFC;
-$light: #F5F5F5;
-$light-gray: #eceff1;
-$light-med-gray: #B0BEC5;
-$med-gray: #4e6471;
+$light: #f2f5f7;
+$light-gray: #e8ebed;
+$light-med-gray: #ced1d3;
+$med-gray: #919495;
+$med-dark-gray: #465965;
 $dark-gray: #263238;
 $dark: #151515;
+
+$med-blue-gray: #B0BEC5;
+$med-blue-dark-gray: #465965;
+$dark-blue-gray: #253655;
+
 $red: #e83b2e;
 $yellow: #FFCC80;
 $orange: #ecab1f;
 $green: #32bd52;
 $primary: #4365d4;
 $secondary: #273b7d;
+$tertiary: #1a2752;
+
+$mainColor: #01b9ff;
+$mainColor2: #01a3e1;
+//$mainColor: $primary;
+//$mainColor2: $secondary;
 
 $mobile-width: 800px;
 

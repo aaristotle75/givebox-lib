@@ -1,0 +1,474 @@
+@import 'variables.scss';
+
+
+
+@media only screen and (max-width: 1000px) {
+	.pagination li {
+    padding: 13px;
+    margin: 0 5px;
+    width: 40px;
+    height: 40px;
+	}
+
+}
+
+@media (min-width: 992px) {
+  .exportRecordsLink {
+    .icon { display: none; }
+  }
+
+  header.navbar .left-menu-open {
+    display: none;
+  }
+
+  /*-------- Sub Header --------*/
+  header.subNav {
+    .actionsMenu {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: 992px) {
+
+  /*-------- Layout ---------*/
+  .layout-main-wrapper .container {
+    padding: 0;
+  }
+
+  header.subNav .container {
+    padding: 5px 10px;
+  }
+
+  /*-------- Button ---------*/
+  button.button {
+    padding: 7px 15px 7px 15px;
+    line-height: 17px;
+  }
+
+  button.button.secondary.subHeader {
+    background-color: $secondary;
+    color: $mainColor;
+    border: 1px solid $mainColor;
+    font-weight: 600;
+  }
+
+  button.button.secondary.subHeader:hover {
+    background-color: $mainColor;
+    color: $white;
+    @include default-transition(.25s);
+  }
+
+  /*-------- Header --------*/
+  header.navbar {
+    background: $secondary;
+    padding: 8px 24px;
+    border: none;
+    border-bottom: none;
+    min-height: 40px;
+
+    h2 { color: $light-gray; }
+  }
+
+/*-------- Sub Header --------*/
+header.subNav {
+  background: $secondary;
+  min-height: 40px;
+
+  .container {
+    padding-top: 5px;
+    padding-bottom: 15px;
+  }
+
+  h2 { color: $light-gray; }
+
+  .actionsMenu button.menuLabel {
+    padding: 7px 15px 7px 15px;
+    line-height: 17px;
+  }
+
+}
+
+  /*------ Avatar ---------*/
+  .avatar button.link {
+    color: $light-gray;
+  }
+
+
+  /*--------- Left Side ---------*/
+
+  .left-menu-open {
+    display: inline-block;
+    @include transition(display .25s);
+  }
+
+  .layout-left {
+    width: 0px;
+    @include transition(width .5s);
+  }
+
+  .layout-top {
+    width: 0px;
+    @include transition(width .5s);
+  }
+
+  .layout-left.expand {
+
+    .layout-cover {
+      display: block;
+      opacity: .7;
+    }
+
+    .layout-top {
+      width: 264px;
+      @include transition(width .5s);
+    }
+
+    .left-menu-close {
+      position: absolute;
+      left: 280px;
+      top: 15px;
+      z-index: 1002;
+
+      button:hover .icon {
+        color: $mainColor2;
+        @include default-transition(.25s);
+      }
+
+      .icon {
+        font-size: $small-text-size;
+        font-weight: 600;
+        color: $mainColor;
+      }
+    }
+
+  }
+
+  /*-------- Form ---------*/
+
+  .search {
+    input {
+      color: $light-med-gray;
+      border-bottom: 1px solid $med-gray;
+    }
+
+    .input-bottom.idle {
+      background: $med-gray;
+    }
+
+    .icon {
+      color: $med-gray;
+    }
+
+    input::-webkit-input-placeholder {
+      font-size: $normal-text-size;
+      font-family: $font-family;
+      color: $med-gray;
+    }
+    input::-moz-placeholder {
+      font-size: $normal-text-size;
+      color: $med-gray;
+    }
+    input::-ms-input-placeholder {
+      font-size: $normal-text-size;
+      color: $med-gray;
+    }
+
+  }
+
+  .exportRecordsLink {
+    .exportRecordsText { display: none; }
+  }
+
+  /*---------- Filter -----------*/
+  .filter {
+
+    input {
+      color: $light-gray;
+    }
+
+    button.link {
+      color: $med-gray;
+      font-size: $small-text-size;
+    }
+
+    .filter-content {
+      box-shadow: none;
+      padding-bottom: 0px;
+      margin-bottom: 0px;
+      background: transparent;
+    }
+
+    label {
+      color: $med-gray;
+    }
+
+    .icon,
+    .dropdown .label,
+    .dropdown .icon, {
+      color: $light-med-gray;
+    }
+
+
+    button.button:disabled {
+      cursor: not-allowed;
+      color: $med-gray;
+      background-color: transparentize($mainColor2, .5);
+    }
+
+    button.button:hover:disabled {
+      background-color: transparentize($mainColor2, .5);
+    }
+
+  }
+
+  /*-------- Money ------------*/
+  .balance {
+
+    h1 {
+      margin-top: 30px;
+    }
+  }
+
+  /*----- End max-width 992px ------*/
+}
+
+@media (max-width: 768px) {
+
+  .column,
+  .column50,
+  .column33 {
+    width: 100%;
+    clear: both;
+  }
+
+  .column50.right { text-align: left; }
+
+  .avatar {
+
+    .icon,
+    .orgName {
+      display: none;
+    }
+  }
+
+  .avatarMenu {
+    .icon {
+      display: block;
+    }
+
+    .close {
+      color: $med-gray;
+    }
+  }
+
+
+  .balance {
+
+    h1 {
+      margin-top: 5px;
+    }
+  }
+
+  .modalContent {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    overflow: auto !important;
+    background: $light-gray !important;
+  }
+
+  .modal .flexWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /*----- End max-width 768px ----*/
+}
+
+@media only screen and (min-width: 600px) {
+  header.subNav {
+    .actionsMenu {
+      display: none;
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+
+  /*------ Layout ------*/
+  .flexBetween {
+    flex-direction: column;
+  }
+
+  header.navbar {
+    padding: 8px 24px;
+    padding-left: 5px;
+  }
+
+  header.subNav .container {
+    padding: 5px 10px;
+  }
+
+  .layout-main-wrapper .container {
+    padding: 0;
+  }
+
+  .filter {
+    .rangeCol { clear: both; }
+    .dropdownCol { clear: both; width: 100%; }
+    .fillerCol { display: none; }
+  }
+
+	.pagination li {
+    font-size: $normal-text-size;
+    padding: 17px;
+    margin: 0 5px;
+    width: 50px;
+    height: 50px;
+    margin: 0px;
+    width: 11%;
+	}
+
+  .maxRecords .dropdown .label {
+    font-size: $normal-text-size;
+  }
+
+  .maxRecords label,
+  .recordCount {
+    font-size: $normal-text-size;
+  }
+
+  header.subNav {
+    .menu {
+      display: none;
+    }
+
+    .filter {
+      text-align: center;
+    }
+
+    .actionsMenu {
+
+      margin-bottom: 10px;
+      text-align: center;
+      button.menuLabel {
+        width: 220px;
+      }
+
+      .actionsMenu-item {
+        padding: 0;
+
+        button {
+          width: 100%;
+          margin: 0;
+          padding: 15px 0 15px 10px;
+          background: $white;
+          color: $mainColor;
+          text-align: left;
+        }
+
+        button:hover {
+          background: transparentize($mainColor, .7);
+        }
+      }
+    }
+  }
+
+  /* Avatar */
+  .avatarMenu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    overflow: auto !important;
+    background: $light-gray !important;
+    @include box-shadow(none);
+
+  }
+
+
+	/* Force table to not be like tables anymore */
+	table, thead, tbody, th, td, tr {
+		display: block;
+	}
+
+	/* Hide table headers (but not display: none;, for accessibility) */
+	thead tr {
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+
+	td {
+		/* Behave  like a "row" */
+		border: none;
+		position: relative;
+		padding-left: 50%;
+	}
+
+	td:before {
+		/* Now like a table header */
+		position: absolute;
+		/* Top/left values mimic padding */
+		top: 6px;
+		left: 6px;
+		width: 45%;
+		padding-right: 10px;
+		white-space: nowrap;
+	}
+
+  td:not(.primaryRow):not(.detailsRow):not(.actionsRow) {
+    display: none;
+  }
+
+  td.actionsRow {
+    margin: 0;
+    padding: 0;
+    padding-bottom: 10px;
+  }
+
+  .formBtn-group {
+    text-align: center;
+  }
+
+  /*----- FORM ------*/
+  .modalFormContainer {
+    padding: 10px;
+  }
+
+  /*----- Money -------*/
+  .descAmount {
+    display: inline;
+    vertical-align: top;
+    text-align: right;
+  }
+
+
+  /*-------- End Max Width 600px -------*/
+
+}
+
+
+@media only screen and (max-width: 420px) {
+
+	.pagination li {
+    font-size: $normal-text-size;
+    padding: 10px;
+    margin: 0 5px;
+    width: 35px;
+    height: 35px;
+    margin: 0px;
+    width: 11%;
+	}
+
+}

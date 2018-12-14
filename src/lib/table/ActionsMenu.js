@@ -72,7 +72,9 @@ class ActionsMenu extends Component {
             duration={200}
             height={open ? 'auto' : 0}
           >
+            <div className='actionsMenu-text'>
               {this.listOptions()}
+            </div>
           </AnimateHeight>
         </div>
       </div>

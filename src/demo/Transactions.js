@@ -180,7 +180,7 @@ class Transactions extends Component {
       { name: 'Description', width: '45%', sort: 'cardName' },
       { name: 'Deposits/Credits', width: '10%', sort: 'net%2CtxType' },
       { name: 'Withdrawals/Debits', width: '10%', sort: 'kind' },
-      { name: '', width: '10%', sort: '' }
+      { name: '', width: '20%', sort: '' }
     );
     fdata.headers = headers;
 

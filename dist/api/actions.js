@@ -108,7 +108,7 @@ function sendResponse(resource, response, error) {
 }
 
 export function sendAPI(resource, endpoint, method, data, callback, reloadResource, customName) {
-  let csrf_token = document.querySelector(`meta[name='csrf_token']`) ? document.querySelector(`meta[name='csrf_token']`)['content'] : '';
+  const csrf_token = document.querySelector(`meta[name='csrf_token']`) ? document.querySelector(`meta[name='csrf_token']`)['content'] === '{{ .CSRFToken }}' ? 'localhost' : document.querySelector(`meta[name='csrf_token']`)['content'] : '';
   return (dispatch, getState) => {
     method = method.toLowerCase();
 
