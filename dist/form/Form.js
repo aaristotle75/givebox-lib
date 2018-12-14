@@ -738,15 +738,23 @@ class Form extends Component {
     return;
   }
 
-  saveButton(callback, label = 'Save', style = {}, className = '') {
+  saveButton(callback, opts = {}) {
+    const defaultOpts = {
+      label: 'Save',
+      style: {},
+      className: ''
+    };
+    const options = { ...defaultOpts,
+      ...opts
+    };
     return React.createElement("button", {
       id: `${this.props.id}-saveButton`,
-      className: `button ${className}`,
-      style: style,
+      className: `button ${options.className}`,
+      style: options.style,
       type: "button",
       disabled: this.state.updated ? false : true,
       onClick: e => this.validateForm(e, callback)
-    }, label);
+    }, options.label);
   }
 
   errorAlert() {

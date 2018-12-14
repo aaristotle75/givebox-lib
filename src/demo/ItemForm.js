@@ -33,7 +33,7 @@ class ItemForm extends Component {
   }
 
   processForm(fields) {
-    let data = {};
+    const data = {};
     Object.entries(fields).forEach(([key, value]) => {
       if (value.autoReturn) data[key] = value.value;
     });
@@ -43,7 +43,11 @@ class ItemForm extends Component {
         id: [this.props.id],
         method: 'patch',
         data: data,
-        callback: this.processCallback.bind(this)
+        callback: this.processCallback.bind(this),
+        resourcesToLoad: [
+          'orgTransactions',
+          'orgFinanceStats'
+        ]
       });
   }
 

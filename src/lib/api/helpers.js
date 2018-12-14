@@ -20,7 +20,7 @@ const API_URL = process.env.REACT_APP_API_URL;
 * @param {function} callback
 * @param {bool} reload If the resource should be reloaded
 */
-export function getResource(resource, opt = {}) {
+export function getResource(resource, opts = {}) {
   const defaults = {
     id: [],
     search: {},
@@ -29,7 +29,7 @@ export function getResource(resource, opt = {}) {
     csv: false,
     customName: null
   }
-  const options = { ...defaults, ...opt };
+  const options = { ...defaults, ...opts };
   return (dispatch, getState) => {
     let id = options.id;
     let reload = options.reload;
@@ -81,17 +81,40 @@ export function getResource(resource, opt = {}) {
 * @param {function} callback
 * @param {bool} reloadAfterSend If the resource list should be included in the reload
 */
-export function reloadResource(name, callback, reloadAfterSend = false) {
+export function reloadResource(name, opts = {}) {
+  // callback, reloadAfterSend = false
+
+  const defaults = {
+    callback: null,
+    reloadList: true,
+    resourcesToLoad: null
+  }
+
+  const options = { ...defaults, ...opts };
+
   return (dispatch, getState) => {
     let resource = has(getState().resource, name) ? getState().resource[name] : null;
-    if (resource) dispatch(getAPI(name, resource.endpoint, resource.search, callback, true));
+    if (resource) dispatch(getAPI(name, resource.endpoint, resource.search, null, true));
 
     // Reload the list after updating a single item
-    if (reloadAfterSend) {
+    if (options.reloadList) {
       let listName = name + 's';
       let resourceList = has(getState().resource, listName) ? getState().resource[listName] : null;
-      if (resourceList) dispatch(getAPI(listName, resourceList.endpoint, resourceList.search, callback, true));
+      if (resourceList) dispatch(getAPI(listName, resourceList.endpoint, resourceList.search, null, true));
     }
+
+    // Reload resources
+    if (options.resourcesToLoad) {
+      options.resourcesToLoad.forEach(function(value) {
+        if (has(getState().resource, value)) {
+          const resource = getState().resource[value];
+          dispatch(value, resource.endpoint, resource.search, null, true);
+        } else {
+          dispatch(getResource(value, { reload: true }));
+        }
+      });
+    }
+    if (options.callback) options.callback(getState());
   }
 }
 
@@ -108,16 +131,17 @@ export function reloadResource(name, callback, reloadAfterSend = false) {
 * @param {function} callback
 * @param {bool} reload If the resource should be reloaded
 */
-export function sendResource(resource, opt = {}) {
+export function sendResource(resource, opts = {}) {
   const defaults = {
     id: [],
     data: null,
     method: 'post',
     callback: null,
     reload: true,
+    resourcesToLoad: null,
     customName: null
   };
-  const options = { ...defaults, ...opt };
+  const options = { ...defaults, ...opts };
   return (dispatch, getState) => {
     let id = options.id;
     let method = options.method;
@@ -140,6 +164,7 @@ export function sendResource(resource, opt = {}) {
       options.data,
       options.callback,
       options.reload ? reloadResource : null,
+      options.resourcesToLoad,
       options.customName
     ));
   }

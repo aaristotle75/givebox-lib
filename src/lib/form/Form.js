@@ -606,9 +606,15 @@ class Form extends Component {
     return;
   }
 
-  saveButton(callback, label = 'Save', style = {}, className = '') {
+  saveButton(callback, opts = {}) {
+    const defaults = {
+      label: 'Save',
+      style: {},
+      className: ''
+    }
+    const options = { ...defaults, ...opts };
     return (
-      <button id={`${this.props.id}-saveButton`} className={`button ${className}`} style={style} type='button' disabled={this.state.updated ? false : true} onClick={(e) => this.validateForm(e, callback)}>{label}</button>
+      <button id={`${this.props.id}-saveButton`} className={`button ${options.className}`} style={options.style} type='button' disabled={this.state.updated ? false : true} onClick={(e) => this.validateForm(e, callback)}>{options.label}</button>
     )
   }
 
