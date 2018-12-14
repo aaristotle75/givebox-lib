@@ -302,7 +302,7 @@ class TableBody extends Component {
       });
     } else {
       items.push(
-        <tr key={0}><td colSpan={length || 1} align='center'><NoRecords /></td></tr>
+        <tr key={0}><td className='noRecordsRow' colSpan={length || 1} align='center'><NoRecords /></td></tr>
       );
     }
 

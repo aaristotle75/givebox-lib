@@ -319,6 +319,7 @@ class TableBody extends Component {
       items.push(React.createElement("tr", {
         key: 0
       }, React.createElement("td", {
+        className: "noRecordsRow",
         colSpan: length || 1,
         align: "center"
       }, React.createElement(NoRecords, null))));
