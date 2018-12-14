@@ -58,7 +58,7 @@ class Filter extends Component {
           height={this.state.open ? 'auto' : 0}
         >
           <Form name={name} >
-            <FilterForm name={name} options={options} />
+            <FilterForm closeMenu={this.closeMenu} name={name} options={options} />
           </Form>
         </AnimateHeight>
       </div>

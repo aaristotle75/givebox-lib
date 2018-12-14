@@ -8,6 +8,7 @@ import Moment from 'moment';
 class Filter extends Component {
   constructor(props) {
     super(props);
+    this.processFormCallback = this.processFormCallback.bind(this);
     this.processForm = this.processForm.bind(this);
     this.getField = this.getField.bind(this);
     this.ignoreFilters = this.ignoreFilters.bind(this);
@@ -67,7 +68,13 @@ class Filter extends Component {
     const search = { ...resource.search,
       ...merge
     };
-    this.props.getAPI(this.props.name, endpoint, search, null, true);
+    this.props.getAPI(this.props.name, endpoint, search, this.processFormCallback, true);
+  }
+
+  processFormCallback(res, err) {
+    if (!err) {
+      this.props.closeMenu();
+    }
   }
 
   processForm(fields) {
@@ -85,7 +92,7 @@ class Filter extends Component {
     search.filter = filters || '';
     if (resource.search.page > 1) search.page = 1;
     const endpoint = resource.endpoint.split('?')[0] + util.makeAPIQuery(search);
-    this.props.getAPI(this.props.name, endpoint, search, null, true);
+    this.props.getAPI(this.props.name, endpoint, search, this.processFormCallback, true);
   }
 
   getField(key, value) {
@@ -151,7 +158,9 @@ class Filter extends Component {
       className: "button secondary",
       type: "button",
       onClick: this.ignoreFilters
-    }, "Ignore Filters"), this.props.saveButton(this.processForm, 'Apply')));
+    }, "Ignore Filters"), this.props.saveButton(this.processForm, {
+      label: 'See Summary'
+    })));
   }
 
 }

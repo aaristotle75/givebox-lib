@@ -64,6 +64,7 @@ class Filter extends Component {
     }, React.createElement(Form, {
       name: name
     }, React.createElement(FilterForm, {
+      closeMenu: this.closeMenu,
       name: name,
       options: options
     }))));
