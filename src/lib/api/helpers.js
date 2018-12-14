@@ -108,7 +108,7 @@ export function reloadResource(name, opts = {}) {
       options.resourcesToLoad.forEach(function(value) {
         if (has(getState().resource, value)) {
           const resource = getState().resource[value];
-          dispatch(value, resource.endpoint, resource.search, null, true);
+          dispatch(getAPI(value, resource.endpoint, resource.search, null, true));
         } else {
           dispatch(getResource(value, { reload: true }));
         }

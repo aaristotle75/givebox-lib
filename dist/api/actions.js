@@ -107,7 +107,7 @@ function sendResponse(resource, response, error) {
   };
 }
 
-export function sendAPI(resource, endpoint, method, data, callback, reloadResource, customName) {
+export function sendAPI(resource, endpoint, method, data, callback, reloadResource, resourcesToLoad, customName) {
   const csrf_token = document.querySelector(`meta[name='csrf_token']`) ? document.querySelector(`meta[name='csrf_token']`)['content'] === '{{ .CSRFToken }}' ? 'localhost' : document.querySelector(`meta[name='csrf_token']`)['content'] : '';
   return (dispatch, getState) => {
     method = method.toLowerCase();
@@ -132,7 +132,9 @@ export function sendAPI(resource, endpoint, method, data, callback, reloadResour
           case 204:
             dispatch(sendResponse(resource, has(response, 'data') ? response.data : response, null));
             if (callback) callback(has(response, 'data') ? response.data : null, null);
-            if (reloadResource) dispatch(reloadResource(customName || resource, null, true));
+            if (reloadResource) dispatch(reloadResource(customName || resource, {
+              resourcesToLoad: resourcesToLoad
+            }));
             break;
 
           default:

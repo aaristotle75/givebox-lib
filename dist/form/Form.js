@@ -739,12 +739,12 @@ class Form extends Component {
   }
 
   saveButton(callback, opts = {}) {
-    const defaultOpts = {
+    const defaults = {
       label: 'Save',
       style: {},
       className: ''
     };
-    const options = { ...defaultOpts,
+    const options = { ...defaults,
       ...opts
     };
     return React.createElement("button", {
