@@ -216,12 +216,13 @@ class Transactions extends Component {
     }
     fdata.rows = rows;
 
-    footer.push(
-      { name: '', colspan: 1},
-      { name: <div style={{textAlign: 'left'}}>TOTALS</div>, colspan: 2 },
-      { name: <div>{util.money(parseFloat(meta.netTotal/100).toFixed(2))}</div>, colspan: 1},
-      { name: <div>{util.money(parseFloat(meta.withdrawalTotal/100).toFixed(2))}</div>, colspan: 1}
-    );
+    footer.push([
+      { value: '', colspan: 1},
+      { value: <div style={{textAlign: 'left'}}>TOTALS</div>, colspan: 2 },
+      { value: <div>{util.money(parseFloat(meta.netTotal/100).toFixed(2))}</div>, colspan: 1},
+      { value: <div>{util.money(parseFloat(meta.withdrawalTotal/100).toFixed(2))}</div>, colspan: 1}
+    ]);
+
     fdata.footer = footer;
 
     return fdata;

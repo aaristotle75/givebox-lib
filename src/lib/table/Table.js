@@ -320,19 +320,23 @@ class TableBody extends Component {
 }
 
 const TableFoot = ({ footer }) => {
-  let items = [];
+  const items = [];
   if (!util.isEmpty(footer)) {
-    Object.entries(footer).forEach(([key, value]) => {
+    footer.forEach((value, key) => {
+      const item = [];
+      Object.entries(value).forEach(([key, value]) => {
+        item.push(
+          <td key={key} align={value.align || 'left'} colSpan={value.colspan || 1}>{value.value}</td>
+        );
+      });
       items.push(
-        <td key={key} align={value.align || 'left'} colSpan={value.colspan || 1}>{value.name}</td>
+        <tr key={key}>{item}</tr>
       );
     });
   }
   return (
     <tfoot>
-      <tr>
-        {items}
-      </tr>
+      {items}
     </tfoot>
   )
 }
