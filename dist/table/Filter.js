@@ -44,7 +44,8 @@ class Filter extends Component {
       style,
       label,
       options,
-      name
+      name,
+      allowDisabled
     } = this.props;
     const {
       open
@@ -64,6 +65,7 @@ class Filter extends Component {
     }, React.createElement(Form, {
       name: name
     }, React.createElement(FilterForm, {
+      allowDisabled: allowDisabled,
       closeMenu: this.closeMenu,
       name: name,
       options: options

@@ -148,6 +148,9 @@ class Filter extends Component {
   }
 
   render() {
+    const {
+      allowDisabled
+    } = this.props;
     return React.createElement("div", {
       className: `filter-content center`
     }, this.listOptions(), React.createElement("div", {
@@ -159,11 +162,16 @@ class Filter extends Component {
       type: "button",
       onClick: this.ignoreFilters
     }, "Ignore Filters"), this.props.saveButton(this.processForm, {
-      label: 'See Summary'
+      label: 'See Summary',
+      allowDisabled: allowDisabled
     })));
   }
 
 }
+
+Filter.defaultProps = {
+  allowDisabled: true
+};
 
 function mapStateToProps(state, props) {
   const resource = state.resource[props.name] ? state.resource[props.name] : {};

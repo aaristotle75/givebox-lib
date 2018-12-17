@@ -742,7 +742,8 @@ class Form extends Component {
     const defaults = {
       label: 'Save',
       style: {},
-      className: ''
+      className: '',
+      allowDisabled: false
     };
     const options = { ...defaults,
       ...opts
@@ -752,7 +753,7 @@ class Form extends Component {
       className: `button ${options.className}`,
       style: options.style,
       type: "button",
-      disabled: this.state.updated ? false : true,
+      disabled: !this.state.updated && options.allowDisabled ? true : false,
       onClick: e => this.validateForm(e, callback)
     }, options.label);
   }

@@ -337,17 +337,23 @@ class TableBody extends Component {
 const TableFoot = ({
   footer
 }) => {
-  let items = [];
+  const items = [];
 
   if (!util.isEmpty(footer)) {
-    Object.entries(footer).forEach(([key, value]) => {
-      items.push(React.createElement("td", {
-        key: key,
-        align: value.align || 'left',
-        colSpan: value.colspan || 1
-      }, value.name));
+    footer.forEach((value, key) => {
+      const item = [];
+      Object.entries(value).forEach(([key, value]) => {
+        item.push(React.createElement("td", {
+          key: key,
+          align: value.align || 'left',
+          colSpan: value.colspan || 1
+        }, value.value));
+      });
+      items.push(React.createElement("tr", {
+        key: key
+      }, item));
     });
   }
 
-  return React.createElement("tfoot", null, React.createElement("tr", null, items));
+  return React.createElement("tfoot", null, items);
 };

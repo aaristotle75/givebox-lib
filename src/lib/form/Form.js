@@ -610,11 +610,12 @@ class Form extends Component {
     const defaults = {
       label: 'Save',
       style: {},
-      className: ''
+      className: '',
+      allowDisabled: false
     }
     const options = { ...defaults, ...opts };
     return (
-      <button id={`${this.props.id}-saveButton`} className={`button ${options.className}`} style={options.style} type='button' disabled={this.state.updated ? false : true} onClick={(e) => this.validateForm(e, callback)}>{options.label}</button>
+      <button id={`${this.props.id}-saveButton`} className={`button ${options.className}`} style={options.style} type='button' disabled={!this.state.updated && options.allowDisabled ? true : false} onClick={(e) => this.validateForm(e, callback)}>{options.label}</button>
     )
   }
 

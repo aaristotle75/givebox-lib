@@ -43,7 +43,8 @@ class Filter extends Component {
       style,
       label,
       options,
-      name
+      name,
+      allowDisabled
     } = this.props;
 
     const {
@@ -58,7 +59,7 @@ class Filter extends Component {
           height={this.state.open ? 'auto' : 0}
         >
           <Form name={name} >
-            <FilterForm closeMenu={this.closeMenu} name={name} options={options} />
+            <FilterForm allowDisabled={allowDisabled} closeMenu={this.closeMenu} name={name} options={options} />
           </Form>
         </AnimateHeight>
       </div>

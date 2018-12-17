@@ -127,18 +127,26 @@ class Filter extends Component {
 
   render() {
 
+    const {
+      allowDisabled
+    } = this.props;
+
     return (
       <div className={`filter-content center`}>
         {this.listOptions()}
         <div className='clear'></div>
         <div className='button-group'>
           <button className='button secondary' type='button' onClick={this.ignoreFilters}>Ignore Filters</button>
-          {this.props.saveButton(this.processForm, { label: 'See Summary' })}
+          {this.props.saveButton(this.processForm, { label: 'See Summary', allowDisabled: allowDisabled })}
         </div>
       </div>
     );
   }
 }
+
+Filter.defaultProps = {
+  allowDisabled: true
+};
 
 function mapStateToProps(state, props) {
 
