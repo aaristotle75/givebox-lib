@@ -119,7 +119,7 @@ class Dropdown extends Component {
     }, React.createElement("span", {
       className: `label ${idleLabel && 'idle'}`
     }, selectedValue), React.createElement("span", {
-      className: `icon ${open ? multi ? 'icon-close' : 'icon-triangle-down' : 'icon-triangle-right'}`
+      className: `icon ${open ? multi ? 'icon-close' : 'icon-down-arrow' : 'icon-next'}`
     })), React.createElement("div", {
       className: `dropdown-content`
     }, React.createElement(AnimateHeight, {

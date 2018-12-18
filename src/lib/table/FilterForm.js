@@ -137,7 +137,7 @@ class Filter extends Component {
         <div className='clear'></div>
         <div className='button-group'>
           <button className='button secondary' type='button' onClick={this.ignoreFilters}>Ignore Filters</button>
-          {this.props.saveButton(this.processForm, { label: 'See Summary', allowDisabled: allowDisabled })}
+          {this.props.saveButton(this.processForm, { label: 'Apply', allowDisabled: allowDisabled })}
         </div>
       </div>
     );

@@ -74,7 +74,7 @@ class ActionsMenu extends Component {
       type: "button",
       onClick: open ? this.closeMenu : this.openMenu
     }, !util.isEmpty(this.props.options) ? label : 'No Actions', React.createElement("span", {
-      className: `icon ${open ? 'icon-triangle-down' : 'icon-triangle-right'} ${util.isEmpty(this.props.options) && 'displayNone'}`
+      className: `icon ${open ? 'icon-down-arrow' : 'icon-next'} ${util.isEmpty(this.props.options) && 'displayNone'}`
     })), React.createElement("div", {
       className: `actionsMenu-content`
     }, React.createElement(AnimateHeight, {

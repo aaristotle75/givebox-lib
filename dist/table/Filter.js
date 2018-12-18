@@ -58,7 +58,7 @@ class Filter extends Component {
       type: "button",
       onClick: open ? this.closeMenu : this.openMenu
     }, label, React.createElement("span", {
-      className: `icon-normal ${open ? 'icon-triangle-down' : 'icon-triangle-right'}`
+      className: `icon-normal ${open ? 'icon-down-arrow' : 'icon-next'}`
     })), React.createElement(AnimateHeight, {
       duration: 500,
       height: this.state.open ? 'auto' : 0

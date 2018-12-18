@@ -102,7 +102,7 @@ class Dropdown extends Component {
       <div style={style} className={`input-group ${className || ''} ${error ? 'error tooltip' : ''}`}>
         {label && <label><GBLink onClick={open ? this.closeMenu : this.openMenu}>{label}</GBLink></label>}
         <div className='dropdown' style={dropdownStyle}>
-          <button type='button' onClick={open ? this.closeMenu : this.openMenu}><span className={`label ${idleLabel && 'idle'}`}>{selectedValue}</span><span className={`icon ${open ? multi ? 'icon-close' : 'icon-triangle-down' : 'icon-triangle-right'}`}></span></button>
+          <button type='button' onClick={open ? this.closeMenu : this.openMenu}><span className={`label ${idleLabel && 'idle'}`}>{selectedValue}</span><span className={`icon ${open ? multi ? 'icon-close' : 'icon-down-arrow' : 'icon-next'}`}></span></button>
           <div className={`dropdown-content`}>
             <AnimateHeight
               duration={200}
