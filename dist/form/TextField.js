@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PasswordStrength from './PasswordStrength';
 import CharacterCount from './CharacterCount';
 import Fade from '../common/Fade';
+import { money } from '../common/utility';
 
 class TextField extends Component {
   constructor(props) {
@@ -56,14 +57,20 @@ class TextField extends Component {
       maxLength,
       value,
       strength,
-      count
+      count,
+      symbol,
+      money
     } = this.props;
     return React.createElement("div", {
       style: style,
-      className: `input-group ${className || ''} textfield-group ${error ? 'error tooltip' : ''} ${type === 'hidden' && 'hidden'}`
+      className: `input-group ${className || ''} textfield-group ${error ? 'error tooltip' : ''} ${type === 'hidden' && 'hidden'} ${money ? 'money-group' : ''}`
     }, React.createElement("div", {
       className: `floating-label ${this.state.status} ${fixedLabel && 'fixed'}`
-    }, React.createElement("input", {
+    }, money && React.createElement("div", {
+      className: `moneyAmount ${value ? 'active' : ''}`
+    }, React.createElement("span", {
+      className: "symbol"
+    }, symbol)), React.createElement("input", {
       autoFocus: autoFocus,
       id: id || name,
       ref: this.inputRef,
@@ -103,6 +110,8 @@ class TextField extends Component {
 TextField.defaultProps = {
   name: 'defaultTextField',
   type: 'text',
-  maxlength: 64
+  maxlength: 64,
+  symbol: '$',
+  money: false
 };
 export default TextField;

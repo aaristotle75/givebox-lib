@@ -1,11 +1,12 @@
 import Moment from 'moment';
+import { numberWithCommas } from '../common/utility';
 
 export function validateEmail(email) {
   const regex = /^(([^<>()[\]\\.,;:\s@']+(\.[^<>()[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return regex.test(email);
 }
 
-export function validateMoney(value, min, max, decimal = true) {
+export function validateNumber(value, min, max, decimal = true) {
   let validate = true;
   let moneyRegex = /^\$?(([1-9]{1}[0-9]*(?:,[0-9]{3})*)|(?:0))(?:\.[0-9]{1,2})?$/;
   if (!value) value = 0;
@@ -25,6 +26,34 @@ export function validateMoney(value, min, max, decimal = true) {
   return validate;
 }
 
+export const nLength = (n) => {
+  return (Math.log(Math.abs(n)+1) * 0.43429448190325176 | 0) + 1;
+}
+
+
+export function formatDecimal(value) {
+  let val = parseInt(value.replace(/[^0-9]/g, ''));
+  let newVal = '';
+	const length = nLength(val);
+  val = val.toString();
+  if (length === 1) {
+    newVal = `.0${val}`;
+  }
+  if (length === 2) {
+    newVal = `.${val.slice(-2)}`;
+  }
+  if (length > 2) {
+    const decimal = val.slice(-2);
+    const int = val.slice(0, -2);
+    newVal = `${int}.${decimal}`;
+  }
+  return isNaN(newVal) || parseInt(val) === 0 || isNaN(val) ? '' : numberWithCommas(newVal);
+}
+
+export function formatNumber(value) {
+  const val = parseInt(value.replace(/[^0-9]/g, ''));
+  return isNaN(val) || parseInt(val) === 0 ? '' : val;
+}
 
 // identify by the first 4 digits
 export function identifyCardTypes(ccnumber) {
@@ -230,7 +259,6 @@ export const msgs = {
   phone: 'Please enter a valid Phone Number. It should be in the format (xxx) xxx-xxxx and have 10 digits.',
   descriptor: 'Please enter a valid Descriptor. It should be between 3 - 21 characters long and contain only letters, numbers, commas, periods or dashes.',
   url: 'Please enter a valid URL. It should begin with either http:// or https:// and end in .com, .co or any other valid Top Level Domain (TLD).',
-  money: 'Please enter a valid amount between 1 to 25,000 with or without a comma and decimal point.',
   success: 'Saved successfully.',
   error: 'Please fix the following errors to continue.',
   savingError: 'There was a system error trying to save. Please contact support@givebox.com if this error persists.',

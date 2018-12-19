@@ -9,7 +9,7 @@ import CalendarField from './CalendarField';
 import * as _v from './formValidate';
 import Loader from '../common/Loader';
 import { Alert } from '../common/Alert';
-import { cloneObj, isEmpty } from '../common/utility';
+import { cloneObj, isEmpty, numberWithCommas } from '../common/utility';
 import has from 'has';
 
 class Form extends Component {
@@ -68,6 +68,9 @@ class Form extends Component {
       type: '',
       autoReturn: true,
       validate: '',
+      validateOpts: {
+        decimal: true
+      },
       maxLength: 64,
       error: false,
       errorType: 'tooltip', // choices: tooltip, normal, none
@@ -173,6 +176,8 @@ class Form extends Component {
       if (field.validate === 'ssn') value = _v.formatSSN(value);
       if (field.validate === 'phone') value = _v.formatPhone(value);
       if (field.validate === 'ccexpire') value = _v.formatCCExpire(value);
+      if ((field.validate === 'money' || field.validate === 'number') && field.validateOpts.decimal) value = _v.formatDecimal(value);
+      if ((field.validate === 'money' || field.validate === 'number') && !field.validateOpts.decimal) value = _v.formatNumber(value);
       this.fieldProp(name, {value: value, error: false});
       this.formProp({error: false, updated: true});
       if (field.debug) console.log('onChange', name, field);
@@ -397,6 +402,7 @@ class Form extends Component {
         label={params.label}
         floatingLabel={params.floatingLabel}
         style={params.style}
+        contentStyle={params.contentStyle}
         className={params.className}
         error={field ? field.error : params.error}
         errorType={params.errorType}
@@ -412,7 +418,9 @@ class Form extends Component {
     const field = has(this.state.fields, name) ? this.state.fields[name] : null;
     const params = Object.assign({}, cloneObj(this.defaults), {
       className: '',
-      type: 'text'
+      type: 'text',
+      symbol: '$',
+      money: false
     }, opts);
 
     return (
@@ -440,6 +448,8 @@ class Form extends Component {
         strength={params.strength}
         count={params.count}
         meta={params.meta}
+        symbol={params.symbol}
+        money={params.validate}
       />
     )
   }
@@ -657,7 +667,7 @@ class Form extends Component {
         if (value.required && !value.value) {
           bindthis.fieldProp(key, {error: _v.msgs.required});
         } else {
-          if (value.value) bindthis.validateField(key, value.validate, value.value);
+          if (value.value) bindthis.validateField(key, value.validate, value.value, value.validateOpts);
         }
       }
     });
@@ -667,7 +677,7 @@ class Form extends Component {
     }
   }
 
-  validateField(key, validate, value) {
+  validateField(key, validate, value, opts = {}) {
     switch (validate) {
       case 'email':
         if (!_v.validateEmail(value)) this.fieldProp(key, {error: _v.msgs.email});
@@ -690,8 +700,14 @@ class Form extends Component {
       case 'url':
         if (!_v.validateURL(value)) this.fieldProp(key, {error: _v.msgs.url});
         break;
+      case 'number':
       case 'money':
-        if (!_v.validateMoney(value, _v.limits.txMin, _v.limits.txMax)) this.fieldProp(key, {error: _v.msgs.money});
+        const min = opts.min || _v.limits.txMin;
+        const max = opts.max || _v.limits.txMax;
+        const decimal = opts.decimal || false;
+        const errorMsg = `Please enter a valid ${validate === 'money' ? 'amount' : 'number'} between ${numberWithCommas(min)} to ${numberWithCommas(max)}`;
+        const error = decimal ? errorMsg : `${errorMsg} with no decimal point.`;
+        if (!_v.validateNumber(value, min, max, decimal )) this.fieldProp(key, {error: error});
         break;
       case 'calendarRange':
         if (!_v.validateCalendarRange(key, this.state.fields)) this.fieldProp(key, {error: _v.msgs.calendarRange});

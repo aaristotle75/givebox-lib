@@ -59,11 +59,11 @@ export default class TestForm extends Component {
         {this.props.choice('choice', { label: 'Choice 2', value: 'choice2', type: 'radio' })}
         {this.props.choice('choice', { label: 'Choice 3', value: 'choice3', type: 'radio' })}
         {this.props.dropdown('status', {options: [{primaryText: 'Active', value: 'active'}, {primaryText: 'Deactivated', value: 'deactivated'}, {primaryText: 'Suspended', value: 'suspended'}], selectLabel: 'Select Status'})}
-        {this.props.textField('amount1', { label: 'Enter Amount', placeholder: '0.00', validate: 'money' })}
+        {this.props.textField('amount1', { label: 'Enter Amount', placeholder: '0.00', validate: 'number' })}
         {this.props.choice('amount1-enabled', { parent: 'amount1', label: 'Amount 1 enabled', checked: true })}
         {this.props.richText('amount1-desc', { parent: 'amount1', label: 'Amount 1 Description', modal: true, modalLabel: 'Edit Description'})}
         {this.props.choice('amount-default', { label: 'Amount 1 Default', type: 'radio', value: 'amount1' })}
-        {this.props.textField('amount2', { label: 'Enter Amount', placeholder: '0.00', validate: 'money'  })}
+        {this.props.textField('amount2', { label: 'Enter Amount', placeholder: '0.00', validate: 'number'  })}
         {this.props.choice('amount2-enabled', { parent: 'amount2', label: 'Amount 2 enabled', checked: true })}
         {this.props.richText('amount2-desc', { parent: 'amount2', label: 'Amount 2 Description', modal: true})}
         {this.props.choice('amount-default', { label: 'Amount 2 Default', type: 'radio', value: 'amount2'})}
@@ -78,6 +78,7 @@ export default class TestForm extends Component {
         */}
         {this.props.dropdown('bankAccountType', { className: 'column50', label: 'What kind of transfer do you want to make?', value: 'deposit', onChange: this.onTypeChange, options: [{primaryText: 'Withdrawal', value: 'deposit' }, {primaryText: 'Send Payment', value: 'payee'}] })}
         {this.props.dropdown('selectedAccount', { className: 'column50', label: `account`, selectLabel: `Select account to make withdrawal to`, onChange: this.selectAccount, options: [{primaryText: 'Account1', value: 1}, {primaryText: 'Account2', value: 2}] })}
+        {this.props.textField('amount', { required: true, label: 'Enter Amount', placeholder: '0.00', validate: 'money', validateOpts: { decimal: true, min: 1, max: 30000 }  })}
         {this.props.saveButton(this.processForm)}
         </div>
       </div>

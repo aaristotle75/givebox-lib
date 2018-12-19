@@ -90,7 +90,8 @@ class Dropdown extends Component {
       multi,
       value,
       defaultValue,
-      floatingLabel
+      floatingLabel,
+      contentStyle
     } = this.props;
 
     const {
@@ -100,14 +101,13 @@ class Dropdown extends Component {
 
     const selectedValue = multi ? open ? 'Close Menu' : selectLabel : selected && (value || defaultValue) ? selected : selectLabel;
     const idleLabel = selectedValue === 'Close Menu' || selectedValue === selectLabel;
-    console.log(value);
 
     return (
       <div style={style} className={`input-group ${className || ''} ${error ? 'error tooltip' : ''}`}>
         <div className={`dropdown ${floatingLabel && 'floating-label'} ${label ? 'fixed' : ''}`} style={dropdownStyle}>
           {label && !floatingLabel && <label><GBLink onClick={open ? this.closeMenu : this.openMenu}>{label}</GBLink></label>}
           <button type='button' onClick={open ? this.closeMenu : this.openMenu}><span className={`label ${idleLabel && 'idle'}`}>{selectedValue}</span><span className={`icon ${open ? multi ? 'icon-close' : 'icon-down-arrow' : 'icon-next'}`}></span></button>
-          <div className={`dropdown-content`}>
+          <div style={contentStyle} className={`dropdown-content`}>
             <AnimateHeight
               duration={200}
               height={open ? 'auto' : 0}
@@ -131,7 +131,8 @@ Dropdown.defaultProps = {
   name: 'defaultSelect',
   multi: false,
   selectLabel: 'Please select',
-  floatingLabel: true
+  floatingLabel: true,
+  contentStyle: {}
 }
 
 export default Dropdown;

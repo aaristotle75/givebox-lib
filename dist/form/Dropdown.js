@@ -102,7 +102,8 @@ class Dropdown extends Component {
       multi,
       value,
       defaultValue,
-      floatingLabel
+      floatingLabel,
+      contentStyle
     } = this.props;
     const {
       open,
@@ -110,7 +111,6 @@ class Dropdown extends Component {
     } = this.state;
     const selectedValue = multi ? open ? 'Close Menu' : selectLabel : selected && (value || defaultValue) ? selected : selectLabel;
     const idleLabel = selectedValue === 'Close Menu' || selectedValue === selectLabel;
-    console.log(value);
     return React.createElement("div", {
       style: style,
       className: `input-group ${className || ''} ${error ? 'error tooltip' : ''}`
@@ -127,6 +127,7 @@ class Dropdown extends Component {
     }, selectedValue), React.createElement("span", {
       className: `icon ${open ? multi ? 'icon-close' : 'icon-down-arrow' : 'icon-next'}`
     })), React.createElement("div", {
+      style: contentStyle,
       className: `dropdown-content`
     }, React.createElement(AnimateHeight, {
       duration: 200,
@@ -147,6 +148,7 @@ Dropdown.defaultProps = {
   name: 'defaultSelect',
   multi: false,
   selectLabel: 'Please select',
-  floatingLabel: true
+  floatingLabel: true,
+  contentStyle: {}
 };
 export default Dropdown;

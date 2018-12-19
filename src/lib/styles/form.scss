@@ -107,6 +107,25 @@ input:not(.checkbox) {
   font-size: $huge-text-size;
 }
 
+// Money
+.money-group {
+
+  .moneyAmount {
+    position: absolute;
+    top: 12px;
+    left: 0px;
+    color: $med-gray;
+  }
+
+  .moneyAmount.active {
+    color: $dark;
+  }
+
+  input {
+    padding-left: 10px;
+  }
+}
+
 /*----------- Labels ---------------*/
 label, .label {
   color: $med-gray;
@@ -403,6 +422,11 @@ label.idle, .label.idle {
 
   .errorMsg {
     display: block;
+  }
+
+  .moneyAmount,
+  .moneyAmount.active {
+    color: $red;
   }
 
   label { color: $red; }
