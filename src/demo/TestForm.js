@@ -7,6 +7,8 @@ export default class TestForm extends Component {
     super(props);
     this.processForm = this.processForm.bind(this);
     this.formSavedCallback = this.formSavedCallback.bind(this);
+    this.onTypeChange = this.onTypeChange.bind(this);
+    this.selectAccount = this.selectAccount.bind(this);
   }
 
   componentDidMount() {
@@ -23,12 +25,22 @@ export default class TestForm extends Component {
     console.log(fields);
   }
 
+  onTypeChange(name, value, field, fields) {
+    console.log('ontypeChange', name, value, field);
+    this.props.fieldProp('selectedAccount', { value: '' });
+  }
+
+  selectAccount(name, value, field) {
+    console.log('selectAccount', name, value, field);
+  }
+
   render() {
 
     return (
       <div>
         <h2>Form Elements</h2>
         <div className='formWrapper'>
+        {/*
         {this.props.calendarRange({debug: true, enableTime: true })}
         {this.props.textField('custID', { type: 'hidden' })}
         <div className='row'>
@@ -62,7 +74,10 @@ export default class TestForm extends Component {
         {this.props.textField('phone', {placeholder: 'Enter Phone', validate: 'phone'})}
         {this.props.textField('descriptor', {placeholder: 'Enter Billing Descriptor', validate: 'descriptor', maxLength:21})}
         {this.props.dropdown('states', {label: 'States', options: selectOptions.states, value: 'CA'})}
-        {this.props.dropdown('status', {options: [{primaryText: 'Active', value: 'active'}, {primaryText: 'Deactivated', value: 'deactivated'}, {primaryText: 'Suspended', value: 'suspended'}], selectLabel: 'Select Status'})}
+        {this.props.dropdown('status', {options: [{primaryText: 'Active', secondaryText: 'active status does so and so', value: 'active'}, {primaryText: 'Deactivated', value: 'deactivated'}, {primaryText: 'Suspended', value: 'suspended'}], selectLabel: 'Select Status'})}
+        */}
+        {this.props.dropdown('bankAccountType', { className: 'column50', label: 'What kind of transfer do you want to make?', value: 'deposit', onChange: this.onTypeChange, options: [{primaryText: 'Withdrawal', value: 'deposit' }, {primaryText: 'Send Payment', value: 'payee'}] })}
+        {this.props.dropdown('selectedAccount', { className: 'column50', label: `account`, selectLabel: `Select account to make withdrawal to`, onChange: this.selectAccount, options: [{primaryText: 'Account1', value: 1}, {primaryText: 'Account2', value: 2}] })}
         {this.props.saveButton(this.processForm)}
         </div>
       </div>

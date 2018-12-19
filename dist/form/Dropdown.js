@@ -83,7 +83,9 @@ class Dropdown extends Component {
         key: value.value
       }, bindthis.props.multi && selected && React.createElement("span", {
         className: "icon icon-checkmark"
-      }), " ", value.primaryText));
+      }), " ", value.primaryText, value.secondaryText && React.createElement("span", {
+        className: "secondaryText"
+      }, value.secondaryText)));
     });
     return items ? items : React.createElement("option", null, "None");
   }
@@ -97,23 +99,27 @@ class Dropdown extends Component {
       selectLabel,
       error,
       errorType,
-      multi
+      multi,
+      value,
+      defaultValue,
+      floatingLabel
     } = this.props;
     const {
       open,
       selected
     } = this.state;
-    const selectedValue = multi ? open ? 'Close Menu' : selectLabel : selected || selectLabel;
+    const selectedValue = multi ? open ? 'Close Menu' : selectLabel : selected && (value || defaultValue) ? selected : selectLabel;
     const idleLabel = selectedValue === 'Close Menu' || selectedValue === selectLabel;
+    console.log(value);
     return React.createElement("div", {
       style: style,
       className: `input-group ${className || ''} ${error ? 'error tooltip' : ''}`
-    }, label && React.createElement("label", null, React.createElement(GBLink, {
-      onClick: open ? this.closeMenu : this.openMenu
-    }, label)), React.createElement("div", {
-      className: "dropdown",
+    }, React.createElement("div", {
+      className: `dropdown ${floatingLabel && 'floating-label'} ${label ? 'fixed' : ''}`,
       style: dropdownStyle
-    }, React.createElement("button", {
+    }, label && !floatingLabel && React.createElement("label", null, React.createElement(GBLink, {
+      onClick: open ? this.closeMenu : this.openMenu
+    }, label)), React.createElement("button", {
       type: "button",
       onClick: open ? this.closeMenu : this.openMenu
     }, React.createElement("span", {
@@ -125,7 +131,10 @@ class Dropdown extends Component {
     }, React.createElement(AnimateHeight, {
       duration: 200,
       height: open ? 'auto' : 0
-    }, this.listOptions()))), React.createElement("div", {
+    }, this.listOptions())), label && floatingLabel && React.createElement("label", null, React.createElement(GBLink, {
+      className: "link label",
+      onClick: open ? this.closeMenu : this.openMenu
+    }, label))), React.createElement("div", {
       className: `tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`
     }, this.props.error, React.createElement("i", null)), React.createElement("div", {
       className: `errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`
@@ -137,6 +146,7 @@ class Dropdown extends Component {
 Dropdown.defaultProps = {
   name: 'defaultSelect',
   multi: false,
-  selectLabel: 'Please select'
+  selectLabel: 'Please select',
+  floatingLabel: true
 };
 export default Dropdown;

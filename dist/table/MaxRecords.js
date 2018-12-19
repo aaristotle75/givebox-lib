@@ -65,10 +65,11 @@ class MaxRecords extends Component {
       className: `maxRecords ${align}`
     }, React.createElement(Dropdown, {
       name: "maxRecords",
-      label: "Records per page",
-      defaultValue: max,
+      label: "Per page",
+      defaultValue: parseInt(max),
       onChange: this.onChange,
-      options: this.setOptions()
+      options: this.setOptions(),
+      floatingLabel: false
     }));
   }
 

@@ -70,7 +70,7 @@ class Dropdown extends Component {
       if (Number.isInteger(value.value)) selectedValue = parseInt(selectedValue);
       let selected = bindthis.props.multi ? bindthis.props.value.includes(value.value) ? true : false : selectedValue === value.value ? true : false;
       items.push(
-        <div data-selected={value.primaryText} data-value={value.value} onClick={(e) => bindthis.onClick(e)} className={`dropdown-item ${selected ? 'selected' : ''}`} key={value.value}>{bindthis.props.multi && selected && <span className='icon icon-checkmark'></span>} {value.primaryText}</div>
+        <div data-selected={value.primaryText} data-value={value.value} onClick={(e) => bindthis.onClick(e)} className={`dropdown-item ${selected ? 'selected' : ''}`} key={value.value}>{bindthis.props.multi && selected && <span className='icon icon-checkmark'></span>} {value.primaryText}{value.secondaryText && <span className='secondaryText'>{value.secondaryText}</span>}</div>
       );
     });
 
@@ -87,7 +87,10 @@ class Dropdown extends Component {
       selectLabel,
       error,
       errorType,
-      multi
+      multi,
+      value,
+      defaultValue,
+      floatingLabel
     } = this.props;
 
     const {
@@ -95,13 +98,14 @@ class Dropdown extends Component {
       selected
     } = this.state;
 
-    const selectedValue = multi ? open ? 'Close Menu' : selectLabel : selected || selectLabel;
+    const selectedValue = multi ? open ? 'Close Menu' : selectLabel : selected && (value || defaultValue) ? selected : selectLabel;
     const idleLabel = selectedValue === 'Close Menu' || selectedValue === selectLabel;
+    console.log(value);
 
     return (
       <div style={style} className={`input-group ${className || ''} ${error ? 'error tooltip' : ''}`}>
-        {label && <label><GBLink onClick={open ? this.closeMenu : this.openMenu}>{label}</GBLink></label>}
-        <div className='dropdown' style={dropdownStyle}>
+        <div className={`dropdown ${floatingLabel && 'floating-label'} ${label ? 'fixed' : ''}`} style={dropdownStyle}>
+          {label && !floatingLabel && <label><GBLink onClick={open ? this.closeMenu : this.openMenu}>{label}</GBLink></label>}
           <button type='button' onClick={open ? this.closeMenu : this.openMenu}><span className={`label ${idleLabel && 'idle'}`}>{selectedValue}</span><span className={`icon ${open ? multi ? 'icon-close' : 'icon-down-arrow' : 'icon-next'}`}></span></button>
           <div className={`dropdown-content`}>
             <AnimateHeight
@@ -111,6 +115,7 @@ class Dropdown extends Component {
                 {this.listOptions()}
             </AnimateHeight>
           </div>
+          {label && floatingLabel && <label><GBLink className='link label' onClick={open ? this.closeMenu : this.openMenu}>{label}</GBLink></label>}
         </div>
         <div className={`tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`}>
           {this.props.error}
@@ -125,7 +130,8 @@ class Dropdown extends Component {
 Dropdown.defaultProps = {
   name: 'defaultSelect',
   multi: false,
-  selectLabel: 'Please select'
+  selectLabel: 'Please select',
+  floatingLabel: true
 }
 
 export default Dropdown;

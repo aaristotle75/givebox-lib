@@ -3,9 +3,11 @@
 .tooltip {
   position: relative;
   text-align: left;
+  z-index: 2147483647;
 }
 
 .tooltip .tooltipTop {
+  position: relative;
   min-width: 200px;
   top: 5px;
   left: 20%;

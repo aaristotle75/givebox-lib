@@ -197,6 +197,7 @@ class Form extends Component {
       }
       this.fieldProp(name, {value: field.multi ? arr : value, error: false});
       this.formProp({error: false, updated: true});
+      if (field.onChange) field.onChange(name, value, field, this.state.fields);
       if (field.debug) console.log('onChangeDropdown', name, field);
     }
   }
@@ -378,7 +379,10 @@ class Form extends Component {
     const field = has(this.state.fields, name) ? this.state.fields[name] : null;
     const defaults = cloneObj(this.defaults);
     const params = Object.assign({}, defaults, {
+      floatingLabel: true
     }, opts);
+
+    const defaultValue = field ? field.value : params.value;
 
     return (
       <Dropdown
@@ -388,9 +392,10 @@ class Form extends Component {
         group={field ? field.group : params.group}
         readOnly={field ? field.readOnly : params.readOnly}
         onChange={this.onChangeDropdown}
-        defaultValue={params.value}
+        defaultValue={defaultValue}
         selectLabel={params.selectLabel}
         label={params.label}
+        floatingLabel={params.floatingLabel}
         style={params.style}
         className={params.className}
         error={field ? field.error : params.error}

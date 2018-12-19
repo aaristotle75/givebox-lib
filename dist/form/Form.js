@@ -241,6 +241,7 @@ class Form extends Component {
         error: false,
         updated: true
       });
+      if (field.onChange) field.onChange(name, value, field, this.state.fields);
       if (field.debug) console.log('onChangeDropdown', name, field);
     }
   }
@@ -482,7 +483,10 @@ class Form extends Component {
   dropdown(name, opts) {
     const field = has(this.state.fields, name) ? this.state.fields[name] : null;
     const defaults = cloneObj(this.defaults);
-    const params = Object.assign({}, defaults, {}, opts);
+    const params = Object.assign({}, defaults, {
+      floatingLabel: true
+    }, opts);
+    const defaultValue = field ? field.value : params.value;
     return React.createElement(Dropdown, {
       name: name,
       options: params.options,
@@ -490,9 +494,10 @@ class Form extends Component {
       group: field ? field.group : params.group,
       readOnly: field ? field.readOnly : params.readOnly,
       onChange: this.onChangeDropdown,
-      defaultValue: params.value,
+      defaultValue: defaultValue,
       selectLabel: params.selectLabel,
       label: params.label,
+      floatingLabel: params.floatingLabel,
       style: params.style,
       className: params.className,
       error: field ? field.error : params.error,

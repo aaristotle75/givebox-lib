@@ -306,6 +306,12 @@ label.idle, .label.idle {
     margin: 0;
   }
 
+  label {
+    button {
+      border-bottom: none;
+    }
+  }
+
   .label {
     color: $dark-gray;
     font-size: $normal-text-size;
@@ -342,6 +348,10 @@ label.idle, .label.idle {
       color: $primary;
       font-size: $normal-text-size;
     }
+
+    .secondaryText {
+      display: block;
+    }
   }
 
   .dropdown-item:hover {
@@ -357,7 +367,6 @@ label.idle, .label.idle {
     margin: 0;
     vertical-align: middle;
     text-align: center;
-    margin-left: 55px;
     padding-bottom: 0px;
   }
 
@@ -366,7 +375,10 @@ label.idle, .label.idle {
 
     .icon { display: none; }
 
-    button { border-bottom: none; }
+    button {
+      width: auto;
+      border-bottom: none;
+    }
 
     .dropdown-content { min-width: 75px; }
 
@@ -374,7 +386,10 @@ label.idle, .label.idle {
   }
 
   button.link,
-  button.link:hover { color: $med-gray; }
+  button.link:hover {
+    display: inline-block;
+    color: $dark;
+  }
 
   label {
     font-size: $tiny-text-size;
@@ -421,6 +436,10 @@ label.idle, .label.idle {
       border: none;
       border-bottom: 2px solid $red;
       color: $red;
+    }
+
+    button.label {
+      border-bottom: none;
     }
 
     .label .idle,
