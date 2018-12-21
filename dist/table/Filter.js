@@ -45,7 +45,8 @@ class Filter extends Component {
       label,
       options,
       name,
-      allowDisabled
+      allowDisabled,
+      alwaysFilter
     } = this.props;
     const {
       open
@@ -68,7 +69,8 @@ class Filter extends Component {
       allowDisabled: allowDisabled,
       closeMenu: this.closeMenu,
       name: name,
-      options: options
+      options: options,
+      alwaysFilter: alwaysFilter
     }))));
   }
 

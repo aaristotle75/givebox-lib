@@ -13,12 +13,33 @@ class Filter extends Component {
     this.processForm = this.processForm.bind(this);
     this.getField = this.getField.bind(this);
     this.ignoreFilters = this.ignoreFilters.bind(this);
+    this.checkFilter = this.checkFilter.bind(this);
   }
 
   componentDidMount() {
   }
 
-  makeFilter(field) {
+  checkFilter(field) {
+    let filters = '';
+    let arr = [];
+    if (isNaN(field.value)) {
+      if (field.value.indexOf(',') !== -1) {
+        arr = field.value.split(',');
+      }
+    }
+    if (!util.isEmpty(arr)) {
+      arr.forEach((value) => {
+        let filter = `${field.filter}:${isNaN(value) ? `"${value}"` : value}`;
+        filters = filter ? !filters ? filter : `${filters}%2C${filter}` : filters;
+      });
+      filters = `(${filters})`;
+    } else {
+      filters = this.makeFilter(field);
+    }
+    return filters;
+  }
+
+  makeFilter(field, splitValue) {
     let filter = '';
     if (field.multi && Array.isArray(field.value)) {
       let filters = '';
@@ -74,12 +95,12 @@ class Filter extends Component {
     let filters = '';
     Object.entries(fields).forEach(([key, value]) => {
       if (value.autoReturn) {
-        let filter = bindthis.makeFilter(value);
+        let filter = bindthis.checkFilter(value);
         filters = filter ? !filters ? filter : `${filters}%3B${filter}` : filters;
       }
     });
     const search = { ...resource.search };
-    search.filter = filters || '';
+    search.filter = filters ? this.props.alwaysFilter ? `${this.props.alwaysFilter}%3B${filters}` : filters : '';
 		if (resource.search.page > 1) search.page = 1;
     const endpoint = resource.endpoint.split('?')[0] + util.makeAPIQuery(search);
 		this.props.getAPI(this.props.name, endpoint, search, this.processFormCallback, true);
@@ -136,7 +157,7 @@ class Filter extends Component {
         {this.listOptions()}
         <div className='clear'></div>
         <div className='button-group'>
-          <button className='button secondary' type='button' onClick={this.ignoreFilters}>Ignore Filters</button>
+          <button className='button' type='button' onClick={this.ignoreFilters}>Ignore Filters</button>
           {this.props.saveButton(this.processForm, { label: 'Apply', allowDisabled: allowDisabled })}
         </div>
       </div>
@@ -145,7 +166,8 @@ class Filter extends Component {
 }
 
 Filter.defaultProps = {
-  allowDisabled: true
+  allowDisabled: true,
+  alwaysFilter: ''
 };
 
 function mapStateToProps(state, props) {

@@ -311,7 +311,7 @@ export function money(amount, symbol = '$') {
     amount = Math.abs(amount);
     negative = true;
   }
-  return <span className={`moneyAmount ${negative && 'negativeAmount'}`}>{negative && '( '}<span className='symbol'>{symbol}</span>{numberWithCommas(amount)}{negative && ' )'}</span>;
+  return <span className={`moneyAmount ${negative && 'negativeAmount'}`}>{negative && '( '}<span className='symbol'>{symbol}</span>{numberWithCommas(parseFloat(amount).toFixed(2))}{negative && ' )'}</span>;
 }
 
 export function formatMoneyForAPI(amount) {
@@ -460,6 +460,20 @@ export function setHeight(e, id) {
 
         // no default
       }
+    }
+  }
+}
+
+export const allowRecurring = (match) => {
+  switch (match) {
+    case 'invoice':
+    case 'membership':
+    case 'fundraiser': {
+      return true;
+    }
+
+    default: {
+      return false;
     }
   }
 }

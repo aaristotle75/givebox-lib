@@ -316,7 +316,7 @@ export function money(amount, symbol = '$') {
     className: `moneyAmount ${negative && 'negativeAmount'}`
   }, negative && '( ', React.createElement("span", {
     className: "symbol"
-  }, symbol), numberWithCommas(amount), negative && ' )');
+  }, symbol), numberWithCommas(parseFloat(amount).toFixed(2)), negative && ' )');
 }
 export function formatMoneyForAPI(amount) {
   if (!amount) return 0;
@@ -460,3 +460,18 @@ export function setHeight(e, id) {
     }
   }
 }
+export const allowRecurring = match => {
+  switch (match) {
+    case 'invoice':
+    case 'membership':
+    case 'fundraiser':
+      {
+        return true;
+      }
+
+    default:
+      {
+        return false;
+      }
+  }
+};

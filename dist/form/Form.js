@@ -214,6 +214,7 @@ class Form extends Component {
         error: false,
         updated: true
       });
+      if (field.onChange) field.onChange(name, value, field, this.state.fields);
       if (field.debug) console.log('onChange', name, field);
     }
   }
@@ -456,14 +457,18 @@ class Form extends Component {
 
     switch (params.type) {
       case 'checkbox':
-        onChange = this.onChangeCheckbox;
-        createField = this.createField;
-        break;
+        {
+          onChange = this.onChangeCheckbox;
+          createField = this.createField;
+          break;
+        }
 
       case 'radio':
-        onChange = this.onChangeRadio;
-        createField = this.createRadioField;
-        break;
+        {
+          onChange = this.onChangeRadio;
+          createField = this.createRadioField;
+          break;
+        }
       // no default
     }
 
@@ -519,9 +524,7 @@ class Form extends Component {
     const field = has(this.state.fields, name) ? this.state.fields[name] : null;
     const params = Object.assign({}, cloneObj(this.defaults), {
       className: '',
-      type: 'text',
-      symbol: '$',
-      money: false
+      type: 'text'
     }, opts);
     return React.createElement(TextField, {
       name: name,
@@ -547,8 +550,8 @@ class Form extends Component {
       strength: params.strength,
       count: params.count,
       meta: params.meta,
-      symbol: params.symbol,
-      money: params.validate
+      symbol: params.validateOpts.symbol,
+      money: params.validate === 'money' ? true : false
     });
   }
 
@@ -830,43 +833,43 @@ class Form extends Component {
     switch (validate) {
       case 'email':
         if (!_v.validateEmail(value)) this.fieldProp(key, {
-          error: _v.msgs.email
+          error: opts.errorMsg || _v.msgs.email
         });
         break;
 
       case 'password':
         if (!_v.validatePassword(value)) this.fieldProp(key, {
-          error: _v.msgs.password
+          error: opts.errorMsg || _v.msgs.password
         });
         break;
 
       case 'taxID':
         if (!_v.validateTaxID(value)) this.fieldProp(key, {
-          error: _v.msgs.taxID
+          error: opts.errorMsg || _v.msgs.taxID
         });
         break;
 
       case 'ssn':
         if (!_v.validateTaxID(value)) this.fieldProp(key, {
-          error: _v.msgs.ssn
+          error: opts.errorMsg || _v.msgs.ssn
         });
         break;
 
       case 'phone':
         if (!_v.validatePhone(value)) this.fieldProp(key, {
-          error: _v.msgs.phone
+          error: opts.errorMsg || _v.msgs.phone
         });
         break;
 
       case 'descriptor':
         if (!_v.validateDescriptor(value)) this.fieldProp(key, {
-          error: _v.msgs.descriptor
+          error: opts.errorMsg || _v.msgs.descriptor
         });
         break;
 
       case 'url':
         if (!_v.validateURL(value)) this.fieldProp(key, {
-          error: _v.msgs.url
+          error: opts.errorMsg || _v.msgs.url
         });
         break;
 
@@ -874,8 +877,8 @@ class Form extends Component {
       case 'money':
         const min = opts.min || _v.limits.txMin;
         const max = opts.max || _v.limits.txMax;
-        const decimal = opts.decimal || false;
-        const errorMsg = `Please enter a valid ${validate === 'money' ? 'amount' : 'number'} between ${numberWithCommas(min)} to ${numberWithCommas(max)}`;
+        const decimal = opts.decimal || true;
+        const errorMsg = opts.errorMsg || `Please enter a valid ${validate === 'money' ? 'amount' : 'number'} between ${numberWithCommas(min)} to ${numberWithCommas(max)}`;
         const error = decimal ? errorMsg : `${errorMsg} with no decimal point.`;
         if (!_v.validateNumber(value, min, max, decimal)) this.fieldProp(key, {
           error: error

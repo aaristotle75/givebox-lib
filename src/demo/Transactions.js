@@ -12,7 +12,8 @@ import {
   ActionBar,
   types,
   Tabs,
-  Tab
+  Tab,
+  Filter
 } from '../lib';
 import Moment from 'moment';
 
@@ -26,7 +27,7 @@ class Transactions extends Component {
   }
 
   componentDidMount() {
-    this.props.getResource(this.props.resourceName);
+    this.props.getResource(this.props.resourceName, { search: { filter: 'txAccount:"commerce"' } } );
     this.props.getResource('orgFinanceStats');
   }
 
@@ -299,7 +300,7 @@ class Transactions extends Component {
           },
           {
             primaryText: 'Refunded/Voided',
-            value: 'refunded'
+            value: 'refunded,chargeback'
           },
           {
             primaryText: 'Chargeback',
@@ -405,11 +406,17 @@ class Transactions extends Component {
             />
           </div>
         </div>
+        <Filter
+          name={resourceName}
+          options={filters}
+          label='Advanced Search'
+          allowDisabled={false}
+          alwaysFilter='txAccount:"commerce"'
+        />
         <Table
           name={resourceName}
           data={() => this.formatTableData()}
           exportDesc='Export Transaction Records'
-          filters={filters}
         />
       </div>
     )

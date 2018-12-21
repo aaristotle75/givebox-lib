@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { lookup, isEmpty } from '../common/utility';
 import GBLink from '../common/GBLink';
 import AnimateHeight from 'react-animate-height';
+import has from 'has';
 
 class Dropdown extends Component {
   constructor(props) {
@@ -75,17 +76,26 @@ class Dropdown extends Component {
     this.props.options.forEach(function (value) {
       if (Number.isInteger(value.value)) selectedValue = parseInt(selectedValue);
       let selected = bindthis.props.multi ? bindthis.props.value.includes(value.value) ? true : false : selectedValue === value.value ? true : false;
-      items.push(React.createElement("div", {
-        "data-selected": value.primaryText,
-        "data-value": value.value,
-        onClick: e => bindthis.onClick(e),
-        className: `dropdown-item ${selected ? 'selected' : ''}`,
-        key: value.value
-      }, bindthis.props.multi && selected && React.createElement("span", {
-        className: "icon icon-checkmark"
-      }), " ", value.primaryText, value.secondaryText && React.createElement("span", {
-        className: "secondaryText"
-      }, value.secondaryText)));
+
+      if (has(value, 'bottom')) {
+        items.push(React.createElement("div", {
+          key: 'bottom',
+          style: value.style,
+          className: `dropdown-item bottom`
+        }, value.bottom));
+      } else {
+        items.push(React.createElement("div", {
+          "data-selected": value.primaryText,
+          "data-value": value.value,
+          onClick: e => bindthis.onClick(e),
+          className: `dropdown-item ${selected ? 'selected' : ''}`,
+          key: value.value
+        }, bindthis.props.multi && selected && React.createElement("span", {
+          className: "icon icon-checkmark"
+        }), " ", value.primaryText, value.secondaryText && React.createElement("span", {
+          className: "secondaryText"
+        }, value.secondaryText)));
+      }
     });
     return items ? items : React.createElement("option", null, "None");
   }

@@ -18,12 +18,14 @@ class ModalLink extends Component {
       id,
       className,
       type,
-      opts
+      opts,
+      style
     } = this.props;
     const component = type === 'li' ? React.createElement("li", {
       className: className,
       onClick: () => this.onClick(id, opts)
     }, this.props.children) : React.createElement(GBLink, {
+      style: style,
       className: `${className}`,
       type: "button",
       onClick: () => this.onClick(id, opts)
@@ -35,7 +37,8 @@ class ModalLink extends Component {
 
 ModalLink.defaultProps = {
   type: 'link',
-  className: ''
+  className: '',
+  style: {}
 };
 
 function mapStateToProps(state) {

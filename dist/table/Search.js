@@ -12,24 +12,25 @@ class Search extends Component {
     this.onChange = this.onChange.bind(this);
     this.resetSearch = this.resetSearch.bind(this);
     this.getSearch = this.getSearch.bind(this);
+    this.onEnterKeypress = this.onEnterKeypress.bind(this);
     this.state = {
       searchValue: props.query || ''
     };
   }
 
   componentDidMount() {
-    const bindthis = this;
-    const input = document.getElementById('search');
-    input.addEventListener('keyup', function (e) {
-      e.preventDefault();
-
-      if (e.keyCode === 13) {
-        bindthis.onSearch(e);
-      }
-    });
+    const searchID = `${this.props.name}Search`;
+    const input = document.getElementById(searchID);
+    input.addEventListener('keyup', this.onEnterKeypress);
   }
 
-  componentWillUnmount() {}
+  onEnterKeypress(e) {
+    e.preventDefault();
+
+    if (e.keyCode === 13) {
+      this.onSearch(e);
+    }
+  }
 
   getSearch(value) {
     const resource = this.props.resource;
@@ -90,13 +91,13 @@ class Search extends Component {
     const {
       searchValue
     } = this.state;
-    const searchName = name + 'Search';
+    const searchName = `${name}Search`;
     const defaultPlaceholder = 'Search';
     return React.createElement("div", {
       style: style,
       className: `search ${align}`
     }, React.createElement(TextField, {
-      id: "search",
+      id: searchName,
       name: searchName,
       placeholder: placeholder ? placeholder : defaultPlaceholder,
       onChange: this.onChange,

@@ -374,10 +374,22 @@ label.idle, .label.idle {
   }
 
   .dropdown-item:hover {
-    background: transparentize($primary, 0.4);
+    background: $primary;
+    color: $white;
   }
 
   .dropdown-item.selected { color: $primary; }
+  .dropdown-item.selected:hover { color: $white; }
+
+  .dropdown-item.bottom {
+    cursor: default;
+  }
+
+  .dropdown-item.bottom:hover {
+    background: $white;
+    color: $primary;
+  }
+
 }
 
 /*----------- Max Records Dropdown -------------*/

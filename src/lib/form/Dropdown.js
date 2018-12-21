@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { lookup, isEmpty } from '../common/utility';
 import GBLink from '../common/GBLink';
 import AnimateHeight from 'react-animate-height';
+import has from 'has';
 
 class Dropdown extends Component {
 
@@ -69,9 +70,15 @@ class Dropdown extends Component {
     this.props.options.forEach(function(value) {
       if (Number.isInteger(value.value)) selectedValue = parseInt(selectedValue);
       let selected = bindthis.props.multi ? bindthis.props.value.includes(value.value) ? true : false : selectedValue === value.value ? true : false;
-      items.push(
-        <div data-selected={value.primaryText} data-value={value.value} onClick={(e) => bindthis.onClick(e)} className={`dropdown-item ${selected ? 'selected' : ''}`} key={value.value}>{bindthis.props.multi && selected && <span className='icon icon-checkmark'></span>} {value.primaryText}{value.secondaryText && <span className='secondaryText'>{value.secondaryText}</span>}</div>
-      );
+      if (has(value, 'bottom')) {
+        items.push(
+          <div key={'bottom'} style={value.style} className={`dropdown-item bottom`}>{value.bottom}</div>
+        );
+      } else {
+        items.push(
+          <div data-selected={value.primaryText} data-value={value.value} onClick={(e) => bindthis.onClick(e)} className={`dropdown-item ${selected ? 'selected' : ''}`} key={value.value}>{bindthis.props.multi && selected && <span className='icon icon-checkmark'></span>} {value.primaryText}{value.secondaryText && <span className='secondaryText'>{value.secondaryText}</span>}</div>
+        );
+      }
     });
 
     return items ? items : <option>None</option>;

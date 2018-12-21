@@ -94,3 +94,17 @@ export function txAccount(txAccount) {
 
   return str;
 }
+export const accountType = type => {
+  switch (type) {
+    case 'deposit':
+      {
+        return 'Withdrawal';
+      }
+
+    case 'payee':
+      {
+        return 'Vendor';
+      }
+    // no default
+  }
+};

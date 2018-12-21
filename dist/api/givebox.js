@@ -947,37 +947,37 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
 
     case 'inappOrgSubscriptions':
       {
-        endpoint = `orgs/${id[0]}/inapp/subscriptions`;
+        endpoint = `orgs/${orgID}/inapp/subscriptions`;
         break;
       }
 
     case 'inappOrgSubscription':
       {
-        endpoint = `orgs/${id[0]}/inapp/subscriptions/${id[1]}`;
+        endpoint = `orgs/${orgID}/inapp/subscriptions/${id[0]}`;
         break;
       }
 
     case 'inappOrgCredits':
       {
-        endpoint = `orgs/${id[0]}/inapp/store-credits`;
+        endpoint = `orgs/${orgID}/inapp/store-credits`;
         break;
       }
 
     case 'inappOrgCredit':
       {
-        endpoint = `orgs/${id[0]}/inapp/store-credits/${id[1]}`;
+        endpoint = `orgs/${orgID}/inapp/store-credits/${id[0]}`;
         break;
       }
 
     case 'inappOrgTransactions':
       {
-        endpoint = `orgs/${id[0]}/inapp/transactions`;
+        endpoint = `orgs/${orgID}/inapp/transactions`;
         break;
       }
 
     case 'inappOrgBalance':
       {
-        endpoint = `orgs/${id[0]}/inapp/balance`;
+        endpoint = `orgs/${orgID}/inapp/balance`;
         break;
       }
     // MISC
