@@ -20,7 +20,7 @@ class Search extends Component {
   }
 
 	componentDidMount() {
-    const searchID =`${this.props.name}Search`;
+    const searchID = this.props.id || `${this.props.name}Search`;
 		const input = document.getElementById(searchID);
 		input.addEventListener('keyup', this.onEnterKeypress);
 	}
@@ -80,7 +80,8 @@ class Search extends Component {
       align,
       style,
       name,
-      placeholder
+      placeholder,
+      id
     } = this.props;
 
     const {
@@ -93,7 +94,7 @@ class Search extends Component {
     return (
       <div style={style} className={`search ${align}`}>
         <TextField
-          id={searchName}
+          id={id || searchName}
           name={searchName}
           placeholder={placeholder ? placeholder : defaultPlaceholder}
           onChange={this.onChange}
@@ -111,6 +112,7 @@ class Search extends Component {
 }
 
 Search.defaultProps = {
+  id: null,
 	align: 'center'
 }
 

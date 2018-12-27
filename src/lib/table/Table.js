@@ -206,7 +206,7 @@ const TableHead = ({ headers, sortColumn, sort, order }) => {
         items.push(<th key={key} style={{width: value.width}}></th>);
       } else {
         items.push(
-          <th onClick={() => sortColumn(value.sort)} className={`${value.sort && 'sort'}`} align={value.align || 'left'} style={{width: value.width}} key={key}>{value.name} {sort === value.sort ? order === 'desc' ? desc : asc : ''}</th>
+          <th onClick={() => sortColumn(value.sort)} className={`${value.sort && 'sort'}`} align={value.align || 'left'} style={{width: value.width }} key={key}>{value.name} {sort === value.sort ? order === 'desc' ? desc : asc : ''}</th>
         );
       }
     });
