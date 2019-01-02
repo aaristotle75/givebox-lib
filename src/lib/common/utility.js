@@ -477,3 +477,21 @@ export const allowRecurring = (match) => {
     }
   }
 }
+
+export function legalLanguage(merchant, campaign) {
+  let legal = '';
+  if (merchant.vantiv.merchantIdentString) {
+    if (campaign.volunteer) {
+      legal = `100% of the donation goes to ${merchant.name} Tax ID ${merchant.taxID}. The peer-to-peer fundraiser was created by ${campaign.volunteerFirstName} ${campaign.volunteerLastName} to support ${merchant.name} and does not represent the official nonprofit or its views.`;
+    } else {
+      legal = `100% of the donation goes to ${merchant.name} Tax ID ${merchant.taxID}. `;
+    }
+  } else {
+    if (campaign.volunteer) {
+      legal = `100% of your donation goes to ${merchant.name} through the support of Givebox Technology Foundation Tax ID 47-4471615. The peer-to-peer fundraiser was created by ${campaign.volunteerFirstName} ${campaign.volunteerLastName} to support ${merchant.name} and does not represent the official organization or its views.`;
+    } else {
+      legal = `100% of the donation goes to ${merchant.name} through the support of Givebox Technology Foundation Tax ID 47-4471615.`;
+    }
+  }
+  return legal;
+}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import TestForm from './TestForm';
-import { Form } from '../lib';
+import { Form, Alert } from '../lib';
 
 export default class Dashboard extends Component {
 
@@ -9,6 +9,7 @@ export default class Dashboard extends Component {
     return (
       <div>
         Dashboard
+        <Alert alert='warning' display={true} msg={'Warning status'} />
         <Form name='testForm'>
           <TestForm />
         </Form>

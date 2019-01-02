@@ -497,6 +497,19 @@ label.idle, .label.idle {
 
 
 /*-------- Alert Messages ---------*/
+.warning {
+  display: block;
+  padding: 10px;
+  background: $orange;
+  vertical-align: middle;
+
+  .msgText {
+    display: inline-block;
+    vertical-align: middle;
+    color: $white;
+  }
+}
+
 .success {
   display: block;
   padding: 10px;

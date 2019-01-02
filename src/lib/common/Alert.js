@@ -18,6 +18,8 @@ export class Alert extends Component {
         return <Error msg={msg} />
       case 'success':
         return <Success msg={msg} />
+      case 'warning':
+        return <Warning msg={msg} />
 
       // no default
     }
@@ -59,6 +61,14 @@ export const Success = ({msg}) => {
   return (
     <div className={`success`}>
       <span className='msgText'><span className='icon icon-checkmark-circle'></span> {msg}</span>
+    </div>
+  )
+}
+
+export const Warning = ({msg}) => {
+  return (
+    <div className={`warning`}>
+      <span className='msgText'><span className='icon icon-error-circle'></span> {msg}</span>
     </div>
   )
 }
