@@ -176,8 +176,7 @@ class Transactions extends Component {
     const footer = [];
 
     headers.push(
-      { name: '*details', width: '5%', sort: '' },
-      { name: 'Date', width: '20%', sort: 'createdAt' },
+      { name: 'Date', colspan: 2, width: '20%', sort: 'createdAt' },
       { name: 'Description', width: '45%', sort: 'cardName' },
       { name: 'Deposits/Credits', width: '10%', sort: 'net%2CtxType' },
       { name: 'Withdrawals/Debits', width: '10%', sort: 'kind' },

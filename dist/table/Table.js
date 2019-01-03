@@ -123,7 +123,8 @@ class Table extends Component {
       iconSortAsc,
       iconSortDesc,
       iconDetailsExpand,
-      iconDetailsCollapse
+      iconDetailsCollapse,
+      detailsTitle
     } = this.props;
     const tableData = data();
     const headers = tableData.headers;
@@ -148,7 +149,8 @@ class Table extends Component {
       length: headers.length,
       detailsLink: this.detailsLink,
       iconDetailsExpand: iconDetailsExpand,
-      iconDetailsCollapse: iconDetailsCollapse
+      iconDetailsCollapse: iconDetailsCollapse,
+      detailsTitle: detailsTitle
     }), React.createElement(TableFoot, {
       footer: footer
     })), (searchDisplay === 'bottom' || searchDisplay === 'both') && this.renderSearch(), (exportDisplay === 'bottom' || exportDisplay === 'both') && this.renderExport(), (maxRecordsDisplay === 'bottom' || maxRecordsDisplay === 'both') && this.renderMaxRecords(), (paginationDisplay === 'bottom' || paginationDisplay === 'both') && this.renderPagination());
@@ -172,7 +174,8 @@ Table.defaultProps = {
   }),
   iconDetailsCollapse: React.createElement("span", {
     className: "icon icon-minus-circle"
-  })
+  }),
+  detailsTitle: 'Details'
 };
 
 function mapStateToProps(state, props) {
@@ -216,6 +219,7 @@ const TableHead = ({
         }));
       } else {
         items.push(React.createElement("th", {
+          colspan: value.colspan,
           onClick: () => sortColumn(value.sort),
           className: `${value.sort && 'sort'}`,
           align: value.align || 'left',
@@ -263,7 +267,8 @@ class TableBody extends Component {
       rows,
       length,
       iconDetailsCollapse,
-      iconDetailsExpand
+      iconDetailsExpand,
+      detailsTitle
     } = this.props;
     const bindthis = this;
     const items = [];
@@ -306,7 +311,7 @@ class TableBody extends Component {
               }
             }, React.createElement("div", {
               className: "detailsTitle"
-            }, "Details"), React.createElement("div", {
+            }, detailsTitle), React.createElement("div", {
               className: "detailsContent"
             }, value.details))))));
           } else {

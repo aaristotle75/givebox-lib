@@ -140,7 +140,8 @@ class Table extends Component {
       iconSortAsc,
       iconSortDesc,
       iconDetailsExpand,
-      iconDetailsCollapse
+      iconDetailsCollapse,
+      detailsTitle
     } = this.props;
 
     const tableData = data();
@@ -173,6 +174,7 @@ class Table extends Component {
             detailsLink={this.detailsLink}
             iconDetailsExpand={iconDetailsExpand}
             iconDetailsCollapse={iconDetailsCollapse}
+            detailsTitle={detailsTitle}
           />
           <TableFoot footer={footer} />
         </table>
@@ -193,7 +195,8 @@ Table.defaultProps = {
   iconSortAsc: <span className='icon icon-chevron-up'></span>,
   iconSortDesc: <span className='icon icon-chevron-down'></span>,
   iconDetailsExpand: <span className='icon icon-plus-circle'></span>,
-  iconDetailsCollapse: <span className='icon icon-minus-circle'></span>
+  iconDetailsCollapse: <span className='icon icon-minus-circle'></span>,
+  detailsTitle: 'Details'
 }
 
 function mapStateToProps(state, props) {
@@ -225,7 +228,7 @@ const TableHead = ({ headers, sortColumn, sort, order, iconSortAsc, iconSortDesc
         items.push(<th key={key} style={{width: value.width}}></th>);
       } else {
         items.push(
-          <th onClick={() => sortColumn(value.sort)} className={`${value.sort && 'sort'}`} align={value.align || 'left'} style={{width: value.width }} key={key}>{value.name} {sort === value.sort ? order === 'desc' ? iconSortDesc : iconSortAsc : ''}</th>
+          <th colspan={value.colspan} onClick={() => sortColumn(value.sort)} className={`${value.sort && 'sort'}`} align={value.align || 'left'} style={{width: value.width }} key={key}>{value.name} {sort === value.sort ? order === 'desc' ? iconSortDesc : iconSortAsc : ''}</th>
         );
       }
     });
@@ -271,7 +274,8 @@ class TableBody extends Component {
       rows,
       length,
       iconDetailsCollapse,
-      iconDetailsExpand
+      iconDetailsExpand,
+      detailsTitle
     } = this.props;
 
     const bindthis = this;
@@ -300,7 +304,7 @@ class TableBody extends Component {
                     height={bindthis.state.details.includes(id) ? 'auto' : 0}
                   >
                     <div className="details" style={{paddingRight: has(value, 'width') ? value.width : '', paddingLeft: has(value, 'width') ? value.width : 0}}>
-                      <div className="detailsTitle">Details</div>
+                      <div className="detailsTitle">{detailsTitle}</div>
                       <div className="detailsContent">{value.details}</div>
                     </div>
                   </AnimateHeight>

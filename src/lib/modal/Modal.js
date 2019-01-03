@@ -193,9 +193,9 @@ class Modal extends Component {
           style={prefix({ ...contentStyle, ...transition_style, ...openEffect })}
           onClick={stopPropagation}
         >
+          {(closeBtn) && <button style={closeBtnStyle} className='modalCloseBtn' onClick={() => this.closeModal(closeCallback)}>{iconClose}</button>}        
           <div className='modalTop'></div>
           {this.renderChildren()}
-          {(closeBtn) && <button style={closeBtnStyle} className='modalCloseBtn' onClick={() => this.closeModal(closeCallback)}>{iconClose}</button>}
           {this.renderActions()}
           <div className='modalBottom'></div>
         </div>
