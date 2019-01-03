@@ -418,7 +418,6 @@ class Transactions extends Component {
           name={resourceName}
           data={() => this.formatTableData()}
           exportDesc='Export Transaction Records'
-          searchDisplay='top'
         />
       </div>
     )

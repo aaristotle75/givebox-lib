@@ -56,7 +56,8 @@ export class Alert extends Component {
       alert,
       msg,
       display,
-      closeBtn
+      closeBtn,
+      iconClose
     } = this.props;
 
     const showAlert = display && (this.state.display !== 'hide') ? true : false;
@@ -69,7 +70,7 @@ export class Alert extends Component {
         unmountOnExit
       >
         <div className='alertMsg'>
-          {closeBtn && <GBLink onClick={this.close} className='close'><span className='icon icon-close'></span></GBLink>}
+          {closeBtn && <GBLink onClick={this.close} className='close'>{iconClose}</GBLink>}
           {this.renderAlert(alert, msg)}
         </div>
       </CSSTransition>
@@ -79,6 +80,7 @@ export class Alert extends Component {
 }
 
 Alert.defaultProps = {
+  iconClose: <span className='icon icon-x'></span>,
   iconError: <span className='icon icon-alert-circle'></span>,
   iconSuccess: <span className='icon icon-check-circle'></span>,
   iconWarning: <span className='icon icon-alert-circle'></span>

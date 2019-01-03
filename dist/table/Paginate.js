@@ -175,7 +175,9 @@ class Paginate extends Component {
       containerClassName,
       previousClassName,
       nextClassName,
-      disabledClassName
+      disabledClassName,
+      iconPrevious,
+      iconNext
     } = this.props;
     const {
       range1,
@@ -195,14 +197,10 @@ class Paginate extends Component {
     }, React.createElement("li", {
       onClick: e => this.handlePreviousPage(e),
       className: `page ${previousClassName} ${activePage <= 1 ? disabledClassName : ''}`
-    }, React.createElement("span", {
-      className: this.props.iconPrevious
-    })), this.pagination(), React.createElement("li", {
+    }, iconPrevious), this.pagination(), React.createElement("li", {
       onClick: e => this.handleNextPage(e),
       className: `page ${nextClassName} ${activePage >= pages ? disabledClassName : ''}`
-    }, React.createElement("span", {
-      className: this.props.iconNext
-    })))) : React.createElement("div", null));
+    }, iconNext))) : React.createElement("div", null));
   }
 
 }
@@ -220,8 +218,12 @@ Paginate.defaultProps = {
   pageClassName: 'page',
   activeClassName: 'active',
   previousClassName: 'previous',
-  iconPrevious: 'icon-arrow-left',
-  iconNext: 'icon-arrow-right',
+  iconPrevious: React.createElement("span", {
+    className: "icon icon-arrow-left"
+  }),
+  iconNext: React.createElement("span", {
+    className: "icon icon-arrow-right"
+  }),
   nextClassName: 'next',
   disabledClassName: 'disabled'
 };

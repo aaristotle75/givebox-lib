@@ -55,22 +55,24 @@ class Filter extends Component {
     } = this.state;
 
     return (
-      <div className='filter' style={style}>
-        <button className='link' type='button' onClick={open ? this.closeMenu : this.openMenu}>{label}{open ? iconOpened : iconClosed}</button>
-        <AnimateHeight
-          duration={500}
-          height={this.state.open ? 'auto' : 0}
-        >
-          <Form name={name} >
-            <FilterForm
-            allowDisabled={allowDisabled}
-            closeMenu={this.closeMenu}
-            name={name}
-            options={options}
-            alwaysFilter={alwaysFilter}
-          />
-          </Form>
-        </AnimateHeight>
+      <div className='filterWrapper'>
+        <button className='link' type='button' onClick={open ? this.closeMenu : this.openMenu}><span>{label}{open ? iconOpened : iconClosed}</span></button>
+        <div className='filter' style={style}>
+          <AnimateHeight
+            duration={500}
+            height={this.state.open ? 'auto' : 0}
+          >
+            <Form name={name} >
+              <FilterForm
+              allowDisabled={allowDisabled}
+              closeMenu={this.closeMenu}
+              name={name}
+              options={options}
+              alwaysFilter={alwaysFilter}
+            />
+            </Form>
+          </AnimateHeight>
+        </div>
       </div>
     );
   }

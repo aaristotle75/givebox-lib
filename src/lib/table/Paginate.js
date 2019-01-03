@@ -162,7 +162,9 @@ class Paginate extends Component{
       containerClassName,
       previousClassName,
       nextClassName,
-      disabledClassName
+      disabledClassName,
+			iconPrevious,
+			iconNext
     } = this.props;
 
 		const {
@@ -184,9 +186,9 @@ class Paginate extends Component{
 				{pages > 1 ?
 				<div>
 		      <ul className={containerClassName}>
-		        <li onClick={(e) => this.handlePreviousPage(e)} className={`page ${previousClassName} ${activePage <= 1? disabledClassName:''}`}><span className={this.props.iconPrevious}></span></li>
+		        <li onClick={(e) => this.handlePreviousPage(e)} className={`page ${previousClassName} ${activePage <= 1? disabledClassName:''}`}>{iconPrevious}</li>
 		        {this.pagination()}
-		        <li onClick={(e) => this.handleNextPage(e)} className={`page ${nextClassName} ${activePage >= pages? disabledClassName:''}`}><span className={this.props.iconNext}></span></li>
+		        <li onClick={(e) => this.handleNextPage(e)} className={`page ${nextClassName} ${activePage >= pages? disabledClassName:''}`}>{iconNext}</li>
 		      </ul>
 				</div>
 				: <div></div>}
@@ -207,8 +209,8 @@ Paginate.defaultProps = {
   pageClassName: 'page',
   activeClassName: 'active',
   previousClassName: 'previous',
-	iconPrevious: 'icon-arrow-left',
-	iconNext: 'icon-arrow-right',
+	iconPrevious: <span className='icon icon-arrow-left'></span>,
+	iconNext: <span className='icon icon-arrow-right'></span>,
   nextClassName: 'next',
   disabledClassName: 'disabled',
 }

@@ -23,6 +23,15 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-help-circle:before {
+  content: "\e9ec";
+}
+.icon-dollar-sign:before {
+  content: "\e9ea";
+}
+.icon-archive:before {
+  content: "\e9eb";
+}
 .icon-activity:before {
   content: "\e900";
 }

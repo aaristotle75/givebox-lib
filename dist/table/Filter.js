@@ -54,13 +54,15 @@ class Filter extends Component {
       open
     } = this.state;
     return React.createElement("div", {
-      className: "filter",
-      style: style
+      className: "filterWrapper"
     }, React.createElement("button", {
       className: "link",
       type: "button",
       onClick: open ? this.closeMenu : this.openMenu
-    }, label, open ? iconOpened : iconClosed), React.createElement(AnimateHeight, {
+    }, React.createElement("span", null, label, open ? iconOpened : iconClosed)), React.createElement("div", {
+      className: "filter",
+      style: style
+    }, React.createElement(AnimateHeight, {
       duration: 500,
       height: this.state.open ? 'auto' : 0
     }, React.createElement(Form, {
@@ -71,7 +73,7 @@ class Filter extends Component {
       name: name,
       options: options,
       alwaysFilter: alwaysFilter
-    }))));
+    })))));
   }
 
 }

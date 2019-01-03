@@ -293,7 +293,7 @@ class TableBody extends Component {
             const icon = bindthis.state.details.includes(id) ? iconDetailsCollapse : iconDetailsExpand;
             td.push(<td onClick={() => ref ? bindthis.detailsLink(ref) : ''} className={'detailsIcon hasDetails'} key={key}>{icon}</td>);
             details.push(
-              <tr ref={ref} className={`detailsRow`} id={id} key={id}>
+              <tr ref={ref} className={`${bindthis.state.details.includes(id) ? 'detailsOpen' : ''} detailsRow`} id={id} key={id}>
                 <td className='detailsRow' colSpan={length}>
                   <AnimateHeight
                     duration={500}

@@ -66,7 +66,8 @@ export class Alert extends Component {
       alert,
       msg,
       display,
-      closeBtn
+      closeBtn,
+      iconClose
     } = this.props;
     const showAlert = display && this.state.display !== 'hide' ? true : false;
     return React.createElement(CSSTransition, {
@@ -79,13 +80,14 @@ export class Alert extends Component {
     }, closeBtn && React.createElement(GBLink, {
       onClick: this.close,
       className: "close"
-    }, React.createElement("span", {
-      className: "icon icon-close"
-    })), this.renderAlert(alert, msg)));
+    }, iconClose), this.renderAlert(alert, msg)));
   }
 
 }
 Alert.defaultProps = {
+  iconClose: React.createElement("span", {
+    className: "icon icon-x"
+  }),
   iconError: React.createElement("span", {
     className: "icon icon-alert-circle"
   }),

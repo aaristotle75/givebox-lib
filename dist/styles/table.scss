@@ -288,14 +288,8 @@ table button .icon {
 /*----------- Filter ---------------*/
 .filter {
   position: relative;
-  display: inline-block;
   width: 100%;
   clear: both;
-
-  button.link {
-    display: flex;
-    align-items: center;
-  }
 
   .col {
     vertical-align: top;

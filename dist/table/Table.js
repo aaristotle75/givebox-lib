@@ -289,7 +289,7 @@ class TableBody extends Component {
             }, icon));
             details.push(React.createElement("tr", {
               ref: ref,
-              className: `detailsRow`,
+              className: `${bindthis.state.details.includes(id) ? 'detailsOpen' : ''} detailsRow`,
               id: id,
               key: id
             }, React.createElement("td", {
