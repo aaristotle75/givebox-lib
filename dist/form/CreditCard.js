@@ -91,7 +91,7 @@ class CreditCard extends Component {
     }, React.createElement("div", {
       className: `checkmark`
     }, React.createElement("i", {
-      className: "icon icon-checkmark"
+      className: "icon icon-check"
     }))), React.createElement("div", {
       className: `tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`
     }, error, React.createElement("i", null)), React.createElement("div", {

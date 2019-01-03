@@ -87,7 +87,9 @@ class Search extends Component {
       style,
       name,
       placeholder,
-      id
+      id,
+      iconSearch,
+      iconClose
     } = this.props;
     const {
       searchValue
@@ -111,22 +113,24 @@ class Search extends Component {
       id: "searchBtn",
       onClick: this.onSearch,
       type: "button"
-    }, React.createElement("span", {
-      className: "icon icon-search-input"
-    })), React.createElement("button", {
+    }, iconSearch), React.createElement("button", {
       className: `searchResetBtn ${!searchValue && 'displayNone'}`,
       onClick: this.resetSearch,
       type: "button"
-    }, React.createElement("span", {
-      className: "icon icon-close"
-    })))));
+    }, iconClose))));
   }
 
 }
 
 Search.defaultProps = {
   id: null,
-  align: 'center'
+  align: 'center',
+  iconSearch: React.createElement("span", {
+    className: "icon icon-search"
+  }),
+  iconClose: React.createElement("span", {
+    className: "icon icon-x"
+  })
 };
 
 function mapStateToProps(state, props) {

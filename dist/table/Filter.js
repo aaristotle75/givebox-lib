@@ -46,7 +46,9 @@ class Filter extends Component {
       options,
       name,
       allowDisabled,
-      alwaysFilter
+      alwaysFilter,
+      iconOpened,
+      iconClosed
     } = this.props;
     const {
       open
@@ -58,9 +60,7 @@ class Filter extends Component {
       className: "link",
       type: "button",
       onClick: open ? this.closeMenu : this.openMenu
-    }, label, React.createElement("span", {
-      className: `icon-normal ${open ? 'icon-down-arrow' : 'icon-next'}`
-    })), React.createElement(AnimateHeight, {
+    }, label, open ? iconOpened : iconClosed), React.createElement(AnimateHeight, {
       duration: 500,
       height: this.state.open ? 'auto' : 0
     }, React.createElement(Form, {
@@ -77,6 +77,12 @@ class Filter extends Component {
 }
 
 Filter.defaultProps = {
-  label: 'Filters'
+  label: 'Filters',
+  iconOpened: React.createElement("span", {
+    className: "icon icon-chevron-down"
+  }),
+  iconClosed: React.createElement("span", {
+    className: "icon icon-chevron-right"
+  })
 };
 export default Filter;

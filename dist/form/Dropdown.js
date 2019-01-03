@@ -90,9 +90,7 @@ class Dropdown extends Component {
           onClick: e => bindthis.onClick(e),
           className: `dropdown-item ${selected ? 'selected' : ''}`,
           key: value.value
-        }, bindthis.props.multi && selected && React.createElement("span", {
-          className: "icon icon-checkmark"
-        }), " ", value.primaryText, value.secondaryText && React.createElement("span", {
+        }, bindthis.props.multi && selected && bindthis.props.iconMultiChecked, " ", value.primaryText, value.secondaryText && React.createElement("span", {
           className: "secondaryText"
         }, value.secondaryText)));
       }
@@ -113,7 +111,10 @@ class Dropdown extends Component {
       value,
       defaultValue,
       floatingLabel,
-      contentStyle
+      contentStyle,
+      iconMultiClose,
+      iconOpened,
+      iconClosed
     } = this.props;
     const {
       open,
@@ -134,9 +135,7 @@ class Dropdown extends Component {
       onClick: open ? this.closeMenu : this.openMenu
     }, React.createElement("span", {
       className: `label ${idleLabel && 'idle'}`
-    }, selectedValue), React.createElement("span", {
-      className: `icon ${open ? multi ? 'icon-close' : 'icon-down-arrow' : 'icon-next'}`
-    })), React.createElement("div", {
+    }, selectedValue), open ? multi ? iconMultiClose : iconOpened : iconClosed), React.createElement("div", {
       style: contentStyle,
       className: `dropdown-content`
     }, React.createElement(AnimateHeight, {
@@ -159,6 +158,18 @@ Dropdown.defaultProps = {
   multi: false,
   selectLabel: 'Please select',
   floatingLabel: true,
-  contentStyle: {}
+  contentStyle: {},
+  iconMultiChecked: React.createElement("span", {
+    className: "icon icon-check"
+  }),
+  iconMultiClose: React.createElement("span", {
+    className: "icon icon-x"
+  }),
+  iconClosed: React.createElement("span", {
+    className: "icon icon-chevron-right"
+  }),
+  iconOpened: React.createElement("span", {
+    className: "icon icon-chevron-down"
+  })
 };
 export default Dropdown;

@@ -60,7 +60,9 @@ class ActionsMenu extends Component {
   render() {
     const {
       style,
-      label
+      label,
+      iconOpened,
+      iconClosed
     } = this.props;
     const {
       open
@@ -74,8 +76,8 @@ class ActionsMenu extends Component {
       type: "button",
       onClick: open ? this.closeMenu : this.openMenu
     }, !util.isEmpty(this.props.options) ? label : 'No Actions', React.createElement("span", {
-      className: `icon ${open ? 'icon-down-arrow' : 'icon-next'} ${util.isEmpty(this.props.options) && 'displayNone'}`
-    })), React.createElement("div", {
+      className: `${util.isEmpty(this.props.options) && 'displayNone'}`
+    }, open ? iconOpened : iconClosed)), React.createElement("div", {
       className: `actionsMenu-content`
     }, React.createElement(AnimateHeight, {
       duration: 200,
@@ -90,6 +92,12 @@ class ActionsMenu extends Component {
 ActionsMenu.defaultProps = {
   label: 'Actions',
   className: '',
-  itemClass: 'button'
+  itemClass: 'button',
+  iconOpened: React.createElement("span", {
+    className: "icon icon-chevron-down"
+  }),
+  iconClosed: React.createElement("span", {
+    className: "icon icon-chevron-right"
+  })
 };
 export default ActionsMenu;

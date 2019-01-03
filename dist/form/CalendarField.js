@@ -89,7 +89,8 @@ class CalendarField extends Component {
       customLabel,
       step,
       error,
-      errorType
+      errorType,
+      icon
     } = this.props;
     const {
       date
@@ -140,9 +141,7 @@ class CalendarField extends Component {
       className: "input-button",
       title: "toggle",
       "data-toggle": true
-    }, React.createElement("i", {
-      className: "icon icon-calendar"
-    })), React.createElement("div", {
+    }, icon), React.createElement("div", {
       className: `tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`
     }, this.props.error, React.createElement("i", null)), React.createElement("div", {
       className: `errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`
@@ -157,6 +156,9 @@ CalendarField.defaultProps = {
   inline: false,
   enableTime: false,
   staticOption: false,
-  clickOpens: false
+  clickOpens: false,
+  icon: React.createElement("span", {
+    className: "icon icon-calendar"
+  })
 };
 export default CalendarField;

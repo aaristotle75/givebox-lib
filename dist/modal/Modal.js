@@ -143,7 +143,8 @@ class Modal extends Component {
       closeBtnShow,
       customStyle,
       customOverlay,
-      className
+      className,
+      iconClose
     } = this.props;
     let transition = effect.transition;
 
@@ -202,9 +203,7 @@ class Modal extends Component {
       style: closeBtnStyle,
       className: "modalCloseBtn",
       onClick: () => this.closeModal(closeCallback)
-    }, React.createElement("span", {
-      className: "icon icon-close"
-    })), this.renderActions(), React.createElement("div", {
+    }, iconClose), this.renderActions(), React.createElement("div", {
       className: "modalBottom"
     })));
   }
@@ -222,6 +221,9 @@ Modal.defaultProps = {
     fontWeight: 500,
     color: '#9aa7ad'
   },
-  actions: false
+  actions: false,
+  iconClose: React.createElement("span", {
+    className: "icon icon-x"
+  })
 };
 export default Modal;

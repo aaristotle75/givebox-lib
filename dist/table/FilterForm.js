@@ -27,7 +27,7 @@ class Filter extends Component {
       }
     }
 
-    if (!util.isEmpty(arr)) {
+    if (!util.isEmpty(arr) && !field.multi) {
       arr.forEach(value => {
         let filter = `${field.filter}:${isNaN(value) ? `"${value}"` : value}`;
         filters = filter ? !filters ? filter : `${filters}%2C${filter}` : filters;

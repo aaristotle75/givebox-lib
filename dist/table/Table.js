@@ -119,7 +119,11 @@ class Table extends Component {
       sort,
       order,
       name,
-      filters
+      filters,
+      iconSortAsc,
+      iconSortDesc,
+      iconDetailsExpand,
+      iconDetailsCollapse
     } = this.props;
     const tableData = data();
     const headers = tableData.headers;
@@ -136,11 +140,15 @@ class Table extends Component {
       headers: headers,
       sortColumn: this.sortColumn,
       sort: sort,
+      iconSortAsc: iconSortAsc,
+      iconSortDesc: iconSortDesc,
       order: order
     }), React.createElement(TableBody, {
       rows: rows,
       length: headers.length,
-      detailsLink: this.detailsLink
+      detailsLink: this.detailsLink,
+      iconDetailsExpand: iconDetailsExpand,
+      iconDetailsCollapse: iconDetailsCollapse
     }), React.createElement(TableFoot, {
       footer: footer
     })), (searchDisplay === 'bottom' || searchDisplay === 'both') && this.renderSearch(), (exportDisplay === 'bottom' || exportDisplay === 'both') && this.renderExport(), (maxRecordsDisplay === 'bottom' || maxRecordsDisplay === 'both') && this.renderMaxRecords(), (paginationDisplay === 'bottom' || paginationDisplay === 'both') && this.renderPagination());
@@ -152,7 +160,19 @@ Table.defaultProps = {
   searchDisplay: 'none',
   exportDisplay: 'none',
   maxRecordsDisplay: 'bottom',
-  paginationDisplay: 'bottom'
+  paginationDisplay: 'bottom',
+  iconSortAsc: React.createElement("span", {
+    className: "icon icon-chevron-up"
+  }),
+  iconSortDesc: React.createElement("span", {
+    className: "icon icon-chevron-down"
+  }),
+  iconDetailsExpand: React.createElement("span", {
+    className: "icon icon-plus-circle"
+  }),
+  iconDetailsCollapse: React.createElement("span", {
+    className: "icon icon-minus-circle"
+  })
 };
 
 function mapStateToProps(state, props) {
@@ -179,14 +199,10 @@ const TableHead = ({
   headers,
   sortColumn,
   sort,
-  order
+  order,
+  iconSortAsc,
+  iconSortDesc
 }) => {
-  const desc = React.createElement("span", {
-    className: "icon icon-triangle-down"
-  });
-  const asc = React.createElement("span", {
-    className: "icon icon-triangle-up"
-  });
   const items = [];
 
   if (!util.isEmpty(headers)) {
@@ -207,7 +223,7 @@ const TableHead = ({
             width: value.width
           },
           key: key
-        }, value.name, " ", sort === value.sort ? order === 'desc' ? desc : asc : ''));
+        }, value.name, " ", sort === value.sort ? order === 'desc' ? iconSortDesc : iconSortAsc : ''));
       }
     });
   }
@@ -245,7 +261,9 @@ class TableBody extends Component {
   renderItems() {
     const {
       rows,
-      length
+      length,
+      iconDetailsCollapse,
+      iconDetailsExpand
     } = this.props;
     const bindthis = this;
     const items = [];
@@ -263,9 +281,7 @@ class TableBody extends Component {
             if (!has(value, 'key')) console.error('Add a key property for proper handling');
             id = `${passkey}-${value.key}-details`;
             ref = React.createRef();
-            const icon = React.createElement("span", {
-              className: `icon ${bindthis.state.details.includes(id) ? 'icon-minus-circle-fill' : 'icon-plus-circle-fill'}`
-            });
+            const icon = bindthis.state.details.includes(id) ? iconDetailsCollapse : iconDetailsExpand;
             td.push(React.createElement("td", {
               onClick: () => ref ? bindthis.detailsLink(ref) : '',
               className: 'detailsIcon hasDetails',

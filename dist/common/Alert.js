@@ -36,17 +36,20 @@ export class Alert extends Component {
     switch (alert) {
       case 'error':
         return React.createElement(Error, {
-          msg: msg
+          msg: msg,
+          icon: this.props.iconError
         });
 
       case 'success':
         return React.createElement(Success, {
-          msg: msg
+          msg: msg,
+          icon: this.props.iconSuccess
         });
 
       case 'warning':
         return React.createElement(Warning, {
-          msg: msg
+          msg: msg,
+          icon: this.props.iconWarning
         });
       // no default
     }
@@ -82,36 +85,44 @@ export class Alert extends Component {
   }
 
 }
+Alert.defaultProps = {
+  iconError: React.createElement("span", {
+    className: "icon icon-alert-circle"
+  }),
+  iconSuccess: React.createElement("span", {
+    className: "icon icon-check-circle"
+  }),
+  iconWarning: React.createElement("span", {
+    className: "icon icon-alert-circle"
+  })
+};
 export const Error = ({
-  msg
+  msg,
+  icon
 }) => {
   return React.createElement("div", {
     className: `error`
   }, React.createElement("span", {
     className: "msgText"
-  }, React.createElement("span", {
-    className: "icon icon-error-circle"
-  }), " ", msg || msgs.error));
+  }, icon, " ", msg || msgs.error));
 };
 export const Success = ({
-  msg
+  msg,
+  icon
 }) => {
   return React.createElement("div", {
     className: `success`
   }, React.createElement("span", {
     className: "msgText"
-  }, React.createElement("span", {
-    className: "icon icon-checkmark-circle"
-  }), " ", msg));
+  }, icon, " ", msg));
 };
 export const Warning = ({
-  msg
+  msg,
+  icon
 }) => {
   return React.createElement("div", {
     className: `warning`
   }, React.createElement("span", {
     className: "msgText"
-  }, React.createElement("span", {
-    className: "icon icon-error-circle"
-  }), " ", msg));
+  }, icon, " ", msg));
 };

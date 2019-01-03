@@ -292,6 +292,11 @@ table button .icon {
   width: 100%;
   clear: both;
 
+  button.link {
+    display: flex;
+    align-items: center;
+  }
+
   .col {
     vertical-align: top;
   }
@@ -299,11 +304,6 @@ table button .icon {
   .rangeCol { width: 100%; }
   .dropdownCol { width: 50%; }
   .fillerCol { width: 50%; }
-
-  .icon-normal {
-    margin-left: 10px;
-    font-size: $normal-text-size;
-  }
 
   .icon {
     margin-left: 10px;
