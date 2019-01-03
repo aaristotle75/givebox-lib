@@ -289,6 +289,7 @@ class Transactions extends Component {
       {
         field: 'dropdown',
         name: 'state',
+        multi: true,
         options: [
           {
             primaryText: 'All Status',
@@ -300,7 +301,7 @@ class Transactions extends Component {
           },
           {
             primaryText: 'Refunded/Voided',
-            value: 'refunded,chargeback'
+            value: 'refunded'
           },
           {
             primaryText: 'Chargeback',
@@ -417,6 +418,7 @@ class Transactions extends Component {
           name={resourceName}
           data={() => this.formatTableData()}
           exportDesc='Export Transaction Records'
+          searchDisplay='top'
         />
       </div>
     )

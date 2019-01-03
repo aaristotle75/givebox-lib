@@ -1,28 +1,53 @@
 import React, {Component} from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { msgs } from '../form/formValidate';
+import GBLink from './GBLink';
 
 export class Alert extends Component {
 
   constructor(props) {
     super(props);
     this.renderAlert = this.renderAlert.bind(this);
+    this.close = this.close.bind(this);
+    this.state = {
+      display: this.props.display ? 'show' : 'hide'
+    };
   }
 
   componentDidMount() {
   }
 
+  componentDidUpdate(nextProps) {
+    if (this.props.display !== nextProps.display) {
+      this.timeout = setTimeout(() => {
+        this.setState({display: this.props.display ? 'show' : 'hide'})
+        this.timeout = null;
+      }, 0);
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+      this.timeout = null;
+    }
+  }
+
   renderAlert(alert, msg) {
     switch (alert) {
       case 'error':
-        return <Error msg={msg} />
+        return <Error msg={msg} icon={this.props.iconError} />
       case 'success':
-        return <Success msg={msg} />
+        return <Success msg={msg} icon={this.props.iconSuccess} />
       case 'warning':
-        return <Warning msg={msg} />
+        return <Warning msg={msg} icon={this.props.iconWarning} />
 
       // no default
     }
+  }
+
+  close() {
+    this.setState({ display: 'hide' });
   }
 
   render() {
@@ -30,17 +55,21 @@ export class Alert extends Component {
     const {
       alert,
       msg,
-      display
+      display,
+      closeBtn
     } = this.props;
+
+    const showAlert = display && (this.state.display !== 'hide') ? true : false;
 
     return (
       <CSSTransition
-        in={display ? true : false}
+        in={showAlert ? true : false}
         timeout={300}
         classNames='alertMsg'
         unmountOnExit
       >
         <div className='alertMsg'>
+          {closeBtn && <GBLink onClick={this.close} className='close'><span className='icon icon-close'></span></GBLink>}
           {this.renderAlert(alert, msg)}
         </div>
       </CSSTransition>
@@ -49,26 +78,32 @@ export class Alert extends Component {
   }
 }
 
-export const Error = ({msg}) => {
+Alert.defaultProps = {
+  iconError: <span className='icon icon-alert-circle'></span>,
+  iconSuccess: <span className='icon icon-check-circle'></span>,
+  iconWarning: <span className='icon icon-alert-circle'></span>
+}
+
+export const Error = ({msg, icon}) => {
   return (
     <div className={`error`}>
-      <span className='msgText'><span className='icon icon-error-circle'></span> {msg || msgs.error}</span>
+      <span className='msgText'>{icon} {msg || msgs.error}</span>
     </div>
   )
 }
 
-export const Success = ({msg}) => {
+export const Success = ({msg, icon}) => {
   return (
     <div className={`success`}>
-      <span className='msgText'><span className='icon icon-checkmark-circle'></span> {msg}</span>
+      <span className='msgText'>{icon} {msg}</span>
     </div>
   )
 }
 
-export const Warning = ({msg}) => {
+export const Warning = ({msg, icon}) => {
   return (
     <div className={`warning`}>
-      <span className='msgText'><span className='icon icon-error-circle'></span> {msg}</span>
+      <span className='msgText'>{icon} {msg}</span>
     </div>
   )
 }

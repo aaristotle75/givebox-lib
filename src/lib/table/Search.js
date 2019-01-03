@@ -81,7 +81,9 @@ class Search extends Component {
       style,
       name,
       placeholder,
-      id
+      id,
+      iconSearch,
+      iconClose
     } = this.props;
 
     const {
@@ -102,8 +104,8 @@ class Search extends Component {
           autoFocus={searchValue ? true : false}
         >
           <div className='input-button'>
-            <button className='searchBtn' id='searchBtn' onClick={this.onSearch} type='button'><span className='icon icon-search-input'></span></button>
-            <button className={`searchResetBtn ${!searchValue && 'displayNone'}`} onClick={this.resetSearch} type='button'><span className='icon icon-close'></span></button>
+            <button className='searchBtn' id='searchBtn' onClick={this.onSearch} type='button'>{iconSearch}</button>
+            <button className={`searchResetBtn ${!searchValue && 'displayNone'}`} onClick={this.resetSearch} type='button'>{iconClose}</button>
           </div>
         </TextField>
       </div>
@@ -113,7 +115,9 @@ class Search extends Component {
 
 Search.defaultProps = {
   id: null,
-	align: 'center'
+	align: 'center',
+  iconSearch: <span className='icon icon-search'></span>,
+  iconClose: <span className='icon icon-x'></span>
 }
 
 function mapStateToProps(state, props) {

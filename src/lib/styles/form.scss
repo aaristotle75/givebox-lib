@@ -497,6 +497,19 @@ label.idle, .label.idle {
 
 
 /*-------- Alert Messages ---------*/
+.alertMsg {
+
+  position: relative;
+
+  button.close {
+    background: transparent;
+    position: absolute;
+    top: 5px;
+    right: 0px;
+    color: $white;
+  }
+}
+
 .warning {
   display: block;
   padding: 10px;

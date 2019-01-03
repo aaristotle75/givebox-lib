@@ -196,13 +196,17 @@ class Modal extends Component {
         ...openEffect
       }),
       onClick: stopPropagation
-    }, this.renderChildren(), closeBtn && React.createElement("button", {
+    }, React.createElement("div", {
+      className: "modalTop"
+    }), this.renderChildren(), closeBtn && React.createElement("button", {
       style: closeBtnStyle,
       className: "modalCloseBtn",
       onClick: () => this.closeModal(closeCallback)
     }, React.createElement("span", {
       className: "icon icon-close"
-    })), this.renderActions()));
+    })), this.renderActions(), React.createElement("div", {
+      className: "modalBottom"
+    })));
   }
 
 }

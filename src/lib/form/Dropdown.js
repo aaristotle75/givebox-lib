@@ -76,7 +76,7 @@ class Dropdown extends Component {
         );
       } else {
         items.push(
-          <div data-selected={value.primaryText} data-value={value.value} onClick={(e) => bindthis.onClick(e)} className={`dropdown-item ${selected ? 'selected' : ''}`} key={value.value}>{bindthis.props.multi && selected && <span className='icon icon-checkmark'></span>} {value.primaryText}{value.secondaryText && <span className='secondaryText'>{value.secondaryText}</span>}</div>
+          <div data-selected={value.primaryText} data-value={value.value} onClick={(e) => bindthis.onClick(e)} className={`dropdown-item ${selected ? 'selected' : ''}`} key={value.value}>{bindthis.props.multi && selected && bindthis.props.iconMultiChecked} {value.primaryText}{value.secondaryText && <span className='secondaryText'>{value.secondaryText}</span>}</div>
         );
       }
     });
@@ -98,7 +98,10 @@ class Dropdown extends Component {
       value,
       defaultValue,
       floatingLabel,
-      contentStyle
+      contentStyle,
+      iconMultiClose,
+      iconOpened,
+      iconClosed
     } = this.props;
 
     const {
@@ -113,7 +116,7 @@ class Dropdown extends Component {
       <div style={style} className={`input-group ${className || ''} ${error ? 'error tooltip' : ''}`}>
         <div className={`dropdown ${floatingLabel && 'floating-label'} ${label ? 'fixed' : ''}`} style={dropdownStyle}>
           {label && !floatingLabel && <label><GBLink onClick={open ? this.closeMenu : this.openMenu}>{label}</GBLink></label>}
-          <button type='button' onClick={open ? this.closeMenu : this.openMenu}><span className={`label ${idleLabel && 'idle'}`}>{selectedValue}</span><span className={`icon ${open ? multi ? 'icon-close' : 'icon-down-arrow' : 'icon-next'}`}></span></button>
+          <button type='button' onClick={open ? this.closeMenu : this.openMenu}><span className={`label ${idleLabel && 'idle'}`}>{selectedValue}</span>{open ? multi ? iconMultiClose : iconOpened : iconClosed}</button>
           <div style={contentStyle} className={`dropdown-content`}>
             <AnimateHeight
               duration={200}
@@ -139,7 +142,11 @@ Dropdown.defaultProps = {
   multi: false,
   selectLabel: 'Please select',
   floatingLabel: true,
-  contentStyle: {}
+  contentStyle: {},
+  iconMultiChecked: <span className='icon icon-check'></span>,
+  iconMultiClose: <span className='icon icon-x'></span>,
+  iconClosed: <span className='icon icon-chevron-right'></span>,
+  iconOpened: <span className='icon icon-chevron-down'></span>
 }
 
 export default Dropdown;

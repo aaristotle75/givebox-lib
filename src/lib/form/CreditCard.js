@@ -80,7 +80,7 @@ class CreditCard extends Component {
           </div>
           <Fade duration={200} in={checked ? true : false}>
             <div className={`checkmark`}>
-                <i className='icon icon-checkmark'></i>
+                <i className='icon icon-check'></i>
             </div>
           </Fade>
           <div className={`tooltipTop ${errorType !=='tooltip' && 'displayNone'}`}>

@@ -79,7 +79,8 @@ class CalendarField extends Component {
       customLabel,
       step,
       error,
-      errorType
+      errorType,
+      icon
     } = this.props;
 
     const {
@@ -126,7 +127,7 @@ class CalendarField extends Component {
               <div className={`input-bottom ${error ? 'error' : this.state.status}`}></div>
             </div>
             <button type='button' className='input-button' title='toggle' data-toggle>
-                <i className='icon icon-calendar'></i>
+                {icon}
             </button>
             <div className={`tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`}>
               {this.props.error}
@@ -146,7 +147,8 @@ CalendarField.defaultProps = {
   inline: false,
   enableTime: false,
   staticOption: false,
-  clickOpens: false
+  clickOpens: false,
+  icon: <span className='icon icon-calendar' />
 }
 
 export default CalendarField;

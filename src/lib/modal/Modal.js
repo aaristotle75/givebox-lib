@@ -142,7 +142,8 @@ class Modal extends Component {
       closeBtnShow,
       customStyle,
       customOverlay,
-      className
+      className,
+      iconClose
     } = this.props;
 
     let transition = effect.transition;
@@ -192,9 +193,11 @@ class Modal extends Component {
           style={prefix({ ...contentStyle, ...transition_style, ...openEffect })}
           onClick={stopPropagation}
         >
+          <div className='modalTop'></div>
           {this.renderChildren()}
-          {(closeBtn) && <button style={closeBtnStyle} className='modalCloseBtn' onClick={() => this.closeModal(closeCallback)}><span className='icon icon-close'></span></button>}
+          {(closeBtn) && <button style={closeBtnStyle} className='modalCloseBtn' onClick={() => this.closeModal(closeCallback)}>{iconClose}</button>}
           {this.renderActions()}
+          <div className='modalBottom'></div>
         </div>
       </div>
     )
@@ -212,7 +215,8 @@ Modal.defaultProps = {
     fontWeight: 500,
     color: '#9aa7ad'
   },
-  actions: false
+  actions: false,
+  iconClose: <span className='icon icon-x'></span>
 };
 
 export default Modal;

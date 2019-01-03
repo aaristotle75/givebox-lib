@@ -136,7 +136,11 @@ class Table extends Component {
       sort,
       order,
       name,
-      filters
+      filters,
+      iconSortAsc,
+      iconSortDesc,
+      iconDetailsExpand,
+      iconDetailsCollapse
     } = this.props;
 
     const tableData = data();
@@ -155,8 +159,21 @@ class Table extends Component {
         {(maxRecordsDisplay === 'top' || maxRecordsDisplay === 'both') && this.renderMaxRecords()}
         {(paginationDisplay === 'top' || paginationDisplay === 'both') && this.renderPagination()}
         <table style={this.props.tableStyle}>
-          <TableHead headers={headers} sortColumn={this.sortColumn} sort={sort} order={order} />
-          <TableBody rows={rows} length={headers.length} detailsLink={this.detailsLink} />
+          <TableHead
+            headers={headers}
+            sortColumn={this.sortColumn}
+            sort={sort}
+            iconSortAsc={iconSortAsc}
+            iconSortDesc={iconSortDesc}
+            order={order}
+          />
+          <TableBody
+            rows={rows}
+            length={headers.length}
+            detailsLink={this.detailsLink}
+            iconDetailsExpand={iconDetailsExpand}
+            iconDetailsCollapse={iconDetailsCollapse}
+          />
           <TableFoot footer={footer} />
         </table>
         {(searchDisplay === 'bottom' || searchDisplay === 'both') && this.renderSearch()}
@@ -172,7 +189,11 @@ Table.defaultProps = {
   searchDisplay: 'none',
   exportDisplay: 'none',
   maxRecordsDisplay: 'bottom',
-  paginationDisplay: 'bottom'
+  paginationDisplay: 'bottom',
+  iconSortAsc: <span className='icon icon-chevron-up'></span>,
+  iconSortDesc: <span className='icon icon-chevron-down'></span>,
+  iconDetailsExpand: <span className='icon icon-plus-circle'></span>,
+  iconDetailsCollapse: <span className='icon icon-minus-circle'></span>
 }
 
 function mapStateToProps(state, props) {
@@ -196,9 +217,7 @@ export default connect(mapStateToProps, {
 })(Table)
 
 
-const TableHead = ({ headers, sortColumn, sort, order }) => {
-  const desc = <span className='icon icon-triangle-down'></span>;
-  const asc = <span className='icon icon-triangle-up'></span>;
+const TableHead = ({ headers, sortColumn, sort, order, iconSortAsc, iconSortDesc }) => {
   const items = [];
   if (!util.isEmpty(headers)) {
     Object.entries(headers).forEach(([key, value]) => {
@@ -206,7 +225,7 @@ const TableHead = ({ headers, sortColumn, sort, order }) => {
         items.push(<th key={key} style={{width: value.width}}></th>);
       } else {
         items.push(
-          <th onClick={() => sortColumn(value.sort)} className={`${value.sort && 'sort'}`} align={value.align || 'left'} style={{width: value.width }} key={key}>{value.name} {sort === value.sort ? order === 'desc' ? desc : asc : ''}</th>
+          <th onClick={() => sortColumn(value.sort)} className={`${value.sort && 'sort'}`} align={value.align || 'left'} style={{width: value.width }} key={key}>{value.name} {sort === value.sort ? order === 'desc' ? iconSortDesc : iconSortAsc : ''}</th>
         );
       }
     });
@@ -250,7 +269,9 @@ class TableBody extends Component {
   renderItems() {
     const {
       rows,
-      length
+      length,
+      iconDetailsCollapse,
+      iconDetailsExpand
     } = this.props;
 
     const bindthis = this;
@@ -269,7 +290,7 @@ class TableBody extends Component {
             if (!has(value, 'key')) console.error('Add a key property for proper handling');
             id = `${passkey}-${value.key}-details`;
             ref = React.createRef();
-            const icon = <span className={`icon ${bindthis.state.details.includes(id) ? 'icon-minus-circle-fill' : 'icon-plus-circle-fill'}`}></span>;
+            const icon = bindthis.state.details.includes(id) ? iconDetailsCollapse : iconDetailsExpand;
             td.push(<td onClick={() => ref ? bindthis.detailsLink(ref) : ''} className={'detailsIcon hasDetails'} key={key}>{icon}</td>);
             details.push(
               <tr ref={ref} className={`detailsRow`} id={id} key={id}>

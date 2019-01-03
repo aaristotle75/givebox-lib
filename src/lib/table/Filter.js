@@ -45,7 +45,9 @@ class Filter extends Component {
       options,
       name,
       allowDisabled,
-      alwaysFilter
+      alwaysFilter,
+      iconOpened,
+      iconClosed
     } = this.props;
 
     const {
@@ -54,7 +56,7 @@ class Filter extends Component {
 
     return (
       <div className='filter' style={style}>
-        <button className='link' type='button' onClick={open ? this.closeMenu : this.openMenu}>{label}<span className={`icon-normal ${open ? 'icon-down-arrow': 'icon-next'}`}></span></button>
+        <button className='link' type='button' onClick={open ? this.closeMenu : this.openMenu}>{label}{open ? iconOpened : iconClosed}</button>
         <AnimateHeight
           duration={500}
           height={this.state.open ? 'auto' : 0}
@@ -75,7 +77,9 @@ class Filter extends Component {
 }
 
 Filter.defaultProps = {
-  label: 'Filters'
+  label: 'Filters',
+  iconOpened: <span className='icon icon-chevron-down'></span>,
+  iconClosed: <span className='icon icon-chevron-right'></span>
 }
 
 export default Filter;

@@ -57,7 +57,9 @@ class ActionsMenu extends Component {
 
     const {
       style,
-      label
+      label,
+      iconOpened,
+      iconClosed
     } = this.props;
 
     const {
@@ -66,7 +68,7 @@ class ActionsMenu extends Component {
 
     return (
       <div className='actionsMenu' style={style}>
-        <button disabled={!!util.isEmpty(this.props.options)} className='menuLabel' type='button' onClick={open ? this.closeMenu : this.openMenu}>{!util.isEmpty(this.props.options) ? label : 'No Actions'}<span className={`icon ${open ? 'icon-down-arrow' : 'icon-next'} ${util.isEmpty(this.props.options) && 'displayNone'}`}></span></button>
+        <button disabled={!!util.isEmpty(this.props.options)} className='menuLabel' type='button' onClick={open ? this.closeMenu : this.openMenu}>{!util.isEmpty(this.props.options) ? label : 'No Actions'}<span className={`${util.isEmpty(this.props.options) && 'displayNone'}`}>{open ? iconOpened : iconClosed}</span></button>
         <div className={`actionsMenu-content`}>
           <AnimateHeight
             duration={200}
@@ -85,7 +87,9 @@ class ActionsMenu extends Component {
 ActionsMenu.defaultProps = {
   label: 'Actions',
   className: '',
-  itemClass: 'button'
+  itemClass: 'button',
+  iconOpened: <span className='icon icon-chevron-down'></span>,
+  iconClosed: <span className='icon icon-chevron-right'></span>
 }
 
 export default ActionsMenu;
