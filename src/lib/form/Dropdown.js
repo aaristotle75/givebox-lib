@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { lookup, isEmpty } from '../common/utility';
 import GBLink from '../common/GBLink';
+import Fade from '../common/Fade';
 import AnimateHeight from 'react-animate-height';
 import has from 'has';
 
@@ -101,7 +102,9 @@ class Dropdown extends Component {
       contentStyle,
       iconMultiClose,
       iconOpened,
-      iconClosed
+      iconClosed,
+      overlay,
+      overlayDuration
     } = this.props;
 
     const {
@@ -114,6 +117,7 @@ class Dropdown extends Component {
 
     return (
       <div style={style} className={`input-group ${className || ''} ${error ? 'error tooltip' : ''}`}>
+        <Fade in={open && overlay} duration={overlayDuration}><div onClick={this.closeMenu} className={`dropdown-cover ${open ? '' : 'displayNone'}`}></div></Fade>
         <div className={`dropdown ${floatingLabel && 'floating-label'} ${label ? 'fixed' : ''}`} style={dropdownStyle}>
           {label && !floatingLabel && <label><GBLink onClick={open ? this.closeMenu : this.openMenu}>{label}</GBLink></label>}
           <button type='button' onClick={open ? this.closeMenu : this.openMenu}><span className={`label ${idleLabel && 'idle'}`}>{selectedValue}</span>{open ? multi ? iconMultiClose : iconOpened : iconClosed}</button>
@@ -146,7 +150,9 @@ Dropdown.defaultProps = {
   iconMultiChecked: <span className='icon icon-check'></span>,
   iconMultiClose: <span className='icon icon-x'></span>,
   iconClosed: <span className='icon icon-chevron-right'></span>,
-  iconOpened: <span className='icon icon-chevron-down'></span>
+  iconOpened: <span className='icon icon-chevron-down'></span>,
+  overlayDuration: 200,
+  overlay: true
 }
 
 export default Dropdown;

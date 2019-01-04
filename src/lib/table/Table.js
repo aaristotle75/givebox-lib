@@ -228,7 +228,7 @@ const TableHead = ({ headers, sortColumn, sort, order, iconSortAsc, iconSortDesc
         items.push(<th key={key} style={{width: value.width}}></th>);
       } else {
         items.push(
-          <th colspan={value.colspan} onClick={() => sortColumn(value.sort)} className={`${value.sort && 'sort'}`} align={value.align || 'left'} style={{width: value.width }} key={key}>{value.name} {sort === value.sort ? order === 'desc' ? iconSortDesc : iconSortAsc : ''}</th>
+          <th colSpan={value.colspan} onClick={() => sortColumn(value.sort)} className={`${value.sort && 'sort'}`} align={value.align || 'left'} style={{width: value.width }} key={key}>{value.name} {sort === value.sort ? order === 'desc' ? iconSortDesc : iconSortAsc : ''}</th>
         );
       }
     });

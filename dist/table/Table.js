@@ -219,7 +219,7 @@ const TableHead = ({
         }));
       } else {
         items.push(React.createElement("th", {
-          colspan: value.colspan,
+          colSpan: value.colspan,
           onClick: () => sortColumn(value.sort),
           className: `${value.sort && 'sort'}`,
           align: value.align || 'left',

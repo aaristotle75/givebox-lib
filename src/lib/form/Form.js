@@ -388,7 +388,8 @@ class Form extends Component {
     const field = has(this.state.fields, name) ? this.state.fields[name] : null;
     const defaults = cloneObj(this.defaults);
     const params = Object.assign({}, defaults, {
-      floatingLabel: true
+      floatingLabel: true,
+      overlay: true
     }, opts);
 
     const defaultValue = field ? field.value : params.value;
@@ -414,6 +415,8 @@ class Form extends Component {
         multi={field ? field.multi : params.multi}
         value={field ? field.value : ''}
         params={params}
+        overlay={params.overlay}
+        overlayDuration={params.overlayDuration}
       />
     )
   }

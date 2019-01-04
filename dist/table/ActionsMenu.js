@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { util } from '../';
 import AnimateHeight from 'react-animate-height';
+import Fade from '../common/Fade';
 
 class ActionsMenu extends Component {
   constructor(props) {
@@ -62,7 +63,9 @@ class ActionsMenu extends Component {
       style,
       label,
       iconOpened,
-      iconClosed
+      iconClosed,
+      overlay,
+      overlayDuration
     } = this.props;
     const {
       open
@@ -70,7 +73,13 @@ class ActionsMenu extends Component {
     return React.createElement("div", {
       className: "actionsMenu",
       style: style
-    }, React.createElement("button", {
+    }, React.createElement(Fade, {
+      in: open && overlay,
+      duration: overlayDuration
+    }, React.createElement("div", {
+      onClick: this.closeMenu,
+      className: `dropdown-cover ${open ? '' : 'displayNone'}`
+    })), React.createElement("button", {
       disabled: !!util.isEmpty(this.props.options),
       className: "menuLabel",
       type: "button",
@@ -98,6 +107,8 @@ ActionsMenu.defaultProps = {
   }),
   iconClosed: React.createElement("span", {
     className: "icon icon-chevron-right"
-  })
+  }),
+  overlayDuration: 200,
+  overlay: true
 };
 export default ActionsMenu;

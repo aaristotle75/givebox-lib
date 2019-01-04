@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { lookup, isEmpty } from '../common/utility';
 import GBLink from '../common/GBLink';
+import Fade from '../common/Fade';
 import AnimateHeight from 'react-animate-height';
 import has from 'has';
 
@@ -114,7 +115,9 @@ class Dropdown extends Component {
       contentStyle,
       iconMultiClose,
       iconOpened,
-      iconClosed
+      iconClosed,
+      overlay,
+      overlayDuration
     } = this.props;
     const {
       open,
@@ -125,7 +128,13 @@ class Dropdown extends Component {
     return React.createElement("div", {
       style: style,
       className: `input-group ${className || ''} ${error ? 'error tooltip' : ''}`
+    }, React.createElement(Fade, {
+      in: open && overlay,
+      duration: overlayDuration
     }, React.createElement("div", {
+      onClick: this.closeMenu,
+      className: `dropdown-cover ${open ? '' : 'displayNone'}`
+    })), React.createElement("div", {
       className: `dropdown ${floatingLabel && 'floating-label'} ${label ? 'fixed' : ''}`,
       style: dropdownStyle
     }, label && !floatingLabel && React.createElement("label", null, React.createElement(GBLink, {
@@ -170,6 +179,8 @@ Dropdown.defaultProps = {
   }),
   iconOpened: React.createElement("span", {
     className: "icon icon-chevron-down"
-  })
+  }),
+  overlayDuration: 200,
+  overlay: true
 };
 export default Dropdown;
