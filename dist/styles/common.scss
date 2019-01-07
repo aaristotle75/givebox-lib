@@ -167,6 +167,24 @@ button.button.secondary:hover {
   @include default-transition(.25s);
 }
 
+button.modalToTop {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 15px;
+  border: 1px solid $light-gray;
+  color: $med-gray;
+  background: transparentize($white, .3);
+  z-index: 9999999;
+
+  .icon { font-size: $large-text-size; }
+}
+
+button.modalToTop:hover {
+  color: $white;
+  background: $mainColor;
+}
+
 /*------- Lists ----------*/
 ul {
   list-style-type: none;

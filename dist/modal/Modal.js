@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import * as Effect from './ModalEffect';
 import { cloneObj, isEmpty } from '../common/utility';
+import animateScrollTo from 'animated-scroll-to';
+import Waypoint from 'react-waypoint';
+import Fade from '../common/Fade';
+import GBLink from '../common/GBLink';
+import Portal from '../common/Portal';
 
 const prefix = require('react-prefixr');
 
@@ -20,6 +25,9 @@ class Modal extends Component {
     this.closeModal = this.closeModal.bind(this);
     this.renderActions = this.renderActions.bind(this);
     this.onClose = this.onClose.bind(this);
+    this.onEnter = this.onEnter.bind(this);
+    this.onExit = this.onExit.bind(this);
+    this.toTop = this.toTop.bind(this);
     let effect;
     if (props.mobile) effect = '3DFlipVert';else effect = props.effect;
     const effects = {
@@ -41,8 +49,10 @@ class Modal extends Component {
       effect: effects[effect],
       windowWidth: window.innerWidth,
       windowHeight: window.innerHeight,
-      mobile: window.innerWidth < this.props.mobileBreakpoint ? true : false
+      mobile: window.innerWidth < this.props.mobileBreakpoint ? true : false,
+      scrolled: false
     };
+    this.modalRef = React.createRef();
   }
 
   componentDidMount() {
@@ -55,6 +65,33 @@ class Modal extends Component {
 
   componentWillUnmount() {
     clearTimeout(this.closeTimer);
+
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+      this.timeout = null;
+    }
+  }
+
+  onEnter(pos) {
+    this.setState({
+      scrolled: false
+    });
+  }
+
+  onExit(pos) {
+    this.timeout = setTimeout(() => {
+      this.setState({
+        scrolled: true
+      });
+      this.timeout = null;
+    }, 200);
+  }
+
+  toTop() {
+    //const el = document.getElementById('layout-main');
+    animateScrollTo(0, {
+      element: this.modalRef.current
+    });
   }
 
   onClose(callback) {
@@ -184,13 +221,20 @@ class Modal extends Component {
       opacity: open ? 1 : 0
     };
     const openEffect = open ? effect.end : effect.begin;
+    const el = document.getElementById('app-root');
     return React.createElement("div", {
+      ref: this.modalRef,
       onClick: () => this.closeModal(closeCallback),
       className: `modalOverlay`,
       style: prefix({ ...overlayStyle,
         ...modalOverlayStyle
       })
-    }, React.createElement("div", {
+    }, React.createElement(Waypoint, {
+      debug: true,
+      onEnter: this.onEnter,
+      onLeave: this.onExit,
+      bottomOffset: '100px'
+    }), React.createElement("div", {
       className: `modalContent ${className}`,
       style: prefix({ ...contentStyle,
         ...transition_style,
@@ -203,7 +247,15 @@ class Modal extends Component {
       onClick: () => this.closeModal(closeCallback)
     }, iconClose), React.createElement("div", {
       className: "modalTop"
-    }), this.renderChildren(), this.renderActions(), React.createElement("div", {
+    }), this.renderChildren(), this.renderActions(), React.createElement(Fade, {
+      duration: 500,
+      in: this.state.scrolled
+    }, React.createElement(GBLink, {
+      onClick: this.toTop,
+      className: "modalToTop"
+    }, React.createElement("span", {
+      className: "icon icon-chevrons-up"
+    }))), React.createElement("div", {
       className: "modalBottom"
     })));
   }
