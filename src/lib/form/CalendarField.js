@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import 'flatpickr/dist/themes/light.css';
 import Flatpickr from 'react-flatpickr';
 import Moment from 'moment';
-import { util, _v } from '../';
+import { util, _v, Fade } from '../';
 
 class CalendarField extends Component {
 
@@ -12,18 +12,28 @@ class CalendarField extends Component {
     this.onBlur = this.onBlur.bind(this);
     this.onOpen = this.onOpen.bind(this);
     this.onClose = this.onClose.bind(this);
+    this.closeCalendar = this.closeCalendar.bind(this);
     this.onChange = this.onChange.bind(this);
     this.onChangeInput = this.onChangeInput.bind(this);
     this.state = {
       date: this.props.defaultValue ? this.props.defaultValue : '',
       value: this.props.defaultValue ? this.props.defaultValue : '',
-      status: 'idle'
+      status: 'idle',
+      open: false,
+      display: false
     }
     this.inputRef = React.createRef();
   }
 
   componentDidMount() {
     if (this.props.createField) this.props.createField(this.props.name, this.props.params);
+  }
+
+  componentWillUnmount() {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+      this.timeout = null;
+    }
   }
 
   onFocus(e) {
@@ -42,11 +52,19 @@ class CalendarField extends Component {
   }
 
   onOpen() {
-    this.setState({status: 'active'});
+    this.setState({status: 'active', open: true, display: true});
+  }
+
+  closeCalendar() {
+    this.inputRef.current.flatpickr.close();
   }
 
   onClose() {
-    this.setState({status: 'idle'});
+    this.setState({status: 'idle', open: false});
+    this.timeout = setTimeout(() => {
+      this.setState({display: false });
+      this.timeout = null;
+    }, this.props.overlayDuration);
   }
 
   onChange(selectedDates, dateStr, instance) {
@@ -80,17 +98,23 @@ class CalendarField extends Component {
       step,
       error,
       errorType,
-      icon
+      icon,
+      overlay,
+      overlayDuration
     } = this.props;
 
     const {
-      date
+      date,
+      open,
+      display
     } = this.state;
 
     const dateFormat = enableTime ? 'm/d/Y H:i' : 'm/d/Y';
     const labelStyle = util.cloneObj(customLabel);
+    const modalEl = document.getElementById('modal-root');
     return (
       <Flatpickr
+        ref={this.inputRef}
         value={date}
         onChange={this.onChange}
         onOpen={this.onOpen}
@@ -103,14 +127,15 @@ class CalendarField extends Component {
           minuteIncrement: 1,
           static: staticOption,
           clickOpens: clickOpens,
-          wrap: true
+          wrap: true,
+          appendTo: modalEl
         }}
       >
-        <div className='flatpickr'>
+        <div id={`flatpickr-${name}`} className='flatpickr'>
+          <Fade in={open && overlay} duration={overlayDuration}><div onClick={this.closeCalendar} className={`dropdown-cover ${display ? '' : 'displayNone'}`}></div></Fade>
           <div className={`input-group ${error && 'error tooltip'}`}>
             <div className={`floating-label ${this.state.status} ${fixedLabel && 'fixed'}`}>
               <input
-                ref={this.inputRef}
                 name={name}
                 style={style}
                 type='text'
@@ -148,7 +173,9 @@ CalendarField.defaultProps = {
   enableTime: false,
   staticOption: false,
   clickOpens: false,
-  icon: <span className='icon icon-calendar' />
+  icon: <span className='icon icon-calendar' />,
+  overlayDuration: 200,
+  overlay: true
 }
 
 export default CalendarField;

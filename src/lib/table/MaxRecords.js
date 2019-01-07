@@ -52,10 +52,11 @@ class MaxRecords extends Component {
       style,
       max,
       count,
-      error
+      error,
+      direction
     } = this.props;
 
-    if (!count || error) {
+    if (!count || error || count <= max) {
       return ( <div></div> );
     }
 
@@ -68,6 +69,7 @@ class MaxRecords extends Component {
           onChange={this.onChange}
           options={this.setOptions()}
           floatingLabel={false}
+          direction={direction}
         />
       </div>
     );

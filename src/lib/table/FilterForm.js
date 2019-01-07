@@ -109,7 +109,7 @@ class Filter extends Component {
   getField(key, value) {
     switch (value.field) {
       case 'calendarRange': {
-        return <div key={key} className='col rangeCol'>{this.props.calendarRange(value.name, { options: value.options, colWidth: '50%' })}</div>;
+        return <div key={key} className='col rangeCol'>{this.props.calendarRange(value.name, { options: value.options, colWidth: '50%', enableTime: value.enableTime, overlay: value.overlay, overlayDuration: value.overlayDuration })}</div>;
       }
 
       case 'dropdown': {
@@ -121,7 +121,8 @@ class Filter extends Component {
               filter: value.name,
               value: value.value,
               multi: value.multi,
-              debug: value.debug
+              debug: value.debug,
+              direction: value.direction
           })}
           </div>;
       }

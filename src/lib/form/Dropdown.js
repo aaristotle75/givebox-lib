@@ -16,6 +16,7 @@ class Dropdown extends Component {
     this.setSelected = this.setSelected.bind(this);
     this.state = {
       open: false,
+      display: false,
       selected: '',
       value: ''
     }
@@ -34,17 +35,25 @@ class Dropdown extends Component {
 
   componentWillUnmount() {
     this.closeMenu();
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+      this.timeout = null;
+    }
   }
 
   openMenu(e) {
     e.stopPropagation();
-    this.setState({open: true});
+    this.setState({open: true, display: true});
     if (!this.props.multi) document.addEventListener('click', this.closeMenu);
   }
 
   closeMenu() {
     this.setState({open: false });
     document.removeEventListener('click', this.closeMenu);
+    this.timeout = setTimeout(() => {
+      this.setState({display: false });
+      this.timeout = null;
+    }, this.props.overlayDuration);
   }
 
   onClick(e) {
@@ -104,12 +113,14 @@ class Dropdown extends Component {
       iconOpened,
       iconClosed,
       overlay,
-      overlayDuration
+      overlayDuration,
+      direction
     } = this.props;
 
     const {
       open,
-      selected
+      selected,
+      display
     } = this.state;
 
     const selectedValue = multi ? open ? 'Close Menu' : selectLabel : selected && (value || defaultValue) ? selected : selectLabel;
@@ -117,11 +128,13 @@ class Dropdown extends Component {
 
     return (
       <div style={style} className={`input-group ${className || ''} ${error ? 'error tooltip' : ''}`}>
-        <Fade in={open && overlay} duration={overlayDuration}><div onClick={this.closeMenu} className={`dropdown-cover ${open ? '' : 'displayNone'}`}></div></Fade>
+        <Fade in={open && overlay} duration={overlayDuration}>
+          <div onClick={this.closeMenu} className={`dropdown-cover ${display ? '' : 'displayNone'}`}></div>
+        </Fade>
         <div className={`dropdown ${floatingLabel && 'floating-label'} ${label ? 'fixed' : ''}`} style={dropdownStyle}>
           {label && !floatingLabel && <label><GBLink onClick={open ? this.closeMenu : this.openMenu}>{label}</GBLink></label>}
           <button type='button' onClick={open ? this.closeMenu : this.openMenu}><span className={`label ${idleLabel && 'idle'}`}>{selectedValue}</span>{open ? multi ? iconMultiClose : iconOpened : iconClosed}</button>
-          <div style={contentStyle} className={`dropdown-content`}>
+          <div style={contentStyle} className={`dropdown-content ${direction}`}>
             <AnimateHeight
               duration={200}
               height={open ? 'auto' : 0}
@@ -152,7 +165,8 @@ Dropdown.defaultProps = {
   iconClosed: <span className='icon icon-chevron-right'></span>,
   iconOpened: <span className='icon icon-chevron-down'></span>,
   overlayDuration: 200,
-  overlay: true
+  overlay: true,
+  direction: ''
 }
 
 export default Dropdown;

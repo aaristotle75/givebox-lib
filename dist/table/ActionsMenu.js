@@ -10,7 +10,8 @@ class ActionsMenu extends Component {
     this.openMenu = this.openMenu.bind(this);
     this.onClick = this.onClick.bind(this);
     this.state = {
-      open: false
+      open: false,
+      display: false
     };
   }
 
@@ -18,12 +19,18 @@ class ActionsMenu extends Component {
 
   componentWillUnmount() {
     this.closeMenu();
+
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+      this.timeout = null;
+    }
   }
 
   openMenu(e) {
     e.stopPropagation();
     this.setState({
-      open: true
+      open: true,
+      display: true
     });
     document.addEventListener('click', this.closeMenu);
   }
@@ -33,6 +40,12 @@ class ActionsMenu extends Component {
       open: false
     });
     document.removeEventListener('click', this.closeMenu);
+    this.timeout = setTimeout(() => {
+      this.setState({
+        display: false
+      });
+      this.timeout = null;
+    }, this.props.overlayDuration);
   }
 
   onClick(e) {
@@ -65,10 +78,12 @@ class ActionsMenu extends Component {
       iconOpened,
       iconClosed,
       overlay,
-      overlayDuration
+      overlayDuration,
+      direction
     } = this.props;
     const {
-      open
+      open,
+      display
     } = this.state;
     return React.createElement("div", {
       className: "actionsMenu",
@@ -78,7 +93,7 @@ class ActionsMenu extends Component {
       duration: overlayDuration
     }, React.createElement("div", {
       onClick: this.closeMenu,
-      className: `dropdown-cover ${open ? '' : 'displayNone'}`
+      className: `dropdown-cover ${display ? '' : 'displayNone'}`
     })), React.createElement("button", {
       disabled: !!util.isEmpty(this.props.options),
       className: "menuLabel",
@@ -87,11 +102,11 @@ class ActionsMenu extends Component {
     }, !util.isEmpty(this.props.options) ? label : 'No Actions', React.createElement("span", {
       className: `${util.isEmpty(this.props.options) && 'displayNone'}`
     }, open ? iconOpened : iconClosed)), React.createElement("div", {
-      className: `actionsMenu-content`
+      className: `actionsMenu-content ${direction}`
     }, React.createElement(AnimateHeight, {
       duration: 200,
       height: open ? 'auto' : 0
-    }, React.createElement("div", {
+    }, React.createElement("i", null), React.createElement("div", {
       className: "actionsMenu-text"
     }, this.listOptions()))));
   }
@@ -109,6 +124,7 @@ ActionsMenu.defaultProps = {
     className: "icon icon-chevron-right"
   }),
   overlayDuration: 200,
-  overlay: true
+  overlay: true,
+  direction: ''
 };
 export default ActionsMenu;

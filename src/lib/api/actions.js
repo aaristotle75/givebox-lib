@@ -144,6 +144,11 @@ export function sendAPI(
             if (callback) callback(has(response, 'data') ? response.data : null, null);
             if (reloadResource) dispatch(reloadResource(customName || resource, { resourcesToLoad: resourcesToLoad }));
             break;
+          case 504:
+            const msg = 'Gateway timeout error occured. Please retry later.';
+            dispatch(sendResponse(resource, {}, response || msg));
+            if (callback) callback(null, response || msg);
+            break;
           default:
             // pass response as error
             dispatch(sendResponse(resource, {}, response));

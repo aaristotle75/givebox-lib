@@ -12,6 +12,7 @@ class ActionsMenu extends Component {
     this.onClick = this.onClick.bind(this);
     this.state = {
       open: false,
+      display: false
     }
   }
 
@@ -20,17 +21,25 @@ class ActionsMenu extends Component {
 
   componentWillUnmount() {
     this.closeMenu();
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+      this.timeout = null;
+    }
   }
 
   openMenu(e) {
     e.stopPropagation();
-    this.setState({open: true});
+    this.setState({open: true, display: true});
     document.addEventListener('click', this.closeMenu);
   }
 
   closeMenu() {
     this.setState({open: false });
     document.removeEventListener('click', this.closeMenu);
+    this.timeout = setTimeout(() => {
+      this.setState({display: false });
+      this.timeout = null;
+    }, this.props.overlayDuration);
   }
 
   onClick(e) {
@@ -62,22 +71,25 @@ class ActionsMenu extends Component {
       iconOpened,
       iconClosed,
       overlay,
-      overlayDuration
+      overlayDuration,
+      direction
     } = this.props;
 
     const {
-      open
+      open,
+      display
     } = this.state;
 
     return (
       <div className='actionsMenu' style={style}>
-        <Fade in={open && overlay} duration={overlayDuration}><div onClick={this.closeMenu} className={`dropdown-cover ${open ? '' : 'displayNone'}`}></div></Fade>
+        <Fade in={open && overlay} duration={overlayDuration}><div onClick={this.closeMenu} className={`dropdown-cover ${display ? '' : 'displayNone'}`}></div></Fade>
         <button disabled={!!util.isEmpty(this.props.options)} className='menuLabel' type='button' onClick={open ? this.closeMenu : this.openMenu}>{!util.isEmpty(this.props.options) ? label : 'No Actions'}<span className={`${util.isEmpty(this.props.options) && 'displayNone'}`}>{open ? iconOpened : iconClosed}</span></button>
-        <div className={`actionsMenu-content`}>
+        <div className={`actionsMenu-content ${direction}`}>
           <AnimateHeight
             duration={200}
             height={open ? 'auto' : 0}
           >
+            <i></i>
             <div className='actionsMenu-text'>
               {this.listOptions()}
             </div>
@@ -95,7 +107,8 @@ ActionsMenu.defaultProps = {
   iconOpened: <span className='icon icon-chevron-down'></span>,
   iconClosed: <span className='icon icon-chevron-right'></span>,
   overlayDuration: 200,
-  overlay: true
+  overlay: true,
+  direction: ''
 }
 
 export default ActionsMenu;

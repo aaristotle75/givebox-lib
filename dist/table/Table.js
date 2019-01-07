@@ -81,13 +81,14 @@ class Table extends Component {
     });
   }
 
-  renderMaxRecords() {
+  renderMaxRecords(direction) {
     return React.createElement(MaxRecords, {
       name: this.props.name,
       style: this.props.maxRecordsStyle,
       textStyle: this.props.maxRecordsTextStyle,
       align: this.props.maxRecordsAlign,
-      records: this.props.maxRecords
+      records: this.props.maxRecords,
+      direction: direction
     });
   }
 
@@ -135,7 +136,7 @@ class Table extends Component {
     }, (searchDisplay === 'top' || searchDisplay === 'both') && this.renderSearch(), (exportDisplay === 'top' || exportDisplay === 'both') && this.renderExport(), filters && React.createElement(Filter, {
       name: name,
       options: filters
-    }), (maxRecordsDisplay === 'top' || maxRecordsDisplay === 'both') && this.renderMaxRecords(), (paginationDisplay === 'top' || paginationDisplay === 'both') && this.renderPagination(), React.createElement("table", {
+    }), (paginationDisplay === 'top' || paginationDisplay === 'both') && this.renderPagination(), (maxRecordsDisplay === 'top' || maxRecordsDisplay === 'both') && this.renderMaxRecords(), React.createElement("table", {
       style: this.props.tableStyle
     }, React.createElement(TableHead, {
       headers: headers,
@@ -153,7 +154,7 @@ class Table extends Component {
       detailsTitle: detailsTitle
     }), React.createElement(TableFoot, {
       footer: footer
-    })), (searchDisplay === 'bottom' || searchDisplay === 'both') && this.renderSearch(), (exportDisplay === 'bottom' || exportDisplay === 'both') && this.renderExport(), (maxRecordsDisplay === 'bottom' || maxRecordsDisplay === 'both') && this.renderMaxRecords(), (paginationDisplay === 'bottom' || paginationDisplay === 'both') && this.renderPagination());
+    })), (searchDisplay === 'bottom' || searchDisplay === 'both') && this.renderSearch(), (exportDisplay === 'bottom' || exportDisplay === 'both') && this.renderExport(), (paginationDisplay === 'bottom' || paginationDisplay === 'both') && this.renderPagination(), (maxRecordsDisplay === 'bottom' || maxRecordsDisplay === 'both') && this.renderMaxRecords('top'));
   }
 
 }
@@ -175,7 +176,7 @@ Table.defaultProps = {
   iconDetailsCollapse: React.createElement("span", {
     className: "icon icon-minus-circle"
   }),
-  detailsTitle: 'Details'
+  detailsTitle: ''
 };
 
 function mapStateToProps(state, props) {
@@ -227,7 +228,7 @@ const TableHead = ({
             width: value.width
           },
           key: key
-        }, value.name, " ", sort === value.sort ? order === 'desc' ? iconSortDesc : iconSortAsc : ''));
+        }, value.name, " ", value.sort && sort === value.sort ? order === 'desc' ? iconSortDesc : iconSortAsc : ''));
       }
     });
   }

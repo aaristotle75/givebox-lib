@@ -65,8 +65,6 @@ tfoot {
 .search {
 
 	button {
-		width: 20px;
-		height: 20px;
 		padding: 0 5px;
 		margin: 0;
 	}
@@ -92,10 +90,17 @@ tfoot {
 
 /*--------- Max Records --------*/
 .maxRecords {
-	margin: 10px 0;
+	margin: 0 0 10px 0;
+
+  .input-group:not(.hidden) {
+    padding: 0;
+    padding-top: 0;
+    margin: 0;
+  }
 }
 
 .recordCount {
+  padding-bottom: 10px;
 	font-size: $tiny-text-size;
 }
 
@@ -265,6 +270,10 @@ table button .icon {
     margin-bottom: 20px;
   }
 
+  .actionsMenu-content.top {
+    bottom: 10px;
+  }
+
   .actionsMenu-text {
     position: relative;
     width: 100%;
@@ -309,8 +318,6 @@ table button .icon {
   }
 
   .filter-content {
-    display: block;
-    position: relative;
     background-color: $off-white;
     min-width: 200px;
     width: 100%;

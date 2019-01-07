@@ -91,7 +91,7 @@ class Table extends Component {
     )
   }
 
-  renderMaxRecords() {
+  renderMaxRecords(direction) {
     return (
       <MaxRecords
         name={this.props.name}
@@ -99,6 +99,7 @@ class Table extends Component {
         textStyle={this.props.maxRecordsTextStyle}
         align={this.props.maxRecordsAlign}
         records={this.props.maxRecords}
+        direction={direction}
       />
     )
   }
@@ -157,8 +158,8 @@ class Table extends Component {
           name={name}
           options={filters}
         />}
-        {(maxRecordsDisplay === 'top' || maxRecordsDisplay === 'both') && this.renderMaxRecords()}
         {(paginationDisplay === 'top' || paginationDisplay === 'both') && this.renderPagination()}
+        {(maxRecordsDisplay === 'top' || maxRecordsDisplay === 'both') && this.renderMaxRecords()}
         <table style={this.props.tableStyle}>
           <TableHead
             headers={headers}
@@ -180,8 +181,8 @@ class Table extends Component {
         </table>
         {(searchDisplay === 'bottom' || searchDisplay === 'both') && this.renderSearch()}
         {(exportDisplay === 'bottom' || exportDisplay === 'both') &&  this.renderExport()}
-        {(maxRecordsDisplay === 'bottom' || maxRecordsDisplay === 'both') && this.renderMaxRecords()}
         {(paginationDisplay === 'bottom' || paginationDisplay === 'both') && this.renderPagination()}
+        {(maxRecordsDisplay === 'bottom' || maxRecordsDisplay === 'both') && this.renderMaxRecords('top')}
       </div>
     )
   }
@@ -196,7 +197,7 @@ Table.defaultProps = {
   iconSortDesc: <span className='icon icon-chevron-down'></span>,
   iconDetailsExpand: <span className='icon icon-plus-circle'></span>,
   iconDetailsCollapse: <span className='icon icon-minus-circle'></span>,
-  detailsTitle: 'Details'
+  detailsTitle: ''
 }
 
 function mapStateToProps(state, props) {
@@ -228,7 +229,7 @@ const TableHead = ({ headers, sortColumn, sort, order, iconSortAsc, iconSortDesc
         items.push(<th key={key} style={{width: value.width}}></th>);
       } else {
         items.push(
-          <th colSpan={value.colspan} onClick={() => sortColumn(value.sort)} className={`${value.sort && 'sort'}`} align={value.align || 'left'} style={{width: value.width }} key={key}>{value.name} {sort === value.sort ? order === 'desc' ? iconSortDesc : iconSortAsc : ''}</th>
+          <th colSpan={value.colspan} onClick={() => sortColumn(value.sort)} className={`${value.sort && 'sort'}`} align={value.align || 'left'} style={{width: value.width }} key={key}>{value.name} {value.sort && sort === value.sort ? order === 'desc' ? iconSortDesc : iconSortAsc : ''}</th>
         );
       }
     });

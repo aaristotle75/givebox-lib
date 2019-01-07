@@ -392,7 +392,9 @@ class Form extends Component {
       error: field ? field.error : params.error,
       errorType: params.errorType,
       createField: this.createField,
-      params: params
+      params: params,
+      overlay: params.overlay,
+      overlayDuration: params.overlayDuration
     });
   }
 
@@ -407,7 +409,8 @@ class Form extends Component {
       range2Name: 'range2',
       range2Label: 'End Date',
       range2Value: '',
-      colWidth: '50%'
+      colWidth: '50%',
+      overlay: true
     }, opts);
     return React.createElement("div", {
       style: params.style,
@@ -425,7 +428,9 @@ class Form extends Component {
       rangeEndField: params.range2Name,
       debug: params.debug,
       filter: name,
-      validate: 'calendarRange'
+      validate: 'calendarRange',
+      overlay: params.overlay,
+      overlayDuration: params.overlayDuration
     })), React.createElement("div", {
       style: {
         width: params.colWidth
@@ -439,7 +444,9 @@ class Form extends Component {
       rangeStartField: params.range1Name,
       debug: params.debug,
       filter: name,
-      validate: 'calendarRange'
+      validate: 'calendarRange',
+      overlay: params.overlay,
+      overlayDuration: params.overlayDuration
     })), React.createElement("div", {
       className: "clear"
     }));
@@ -519,7 +526,8 @@ class Form extends Component {
       value: field ? field.value : '',
       params: params,
       overlay: params.overlay,
-      overlayDuration: params.overlayDuration
+      overlayDuration: params.overlayDuration,
+      direction: params.direction
     });
   }
 
@@ -666,7 +674,7 @@ class Form extends Component {
   checkForErrors(fields, group) {
     let error = false;
     Object.entries(fields).forEach(([key, value]) => {
-      if (value.group === group || value.group === 'all') {
+      if (value.group === group || value.group === 'all' || group === 'submitAll') {
         if (value.error) error = true;
       }
     });
@@ -735,6 +743,7 @@ class Form extends Component {
       }
     }
 
+    if (!error && typeof err === 'string') error = err;
     return error;
   }
 
@@ -764,7 +773,8 @@ class Form extends Component {
       label: 'Save',
       style: {},
       className: '',
-      allowDisabled: false
+      allowDisabled: false,
+      group: 'submitAll'
     };
     const options = { ...defaults,
       ...opts
@@ -775,7 +785,7 @@ class Form extends Component {
       style: options.style,
       type: "button",
       disabled: !this.state.updated && options.allowDisabled ? true : false,
-      onClick: e => this.validateForm(e, callback)
+      onClick: e => this.validateForm(e, callback, options.group)
     }, options.label);
   }
 
@@ -813,7 +823,7 @@ class Form extends Component {
     let fields = this.state.fields;
     const groupFields = {};
     Object.entries(fields).forEach(([key, value]) => {
-      if ((value.group === group || value.group === 'all') && value.autoReturn) {
+      if ((value.group === group || value.group === 'all' || group === 'submitAll') && value.autoReturn) {
         groupFields[key] = value;
 
         if (value.required && !value.value) {

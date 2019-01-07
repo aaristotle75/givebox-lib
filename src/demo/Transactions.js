@@ -27,7 +27,7 @@ class Transactions extends Component {
   }
 
   componentDidMount() {
-    this.props.getResource(this.props.resourceName, { search: { filter: 'txAccount:"commerce"' } } );
+    this.props.getResource(this.props.resourceName, { search: { max: 20, filter: 'txAccount:"commerce"' } } );
     this.props.getResource('orgFinanceStats');
   }
 
@@ -411,12 +411,12 @@ class Transactions extends Component {
           options={filters}
           label='Advanced Search'
           allowDisabled={false}
-          alwaysFilter='txAccount:"commerce"'
         />
         <Table
           name={resourceName}
           data={() => this.formatTableData()}
           exportDesc='Export Transaction Records'
+          maxRecordsDisplay='both'
         />
       </div>
     )

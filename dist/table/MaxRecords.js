@@ -53,10 +53,11 @@ class MaxRecords extends Component {
       style,
       max,
       count,
-      error
+      error,
+      direction
     } = this.props;
 
-    if (!count || error) {
+    if (!count || error || count <= max) {
       return React.createElement("div", null);
     }
 
@@ -69,7 +70,8 @@ class MaxRecords extends Component {
       defaultValue: parseInt(max),
       onChange: this.onChange,
       options: this.setOptions(),
-      floatingLabel: false
+      floatingLabel: false,
+      direction: direction
     }));
   }
 
