@@ -1,5 +1,7 @@
 import Moment from 'moment';
+import { extendMoment } from 'moment-range';
 import { numberWithCommas } from '../common/utility';
+const xmoment = extendMoment(Moment);
 export function validateEmail(email) {
   const regex = /^(([^<>()[\]\\.,;:\s@']+(\.[^<>()[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return regex.test(email);
@@ -239,6 +241,31 @@ export function formatDate(value, time = false) {
   let str;
   if (time) str = !x[2] ? x[1] : x[1] + '/' + x[2] + (x[3] ? '/' + x[3] : '') + (x[4] ? ' ' + x[4] : '') + (x[5] ? ':' + x[5] : '');else str = !x[2] ? x[1] : x[1] + '/' + x[2] + (x[3] ? '/' + x[3] : '');
   return str;
+}
+export function validateDate(value, opts) {
+  let validate = true;
+  let min, max;
+  const defaultOpts = {
+    min: null,
+    max: null,
+    enableTime: false
+  };
+  const options = { ...defaultOpts,
+    ...opts
+  };
+  const format = options.enableTime ? 'MM/DD/YYYY H:mm' : 'MM/DD/YYYY';
+  if (options.min) min = Moment(options.min, format).valueOf() / 1000;
+  if (options.max) max = Moment(options.max, format).valueOf() / 1000;
+
+  if (min && max) {
+    if (value < min || value > max) validate = false;
+  } else if (min && !max) {
+    if (value < min) validate = false;
+  } else if (!min && max) {
+    if (value > max) validate = false;
+  }
+
+  return validate;
 }
 export function validatePassword(value) {
   let validate = true;

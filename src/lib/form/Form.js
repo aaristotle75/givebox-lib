@@ -689,7 +689,18 @@ class Form extends Component {
   }
 
   validateField(key, validate, value, opts = {}) {
+    let min, max, errorMsg, format;
     switch (validate) {
+      case 'date':
+        format = opts.format || null;
+        min = opts.min || null;
+        max = opts.max || null;
+        errorMsg = min && max ? `Please enter a date between ${min} and ${max}.`
+        : min && !max ? `Please enter a date after ${min}.`
+        : !min && max ? `Please enter a date before ${max}.`
+        : `default error`;
+        if (!_v.validateDate(value, { min: min, max: max, format: format })) this.fieldProp(key, {error: opts.errorMsg || errorMsg});
+        break;
       case 'email':
         if (!_v.validateEmail(value)) this.fieldProp(key, {error: opts.errorMsg || _v.msgs.email});
         break;
@@ -713,10 +724,10 @@ class Form extends Component {
         break;
       case 'number':
       case 'money':
-        const min = opts.min || _v.limits.txMin;
-        const max = opts.max || _v.limits.txMax;
         const decimal = opts.decimal || true;
-        const errorMsg = opts.errorMsg || `Please enter a valid ${validate === 'money' ? 'amount' : 'number'} between ${numberWithCommas(min)} to ${numberWithCommas(max)}`;
+        min = opts.min || _v.limits.txMin;
+        max = opts.max || _v.limits.txMax;
+        errorMsg = opts.errorMsg || `Please enter a valid ${validate === 'money' ? 'amount' : 'number'} between ${numberWithCommas(min)} to ${numberWithCommas(max)}`;
         const error = decimal ? errorMsg : `${errorMsg} with no decimal point.`;
         if (!_v.validateNumber(value, min, max, decimal )) this.fieldProp(key, {error: error});
         break;

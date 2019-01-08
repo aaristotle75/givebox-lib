@@ -5,7 +5,6 @@ import animateScrollTo from 'animated-scroll-to';
 import Waypoint from 'react-waypoint';
 import Fade from '../common/Fade';
 import GBLink from '../common/GBLink';
-import Portal from '../common/Portal';
 
 const prefix = require('react-prefixr');
 
