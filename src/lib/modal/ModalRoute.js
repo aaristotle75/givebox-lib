@@ -105,8 +105,7 @@ function mapStateToProps(state, props) {
   return {
     modals: state.modal,
     open: open,
-    opts: opts,
-    reduxAppRef: state.app.appRef
+    opts: opts
   }
 }
 
