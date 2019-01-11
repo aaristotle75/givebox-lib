@@ -67,3 +67,8 @@ $mobile-width: 800px;
     }
   }
 }
+
+@mixin filter($filter...) {
+  -webkit-filter: $filter;
+  filter: $filter;
+}

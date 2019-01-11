@@ -8,6 +8,7 @@ import Moment from 'moment';
 class Filter extends Component {
   constructor(props) {
     super(props);
+    this.ignoreFiltersCallback = this.ignoreFiltersCallback.bind(this);
     this.processFormCallback = this.processFormCallback.bind(this);
     this.processForm = this.processForm.bind(this);
     this.getField = this.getField.bind(this);
@@ -92,12 +93,20 @@ class Filter extends Component {
     const search = { ...resource.search,
       ...merge
     };
-    this.props.getAPI(this.props.name, endpoint, search, this.processFormCallback, true);
+    this.props.getAPI(this.props.name, endpoint, search, this.ignoreFiltersCallback, true);
+  }
+
+  ignoreFiltersCallback(res, err) {
+    if (!err) {
+      this.props.closeMenu();
+      if (this.props.callback) this.props.callback('ignore');
+    }
   }
 
   processFormCallback(res, err) {
     if (!err) {
       this.props.closeMenu();
+      if (this.props.callback) this.props.callback('apply');
     }
   }
 
@@ -147,7 +156,8 @@ class Filter extends Component {
             value: value.value,
             multi: value.multi,
             debug: value.debug,
-            direction: value.direction
+            direction: value.direction,
+            onChange: value.onChange
           }));
         }
 

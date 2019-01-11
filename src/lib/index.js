@@ -44,10 +44,12 @@ import {
   removeResource,
   resourceProp,
   getAPI,
-  sendAPI
+  sendAPI,
+  setAppRef,
+  setModalRef
 } from './api/actions';
 
-import { resource, send, modal } from './api/reducers';
+import { app, resource, send, modal } from './api/reducers';
 
 import {
   getResource,
@@ -77,6 +79,8 @@ export {
   resourceProp,
   getAPI,
   sendAPI,
+  setAppRef,
+  setModalRef,
 
   // API
   giveboxAPI,
@@ -85,6 +89,7 @@ export {
   sendResource,
 
   // reducers
+  app,
   resource,
   send,
   modal,

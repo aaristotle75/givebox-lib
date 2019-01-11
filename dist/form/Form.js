@@ -37,6 +37,7 @@ class Form extends Component {
     this.createField = this.createField.bind(this);
     this.createRadioField = this.createRadioField.bind(this);
     this.fieldProp = this.fieldProp.bind(this);
+    this.multiFieldProp = this.multiFieldProp.bind(this);
     this.formProp = this.formProp.bind(this);
     this.getErrors = this.getErrors.bind(this);
     this.saveButton = this.saveButton.bind(this);
@@ -132,6 +133,13 @@ class Form extends Component {
     if (!field) {
       this.createField(name, args);
     }
+  }
+
+  multiFieldProp(fields) {
+    const bindthis = this;
+    Object.entries(fields).forEach(([key, value]) => {
+      bindthis.fieldProp(value.name, value.args);
+    });
   }
 
   fieldProp(name, args) {
@@ -247,7 +255,7 @@ class Form extends Component {
         error: false,
         updated: true
       });
-      if (field.onChange) field.onChange(name, value, field, this.state.fields);
+      if (field.onChange) field.onChange(name, field.multi ? arr : value, field, this.state.fields);
       if (field.debug) console.log('onChangeDropdown', name, field);
     }
   }
@@ -377,6 +385,13 @@ class Form extends Component {
       reduceTS: 1000,
       fixedLabel: true
     }, opts);
+
+    if (field) {
+      params.dateFormat = field.enableTime ? 'MM/DD/YYYY H:mm' : 'MM/DD/YYYY';
+    } else {
+      params.dateFormat = params.enableTime ? 'MM/DD/YYYY H:mm' : 'MM/DD/YYYY';
+    }
+
     return React.createElement(CalendarField, {
       name: name,
       required: field ? field.required : params.required,
@@ -394,7 +409,8 @@ class Form extends Component {
       createField: this.createField,
       params: params,
       overlay: params.overlay,
-      overlayDuration: params.overlayDuration
+      overlayDuration: params.overlayDuration,
+      dateFormat: params.dateFormat
     });
   }
 
@@ -522,12 +538,14 @@ class Form extends Component {
       error: field ? field.error : params.error,
       errorType: params.errorType,
       createField: this.createField,
-      multi: field ? field.multi : params.multi,
       value: field ? field.value : '',
       params: params,
       overlay: params.overlay,
       overlayDuration: params.overlayDuration,
-      direction: params.direction
+      direction: params.direction,
+      multi: field ? field.multi : params.multi,
+      multiCloseLabel: params.multiCloseLabel,
+      multiCloseCallback: params.multiCloseCallback
     });
   }
 
@@ -537,6 +555,36 @@ class Form extends Component {
       className: '',
       type: 'text'
     }, opts);
+    let maxLength;
+
+    switch (params.validate) {
+      case 'taxID':
+        {
+          maxLength = 10;
+          break;
+        }
+
+      case 'ssn':
+        {
+          maxLength = 11;
+          break;
+        }
+
+      case 'email':
+        {
+          maxLength = 128;
+          break;
+        }
+
+      case 'descriptor':
+        {
+          maxLength = 21;
+          break;
+        }
+      // no default
+    }
+
+    maxLength = maxLength || params.maxLength;
     return React.createElement(TextField, {
       name: name,
       className: params.className,
@@ -555,7 +603,7 @@ class Form extends Component {
       value: field ? field.value : params.value,
       error: field ? field.error : params.error,
       errorType: params.errorType,
-      maxLength: field ? field.maxLength : params.maxLength,
+      maxLength: maxLength,
       createField: this.createField,
       params: params,
       strength: params.strength,
@@ -934,6 +982,7 @@ class Form extends Component {
       validateForm: this.validateForm,
       formProp: this.formProp,
       fieldProp: this.fieldProp,
+      multiFieldProp: this.multiFieldProp,
       formSaved: this.formSaved,
       saveButton: this.saveButton,
       getErrors: this.getErrors,

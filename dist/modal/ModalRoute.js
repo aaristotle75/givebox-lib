@@ -10,6 +10,7 @@ class ModalRoute extends Component {
   constructor(props) {
     super(props);
     this.receiveMessage = this.receiveMessage.bind(this);
+    this.searchForOpenModals = this.searchForOpenModals.bind(this);
   }
 
   componentDidMount() {
@@ -18,9 +19,25 @@ class ModalRoute extends Component {
 
   componentWillUnmount() {}
 
+  searchForOpenModals(ignore) {
+    let modalIsOpen = false;
+    Object.entries(this.props.modals).forEach(([key, value]) => {
+      if (ignore !== key && value.open) modalIsOpen = true;
+    });
+    return modalIsOpen;
+  }
+
   receiveMessage(e) {
     if (e.data === this.props.id) {
-      if (this.props.open) this.props.toggleModal(e.data, false);
+      if (this.props.open) {
+        this.props.toggleModal(e.data, false);
+
+        if (this.props.appRef && !this.searchForOpenModals(e.data)) {
+          if (this.props.appRef.current.classList.contains('blur')) {
+            this.props.appRef.current.classList.remove('blur');
+          }
+        }
+      }
     }
   }
 
@@ -33,12 +50,19 @@ class ModalRoute extends Component {
       component,
       id,
       opts,
-      className
+      className,
+      appRef
     } = this.props;
     const modalRoot = document.getElementById('modal-root');
 
     if (!modalRoot) {
       return React.createElement(Loader, null);
+    }
+
+    if (appRef) {
+      if (open) {
+        appRef.current.classList.add('blur');
+      }
     }
 
     return React.createElement("div", null, open && React.createElement(Portal, {
@@ -70,8 +94,10 @@ function mapStateToProps(state, props) {
   }
 
   return {
+    modals: state.modal,
     open: open,
-    opts: opts
+    opts: opts,
+    reduxAppRef: state.app.appRef
   };
 }
 

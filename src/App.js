@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Routes from './Routes';
 import Loadable from 'react-loadable';
 import has from 'has';
-import { resourceProp, Loader, getResource, reloadResource } from './lib';
+import { resourceProp, Loader, getResource, reloadResource, setAppRef, setModalRef } from './lib';
 
 export const AppContext = React.createContext();
 
@@ -22,11 +22,15 @@ class App extends Component {
       org: {},
       user: {}
     }
+    this.appRef = React.createRef();
+    this.modalRef = React.createRef();
   }
 
   componentDidMount() {
     // Entry point - check if session exists and authenticate
     this.props.getResource('session', {callback: this.authenticate});
+    if (this.appRef) this.props.setAppRef(this.appRef);
+    if (this.modalRef) this.props.setModalRef(this.modalRef);
   }
 
   /**
@@ -148,7 +152,7 @@ class App extends Component {
 
     return (
       <div className={this.state.mobile ? 'mobile' : 'desktop'}>
-        <div id='app-root'>
+        <div id='app-root' ref={this.appRef}>
           <AppContext.Provider
             value={{
               title: `Givebox lib - ${this.state.org.name}`
@@ -161,7 +165,7 @@ class App extends Component {
             />
           </AppContext.Provider>
         </div>
-        <div id='modal-root'></div>
+        <div id='modal-root' ref={this.modalRef}></div>
       </div>
     );
   }
@@ -177,5 +181,7 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, {
   getResource,
   reloadResource,
-  resourceProp
+  resourceProp,
+  setAppRef,
+  setModalRef
 })(App);

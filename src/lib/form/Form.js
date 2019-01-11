@@ -38,6 +38,7 @@ class Form extends Component {
     this.createField = this.createField.bind(this);
     this.createRadioField = this.createRadioField.bind(this);
     this.fieldProp = this.fieldProp.bind(this);
+    this.multiFieldProp = this.multiFieldProp.bind(this);
     this.formProp = this.formProp.bind(this);
     this.getErrors = this.getErrors.bind(this);
     this.saveButton = this.saveButton.bind(this);
@@ -126,6 +127,13 @@ class Form extends Component {
     }
   }
 
+  multiFieldProp(fields) {
+    const bindthis = this;
+    Object.entries(fields).forEach(([key, value]) => {
+      bindthis.fieldProp(value.name, value.args);
+    });
+  }
+
   fieldProp(name, args) {
     const field = has(this.state.fields, name) ? this.state.fields[name] : null;
     if (field) {
@@ -203,7 +211,7 @@ class Form extends Component {
       }
       this.fieldProp(name, {value: field.multi ? arr : value, error: false});
       this.formProp({error: false, updated: true});
-      if (field.onChange) field.onChange(name, value, field, this.state.fields);
+      if (field.onChange) field.onChange(name, field.multi ? arr : value, field, this.state.fields);
       if (field.debug) console.log('onChangeDropdown', name, field);
     }
   }
@@ -290,6 +298,13 @@ class Form extends Component {
       fixedLabel: true
     }, opts);
 
+
+    if (field) {
+      params.dateFormat = field.enableTime  ? 'MM/DD/YYYY H:mm' : 'MM/DD/YYYY';
+    } else {
+      params.dateFormat = params.enableTime  ? 'MM/DD/YYYY H:mm' : 'MM/DD/YYYY';
+    }
+
     return (
       <CalendarField
         name={name}
@@ -309,6 +324,7 @@ class Form extends Component {
         params={params}
         overlay={params.overlay}
         overlayDuration={params.overlayDuration}
+        dateFormat={params.dateFormat}
       />
     )
   }
@@ -396,7 +412,6 @@ class Form extends Component {
     }, opts);
 
     const defaultValue = field ? field.value : params.value;
-
     return (
       <Dropdown
         name={name}
@@ -415,12 +430,14 @@ class Form extends Component {
         error={field ? field.error : params.error}
         errorType={params.errorType}
         createField={this.createField}
-        multi={field ? field.multi : params.multi}
         value={field ? field.value : ''}
         params={params}
         overlay={params.overlay}
         overlayDuration={params.overlayDuration}
         direction={params.direction}
+        multi={field ? field.multi : params.multi}
+        multiCloseLabel={params.multiCloseLabel}
+        multiCloseCallback={params.multiCloseCallback}
       />
     )
   }
@@ -431,6 +448,28 @@ class Form extends Component {
       className: '',
       type: 'text'
     }, opts);
+
+    let maxLength;
+    switch (params.validate) {
+      case 'taxID': {
+        maxLength = 10;
+        break;
+      }
+      case 'ssn': {
+        maxLength = 11;
+        break;
+      }
+      case 'email': {
+        maxLength = 128;
+        break;
+      }
+      case 'descriptor': {
+        maxLength = 21;
+        break;
+      }
+      // no default
+    }
+    maxLength =  maxLength || params.maxLength;
 
     return (
       <TextField
@@ -451,7 +490,7 @@ class Form extends Component {
         value={field ? field.value : params.value}
         error={field ? field.error : params.error }
         errorType={params.errorType}
-        maxLength={field ? field.maxLength : params.maxLength}
+        maxLength={maxLength}
         createField={this.createField}
         params={params}
         strength={params.strength}
@@ -748,6 +787,7 @@ class Form extends Component {
         validateForm: this.validateForm,
         formProp: this.formProp,
         fieldProp: this.fieldProp,
+        multiFieldProp: this.multiFieldProp,
         formSaved: this.formSaved,
         saveButton: this.saveButton,
         getErrors: this.getErrors,

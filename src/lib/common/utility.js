@@ -419,6 +419,20 @@ export function isLoading(resource, id = null) {
   return loading;
 }
 
+/**
+* Check if a resource is fetching
+* @param {object} resource props to check
+*/
+export function isFetching(resource) {
+  let loading = false;
+  if (resource) {
+    if (has(resource, 'isFetching')) {
+      if (resource.isFetching) loading = true;
+    }
+  }
+  return loading;
+}
+
 export function getDate(timestamp, format = 'MM/DD/YYYY HH:mm') {
   return Moment.unix(timestamp).format(format);
 }
@@ -440,10 +454,10 @@ export function isEmpty(value){
           value.length === 0
 }
 
-export function getValue(obj, prop) {
-  if (isEmpty(obj)) return '';
+export function getValue(obj, prop, returnIfEmpty = '') {
+  if (isEmpty(obj)) return returnIfEmpty;
   if (has(obj, prop)) return obj[prop];
-  else return '';
+  else return returnIfEmpty;
 }
 
 export function setHeight(e, id) {
@@ -494,4 +508,30 @@ export function legalLanguage(merchant, campaign) {
     }
   }
   return legal;
+}
+
+export function makeDescriptor(value, prefix = 'GBX*') {
+  let descriptor;
+  if (!value) return descriptor;
+  let slug = value.replace(/[^a-zA-Z0-9,-.]/, '');
+  descriptor = slug.substr(0, 21);
+  return prefix + descriptor.toUpperCase();
+}
+
+export function noSelection() {
+  if (document.selection) {
+    document.selection.empty()
+  } else {
+    window.getSelection().removeAllRanges()
+  }
+}
+
+export function prunePhone(phone) {
+  if (phone) {
+  	phone = phone.replace("(", "");
+  	phone = phone.replace(")", "");
+  	phone = phone.replace(" " , "");
+  	phone = phone.replace("-", "");
+  }
+  return phone;
 }

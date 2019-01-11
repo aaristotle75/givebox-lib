@@ -55,6 +55,11 @@ p { margin: 1.67em 0; font-size: $normal-text-size; font-weight: $font-weight; }
 .red { color: $red !important; }
 .gray { color: $light-med-gray !important; }
 
+.blur {
+  @include filter(blur(3px));
+  @include default-transition(.5s);
+}
+
 /*-------- Links ------------*/
 
 a {

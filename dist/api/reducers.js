@@ -1,6 +1,31 @@
 import { combineReducers } from 'redux';
 import * as types from './actionTypes';
 import has from 'has';
+export function app(state = {
+  appRef: null,
+  modalRef: null,
+  filterOpen: false
+}, action) {
+  switch (action.type) {
+    case types.SET_APP_REF:
+      return Object.assign({}, state, {
+        appRef: action.ref
+      });
+
+    case types.SET_MODAL_REF:
+      return Object.assign({}, state, {
+        modalRef: action.ref
+      });
+
+    case types.IS_FILTER_OPEN:
+      return Object.assign({}, state, {
+        filterOpen: action.open
+      });
+
+    default:
+      return state;
+  }
+}
 export function resource(state = {
   isFetching: false
 }, action) {
@@ -111,7 +136,7 @@ export function send(state = {
 export function modal(state = {}, action) {
   switch (action.type) {
     case types.TOGGLE_MODAL:
-      return Object.assign({}, state, { ...state.modals,
+      return Object.assign({}, state, {
         [action.identifier]: {
           open: action.open,
           opts: action.opts
@@ -123,6 +148,7 @@ export function modal(state = {}, action) {
   }
 }
 const appReducer = combineReducers({
+  app,
   resource,
   modal,
   send

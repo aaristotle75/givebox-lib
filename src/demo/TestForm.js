@@ -70,12 +70,12 @@ export default class TestForm extends Component {
         {this.props.choice('enabled', {label: 'Enable this resource', checked: true, errorType: 'custom', style: {marginBottom: 0}, debug: false})}
         {this.props.fieldError('enabled', 'You must enable to continue.')}
         {this.props.textField('taxID', {placeholder: 'Enter Tax ID', validate: 'taxID', maxLength: 10})}
-        {this.props.textField('ssn', {placeholder: 'Enter Social Security Number', validate: 'ssn', maxLength: 11})}
         {this.props.textField('phone', {placeholder: 'Enter Phone', validate: 'phone'})}
         {this.props.textField('descriptor', {placeholder: 'Enter Billing Descriptor', validate: 'descriptor', maxLength:21})}
         {this.props.dropdown('states', {label: 'States', options: selectOptions.states, value: 'CA'})}
         {this.props.dropdown('status', {options: [{primaryText: 'Active', secondaryText: 'active status does so and so', value: 'active'}, {primaryText: 'Deactivated', value: 'deactivated'}, {primaryText: 'Suspended', value: 'suspended'}], selectLabel: 'Select Status'})}
         */}
+        {this.props.textField('ssn', {placeholder: 'Enter Social Security Number', validate: 'ssn'})}
         {this.props.calendarField('dob', { required: true, validate: 'date', validateOpts: { }})}
         {/*
         {this.props.dropdown('bankAccountType', { className: 'column50', label: 'What kind of transfer do you want to make?', value: 'deposit', onChange: this.onTypeChange, options: [{primaryText: 'Withdrawal', value: 'deposit' }, {primaryText: 'Send Payment', value: 'payee'}] })}

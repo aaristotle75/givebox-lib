@@ -33,15 +33,15 @@ import Tabs, { Tab } from './common/Tabs';
 import * as types from './common/types';
 import * as util from './common/utility';
 import FeesGlossary from './glossary/Fees';
-import { toggleModal, removeResource, resourceProp, getAPI, sendAPI } from './api/actions';
-import { resource, send, modal } from './api/reducers';
+import { toggleModal, removeResource, resourceProp, getAPI, sendAPI, setAppRef, setModalRef } from './api/actions';
+import { app, resource, send, modal } from './api/reducers';
 import { getResource, reloadResource, sendResource } from './api/helpers';
 import * as giveboxAPI from './api/givebox';
 export { // Form
 Form, _v, selectOptions, Select, TextField, Dropdown, RichTextField, Choice, CalendarField, CalendarRange, Checkbox, // actions
-toggleModal, removeResource, resourceProp, getAPI, sendAPI, // API
+toggleModal, removeResource, resourceProp, getAPI, sendAPI, setAppRef, setModalRef, // API
 giveboxAPI, getResource, reloadResource, sendResource, // reducers
-resource, send, modal, // Modal
+app, resource, send, modal, // Modal
 ModalLink, ModalRoute, // Table
 ActionsMenu, Search, Table, MaxRecords, NoRecords, Paginate, Export, Filter, // Block
 StatBlock, ActionBar, // common

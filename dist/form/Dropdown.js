@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { lookup, isEmpty } from '../common/utility';
 import GBLink from '../common/GBLink';
 import Fade from '../common/Fade';
+import * as util from '../common/utility';
 import AnimateHeight from 'react-animate-height';
 import has from 'has';
 
@@ -52,6 +53,7 @@ class Dropdown extends Component {
   }
 
   closeMenu() {
+    if (this.props.multiCloseCallback) this.props.multiCloseCallback();
     this.setState({
       open: false
     });
@@ -89,7 +91,7 @@ class Dropdown extends Component {
     const items = [];
     this.props.options.forEach(function (value) {
       if (Number.isInteger(value.value)) selectedValue = parseInt(selectedValue);
-      let selected = bindthis.props.multi ? bindthis.props.value.includes(value.value) ? true : false : selectedValue === value.value ? true : false;
+      let selected = bindthis.props.multi ? util.getValue(bindthis.props, 'value') ? bindthis.props.value.includes(value.value) ? true : false : false : selectedValue === value.value ? true : false;
 
       if (has(value, 'bottom')) {
         items.push(React.createElement("div", {
@@ -122,6 +124,7 @@ class Dropdown extends Component {
       error,
       errorType,
       multi,
+      multiCloseLabel,
       value,
       defaultValue,
       floatingLabel,
@@ -138,8 +141,8 @@ class Dropdown extends Component {
       selected,
       display
     } = this.state;
-    const selectedValue = multi ? open ? 'Close Menu' : selectLabel : selected && (value || defaultValue) ? selected : selectLabel;
-    const idleLabel = selectedValue === 'Close Menu' || selectedValue === selectLabel;
+    const selectedValue = multi ? open ? multiCloseLabel : selectLabel : selected && (value || defaultValue) ? selected : selectLabel;
+    const idleLabel = selectedValue === multiCloseLabel || selectedValue === selectLabel;
     return React.createElement("div", {
       style: style,
       className: `input-group ${className || ''} ${error ? 'error tooltip' : ''}`
@@ -165,7 +168,9 @@ class Dropdown extends Component {
     }, React.createElement(AnimateHeight, {
       duration: 200,
       height: open ? 'auto' : 0
-    }, this.listOptions())), label && floatingLabel && React.createElement("label", null, React.createElement(GBLink, {
+    }, React.createElement("div", {
+      className: "dropdown-content-inner"
+    }, this.listOptions()))), label && floatingLabel && React.createElement("label", null, React.createElement(GBLink, {
       className: "link label",
       onClick: open ? this.closeMenu : this.openMenu
     }, label))), React.createElement("div", {
@@ -180,6 +185,7 @@ class Dropdown extends Component {
 Dropdown.defaultProps = {
   name: 'defaultSelect',
   multi: false,
+  multiCloseLabel: 'Close Menu',
   selectLabel: 'Please select',
   floatingLabel: true,
   contentStyle: {},
@@ -187,7 +193,7 @@ Dropdown.defaultProps = {
     className: "icon icon-check"
   }),
   iconMultiClose: React.createElement("span", {
-    className: "icon icon-x"
+    className: "icon icon-chevron-down"
   }),
   iconClosed: React.createElement("span", {
     className: "icon icon-chevron-right"

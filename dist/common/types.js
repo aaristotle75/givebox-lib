@@ -38,8 +38,8 @@ export function kind(kind) {
 
     case 'sweepstake':
       {
-        obj.name = 'Sweepstakes';
-        obj.txName = 'Sweepstakes entry';
+        obj.name = 'Sweepstake';
+        obj.txName = 'Sweepstake entry';
         break;
       }
     // no default
@@ -103,7 +103,7 @@ export const accountType = type => {
 
     case 'payee':
       {
-        return 'Vendor';
+        return 'Payee';
       }
     // no default
   }

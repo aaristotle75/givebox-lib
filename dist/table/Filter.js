@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import AnimateHeight from 'react-animate-height';
 import FilterForm from './FilterForm';
 import Form from '../form/Form';
+import { isFilterOpen } from '../api/actions';
 
 class Filter extends Component {
   constructor(props) {
@@ -21,12 +23,14 @@ class Filter extends Component {
   }
 
   openMenu(e) {
+    this.props.isFilterOpen(true);
     this.setState({
       open: true
     });
   }
 
   closeMenu() {
+    this.props.isFilterOpen(false);
     this.setState({
       open: false
     });
@@ -47,6 +51,7 @@ class Filter extends Component {
       name,
       allowDisabled,
       alwaysFilter,
+      callback,
       iconOpened,
       iconClosed
     } = this.props;
@@ -72,7 +77,8 @@ class Filter extends Component {
       closeMenu: this.closeMenu,
       name: name,
       options: options,
-      alwaysFilter: alwaysFilter
+      alwaysFilter: alwaysFilter,
+      callback: callback
     })))));
   }
 
@@ -87,4 +93,13 @@ Filter.defaultProps = {
     className: "icon icon-chevron-right"
   })
 };
-export default Filter;
+
+function mapStateToProps(state, props) {
+  return {
+    filterOpen: state.app.filterOpen
+  };
+}
+
+export default connect(mapStateToProps, {
+  isFilterOpen
+})(Filter);

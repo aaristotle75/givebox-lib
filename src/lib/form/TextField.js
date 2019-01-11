@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PasswordStrength from './PasswordStrength';
 import CharacterCount from './CharacterCount';
 import Fade from '../common/Fade';
-import { money } from '../common/utility';
 
 class TextField extends Component {
 

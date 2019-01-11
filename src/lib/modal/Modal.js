@@ -210,16 +210,14 @@ class Modal extends Component {
 
     const openEffect = open ? effect.end : effect.begin;
 
-    const el = document.getElementById('app-root');
-
     return (
       <div
         ref={this.modalRef}
         onClick={() => this.closeModal(closeCallback)}
+        id={`modalOverlay`}
         className={`modalOverlay`} style={prefix({ ...overlayStyle, ...modalOverlayStyle})}
       >
         <Waypoint
-          debug={true}
           onEnter={this.onEnter}
           onLeave={this.onExit}
           bottomOffset={'100px'}

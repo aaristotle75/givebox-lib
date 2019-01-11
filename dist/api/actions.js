@@ -16,6 +16,24 @@ export function resourceProp(key, value) {
     value: value
   };
 }
+export function isFilterOpen(open) {
+  return {
+    type: types.IS_FILTER_OPEN,
+    open: open
+  };
+}
+export function setAppRef(ref) {
+  return {
+    type: types.SET_APP_REF,
+    ref: ref
+  };
+}
+export function setModalRef(ref) {
+  return {
+    type: types.SET_MODAL_REF,
+    ref: ref
+  };
+}
 
 function requestResource(resource, reload) {
   return {

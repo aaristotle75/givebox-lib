@@ -220,16 +220,15 @@ class Modal extends Component {
       opacity: open ? 1 : 0
     };
     const openEffect = open ? effect.end : effect.begin;
-    const el = document.getElementById('app-root');
     return React.createElement("div", {
       ref: this.modalRef,
       onClick: () => this.closeModal(closeCallback),
+      id: `modalOverlay`,
       className: `modalOverlay`,
       style: prefix({ ...overlayStyle,
         ...modalOverlayStyle
       })
     }, React.createElement(Waypoint, {
-      debug: true,
       onEnter: this.onEnter,
       onLeave: this.onExit,
       bottomOffset: '100px'

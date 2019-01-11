@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { lookup, isEmpty } from '../common/utility';
 import GBLink from '../common/GBLink';
 import Fade from '../common/Fade';
+import * as util from '../common/utility';
 import AnimateHeight from 'react-animate-height';
 import has from 'has';
 
@@ -48,6 +49,7 @@ class Dropdown extends Component {
   }
 
   closeMenu() {
+    if (this.props.multiCloseCallback) this.props.multiCloseCallback();
     this.setState({open: false });
     document.removeEventListener('click', this.closeMenu);
     this.timeout = setTimeout(() => {
@@ -79,7 +81,7 @@ class Dropdown extends Component {
     const items = [];
     this.props.options.forEach(function(value) {
       if (Number.isInteger(value.value)) selectedValue = parseInt(selectedValue);
-      let selected = bindthis.props.multi ? bindthis.props.value.includes(value.value) ? true : false : selectedValue === value.value ? true : false;
+      let selected = bindthis.props.multi ? util.getValue(bindthis.props, 'value') ? bindthis.props.value.includes(value.value) ? true : false : false : selectedValue === value.value ? true : false;
       if (has(value, 'bottom')) {
         items.push(
           <div key={'bottom'} style={value.style} className={`dropdown-item bottom`}>{value.bottom}</div>
@@ -105,6 +107,7 @@ class Dropdown extends Component {
       error,
       errorType,
       multi,
+      multiCloseLabel,
       value,
       defaultValue,
       floatingLabel,
@@ -123,8 +126,8 @@ class Dropdown extends Component {
       display
     } = this.state;
 
-    const selectedValue = multi ? open ? 'Close Menu' : selectLabel : selected && (value || defaultValue) ? selected : selectLabel;
-    const idleLabel = selectedValue === 'Close Menu' || selectedValue === selectLabel;
+    const selectedValue = multi ? open ? multiCloseLabel : selectLabel : selected && (value || defaultValue) ? selected : selectLabel;
+    const idleLabel = selectedValue === multiCloseLabel || selectedValue === selectLabel;
 
     return (
       <div style={style} className={`input-group ${className || ''} ${error ? 'error tooltip' : ''}`}>
@@ -139,7 +142,9 @@ class Dropdown extends Component {
               duration={200}
               height={open ? 'auto' : 0}
             >
+              <div className='dropdown-content-inner'>
                 {this.listOptions()}
+              </div>
             </AnimateHeight>
           </div>
           {label && floatingLabel && <label><GBLink className='link label' onClick={open ? this.closeMenu : this.openMenu}>{label}</GBLink></label>}
@@ -157,11 +162,12 @@ class Dropdown extends Component {
 Dropdown.defaultProps = {
   name: 'defaultSelect',
   multi: false,
+  multiCloseLabel: 'Close Menu',
   selectLabel: 'Please select',
   floatingLabel: true,
   contentStyle: {},
   iconMultiChecked: <span className='icon icon-check'></span>,
-  iconMultiClose: <span className='icon icon-x'></span>,
+  iconMultiClose: <span className='icon icon-chevron-down'></span>,
   iconClosed: <span className='icon icon-chevron-right'></span>,
   iconOpened: <span className='icon icon-chevron-down'></span>,
   overlayDuration: 200,
