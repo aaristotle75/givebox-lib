@@ -11,6 +11,8 @@ export function kind(kind) {
     case 'event':
       {
         obj.name = 'Event';
+        obj.btnName = obj.name;
+        obj.cta = 'Buy Tickets';
         obj.txName = 'Ticket purchase';
         break;
       }
@@ -18,6 +20,8 @@ export function kind(kind) {
     case 'fundraiser':
       {
         obj.name = 'Fundraiser';
+        obj.btnName = 'Donate';
+        obj.cta = 'Donate Now';
         obj.txName = 'Made donation';
         break;
       }
@@ -25,6 +29,8 @@ export function kind(kind) {
     case 'invoice':
       {
         obj.name = 'Invoice';
+        obj.btnName = obj.name;
+        obj.cta = 'Pay Invoice';
         obj.txName = 'Paid invoice';
         break;
       }
@@ -32,6 +38,8 @@ export function kind(kind) {
     case 'membership':
       {
         obj.name = 'Membership';
+        obj.btnName = obj.name;
+        obj.cta = 'Purchase Membership';
         obj.txName = 'Membership purchase';
         break;
       }
@@ -39,6 +47,8 @@ export function kind(kind) {
     case 'sweepstake':
       {
         obj.name = 'Sweepstake';
+        obj.btnName = obj.name;
+        obj.cta = 'Enter Sweepstakes';
         obj.txName = 'Sweepstake entry';
         break;
       }

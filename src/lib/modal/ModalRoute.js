@@ -23,10 +23,18 @@ class ModalRoute extends Component {
 
   searchForOpenModals(ignore) {
     let modalIsOpen = false;
+    let allModalsClosed = true;
     Object.entries(this.props.modals).forEach(([key, value]) => {
       if (ignore !== key && value.open) modalIsOpen = true;
+      if (value.open) allModalsClosed = false;
     });
-    return modalIsOpen;
+    if (modalIsOpen) {
+      return true;
+    } else if (allModalsClosed) {
+      return false;
+    } else {
+      return false;
+    }
   }
 
   receiveMessage(e) {
@@ -65,6 +73,14 @@ class ModalRoute extends Component {
     if (appRef) {
       if (open) {
         appRef.current.classList.add('blur');
+      } else {
+        if (this.props.appRef && !this.searchForOpenModals(id)) {
+          if (this.props.appRef.current) {
+            if (this.props.appRef.current.classList.contains('blur')) {
+              this.props.appRef.current.classList.remove('blur');
+            }
+          }
+        }
       }
     }
 

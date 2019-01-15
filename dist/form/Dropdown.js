@@ -96,8 +96,7 @@ class Dropdown extends Component {
       if (has(value, 'bottom')) {
         items.push(React.createElement("div", {
           key: 'bottom',
-          style: value.style,
-          className: `dropdown-item bottom`
+          style: value.style
         }, value.bottom));
       } else {
         items.push(React.createElement("div", {

@@ -10,30 +10,40 @@ export function kind(kind) {
   switch (kind) {
     case 'event': {
       obj.name = 'Event';
+      obj.btnName = obj.name;
+      obj.cta = 'Buy Tickets';
       obj.txName = 'Ticket purchase';
       break;
     }
 
     case 'fundraiser': {
       obj.name = 'Fundraiser';
+      obj.btnName = 'Donate';
+      obj.cta = 'Donate Now';
       obj.txName = 'Made donation';
       break;
     }
 
     case 'invoice': {
       obj.name = 'Invoice';
+      obj.btnName = obj.name;
+      obj.cta = 'Pay Invoice';
       obj.txName = 'Paid invoice';
       break;
     }
 
     case 'membership': {
       obj.name = 'Membership';
+      obj.btnName = obj.name;
+      obj.cta = 'Purchase Membership';
       obj.txName = 'Membership purchase';
       break;
     }
 
     case 'sweepstake': {
       obj.name = 'Sweepstake';
+      obj.btnName = obj.name;
+      obj.cta = 'Enter Sweepstakes';
       obj.txName = 'Sweepstake entry';
       break;
     }

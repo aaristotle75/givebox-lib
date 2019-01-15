@@ -829,7 +829,7 @@ class Form extends Component {
         onSubmit={this.validateForm}
         noValidate={true}
       >
-        {this.props.isSending && <Loader msg={'Sending data'} />}
+        {this.props.showLoader === 'display' && this.props.isSending && <Loader msg={'Sending data'} />}
         {errorMsg && this.errorAlert()}
         {successMsg && this.successAlert()}
         {this.renderChildren()}
@@ -841,7 +841,8 @@ class Form extends Component {
 Form.defaultProps = {
   errorMsg: true,
   successMsg: true,
-  hideVantivErrors: false
+  hideVantivErrors: false,
+  showLoader: 'display'
 }
 
 function mapStateToProps(state, props) {

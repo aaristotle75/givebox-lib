@@ -21,11 +21,13 @@ import Export from './table/Export';
 import Filter from './table/Filter';
 import StatBlock from './block/StatBlock';
 import ActionBar from './block/ActionBar';
+import CodeBlock from './block/CodeBlock';
 import { Alert } from './common/Alert';
 import Delete from './common/Delete';
 import Error from './common/Error';
 import Fade from './common/Fade';
 import GBLink from './common/GBLink';
+import GBX from './common/GBX';
 import LinearBar from './common/LinearBar';
 import Loader from './common/Loader';
 import Portal from './common/Portal';
@@ -44,6 +46,6 @@ giveboxAPI, getResource, reloadResource, sendResource, // reducers
 app, resource, send, modal, // Modal
 ModalLink, ModalRoute, // Table
 ActionsMenu, Search, Table, MaxRecords, NoRecords, Paginate, Export, Filter, // Block
-StatBlock, ActionBar, // common
-Alert, Delete, Error, Fade, GBLink, LinearBar, Loader, Portal, Tabs, Tab, types, util, // Glossary
+StatBlock, ActionBar, CodeBlock, // common
+Alert, Delete, Error, Fade, GBLink, GBX, LinearBar, Loader, Portal, Tabs, Tab, types, util, // Glossary
 FeesGlossary };

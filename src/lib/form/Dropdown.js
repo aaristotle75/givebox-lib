@@ -84,7 +84,7 @@ class Dropdown extends Component {
       let selected = bindthis.props.multi ? util.getValue(bindthis.props, 'value') ? bindthis.props.value.includes(value.value) ? true : false : false : selectedValue === value.value ? true : false;
       if (has(value, 'bottom')) {
         items.push(
-          <div key={'bottom'} style={value.style} className={`dropdown-item bottom`}>{value.bottom}</div>
+          <div key={'bottom'} style={value.style}>{value.bottom}</div>
         );
       } else {
         items.push(

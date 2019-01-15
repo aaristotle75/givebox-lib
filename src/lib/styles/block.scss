@@ -76,3 +76,139 @@ ul.actionBar {
   }
 
 }
+
+/*
+
+github.com style (c) Vasily Polovnyov <vast@whiteants.net>
+
+*/
+
+.codeBlock {
+  overflow: hidden;
+}
+
+.codeBlock .highlight {
+	color: $primary;
+	background: rgba(140,239,236, .3);
+}
+
+.copy .text {
+  color: $med-gray;
+}
+
+.hljs {
+	font-family: CenturyGothic, sans-serif;
+  display: block;
+  overflow: wrap;
+  color: $primary;
+  background: #fff;
+  white-space: nowrap;
+  font-size: 12px;
+	white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
+	white-space: -pre-wrap;      /* Opera 4-6 */
+	white-space: -o-pre-wrap;    /* Opera 7 */
+	white-space: pre-wrap;       /* css-3 */
+	word-wrap: break-word;       /* Internet Explorer 5.5+ */
+	white-space: -webkit-pre-wrap; /* Newer versions of Chrome/Safari*/
+	word-break: break-all;
+	white-space: normal;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #75b7f3;
+  font-style: italic;
+}
+
+.hljs-doctag,
+.hljs-formula {
+  color: #75b7f3;
+}
+
+.hljs-keyword,
+.hljs-attr,
+.hljs-section,
+.hljs-name,
+.hljs-selector-tag,
+.hljs-deletion,
+.hljs-subst,
+.hljs-regexp {
+  color: #263238;
+}
+
+.hljs-literal {
+  color: #56b6c2;
+}
+
+.hljs-string,
+.hljs-addition,
+.hljs-attribute,
+.hljs-meta-string {
+  color: #75b7f3;
+}
+
+.hljs-built_in,
+.hljs-class .hljs-title {
+  color: #fff;
+}
+
+.hljs-number {
+  color: #75b7f3;
+}
+
+.hljs-variable,
+.hljs-template-variable,
+.hljs-type,
+.hljs-selector-class,
+.hljs-selector-attr,
+.hljs-selector-pseudo {
+  color: #fff;
+}
+
+.hljs-symbol,
+.hljs-bullet,
+.hljs-link,
+.hljs-meta,
+.hljs-selector-id,
+.hljs-title {
+  color: #61aeee;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+
+.hljs-link {
+  text-decoration: underline;
+}
+
+.jsonObj .line {
+  display: block;
+}
+
+.jsonObj {
+  padding: 20px;
+  background: #1e1e1e;
+  font-size: 14px;
+  color: #fff;
+}
+
+.jsonObj .indent5 {
+  padding-left: 10px;
+}
+
+.jsonObj .indent10 {
+  padding-left: 20px;
+}
+
+.jsonObj .indent20 {
+  padding-left: 30px;
+}
+
+.jsonObj .attr {
+  color: #75b7f3;
+}

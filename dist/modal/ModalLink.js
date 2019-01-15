@@ -21,15 +21,40 @@ class ModalLink extends Component {
       opts,
       style
     } = this.props;
-    const component = type === 'li' ? React.createElement("li", {
-      className: className,
-      onClick: () => this.onClick(id, opts)
-    }, this.props.children) : React.createElement(GBLink, {
-      style: style,
-      className: `${className}`,
-      type: "button",
-      onClick: () => this.onClick(id, opts)
-    }, this.props.children);
+    let component;
+
+    switch (type) {
+      case 'li':
+        {
+          component = React.createElement("li", {
+            className: className,
+            onClick: () => this.onClick(id, opts)
+          }, this.props.children);
+          break;
+        }
+
+      case 'div':
+        {
+          component = React.createElement("div", {
+            style: style,
+            className: `${className}`,
+            onClick: () => this.onClick(id, opts)
+          }, this.props.children);
+          break;
+        }
+
+      default:
+        {
+          component = React.createElement(GBLink, {
+            style: style,
+            className: `${className}`,
+            type: "button",
+            onClick: () => this.onClick(id, opts)
+          }, this.props.children);
+          break;
+        }
+    }
+
     return component;
   }
 

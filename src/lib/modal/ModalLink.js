@@ -24,14 +24,28 @@ class ModalLink extends Component {
       style
     } = this.props;
 
-    const component =
-      type === 'li' ?
-      <li className={className} onClick={() => this.onClick(id, opts)}>{this.props.children}</li>
-      :
-      <GBLink style={style} className={`${className}`} type='button' onClick={() => this.onClick(id, opts)}>
-        {this.props.children}
-      </GBLink>
-    ;
+    let component;
+    switch(type) {
+      case 'li' : {
+        component = <li className={className} onClick={() => this.onClick(id, opts)}>{this.props.children}</li>;
+        break;
+      }
+      case 'div': {
+        component =
+          <div style={style} className={`${className}`} onClick={() => this.onClick(id, opts)}>
+            {this.props.children}
+          </div>
+        break;
+      }
+      default: {
+        component =
+          <GBLink style={style} className={`${className}`} type='button' onClick={() => this.onClick(id, opts)}>
+            {this.props.children}
+          </GBLink>
+        ;
+        break;
+      }
+    }
 
     return (
       component

@@ -24,12 +24,14 @@ import Filter from './table/Filter';
 
 import StatBlock from './block/StatBlock';
 import ActionBar from './block/ActionBar';
+import CodeBlock from './block/CodeBlock';
 
 import { Alert } from './common/Alert';
 import Delete from './common/Delete';
 import Error from './common/Error';
 import Fade from './common/Fade';
 import GBLink from './common/GBLink';
+import GBX from './common/GBX';
 import LinearBar from './common/LinearBar';
 import Loader from './common/Loader';
 import Portal from './common/Portal';
@@ -111,6 +113,7 @@ export {
   // Block
   StatBlock,
   ActionBar,
+  CodeBlock,
 
   // common
   Alert,
@@ -118,6 +121,7 @@ export {
   Error,
   Fade,
   GBLink,
+  GBX,
   LinearBar,
   Loader,
   Portal,

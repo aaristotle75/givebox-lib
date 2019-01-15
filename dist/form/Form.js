@@ -1019,7 +1019,7 @@ class Form extends Component {
       className: `${id} ${className || ''}`,
       onSubmit: this.validateForm,
       noValidate: true
-    }, this.props.isSending && React.createElement(Loader, {
+    }, this.props.showLoader === 'display' && this.props.isSending && React.createElement(Loader, {
       msg: 'Sending data'
     }), errorMsg && this.errorAlert(), successMsg && this.successAlert(), this.renderChildren());
   }
@@ -1029,7 +1029,8 @@ class Form extends Component {
 Form.defaultProps = {
   errorMsg: true,
   successMsg: true,
-  hideVantivErrors: false
+  hideVantivErrors: false,
+  showLoader: 'display'
 };
 
 function mapStateToProps(state, props) {
