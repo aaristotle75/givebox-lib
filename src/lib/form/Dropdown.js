@@ -88,7 +88,7 @@ class Dropdown extends Component {
         );
       } else {
         items.push(
-          <div data-selected={value.primaryText} data-value={value.value} onClick={(e) => bindthis.onClick(e)} className={`dropdown-item ${selected ? 'selected' : ''}`} key={value.value}>{bindthis.props.multi && selected && bindthis.props.iconMultiChecked} {value.primaryText}{value.secondaryText && <span className='secondaryText'>{value.secondaryText}</span>}</div>
+          <div data-selected={value.primaryText} data-value={value.value} onClick={(e) => bindthis.onClick(e)} className={`dropdown-item ${selected ? 'selected' : ''}`} key={value.value}>{bindthis.props.multi && selected && bindthis.props.iconMultiChecked} {value.primaryText}{value.actions ? <span className='dropdown-item-actions'>{value.actions}</span> : ''}{value.secondaryText && <span className='secondaryText'>{value.secondaryText}</span>}</div>
         );
       }
     });

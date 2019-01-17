@@ -151,7 +151,7 @@ class Table extends Component {
     const footer = tableData.footer;
 
     return (
-      <div className={className}>
+      <div className={`givebox-lib-table ${className}`}>
         {(searchDisplay === 'top' || searchDisplay === 'both') && this.renderSearch()}
         {(exportDisplay === 'top' || exportDisplay === 'both') &&  this.renderExport()}
         {filters && <Filter

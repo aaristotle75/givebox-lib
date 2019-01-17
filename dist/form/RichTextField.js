@@ -57,6 +57,7 @@ const Editor = props => {
     onChange: props.onChange,
     placeholder: props.placeholder,
     content: props.value,
-    fieldName: props.name
+    fieldName: props.name,
+    wysiwyg: props.wysiwyg
   });
 };

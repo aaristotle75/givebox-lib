@@ -77,6 +77,7 @@ export default class TestForm extends Component {
         */}
         {this.props.textField('ssn', {placeholder: 'Enter Social Security Number', validate: 'ssn'})}
         {this.props.calendarField('dob', { required: true, validate: 'date', validateOpts: { }})}
+        {this.props.richText('emailList', { label: 'Email List', placeholder: 'Enter emails separated by commas', modal: true })}
         {/*
         {this.props.dropdown('bankAccountType', { className: 'column50', label: 'What kind of transfer do you want to make?', value: 'deposit', onChange: this.onTypeChange, options: [{primaryText: 'Withdrawal', value: 'deposit' }, {primaryText: 'Send Payment', value: 'payee'}] })}
         {this.props.dropdown('selectedAccount', { className: 'column50', label: `account`, selectLabel: `Select account to make withdrawal to`, onChange: this.selectAccount, options: [{primaryText: 'Account1', value: 1}, {primaryText: 'Account2', value: 2}, { bottom: <span>Add Account</span>, style: {textAlign: 'center'} }] })}

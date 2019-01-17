@@ -535,3 +535,20 @@ export function prunePhone(phone) {
   }
   return phone;
 }
+
+export function replaceAll(str,mapObj){
+  var re = new RegExp(Object.keys(mapObj).join("|"),"gi");
+
+  return str.replace(re, function(matched){
+      return mapObj[matched.toLowerCase()];
+  });
+}
+
+export function stripHtml(html){
+    // Create a new div element
+    var temporalDivElement = document.createElement("div");
+    // Set the HTML content with the providen
+    temporalDivElement.innerHTML = html;
+    // Retrieve the text property of the element (cross-browser support)
+    return temporalDivElement.textContent || temporalDivElement.innerText || "";
+}

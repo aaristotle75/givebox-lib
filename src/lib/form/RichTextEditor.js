@@ -3,7 +3,7 @@ import {Editor, EditorState, RichUtils} from 'draft-js';
 import {stateToHTML} from 'draft-js-export-html';
 import {stateFromHTML} from 'draft-js-import-html';
 
-class ContentEditor extends Component{
+class ContentEditor extends Component {
 	constructor(props){
 		super(props);
 		let contentState = this.props.content ? stateFromHTML(this.props.content) : null;
@@ -61,7 +61,7 @@ class ContentEditor extends Component{
 
 	render() {
 
-		const {placeholder } = this.props;
+		const {placeholder, wysiwyg } = this.props;
 
 		const {editorState} = this.state;
 
@@ -77,14 +77,17 @@ class ContentEditor extends Component{
 
 		return (
 			<div className='RichEditor-root'>
-				<BlockStyleControls
-					editorState={editorState}
-					onToggle={this.toggleBlockType}
-				/>
-				<InlineStyleControls
-					editorState={editorState}
-					onToggle={this.toggleInlineStyle}
-				/>
+				{wysiwyg === 'display' ?
+				<div className='wysiwyg'>
+					<BlockStyleControls
+						editorState={editorState}
+						onToggle={this.toggleBlockType}
+					/>
+					<InlineStyleControls
+						editorState={editorState}
+						onToggle={this.toggleInlineStyle}
+					/>
+				</div> : ''}
 				<div className={className} onClick={this.focus}>
 					<Editor
 						blockStyleFn={getBlockStyle}
@@ -101,6 +104,10 @@ class ContentEditor extends Component{
 			</div>
 		);
 	}
+}
+
+ContentEditor.defaultProps = {
+	wysiwyg: 'display'
 }
 
 // Custom overrides for 'code' style.

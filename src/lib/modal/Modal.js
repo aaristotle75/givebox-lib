@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
 import * as Effect from './ModalEffect';
 import { cloneObj, isEmpty } from '../common/utility';
 import animateScrollTo from 'animated-scroll-to';
@@ -27,6 +28,7 @@ class Modal extends Component {
     this.onEnter = this.onEnter.bind(this);
     this.onExit = this.onExit.bind(this);
     this.toTop = this.toTop.bind(this);
+    this.searchForOpenModals = this.searchForOpenModals.bind(this);
     let effect;
     if (props.mobile) effect = '3DFlipVert';
     else effect = props.effect;
@@ -86,8 +88,33 @@ class Modal extends Component {
     animateScrollTo(0, { element: this.modalRef.current });
   }
 
+  searchForOpenModals(ignore) {
+    let modalIsOpen = false;
+    let allModalsClosed = true;
+    if (this.props.modals) {
+      Object.entries(this.props.modals).forEach(([key, value]) => {
+        if (ignore !== key && value.open) modalIsOpen = true;
+        if (value.open) allModalsClosed = false;
+      });
+      if (modalIsOpen) {
+        return true;
+      } else if (allModalsClosed) {
+        return false;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
   onClose(callback) {
     const transitionTimeMS = this.getTransitionDuration();
+    if (this.props.appRef && !this.searchForOpenModals(this.props.identifier)) {
+      if (this.props.appRef.current.classList.contains('blur')) {
+        this.props.appRef.current.classList.remove('blur');
+      }
+    }
     this.setState({open: false}, () => {
        this.closeTimer = setTimeout(callback, transitionTimeMS);
     });
@@ -170,7 +197,9 @@ class Modal extends Component {
       customStyle,
       customOverlay,
       className,
-      iconClose
+      iconClose,
+      appRef,
+      identifier
     } = this.props;
 
     let transition = effect.transition;
@@ -209,6 +238,20 @@ class Modal extends Component {
     }
 
     const openEffect = open ? effect.end : effect.begin;
+
+    if (appRef) {
+      if (open) {
+        appRef.current.classList.add('blur');
+      } else {
+        if (appRef && !this.searchForOpenModals(identifier)) {
+          if (appRef.current) {
+            if (appRef.current.classList.contains('blur')) {
+              appRef.current.classList.remove('blur');
+            }
+          }
+        }
+      }
+    }
 
     return (
       <div
@@ -259,4 +302,12 @@ Modal.defaultProps = {
   iconClose: <span className='icon icon-x'></span>
 };
 
-export default Modal;
+function mapStateToProps(state, props) {
+
+  return {
+    modals: state.modals
+  }
+}
+
+export default connect(mapStateToProps, {
+})(Modal)

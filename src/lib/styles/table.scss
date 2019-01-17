@@ -1,65 +1,148 @@
 @import 'variables.scss';
 
 /*--------- Table --------*/
+.givebox-lib-table {
 
-table {
-  width: 100%;
-  margin: 20px 0;
-}
+  table {
+    width: 100%;
+    margin: 20px 0;
+  }
 
-th {
-  color: $light-med-gray;
-  background: transparent;
-  font-size: $small-text-size;
-  padding: 15px 15px 15px 5px;
-  overflow: hidden;
-  white-space: nowrap;
-}
+  th {
+    color: $light-med-gray;
+    background: transparent;
+    font-size: $small-text-size;
+    padding: 15px 15px 15px 5px;
+    overflow: hidden;
+    white-space: nowrap;
+  }
 
-th.sort:hover {
-  cursor: pointer;
-  color: $white;
-  background: transparentize($primary, 0.4);
-  @include default-transition(.5s);
-}
+  th.sort:hover {
+    cursor: pointer;
+    color: $white;
+    background: transparentize($primary, 0.4);
+    @include default-transition(.5s);
+  }
 
-th.sort .icon {
-  display: inline-block;
-  font-size: $small-text-size;
-}
+  th.sort .icon {
+    display: inline-block;
+    font-size: $small-text-size;
+  }
 
-th-grip {
-  background: red;
-}
+  th-grip {
+    background: red;
+  }
 
-tr {
-  background: $white;
-}
+  tr {
+    background: $white;
+  }
 
-tr:nth-child(even) {
-  background: $off-white;
-}
+  tr:nth-child(even) {
+    background: $off-white;
+  }
 
-.altRow {
-  background: $off-white;
-}
-
-tr:hover {
-  background: transparentize($primary, 0.4);
-  @include default-transition(.5s);
-}
-
-td {
-  padding: 10px 5px;
-  font-size: $normal-text-size;
-}
-
-tfoot {
+  .altRow {
+    background: $off-white;
+  }
 
   tr:hover {
-    background: none;
+    background: transparentize($primary, 0.4);
+    @include default-transition(.5s);
   }
+
+  td {
+    padding: 10px 5px;
+    font-size: $normal-text-size;
+  }
+
+  tfoot {
+
+    tr:hover {
+      background: none;
+    }
+  }
+
+
+  /*----------- Description and Details -----------*/
+  .grayout {
+    background: $light;
+    color: $med-gray;
+  }
+
+  .description {
+
+    .line {
+      padding: 3px 0;
+      display: block;
+    }
+
+    .topSpaced {
+      display: block;
+      padding-top: 20px;
+    }
+
+    .leftCol {
+      float: left;
+      width: 45%;
+    }
+
+    .rightCol {
+      float: right;
+      text-align: right;
+      width: 45%;
+    }
+
+  }
+
+  tr.detailsRow {
+
+    padding: 0;
+    margin: 0;
+
+    td {
+      padding: 0;
+      margin: 0;
+    }
+
+  }
+
+  td.hasDetails {
+    cursor: pointer;
+  }
+
+  tr.detailsOpen {
+    background: $light-gray;
+  }
+
+  .details {
+    background: $light-gray;
+    padding: 10px 20px 20px 20px;
+  }
+
+  .detailsTitle {
+    width: 100%;
+    border-bottom: 1px solid $light-med-gray;
+    padding: 5px 20px 10px 20px;
+    margin-bottom: 10px;
+  }
+
+  .detailsContent {
+    width: 100%;
+    padding: 10px 20px 10px 20px;
+  }
+
+  .total {
+    font-size: $large-text-size;
+  }
+
+  /*----------- Table Buttons ----------*/
+  table button .icon {
+    font-size: $large-text-size;
+    background: transparent;
+  }
+
 }
+// End givebox-lib-table
 
 /*--------- Search ----------*/
 .search {
@@ -132,85 +215,6 @@ tfoot {
     margin: 10px 0;
   }
 }
-
-/*----------- Description and Details -----------*/
-.grayout {
-  background: $light;
-  color: $med-gray;
-}
-
-.description {
-
-  .line {
-    padding: 3px 0;
-    display: block;
-  }
-
-  .topSpaced {
-    display: block;
-    padding-top: 20px;
-  }
-
-  .leftCol {
-    float: left;
-    width: 45%;
-  }
-
-  .rightCol {
-    float: right;
-    text-align: right;
-    width: 45%;
-  }
-
-}
-
-tr.detailsRow {
-
-  padding: 0;
-  margin: 0;
-
-  td {
-    padding: 0;
-    margin: 0;
-  }
-
-}
-
-td.hasDetails {
-  cursor: pointer;
-}
-
-tr.detailsOpen {
-  background: $light-gray;
-}
-
-.details {
-  background: $light-gray;
-  padding: 10px 20px 20px 20px;
-}
-
-.detailsTitle {
-  width: 100%;
-  border-bottom: 1px solid $light-med-gray;
-  padding: 5px 20px 10px 20px;
-  margin-bottom: 10px;
-}
-
-.detailsContent {
-  width: 100%;
-  padding: 10px 20px 10px 20px;
-}
-
-.total {
-  font-size: $large-text-size;
-}
-
-/*----------- Table Buttons ----------*/
-table button .icon {
-  font-size: $large-text-size;
-  background: transparent;
-}
-
 
 /*------------ Actions Menu -----------*/
 .actionsMenu {

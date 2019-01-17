@@ -63,7 +63,8 @@ class ContentEditor extends Component {
 
   render() {
     const {
-      placeholder
+      placeholder,
+      wysiwyg
     } = this.props;
     const {
       editorState
@@ -81,13 +82,15 @@ class ContentEditor extends Component {
 
     return React.createElement("div", {
       className: "RichEditor-root"
+    }, wysiwyg === 'display' ? React.createElement("div", {
+      className: "wysiwyg"
     }, React.createElement(BlockStyleControls, {
       editorState: editorState,
       onToggle: this.toggleBlockType
     }), React.createElement(InlineStyleControls, {
       editorState: editorState,
       onToggle: this.toggleInlineStyle
-    }), React.createElement("div", {
+    })) : '', React.createElement("div", {
       className: className,
       onClick: this.focus
     }, React.createElement(Editor, {
@@ -103,9 +106,12 @@ class ContentEditor extends Component {
     })));
   }
 
-} // Custom overrides for 'code' style.
+}
 
+ContentEditor.defaultProps = {
+  wysiwyg: 'display' // Custom overrides for 'code' style.
 
+};
 const styleMap = {
   CODE: {
     backgroundColor: 'rgba(0, 0, 0, 0.05)',

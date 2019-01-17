@@ -9,7 +9,7 @@ import CalendarField from './CalendarField';
 import * as _v from './formValidate';
 import Loader from '../common/Loader';
 import { Alert } from '../common/Alert';
-import { cloneObj, isEmpty, numberWithCommas } from '../common/utility';
+import { cloneObj, isEmpty, numberWithCommas, stripHtml } from '../common/utility';
 import has from 'has';
 
 class Form extends Component {
@@ -45,6 +45,7 @@ class Form extends Component {
     this.successAlert = this.successAlert.bind(this);
     this.errorAlert = this.errorAlert.bind(this);
     this.fieldError = this.fieldError.bind(this);
+    this.allowEnterToSubmit = this.allowEnterToSubmit.bind(this);
     this.state = {
       error: false,
       errorMsg: '',
@@ -106,12 +107,27 @@ class Form extends Component {
     e.preventDefault();
 
     if (e.keyCode === 13) {
-      document.getElementById(`${this.props.id}-saveButton`).click();
+      const form = document.getElementById(`${this.props.id}-saveButton`) || null;
+      if (form && this.allowEnterToSubmit()) form.click();
     }
   }
 
   focusInput(ref) {
     ref.current.focus();
+  }
+
+  allowEnterToSubmit() {
+    let allowEnter = true;
+
+    if (!isEmpty(this.props.modals)) {
+      Object.entries(this.props.modals).forEach(([key, value]) => {
+        if (!this.props.id.includes(key) && value.open) {
+          allowEnter = false;
+        }
+      });
+    }
+
+    return allowEnter;
   }
 
   createField(name, args) {
@@ -299,7 +315,7 @@ class Form extends Component {
     const field = has(this.state.fields, name) ? this.state.fields[name] : null;
 
     if (field) {
-      const value = hasText ? val : _v.clearRichTextIfShouldBeEmpty(val);
+      const value = hasText ? field.wysiwyg === 'hide' ? stripHtml(val) : val : _v.clearRichTextIfShouldBeEmpty(val);
       this.fieldProp(name, {
         value: value,
         error: false
@@ -576,6 +592,12 @@ class Form extends Component {
           break;
         }
 
+      case 'emailList':
+        {
+          maxLength = 52428800;
+          break;
+        }
+
       case 'descriptor':
         {
           maxLength = 21;
@@ -640,6 +662,7 @@ class Form extends Component {
       error: field ? field.error : params.error,
       errorType: params.errorType,
       createField: this.createField,
+      wysiwyg: params.wysiwyg,
       params: params
     });
   }
@@ -908,6 +931,13 @@ class Form extends Component {
         });
         break;
 
+      case 'emailList':
+        const optional = opts.optional || false;
+        if (!_v.validateEmailList(value, optional)) this.fieldProp(key, {
+          error: opts.errorMsg || _v.msgs.emailList
+        });
+        break;
+
       case 'email':
         if (!_v.validateEmail(value)) this.fieldProp(key, {
           error: opts.errorMsg || _v.msgs.email
@@ -1030,7 +1060,8 @@ Form.defaultProps = {
   errorMsg: true,
   successMsg: true,
   hideVantivErrors: false,
-  showLoader: 'display'
+  showLoader: 'display',
+  submitOnEnter: true
 };
 
 function mapStateToProps(state, props) {
@@ -1040,7 +1071,8 @@ function mapStateToProps(state, props) {
   return {
     id: id,
     isSending: state.send.isSending,
-    responseData: responseData
+    responseData: responseData,
+    modals: state.modal ? state.modal : {}
   };
 }
 

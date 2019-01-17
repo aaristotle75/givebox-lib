@@ -18,7 +18,8 @@ class GBLink extends Component {
       onMouseLeave,
       className,
       style,
-      primaryColor
+      primaryColor,
+      disabled
     } = this.props;
     const color = primaryColor ? {
       color: primaryColor
@@ -27,6 +28,7 @@ class GBLink extends Component {
       ...color
     };
     return React.createElement("button", {
+      disabled: disabled,
       type: "button",
       id: id,
       className: className || 'link',
@@ -42,6 +44,7 @@ class GBLink extends Component {
 ;
 GBLink.defaultProps = {
   primaryColor: '',
-  style: {}
+  style: {},
+  disabled: false
 };
 export default GBLink;

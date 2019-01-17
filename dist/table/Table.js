@@ -132,7 +132,7 @@ class Table extends Component {
     const rows = tableData.rows;
     const footer = tableData.footer;
     return React.createElement("div", {
-      className: className
+      className: `givebox-lib-table ${className}`
     }, (searchDisplay === 'top' || searchDisplay === 'both') && this.renderSearch(), (exportDisplay === 'top' || exportDisplay === 'both') && this.renderExport(), filters && React.createElement(Filter, {
       name: name,
       options: filters

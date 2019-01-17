@@ -10,42 +10,20 @@ class ModalRoute extends Component {
   constructor(props) {
     super(props);
     this.receiveMessage = this.receiveMessage.bind(this);
-    this.searchForOpenModals = this.searchForOpenModals.bind(this);
   }
 
   componentDidMount() {
     window.addEventListener('message', this.receiveMessage, false);
   }
 
-  componentWillUnmount() {}
-
-  searchForOpenModals(ignore) {
-    let modalIsOpen = false;
-    let allModalsClosed = true;
-    Object.entries(this.props.modals).forEach(([key, value]) => {
-      if (ignore !== key && value.open) modalIsOpen = true;
-      if (value.open) allModalsClosed = false;
-    });
-
-    if (modalIsOpen) {
-      return true;
-    } else if (allModalsClosed) {
-      return false;
-    } else {
-      return false;
-    }
+  componentWillUnmount() {
+    console.log('ModalRoute unmounted');
   }
 
   receiveMessage(e) {
     if (e.data === this.props.id) {
       if (this.props.open) {
         this.props.toggleModal(e.data, false);
-
-        if (this.props.appRef && !this.searchForOpenModals(e.data)) {
-          if (this.props.appRef.current.classList.contains('blur')) {
-            this.props.appRef.current.classList.remove('blur');
-          }
-        }
       }
     }
   }
@@ -68,20 +46,6 @@ class ModalRoute extends Component {
       return React.createElement(Loader, null);
     }
 
-    if (appRef) {
-      if (open) {
-        appRef.current.classList.add('blur');
-      } else {
-        if (this.props.appRef && !this.searchForOpenModals(id)) {
-          if (this.props.appRef.current) {
-            if (this.props.appRef.current.classList.contains('blur')) {
-              this.props.appRef.current.classList.remove('blur');
-            }
-          }
-        }
-      }
-    }
-
     return React.createElement("div", null, open && React.createElement(Portal, {
       rootEl: modalRoot,
       className: "modal"
@@ -91,7 +55,9 @@ class ModalRoute extends Component {
       effect: effect,
       open: open,
       closeBtnShow: closeBtnShow,
-      customStyle: style
+      customStyle: style,
+      closeCallback: has(opts, 'closeCallback') ? opts.closeCallback : null,
+      appRef: appRef
     }, component(opts))));
   }
 
@@ -111,7 +77,6 @@ function mapStateToProps(state, props) {
   }
 
   return {
-    modals: state.modal,
     open: open,
     opts: opts
   };

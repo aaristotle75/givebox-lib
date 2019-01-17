@@ -273,6 +273,7 @@ export function validatePassword(value) {
 export const msgs = {
   required: 'Field is required.',
   email: 'Please enter a valid email address.',
+  emailList: 'Please enter valid email addresses separated by commas.',
   taxID: 'Please enter a valid Tax ID. It should be in the format of xx-xxxxxxx and have 9 digits.',
   ssn: 'Please enter a valid Social Security Number. It should be in the format xxx-xx-xxxx and have 9 digits.',
   phone: 'Please enter a valid Phone Number. It should be in the format (xxx) xxx-xxxx and have 10 digits.',

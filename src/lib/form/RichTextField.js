@@ -68,6 +68,7 @@ const Editor = (props) => {
       placeholder={props.placeholder}
       content={props.value}
       fieldName={props.name}
+      wysiwyg={props.wysiwyg}
     />
   )
 }
