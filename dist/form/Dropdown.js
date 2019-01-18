@@ -18,8 +18,10 @@ class Dropdown extends Component {
       open: false,
       display: false,
       selected: '',
-      value: ''
+      value: '',
+      direction: ''
     };
+    this.dropdownRef = React.createRef();
   }
 
   componentDidMount() {
@@ -34,6 +36,19 @@ class Dropdown extends Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.value !== this.props.value) {
+      let init = lookup(this.props.options, 'value', this.props.value);
+
+      if (!isEmpty(init)) {
+        this.setState({
+          value: init.value,
+          selected: init.primaryText
+        });
+      }
+    }
+  }
+
   componentWillUnmount() {
     this.closeMenu();
 
@@ -45,7 +60,13 @@ class Dropdown extends Component {
 
   openMenu(e) {
     e.stopPropagation();
+    const ref = this.dropdownRef.current;
+    const height = window.innerHeight;
+    const rect = ref.getBoundingClientRect();
+    let direction = '';
+    if (height - rect.top < 300) direction = 'top';
     this.setState({
+      direction,
       open: true,
       display: true
     });
@@ -90,8 +111,9 @@ class Dropdown extends Component {
     let selectedValue = this.state.value;
     const items = [];
     this.props.options.forEach(function (value) {
-      if (Number.isInteger(value.value)) selectedValue = parseInt(selectedValue);
-      let selected = bindthis.props.multi ? util.getValue(bindthis.props, 'value') ? bindthis.props.value.includes(value.value) ? true : false : false : selectedValue === value.value ? true : false;
+      const dataValue = !isNaN(value.value) ? parseInt(value.value) : value.value;
+      if (Number.isInteger(dataValue)) selectedValue = parseInt(selectedValue);
+      let selected = bindthis.props.multi ? util.getValue(bindthis.props, 'value') ? bindthis.props.value.includes(dataValue) ? true : false : false : selectedValue === dataValue ? true : false;
 
       if (has(value, 'bottom')) {
         items.push(React.createElement("div", {
@@ -101,10 +123,10 @@ class Dropdown extends Component {
       } else {
         items.push(React.createElement("div", {
           "data-selected": value.primaryText,
-          "data-value": value.value,
+          "data-value": dataValue,
           onClick: e => bindthis.onClick(e),
           className: `dropdown-item ${selected ? 'selected' : ''}`,
-          key: value.value
+          key: dataValue
         }, bindthis.props.multi && selected && bindthis.props.iconMultiChecked, " ", value.primaryText, value.actions ? React.createElement("span", {
           className: "dropdown-item-actions"
         }, value.actions) : '', value.secondaryText && React.createElement("span", {
@@ -134,13 +156,13 @@ class Dropdown extends Component {
       iconOpened,
       iconClosed,
       overlay,
-      overlayDuration,
-      direction
+      overlayDuration
     } = this.props;
     const {
       open,
       selected,
-      display
+      display,
+      direction
     } = this.state;
     const selectedValue = multi ? open ? multiCloseLabel : selectLabel : selected && (value || defaultValue) ? selected : selectLabel;
     const idleLabel = selectedValue === multiCloseLabel || selectedValue === selectLabel;
@@ -164,8 +186,9 @@ class Dropdown extends Component {
     }, React.createElement("span", {
       className: `label ${idleLabel && 'idle'}`
     }, selectedValue), open ? multi ? iconMultiClose : iconOpened : iconClosed), React.createElement("div", {
+      ref: this.dropdownRef,
       style: contentStyle,
-      className: `dropdown-content ${direction}`
+      className: `dropdown-content ${this.props.direction || direction}`
     }, React.createElement(AnimateHeight, {
       duration: 200,
       height: open ? 'auto' : 0

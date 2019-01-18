@@ -12,6 +12,7 @@ class ModalLink extends Component {
 
   onClick(id, opts) {
     this.props.toggleModal(id, true, opts);
+    if (this.props.onClickCallback) this.props.onClickCallback();
   }
 
   render() {
@@ -21,7 +22,9 @@ class ModalLink extends Component {
       className,
       type,
       opts,
-      style
+      style,
+      onMouseEnter,
+      onMouseLeave
     } = this.props;
 
     let component;
@@ -39,7 +42,7 @@ class ModalLink extends Component {
       }
       default: {
         component =
-          <GBLink style={style} className={`${className}`} type='button' onClick={() => this.onClick(id, opts)}>
+          <GBLink style={style} className={`${className}`} type='button' onClick={() => this.onClick(id, opts)} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
             {this.props.children}
           </GBLink>
         ;

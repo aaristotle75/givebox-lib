@@ -11,6 +11,7 @@ class ModalLink extends Component {
 
   onClick(id, opts) {
     this.props.toggleModal(id, true, opts);
+    if (this.props.onClickCallback) this.props.onClickCallback();
   }
 
   render() {
@@ -19,7 +20,9 @@ class ModalLink extends Component {
       className,
       type,
       opts,
-      style
+      style,
+      onMouseEnter,
+      onMouseLeave
     } = this.props;
     let component;
 
@@ -49,7 +52,9 @@ class ModalLink extends Component {
             style: style,
             className: `${className}`,
             type: "button",
-            onClick: () => this.onClick(id, opts)
+            onClick: () => this.onClick(id, opts),
+            onMouseEnter: onMouseEnter,
+            onMouseLeave: onMouseLeave
           }, this.props.children);
           break;
         }

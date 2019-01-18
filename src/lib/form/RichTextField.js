@@ -4,6 +4,17 @@ import { ModalRoute, ModalLink } from '../';
 
 class ContentField extends Component {
 
+  constructor(props) {
+    super(props);
+    this.onFocus = this.onFocus.bind(this);
+    this.onBlur = this.onBlur.bind(this);
+    this.onMouseEnter = this.onMouseEnter.bind(this);
+    this.onMouseLeave = this.onMouseLeave.bind(this);
+    this.state = {
+      status: 'idle'
+    }
+  }
+
   componentDidMount() {
     if (this.props.createField) {
       this.props.createField(this.props.name, this.props.params);
@@ -16,35 +27,63 @@ class ContentField extends Component {
     );
   }
 
+  onFocus(e) {
+    e.preventDefault();
+    this.setState({status: 'active'});
+    if (this.props.onFocus) this.props.onFocus(e);
+  }
+
+  onBlur(e) {
+    e.preventDefault();
+    this.setState({status: 'idle'});
+    if (this.props.onBlur) this.props.onBlur(e);
+  }
+
+  onMouseEnter(e) {
+    e.preventDefault();
+    if (!this.props.error) this.setState({status: 'active'});
+  }
+
+  onMouseLeave(e) {
+    e.preventDefault();
+    this.setState({status: 'idle'});
+  }
+
   render() {
 
     const {
       name,
       style,
       label,
+      fixedLabel,
       className,
       error,
       errorType,
       modal,
-      modalLabel
+      modalLabel,
+      value
     } = this.props;
 
     let id = `${name}-richText`;
 
     return (
       <div style={style} className={`input-group ${className || ''} richtext-group ${error ? 'error tooltip' : ''}`}>
-        {label && <label>{label}</label>}
         <div className={`errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`}>{error}</div>
-        {modal ?
-          <div className='richtext-modal'>
-            <ModalRoute id={id} component={() => this.renderEditor(this.props)} />
-            <ModalLink id={id}>{modalLabel}</ModalLink>
-          </div>
-        :
-          <div className='richtext-embed'>
-            <Editor {...this.props} />
-          </div>
-        }
+        {!modal && label && <label htmlFor={name}>{label}</label>}
+        <div className={`floating-label ${this.state.status} ${fixedLabel && 'fixed'}`}>
+          {modal ?
+            <div>
+              <ModalRoute id={id} component={() => this.renderEditor(this.props)} />
+              <ModalLink className={`input ${value ? 'hasValue' : ''}`} id={id} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>{modalLabel}</ModalLink>
+            </div>
+          :
+            <div className='richtext-embed'>
+              <Editor {...this.props} />
+            </div>
+          }
+          {modal && label && <label htmlFor={name}>{label}</label>}
+          <div className={`input-bottom ${error ? 'error' : this.state.status}`}></div>
+        </div>
         <div className={`tooltipTop ${errorType !=='tooltip' && 'displayNone'}`}>
           {error}
           <i></i>

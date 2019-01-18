@@ -29,6 +29,29 @@ form button {
   margin: 0 5px;
 }
 
+button.input {
+  font-size: $normal-text-size;
+  font-family: $font-family;
+  color: $med-gray;
+  height: 40px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid $light-med-gray;
+  box-sizing: border-box;
+  transition: all .3s linear;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  text-align: left;
+  @media screen and (max-width: $mobile-width) {
+    font-size: 16px;
+  }
+}
+
+button.input.hasValue {
+  color: $primary;
+}
+
 input {
   font-size: $normal-text-size;
   font-family: $font-family;

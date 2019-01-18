@@ -130,6 +130,7 @@ export function reloadResource(name, opts = {}) {
 * @param {string} method
 * @param {function} callback
 * @param {bool} reload If the resource should be reloaded
+* @param {array} resourcesToLoad array of resources to load
 */
 export function sendResource(resource, opts = {}) {
   const defaults = {

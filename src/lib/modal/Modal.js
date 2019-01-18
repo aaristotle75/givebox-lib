@@ -88,33 +88,8 @@ class Modal extends Component {
     animateScrollTo(0, { element: this.modalRef.current });
   }
 
-  searchForOpenModals(ignore) {
-    let modalIsOpen = false;
-    let allModalsClosed = true;
-    if (this.props.modals) {
-      Object.entries(this.props.modals).forEach(([key, value]) => {
-        if (ignore !== key && value.open) modalIsOpen = true;
-        if (value.open) allModalsClosed = false;
-      });
-      if (modalIsOpen) {
-        return true;
-      } else if (allModalsClosed) {
-        return false;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
-    }
-  }
-
   onClose(callback) {
     const transitionTimeMS = this.getTransitionDuration();
-    if (this.props.appRef && !this.searchForOpenModals(this.props.identifier)) {
-      if (this.props.appRef.current.classList.contains('blur')) {
-        this.props.appRef.current.classList.remove('blur');
-      }
-    }
     this.setState({open: false}, () => {
        this.closeTimer = setTimeout(callback, transitionTimeMS);
     });
@@ -164,9 +139,34 @@ class Modal extends Component {
     return effect.transition.duration || defaultTransition.duration;
   }
 
+  searchForOpenModals(ignore) {
+    let modalIsOpen = false;
+    let allModalsClosed = true;
+    if (this.props.modals) {
+      Object.entries(this.props.modals).forEach(([key, value]) => {
+        if (ignore !== key && value.open) modalIsOpen = true;
+        if (value.open) allModalsClosed = false;
+      });
+      if (modalIsOpen) {
+        return true;
+      } else if (allModalsClosed) {
+        return false;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
   closeModal(callback) {
     const bindthis = this;
     const transitionTimeMS = this.getTransitionDuration();
+    if (this.props.appRef && !this.searchForOpenModals(this.props.identifier)) {
+      if (this.props.appRef.current.classList.contains('blur')) {
+        this.props.appRef.current.classList.remove('blur');
+      }
+    }
     this.setState({open: false});
     this.closeTimer = setTimeout(function() {
 		  window.postMessage(bindthis.props.identifier, '*');
@@ -305,7 +305,7 @@ Modal.defaultProps = {
 function mapStateToProps(state, props) {
 
   return {
-    modals: state.modals
+    modals: state.modal
   }
 }
 

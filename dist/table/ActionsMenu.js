@@ -11,8 +11,10 @@ class ActionsMenu extends Component {
     this.onClick = this.onClick.bind(this);
     this.state = {
       open: false,
-      display: false
+      display: false,
+      direction: ''
     };
+    this.dropdownRef = React.createRef();
   }
 
   componentDidMount() {}
@@ -28,7 +30,13 @@ class ActionsMenu extends Component {
 
   openMenu(e) {
     e.stopPropagation();
+    const ref = this.dropdownRef.current;
+    const height = window.innerHeight;
+    const rect = ref.getBoundingClientRect();
+    let direction = '';
+    if (height - rect.top < 300) direction = 'top';
     this.setState({
+      direction,
       open: true,
       display: true
     });
@@ -78,12 +86,12 @@ class ActionsMenu extends Component {
       iconOpened,
       iconClosed,
       overlay,
-      overlayDuration,
-      direction
+      overlayDuration
     } = this.props;
     const {
       open,
-      display
+      display,
+      direction
     } = this.state;
     return React.createElement("div", {
       className: "actionsMenu",
@@ -102,7 +110,8 @@ class ActionsMenu extends Component {
     }, !util.isEmpty(this.props.options) ? label : 'No Actions', React.createElement("span", {
       className: `${util.isEmpty(this.props.options) && 'displayNone'}`
     }, open ? iconOpened : iconClosed)), React.createElement("div", {
-      className: `actionsMenu-content ${direction}`
+      ref: this.dropdownRef,
+      className: `actionsMenu-content ${this.props.direction || direction}`
     }, React.createElement(AnimateHeight, {
       duration: 200,
       height: open ? 'auto' : 0

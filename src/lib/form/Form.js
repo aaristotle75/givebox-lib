@@ -4,6 +4,7 @@ import TextField from './TextField';
 import Dropdown from './Dropdown';
 import Choice from './Choice';
 import RichTextField from './RichTextField';
+import ModalField from './ModalField';
 import CreditCard from './CreditCard';
 import CalendarField from './CalendarField';
 import * as _v from './formValidate';
@@ -33,6 +34,7 @@ class Form extends Component {
     this.dropdown = this.dropdown.bind(this);
     this.choice = this.choice.bind(this);
     this.richText = this.richText.bind(this);
+    this.modalField = this.modalField.bind(this);
     this.creditCard = this.creditCard.bind(this);
     this.creditCardGroup = this.creditCardGroup.bind(this);
     this.createField = this.createField.bind(this);
@@ -435,7 +437,7 @@ class Form extends Component {
         readOnly={field ? field.readOnly : params.readOnly}
         onChange={this.onChangeDropdown}
         defaultValue={defaultValue}
-        selectLabel={params.selectLabel}
+        selectLabel={field ? field.selectLabel : params.selectLabel}
         label={params.label}
         floatingLabel={params.floatingLabel}
         style={params.style}
@@ -526,7 +528,7 @@ class Form extends Component {
     const params = Object.assign({}, defaultParams, {
       className: '',
       type: 'richText',
-      errorType: 'normal'
+      fixedLabel: true
     }, opts);
 
     return (
@@ -534,6 +536,7 @@ class Form extends Component {
         name={name}
         className={params.className}
         label={params.label}
+        fixedLabel={params.fixedLabel}
         modal={params.modal}
         modalLabel={params.modalLabel}
         style={params.style}
@@ -549,6 +552,36 @@ class Form extends Component {
         errorType={params.errorType}
         createField={this.createField}
         wysiwyg={params.wysiwyg}
+        params={params}
+      />
+    )
+  }
+
+  modalField(name, opts) {
+    const field = has(this.state.fields, name) ? this.state.fields[name] : null;
+    const defaultParams = cloneObj(this.defaults);
+    const params = Object.assign({}, defaultParams, {
+      className: '',
+      fixedLabel: true
+    }, opts);
+
+    return (
+      <ModalField
+        id={params.id}
+        name={name}
+        className={params.className}
+        label={params.label}
+        fixedLabel={params.fixedLabel}
+        modalLabel={params.modalLabel}
+        style={params.style}
+        placeholder={field ? field.placeholder : params.placeholder}
+        required={field ? field.required : params.required}
+        group={field ? field.group : params.group}
+        value={field ? field.value : params.value}
+        error={field ? field.error : params.error }
+        errorType={params.errorType}
+        createField={this.createField}
+        opts={params.opts}
         params={params}
       />
     )
@@ -817,6 +850,7 @@ class Form extends Component {
         formState: this.state,
         textField: this.textField,
         richText: this.richText,
+        modalField: this.modalField,
         creditCardGroup: this.creditCardGroup,
         dropdown: this.dropdown,
         choice: this.choice,
@@ -827,7 +861,8 @@ class Form extends Component {
         fieldError: this.fieldError,
         errorAlert: this.errorAlert,
         successAlert: this.successAlert,
-        name: this.props.name
+        name: this.props.name,
+        onChangeDropdown: this.onChangeDropdown
       })
     );
     return childrenWithProps;

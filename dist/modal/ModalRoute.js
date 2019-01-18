@@ -16,10 +16,6 @@ class ModalRoute extends Component {
     window.addEventListener('message', this.receiveMessage, false);
   }
 
-  componentWillUnmount() {
-    console.log('ModalRoute unmounted');
-  }
-
   receiveMessage(e) {
     if (e.data === this.props.id) {
       if (this.props.open) {

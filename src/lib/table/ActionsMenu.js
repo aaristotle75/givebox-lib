@@ -12,8 +12,10 @@ class ActionsMenu extends Component {
     this.onClick = this.onClick.bind(this);
     this.state = {
       open: false,
-      display: false
+      display: false,
+      direction: ''
     }
+    this.dropdownRef = React.createRef();
   }
 
   componentDidMount() {
@@ -29,7 +31,12 @@ class ActionsMenu extends Component {
 
   openMenu(e) {
     e.stopPropagation();
-    this.setState({open: true, display: true});
+    const ref = this.dropdownRef.current;
+    const height = window.innerHeight;
+    const rect = ref.getBoundingClientRect();
+    let direction = '';
+    if ((height - rect.top) < 300) direction = 'top';
+    this.setState({direction, open: true, display: true});
     document.addEventListener('click', this.closeMenu);
   }
 
@@ -71,20 +78,20 @@ class ActionsMenu extends Component {
       iconOpened,
       iconClosed,
       overlay,
-      overlayDuration,
-      direction
+      overlayDuration
     } = this.props;
 
     const {
       open,
-      display
+      display,
+      direction
     } = this.state;
 
     return (
       <div className='actionsMenu' style={style}>
         <Fade in={open && overlay} duration={overlayDuration}><div onClick={this.closeMenu} className={`dropdown-cover ${display ? '' : 'displayNone'}`}></div></Fade>
         <button disabled={!!util.isEmpty(this.props.options)} className='menuLabel' type='button' onClick={open ? this.closeMenu : this.openMenu}>{!util.isEmpty(this.props.options) ? label : 'No Actions'}<span className={`${util.isEmpty(this.props.options) && 'displayNone'}`}>{open ? iconOpened : iconClosed}</span></button>
-        <div className={`actionsMenu-content ${direction}`}>
+        <div ref={this.dropdownRef} className={`actionsMenu-content ${this.props.direction || direction}`}>
           <AnimateHeight
             duration={200}
             height={open ? 'auto' : 0}
