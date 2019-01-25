@@ -552,3 +552,23 @@ export function stripHtml(html){
     // Retrieve the text property of the element (cross-browser support)
     return temporalDivElement.textContent || temporalDivElement.innerText || "";
 }
+
+export function makeAddress(where, showCountry = true) {
+  const obj = {};
+  if (where.address) obj.line1 = where.address;
+  if (where.city || where.state || where.zip) {
+    obj.line2 = `${where.city || ''}${where.city && where.zip ? ',' : ''} ${where.state || ''} ${where.zip || ''}`;
+  }
+  if (where.country) obj.line3 = where.country;
+  if (!isEmpty(obj)) {
+    return (
+      <div className='address'>
+        {obj.line1 && <span className='line'>{obj.line1}</span>}
+        {obj.line2 && <span className='line'>{obj.line2}</span>}
+        {obj.line3 && showCountry && <span className='line'>{obj.line3}</span>}
+      </div>
+    )
+  } else {
+    return '';
+  }
+}

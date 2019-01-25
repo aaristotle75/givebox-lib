@@ -78,7 +78,8 @@ class ActionsMenu extends Component {
       iconOpened,
       iconClosed,
       overlay,
-      overlayDuration
+      overlayDuration,
+      className
     } = this.props;
 
     const {
@@ -88,10 +89,10 @@ class ActionsMenu extends Component {
     } = this.state;
 
     return (
-      <div className='actionsMenu' style={style}>
+      <div className={`actionsMenu ${className || ''}`} style={style}>
         <Fade in={open && overlay} duration={overlayDuration}><div onClick={this.closeMenu} className={`dropdown-cover ${display ? '' : 'displayNone'}`}></div></Fade>
         <button disabled={!!util.isEmpty(this.props.options)} className='menuLabel' type='button' onClick={open ? this.closeMenu : this.openMenu}>{!util.isEmpty(this.props.options) ? label : 'No Actions'}<span className={`${util.isEmpty(this.props.options) && 'displayNone'}`}>{open ? iconOpened : iconClosed}</span></button>
-        <div ref={this.dropdownRef} className={`actionsMenu-content ${this.props.direction || direction}`}>
+        <div ref={this.dropdownRef} className={`${open ? 'opened' : ''} actionsMenu-content ${this.props.direction || direction}`}>
           <AnimateHeight
             duration={200}
             height={open ? 'auto' : 0}

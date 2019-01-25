@@ -1,6 +1,6 @@
 @import 'variables.scss';
 
-form {
+form:not(.clean) {
   padding: 10px 0;
 }
 

@@ -326,7 +326,9 @@ class TableBody extends Component {
                 onClick: () => ref ? bindthis.detailsLink(ref) : '',
                 className: `${ref ? 'hasDetails' : ''} ${value.primary ? 'primaryRow' : ''}`,
                 key: key
-              }, value.value));
+              }, React.createElement("span", {
+                className: `${!value.primary && !has(value, 'actions') && !has(value, 'always') && bindthis.state.details.includes(id) ? 'hidden' : ''}`
+              }, value.value)));
             }
           }
         });

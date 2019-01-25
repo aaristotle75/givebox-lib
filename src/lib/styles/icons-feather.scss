@@ -23,6 +23,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-gift:before {
+  content: "\e9ed";
+}
+.icon-book-open:before {
+  content: "\e9ee";
+}
 .icon-help-circle:before {
   content: "\e9ec";
 }

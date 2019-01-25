@@ -86,7 +86,8 @@ class ActionsMenu extends Component {
       iconOpened,
       iconClosed,
       overlay,
-      overlayDuration
+      overlayDuration,
+      className
     } = this.props;
     const {
       open,
@@ -94,7 +95,7 @@ class ActionsMenu extends Component {
       direction
     } = this.state;
     return React.createElement("div", {
-      className: "actionsMenu",
+      className: `actionsMenu ${className || ''}`,
       style: style
     }, React.createElement(Fade, {
       in: open && overlay,
@@ -111,7 +112,7 @@ class ActionsMenu extends Component {
       className: `${util.isEmpty(this.props.options) && 'displayNone'}`
     }, open ? iconOpened : iconClosed)), React.createElement("div", {
       ref: this.dropdownRef,
-      className: `actionsMenu-content ${this.props.direction || direction}`
+      className: `${open ? 'opened' : ''} actionsMenu-content ${this.props.direction || direction}`
     }, React.createElement(AnimateHeight, {
       duration: 200,
       height: open ? 'auto' : 0

@@ -204,7 +204,7 @@ class Transactions extends Component {
           { details: desc.details, width: '6%', key: data.ID },
           { value: createdAt },
           { value: desc.desc, primary: true},
-          { value: desc.credit !== '0.00' || value.txType === 'credit' ? util.money(desc.credit) : ''},
+          { value: desc.credit !== '0.00' || value.txType === 'credit' ? util.money(desc.credit) : '', always: true},
           { value: desc.debit !== '0.00' || value.txType === 'debit' ? util.money(desc.debit) : ''},
           { actions:
             <ActionsMenu

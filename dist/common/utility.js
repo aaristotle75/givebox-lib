@@ -548,3 +548,27 @@ export function stripHtml(html) {
 
   return temporalDivElement.textContent || temporalDivElement.innerText || "";
 }
+export function makeAddress(where, showCountry = true) {
+  const obj = {};
+  if (where.address) obj.line1 = where.address;
+
+  if (where.city || where.state || where.zip) {
+    obj.line2 = `${where.city || ''}${where.city && where.zip ? ',' : ''} ${where.state || ''} ${where.zip || ''}`;
+  }
+
+  if (where.country) obj.line3 = where.country;
+
+  if (!isEmpty(obj)) {
+    return React.createElement("div", {
+      className: "address"
+    }, obj.line1 && React.createElement("span", {
+      className: "line"
+    }, obj.line1), obj.line2 && React.createElement("span", {
+      className: "line"
+    }, obj.line2), obj.line3 && showCountry && React.createElement("span", {
+      className: "line"
+    }, obj.line3));
+  } else {
+    return '';
+  }
+}

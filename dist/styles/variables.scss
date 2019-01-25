@@ -1,13 +1,21 @@
+/*----- Layout -----*/
+$layout-top-height: 56px;
+$layout-left-width: 210px;
+$main-max-width: 100%;
+
 /*----- Defaults --------*/
 //$font-family: CenturyGothic, sans-serif;
 $font-family: Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
 $header-weight: 400;
 $font-weight: 400;
+$icon-weight: 500;
 $huge-text-size: 1.5em;
-$large-text-size: 1.17em;
-$normal-text-size: 1.00em;
+$large-text-size: 1.3em;
+$normal-text-size: 1.1em;
+$med-text-size: 1em;
 $small-text-size: 0.83em;
 $tiny-text-size: 0.67em;
+
 
 /*----- Define Colors --------*/
 $white: #FFFFFF;
@@ -27,17 +35,29 @@ $dark-blue-gray: #253655;
 $red: #e83b2e;
 $yellow: #FFCC80;
 $orange: #ecab1f;
-$green: #32bd52;
+$green: #35e6b2;
+
+/* previous purpleblue & skyblue
 $primary: #4365d4;
 $secondary: #273b7d;
 $tertiary: #1a2752;
+$secondColor: #01b9ff;
+$secondColor2: #01a3e1;
+*/
 
-//$mainColor: #01b9ff;
-//$mainColor2: #01a3e1;
+$primary: #45a8dc;
+$secondary: #233e59;
+$tertiary: #1e364f;
+$secondColor: #7ddafd;
+$secondColor2: #48bae6;
+$secondColor3: #b1e8fd;
+
 $mainColor: $primary;
 $mainColor2: $secondary;
 
 $mobile-width: 800px;
+$overlayColor: transparentize($dark-blue-gray, .7);
+
 
 @mixin box-shadow($shadows...) {
   -moz-box-shadow: $shadows;

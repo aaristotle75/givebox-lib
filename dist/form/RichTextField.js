@@ -109,6 +109,7 @@ const Editor = props => {
     onChange: props.onChange,
     placeholder: props.placeholder,
     content: props.value,
+    updateContent: props.updateContent,
     fieldName: props.name,
     wysiwyg: props.wysiwyg
   });

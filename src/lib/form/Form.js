@@ -548,6 +548,7 @@ class Form extends Component {
         onBlur={this.onBlur}
         onFocus={this.onFocus}
         value={field ? field.value : params.value}
+        updateContent={field ? field.updateContent || null : null}
         error={field ? field.error : params.error }
         errorType={params.errorType}
         createField={this.createField}

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { selectOptions } from '../lib';
+import { selectOptions, GBLink } from '../lib';
 
 export default class TestForm extends Component {
 
@@ -9,6 +9,7 @@ export default class TestForm extends Component {
     this.formSavedCallback = this.formSavedCallback.bind(this);
     this.onTypeChange = this.onTypeChange.bind(this);
     this.selectAccount = this.selectAccount.bind(this);
+    this.testFieldProp = this.testFieldProp.bind(this);
   }
 
   componentDidMount() {
@@ -34,12 +35,17 @@ export default class TestForm extends Component {
     console.log('selectAccount', name, value, field);
   }
 
+  testFieldProp() {
+    this.props.fieldProp('emailList', { updateContent: '111' });
+  }
+
   render() {
 
     return (
       <div>
         <h2>Form Elements</h2>
         <div className='formWrapper'>
+        <GBLink onClick={this.testFieldProp}>Test Field Prop</GBLink>
         {/*
         {this.props.calendarRange({debug: true, enableTime: true })}
         {this.props.textField('custID', { type: 'hidden' })}
@@ -74,13 +80,13 @@ export default class TestForm extends Component {
         {this.props.textField('descriptor', {placeholder: 'Enter Billing Descriptor', validate: 'descriptor', maxLength:21})}
         {this.props.dropdown('states', {label: 'States', options: selectOptions.states, value: 'CA'})}
         {this.props.dropdown('status', {options: [{primaryText: 'Active', secondaryText: 'active status does so and so', value: 'active'}, {primaryText: 'Deactivated', value: 'deactivated'}, {primaryText: 'Suspended', value: 'suspended'}], selectLabel: 'Select Status'})}
-        */}
         {this.props.textField('ssn', {label: 'Social Security Number', placeholder: 'Enter Social Security Number', validate: 'ssn'})}
         {this.props.calendarField('dob', { label: 'Date of Birth', required: true, validate: 'date', validateOpts: { }})}
-        {this.props.richText('emailList', { label: 'Email List', placeholder: 'Enter emails separated by commas', modal: true, required: true })}
+        */}
+        {this.props.richText('emailList', { label: 'Email List', placeholder: 'Enter emails separated by commas', modal: false, required: true, wysiwyg: 'show' })}
+        {/*
         {this.props.modalField('testModal', { id: 'feesGlossary', label: 'Test Modal', modalLabel: 'Click the modal' } )}
         {this.props.dropdown('states', {label: 'States', options: selectOptions.states, value: 'CA'})}
-        {/*
         {this.props.dropdown('bankAccountType', { className: 'column50', label: 'What kind of transfer do you want to make?', value: 'deposit', onChange: this.onTypeChange, options: [{primaryText: 'Withdrawal', value: 'deposit' }, {primaryText: 'Send Payment', value: 'payee'}] })}
         {this.props.dropdown('selectedAccount', { className: 'column50', label: `account`, selectLabel: `Select account to make withdrawal to`, onChange: this.selectAccount, options: [{primaryText: 'Account1', value: 1}, {primaryText: 'Account2', value: 2}, { bottom: <span>Add Account</span>, style: {textAlign: 'center'} }] })}
         {this.props.textField('amount', { required: true, label: 'Enter Amount', placeholder: '0.00', validate: 'money', validateOpts: { decimal: true, min: 1, max: 2999.87, errorMsg: `You can't transfer more than your available balance of 2999.87` }  })}

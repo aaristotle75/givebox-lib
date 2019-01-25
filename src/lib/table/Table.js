@@ -317,7 +317,7 @@ class TableBody extends Component {
               options = value.options;
             } else {
               if (has(value, 'actions')) td.push(<td className='actionsRow' key={key}>{value.actions}</td>);
-              else td.push(<td onClick={() => ref ? bindthis.detailsLink(ref) : ''} className={`${ref ? 'hasDetails' : ''} ${value.primary ? 'primaryRow' : ''}`} key={key}>{value.value}</td>);
+              else td.push(<td onClick={() => ref ? bindthis.detailsLink(ref) : ''} className={`${ref ? 'hasDetails' : ''} ${value.primary ? 'primaryRow' : ''}`} key={key}><span className={`${!value.primary && !has(value, 'actions') && !has(value, 'always') && bindthis.state.details.includes(id) ? 'hidden' : ''}`}>{value.value}</span></td>);
             }
           }
         });

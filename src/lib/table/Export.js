@@ -10,21 +10,6 @@ class ExportLink extends Component {
     super(props);
     this.onClick = this.onClick.bind(this);
     this.makeLink = this.makeLink.bind(this);
-    this.state = {
-      link: null
-    }
-  }
-
-  componentDidMount() {
-    this.makeLink();
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (has(prevProps.resource, 'endpoint')) {
-      if (this.props.resource.endpoint !== prevProps.resource.endpoint) {
-        this.makeLink();
-      }
-    }
   }
 
   makeLink() {
@@ -32,13 +17,11 @@ class ExportLink extends Component {
     const max = { max: 100000000 };
     const search = { ...resource.search, ...max };
     const link = this.props.getResource(this.props.name, { csv: true, search: search });
-    this.setState({
-      link
-    })
+    return link;
   }
 
   onClick() {
-    window.open(this.state.link, '_blank');
+    window.open(this.makeLink(), '_blank');
   }
 
   render() {
@@ -46,8 +29,15 @@ class ExportLink extends Component {
     const {
       style,
       align,
-      desc
+      desc,
+      resource
     } = this.props;
+
+    if (util.isLoading(resource)) {
+      return <div></div>;
+    } else {
+      if (util.isEmpty(resource.data)) return <div></div>;
+    }
 
     return (
       <div style={style} className={`exportRecordsLink ${align}`}>
@@ -65,16 +55,9 @@ ExportLink.defaultProps = {
 function mapStateToProps(state, props) {
 
   const resource = state.resource[props.name] ? state.resource[props.name] : {};
-  let sort, order;
-  if (!util.isLoading(resource)) {
-    sort = has(resource.search, 'sort') ? resource.search.sort : '';
-    order = has(resource.search, 'order') ? resource.search.order : '';
-  }
 
   return {
-    resource: resource,
-    sort: sort,
-    order: order
+    resource: resource
   }
 }
 

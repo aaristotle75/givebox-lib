@@ -1,30 +1,41 @@
 @import 'variables.scss';
 
+
 /*------- Common ----------*/
 body {
+  font-family: $font-family;
   color: $dark-gray;
 }
 
 h1 { font-size: 1.5em }
-h2 { font-size: 1.3em }
+h2 { font-size: 1.17em }
+
+h1, h2, h3, h4, h5 {
+  font-weight: 300;
+}
 
 a, button.link, button.button {
+  font-weight: 300;
   color: $mainColor;
 }
 
 a:hover, button.link:hover, button.button:hover {
-  color: $mainColor2;
-}
-
-.detailsIcon .icon {
-  color: $light-gray;
-  font-size: 1.5em;
-  vertical-align: middle;
+  color: $secondColor;
 }
 
 .date {
   font-size: $small-text-size;
-  color: $med-dark-gray;
+  color: $med-gray;
+  font-weight: 300;
+}
+
+.grayout {
+  .date {
+    color: $med-gray;
+  }
+}
+
+label, .label {
   font-weight: 300;
 }
 
@@ -40,6 +51,9 @@ a:hover, button.link:hover, button.button:hover {
 .flexBetween {
   display: flex;
   justify-content: space-between;
+}
+
+.centerItems {
   align-items: center;
 }
 
@@ -49,185 +63,43 @@ a:hover, button.link:hover, button.button:hover {
 }
 
 .column50 {
+  vertical-align: top;
   display: inline-block;
   width: 50%;
 }
 
 .column33 {
+  vertical-align: top;
   display: inline-block;
   width: 33%;
 }
 
-/*------- Header -----------*/
-header.navbar {
-  min-height: 56px;
-  padding: 16px;
-  padding-top: 8px;
-  padding-right: 32px;
-  border: 0 solid $light;
-  border-bottom: 1px solid $light-gray;
-  @include transition(border-bottom-width .2s linear,background-color .2s linear);
-  background: $white;
-
-  .left-menu-open {
-    display: inline-block;
-    vertical-align: middle;
-    margin-top: 2px;
-    margin-right: 10px;
-
-    button:hover .icon {
-      color: $mainColor2;
-      @include default-transition(.25s);
-    }
-
-    .icon {
-      font-size: 2em;
-      color: $mainColor;
-    }
-  }
-
-  .title {
-    h2 {
-      vertical-align: middle;
-      display: inline-block;
-    }
-  }
-
-  .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1176px;
-    margin-left: 0;
-  }
+.blur {
+  @include filter(blur(8px));
+  @include default-transition(.5s);
 }
 
-/*-------- Sub Header --------*/
-header.subNav {
-  min-height: 56px;
-  border: 0 solid transparent;
-  border-bottom: 1px solid $light-gray;
-  transition: border-bottom-width 0s linear,background-color .2s linear;
-  background: $white;
-
-  .container {
-    max-width: 1176px;
-    margin-left: 0;
-  }
-
-  button.button {
-    margin: 0 5px;
-  }
-
-  .actionsMenu button.menuLabel {
-    width: 200px;
-    text-align: center;
-    font-size: 12px;
-    letter-spacing: .5px;
-    font-family: $font-family;
-    color: $white;
-    display: inline-block;
-    border: none;
-    border-radius: 0px;
-    padding: 10px 20px 10px 20px;
-    line-height: 17px;
-    text-transform: none;
-    background-color: $mainColor;
-    cursor: pointer;
-    font-weight: 500;
-    @include box-shadow(none);
-    border: 1px solid transparent;
-  }
-
-  .actionsMenu button.menuLabel:hover {
-    color: $white;
-    background-color: $mainColor2;
-    @include default-transition(.25s);
-  }
-
-  .actionsMenu button.menuLabel .icon { display: none; }
-
-  .filter {
-    text-align: right;
-  }
-}
-
-/*------- Left Side ---------*/
-.layout-left {
-  width: 264px;
-  max-height: 100vh;
-  overflow-y: auto;
-  @include transition(width .5s);
-}
-
-.layout-top {
-  position: fixed;
-  top: 0;
-  width: 264px;
-  max-height: 100vh;
-  overflow-y: auto;
-  backface-visibility: hidden;
-  background: $secondary;
-  @include transition(width .5s);
-  z-index: 1002;
-}
-
-.layout-left .layout-top {
-  background-image: url(https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/left-side-bg.png);
-  background-position: center bottom;
-  background-repeat: no-repeat;
-  background-size: 264px auto;
-  height: 100vh;
-}
-
-.layout-left-container {
-
-  .logo img {
-    width: 165px;
-    height: 30px;
-    margin-top: 13px;
-    margin-bottom: 21px;
-  }
-
-  .nav ul {
-    position: relative;
-    width: 100%;
-  }
-
-  .nav li {
-    padding: 15px;
-    padding-left: 30px;
-    color: $white;
-    font-weight: 300;
-    letter-spacing: 1px;
-    cursor: pointer;
-    border-left: 3px solid transparent;
-  }
-
-  .nav li:hover {
-    color: $mainColor;
-    @include default-transition(.25s);
-  }
-
-  .nav li.active {
-    background: $tertiary;
-    border-left: 3px solid $mainColor;
-    color: $mainColor;
-  }
-}
 
 /*--------- Main Container -------*/
+
+/*--- Layout Main ---*/
 .layout-main {
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   width: 100%;
+  background: $white;
 }
 
 .layout-main-wrapper {
 
   .container {
-    max-width: 1176px;
-    padding: 20px;
+    max-width: $main-max-width;
+    padding: 5px 20px 10px 20px;
+  }
+
+  .mainContent {
+    background: $white;
   }
 
 }
@@ -239,12 +111,489 @@ header.subNav {
   right: 0;
   left: 0;
   bottom: 0;
-  display: pointer;
   cursor: pointer;
   background: $dark-blue-gray;
   @include transition(opacity .35s ease);
   opacity: 0;
+  z-index: 3000;
+}
+
+/*------- Header -----------*/
+.title {
+
+  .noLink {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    color: $light-med-gray;
+    font-size: $large-text-size;
+
+    .icon {
+      padding-right: 5px;
+      color: $light-med-gray;
+      font-size: $large-text-size;
+    }
+  }
+
+  button.link {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    color: $mainColor;
+    font-weight: 400;
+    font-size: $large-text-size;
+    .icon {
+      padding-right: 5px;
+      color: $mainColor;
+      font-size: $large-text-size;
+    }
+  }
+  button.link:hover {
+    color: $secondColor;
+    .icon {
+      color: $secondColor;
+      @include default-transition(.25s);
+    }
+  }
+  .childLink {
+    color: $light-med-gray;
+  }
+}
+
+.layout-top {
+  background: $white;
+}
+
+header.navbar {
+  left: $layout-left-width;
+  height: $layout-top-height;
+  padding-bottom: 16px;
+  padding-top: 3px;
+  border: 0 solid $light-gray;
+  border-bottom: 1px solid $light-gray;
+  @include transition(border-bottom-width .2s linear,background-color .2s linear);
+  background: transparent;
+
+  .left-menu-open {
+    position: absolute;
+    left: 0px;
+    z-index: 1100;
+
+    button:hover .icon {
+      color: $mainColor2;
+      @include default-transition(.25s);
+    }
+
+    .icon {
+      font-size: 1.8em;
+      color: $mainColor;
+    }
+  }
+
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: $main-max-width;
+    margin-left: 0;
+    padding: 0 20px;
+  }
+}
+
+/*-------- Sub Header --------*/
+.fixed header.subNavFixed {
+  height: auto;
+  @include box-shadow(0px 5px 3px -3px $med-gray);
+
+  .subNavContent {
+
+    .leftSide {
+      display: flex;
+      flex-direction: row-reverse;
+      align-items: center;
+      margin-right: 20px;
+    }
+
+    .balance {
+      flex: 1;
+      margin-top: 5px;
+      h1 {
+        margin-top: 0px;
+        margin-bottom: 0px;
+        font-size: 2em;
+        height: auto;
+      }
+      button { margin-top: 2px; }
+    }
+
+    .actionsMenu {
+      flex: 0;
+      display: inline;
+    }
+
+  	.actionsMenu button.menuLabel {
+      margin-top: 5px;
+      margin-right: 20px;
+  	  width: 135px;
+      padding: 12px;
+      text-align: center;
+  	}
+
+    .searchBlock {
+      margin-top: 0;
+      margin-bottom: 0px;
+    }
+
+    .date,
+    .menu {
+      display: none;
+    }
+
+    .filter {
+      margin-top: 0px;
+    }
+  }
+}
+
+header.subNavFixed {
+  position: fixed;
+  top: 0;
+  right: 0px;
+  left: $layout-left-width;
+  height: 0;
+  padding-right: 5px;
   z-index: 1000;
+  background: $white;
+}
+
+header.subNav {
+  min-height: 56px;
+  border: 0 solid transparent;
+  transition: border-bottom-width 0s linear,background-color .2s linear;
+  background: transparent;
+  .container {
+    max-width: $main-max-width;
+    margin-left: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+}
+
+.subNavContent {
+
+	.actionsMenu button.menuLabel {
+	  padding: 7px 15px 7px 15px;
+	  line-height: 17px;
+		text-align: center;
+		background: none;
+    color: $mainColor;
+    border: 1px solid $mainColor;
+
+    .icon {
+      display: none;
+    }
+	}
+
+	.actionsMenu button.menuLabel:hover {
+	  color: $white;
+	  background-color: $mainColor;
+	  @include default-transition(.25s);
+	}
+
+  button.button {
+    margin: 0;
+  }
+
+  .filterWrapper {
+    button.link {
+      position: absolute;
+      top: -15px;
+      right: 0px;
+      font-size: $small-text-size;
+      color: $med-gray;
+      font-weight: 300;
+      margin-right: 5px;
+    }
+  }
+
+  .filter {
+    text-align: right;
+  }
+}
+
+/*------- Scrollbar -------*/
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: $overlayColor;
+  outline: 0;
+  border-radius: 20px;
+}
+
+.dropdown .dropdown-content::-webkit-scrollbar {
+    width: 4px;
+}
+
+.dropdown .dropdown-content::-webkit-scrollbar-track {
+  margin: 10px 0;
+  background-color: $white;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.dropdown .dropdown-content::-webkit-scrollbar-thumb {
+  background-color: $mainColor;
+  outline: 0;
+  border-radius: 20px;
+}
+
+
+/*------- Actions Block -----*/
+.actionsBlock {
+  text-align: right;
+  vertical-align: top;
+}
+
+
+/*------- Glossary Button ------*/
+
+button.glossary {
+  font-size: $small-text-size;
+  color: $med-gray;
+}
+
+button.glossary:hover {
+  color: $mainColor;
+}
+
+/*------ Search Block -------*/
+
+.searchBlock {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  text-align: right;
+
+  .search {
+    display: inline-block;
+    width: 300px;
+
+    .input-button {
+      top: 10px;
+    }
+
+  }
+
+  .searchBtn .icon {
+    font-size: $large-text-size;
+    font-weight: $icon-weight;
+  }
+
+  .searchResetBtn .icon {
+    font-size: $large-text-size;
+    font-weight: $icon-weight;
+  }
+
+  .searchResetBtn:hover .icon,
+  .searchBtn:hover .icon {
+    color: $mainColor;
+  }
+
+}
+
+/*------- Balance Block --------*/
+.balance {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  h1 {
+    display: flex;
+    color: $mainColor;
+    margin: 0;
+    margin-bottom: 5px;
+    font-size: 4em;
+    font-weight: 300;
+    height: 80px;
+    @media (max-width: 1300px) { font-size: 5vw; }
+    @media (max-width: 600px) { font-size: 12vw; }
+  }
+
+  .moneyAmount {
+    align-self: center;
+    .symbol {
+    	display: inline;
+    	vertical-align: top;
+    	font-size: 55%;
+    }
+  }
+
+  button {
+    margin-top: 2px;
+    align-self: start;
+    margin-left: 5px;
+  }
+
+  .dropdown button {
+    padding: 0px 0px 2px 0px;
+    border-color: $light-gray;
+  }
+
+}
+
+/*------ Stat Block ---------*/
+.statBlock {
+  display: inline-block;
+  padding: 0;
+  height: 100%;
+  width: 50%;
+
+  li,
+  li:nth-child(even) {
+    background: transparent;
+  }
+}
+
+/*------- Left Side ---------*/
+.layout-left {
+  width: $layout-left-width;
+  max-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  @include transition(width .5s);
+}
+
+.layout-left-content {
+  position: fixed;
+  top: 0;
+  width: $layout-left-width;
+  max-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  backface-visibility: hidden;
+  @include transition(width .5s);
+  z-index: 3002;
+}
+
+.layout-left .layout-left-content {
+  height: 100vh;
+  background: $mainColor2;
+  background-image: url(https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/layout-left-bg-new.png), linear-gradient(to bottom, $mainColor2 0%,$mainColor 100%);
+  //background: linear-gradient(to bottom, $mainColor2 0%,$mainColor 100%);
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  background-size: $layout-left-width auto;
+}
+
+.layout-left-container {
+  .logo {
+    text-align: center;
+  	-webkit-animation: pulsateBrighter 2s ease-out;
+  	-webkit-animation-iteration-count: infinite;
+    img {
+      width: 35px;
+      height: 35px;
+      margin-top: 13px;
+      margin-bottom: 21px;
+    }
+  }
+
+  .nav ul {
+    position: relative;
+    width: 100%;
+  }
+
+  .active-indicator {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    margin: 0;
+    width: $layout-left-width;
+    height: 49px;
+    background: transparent;
+    //border-left: 3px solid $secondColor;
+    transition: all 700ms;
+    z-index: 1003;
+  	-webkit-animation: pulsateBrighter 2s ease-out;
+  	-webkit-animation-iteration-count: infinite;
+  }
+
+  .active-indicator-bar {
+    margin-top: 5px;
+    height: 42px;
+    width: 5px;
+    background: $secondColor;
+    z-index: 1005;
+  	-webkit-animation-iteration-count: infinite;
+    border-radius: 20px;
+  }
+
+  .nav li {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    padding-left: 10px;
+    color: $white;
+    font-size: 1em;
+    font-weight: 300;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    overflow: hidden;
+    white-space: nowrap;
+
+    .icon {
+      position: relative;
+      display: inline-block;
+      width: 40px;
+      padding-right: 10px;
+      text-align: center;
+      vertical-align: middle;
+      z-index: 1004;
+      font-size: 1.3em;
+    }
+
+    .text {
+      position: relative;
+      display: inline-block;
+      text-align: left;
+      vertical-align: middle;
+      z-index: 1004;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+  }
+
+  .nav li:hover {
+    color: $secondColor;
+    @include default-transition(.25s);
+  }
+
+  .nav li.active {
+    .icon,
+    .text {
+      color: $secondColor;
+    	-webkit-animation: pulsateBrighter 2s ease-out;
+    	-webkit-animation-iteration-count: infinite;
+    }
+  }
+
+  .nav li.hasChildren {
+    background: transparentize($mainColor2, .8);
+  }
+
+  .nav li.sublist {
+    font-size: $small-text-size;
+    padding-left: 25px;
+    background: transparentize($mainColor2, .8);
+  }
+
 }
 
 /*------ Lists --------*/
@@ -252,18 +601,24 @@ ul.selectable {
 
   li {
     display: flex;
-    background: $light-gray;
-    border: none;
+    background: $white;
+    border: 0;
     border-top: 1px solid $light-med-gray;
     margin: 0;
   }
 
+  li:first-child {
+    border-top: none;
+  }
+
   li:nth-child(even) {
-    background: $light-gray;
+    background: $white;
   }
 
   li:hover {
-    background: $white;
+    background: $mainColor;
+    color: $white;
+    @include default-transition(.25s);
   }
 
   img {
@@ -279,44 +634,64 @@ ul.selectable {
 
 /*--------- Button, Links, Menus --------*/
 
-button.button {
-  font-size: 12px;
-  letter-spacing: .5px;
+.button-group {
+  button.button {
+    margin: 0 5px;
+  }
+}
+
+button {
   font-family: $font-family;
-  color: $white;
+  font-size: $normal-text-size;
+}
+
+button:hover {
+  @include default-transition(.25s);
+}
+
+
+button.button {
+  font-size: $normal-text-size;
+  letter-spacing: 0px;
+  font-family: $font-family;
+  color: $mainColor;
   display: inline-block;
-  border: none;
-  border-radius: 0px;
   padding: 10px 20px 10px 20px;
   line-height: 17px;
   text-transform: none;
-  background-color: $mainColor;
+  background-color: transparent;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 300;
   @include box-shadow(none);
-  border: 1px solid transparent;
+  border: 1px solid $mainColor;
+  border-radius: 20px;
 }
 
 button.button:hover {
   color: $white;
-  background-color: $mainColor2;
+  background-color: $mainColor;
+  //background: linear-gradient(to bottom, $mainColor2 0%,$mainColor 100%);
   @include default-transition(.25s);
 }
 
 button.button:disabled {
   cursor: not-allowed;
-  background-color: transparentize($mainColor, .5);
+  color: $light-med-gray;
+  border: 1px solid $light-med-gray;
+  background-color: $white;
 }
 
 button.button:hover:disabled {
-  background-color: transparentize($mainColor, .5);
+  color: $light-med-gray;
+  border: 1px solid $light-med-gray;
+  background-color: $white;
 }
 
 button.button.secondary {
   background-color: $white;
   color: $mainColor;
   border: 1px solid $mainColor;
-  font-weight: 600;
+  font-weight: 300;
 }
 
 button.button.secondary:hover {
@@ -325,45 +700,86 @@ button.button.secondary:hover {
   @include default-transition(.25s);
 }
 
+.actionsMenu.normalButton button.menuLabel {
+  font-size: $normal-text-size;
+  letter-spacing: 0px;
+  font-family: $font-family;
+  color: $mainColor;
+  display: inline-block;
+  padding: 10px 20px 10px 20px;
+  line-height: 17px;
+  text-transform: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-weight: 300;
+  @include box-shadow(none);
+  border: 1px solid $mainColor;
+  border-radius: 20px;
+
+  .icon {
+    color: $mainColor;
+    vertical-align: middle;
+    margin-bottom: 2px;
+  }
+}
+
+
 .actionsMenu button.menuLabel {
   background: transparent;
   color: $mainColor;
   padding: 5px;
-  font-family: Circular, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: $font-family;
   font-size: 0.83em;
-  font-weight: 400;
+  font-weight: 300;
   letter-spacing: 0;
-  border-radius: 2px;
-  border: none;
+  border-radius: 20px;
+  border: 0;
   cursor: pointer;
   box-shadow: none;
   width: 100%;
-  text-align: left;
+  text-align: right;
   margin: 0;
+  vertical-align: middle;
 
   .icon {
     color: $mainColor;
+    vertical-align: middle;
+    margin-bottom: 2px;
   }
 }
 
-.actionsMenu button:hover.menuLabel {
-  color: $mainColor2;
+.actionsMenu button:hover.menuLabel,
+.actionsMenu button:hover .icon {
+  color: $secondColor;
 }
 
 .actionsMenu button.menuLabel:disabled {
   display: none;
 }
 
-.actionsMenu button:hover .icon {
-  color: $mainColor2;
-}
-
 .actionsMenu {
+
+  .actionsMenu-content {
+    min-width: 150px;
+    max-width: 100%;
+    width: auto;
+    max-height: initial;
+    right: 0;
+    border-radius: 20px;
+    background-color: $white;
+    overflow-y: visible;
+    overflow-x: visible;
+  }
+
+  .actionsMenu-content.opened {
+    border: 1px solid $mainColor;
+    @include box-shadow(0px 3px 6px 0px transparentize($mainColor2, .4));
+  }
 
   white-space: nowrap;
 
   .icon {
-    position: relative;
+    position: static;
     display: inline-block;
     top: 0px;
     right: 0px;
@@ -373,19 +789,29 @@ button.button.secondary:hover {
     margin-left: 5px;
   }
 
+  .actionsMenu-text {
+    margin: 15px 0 15px 0;
+    border-radius: 20px;
+  }
+
   .actionsMenu-item.button {
-    margin: 0;
+    margin: 0px;
     padding: 0;
   }
 
   .actionsMenu-item {
+    white-space: pre-wrap;
+    word-break: break-word;
     button {
-      padding: 10px;
-      text-align: left;
+      padding: 15px 25px;
+      text-align: right;
       width: 100%;
-      color: $med-dark-gray;
+      color: $mainColor;
       background: transparent;
       margin: 0;
+      border: 0;
+      border-bottom: 1px solid $light;
+      border-radius: 0px;
     }
 
     button:hover {
@@ -393,109 +819,356 @@ button.button.secondary:hover {
       background: $mainColor;
     }
   }
+
+  .actionsMenu-item:last-child {
+    button {
+      border-bottom: 0;
+    }
+  }
+}
+
+.input-button .icon {
+  color: $med-gray;
+  font-size: $normal-text-size;
+}
+
+button.input-button:hover .icon {
+  color: $mainColor;
+}
+
+button.toTop {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 15px;
+  border: 1px solid $light-gray;
+  color: $med-gray;
+  background: transparentize($white, .3);
+  z-index: 1000;
+  max-width: $main-max-width;
+
+  .icon { font-size: $large-text-size; }
+}
+
+button.toTop:hover {
+  color: $white;
+  background: $mainColor;
+}
+
+button.input {
+  font-weight: 300;
+  font-size: $normal-text-size;
+}
+
+button.input.hasValue {
+  color: $mainColor;
 }
 
 /*------- Table ----------*/
-th, tr {
-  background: $light-gray;
-}
 
-th {
-  font-weight: 400;
-}
+.givebox-lib-table {
 
-th.sort:hover {
-  color: $med-gray;
-  background: $light-gray;
-}
-
-
-tbody tr:not(:first-child):not(.detailsRow) {
-  border-top: 1px solid $light-med-gray;
-}
-
-tbody tr:hover {
-  background: $white;
-}
-
-tbody td {
-  vertical-align: middle;
-  padding: 20px 5px;
-}
-
-tr:nth-child(even) {
-  background: $light-gray;
-}
-
-.altRow {
-  background: $light-gray;
-}
-
-tr.detailsRow {
-  border-top: none;
-}
-
-.details {
-  background: $white;
-}
-
-tr.detailsOpen {
-  background: $white;
-}
-
-.detailsTitle {
-  font-weight: 300;
-  color: $light-med-gray;
-  border-bottom: 1px solid $light-gray;
-}
-
-tfoot tr {
-  font-size: $large-text-size;
-  font-weight: 300;
-
-  td {
-    padding-top: 30px;
+  table {
+    margin: 0;
   }
-}
 
-.description {
-  .column50 {
+  th, tr {
+    background: transparent;
+  }
+
+  thead tr:hover {
+    background: transparent;
+  }
+
+  th {
+    color: $med-gray;
+    font-weight: 300;
+    padding: 20px 5px;
+  }
+
+  th.sort:hover {
+    color: $mainColor;
+    background: transparent;
+  }
+
+  th.sort .icon {
     vertical-align: top;
+    font-size: $tiny-text-size;
   }
+
+  tbody tr:not(:first-child):not(.detailsRow) {
+    border-top: 1px solid $light-med-gray;
+  }
+
+  tbody tr:hover {
+    background: $white;
+  }
+
+  tbody td {
+    vertical-align: middle;
+    padding: 20px 5px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-size: $normal-text-size;
+    @media (max-width: 1100px) { font-size: 1.6vw; }
+    @media (max-width: 900px) { font-size: 2vw; }
+    @media (max-width: 600px) { font-size: $normal-text-size }
+  }
+
+  tr:nth-child(even) {
+    background: $white;
+  }
+
+  .altRow {
+    background: $white;
+  }
+
+  tr.detailsRow {
+    border-top: none;
+  }
+
+  tbody tr .detailsIcon {
+    text-align: center;
+    .icon {
+      color: $light;
+      font-size: 1.5em;
+      vertical-align: middle;
+      @include default-transition(.5s);
+    }
+  }
+
+  tbody tr:hover .detailsIcon {
+    .icon {
+      color: $mainColor;
+    }
+  }
+
+  .details {
+    background: $light;
+    padding: 0;
+  }
+
+  .detailsContent {
+    width: 100%;
+    padding: 0;
+    padding-bottom: 30px;
+  }
+
+  tbody tr.detailsOpen {
+    @include default-transition(.25s);
+    background: $light;
+
+    .detailsIcon .icon {
+      color: $light-med-gray;
+    }
+
+    td:not(.primaryRow) {
+
+    }
+  }
+
+  tbody tr.detailsOpen:hover {
+
+    .detailsIcon .icon {
+      color: $mainColor;
+    }
+  }
+
+  .detailsTitle {
+    display: none;
+    padding-top: 0;
+    font-weight: 300;
+    letter-spacing: 1px;
+    color: $med-gray;
+    border-bottom: 1px solid $light-med-gray;
+  }
+
+  tfoot {
+    font-size: $normal-text-size;
+
+    tr {
+      line-height: 20px;
+      padding: 10px 0;
+      font-weight: 400;
+    }
+
+    tr:first-child td {
+      padding-top: 20px;
+    }
+
+  }
+
+  .description {
+
+    .image {
+      position: relative;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 175px;
+      height: auto;
+      img {
+        width: 100%;
+        max-width: 200px;
+        height: auto;
+        border-radius: 20px;
+      }
+    }
+
+    .imagePlaceholder {
+      position: relative;
+      display: inline-block;
+      height: 175px;
+      width: 175px;
+      border-radius: 20px;
+      color: $white;
+      background: $light-gray;
+      vertical-align: middle;
+      text-align: center;
+
+      .icon {
+        position: absolute;
+        left:0; right:0;
+        top:40px; bottom:0;
+        margin: auto;
+        font-size: 100px;
+        font-weight: 200;
+        max-width:100%;
+        max-height:100%;
+      }
+    }
+
+    .imageCover {
+      position: absolute;
+      width: 100%;
+      max-width: 175px;
+      height: auto;
+      border-radius: 20px;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      cursor: pointer;
+      opacity: 0;
+      @include transition(opacity .5s ease-out);
+    }
+
+    .imageLink {
+      position: absolute;
+      bottom: 5px;
+      right: 10px;
+      cursor: pointer;
+      color: $white;
+      font-weight: 300;
+      opacity: 0;
+      @include transition(opacity .5s ease-out);
+      background: $overlayColor;
+      padding: 2px 10px;
+    }
+
+    .imageLink:hover {
+      color: $secondColor;
+    }
+
+    .image:hover {
+      .imageLink {
+        opacity: 1;
+      }
+
+      .imageCover {
+        opacity: 1;
+        background: $overlayColor;
+      }
+    }
+
+    .input-group {
+      padding: 0;
+      margin: 0;
+    }
+
+    .detailsLabel {
+      font-weight: 300;
+      color: $med-gray;
+      font-size: $normal-text-size;
+    }
+
+    .column50 {
+      vertical-align: top;
+      white-space: pre-wrap;
+    }
+  }
+
 }
 
 /*---------- Filter -----------*/
-.filter {
-
-  margin-top: 5px;
+.filterWrapper {
+  position: relative;
 
   button.link {
-    color: $med-gray;
     font-size: $small-text-size;
+    color: $med-gray;
     font-weight: 300;
+    margin-right: 5px;
   }
+
+  button.link:hover {
+    color: $mainColor;
+  }
+}
+
+.filter {
 
   .filter-content {
     box-shadow: none;
     padding-bottom: 0px;
     margin-bottom: 0px;
     background: transparent;
+    padding: 30px 0;
+    overflow-x: auto;
   }
 }
 
 /*----------- Max Records Dropdown -------------*/
+.exportRecordsLink {
+
+  .exportRecordsText {
+    margin-right: 5px;
+  }
+
+  button.link {
+    color: $med-gray;
+    font-weight: 300;
+  }
+
+  button.link:hover {
+    color: $mainColor;
+  }
+}
+
 .maxRecords {
 
   .dropdown {
-    .label { color: $mainColor; }
+    .label {
+      font-size: $tiny-text-size;
+      color: $med-gray;
+    }
+    button:hover {
+      .label { color: $mainColor; }
+    }
   }
 
-  button.link,
-  button.link:hover {
+  button.link {
     font-weight: 400;
-    color: $dark-gray;
+    color: $med-gray;
+  }
+  button.link:hover {
+    color: $mainColor;
   }
 }
+
+.recordCount {
+  color: $med-gray;
+}
+
 
 /*----------- Tabs -------------*/
 .statsTab {
@@ -526,30 +1199,50 @@ tfoot tr {
 
 }
 
-/*------- Stat Block --------*/
-.statBlock {
-
-  .value,
-  label,
-  .label,
-  button.glossary {
-    font-size: $normal-text-size;
-    font-weight: 300;
-  }
-
-  button {
-    margin: 0;
-    padding: 0;
-  }
-
-  li,
-  li:nth-child(even) {
-    background: $light-gray;
-  }
-
+/*--------- Form ----------*/
+.fieldContext {
+  padding: 0 5px;
+  font-weight: 300;
+  font-size: $small-text-size;
+  color: $med-gray;
 }
 
-/*--------- Form ----------*/
+input {
+  line-height: 1.5em;
+}
+
+.input-bottom.active {
+  background: $mainColor;
+  transform: scaleX(1);
+  -webkit-transform: scaleX(1);
+  @include default-transition(.25s);
+}
+
+input::-webkit-input-placeholder {
+  font-size: $normal-text-size;
+  font-family: $font-family;
+  color: $med-gray;
+  font-weight: 300;
+}
+input::-moz-placeholder {
+  font-size: $normal-text-size;
+  color: $med-gray;
+  font-weight: 300;
+}
+input::-ms-input-placeholder {
+  font-size: $normal-text-size;
+  color: $med-gray;
+  font-weight: 300;
+}
+
+.floating-label button.label {
+  color: $med-gray;
+}
+
+.floating-label.active label {
+  color: $mainColor;
+}
+
 .search {
   .input-group:not(.hidden) {
     position: relative;
@@ -572,45 +1265,176 @@ tfoot tr {
   }
 }
 
-.input-bottom.active {
-  background: $mainColor;
-  transform: scaleX(1);
-  -webkit-transform: scaleX(1);
-  @include default-transition(.25s);
+.dropdown-cover {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  cursor: pointer;
+  background: $overlayColor;
+  z-index: 4000;
 }
 
-input::-webkit-input-placeholder {
-  font-size: $normal-text-size;
-  font-family: $font-family;
-  color: $med-gray;
-}
-input::-moz-placeholder {
-  font-size: $normal-text-size;
-  color: $med-gray;
-}
-input::-ms-input-placeholder {
-  font-size: $normal-text-size;
-  color: $med-gray;
+.modal .dropdown-cover {
+  border-radius: 20px;
 }
 
-.floating-label.active label {
-  color: $mainColor;
+.dropdown .dropdown-content {
+  border-radius: 20px;
+  background: $white;
+}
+
+.dropdown .dropdown-content.opened {
+  border: 1px solid $mainColor;
+  @include box-shadow(0px 3px 6px 0px transparentize($mainColor2, .4));
+}
+
+.dropdown .dropdown-content-inner {
+  margin: 15px 0;
 }
 
 .dropdown .dropdown-item.selected {
   color: $mainColor;
 }
 
-.dropdown .dropdown-item:hover {
-  background: transparentize($mainColor, .7);
+.dropdown .dropdown-item {
+  padding: 15px 25px;
+  border-bottom: 1px solid $light;
 }
 
-.flatpickr-day.selected, .flatpickr-day.selected:hover {
-  background: $mainColor !important;
-  border-color: $mainColor !important;
+.dropdown .dropdown-item-actions {
+  display: inline;
+  float: right;
+}
+
+.dropdown .dropdown-item:last-child {
+  border-bottom: 0;
+}
+
+.dropdown .dropdown-item:hover {
+  background: $mainColor;
+  color: $white;
+  .icon { color: $white; }
+  .dropdown-item-actions button.link {
+    color: $white;
+  }
+  .dropdown-item-actions button.link:hover {
+    color: $light-gray;
+  }
+}
+
+.dropdown-item button.link {
+  border-bottom: 0;
+}
+
+.dropdown-item.bottom {
+  cursor: default;
+  button {
+    border-bottom: 0;
+  }
+  button.link {
+    font-size: $med-text-size;
+  }
+}
+
+.dropdown-item.bottom:hover {
+  background: transparent;
+  color: $mainColor;
+}
+
+.dropdown .label:not(button) {
+  font-size: $normal-text-size;
+}
+
+.dropdown .label.idle {
+  font-weight: 300;
+}
+
+.dropdown label button {
+  color: $med-gray;
+}
+
+.dropdown button .label {
+  font-weight: 400;
+}
+
+.input-group.dropdown-button {
+    padding: 0;
+    margin-left: 0px;
+
+    .label.idle {
+      color: $mainColor !important;
+    }
+
+    .dropdown .dropdown-content-inner .icon {
+    }
+
+    .dropdown .dropdown-item {
+      .icon {
+        font-size: $small-text-size;
+      }
+    }
+
+    .dropdown .dropdown-item:hover {
+      .icon {
+        color: $white;
+      }
+    }
+
+    .dropdown .icon {
+      position: initial;
+      color: $mainColor;
+      font-size: $normal-text-size;
+      margin-left: 5px;
+    }
+    .dropdown .label {
+      color: $mainColor;
+      font-weight: 300;
+    }
+
+    .dropdown button {
+      display: flex;
+      align-items: center;
+      border: 0;
+    }
+
+    .dropdown button:hover {
+      .label,
+      .icon {
+        color: $secondColor !important;
+        @include default-transition(.5s);
+      }
+    }
+}
+
+.input-group.dropdown-button.publish {
+  .dropdown button {
+    font-size: $med-text-size;
+  }
+}
+
+// Error
+.error {
+  .dropdown-item.bottom {
+    button,
+    button.button,
+    button.link {
+      color: $mainColor;
+    }
+  }
 }
 
 .alertMsg {
+
+  .msgText {
+    text-align: center;
+    max-width: $main-max-width;
+  }
+  .icon {
+    vertical-align: middle;
+    font-size: $huge-text-size;
+  }
 
   margin-bottom: 20px;
 
@@ -619,9 +1443,100 @@ input::-ms-input-placeholder {
   }
 }
 
+.success {
+  background: $green;
+
+  .msgText {
+    color: $white;
+  }
+}
+
 .formBtn-group {
   width: 100%;
   clear: both;
+}
+
+.RichEditor-styleButton {
+  color: $mainColor;
+}
+
+.RichEditor-editor .public-DraftEditorPlaceholder-inner {
+  font-weight: 300;
+  font-size: $normal-text-size;
+}
+
+.RichEditor-controls {
+  font-size: $med-text-size;
+}
+
+.DraftEditor-editorContainer {
+}
+
+.modal {
+
+  .richtext-nopadding {
+    .RichEditor-root {
+      padding: 0px;
+    }
+  }
+
+  .RichEditor-root {
+    padding: 20px;
+    margin-top: 20px;
+  }
+}
+
+/*-------- Status -----------*/
+
+.merchantStatus {
+
+  background: $white;
+
+  .alertMsg {
+    margin-bottom: 0px;
+    padding-bottom: 5px;
+
+    button.link {
+      font-weight: 400;
+      display: block;
+    }
+
+    .msgText {
+      display: flex;
+      justify-content: center;
+    }
+
+    .icon {
+      margin-top: 2px;
+      vertical-align: top;
+    }
+
+    .statusMsg {
+      display: flex;
+      flex-direction: column;
+      padding: 5px 10px 5px 0;
+      align-items: center;
+      margin-left: 10px;
+    }
+
+    button.close {
+      right: 0px;
+      font-size: $tiny-text-size;
+    }
+    button.close:hover {
+      color: $light-med-gray;
+    }
+  }
+
+  button.link.needsValidated {
+    color: $orange;
+    font-size: $small-text-size;
+  }
+
+  button.link.validated {
+    color: $green;
+    font-size: $small-text-size;
+  }
 }
 
 /*-------- Dashboard ----------*/
@@ -648,42 +1563,201 @@ input::-ms-input-placeholder {
   color: $red;
 }
 
-.balance {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.descAmount {
+  display: none;
+  margin-right: 5px;
+}
 
-  h1 {
-    color: $med-dark-gray;
-    margin: 0;
-    margin-bottom: 5px;
-    font-size: 3.5em;
+.transferMoney {
+  .balance {
+    button.link { align-self: center; }
+  }
+}
+
+.transferAmount {
+  display: block;
+  margin-top: 20px;
+
+  label {
+    display: block;
+  }
+
+  .moneyAmount {
+    margin-top: 5px;
+    display: block;
+    font-size: $huge-text-size;
     font-weight: 300;
   }
 }
 
-.descAmount {
-  display: none;
+/*------ Merchant Form -----*/
+.merchantForm {
+  position: relative;
+
+  h3 {
+    margin-left: 5px;
+    margin-bottom: 10px;
+  }
 }
 
 /*-------- Modal ----------*/
-.modal .modalWrapper {
-  margin: 0;
-  padding: 10px;
-  background: $light-gray;
+.modal {
 
-  h2 {
-    font-weight: 300;
+  .modalOverlay {
+    background: $overlayColor;
   }
 
-}
+  .modalWrapper {
+    position: relative;
+    display: block;
+    margin: 0;
+    padding: 20px 10px;
+    padding-top: 40px;
+    border-radius: 20px;
+  }
 
-.modal {
+  .modalContent {
+    border-radius: 20px;
+    overflow: hidden;
+    background: $white;
+  }
+
   h2 {
+    font-size: 1.5em;
+    color: $med-gray;
+    font-weight: 300;
     margin-top: 0px;
   }
+
+  .modalCloseBtn {
+    top: 0px;
+    right: 0;
+    z-index: 999999999;
+
+    .icon {
+      color: $med-gray;
+      font-size: $normal-text-size;
+    }
+  }
+
+  button.modalCloseBtn:hover {
+    .icon { color: $mainColor; }
+  }
+
+  button.modalToTop:hover {
+    color: $mainColor;
+  }
+
 }
 
 .modalFormContainer {
-  padding: 40px;
+  padding: 0px 40px;
+}
+
+.modalPreview {
+  .modalTop,
+  .modalBottom {
+    display: none;
+  }
+  .modalWrapper {
+    padding-top: 20px;
+  }
+}
+
+.modalTop {
+  position: fixed;
+  top: -1px;
+  height: 30px;
+  width: 100%;
+  overflow: hidden;
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;
+  z-index: 999999;
+}
+
+.modalTop::after {
+  content: "";
+  background: url('https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/modal-top-bg3.png') repeat-x;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+  opacity: .4;
+  height: 30px;
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;
+}
+
+.modalBottom {
+  clear: both;
+  position: relative;
+  display: block;
+  bottom: 0px;
+  height: 28px;
+  width: auto;
+  overflow: hidden;
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  z-index: 999999;
+}
+
+.modalBottom::after {
+  content: "";
+  background: url('https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/modal-bottom-bg3.png') repeat-x bottom;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+  opacity: .4;
+  height: 28px;
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+/*------- Flatpickr Calendar -------*/
+.flatpickr-calendar {
+  @include box-shadow(0px 4px 8px 0px rgba(0,0,0,0.6));
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.flatpickr-innerContainer {
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.flatpickr-day.selected,
+.flatpickr-day.selected:hover,
+.flatpickr-day:hover {
+  background: $mainColor !important;
+  border-color: $mainColor !important;
+  color: $white !important;
+}
+
+/*-------- Loader ----------*/
+.loader {
+	background: $overlayColor;
+}
+
+/*------- Share ---------*/
+.share {
+  ul {
+
+
+  }
+
+  li {
+    margin: 0 10px;
+    display: inline-block;
+    cursor: pointer;
+  }
+}
+
+/*-------- HTML INJECTION - Used for email templates and other HTML templates */
+.html-injection {
+  p {
+    font-size: 12px;
+    margin: 0;
+  }
 }

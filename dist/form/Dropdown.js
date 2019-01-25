@@ -188,7 +188,7 @@ class Dropdown extends Component {
     }, selectedValue), open ? multi ? iconMultiClose : iconOpened : iconClosed), React.createElement("div", {
       ref: this.dropdownRef,
       style: contentStyle,
-      className: `dropdown-content ${this.props.direction || direction}`
+      className: `${open ? 'opened' : ''} dropdown-content ${this.props.direction || direction}`
     }, React.createElement(AnimateHeight, {
       duration: 200,
       height: open ? 'auto' : 0

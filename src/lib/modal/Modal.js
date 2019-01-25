@@ -70,6 +70,7 @@ class Modal extends Component {
       clearTimeout(this.timeout);
       this.timeout = null;
     }
+    this.closeModal();
   }
 
   onEnter(pos) {

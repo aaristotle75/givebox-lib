@@ -101,11 +101,13 @@ ContentField.defaultProps = {
 export default ContentField;
 
 const Editor = (props) => {
+
   return (
     <RichTextEditor
       onChange={props.onChange}
       placeholder={props.placeholder}
       content={props.value}
+      updateContent={props.updateContent}
       fieldName={props.name}
       wysiwyg={props.wysiwyg}
     />

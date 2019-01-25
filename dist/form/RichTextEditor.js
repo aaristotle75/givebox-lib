@@ -26,6 +26,19 @@ class ContentEditor extends Component {
     this.inputRef.current.focus();
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.updateContent !== this.props.updateContent) {
+      console.log('execute fired', prevProps.updateContent, this.props.updateContent);
+      const contentState = this.props.updateContent ? stateFromHTML(this.props.updateContent) : null;
+      const editorState = contentState ? EditorState.createWithContent(contentState) : EditorState.createEmpty();
+      const content = editorState.getCurrentContent();
+      this.setState({
+        editorState
+      });
+      this.props.onChange(this.props.fieldName, stateToHTML(content), content.hasText());
+    }
+  }
+
   onChange(editorState) {
     this.setState({
       editorState

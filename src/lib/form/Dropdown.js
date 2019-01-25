@@ -157,7 +157,7 @@ class Dropdown extends Component {
         <div className={`dropdown ${floatingLabel && 'floating-label'} ${label ? 'fixed' : ''}`} style={dropdownStyle}>
           {label && !floatingLabel && <label><GBLink onClick={open ? this.closeMenu : this.openMenu}>{label}</GBLink></label>}
           <button type='button' onClick={open ? this.closeMenu : this.openMenu}><span className={`label ${idleLabel && 'idle'}`}>{selectedValue}</span>{open ? multi ? iconMultiClose : iconOpened : iconClosed}</button>
-          <div ref={this.dropdownRef} style={contentStyle} className={`dropdown-content ${this.props.direction || direction}`}>
+          <div ref={this.dropdownRef} style={contentStyle} className={`${open ? 'opened' : ''} dropdown-content ${this.props.direction || direction}`}>
             <AnimateHeight
               duration={200}
               height={open ? 'auto' : 0}
