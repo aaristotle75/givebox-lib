@@ -304,7 +304,7 @@ export function calcAmount(amount, fee, passFees, gross = false) {
     if (gross) return parseFloat(amount / 100).toFixed(2);else return parseFloat(amount / 100 - fee / 100).toFixed(2);
   }
 }
-export function money(amount, symbol = '$') {
+export function money(amount, symbol = '$', cents = true) {
   let negative = false;
 
   if (amount < 0) {
@@ -316,7 +316,7 @@ export function money(amount, symbol = '$') {
     className: `moneyAmount ${negative && 'negativeAmount'}`
   }, negative && '( ', React.createElement("span", {
     className: "symbol"
-  }, symbol), numberWithCommas(parseFloat(amount).toFixed(2)), negative && ' )');
+  }, symbol), numberWithCommas(parseFloat(amount).toFixed(cents ? 2 : 0)), negative && ' )');
 }
 export function formatMoneyForAPI(amount) {
   if (!amount) return 0;

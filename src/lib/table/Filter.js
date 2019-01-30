@@ -30,7 +30,7 @@ class Filter extends Component {
   }
 
   closeMenu() {
-    this.props.isFilterOpen(false);    
+    this.props.isFilterOpen(false);
     this.setState({open: false });
   }
 
@@ -48,6 +48,7 @@ class Filter extends Component {
       label,
       options,
       name,
+      customName,
       allowDisabled,
       alwaysFilter,
       callback,
@@ -72,6 +73,7 @@ class Filter extends Component {
               allowDisabled={allowDisabled}
               closeMenu={this.closeMenu}
               name={name}
+              customName={customName}
               options={options}
               alwaysFilter={alwaysFilter}
               callback={callback}

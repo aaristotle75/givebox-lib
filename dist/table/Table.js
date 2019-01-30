@@ -34,7 +34,7 @@ class Table extends Component {
       search.order = resource.search.order === 'desc' ? 'asc' : 'desc';
       search.sort = sort;
       const endpoint = resource.endpoint.split('?')[0] + util.makeAPIQuery(search);
-      this.props.getAPI(this.props.name, endpoint, search, null, true);
+      this.props.getAPI(this.props.name, endpoint, search, null, true, this.props.customName || null);
     }
   }
 
@@ -75,6 +75,7 @@ class Table extends Component {
   renderSearch() {
     return React.createElement(Search, {
       name: this.props.name,
+      customName: this.props.customName,
       placeholder: this.props.searchPlaceholder,
       align: this.props.searchAlign,
       style: this.props.searchStyle
@@ -84,6 +85,7 @@ class Table extends Component {
   renderMaxRecords(direction) {
     return React.createElement(MaxRecords, {
       name: this.props.name,
+      customName: this.props.customName,
       style: this.props.maxRecordsStyle,
       textStyle: this.props.maxRecordsTextStyle,
       align: this.props.maxRecordsAlign,
@@ -95,6 +97,7 @@ class Table extends Component {
   renderPagination() {
     return React.createElement(Paginate, {
       name: this.props.name,
+      customName: this.props.customName,
       align: this.props.paginateAlign,
       nextIcon: this.props.nextIcon,
       previousIcon: this.props.previousIcon
@@ -104,6 +107,7 @@ class Table extends Component {
   renderExport() {
     return React.createElement(Export, {
       name: this.props.name,
+      customName: this.props.customName,
       align: this.props.exportAlign,
       desc: this.props.exportDesc
     });
@@ -180,7 +184,7 @@ Table.defaultProps = {
 };
 
 function mapStateToProps(state, props) {
-  const resource = state.resource[props.name] ? state.resource[props.name] : {};
+  const resource = state.resource[props.customName || props.name] ? state.resource[props.customName || props.name] : {};
   let sort, order;
 
   if (!util.isLoading(resource)) {

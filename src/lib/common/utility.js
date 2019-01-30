@@ -305,13 +305,13 @@ export function calcAmount(amount, fee, passFees, gross = false) {
   }
 }
 
-export function money(amount, symbol = '$') {
+export function money(amount, symbol = '$', cents = true) {
   let negative = false;
   if (amount < 0) {
     amount = Math.abs(amount);
     negative = true;
   }
-  return <span className={`moneyAmount ${negative && 'negativeAmount'}`}>{negative && '( '}<span className='symbol'>{symbol}</span>{numberWithCommas(parseFloat(amount).toFixed(2))}{negative && ' )'}</span>;
+  return <span className={`moneyAmount ${negative && 'negativeAmount'}`}>{negative && '( '}<span className='symbol'>{symbol}</span>{numberWithCommas(parseFloat(amount).toFixed(cents ? 2 : 0))}{negative && ' )'}</span>;
 }
 
 export function formatMoneyForAPI(amount) {

@@ -78,10 +78,12 @@ class Filter extends Component {
 
   ignoreFilters() {
     const resource = this.props.resource;
-    let endpoint = resource.search.filter ? resource.endpoint.replace(`filter=${resource.search.filter}`, '') : resource.endpoint;
     const merge = { filter: '' };
     const search = { ...resource.search, ...merge };
-		this.props.getAPI(this.props.name, endpoint, search, this.ignoreFiltersCallback, true);
+    search.filter =  this.props.alwaysFilter ? `${this.props.alwaysFilter}` : '';
+		if (resource.search.page > 1) search.page = 1;
+    const endpoint = resource.endpoint.split('?')[0] + util.makeAPIQuery(search);
+  	this.props.getAPI(this.props.name, endpoint, search, this.ignoreFiltersCallback, true, this.props.customName || null);
   }
 
   ignoreFiltersCallback(res, err) {
@@ -109,10 +111,10 @@ class Filter extends Component {
       }
     });
     const search = { ...resource.search };
-    search.filter = filters ? this.props.alwaysFilter ? `${this.props.alwaysFilter}%3B${filters}` : filters : '';
+    search.filter = filters ? this.props.alwaysFilter ? `${this.props.alwaysFilter}%3B${filters}` : filters : this.props.alwaysFilter || '';
 		if (resource.search.page > 1) search.page = 1;
     const endpoint = resource.endpoint.split('?')[0] + util.makeAPIQuery(search);
-		this.props.getAPI(this.props.name, endpoint, search, this.processFormCallback, true);
+  	this.props.getAPI(this.props.name, endpoint, search, this.processFormCallback, true, this.props.customName || null);
   }
 
   getField(key, value) {
@@ -183,7 +185,7 @@ Filter.defaultProps = {
 
 function mapStateToProps(state, props) {
 
-  const resource = state.resource[props.name] ? state.resource[props.name] : {};
+  const resource = state.resource[props.customName || props.name] ? state.resource[props.customName || props.name] : {};
   let sort, order;
   if (!util.isLoading(resource)) {
     sort = has(resource.search, 'sort') ? resource.search.sort : '';

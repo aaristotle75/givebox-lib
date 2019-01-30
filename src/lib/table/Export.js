@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { util } from '../';
 import { getResource } from '../api/helpers';
-import has from 'has';
 
 class ExportLink extends Component {
 
@@ -16,7 +15,7 @@ class ExportLink extends Component {
     const resource = this.props.resource;
     const max = { max: 100000000 };
     const search = { ...resource.search, ...max };
-    const link = this.props.getResource(this.props.name, { csv: true, search: search });
+    const link = this.props.getResource(this.props.name, { customName: this.props.customName || null, csv: true, search: search });
     return link;
   }
 
@@ -54,7 +53,7 @@ ExportLink.defaultProps = {
 
 function mapStateToProps(state, props) {
 
-  const resource = state.resource[props.name] ? state.resource[props.name] : {};
+  const resource = state.resource[props.customName || props.name] ? state.resource[props.customName || props.name] : {};
 
   return {
     resource: resource

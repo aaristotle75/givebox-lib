@@ -27,7 +27,7 @@ class Transactions extends Component {
   }
 
   componentDidMount() {
-    this.props.getResource(this.props.resourceName, { search: { max: 20, filter: 'txAccount:"commerce"' } } );
+    this.props.getResource(this.props.resourceName, { customName: 'testCustomName', search: { max: 20, filter: 'txAccount:"commerce"' } } );
     this.props.getResource('orgFinanceStats');
   }
 
@@ -240,6 +240,7 @@ class Transactions extends Component {
 
     const {
       resourceName,
+      customName,
       financeStats,
       transactions
     } = this.props;
@@ -408,12 +409,14 @@ class Transactions extends Component {
         </div>
         <Filter
           name={resourceName}
+          customName={customName}
           options={filters}
           label='Advanced Search'
           allowDisabled={false}
         />
         <Table
           name={resourceName}
+          customName={customName}
           data={() => this.formatTableData()}
           exportDesc='Export Transaction Records'
           maxRecordsDisplay='both'
@@ -424,12 +427,13 @@ class Transactions extends Component {
 }
 
 Transactions.defaultProps = {
-  resourceName: 'orgTransactions'
+  resourceName: 'orgTransactions',
+  customName: 'testCustomName'
 }
 
 function mapStateToProps(state, props) {
   return {
-    transactions: state.resource.orgTransactions ? state.resource.orgTransactions : {},
+    transactions: state.resource.testCustomName ? state.resource.testCustomName : {},
     financeStats: state.resource.orgFinanceStats ? state.resource.orgFinanceStats.data : {},
     isFetching: state.resource.isFetching
   }

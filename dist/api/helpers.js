@@ -35,12 +35,12 @@ export function getResource(resource, opts = {}) {
     const userID = has(getState().resource, 'userID') ? getState().resource.userID : null;
     const affiliateID = has(getState().resource, 'affiliateID') ? getState().resource.affiliateID : null; // Reload if resource exists and a new ID is requested
 
-    if (has(getState().resource, resource)) {
+    if (has(getState().resource, options.customName || resource)) {
       if (!util.isEmpty(id)) {
         id.forEach(function (value, key) {
-          if (has(getState().resource[resource].search, 'id')) {
-            if (!util.isEmpty(getState().resource[resource].search.id[key])) {
-              if (getState().resource[resource].search.id[key] !== id[key]) reload = true;
+          if (has(getState().resource[options.customName || resource].search, 'id')) {
+            if (!util.isEmpty(getState().resource[options.customName || resource].search.id[key])) {
+              if (getState().resource[options.customName || resource].search.id[key] !== id[key]) reload = true;
             }
           }
         });

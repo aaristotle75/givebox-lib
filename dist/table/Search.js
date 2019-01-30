@@ -39,7 +39,7 @@ class Search extends Component {
     search.query = value;
     if (resource.search.page > 1) search.page = 1;
     const endpoint = resource.endpoint.split('?')[0] + util.makeAPIQuery(search);
-    this.props.getAPI(this.props.name, endpoint, search, null, true);
+    this.props.getAPI(this.props.name, endpoint, search, null, true, this.props.customName || null);
   }
 
   onSearch(e) {
@@ -134,7 +134,7 @@ Search.defaultProps = {
 };
 
 function mapStateToProps(state, props) {
-  const resource = state.resource[props.name] ? state.resource[props.name] : {};
+  const resource = state.resource[props.customName || props.name] ? state.resource[props.customName || props.name] : {};
   let query;
 
   if (!util.isLoading(resource)) {

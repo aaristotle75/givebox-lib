@@ -57,7 +57,7 @@ class Paginate extends Component {
       };
       search.page = selected;
       const endpoint = resource.endpoint.split('?')[0] + util.makeAPIQuery(search);
-      this.props.getAPI(this.props.name, endpoint, search, null, true);
+      this.props.getAPI(this.props.name, endpoint, search, null, true, this.props.customName || null);
     }
   }
 
@@ -229,7 +229,7 @@ Paginate.defaultProps = {
 };
 
 function mapStateToProps(state, props) {
-  let resource = state.resource[props.name] ? state.resource[props.name] : {};
+  const resource = state.resource[props.customName || props.name] ? state.resource[props.customName || props.name] : {};
   let count, max, pages, activePage;
 
   if (!util.isLoading(resource)) {

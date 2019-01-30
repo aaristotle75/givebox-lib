@@ -24,7 +24,7 @@ class MaxRecords extends Component {
     search.page = resource.search.page > pages ? 1 : resource.search.page;
     search.max = selected;
     const endpoint = resource.endpoint.split('?')[0] + util.makeAPIQuery(search);
-		this.props.getAPI(this.props.name, endpoint, search, null, true);
+  	this.props.getAPI(this.props.name, endpoint, search, null, true, this.props.customName || null);
   }
 
   setOptions() {
@@ -56,7 +56,7 @@ class MaxRecords extends Component {
       direction
     } = this.props;
 
-    if (!count || error || count <= max) {
+    if (!count || error || count > max) {
       return ( <div></div> );
     }
 
@@ -82,7 +82,7 @@ MaxRecords.defaultProps = {
 }
 
 function mapStateToProps(state, props) {
-	let resource = state.resource[props.name] ? state.resource[props.name] : {};
+  const resource = state.resource[props.customName || props.name] ? state.resource[props.customName || props.name] : {};
   let max, error, count;
   if (!util.isLoading(resource)) {
     max = has(resource.search, 'max') ? resource.search.max : null;
