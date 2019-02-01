@@ -5,12 +5,25 @@ export const mime = {
   applications: 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.apple.keynote, application/vnd.apple.numbers, application/vnd.apple.pages, application/vnd.oasis.opendocument.text, application/rtf, application/vnd.ms-excel'
 }
 
+export function kinds() {
+  const kinds = [
+    'event',
+    'fundraiser',
+    'invoice',
+    'membership',
+    'sweepstake'
+  ];
+  return kinds;
+}
+
+
 export function kind(kind) {
   const obj = {};
   switch (kind) {
     case 'events':
     case 'event': {
       obj.name = 'Event';
+      obj.namePlural = 'Events';
       obj.btnName = obj.name;
       obj.cta = 'Buy Tickets';
       obj.txName = 'Ticket purchase';
@@ -21,12 +34,15 @@ export function kind(kind) {
         item: 'Event',
         list: 'Events'
       };
+      obj.icon = 'calendar';
+      obj.desc = 'Sell tickets for your next event.';
       break;
     }
 
     case 'fundraisers':
     case 'fundraiser': {
       obj.name = 'Donation Form';
+      obj.namePlural = 'Donation Forms';
       obj.btnName = 'Donate';
       obj.cta = 'Donate Now';
       obj.txName = 'Made donation';
@@ -37,12 +53,15 @@ export function kind(kind) {
         item: 'Fundraiser',
         list: 'Fundraisers'
       };
+      obj.icon = 'box';
+      obj.desc = 'Raise donations to fund your programs.';
       break;
     }
 
     case 'invoices':
     case 'invoice': {
       obj.name = 'Invoice';
+      obj.namePlural = 'Invoices';
       obj.btnName = obj.name;
       obj.cta = 'Pay Invoice';
       obj.txName = 'Paid invoice';
@@ -53,12 +72,15 @@ export function kind(kind) {
         item: 'Invoice',
         list: 'Invoices'
       };
+      obj.icon = 'briefcase';
+      obj.desc = 'Convenient way to accept payments';
       break;
     }
 
     case 'memberships':
     case 'membership': {
       obj.name = 'Membership';
+      obj.namePlural = 'Memberships';
       obj.btnName = obj.name;
       obj.cta = 'Purchase Membership';
       obj.txName = 'Membership purchase';
@@ -69,12 +91,15 @@ export function kind(kind) {
         item: 'Membership',
         list: 'Memberships'
       };
+      obj.icon = 'clipboard';
+      obj.desc = 'Gain paid subscribers with memberships.';
       break;
     }
 
     case 'sweepstakes':
     case 'sweepstake': {
       obj.name = 'Sweepstakes';
+      obj.namePlural = 'Sweepstakes';
       obj.btnName = obj.name;
       obj.cta = 'Enter Sweepstakes';
       obj.txName = 'Sweepstake entry';
@@ -85,11 +110,14 @@ export function kind(kind) {
         item: 'Sweepstake',
         list: 'Sweepstakes'
       };
+      obj.icon = 'gift';
+      obj.desc = 'Raffle tickets online for donations.';
       break;
     }
 
     default:
       obj.name = 'All Money Sources';
+      obj.namePlural = 'All Money Sources';
       obj.btnName = obj.name;
       obj.cta = 'Purchase';
       obj.txName = 'Purchase';
@@ -100,6 +128,8 @@ export function kind(kind) {
         item: 'Article',
         list: 'Articles'
       };
+      obj.icon = 'globe';
+      obj.desc = '';
       break;
   }
   return obj;
