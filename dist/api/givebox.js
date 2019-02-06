@@ -827,6 +827,18 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
         endpoint = `orgs/${orgID}/subscriptions/${id[0]}`;
         break;
       }
+
+    case 'orgMediaItems':
+      {
+        endpoint = `orgs/${orgID}/media-items`;
+        break;
+      }
+
+    case 'orgMediaItem':
+      {
+        endpoint = `orgs/${orgID}/media-items/${id[0]}`;
+        break;
+      }
     // ORDERS
 
     case 'purchaseOrder':
@@ -911,6 +923,18 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
     case 'articleShares':
       {
         endpoint = `articles/${id[0]}/shares`;
+        break;
+      }
+
+    case 'articleMediaItems':
+      {
+        endpoint = `articles/${id[0]}/media-items`;
+        break;
+      }
+
+    case 'articleMediaItem':
+      {
+        endpoint = `articles/${id[0]}/media-items/${id[1]}`;
         break;
       }
     // IN APP

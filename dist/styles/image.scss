@@ -1,30 +1,91 @@
 @import 'variables.scss';
 
-.dropZone {
+/*----- default image -------*/
+.imageComponent {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  img {
+    display: block;
+    width: auto;
+    height: auto;
+  }
+
+  .imageLoader {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+  }
+}
+
+
+.dropzone {
   display: flex;
   justify-content: center;
   flex-direction: column;
   text-align: center;
-	width: 146px;
-	height: 146px;
-	border-radius: 5px;
-	border: 3px dashed transparentize($primary, .5);
-	background-color: $light-gray;
+	width: 175px;
+	height: 175px;
+	border-radius: 20px;
+	border: 3px dashed $primary;
+	background-color: $white;
 	cursor: pointer;
 }
 
-.dropZone:hover {
-	background-color: transparentize($primary, .5);
+.dropzone:hover {
+	background-color: $primary;
 	border: 3px dashed #fff;
-  @include default-transition(.5s);
+  @include default-transition(.25s);
 }
 
-.dropZone .text {
+.dropzone .text {
 	font-size: $normal-text-size;
-	font-weight: 500;
+	font-weight: 300;
   color: $primary;
 }
 
-.dropZone:hover .text {
+.dropzone:hover .text {
   color: #fff;
+}
+
+.dropzoneImageContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 200px;
+  button.link {
+    position: relative;
+    display: block;
+  }
+}
+
+.dropzoneImage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  img {
+    display: block;
+    max-width: 175px;
+    max-height: 175px;
+    width: auto;
+    height: auto;
+  }
+
+  .imageLoader {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+  }
 }

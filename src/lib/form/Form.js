@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import TextField from './TextField';
+import Upload from './Upload';
 import Dropdown from './Dropdown';
 import Choice from './Choice';
 import RichTextField from './RichTextField';
@@ -19,6 +20,7 @@ class Form extends Component {
     super(props);
     this.onEnterKeypress = this.onEnterKeypress.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.onChangeDropzone = this.onChangeDropzone.bind(this);
     this.onChangeCalendar = this.onChangeCalendar.bind(this);
     this.onChangeDropdown = this.onChangeDropdown.bind(this);
     this.onChangeCheckbox = this.onChangeCheckbox.bind(this);
@@ -30,6 +32,7 @@ class Form extends Component {
     this.validateForm = this.validateForm.bind(this);
     this.validateField = this.validateField.bind(this);
     this.calendarField = this.calendarField.bind(this);
+    this.uploadField = this.uploadField.bind(this);
     this.textField = this.textField.bind(this);
     this.dropdown = this.dropdown.bind(this);
     this.choice = this.choice.bind(this);
@@ -173,6 +176,14 @@ class Form extends Component {
     this.setState(Object.assign(this.state, args));
   }
 
+  onChangeDropzone(name, files) {
+    const field = has(this.state.fields, name) ? this.state.fields[name] : null;
+    if (field) {
+      this.formProp({ error: false, errorMsg: '', updated: true });
+      if (field.debug) console.log('onChangeDropzone', name, field);
+    }
+  }
+
   onChangeCalendar(ts, name) {
     const field = has(this.state.fields, name) ? this.state.fields[name] : null;
     if (field) {
@@ -238,6 +249,7 @@ class Form extends Component {
       const checked = field.checked ? false : true;
       this.fieldProp(name, {checked: checked, value: checked, error: false});
       this.formProp({error: false, updated: true});
+      if (field.onChange) field.onChange(name, checked, this.fieldProp, field, this.state.fields);
       if (field.debug) console.log('onChangeCheckbox', name, field);
     }
   }
@@ -247,6 +259,7 @@ class Form extends Component {
     if (field) {
       this.fieldProp(name, {checked: value, value: value, error: false});
       this.formProp({error: false, updated: true});
+      if (field.onChange) field.onChange(name, value, this.fieldProp, field, this.state.fields);
       if (field.debug) console.log('onChangeRadio', name, field);
     }
   }
@@ -454,6 +467,37 @@ class Form extends Component {
         multi={field ? field.multi : params.multi}
         multiCloseLabel={params.multiCloseLabel}
         multiCloseCallback={params.multiCloseCallback}
+      />
+    )
+  }
+
+  uploadField(name, opts) {
+    const field = has(this.state.fields, name) ? this.state.fields[name] : null;
+    const params = Object.assign({}, cloneObj(this.defaults), {
+      className: '',
+      type: 'dropdown',
+      fixedLabel: true
+    }, opts);
+
+    return (
+      <Upload
+        name={name}
+        className={params.className}
+        label={params.label}
+        uploadLabel={params.uploadLabel}
+        style={params.style}
+        required={field ? field.required : params.required}
+        group={field ? field.group : params.group}
+        onChange={this.onChangeDropzone}
+        saveCallback={params.saveCallback || null}
+        onBlur={this.onBlur}
+        onFocus={this.onFocus}
+        value={field ? field.value : params.value}
+        error={field ? field.error : params.error }
+        errorType={params.errorType}
+        createField={this.createField}
+        fieldProp={this.fieldProp}
+        params={params}
       />
     )
   }
@@ -850,6 +894,7 @@ class Form extends Component {
         getErrors: this.getErrors,
         formState: this.state,
         textField: this.textField,
+        uploadField: this.uploadField,
         richText: this.richText,
         modalField: this.modalField,
         creditCardGroup: this.creditCardGroup,

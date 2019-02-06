@@ -32,6 +32,7 @@ import Error from './common/Error';
 import Fade from './common/Fade';
 import GBLink from './common/GBLink';
 import GBX from './common/GBX';
+import Image from './common/Image';
 import LinearBar from './common/LinearBar';
 import Loader from './common/Loader';
 import Portal from './common/Portal';
@@ -122,6 +123,7 @@ export {
   Fade,
   GBLink,
   GBX,
+  Image,
   LinearBar,
   Loader,
   Portal,

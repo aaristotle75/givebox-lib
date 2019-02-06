@@ -7,8 +7,8 @@ export const mime = {
 
 export function kinds() {
   const kinds = [
-    'event',
     'fundraiser',
+    'event',
     'invoice',
     'membership',
     'sweepstake'

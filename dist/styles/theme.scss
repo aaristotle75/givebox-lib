@@ -14,6 +14,27 @@ h1, h2, h3, h4, h5 {
   font-weight: 300;
 }
 
+.tinyText {
+  font-size: $tiny-text-size;
+}
+
+.descBlock {
+  font-size: $normal-text-size;
+  .line {
+    display: block;
+    margin: 10px 0;
+  }
+
+  .detailsLabel {
+    font-weight: 300;
+  }
+
+  .stackedLabel {
+    display: block;
+    font-weight: 300;
+  }
+}
+
 a, button.link, button.button {
   font-weight: 300;
   color: $mainColor;
@@ -53,6 +74,11 @@ label, .label {
   justify-content: space-between;
 }
 
+.flexStart {
+  display: flex;
+  justify-content: flex-start;
+}
+
 .centerItems {
   align-items: center;
 }
@@ -72,6 +98,12 @@ label, .label {
   vertical-align: top;
   display: inline-block;
   width: 33%;
+}
+
+.column25 {
+  vertical-align: top;
+  display: inline-block;
+  width: 25%;
 }
 
 .blur {
@@ -374,6 +406,14 @@ button.glossary:hover {
 
 /*------ Search Block -------*/
 
+.searchBlock.center {
+  text-align: center;
+}
+
+.searchBlock.left {
+  text-align: left;
+}
+
 .searchBlock {
   display: block;
   width: 100%;
@@ -585,13 +625,13 @@ button.glossary:hover {
   }
 
   .nav li.hasChildren {
-    background: transparentize($mainColor2, .8);
+    //background: transparentize($mainColor2, .8);
   }
 
   .nav li.sublist {
     font-size: $small-text-size;
     padding-left: 25px;
-    background: transparentize($mainColor2, .8);
+    //background: transparentize($mainColor2, .8);
   }
 
 }
@@ -864,6 +904,11 @@ button.input.hasValue {
   color: $mainColor;
 }
 
+button.supportLink {
+  color: $med-gray;
+  font-size: $small-text-size;
+}
+
 /*------- Table ----------*/
 
 .givebox-lib-table {
@@ -913,6 +958,18 @@ button.input.hasValue {
     @media (max-width: 1100px) { font-size: 1.6vw; }
     @media (max-width: 900px) { font-size: 2vw; }
     @media (max-width: 600px) { font-size: $normal-text-size }
+  }
+
+  tbody td.actionsRow {
+    padding: 20px 0;
+  }
+
+  .noRecords {
+    .normalText {
+      color: $light-med-gray;
+      font-weight: 300;
+      font-size: $normal-text-size;
+    }
   }
 
   tr:nth-child(even) {
@@ -967,6 +1024,14 @@ button.input.hasValue {
     }
   }
 
+  tbody tr.detailsOpen .actionsMenu button.menuLabel {
+  }
+
+  .actionsMenu button.menuLabel .icon {
+    font-size: $med-text-size;
+    margin-right: 3px;
+  }
+
   tbody tr.detailsOpen:hover {
 
     .detailsIcon .icon {
@@ -1000,86 +1065,6 @@ button.input.hasValue {
 
   .description {
 
-    .image {
-      position: relative;
-      border-radius: 20px;
-      width: 100%;
-      max-width: 175px;
-      height: auto;
-      img {
-        width: 100%;
-        max-width: 200px;
-        height: auto;
-        border-radius: 20px;
-      }
-    }
-
-    .imagePlaceholder {
-      position: relative;
-      display: inline-block;
-      height: 175px;
-      width: 175px;
-      border-radius: 20px;
-      color: $white;
-      background: $light-gray;
-      vertical-align: middle;
-      text-align: center;
-
-      .icon {
-        position: absolute;
-        left:0; right:0;
-        top:40px; bottom:0;
-        margin: auto;
-        font-size: 100px;
-        font-weight: 200;
-        max-width:100%;
-        max-height:100%;
-      }
-    }
-
-    .imageCover {
-      position: absolute;
-      width: 100%;
-      max-width: 175px;
-      height: auto;
-      border-radius: 20px;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      cursor: pointer;
-      opacity: 0;
-      @include transition(opacity .5s ease-out);
-    }
-
-    .imageLink {
-      position: absolute;
-      bottom: 5px;
-      right: 10px;
-      cursor: pointer;
-      color: $white;
-      font-weight: 300;
-      opacity: 0;
-      @include transition(opacity .5s ease-out);
-      background: $overlayColor;
-      padding: 2px 10px;
-    }
-
-    .imageLink:hover {
-      color: $secondColor;
-    }
-
-    .image:hover {
-      .imageLink {
-        opacity: 1;
-      }
-
-      .imageCover {
-        opacity: 1;
-        background: $overlayColor;
-      }
-    }
-
     .input-group {
       padding: 0;
       margin: 0;
@@ -1097,6 +1082,123 @@ button.input.hasValue {
     }
   }
 
+}
+
+/*----------- Image ----------*/
+.image {
+  position: relative;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 175px;
+  height: auto;
+  img {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    border-radius: 20px;
+  }
+}
+
+.imagePlaceholder {
+  position: relative;
+  display: inline-block;
+  height: 175px;
+  width: 175px;
+  border-radius: 20px;
+  color: $white;
+  background: $light-gray;
+  vertical-align: middle;
+  text-align: center;
+
+  .icon {
+    position: absolute;
+    left:0; right:0;
+    top:40px; bottom:0;
+    margin: auto;
+    font-size: 100px;
+    font-weight: 200;
+    max-width:100%;
+    max-height:100%;
+  }
+}
+
+.imageCover {
+  position: absolute;
+  width: 100%;
+  max-width: 175px;
+  height: auto;
+  border-radius: 20px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  cursor: pointer;
+  opacity: 0;
+  @include transition(opacity .5s ease-out);
+}
+
+.imageLink {
+  position: absolute;
+  bottom: 5px;
+  right: 10px;
+  cursor: pointer;
+  color: $white;
+  font-weight: 300;
+  opacity: 0;
+  @include transition(opacity .5s ease-out);
+  background: $overlayColor;
+  padding: 5px 15px;
+  border-radius: 15px;
+}
+
+.imageLink:hover {
+  color: $secondColor;
+}
+
+.image:hover {
+  .imageLink {
+    opacity: 1;
+  }
+
+  .imageCover {
+    opacity: 1;
+    background: $overlayColor;
+  }
+}
+
+
+.modalImage {
+  margin-bottom: 20px;
+  .image {
+    display: inline-block;
+    max-width: 175px;
+    img {
+      max-width: 200px;
+    }
+  }
+  .imagePlaceholder {
+    height: 175px;
+    width: 175px;
+  }
+  .imageCover {
+    max-width: 175px;
+  }
+}
+
+.description {
+  .image {
+    max-width: 175px;
+    img {
+      max-width: 200px;
+    }
+  }
+  .imagePlaceholder {
+    height: 175px;
+    width: 175px;
+  }
+  .imageCover {
+    max-width: 175px;
+  }
 }
 
 /*---------- Filter -----------*/
@@ -1147,6 +1249,7 @@ button.input.hasValue {
 .maxRecords {
 
   .dropdown {
+    width: 125px;
     .label {
       font-size: $tiny-text-size;
       color: $med-gray;
@@ -1645,7 +1748,7 @@ input::-ms-input-placeholder {
   }
 
   button.modalToTop:hover {
-    color: $mainColor;
+    color: $white;
   }
 
 }

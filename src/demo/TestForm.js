@@ -10,6 +10,7 @@ export default class TestForm extends Component {
     this.onTypeChange = this.onTypeChange.bind(this);
     this.selectAccount = this.selectAccount.bind(this);
     this.testFieldProp = this.testFieldProp.bind(this);
+    this.toggleRequired = this.toggleRequired.bind(this);
   }
 
   componentDidMount() {
@@ -39,13 +40,18 @@ export default class TestForm extends Component {
     this.props.fieldProp('emailList', { updateContent: '111' });
   }
 
+  toggleRequired(name, field, fieldProp, fields) {
+    console.log('toggleRequired', field);
+    fieldProp('phoneInfo', { checked: true });
+  }
+
   render() {
 
     return (
       <div>
         <h2>Form Elements</h2>
         <div className='formWrapper'>
-        <GBLink onClick={this.testFieldProp}>Test Field Prop</GBLink>
+        {this.props.uploadField('imageURL', { label: 'Image', debug: true, value: 'https://givebox-staging.s3.amazonaws.com/gbx%2F9b28b33157275cf5c8fa036633a3b33d%2F2018-11-09%2Fwesome1-jpg-original-jpg%2Foriginal' })}
         {/*
         {this.props.calendarRange({debug: true, enableTime: true })}
         {this.props.textField('custID', { type: 'hidden' })}
@@ -82,14 +88,14 @@ export default class TestForm extends Component {
         {this.props.dropdown('status', {options: [{primaryText: 'Active', secondaryText: 'active status does so and so', value: 'active'}, {primaryText: 'Deactivated', value: 'deactivated'}, {primaryText: 'Suspended', value: 'suspended'}], selectLabel: 'Select Status'})}
         {this.props.textField('ssn', {label: 'Social Security Number', placeholder: 'Enter Social Security Number', validate: 'ssn'})}
         {this.props.calendarField('dob', { label: 'Date of Birth', required: true, validate: 'date', validateOpts: { }})}
-        */}
         {this.props.richText('emailList', { label: 'Email List', placeholder: 'Enter emails separated by commas', modal: false, required: true, wysiwyg: 'show' })}
-        {/*
         {this.props.modalField('testModal', { id: 'feesGlossary', label: 'Test Modal', modalLabel: 'Click the modal' } )}
         {this.props.dropdown('states', {label: 'States', options: selectOptions.states, value: 'CA'})}
         {this.props.dropdown('bankAccountType', { className: 'column50', label: 'What kind of transfer do you want to make?', value: 'deposit', onChange: this.onTypeChange, options: [{primaryText: 'Withdrawal', value: 'deposit' }, {primaryText: 'Send Payment', value: 'payee'}] })}
         {this.props.dropdown('selectedAccount', { className: 'column50', label: `account`, selectLabel: `Select account to make withdrawal to`, onChange: this.selectAccount, options: [{primaryText: 'Account1', value: 1}, {primaryText: 'Account2', value: 2}, { bottom: <span>Add Account</span>, style: {textAlign: 'center'} }] })}
         {this.props.textField('amount', { required: true, label: 'Enter Amount', placeholder: '0.00', validate: 'money', validateOpts: { decimal: true, min: 1, max: 2999.87, errorMsg: `You can't transfer more than your available balance of 2999.87` }  })}
+        {this.props.choice('phoneInfo', { group: 'options', label: 'Add phone number to form.' })}
+        {this.props.choice('phoneInfoRequired', { parent: 'phoneInfo', group: 'options', label: 'Make phone number required', onChange: this.toggleRequired })}
         */}
         {this.props.saveButton(this.processForm)}
         </div>

@@ -5,7 +5,7 @@ export const mime = {
   applications: 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.apple.keynote, application/vnd.apple.numbers, application/vnd.apple.pages, application/vnd.oasis.opendocument.text, application/rtf, application/vnd.ms-excel'
 };
 export function kinds() {
-  const kinds = ['event', 'fundraiser', 'invoice', 'membership', 'sweepstake'];
+  const kinds = ['fundraiser', 'event', 'invoice', 'membership', 'sweepstake'];
   return kinds;
 }
 export function kind(kind) {

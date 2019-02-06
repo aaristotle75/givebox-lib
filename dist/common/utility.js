@@ -451,6 +451,23 @@ export function formatBytes(bytes, decimals) {
         i = Math.floor(Math.log(bytes) / Math.log(k));
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 }
+export function toBinary(accepted) {
+  accepted.forEach(file => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      const fileAsBinaryString = reader.result; // do whatever you want with the file content
+
+      console.log('execute', fileAsBinaryString);
+    };
+
+    reader.onabort = () => console.log('file reading was aborted');
+
+    reader.onerror = () => console.log('file reading has failed');
+
+    reader.readAsBinaryString(file);
+  });
+}
 export function isEmpty(value) {
   return value === undefined || value === null || typeof value === 'object' && Object.keys(value).length === 0 || typeof value === 'string' && value.trim().length === 0 || value.length === 0;
 }
@@ -572,3 +589,22 @@ export function makeAddress(where, showCountry = true) {
     return '';
   }
 }
+export const equals = function (array, array2) {
+  // if the other array is a falsy value, return
+  if (!array || !array2) return false; // compare lengths - can save a lot of time
+
+  if (array.length !== array2.length) return false;
+
+  for (var i = 0, l = array.length; i < l; i++) {
+    // Check if we have nested arrays
+    if (array[i] instanceof Array && array2[i] instanceof Array) {
+      // recurse into the nested arrays
+      if (!array[i].equals(array2[i])) return false;
+    } else if (array[i] !== array2[i]) {
+      // Warning - two different object instances will never be equal: {x:20} != {x:20}
+      return false;
+    }
+  }
+
+  return true;
+};
