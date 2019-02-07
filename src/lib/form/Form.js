@@ -497,6 +497,9 @@ class Form extends Component {
         errorType={params.errorType}
         createField={this.createField}
         fieldProp={this.fieldProp}
+        clear={field ? field.clear : null}
+        noPreview={params.noPreview}
+        customLink={params.customLink}
         params={params}
       />
     )
@@ -827,6 +830,9 @@ class Form extends Component {
   validateField(key, validate, value, opts = {}) {
     let min, max, errorMsg, format;
     switch (validate) {
+      case 'custom':
+        if (!opts.custom(value)) this.fieldProp(key, { error: opts.errorMsg || `Custom validation error for ${key}.` });
+        break;
       case 'date':
         format = opts.format || null;
         min = opts.min || null;

@@ -16,6 +16,7 @@ class Upload extends Component {
     this.clearImage = this.clearImage.bind(this);
     this.restoreImage = this.restoreImage.bind(this);
     this.imageOnLoad = this.imageOnLoad.bind(this);
+    this.reset = this.reset.bind(this);
     this.state = {
       accepted: [],
       rejected: [],
@@ -31,6 +32,23 @@ class Upload extends Component {
     if (this.props.createField) this.props.createField(this.props.name, this.props.params);
   }
 
+  componentDidUpdate(prev) {
+    if (!prev.clear && this.props.clear === 'reset') {
+      this.reset();
+    }
+    if (prev.value !== this.props.value) {
+      this.setState({ preview: this.props.value });
+    }
+  }
+
+  reset() {
+    this.setState({
+      original: null,
+      preview: null
+    });
+    this.props.fieldProp(this.props.name, { value: '', clear: null });
+  }
+
   onDrop(accepted, rejected) {
     this.props.onChange(this.props.name, accepted);
     this.setState({
@@ -42,8 +60,11 @@ class Upload extends Component {
 
   handleSaveCallback(url) {
     if (url) {
-      this.setState({ loading: false, preview: url });
-      this.props.fieldProp(this.props.name, { value: url });
+      this.setState({ loading: false });
+      if (!this.props.noPreview) {
+        this.setState({ preview: url });
+        this.props.fieldProp(this.props.name, { value: url });
+      }
       if (this.props.saveCallback) this.props.saveCallback(url);
     } else {
       this.setState({ error: true });
@@ -83,13 +104,15 @@ class Upload extends Component {
         {this.state.loading && <Loader className={'uploadLoader'} msg={'Uploading'} />}
         {this.state.preview ?
           <div className='dropzoneImageContainer'>
-            <Image url={this.state.preview} alt={this.state.preview} className='dropzoneImage' onLoad={this.imageOnLoad} />
+            {!this.state.imageLoading && (this.props.customLink || '')}
+            <Image maxSize='175px' url={this.state.preview} alt={this.state.preview} className='dropzoneImage' onLoad={this.imageOnLoad} />
             {!this.state.imageLoading &&
               <GBLink onClick={this.clearImage} className='link'>Clear image</GBLink>
             }
           </div>
         :
           <div className='dropzoneImageContainer'>
+            {this.props.customLink || '' }
             <Dropzone
               className='dropzone'
               onDrop={this.onDrop}

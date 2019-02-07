@@ -1,6 +1,13 @@
 @import 'variables.scss';
 
 /*----- default image -------*/
+
+.imageComponent.noFlex {
+  display: block;
+  vertical-align: middle;
+  text-align: center;
+}
+
 .imageComponent {
   position: relative;
   display: flex;
@@ -11,6 +18,7 @@
     display: block;
     width: auto;
     height: auto;
+    border-radius: 20px;
   }
 
   .imageLoader {
@@ -20,9 +28,15 @@
     position: absolute;
     top: 50%;
     left: 50%;
+    img {
+      width: auto !important;
+      height: auto !important;
+      min-height: auto !important;
+      min-width: auto !important;
+      border-radius: 0 !important;
+    }
   }
 }
-
 
 .dropzone {
   display: flex;
@@ -59,7 +73,8 @@
   justify-content: center;
   align-items: center;
   width: 200px;
-  height: 200px;
+  height: auto;
+  min-height: 200px;
   button.link {
     position: relative;
     display: block;
@@ -78,6 +93,7 @@
     max-height: 175px;
     width: auto;
     height: auto;
+    border-radius: 20px;
   }
 
   .imageLoader {
@@ -87,5 +103,12 @@
     position: absolute;
     top: 50%;
     left: 50%;
+    img {
+      width: auto !important;
+      height: auto !important;
+      min-height: auto !important;
+      min-width: auto !important;
+      border-radius: 0 !important;
+    }
   }
 }

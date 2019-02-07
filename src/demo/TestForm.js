@@ -47,11 +47,13 @@ export default class TestForm extends Component {
 
   render() {
 
+    const customLink = <GBLink className='link'>Test</GBLink>;
+
     return (
       <div>
         <h2>Form Elements</h2>
         <div className='formWrapper'>
-        {this.props.uploadField('imageURL', { label: 'Image', debug: true, value: 'https://givebox-staging.s3.amazonaws.com/gbx%2F9b28b33157275cf5c8fa036633a3b33d%2F2018-11-09%2Fwesome1-jpg-original-jpg%2Foriginal' })}
+        {this.props.uploadField('imageURL', { customLink: customLink, label: 'Image', debug: true, value: 'https://givebox-staging.s3.amazonaws.com/gbx%2F9b28b33157275cf5c8fa036633a3b33d%2F2018-11-09%2Fwesome1-jpg-original-jpg%2Foriginal' })}
         {/*
         {this.props.calendarRange({debug: true, enableTime: true })}
         {this.props.textField('custID', { type: 'hidden' })}

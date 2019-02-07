@@ -22,17 +22,47 @@ export default class Image extends Component {
       url,
       size,
       alt,
-      className,
-      maxSize
+      className
     } = this.props;
+
+    let defaultSize = '175px';
+    switch (size) {
+      case 'thumb': {
+        defaultSize = '80px';
+        break;
+      }
+
+      case 'small': {
+        defaultSize = '175px';
+        break;
+      }
+
+      case 'medium': {
+        defaultSize = '400px';
+        break;
+      }
+
+      case 'large': {
+        defaultSize = '1200px';
+        break;
+      }
+
+      case 'original': {
+        defaultSize = '100%';
+        break;
+      }
+
+      // no default
+    }
+    const maxSize = this.props.maxSize || defaultSize;
 
     return (
       <div className={`imageComponent ${className || ''}`}>
-        {this.state.imageLoading &&
+        {this.state.imageLoading  &&
         <div className='imageLoader'>
           <img src='https://s3-us-west-1.amazonaws.com/givebox/public/images/squareLoader.gif' alt='Loader' />
         </div>}
-        <img style={{ maxWidth: maxSize, maxHeight: maxSize }} src={imageUrlWithStyle(url, size)} alt={alt || url} onLoad={this.imageOnLoad} />
+        <img style={{ maxWidth: maxSize, maxHeight: maxSize }} src={size === 'inherit' ? url : imageUrlWithStyle(url, size)} alt={alt || url} onLoad={this.imageOnLoad} />
       </div>
     )
   }
@@ -40,5 +70,5 @@ export default class Image extends Component {
 
 Image.defaultProps = {
   size: 'original',
-  maxSize: '175px'
+  maxSize: '100%'
 }
