@@ -1,6 +1,6 @@
 /*----- Layout -----*/
 $layout-top-height: 56px;
-$layout-left-width: 210px;
+$layout-left-width: 220px;
 $main-max-width: 100%;
 
 /*----- Defaults --------*/
@@ -20,12 +20,12 @@ $tiny-text-size: 0.67em;
 /*----- Define Colors --------*/
 $white: #FFFFFF;
 $off-white: #FCFCFC;
-$light: #f2f5f7;
+$light: #edf6f9;
 $light-gray: #e8ebed;
-$light-med-gray: #ced1d3;
-$med-gray: #919495;
+$light-med-gray: #B0BEC5;
+$med-gray: #465965;
 $med-dark-gray: #465965;
-$dark-gray: #263238;
+$dark-gray: #253655;
 $dark: #151515;
 
 $med-blue-gray: #B0BEC5;
@@ -36,6 +36,7 @@ $red: #e83b2e;
 $yellow: #FFCC80;
 $orange: #ecab1f;
 $green: #35e6b2;
+$greenDark: #27ab84;
 
 /* previous purpleblue & skyblue
 $primary: #4365d4;
@@ -49,6 +50,7 @@ $primary: #45a8dc;
 $secondary: #233e59;
 $tertiary: #1e364f;
 $secondColor: #7ddafd;
+$secondColorDark: #5fa5c0;
 $secondColor2: #48bae6;
 $secondColor3: #b1e8fd;
 

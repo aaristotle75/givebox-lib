@@ -62,6 +62,7 @@ class Form extends Component {
     }
     this.defaultOptions = {
       parent: false,
+      useChildren: false,
       label: '',
       fixedLabel: false,
       className: '',
@@ -136,7 +137,44 @@ class Form extends Component {
       ...this.state,
       fields: merge
     }));
-    if (args.parent) this.fieldProp(args.parent, {[name]: args.value});
+    if (args.parent) {
+      const parentField = has(this.state.fields, args.parent) ? this.state.fields[args.parent] : null;
+      if (parentField) {
+        if (parentField.useChildren) {
+          const children = has(parentField, 'children') ? parentField.children : [];
+          const index = children.findIndex((el) => {
+            return el === name;
+          });
+          if (index === -1) {
+            children.push(
+              { [name]: args }
+            );
+          } else {
+            children[index] = { [name]: args }
+          }
+          const parentMerge = {
+            ...this.state.fields,
+            [args.parent]: {
+              ...this.state.fields[args.parent],
+              children
+            }};
+          this.setState(Object.assign(this.state, {
+            ...this.state,
+            fields: parentMerge
+          }));
+        }
+      }
+      const parentMerge = {
+        ...this.state.fields,
+        [args.parent]: {
+          ...this.state.fields[args.parent],
+          [name]: args.value
+        }};
+      this.setState(Object.assign(this.state, {
+        ...this.state,
+        fields: parentMerge
+      }));
+    }
   }
 
   createRadioField(name, args) {
@@ -165,7 +203,32 @@ class Form extends Component {
         }
       }));
       if (field.parent) {
-        if (has(params, 'value')) this.fieldProp(field.parent, {[name]: params.value});
+        const parentField = has(this.state.fields, field.parent) ? this.state.fields[field.parent] : null;
+        if (parentField) {
+          if (parentField.useChildren) {
+            const children = parentField.children;
+            this.setState(Object.assign(this.state, {
+              ...this.state,
+              fields: {
+                ...this.state.fields,
+                [field.parent]: {
+                  ...this.state.fields[field.parent],
+                  children
+                }
+              }
+            }));
+          }
+          this.setState(Object.assign(this.state, {
+            ...this.state,
+            fields: {
+              ...this.state.fields,
+              [field.parent]: {
+                ...this.state.fields[field.parent],
+                [name]: params.value
+              }
+            }
+          }));
+        }
       }
     } else {
       console.error(`Error in fieldProp: ${name}`);
@@ -418,6 +481,7 @@ class Form extends Component {
         type={params.type}
         checked={field ? field.checked : params.checked}
         value={params.value}
+        customValue={params.customValue}
         group={field ? field.group : params.group}
         readOnly={field ? field.readOnly : params.readOnly}
         onChange={onChange}
@@ -807,7 +871,7 @@ class Form extends Component {
   }
 
   validateForm(e, callback, group = 'default') {
-		e.preventDefault();
+		if (e) e.preventDefault();
     let bindthis = this;
     let fields = this.state.fields;
     const groupFields = {};

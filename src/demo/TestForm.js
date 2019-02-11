@@ -53,8 +53,15 @@ export default class TestForm extends Component {
       <div>
         <h2>Form Elements</h2>
         <div className='formWrapper'>
-        {this.props.uploadField('imageURL', { customLink: customLink, label: 'Image', debug: true, value: 'https://givebox-staging.s3.amazonaws.com/gbx%2F9b28b33157275cf5c8fa036633a3b33d%2F2018-11-09%2Fwesome1-jpg-original-jpg%2Foriginal' })}
+        {this.props.textField('amounts', { type: 'hidden', useChildren: true })}
+        {this.props.textField('amount1', { parent: 'amounts', label: 'Enter Amount', placeholder: '0.00', validate: 'number' })}
+        {this.props.choice('amount1Enabled', { parent: 'amounts', label: '1 Enabled' })}
+        {this.props.textField('amount2', { parent: 'amounts', label: 'Enter Amount', placeholder: '0.00', validate: 'number' })}
+        {this.props.choice('amount2Enabled', { parent: 'amounts', label: '2 Enabled' })}
+        {this.props.textField('amount3', { parent: 'amounts', label: 'Enter Amount', placeholder: '0.00', validate: 'number' })}
+        {this.props.choice('amount3Enabled', { parent: 'amounts', label: '3 Enabled' })}
         {/*
+        {this.props.uploadField('imageURL', { customLink: customLink, label: 'Image', debug: true, value: 'https://givebox-staging.s3.amazonaws.com/gbx%2F9b28b33157275cf5c8fa036633a3b33d%2F2018-11-09%2Fwesome1-jpg-original-jpg%2Foriginal' })}
         {this.props.calendarRange({debug: true, enableTime: true })}
         {this.props.textField('custID', { type: 'hidden' })}
         <div className='row'>
@@ -69,19 +76,17 @@ export default class TestForm extends Component {
         {this.props.textField('website', {label: 'Website URL', placeholder: 'Enter Website URL', validate: 'url', maxLength:128})}
         {this.props.creditCardGroup({ required: false, debug: false})}
         {this.props.richText('contentabc', { required: false, label: 'Rich Text', placeholder: 'Please write something...', modal: false, modalLabel: 'Open content editor' })}
-        {this.props.choice('choice', { label: 'Choice 1', value: 'choice1', type: 'radio', checked: 'choice2', debug: false })}
+        {this.props.choice('choice', { label: 'Choice 1', value: 'choice1', checked: 'choice2', type: 'radio' })}
         {this.props.choice('choice', { label: 'Choice 2', value: 'choice2', type: 'radio' })}
         {this.props.choice('choice', { label: 'Choice 3', value: 'choice3', type: 'radio' })}
+
+        {this.props.choice('phoneInfo', { group: 'options', label: 'Add phone number to form.' })}
+        {this.props.choice('phoneInfoRequired', { parent: 'phoneInfo', group: 'options', label: 'Make phone number required', onChange: this.toggleRequired })}
         {this.props.dropdown('status', {options: [{primaryText: 'Active', value: 'active'}, {primaryText: 'Deactivated', value: 'deactivated'}, {primaryText: 'Suspended', value: 'suspended'}], selectLabel: 'Select Status'})}
         {this.props.textField('amount1', { label: 'Enter Amount', placeholder: '0.00', validate: 'number' })}
-        {this.props.choice('amount1-enabled', { parent: 'amount1', label: 'Amount 1 enabled', checked: true })}
         {this.props.richText('amount1-desc', { parent: 'amount1', label: 'Amount 1 Description', modal: true, modalLabel: 'Edit Description'})}
-        {this.props.choice('amount-default', { label: 'Amount 1 Default', type: 'radio', value: 'amount1' })}
         {this.props.textField('amount2', { label: 'Enter Amount', placeholder: '0.00', validate: 'number'  })}
-        {this.props.choice('amount2-enabled', { parent: 'amount2', label: 'Amount 2 enabled', checked: true })}
         {this.props.richText('amount2-desc', { parent: 'amount2', label: 'Amount 2 Description', modal: true})}
-        {this.props.choice('amount-default', { label: 'Amount 2 Default', type: 'radio', value: 'amount2'})}
-        {this.props.choice('enabled', {label: 'Enable this resource', checked: true, errorType: 'custom', style: {marginBottom: 0}, debug: false})}
         {this.props.fieldError('enabled', 'You must enable to continue.')}
         {this.props.textField('taxID', {placeholder: 'Enter Tax ID', validate: 'taxID', maxLength: 10})}
         {this.props.textField('phone', {placeholder: 'Enter Phone', validate: 'phone'})}

@@ -1,3 +1,5 @@
+import React from 'react';
+
 export const mime = {
   image: 'image/jpeg, image/gif, image/png, image/bmp, image/tiff, image/x-icon',
   video: 'video/ogg, video/webm, video/mp4, video/mpeg, video/quicktime',
@@ -24,6 +26,7 @@ export function kind(kind) {
     case 'event': {
       obj.name = 'Event';
       obj.namePlural = 'Events';
+      obj.amountLabel = 'Tickets';
       obj.btnName = obj.name;
       obj.cta = 'Buy Tickets';
       obj.txName = 'Ticket purchase';
@@ -35,7 +38,7 @@ export function kind(kind) {
         list: 'Events'
       };
       obj.icon = 'calendar';
-      obj.desc = 'Sell tickets for your next event.';
+      obj.desc = <span className='typesDesc'>An all-in-one tool to help you organize and plan every detail of your nonprofit <span className='typeDescBold'>Events</span>. From golf toournaments to fundraisers.</span>;
       break;
     }
 
@@ -43,6 +46,7 @@ export function kind(kind) {
     case 'fundraiser': {
       obj.name = 'Donation Form';
       obj.namePlural = 'Donation Forms';
+      obj.amountLabel = 'Donation Amounts';
       obj.btnName = 'Donate';
       obj.cta = 'Donate Now';
       obj.txName = 'Made donation';
@@ -54,7 +58,7 @@ export function kind(kind) {
         list: 'Fundraisers'
       };
       obj.icon = 'box';
-      obj.desc = 'Raise donations to fund your programs.';
+      obj.desc = <span className='typesDesc'>The most successful fundraising tool can be your <span className='typeDescBold'>Donation Forms</span> collecting money directly from your website or Facebook profile.</span>;
       break;
     }
 
@@ -62,6 +66,7 @@ export function kind(kind) {
     case 'invoice': {
       obj.name = 'Invoice';
       obj.namePlural = 'Invoices';
+      obj.amountLabel = 'Invoice Amounts';
       obj.btnName = obj.name;
       obj.cta = 'Pay Invoice';
       obj.txName = 'Paid invoice';
@@ -73,7 +78,7 @@ export function kind(kind) {
         list: 'Invoices'
       };
       obj.icon = 'briefcase';
-      obj.desc = 'Convenient way to accept payments';
+      obj.desc = <span className='typesDesc'>Create customized, professional <span className='typeDescBold'>Invoices</span> in a few clicks and send to vendors and large donors through email.</span>;
       break;
     }
 
@@ -81,6 +86,7 @@ export function kind(kind) {
     case 'membership': {
       obj.name = 'Membership';
       obj.namePlural = 'Memberships';
+      obj.amountLabel = 'Membership Amounts';
       obj.btnName = obj.name;
       obj.cta = 'Purchase Membership';
       obj.txName = 'Membership purchase';
@@ -92,7 +98,7 @@ export function kind(kind) {
         list: 'Memberships'
       };
       obj.icon = 'clipboard';
-      obj.desc = 'Gain paid subscribers with memberships.';
+      obj.desc = <span className='typesDesc'>Engage, grow, track and measure your nonprofit organizations and associations <span className='typeDescBold'>Memberships</span> in a few simple steps.</span>;
       break;
     }
 
@@ -100,6 +106,7 @@ export function kind(kind) {
     case 'sweepstake': {
       obj.name = 'Sweepstakes';
       obj.namePlural = 'Sweepstakes';
+      obj.amountLabel = 'Tickets';
       obj.btnName = obj.name;
       obj.cta = 'Enter Sweepstakes';
       obj.txName = 'Sweepstake entry';
@@ -111,7 +118,7 @@ export function kind(kind) {
         list: 'Sweepstakes'
       };
       obj.icon = 'gift';
-      obj.desc = 'Raffle tickets online for donations.';
+      obj.desc = <span className='typesDesc'>Creating a <span className='typeDescBold'>Sweepstakes</span> campaign offers a fun, engaging way for you to boost fundraising and gather information on your donors.</span>;
       break;
     }
 
