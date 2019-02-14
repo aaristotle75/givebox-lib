@@ -4,6 +4,7 @@ export default class Portal extends Component {
   constructor(props) {
     super(props);
     this.el = document.createElement('div');
+    this.el.setAttribute('id', this.props.id);
     this.el.classList.add(props.className);
   }
 

@@ -48,7 +48,7 @@ class ModalRoute extends Component {
     return (
       <div>
         { open &&
-          <Portal rootEl={modalRoot} className='modal'>
+          <Portal id={id} rootEl={modalRoot} className='modal'>
             <Modal
               className={className}
               identifier={id}

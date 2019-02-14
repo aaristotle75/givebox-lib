@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { selectOptions, GBLink } from '../lib';
+import { selectOptions, GBLink, ModalLink } from '../lib';
 
 export default class TestForm extends Component {
 
@@ -52,7 +52,10 @@ export default class TestForm extends Component {
     return (
       <div>
         <h2>Form Elements</h2>
+        <ModalLink id='testModal'>Test Modal</ModalLink>
         <div className='formWrapper'>
+        {this.props.richText('emailList', { label: 'Email List', placeholder: 'Enter emails separated by commas', modal: true, required: true })}
+        {/*
         {this.props.textField('amounts', { type: 'hidden', useChildren: true })}
         {this.props.textField('amount1', { parent: 'amounts', label: 'Enter Amount', placeholder: '0.00', validate: 'number' })}
         {this.props.choice('amount1Enabled', { parent: 'amounts', label: '1 Enabled' })}
@@ -60,7 +63,6 @@ export default class TestForm extends Component {
         {this.props.choice('amount2Enabled', { parent: 'amounts', label: '2 Enabled' })}
         {this.props.textField('amount3', { parent: 'amounts', label: 'Enter Amount', placeholder: '0.00', validate: 'number' })}
         {this.props.choice('amount3Enabled', { parent: 'amounts', label: '3 Enabled' })}
-        {/*
         {this.props.uploadField('imageURL', { customLink: customLink, label: 'Image', debug: true, value: 'https://givebox-staging.s3.amazonaws.com/gbx%2F9b28b33157275cf5c8fa036633a3b33d%2F2018-11-09%2Fwesome1-jpg-original-jpg%2Foriginal' })}
         {this.props.calendarRange({debug: true, enableTime: true })}
         {this.props.textField('custID', { type: 'hidden' })}

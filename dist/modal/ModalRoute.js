@@ -43,6 +43,7 @@ class ModalRoute extends Component {
     }
 
     return React.createElement("div", null, open && React.createElement(Portal, {
+      id: id,
       rootEl: modalRoot,
       className: "modal"
     }, React.createElement(Modal, {

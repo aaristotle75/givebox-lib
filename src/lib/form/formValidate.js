@@ -32,7 +32,7 @@ export const nLength = (n) => {
 
 
 export function formatDecimal(value) {
-  let val = parseInt(value.replace(/[^0-9]/g, ''));
+  let val = isNaN(value) ? parseInt(value.replace(/[^0-9]/g, '')) : value;
   let newVal = '';
 	const length = nLength(val);
   val = val.toString();
@@ -51,7 +51,7 @@ export function formatDecimal(value) {
 }
 
 export function formatNumber(value) {
-  const val = parseInt(value.replace(/[^0-9]/g, ''));
+  const val = isNaN(value) ? parseInt(value.replace(/[^0-9]/g, '')) : value
   return isNaN(val) || parseInt(val) === 0 ? '' : val;
 }
 

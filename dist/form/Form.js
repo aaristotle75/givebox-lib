@@ -137,7 +137,6 @@ class Form extends Component {
   }
 
   createField(name, args) {
-    if (args.parent) args.autoReturn = false;
     const merge = { ...this.state.fields,
       [name]: args
     };
@@ -304,8 +303,11 @@ class Form extends Component {
       if (field.validate === 'ssn') value = _v.formatSSN(value);
       if (field.validate === 'phone') value = _v.formatPhone(value);
       if (field.validate === 'ccexpire') value = _v.formatCCExpire(value);
-      if ((field.validate === 'money' || field.validate === 'number') && field.validateOpts.decimal) value = _v.formatDecimal(value);
-      if ((field.validate === 'money' || field.validate === 'number') && !field.validateOpts.decimal) value = _v.formatNumber(value);
+
+      if (field.validate === 'money' || field.validate === 'number' || field.validateOpts.validate === 'money' || field.validateOpts.validate === 'number') {
+        if (field.validateOpts.decimal) value = _v.formatDecimal(value);else value = _v.formatNumber(value);
+      }
+
       this.fieldProp(name, {
         value: value,
         error: false
@@ -402,6 +404,7 @@ class Form extends Component {
         error: false,
         updated: true
       });
+      if (field.onChange) field.onChange(name, val, field, hasText);
       if (field.debug) console.log('onChangeRichText', name, field);
     }
   }
@@ -742,7 +745,7 @@ class Form extends Component {
       count: params.count,
       meta: params.meta,
       symbol: params.validateOpts.symbol,
-      money: params.validate === 'money' ? true : false
+      money: params.validate === 'money' || params.validateOpts.validate === 'money' ? true : false
     });
   }
 
@@ -761,6 +764,7 @@ class Form extends Component {
       fixedLabel: params.fixedLabel,
       modal: params.modal,
       modalLabel: params.modalLabel,
+      modalID: params.modalID,
       style: params.style,
       placeholder: field ? field.placeholder : params.placeholder,
       required: field ? field.required : params.required,
@@ -1027,7 +1031,7 @@ class Form extends Component {
     }, msg ? msg : error);
   }
 
-  validateForm(e, callback, group = 'default') {
+  validateForm(e, callback, group = 'default', cbCallback = null) {
     if (e) e.preventDefault();
     let bindthis = this;
     let fields = this.state.fields;
@@ -1041,23 +1045,23 @@ class Form extends Component {
             error: _v.msgs.required
           });
         } else {
-          if (value.value) bindthis.validateField(key, value.validate, value.value, value.validateOpts);
+          bindthis.validateField(key, value.validate, value.value, value.validateOpts, value.parent, value);
         }
       }
     });
     this.checkForErrors(fields, group);
 
     if (!this.state.error) {
-      if (callback) callback(groupFields);
+      if (callback) callback(groupFields, cbCallback);
     }
   }
 
-  validateField(key, validate, value, opts = {}) {
+  validateField(key, validate, value, opts = {}, parent, field) {
     let min, max, errorMsg, format;
 
     switch (validate) {
       case 'custom':
-        if (!opts.custom(value)) this.fieldProp(key, {
+        if (!opts.custom(key, value, parent)) this.fieldProp(key, {
           error: opts.errorMsg || `Custom validation error for ${key}.`
         });
         break;
@@ -1067,7 +1071,7 @@ class Form extends Component {
         min = opts.min || null;
         max = opts.max || null;
         errorMsg = min && max ? `Please enter a date between ${min} and ${max}.` : min && !max ? `Please enter a date after ${min}.` : !min && max ? `Please enter a date before ${max}.` : `default error`;
-        if (!_v.validateDate(value, {
+        if (value.value) if (!_v.validateDate(value, {
           min: min,
           max: max,
           format: format
@@ -1078,13 +1082,13 @@ class Form extends Component {
 
       case 'emailList':
         const optional = opts.optional || false;
-        if (!_v.validateEmailList(value, optional)) this.fieldProp(key, {
+        if (value) if (!_v.validateEmailList(value, optional)) this.fieldProp(key, {
           error: opts.errorMsg || _v.msgs.emailList
         });
         break;
 
       case 'email':
-        if (!_v.validateEmail(value)) this.fieldProp(key, {
+        if (value) if (!_v.validateEmail(value)) this.fieldProp(key, {
           error: opts.errorMsg || _v.msgs.email
         });
         break;
@@ -1096,31 +1100,31 @@ class Form extends Component {
         break;
 
       case 'taxID':
-        if (!_v.validateTaxID(value)) this.fieldProp(key, {
+        if (value) if (!_v.validateTaxID(value)) this.fieldProp(key, {
           error: opts.errorMsg || _v.msgs.taxID
         });
         break;
 
       case 'ssn':
-        if (!_v.validateTaxID(value)) this.fieldProp(key, {
+        if (value) if (!_v.validateTaxID(value)) this.fieldProp(key, {
           error: opts.errorMsg || _v.msgs.ssn
         });
         break;
 
       case 'phone':
-        if (!_v.validatePhone(value)) this.fieldProp(key, {
+        if (value) if (!_v.validatePhone(value)) this.fieldProp(key, {
           error: opts.errorMsg || _v.msgs.phone
         });
         break;
 
       case 'descriptor':
-        if (!_v.validateDescriptor(value)) this.fieldProp(key, {
+        if (value) if (!_v.validateDescriptor(value)) this.fieldProp(key, {
           error: opts.errorMsg || _v.msgs.descriptor
         });
         break;
 
       case 'url':
-        if (!_v.validateURL(value)) this.fieldProp(key, {
+        if (value.value) if (!_v.validateURL(value)) this.fieldProp(key, {
           error: opts.errorMsg || _v.msgs.url
         });
         break;
@@ -1132,19 +1136,19 @@ class Form extends Component {
         max = opts.max || _v.limits.txMax;
         errorMsg = opts.errorMsg || `Please enter a valid ${validate === 'money' ? 'amount' : 'number'} between ${numberWithCommas(min)} to ${numberWithCommas(max)}`;
         const error = decimal ? errorMsg : `${errorMsg} with no decimal point.`;
-        if (!_v.validateNumber(value, min, max, decimal)) this.fieldProp(key, {
+        if (value) if (!_v.validateNumber(value, min, max, decimal)) this.fieldProp(key, {
           error: error
         });
         break;
 
       case 'calendarRange':
-        if (!_v.validateCalendarRange(key, this.state.fields)) this.fieldProp(key, {
+        if (value) if (!_v.validateCalendarRange(key, this.state.fields)) this.fieldProp(key, {
           error: _v.msgs.calendarRange
         });
         break;
 
       case 'creditCard':
-        if (!_v.validateCardTypes(value)) this.fieldProp(key, {
+        if (value) if (!_v.validateCardTypes(value)) this.fieldProp(key, {
           error: _v.msgs.creditCard
         });
         break;

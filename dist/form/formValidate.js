@@ -33,7 +33,7 @@ export const nLength = n => {
   return (Math.log(Math.abs(n) + 1) * 0.43429448190325176 | 0) + 1;
 };
 export function formatDecimal(value) {
-  let val = parseInt(value.replace(/[^0-9]/g, ''));
+  let val = isNaN(value) ? parseInt(value.replace(/[^0-9]/g, '')) : value;
   let newVal = '';
   const length = nLength(val);
   val = val.toString();
@@ -55,7 +55,7 @@ export function formatDecimal(value) {
   return isNaN(newVal) || parseInt(val) === 0 || isNaN(val) ? '' : numberWithCommas(newVal);
 }
 export function formatNumber(value) {
-  const val = parseInt(value.replace(/[^0-9]/g, ''));
+  const val = isNaN(value) ? parseInt(value.replace(/[^0-9]/g, '')) : value;
   return isNaN(val) || parseInt(val) === 0 ? '' : val;
 } // identify by the first 4 digits
 

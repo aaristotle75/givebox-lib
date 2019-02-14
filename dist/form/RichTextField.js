@@ -57,6 +57,7 @@ class ContentField extends Component {
   render() {
     const {
       name,
+      modalID,
       style,
       label,
       fixedLabel,
@@ -67,7 +68,7 @@ class ContentField extends Component {
       modalLabel,
       value
     } = this.props;
-    let id = `${name}-richText`;
+    let id = `${modalID || name}-richText`;
     return React.createElement("div", {
       style: style,
       className: `input-group ${className || ''} richtext-group ${error ? 'error tooltip' : ''}`
