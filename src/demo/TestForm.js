@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { selectOptions, GBLink, ModalLink } from '../lib';
+import Moment from 'moment';
 
 export default class TestForm extends Component {
 
@@ -52,10 +53,12 @@ export default class TestForm extends Component {
     return (
       <div>
         <h2>Form Elements</h2>
-        <ModalLink id='testModal'>Test Modal</ModalLink>
         <div className='formWrapper'>
-        {this.props.richText('emailList', { label: 'Email List', placeholder: 'Enter emails separated by commas', modal: true, required: true })}
+        {this.props.whereField('where')}
         {/*
+        {this.props.calendarField('dob', { label: 'Date of Birth', enableTime: false, enableTimeOption: true, required: true, validate: 'date', validateOpts: { }})}
+        {this.props.calendarRange('event range', { rangeRequired: false, debug: true, enableTimeOption: true, enableTimeOptionLabel: 'Show time', range1Label: 'Event Start Date', range2Label: 'Event End Date', range1Name: 'when', range2Name: 'endsAt', range1Value: 1552006980, range1EnableTime: false, range2EnableTime: true })}
+        {this.props.richText('emailList', { label: 'Email List', placeholder: 'Enter emails separated by commas', modal: true, required: true })}
         {this.props.textField('amounts', { type: 'hidden', useChildren: true })}
         {this.props.textField('amount1', { parent: 'amounts', label: 'Enter Amount', placeholder: '0.00', validate: 'number' })}
         {this.props.choice('amount1Enabled', { parent: 'amounts', label: '1 Enabled' })}

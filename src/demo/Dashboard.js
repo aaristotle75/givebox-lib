@@ -29,7 +29,7 @@ export default class Dashboard extends Component {
       <div className='statusMsg'>
         Your account is not complete and all transactions will be processed through Givebox Technology Foundation Tax ID 47-4471615.
         <div>CLICK HERE TO COMPLETE YOUR ACCOUNT</div>
-      </div> 
+      </div>
     ;
     let display = true;
     this.setState({ msg: msg, display: display });
@@ -41,8 +41,6 @@ export default class Dashboard extends Component {
       display,
       msg
     } = this.state;
-
-    console.log(display, msg);
 
     return (
       <div>

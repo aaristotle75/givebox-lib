@@ -2,8 +2,22 @@ import React, {Component} from 'react';
 
 class Checkbox extends Component {
 
+  constructor(props) {
+    super(props);
+    this.onChange = this.onChange.bind(this);
+    this.state = {
+      checked: this.props.checked
+    };
+  }
+
   componentDidMount() {
     if (this.props.createField) this.props.createField(this.props.name, this.props.params);
+  }
+
+  onChange() {
+    const checked = this.state.checked ? false : true;
+    this.setState({ checked });
+    this.props.onChange(checked, this.props.name);
   }
 
   render() {
@@ -13,11 +27,13 @@ class Checkbox extends Component {
       label,
       className,
       style,
-      onChange,
-      checked,
       error,
       errorType
     } = this.props;
+
+    const {
+      checked
+    } = this.state;
 
     let id = `${name}-checkbox`;
 
@@ -26,13 +42,13 @@ class Checkbox extends Component {
         <input
           type='checkbox'
           name={name}
-          onChange={() => onChange(name)}
+          onChange={this.onChange}
           checked={checked}
           className='checkbox'
           id={id}
         />
           <label htmlFor={id}></label>
-          {label && <label onClick={() => onChange(name)}>{label}</label>}
+          {label && <label className='label' onClick={this.onChange}>{label}</label>}
           <div className={`tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`}>
             {this.props.error}
             <i></i>

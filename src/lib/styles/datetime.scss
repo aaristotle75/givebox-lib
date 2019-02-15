@@ -15,6 +15,15 @@
   margin: 0 !important;
 }
 
+.flatpickr.enableTimeOption .input-group {
+  padding-bottom: 0px;
+}
+
+.flatpickr .input-group.checkbox-group {
+  padding-top: 5px;
+  padding-bottom: 20px;
+}
+
 .flatpickr-calendar {
   z-index: 99999999 !important;
 }

@@ -23,6 +23,7 @@ export function validateNumber(value, min, max, decimal = true) {
       validate = false;
     }
   }
+  console.log('validateNumber', value, min, max, decimal, validate);
   return validate;
 }
 
@@ -228,10 +229,13 @@ export function validateCalendarRange(key, fields) {
 
     // no default
   }
-  if (fields[key].enableTime) {
-    if (range.start > range.end) validate = false;
-  } else {
-    if (Moment.unix(range.start).startOf('day').unix() > Moment.unix(range.end).endOf('day').unix()) validate = false;
+
+  if (fields[key].rangeRequired || (range.start && range.end)) {
+    if (fields[key].enableTime) {
+      if (range.start > range.end) validate = false;
+    } else {
+      if (Moment.unix(range.start).startOf('day').unix() > Moment.unix(range.end).endOf('day').unix()) validate = false;
+    }
   }
   return validate;
 }

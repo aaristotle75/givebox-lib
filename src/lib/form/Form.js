@@ -8,6 +8,7 @@ import RichTextField from './RichTextField';
 import ModalField from './ModalField';
 import CreditCard from './CreditCard';
 import CalendarField from './CalendarField';
+import WhereField from './WhereField';
 import * as _v from './formValidate';
 import Loader from '../common/Loader';
 import { Alert } from '../common/Alert';
@@ -27,6 +28,7 @@ class Form extends Component {
     this.onChangeRadio = this.onChangeRadio.bind(this);
     this.onChangeRichText = this.onChangeRichText.bind(this);
     this.onChangeCreditCard = this.onChangeCreditCard.bind(this);
+    this.onChangeWhere = this.onChangeWhere.bind(this);
     this.onBlur = this.onBlur.bind(this);
     this.onFocus = this.onFocus.bind(this);
     this.validateForm = this.validateForm.bind(this);
@@ -40,6 +42,7 @@ class Form extends Component {
     this.modalField = this.modalField.bind(this);
     this.creditCard = this.creditCard.bind(this);
     this.creditCardGroup = this.creditCardGroup.bind(this);
+    this.whereField = this.whereField.bind(this);
     this.createField = this.createField.bind(this);
     this.createRadioField = this.createRadioField.bind(this);
     this.fieldProp = this.fieldProp.bind(this);
@@ -252,14 +255,27 @@ class Form extends Component {
       this.fieldProp(name, { value: ts/field.reduceTS, error: false });
       this.formProp({ error: false, errorMsg: '', updated: true });
       if (has(field, 'rangeStartField')) {
-        let required = ts ? true : false;
+        let required = field.rangeRequired ? ts ? true : false : false;
         this.fieldProp(field.rangeStartField, {error: false, required: required});
       }
       if (has(field, 'rangeEndField')) {
-        let required = ts ? true : false;
+        let required = field.rangeRequired ? ts ? true : false : false;
         this.fieldProp(field.rangeEndField, {error: false, required: required});
       }
       if (field.debug) console.log('onChangeCalendar', name, field);
+    }
+  }
+
+  onChangeWhere(e) {
+    e.preventDefault();
+    const name = e.target.name;
+    const field = has(this.state.fields, name) ? this.state.fields[name] : null;
+    if (field) {
+      let value = e.target.value;
+      this.fieldProp(name, {value: value, error: false});
+      this.formProp({error: false, updated: true});
+      if (field.onChange) field.onChange(name, value, field, this.state.fields);
+      if (field.debug) console.log('onChange', name, field);
     }
   }
 
@@ -388,10 +404,11 @@ class Form extends Component {
     const defaults = cloneObj(this.defaults);
     const params = Object.assign({}, defaults, {
       enableTime: false,
+      enableTimeOption: false,
       reduceTS: 1000,
-      fixedLabel: true
+      fixedLabel: true,
+      rangeRequired: true
     }, opts);
-
 
     if (field) {
       params.dateFormat = field.enableTime  ? 'MM/DD/YYYY H:mm' : 'MM/DD/YYYY';
@@ -403,7 +420,10 @@ class Form extends Component {
       <CalendarField
         name={name}
         required={field ? field.required : params.required}
+        rangeRequired={field ? field.rangeRequired : params.rangeRequired}
         enableTime={field ? field.enableTime : params.enableTime}
+        enableTimeOption={params.enableTimeOption}
+        enableTimeOptionLabel={params.enableTimeOptionLabel}
         group={field ? field.group : params.group}
         readOnly={field ? field.readOnly : params.readOnly}
         onChangeCalendar={this.onChangeCalendar}
@@ -419,6 +439,7 @@ class Form extends Component {
         overlay={params.overlay}
         overlayDuration={params.overlayDuration}
         dateFormat={params.dateFormat}
+        fieldProp={this.fieldProp}
       />
     )
   }
@@ -428,23 +449,30 @@ class Form extends Component {
     const params = Object.assign({}, defaults, {
       className: '',
       enableTime: false,
+      enableTimeOption: false,
       range1Name: 'range1',
       range1Label: 'Start Date',
       range1Value: '',
+      range1EnableTime: false,
+      range1EnableTimeOption: false,
       range2Name: 'range2',
       range2Label: 'End Date',
       range2Value: '',
+      range2EnableTime: false,
+      range2EnableTimeOption: false,
       colWidth: '50%',
-      overlay: true
+      overlay: true,
+      required: false,
+      rangeRequired: true
     }, opts);
 
     return (
       <div style={params.style} className={`field-group`}>
         <div style={{width: params.colWidth}} className='col'>
-          {this.calendarField(params.range1Name, { enableTime: params.enableTime, value: params.range1Value, label: params.range1Label, range: 'start', rangeEndField: params.range2Name, debug: params.debug, filter: name, validate: 'calendarRange', overlay: params.overlay, overlayDuration: params.overlayDuration })}
+          {this.calendarField(params.range1Name, { required: params.required, rangeRequired: params.rangeRequired, enableTime: params.range1EnableTime || params.enableTime, enableTimeOption: params.range1EnableTimeOption || params.enableTimeOption, enableTimeOptionLabel: params.enableTimeOptionLabel, value: params.range1Value, label: params.range1Label, range: 'start', rangeEndField: params.range2Name, debug: params.debug, filter: name, validate: 'calendarRange', overlay: params.overlay, overlayDuration: params.overlayDuration })}
         </div>
         <div style={{width: params.colWidth}} className='col'>
-          {this.calendarField(params.range2Name, { enableTime: params.enableTime, value: params.range2Value, label: params.range2Label, range: 'end', rangeStartField: params.range1Name, debug: params.debug, filter: name, validate: 'calendarRange', overlay: params.overlay, overlayDuration: params.overlayDuration })}
+          {this.calendarField(params.range2Name, { required: params.required, rangeRequired: params.rangeRequired, enableTime: params.range2EnableTime || params.enableTime, enableTimeOption: params.range2EnableTimeOption || params.enableTimeOption, enableTimeOptionLabel: params.enableTimeOptionLabel, value: params.range2Value, label: params.range2Label, range: 'end', rangeStartField: params.range1Name, debug: params.debug, filter: name, validate: 'calendarRange', overlay: params.overlay, overlayDuration: params.overlayDuration })}
         </div>
         <div className='clear'></div>
       </div>
@@ -763,6 +791,54 @@ class Form extends Component {
     )
   }
 
+  whereField(name, opts) {
+    const field = has(this.state.fields, name) ? this.state.fields[name] : null;
+    const params = Object.assign({}, cloneObj(this.defaults), {
+      className: '',
+      type: 'text',
+      maxLength: 128,
+      id: 'autocomplete',
+      googleMaps: {},
+      where: {},
+      label: 'Google Maps Address',
+      placeholder: 'Enter full address',
+      fixedLabel: true,
+      useChildren: true,
+      validate: 'googleMaps'
+    }, opts);
+
+    return (
+      <WhereField
+        id={params.id}
+        name={name}
+        className={params.className}
+        label={params.label}
+        fixedLabel={params.fixedLabel}
+        style={params.style}
+        placeholder={field ? field.placeholder : params.placeholder}
+        type={field ? field.type : params.type}
+        required={field ? field.required : params.required}
+        group={field ? field.group : params.group}
+        readOnly={field ? field.readOnly : params.readOnly}
+        autoFocus={field ? field.autoFocus : params.autoFocus}
+        onChange={this.onChangeWhere}
+        onBlur={this.onBlur}
+        onFocus={this.onFocus}
+        value={field ? field.value : params.value}
+        error={field ? field.error : params.error }
+        errorType={params.errorType}
+        maxLength={params.maxLength}
+        createField={this.createField}
+        params={params}
+        meta={params.meta}
+        fieldProp={this.fieldProp}
+        dropdown={this.dropdown}
+        field={field}
+        textField={this.textField}
+      />
+    )
+  }
+
   checkForErrors(fields, group) {
     let error = false;
     Object.entries(fields).forEach(([key, value]) => {
@@ -937,7 +1013,7 @@ class Form extends Component {
         break;
       case 'number':
       case 'money':
-        const decimal = opts.decimal || true;
+        const decimal = opts.decimal ? true : false;
         min = opts.min || _v.limits.txMin;
         max = opts.max || _v.limits.txMax;
         errorMsg = opts.errorMsg || `Please enter a valid ${validate === 'money' ? 'amount' : 'number'} between ${numberWithCommas(min)} to ${numberWithCommas(max)}`;
@@ -949,6 +1025,19 @@ class Form extends Component {
         break;
       case 'creditCard':
         if (value) if (!_v.validateCardTypes(value)) this.fieldProp(key, {error: _v.msgs.creditCard});
+        break;
+      case 'googleMaps':
+        let locationError = false;
+        if (value && field) {
+          if (has(field, 'googleMaps')) {
+            if (isEmpty(field.googleMaps)) locationError = true;
+          } else {
+            locationError = true;
+          }
+          if (locationError) {
+            this.fieldProp(key, { error: 'Google maps could not find address. Please try again or manually enter address.'});
+          }
+        }
         break;
 
       // no default
@@ -967,6 +1056,7 @@ class Form extends Component {
         getErrors: this.getErrors,
         formState: this.state,
         textField: this.textField,
+        whereField: this.whereField,
         uploadField: this.uploadField,
         richText: this.richText,
         modalField: this.modalField,

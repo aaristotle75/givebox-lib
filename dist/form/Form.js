@@ -273,7 +273,7 @@ class Form extends Component {
       });
 
       if (has(field, 'rangeStartField')) {
-        let required = ts ? true : false;
+        let required = field.rangeRequired ? ts ? true : false : false;
         this.fieldProp(field.rangeStartField, {
           error: false,
           required: required
@@ -281,7 +281,7 @@ class Form extends Component {
       }
 
       if (has(field, 'rangeEndField')) {
-        let required = ts ? true : false;
+        let required = field.rangeRequired ? ts ? true : false : false;
         this.fieldProp(field.rangeEndField, {
           error: false,
           required: required
@@ -479,8 +479,10 @@ class Form extends Component {
     const defaults = cloneObj(this.defaults);
     const params = Object.assign({}, defaults, {
       enableTime: false,
+      enableTimeOption: false,
       reduceTS: 1000,
-      fixedLabel: true
+      fixedLabel: true,
+      rangeRequired: true
     }, opts);
 
     if (field) {
@@ -492,7 +494,10 @@ class Form extends Component {
     return React.createElement(CalendarField, {
       name: name,
       required: field ? field.required : params.required,
+      rangeRequired: field ? field.rangeRequired : params.rangeRequired,
       enableTime: field ? field.enableTime : params.enableTime,
+      enableTimeOption: params.enableTimeOption,
+      enableTimeOptionLabel: params.enableTimeOptionLabel,
       group: field ? field.group : params.group,
       readOnly: field ? field.readOnly : params.readOnly,
       onChangeCalendar: this.onChangeCalendar,
@@ -507,7 +512,8 @@ class Form extends Component {
       params: params,
       overlay: params.overlay,
       overlayDuration: params.overlayDuration,
-      dateFormat: params.dateFormat
+      dateFormat: params.dateFormat,
+      fieldProp: this.fieldProp
     });
   }
 
@@ -516,14 +522,21 @@ class Form extends Component {
     const params = Object.assign({}, defaults, {
       className: '',
       enableTime: false,
+      enableTimeOption: false,
       range1Name: 'range1',
       range1Label: 'Start Date',
       range1Value: '',
+      range1EnableTime: false,
+      range1EnableTimeOption: false,
       range2Name: 'range2',
       range2Label: 'End Date',
       range2Value: '',
+      range2EnableTime: false,
+      range2EnableTimeOption: false,
       colWidth: '50%',
-      overlay: true
+      overlay: true,
+      required: false,
+      rangeRequired: true
     }, opts);
     return React.createElement("div", {
       style: params.style,
@@ -534,7 +547,11 @@ class Form extends Component {
       },
       className: "col"
     }, this.calendarField(params.range1Name, {
-      enableTime: params.enableTime,
+      required: params.required,
+      rangeRequired: params.rangeRequired,
+      enableTime: params.range1EnableTime || params.enableTime,
+      enableTimeOption: params.range1EnableTimeOption || params.enableTimeOption,
+      enableTimeOptionLabel: params.enableTimeOptionLabel,
       value: params.range1Value,
       label: params.range1Label,
       range: 'start',
@@ -550,7 +567,11 @@ class Form extends Component {
       },
       className: "col"
     }, this.calendarField(params.range2Name, {
-      enableTime: params.enableTime,
+      required: params.required,
+      rangeRequired: params.rangeRequired,
+      enableTime: params.range2EnableTime || params.enableTime,
+      enableTimeOption: params.range2EnableTimeOption || params.enableTimeOption,
+      enableTimeOptionLabel: params.enableTimeOptionLabel,
       value: params.range2Value,
       label: params.range2Label,
       range: 'end',
@@ -1131,7 +1152,7 @@ class Form extends Component {
 
       case 'number':
       case 'money':
-        const decimal = opts.decimal || true;
+        const decimal = opts.decimal ? true : false;
         min = opts.min || _v.limits.txMin;
         max = opts.max || _v.limits.txMax;
         errorMsg = opts.errorMsg || `Please enter a valid ${validate === 'money' ? 'amount' : 'number'} between ${numberWithCommas(min)} to ${numberWithCommas(max)}`;
