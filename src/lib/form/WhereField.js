@@ -27,7 +27,6 @@ class WhereFieldForm extends Component {
   }
 
   componentDidMount() {
-    console.log('where', this.props.where);
     if (!util.isEmpty(this.props.where)) {
       if (has(this.props.where, 'coordinates')) {
         if (!util.isEmpty(this.props.where.coordinates)) {
@@ -38,7 +37,10 @@ class WhereFieldForm extends Component {
   }
 
   componentWillUnmount() {
-    console.log(this.state.manual);
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+      this.timeout = null;
+    }
     if (this.state.manual) this.setWhereManualFields();
   }
 
@@ -76,7 +78,6 @@ class WhereFieldForm extends Component {
 
   geocodeCallback(results, status) {
     let lat, lng;
-    console.log(results, status);
     if (status === google.maps.GeocoderStatus.OK && results.length > 0) {
       const location = results[0].geometry.location;
       lat = location.lat();
@@ -91,17 +92,20 @@ class WhereFieldForm extends Component {
   }
 
   drawMap(lat, lng) {
-    const myLatLng = new google.maps.LatLng(lat, lng);
-    const map = new google.maps.Map(this.mapRef.current, {
-      zoom: 12,
-      center: myLatLng
-    });
-    const marker = new google.maps.Marker({
-      position: myLatLng,
-      title: 'Event Location (Approximate)'
-    });
-    marker.setMap(map);
-    this.setState({ map: true });
+    this.timeout = setTimeout(() => {
+      const myLatLng = new google.maps.LatLng(lat, lng);
+      const map = new google.maps.Map(this.mapRef.current, {
+        zoom: 12,
+        center: myLatLng
+      });
+      const marker = new google.maps.Marker({
+        position: myLatLng,
+        title: 'Event Location (Approximate)'
+      });
+      marker.setMap(map);
+      this.setState({ map: true });
+      this.timeout = null;
+    }, 0);
   }
 
   render() {
@@ -113,6 +117,7 @@ class WhereFieldForm extends Component {
     return (
         <div className={`modalFormContainer where-group`}>
           <h2 className='center'>{this.props.label}</h2>
+          {this.props.value && <h3 className='center'>{this.props.value}</h3>}
           <AnimateHeight
             duration={500}
             height={this.state.map ? 'auto' : 0}

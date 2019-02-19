@@ -7,6 +7,7 @@ import Choice from './form/Choice';
 import CalendarField from './form/CalendarField';
 import CalendarRange from './form/CalendarRange';
 import Checkbox from './form/Checkbox';
+import WhereField from './form/WhereField';
 import * as _v from './form/formValidate';
 import * as selectOptions from './form/selectOptions';
 import ModalLink from './modal/ModalLink';
@@ -41,7 +42,7 @@ import { app, resource, send, modal } from './api/reducers';
 import { getResource, reloadResource, sendResource } from './api/helpers';
 import * as giveboxAPI from './api/givebox';
 export { // Form
-Form, _v, selectOptions, Select, TextField, Dropdown, RichTextField, Choice, CalendarField, CalendarRange, Checkbox, // actions
+Form, _v, selectOptions, Select, TextField, Dropdown, RichTextField, Choice, CalendarField, CalendarRange, Checkbox, WhereField, // actions
 toggleModal, removeResource, resourceProp, getAPI, sendAPI, setAppRef, setModalRef, // API
 giveboxAPI, getResource, reloadResource, sendResource, // reducers
 app, resource, send, modal, // Modal
