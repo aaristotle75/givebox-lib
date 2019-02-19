@@ -18,34 +18,35 @@ class WhereFieldForm extends Component {
     this.toggleManual = this.toggleManual.bind(this);
     this.setWhereManualFields = this.setWhereManualFields.bind(this);
     this.geocodeCallback = this.geocodeCallback.bind(this);
+    this.drawMap = this.drawMap.bind(this);
     this.state = {
-      manual: false
+      manual: false,
+      map: false
+    }
+    this.mapRef = React.createRef();
+  }
+
+  componentDidMount() {
+    console.log('where', this.props.where);
+    if (!util.isEmpty(this.props.where)) {
+      if (has(this.props.where, 'coordinates')) {
+        if (!util.isEmpty(this.props.where.coordinates)) {
+          this.drawMap(util.getValue(this.props.where.coordinates, 'lat'), util.getValue(this.props.where.coordinates, 'long'));
+        }
+      }
     }
   }
 
   componentWillUnmount() {
+    console.log(this.state.manual);
     if (this.state.manual) this.setWhereManualFields();
   }
 
-  geocodeCallback(results, status) {
-    let lat, lng;
-    if (status === google.maps.GeocoderStatus.OK && results.length > 0) {
-      const location = results[0].geometry.location;
-      lat = location.lat();
-      lng = location.lng();
-    }
-    const where = this.props.field.where;
-    if (!has(where, 'coordinate')) where.coordinates = {};
-    where.coordinates.lat = lat;
-    where.coordinates.lng = lng;
-    this.props.fieldProp(this.props.name, { where });
-  }
-
-  toggleManual() {
-    if (!this.state.manual) {
+  toggleManual(open) {
+    if (open) {
       this.props.fieldProp('googleMaps', { value: '', error: null });
     }
-    this.setState({ manual: this.state.manual ? false : true });
+    this.setState({ manual: open ? true : false });
   }
 
   setWhereManualFields(closeModal = false) {
@@ -70,7 +71,37 @@ class WhereFieldForm extends Component {
         this.geocodeCallback
       );
     }
-    if (closeModal) this.props.toggleModal(this.props.modalID, false);
+    //if (closeModal) this.props.toggleModal(this.props.modalID, false);
+  }
+
+  geocodeCallback(results, status) {
+    let lat, lng;
+    console.log(results, status);
+    if (status === google.maps.GeocoderStatus.OK && results.length > 0) {
+      const location = results[0].geometry.location;
+      lat = location.lat();
+      lng = location.lng();
+    }
+    const where = this.props.field.where;
+    if (!has(where, 'coordinate')) where.coordinates = {};
+    where.coordinates.lat = lat;
+    where.coordinates.long = lng;
+    this.props.fieldProp(this.props.name, { where });
+    this.drawMap(lat, lng);
+  }
+
+  drawMap(lat, lng) {
+    const myLatLng = new google.maps.LatLng(lat, lng);
+    const map = new google.maps.Map(this.mapRef.current, {
+      zoom: 12,
+      center: myLatLng
+    });
+    const marker = new google.maps.Marker({
+      position: myLatLng,
+      title: 'Event Location (Approximate)'
+    });
+    marker.setMap(map);
+    this.setState({ map: true });
   }
 
   render() {
@@ -82,9 +113,17 @@ class WhereFieldForm extends Component {
     return (
         <div className={`modalFormContainer where-group`}>
           <h2 className='center'>{this.props.label}</h2>
-          <GooglePlacesField {...this.props } id={'autocomplete'} manual={this.state.manual} />
+          <AnimateHeight
+            duration={500}
+            height={this.state.map ? 'auto' : 0}
+          >
+            <div className='flexCenter'>
+              <div style={{ width: 300, height: 300 }} ref={this.mapRef}></div>
+            </div>
+          </AnimateHeight>
+          <GooglePlacesField {...this.props } toggleManual={this.toggleManual} drawMap={this.drawMap} id={'autocomplete'} manual={this.state.manual} />
           <div style={{ marginTop: 20 }}>
-            <GBLink className='link manualLink' onClick={this.toggleManual}>Manually enter address <span className={`icon icon-${this.state.manual ? 'chevron-down' : 'chevron-right'}`}></span></GBLink>
+            <GBLink className='link manualLink' onClick={() => this.toggleManual(this.state.manual ? false : true)}>Manually enter address <span className={`icon icon-${this.state.manual ? 'chevron-down' : 'chevron-right'}`}></span></GBLink>
             <AnimateHeight
               duration={500}
               height={this.state.manual ? 'auto' : 0}
@@ -196,7 +235,7 @@ class WhereField extends Component {
 WhereField.defaultProps = {
   name: 'defaultWhereField',
   modalLabel: 'Open Where Modal',
-  manualLabel: 'Update'
+  manualLabel: 'Update Map'
 }
 
 export default WhereField;

@@ -86,7 +86,7 @@ class GooglePlacesField extends Component {
     this.formatAddress(googleMaps);
     this.resetValues(returned, googleMaps);
     this.setState({edit: false});
-    this.props.toggleModal(this.props.modalID, false);
+    //this.props.toggleModal(this.props.modalID, false);
 	}
 
 
@@ -96,6 +96,8 @@ class GooglePlacesField extends Component {
 		const state = data.administrative_area_level_1;
 		const zip = data.postal_code;
 		const country = data.country;
+    const lat = data.lat;
+    const long = data.long;
 
     let value = `${address}${city ? ` ${city},`: ''}${state ? ` ${state}` : ''}${zip ? ` ${zip}` : ''}`;
     if (!data.locality && !this.state.edit) value = '';
@@ -106,10 +108,11 @@ class GooglePlacesField extends Component {
       zip: zip,
       country: country,
       coordinates: {
-        lat: data.lat,
-        long: data.long
+        lat: lat,
+        long: long
       }
     };
+    this.props.drawMap(lat, long);
     this.props.fieldProp('googleMaps', { value, googleMaps: data });
     this.props.fieldProp(this.props.name, { value, where });
     return value;
@@ -144,6 +147,7 @@ class GooglePlacesField extends Component {
   }
 
   onFocus(name, field) {
+    this.props.toggleManual(false);
     this.initAutocomplete(field.ref);
     this.geolocate();
   }

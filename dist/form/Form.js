@@ -940,8 +940,7 @@ class Form extends Component {
       maxLength: 128,
       googleMaps: {},
       where: {},
-      fixedLabel: true,
-      useChildren: true
+      fixedLabel: true
     }, opts);
     return React.createElement(WhereField, {
       name: name,
