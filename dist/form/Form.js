@@ -13,6 +13,7 @@ import * as _v from './formValidate';
 import Loader from '../common/Loader';
 import { Alert } from '../common/Alert';
 import { cloneObj, isEmpty, numberWithCommas, stripHtml } from '../common/utility';
+import { toggleModal } from '../api/actions';
 import has from 'has';
 
 class Form extends Component {
@@ -494,6 +495,7 @@ class Form extends Component {
     e.preventDefault();
     const name = e.target.name;
     const field = this.state.fields[name];
+    if (field.onFocus) field.onFocus(name, field);
     if (field.debug) console.log('onFocus', name, field);
   }
 
@@ -765,6 +767,7 @@ class Form extends Component {
 
     maxLength = maxLength || params.maxLength;
     return React.createElement(TextField, {
+      id: params.id,
       name: name,
       className: params.className,
       label: params.label,
@@ -935,23 +938,21 @@ class Form extends Component {
       className: '',
       type: 'text',
       maxLength: 128,
-      id: 'autocomplete',
       googleMaps: {},
       where: {},
-      label: 'Google Maps Address',
-      placeholder: 'Enter full address',
       fixedLabel: true,
-      useChildren: true,
-      validate: 'googleMaps'
+      useChildren: true
     }, opts);
     return React.createElement(WhereField, {
-      id: params.id,
       name: name,
       className: params.className,
       label: params.label,
       fixedLabel: params.fixedLabel,
       style: params.style,
       placeholder: field ? field.placeholder : params.placeholder,
+      modalLabel: params.modalLabel,
+      modalID: params.modalID || 'defaultWhereField',
+      manualLabel: params.manualLabel,
       type: field ? field.type : params.type,
       required: field ? field.required : params.required,
       group: field ? field.group : params.group,
@@ -970,7 +971,9 @@ class Form extends Component {
       fieldProp: this.fieldProp,
       dropdown: this.dropdown,
       field: field,
-      textField: this.textField
+      fields: this.state.fields,
+      textField: this.textField,
+      toggleModal: this.props.toggleModal
     });
   }
 
@@ -1290,7 +1293,8 @@ class Form extends Component {
       errorAlert: this.errorAlert,
       successAlert: this.successAlert,
       name: this.props.name,
-      onChangeDropdown: this.onChangeDropdown
+      onChangeDropdown: this.onChangeDropdown,
+      toggleModal: this.props.toggleModal
     }));
     return childrenWithProps;
   }
@@ -1310,7 +1314,14 @@ class Form extends Component {
       className: `${id} ${className || ''}`,
       onSubmit: this.validateForm,
       noValidate: true
-    }, this.props.showLoader === 'display' && this.props.isSending && React.createElement(Loader, {
+    }, React.createElement("input", {
+      autoComplete: "false",
+      name: "hidden",
+      type: "text",
+      style: {
+        display: 'none'
+      }
+    }), this.props.showLoader === 'display' && this.props.isSending && React.createElement(Loader, {
       msg: 'Sending data'
     }), errorMsg && this.errorAlert(), successMsg && this.successAlert(), this.renderChildren());
   }
@@ -1337,4 +1348,6 @@ function mapStateToProps(state, props) {
   };
 }
 
-export default connect(mapStateToProps, {})(Form);
+export default connect(mapStateToProps, {
+  toggleModal
+})(Form);

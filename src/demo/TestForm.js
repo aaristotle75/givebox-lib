@@ -55,7 +55,11 @@ export default class TestForm extends Component {
       city: 'Venice',
       state: 'CA',
       zip: '90291',
-      country: 'USA'
+      country: 'USA',
+      coordinates: {
+        lat: 123.12223,
+        lng: 44.1242
+      }
     }
 
     return (

@@ -23,10 +23,6 @@ class WhereFieldForm extends Component {
     }
   }
 
-  componentDidMount() {
-    //this.geocode = new google.maps.Geocoder();
-  }
-
   componentWillUnmount() {
     if (this.state.manual) this.setWhereManualFields();
   }
@@ -79,6 +75,10 @@ class WhereFieldForm extends Component {
 
   render() {
 
+    const {
+      where
+    } = this.props;
+
     return (
         <div className={`modalFormContainer where-group`}>
           <h2 className='center'>{this.props.label}</h2>
@@ -90,11 +90,11 @@ class WhereFieldForm extends Component {
               height={this.state.manual ? 'auto' : 0}
             >
               <div className='where-manual-container'>
-                {this.props.textField('address', { parent: 'where', label: 'Address', placeholder: 'Enter Address' })}
+                {this.props.textField('address', { parent: 'where', label: 'Address', placeholder: 'Enter Address', value: util.getValue(where, 'address') })}
                 <div className='cityStateZip'>
-                  <div className='part city'>{this.props.textField('city', { parent: 'where', label: 'City', placeholder: 'Enter City' })}</div>
-                  <div className='part state'>{this.props.dropdown('state', { parent: 'where', direction: 'top', label: 'State', options: selectOptions.states })}</div>
-                  <div className='part zip'>{this.props.textField('zip', { parent: 'where', label: 'Zip', placeholder: 'Enter Zip', maxLength: 10 })}</div>
+                  <div className='part city'>{this.props.textField('city', { parent: 'where', label: 'City', placeholder: 'Enter City', value: util.getValue(where, 'city')})}</div>
+                  <div className='part state'>{this.props.dropdown('state', { parent: 'where', direction: 'top', label: 'State', options: selectOptions.states, value: util.getValue(where, 'state') })}</div>
+                  <div className='part zip'>{this.props.textField('zip', { parent: 'where', label: 'Zip', placeholder: 'Enter Zip', maxLength: 10, value: util.getValue(where, 'zip') })}</div>
                 </div>
                 <div className='center button-group'>
                   <GBLink style={{ marginTop: 20 }} className='button' onClick={() => this.setWhereManualFields(true)}>{this.props.manualLabel}</GBLink>
@@ -122,8 +122,17 @@ class WhereField extends Component {
   }
 
   componentDidMount() {
+    const where = util.getValue(this.props.params, 'where', {});
+    const address = util.getValue(where, 'address', '');
+    const city = util.getValue(where, 'city', '');
+    const state = util.getValue(where, 'state', '');
+    const zip = util.getValue(where, 'zip', '');
+    const whereValue = `${address}${city ? ` ${city},`: ''}${state ? ` ${state}` : ''}${zip ? ` ${zip}` : ''}`;
     if (this.props.createField) {
-      this.props.createField(this.props.name, this.props.params);
+      let params = util.cloneObj(this.props.params);
+      let value = whereValue || '';
+      params = Object.assign(params, { value });
+      this.props.createField(this.props.name, params);
     }
   }
 
@@ -138,8 +147,9 @@ class WhereField extends Component {
   }
 
   renderForm() {
+    const where = this.props.field ? util.getValue(this.props.field, 'where', {}) : {};
     return (
-      <WhereFieldForm {...this.props } />
+      <WhereFieldForm {...this.props } where={where} />
     )
   }
 

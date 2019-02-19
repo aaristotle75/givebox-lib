@@ -827,6 +827,21 @@ label.idle, .label.idle {
 }
 
 /*-------- WHERE -----------*/
+.pac-container {
+  z-index: 99999999;
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+.pac-item {
+  cursor: pointer;
+}
+
+.pac-item:hover {
+  background: $mainColor;
+  color: $white;
+}
+
 .where-group {
   .input-group {
     padding-bottom: 5px;

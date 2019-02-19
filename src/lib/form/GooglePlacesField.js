@@ -97,7 +97,7 @@ class GooglePlacesField extends Component {
 		const zip = data.postal_code;
 		const country = data.country;
 
-    let value = `${address}${city ? ` ${city},`: ''}${state ? ` ${state}` : ''}${zip ? ` ${zip}` : ''}${country ? ` ${country}` : ''}`;
+    let value = `${address}${city ? ` ${city},`: ''}${state ? ` ${state}` : ''}${zip ? ` ${zip}` : ''}`;
     if (!data.locality && !this.state.edit) value = '';
     const where = {
       address: address,
