@@ -37,15 +37,9 @@ export default class Dashboard extends Component {
 
   render() {
 
-    const {
-      display,
-      msg
-    } = this.state;
-
     return (
       <div>
         Dashboard
-        <Alert alert='warning' display={display} msg={msg} closeBtn={true} />
         <Form name='testForm'>
           <TestForm />
         </Form>

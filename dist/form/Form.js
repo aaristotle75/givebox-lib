@@ -8,6 +8,7 @@ import RichTextField from './RichTextField';
 import ModalField from './ModalField';
 import CreditCard from './CreditCard';
 import CalendarField from './CalendarField';
+import WhereField from './WhereField';
 import * as _v from './formValidate';
 import Loader from '../common/Loader';
 import { Alert } from '../common/Alert';
@@ -26,6 +27,7 @@ class Form extends Component {
     this.onChangeRadio = this.onChangeRadio.bind(this);
     this.onChangeRichText = this.onChangeRichText.bind(this);
     this.onChangeCreditCard = this.onChangeCreditCard.bind(this);
+    this.onChangeWhere = this.onChangeWhere.bind(this);
     this.onBlur = this.onBlur.bind(this);
     this.onFocus = this.onFocus.bind(this);
     this.validateForm = this.validateForm.bind(this);
@@ -39,6 +41,7 @@ class Form extends Component {
     this.modalField = this.modalField.bind(this);
     this.creditCard = this.creditCard.bind(this);
     this.creditCardGroup = this.creditCardGroup.bind(this);
+    this.whereField = this.whereField.bind(this);
     this.createField = this.createField.bind(this);
     this.createRadioField = this.createRadioField.bind(this);
     this.fieldProp = this.fieldProp.bind(this);
@@ -289,6 +292,26 @@ class Form extends Component {
       }
 
       if (field.debug) console.log('onChangeCalendar', name, field);
+    }
+  }
+
+  onChangeWhere(e) {
+    e.preventDefault();
+    const name = e.target.name;
+    const field = has(this.state.fields, name) ? this.state.fields[name] : null;
+
+    if (field) {
+      let value = e.target.value;
+      this.fieldProp(name, {
+        value: value,
+        error: false
+      });
+      this.formProp({
+        error: false,
+        updated: true
+      });
+      if (field.onChange) field.onChange(name, value, field, this.state.fields);
+      if (field.debug) console.log('onChange', name, field);
     }
   }
 
@@ -906,6 +929,51 @@ class Form extends Component {
     }));
   }
 
+  whereField(name, opts) {
+    const field = has(this.state.fields, name) ? this.state.fields[name] : null;
+    const params = Object.assign({}, cloneObj(this.defaults), {
+      className: '',
+      type: 'text',
+      maxLength: 128,
+      id: 'autocomplete',
+      googleMaps: {},
+      where: {},
+      label: 'Google Maps Address',
+      placeholder: 'Enter full address',
+      fixedLabel: true,
+      useChildren: true,
+      validate: 'googleMaps'
+    }, opts);
+    return React.createElement(WhereField, {
+      id: params.id,
+      name: name,
+      className: params.className,
+      label: params.label,
+      fixedLabel: params.fixedLabel,
+      style: params.style,
+      placeholder: field ? field.placeholder : params.placeholder,
+      type: field ? field.type : params.type,
+      required: field ? field.required : params.required,
+      group: field ? field.group : params.group,
+      readOnly: field ? field.readOnly : params.readOnly,
+      autoFocus: field ? field.autoFocus : params.autoFocus,
+      onChange: this.onChangeWhere,
+      onBlur: this.onBlur,
+      onFocus: this.onFocus,
+      value: field ? field.value : params.value,
+      error: field ? field.error : params.error,
+      errorType: params.errorType,
+      maxLength: params.maxLength,
+      createField: this.createField,
+      params: params,
+      meta: params.meta,
+      fieldProp: this.fieldProp,
+      dropdown: this.dropdown,
+      field: field,
+      textField: this.textField
+    });
+  }
+
   checkForErrors(fields, group) {
     let error = false;
     Object.entries(fields).forEach(([key, value]) => {
@@ -1173,6 +1241,25 @@ class Form extends Component {
           error: _v.msgs.creditCard
         });
         break;
+
+      case 'googleMaps':
+        let locationError = false;
+
+        if (value && field) {
+          if (has(field, 'googleMaps')) {
+            if (isEmpty(field.googleMaps)) locationError = true;
+          } else {
+            locationError = true;
+          }
+
+          if (locationError) {
+            this.fieldProp(key, {
+              error: 'Google maps could not find address. Please try again or manually enter address.'
+            });
+          }
+        }
+
+        break;
       // no default
     }
   }
@@ -1188,6 +1275,7 @@ class Form extends Component {
       getErrors: this.getErrors,
       formState: this.state,
       textField: this.textField,
+      whereField: this.whereField,
       uploadField: this.uploadField,
       richText: this.richText,
       modalField: this.modalField,

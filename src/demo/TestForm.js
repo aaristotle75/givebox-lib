@@ -50,11 +50,19 @@ export default class TestForm extends Component {
 
     const customLink = <GBLink className='link'>Test</GBLink>;
 
+    const where = {
+      address: '2010 Canal St',
+      city: 'Venice',
+      state: 'CA',
+      zip: '90291',
+      country: 'USA'
+    }
+
     return (
       <div>
         <h2>Form Elements</h2>
         <div className='formWrapper'>
-        {this.props.whereField('where')}
+        {this.props.whereField('where', { where: where, label: 'Where is the event', modalLabel: 'Add location', manualLabel: 'Close' })}
         {/*
         {this.props.calendarField('dob', { label: 'Date of Birth', enableTime: false, enableTimeOption: true, required: true, validate: 'date', validateOpts: { }})}
         {this.props.calendarRange('event range', { rangeRequired: false, debug: true, enableTimeOption: true, enableTimeOptionLabel: 'Show time', range1Label: 'Event Start Date', range2Label: 'Event End Date', range1Name: 'when', range2Name: 'endsAt', range1Value: 1552006980, range1EnableTime: false, range2EnableTime: true })}

@@ -790,3 +790,97 @@ label.idle, .label.idle {
   font-weight: 500;
   color: $med-gray;
 }
+
+/*------- Disabled ------*/
+.disabled {
+
+  .input-bottom,
+  .input-bottom.active,
+  .input-bottom.idle {
+    background: $light;
+  }
+
+  label, .label,
+  label.active,
+  label.idle {
+    color: $light !important;
+  }
+
+  input {
+    color: $light !important;
+    border-bottom: 1px solid $light;
+  }
+
+  input::-webkit-input-placeholder {
+    font-size: $normal-text-size;
+    font-family: $font-family;
+    color: $light;
+  }
+  input::-moz-placeholder {
+    font-size: $normal-text-size;
+    color: $light;
+  }
+  input::-ms-input-placeholder {
+    font-size: $normal-text-size;
+    color: $light;
+  }
+}
+
+/*-------- WHERE -----------*/
+.where-group {
+  .input-group {
+    padding-bottom: 5px;
+  }
+
+  button.manualLink {
+    display: flex;
+    align-items: center;
+    margin-left: 5px;
+    .icon {
+      margin-left: 5px;
+    }
+  }
+
+  .where-manual-container {
+    padding: 10px 5px;
+    @media (max-width: 600px) {
+      padding: 10px 0;
+    }
+    .cityStateZip {
+      display: flex;
+      align-items: center;
+
+      .city { width: 40%; }
+      .state {
+        width: 40%;
+        .dropdown button {
+          margin-top: 5px;
+          padding-top: 5px;
+          padding-bottom: 5px;
+        }
+        .dropdown label {
+          margin-top: -5px;
+        }
+      }
+      .zip { width: 20%; }
+      @media (max-width: 600px) {
+        display: flex;
+        flex-direction: column;
+        .city { width: 100%; }
+        .state {
+          width: 100%;
+          .dropdown button {
+            margin-top: 5px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+          }
+          .dropdown label {
+            margin-top: -5px;
+          }
+        }
+        .zip { width: 100%; }
+      }
+    }
+  }
+
+}

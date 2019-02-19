@@ -105,6 +105,7 @@ class CalendarField extends Component {
 
     const {
       name,
+      className,
       style,
       allowInput,
       inline,
@@ -136,6 +137,7 @@ class CalendarField extends Component {
 
     return (
       <Flatpickr
+        className={`${enableTimeOption ? 'enableTimeOption' : ''} ${className || ''}`}
         ref={this.inputRef}
         value={date}
         onChange={this.onChange}

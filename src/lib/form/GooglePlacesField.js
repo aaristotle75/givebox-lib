@@ -6,14 +6,11 @@ class GooglePlacesField extends Component {
   constructor(props) {
     super(props);
     this.fillInAddress = this.fillInAddress.bind(this);
-    this.onFocus = this.onFocus.bind(this);
-    this.onBlur = this.onBlur.bind(this);
     this.geolocate = this.geolocate.bind(this);
     this.resetValues = this.resetValues.bind(this);
     this.clearInput = this.clearInput.bind(this);
-    this.onChange = this.onChange.bind(this);
     this.formatAddress = this.formatAddress.bind(this);
-    this.inputRef = React.createRef();
+    this.onFocus = this.onFocus.bind(this);
 		this.autocomplete = null;
     this.state = {
       status: 'idle',
@@ -22,18 +19,18 @@ class GooglePlacesField extends Component {
   }
 
   componentDidMount() {
-    this.initAutocomplete();
-    const params = Object.assign({}, this.props.params, { ref: this.inputRef });
-    if (this.props.createField) this.props.createField(this.props.name, params);
   }
 
-  initAutocomplete() {
+  initAutocomplete(ref) {
+    this.inputRef = ref;
+
 		// Create the autocomplete object, restricting the search to geographical
 		// location types.
 		this.autocomplete = new google.maps.places.Autocomplete(
-				/** @type {!HTMLInputElement} */(document.getElementById(this.props.id)),
+				/** @type {!HTMLInputElement} */(this.inputRef.current),
 				{types: ['geocode']});
 
+    this.inputRef.current.setAttribute('autocomplete', 'new-password');
 		// When the user selects an address from the dropdown, populate the address
 		// fields in the form.
 		this.autocomplete.addListener('place_changed', this.fillInAddress);
@@ -62,10 +59,6 @@ class GooglePlacesField extends Component {
 		}
 	}
 
-  onChange(e) {
-    this.props.onChange(e);
-  }
-
 	fillInAddress() {
     const returned = [];
     const googleMaps = {};
@@ -93,6 +86,7 @@ class GooglePlacesField extends Component {
     this.formatAddress(googleMaps);
     this.resetValues(returned, googleMaps);
     this.setState({edit: false});
+    this.props.toggleModal(this.props.modalID, false);
 	}
 
 
@@ -116,8 +110,8 @@ class GooglePlacesField extends Component {
         long: data.long
       }
     };
-    this.props.fieldProp(this.props.name, { value, readOnly: true, googleMaps: data, where });
-    this.props.setWhereManualFields(where);
+    this.props.fieldProp('googleMaps', { value, googleMaps: data });
+    this.props.fieldProp(this.props.name, { value, where });
     return value;
 	}
 
@@ -141,89 +135,31 @@ class GooglePlacesField extends Component {
     if (array.indexOf('postal_code') === -1) {
       googleMaps.postal_code = '';
     }
-    this.props.fieldProp(this.props.name, { googleMaps });
+    this.props.fieldProp('googleMaps', { googleMaps });
   }
 
   clearInput() {
-    this.props.fieldProp(this.props.name, { value: '', readOnly: false, googleMaps: {}, where: {} });
+    this.props.fieldProp('googleMaps', { value: '', readOnly: false, googleMaps: {} });
     this.setState({ edit: true });
   }
 
-  onFocus(e) {
-    e.preventDefault();
-    this.setState({status: 'active'});
+  onFocus(name, field) {
+    this.initAutocomplete(field.ref);
     this.geolocate();
-    if (this.props.onFocus) this.props.onFocus(e);
-  }
-
-  onBlur(e) {
-    e.preventDefault();
-    this.setState({status: 'idle'});
-    if (this.props.onBlur) this.props.onBlur(e);
   }
 
   render() {
 
-    const {
-      id,
-      name,
-      type,
-      placeholder,
-      autoFocus,
-      required,
-      readOnly,
-      style,
-      label,
-      fixedLabel,
-      className,
-      error,
-      errorType,
-      maxLength,
-      value,
-      iconClear,
-      manual
-    } = this.props;
-
     return (
-        <div style={style} className={`input-group ${className || ''} ${manual ? 'disabled' : ''} textfield-group ${error ? 'error tooltip' : ''} ${type === 'hidden' && 'hidden'}`}>
-          <div className={`floating-label ${this.state.status} ${fixedLabel && 'fixed'}`}>
-            <input
-              autoFocus={autoFocus}
-              id={id || name}
-              ref={this.inputRef}
-              name={name}
-              type={type}
-              placeholder={placeholder}
-              required={type === 'hidden' ? false : required}
-              readOnly={readOnly}
-              onChange={this.onChange}
-              onBlur={this.onBlur}
-              onFocus={this.onFocus}
-              autoComplete='new-password'
-              value={value}
-              maxLength={maxLength}
-            />
-            {label && <label htmlFor={name}>{label}</label>}
-            <div className={`input-bottom ${error ? 'error' : this.state.status}`}></div>
-            <div className='input-button'>
-              <button className={`link ${this.state.edit && 'displayNone'}`} onClick={this.clearInput} type='button'>{iconClear}</button>
-            </div>
-          </div>
-          <div className={`tooltipTop ${(errorType !=='tooltip') && 'displayNone'}`}>
-            {error}
-            <i></i>
-          </div>
-          <div className={`errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`}>{error}</div>
-        </div>
+      <div className='googleMapFields'>
+        {this.props.textField('googleMaps', { onFocus: this.onFocus, id: this.props.id, placeholder: 'Enter location', fixedLabel: true, label: 'Search google maps', maxLength: 128 })}
+      </div>
     );
   }
 }
 
 GooglePlacesField.defaultProps = {
-  name: 'defaultWhereField',
-  type: 'text',
-  maxlength: 128,
-  iconClear: <span className='icon icon-x'></span>
+  id: 'autocomplete'
 }
 
 export default GooglePlacesField;
