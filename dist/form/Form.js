@@ -691,7 +691,8 @@ class Form extends Component {
       direction: params.direction,
       multi: field ? field.multi : params.multi,
       multiCloseLabel: params.multiCloseLabel,
-      multiCloseCallback: params.multiCloseCallback
+      multiCloseCallback: params.multiCloseCallback,
+      fieldProp: this.fieldProp
     });
   }
 

@@ -14,12 +14,15 @@ class Dropdown extends Component {
     this.openMenu = this.openMenu.bind(this);
     this.onClick = this.onClick.bind(this);
     this.setSelected = this.setSelected.bind(this);
+    this.onMouseEnter = this.onMouseEnter.bind(this);
+    this.onMouseLeave = this.onMouseLeave.bind(this);
     this.state = {
       open: false,
       display: false,
       selected: '',
       value: '',
-      direction: ''
+      direction: '',
+      status: 'idle'
     };
     this.dropdownRef = React.createRef();
   }
@@ -44,6 +47,33 @@ class Dropdown extends Component {
         this.setState({
           value: init.value,
           selected: init.primaryText
+        });
+      } else {
+        this.setState({
+          value: this.props.options[0].value,
+          selected: this.props.options[0].primaryText
+        });
+      }
+    }
+
+    if (util.getValue(prevProps.params, 'value') !== util.getValue(this.props.params, 'value')) {
+      let init = lookup(this.props.options, 'value', this.props.params.value);
+
+      if (!isEmpty(init)) {
+        this.setState({
+          value: init.value,
+          selected: init.primaryText
+        });
+        this.props.fieldProp(this.props.name, {
+          value: init.value
+        });
+      }
+    }
+
+    if (Array.isArray(this.props.value)) {
+      if (!util.equals(prevProps.value, this.props.value)) {
+        this.setState({
+          value: this.props.value
         });
       }
     }
@@ -137,6 +167,20 @@ class Dropdown extends Component {
     return items ? items : React.createElement("option", null, "None");
   }
 
+  onMouseEnter(e) {
+    e.preventDefault();
+    if (!this.props.error) this.setState({
+      status: 'active'
+    });
+  }
+
+  onMouseLeave(e) {
+    e.preventDefault();
+    this.setState({
+      status: 'idle'
+    });
+  }
+
   render() {
     const {
       label,
@@ -176,11 +220,13 @@ class Dropdown extends Component {
       onClick: this.closeMenu,
       className: `dropdown-cover ${display ? '' : 'displayNone'}`
     })), React.createElement("div", {
-      className: `dropdown ${floatingLabel && 'floating-label'} ${label ? 'fixed' : ''}`,
+      className: `dropdown ${floatingLabel && 'floating-label'} ${this.state.status} ${label ? 'fixed' : ''}`,
       style: dropdownStyle
     }, label && !floatingLabel && React.createElement("label", null, React.createElement(GBLink, {
       onClick: open ? this.closeMenu : this.openMenu
     }, label)), React.createElement("button", {
+      onMouseEnter: this.onMouseEnter,
+      onMouseLeave: this.onMouseLeave,
       type: "button",
       onClick: open ? this.closeMenu : this.openMenu
     }, React.createElement("span", {

@@ -23,7 +23,6 @@ export function validateNumber(value, min, max, decimal = true) {
       validate = false;
     }
   }
-  console.log('validateNumber', value, min, max, decimal, validate);
   return validate;
 }
 

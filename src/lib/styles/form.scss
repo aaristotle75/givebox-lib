@@ -366,6 +366,14 @@ label.idle, .label.idle {
     margin: 0;
   }
 
+  button:hover:not(.label) {
+    @include default-transition(.25s);
+    border-bottom: 1px solid $mainColor;
+    .label {
+      color: $mainColor !important;
+    }
+  }
+
   label {
     button {
       border-bottom: none;
@@ -445,6 +453,14 @@ label.idle, .label.idle {
     color: $primary;
   }
 
+}
+
+.dropdown.active {
+    .icon,
+    button.label {
+      border: 0 !important;
+      color: $mainColor !important;
+    }
 }
 
 /*----------- Max Records Dropdown -------------*/

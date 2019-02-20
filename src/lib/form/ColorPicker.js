@@ -82,7 +82,7 @@ class ColorPicker extends Component {
         head: {
           background: '#fff',
           backgroundImage: 'none',
-          fontSize: '1.3em',
+          fontSize: '1.5em',
           fontWeight: 300,
           border: 0,
           marginBottom: 20,
@@ -103,7 +103,7 @@ class ColorPicker extends Component {
     ;
     if (this.props.modal) {
       item.push(
-        <div key={'colorPicker'} className='modalFormContainer'>
+        <div key={'colorPicker'} className='modalWrapper'>
           <div className='flexCenter'>
             {picker}
           </div>

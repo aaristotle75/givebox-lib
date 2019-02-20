@@ -27,7 +27,6 @@ export function validateNumber(value, min, max, decimal = true) {
     }
   }
 
-  console.log('validateNumber', value, min, max, decimal, validate);
   return validate;
 }
 export const nLength = n => {

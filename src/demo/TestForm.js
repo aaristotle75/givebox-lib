@@ -66,8 +66,19 @@ export default class TestForm extends Component {
       <div>
         <h2>Form Elements</h2>
         <div className='formWrapper'>
-        {this.props.colorPicker('primaryColor', { label: 'Pick a theme color' })}
+        {this.props.dropdown('recurringDefaultInterval', {
+          options: [
+            { primaryText: 'None', value: 'once' },
+            { primaryText: 'Monthly', value: 'monthly' },
+            { primaryText: 'Quarterly', value: 'quarterly' },
+            { primaryText: 'Yearly', value: 'annually' }
+          ],
+          label: 'Default Recurring Option',
+          selectLabel: 'Select the Default Recurring Option offered',
+          className: 'recurringOption'
+        })}
         {/*
+        {this.props.colorPicker('primaryColor', { label: 'Pick a theme color' })}
         {this.props.whereField('where', { where: where, label: 'Where is the event', modalLabel: 'Add location' })}
         {this.props.calendarField('dob', { label: 'Date of Birth', enableTime: false, enableTimeOption: true, required: true, validate: 'date', validateOpts: { }})}
         {this.props.calendarRange('event range', { rangeRequired: false, debug: true, enableTimeOption: true, enableTimeOptionLabel: 'Show time', range1Label: 'Event Start Date', range2Label: 'Event End Date', range1Name: 'when', range2Name: 'endsAt', range1Value: 1552006980, range1EnableTime: false, range2EnableTime: true })}

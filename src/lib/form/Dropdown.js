@@ -15,12 +15,15 @@ class Dropdown extends Component {
     this.openMenu = this.openMenu.bind(this);
     this.onClick = this.onClick.bind(this);
     this.setSelected = this.setSelected.bind(this);
+    this.onMouseEnter = this.onMouseEnter.bind(this);
+    this.onMouseLeave = this.onMouseLeave.bind(this);
     this.state = {
       open: false,
       display: false,
       selected: '',
       value: '',
-      direction: ''
+      direction: '',
+      status: 'idle'
     }
     this.dropdownRef = React.createRef();
   }
@@ -43,6 +46,30 @@ class Dropdown extends Component {
         this.setState({
           value: init.value,
           selected: init.primaryText
+        });
+      } else {
+        this.setState({
+          value: this.props.options[0].value,
+          selected: this.props.options[0].primaryText
+        });
+      }
+    }
+
+    if (util.getValue(prevProps.params, 'value') !== util.getValue(this.props.params, 'value')) {
+      let init = lookup(this.props.options, 'value', this.props.params.value);
+      if (!isEmpty(init)) {
+        this.setState({
+          value: init.value,
+          selected: init.primaryText
+        });
+        this.props.fieldProp(this.props.name, { value: init.value });
+      }
+    }
+
+    if (Array.isArray(this.props.value)) {
+      if (!util.equals(prevProps.value, this.props.value)) {
+        this.setState({
+          value: this.props.value
         });
       }
     }
@@ -116,6 +143,16 @@ class Dropdown extends Component {
     return items ? items : <option>None</option>;
   }
 
+  onMouseEnter(e) {
+    e.preventDefault();
+    if (!this.props.error) this.setState({status: 'active'});
+  }
+
+  onMouseLeave(e) {
+    e.preventDefault();
+    this.setState({status: 'idle'});
+  }
+
   render() {
 
     const {
@@ -154,9 +191,9 @@ class Dropdown extends Component {
         <Fade in={open && overlay} duration={overlayDuration}>
           <div onClick={this.closeMenu} className={`dropdown-cover ${display ? '' : 'displayNone'}`}></div>
         </Fade>
-        <div className={`dropdown ${floatingLabel && 'floating-label'} ${label ? 'fixed' : ''}`} style={dropdownStyle}>
+        <div className={`dropdown ${floatingLabel && 'floating-label'} ${this.state.status} ${label ? 'fixed' : ''}`} style={dropdownStyle}>
           {label && !floatingLabel && <label><GBLink onClick={open ? this.closeMenu : this.openMenu}>{label}</GBLink></label>}
-          <button type='button' onClick={open ? this.closeMenu : this.openMenu}><span className={`label ${idleLabel && 'idle'}`}>{selectedValue}</span>{open ? multi ? iconMultiClose : iconOpened : iconClosed}</button>
+          <button onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} type='button' onClick={open ? this.closeMenu : this.openMenu}><span className={`label ${idleLabel && 'idle'}`}>{selectedValue}</span>{open ? multi ? iconMultiClose : iconOpened : iconClosed}</button>
           <div ref={this.dropdownRef} style={contentStyle} className={`${open ? 'opened' : ''} dropdown-content ${this.props.direction || direction}`}>
             <AnimateHeight
               duration={200}

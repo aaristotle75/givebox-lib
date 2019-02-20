@@ -539,6 +539,7 @@ class Form extends Component {
     }, opts);
 
     const defaultValue = field ? field.value : params.value;
+
     return (
       <Dropdown
         name={name}
@@ -565,6 +566,7 @@ class Form extends Component {
         multi={field ? field.multi : params.multi}
         multiCloseLabel={params.multiCloseLabel}
         multiCloseCallback={params.multiCloseCallback}
+        fieldProp={this.fieldProp}
       />
     )
   }
