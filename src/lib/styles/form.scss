@@ -899,3 +899,24 @@ label.idle, .label.idle {
   }
 
 }
+
+.photoshop-picker {
+  width: 100% !important;
+  background: $white !important;
+  box-shadow: none !important;
+}
+
+.photoshop-picker div:first-of-type {
+}
+
+.colorPickerLabel {
+  display: flex;
+  align-items: center;
+}
+
+.colorPickerExample {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
