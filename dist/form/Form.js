@@ -9,6 +9,7 @@ import ModalField from './ModalField';
 import CreditCard from './CreditCard';
 import CalendarField from './CalendarField';
 import WhereField from './WhereField';
+import ColorPicker from './ColorPicker';
 import * as _v from './formValidate';
 import Loader from '../common/Loader';
 import { Alert } from '../common/Alert';
@@ -43,6 +44,7 @@ class Form extends Component {
     this.creditCard = this.creditCard.bind(this);
     this.creditCardGroup = this.creditCardGroup.bind(this);
     this.whereField = this.whereField.bind(this);
+    this.colorPicker = this.colorPicker.bind(this);
     this.createField = this.createField.bind(this);
     this.createRadioField = this.createRadioField.bind(this);
     this.fieldProp = this.fieldProp.bind(this);
@@ -976,6 +978,35 @@ class Form extends Component {
     });
   }
 
+  colorPicker(name, opts) {
+    const field = has(this.state.fields, name) ? this.state.fields[name] : null;
+    const params = Object.assign({}, cloneObj(this.defaults), {
+      className: '',
+      fixedLabel: true
+    }, opts);
+    return React.createElement(ColorPicker, {
+      name: name,
+      className: params.className,
+      fixedLabel: params.fixedLabel,
+      label: params.label,
+      style: params.style,
+      required: field ? field.required : params.required,
+      group: field ? field.group : params.group,
+      onChange: this.onChange,
+      saveCallback: params.saveCallback || null,
+      onBlur: this.onBlur,
+      onFocus: this.onFocus,
+      value: field ? field.value : params.value,
+      error: field ? field.error : params.error,
+      errorType: params.errorType,
+      createField: this.createField,
+      fieldProp: this.fieldProp,
+      clear: field ? field.clear : null,
+      params: params,
+      toggleModal: this.props.toggleModal
+    });
+  }
+
   checkForErrors(fields, group) {
     let error = false;
     Object.entries(fields).forEach(([key, value]) => {
@@ -1279,6 +1310,7 @@ class Form extends Component {
       textField: this.textField,
       whereField: this.whereField,
       uploadField: this.uploadField,
+      colorPicker: this.colorPicker,
       richText: this.richText,
       modalField: this.modalField,
       creditCardGroup: this.creditCardGroup,

@@ -20,7 +20,7 @@ class ColorPicker extends Component {
     this.inputRef = React.createRef();
     this.state = {
       status: 'idle',
-      hex: '#45a8dc'
+      hex: this.props.value || this.props.defaultColor
     }
   }
 
@@ -61,6 +61,7 @@ class ColorPicker extends Component {
   }
 
   onCancel() {
+    this.setState({ hex: this.props.value || this.props.defaultColor });
     this.props.toggleModal(this.props.modalID, false);
   }
 
@@ -170,7 +171,8 @@ ColorPicker.defaultProps = {
   name: 'defaultColorPicker',
   modal: true,
   modalLabel: 'Select color',
-  modalID: 'colorPicker'
+  modalID: 'colorPicker',
+  defaultColor: '#45a8dc'
 }
 
 export default ColorPicker;
