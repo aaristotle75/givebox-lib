@@ -434,8 +434,9 @@ export function isFetching(resource) {
   return loading;
 }
 
-export function getDate(timestamp, format = 'MM/DD/YYYY HH:mm') {
-  return Moment.unix(timestamp).format(format);
+export function getDate(timestamp, format = 'MM/DD/YYYY HH:mm', utc = true) {
+  if (utc) return Moment.utc(Moment.unix(timestamp)).format(format);
+  else return Moment.unix(timestamp).format(format);
 }
 
 export function formatBytes(bytes,decimals) {

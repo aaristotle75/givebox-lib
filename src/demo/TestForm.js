@@ -66,6 +66,8 @@ export default class TestForm extends Component {
       <div>
         <h2>Form Elements</h2>
         <div className='formWrapper'>
+        {this.props.calendarField('dob', { label: 'Date of Birth', enableTime: false, enableTimeOption: true, required: true, validate: 'date', validateOpts: { }, utc: false })}        
+        {/*
         {this.props.dropdown('recurringDefaultInterval', {
           options: [
             { primaryText: 'None', value: 'once' },
@@ -77,7 +79,6 @@ export default class TestForm extends Component {
           selectLabel: 'Select the Default Recurring Option offered',
           className: 'recurringOption'
         })}
-        {/*
         {this.props.colorPicker('primaryColor', { label: 'Pick a theme color' })}
         {this.props.whereField('where', { where: where, label: 'Where is the event', modalLabel: 'Add location' })}
         {this.props.calendarField('dob', { label: 'Date of Birth', enableTime: false, enableTimeOption: true, required: true, validate: 'date', validateOpts: { }})}
