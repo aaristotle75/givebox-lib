@@ -91,7 +91,7 @@ class CalendarField extends Component {
 
   onChange(selectedDates, dateStr, instance) {
     const dateFormat = this.state.enableTime ? 'MM/DD/YYYY H:mm' : 'MM/DD/YYYY';
-    const ts = Moment(dateStr, dateFormat).valueOf();
+    const ts = this.props.utc ? Moment.utc(dateStr, dateFormat).valueOf() : Moment(dateStr, dateFormat).valueOf();
     this.setState({
       value: dateStr,
       date: dateStr
@@ -103,7 +103,7 @@ class CalendarField extends Component {
     const value = _v.formatDate(e.currentTarget.value, this.state.enableTime);
 
     const dateFormat = this.state.enableTime ? 'MM/DD/YYYY H:mm' : 'MM/DD/YYYY';
-    const ts = Moment(value, dateFormat).valueOf();
+    const ts = this.props.utc ? Moment.utc(value, dateFormat).valueOf() : Moment(value, dateFormat).valueOf();
     this.setState({
       value: value,
       date: value
@@ -121,7 +121,7 @@ class CalendarField extends Component {
     });
 
     if (this.state.value) {
-      const ts = Moment(this.state.date, dateFormat).valueOf();
+      const ts = this.props.utc ? Moment.utc(this.state.date, dateFormat).valueOf() : Moment(this.state.date, dateFormat).valueOf();
       const dateStr = util.getDate(ts / 1000, dateFormat);
       this.setState({
         value: dateStr
@@ -149,7 +149,8 @@ class CalendarField extends Component {
       errorType,
       icon,
       overlay,
-      overlayDuration
+      overlayDuration,
+      utc
     } = this.props;
     const {
       date,
@@ -176,7 +177,8 @@ class CalendarField extends Component {
         static: staticOption,
         clickOpens: clickOpens,
         wrap: true,
-        appendTo: modalEl
+        appendTo: modalEl,
+        utc: utc ? true : false
       }
     }, React.createElement("div", {
       id: `flatpickr-${name}`,
@@ -240,6 +242,7 @@ CalendarField.defaultProps = {
     className: "icon icon-calendar"
   }),
   overlayDuration: 200,
-  overlay: true
+  overlay: true,
+  utc: false
 };
 export default CalendarField;

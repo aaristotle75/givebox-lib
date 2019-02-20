@@ -509,7 +509,8 @@ class Form extends Component {
       enableTimeOption: false,
       reduceTS: 1000,
       fixedLabel: true,
-      rangeRequired: true
+      rangeRequired: true,
+      utc: true
     }, opts);
 
     if (field) {
@@ -540,7 +541,8 @@ class Form extends Component {
       overlay: params.overlay,
       overlayDuration: params.overlayDuration,
       dateFormat: params.dateFormat,
-      fieldProp: this.fieldProp
+      fieldProp: this.fieldProp,
+      utc: params.utc
     });
   }
 
@@ -563,7 +565,8 @@ class Form extends Component {
       colWidth: '50%',
       overlay: true,
       required: false,
-      rangeRequired: true
+      rangeRequired: true,
+      utc: true
     }, opts);
     return React.createElement("div", {
       style: params.style,
@@ -587,7 +590,8 @@ class Form extends Component {
       filter: name,
       validate: 'calendarRange',
       overlay: params.overlay,
-      overlayDuration: params.overlayDuration
+      overlayDuration: params.overlayDuration,
+      utc: params.utc
     })), React.createElement("div", {
       style: {
         width: params.colWidth
@@ -607,7 +611,8 @@ class Form extends Component {
       filter: name,
       validate: 'calendarRange',
       overlay: params.overlay,
-      overlayDuration: params.overlayDuration
+      overlayDuration: params.overlayDuration,
+      utc: params.utc
     })), React.createElement("div", {
       className: "clear"
     }));
