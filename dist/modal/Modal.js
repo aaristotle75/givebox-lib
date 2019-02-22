@@ -273,7 +273,7 @@ class Modal extends Component {
     return React.createElement("div", {
       ref: this.modalRef,
       onClick: () => this.closeModal(closeCallback),
-      id: `modalOverlay`,
+      id: `modalOverlay-${identifier}`,
       className: `modalOverlay`,
       style: prefix({ ...overlayStyle,
         ...modalOverlayStyle

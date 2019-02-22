@@ -160,7 +160,7 @@ class CalendarField extends Component {
     } = this.state;
     const dateFormat = enableTime ? 'm/d/Y H:i' : 'm/d/Y';
     const labelStyle = util.cloneObj(customLabel);
-    const modalEl = document.getElementById('modal-root');
+    const modalEl = document.getElementById('calendar-root');
     return React.createElement(Flatpickr, {
       className: `${enableTimeOption ? 'enableTimeOption' : ''} ${className || ''}`,
       ref: this.inputRef,

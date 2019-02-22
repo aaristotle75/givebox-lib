@@ -1,6 +1,7 @@
 import React from 'react';
 import Moment from 'moment';
 import has from 'has';
+import animateScrollTo from 'animated-scroll-to';
 export const imageUrlWithStyle = function (imageURL, style) {
   if (imageURL) {
     return imageURL.replace(/original$/i, style);
@@ -608,3 +609,9 @@ export const equals = function (array, array2) {
 
   return true;
 };
+export function toTop(id, ref = null) {
+  const el = ref || document.getElementById(id);
+  if (el) animateScrollTo(0, {
+    element: el
+  });
+}

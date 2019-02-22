@@ -258,7 +258,7 @@ class Modal extends Component {
       <div
         ref={this.modalRef}
         onClick={() => this.closeModal(closeCallback)}
-        id={`modalOverlay`}
+        id={`modalOverlay-${identifier}`}
         className={`modalOverlay`} style={prefix({ ...overlayStyle, ...modalOverlayStyle})}
       >
         <Waypoint
