@@ -127,6 +127,14 @@ function sendResponse(resource, response, error) {
 
 export function sendAPI(resource, endpoint, method, data, callback, reloadResource, resourcesToLoad, customName) {
   const csrf_token = document.querySelector(`meta[name='csrf_token']`) ? document.querySelector(`meta[name='csrf_token']`)['content'] === '{{ .CSRFToken }}' ? 'localhost' : document.querySelector(`meta[name='csrf_token']`)['content'] : '';
+  let msg;
+  let errorMsg = {
+    response: {
+      data: {
+        message: 'Some error occurred.'
+      }
+    }
+  };
   return (dispatch, getState) => {
     method = method.toLowerCase();
 
@@ -141,7 +149,14 @@ export function sendAPI(resource, endpoint, method, data, callback, reloadResour
           'X-CSRF-Token': csrf_token
         },
         transformResponse: data => {
-          return data ? JSON.parse(data) : '';
+          return data ? JSON.parse(data) : data;
+          /*
+          if (data.constructor === {}.constructor) {
+            return JSON.parse(data);
+          } else {
+            return data;
+          }
+          */
         }
       }).then(function (response) {
         switch (response.status) {
@@ -156,9 +171,10 @@ export function sendAPI(resource, endpoint, method, data, callback, reloadResour
             break;
 
           case 504:
-            const msg = 'Gateway timeout error occured. Please retry later.';
-            dispatch(sendResponse(resource, {}, response || msg));
-            if (callback) callback(null, response || msg);
+            msg = 'Gateway timeout error occured. Please retry later.';
+            errorMsg.response.data.message = msg;
+            dispatch(sendResponse(resource, {}, errorMsg));
+            if (callback) callback(null, errorMsg);
             break;
 
           default:
@@ -168,8 +184,12 @@ export function sendAPI(resource, endpoint, method, data, callback, reloadResour
             break;
         }
       }).catch(function (error) {
-        dispatch(sendResponse(resource, {}, error));
-        if (callback) callback(null, error);
+        let badrequest = false;
+        msg = '400 Bad Request. This is a server issue, please contact support@givebox.com or try again in a few minutes.';
+        errorMsg.response.data.message = msg;
+        if (!has(error, 'response')) badrequest = true;
+        dispatch(sendResponse(resource, {}, badrequest ? errorMsg : error));
+        if (callback) callback(null, badrequest ? errorMsg : error);
       });
     }
   };

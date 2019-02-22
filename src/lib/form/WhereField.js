@@ -92,20 +92,22 @@ class WhereFieldForm extends Component {
   }
 
   drawMap(lat, lng) {
-    this.timeout = setTimeout(() => {
-      const myLatLng = new google.maps.LatLng(lat, lng);
-      const map = new google.maps.Map(this.mapRef.current, {
-        zoom: 12,
-        center: myLatLng
-      });
-      const marker = new google.maps.Marker({
-        position: myLatLng,
-        title: 'Event Location (Approximate)'
-      });
-      marker.setMap(map);
-      this.setState({ map: true });
-      this.timeout = null;
-    }, 0);
+    if (lat && lng) {
+      this.timeout = setTimeout(() => {
+        const myLatLng = new google.maps.LatLng(lat, lng);
+        const map = new google.maps.Map(this.mapRef.current, {
+          zoom: 12,
+          center: myLatLng
+        });
+        const marker = new google.maps.Marker({
+          position: myLatLng,
+          title: 'Event Location (Approximate)'
+        });
+        marker.setMap(map);
+        this.setState({ map: true });
+        this.timeout = null;
+      }, 0);
+    }
   }
 
   render() {

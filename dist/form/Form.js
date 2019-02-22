@@ -1012,19 +1012,6 @@ class Form extends Component {
       toggleModal: this.props.toggleModal
     });
   }
-
-  checkForErrors(fields, group) {
-    let error = false;
-    Object.entries(fields).forEach(([key, value]) => {
-      if (value.group === group || value.group === 'all' || group === 'submitAll') {
-        if (value.error) error = true;
-      }
-    });
-    this.formProp({
-      error: error
-    });
-    return error;
-  }
   /**
   * Get Errors returned from the API
   * @param {object} err Error response returned
@@ -1159,6 +1146,19 @@ class Form extends Component {
     }, msg ? msg : error);
   }
 
+  checkForErrors(fields, group) {
+    let error = false;
+    Object.entries(fields).forEach(([key, value]) => {
+      if (value.group === group || value.group === 'all' || group === 'submitAll') {
+        if (value.error) error = true;
+      }
+    });
+    this.formProp({
+      error: error
+    });
+    return error;
+  }
+
   validateForm(e, callback, group = 'default', cbCallback = null) {
     if (e) e.preventDefault();
     let bindthis = this;
@@ -1177,10 +1177,13 @@ class Form extends Component {
         }
       }
     });
-    this.checkForErrors(fields, group);
+    const error = this.checkForErrors(fields, group);
 
-    if (!this.state.error) {
+    if (!error) {
       if (callback) callback(groupFields, cbCallback);
+      return true;
+    } else {
+      return false;
     }
   }
 

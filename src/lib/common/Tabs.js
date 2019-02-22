@@ -19,8 +19,8 @@ class Tabs extends Component {
   async onTabClick(key) {
     const promise = new Promise((resolve, reject) => {
       let validate = true;
-      if (this.props.callbackBefore) {
-        if (!this.props.callbackBefore(key)) validate = false;
+      if (typeof this.props.callbackBefore === 'function') {
+        validate = this.props.callbackBefore(key);
       }
       resolve(validate);
     });

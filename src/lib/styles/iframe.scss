@@ -1,0 +1,21 @@
+.iframeWrapper {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.iframeLoader {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  img {
+    width: auto !important;
+    height: auto !important;
+    min-height: auto !important;
+    min-width: auto !important;
+    border-radius: 0 !important;
+  }
+}
