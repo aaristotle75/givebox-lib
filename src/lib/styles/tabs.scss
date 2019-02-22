@@ -38,6 +38,11 @@
     color: $dark;
   }
 
+  .panelTab.disabled {
+    opacity: .4;
+    cursor: not-allowed;
+  }
+
   .panel {
     border-bottom: 1px solid transparentize($primary, .8);
   }
