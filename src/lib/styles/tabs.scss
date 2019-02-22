@@ -43,6 +43,10 @@
     cursor: not-allowed;
   }
 
+  .panelTab.disabled:hover {
+    color: $light-med-gray;
+  }
+
   .panel {
     border-bottom: 1px solid transparentize($primary, .8);
   }

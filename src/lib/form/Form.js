@@ -889,42 +889,39 @@ class Form extends Component {
   getErrors(err) {
     let error = false;
 
-    // Make sure the err has response prop before continuing
-    if (has(err, 'response')) {
 
-      // Make sure the response has data prop before continuing
-      if (has(err.response, 'data')) {
-
-        // Handle single error
-        if (has(err.response.data, 'message')) {
-          if (err.response.data.code === 'vantiv_payfac' && this.props.hideVantivErrors) {
-            // Show the hideVantivErrors message
-            this.formProp({ error: true, errorMsg: `${this.props.hideVantivErrors}` });
-            error = this.props.hideVantivErrors;
-          } else {
-            this.formProp({ error: true, errorMsg: `${err.response.data.message}` });
-            error = err.response.data.message;
-          }
+    // Make sure the response has data prop before continuing
+    if (has(err, 'data')) {
+      const data = err.data;
+      // Handle single error
+      if (has(data, 'message')) {
+        if (data.code === 'vantiv_payfac' && this.props.hideVantivErrors) {
+          // Show the hideVantivErrors message
+          this.formProp({ error: true, errorMsg: `${this.props.hideVantivErrors}` });
+          error = this.props.hideVantivErrors;
+        } else {
+          this.formProp({ error: true, errorMsg: `${data.message}` });
+          error = data.message;
         }
+      }
 
-        if (has(err.response.data, 'errors')) {
+      if (has(data, 'errors')) {
 
-          // Handle multiple errors
-          const errors = err.response.data.errors;
-          for (let i=0; i <= errors.length; i++) {
-            if (!isEmpty(errors[i])) {
-              if (has(errors[i], 'field')) {
-                if (has(this.state.fields, errors[i].field)) {
-                  this.fieldProp(errors[i].field, { error: `The following error occurred while saving, ${errors[i].message}` });
-                }
-              }
-              if (has(errors[i], 'message')) {
-                error = i === 0 ? errors[0].message : `${error}, ${errors[i].message}`;
+        // Handle multiple errors
+        const errors = data.errors;
+        for (let i=0; i <= errors.length; i++) {
+          if (!isEmpty(errors[i])) {
+            if (has(errors[i], 'field')) {
+              if (has(this.state.fields, errors[i].field)) {
+                this.fieldProp(errors[i].field, { error: `The following error occurred while saving, ${errors[i].message}` });
               }
             }
+            if (has(errors[i], 'message')) {
+              error = i === 0 ? errors[0].message : `${error}, ${errors[i].message}`;
+            }
           }
-          this.formProp({ error: true, errorMsg: `Error saving: ${error}` });
         }
+        this.formProp({ error: true, errorMsg: `Error saving: ${error}` });
       }
     }
     if (!error && (typeof err === 'string')) error = err;

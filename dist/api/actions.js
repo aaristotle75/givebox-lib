@@ -127,8 +127,7 @@ function sendResponse(resource, response, error) {
 
 export function sendAPI(resource, endpoint, method, data, callback, reloadResource, resourcesToLoad, customName) {
   const csrf_token = document.querySelector(`meta[name='csrf_token']`) ? document.querySelector(`meta[name='csrf_token']`)['content'] === '{{ .CSRFToken }}' ? 'localhost' : document.querySelector(`meta[name='csrf_token']`)['content'] : '';
-  let msg;
-  let errorMsg = {
+  const errorMsg = {
     response: {
       data: {
         message: 'Some error occurred.'
@@ -147,16 +146,6 @@ export function sendAPI(resource, endpoint, method, data, callback, reloadResour
         withCredentials: true,
         headers: {
           'X-CSRF-Token': csrf_token
-        },
-        transformResponse: data => {
-          return data ? JSON.parse(data) : data;
-          /*
-          if (data.constructor === {}.constructor) {
-            return JSON.parse(data);
-          } else {
-            return data;
-          }
-          */
         }
       }).then(function (response) {
         switch (response.status) {
@@ -171,8 +160,7 @@ export function sendAPI(resource, endpoint, method, data, callback, reloadResour
             break;
 
           case 504:
-            msg = 'Gateway timeout error occured. Please retry later.';
-            errorMsg.response.data.message = msg;
+            errorMsg.response.data.message = 'Gateway timeout error occured. Please retry later.';
             dispatch(sendResponse(resource, {}, errorMsg));
             if (callback) callback(null, errorMsg);
             break;
@@ -184,12 +172,35 @@ export function sendAPI(resource, endpoint, method, data, callback, reloadResour
             break;
         }
       }).catch(function (error) {
+        if (error.response) {
+          let badrequest = false;
+
+          if (error.response.status === 400) {
+            badrequest = true;
+            errorMsg.response.data.message = '400 Bad Request. This is a server issue, please contact support@givebox.com or try again in a few minutes.';
+          }
+
+          console.error('Error response', error);
+          dispatch(sendResponse(resource, {}, badrequest ? errorMsg : error));
+          if (callback) callback(null, badrequest ? errorMsg : error.response);
+        } else {
+          errorMsg.response.data.message = 'Javascript error occurred.';
+          dispatch(sendResponse(resource, {}, error));
+          console.error('Error', error);
+          if (callback) callback(null, errorMsg);
+        }
+        /*
+        console.log('catch error', error);
         let badrequest = false;
         msg = '400 Bad Request. This is a server issue, please contact support@givebox.com or try again in a few minutes.';
         errorMsg.response.data.message = msg;
         if (!has(error, 'response')) badrequest = true;
-        dispatch(sendResponse(resource, {}, badrequest ? errorMsg : error));
-        if (callback) callback(null, badrequest ? errorMsg : error);
+        if (has(error, 'response')) {
+          dispatch(sendResponse(resource, {}, badrequest ? errorMsg : error));
+          if (callback) callback(null, badrequest ? errorMsg : error);
+        }
+        */
+
       });
     }
   };
