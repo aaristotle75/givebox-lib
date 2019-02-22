@@ -1007,6 +1007,7 @@ class Form extends Component {
       errorType: params.errorType,
       createField: this.createField,
       fieldProp: this.fieldProp,
+      formProp: this.formProp,
       clear: field ? field.clear : null,
       params: params,
       toggleModal: this.props.toggleModal

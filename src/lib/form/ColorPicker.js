@@ -57,6 +57,7 @@ class ColorPicker extends Component {
 
   onAccept(res) {
     this.props.fieldProp(this.props.name, { value: this.state.hex });
+    this.props.formProp({ updated: true });
     if (this.props.modal) this.props.toggleModal(this.props.modalID, false);
   }
 
