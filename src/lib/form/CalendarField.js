@@ -134,7 +134,7 @@ class CalendarField extends Component {
 
     const dateFormat = enableTime ? 'm/d/Y H:i' : 'm/d/Y';
     const labelStyle = util.cloneObj(customLabel);
-    const modalEl = document.getElementById('modal-root');
+    const modalEl = document.getElementById('calendar-root');
 
     return (
       <Flatpickr
