@@ -18,6 +18,17 @@ export function kinds() {
   return kinds;
 }
 
+export function kindOptions(all = true, allName = 'All Kinds') {
+  const options = [];
+  if (all) options.push({ primaryText: allName, value: 'all' });
+  kinds().forEach((key) => {
+    options.push(
+      { primaryText: kind(key).namePlural, value: key }
+    );
+  });
+  return options;
+}
+
 
 export function kind(kind) {
   const obj = {};

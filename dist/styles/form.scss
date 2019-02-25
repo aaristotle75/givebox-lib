@@ -448,11 +448,11 @@ label.idle, .label.idle {
     cursor: default;
   }
 
-  .dropdown-item.bottom:hover {
+  .dropdown-item.bottom button:hover {
     background: $white;
     color: $primary;
+    border-bottom: 0;
   }
-
 }
 
 .dropdown.active {

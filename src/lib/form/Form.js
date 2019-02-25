@@ -13,7 +13,7 @@ import ColorPicker from './ColorPicker';
 import * as _v from './formValidate';
 import Loader from '../common/Loader';
 import { Alert } from '../common/Alert';
-import { cloneObj, isEmpty, numberWithCommas, stripHtml } from '../common/utility';
+import { cloneObj, isEmpty, numberWithCommas, stripHtml, getValue } from '../common/utility';
 import { toggleModal } from '../api/actions';
 import has from 'has';
 
@@ -1026,7 +1026,7 @@ class Form extends Component {
         : min && !max ? `Please enter a date after ${min}.`
         : !min && max ? `Please enter a date before ${max}.`
         : `default error`;
-        if (value.value) if (!_v.validateDate(value, { min: min, max: max, format: format })) this.fieldProp(key, {error: opts.errorMsg || errorMsg});
+        if (getValue(value, 'value')) if (!_v.validateDate(value, { min: min, max: max, format: format })) this.fieldProp(key, {error: opts.errorMsg || errorMsg});
         break;
       case 'emailList':
         const optional = opts.optional || false;
