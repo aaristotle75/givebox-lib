@@ -9,7 +9,7 @@ class Collapse extends Component {
     this.renderChildren = this.renderChildren.bind(this);
     this.toggleDisplay = this.toggleDisplay.bind(this);
     this.state = {
-      display: this.props.defaultCollapse === 'open' ? true : false
+      display: this.props.default === 'open' ? true : false
     };
   }
 
@@ -32,20 +32,19 @@ class Collapse extends Component {
   render() {
 
     const {
-      collapseStyle,
-      collapseClassName,
-      collapseLabel,
+      cStyle,
+      cClassName,
+      cLabel,
       iconOpen,
       iconClosed,
-      iconPrimary,
-      showBorder
+      iconPrimary
     } = this.props;
 
     return (
-      <div className={`collapse ${showBorder ? '' : 'noBorder'} ${collapseClassName || ''}`} style={collapseStyle}>
+      <div className={`collapse ${this.state.display ? 'noBorder' : ''} ${cClassName || ''}`} style={cStyle}>
         <GBLink className='sectionLink' onClick={() => this.toggleDisplay()}>
           <span className='sectionText'>
-            <span className={`icon icon-${iconPrimary}`}></span>{collapseLabel}
+            <span className={`icon icon-${iconPrimary}`}></span>{cLabel}
           </span>
           <span className={`icon icon-${this.state.display ? iconOpen : iconClosed}`}></span>
         </GBLink>
@@ -61,12 +60,11 @@ class Collapse extends Component {
 }
 
 Collapse.defaultProps = {
-  showBorder: false,
   iconPrimary: 'edit',
   iconOpen: 'chevron-down',
   iconClosed: 'chevron-right',
-  defaultCollapse: 'open',
-  collapseLabel: 'Collapsible Label'
+  default: 'open',
+  cLabel: 'Collapsible Label'
 }
 
 export default Collapse;

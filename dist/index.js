@@ -24,6 +24,7 @@ import StatBlock from './block/StatBlock';
 import ActionBar from './block/ActionBar';
 import CodeBlock from './block/CodeBlock';
 import { Alert } from './common/Alert';
+import Collapse from './common/Collapse';
 import Delete from './common/Delete';
 import Error from './common/Error';
 import Fade from './common/Fade';
@@ -50,5 +51,5 @@ app, resource, send, modal, // Modal
 ModalLink, ModalRoute, // Table
 ActionsMenu, Search, Table, MaxRecords, NoRecords, Paginate, Export, Filter, // Block
 StatBlock, ActionBar, CodeBlock, // common
-Alert, Delete, Error, Fade, GBLink, GBX, Iframe, Image, LinearBar, Loader, Portal, Tabs, Tab, types, util, // Glossary
+Alert, Collapse, Delete, Error, Fade, GBLink, GBX, Iframe, Image, LinearBar, Loader, Portal, Tabs, Tab, types, util, // Glossary
 FeesGlossary };
