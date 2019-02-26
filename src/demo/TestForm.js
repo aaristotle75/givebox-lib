@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { selectOptions, GBLink, ModalLink } from '../lib';
+import { selectOptions, GBLink, ModalLink, Collapse } from '../lib';
 import Moment from 'moment';
 
 export default class TestForm extends Component {
@@ -66,9 +66,13 @@ export default class TestForm extends Component {
       <div>
         <h2>Form Elements</h2>
         <div className='formWrapper'>
-        {this.props.colorPicker('primaryColor', { label: 'Pick a theme color' })}
-        {this.props.richText('emailList', { label: 'Email List', placeholder: 'Enter emails separated by commas', modal: true, required: true })}
-        {this.props.calendarField('dob', { label: 'Date of Birth', enableTime: false, enableTimeOption: true, required: true, validate: 'date', validateOpts: { }, utc: false })}
+        <Collapse>
+          {this.props.colorPicker('primaryColor', { label: 'Pick a theme color' })}
+        </Collapse>
+        <Collapse>
+          {this.props.richText('emailList', { label: 'Email List', placeholder: 'Enter emails separated by commas', modal: true, required: true })}
+          {this.props.calendarField('dob', { label: 'Date of Birth', enableTime: false, enableTimeOption: true, required: true, validate: 'date', validateOpts: { }, utc: false })}
+        </Collapse>
         {/*
         {this.props.dropdown('recurringDefaultInterval', {
           options: [

@@ -245,3 +245,41 @@ ul.selectable {
   	white-space: nowrap;
   }
 }
+
+/*------- Collapse -----------*/
+.collapse {
+
+  margin: 40px 0;
+  border-bottom: 1px solid $light;
+
+  button.sectionLink {
+    display: flex;
+    justify-content: space-between;
+    color: $med-gray;
+    font-size: $normal-text-size;
+    font-weight: 300;
+    padding-bottom: 10px !important;
+    width: 100%;
+    align-items: center;
+
+    .sectionText {
+      margin-left: 10px;
+      display: flex;
+
+      .icon {
+        font-size: $large-text-size;
+        margin-right: 10px;
+        font-weight: 300;
+      }
+    }
+  }
+
+  button.sectionLink:hover {
+    @include default-transition(.25s);
+    color: $mainColor;
+  }
+}
+
+.collapse.noBorder {
+  border: 0;
+}
