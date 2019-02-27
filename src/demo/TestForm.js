@@ -66,6 +66,7 @@ export default class TestForm extends Component {
       <div>
         <h2>Form Elements</h2>
         <div className='formWrapper'>
+        {this.props.textField('newPassword', {label: 'New Password', placeholder: 'Enter new password', validate: 'password', type: 'password', maxLength:32, strength: true})}        
         <Collapse>
           {this.props.colorPicker('primaryColor', { label: 'Pick a theme color' })}
         </Collapse>

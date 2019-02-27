@@ -32,21 +32,21 @@ class Collapse extends Component {
   render() {
 
     const {
-      cStyle,
-      cClassName,
-      cLabel,
-      iconOpen,
-      iconClosed,
-      iconPrimary
+      cstyle,
+      cclassName,
+      clabel,
+      iconopen,
+      iconclosed,
+      iconprimary
     } = this.props;
 
     return (
-      <div className={`collapse ${this.state.display ? 'noBorder' : ''} ${cClassName || ''}`} style={cStyle}>
+      <div className={`collapse ${this.state.display ? 'noBorder' : ''} ${cclassName || ''}`} style={cstyle}>
         <GBLink className='sectionLink' onClick={() => this.toggleDisplay()}>
           <span className='sectionText'>
-            <span className={`icon icon-${iconPrimary}`}></span>{cLabel}
+            <span className={`icon icon-${iconprimary}`}></span>{clabel}
           </span>
-          <span className={`icon icon-${this.state.display ? iconOpen : iconClosed}`}></span>
+          <span className={`icon icon-${this.state.display ? iconopen : iconclosed}`}></span>
         </GBLink>
         <AnimateHeight
           duration={500}
@@ -60,11 +60,11 @@ class Collapse extends Component {
 }
 
 Collapse.defaultProps = {
-  iconPrimary: 'edit',
-  iconOpen: 'chevron-down',
-  iconClosed: 'chevron-right',
+  iconprimary: 'edit',
+  iconopen: 'chevron-down',
+  iconclosed: 'chevron-right',
   default: 'open',
-  cLabel: 'Collapsible Label'
+  clabel: 'Collapsible Label'
 }
 
 export default Collapse;

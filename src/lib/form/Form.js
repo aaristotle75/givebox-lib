@@ -1036,7 +1036,7 @@ class Form extends Component {
         if (value) if (!_v.validateEmail(value)) this.fieldProp(key, {error: opts.errorMsg || _v.msgs.email});
         break;
       case 'password':
-        if (!_v.validatePassword(value)) this.fieldProp(key, {error: opts.errorMsg || _v.msgs.password});
+        if (value) if (!_v.validatePassword(value)) this.fieldProp(key, {error: opts.errorMsg || _v.msgs.password});
         break;
       case 'taxID':
         if (value) if (!_v.validateTaxID(value)) this.fieldProp(key, {error: opts.errorMsg || _v.msgs.taxID});
@@ -1051,7 +1051,7 @@ class Form extends Component {
         if (value) if (!_v.validateDescriptor(value)) this.fieldProp(key, {error: opts.errorMsg || _v.msgs.descriptor});
         break;
       case 'url':
-        if (value.value) if (!_v.validateURL(value)) this.fieldProp(key, {error: opts.errorMsg || _v.msgs.url});
+        if (value) if (!_v.validateURL(value)) this.fieldProp(key, {error: opts.errorMsg || _v.msgs.url});
         break;
       case 'number':
       case 'money':

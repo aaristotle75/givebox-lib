@@ -1224,7 +1224,7 @@ class Form extends Component {
         break;
 
       case 'password':
-        if (!_v.validatePassword(value)) this.fieldProp(key, {
+        if (value) if (!_v.validatePassword(value)) this.fieldProp(key, {
           error: opts.errorMsg || _v.msgs.password
         });
         break;
@@ -1254,7 +1254,7 @@ class Form extends Component {
         break;
 
       case 'url':
-        if (value.value) if (!_v.validateURL(value)) this.fieldProp(key, {
+        if (value) if (!_v.validateURL(value)) this.fieldProp(key, {
           error: opts.errorMsg || _v.msgs.url
         });
         break;
