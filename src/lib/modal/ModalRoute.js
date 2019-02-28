@@ -41,6 +41,8 @@ class ModalRoute extends Component {
 
     const modalRoot = document.getElementById('modal-root');
 
+    const optsProps = { ...opts, ...this.props.optsProps };
+
     if (!modalRoot) {
       return ( <Loader /> );
     }
@@ -59,7 +61,7 @@ class ModalRoute extends Component {
               closeCallback={has(opts, 'closeCallback') ? opts.closeCallback : null}
               appRef={appRef}
             >
-              {component(opts)}
+              {component(optsProps)}
             </Modal>
           </Portal>
         }
@@ -69,7 +71,8 @@ class ModalRoute extends Component {
 }
 
 ModalRoute.defaultProps = {
-  className: ''
+  className: '',
+  optsProps: {}
 }
 
 function mapStateToProps(state, props) {

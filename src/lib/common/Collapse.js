@@ -23,7 +23,6 @@ class Collapse extends Component {
   renderChildren() {
     const childrenWithProps = React.Children.map(this.props.children,
       (child) => React.cloneElement(child, {
-        ...this.props
       })
     );
     return childrenWithProps;
@@ -32,21 +31,21 @@ class Collapse extends Component {
   render() {
 
     const {
-      cstyle,
-      cclassName,
-      clabel,
-      iconopen,
-      iconclosed,
-      iconprimary
+      style,
+      className,
+      label,
+      iconOpen,
+      iconClosed,
+      iconPrimary
     } = this.props;
 
     return (
-      <div className={`collapse ${this.state.display ? 'noBorder' : ''} ${cclassName || ''}`} style={cstyle}>
+      <div className={`collapse ${this.state.display ? 'noBorder' : ''} ${className || ''}`} style={style}>
         <GBLink className='sectionLink' onClick={() => this.toggleDisplay()}>
           <span className='sectionText'>
-            <span className={`icon icon-${iconprimary}`}></span>{clabel}
+            <span className={`icon icon-${iconPrimary}`}></span>{label}
           </span>
-          <span className={`icon icon-${this.state.display ? iconopen : iconclosed}`}></span>
+          <span className={`icon icon-${this.state.display ? iconOpen : iconClosed}`}></span>
         </GBLink>
         <AnimateHeight
           duration={500}
@@ -60,11 +59,11 @@ class Collapse extends Component {
 }
 
 Collapse.defaultProps = {
-  iconprimary: 'edit',
-  iconopen: 'chevron-down',
-  iconclosed: 'chevron-right',
+  iconPrimary: 'edit',
+  iconOpen: 'chevron-down',
+  iconClosed: 'chevron-right',
   default: 'open',
-  clabel: 'Collapsible Label'
+  label: 'Collapsible Label'
 }
 
 export default Collapse;

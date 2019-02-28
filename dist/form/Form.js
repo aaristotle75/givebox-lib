@@ -349,6 +349,7 @@ class Form extends Component {
 
   onChangeDropdown(name, value) {
     const field = has(this.state.fields, name) ? this.state.fields[name] : null;
+    let formatValue = value;
 
     if (field) {
       const arr = [];
@@ -365,17 +366,19 @@ class Form extends Component {
         } else {
           arr.push(value);
         }
+      } else {
+        formatValue = isNaN(value) ? value : parseFloat(value);
       }
 
       this.fieldProp(name, {
-        value: field.multi ? arr : value,
+        value: field.multi ? arr : formatValue,
         error: false
       });
       this.formProp({
         error: false,
         updated: true
       });
-      if (field.onChange) field.onChange(name, field.multi ? arr : value, field, this.state.fields);
+      if (field.onChange) field.onChange(name, field.multi ? arr : formatValue, field, this.state.fields);
       if (field.debug) console.log('onChangeDropdown', name, field);
     }
   }

@@ -45,8 +45,8 @@ class Tabs extends Component {
           key: key,
           className: `panelItem`
         }, React.createElement(GBLink, {
-          disabled: value.props.disabled,
-          className: `${value.props.disabled ? 'disabled' : ''} ripple panelTab ${value.props.id === bindthis.state.selectedTab && 'selected'}`,
+          disabled: util.getValue(value.props, 'disabled'),
+          className: `${util.getValue(value.props, 'disabled') ? 'disabled' : ''} ripple panelTab ${value.props.id === bindthis.state.selectedTab && 'selected'}`,
           style: bindthis.props.tabsStyle,
           onClick: () => bindthis.onTabClick(value.props.id)
         }, value.props.label)));

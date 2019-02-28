@@ -37,6 +37,9 @@ class ModalRoute extends Component {
       appRef
     } = this.props;
     const modalRoot = document.getElementById('modal-root');
+    const optsProps = { ...opts,
+      ...this.props.optsProps
+    };
 
     if (!modalRoot) {
       return React.createElement(Loader, null);
@@ -55,13 +58,14 @@ class ModalRoute extends Component {
       customStyle: style,
       closeCallback: has(opts, 'closeCallback') ? opts.closeCallback : null,
       appRef: appRef
-    }, component(opts))));
+    }, component(optsProps))));
   }
 
 }
 
 ModalRoute.defaultProps = {
-  className: ''
+  className: '',
+  optsProps: {}
 };
 
 function mapStateToProps(state, props) {

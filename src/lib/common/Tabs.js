@@ -38,7 +38,7 @@ class Tabs extends Component {
       Object.entries(this.props.children).forEach(([key, value]) => {
         items.push(
           <div style={bindthis.props.tabStyle} key={key} className={`panelItem`}>
-            <GBLink disabled={value.props.disabled} className={`${value.props.disabled ? 'disabled' : ''} ripple panelTab ${(value.props.id === bindthis.state.selectedTab) && 'selected'}`} style={bindthis.props.tabsStyle} onClick={() => bindthis.onTabClick(value.props.id)}>{value.props.label}</GBLink>
+            <GBLink disabled={util.getValue(value.props, 'disabled')} className={`${util.getValue(value.props, 'disabled') ? 'disabled' : ''} ripple panelTab ${(value.props.id === bindthis.state.selectedTab) && 'selected'}`} style={bindthis.props.tabsStyle} onClick={() => bindthis.onTabClick(value.props.id)}>{value.props.label}</GBLink>
           </div>
         );
       });
