@@ -16,7 +16,7 @@ class TextField extends Component {
 
   componentDidMount() {
     const params = Object.assign({}, this.props.params, {
-      ref: this.props.ref || this.inputRef
+      ref: this.inputRef
     });
     if (params.type === 'hidden') params.required = false;
     if (this.props.createField) this.props.createField(this.props.name, params);
@@ -58,8 +58,7 @@ class TextField extends Component {
       strength,
       count,
       symbol,
-      money,
-      ref
+      money
     } = this.props;
     return React.createElement("div", {
       style: style,
@@ -73,7 +72,7 @@ class TextField extends Component {
     }, symbol)), React.createElement("input", {
       autoFocus: autoFocus,
       id: id || name,
-      ref: ref || this.inputRef,
+      ref: this.inputRef,
       name: name,
       type: type,
       placeholder: placeholder,
@@ -92,7 +91,9 @@ class TextField extends Component {
     }), this.props.children, strength && React.createElement(PasswordStrength, {
       password: value,
       error: error
-    }), count && type !== 'password' && type !== 'hidden' && React.createElement(Fade, {
+    }), React.createElement("div", {
+      className: "customLink"
+    }, this.props.customLink) || '', count && type !== 'password' && type !== 'hidden' && React.createElement(Fade, {
       in: this.state.status === 'active' && value ? true : false,
       duration: 200
     }, React.createElement(CharacterCount, {

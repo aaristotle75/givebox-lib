@@ -28,6 +28,13 @@ form button {
   margin: 0 5px;
 }
 
+.input-group {
+  .customLink {
+    position: absolute;
+    top: 40px;
+  }
+}
+
 button.input {
   font-size: $normal-text-size;
   font-family: $font-family;
@@ -453,6 +460,7 @@ label.idle, .label.idle {
     color: $primary;
     border-bottom: 0;
   }
+
 }
 
 .dropdown.active {
@@ -553,6 +561,10 @@ label.idle, .label.idle {
     label .idle,
     .label {
       color: $red !important;
+    }
+
+    .dropdown-item-actions button {
+      color: $mainColor;
     }
   }
 }

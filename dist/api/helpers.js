@@ -130,6 +130,7 @@ export function reloadResource(name, opts = {}) {
 * @param {function} callback
 * @param {bool} reload If the resource should be reloaded
 * @param {array} resourcesToLoad array of resources to load
+* @param {bool} multi If should send multi of same resource
 */
 
 export function sendResource(resource, opts = {}) {
@@ -140,7 +141,8 @@ export function sendResource(resource, opts = {}) {
     callback: null,
     reload: true,
     resourcesToLoad: null,
-    customName: null
+    customName: null,
+    multi: false
   };
   const options = { ...defaults,
     ...opts
@@ -161,6 +163,6 @@ export function sendResource(resource, opts = {}) {
       endpoint = endpoint.slice(0, -4);
     }
 
-    return dispatch(sendAPI(resource, endpoint, method, options.data, options.callback, options.reload ? reloadResource : null, options.resourcesToLoad, options.customName));
+    return dispatch(sendAPI(resource, endpoint, method, options.data, options.callback, options.reload ? reloadResource : null, options.resourcesToLoad, options.customName, options.multi));
   };
 }

@@ -32,6 +32,7 @@ class Form extends Component {
     this.onChangeWhere = this.onChangeWhere.bind(this);
     this.onBlur = this.onBlur.bind(this);
     this.onFocus = this.onFocus.bind(this);
+    this.fieldRef = this.fieldRef.bind(this);
     this.validateForm = this.validateForm.bind(this);
     this.validateField = this.validateField.bind(this);
     this.calendarField = this.calendarField.bind(this);
@@ -126,6 +127,16 @@ class Form extends Component {
 
   focusInput(ref) {
     ref.current.focus();
+  }
+
+  fieldRef(name) {
+    const field = has(this.state.fields, name) ? this.state.fields[name] : null;
+
+    if (field) {
+      if (has(field, 'ref')) return field.ref.current;
+    }
+
+    return null;
   }
 
   allowEnterToSubmit() {
@@ -703,7 +714,9 @@ class Form extends Component {
       multi: field ? field.multi : params.multi,
       multiCloseLabel: params.multiCloseLabel,
       multiCloseCallback: params.multiCloseCallback,
-      fieldProp: this.fieldProp
+      fieldProp: this.fieldProp,
+      formProp: this.formProp,
+      inputRef: params.ref
     });
   }
 
@@ -806,7 +819,9 @@ class Form extends Component {
       count: params.count,
       meta: params.meta,
       symbol: params.validateOpts.symbol,
-      money: params.validate === 'money' || params.validateOpts.validate === 'money' ? true : false
+      money: params.validate === 'money' || params.validateOpts.validate === 'money' ? true : false,
+      inputRef: params.ref,
+      customLink: params.customLink
     });
   }
 
@@ -1316,6 +1331,7 @@ class Form extends Component {
       validateForm: this.validateForm,
       formProp: this.formProp,
       fieldProp: this.fieldProp,
+      fieldRef: this.fieldRef,
       multiFieldProp: this.multiFieldProp,
       formSaved: this.formSaved,
       saveButton: this.saveButton,

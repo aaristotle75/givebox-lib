@@ -125,7 +125,7 @@ function sendResponse(resource, response, error) {
   };
 }
 
-export function sendAPI(resource, endpoint, method, data, callback, reloadResource, resourcesToLoad, customName) {
+export function sendAPI(resource, endpoint, method, data, callback, reloadResource, resourcesToLoad, customName, multi) {
   const csrf_token = document.querySelector(`meta[name='csrf_token']`) ? document.querySelector(`meta[name='csrf_token']`)['content'] === '{{ .CSRFToken }}' ? 'localhost' : document.querySelector(`meta[name='csrf_token']`)['content'] : '';
   const errorMsg = {
     response: {
@@ -137,7 +137,7 @@ export function sendAPI(resource, endpoint, method, data, callback, reloadResour
   return (dispatch, getState) => {
     method = method.toLowerCase();
 
-    if (shouldSendAPI(getState(), resource)) {
+    if (shouldSendAPI(getState(), resource, multi)) {
       dispatch(sendRequest(resource, endpoint, method, data));
       axios({
         method: method,
@@ -206,10 +206,10 @@ export function sendAPI(resource, endpoint, method, data, callback, reloadResour
   };
 }
 
-function shouldSendAPI(state, resource) {
+function shouldSendAPI(state, resource, multi) {
   let shouldSend = true;
 
-  if (has(state.send, resource)) {
+  if (has(state.send, resource && !multi)) {
     if (state.send[resource].isSending) shouldSend = false;
   }
 

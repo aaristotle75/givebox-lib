@@ -28,7 +28,12 @@ class Dropdown extends Component {
   }
 
   componentDidMount() {
-    if (this.props.createField) this.props.createField(this.props.name, this.props.params);
+    const params = Object.assign({}, this.props.params, {
+      ref: this.dropdownRef,
+      openMenu: this.openMenu,
+      closeMenu: this.closeMenu
+    });
+    if (this.props.createField) this.props.createField(this.props.name, params);
     let init = lookup(this.props.options, 'value', this.props.defaultValue);
 
     if (!isEmpty(init)) {
@@ -89,7 +94,13 @@ class Dropdown extends Component {
   }
 
   openMenu(e) {
-    e.stopPropagation();
+    this.props.fieldProp(this.props.name, {
+      error: false
+    });
+    this.props.formProp({
+      error: false,
+      errorMsg: ''
+    });
     const ref = this.dropdownRef.current;
     const height = window.innerHeight;
     const rect = ref.getBoundingClientRect();

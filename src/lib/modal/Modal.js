@@ -6,6 +6,7 @@ import animateScrollTo from 'animated-scroll-to';
 import Waypoint from 'react-waypoint';
 import Fade from '../common/Fade';
 import GBLink from '../common/GBLink';
+import has from 'has';
 
 const prefix = require('react-prefixr');
 const defaultOverlayStyle = {};
@@ -242,12 +243,14 @@ class Modal extends Component {
 
     if (appRef) {
       if (open) {
-        appRef.current.classList.add('blur');
+        if (has(appRef.current, 'classList')) appRef.current.classList.add('blur');
       } else {
         if (appRef && !this.searchForOpenModals(identifier)) {
           if (appRef.current) {
-            if (appRef.current.classList.contains('blur')) {
-              appRef.current.classList.remove('blur');
+            if (has(appRef.current, 'classList')) {
+              if (appRef.current.classList.contains('blur')) {
+                appRef.current.classList.remove('blur');
+              }
             }
           }
         }

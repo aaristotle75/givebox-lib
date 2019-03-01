@@ -12,6 +12,12 @@ export default class TestForm extends Component {
     this.selectAccount = this.selectAccount.bind(this);
     this.testFieldProp = this.testFieldProp.bind(this);
     this.toggleRequired = this.toggleRequired.bind(this);
+    this.toggleChecked = this.toggleChecked.bind(this);
+    this.focusInput = this.focusInput.bind(this);
+    this.state = {
+      checked: false
+    }
+    this.roleRef = React.createRef();
   }
 
   componentDidMount() {
@@ -26,6 +32,15 @@ export default class TestForm extends Component {
 
   processForm(fields) {
     console.log(fields);
+  }
+
+  toggleChecked() {
+    this.setState({ checked: this.state.checked ? false : true });
+  }
+
+  focusInput() {
+    const ref = this.props.fieldRef('role');
+    if (ref) ref.focus();
   }
 
   onTypeChange(name, value, field, fields) {
@@ -48,8 +63,6 @@ export default class TestForm extends Component {
 
   render() {
 
-    const customLink = <GBLink className='link'>Test</GBLink>;
-
     const where = {
       address: '2010 Canal St',
       city: 'Venice',
@@ -62,14 +75,35 @@ export default class TestForm extends Component {
       }
     }
 
+    const customLink = <GBLink onClick={this.focusInput}>Focus Input</GBLink>;
+
     return (
       <div>
         <h2>Form Elements</h2>
         <div className='formWrapper'>
-          {this.props.textField('user', { useChildren: true })}
-          {this.props.textField('test', {label: 'Test', parent: 'user', placeholder: 'Enter test', maxLength:128})}
-          {this.props.uploadField('imageURL', { parent: 'user', label: 'Image', debug: true })}
+        {customLink}
+        {this.props.textField('role', { required: true, label: 'Role', customLink: customLink })}
+        {this.props.dropdown('recurringDefaultInterval', {
+          options: [
+            { primaryText: 'None', value: 'once' },
+            { primaryText: 'Monthly', value: 'monthly' },
+            { primaryText: 'Quarterly', value: 'quarterly' },
+            { primaryText: 'Yearly', value: 'annually' }
+          ],
+          label: 'Default Recurring Option',
+          selectLabel: 'Select the Default Recurring Option offered',
+          className: 'recurringOption',
+          required: true
+        })}
         {/*
+        <GBLink onClick={this.toggleChecked}>Toggle Checked</GBLink>
+        {this.props.choice('enabled', { label: 'Enabled', checked: this.state.checked, value: this.state.checked })}
+        {this.props.choice('choice', { label: 'Choice 1', value: 'choice1', checked: 'choice2', type: 'radio' })}
+        {this.props.choice('choice', { label: 'Choice 2', value: 'choice2', type: 'radio' })}
+        {this.props.choice('choice', { label: 'Choice 3', value: 'choice3', type: 'radio' })}
+        {this.props.textField('user', { useChildren: true })}
+        {this.props.textField('test', {label: 'Test', parent: 'user', placeholder: 'Enter test', maxLength:128})}
+        {this.props.uploadField('imageURL', { parent: 'user', label: 'Image', debug: true })}
         {this.props.textField('newPassword', {label: 'New Password', placeholder: 'Enter new password', validate: 'password', type: 'password', maxLength:32, strength: true})}
         <Collapse>
           {this.props.colorPicker('primaryColor', { label: 'Pick a theme color' })}

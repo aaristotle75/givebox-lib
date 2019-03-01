@@ -137,7 +137,8 @@ export function sendAPI(
   callback,
   reloadResource,
   resourcesToLoad,
-  customName
+  customName,
+  multi
 ) {
   const csrf_token = document.querySelector(`meta[name='csrf_token']`) ? document.querySelector(`meta[name='csrf_token']`)['content'] === '{{ .CSRFToken }}' ? 'localhost' : document.querySelector(`meta[name='csrf_token']`)['content'] : '';
   const errorMsg = {
@@ -149,7 +150,7 @@ export function sendAPI(
   };
   return (dispatch, getState) => {
     method = method.toLowerCase();
-    if (shouldSendAPI(getState(), resource)) {
+    if (shouldSendAPI(getState(), resource, multi)) {
       dispatch(sendRequest(resource, endpoint, method, data));
       axios({
         method: method,
@@ -213,9 +214,9 @@ export function sendAPI(
   }
 }
 
-function shouldSendAPI(state, resource) {
+function shouldSendAPI(state, resource, multi) {
   let shouldSend = true;
-  if (has(state.send, resource)) {
+  if (has(state.send, resource && !multi)) {
     if (state.send[resource].isSending) shouldSend = false;
   }
   return shouldSend;

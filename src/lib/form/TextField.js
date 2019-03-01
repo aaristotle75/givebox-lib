@@ -16,7 +16,7 @@ class TextField extends Component {
   }
 
   componentDidMount() {
-    const params = Object.assign({}, this.props.params, { ref: this.props.ref || this.inputRef });
+    const params = Object.assign({}, this.props.params, { ref: this.inputRef });
     if (params.type === 'hidden') params.required = false;
     if (this.props.createField) this.props.createField(this.props.name, params);
   }
@@ -54,8 +54,7 @@ class TextField extends Component {
       strength,
       count,
       symbol,
-      money,
-      ref
+      money
     } = this.props;
 
     return (
@@ -65,7 +64,7 @@ class TextField extends Component {
             <input
               autoFocus={autoFocus}
               id={id || name}
-              ref={ref || this.inputRef}
+              ref={this.inputRef}
               name={name}
               type={type}
               placeholder={placeholder}
@@ -82,6 +81,7 @@ class TextField extends Component {
             <div className={`input-bottom ${error ? 'error' : this.state.status}`}></div>
             {this.props.children}
             {strength && <PasswordStrength password={value} error={error} />}
+            {<div className='customLink'>{this.props.customLink}</div> || ''}
   			    {count && type !== 'password' && type !== 'hidden' &&
               <Fade in={this.state.status === 'active' && value ? true : false} duration={200}>
                 <CharacterCount max={maxLength} count={value.length} />
