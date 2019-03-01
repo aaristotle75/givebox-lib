@@ -63,7 +63,7 @@ class Dropdown extends Component {
           value: init.value,
           selected: init.primaryText
         });
-        this.props.fieldProp(this.props.name, { value: init.value });
+        if (this.props.fieldProp) this.props.fieldProp(this.props.name, { value: init.value });
       }
     }
 
@@ -85,8 +85,8 @@ class Dropdown extends Component {
   }
 
   openMenu(e) {
-    this.props.fieldProp(this.props.name, { error: false });
-    this.props.formProp({ error: false, errorMsg: '' });
+    if (this.props.fieldProp) this.props.fieldProp(this.props.name, { error: false });
+    if (this.props.formProp) this.props.formProp({ error: false, errorMsg: '' });
     const ref = this.dropdownRef.current;
     const height = window.innerHeight;
     const rect = ref.getBoundingClientRect();

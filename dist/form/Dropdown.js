@@ -69,7 +69,7 @@ class Dropdown extends Component {
           value: init.value,
           selected: init.primaryText
         });
-        this.props.fieldProp(this.props.name, {
+        if (this.props.fieldProp) this.props.fieldProp(this.props.name, {
           value: init.value
         });
       }
@@ -94,10 +94,10 @@ class Dropdown extends Component {
   }
 
   openMenu(e) {
-    this.props.fieldProp(this.props.name, {
+    if (this.props.fieldProp) this.props.fieldProp(this.props.name, {
       error: false
     });
-    this.props.formProp({
+    if (this.props.formProp) this.props.formProp({
       error: false,
       errorMsg: ''
     });
