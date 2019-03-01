@@ -66,7 +66,11 @@ export default class TestForm extends Component {
       <div>
         <h2>Form Elements</h2>
         <div className='formWrapper'>
-        {this.props.textField('newPassword', {label: 'New Password', placeholder: 'Enter new password', validate: 'password', type: 'password', maxLength:32, strength: true})}        
+          {this.props.textField('user', { useChildren: true })}
+          {this.props.textField('test', {label: 'Test', parent: 'user', placeholder: 'Enter test', maxLength:128})}
+          {this.props.uploadField('imageURL', { parent: 'user', label: 'Image', debug: true })}
+        {/*
+        {this.props.textField('newPassword', {label: 'New Password', placeholder: 'Enter new password', validate: 'password', type: 'password', maxLength:32, strength: true})}
         <Collapse>
           {this.props.colorPicker('primaryColor', { label: 'Pick a theme color' })}
         </Collapse>
@@ -74,7 +78,6 @@ export default class TestForm extends Component {
           {this.props.richText('emailList', { label: 'Email List', placeholder: 'Enter emails separated by commas', modal: true, required: true })}
           {this.props.calendarField('dob', { label: 'Date of Birth', enableTime: false, enableTimeOption: true, required: true, validate: 'date', validateOpts: { }, utc: false })}
         </Collapse>
-        {/*
         {this.props.dropdown('recurringDefaultInterval', {
           options: [
             { primaryText: 'None', value: 'once' },

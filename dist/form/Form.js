@@ -144,7 +144,10 @@ class Form extends Component {
 
   createField(name, args) {
     const merge = { ...this.state.fields,
-      [name]: args
+      [name]: {
+        name: name,
+        ...args
+      }
     };
     this.setState(Object.assign(this.state, { ...this.state,
       fields: merge
@@ -251,7 +254,7 @@ class Form extends Component {
     this.setState(Object.assign(this.state, args));
   }
 
-  onChangeDropzone(name, files) {
+  onChangeDropzone(name, url) {
     const field = has(this.state.fields, name) ? this.state.fields[name] : null;
 
     if (field) {

@@ -50,7 +50,6 @@ class Upload extends Component {
   }
 
   onDrop(accepted, rejected) {
-    this.props.onChange(this.props.name, accepted);
     this.setState({
       loading: true ,
       imageLoading: true
@@ -63,6 +62,7 @@ class Upload extends Component {
       this.setState({ loading: false });
       if (!this.props.noPreview) {
         this.setState({ preview: url });
+        this.props.onChange(this.props.name, url);
         this.props.fieldProp(this.props.name, { value: url });
       }
       if (this.props.saveCallback) this.props.saveCallback(url);
