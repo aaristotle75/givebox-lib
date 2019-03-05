@@ -243,14 +243,12 @@ class Modal extends Component {
 
     if (appRef) {
       if (open) {
-        if (has(appRef.current, 'classList')) appRef.current.classList.add('blur');
+        if (appRef.current) appRef.current.classList.add('blur');
       } else {
         if (appRef && !this.searchForOpenModals(identifier)) {
           if (appRef.current) {
-            if (has(appRef.current, 'classList')) {
-              if (appRef.current.classList.contains('blur')) {
-                appRef.current.classList.remove('blur');
-              }
+            if (appRef.current.classList.contains('blur')) {
+              appRef.current.classList.remove('blur');
             }
           }
         }

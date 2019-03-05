@@ -9,6 +9,20 @@ class ModalLink extends Component {
     this.onClick = this.onClick.bind(this);
   }
 
+  componentDidMount() {
+    if (this.props.modalState === 'open') {
+      this.props.toggleModal(this.props.id, true, this.props.opts);
+      if (this.props.onOpenCallback) this.props.onOpenCallback();
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.modalState !== this.props.modalState) {
+      this.props.toggleModal(this.props.id, this.props.modalState === 'open' ? true : false, this.props.opts);
+      if (this.props.onOpenCallback) this.props.onOpenCallback();
+    }
+  }
+
   onClick(id, opts) {
     this.props.toggleModal(id, true, opts);
     if (this.props.onClickCallback) this.props.onClickCallback();
@@ -68,7 +82,8 @@ class ModalLink extends Component {
 ModalLink.defaultProps = {
   type: 'link',
   className: '',
-  style: {}
+  style: {},
+  modalState: 'closed'
 };
 
 function mapStateToProps(state) {

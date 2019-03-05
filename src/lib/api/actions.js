@@ -142,10 +142,8 @@ export function sendAPI(
 ) {
   const csrf_token = document.querySelector(`meta[name='csrf_token']`) ? document.querySelector(`meta[name='csrf_token']`)['content'] === '{{ .CSRFToken }}' ? 'localhost' : document.querySelector(`meta[name='csrf_token']`)['content'] : '';
   const errorMsg = {
-    response: {
-      data: {
-        message: 'Some error occurred.'
-      }
+    data: {
+      message: 'Some error occurred.'
     }
   };
   return (dispatch, getState) => {
@@ -184,31 +182,23 @@ export function sendAPI(
       })
       .catch(function (error) {
         if (error.response) {
-          let badrequest = false;
+          let customMsg = false;
           if (error.response.status === 400) {
-            badrequest = true;
-            errorMsg.response.data.message = '400 Bad Request. This is a server issue, please contact support@givebox.com or try again in a few minutes.';
+            customMsg = true;
+            errorMsg.data.message = '400 Bad Request. This is a server issue, please contact support@givebox.com or try again in a few minutes.';
           }
-          console.error('Error response', error);
-          dispatch(sendResponse(resource, {}, badrequest ? errorMsg : error ));
-          if (callback) callback(null, badrequest ? errorMsg : error.response);
+          if (error.response.status === 401) {
+            customMsg = true;
+            errorMsg.data.message = 'You do not have permission to make this request. Please contact your administrator to allow access.';
+          }
+          dispatch(sendResponse(resource, {}, customMsg ? errorMsg : error ));
+          if (callback) callback(null, customMsg ? errorMsg : error.response);
         } else {
           errorMsg.response.data.message = 'Javascript error occurred.';
           dispatch(sendResponse(resource, {}, error));
           console.error('Error', error);
           if (callback) callback(null, errorMsg);
         }
-        /*
-        console.log('catch error', error);
-        let badrequest = false;
-        msg = '400 Bad Request. This is a server issue, please contact support@givebox.com or try again in a few minutes.';
-        errorMsg.response.data.message = msg;
-        if (!has(error, 'response')) badrequest = true;
-        if (has(error, 'response')) {
-          dispatch(sendResponse(resource, {}, badrequest ? errorMsg : error));
-          if (callback) callback(null, badrequest ? errorMsg : error);
-        }
-        */
       })
     }
   }

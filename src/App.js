@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Routes from './Routes';
 import Loadable from 'react-loadable';
 import has from 'has';
-import { resourceProp, Loader, getResource, reloadResource, setAppRef, setModalRef } from './lib';
+import { resourceProp, Loader, getResource, reloadResource, setAppRef, setModalRef, util } from './lib';
 
 export const AppContext = React.createContext();
 
@@ -73,6 +73,20 @@ class App extends Component {
         else user = res.user;
 
         this.props.resourceProp('userID', user.ID);
+
+        // set access
+        const access = {
+          isOwner: false,
+          role: util.getValue(user, 'role'),
+          permissions: [],
+          type: 'organization'
+        };
+        // Check member for access
+        if (has(res, 'member')) {
+          access.isOwner = util.getValue(res.member, 'isOwner');
+          access.permissions = util.getValue(res.member, 'permissions');
+        }
+        this.props.resourceProp('access', access);
 
         // Set user info
         this.setIndexState('user', {

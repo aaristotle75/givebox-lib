@@ -345,7 +345,7 @@ class Form extends Component {
       if (field.validate === 'ccexpire') value = _v.formatCCExpire(value);
 
       if (field.validate === 'money' || field.validate === 'number' || field.validateOpts.validate === 'money' || field.validateOpts.validate === 'number') {
-        if (field.validateOpts.decimal) value = _v.formatDecimal(value);else value = _v.formatNumber(value);
+        value = _v.formatNumber(value);
       }
 
       this.fieldProp(name, {
@@ -1043,7 +1043,8 @@ class Form extends Component {
 
 
   getErrors(err) {
-    let error = false; // Make sure the response has data prop before continuing
+    let error = false;
+    console.log('Form', err); // Make sure the response has data prop before continuing
 
     if (has(err, 'data')) {
       const data = err.data; // Handle single error

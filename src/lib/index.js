@@ -60,7 +60,8 @@ import { app, resource, send, modal } from './api/reducers';
 import {
   getResource,
   reloadResource,
-  sendResource
+  sendResource,
+  translatePerm
 } from './api/helpers';
 
 import * as giveboxAPI from './api/givebox';
@@ -94,6 +95,7 @@ export {
   getResource,
   reloadResource,
   sendResource,
+  translatePerm,
 
   // reducers
   app,

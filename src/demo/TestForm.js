@@ -81,6 +81,17 @@ export default class TestForm extends Component {
       <div>
         <h2>Form Elements</h2>
         <div className='formWrapper'>
+        {this.props.textField('amount', {
+          required: true,
+          className: 'column',
+          label: 'Amount',
+          placeholder: '0.00',
+          fixedLabel: true,
+          validate: 'money',
+          validateOpts: { decimal: true, min: 1, max: 25000, errorMsg: `You can transfer a minimum of $1 up to your available balance of 25000` },
+          debug: true
+        })}
+        {/*
         {customLink}
         {this.props.textField('role', { required: true, label: 'Role', customLink: customLink })}
         {this.props.dropdown('recurringDefaultInterval', {
@@ -95,7 +106,6 @@ export default class TestForm extends Component {
           className: 'recurringOption',
           required: true
         })}
-        {/*
         <GBLink onClick={this.toggleChecked}>Toggle Checked</GBLink>
         {this.props.choice('enabled', { label: 'Enabled', checked: this.state.checked, value: this.state.checked })}
         {this.props.choice('choice', { label: 'Choice 1', value: 'choice1', checked: 'choice2', type: 'radio' })}

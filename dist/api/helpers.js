@@ -1,4 +1,4 @@
-import { getAPI, sendAPI } from './actions';
+import { getAPI, sendAPI, toggleModal } from './actions';
 import * as giveboxAPI from './givebox';
 import * as util from '../common/utility';
 import has from 'has';
@@ -33,7 +33,10 @@ export function getResource(resource, opts = {}) {
     let reload = options.reload;
     const orgID = has(getState().resource, 'orgID') ? getState().resource.orgID : null;
     const userID = has(getState().resource, 'userID') ? getState().resource.userID : null;
-    const affiliateID = has(getState().resource, 'affiliateID') ? getState().resource.affiliateID : null; // Reload if resource exists and a new ID is requested
+    const affiliateID = has(getState().resource, 'affiliateID') ? getState().resource.affiliateID : null; //const access = has(getState().resource, 'access') ? getState().resource.access : null;
+    //console.log('getResource access', access);
+    //dispatch(toggleModal('accessDenied', true));
+    // Reload if resource exists and a new ID is requested
 
     if (has(getState().resource, options.customName || resource)) {
       if (!util.isEmpty(id)) {
@@ -62,14 +65,17 @@ export function getResource(resource, opts = {}) {
       ...options.search
     }; // Get the API endpoint
 
-    let endpoint = API_URL + giveboxAPI.endpoint(resource, id, {
+    const api = giveboxAPI.endpoint(resource, id, {
       orgID,
-      userID,
-      affiliateID
-    });
-    endpoint = `${endpoint}${options.csv ? '.csv' : ''}${util.makeAPIQuery(search)}`; // If CSV return the endpoint else dispatch the API
+      userID
+    }); // Only dispatch if an api.endpoint exists
 
-    if (options.csv) return endpoint;else return dispatch(getAPI(resource, endpoint, search, options.callback, reload, options.customName));
+    if (api.endpoint) {
+      let endpoint = API_URL + api.endpoint;
+      endpoint = `${endpoint}${options.csv ? '.csv' : ''}${util.makeAPIQuery(search)}`; // If CSV return the endpoint else dispatch the API
+
+      if (options.csv) return endpoint;else return dispatch(getAPI(resource, endpoint, search, options.callback, reload, options.customName));
+    }
   };
 }
 /**
@@ -152,17 +158,120 @@ export function sendResource(resource, opts = {}) {
     let method = options.method;
     const orgID = has(getState().resource, 'orgID') ? getState().resource.orgID : null;
     const userID = has(getState().resource, 'userID') ? getState().resource.userID : null;
-    let endpoint = API_URL + giveboxAPI.endpoint(resource, id, {
+    const api = giveboxAPI.endpoint(resource, id, {
       orgID,
       userID
-    }); // If endpoint is create new than slice off new and set method to POST
+    }); // Only dispatch if an api.endpoint exists
 
-    if (endpoint.slice(-3) === 'new') {
-      method = 'POST'; // This slices off the /new from the endpoint
+    if (api.endpoint) {
+      let endpoint = API_URL + api.endpoint; // If endpoint is create new than slice off new and set method to POST
 
-      endpoint = endpoint.slice(0, -4);
+      if (endpoint.slice(-3) === 'new') {
+        method = 'POST'; // This slices off the /new from the endpoint
+
+        endpoint = endpoint.slice(0, -4);
+      }
+
+      return dispatch(sendAPI(resource, endpoint, method, options.data, options.callback, options.reload ? reloadResource : null, options.resourcesToLoad, options.customName, options.multi));
     }
-
-    return dispatch(sendAPI(resource, endpoint, method, options.data, options.callback, options.reload ? reloadResource : null, options.resourcesToLoad, options.customName, options.multi));
   };
+}
+export function translatePerm(value) {
+  var slugArr = util.getSplitStr(value.slug, '_', 2, -1);
+  var obj = {};
+  var group, groupName, perm, name;
+  groupName = value.name.substr(value.name.indexOf(' ') + 1);
+  group = slugArr[1];
+  perm = slugArr[0];
+  name = value.name;
+
+  switch (group) {
+    case 'refund':
+      groupName = 'Refunds';
+      break;
+
+    case 'finance':
+    case 'transfer':
+      group = 'money';
+      groupName = 'Money';
+
+      switch (perm) {
+        case 'read':
+          name = 'View Transactions';
+          break;
+
+        case 'write':
+          name = 'Transfer Money (Withdrawal/Send Payments)';
+          break;
+        // no default
+      }
+
+      break;
+
+    case 'sweepstake':
+      groupName = 'Sweepstakes';
+      break;
+
+    case 'member':
+      group = 'users';
+      groupName = 'Users';
+
+      switch (perm) {
+        case 'read':
+          name = 'View User';
+          break;
+
+        case 'write':
+          name = 'Create/Edit User';
+          break;
+
+        case 'delete':
+          name = 'Delete User';
+          break;
+        // no default
+      }
+
+      ;
+      break;
+
+    case 'keys':
+      groupName = 'Developer';
+      break;
+
+    case 'fundraiser':
+      groupName = 'Donation Forms';
+      break;
+
+    case 'membership':
+      groupName = 'Memberships';
+      break;
+
+    case 'event':
+      groupName = 'Events';
+      break;
+
+    case 'invoice':
+      groupName = 'Invoices';
+      break;
+
+    case 'customer':
+      groupName = 'Customers';
+      break;
+
+    case 'bank':
+      groupName = 'Bank Accounts';
+      break;
+
+    case 'email':
+      groupName = 'Email Blasts';
+      break;
+    // no default
+  }
+
+  obj.groupName = groupName;
+  obj.group = group;
+  obj.perm = perm;
+  obj.name = name;
+  obj.slug = value.slug;
+  return obj;
 }

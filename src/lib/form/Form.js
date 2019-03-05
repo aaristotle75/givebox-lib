@@ -302,8 +302,7 @@ class Form extends Component {
       if (field.validate === 'phone') value = _v.formatPhone(value);
       if (field.validate === 'ccexpire') value = _v.formatCCExpire(value);
       if (field.validate === 'money' || field.validate === 'number' || field.validateOpts.validate === 'money' || field.validateOpts.validate === 'number') {
-         if (field.validateOpts.decimal) value = _v.formatDecimal(value);
-         else value = _v.formatNumber(value);
+        value = _v.formatNumber(value);
       }
       this.fieldProp(name, {value: value, error: false});
       this.formProp({error: false, updated: true});
@@ -905,7 +904,7 @@ class Form extends Component {
   */
   getErrors(err) {
     let error = false;
-
+    console.log('Form', err);
 
     // Make sure the response has data prop before continuing
     if (has(err, 'data')) {

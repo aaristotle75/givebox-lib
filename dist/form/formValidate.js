@@ -33,6 +33,7 @@ export const nLength = n => {
   return (Math.log(Math.abs(n) + 1) * 0.43429448190325176 | 0) + 1;
 };
 export function formatDecimal(value) {
+  console.log('value', value);
   let val = isNaN(value) ? parseInt(value.replace(/[^0-9]/g, '')) : value;
   let newVal = '';
   const length = nLength(val);
@@ -52,6 +53,7 @@ export function formatDecimal(value) {
     newVal = `${int}.${decimal}`;
   }
 
+  console.log('newVal val', newVal, val);
   return isNaN(newVal) || parseInt(val) === 0 || isNaN(val) ? '' : numberWithCommas(newVal);
 }
 export function formatNumber(value) {

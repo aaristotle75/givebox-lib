@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import TestForm from './TestForm';
-import { Form, Alert, Tabs, Tab, } from '../lib';
+import { Form, Alert, Tabs, Tab, ModalLink, GBLink } from '../lib';
 
 export default class Dashboard extends Component {
 
   constructor(props) {
     super(props);
     this.status = this.status.bind(this);
+    this.toggleModalState = this.toggleModalState.bind(this);
     this.state = {
       msg: '',
-      display: false
+      display: false,
+      modalState: 'closed'
     };
   }
 
@@ -35,10 +37,20 @@ export default class Dashboard extends Component {
     this.setState({ msg: msg, display: display });
   }
 
+  toggleModalState() {
+    let modalState = 'open';
+    if (this.state.modalState === 'open') {
+      modalState = 'closed';
+    }
+    this.setState({ modalState });
+  }
+
   render() {
 
     return (
       <div>
+      <GBLink onClick={() => this.toggleModalState()}>Toggle Modal</GBLink>
+      <ModalLink modalState={this.state.modalState} id='accessDenied'>Access Denied</ModalLink>
         <Tabs
           default='list'
           className='statsTab'

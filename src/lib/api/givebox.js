@@ -17,8 +17,13 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
     orgID,
     affiliateID
   } = opts;
-  let endpoint;
 
+  const obj = {
+    endpoint: '',
+    perm: ''
+  };
+
+  let endpoint, perm;
   switch (resource) {
     // SUPER
     case 'superFeeSettings': {
@@ -300,10 +305,12 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'orgMembers': {
+      perm = 'member'
       endpoint = `orgs/${orgID}/members`;
       break;
     }
     case 'orgMember': {
+      perm = 'member';
       endpoint = `orgs/${orgID}/members/${id[0]}`;
       break;
     }
@@ -320,14 +327,17 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'orgCustomers': {
+      perm = 'customer';
       endpoint = `orgs/${orgID}/customers`;
       break;
     }
     case 'orgCustomer': {
+      perm = 'customer'
       endpoint = `orgs/${orgID}/customers/${id[0]}`;
       break;
     }
     case 'orgKeys': {
+      perm = 'keys';
       endpoint = `orgs/${orgID}/apikeys`;
       break;
     }
@@ -340,10 +350,12 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'orgBankAccounts': {
+      perm = 'bank_account';
       endpoint = `orgs/${orgID}/bank-accounts`;
       break;
     }
     case 'orgBankAccount': {
+      perm = 'bank_account';
       endpoint = `orgs/${orgID}/bank-accounts/${id[0]}`;
       break;
     }
@@ -388,14 +400,17 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'orgRecurringOrders': {
+      perm = 'recurring';
       endpoint = `orgs/${orgID}/recurring`;
       break;
     }
     case 'orgRecurringOrder': {
+      perm = 'recurring';
       endpoint = `orgs/${orgID}/recurring/${id[0]}`;
       break;
     }
     case 'orgTransactions': {
+      perm = 'finance';
       endpoint = `orgs/${orgID}/transactions`;
       break;
     }
@@ -404,6 +419,7 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'orgMoneyTransfers': {
+      perm = 'transfer';
       endpoint = `orgs/${orgID}/money-transfers`;
       break;
     }
@@ -412,6 +428,7 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'orgRefundPurchase': {
+      perm = 'refund';
       endpoint = `orgs/${orgID}/purchases/${id[0]}/refunds`;
       break;
     }
@@ -428,10 +445,12 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'orgFundraisers': {
+      perm = 'fundraiser';
       endpoint = `orgs/${orgID}/fundraisers`;
       break;
     }
     case 'orgFundraiser': {
+      perm = 'fundraiser';
       endpoint = `orgs/${orgID}/fundraisers/${id[0]}`;
       break;
     }
@@ -448,10 +467,12 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'orgEvents': {
+      perm = 'event';
       endpoint = `orgs/${orgID}/events`;
       break;
     }
     case 'orgEvent': {
+      perm = 'event';
       endpoint = `orgs/${orgID}/events/${id[0]}`;
       break;
     }
@@ -472,10 +493,12 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'orgInvoices': {
+      perm = 'invoice';
       endpoint = `orgs/${orgID}/invoices`;
       break;
     }
     case 'orgInvoice': {
+      perm = 'invoice';
       endpoint = `orgs/${orgID}/invoices/${id[0]}`;
       break;
     }
@@ -488,10 +511,12 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'orgSweepstakes': {
+      perm = 'sweepstake';
       endpoint = `orgs/${orgID}/sweepstakes`;
       break;
     }
     case 'orgSweepstake': {
+      perm = 'sweepstake';
       endpoint = `orgs/${orgID}/sweepstakes/${id[0]}`;
       break;
     }
@@ -516,10 +541,12 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'orgMemberships': {
+      perm = 'membership';
       endpoint = `orgs/${orgID}/memberships`;
       break;
     }
     case 'orgMembership': {
+      perm = 'membership';
       endpoint = `orgs/${orgID}/memberships/${id[0]}`;
       break;
     }
@@ -556,10 +583,12 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'orgAlerts': {
+      perm = 'alert';
       endpoint = `orgs/${orgID}/subscriptions`;
       break;
     }
     case 'orgAlert': {
+      perm = 'alert';
       endpoint = `orgs/${orgID}/subscriptions/${id[0]}`;
       break;
     }
@@ -710,9 +739,12 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
 
     // DEFAULT
     default:
-      console.error('No endpoint found.');
+      console.error('No endpoint found: ', resource);
       break;
   }
 
-  return endpoint;
+  obj.endpoint = endpoint;
+  obj.perm = perm;
+
+  return obj;
 }
