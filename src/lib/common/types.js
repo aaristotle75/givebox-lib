@@ -49,7 +49,6 @@ export function kind(kind) {
         list: 'Events'
       };
       obj.icon = 'calendar';
-      obj.desc = <span className='typesDesc'>An all-in-one tool to help you organize and plan every detail of your nonprofit <span className='typeDescBold'>Events</span>. From golf toournaments to fundraisers.</span>;
       break;
     }
 
@@ -69,7 +68,6 @@ export function kind(kind) {
         list: 'Fundraisers'
       };
       obj.icon = 'box';
-      obj.desc = <span className='typesDesc'>The most successful fundraising tool can be your <span className='typeDescBold'>Donation Forms</span> collecting money directly from your website or Facebook profile.</span>;
       break;
     }
 
@@ -89,7 +87,6 @@ export function kind(kind) {
         list: 'Invoices'
       };
       obj.icon = 'briefcase';
-      obj.desc = <span className='typesDesc'>Create customized, professional <span className='typeDescBold'>Invoices</span> in a few clicks and send to vendors and large donors through email.</span>;
       break;
     }
 
@@ -109,7 +106,6 @@ export function kind(kind) {
         list: 'Memberships'
       };
       obj.icon = 'clipboard';
-      obj.desc = <span className='typesDesc'>Engage, grow, track and measure your nonprofit organizations and associations <span className='typeDescBold'>Memberships</span> in a few simple steps.</span>;
       break;
     }
 
@@ -129,7 +125,6 @@ export function kind(kind) {
         list: 'Sweepstakes'
       };
       obj.icon = 'gift';
-      obj.desc = <span className='typesDesc'>Creating a <span className='typeDescBold'>Sweepstakes</span> campaign offers a fun, engaging way for you to boost fundraising and gather information on your donors.</span>;
       break;
     }
 
@@ -147,7 +142,6 @@ export function kind(kind) {
         list: 'Articles'
       };
       obj.icon = 'globe';
-      obj.desc = '';
       break;
   }
   return obj;

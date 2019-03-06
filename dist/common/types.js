@@ -44,11 +44,6 @@ export function kind(kind) {
           list: 'Events'
         };
         obj.icon = 'calendar';
-        obj.desc = React.createElement("span", {
-          className: "typesDesc"
-        }, "An all-in-one tool to help you organize and plan every detail of your nonprofit ", React.createElement("span", {
-          className: "typeDescBold"
-        }, "Events"), ". From golf toournaments to fundraisers.");
         break;
       }
 
@@ -69,11 +64,6 @@ export function kind(kind) {
           list: 'Fundraisers'
         };
         obj.icon = 'box';
-        obj.desc = React.createElement("span", {
-          className: "typesDesc"
-        }, "The most successful fundraising tool can be your ", React.createElement("span", {
-          className: "typeDescBold"
-        }, "Donation Forms"), " collecting money directly from your website or Facebook profile.");
         break;
       }
 
@@ -94,11 +84,6 @@ export function kind(kind) {
           list: 'Invoices'
         };
         obj.icon = 'briefcase';
-        obj.desc = React.createElement("span", {
-          className: "typesDesc"
-        }, "Create customized, professional ", React.createElement("span", {
-          className: "typeDescBold"
-        }, "Invoices"), " in a few clicks and send to vendors and large donors through email.");
         break;
       }
 
@@ -119,11 +104,6 @@ export function kind(kind) {
           list: 'Memberships'
         };
         obj.icon = 'clipboard';
-        obj.desc = React.createElement("span", {
-          className: "typesDesc"
-        }, "Engage, grow, track and measure your nonprofit organizations and associations ", React.createElement("span", {
-          className: "typeDescBold"
-        }, "Memberships"), " in a few simple steps.");
         break;
       }
 
@@ -144,11 +124,6 @@ export function kind(kind) {
           list: 'Sweepstakes'
         };
         obj.icon = 'gift';
-        obj.desc = React.createElement("span", {
-          className: "typesDesc"
-        }, "Creating a ", React.createElement("span", {
-          className: "typeDescBold"
-        }, "Sweepstakes"), " campaign offers a fun, engaging way for you to boost fundraising and gather information on your donors.");
         break;
       }
 
@@ -166,7 +141,6 @@ export function kind(kind) {
         list: 'Articles'
       };
       obj.icon = 'globe';
-      obj.desc = '';
       break;
   }
 

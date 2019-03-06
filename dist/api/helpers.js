@@ -1,4 +1,4 @@
-import { getAPI, sendAPI, toggleModal } from './actions';
+import { getAPI, sendAPI } from './actions';
 import * as giveboxAPI from './givebox';
 import * as util from '../common/utility';
 import has from 'has';
@@ -35,7 +35,6 @@ export function getResource(resource, opts = {}) {
     const userID = has(getState().resource, 'userID') ? getState().resource.userID : null;
     const affiliateID = has(getState().resource, 'affiliateID') ? getState().resource.affiliateID : null; //const access = has(getState().resource, 'access') ? getState().resource.access : null;
     //console.log('getResource access', access);
-    //dispatch(toggleModal('accessDenied', true));
     // Reload if resource exists and a new ID is requested
 
     if (has(getState().resource, options.customName || resource)) {
@@ -214,7 +213,7 @@ export function translatePerm(value) {
 
     case 'member':
       group = 'users';
-      groupName = 'Users';
+      groupName = 'Team Members';
 
       switch (perm) {
         case 'read':
