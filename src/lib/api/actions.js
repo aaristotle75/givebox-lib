@@ -194,7 +194,7 @@ export function sendAPI(
           dispatch(sendResponse(resource, {}, customMsg ? errorMsg : error ));
           if (callback) callback(null, customMsg ? errorMsg : error.response);
         } else {
-          errorMsg.response.data.message = 'Javascript error occurred.';
+          errorMsg.data.message = 'Javascript error occurred.';
           dispatch(sendResponse(resource, {}, error));
           console.error('Error', error);
           if (callback) callback(null, errorMsg);
