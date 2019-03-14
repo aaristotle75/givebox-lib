@@ -77,6 +77,16 @@ export default class TestForm extends Component {
 
     const customLink = <GBLink onClick={this.focusInput}>Focus Input</GBLink>;
 
+    const loading = true;
+    /*
+    if (loading) return (
+      <div>
+        {this.props.loader('Loading data...')}
+        {this.props.loader('Loading data2...')}
+      </div>
+    )
+    */
+
     return (
       <div>
         <h2>Form Elements</h2>

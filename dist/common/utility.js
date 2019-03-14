@@ -305,10 +305,10 @@ export function calcAmount(amount, fee, passFees, gross = false) {
     if (gross) return parseFloat(amount / 100).toFixed(2);else return parseFloat(amount / 100 - fee / 100).toFixed(2);
   }
 }
-export function money(amount, symbol = '$', cents = true) {
+export function money(amount, symbol = '$', cents = true, showNegative = true) {
   let negative = false;
 
-  if (amount < 0) {
+  if (amount < 0 && showNegative) {
     amount = Math.abs(amount);
     negative = true;
   }

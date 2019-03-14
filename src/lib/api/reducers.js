@@ -20,6 +20,11 @@ export function app(state = {
       return Object.assign({}, state, {
         filterOpen: action.open
       });
+    case types.SET_PROP:
+      return Object.assign({}, state, {
+        ...state,
+        [action.key]: action.value
+      });
     default:
       return state
   }

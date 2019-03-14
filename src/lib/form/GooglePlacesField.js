@@ -43,44 +43,44 @@ class GooglePlacesField extends Component {
   }
 
 	geolocate() {
-		var bindthis = this;
-		if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition(function(position) {
-				var geolocation = {
-					lat: position.coords.latitude,
-					lng: position.coords.longitude
-				};
-				var circle = new google.maps.Circle({
-					center: geolocation,
-					radius: position.coords.accuracy
-				});
-				bindthis.autocomplete.setBounds(circle.getBounds());
-			});
-		}
+    var bindthis = this;
+    if (navigator.geolocation) {
+    	navigator.geolocation.getCurrentPosition(function(position) {
+    		var geolocation = {
+    			lat: position.coords.latitude,
+    			lng: position.coords.longitude
+    		};
+    		var circle = new google.maps.Circle({
+    			center: geolocation,
+    			radius: position.coords.accuracy
+    		});
+    		bindthis.autocomplete.setBounds(circle.getBounds());
+    	});
+    }
 	}
 
 	fillInAddress() {
     const returned = [];
     const googleMaps = {};
-		const place = this.autocomplete.getPlace();
-		const componentForm = {
-			street_number: 'short_name',
-			route: 'long_name',
-			locality: 'long_name',
-			administrative_area_level_1: 'short_name',
-			country: 'long_name',
-			postal_code: 'short_name'
-		};
-		// Get each component of the address from the place details
-		// and fill the corresponding field on the form.
-		for (var i = 0; i < place.address_components.length; i++) {
-			const addressType = place.address_components[i].types[0];
+    const place = this.autocomplete.getPlace();
+    const componentForm = {
+    	street_number: 'short_name',
+    	route: 'long_name',
+    	locality: 'long_name',
+    	administrative_area_level_1: 'short_name',
+    	country: 'long_name',
+    	postal_code: 'short_name'
+    };
+    // Get each component of the address from the place details
+    // and fill the corresponding field on the form.
+    for (var i = 0; i < place.address_components.length; i++) {
+    	const addressType = place.address_components[i].types[0];
       returned.push(addressType);
-			if (componentForm[addressType]) {
-				var val = place.address_components[i][componentForm[addressType]];
+    	if (componentForm[addressType]) {
+    		var val = place.address_components[i][componentForm[addressType]];
         googleMaps[addressType] = val;
-			}
-		}
+    	}
+    }
     googleMaps.lat = place.geometry.location.lat();
     googleMaps.long = place.geometry.location.lng();
     this.formatAddress(googleMaps);
@@ -91,11 +91,11 @@ class GooglePlacesField extends Component {
 
 
   formatAddress(data) {
-		const address = data.street_number ? `${data.street_number} ${data.route}` : '';
-		const city = data.locality;
-		const state = data.administrative_area_level_1;
-		const zip = data.postal_code;
-		const country = data.country;
+    const address = data.street_number ? `${data.street_number} ${data.route}` : '';
+    const city = data.locality;
+    const state = data.administrative_area_level_1;
+    const zip = data.postal_code;
+    const country = data.country;
     const lat = data.lat;
     const long = data.long;
 

@@ -18,3 +18,4 @@ export const TOGGLE_MODAL = 'TOGGLE_MODAL';
 export const IS_FILTER_OPEN = 'IS_FILTER_OPEN';
 export const SET_APP_REF = 'SET_APP_REF';
 export const SET_MODAL_REF = 'SET_MODAL_REF';
+export const SET_PROP = 'SET_PROP';

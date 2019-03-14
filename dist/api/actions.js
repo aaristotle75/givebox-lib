@@ -16,6 +16,13 @@ export function resourceProp(key, value) {
     value: value
   };
 }
+export function setProp(key, value) {
+  return {
+    type: types.SET_PROP,
+    key: key,
+    value: value
+  };
+}
 export function isFilterOpen(open) {
   return {
     type: types.IS_FILTER_OPEN,

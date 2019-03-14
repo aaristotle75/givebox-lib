@@ -306,9 +306,9 @@ export function calcAmount(amount, fee, passFees, gross = false) {
   }
 }
 
-export function money(amount, symbol = '$', cents = true) {
+export function money(amount, symbol = '$', cents = true, showNegative = true) {
   let negative = false;
-  if (amount < 0) {
+  if (amount < 0 && showNegative) {
     amount = Math.abs(amount);
     negative = true;
   }

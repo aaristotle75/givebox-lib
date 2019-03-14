@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Portal from './Portal';
+import { util } from '../';
 export default class Loader extends Component {
   constructor(props) {
     super(props);
@@ -41,6 +42,7 @@ export default class Loader extends Component {
     if (!this.state.rootEl) return React.createElement("div", null);
     const showMsg = !!forceText;
     return React.createElement(Portal, {
+      id: "loadingPortal",
       rootEl: this.state.rootEl
     }, React.createElement("div", {
       className: `loader ${className}`

@@ -22,6 +22,11 @@ export function app(state = {
         filterOpen: action.open
       });
 
+    case types.SET_PROP:
+      return Object.assign({}, state, { ...state,
+        [action.key]: action.value
+      });
+
     default:
       return state;
   }

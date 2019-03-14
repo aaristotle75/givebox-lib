@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Portal from './Portal';
+import { util } from '../';
 
 export default class Loader extends Component {
 
@@ -32,7 +33,7 @@ export default class Loader extends Component {
 		const showMsg = !!forceText;
 
     return (
-      <Portal rootEl={this.state.rootEl}>
+      <Portal id='loadingPortal' rootEl={this.state.rootEl}>
 				<div className={`loader ${className}`} />
 				<div className='loaderContent'>
 					<div className='loadingText'>

@@ -57,7 +57,7 @@ export default class Image extends Component {
     const maxSize = this.props.maxSize || defaultSize;
 
     return (
-      <div className={`imageComponent ${className || ''}`}>
+      <div style={{ width: maxSize, height: 'auto' }} className={`imageComponent ${className || ''}`}>
         {this.state.imageLoading  &&
         <div className='imageLoader'>
           <img src='https://s3-us-west-1.amazonaws.com/givebox/public/images/squareLoader.gif' alt='Loader' />

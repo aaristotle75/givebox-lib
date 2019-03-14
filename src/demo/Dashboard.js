@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import TestForm from './TestForm';
-import { Form, Alert, Tabs, Tab, ModalLink, GBLink } from '../lib';
+import { Form, Alert, Tabs, Tab, ModalLink, GBLink, Image } from '../lib';
 
 export default class Dashboard extends Component {
 
@@ -49,6 +49,7 @@ export default class Dashboard extends Component {
 
     return (
       <div>
+      <Image maxSize={'125px'} url={`https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/raise-fundraiser.png`} size='inherit' alt={`Customers`} />
       <GBLink onClick={() => this.toggleModalState()}>Toggle Modal</GBLink>
       <ModalLink modalState={this.state.modalState} id='accessDenied'>Access Denied</ModalLink>
         <Tabs
@@ -63,7 +64,7 @@ export default class Dashboard extends Component {
           </Tab>
         </Tabs>
         <Form name='testForm'>
-          <TestForm />
+          <TestForm {...this.props} />
         </Form>
       </div>
     )
