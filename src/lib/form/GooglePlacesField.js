@@ -59,7 +59,7 @@ class GooglePlacesField extends Component {
     }
 	}
 
-	fillInAddress() {
+  fillInAddress() {
     const returned = [];
     const googleMaps = {};
     const place = this.autocomplete.getPlace();
