@@ -165,7 +165,7 @@ class App extends Component {
   render() {
 
     return (
-      <div className={this.state.mobile ? 'mobile' : 'desktop'}>
+      <div className={`${this.state.mobile ? 'mobile' : 'desktop'}`}>
         <div id='app-root' ref={this.appRef}>
           <AppContext.Provider
             value={{

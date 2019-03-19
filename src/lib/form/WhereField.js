@@ -1,12 +1,14 @@
 /*global google*/
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import GooglePlacesField from './GooglePlacesField';
 import {
   GBLink,
   selectOptions,
   util,
   ModalRoute,
-  ModalLink
+  ModalLink,
+  toggleModal
 } from '../';
 import AnimateHeight from 'react-animate-height';
 import has from 'has';
@@ -148,6 +150,9 @@ class WhereFieldForm extends Component {
               </div>
             </AnimateHeight>
           </div>
+          <div className='center button-group'>
+            <GBLink className='button' onClick={() => this.props.toggleModal(this.props.modalID, false)}>Close</GBLink>
+          </div>
         </div>
     );
   }
@@ -245,4 +250,11 @@ WhereField.defaultProps = {
   manualLabel: 'Update Map'
 }
 
-export default WhereField;
+function mapStateToProps(state, props) {
+  return {
+  }
+}
+
+export default connect(mapStateToProps, {
+  toggleModal
+})(WhereField);

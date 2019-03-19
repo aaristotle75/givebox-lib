@@ -171,7 +171,7 @@ class ColorPicker extends Component {
 ColorPicker.defaultProps = {
   name: 'defaultColorPicker',
   modal: true,
-  modalLabel: 'Select color',
+  modalLabel: 'Select Color',
   modalID: 'colorPicker',
   defaultColor: '#45a8dc'
 }

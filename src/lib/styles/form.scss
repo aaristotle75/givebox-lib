@@ -1,5 +1,9 @@
 @import 'variables.scss';
 
+form {
+  position: relative;
+}
+
 form:not(.clean) {
   padding: 10px 0;
 }
@@ -463,6 +467,12 @@ label.idle, .label.idle {
 
 }
 
+.dropdown {
+  button .label.idle {
+    color: $med-blue-gray !important;
+  }
+}
+
 .dropdown.active {
     .icon,
     button.label {
@@ -842,15 +852,15 @@ label.idle, .label.idle {
   input::-webkit-input-placeholder {
     font-size: $normal-text-size;
     font-family: $font-family;
-    color: $light;
+    color: $med-blue-gray;
   }
   input::-moz-placeholder {
     font-size: $normal-text-size;
-    color: $light;
+    color: $med-blue-gray;
   }
   input::-ms-input-placeholder {
     font-size: $normal-text-size;
-    color: $light;
+    color: $med-blue-gray;
   }
 }
 

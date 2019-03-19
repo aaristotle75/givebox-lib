@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import 'flatpickr/dist/themes/light.css';
 import Flatpickr from 'react-flatpickr';
 import Moment from 'moment';
+import Inputmask from "inputmask";
 import { util, _v, Fade, Checkbox } from '../';
 
 class CalendarField extends Component {
@@ -24,6 +25,7 @@ class CalendarField extends Component {
       display: false,
       enableTime: this.props.enableTime
     }
+    this.flatpickrRef = React.createRef();
     this.inputRef = React.createRef();
   }
 
@@ -63,7 +65,7 @@ class CalendarField extends Component {
   }
 
   closeCalendar() {
-    this.inputRef.current.flatpickr.close();
+    this.flatpickrRef.current.flatpickr.close();
   }
 
   onClose() {
@@ -82,7 +84,8 @@ class CalendarField extends Component {
   }
 
   onChangeInput(e) {
-    const value = _v.formatDate(e.currentTarget.value, this.state.enableTime);
+    const val = e.currentTarget.value;
+    const value = _v.formatDate(val, this.state.enableTime);
     const dateFormat = this.state.enableTime ? 'MM/DD/YYYY H:mm' : 'MM/DD/YYYY';
     const ts = this.props.utc ? Moment.utc(value, dateFormat).valueOf() : Moment(value, dateFormat).valueOf();
     this.setState({ value: value, date: value });
@@ -139,7 +142,7 @@ class CalendarField extends Component {
     return (
       <Flatpickr
         className={`${enableTimeOption ? 'enableTimeOption' : ''} ${className || ''}`}
-        ref={this.inputRef}
+        ref={this.flatpickrRef}
         value={date}
         onChange={this.onChange}
         onOpen={this.onOpen}
@@ -173,6 +176,7 @@ class CalendarField extends Component {
                 onChange={this.onChangeInput}
                 value={this.state.value}
                 maxLength={16}
+                ref={this.inputRef}
               />
               <label htmlFor={name} style={labelStyle} >{label}</label>
               <div className={`input-bottom ${error ? 'error' : this.state.status}`}></div>

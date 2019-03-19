@@ -202,7 +202,7 @@ class Filter extends Component {
       type: "button",
       onClick: this.ignoreFilters
     }, "Ignore Filters"), this.props.saveButton(this.processForm, {
-      label: 'Apply',
+      label: 'Apply Filters',
       allowDisabled: allowDisabled
     })));
   }

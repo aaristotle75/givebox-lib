@@ -14,6 +14,14 @@ class Tabs extends Component {
 
   componentDidMount() {}
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.default !== this.props.default) {
+      if (this.state.selectedTab !== this.props.default) {
+        this.onTabClick(this.props.default);
+      }
+    }
+  }
+
   async onTabClick(key) {
     const promise = new Promise((resolve, reject) => {
       let validate = true;

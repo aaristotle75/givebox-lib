@@ -107,7 +107,7 @@ class Upload extends Component {
             {!this.state.imageLoading && (this.props.customLink || '')}
             <Image maxSize='175px' url={this.state.preview} alt={this.state.preview} className='dropzoneImage' onLoad={this.imageOnLoad} />
             {!this.state.imageLoading &&
-              <GBLink onClick={this.clearImage} className='link'>Clear image</GBLink>
+              <GBLink onClick={this.clearImage} className='link'>Remove Image</GBLink>
             }
           </div>
         :
@@ -118,6 +118,7 @@ class Upload extends Component {
               onDrop={this.onDrop}
               accept={mimes}
             >
+              <span className='icon dropzone-icon icon-instagram'></span>
               <span className='text'>{uploadLabel}</span>
             </Dropzone>
             {this.state.original && <GBLink onClick={this.restoreImage} className='link'>Restore Original</GBLink>}
@@ -136,7 +137,7 @@ class Upload extends Component {
 Upload.defaultProps = {
   name: 'defaultUpload',
   label: 'Upload',
-  uploadLabel: 'Upload Image'
+  uploadLabel: 'Add Image'
 }
 
 export default Upload;
