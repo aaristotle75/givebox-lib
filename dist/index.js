@@ -39,15 +39,15 @@ import Tabs, { Tab } from './common/Tabs';
 import * as types from './common/types';
 import * as util from './common/utility';
 import FeesGlossary from './glossary/Fees';
-import { toggleModal, removeResource, resourceProp, getAPI, sendAPI, setAppRef, setModalRef, setProp } from './api/actions';
-import { app, resource, send, modal } from './api/reducers';
-import { getResource, reloadResource, sendResource, translatePerm } from './api/helpers';
+import { toggleModal, removeResource, resourceProp, getAPI, sendAPI, setAppRef, setModalRef, setProp, setPrefs } from './api/actions';
+import { app, resource, send, modal, preferences } from './api/reducers';
+import { getResource, reloadResource, sendResource, translatePerm, savePrefs } from './api/helpers';
 import * as giveboxAPI from './api/givebox';
 export { // Form
 Form, _v, selectOptions, Select, TextField, Dropdown, RichTextField, Choice, CalendarField, CalendarRange, Checkbox, WhereField, // actions
-toggleModal, removeResource, resourceProp, getAPI, sendAPI, setAppRef, setModalRef, setProp, // API
-giveboxAPI, getResource, reloadResource, sendResource, translatePerm, // reducers
-app, resource, send, modal, // Modal
+toggleModal, removeResource, resourceProp, getAPI, sendAPI, setAppRef, setModalRef, setProp, setPrefs, // API
+giveboxAPI, getResource, reloadResource, sendResource, translatePerm, savePrefs, // reducers
+app, resource, send, modal, preferences, // Modal
 ModalLink, ModalRoute, // Table
 ActionsMenu, Search, Table, MaxRecords, NoRecords, Paginate, Export, Filter, // Block
 StatBlock, ActionBar, CodeBlock, // common

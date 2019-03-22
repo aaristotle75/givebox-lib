@@ -1,6 +1,21 @@
 import axios from 'axios';
 import * as types from './actionTypes';
 import has from 'has';
+export function updatePrefs(prefs) {
+  return {
+    type: types.SET_PREFERENCES,
+    preferences: prefs
+  };
+}
+export function setPrefs(pref) {
+  return (dispatch, getState) => {
+    const preferences = has(getState(), 'preferences') ? getState().preferences : {};
+    const updatedPrefs = { ...preferences,
+      ...pref
+    };
+    return dispatch(updatePrefs(updatedPrefs));
+  };
+}
 export function toggleModal(identifier, open, opts = {}) {
   return {
     type: types.TOGGLE_MODAL,
@@ -68,7 +83,7 @@ function resourceCatchError(resource, error) {
   };
 }
 
-export function getAPI(resource, endpoint, search, callback, reload, customName) {
+export function getAPI(resource, endpoint, search, callback, reload, customName, resourcesToLoad, reloadResource) {
   let csrf_token = document.querySelector(`meta[name='csrf_token']`) ? document.querySelector(`meta[name='csrf_token']`)['content'] : '';
   return (dispatch, getState) => {
     if (shouldGetAPI(getState(), customName || resource, reload)) {
@@ -85,12 +100,18 @@ export function getAPI(resource, endpoint, search, callback, reload, customName)
         switch (response.status) {
           case 200:
             dispatch(receiveResource(customName || resource, endpoint, response.data, null, search));
+            if (resourcesToLoad) dispatch(reloadResource(null, {
+              resourcesToLoad: resourcesToLoad
+            }));
             if (callback) callback(response.data, null);
             break;
 
           default:
             // pass response as error
             dispatch(receiveResource(customName || resource, endpoint, {}, response, search));
+            if (resourcesToLoad) dispatch(reloadResource(null, {
+              resourcesToLoad: resourcesToLoad
+            }));
             if (callback) callback(null, response);
             break;
         }

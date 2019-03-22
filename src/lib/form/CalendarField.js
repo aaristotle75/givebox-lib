@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import 'flatpickr/dist/themes/light.css';
 import Flatpickr from 'react-flatpickr';
 import Moment from 'moment';
-import Inputmask from "inputmask";
 import { util, _v, Fade, Checkbox } from '../';
 
 class CalendarField extends Component {
@@ -77,7 +76,7 @@ class CalendarField extends Component {
   }
 
   onChange(selectedDates, dateStr, instance) {
-    const dateFormat = this.state.enableTime ? 'MM/DD/YYYY H:mm' : 'MM/DD/YYYY';
+    const dateFormat = this.state.enableTime ? 'MM/DD/YYYY h:mmA' : 'MM/DD/YYYY';
     const ts = this.props.utc ? Moment.utc(dateStr, dateFormat).valueOf() : Moment(dateStr, dateFormat).valueOf();
     this.setState({value: dateStr, date: dateStr});
     if (this.props.onChangeCalendar) this.props.onChangeCalendar(ts, this.props.name);
@@ -86,7 +85,7 @@ class CalendarField extends Component {
   onChangeInput(e) {
     const val = e.currentTarget.value;
     const value = _v.formatDate(val, this.state.enableTime);
-    const dateFormat = this.state.enableTime ? 'MM/DD/YYYY H:mm' : 'MM/DD/YYYY';
+    const dateFormat = this.state.enableTime ? 'MM/DD/YYYY h:mmA' : 'MM/DD/YYYY';
     const ts = this.props.utc ? Moment.utc(value, dateFormat).valueOf() : Moment(value, dateFormat).valueOf();
     this.setState({ value: value, date: value });
     if (this.props.onChangeCalendar) this.props.onChangeCalendar(ts, this.props.name);
@@ -94,7 +93,7 @@ class CalendarField extends Component {
 
   toggleEnableTime(enableTime, name) {
     this.setState({ enableTime });
-    const dateFormat = enableTime ? 'MM/DD/YYYY H:mm' : 'MM/DD/YYYY';
+    const dateFormat = enableTime ? 'MM/DD/YYYY h:mmA' : 'MM/DD/YYYY';
     this.props.fieldProp(this.props.name, { enableTime });
     if (this.state.value) {
       const ts = this.props.utc ? Moment.utc(this.state.date, dateFormat).valueOf() : Moment(this.state.date, dateFormat).valueOf();
@@ -115,7 +114,6 @@ class CalendarField extends Component {
       enableTimeOption,
       enableTimeOptionLabel,
       staticOption,
-      clickOpens,
       label,
       fixedLabel,
       customLabel,
@@ -125,7 +123,8 @@ class CalendarField extends Component {
       icon,
       overlay,
       overlayDuration,
-      utc
+      utc,
+      placeholder
     } = this.props;
 
     const {
@@ -135,7 +134,7 @@ class CalendarField extends Component {
       enableTime
     } = this.state;
 
-    const dateFormat = enableTime ? 'm/d/Y H:i' : 'm/d/Y';
+    const dateFormat = enableTime ? 'm/d/Y h:iK' : 'm/d/Y';
     const labelStyle = util.cloneObj(customLabel);
     const modalEl = document.getElementById('calendar-root');
 
@@ -154,7 +153,7 @@ class CalendarField extends Component {
           enableTime: enableTimeOption ? true : enableTime,
           minuteIncrement: 1,
           static: staticOption,
-          clickOpens: clickOpens,
+          clickOpens: allowInput ? false : true,
           wrap: true,
           appendTo: modalEl,
           utc: utc ? true : false
@@ -164,11 +163,12 @@ class CalendarField extends Component {
           <Fade in={open && overlay} duration={overlayDuration}><div onClick={this.closeCalendar} className={`dropdown-cover ${display ? '' : 'displayNone'}`}></div></Fade>
           <div className={`input-group ${error && 'error tooltip'}`}>
             <div className={`floating-label ${this.state.status} ${fixedLabel && 'fixed'}`}>
+              {allowInput ?
               <input
                 name={name}
                 style={style}
                 type='text'
-                placeholder={enableTime ? 'mm/dd/yyyy hh:mm' : 'mm/dd/yyyy'}
+                placeholder={placeholder || enableTime ? 'mm/dd/yyyy h:mmA' : 'mm/dd/yyyy'}
                 data-input
                 onBlur={this.onBlur}
                 onFocus={this.onFocus}
@@ -178,6 +178,9 @@ class CalendarField extends Component {
                 maxLength={16}
                 ref={this.inputRef}
               />
+              :
+              <input type="text" placeholder={placeholder || enableTime ? 'mm/dd/yyyy h:mmA' : 'mm/dd/yyyy'} data-input />
+              }
               <label htmlFor={name} style={labelStyle} >{label}</label>
               <div className={`input-bottom ${error ? 'error' : this.state.status}`}></div>
             </div>
@@ -206,13 +209,12 @@ class CalendarField extends Component {
 
 CalendarField.defaultProps = {
   name: 'defaultDate',
-  allowInput: true,
+  allowInput: false,
   inline: false,
   enableTime: false,
   enableTimeOption: false,
   enableTimeOptionLabel: 'Enable time',
   staticOption: false,
-  clickOpens: false,
   icon: <span className='icon icon-calendar' />,
   overlayDuration: 200,
   overlay: true,

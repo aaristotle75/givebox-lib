@@ -91,7 +91,12 @@ export default class TestForm extends Component {
       <div>
         <h2>Form Elements</h2>
         <div className='formWrapper'>
-          {this.props.calendarField('dob', { label: 'Date of Birth', enableTime: true, enableTimeOption: true, required: true, validate: 'date', validateOpts: { }, utc: false })}
+          <Collapse
+            id='testForm'
+            label='Calendar'
+          >
+          {this.props.calendarField('dob', { label: 'Date of Birth', enableTime: false, enableTimeOption: false, required: true, validate: 'date', validateOpts: { }, utc: false })}
+          </Collapse>
         {/*
         {this.props.textField('amount', {
           required: true,

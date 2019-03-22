@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
-import { util, GBLink, types } from '../';
+import { connect } from 'react-redux';
+import {
+  util,
+  GBLink,
+} from '../';
+import { setPrefs } from '../api/actions';
+import { savePrefs } from '../api/helpers';
 import AnimateHeight from 'react-animate-height';
+import has from 'has';
 
 class Collapse extends Component {
 
@@ -9,15 +16,20 @@ class Collapse extends Component {
     this.renderChildren = this.renderChildren.bind(this);
     this.toggleDisplay = this.toggleDisplay.bind(this);
     this.state = {
-      display: this.props.default === 'open' ? true : false
+      display: this.props.open
     };
   }
 
   componentDidMount() {
   }
 
+  componentWillUmount() {
+  }
+
   toggleDisplay() {
-    this.setState({ display: this.state.display ? false : true });
+    const display = this.state.display ? false : true;
+    this.setState({ display });
+    if (this.props.id) this.props.savePrefs({ [this.props.id]: { open: display } });
   }
 
   renderChildren() {
@@ -49,9 +61,9 @@ class Collapse extends Component {
         </GBLink>
         <AnimateHeight
           duration={500}
-          height={this.state.display ? 'auto' : 0}
+          height={this.state.display ? 'auto' : 1}
         >
-          {this.renderChildren()}
+          {this.props.children}
         </AnimateHeight>
       </div>
     );
@@ -66,4 +78,23 @@ Collapse.defaultProps = {
   label: 'Collapsible Label'
 }
 
-export default Collapse;
+function mapStateToProps(state, props) {
+
+  let open = props.default === 'closed' ? false : true;
+  if (props.id) {
+    if (has(state, 'preferences')) {
+      if (has(state.preferences, props.id)) {
+        open = util.getValue(state.preferences[props.id], 'open', props.default || true );
+      }
+    }
+  }
+
+  return {
+    open
+  }
+}
+
+export default connect(mapStateToProps, {
+  setPrefs,
+  savePrefs
+})(Collapse);

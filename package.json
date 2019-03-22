@@ -25,7 +25,6 @@
     "draft-js-import-html": "^1.2.1",
     "flatpickr": "^4.5.2",
     "has": "^1.0.3",
-    "inputmask": "^4.0.6",
     "moment": "^2.22.2",
     "react": "^16.6.0",
     "react-animate-height": "^2.0.6",

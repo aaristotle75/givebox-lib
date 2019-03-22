@@ -457,6 +457,8 @@ class Form extends Component {
         dateFormat={params.dateFormat}
         fieldProp={this.fieldProp}
         utc={params.utc}
+        allowInput={params.allowInput}
+        placeholder={params.placeholder}
       />
     )
   }
@@ -487,10 +489,10 @@ class Form extends Component {
     return (
       <div style={params.style} className={`field-group`}>
         <div style={{width: params.colWidth}} className='col'>
-          {this.calendarField(params.range1Name, { required: params.required, rangeRequired: params.rangeRequired, enableTime: params.range1EnableTime || params.enableTime, enableTimeOption: params.range1EnableTimeOption || params.enableTimeOption, enableTimeOptionLabel: params.enableTimeOptionLabel, value: params.range1Value, label: params.range1Label, range: 'start', rangeEndField: params.range2Name, debug: params.debug, filter: name, validate: 'calendarRange', overlay: params.overlay, overlayDuration: params.overlayDuration, utc: params.utc })}
+          {this.calendarField(params.range1Name, { required: params.required, rangeRequired: params.rangeRequired, enableTime: params.range1EnableTime || params.enableTime, placeholder: params.range1Placeholder, enableTimeOption: params.range1EnableTimeOption || params.enableTimeOption, enableTimeOptionLabel: params.enableTimeOptionLabel, value: params.range1Value, label: params.range1Label, range: 'start', rangeEndField: params.range2Name, debug: params.debug, filter: name, validate: 'calendarRange', overlay: params.overlay, overlayDuration: params.overlayDuration, utc: params.utc })}
         </div>
         <div style={{width: params.colWidth}} className='col'>
-          {this.calendarField(params.range2Name, { required: params.required, rangeRequired: params.rangeRequired, enableTime: params.range2EnableTime || params.enableTime, enableTimeOption: params.range2EnableTimeOption || params.enableTimeOption, enableTimeOptionLabel: params.enableTimeOptionLabel, value: params.range2Value, label: params.range2Label, range: 'end', rangeStartField: params.range1Name, debug: params.debug, filter: name, validate: 'calendarRange', overlay: params.overlay, overlayDuration: params.overlayDuration, utc: params.utc })}
+          {this.calendarField(params.range2Name, { required: params.required, rangeRequired: params.rangeRequired, enableTime: params.range2EnableTime || params.enableTime, placeholder: params.range2Placeholder, enableTimeOption: params.range2EnableTimeOption || params.enableTimeOption, enableTimeOptionLabel: params.enableTimeOptionLabel, value: params.range2Value, label: params.range2Label, range: 'end', rangeStartField: params.range1Name, debug: params.debug, filter: name, validate: 'calendarRange', overlay: params.overlay, overlayDuration: params.overlayDuration, utc: params.utc })}
         </div>
         <div className='clear'></div>
       </div>

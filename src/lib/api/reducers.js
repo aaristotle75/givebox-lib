@@ -2,6 +2,19 @@ import { combineReducers } from 'redux';
 import  * as types  from './actionTypes';
 import has from 'has';
 
+export function preferences(state = {
+}, action) {
+  switch (action.type) {
+    case types.SET_PREFERENCES:
+      return Object.assign({}, state, {
+        ...state,
+        ...action.preferences
+      });
+    default:
+      return state;
+  }
+}
+
 export function app(state = {
   appRef: null,
   modalRef: null,
@@ -155,6 +168,7 @@ export function modal(state = {
 
 
 const appReducer = combineReducers({
+  preferences,
   app,
   resource,
   modal,

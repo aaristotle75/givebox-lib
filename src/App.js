@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Routes from './Routes';
 import Loadable from 'react-loadable';
 import has from 'has';
-import { resourceProp, Loader, getResource, reloadResource, setAppRef, setModalRef, util } from './lib';
+import { resourceProp, Loader, getResource, reloadResource, setAppRef, setModalRef, util, setPrefs, sendResource } from './lib';
 
 export const AppContext = React.createContext();
 
@@ -98,6 +98,11 @@ class App extends Component {
           theme: user.preferences ? user.preferences.cloudTheme : 'light',
           animations: user.preferences ? user.preferences.animations : false
         });
+
+        // Set preferences
+        if (has(user, 'preferences')) {
+          this.props.setPrefs(util.getValue(user.preferences, 'cloudUI', {}));
+        }
 
         // Get init collection of resources
         this.initResources();
@@ -198,5 +203,7 @@ export default connect(mapStateToProps, {
   reloadResource,
   resourceProp,
   setAppRef,
-  setModalRef
+  setModalRef,
+  setPrefs,
+  sendResource
 })(App);

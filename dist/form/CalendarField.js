@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import 'flatpickr/dist/themes/light.css';
 import Flatpickr from 'react-flatpickr';
 import Moment from 'moment';
-import Inputmask from "inputmask";
 import { util, _v, Fade, Checkbox } from '../';
 
 class CalendarField extends Component {
@@ -92,7 +91,7 @@ class CalendarField extends Component {
   }
 
   onChange(selectedDates, dateStr, instance) {
-    const dateFormat = this.state.enableTime ? 'MM/DD/YYYY H:mm' : 'MM/DD/YYYY';
+    const dateFormat = this.state.enableTime ? 'MM/DD/YYYY h:mmA' : 'MM/DD/YYYY';
     const ts = this.props.utc ? Moment.utc(dateStr, dateFormat).valueOf() : Moment(dateStr, dateFormat).valueOf();
     this.setState({
       value: dateStr,
@@ -106,7 +105,7 @@ class CalendarField extends Component {
 
     const value = _v.formatDate(val, this.state.enableTime);
 
-    const dateFormat = this.state.enableTime ? 'MM/DD/YYYY H:mm' : 'MM/DD/YYYY';
+    const dateFormat = this.state.enableTime ? 'MM/DD/YYYY h:mmA' : 'MM/DD/YYYY';
     const ts = this.props.utc ? Moment.utc(value, dateFormat).valueOf() : Moment(value, dateFormat).valueOf();
     this.setState({
       value: value,
@@ -119,7 +118,7 @@ class CalendarField extends Component {
     this.setState({
       enableTime
     });
-    const dateFormat = enableTime ? 'MM/DD/YYYY H:mm' : 'MM/DD/YYYY';
+    const dateFormat = enableTime ? 'MM/DD/YYYY h:mmA' : 'MM/DD/YYYY';
     this.props.fieldProp(this.props.name, {
       enableTime
     });
@@ -144,7 +143,6 @@ class CalendarField extends Component {
       enableTimeOption,
       enableTimeOptionLabel,
       staticOption,
-      clickOpens,
       label,
       fixedLabel,
       customLabel,
@@ -154,7 +152,8 @@ class CalendarField extends Component {
       icon,
       overlay,
       overlayDuration,
-      utc
+      utc,
+      placeholder
     } = this.props;
     const {
       date,
@@ -162,7 +161,7 @@ class CalendarField extends Component {
       display,
       enableTime
     } = this.state;
-    const dateFormat = enableTime ? 'm/d/Y H:i' : 'm/d/Y';
+    const dateFormat = enableTime ? 'm/d/Y h:iK' : 'm/d/Y';
     const labelStyle = util.cloneObj(customLabel);
     const modalEl = document.getElementById('calendar-root');
     return React.createElement(Flatpickr, {
@@ -179,7 +178,7 @@ class CalendarField extends Component {
         enableTime: enableTimeOption ? true : enableTime,
         minuteIncrement: 1,
         static: staticOption,
-        clickOpens: clickOpens,
+        clickOpens: allowInput ? false : true,
         wrap: true,
         appendTo: modalEl,
         utc: utc ? true : false
@@ -197,11 +196,11 @@ class CalendarField extends Component {
       className: `input-group ${error && 'error tooltip'}`
     }, React.createElement("div", {
       className: `floating-label ${this.state.status} ${fixedLabel && 'fixed'}`
-    }, React.createElement("input", {
+    }, allowInput ? React.createElement("input", {
       name: name,
       style: style,
       type: "text",
-      placeholder: enableTime ? 'mm/dd/yyyy hh:mm' : 'mm/dd/yyyy',
+      placeholder: placeholder || enableTime ? 'mm/dd/yyyy h:mmA' : 'mm/dd/yyyy',
       "data-input": true,
       onBlur: this.onBlur,
       onFocus: this.onFocus,
@@ -210,6 +209,10 @@ class CalendarField extends Component {
       value: this.state.value,
       maxLength: 16,
       ref: this.inputRef
+    }) : React.createElement("input", {
+      type: "text",
+      placeholder: placeholder || enableTime ? 'mm/dd/yyyy h:mmA' : 'mm/dd/yyyy',
+      "data-input": true
     }), React.createElement("label", {
       htmlFor: name,
       style: labelStyle
@@ -236,13 +239,12 @@ class CalendarField extends Component {
 
 CalendarField.defaultProps = {
   name: 'defaultDate',
-  allowInput: true,
+  allowInput: false,
   inline: false,
   enableTime: false,
   enableTimeOption: false,
   enableTimeOptionLabel: 'Enable time',
   staticOption: false,
-  clickOpens: false,
   icon: React.createElement("span", {
     className: "icon icon-calendar"
   }),

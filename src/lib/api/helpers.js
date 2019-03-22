@@ -1,6 +1,7 @@
 import {
   getAPI,
-  sendAPI
+  sendAPI,
+  updatePrefs
 } from './actions';
 import * as giveboxAPI from './givebox';
 import * as util from '../common/utility';
@@ -27,7 +28,8 @@ export function getResource(resource, opts = {}) {
     callback: null,
     reload: false,
     csv: false,
-    customName: null
+    customName: null,
+    resourcesToLoad: null
   }
   const options = { ...defaults, ...opts };
   return (dispatch, getState) => {
@@ -76,7 +78,16 @@ export function getResource(resource, opts = {}) {
 
       // If CSV return the endpoint else dispatch the API
       if (options.csv) return endpoint;
-      else return dispatch(getAPI(resource, endpoint, search, options.callback, reload, options.customName));
+      else return dispatch(getAPI(
+        resource,
+        endpoint,
+        search,
+        options.callback,
+        reload,
+        options.customName,
+        options.resourcesToLoad,
+        reloadResource
+      ));
     }
   }
 }
@@ -100,16 +111,17 @@ export function reloadResource(name, opts = {}) {
   const options = { ...defaults, ...opts };
 
   return (dispatch, getState) => {
-    let resource = has(getState().resource, name) ? getState().resource[name] : null;
-    if (resource) dispatch(getAPI(name, resource.endpoint, resource.search, null, true));
+    if (name) {
+      let resource = has(getState().resource, name) ? getState().resource[name] : null;
+      if (resource) dispatch(getAPI(name, resource.endpoint, resource.search, null, true));
 
-    // Reload the list after updating a single item
-    if (options.reloadList) {
-      let listName = name + 's';
-      let resourceList = has(getState().resource, listName) ? getState().resource[listName] : null;
-      if (resourceList) dispatch(getAPI(listName, resourceList.endpoint, resourceList.search, null, true));
+      // Reload the list after updating a single item
+      if (options.reloadList) {
+        let listName = name + 's';
+        let resourceList = has(getState().resource, listName) ? getState().resource[listName] : null;
+        if (resourceList) dispatch(getAPI(listName, resourceList.endpoint, resourceList.search, null, true));
+      }
     }
-
     // Reload resources
     if (options.resourcesToLoad) {
       options.resourcesToLoad.forEach(function(value) {
@@ -265,4 +277,19 @@ export function translatePerm(value) {
 	obj.name = name;
   obj.slug = value.slug;
 	return obj;
+}
+
+export function savePrefs(pref, callback) {
+  return (dispatch, getState) => {
+    const preferences = has(getState(), 'preferences') ? getState().preferences : {};
+    const updatedPrefs = { ...preferences, ...pref };
+    dispatch(updatePrefs(updatedPrefs));
+    dispatch(sendResource('userPreferences', {
+      method: 'patch',
+      data: {
+        cloudUI: updatedPrefs
+      },
+      reload: false
+    }));
+  }
 }

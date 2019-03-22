@@ -559,7 +559,9 @@ class Form extends Component {
       overlayDuration: params.overlayDuration,
       dateFormat: params.dateFormat,
       fieldProp: this.fieldProp,
-      utc: params.utc
+      utc: params.utc,
+      allowInput: params.allowInput,
+      placeholder: params.placeholder
     });
   }
 
@@ -597,6 +599,7 @@ class Form extends Component {
       required: params.required,
       rangeRequired: params.rangeRequired,
       enableTime: params.range1EnableTime || params.enableTime,
+      placeholder: params.range1Placeholder,
       enableTimeOption: params.range1EnableTimeOption || params.enableTimeOption,
       enableTimeOptionLabel: params.enableTimeOptionLabel,
       value: params.range1Value,
@@ -618,6 +621,7 @@ class Form extends Component {
       required: params.required,
       rangeRequired: params.rangeRequired,
       enableTime: params.range2EnableTime || params.enableTime,
+      placeholder: params.range2Placeholder,
       enableTimeOption: params.range2EnableTimeOption || params.enableTimeOption,
       enableTimeOptionLabel: params.enableTimeOptionLabel,
       value: params.range2Value,

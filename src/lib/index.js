@@ -53,16 +53,18 @@ import {
   sendAPI,
   setAppRef,
   setModalRef,
-  setProp
+  setProp,
+  setPrefs
 } from './api/actions';
 
-import { app, resource, send, modal } from './api/reducers';
+import { app, resource, send, modal, preferences } from './api/reducers';
 
 import {
   getResource,
   reloadResource,
   sendResource,
-  translatePerm
+  translatePerm,
+  savePrefs
 } from './api/helpers';
 
 import * as giveboxAPI from './api/givebox';
@@ -91,6 +93,7 @@ export {
   setAppRef,
   setModalRef,
   setProp,
+  setPrefs,
 
   // API
   giveboxAPI,
@@ -98,12 +101,14 @@ export {
   reloadResource,
   sendResource,
   translatePerm,
+  savePrefs,
 
   // reducers
   app,
   resource,
   send,
   modal,
+  preferences,
 
   // Modal
   ModalLink,
