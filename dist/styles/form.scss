@@ -46,7 +46,7 @@ button.input {
   height: 40px;
   background: transparent;
   border: none;
-  border-bottom: 1px solid $light-med-gray;
+  border-bottom: 1px solid $light;
   box-sizing: border-box;
   transition: all .3s linear;
   margin: 0;
@@ -68,7 +68,7 @@ input {
   height: 40px;
   background: transparent;
   border: none;
-  border-bottom: 1px solid $light-med-gray;
+  border-bottom: 1px solid $light;
   box-sizing: border-box;
   transition: all .3s linear;
   @media screen and (max-width: $mobile-width) {
@@ -103,7 +103,7 @@ input:focus {
 }
 
 .input-bottom.idle {
-  background: $light-med-gray;
+  background: $light;
   transform: scaleX(0);
   -webkit-transform: scaleX(0);
   @include default-transition(.25s);
