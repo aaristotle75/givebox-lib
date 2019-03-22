@@ -150,7 +150,8 @@ export function sendResource(resource, opts = {}) {
     reload: true,
     resourcesToLoad: null,
     customName: null,
-    multi: false
+    multi: false,
+    isSending: true
   };
   const options = { ...defaults,
     ...opts
@@ -174,7 +175,7 @@ export function sendResource(resource, opts = {}) {
         endpoint = endpoint.slice(0, -4);
       }
 
-      return dispatch(sendAPI(resource, endpoint, method, options.data, options.callback, options.reload ? reloadResource : null, options.resourcesToLoad, options.customName, options.multi));
+      return dispatch(sendAPI(resource, endpoint, method, options.data, options.callback, options.reload ? reloadResource : null, options.resourcesToLoad, options.customName, options.multi, options.isSending));
     }
   };
 }
@@ -289,7 +290,8 @@ export function savePrefs(pref, callback) {
       data: {
         cloudUI: updatedPrefs
       },
-      reload: false
+      reload: false,
+      isSending: false
     }));
   };
 }

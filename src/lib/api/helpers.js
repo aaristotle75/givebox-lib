@@ -161,7 +161,8 @@ export function sendResource(resource, opts = {}) {
     reload: true,
     resourcesToLoad: null,
     customName: null,
-    multi: false
+    multi: false,
+    isSending: true
   };
   const options = { ...defaults, ...opts };
   return (dispatch, getState) => {
@@ -191,7 +192,8 @@ export function sendResource(resource, opts = {}) {
         options.reload ? reloadResource : null,
         options.resourcesToLoad,
         options.customName,
-        options.multi
+        options.multi,
+        options.isSending
       ));
     }
   }
@@ -289,7 +291,8 @@ export function savePrefs(pref, callback) {
       data: {
         cloudUI: updatedPrefs
       },
-      reload: false
+      reload: false,
+      isSending: false
     }));
   }
 }

@@ -134,13 +134,14 @@ function shouldGetAPI(state, resource, reload) {
   return shouldGet;
 }
 
-function sendRequest(resource, endpoint, method, data) {
+function sendRequest(resource, endpoint, method, data, isSending = true) {
   return {
     type: types.SEND_REQUEST,
     resource: resource,
     endpoint: endpoint,
     method: method,
-    data: data
+    data: data,
+    isSending: isSending
   };
 }
 
@@ -153,7 +154,7 @@ function sendResponse(resource, response, error) {
   };
 }
 
-export function sendAPI(resource, endpoint, method, data, callback, reloadResource, resourcesToLoad, customName, multi) {
+export function sendAPI(resource, endpoint, method, data, callback, reloadResource, resourcesToLoad, customName, multi, isSending) {
   const csrf_token = document.querySelector(`meta[name='csrf_token']`) ? document.querySelector(`meta[name='csrf_token']`)['content'] === '{{ .CSRFToken }}' ? 'localhost' : document.querySelector(`meta[name='csrf_token']`)['content'] : '';
   const errorMsg = {
     data: {
@@ -164,7 +165,7 @@ export function sendAPI(resource, endpoint, method, data, callback, reloadResour
     method = method.toLowerCase();
 
     if (shouldSendAPI(getState(), resource, multi)) {
-      dispatch(sendRequest(resource, endpoint, method, data));
+      dispatch(sendRequest(resource, endpoint, method, data, isSending));
       axios({
         method: method,
         url: endpoint,

@@ -125,9 +125,9 @@ export function send(state = {
   switch (action.type) {
     case types.SEND_REQUEST:
       return Object.assign({}, state, {
-        isSending: true,
+        isSending: action.isSending ? true : false,
         [action.resource]: { ...state[action.resource],
-          isSending: true,
+          isSending: action.isSending ? true : false,
           method: action.method,
           data: action.data,
           error: false,
