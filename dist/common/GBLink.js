@@ -31,7 +31,7 @@ class GBLink extends Component {
       disabled: disabled,
       type: "button",
       id: id,
-      className: className || 'link',
+      className: `${className || 'link'}`,
       onClick: onClick,
       onMouseEnter: onMouseEnter,
       onMouseLeave: onMouseLeave,
@@ -45,6 +45,7 @@ class GBLink extends Component {
 GBLink.defaultProps = {
   primaryColor: '',
   style: {},
-  disabled: false
+  disabled: false,
+  ripple: true
 };
 export default GBLink;

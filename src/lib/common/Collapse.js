@@ -53,7 +53,7 @@ class Collapse extends Component {
 
     return (
       <div className={`collapse ${this.state.display ? 'noBorder' : ''} ${className || ''}`} style={style}>
-        <GBLink className='sectionLink' onClick={() => this.toggleDisplay()}>
+        <GBLink className='sectionLink ripple' onClick={() => this.toggleDisplay()}>
           <span className='sectionText'>
             <span className={`icon icon-${iconPrimary}`}></span>{label}
           </span>
