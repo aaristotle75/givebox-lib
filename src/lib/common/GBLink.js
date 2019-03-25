@@ -18,14 +18,15 @@ class GBLink extends Component {
 			className,
 			style,
 			primaryColor,
-			disabled
+			disabled,
+			ripple
 		} = this.props;
 
 		const color = primaryColor ? { color: primaryColor } : {};
 		const mergeStyle = { ...style, ...color };
 
 		return (
-      <button disabled={disabled} type='button' id={id} className={`${className || 'link'}`} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} style={mergeStyle}>
+      <button disabled={disabled} type='button' id={id} className={`${ripple ? 'ripple' : ''} ${className || 'link'}`} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} style={mergeStyle}>
         {this.props.children}
       </button>
 		)
@@ -36,7 +37,7 @@ GBLink.defaultProps = {
 	primaryColor: '',
 	style: {},
 	disabled: false,
-	ripple: true
+	ripple: false
 }
 
 export default GBLink;

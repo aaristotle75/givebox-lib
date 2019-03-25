@@ -19,7 +19,8 @@ class GBLink extends Component {
       className,
       style,
       primaryColor,
-      disabled
+      disabled,
+      ripple
     } = this.props;
     const color = primaryColor ? {
       color: primaryColor
@@ -31,7 +32,7 @@ class GBLink extends Component {
       disabled: disabled,
       type: "button",
       id: id,
-      className: `${className || 'link'}`,
+      className: `${ripple ? 'ripple' : ''} ${className || 'link'}`,
       onClick: onClick,
       onMouseEnter: onMouseEnter,
       onMouseLeave: onMouseLeave,
