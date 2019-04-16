@@ -47,6 +47,6 @@ GBLink.defaultProps = {
   primaryColor: '',
   style: {},
   disabled: false,
-  ripple: true
+  ripple: false
 };
 export default GBLink;

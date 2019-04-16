@@ -12,7 +12,7 @@
     overflow: auto;
     perspective: 1300;
     background: rgba(0, 0, 0, 0.4);
-    z-index: 9999998;
+    z-index: 999990;
   	overflow-x: hidden !important;
   }
 
@@ -25,7 +25,7 @@
     background: #fff;
     border-radius: 5px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, .3);
-    z-index: 9999999;
+    z-index: 999991;
   	overflow-x: hidden !important;
   }
 
@@ -38,7 +38,7 @@
   	top: 10px;
   	right: 10px;
   	cursor: pointer;
-  	z-index: 9999999;
+  	z-index: 999991;
   	color: $light-med-gray;
   }
 

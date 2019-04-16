@@ -20,11 +20,10 @@ $tiny-text-size: 0.67em;
 /*----- Define Colors --------*/
 $white: #FFFFFF;
 $off-white: #FCFCFC;
-$light: #edf6f9;
+$light: #ebf9ff;
 $light-gray: #e8ebed;
 $light-med-gray: #B0BEC5;
 $med-gray: #465965;
-$med-dark-gray: #465965;
 $dark-gray: #253655;
 $dark: #151515;
 
@@ -35,31 +34,57 @@ $dark-blue-gray: #253655;
 $red: #e83b2e;
 $yellow: #FFCC80;
 $orange: #ecab1f;
-$green: #35e6b2;
+$green: #59efe8; // Gren Glow #6cfec9;  // Glow #6cfef7 // Orig Green #35e6b2
 $greenDark: #27ab84;
 
-/* previous purpleblue & skyblue
-$primary: #4365d4;
-$secondary: #273b7d;
-$tertiary: #1a2752;
-$secondColor: #01b9ff;
-$secondColor2: #01a3e1;
-*/
-
-$primary: #45a8dc;
+$primary: #32dbec; // #45a8dc;
 $secondary: #233e59;
 $tertiary: #1e364f;
-$secondColor: #7ddafd;
+$secondColor: #a2e6ff;
 $secondColorDark: #5fa5c0;
 $secondColor2: #48bae6;
 $secondColor3: #b1e8fd;
 
-$mainColor: $primary;
-$mainColor2: $secondary;
+// New colors
+$magenta: #e42eb8;
+$deepBlue: #1818c8; // #21a5cb bluegreen
+$seaBlue: #25acd1;   // #2db9da  // lt bluegreen #a2e2e0
+$purple: #806fdf;  // #7162c5 deeper purple
+$bloodRed: #c90f38;
+$deepOrange: #db6427;
+
+// New Colors v2
+$pinkHot: #e70db6;
+$yellowBright: #faf32d;
+$orangeRust: #e98604;
+$greenBright: #35cb12;
+$greenGlow: #6cfec9;
+$blueDeep2: #065192;
+$blueSea2: #06b6d9;
+$salmon: #fa6056;
+
+
+// Bar Gradients
+$bar1Color:  #396ef0; // #25acd1;
+$bar1Color2: #25acd1; // #7ddafd;
+$bar1Gradient: linear-gradient(to bottom, $bar1Color 0%,$bar1Color2 100%);
+$bar2Color: #35e6b2;
+$bar2Color2: #21a5cb;
+$bar2Gradient: linear-gradient(to bottom, $bar2Color 0%,$bar2Color2 100%);
+$bar3Color: #806fdf;
+$bar3Color2: #e42eb8;
+$bar3Gradient: linear-gradient(to bottom, $bar3Color 0%,$bar3Color2 100%);
+$bar4Color: #db6427;
+$bar4Color2: #fdd38f;
+$bar4Gradient: linear-gradient(to bottom, $bar4Color 0%,$bar4Color2 100%);
+
+$mainColor: #49c9ff;
+$mainColor2: $deepBlue;
 
 $mobile-width: 800px;
 $overlayColor: transparentize($dark-blue-gray, .7);
 
+$sonarAlertColor: $green;
 
 @mixin box-shadow($shadows...) {
   -moz-box-shadow: $shadows;
