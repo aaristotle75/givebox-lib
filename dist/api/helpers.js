@@ -24,7 +24,8 @@ export function getResource(resource, opts = {}) {
     reload: false,
     csv: false,
     customName: null,
-    resourcesToLoad: null
+    resourcesToLoad: null,
+    fullResponse: false
   };
   const options = { ...defaults,
     ...opts
@@ -74,7 +75,7 @@ export function getResource(resource, opts = {}) {
       let endpoint = API_URL + api.endpoint;
       endpoint = `${endpoint}${options.csv ? '.csv' : ''}${util.makeAPIQuery(search)}`; // If CSV return the endpoint else dispatch the API
 
-      if (options.csv) return endpoint;else return dispatch(getAPI(resource, endpoint, search, options.callback, reload, options.customName, options.resourcesToLoad, reloadResource));
+      if (options.csv) return endpoint;else return dispatch(getAPI(resource, endpoint, search, options.callback, reload, options.customName, options.resourcesToLoad, reloadResource, options.fullResponse));
     }
   };
 }

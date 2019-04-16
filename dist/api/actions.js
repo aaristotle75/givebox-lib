@@ -83,7 +83,7 @@ function resourceCatchError(resource, error) {
   };
 }
 
-export function getAPI(resource, endpoint, search, callback, reload, customName, resourcesToLoad, reloadResource) {
+export function getAPI(resource, endpoint, search, callback, reload, customName, resourcesToLoad, reloadResource, fullResponse) {
   let csrf_token = document.querySelector(`meta[name='csrf_token']`) ? document.querySelector(`meta[name='csrf_token']`)['content'] : '';
   return (dispatch, getState) => {
     if (shouldGetAPI(getState(), customName || resource, reload)) {
@@ -99,7 +99,7 @@ export function getAPI(resource, endpoint, search, callback, reload, customName,
       }).then(function (response) {
         switch (response.status) {
           case 200:
-            dispatch(receiveResource(customName || resource, endpoint, response.data, null, search));
+            dispatch(receiveResource(customName || resource, endpoint, fullResponse ? response : response.data, null, search));
             if (resourcesToLoad) dispatch(reloadResource(null, {
               resourcesToLoad: resourcesToLoad
             }));
