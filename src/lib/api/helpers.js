@@ -29,8 +29,7 @@ export function getResource(resource, opts = {}) {
     reload: false,
     csv: false,
     customName: null,
-    resourcesToLoad: null,
-    fullResponse: false
+    resourcesToLoad: null
   }
   const options = { ...defaults, ...opts };
   return (dispatch, getState) => {
@@ -87,8 +86,7 @@ export function getResource(resource, opts = {}) {
         reload,
         options.customName,
         options.resourcesToLoad,
-        reloadResource,
-        options.fullResponse
+        reloadResource
       ));
     }
   }

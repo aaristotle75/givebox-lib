@@ -97,8 +97,7 @@ export function getAPI(
   reload,
   customName,
   resourcesToLoad,
-  reloadResource,
-  fullResponse
+  reloadResource
 ) {
   let csrf_token = document.querySelector(`meta[name='csrf_token']`) ? document.querySelector(`meta[name='csrf_token']`)['content'] : '';
   return (dispatch, getState) => {
@@ -116,7 +115,7 @@ export function getAPI(
       .then(function (response) {
         switch (response.status) {
           case 200:
-            dispatch(receiveResource(customName || resource, endpoint, fullResponse ? response : response.data, null, search));
+            dispatch(receiveResource(customName || resource, endpoint, response.data, null, search));
             if (resourcesToLoad) dispatch(reloadResource(null, { resourcesToLoad: resourcesToLoad }));
             if (callback) callback(response.data, null);
             break;
