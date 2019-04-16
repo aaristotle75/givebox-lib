@@ -393,6 +393,12 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
         break;
       }
 
+    case 'claimOrg':
+      {
+        endpoint = `orgs/${id[0]}/owner`;
+        break;
+      }
+
     case 'orgImage':
       {
         endpoint = `orgs/${orgID}/image`;
