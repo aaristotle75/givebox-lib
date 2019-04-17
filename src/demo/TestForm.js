@@ -95,19 +95,19 @@ export default class TestForm extends Component {
             id='testForm'
             label='Calendar'
           >
+          {this.props.textField('amount', {
+            required: true,
+            className: 'column',
+            label: 'Amount',
+            placeholder: '0.00',
+            fixedLabel: true,
+            validate: 'money',
+            validateOpts: { decimal: true, min: 1, max: 25000, errorMsg: `You can transfer a minimum of $1 up to your available balance of 25000` },
+            debug: true
+          })}
           {this.props.calendarField('dob', { label: 'Date of Birth', enableTime: false, enableTimeOption: false, required: true, validate: 'date', validateOpts: { }, utc: false })}
           </Collapse>
         {/*
-        {this.props.textField('amount', {
-          required: true,
-          className: 'column',
-          label: 'Amount',
-          placeholder: '0.00',
-          fixedLabel: true,
-          validate: 'money',
-          validateOpts: { decimal: true, min: 1, max: 25000, errorMsg: `You can transfer a minimum of $1 up to your available balance of 25000` },
-          debug: true
-        })}
         {customLink}
         {this.props.textField('role', { required: true, label: 'Role', customLink: customLink })}
         {this.props.dropdown('recurringDefaultInterval', {

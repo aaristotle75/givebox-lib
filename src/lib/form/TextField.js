@@ -60,7 +60,7 @@ class TextField extends Component {
     return (
         <div style={style} className={`input-group ${className || ''} textfield-group ${error ? 'error tooltip' : ''} ${type === 'hidden' && 'hidden'} ${money ? 'money-group' : ''}`}>
           <div className={`floating-label ${this.state.status} ${fixedLabel && 'fixed'}`}>
-            {money && <div className={`moneyAmount ${value ? 'active' : ''}`}><span className='symbol'>{symbol}</span></div>}
+            {money && <div className={`moneyAmount ${value ? 'active' : 'noValue'}`}><span className='symbol'>{symbol}</span></div>}
             <input
               autoFocus={autoFocus}
               id={id || name}
