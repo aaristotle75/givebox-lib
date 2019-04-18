@@ -126,6 +126,14 @@ export function hexToRgb(hex) {
     } : null;
 }
 
+export function removeFromArr(array, element) {
+  const arr = array;
+  const index = arr.indexOf(element);
+  if (index > -1) {
+    arr.splice(index, 1);
+  }
+  return arr;
+}
 
 export function removeElement(element) {
   element && element.parentNode && element.parentNode.removeChild(element);

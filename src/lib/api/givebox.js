@@ -716,6 +716,18 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       endpoint = `recaptcha/v3`;
       break;
     }
+    case 'googleLink': {
+      endpoint = `google/oauth2link`;
+      break;
+    }
+    case 'googleImport': {
+      endpoint = `google/contacts/emails`;
+      break;
+    }
+    case 'googleList': {
+      endpoint = `google/contact-customers`;
+      break;
+    }
 
     // DEFAULT
     default:
