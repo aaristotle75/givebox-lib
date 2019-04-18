@@ -66,7 +66,7 @@ class TextField extends Component {
     }, React.createElement("div", {
       className: `floating-label ${this.state.status} ${fixedLabel && 'fixed'}`
     }, money && React.createElement("div", {
-      className: `moneyAmount ${value ? 'active' : ''}`
+      className: `moneyAmount ${value ? 'active' : 'noValue'}`
     }, React.createElement("span", {
       className: "symbol"
     }, symbol)), React.createElement("input", {
