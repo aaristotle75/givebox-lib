@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { cloneObj } from '../common/utility';
+import GBLink from '../common/GBLink';
 
 class Choice extends Component {
   constructor(props) {
     super(props);
     this.onChange = this.onChange.bind(this);
+    this.onChangeLink = this.onChangeLink.bind(this);
   }
 
   componentDidMount() {
@@ -28,6 +30,10 @@ class Choice extends Component {
     this.props.onChange(name, value);
   }
 
+  onChangeLink(name, value) {
+    this.props.onChange(name, value);
+  }
+
   render() {
     const {
       name,
@@ -38,7 +44,8 @@ class Choice extends Component {
       error,
       errorType,
       value,
-      checked
+      checked,
+      useIcon
     } = this.props;
     let id = type === 'radio' ? `${value}-${type}` : `${name}-${type}`;
     let isChecked = checked;
@@ -46,7 +53,13 @@ class Choice extends Component {
     return React.createElement("div", {
       style: style,
       className: `choice-group ${className || ''} ${type}-group  ${error ? 'error tooltip' : ''}`
-    }, React.createElement("input", {
+    }, useIcon ? React.createElement(GBLink, {
+      onClick: () => this.onChangeLink(name, value)
+    }, isChecked ? React.createElement("span", {
+      className: "icon icon-check-square"
+    }) : React.createElement("span", {
+      className: "icon icon-square"
+    })) : React.createElement("input", {
       type: type,
       name: name,
       onChange: () => this.onChange(name, value),
@@ -68,5 +81,7 @@ class Choice extends Component {
 
 }
 
-Choice.defaultProps = {};
+Choice.defaultProps = {
+  useIcon: true
+};
 export default Choice;

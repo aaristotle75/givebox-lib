@@ -224,6 +224,9 @@ label.idle, .label.idle {
 .choice-group {
   position: relative;
   padding: 10px 5px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 /*--------------- Checkbox ---------------*/

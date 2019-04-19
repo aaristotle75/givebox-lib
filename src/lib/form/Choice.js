@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { cloneObj } from '../common/utility';
+import GBLink from '../common/GBLink';
 
 class Choice extends Component {
 
   constructor(props) {
     super(props);
     this.onChange = this.onChange.bind(this);
+    this.onChangeLink = this.onChangeLink.bind(this);
   }
 
   componentDidMount() {
@@ -27,6 +29,10 @@ class Choice extends Component {
     this.props.onChange(name, value);
   }
 
+  onChangeLink(name, value) {
+    this.props.onChange(name, value);
+  }
+
   render() {
 
     const {
@@ -38,7 +44,8 @@ class Choice extends Component {
       error,
       errorType,
       value,
-      checked
+      checked,
+      useIcon
     } = this.props;
 
     let id = type === 'radio' ? `${value}-${type}` : `${name}-${type}`;
@@ -48,6 +55,11 @@ class Choice extends Component {
 
     return (
       <div style={style} className={`choice-group ${className || ''} ${type}-group  ${error ? 'error tooltip' : ''}`}>
+        {useIcon ?
+          <GBLink onClick={() => this.onChangeLink(name, value)}>
+            {isChecked ? <span className='icon icon-check-square'></span> : <span className='icon icon-square'></span>}
+          </GBLink>
+        :
         <input
           type={type}
           name={name}
@@ -57,19 +69,21 @@ class Choice extends Component {
           id={id}
           value={value || checked}
         />
-          <label htmlFor={id}></label>
-          {label && <label className='label' onClick={() => this.onChange(name, value)}>{label}</label>}
-          <div className={`tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`}>
-            {this.props.error}
-            <i></i>
-          </div>
-          <div className={`errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`}>{error}</div>
+        }
+        <label htmlFor={id}></label>
+        {label && <label className='label' onClick={() => this.onChange(name, value)}>{label}</label>}
+        <div className={`tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`}>
+          {this.props.error}
+          <i></i>
+        </div>
+        <div className={`errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`}>{error}</div>
       </div>
     );
   }
 }
 
 Choice.defaultProps = {
+  useIcon: true
 }
 
 export default Choice;

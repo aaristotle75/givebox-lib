@@ -134,14 +134,15 @@ class Form extends Component {
   }
 
   allowEnterToSubmit() {
-    let allowEnter = true;
+    let allowEnter = false;
     if (!isEmpty(this.props.modals)) {
       Object.entries(this.props.modals).forEach(([key, value]) => {
-        if (!this.props.id.includes(key) && value.open) {
-          allowEnter = false;
+        if (this.props.id.includes(`${key}`) && value.open) {
+          allowEnter = true;
         }
       });
     }
+    if (this.props.alwaysSubmitOnEnter) allowEnter = true;
     return allowEnter;
   }
 
@@ -542,6 +543,7 @@ class Form extends Component {
         errorType={params.errorType}
         createField={createField}
         params={params}
+        useIcon={params.useIcon}
       />
     )
   }
@@ -1173,7 +1175,7 @@ Form.defaultProps = {
   successMsg: true,
   hideVantivErrors: false,
   showLoader: 'display',
-  submitOnEnter: true
+  alwaysSubmitOnEnter: false
 }
 
 function mapStateToProps(state, props) {

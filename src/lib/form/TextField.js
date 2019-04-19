@@ -16,7 +16,7 @@ class TextField extends Component {
   }
 
   componentDidMount() {
-    const params = Object.assign({}, this.props.params, { ref: this.inputRef });
+    const params = Object.assign({}, this.props.params, { ref: this.props.inputRef || this.inputRef });
     if (params.type === 'hidden') params.required = false;
     if (this.props.createField) this.props.createField(this.props.name, params);
   }
@@ -54,7 +54,8 @@ class TextField extends Component {
       strength,
       count,
       symbol,
-      money
+      money,
+      inputRef
     } = this.props;
 
     return (
@@ -64,7 +65,7 @@ class TextField extends Component {
             <input
               autoFocus={autoFocus}
               id={id || name}
-              ref={this.inputRef}
+              ref={inputRef || this.inputRef}
               name={name}
               type={type}
               placeholder={placeholder}
@@ -103,7 +104,8 @@ TextField.defaultProps = {
   type: 'text',
   maxlength: 64,
   symbol: '$',
-  money: false
+  money: false,
+  inputRef: null
 }
 
 export default TextField;

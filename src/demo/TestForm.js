@@ -95,6 +95,7 @@ export default class TestForm extends Component {
             id='testForm'
             label='Calendar'
           >
+          {this.props.choice('enabled', { label: 'Enabled', checked: this.state.checked, value: this.state.checked })}
           {this.props.textField('amount', {
             required: true,
             className: 'column',
