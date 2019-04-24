@@ -18,7 +18,7 @@ export function kinds() {
   return kinds;
 }
 
-export function kindOptions(all = true, allName = 'All Kinds') {
+export function kindOptions(all = true, allName = 'All Types') {
   const options = [];
   if (all) options.push({ primaryText: allName, value: 'all' });
   kinds().forEach((key) => {

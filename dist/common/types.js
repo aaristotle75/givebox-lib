@@ -9,7 +9,7 @@ export function kinds() {
   const kinds = ['fundraiser', 'event', 'invoice', 'membership', 'sweepstake'];
   return kinds;
 }
-export function kindOptions(all = true, allName = 'All Kinds') {
+export function kindOptions(all = true, allName = 'All Types') {
   const options = [];
   if (all) options.push({
     primaryText: allName,
