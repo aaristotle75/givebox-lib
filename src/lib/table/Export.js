@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { util } from '../';
 import { getResource } from '../api/helpers';
+import has from 'has';
 
 class ExportLink extends Component {
 
@@ -13,6 +14,7 @@ class ExportLink extends Component {
 
   makeLink() {
     const resource = this.props.resource;
+    if (has(resource.search, 'page')) delete resource.search.page;
     const max = { max: 100000000 };
     const search = { ...resource.search, ...max };
     const link = this.props.getResource(this.props.name, { customName: this.props.customName || null, csv: true, search: search });

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { util } from '../';
 import { getResource } from '../api/helpers';
+import has from 'has';
 
 class ExportLink extends Component {
   constructor(props) {
@@ -12,6 +13,7 @@ class ExportLink extends Component {
 
   makeLink() {
     const resource = this.props.resource;
+    if (has(resource.search, 'page')) delete resource.search.page;
     const max = {
       max: 100000000
     };

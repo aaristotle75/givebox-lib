@@ -908,7 +908,6 @@ class Form extends Component {
   */
   getErrors(err) {
     let error = false;
-    console.log('Form', err);
 
     // Make sure the response has data prop before continuing
     if (has(err, 'data')) {
