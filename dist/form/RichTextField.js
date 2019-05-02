@@ -125,6 +125,6 @@ const Editor = props => {
     className: "center button-group"
   }, React.createElement(GBLink, {
     className: "button",
-    onClick: () => props.toggleModal(props.id, false)
+    onClick: () => props.closeModalAndSave(props.id)
   }, "Save")));
 };

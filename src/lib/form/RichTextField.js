@@ -122,7 +122,7 @@ const Editor = (props) => {
         wysiwyg={props.wysiwyg}
       />
       <div className='center button-group'>
-        <GBLink className='button' onClick={() => props.toggleModal(props.id, false)}>Save</GBLink>
+        <GBLink className='button' onClick={() => props.closeModalAndSave(props.id)}>Save</GBLink>
       </div>
     </div>
   )

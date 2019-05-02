@@ -7,8 +7,7 @@ import {
   selectOptions,
   util,
   ModalRoute,
-  ModalLink,
-  toggleModal
+  ModalLink
 } from '../';
 import AnimateHeight from 'react-animate-height';
 import has from 'has';
@@ -75,7 +74,6 @@ class WhereFieldForm extends Component {
         this.geocodeCallback
       );
     }
-    //if (closeModal) this.props.toggleModal(this.props.modalID, false);
   }
 
   geocodeCallback(results, status) {
@@ -151,7 +149,7 @@ class WhereFieldForm extends Component {
             </AnimateHeight>
           </div>
           <div className='center button-group'>
-            <GBLink className='button' onClick={() => this.props.toggleModal(this.props.modalID, false)}>Save</GBLink>
+            <GBLink className='button' onClick={() => this.props.closeModalAndSave(this.props.modalID)}>Save</GBLink>
           </div>
         </div>
     );
@@ -256,5 +254,4 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
-  toggleModal
 })(WhereField);

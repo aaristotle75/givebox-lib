@@ -58,6 +58,7 @@ class Form extends Component {
     this.errorAlert = this.errorAlert.bind(this);
     this.fieldError = this.fieldError.bind(this);
     this.allowEnterToSubmit = this.allowEnterToSubmit.bind(this);
+    this.closeModalAndSave = this.closeModalAndSave.bind(this);
     this.state = {
       error: false,
       errorMsg: '',
@@ -863,8 +864,17 @@ class Form extends Component {
       createField: this.createField,
       wysiwyg: params.wysiwyg,
       params: params,
-      toggleModal: this.props.toggleModal
+      closeModalAndSave: this.closeModalAndSave
     });
+  }
+
+  closeModalAndSave(id, save = true) {
+    this.props.toggleModal(id, false);
+
+    if (save) {
+      const form = document.getElementById(`${this.props.id}-saveButton`) || null;
+      if (form) form.click();
+    }
   }
 
   modalField(name, opts) {
@@ -1009,7 +1019,7 @@ class Form extends Component {
       field: field,
       fields: this.state.fields,
       textField: this.textField,
-      toggleModal: this.props.toggleModal
+      closeModalAndSave: this.closeModalAndSave
     });
   }
 
