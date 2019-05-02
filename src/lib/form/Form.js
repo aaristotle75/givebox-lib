@@ -726,6 +726,7 @@ class Form extends Component {
         createField={this.createField}
         wysiwyg={params.wysiwyg}
         params={params}
+        toggleModal={this.props.toggleModal}
       />
     )
   }

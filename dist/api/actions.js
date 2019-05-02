@@ -18,18 +18,45 @@ export function setPrefs(pref) {
   };
 }
 
-function setModal(identifier, open, opts = {}) {
+function setModal(identifier, open, topModal, opts = {}) {
   return {
     type: types.TOGGLE_MODAL,
     identifier: identifier,
     opts: opts,
-    open: open
+    open: open,
+    topModal: topModal
   };
 }
 
 export function toggleModal(identifier, open, opts = {}) {
   return (dispatch, getState) => {
-    dispatch(setModal(identifier, open, opts));
+    const modals = util.getValue(getState(), 'modal', {});
+    let openModals = [];
+
+    if (!util.isEmpty(modals)) {
+      const filtered = util.filterObj(modals, 'open', true);
+      openModals = Object.keys(filtered);
+    }
+
+    if (open) {
+      if (!openModals.includes(identifier)) {
+        openModals.push(identifier);
+      }
+    } else {
+      const index = openModals.indexOf(identifier);
+
+      if (index !== -1) {
+        openModals.splice(index, 1);
+      }
+    }
+
+    let topModal = null;
+
+    if (!util.isEmpty(openModals)) {
+      topModal = openModals[openModals.length - 1];
+    }
+
+    dispatch(setModal(identifier, open, topModal, opts));
   };
 }
 export function resourceProp(key, value) {

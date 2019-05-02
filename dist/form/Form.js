@@ -143,11 +143,9 @@ class Form extends Component {
     let allowEnter = false;
 
     if (!isEmpty(this.props.modals)) {
+      const topModal = getValue(this.props.modals, 'topModal', null);
       Object.entries(this.props.modals).forEach(([key, value]) => {
-        console.log('execute before allow allowEnterToSubmit', this.props.id, key, value);
-
-        if (this.props.id.includes(`${key}`) && value.open) {
-          console.log('execute after allow allowEnterToSubmit', this.props.id, key, value);
+        if (this.props.id.includes(`${key}`) && value.open && key === topModal) {
           allowEnter = true;
         }
       });
@@ -864,7 +862,8 @@ class Form extends Component {
       errorType: params.errorType,
       createField: this.createField,
       wysiwyg: params.wysiwyg,
-      params: params
+      params: params,
+      toggleModal: this.props.toggleModal
     });
   }
 

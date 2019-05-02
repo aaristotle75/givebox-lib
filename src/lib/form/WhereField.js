@@ -151,7 +151,7 @@ class WhereFieldForm extends Component {
             </AnimateHeight>
           </div>
           <div className='center button-group'>
-            <GBLink className='button' onClick={() => this.props.toggleModal(this.props.modalID, false)}>Close</GBLink>
+            <GBLink className='button' onClick={() => this.props.toggleModal(this.props.modalID, false)}>Save</GBLink>
           </div>
         </div>
     );

@@ -149,10 +149,13 @@ export function send(state = {
       return state;
   }
 }
-export function modal(state = {}, action) {
+export function modal(state = {
+  topModal: null
+}, action) {
   switch (action.type) {
     case types.TOGGLE_MODAL:
       return Object.assign({}, state, {
+        topModal: action.topModal,
         [action.identifier]: {
           open: action.open,
           opts: action.opts

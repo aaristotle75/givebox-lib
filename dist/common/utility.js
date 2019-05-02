@@ -625,3 +625,16 @@ export function toTop(id, ref = null) {
     element: el
   });
 }
+export function filterObj(obj, key, value) {
+  const result = {};
+  Object.entries(obj).forEach(([k, v]) => {
+    if (!isEmpty(v)) {
+      if (has(v, key)) {
+        if (v[key] === value) {
+          result[k] = obj[k];
+        }
+      }
+    }
+  });
+  return result;
+}

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import RichTextEditor from './RichTextEditor';
-import { ModalRoute, ModalLink } from '../';
+import { ModalRoute, ModalLink, GBLink } from '../';
 
 class ContentField extends Component {
 
@@ -52,8 +53,8 @@ class ContentField extends Component {
   render() {
 
     const {
+      id,
       name,
-      modalID,
       style,
       label,
       fixedLabel,
@@ -64,8 +65,6 @@ class ContentField extends Component {
       modalLabel,
       value
     } = this.props;
-
-    let id = `${modalID || name}-richText`;
 
     return (
       <div style={style} className={`input-group ${className || ''} richtext-group ${error ? 'error tooltip' : ''}`}>
@@ -99,18 +98,32 @@ ContentField.defaultProps = {
   modalLabel: 'Open Editor'
 }
 
-export default ContentField;
+function mapStateToProps(state, props) {
+
+  let id = `${props.modalID || props.name}-richText`;
+
+  return {
+    id
+  }
+}
+
+export default connect(mapStateToProps, {
+})(ContentField);
 
 const Editor = (props) => {
-
   return (
-    <RichTextEditor
-      onChange={props.onChange}
-      placeholder={props.placeholder}
-      content={props.value}
-      updateContent={props.updateContent}
-      fieldName={props.name}
-      wysiwyg={props.wysiwyg}
-    />
+    <div>
+      <RichTextEditor
+        onChange={props.onChange}
+        placeholder={props.placeholder}
+        content={props.value}
+        updateContent={props.updateContent}
+        fieldName={props.name}
+        wysiwyg={props.wysiwyg}
+      />
+      <div className='center button-group'>
+        <GBLink className='button' onClick={() => props.toggleModal(props.id, false)}>Save</GBLink>
+      </div>
+    </div>
   )
 }
