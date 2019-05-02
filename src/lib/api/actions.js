@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as types from './actionTypes';
+import * as util from '../common/utility';
 import has from 'has';
 
 export function updatePrefs(prefs) {
@@ -17,12 +18,39 @@ export function setPrefs(pref) {
   }
 }
 
-export function toggleModal(identifier, open, opts = {}) {
+function setModal(identifier, open, topModal, opts = {}) {
   return {
     type: types.TOGGLE_MODAL,
     identifier: identifier,
     opts: opts,
-    open: open
+    open: open,
+    topModal: topModal
+  }
+}
+
+export function toggleModal(identifier, open, opts = {}) {
+  return (dispatch, getState) => {
+    const modals = util.getValue(getState(), 'modal', {});
+    let openModals = [];
+    if (!util.isEmpty(modals)) {
+      const filtered = util.filterObj(modals, 'open', true);
+      openModals = Object.keys(filtered);
+    }
+    if (open) {
+      if (!openModals.includes(identifier)) {
+        openModals.push(identifier);
+      }
+    } else {
+      const index = openModals.indexOf(identifier);
+      if (index !== -1) {
+        openModals.splice(index, 1);
+      }
+    }
+    let topModal = null;
+    if (!util.isEmpty(openModals)) {
+      topModal = openModals[openModals.length - 1]
+    }
+    dispatch(setModal(identifier, open, topModal, opts));
   }
 }
 

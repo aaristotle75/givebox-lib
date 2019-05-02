@@ -144,7 +144,10 @@ class Form extends Component {
 
     if (!isEmpty(this.props.modals)) {
       Object.entries(this.props.modals).forEach(([key, value]) => {
+        console.log('execute before allow allowEnterToSubmit', this.props.id, key, value);
+
         if (this.props.id.includes(`${key}`) && value.open) {
+          console.log('execute after allow allowEnterToSubmit', this.props.id, key, value);
           allowEnter = true;
         }
       });

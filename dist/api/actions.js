@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as types from './actionTypes';
+import * as util from '../common/utility';
 import has from 'has';
 export function updatePrefs(prefs) {
   return {
@@ -16,12 +17,19 @@ export function setPrefs(pref) {
     return dispatch(updatePrefs(updatedPrefs));
   };
 }
-export function toggleModal(identifier, open, opts = {}) {
+
+function setModal(identifier, open, opts = {}) {
   return {
     type: types.TOGGLE_MODAL,
     identifier: identifier,
     opts: opts,
     open: open
+  };
+}
+
+export function toggleModal(identifier, open, opts = {}) {
+  return (dispatch, getState) => {
+    dispatch(setModal(identifier, open, opts));
   };
 }
 export function resourceProp(key, value) {

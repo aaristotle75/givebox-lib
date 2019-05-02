@@ -136,8 +136,9 @@ class Form extends Component {
   allowEnterToSubmit() {
     let allowEnter = false;
     if (!isEmpty(this.props.modals)) {
+      const topModal = getValue(this.props.modals, 'topModal', null);
       Object.entries(this.props.modals).forEach(([key, value]) => {
-        if (this.props.id.includes(`${key}`) && value.open) {
+        if (this.props.id.includes(`${key}`) && value.open && key === topModal) {
           allowEnter = true;
         }
       });
