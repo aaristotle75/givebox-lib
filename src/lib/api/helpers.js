@@ -211,12 +211,12 @@ export function translatePerm(value) {
 	name = value.name;
 	switch (group) {
 		case 'refund':
-			groupName = 'Refunds';
-			break;
+      groupName = 'Refunds';
+      break;
     case 'finance':
-		case 'transfer':
+    case 'transfer':
       group = 'money';
-			groupName = 'Money';
+      groupName = 'Money';
       switch (perm) {
         case 'read':
           name = 'View Transactions';
@@ -227,60 +227,60 @@ export function translatePerm(value) {
 
         // no default
       }
-			break;
-		case 'sweepstake':
-			groupName = 'Sweepstakes';
-			break;
-		case 'member':
+      break;
+    case 'sweepstake':
+      groupName = 'Sweepstakes';
+      break;
+    case 'member':
       group = 'users';
-			groupName = 'Team Members';
-			switch(perm) {
-				case 'read':
-					name = 'View User';
-					break;
-				case 'write':
-					name = 'Create/Edit User';
-					break;
-				case 'delete':
-					name = 'Delete User';
-					break;
+      groupName = 'Team Members';
+      switch(perm) {
+        case 'read':
+          name = 'View User';
+          break;
+        case 'write':
+          name = 'Create/Edit User';
+          break;
+        case 'delete':
+          name = 'Delete User';
+          break;
 
         // no default
-			};
-			break;
-		case 'keys':
-			groupName = 'Developer';
-			break;
-		case 'fundraiser':
-			groupName = 'Donation Forms';
-			break;
-		case 'membership':
-			groupName = 'Memberships';
-			break;
-		case 'event':
-			groupName = 'Events';
-			break;
-		case 'invoice':
-			groupName = 'Invoices';
-			break;
-		case 'customer':
-			groupName = 'Customers';
-			break;
-		case 'bank':
-			groupName = 'Bank Accounts';
-			break;
-		case 'email':
-			groupName = 'Email Blasts';
-			break;
+      };
+      break;
+    case 'keys':
+      groupName = 'Developer';
+      break;
+    case 'fundraiser':
+      groupName = 'Donation Forms';
+      break;
+    case 'membership':
+      groupName = 'Memberships';
+      break;
+    case 'event':
+      groupName = 'Events';
+      break;
+    case 'invoice':
+      groupName = 'Invoices';
+      break;
+    case 'customer':
+      groupName = 'Customers';
+      break;
+    case 'bank':
+      groupName = 'Bank Accounts';
+      break;
+    case 'email':
+      groupName = 'Email Blasts';
+      break;
 
-    // no default
+      // no default
 	}
-	obj.groupName = groupName;
-	obj.group = group;
-	obj.perm = perm;
-	obj.name = name;
+  obj.groupName = groupName;
+  obj.group = group;
+  obj.perm = perm;
+  obj.name = name;
   obj.slug = value.slug;
-	return obj;
+  return obj;
 }
 
 export function savePrefs(pref, callback) {
