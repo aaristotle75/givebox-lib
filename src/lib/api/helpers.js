@@ -202,13 +202,13 @@ export function sendResource(resource, opts = {}) {
 }
 
 export function translatePerm(value) {
-	var slugArr = util.getSplitStr(value.slug, '_', 2, -1);
-	var obj = {};
-	var group, groupName, perm, name;
-	groupName = value.name.substr(value.name.indexOf(' ')+1);
-	group = slugArr[1];
-	perm = slugArr[0];
-	name = value.name;
+  var slugArr = util.getSplitStr(value.slug, '_', 2, -1);
+  var obj = {};
+  var group, groupName, perm, name;
+  groupName = value.name.substr(value.name.indexOf(' ')+1);
+  group = slugArr[1];
+  perm = slugArr[0];
+  name = value.name;
 	switch (group) {
 		case 'refund':
       groupName = 'Refunds';
@@ -274,7 +274,7 @@ export function translatePerm(value) {
       break;
 
       // no default
-	}
+  }
   obj.groupName = groupName;
   obj.group = group;
   obj.perm = perm;
