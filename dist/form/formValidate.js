@@ -135,10 +135,6 @@ export function formatTaxID(value) {
   let val = value.replace(/\D/g, '');
   let newVal = '';
 
-  if (val.length > 2) {
-    this.value = val;
-  }
-
   if (val.length > 2 && val.length < 10) {
     newVal += val.substr(0, 2) + '-';
     val = val.substr(2);
