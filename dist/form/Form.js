@@ -958,6 +958,8 @@ class Form extends Component {
     }, this.creditCard('ccnumber', {
       label: params.ccnumberLabel || 'Credit Card',
       fixedLabel: params.ccnumberfixedLabel || true,
+      placeholder: params.placeholder,
+      readOnly: params.readOnly,
       required: params.required,
       debug: params.debug
     })), React.createElement("div", {
@@ -970,6 +972,7 @@ class Form extends Component {
       fixedLabel: params.ccexpirefixedLabel || true,
       placeholder: 'MM/YY',
       required: params.required,
+      value: params.ccexpireValue,
       validate: 'ccexpire',
       maxLength: 5,
       count: false,

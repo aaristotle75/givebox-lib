@@ -821,10 +821,10 @@ class Form extends Component {
 
       <div style={params.style} className={`field-group creditCard-group`}>
         <div style={{width: '75%'}} className='col'>
-          {this.creditCard('ccnumber', {label: params.ccnumberLabel || 'Credit Card', fixedLabel: params.ccnumberfixedLabel || true, required: params.required, debug: params.debug})}
+          {this.creditCard('ccnumber', {label: params.ccnumberLabel || 'Credit Card', fixedLabel: params.ccnumberfixedLabel || true, placeholder: params.placeholder, readOnly: params.readOnly, required: params.required, debug: params.debug})}
         </div>
         <div style={{width: '25%'}} className='col'>
-          {this.textField('ccexpire', {label: params.ccxpireLabel || 'Expiration', fixedLabel: params.ccexpirefixedLabel || true, placeholder: 'MM/YY', required: params.required, validate: 'ccexpire', maxLength: 5, count: false, debug: params.debug})}
+          {this.textField('ccexpire', {label: params.ccxpireLabel || 'Expiration', fixedLabel: params.ccexpirefixedLabel || true, placeholder: 'MM/YY', required: params.required, value: params.ccexpireValue, validate: 'ccexpire', maxLength: 5, count: false, debug: params.debug})}
         </div>
         <div className='clear'></div>
       </div>

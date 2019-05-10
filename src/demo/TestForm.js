@@ -91,6 +91,7 @@ export default class TestForm extends Component {
       <div>
         <h2>Form Elements</h2>
         <div className='formWrapper'>
+          {this.props.creditCardGroup({ required: false, debug: false})}
           {this.props.textField('taxID', {placeholder: 'Enter Tax ID', validate: 'taxID', maxLength: 10})}
           <Collapse
             id='testForm'

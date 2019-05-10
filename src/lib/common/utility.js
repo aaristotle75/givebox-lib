@@ -320,7 +320,7 @@ export function money(amount, symbol = '$', cents = true, showNegative = true) {
     amount = Math.abs(amount);
     negative = true;
   }
-  return <span className={`moneyAmount ${negative && 'negativeAmount'}`}>{negative && '( '}<span className='symbol'>{symbol}</span>{numberWithCommas(parseFloat(amount).toFixed(cents ? 2 : 0))}{negative && ' )'}</span>;
+  return <span className={`moneyAmount ${negative && 'negativeAmount'}`}>{negative && '-'}<span className='symbol'>{symbol}</span>{numberWithCommas(parseFloat(amount).toFixed(cents ? 2 : 0))}</span>;
 }
 
 export function formatMoneyForAPI(amount) {

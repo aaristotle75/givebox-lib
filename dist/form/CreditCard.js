@@ -106,6 +106,7 @@ CreditCard.defaultProps = {
   type: 'text',
   maxlength: 64,
   cardType: 'noCardType',
-  checked: false
+  checked: false,
+  placeholder: 'xxxx xxxx xxxx xxxx'
 };
 export default CreditCard;

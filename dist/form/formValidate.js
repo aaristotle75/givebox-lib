@@ -150,10 +150,6 @@ export function formatSSN(value) {
   let val = value.replace(/\D/g, '');
   let newVal = '';
 
-  if (val.length > 4) {
-    this.value = val;
-  }
-
   if (val.length > 3 && val.length < 6) {
     newVal += val.substr(0, 3) + '-';
     val = val.substr(3);
