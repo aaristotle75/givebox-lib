@@ -14,6 +14,106 @@ h1, h2, h3, h4, h5 {
   font-weight: 300;
 }
 
+.strong {
+  font-weight: 500;
+}
+
+//img {image-rendering: optimizeSpeed;image-rendering: -moz-crisp-edges;image-rendering: -webkit-optimize-contrast;image-rendering: optimize-contrast;image-rendering: pixelated; -ms-interpolation-mode: nearest-neighbor; }
+
+.imageComponent.noRadius {
+  img {
+    border-radius: 0px !important;
+  }
+}
+
+.superOnly { display: none !important; }
+
+.super {
+  .superOnly { display: block !important; }
+}
+
+.section {
+  margin: 2px 0;
+  display: flex;
+  justify-content: space-between;
+  background: $white;
+  border-radius: 20px;
+}
+
+.sectionContainer {
+  background: $light;
+  border-radius: 20px;
+  padding: 3px 5px;
+}
+
+.sectionItem {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.subsectionTitle {
+  display: block;
+  color: $med-blue-gray;
+  font-size: $normal-text-size;
+  font-weight: 300;
+  margin-top: 10px;
+}
+
+.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #B0BEC5;
+  font-weight: 300;
+}
+
+.mainColor {
+  color: $mainColor !important;
+}
+
+.green {
+  color: $green !important;
+}
+
+.magenta {
+  color: $magenta !important;
+}
+
+.seaBlue {
+  color: $seaBlue !important;
+}
+
+.deepBlue {
+  color: $deepBlue !important;
+}
+
+.bloodRed {
+  color: $bloodRed !important;
+}
+
+.deepOrange {
+  color: $deepOrange !important;
+}
+
+.purple {
+  color: $purple !important;
+}
+
+.light-med-gray {
+  color: $light-med-gray !important;
+}
+
+.collapse {
+  button.sectionLink {
+    color: $mainColor;
+  }
+
+  button.sectionLink:hover {
+    color: $secondColor;
+  }
+}
+
 .tinyText {
   font-size: $tiny-text-size;
 }
@@ -69,6 +169,11 @@ label, .label {
   width: 100%;
 }
 
+.flexTop {
+  display: flex;
+  flex-direction: column;
+}
+
 .flexBetween {
   display: flex;
   justify-content: space-between;
@@ -77,6 +182,16 @@ label, .label {
 .flexStart {
   display: flex;
   justify-content: flex-start;
+}
+
+.flexCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flexColumn {
+  flex-direction: column;
 }
 
 .centerItems {
@@ -92,6 +207,12 @@ label, .label {
   vertical-align: top;
   display: inline-block;
   width: 50%;
+}
+
+.column66 {
+  vertical-align: top;
+  display: inline-block;
+  width: 66%;
 }
 
 .column33 {
@@ -239,6 +360,10 @@ header.navbar {
 
   .subNavContent {
 
+    .imageComponent {
+      display: none;
+    }
+
     .leftSide {
       display: flex;
       flex-direction: row-reverse;
@@ -277,7 +402,7 @@ header.navbar {
     }
 
     .date,
-    .menu {
+    .menu:not(.alwaysShow) {
       display: none;
     }
 
@@ -313,6 +438,11 @@ header.subNav {
 
 .subNavContent {
 
+  .imageComponent {
+    margin-right: 20px;
+    img { border-radius: 0; }
+  }
+
 	.actionsMenu button.menuLabel {
 	  padding: 7px 15px 7px 15px;
 	  line-height: 17px;
@@ -342,7 +472,7 @@ header.subNav {
       top: -15px;
       right: 0px;
       font-size: $small-text-size;
-      color: $med-gray;
+      color: $mainColor;
       font-weight: 300;
       margin-right: 5px;
     }
@@ -397,11 +527,13 @@ header.subNav {
 
 button.glossary {
   font-size: $small-text-size;
-  color: $med-gray;
+  color: $light-med-gray;
+  cursor: text;
+  pointer-events: none;
 }
 
 button.glossary:hover {
-  color: $mainColor;
+  color: $light-med-gray;
 }
 
 /*------ Search Block -------*/
@@ -448,6 +580,10 @@ button.glossary:hover {
 }
 
 /*------- Balance Block --------*/
+.leftSide {
+  display: flex;
+}
+
 .balance {
   display: flex;
   align-items: center;
@@ -455,13 +591,13 @@ button.glossary:hover {
 
   h1 {
     display: flex;
-    color: $mainColor;
+    color: $green;
     margin: 0;
     margin-bottom: 5px;
-    font-size: 4em;
+    font-size: 3.5em;
     font-weight: 300;
     height: 80px;
-    @media (max-width: 1300px) { font-size: 5vw; }
+    @media (max-width: 1300px) { font-size: 4.5vw; }
     @media (max-width: 600px) { font-size: 12vw; }
   }
 
@@ -469,8 +605,21 @@ button.glossary:hover {
     align-self: center;
     .symbol {
     	display: inline;
-    	vertical-align: top;
-    	font-size: 55%;
+    	font-size: 45%;
+      vertical-align: top;
+    }
+    .dollarAmount {
+      vertical-align: top;
+    }
+    .centAmount {
+      vertical-align: top;
+    }
+    .centSymbol {
+      font-family: times, Sans-serif;
+      font-size: 55%;
+    }
+    .dollarComma {
+      font-size: 65%;
     }
   }
 
@@ -524,7 +673,7 @@ button.glossary:hover {
 .layout-left .layout-left-content {
   height: 100vh;
   background: $mainColor2;
-  background-image: url(https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/layout-left-bg-new.png), linear-gradient(to bottom, $mainColor2 0%,$mainColor 100%);
+  background-image: url(https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/layout-left-bg-new.png), linear-gradient(to bottom, #1818c8 0%,#25acd1 85%,#35e6b2 100%);
   //background: linear-gradient(to bottom, $mainColor2 0%,$mainColor 100%);
   background-position: center bottom;
   background-repeat: no-repeat;
@@ -643,8 +792,9 @@ ul.selectable {
     display: flex;
     background: $white;
     border: 0;
-    border-top: 1px solid $light-med-gray;
+    border-top: 1px solid $light;
     margin: 0;
+    border-radius: 20px;
   }
 
   li:first-child {
@@ -659,6 +809,15 @@ ul.selectable {
     background: $mainColor;
     color: $white;
     @include default-transition(.25s);
+    .gray {
+      color: $white !important;
+    }
+    .icon {
+      color: $white;
+    }
+    .date {
+      color: $white;
+    }
   }
 
   img {
@@ -668,6 +827,26 @@ ul.selectable {
 
   .liContent {
     margin-left: 10px;
+  }
+
+  .imagePlaceholder {
+    position: relative;
+    display: inline-block;
+    height: 50px;
+    width: 50px;
+    border-radius: 20px;
+    color: $white;
+    background: $light-gray;
+    vertical-align: middle;
+    text-align: center;
+
+    .icon {
+      position: absolute;
+      left:0; right:0;
+      top:10px; bottom:0;
+      margin: auto;
+      font-size: 30px;
+    }
   }
 
 }
@@ -685,10 +864,23 @@ button {
   font-size: $normal-text-size;
 }
 
+button.gray {
+  color: $light-med-gray !important;
+  font-weight: 300;
+}
+
+button.gray:hover {
+  color: $secondColor !important;
+  @include default-transition(.25s);
+}
+
 button:hover {
   @include default-transition(.25s);
 }
 
+.buttonAnimation {
+  @include animation(pulsateSlightlyBrighter 2s infinite ease-out);
+}
 
 button.button {
   font-size: $normal-text-size;
@@ -800,7 +992,7 @@ button.button.secondary:hover {
 .actionsMenu {
 
   .actionsMenu-content {
-    min-width: 150px;
+    min-width: 200px;
     max-width: 100%;
     width: auto;
     max-height: initial;
@@ -898,6 +1090,7 @@ button.toTop:hover {
 button.input {
   font-weight: 300;
   font-size: $normal-text-size;
+  color: $med-blue-gray;
 }
 
 button.input.hasValue {
@@ -913,6 +1106,12 @@ button.supportLink {
 
 .givebox-lib-table {
 
+  width: 100%;
+  border-radius: 20px;
+  background: $white;
+  margin: 0;
+  padding: 0;
+
   table {
     margin: 0;
   }
@@ -926,7 +1125,7 @@ button.supportLink {
   }
 
   th {
-    color: $med-gray;
+    color: $med-blue-gray;
     font-weight: 300;
     padding: 20px 5px;
   }
@@ -942,7 +1141,7 @@ button.supportLink {
   }
 
   tbody tr:not(:first-child):not(.detailsRow) {
-    border-top: 1px solid $light-med-gray;
+    border-top: 1px solid $light;
   }
 
   tbody tr:hover {
@@ -964,14 +1163,6 @@ button.supportLink {
     padding: 20px 0;
   }
 
-  .noRecords {
-    .normalText {
-      color: $light-med-gray;
-      font-weight: 300;
-      font-size: $normal-text-size;
-    }
-  }
-
   tr:nth-child(even) {
     background: $white;
   }
@@ -987,7 +1178,8 @@ button.supportLink {
   tbody tr .detailsIcon {
     text-align: center;
     .icon {
-      color: $light;
+      color: $mainColor;
+      opacity: .2;
       font-size: 1.5em;
       vertical-align: middle;
       @include default-transition(.5s);
@@ -997,12 +1189,20 @@ button.supportLink {
   tbody tr:hover .detailsIcon {
     .icon {
       color: $mainColor;
+      opacity: 1;
+      @include animation(pulsateBrighter 2s ease-out infinite);
     }
   }
 
   .details {
     background: $light;
     padding: 0;
+
+    .description {
+      .line {
+        padding: 7px 0;
+      }
+    }
   }
 
   .detailsContent {
@@ -1049,7 +1249,15 @@ button.supportLink {
   }
 
   tfoot {
+
     font-size: $normal-text-size;
+
+    .footerLabel {
+      font-size: $small-text-size;
+      color: $med-blue-dark-gray;
+      font-weight: 300;
+      border-bottom: 1px dashed $light-gray;
+    }
 
     tr {
       line-height: 20px;
@@ -1071,9 +1279,10 @@ button.supportLink {
     }
 
     .detailsLabel {
+      display: block;
       font-weight: 300;
       color: $med-gray;
-      font-size: $normal-text-size;
+      font-size: $small-text-size;
     }
 
     .column50 {
@@ -1082,6 +1291,14 @@ button.supportLink {
     }
   }
 
+}
+
+.noRecords {
+  .normalText {
+    color: $light-med-gray;
+    font-weight: 300;
+    font-size: $normal-text-size;
+  }
 }
 
 /*----------- Image ----------*/
@@ -1207,17 +1424,19 @@ button.supportLink {
 
   button.link {
     font-size: $small-text-size;
-    color: $med-gray;
+    color: $mainColor;
     font-weight: 300;
     margin-right: 5px;
   }
 
   button.link:hover {
-    color: $mainColor;
+    color: $secondColor;
   }
 }
 
 .filter {
+  position: relative;
+  display: block;
 
   .filter-content {
     box-shadow: none;
@@ -1237,12 +1456,12 @@ button.supportLink {
   }
 
   button.link {
-    color: $med-gray;
+    color: $mainColor;
     font-weight: 300;
   }
 
   button.link:hover {
-    color: $mainColor;
+    color: $secondColor;
   }
 }
 
@@ -1290,6 +1509,7 @@ button.supportLink {
     background: transparent;
     border-bottom: 2px solid $mainColor;
     @include default-transition(1s);
+    @include animation(pulsateBrighter 2s infinite linear);
   }
 
   .panelTab:hover {
@@ -1303,39 +1523,18 @@ button.supportLink {
 }
 
 /*--------- Form ----------*/
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active  {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+
 .fieldContext {
   padding: 0 5px;
   font-weight: 300;
   font-size: $small-text-size;
   color: $med-gray;
-}
-
-input {
-  line-height: 1.5em;
-}
-
-.input-bottom.active {
-  background: $mainColor;
-  transform: scaleX(1);
-  -webkit-transform: scaleX(1);
-  @include default-transition(.25s);
-}
-
-input::-webkit-input-placeholder {
-  font-size: $normal-text-size;
-  font-family: $font-family;
-  color: $med-gray;
-  font-weight: 300;
-}
-input::-moz-placeholder {
-  font-size: $normal-text-size;
-  color: $med-gray;
-  font-weight: 300;
-}
-input::-ms-input-placeholder {
-  font-size: $normal-text-size;
-  color: $med-gray;
-  font-weight: 300;
 }
 
 .floating-label button.label {
@@ -1356,11 +1555,11 @@ input::-ms-input-placeholder {
   input {
     padding-right: 45px;
     height: 35px;
-    border-bottom: 1px solid $light-gray;
+    border-bottom: 1px solid $light;
   }
 
   .input-bottom.idle {
-    background: $light-gray;
+    background: $light;
   }
 
   .icon {
@@ -1397,6 +1596,12 @@ input::-ms-input-placeholder {
   margin: 15px 0;
 }
 
+.dropdown-content.top {
+  .dropdown-content-inner {
+    margin: 0px 0;
+  }
+}
+
 .dropdown .dropdown-item.selected {
   color: $mainColor;
 }
@@ -1421,9 +1626,14 @@ input::-ms-input-placeholder {
   .icon { color: $white; }
   .dropdown-item-actions button.link {
     color: $white;
+    border: 0;
   }
   .dropdown-item-actions button.link:hover {
     color: $light-gray;
+    border: 0;
+  }
+  .date {
+    color: $white;
   }
 }
 
@@ -1530,6 +1740,10 @@ input::-ms-input-placeholder {
 
 .alertMsg {
 
+  .warning {
+    background: $red;
+  }
+
   .msgText {
     text-align: center;
     max-width: $main-max-width;
@@ -1632,7 +1846,7 @@ input::-ms-input-placeholder {
   }
 
   button.link.needsValidated {
-    color: $orange;
+    color: $deepOrange;
     font-size: $small-text-size;
   }
 
@@ -1722,7 +1936,7 @@ input::-ms-input-placeholder {
   .modalContent {
     border-radius: 20px;
     overflow: hidden;
-    background: $white;
+    background: transparentize($white, 0) !important;
   }
 
   h2 {
@@ -1754,7 +1968,18 @@ input::-ms-input-placeholder {
 }
 
 .modalFormContainer {
-  padding: 40px;
+  padding: 0px 40px;
+
+  h2 {
+    font-size: 1.5em;
+    color: $med-gray;
+    font-weight: 300;
+    margin-top: 0px;
+  }
+
+  h2.pageTitle {
+    text-align: center;
+  }
 }
 
 .modalPreview {
@@ -1780,13 +2005,14 @@ input::-ms-input-placeholder {
 
 .modalTop::after {
   content: "";
-  background: url('https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/modal-top-bg3.png') repeat-x;
+  background: url('https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/modal-top-bg5.png') repeat-x;
+  background-size: 1000px 30px;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   position: absolute;
-  opacity: .4;
+  opacity: 1;
   height: 30px;
   border-top-right-radius: 20px;
   border-top-left-radius: 20px;
@@ -1807,12 +2033,13 @@ input::-ms-input-placeholder {
 
 .modalBottom::after {
   content: "";
-  background: url('https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/modal-bottom-bg3.png') repeat-x bottom;
+  background: url('https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/modal-bottom-bg5.png') repeat-x bottom;
+  background-size: 1000px 28px;
   left: 0;
   right: 0;
   bottom: 0;
   position: absolute;
-  opacity: .4;
+  opacity: 1;
   height: 28px;
   border-bottom-right-radius: 20px;
   border-bottom-left-radius: 20px;
@@ -1825,9 +2052,14 @@ input::-ms-input-placeholder {
   border-bottom-right-radius: 20px;
 }
 
-.flatpickr-innerContainer {
+.flatpickr-time {
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
+}
+
+.flatpickr-innerContainer {
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
 }
 
 .flatpickr-day.selected,
@@ -1859,8 +2091,121 @@ input::-ms-input-placeholder {
 
 /*-------- HTML INJECTION - Used for email templates and other HTML templates */
 .html-injection {
+  td { padding: 0; margin: 0; }
   p {
     font-size: 12px;
     margin: 0;
+  }
+	img { border: 0; text-decoration: none; height: auto; outline: none; }
+	table { border-collapse:collapse !important; }
+
+  .flexTop {
+    display: flex;
+    flex-direction: column;
+  }
+
+	#emailContainer { width: 500px; }
+	#invoice { margin: 10px 0 10px 0; }
+	#ticket { margin: 20px 0 20px 0; }
+  #ticketBackground {
+    background: url('https://s3-us-west-1.amazonaws.com/givebox/public/images/ticket-template3.png') no-repeat;
+  }
+
+	h1 { font-size: 22px; font-weight: 500; margin: 5px 0 5px 0; }
+	h2 { font-size: 18px; font-weight: 400; margin: 5px 0 5px 0; }
+	h3 { font-size: 16px; font-weight: 400; margin: 5px 0 5px 0; }
+	h4 { font-size: 14px; font-weight: 400; margin: 5px 0 5px 0; }
+	p { font-size: 12px; margin: 5px 0 5px 0; }
+
+	.strong { font-weight: 500; }
+	.veryStrong { font-weight: 600; }
+	.weak { font-weight: 300; }
+	.left { text-align: left; }
+	.center { text-align: center; }
+	.right { text-align: right; }
+	.header { height: 30px; }
+	.headerText { color: #767f84; font-size: 12px; font-weight: 500; }
+	.row { height: 30px; }
+	.rowText { font-size: 14px; }
+	.totalRow { height: 20px; }
+	.totalText { font-size: 16px; }
+	.smallText { font-size: 12px; }
+	.verySmallText { font-size: 10px; }
+
+	@media screen and (max-width: 550px) {
+	  #emailContainer { width: 360px; }
+	  #templateColumns{ width:100% !important; }
+	  .templateColumnContainer{ width:100% !important;  }
+	}
+}
+
+.customers {
+  header.subNavFixed .subNavContent .balance {
+    display: flex;
+    align-items: flex-start;
+    margin-left: 20px;
+  }
+}
+
+.emailList {
+  .actionsMenu {
+
+    button.menuLabel {
+      text-align: center;
+      font-size: $normal-text-size;
+    }
+
+    .icon {
+      font-size: $normal-text-size;
+    }
+
+    .actionsMenu-content {
+      width: 300px;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+    }
+
+    .actionsMenu-item button {
+      text-align: left;
+      font-size: $large-text-size;
+    }
+
+  }
+}
+
+.emailListContainer {
+  .selectButtons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .link {
+      font-size: $small-text-size;
+    }
+  }
+  ul {
+    margin: 20px 0;
+    max-height: 200px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+
+}
+
+.selectedCount {
+  font-size: $small-text-size;
+  color: $med-gray;
+}
+
+button.importGmail {
+  img {
+    @include filter(brightness(90%));
+  }
+}
+
+button.importGmail:hover {
+  img {
+    @include filter(brightness(100%));
   }
 }

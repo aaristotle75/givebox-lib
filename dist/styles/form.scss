@@ -229,6 +229,12 @@ label.idle, .label.idle {
   align-items: center;
 }
 
+.choice-group.error {
+  .icon {
+    color: $red;
+  }
+}
+
 /*--------------- Checkbox ---------------*/
 .checkbox-group {
   label {
@@ -529,7 +535,8 @@ label.idle, .label.idle {
   }
 
   .moneyAmount,
-  .moneyAmount.active {
+  .moneyAmount.active,
+  .moneyAmount.noValue .symbol {
     color: $red;
   }
 

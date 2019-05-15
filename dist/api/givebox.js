@@ -246,6 +246,12 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
         endpoint = `users/${userID}/paymethods/${id[0]}`;
         break;
       }
+
+    case 'userFundraisers':
+      {
+        endpoint = `users/${userID}/volunteer-fundraisers`;
+        break;
+      }
     // AFFILIATE
 
     case 'affiliates':
@@ -1060,6 +1066,18 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
     case 'googleList':
       {
         endpoint = `google/contact-customers`;
+        break;
+      }
+
+    case 'updateHubspotContact':
+      {
+        endpoint = `hubspot/contacts`;
+        break;
+      }
+
+    case 'getHubspotContact':
+      {
+        endpoint = `hubspot/contacts/${id[0]}`;
         break;
       }
     // DEFAULT
