@@ -971,3 +971,270 @@ label.idle, .label.idle {
   height: 20px;
   margin-right: 10px;
 }
+
+// Moved over from Cloud to be used Globally
+
+
+.editMode {
+  padding: 10px 0 15px 0;
+  vertical-align: top;
+  font-size: 50%;
+  color: $mainColor;
+  white-space: nowrap;
+  display: block;
+  @include animation(pulsateBrighter 2s infinite linear);
+}
+
+.enableColumn {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  .icon {
+    font-size: 1.75em;
+  }
+}
+
+input {
+  line-height: 1.5em;
+}
+
+.moneyAmount.noValue .symbol {
+  color: $med-blue-gray
+}
+
+.input-bottom.active {
+  background: $mainColor;
+  transform: scaleX(1);
+  -webkit-transform: scaleX(1);
+  @include default-transition(.25s);
+}
+
+input::-webkit-input-placeholder {
+  font-size: $normal-text-size;
+  font-family: $font-family;
+  color: $med-blue-gray;
+  font-weight: 300;
+}
+input::-moz-placeholder {
+  font-size: $normal-text-size;
+  color: $med-blue-gray;
+  font-weight: 300;
+}
+input::-ms-input-placeholder {
+  font-size: $normal-text-size;
+  color: $med-blue-gray;
+  font-weight: 300;
+}
+
+form {
+
+  .tabs .panel {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+
+  .statsTab button.panelTab {
+    font-weight: 300;
+    padding: 5px 30px;
+  }
+
+  .statsTab button.panelTab:hover {
+    color: $secondColor;
+  }
+
+  h4 {
+    margin-bottom: 0;
+  }
+
+  .flexStart.formInfo .choice-group:not(.right) {
+    width: 250px;
+  }
+
+  .flexStart.formInfo .choice-group.right {
+    margin-left: 20px;
+    @media only screen and (max-width: 600px) {
+      text-align: left;
+      margin-left: 0px;
+    }
+  }
+
+  .flexStart.formInfo {
+    @media only screen and (max-width: 600px) {
+      flex-direction: column;
+    }
+  }
+
+  .imageURL {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    .input-group {
+      display: inline-block;
+      width: 200px;
+      margin: 0;
+      padding: 0;
+    }
+  }
+
+}
+
+/*------ Sortable ---------*/
+.sortableElement {
+  z-index: 999999999;
+  cursor: pointer;
+}
+
+.sortableListItem.notOnForm {
+  opacity: .5;
+}
+
+.sortableListItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .column {
+    display: inline-block;
+  }
+
+  .actions button {
+    display: block;
+    font-size: $small-text-size;
+    margin: 0;
+    text-align: left;
+  }
+
+  .defaultField {
+    display: block;
+    font-size: $small-text-size;
+    color: $mainColor2;
+    cursor: default;
+  }
+
+}
+
+.sortableElement:hover button.sortable .icon {
+  color: $mainColor;
+}
+
+
+/*------ Tooltip Sortable-------*/
+.tooltip.sortable {
+  .tooltipTop {
+    background: #253655;
+  }
+}
+
+button.tooltip.sortable {
+  .icon {
+    @include default-transition(.25s);
+    color: $light;
+  }
+}
+
+button.tooltip.sortable:hover {
+  .icon {
+    color: $mainColor;
+  }
+}
+
+.tooltip.right .tooltipTop {
+  right: 0;
+  left: 0;
+  min-width: 100px;
+}
+
+.tooltip.right .tooltipTop i {
+  position: absolute;
+  top: 100%;
+  right: 20%;
+  margin-left: 0px;
+  width: 24px;
+  height: 12px;
+  overflow: hidden;
+}
+
+.formSectionContainer {
+  padding: 3px 5px;
+  background: $light;
+  border-radius: 20px;
+}
+
+.formSection {
+  padding: 10px 20px 20px 20px;
+  margin: 2px 0;
+  background: $white;
+  border-radius: 20px;
+}
+
+.modalContent.campaignForm {
+  .modalFormContainer {
+    padding: 0 20px;
+    @media (max-width: 849px) {
+      padding: 0 10px;
+    }
+  }
+}
+
+.modal {
+  .modalFormContainer.where-group {
+    padding: 40px 40px;
+  }
+}
+
+.addRow {
+  padding: 10px 0;
+}
+
+.amountForm {
+  padding-top: 20px;
+
+  .actions {
+    button {
+      margin-top: 5px;
+    }
+  }
+
+  .actions.center {
+    display: flex;
+    justify-content: center;
+  }
+
+  button.tooltip {
+    margin-top: 0 !important;
+  }
+}
+
+.gbxform {
+
+  iframe {
+    width: 770px;
+    min-height: 650px !important;
+    overflow: hidden;
+  }
+}
+
+/*------- Dropdown ----------*/
+.dropdown {
+  .dropdown-item.bottom button:hover {
+    color: $secondColor;
+    background: transparent;
+  }
+
+}
+
+/*------ Dropzone -------*/
+.dropzoneImageContainer {
+  .dropzoneLoader {
+    margin-bottom: 10px;
+    font-size: $small-text-size;
+    color: $med-gray;
+    img {
+      margin-left: 10px;
+    }
+  }
+}
