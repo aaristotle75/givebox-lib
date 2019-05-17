@@ -1,5 +1,9 @@
 @import 'variables.scss';
 
+button.link:hover .avatarImage {
+  border: 1px solid $secondColor;
+}
+
 .avatarLink {
   position: relative;
 
@@ -49,18 +53,20 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 50%;
+    border-radius: 20px;
     width: 45px;
     height: 45px;
     border: 1px solid $light-med-gray;
-    margin: 0 10px;
+    text-align: center;
     overflow: hidden;
+    margin: 0 10px;
 
     img {
       display: inline;
       margin: 0 auto;
       height: 100%;
       width: auto;
+      border-radius: 20px;
     }
   }
 }
@@ -71,9 +77,9 @@
   justify-content: center;
   align-items: center;
   margin: 0 10px;
-  height: 40px;
-  width: 40px;
-  border-radius: 50%;
+  height: 45px;
+  width: 45px;
+  border-radius: 20px;
   color: $white;
   background: $light-gray;
   vertical-align: middle;
@@ -105,7 +111,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 50%;
+    border-radius: 20px;
     width: 80px;
     height: 80px;
     border: 1px solid $light-med-gray;
@@ -117,6 +123,7 @@
       margin: 0 auto;
       height: 100%;
       width: auto;
+      border-radius: 20px;
     }
   }
 
@@ -127,7 +134,7 @@
       width: 80px;
       color: $white;
       font-size: $tiny-text-size;
-      border-radius: 50%;
+      border-radius: 20px;
       background: $light-gray;
     }
 

@@ -1,6 +1,5 @@
 @import 'variables.scss';
 
-
 /*------- Common ----------*/
 body {
   font-family: $font-family;
@@ -586,6 +585,7 @@ button.glossary:hover {
 
 .balance {
   display: flex;
+  align-items: center;
   flex-direction: column;
 
   h1 {
@@ -827,7 +827,8 @@ ul.selectable {
     align-items: center;
     width: 45px;
     height: 45px;
-    border-radius: 50%;
+    border-radius: 20px;
+    border: 1px solid $light-gray;
   }
 
   img {
@@ -835,19 +836,16 @@ ul.selectable {
     margin: 0 auto;
     height: 100%;
     width: auto;
+    border-radius: 20px;
   }
 
-  .liContent {
-    margin-left: 10px;
-  }
-
-  .imagePlaceholder {
+  .defaultOrgImg {
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 50px;
-    width: 50px;
+    height: 45px;
+    width: 45px;
     border-radius: 20px;
     color: $white;
     background: $light-gray;
@@ -855,12 +853,12 @@ ul.selectable {
     text-align: center;
 
     .icon {
-      position: absolute;
-      left:0; right:0;
-      top:10px; bottom:0;
-      margin: auto;
-      font-size: 30px;
+      font-size: 25px;
     }
+  }
+
+  .liContent {
+    margin-left: 10px;
   }
 
 }
