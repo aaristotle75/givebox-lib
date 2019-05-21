@@ -555,7 +555,8 @@ class Form extends Component {
     const defaults = cloneObj(this.defaults);
     const params = Object.assign({}, defaults, {
       floatingLabel: true,
-      overlay: true
+      overlay: true,
+      fixedLabel: true
     }, opts);
 
     const defaultValue = field ? field.value : params.value;
@@ -572,6 +573,7 @@ class Form extends Component {
         selectLabel={field ? field.selectLabel : params.selectLabel}
         label={params.label}
         floatingLabel={params.floatingLabel}
+        fixedLabel={params.fixedLabel}
         style={params.style}
         contentStyle={params.contentStyle}
         className={params.className}
@@ -779,7 +781,8 @@ class Form extends Component {
       cardType: 'noCardType',
       placeholder: 'xxxx xxxx xxxx xxxx',
       validate: 'creditCard',
-      maxLength: 19
+      maxLength: 19,
+      hideLabel: false
     }, opts);
 
     return (
@@ -790,6 +793,7 @@ class Form extends Component {
         checked={field ? field.checked : params.checked}
         label={params.label}
         fixedLabel={params.fixedLabel}
+        hideLabel={params.hideLabel}
         style={params.style}
         placeholder={field ? field.placeholder : params.placeholder}
         type={field ? field.type : params.type}
@@ -821,7 +825,7 @@ class Form extends Component {
 
       <div style={params.style} className={`field-group creditCard-group`}>
         <div style={{width: '75%'}} className='col'>
-          {this.creditCard('ccnumber', {label: params.ccnumberLabel || 'Credit Card', fixedLabel: params.ccnumberfixedLabel || true, placeholder: params.placeholder, readOnly: params.readOnly, required: params.required, debug: params.debug})}
+          {this.creditCard('ccnumber', {label: params.ccnumberLabel || 'Credit Card', fixedLabel: params.ccnumberfixedLabel || true, hideLabel: params.hideLabel, placeholder: params.placeholder, readOnly: params.readOnly, required: params.required, debug: params.debug})}
         </div>
         <div style={{width: '25%'}} className='col'>
           {this.textField('ccexpire', {label: params.ccxpireLabel || 'Expiration', fixedLabel: params.ccexpirefixedLabel || true, placeholder: 'MM/YY', required: params.required, value: params.ccexpireValue, validate: 'ccexpire', maxLength: 5, count: false, debug: params.debug})}

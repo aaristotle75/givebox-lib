@@ -175,7 +175,8 @@ class Dropdown extends Component {
       iconOpened,
       iconClosed,
       overlay,
-      overlayDuration
+      overlayDuration,
+      fixedLabel
     } = this.props;
 
     const {
@@ -193,7 +194,7 @@ class Dropdown extends Component {
         <Fade in={open && overlay} duration={overlayDuration}>
           <div onClick={this.closeMenu} className={`dropdown-cover ${display ? '' : 'displayNone'}`}></div>
         </Fade>
-        <div className={`dropdown ${floatingLabel && 'floating-label'} ${this.state.status} ${label ? 'fixed' : ''}`} style={dropdownStyle}>
+        <div className={`dropdown ${floatingLabel && 'floating-label'} ${this.state.status} ${fixedLabel ? 'fixed' : ''}`} style={dropdownStyle}>
           {label && !floatingLabel && <label><GBLink onClick={open ? this.closeMenu : this.openMenu}>{label}</GBLink></label>}
           <button onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} type='button' onClick={open ? this.closeMenu : this.openMenu}><span className={`label ${idleLabel && 'idle'}`}>{selectedValue}</span>{open ? multi ? iconMultiClose : iconOpened : iconClosed}</button>
           <div ref={this.dropdownRef} style={contentStyle} className={`${open ? 'opened' : ''} dropdown-content ${this.props.direction || direction}`}>

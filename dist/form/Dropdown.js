@@ -211,7 +211,8 @@ class Dropdown extends Component {
       iconOpened,
       iconClosed,
       overlay,
-      overlayDuration
+      overlayDuration,
+      fixedLabel
     } = this.props;
     const {
       open,
@@ -231,7 +232,7 @@ class Dropdown extends Component {
       onClick: this.closeMenu,
       className: `dropdown-cover ${display ? '' : 'displayNone'}`
     })), React.createElement("div", {
-      className: `dropdown ${floatingLabel && 'floating-label'} ${this.state.status} ${label ? 'fixed' : ''}`,
+      className: `dropdown ${floatingLabel && 'floating-label'} ${this.state.status} ${fixedLabel ? 'fixed' : ''}`,
       style: dropdownStyle
     }, label && !floatingLabel && React.createElement("label", null, React.createElement(GBLink, {
       onClick: open ? this.closeMenu : this.openMenu

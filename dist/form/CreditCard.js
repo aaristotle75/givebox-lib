@@ -51,7 +51,8 @@ class CreditCard extends Component {
       errorType,
       maxLength,
       value,
-      checked
+      checked,
+      hideLabel
     } = this.props;
     const hideCardsAccepted = value ? cardType !== 'noCardType' ? true : false : false;
     return React.createElement("div", {
@@ -81,7 +82,7 @@ class CreditCard extends Component {
       autoComplete: "new-password",
       value: value,
       maxLength: maxLength
-    }), label && React.createElement("label", {
+    }), !hideLabel && label && React.createElement("label", {
       htmlFor: name
     }, label), React.createElement("div", {
       className: `input-bottom ${error ? 'error' : this.state.status}`
@@ -107,6 +108,7 @@ CreditCard.defaultProps = {
   maxlength: 64,
   cardType: 'noCardType',
   checked: false,
-  placeholder: 'xxxx xxxx xxxx xxxx'
+  placeholder: 'xxxx xxxx xxxx xxxx',
+  hideLabel: false
 };
 export default CreditCard;

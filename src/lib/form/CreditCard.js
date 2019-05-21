@@ -48,7 +48,8 @@ class CreditCard extends Component {
       errorType,
       maxLength,
       value,
-      checked
+      checked,
+      hideLabel
     } = this.props;
 
     const hideCardsAccepted = value ? cardType !== 'noCardType' ? true : false : false;
@@ -75,7 +76,7 @@ class CreditCard extends Component {
               value={value}
               maxLength={maxLength}
             />
-            {label && <label htmlFor={name}>{label}</label>}
+            {!hideLabel && label && <label htmlFor={name}>{label}</label>}
             <div className={`input-bottom ${error ? 'error' : this.state.status}`}></div>
           </div>
           <Fade duration={200} in={checked ? true : false}>
@@ -99,7 +100,8 @@ CreditCard.defaultProps = {
   maxlength: 64,
   cardType: 'noCardType',
   checked: false,
-  placeholder: 'xxxx xxxx xxxx xxxx'
+  placeholder: 'xxxx xxxx xxxx xxxx',
+  hideLabel: false
 }
 
 export default CreditCard;
