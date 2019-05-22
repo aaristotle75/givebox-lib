@@ -40,9 +40,12 @@ h1, h2, h3, h4, h5 {
 }
 
 .sectionContainer {
-  background: $light;
   border-radius: 20px;
   padding: 3px 5px;
+  background: $light;
+  background: -moz-linear-gradient(left,  $light 0%, $greenLight 100%);
+  background: -webkit-linear-gradient(left,  $light 0%, $greenLight 100%);
+  background: linear-gradient(to right,  $light 0%, $greenLight 100%);
 }
 
 .sectionItem {
@@ -1208,6 +1211,9 @@ button.supportLink {
 
   .details {
     background: $light;
+    background: -moz-linear-gradient(left,  $light 0%, $greenLight 100%);
+    background: -webkit-linear-gradient(left,  $light 0%, $greenLight 100%);
+    background: linear-gradient(to right,  $light 0%, $greenLight 100%);    
     padding: 0;
 
     .description {
@@ -1226,6 +1232,9 @@ button.supportLink {
   tbody tr.detailsOpen {
     @include default-transition(.25s);
     background: $light;
+    background: -moz-linear-gradient(left,  $light 0%, $greenLight 100%);
+    background: -webkit-linear-gradient(left,  $light 0%, $greenLight 100%);
+    background: linear-gradient(to right,  $light 0%, $greenLight 100%);
 
     .detailsIcon .icon {
       color: $light-med-gray;
@@ -1435,10 +1444,16 @@ button.supportLink {
   position: relative;
 
   button.link {
+    display: flex;
+    align-items: center;
     font-size: $small-text-size;
     color: $mainColor;
     font-weight: 300;
     margin-right: 5px;
+
+    .icon {
+      margin-left: 2px;
+    }
   }
 
   button.link:hover {
@@ -1532,21 +1547,6 @@ button.supportLink {
     font-size: $normal-text-size;
   }
 
-}
-
-/*--------- Form ----------*/
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active  {
-    -webkit-box-shadow: 0 0 0 30px white inset !important;
-}
-
-.fieldContext {
-  padding: 0 5px;
-  font-weight: 300;
-  font-size: $small-text-size;
-  color: $med-gray;
 }
 
 .floating-label button.label {
@@ -1682,6 +1682,10 @@ input:-webkit-autofill:active  {
 
 .dropdown button .label {
   font-weight: 400;
+}
+
+.dropdown button.label {
+  font-size: 1em;
 }
 
 .input-group.dropdown-button {

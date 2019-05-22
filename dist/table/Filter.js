@@ -89,10 +89,10 @@ class Filter extends Component {
 Filter.defaultProps = {
   label: 'Filters',
   iconOpened: React.createElement("span", {
-    className: "icon icon-chevron-down"
+    className: "icon icon-minus"
   }),
   iconClosed: React.createElement("span", {
-    className: "icon icon-chevron-right"
+    className: "icon icon-plus"
   })
 };
 

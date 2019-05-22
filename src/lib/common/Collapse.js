@@ -72,8 +72,8 @@ class Collapse extends Component {
 
 Collapse.defaultProps = {
   iconPrimary: 'edit',
-  iconOpen: 'chevron-down',
-  iconClosed: 'chevron-right',
+  iconOpen: 'minus',
+  iconClosed: 'plus',
   default: 'open',
   label: 'Collapsible Label'
 }

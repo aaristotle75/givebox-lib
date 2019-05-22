@@ -88,8 +88,8 @@ class Filter extends Component {
 
 Filter.defaultProps = {
   label: 'Filters',
-  iconOpened: <span className='icon icon-chevron-down'></span>,
-  iconClosed: <span className='icon icon-chevron-right'></span>
+  iconOpened: <span className='icon icon-minus'></span>,
+  iconClosed: <span className='icon icon-plus'></span>
 }
 
 function mapStateToProps(state, props) {
