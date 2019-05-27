@@ -41,6 +41,7 @@ export function kind(kind) {
       obj.btnName = obj.name;
       obj.cta = 'Buy Tickets';
       obj.txName = 'Ticket purchase';
+      obj.txLabel = 'Ticket Sales';
       obj.kind = 'event';
       obj.kindPlural = 'events';
       obj.header = 'Events';
@@ -60,6 +61,7 @@ export function kind(kind) {
       obj.btnName = 'Donate';
       obj.cta = 'Donate Now';
       obj.txName = 'Made donation';
+      obj.txLabel = 'Donations';
       obj.kind = 'fundraiser';
       obj.kindPlural = 'fundraisers';
       obj.header = 'Donation Forms';
@@ -79,6 +81,7 @@ export function kind(kind) {
       obj.btnName = obj.name;
       obj.cta = 'Pay Invoice';
       obj.txName = 'Paid invoice';
+      obj.txLabel = 'Invoice Payments';
       obj.kind = 'invoice';
       obj.kindPlural = 'invoices';
       obj.header = 'Invoices';
@@ -98,6 +101,7 @@ export function kind(kind) {
       obj.btnName = obj.name;
       obj.cta = 'Purchase Membership';
       obj.txName = 'Membership purchase';
+      obj.txLabel = 'Memberships';
       obj.kind = 'membership';
       obj.kindPlural = 'memberships';
       obj.header = 'Memberships';
@@ -117,6 +121,7 @@ export function kind(kind) {
       obj.btnName = obj.name;
       obj.cta = 'Enter Sweepstakes';
       obj.txName = 'Sweepstake entry';
+      obj.txLabel = 'Sweepstake Entries';
       obj.kind = 'sweepstake';
       obj.kindPlural = 'sweepstakes';
       obj.header = 'Sweepstakes';

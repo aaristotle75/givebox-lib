@@ -46,7 +46,7 @@ class ModalRoute extends Component {
     if (!modalRoot) {
       return ( <Loader /> );
     }
-
+    
     return (
       <div>
         { open &&

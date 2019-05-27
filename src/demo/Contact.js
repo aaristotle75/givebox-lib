@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import {
+  Form
+} from '../lib/';
+import TestForm from './TestForm';
 
 export default class Contact extends Component {
 
@@ -6,7 +10,9 @@ export default class Contact extends Component {
 
     return (
       <div>
-        Contact
+        <Form id={`testForm`} name={`testForm`}>
+          <TestForm {...this.props} />
+        </Form>
       </div>
     )
   }

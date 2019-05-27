@@ -1007,7 +1007,7 @@ button.button.secondary:hover {
 .actionsMenu {
 
   .actionsMenu-content {
-    min-width: 200px;
+    min-width: 250px;
     max-width: 100%;
     width: auto;
     max-height: initial;
@@ -1213,13 +1213,20 @@ button.supportLink {
     background: $light;
     background: -moz-linear-gradient(left,  $light 0%, $greenLight 100%);
     background: -webkit-linear-gradient(left,  $light 0%, $greenLight 100%);
-    background: linear-gradient(to right,  $light 0%, $greenLight 100%);    
+    background: linear-gradient(to right,  $light 0%, $greenLight 100%);
     padding: 0;
 
     .description {
       .line {
         padding: 7px 0;
       }
+    }
+
+    .dropdown .label:not(button) {
+      font-size: $small-text-size;
+    }
+    .input-group.dropdown-button .dropdown .icon {
+      font-size: $small-text-size;
     }
   }
 
@@ -1444,8 +1451,7 @@ button.supportLink {
   position: relative;
 
   button.link {
-    display: flex;
-    align-items: center;
+    vertical-align: middle;
     font-size: $small-text-size;
     color: $mainColor;
     font-weight: 300;

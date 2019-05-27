@@ -91,6 +91,8 @@ export default class TestForm extends Component {
       <div>
         <h2>Form Elements</h2>
         <div className='formWrapper'>
+          {this.props.uploadField('imageURL', { parent: 'user', label: 'Image', debug: true })}
+          {/*
           {this.props.creditCardGroup({ required: false, debug: false})}
           {this.props.textField('taxID', {placeholder: 'Enter Tax ID', validate: 'taxID', maxLength: 10})}
           <Collapse
@@ -110,7 +112,6 @@ export default class TestForm extends Component {
           })}
           {this.props.calendarField('dob', { label: 'Date of Birth', enableTime: false, enableTimeOption: false, required: true, validate: 'date', validateOpts: { }, utc: false })}
           </Collapse>
-        {/*
         {customLink}
         {this.props.textField('role', { required: true, label: 'Role', customLink: customLink })}
         {this.props.dropdown('recurringDefaultInterval', {

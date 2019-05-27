@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Dropzone from 'react-dropzone';
 import { mime } from '../common/types';
 import Loader from '../common/Loader';
 import GBLink from '../common/GBLink';
 import Image from '../common/Image';
+import ModalRoute from '../modal/ModalRoute';
+import ModalLink from '../modal/ModalLink';
+import UploadLibrary from './UploadLibrary';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -96,16 +100,20 @@ class Upload extends Component {
       errorType
     } = this.props;
 
+    const {
+      preview
+    } = this.state;
+
     const mimes = mime.image + ',' + mime.text + ',' + mime.applications;
 
     return (
       <div style={style} className={`dropzone-group input-group ${className || ''} textfield-group ${error ? 'error tooltip' : ''}`}>
         {label && <label>{label}</label>}
         {this.state.loading && <Loader className={'uploadLoader'} msg={'Uploading'} />}
-        {this.state.preview ?
+        {preview ?
           <div className='dropzoneImageContainer'>
             {!this.state.imageLoading && (this.props.customLink || '')}
-            <Image maxSize='175px' url={this.state.preview} alt={this.state.preview} className='dropzoneImage' onLoad={this.imageOnLoad} />
+            <Image maxSize='175px' url={preview} alt={preview} className='dropzoneImage' onLoad={this.imageOnLoad} />
             {!this.state.imageLoading &&
               <GBLink onClick={this.clearImage} className='link'>Remove Image</GBLink>
             }
@@ -124,6 +132,13 @@ class Upload extends Component {
             {this.state.original && <GBLink onClick={this.restoreImage} className='link'>Restore Original</GBLink>}
           </div>
         }
+        <ModalRoute id={'uploadLibrary'} component={() =>
+          <UploadLibrary
+            image={preview}
+            test='test'
+          />}
+        />
+        <ModalLink id={'uploadLibrary'}>Image Editor</ModalLink>
         <div className={`tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`}>
           {error}
           <i></i>
@@ -140,7 +155,14 @@ Upload.defaultProps = {
   uploadLabel: 'Add Image'
 }
 
-export default Upload;
+function mapStateToProps(state, props) {
+
+  return {
+  }
+}
+
+export default connect(mapStateToProps, {
+})(Upload);
 
 
 export function handleSave(file, callback) {

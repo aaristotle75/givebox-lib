@@ -35,6 +35,7 @@ import Image from './common/Image';
 import LinearBar from './common/LinearBar';
 import Loader from './common/Loader';
 import Portal from './common/Portal';
+import Redirect from './common/Redirect';
 import Tabs, { Tab } from './common/Tabs';
 import * as types from './common/types';
 import * as util from './common/utility';
@@ -51,5 +52,5 @@ app, resource, send, modal, preferences, // Modal
 ModalLink, ModalRoute, // Table
 ActionsMenu, Search, Table, MaxRecords, NoRecords, Paginate, Export, Filter, // Block
 StatBlock, ActionBar, CodeBlock, // common
-Alert, Collapse, Delete, Error, Fade, GBLink, GBX, Iframe, Image, LinearBar, Loader, Portal, Tabs, Tab, types, util, // Glossary
+Alert, Collapse, Delete, Error, Fade, GBLink, GBX, Iframe, Image, LinearBar, Loader, Portal, Redirect, Tabs, Tab, types, util, // Glossary
 FeesGlossary };

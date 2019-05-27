@@ -39,6 +39,7 @@ import Image from './common/Image';
 import LinearBar from './common/LinearBar';
 import Loader from './common/Loader';
 import Portal from './common/Portal';
+import Redirect from './common/Redirect';
 import Tabs, { Tab } from './common/Tabs';
 import * as types from './common/types';
 import * as util from './common/utility';
@@ -142,6 +143,7 @@ export {
   LinearBar,
   Loader,
   Portal,
+  Redirect,
   Tabs,
   Tab,
   types,
