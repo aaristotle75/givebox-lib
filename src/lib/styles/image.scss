@@ -140,28 +140,67 @@
   }
 }
 
-.uploadLibraryContainer {
+.uploadContainer {
   position: relative;
   height: 500px;
-  width: 600px;
+  width: 100%;
   margin-top: 30px;
 
   .dropzone {
     width: 200px;
-    height: 100px;
+    height: 50px;
+    border-radius: 20px;
   }
 }
 
-.uploadEditorFixed {
-  position: absolute;
-  width: 100%;
-  height: 400px;
-  top: 20px;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  background: $white;
-  overflow: auto;
+.uploadLibraryContainer {
+  position: relative;
+  height: 100%;
+  padding-top: 75px;
+  overflow: hidden;
+
+  .menu {
+    position: fixed;
+    top: 40px;
+    left: 0;
+    right: 0;
+    height: 75px;
+  }
+
+  .content {
+    position: relative;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+}
+
+.uploadEditorContainer {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  padding-bottom: 110px;
+
+  .menu {
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    bottom: 0px;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: $white;
+  }
+
+  .content {
+    position: relative;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-bottom: 75px;
+  }
+
 }
 
 .uploadEditor {
@@ -178,6 +217,12 @@
     width: 500px;
     height: 350px;
     background: $canvasOverlay;
+  }
+
+  .rotate {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 }
 
@@ -224,11 +269,17 @@
     align-items: center;
   }
 
+  li.noPhoto {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: $small-text-size;
+  }
+
   li {
     margin: 5px;
     width: 75px;
     height: 75px;
-    background: blue;
 
     img {
       display: inline;
@@ -236,5 +287,107 @@
       height: 100%;
       width: auto;
     }
+  }
+}
+
+
+.photoSection.mediaList {
+
+  position: relative;
+
+  ul {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+
+    li.uploadField {
+      display: flex;
+      align-items: center;
+    }
+
+    li.uploadField:hover {
+      background: transparent;
+    }
+
+    li:not(.uploadField) {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: 0;
+      width: 75px;
+      height: 75px;
+      padding: 0;
+      margin: 5px;
+    }
+
+    img {
+      vertical-align: middle;
+      max-height: 75px;
+      max-width: 75px;
+      height: auto;
+      width: auto;
+      border: 4px solid transparent;
+    }
+
+    li:hover:not(.uploadField) {
+      .buttons {
+        display: flex;
+        @include default-transition(.25s);
+      }
+      img {
+        @include filter(blur(2px));
+        border: 4px solid $mainColor;
+        @include default-transition(.25s);
+      }
+    }
+
+    .buttons {
+      position: absolute;
+      bottom: 0;
+      display: none;
+      button {
+        margin: 0 5px;
+      }
+    }
+
+    button.select {
+      color: $white;
+      background: transparentize($dark-blue-gray, .3);
+      border-radius: 20px;
+      font-weight: 300;
+      width: 50px;
+      height: 15px;
+    }
+
+    button.select:hover {
+      background: $mainColor;
+      color: $white;
+      @include default-transition(.25s);
+    }
+
+    button.delete {
+      text-align: center;
+      border-radius: 20px;
+      font-weight: 300;
+      width: 30px;
+      height: 30px;
+      background: transparentize($dark-blue-gray, .3);
+      color: $white;
+      .icon {
+        display: inline-block;
+        margin-top: 5px;
+      }
+    }
+
+    button.delete:hover {
+      color: $secondColor;
+      @include default-transition(.25s);
+    }
+
   }
 }

@@ -146,6 +146,10 @@ a:hover, button.link:hover, button.button:hover {
   color: $secondColor;
 }
 
+button.secondary {
+  color: transparentize($mainColor, .4);
+}
+
 .date {
   font-size: $small-text-size;
   color: $med-gray;

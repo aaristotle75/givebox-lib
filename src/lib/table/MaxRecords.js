@@ -55,8 +55,8 @@ class MaxRecords extends Component {
       error,
       direction
     } = this.props;
-
-    if (!count || error || count > max) {
+    
+    if (!count || error) {
       return ( <div></div> );
     }
 
@@ -92,8 +92,8 @@ function mapStateToProps(state, props) {
 
   return {
     resource: resource,
-    max: max,
-    count: count,
+    max: parseInt(max),
+    count: parseInt(count),
     error: error
   }
 }

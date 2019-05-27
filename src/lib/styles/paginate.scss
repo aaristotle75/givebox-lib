@@ -137,3 +137,83 @@ $active-bg: $white;
 		width: 10%;
 	}
 }
+
+
+/*----------- Pagination Themed ------------*/
+.paginate {
+  padding-top: 40px;
+}
+
+.pagination .icon {
+  font-size: $large-text-size;
+}
+
+.pagination li {
+  border-radius: 50%;
+  padding: 13px;
+  margin: 0 5px;
+  width: 40px;
+  height: 40px;
+}
+
+.pagination .page {
+  color: $med-gray;
+}
+
+.pagination .page:hover {
+  color: $mainColor;
+  background: transparent;
+}
+
+.pagination .active {
+  color: $light-med-gray;
+  text-decoration: underline;
+}
+
+.pagination .active:hover {
+  color: $med-gray;
+  background: #FFFFFF;
+}
+
+.pagination .previous {
+  border-top-left-radius: none;
+  border-bottom-left-radius: none;
+  border-radius: 50%;
+}
+
+.pagination .previous:hover {
+  color: $mainColor;
+  background: transparent;
+}
+
+.pagination .next {
+  border-top-right-radius: none;
+  border-bottom-right-radius: none;
+  border-radius: 50%;
+}
+
+.pagination .next:hover {
+  color: $mainColor;
+  background: transparent;
+}
+
+.pagination .break {
+  width: 5%;
+  color: $med-gray;
+  margin: 0px;
+}
+
+.pagination .break:hover {
+  color: $med-gray;
+  background: transparent;
+}
+
+.pagination .disabled {
+  color: $light-med-gray;
+  background: transparent;
+}
+
+.pagination .disabled:hover {
+  color: $light-med-gray;
+  background: transparent;
+}
