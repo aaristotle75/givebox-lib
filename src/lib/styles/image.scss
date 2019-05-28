@@ -144,7 +144,6 @@
   position: relative;
   height: 500px;
   width: 100%;
-  margin-top: 30px;
 
   .dropzone {
     width: 200px;
@@ -156,15 +155,38 @@
 .uploadLibraryContainer {
   position: relative;
   height: 100%;
-  padding-top: 75px;
+  padding-top: 250px;
   overflow: hidden;
 
   .menu {
     position: fixed;
-    top: 40px;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    top: 0px;
     left: 0;
     right: 0;
-    height: 75px;
+    height: 250px;
+    margin: 0 10px;
+    padding-top: 20px;
+    background: $white;
+    border-bottom: 1px solid $light;
+
+    .button-group {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 20px 0 10px 0;
+    }
+
+    button.button {
+      width: 200px;
+      height: 50px;
+    }
+
+    h3 {
+      margin: 0;
+    }
   }
 
   .content {
@@ -172,6 +194,110 @@
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
+    margin: 0 0 10px 0;
+    padding: 0 10px 10px 10px;
+  }
+}
+
+.photoSection.mediaList {
+
+  .imageComponent img {
+    border-radius: 0px;
+  }
+
+  position: relative;
+
+  ul:not(.pagination) {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+
+    li.noPhoto {
+      width: 100%;
+      justify-content: flex-start;
+      color: $med-blue-gray;
+    }
+
+    li {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: 0;
+      width: 100px;
+      height: 100px;
+      padding: 0;
+      margin: 5px;
+    }
+
+    img {
+      vertical-align: middle;
+      height: auto;
+      width: auto;
+      border: 4px solid transparent;
+    }
+
+    li:hover {
+      .buttons {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        @include default-transition(.25s);
+      }
+      img {
+        @include filter(blur(2px));
+        border: 4px solid $mainColor;
+        @include default-transition(.25s);
+      }
+    }
+
+    .buttons {
+      position: absolute;
+      bottom: 0;
+      display: none;
+      button {
+        margin: 0 5px;
+      }
+    }
+
+    button.select {
+      color: $white;
+      background: transparentize($dark-blue-gray, .3);
+      border-radius: 20px;
+      font-weight: 300;
+      padding: 5px 10px;
+      font-size: $small-text-size;
+    }
+
+    button.select:hover {
+      background: $mainColor;
+      color: $white;
+      @include default-transition(.25s);
+    }
+
+    button.delete {
+      text-align: center;
+      border-radius: 20px;
+      font-weight: 300;
+      width: 30px;
+      height: 30px;
+      background: transparentize($dark-blue-gray, .3);
+      color: $white;
+      .icon {
+        display: inline-block;
+        margin-top: 5px;
+      }
+    }
+
+    button.delete:hover {
+      color: $secondColor;
+      @include default-transition(.25s);
+    }
+
   }
 }
 
@@ -179,7 +305,7 @@
   position: relative;
   height: 100%;
   overflow: hidden;
-  padding-bottom: 110px;
+  padding-bottom: 50px;
 
   .menu {
     position: absolute;
@@ -189,43 +315,48 @@
     bottom: 0px;
     left: 0;
     right: 0;
-    height: 100px;
+    height: 70px;
     background: $white;
+    padding: 0 10px;
   }
 
   .content {
     position: relative;
     height: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding-bottom: 75px;
-  }
-
-}
-
-.uploadEditor {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding: 20px 0;
-
-  .editorWrapper {
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 500px;
-    height: 350px;
-    background: $canvasOverlay;
+    flex-direction: column;
+    padding-top: 40px;
   }
 
-  .rotate {
+  .rotate,
+  .scale {
+    margin: 0 5%;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    @media (max-width: 600px) { margin: 0; }
+  }
+
+  .rotate {
+    .icon {
+      margin: 0 5px;
+    }
+  }
+
+  .scale {
+    .icon.small {
+      font-size: $small-text-size;
+      margin-right: 5px;
+    }
+    .icon {
+      font-size: $large-text-size;
+      margin-left: 5px;
+    }
   }
 }
-
 
 .loadImage {
   position: fixed;
@@ -259,135 +390,5 @@
     height: 10px;
     background: transparent;
     border-radius: 20px;
-  }
-}
-
-.photoSection {
-  ul {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-  }
-
-  li.noPhoto {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: $small-text-size;
-  }
-
-  li {
-    margin: 5px;
-    width: 75px;
-    height: 75px;
-
-    img {
-      display: inline;
-      margin: 0 auto;
-      height: 100%;
-      width: auto;
-    }
-  }
-}
-
-
-.photoSection.mediaList {
-
-  position: relative;
-
-  ul {
-    display: flex;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    margin: 0 auto;
-
-    li.uploadField {
-      display: flex;
-      align-items: center;
-    }
-
-    li.uploadField:hover {
-      background: transparent;
-    }
-
-    li:not(.uploadField) {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: none;
-      border: 0;
-      width: 75px;
-      height: 75px;
-      padding: 0;
-      margin: 5px;
-    }
-
-    img {
-      vertical-align: middle;
-      max-height: 75px;
-      max-width: 75px;
-      height: auto;
-      width: auto;
-      border: 4px solid transparent;
-    }
-
-    li:hover:not(.uploadField) {
-      .buttons {
-        display: flex;
-        @include default-transition(.25s);
-      }
-      img {
-        @include filter(blur(2px));
-        border: 4px solid $mainColor;
-        @include default-transition(.25s);
-      }
-    }
-
-    .buttons {
-      position: absolute;
-      bottom: 0;
-      display: none;
-      button {
-        margin: 0 5px;
-      }
-    }
-
-    button.select {
-      color: $white;
-      background: transparentize($dark-blue-gray, .3);
-      border-radius: 20px;
-      font-weight: 300;
-      width: 50px;
-      height: 15px;
-    }
-
-    button.select:hover {
-      background: $mainColor;
-      color: $white;
-      @include default-transition(.25s);
-    }
-
-    button.delete {
-      text-align: center;
-      border-radius: 20px;
-      font-weight: 300;
-      width: 30px;
-      height: 30px;
-      background: transparentize($dark-blue-gray, .3);
-      color: $white;
-      .icon {
-        display: inline-block;
-        margin-top: 5px;
-      }
-    }
-
-    button.delete:hover {
-      color: $secondColor;
-      @include default-transition(.25s);
-    }
-
   }
 }

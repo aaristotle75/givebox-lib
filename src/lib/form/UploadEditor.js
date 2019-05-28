@@ -1,28 +1,32 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom'
 import { connect } from 'react-redux';
 import { toggleModal } from '../api/actions';
 import {
-  GBLink
+  GBLink,
+  util
 } from '../';
 import AvatarEditor from 'react-avatar-editor'
-import UploadPreview from './UploadPreview'
-import Dropzone from 'react-dropzone'
 
 class UploadEditor extends Component {
 
   constructor(props) {
     super(props);
+    this.setScale = this.setScale.bind(this);
+    this.cancel = this.cancel.bind(this);
+    this.save = this.save.bind(this);
+    this.saveCallback= this.saveCallback.bind(this);
+    this.saveMediaItem = this.saveMediaItem.bind(this);
+    this.saveMediaItemCallback = this.saveMediaItemCallback.bind(this);
     this.state = {
       image: this.props.image || '',
-      allowZoomOut: false,
+      allowZoomOut: true,
       position: { x: 0.5, y: 0.5 },
-      scale: 1,
+      scale: this.props.defaultScale,
       rotate: 0,
-      borderRadius: 0,
+      borderRadius: this.props.borderRadius,
       preview: null,
-      width: 290,
-      height: 290
+      width: this.props.width,
+      height: this.props.height
     }
   }
 
@@ -32,25 +36,47 @@ class UploadEditor extends Component {
   componentDidUpdate(prev) {
   }
 
-  handleSave = data => {
-    const img = this.editor.getImageScaledToCanvas().toDataURL()
-    const rect = this.editor.getCroppingRect()
+  cancel() {
+    this.props.toggleEditor(false);
+  }
 
-    this.setState({
-      preview: {
-        img,
-        rect,
-        scale: this.state.scale,
-        width: this.state.width,
-        height: this.state.height,
-        borderRadius: this.state.borderRadius,
+  save() {
+    const data = this.editor.getImage().toDataURL();
+    const file = util.dataURLtoFile(data, `image.png`);
+    this.props.handleSave(file, this.saveCallback, this.props.encodeProgress);
+    this.props.setLoading(true);
+  }
+
+  saveCallback(url) {
+    this.props.handleSaveCallback(url, this.saveMediaItem);
+  }
+
+  saveMediaItem(url) {
+    this.props.sendResource('orgMediaItems', {
+      id: null,
+      data: {
+        URL: url
       },
-    })
+      method: 'post',
+      resourcesToLoad: ['orgMediaItems'],
+      callback: this.saveMediaItemCallback,
+      isSending: false
+    });
+  }
+
+  saveMediaItemCallback(res, err) {
+    this.props.setSelected(res.URL, res.ID);
+    this.props.toggleEditor(false);
+    this.props.setLoading(false);
   }
 
   handleScale = e => {
     const scale = parseFloat(e.target.value)
     this.setState({ scale })
+  }
+
+  setScale(scale) {
+    this.setState({ scale });
   }
 
   handleAllowZoomOut = ({ target: { checked: allowZoomOut } }) => {
@@ -119,64 +145,23 @@ class UploadEditor extends Component {
     return (
       <div className='uploadEditorContainer'>
         <div className='content'>
-          <div className='uploadEditor'>
-            <AvatarEditor
-              ref={this.setEditorRef}
-              scale={parseFloat(this.state.scale)}
-              width={this.state.width || this.props.minWidth}
-              height={this.state.height || this.props.minHeight}
-              position={this.state.position}
-              onPositionChange={this.handlePositionChange}
-              rotate={parseFloat(this.state.rotate)}
-              borderRadius={this.state.width / (100 / 50)}
-              onLoadFailure={this.logCallback.bind(this, 'onLoadFailed')}
-              onLoadSuccess={this.logCallback.bind(this, 'onLoadSuccess')}
-              onImageReady={this.logCallback.bind(this, 'onImageReady')}
-              image={this.state.image}
-              className="editor-canvas"
-              color={[37, 54, 85, .3]}
-              border={[100, 20]}
-            />
-            <br />
-            Border radius:
-            <input
-              name="scale"
-              type="range"
-              onChange={this.handleBorderRadius}
-              min="0"
-              max="50"
-              step="1"
-              defaultValue="0"
-            />
-            {!!this.state.preview && (
-              <img
-                alt={'Preview'}
-                src={this.state.preview.img}
-                style={{
-                  borderRadius: `${(Math.min(
-                    this.state.preview.height,
-                    this.state.preview.width
-                  ) +
-                    10) *
-                    (this.state.preview.borderRadius / 2 / 100)}px`,
-                }}
-              />
-            )}
-            {/*
-            {!!this.state.preview && (
-              <UploadPreview
-                width={
-                  this.state.preview.scale < 1
-                    ? this.state.preview.width
-                    : this.state.preview.height * 478 / 270
-                }
-                height={this.state.preview.height}
-                image=''
-                rect={this.state.preview.rect}
-              />
-            )}
-            */}
-          </div>
+          <AvatarEditor
+            ref={this.setEditorRef}
+            scale={parseFloat(this.state.scale)}
+            width={this.state.width || this.props.minWidth}
+            height={this.state.height || this.props.minHeight}
+            position={this.state.position}
+            onPositionChange={this.handlePositionChange}
+            rotate={parseFloat(this.state.rotate)}
+            borderRadius={this.state.width / (100 / this.state.borderRadius)}
+            onLoadFailure={this.logCallback.bind(this, 'onLoadFailed')}
+            onLoadSuccess={this.logCallback.bind(this, 'onLoadSuccess')}
+            onImageReady={this.logCallback.bind(this, 'onImageReady')}
+            image={this.state.image}
+            className="editor-canvas"
+            color={[37, 54, 85, .4]}
+            border={[200, 40]}
+          />
         </div>
         <div className='menu'>
           <div className='rotate'>
@@ -184,20 +169,21 @@ class UploadEditor extends Component {
             <GBLink onClick={this.rotateRight}><span className='icon icon-rotate-cw'></span></GBLink>
           </div>
           <div className='scale'>
+            <GBLink onClick={() => this.setScale(this.props.minScale)}><span className='icon small icon-image'></span></GBLink>
             <input
               name="scale"
               type="range"
               onChange={this.handleScale}
-              min={'0.1'}
-              max="2"
+              min={this.props.minScale}
+              max={this.props.maxScale}
               step="0.01"
-              defaultValue="1"
+              value={this.state.scale}
             />
+            <GBLink onClick={() => this.setScale(this.props.maxScale)}><span className='icon icon-image'></span></GBLink>
           </div>
           <div className='button-group'>
-            <input type="button" onClick={this.handleSave} value="Preview" />
-            <GBLink className='link secondary' onClick={() => this.props.toggleEditor(false)}>Cancel</GBLink>
-            <GBLink onClick={() => this.props.toggleEditor(false)}>Save</GBLink>
+            <GBLink className='link' onClick={() => this.cancel()}>Cancel</GBLink>
+            <GBLink className='button' onClick={() => this.save()}>Save</GBLink>
           </div>
         </div>
       </div>
@@ -206,10 +192,16 @@ class UploadEditor extends Component {
 }
 
 UploadEditor.defaultProps = {
+  width: 290,
   maxWidth: 300,
   minWidth: 100,
+  height: 290,
   maxHeight: 300,
-  minHeight: 100
+  minHeight: 100,
+  minScale: .5,
+  maxScale: 2,
+  defaultScale: 1,
+  borderRadius: 0
 }
 
 function mapStateToProps(state, props) {

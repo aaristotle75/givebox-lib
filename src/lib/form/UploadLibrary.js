@@ -2,20 +2,20 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Dropzone from 'react-dropzone';
 import {
-  ModalRoute,
   ModalLink,
+  ModalRoute,
   GBLink,
   types,
   util,
   Loader,
   Image,
   Paginate,
-  MaxRecords
+  MaxRecords,
+  ImageDisplay
 } from '../';
-import { getResource } from '../api/helpers';
-import { removeResource } from '../api/actions';
+import { getResource, sendResource } from '../api/helpers';
+import { removeResource, toggleModal } from '../api/actions';
 import UploadEditor from './UploadEditor';
-import { post } from 'axios';
 import { Line } from 'rc-progress';
 import has from 'has';
 
@@ -30,11 +30,15 @@ class UploadLibrary extends Component {
     this.newUploadProgressCallback = this.newUploadProgressCallback.bind(this);
     this.editPhoto = this.editPhoto.bind(this);
     this.listMedia = this.listMedia.bind(this);
+    this.listSelected = this.listSelected.bind(this);
     this.deleteImage = this.deleteImage.bind(this);
-    this.selectImageCallback = this.selectImageCallback.bind(this);
+    this.selectEditorCallback = this.selectEditorCallback.bind(this);
+    this.setSelected = this.setSelected.bind(this);
     this.toggleEditor = this.toggleEditor.bind(this);
     this.encodeProgress = this.encodeProgress.bind(this);
     this.readFile = this.readFile.bind(this);
+    this.setLoading = this.setLoading.bind(this);
+    this.setPreview = this.setPreview.bind(this);
     this.state = {
       image: this.props.image || '',
       preview: this.props.preview || '',
@@ -48,6 +52,7 @@ class UploadLibrary extends Component {
 
   componentDidMount() {
     this.props.getResource(this.props.resourceName);
+    if (this.props.articleID) this.props.getResource('articleMediaItems', { id: [this.props.articleID], reload: true });
   }
 
   componentDidUpdate(prev) {
@@ -65,44 +70,72 @@ class UploadLibrary extends Component {
     this.setState({ editor: bool, loading: false, percent: 0 });
   }
 
+  setLoading(bool) {
+    this.setState({ loading: bool });
+  }
+
   /*
   handleDrop = acceptedFiles => {
     //this.setState({ image: acceptedFiles[0] })
   }
   */
 
-  deleteImage(ID) {
+  deleteImage(ID, closeModal = null) {
     console.log('deleteImage', ID);
+    if (closeModal) this.props.toggleModal(closeModal, false);
+
   }
 
-  selectImage(URL, ID) {
+  selectEditor(URL, callback = null) {
     this.setState({ loading: true });
     let imageUrl = URL;
 		if (URL.substr(0, 4) !== 'blob') imageUrl = imageUrl + '?' + util.makeHash(10);
-    util.encodeDataURI(imageUrl, this.selectImageCallback, this.encodeProgress);
+    if (callback) callback();
+    util.encodeDataURI(imageUrl, this.selectEditorCallback, this.encodeProgress);
   }
 
-  encodeProgress(progress) {
-    console.log('encodeprogress', progress);
-    this.setState({ percent: progress });
-  }
-
-  selectImageCallback(data) {
+  selectEditorCallback(data) {
     const file = util.dataURLtoFile(data, `image.png`);
     this.readFile(file, this.editPhoto);
   }
 
-  readFile(file, callback, preview = false) {
+  setSelected(URL, ID, callback = null) {
+    this.setPreview(URL);
+    this.props.handleSaveCallback(URL);
+    if (this.props.articleID) {
+      this.props.sendResource('articleMediaItem', {
+        id: [this.props.articleID, ID],
+        method: 'put',
+        isSending: false,
+        data: {
+          setDefault: true,
+          orderNumber: 1
+        },
+        resourcesToLoad: ['articleMediaItems']
+      });
+    }
+    if (callback) callback();
+  }
+
+  setPreview(URL) {
+    this.setState({ preview: URL });
+  }
+
+  readFile(file, callback) {
     const reader = new FileReader();
     reader.onload = function(e) {
       callback(e.target.result, file);
-      if (preview) this.setState({ preview: e.target.result });
-    }.bind(this);
+    };
     reader.readAsDataURL(file);
   }
 
   editPhoto(url) {
     this.setState({ image: url}, () => this.toggleEditor(true));
+  }
+
+  encodeProgress(progress) {
+    console.log('execute encodeProgress', progress);
+    this.setState({ percent: progress });
   }
 
   handleDrop(files) {
@@ -113,7 +146,7 @@ class UploadLibrary extends Component {
     this.editPhoto(url);
   }
 
-  newUploadProgress(url, file) {
+  newUploadProgress(url, file, callback = this.newUploadProgressCallback) {
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('progress', function(e) {
     	var percent_complete = (e.loaded / e.total)*100;
@@ -123,52 +156,118 @@ class UploadLibrary extends Component {
     xhr.responseType = 'arraybuffer'
     xhr.onload = function() {
       if (xhr.status === 200) {
-        this.newUploadProgressCallback(url);
+        callback(url);
       }
-    }.bind(this);
+    };
     xhr.send();
   }
 
   handleDropAccepted(files) {
     this.setState({ loading: true });
-    this.readFile(files[0], this.newUploadProgress, true);
+    this.readFile(files[0], this.newUploadProgress);
   }
 
   handleDropRejected(files) {
     console.log('rejected');
   }
 
+  listSelected() {
+    const items = [];
+    if (this.state.preview) {
+      const actions =
+        <div className='button-group flexCenter'>
+          <GBLink className='link' onClick={() => this.props.toggleModal('imageDisplay', false)}>Close</GBLink>
+          <GBLink className='button' onClick={() => this.selectEditor(this.state.preview, () => this.props.toggleModal('imageDisplay', false))}>Edit</GBLink>
+        </div>
+      ;
+      items.push(
+        <li key={0} className='ripple'>
+          <ModalLink id='imageDisplay' opts={{ url: this.state.preview, actions: actions }}><Image url={this.state.preview} size='original' maxSize='100px' alt='Media Item' /></ModalLink>
+          <div className='buttons'>
+            <GBLink className='select' onClick={() => this.selectEditor(this.state.preview)}>Edit</GBLink>
+          </div>
+        </li>
+      );
+    } else {
+      items.push(
+        <li className='noPhoto'>No photo, please upload or select a photo.</li>
+      );
+    }
+
+    return (
+      <div className='photoSection mediaList'>
+        <h3>{util.getValue(this.props.library, 'selectedLabel', 'Selected Photo')}</h3>
+        <ul>
+          {items}
+        </ul>
+      </div>
+    )
+  }
 
   listMedia() {
     const items = [];
-    Object.entries(this.props.items).forEach(([key, value]) => {
-      items.push(
-        <li className='ripple' key={key}>
-          <GBLink onClick={() => this.selectImage(value.URL)}><Image url={value.URL} maxSize='75px' alt='Media Item' /></GBLink>
-          {/*
-          <ModalLink id='image' opts={{ url: value.URL }}><Image url={value.URL} maxSize='75px' alt='Media Item' /></ModalLink>
-          <div className='buttons'>
-            <GBLink className='select' onClick={() => this.selectImage(value.URL, value.ID)}>Select</GBLink>
-            <ModalLink id='delete' className='delete' opts={{ id: value.ID, resource: 'orgMediaItem', resourcesToLoad: ['orgMediaItems'], desc: <div style={{display: 'inline-block', width: 'auto', textAlign: 'center', margin: '10px 0'}}><Image url={value.URL} maxSize='75px' alt='Media Item' /></div>, showLoader: 'no'  }}><span className='icon icon-trash-2'></span></ModalLink>
+    let paginate = false;
+    if (!util.isEmpty(this.props.items)) {
+      Object.entries(this.props.items).forEach(([key, value]) => {
+        const actions =
+          <div className='button-group flexCenter'>
+            <GBLink className='link' onClick={() => this.props.toggleModal('imageDisplay', false)}>Close</GBLink>
+            <ModalLink id='delete' opts={{ callback: () => this.props.toggleModal('imageDisplay', false), id: value.ID, resource: 'orgMediaItem', resourcesToLoad: ['orgMediaItems'], desc: <div style={{display: 'inline-block', width: 'auto', textAlign: 'center', margin: '10px 0'}}><Image url={value.URL} maxSize='75px' alt='Media Item' /></div>, showLoader: 'no'  }}><span className='icon icon-trash-2'></span></ModalLink>
+            <GBLink className='button' onClick={() => this.setSelected(value.URL, value.ID, () => this.props.toggleModal('imageDisplay', false))}>Select</GBLink>
+            <GBLink className='button' onClick={() => this.selectEditor(value.URL, () => this.props.toggleModal('imageDisplay', false))}>Edit</GBLink>
           </div>
-          */}
+        ;
+        items.push(
+          <li className='ripple' key={key}>
+            <ModalLink id='imageDisplay' opts={{ url: value.URL, id: value.ID, toggleModal: this.props.toggleModal, setSelected: this.setSelected, actions: actions }}><Image url={value.URL} size={this.state.preview === value.URL ? 'original' : 'small'} maxSize='100px' alt='Media Item' /></ModalLink>
+            <div className='buttons'>
+              <ModalLink id='delete' className='delete' opts={{ id: value.ID, resource: 'orgMediaItem', resourcesToLoad: ['orgMediaItems'], desc: <div style={{display: 'inline-block', width: 'auto', textAlign: 'center', margin: '10px 0'}}><Image url={value.URL} maxSize='75px' alt='Media Item' /></div>, showLoader: 'no'  }}><span className='icon icon-trash-2'></span></ModalLink>
+              <GBLink className='select' onClick={() => this.setSelected(value.URL, value.ID)}>Select</GBLink>
+            </div>
+          </li>
+        );
+      });
+      paginate = true;
+    } else {
+      items.push(
+        <li key={0} className='noPhoto'>
+          No photos in your library.
         </li>
       );
-    });
-    return <ul>{items}</ul>
+    }
+    return (
+      <div className='photoSection mediaList'>
+        <h3>Your Photos</h3>
+        <ul>{items}</ul>
+        {paginate ?
+          <div className='flexCenter flexColumn'>
+            <Paginate
+              name={this.props.resourceName}
+            />
+            <MaxRecords
+              name={this.props.resourceName}
+            />
+          </div>
+        : ''}
+      </div>
+    );
   }
 
 
   render() {
 
     const {
-      isFetching
+      isFetching,
+      library
     } = this.props;
 
     const mimes = types.mime.image + ',' + types.mime.text + ',' + types.mime.applications;
 
     return (
       <div>
+        <ModalRoute id='imageDisplay' component={(props) =>
+          <ImageDisplay {...props} />
+        } className='flexWrapper centerItems' effect='3DFlipVert' style={{ width: '60%' }} />
         { this.state.loading &&
         <div className='loadImage'>
           <div className='loadingBarWrap'>
@@ -182,42 +281,34 @@ class UploadLibrary extends Component {
           <div className='uploadLibraryContainer'>
             {isFetching && <Loader className='uploadLoader' msg={'Loading...'} />}
             <div className='menu'>
-              <Dropzone
-                className='dropzone'
-                onDrop={this.handleDrop}
-                onDropAccepted={this.handleDropAccepted}
-                onDropRejected={this.handleDropRejected}
-                accept={mimes}
-              >
-                <span className='text'><span className='icon icon-plus'></span> Upload Photo</span>
-              </Dropzone>
+              <div className='button-group'>
+                <Dropzone
+                  className='dropzone'
+                  onDrop={this.handleDrop}
+                  onDropAccepted={this.handleDropAccepted}
+                  onDropRejected={this.handleDropRejected}
+                  accept={mimes}
+                >
+                  <span className='text'><span className='icon icon-plus'></span> Upload Photo</span>
+                </Dropzone>
+                {this.state.preview ? <GBLink style={{ marginLeft: '5%' }} className='button' onClick={() => this.selectEditor(this.state.preview)}><span className='icon icon-edit'></span> Edit Selected</GBLink> : ''}
+              </div>
+              {this.listSelected()}
             </div>
             <div className='content'>
-              <div className='photoSection'>
-                <h3>Selected Photo(s)</h3>
-                <ul>
-                  {this.state.preview ? <li onClick={() => this.editPhoto(this.state.preview)}><img src={this.state.preview} alt={'Preview'} /></li>
-                  : <li className='noPhoto'>No Photos</li>}
-                </ul>
-              </div>
-              <div className='photoSection mediaList'>
-                <h3>Media Library</h3>
-                {this.listMedia()}
-                <div className='flexCenter flexColumn'>
-                  <Paginate
-                    name={this.props.resourceName}
-                  />
-                  <MaxRecords
-                    name={this.props.resourceName}
-                  />
-                </div>
-              </div>
+              {this.listMedia()}
             </div>
           </div>
           :
             <UploadEditor
+              {...this.props}
               image={this.state.image}
               toggleEditor={this.toggleEditor}
+              encodeProgress={this.encodeProgress}
+              setLoading={this.setLoading}
+              setPreview={this.setPreview}
+              setSelected={this.setSelected}
+              borderRadius={util.getValue(library, 'borderRadius')}
             />
           }
         </div>
@@ -227,21 +318,27 @@ class UploadLibrary extends Component {
 }
 
 UploadLibrary.defaultProps = {
+  selectedLabel: 'Selected Photo'
 }
 
 function mapStateToProps(state, props) {
 
   const resourceName = 'orgMediaItems';
   const items = state.resource[resourceName] ? state.resource[resourceName] : {};
+  const articleItems = state.resource.articleMediaItems ? state.resource.articleMediaItems : {};
 
   return {
     resourceName,
     items: has(items, 'data') ? items.data : {},
+    articleItems: has(articleItems, 'data') ? articleItems.data : {},
+    articleIsFetching: has(articleItems, 'isFetching') ? articleItems.isFetching : false,
     isFetching: has(items, 'isFetching') ? items.isFetching : false
   }
 }
 
 export default connect(mapStateToProps, {
   getResource,
-  removeResource
+  sendResource,
+  removeResource,
+  toggleModal
 })(UploadLibrary);

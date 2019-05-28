@@ -600,7 +600,9 @@ class Form extends Component {
     const params = Object.assign({}, cloneObj(this.defaults), {
       className: '',
       type: 'dropdown',
-      fixedLabel: true
+      fixedLabel: true,
+      library: {},
+      articleID: null
     }, opts);
 
     return (
@@ -624,6 +626,8 @@ class Form extends Component {
         clear={field ? field.clear : null}
         noPreview={params.noPreview}
         customLink={params.customLink}
+        library={params.library}
+        articleID={params.articleID}
         params={params}
       />
     )

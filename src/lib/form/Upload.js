@@ -8,6 +8,7 @@ import Image from '../common/Image';
 import ModalRoute from '../modal/ModalRoute';
 import ModalLink from '../modal/ModalLink';
 import UploadLibrary from './UploadLibrary';
+import { util } from '../';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -61,7 +62,7 @@ class Upload extends Component {
     handleSave(accepted[0], this.handleSaveCallback);
   }
 
-  handleSaveCallback(url) {
+  handleSaveCallback(url, callback = null) {
     if (url) {
       this.setState({ loading: false });
       if (!this.props.noPreview) {
@@ -70,6 +71,7 @@ class Upload extends Component {
         this.props.fieldProp(this.props.name, { value: url });
       }
       if (this.props.saveCallback) this.props.saveCallback(url);
+      if (callback) callback(url);
     } else {
       this.setState({ error: true });
     }
@@ -97,7 +99,9 @@ class Upload extends Component {
       className,
       style,
       error,
-      errorType
+      errorType,
+      library,
+      articleID
     } = this.props;
 
     const {
@@ -110,35 +114,64 @@ class Upload extends Component {
       <div style={style} className={`dropzone-group input-group ${className || ''} textfield-group ${error ? 'error tooltip' : ''}`}>
         {label && <label>{label}</label>}
         {this.state.loading && <Loader className={'uploadLoader'} msg={'Uploading'} />}
-        {preview ?
-          <div className='dropzoneImageContainer'>
-            {!this.state.imageLoading && (this.props.customLink || '')}
-            <Image maxSize='175px' url={preview} alt={preview} className='dropzoneImage' onLoad={this.imageOnLoad} />
-            {!this.state.imageLoading &&
-              <GBLink onClick={this.clearImage} className='link'>Remove Image</GBLink>
+        {util.isEmpty(library) ?
+          <div className='directUpload'>
+            {preview ?
+              <div className='dropzoneImageContainer'>
+                {!this.state.imageLoading && (this.props.customLink || '')}
+                <Image maxSize='175px' url={preview} alt={preview} className='dropzoneImage' onLoad={this.imageOnLoad} />
+                {!this.state.imageLoading &&
+                  <GBLink onClick={this.clearImage} className='link'>Remove Image</GBLink>
+                }
+              </div>
+            :
+              <div className='dropzoneImageContainer'>
+                {this.props.customLink || '' }
+                <Dropzone
+                  className='dropzone'
+                  onDrop={this.onDrop}
+                  accept={mimes}
+                >
+                  <span className='icon dropzone-icon icon-instagram'></span>
+                  <span className='text'>{uploadLabel}</span>
+                </Dropzone>
+                {this.state.original && <GBLink onClick={this.restoreImage} className='link'>Restore Original</GBLink>}
+              </div>
             }
           </div>
         :
-          <div className='dropzoneImageContainer'>
-            {this.props.customLink || '' }
-            <Dropzone
-              className='dropzone'
-              onDrop={this.onDrop}
-              accept={mimes}
-            >
-              <span className='icon dropzone-icon icon-instagram'></span>
-              <span className='text'>{uploadLabel}</span>
-            </Dropzone>
-            {this.state.original && <GBLink onClick={this.restoreImage} className='link'>Restore Original</GBLink>}
+          <div className='libraryUpload'>
+            <ModalRoute id={'uploadLibrary'} component={() =>
+              <UploadLibrary
+                image={preview}
+                preview={preview}
+                test='test'
+                handleSaveCallback={this.handleSaveCallback}
+                handleSave={handleSave}
+                articleID={articleID}
+                library={library}
+              />}
+            />
+            {preview ?
+              <div className='dropzoneImageContainer'>
+                {!this.state.imageLoading && (this.props.customLink || '')}
+                <div className='image'>
+                  <Image maxSize='175px' url={preview} alt={preview} onLoad={this.imageOnLoad} />
+                  <ModalLink style={{ margin: 0 }} className='imageCover' id={'uploadLibrary'}>
+                    <div className='imageLink'>Manage</div>
+                  </ModalLink>
+                </div>
+              </div>
+            :
+            <div className='dropzoneImageContainer'>
+              <ModalLink type='div' className='dropzone' id={'uploadLibrary'}>
+                <span className='icon dropzone-icon icon-instagram'></span>
+                <span className='text'>{uploadLabel}</span>
+              </ModalLink>
+            </div>
+            }
           </div>
         }
-        <ModalRoute id={'uploadLibrary'} component={() =>
-          <UploadLibrary
-            image={preview}
-            test='test'
-          />}
-        />
-        <ModalLink id={'uploadLibrary'}>Image Editor</ModalLink>
         <div className={`tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`}>
           {error}
           <i></i>
@@ -165,7 +198,7 @@ export default connect(mapStateToProps, {
 })(Upload);
 
 
-export function handleSave(file, callback) {
+export function handleSave(file, callback, progressCallback) {
 
   const x = new XMLHttpRequest();
 	x.onload = function() {
@@ -173,7 +206,7 @@ export function handleSave(file, callback) {
 			return;
 		}
 		const s3 = JSON.parse(this.response);
-		blob2S3(file, s3, file.name, callback);
+		blob2S3(file, s3, file.name, callback, progressCallback);
 	}
 	const endpoint = `${API_URL}s3/upload-form?name=${file.name}&mime=${file.type}`
 	x.open('GET', endpoint);
@@ -185,7 +218,8 @@ export function blob2S3(
   file,
   s3,
   fileName,
-  callback
+  callback,
+  progressCallback
 ) {
 	const formData = new FormData();
 	for (var name in s3.fields) {
@@ -193,6 +227,16 @@ export function blob2S3(
 	}
 	formData.append('file', file, fileName);
 	var x = new XMLHttpRequest();
+
+  /*
+  if (progressCallback) {
+    x.addEventListener('progress', function(e) {
+    	var percent_complete = (e.loaded / e.total)*100;
+      console.log('execute blob2s3 progress', percent_complete);
+    	progressCallback(percent_complete);
+    });
+  }
+  */
 	x.onload = function() {
 		if (this.status !== 204) {
     	if (callback) {
