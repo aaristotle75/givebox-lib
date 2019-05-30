@@ -222,6 +222,10 @@
       color: $med-blue-gray;
     }
 
+    li.noPhoto.center {
+      justify-content: center;
+    }
+
     li {
       display: flex;
       align-items: center;

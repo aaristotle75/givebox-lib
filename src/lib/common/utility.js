@@ -11,6 +11,18 @@ export const imageUrlWithStyle = function(imageURL, style) {
   }
 }
 
+// Check if image is default. If default return empty.
+export function checkImage(url) {
+  const default1 = 'fundraiser-cover';
+  const default2 = 'invoice-cover';
+  return !url.includes(default1) && !url.includes(default2) ? url : '';
+}
+
+export function checkDefault(str) {
+  const default1 = 'My first fundraiser';
+  return str !== default1 ? str : '';
+}
+
 export function lookup(arr, field, value) {
   let item;
   for (let i = 0; i < arr.length; i++) {

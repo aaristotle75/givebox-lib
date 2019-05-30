@@ -194,13 +194,13 @@ class UploadLibrary extends Component {
       );
     } else {
       items.push(
-        <li className='noPhoto'>No photo, please upload or select a photo.</li>
+        <li className={`noPhoto ${!this.state.preview ? 'center' : ''}`}>Please upload {!util.isEmpty(this.props.items) ? 'or select' : ''} a photo.</li>
       );
     }
 
     return (
       <div className='photoSection PhotoList'>
-        <h4>{util.getValue(this.props.library, 'selectedLabel', 'Selected Photo')}</h4>
+        {this.state.preview ? <h4>{util.getValue(this.props.library, 'selectedLabel', 'Selected Photo')}</h4> : ''}
         <ul>
           {items}
         </ul>
@@ -238,26 +238,24 @@ class UploadLibrary extends Component {
         );
       });
       paginate = true;
-    } else {
-      items.push(
-        <li key={0} className='noPhoto'>
-          No photos in your library.
-        </li>
-      );
     }
     return (
       <div className='photoSection PhotoList'>
-        <h4>Your Photos</h4>
-        <ul>{items}</ul>
-        {paginate ?
-          <div className='flexCenter flexColumn'>
-            <Paginate
-              name={this.props.resourceName}
-            />
-            <MaxRecords
-              name={this.props.resourceName}
-            />
-          </div>
+        {!util.isEmpty(items) ?
+        <div>
+          <h4>Your Photos</h4>
+          <ul>{items}</ul>
+          {paginate ?
+            <div className='flexCenter flexColumn'>
+              <Paginate
+                name={this.props.resourceName}
+              />
+              <MaxRecords
+                name={this.props.resourceName}
+              />
+            </div>
+          : ''}
+        </div>
         : ''}
       </div>
     );
