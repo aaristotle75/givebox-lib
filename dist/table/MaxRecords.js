@@ -57,7 +57,7 @@ class MaxRecords extends Component {
       direction
     } = this.props;
 
-    if (!count || error || count > max) {
+    if (!count || error) {
       return React.createElement("div", null);
     }
 
@@ -94,8 +94,8 @@ function mapStateToProps(state, props) {
 
   return {
     resource: resource,
-    max: max,
-    count: count,
+    max: parseInt(max),
+    count: parseInt(count),
     error: error
   };
 }

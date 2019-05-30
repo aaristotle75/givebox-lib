@@ -41,7 +41,8 @@ class ModalField extends Component {
       modalLabel,
       value,
       opts,
-      id
+      id,
+      disallowModalBgClose
     } = this.props;
 
     return (
@@ -49,7 +50,7 @@ class ModalField extends Component {
         <div className={`errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`}>{error}</div>
         <div className={`floating-label ${this.state.status} ${fixedLabel && 'fixed'}`}>
           <div>
-            <ModalLink className={`input ${value ? 'hasValue' : ''}`} id={id} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} opts={opts}>{modalLabel}</ModalLink>
+            <ModalLink className={`input ${value ? 'hasValue' : ''}`} id={id} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} opts={{ ...opts, disallowBgClose: disallowModalBgClose} }>{modalLabel}</ModalLink>
           </div>
           {label && <label htmlFor={name}>{label}</label>}
           <div className={`input-bottom ${error ? 'error' : this.state.status}`}></div>

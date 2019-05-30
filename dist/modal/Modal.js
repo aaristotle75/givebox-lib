@@ -177,23 +177,25 @@ class Modal extends Component {
     }
   }
 
-  closeModal(callback) {
+  closeModal(callback, allowClose = true) {
     const bindthis = this;
     const transitionTimeMS = this.getTransitionDuration();
 
-    if (this.props.appRef && !this.searchForOpenModals(this.props.identifier)) {
-      if (this.props.appRef.current.classList.contains('blur')) {
-        this.props.appRef.current.classList.remove('blur');
+    if (allowClose) {
+      if (this.props.appRef && !this.searchForOpenModals(this.props.identifier)) {
+        if (this.props.appRef.current.classList.contains('blur')) {
+          this.props.appRef.current.classList.remove('blur');
+        }
       }
-    }
 
-    this.setState({
-      open: false
-    });
-    this.closeTimer = setTimeout(function () {
-      window.postMessage(bindthis.props.identifier, '*');
-      if (callback) callback();
-    }, transitionTimeMS);
+      this.setState({
+        open: false
+      });
+      this.closeTimer = setTimeout(function () {
+        window.postMessage(bindthis.props.identifier, '*');
+        if (callback) callback();
+      }, transitionTimeMS);
+    }
   }
 
   renderChildren() {
@@ -273,7 +275,7 @@ class Modal extends Component {
 
     return React.createElement("div", {
       ref: this.modalRef,
-      onClick: () => this.closeModal(closeCallback),
+      onClick: () => this.closeModal(closeCallback, this.props.disallowBgClose ? false : true),
       id: `modalOverlay-${identifier}`,
       className: `modalOverlay`,
       style: prefix({ ...overlayStyle,
@@ -301,7 +303,7 @@ class Modal extends Component {
       in: this.state.scrolled
     }, React.createElement(GBLink, {
       onClick: this.toTop,
-      className: "modalToTop"
+      className: `modalToTop ${this.state.scrolled ? '' : 'displayNone'}`
     }, React.createElement("span", {
       className: "icon icon-chevrons-up"
     }))), React.createElement("div", {
@@ -312,6 +314,7 @@ class Modal extends Component {
 }
 
 Modal.defaultProps = {
+  disallowBgClose: false,
   mobileBreakpoint: 800,
   customStyle: {},
   effect: 'fall',

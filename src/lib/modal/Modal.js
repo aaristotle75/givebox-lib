@@ -162,7 +162,6 @@ class Modal extends Component {
   }
 
   closeModal(callback, allowClose = true) {
-    console.log('allowClose', allowClose);
     const bindthis = this;
     const transitionTimeMS = this.getTransitionDuration();
     if (allowClose) {
@@ -257,8 +256,6 @@ class Modal extends Component {
         }
       }
     }
-
-    console.log('Modal disallowBgClose', this.props.disallowBgClose);
 
     return (
       <div

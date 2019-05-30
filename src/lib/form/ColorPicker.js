@@ -135,7 +135,8 @@ class ColorPicker extends Component {
       modalLabel,
       modalID,
       opts,
-      value
+      value,
+      disallowModalBgClose
     } = this.props;
 
     let renderModalLabel = <span>{modalLabel}</span>;
@@ -150,7 +151,7 @@ class ColorPicker extends Component {
           <div className={`floating-label ${this.state.status} ${fixedLabel && 'fixed'}`}>
             <div>
             <ModalRoute id={modalID} component={() => this.renderColorPicker()} />
-            <ModalLink onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} className={`input ${value ? 'hasValue' : ''}`} id={modalID} opts={opts}>{renderModalLabel}</ModalLink>
+            <ModalLink onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} className={`input ${value ? 'hasValue' : ''}`} id={modalID} opts={{ ...opts, disallowBgClose: disallowModalBgClose}}>{renderModalLabel}</ModalLink>
             </div>
             {label && <label htmlFor={name}>{label}</label>}
             <div className={`input-bottom ${error ? 'error' : this.state.status}`}></div>

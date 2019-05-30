@@ -4,6 +4,7 @@ import Modal from './Modal';
 import Portal from '../common/Portal';
 import Loader from '../common/Loader';
 import { toggleModal } from '../api/actions';
+import { util } from '../';
 import has from 'has';
 
 class ModalRoute extends Component {
@@ -57,6 +58,7 @@ class ModalRoute extends Component {
       closeBtnShow: closeBtnShow,
       customStyle: style,
       closeCallback: has(opts, 'closeCallback') ? opts.closeCallback : null,
+      disallowBgClose: util.getValue(optsProps, 'disallowBgClose', false),
       appRef: appRef
     }, component(optsProps))));
   }

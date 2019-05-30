@@ -735,7 +735,9 @@ class Form extends Component {
     const params = Object.assign({}, cloneObj(this.defaults), {
       className: '',
       type: 'dropdown',
-      fixedLabel: true
+      fixedLabel: true,
+      library: {},
+      articleID: null
     }, opts);
     return React.createElement(Upload, {
       name: name,
@@ -757,6 +759,8 @@ class Form extends Component {
       clear: field ? field.clear : null,
       noPreview: params.noPreview,
       customLink: params.customLink,
+      library: params.library,
+      disallowModalBgSave: params.disallowModalBgSave,
       params: params
     });
   }
@@ -866,7 +870,8 @@ class Form extends Component {
       createField: this.createField,
       wysiwyg: params.wysiwyg,
       params: params,
-      closeModalAndSave: this.closeModalAndSave
+      closeModalAndSave: this.closeModalAndSave,
+      disallowModalBgClose: params.disallowModalBgClose
     });
   }
 

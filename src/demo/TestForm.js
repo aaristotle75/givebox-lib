@@ -91,8 +91,12 @@ export default class TestForm extends Component {
       <div>
         <h2>Form Elements</h2>
         <div className='formWrapper'>
+          {this.props.textField('amounts', { type: 'hidden', useChildren: true })}
           {this.props.uploadField('imageURL', { parent: 'user', label: 'Image', library: { borderRadius: 20, type: 'article', articleID: 587 }, debug: true, value: 'https://givebox-staging.s3.amazonaws.com/gbx%2F10a59ceee72803ecbf1fd3c6cdbbfaf8%2F2019-05-22%2Fimg-0428-jpg%2Foriginal' })}
-          {this.props.richText('emailList', { label: 'Email List', placeholder: 'Enter emails separated by commas', modal: true, required: false, disallowModalBgClose: true })}          
+          {this.props.richText('emailList', { label: 'Email List', placeholder: 'Enter emails separated by commas', modal: true, required: false })}
+          {this.props.modalField('testModal', { id: 'feesGlossary', label: 'Test Modal', modalLabel: 'Click the modal' } )}
+          {this.props.whereField('where', { where: where, label: 'Where is the event', modalLabel: 'Add location' })}
+          {this.props.colorPicker('primaryColor', { label: 'Pick a theme color' })}
           {/*
           {this.props.creditCardGroup({ required: false, debug: false})}
           {this.props.textField('taxID', {placeholder: 'Enter Tax ID', validate: 'taxID', maxLength: 10})}

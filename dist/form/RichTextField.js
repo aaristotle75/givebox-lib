@@ -67,7 +67,8 @@ class ContentField extends Component {
       errorType,
       modal,
       modalLabel,
-      value
+      value,
+      disallowModalBgClose
     } = this.props;
     return React.createElement("div", {
       style: style,
@@ -80,8 +81,13 @@ class ContentField extends Component {
       className: `floating-label ${this.state.status} ${fixedLabel && 'fixed'}`
     }, modal ? React.createElement("div", null, React.createElement(ModalRoute, {
       id: id,
-      component: () => this.renderEditor(this.props)
+      component: props => this.renderEditor({ ...this.props,
+        ...props
+      })
     }), React.createElement(ModalLink, {
+      opts: {
+        disallowBgClose: disallowModalBgClose
+      },
       className: `input ${value ? 'hasValue' : ''}`,
       id: id,
       onMouseEnter: this.onMouseEnter,

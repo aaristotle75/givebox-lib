@@ -10,7 +10,7 @@ export default class Contact extends Component {
 
     return (
       <div>
-        <Form id={`testForm`} name={`testForm`}>
+        <Form id={`testForm`} name={`testForm`} options={{ disallowModalBgClose: true }}>
           <TestForm {...this.props} />
         </Form>
       </div>

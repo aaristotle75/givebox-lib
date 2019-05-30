@@ -218,7 +218,8 @@ class WhereField extends Component {
       errorType,
       modalLabel,
       value,
-      opts
+      opts,
+      disallowModalBgClose
     } = this.props;
 
     return (
@@ -227,7 +228,7 @@ class WhereField extends Component {
         <div className={`floating-label ${this.state.status} ${fixedLabel && 'fixed'}`}>
           <div>
             <ModalRoute id={this.props.modalID} component={() => this.renderForm()} />
-            <ModalLink className={`input ${value ? 'hasValue' : ''}`} id={this.props.modalID} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} opts={opts}>{value || modalLabel}</ModalLink>
+            <ModalLink className={`input ${value ? 'hasValue' : ''}`} id={this.props.modalID} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} opts={{ ...opts,       disallowBgClose: disallowModalBgClose }}>{value || modalLabel}</ModalLink>
           </div>
           {label && <label htmlFor={name}>{label}</label>}
           <div className={`input-bottom ${error ? 'error' : this.state.status}`}></div>

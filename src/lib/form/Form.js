@@ -97,7 +97,8 @@ class Form extends Component {
       debug: false,
       strength: false,
       count: false,
-      meta: {}
+      meta: {},
+      disallowModalBgClose: false
     }
     this.defaults = { ...this.defaultOptions, ...props.options };
   }
@@ -627,7 +628,7 @@ class Form extends Component {
         noPreview={params.noPreview}
         customLink={params.customLink}
         library={params.library}
-        disallowModalBgSave={params.disallowModalBgSave}
+        disallowModalBgClose={params.disallowModalBgClose}
         params={params}
       />
     )
@@ -772,6 +773,7 @@ class Form extends Component {
         errorType={params.errorType}
         createField={this.createField}
         opts={params.opts}
+        disallowModalBgClose={params.disallowModalBgClose}
         params={params}
       />
     )
@@ -883,6 +885,7 @@ class Form extends Component {
         fields={this.state.fields}
         textField={this.textField}
         closeModalAndSave={this.closeModalAndSave}
+        disallowModalBgClose={params.disallowModalBgClose}
       />
     )
   }
@@ -916,6 +919,7 @@ class Form extends Component {
         clear={field ? field.clear : null}
         params={params}
         toggleModal={this.props.toggleModal}
+        disallowModalBgClose={params.disallowModalBgClose}
       />
     )
   }

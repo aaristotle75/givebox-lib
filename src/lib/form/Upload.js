@@ -101,7 +101,8 @@ class Upload extends Component {
       error,
       errorType,
       library,
-      articleID
+      articleID,
+      disallowModalBgClose
     } = this.props;
 
     const {
@@ -157,7 +158,7 @@ class Upload extends Component {
                 {!this.state.imageLoading && (this.props.customLink || '')}
                 <div className='image'>
                   <Image maxSize='175px' url={preview} alt={preview} onLoad={this.imageOnLoad} />
-                  <ModalLink style={{ margin: 0 }} className='imageCover' id={'uploadLibrary'}>
+                  <ModalLink opts={{ disallowBgClose: disallowModalBgClose }} style={{ margin: 0 }} className='imageCover' id={'uploadLibrary'}>
                     <div className='imageLink'>Manage</div>
                   </ModalLink>
                 </div>

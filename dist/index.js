@@ -32,6 +32,7 @@ import GBLink from './common/GBLink';
 import GBX from './common/GBX';
 import Iframe from './common/Iframe';
 import Image from './common/Image';
+import ImageDisplay from './common/ImageDisplay';
 import LinearBar from './common/LinearBar';
 import Loader from './common/Loader';
 import Portal from './common/Portal';
@@ -52,5 +53,5 @@ app, resource, send, modal, preferences, // Modal
 ModalLink, ModalRoute, // Table
 ActionsMenu, Search, Table, MaxRecords, NoRecords, Paginate, Export, Filter, // Block
 StatBlock, ActionBar, CodeBlock, // common
-Alert, Collapse, Delete, Error, Fade, GBLink, GBX, Iframe, Image, LinearBar, Loader, Portal, Redirect, Tabs, Tab, types, util, // Glossary
+Alert, Collapse, Delete, Error, Fade, GBLink, GBX, Iframe, Image, ImageDisplay, LinearBar, Loader, Portal, Redirect, Tabs, Tab, types, util, // Glossary
 FeesGlossary };

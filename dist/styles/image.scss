@@ -139,3 +139,266 @@
     }
   }
 }
+
+.uploadContainer {
+  position: relative;
+  height: 500px;
+  width: 100%;
+
+  .dropzone {
+    width: 200px;
+    height: 50px;
+    border-radius: 20px;
+  }
+}
+
+.uploadLibraryContainer {
+  position: relative;
+  height: 100%;
+  padding-top: 250px;
+  overflow: hidden;
+
+  .menu {
+    position: fixed;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    top: 0px;
+    left: 0;
+    right: 0;
+    height: 250px;
+    margin: 0 10px;
+    padding-top: 20px;
+    background: $white;
+    border-bottom: 1px solid $light;
+
+    .button-group {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 20px 0 10px 0;
+    }
+
+    button.button {
+      width: 200px;
+      height: 50px;
+    }
+
+    h4 {
+      margin: 0;
+    }
+  }
+
+  .content {
+    position: relative;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin: 0 0 10px 0;
+    padding: 0 10px 10px 10px;
+  }
+}
+
+.photoSection.mediaList {
+
+  .imageComponent img {
+    border-radius: 0px;
+  }
+
+  position: relative;
+
+  ul:not(.pagination) {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+
+    li.noPhoto {
+      width: 100%;
+      justify-content: flex-start;
+      color: $med-blue-gray;
+    }
+
+    li {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: 0;
+      width: 100px;
+      height: 100px;
+      padding: 0;
+      margin: 5px;
+    }
+
+    img {
+      vertical-align: middle;
+      height: auto;
+      width: auto;
+      border: 4px solid transparent;
+    }
+
+    li:hover {
+      .buttons {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        @include default-transition(.25s);
+      }
+      img {
+        @include filter(blur(2px));
+        border: 4px solid $mainColor;
+        @include default-transition(.25s);
+      }
+    }
+
+    .buttons {
+      position: absolute;
+      bottom: 0;
+      display: none;
+      button {
+        margin: 0 5px;
+      }
+    }
+
+    button.select {
+      color: $white;
+      background: transparentize($dark-blue-gray, .3);
+      border-radius: 20px;
+      font-weight: 300;
+      padding: 5px 10px;
+      font-size: $small-text-size;
+    }
+
+    button.select:hover {
+      background: $mainColor;
+      color: $white;
+      @include default-transition(.25s);
+    }
+
+    button.delete {
+      text-align: center;
+      border-radius: 20px;
+      font-weight: 300;
+      width: 30px;
+      height: 30px;
+      background: transparentize($dark-blue-gray, .3);
+      color: $white;
+      .icon {
+        display: inline-block;
+        margin-top: 5px;
+      }
+    }
+
+    button.delete:hover {
+      color: $secondColor;
+      @include default-transition(.25s);
+    }
+
+  }
+}
+
+.uploadEditorContainer {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  padding-bottom: 50px;
+
+  .menu {
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    bottom: 0px;
+    left: 0;
+    right: 0;
+    height: 70px;
+    background: $white;
+    padding: 0 10px;
+  }
+
+  .content {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding-top: 40px;
+  }
+
+  .rotate,
+  .scale {
+    margin: 0 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    @media (max-width: 600px) { margin: 0; }
+  }
+
+  .rotate {
+    .icon {
+      margin: 0 5px;
+    }
+  }
+
+  .scale {
+    .icon.small {
+      font-size: $small-text-size;
+      margin-right: 5px;
+    }
+    .icon {
+      font-size: $large-text-size;
+      margin-left: 5px;
+    }
+  }
+}
+
+.loadImage {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: transparentize($dark-blue-gray, .05);
+  //color: $white;
+  z-index: 1;
+
+  .loadingBarWrap {
+    width: 90%;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+  }
+
+  .loadingText {
+    font-size: $med-text-size;
+    font-weight: 300;
+    color: $white;
+    margin-bottom: 10px;
+  }
+
+  .loadingBar {
+    width: 100%;
+    height: 10px;
+    background: transparent;
+    border-radius: 20px;
+  }
+}
+
+.imageDisplay {
+  .actionsMenu {
+    width: auto;
+
+    button.menuLabel {
+      font-size: $normal-text-size;
+    }
+  }
+}

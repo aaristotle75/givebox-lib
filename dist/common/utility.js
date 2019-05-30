@@ -284,8 +284,16 @@ export function getBlob(objectUrl, callback, data, fileName, imageCallback, fiel
 
   xhr.send();
 }
-export function encodeDataURI(imageUrl, callback) {
+export function encodeDataURI(imageUrl, callback, progressCallback = null) {
   const xhr = new XMLHttpRequest();
+
+  if (progressCallback) {
+    xhr.addEventListener('progress', function (e) {
+      var percent_complete = e.loaded / e.total * 100;
+      progressCallback(percent_complete);
+    });
+  }
+
   xhr.open('GET', imageUrl);
   xhr.responseType = 'arraybuffer';
 
@@ -303,10 +311,25 @@ export function encodeDataURI(imageUrl, callback) {
 
     const prefix = 'data:' + type + ';base64,';
     data = prefix + window.btoa(binary);
-    callback(data);
+    callback(data, imageUrl);
   };
 
   xhr.send();
+}
+export function dataURLtoFile(dataurl, filename) {
+  let arr = dataurl.split(','),
+      mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]),
+      n = bstr.length,
+      u8arr = new Uint8Array(n);
+
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+
+  return new File([u8arr], filename, {
+    type: mime
+  });
 }
 export function calcAmount(amount, fee, passFees, gross = false) {
   if (passFees) {
