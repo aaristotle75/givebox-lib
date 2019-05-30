@@ -22,7 +22,8 @@ export default class Iframe extends Component {
       src,
       title,
       ref,
-      className
+      className,
+      scrolling
     } = this.props;
 
     return (
@@ -35,7 +36,7 @@ export default class Iframe extends Component {
           id={id}
           src={src}
           title={title}
-          scrolling='no'
+          scrolling={scrolling}
           frameBorder='no'
           ref={ref}
           onLoad={this.iframeLoaded}
@@ -47,5 +48,6 @@ export default class Iframe extends Component {
 
 Iframe.defaultProps = {
   id: 'iframeID',
-  title: 'Default iframe title'
+  title: 'Default iframe title',
+  scrolling: 'no'
 }
