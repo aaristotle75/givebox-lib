@@ -629,6 +629,7 @@ class Form extends Component {
         customLink={params.customLink}
         library={params.library}
         disallowModalBgClose={params.disallowModalBgClose}
+        closeModalAndSave={this.closeModalAndSave}
         params={params}
       />
     )

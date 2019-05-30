@@ -151,6 +151,7 @@ class Upload extends Component {
                 handleSave={handleSave}
                 articleID={articleID}
                 library={library}
+                closeModalAndSave={this.props.closeModalAndSave}
               />}
             />
             {preview ?
@@ -186,7 +187,7 @@ class Upload extends Component {
 Upload.defaultProps = {
   name: 'defaultUpload',
   label: 'Upload',
-  uploadLabel: 'Add Image'
+  uploadLabel: 'Add Photo'
 }
 
 function mapStateToProps(state, props) {

@@ -183,7 +183,7 @@ class UploadEditor extends Component {
           </div>
           <div className='button-group'>
             <GBLink className='link' onClick={() => this.cancel()}>Cancel</GBLink>
-            <GBLink className='button' onClick={() => this.save()}>Save</GBLink>
+            <GBLink className='button' onClick={() => this.save()}>Upload</GBLink>
           </div>
         </div>
       </div>

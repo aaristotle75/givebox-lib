@@ -301,7 +301,7 @@ class UploadLibrary extends Component {
                 >
                   <span className='text'><span className='icon icon-plus'></span> Upload Photo</span>
                 </Dropzone>
-                {this.state.preview ? <GBLink style={{ marginLeft: '5%' }} className='button' onClick={() => this.selectEditor(this.state.preview)}><span className='icon icon-edit'></span> Edit Selected</GBLink> : ''}
+                {this.state.preview ? <GBLink style={{ marginLeft: '2%' }} className='button' onClick={() => this.selectEditor(this.state.preview)}><span className='icon icon-edit'></span> Edit Selected</GBLink> : ''}
               </div>
               {this.listSelected()}
             </div>
@@ -322,6 +322,12 @@ class UploadLibrary extends Component {
             />
           }
         </div>
+        {!this.state.editor ?
+        <div className='center button-group'>
+          <GBLink className='link' onClick={() => this.props.closeModalAndSave('uploadLibrary', false)}>Cancel</GBLink>
+          <GBLink className='button' onClick={() => this.props.closeModalAndSave('uploadLibrary')}>Save</GBLink>
+        </div>
+        : ''}
       </div>
     );
   }

@@ -149,6 +149,7 @@ class WhereFieldForm extends Component {
             </AnimateHeight>
           </div>
           <div className='center button-group'>
+            <GBLink className='link' onClick={() => this.props.closeModalAndSave(this.props.modalID, false)}>Cancel</GBLink>
             <GBLink className='button' onClick={() => this.props.closeModalAndSave(this.props.modalID)}>Save</GBLink>
           </div>
         </div>

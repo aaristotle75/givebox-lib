@@ -46,9 +46,11 @@ export function getResource(resource, opts = {}) {
     if (has(getState().resource, options.customName || resource)) {
       if (!util.isEmpty(id)) {
         id.forEach(function(value, key) {
-          if (has(getState().resource[options.customName || resource].search, 'id')) {
-            if (!util.isEmpty(getState().resource[options.customName || resource].search.id[key])) {
-              if (getState().resource[options.customName || resource].search.id[key] !== id[key]) reload = true;
+          if (has(getState().resource[options.customName || resource], 'search')) {
+            if (has(getState().resource[options.customName || resource].search, 'id')) {
+              if (!util.isEmpty(getState().resource[options.customName || resource].search.id[key])) {
+                if (getState().resource[options.customName || resource].search.id[key] !== id[key]) reload = true;
+              }
             }
           }
         });

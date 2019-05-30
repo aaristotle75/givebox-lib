@@ -130,6 +130,9 @@ const Editor = props => {
   }), React.createElement("div", {
     className: "center button-group"
   }, React.createElement(GBLink, {
+    className: "link",
+    onClick: () => props.closeModalAndSave(props.id, false)
+  }, "Cancel"), React.createElement(GBLink, {
     className: "button",
     onClick: () => props.closeModalAndSave(props.id)
   }, "Save")));
