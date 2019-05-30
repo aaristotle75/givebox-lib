@@ -63,7 +63,8 @@ class ContentField extends Component {
       errorType,
       modal,
       modalLabel,
-      value
+      value,
+      disallowModalBgClose
     } = this.props;
 
     return (
@@ -73,8 +74,8 @@ class ContentField extends Component {
         <div className={`floating-label ${this.state.status} ${fixedLabel && 'fixed'}`}>
           {modal ?
             <div>
-              <ModalRoute id={id} component={() => this.renderEditor(this.props)} />
-              <ModalLink className={`input ${value ? 'hasValue' : ''}`} id={id} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>{modalLabel}</ModalLink>
+              <ModalRoute id={id} component={(props) => this.renderEditor({ ...this.props, ...props })} />
+              <ModalLink opts={{ disallowBgClose: disallowModalBgClose }} className={`input ${value ? 'hasValue' : ''}`} id={id} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>{modalLabel}</ModalLink>
             </div>
           :
             <div className='richtext-embed'>

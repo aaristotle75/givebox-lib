@@ -161,19 +161,22 @@ class Modal extends Component {
     }
   }
 
-  closeModal(callback) {
+  closeModal(callback, allowClose = true) {
+    console.log('allowClose', allowClose);
     const bindthis = this;
     const transitionTimeMS = this.getTransitionDuration();
-    if (this.props.appRef && !this.searchForOpenModals(this.props.identifier)) {
-      if (this.props.appRef.current.classList.contains('blur')) {
-        this.props.appRef.current.classList.remove('blur');
+    if (allowClose) {
+      if (this.props.appRef && !this.searchForOpenModals(this.props.identifier)) {
+        if (this.props.appRef.current.classList.contains('blur')) {
+          this.props.appRef.current.classList.remove('blur');
+        }
       }
+      this.setState({open: false});
+      this.closeTimer = setTimeout(function() {
+  		  window.postMessage(bindthis.props.identifier, '*');
+        if (callback) callback();
+      }, transitionTimeMS);
     }
-    this.setState({open: false});
-    this.closeTimer = setTimeout(function() {
-		  window.postMessage(bindthis.props.identifier, '*');
-      if (callback) callback();
-    }, transitionTimeMS);
   }
 
   renderChildren() {
@@ -255,10 +258,12 @@ class Modal extends Component {
       }
     }
 
+    console.log('Modal disallowBgClose', this.props.disallowBgClose);
+
     return (
       <div
         ref={this.modalRef}
-        onClick={() => this.closeModal(closeCallback)}
+        onClick={() => this.closeModal(closeCallback, this.props.disallowBgClose ? false : true)}
         id={`modalOverlay-${identifier}`}
         className={`modalOverlay`} style={prefix({ ...overlayStyle, ...modalOverlayStyle})}
       >
@@ -290,6 +295,7 @@ class Modal extends Component {
 }
 
 Modal.defaultProps = {
+  disallowBgClose: false,
   mobileBreakpoint: 800,
   customStyle: {},
   effect: 'fall',

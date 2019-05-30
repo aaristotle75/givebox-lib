@@ -31,7 +31,6 @@ class UploadLibrary extends Component {
     this.editPhoto = this.editPhoto.bind(this);
     this.listMedia = this.listMedia.bind(this);
     this.listSelected = this.listSelected.bind(this);
-    this.deleteImage = this.deleteImage.bind(this);
     this.selectEditorCallback = this.selectEditorCallback.bind(this);
     this.setSelected = this.setSelected.bind(this);
     this.toggleEditor = this.toggleEditor.bind(this);
@@ -72,18 +71,6 @@ class UploadLibrary extends Component {
 
   setLoading(loading) {
     this.setState({ loading });
-  }
-
-  /*
-  handleDrop = acceptedFiles => {
-    //this.setState({ image: acceptedFiles[0] })
-  }
-  */
-
-  deleteImage(ID, closeModal = null) {
-    console.log('deleteImage', ID);
-    if (closeModal) this.props.toggleModal(closeModal, false);
-
   }
 
   selectEditor(URL, callback = null) {
@@ -150,7 +137,6 @@ class UploadLibrary extends Component {
   }
 
   encodeProgress(progress) {
-    console.log('execute encodeProgress', progress);
     this.setState({ percent: progress });
   }
 

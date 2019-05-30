@@ -627,6 +627,7 @@ class Form extends Component {
         noPreview={params.noPreview}
         customLink={params.customLink}
         library={params.library}
+        disallowModalBgSave={params.disallowModalBgSave}
         params={params}
       />
     )
@@ -733,6 +734,7 @@ class Form extends Component {
         wysiwyg={params.wysiwyg}
         params={params}
         closeModalAndSave={this.closeModalAndSave}
+        disallowModalBgClose={params.disallowModalBgClose}
       />
     )
   }
