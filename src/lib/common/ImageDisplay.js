@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
 import {
   Image,
   util,
   ActionsMenu,
-  GBLink
+  GBLink,
 } from '../';
+import { toggleModal } from '../api/actions';
 
-export default class ImageDisplay extends Component {
+class ImageDisplay extends Component {
 
   render() {
 
@@ -23,7 +25,7 @@ export default class ImageDisplay extends Component {
     } = this.props;
 
     return (
-      <div style={{ padding: '40px 10px 10px 10px' }}>
+      <div className='imageDisplay' style={{ padding: '40px 10px 10px 10px' }}>
         <Image
           url={url}
           width={width}
@@ -38,6 +40,7 @@ export default class ImageDisplay extends Component {
           <GBLink className='link' onClick={() => this.props.toggleModal('imageDisplay', false)}>Close</GBLink>
           {!util.isEmpty(actions) ?
             <ActionsMenu
+              direction={'top'}
               options={actions}
             />
           :
@@ -53,3 +56,12 @@ ImageDisplay.defaultProps = {
   className: 'noFlex',
   actions: {}
 }
+
+function mapStateToProps(state, props) {
+  return {
+  }
+}
+
+export default connect(mapStateToProps, {
+  toggleModal
+})(ImageDisplay);

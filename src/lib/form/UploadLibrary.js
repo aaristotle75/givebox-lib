@@ -192,12 +192,12 @@ class UploadLibrary extends Component {
   listSelected() {
     const items = [];
     if (this.state.preview) {
-      const actions =
-        <div className='button-group flexCenter'>
-          <GBLink className='link' onClick={() => this.props.toggleModal('imageDisplay', false)}>Close</GBLink>
-          <GBLink className='button' onClick={() => this.selectEditor(this.state.preview, () => this.props.toggleModal('imageDisplay', false))}>Edit</GBLink>
-        </div>
-      ;
+      const actions = [];
+
+      actions.push(
+        <GBLink className='button' onClick={() => this.selectEditor(this.state.preview, () => this.props.toggleModal('imageDisplay', false))}>Edit</GBLink>
+      );
+
       items.push(
         <li key={0} className='ripple'>
           <ModalLink id='imageDisplay' opts={{ url: this.state.preview, actions: actions }}><Image url={this.state.preview} size='original' maxSize='100px' alt='Media Item' /></ModalLink>
@@ -228,8 +228,9 @@ class UploadLibrary extends Component {
     if (!util.isEmpty(this.props.items)) {
       Object.entries(this.props.items).forEach(([key, value]) => {
         const actions = [];
+
         actions.push(
-          <ModalLink id='delete' opts={{ callback: () => this.props.toggleModal('imageDisplay', false), id: value.ID, resource: 'orgMediaItem', resourcesToLoad: ['orgMediaItems'], desc: <div style={{display: 'inline-block', width: 'auto', textAlign: 'center', margin: '10px 0'}}><Image url={value.URL} maxSize='75px' alt='Media Item' /></div>, showLoader: 'no'  }}><span className='icon icon-trash-2'></span></ModalLink>
+          <GBLink className='button' onClick={() => this.selectEditor(value.URL, () => this.props.toggleModal('imageDisplay', false))}>Edit</GBLink>
         );
 
         actions.push(
@@ -237,7 +238,7 @@ class UploadLibrary extends Component {
         );
 
         actions.push(
-          <GBLink className='button' onClick={() => this.selectEditor(value.URL, () => this.props.toggleModal('imageDisplay', false))}>Edit</GBLink>
+          <ModalLink className='button' id='delete' opts={{ callback: () => this.props.toggleModal('imageDisplay', false), id: value.ID, resource: 'orgMediaItem', resourcesToLoad: ['orgMediaItems'], desc: <div style={{display: 'inline-block', width: 'auto', textAlign: 'center', margin: '10px 0'}}><Image url={value.URL} maxSize='75px' alt='Media Item' /></div>, showLoader: 'no'  }}>Delete</ModalLink>
         );
 
         items.push(

@@ -392,3 +392,13 @@
     border-radius: 20px;
   }
 }
+
+.imageDisplay {
+  .actionsMenu {
+    width: auto;
+
+    button.menuLabel {
+      font-size: $normal-text-size;
+    }
+  }
+}
