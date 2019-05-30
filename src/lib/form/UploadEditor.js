@@ -44,7 +44,7 @@ class UploadEditor extends Component {
     const data = this.editor.getImage().toDataURL();
     const file = util.dataURLtoFile(data, `image.png`);
     this.props.handleSave(file, this.saveCallback, this.props.encodeProgress);
-    this.props.setLoading(true);
+    this.props.setLoading('Saving image...');
   }
 
   saveCallback(url) {

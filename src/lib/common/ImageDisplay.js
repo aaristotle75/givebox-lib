@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import {
   Image,
-  util
+  util,
+  ActionsMenu,
+  GBLink
 } from '../';
 
 export default class ImageDisplay extends Component {
@@ -32,8 +34,15 @@ export default class ImageDisplay extends Component {
           onLoad={onLoad}
           size={size}
         />
-        {!util.isEmpty(actions) ?
-          actions : ''}
+        <div className='button-group flexCenter'>
+          <GBLink className='link' onClick={() => this.props.toggleModal('imageDisplay', false)}>Close</GBLink>
+          {!util.isEmpty(actions) ?
+            <ActionsMenu
+              options={actions}
+            />
+          :
+          ''}
+        </div>
       </div>
     )
   }

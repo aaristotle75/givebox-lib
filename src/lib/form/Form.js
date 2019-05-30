@@ -627,7 +627,6 @@ class Form extends Component {
         noPreview={params.noPreview}
         customLink={params.customLink}
         library={params.library}
-        articleID={params.articleID}
         params={params}
       />
     )

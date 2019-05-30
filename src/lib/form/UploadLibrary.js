@@ -52,7 +52,7 @@ class UploadLibrary extends Component {
 
   componentDidMount() {
     this.props.getResource(this.props.resourceName);
-    if (this.props.articleID) this.props.getResource('articleMediaItems', { id: [this.props.articleID], reload: true });
+    if (util.getValue(this.props.library, 'articleID')) this.props.getResource('articleMediaItems', { id: [this.props.library.articleID], reload: true });
   }
 
   componentDidUpdate(prev) {
@@ -70,8 +70,8 @@ class UploadLibrary extends Component {
     this.setState({ editor: bool, loading: false, percent: 0 });
   }
 
-  setLoading(bool) {
-    this.setState({ loading: bool });
+  setLoading(loading) {
+    this.setState({ loading });
   }
 
   /*
@@ -87,7 +87,7 @@ class UploadLibrary extends Component {
   }
 
   selectEditor(URL, callback = null) {
-    this.setState({ loading: true });
+    this.setState({ loading: 'Loading image...' });
     let imageUrl = URL;
 		if (URL.substr(0, 4) !== 'blob') imageUrl = imageUrl + '?' + util.makeHash(10);
     if (callback) callback();
@@ -102,17 +102,33 @@ class UploadLibrary extends Component {
   setSelected(URL, ID, callback = null) {
     this.setPreview(URL);
     this.props.handleSaveCallback(URL);
-    if (this.props.articleID) {
-      this.props.sendResource('articleMediaItem', {
-        id: [this.props.articleID, ID],
-        method: 'put',
-        isSending: false,
-        data: {
-          setDefault: true,
-          orderNumber: 1
-        },
-        resourcesToLoad: ['articleMediaItems']
-      });
+    switch (util.getValue(this.props.library, 'type')) {
+      case 'article': {
+        if (util.getValue(this.props.library, 'articleID')) {
+          this.props.sendResource('articleMediaItem', {
+            id: [this.props.library.articleID, ID],
+            method: 'put',
+            isSending: false,
+            data: {
+              setDefault: true,
+              orderNumber: 1
+            },
+            resourcesToLoad: ['articleMediaItems']
+          });
+        } else {
+          console.error('No articleID in library object.');
+        }
+        break;
+      }
+
+      default: {
+        this.props.sendResource('orgMediaItem', {
+          id: [ID],
+          method: 'put',
+          isSending: false
+        });
+        break;
+      }
     }
     if (callback) callback();
   }
@@ -148,10 +164,12 @@ class UploadLibrary extends Component {
 
   newUploadProgress(url, file, callback = this.newUploadProgressCallback) {
     const xhr = new XMLHttpRequest();
-    xhr.addEventListener('progress', function(e) {
-    	var percent_complete = (e.loaded / e.total)*100;
-    	this.encodeProgress(percent_complete);
-    }.bind(this));
+    xhr.upload.onprogress = function(e) {
+      if (e.lengthComputable) {
+        const percentLoaded = Math.round((e.loaded / e.total) * 100);
+        this.encodeProgress(percentLoaded);
+      }
+    }.bind(this);
     xhr.open('GET', url);
     xhr.responseType = 'arraybuffer'
     xhr.onload = function() {
@@ -163,7 +181,7 @@ class UploadLibrary extends Component {
   }
 
   handleDropAccepted(files) {
-    this.setState({ loading: true });
+    this.setState({ loading: 'Accepting file...' });
     this.readFile(files[0], this.newUploadProgress);
   }
 
@@ -196,7 +214,7 @@ class UploadLibrary extends Component {
 
     return (
       <div className='photoSection mediaList'>
-        <h3>{util.getValue(this.props.library, 'selectedLabel', 'Selected Photo')}</h3>
+        <h4>{util.getValue(this.props.library, 'selectedLabel', 'Selected Photo')}</h4>
         <ul>
           {items}
         </ul>
@@ -209,14 +227,19 @@ class UploadLibrary extends Component {
     let paginate = false;
     if (!util.isEmpty(this.props.items)) {
       Object.entries(this.props.items).forEach(([key, value]) => {
-        const actions =
-          <div className='button-group flexCenter'>
-            <GBLink className='link' onClick={() => this.props.toggleModal('imageDisplay', false)}>Close</GBLink>
-            <ModalLink id='delete' opts={{ callback: () => this.props.toggleModal('imageDisplay', false), id: value.ID, resource: 'orgMediaItem', resourcesToLoad: ['orgMediaItems'], desc: <div style={{display: 'inline-block', width: 'auto', textAlign: 'center', margin: '10px 0'}}><Image url={value.URL} maxSize='75px' alt='Media Item' /></div>, showLoader: 'no'  }}><span className='icon icon-trash-2'></span></ModalLink>
-            <GBLink className='button' onClick={() => this.setSelected(value.URL, value.ID, () => this.props.toggleModal('imageDisplay', false))}>Select</GBLink>
-            <GBLink className='button' onClick={() => this.selectEditor(value.URL, () => this.props.toggleModal('imageDisplay', false))}>Edit</GBLink>
-          </div>
-        ;
+        const actions = [];
+        actions.push(
+          <ModalLink id='delete' opts={{ callback: () => this.props.toggleModal('imageDisplay', false), id: value.ID, resource: 'orgMediaItem', resourcesToLoad: ['orgMediaItems'], desc: <div style={{display: 'inline-block', width: 'auto', textAlign: 'center', margin: '10px 0'}}><Image url={value.URL} maxSize='75px' alt='Media Item' /></div>, showLoader: 'no'  }}><span className='icon icon-trash-2'></span></ModalLink>
+        );
+
+        actions.push(
+          <GBLink className='button' onClick={() => this.setSelected(value.URL, value.ID, () => this.props.toggleModal('imageDisplay', false))}>Select</GBLink>
+        );
+
+        actions.push(
+          <GBLink className='button' onClick={() => this.selectEditor(value.URL, () => this.props.toggleModal('imageDisplay', false))}>Edit</GBLink>
+        );
+
         items.push(
           <li className='ripple' key={key}>
             <ModalLink id='imageDisplay' opts={{ url: value.URL, id: value.ID, toggleModal: this.props.toggleModal, setSelected: this.setSelected, actions: actions }}><Image url={value.URL} size={this.state.preview === value.URL ? 'original' : 'small'} maxSize='100px' alt='Media Item' /></ModalLink>
@@ -237,7 +260,7 @@ class UploadLibrary extends Component {
     }
     return (
       <div className='photoSection mediaList'>
-        <h3>Your Photos</h3>
+        <h4>Your Photos</h4>
         <ul>{items}</ul>
         {paginate ?
           <div className='flexCenter flexColumn'>
@@ -271,7 +294,7 @@ class UploadLibrary extends Component {
         { this.state.loading &&
         <div className='loadImage'>
           <div className='loadingBarWrap'>
-            <span className='loadingText'>Loading image...</span>
+            <span className='loadingText'>{this.state.loading}</span>
             <Line className='loadingBar' percent={this.state.percent} strokeWidth='5' strokeColor='#32dbec' trailWidth='5' trailColor='#253655' strokeLinecap='square' />
           </div>
         </div>

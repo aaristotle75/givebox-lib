@@ -91,7 +91,7 @@ export default class TestForm extends Component {
       <div>
         <h2>Form Elements</h2>
         <div className='formWrapper'>
-          {this.props.uploadField('imageURL', { parent: 'user', label: 'Image', library: { borderRadius: 20  }, articleID: 587, debug: true, value: 'https://givebox-staging.s3.amazonaws.com/gbx%2F10a59ceee72803ecbf1fd3c6cdbbfaf8%2F2019-05-22%2Fimg-0428-jpg%2Foriginal' })}
+          {this.props.uploadField('imageURL', { parent: 'user', label: 'Image', library: { borderRadius: 20, type: 'article', articleID: 587 }, debug: true, value: 'https://givebox-staging.s3.amazonaws.com/gbx%2F10a59ceee72803ecbf1fd3c6cdbbfaf8%2F2019-05-22%2Fimg-0428-jpg%2Foriginal' })}
           {/*
           {this.props.creditCardGroup({ required: false, debug: false})}
           {this.props.textField('taxID', {placeholder: 'Enter Tax ID', validate: 'taxID', maxLength: 10})}

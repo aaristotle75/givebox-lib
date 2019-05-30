@@ -228,15 +228,15 @@ export function blob2S3(
 	formData.append('file', file, fileName);
 	var x = new XMLHttpRequest();
 
-  /*
   if (progressCallback) {
-    x.addEventListener('progress', function(e) {
-    	var percent_complete = (e.loaded / e.total)*100;
-      console.log('execute blob2s3 progress', percent_complete);
-    	progressCallback(percent_complete);
-    });
+    x.upload.onprogress = function(e) {
+      if (e.lengthComputable) {
+        const percentLoaded = Math.round((e.loaded / e.total) * 100);
+        progressCallback(percentLoaded);
+      }
+    }
   }
-  */
+
 	x.onload = function() {
 		if (this.status !== 204) {
     	if (callback) {
