@@ -199,7 +199,7 @@ class UploadLibrary extends Component {
     }
 
     return (
-      <div className='photoSection mediaList'>
+      <div className='photoSection PhotoList'>
         <h4>{util.getValue(this.props.library, 'selectedLabel', 'Selected Photo')}</h4>
         <ul>
           {items}
@@ -246,7 +246,7 @@ class UploadLibrary extends Component {
       );
     }
     return (
-      <div className='photoSection mediaList'>
+      <div className='photoSection PhotoList'>
         <h4>Your Photos</h4>
         <ul>{items}</ul>
         {paginate ?
