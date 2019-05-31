@@ -47,6 +47,7 @@ class CodeBlock extends Component{
       type,
 			copiedText,
 			copiedTextStyle,
+			regularText
 		} = this.props;
 
     const {
@@ -55,12 +56,14 @@ class CodeBlock extends Component{
 
 		return (
       <div className="codeBlockComponent">
-        <CopyToClipboard name={name} text={`CopyToClipboard\n${text}`} onCopy={() => this.onCopy()}>
-          <span className="copy">
-            <GBLink>{(nameIcon) && <i className="material-icons"><span className="icon-copy"></span></i>}<span style={nameStyle}>{name}</span></GBLink>
-         		{copied ? <span style={copiedTextStyle} className="text">{copiedText}</span> : ''}
-        	</span>
-        </CopyToClipboard>
+				<div className={`codeBlockText ${this.props.className}`}>
+					{regularText}
+	        <CopyToClipboard name={name} text={text} onCopy={() => this.onCopy()}>
+	          <span className="copy">
+	            <GBLink>{(nameIcon) && <i className="material-icons"><span className="icon-copy"></span></i>}<span style={nameStyle}>{name}</span></GBLink>
+	        	</span>
+	        </CopyToClipboard>
+				</div>
         <div className="codeBlock wordwrap">
           <Highlight className={`${type} code ${copied ? 'highlight' : ''}`}>
             {text}
@@ -72,6 +75,8 @@ class CodeBlock extends Component{
 };
 
 CodeBlock.defaultProps = {
+	className: '',
+	regularText: '',
 	copiedText: '...copied to clipboard',
 	copiedTextStyle : {
 		fontSize: 10

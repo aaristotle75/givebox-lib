@@ -146,7 +146,10 @@ class Table extends Component {
       iconSortDesc,
       iconDetailsExpand,
       iconDetailsCollapse,
-      detailsTitle
+      detailsTitle,
+      showHeader,
+      showFooter,
+      defaultOpen
     } = this.props;
 
     const tableData = data();
@@ -165,6 +168,7 @@ class Table extends Component {
         {(paginationDisplay === 'top' || paginationDisplay === 'both') && this.renderPagination()}
         {(maxRecordsDisplay === 'top' || maxRecordsDisplay === 'both') && this.renderMaxRecords()}
         <table style={this.props.tableStyle}>
+          {showHeader &&
           <TableHead
             headers={headers}
             sortColumn={this.sortColumn}
@@ -172,7 +176,7 @@ class Table extends Component {
             iconSortAsc={iconSortAsc}
             iconSortDesc={iconSortDesc}
             order={order}
-          />
+          />}
           <TableBody
             rows={rows}
             length={headers.length}
@@ -180,8 +184,10 @@ class Table extends Component {
             iconDetailsExpand={iconDetailsExpand}
             iconDetailsCollapse={iconDetailsCollapse}
             detailsTitle={detailsTitle}
+            defaultOpen={defaultOpen}
           />
-          <TableFoot footer={footer} />
+          {showFooter &&
+          <TableFoot footer={footer} />}
         </table>
         {(searchDisplay === 'bottom' || searchDisplay === 'both') && this.renderSearch()}
         {(exportDisplay === 'bottom' || exportDisplay === 'both') &&  this.renderExport()}
@@ -193,6 +199,9 @@ class Table extends Component {
 }
 
 Table.defaultProps = {
+  defaultOpen: false,
+  showHeader: true,
+  showFooter: true,
   searchDisplay: 'none',
   exportDisplay: 'none',
   maxRecordsDisplay: 'bottom',
@@ -255,6 +264,13 @@ class TableBody extends Component {
     this.detailsLink = this.detailsLink.bind(this);
     this.state = {
       details: []
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.defaultOpen) {
+      const id = `0-${this.props.defaultOpen}-details`;
+      this.setState({ details: [id]});
     }
   }
 

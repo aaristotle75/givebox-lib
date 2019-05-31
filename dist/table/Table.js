@@ -129,7 +129,10 @@ class Table extends Component {
       iconSortDesc,
       iconDetailsExpand,
       iconDetailsCollapse,
-      detailsTitle
+      detailsTitle,
+      showHeader,
+      showFooter,
+      defaultOpen
     } = this.props;
     const tableData = data();
     const headers = tableData.headers;
@@ -142,7 +145,7 @@ class Table extends Component {
       options: filters
     }), (paginationDisplay === 'top' || paginationDisplay === 'both') && this.renderPagination(), (maxRecordsDisplay === 'top' || maxRecordsDisplay === 'both') && this.renderMaxRecords(), React.createElement("table", {
       style: this.props.tableStyle
-    }, React.createElement(TableHead, {
+    }, showHeader && React.createElement(TableHead, {
       headers: headers,
       sortColumn: this.sortColumn,
       sort: sort,
@@ -155,8 +158,9 @@ class Table extends Component {
       detailsLink: this.detailsLink,
       iconDetailsExpand: iconDetailsExpand,
       iconDetailsCollapse: iconDetailsCollapse,
-      detailsTitle: detailsTitle
-    }), React.createElement(TableFoot, {
+      detailsTitle: detailsTitle,
+      defaultOpen: defaultOpen
+    }), showFooter && React.createElement(TableFoot, {
       footer: footer
     })), (searchDisplay === 'bottom' || searchDisplay === 'both') && this.renderSearch(), (exportDisplay === 'bottom' || exportDisplay === 'both') && this.renderExport(), (paginationDisplay === 'bottom' || paginationDisplay === 'both') && this.renderPagination(), (maxRecordsDisplay === 'bottom' || maxRecordsDisplay === 'both') && this.renderMaxRecords('top'));
   }
@@ -164,6 +168,9 @@ class Table extends Component {
 }
 
 Table.defaultProps = {
+  defaultOpen: false,
+  showHeader: true,
+  showFooter: true,
   searchDisplay: 'none',
   exportDisplay: 'none',
   maxRecordsDisplay: 'bottom',
@@ -248,6 +255,15 @@ class TableBody extends Component {
     this.state = {
       details: []
     };
+  }
+
+  componentDidMount() {
+    if (this.props.defaultOpen) {
+      const id = `0-${this.props.defaultOpen}-details`;
+      this.setState({
+        details: [id]
+      });
+    }
   }
 
   detailsLink(ref) {

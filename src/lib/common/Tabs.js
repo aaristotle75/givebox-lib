@@ -77,6 +77,7 @@ class Tabs extends Component {
     return (
       <div className={`tabs ${className}`} style={style}>
         {this.renderTabPanel()}
+        {this.props.intro}
         {this.renderChildren()}
       </div>
     );

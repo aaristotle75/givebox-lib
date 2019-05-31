@@ -84,7 +84,7 @@ class Tabs extends Component {
     return React.createElement("div", {
       className: `tabs ${className}`,
       style: style
-    }, this.renderTabPanel(), this.renderChildren());
+    }, this.renderTabPanel(), this.props.intro, this.renderChildren());
   }
 
 }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { cloneObj } from '../common/utility';
 import GBLink from '../common/GBLink';
+import has from 'has';
 
 class Choice extends Component {
   constructor(props) {
@@ -20,8 +21,10 @@ class Choice extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.props.type === 'checkbox') {
-      if (prevProps.params.value !== this.props.params.value) {
-        this.props.onChange(this.props.name);
+      if (has(this.props, 'params')) {
+        if (prevProps.params.value !== this.props.params.value) {
+          this.props.onChange(this.props.name);
+        }
       }
     }
   }

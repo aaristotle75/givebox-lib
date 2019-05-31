@@ -502,6 +502,10 @@
     	margin-bottom: 30px;
   	}
 
+		.tabs:not(.showOnMobile) .panelItem {
+			display: none !important;
+		}
+
 		.tab:not(.showOnMobile) {
 			display: none !important;
 		}
