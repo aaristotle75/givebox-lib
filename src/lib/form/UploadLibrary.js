@@ -107,8 +107,7 @@ class UploadLibrary extends Component {
         }
         break;
       }
-
-      default: {
+      case 'org': {
         this.props.sendResource('orgMediaItem', {
           id: [ID],
           method: 'put',
@@ -116,6 +115,8 @@ class UploadLibrary extends Component {
         });
         break;
       }
+
+      // no default
     }
     if (callback) callback();
   }

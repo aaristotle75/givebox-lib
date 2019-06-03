@@ -92,7 +92,7 @@ export default class TestForm extends Component {
         <h2>Form Elements</h2>
         <div className='formWrapper'>
           {this.props.textField('amounts', { type: 'hidden', useChildren: true })}
-          {this.props.uploadField('imageURL', { parent: 'user', label: 'Image', library: { borderRadius: 20, type: 'article', articleID: 587 }, debug: true })}
+          {this.props.uploadField('imageURL', { parent: 'user', label: 'Image', library: { borderRadius: 20, type: 'avatar' }, debug: true })}
           {this.props.richText('emailList', { label: 'Email List', placeholder: 'Enter emails separated by commas', modal: true, required: false })}
           {this.props.modalField('testModal', { id: 'feesGlossary', label: 'Test Modal', modalLabel: 'Click the modal' } )}
           {this.props.whereField('where', { where: where, label: 'Where is the event', modalLabel: 'Add location' })}
