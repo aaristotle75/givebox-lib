@@ -4,7 +4,6 @@ import {
   util,
   GBLink,
 } from '../';
-import { setPrefs } from '../api/actions';
 import { savePrefs } from '../api/helpers';
 import AnimateHeight from 'react-animate-height';
 import has from 'has';
@@ -95,6 +94,5 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
-  setPrefs,
   savePrefs
 })(Collapse);

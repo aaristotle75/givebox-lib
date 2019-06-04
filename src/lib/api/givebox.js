@@ -732,12 +732,8 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       endpoint = `google/contact-customers`;
       break;
     }
-    case 'updateHubspotContact': {
+    case 'hubspot': {
       endpoint = `hubspot/contacts`;
-      break;
-    }
-    case 'getHubspotContact': {
-      endpoint = `hubspot/contacts/${id[0]}`;
       break;
     }
 

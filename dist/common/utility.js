@@ -16,7 +16,8 @@ export function checkImage(url) {
   return !url.includes(default1) && !url.includes(default2) ? url : '';
 }
 export function checkDefault(str) {
-  const default1 = 'My first fundraiser';
+  //const default1 = 'My first fundraiser';
+  const default1 = 'akdsfaskdfkdjfkjdk';
   return str !== default1 ? str : '';
 }
 export function lookup(arr, field, value) {
