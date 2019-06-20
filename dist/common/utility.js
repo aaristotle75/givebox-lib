@@ -518,7 +518,7 @@ export function isEmpty(value) {
 }
 export function getValue(obj, prop, returnIfEmpty = '') {
   if (isEmpty(obj)) return returnIfEmpty;
-  if (has(obj, prop)) return obj[prop];else return returnIfEmpty;
+  if (has(obj, prop)) return obj[prop] || returnIfEmpty;else return returnIfEmpty;
 }
 export function setHeight(e, id) {
   const arr = e.data.split('-');

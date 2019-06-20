@@ -20,7 +20,7 @@ $tiny-text-size: 0.67em;
 /*----- Define Colors --------*/
 $white: #FFFFFF;
 $off-white: #FCFCFC;
-$light: #ebf9ff;
+$light: #f7fdff;
 $light-gray: #e8ebed;
 $light-med-gray: #B0BEC5;
 $med-gray: #465965;
@@ -79,7 +79,8 @@ $bar4Color: #db6427;
 $bar4Color2: #fdd38f;
 $bar4Gradient: linear-gradient(to bottom, $bar4Color 0%,$bar4Color2 100%);
 
-$mainColor: #49c9ff;
+$mainColor: #2f94ec; // old baby blue #49c9ff  darker blue #3fbcf1;
+$mainColorLight: #49c9ff;
 $mainColor2: $deepBlue;
 
 $mobile-width: 800px;

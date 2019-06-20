@@ -1219,9 +1219,9 @@ button.supportLink {
 
   .details {
     background: $light;
-    background: -moz-linear-gradient(left,  $light 0%, $greenLight 100%);
-    background: -webkit-linear-gradient(left,  $light 0%, $greenLight 100%);
-    background: linear-gradient(to right,  $light 0%, $greenLight 100%);
+    background: -moz-linear-gradient(left,  $light 50%, $greenLight 100%);
+    background: -webkit-linear-gradient(left,  $light 50%, $greenLight 100%);
+    background: linear-gradient(to right,  $light 50%, $greenLight 100%);
     padding: 0;
 
     .description {
@@ -1247,9 +1247,9 @@ button.supportLink {
   tbody tr.detailsOpen {
     @include default-transition(.25s);
     background: $light;
-    background: -moz-linear-gradient(left,  $light 0%, $greenLight 100%);
-    background: -webkit-linear-gradient(left,  $light 0%, $greenLight 100%);
-    background: linear-gradient(to right,  $light 0%, $greenLight 100%);
+    background: -moz-linear-gradient(left,  $light 50%, $greenLight 100%);
+    background: -webkit-linear-gradient(left,  $light 50%, $greenLight 100%);
+    background: linear-gradient(to right,  $light 50%, $greenLight 100%);
 
     .detailsIcon .icon {
       color: $light-med-gray;

@@ -509,7 +509,7 @@ export function isEmpty(value){
 
 export function getValue(obj, prop, returnIfEmpty = '') {
   if (isEmpty(obj)) return returnIfEmpty;
-  if (has(obj, prop)) return obj[prop];
+  if (has(obj, prop)) return obj[prop] || returnIfEmpty;
   else return returnIfEmpty;
 }
 
