@@ -631,6 +631,7 @@ class Form extends Component {
         disallowModalBgClose={params.disallowModalBgClose}
         closeModalAndSave={this.closeModalAndSave}
         params={params}
+        maxSize={params.maxSize}
       />
     )
   }

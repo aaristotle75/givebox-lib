@@ -324,7 +324,7 @@ class UploadLibrary extends Component {
         {!this.state.editor ?
         <div className='center button-group'>
           <GBLink className='link' onClick={() => this.props.closeModalAndSave('uploadLibrary', false)}>Cancel</GBLink>
-          <GBLink className='button' onClick={() => this.props.closeModalAndSave('uploadLibrary')}>Save</GBLink>
+          <GBLink style={{ width: '150px' }} className='button' onClick={() => this.props.closeModalAndSave('uploadLibrary')}>Save</GBLink>
         </div>
         : ''}
       </div>

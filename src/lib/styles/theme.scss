@@ -1250,6 +1250,7 @@ button.supportLink {
     background: -moz-linear-gradient(left,  $light 50%, $greenLight 100%);
     background: -webkit-linear-gradient(left,  $light 50%, $greenLight 100%);
     background: linear-gradient(to right,  $light 50%, $greenLight 100%);
+    background-attachment: fixed;
 
     .detailsIcon .icon {
       color: $light-med-gray;

@@ -49,9 +49,11 @@ const GBX = (function() {
 	function messageGivebox(e) {
 		if (e.data === 'closeGivebox') {
 			const iframe = document.getElementById(iframeId);
-			iframe.src = '';
-			iframe.style.display = 'none';
-			iframe.style.visibility = 'hidden';
+			if (iframe) {
+				iframe.src = '';
+				iframe.style.display = 'none';
+				iframe.style.visibility = 'hidden';
+			}
 			const overlay = document.getElementById('giveboxOverlay');
 			if (overlay) {
 				overlay.parentNode.removeChild(overlay);

@@ -158,7 +158,7 @@ class Upload extends Component {
               <div className='dropzoneImageContainer'>
                 {!this.state.imageLoading && (this.props.customLink || '')}
                 <div className='image'>
-                  <Image maxSize='175px' url={preview} alt={preview} onLoad={this.imageOnLoad} />
+                  <Image maxSize={this.props.maxSize} url={preview} alt={preview} onLoad={this.imageOnLoad} />
                   <ModalLink opts={{ disallowBgClose: disallowModalBgClose }} style={{ margin: 0 }} className='imageCover' id={'uploadLibrary'}>
                     <div className='imageLink'>Manage</div>
                   </ModalLink>
@@ -187,7 +187,8 @@ class Upload extends Component {
 Upload.defaultProps = {
   name: 'defaultUpload',
   label: 'Upload',
-  uploadLabel: 'Add Photo'
+  uploadLabel: 'Add Photo',
+  maxSize: '175px'
 }
 
 function mapStateToProps(state, props) {
