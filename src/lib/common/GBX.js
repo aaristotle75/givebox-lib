@@ -1,5 +1,4 @@
 const GBX = (function() {
-	const host = process.env.REACT_APP_GBX_URL;
 	const isMobile = window.innerWidth <= 767 ? true : false;
 	let position = 'fixed';
   if (isMobile) position = 'absolute';
@@ -7,38 +6,33 @@ const GBX = (function() {
 	const giveboxStyle = 'position:'+position+';top:0;right:0;bottom:0;left:0;border:none;white-space:nowrap;background-color:rgba(0,0,0,0);z-index:2147483647;text-align:center;width:100%;height:100%;overflow-y:scroll;overflow-x:hidden;display:none;';
 
 	const DEFAULT_COLOR = '374dcf';
-	const URL = host + '/';
 	const iframeId = 'givebox-embed';
 
-	function createGivebox(p) {
-		const color = p.color || DEFAULT_COLOR;
+	function createGivebox(url) {
+		const color = DEFAULT_COLOR;
 		if (!document.getElementById(iframeId)) {
 			var iframe = document.createElement('iframe');
-			iframe.setAttribute('id', iframeId);
-			iframe.setAttribute('allowTransparency', 'true');
-			iframe.setAttribute('style', giveboxStyle);
-			iframe.setAttribute('data-color', color);
-			iframe.style.visibility = 'hidden';
-			document.body.appendChild(iframe);
+			if (iframe) {
+				iframe.setAttribute('id', iframeId);
+				iframe.setAttribute('allowTransparency', 'true');
+				iframe.setAttribute('style', giveboxStyle);
+				iframe.setAttribute('data-color', color);
+				iframe.style.visibility = 'hidden';
+				document.body.appendChild(iframe);
+			}
 		}
-		loadGivebox(p);
+		loadGivebox(url);
 	}
 
-	function loadGivebox(p) {
+	function loadGivebox(url) {
     const iframe = document.getElementById(iframeId);
-		let id, loc, preview, signup, url, overlay;
-    id = p.id;
-    loc = p.loc || window.location.href;
-    preview = p.preview ? '&preview=true' : '';
-    signup = p.signup ? '&signup=true' : '';
-		overlay = document.createElement('div');
+		const overlay = document.createElement('div');
 		overlay.setAttribute('id', 'giveboxOverlay');
 		overlay.setAttribute('style', blackOverlayStyle);
 		document.body.appendChild(overlay);
 
 		loader();
 		iframe.style.visibility = 'visible';
-		url = URL + '/' + id + '?loc=' + encodeURI(loc)+preview+signup;
 		iframe.style.display = 'block';
 		iframe.src = url;
 		iframe.onload = function() {
@@ -106,8 +100,7 @@ const GBX = (function() {
 		}
 	}
 
-	function injectLoaderCSS(color) {
-		color = typeof color !== 'undefined' ? color : DEFAULT_COLOR;
+	function injectLoaderCSS() {
 		//var css_old = '.gbloader {margin:0 auto;border:4px solid transparent;border-top:4px solid #'+color+';border-bottom:4px solid #'+color+';border-radius:50%;width:60px;height:60px;animation:spin .7s linear infinite;} @keyframes spin {0%{transform: rotate(0deg);} 100%{transform:rotate(360deg);}';
 
 		const css = '.loaderSVG  {height: 45px;width: 45px;background: transparent;animation: logoPulsate .5s ease-in-out infinite, spin 1.5s linear infinite;-webkit-animation: logoPulsate .5s ease-in-out infinite, spin 1.5s linear infinite;}@-moz-keyframes spin {from { -moz-transform: rotate(0deg); }to { -moz-transform: rotate(360deg); }}@-webkit-keyframes spin {from { -webkit-transform: rotate(0deg); }to { -webkit-transform: rotate(360deg); }}@keyframes spin {from {transform:rotate(0deg);}to {transform:rotate(360deg);}}@-webkit-keyframes logoPulsate {0% {filter: brightness(70);-webkit-filter:brightness(70%);}50% {filter: brightness(150);-webkit-filter:brightness(150%);}100% {filter: brightness(70);-webkit-filter:brightness(70%);}}';
@@ -126,23 +119,20 @@ const GBX = (function() {
 		}
 	}
 
-	let p = {};
-
 	return {
-		init: function(params) {
-			p = params[0];
+		init: function(url) {
 			if (document.readyState === 'complete') {
-				injectLoaderCSS(p.color);
-				createGivebox(p);
+				injectLoaderCSS();
+				createGivebox(url);
 			} else {
 				window.onload = function() {
-					injectLoaderCSS(p.color);
-					createGivebox(p);
+					injectLoaderCSS();
+					createGivebox(url);
 				};
 			}
 		},
-		load: function(p) {
-			createGivebox(p);
+		load: function(url) {
+			createGivebox(url);
 		},
 	};
 }());

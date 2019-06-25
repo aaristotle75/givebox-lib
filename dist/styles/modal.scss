@@ -9,11 +9,13 @@
     left: 0;
     right: 0;
     bottom: 0;
-    overflow: auto;
     perspective: 1300;
     background: rgba(0, 0, 0, 0.4);
     z-index: 999990;
   	overflow-x: hidden !important;
+    overflow-y: auto;
+    -webkit-overflow-scrolling:touch;
+    height: 100%;
   }
 
   .modalContent {
