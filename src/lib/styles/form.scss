@@ -1246,6 +1246,14 @@ button.tooltip.sortable:hover {
 }
 
 /*------ Dropzone -------*/
+.dropzone-group {
+  label {
+    position: absolute;
+    top: 0;
+  }
+}
+
+
 .dropzoneImageContainer {
   .dropzoneLoader {
     margin-bottom: 10px;
