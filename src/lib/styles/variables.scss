@@ -19,7 +19,7 @@ $tiny-text-size: 0.67em;
 
 /*----- Define Colors --------*/
 $white: #FFFFFF;
-$off-white: #FCFCFC;
+$off-white: #FEFEFE;
 $light: #f7fdff;
 $light-gray: #e8ebed;
 $light-med-gray: #B0BEC5;
@@ -92,9 +92,14 @@ $canvasOverlay: rgba(37, 54, 85, .1);
 $sonarAlertColor: $green;
 
 @mixin box-shadow($shadows...) {
-  -moz-box-shadow: $shadows;
+  -moz-box-: $shadows;
   -webkit-box-shadow: $shadows;
   box-shadow: $shadows;
+}
+
+@mixin drop-shadow($shadows...) {
+  -webkit-filter: drop-shadow($shadows);
+  filter: drop-shadow($shadows);
 }
 
 @mixin default-transition($transitions...) {
