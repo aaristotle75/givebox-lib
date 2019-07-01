@@ -58,7 +58,7 @@ class Paginate extends Component{
 	    const search = { ...resource.search };
 	    search.page = selected;
 	    const endpoint = resource.endpoint.split('?')[0] + util.makeAPIQuery(search);
-  		this.props.getAPI(this.props.name, endpoint, search, null, true, this.props.customName || null);
+  		this.props.getAPI(this.props.name, endpoint, search, this.props.callback, true, this.props.customName || null);
 		}
   }
 
@@ -213,6 +213,7 @@ Paginate.defaultProps = {
 	iconNext: <span className='icon icon-arrow-right'></span>,
   nextClassName: 'next',
   disabledClassName: 'disabled',
+	callback: null
 }
 
 function mapStateToProps(state, props) {

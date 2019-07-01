@@ -633,6 +633,12 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
         break;
       }
 
+    case 'orgArticlesOrder':
+      {
+        endpoint = `orgs/${id[0] || orgID}/articles/orderby`;
+        break;
+      }
+
     case 'orgSources':
       {
         endpoint = `orgs/${orgID}/sources`;

@@ -230,6 +230,20 @@ export function translatePerm(value) {
         // no default
       }
       break;
+    case 'general':
+      group = 'general';
+      groupName = 'Non Profit Details';
+      switch (perm) {
+        case 'read':
+          name = 'View Non Profit Details';
+          break;
+        case 'write':
+          name = 'Update Non Profit Details';
+          break;
+
+        // no default
+      }
+      break;
     case 'sweepstake':
       groupName = 'Sweepstakes';
       break;
