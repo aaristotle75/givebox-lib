@@ -2002,6 +2002,21 @@ button.supportLink {
     display: inline-block;
     cursor: pointer;
   }
+
+  li:hover {
+    img {
+      @include filter(brightness(120%));
+    }
+  }
+}
+
+
+ul.share {
+  li:hover {
+    img {
+      @include filter(brightness(120%));
+    }
+  }
 }
 
 /*-------- HTML INJECTION - Used for email templates and other HTML templates */

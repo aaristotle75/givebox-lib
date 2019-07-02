@@ -206,3 +206,7 @@ export const accountType = (type) => {
     // no default
   }
 }
+
+export const socialIcons = (type, size = 50) => {
+  return <img style={{ height: size, width: size }} src={`https://givebox.s3-us-west-1.amazonaws.com/public/images/social-${type}.png`} alt={`${type}`} />;
+}
