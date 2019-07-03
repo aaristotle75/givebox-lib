@@ -306,7 +306,7 @@ class Form extends Component {
       if (field.validate === 'phone') value = _v.formatPhone(value);
       if (field.validate === 'ccexpire') value = _v.formatCCExpire(value);
       if (field.validate === 'money' || field.validate === 'number' || field.validateOpts.validate === 'money' || field.validateOpts.validate === 'number') {
-        value = _v.formatNumber(value);
+        value = field.validateOpts.decimal ? _v.formatDecimal(value) : _v.formatNumber(value);
       }
       this.fieldProp(name, {value: value, error: false});
       this.formProp({error: false, updated: true});
