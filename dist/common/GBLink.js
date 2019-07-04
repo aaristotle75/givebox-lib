@@ -1,6 +1,31 @@
 import React, { Component } from 'react';
+import { util } from '../';
 
 class GBLink extends Component {
+  constructor(props) {
+    super(props);
+    this.onMouseEnter = this.onMouseEnter.bind(this);
+    this.onMouseLeave = this.onMouseLeave.bind(this);
+    this.linkRef = React.createRef();
+    this.state = {
+      hoverStyle: {}
+    };
+  }
+
+  onMouseEnter(e) {
+    if (this.props.hoverStyle) this.setState({
+      hoverStyle: this.props.hoverStyle
+    });
+    if (this.props.onMouseEnter) this.props.onMouseEnter(e, util.getValue(this.linkRef, 'current', {}), this.props.id);
+  }
+
+  onMouseLeave(e) {
+    if (this.props.hoverStyle) this.setState({
+      hoverStyle: {}
+    });
+    if (this.props.onMouseLeave) this.props.onMouseLeave(e, util.getValue(this.linkRef, 'current', {}), this.props.id);
+  }
+
   linkStyle() {
     const style = {
       color: `${this.props.primaryColor}`
@@ -14,8 +39,6 @@ class GBLink extends Component {
     const {
       id,
       onClick,
-      onMouseEnter,
-      onMouseLeave,
       className,
       style,
       primaryColor,
@@ -26,16 +49,18 @@ class GBLink extends Component {
       color: primaryColor
     } : {};
     const mergeStyle = { ...style,
-      ...color
+      ...color,
+      ...this.state.hoverStyle
     };
     return React.createElement("button", {
+      ref: this.linkRef,
       disabled: disabled,
       type: "button",
       id: id,
       className: `${ripple ? 'ripple' : ''} ${className || 'link'}`,
       onClick: onClick,
-      onMouseEnter: onMouseEnter,
-      onMouseLeave: onMouseLeave,
+      onMouseEnter: this.onMouseEnter,
+      onMouseLeave: this.onMouseLeave,
       style: mergeStyle
     }, this.props.children);
   }

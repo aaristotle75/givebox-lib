@@ -305,8 +305,11 @@ class Form extends Component {
       if (field.validate === 'ssn') value = _v.formatSSN(value);
       if (field.validate === 'phone') value = _v.formatPhone(value);
       if (field.validate === 'ccexpire') value = _v.formatCCExpire(value);
-      if (field.validate === 'money' || field.validate === 'number' || field.validateOpts.validate === 'money' || field.validateOpts.validate === 'number') {
-        value = field.validateOpts.decimal ? _v.formatDecimal(value) : _v.formatNumber(value);
+      if (field.validate === 'money'
+        || field.validate === 'number'
+        || field.validateOpts.validate === 'money'
+        || field.validateOpts.validate === 'number') {
+        value = _v.formatNumber(value);
       }
       this.fieldProp(name, {value: value, error: false});
       this.formProp({error: false, updated: true});
@@ -611,6 +614,7 @@ class Form extends Component {
         name={name}
         className={params.className}
         label={params.label}
+        labelClass={params.labelClass}
         uploadLabel={params.uploadLabel}
         style={params.style}
         required={field ? field.required : params.required}

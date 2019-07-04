@@ -8,13 +8,20 @@ class ModalField extends Component {
     this.onMouseEnter = this.onMouseEnter.bind(this);
     this.onMouseLeave = this.onMouseLeave.bind(this);
     this.state = {
-      status: 'idle'
+      status: 'idle',
+      modalLabel: this.props.modalLabel
     }
   }
 
   componentDidMount() {
     if (this.props.createField) {
       this.props.createField(this.props.name, this.props.params);
+    }
+  }
+
+  componentDidUpdate(prev) {
+    if (prev.modalLabel !== this.props.modalLabel) {
+      this.setState({ modalLabel: this.props.modalLabel });
     }
   }
 
@@ -38,7 +45,6 @@ class ModalField extends Component {
       className,
       error,
       errorType,
-      modalLabel,
       value,
       opts,
       id,
@@ -50,7 +56,7 @@ class ModalField extends Component {
         <div className={`errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`}>{error}</div>
         <div className={`floating-label ${this.state.status} ${fixedLabel && 'fixed'}`}>
           <div>
-            <ModalLink className={`input ${value ? 'hasValue' : ''}`} id={id} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} opts={{ ...opts, disallowBgClose: disallowModalBgClose} }>{modalLabel}</ModalLink>
+            <ModalLink className={`input ${value ? 'hasValue' : ''}`} id={id} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} opts={{ ...opts, disallowBgClose: disallowModalBgClose} }>{this.state.modalLabel}</ModalLink>
           </div>
           {label && <label htmlFor={name}>{label}</label>}
           <div className={`input-bottom ${error ? 'error' : this.state.status}`}></div>

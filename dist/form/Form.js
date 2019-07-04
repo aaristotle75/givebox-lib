@@ -349,7 +349,7 @@ class Form extends Component {
       if (field.validate === 'ccexpire') value = _v.formatCCExpire(value);
 
       if (field.validate === 'money' || field.validate === 'number' || field.validateOpts.validate === 'money' || field.validateOpts.validate === 'number') {
-        value = field.validateOpts.decimal ? _v.formatDecimal(value) : _v.formatNumber(value);
+        value = _v.formatNumber(value);
       }
 
       this.fieldProp(name, {
@@ -744,6 +744,7 @@ class Form extends Component {
       name: name,
       className: params.className,
       label: params.label,
+      labelClass: params.labelClass,
       uploadLabel: params.uploadLabel,
       style: params.style,
       required: field ? field.required : params.required,

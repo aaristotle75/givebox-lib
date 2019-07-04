@@ -376,10 +376,14 @@ export function formatMoneyForAPI(amount) {
     dollar = parseInt(arr[0] * 100);
 
     if (1 in arr) {
-      if (arr[1].length === 1) {
-        cents = parseInt(arr[1] * 10);
+      if (arr[1].length > 0) {
+        if (arr[1].length === 1) {
+          cents = parseInt(arr[1] * 10);
+        } else {
+          cents = parseInt(arr[1].slice(0, 2));
+        }
       } else {
-        cents = parseInt(arr[1]);
+        dollar = parseInt(arr) * 100;
       }
     }
   } else {

@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
-import { imageUrlWithStyle } from './utility';
+import { imageUrlWithStyle, getValue } from './utility';
 
 export default class Image extends Component {
 
   constructor(props) {
     super(props);
     this.imageOnLoad = this.imageOnLoad.bind(this);
+		this.onMouseEnter = this.onMouseEnter.bind(this);
+		this.onMouseLeave = this.onMouseLeave.bind(this);
     this.state = {
-      imageLoading: true
+      imageLoading: true,
+      hoverStyle: {}
     }
   }
 
@@ -15,6 +18,14 @@ export default class Image extends Component {
     this.setState({ imageLoading: false });
     if (this.props.onLoad) this.props.onLoad();
   }
+
+	onMouseEnter() {
+		if (this.props.hoverStyle) this.setState({ hoverStyle: this.props.hoverStyle });
+	}
+
+	onMouseLeave() {
+		if (this.props.hoverStyle) this.setState({ hoverStyle: {} });
+	}
 
   render() {
 
@@ -59,14 +70,15 @@ export default class Image extends Component {
       // no default
     }
     const maxSize = this.props.maxSize || defaultSize;
+    const mergeStyle = { ...imgStyle, maxWidth: maxWidth || maxSize, maxHeight: maxHeight || maxSize };
 
     return (
-      <div style={{ ...style, width: maxSize, height: 'auto' }} className={`imageComponent ${className || ''}`}>
+      <div style={{ ...style, ...this.state.hoverStyle, width: maxSize, height: 'auto' }} className={`imageComponent ${className || ''}`}>
         {this.state.imageLoading  &&
         <div className='imageLoader'>
           <img src='https://s3-us-west-1.amazonaws.com/givebox/public/images/squareLoader.gif' alt='Loader' />
         </div>}
-        <img style={{ ...imgStyle, maxWidth: maxWidth || maxSize, maxHeight: maxHeight || maxSize }} src={size === 'inherit' ? url : imageUrlWithStyle(url, size)} alt={alt || url} onLoad={this.imageOnLoad} />
+        <img onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} style={mergeStyle} src={size === 'inherit' ? url : imageUrlWithStyle(url, size)} alt={alt || url} onLoad={this.imageOnLoad} />
       </div>
     )
   }

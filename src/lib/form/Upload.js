@@ -96,6 +96,7 @@ class Upload extends Component {
     const {
       uploadLabel,
       label,
+      labelClass,
       className,
       style,
       error,
@@ -113,7 +114,7 @@ class Upload extends Component {
 
     return (
       <div style={style} className={`dropzone-group input-group ${className || ''} textfield-group ${error ? 'error tooltip' : ''}`}>
-        {label && <label>{label}</label>}
+        {label && <label className={labelClass}>{label}</label>}
         {this.state.loading && <Loader className={'uploadLoader'} msg={'Uploading'} />}
         {util.isEmpty(library) ?
           <div className='directUpload'>
@@ -187,6 +188,7 @@ class Upload extends Component {
 Upload.defaultProps = {
   name: 'defaultUpload',
   label: 'Upload',
+  labelClass: '',
   uploadLabel: 'Add Photo',
   maxSize: '175px'
 }

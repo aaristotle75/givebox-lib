@@ -33,28 +33,26 @@ export const nLength = n => {
   return (Math.log(Math.abs(n) + 1) * 0.43429448190325176 | 0) + 1;
 };
 export function formatDecimal(value) {
-  console.log('value', value);
+  /*
   let val = isNaN(value) ? parseInt(value.replace(/[^0-9]/g, '')) : value;
   let newVal = '';
   const length = nLength(val);
   val = val.toString();
-
   if (length === 1) {
     newVal = `.0${val}`;
   }
-
   if (length === 2) {
     newVal = `.${val.slice(-2)}`;
   }
-
   if (length > 2) {
     const decimal = val.slice(-2);
     const int = val.slice(0, -2);
     newVal = `${int}.${decimal}`;
   }
-
   console.log('newVal val', newVal, val);
   return isNaN(newVal) || parseInt(val) === 0 || isNaN(val) ? '' : numberWithCommas(newVal);
+  */
+  return Number((value / 100).toFixed(2));
 }
 export function formatNumber(value) {
   const val = isNaN(value) ? parseInt(value.replace(/[^0-9]/g, '')) : value;

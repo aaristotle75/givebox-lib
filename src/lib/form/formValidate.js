@@ -32,7 +32,7 @@ export const nLength = (n) => {
 
 
 export function formatDecimal(value) {
-  console.log('value', value);
+  /*
   let val = isNaN(value) ? parseInt(value.replace(/[^0-9]/g, '')) : value;
   let newVal = '';
 	const length = nLength(val);
@@ -50,6 +50,8 @@ export function formatDecimal(value) {
   }
   console.log('newVal val', newVal, val);
   return isNaN(newVal) || parseInt(val) === 0 || isNaN(val) ? '' : numberWithCommas(newVal);
+  */
+  return Number((value / 100).toFixed(2));
 }
 
 export function formatNumber(value) {
