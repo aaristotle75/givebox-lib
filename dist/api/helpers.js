@@ -35,7 +35,8 @@ export function getResource(resource, opts = {}) {
     let reload = options.reload;
     const orgID = has(getState().resource, 'orgID') ? getState().resource.orgID : null;
     const userID = has(getState().resource, 'userID') ? getState().resource.userID : null;
-    const affiliateID = has(getState().resource, 'affiliateID') ? getState().resource.affiliateID : null; //const access = has(getState().resource, 'access') ? getState().resource.access : null;
+    const affiliateID = has(getState().resource, 'affiliateID') ? getState().resource.affiliateID : null;
+    const enterpriseID = has(getState().resource, 'enterpriseID') ? getState().resource.enterpriseID : null; //const access = has(getState().resource, 'access') ? getState().resource.access : null;
     //console.log('getResource access', access);
     // Reload if resource exists and a new ID is requested
 

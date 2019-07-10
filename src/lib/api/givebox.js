@@ -15,7 +15,8 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
   const {
     userID,
     orgID,
-    affiliateID
+    affiliateID,
+    enterpriseID
   } = opts;
 
   const obj = {
@@ -182,6 +183,16 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
     }
     case 'userFundraisers': {
       endpoint = `users/${userID}/volunteer-fundraisers`;
+      break;
+    }
+
+    // Enterprise
+    case 'enterpriseBankAccounts': {
+      endpoint = `enterprises/${enterpriseID || id[0]}/bank-accounts`;
+      break;
+    }
+    case 'enterpriseBankAccount': {
+      endpoint = `enterprises/${enterpriseID || id[0]}/bank-accounts/${id[1]}`;
       break;
     }
 
