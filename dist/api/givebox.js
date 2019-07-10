@@ -78,6 +78,12 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
         break;
       }
 
+    case 'superScamProfiles':
+      {
+        endpoint = `scam-profiles/${id[0]}`;
+        break;
+      }
+
     case 'superScamProfilesBlock':
       {
         endpoint = `scam-profiles/${id[0]}/block`;
