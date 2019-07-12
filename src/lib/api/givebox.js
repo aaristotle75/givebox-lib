@@ -100,6 +100,36 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
 
+    // Underwriting
+    case 'underwritingStatus': {
+      endpoint = `orgs/${id[0]}/underwriting`;
+      break;
+    }
+    case 'underwritingList': {
+      endpoint = `underwriting-info`;
+      break;
+    }
+    case 'underwriting': {
+      endpoint = `orgs/${id[0]}/underwriting-info`;
+      break;
+    }
+    case 'underwritingDocs': {
+      endpoint = `orgs/${id[0]}/underwriting-documents`;
+      break;
+    }
+    case 'underwritingDoc': {
+      endpoint = `orgs/${id[0]}/underwriting-documents/${id[1]}`;
+      break;
+    }
+    case 'underwritingDownload': {
+      endpoint = `orgs/${id[0]}/underwriting-documents/download`;
+      break;
+    }
+    case 'underwritingSnapshot': {
+      endpoint = `orgs/${id[0]}/underwriting-snapshot`;
+      break;
+    }
+
 
     // USER
     case 'users': {
