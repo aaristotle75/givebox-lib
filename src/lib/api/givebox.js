@@ -79,6 +79,27 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       endpoint = `super/chargeback-transactions/${id[0]}`;
       break;
     }
+    case 'refund': {
+      endpoint = `orgs/${id[0]}/purchases/${id[1]}/refunds`;
+      break;
+    }
+    case 'receipt': {
+      endpoint = `orgs/${id[0]}/purchases/${id[1]}/receipt`;
+      break;
+    }
+    case 'superRecurringOrders': {
+      endpoint = `super/recurring`;
+      break;
+    }
+    case 'recurringOrders': {
+      endpoint = `orgs/${id[0]}/recurring`;
+      break;
+    }
+    case 'recurringOrder': {
+      endpoint = `orgs/${id[0]}/recurring/${id[1]}`;
+      break;
+    }
+
 
     // USER
     case 'users': {
@@ -86,7 +107,7 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'singleUser': {
-      endpoint = `users/${userID}`;
+      endpoint = `users/${id[0] || userID}`;
       break;
     }
     case 'session': {
@@ -188,11 +209,11 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
 
     // Enterprise
     case 'enterpriseBankAccounts': {
-      endpoint = `enterprises/${enterpriseID || id[0]}/bank-accounts`;
+      endpoint = `enterprises/${id[0] || enterpriseID}/bank-accounts`;
       break;
     }
     case 'enterpriseBankAccount': {
-      endpoint = `enterprises/${enterpriseID || id[0]}/bank-accounts/${id[1]}`;
+      endpoint = `enterprises/${id[0] || enterpriseID}/bank-accounts/${id[1]}`;
       break;
     }
 
@@ -288,7 +309,7 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'org': {
-      endpoint = `orgs/${orgID || id[0]}`;
+      endpoint = `orgs/${id[0] || orgID}`;
       break;
     }
     case 'orgOwner': {
