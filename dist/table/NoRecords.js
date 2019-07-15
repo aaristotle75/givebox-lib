@@ -5,13 +5,14 @@ export default class NoRecords extends Component {
     const {
       link,
       label,
-      align
+      align,
+      text
     } = this.props;
     return React.createElement("div", {
       className: `noRecords ${align}`
     }, React.createElement("span", {
       className: "normalText"
-    }, "No records found"), link && React.createElement(GBLink, {
+    }, text), link && React.createElement(GBLink, {
       onClick: link
     }, label));
   }
@@ -19,5 +20,6 @@ export default class NoRecords extends Component {
 }
 NoRecords.defaultProps = {
   align: 'center',
-  label: 'Reload'
+  label: 'Reload',
+  text: 'No records found'
 };

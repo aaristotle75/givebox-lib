@@ -185,6 +185,7 @@ class Table extends Component {
             iconDetailsCollapse={iconDetailsCollapse}
             detailsTitle={detailsTitle}
             defaultOpen={defaultOpen}
+            noRecordsText={this.props.noRecordsText}
           />
           {showFooter &&
           <TableFoot footer={footer} />}
@@ -348,7 +349,7 @@ class TableBody extends Component {
       });
     } else {
       items.push(
-        <tr key={0}><td className='noRecordsRow' colSpan={length || 1} align='center'><NoRecords /></td></tr>
+        <tr key={0}><td className='noRecordsRow' colSpan={length || 1} align='center'><NoRecords text={this.props.noRecordsText}/></td></tr>
       );
     }
 

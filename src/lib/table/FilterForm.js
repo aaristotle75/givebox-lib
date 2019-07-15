@@ -81,7 +81,7 @@ class Filter extends Component {
     const merge = { filter: '' };
     const search = { ...resource.search, ...merge };
     search.filter =  this.props.alwaysFilter ? `${this.props.alwaysFilter}` : '';
-    search.page = util.getValue(resource.search, 'page', 1);
+    search.page = 1;
     const endpoint = resource.endpoint.split('?')[0] + util.makeAPIQuery(search);
   	this.props.getAPI(this.props.name, endpoint, search, this.ignoreFiltersCallback, true, this.props.customName || null);
   }
@@ -112,7 +112,7 @@ class Filter extends Component {
     });
     const search = { ...resource.search };
     search.filter = filters ? this.props.alwaysFilter ? `${this.props.alwaysFilter}%3B${filters}` : filters : this.props.alwaysFilter || '';
-    search.page = util.getValue(resource.search, 'page', 1);
+    search.page = 1;
     const endpoint = resource.endpoint.split('?')[0] + util.makeAPIQuery(search);
   	this.props.getAPI(this.props.name, endpoint, search, this.processFormCallback, true, this.props.customName || null);
   }

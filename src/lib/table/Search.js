@@ -34,16 +34,21 @@ class Search extends Component {
 
   getSearch(value) {
     const resource = this.props.resource;
-    const search = { ...resource.search };
-    search.query = value;
-		if (resource.search.page > 1) search.page = 1;
-    const endpoint = resource.endpoint.split('?')[0] + util.makeAPIQuery(search);
-  	this.props.getAPI(this.props.name, endpoint, search, null, true, this.props.customName || null);
+    if (has(resource, 'endpoint')) {
+      const search = { ...resource.search };
+      search.query = value;
+      search.page = 1;
+      const endpoint = resource.endpoint.split('?')[0] + util.makeAPIQuery(search);
+    	this.props.getAPI(this.props.name, endpoint, search, null, true, this.props.customName || null);
+    } else {
+      console.error('No resource to search');
+    }
   }
 
   onSearch(e) {
     const value = this.state.searchValue;
-    this.getSearch(value);
+    if (this.props.getSearch) this.props.getSearch(value);
+    else this.getSearch(value);
   }
 
   onChange(e) {
@@ -51,7 +56,8 @@ class Search extends Component {
   }
 
   resetSearch() {
-    this.getSearch('');
+    if (this.props.resetSearch) this.props.resetSearch();
+    else this.getSearch('');
     this.setState({ searchValue: '' });
   }
 

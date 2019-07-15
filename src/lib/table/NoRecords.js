@@ -8,12 +8,13 @@ export default class NoRecords extends Component {
     const {
       link,
       label,
-      align
+      align,
+      text
     } = this.props;
 
     return (
       <div className={`noRecords ${align}`}>
-        <span className='normalText'>No records found</span>
+        <span className='normalText'>{text}</span>
         {link && <GBLink onClick={link}>{label}</GBLink>}
       </div>
     )
@@ -22,5 +23,6 @@ export default class NoRecords extends Component {
 
 NoRecords.defaultProps = {
   align: 'center',
-  label: 'Reload'
+  label: 'Reload',
+  text: 'No records found'
 }

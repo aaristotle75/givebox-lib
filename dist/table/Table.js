@@ -159,7 +159,8 @@ class Table extends Component {
       iconDetailsExpand: iconDetailsExpand,
       iconDetailsCollapse: iconDetailsCollapse,
       detailsTitle: detailsTitle,
-      defaultOpen: defaultOpen
+      defaultOpen: defaultOpen,
+      noRecordsText: this.props.noRecordsText
     }), showFooter && React.createElement(TableFoot, {
       footer: footer
     })), (searchDisplay === 'bottom' || searchDisplay === 'both') && this.renderSearch(), (exportDisplay === 'bottom' || exportDisplay === 'both') && this.renderExport(), (paginationDisplay === 'bottom' || paginationDisplay === 'both') && this.renderPagination(), (maxRecordsDisplay === 'bottom' || maxRecordsDisplay === 'both') && this.renderMaxRecords('top'));
@@ -366,7 +367,9 @@ class TableBody extends Component {
         className: "noRecordsRow",
         colSpan: length || 1,
         align: "center"
-      }, React.createElement(NoRecords, null))));
+      }, React.createElement(NoRecords, {
+        text: this.props.noRecordsText
+      }))));
     }
 
     return items;
