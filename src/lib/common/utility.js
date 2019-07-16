@@ -15,7 +15,8 @@ export const imageUrlWithStyle = function(imageURL, style) {
 export function checkImage(url) {
   const default1 = 'fundraiser-cover';
   const default2 = 'invoice-cover';
-  return !url.includes(default1) && !url.includes(default2) ? url : '';
+  const default3 = 'org-logo';
+  return !url.includes(default1) && !url.includes(default2) && !url.includes(default3) ? url : '';
 }
 
 export function checkDefault(str) {
