@@ -343,7 +343,9 @@ class TableBody extends Component {
               if (has(value, 'actions')) td.push(React.createElement("td", {
                 className: "actionsRow",
                 key: key
-              }, value.actions));else td.push(React.createElement("td", {
+              }, React.createElement("span", {
+                className: ` ${has(value, 'secondary') && bindthis.state.details.includes(id) ? 'hidden' : ''}`
+              }, value.actions)));else td.push(React.createElement("td", {
                 onClick: () => ref ? bindthis.detailsLink(ref) : '',
                 className: `${ref ? 'hasDetails' : ''} ${value.primary ? 'primaryRow' : ''}`,
                 key: key

@@ -31,7 +31,7 @@ class Dropdown extends Component {
   componentDidMount() {
     const params = Object.assign({}, this.props.params, { ref: this.dropdownRef, openMenu: this.openMenu, closeMenu: this.closeMenu });
     if (this.props.createField) this.props.createField(this.props.name, params);
-    let init = lookup(this.props.options, 'value', this.props.defaultValue);
+    let init = lookup(this.props.options, 'value', this.props.value || this.props.defaultValue);
     if (!isEmpty(init)) {
       this.setState({
         value: init.value,

@@ -34,7 +34,7 @@ class Dropdown extends Component {
       closeMenu: this.closeMenu
     });
     if (this.props.createField) this.props.createField(this.props.name, params);
-    let init = lookup(this.props.options, 'value', this.props.defaultValue);
+    let init = lookup(this.props.options, 'value', this.props.value || this.props.defaultValue);
 
     if (!isEmpty(init)) {
       this.setState({
