@@ -61,9 +61,10 @@ class TextField extends Component {
       money,
       inputRef
     } = this.props;
+    const readOnlyText = this.props.readOnlyText || `${label} is not editable`;
     return React.createElement("div", {
       style: style,
-      className: `input-group ${className || ''} textfield-group ${error ? 'error tooltip' : ''} ${type === 'hidden' && 'hidden'} ${money ? 'money-group' : ''}`
+      className: `input-group ${className || ''} textfield-group ${readOnly ? 'readOnly tooltip' : ''} ${error ? 'error tooltip' : ''} ${type === 'hidden' && 'hidden'} ${money ? 'money-group' : ''}`
     }, React.createElement("div", {
       className: `floating-label ${this.state.status} ${fixedLabel && 'fixed'}`
     }, money && React.createElement("div", {
@@ -102,7 +103,7 @@ class TextField extends Component {
       count: value.length
     }))), React.createElement("div", {
       className: `tooltipTop ${(errorType !== 'tooltip' || strength) && 'displayNone'}`
-    }, error, React.createElement("i", null)), React.createElement("div", {
+    }, error, readOnly ? readOnlyText : '', React.createElement("i", null)), React.createElement("div", {
       className: `errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`
     }, error));
   }

@@ -58,8 +58,10 @@ class TextField extends Component {
       inputRef
     } = this.props;
 
+    const readOnlyText = this.props.readOnlyText || `${label} is not editable`;
+
     return (
-        <div style={style} className={`input-group ${className || ''} textfield-group ${error ? 'error tooltip' : ''} ${type === 'hidden' && 'hidden'} ${money ? 'money-group' : ''}`}>
+        <div style={style} className={`input-group ${className || ''} textfield-group ${readOnly ? 'readOnly tooltip' : ''} ${error ? 'error tooltip' : ''} ${type === 'hidden' && 'hidden'} ${money ? 'money-group' : ''}`}>
           <div className={`floating-label ${this.state.status} ${fixedLabel && 'fixed'}`}>
             {money && <div className={`moneyAmount ${value ? 'active' : 'noValue'}`}><span className='symbol'>{symbol}</span></div>}
             <input
@@ -90,7 +92,7 @@ class TextField extends Component {
             }
           </div>
           <div className={`tooltipTop ${(errorType !=='tooltip' || strength) && 'displayNone'}`}>
-            {error}
+            {error}{readOnly ? readOnlyText : ''}
             <i></i>
           </div>
           <div className={`errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`}>{error}</div>

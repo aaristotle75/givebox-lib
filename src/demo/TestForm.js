@@ -91,13 +91,15 @@ export default class TestForm extends Component {
       <div>
         <h2>Form Elements</h2>
         <div className='formWrapper'>
+          {this.props.saveButton(this.processForm, { id: '-second' })}
+          {this.props.textField('taxID', { readOnly: true,readOnlyText: 'You cannot edit this field', placeholder: 'Enter federal Tax ID', label: 'Tax ID', validate: 'taxID', value: '10-1010101' })}
+          {/*
           {this.props.textField('amounts', { type: 'hidden', useChildren: true })}
           {this.props.uploadField('imageURL', { parent: 'user', label: 'Image', library: { borderRadius: 20, type: 'avatar' }, debug: true })}
           {this.props.richText('emailList', { label: 'Email List', placeholder: 'Enter emails separated by commas', modal: true, required: false })}
           {this.props.modalField('testModal', { id: 'feesGlossary', label: 'Test Modal', modalLabel: 'Click the modal' } )}
           {this.props.whereField('where', { where: where, label: 'Where is the event', modalLabel: 'Add location' })}
           {this.props.colorPicker('primaryColor', { label: 'Pick a theme color' })}
-          {/*
           {this.props.creditCardGroup({ required: false, debug: false})}
           {this.props.textField('taxID', {placeholder: 'Enter Tax ID', validate: 'taxID', maxLength: 10})}
           <Collapse

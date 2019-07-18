@@ -118,15 +118,6 @@ class Form extends Component {
     window.removeEventListener('keyup', this.onEnterKeypress);
   }
 
-  onEnterKeypress(e) {
-    e.preventDefault();
-
-    if (e.keyCode === 13) {
-      const form = document.getElementById(`${this.props.id}-saveButton`) || null;
-      if (form && this.allowEnterToSubmit()) form.click();
-    }
-  }
-
   focusInput(ref) {
     ref.current.focus();
   }
@@ -141,16 +132,29 @@ class Form extends Component {
     return null;
   }
 
+  onEnterKeypress(e) {
+    e.preventDefault();
+
+    if (e.keyCode === 13) {
+      const form = document.getElementById(`${this.props.id}-saveButton`) || null;
+      if (form && this.allowEnterToSubmit()) form.click();
+    }
+  }
+
   allowEnterToSubmit() {
     let allowEnter = false;
+    let topModal = getValue(this.props.modals, 'topModal', null);
 
-    if (!isEmpty(this.props.modals)) {
-      const topModal = getValue(this.props.modals, 'topModal', null);
-      Object.entries(this.props.modals).forEach(([key, value]) => {
-        if (this.props.id.includes(`${key}`) && value.open && key === topModal) {
-          allowEnter = true;
-        }
-      });
+    if (topModal) {
+      if (!isEmpty(this.props.modals)) {
+        Object.entries(this.props.modals).forEach(([key, value]) => {
+          if (this.props.id.includes(`${key}`) && value.open && key === topModal) {
+            allowEnter = true;
+          }
+        });
+      }
+    } else {
+      allowEnter = true;
     }
 
     if (this.props.alwaysSubmitOnEnter) allowEnter = true;
@@ -823,6 +827,7 @@ class Form extends Component {
       required: field ? field.required : params.required,
       group: field ? field.group : params.group,
       readOnly: field ? field.readOnly : params.readOnly,
+      readOnlyText: field ? field.readOnlyText : params.readOnlyText,
       autoFocus: field ? field.autoFocus : params.autoFocus,
       onChange: this.onChange,
       onBlur: this.onBlur,
@@ -1166,8 +1171,9 @@ class Form extends Component {
     const options = { ...defaults,
       ...opts
     };
+    const id = `${this.props.id}-saveButton`;
     return React.createElement("button", {
-      id: `${this.props.id}-saveButton`,
+      id: id,
       className: `button ${options.className}`,
       style: options.style,
       type: "button",
@@ -1228,7 +1234,7 @@ class Form extends Component {
 
         if (value.required && !value.value) {
           bindthis.fieldProp(key, {
-            error: _v.msgs.required
+            error: value.label ? `${value.label} is required.` : _v.msgs.required
           });
         } else {
           bindthis.validateField(key, value.validate, value.value, value.validateOpts, value.parent, value);

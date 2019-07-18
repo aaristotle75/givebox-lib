@@ -343,7 +343,7 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'orgOwner': {
-      endpoint = `orgs/${orgID}/owner`;
+      endpoint = `orgs/${id[0] || orgID}/owner`;
       break;
     }
     case 'claimOrg': {

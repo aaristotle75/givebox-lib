@@ -613,6 +613,14 @@ label.idle, .label.idle {
   background-color: $red;
 }
 
+.readOnly.tooltip .tooltipTop {
+  color: $dark;
+  background-color: $light-gray;
+}
+
+.readOnly.tooltip .tooltipTop i::after {
+  background-color: $light-gray;
+}
 
 /*-------- Alert Messages ---------*/
 .alertMsg {

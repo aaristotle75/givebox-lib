@@ -49,10 +49,15 @@ export default class Dashboard extends Component {
 
     return (
       <div>
+        <Form name='testForm'>
+          <TestForm {...this.props} />
+        </Form>
+      {/*
       <Image maxSize={'125px'} url={`https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/raise-fundraiser.png`} size='inherit' alt={`Customers`} />
       <ModalLink id='testModal'>Modal Form</ModalLink>
       <br /><br />
       <ModalLink id='accessDenied'>Access Denied</ModalLink>      
+      */}
       {/*
         <Tabs
           default='list'
