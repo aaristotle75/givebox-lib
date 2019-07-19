@@ -1,4 +1,4 @@
-import { getAPI, sendAPI, updatePrefs } from './actions';
+import { getAPI, sendAPI, updatePrefs, receiveResource } from './actions';
 import * as giveboxAPI from './givebox';
 import * as util from '../common/utility';
 import has from 'has';
@@ -25,7 +25,8 @@ export function getResource(resource, opts = {}) {
     csv: false,
     customName: null,
     resourcesToLoad: null,
-    fullResponse: false
+    fullResponse: false,
+    returnData: true
   };
   const options = { ...defaults,
     ...opts
@@ -78,7 +79,9 @@ export function getResource(resource, opts = {}) {
       let endpoint = API_URL + api.endpoint;
       endpoint = `${endpoint}${options.csv ? '.csv' : ''}${util.makeAPIQuery(search)}`; // If CSV return the endpoint else dispatch the API
 
-      if (options.csv) return endpoint;else return dispatch(getAPI(resource, endpoint, search, options.callback, reload, options.customName, options.resourcesToLoad, reloadResource, options.fullResponse));
+      if (options.csv) return endpoint;else if (!options.returnData) {
+        return dispatch(receiveResource(options.customName || resource, endpoint, null, null, search, false));
+      } else return dispatch(getAPI(resource, endpoint, search, options.callback, reload, options.customName, options.resourcesToLoad, reloadResource, options.fullResponse));
     }
   };
 }
@@ -117,7 +120,7 @@ export function reloadResource(name, opts = {}) {
       options.resourcesToLoad.forEach(function (value) {
         if (has(getState().resource, value)) {
           const resource = getState().resource[value];
-          dispatch(getAPI(value, resource.endpoint, resource.search, null, true));
+          if (!util.isEmpty(util.getValue(resource, 'data'))) dispatch(getAPI(value, resource.endpoint, resource.search, null, true));
         } else {
           dispatch(getResource(value, {
             reload: true

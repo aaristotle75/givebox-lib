@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { util } from '../';
 import { getAPI } from '../api/actions';
+import * as giveboxAPI from '../api/givebox';
 import has from 'has';
 import Moment from 'moment';
 

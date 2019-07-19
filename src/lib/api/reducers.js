@@ -75,10 +75,15 @@ export function resource(state = {
       });
     case types.RECEIVE_RESOURCE:
       let data, meta;
-      if (has(action.data, 'data')) {
-        data = action.data.data;
-        delete action.data['data'];
-        meta = action.data;
+      if (action.returnData) {
+        if (has(action.data, 'data')) {
+          data = action.data.data;
+          delete action.data['data'];
+          meta = action.data;
+        } else {
+          data = action.data;
+          meta = {};
+        }
       } else {
         data = action.data;
         meta = {};

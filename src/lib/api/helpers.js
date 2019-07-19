@@ -1,7 +1,8 @@
 import {
   getAPI,
   sendAPI,
-  updatePrefs
+  updatePrefs,
+  receiveResource
 } from './actions';
 import * as giveboxAPI from './givebox';
 import * as util from '../common/utility';
@@ -30,7 +31,8 @@ export function getResource(resource, opts = {}) {
     csv: false,
     customName: null,
     resourcesToLoad: null,
-    fullResponse: false
+    fullResponse: false,
+    returnData: true
   }
   const options = { ...defaults, ...opts };
   return (dispatch, getState) => {
@@ -82,7 +84,16 @@ export function getResource(resource, opts = {}) {
 
       // If CSV return the endpoint else dispatch the API
       if (options.csv) return endpoint;
-      else return dispatch(getAPI(
+      else if (!options.returnData) {
+        return dispatch(receiveResource(
+          options.customName || resource,
+          endpoint,
+          null,
+          null,
+          search,
+          false
+        ));
+      } else return dispatch(getAPI(
         resource,
         endpoint,
         search,
@@ -132,7 +143,7 @@ export function reloadResource(name, opts = {}) {
       options.resourcesToLoad.forEach(function(value) {
         if (has(getState().resource, value)) {
           const resource = getState().resource[value];
-          dispatch(getAPI(value, resource.endpoint, resource.search, null, true));
+          if (!util.isEmpty(util.getValue(resource, 'data'))) dispatch(getAPI(value, resource.endpoint, resource.search, null, true));
         } else {
           dispatch(getResource(value, { reload: true }));
         }

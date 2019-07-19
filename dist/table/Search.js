@@ -14,7 +14,8 @@ class Search extends Component {
     this.getSearch = this.getSearch.bind(this);
     this.onEnterKeypress = this.onEnterKeypress.bind(this);
     this.state = {
-      searchValue: props.query || ''
+      searchValue: props.query || '',
+      resetSearch: false
     };
   }
 
@@ -50,6 +51,9 @@ class Search extends Component {
   onSearch(e) {
     const value = this.state.searchValue;
     if (this.props.getSearch) this.props.getSearch(value);else this.getSearch(value);
+    this.setState({
+      resetSearch: true
+    });
   }
 
   onChange(e) {
@@ -61,7 +65,8 @@ class Search extends Component {
   resetSearch() {
     if (this.props.resetSearch) this.props.resetSearch();else this.getSearch('');
     this.setState({
-      searchValue: ''
+      searchValue: '',
+      resetSearch: false
     });
   }
 
@@ -119,7 +124,7 @@ class Search extends Component {
       onClick: this.onSearch,
       type: "button"
     }, iconSearch), React.createElement("button", {
-      className: `searchResetBtn ${!searchValue && 'displayNone'}`,
+      className: `searchResetBtn ${!this.state.resetSearch && 'displayNone'}`,
       onClick: this.resetSearch,
       type: "button"
     }, iconClose))));

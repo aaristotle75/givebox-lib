@@ -98,14 +98,15 @@ function requestResource(resource, reload) {
   }
 }
 
-function receiveResource(resource, endpoint, data, error, search) {
+export function receiveResource(resource, endpoint, data, error, search, returnData = true) {
   return {
     type: types.RECEIVE_RESOURCE,
     resource: resource,
     endpoint: endpoint,
     data: data,
     search: search,
-    error: error
+    error: error,
+    returnData: returnData
   }
 }
 
