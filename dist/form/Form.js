@@ -103,6 +103,7 @@ class Form extends Component {
     this.defaults = { ...this.defaultOptions,
       ...props.options
     };
+    this.saveButtonRef = React.createRef();
   }
 
   componentDidMount() {
@@ -119,7 +120,9 @@ class Form extends Component {
   }
 
   focusInput(ref) {
-    ref.current.focus();
+    if (ref) {
+      ref.current.focus();
+    }
   }
 
   fieldRef(name) {
@@ -134,9 +137,9 @@ class Form extends Component {
 
   onEnterKeypress(e) {
     e.preventDefault();
+    const form = this.saveButtonRef ? this.saveButtonRef.current : null;
 
     if (e.keyCode === 13) {
-      const form = document.getElementById(`${this.props.id}-saveButton`) || null;
       if (form && this.allowEnterToSubmit()) form.click();
     }
   }
@@ -1173,6 +1176,7 @@ class Form extends Component {
     };
     const id = `${this.props.id}-saveButton`;
     return React.createElement("button", {
+      ref: this.saveButtonRef,
       id: id,
       className: `button ${options.className}`,
       style: options.style,

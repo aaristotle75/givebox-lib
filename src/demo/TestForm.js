@@ -93,6 +93,7 @@ export default class TestForm extends Component {
         <div className='formWrapper'>
           {this.props.saveButton(this.processForm, { id: '-second' })}
           {this.props.textField('taxID', { readOnly: true,readOnlyText: 'You cannot edit this field', placeholder: 'Enter federal Tax ID', label: 'Tax ID', validate: 'taxID', value: '10-1010101' })}
+          {this.props.choice('enabled', { label: 'Enabled', checked: this.state.checked, value: this.state.checked })}          
           {/*
           {this.props.textField('amounts', { type: 'hidden', useChildren: true })}
           {this.props.uploadField('imageURL', { parent: 'user', label: 'Image', library: { borderRadius: 20, type: 'avatar' }, debug: true })}

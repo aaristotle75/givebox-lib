@@ -101,6 +101,7 @@ class Form extends Component {
       disallowModalBgClose: false
     }
     this.defaults = { ...this.defaultOptions, ...props.options };
+    this.saveButtonRef = React.createRef();
   }
 
   componentDidMount() {
@@ -116,8 +117,10 @@ class Form extends Component {
   }
 
 	focusInput(ref) {
-		ref.current.focus();
-	}
+    if (ref) {
+      ref.current.focus();
+    }
+  }
 
   fieldRef(name) {
     const field = has(this.state.fields, name) ? this.state.fields[name] : null;
@@ -129,8 +132,8 @@ class Form extends Component {
 
   onEnterKeypress(e) {
     e.preventDefault();
+    const form = this.saveButtonRef ? this.saveButtonRef.current : null;
     if (e.keyCode === 13) {
-      const form = document.getElementById(`${this.props.id}-saveButton`) || null;
       if (form && this.allowEnterToSubmit()) form.click();
     }
   }
@@ -1005,7 +1008,7 @@ class Form extends Component {
     const options = { ...defaults, ...opts };
     const id = `${this.props.id}-saveButton`;
     return (
-      <button id={id} className={`button ${options.className}`} style={options.style} type='button' disabled={!this.state.updated && options.allowDisabled ? true : false} onClick={(e) => this.validateForm(e, callback, options.group)}>{options.label}</button>
+      <button ref={this.saveButtonRef} id={id} className={`button ${options.className}`} style={options.style} type='button' disabled={!this.state.updated && options.allowDisabled ? true : false} onClick={(e) => this.validateForm(e, callback, options.group)}>{options.label}</button>
     )
   }
 

@@ -6,10 +6,21 @@ class GBLink extends Component {
     super(props);
     this.onMouseEnter = this.onMouseEnter.bind(this);
     this.onMouseLeave = this.onMouseLeave.bind(this);
+    this.onClick = this.onClick.bind(this);
     this.linkRef = React.createRef();
     this.state = {
       hoverStyle: {}
     };
+  }
+
+  onClick(e) {
+    e.preventDefault();
+
+    if (this.linkRef) {
+      this.linkRef.current.blur();
+    }
+
+    this.props.onClick();
   }
 
   onMouseEnter(e) {
@@ -38,7 +49,6 @@ class GBLink extends Component {
   render() {
     const {
       id,
-      onClick,
       className,
       style,
       primaryColor,
@@ -58,7 +68,7 @@ class GBLink extends Component {
       type: "button",
       id: id,
       className: `${ripple ? 'ripple' : ''} ${className || 'link'}`,
-      onClick: onClick,
+      onClick: this.onClick,
       onMouseEnter: this.onMouseEnter,
       onMouseLeave: this.onMouseLeave,
       style: mergeStyle
