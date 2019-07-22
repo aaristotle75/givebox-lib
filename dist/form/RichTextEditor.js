@@ -28,7 +28,6 @@ class ContentEditor extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.updateContent !== this.props.updateContent) {
-      console.log('execute fired', prevProps.updateContent, this.props.updateContent);
       const contentState = this.props.updateContent ? stateFromHTML(this.props.updateContent) : null;
       const editorState = contentState ? EditorState.createWithContent(contentState) : EditorState.createEmpty();
       const content = editorState.getCurrentContent();

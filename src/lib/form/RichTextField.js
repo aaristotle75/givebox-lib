@@ -122,10 +122,11 @@ const Editor = (props) => {
         fieldName={props.name}
         wysiwyg={props.wysiwyg}
       />
+      {props.closeModalAndSave ?
       <div className='center button-group'>
         <GBLink className='link' onClick={() => props.closeModalAndSave(props.id, false)}>Cancel</GBLink>
         <GBLink className='button' onClick={() => props.closeModalAndSave(props.id)}>Save</GBLink>
-      </div>
+      </div> : ''}
     </div>
   )
 }

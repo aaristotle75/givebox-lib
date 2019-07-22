@@ -127,7 +127,7 @@ const Editor = props => {
     updateContent: props.updateContent,
     fieldName: props.name,
     wysiwyg: props.wysiwyg
-  }), React.createElement("div", {
+  }), props.closeModalAndSave ? React.createElement("div", {
     className: "center button-group"
   }, React.createElement(GBLink, {
     className: "link",
@@ -135,5 +135,5 @@ const Editor = props => {
   }, "Cancel"), React.createElement(GBLink, {
     className: "button",
     onClick: () => props.closeModalAndSave(props.id)
-  }, "Save")));
+  }, "Save")) : '');
 };

@@ -512,7 +512,7 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
 
     case 'orgLegalEntity':
       {
-        endpoint = `orgs/${orgID}/legal-entity`;
+        endpoint = `orgs/${id[0] || orgID}/legal-entity`;
         break;
       }
 
@@ -560,7 +560,7 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
 
     case 'orgPrincipals':
       {
-        endpoint = `orgs/${orgID}/principals`;
+        endpoint = `orgs/${id[0] || orgID}/principals`;
         break;
       }
 
@@ -602,7 +602,7 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
 
     case 'orgBankAccounts':
       {
-        endpoint = `orgs/${orgID}/bank-accounts`;
+        endpoint = `orgs/${id[0] || orgID}/bank-accounts`;
         break;
       }
 
@@ -614,7 +614,7 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
 
     case 'orgAddresses':
       {
-        endpoint = `orgs/${orgID}/addresses`;
+        endpoint = `orgs/${id[0] || orgID}/addresses`;
         break;
       }
 
