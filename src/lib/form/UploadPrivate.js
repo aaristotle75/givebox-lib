@@ -55,7 +55,7 @@ class UploadPrivate extends Component {
 
   fileUploadError(filename, ID) {
     if (this.props.fileUploadError) this.props.fileUploadError(filename, ID);
-    else this.setState({ error : `Error uploading ${filename} to s3 bucket` });
+    this.setState({ error : this.props.errorMsg || `Error uploading ${filename} to s3 bucket` });
     this.timeout = setTimeout(() => {
       this.setState({ error: false });
       this.timeout = null;
@@ -64,7 +64,7 @@ class UploadPrivate extends Component {
 
   fileUploadSuccess(filename, ID) {
     if (this.props.fileUploadSuccess) this.props.fileUploadSuccess(filename, ID);
-    else this.setState({ success : `File ${filename} uploaded successfully to s3 bucket` });
+    this.setState({ success : this.props.successMsg || `File ${filename} uploaded successfully to s3 bucket` });
     this.timeout = setTimeout(() => {
       this.setState({ success: false });
       this.timeout = null;
@@ -78,7 +78,7 @@ class UploadPrivate extends Component {
   	const x = new XMLHttpRequest();
     x.upload.onprogress = function(e) {
       if (e.lengthComputable) {
-        const percentLoaded = Math.round((e.loaded / e.total) * 100);
+        const percentLoaded = e.loaded ? Math.round((e.loaded / e.total) * 100) : 0;
         bindthis.encodeProgress(percentLoaded);
       }
     }
@@ -175,7 +175,7 @@ class UploadPrivate extends Component {
     return (
       <div style={style} className={`dropzone-group input-group ${className || ''} textfield-group ${error ? 'error tooltip' : ''}`}>
         {label && <label className={labelClass}>{label}</label>}
-        <div className='privateUpload alt'>
+        <div className={`privateUpload ${this.props.alt ? 'alt' : ''}`}>
           <div className='dropzoneImageContainer'>
             {this.state.loading &&
             <div className='loadImage'>
@@ -211,7 +211,8 @@ UploadPrivate.defaultProps = {
   labelClass: '',
   uploadLabel: 'Add Document',
   icon: 'file-plus',
-  maxSize: '175px'
+  maxSize: '175px',
+  alt: false
 }
 
 function mapStateToProps(state, props) {

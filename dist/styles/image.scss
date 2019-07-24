@@ -556,12 +556,36 @@ button.imageCover {
 }
 
 .privateUpload.alt {
+
+  .loadImage {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    background: transparentize($dark-blue-gray, .05);
+    //color: $white;
+    z-index: 1;
+    border-radius: 20px;
+
+    .loadingText {
+      font-size: $small-text-size;
+      font-weight: 300;
+      color: $white;
+      margin-bottom: 5px;
+    }
+  }
+
   .dropzoneImageContainer {
     position: relative;
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
+    min-width: 175px;
     width: 100%;
     height: auto;
     min-height: 40px;
@@ -572,10 +596,10 @@ button.imageCover {
     justify-content: center;
     align-items: center;
   	width: auto;
-  	height: 50px;
+  	height: 40px;
   	border-radius: 20px;
-    padding: 10px 20px;
     overflow: hidden;
+    padding: 10px 20px;
 
     .text {
       white-space: nowrap;

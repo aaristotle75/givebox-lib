@@ -102,6 +102,7 @@ export default class TestForm extends Component {
               id={185}
               fileUploadSuccess={this.fileUploadSuccess}
               success={this.state.success}
+              alt={true}
             />
           </div>
           {/*
