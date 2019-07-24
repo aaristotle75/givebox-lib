@@ -175,7 +175,7 @@ class UploadPrivate extends Component {
     return (
       <div style={style} className={`dropzone-group input-group ${className || ''} textfield-group ${error ? 'error tooltip' : ''}`}>
         {label && <label className={labelClass}>{label}</label>}
-        <div className='privateUpload'>
+        <div className='privateUpload alt'>
           <div className='dropzoneImageContainer'>
             {this.state.loading &&
             <div className='loadImage'>
@@ -207,7 +207,7 @@ class UploadPrivate extends Component {
 
 UploadPrivate.defaultProps = {
   name: 'defaultUpload',
-  label: 'Upload',
+  label: '',
   labelClass: '',
   uploadLabel: 'Add Document',
   icon: 'file-plus',

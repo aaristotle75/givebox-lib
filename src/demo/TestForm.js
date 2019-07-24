@@ -97,11 +97,13 @@ export default class TestForm extends Component {
       <div>
         <h2>Form Elements</h2>
         <div className='formWrapper'>
-          <UploadPrivate
-            id={185}
-            fileUploadSuccess={this.fileUploadSuccess}
-            success={this.state.success}
-          />
+          <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+            <UploadPrivate
+              id={185}
+              fileUploadSuccess={this.fileUploadSuccess}
+              success={this.state.success}
+            />
+          </div>
           {/*
           {this.props.saveButton(this.processForm, { id: '-second' })}
           {this.props.textField('taxID', { readOnly: true,readOnlyText: 'You cannot edit this field', placeholder: 'Enter federal Tax ID', label: 'Tax ID', validate: 'taxID', value: '10-1010101' })}
