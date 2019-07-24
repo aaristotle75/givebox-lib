@@ -555,6 +555,52 @@ button.imageCover {
 
 }
 
+.privateUpload.alt {
+  .dropzoneImageContainer {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: auto;
+    min-height: 40px;
+  }
+  .dropzone {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  	width: auto;
+  	height: 50px;
+  	border-radius: 20px;
+    padding: 10px 20px;
+    overflow: hidden;
+
+    .text {
+      white-space: nowrap;
+    }
+
+    .dropzone-icon {
+      font-size: 20px;
+      margin-right: 5px;
+    }
+  }
+
+  .dropzone:hover {
+  	background-color: $mainColor;
+  	border: 1px solid $white;
+    @include default-transition(.25s);
+
+    .dropzone-icon {
+      font-size: 20px;
+      color: $white;
+    }
+
+  }
+
+}
+
 .successMsg {
   color: $green;
 }
