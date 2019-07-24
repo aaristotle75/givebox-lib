@@ -522,3 +522,39 @@ button.imageCover {
     }
   }
 }
+
+
+.privateUpload {
+  position: relative;
+
+  .loadImage {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    background: transparentize($dark-blue-gray, .05);
+    //color: $white;
+    z-index: 1;
+    border-radius: 20px;
+  }
+
+  .dropzoneImageContainer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: auto;
+    min-height: 200px;
+  }
+
+}
+
+.successMsg {
+  color: $green;
+}
