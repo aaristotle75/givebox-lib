@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { selectOptions, GBLink, ModalLink, Collapse } from '../lib';
+import { selectOptions, GBLink, ModalLink, Collapse, UploadPrivate } from '../lib';
 import Moment from 'moment';
 
 export default class TestForm extends Component {
@@ -14,8 +14,10 @@ export default class TestForm extends Component {
     this.toggleRequired = this.toggleRequired.bind(this);
     this.toggleChecked = this.toggleChecked.bind(this);
     this.focusInput = this.focusInput.bind(this);
+    this.fileUploadSuccess = this.fileUploadSuccess.bind(this);
     this.state = {
-      checked: false
+      checked: false,
+      success: false
     }
     this.roleRef = React.createRef();
   }
@@ -24,6 +26,10 @@ export default class TestForm extends Component {
   }
 
   componentWillUnmount() {
+  }
+
+  fileUploadSuccess(name, ID) {
+    this.setState({ success: `File ${name} uploaded successfully - CALLBACK` });
   }
 
   formSavedCallback() {
@@ -91,10 +97,15 @@ export default class TestForm extends Component {
       <div>
         <h2>Form Elements</h2>
         <div className='formWrapper'>
+          <UploadPrivate
+            id={185}
+            fileUploadSuccess={this.fileUploadSuccess}
+            success={this.state.success}
+          />
+          {/*
           {this.props.saveButton(this.processForm, { id: '-second' })}
           {this.props.textField('taxID', { readOnly: true,readOnlyText: 'You cannot edit this field', placeholder: 'Enter federal Tax ID', label: 'Tax ID', validate: 'taxID', value: '10-1010101' })}
-          {this.props.choice('enabled', { label: 'Enabled', checked: this.state.checked, value: this.state.checked })}          
-          {/*
+          {this.props.choice('enabled', { label: 'Enabled', checked: this.state.checked, value: this.state.checked })}
           {this.props.textField('amounts', { type: 'hidden', useChildren: true })}
           {this.props.uploadField('imageURL', { parent: 'user', label: 'Image', library: { borderRadius: 20, type: 'avatar' }, debug: true })}
           {this.props.richText('emailList', { label: 'Email List', placeholder: 'Enter emails separated by commas', modal: true, required: false })}
@@ -213,8 +224,8 @@ export default class TestForm extends Component {
         {this.props.textField('amount', { required: true, label: 'Enter Amount', placeholder: '0.00', validate: 'money', validateOpts: { decimal: true, min: 1, max: 2999.87, errorMsg: `You can't transfer more than your available balance of 2999.87` }  })}
         {this.props.choice('phoneInfo', { group: 'options', label: 'Add phone number to form.' })}
         {this.props.choice('phoneInfoRequired', { parent: 'phoneInfo', group: 'options', label: 'Make phone number required', onChange: this.toggleRequired })}
-        */}
         {this.props.saveButton(this.processForm)}
+        */}
         </div>
       </div>
     )

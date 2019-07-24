@@ -116,6 +116,7 @@ const Editor = (props) => {
     <div>
       <RichTextEditor
         onChange={props.onChange}
+        onBlur={props.onBlurEditor}
         placeholder={props.placeholder}
         content={props.value}
         updateContent={props.updateContent}

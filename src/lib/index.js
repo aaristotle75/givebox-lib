@@ -8,6 +8,7 @@ import CalendarField from './form/CalendarField';
 import CalendarRange from './form/CalendarRange';
 import Checkbox from './form/Checkbox';
 import WhereField from './form/WhereField';
+import UploadPrivate from './form/UploadPrivate';
 import * as _v from './form/formValidate';
 import * as selectOptions from './form/selectOptions';
 
@@ -84,6 +85,7 @@ export {
   CalendarField,
   CalendarRange,
   Checkbox,
+  UploadPrivate,
   WhereField,
 
   // actions

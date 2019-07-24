@@ -11,6 +11,7 @@ class ContentEditor extends Component {
       editorState: contentState ? EditorState.createWithContent(contentState) : EditorState.createEmpty()
     };
     this.onChange = this.onChange.bind(this);
+    this.onBlur = this.onBlur.bind(this);
     this.inputRef = React.createRef();
 
     this.handleKeyCommand = command => this._handleKeyCommand(command);
@@ -44,6 +45,11 @@ class ContentEditor extends Component {
     });
     const content = editorState.getCurrentContent();
     this.props.onChange(this.props.fieldName, stateToHTML(content), content.hasText());
+  }
+
+  onBlur() {
+    const content = this.state.editorState.getCurrentContent();
+    this.props.onBlur(this.props.fieldName, stateToHTML(content), content.hasText());
   }
 
   _handleKeyCommand(command) {
@@ -111,6 +117,7 @@ class ContentEditor extends Component {
       editorState: editorState,
       handleKeyCommand: this.handleKeyCommand,
       onChange: this.onChange,
+      onBlur: this.onBlur,
       onTab: this.onTab,
       placeholder: placeholder ? placeholder : 'Enter text...',
       ref: this.inputRef,
