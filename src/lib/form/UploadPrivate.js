@@ -50,7 +50,7 @@ class UploadPrivate extends Component {
   }
 
   handleDrop(files) {
-    console.log('drop');
+    //console.log('drop', files[0]);
   }
 
   fileUploadError(filename, ID) {
@@ -73,8 +73,6 @@ class UploadPrivate extends Component {
 
   saveToS3(request, file, ID) {
     const bindthis = this;
-	  const formData = new FormData();
-  	formData.append('file', file, file.name);
   	const x = new XMLHttpRequest();
     x.upload.onprogress = function(e) {
       if (e.lengthComputable) {
@@ -105,7 +103,7 @@ class UploadPrivate extends Component {
     Object.entries(request.header).forEach(([key, value]) => {
       x.setRequestHeader(key, value);
     });
-  	x.send(formData);
+  	x.send(file);
   }
 
   handleDropAccepted(files) {
@@ -198,8 +196,8 @@ class UploadPrivate extends Component {
             </Dropzone>
           </div>
         </div>
-        <Fade in={error}><div className={`errorMsg`}>{error}</div></Fade>
-        <Fade in={success}><div className={`successMsg`}>{success}</div></Fade>
+        <Fade in={error ? true : false}><div className={`errorMsg`}>{error}</div></Fade>
+        <Fade in={success ? true : false}><div className={`successMsg`}>{success}</div></Fade>
       </div>
     );
   }

@@ -105,6 +105,7 @@ export default class TestForm extends Component {
               alt={true}
             />
           </div>
+          {this.props.uploadField('imageURL', { label: 'Image', library: { borderRadius: 20, type: 'avatar' }, debug: true })}
           {/*
           {this.props.saveButton(this.processForm, { id: '-second' })}
           {this.props.textField('taxID', { readOnly: true,readOnlyText: 'You cannot edit this field', placeholder: 'Enter federal Tax ID', label: 'Tax ID', validate: 'taxID', value: '10-1010101' })}
