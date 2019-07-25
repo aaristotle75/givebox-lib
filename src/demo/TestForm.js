@@ -100,6 +100,7 @@ export default class TestForm extends Component {
         <h2>Form Elements</h2>
         <div className='formWrapper'>
           {util.getDate(ts)}
+          {this.props.calendarField('dateOfBirth', { label: 'Date of Birth', validate: 'date', validateOpts: { }, value: 164332800 })}
           <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
             <UploadPrivate
               id={185}

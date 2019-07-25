@@ -477,17 +477,29 @@ export function isFetching(resource) {
   return loading;
 }
 
-export function getDate(timestamp, format, tz, modal = true, utc = true) {
-  let date = '';
+export function getDate(timestamp, format, opts = {}) {
   format = format || 'MM/DD/YYYY h:mmA z';
-  tz = tz || process.env.REACT_APP_TZ;
-  if (utc) date = Moment.utc(Moment.unix(timestamp));
-  else return date = Moment.unix(timestamp);
-  if (tz) date = date.tz(tz).format(format);
+  const defaults = {
+    utc: true,
+    tz: process.env.REACT_APP_TZ,
+    modal: false,
+    modalID: 'timezone',
+    modalClass: ''
+  };
+  const options = { ...defaults, ...opts };
+  let date = '';
+
+  if (options.utc) date = Moment.utc(Moment.unix(timestamp));
+  else date = Moment.unix(timestamp);
+  /*
+  if (options.tz) date = date.tz(options.tz).format(format);
   else date = date.format(format);
-  if (modal) {
+  */
+  date = date.format(format);
+  const local = Moment.unix(timestamp).local().format(format);
+  if (options.modal) {
     return (
-      <ModalLink className='date' id='timezone'>{date}</ModalLink>
+      <ModalLink className={options.modalClass} id={options.modalID} opts={{ ts: timestamp, local: local }}>{date}</ModalLink>
     )
   } else {
     return date;

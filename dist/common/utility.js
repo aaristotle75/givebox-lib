@@ -2,6 +2,7 @@ import React from 'react';
 import Moment from 'moment-timezone';
 import has from 'has';
 import animateScrollTo from 'animated-scroll-to';
+import ModalLink from '../modal/ModalLink';
 export const imageUrlWithStyle = function (imageURL, style) {
   if (imageURL) {
     return imageURL.replace(/original$/i, style);
@@ -491,11 +492,40 @@ export function isFetching(resource) {
 
   return loading;
 }
-export function getDate(timestamp, format = 'MM/DD/YYYY h:mmA', tz = process.env.REACT_APP_TZ, utc = true) {
+export function getDate(timestamp, format, opts = {}) {
+  format = format || 'MM/DD/YYYY h:mmA z';
+  const defaults = {
+    utc: true,
+    tz: process.env.REACT_APP_TZ,
+    modal: false,
+    modalID: 'timezone',
+    modalClass: ''
+  };
+  const options = { ...defaults,
+    ...opts
+  };
   let date = '';
-  if (utc) date = Moment.utc(Moment.unix(timestamp));else return date = Moment.unix(timestamp);
-  if (tz) date = date.tz(tz);
-  return date.format(`${format} ${tz ? 'z' : ''}`);
+  if (options.utc) date = Moment.utc(Moment.unix(timestamp));else date = Moment.unix(timestamp);
+  /*
+  if (options.tz) date = date.tz(options.tz).format(format);
+  else date = date.format(format);
+  */
+
+  date = date.format(format);
+  const local = Moment.unix(timestamp).local().format(format);
+
+  if (options.modal) {
+    return React.createElement(ModalLink, {
+      className: options.modalClass,
+      id: options.modalID,
+      opts: {
+        ts: timestamp,
+        local: local
+      }
+    }, date);
+  } else {
+    return date;
+  }
 }
 export function formatBytes(bytes, decimals) {
   if (bytes === 0) return '0 Bytes';
