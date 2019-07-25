@@ -26,6 +26,7 @@
     "flatpickr": "^4.6.1",
     "has": "^1.0.3",
     "moment": "^2.24.0",
+    "moment-timezone": "^0.5.26",
     "rc-progress": "^2.3.0",
     "react": "^16.8.6",
     "react-animate-height": "^2.0.9",

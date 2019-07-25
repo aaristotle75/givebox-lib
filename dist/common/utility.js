@@ -1,5 +1,5 @@
 import React from 'react';
-import Moment from 'moment';
+import Moment from 'moment-timezone';
 import has from 'has';
 import animateScrollTo from 'animated-scroll-to';
 export const imageUrlWithStyle = function (imageURL, style) {
@@ -491,8 +491,11 @@ export function isFetching(resource) {
 
   return loading;
 }
-export function getDate(timestamp, format = 'MM/DD/YYYY HH:mm', utc = true) {
-  if (utc) return Moment.utc(Moment.unix(timestamp)).format(format);else return Moment.unix(timestamp).format(format);
+export function getDate(timestamp, format = 'MM/DD/YYYY h:mmA', tz = process.env.REACT_APP_TZ, utc = true) {
+  let date = '';
+  if (utc) date = Moment.utc(Moment.unix(timestamp));else return date = Moment.unix(timestamp);
+  if (tz) date = date.tz(tz);
+  return date.format(`${format} ${tz ? 'z' : ''}`);
 }
 export function formatBytes(bytes, decimals) {
   if (bytes === 0) return '0 Bytes';
