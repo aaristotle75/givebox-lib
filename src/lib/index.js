@@ -38,6 +38,7 @@ import GBX from './common/GBX';
 import Iframe from './common/Iframe';
 import Image from './common/Image';
 import ImageDisplay from './common/ImageDisplay';
+import history from './common/history';
 import LinearBar from './common/LinearBar';
 import Loader from './common/Loader';
 import Portal from './common/Portal';
@@ -144,6 +145,7 @@ export {
   Iframe,
   Image,
   ImageDisplay,
+  history,
   LinearBar,
   Loader,
   Portal,
