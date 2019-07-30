@@ -95,8 +95,11 @@ class Filter extends Component {
     };
     search.filter = this.props.alwaysFilter ? `${this.props.alwaysFilter}` : '';
     search.page = 1;
-    const endpoint = resource.endpoint.split('?')[0] + util.makeAPIQuery(search);
-    this.props.getAPI(this.props.name, endpoint, search, this.ignoreFiltersCallback, true, this.props.customName || null);
+
+    if (has(resource, 'endpoint')) {
+      const endpoint = resource.endpoint.split('?')[0] + util.makeAPIQuery(search);
+      this.props.getAPI(this.props.name, endpoint, search, this.ignoreFiltersCallback, true, this.props.customName || null);
+    }
   }
 
   ignoreFiltersCallback(res, err) {
@@ -127,8 +130,11 @@ class Filter extends Component {
     };
     search.filter = filters ? this.props.alwaysFilter ? `${this.props.alwaysFilter}%3B${filters}` : filters : this.props.alwaysFilter || '';
     search.page = 1;
-    const endpoint = resource.endpoint.split('?')[0] + util.makeAPIQuery(search);
-    this.props.getAPI(this.props.name, endpoint, search, this.processFormCallback, true, this.props.customName || null);
+
+    if (has(resource, 'endpoint')) {
+      const endpoint = resource.endpoint.split('?')[0] + util.makeAPIQuery(search);
+      this.props.getAPI(this.props.name, endpoint, search, this.processFormCallback, true, this.props.customName || null);
+    }
   }
 
   getField(key, value) {

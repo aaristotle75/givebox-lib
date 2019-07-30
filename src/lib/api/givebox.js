@@ -99,6 +99,14 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       endpoint = `orgs/${id[0]}/recurring/${id[1]}`;
       break;
     }
+    case 'bankAccounts': {
+      endpoint = `bank-accounts`;
+      break;
+    }
+    case 'bankAccount': {
+      endpoint = `bank-accounts/${id[0]}`;
+      break;
+    }
 
     // Underwriting
     case 'underwritingStatus': {
@@ -403,11 +411,11 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'orgCustomers': {
-      endpoint = `orgs/${orgID}/customers`;
+      endpoint = `orgs/${id[0] || orgID}/customers`;
       break;
     }
     case 'orgCustomer': {
-      endpoint = `orgs/${orgID}/customers/${id[0]}`;
+      endpoint = `orgs/${id[0] || orgID}/customers/${id[0]}`;
       break;
     }
     case 'orgKeys': {
@@ -439,19 +447,19 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'orgStats': {
-      endpoint = `orgs/${orgID}/stats`;
+      endpoint = `orgs/${id[0] || orgID}/stats`;
       break;
     }
     case 'orgTimeline': {
-      endpoint = `orgs/${orgID}/timeline`;
+      endpoint = `orgs/${id[0] || orgID}/timeline`;
       break;
     }
     case 'orgUnderwriting': {
-      endpoint = `orgs/${orgID}/underwriting`;
+      endpoint = `orgs/${id[0] || orgID}/underwriting`;
       break;
     }
     case 'orgStatus': {
-      endpoint = `orgs/${orgID}/status`;
+      endpoint = `orgs/${id[0] || orgID}/status`;
       break;
     }
     case 'orgContactRequest': {
@@ -459,7 +467,7 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'orgChargebacks': {
-      endpoint = `orgs/${orgID}/chargeback-transactions`;
+      endpoint = `orgs/${id[0] || orgID}/chargeback-transactions`;
       break;
     }
     case 'orgDonations': {
@@ -479,19 +487,19 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'orgTransactions': {
-      endpoint = `orgs/${orgID}/transactions`;
+      endpoint = `orgs/${id[0] || orgID}/transactions`;
       break;
     }
     case 'orgFinanceStats': {
-      endpoint = `orgs/${orgID}/finance-stats`;
+      endpoint = `orgs/${id[0] || orgID}/finance-stats`;
       break;
     }
     case 'orgMoneyTransfers': {
-      endpoint = `orgs/${orgID}/money-transfers`;
+      endpoint = `orgs/${id[0] || orgID}/money-transfers`;
       break;
     }
     case 'orgPurchases': {
-      endpoint = `orgs/${orgID}/purchases`;
+      endpoint = `orgs/${id[0] || orgID}/purchases`;
       break;
     }
     case 'orgRefundPurchase': {
