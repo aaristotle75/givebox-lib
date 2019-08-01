@@ -79,6 +79,7 @@ class Form extends Component {
       value: '',
       placeholder: '',
       group: 'default',
+      subGroup: '',
       readOnly: false,
       autoFocus: false,
       type: '',
@@ -1062,7 +1063,7 @@ class Form extends Component {
     });
     const error = this.checkForErrors(fields, group);
     if (!error) {
-      if (callback) callback(groupFields, cbCallback);
+      if (callback) callback(groupFields, cbCallback, group);
       return true;
     } else {
       return false;
@@ -1083,7 +1084,7 @@ class Form extends Component {
         : min && !max ? `Please enter a date after ${min}.`
         : !min && max ? `Please enter a date before ${max}.`
         : `default error`;
-        if (getValue(value, 'value')) if (!_v.validateDate(value, { min: min, max: max, format: format })) this.fieldProp(key, {error: opts.errorMsg || errorMsg});
+        if (value) if (!_v.validateDate(value, { min: min, max: max, format: format })) this.fieldProp(key, {error: opts.errorMsg || errorMsg});
         break;
       case 'emailList':
         const optional = opts.optional || false;

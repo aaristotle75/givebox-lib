@@ -95,21 +95,40 @@ export default class TestForm extends Component {
 
     const ts = 1563883654;
 
+    const testObj = {
+      dog: {
+        golden: {
+          buddy: {
+            coat: 'beautiful',
+            temperment: 'charismatic',
+            intelligence: 'very smart'
+          },
+          coat: 'gold'
+        },
+        bulldog: {
+          coat: 'brown'
+        },
+      },
+      cat: {
+        siamese: {
+          coat: 'white'
+        }
+      },
+      pig: {
+        hog: {
+          coat: 'pink'
+        }
+      }
+    };
+
+    console.log(util.getValue(testObj, 'buddy'));
+    const minDOB = Moment().subtract(18, 'years').format('MM/DD/YYYY');
     return (
       <div>
         <h2>Form Elements</h2>
         <div className='formWrapper'>
           {util.getDate(ts)}
-          {this.props.calendarField('dateOfBirth', { label: 'Date of Birth', validate: 'date', validateOpts: { }, value: 164332800 })}
-          <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-            <UploadPrivate
-              id={185}
-              fileUploadSuccess={this.fileUploadSuccess}
-              success={this.state.success}
-              alt={true}
-            />
-          </div>
-          {this.props.uploadField('imageURL', { label: 'Image', library: { borderRadius: 20, type: 'avatar' }, debug: true })}
+          {this.props.calendarField('dateOfBirth', { group: 'principal', label: 'Date of Birth', required: true, validate: 'date', validateOpts: { max: minDOB, errorMsg: `Representative must be at least 18 years old.` }, value: '' })}
           {/*
           {this.props.saveButton(this.processForm, { id: '-second' })}
           {this.props.textField('taxID', { readOnly: true,readOnlyText: 'You cannot edit this field', placeholder: 'Enter federal Tax ID', label: 'Tax ID', validate: 'taxID', value: '10-1010101' })}
@@ -232,8 +251,8 @@ export default class TestForm extends Component {
         {this.props.textField('amount', { required: true, label: 'Enter Amount', placeholder: '0.00', validate: 'money', validateOpts: { decimal: true, min: 1, max: 2999.87, errorMsg: `You can't transfer more than your available balance of 2999.87` }  })}
         {this.props.choice('phoneInfo', { group: 'options', label: 'Add phone number to form.' })}
         {this.props.choice('phoneInfoRequired', { parent: 'phoneInfo', group: 'options', label: 'Make phone number required', onChange: this.toggleRequired })}
-        {this.props.saveButton(this.processForm)}
         */}
+        {this.props.saveButton(this.processForm)}
         </div>
       </div>
     )

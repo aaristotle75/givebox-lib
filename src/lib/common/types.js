@@ -1,5 +1,13 @@
 import React from 'react';
 
+export const imageTypes = [
+  'jpg',
+  'jpeg',
+  'gif',
+  'bmp',
+  'png'
+];
+
 export const mime = {
   image: 'image/jpeg, image/gif, image/png, image/bmp, image/tiff, image/x-icon',
   video: 'video/ogg, video/webm, video/mp4, video/mpeg, video/quicktime',

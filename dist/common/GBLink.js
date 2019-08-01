@@ -20,7 +20,7 @@ class GBLink extends Component {
       this.linkRef.current.blur();
     }
 
-    this.props.onClick();
+    if (this.props.onClick) this.props.onClick();
   }
 
   onMouseEnter(e) {

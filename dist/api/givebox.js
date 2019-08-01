@@ -1,3 +1,4 @@
+import { getIndex } from '../common/utility';
 /*
 * Get a Givebox API endpoint
 *
@@ -11,6 +12,7 @@
 * @param {int} articleID
 *
 */
+
 export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
   const {
     userID,
@@ -500,13 +502,13 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
 
     case 'org':
       {
-        endpoint = `orgs/${id[0] || orgID}`;
+        endpoint = `orgs/${getIndex(id, 0) || orgID}`;
         break;
       }
 
     case 'orgOwner':
       {
-        endpoint = `orgs/${id[0] || orgID}/owner`;
+        endpoint = `orgs/${getIndex(id, 0) || orgID}/owner`;
         break;
       }
 
@@ -530,7 +532,7 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
 
     case 'orgLegalEntity':
       {
-        endpoint = `orgs/${id[0] || orgID}/legal-entity`;
+        endpoint = `orgs/${getIndex(id, 0) || orgID}/legal-entity`;
         break;
       }
 
@@ -578,7 +580,7 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
 
     case 'orgPrincipals':
       {
-        endpoint = `orgs/${id[0] || orgID}/principals`;
+        endpoint = `orgs/${getIndex(id, 0) || orgID}/principals`;
         break;
       }
 
@@ -590,13 +592,13 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
 
     case 'orgCustomers':
       {
-        endpoint = `orgs/${id[0] || orgID}/customers`;
+        endpoint = `orgs/${getIndex(id, 0) || orgID}/customers`;
         break;
       }
 
     case 'orgCustomer':
       {
-        endpoint = `orgs/${id[0] || orgID}/customers/${id[0]}`;
+        endpoint = `orgs/${getIndex(id, 0) || orgID}/customers/${id[0]}`;
         break;
       }
 
@@ -620,7 +622,7 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
 
     case 'orgBankAccounts':
       {
-        endpoint = `orgs/${id[0] || orgID}/bank-accounts`;
+        endpoint = `orgs/${getIndex(id, 0) || orgID}/bank-accounts`;
         break;
       }
 
@@ -632,7 +634,7 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
 
     case 'orgAddresses':
       {
-        endpoint = `orgs/${id[0] || orgID}/addresses`;
+        endpoint = `orgs/${getIndex(id, 0) || orgID}/addresses`;
         break;
       }
 
@@ -644,25 +646,25 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
 
     case 'orgStats':
       {
-        endpoint = `orgs/${id[0] || orgID}/stats`;
+        endpoint = `orgs/${getIndex(id, 0) || orgID}/stats`;
         break;
       }
 
     case 'orgTimeline':
       {
-        endpoint = `orgs/${id[0] || orgID}/timeline`;
+        endpoint = `orgs/${getIndex(id, 0) || orgID}/timeline`;
         break;
       }
 
     case 'orgUnderwriting':
       {
-        endpoint = `orgs/${id[0] || orgID}/underwriting`;
+        endpoint = `orgs/${getIndex(id, 0) || orgID}/underwriting`;
         break;
       }
 
     case 'orgStatus':
       {
-        endpoint = `orgs/${id[0] || orgID}/status`;
+        endpoint = `orgs/${getIndex(id, 0) || orgID}/status`;
         break;
       }
 
@@ -674,7 +676,7 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
 
     case 'orgChargebacks':
       {
-        endpoint = `orgs/${id[0] || orgID}/chargeback-transactions`;
+        endpoint = `orgs/${getIndex(id, 0) || orgID}/chargeback-transactions`;
         break;
       }
 
@@ -704,25 +706,25 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
 
     case 'orgTransactions':
       {
-        endpoint = `orgs/${id[0] || orgID}/transactions`;
+        endpoint = `orgs/${getIndex(id, 0) || orgID}/transactions`;
         break;
       }
 
     case 'orgFinanceStats':
       {
-        endpoint = `orgs/${id[0] || orgID}/finance-stats`;
+        endpoint = `orgs/${getIndex(id, 0) || orgID}/finance-stats`;
         break;
       }
 
     case 'orgMoneyTransfers':
       {
-        endpoint = `orgs/${id[0] || orgID}/money-transfers`;
+        endpoint = `orgs/${getIndex(id, 0) || orgID}/money-transfers`;
         break;
       }
 
     case 'orgPurchases':
       {
-        endpoint = `orgs/${id[0] || orgID}/purchases`;
+        endpoint = `orgs/${getIndex(id, 0) || orgID}/purchases`;
         break;
       }
 
@@ -740,13 +742,13 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
 
     case 'orgArticles':
       {
-        endpoint = `orgs/${id[0] || orgID}/articles`;
+        endpoint = `orgs/${getIndex(id, 0) || orgID}/articles`;
         break;
       }
 
     case 'orgArticlesOrder':
       {
-        endpoint = `orgs/${id[0] || orgID}/articles/orderby`;
+        endpoint = `orgs/${getIndex(id, 0) || orgID}/articles/orderby`;
         break;
       }
 

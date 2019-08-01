@@ -555,9 +555,39 @@ export function toBinary(accepted) {
 export function isEmpty(value) {
   return value === undefined || value === null || typeof value === 'object' && Object.keys(value).length === 0 || typeof value === 'string' && value.trim().length === 0 || value.length === 0;
 }
+export function search(haystack, needle, found = []) {
+  if (typeof haystack === 'object' && haystack) {
+    Object.keys(haystack).forEach(key => {
+      if (key === needle) {
+        found.push(haystack[key]);
+        return found;
+      }
+
+      if (typeof haystack[key] === 'object') {
+        search(haystack[key], needle, found);
+      }
+    });
+  }
+
+  return found;
+}
+;
 export function getValue(obj, prop, returnIfEmpty = '') {
-  if (isEmpty(obj)) return returnIfEmpty;
-  if (has(obj, prop)) return obj[prop] || returnIfEmpty;else return returnIfEmpty;
+  if (typeof obj === 'undefined') return returnIfEmpty;
+  if (isEmpty(obj) || !obj) return returnIfEmpty;
+  if (has(obj, prop)) return obj[prop] || typeof obj[prop] === 'boolean' ? obj[prop] : returnIfEmpty;
+  return returnIfEmpty;
+}
+export function getIndex(array, index) {
+  if (typeof array === 'undefined') {
+    if (typeof array[index] === 'undefined') {
+      return null;
+    } else {
+      return array[index];
+    }
+  }
+
+  return null;
 }
 export function setHeight(e, id) {
   const arr = e.data.split('-');

@@ -932,13 +932,31 @@ label.idle, .label.idle {
     @media (max-width: 600px) {
       padding: 10px 0;
     }
-    .cityStateZip {
-      display: flex;
-      align-items: center;
+  }
 
-      .city { width: 40%; }
+  .cityStateZip {
+    display: flex;
+    align-items: center;
+
+    .city { width: 40%; }
+    .state {
+      width: 40%;
+      .dropdown button {
+        margin-top: 5px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+      }
+      .dropdown label {
+        margin-top: -5px;
+      }
+    }
+    .zip { width: 20%; }
+    @media (max-width: 600px) {
+      display: flex;
+      flex-direction: column;
+      .city { width: 100%; }
       .state {
-        width: 40%;
+        width: 100%;
         .dropdown button {
           margin-top: 5px;
           padding-top: 5px;
@@ -948,24 +966,7 @@ label.idle, .label.idle {
           margin-top: -5px;
         }
       }
-      .zip { width: 20%; }
-      @media (max-width: 600px) {
-        display: flex;
-        flex-direction: column;
-        .city { width: 100%; }
-        .state {
-          width: 100%;
-          .dropdown button {
-            margin-top: 5px;
-            padding-top: 5px;
-            padding-bottom: 5px;
-          }
-          .dropdown label {
-            margin-top: -5px;
-          }
-        }
-        .zip { width: 100%; }
-      }
+      .zip { width: 100%; }
     }
   }
 

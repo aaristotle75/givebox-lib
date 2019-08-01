@@ -1,3 +1,5 @@
+import { getIndex } from '../common/utility';
+
 /*
 * Get a Givebox API endpoint
 *
@@ -351,11 +353,11 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'org': {
-      endpoint = `orgs/${id[0] || orgID}`;
+      endpoint = `orgs/${getIndex(id, 0) || orgID}`;
       break;
     }
     case 'orgOwner': {
-      endpoint = `orgs/${id[0] || orgID}/owner`;
+      endpoint = `orgs/${getIndex(id, 0) || orgID}/owner`;
       break;
     }
     case 'claimOrg': {
@@ -371,7 +373,7 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'orgLegalEntity': {
-      endpoint = `orgs/${id[0] || orgID}/legal-entity`;
+      endpoint = `orgs/${getIndex(id, 0) || orgID}/legal-entity`;
       break;
     }
     case 'categories': {
@@ -403,7 +405,7 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'orgPrincipals': {
-      endpoint = `orgs/${id[0] || orgID}/principals`;
+      endpoint = `orgs/${getIndex(id, 0) || orgID}/principals`;
       break;
     }
     case 'orgPrincipal': {
@@ -411,11 +413,11 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'orgCustomers': {
-      endpoint = `orgs/${id[0] || orgID}/customers`;
+      endpoint = `orgs/${getIndex(id, 0) || orgID}/customers`;
       break;
     }
     case 'orgCustomer': {
-      endpoint = `orgs/${id[0] || orgID}/customers/${id[0]}`;
+      endpoint = `orgs/${getIndex(id, 0) || orgID}/customers/${id[0]}`;
       break;
     }
     case 'orgKeys': {
@@ -431,7 +433,7 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'orgBankAccounts': {
-      endpoint = `orgs/${id[0] || orgID}/bank-accounts`;
+      endpoint = `orgs/${getIndex(id, 0) || orgID}/bank-accounts`;
       break;
     }
     case 'orgBankAccount': {
@@ -439,7 +441,7 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'orgAddresses': {
-      endpoint = `orgs/${id[0] || orgID}/addresses`;
+      endpoint = `orgs/${getIndex(id, 0) || orgID}/addresses`;
       break;
     }
     case 'orgAddress': {
@@ -447,19 +449,19 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'orgStats': {
-      endpoint = `orgs/${id[0] || orgID}/stats`;
+      endpoint = `orgs/${getIndex(id, 0) || orgID}/stats`;
       break;
     }
     case 'orgTimeline': {
-      endpoint = `orgs/${id[0] || orgID}/timeline`;
+      endpoint = `orgs/${getIndex(id, 0) || orgID}/timeline`;
       break;
     }
     case 'orgUnderwriting': {
-      endpoint = `orgs/${id[0] || orgID}/underwriting`;
+      endpoint = `orgs/${getIndex(id, 0) || orgID}/underwriting`;
       break;
     }
     case 'orgStatus': {
-      endpoint = `orgs/${id[0] || orgID}/status`;
+      endpoint = `orgs/${getIndex(id, 0) || orgID}/status`;
       break;
     }
     case 'orgContactRequest': {
@@ -467,7 +469,7 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'orgChargebacks': {
-      endpoint = `orgs/${id[0] || orgID}/chargeback-transactions`;
+      endpoint = `orgs/${getIndex(id, 0) || orgID}/chargeback-transactions`;
       break;
     }
     case 'orgDonations': {
@@ -487,19 +489,19 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'orgTransactions': {
-      endpoint = `orgs/${id[0] || orgID}/transactions`;
+      endpoint = `orgs/${getIndex(id, 0) || orgID}/transactions`;
       break;
     }
     case 'orgFinanceStats': {
-      endpoint = `orgs/${id[0] || orgID}/finance-stats`;
+      endpoint = `orgs/${getIndex(id, 0) || orgID}/finance-stats`;
       break;
     }
     case 'orgMoneyTransfers': {
-      endpoint = `orgs/${id[0] || orgID}/money-transfers`;
+      endpoint = `orgs/${getIndex(id, 0) || orgID}/money-transfers`;
       break;
     }
     case 'orgPurchases': {
-      endpoint = `orgs/${id[0] || orgID}/purchases`;
+      endpoint = `orgs/${getIndex(id, 0) || orgID}/purchases`;
       break;
     }
     case 'orgRefundPurchase': {
@@ -511,11 +513,11 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'orgArticles': {
-      endpoint = `orgs/${id[0] || orgID}/articles`;
+      endpoint = `orgs/${getIndex(id, 0) || orgID}/articles`;
       break;
     }
     case 'orgArticlesOrder': {
-      endpoint = `orgs/${id[0] || orgID}/articles/orderby`;
+      endpoint = `orgs/${getIndex(id, 0) || orgID}/articles/orderby`;
       break;
     }
     case 'orgSources': {
