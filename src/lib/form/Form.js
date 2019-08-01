@@ -1126,6 +1126,9 @@ class Form extends Component {
       case 'creditCard':
         if (value) if (!_v.validateCardTypes(value)) this.fieldProp(key, {error: _v.msgs.creditCard});
         break;
+      case 'address':
+        if (value) if (!_v.validateAddress(value)) this.fieldProp(key, {error: opts.errorMsg || _v.msgs.address});
+        break;
       case 'googleMaps':
         let locationError = false;
         if (value && field) {

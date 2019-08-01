@@ -127,9 +127,10 @@ export default class TestForm extends Component {
       <div>
         <h2>Form Elements</h2>
         <div className='formWrapper'>
+          {this.props.textField('address', {label: 'Address', placeholder: 'Enter Address', validate: 'address'})}
+          {/*
           {util.getDate(ts)}
           {this.props.calendarField('dateOfBirth', { group: 'principal', label: 'Date of Birth', required: true, validate: 'date', validateOpts: { max: minDOB, errorMsg: `Representative must be at least 18 years old.` }, value: '' })}
-          {/*
           {this.props.saveButton(this.processForm, { id: '-second' })}
           {this.props.textField('taxID', { readOnly: true,readOnlyText: 'You cannot edit this field', placeholder: 'Enter federal Tax ID', label: 'Tax ID', validate: 'taxID', value: '10-1010101' })}
           {this.props.choice('enabled', { label: 'Enabled', checked: this.state.checked, value: this.state.checked })}

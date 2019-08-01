@@ -578,16 +578,16 @@ export function getValue(obj, prop, returnIfEmpty = '') {
   if (has(obj, prop)) return obj[prop] || typeof obj[prop] === 'boolean' ? obj[prop] : returnIfEmpty;
   return returnIfEmpty;
 }
-export function getIndex(array, index) {
+export function getIndex(array, index, returnIfEmpty = '') {
   if (typeof array === 'undefined') {
-    if (typeof array[index] === 'undefined') {
-      return null;
-    } else {
-      return array[index];
-    }
+    return returnIfEmpty;
   }
 
-  return null;
+  if (typeof array[index] === 'undefined') {
+    return returnIfEmpty;
+  }
+
+  return array[index];
 }
 export function setHeight(e, id) {
   const arr = e.data.split('-');

@@ -1353,6 +1353,12 @@ class Form extends Component {
         });
         break;
 
+      case 'address':
+        if (value) if (!_v.validateAddress(value)) this.fieldProp(key, {
+          error: opts.errorMsg || _v.msgs.address
+        });
+        break;
+
       case 'googleMaps':
         let locationError = false;
 

@@ -1,5 +1,9 @@
 import Moment from 'moment';
-import { numberWithCommas } from '../common/utility';
+export function validateAddress(address) {
+  console.log('validateAddress', address);
+  const regex = /(?:P(?:ost(?:al)?)?[\.\-\s]*(?:(?:O(?:ffice)?[\.\-\s]*)?B(?:ox|in|\b|\d)|o(?:ffice|\b)(?:[-\s]*\d)|code)|box[-\s\b]*\d)/i;
+  return regex.test(address) ? false : true;
+}
 export function validateEmail(email) {
   const regex = /^(([^<>()[\]\\.,;:\s@']+(\.[^<>()[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return regex.test(email);
@@ -279,7 +283,8 @@ export const msgs = {
   calendarRange: 'Start date must be equal to or less than End date.',
   creditCard: 'Please enter a valid credit card number.',
   password: 'Passwords must be at least 8 characters long.',
-  account: 'There was an error creating your account. Please contact support@givebox.com.'
+  account: 'There was an error creating your account. Please contact support@givebox.com.',
+  address: 'The address cannot be a PO Box.'
 };
 export const limits = {
   txMin: 1,
