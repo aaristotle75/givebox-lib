@@ -583,6 +583,10 @@ export function getIndex(array, index, returnIfEmpty = '') {
     return returnIfEmpty;
   }
 
+  if (!array) {
+    return returnIfEmpty;
+  }
+
   if (typeof array[index] === 'undefined') {
     return returnIfEmpty;
   }

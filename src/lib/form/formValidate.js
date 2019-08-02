@@ -1,7 +1,6 @@
 import Moment from 'moment';
 
 export function validateAddress(address) {
-  console.log('validateAddress', address);
   const regex = /(?:P(?:ost(?:al)?)?[\.\-\s]*(?:(?:O(?:ffice)?[\.\-\s]*)?B(?:ox|in|\b|\d)|o(?:ffice|\b)(?:[-\s]*\d)|code)|box[-\s\b]*\d)/i;
   return regex.test(address) ? false : true;
 }

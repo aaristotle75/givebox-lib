@@ -564,6 +564,9 @@ export function getIndex(array, index, returnIfEmpty = '') {
   if (typeof array === 'undefined') {
     return returnIfEmpty;
   }
+  if (!array) {
+    return returnIfEmpty;
+  }
   if (typeof array[index] === 'undefined') {
     return returnIfEmpty;
   }
