@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { selectOptions, GBLink, ModalLink, Collapse, UploadPrivate, util } from '../lib';
 import Moment from 'moment';
+import Capture from '../lib/form/Capture';
 
 export default class TestForm extends Component {
 
@@ -15,9 +16,13 @@ export default class TestForm extends Component {
     this.toggleChecked = this.toggleChecked.bind(this);
     this.focusInput = this.focusInput.bind(this);
     this.fileUploadSuccess = this.fileUploadSuccess.bind(this);
+    this.toggleWebcam = this.toggleWebcam.bind(this);
+    this.getCapture = this.getCapture.bind(this);
     this.state = {
       checked: false,
-      success: false
+      success: false,
+      webcam: true,
+      capture: null
     }
     this.roleRef = React.createRef();
   }
@@ -67,68 +72,31 @@ export default class TestForm extends Component {
     fieldProp('phoneInfo', { checked: true });
   }
 
+  getCapture(capture) {
+    this.setState({ capture });
+  }
+
+  toggleWebcam() {
+    this.setState({ webcam: this.state.webcam ? false : true });
+  }
+
   render() {
 
-    const where = {
-      address: '2010 Canal St',
-      city: 'Venice',
-      state: 'CA',
-      zip: '90291',
-      country: 'USA',
-      coordinates: {
-        lat: 123.12223,
-        long: 44.1242
-      }
-    }
-
-    const customLink = <GBLink onClick={this.focusInput}>Focus Input</GBLink>;
-
-    const loading = true;
-    /*
-    if (loading) return (
-      <div>
-        {this.props.loader('Loading data...')}
-        {this.props.loader('Loading data2...')}
-      </div>
-    )
-    */
-
-    const ts = 1563883654;
-
-    const testObj = {
-      dog: {
-        golden: {
-          buddy: {
-            coat: 'beautiful',
-            temperment: 'charismatic',
-            intelligence: 'very smart'
-          },
-          coat: 'gold'
-        },
-        bulldog: {
-          coat: 'brown'
-        },
-      },
-      cat: {
-        siamese: {
-          coat: 'white'
-        }
-      },
-      pig: {
-        hog: {
-          coat: 'pink'
-        }
-      }
-    };
-
-    console.log(util.getValue(testObj, 'buddy'));
-    const minDOB = Moment().subtract(18, 'years').format('MM/DD/YYYY');
     return (
       <div>
         <h2>Form Elements</h2>
         <div className='formWrapper'>
-          {this.props.textField('address', {label: 'Address', placeholder: 'Enter Address', validate: 'address'})}
+          {!this.state.webcam ?
+            <div>
+              {this.state.capture ? <img src={this.state.capture} alt='capture' /> : <span>No Capture</span>}<br />
+            </div>
+          : <Capture
+              callback={this.getCapture}
+            />
+          }
+          <button onClick={this.toggleWebcam}>Toggle Webcam</button>
           {/*
+          {this.props.textField('address', {label: 'Address', placeholder: 'Enter Address', validate: 'address'})}
           {util.getDate(ts)}
           {this.props.calendarField('dateOfBirth', { group: 'principal', label: 'Date of Birth', required: true, validate: 'date', validateOpts: { max: minDOB, errorMsg: `Representative must be at least 18 years old.` }, value: '' })}
           {this.props.saveButton(this.processForm, { id: '-second' })}

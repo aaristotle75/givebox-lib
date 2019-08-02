@@ -39,6 +39,7 @@
     "react-prefixr": "^0.1.0",
     "react-scripts": "^2.1.8",
     "react-waypoint": "^8.1.0",
+    "react-webcam": "^1.1.1",
     "recharts": "^1.6.2"
   },
   "scripts": {
