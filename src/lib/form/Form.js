@@ -418,6 +418,7 @@ class Form extends Component {
     const field = this.state.fields[name];
     let value = e.target.value;
     if (field.validate === 'url') this.fieldProp(name, {value: _v.checkHTTP(value)});
+    if (field.onBlur) field.onBlur(name, value, field, this.state.fields);    
     if (field.debug) console.log('onBlur', name, field);
   }
 

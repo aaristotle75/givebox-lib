@@ -35,7 +35,7 @@ class ContentEditor extends Component {
       this.setState({
         editorState
       });
-      this.props.onChange(this.props.fieldName, stateToHTML(content), content.hasText());
+      if (this.props.onChange) this.props.onChange(this.props.fieldName, stateToHTML(content), content.hasText());
     }
   }
 
@@ -44,12 +44,12 @@ class ContentEditor extends Component {
       editorState
     });
     const content = editorState.getCurrentContent();
-    this.props.onChange(this.props.fieldName, stateToHTML(content), content.hasText());
+    if (this.props.onChange) this.props.onChange(this.props.fieldName, stateToHTML(content), content.hasText());
   }
 
   onBlur() {
     const content = this.state.editorState.getCurrentContent();
-    this.props.onBlur(this.props.fieldName, stateToHTML(content), content.hasText());
+    if (this.props.onBlur) this.props.onBlur(this.props.fieldName, stateToHTML(content), content.hasText());
   }
 
   _handleKeyCommand(command) {

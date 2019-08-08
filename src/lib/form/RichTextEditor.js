@@ -27,19 +27,19 @@ class ContentEditor extends Component {
 			const editorState = contentState ? EditorState.createWithContent(contentState) : EditorState.createEmpty();
 			const content = editorState.getCurrentContent();
 			this.setState({editorState});
-			this.props.onChange(this.props.fieldName, stateToHTML(content), content.hasText());
+			if (this.props.onChange) this.props.onChange(this.props.fieldName, stateToHTML(content), content.hasText());
 		}
   }
 
 	onChange(editorState) {
 		this.setState({editorState});
 		const content = editorState.getCurrentContent();
-		this.props.onChange(this.props.fieldName, stateToHTML(content), content.hasText());
+		if (this.props.onChange) this.props.onChange(this.props.fieldName, stateToHTML(content), content.hasText());
 	}
 
 	onBlur() {
 		const content = this.state.editorState.getCurrentContent();
-		this.props.onBlur(this.props.fieldName, stateToHTML(content), content.hasText());
+		if (this.props.onBlur) this.props.onBlur(this.props.fieldName, stateToHTML(content), content.hasText());
 	}
 
 	_handleKeyCommand(command) {

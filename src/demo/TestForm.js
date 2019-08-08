@@ -86,7 +86,7 @@ export default class TestForm extends Component {
       <div>
         <h2>Form Elements</h2>
         <div className='formWrapper'>
-          {!this.state.webcam ?
+          {!this.state.webcam || 1===1 ?
             <div>
               {this.state.capture ? <img src={this.state.capture} alt='capture' /> : <span>No Capture</span>}<br />
             </div>

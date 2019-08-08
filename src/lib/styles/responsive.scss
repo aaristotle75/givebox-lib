@@ -495,6 +495,15 @@
 }
 
 @media (max-width: 849px) {
+
+	.stepLabelText {
+		display: none !important;
+	}
+
+	.hideMobile {
+		display: none !important;
+	}
+
 	form {
   	.tabs .panel {
     	display: none;
@@ -502,6 +511,7 @@
     	margin-bottom: 30px;
   	}
 
+		/*
 		.tabs:not(.showOnMobile) .panelItem {
 			display: none !important;
 		}
@@ -509,6 +519,7 @@
 		.tab:not(.showOnMobile) {
 			display: none !important;
 		}
+		*/
 	}
 
 	.modalContent.campaignForm {

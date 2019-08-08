@@ -1,6 +1,26 @@
 import React from 'react';
 
+export function bankStatus(status) {
+  let name = '';
+  switch(status) {
+    case 'approved': {
+      name = 'Verified';
+      break;
+    }
 
+    case 'declined': {
+      name = 'Bank Account not allowed';
+      break;
+    }
+
+    case 'pending':
+    default: {
+      name = 'Account being validated';
+      break;
+    }
+  }
+  return name;
+}
 
 export const imageTypes = [
   'jpg',

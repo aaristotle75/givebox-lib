@@ -598,7 +598,7 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
 
     case 'orgCustomer':
       {
-        endpoint = `orgs/${getIndex(id, 0, orgID)}/customers/${id[0]}`;
+        if (orgID) endpoint = `orgs/${orgID}/customers/${id[0]}`;else endpoint = `orgs/${id[0]}/customers/${id[1]}`;
         break;
       }
 

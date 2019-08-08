@@ -775,7 +775,7 @@ label.idle, .label.idle {
   .tooltip .tooltipTop {
     top: -40px;
     color: $white;
-    background-color: $primary;
+    background-color: $mainColor;
   }
 
   .tooltip .tooltipTop i {
@@ -784,7 +784,7 @@ label.idle, .label.idle {
   }
 
   .tooltip .tooltipTop i::after {
-    background-color: $primary;
+    background-color: $mainColor;
   }
 
   .error {

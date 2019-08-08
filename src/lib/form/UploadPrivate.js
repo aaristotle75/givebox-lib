@@ -6,8 +6,6 @@ import { sendResource } from '../api/helpers';
 import { util, Fade } from '../';
 import { Line } from 'rc-progress';
 
-const API_URL = process.env.REACT_APP_API_URL;
-
 class UploadPrivate extends Component {
 
   constructor(props) {
@@ -107,13 +105,17 @@ class UploadPrivate extends Component {
   }
 
   handleDropAccepted(files) {
+    const bindthis = this;
     this.setState({ loading: 'Uploading...', accepted: files });
     const items = [];
     if (!util.isEmpty(files)) {
       Object.entries(files).forEach(([key, value]) => {
-        items.push({
-          filename: value.name
-        });
+        const data = {};
+        data.filename = value.name;
+        if (bindthis.resourceType) data.resourceType = bindthis.resourceType;
+        if (bindthis.resourceID) data.resourceID = bindthis.resourceID;
+        if (bindthis.tag) data.tag = bindthis.tag;
+        items.push(data);
       });
     }
     this.props.sendResource('underwritingDocs', {
@@ -207,7 +209,7 @@ UploadPrivate.defaultProps = {
   name: 'defaultUpload',
   label: '',
   labelClass: '',
-  uploadLabel: 'Add Document',
+  uploadLabel: 'Add Document(s)',
   icon: 'file-plus',
   maxSize: '175px',
   alt: false
