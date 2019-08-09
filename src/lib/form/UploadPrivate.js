@@ -112,9 +112,9 @@ class UploadPrivate extends Component {
       Object.entries(files).forEach(([key, value]) => {
         const data = {};
         data.filename = value.name;
-        if (bindthis.resourceType) data.resourceType = bindthis.resourceType;
-        if (bindthis.resourceID) data.resourceID = bindthis.resourceID;
-        if (bindthis.tag) data.tag = bindthis.tag;
+        if (bindthis.props.resourceType) data.resourceType = bindthis.props.resourceType;
+        if (bindthis.props.resourceID) data.resourceID = bindthis.props.resourceID;
+        if (bindthis.props.tag) data.tag = bindthis.props.tag;
         items.push(data);
       });
     }

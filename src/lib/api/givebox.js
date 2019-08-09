@@ -109,6 +109,10 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       endpoint = `bank-accounts/${id[0]}`;
       break;
     }
+    case 'bankAccountStatus': {
+      endpoint = `bank-accounts/${id[0]}/status`;
+      break;
+    }
 
     // Underwriting
     case 'underwritingStatus': {
@@ -439,6 +443,10 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
     }
     case 'orgBankAccount': {
       endpoint = `orgs/${orgID}/bank-accounts/${id[0]}`;
+      break;
+    }
+    case 'orgBankAccountAdded': {
+      endpoint = `orgs/${orgID}/bank-accounts/${id[0]}/email`;
       break;
     }
     case 'orgAddresses': {

@@ -1,25 +1,28 @@
 import React from 'react';
 
-export function bankStatus(status) {
-  let name = '';
+export function bankStatus(status, voidCheck) {
+  const obj = {};
   switch(status) {
     case 'approved': {
-      name = 'Verified';
+      obj.name = 'Verified';
+      obj.color = 'green';
       break;
     }
 
     case 'declined': {
-      name = 'Bank Account not allowed';
+      obj.name = 'Declined';
+      obj.color = 'red';
       break;
     }
 
     case 'pending':
     default: {
-      name = 'Account being validated';
+      obj.name = voidCheck ? 'Bank account under review' : 'Please upload a voided check';
+      obj.color = voidCheck ? 'green' : 'orange';
       break;
     }
   }
-  return name;
+  return obj;
 }
 
 export const imageTypes = [
