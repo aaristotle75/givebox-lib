@@ -82,10 +82,25 @@ export default class TestForm extends Component {
 
   render() {
 
+    const list = [
+      { value: 1, primaryText: 'First Bank Account', secondaryText: 'xxxxx1234', rightText: 'Verified' },
+      { value: 2, primaryText: 'Second Bank Account', secondaryText: 'xxxxx2222' },
+      { value: 3, primaryText: 'Third Bank Account', secondaryText: 'xxxxx3333', disabled: true },
+      { value: 4, primaryText: 'Fourth Bank Account', secondaryText: 'xxxxx4444' }
+    ];
+
+
     return (
       <div>
         <h2>Form Elements</h2>
         <div className='formWrapper'>
+          {this.props.dropdown('bankAccounts', {
+            options: list,
+            label: 'Bank Accounts',
+            selectLabel: 'Select the Bank Account',
+            required: true
+          })}
+          {/*
           {!this.state.webcam || 1===1 ?
             <div>
               {this.state.capture ? <img src={this.state.capture} alt='capture' /> : <span>No Capture</span>}<br />
@@ -95,7 +110,6 @@ export default class TestForm extends Component {
             />
           }
           <button onClick={this.toggleWebcam}>Toggle Webcam</button>
-          {/*
           {this.props.textField('address', {label: 'Address', placeholder: 'Enter Address', validate: 'address'})}
           {util.getDate(ts)}
           {this.props.calendarField('dateOfBirth', { group: 'principal', label: 'Date of Birth', required: true, validate: 'date', validateOpts: { max: minDOB, errorMsg: `Representative must be at least 18 years old.` }, value: '' })}

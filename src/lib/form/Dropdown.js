@@ -106,17 +106,19 @@ class Dropdown extends Component {
     }, this.props.overlayDuration);
   }
 
-  onClick(e) {
+  onClick(e, disabled = false) {
     e.preventDefault();
-    const value = e.currentTarget.getAttribute('data-value');
-    const selected = e.currentTarget.getAttribute('data-selected');
-    const open = this.props.multi ? true : false;
-    this.setState({
-      open: open,
-      value: value,
-      selected: selected
-    });
-    this.props.onChange(this.props.name, value);
+    if (!disabled) {
+      const value = e.currentTarget.getAttribute('data-value');
+      const selected = e.currentTarget.getAttribute('data-selected');
+      const open = this.props.multi ? true : false;
+      this.setState({
+        open: open,
+        value: value,
+        selected: selected
+      });
+      this.props.onChange(this.props.name, value);
+    }
   }
 
   setSelected(selected) {
@@ -137,7 +139,17 @@ class Dropdown extends Component {
         );
       } else {
         items.push(
-          <div data-selected={value.primaryText} data-value={dataValue} onClick={(e) => bindthis.onClick(e)} className={`dropdown-item ${selected ? 'selected' : ''}`} key={dataValue}>{bindthis.props.multi && selected && bindthis.props.iconMultiChecked} {value.primaryText}{value.actions ? <span className='dropdown-item-actions'>{value.actions}</span> : ''}{value.secondaryText && <span className='secondaryText'>{value.secondaryText}</span>}</div>
+          <div data-selected={value.primaryText} data-value={dataValue} onClick={(e) => bindthis.onClick(e, value.disabled)} className={`dropdown-item ${selected ? 'selected' : ''} ${value.disabled ? 'disabled' : ''}`} key={dataValue}>
+            <div className='dropdown-container'>
+              <div className='leftSide'>
+                {bindthis.props.multi && selected && bindthis.props.iconMultiChecked} {value.primaryText}{value.actions ? <span className='dropdown-item-actions'>{value.actions}</span> : ''}
+                {value.secondaryText && <span className='secondaryText'>{value.secondaryText}</span>}
+              </div>
+              <div className='rightSide'>
+                {value.rightText && <span className='rightText'>{value.rightText}</span>}
+              </div>
+            </div>
+          </div>
         );
       }
     });
