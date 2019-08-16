@@ -128,17 +128,20 @@ class Dropdown extends Component {
     }, this.props.overlayDuration);
   }
 
-  onClick(e) {
+  onClick(e, disabled = false) {
     e.preventDefault();
-    const value = e.currentTarget.getAttribute('data-value');
-    const selected = e.currentTarget.getAttribute('data-selected');
-    const open = this.props.multi ? true : false;
-    this.setState({
-      open: open,
-      value: value,
-      selected: selected
-    });
-    this.props.onChange(this.props.name, value);
+
+    if (!disabled) {
+      const value = e.currentTarget.getAttribute('data-value');
+      const selected = e.currentTarget.getAttribute('data-selected');
+      const open = this.props.multi ? true : false;
+      this.setState({
+        open: open,
+        value: value,
+        selected: selected
+      });
+      this.props.onChange(this.props.name, value);
+    }
   }
 
   setSelected(selected) {
@@ -165,14 +168,22 @@ class Dropdown extends Component {
         items.push(React.createElement("div", {
           "data-selected": value.primaryText,
           "data-value": dataValue,
-          onClick: e => bindthis.onClick(e),
-          className: `dropdown-item ${selected ? 'selected' : ''}`,
+          onClick: e => bindthis.onClick(e, value.disabled),
+          className: `dropdown-item ${selected ? 'selected' : ''} ${value.disabled ? 'disabled' : ''}`,
           key: dataValue
+        }, React.createElement("div", {
+          className: "dropdown-container"
+        }, React.createElement("div", {
+          className: "leftSide"
         }, bindthis.props.multi && selected && bindthis.props.iconMultiChecked, " ", value.primaryText, value.actions ? React.createElement("span", {
           className: "dropdown-item-actions"
         }, value.actions) : '', value.secondaryText && React.createElement("span", {
           className: "secondaryText"
-        }, value.secondaryText)));
+        }, value.secondaryText)), React.createElement("div", {
+          className: "rightSide"
+        }, value.rightText && React.createElement("span", {
+          className: "rightText"
+        }, value.rightText)))));
       }
     });
     return items ? items : React.createElement("option", null, "None");

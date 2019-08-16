@@ -447,6 +447,16 @@ label.idle, .label.idle {
     overflow-x: hidden;
   }
 
+  .dropdown-item.disabled {
+    color: $med-blue-gray;
+  }
+
+  .dropdown-item.disabled:hover {
+    color: $med-blue-gray;
+    background: transparent;
+    cursor: not-allowed;
+  }
+
   .dropdown-item {
     padding: 10px 5px;
     cursor: pointer;
@@ -454,6 +464,20 @@ label.idle, .label.idle {
     width: auto;
     color: $dark-gray;
     text-align: left;
+
+    .dropdown-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    .leftSide {
+      display: block;
+    }
+
+    .rightSide {
+      display: block;
+    }
 
     .icon {
       position: relative;

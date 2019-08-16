@@ -94,6 +94,7 @@ export default class TestForm extends Component {
       <div>
         <h2>Form Elements</h2>
         <div className='formWrapper'>
+          <ModalLink id='feesGlossary'>Test Modal</ModalLink>
           {this.props.dropdown('bankAccounts', {
             options: list,
             label: 'Bank Accounts',

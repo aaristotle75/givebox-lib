@@ -57,9 +57,11 @@ class Search extends Component {
   }
 
   onChange(e) {
+    const searchValue = e.currentTarget.value;
     this.setState({
-      searchValue: e.currentTarget.value
+      searchValue
     });
+    if (this.props.onChange) this.props.onChange(searchValue);
   }
 
   resetSearch() {
