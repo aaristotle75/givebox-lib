@@ -1,4 +1,9 @@
 @import 'variables.scss';
+@import 'draft.scss';
+
+.public-DraftEditorPlaceholder-root {
+  position: absolute;
+}
 
 .RichEditor-root {
   background: none;
