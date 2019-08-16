@@ -36,7 +36,8 @@ class ModalRoute extends Component {
       opts,
       className,
       appRef,
-      disallowBgClose
+      disallowBgClose,
+      draggable
     } = this.props;
     const modalRoot = document.getElementById('modal-root');
     const optsProps = { ...opts,
@@ -60,7 +61,8 @@ class ModalRoute extends Component {
       customStyle: style,
       closeCallback: has(opts, 'closeCallback') ? opts.closeCallback : null,
       disallowBgClose: disallowBgClose || util.getValue(optsProps, 'disallowBgClose', false),
-      appRef: appRef
+      appRef: appRef,
+      draggable: draggable
     }, component(optsProps))));
   }
 

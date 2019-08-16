@@ -6,6 +6,7 @@ import animateScrollTo from 'animated-scroll-to';
 import Waypoint from 'react-waypoint';
 import Fade from '../common/Fade';
 import GBLink from '../common/GBLink';
+import Draggable from 'react-draggable';
 import has from 'has';
 
 const prefix = require('react-prefixr');
@@ -218,7 +219,8 @@ class Modal extends Component {
       className,
       iconClose,
       appRef,
-      identifier
+      identifier,
+      draggable
     } = this.props;
     let transition = effect.transition;
 
@@ -273,19 +275,7 @@ class Modal extends Component {
       }
     }
 
-    return React.createElement("div", {
-      ref: this.modalRef,
-      onClick: () => this.closeModal(closeCallback, this.props.disallowBgClose ? false : true),
-      id: `modalOverlay-${identifier}`,
-      className: `modalOverlay`,
-      style: prefix({ ...overlayStyle,
-        ...modalOverlayStyle
-      })
-    }, React.createElement(Waypoint, {
-      onEnter: this.onEnter,
-      onLeave: this.onExit,
-      bottomOffset: '100px'
-    }), React.createElement("div", {
+    const modalContent = React.createElement("div", {
       className: `modalContent ${className}`,
       style: prefix({ ...contentStyle,
         ...transition_style,
@@ -308,7 +298,20 @@ class Modal extends Component {
       className: "icon icon-chevrons-up"
     }))), React.createElement("div", {
       className: "modalBottom"
-    })));
+    }));
+    return React.createElement("div", {
+      ref: this.modalRef,
+      onClick: () => this.closeModal(closeCallback, this.props.disallowBgClose ? false : true),
+      id: `modalOverlay-${identifier}`,
+      className: `modalOverlay`,
+      style: prefix({ ...overlayStyle,
+        ...modalOverlayStyle
+      })
+    }, React.createElement(Waypoint, {
+      onEnter: this.onEnter,
+      onLeave: this.onExit,
+      bottomOffset: '100px'
+    }), draggable ? React.createElement(Draggable, null, modalContent) : modalContent);
   }
 
 }
@@ -328,7 +331,8 @@ Modal.defaultProps = {
   actions: false,
   iconClose: React.createElement("span", {
     className: "icon icon-x"
-  })
+  }),
+  draggable: false
 };
 
 function mapStateToProps(state, props) {
