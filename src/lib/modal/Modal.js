@@ -6,6 +6,7 @@ import animateScrollTo from 'animated-scroll-to';
 import Waypoint from 'react-waypoint';
 import Fade from '../common/Fade';
 import GBLink from '../common/GBLink';
+import Draggable from 'react-draggable';
 import has from 'has';
 
 const prefix = require('react-prefixr');
@@ -203,7 +204,8 @@ class Modal extends Component {
       className,
       iconClose,
       appRef,
-      identifier
+      identifier,
+      draggable
     } = this.props;
 
     let transition = effect.transition;
@@ -257,6 +259,26 @@ class Modal extends Component {
       }
     }
 
+    const modalContent =
+      <div
+        className={`modalContent ${className}`}
+        style={prefix({ ...contentStyle, ...transition_style, ...openEffect })}
+        onClick={stopPropagation}
+      >
+        {(closeBtn) && <button style={closeBtnStyle} className='modalCloseBtn' onClick={() => this.closeModal(closeCallback)}>{iconClose}</button>}
+        <div className='modalTop'></div>
+        {this.renderChildren()}
+        {this.renderActions()}
+        <Fade
+          duration={500}
+          in={this.state.scrolled}
+        >
+          <GBLink onClick={this.toTop} className={`modalToTop ${this.state.scrolled ? '' : 'displayNone'}`}><span className='icon icon-chevrons-up'></span></GBLink>
+        </Fade>
+        <div className='modalBottom'></div>
+      </div>
+    ;
+
     return (
       <div
         ref={this.modalRef}
@@ -269,23 +291,13 @@ class Modal extends Component {
           onLeave={this.onExit}
           bottomOffset={'100px'}
         />
-        <div
-          className={`modalContent ${className}`}
-          style={prefix({ ...contentStyle, ...transition_style, ...openEffect })}
-          onClick={stopPropagation}
-        >
-          {(closeBtn) && <button style={closeBtnStyle} className='modalCloseBtn' onClick={() => this.closeModal(closeCallback)}>{iconClose}</button>}
-          <div className='modalTop'></div>
-          {this.renderChildren()}
-          {this.renderActions()}
-          <Fade
-            duration={500}
-            in={this.state.scrolled}
-          >
-            <GBLink onClick={this.toTop} className={`modalToTop ${this.state.scrolled ? '' : 'displayNone'}`}><span className='icon icon-chevrons-up'></span></GBLink>
-          </Fade>
-          <div className='modalBottom'></div>
-        </div>
+        {draggable ?
+          <Draggable>
+            {modalContent}
+          </Draggable>
+        :
+          modalContent
+        }
       </div>
     )
   }
@@ -304,7 +316,8 @@ Modal.defaultProps = {
     color: '#9aa7ad'
   },
   actions: false,
-  iconClose: <span className='icon icon-x'></span>
+  iconClose: <span className='icon icon-x'></span>,
+  draggable: false
 };
 
 function mapStateToProps(state, props) {

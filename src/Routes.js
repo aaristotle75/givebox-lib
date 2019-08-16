@@ -21,7 +21,7 @@ class Routes extends Component {
     return (
       <div>
         <ModalRoute  id='accessDenied' component={() => this.props.loadComponent('modal/lib/common/AccessDenied', { useProjectRoot: false })} effect='3DFlipVert' style={{ width: '50%' }} />
-        <ModalRoute id='feesGlossary' component={() => loadComponent('modal/lib/glossary/Fees', {useProjectRoot: false})} effect='3DFlipVert' style={{ width: '50%' }} />
+        <ModalRoute id='feesGlossary' draggable={true} component={() => loadComponent('modal/lib/glossary/Fees', {useProjectRoot: false})} effect='3DFlipVert' style={{ width: '50%' }} />
         <ModalRoute id='timezone' component={() => loadComponent('modal/lib/glossary/Timezone', {useProjectRoot: false})} effect='3DFlipVert' style={{ width: '50%' }} />
         <ModalRoute id='financeGlossary' component={() => loadComponent('modal/lib/glossary/Finance', {useProjectRoot: false})} effect='3DFlipVert' style={{ width: '50%' }} />
         <ModalRoute id='bankDelete' component={(props) => loadComponent('modal/lib/common/Delete', { useProjectRoot: false, props: props })} effect='3DFlipVert' style={{ width: '50%' }} />
