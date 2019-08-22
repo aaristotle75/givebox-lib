@@ -51,7 +51,9 @@
 }
 
 .RichEditor-editor .public-DraftEditorPlaceholder-inner {
-  color: $med-gray;
+  font-size: $normal-text-size;
+  font-family: $font-family;
+  color: $med-blue-gray;
 }
 
 .RichEditor-editor .RichEditor-blockquote {
