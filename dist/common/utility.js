@@ -9,7 +9,25 @@ export const imageUrlWithStyle = function (imageURL, style) {
   } else {
     return;
   }
-}; // Check if image is default. If default return empty.
+};
+export function groupBy(list, keyGetter) {
+  const map = new Map();
+  list.forEach(item => {
+    const key = keyGetter(item);
+    const collection = map.get(key);
+
+    if (!collection) {
+      map.set(key, [item]);
+    } else {
+      collection.push(item);
+    }
+  });
+  return map;
+}
+export function roundNumber(rnum, rlength) {
+  var newnumber = Math.round(rnum * Math.pow(10, rlength)) / Math.pow(10, rlength);
+  return newnumber;
+} // Check if image is default. If default return empty.
 
 export function checkImage(url) {
   const default1 = 'fundraiser-cover';

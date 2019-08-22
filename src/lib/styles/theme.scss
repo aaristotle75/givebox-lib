@@ -1561,10 +1561,11 @@ button.supportLink {
     font-size: $med-text-size;
   }
 }
-
+.dropdown .dropdown-item.bottom:hover,
 .dropdown-item.bottom:hover {
-  background: transparent;
+  background: $white;
   color: $mainColor;
+  border-bottom: 0;
 }
 
 .dropdown .label:not(button) {
