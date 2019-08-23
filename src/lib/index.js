@@ -67,7 +67,6 @@ import {
   getResource,
   reloadResource,
   sendResource,
-  translatePerm,
   savePrefs
 } from './api/helpers';
 
@@ -105,7 +104,6 @@ export {
   getResource,
   reloadResource,
   sendResource,
-  translatePerm,
   savePrefs,
 
   // reducers

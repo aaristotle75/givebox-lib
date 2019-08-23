@@ -100,7 +100,7 @@ export function getResource(resource, opts = {}) {
         options.callback,
         reload,
         options.customName,
-        options.resourcesToLoad,
+        options.resourcesToLoad || options.toLoad,
         reloadResource,
         options.fullResponse
       ));
@@ -206,109 +206,13 @@ export function sendResource(resource, opts = {}) {
         options.data,
         options.callback,
         options.reload ? reloadResource : null,
-        options.resourcesToLoad,
+        options.resourcesToLoad || options.toLoad,
         options.customName,
         options.multi,
         options.isSending
       ));
     }
   }
-}
-
-export function translatePerm(value) {
-  var slugArr = util.getSplitStr(value.slug, '_', 2, -1);
-  var obj = {};
-  var group, groupName, perm, name;
-  groupName = value.name.substr(value.name.indexOf(' ')+1);
-  group = slugArr[1];
-  perm = slugArr[0];
-  name = value.name;
-	switch (group) {
-		case 'refund':
-      groupName = 'Refunds';
-      break;
-    case 'finance':
-    case 'transfer':
-      group = 'money';
-      groupName = 'Money';
-      switch (perm) {
-        case 'read':
-          name = 'View Transactions';
-          break;
-        case 'write':
-          name = 'Transfer Money (Withdrawal/Send Payments)';
-          break;
-
-        // no default
-      }
-      break;
-    case 'general':
-      group = 'general';
-      groupName = 'Non Profit Details';
-      switch (perm) {
-        case 'read':
-          name = 'View Non Profit Details';
-          break;
-        case 'write':
-          name = 'Update Non Profit Details';
-          break;
-
-        // no default
-      }
-      break;
-    case 'sweepstake':
-      groupName = 'Sweepstakes';
-      break;
-    case 'member':
-      group = 'users';
-      groupName = 'Team Members';
-      switch(perm) {
-        case 'read':
-          name = 'View User';
-          break;
-        case 'write':
-          name = 'Create/Edit User';
-          break;
-        case 'delete':
-          name = 'Delete User';
-          break;
-
-        // no default
-      };
-      break;
-    case 'keys':
-      groupName = 'Developer';
-      break;
-    case 'fundraiser':
-      groupName = 'Donation Forms';
-      break;
-    case 'membership':
-      groupName = 'Memberships';
-      break;
-    case 'event':
-      groupName = 'Events';
-      break;
-    case 'invoice':
-      groupName = 'Invoices';
-      break;
-    case 'customer':
-      groupName = 'Customers';
-      break;
-    case 'bank':
-      groupName = 'Bank Accounts';
-      break;
-    case 'email':
-      groupName = 'Email Blasts';
-      break;
-
-      // no default
-  }
-  obj.groupName = groupName;
-  obj.group = group;
-  obj.perm = perm;
-  obj.name = name;
-  obj.slug = value.slug;
-  return obj;
 }
 
 export function savePrefs(pref, callback) {

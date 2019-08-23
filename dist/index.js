@@ -45,12 +45,12 @@ import * as util from './common/utility';
 import FeesGlossary from './glossary/Fees';
 import { toggleModal, removeResource, resourceProp, getAPI, sendAPI, setAppRef, setModalRef, setProp, setPrefs } from './api/actions';
 import { app, resource, send, modal, preferences } from './api/reducers';
-import { getResource, reloadResource, sendResource, translatePerm, savePrefs } from './api/helpers';
+import { getResource, reloadResource, sendResource, savePrefs } from './api/helpers';
 import * as giveboxAPI from './api/givebox';
 export { // Form
 Form, _v, selectOptions, Select, TextField, Dropdown, RichTextField, Choice, CalendarField, CalendarRange, Checkbox, UploadPrivate, WhereField, // actions
 toggleModal, removeResource, resourceProp, getAPI, sendAPI, setAppRef, setModalRef, setProp, setPrefs, // API
-giveboxAPI, getResource, reloadResource, sendResource, translatePerm, savePrefs, // reducers
+giveboxAPI, getResource, reloadResource, sendResource, savePrefs, // reducers
 app, resource, send, modal, preferences, // Modal
 ModalLink, ModalRoute, // Table
 ActionsMenu, Search, Table, MaxRecords, NoRecords, Paginate, Export, Filter, // Block
