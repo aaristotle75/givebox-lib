@@ -223,7 +223,7 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
 
     case 'singleUser':
       {
-        endpoint = `users/${id[0] || userID}`;
+        endpoint = `users/${getIndex(id, 0, userID)}`;
         break;
       }
 
@@ -393,121 +393,121 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
 
     case 'affiliate':
       {
-        endpoint = `affiliates/${affiliateID}`;
+        endpoint = `affiliates/${getIndex(id, 0, affiliateID)}`;
         break;
       }
 
     case 'affiliateLegalEntity':
       {
-        endpoint = `affiliates/${affiliateID}/legal-entity`;
+        endpoint = `affiliates/${getIndex(id, 0, affiliateID)}/legal-entity`;
         break;
       }
 
     case 'affiliatePrincipals':
       {
-        endpoint = `affiliates/${affiliateID}/principals`;
+        endpoint = `affiliates/${getIndex(id, 0, affiliateID)}/principals`;
         break;
       }
 
     case 'affiliatePrincipal':
       {
-        endpoint = `affiliates/${affiliateID}/principals/${id[0]} `;
+        endpoint = `affiliates/${getIndex(id, 0, affiliateID)}/principals/${id[1]} `;
         break;
       }
 
     case 'affiliateOwner':
       {
-        endpoint = `affiliates/${affiliateID}/owner`;
+        endpoint = `affiliates/${getIndex(id, 0, affiliateID)}/owner`;
         break;
       }
 
     case 'affiliateKeys':
       {
-        endpoint = `affiliates/${affiliateID}/api-keys`;
+        endpoint = `affiliates/${getIndex(id, 0, affiliateID)}/api-keys`;
         break;
       }
 
     case 'affiliateSelectOrg':
       {
-        endpoint = `affiliates/${affiliateID}/orgs/${id[0]}`;
+        endpoint = `affiliates/${getIndex(id, 0, affiliateID)}/orgs/${id[1]}`;
         break;
       }
 
     case 'affiliateOrgs':
       {
-        endpoint = `affiliates/${affiliateID}/orgs`;
+        endpoint = `affiliates/${getIndex(id, 0, affiliateID)}/orgs`;
         break;
       }
 
     case 'affiliateFeeSettings':
       {
-        endpoint = `affiliates/${affiliateID}/fee-settings`;
+        endpoint = `affiliates/${getIndex(id, 0, affiliateID)}/fee-settings`;
         break;
       }
 
     case 'affiliateBankAccounts':
       {
-        endpoint = `affiliates/${affiliateID}/bank-accounts`;
+        endpoint = `affiliates/${getIndex(id, 0, affiliateID)}/bank-accounts`;
         break;
       }
 
     case 'affiliateBankAccount':
       {
-        endpoint = `affiliates/${affiliateID}/bank-accounts/${id[0]}`;
+        endpoint = `affiliates/${getIndex(id, 0, affiliateID)}/bank-accounts/${id[1]}`;
         break;
       }
 
     case 'affiliateMoneyTransfers':
       {
-        endpoint = `affiliates/${affiliateID}/money-transfers`;
+        endpoint = `affiliates/${getIndex(id, 0, affiliateID)}/money-transfers`;
         break;
       }
 
     case 'affiliateAddresses':
       {
-        endpoint = `affiliates/${affiliateID}/addresses`;
+        endpoint = `affiliates/${getIndex(id, 0, affiliateID)}/addresses`;
         break;
       }
 
     case 'affiliateAddress':
       {
-        endpoint = `affiliates/${affiliateID}/addresses/${id[0]}`;
+        endpoint = `affiliates/${getIndex(id, 0, affiliateID)}/addresses/${id[1]}`;
         break;
       }
 
     case 'affiliateActivities':
       {
-        endpoint = `affiliates/${affiliateID}/activities`;
+        endpoint = `affiliates/${getIndex(id, 0, affiliateID)}/activities`;
         break;
       }
 
     case 'affiliateCustomers':
       {
-        endpoint = `affiliates/${affiliateID}/customers`;
+        endpoint = `affiliates/${getIndex(id, 0, affiliateID)}/customers`;
         break;
       }
 
     case 'affiliateFinanceStats':
       {
-        endpoint = `affiliates/${affiliateID}/finance-stats`;
+        endpoint = `affiliates/${getIndex(id, 0, affiliateID)}/finance-stats`;
         break;
       }
 
     case 'affiliateTransactions':
       {
-        endpoint = `affiliates/${affiliateID}/transactions`;
+        endpoint = `affiliates/${getIndex(id, 0, affiliateID)}/transactions`;
         break;
       }
 
     case 'affiliateStats':
       {
-        endpoint = `affiliates/${affiliateID}/stats`;
+        endpoint = `affiliates/${getIndex(id, 0, affiliateID)}/stats`;
         break;
       }
 
     case 'affiliateTimeline':
       {
-        endpoint = `affiliates/${affiliateID}/timeline`;
+        endpoint = `affiliates/${getIndex(id, 0, affiliateID)}/timeline`;
         break;
       }
     // ORGANIZATION
