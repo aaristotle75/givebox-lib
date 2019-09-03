@@ -59,6 +59,7 @@ export class Alert extends Component {
     this.setState({
       display: 'hide'
     });
+    if (this.props.callback) this.props.callback();
   }
 
   render() {
