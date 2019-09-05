@@ -270,6 +270,8 @@ class Transactions extends Component {
       {
         field: 'dropdown',
         name: 'txType',
+        filter: 'txType,kind',
+        operator: '%3B',
         options: [
           {
             primaryText: 'All Transactions',
@@ -282,6 +284,14 @@ class Transactions extends Component {
           {
             primaryText: 'Withdrawals/Debits',
             value: 'debit'
+          },
+          {
+            primaryText: 'Withdrawals Only',
+            value: 'debit,deposit'
+          },
+          {
+            primaryText: 'In App Purchases',
+            value: 'debit,Subscription'
           }
         ],
         value: 'all'

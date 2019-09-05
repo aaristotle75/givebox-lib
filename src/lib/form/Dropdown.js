@@ -142,11 +142,12 @@ class Dropdown extends Component {
           <div data-selected={value.primaryText} data-value={dataValue} onClick={(e) => bindthis.onClick(e, value.disabled)} className={`dropdown-item ${selected ? 'selected' : ''} ${value.disabled ? 'disabled' : ''}`} key={dataValue}>
             <div className='dropdown-container'>
               <div className='leftSide'>
-                {bindthis.props.multi && selected && bindthis.props.iconMultiChecked} {value.primaryText}{value.actions ? <span className='dropdown-item-actions'>{value.actions}</span> : ''}
+                {bindthis.props.multi && selected && bindthis.props.iconMultiChecked} {value.primaryText}
                 {value.secondaryText && <span className='secondaryText'>{value.secondaryText}</span>}
               </div>
               <div className='rightSide'>
                 {value.rightText && <span className='rightText'>{value.rightText}</span>}
+                {value.actions ? <span className='dropdown-item-actions'>{value.actions}</span> : ''}
               </div>
             </div>
           </div>

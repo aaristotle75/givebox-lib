@@ -518,6 +518,11 @@ label.idle, .label.idle {
   button .label.idle {
     color: $med-blue-gray !important;
   }
+
+  .dropdown-item-actions button {
+    color: $mainColor;
+    font-size: $med-text-size;
+  }
 }
 
 .dropdown.active {
@@ -620,10 +625,6 @@ label.idle, .label.idle {
     .label {
       color: $red !important;
     }
-
-    .dropdown-item-actions button {
-      color: $mainColor;
-    }
   }
 }
 
@@ -682,6 +683,14 @@ label.idle, .label.idle {
     display: inline-block;
     vertical-align: middle;
     color: $white;
+  }
+
+  button.link {
+    font-size: $med-text-size;
+    color: $mainColor;
+  }
+  button.link:hover {
+    color: $mainColor2;
   }
 }
 

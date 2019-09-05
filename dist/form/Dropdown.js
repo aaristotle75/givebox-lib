@@ -175,15 +175,15 @@ class Dropdown extends Component {
           className: "dropdown-container"
         }, React.createElement("div", {
           className: "leftSide"
-        }, bindthis.props.multi && selected && bindthis.props.iconMultiChecked, " ", value.primaryText, value.actions ? React.createElement("span", {
-          className: "dropdown-item-actions"
-        }, value.actions) : '', value.secondaryText && React.createElement("span", {
+        }, bindthis.props.multi && selected && bindthis.props.iconMultiChecked, " ", value.primaryText, value.secondaryText && React.createElement("span", {
           className: "secondaryText"
         }, value.secondaryText)), React.createElement("div", {
           className: "rightSide"
         }, value.rightText && React.createElement("span", {
           className: "rightText"
-        }, value.rightText)))));
+        }, value.rightText), value.actions ? React.createElement("span", {
+          className: "dropdown-item-actions"
+        }, value.actions) : ''))));
       }
     });
     return items ? items : React.createElement("option", null, "None");

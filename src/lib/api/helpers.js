@@ -215,9 +215,9 @@ export function sendResource(resource, opts = {}) {
   }
 }
 
-export function savePrefs(pref, callback) {
+export function savePrefs(pref, callback, reset = false) {
   return (dispatch, getState) => {
-    const preferences = has(getState(), 'preferences') ? getState().preferences : {};
+    const preferences = !reset && has(getState(), 'preferences') ? getState().preferences : {};
     const updatedPrefs = { ...preferences, ...pref };
     dispatch(updatePrefs(updatedPrefs));
     dispatch(sendResource('userPreferences', {
@@ -225,7 +225,7 @@ export function savePrefs(pref, callback) {
       data: {
         cloudUI: updatedPrefs
       },
-      reload: false,
+      reload: reset ? true : false,
       isSending: false
     }));
   }
