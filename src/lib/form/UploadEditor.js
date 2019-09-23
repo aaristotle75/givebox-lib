@@ -84,15 +84,14 @@ class UploadEditor extends Component {
   }
 
   rotateLeft = e => {
-    e.preventDefault()
-
+    //e.preventDefault();
     this.setState({
       rotate: this.state.rotate - 90,
     })
   }
 
   rotateRight = e => {
-    e.preventDefault()
+    //e.preventDefault()
     this.setState({
       rotate: this.state.rotate + 90,
     })

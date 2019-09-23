@@ -418,7 +418,7 @@ class Form extends Component {
     const field = this.state.fields[name];
     let value = e.target.value;
     if (field.validate === 'url') this.fieldProp(name, {value: _v.checkHTTP(value)});
-    if (field.onBlur) field.onBlur(name, value, field, this.state.fields);    
+    if (field.onBlur) field.onBlur(name, value, field, this.state.fields);
     if (field.debug) console.log('onBlur', name, field);
   }
 
@@ -946,20 +946,22 @@ class Form extends Component {
   *
   * TODO: get this cleaned up on the API side to have consistent responses
   */
-  getErrors(err) {
+  getErrors(err, returnCode = false) {
     let error = false;
+    let code = getValue(err, 'code');
 
     // Make sure the response has data prop before continuing
     if (has(err, 'data')) {
       const data = err.data;
+      code = getValue(data, 'code');
       // Handle single error
       if (has(data, 'message')) {
         if (data.code === 'vantiv_payfac' && this.props.hideVantivErrors) {
           // Show the hideVantivErrors message
-          this.formProp({ error: true, errorMsg: `${this.props.hideVantivErrors}` });
+          if (!returnCode) this.formProp({ error: true, errorMsg: `${this.props.hideVantivErrors}` });
           error = this.props.hideVantivErrors;
         } else {
-          this.formProp({ error: true, errorMsg: `${data.message}` });
+          if (!returnCode) this.formProp({ error: true, errorMsg: `${data.message}` });
           error = data.message;
         }
       }
@@ -972,7 +974,7 @@ class Form extends Component {
           if (!isEmpty(errors[i])) {
             if (has(errors[i], 'field')) {
               if (has(this.state.fields, errors[i].field)) {
-                this.fieldProp(errors[i].field, { error: `The following error occurred while saving, ${errors[i].message}` });
+                if (!returnCode) this.fieldProp(errors[i].field, { error: `The following error occurred while saving, ${errors[i].message}` });
               }
             }
             if (has(errors[i], 'message')) {
@@ -980,11 +982,12 @@ class Form extends Component {
             }
           }
         }
-        this.formProp({ error: true, errorMsg: `Error saving: ${error}` });
+        if (!returnCode) this.formProp({ error: true, errorMsg: `Error saving: ${error}` });
       }
     }
+
     if (!error && (typeof err === 'string')) error = err;
-    return error;
+    return returnCode ? code : error;
   }
 
   formSaved(callback, msg = '', timeout = 2500) {

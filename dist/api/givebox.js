@@ -164,6 +164,18 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
         endpoint = `enterprises/1/orgs/${id[0]}/fee-settings`;
         break;
       }
+
+    case 'rewardCategories':
+      {
+        endpoint = `reward-categories`;
+        break;
+      }
+
+    case 'rewardMilestones':
+      {
+        endpoint = `reward-milestones`;
+        break;
+      }
     // Underwriting
 
     case 'underwritingStatus':
@@ -1007,6 +1019,18 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
     case 'orgBackgroundTask':
       {
         endpoint = `orgs/${orgID}/background-tasks/${id[0]}`;
+        break;
+      }
+
+    case 'orgRewardProgress':
+      {
+        endpoint = `orgs/${orgID}/reward-progress`;
+        break;
+      }
+
+    case 'orgRewardPoints':
+      {
+        endpoint = `orgs/${orgID}/reward-points`;
         break;
       }
     // ORDERS

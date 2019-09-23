@@ -21,6 +21,7 @@ class Filter extends Component {
 
   checkFilter(field) {
     let filters = '';
+    const operator = field.operator || '%2C';
     let arr = [];
 
     if (isNaN(field.value)) {
@@ -29,10 +30,16 @@ class Filter extends Component {
       }
     }
 
+    let filterArr = [];
+
+    if (field.filter.indexOf(',') !== -1) {
+      filterArr = field.filter.split(',');
+    }
+
     if (!util.isEmpty(arr) && !field.multi) {
-      arr.forEach(value => {
-        let filter = `${field.filter}:${isNaN(value) ? `"${value}"` : value}`;
-        filters = filter ? !filters ? filter : `${filters}%2C${filter}` : filters;
+      arr.forEach((value, key) => {
+        let filter = `${!util.isEmpty(filterArr) ? filterArr[key] : field.filter}:${isNaN(value) ? `"${value}"` : value}`;
+        filters = filter ? !filters ? filter : `${filters}${operator}${filter}` : filters;
       });
       filters = `(${filters})`;
     } else {
@@ -44,15 +51,23 @@ class Filter extends Component {
 
   makeFilter(field, splitValue) {
     let filter = '';
+    let filterArr = [];
+
+    if (field.filter.indexOf(',') !== -1) {
+      filterArr = field.filter.split(',');
+    }
+
+    const operator = field.operator || '%2C';
+    const toFilter = !util.isEmpty(filterArr) ? filterArr[0] : field.filter;
 
     if (field.multi && Array.isArray(field.value)) {
       let filters = '';
       field.value.forEach(function (value) {
         if (value && !field.value.includes('all')) {
-          filter = `${field.filter}:${isNaN(value) ? `"${value}"` : value}`;
+          filter = `${toFilter}:${isNaN(value) ? `"${value}"` : value}`;
         }
 
-        filters = filter ? !filters ? filter : `${filters}%2C${filter}` : filters;
+        filters = filter ? !filters ? filter : `${filters}${operator}${filter}` : filters;
       });
       filter = filters;
     } else {
@@ -78,7 +93,7 @@ class Filter extends Component {
           }
         }
 
-        filter = `${field.filter}:${isNaN(value) && !field.range ? `"${value}"` : value}`;
+        filter = `${toFilter}:${isNaN(value) && !field.range ? `"${value}"` : value}`;
       }
     }
 
@@ -161,7 +176,8 @@ class Filter extends Component {
           }, this.props.dropdown(value.name, {
             options: value.options,
             selectLabel: value.selectLabel,
-            filter: value.name,
+            filter: value.filter || value.name,
+            operator: value.operator,
             value: value.value,
             multi: value.multi,
             debug: value.debug,

@@ -1090,22 +1090,24 @@ class Form extends Component {
   */
 
 
-  getErrors(err) {
-    let error = false; // Make sure the response has data prop before continuing
+  getErrors(err, returnCode = false) {
+    let error = false;
+    let code = getValue(err, 'code'); // Make sure the response has data prop before continuing
 
     if (has(err, 'data')) {
-      const data = err.data; // Handle single error
+      const data = err.data;
+      code = getValue(data, 'code'); // Handle single error
 
       if (has(data, 'message')) {
         if (data.code === 'vantiv_payfac' && this.props.hideVantivErrors) {
           // Show the hideVantivErrors message
-          this.formProp({
+          if (!returnCode) this.formProp({
             error: true,
             errorMsg: `${this.props.hideVantivErrors}`
           });
           error = this.props.hideVantivErrors;
         } else {
-          this.formProp({
+          if (!returnCode) this.formProp({
             error: true,
             errorMsg: `${data.message}`
           });
@@ -1121,7 +1123,7 @@ class Form extends Component {
           if (!isEmpty(errors[i])) {
             if (has(errors[i], 'field')) {
               if (has(this.state.fields, errors[i].field)) {
-                this.fieldProp(errors[i].field, {
+                if (!returnCode) this.fieldProp(errors[i].field, {
                   error: `The following error occurred while saving, ${errors[i].message}`
                 });
               }
@@ -1133,7 +1135,7 @@ class Form extends Component {
           }
         }
 
-        this.formProp({
+        if (!returnCode) this.formProp({
           error: true,
           errorMsg: `Error saving: ${error}`
         });
@@ -1141,7 +1143,7 @@ class Form extends Component {
     }
 
     if (!error && typeof err === 'string') error = err;
-    return error;
+    return returnCode ? code : error;
   }
 
   formSaved(callback, msg = '', timeout = 2500) {

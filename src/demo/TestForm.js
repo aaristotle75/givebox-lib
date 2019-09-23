@@ -18,11 +18,13 @@ export default class TestForm extends Component {
     this.fileUploadSuccess = this.fileUploadSuccess.bind(this);
     this.toggleWebcam = this.toggleWebcam.bind(this);
     this.getCapture = this.getCapture.bind(this);
+    this.onChangeReadonly = this.onChangeReadonly.bind(this);
     this.state = {
       checked: false,
       success: false,
       webcam: true,
-      capture: null
+      capture: null,
+      readOnly: false
     }
     this.roleRef = React.createRef();
   }
@@ -80,6 +82,11 @@ export default class TestForm extends Component {
     this.setState({ webcam: this.state.webcam ? false : true });
   }
 
+  onChangeReadonly(name, value) {
+    this.props.fieldProp('taxID', { readOnly: value });
+    this.setState({ readOnly: value });
+  }
+
   render() {
 
     const list = [
@@ -89,12 +96,14 @@ export default class TestForm extends Component {
       { value: 4, primaryText: 'Fourth Bank Account', secondaryText: 'xxxxx4444' }
     ];
 
-
+    console.log('execute readOnly', this.state.readOnly);
     return (
       <div>
         <h2>Form Elements</h2>
         <div className='formWrapper'>
-          <ModalLink id='feesGlossary'>Test Modal</ModalLink>
+          {this.props.choice('readOnly', { type: 'checkbox', onChange: this.onChangeReadonly, label: 'Change Read Only.', checked: false })}
+          {this.props.textField('taxID', { readOnly: this.state.readOnly, readOnlyText: 'You cannot edit this field', placeholder: 'Enter federal Tax ID', label: 'Tax ID', validate: 'taxID', value: '10-1010101' })}
+
           {this.props.dropdown('bankAccounts', {
             options: list,
             label: 'Bank Accounts',

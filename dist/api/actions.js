@@ -232,7 +232,7 @@ export function sendAPI(resource, endpoint, method, data, callback, reloadResour
           default:
             // pass response as error
             dispatch(sendResponse(resource, {}, response));
-            if (callback) callback(null, response);
+            if (callback) callback(null, response, response.status);
             break;
         }
       }).catch(function (error) {

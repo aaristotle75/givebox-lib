@@ -121,9 +121,10 @@ function propCompare(prop, direction) {
   }
 }
 
-export function splitName(str) {
+export function splitName(string) {
   let arr = [];
   const value = {};
+  const str = string.trim();
   if (!str) return false;
   arr = str.split(' ');
   if (arr.length > 1) {

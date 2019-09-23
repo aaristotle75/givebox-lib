@@ -243,7 +243,7 @@ export function sendAPI(
           default:
             // pass response as error
             dispatch(sendResponse(resource, {}, response));
-            if (callback) callback(null, response);
+            if (callback) callback(null, response, response.status);
             break;
         }
       })
