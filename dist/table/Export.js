@@ -1,14 +1,26 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { util } from '../';
+import { util, Loader } from '../';
 import { getResource } from '../api/helpers';
+import FileSaver from 'file-saver';
 import has from 'has';
+
+const {
+  detect
+} = require('detect-browser');
+
+const browser = detect();
 
 class ExportLink extends Component {
   constructor(props) {
     super(props);
     this.onClick = this.onClick.bind(this);
     this.makeLink = this.makeLink.bind(this);
+    this.download = this.download.bind(this);
+    this.downloadCallback = this.downloadCallback.bind(this);
+    this.state = {
+      downloading: false
+    };
   }
 
   makeLink() {
@@ -29,7 +41,35 @@ class ExportLink extends Component {
   }
 
   onClick() {
-    window.open(this.makeLink(), '_blank');
+    const browserName = util.getValue(browser, 'name');
+    if (browserName === 'chrome') window.open(this.makeLink(), '_self');else this.setState({
+      downloading: true
+    }, this.download);
+  }
+
+  download() {
+    const bindthis = this;
+    const url = this.makeLink();
+    const filename = `${this.props.name}.csv`;
+    const x = new XMLHttpRequest();
+
+    x.onload = function () {
+      if (this.status === 200) {
+        bindthis.downloadCallback(url, x.response, filename);
+      }
+    };
+
+    x.open('get', url, true);
+    x.withCredentials = true;
+    x.responseType = 'blob';
+    x.send();
+  }
+
+  async downloadCallback(url, blob, filename) {
+    FileSaver.saveAs(blob, filename);
+    this.setState({
+      downloading: false
+    });
   }
 
   render() {
@@ -49,7 +89,9 @@ class ExportLink extends Component {
     return React.createElement("div", {
       style: style,
       className: `exportRecordsLink ${align}`
-    }, React.createElement("button", {
+    }, this.state.downloading ? React.createElement(Loader, {
+      msg: "Downloading File"
+    }) : '', React.createElement("button", {
       onClick: this.onClick,
       className: `link`
     }, desc));

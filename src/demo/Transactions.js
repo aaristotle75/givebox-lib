@@ -13,7 +13,8 @@ import {
   types,
   Tabs,
   Tab,
-  Filter
+  Filter,
+  Export
 } from '../lib';
 import Moment from 'moment';
 
@@ -177,10 +178,16 @@ class Transactions extends Component {
 
     headers.push(
       { name: 'Date', colspan: 2, width: '20%', sort: 'createdAt' },
-      { name: 'Description', width: '45%', sort: 'cardName' },
+      { name: 'Description', width: '40%', sort: 'cardName' },
       { name: 'Deposits/Credits', width: '10%', sort: 'net%2CtxType' },
       { name: 'Withdrawals/Debits', width: '10%', sort: 'kind' },
-      { name: '', width: '20%', sort: '' }
+      { name:
+        <Export
+          name='orgTransactions'
+          customName={'testCustomName'}
+          align={'right'}
+          desc={<span><span className='exportRecordsText'>Download Report</span> <span className='icon icon-download-cloud'></span></span>}
+        />, width: '20%', sort: '' }
     );
     fdata.headers = headers;
 
