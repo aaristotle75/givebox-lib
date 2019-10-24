@@ -186,7 +186,6 @@ class Transactions extends Component {
           name='orgTransactions'
           customName={'testCustomName'}
           align={'right'}
-          desc={<span><span className='exportRecordsText'>Download Report</span> <span className='icon icon-download-cloud'></span></span>}
         />, width: '20%', sort: '' }
     );
     fdata.headers = headers;

@@ -83,7 +83,10 @@ export function getResource(resource, opts = {}) {
       endpoint = `${endpoint}${options.csv ? '.csv' : ''}${util.makeAPIQuery(search)}`;
 
       // If CSV return the endpoint else dispatch the API
-      if (options.csv) return endpoint;
+      if (options.csv) {
+        if (options.callback) options.callback();
+        return endpoint;
+      }
       else if (!options.returnData) {
         return dispatch(receiveResource(
           options.customName || resource,
