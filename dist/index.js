@@ -19,7 +19,7 @@ import Table from './table/Table';
 import MaxRecords from './table/MaxRecords';
 import NoRecords from './table/NoRecords';
 import Paginate from './table/Paginate';
-import Export from './table/Export';
+import Export, { DownloadFileConnect } from './table/Export';
 import Filter from './table/Filter';
 import StatBlock from './block/StatBlock';
 import ActionBar from './block/ActionBar';
@@ -53,7 +53,7 @@ toggleModal, removeResource, resourceProp, getAPI, sendAPI, setAppRef, setModalR
 giveboxAPI, getResource, reloadResource, sendResource, savePrefs, // reducers
 app, resource, send, modal, preferences, // Modal
 ModalLink, ModalRoute, // Table
-ActionsMenu, Search, Table, MaxRecords, NoRecords, Paginate, Export, Filter, // Block
+ActionsMenu, Search, Table, MaxRecords, NoRecords, Paginate, Export, DownloadFileConnect, Filter, // Block
 StatBlock, ActionBar, CodeBlock, // common
 Alert, Collapse, Delete, Error, Fade, GBLink, GBX, Iframe, Image, ImageDisplay, history, LinearBar, Loader, Portal, Redirect, Tabs, Tab, types, util, // Glossary
 FeesGlossary };

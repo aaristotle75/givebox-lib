@@ -24,6 +24,10 @@ class DownloadFile extends Component {
     };
   }
 
+  componentDidMount() {
+    console.log('execute downloadFileConnect', this.props);
+  }
+
   makeLink(chrome = false) {
     const resource = this.props.resource;
     if (has(resource.search, 'page')) delete resource.search.page;
@@ -90,16 +94,14 @@ class DownloadFile extends Component {
     }
 
     return (
-      <div className='modalWrapper'>
-        <div className='center'>
-          {this.state.downloading ? <Loader msg='Downloading File' /> : ''}
-          <Alert alert='success' display={success} msg={success} />
-          <Alert alert='error' display={this.state.error} msg={this.state.error} />
-          <h3>{`You are about to download ${text || name}.`}</h3>
-          <div className='button-group'>
-            <GBLink className='link' onClick={() => this.props.toggleModal(this.props.modalID, false)}>{success ? 'Close' : 'Cancel'}</GBLink>
-            <GBLink className="button" onClick={this.onClick}>Download Report {success ? 'Again' : ''}</GBLink>
-          </div>
+      <div className='center'>
+        {this.state.downloading ? <Loader msg='Downloading File' /> : ''}
+        <Alert alert='success' display={success} msg={success} />
+        <Alert alert='error' display={this.state.error} msg={this.state.error} />
+        <h3>{`You are about to download ${text || name}.`}</h3>
+        <div className='button-group'>
+          <GBLink className='link' onClick={() => this.props.toggleModal(this.props.modalID, false)}>{success ? 'Close' : 'Cancel'}</GBLink>
+          <GBLink className="button" onClick={this.onClick}>Download Report {success ? 'Again' : ''}</GBLink>
         </div>
       </div>
     );
@@ -115,7 +117,7 @@ function mapStateToProps(state, props) {
   }
 }
 
-const DownloadFileConnect = connect(mapStateToProps, {
+export const DownloadFileConnect = connect(mapStateToProps, {
   toggleModal,
   getResource
 })(DownloadFile)
@@ -129,17 +131,17 @@ export default class ExportLink extends Component {
       style,
       align,
       link,
-      name
+      name,
+      customName,
+      resource,
+      text
     } = this.props;
 
-    const modalID = `export${name}`;
+    const modalID = 'downloadReport'; //`export${name}`;
 
     return (
-      <div>
-        <ModalRoute id={modalID} className='flexWrapper' component={() => { return <DownloadFileConnect {...this.props} modalID={modalID} /> }} effect='3DFlipVert' style={{ width: '50%' }} />
-        <div style={style} className={`exportRecordsLink ${align}`}>
-          <ModalLink id={modalID} className='link'>{link}</ModalLink>
-        </div>
+      <div style={style} className={`exportRecordsLink ${align}`}>
+        <ModalLink id={modalID} className='link' opts={{ name, customName, link, resource, text, modalID }}>{link}</ModalLink>
       </div>
     );
   }

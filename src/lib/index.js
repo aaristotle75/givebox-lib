@@ -21,7 +21,7 @@ import Table from './table/Table';
 import MaxRecords from './table/MaxRecords';
 import NoRecords from './table/NoRecords';
 import Paginate from './table/Paginate';
-import Export from './table/Export';
+import Export, { DownloadFileConnect } from './table/Export';
 import Filter from './table/Filter';
 
 import StatBlock from './block/StatBlock';
@@ -125,6 +125,7 @@ export {
   NoRecords,
   Paginate,
   Export,
+  DownloadFileConnect,
   Filter,
 
   // Block

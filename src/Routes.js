@@ -27,6 +27,7 @@ class Routes extends Component {
         <ModalRoute id='bankDelete' component={(props) => loadComponent('modal/lib/common/Delete', { useProjectRoot: false, props: props })} effect='3DFlipVert' style={{ width: '50%' }} />
         <ModalRoute id='delete' component={(props) => loadComponent('modal/lib/common/Delete', { useProjectRoot: false, props: props })} effect='3DFlipVert' style={{ width: '50%' }} />
         <ModalRoute  id='testModal' component={() => this.props.loadComponent('modal/demo/ModalForm', { useProjectRoot: false })} effect='3DFlipVert' style={{ width: '50%' }} />
+        <ModalRoute  id='downloadReport' component={(props) => this.props.loadComponent('modal/demo/Export', { useProjectRoot: false, props: props })} effect='3DFlipVert' style={{ width: '50%' }} />            
         <Router>
           <Route
             render={({ location }) => (

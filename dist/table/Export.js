@@ -1,5 +1,3 @@
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { util, Loader, GBLink, ModalLink, ModalRoute, Alert } from '../';
@@ -27,6 +25,10 @@ class DownloadFile extends Component {
       error: '',
       success: ''
     };
+  }
+
+  componentDidMount() {
+    console.log('execute downloadFileConnect', this.props);
   }
 
   makeLink(chrome = false) {
@@ -106,8 +108,6 @@ class DownloadFile extends Component {
     }
 
     return React.createElement("div", {
-      className: "modalWrapper"
-    }, React.createElement("div", {
       className: "center"
     }, this.state.downloading ? React.createElement(Loader, {
       msg: "Downloading File"
@@ -127,7 +127,7 @@ class DownloadFile extends Component {
     }, success ? 'Close' : 'Cancel'), React.createElement(GBLink, {
       className: "button",
       onClick: this.onClick
-    }, "Download Report ", success ? 'Again' : ''))));
+    }, "Download Report ", success ? 'Again' : '')));
   }
 
 }
@@ -139,7 +139,7 @@ function mapStateToProps(state, props) {
   };
 }
 
-const DownloadFileConnect = connect(mapStateToProps, {
+export const DownloadFileConnect = connect(mapStateToProps, {
   toggleModal,
   getResource
 })(DownloadFile);
@@ -149,28 +149,28 @@ export default class ExportLink extends Component {
       style,
       align,
       link,
-      name
+      name,
+      customName,
+      resource,
+      text
     } = this.props;
-    const modalID = `export${name}`;
-    return React.createElement("div", null, React.createElement(ModalRoute, {
-      id: modalID,
-      className: "flexWrapper",
-      component: () => {
-        return React.createElement(DownloadFileConnect, _extends({}, this.props, {
-          modalID: modalID
-        }));
-      },
-      effect: "3DFlipVert",
-      style: {
-        width: '50%'
-      }
-    }), React.createElement("div", {
+    const modalID = 'downloadReport'; //`export${name}`;
+
+    return React.createElement("div", {
       style: style,
       className: `exportRecordsLink ${align}`
     }, React.createElement(ModalLink, {
       id: modalID,
-      className: "link"
-    }, link)));
+      className: "link",
+      opts: {
+        name,
+        customName,
+        link,
+        resource,
+        text,
+        modalID
+      }
+    }, link));
   }
 
 }
