@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { util, Loader, GBLink, ModalLink, ModalRoute, Alert } from '../';
+import { util, Loader, GBLink, ModalLink, Alert } from '../';
 import { toggleModal } from '../api/actions';
 import { getResource } from '../api/helpers';
 import FileSaver from 'file-saver';
@@ -22,10 +22,6 @@ class DownloadFile extends Component {
       error: '',
       success: ''
     };
-  }
-
-  componentDidMount() {
-    console.log('execute downloadFileConnect', this.props);
   }
 
   makeLink(chrome = false) {
