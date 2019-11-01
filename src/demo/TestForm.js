@@ -19,12 +19,14 @@ export default class TestForm extends Component {
     this.toggleWebcam = this.toggleWebcam.bind(this);
     this.getCapture = this.getCapture.bind(this);
     this.onChangeReadonly = this.onChangeReadonly.bind(this);
+    this.testFunc = this.testFunc.bind(this);
     this.state = {
       checked: false,
       success: false,
       webcam: true,
       capture: null,
-      readOnly: false
+      readOnly: false,
+      value: 5
     }
     this.roleRef = React.createRef();
   }
@@ -87,6 +89,10 @@ export default class TestForm extends Component {
     this.setState({ readOnly: value });
   }
 
+  testFunc(value) {
+    this.setState({ value });
+  }
+
   render() {
 
     const list = [
@@ -96,14 +102,15 @@ export default class TestForm extends Component {
       { value: 4, primaryText: 'Fourth Bank Account', secondaryText: 'xxxxx4444' }
     ];
 
-    console.log('execute readOnly', this.state.readOnly);
+    console.log('execute amount', this.state.value);
     return (
       <div>
         <h2>Form Elements</h2>
         <div className='formWrapper'>
           {this.props.choice('readOnly', { type: 'checkbox', onChange: this.onChangeReadonly, label: 'Change Read Only.', checked: false })}
           {this.props.textField('taxID', { readOnly: this.state.readOnly, readOnlyText: 'You cannot edit this field', placeholder: 'Enter federal Tax ID', label: 'Tax ID', validate: 'taxID', value: '10-1010101' })}
-
+          <GBLink onClick={() => this.testFunc(100)}>Test Func</GBLink>
+          {this.props.textField('amount', { value: this.state.value, label: 'Amount' })}
           {this.props.dropdown('bankAccounts', {
             options: list,
             label: 'Bank Accounts',
