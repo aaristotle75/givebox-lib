@@ -69,6 +69,9 @@ class Delete extends Component {
     this.props.sendResource(this.props.resource, {
       id: [this.props.id],
       method: 'delete',
+      data: {
+        activityDesc: this.props.desc
+      },
       callback: this.confirmCallback,
       resourcesToLoad: this.props.resourcesToLoad || null
     });

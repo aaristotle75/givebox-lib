@@ -162,7 +162,8 @@ export function sendResource(resource, opts = {}) {
     resourcesToLoad: null,
     customName: null,
     multi: false,
-    isSending: true
+    isSending: true,
+    trackActivity: true
   };
   const options = { ...defaults,
     ...opts
@@ -186,7 +187,7 @@ export function sendResource(resource, opts = {}) {
         endpoint = endpoint.slice(0, -4);
       }
 
-      return dispatch(sendAPI(resource, endpoint, method, options.data, options.callback, options.reload ? reloadResource : null, options.resourcesToLoad || options.toLoad, options.customName, options.multi, options.isSending));
+      return dispatch(sendAPI(resource, endpoint, method, options.data, options.callback, options.reload ? reloadResource : null, options.resourcesToLoad || options.toLoad, options.customName, options.multi, options.isSending, options.trackActivity));
     }
   };
 }

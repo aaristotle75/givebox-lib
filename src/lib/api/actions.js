@@ -2,6 +2,7 @@ import axios from 'axios';
 import * as types from './actionTypes';
 import * as util from '../common/utility';
 import has from 'has';
+import { trackActivity } from './activity';
 
 export function updatePrefs(prefs) {
   return {
@@ -129,13 +130,13 @@ export function getAPI(
   reloadResource,
   fullResponse
 ) {
-  let csrf_token = document.querySelector(`meta[name='csrf_token']`) ? document.querySelector(`meta[name='csrf_token']`)['content'] : '';
   return (dispatch, getState) => {
     if (shouldGetAPI(getState(), customName || resource, reload)) {
+      const csrf_token = document.getElementById('givebox_csrf_token') ? document.getElementById('givebox_csrf_token').value : '';
       dispatch(requestResource(customName || resource, reload));
       axios.get(endpoint, {
         headers: {
-          'X-CSRF-Token': csrf_token
+          'X-CSRF-Token': csrf_token === '{{ .CSRFToken }}' ? 'localhost' : csrf_token
         },
         withCredentials: true,
         transformResponse: (data) => {
@@ -205,9 +206,10 @@ export function sendAPI(
   resourcesToLoad,
   customName,
   multi,
-  isSending
+  isSending,
+  tryTrackActivity
 ) {
-  const csrf_token = document.querySelector(`meta[name='csrf_token']`) ? document.querySelector(`meta[name='csrf_token']`)['content'] === '{{ .CSRFToken }}' ? 'localhost' : document.querySelector(`meta[name='csrf_token']`)['content'] : '';
+
   const errorMsg = {
     data: {
       message: 'Some error occurred.'
@@ -216,6 +218,7 @@ export function sendAPI(
   return (dispatch, getState) => {
     method = method.toLowerCase();
     if (shouldSendAPI(getState(), resource, multi)) {
+      const csrf_token = document.getElementById('givebox_csrf_token') ? document.getElementById('givebox_csrf_token').value : '';
       dispatch(sendRequest(resource, endpoint, method, data, isSending));
       axios({
         method: method,
@@ -223,7 +226,7 @@ export function sendAPI(
         data: data,
         withCredentials: true,
         headers: {
-          'X-CSRF-Token': csrf_token
+          'X-CSRF-Token': csrf_token === '{{ .CSRFToken }}' ? 'localhost' : csrf_token
         }
       })
       .then(function (response) {
@@ -234,6 +237,9 @@ export function sendAPI(
             dispatch(sendResponse(resource, has(response, 'data') ? response.data : response, null));
             if (callback) callback(has(response, 'data') ? response.data : null, null);
             if (reloadResource) dispatch(reloadResource(customName || resource, { resourcesToLoad: resourcesToLoad }));
+
+            // Check if should track activity
+            if (tryTrackActivity) dispatch(trackActivity(resource, method, data, endpoint));
             break;
           case 504:
             errorMsg.response.data.message = 'Gateway timeout error occured. Please retry later.';

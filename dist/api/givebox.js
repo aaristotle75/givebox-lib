@@ -1039,6 +1039,18 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
         endpoint = `orgs/${orgID}/reward-points`;
         break;
       }
+
+    case 'orgActivities':
+      {
+        endpoint = `orgs/${orgID}/audit-activities`;
+        break;
+      }
+
+    case 'orgActivityArchives':
+      {
+        endpoint = `orgs/${orgID}/audit-activity-archives`;
+        break;
+      }
     // ORDERS
 
     case 'purchaseOrder':

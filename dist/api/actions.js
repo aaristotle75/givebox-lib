@@ -2,6 +2,7 @@ import axios from 'axios';
 import * as types from './actionTypes';
 import * as util from '../common/utility';
 import has from 'has';
+import { trackActivity } from './activity';
 export function updatePrefs(prefs) {
   return {
     type: types.SET_PREFERENCES,
@@ -120,13 +121,13 @@ function resourceCatchError(resource, error) {
 }
 
 export function getAPI(resource, endpoint, search, callback, reload, customName, resourcesToLoad, reloadResource, fullResponse) {
-  let csrf_token = document.querySelector(`meta[name='csrf_token']`) ? document.querySelector(`meta[name='csrf_token']`)['content'] : '';
   return (dispatch, getState) => {
     if (shouldGetAPI(getState(), customName || resource, reload)) {
+      const csrf_token = document.getElementById('givebox_csrf_token') ? document.getElementById('givebox_csrf_token').value : '';
       dispatch(requestResource(customName || resource, reload));
       axios.get(endpoint, {
         headers: {
-          'X-CSRF-Token': csrf_token
+          'X-CSRF-Token': csrf_token === '{{ .CSRFToken }}' ? 'localhost' : csrf_token
         },
         withCredentials: true,
         transformResponse: data => {
@@ -191,8 +192,7 @@ function sendResponse(resource, response, error) {
   };
 }
 
-export function sendAPI(resource, endpoint, method, data, callback, reloadResource, resourcesToLoad, customName, multi, isSending) {
-  const csrf_token = document.querySelector(`meta[name='csrf_token']`) ? document.querySelector(`meta[name='csrf_token']`)['content'] === '{{ .CSRFToken }}' ? 'localhost' : document.querySelector(`meta[name='csrf_token']`)['content'] : '';
+export function sendAPI(resource, endpoint, method, data, callback, reloadResource, resourcesToLoad, customName, multi, isSending, tryTrackActivity) {
   const errorMsg = {
     data: {
       message: 'Some error occurred.'
@@ -202,6 +202,7 @@ export function sendAPI(resource, endpoint, method, data, callback, reloadResour
     method = method.toLowerCase();
 
     if (shouldSendAPI(getState(), resource, multi)) {
+      const csrf_token = document.getElementById('givebox_csrf_token') ? document.getElementById('givebox_csrf_token').value : '';
       dispatch(sendRequest(resource, endpoint, method, data, isSending));
       axios({
         method: method,
@@ -209,7 +210,7 @@ export function sendAPI(resource, endpoint, method, data, callback, reloadResour
         data: data,
         withCredentials: true,
         headers: {
-          'X-CSRF-Token': csrf_token
+          'X-CSRF-Token': csrf_token === '{{ .CSRFToken }}' ? 'localhost' : csrf_token
         }
       }).then(function (response) {
         switch (response.status) {
@@ -220,7 +221,9 @@ export function sendAPI(resource, endpoint, method, data, callback, reloadResour
             if (callback) callback(has(response, 'data') ? response.data : null, null);
             if (reloadResource) dispatch(reloadResource(customName || resource, {
               resourcesToLoad: resourcesToLoad
-            }));
+            })); // Check if should track activity
+
+            if (tryTrackActivity) dispatch(trackActivity(resource, method, data, endpoint));
             break;
 
           case 504:

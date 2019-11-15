@@ -181,7 +181,8 @@ export function sendResource(resource, opts = {}) {
     resourcesToLoad: null,
     customName: null,
     multi: false,
-    isSending: true
+    isSending: true,
+    trackActivity: true
   };
   const options = { ...defaults, ...opts };
   return (dispatch, getState) => {
@@ -202,6 +203,7 @@ export function sendResource(resource, opts = {}) {
         // This slices off the /new from the endpoint
         endpoint = endpoint.slice(0, -4);
       }
+
       return dispatch(sendAPI(
         resource,
         endpoint,
@@ -212,7 +214,8 @@ export function sendResource(resource, opts = {}) {
         options.resourcesToLoad || options.toLoad,
         options.customName,
         options.multi,
-        options.isSending
+        options.isSending,
+        options.trackActivity
       ));
     }
   }
