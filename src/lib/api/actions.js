@@ -239,7 +239,7 @@ export function sendAPI(
             if (reloadResource) dispatch(reloadResource(customName || resource, { resourcesToLoad: resourcesToLoad }));
 
             // Check if should track activity
-            if (tryTrackActivity) dispatch(trackActivity(resource, method, data, endpoint));
+            if (tryTrackActivity) dispatch(trackActivity(resource, method, data, endpoint, util.getValue(response, 'data', {})));
             break;
           case 504:
             errorMsg.response.data.message = 'Gateway timeout error occured. Please retry later.';

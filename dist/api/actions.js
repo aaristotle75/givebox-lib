@@ -223,7 +223,7 @@ export function sendAPI(resource, endpoint, method, data, callback, reloadResour
               resourcesToLoad: resourcesToLoad
             })); // Check if should track activity
 
-            if (tryTrackActivity) dispatch(trackActivity(resource, method, data, endpoint));
+            if (tryTrackActivity) dispatch(trackActivity(resource, method, data, endpoint, util.getValue(response, 'data', {})));
             break;
 
           case 504:

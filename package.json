@@ -17,6 +17,7 @@
     "react-dom": "^16.6.0"
   },
   "dependencies": {
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "animated-scroll-to": "^1.2.2",
     "axios": "^0.18.1",
     "detect-browser": "^3.0.1",
