@@ -4,22 +4,37 @@ import { util } from '../';
 export default class Loader extends Component {
   constructor(props) {
     super(props);
+    this.stopLoader = this.stopLoader.bind(this);
     this.state = {
       end: false,
-      rootEl: null
+      rootEl: null,
+      showLoader: true
     };
   }
 
   componentDidMount() {
     this.setState({
       rootEl: document.getElementById('app-root')
-    });
+    }, this.stopLoader);
   }
 
   componentWillUnmount() {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+      this.timeout = null;
+    }
+
     this.setState({
       end: true
     });
+  }
+
+  stopLoader() {
+    this.timeout = setTimeout(() => {
+      this.setState({
+        showLoader: false
+      });
+    }, 30000);
   }
 
   createSVG() {
@@ -41,10 +56,10 @@ export default class Loader extends Component {
     } = this.props;
     if (!this.state.rootEl) return React.createElement("div", null);
     const showMsg = !!forceText;
-    return React.createElement(Portal, {
+    return this.state.showLoader ? React.createElement(Portal, {
       id: "loadingPortal",
       rootEl: this.state.rootEl
-    }, React.createElement("div", {
+    }, React.createElement("div", null, React.createElement("div", {
       className: `loader ${className}`
     }), React.createElement("div", {
       className: "loaderContent"
@@ -55,7 +70,7 @@ export default class Loader extends Component {
       style: {
         color: `${textColor ? textColor : '#fff'}`
       }
-    }, msg))));
+    }, msg))))) : React.createElement("div", null);
   }
 
 }

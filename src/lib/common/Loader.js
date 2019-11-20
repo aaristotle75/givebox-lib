@@ -6,18 +6,30 @@ export default class Loader extends Component {
 
 	constructor(props){
 		super(props);
+		this.stopLoader = this.stopLoader.bind(this);
 		this.state = {
 			end: false,
-      rootEl: null
+      rootEl: null,
+			showLoader: true
 		};
 	}
 
   componentDidMount() {
-    this.setState({rootEl: document.getElementById('app-root')});
+    this.setState({rootEl: document.getElementById('app-root')}, this.stopLoader);
   }
 
 	componentWillUnmount() {
-		this.setState({end: true});
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+      this.timeout = null;
+    }
+		this.setState({ end: true });
+	}
+
+	stopLoader() {
+		this.timeout = setTimeout(() => {
+			this.setState({ showLoader: false });
+		}, 30000);
 	}
 
 	createSVG() {
@@ -33,15 +45,19 @@ export default class Loader extends Component {
 		const showMsg = !!forceText;
 
     return (
+			this.state.showLoader ?
       <Portal id='loadingPortal' rootEl={this.state.rootEl}>
-				<div className={`loader ${className}`} />
-				<div className='loaderContent'>
-					<div className='loadingText'>
-					 	<div>{this.createSVG()}</div>
-						<span className={`${showMsg ? '' : 'displayNone'}`} style={{color: `${textColor ? textColor : '#fff'}` }}>{msg}</span>
+				<div>
+					<div className={`loader ${className}`} />
+					<div className='loaderContent'>
+						<div className='loadingText'>
+						 	<div>{this.createSVG()}</div>
+							<span className={`${showMsg ? '' : 'displayNone'}`} style={{color: `${textColor ? textColor : '#fff'}` }}>{msg}</span>
+						</div>
 					</div>
 				</div>
       </Portal>
+			: <div></div>
     )
   }
 }

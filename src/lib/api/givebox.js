@@ -681,6 +681,10 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       endpoint = `orgs/${orgID}/email-blasts/${id[0]}`;
       break;
     }
+    case 'orgEmailActivities': {
+      endpoint = `orgs/${orgID}/email-activities`;
+      break;
+    }
     case 'orgAlerts': {
       endpoint = `orgs/${orgID}/subscriptions`;
       break;
