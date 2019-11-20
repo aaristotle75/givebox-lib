@@ -1,7 +1,9 @@
 import {
-  sendResource
+  sendResource,
+  getResource
 } from './helpers';
 import * as util from '../common/utility';
+import Moment from 'moment';
 
 export function trackActivity(resourceName, method, data, endpoint, res) {
   return (dispatch, getState) => {
@@ -14,10 +16,29 @@ export function trackActivity(resourceName, method, data, endpoint, res) {
         userID: util.getValue(user, 'ID', null),
         URLPath: endpoint,
         description: desc,
-        method: method
+        method: method,
+        slug: resourceName
       };
-      dispatch(saveActivity(activityData));
+      dispatch(shouldSaveActivity(activityData, resourceName));
     }
+  }
+}
+
+function shouldSaveActivity(data, slug) {
+  return (dispatch, getState) => {
+    const checkTime = parseInt(Moment().subtract(1, 'minute').format('x')/1000);
+    dispatch(getResource('orgActivities', {
+      reload: true,
+      search: {
+        filter: `slug:"${slug}"%3BcreatedAt:>d${checkTime}`
+      },
+      callback: (res, err) => {
+        const total = !util.isEmpty(res) ? util.getValue(res, 'total', 0) : 0;
+        if (total === 0) {
+          dispatch(saveActivity(data));
+        }
+      }
+    }));
   }
 }
 
@@ -165,10 +186,13 @@ function getActivity(resource, method, data, res) {
       break;
     }
 
+    case 'orgAlert': {
+      desc = desc || `Alerts`;
+      break;
+    }
+
     // no default
   }
   const activityDesc = !util.isEmpty(desc) ? `${methodDesc} ${desc}` : '';
-  console.log('execute', activityDesc);
-  //return activityDesc;
-  return '';
+  return activityDesc;
 }
