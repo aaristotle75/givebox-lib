@@ -97,6 +97,10 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       endpoint = `risk-triggers`;
       break;
     }
+    case 'superRiskTrigger': {
+      endpoint = `risk-triggers/${id[0]}`;
+      break;
+    }
     case 'orgRiskInfo': {
       endpoint = `orgs/${id[0]}/risk-info`;
       break;
@@ -107,6 +111,10 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
     }
     case 'orgRiskTriggers': {
       endpoint = `orgs/${id[0]}/risk-triggers`;
+      break;
+    }
+    case 'orgRiskTrigger': {
+      endpoint = `orgs/${id[0]}/risk-triggers/${id[1]}`;
       break;
     }
     case 'orgRiskActivities': {
