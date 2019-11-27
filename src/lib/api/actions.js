@@ -223,7 +223,7 @@ export function sendAPI(
       axios({
         method: method,
         url: endpoint,
-        data: data,
+        data: method !== 'delete' ? data : null,
         withCredentials: true,
         headers: {
           'X-CSRF-Token': csrf_token === '{{ .CSRFToken }}' ? 'localhost' : csrf_token

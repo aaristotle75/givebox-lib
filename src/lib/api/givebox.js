@@ -85,6 +85,38 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       endpoint = `super/chargeback-transactions/${id[0]}`;
       break;
     }
+    case 'superRiskInfo': {
+      endpoint = `risk-info`;
+      break;
+    }
+    case 'superRiskStats': {
+      endpoint = `risk-stats`;
+      break;
+    }
+    case 'superRiskTriggers': {
+      endpoint = `risk-triggers`;
+      break;
+    }
+    case 'orgRiskInfo': {
+      endpoint = `orgs/${id[0]}/risk-info`;
+      break;
+    }
+    case 'orgRiskStats': {
+      endpoint = `orgs/${id[0]}/risk-stats`;
+      break;
+    }
+    case 'orgRiskTriggers': {
+      endpoint = `orgs/${id[0]}/risk-triggers`;
+      break;
+    }
+    case 'orgRiskActivities': {
+      endpoint = `orgs/${id[0]}/risk-activity`;
+      break;
+    }
+    case 'orgRiskActivity': {
+      endpoint = `orgs/${id[0]}/risk-activity/${id[1]}`;
+      break;
+    }
     case 'refund': {
       endpoint = `orgs/${id[0]}/purchases/${id[1]}/refunds`;
       break;
