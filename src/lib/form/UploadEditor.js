@@ -53,12 +53,12 @@ class UploadEditor extends Component {
 
   saveMediaItem(url) {
     this.props.sendResource(this.props.super ? 'superOrgMediaItems' : 'orgMediaItems', {
-      id: this.props.ids || null,
+      id: this.props.orgID || null,
       data: {
         URL: url
       },
       method: 'post',
-      resourcesToLoad: ['orgMediaItems'],
+      resourcesToLoad: this.props.super ? ['superOrgMediaItems'] : ['orgMediaItems'],
       callback: this.saveMediaItemCallback,
       isSending: false
     });

@@ -50,7 +50,11 @@ class UploadLibrary extends Component {
   }
 
   componentDidMount() {
-    this.props.getResource(this.props.resourceName);
+    const library = this.props.library;
+    const orgID = util.getValue(library, 'orgID');
+    this.props.getResource(this.props.resourceName, {
+      id: orgID ? [orgID] : null
+    });
     if (util.getValue(this.props.library, 'articleID')) this.props.getResource('articleMediaItems', { id: [this.props.library.articleID], reload: true });
   }
 
@@ -87,13 +91,14 @@ class UploadLibrary extends Component {
   }
 
   setSelected(URL, ID, callback = null) {
+    const library = this.props.library;
     this.setPreview(URL);
     this.props.handleSaveCallback(URL);
-    switch (util.getValue(this.props.library, 'type')) {
+    switch (util.getValue(library, 'type')) {
       case 'article': {
-        if (util.getValue(this.props.library, 'articleID')) {
+        if (util.getValue(library, 'articleID')) {
           this.props.sendResource('articleMediaItem', {
-            id: [this.props.library.articleID, ID],
+            id: [library.articleID, ID],
             method: 'put',
             isSending: false,
             data: {
@@ -108,8 +113,8 @@ class UploadLibrary extends Component {
         break;
       }
       case 'org': {
-        this.props.sendResource('orgMediaItem', {
-          id: [ID],
+        this.props.sendResource(util.getValue(library, 'super') ? 'superOrgMediaItem' : 'orgMediaItem', {
+          id: util.getValue(library, 'orgID') ? [util.getValue(library, 'orgID'), ID] : [ID],
           method: 'put',
           isSending: false
         });
@@ -319,7 +324,7 @@ class UploadLibrary extends Component {
               setSelected={this.setSelected}
               borderRadius={util.getValue(library, 'borderRadius')}
               super={util.getValue(library, 'super', false)}
-              ids={util.getValue(library, 'ids', null)}
+              orgID={util.getValue(library, 'orgID', null)}
             />
           }
         </div>
@@ -340,7 +345,8 @@ UploadLibrary.defaultProps = {
 
 function mapStateToProps(state, props) {
 
-  const resourceName = 'orgMediaItems';
+  const library = props.library;
+  const resourceName = util.getValue(library, 'super') ? 'superOrgMediaItems' : 'orgMediaItems';
   const items = state.resource[resourceName] ? state.resource[resourceName] : {};
   const articleItems = state.resource.articleMediaItems ? state.resource.articleMediaItems : {};
 
