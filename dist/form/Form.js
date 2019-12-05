@@ -774,7 +774,9 @@ class Form extends Component {
       disallowModalBgClose: params.disallowModalBgClose,
       closeModalAndSave: this.closeModalAndSave,
       params: params,
-      maxSize: params.maxSize
+      maxSize: params.maxSize,
+      super: params.super,
+      ids: params.ids
     });
   }
 

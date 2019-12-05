@@ -318,6 +318,8 @@ class UploadLibrary extends Component {
               setPreview={this.setPreview}
               setSelected={this.setSelected}
               borderRadius={util.getValue(library, 'borderRadius')}
+              super={util.getValue(library, 'super', false)}
+              ids={util.getValue(library, 'ids', null)}
             />
           }
         </div>

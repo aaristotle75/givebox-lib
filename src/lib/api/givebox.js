@@ -169,6 +169,14 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       endpoint = `reward-milestones`;
       break;
     }
+    case 'superOrgMediaItems': {
+      endpoint = `orgs/${id[0]}/media-items`;
+      break;
+    }
+    case 'superOrgMediaItem': {
+      endpoint = `orgs/${id[0]}/media-items/${id[1]}`;
+      break;
+    }
 
     // Underwriting
     case 'underwritingStatus': {
