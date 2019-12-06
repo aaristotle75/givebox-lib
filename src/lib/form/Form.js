@@ -645,8 +645,6 @@ class Form extends Component {
         closeModalAndSave={this.closeModalAndSave}
         params={params}
         maxSize={params.maxSize}
-        super={params.super}
-        ids={params.ids}
       />
     )
   }
