@@ -51,7 +51,7 @@ export function kinds() {
   return kinds;
 }
 
-export function kindOptions(all = true, allName = 'All Types') {
+export function kindOptions(all = true, allName = 'All Payment Forms') {
   const options = [];
   if (all) options.push({ primaryText: allName, value: 'all' });
   kinds().forEach((key) => {
@@ -102,7 +102,7 @@ export function kind(kind) {
         item: 'Fundraiser',
         list: 'Fundraisers'
       };
-      obj.icon = 'box';
+      obj.icon = 'heart';
       break;
     }
 

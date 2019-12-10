@@ -39,7 +39,7 @@ export function kinds() {
   const kinds = ['fundraiser', 'event', 'invoice', 'membership', 'sweepstake'];
   return kinds;
 }
-export function kindOptions(all = true, allName = 'All Types') {
+export function kindOptions(all = true, allName = 'All Payment Forms') {
   const options = [];
   if (all) options.push({
     primaryText: allName,
@@ -95,7 +95,7 @@ export function kind(kind) {
           item: 'Fundraiser',
           list: 'Fundraisers'
         };
-        obj.icon = 'box';
+        obj.icon = 'heart';
         break;
       }
 

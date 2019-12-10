@@ -134,6 +134,9 @@ const Editor = props => {
     className: "link",
     onClick: () => props.closeModalAndSave(props.id, false)
   }, "Cancel"), React.createElement(GBLink, {
+    style: {
+      width: 150
+    },
     className: "button",
     onClick: () => props.closeModalAndSave(props.id)
   }, "Save")) : '');

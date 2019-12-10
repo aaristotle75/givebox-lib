@@ -126,7 +126,7 @@ const Editor = (props) => {
       {props.closeModalAndSave ?
       <div className='center button-group'>
         <GBLink className='link' onClick={() => props.closeModalAndSave(props.id, false)}>Cancel</GBLink>
-        <GBLink className='button' onClick={() => props.closeModalAndSave(props.id)}>Save</GBLink>
+        <GBLink style={{ width: 150 }} className='button' onClick={() => props.closeModalAndSave(props.id)}>Save</GBLink>
       </div> : ''}
     </div>
   )
