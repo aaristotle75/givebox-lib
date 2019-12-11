@@ -95,6 +95,10 @@ export default class TestForm extends Component {
 
   render() {
 
+    const {
+      formState
+    } = this.props;
+
     const list = [
       { value: 1, primaryText: 'First Bank Account', secondaryText: 'xxxxx1234', rightText: 'Verified' },
       { value: 2, primaryText: 'Second Bank Account', secondaryText: 'xxxxx2222' },
@@ -102,11 +106,18 @@ export default class TestForm extends Component {
       { value: 4, primaryText: 'Fourth Bank Account', secondaryText: 'xxxxx4444' }
     ];
 
-    console.log('execute amount', this.state.value);
+    const fields = util.getValue(formState, 'fields', {});
+    const content = util.getValue(fields, 'content', {});
+
     return (
       <div>
         <h2>Form Elements</h2>
         <div className='formWrapper'>
+          {this.props.richText('content', { required: false, label: 'Rich Text', placeholder: 'Please write something...', modal: true, modalLabel: 'Open content editor', allowLink: true })}
+          <div style={{ margin: '100px 0px' }}>
+            <div dangerouslySetInnerHTML={{ __html: util.getValue(content, 'value') }}></div>
+          </div>
+          {/*
           {this.props.choice('readOnly', { type: 'checkbox', onChange: this.onChangeReadonly, label: 'Change Read Only.', checked: false })}
           {this.props.textField('taxID', { readOnly: this.state.readOnly, readOnlyText: 'You cannot edit this field', placeholder: 'Enter federal Tax ID', label: 'Tax ID', validate: 'taxID', value: '10-1010101' })}
           <GBLink onClick={() => this.testFunc(100)}>Test Func</GBLink>
@@ -117,7 +128,6 @@ export default class TestForm extends Component {
             selectLabel: 'Select the Bank Account',
             required: true
           })}
-          {/*
           {!this.state.webcam || 1===1 ?
             <div>
               {this.state.capture ? <img src={this.state.capture} alt='capture' /> : <span>No Capture</span>}<br />

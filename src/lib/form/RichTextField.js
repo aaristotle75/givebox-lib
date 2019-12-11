@@ -122,6 +122,7 @@ const Editor = (props) => {
         updateContent={props.updateContent}
         fieldName={props.name}
         wysiwyg={props.wysiwyg}
+        allowLink={props.allowLink}
       />
       {props.closeModalAndSave ?
       <div className='center button-group'>

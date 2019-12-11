@@ -749,6 +749,7 @@ class Form extends Component {
         errorType={params.errorType}
         createField={this.createField}
         wysiwyg={params.wysiwyg}
+        allowLink={params.allowLink}
         params={params}
         closeModalAndSave={this.closeModalAndSave}
         disallowModalBgClose={params.disallowModalBgClose}
