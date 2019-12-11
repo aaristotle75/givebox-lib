@@ -181,7 +181,7 @@ class Filter extends Component {
             value: value.value,
             multi: value.multi,
             debug: value.debug,
-            direction: value.direction,
+            direction: 'bottom',
             onChange: value.onChange
           }));
         }

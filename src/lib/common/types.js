@@ -17,7 +17,7 @@ export function bankStatus(status, voidCheck) {
 
     case 'pending':
     default: {
-      obj.name = voidCheck ? 'Bank account under review' : 'Please upload a voided check';
+      obj.name = voidCheck ? 'Bank account under review' : 'Needs void check or bank statement';
       obj.color = voidCheck ? 'green' : 'orange';
       break;
     }
@@ -195,12 +195,12 @@ export function source(source) {
     }
 
     case 'swipe': {
-      str = 'In-Person';
+      str = 'Givebox Swipe App';
       break;
     }
 
     case 'app': {
-      str = 'Mobile App';
+      str = 'Givebox Donor App';
       break;
     }
 
