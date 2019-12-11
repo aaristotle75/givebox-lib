@@ -127,7 +127,8 @@ const Editor = props => {
     content: props.value,
     updateContent: props.updateContent,
     fieldName: props.name,
-    wysiwyg: props.wysiwyg
+    wysiwyg: props.wysiwyg,
+    allowLink: props.allowLink
   }), props.closeModalAndSave ? React.createElement("div", {
     className: "center button-group"
   }, React.createElement(GBLink, {

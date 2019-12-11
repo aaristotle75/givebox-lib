@@ -1,18 +1,26 @@
 import React, { Component } from 'react';
-import { Editor, EditorState, RichUtils } from 'draft-js';
+import Draft from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
 import { stateFromHTML } from 'draft-js-import-html';
+const {
+  Editor,
+  CompositeDecorator,
+  EditorState,
+  RichUtils
+} = Draft;
 
 class ContentEditor extends Component {
   constructor(props) {
     super(props);
+    const decorator = new CompositeDecorator([{
+      strategy: findLinkEntities,
+      component: Link
+    }]);
     let contentState = this.props.content ? stateFromHTML(this.props.content) : null;
-    this.state = {
-      editorState: contentState ? EditorState.createWithContent(contentState) : EditorState.createEmpty()
-    };
     this.onChange = this.onChange.bind(this);
     this.onBlur = this.onBlur.bind(this);
     this.inputRef = React.createRef();
+    this.linkInputRef = React.createRef();
 
     this.handleKeyCommand = command => this._handleKeyCommand(command);
 
@@ -21,6 +29,23 @@ class ContentEditor extends Component {
     this.toggleBlockType = type => this._toggleBlockType(type);
 
     this.toggleInlineStyle = style => this._toggleInlineStyle(style);
+
+    this.promptForLink = this._promptForLink.bind(this);
+
+    this.onURLChange = e => this.setState({
+      urlValue: e.target.value
+    });
+
+    this.confirmLink = this._confirmLink.bind(this);
+    this.cancelLink = this.cancelLink.bind(this);
+    this.onLinkInputKeyDown = this._onLinkInputKeyDown.bind(this);
+    this.removeLink = this._removeLink.bind(this);
+    this.state = {
+      editorState: contentState ? EditorState.createWithContent(contentState, decorator) : EditorState.createEmpty(decorator),
+      showURLInput: false,
+      urlValue: '',
+      status: 'idle'
+    };
   }
 
   componentDidMount() {
@@ -36,6 +61,85 @@ class ContentEditor extends Component {
         editorState
       });
       if (this.props.onChange) this.props.onChange(this.props.fieldName, stateToHTML(content), content.hasText());
+    }
+  }
+
+  _promptForLink(e) {
+    e.preventDefault();
+    const {
+      editorState
+    } = this.state;
+    const selection = editorState.getSelection();
+
+    if (!selection.isCollapsed()) {
+      const contentState = editorState.getCurrentContent();
+      const startKey = editorState.getSelection().getStartKey();
+      const startOffset = editorState.getSelection().getStartOffset();
+      const blockWithLinkAtBeginning = contentState.getBlockForKey(startKey);
+      const linkKey = blockWithLinkAtBeginning.getEntityAt(startOffset);
+      let url = '';
+
+      if (linkKey) {
+        const linkInstance = contentState.getEntity(linkKey);
+        url = linkInstance.getData().url;
+      }
+
+      this.setState({
+        showURLInput: true,
+        urlValue: url
+      }, () => {
+        setTimeout(() => this.linkInputRef.current.focus(), 0);
+      });
+    }
+  }
+
+  _confirmLink(e) {
+    e.preventDefault();
+    const {
+      editorState,
+      urlValue
+    } = this.state;
+    const contentState = editorState.getCurrentContent();
+    const contentStateWithEntity = contentState.createEntity('LINK', 'MUTABLE', {
+      url: urlValue
+    });
+    const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
+    const newEditorState = EditorState.set(editorState, {
+      currentContent: contentStateWithEntity
+    });
+    this.setState({
+      editorState: RichUtils.toggleLink(newEditorState, newEditorState.getSelection(), entityKey),
+      showURLInput: false,
+      urlValue: ''
+    }, () => {
+      setTimeout(() => this.inputRef.current.focus(), 0);
+    });
+  }
+
+  cancelLink(e) {
+    this.setState({
+      showURLInput: false,
+      urlValue: ''
+    });
+  }
+
+  _onLinkInputKeyDown(e) {
+    if (e.which === 13) {
+      this._confirmLink(e);
+    }
+  }
+
+  _removeLink(e) {
+    e.preventDefault();
+    const {
+      editorState
+    } = this.state;
+    const selection = editorState.getSelection();
+
+    if (!selection.isCollapsed()) {
+      this.setState({
+        editorState: RichUtils.toggleLink(editorState, selection, null)
+      });
     }
   }
 
@@ -82,7 +186,8 @@ class ContentEditor extends Component {
   render() {
     const {
       placeholder,
-      wysiwyg
+      wysiwyg,
+      allowLink
     } = this.props;
     const {
       editorState
@@ -98,6 +203,28 @@ class ContentEditor extends Component {
       }
     }
 
+    let urlInput;
+
+    if (this.state.showURLInput) {
+      urlInput = React.createElement("div", null, React.createElement("input", {
+        onChange: this.onURLChange,
+        ref: this.linkInputRef,
+        type: "text",
+        value: this.state.urlValue,
+        onKeyDown: this.onLinkInputKeyDown,
+        placeholder: 'Enter link URL'
+      }), React.createElement("button", {
+        className: "link",
+        onMouseDown: this.cancelLink
+      }, "Cancel"), React.createElement("button", {
+        style: {
+          marginLeft: 10
+        },
+        className: "link",
+        onMouseDown: this.confirmLink
+      }, "Confirm"));
+    }
+
     return React.createElement("div", {
       className: "RichEditor-root"
     }, wysiwyg === 'display' ? React.createElement("div", {
@@ -107,8 +234,11 @@ class ContentEditor extends Component {
       onToggle: this.toggleBlockType
     }), React.createElement(InlineStyleControls, {
       editorState: editorState,
-      onToggle: this.toggleInlineStyle
-    })) : '', React.createElement("div", {
+      onToggle: this.toggleInlineStyle,
+      promptForLink: this.promptForLink,
+      removeLink: this.removeLink,
+      allowLink: allowLink
+    })) : '', urlInput, React.createElement("div", {
       className: className,
       onClick: this.focus
     }, React.createElement(Editor, {
@@ -221,7 +351,13 @@ const InlineStyleControls = props => {
   const currentStyle = props.editorState.getCurrentInlineStyle();
   return React.createElement("div", {
     className: "RichEditor-controls"
-  }, INLINE_STYLES.map(type => React.createElement(StyleButton, {
+  }, props.allowLink ? React.createElement("span", {
+    onMouseDown: props.promptForLink,
+    className: "RichEditor-styleButton"
+  }, "Add Link") : '', props.allowLink ? React.createElement("span", {
+    onMouseDown: props.removeLink,
+    className: "RichEditor-styleButton"
+  }, "Remove Link") : '', INLINE_STYLES.map(type => React.createElement(StyleButton, {
     key: type.label,
     active: currentStyle.has(type.style),
     label: type.label,
@@ -231,3 +367,19 @@ const InlineStyleControls = props => {
 };
 
 export default ContentEditor;
+
+function findLinkEntities(contentBlock, callback, contentState) {
+  contentBlock.findEntityRanges(character => {
+    const entityKey = character.getEntity();
+    return entityKey !== null && contentState.getEntity(entityKey).getType() === 'LINK';
+  }, callback);
+}
+
+const Link = props => {
+  const {
+    url
+  } = props.contentState.getEntity(props.entityKey).getData();
+  return React.createElement("a", {
+    href: url
+  }, props.children);
+};

@@ -24,6 +24,7 @@ class ContentEditor extends Component {
 		this.onChange = this.onChange.bind(this);
 		this.onBlur = this.onBlur.bind(this);
     this.inputRef = React.createRef();
+		this.linkInputRef = React.createRef();
 		this.handleKeyCommand = (command) => this._handleKeyCommand(command);
 		this.onTab = (e) => this._onTab(e);
 		this.toggleBlockType = (type) => this._toggleBlockType(type);
@@ -78,7 +79,7 @@ class ContentEditor extends Component {
         showURLInput: true,
         urlValue: url,
       }, () => {
-        setTimeout(() => this.refs.url.focus(), 0);
+        setTimeout(() => this.linkInputRef.current.focus(), 0);
       });
     }
   }
@@ -197,7 +198,7 @@ class ContentEditor extends Component {
         <div>
         	<input
             onChange={this.onURLChange}
-            ref="url"
+            ref={this.linkInputRef}
             type="text"
             value={this.state.urlValue}
             onKeyDown={this.onLinkInputKeyDown}
