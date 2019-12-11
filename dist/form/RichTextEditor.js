@@ -101,7 +101,8 @@ class ContentEditor extends Component {
     } = this.state;
     const contentState = editorState.getCurrentContent();
     const contentStateWithEntity = contentState.createEntity('LINK', 'MUTABLE', {
-      url: urlValue
+      url: urlValue,
+      target: '_blank'
     });
     const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
     const newEditorState = EditorState.set(editorState, {
