@@ -207,7 +207,8 @@ export function sendAPI(
   customName,
   multi,
   isSending,
-  tryTrackActivity
+  tryTrackActivity,
+  sendData
 ) {
 
   const errorMsg = {
@@ -223,7 +224,7 @@ export function sendAPI(
       axios({
         method: method,
         url: endpoint,
-        data: method !== 'delete' ? data : null,
+        data: sendData && data ? data : null,
         withCredentials: true,
         headers: {
           'X-CSRF-Token': csrf_token === '{{ .CSRFToken }}' ? 'localhost' : csrf_token

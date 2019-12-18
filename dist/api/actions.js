@@ -192,7 +192,7 @@ function sendResponse(resource, response, error) {
   };
 }
 
-export function sendAPI(resource, endpoint, method, data, callback, reloadResource, resourcesToLoad, customName, multi, isSending, tryTrackActivity) {
+export function sendAPI(resource, endpoint, method, data, callback, reloadResource, resourcesToLoad, customName, multi, isSending, tryTrackActivity, sendData) {
   const errorMsg = {
     data: {
       message: 'Some error occurred.'
@@ -207,7 +207,7 @@ export function sendAPI(resource, endpoint, method, data, callback, reloadResour
       axios({
         method: method,
         url: endpoint,
-        data: method !== 'delete' ? data : null,
+        data: sendData && data ? data : null,
         withCredentials: true,
         headers: {
           'X-CSRF-Token': csrf_token === '{{ .CSRFToken }}' ? 'localhost' : csrf_token

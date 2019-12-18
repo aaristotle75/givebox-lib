@@ -175,6 +175,7 @@ export function sendResource(resource, opts = {}) {
   const defaults = {
     id: [],
     data: null,
+    sendData: true,
     method: 'post',
     callback: null,
     reload: true,
@@ -215,7 +216,8 @@ export function sendResource(resource, opts = {}) {
         options.customName,
         options.multi,
         options.isSending,
-        options.trackActivity
+        options.trackActivity,
+        options.sendData
       ));
     }
   }

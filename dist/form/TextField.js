@@ -48,6 +48,7 @@ class TextField extends Component {
       required,
       readOnly,
       style,
+      inputStyle,
       label,
       fixedLabel,
       className,
@@ -85,7 +86,8 @@ class TextField extends Component {
       onFocus: this.onFocus,
       autoComplete: "nope",
       value: value,
-      maxLength: maxLength
+      maxLength: maxLength,
+      style: inputStyle
     }), label && React.createElement("label", {
       htmlFor: name
     }, label), React.createElement("div", {
@@ -116,6 +118,7 @@ TextField.defaultProps = {
   maxlength: 64,
   symbol: '$',
   money: false,
-  inputRef: null
+  inputRef: null,
+  inputStyle: {}
 };
 export default TextField;

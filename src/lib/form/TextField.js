@@ -44,6 +44,7 @@ class TextField extends Component {
       required,
       readOnly,
       style,
+      inputStyle,
       label,
       fixedLabel,
       className,
@@ -79,6 +80,7 @@ class TextField extends Component {
               autoComplete='nope'
               value={value}
               maxLength={maxLength}
+              style={inputStyle}
             />
             {label && <label htmlFor={name}>{label}</label>}
             <div className={`input-bottom ${error ? 'error' : this.state.status}`}></div>
@@ -107,7 +109,8 @@ TextField.defaultProps = {
   maxlength: 64,
   symbol: '$',
   money: false,
-  inputRef: null
+  inputRef: null,
+  inputStyle: {}
 }
 
 export default TextField;

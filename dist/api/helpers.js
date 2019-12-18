@@ -156,6 +156,7 @@ export function sendResource(resource, opts = {}) {
   const defaults = {
     id: [],
     data: null,
+    sendData: true,
     method: 'post',
     callback: null,
     reload: true,
@@ -187,7 +188,7 @@ export function sendResource(resource, opts = {}) {
         endpoint = endpoint.slice(0, -4);
       }
 
-      return dispatch(sendAPI(resource, endpoint, method, options.data, options.callback, options.reload ? reloadResource : null, options.resourcesToLoad || options.toLoad, options.customName, options.multi, options.isSending, options.trackActivity));
+      return dispatch(sendAPI(resource, endpoint, method, options.data, options.callback, options.reload ? reloadResource : null, options.resourcesToLoad || options.toLoad, options.customName, options.multi, options.isSending, options.trackActivity, options.sendData));
     }
   };
 }
