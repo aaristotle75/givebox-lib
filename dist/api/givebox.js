@@ -920,6 +920,12 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
         break;
       }
 
+    case 'superOrgEventTickets':
+      {
+        endpoint = `orgs/${id[0]}/events/${id[1]}/tickets`;
+        break;
+      }
+
     case 'orgEventTicket':
       {
         endpoint = `orgs/${orgID}/events/${id[0]}/tickets/${id[1]}`;
@@ -1347,6 +1353,18 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
     case 'hubspot':
       {
         endpoint = `hubspot/contacts`;
+        break;
+      }
+
+    case 'zohoContacts':
+      {
+        endpoint = `zoho/contacts`;
+        break;
+      }
+
+    case 'zohoAccounts':
+      {
+        endpoint = `zoho/accounts`;
         break;
       }
     // DEFAULT

@@ -46,9 +46,9 @@ $active-bg: $white;
 	font-size: $small-text-size;
 	font-weight: 500;
 	text-align: center;
-	-moz-box-shadow: $box-shadow;
-	-webkit-box-shadow: $box-shadow;
-	box-shadow: $box-shadow;
+	//-moz-box-shadow: $box-shadow;
+	//-webkit-box-shadow: $box-shadow;
+	//box-shadow: $box-shadow;
 	width: 5%;
 	cursor: pointer;
 }
