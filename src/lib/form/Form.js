@@ -713,6 +713,7 @@ class Form extends Component {
         money={params.validate === 'money' || params.validateOpts.validate === 'money' ? true : false}
         inputRef={params.ref}
         customLink={params.customLink}
+        inputmode={params.inputmode}
       />
     )
   }
@@ -852,7 +853,7 @@ class Form extends Component {
           {this.creditCard('ccnumber', {label: params.ccnumberLabel || 'Credit Card', fixedLabel: params.ccnumberfixedLabel || true, hideLabel: params.hideLabel, placeholder: params.placeholder, readOnly: params.readOnly, required: params.required, debug: params.debug})}
         </div>
         <div style={{width: '25%'}} className='col'>
-          {this.textField('ccexpire', {label: params.ccxpireLabel || 'Expiration', fixedLabel: params.ccexpirefixedLabel || true, placeholder: 'MM/YY', required: params.required, value: params.ccexpireValue, validate: 'ccexpire', maxLength: 5, count: false, debug: params.debug})}
+          {this.textField('ccexpire', {label: params.ccxpireLabel || 'Expiration', fixedLabel: params.ccexpirefixedLabel || true, placeholder: 'MM/YY', required: params.required, value: params.ccexpireValue, validate: 'ccexpire', maxLength: 5, count: false, debug: params.debug, inputmode: 'numeric'})}
         </div>
         <div className='clear'></div>
       </div>

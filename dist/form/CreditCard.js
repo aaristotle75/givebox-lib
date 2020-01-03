@@ -81,7 +81,8 @@ class CreditCard extends Component {
       onFocus: this.onFocus,
       autoComplete: "new-password",
       value: value,
-      maxLength: maxLength
+      maxLength: maxLength,
+      inputmode: "numeric"
     }), !hideLabel && label && React.createElement("label", {
       htmlFor: name
     }, label), React.createElement("div", {

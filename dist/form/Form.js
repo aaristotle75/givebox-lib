@@ -849,7 +849,8 @@ class Form extends Component {
       symbol: params.validateOpts.symbol,
       money: params.validate === 'money' || params.validateOpts.validate === 'money' ? true : false,
       inputRef: params.ref,
-      customLink: params.customLink
+      customLink: params.customLink,
+      inputmode: params.inputmode
     });
   }
 
@@ -1002,7 +1003,8 @@ class Form extends Component {
       validate: 'ccexpire',
       maxLength: 5,
       count: false,
-      debug: params.debug
+      debug: params.debug,
+      inputmode: 'numeric'
     })), React.createElement("div", {
       className: "clear"
     }));

@@ -60,7 +60,8 @@ class TextField extends Component {
       count,
       symbol,
       money,
-      inputRef
+      inputRef,
+      inputmode
     } = this.props;
     const readOnlyText = this.props.readOnlyText || `${label} is not editable`;
     return React.createElement("div", {
@@ -87,7 +88,8 @@ class TextField extends Component {
       autoComplete: "nope",
       value: value,
       maxLength: maxLength,
-      style: inputStyle
+      style: inputStyle,
+      inputmode: inputmode
     }), label && React.createElement("label", {
       htmlFor: name
     }, label), React.createElement("div", {

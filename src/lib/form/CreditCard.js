@@ -75,6 +75,7 @@ class CreditCard extends Component {
               autoComplete='new-password'
               value={value}
               maxLength={maxLength}
+              inputmode='numeric'
             />
             {!hideLabel && label && <label htmlFor={name}>{label}</label>}
             <div className={`input-bottom ${error ? 'error' : this.state.status}`}></div>

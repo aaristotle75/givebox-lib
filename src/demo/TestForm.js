@@ -1,5 +1,12 @@
 import React, {Component} from 'react';
-import { selectOptions, GBLink, ModalLink, Collapse, UploadPrivate, util } from '../lib';
+import {
+  selectOptions,
+  GBLink,
+  ModalLink,
+  Collapse,
+  UploadPrivate,
+  util
+} from '../lib';
 import Moment from 'moment';
 import Capture from '../lib/form/Capture';
 
@@ -113,11 +120,13 @@ export default class TestForm extends Component {
       <div>
         <h2>Form Elements</h2>
         <div className='formWrapper'>
+          {/*
           {this.props.richText('content', { required: false, label: 'Rich Text', placeholder: 'Please write something...', modal: true, modalLabel: 'Open content editor', allowLink: true })}
           <div style={{ margin: '100px 0px' }}>
             <div dangerouslySetInnerHTML={{ __html: util.getValue(content, 'value') }}></div>
           </div>
-          {/*
+          */}
+
           {this.props.choice('readOnly', { type: 'checkbox', onChange: this.onChangeReadonly, label: 'Change Read Only.', checked: false })}
           {this.props.textField('taxID', { readOnly: this.state.readOnly, readOnlyText: 'You cannot edit this field', placeholder: 'Enter federal Tax ID', label: 'Tax ID', validate: 'taxID', value: '10-1010101' })}
           <GBLink onClick={() => this.testFunc(100)}>Test Func</GBLink>
@@ -128,6 +137,7 @@ export default class TestForm extends Component {
             selectLabel: 'Select the Bank Account',
             required: true
           })}
+          {/*
           {!this.state.webcam || 1===1 ?
             <div>
               {this.state.capture ? <img src={this.state.capture} alt='capture' /> : <span>No Capture</span>}<br />
@@ -137,9 +147,8 @@ export default class TestForm extends Component {
             />
           }
           <button onClick={this.toggleWebcam}>Toggle Webcam</button>
+          */}
           {this.props.textField('address', {label: 'Address', placeholder: 'Enter Address', validate: 'address'})}
-          {util.getDate(ts)}
-          {this.props.calendarField('dateOfBirth', { group: 'principal', label: 'Date of Birth', required: true, validate: 'date', validateOpts: { max: minDOB, errorMsg: `Representative must be at least 18 years old.` }, value: '' })}
           {this.props.saveButton(this.processForm, { id: '-second' })}
           {this.props.textField('taxID', { readOnly: true,readOnlyText: 'You cannot edit this field', placeholder: 'Enter federal Tax ID', label: 'Tax ID', validate: 'taxID', value: '10-1010101' })}
           {this.props.choice('enabled', { label: 'Enabled', checked: this.state.checked, value: this.state.checked })}
@@ -147,7 +156,6 @@ export default class TestForm extends Component {
           {this.props.uploadField('imageURL', { parent: 'user', label: 'Image', library: { borderRadius: 20, type: 'avatar' }, debug: true })}
           {this.props.richText('emailList', { label: 'Email List', placeholder: 'Enter emails separated by commas', modal: true, required: false })}
           {this.props.modalField('testModal', { id: 'feesGlossary', label: 'Test Modal', modalLabel: 'Click the modal' } )}
-          {this.props.whereField('where', { where: where, label: 'Where is the event', modalLabel: 'Add location' })}
           {this.props.colorPicker('primaryColor', { label: 'Pick a theme color' })}
           {this.props.creditCardGroup({ required: false, debug: false})}
           {this.props.textField('taxID', {placeholder: 'Enter Tax ID', validate: 'taxID', maxLength: 10})}
@@ -168,8 +176,6 @@ export default class TestForm extends Component {
           })}
           {this.props.calendarField('dob', { label: 'Date of Birth', enableTime: false, enableTimeOption: false, required: true, validate: 'date', validateOpts: { }, utc: false })}
           </Collapse>
-        {customLink}
-        {this.props.textField('role', { required: true, label: 'Role', customLink: customLink })}
         {this.props.dropdown('recurringDefaultInterval', {
           options: [
             { primaryText: 'None', value: 'once' },
@@ -209,7 +215,6 @@ export default class TestForm extends Component {
           selectLabel: 'Select the Default Recurring Option offered',
           className: 'recurringOption'
         })}
-        {this.props.whereField('where', { where: where, label: 'Where is the event', modalLabel: 'Add location' })}
         {this.props.calendarField('dob', { label: 'Date of Birth', enableTime: false, enableTimeOption: true, required: true, validate: 'date', validateOpts: { }})}
         {this.props.calendarRange('event range', { rangeRequired: false, debug: true, enableTimeOption: true, enableTimeOptionLabel: 'Show time', range1Label: 'Event Start Date', range2Label: 'Event End Date', range1Name: 'when', range2Name: 'endsAt', range1Value: 1552006980, range1EnableTime: false, range2EnableTime: true })}
         {this.props.textField('amounts', { type: 'hidden', useChildren: true })}
@@ -219,7 +224,6 @@ export default class TestForm extends Component {
         {this.props.choice('amount2Enabled', { parent: 'amounts', label: '2 Enabled' })}
         {this.props.textField('amount3', { parent: 'amounts', label: 'Enter Amount', placeholder: '0.00', validate: 'number' })}
         {this.props.choice('amount3Enabled', { parent: 'amounts', label: '3 Enabled' })}
-        {this.props.uploadField('imageURL', { customLink: customLink, label: 'Image', debug: true, value: 'https://givebox-staging.s3.amazonaws.com/gbx%2F9b28b33157275cf5c8fa036633a3b33d%2F2018-11-09%2Fwesome1-jpg-original-jpg%2Foriginal' })}
         {this.props.calendarRange({debug: true, enableTime: true })}
         {this.props.textField('custID', { type: 'hidden' })}
         <div className='row'>

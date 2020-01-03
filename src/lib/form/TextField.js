@@ -56,7 +56,8 @@ class TextField extends Component {
       count,
       symbol,
       money,
-      inputRef
+      inputRef,
+      inputmode
     } = this.props;
 
     const readOnlyText = this.props.readOnlyText || `${label} is not editable`;
@@ -81,6 +82,7 @@ class TextField extends Component {
               value={value}
               maxLength={maxLength}
               style={inputStyle}
+              inputmode={inputmode}
             />
             {label && <label htmlFor={name}>{label}</label>}
             <div className={`input-bottom ${error ? 'error' : this.state.status}`}></div>
