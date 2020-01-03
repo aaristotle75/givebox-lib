@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
 import Fade from '../common/Fade';
+import * as _v from './formValidate';
+import * as util from '../common/utility';
+
+var lookup = require('binlookup')('8e161ba2-5874-40d0-834c-b63cf8468c9f');
 
 class CreditCard extends Component {
   constructor(props) {
     super(props);
     this.onFocus = this.onFocus.bind(this);
     this.onBlur = this.onBlur.bind(this);
+    this.onChange = this.onChange.bind(this);
     this.inputRef = React.createRef();
     this.state = {
-      status: 'idle'
+      status: 'idle',
+      cardType: 'default'
     };
   }
 
@@ -35,12 +41,37 @@ class CreditCard extends Component {
     if (this.props.onBlur) this.props.onBlur(e);
   }
 
+  onChange(e) {
+    e.preventDefault();
+    const name = e.target.name;
+
+    const obj = _v.formatCreditCard(e.target.value);
+
+    const length = obj.apiValue.length;
+    let doBinLookup = false;
+    let cardType = length < 4 ? 'default' : this.state.cardType;
+    if (length === 4) doBinLookup = true;
+    if (cardType === 'default' && length >= 15) doBinLookup = true;
+
+    if (doBinLookup) {
+      lookup(obj.apiValue, (err, data) => {
+        const cardType = util.getValue(data, 'scheme', 'default');
+        this.setState({
+          cardType
+        }, this.props.onChange(name, obj.value, cardType));
+      });
+    } else {
+      this.setState({
+        cardType
+      }, this.props.onChange(name, obj.value, cardType));
+    }
+  }
+
   render() {
     const {
       name,
       label,
       fixedLabel,
-      cardType,
       placeholder,
       autoFocus,
       required,
@@ -54,7 +85,10 @@ class CreditCard extends Component {
       checked,
       hideLabel
     } = this.props;
-    const hideCardsAccepted = value ? cardType !== 'noCardType' ? true : false : false;
+    const {
+      cardType
+    } = this.state;
+    const hideCardsAccepted = value ? cardType !== 'default' ? true : false : false;
     return React.createElement("div", {
       style: style,
       className: `input-group ${className || ''} creditCard ${error ? 'error tooltip' : ''}`
@@ -76,13 +110,13 @@ class CreditCard extends Component {
       readOnly: readOnly,
       required: required,
       placeholder: placeholder,
-      onChange: this.props.onChange,
+      onChange: this.onChange,
       onBlur: this.onBlur,
       onFocus: this.onFocus,
       autoComplete: "new-password",
       value: value,
       maxLength: maxLength,
-      inputmode: "numeric"
+      inputMode: "numeric"
     }), !hideLabel && label && React.createElement("label", {
       htmlFor: name
     }, label), React.createElement("div", {
@@ -107,7 +141,6 @@ CreditCard.defaultProps = {
   name: 'defaultCreditCardField',
   type: 'text',
   maxlength: 64,
-  cardType: 'noCardType',
   checked: false,
   placeholder: 'xxxx xxxx xxxx xxxx',
   hideLabel: false

@@ -148,6 +148,8 @@ export default class TestForm extends Component {
           }
           <button onClick={this.toggleWebcam}>Toggle Webcam</button>
           */}
+          {this.props.creditCardGroup({ required: false, debug: false})}
+          {/*
           {this.props.textField('address', {label: 'Address', placeholder: 'Enter Address', validate: 'address'})}
           {this.props.saveButton(this.processForm, { id: '-second' })}
           {this.props.textField('taxID', { readOnly: true,readOnlyText: 'You cannot edit this field', placeholder: 'Enter federal Tax ID', label: 'Tax ID', validate: 'taxID', value: '10-1010101' })}
@@ -236,7 +238,6 @@ export default class TestForm extends Component {
         </div>
         {this.props.textField('password', {label: 'Password', placeholder: 'Enter password', validate: 'password', type: 'password', maxLength:32, strength: true})}
         {this.props.textField('website', {label: 'Website URL', placeholder: 'Enter Website URL', validate: 'url', maxLength:128})}
-        {this.props.creditCardGroup({ required: false, debug: false})}
         {this.props.richText('contentabc', { required: false, label: 'Rich Text', placeholder: 'Please write something...', modal: false, modalLabel: 'Open content editor' })}
         {this.props.choice('choice', { label: 'Choice 1', value: 'choice1', checked: 'choice2', type: 'radio' })}
         {this.props.choice('choice', { label: 'Choice 2', value: 'choice2', type: 'radio' })}

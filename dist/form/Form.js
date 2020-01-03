@@ -15,6 +15,9 @@ import Loader from '../common/Loader';
 import { Alert } from '../common/Alert';
 import { cloneObj, isEmpty, numberWithCommas, stripHtml, getValue } from '../common/utility';
 import { toggleModal } from '../api/actions';
+import ModalRoute from '../modal/ModalRoute';
+import ModalLink from '../modal/ModalLink';
+import CVVModal from './CVVModal';
 import has from 'has';
 
 class Form extends Component {
@@ -28,6 +31,7 @@ class Form extends Component {
     this.onChangeCheckbox = this.onChangeCheckbox.bind(this);
     this.onChangeRadio = this.onChangeRadio.bind(this);
     this.onChangeRichText = this.onChangeRichText.bind(this);
+    this.onChangeCCExpire = this.onChangeCCExpire.bind(this);
     this.onChangeCreditCard = this.onChangeCreditCard.bind(this);
     this.onChangeWhere = this.onChangeWhere.bind(this);
     this.onBlur = this.onBlur.bind(this);
@@ -274,7 +278,7 @@ class Form extends Component {
   }
 
   formProp(args) {
-    this.setState(Object.assign(this.state, args));
+    this.setState(Object.assign(this.state, args), this.props.formPropCallback ? this.props.formPropCallback(this.state) : null);
   }
 
   onChangeDropzone(name, url) {
@@ -464,31 +468,34 @@ class Form extends Component {
     }
   }
 
-  onChangeCreditCard(e) {
-    e.preventDefault();
+  onChangeCCExpire(name, value, field, fields) {
+    const length = value.replace('/', '').length;
 
-    const obj = _v.formatCreditCard(e.target.value);
+    if (length === 4) {
+      this.focusInput(fields.cvv.ref);
+    }
+  }
 
-    const name = e.target.name;
+  onChangeCreditCard(name, val, cardType) {
+    const obj = _v.formatCreditCard(val);
+
     const field = this.state.fields[name];
     const value = obj.value;
     const apiValue = obj.apiValue;
     this.fieldProp(name, {
-      value: value,
-      apiValue: apiValue,
+      value,
+      apiValue,
+      cardType,
       error: false
     });
 
-    if (apiValue.length <= 4) {
-      let cardType = _v.identifyCardTypes(apiValue);
-
-      if (cardType === 'amex') this.fieldProp(name, {
-        maxLength: 18
-      });else this.fieldProp(name, {
-        maxLength: 19
+    if (cardType === 'amex') {
+      this.fieldProp('cvv', {
+        maxLength: 4
       });
-      this.fieldProp(name, {
-        cardType: cardType
+    } else {
+      this.fieldProp('cvv', {
+        maxLength: 3
       });
     }
 
@@ -497,11 +504,13 @@ class Form extends Component {
       updated: true
     });
 
-    if (field.cardType === 'amex' && apiValue.length === 15 || field.cardType !== 'noCardType' && apiValue.length === 16) {
+    if (cardType === 'amex' && apiValue.length === 15 || field.cardType !== 'default' && apiValue.length === 16) {
       this.fieldProp(name, {
         checked: true
       });
-      this.focusInput(this.state.fields.ccexpire.ref);
+      const ccexpire = this.state.fields.ccexpire;
+      const ccexpireLength = ccexpire.value.replace('/', '').length;
+      if (ccexpireLength === 4) this.focusInput(this.state.fields.cvv.ref);else this.focusInput(ccexpire.ref);
     } else {
       this.fieldProp(name, {
         checked: false
@@ -816,6 +825,12 @@ class Form extends Component {
           maxLength = 21;
           break;
         }
+
+      case 'cvv':
+        {
+          maxLength = field ? field.maxLength : params.maxLength;
+          break;
+        }
       // no default
     }
 
@@ -825,6 +840,7 @@ class Form extends Component {
       name: name,
       className: params.className,
       label: params.label,
+      customLabel: params.customLabel,
       fixedLabel: params.fixedLabel,
       style: params.style,
       placeholder: field ? field.placeholder : params.placeholder,
@@ -850,7 +866,7 @@ class Form extends Component {
       money: params.validate === 'money' || params.validateOpts.validate === 'money' ? true : false,
       inputRef: params.ref,
       customLink: params.customLink,
-      inputmode: params.inputmode
+      inputMode: params.inputMode
     });
   }
 
@@ -934,7 +950,7 @@ class Form extends Component {
     const params = Object.assign({}, defaultParams, {
       className: '',
       type: 'text',
-      cardType: 'noCardType',
+      cardType: 'default',
       placeholder: 'xxxx xxxx xxxx xxxx',
       validate: 'creditCard',
       maxLength: 19,
@@ -973,12 +989,24 @@ class Form extends Component {
       className: '',
       required: true
     }, opts);
+    const cvvModal = React.createElement("div", null, React.createElement(ModalRoute, {
+      id: "cvvModal",
+      component: () => {
+        return React.createElement(CVVModal, null);
+      },
+      effect: "3DFlipVert",
+      style: {
+        width: '60%'
+      }
+    }), React.createElement(ModalLink, {
+      id: "cvvModal"
+    }, "What is CVV?"));
     return React.createElement("div", {
       style: params.style,
       className: `field-group creditCard-group`
     }, React.createElement("div", {
       style: {
-        width: '75%'
+        width: '60%'
       },
       className: "col"
     }, this.creditCard('ccnumber', {
@@ -991,7 +1019,7 @@ class Form extends Component {
       debug: params.debug
     })), React.createElement("div", {
       style: {
-        width: '25%'
+        width: '20%'
       },
       className: "col"
     }, this.textField('ccexpire', {
@@ -999,12 +1027,28 @@ class Form extends Component {
       fixedLabel: params.ccexpirefixedLabel || true,
       placeholder: 'MM/YY',
       required: params.required,
-      value: params.ccexpireValue,
+      value: params.ccexpireValue || '',
       validate: 'ccexpire',
       maxLength: 5,
       count: false,
       debug: params.debug,
-      inputmode: 'numeric'
+      inputMode: 'numeric',
+      onChange: this.onChangeCCExpire
+    })), React.createElement("div", {
+      style: {
+        width: '20%'
+      },
+      className: "col"
+    }, this.textField('cvv', {
+      label: 'CVV',
+      customLabel: cvvModal,
+      fixedLabel: true,
+      placeholder: 'CVV',
+      required: params.required,
+      maxLength: 3,
+      count: false,
+      debug: params.debug,
+      inputMode: 'numeric'
     })), React.createElement("div", {
       className: "clear"
     }));

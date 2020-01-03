@@ -50,6 +50,7 @@ class TextField extends Component {
       style,
       inputStyle,
       label,
+      customLabel,
       fixedLabel,
       className,
       error,
@@ -61,7 +62,7 @@ class TextField extends Component {
       symbol,
       money,
       inputRef,
-      inputmode
+      inputMode
     } = this.props;
     const readOnlyText = this.props.readOnlyText || `${label} is not editable`;
     return React.createElement("div", {
@@ -89,10 +90,10 @@ class TextField extends Component {
       value: value,
       maxLength: maxLength,
       style: inputStyle,
-      inputmode: inputmode
+      inputMode: inputMode
     }), label && React.createElement("label", {
       htmlFor: name
-    }, label), React.createElement("div", {
+    }, customLabel || label), React.createElement("div", {
       className: `input-bottom ${error ? 'error' : this.state.status}`
     }), this.props.children, strength && React.createElement(PasswordStrength, {
       password: value,

@@ -15,6 +15,9 @@ import Loader from '../common/Loader';
 import { Alert } from '../common/Alert';
 import { cloneObj, isEmpty, numberWithCommas, stripHtml, getValue } from '../common/utility';
 import { toggleModal } from '../api/actions';
+import ModalRoute from '../modal/ModalRoute';
+import ModalLink from '../modal/ModalLink';
+import CVVModal from './CVVModal';
 import has from 'has';
 
 class Form extends Component {
@@ -29,6 +32,7 @@ class Form extends Component {
     this.onChangeCheckbox = this.onChangeCheckbox.bind(this);
     this.onChangeRadio = this.onChangeRadio.bind(this);
     this.onChangeRichText = this.onChangeRichText.bind(this);
+    this.onChangeCCExpire = this.onChangeCCExpire.bind(this);
     this.onChangeCreditCard = this.onChangeCreditCard.bind(this);
     this.onChangeWhere = this.onChangeWhere.bind(this);
     this.onBlur = this.onBlur.bind(this);
@@ -262,7 +266,7 @@ class Form extends Component {
   }
 
   formProp(args) {
-    this.setState(Object.assign(this.state, args));
+    this.setState(Object.assign(this.state, args), this.props.formPropCallback ? this.props.formPropCallback(this.state) : null);
   }
 
   onChangeDropzone(name, url) {
@@ -384,27 +388,34 @@ class Form extends Component {
     }
   }
 
-  onChangeCreditCard(e) {
-    e.preventDefault();
-    const obj = _v.formatCreditCard(e.target.value);
-    const name = e.target.name;
+  onChangeCCExpire(name, value, field, fields) {
+    const length = value.replace('/', '').length;
+    if (length === 4) {
+      this.focusInput(fields.cvv.ref);
+    }
+  }
+
+  onChangeCreditCard(name, val, cardType) {
+    const obj = _v.formatCreditCard(val);
     const field = this.state.fields[name];
     const value = obj.value;
     const apiValue = obj.apiValue;
-    this.fieldProp(name, {value: value, apiValue: apiValue, error: false});
+    this.fieldProp(name, {value, apiValue, cardType, error: false});
 
-    if (apiValue.length <= 4) {
-      let cardType = _v.identifyCardTypes(apiValue);
-      if (cardType === 'amex') this.fieldProp(name, {maxLength: 18});
-      else this.fieldProp(name, {maxLength: 19});
-      this.fieldProp(name, {cardType: cardType});
+    if (cardType === 'amex') {
+      this.fieldProp('cvv', { maxLength: 4 });
+    } else {
+      this.fieldProp('cvv', { maxLength: 3 });
     }
     this.formProp({error: false, updated: true});
 
-    if ((field.cardType === 'amex' && apiValue.length === 15)
-       || (field.cardType !== 'noCardType' && apiValue.length === 16)) {
+    if ((cardType === 'amex' && apiValue.length === 15)
+       || (field.cardType !== 'default' && apiValue.length === 16)) {
         this.fieldProp(name, {checked: true});
-        this.focusInput(this.state.fields.ccexpire.ref);
+        const ccexpire = this.state.fields.ccexpire;
+        const ccexpireLength = ccexpire.value.replace('/', '').length;
+        if (ccexpireLength === 4) this.focusInput(this.state.fields.cvv.ref);
+        else this.focusInput(ccexpire.ref);
     } else {
       this.fieldProp(name, {checked: false});
     }
@@ -678,6 +689,10 @@ class Form extends Component {
         maxLength = 21;
         break;
       }
+      case 'cvv': {
+        maxLength = field ? field.maxLength : params.maxLength;
+        break;
+      }
       // no default
     }
     maxLength =  maxLength || params.maxLength;
@@ -688,6 +703,7 @@ class Form extends Component {
         name={name}
         className={params.className}
         label={params.label}
+        customLabel={params.customLabel}
         fixedLabel={params.fixedLabel}
         style={params.style}
         placeholder={field ? field.placeholder : params.placeholder}
@@ -713,7 +729,7 @@ class Form extends Component {
         money={params.validate === 'money' || params.validateOpts.validate === 'money' ? true : false}
         inputRef={params.ref}
         customLink={params.customLink}
-        inputmode={params.inputmode}
+        inputMode={params.inputMode}
       />
     )
   }
@@ -803,7 +819,7 @@ class Form extends Component {
     const params = Object.assign({}, defaultParams, {
       className: '',
       type: 'text',
-      cardType: 'noCardType',
+      cardType: 'default',
       placeholder: 'xxxx xxxx xxxx xxxx',
       validate: 'creditCard',
       maxLength: 19,
@@ -846,14 +862,24 @@ class Form extends Component {
       required: true
     }, opts);
 
+    const cvvModal =
+      <div>
+        <ModalRoute  id='cvvModal' component={() => { return <CVVModal /> }} effect='3DFlipVert' style={{ width: '60%' }} />
+        <ModalLink id='cvvModal'>What is CVV?</ModalLink>
+      </div>
+    ;
+
     return (
 
       <div style={params.style} className={`field-group creditCard-group`}>
-        <div style={{width: '75%'}} className='col'>
+        <div style={{width: '60%'}} className='col'>
           {this.creditCard('ccnumber', {label: params.ccnumberLabel || 'Credit Card', fixedLabel: params.ccnumberfixedLabel || true, hideLabel: params.hideLabel, placeholder: params.placeholder, readOnly: params.readOnly, required: params.required, debug: params.debug})}
         </div>
-        <div style={{width: '25%'}} className='col'>
-          {this.textField('ccexpire', {label: params.ccxpireLabel || 'Expiration', fixedLabel: params.ccexpirefixedLabel || true, placeholder: 'MM/YY', required: params.required, value: params.ccexpireValue, validate: 'ccexpire', maxLength: 5, count: false, debug: params.debug, inputmode: 'numeric'})}
+        <div style={{width: '20%'}} className='col'>
+          {this.textField('ccexpire', {label: params.ccxpireLabel || 'Expiration', fixedLabel: params.ccexpirefixedLabel || true, placeholder: 'MM/YY', required: params.required, value: params.ccexpireValue || '', validate: 'ccexpire', maxLength: 5, count: false, debug: params.debug, inputMode: 'numeric', onChange: this.onChangeCCExpire })}
+        </div>
+        <div style={{width: '20%'}} className='col'>
+          {this.textField('cvv', {label: 'CVV', customLabel: cvvModal, fixedLabel: true, placeholder: 'CVV', required: params.required, maxLength: 3, count: false, debug: params.debug, inputMode: 'numeric'})}
         </div>
         <div className='clear'></div>
       </div>

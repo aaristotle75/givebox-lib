@@ -46,6 +46,7 @@ class TextField extends Component {
       style,
       inputStyle,
       label,
+      customLabel,
       fixedLabel,
       className,
       error,
@@ -57,7 +58,7 @@ class TextField extends Component {
       symbol,
       money,
       inputRef,
-      inputmode
+      inputMode
     } = this.props;
 
     const readOnlyText = this.props.readOnlyText || `${label} is not editable`;
@@ -82,9 +83,9 @@ class TextField extends Component {
               value={value}
               maxLength={maxLength}
               style={inputStyle}
-              inputmode={inputmode}
+              inputMode={inputMode}
             />
-            {label && <label htmlFor={name}>{label}</label>}
+            {label && <label htmlFor={name}>{customLabel || label}</label>}
             <div className={`input-bottom ${error ? 'error' : this.state.status}`}></div>
             {this.props.children}
             {strength && <PasswordStrength password={value} error={error} />}
