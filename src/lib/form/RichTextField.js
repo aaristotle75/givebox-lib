@@ -28,16 +28,14 @@ class ContentField extends Component {
     );
   }
 
-  onFocus(e) {
-    e.preventDefault();
+  onFocus(name, content, hasText) {
     this.setState({status: 'active'});
-    if (this.props.onFocus) this.props.onFocus(e);
+		if (this.props.onFocusEditor) this.props.onFocusEditor(name, content, hasText);
   }
 
-  onBlur(e) {
-    e.preventDefault();
+  onBlur(name, content, hasText) {
     this.setState({status: 'idle'});
-    if (this.props.onBlur) this.props.onBlur(e);
+		if (this.props.onBlurEditor) this.props.onBlurEditor(name, content, hasText);
   }
 
   onMouseEnter(e) {
@@ -70,7 +68,7 @@ class ContentField extends Component {
     return (
       <div style={style} className={`input-group ${className || ''} richtext-group ${error ? 'error tooltip' : ''}`}>
         <div className={`errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`}>{error}</div>
-        {!modal && label && <label htmlFor={name}>{label}</label>}
+        {!modal && label && <label className={`${this.state.status}`} htmlFor={name}>{label}</label>}
         <div className={`floating-label ${this.state.status} ${fixedLabel && 'fixed'}`}>
           {modal ?
             <div>
@@ -79,7 +77,11 @@ class ContentField extends Component {
             </div>
           :
             <div className='richtext-embed'>
-              <Editor {...this.props} />
+              <Editor
+                {...this.props}
+                onBlur={this.onBlur}
+                onFocus={this.onFocus}
+              />
             </div>
           }
           {modal && label && <label htmlFor={name}>{label}</label>}
@@ -116,7 +118,8 @@ const Editor = (props) => {
     <div>
       <RichTextEditor
         onChange={props.onChange}
-        onBlur={props.onBlurEditor}
+        onBlur={props.onBlur}
+        onFocus={props.onFocus}
         placeholder={props.placeholder}
         content={props.value}
         updateContent={props.updateContent}
@@ -124,7 +127,7 @@ const Editor = (props) => {
         wysiwyg={props.wysiwyg}
         allowLink={props.allowLink}
       />
-      {props.closeModalAndSave ?
+      {props.closeModalAndSave && !props.hideCloseModalAndSaveButtons ?
       <div className='center button-group'>
         <GBLink className='link' onClick={() => props.closeModalAndSave(props.id, false)}>Cancel</GBLink>
         <GBLink style={{ width: 150 }} className='button' onClick={() => props.closeModalAndSave(props.id)}>Save</GBLink>

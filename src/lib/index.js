@@ -72,6 +72,8 @@ import {
 
 import * as giveboxAPI from './api/givebox';
 
+import HelpDesk from './helpdesk/HelpDesk';
+
 export {
   // Form
   Form,
@@ -155,5 +157,8 @@ export {
   util,
 
   // Glossary
-  FeesGlossary
+  FeesGlossary,
+
+  // Zoho
+  HelpDesk
 };

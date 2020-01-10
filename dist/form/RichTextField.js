@@ -1,3 +1,5 @@
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import RichTextEditor from './RichTextEditor';
@@ -25,20 +27,18 @@ class ContentField extends Component {
     return React.createElement(Editor, props);
   }
 
-  onFocus(e) {
-    e.preventDefault();
+  onFocus(name, content, hasText) {
     this.setState({
       status: 'active'
     });
-    if (this.props.onFocus) this.props.onFocus(e);
+    if (this.props.onFocusEditor) this.props.onFocusEditor(name, content, hasText);
   }
 
-  onBlur(e) {
-    e.preventDefault();
+  onBlur(name, content, hasText) {
     this.setState({
       status: 'idle'
     });
-    if (this.props.onBlur) this.props.onBlur(e);
+    if (this.props.onBlurEditor) this.props.onBlurEditor(name, content, hasText);
   }
 
   onMouseEnter(e) {
@@ -76,6 +76,7 @@ class ContentField extends Component {
     }, React.createElement("div", {
       className: `errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`
     }, error), !modal && label && React.createElement("label", {
+      className: `${this.state.status}`,
       htmlFor: name
     }, label), React.createElement("div", {
       className: `floating-label ${this.state.status} ${fixedLabel && 'fixed'}`
@@ -94,7 +95,10 @@ class ContentField extends Component {
       onMouseLeave: this.onMouseLeave
     }, modalLabel)) : React.createElement("div", {
       className: "richtext-embed"
-    }, React.createElement(Editor, this.props)), modal && label && React.createElement("label", {
+    }, React.createElement(Editor, _extends({}, this.props, {
+      onBlur: this.onBlur,
+      onFocus: this.onFocus
+    }))), modal && label && React.createElement("label", {
       htmlFor: name
     }, label), React.createElement("div", {
       className: `input-bottom ${error ? 'error' : this.state.status}`
@@ -122,14 +126,15 @@ export default connect(mapStateToProps, {})(ContentField);
 const Editor = props => {
   return React.createElement("div", null, React.createElement(RichTextEditor, {
     onChange: props.onChange,
-    onBlur: props.onBlurEditor,
+    onBlur: props.onBlur,
+    onFocus: props.onFocus,
     placeholder: props.placeholder,
     content: props.value,
     updateContent: props.updateContent,
     fieldName: props.name,
     wysiwyg: props.wysiwyg,
     allowLink: props.allowLink
-  }), props.closeModalAndSave ? React.createElement("div", {
+  }), props.closeModalAndSave && !props.hideCloseModalAndSaveButtons ? React.createElement("div", {
     className: "center button-group"
   }, React.createElement(GBLink, {
     className: "link",

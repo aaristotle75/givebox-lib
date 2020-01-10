@@ -11,9 +11,10 @@ export default class Sidebar extends Component {
           <NavLink to='/dashboard'>Dashboard</NavLink>
           <NavLink to='/charts'>Charts</NavLink>
           <NavLink to='/list'>List Items</NavLink>
-          <NavLink to='/transactions'>Transactions</NavLink>          
+          <NavLink to='/transactions'>Transactions</NavLink>
           <NavLink to='/about'>About</NavLink>
           <NavLink to='/contact'>Contact</NavLink>
+          <NavLink to='/helpdesk'>Help Desk</NavLink>
         </ul>
       </nav>
     )

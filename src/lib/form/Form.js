@@ -758,8 +758,6 @@ class Form extends Component {
         group={field ? field.group : params.group}
         autoFocus={field ? field.autoFocus : params.autoFocus}
         onChange={this.onChangeRichText}
-        onBlur={this.onBlur}
-        onFocus={this.onFocus}
         value={field ? field.value : params.value}
         updateContent={field ? field.updateContent || null : null}
         error={field ? field.error : params.error }
@@ -769,6 +767,7 @@ class Form extends Component {
         allowLink={params.allowLink}
         params={params}
         closeModalAndSave={this.closeModalAndSave}
+        hideCloseModalAndSaveButtons={params.hideCloseModalAndSaveButtons}
         disallowModalBgClose={params.disallowModalBgClose}
       />
     )

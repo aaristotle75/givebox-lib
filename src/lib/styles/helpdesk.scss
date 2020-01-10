@@ -1,0 +1,41 @@
+@import 'variables.scss';
+
+.helpdesk {
+
+  .RichEditor-root {
+    font-family: $font-family;
+    padding-top: 0;
+  }
+
+  .RichEditor-editor {
+    margin-top: 0;
+
+    .public-DraftEditorPlaceholder-inner,
+    .public-DraftStyleDefault-ltr {
+      font-size: 1.1em;
+    }
+  }
+
+  .attachment {
+    position: relative;
+
+    .loadImage {
+      position: absolute;
+      background: rgba(255, 255, 255, .7);
+    }
+  }
+
+  .dropzoneImageContainer {
+    width: 150px;
+    min-height: 150px;
+    .dropzone-icon {
+      font-size: 75px;
+    }
+  }
+
+  .dropzone {
+    width: 150px;
+    height: 150px;
+  }
+
+}

@@ -211,6 +211,14 @@ label.idle, .label.idle {
   color: $primary;
 }
 
+label.active {
+  color: $mainColor;
+}
+
+.error label.idle {
+  color: $red !important;
+}
+
 /*---------- Textarea -------*/
 
 
@@ -233,6 +241,14 @@ label.idle, .label.idle {
     padding: 20px;
   }
 
+}
+
+.error {
+  .RichEditor-editor {
+    .public-DraftEditorPlaceholder-inner {
+      color: $red;
+    }
+  }
 }
 
 /********** CHOICE GROUP **************/

@@ -19,6 +19,7 @@ class ContentEditor extends Component {
     let contentState = this.props.content ? stateFromHTML(this.props.content) : null;
     this.onChange = this.onChange.bind(this);
     this.onBlur = this.onBlur.bind(this);
+    this.onFocus = this.onFocus.bind(this);
     this.inputRef = React.createRef();
     this.linkInputRef = React.createRef();
 
@@ -157,6 +158,11 @@ class ContentEditor extends Component {
     if (this.props.onBlur) this.props.onBlur(this.props.fieldName, stateToHTML(content), content.hasText());
   }
 
+  onFocus() {
+    const content = this.state.editorState.getCurrentContent();
+    if (this.props.onFocus) this.props.onFocus(this.props.fieldName, stateToHTML(content), content.hasText());
+  }
+
   _handleKeyCommand(command) {
     const {
       editorState
@@ -249,6 +255,7 @@ class ContentEditor extends Component {
       handleKeyCommand: this.handleKeyCommand,
       onChange: this.onChange,
       onBlur: this.onBlur,
+      onFocus: this.onFocus,
       onTab: this.onTab,
       placeholder: placeholder ? placeholder : 'Enter text...',
       ref: this.inputRef,
