@@ -4,12 +4,17 @@ import { searchContacts } from './zoho';
 import {
   Form,
   util,
-  GBLink
+  GBLink,
+  Loader
 } from '../';
 import Dropzone from 'react-dropzone';
 import { mime } from '../common/types';
 import Image from '../common/Image';
 import { Line } from 'rc-progress';
+import { loadReCaptcha } from 'react-recaptcha-v3'
+import Cookies from 'js-cookie'
+
+const RECAPTCHA_KEY = "6Lddf3wUAAAAADzJFZ9siQeegVC_PNHBIBQivCJ_0";
 
 class TicketFormClass extends Component {
 
@@ -27,6 +32,7 @@ class TicketFormClass extends Component {
     this.setLoading = this.setLoading.bind(this);
     this.setPreview = this.setPreview.bind(this);
     this.state = {
+      loading: false,
       file: null,
       preview: this.props.value || null,
       original: this.props.value || null,
@@ -37,6 +43,7 @@ class TicketFormClass extends Component {
   }
 
   componentDidMount() {
+		loadReCaptcha(RECAPTCHA_KEY);
     /*
     searchContacts('', (response) => {
       this.setState({ contacts: response });
@@ -60,6 +67,8 @@ class TicketFormClass extends Component {
   }
 
   processForm(fields) {
+    const bindthis = this;
+    this.setState({ loading: true });
     const data = {};
     Object.entries(fields).forEach(([key, value]) => {
       if (value.autoReturn) data[key] = value.value;
@@ -71,7 +80,21 @@ class TicketFormClass extends Component {
         data.description = util.stripHtml(value.value);
       }
     });
-    console.log('execute processForm', data, this.state.file);
+
+    const csrf_token = document.getElementById('givebox_csrf_token') ? document.getElementById('givebox_csrf_token').value :  Cookies.get('csrf_token') || '';
+    const grecaptcha = window.grecaptcha;
+    grecaptcha.ready(function() {
+      try {
+        grecaptcha.execute(RECAPTCHA_KEY, {action: 'helpdesk'})
+        .then(function(token) {
+          console.log('execute grecaptcha', token);
+          console.log('execute csrf_token', csrf_token);
+        });
+      } catch (error) {
+        console.log('catch error', error);
+        bindthis.setState({ loading: false });
+      }
+    });
   }
 
   onDrop(accepted, rejected) {
@@ -117,7 +140,8 @@ class TicketFormClass extends Component {
   render() {
 
     const {
-      preview
+      preview,
+      loading
     } = this.state;
 
     const mimes = mime.image + ',' + mime.text + ',' + mime.applications;
@@ -125,10 +149,11 @@ class TicketFormClass extends Component {
     return (
       <div className='formSectionContainer'>
         <div className='formSection'>
+          {loading && <Loader msg={`Processing...`} />}
           {this.props.textField('name', { placeholder: 'Enter your name', label: 'Your Name', fixedLabel: true })}
           {this.props.textField('email', { placeholder: 'Enter your email', label: 'Email', fixedLabel: true, validate: 'email' })}
-          {this.props.textField('subject', { placeholder: 'A short description of your question or issue', label: 'Subject', fixedLabel: true })}
-          {this.props.richText('description', { placeholder: 'Please describe the reason for contacting Givebox Help Desk...', label: 'Description', wysiwyg: false, hideCloseModalAndSaveButtons: true })}
+          {this.props.textField('subject', { placeholder: 'A short description of your question or issue', label: 'Subject', fixedLabel: true, required: false })}
+          {this.props.richText('description', { placeholder: 'Please describe the reason for contacting Givebox Help Desk...', label: 'Description', wysiwyg: false, hideCloseModalAndSaveButtons: true, required: false })}
           <div className='attachment'>
             {preview && !this.state.loading ?
               <div className='dropzoneImageContainer'>

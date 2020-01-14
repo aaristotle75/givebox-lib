@@ -4,7 +4,7 @@ import { util } from '../';
 
 export default class Loader extends Component {
 
-	constructor(props){
+	constructor(props) {
 		super(props);
 		this.stopLoader = this.stopLoader.bind(this);
 		this.state = {
