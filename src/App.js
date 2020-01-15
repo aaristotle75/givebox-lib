@@ -20,7 +20,8 @@ class App extends Component {
       windowHeight: window.innerHeight,
       mobile: window.innerWidth < props.mobileBreakpoint ? true : false,
       org: {},
-      user: {}
+      user: {},
+      authenticated: false
     }
     this.appRef = React.createRef();
     this.modalRef = React.createRef();
@@ -63,6 +64,9 @@ class App extends Component {
       if (!has(res, 'organization')) {
         console.log('redirect to signin');
       } else {
+        // Authenticate
+        this.setState({authenticated: true});
+
         // Set the selected org
         this.props.resourceProp('orgID', res.organization.ID);
         this.setIndexState('org', { name: res.organization.name });
@@ -181,6 +185,7 @@ class App extends Component {
               {...this.props}
               loader={this.loader}
               loadComponent={this.loadComponent}
+              authenticated={this.state.authenticated}
             />
           </AppContext.Provider>
         </div>
@@ -193,8 +198,7 @@ class App extends Component {
 
 function mapStateToProps(state) {
   return {
-    session: state.resource.session ? state.resource.session : {},
-    org: state.resource.org ? state.resource.org : {}
+    session: state.resource.session ? state.resource.session : {}
   }
 }
 

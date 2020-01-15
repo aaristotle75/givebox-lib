@@ -11,11 +11,13 @@ class Routes extends Component {
     const {
       loadComponent,
       session,
-      org
+      authenticated
     } = this.props;
 
-    if (util.isLoading(session) || util.isLoading(org)) {
-      return this.props.loader('Trying to load initial resources: session and org');
+    if (!authenticated) return ( this.props.loader('Authenticating', 'authenticating') );
+
+    if (util.isLoading(session)) {
+      return this.props.loader('Trying to load initial resources: session');
     }
 
     return (

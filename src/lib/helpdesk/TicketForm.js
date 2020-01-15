@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { searchContacts } from './zoho';
 import {
   Form,
   util,
@@ -44,11 +43,7 @@ class TicketFormClass extends Component {
 
   componentDidMount() {
 		loadReCaptcha(RECAPTCHA_KEY);
-    /*
-    searchContacts('', (response) => {
-      this.setState({ contacts: response });
-    });
-    */
+    console.log('execute contact', this.props.contact);
   }
 
   formSavedCallback() {
@@ -220,11 +215,11 @@ export default class TicketForm extends Component {
 
   render() {
 
-    //console.log('execute', this.state.contacts);
-
     return (
       <Form id='ticketForm' name='ticketForm' options={{ required: true }}>
-        <TicketFormConnect />
+        <TicketFormConnect
+          {...this.props}
+        />
       </Form>
     )
   }

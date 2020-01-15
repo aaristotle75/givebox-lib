@@ -20,6 +20,10 @@ strong {
   font-weight: 500;
 }
 
+.italic {
+  font-style: italic;
+}
+
 h1 { margin: 0.67em 0; font-size: 2.00em; font-weight: $header-weight; }
 h2 { margin: 0.83em 0; font-size: 1.50em; font-weight: $header-weight; }
 h3 { margin: 1.00em 0; font-size: 1.17em; font-weight: $header-weight; }
