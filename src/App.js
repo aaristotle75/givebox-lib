@@ -83,7 +83,16 @@ class App extends Component {
           isOwner: false,
           role: util.getValue(user, 'role'),
           permissions: [],
-          type: 'organization'
+          type: 'organization',
+          userID: user.ID,
+          initial: user.firstName.charAt(0).toUpperCase() + user.lastName.charAt(0).toUpperCase(),
+          firstName: user.firstName,
+          lastName: user.lastName,
+          fullName: user.firstName + ' ' + user.lastName,
+          email: user.email,
+          orgName: res.organization.name,
+          orgID: res.organization.ID,
+          orgSlug: res.organization.slug                
         };
         // Check member for access
         if (has(res, 'member')) {

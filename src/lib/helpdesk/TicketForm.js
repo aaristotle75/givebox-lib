@@ -3,66 +3,40 @@ import { connect } from 'react-redux';
 import {
   Form,
   util,
-  GBLink,
-  Loader
+  Loader,
+  Alert,
+  Fade,
+  GBLink
 } from '../';
-import Dropzone from 'react-dropzone';
-import { mime } from '../common/types';
-import Image from '../common/Image';
-import { Line } from 'rc-progress';
-import { loadReCaptcha } from 'react-recaptcha-v3'
-import Cookies from 'js-cookie'
+import { loadReCaptcha } from 'react-recaptcha-v3';
+import Cookies from 'js-cookie';
+import Attachment from './Attachment';
+import { searchContact, createAccount, createContact, createTicket, createAttachment } from './zohoDesk';
 
-const RECAPTCHA_KEY = "6Lddf3wUAAAAADzJFZ9siQeegVC_PNHBIBQivCJ_0";
+const RECAPTCHA_KEY = '6Lddf3wUAAAAADzJFZ9siQeegVC_PNHBIBQivCJ_';
+const ZOHO_DEPARTMENT_ID = '458931000000006907';
+const ZOHO_TEAM_ID = '458931000000192161';
 
 class TicketFormClass extends Component {
 
   constructor(props) {
     super(props);
     this.processForm = this.processForm.bind(this);
-    this.formSavedCallback = this.formSavedCallback.bind(this);
-    this.onDrop = this.onDrop.bind(this);
-    this.clearImage = this.clearImage.bind(this);
-    this.restoreImage = this.restoreImage.bind(this);
-    this.imageOnLoad = this.imageOnLoad.bind(this);
-    this.handleDropAccepted = this.handleDropAccepted.bind(this);
-    this.handleDropRejected = this.handleDropRejected.bind(this);
-    this.readFile = this.readFile.bind(this);
-    this.setLoading = this.setLoading.bind(this);
-    this.setPreview = this.setPreview.bind(this);
+    this.attachmentCallback = this.attachmentCallback.bind(this);
     this.state = {
       loading: false,
-      file: null,
-      preview: this.props.value || null,
-      original: this.props.value || null,
-      imageLoading: true,
-      error: false
+      attachment: {},
+      error: null,
+      success: null
     };
     this.uploadImageRef = React.createRef();
   }
 
   componentDidMount() {
 		loadReCaptcha(RECAPTCHA_KEY);
-    console.log('execute contact', this.props.contact);
   }
 
-  formSavedCallback() {
-    if (this.props.callback) {
-      this.props.callback(arguments[0]);
-    }
-  }
-
-  processCallback(res, err) {
-    if (!err) {
-      this.props.formSaved(() => this.formSavedCallback());
-    } else {
-      if (!this.props.getErrors(err)) this.props.formProp({error: this.props.savingErrorMsg});
-    }
-    return;
-  }
-
-  processForm(fields) {
-    const bindthis = this;
+  async processForm(fields) {
     this.setState({ loading: true });
     const data = {};
     Object.entries(fields).forEach(([key, value]) => {
@@ -76,6 +50,56 @@ class TicketFormClass extends Component {
       }
     });
 
+    const zohoContact = await this.zohoGetContact(data.email);
+    let contactId = null;
+    if (zohoContact) {
+      contactId = util.getValue(zohoContact, 'id', null);
+    } else {
+      const newContact = {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email
+      };
+      if (this.props.role !== 'super') {
+        const zohoAccount = await this.zohoCreateAccount({
+          accountName: this.props.orgName,
+          cf: {
+            cf_givebox_org_id: this.props.orgID
+          }
+        });
+        newContact.accountId = util.getValue(zohoAccount, 'id', null);
+      }
+
+      const newZohoContact = await this.zohoCreateContact(newContact);
+      contactId = util.getValue(newZohoContact, 'id', null);
+    }
+
+    const newTicket = {
+      contactId,
+      teamId : ZOHO_TEAM_ID,
+      departmentId : ZOHO_DEPARTMENT_ID,
+      subject: data.subject,
+      description: data.description
+    };
+
+    if (this.props.orgName && this.props.orgID) {
+      newTicket.cf = {
+        cf_givebox_org_id: this.props.orgID,
+        cf_givebox_org_name: this.props.orgName
+      };
+    }
+
+    const zohoNewTicket = await this.zohoCreateTicket(newTicket);
+    if (zohoNewTicket) {
+      if (!util.isEmpty(this.state.attachment)) {
+        if (await this.zohoCreateAttachment({ ...this.state.attachment, ticketId: util.getValue(zohoNewTicket, 'id') })) {
+          this.setState({ success: true });
+        }
+      } else {
+        this.setState({ success: true });
+      }
+    }
+    /*
     const csrf_token = document.getElementById('givebox_csrf_token') ? document.getElementById('givebox_csrf_token').value :  Cookies.get('csrf_token') || '';
     const grecaptcha = window.grecaptcha;
     grecaptcha.ready(function() {
@@ -84,108 +108,100 @@ class TicketFormClass extends Component {
         .then(function(token) {
           console.log('execute grecaptcha', token);
           console.log('execute csrf_token', csrf_token);
+          bindthis.setState({ loading: false });
         });
       } catch (error) {
         console.log('catch error', error);
         bindthis.setState({ loading: false });
       }
     });
+    */
+    this.setState({ loading: false });
   }
 
-  onDrop(accepted, rejected) {
+  async zohoGetContact(email) {
+    return new Promise((resolve, reject) => {
+      searchContact(email, (data, error) => {
+        resolve(data);
+      });
+    });
   }
 
-  clearImage() {
-    this.setState({ file: null, preview: null, imageLoading: false, percent: 0 });
+  async zohoCreateAccount(body) {
+    return new Promise((resolve, reject) => {
+      createAccount(body, (data, error) => {
+        resolve(data);
+      });
+    });
   }
 
-  restoreImage() {
-    this.setState({ preview: this.state.original });
+  async zohoCreateContact(body) {
+    return new Promise((resolve, reject) => {
+      createContact(body, (data, error) => {
+        resolve(data);
+      });
+    });
   }
 
-  imageOnLoad() {
-    this.setState({ imageLoading: false });
+  async zohoCreateTicket(body) {
+    return new Promise((resolve, reject) => {
+      createTicket(body, (data, error) => {
+        resolve(data);
+      });
+    });
   }
 
-  setPreview(URL) {
-    this.setState({ preview: URL, imageLoading: false, percent: 100 });
+  async zohoCreateAttachment(body) {
+    return new Promise((resolve, reject) => {
+      createAttachment(body, (data, error) => {
+        resolve(data);
+      });
+    });
   }
 
-  setLoading(loading) {
-    this.setState({ loading });
-  }
-
-  readFile(file, callback) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      callback(e.target.result, file);
-    };
-    reader.readAsDataURL(file);
-  }
-
-  handleDropAccepted(files) {
-    this.setState({ imageLoading: 'Accepting file...', file: files[0] });
-    this.readFile(files[0], this.setPreview);
-  }
-
-  handleDropRejected(files) {
-    console.log('rejected');
+  attachmentCallback(file, base64) {
+    const attachment = {};
+    if (file && base64) {
+      attachment.fileName = file.name;
+      attachment.base64 = base64;
+    }
+    this.setState({ attachment });
   }
 
   render() {
 
     const {
-      preview,
-      loading
+      loading,
+      success
     } = this.state;
 
-    const mimes = mime.image + ',' + mime.text + ',' + mime.applications;
+    const name = this.props.firstName || this.props.lastName ? `${this.props.firstName} ${this.props.lastName}` : '';
 
     return (
       <div className='formSectionContainer'>
         <div className='formSection'>
           {loading && <Loader msg={`Processing...`} />}
-          {this.props.textField('name', { placeholder: 'Enter your name', label: 'Your Name', fixedLabel: true })}
-          {this.props.textField('email', { placeholder: 'Enter your email', label: 'Email', fixedLabel: true, validate: 'email' })}
-          {this.props.textField('subject', { placeholder: 'A short description of your question or issue', label: 'Subject', fixedLabel: true, required: false })}
-          {this.props.richText('description', { placeholder: 'Please describe the reason for contacting Givebox Help Desk...', label: 'Description', wysiwyg: false, hideCloseModalAndSaveButtons: true, required: false })}
-          <div className='attachment'>
-            {preview && !this.state.loading ?
-              <div className='dropzoneImageContainer'>
-                {!this.state.imageLoading && (this.props.customLink || '')}
-                <Image maxSize='175px' url={preview} alt={preview} className='dropzoneImage' onLoad={this.imageOnLoad} />
-                {!this.state.imageLoading &&
-                  <GBLink onClick={this.clearImage} className='link'>Remove Image</GBLink>
-                }
+          { success ?
+            <div className='flexColumn flexCenter'>
+              <Alert display={success} msg='Your ticket has been received. A Givebox representative will respond to your request within 1-3 business days.' alert='success'/>
+              <Fade in={success}>
+                <GBLink onClick={() => this.setState({ success: null })} className='flexCenter button'>Submit another ticket</GBLink>
+              </Fade>
+            </div>
+          :
+            <div>
+              {this.props.textField('name', { placeholder: 'Enter your name', label: 'Your Name', fixedLabel: true, value: name })}
+              {this.props.textField('email', { placeholder: 'Enter your email', label: 'Email', fixedLabel: true, validate: 'email', value: this.props.email })}
+              {this.props.textField('subject', { placeholder: 'A short description of your question or issue', label: 'Subject', fixedLabel: true, required: false })}
+              {this.props.richText('description', { placeholder: 'Please describe the reason for contacting Givebox Help Desk...', label: 'Description', wysiwyg: false, hideCloseModalAndSaveButtons: true, required: false })}
+              <Attachment
+                callback={this.attachmentCallback}
+              />
+              <div className='button-group center'>
+                {this.props.saveButton(this.processForm, { label: 'Submit Ticket', style: { width: 150 } })}
               </div>
-            :
-              <div className='dropzoneImageContainer'>
-                { this.state.loading &&
-                <div className='loadImage'>
-                  <div className='loadingBarWrap'>
-                    <span className='loadingText'>{this.state.loading}</span>
-                    <Line className='loadingBar' percent={this.state.percent} strokeWidth='5' strokeColor='#4775f8' trailWidth='5' trailColor='#f7fdff' strokeLinecap='square' />
-                  </div>
-                </div>
-                }
-                <Dropzone
-                  className='dropzone'
-                  onDrop={this.handleDrop}
-                  onDropAccepted={this.handleDropAccepted}
-                  onDropRejected={this.handleDropRejected}
-                  accept={mimes}
-                >
-                  <span className='text'>Attach file</span>
-                  <span className='icon dropzone-icon icon-instagram'></span>
-                  <span className='text'>Drag & drop file</span>
-                </Dropzone>
-                {this.state.original && <GBLink onClick={this.restoreImage} className='link'>Restore Original</GBLink>}
-              </div>
-            }
-          </div>
-          <div className='button-group center'>
-            {this.props.saveButton(this.processForm, { label: 'Submit Ticket', style: { width: 150 } })}
-          </div>
+            </div>
+          }
         </div>
       </div>
     )

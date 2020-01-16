@@ -1,5 +1,9 @@
 @import 'variables.scss';
 
+.grecaptcha-badge {
+	visibility: collapse !important;
+}
+
 .helpdesk {
 
   .RichEditor-root {

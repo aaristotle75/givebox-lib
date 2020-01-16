@@ -11,6 +11,26 @@ export function searchContact(email, callback) {
   sendDesk({ endpoint, single: true }, callback);
 }
 
+export function createContact(body, callback) {
+  const endpoint = `/contacts`;
+  sendDesk({ endpoint, body, method: 'POST' }, callback);
+}
+
+export function createAccount(body, callback) {
+  const endpoint = `/accounts`;
+  sendDesk({ endpoint, body, method: 'POST' }, callback);
+}
+
+export function createTicket(body, callback) {
+  const endpoint = `/tickets`;
+  sendDesk({ endpoint, body, method: 'POST' }, callback);
+}
+
+export function createAttachment({ fileName, base64, ticketId }, callback) {
+  const endpoint = `/tickets/{ticket_id}/attachments`;
+  sendDesk({ endpoint, fileName, body: base64, args: [ticketId], method: 'POST' }, callback);
+}
+
 function sendDesk(opts = {}, callback) {
   const defaultOpts = {
     method: 'GET',
@@ -35,11 +55,17 @@ function sendDesk(opts = {}, callback) {
       case 200:
       case 201:
       case 204:
-        const res = util.getValue(response, 'data', {});
-        const body = util.getValue(res, 'body', {});
-        const data = util.getValue(body, 'data', {});
-        const returnData = options.single ? util.getValue(data, 0, null) : data;
-        if (callback) callback(returnData);
+        if (options.method === 'GET') {
+          const res = util.getValue(response, 'data', {});
+          const body = util.getValue(res, 'body', {});
+          const data = util.getValue(body, 'data', {});
+          const returnData = options.single ? util.getValue(data, 0, null) : data;
+          if (callback) callback(returnData);
+        } else if (options.method === 'POST') {
+          const res = util.getValue(response, 'data', {});
+          const body = util.getValue(res, 'body', {});
+          if (callback) callback(body);
+        }
         break;
       case 504:
         if (callback) callback(null, response);
