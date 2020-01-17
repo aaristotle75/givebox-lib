@@ -1,6 +1,11 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import TicketForm from './TicketForm';
+import {
+  Tab,
+  Tabs
+} from '../';
+import Articles from './Articles';
 
 class HelpDesk extends Component {
 
@@ -33,11 +38,27 @@ class HelpDesk extends Component {
 
     return (
       <div id='helpdesk' className='helpdesk'>
-        HelpDesk
-        <div id='zsiqwidget'></div>
-        <TicketForm
-          {...this.props}
-        />
+        <Tabs
+          default='articles'
+          className='statsTab'
+        >
+          <Tab
+            className='showOnMobile'
+            id='articles'
+            label='FAQs'
+          >
+            <Articles />
+          </Tab>
+          <Tab
+            className='showOnMobile'
+            id='contact'
+            label='Contact Support'
+          >
+            <TicketForm
+              {...this.props}
+            />
+          </Tab>
+        </Tabs>
       </div>
     )
   }

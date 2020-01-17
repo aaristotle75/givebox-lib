@@ -8,7 +8,7 @@ const csrf_token = document.getElementById('givebox_csrf_token') ? document.getE
 
 export function searchContact(email, callback) {
   const endpoint = `/contacts/search?limit=1&email=${email}`;
-  sendDesk({ endpoint, single: true }, callback);
+  sendDesk({ endpoint, single: true, method: 'GET' }, callback);
 }
 
 export function createContact(body, callback) {
@@ -31,16 +31,41 @@ export function createAttachment({ fileName, base64, ticketId }, callback) {
   sendDesk({ endpoint, fileName, body: base64, args: [ticketId], method: 'POST' }, callback);
 }
 
+export function getArticles(opts = {}, callback) {
+  const defaultOptions = {
+    limit: 20,
+    from: 1,
+    categoryId: ''
+  };
+  const options = { ...defaultOptions, ...opts };
+  const categoryId = options.categoryId ? `&categoryId=${options.categoryId}` : '';
+
+  //const endpoint = `/articles?from=${options.from}&limit=${options.limit}${status}${categoryId}${permission}`;
+  const endpoint = `/articles?from=3&limit=1&status=Published`;
+  sendDesk({ endpoint, method: 'GET' }, callback);
+}
+
+export function searchArticle(title, callback) {
+  const endpoint = `/articles/search?title=${title}`;
+  sendDesk({ endpoint, single: true, method: 'GET' }, callback);
+}
+
+export function articleCount(callback) {
+  const endpoint = `/articles/count?status=Published`;
+  sendDesk({ endpoint, method: 'GET' }, callback);
+}
+
 function sendDesk(opts = {}, callback) {
   const defaultOpts = {
-    method: 'GET',
-    endpoint: '/contacts',
+    method: '',
+    endpoint: '',
     args: [],
     body: null,
     single: false
   };
   const options = { ...defaultOpts, ...opts };
 
+  // Always POST to our endpoint as a pass thru to Zoho
   axios({
     method: 'POST',
     url: API_ENDPOINT,

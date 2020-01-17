@@ -192,8 +192,8 @@ class TicketFormClass extends Component {
             <div>
               {this.props.textField('name', { placeholder: 'Enter your name', label: 'Your Name', fixedLabel: true, value: name })}
               {this.props.textField('email', { placeholder: 'Enter your email', label: 'Email', fixedLabel: true, validate: 'email', value: this.props.email })}
-              {this.props.textField('subject', { placeholder: 'A short description of your question or issue', label: 'Subject', fixedLabel: true, required: false })}
-              {this.props.richText('description', { placeholder: 'Please describe the reason for contacting Givebox Help Desk...', label: 'Description', wysiwyg: false, hideCloseModalAndSaveButtons: true, required: false })}
+              {this.props.textField('subject', { placeholder: 'A short description of your question or issue', label: 'Subject', fixedLabel: true, required: true })}
+              {this.props.richText('description', { placeholder: 'Please describe the reason for contacting Givebox Help Desk...', label: 'Description', wysiwyg: false, hideCloseModalAndSaveButtons: true, required: true })}
               <Attachment
                 callback={this.attachmentCallback}
               />

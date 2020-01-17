@@ -88,9 +88,9 @@ class Attachment extends Component {
               onDropRejected={this.handleDropRejected}
               accept={mimes}
             >
-              <span className='text'>Attach file</span>
+              <span className='text'>Add file</span>
               <span className='icon dropzone-icon icon-instagram'></span>
-              <span className='text'>Drag & drop file</span>
+              <span className='text'>or drop file here</span>
             </Dropzone>
           </div>
         }
