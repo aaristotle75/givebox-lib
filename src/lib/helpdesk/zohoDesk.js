@@ -38,10 +38,9 @@ export function getArticles(opts = {}, callback) {
     categoryId: ''
   };
   const options = { ...defaultOptions, ...opts };
-  const categoryId = options.categoryId ? `&categoryId=${options.categoryId}` : '';
-
+  //const categoryId = options.categoryId ? `&categoryId=${options.categoryId}` : '';
   //const endpoint = `/articles?from=${options.from}&limit=${options.limit}${status}${categoryId}${permission}`;
-  const endpoint = `/articles?from=3&limit=1&status=Published`;
+  const endpoint = `/articles?from=${options.from}&limit=${options.limit}&status=Published`;
   sendDesk({ endpoint, method: 'GET' }, callback);
 }
 
