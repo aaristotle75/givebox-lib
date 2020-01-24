@@ -74,7 +74,7 @@ class Attachment extends Component {
       <div className='attachment'>
         {preview ?
           <div className='dropzoneImageContainer'>
-            <Image maxSize='175px' url={preview} alt={preview} className='dropzoneImage' onLoad={this.imageOnLoad} />
+            <Image maxSize='125px' url={preview} alt={preview} className='dropzoneImage' onLoad={this.imageOnLoad} />
             {!this.state.imageLoading &&
               <GBLink onClick={this.clearImage} className='link'>Remove Image</GBLink>
             }
@@ -88,9 +88,7 @@ class Attachment extends Component {
               onDropRejected={this.handleDropRejected}
               accept={mimes}
             >
-              <span className='text'>Add file</span>
-              <span className='icon dropzone-icon icon-instagram'></span>
-              <span className='text'>or drop file here</span>
+              <span className='text'><span className='icon icon-instagram'></span> Attach or drag a file here</span>
             </Dropzone>
           </div>
         }

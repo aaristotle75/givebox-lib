@@ -48,6 +48,9 @@ import { app, resource, send, modal, preferences } from './api/reducers';
 import { getResource, reloadResource, sendResource, savePrefs } from './api/helpers';
 import * as giveboxAPI from './api/givebox';
 import HelpDesk from './helpdesk/HelpDesk';
+import TicketForm from './helpdesk/TicketForm';
+import { zohoCats } from './helpdesk/zohoCats';
+import Articles from './helpdesk/Articles';
 export { // Form
 Form, _v, selectOptions, Select, TextField, Dropdown, RichTextField, Choice, CalendarField, CalendarRange, Checkbox, UploadPrivate, WhereField, // actions
 toggleModal, removeResource, resourceProp, getAPI, sendAPI, setAppRef, setModalRef, setProp, setPrefs, // API
@@ -58,4 +61,4 @@ ActionsMenu, Search, Table, MaxRecords, NoRecords, Paginate, Export, DownloadFil
 StatBlock, ActionBar, CodeBlock, // common
 Alert, Collapse, Delete, Error, Fade, GBLink, GBX, Iframe, Image, ImageDisplay, history, LinearBar, Loader, Portal, Redirect, Tabs, Tab, types, util, // Glossary
 FeesGlossary, // Zoho
-HelpDesk };
+HelpDesk, TicketForm, zohoCats, Articles };

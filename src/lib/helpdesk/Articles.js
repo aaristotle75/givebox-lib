@@ -36,6 +36,12 @@ class Articles extends Component {
     this.getArticles();
   }
 
+  componentDidUpdate(prev) {
+    if (prev.category !== this.props.category) {
+      this.setState({ category: this.props.category }, this.getArticles);
+    }
+  }
+
   getArticles() {
     this.setState({ searchValue: '' });
     const category = this.state.category ? util.getValue(zohoCats, this.state.category, {}) : null;

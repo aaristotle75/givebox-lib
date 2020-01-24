@@ -73,6 +73,9 @@ import {
 import * as giveboxAPI from './api/givebox';
 
 import HelpDesk from './helpdesk/HelpDesk';
+import TicketForm from './helpdesk/TicketForm';
+import { zohoCats } from './helpdesk/zohoCats';
+import Articles from './helpdesk/Articles';
 
 export {
   // Form
@@ -160,5 +163,8 @@ export {
   FeesGlossary,
 
   // Zoho
-  HelpDesk
+  HelpDesk,
+  TicketForm,
+  zohoCats,
+  Articles
 };

@@ -5,7 +5,7 @@ export const zohoCats = {
   'events': { parent: 'raise', name: 'Events', id: '458931000000343271' },
   'invoices': { parent: 'raise', name: 'Invoices', id: '458931000000343278' },
   'memberships': { parent: 'raise', name: 'Memberships', id: '458931000000343285' },
-  'sweepstakes': { parent: 'raise', name: 'Invoices', id: '458931000000343292' },
+  'sweepstakes': { parent: 'raise', name: 'Sweepstakes', id: '458931000000343292' },
   'pages': { parent: '', name: 'Giving Page', id: '458931000000343028' },
   'money': { parent: '', name: 'Manage Money', id: '458931000000297054' },
   'customers': { parent: '', name: 'Customers', id: '458931000000232056' },
