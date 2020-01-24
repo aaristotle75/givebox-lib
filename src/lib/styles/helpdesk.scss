@@ -6,6 +6,63 @@
 
 .helpdesk {
 
+	.spacer {
+		padding: 0 10px;
+	}
+
+	.search {
+		margin-bottom: 10px;
+	}
+
+	.imageLoader {
+		font-size: 12px;
+		color: $light-med-gray;
+	}
+
+	.articles {
+		width: 100%;
+		padding: 20px;
+	}
+
+	ul.breadcrumbs {
+		font-size: 14px;
+		margin-bottom: 20px;
+		li {
+			display: inline-block;
+			vertical-align: middle;
+			text-align: left;
+		}
+	}
+
+	ul.articleList {
+		li {
+			margin: 10px 0;
+
+			button.link {
+				display: flex;
+				justify-content: flex-start;
+				align-items: center;
+				text-align: left;
+
+				.icon {
+					margin-right: 5px;
+				}
+			}
+		}
+
+		.noRecords {
+			margin: 10px 0;
+			display: block;
+			font-size: 12px;
+			color: $light-med-gray;
+		}
+
+		.details {
+			display: block;
+			padding: 5px 20px;
+		}
+	}
+
   .RichEditor-root {
     font-family: $font-family;
     padding-top: 0;

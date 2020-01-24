@@ -9,9 +9,8 @@ import {
   GBLink
 } from '../';
 import { loadReCaptcha } from 'react-recaptcha-v3';
-import Cookies from 'js-cookie';
 import Attachment from './Attachment';
-import { searchContact, createAccount, createContact, createTicket, createAttachment } from './zohoDesk';
+import { searchContact, createAccount, createContact, createTicket, createAttachment } from './zohoDeskAPI';
 
 const RECAPTCHA_KEY = '6Lddf3wUAAAAADzJFZ9siQeegVC_PNHBIBQivCJ_';
 const ZOHO_DEPARTMENT_ID = '458931000000006907';
@@ -79,7 +78,8 @@ class TicketFormClass extends Component {
       teamId : ZOHO_TEAM_ID,
       departmentId : ZOHO_DEPARTMENT_ID,
       subject: data.subject,
-      description: data.description
+      description: data.description,
+      channel: data.channel
     };
 
     if (this.props.orgName && this.props.orgID) {
@@ -190,6 +190,7 @@ class TicketFormClass extends Component {
             </div>
           :
             <div>
+              {this.props.textField('channel', { value: this.props.channel })}
               {this.props.textField('name', { placeholder: 'Enter your name', label: 'Your Name', fixedLabel: true, value: name })}
               {this.props.textField('email', { placeholder: 'Enter your email', label: 'Email', fixedLabel: true, validate: 'email', value: this.props.email })}
               {this.props.textField('subject', { placeholder: 'A short description of your question or issue', label: 'Subject', fixedLabel: true, required: true })}
@@ -213,8 +214,7 @@ TicketFormClass.defaultProps = {
   lastName: '',
   email: '',
   orgName: '',
-  orgID: '',
-  channel: ''
+  orgID: ''
 }
 
 function mapStateToProps(state, props) {

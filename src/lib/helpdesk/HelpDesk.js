@@ -47,7 +47,9 @@ class HelpDesk extends Component {
             id='articles'
             label='FAQs'
           >
-            <Articles />
+            <Articles
+              {...this.props}
+            />
           </Tab>
           <Tab
             className='showOnMobile'

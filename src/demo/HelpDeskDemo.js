@@ -27,6 +27,7 @@ class HelpDeskDemo extends Component {
           lastName={util.getValue(access, 'lastName')}
           role={util.getValue(access, 'role')}
           channel={'Nonprofit Admin'}
+          category='events'
         />
       </div>
     )

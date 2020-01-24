@@ -1,0 +1,21 @@
+export const zohoCats = {
+  'analytics': { parent: '', name: 'Analytics', id: '458931000000343001' },
+  'raise': { parent: '', name: 'Raise Money', id: '458931000000343257' },
+  'fundraisers': { parent: 'raise', name: 'Donation Forms', id: '458931000000343264' },
+  'events': { parent: 'raise', name: 'Events', id: '458931000000343271' },
+  'invoices': { parent: 'raise', name: 'Invoices', id: '458931000000343278' },
+  'memberships': { parent: 'raise', name: 'Memberships', id: '458931000000343285' },
+  'sweepstakes': { parent: 'raise', name: 'Invoices', id: '458931000000343292' },
+  'pages': { parent: '', name: 'Giving Page', id: '458931000000343028' },
+  'money': { parent: '', name: 'Manage Money', id: '458931000000297054' },
+  'customers': { parent: '', name: 'Customers', id: '458931000000232056' },
+  'settings': { parent: '', name: 'Settings', id: '458931000000343043' },
+  'myaccount': { parent: 'settings', name: 'My Account', id: '458931000000343083' },
+  'details': { parent: 'settings', name: 'Nonprofit Details', id: '458931000000343090' },
+  'purchases': { parent: 'settings', name: 'Purchases', id: '458931000000343097' },
+  'team': { parent: 'settings', name: 'Manage Team', id: '458931000000343104' },
+  'media': { parent: 'settings', name: 'Media Library', id: '458931000000343111' },
+  'alerts': { parent: 'settings', name: 'Manage Alerts', id: '458931000000343118' },
+  'tracking': { parent: 'settings', name: 'Tracking', id: '458931000000343125' },
+  'developer': { parent: 'settings', name: 'Developer', id: '458931000000343132' }
+}

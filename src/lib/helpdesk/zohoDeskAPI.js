@@ -31,29 +31,6 @@ export function createAttachment({ fileName, base64, ticketId }, callback) {
   sendDesk({ endpoint, fileName, body: base64, args: [ticketId], method: 'POST' }, callback);
 }
 
-export function getArticles(opts = {}, callback) {
-  const defaultOptions = {
-    limit: 20,
-    from: 1,
-    categoryId: ''
-  };
-  const options = { ...defaultOptions, ...opts };
-  //const categoryId = options.categoryId ? `&categoryId=${options.categoryId}` : '';
-  //const endpoint = `/articles?from=${options.from}&limit=${options.limit}${status}${categoryId}${permission}`;
-  const endpoint = `/articles?from=${options.from}&limit=${options.limit}&status=Published`;
-  sendDesk({ endpoint, method: 'GET' }, callback);
-}
-
-export function searchArticle(title, callback) {
-  const endpoint = `/articles/search?title=${title}`;
-  sendDesk({ endpoint, single: true, method: 'GET' }, callback);
-}
-
-export function articleCount(callback) {
-  const endpoint = `/articles/count?status=Published`;
-  sendDesk({ endpoint, method: 'GET' }, callback);
-}
-
 function sendDesk(opts = {}, callback) {
   const defaultOpts = {
     method: '',
