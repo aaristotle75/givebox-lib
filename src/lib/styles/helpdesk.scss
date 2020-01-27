@@ -6,6 +6,13 @@
 
 .helpdesk {
 
+	.scrollContainer {
+		position: relative;
+		height: 400px;
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
+
 	.spacer {
 		padding: 0 10px;
 	}
@@ -38,6 +45,7 @@
 	}
 
 	ul.articleList {
+
 		li {
 			margin: 15px 0;
 

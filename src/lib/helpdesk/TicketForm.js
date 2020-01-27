@@ -178,36 +178,34 @@ class TicketFormClass extends Component {
     const name = this.props.firstName || this.props.lastName ? `${this.props.firstName} ${this.props.lastName}` : '';
 
     return (
-      <div className='formSectionContainer'>
-        <div className='formSection'>
-          {loading && <Loader msg={`Processing...`} />}
-          { success ?
-            <div className='flexColumn flexCenter'>
-              <Alert display={success} msg='Your ticket has been received. A Givebox representative will respond to your request within 1-3 business days.' alert='success'/>
-              <Fade in={success}>
-                <GBLink onClick={() => this.setState({ success: null })} className='flexCenter button'>Submit another ticket</GBLink>
-              </Fade>
+      <div style={{ height: this.props.scrollHeight }} className='scrollContainer'>
+        {loading && <Loader msg={`Processing...`} />}
+        { success ?
+          <div className='flexColumn flexCenter'>
+            <Alert display={success} msg='Your ticket has been received. A Givebox representative will respond to your request within 1-3 business days.' alert='success'/>
+            <Fade in={success}>
+              <GBLink onClick={() => this.setState({ success: null })} className='flexCenter button'>Submit another ticket</GBLink>
+            </Fade>
+          </div>
+        :
+          <div>
+            {this.props.textField('channel', { type: 'hidden', value: this.props.channel })}
+            <div className='column50'>
+              {this.props.textField('name', { placeholder: 'Enter your name', label: 'Your Name', fixedLabel: true, value: name })}
             </div>
-          :
-            <div>
-              {this.props.textField('channel', { type: 'hidden', value: this.props.channel })}
-              <div className='column50'>
-                {this.props.textField('name', { placeholder: 'Enter your name', label: 'Your Name', fixedLabel: true, value: name })}
-              </div>
-              <div className='column50'>
-                {this.props.textField('email', { placeholder: 'Enter your email', label: 'Email', fixedLabel: true, validate: 'email', value: this.props.email })}
-              </div>
-              {this.props.textField('subject', { placeholder: 'A short description of your question or issue', label: 'Subject', fixedLabel: true, required: true })}
-              {this.props.richText('description', { placeholder: 'Please describe the reason for contacting Givebox Help Desk...', label: 'Description', wysiwyg: false, hideCloseModalAndSaveButtons: true, required: true })}
-              <Attachment
-                callback={this.attachmentCallback}
-              />
-              <div className='button-group center'>
-                {this.props.saveButton(this.processForm, { label: 'Submit Ticket', style: { width: 150 } })}
-              </div>
+            <div className='column50'>
+              {this.props.textField('email', { placeholder: 'Enter your email', label: 'Email', fixedLabel: true, validate: 'email', value: this.props.email })}
             </div>
-          }
-        </div>
+            {this.props.textField('subject', { placeholder: 'A short description of your question or issue', label: 'Subject', fixedLabel: true, required: true })}
+            {this.props.richText('description', { placeholder: 'Please describe the reason for contacting Givebox Help Desk...', label: 'Description', wysiwyg: false, hideCloseModalAndSaveButtons: true, required: true })}
+            <Attachment
+              callback={this.attachmentCallback}
+            />
+            <div className='button-group center'>
+              {this.props.saveButton(this.processForm, { label: 'Submit Ticket', style: { width: 150 } })}
+            </div>
+          </div>
+        }
       </div>
     )
   }
@@ -236,11 +234,17 @@ export default class TicketForm extends Component {
   render() {
 
     return (
-      <Form id='ticketForm' name='ticketForm' options={{ required: true }}>
-        <TicketFormConnect
-          {...this.props}
-        />
-      </Form>
+      <div className='formSectionContainer'>
+        <div className=' formSection'>
+          <div className='articles'>
+            <Form id='ticketForm' name='ticketForm' options={{ required: true }}>
+              <TicketFormConnect
+                {...this.props}
+              />
+            </Form>
+          </div>
+        </div>
+      </div>
     )
   }
 }

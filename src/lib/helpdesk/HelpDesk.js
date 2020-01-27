@@ -52,6 +52,7 @@ class HelpDesk extends Component {
 }
 
 HelpDesk.defaultProps = {
+  scrollHeight: '400px'
 }
 
 function mapStateToProps(state, props) {

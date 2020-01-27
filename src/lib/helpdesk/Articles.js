@@ -174,7 +174,9 @@ class Articles extends Component {
               searchValue={this.state.searchValue}
               setCategory={this.setCategory}
             />
-            {this.listArticles()}
+            <div style={{ height: this.props.scrollHeight }} className='scrollContainer'>
+              {this.listArticles()}
+            </div>
           </div>
         </div>
       </div>
