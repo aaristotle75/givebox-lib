@@ -178,7 +178,7 @@ class TicketFormClass extends Component {
     const name = this.props.firstName || this.props.lastName ? `${this.props.firstName} ${this.props.lastName}` : '';
 
     return (
-      <div style={{ height: this.props.scrollHeight }} className='scrollContainer'>
+      <div>
         {loading && <Loader msg={`Processing...`} />}
         { success ?
           <div className='flexColumn flexCenter'>
@@ -236,7 +236,7 @@ export default class TicketForm extends Component {
     return (
       <div className='formSectionContainer'>
         <div className=' formSection'>
-          <div className='articles'>
+          <div style={{ height: this.props.scrollHeight + 100 }} className='scrollContainer'>
             <Form id='ticketForm' name='ticketForm' options={{ required: true }}>
               <TicketFormConnect
                 {...this.props}

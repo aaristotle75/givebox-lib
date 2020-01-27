@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import TicketForm from './TicketForm';
 import {
   Tab,
-  Tabs
+  Tabs,
+  GBLink
 } from '../';
 import Articles from './Articles';
 
@@ -11,12 +12,17 @@ class HelpDesk extends Component {
 
   constructor(props) {
     super(props);
+    this.closeHelpDesk = this.closeHelpDesk.bind(this);
     this.state = {
       loading: true
     };
   }
 
   componentDidMount() {
+  }
+
+  closeHelpDesk() {
+    if (this.props.closeHelpDeskCb) this.props.closeHelpDeskCb();
   }
 
   render() {
@@ -26,11 +32,16 @@ class HelpDesk extends Component {
         <Tabs
           default='articles'
           className='statsTab'
+          intro={
+            <div className='helpDeskClose'>
+              <GBLink onClick={this.closeHelpDesk}><span className='icon icon-x'></span></GBLink>
+            </div>
+          }
         >
           <Tab
             className='showOnMobile'
             id='articles'
-            label='FAQs'
+            label='Givebox FAQs'
           >
             <Articles
               {...this.props}
