@@ -5,10 +5,26 @@ const PORTAL_ID = '?portalId=ea68d2793e56a15bf831493087c3d8bd4dbff791f28abdeafd0
 
 const API_ENDPOINT = 'https://desk.zoho.com/portal/api/';
 
-export function getArticles(callback, categoryID) {
-  const category = categoryID ? `&categoryId=${categoryID}` : '';
+const getKBCategoryID = (channel) => {
+  switch (channel) {
+    case 'Nonprofit Admin': {
+      return '458931000000130477';
+    }
+
+    case 'Donor': {
+      return '458931000000188501';
+    }
+
+    // no default
+  }
+  return '';
+}
+
+export function getArticles(callback, categoryID, channel) {
+  const category = categoryID ? `&categoryId=${categoryID}` : getKBCategoryID(channel) ? `&categoryId=${getKBCategoryID(channel)}` : '';
+  const limit = `&limit=100`;
   sendRequest({
-    endpoint: `kbArticles${PORTAL_ID}&includeChildCategoryArticles=true${category}`
+    endpoint: `kbArticles${PORTAL_ID}&includeChildCategoryArticles=true${category}${limit}`
   }, callback);
 }
 

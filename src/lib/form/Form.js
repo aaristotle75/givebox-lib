@@ -158,6 +158,7 @@ class Form extends Component {
       allowEnter = true;
     }
     if (this.props.alwaysSubmitOnEnter) allowEnter = true;
+    if (this.props.neverSubmitOnEnter) allowEnter = false;
     return allowEnter;
   }
 
@@ -1248,7 +1249,8 @@ Form.defaultProps = {
   successMsg: true,
   hideVantivErrors: false,
   showLoader: 'display',
-  alwaysSubmitOnEnter: false
+  alwaysSubmitOnEnter: false,
+  neverSubmitOnEnter: false
 }
 
 function mapStateToProps(state, props) {

@@ -48,7 +48,7 @@ class Articles extends Component {
     const categoryID = util.getValue(category, 'id', null);
     getArticles((data, error) => {
       this.setState({ articles: data });
-    }, categoryID);
+    }, categoryID, this.props.channel);
   }
 
   searchArticles(value) {
@@ -68,7 +68,7 @@ class Articles extends Component {
     const categoryID = util.getValue(category, 'id', null);
     getArticles((data, error) => {
       this.setState({ articles: data });
-    }, categoryID);
+    }, categoryID, this.props.channel);
   }
 
   listArticles() {
@@ -110,9 +110,11 @@ class Articles extends Component {
         :
           <li>
             <span className='noRecords'>No articles found</span>
-            <GBLink onClick={() => window.open('https://help.givebox.com/portal/kb/faq', '_blank')}>Visit Givebox Help Center</GBLink>
           </li>
         }
+        <li>
+          <GBLink className='link visitHelpCenterLink' onClick={() => window.open(`https://help.givebox.com/portal/kb/${this.props.kb}`, '_blank')}>Visit Givebox Help Center <span className='icon icon-chevron-right'></span></GBLink>
+        </li>
       </ul>
     );
   }

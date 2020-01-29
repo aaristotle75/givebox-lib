@@ -22,6 +22,7 @@ class TicketFormClass extends Component {
     super(props);
     this.processForm = this.processForm.bind(this);
     this.attachmentCallback = this.attachmentCallback.bind(this);
+    this.setSuccess = this.setSuccess.bind(this);
     this.state = {
       loading: false,
       attachment: {},
@@ -79,7 +80,8 @@ class TicketFormClass extends Component {
       departmentId : ZOHO_DEPARTMENT_ID,
       subject: data.subject,
       description: data.description,
-      channel: data.channel
+      channel: data.channel,
+      email: data.email
     };
 
     if (this.props.orgName && this.props.orgID) {
@@ -93,10 +95,10 @@ class TicketFormClass extends Component {
     if (zohoNewTicket) {
       if (!util.isEmpty(this.state.attachment)) {
         if (await this.zohoCreateAttachment({ ...this.state.attachment, ticketId: util.getValue(zohoNewTicket, 'id') })) {
-          this.setState({ success: true });
+          this.setSuccess();
         }
       } else {
-        this.setState({ success: true });
+        this.setSuccess();
       }
     }
     /*
@@ -117,6 +119,12 @@ class TicketFormClass extends Component {
     });
     */
     this.setState({ loading: false });
+  }
+
+  setSuccess() {
+    this.setState({ success: true, attachment: {}});
+    this.props.fieldProp('subject', { value: '' });
+    this.props.fieldProp('description', { value: '' });
   }
 
   async zohoGetContact(email) {
@@ -194,7 +202,7 @@ class TicketFormClass extends Component {
               {this.props.textField('name', { placeholder: 'Enter your name', label: 'Your Name', fixedLabel: true, value: name })}
             </div>
             <div className='column50'>
-              {this.props.textField('email', { placeholder: 'Enter your email', label: 'Email', fixedLabel: true, validate: 'email', value: this.props.email })}
+              {this.props.textField('email', { placeholder: 'Enter your email', label: 'Your Email', fixedLabel: true, validate: 'email', value: this.props.email })}
             </div>
             {this.props.textField('subject', { placeholder: 'A short description of your question or issue', label: 'Subject', fixedLabel: true, required: true })}
             {this.props.richText('description', { placeholder: 'Please describe the reason for contacting Givebox Help Desk...', label: 'Description', wysiwyg: false, hideCloseModalAndSaveButtons: true, required: true })}
@@ -237,7 +245,7 @@ export default class TicketForm extends Component {
       <div className='formSectionContainer'>
         <div className=' formSection'>
           <div style={{ height: this.props.scrollHeight + 100 }} className='scrollContainer'>
-            <Form id='ticketForm' name='ticketForm' options={{ required: true }}>
+            <Form neverSubmitOnEnter={true} id='ticketForm' name='ticketForm' options={{ required: true }}>
               <TicketFormConnect
                 {...this.props}
               />

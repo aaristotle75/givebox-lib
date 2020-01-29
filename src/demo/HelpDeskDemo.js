@@ -28,6 +28,7 @@ class HelpDeskDemo extends Component {
           role={util.getValue(access, 'role')}
           channel={'Nonprofit Admin'}
           category='events'
+          kb='faq'
         />
       </div>
     )

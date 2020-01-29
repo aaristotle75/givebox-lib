@@ -2,7 +2,7 @@ import axios from 'axios';
 import * as util from '../common/utility';
 import Cookies from 'js-cookie'
 
-const API_ENDPOINT = process.env.NODE_ENV === 'production' ? 'https://api.givebox.com/v2/zoho/desk' : 'https://staging-api.givebox.com/v2/zoho/desk';
+const API_ENDPOINT = process.env.REACT_APP_ENV === 'production' ? 'https://api.givebox.com/v2/zoho/desk' : 'https://staging-api.givebox.com/v2/zoho/desk';
 
 const csrf_token = document.getElementById('givebox_csrf_token') ? document.getElementById('givebox_csrf_token').value :  Cookies.get('csrf_token') || '';
 
