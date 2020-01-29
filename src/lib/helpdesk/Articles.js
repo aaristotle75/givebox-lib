@@ -187,6 +187,7 @@ class Articles extends Component {
 }
 
 Articles.defaultProps = {
+  kb: ''
 }
 
 function mapStateToProps(state, props) {

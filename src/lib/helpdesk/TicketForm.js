@@ -13,8 +13,6 @@ import Attachment from './Attachment';
 import { searchContact, createAccount, createContact, createTicket, createAttachment } from './zohoDeskAPI';
 
 const RECAPTCHA_KEY = '6Lddf3wUAAAAADzJFZ9siQeegVC_PNHBIBQivCJ_';
-const ZOHO_DEPARTMENT_ID = '458931000000006907';
-const ZOHO_TEAM_ID = '458931000000192161';
 
 class TicketFormClass extends Component {
 
@@ -76,8 +74,8 @@ class TicketFormClass extends Component {
 
     const newTicket = {
       contactId,
-      teamId : ZOHO_TEAM_ID,
-      departmentId : ZOHO_DEPARTMENT_ID,
+      teamId : this.props.teamId,
+      departmentId : this.props.departmentId,
       subject: data.subject,
       description: data.description,
       channel: data.channel,

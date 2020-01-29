@@ -76,6 +76,7 @@ import HelpDesk from './helpdesk/HelpDesk';
 import TicketForm from './helpdesk/TicketForm';
 import { zohoCats } from './helpdesk/zohoCats';
 import Articles from './helpdesk/Articles';
+import HelpDeskButton from './helpdesk/HelpDeskButton';
 
 export {
   // Form
@@ -166,5 +167,6 @@ export {
   HelpDesk,
   TicketForm,
   zohoCats,
-  Articles
+  Articles,
+  HelpDeskButton
 };

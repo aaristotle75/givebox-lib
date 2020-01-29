@@ -29,6 +29,8 @@ class HelpDeskDemo extends Component {
           channel={'Nonprofit Admin'}
           category='events'
           kb='faq'
+          departmentId='458931000000006907'
+          teamId='458931000000192161'
         />
       </div>
     )

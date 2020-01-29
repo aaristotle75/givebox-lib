@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
-import { util, ModalRoute } from './lib';
+import { util, ModalRoute, HelpDeskButton } from './lib';
 import Sidebar from './demo/Sidebar';
 import Header from './demo/Header';
 
@@ -41,6 +41,7 @@ class Routes extends Component {
                 />
                 <Header />
                 <Sidebar />
+                <HelpDeskButton location={location} loader={this.props.loader} />
                 <div id='contentContainer' className='contentContainer'>
                   <Switch location={location}>
                     <Route path='/dashboard' render={(props) => loadComponent('demo/Dashboard')}  />

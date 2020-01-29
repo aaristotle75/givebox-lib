@@ -68,14 +68,14 @@
 
 			.visitHelpCenterLink {
 				font-size: 14px;
-				margin-top: 25px;
+				margin-top: 40px;
 			}
 		}
 
 		.noRecords {
 			margin: 10px 0;
 			display: block;
-			font-size: 12px;
+			font-size: 14px;
 			color: $light-med-gray;
 		}
 
@@ -127,6 +127,137 @@
 		.icon {
 			margin-left: 5px;
 		}
+  }
+
+}
+
+/**-------- Help Desk Customization ----------*/
+.helpdeskContainer {
+  position: fixed;
+  right: 0;
+  top: 20%;
+  width: 0;
+  height: auto;
+  background: $white;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 1999991;
+  border-radius: 20px;
+  background: $bar1Gradient;
+
+  .handle {
+    cursor: grab;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: $white;
+  }
+
+  .handle:hover {
+    color: $mainColorLight;
+    @include default-transition(1s);
+  }
+}
+
+.helpdeskContainer.closed {
+  width: 0px;
+  height: 400px;
+  @include transition(width .5s);
+}
+
+.helpdeskContainer.open {
+  width: 500px;
+  @include transition(width .5s);
+}
+
+.helpDeskButton {
+  position: fixed;
+  right: -20px;
+  top: 40%;
+  width: 70px;
+  height: 30px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  background: $mainColor;
+  color: $white;
+  z-index: 1999991;
+  transform: rotate(-90deg);
+  -webkit-transform: rotate(-90deg);
+  @include animation(pulsateSlightlyBrighter 2s infinite ease-out);
+}
+
+.helpDeskButton:hover {
+  background: $mainColorLight;
+  @include default-transition(.25s);
+}
+
+.helpdesk {
+
+	.helpDeskClose {
+		position: absolute;
+		right: 30px;
+		top: 15px;
+
+    button.link {
+      color: $white;
+    }
+
+    button.link:hover {
+      color: $mainColorLight;
+    }
+	}
+
+  .statsTab .panel {
+    display: flex;
+    justify-content: center;
+  }
+
+  .statsTab button.panelTab {
+    color: $white;
+  }
+
+  .statsTab button.panelTab:hover:not(.selected) {
+    color: $mainColorLight;
+  }
+
+  .statsTab button.panelTab.selected {
+		color: $white;
+    border-bottom: 2px solid $mainColorLight;
+  }
+
+  .sectionContainer,
+  .formSectionContainer {
+    background: transparent;
+  }
+
+  .formSection {
+    padding-bottom: 0;
+  }
+
+  .dropzone {
+    border: 1px solid transparent;
+    background: $white;
+  }
+
+  .dropzone .icon, {
+      color: $mainColor;
+  }
+
+  .dropzone .text {
+    color: $mainColor;
+    font-size: 1em;
+  }
+
+  .dropzone:hover {
+    border: 1px solid $mainColorLight;
+    @include default-transition(.5s);
+    .text,
+    .icon {
+      @include default-transition(.5s);
+      color: $mainColorLight;
+    }
   }
 
 }
