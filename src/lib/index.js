@@ -62,7 +62,7 @@ import {
   setCustomProp
 } from './api/actions';
 
-import { app, resource, send, modal, preferences } from './api/reducers';
+import { app, resource, send, modal, preferences, custom } from './api/reducers';
 
 import {
   getResource,
@@ -120,6 +120,7 @@ export {
   send,
   modal,
   preferences,
+  custom,
 
   // Modal
   ModalLink,

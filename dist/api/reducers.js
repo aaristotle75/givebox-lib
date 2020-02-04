@@ -43,6 +43,19 @@ export function app(state = {
       return state;
   }
 }
+export function custom(state = {
+  primaryColor: ''
+}, action) {
+  switch (action.type) {
+    case types.SET_CUSTOM_PROP:
+      return Object.assign({}, state, { ...state,
+        [action.key]: action.value
+      });
+
+    default:
+      return state;
+  }
+}
 export function resource(state = {
   isFetching: false
 }, action) {
@@ -177,7 +190,8 @@ const appReducer = combineReducers({
   app,
   resource,
   modal,
-  send
+  send,
+  custom
 });
 
 const rootReducers = (state, action) => {

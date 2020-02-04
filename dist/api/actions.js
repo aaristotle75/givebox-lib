@@ -74,6 +74,13 @@ export function setProp(key, value) {
     value: value
   };
 }
+export function setCustomProp(key, value) {
+  return {
+    type: types.SET_CUSTOM_PROP,
+    key: key,
+    value: value
+  };
+}
 export function isFilterOpen(open) {
   return {
     type: types.IS_FILTER_OPEN,
