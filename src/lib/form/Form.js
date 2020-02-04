@@ -855,6 +855,7 @@ class Form extends Component {
         maxLength={field ? field.maxLength : params.maxLength}
         createField={this.createField}
         params={params}
+        color={params.color}
       />
     )
   }

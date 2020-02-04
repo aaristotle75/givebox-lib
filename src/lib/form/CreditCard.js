@@ -72,12 +72,21 @@ class CreditCard extends Component {
       maxLength,
       value,
       checked,
-      hideLabel
+      hideLabel,
+      color
     } = this.props;
 
     const {
-      cardType
+      cardType,
+      status
     } = this.state;
+
+    const labelStyle = {
+      color: status === 'active' ? color : ''
+    };
+    const inputBottomStyle = {
+      background: status === 'active' ? color : ''
+    };
 
     const hideCardsAccepted = value ? cardType !== 'default' ? true : false : false;
 
@@ -104,8 +113,8 @@ class CreditCard extends Component {
               maxLength={maxLength}
               inputMode='numeric'
             />
-            {!hideLabel && label && <label htmlFor={name}>{label}</label>}
-            <div className={`input-bottom ${error ? 'error' : this.state.status}`}></div>
+            {!hideLabel && label && <label style={labelStyle} htmlFor={name}>{label}</label>}
+            <div style={inputBottomStyle} className={`input-bottom ${error ? 'error' : this.state.status}`}></div>
           </div>
           <Fade duration={200} in={checked ? true : false}>
             <div className={`checkmark`}>
