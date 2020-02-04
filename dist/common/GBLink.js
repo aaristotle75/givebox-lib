@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { util } from '../';
 
 class GBLink extends Component {
@@ -84,4 +85,17 @@ GBLink.defaultProps = {
   disabled: false,
   ripple: false
 };
-export default GBLink;
+
+function mapStateToProps(state, props) {
+  const app = util.getValue(state, 'app', {});
+  const primaryColor = util.getValue(app, 'primaryColor');
+  const rgb = primaryColor ? util.hexToRgb(primaryColor) : '';
+  return {
+    primaryColor,
+    hoverStyle: rgb ? {
+      color: `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .7)`
+    } : null
+  };
+}
+
+export default connect(mapStateToProps, {})(GBLink);

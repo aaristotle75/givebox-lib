@@ -70,8 +70,8 @@ GBLink.defaultProps = {
 
 function mapStateToProps(state, props) {
 
-	const app = util.getValue(state, 'app', {});
-	const primaryColor = util.getValue(app, 'primaryColor');
+	const custom = util.getValue(state, 'custom', {});
+	const primaryColor = util.getValue(custom, 'primaryColor');
 	const rgb = primaryColor ? util.hexToRgb(primaryColor) : '';
 
   return {

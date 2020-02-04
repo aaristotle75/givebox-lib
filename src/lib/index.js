@@ -58,7 +58,8 @@ import {
   setAppRef,
   setModalRef,
   setProp,
-  setPrefs
+  setPrefs,
+  setCustomProp
 } from './api/actions';
 
 import { app, resource, send, modal, preferences } from './api/reducers';
@@ -104,6 +105,7 @@ export {
   setModalRef,
   setProp,
   setPrefs,
+  setCustomProp,
 
   // API
   giveboxAPI,

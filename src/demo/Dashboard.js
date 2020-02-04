@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import TestForm from './TestForm';
 import { Form, Alert, Tabs, Tab, ModalLink, GBLink, Image, util } from '../lib';
-import { setProp } from '../lib/api/actions';
+import { setCustomProp } from '../lib/api/actions';
 
 class Dashboard extends Component {
 
@@ -19,7 +19,7 @@ class Dashboard extends Component {
 
   componentDidMount() {
     this.status();
-    this.props.setProp('primaryColor', '#ecab1f');
+    this.props.setCustomProp('primaryColor', '#ecab1f');
   }
 
   componentWillUnmount() {
@@ -97,5 +97,5 @@ function mapStateToProps(state, props) {
 
 
 export default connect(mapStateToProps, {
-  setProp
+  setCustomProp
 })(Dashboard)

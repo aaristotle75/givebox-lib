@@ -15,7 +15,8 @@ export function preferences(state = {}, action) {
 export function app(state = {
   appRef: null,
   modalRef: null,
-  filterOpen: false
+  filterOpen: false,
+  primaryColor: ''
 }, action) {
   switch (action.type) {
     case types.SET_APP_REF:

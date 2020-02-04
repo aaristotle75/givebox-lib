@@ -22,3 +22,6 @@ export const SET_PROP = 'SET_PROP';
 
 // Preferences
 export const SET_PREFERENCES = 'SET_PREFERENCES';
+
+// Custom Actions
+export const SET_CUSTOM_PROP = 'SET_CUSTOM_PROP';
