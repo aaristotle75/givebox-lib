@@ -48,7 +48,8 @@ class Choice extends Component {
       errorType,
       value,
       checked,
-      useIcon
+      useIcon,
+      color
     } = this.props;
 
     let id = type === 'radio' ? `${value}-${type}` : `${name}-${type}`;
@@ -59,7 +60,7 @@ class Choice extends Component {
     return (
       <div style={style} className={`choice-group ${className || ''} ${type}-group  ${error ? 'error tooltip' : ''}`}>
         {useIcon ?
-          <GBLink onClick={() => this.onChangeLink(name, value)}>
+          <GBLink style={{ color: !error ? color : '' }} onClick={() => this.onChangeLink(name, value)}>
             {isChecked ? <span className='icon icon-check-square'></span> : <span className='icon icon-square'></span>}
           </GBLink>
         :

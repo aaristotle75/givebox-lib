@@ -23,9 +23,13 @@ class Dropdown extends Component {
       selected: '',
       value: '',
       direction: '',
-      status: 'idle'
+      status: 'idle',
+      buttonStyle: {}
     }
     this.dropdownRef = React.createRef();
+    this.labelRef = React.createRef();
+    this.selectedRef = React.createRef();
+    this.itemRefs = {};
   }
 
   componentDidMount() {
@@ -138,8 +142,9 @@ class Dropdown extends Component {
           <div key={'bottom'} style={value.style}>{value.bottom}</div>
         );
       } else {
+        bindthis.itemRefs[dataValue] = React.createRef();
         items.push(
-          <div data-selected={value.primaryText} data-value={dataValue} onClick={(e) => bindthis.onClick(e, value.disabled)} className={`dropdown-item ${selected ? 'selected' : ''} ${value.disabled ? 'disabled' : ''}`} key={dataValue}>
+          <div ref={bindthis.itemRefs[dataValue]} onMouseEnter={() => { const ref = bindthis.itemRefs[dataValue].current;       ref.style.setProperty('background', bindthis.props.color); } } onMouseLeave={() => { const ref = bindthis.itemRefs[dataValue].current; ref.style.setProperty('background', ''); } } data-selected={value.primaryText} data-value={dataValue} onClick={(e) => bindthis.onClick(e, value.disabled)} className={`dropdown-item ${selected ? 'selected' : ''} ${value.disabled ? 'disabled' : ''}`} key={dataValue}>
             <div className='dropdown-container'>
               <div className='leftSide'>
                 {bindthis.props.multi && selected && bindthis.props.iconMultiChecked} {value.primaryText}
@@ -160,12 +165,21 @@ class Dropdown extends Component {
 
   onMouseEnter(e) {
     e.preventDefault();
-    if (!this.props.error) this.setState({status: 'active'});
+    if (!this.props.error) {
+      const buttonStyle = {
+        borderBottom: this.props.color ? `1px solid ${this.props.color}` : ''
+      };
+      this.labelRef.current.style.setProperty('color', this.props.color, 'important');
+      this.selectedRef.current.style.setProperty('color', this.props.color, 'important');
+      this.setState({buttonStyle, status: 'active'});
+    }
   }
 
   onMouseLeave(e) {
     e.preventDefault();
-    this.setState({status: 'idle'});
+    this.labelRef.current.style.setProperty('color', '');
+    this.selectedRef.current.style.setProperty('color', '');
+    this.setState({status: 'idle', buttonStyle: {} });
   }
 
   render() {
@@ -196,7 +210,9 @@ class Dropdown extends Component {
       open,
       selected,
       display,
-      direction
+      direction,
+      status,
+      buttonStyle
     } = this.state;
 
     const selectedValue = multi ? open ? multiCloseLabel : selectLabel : selected && (value || defaultValue) ? selected : selectLabel;
@@ -207,10 +223,10 @@ class Dropdown extends Component {
         <Fade in={open && overlay} duration={overlayDuration}>
           <div onClick={this.closeMenu} className={`dropdown-cover ${display ? '' : 'displayNone'}`}></div>
         </Fade>
-        <div className={`dropdown ${floatingLabel && 'floating-label'} ${this.state.status} ${fixedLabel ? 'fixed' : ''}`} style={dropdownStyle}>
+        <div className={`dropdown ${floatingLabel && 'floating-label'} ${status} ${fixedLabel ? 'fixed' : ''}`} style={dropdownStyle}>
           {label && !floatingLabel && <label><GBLink onClick={open ? this.closeMenu : this.openMenu}>{label}</GBLink></label>}
-          <button onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} type='button' onClick={open ? this.closeMenu : this.openMenu}><span className={`label ${idleLabel && 'idle'}`}>{selectedValue}</span>{open ? multi ? iconMultiClose : iconOpened : iconClosed}</button>
-          <div ref={this.dropdownRef} style={contentStyle} className={`${open ? 'opened' : ''} dropdown-content ${this.props.direction || direction}`}>
+          <button style={buttonStyle} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} type='button' onClick={open ? this.closeMenu : this.openMenu}><span ref={this.selectedRef} className={`label ${idleLabel && 'idle'}`}>{selectedValue}</span>{open ? multi ? iconMultiClose : iconOpened : iconClosed}</button>
+          <div ref={this.dropdownRef} style={{ ...contentStyle, boxShadow: this.props.color ? `none`: '', border: this.props.color && open ? `1px solid ${this.props.color}` : ''}} className={`${open ? 'opened' : ''} dropdown-content ${this.props.direction || direction}`}>
             <AnimateHeight
               duration={200}
               height={open ? 'auto' : 0}
@@ -220,7 +236,7 @@ class Dropdown extends Component {
               </div>
             </AnimateHeight>
           </div>
-          {label && floatingLabel && <label><GBLink className='link label' onClick={open ? this.closeMenu : this.openMenu}>{label}</GBLink></label>}
+          {label && floatingLabel && <label><GBLink className='link label' onClick={open ? this.closeMenu : this.openMenu}><span ref={this.labelRef}>{label}</span></GBLink></label>}
         </div>
         <div className={`tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`}>
           {this.props.error}

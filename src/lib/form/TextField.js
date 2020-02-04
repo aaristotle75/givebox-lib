@@ -58,8 +58,20 @@ class TextField extends Component {
       symbol,
       money,
       inputRef,
-      inputMode
+      inputMode,
+      color
     } = this.props;
+
+    const {
+      status
+    } = this.state;
+
+    const labelStyle = {
+      color: status === 'active' ? color : ''
+    };
+    const inputBottomStyle = {
+      background: status === 'active' ? color : ''
+    };
 
     const readOnlyText = this.props.readOnlyText || `${label} is not editable`;
 
@@ -85,8 +97,8 @@ class TextField extends Component {
               style={inputStyle}
               inputMode={inputMode}
             />
-            {label && <label htmlFor={name}>{customLabel || label}</label>}
-            <div className={`input-bottom ${error ? 'error' : this.state.status}`}></div>
+            {label && <label style={labelStyle} htmlFor={name}>{customLabel || label}</label>}
+            <div style={inputBottomStyle} className={`input-bottom ${error ? 'error' : this.state.status}`}></div>
             {this.props.children}
             {strength && <PasswordStrength password={value} error={error} />}
             {<div className='customLink'>{this.props.customLink}</div> || ''}

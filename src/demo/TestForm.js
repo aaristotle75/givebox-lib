@@ -130,7 +130,7 @@ export default class TestForm extends Component {
           {this.props.choice('readOnly', { type: 'checkbox', onChange: this.onChangeReadonly, label: 'Change Read Only.', checked: false })}
           {this.props.textField('taxID', { readOnly: this.state.readOnly, readOnlyText: 'You cannot edit this field', placeholder: 'Enter federal Tax ID', label: 'Tax ID', validate: 'taxID', value: '10-1010101' })}
           <GBLink onClick={() => this.testFunc(100)}>Test Func</GBLink>
-          {this.props.textField('amount', { value: this.state.value, label: 'Amount' })}
+          {this.props.textField('amount', { value: '', label: 'Amount', fixedLabel: false, required: true })}
           {this.props.dropdown('bankAccounts', {
             options: list,
             label: 'Bank Accounts',

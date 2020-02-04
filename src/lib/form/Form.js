@@ -103,7 +103,8 @@ class Form extends Component {
       strength: false,
       count: false,
       meta: {},
-      disallowModalBgClose: false
+      disallowModalBgClose: false,
+      color: ''
     }
     this.defaults = { ...this.defaultOptions, ...props.options };
     this.saveButtonRef = React.createRef();
@@ -571,6 +572,7 @@ class Form extends Component {
         createField={createField}
         params={params}
         useIcon={params.useIcon}
+        color={params.color}
       />
     )
   }
@@ -616,6 +618,7 @@ class Form extends Component {
         fieldProp={this.fieldProp}
         formProp={this.formProp}
         inputRef={params.ref}
+        color={params.color}
       />
     )
   }
@@ -731,6 +734,7 @@ class Form extends Component {
         inputRef={params.ref}
         customLink={params.customLink}
         inputMode={params.inputMode}
+        color={params.color}
       />
     )
   }
