@@ -281,7 +281,7 @@ class Form extends Component {
   onChangeCalendar(ts, name) {
     const field = has(this.state.fields, name) ? this.state.fields[name] : null;
     if (field) {
-      this.fieldProp(name, { value: ts/field.reduceTS, error: false });
+      this.fieldProp(name, { value: ts ? ts/field.reduceTS : null, error: false });
       this.formProp({ error: false, errorMsg: '', updated: true });
       if (has(field, 'rangeStartField')) {
         let required = field.rangeRequired ? ts ? true : false : false;

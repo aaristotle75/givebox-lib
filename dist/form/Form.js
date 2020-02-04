@@ -300,7 +300,7 @@ class Form extends Component {
 
     if (field) {
       this.fieldProp(name, {
-        value: ts / field.reduceTS,
+        value: ts ? ts / field.reduceTS : null,
         error: false
       });
       this.formProp({

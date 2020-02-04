@@ -7,6 +7,7 @@ import Waypoint from 'react-waypoint';
 import Fade from '../common/Fade';
 import GBLink from '../common/GBLink';
 import Draggable from 'react-draggable';
+import { util } from '../';
 import has from 'has';
 
 const prefix = require('react-prefixr');
@@ -181,11 +182,14 @@ class Modal extends Component {
   closeModal(callback, allowClose = true) {
     const bindthis = this;
     const transitionTimeMS = this.getTransitionDuration();
+    const current = util.getValue(this.props.appRef, 'current', {});
 
     if (allowClose) {
       if (this.props.appRef && !this.searchForOpenModals(this.props.identifier)) {
-        if (this.props.appRef.current.classList.contains('blur')) {
-          this.props.appRef.current.classList.remove('blur');
+        if (!util.isEmpty(current)) {
+          if (this.props.appRef.current.classList.contains('blur')) {
+            this.props.appRef.current.classList.remove('blur');
+          }
         }
       }
 
