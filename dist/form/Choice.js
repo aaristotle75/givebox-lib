@@ -48,7 +48,8 @@ class Choice extends Component {
       errorType,
       value,
       checked,
-      useIcon
+      useIcon,
+      color
     } = this.props;
     let id = type === 'radio' ? `${value}-${type}` : `${name}-${type}`;
     let isChecked = checked;
@@ -57,6 +58,9 @@ class Choice extends Component {
       style: style,
       className: `choice-group ${className || ''} ${type}-group  ${error ? 'error tooltip' : ''}`
     }, useIcon ? React.createElement(GBLink, {
+      style: {
+        color: !error ? color : ''
+      },
       onClick: () => this.onChangeLink(name, value)
     }, isChecked ? React.createElement("span", {
       className: "icon icon-check-square"

@@ -62,8 +62,18 @@ class TextField extends Component {
       symbol,
       money,
       inputRef,
-      inputMode
+      inputMode,
+      color
     } = this.props;
+    const {
+      status
+    } = this.state;
+    const labelStyle = {
+      color: status === 'active' ? color : ''
+    };
+    const inputBottomStyle = {
+      background: status === 'active' ? color : ''
+    };
     const readOnlyText = this.props.readOnlyText || `${label} is not editable`;
     return React.createElement("div", {
       style: style,
@@ -92,8 +102,10 @@ class TextField extends Component {
       style: inputStyle,
       inputMode: inputMode
     }), label && React.createElement("label", {
+      style: labelStyle,
       htmlFor: name
     }, customLabel || label), React.createElement("div", {
+      style: inputBottomStyle,
       className: `input-bottom ${error ? 'error' : this.state.status}`
     }), this.props.children, strength && React.createElement(PasswordStrength, {
       password: value,

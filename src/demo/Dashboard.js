@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import TestForm from './TestForm';
-import { Form, Alert, Tabs, Tab, ModalLink, GBLink, Image } from '../lib';
+import { Form, Alert, Tabs, Tab, ModalLink, GBLink, Image, util } from '../lib';
+import { setProp } from '../lib/api/actions';
 
-export default class Dashboard extends Component {
+class Dashboard extends Component {
 
   constructor(props) {
     super(props);
@@ -17,6 +19,7 @@ export default class Dashboard extends Component {
 
   componentDidMount() {
     this.status();
+    this.props.setProp('primaryColor', '#ecab1f');
   }
 
   componentWillUnmount() {
@@ -82,3 +85,17 @@ export default class Dashboard extends Component {
     )
   }
 }
+
+function mapStateToProps(state, props) {
+
+	const app = util.getValue(state, 'app', {});
+
+  return {
+		primaryColor: util.getValue(app, 'primaryColor')
+  }
+}
+
+
+export default connect(mapStateToProps, {
+  setProp
+})(Dashboard)

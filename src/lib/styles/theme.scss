@@ -529,6 +529,11 @@ header.subNav {
   border-radius: 20px;
 }
 
+.dropdown.customColor .dropdown-content::-webkit-scrollbar-thumb {
+  background-color: $med-blue-gray;
+  outline: 0;
+  border-radius: 20px;
+}
 
 /*------- Actions Block -----*/
 .actionsBlock {

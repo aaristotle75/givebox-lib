@@ -41,7 +41,6 @@ class Routes extends Component {
                 />
                 <Header />
                 <Sidebar />
-                <HelpDeskButton location={location} loader={this.props.loader} />
                 <div id='contentContainer' className='contentContainer'>
                   <Switch location={location}>
                     <Route path='/dashboard' render={(props) => loadComponent('demo/Dashboard')}  />

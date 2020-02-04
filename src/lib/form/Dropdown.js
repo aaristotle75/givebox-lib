@@ -29,6 +29,7 @@ class Dropdown extends Component {
     this.dropdownRef = React.createRef();
     this.labelRef = React.createRef();
     this.selectedRef = React.createRef();
+    this.iconRef = React.createRef();
     this.itemRefs = {};
   }
 
@@ -169,16 +170,18 @@ class Dropdown extends Component {
       const buttonStyle = {
         borderBottom: this.props.color ? `1px solid ${this.props.color}` : ''
       };
-      this.labelRef.current.style.setProperty('color', this.props.color, 'important');
-      this.selectedRef.current.style.setProperty('color', this.props.color, 'important');
+      if (util.getValue(this.labelRef, 'current')) this.labelRef.current.style.setProperty('color', this.props.color, 'important');
+      if (util.getValue(this.selectedRef, 'current')) this.selectedRef.current.style.setProperty('color', this.props.color, 'important');
+      if (util.getValue(this.iconRef, 'current')) this.iconRef.current.style.setProperty('color', this.props.color, 'important');
       this.setState({buttonStyle, status: 'active'});
     }
   }
 
   onMouseLeave(e) {
     e.preventDefault();
-    this.labelRef.current.style.setProperty('color', '');
-    this.selectedRef.current.style.setProperty('color', '');
+    if (util.getValue(this.labelRef, 'current')) this.labelRef.current.style.setProperty('color', '');
+    if (util.getValue(this.selectedRef, 'current')) this.selectedRef.current.style.setProperty('color', '');
+    if (util.getValue(this.iconRef, 'current')) this.iconRef.current.style.setProperty('color', '');
     this.setState({status: 'idle', buttonStyle: {} });
   }
 
@@ -223,9 +226,9 @@ class Dropdown extends Component {
         <Fade in={open && overlay} duration={overlayDuration}>
           <div onClick={this.closeMenu} className={`dropdown-cover ${display ? '' : 'displayNone'}`}></div>
         </Fade>
-        <div className={`dropdown ${floatingLabel && 'floating-label'} ${status} ${fixedLabel ? 'fixed' : ''}`} style={dropdownStyle}>
+        <div className={`dropdown ${this.props.color ? 'customColor' : ''} ${floatingLabel && 'floating-label'} ${status} ${fixedLabel ? 'fixed' : ''}`} style={dropdownStyle}>
           {label && !floatingLabel && <label><GBLink onClick={open ? this.closeMenu : this.openMenu}>{label}</GBLink></label>}
-          <button style={buttonStyle} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} type='button' onClick={open ? this.closeMenu : this.openMenu}><span ref={this.selectedRef} className={`label ${idleLabel && 'idle'}`}>{selectedValue}</span>{open ? multi ? iconMultiClose : iconOpened : iconClosed}</button>
+          <button style={buttonStyle} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} type='button' onClick={open ? this.closeMenu : this.openMenu}><span ref={this.selectedRef} className={`label ${idleLabel && 'idle'}`}>{selectedValue}</span><span ref={this.iconRef} className={`icon icon-${open ? multi ? iconMultiClose : iconOpened : iconClosed}`}></span></button>
           <div ref={this.dropdownRef} style={{ ...contentStyle, boxShadow: this.props.color ? `none`: '', border: this.props.color && open ? `1px solid ${this.props.color}` : ''}} className={`${open ? 'opened' : ''} dropdown-content ${this.props.direction || direction}`}>
             <AnimateHeight
               duration={200}
@@ -255,10 +258,10 @@ Dropdown.defaultProps = {
   selectLabel: 'Please select',
   floatingLabel: true,
   contentStyle: {},
-  iconMultiChecked: <span className='icon icon-check'></span>,
-  iconMultiClose: <span className='icon icon-chevron-down'></span>,
-  iconClosed: <span className='icon icon-chevron-right'></span>,
-  iconOpened: <span className='icon icon-chevron-down'></span>,
+  iconMultiChecked: 'check',
+  iconMultiClose: 'chevron-down',
+  iconClosed: 'chevron-right',
+  iconOpened: 'chevron-down',
   overlayDuration: 200,
   overlay: true,
   direction: ''

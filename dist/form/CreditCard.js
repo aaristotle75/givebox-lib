@@ -83,11 +83,19 @@ class CreditCard extends Component {
       maxLength,
       value,
       checked,
-      hideLabel
+      hideLabel,
+      color
     } = this.props;
     const {
-      cardType
+      cardType,
+      status
     } = this.state;
+    const labelStyle = {
+      color: status === 'active' ? color : ''
+    };
+    const inputBottomStyle = {
+      background: status === 'active' ? color : ''
+    };
     const hideCardsAccepted = value ? cardType !== 'default' ? true : false : false;
     return React.createElement("div", {
       style: style,
@@ -118,8 +126,10 @@ class CreditCard extends Component {
       maxLength: maxLength,
       inputMode: "numeric"
     }), !hideLabel && label && React.createElement("label", {
+      style: labelStyle,
       htmlFor: name
     }, label), React.createElement("div", {
+      style: inputBottomStyle,
       className: `input-bottom ${error ? 'error' : this.state.status}`
     })), React.createElement(Fade, {
       duration: 200,

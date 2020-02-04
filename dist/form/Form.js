@@ -103,7 +103,8 @@ class Form extends Component {
       strength: false,
       count: false,
       meta: {},
-      disallowModalBgClose: false
+      disallowModalBgClose: false,
+      color: ''
     };
     this.defaults = { ...this.defaultOptions,
       ...props.options
@@ -705,7 +706,8 @@ class Form extends Component {
       errorType: params.errorType,
       createField: createField,
       params: params,
-      useIcon: params.useIcon
+      useIcon: params.useIcon,
+      color: params.color
     });
   }
 
@@ -746,7 +748,8 @@ class Form extends Component {
       multiCloseCallback: params.multiCloseCallback,
       fieldProp: this.fieldProp,
       formProp: this.formProp,
-      inputRef: params.ref
+      inputRef: params.ref,
+      color: params.color
     });
   }
 
@@ -867,7 +870,8 @@ class Form extends Component {
       money: params.validate === 'money' || params.validateOpts.validate === 'money' ? true : false,
       inputRef: params.ref,
       customLink: params.customLink,
-      inputMode: params.inputMode
+      inputMode: params.inputMode,
+      color: params.color
     });
   }
 
@@ -979,7 +983,8 @@ class Form extends Component {
       errorType: params.errorType,
       maxLength: field ? field.maxLength : params.maxLength,
       createField: this.createField,
-      params: params
+      params: params,
+      color: params.color
     });
   }
 

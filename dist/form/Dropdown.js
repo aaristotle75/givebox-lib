@@ -22,9 +22,14 @@ class Dropdown extends Component {
       selected: '',
       value: '',
       direction: '',
-      status: 'idle'
+      status: 'idle',
+      buttonStyle: {}
     };
     this.dropdownRef = React.createRef();
+    this.labelRef = React.createRef();
+    this.selectedRef = React.createRef();
+    this.iconRef = React.createRef();
+    this.itemRefs = {};
   }
 
   componentDidMount() {
@@ -165,7 +170,17 @@ class Dropdown extends Component {
           style: value.style
         }, value.bottom));
       } else {
+        bindthis.itemRefs[dataValue] = React.createRef();
         items.push(React.createElement("div", {
+          ref: bindthis.itemRefs[dataValue],
+          onMouseEnter: () => {
+            const ref = bindthis.itemRefs[dataValue].current;
+            ref.style.setProperty('background', bindthis.props.color);
+          },
+          onMouseLeave: () => {
+            const ref = bindthis.itemRefs[dataValue].current;
+            ref.style.setProperty('background', '');
+          },
           "data-selected": value.primaryText,
           "data-value": dataValue,
           onClick: e => bindthis.onClick(e, value.disabled),
@@ -191,15 +206,29 @@ class Dropdown extends Component {
 
   onMouseEnter(e) {
     e.preventDefault();
-    if (!this.props.error) this.setState({
-      status: 'active'
-    });
+
+    if (!this.props.error) {
+      const buttonStyle = {
+        borderBottom: this.props.color ? `1px solid ${this.props.color}` : ''
+      };
+      if (util.getValue(this.labelRef, 'current')) this.labelRef.current.style.setProperty('color', this.props.color, 'important');
+      if (util.getValue(this.selectedRef, 'current')) this.selectedRef.current.style.setProperty('color', this.props.color, 'important');
+      if (util.getValue(this.iconRef, 'current')) this.iconRef.current.style.setProperty('color', this.props.color, 'important');
+      this.setState({
+        buttonStyle,
+        status: 'active'
+      });
+    }
   }
 
   onMouseLeave(e) {
     e.preventDefault();
+    if (util.getValue(this.labelRef, 'current')) this.labelRef.current.style.setProperty('color', '');
+    if (util.getValue(this.selectedRef, 'current')) this.selectedRef.current.style.setProperty('color', '');
+    if (util.getValue(this.iconRef, 'current')) this.iconRef.current.style.setProperty('color', '');
     this.setState({
-      status: 'idle'
+      status: 'idle',
+      buttonStyle: {}
     });
   }
 
@@ -229,7 +258,9 @@ class Dropdown extends Component {
       open,
       selected,
       display,
-      direction
+      direction,
+      status,
+      buttonStyle
     } = this.state;
     const selectedValue = multi ? open ? multiCloseLabel : selectLabel : selected && (value || defaultValue) ? selected : selectLabel;
     const idleLabel = selectedValue === multiCloseLabel || selectedValue === selectLabel;
@@ -243,20 +274,28 @@ class Dropdown extends Component {
       onClick: this.closeMenu,
       className: `dropdown-cover ${display ? '' : 'displayNone'}`
     })), React.createElement("div", {
-      className: `dropdown ${floatingLabel && 'floating-label'} ${this.state.status} ${fixedLabel ? 'fixed' : ''}`,
+      className: `dropdown ${this.props.color ? 'customColor' : ''} ${floatingLabel && 'floating-label'} ${status} ${fixedLabel ? 'fixed' : ''}`,
       style: dropdownStyle
     }, label && !floatingLabel && React.createElement("label", null, React.createElement(GBLink, {
       onClick: open ? this.closeMenu : this.openMenu
     }, label)), React.createElement("button", {
+      style: buttonStyle,
       onMouseEnter: this.onMouseEnter,
       onMouseLeave: this.onMouseLeave,
       type: "button",
       onClick: open ? this.closeMenu : this.openMenu
     }, React.createElement("span", {
+      ref: this.selectedRef,
       className: `label ${idleLabel && 'idle'}`
-    }, selectedValue), open ? multi ? iconMultiClose : iconOpened : iconClosed), React.createElement("div", {
+    }, selectedValue), React.createElement("span", {
+      ref: this.iconRef,
+      className: `icon icon-${open ? multi ? iconMultiClose : iconOpened : iconClosed}`
+    })), React.createElement("div", {
       ref: this.dropdownRef,
-      style: contentStyle,
+      style: { ...contentStyle,
+        boxShadow: this.props.color ? `none` : '',
+        border: this.props.color && open ? `1px solid ${this.props.color}` : ''
+      },
       className: `${open ? 'opened' : ''} dropdown-content ${this.props.direction || direction}`
     }, React.createElement(AnimateHeight, {
       duration: 200,
@@ -266,7 +305,9 @@ class Dropdown extends Component {
     }, this.listOptions()))), label && floatingLabel && React.createElement("label", null, React.createElement(GBLink, {
       className: "link label",
       onClick: open ? this.closeMenu : this.openMenu
-    }, label))), React.createElement("div", {
+    }, React.createElement("span", {
+      ref: this.labelRef
+    }, label)))), React.createElement("div", {
       className: `tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`
     }, this.props.error, React.createElement("i", null)), React.createElement("div", {
       className: `errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`
@@ -282,18 +323,10 @@ Dropdown.defaultProps = {
   selectLabel: 'Please select',
   floatingLabel: true,
   contentStyle: {},
-  iconMultiChecked: React.createElement("span", {
-    className: "icon icon-check"
-  }),
-  iconMultiClose: React.createElement("span", {
-    className: "icon icon-chevron-down"
-  }),
-  iconClosed: React.createElement("span", {
-    className: "icon icon-chevron-right"
-  }),
-  iconOpened: React.createElement("span", {
-    className: "icon icon-chevron-down"
-  }),
+  iconMultiChecked: 'check',
+  iconMultiClose: 'chevron-down',
+  iconClosed: 'chevron-right',
+  iconOpened: 'chevron-down',
   overlayDuration: 200,
   overlay: true,
   direction: ''
