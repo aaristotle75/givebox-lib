@@ -68,14 +68,25 @@ class ContentField extends Component {
       modal,
       modalLabel,
       value,
-      disallowModalBgClose
+      disallowModalBgClose,
+      color
     } = this.props;
+    const {
+      status
+    } = this.state;
+    const labelStyle = {
+      color: status === 'active' ? color : ''
+    };
+    const inputBottomStyle = {
+      background: status === 'active' ? color : ''
+    };
     return React.createElement("div", {
       style: style,
       className: `input-group ${className || ''} richtext-group ${error ? 'error tooltip' : ''}`
     }, React.createElement("div", {
       className: `errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`
     }, error), !modal && label && React.createElement("label", {
+      style: labelStyle,
       className: `${this.state.status}`,
       htmlFor: name
     }, label), React.createElement("div", {
@@ -99,8 +110,10 @@ class ContentField extends Component {
       onBlur: this.onBlur,
       onFocus: this.onFocus
     }))), modal && label && React.createElement("label", {
+      style: labelStyle,
       htmlFor: name
     }, label), React.createElement("div", {
+      style: inputBottomStyle,
       className: `input-bottom ${error ? 'error' : this.state.status}`
     })), React.createElement("div", {
       className: `tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`
@@ -133,8 +146,9 @@ const Editor = props => {
     updateContent: props.updateContent,
     fieldName: props.name,
     wysiwyg: props.wysiwyg,
-    allowLink: props.allowLink
-  }), props.closeModalAndSave && !props.hideCloseModalAndSaveButtons ? React.createElement("div", {
+    allowLink: props.allowLink,
+    color: props.color
+  }), props.closeModalAndSave && !props.hideCloseModalAndSaveButtons && props.modal ? React.createElement("div", {
     className: "center button-group"
   }, React.createElement(GBLink, {
     className: "link",

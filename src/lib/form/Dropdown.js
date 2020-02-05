@@ -145,7 +145,7 @@ class Dropdown extends Component {
       } else {
         bindthis.itemRefs[dataValue] = React.createRef();
         items.push(
-          <div ref={bindthis.itemRefs[dataValue]} onMouseEnter={() => { const ref = bindthis.itemRefs[dataValue].current;       ref.style.setProperty('background', bindthis.props.color); } } onMouseLeave={() => { const ref = bindthis.itemRefs[dataValue].current; ref.style.setProperty('background', ''); } } data-selected={value.primaryText} data-value={dataValue} onClick={(e) => bindthis.onClick(e, value.disabled)} className={`dropdown-item ${selected ? 'selected' : ''} ${value.disabled ? 'disabled' : ''}`} key={dataValue}>
+          <div style={{ color: selected ? bindthis.props.color || '' : ''}} ref={bindthis.itemRefs[dataValue]} onMouseEnter={() => { const ref = bindthis.itemRefs[dataValue].current; ref.style.setProperty('background', value.disabled ? '' : bindthis.props.color); ref.style.setProperty('color', selected ? '#ffffff' : ''); } } onMouseLeave={() => { const ref = bindthis.itemRefs[dataValue].current; ref.style.setProperty('background', ''); ref.style.setProperty('color', selected ? bindthis.props.color : ''); } } data-selected={value.primaryText} data-value={dataValue} onClick={(e) => bindthis.onClick(e, value.disabled)} className={`dropdown-item ${selected ? 'selected' : ''} ${value.disabled ? 'disabled' : ''}`} key={dataValue}>
             <div className='dropdown-container'>
               <div className='leftSide'>
                 {bindthis.props.multi && selected && bindthis.props.iconMultiChecked} {value.primaryText}

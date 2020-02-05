@@ -194,7 +194,8 @@ class ContentEditor extends Component {
     const {
       placeholder,
       wysiwyg,
-      allowLink
+      allowLink,
+      color
     } = this.props;
     const {
       editorState
@@ -238,13 +239,15 @@ class ContentEditor extends Component {
       className: "wysiwyg"
     }, React.createElement(BlockStyleControls, {
       editorState: editorState,
-      onToggle: this.toggleBlockType
+      onToggle: this.toggleBlockType,
+      color: color
     }), React.createElement(InlineStyleControls, {
       editorState: editorState,
       onToggle: this.toggleInlineStyle,
       promptForLink: this.promptForLink,
       removeLink: this.removeLink,
-      allowLink: allowLink
+      allowLink: allowLink,
+      color: color
     })) : '', urlInput, React.createElement("div", {
       className: className,
       onClick: this.focus
@@ -306,6 +309,9 @@ class StyleButton extends React.Component {
     }
 
     return React.createElement("span", {
+      style: {
+        color: this.props.color
+      },
       className: className,
       onMouseDown: this.onToggle
     }, this.props.label);
@@ -340,7 +346,8 @@ const BlockStyleControls = props => {
     active: type.style === blockType,
     label: type.label,
     onToggle: props.onToggle,
-    style: type.style
+    style: type.style,
+    color: props.color
   })));
 };
 
@@ -370,7 +377,8 @@ const InlineStyleControls = props => {
     active: currentStyle.has(type.style),
     label: type.label,
     onToggle: props.onToggle,
-    style: type.style
+    style: type.style,
+    color: props.color
   })));
 };
 

@@ -172,14 +172,19 @@ class Dropdown extends Component {
       } else {
         bindthis.itemRefs[dataValue] = React.createRef();
         items.push(React.createElement("div", {
+          style: {
+            color: selected ? bindthis.props.color || '' : ''
+          },
           ref: bindthis.itemRefs[dataValue],
           onMouseEnter: () => {
             const ref = bindthis.itemRefs[dataValue].current;
-            ref.style.setProperty('background', bindthis.props.color);
+            ref.style.setProperty('background', value.disabled ? '' : bindthis.props.color);
+            ref.style.setProperty('color', selected ? '#ffffff' : '');
           },
           onMouseLeave: () => {
             const ref = bindthis.itemRefs[dataValue].current;
             ref.style.setProperty('background', '');
+            ref.style.setProperty('color', selected ? bindthis.props.color : '');
           },
           "data-selected": value.primaryText,
           "data-value": dataValue,

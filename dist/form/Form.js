@@ -907,7 +907,8 @@ class Form extends Component {
       params: params,
       closeModalAndSave: this.closeModalAndSave,
       hideCloseModalAndSaveButtons: params.hideCloseModalAndSaveButtons,
-      disallowModalBgClose: params.disallowModalBgClose
+      disallowModalBgClose: params.disallowModalBgClose,
+      color: params.color
     });
   }
 
