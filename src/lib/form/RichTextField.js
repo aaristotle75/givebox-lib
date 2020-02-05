@@ -62,13 +62,25 @@ class ContentField extends Component {
       modal,
       modalLabel,
       value,
-      disallowModalBgClose
+      disallowModalBgClose,
+      color
     } = this.props;
+
+    const {
+      status
+    } = this.state;
+
+    const labelStyle = {
+      color: status === 'active' ? color : ''
+    };
+    const inputBottomStyle = {
+      background: status === 'active' ? color : ''
+    };
 
     return (
       <div style={style} className={`input-group ${className || ''} richtext-group ${error ? 'error tooltip' : ''}`}>
         <div className={`errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`}>{error}</div>
-        {!modal && label && <label className={`${this.state.status}`} htmlFor={name}>{label}</label>}
+        {!modal && label && <label style={labelStyle} className={`${this.state.status}`} htmlFor={name}>{label}</label>}
         <div className={`floating-label ${this.state.status} ${fixedLabel && 'fixed'}`}>
           {modal ?
             <div>
@@ -84,8 +96,8 @@ class ContentField extends Component {
               />
             </div>
           }
-          {modal && label && <label htmlFor={name}>{label}</label>}
-          <div className={`input-bottom ${error ? 'error' : this.state.status}`}></div>
+          {modal && label && <label style={labelStyle} htmlFor={name}>{label}</label>}
+          <div style={inputBottomStyle} className={`input-bottom ${error ? 'error' : this.state.status}`}></div>
         </div>
         <div className={`tooltipTop ${errorType !=='tooltip' && 'displayNone'}`}>
           {error}
@@ -114,6 +126,7 @@ export default connect(mapStateToProps, {
 })(ContentField);
 
 const Editor = (props) => {
+
   return (
     <div>
       <RichTextEditor
@@ -126,8 +139,9 @@ const Editor = (props) => {
         fieldName={props.name}
         wysiwyg={props.wysiwyg}
         allowLink={props.allowLink}
+        color={props.color}
       />
-      {props.closeModalAndSave && !props.hideCloseModalAndSaveButtons ?
+      {props.closeModalAndSave && !props.hideCloseModalAndSaveButtons && props.modal ?
       <div className='center button-group'>
         <GBLink className='link' onClick={() => props.closeModalAndSave(props.id, false)}>Cancel</GBLink>
         <GBLink style={{ width: 150 }} className='button' onClick={() => props.closeModalAndSave(props.id)}>Save</GBLink>

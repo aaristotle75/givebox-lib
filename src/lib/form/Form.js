@@ -774,6 +774,7 @@ class Form extends Component {
         closeModalAndSave={this.closeModalAndSave}
         hideCloseModalAndSaveButtons={params.hideCloseModalAndSaveButtons}
         disallowModalBgClose={params.disallowModalBgClose}
+        color={params.color}
       />
     )
   }

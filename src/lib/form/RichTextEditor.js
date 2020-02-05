@@ -187,7 +187,7 @@ class ContentEditor extends Component {
 
 	render() {
 
-		const {placeholder, wysiwyg, allowLink } = this.props;
+		const {placeholder, wysiwyg, allowLink, color } = this.props;
 
 		const {editorState} = this.state;
 
@@ -225,6 +225,7 @@ class ContentEditor extends Component {
 					<BlockStyleControls
 						editorState={editorState}
 						onToggle={this.toggleBlockType}
+						color={color}
 					/>
 					<InlineStyleControls
 						editorState={editorState}
@@ -232,6 +233,7 @@ class ContentEditor extends Component {
 						promptForLink={this.promptForLink}
 						removeLink={this.removeLink}
 						allowLink={allowLink}
+						color={color}
 					/>
 				</div> : ''}
         {urlInput}
@@ -292,7 +294,7 @@ class StyleButton extends React.Component {
 		}
 
 		return (
-			<span className={className} onMouseDown={this.onToggle}>
+			<span style={{ color: this.props.color }} className={className} onMouseDown={this.onToggle}>
 				{this.props.label}
 			</span>
 		);
@@ -323,6 +325,7 @@ const BlockStyleControls = (props) => {
 					label={type.label}
 					onToggle={props.onToggle}
 					style={type.style}
+					color={props.color}
 				/>
 			)}
 		</div>
@@ -348,6 +351,7 @@ const InlineStyleControls = (props) => {
 					label={type.label}
 					onToggle={props.onToggle}
 					style={type.style}
+					color={props.color}
 				/>
 			)}
 		</div>

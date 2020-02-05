@@ -149,6 +149,7 @@ export default class TestForm extends Component {
           <button onClick={this.toggleWebcam}>Toggle Webcam</button>
           */}
           {this.props.creditCardGroup({ required: false, debug: false})}
+          {this.props.richText('emailList', { label: 'Email List', placeholder: 'Enter emails separated by commas', modal: false, required: false })}
           {/*
           {this.props.textField('address', {label: 'Address', placeholder: 'Enter Address', validate: 'address'})}
           {this.props.saveButton(this.processForm, { id: '-second' })}
@@ -156,7 +157,6 @@ export default class TestForm extends Component {
           {this.props.choice('enabled', { label: 'Enabled', checked: this.state.checked, value: this.state.checked })}
           {this.props.textField('amounts', { type: 'hidden', useChildren: true })}
           {this.props.uploadField('imageURL', { parent: 'user', label: 'Image', library: { borderRadius: 20, type: 'avatar' }, debug: true })}
-          {this.props.richText('emailList', { label: 'Email List', placeholder: 'Enter emails separated by commas', modal: true, required: false })}
           {this.props.modalField('testModal', { id: 'feesGlossary', label: 'Test Modal', modalLabel: 'Click the modal' } )}
           {this.props.colorPicker('primaryColor', { label: 'Pick a theme color' })}
           {this.props.creditCardGroup({ required: false, debug: false})}
