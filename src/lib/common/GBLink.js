@@ -51,7 +51,7 @@ class GBLink extends Component {
 		} = this.props;
 
 		const color = primaryColor ? { color: primaryColor } : {};
-		const mergeStyle = { ...style, ...color, ...this.state.hoverStyle };
+		const mergeStyle = {...color,  ...style, ...this.state.hoverStyle };
 
 		return (
 	    <button ref={this.linkRef} disabled={disabled} type='button' id={id} className={`${ripple ? 'ripple' : ''} ${className || 'link'}`} onClick={this.onClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} style={mergeStyle}>
