@@ -163,7 +163,8 @@ export const legalTypes = [//{ value: 'INDIVIDUAL_SOLE_PROPRIETORSHIP', primaryT
 {
   value: 'TAX_EXEMPT_ORGANIZATION',
   primaryText: 'Tax Exempt Organization'
-}];
+} //{ value: 'GOVERNMENT_AGENCY', primaryText: 'Government Agency' }
+];
 export const articleKinds = [{
   value: 'fundraiser',
   primaryText: 'Fundraiser'

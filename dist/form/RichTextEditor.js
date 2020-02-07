@@ -269,9 +269,9 @@ class ContentEditor extends Component {
 }
 
 ContentEditor.defaultProps = {
-  wysiwyg: 'display' // Custom overrides for 'code' style.
+  wysiwyg: 'display'
+}; // Custom overrides for 'code' style.
 
-};
 const styleMap = {
   CODE: {
     backgroundColor: 'rgba(0, 0, 0, 0.05)',
