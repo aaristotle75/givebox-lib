@@ -59,8 +59,8 @@ class GBLink extends Component {
     const color = primaryColor ? {
       color: primaryColor
     } : {};
-    const mergeStyle = { ...color,
-      ...style,
+    const mergeStyle = { ...style,
+      ...color,
       ...this.state.hoverStyle
     };
     return React.createElement("button", {
