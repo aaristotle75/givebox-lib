@@ -137,6 +137,7 @@ export default class TestForm extends Component {
             selectLabel: 'Select the Bank Account',
             required: true
           })}
+          {this.props.uploadField('imageURL', { parent: 'user', label: 'Image', debug: true })}
           {/*
           {!this.state.webcam || 1===1 ?
             <div>
