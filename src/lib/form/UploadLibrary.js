@@ -303,7 +303,7 @@ class UploadLibrary extends Component {
                   onDropRejected={this.handleDropRejected}
                   accept={mimes}
                 >
-                  <span className='text'><span className='icon icon-plus'></span> Upload Photo</span>
+                  { () => <span className='text'><span className='icon icon-plus'></span> Upload Photo</span> }
                 </Dropzone>
                 {this.state.preview ? <GBLink style={{ marginLeft: '2%' }} className='button' onClick={() => this.selectEditor(this.state.preview)}><span className='icon icon-edit'></span> Edit Selected</GBLink> : ''}
               </div>

@@ -134,8 +134,12 @@ class Upload extends Component {
                   onDrop={this.onDrop}
                   accept={mimes}
                 >
-                  <span className='icon dropzone-icon icon-instagram'></span>
-                  <span className='text'>{uploadLabel}</span>
+                  { () =>
+                  <>
+                    <span className='icon dropzone-icon icon-instagram'></span>
+                    <span className='text'>{uploadLabel}</span>
+                  </>
+                  }
                 </Dropzone>
                 {this.state.original && <GBLink onClick={this.restoreImage} className='link'>Restore Original</GBLink>}
               </div>

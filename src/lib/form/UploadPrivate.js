@@ -193,8 +193,12 @@ class UploadPrivate extends Component {
               onDropRejected={this.handleDropRejected}
               accept={mimes}
             >
+            { () =>
+              <>
               <span className={`icon dropzone-icon icon-${this.props.icon}`}></span>
               <span className='text'>{uploadLabel}</span>
+              </>
+            }
             </Dropzone>
           </div>
         </div>
