@@ -1,0 +1,29 @@
+.react-grid-item {
+  background: gray;
+  opacity: .5;
+  overflow: hidden;
+
+  .removeLink {
+  }
+}
+
+.board {
+  min-height: 400px;
+  min-width: 500px;
+}
+
+.tools {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.tool {
+  background: green;
+  display: inline-block;
+  padding: 10px;
+  margin: 5px;
+  text-align: center;
+  width: 100px;
+  height: 50px;
+}

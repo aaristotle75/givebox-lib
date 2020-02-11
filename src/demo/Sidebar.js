@@ -15,6 +15,7 @@ export default class Sidebar extends Component {
           <NavLink to='/about'>About</NavLink>
           <NavLink to='/contact'>Contact</NavLink>
           <NavLink to='/helpdesk'>Help Desk</NavLink>
+          <NavLink to='/gbx'>GBX</NavLink>
         </ul>
       </nav>
     )

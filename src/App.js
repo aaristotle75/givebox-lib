@@ -62,7 +62,7 @@ class App extends Component {
     } else {
       // Check if an organization has been returned, if not redirect to main signin
       if (!has(res, 'organization')) {
-        console.log('redirect to signin');
+        console.log('signed in as super, not masquerading');
       } else {
         // Authenticate
         this.setState({authenticated: true});

@@ -14,11 +14,13 @@ class Routes extends Component {
       authenticated
     } = this.props;
 
+    /*
     if (!authenticated) return ( this.props.loader('Authenticating', 'authenticating') );
 
     if (util.isLoading(session)) {
       return this.props.loader('Trying to load initial resources: session');
     }
+    */
 
     return (
       <div>
@@ -52,6 +54,7 @@ class Routes extends Component {
                     <Route path='/about' render={(props) => loadComponent('demo/About')}  />
                     <Route path='/contact' render={(props) => loadComponent('demo/Contact')}  />
                     <Route path='/helpdesk' render={(props) => loadComponent('demo/HelpDeskDemo')}  />
+                    <Route path='/gbx' render={(props) => loadComponent('demo/GBXTest')}  />
                     <Route render={() => <div>Error</div>} />
                   </Switch>
                 </div>
