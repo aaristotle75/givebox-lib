@@ -111,6 +111,7 @@ class HelpDeskButton extends Component {
                 kb={this.props.kb}
                 departmentId={this.props.departmentId}
                 teamId={this.props.teamId}
+                showKB={this.props.showKB}
               />
             </Fade>
           </div>

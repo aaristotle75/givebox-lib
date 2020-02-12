@@ -13,12 +13,18 @@ class HelpDesk extends Component {
   constructor(props) {
     super(props);
     this.closeHelpDesk = this.closeHelpDesk.bind(this);
+    this.setTab = this.setTab.bind(this);
     this.state = {
-      loading: true
+      loading: true,
+      tab: props.showKB ? props.defaultTab : 'contact'
     };
   }
 
   componentDidMount() {
+  }
+
+  setTab(tab) {
+    this.setState({ tab });
   }
 
   closeHelpDesk() {
@@ -30,7 +36,7 @@ class HelpDesk extends Component {
     return (
       <div id='helpdesk' className='helpdesk'>
         <Tabs
-          default='articles'
+          default={this.state.tab}
           className='statsTab'
           intro={
             <div className='helpDeskClose'>
@@ -40,7 +46,7 @@ class HelpDesk extends Component {
         >
           <Tab
             className='showOnMobile'
-            id='articles'
+            id={this.props.showKB ? 'articles' : ''}
             label='Givebox FAQs'
           >
             <Articles
@@ -63,7 +69,9 @@ class HelpDesk extends Component {
 }
 
 HelpDesk.defaultProps = {
-  scrollHeight: '400px'
+  scrollHeight: '400px',
+  defaultTab: 'contact',
+  showKB: true
 }
 
 function mapStateToProps(state, props) {

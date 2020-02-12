@@ -137,20 +137,17 @@ class ContentEditor extends Component {
   }
 
 	onChange(editorState) {
-		console.log('execute onChange');
 		this.setState({editorState});
 		const content = editorState.getCurrentContent();
 		if (this.props.onChange) this.props.onChange(this.props.fieldName, stateToHTML(content), content.hasText());
 	}
 
 	onBlur() {
-		console.log('execute onBlur');
 		const content = this.state.editorState.getCurrentContent();
 		if (this.props.onBlur) this.props.onBlur(this.props.fieldName, stateToHTML(content), content.hasText());
 	}
 
 	onFocus() {
-		console.log('execute onFocus');
 		const content = this.state.editorState.getCurrentContent();
 		if (this.props.onFocus) this.props.onFocus(this.props.fieldName, stateToHTML(content), content.hasText());
 	}

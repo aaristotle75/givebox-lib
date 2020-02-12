@@ -14,9 +14,9 @@ class Routes extends Component {
       authenticated
     } = this.props;
 
-    /*
     if (!authenticated) return ( this.props.loader('Authenticating', 'authenticating') );
 
+    /*
     if (util.isLoading(session)) {
       return this.props.loader('Trying to load initial resources: session');
     }

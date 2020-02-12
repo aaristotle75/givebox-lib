@@ -64,8 +64,6 @@ class App extends Component {
       if (!has(res, 'organization')) {
         console.log('signed in as super, not masquerading');
       } else {
-        // Authenticate
-        this.setState({authenticated: true});
 
         // Set the selected org
         this.props.resourceProp('orgID', res.organization.ID);
@@ -121,6 +119,8 @@ class App extends Component {
         this.initResources();
       }
     }
+    // Authenticate
+    this.setState({authenticated: true});
   }
 
   initResources() {

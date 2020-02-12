@@ -44,12 +44,14 @@ class Tabs extends Component {
     const bindthis = this;
     if (!util.isEmpty(this.props.children)) {
       Object.entries(this.props.children).forEach(([key, value]) => {
-        if (util.getValue(value.props, 'id')) {
-          items.push(
-            <div style={bindthis.props.tabStyle} key={key} className={`panelItem`}>
-              <GBLink disabled={util.getValue(value.props, 'disabled')} className={`${util.getValue(value.props, 'disabled') ? 'disabled' : ''} ripple panelTab ${(value.props.id === bindthis.state.selectedTab) && 'selected'}`} style={bindthis.props.tabsStyle} onClick={() => bindthis.onTabClick(value.props.id)}>{value.props.label}</GBLink>
-            </div>
-          );
+        if (!util.isEmpty(value)) {
+          if (util.getValue(value.props, 'id')) {
+            items.push(
+              <div style={bindthis.props.tabStyle} key={key} className={`panelItem`}>
+                <GBLink disabled={util.getValue(value.props, 'disabled')} className={`${util.getValue(value.props, 'disabled') ? 'disabled' : ''} ripple panelTab ${(value.props.id === bindthis.state.selectedTab) && 'selected'}`} style={bindthis.props.tabsStyle} onClick={() => bindthis.onTabClick(value.props.id)}>{value.props.label}</GBLink>
+              </div>
+            );
+          }
         }
       });
     }

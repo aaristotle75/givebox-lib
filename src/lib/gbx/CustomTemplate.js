@@ -7,8 +7,9 @@ import {
   GBLink
 } from '../';
 import AnimateHeight from 'react-animate-height';
-import { DndProvider, useDrag, useDrop } from 'react-dnd'
-import Backend from 'react-dnd-html5-backend'
+import { DndProvider, useDrag, useDrop } from 'react-dnd';
+import Backend from 'react-dnd-html5-backend';
+import PageElement from './PageElement';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -40,41 +41,44 @@ class GBX extends React.Component {
     };
 
     const defaultToolsEnabled = [
-      'a',
-      'b',
+      'orgName',
+      'summary',
       'c'
     ];
 
     this.state = {
       editable: true,
       tools: {
-        'a': { name: 'A', child: <AComp /> },
-        'b': { name: 'B', child: <div>B</div> },
-        'c': { name: 'C', child: <div>C</div> },
-        'd': { name: 'D', child: <div>D</div> },
-        'e': { name: 'E', child: <div>E</div> },
-        'f': { name: 'F', child: <div>F</div> },
-        'g': { name: 'G', child: <div>G</div> }
+        'orgName': { name: 'Organization Name', child: 'OrgName' },
+        'summary': { name: 'Summary', child: 'Summary' },
+        'c': { name: 'C', child: 'OrgName' },
+        'd': { name: 'D', child: 'OrgName' },
+        'e': { name: 'E', child: 'OrgName' },
+        'f': { name: 'F', child: 'OrgName' },
+        'g': { name: 'G', child: 'OrgName' }
       },
       toolsEnabled: defaultToolsEnabled,
       layouts: defaultLayouts
     }
   }
 
+  componentDidMount() {
+  }
+
   layoutChange(layout) {
-    console.log('execute updateLayout', layout);
+    //console.log('execute updateLayout', layout);
   }
 
   breakpointChange(breakpoint, cols) {
-    console.log('execute breakpointChange', breakpoint, cols);
+    //console.log('execute breakpointChange', breakpoint, cols);
   }
 
   widthChange(width, margin, cols) {
-    console.log('execute widthChange', width, margin, cols);
+    //console.log('execute widthChange', width, margin, cols);
   }
 
   droppingItem(i, w, h) {
-    console.log('droppingItem', i, w, h);
+    //console.log('droppingItem', i, w, h);
   }
 
   toggleEditable() {
@@ -83,6 +87,7 @@ class GBX extends React.Component {
   }
 
   addTool(tool) {
+    console.log('execute addTool', tool);
     const layouts = this.state.layouts;
     const newItem = {
       i: tool,
@@ -98,6 +103,7 @@ class GBX extends React.Component {
   }
 
   removeTool(tool) {
+    console.log('execute removeTool', tool);
     const layouts = this.state.layouts;
     const toolsEnabled = this.state.toolsEnabled;
     const desktopIndex = layouts.desktop.findIndex(t => t.i === tool);
@@ -119,7 +125,7 @@ class GBX extends React.Component {
           <div className='editableTools'>
             <GBLink onClick={() => this.removeTool(value)}>Remove</GBLink>
           </div> : ''}
-          {tools[value].child}
+          <PageElement {...this.props} element={tools[value].child} />
         </div>
       );
     });
@@ -176,7 +182,7 @@ class GBX extends React.Component {
               layouts={layouts}
               breakpoints={{desktop: 801, mobile: 800 }}
               cols={{desktop: 12, mobile: 4}}
-              rowHeight={50}
+              rowHeight={30}
               onLayoutChange={this.layoutChange}
               onBreakpointChange={this.breakpointChange}
               onWidthChange={this.widthChange}
@@ -262,23 +268,6 @@ const Board = ({ addTool, children }) => {
   )
 }
 
-const AComp = () => {
-  return (
-    <Collapse
-      label={'Test'}
-      icon={'check'}
-    >
-      <div>
-        <h2>Hello world!</h2>
-        <p>
-          Hello<br />
-          Hello<br />
-        </p>
-      </div>
-    </Collapse>
-  )
-}
-
 export default class CustomTemplate extends React.Component {
 
   render() {
@@ -286,7 +275,9 @@ export default class CustomTemplate extends React.Component {
       <DndProvider
         backend={Backend}
       >
-        <GBX />
+        <GBX
+          {...this.props}
+        />
       </DndProvider>
     )
   }
