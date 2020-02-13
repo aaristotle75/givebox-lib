@@ -8,12 +8,14 @@ export default class Summary extends Component {
   render() {
 
     const {
-      text,
-      style
+      style,
+      article
     } = this.props;
 
+    const summary = util.getValue(article, 'summary');
+
     return (
-      <div style={style}>{text}</div>
+      <div style={style}>{summary}</div>
     )
   }
 }

@@ -37,7 +37,8 @@ export default class Image extends Component {
       imgStyle,
       style,
       maxWidth,
-      maxHeight
+      maxHeight,
+      draggable
     } = this.props;
 
     let defaultSize = '175px';
@@ -73,12 +74,12 @@ export default class Image extends Component {
     const mergeStyle = { ...imgStyle, maxWidth: maxWidth || maxSize, maxHeight: maxHeight || maxSize };
 
     return (
-      <div onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} style={{ ...style, ...this.state.hoverStyle, width: maxSize, height: 'auto' }} className={`imageComponent ${className || ''}`}>
+      <div onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} style={{ width: maxSize, height: 'auto',  ...style, ...this.state.hoverStyle  }} className={`imageComponent ${className || ''}`}>
         {this.state.imageLoading  &&
         <div className='imageLoader'>
           <img src='https://s3-us-west-1.amazonaws.com/givebox/public/images/squareLoader.gif' alt='Loader' />
         </div>}
-        <img style={mergeStyle} src={size === 'inherit' ? url : imageUrlWithStyle(url, size)} alt={alt || url} onLoad={this.imageOnLoad} />
+        <img style={mergeStyle} src={size === 'inherit' ? url : imageUrlWithStyle(url, size)} alt={alt || url} onLoad={this.imageOnLoad} draggable={draggable} />
       </div>
     )
   }
@@ -88,5 +89,6 @@ Image.defaultProps = {
   size: 'original',
   maxSize: '100%',
   maxHeight: null,
-  maxWidth: null
+  maxWidth: null,
+  draggable: false
 }

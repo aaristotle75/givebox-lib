@@ -2,13 +2,16 @@ import React from 'react'
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
+import '../styles/gbx.scss';
+import '../styles/gbxForm.scss';
 import {
   Collapse,
   GBLink
 } from '../';
 import AnimateHeight from 'react-animate-height';
-import { DndProvider, useDrag, useDrop } from 'react-dnd';
+import { DndProvider } from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
+import { Tool, Board } from './DragBoard.js';
 import PageElement from './PageElement';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
@@ -29,36 +32,43 @@ class GBX extends React.Component {
 
     const defaultLayouts = {
       desktop: [
-        { i: 'a', x: 0, y: 0, w: 1, h: 1 },
-        { i: 'b', x: 1, y: 0, w: 1, h: 1 },
-        { i: 'c', x: 2, y: 0, w: 1, h: 1 }
+        { i: 'logo', x: 0, y: 0, w: 1, h: 2 },
+        { i: 'title', x: 1, y: 0, w: 5, h: 2 },
+        { i: 'summary', x: 0, y: 2, w: 6, h: 3 },
+        { i: 'media', x: 6, y: 0, w: 6, h: 12 },
+        { i: 'form', x: 0, y: 3, w: 12, h: 40 }
       ],
       mobile: [
-        { i: 'a', x: 0, y: 0, w: 1, h: 1 },
-        { i: 'b', x: 1, y: 0, w: 1, h: 1 },
-        { i: 'c', x: 2, y: 0, w: 1, h: 1 }
+        { i: 'logo', x: 0, y: 0, w: 1, h: 2 },
+        { i: 'title', x: 1, y: 0, w: 5, h: 2 },
+        { i: 'media', x: 0, y: 2, w: 6, h: 12 },
+        { i: 'summary', x: 0, y: 2, w: 6, h: 3 },
+        { i: 'form', x: 0, y: 3, w: 6, h: 70 }
       ]
     };
 
     const defaultToolsEnabled = [
-      'orgName',
+      'logo',
+      'title',
+      'media',
       'summary',
-      'c'
+      'form'
     ];
 
     this.state = {
       editable: true,
       tools: {
-        'orgName': { name: 'Organization Name', child: 'OrgName' },
+        'logo': { name: 'Logo', child: 'Logo' },
+        'title': { name: 'Title', child: 'Title' },
+        'media': { name: 'Media', child: 'Media' },
         'summary': { name: 'Summary', child: 'Summary' },
-        'c': { name: 'C', child: 'OrgName' },
-        'd': { name: 'D', child: 'OrgName' },
-        'e': { name: 'E', child: 'OrgName' },
-        'f': { name: 'F', child: 'OrgName' },
-        'g': { name: 'G', child: 'OrgName' }
+        'form': { name: 'Form', child: 'PublicForm' }
       },
       toolsEnabled: defaultToolsEnabled,
-      layouts: defaultLayouts
+      layouts: defaultLayouts,
+      formStyle: {
+        maxWidth: '1000px'
+      }
     }
   }
 
@@ -66,19 +76,19 @@ class GBX extends React.Component {
   }
 
   layoutChange(layout) {
-    //console.log('execute updateLayout', layout);
+    console.log('execute updateLayout', layout);
   }
 
   breakpointChange(breakpoint, cols) {
-    //console.log('execute breakpointChange', breakpoint, cols);
+    console.log('execute breakpointChange', breakpoint, cols);
   }
 
   widthChange(width, margin, cols) {
-    //console.log('execute widthChange', width, margin, cols);
+    console.log('execute widthChange', width, margin, cols);
   }
 
   droppingItem(i, w, h) {
-    //console.log('droppingItem', i, w, h);
+    console.log('droppingItem', i, w, h);
   }
 
   toggleEditable() {
@@ -93,7 +103,7 @@ class GBX extends React.Component {
       i: tool,
       x: 0,
       y: Infinity,
-      w: 1,
+      w: 6,
       h: 1
     };
     layouts.desktop.push(newItem);
@@ -121,11 +131,12 @@ class GBX extends React.Component {
     this.state.toolsEnabled.forEach((value) => {
       items.push(
         <div key={value}>
-          {this.state.editable ?
           <div className='editableTools'>
             <GBLink onClick={() => this.removeTool(value)}>Remove</GBLink>
-          </div> : ''}
-          <PageElement {...this.props} element={tools[value].child} />
+          </div>
+          <div className='pageElement'>
+            <PageElement {...this.props} element={tools[value].child} />
+          </div>
         </div>
       );
     });
@@ -154,11 +165,14 @@ class GBX extends React.Component {
 
     const {
       layouts,
-      editable
+      editable,
+      formStyle
     } = this.state;
 
+    console.log('execute', layouts);
+
     return (
-      <div>
+      <div style={formStyle} className={`gbxFormWrapper ${editable ? 'editableForm' : ''}`}>
         <div style={{ marginBottom: 20 }} className='column'>
           <GBLink onClick={this.toggleEditable}>Editable {editable ? 'On' : 'False'}</GBLink>
         </div>
@@ -180,8 +194,8 @@ class GBX extends React.Component {
             <ResponsiveGridLayout
               className="layout"
               layouts={layouts}
-              breakpoints={{desktop: 801, mobile: 800 }}
-              cols={{desktop: 12, mobile: 4}}
+              breakpoints={{desktop: 701, mobile: 700 }}
+              cols={{desktop: 12, mobile: 6}}
               rowHeight={30}
               onLayoutChange={this.layoutChange}
               onBreakpointChange={this.breakpointChange}
@@ -200,72 +214,6 @@ class GBX extends React.Component {
       </div>
     )
   }
-}
-
-const Tool = ({ name, style = {}, children }) => {
-  const [{isDragging}, drag] = useDrag({
-    item: { name, type: 'tool' },
-    collect: monitor => ({
-      isDragging: !!monitor.isDragging(),
-    }),
-  });
-
-  const toolStyle = {
-    opacity: isDragging ? 0.5 : 1,
-    cursor: 'move',
-    ...style
-  };
-
-  return (
-    <div
-      ref={drag}
-      style={toolStyle}
-      className='tool'
-    >
-      {children}
-    </div>
-  )
-}
-
-const Board = ({ addTool, children }) => {
-  const [{ isOver }, drop] = useDrop({
-    accept: 'tool',
-    drop: (item, monitor) => {
-      const getItem = monitor.getItem();
-      addTool(getItem.name);
-    },
-    collect: monitor => ({
-      isOver: !!monitor.isOver(),
-    }),
-  });
-
-  return (
-    <div
-      className='board'
-      ref={drop}
-      style={{
-        position: 'relative',
-        width: '100%',
-        height: '100%',
-      }}
-    >
-      {children}
-      {isOver && (
-        <div
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            height: '100%',
-            width: '100%',
-            zIndex: 1,
-            opacity: 0.5,
-            backgroundColor: 'yellow',
-          }}
-        />
-      )}
-    </div>
-  )
 }
 
 export default class CustomTemplate extends React.Component {
