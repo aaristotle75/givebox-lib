@@ -36,14 +36,14 @@ class GBX extends React.Component {
         { i: 'title', x: 1, y: 0, w: 5, h: 2 },
         { i: 'summary', x: 0, y: 2, w: 6, h: 3 },
         { i: 'media', x: 6, y: 0, w: 6, h: 12 },
-        { i: 'form', x: 0, y: 3, w: 12, h: 40 }
+        { i: 'form', x: 0, y: 3, w: 12, h: 20 }
       ],
       mobile: [
         { i: 'logo', x: 0, y: 0, w: 1, h: 2 },
         { i: 'title', x: 1, y: 0, w: 5, h: 2 },
         { i: 'media', x: 0, y: 2, w: 6, h: 12 },
         { i: 'summary', x: 0, y: 2, w: 6, h: 3 },
-        { i: 'form', x: 0, y: 3, w: 6, h: 70 }
+        { i: 'form', x: 0, y: 3, w: 6, h: 30 }
       ]
     };
 

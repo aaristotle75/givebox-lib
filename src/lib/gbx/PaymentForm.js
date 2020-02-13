@@ -188,6 +188,7 @@ class PaymentForm extends Component {
       formState: {}
     }
     this._isMounted = false;
+    this.formRef = React.createRef();
 	}
 
   componentDidMount() {
@@ -206,10 +207,12 @@ class PaymentForm extends Component {
 
   handleResize(e) {
     if (this._isMounted) {
+      const current = this.formRef.current;
+      const width = current.clientWidth;
       this.setState({
-        windowWidthChange: window.innerWidth
+        windowWidthChange: width
       });
-      const breakpoint = window.innerWidth > this.props.breakpointSize ? 'desktop' : 'mobile';
+      const breakpoint = width > this.props.breakpointSize ? 'desktop' : 'mobile';
       if (breakpoint !== this.state.breakpoint) {
         this.setState({ breakpoint });
       }
@@ -229,7 +232,7 @@ class PaymentForm extends Component {
     } = this.state;
 
     return (
-      <div className='givebox-paymentform'>
+      <div ref={this.formRef} className='givebox-paymentform'>
         <h2>{windowWidthChange}</h2>
         <Fade
           in={util.getValue(formState, 'error', false)}
