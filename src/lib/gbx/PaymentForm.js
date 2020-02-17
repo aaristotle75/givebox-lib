@@ -5,9 +5,11 @@ import {
   selectOptions,
   ModalLink,
   Form,
-  Fade
+  Fade,
+  ModalRoute
 } from '../';
 import Moment from 'moment';
+import SendEmail from './SendEmail';
 
 class PaymentFormClass extends Component {
 
@@ -108,7 +110,7 @@ class PaymentFormClass extends Component {
     } = this.props;
 
     const name = this.props.textField('name', { placeholder: 'Enter Name',  label: 'Name', required: true });
-    const creditCard = this.props.creditCardGroup({ required: true, placeholder: 'xxxx xxxx xxxx xxxx', debug: false});
+    const creditCard = this.props.creditCardGroup({ required: true, placeholder: 'xxxx xxxx xxxx xxxx', debug: false, cvvModalRootClass: 'gbxModal' });
     const email = this.props.textField('email', {required: true, placeholder: 'Enter Email Address', label: 'Email', validate: 'email', inputMode: 'email' });
     const phoneField = this.props.textField('phone', {required: phone.required, placeholder: 'Enter Phone Number', validate: 'phone', inputMode: 'tel' });
     const addressField = this.props.textField('address', { required: address.required, label: 'Address', placeholder: 'Enter Street Address' });
@@ -167,11 +169,13 @@ class PaymentFormClass extends Component {
   render() {
 
     return (
-      <div className='gbxPaymentForm'>
-        <h2>{this.props.breakpoint}</h2>
-        {this.renderFields()}
-        {this.props.saveButton(this.processForm, { style: { margin: 0, padding: 0, height: 0, width: 0, visibility: 'hidden' } })}
-      </div>
+      <>
+        <ModalRoute id='sendEmail' modalRootClass='gbxModal' component={() => <SendEmail {...this.props} /> } effect='3DFlipVert' style={{ width: '50%' }} />
+        <>
+          {this.renderFields()}
+          {this.props.saveButton(this.processForm, { style: { margin: 0, padding: 0, height: 0, width: 0, visibility: 'hidden' } })}
+        </>
+      </>
     )
   }
 }
@@ -192,8 +196,16 @@ class PaymentForm extends Component {
 	}
 
   componentDidMount() {
+    const current = this.formRef.current;
+    const width = current.clientWidth;
+    this.setState({
+      windowWidthChange: width,
+      breakpoint: width > this.props.breakpointSize ? 'desktop' : 'mobile'
+    });
     this._isMounted = true;
-    if (this._isMounted) window.addEventListener('resize', this.handleResize.bind(this));
+    if (this._isMounted) {
+      window.addEventListener('resize', this.handleResize.bind(this));
+    }
   }
 
   componentWillUnmount() {
@@ -226,14 +238,12 @@ class PaymentForm extends Component {
   render() {
 
     const {
-      windowWidthChange,
       breakpoint,
       formState
     } = this.state;
 
     return (
       <div ref={this.formRef} className='givebox-paymentform'>
-        <h2>{windowWidthChange}</h2>
         <Fade
           in={util.getValue(formState, 'error', false)}
           duration={100}
@@ -261,7 +271,7 @@ class PaymentForm extends Component {
 }
 
 PaymentForm.defaultProps = {
-  breakpointSize: 800,
+  breakpointSize: 700,
   phone: {
     enabled: false,
     required: false

@@ -3,7 +3,6 @@ import { Responsive, WidthProvider } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import '../styles/gbx.scss';
-import '../styles/gbxForm.scss';
 import {
   Collapse,
   GBLink
@@ -27,24 +26,49 @@ class GBX extends React.Component {
     this.toggleEditable = this.toggleEditable.bind(this);
     this.addTool = this.addTool.bind(this);
     this.removeTool = this.removeTool.bind(this);
+    this.resetLayout = this.resetLayout.bind(this);
+    this.saveLayout = this.saveLayout.bind(this);
     this.renderToolsEnabled = this.renderToolsEnabled.bind(this);
     this.renderToolsAvailable = this.renderToolsAvailable.bind(this);
 
+    const tools = {
+      'logo': { name: 'Logo', child: 'Logo', grid: {
+        desktop: { i: 'logo', x: 0, y: 0, w: 1, h: 2 },
+        mobile: { i: 'logo', x: 0, y: 0, w: 1, h: 2 }
+      }},
+      'title': { name: 'Title', child: 'Title', grid: {
+        desktop: { i: 'title', x: 1, y: 0, w: 5, h: 2 },
+        mobile: { i: 'title', x: 1, y: 0, w: 5, h: 2 }
+      }},
+      'media': { name: 'Media', child: 'Media', grid: {
+        desktop: { i: 'media', x: 6, y: 0, w: 6, h: 10 },
+        mobile: { i: 'media', x: 0, y: 2, w: 6, h: 10 }
+      }},
+      'summary': { name: 'Summary', child: 'Summary', grid: {
+        desktop: { i: 'summary', x: 0, y: 2, w: 6, h: 3 },
+        mobile: { i: 'summary', x: 0, y: 2, w: 6, h: 3 }
+      }},
+      'form': { name: 'Form', child: 'PublicForm', grid: {
+        desktop: { i: 'form', x: 0, y: 3, w: 12, h: 20, minW: 10 },
+        mobile: { i: 'form', x: 0, y: 3, w: 6, h: 30, minW: 4 }
+      }}
+    };
+
     const defaultLayouts = {
       desktop: [
-        { i: 'logo', x: 0, y: 0, w: 1, h: 2 },
-        { i: 'title', x: 1, y: 0, w: 5, h: 2 },
-        { i: 'summary', x: 0, y: 2, w: 6, h: 3 },
-        { i: 'media', x: 6, y: 0, w: 6, h: 12 },
-        { i: 'form', x: 0, y: 3, w: 12, h: 20 }
+        tools.logo.grid.desktop,
+        tools.title.grid.desktop,
+        tools.summary.grid.desktop,
+        tools.media.grid.desktop,
+        tools.form.grid.desktop
       ],
       mobile: [
-        { i: 'logo', x: 0, y: 0, w: 1, h: 2 },
-        { i: 'title', x: 1, y: 0, w: 5, h: 2 },
-        { i: 'media', x: 0, y: 2, w: 6, h: 12 },
-        { i: 'summary', x: 0, y: 2, w: 6, h: 3 },
-        { i: 'form', x: 0, y: 3, w: 6, h: 30 }
-      ]
+        tools.logo.grid.mobile,
+        tools.title.grid.mobile,
+        tools.summary.grid.mobile,
+        tools.media.grid.mobile,
+        tools.form.grid.mobile
+      ],
     };
 
     const defaultToolsEnabled = [
@@ -56,30 +80,46 @@ class GBX extends React.Component {
     ];
 
     this.state = {
+      tools,
+      defaultLayouts,
       editable: true,
-      tools: {
-        'logo': { name: 'Logo', child: 'Logo' },
-        'title': { name: 'Title', child: 'Title' },
-        'media': { name: 'Media', child: 'Media' },
-        'summary': { name: 'Summary', child: 'Summary' },
-        'form': { name: 'Form', child: 'PublicForm' }
-      },
       toolsEnabled: defaultToolsEnabled,
       layouts: defaultLayouts,
+      savedLayouts: defaultLayouts,
       formStyle: {
         maxWidth: '1000px'
-      }
+      },
+      breakpoint: 'desktop'
     }
+    this.gridRef = React.createRef();
+    this.tools = tools;
+    this.defaultLayouts = defaultLayouts;
   }
 
   componentDidMount() {
+    const gridWidth = this.gridRef.current.clientWidth;
+    if (gridWidth < this.props.breakpointWidth) {
+      this.setState({ breakpoint: 'mobile' });
+    }
+  }
+
+  resetLayout() {
+    console.log('execute', this.state.layouts, this.defaultLayouts);
+    this.setState({ layouts: this.defaultLayouts });
   }
 
   layoutChange(layout) {
-    console.log('execute updateLayout', layout);
+    const layouts = this.state.layouts;
+    layouts[this.state.breakpoint] = layout;
+    this.setState({ layouts });
+  }
+
+  saveLayout() {
+    console.log('execute save layout');
   }
 
   breakpointChange(breakpoint, cols) {
+    this.setState({ breakpoint });
     console.log('execute breakpointChange', breakpoint, cols);
   }
 
@@ -97,23 +137,31 @@ class GBX extends React.Component {
   }
 
   addTool(tool) {
-    console.log('execute addTool', tool);
     const layouts = this.state.layouts;
-    const newItem = {
+    const desktopGrid = this.tools[tool].grid.desktop;
+    const mobileGrid = this.tools[tool].grid.mobile;
+    const newDesktopItem = {
       i: tool,
-      x: 0,
-      y: Infinity,
-      w: 6,
-      h: 1
+      x: desktopGrid.x,
+      y: desktopGrid.y,
+      w: desktopGrid.w,
+      h: desktopGrid.h
     };
-    layouts.desktop.push(newItem);
-    layouts.mobile.push(newItem);
+    const newMobileItem = {
+      i: tool,
+      x: mobileGrid.x,
+      y: mobileGrid.y,
+      w: mobileGrid.w,
+      h: mobileGrid.h
+    };
+    layouts.desktop.push(newDesktopItem);
+    layouts.mobile.push(newMobileItem);
+    console.log('execute addTool', layouts);
     const toolsEnabled = this.state.toolsEnabled.concat(tool);
     this.setState({ layouts, toolsEnabled });
   }
 
   removeTool(tool) {
-    console.log('execute removeTool', tool);
     const layouts = this.state.layouts;
     const toolsEnabled = this.state.toolsEnabled;
     const desktopIndex = layouts.desktop.findIndex(t => t.i === tool);
@@ -130,7 +178,7 @@ class GBX extends React.Component {
     const tools = this.state.tools;
     this.state.toolsEnabled.forEach((value) => {
       items.push(
-        <div key={value}>
+        <div id={`pageElement-${value}`} key={value}>
           <div className='editableTools'>
             <GBLink onClick={() => this.removeTool(value)}>Remove</GBLink>
           </div>
@@ -169,12 +217,13 @@ class GBX extends React.Component {
       formStyle
     } = this.state;
 
-    console.log('execute', layouts);
+    console.log('execute render', layouts);
 
     return (
       <div style={formStyle} className={`gbxFormWrapper ${editable ? 'editableForm' : ''}`}>
-        <div style={{ marginBottom: 20 }} className='column'>
+        <div style={{ marginBottom: 20 }} className='button-group column'>
           <GBLink onClick={this.toggleEditable}>Editable {editable ? 'On' : 'False'}</GBLink>
+          <GBLink onClick={this.resetLayout}>Reset Layout</GBLink>
         </div>
         <AnimateHeight
           duration={500}
@@ -190,22 +239,24 @@ class GBX extends React.Component {
         <Board
           addTool={this.addTool}
         >
-          <div style={{ marginBottom: 20 }} className='column'>
+          <div ref={this.gridRef} style={{ marginBottom: 20 }} className='column'>
             <ResponsiveGridLayout
               className="layout"
               layouts={layouts}
               breakpoints={{desktop: 701, mobile: 700 }}
               cols={{desktop: 12, mobile: 6}}
-              rowHeight={30}
+              rowHeight={31}
               onLayoutChange={this.layoutChange}
               onBreakpointChange={this.breakpointChange}
               onWidthChange={this.widthChange}
               onDrop={this.droppingItem}
               isDraggable={editable}
+              isDroppable={true}
               isResizable={editable}
               margin={[0, 0]}
               containerPadding={[0, 0]}
               autoSize={true}
+              draggableCancel={'.modal'}
             >
               {this.renderToolsEnabled()}
             </ResponsiveGridLayout>
@@ -214,6 +265,10 @@ class GBX extends React.Component {
       </div>
     )
   }
+}
+
+GBX.defaultProps = {
+  breakpointWidth: 701
 }
 
 export default class CustomTemplate extends React.Component {

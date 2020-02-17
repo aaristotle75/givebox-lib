@@ -71,7 +71,7 @@ export default class Image extends Component {
       // no default
     }
     const maxSize = this.props.maxSize || defaultSize;
-    const mergeStyle = { ...imgStyle, maxWidth: maxWidth || maxSize, maxHeight: maxHeight || maxSize };
+    const mergeStyle = { maxWidth: maxWidth || maxSize, maxHeight: maxHeight || maxSize, ...imgStyle };
 
     return (
       <div onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} style={{ width: maxSize, height: 'auto',  ...style, ...this.state.hoverStyle  }} className={`imageComponent ${className || ''}`}>

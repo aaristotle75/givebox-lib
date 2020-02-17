@@ -39,7 +39,8 @@ class ModalRoute extends Component {
       className,
       appRef,
       disallowBgClose,
-      draggable
+      draggable,
+      modalRootClass
     } = this.props;
 
     const modalRoot = document.getElementById('modal-root');
@@ -53,7 +54,7 @@ class ModalRoute extends Component {
     return (
       <div>
         { open &&
-          <Portal id={id} rootEl={modalRoot} className='modal'>
+          <Portal id={id} rootEl={modalRoot} className={`${modalRootClass}`}>
             <Modal
               className={className}
               identifier={id}
@@ -77,7 +78,8 @@ class ModalRoute extends Component {
 
 ModalRoute.defaultProps = {
   className: '',
-  optsProps: {}
+  optsProps: {},
+  modalRootClass: 'generalModal'
 }
 
 function mapStateToProps(state, props) {

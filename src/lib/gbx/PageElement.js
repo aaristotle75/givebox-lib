@@ -14,6 +14,9 @@ class PageElement extends Component {
     this.loadComponent = this.loadComponent.bind(this);
   }
 
+  componentDidMount() {
+  }
+
   /**
   * Dynamically load components by module path
   * @param {string} element component to load

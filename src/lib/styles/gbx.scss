@@ -1,15 +1,10 @@
 @import 'variables.scss';
 
-.gbxFormWrapper {
-  background: $light;
-}
-
 .react-grid-item {
   background: transparent;
   z-index: 1;
   border: 2px solid transparent;
 }
-
 .cardHeaderSubtitle {
   display: block;
   font-size: 12px;
@@ -72,6 +67,107 @@
 
     .editableTools {
       display: block;
+    }
+  }
+
+}
+
+// Modal
+.gbxModal {
+  .modal .modalWrapper {
+    padding-top: 0px;
+  }
+
+  .modalTop,
+  .modalBottom {
+    display: none;
+  }
+
+  .modalContainer {
+    padding: 20px 10px;
+  }
+
+  .modal .modalContent {
+    border-radius: 20px;
+    padding: 20px;
+  }
+}
+
+.givebox-paymentform {
+  padding: 0px 20px;
+}
+
+.gbxFormWrapper {
+
+  .mobileFriendly {
+    margin: 100px 0;
+  }
+
+  .imageComponent {
+    flex-direction: row;
+  }
+
+  .creditCard {
+    .checkmark {
+      right: 5px;
+    }
+  }
+
+  .creditCard-group .cardsAccepted {
+      top: -35px;
+  }
+
+  .column {
+    display: inline-block;
+  }
+
+
+  label, .label {
+    white-space: nowrap;
+    font-size: 12px;
+  }
+
+  /*------- Button & Link -------*/
+
+  button.link {
+    font-size: 14px;
+    @include default-transition(.5s);
+  }
+
+  button.button {
+    border-radius: 20px;
+    font-size: 16px;
+    background-color: transparent;
+    @include default-transition(.5s);
+  }
+
+  button.button:hover {
+    background-color: $off-white;
+  }
+
+  button.gbxBtn {
+    font-weight: 300;
+    font-size: 16px;
+    color: $white;
+    background: $med-blue-gray;
+    padding: 10px 20px;
+    border-radius: 20px;
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55);
+    @include default-transition(.5s);
+  }
+
+  button.gbxBtn:hover {
+    color: $white;
+    background: $med-blue-gray;
+    opacity: .7;
+    @include default-transition(.5s);
+  }
+
+
+  // Responsive
+  @media (max-width: 800px) {
+    .modalContent:not(.campaignForm) {
+        width: 100% !important;
     }
   }
 

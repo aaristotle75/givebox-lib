@@ -284,24 +284,26 @@ class Modal extends Component {
     ;
 
     return (
-      <div
-        ref={this.modalRef}
-        onClick={() => this.closeModal(closeCallback, this.props.disallowBgClose ? false : true)}
-        id={`modalOverlay-${identifier}`}
-        className={`modalOverlay`} style={prefix({ ...overlayStyle, ...modalOverlayStyle})}
-      >
-        <Waypoint
-          onEnter={this.onEnter}
-          onLeave={this.onExit}
-          bottomOffset={'100px'}
-        />
-        {draggable ?
-          <Draggable>
-            {modalContent}
-          </Draggable>
-        :
-          modalContent
-        }
+      <div className='modal'>
+        <div
+          ref={this.modalRef}
+          onClick={() => this.closeModal(closeCallback, this.props.disallowBgClose ? false : true)}
+          id={`modalOverlay-${identifier}`}
+          className={`modalOverlay`} style={prefix({ ...overlayStyle, ...modalOverlayStyle})}
+        >
+          <Waypoint
+            onEnter={this.onEnter}
+            onLeave={this.onExit}
+            bottomOffset={'100px'}
+          />
+          {draggable ?
+            <Draggable>
+              {modalContent}
+            </Draggable>
+          :
+            modalContent
+          }
+        </div>
       </div>
     )
   }

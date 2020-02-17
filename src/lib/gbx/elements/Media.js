@@ -16,7 +16,11 @@ export default class Media extends Component {
 
     const url = util.getValue(article, 'imageURL');
     const imgStyle = {
-      borderRadius: '20px'
+      display: 'inline-block',
+      borderRadius: '20px',
+      maxWidth: '300px',
+      maxHeight: '300px',
+      height: 'auto'
     };
 
     const defaultStyle = {

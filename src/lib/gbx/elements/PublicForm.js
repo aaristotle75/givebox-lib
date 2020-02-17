@@ -1,18 +1,12 @@
 import React, {Component} from 'react';
-import { connect } from 'react-redux';
 import {
-  getResource,
-  sendResource,
   util,
-  removeResource,
-  toggleModal,
-  setCustomProp,
   GBLink
 } from '../../';
 import PaymentForm from '../PaymentForm';
 import CustomBtn from '../CustomBtn';
 
-class PublicForm extends Component {
+export default class PublicForm extends Component {
 
   constructor(props) {
     super(props);
@@ -27,7 +21,6 @@ class PublicForm extends Component {
   saveButton() {
     const form = document.getElementById(`gbxForm-form-saveButton`);
     if (form) form.click();
-
   }
 
   render() {
@@ -40,7 +33,7 @@ class PublicForm extends Component {
     const color = util.getValue(settings, 'primaryColor');
 
     return (
-      <div className='mobileFriendly'>
+      <>
         <PaymentForm
           primaryColor={color}
           article={article}
@@ -53,22 +46,7 @@ class PublicForm extends Component {
           <CustomBtn color={this.props.primaryColor} className='gbxBtn' onClick={() => this.saveButton()}>Submit Form</CustomBtn>
           <GBLink onClick={() => console.log('onclick callback')}>No, thanks</GBLink>
         </div>
-      </div>
+      </>
     )
   }
 }
-
-function mapStateToProps(state, props) {
-  return {
-    primaryColor: util.getValue(state.custom, 'primaryColor'),
-    article: util.getValue(state.resource, 'article', {})
-  }
-}
-
-export default connect(mapStateToProps, {
-  getResource,
-  sendResource,
-  removeResource,
-  toggleModal,
-  setCustomProp
-})(PublicForm)

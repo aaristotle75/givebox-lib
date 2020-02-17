@@ -11,7 +11,7 @@ class GBXTest extends Component {
 
   componentDidMount() {
     this.props.getResource('article', {
-      id: [4]
+      id: [739]
     });
   }
 
