@@ -73,11 +73,16 @@ import {
 
 import * as giveboxAPI from './api/givebox';
 
+// Help Desk
 import HelpDesk from './helpdesk/HelpDesk';
 import TicketForm from './helpdesk/TicketForm';
 import { zohoCats } from './helpdesk/zohoCats';
 import Articles from './helpdesk/Articles';
 import HelpDeskButton from './helpdesk/HelpDeskButton';
+
+// GBX
+import CustomTemplate from './gbx/CustomTemplate';
+import CustomBtn from './gbx/CustomBtn';
 
 export {
   // Form
@@ -166,10 +171,14 @@ export {
   // Glossary
   FeesGlossary,
 
-  // Zoho
+  // Help Desk
   HelpDesk,
   TicketForm,
   zohoCats,
   Articles,
-  HelpDeskButton
+  HelpDeskButton,
+
+  // GBX
+  CustomBtn,
+  CustomTemplate
 };

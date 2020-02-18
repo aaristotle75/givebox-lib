@@ -995,7 +995,10 @@ class Form extends Component {
       className: '',
       required: true
     }, opts);
-    const cvvModal = React.createElement("div", null, React.createElement(ModalRoute, {
+    const cvvModal = React.createElement("div", {
+      className: "cvvModal"
+    }, React.createElement(ModalRoute, {
+      modalRootClass: params.cvvModalRootClass,
       id: "cvvModal",
       component: () => {
         return React.createElement(CVVModal, null);

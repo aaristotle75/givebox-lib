@@ -49,36 +49,28 @@ class GBX extends React.Component {
         desktop: { i: 'summary', x: 0, y: 2, w: 6, h: 3 },
         mobile: { i: 'summary', x: 0, y: 2, w: 6, h: 3 }
       }},
-      'form': { name: 'Form', child: 'PublicForm', grid: {
+      'form': { name: 'Form', child: 'PublicForm', overflow: 'visible', grid: {
         desktop: { i: 'form', x: 0, y: 3, w: 12, h: 20, minW: 10 },
         mobile: { i: 'form', x: 0, y: 3, w: 6, h: 30, minW: 4 }
       }}
     };
 
     const defaultLayouts = {
-      desktop: [
-        tools.logo.grid.desktop,
-        tools.title.grid.desktop,
-        tools.summary.grid.desktop,
-        tools.media.grid.desktop,
-        tools.form.grid.desktop
-      ],
-      mobile: [
-        tools.logo.grid.mobile,
-        tools.title.grid.mobile,
-        tools.summary.grid.mobile,
-        tools.media.grid.mobile,
-        tools.form.grid.mobile
-      ],
+      desktop: [],
+      mobile: [],
     };
 
     const defaultToolsEnabled = [
       'logo',
-      'title',
       'media',
       'summary',
       'form'
     ];
+
+    defaultToolsEnabled.forEach((key) => {
+      defaultLayouts.desktop.push(tools[key].grid.desktop);
+      defaultLayouts.mobile.push(tools[key].grid.mobile);
+    });
 
     this.state = {
       tools,
@@ -86,7 +78,6 @@ class GBX extends React.Component {
       editable: true,
       toolsEnabled: defaultToolsEnabled,
       layouts: defaultLayouts,
-      savedLayouts: defaultLayouts,
       formStyle: {
         maxWidth: '1000px'
       },
@@ -160,7 +151,7 @@ class GBX extends React.Component {
     layouts.mobile.push(newMobileItem);
     console.log('execute addTool', layouts);
     const toolsEnabled = this.state.toolsEnabled.concat(tool);
-    this.setState({ layouts, toolsEnabled });
+    this.setState({ toolsEnabled });
   }
 
   removeTool(tool) {
@@ -185,13 +176,13 @@ class GBX extends React.Component {
     this.state.toolsEnabled.forEach((value) => {
       items.push(
         <div id={`pageElement-${value}`} key={value}>
-          <div className='toolBar center'>
+          <div className='pageElementBar'>
             <div className='button-group'>
               <GBLink onClick={() => this.editTool(value)}>Edit</GBLink>
               <GBLink onClick={() => this.removeTool(value)}>Remove</GBLink>
             </div>
           </div>
-          <div className='pageElement'>
+          <div className='pageElement' style={{ overflow: tools[value].overflow || 'hidden' }}>
             <PageElement {...this.props} element={tools[value].child} />
           </div>
         </div>
@@ -206,12 +197,18 @@ class GBX extends React.Component {
     Object.entries(tools).forEach(([key, value]) => {
       if (!this.state.toolsEnabled.includes(key)) {
         items.push(
-          <Tool
-            key={key}
-            name={key}
-          >
-            {value.name}
-          </Tool>
+          <div key={key} className='toolContainer'>
+            <div className='toolBar'>
+              <div className='button-group'>
+                <GBLink onClick={() => this.addTool(key)}>Add {value.name}</GBLink>
+              </div>
+            </div>
+            <div
+              className='tool'
+            >
+              {value.name}
+            </div>
+          </div>
         );
       }
     });
@@ -238,40 +235,48 @@ class GBX extends React.Component {
           duration={500}
           height={editable ? 'auto' : 1}
         >
-          <div style={{ marginBottom: 20 }} className='toolContainer'>
+          <div style={{ marginBottom: 20 }} className='column'>
             <h2>Toolbar</h2>
             <div className='tools'>
+            <div
+              className="droppable-element"
+              draggable={true}
+              unselectable="on"
+              // this is a hack for firefox
+              // Firefox requires some kind of initialization
+              // which we can do by adding this attribute
+              // @see https://bugzilla.mozilla.org/show_bug.cgi?id=568313
+              onDragStart={e => e.dataTransfer.setData("text/plain", "")}
+            >
+              Droppable Element
+            </div>            
               {this.renderToolsAvailable()}
             </div>
           </div>
         </AnimateHeight>
-        <Board
-          addTool={this.addTool}
-        >
-          <div ref={this.gridRef} style={{ marginBottom: 20 }} className='column'>
-            <ResponsiveGridLayout
-              className="layout"
-              layouts={layouts}
-              breakpoints={{desktop: 701, mobile: 700 }}
-              cols={{desktop: 12, mobile: 6}}
-              rowHeight={31}
-              onLayoutChange={this.layoutChange}
-              onBreakpointChange={this.breakpointChange}
-              onWidthChange={this.widthChange}
-              onDrop={this.droppingItem}
-              isDraggable={editable}
-              isDroppable={true}
-              isResizable={editable}
-              margin={[0, 0]}
-              containerPadding={[0, 0]}
-              autoSize={true}
-              draggableCancel={'.modal'}
-              verticalCompact={false}
-            >
-              {this.renderToolsEnabled()}
-            </ResponsiveGridLayout>
-          </div>
-        </Board>
+        <div ref={this.gridRef} style={{ marginBottom: 20 }} className='column'>
+          <ResponsiveGridLayout
+            className="layout"
+            layouts={layouts}
+            breakpoints={{desktop: 701, mobile: 700 }}
+            cols={{desktop: 12, mobile: 6}}
+            rowHeight={31}
+            onLayoutChange={this.layoutChange}
+            onBreakpointChange={this.breakpointChange}
+            onWidthChange={this.widthChange}
+            onDrop={this.droppingItem}
+            isDraggable={editable}
+            isDroppable={true}
+            isResizable={editable}
+            margin={[0, 0]}
+            containerPadding={[0, 0]}
+            autoSize={true}
+            draggableCancel={'.modal'}
+            verticalCompact={false}
+          >
+            {this.renderToolsEnabled()}
+          </ResponsiveGridLayout>
+        </div>
       </div>
     )
   }
@@ -285,13 +290,9 @@ export default class CustomTemplate extends React.Component {
 
   render() {
     return (
-      <DndProvider
-        backend={Backend}
-      >
-        <GBX
-          {...this.props}
-        />
-      </DndProvider>
+      <GBX
+        {...this.props}
+      />
     )
   }
 }

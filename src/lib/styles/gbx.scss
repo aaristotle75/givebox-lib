@@ -16,7 +16,6 @@
   top: 0; bottom: 0; right: 0; left: 0;
   height: 100%;
   width: 100%;
-  overflow: hidden;
 }
 
 .board {
@@ -30,6 +29,37 @@
   align-items: center;
 }
 
+.toolContainer {
+  position: relative;
+}
+
+.toolContainer:hover {
+  .toolBar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.toolBar {
+  display: none;
+  position: absolute;
+  top: 0; bottom: 0; right: 0; left: 0;
+  height: 100%;
+  width: 100%;
+  background: transparentize($mainColor, .3);
+  color: $white;
+  z-index: 2;
+  font-size: 14px;
+}
+
+.toolBar button {
+  color: $white;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+
 .tool {
   background: green;
   display: inline-block;
@@ -40,7 +70,7 @@
   height: 50px;
 }
 
-.toolBar {
+.pageElementBar {
   display: none;
   position: absolute;
   top: 5%; bottom: 5%; right: 5%; left: 5%;
@@ -49,13 +79,10 @@
   background: transparentize($mainColor, .3);
   color: $white;
   z-index: 2;
-  text-align: center;
-  vertical-align: middle;
   font-size: 14px;
-  margin: auto;
 }
 
-.toolBar button {
+.pageElementBar button {
   color: $white;
   font-size: 16px;
   font-weight: 500;
@@ -70,7 +97,7 @@
   .react-grid-item:hover {
     border: 2px solid $mainColorLight;
 
-    .toolBar {
+    .pageElementBar {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -106,6 +133,14 @@
 
 .gbxFormWrapper {
 
+  .dropdown button .selected.label {
+    font-size: $small-text-size;
+  }
+
+  .dropdown-cover {
+    display: none;
+  }
+
   .mobileFriendly {
     margin: 100px 0;
   }
@@ -126,6 +161,7 @@
 
   .column {
     display: inline-block;
+    float: none;
   }
 
 
@@ -136,9 +172,20 @@
 
   /*------- Button & Link -------*/
 
+  .cvvModal button.link {
+  }
+
+  .button-group {
+    button.link,
+    button.button {
+      margin: 0 10px;
+    }
+  }
+
   button.link {
-    font-size: 14px;
+    font-size: 12px;
     @include default-transition(.5s);
+    margin: 0;
   }
 
   button.button {

@@ -304,6 +304,8 @@ class Modal extends Component {
       className: "modalBottom"
     }));
     return React.createElement("div", {
+      className: "modal"
+    }, React.createElement("div", {
       ref: this.modalRef,
       onClick: () => this.closeModal(closeCallback, this.props.disallowBgClose ? false : true),
       id: `modalOverlay-${identifier}`,
@@ -315,7 +317,7 @@ class Modal extends Component {
       onEnter: this.onEnter,
       onLeave: this.onExit,
       bottomOffset: '100px'
-    }), draggable ? React.createElement(Draggable, null, modalContent) : modalContent);
+    }), draggable ? React.createElement(Draggable, null, modalContent) : modalContent));
   }
 
 }

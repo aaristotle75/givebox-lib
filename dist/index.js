@@ -46,12 +46,16 @@ import FeesGlossary from './glossary/Fees';
 import { toggleModal, removeResource, resourceProp, getAPI, sendAPI, setAppRef, setModalRef, setProp, setPrefs, setCustomProp } from './api/actions';
 import { app, resource, send, modal, preferences, custom } from './api/reducers';
 import { getResource, reloadResource, sendResource, savePrefs } from './api/helpers';
-import * as giveboxAPI from './api/givebox';
+import * as giveboxAPI from './api/givebox'; // Help Desk
+
 import HelpDesk from './helpdesk/HelpDesk';
 import TicketForm from './helpdesk/TicketForm';
 import { zohoCats } from './helpdesk/zohoCats';
 import Articles from './helpdesk/Articles';
-import HelpDeskButton from './helpdesk/HelpDeskButton';
+import HelpDeskButton from './helpdesk/HelpDeskButton'; // GBX
+
+import CustomTemplate from './gbx/CustomTemplate';
+import CustomBtn from './gbx/CustomBtn';
 export { // Form
 Form, _v, selectOptions, Select, TextField, Dropdown, RichTextField, Choice, CalendarField, CalendarRange, Checkbox, UploadPrivate, WhereField // actions
 , toggleModal, removeResource, resourceProp, getAPI, sendAPI, setAppRef, setModalRef, setProp, setPrefs, setCustomProp // API
@@ -61,5 +65,6 @@ Form, _v, selectOptions, Select, TextField, Dropdown, RichTextField, Choice, Cal
 , ActionsMenu, Search, Table, MaxRecords, NoRecords, Paginate, Export, DownloadFileConnect, Filter // Block
 , StatBlock, ActionBar, CodeBlock // common
 , Alert, Collapse, Delete, Error, Fade, GBLink, GBX, Iframe, Image, ImageDisplay, history, LinearBar, Loader, Portal, Redirect, Tabs, Tab, types, util // Glossary
-, FeesGlossary // Zoho
-, HelpDesk, TicketForm, zohoCats, Articles, HelpDeskButton };
+, FeesGlossary // Help Desk
+, HelpDesk, TicketForm, zohoCats, Articles, HelpDeskButton // GBX
+, CustomBtn, CustomTemplate };

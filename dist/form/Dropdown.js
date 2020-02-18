@@ -291,7 +291,7 @@ class Dropdown extends Component {
       onClick: open ? this.closeMenu : this.openMenu
     }, React.createElement("span", {
       ref: this.selectedRef,
-      className: `label ${idleLabel && 'idle'}`
+      className: `label ${selected ? 'selected' : ''} ${idleLabel && 'idle'}`
     }, selectedValue), React.createElement("span", {
       ref: this.iconRef,
       className: `icon icon-${open ? multi ? iconMultiClose : iconOpened : iconClosed}`

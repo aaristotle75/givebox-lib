@@ -869,7 +869,7 @@ class Form extends Component {
     }, opts);
 
     const cvvModal =
-      <div>
+      <div className='cvvModal'>
         <ModalRoute modalRootClass={params.cvvModalRootClass} id='cvvModal' component={() => { return <CVVModal /> }} effect='3DFlipVert' style={{ width: '60%' }} />
         <ModalLink id='cvvModal'>What is CVV?</ModalLink>
       </div>
