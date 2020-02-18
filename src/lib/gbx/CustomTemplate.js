@@ -26,6 +26,7 @@ class GBX extends React.Component {
     this.toggleEditable = this.toggleEditable.bind(this);
     this.addTool = this.addTool.bind(this);
     this.removeTool = this.removeTool.bind(this);
+    this.editTool = this.editTool.bind(this);
     this.resetLayout = this.resetLayout.bind(this);
     this.saveLayout = this.saveLayout.bind(this);
     this.renderToolsEnabled = this.renderToolsEnabled.bind(this);
@@ -110,8 +111,9 @@ class GBX extends React.Component {
 
   layoutChange(layout) {
     const layouts = this.state.layouts;
-    layouts[this.state.breakpoint] = layout;
-    this.setState({ layouts });
+    //layouts[this.state.breakpoint] = layout;
+    console.log('layoutChange', layout, layouts);
+    //this.setState({ layouts });
   }
 
   saveLayout() {
@@ -173,14 +175,21 @@ class GBX extends React.Component {
     this.setState({ layouts, toolsEnabled });
   }
 
+  editTool(tool) {
+    console.log('execute editTool', tool);
+  }
+
   renderToolsEnabled() {
     const items = [];
     const tools = this.state.tools;
     this.state.toolsEnabled.forEach((value) => {
       items.push(
         <div id={`pageElement-${value}`} key={value}>
-          <div className='editableTools'>
-            <GBLink onClick={() => this.removeTool(value)}>Remove</GBLink>
+          <div className='toolBar center'>
+            <div className='button-group'>
+              <GBLink onClick={() => this.editTool(value)}>Edit</GBLink>
+              <GBLink onClick={() => this.removeTool(value)}>Remove</GBLink>
+            </div>
           </div>
           <div className='pageElement'>
             <PageElement {...this.props} element={tools[value].child} />
@@ -257,6 +266,7 @@ class GBX extends React.Component {
               containerPadding={[0, 0]}
               autoSize={true}
               draggableCancel={'.modal'}
+              verticalCompact={false}
             >
               {this.renderToolsEnabled()}
             </ResponsiveGridLayout>

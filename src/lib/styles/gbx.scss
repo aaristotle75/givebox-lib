@@ -40,16 +40,25 @@
   height: 50px;
 }
 
-.editableTools {
+.toolBar {
   display: none;
   position: absolute;
-  top: -20px;
-  right: 0;
-  height: 30px;
-  width: 70px;
-  background: transparent;
+  top: 5%; bottom: 5%; right: 5%; left: 5%;
+  height: 90%;
+  width: 90%;
+  background: transparentize($mainColor, .3);
   color: $white;
   z-index: 2;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 14px;
+  margin: auto;
+}
+
+.toolBar button {
+  color: $white;
+  font-size: 16px;
+  font-weight: 500;
 }
 
 .editableForm {
@@ -58,15 +67,13 @@
     cursor: grab;
   }
 
-  .editableTools:hover {
-    display: block;
-  }
-
   .react-grid-item:hover {
     border: 2px solid $mainColorLight;
 
-    .editableTools {
-      display: block;
+    .toolBar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
 
