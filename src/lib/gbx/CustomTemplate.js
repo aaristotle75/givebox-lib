@@ -4,13 +4,10 @@ import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import '../styles/gbx.scss';
 import {
-  Collapse,
-  GBLink
+  GBLink,
+  util
 } from '../';
 import AnimateHeight from 'react-animate-height';
-import { DndProvider } from 'react-dnd';
-import Backend from 'react-dnd-html5-backend';
-import { Tool, Board } from './DragBoard.js';
 import PageElement from './PageElement';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
@@ -127,16 +124,17 @@ class GBX extends React.Component {
   layoutChange(layout, layouts) {
     const breakpoint = this.state.breakpoint;
     const tools = this.state.tools;
-    const breakpointLayout = layouts[breakpoint];
-    console.log('execute layoutChange', breakpoint, layouts, breakpointLayout);
-    breakpointLayout.forEach((value) => {
-      const grid = tools[value.i].grid[breakpoint];
-      grid.x = value.x;
-      grid.y = value.y;
-      grid.w = value.w;
-      grid.h = value.h;
-    });
-    this.setState({ tools, layouts });
+    const breakpointLayout = util.getValue(layouts, 'breakpoint');
+    if (breakpointLayout) {
+      breakpointLayout.forEach((value) => {
+        const grid = tools[value.i].grid[breakpoint];
+        grid.x = value.x;
+        grid.y = value.y;
+        grid.w = value.w;
+        grid.h = value.h;
+      });
+      this.setState({ tools, layouts });
+    }
   }
 
   saveLayout() {
@@ -174,7 +172,23 @@ class GBX extends React.Component {
     Object.entries(tools).forEach(([key, value]) => {
       if (!value.grid[breakpoint].enabled) {
         items.push(
-          <div key={key} className='toolContainer'>
+          <div
+            draggable={true}
+            unselectable={'no'}
+            key={key}
+            className='toolContainer'
+            onDragStart={(e) => {
+              e.dataTransfer.setData('text/plain', '');
+              e.dataTransfer.setData('tool', key);
+              const current = this.gridRef.current;
+              current.classList.add('dragOver');
+              console.log('execute onDragStart');
+            }}
+            onDragEnd={(e) => {
+              const current = this.gridRef.current;
+              if (current.classList.contains('dragOver')) current.classList.remove('dragOver');
+            }}
+          >
             <div className='toolBar'>
               <div className='button-group'>
                 <GBLink onClick={() => this.addTool(key)}>Add {value.name}</GBLink>
@@ -217,7 +231,22 @@ class GBX extends React.Component {
             </div>
           </div>
         </AnimateHeight>
-        <div ref={this.gridRef} style={{ marginBottom: 20 }} className='column'>
+        <div
+          ref={this.gridRef}
+          style={{ marginBottom: 20 }}
+          className={`column dropArea`}
+          onDragOver={(e) => {
+            e.preventDefault();
+          }}
+          onDrop={(e) => {
+            const tool = e.dataTransfer.getData('tool');
+            e.preventDefault();
+            const current = this.gridRef.current;
+            if (current.classList.contains('dragOver')) current.classList.remove('dragOver');
+            console.log('execute onDrop', tool);
+          }}
+        >
+          <div className='dragOverText'>Drop Page Element Here</div>
           <ResponsiveGridLayout
             className="layout"
             layouts={layouts}
@@ -229,7 +258,7 @@ class GBX extends React.Component {
             onWidthChange={this.widthChange}
             onDrop={this.onDrop}
             isDraggable={editable}
-            isDroppable={true}
+            isDroppable={false}
             isResizable={editable}
             margin={[0, 0]}
             containerPadding={[0, 0]}

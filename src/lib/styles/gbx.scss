@@ -1,5 +1,29 @@
 @import 'variables.scss';
 
+.dropArea {
+  background: transparent;
+  @include default-transition(.25s);
+
+  .dragOverText {
+    display: none;
+    text-align: center;
+    font-size: 20px;
+    color: $white;
+    position: absolute;
+    top: 50%;
+    right: 0; left: 0; bottom: 0;
+    text-align: center;
+    z-index: 3;
+  }
+}
+
+.dropArea.dragOver {
+  background: transparentize($mainColor, .3);
+  .dragOverText {
+    display: block;
+  }
+}
+
 .react-grid-item {
   background: transparent;
   z-index: 1;
