@@ -112,14 +112,14 @@ class PaymentFormClass extends Component {
     const name = this.props.textField('name', { placeholder: 'Enter Name',  label: 'Name', required: true });
     const creditCard = this.props.creditCardGroup({ required: true, placeholder: 'xxxx xxxx xxxx xxxx', debug: false, cvvModalRootClass: 'gbxModal' });
     const email = this.props.textField('email', {required: true, placeholder: 'Enter Email Address', label: 'Email', validate: 'email', inputMode: 'email' });
-    const phoneField = this.props.textField('phone', {required: phone.required, placeholder: 'Enter Phone Number', validate: 'phone', inputMode: 'tel' });
+    const phoneField = this.props.textField('phone', {required: phone.required, label: 'Phone', placeholder: 'Enter Phone Number', validate: 'phone', inputMode: 'tel' });
     const addressField = this.props.textField('address', { required: address.required, label: 'Address', placeholder: 'Enter Street Address' });
     const city = this.props.textField('city', { required: address.required, label: 'City', placeholder: 'Enter City' });
     const zip = this.props.textField('zip', { required: true, label: 'Zip Code', placeholder: 'Enter Zip', maxLength: 5, inputMode: 'numeric' });
     const state = this.props.dropdown('state', {label: 'State', fixedLabel: false, selectLabel: 'Enter State', options: selectOptions.states, required: address.required })
     const employer = this.props.textField('employer', { required: work.required, label: 'Employer', placeholder: 'Employer' });
     const occupation = this.props.textField('occupation', { required: work.required, label: 'Occupation', placeholder: 'Occupation' });
-    const customField = this.props.textField('note', { required: custom.required, hideLabel: true, placeholder: custom.placeholder });
+    const customField = this.props.textField('note', { required: custom.required, label: custom.placeholder, hideLabel: true, placeholder: custom.placeholder });
 
     const cityStateZipGroup =
       <div>
