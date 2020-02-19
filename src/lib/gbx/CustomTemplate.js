@@ -22,7 +22,7 @@ class GBX extends React.Component {
     this.layoutChange = this.layoutChange.bind(this);
     this.breakpointChange = this.breakpointChange.bind(this);
     this.widthChange = this.widthChange.bind(this);
-    this.droppingItem = this.droppingItem.bind(this);
+    this.onDrop = this.onDrop.bind(this);
     this.toggleEditable = this.toggleEditable.bind(this);
     this.addTool = this.addTool.bind(this);
     this.removeTool = this.removeTool.bind(this);
@@ -34,24 +34,24 @@ class GBX extends React.Component {
 
     const tools = {
       'logo': { name: 'Logo', child: 'Logo', grid: {
-        desktop: { i: 'logo', x: 0, y: 0, w: 1, h: 2 },
-        mobile: { i: 'logo', x: 0, y: 0, w: 1, h: 2 }
+        desktop: { i: 'logo', x: 0, y: 0, w: 1, h: 2, enabled: true },
+        mobile: { i: 'logo', x: 0, y: 0, w: 1, h: 2, enabled: true }
       }},
       'title': { name: 'Title', child: 'Title', grid: {
-        desktop: { i: 'title', x: 1, y: 0, w: 5, h: 2 },
-        mobile: { i: 'title', x: 1, y: 0, w: 5, h: 2 }
+        desktop: { i: 'title', x: 1, y: 0, w: 5, h: 2, enabled: false },
+        mobile: { i: 'title', x: 1, y: 0, w: 5, h: 2, enabled: true }
       }},
       'media': { name: 'Media', child: 'Media', grid: {
-        desktop: { i: 'media', x: 6, y: 0, w: 6, h: 10 },
-        mobile: { i: 'media', x: 0, y: 2, w: 6, h: 10 }
+        desktop: { i: 'media', x: 6, y: 0, w: 6, h: 10, enabled: true },
+        mobile: { i: 'media', x: 0, y: 2, w: 6, h: 10, enabled: true }
       }},
       'summary': { name: 'Summary', child: 'Summary', grid: {
-        desktop: { i: 'summary', x: 0, y: 2, w: 6, h: 3 },
-        mobile: { i: 'summary', x: 0, y: 2, w: 6, h: 3 }
+        desktop: { i: 'summary', x: 0, y: 2, w: 6, h: 3, enabled: true },
+        mobile: { i: 'summary', x: 0, y: 2, w: 6, h: 3, enabled: true }
       }},
       'form': { name: 'Form', child: 'PublicForm', overflow: 'visible', grid: {
-        desktop: { i: 'form', x: 0, y: 3, w: 12, h: 20, minW: 10 },
-        mobile: { i: 'form', x: 0, y: 3, w: 6, h: 30, minW: 4 }
+        desktop: { i: 'form', x: 0, y: 3, w: 12, h: 20, minW: 10, enabled: true },
+        mobile: { i: 'form', x: 0, y: 3, w: 6, h: 30, minW: 4, enabled: true }
       }}
     };
 
@@ -60,23 +60,15 @@ class GBX extends React.Component {
       mobile: [],
     };
 
-    const defaultToolsEnabled = [
-      'logo',
-      'media',
-      'summary',
-      'form'
-    ];
-
-    defaultToolsEnabled.forEach((key) => {
-      defaultLayouts.desktop.push(tools[key].grid.desktop);
-      defaultLayouts.mobile.push(tools[key].grid.mobile);
+    Object.entries(tools).forEach(([key, value]) => {
+      defaultLayouts.desktop.push(value.grid.desktop);
+      defaultLayouts.mobile.push(value.grid.mobile);
     });
+
 
     this.state = {
       tools,
-      defaultLayouts,
       editable: true,
-      toolsEnabled: defaultToolsEnabled,
       layouts: defaultLayouts,
       formStyle: {
         maxWidth: '1000px'
@@ -84,8 +76,6 @@ class GBX extends React.Component {
       breakpoint: 'desktop'
     }
     this.gridRef = React.createRef();
-    this.tools = tools;
-    this.defaultLayouts = defaultLayouts;
   }
 
   componentDidMount() {
@@ -95,98 +85,84 @@ class GBX extends React.Component {
     }
   }
 
-  resetLayout() {
-    console.log('execute', this.state.layouts, this.defaultLayouts);
-    this.setState({ layouts: this.defaultLayouts });
-  }
-
-  layoutChange(layout) {
-    const layouts = this.state.layouts;
-    //layouts[this.state.breakpoint] = layout;
-    console.log('layoutChange', layout, layouts);
-    //this.setState({ layouts });
-  }
-
-  saveLayout() {
-    console.log('execute save layout');
-  }
-
   breakpointChange(breakpoint, cols) {
     this.setState({ breakpoint });
-    console.log('execute breakpointChange', breakpoint, cols);
   }
 
   widthChange(width, margin, cols) {
-    console.log('execute widthChange', width, margin, cols);
+    //console.log('execute widthChange', width, margin, cols);
   }
 
-  droppingItem(i, w, h) {
-    console.log('droppingItem', i, w, h);
+  onDrop(i, w, h) {
+    console.log('onDrop', i, w, h);
   }
 
   toggleEditable() {
-    console.log('toggleEditable', this.state.editable);
     this.setState({ editable: this.state.editable ? false : true });
   }
 
   addTool(tool) {
-    const layouts = this.state.layouts;
-    const desktopGrid = this.tools[tool].grid.desktop;
-    const mobileGrid = this.tools[tool].grid.mobile;
-    const newDesktopItem = {
-      i: tool,
-      x: desktopGrid.x,
-      y: desktopGrid.y,
-      w: desktopGrid.w,
-      h: desktopGrid.h
-    };
-    const newMobileItem = {
-      i: tool,
-      x: mobileGrid.x,
-      y: mobileGrid.y,
-      w: mobileGrid.w,
-      h: mobileGrid.h
-    };
-    layouts.desktop.push(newDesktopItem);
-    layouts.mobile.push(newMobileItem);
-    console.log('execute addTool', layouts);
-    const toolsEnabled = this.state.toolsEnabled.concat(tool);
-    this.setState({ toolsEnabled });
+    const tools = this.state.tools;
+    const breakpoint = this.state.breakpoint;
+    tools[tool].grid[breakpoint].enabled = true;
+    this.setState({ tools });
   }
 
   removeTool(tool) {
-    const layouts = this.state.layouts;
-    const toolsEnabled = this.state.toolsEnabled;
-    const desktopIndex = layouts.desktop.findIndex(t => t.i === tool);
-    const mobileIndex = layouts.mobile.findIndex(t => t.i === tool);
-    const enabledIndex = toolsEnabled.indexOf(tool);
-    layouts.desktop.splice(desktopIndex, 1);
-    layouts.mobile.splice(mobileIndex, 1);
-    toolsEnabled.splice(enabledIndex, 1);
-    this.setState({ layouts, toolsEnabled });
+    const tools = this.state.tools;
+    const breakpoint = this.state.breakpoint;
+    tools[tool].grid[breakpoint].enabled = false;
+    this.setState({ tools });
   }
 
   editTool(tool) {
     console.log('execute editTool', tool);
   }
 
+
+  resetLayout() {
+    console.log('execute resetLayout');
+  }
+
+  layoutChange(layout, layouts) {
+    const breakpoint = this.state.breakpoint;
+    const tools = this.state.tools;
+    const breakpointLayout = layouts[breakpoint];
+    console.log('execute layoutChange', breakpoint, layouts, breakpointLayout);
+    breakpointLayout.forEach((value) => {
+      const grid = tools[value.i].grid[breakpoint];
+      grid.x = value.x;
+      grid.y = value.y;
+      grid.w = value.w;
+      grid.h = value.h;
+    });
+    this.setState({ tools, layouts });
+  }
+
+  saveLayout() {
+    console.log('execute save layout');
+  }
+
   renderToolsEnabled() {
     const items = [];
     const tools = this.state.tools;
-    this.state.toolsEnabled.forEach((value) => {
-      items.push(
-        <div id={`pageElement-${value}`} key={value}>
-          <div className='pageElementBar'>
-            <div className='button-group'>
-              <GBLink onClick={() => this.editTool(value)}>Edit</GBLink>
-              <GBLink onClick={() => this.removeTool(value)}>Remove</GBLink>
+    const breakpoint = this.state.breakpoint;
+    Object.entries(tools).forEach(([key, value]) => {
+      if (value.grid[breakpoint].enabled) {
+        items.push(
+          <div id={`pageElement-${key}`} key={key} data-grid={value.grid[breakpoint]}>
+            <div className='pageElementBar'>
+              <div className='button-group'>
+                <GBLink onClick={() => this.editTool(key)}>Edit</GBLink>
+                <GBLink onClick={() => this.removeTool(key)}>Remove</GBLink>
+              </div>
+            </div>
+            <div className='pageElement' style={{ overflow: value.overflow || 'hidden' }}>
+              <PageElement {...this.props} element={value.child} />
             </div>
           </div>
-          <div className='pageElement' style={{ overflow: tools[value].overflow || 'hidden' }}>
-            <PageElement {...this.props} element={tools[value].child} />
-          </div>
-        </div>
-      );
+        );
+      }
     });
     return items;
   }
@@ -194,8 +170,9 @@ class GBX extends React.Component {
   renderToolsAvailable() {
     const items = [];
     const tools = this.state.tools;
+    const breakpoint = this.state.breakpoint;
     Object.entries(tools).forEach(([key, value]) => {
-      if (!this.state.toolsEnabled.includes(key)) {
+      if (!value.grid[breakpoint].enabled) {
         items.push(
           <div key={key} className='toolContainer'>
             <div className='toolBar'>
@@ -218,12 +195,10 @@ class GBX extends React.Component {
   render() {
 
     const {
-      layouts,
       editable,
-      formStyle
+      formStyle,
+      layouts
     } = this.state;
-
-    console.log('execute render', layouts);
 
     return (
       <div style={formStyle} className={`gbxFormWrapper ${editable ? 'editableForm' : ''}`}>
@@ -238,18 +213,6 @@ class GBX extends React.Component {
           <div style={{ marginBottom: 20 }} className='column'>
             <h2>Toolbar</h2>
             <div className='tools'>
-            <div
-              className="droppable-element"
-              draggable={true}
-              unselectable="on"
-              // this is a hack for firefox
-              // Firefox requires some kind of initialization
-              // which we can do by adding this attribute
-              // @see https://bugzilla.mozilla.org/show_bug.cgi?id=568313
-              onDragStart={e => e.dataTransfer.setData("text/plain", "")}
-            >
-              Droppable Element
-            </div>            
               {this.renderToolsAvailable()}
             </div>
           </div>
@@ -264,7 +227,7 @@ class GBX extends React.Component {
             onLayoutChange={this.layoutChange}
             onBreakpointChange={this.breakpointChange}
             onWidthChange={this.widthChange}
-            onDrop={this.droppingItem}
+            onDrop={this.onDrop}
             isDraggable={editable}
             isDroppable={true}
             isResizable={editable}
