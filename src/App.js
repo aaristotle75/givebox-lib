@@ -201,6 +201,7 @@ class App extends Component {
         <div id='modal-root' ref={this.modalRef}></div>
         <div id='calendar-root'></div>
         <div id='help-center'></div>
+        <div id='gbx-form-root'></div>        
       </div>
     );
   }
