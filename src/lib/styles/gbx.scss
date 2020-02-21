@@ -110,21 +110,21 @@
   color: $white;
   background: transparentize($mainColor, .3);
   z-index: 2;
+}
 
-  button.remove {
-    position: absolute;
-    top: -5px;
-    right: -15px;
+button.removeBtn {
+  position: absolute;
+  top: -5px;
+  right: -15px;
 
-    .icon {
-      color: $white;
-      font-size: 16px;
-    }
+  .icon {
+    color: $white;
+    font-size: 16px;
   }
-  button.remove:hover {
-    .icon {
-      color: $mainColorLight;
-    }
+}
+button.removeBtn:hover {
+  .icon {
+    color: $mainColorLight;
   }
 }
 

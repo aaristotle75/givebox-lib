@@ -26,7 +26,9 @@ export default class Title extends Component {
     return (
       <>
         {edit === 'title' ?
-          <PropertyBar>
+          <PropertyBar
+            {...this.props}
+          >
             <h2>{title}</h2>
           </PropertyBar>
         : <></>}

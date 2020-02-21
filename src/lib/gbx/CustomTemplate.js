@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
@@ -28,7 +28,7 @@ class GBX extends React.Component {
     this.renderPageElementsEnabled = this.renderPageElementsEnabled.bind(this);
     this.renderPageElementsAvailable = this.renderPageElementsAvailable.bind(this);
 
-    const pageElements = {
+    const defaultPageElements = {
       'logo': { name: 'Logo', child: 'Logo', grid: {
         desktop: { i: 'logo', x: 0, y: 0, w: 1, h: 2, enabled: true },
         mobile: { i: 'logo', x: 0, y: 0, w: 1, h: 2, enabled: true }
@@ -57,11 +57,14 @@ class GBX extends React.Component {
       mobile: [],
     };
 
+    const givebox = util.getValue(props.article, 'givebox', {});
+    const customTemplate = util.getValue(givebox, 'customTemplate', null);
+    const pageElements = customTemplate || defaultPageElements;
+
     Object.entries(pageElements).forEach(([key, value]) => {
       defaultLayouts.desktop.push(value.grid.desktop);
       defaultLayouts.mobile.push(value.grid.mobile);
     });
-
 
     this.state = {
       pageElements,
@@ -113,8 +116,7 @@ class GBX extends React.Component {
   }
 
   editPageElement(element) {
-    const editable = !element ? this.state.editable : false;
-    this.setState({ editable, pageElementToEdit: element });
+    this.setState({ pageElementToEdit: element });
   }
 
   resetLayout() {
@@ -124,7 +126,7 @@ class GBX extends React.Component {
   layoutChange(layout, layouts) {
     const breakpoint = this.state.breakpoint;
     const pageElements = this.state.pageElements;
-    const breakpointLayout = util.getValue(layouts, 'breakpoint');
+    const breakpointLayout = util.getValue(layouts, breakpoint);
     if (breakpointLayout) {
       breakpointLayout.forEach((value) => {
         const grid = pageElements[value.i].grid[breakpoint];
@@ -138,7 +140,8 @@ class GBX extends React.Component {
   }
 
   saveLayout() {
-    console.log('execute save layout');
+    if (this.props.save) this.props.save(this.state.pageElements);
+    else console.error('Not saved: this.props.save not found');
   }
 
   renderPageElementsEnabled() {
@@ -152,11 +155,11 @@ class GBX extends React.Component {
             <div className='pageElementBar'>
               <div className='button-group'>
                 <GBLink className='editBtn' onClick={() => this.editPageElement(key)}><span className='icon icon-edit'></span>Edit</GBLink>
-                {!value.irremovable ? <GBLink className='link remove' onClick={() => this.removePageElement(key)}><span className='icon icon-x'></span></GBLink> : ''}
+                {!value.irremovable ? <GBLink className='link removeBtn' onClick={() => this.removePageElement(key)}><span className='icon icon-x'></span></GBLink> : ''}
               </div>
             </div>
             <div className='pageElement' style={{ overflow: value.overflow || 'hidden' }}>
-              <PageElement edit={this.state.pageElementToEdit} {...this.props} element={value.child} />
+              <PageElement editPageElement={this.editPageElement} edit={this.state.pageElementToEdit} {...this.props} element={value.child} />
             </div>
           </div>
         );
@@ -213,15 +216,19 @@ class GBX extends React.Component {
       editable,
       formStyle,
       layouts,
-      showOutline
+      showOutline,
+      pageElementToEdit
     } = this.state;
 
+    const isEditable = pageElementToEdit ? false : editable;
+
     return (
-      <div style={formStyle} className={`gbxFormWrapper ${editable ? 'editableForm' : ''}`}>
+      <div style={formStyle} className={`gbxFormWrapper ${isEditable ? 'editableForm' : ''}`}>
         <div style={{ marginBottom: 20 }} className='button-group column'>
           <GBLink onClick={this.toggleEditable}>Editable {editable ? 'On' : 'False'}</GBLink>
-          <GBLink onClick={this.resetLayout}>Reset Layout</GBLink>
           <GBLink onClick={() => this.setState({ showOutline: showOutline ? false : true })}>{showOutline ? 'Hide Outline' : 'Show Outline'}</GBLink>
+          <GBLink onClick={this.resetLayout}>Reset Layout</GBLink>
+          <GBLink onClick={this.saveLayout}>Save Layout</GBLink>
         </div>
         <AnimateHeight
           duration={500}
@@ -254,9 +261,9 @@ class GBX extends React.Component {
             onLayoutChange={this.layoutChange}
             onBreakpointChange={this.breakpointChange}
             onWidthChange={this.widthChange}
-            isDraggable={editable}
+            isDraggable={isEditable}
+            isResizable={isEditable}
             isDroppable={false}
-            isResizable={editable}
             margin={[0, 0]}
             containerPadding={[0, 0]}
             autoSize={true}
