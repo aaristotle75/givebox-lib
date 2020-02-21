@@ -60,15 +60,16 @@
 .pageElementAvailableContainer {
   position: relative;
   color: $white;
-  background: $med-blue-gray;
-  font-size: 14px;
+  background: transparent;
+  font-size: 12px;
   font-weight: 500;
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 0 5px;
-  width: 100px;
+  width: 80px;
   height: 70px;
+  border: 1px solid $mainColor;
   border-radius: 10px;
   @include default-transition(.25s);
 }
@@ -113,6 +114,7 @@
 }
 
 button.removeBtn {
+  background: transparent;
   position: absolute;
   top: -5px;
   right: -15px;
@@ -128,19 +130,19 @@ button.removeBtn:hover {
   }
 }
 
-.gbxFormWrapper {
-   button.editBtn {
-    color: $white;
-    font-size: 14px;
-    font-weight: 400;
-    .icon {
-      display: block;
-      font-size: 30px;
-    }
+button.editBtn {
+  background: transparent;
+  color: $white;
+  font-size: 14px;
+  font-weight: 400;
+  .icon {
+    display: block;
+    font-size: 30px;
   }
-   button.editBtn:hover {
-    color: $mainColorLight
-  }
+}
+
+button.editBtn:hover {
+  color: $mainColorLight
 }
 
 .react-grid-item {
@@ -154,18 +156,66 @@ button.removeBtn:hover {
 }
 
 .adminCustomArea {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: $dark-blue-gray;
+  width: 90%;
+  margin: 0 auto;
+  z-index: 999999;
+
+  .logo {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+
+    img {
+      height: 25px;
+      width: 25px;
+    }
+  }
+
+  .button-group {
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+  }
+
+  button.link {
+    font-size: 14px;
+    color: $mainColorLight;
+  }
+
+  button.link:hover {
+    color: $white;
+  }
+
   button.link:not(.show) {
     visibility: hidden;
+  }
+
+  .handle {
+    cursor: grab;
+    position: absolute;
+    top: 12px;
+    left: 20px;
+    color: $mainColorLight;
+  }
+
+  .handle:hover {
+    color: $white;
+    @include default-transition(1s);
+  }
+}
+
+.adminCustomArea.editableForm {
+  button.link {
+    visibility: visible;
   }
 }
 
 .editableForm {
-
-  .adminCustomArea {
-    button.link {
-      visibility: visible;
-    }
-  }
 
   .react-grid-item {
     cursor: grab;

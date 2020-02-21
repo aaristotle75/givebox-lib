@@ -775,10 +775,14 @@ export function deviceOS() {
 
 export function getAuthorizedAccess(access, orgID) {
 	let hasAccess = false;
+  const fullName = getValue(access, 'fullName');
 	const userOrgID = getValue(access, 'orgID', null);
 	const userRole = getValue(access, 'role', null);
 	if (userRole === 'super') hasAccess = true;
 	if (userRole === 'admin' && userOrgID === orgID) hasAccess = true;
-  console.log('execute getAuthorizedAccess', userRole, userOrgID, orgID, hasAccess);
-	return hasAccess;
+  const obj = {
+    fullName,
+    userRole
+  }
+	return hasAccess ? obj : false;
 }

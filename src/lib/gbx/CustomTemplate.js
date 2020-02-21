@@ -9,10 +9,12 @@ import {
   util,
   sendResource,
   types,
-  Alert
+  Alert,
+  Portal
 } from '../';
 import AnimateHeight from 'react-animate-height';
 import PageElement from './PageElement';
+import Draggable from 'react-draggable';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -285,28 +287,39 @@ class GBX extends React.Component {
     } = this.state;
 
     const isEditable = pageElementToEdit ? false : editable;
+    const rootEl = document.getElementById('gbx-form-root');
 
     return (
       <div style={formStyle} className={`gbxFormWrapper ${isEditable ? 'editableForm' : ''}`}>
         {customizable ?
-        <div className={`adminCustomArea`}>
-          <div style={{ marginBottom: 20 }} className='button-group column'>
-            <GBLink className='link show' onClick={this.toggleEditable}>{editable ? 'Turn Editable Off' : 'Turn Editable On'}</GBLink>
-            <GBLink onClick={() => this.setState({ showOutline: showOutline ? false : true })}>{showOutline ? 'Hide Outline' : 'Show Outline'}</GBLink>
-            <GBLink onClick={this.resetLayout}>Reset Layout</GBLink>
-            <GBLink onClick={this.saveLayout}>Save Layout</GBLink>
-          </div>
-          <AnimateHeight
-            duration={500}
-            height={editable ? 'auto' : 1}
+        <Portal id={'gbx-form-portal'} rootEl={rootEl} className={`${isEditable ? 'editableForm' : ''}`}>
+          <Draggable
+            allowAnyClick={false}
+            handle={'.handle'}
           >
-            {this.renderPageElementsAvailable()}
-          </AnimateHeight>
-          <div className='alertContainer'>
-            <Alert alert='error' display={this.state.error} msg={'Error saving, check console'} />
-            <Alert alert='success' display={this.state.success} msg={'Custom Template Saved'} />
-          </div>
-        </div> : <></>}
+            <div className={`adminCustomArea ${isEditable ? 'editableForm' : ''}`}>
+              <div className='handle'><span className='icon icon-move'></span></div>
+              <GBLink className='logo'><img src={util.imageUrlWithStyle('https://givebox.s3-us-west-1.amazonaws.com/public/gb-logo5.png', 'small')} alt='Givebox Logo' /></GBLink>
+              <div className='button-group column'>
+                <GBLink className='link show' onClick={this.toggleEditable}>{editable ? 'Turn Editable Off' : 'Turn Editable On'}</GBLink>
+                <GBLink onClick={() => this.setState({ showOutline: showOutline ? false : true })}>{showOutline ? 'Hide Outline' : 'Show Outline'}</GBLink>
+                <GBLink onClick={this.resetLayout}>Reset Layout</GBLink>
+                <GBLink onClick={this.saveLayout}>Save Layout</GBLink>
+              </div>
+              <AnimateHeight
+                duration={500}
+                height={editable ? 'auto' : 1}
+              >
+                {this.renderPageElementsAvailable()}
+              </AnimateHeight>
+              <div className='alertContainer'>
+                <Alert alert='error' display={this.state.error} msg={'Error saving, check console'} />
+                <Alert alert='success' display={this.state.success} msg={'Custom Template Saved'} />
+              </div>
+            </div>
+          </Draggable>
+        </Portal>
+        : <></>}
         <div
           ref={this.gridRef}
           style={{ marginBottom: 20 }}

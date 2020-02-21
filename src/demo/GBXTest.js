@@ -5,21 +5,14 @@ import {
   util,
   getResource,
   sendResource,
-  Loader,
-  types,
-  Alert
+  Loader
 } from '../lib';
 
 class GBXTest extends Component {
 
   constructor(props) {
     super(props);
-    this.saveCustomTemplate = this.saveCustomTemplate.bind(this);
-    this.success = this.success.bind(this);
-    this.error = this.error.bind(this);
     this.state = {
-      success: false,
-      error: false,
       id: 739
     };
     this.timeout = false;
@@ -39,41 +32,14 @@ class GBXTest extends Component {
     }
   }
 
-  success() {
-    this.setState({ success: true });
-    this.timeout = setTimeout(() => {
-      this.setState({ success: false });
-      this.timeout = null;
-    }, 2500);
-  }
-
-  error() {
-    this.setState({ error: true });
-    this.timeout = setTimeout(() => {
-      this.setState({ error: false });
-      this.timeout = null;
-    }, 2500);
-  }
-
-  saveCustomTemplate(customTemplate, res, err) {
-    if (!err) {
-      this.success();
-    } else {
-      this.error();
-    }
-  }
-
   render() {
 
     if (util.isEmpty(this.props.article)) return <Loader msg='Loading article...' />
 
     return (
       <div>
-        <Alert alert='error' display={this.state.error} msg={'Error saving, check console'} />
-        <Alert alert='success' display={this.state.success} msg={'Custom Template Saved'} />
         <CustomTemplate
           article={this.props.article}
-          save={this.saveCustomTemplate}
           autoSave={true}
           customizable={util.getAuthorizedAccess(this.props.access, this.props.article.orgID)}
         />
