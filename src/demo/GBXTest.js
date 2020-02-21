@@ -55,30 +55,11 @@ class GBXTest extends Component {
     }, 2500);
   }
 
-  saveCustomTemplate(customTemplate) {
-    const kind = util.getValue(this.props.article, 'kind');
-    const kindID = util.getValue(this.props.article, 'kindID');
-
-    if (kindID && kind) {
-      const resource = `org${types.kind(kind).api.item}`;
-      this.props.sendResource(resource, {
-        id: [kindID],
-        data: {
-          giveboxSettings: {
-            customTemplate
-          }
-        },
-        method: 'patch',
-        callback: (res, err) => {
-          if (!err) {
-            this.success();
-          } else {
-            this.error();
-          }
-        }
-      });
+  saveCustomTemplate(customTemplate, res, err) {
+    if (!err) {
+      this.success();
     } else {
-      console.error(`No kind or KindID ${kind} ${kindID}`);
+      this.error();
     }
   }
 
@@ -93,6 +74,8 @@ class GBXTest extends Component {
         <CustomTemplate
           article={this.props.article}
           save={this.saveCustomTemplate}
+          autoSave={true}
+          customizable={util.getAuthorizedAccess(this.props.access, this.props.article.orgID)}
         />
       </div>
     )
@@ -108,7 +91,8 @@ function mapStateToProps(state, props) {
   return {
     resource,
     isFetching,
-    article
+    article,
+    access: util.getValue(state.resource, 'access', {})
   }
 }
 

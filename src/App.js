@@ -60,64 +60,63 @@ class App extends Component {
       // If no session is found redirect the user to sign in
       console.log('Err No session found', err);
     } else {
-      // Check if an organization has been returned, if not redirect to main signin
-      if (!has(res, 'organization')) {
-        console.log('signed in as super, not masquerading');
-      } else {
 
-        // Set the selected org
-        this.props.resourceProp('orgID', res.organization.ID);
-        this.setIndexState('org', { name: res.organization.name });
+      const org = util.getValue(res, 'organization', {});
+      const orgID = util.getValue(org, 'ID', null);
+      const orgName = util.getValue(org, 'name', 'Super');
 
-        // Check if this is a masquerade
-        let user;
-        if (has(res, 'masker')) user = res.masker;
-        else user = res.user;
+      // Set the selected org
+      this.props.resourceProp('orgID', orgID);
+      this.setIndexState('org', { name: orgName });
 
-        this.props.resourceProp('userID', user.ID);
+      // Check if this is a masquerade
+      let user;
+      if (has(res, 'masker')) user = res.masker;
+      else user = res.user;
 
-        // set access
-        const access = {
-          isOwner: false,
-          role: util.getValue(user, 'role'),
-          permissions: [],
-          type: 'organization',
-          userID: user.ID,
-          initial: user.firstName.charAt(0).toUpperCase() + user.lastName.charAt(0).toUpperCase(),
-          firstName: user.firstName,
-          lastName: user.lastName,
-          fullName: user.firstName + ' ' + user.lastName,
-          email: user.email,
-          orgName: res.organization.name,
-          orgID: res.organization.ID,
-          orgSlug: res.organization.slug
-        };
-        // Check member for access
-        if (has(res, 'member')) {
-          access.isOwner = util.getValue(res.member, 'isOwner');
-          access.permissions = util.getValue(res.member, 'permissions');
-        }
-        this.props.resourceProp('access', access);
+      this.props.resourceProp('userID', user.ID);
 
-        // Set user info
-        this.setIndexState('user', {
-          userID: user.ID,
-          fullName: user.firstName + ' ' + user.lastName,
-          email: user.email,
-          role: user.role,
-          masker: has(res, 'masker') ? true : false,
-          theme: user.preferences ? user.preferences.cloudTheme : 'light',
-          animations: user.preferences ? user.preferences.animations : false
-        });
-
-        // Set preferences
-        if (has(user, 'preferences')) {
-          this.props.setPrefs(util.getValue(user.preferences, 'cloudUI', {}));
-        }
-
-        // Get init collection of resources
-        this.initResources();
+      // set access
+      const access = {
+        isOwner: false,
+        role: util.getValue(user, 'role'),
+        permissions: [],
+        type: 'organization',
+        userID: user.ID,
+        initial: user.firstName.charAt(0).toUpperCase() + user.lastName.charAt(0).toUpperCase(),
+        firstName: user.firstName,
+        lastName: user.lastName,
+        fullName: user.firstName + ' ' + user.lastName,
+        email: user.email,
+        orgName: orgName,
+        orgID: orgID,
+        orgSlug: util.getValue(org, 'slug')
+      };
+      // Check member for access
+      if (has(res, 'member')) {
+        access.isOwner = util.getValue(res.member, 'isOwner');
+        access.permissions = util.getValue(res.member, 'permissions');
       }
+      this.props.resourceProp('access', access);
+
+      // Set user info
+      this.setIndexState('user', {
+        userID: user.ID,
+        fullName: user.firstName + ' ' + user.lastName,
+        email: user.email,
+        role: user.role,
+        masker: has(res, 'masker') ? true : false,
+        theme: user.preferences ? user.preferences.cloudTheme : 'light',
+        animations: user.preferences ? user.preferences.animations : false
+      });
+
+      // Set preferences
+      if (has(user, 'preferences')) {
+        this.props.setPrefs(util.getValue(user.preferences, 'cloudUI', {}));
+      }
+
+      // Get init collection of resources
+      this.initResources();
     }
     // Authenticate
     this.setState({authenticated: true});
@@ -201,7 +200,7 @@ class App extends Component {
         <div id='modal-root' ref={this.modalRef}></div>
         <div id='calendar-root'></div>
         <div id='help-center'></div>
-        <div id='gbx-form-root'></div>        
+        <div id='gbx-form-root'></div>
       </div>
     );
   }

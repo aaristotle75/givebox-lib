@@ -1,11 +1,15 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import '../styles/gbx.scss';
 import {
   GBLink,
-  util
+  util,
+  sendResource,
+  types,
+  Alert
 } from '../';
 import AnimateHeight from 'react-animate-height';
 import PageElement from './PageElement';
@@ -23,10 +27,12 @@ class GBX extends React.Component {
     this.addPageElement = this.addPageElement.bind(this);
     this.removePageElement = this.removePageElement.bind(this);
     this.editPageElement = this.editPageElement.bind(this);
-    this.resetLayout = this.resetLayout.bind(this);
-    this.saveLayout = this.saveLayout.bind(this);
     this.renderPageElementsEnabled = this.renderPageElementsEnabled.bind(this);
     this.renderPageElementsAvailable = this.renderPageElementsAvailable.bind(this);
+    this.resetLayout = this.resetLayout.bind(this);
+    this.saveLayout = this.saveLayout.bind(this);
+    this.success = this.success.bind(this);
+    this.error = this.error.bind(this);
 
     const defaultPageElements = {
       'logo': { name: 'Logo', child: 'Logo', grid: {
@@ -57,7 +63,7 @@ class GBX extends React.Component {
       mobile: [],
     };
 
-    const givebox = util.getValue(props.article, 'givebox', {});
+    const givebox = props.kind ? util.getValue(props.article, 'giveboxSettings', {}) : util.getValue(props.article, 'givebox', {});
     const customTemplate = util.getValue(givebox, 'customTemplate', null);
     const pageElements = customTemplate || defaultPageElements;
 
@@ -68,14 +74,18 @@ class GBX extends React.Component {
 
     this.state = {
       pageElements,
-      editable: true,
+      kind: util.getValue(this.props.article, 'kind', props.kind),
       showOutline: false,
       layouts: defaultLayouts,
       formStyle: {
         maxWidth: '1000px'
       },
       breakpoint: 'desktop',
-      pageElementToEdit: null
+      pageElementToEdit: null,
+      success: false,
+      error: false,
+      editable: false,
+      customizable: this.props.customizable
     }
     this.gridRef = React.createRef();
   }
@@ -85,6 +95,29 @@ class GBX extends React.Component {
     if (gridWidth < this.props.breakpointWidth) {
       this.setState({ breakpoint: 'mobile' });
     }
+  }
+
+  componentWillUnmount() {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+      this.timeout = null;
+    }
+  }
+
+  success() {
+    this.setState({ success: true });
+    this.timeout = setTimeout(() => {
+      this.setState({ success: false });
+      this.timeout = null;
+    }, 2500);
+  }
+
+  error() {
+    this.setState({ error: true });
+    this.timeout = setTimeout(() => {
+      this.setState({ error: false });
+      this.timeout = null;
+    }, 2500);
   }
 
   breakpointChange(breakpoint, cols) {
@@ -140,8 +173,38 @@ class GBX extends React.Component {
   }
 
   saveLayout() {
-    if (this.props.save) this.props.save(this.state.pageElements);
-    else console.error('Not saved: this.props.save not found');
+    if (this.props.autoSave) {
+      let id = null;
+      if (util.getValue(this.props.article, 'articleID')) {
+        id = this.props.article.ID;
+      } else {
+        id = util.getValue(this.props.article, 'kindID');
+      }
+
+      if (id) {
+        const resource = `org${types.kind(this.state.kind).api.item}`;
+        this.props.sendResource(resource, {
+          id: [id],
+          data: {
+            giveboxSettings: {
+              customTemplate: this.state.pageElements
+            }
+          },
+          method: 'patch',
+          callback: (res, err) => {
+            if (this.props.save) this.props.save(this.state.pageElements, res, err);
+          }
+        });
+      } else {
+        console.error(`No id`);
+      }
+    } else {
+      if (this.props.save) {
+        this.props.save(this.state.pageElements);
+      } else {
+        console.error('Not saved: this.props.save not found');
+      }
+    }
   }
 
   renderPageElementsEnabled() {
@@ -217,25 +280,33 @@ class GBX extends React.Component {
       formStyle,
       layouts,
       showOutline,
-      pageElementToEdit
+      pageElementToEdit,
+      customizable
     } = this.state;
 
     const isEditable = pageElementToEdit ? false : editable;
 
     return (
       <div style={formStyle} className={`gbxFormWrapper ${isEditable ? 'editableForm' : ''}`}>
-        <div style={{ marginBottom: 20 }} className='button-group column'>
-          <GBLink onClick={this.toggleEditable}>Editable {editable ? 'On' : 'False'}</GBLink>
-          <GBLink onClick={() => this.setState({ showOutline: showOutline ? false : true })}>{showOutline ? 'Hide Outline' : 'Show Outline'}</GBLink>
-          <GBLink onClick={this.resetLayout}>Reset Layout</GBLink>
-          <GBLink onClick={this.saveLayout}>Save Layout</GBLink>
-        </div>
-        <AnimateHeight
-          duration={500}
-          height={editable ? 'auto' : 1}
-        >
-          {this.renderPageElementsAvailable()}
-        </AnimateHeight>
+        {customizable ?
+        <div className={`adminCustomArea`}>
+          <div style={{ marginBottom: 20 }} className='button-group column'>
+            <GBLink className='link show' onClick={this.toggleEditable}>{editable ? 'Turn Editable Off' : 'Turn Editable On'}</GBLink>
+            <GBLink onClick={() => this.setState({ showOutline: showOutline ? false : true })}>{showOutline ? 'Hide Outline' : 'Show Outline'}</GBLink>
+            <GBLink onClick={this.resetLayout}>Reset Layout</GBLink>
+            <GBLink onClick={this.saveLayout}>Save Layout</GBLink>
+          </div>
+          <AnimateHeight
+            duration={500}
+            height={editable ? 'auto' : 1}
+          >
+            {this.renderPageElementsAvailable()}
+          </AnimateHeight>
+          <div className='alertContainer'>
+            <Alert alert='error' display={this.state.error} msg={'Error saving, check console'} />
+            <Alert alert='success' display={this.state.success} msg={'Custom Template Saved'} />
+          </div>
+        </div> : <></>}
         <div
           ref={this.gridRef}
           style={{ marginBottom: 20 }}
@@ -282,11 +353,20 @@ GBX.defaultProps = {
   breakpointWidth: 701
 }
 
+function mapStateToProps(state) {
+  return {
+  }
+}
+
+const GBXConnect = connect(mapStateToProps, {
+  sendResource
+})(GBX);
+
 export default class CustomTemplate extends React.Component {
 
   render() {
     return (
-      <GBX
+      <GBXConnect
         {...this.props}
       />
     )

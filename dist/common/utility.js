@@ -787,3 +787,12 @@ export function deviceOS() {
     return false;
   }
 }
+export function getAuthorizedAccess(access, orgID) {
+  let hasAccess = false;
+  const userOrgID = getValue(access, 'orgID', null);
+  const userRole = getValue(access, 'role', null);
+  if (userRole === 'super') hasAccess = true;
+  if (userRole === 'admin' && userOrgID === orgID) hasAccess = true;
+  console.log('execute getAuthorizedAccess', userRole, userOrgID, orgID, hasAccess);
+  return hasAccess;
+}
