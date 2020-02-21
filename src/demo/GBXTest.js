@@ -41,7 +41,7 @@ class GBXTest extends Component {
         <CustomTemplate
           article={this.props.article}
           autoSave={true}
-          customizable={util.getAuthorizedAccess(this.props.access, this.props.article.orgID)}
+          access={util.getAuthorizedAccess(this.props.access, this.props.article.orgID)}
         />
       </div>
     )

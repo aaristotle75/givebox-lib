@@ -161,7 +161,7 @@ button.editBtn:hover {
   right: 0;
   bottom: 0;
   background: $dark-blue-gray;
-  width: 90%;
+  width: 100%;
   margin: 0 auto;
   z-index: 999999;
 
@@ -169,17 +169,38 @@ button.editBtn:hover {
     position: absolute;
     right: 10px;
     top: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .loggedInGroup {
+      text-align: right;
+      margin-right: 20px;
+    }
+
+    .loggedInAs {
+      font-size: 10px;
+      color: $med-blue-gray;
+      display: block;
+    }
+
+    button.link {
+      color: $white;
+      font-size: 12px;
+    }
 
     img {
+      cursor: pointer;
       height: 25px;
       width: 25px;
     }
   }
 
-  .button-group {
+  .button-group.linkBar {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     margin: 10px;
+    margin-left: 50px;
   }
 
   button.link {

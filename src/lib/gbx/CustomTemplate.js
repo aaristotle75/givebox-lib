@@ -86,8 +86,7 @@ class GBX extends React.Component {
       pageElementToEdit: null,
       success: false,
       error: false,
-      editable: false,
-      customizable: this.props.customizable
+      editable: false
     }
     this.gridRef = React.createRef();
   }
@@ -269,7 +268,7 @@ class GBX extends React.Component {
     const hasItems = util.isEmpty(items) ? false : true;
 
     return (
-      <div className={`pageElementsAvailable ${hasItems ? 'flexStart' : 'flexCenter'}`}>
+      <div className={`pageElementsAvailable flexCenter`}>
         {hasItems ? items : <span className='noRecords'>All page elements enabled</span>}
       </div>
     )
@@ -282,12 +281,14 @@ class GBX extends React.Component {
       formStyle,
       layouts,
       showOutline,
-      pageElementToEdit,
-      customizable
+      pageElementToEdit
     } = this.state;
 
     const isEditable = pageElementToEdit ? false : editable;
     const rootEl = document.getElementById('gbx-form-root');
+    const customizable = !util.isEmpty(this.props.access) ? true : false;
+
+    console.log('execute', this.props.access);
 
     return (
       <div style={formStyle} className={`gbxFormWrapper ${isEditable ? 'editableForm' : ''}`}>
@@ -296,11 +297,18 @@ class GBX extends React.Component {
           <Draggable
             allowAnyClick={false}
             handle={'.handle'}
+            axis='y'
           >
             <div className={`adminCustomArea ${isEditable ? 'editableForm' : ''}`}>
               <div className='handle'><span className='icon icon-move'></span></div>
-              <GBLink className='logo'><img src={util.imageUrlWithStyle('https://givebox.s3-us-west-1.amazonaws.com/public/gb-logo5.png', 'small')} alt='Givebox Logo' /></GBLink>
-              <div className='button-group column'>
+              <div className='logo'>
+                <div className='loggedInGroup'>
+                  <span className='loggedInAs'>Logged in as {util.getValue(this.props.access, 'userRole')}</span>
+                  <GBLink className='link show' onClick={() => window.open('https://admin.givebox.com', '_blank')}>{util.getValue(this.props.access, 'fullName')}</GBLink>
+                </div>
+                <img src={util.imageUrlWithStyle('https://givebox.s3-us-west-1.amazonaws.com/public/gb-logo5.png', 'small')} alt='Givebox Logo' onClick={() => window.open('https://admin.givebox.com', '_blank')} />
+              </div>
+              <div className='button-group linkBar'>
                 <GBLink className='link show' onClick={this.toggleEditable}>{editable ? 'Turn Editable Off' : 'Turn Editable On'}</GBLink>
                 <GBLink onClick={() => this.setState({ showOutline: showOutline ? false : true })}>{showOutline ? 'Hide Outline' : 'Show Outline'}</GBLink>
                 <GBLink onClick={this.resetLayout}>Reset Layout</GBLink>
