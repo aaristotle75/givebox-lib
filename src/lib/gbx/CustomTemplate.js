@@ -288,8 +288,6 @@ class GBX extends React.Component {
     const rootEl = document.getElementById('gbx-form-root');
     const customizable = !util.isEmpty(this.props.access) ? true : false;
 
-    console.log('execute', this.props.access);
-
     return (
       <div style={formStyle} className={`gbxFormWrapper ${isEditable ? 'editableForm' : ''}`}>
         {customizable ?

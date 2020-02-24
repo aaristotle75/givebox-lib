@@ -21,8 +21,6 @@ export default class Title extends Component {
     const defaultStyle = {
     };
 
-    console.log('execute edit', edit);
-
     return (
       <>
         {edit === 'title' ?
