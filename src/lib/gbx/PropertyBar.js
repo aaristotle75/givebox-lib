@@ -36,7 +36,7 @@ export default class PropertyBar extends Component {
     const rootEl = document.getElementById('gbx-form-root');
 
     return (
-      <Portal id={'gbx-form-portal'} rootEl={rootEl}>
+      <Portal id={'gbx-form-portal'} rootEl={rootEl} className='gbxFormWrapper'>
         <Draggable
           allowAnyClick={false}
           handle={'.handle'}

@@ -131,13 +131,16 @@ button.removeBtn:hover {
 }
 
 button.editBtn {
+  display: flex;
+  align-items: center;
   background: transparent;
   color: $white;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 400;
   .icon {
-    display: block;
-    font-size: 30px;
+    display: inline-block;
+    font-size: 24px;
+    margin-right: 5px;
   }
 }
 
@@ -234,25 +237,6 @@ button.editBtn:hover {
   button.link {
     visibility: visible;
   }
-}
-
-.editableForm {
-
-  .react-grid-item {
-    cursor: grab;
-  }
-
-  .react-grid-item:hover {
-    border: 2px solid $mainColorLight;
-    background: $mainColor;
-
-    .pageElementBar {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-  }
-
 }
 
 // Modal
@@ -372,6 +356,35 @@ button.editBtn:hover {
     @include default-transition(.5s);
   }
 
+  // raw elements
+
+  h1, h2, h3, h4 {
+    margin: 0;
+    font-weight: 400;
+  }
+
+  h1 {
+    font-size: 22px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  h3 {
+    font-size: 18px;
+  }
+
+  h4 {
+    font-size: 16px;
+  }
+
+  p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 400;
+  }
+
 
   // Responsive
   @media (max-width: 800px) {
@@ -379,8 +392,27 @@ button.editBtn:hover {
         width: 100% !important;
     }
   }
-
 }
+
+
+.editableForm {
+
+  .react-grid-item {
+    cursor: grab;
+  }
+
+  .react-grid-item:hover {
+    border: 2px solid $mainColorLight;
+    background: $mainColor;
+
+    .pageElementBar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
+
 
 .pageElementPropertyBar {
   position: fixed;
@@ -396,7 +428,7 @@ button.editBtn:hover {
 
   .editHeader {
     position: absolute;
-    top: 9px;
+    top: 15px;
     left: 35px;
     font-size: 1.3em;
     font-weight: 400;
@@ -405,7 +437,7 @@ button.editBtn:hover {
   .handle {
     cursor: grab;
     position: absolute;
-    top: 13px;
+    top: 20px;
     left: 8px;
     color: $mainColor;
   }
