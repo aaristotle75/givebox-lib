@@ -256,6 +256,7 @@ class PaymentForm extends Component {
           errorMsg={false}
           successMsg={false}
           formPropCallback={this.formStateCallback}
+          neverSubmitOnEnter={this.props.editable ? true : false}
           options={{
             color: this.props.primaryColor
           }}

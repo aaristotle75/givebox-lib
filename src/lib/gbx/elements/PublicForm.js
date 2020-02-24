@@ -41,6 +41,7 @@ export default class PublicForm extends Component {
           address={{ enabled: true, required: false }}
           work={{ enabled: true, required: false }}
           custom={{ enabled: true, required: false, placeholder: 'My custom note placeholder' }}
+          editable={this.props.editable}
         />
         <div className='button-group'>
           <CustomBtn color={this.props.primaryColor} className='gbxBtn' onClick={() => this.saveButton()}>Submit Form</CustomBtn>

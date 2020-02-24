@@ -382,7 +382,6 @@ button.editBtn:hover {
 
 }
 
-/**-------- Help Desk Customization ----------*/
 .pageElementPropertyBar {
   position: fixed;
   right: 0;
@@ -391,13 +390,23 @@ button.editBtn:hover {
   height: auto;
   z-index: 1999991;
   border-radius: 20px;
-  background: $bar1Gradient;
+  padding: 30px;
+  background: $white;
+  @include box-shadow(1px 3px 3px 1px rgba(0,0,0,0.4));
+
+  .editHeader {
+    position: absolute;
+    top: 9px;
+    left: 35px;
+    font-size: 1.3em;
+    font-weight: 400;
+  }
 
   .handle {
     cursor: grab;
     position: absolute;
-    top: 20px;
-    left: 20px;
+    top: 13px;
+    left: 8px;
     color: $mainColor;
   }
 
@@ -405,6 +414,22 @@ button.editBtn:hover {
     color: $mainColorLight;
     @include default-transition(1s);
   }
+
+  button.removeBtn {
+    top: 8px;
+    right: 8px;
+
+    .icon {
+      color: $mainColor;
+      font-size: 16px;
+    }
+  }
+  button.removeBtn:hover {
+    .icon {
+      color: $mainColorLight;
+    }
+  }
+
 }
 
 .pageElementPropertyBar.closed {

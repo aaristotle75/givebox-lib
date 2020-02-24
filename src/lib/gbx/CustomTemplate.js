@@ -86,7 +86,7 @@ class GBX extends React.Component {
       pageElementToEdit: null,
       success: false,
       error: false,
-      editable: false
+      editable: true
     }
     this.gridRef = React.createRef();
   }
@@ -223,7 +223,7 @@ class GBX extends React.Component {
               </div>
             </div>
             <div className='pageElement' style={{ overflow: value.overflow || 'hidden' }}>
-              <PageElement editPageElement={this.editPageElement} edit={this.state.pageElementToEdit} {...this.props} element={value.child} />
+              <PageElement editPageElement={this.editPageElement} edit={this.state.pageElementToEdit === key ? key : null} article={this.props.article} element={value.child} name={key} editable={this.state.editable} />
             </div>
           </div>
         );

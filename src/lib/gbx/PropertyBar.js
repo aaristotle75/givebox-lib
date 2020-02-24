@@ -45,7 +45,6 @@ export default class PropertyBar extends Component {
             <div className='handle'><span className='icon icon-move'></span></div>
             <GBLink className='removeBtn' onClick={this.toggleDisplay}><span className='icon icon-x'></span></GBLink>
             <Fade in={open}>
-              Page Element Property Bar
               {this.props.children}
             </Fade>
           </div>
