@@ -12,7 +12,6 @@ export default class Title extends Component {
     this.onBlur = this.onBlur.bind(this);
     this.onChange = this.onChange.bind(this);
     const defaultStyle = {
-
     };
 
     const article = props.article;

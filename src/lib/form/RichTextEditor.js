@@ -1,18 +1,34 @@
 import React, {Component} from 'react';
 import Draft from 'draft-js';
+import Editor, { composeDecorators } from 'draft-js-plugins-editor';
 import {stateToHTML} from 'draft-js-export-html';
 import {stateFromHTML} from 'draft-js-import-html';
+import createAlignmentPlugin from 'draft-js-alignment-plugin';
+import createLinkifyPlugin from 'draft-js-linkify-plugin';
+import createFocusPlugin from 'draft-js-focus-plugin';
+
+const alignmentPlugin = createAlignmentPlugin();
+const focusPlugin = createFocusPlugin();
+const linkifyPlugin = createLinkifyPlugin();
+
+const plugins = [
+	alignmentPlugin,
+	focusPlugin,
+	linkifyPlugin
+];
 
 const {
-	Editor,
   CompositeDecorator,
   EditorState,
   RichUtils,
 } = Draft;
 
+const { AlignmentTool } = alignmentPlugin;
+
 class ContentEditor extends Component {
 	constructor(props){
 		super(props);
+
     const decorator = new CompositeDecorator([
       {
         strategy: findLinkEntities,
@@ -250,6 +266,7 @@ class ContentEditor extends Component {
 						placeholder={placeholder ? placeholder : 'Enter text...'}
 						ref={this.inputRef}
 						spellCheck={true}
+						plugins={plugins}
 					/>
 				</div>
 			</div>
