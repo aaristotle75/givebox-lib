@@ -3,6 +3,7 @@ import {
   util,
   RichTextField
 } from '../lib';
+import GBXEditor from '../lib/gbx/GBXEditor';
 
 export default class Test extends Component {
 
@@ -33,17 +34,12 @@ export default class Test extends Component {
 
     return (
       <>
-        <RichTextField
+        <GBXEditor
           label=''
           placeholder='Enter title...'
-          modal={false}
-          required={false}
           onChange={this.onChange}
-          onBlurEditor={this.onBlur}
-          value={this.state.content}
-          allowLink={true}
+          onBlur={this.onBlur}
         />
-        <div dangerouslySetInnerHTML={{ __html: this.state.content}} />
       </>
     )
   }
