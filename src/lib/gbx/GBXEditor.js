@@ -2,18 +2,13 @@ import React, { Component } from 'react';
 import {
   util
 } from '../../';
-import Editor from 'draft-js-plugins-editor';
-import createHashtagPlugin from 'draft-js-hashtag-plugin';
-import createLinkifyPlugin from 'draft-js-linkify-plugin';
-import { EditorState } from 'draft-js';
+import ReactQuill, { Quill } from 'react-quill';
+import ImageResize from 'quill-image-resize-module-react';
+import 'react-quill/dist/quill.snow.css';
+import '../styles/quill.scss';
 
-const hashtagPlugin = createHashtagPlugin();
-const linkifyPlugin = createLinkifyPlugin();
 
-const plugins = [
-  linkifyPlugin,
-  hashtagPlugin,
-];
+Quill.register('modules/imageResize', ImageResize);
 
 export default class GBXEditor extends Component {
 
@@ -23,30 +18,67 @@ export default class GBXEditor extends Component {
     this.onChange = this.onChange.bind(this);
 
     this.state = {
-      editorState: EditorState.createEmpty(),
-      content: 'hello'
+      content: ''
     };
   }
 
-  onBlur(editorState) {
-    console.log('execute onBlur', editorState);
-    this.setState({ editorState });
+  toolbarOptions = [
+    ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+    ['blockquote', 'code-block'],
+
+    [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+    [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+    [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+    [{ 'direction': 'rtl' }],                         // text direction
+
+    [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+    ['image', 'video'],
+
+    [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+    [{ 'font': [] }],
+    [{ 'align': [] }],
+
+    ['clean']                                         // remove formatting button
+  ];
+
+  modules = {
+    ImageResize: {
+        modules: [ 'Resize', 'DisplaySize', 'Toolbar' ]
+    },
+    toolbar: this.toolbarOptions
+  };
+
+  formats = [
+    'header',
+    'bold', 'italic', 'underline', 'strike', 'blockquote',
+    'list', 'bullet', 'indent',
+    'link', 'image', 'video', 'color', 'font', 'align'
+  ];
+
+  onBlur() {
+    const content = this.state.content;
+    console.log('execute onBlur', content);
+    this.setState({ content});
   }
 
-  onChange(editorState) {
-    console.log('execute onChange', editorState);
-    this.setState({ editorState });
+  onChange(content) {
+    console.log('execute onChange', content);
+    this.setState({ content });
   }
 
   render() {
 
     return (
       <>
-        <Editor
-          editorState={this.state.editorState}
+        <ReactQuill
+          value={this.state.content}
           onChange={this.onChange}
           onBlur={this.onBlur}
-          plugins={plugins}
+          modules={this.modules}
+          formats={this.formats}
         />
         <div dangerouslySetInnerHTML={{ __html: this.state.content }} />
       </>
