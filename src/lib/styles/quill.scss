@@ -13,3 +13,13 @@
 .ql-align-right {
   text-align: right;
 }
+
+.quill-editor iframe {
+  pointer-events: none;
+}
+
+.media {
+  background: blue;
+  width: 500px;
+  height: 300px;
+}

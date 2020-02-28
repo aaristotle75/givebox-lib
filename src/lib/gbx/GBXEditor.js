@@ -2,13 +2,10 @@ import React, { Component } from 'react';
 import {
   util
 } from '../../';
-import ReactQuill, { Quill } from 'react-quill';
-import ImageResize from 'quill-image-resize-module-react';
-import 'react-quill/dist/quill.snow.css';
 import '../styles/quill.scss';
-
-
-Quill.register('modules/imageResize', ImageResize);
+import CKEditor from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import EmbedContainer from 'react-oembed-container';
 
 export default class GBXEditor extends Component {
 
@@ -16,71 +13,56 @@ export default class GBXEditor extends Component {
     super(props);
     this.onBlur = this.onBlur.bind(this);
     this.onChange = this.onChange.bind(this);
-
+    this.onFocus = this.onFocus.bind(this);
+    this.onInit = this.onInit.bind(this);
     this.state = {
-      content: ''
+      content: `<p>Test</p><p>&nbsp;</p><figure class="media"><oembed url="https://youtu.be/bxY4lpc207Q"></oembed></figure>`
     };
   }
 
-  toolbarOptions = [
-    ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-    ['blockquote', 'code-block'],
+  componentDidMount() {
+  }
 
-    [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-    [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-    [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-    [{ 'direction': 'rtl' }],                         // text direction
+  onInit(editor) {
+    console.log( 'Editor is ready to use!', editor );
+  }
 
-    [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-
-    ['image', 'video'],
-
-    [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-    [{ 'font': [] }],
-    [{ 'align': [] }],
-
-    ['clean']                                         // remove formatting button
-  ];
-
-  modules = {
-    ImageResize: {
-        modules: [ 'Resize', 'DisplaySize', 'Toolbar' ]
-    },
-    toolbar: this.toolbarOptions
-  };
-
-  formats = [
-    'header',
-    'bold', 'italic', 'underline', 'strike', 'blockquote',
-    'list', 'bullet', 'indent',
-    'link', 'image', 'video', 'color', 'font', 'align'
-  ];
-
-  onBlur() {
-    const content = this.state.content;
-    console.log('execute onBlur', content);
+  onBlur(event, editor) {
+    const content = editor.getData();
+    console.log( { event, editor, content } );
     this.setState({ content});
   }
 
-  onChange(content) {
-    console.log('execute onChange', content);
+  onChange(event, editor) {
+    const content = editor.getData();
+    console.log( { event, editor, content } );
     this.setState({ content });
+  }
+
+  onFocus(event, editor) {
+    console.log('focus', editor);
   }
 
   render() {
 
     return (
       <>
-        <ReactQuill
-          value={this.state.content}
-          onChange={this.onChange}
-          onBlur={this.onBlur}
-          modules={this.modules}
-          formats={this.formats}
+        <CKEditor
+            editor={ ClassicEditor }
+            data={this.state.content}
+            onInit={this.onInit}
+            onChange={this.onChange}
+            onBlur={this.onBlur}
+            onFocus={this.onFocus}
         />
-        <div dangerouslySetInnerHTML={{ __html: this.state.content }} />
+        <EmbedContainer markup={this.state.content}>
+          <div dangerouslySetInnerHTML={{ __html: this.state.content }} />
+        </EmbedContainer>
+        {/*
+        <figure className='media'>
+          <oembed url="https://youtu.be/T7ep3FBF3Is"></oembed>
+        </figure>
+        */}
       </>
     )
   }
