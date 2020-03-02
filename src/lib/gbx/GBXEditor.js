@@ -38,6 +38,9 @@ export default class GBXEditor extends Component {
 
 	setConfig() {
 		const config = {
+			mediaEmbed: {
+				previewsInData: true
+			},
 			giveboxUpload: {
 				callback: (file) => {
 					this.setState({ loading: true });
@@ -83,8 +86,6 @@ export default class GBXEditor extends Component {
   }
 
   render() {
-
-		console.log('execute loading', this.state.loading);
 
     return (
       <div className='ck-content'>
