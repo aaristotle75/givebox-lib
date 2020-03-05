@@ -572,7 +572,7 @@ export function toBinary(accepted) {
   });
 }
 export function isEmpty(value) {
-  return value === undefined || value === null || typeof value === 'object' && Object.keys(value).length === 0 || typeof value === 'string' && value.trim().length === 0 || value.length === 0;
+  return !value || value === undefined || value === null || typeof value === 'object' && Object.keys(value).length === 0 || typeof value === 'string' && value.trim().length === 0 || value.length === 0;
 }
 export function search(haystack, needle, found = []) {
   if (typeof haystack === 'object' && haystack) {

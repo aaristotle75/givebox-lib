@@ -179,7 +179,7 @@ class Dropdown extends Component {
           onMouseEnter: () => {
             const ref = bindthis.itemRefs[dataValue].current;
             ref.style.setProperty('background', value.disabled ? '' : bindthis.props.color);
-            ref.style.setProperty('color', selected ? '#ffffff' : '');
+            ref.style.setProperty('color', selected && bindthis.props.color ? '#ffffff' : '');
           },
           onMouseLeave: () => {
             const ref = bindthis.itemRefs[dataValue].current;
@@ -334,6 +334,7 @@ Dropdown.defaultProps = {
   iconOpened: 'chevron-down',
   overlayDuration: 200,
   overlay: true,
-  direction: ''
+  direction: '',
+  defaultColor: '#4775f8'
 };
 export default Dropdown;
