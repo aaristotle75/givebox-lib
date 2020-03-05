@@ -17,7 +17,7 @@ export function bankStatus(status, voidCheck) {
 
     case 'pending':
     default: {
-      obj.name = voidCheck ? 'Bank account under review' : 'Needs void check or bank statement';
+      obj.name = voidCheck ? 'Bank account under review' : 'Upload void check or bank statement';
       obj.color = voidCheck ? 'green' : 'orange';
       break;
     }
