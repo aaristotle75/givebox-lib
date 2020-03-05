@@ -26,6 +26,7 @@ import ActionBar from './block/ActionBar';
 import CodeBlock from './block/CodeBlock';
 import { Alert } from './common/Alert';
 import Collapse from './common/Collapse';
+import CustomBtn from './common/CustomBtn';
 import Delete from './common/Delete';
 import Error from './common/Error';
 import Fade from './common/Fade';
@@ -55,7 +56,6 @@ import Articles from './helpdesk/Articles';
 import HelpDeskButton from './helpdesk/HelpDeskButton'; // GBX
 
 import CustomTemplate from './gbx/CustomTemplate';
-import CustomBtn from './gbx/CustomBtn';
 export { // Form
 Form, _v, selectOptions, Select, TextField, Dropdown, RichTextField, Choice, CalendarField, CalendarRange, Checkbox, UploadPrivate, WhereField // actions
 , toggleModal, removeResource, resourceProp, getAPI, sendAPI, setAppRef, setModalRef, setProp, setPrefs, setCustomProp // API
@@ -64,7 +64,7 @@ Form, _v, selectOptions, Select, TextField, Dropdown, RichTextField, Choice, Cal
 , ModalLink, ModalRoute // Table
 , ActionsMenu, Search, Table, MaxRecords, NoRecords, Paginate, Export, DownloadFileConnect, Filter // Block
 , StatBlock, ActionBar, CodeBlock // common
-, Alert, Collapse, Delete, Error, Fade, GBLink, GBX, Iframe, Image, ImageDisplay, history, LinearBar, Loader, Portal, Redirect, Tabs, Tab, types, util // Glossary
+, Alert, Collapse, CustomBtn, Delete, Error, Fade, GBLink, GBX, Iframe, Image, ImageDisplay, history, LinearBar, Loader, Portal, Redirect, Tabs, Tab, types, util // Glossary
 , FeesGlossary // Help Desk
 , HelpDesk, TicketForm, zohoCats, Articles, HelpDeskButton // GBX
-, CustomBtn, CustomTemplate };
+, CustomTemplate };

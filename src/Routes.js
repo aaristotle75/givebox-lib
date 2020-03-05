@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 import { util, ModalRoute, HelpDeskButton } from './lib';
 import Sidebar from './demo/Sidebar';
 import Header from './demo/Header';
+import Test from './demo/Test';
 
 class Routes extends Component {
 
@@ -55,6 +56,7 @@ class Routes extends Component {
                     <Route path='/contact' render={(props) => loadComponent('demo/Contact')}  />
                     <Route path='/helpdesk' render={(props) => loadComponent('demo/HelpDeskDemo')}  />
                     <Route path='/gbx' render={(props) => loadComponent('demo/GBXTest')}  />
+                    <Route path='/test' component={Test} />
                     <Route render={() => <div>Error</div>} />
                   </Switch>
                 </div>

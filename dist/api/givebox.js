@@ -1090,7 +1090,7 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
 
     case 'orgMediaItems':
       {
-        endpoint = `orgs/${orgID}/media-items`;
+        endpoint = `orgs/${getIndex(id, 0, orgID)}/media-items`;
         break;
       }
 

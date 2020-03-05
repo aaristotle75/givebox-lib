@@ -38,25 +38,32 @@ class GBX extends React.Component {
 
     const defaultPageElements = {
       'logo': { name: 'Logo', child: 'Logo', grid: {
-        desktop: { i: 'logo', x: 0, y: 0, w: 1, h: 2, enabled: true },
-        mobile: { i: 'logo', x: 0, y: 0, w: 1, h: 2, enabled: true }
+        desktop: { i: 'logo', x: 0, y: 0, w: 1, h: 4, enabled: true },
+        mobile: { i: 'logo', x: 0, y: 0, w: 1, h: 4, enabled: true }
       }},
       'title': { name: 'Title', child: 'Title', grid: {
         desktop: { i: 'title', x: 1, y: 0, w: 5, h: 2, enabled: true },
         mobile: { i: 'title', x: 1, y: 0, w: 5, h: 2, enabled: true }
       }},
+      'orgName': { name: 'Name', child: 'OrgName', grid: {
+        desktop: { i: 'orgName', x: 1, y: 1, w: 5, h: 2, enabled: true },
+        mobile: { i: 'orgName', x: 1, y: 1, w: 5, h: 2, enabled: true }
+      }},
       'media': { name: 'Media', child: 'Media', grid: {
-        desktop: { i: 'media', x: 6, y: 0, w: 6, h: 10, enabled: true },
-        mobile: { i: 'media', x: 0, y: 2, w: 6, h: 10, enabled: true }
+        desktop: { i: 'media', x: 6, y: 0, w: 6, h: 20, enabled: true },
+        mobile: { i: 'media', x: 0, y: 2, w: 6, h: 20, enabled: true }
       }},
       'summary': { name: 'Summary', child: 'Summary', grid: {
-        desktop: { i: 'summary', x: 0, y: 2, w: 6, h: 3, enabled: true },
-        mobile: { i: 'summary', x: 0, y: 2, w: 6, h: 3, enabled: true }
+        desktop: { i: 'summary', x: 0, y: 2, w: 6, h: 6, enabled: true },
+        mobile: { i: 'summary', x: 0, y: 2, w: 6, h: 6, enabled: true }
       }},
-      'form': { name: 'Form', child: 'PublicForm', overflow: 'visible', irremovable: true,
-      grid: {
-        desktop: { i: 'form', x: 0, y: 3, w: 12, h: 20, minW: 10, enabled: true },
-        mobile: { i: 'form', x: 0, y: 3, w: 6, h: 30, minW: 4, enabled: true }
+      'form': { name: 'Form', child: 'PublicForm', overflow: 'visible', irremovable: true, grid: {
+        desktop: { i: 'form', x: 0, y: 3, w: 12, h: 40, minW: 10, enabled: true },
+        mobile: { i: 'form', x: 0, y: 3, w: 6, h: 60, minW: 4, enabled: true }
+      }},
+      'content': { name: 'Content', child: 'Content', overflow: 'visible', grid: {
+        desktop: { i: 'content', x: 0, y: 4, w: 6, h: 6, enabled: true },
+        mobile: { i: 'content', x: 0, y: 4, w: 6, h: 6, enabled: true }
       }}
     };
 
@@ -66,8 +73,8 @@ class GBX extends React.Component {
     };
 
     const givebox = props.kind ? util.getValue(props.article, 'giveboxSettings', {}) : util.getValue(props.article, 'givebox', {});
-    const customTemplate = util.getValue(givebox, 'customTemplate', null);
-    const pageElements = customTemplate || defaultPageElements;
+    const customTemplate = util.getValue(givebox, 'customTemplate', {});
+    const pageElements = { ...defaultPageElements, ...customTemplate };
 
     Object.entries(pageElements).forEach(([key, value]) => {
       defaultLayouts.desktop.push(value.grid.desktop);
@@ -257,7 +264,7 @@ class GBX extends React.Component {
           >
             <div className='toolBar'>
               <div className='button-group'>
-                <GBLink className='editBtn' onClick={() => this.addPageElement(key)}><span className='icon icon-plus-square'></span>Add {value.name}</GBLink>
+                <GBLink className='availableBtn' onClick={() => this.addPageElement(key)}><span className='icon icon-plus-square'></span>Add {value.name}</GBLink>
               </div>
             </div>
             {value.name}
@@ -288,6 +295,7 @@ class GBX extends React.Component {
     const rootEl = document.getElementById('gbx-form-root');
     const customizable = !util.isEmpty(this.props.access) ? true : false;
 
+		console.log('execute access', this.props.access, customizable);
     return (
       <div style={formStyle} className={`gbxFormWrapper ${isEditable ? 'editableForm' : ''}`}>
         {customizable ?
@@ -347,7 +355,7 @@ class GBX extends React.Component {
             layouts={layouts}
             breakpoints={{desktop: 701, mobile: 700 }}
             cols={{desktop: 12, mobile: 6}}
-            rowHeight={31}
+            rowHeight={15}
             onLayoutChange={this.layoutChange}
             onBreakpointChange={this.breakpointChange}
             onWidthChange={this.widthChange}
@@ -359,6 +367,7 @@ class GBX extends React.Component {
             autoSize={true}
             draggableCancel={'.modal'}
             verticalCompact={false}
+						preventCollision={true}
           >
             {this.renderPageElementsEnabled()}
           </ResponsiveGridLayout>

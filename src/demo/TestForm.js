@@ -120,13 +120,13 @@ export default class TestForm extends Component {
       <div>
         <h2>Form Elements</h2>
         <div className='formWrapper'>
+          {this.props.richText('emailList', { label: 'Email List', placeholder: 'Enter emails separated by commas', modal: false, required: false, allowLink: true })}
+
           {/*
           {this.props.richText('content', { required: false, label: 'Rich Text', placeholder: 'Please write something...', modal: true, modalLabel: 'Open content editor', allowLink: true })}
           <div style={{ margin: '100px 0px' }}>
             <div dangerouslySetInnerHTML={{ __html: util.getValue(content, 'value') }}></div>
           </div>
-          */}
-
           {this.props.choice('readOnly', { type: 'checkbox', onChange: this.onChangeReadonly, label: 'Change Read Only.', checked: false })}
           {this.props.textField('taxID', { readOnly: this.state.readOnly, readOnlyText: 'You cannot edit this field', placeholder: 'Enter federal Tax ID', label: 'Tax ID', validate: 'taxID', value: '10-1010101' })}
           <GBLink onClick={() => this.testFunc(100)}>Test Func</GBLink>
@@ -138,7 +138,7 @@ export default class TestForm extends Component {
             required: true
           })}
           {this.props.uploadField('imageURL', { parent: 'user', label: 'Image', debug: true })}
-          {/*
+
           {!this.state.webcam || 1===1 ?
             <div>
               {this.state.capture ? <img src={this.state.capture} alt='capture' /> : <span>No Capture</span>}<br />
@@ -148,10 +148,7 @@ export default class TestForm extends Component {
             />
           }
           <button onClick={this.toggleWebcam}>Toggle Webcam</button>
-          */}
           {this.props.creditCardGroup({ required: false, debug: false})}
-          {this.props.richText('emailList', { label: 'Email List', placeholder: 'Enter emails separated by commas', modal: false, required: false })}
-          {/*
           {this.props.textField('address', {label: 'Address', placeholder: 'Enter Address', validate: 'address'})}
           {this.props.saveButton(this.processForm, { id: '-second' })}
           {this.props.textField('taxID', { readOnly: true,readOnlyText: 'You cannot edit this field', placeholder: 'Enter federal Tax ID', label: 'Tax ID', validate: 'taxID', value: '10-1010101' })}

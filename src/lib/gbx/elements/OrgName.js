@@ -13,10 +13,9 @@ export default class Title extends Component {
     this.onChange = this.onChange.bind(this);
     const defaultStyle = {
     };
-
     const article = props.article;
-    const title = util.getValue(article, 'title');
-    const content = props.content || `<h3>${title}</h3>`;
+    const orgName = util.getValue(article, 'orgName');
+    const content = `<p className='cardHeaderSubtitle'>${orgName}</p>`;
 
     this.state = {
       content
@@ -43,14 +42,14 @@ export default class Title extends Component {
 
     return (
       <>
-        {edit === 'title' ?
+        {edit === 'orgName' ?
           <PropertyBar
             {...this.props}
           >
-            <div className='editHeader'>Edit Title</div>
+            <div className='editHeader'>Edit Organization Name</div>
             <RichTextField
               label=''
-              placeholder='Enter title...'
+              placeholder='Enter name of organization...'
               modal={false}
               required={false}
               onChange={this.onChange}

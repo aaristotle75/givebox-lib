@@ -5,7 +5,7 @@ import {
 } from '../../';
 import PropertyBar from '../PropertyBar';
 
-export default class Title extends Component {
+export default class Content extends Component {
 
   constructor(props) {
     super(props);
@@ -43,7 +43,7 @@ export default class Title extends Component {
 
     return (
       <>
-        {edit === 'title' ?
+        {edit === 'content' ?
           <PropertyBar
             {...this.props}
           >

@@ -10,9 +10,11 @@ const {
   RichUtils,
 } = Draft;
 
+
 class ContentEditor extends Component {
 	constructor(props){
 		super(props);
+
     const decorator = new CompositeDecorator([
       {
         strategy: findLinkEntities,
