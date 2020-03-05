@@ -148,6 +148,23 @@ button.editBtn:hover {
   color: $mainColorLight
 }
 
+button.availableBtn {
+	white-space: nowrap;
+  background: transparent;
+  color: $white;
+  font-size: 12px;
+  font-weight: 400;
+  .icon {
+    display: block;
+    font-size: 24px;
+    margin-bottom: 5px;
+  }
+}
+
+button.availableBtn:hover {
+  color: $mainColorLight
+}
+
 .react-grid-item {
   background: transparent;
   z-index: 1;

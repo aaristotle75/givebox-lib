@@ -30,6 +30,7 @@ import CodeBlock from './block/CodeBlock';
 
 import { Alert } from './common/Alert';
 import Collapse from './common/Collapse';
+import CustomBtn from './common/CustomBtn';
 import Delete from './common/Delete';
 import Error from './common/Error';
 import Fade from './common/Fade';
@@ -82,7 +83,6 @@ import HelpDeskButton from './helpdesk/HelpDeskButton';
 
 // GBX
 import CustomTemplate from './gbx/CustomTemplate';
-import CustomBtn from './gbx/CustomBtn';
 
 export {
   // Form
@@ -150,6 +150,7 @@ export {
   // common
   Alert,
   Collapse,
+	CustomBtn,
   Delete,
   Error,
   Fade,
@@ -179,6 +180,5 @@ export {
   HelpDeskButton,
 
   // GBX
-  CustomBtn,
   CustomTemplate
 };

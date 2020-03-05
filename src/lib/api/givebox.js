@@ -746,7 +746,7 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
     case 'orgMediaItems': {
-      endpoint = `orgs/${orgID}/media-items`;
+      endpoint = `orgs/${getIndex(id, 0, orgID)}/media-items`;
       break;
     }
     case 'orgMediaItem': {

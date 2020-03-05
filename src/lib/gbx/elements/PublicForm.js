@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {
   util,
-  GBLink
+  GBLink,
+	CustomBtn
 } from '../../';
 import PaymentForm from '../PaymentForm';
-import CustomBtn from '../CustomBtn';
 
 export default class PublicForm extends Component {
 

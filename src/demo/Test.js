@@ -18,15 +18,13 @@ export default class Test extends Component {
     };
   }
 
-  onBlur(name, value, hasText) {
-    const content = hasText ? value : '';
-    console.log('execute onBlur', content, hasText);
+  onBlur(content) {
+    console.log('execute onBlur', content);
     this.setState({ content });
   }
 
-  onChange(name, value, hasText) {
-    const content = hasText ? value : '';
-    console.log('execute onChange', content, hasText);
+  onChange(content) {
+    //console.log('execute onChange', content);
     this.setState({ content });
   }
 
@@ -39,6 +37,7 @@ export default class Test extends Component {
           placeholder='Enter title...'
           onChange={this.onChange}
           onBlur={this.onBlur}
+					orgID={185}
         />
       </>
     )

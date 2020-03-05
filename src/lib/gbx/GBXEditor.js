@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import {
   util,
 	Loader,
-	Alert
+	Alert,
+	sendResource
 } from '../';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { handleFile } from './images/ImageHandling';
 
-export default class GBXEditor extends Component {
+class GBXEditor extends Component {
 
   constructor(props) {
     super(props);
@@ -17,12 +19,16 @@ export default class GBXEditor extends Component {
     this.onFocus = this.onFocus.bind(this);
     this.onInit = this.onInit.bind(this);
 		this.setConfig = this.setConfig.bind(this);
+		this.addImageToMediaLibrary = this.addImageToMediaLibrary.bind(this);
+		this.uploadError = this.uploadError.bind(this);
+		this.cleanContent = this.cleanContent.bind(this);
 
     const testContent = `<p>Test</p><p>&nbsp;</p><figure class="media"><oembed url="https://youtu.be/bxY4lpc207Q"></oembed></figure>`;
     this.state = {
       content: '',
 			loading: false,
-			error: null
+			error: null,
+			errorMsg: 'Error occurred'
     };
   }
 
@@ -37,7 +43,7 @@ export default class GBXEditor extends Component {
   }
 
 	setConfig() {
-		const config = {
+		const defaultConfig = {
 			mediaEmbed: {
 				previewsInData: true
 			},
@@ -47,22 +53,43 @@ export default class GBXEditor extends Component {
 					const p = new Promise((resolve, reject) => {
 						this.url = null;
 						handleFile(file, (url, error) => {
-							this.setState({ loading: false });
-							resolve(url);
+							this.addImageToMediaLibrary(url, resolve);
 						});
 					})
 					return p;
 				},
-				uploadError: () => {
-					this.setState({ error: 'Error uploading. Please make sure the image you are uploading is a JPEG, PNG or GIF file.' });
-					this.timeout = setTimeout(() => {
-						this.setState({ error: null });
-						this.timeout = null;
-					}, 4000);
-				}
+				uploadError: this.uploadError
 			}
 		}
+		const config = { ...defaultConfig, ...this.props.config };
 		return config;
+	}
+
+	addImageToMediaLibrary(URL, resolve) {
+		this.props.sendResource('orgMediaItems', {
+			id: [this.props.orgID],
+			method: 'POST',
+			data: {
+				URL
+			},
+			callback: (res, err) => {
+				let url = null;
+				if (!err && !util.isEmpty(res)) {
+					url = util.getValue(res, 'URL', '');
+					// url = url ? util.imageUrlWithStyle(url, 'large') : null;
+				}
+				resolve(url);
+				this.setState({ loading: false });
+			}
+		});
+	}
+
+	uploadError() {
+		this.setState({ error: true, errorMsg: 'Error uploading. Please make sure the image you are uploading is a JPEG, PNG or GIF file.' });
+		this.timeout = setTimeout(() => {
+			this.setState({ error: null });
+			this.timeout = null;
+		}, 4000);
 	}
 
   onInit(editor) {
@@ -70,20 +97,37 @@ export default class GBXEditor extends Component {
   }
 
   onBlur(event, editor) {
-    const content = editor.getData();
-    //console.log( { event, editor, content } );
+    let content = editor.getData();
+		content = this.cleanContent(content);
     this.setState({ content});
+		if (this.props.onBlur) this.props.onBlur(content);
   }
 
   onChange(event, editor) {
-    const content = editor.getData();
-    //console.log( { event, editor, content } );
+    let content = editor.getData();
     this.setState({ content });
+		if (this.props.onChange) this.props.onChange(content);
   }
 
   onFocus(event, editor) {
     //console.log('focus', editor);
   }
+
+	cleanContent(contentToOptimize) {
+		let content = contentToOptimize;
+		const el = document.createElement('div');
+		el.innerHTML = content;
+		const images = el.getElementsByTagName('img');
+		if (!util.isEmpty(images)) {
+			for(var i=0; i < images.length; i++){
+				images[i].src = util.imageUrlWithStyle(images[i].src, 'large');
+			  console.log(images[i].src);
+			}
+		}
+		content = el.innerHTML;
+		console.log('execute', content);
+		return content;
+	}
 
   render() {
 
@@ -92,21 +136,30 @@ export default class GBXEditor extends Component {
 				{this.state.loading && <Loader msg='Loading image...' /> }
 				<Alert alert='error' display={this.state.error} msg={this.state.error} />
         <CKEditor
-						config={this.setConfig()}
-            editor={ ClassicEditor }
-            data={this.state.content}
-            onInit={this.onInit}
-            onChange={this.onChange}
-            onBlur={this.onBlur}
-            onFocus={this.onFocus}
+					config={this.setConfig()}
+          editor={ ClassicEditor }
+          data={this.state.content}
+          onInit={this.onInit}
+          onChange={this.onChange}
+          onBlur={this.onBlur}
+          onFocus={this.onFocus}
         />
         <div dangerouslySetInnerHTML={{ __html: this.state.content }} />
-        {/*
-        <figure className='media'>
-          <oembed url="https://youtu.be/T7ep3FBF3Is"></oembed>
-        </figure>
-        */}
       </div>
     )
   }
 }
+
+GBXEditor.defaultProps = {
+	config: {},
+	ownerType: 'organization'
+};
+
+function mapStateToProps(state) {
+  return {
+  }
+}
+
+export default connect(mapStateToProps, {
+  sendResource
+})(GBXEditor);
