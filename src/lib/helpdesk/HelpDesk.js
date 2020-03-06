@@ -70,7 +70,7 @@ class HelpDesk extends Component {
 
 HelpDesk.defaultProps = {
   scrollHeight: '400px',
-  defaultTab: 'contact',
+  defaultTab: 'articles',
   showKB: true
 }
 
