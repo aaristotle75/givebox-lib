@@ -9,6 +9,7 @@ import {
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { handleFile } from './images/ImageHandling';
+import '../styles/ckeditor.scss';
 
 class GBXEditor extends Component {
 
@@ -23,7 +24,6 @@ class GBXEditor extends Component {
 		this.uploadError = this.uploadError.bind(this);
 		this.cleanContent = this.cleanContent.bind(this);
 
-    const testContent = `<p>Test</p><p>&nbsp;</p><figure class="media"><oembed url="https://youtu.be/bxY4lpc207Q"></oembed></figure>`;
     this.state = {
       content: '',
 			loading: false,
@@ -93,7 +93,7 @@ class GBXEditor extends Component {
 	}
 
   onInit(editor) {
-    //console.log( 'Editor is ready to use!', editor );
+		editor.editing.view.focus();
   }
 
   onBlur(event, editor) {
@@ -120,12 +120,14 @@ class GBXEditor extends Component {
 		const images = el.getElementsByTagName('img');
 		if (!util.isEmpty(images)) {
 			for(var i=0; i < images.length; i++){
-				images[i].src = util.imageUrlWithStyle(images[i].src, 'large');
-			  console.log(images[i].src);
+				const image = util.getValue(images, i);
+				if (!util.isEmpty(image)) {
+					image.src = util.imageUrlWithStyle(image.src, 'large');
+				  console.log(image.src);
+				}
 			}
 		}
 		content = el.innerHTML;
-		console.log('execute', content);
 		return content;
 	}
 

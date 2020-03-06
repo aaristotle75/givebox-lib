@@ -15,6 +15,14 @@
     --ck-todo-list-checkmark-size: 16px;
 }
 
+.ck-content ul {
+	list-style-type: disc;
+}
+
+.ck-content ol {
+	list-style-type: upper-roman;
+}
+
 /* ckeditor5-list/theme/todolist.css */
 .ck-content .todo-list {
     list-style: none;
