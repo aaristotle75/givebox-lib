@@ -56,6 +56,7 @@ class Routes extends Component {
                     <Route path='/contact' render={(props) => loadComponent('demo/Contact')}  />
                     <Route path='/helpdesk' render={(props) => loadComponent('demo/HelpDeskDemo')}  />
                     <Route path='/gbx' render={(props) => loadComponent('demo/GBXTest')}  />
+                    <Route path='/gbx3' render={(props) => loadComponent('demo/GBX3Test')}  />
                     <Route path='/test' component={Test} />
                     <Route render={() => <div>Error</div>} />
                   </Switch>
