@@ -116,15 +116,17 @@ class App extends Component {
       }
 
       // Get init collection of resources
-      this.initResources();
+      this.initResources(orgID);
     }
     // Authenticate
     this.setState({authenticated: true});
   }
 
-  initResources() {
+  initResources(orgID) {
     // Get the org
-    this.props.getResource('org');
+    this.props.getResource('org', {
+			orgID: orgID || 185
+		});
   }
 
   loader(msg, className = '') {

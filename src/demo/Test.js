@@ -3,7 +3,7 @@ import {
   util,
   RichTextField
 } from '../lib';
-import GBXEditor from '../lib/gbx/GBXEditor';
+import Editor from '../lib/gbx3/tools/Editor';
 
 export default class Test extends Component {
 
@@ -32,12 +32,13 @@ export default class Test extends Component {
 
     return (
       <>
-        <GBXEditor
+        <Editor
           label=''
           placeholder='Enter title...'
           onChange={this.onChange}
           onBlur={this.onBlur}
 					orgID={185}
+					content='test'
         />
       </>
     )

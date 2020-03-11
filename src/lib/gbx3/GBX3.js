@@ -8,10 +8,15 @@ import {
   GBLink,
   util,
   sendResource,
+	getResource,
+	resourceProp,
   types,
-  Alert
+  Alert,
+	Loader
 } from '../';
-import { initLayout } from './config';
+import AdminToolbar from './tools/AdminToolbar';
+import Block from './blocks/Block';
+import { initBlocks } from './config';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -23,6 +28,7 @@ class GBXClass extends React.Component {
     this.breakpointChange = this.breakpointChange.bind(this);
     this.widthChange = this.widthChange.bind(this);
     this.toggleEditable = this.toggleEditable.bind(this);
+		this.toggleOutline = this.toggleOutline.bind(this);
     this.resetLayout = this.resetLayout.bind(this);
     this.saveLayout = this.saveLayout.bind(this);
     this.success = this.success.bind(this);
@@ -30,6 +36,7 @@ class GBXClass extends React.Component {
 		this.addBlock = this.addBlock.bind(this);
 		this.removeBlock = this.removeBlock.bind(this);
 		this.renderBlocks = this.renderBlocks.bind(this);
+		this.getData = this.getData.bind(this);
 
     const layouts = {
       desktop: [],
@@ -38,7 +45,9 @@ class GBXClass extends React.Component {
 
     const givebox = props.kind ? util.getValue(props.article, 'giveboxSettings', {}) : util.getValue(props.article, 'givebox', {});
     const customTemplate = util.getValue(givebox, 'customTemplate', {});
-    const blocks = { ...initLayout, ...customTemplate };
+		const customBlocks = util.getValue(customTemplate, 'blocks', []);
+
+    const blocks = [ ...initBlocks[props.kind], ...customBlocks ];
 
     Object.entries(blocks).forEach(([key, value]) => {
       layouts.desktop.push(value.grid.desktop);
@@ -48,7 +57,7 @@ class GBXClass extends React.Component {
     this.state = {
 			blocks,
 			layouts,
-      kind: util.getValue(this.props.article, 'kind', props.kind),
+			data: {},
       formStyle: {
         maxWidth: '1000px'
       },
@@ -108,7 +117,7 @@ class GBXClass extends React.Component {
 
   toggleOutline() {
 		const showOutline = this.state.showOutline ? false : true;
-		this.setState({ showOutline: showOutline ? false : true })
+		this.setState({ showOutline })
   }
 
   resetLayout() {
@@ -119,53 +128,66 @@ class GBXClass extends React.Component {
     const breakpoint = this.state.breakpoint;
     const blocks = this.state.blocks;
     const breakpointLayout = util.getValue(layouts, breakpoint);
-		console.log('execute', layouts);
     if (breakpointLayout) {
       breakpointLayout.forEach((value) => {
-        const grid = blocks[value.i].grid[breakpoint];
-        grid.x = value.x;
-        grid.y = value.y;
-        grid.w = value.w;
-        grid.h = value.h;
+				const index = blocks.findIndex(b => b.name === value.i);
+				if (index !== -1) {
+					const block = util.getValue(blocks, index);
+					if (!util.isEmpty(block)) {
+						const grid = util.getValue(block, 'grid', {});
+						const gridBreak = util.getValue(grid, breakpoint);
+						if (!util.isEmpty(gridBreak)) {
+			        gridBreak.x = value.x;
+			        gridBreak.y = value.y;
+			        gridBreak.w = value.w;
+			        gridBreak.h = value.h;
+						}
+					}
+				}
       });
       this.setState({ blocks, layouts });
     }
   }
 
   saveLayout() {
-    if (this.props.autoSave) {
-      let id = null;
-      if (util.getValue(this.props.article, 'articleID')) {
-        id = this.props.article.ID;
-      } else {
-        id = util.getValue(this.props.article, 'kindID');
-      }
+		// Need to handle creating new articles
+		const data = this.getData();
+    const id = util.getValue(this.props.article, 'ID', null);
 
-      if (id) {
-        const resource = `org${types.kind(this.state.kind).api.item}`;
-        this.props.sendResource(resource, {
-          id: [id],
-          data: {
-            giveboxSettings: {
-              customTemplate: this.state.blocks
-            }
-          },
-          method: 'patch',
-          callback: (res, err) => {
-            if (this.props.save) this.props.save(this.state.blocks, res, err);
+    if (this.props.autoSave) {
+      this.props.sendResource(this.props.resourceName, {
+        id: id ? [id] : null,
+				orgID: this.props.orgID,
+        data: {
+          giveboxSettings: {
+            customTemplate: {
+							blocks: this.state.blocks
+						}
           }
-        });
-      } else {
-        console.error(`No id`);
-      }
+        },
+        method: id ? 'patch' : 'post',
+        callback: (res, err) => {
+          if (this.props.save) this.props.save(id, data, this.state.blocks, res, err);
+        }
+      });
     } else {
       if (this.props.save) {
-        this.props.save(this.state.blocks);
+        this.props.save(id, data, this.state.blocks);
       } else {
         console.error('Not saved: this.props.save not found');
       }
     }
   }
+
+	getData() {
+		const data = this.state.data;
+		data.giveboxSettings = {
+			customTemplate: {
+				blocks: this.state.blocks
+			}
+		};
+		return data;
+	}
 
   addBlock(block) {
     const blocks = this.state.blocks;
@@ -189,11 +211,23 @@ class GBXClass extends React.Component {
 		} = this.state;
 
     const items = [];
+		const article = this.props.article;
     Object.entries(blocks).forEach(([key, value]) => {
       if (value.grid[breakpoint].enabled) {
+				const fieldValue = util.getValue(article, value.field);
+				const defaultContent = value.defaultFormat && fieldValue ? value.defaultFormat.replace('{{TOKEN}}', fieldValue) : fieldValue;
+
         items.push(
-          <div className={`${showOutline ? 'outline' : ''}`} id={`block-${key}`} key={key} data-grid={value.grid[breakpoint]}>
-						{value.name}
+          <div className={`${showOutline ? 'outline' : ''}`} id={`block-${value.name}`} key={value.name} data-grid={value.grid[breakpoint]}>
+						<Block
+							name={value.name}
+							type={value.type}
+							field={value.field}
+							defaultContent={defaultContent}
+							content={value.content}
+							editable={this.state.editable}
+							overflow={value.overflow}
+						/>
 					</div>
         );
       }
@@ -205,12 +239,22 @@ class GBXClass extends React.Component {
 
 		const {
 			layouts,
-			editable
+			editable,
+			showOutline,
+			formStyle
 		} = this.state;
 
 		return (
-			<div className='gbx3'>
-				<GBLink onClick={this.toggleEditable}>GBX {editable ? 'Turn Off Editing' : 'Turn On Editing'}</GBLink>
+			<div style={formStyle} className='gbx3'>
+				<AdminToolbar
+					toggleEditable={this.toggleEditable}
+					toggleOutline={this.toggleOutline}
+					editable={editable}
+					showOutline={showOutline}
+					resetLayout={this.resetLayout}
+					saveLayout={this.saveLayout}
+					access={this.props.access}
+				/>
         <div
           ref={this.gridRef}
           style={{ marginBottom: 20 }}
@@ -228,6 +272,7 @@ class GBXClass extends React.Component {
         >
           <div className='dragOverText'>Drop Page Element Here</div>
           <ResponsiveGridLayout
+						id='testGrid'
             className="layout"
             layouts={layouts}
             breakpoints={{desktop: 701, mobile: 700 }}
@@ -242,6 +287,7 @@ class GBXClass extends React.Component {
             margin={[0, 0]}
             containerPadding={[0, 0]}
             autoSize={true}
+						draggableHandle={'.dragHandle'}
             draggableCancel={'.modal'}
             verticalCompact={false}
 						preventCollision={true}
@@ -255,26 +301,50 @@ class GBXClass extends React.Component {
 
 }
 
-GBXClass.defaultProps = {
-  breakpointWidth: 701
-}
+class GBX extends React.Component {
 
-function mapStateToProps(state) {
-  return {
-  }
-}
-
-const GBXConnect = connect(mapStateToProps, {
-  sendResource
-})(GBXClass);
-
-export default class GBX extends React.Component {
+	componentDidMount() {
+		if (util.isEmpty(this.props.article) && this.props.kindID) {
+			this.props.getResource(this.props.resourceName, {
+				id: [this.props.kindID],
+				orgID: this.props.orgID
+			});
+		}
+	}
 
   render() {
+
+		if (this.props.kindID && util.isEmpty(this.props.article)) return <Loader msg='Loading article resource...' />
+
     return (
-      <GBXConnect
+      <GBXClass
         {...this.props}
       />
     )
   }
 }
+
+GBX.defaultProps = {
+  breakpointWidth: 701
+}
+
+function mapStateToProps(state, props) {
+
+	const resourceName = `org${types.kind(props.kind).api.item}`;
+  const resource = util.getValue(state.resource, resourceName, {});
+  const isFetching = util.getValue(resource, 'isFetching', false);
+  const article = util.getValue(resource, 'data', {});
+
+  return {
+		resourceName,
+    resource,
+    isFetching,
+    article,
+    access: util.getValue(state.resource, 'access', {})
+  }
+}
+
+export default connect(mapStateToProps, {
+  sendResource,
+	getResource
+})(GBX);

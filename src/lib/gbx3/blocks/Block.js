@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 import {
   util,
-  getResource,
   Loader
 } from '../../';
 import Loadable from 'react-loadable';
 
-class Block extends Component {
+export default class Block extends Component {
 
   constructor(props) {
     super(props);
     this.loadBlock = this.loadBlock.bind(this);
 		this.onChange = this.onChange.bind(this);
 		this.onBlur = this.onBlur.bind(this);
-  }
+		this.onFocus = this.onFocus.bind(this);
+	}
 
   componentDidMount() {
   }
@@ -26,12 +26,15 @@ class Block extends Component {
 		console.log('Block onBlur', name, content);
 	}
 
+	onFocus(name, content) {
+		console.log('Block onFocus', name, content);
+	}
+
   /**
   * Dynamically load block by module path
   * @param {string} element component to load
   */
   loadBlock() {
-
     const Block = Loadable({
       loader: () => import(`./${this.props.type}`),
       loading: () => <></>
@@ -42,6 +45,7 @@ class Block extends Component {
         {...this.props}
 				onChange={this.onChange}
 				onBlur={this.onBlur}
+				onFocus={this.onFocus}
       />
     )
   }
@@ -49,9 +53,9 @@ class Block extends Component {
   render() {
 
     return (
-      <>
+      <div className='block'>
         {this.loadBlock()}
-      </>
+      </div>
     )
   }
 }

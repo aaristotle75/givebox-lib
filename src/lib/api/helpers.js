@@ -32,15 +32,18 @@ export function getResource(resource, opts = {}) {
     customName: null,
     resourcesToLoad: null,
     fullResponse: false,
-    returnData: true
+    returnData: true,
+		orgID: null,
+		userID: null,
+		affiliateID: null
   }
   const options = { ...defaults, ...opts };
   return (dispatch, getState) => {
     let id = options.id;
     let reload = options.reload;
-    const orgID = has(getState().resource, 'orgID') ? getState().resource.orgID : null;
-    const userID = has(getState().resource, 'userID') ? getState().resource.userID : null;
-    const affiliateID = has(getState().resource, 'affiliateID') ? getState().resource.affiliateID : null;
+    const orgID = options.orgID || util.getValue(getState().resource, 'orgID', null);
+    const userID = options.userID || util.getValue(getState().resource, 'userID', null);
+    const affiliateID = options.affiliateID || util.getValue(getState().resource, 'affiliateID', null);
     //const enterpriseID = has(getState().resource, 'enterpriseID') ? getState().resource.enterpriseID : null;
     //const access = has(getState().resource, 'access') ? getState().resource.access : null;
     //console.log('getResource access', access);
@@ -183,14 +186,17 @@ export function sendResource(resource, opts = {}) {
     customName: null,
     multi: false,
     isSending: true,
-    trackActivity: true
+    trackActivity: true,
+		orgID: null,
+		userID: null
   };
   const options = { ...defaults, ...opts };
   return (dispatch, getState) => {
     let id = options.id;
     let method = options.method;
-    const orgID = has(getState().resource, 'orgID') ? getState().resource.orgID : null;
-    const userID = has(getState().resource, 'userID') ? getState().resource.userID : null;
+    const orgID = options.orgID || util.getValue(getState().resource, 'orgID', null);
+    const userID = options.userID || util.getValue(getState().resource, 'userID', null);
+
     const api = giveboxAPI.endpoint(resource, id, { orgID, userID });
 
     // Only dispatch if an api.endpoint exists

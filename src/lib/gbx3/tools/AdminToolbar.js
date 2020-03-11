@@ -31,7 +31,7 @@ export default class AdminToolbar extends Component {
     const rootEl = document.getElementById('gbx-form-root');
 
     return (
-      <Portal id={'gbx-form-portal'} rootEl={rootEl} className={`${editable ? 'editable' : ''}`}>
+      <Portal id={'gbx-form-portal'} rootEl={rootEl} className={`gbx3 ${editable ? 'editable' : ''}`}>
         <Draggable
           allowAnyClick={false}
           handle={'.handle'}

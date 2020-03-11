@@ -2,6 +2,44 @@
 
 .gbx3 {
 
+	/*------ Elements --------*/
+
+	h1, h2, h3, h4 {
+	  margin: 0;
+	  font-weight: 400;
+	}
+
+	h1 {
+	  font-size: 22px;
+	}
+
+	h2 {
+	  font-size: 20px;
+	}
+
+	h3 {
+	  font-size: 18px;
+	}
+
+	h4 {
+	  font-size: 16px;
+	}
+
+	p {
+	  margin: 0;
+	  font-size: 14px;
+	  font-weight: 400;
+	}
+
+	/*------ End Elements ------*/
+
+	.noRecords {
+	  color: $med-blue-gray;
+	  font-size: 14px;
+	}
+
+	/*------- Grid ---------*/
+
 	.react-grid-item {
 	  background: transparent;
 	  z-index: 1;
@@ -12,21 +50,124 @@
 	  border: 2px solid $mainColorLight;
 	}
 
-	.editable {
-	  .react-grid-item {
+	.dragHandle {
+	  cursor: grab;
+	  position: absolute;
+	  top: 0px;
+	  left: 0px;
+		font-size: 22px;
+	  color: $mainColorLight;
+	}
+
+	.dragHandle:hover {
+	  color: $white;
+	  @include default-transition(1s);
+	}
+
+	/*--------- End Grid ---------*/
+
+
+	/*---------- Blocks ------------ */
+	.block {
+
+		.edit-group {
+			position: absolute;
+			top: 0; left: 0; right: 0;
+			width: 100%;
+			margin: 0 auto;
+		}
+	}
+
+	/*---------- End Blocks ------------ */
+
+
+	/*------- Admin Custom Area -----*/
+
+	.adminCustomArea {
+	  position: fixed;
+	  left: 0;
+	  right: 0;
+	  bottom: 0;
+	  background: $dark-blue-gray;
+	  width: 100%;
+	  margin: 0 auto;
+	  z-index: 999999;
+
+	  .logo {
+	    position: absolute;
+	    right: 10px;
+	    top: 5px;
+	    display: flex;
+	    justify-content: center;
+	    align-items: center;
+
+	    .loggedInGroup {
+	      text-align: right;
+	      margin-right: 20px;
+	    }
+
+	    .loggedInAs {
+	      font-size: 10px;
+	      color: $med-blue-gray;
+	      display: block;
+	    }
+
+	    button.link {
+	      color: $white;
+	      font-size: 12px;
+	    }
+
+	    img {
+	      cursor: pointer;
+	      height: 25px;
+	      width: 25px;
+	    }
+	  }
+
+	  .button-group.linkBar {
+	    display: flex;
+	    justify-content: flex-start;
+	    margin: 10px;
+	    margin-left: 50px;
+	  }
+
+	  button.link {
+	    font-size: 14px;
+	    color: $mainColorLight;
+	  }
+
+	  button.link:hover {
+	    color: $white;
+	  }
+
+	  button.link:not(.show) {
+	    visibility: hidden;
+	  }
+
+	  .handle {
 	    cursor: grab;
+	    position: absolute;
+	    top: 12px;
+	    left: 20px;
+	    color: $mainColorLight;
 	  }
 
-	  .react-grid-item:hover {
-	    border: 2px solid $mainColorLight;
-	    background: $mainColor;
+	  .handle:hover {
+	    color: $white;
+	    @include default-transition(1s);
 	  }
 	}
 
-	.noRecords {
-	  color: $med-blue-gray;
-	  font-size: 14px;
+	.adminCustomArea.editable {
+	  button.link {
+	    visibility: visible;
+	  }
 	}
+
+	/*------- End Admin Custom Area -----*/
+
+
+	/*--------- Drop Area ------*/
 
 	.dropArea {
 	  background: transparent;
@@ -52,5 +193,136 @@
 	  }
 	}
 
+	/*-------- End Drop Area ---------*/
+
+
+	/*--------- Modal ---------*/
+
+	.gbxModal {
+	  .modal .modalWrapper {
+	    padding-top: 0px;
+	  }
+
+	  .modalTop,
+	  .modalBottom {
+	    display: none;
+	  }
+
+	  .modalContainer {
+	    padding: 20px 10px;
+	  }
+
+	  .modal .modalContent {
+	    border-radius: 20px;
+	    padding: 20px;
+	  }
+
+	  .modal .RichEditor-root {
+	      padding: 0px;
+	      margin-top: 10px;
+	  }
+
+	}
+	/*------- End Modal ----------*/
+
+
+	/*------ Payment Form ---------*/
+
+	.givebox-paymentform {
+	  padding: 0px 20px;
+	}
+
+	.dropdown button .selected.label {
+	  font-size: $small-text-size;
+	}
+
+	.dropdown-cover {
+	  display: none;
+	}
+
+	.mobileFriendly {
+	  margin: 100px 0;
+	}
+
+	.imageComponent {
+	  flex-direction: row;
+	}
+
+	.creditCard {
+	  .checkmark {
+	    right: 5px;
+	  }
+	}
+
+	.creditCard-group .cardsAccepted {
+	    top: -35px;
+	}
+
+	.column {
+	  display: inline-block;
+	  float: none;
+	}
+
+
+	label, .label {
+	  white-space: nowrap;
+	  font-size: 12px;
+	}
+
+	.cvvModal button.link {
+	}
+
+	.button-group {
+	  button.link,
+	  button.button {
+	    margin: 0 10px;
+	  }
+	}
+
+	button.link {
+	  font-size: 12px;
+	  @include default-transition(.5s);
+	  margin: 0;
+	}
+
+	button.button {
+	  border-radius: 20px;
+	  font-size: 16px;
+	  background-color: transparent;
+	  @include default-transition(.5s);
+	}
+
+	button.button:hover {
+	  background-color: $off-white;
+	}
+
+	button.gbxBtn {
+	  font-weight: 300;
+	  font-size: 16px;
+	  color: $white;
+	  background: $med-blue-gray;
+	  padding: 10px 20px;
+	  border-radius: 20px;
+	  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55);
+	  @include default-transition(.5s);
+	}
+
+	button.gbxBtn:hover {
+	  color: $white;
+	  background: $med-blue-gray;
+	  opacity: .7;
+	  @include default-transition(.5s);
+	}
+
+	/*----- End Payment Form ------*/
+
+
+	/*------- Responsive ---------*/
+
+	@media (max-width: 800px) {
+	  .modalContent:not(.campaignForm) {
+	      width: 100% !important;
+	  }
+	}
 
 }

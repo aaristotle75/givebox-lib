@@ -32,6 +32,10 @@ class GBXTest extends Component {
     }
   }
 
+	save(id, data, blocks) {
+		console.log('execute save', id, data, blocks);
+	}
+
   render() {
 
     if (util.isEmpty(this.props.article)) return <Loader msg='Loading article...' />
@@ -39,8 +43,11 @@ class GBXTest extends Component {
     return (
       <div>
         <GBX
-          article={this.props.article}
-          autoSave={true}
+					orgID={this.props.article.orgID}
+					kindID={this.props.article.kindID}
+					kind={this.props.article.kind}
+          autoSave={false}
+					save={this.save}
           access={util.getAuthorizedAccess(this.props.access, this.props.article.orgID)}
         />
       </div>

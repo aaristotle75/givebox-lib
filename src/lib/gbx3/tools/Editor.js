@@ -7,7 +7,7 @@ import {
 	sendResource
 } from '../../';
 import CKEditor from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import InlineEditor from '@ckeditor/ckeditor5-build-inline';
 import { handleFile } from './util';
 import '../../styles/ckeditor.scss';
 
@@ -25,7 +25,7 @@ class Editor extends Component {
 		this.cleanContent = this.cleanContent.bind(this);
 
     this.state = {
-      content: '',
+      content: this.props.content,
 			loading: false,
 			error: null,
 			errorMsg: 'Error occurred'
@@ -110,7 +110,8 @@ class Editor extends Component {
   }
 
   onFocus(event, editor) {
-    //console.log('focus', editor);
+    let content = editor.getData();
+		if (this.props.onFocus) this.props.onFocus(content);
   }
 
 	cleanContent(contentToOptimize) {
@@ -139,14 +140,13 @@ class Editor extends Component {
 				<Alert alert='error' display={this.state.error} msg={this.state.error} />
         <CKEditor
 					config={this.setConfig()}
-          editor={ ClassicEditor }
+          editor={ InlineEditor }
           data={this.state.content}
           onInit={this.onInit}
           onChange={this.onChange}
           onBlur={this.onBlur}
           onFocus={this.onFocus}
         />
-        <div dangerouslySetInnerHTML={{ __html: this.state.content }} />
       </div>
     )
   }
