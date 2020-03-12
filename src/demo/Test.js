@@ -30,6 +30,10 @@ export default class Test extends Component {
 
   render() {
 
+		const dirty = `<a href='http://buddyteal.com' target="_blank" onClick="alert('hello')">Test link</a>`;
+
+		const clean = util.cleanHtml(dirty);
+
     return (
       <>
         <Editor
@@ -40,6 +44,7 @@ export default class Test extends Component {
 					orgID={185}
 					content='test'
         />
+				<div dangerouslySetInnerHTML={{ __html: clean}} />
       </>
     )
   }

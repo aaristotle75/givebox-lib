@@ -93,7 +93,7 @@ class Editor extends Component {
 	}
 
   onInit(editor) {
-		editor.editing.view.focus();
+		//editor.editing.view.focus();
   }
 
   onBlur(event, editor) {

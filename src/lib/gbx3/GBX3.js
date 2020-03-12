@@ -37,6 +37,11 @@ class GBXClass extends React.Component {
 		this.removeBlock = this.removeBlock.bind(this);
 		this.renderBlocks = this.renderBlocks.bind(this);
 		this.getData = this.getData.bind(this);
+		this.onResizeStart = this.onResizeStart.bind(this);
+		this.onResizeStop = this.onResizeStop.bind(this);
+		this.onDragStart = this.onDragStart.bind(this);
+		this.onDragStop = this.onDragStop.bind(this);
+		this.updateBlock = this.updateBlock.bind(this);
 
     const layouts = {
       desktop: [],
@@ -65,6 +70,7 @@ class GBXClass extends React.Component {
       success: false,
       error: false,
       editable: true,
+			showEditor: true,
       showOutline: false
     }
 
@@ -203,36 +209,77 @@ class GBXClass extends React.Component {
     this.setState({ blocks });
 	}
 
+	updateBlock(name, obj = {}) {
+		const blocks = this.state.blocks;
+		const index = blocks.findIndex(b => b.name === name);
+		if (index !== -1) {
+			blocks[index] = { ...blocks[index], ...obj };
+			console.log(blocks[index], blocks);
+			this.setState({ blocks });
+		}
+	}
+
 	renderBlocks() {
 		const {
 			blocks,
 			breakpoint,
-			showOutline
+			showOutline,
+			editable
 		} = this.state;
 
     const items = [];
 		const article = this.props.article;
+		const showEditor = this.state.showEditor;
     Object.entries(blocks).forEach(([key, value]) => {
       if (value.grid[breakpoint].enabled) {
 				const fieldValue = util.getValue(article, value.field);
-				const defaultContent = value.defaultFormat && fieldValue ? value.defaultFormat.replace('{{TOKEN}}', fieldValue) : fieldValue;
 
         items.push(
-          <div className={`${showOutline ? 'outline' : ''}`} id={`block-${value.name}`} key={value.name} data-grid={value.grid[breakpoint]}>
+          <div
+						className={`${showOutline ? 'outline' : ''}`}
+						id={`block-${value.name}`}
+						key={value.name}
+						data-grid={value.grid[breakpoint]}
+						style={{ overflow: editable ? 'visible' : value.overflow || 'visible', overflowY: 'hidden' }}
+					>
 						<Block
 							name={value.name}
 							type={value.type}
 							field={value.field}
-							defaultContent={defaultContent}
+							fieldValue={fieldValue}
 							content={value.content}
 							editable={this.state.editable}
 							overflow={value.overflow}
+							showEditor={showEditor}
+							defaultFormat={value.defaultFormat}
+							updateBlock={this.updateBlock}
 						/>
+            <div className='dragHandle'><span className='icon icon-move'></span></div>
 					</div>
         );
       }
     });
     return items;
+	}
+
+	onResizeStart() {
+		console.log('execute onResizeStart');
+		this.setState({ showEditor: false })
+	}
+
+	onResizeStop() {
+		console.log('execute onResizeStop');
+		this.setState({ showEditor: true })
+	}
+
+	onDragStart() {
+		console.log('execute onDragStart');
+		this.setState({ showEditor: false })
+	}
+
+	onDragStop() {
+		console.log('execute onDragStop');
+		this.setState({ showEditor: true })
 	}
 
 	render() {
@@ -291,6 +338,10 @@ class GBXClass extends React.Component {
             draggableCancel={'.modal'}
             verticalCompact={false}
 						preventCollision={true}
+						onDragStart={this.onDragStart}
+						onDragStop={this.onDragStop}
+						onResizeStart={this.onResizeStart}
+						onResizeStop={this.onResizeStop}
           >
 						{this.renderBlocks()}
           </ResponsiveGridLayout>

@@ -16,18 +16,20 @@ export default class Block extends Component {
 	}
 
   componentDidMount() {
+		console.log('execute componentDidMount BLOCK');
   }
 
 	onChange(name, content) {
-		console.log('Block onChange', name, content);
+		//console.log('Block onChange', name, content);
 	}
 
 	onBlur(name, content) {
-		console.log('Block onBlur', name, content);
+		//console.log('Block onBlur', name, content);
+		this.props.updateBlock(name, { content });
 	}
 
 	onFocus(name, content) {
-		console.log('Block onFocus', name, content);
+		//console.log('Block onFocus', name, content);
 	}
 
   /**

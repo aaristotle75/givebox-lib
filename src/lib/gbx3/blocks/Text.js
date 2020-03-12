@@ -12,7 +12,10 @@ export default class Text extends Component {
 		this.onBlur = this.onBlur.bind(this);
 		this.onChange = this.onChange.bind(this);
 		this.onFocus = this.onFocus.bind(this);
-		const content = this.props.content || this.props.defaultContent;
+
+		const defaultContent = props.defaultFormat && props.fieldValue ? props.defaultFormat.replace('{{TOKEN}}', props.fieldValue) : `<p>${props.fieldValue}</p>`;
+		const content = this.props.content || defaultContent;
+
     this.state = {
 			content,
 			defaultContent: content,
@@ -21,6 +24,7 @@ export default class Text extends Component {
   }
 
 	componentDidMount() {
+		console.log('execute componentDidMount TEXT');
 	}
 
   onBlur(content) {
@@ -42,7 +46,8 @@ export default class Text extends Component {
 
 		const {
 			editable,
-			overflow
+			overflow,
+			showEditor
 		} = this.props;
 
 		const {
@@ -51,6 +56,8 @@ export default class Text extends Component {
 			content
 		} = this.state;
 
+		const cleanHtml = util.cleanHtml(content);
+
     return (
       <div className='text'>
 				{1===2 && editable ?
@@ -58,7 +65,7 @@ export default class Text extends Component {
 						<GBLink onClick={() => this.setState({ edit: edit ? false : true })}>{edit ? 'Save' : 'Edit'}</GBLink>
 					</div>
 				: <></>}
-				{editable ?
+				{showEditor && editable ?
 	        <Editor
 	          onChange={this.onChange}
 	          onBlur={this.onBlur}
@@ -83,7 +90,7 @@ export default class Text extends Component {
 						}}
 	        />
 				:
-					<div style={{ overflow: overflow || 'hidden' }} dangerouslySetInnerHTML={{ __html: content}} />
+					<div dangerouslySetInnerHTML={{ __html: cleanHtml }} />
 				}
       </div>
     )

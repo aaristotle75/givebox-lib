@@ -50,13 +50,25 @@
 	  border: 2px solid $mainColorLight;
 	}
 
+	.react-grid-item > .react-resizable-handle {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    bottom: 0;
+    right: 0;
+    cursor: se-resize;
+	}
+
 	.dragHandle {
+		display: none;
 	  cursor: grab;
 	  position: absolute;
-	  top: 0px;
-	  left: 0px;
-		font-size: 22px;
-	  color: $mainColorLight;
+		height: 20px;
+		width: 20px;
+	  bottom: -7px;
+	  right: 20px;
+		font-size: 14px;
+	  color: $dark;
 	}
 
 	.dragHandle:hover {
@@ -64,11 +76,24 @@
 	  @include default-transition(1s);
 	}
 
+	.editable {
+
+	  .react-grid-item:hover {
+	    border: 2px solid $mainColorLight;
+	  }
+
+		.dragHandle {
+			display: block;
+		}
+	}
+
 	/*--------- End Grid ---------*/
 
 
 	/*---------- Blocks ------------ */
 	.block {
+
+		display: table;
 
 		.edit-group {
 			position: absolute;
