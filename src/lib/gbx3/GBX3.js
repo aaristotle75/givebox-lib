@@ -15,8 +15,8 @@ import {
 	Loader
 } from '../';
 import AdminToolbar from './tools/AdminToolbar';
-import Block from './blocks/Block';
 import { initBlocks } from './config';
+import Loadable from 'react-loadable';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -37,10 +37,6 @@ class GBXClass extends React.Component {
 		this.removeBlock = this.removeBlock.bind(this);
 		this.renderBlocks = this.renderBlocks.bind(this);
 		this.getData = this.getData.bind(this);
-		this.onResizeStart = this.onResizeStart.bind(this);
-		this.onResizeStop = this.onResizeStop.bind(this);
-		this.onDragStart = this.onDragStart.bind(this);
-		this.onDragStop = this.onDragStop.bind(this);
 		this.updateBlock = this.updateBlock.bind(this);
 
     const layouts = {
@@ -70,11 +66,11 @@ class GBXClass extends React.Component {
       success: false,
       error: false,
       editable: true,
-			showEditor: true,
       showOutline: false
     }
 
     this.gridRef = React.createRef();
+		this.blockRefs = {};
 	}
 
   componentDidMount() {
@@ -219,7 +215,7 @@ class GBXClass extends React.Component {
 		}
 	}
 
-	renderBlocks() {
+	renderBlocks(enabled = true) {
 		const {
 			blocks,
 			breakpoint,
@@ -229,18 +225,19 @@ class GBXClass extends React.Component {
 
     const items = [];
 		const article = this.props.article;
-		const showEditor = this.state.showEditor;
     Object.entries(blocks).forEach(([key, value]) => {
-      if (value.grid[breakpoint].enabled) {
+      if (value.grid[breakpoint].enabled === enabled) {
+			  const Block = Loadable({
+			    loader: () => import(`./blocks/${value.type}`),
+			    loading: () => <></>
+			  });
 				const fieldValue = util.getValue(article, value.field);
-
-        items.push(
-          <div
+	      items.push(
+	        <div
 						className={`${showOutline ? 'outline' : ''}`}
 						id={`block-${value.name}`}
 						key={value.name}
 						data-grid={value.grid[breakpoint]}
-						style={{ overflow: editable ? 'visible' : value.overflow || 'visible', overflowY: 'hidden' }}
 					>
 						<Block
 							name={value.name}
@@ -248,38 +245,17 @@ class GBXClass extends React.Component {
 							field={value.field}
 							fieldValue={fieldValue}
 							content={value.content}
-							editable={this.state.editable}
+							editable={editable}
+							toggleEditable={this.toggleEditable}
 							overflow={value.overflow}
-							showEditor={showEditor}
 							defaultFormat={value.defaultFormat}
 							updateBlock={this.updateBlock}
 						/>
-            <div className='dragHandle'><span className='icon icon-move'></span></div>
 					</div>
-        );
+	      );
       }
     });
     return items;
-	}
-
-	onResizeStart() {
-		console.log('execute onResizeStart');
-		this.setState({ showEditor: false })
-	}
-
-	onResizeStop() {
-		console.log('execute onResizeStop');
-		this.setState({ showEditor: true })
-	}
-
-	onDragStart() {
-		console.log('execute onDragStart');
-		this.setState({ showEditor: false })
-	}
-
-	onDragStop() {
-		console.log('execute onDragStop');
-		this.setState({ showEditor: true })
 	}
 
 	render() {
@@ -294,6 +270,7 @@ class GBXClass extends React.Component {
 		return (
 			<div style={formStyle} className='gbx3'>
 				<AdminToolbar
+					renderBlocks={this.renderBlocks}
 					toggleEditable={this.toggleEditable}
 					toggleOutline={this.toggleOutline}
 					editable={editable}
@@ -338,10 +315,6 @@ class GBXClass extends React.Component {
             draggableCancel={'.modal'}
             verticalCompact={false}
 						preventCollision={true}
-						onDragStart={this.onDragStart}
-						onDragStop={this.onDragStop}
-						onResizeStart={this.onResizeStart}
-						onResizeStop={this.onResizeStop}
           >
 						{this.renderBlocks()}
           </ResponsiveGridLayout>

@@ -4,6 +4,7 @@ import {
 	GBLink
 } from '../../';
 import Editor from '../tools/Editor';
+import { BlockOption } from './Block';
 
 export default class Text extends Component {
 
@@ -11,7 +12,8 @@ export default class Text extends Component {
     super(props);
 		this.onBlur = this.onBlur.bind(this);
 		this.onChange = this.onChange.bind(this);
-		this.onFocus = this.onFocus.bind(this);
+		this.edit = this.edit.bind(this);
+		this.editorInit = this.editorInit.bind(this);
 
 		const defaultContent = props.defaultFormat && props.fieldValue ? props.defaultFormat.replace('{{TOKEN}}', props.fieldValue) : `<p>${props.fieldValue}</p>`;
 		const content = this.props.content || defaultContent;
@@ -21,15 +23,15 @@ export default class Text extends Component {
 			defaultContent: content,
 			edit: false
     };
+		this.editor = null;
   }
 
 	componentDidMount() {
-		console.log('execute componentDidMount TEXT');
 	}
 
   onBlur(content) {
     this.setState({ content });
-    if (this.props.onBlur) this.props.onBlur(this.props.name, content);
+		this.props.updateBlock(this.props.name, { content });
   }
 
   onChange(content) {
@@ -37,17 +39,24 @@ export default class Text extends Component {
     if (this.props.onChange) this.props.onChange(this.props.name, content);
   }
 
-  onFocus(content) {
-		console.log('execute onFocus', this.props.name);
-    if (this.props.onFocus) this.props.onFocus(this.props.name, content);
-  }
+	edit() {
+		this.setState({ edit: true });
+	}
+
+	remove() {
+		console.log('execute remove');
+	}
+
+	editorInit(editor) {
+		this.editor = editor;
+		this.editor.editing.view.focus();
+	}
 
   render() {
 
 		const {
 			editable,
-			overflow,
-			showEditor
+			noRemove
 		} = this.props;
 
 		const {
@@ -59,18 +68,19 @@ export default class Text extends Component {
 		const cleanHtml = util.cleanHtml(content);
 
     return (
-      <div className='text'>
-				{1===2 && editable ?
-					<div className='edit-group'>
-						<GBLink onClick={() => this.setState({ edit: edit ? false : true })}>{edit ? 'Save' : 'Edit'}</GBLink>
-					</div>
-				: <></>}
-				{showEditor && editable ?
+      <div className='block'>
+				<BlockOption
+					edit={edit}
+					noRemove={noRemove}
+					editOnClick={this.edit}
+					removeOnClick={this.remove}
+				/>
+				{edit && editable ?
 	        <Editor
 	          onChange={this.onChange}
 	          onBlur={this.onBlur}
-						onFocus={this.onFocus}
 						content={defaultContent}
+						editorInit={this.editorInit}
 						config={{
 							toolbar: {
 								items: [

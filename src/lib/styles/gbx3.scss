@@ -47,7 +47,7 @@
 	}
 
 	.react-grid-item.outline {
-	  border: 2px solid $mainColorLight;
+	  border: 2px solid $mainColor;
 	}
 
 	.react-grid-item > .react-resizable-handle {
@@ -59,32 +59,45 @@
     cursor: se-resize;
 	}
 
+	.react-grid-item.react-grid-placeholder {
+	    background: $mainColorLight;
+	    opacity: .3;
+	    transition-duration: 100ms;
+	    z-index: 2;
+	    border-radius: 4px;
+	    -webkit-user-select: none;
+	    -moz-user-select: none;
+	    -ms-user-select: none;
+	    -o-user-select: none;
+	    user-select: none;
+	}
+
 	.dragHandle {
 		display: none;
 	  cursor: grab;
-	  position: absolute;
-		height: 20px;
-		width: 20px;
-	  bottom: -7px;
-	  right: 20px;
-		font-size: 14px;
-	  color: $dark;
+		z-index: 3;
 	}
 
 	.dragHandle:hover {
-	  color: $white;
 	  @include default-transition(1s);
 	}
 
 	.editable {
 
 	  .react-grid-item:hover {
-	    border: 2px solid $mainColorLight;
-	  }
+	    border: 2px solid $mainColor;
 
-		.dragHandle {
-			display: block;
+	    .blockOptions {
+	      display: flex;
+	      justify-content: center;
+	      align-items: center;
+	    }
+
+			.dragHandle {
+				display: block;
+			}
 		}
+
 	}
 
 	/*--------- End Grid ---------*/
@@ -92,8 +105,10 @@
 
 	/*---------- Blocks ------------ */
 	.block {
-
-		display: table;
+	  position: absolute;
+	  top: 0; bottom: 0; right: 0; left: 0;
+	  height: 100%;
+	  width: 100%;
 
 		.edit-group {
 			position: absolute;
@@ -101,6 +116,54 @@
 			width: 100%;
 			margin: 0 auto;
 		}
+	}
+
+	.blockOptions {
+	  display: none;
+	  position: absolute;
+	  top: 5%; bottom: 5%; right: 5%; left: 5%;
+	  height: 90%;
+	  width: 90%;
+	  color: $white;
+	  background: transparentize($mainColor, .3);
+	  z-index: 2;
+	}
+
+	button.blockRemove {
+	  background: transparent;
+	  position: absolute;
+	  top: 0px;
+	  right: 2px;
+		color: $white;
+
+	  .icon {
+			color: $white;
+	    font-size: 16px;
+	  }
+	}
+	button.blockRemove:hover {
+	  .icon {
+	    color: $mainColorLight;
+	  }
+	}
+
+	.blockEdit {
+	  display: flex;
+	  align-items: center;
+	  background: transparent;
+	  color: $white;
+	  font-size: 14px;
+	  font-weight: 400;
+		margin: 0 5px;
+	  .icon {
+	    display: inline-block;
+	    font-size: 20px;
+	    margin-right: 5px;
+	  }
+	}
+
+	.blockEdit:hover {
+	  color: $mainColorLight
 	}
 
 	/*---------- End Blocks ------------ */

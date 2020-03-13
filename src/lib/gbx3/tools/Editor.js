@@ -8,6 +8,7 @@ import {
 } from '../../';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import InlineEditor from '@ckeditor/ckeditor5-build-inline';
+//import ClassicEditor from '@ckeditor/ckeditor5-build-inline';
 import { handleFile } from './util';
 import '../../styles/ckeditor.scss';
 
@@ -94,6 +95,7 @@ class Editor extends Component {
 
   onInit(editor) {
 		//editor.editing.view.focus();
+		if (this.props.editorInit) this.props.editorInit(editor);
   }
 
   onBlur(event, editor) {

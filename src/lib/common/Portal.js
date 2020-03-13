@@ -10,7 +10,7 @@ export default class Portal extends Component {
     if (props.className) {
 			const array = props.className.split(' ');
 			array.forEach((value) => {
-				this.el.classList.add(value);
+				if (value) this.el.classList.add(value);
 			});
 		}
   }

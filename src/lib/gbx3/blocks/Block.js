@@ -1,63 +1,16 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   util,
-  Loader
+	GBLink
 } from '../../';
-import Loadable from 'react-loadable';
 
-export default class Block extends Component {
 
-  constructor(props) {
-    super(props);
-    this.loadBlock = this.loadBlock.bind(this);
-		this.onChange = this.onChange.bind(this);
-		this.onBlur = this.onBlur.bind(this);
-		this.onFocus = this.onFocus.bind(this);
-	}
-
-  componentDidMount() {
-		console.log('execute componentDidMount BLOCK');
-  }
-
-	onChange(name, content) {
-		//console.log('Block onChange', name, content);
-	}
-
-	onBlur(name, content) {
-		//console.log('Block onBlur', name, content);
-		this.props.updateBlock(name, { content });
-	}
-
-	onFocus(name, content) {
-		//console.log('Block onFocus', name, content);
-	}
-
-  /**
-  * Dynamically load block by module path
-  * @param {string} element component to load
-  */
-  loadBlock() {
-    const Block = Loadable({
-      loader: () => import(`./${this.props.type}`),
-      loading: () => <></>
-    });
-
-    return (
-      <Block
-        {...this.props}
-				onChange={this.onChange}
-				onBlur={this.onBlur}
-				onFocus={this.onFocus}
-      />
-    )
-  }
-
-  render() {
-
-    return (
-      <div className='block'>
-        {this.loadBlock()}
-      </div>
-    )
-  }
+export const BlockOption = ({ edit, editOnClick, removeOnClick, noRemove }) => {
+	return (
+		<div className={`blockOptions ${edit ? 'displayNone' : ''}`}>
+      <GBLink className='blockEdit' onClick={editOnClick}><span className='icon icon-edit'></span>Edit</GBLink>
+			<div className='dragHandle blockEdit'><span className='icon icon-move'></span></div>
+      {!noRemove ? <GBLink className='link blockRemove' onClick={removeOnClick}><span className='icon icon-x'></span></GBLink> : ''}
+		</div>
+	)
 }

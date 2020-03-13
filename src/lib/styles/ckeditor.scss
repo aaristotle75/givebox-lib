@@ -29,6 +29,10 @@
     border: 1px solid transparent;
 }
 
+.ck-content {
+	position: fixed;
+}
+
 .ck-content ul {
 	list-style-type: disc;
 }
@@ -312,6 +316,7 @@
     padding: 0;
     border-radius: 0;
 }
+
 @media print {
     /* ckeditor5-page-break/theme/pagebreak.css */
     .ck-content .page-break {
