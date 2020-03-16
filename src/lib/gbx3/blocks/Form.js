@@ -29,7 +29,7 @@ export default class Form extends Component {
       article
     } = this.props;
 
-    const settings = util.getValue(article, 'givebox', {});
+    const settings = util.getValue(article, 'giveboxSettings', {});
     const color = util.getValue(settings, 'primaryColor');
 
     return (

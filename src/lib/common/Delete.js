@@ -53,6 +53,7 @@ class Delete extends Component {
   }
 
   confirm() {
+		console.log('execute confirm delete');
     if (this.props.showLoader === 'yes') this.setState({loading: true });
     this.props.sendResource(
       this.props.resource, {
@@ -61,6 +62,7 @@ class Delete extends Component {
         data: {
           activityDesc: this.props.desc
         },
+        sendData: false,
         callback: this.confirmCallback,
         resourcesToLoad: this.props.resourcesToLoad || null
       });

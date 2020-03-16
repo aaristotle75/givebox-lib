@@ -10,6 +10,7 @@ import {
   sendResource,
 	getResource,
 	resourceProp,
+	setCustomProp,
   types,
   Alert,
 	Loader
@@ -243,13 +244,14 @@ class GBXClass extends React.Component {
 							name={value.name}
 							type={value.type}
 							field={value.field}
-							fieldValue={fieldValue}
 							content={value.content}
-							editable={editable}
-							toggleEditable={this.toggleEditable}
 							overflow={value.overflow}
 							defaultFormat={value.defaultFormat}
+							fieldValue={fieldValue}
+							editable={editable}
+							toggleEditable={this.toggleEditable}
 							updateBlock={this.updateBlock}
+							article={this.props.article}
 						/>
 					</div>
 	      );
@@ -331,7 +333,14 @@ class GBX extends React.Component {
 		if (util.isEmpty(this.props.article) && this.props.kindID) {
 			this.props.getResource(this.props.resourceName, {
 				id: [this.props.kindID],
-				orgID: this.props.orgID
+				orgID: this.props.orgID,
+				callback: (res, err) => {
+					if (!err && !util.isEmpty(res)) {
+						const settings = util.getValue(res, 'giveboxSettings', {});
+						const color = util.getValue(settings, 'primaryColor', '#4775f8');
+				    this.props.setCustomProp('primaryColor', color);
+					}
+				}
 			});
 		}
 	}
@@ -370,5 +379,6 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
   sendResource,
-	getResource
+	getResource,
+	setCustomProp
 })(GBX);

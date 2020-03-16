@@ -1,3 +1,5 @@
+@import 'variables.scss';
+
 /*
  * CKEditor 5 (v16.0.0) content styles.
  * Generated on Thu, 13 Feb 2020 14:40:38 GMT.
@@ -14,6 +16,7 @@
     --ck-image-style-spacing: 1.5em;
     --ck-todo-list-checkmark-size: 16px;
 }
+
 
 .ck.ck-editor__editable_inline>:last-child {
     margin-bottom: 0;

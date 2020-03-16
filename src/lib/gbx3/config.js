@@ -3,6 +3,10 @@
 		name: 'logo',
 		type: 'Media',
 		field: 'orgImageURL',
+		defaultFormat: {
+			maxSize: '55px',
+			size: 'small',
+		},
 		grid: {
 	    desktop: { i: 'logo', x: 0, y: 0, w: 1, h: 4, enabled: true },
 	    mobile: { i: 'logo', x: 0, y: 0, w: 1, h: 4, enabled: true }
@@ -32,6 +36,17 @@
 		name: 'media',
 		type: 'Media',
 		field: 'imageURL',
+		defaultFormat: {
+			imgStyle: {
+	      display: 'inline-block',
+	      borderRadius: '20px',
+	      maxWidth: '300px',
+	      maxHeight: '300px',
+	      height: 'auto'
+			},
+			maxSize: '360px',
+			size: 'medium'
+		},
 		grid: {
 	    desktop: { i: 'media', x: 6, y: 0, w: 6, h: 20, enabled: true },
 	    mobile: { i: 'media', x: 0, y: 2, w: 6, h: 20, enabled: true }

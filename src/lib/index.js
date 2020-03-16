@@ -8,6 +8,8 @@ import CalendarField from './form/CalendarField';
 import CalendarRange from './form/CalendarRange';
 import Checkbox from './form/Checkbox';
 import WhereField from './form/WhereField';
+import Upload from './form/Upload';
+import UploadLibrary from './form/UploadLibrary';
 import UploadPrivate from './form/UploadPrivate';
 import * as _v from './form/formValidate';
 import * as selectOptions from './form/selectOptions';
@@ -97,6 +99,8 @@ export {
   CalendarField,
   CalendarRange,
   Checkbox,
+	Upload,
+	UploadLibrary,
   UploadPrivate,
   WhereField,
 

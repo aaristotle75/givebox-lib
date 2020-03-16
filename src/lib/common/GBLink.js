@@ -47,10 +47,11 @@ class GBLink extends Component {
 			style,
 			primaryColor,
 			disabled,
-			ripple
+			ripple,
+			disallowCustom
 		} = this.props;
 
-		const color = primaryColor ? { color: primaryColor } : {};
+		const color = !disallowCustom && primaryColor ? { color: primaryColor } : {};
 		const mergeStyle = {...color,  ...style, ...this.state.hoverStyle };
 
 		return (
@@ -65,7 +66,8 @@ GBLink.defaultProps = {
 	primaryColor: '',
 	style: {},
 	disabled: false,
-	ripple: false
+	ripple: false,
+	disallowCustom: false
 }
 
 function mapStateToProps(state, props) {
@@ -73,10 +75,26 @@ function mapStateToProps(state, props) {
 	const custom = util.getValue(state, 'custom', {});
 	const primaryColor = util.getValue(custom, 'primaryColor');
 	const rgb = primaryColor ? util.hexToRgb(primaryColor) : '';
+	let rgbColor = null;
+	if (rgb) {
+		rgbColor = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .7)`;
+	}
+
+	const className = props.className || '';
+	const hoverStyle = rgb && !props.disallowCustom ? { color: rgbColor } : {};
+	const style = { ...props.style };
+
+
+	if (className.includes('button') && !props.disallowCustom ) {
+		hoverStyle.backgroundColor = rgbColor;
+		hoverStyle.color = '#ffffff';
+		style.border = `1px solid ${rgbColor}`;
+	}
 
   return {
 		primaryColor,
-		hoverStyle: rgb ? { color: `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .7)` } : null
+		hoverStyle,
+		style
   }
 }
 

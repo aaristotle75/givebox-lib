@@ -38,6 +38,7 @@ class UploadLibrary extends Component {
     this.readFile = this.readFile.bind(this);
     this.setLoading = this.setLoading.bind(this);
     this.setPreview = this.setPreview.bind(this);
+		this.closeModalAndCancel = this.closeModalAndCancel.bind(this);
     this.state = {
       image: this.props.image || '',
       preview: this.props.preview || '',
@@ -181,6 +182,12 @@ class UploadLibrary extends Component {
     console.log('rejected');
   }
 
+	closeModalAndCancel() {
+		const modalID = this.props.modalID;
+		if (this.props.closeModalAndSave && !this.props.closeModalAndCancel) this.props.closeModalAndSave(modalID, false);
+		if (this.props.closeModalAndCancel) this.props.closeModalAndCancel(modalID, false);
+	}
+
   listSelected() {
     const items = [];
     if (this.state.preview) {
@@ -267,12 +274,12 @@ class UploadLibrary extends Component {
     );
   }
 
-
   render() {
 
     const {
       isFetching,
-      library
+      library,
+			modalID
     } = this.props;
 
     const mimes = types.mime.image + ',' + types.mime.text + ',' + types.mime.applications;
@@ -330,8 +337,8 @@ class UploadLibrary extends Component {
         </div>
         {!this.state.editor ?
         <div className='center button-group'>
-          <GBLink className='link' onClick={() => this.props.closeModalAndSave('uploadLibrary', false)}>Cancel</GBLink>
-          <GBLink style={{ width: '150px' }} className='button' onClick={() => this.props.closeModalAndSave('uploadLibrary')}>Save</GBLink>
+          <GBLink className='link' onClick={() => this.closeModalAndCancel()}>Cancel</GBLink>
+          <GBLink style={{ width: '150px' }} className='button' onClick={() => this.props.closeModalAndSave(modalID)}>Save</GBLink>
         </div>
         : ''}
       </div>
@@ -340,7 +347,8 @@ class UploadLibrary extends Component {
 }
 
 UploadLibrary.defaultProps = {
-  selectedLabel: 'Selected Photo'
+  selectedLabel: 'Selected Photo',
+	modalID: 'uploadLibrary'
 }
 
 function mapStateToProps(state, props) {
