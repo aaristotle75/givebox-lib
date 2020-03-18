@@ -233,12 +233,14 @@ class GBXClass extends React.Component {
 			    loading: () => <></>
 			  });
 				const fieldValue = util.getValue(article, value.field);
+				const ref = React.createRef();
 	      items.push(
 	        <div
 						className={`${showOutline ? 'outline' : ''}`}
 						id={`block-${value.name}`}
 						key={value.name}
 						data-grid={value.grid[breakpoint]}
+						ref={ref}
 					>
 						<Block
 							name={value.name}
@@ -252,6 +254,7 @@ class GBXClass extends React.Component {
 							toggleEditable={this.toggleEditable}
 							updateBlock={this.updateBlock}
 							article={this.props.article}
+							blockRef={ref}
 						/>
 					</div>
 	      );

@@ -8,6 +8,8 @@ import CalendarField from './form/CalendarField';
 import CalendarRange from './form/CalendarRange';
 import Checkbox from './form/Checkbox';
 import WhereField from './form/WhereField';
+import Upload from './form/Upload';
+import UploadLibrary from './form/UploadLibrary';
 import UploadPrivate from './form/UploadPrivate';
 import * as _v from './form/formValidate';
 import * as selectOptions from './form/selectOptions';
@@ -57,7 +59,7 @@ import HelpDeskButton from './helpdesk/HelpDeskButton'; // GBX
 
 import CustomTemplate from './gbx/CustomTemplate';
 export { // Form
-Form, _v, selectOptions, Select, TextField, Dropdown, RichTextField, Choice, CalendarField, CalendarRange, Checkbox, UploadPrivate, WhereField // actions
+Form, _v, selectOptions, Select, TextField, Dropdown, RichTextField, Choice, CalendarField, CalendarRange, Checkbox, Upload, UploadLibrary, UploadPrivate, WhereField // actions
 , toggleModal, removeResource, resourceProp, getAPI, sendAPI, setAppRef, setModalRef, setProp, setPrefs, setCustomProp // API
 , giveboxAPI, getResource, reloadResource, sendResource, savePrefs // reducers
 , app, resource, send, modal, preferences, custom // Modal

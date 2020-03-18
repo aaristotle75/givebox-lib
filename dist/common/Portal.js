@@ -5,7 +5,13 @@ export default class Portal extends Component {
     super(props);
     this.el = document.createElement('div');
     this.el.setAttribute('id', this.props.id);
-    if (props.className) this.el.classList.add(props.className);
+
+    if (props.className) {
+      const array = props.className.split(' ');
+      array.forEach(value => {
+        if (value) this.el.classList.add(value);
+      });
+    }
   }
 
   componentDidMount() {

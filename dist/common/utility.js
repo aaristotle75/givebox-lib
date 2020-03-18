@@ -3,6 +3,7 @@ import Moment from 'moment-timezone';
 import has from 'has';
 import animateScrollTo from 'animated-scroll-to';
 import ModalLink from '../modal/ModalLink';
+import sanitizeHtml from 'sanitize-html';
 export const imageUrlWithStyle = function (imageURL, style) {
   if (imageURL) {
     return imageURL.replace(/original$/i, style);
@@ -10,6 +11,28 @@ export const imageUrlWithStyle = function (imageURL, style) {
     return;
   }
 };
+export function cleanHtml(html, opts = {}) {
+  const defaultOptions = {
+    allowedTags: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul', 'ol', 'nl', 'li', 'b', 'i', 'strong', 'em', 'strike', 'code', 'hr', 'br', 'div', 'table', 'thead', 'caption', 'tbody', 'tr', 'th', 'td', 'pre', 'iframe', 'img', 'span', 'u'],
+    disallowedTagsMode: 'discard',
+    allowedAttributes: {
+      a: ['href', 'name', 'target'],
+      img: ['src', 'width', 'height', 'alt'],
+      '*': ['align', 'style']
+    },
+    // Lots of these won't come up by default because we don't allow them
+    selfClosing: ['img', 'br', 'hr', 'area', 'base', 'basefont', 'input', 'link', 'meta'],
+    // URL schemes we permit
+    allowedSchemes: ['http', 'https', 'mailto'],
+    allowedSchemesByTag: {},
+    allowedSchemesAppliedToAttributes: ['href', 'src', 'cite'],
+    allowProtocolRelative: true
+  };
+  const options = { ...defaultOptions,
+    ...opts
+  };
+  return sanitizeHtml(html, options);
+}
 export function groupBy(list, keyGetter) {
   const map = new Map();
   list.forEach(item => {

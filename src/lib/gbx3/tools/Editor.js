@@ -4,11 +4,14 @@ import {
   util,
 	Loader,
 	Alert,
-	sendResource
+	sendResource,
+	UploadLibrary,
+	ModalRoute,
+	toggleModal
 } from '../../';
 import CKEditor from '@ckeditor/ckeditor5-react';
-import InlineEditor from '@ckeditor/ckeditor5-build-inline';
-//import ClassicEditor from '@ckeditor/ckeditor5-build-inline';
+// import InlineEditor from '@ckeditor/ckeditor5-build-inline';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { handleFile } from './util';
 import '../../styles/ckeditor.scss';
 
@@ -45,6 +48,9 @@ class Editor extends Component {
 
 	setConfig() {
 		const defaultConfig = {
+			toolbar: {
+				viewportTopOffset: 50
+			},
 			mediaEmbed: {
 				previewsInData: true
 			},
@@ -95,6 +101,10 @@ class Editor extends Component {
 
   onInit(editor) {
 		//editor.editing.view.focus();
+		editor.editing.view.change( writer => {
+		    writer.setStyle( 'height', `${this.props.height}px`, editor.editing.view.document.getRoot() );
+		    writer.setStyle( 'width', `${this.props.width}px`, editor.editing.view.document.getRoot() );
+		});
 		if (this.props.editorInit) this.props.editorInit(editor);
   }
 
@@ -142,7 +152,7 @@ class Editor extends Component {
 				<Alert alert='error' display={this.state.error} msg={this.state.error} />
         <CKEditor
 					config={this.setConfig()}
-          editor={ InlineEditor }
+          editor={ ClassicEditor }
           data={this.state.content}
           onInit={this.onInit}
           onChange={this.onChange}

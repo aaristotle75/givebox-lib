@@ -24,12 +24,21 @@ export default class Text extends Component {
 			edit: false
     };
 		this.editor = null;
+		this.blockRef = null;
+		this.width = null;
+		this.height = null;
   }
 
 	componentDidMount() {
+		this.blockRef = this.props.blockRef.current;
+		if (this.blockRef) {
+			this.width = this.blockRef.clientWidth;
+			this.height = this.blockRef.clientHeight;
+		}
 	}
 
   onBlur(content) {
+		console.log('execute onBlur');
     this.setState({ content });
 		this.props.updateBlock(this.props.name, { content });
   }
@@ -81,6 +90,8 @@ export default class Text extends Component {
 	          onBlur={this.onBlur}
 						content={defaultContent}
 						editorInit={this.editorInit}
+						width={this.width}
+						height={this.height}
 						config={{
 							toolbar: {
 								items: [

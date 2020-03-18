@@ -30,7 +30,7 @@ export default class Test extends Component {
 
   render() {
 
-		const dirty = `<a href='http://buddyteal.com' target="_blank" onClick="alert('hello')">Test link</a>`;
+		const dirty = `test																			test`;
 
 		const clean = util.cleanHtml(dirty);
 
@@ -42,7 +42,7 @@ export default class Test extends Component {
           onChange={this.onChange}
           onBlur={this.onBlur}
 					orgID={185}
-					content='test'
+					content={dirty}
         />
 				<div dangerouslySetInnerHTML={{ __html: clean}} />
       </>

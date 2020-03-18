@@ -24,8 +24,15 @@ class Media extends Component {
 		this.handleSaveCallback = this.handleSaveCallback.bind(this);
 		this.closeModalAndSave = this.closeModalAndSave.bind(this);
 		this.closeModalAndCancel = this.closeModalAndCancel.bind(this);
+		this.openMediaLibrary = this.openMediaLibrary.bind(this);
 
-		const defaultContent = props.fieldValue;
+		this.blockRef = this.props.blockRef.current;
+		if (this.blockRef) {
+			this.width = this.blockRef.clientWidth;
+			this.height = this.blockRef.clientHeight;
+		}
+
+		const defaultContent = `<img src="${util.imageUrlWithStyle(props.fieldValue, 'medium')}" alt="${props.name}" height="${this.height}" width="${this.width}" />`;
 		const content = this.props.content || defaultContent;
 
     this.state = {
@@ -34,13 +41,15 @@ class Media extends Component {
 			edit: false
     };
 		this.editor = null;
+		this.uploadedUrl = null;
   }
 
 	componentDidMount() {
 	}
 
   onBlur(content) {
-    this.setState({ content });
+		console.log('execute onBlur');
+    //this.setState({ content });
 		//this.props.updateBlock(this.props.name, { content });
   }
 
@@ -50,7 +59,7 @@ class Media extends Component {
   }
 
 	edit() {
-		this.props.toggleModal(this.props.modalID, true, { closeCallback: this.closeModalAndSave} );
+		//this.props.toggleModal(this.props.modalID, true, { closeCallback: this.closeModalAndSave} );
 		this.setState({ edit: true });
 	}
 
@@ -63,10 +72,6 @@ class Media extends Component {
 		this.editor.editing.view.focus();
 	}
 
-	handleSaveCallback(url, callback = null) {
-		this.setState({ content: url });
-	}
-
 	closeModalAndSave() {
 		this.props.toggleModal(this.props.modalID, false);
 		this.setState({ edit: false });
@@ -77,12 +82,28 @@ class Media extends Component {
 		this.setState({ content: this.state.defaultContent, edit: false });
 	}
 
+	handleSaveCallback(url, callback = null) {
+		console.log('execute', this.editor);
+		this.editor.model.change( writer => {
+		    const imageElement = writer.createElement( 'image', {
+		        src: url
+		    } );
+
+		    // Insert the image in the current selection location.
+		    this.editor.model.insertContent( imageElement, this.editor.model.document.selection );
+		});
+		this.props.toggleModal(this.props.modalID, false);
+	}
+
+	openMediaLibrary(editor) {
+		this.props.toggleModal(this.props.modalID, true);
+	}
+
   render() {
 
 		const {
 			editable,
 			noRemove,
-			defaultFormat,
 			article,
 			modalID
 		} = this.props;
@@ -93,14 +114,8 @@ class Media extends Component {
 			content
 		} = this.state;
 
-
+		const cleanHtml = util.cleanHtml(content);
 		const articleID = util.getValue(article, 'articleID', null);
-    const defaultStyle = {
-      borderRadius: '15%',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center'
-    	, ...util.getValue(defaultFormat, 'imgStyle', {}) };
 
 		const library = {
 			type: 'article',
@@ -108,8 +123,15 @@ class Media extends Component {
 			articleID: articleID
 		}
 
+		console.log('execute', content, defaultContent, cleanHtml);
     return (
       <div className='block'>
+				<BlockOption
+					edit={edit}
+					noRemove={noRemove}
+					editOnClick={this.edit}
+					removeOnClick={this.remove}
+				/>
         <ModalRoute id={modalID} component={() =>
           <UploadLibrary
             image={content}
@@ -123,13 +145,29 @@ class Media extends Component {
 						closeModalAndCancel={this.closeModalAndCancel}
           />}
 				/>
-				<BlockOption
-					edit={edit}
-					noRemove={noRemove}
-					editOnClick={this.edit}
-					removeOnClick={this.remove}
-				/>
-				<Image imgStyle={defaultStyle} url={content} maxSize={util.getValue(defaultFormat, 'maxSize', '55px')} />
+				{edit && editable ?
+	        <Editor
+	          onChange={this.onChange}
+	          onBlur={this.onBlur}
+						content={defaultContent}
+						editorInit={this.editorInit}
+						width={this.width}
+						height={this.height}
+						config={{
+							toolbar: {
+								items: [
+									'mediaLibrary',
+									'mediaEmbed'
+								]
+							},
+							mediaLibrary: {
+								openMediaLibrary: this.openMediaLibrary
+							}
+						}}
+	        />
+				:
+					<div dangerouslySetInnerHTML={{ __html: cleanHtml }} />
+				}
       </div>
     )
   }

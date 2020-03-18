@@ -48,8 +48,8 @@
 			size: 'medium'
 		},
 		grid: {
-	    desktop: { i: 'media', x: 6, y: 0, w: 6, h: 20, enabled: true },
-	    mobile: { i: 'media', x: 0, y: 2, w: 6, h: 20, enabled: true }
+	    desktop: { i: 'media', x: 6, y: 0, w: 4, h: 20, enabled: true },
+	    mobile: { i: 'media', x: 0, y: 2, w: 4, h: 20, enabled: true }
   	}
 	},
 	{
