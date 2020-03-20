@@ -8,21 +8,18 @@ import {
 	UploadLibrary,
 	ModalRoute,
 	toggleModal
-} from '../../';
-import CKEditor from '@ckeditor/ckeditor5-react';
-import InlineEditor from '@ckeditor/ckeditor5-build-inline';
-// import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { handleFile } from './util';
-import '../../styles/ckeditor.scss';
+} from '../';
+import CKEditor from 'ckeditor4-react';
 
-class Editor extends Component {
+CKEditor.editorUrl = 'https://cdn.ckeditor.com/4.14.0/full-all/ckeditor.js';
+
+class CustomCKEditor4 extends Component {
 
   constructor(props) {
     super(props);
     this.onBlur = this.onBlur.bind(this);
     this.onChange = this.onChange.bind(this);
     this.onFocus = this.onFocus.bind(this);
-    this.onInit = this.onInit.bind(this);
 		this.setConfig = this.setConfig.bind(this);
 		this.addImageToMediaLibrary = this.addImageToMediaLibrary.bind(this);
 		this.uploadError = this.uploadError.bind(this);
@@ -48,25 +45,43 @@ class Editor extends Component {
 
 	setConfig() {
 		const defaultConfig = {
-			toolbar: {
-				viewportTopOffset: 50
-			},
-			mediaEmbed: {
-				previewsInData: true
-			},
-			giveboxUpload: {
-				callback: (file) => {
-					this.setState({ loading: true });
-					const p = new Promise((resolve, reject) => {
-						this.url = null;
-						handleFile(file, (url, error) => {
-							this.addImageToMediaLibrary(url, resolve);
-						});
-					})
-					return p;
-				},
-				uploadError: this.uploadError
-			}
+      extraPlugins: 'autoembed,balloontoolbar,image2,uploadimage',
+			toolbarGroups: [
+					{ name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
+					{ name: 'forms', groups: [ 'forms' ] },
+					{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+					{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
+					{ name: 'links', groups: [ 'links' ] },
+					{ name: 'insert', groups: [ 'insert' ] },
+					{ name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
+					{ name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
+					'/',
+					{ name: 'styles', groups: [ 'styles' ] },
+					{ name: 'colors', groups: [ 'colors' ] },
+					{ name: 'tools', groups: [ 'tools' ] },
+					{ name: 'others', groups: [ 'others' ] },
+					{ name: 'about', groups: [ 'about' ] }
+			],
+			removeButtons: 'Save,NewPage,Preview,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Find,Replace,SelectAll,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Strike,Subscript,Superscript,CopyFormatting,RemoveFormat,Outdent,Indent,Blockquote,CreateDiv,JustifyBlock,Language,BidiRtl,BidiLtr,Flash,Smiley,PageBreak,Iframe,About,Styles,SpecialChar',
+			image_previewText: ' ',
+      image2_disableResizer: true,
+			on: {
+        instanceReady: function(evt) {
+          var editor = evt.editor;
+
+          // Register custom context for image widgets on the fly.
+          editor.balloonToolbars.create({
+            buttons: 'Link,Unlink,Image',
+            widgets: 'image'
+          });
+
+					editor.on('fileUploadRequest', function(evt) {
+						console.log('execute on fileUploadRequest', evt);
+						evt.stop();
+					});
+        }
+      },
+			height: 500
 		}
 		const config = { ...defaultConfig, ...this.props.config };
 		return config;
@@ -99,30 +114,21 @@ class Editor extends Component {
 		}, 4000);
 	}
 
-  onInit(editor) {
-		//editor.editing.view.focus();
-		editor.editing.view.change( writer => {
-		    writer.setStyle( 'height', `${this.props.height}`, editor.editing.view.document.getRoot() );
-		    writer.setStyle( 'width', `${this.props.width}`, editor.editing.view.document.getRoot() );
-		});
-		if (this.props.editorInit) this.props.editorInit(editor);
-  }
-
-  onBlur(event, editor) {
-    let content = editor.getData();
+  onBlur(e) {
+    let content = e.editor.getData();
 		content = this.cleanContent(content);
     this.setState({ content});
 		if (this.props.onBlur) this.props.onBlur(content);
   }
 
-  onChange(event, editor) {
-    let content = editor.getData();
+  onChange(e) {
+    let content = e.editor.getData();
     this.setState({ content });
 		if (this.props.onChange) this.props.onChange(content);
   }
 
-  onFocus(event, editor) {
-    let content = editor.getData();
+  onFocus(e) {
+    let content = e.editor.getData();
 		if (this.props.onFocus) this.props.onFocus(content);
   }
 
@@ -152,9 +158,7 @@ class Editor extends Component {
 				<Alert alert='error' display={this.state.error} msg={this.state.error} />
         <CKEditor
 					config={this.setConfig()}
-          editor={ InlineEditor }
           data={this.state.content}
-          onInit={this.onInit}
           onChange={this.onChange}
           onBlur={this.onBlur}
           onFocus={this.onFocus}
@@ -164,7 +168,7 @@ class Editor extends Component {
   }
 }
 
-Editor.defaultProps = {
+CustomCKEditor4.defaultProps = {
 	config: {},
 	ownerType: 'organization',
 	height: 'auto',
@@ -181,4 +185,4 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
   sendResource
-})(Editor);
+})(CustomCKEditor4);

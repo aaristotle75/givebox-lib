@@ -1,9 +1,17 @@
+/* eslint-disable */
+
 import React, { Component } from 'react';
 import {
   util,
   RichTextField
 } from '../lib';
-import Editor from '../lib/gbx3/tools/Editor';
+import CustomCKEditor from '../lib/editor/CustomCKEditor';
+import CustomDraft from '../lib/editor/CustomDraft';
+import CustomCKEditor4 from '../lib/editor/CustomCKEditor4';
+import '../lib/styles/gbx3.scss';
+const emailTemplate = require('html-loader!../lib/editor/emailTemplate.html');
+const content = require('html-loader!../lib/editor/templateContent.html');
+const footer = require('html-loader!../lib/editor/templateFooter.html');
 
 export default class Test extends Component {
 
@@ -11,7 +19,6 @@ export default class Test extends Component {
     super(props);
     this.onBlur = this.onBlur.bind(this);
     this.onChange = this.onChange.bind(this);
-    const content = `<h3>Test editor</h3>`;
 
     this.state = {
       content
@@ -19,7 +26,7 @@ export default class Test extends Component {
   }
 
   onBlur(content) {
-    console.log('execute onBlur', content);
+    //console.log('execute onBlur', content);
     this.setState({ content });
   }
 
@@ -28,24 +35,49 @@ export default class Test extends Component {
     this.setState({ content });
   }
 
+	renderTemplate() {
+		const content = this.state.content;
+	}
+
   render() {
 
-		const dirty = `test																			test`;
+		const {
+			content
+		} = this.state;
 
+		const dirty = `test`;
 		const clean = util.cleanHtml(dirty);
 
     return (
-      <>
-        <Editor
+      <div className='block'>
+				{/*
+				<CustomCKEditor
           label=''
           placeholder='Enter title...'
           onChange={this.onChange}
           onBlur={this.onBlur}
 					orgID={185}
-					content={dirty}
+					content={content}
+					width='500px'
+					height='500px'
         />
-				<div dangerouslySetInnerHTML={{ __html: clean}} />
-      </>
+        <CustomDraft
+          label=''
+          placeholder='Enter title...'
+          onChange={this.onChange}
+          onBlur={this.onBlur}
+					orgID={185}
+					content={content}
+					width='500px'
+        />
+				*/}
+				<CustomCKEditor4
+					content={content}
+					onBlur={this.onBlur}
+					onChange={this.onChange}
+				/>
+				<div dangerouslySetInnerHTML={{ __html: emailTemplate }} />
+      </div>
     )
   }
 }

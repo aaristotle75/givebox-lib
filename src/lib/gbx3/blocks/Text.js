@@ -32,8 +32,8 @@ export default class Text extends Component {
 	componentDidMount() {
 		this.blockRef = this.props.blockRef.current;
 		if (this.blockRef) {
-			this.width = this.blockRef.clientWidth;
-			this.height = this.blockRef.clientHeight;
+			this.width = `${this.blockRef.clientWidth}px`;
+			this.height = `${this.blockRef.clientHeight}px`;
 		}
 	}
 

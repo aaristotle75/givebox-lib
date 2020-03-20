@@ -8,14 +8,13 @@ import {
 	UploadLibrary,
 	ModalRoute,
 	toggleModal
-} from '../../';
+} from '../';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import InlineEditor from '@ckeditor/ckeditor5-build-inline';
 // import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { handleFile } from './util';
-import '../../styles/ckeditor.scss';
+import '../styles/ckeditor.scss';
 
-class Editor extends Component {
+class CustomCKEditor extends Component {
 
   constructor(props) {
     super(props);
@@ -59,7 +58,7 @@ class Editor extends Component {
 					this.setState({ loading: true });
 					const p = new Promise((resolve, reject) => {
 						this.url = null;
-						handleFile(file, (url, error) => {
+						util.handleFile(file, (url, error) => {
 							this.addImageToMediaLibrary(url, resolve);
 						});
 					})
@@ -164,7 +163,7 @@ class Editor extends Component {
   }
 }
 
-Editor.defaultProps = {
+CustomCKEditor.defaultProps = {
 	config: {},
 	ownerType: 'organization',
 	height: 'auto',
@@ -181,4 +180,4 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
   sendResource
-})(Editor);
+})(CustomCKEditor);
