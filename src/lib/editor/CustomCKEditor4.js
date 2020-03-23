@@ -33,12 +33,8 @@ class CustomCKEditor4 extends Component {
 		const defaultConfig = {
 			width: this.props.width,
 			height: this.props.height,
-      extraPlugins: 'autoembed,balloontoolbar,image2,uploadimage',
+      extraPlugins: 'autoembed,balloontoolbar,image2',
 			toolbarGroups: [
-					{ name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
-					{ name: 'forms', groups: [ 'forms' ] },
-					{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-					{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
 					{ name: 'links', groups: [ 'links' ] },
 					{ name: 'insert', groups: [ 'insert' ] },
 					{ name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
@@ -48,11 +44,17 @@ class CustomCKEditor4 extends Component {
 					{ name: 'colors', groups: [ 'colors' ] },
 					{ name: 'tools', groups: [ 'tools' ] },
 					{ name: 'others', groups: [ 'others' ] },
-					{ name: 'about', groups: [ 'about' ] }
+					{ name: 'about', groups: [ 'about' ] },
+					'/',
+					{ name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
+					{ name: 'forms', groups: [ 'forms' ] },
+					{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+					{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] }
 			],
-			removeButtons: 'Save,NewPage,Preview,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Find,Replace,SelectAll,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Strike,Subscript,Superscript,CopyFormatting,RemoveFormat,Outdent,Indent,Blockquote,CreateDiv,JustifyBlock,Language,BidiRtl,BidiLtr,Flash,Smiley,PageBreak,Iframe,About,Styles,SpecialChar',
+			removeButtons: 'Save,NewPage,Preview,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Find,Replace,SelectAll,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Strike,Subscript,Superscript,CopyFormatting,RemoveFormat,Outdent,Indent,Blockquote,CreateDiv,JustifyBlock,Language,BidiRtl,BidiLtr,Flash,Smiley,PageBreak,Iframe,About,Styles,SpecialChar,Maximize,Source,Scayt,Format,Anchor',
 			image_previewText: ' ',
       image2_disableResizer: false,
+      removeDialogTabs: 'image:advanced;link:advanced;link:target',
 			on: {
         instanceReady: function(evt) {
           var editor = evt.editor;
@@ -62,11 +64,6 @@ class CustomCKEditor4 extends Component {
             buttons: 'Link,Unlink,Image',
             widgets: 'image'
           });
-
-					editor.on('fileUploadRequest', function(evt) {
-						console.log('execute on fileUploadRequest', evt);
-						evt.stop();
-					});
         }
       }
 		}
@@ -93,11 +90,15 @@ class CustomCKEditor4 extends Component {
 
   render() {
 
+		const {
+			content
+		} = this.state;
+
     return (
       <div className='ck-content'>
         <CKEditor
 					config={this.setConfig()}
-          data={this.state.content}
+          data={content}
           onChange={this.onChange}
           onBlur={this.onBlur}
           onFocus={this.onFocus}
