@@ -9,9 +9,10 @@ import CustomCKEditor from '../lib/editor/CustomCKEditor';
 import CustomDraft from '../lib/editor/CustomDraft';
 import CustomCKEditor4 from '../lib/editor/CustomCKEditor4';
 import '../lib/styles/gbx3.scss';
+import '../lib/styles/emailTemplate.scss';
+
 const emailTemplate = require('html-loader!../lib/editor/emailTemplate.html');
-const content = require('html-loader!../lib/editor/templateContent.html');
-const footer = require('html-loader!../lib/editor/templateFooter.html');
+const defaultContent = require('html-loader!../lib/editor/templateContent.html');
 
 export default class Test extends Component {
 
@@ -19,9 +20,9 @@ export default class Test extends Component {
     super(props);
     this.onBlur = this.onBlur.bind(this);
     this.onChange = this.onChange.bind(this);
-
+		this.renderTemplate = this.renderTemplate.bind(this);
     this.state = {
-      content
+      content: defaultContent
     };
   }
 
@@ -37,6 +38,14 @@ export default class Test extends Component {
 
 	renderTemplate() {
 		const content = this.state.content;
+		const tokens = {
+			'{{content}}': content
+		};
+
+	  const html = util.replaceAll(emailTemplate, tokens);
+		return (
+			<div dangerouslySetInnerHTML={{ __html: html }} />
+		);
 	}
 
   render() {
@@ -48,8 +57,9 @@ export default class Test extends Component {
 		const dirty = `test`;
 		const clean = util.cleanHtml(dirty);
 
+		console.log('execute', content);
     return (
-      <div className='block'>
+      <div className='block emailTemplate'>
 				{/*
 				<CustomCKEditor
           label=''
@@ -75,8 +85,10 @@ export default class Test extends Component {
 					content={content}
 					onBlur={this.onBlur}
 					onChange={this.onChange}
+					width={645}
+					height={600}
 				/>
-				<div dangerouslySetInnerHTML={{ __html: emailTemplate }} />
+				{this.renderTemplate()}
       </div>
     )
   }

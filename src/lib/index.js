@@ -89,6 +89,9 @@ import Editor from './gbx3/tools/Editor';
 import { handleFile } from './gbx3/tools/util';
 import { BlockOption } from './gbx3/blocks/Block';
 
+// Editor
+import CustomCKEditor4 from './editor/CustomCKEditor4';
+
 export {
   // Form
   Form,
@@ -190,5 +193,8 @@ export {
   CustomTemplate,
 	Editor,
 	handleFile,
-	BlockOption
+	BlockOption,
+
+	// Editor
+	CustomCKEditor4
 };

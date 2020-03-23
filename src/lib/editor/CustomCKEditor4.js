@@ -1,15 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-  util,
-	Loader,
-	Alert,
-	sendResource,
-	UploadLibrary,
-	ModalRoute,
-	toggleModal
-} from '../';
 import CKEditor from 'ckeditor4-react';
+import '../styles/editor.scss';
 
 CKEditor.editorUrl = 'https://cdn.ckeditor.com/4.14.0/full-all/ckeditor.js';
 
@@ -21,15 +13,9 @@ class CustomCKEditor4 extends Component {
     this.onChange = this.onChange.bind(this);
     this.onFocus = this.onFocus.bind(this);
 		this.setConfig = this.setConfig.bind(this);
-		this.addImageToMediaLibrary = this.addImageToMediaLibrary.bind(this);
-		this.uploadError = this.uploadError.bind(this);
-		this.cleanContent = this.cleanContent.bind(this);
 
     this.state = {
-      content: this.props.content,
-			loading: false,
-			error: null,
-			errorMsg: 'Error occurred'
+      content: this.props.content
     };
   }
 
@@ -45,6 +31,8 @@ class CustomCKEditor4 extends Component {
 
 	setConfig() {
 		const defaultConfig = {
+			width: this.props.width,
+			height: this.props.height,
       extraPlugins: 'autoembed,balloontoolbar,image2,uploadimage',
 			toolbarGroups: [
 					{ name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
@@ -64,7 +52,7 @@ class CustomCKEditor4 extends Component {
 			],
 			removeButtons: 'Save,NewPage,Preview,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Find,Replace,SelectAll,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Strike,Subscript,Superscript,CopyFormatting,RemoveFormat,Outdent,Indent,Blockquote,CreateDiv,JustifyBlock,Language,BidiRtl,BidiLtr,Flash,Smiley,PageBreak,Iframe,About,Styles,SpecialChar',
 			image_previewText: ' ',
-      image2_disableResizer: true,
+      image2_disableResizer: false,
 			on: {
         instanceReady: function(evt) {
           var editor = evt.editor;
@@ -80,43 +68,14 @@ class CustomCKEditor4 extends Component {
 						evt.stop();
 					});
         }
-      },
-			height: 500
+      }
 		}
 		const config = { ...defaultConfig, ...this.props.config };
 		return config;
 	}
 
-	addImageToMediaLibrary(URL, resolve) {
-		this.props.sendResource('orgMediaItems', {
-			id: [this.props.orgID],
-			method: 'POST',
-			data: {
-				URL
-			},
-			callback: (res, err) => {
-				let url = null;
-				if (!err && !util.isEmpty(res)) {
-					url = util.getValue(res, 'URL', '');
-					// url = url ? util.imageUrlWithStyle(url, 'large') : null;
-				}
-				resolve(url);
-				this.setState({ loading: false });
-			}
-		});
-	}
-
-	uploadError() {
-		this.setState({ error: true, errorMsg: 'Error uploading. Please make sure the image you are uploading is a JPEG, PNG or GIF file.' });
-		this.timeout = setTimeout(() => {
-			this.setState({ error: null });
-			this.timeout = null;
-		}, 4000);
-	}
-
   onBlur(e) {
     let content = e.editor.getData();
-		content = this.cleanContent(content);
     this.setState({ content});
 		if (this.props.onBlur) this.props.onBlur(content);
   }
@@ -132,30 +91,10 @@ class CustomCKEditor4 extends Component {
 		if (this.props.onFocus) this.props.onFocus(content);
   }
 
-	cleanContent(contentToOptimize) {
-		let content = contentToOptimize;
-		const el = document.createElement('div');
-		el.innerHTML = content;
-		const images = el.getElementsByTagName('img');
-		if (!util.isEmpty(images)) {
-			for(var i=0; i < images.length; i++){
-				const image = util.getValue(images, i);
-				if (!util.isEmpty(image)) {
-					image.src = util.imageUrlWithStyle(image.src, 'large');
-				  console.log(image.src);
-				}
-			}
-		}
-		content = el.innerHTML;
-		return content;
-	}
-
   render() {
 
     return (
       <div className='ck-content'>
-				{this.state.loading && <Loader msg='Loading image...' /> }
-				<Alert alert='error' display={this.state.error} msg={this.state.error} />
         <CKEditor
 					config={this.setConfig()}
           data={this.state.content}
@@ -176,13 +115,9 @@ CustomCKEditor4.defaultProps = {
 };
 
 function mapStateToProps(state) {
-	const resource = util.getValue(state, 'resource', {});
-	const orgID = util.getValue(resource, 'orgID', null);
   return {
-		orgID
   }
 }
 
 export default connect(mapStateToProps, {
-  sendResource
 })(CustomCKEditor4);

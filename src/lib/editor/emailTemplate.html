@@ -13,7 +13,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{{ SUBJECT }}</title>
+        <title>{{subject}}</title>
 
     <style type="text/css">
 		p{
@@ -486,7 +486,8 @@
 			/*@editable*/line-height:150% !important;
 		}
 
-}</style></head>
+}
+</style></head>
     <body>
         <!--*|IF:MC_PREVIEW_TEXT|*-->
         <!--[if !gte mso 9]><!----><span class="mcnPreviewText" style="display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;">*|MC_PREVIEW_TEXT|*</span><!--<![endif]-->
@@ -518,12 +519,110 @@
                             </tr>
                             <tr>
                                 <td align="center" valign="top" id="templateBody" data-template-container>
-																	{{ CONTENT }}
+<!--[if (gte mso 9)|(IE)]>
+                                    <table align="center" border="0" cellspacing="0" cellpadding="0" width="600" style="width:600px;">
+                                    <tr>
+                                    <td align="center" valign="top" width="600" style="width:600px;">
+                                    <![endif]-->
+																		<table align="center" border="0" cellpadding="0" cellspacing="0" class="templateContainer" style="width:100%">
+																			<tbody>
+																				<tr>
+																					<td style="vertical-align:top">
+																					<table border="0" cellpadding="0" cellspacing="0" class="mcnTextBlock" style="min-width:100%; width:100%">
+																						<tbody>
+																							<tr>
+																								<td style="vertical-align:top">
+																									<!--[if mso]>
+																						<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
+																						<tr>
+																						<![endif]--><!--[if mso]>
+																						<td valign="top" width="600" style="width:600px;">
+																						<![endif]-->
+																						<table align="left" border="0" cellpadding="0" cellspacing="0" class="mcnTextContentContainer" style="max-width:100%; min-width:100%; width:100%">
+																							<tbody>
+																								<tr>
+																									<td style="vertical-align:top">
+																							{{content}}
+																						<!--[if mso]>
+																				</td>
+																				<![endif]--><!--[if mso]>
+																				</tr>
+																				</table>
+																				<![endif]--></td>
+																					</tr>
+																				</tbody>
+																			</table>
+																			</td>
+																		</tr>
+																	</tbody>
+																</table>
+																<!--[if (gte mso 9)|(IE)]>
+																                                    </td>
+																                                    </tr>
+																                                    </table>
+																                                    <![endif]-->
+																				</td>
+																			</tr>
+																		</tbody>
+																	</table>
                                 </td>
                             </tr>
                             <tr>
                                 <td align="center" valign="top" id="templateFooter" data-template-container>
- 																	{{ FOOTER }}
+                                   <!--[if (gte mso 9)|(IE)]>
+																	 <table align="center" border="0" cellspacing="0" cellpadding="0" width="600" style="width:600px;">
+																	 <tr>
+																	 <td align="center" valign="top" width="600" style="width:600px;">
+																	 <![endif]-->
+																	 <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" class="templateContainer">
+																			 <tr>
+																					 <td valign="top" class="footerContainer">
+<table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width:100%;">
+	 <tbody class="mcnTextBlockOuter">
+			 <tr>
+					 <td valign="top" class="mcnTextBlockInner" style="padding-top:9px;">
+							 <!--[if mso]>
+			 <table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
+			 <tr>
+			 <![endif]-->
+
+			 <!--[if mso]>
+			 <td valign="top" width="600" style="width:600px;">
+			 <![endif]-->
+							 <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width:100%; min-width:100%;" width="100%" class="mcnTextContentContainer">
+									 <tbody>
+										 <tr>
+
+											 <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;color: #727E83;">
+												 This email was sent from <a href="https://givebox.com" target="_blank">Givebox</a> on behalf of {{nonprofit_name}}.
+<br><br>
+Not interested? <a href="#">Unsubscribe from this list</a>
+<br><br>
+<em>Copyright © 2020 Givebox Inc., All rights reserved.</em>
+											 </td>
+									 </tr>
+							 </tbody></table>
+			 <!--[if mso]>
+			 </td>
+			 <![endif]-->
+
+			 <!--[if mso]>
+			 </tr>
+			 </table>
+			 <![endif]-->
+					 </td>
+			 </tr>
+	 </tbody>
+ </table>
+</td>
+																			 </tr>
+																	 </table>
+																	 <!--[if (gte mso 9)|(IE)]>
+																	 </td>
+																	 </tr>
+																	 </table>
+																	 <![endif]-->
+
                                 </td>
                             </tr>
                         </table>

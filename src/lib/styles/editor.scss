@@ -32,3 +32,12 @@
 .headlineButton:focus {
   background: #f3f3f3;
 }
+
+.cke_dialog_body {
+
+}
+
+
+.cke_reset_all, .cke_reset_all *, .cke_reset_all a, .cke_reset_all textarea {
+    white-space: normal !important;
+}
