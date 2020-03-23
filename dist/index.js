@@ -60,7 +60,9 @@ import HelpDeskButton from './helpdesk/HelpDeskButton'; // GBX
 import CustomTemplate from './gbx/CustomTemplate';
 import Editor from './gbx3/tools/Editor';
 import { handleFile } from './gbx3/tools/util';
-import { BlockOption } from './gbx3/blocks/Block';
+import { BlockOption } from './gbx3/blocks/Block'; // Editor
+
+import CustomCKEditor4 from './editor/CustomCKEditor4';
 export { // Form
 Form, _v, selectOptions, Select, TextField, Dropdown, RichTextField, Choice, CalendarField, CalendarRange, Checkbox, Upload, UploadLibrary, UploadPrivate, WhereField // actions
 , toggleModal, removeResource, resourceProp, getAPI, sendAPI, setAppRef, setModalRef, setProp, setPrefs, setCustomProp // API
@@ -72,4 +74,5 @@ Form, _v, selectOptions, Select, TextField, Dropdown, RichTextField, Choice, Cal
 , Alert, Collapse, CustomBtn, Delete, Error, Fade, GBLink, GBX, Iframe, Image, ImageDisplay, history, LinearBar, Loader, Portal, Redirect, Tabs, Tab, types, util // Glossary
 , FeesGlossary // Help Desk
 , HelpDesk, TicketForm, zohoCats, Articles, HelpDeskButton // GBX
-, CustomTemplate, Editor, handleFile, BlockOption };
+, CustomTemplate, Editor, handleFile, BlockOption // Editor
+, CustomCKEditor4 };
