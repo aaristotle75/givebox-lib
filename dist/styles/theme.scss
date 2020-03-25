@@ -687,6 +687,7 @@ button.glossary:hover {
   backface-visibility: hidden;
   @include transition(width .5s);
   z-index: 1000;
+	padding-bottom: 100px;
 }
 
 .layout-left .layout-left-content {

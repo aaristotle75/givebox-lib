@@ -41,3 +41,19 @@
 .cke_reset_all, .cke_reset_all *, .cke_reset_all a, .cke_reset_all textarea {
     white-space: normal !important;
 }
+
+.cke_editable a {
+  text-decoration: none !important;
+}
+
+#cke_editor1,
+.cke_dialog_background_cover,
+.cke_dialog_container,
+.cke_balloon.cke_balloontoolbar,
+.cke_panel {
+	z-index: 9999999 !important;
+}
+
+.cke_dialog_ui_checkbox {
+	display: none !important;
+}

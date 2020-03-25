@@ -32,26 +32,25 @@ class CustomCKEditor4 extends Component {
 	setConfig() {
 		const defaultConfig = {
 			width: this.props.width,
-			height: this.props.height,
-      extraPlugins: 'autoembed,balloontoolbar,image2',
+			autoGrow_minHeight: this.props.height,
+      extraPlugins: 'autoembed,balloontoolbar,image2,autogrow',
 			toolbarGroups: [
-					{ name: 'links', groups: [ 'links' ] },
-					{ name: 'insert', groups: [ 'insert' ] },
-					{ name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
-					{ name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
-					'/',
-					{ name: 'styles', groups: [ 'styles' ] },
-					{ name: 'colors', groups: [ 'colors' ] },
-					{ name: 'tools', groups: [ 'tools' ] },
-					{ name: 'others', groups: [ 'others' ] },
-					{ name: 'about', groups: [ 'about' ] },
-					'/',
 					{ name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
 					{ name: 'forms', groups: [ 'forms' ] },
 					{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-					{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] }
+					{ name: 'styles', groups: [ 'styles' ] },
+					{ name: 'colors', groups: [ 'colors' ] },
+					'/',
+					{ name: 'links', groups: [ 'links' ] },
+					{ name: 'insert', groups: [ 'insert' ] },
+					{ name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
+					{ name: 'tools', groups: [ 'tools' ] },
+					{ name: 'others', groups: [ 'others' ] },
+					{ name: 'about', groups: [ 'about' ] },
+					{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
+					{ name: 'clipboard', groups: [ 'clipboard', 'undo' ] }
 			],
-			removeButtons: 'Save,NewPage,Preview,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Find,Replace,SelectAll,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Strike,Subscript,Superscript,CopyFormatting,RemoveFormat,Outdent,Indent,Blockquote,CreateDiv,JustifyBlock,Language,BidiRtl,BidiLtr,Flash,Smiley,PageBreak,Iframe,About,Styles,SpecialChar,Maximize,Source,Scayt,Format,Anchor',
+			removeButtons: 'Save,NewPage,Preview,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Find,Replace,SelectAll,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Strike,Subscript,Superscript,CopyFormatting,RemoveFormat,Blockquote,CreateDiv,JustifyBlock,Language,BidiRtl,BidiLtr,Flash,Smiley,PageBreak,Iframe,About,Styles,SpecialChar,Maximize,Source,Scayt,Format,Anchor',
 			image_previewText: ' ',
       image2_disableResizer: false,
       removeDialogTabs: 'image:advanced;link:advanced;link:target',
@@ -65,7 +64,7 @@ class CustomCKEditor4 extends Component {
             widgets: 'image'
           });
         }
-      }
+      },
 		}
 		const config = { ...defaultConfig, ...this.props.config };
 		return config;
@@ -102,6 +101,7 @@ class CustomCKEditor4 extends Component {
           onChange={this.onChange}
           onBlur={this.onBlur}
           onFocus={this.onFocus}
+					type={this.props.type}
         />
       </div>
     )
@@ -112,7 +112,8 @@ CustomCKEditor4.defaultProps = {
 	config: {},
 	ownerType: 'organization',
 	height: 'auto',
-	width: '100%'
+	width: '100%',
+	type: 'inline'
 };
 
 function mapStateToProps(state) {

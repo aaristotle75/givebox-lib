@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { PhotoshopPicker } from 'react-color';
 import {
   ModalRoute,
   ModalLink
 } from '../';
+import { toggleModal } from '../api/actions';
 
 class ColorPicker extends Component {
 
@@ -56,8 +58,11 @@ class ColorPicker extends Component {
   }
 
   onAccept(res) {
-    this.props.fieldProp(this.props.name, { value: this.state.hex });
-    this.props.formProp({ updated: true });
+		if (this.props.fieldProp) {
+	    this.props.fieldProp(this.props.name, { value: this.state.hex });
+	    this.props.formProp({ updated: true });
+		}
+		if (this.props.onAccept) this.props.onAccept(this.props.name, this.state.hex);
     if (this.props.modal) this.props.toggleModal(this.props.modalID, false);
   }
 
@@ -177,4 +182,11 @@ ColorPicker.defaultProps = {
   defaultColor: '#45a8dc'
 }
 
-export default ColorPicker;
+function mapStateToProps(state, props) {
+  return {
+  }
+}
+
+export default connect(mapStateToProps, {
+  toggleModal
+})(ColorPicker);

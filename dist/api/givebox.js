@@ -135,6 +135,18 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
         break;
       }
 
+    case 'deletedOrgs':
+      {
+        endpoint = `orgs/soft-deleted`;
+        break;
+      }
+
+    case 'deletedOrg':
+      {
+        endpoint = `orgs/soft-deleted/${id[0]}`;
+        break;
+      }
+
     case 'orgRiskInfo':
       {
         endpoint = `orgs/${id[0]}/risk-info`;

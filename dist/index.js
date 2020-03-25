@@ -7,6 +7,7 @@ import Choice from './form/Choice';
 import CalendarField from './form/CalendarField';
 import CalendarRange from './form/CalendarRange';
 import Checkbox from './form/Checkbox';
+import ColorPicker from './form/ColorPicker';
 import WhereField from './form/WhereField';
 import Upload from './form/Upload';
 import UploadLibrary from './form/UploadLibrary';
@@ -64,7 +65,7 @@ import { BlockOption } from './gbx3/blocks/Block'; // Editor
 
 import CustomCKEditor4 from './editor/CustomCKEditor4';
 export { // Form
-Form, _v, selectOptions, Select, TextField, Dropdown, RichTextField, Choice, CalendarField, CalendarRange, Checkbox, Upload, UploadLibrary, UploadPrivate, WhereField // actions
+Form, _v, selectOptions, Select, TextField, Dropdown, RichTextField, Choice, CalendarField, CalendarRange, Checkbox, ColorPicker, Upload, UploadLibrary, UploadPrivate, WhereField // actions
 , toggleModal, removeResource, resourceProp, getAPI, sendAPI, setAppRef, setModalRef, setProp, setPrefs, setCustomProp // API
 , giveboxAPI, getResource, reloadResource, sendResource, savePrefs // reducers
 , app, resource, send, modal, preferences, custom // Modal
