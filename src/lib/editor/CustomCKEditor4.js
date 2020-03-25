@@ -13,6 +13,7 @@ class CustomCKEditor4 extends Component {
     this.onChange = this.onChange.bind(this);
     this.onFocus = this.onFocus.bind(this);
 		this.setConfig = this.setConfig.bind(this);
+		this.onBeforeLoad = this.onBeforeLoad.bind(this);
 
     this.state = {
       content: this.props.content
@@ -29,34 +30,79 @@ class CustomCKEditor4 extends Component {
     }
   }
 
+	onBeforeLoad(CKEDITOR) {
+
+		CKEDITOR.on( 'dialogDefinition', function( ev ) {
+		    const dialogName = ev.data.name;
+		    const dialogDefinition = ev.data.definition;
+				if (dialogName === 'image2') {
+					const def = dialogDefinition;
+					def.title = 'Add/Edit Image';
+					def.width = 400;
+					def.height = 200;
+
+					const dialog = def.dialog;
+					const buttons = dialog._.buttons;
+					const button = dialog.getButton('ok');
+					console.log('execute button', dialog, dialog._, buttons, button);
+					/*
+					okBtn.onClick = () => {
+						console.log('hello world');
+					};
+					*/
+
+					const info = dialogDefinition.getContents( 'info' );
+					const els = info.elements;
+					const vbox = els[0];
+					const children = vbox.children[0].children;
+					const hboxInput = children[0];
+					hboxInput.label = 'Image URL';
+					const hboxBtn = children[1];
+					hboxBtn.label = 'Select';
+
+					const alt = els[1];
+					alt.label = `Text if image can't display`;
+
+					const align = els[3];
+					align.hidden = true;
+
+					const caption = els[4];
+					caption.hidden = true;
+
+					console.log('execute def', def);
+					console.log('execute info', info);
+					console.log('execute els', els);
+					/*
+					const vboxChildren = vbox.children;
+					const vboxButton = vboxChildren[1];
+					vboxButton.label = 'Select';
+					console.log('execute dialogDefinition', dialogDefinition, info, vboxButton);
+					*/
+				}
+		});
+	}
+
+	ckeditorUploadCallback(a, b) {
+		console.log('execute ckeditorUploadCallback', a, b);
+	}
+
 	setConfig() {
 		const defaultConfig = {
 			width: this.props.width,
-			autoGrow_minHeight: this.props.height,
-      extraPlugins: 'autoembed,balloontoolbar,image2,autogrow',
-			toolbarGroups: [
-					{ name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
-					{ name: 'forms', groups: [ 'forms' ] },
-					{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-					{ name: 'styles', groups: [ 'styles' ] },
-					{ name: 'colors', groups: [ 'colors' ] },
-					'/',
-					{ name: 'links', groups: [ 'links' ] },
-					{ name: 'insert', groups: [ 'insert' ] },
-					{ name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
-					{ name: 'tools', groups: [ 'tools' ] },
-					{ name: 'others', groups: [ 'others' ] },
-					{ name: 'about', groups: [ 'about' ] },
-					{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
-					{ name: 'clipboard', groups: [ 'clipboard', 'undo' ] }
+			height: this.props.height,
+      extraPlugins: 'autoembed,balloontoolbar,image2',
+			removePlugins: 'image',
+			contentsCss: 'https://givebox.s3-us-west-1.amazonaws.com/public/css/contents.css',
+			toolbar: [
+				[ 'Bold', 'Italic', '-', 'Font', '-', 'FontSize', 'TextColor', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', '-', 'Link', 'Unlink', '-', 'Image']
 			],
-			removeButtons: 'Save,NewPage,Preview,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Find,Replace,SelectAll,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Strike,Subscript,Superscript,CopyFormatting,RemoveFormat,Blockquote,CreateDiv,JustifyBlock,Language,BidiRtl,BidiLtr,Flash,Smiley,PageBreak,Iframe,About,Styles,SpecialChar,Maximize,Source,Scayt,Format,Anchor',
+			removeButtons: 'Save,NewPage,Preview,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Find,Replace,SelectAll,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Strike,Subscript,Superscript,CopyFormatting,RemoveFormat,Blockquote,CreateDiv,JustifyBlock,Language,BidiRtl,BidiLtr,Flash,Smiley,PageBreak,Iframe,About,Styles,SpecialChar,Maximize,Source,Scayt,Format,Anchor,Underline',
 			image_previewText: ' ',
       image2_disableResizer: false,
       removeDialogTabs: 'image:advanced;link:advanced;link:target',
 			on: {
         instanceReady: function(evt) {
-          var editor = evt.editor;
+          const editor = evt.editor;
 
           // Register custom context for image widgets on the fly.
           editor.balloonToolbars.create({
@@ -65,6 +111,9 @@ class CustomCKEditor4 extends Component {
           });
         }
       },
+	    filebrowserImageBrowseUrl: '/upload',
+	    filebrowserWindowWidth: '640',
+	    filebrowserWindowHeight: '480'
 		}
 		const config = { ...defaultConfig, ...this.props.config };
 		return config;
@@ -102,6 +151,7 @@ class CustomCKEditor4 extends Component {
           onBlur={this.onBlur}
           onFocus={this.onFocus}
 					type={this.props.type}
+					onBeforeLoad={this.onBeforeLoad}
         />
       </div>
     )
@@ -113,7 +163,7 @@ CustomCKEditor4.defaultProps = {
 	ownerType: 'organization',
 	height: 'auto',
 	width: '100%',
-	type: 'inline'
+	type: 'classic'
 };
 
 function mapStateToProps(state) {

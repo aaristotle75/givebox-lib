@@ -4,6 +4,7 @@ import Routes from './Routes';
 import Loadable from 'react-loadable';
 import has from 'has';
 import { resourceProp, Loader, getResource, reloadResource, setAppRef, setModalRef, util, setPrefs, sendResource } from './lib';
+import queryString from 'query-string';
 
 export const AppContext = React.createContext();
 
@@ -168,6 +169,12 @@ class App extends Component {
       loader: () => import(`/${moduleToLoad}`),
       loading: () => modal ? '' : this.loader(`Trying to load component ${moduleToLoad}`)
     });
+
+    const routeProps = options.routeProps;
+    const location = util.getValue(routeProps, 'location', {});
+    const search = util.getValue(location, 'search', {});
+	  const queryParams = queryString.parse(search);
+
     return (
       <div id={`content-root`} className={options.className}>
         <Component
@@ -176,6 +183,7 @@ class App extends Component {
           routeProps={options.routeProps}
           mobile={this.state.mobile}
           loadComponent={this.loadComponent}
+					queryParams={queryParams}
         />
       </div>
     )

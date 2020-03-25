@@ -57,7 +57,6 @@ export default class Test extends Component {
 		const dirty = `test`;
 		const clean = util.cleanHtml(dirty);
 
-		console.log('execute', content);
     return (
       <div className='block emailTemplate'>
 				{/*
