@@ -44,6 +44,7 @@ class ModalRoute extends Component {
     const optsProps = { ...opts,
       ...this.props.optsProps
     };
+    const customOverlay = this.props.customOverlay || {};
 
     if (!modalRoot) {
       return React.createElement(Loader, null);
@@ -62,6 +63,7 @@ class ModalRoute extends Component {
       customStyle: style,
       closeCallback: has(opts, 'closeCallback') ? opts.closeCallback : null,
       disallowBgClose: disallowBgClose || util.getValue(optsProps, 'disallowBgClose', false),
+      customOverlay: util.getValue(optsProps, 'customOverlay', customOverlay),
       appRef: appRef,
       draggable: draggable
     }, component(optsProps))));

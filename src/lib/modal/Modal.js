@@ -224,7 +224,6 @@ class Modal extends Component {
       transition: `${transition.property} ${(transition.duration/1000)}s ${transition.timingfunction}`
     }
 
-
     const closeBtn = mobile ? true : closeBtnShow;
 
     const defaultOverlay = cloneObj(defaultOverlayStyle);

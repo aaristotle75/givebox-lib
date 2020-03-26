@@ -91,7 +91,7 @@ class CustomCKEditor4 extends Component {
 			width: this.props.width,
 			height: this.props.height,
       extraPlugins: 'autoembed,balloontoolbar,image2',
-			removePlugins: 'image',
+			removePlugins: 'image,elementspath,resize',
 			contentsCss: 'https://givebox.s3-us-west-1.amazonaws.com/public/css/contents.css',
 			toolbar: [
 				[ 'Bold', 'Italic', '-', 'Font', '-', 'FontSize', 'TextColor', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', '-', 'Link', 'Unlink', '-', 'Image']

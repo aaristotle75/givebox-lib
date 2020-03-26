@@ -60,8 +60,8 @@ export default class Popup extends Component {
 	            </Fade>
 							{showButtons ?
 							<div className='button-group'>
-								<GBLink className='button cancel' onClick={() => this.buttonClick('cancel')}>Cancel</GBLink>
-								<GBLink className='button ok' onClick={() => this.buttonClick('ok')}>OK</GBLink>
+								<GBLink className='popupBtn cancel' onClick={() => this.buttonClick('cancel')}>Cancel</GBLink>
+								<GBLink className='popupBtn ok' onClick={() => this.buttonClick('ok')}>OK</GBLink>
 							</div> : <></>}
 	          </div>
 	        </Draggable>

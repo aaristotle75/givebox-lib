@@ -5,7 +5,8 @@ import {
   util,
   RichTextField,
 	GBLink,
-	Popup
+	Popup,
+	ColorPicker
 } from '../lib';
 import CustomCKEditor from '../lib/editor/CustomCKEditor';
 import CustomDraft from '../lib/editor/CustomDraft';
@@ -112,15 +113,17 @@ export default class Test extends Component {
 					open={this.state.editBtn}
 				>
 					<h2>Test</h2>
-					<p>Lorem ipsum</p>
-					<p>Lorem ipsum</p>
-					<p>Lorem ipsum</p>
-					<p>Lorem ipsum</p>
-					<p>Lorem ipsum</p>
-					<p>Lorem ipsum</p>
-					<p>Lorem ipsum</p>
-
-
+					<ColorPicker
+						name='bgColor'
+						fixedLabel={true}
+						label='Button Background Color'
+						modalID='colorPickerBgColor'
+						opts={{
+							customOverlay: {
+								zIndex: 9999909
+							}
+						}}
+					/>
 				</Popup>
 				<GBLink onClick={() => this.buttonClick('open', true)}>Edit Button</GBLink>
 				{this.renderTemplate()}

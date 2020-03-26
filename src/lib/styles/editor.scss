@@ -35,6 +35,14 @@
   background: #f3f3f3;
 }
 
+.cke_chrome {
+	border: 1px solid transparent !important;
+}
+
+.cke_button_icon {
+	color: blue !important;
+}
+
 .cke_dialog_background_cover {
 	background: $overlayColor !important;
 	opacity: 1 !important;
