@@ -3,7 +3,9 @@
 import React, { Component } from 'react';
 import {
   util,
-  RichTextField
+  RichTextField,
+	GBLink,
+	Popup
 } from '../lib';
 import CustomCKEditor from '../lib/editor/CustomCKEditor';
 import CustomDraft from '../lib/editor/CustomDraft';
@@ -21,8 +23,10 @@ export default class Test extends Component {
     this.onBlur = this.onBlur.bind(this);
     this.onChange = this.onChange.bind(this);
 		this.renderTemplate = this.renderTemplate.bind(this);
+		this.buttonClick = this.buttonClick.bind(this);
     this.state = {
-      content: defaultContent
+      content: defaultContent,
+			editBtn: false
     };
   }
 
@@ -46,6 +50,21 @@ export default class Test extends Component {
 		return (
 			<div dangerouslySetInnerHTML={{ __html: html }} />
 		);
+	}
+
+	buttonClick(type, open) {
+		switch (type) {
+			case 'cancel': {
+				break;
+			}
+
+			case 'ok': {
+				break;
+			}
+
+			// no default
+		}
+		this.setState({ editBtn: open });
 	}
 
   render() {
@@ -87,6 +106,23 @@ export default class Test extends Component {
 					width={645}
 					height={600}
 				/>
+				<Popup
+					title={'Test title'}
+					buttonCallback={this.buttonClick}
+					open={this.state.editBtn}
+				>
+					<h2>Test</h2>
+					<p>Lorem ipsum</p>
+					<p>Lorem ipsum</p>
+					<p>Lorem ipsum</p>
+					<p>Lorem ipsum</p>
+					<p>Lorem ipsum</p>
+					<p>Lorem ipsum</p>
+					<p>Lorem ipsum</p>
+
+
+				</Popup>
+				<GBLink onClick={() => this.buttonClick('open', true)}>Edit Button</GBLink>
 				{this.renderTemplate()}
       </div>
     )

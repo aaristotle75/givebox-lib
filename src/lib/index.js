@@ -17,6 +17,7 @@ import * as selectOptions from './form/selectOptions';
 
 import ModalLink from './modal/ModalLink';
 import ModalRoute from './modal/ModalRoute';
+import Popup from './modal/Popup';
 
 import ActionsMenu from './table/ActionsMenu';
 import Search from './table/Search';
@@ -174,6 +175,7 @@ export {
   history,
   LinearBar,
   Loader,
+	Popup,
   Portal,
   Redirect,
   Tabs,

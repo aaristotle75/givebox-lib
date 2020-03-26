@@ -58,7 +58,7 @@ class CustomCKEditor4 extends Component {
 					const hboxInput = children[0];
 					hboxInput.label = 'Image URL';
 					const hboxBtn = children[1];
-					hboxBtn.label = 'Select';
+					hboxBtn.label = 'Choose';
 
 					const alt = els[1];
 					alt.label = `Text if image can't display`;
