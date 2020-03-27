@@ -6,7 +6,7 @@ export default class Sidebar extends Component {
   render() {
 
     return (
-      <nav className='sideBar'>
+      <nav id='sideBar' className='sideBar'>
         <ul>
           <NavLink to='/dashboard'>Dashboard</NavLink>
           <NavLink to='/charts'>Charts</NavLink>

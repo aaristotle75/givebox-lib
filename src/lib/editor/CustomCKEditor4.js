@@ -32,27 +32,17 @@ class CustomCKEditor4 extends Component {
 
 	onBeforeLoad(CKEDITOR) {
 
-		CKEDITOR.on( 'dialogDefinition', function( ev ) {
-		    const dialogName = ev.data.name;
-		    const dialogDefinition = ev.data.definition;
+		CKEDITOR.on( 'dialogDefinition', function( e ) {
+		    const dialogName = e.data.name;
+		    const dialogDefinition = e.data.definition;
 				if (dialogName === 'image2') {
 					const def = dialogDefinition;
 					def.title = 'Add/Edit Image';
 					def.width = 400;
 					def.height = 200;
 
-					const dialog = def.dialog;
-					const buttons = dialog._.buttons;
-					const button = dialog.getButton('ok');
-					console.log('execute button', dialog, dialog._, buttons, button);
-					/*
-					okBtn.onClick = () => {
-						console.log('hello world');
-					};
-					*/
-
-					const info = dialogDefinition.getContents( 'info' );
-					const els = info.elements;
+					const infoTab = dialogDefinition.getContents( 'info' );
+					const els = infoTab.elements;
 					const vbox = els[0];
 					const children = vbox.children[0].children;
 					const hboxInput = children[0];
@@ -69,21 +59,13 @@ class CustomCKEditor4 extends Component {
 					const caption = els[4];
 					caption.hidden = true;
 
+					/* debug
 					console.log('execute def', def);
 					console.log('execute info', info);
 					console.log('execute els', els);
-					/*
-					const vboxChildren = vbox.children;
-					const vboxButton = vboxChildren[1];
-					vboxButton.label = 'Select';
-					console.log('execute dialogDefinition', dialogDefinition, info, vboxButton);
 					*/
 				}
 		});
-	}
-
-	ckeditorUploadCallback(a, b) {
-		console.log('execute ckeditorUploadCallback', a, b);
 	}
 
 	setConfig() {
@@ -100,6 +82,7 @@ class CustomCKEditor4 extends Component {
 			image_previewText: ' ',
       image2_disableResizer: false,
       removeDialogTabs: 'image:advanced;link:advanced;link:target',
+			disallowedContent: 'img{width,height}',
 			on: {
         instanceReady: function(evt) {
           const editor = evt.editor;
@@ -111,9 +94,9 @@ class CustomCKEditor4 extends Component {
           });
         }
       },
-	    filebrowserImageBrowseUrl: '/upload',
+	    filebrowserImageBrowseUrl: `/upload`,
 	    filebrowserWindowWidth: '640',
-	    filebrowserWindowHeight: '480'
+	    filebrowserWindowHeight: '580'
 		}
 		const config = { ...defaultConfig, ...this.props.config };
 		return config;

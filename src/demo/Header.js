@@ -11,7 +11,7 @@ export default class Header extends Component {
     return (
       <AppContext.Consumer>
       {(context) => (
-        <header className='top'>
+        <header id='header' className='top'>
           <div className='leftSide'>
             {context.title}
           </div>

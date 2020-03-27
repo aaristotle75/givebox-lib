@@ -11,6 +11,7 @@ import ColorPicker from './form/ColorPicker';
 import WhereField from './form/WhereField';
 import Upload from './form/Upload';
 import UploadLibrary from './form/UploadLibrary';
+import MediaLibrary from './form/MediaLibrary';
 import UploadPrivate from './form/UploadPrivate';
 import * as _v from './form/formValidate';
 import * as selectOptions from './form/selectOptions';
@@ -112,6 +113,7 @@ export {
 	UploadLibrary,
   UploadPrivate,
   WhereField,
+	MediaLibrary,
 
   // actions
   toggleModal,
