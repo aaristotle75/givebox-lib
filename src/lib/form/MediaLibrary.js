@@ -92,38 +92,8 @@ class UploadLibrary extends Component {
   }
 
   setSelected(URL, ID, callback = null, justUploaded = false) {
-    const library = this.props.library;
     this.setPreview(URL);
     this.props.handleSaveCallback(URL, justUploaded);
-    switch (util.getValue(library, 'type')) {
-      case 'article': {
-        if (util.getValue(library, 'articleID')) {
-          this.props.sendResource('articleMediaItem', {
-            id: [library.articleID, ID],
-            method: 'put',
-            isSending: false,
-            data: {
-              setDefault: false,
-              orderNumber: 1
-            },
-            resourcesToLoad: ['articleMediaItems']
-          });
-        } else {
-          console.error('No articleID in library object.');
-        }
-        break;
-      }
-      case 'org': {
-        this.props.sendResource(util.getValue(library, 'super') ? 'superOrgMediaItem' : 'orgMediaItem', {
-          id: util.getValue(library, 'orgID') ? [util.getValue(library, 'orgID'), ID] : [ID],
-          method: 'put',
-          isSending: false
-        });
-        break;
-      }
-
-      // no default
-    }
     if (callback) callback();
   }
 

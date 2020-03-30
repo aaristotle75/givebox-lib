@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {
   util,
-	MediaLibrary
+	MediaLibrary,
+	Loader
 } from '../';
 
 
@@ -16,8 +17,10 @@ export default class CKEditorUpload extends Component {
 		this.getMeta = this.getMeta.bind(this);
 		this.handleAspectRatio = this.handleAspectRatio.bind(this);
     this.state = {
-			url: ''
+			url: '',
+			loading: false
     };
+		this.CKEDITOR = window.opener.CKEDITOR;
   }
 
 	componentDidMount() {
@@ -40,15 +43,23 @@ export default class CKEditorUpload extends Component {
 			height
 		} = this.state;
 
-		const CKEDITOR = window.opener.CKEDITOR;
-		if (url) {
-			const funcNum = this.props.queryParams.CKEditorFuncNum;
-			CKEDITOR.tools.callFunction( funcNum, util.imageUrlWithStyle(url, 'large') );
-			this.handleImageSize(width, height);
-		}
+		const CKEDITOR = this.CKEDITOR;
+		this.setState({ loading: true });
+
 		const button = CKEDITOR.dialog.getCurrent().getButton('ok');
-		if (button) CKEDITOR.tools.setTimeout(button.click, 0, button);
-		window.close();
+		this.timeout = setTimeout(() => {
+			if (url) {
+				const funcNum = this.props.queryParams.CKEditorFuncNum;
+				CKEDITOR.tools.callFunction( funcNum, util.imageUrlWithStyle(url, 'large') );
+				this.handleImageSize(width, height);
+			}
+			this.setState({ loading: false }, () => {
+				setTimeout(() => {
+					if (button) CKEDITOR.tools.setTimeout(button.click, 0, button);
+					window.close();
+				}, 0);
+			});
+		}, 2000);
 	}
 
 	closeModalAndCancel(modalID) {
@@ -92,7 +103,7 @@ export default class CKEditorUpload extends Component {
 			url,
 			width,
 			height
-		});
+		}, this.closeModalAndSave);
 	}
 
 	handleImageSize(width, height) {
@@ -107,7 +118,8 @@ export default class CKEditorUpload extends Component {
   render() {
 
 		const {
-			url
+			url,
+			loading
 		} = this.state;
 
 		const articleID = util.getValue(this.props.queryParams, 'articleID');
@@ -117,10 +129,9 @@ export default class CKEditorUpload extends Component {
 			borderRadius: 0
 		}
 
-		console.log('execute library', library);
-
     return (
 			<div>
+				{loading ? <Loader msg='Saving...' /> : <></>}
 	      <MediaLibrary
 					image={url}
 					preview={url}

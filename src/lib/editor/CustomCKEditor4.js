@@ -46,12 +46,18 @@ class CustomCKEditor4 extends Component {
 					const vbox = els[0];
 					const children = vbox.children[0].children;
 					const hboxInput = children[0];
+					hboxInput.hidden = true;
 					hboxInput.label = 'Image URL';
 					const hboxBtn = children[1];
-					hboxBtn.label = 'Choose';
+					hboxBtn.label = 'Click here to Upload Image from Media Library';
+					hboxBtn.style = 'display:flex;justify-content:center;align-items:center;height:40px;margin-top:50px;width:90%;';
 
 					const alt = els[1];
+					alt.hidden = true;
 					alt.label = `Text if image can't display`;
+
+					const size = els[2];
+					size.hidden = true;
 
 					const align = els[3];
 					align.hidden = true;
@@ -59,10 +65,11 @@ class CustomCKEditor4 extends Component {
 					const caption = els[4];
 					caption.hidden = true;
 
+					console.log('execute els', els, hboxBtn, hboxInput);
+
 					/* debug
 					console.log('execute def', def);
 					console.log('execute info', info);
-					console.log('execute els', els);
 					*/
 				}
 		});

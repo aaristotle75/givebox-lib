@@ -36,7 +36,7 @@
 }
 
 .cke_chrome {
-	border: 1px solid transparent !important;
+	//border: 1px solid transparent !important;
 }
 
 .cke_button_icon {
@@ -113,4 +113,8 @@ a.cke_dialog_ui_button_ok:focus {
 .cke_balloon.cke_balloontoolbar,
 .cke_panel {
 	z-index: 9999999 !important;
+}
+
+.cke_dialog_ui_hbox_first {
+	width: 0% !important;
 }
