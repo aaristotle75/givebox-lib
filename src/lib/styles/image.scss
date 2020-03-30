@@ -638,20 +638,26 @@ button.imageCover {
 	}
 
 
-	.uploadContainer .dropzone {
-		width: 150px;
-		height: 150px;
+	.uploadContainer {
 
-		.icon {
-			font-size: 32px;
-		}
+		height: 630px;
+		padding-bottom: 50px;
 
-	 .text {
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
+		.dropzone {
+			width: 150px;
+			height: 150px;
 
-			span { margin: 5px 0 }
+			.icon {
+				font-size: 32px;
+			}
+
+		 .text {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+
+				span { margin: 5px 0 }
+			}
 		}
 
 	}
@@ -663,10 +669,24 @@ button.imageCover {
 			height: 180px;
 			padding-top: 10px;
 
-			.button-group {
-				margin: 0;
-			}
+	    .menu-group {
+	      display: flex;
+	      justify-content: center;
+	      align-items: center;
+	      margin: 0px;
+	    }
 		}
-
 	}
+	.uploadBottom {
+		position: absolute;
+		bottom: 0;
+		right: 0;
+		left: 0;
+		height: 50px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background: #ffffff;
+	}
+
 }

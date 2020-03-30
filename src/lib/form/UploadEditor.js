@@ -30,10 +30,11 @@ class UploadEditor extends Component {
     }
   }
 
-  componentDidMount() {
-  }
-
-  componentDidUpdate(prev) {
+  componentWillUnmount() {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+      this.timeout = null;
+    }
   }
 
   cancel() {
@@ -48,7 +49,7 @@ class UploadEditor extends Component {
   }
 
   saveCallback(url) {
-    this.props.handleSaveCallback(url, this.saveMediaItem);
+		this.saveMediaItem(url);
   }
 
   saveMediaItem(url) {
@@ -65,9 +66,13 @@ class UploadEditor extends Component {
   }
 
   saveMediaItemCallback(res, err) {
-    this.props.setSelected(res.URL, res.ID);
-    this.props.toggleEditor(false);
-    this.props.setLoading(false);
+		this.timeout = setTimeout(() => {
+	    this.props.handleSaveCallback(res.URL);
+	    this.props.setSelected(res.URL, res.ID, null, true);
+	    this.props.toggleEditor(false);
+	    this.props.setLoading(false);
+			this.timeout = null;
+		}, 500 );
   }
 
   handleScale = e => {

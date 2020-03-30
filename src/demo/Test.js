@@ -101,6 +101,8 @@ export default class Test extends Component {
         />
 				*/}
 				<CustomCKEditor4
+					orgID={185}
+					articleID={587}
 					content={content}
 					onBlur={this.onBlur}
 					onChange={this.onChange}

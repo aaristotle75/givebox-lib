@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import {
   util,
 	MediaLibrary
-} from '../lib';
+} from '../';
 
 
-export default class ckeditorUpload extends Component {
+export default class CKEditorUpload extends Component {
 
   constructor(props) {
     super(props);
@@ -43,7 +43,7 @@ export default class ckeditorUpload extends Component {
 		const CKEDITOR = window.opener.CKEDITOR;
 		if (url) {
 			const funcNum = this.props.queryParams.CKEditorFuncNum;
-			CKEDITOR.tools.callFunction( funcNum, url );
+			CKEDITOR.tools.callFunction( funcNum, util.imageUrlWithStyle(url, 'large') );
 			this.handleImageSize(width, height);
 		}
 		const button = CKEDITOR.dialog.getCurrent().getButton('ok');
@@ -56,8 +56,7 @@ export default class ckeditorUpload extends Component {
 		window.opener.CKEDITOR.dialog.getCurrent().hide();
 	}
 
-	handleSaveCallback(value) {
-		const url = util.imageUrlWithStyle(value, 'large');
+	handleSaveCallback(url) {
 		this.getMeta(url);
 	}
 
@@ -71,8 +70,8 @@ export default class ckeditorUpload extends Component {
 	}
 
 	handleAspectRatio(url, w, h) {
-		const maxWidth = 600;
-		const maxHeight = 600;
+		const maxWidth = 550;
+		const maxHeight = 550;
 		let ratio = 0;
 		let width = w;
 		let height = h;
@@ -103,7 +102,6 @@ export default class ckeditorUpload extends Component {
 		const height_field = dialog.getContentElement('info', 'height');
 		width_field.setValue(width);
 		height_field.setValue(height);
-		console.log('execute dialog', width_field, height_field);
 	}
 
   render() {
@@ -112,9 +110,14 @@ export default class ckeditorUpload extends Component {
 			url
 		} = this.state;
 
+		const articleID = util.getValue(this.props.queryParams, 'articleID');
 		const library = {
+			articleID,
+			type: 'article',
 			borderRadius: 0
 		}
+
+		console.log('execute library', library);
 
     return (
 			<div>

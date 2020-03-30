@@ -58,7 +58,7 @@ class Routes extends Component {
                     <Route path='/gbx' render={(props) => loadComponent('demo/GBXTest')}  />
                     <Route path='/gbx3' render={(props) => loadComponent('demo/GBX3Test')}  />
                     <Route path='/test' component={Test} />
-                    <Route path='/upload' render={(props) => loadComponent('modal/demo/CKEditorUpload',  { useProjectRoot: false, routeProps: props })}  />
+                    <Route path='/upload' render={(props) => loadComponent('modal/lib/editor/CKEditorUpload',  { useProjectRoot: false, routeProps: props })}  />
                     <Route render={() => <div>Error</div>} />
                   </Switch>
                 </div>

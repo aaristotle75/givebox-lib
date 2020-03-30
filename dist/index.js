@@ -11,6 +11,7 @@ import ColorPicker from './form/ColorPicker';
 import WhereField from './form/WhereField';
 import Upload from './form/Upload';
 import UploadLibrary from './form/UploadLibrary';
+import MediaLibrary from './form/MediaLibrary';
 import UploadPrivate from './form/UploadPrivate';
 import * as _v from './form/formValidate';
 import * as selectOptions from './form/selectOptions';
@@ -65,8 +66,9 @@ import { handleFile } from './gbx3/tools/util';
 import { BlockOption } from './gbx3/blocks/Block'; // Editor
 
 import CustomCKEditor4 from './editor/CustomCKEditor4';
+import CKEditorUpload from './editor/CKEditorUpload';
 export { // Form
-Form, _v, selectOptions, Select, TextField, Dropdown, RichTextField, Choice, CalendarField, CalendarRange, Checkbox, ColorPicker, Upload, UploadLibrary, UploadPrivate, WhereField // actions
+Form, _v, selectOptions, Select, TextField, Dropdown, RichTextField, Choice, CalendarField, CalendarRange, Checkbox, ColorPicker, Upload, UploadLibrary, UploadPrivate, WhereField, MediaLibrary // actions
 , toggleModal, removeResource, resourceProp, getAPI, sendAPI, setAppRef, setModalRef, setProp, setPrefs, setCustomProp // API
 , giveboxAPI, getResource, reloadResource, sendResource, savePrefs // reducers
 , app, resource, send, modal, preferences, custom // Modal
@@ -77,4 +79,4 @@ Form, _v, selectOptions, Select, TextField, Dropdown, RichTextField, Choice, Cal
 , FeesGlossary // Help Desk
 , HelpDesk, TicketForm, zohoCats, Articles, HelpDeskButton // GBX
 , CustomTemplate, Editor, handleFile, BlockOption // Editor
-, CustomCKEditor4 };
+, CustomCKEditor4, CKEditorUpload };

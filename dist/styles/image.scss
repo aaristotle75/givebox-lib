@@ -628,3 +628,65 @@ button.imageCover {
 .successMsg {
   color: $green;
 }
+
+.mediaLibrary {
+
+	.photoSection.SelectedPhoto {
+		width: 150px;
+		height: 150px;
+		margin-left: 50px;
+	}
+
+
+	.uploadContainer {
+
+		height: 630px;
+		padding-bottom: 50px;
+
+		.dropzone {
+			width: 150px;
+			height: 150px;
+
+			.icon {
+				font-size: 32px;
+			}
+
+		 .text {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+
+				span { margin: 5px 0 }
+			}
+		}
+
+	}
+
+	.uploadLibraryContainer {
+		padding-top: 180px;
+
+		.menu {
+			height: 180px;
+			padding-top: 10px;
+
+	    .menu-group {
+	      display: flex;
+	      justify-content: center;
+	      align-items: center;
+	      margin: 0px;
+	    }
+		}
+	}
+	.uploadBottom {
+		position: absolute;
+		bottom: 0;
+		right: 0;
+		left: 0;
+		height: 50px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background: #ffffff;
+	}
+
+}

@@ -94,9 +94,9 @@ class CustomCKEditor4 extends Component {
           });
         }
       },
-	    filebrowserImageBrowseUrl: `/upload`,
+	    filebrowserImageBrowseUrl: `/upload?articleID=${this.props.articleID}`,
 	    filebrowserWindowWidth: '640',
-	    filebrowserWindowHeight: '580'
+	    filebrowserWindowHeight: '600'
 		}
 		const config = { ...defaultConfig, ...this.props.config };
 		return config;

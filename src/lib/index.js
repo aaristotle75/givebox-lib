@@ -94,6 +94,7 @@ import { BlockOption } from './gbx3/blocks/Block';
 
 // Editor
 import CustomCKEditor4 from './editor/CustomCKEditor4';
+import CKEditorUpload from './editor/CKEditorUpload';
 
 export {
   // Form
@@ -202,5 +203,6 @@ export {
 	BlockOption,
 
 	// Editor
-	CustomCKEditor4
+	CustomCKEditor4,
+	CKEditorUpload
 };

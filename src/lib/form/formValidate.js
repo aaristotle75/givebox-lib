@@ -232,7 +232,7 @@ export function validateCalendarRange(key, fields) {
     // no default
   }
 
-  if (fields[key].rangeRequired || (range.start && range.end)) {
+  if (fields[key].rangeRequired && (range.start && range.end)) {
     if (fields[key].enableTime) {
       if (range.start > range.end) validate = false;
     } else {

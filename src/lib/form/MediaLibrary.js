@@ -91,10 +91,10 @@ class UploadLibrary extends Component {
     this.readFile(file, this.editPhoto);
   }
 
-  setSelected(URL, ID, callback = null) {
+  setSelected(URL, ID, callback = null, justUploaded = false) {
     const library = this.props.library;
     this.setPreview(URL);
-    this.props.handleSaveCallback(URL);
+    this.props.handleSaveCallback(URL, justUploaded);
     switch (util.getValue(library, 'type')) {
       case 'article': {
         if (util.getValue(library, 'articleID')) {
@@ -103,7 +103,7 @@ class UploadLibrary extends Component {
             method: 'put',
             isSending: false,
             data: {
-              setDefault: true,
+              setDefault: false,
               orderNumber: 1
             },
             resourcesToLoad: ['articleMediaItems']
@@ -302,7 +302,7 @@ class UploadLibrary extends Component {
           <div className='uploadLibraryContainer'>
             {isFetching && <Loader className='uploadLoader' msg={'Loading...'} />}
             <div className='menu'>
-              <div className='button-group'>
+              <div className='menu-group'>
                 <Dropzone
                   className='dropzone'
                   onDrop={this.handleDrop}
@@ -339,7 +339,7 @@ class UploadLibrary extends Component {
           }
         </div>
         {!this.state.editor ?
-        <div className='center button-group'>
+        <div className='uploadBottom center button-group'>
           <GBLink className='link' onClick={() => this.closeModalAndCancel()}>{this.props.cancelLabel}</GBLink>
           <GBLink style={{ width: '150px' }} className='button' onClick={() => this.props.closeModalAndSave(modalID)}>{this.props.saveLabel}</GBLink>
         </div>
