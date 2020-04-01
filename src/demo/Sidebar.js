@@ -18,6 +18,7 @@ export default class Sidebar extends Component {
           <NavLink to='/gbx'>GBX</NavLink>
           <NavLink to='/gbx3'>GBX3</NavLink>
           <NavLink to='/test'>Test</NavLink>
+          <NavLink to='/editor'>Upload Editor Test</NavLink>					
         </ul>
       </nav>
     )

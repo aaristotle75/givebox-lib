@@ -15,7 +15,7 @@ import {
 } from '../';
 import { getResource, sendResource } from '../api/helpers';
 import { removeResource, toggleModal } from '../api/actions';
-import UploadEditor from './UploadEditor';
+import UploadEditorResizer from './UploadEditorResizer';
 import { Line } from 'rc-progress';
 import has from 'has';
 
@@ -212,7 +212,7 @@ class UploadLibrary extends Component {
 
         items.push(
           <li className='ripple' key={key}>
-            <ModalLink id='imageDisplay' opts={{ url: value.URL, id: value.ID, toggleModal: this.props.toggleModal, setSelected: this.setSelected, actions: actions }}><Image url={value.URL} size={this.state.preview === value.URL ? 'original' : 'small'} maxSize='100px' alt='Media Item' /></ModalLink>
+            <ModalLink id='imageDisplay' opts={{ url: value.URL, id: value.ID, toggleModal: this.props.toggleModal, setSelected: this.setSelected, actions: actions }}><Image url={value.URL} size={this.state.preview === value.URL ? 'original' : 'small'} maxWidth='100px' maxHeight='auto' alt='Media Item' /></ModalLink>
             <div className='buttons'>
             	<GBLink className='select' onClick={() => this.selectEditor(value.URL)}><span className='icon icon-edit'></span></GBLink>
               <GBLink className='select' onClick={() => this.setSelected(value.URL, value.ID)}>Select</GBLink>
@@ -294,7 +294,7 @@ class UploadLibrary extends Component {
             </div>
           </div>
           :
-            <UploadEditor
+            <UploadEditorResizer
               {...this.props}
               image={this.state.image}
               toggleEditor={this.toggleEditor}
@@ -309,7 +309,7 @@ class UploadLibrary extends Component {
           }
         </div>
         {!this.state.editor ?
-        <div className='uploadBottom center button-group'>
+        <div style={{ marginBottom: 0 }} className='uploadBottom center button-group'>
           <GBLink className='link' onClick={() => this.closeModalAndCancel()}>{this.props.cancelLabel}</GBLink>
           <GBLink style={{ width: '150px' }} className='button' onClick={() => this.props.closeModalAndSave(modalID)}>{this.props.saveLabel}</GBLink>
         </div>

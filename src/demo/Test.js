@@ -6,6 +6,7 @@ import {
   RichTextField,
 	GBLink,
 	Popup,
+	Balloon,
 	ColorPicker
 } from '../lib';
 import CustomCKEditor from '../lib/editor/CustomCKEditor';
@@ -25,9 +26,11 @@ export default class Test extends Component {
     this.onChange = this.onChange.bind(this);
 		this.renderTemplate = this.renderTemplate.bind(this);
 		this.buttonClick = this.buttonClick.bind(this);
+		this.balloonClick = this.balloonClick.bind(this);
     this.state = {
       content: defaultContent,
-			editBtn: false
+			editBtn: false,
+			balloon: false
     };
   }
 
@@ -66,6 +69,10 @@ export default class Test extends Component {
 			// no default
 		}
 		this.setState({ editBtn: open });
+	}
+
+	balloonClick(type, open) {
+		this.setState({ balloon: open });
 	}
 
   render() {
@@ -109,6 +116,20 @@ export default class Test extends Component {
 					width={645}
 					height={600}
 				/>
+				<div style={{ marginTop: 40 }}></div>
+				<Balloon
+					open={this.state.balloon}
+					buttonCallback={this.balloonClick}
+					pointer={'left'}
+					style={{
+						top: '400px',
+						right: '50px'
+					}}
+				>
+					Add captivating content to gain the attention of your audience
+				</Balloon>
+				<GBLink onClick={() => this.balloonClick('open', true)}>Balloon</GBLink>
+				<div style={{ marginTop: 40 }}></div>
 				<Popup
 					title={'Test title'}
 					buttonCallback={this.buttonClick}

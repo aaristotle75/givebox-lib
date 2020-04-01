@@ -35,6 +35,15 @@ class CustomCKEditor4 extends Component {
 		CKEDITOR.on( 'dialogDefinition', function( e ) {
 		    const dialogName = e.data.name;
 		    const dialogDefinition = e.data.definition;
+
+				/*
+				if (dialogName === 'link') {
+					const def = dialogDefinition;
+					const infoTab = def.getContents( 'info' );
+					const els = infoTab.elements;
+				}
+				*/
+
 				if (dialogName === 'image2') {
 					const def = dialogDefinition;
 					def.title = 'Add/Edit Image';
@@ -52,6 +61,9 @@ class CustomCKEditor4 extends Component {
 					hboxBtn.label = 'Click here to Upload Image from Media Library';
 					hboxBtn.style = 'display:flex;justify-content:center;align-items:center;height:40px;margin-top:50px;width:90%;';
 
+					//console.log('execute opened', def, hboxBtn);
+					//console.log('execute hboxBtn', hboxBtn.onClick());
+
 					const alt = els[1];
 					alt.hidden = true;
 					alt.label = `Text if image can't display`;
@@ -65,11 +77,11 @@ class CustomCKEditor4 extends Component {
 					const caption = els[4];
 					caption.hidden = true;
 
-					console.log('execute els', els, hboxBtn, hboxInput);
-
+					//console.log('execute els', els, hboxBtn, hboxInput);
 					/* debug
 					console.log('execute def', def);
 					console.log('execute info', info);
+					console.log('execute els', els, hboxBtn, hboxInput);
 					*/
 				}
 		});

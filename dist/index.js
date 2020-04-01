@@ -18,6 +18,7 @@ import * as selectOptions from './form/selectOptions';
 import ModalLink from './modal/ModalLink';
 import ModalRoute from './modal/ModalRoute';
 import Popup from './modal/Popup';
+import Balloon from './modal/Balloon';
 import ActionsMenu from './table/ActionsMenu';
 import Search from './table/Search';
 import Table from './table/Table';
@@ -75,7 +76,7 @@ Form, _v, selectOptions, Select, TextField, Dropdown, RichTextField, Choice, Cal
 , ModalLink, ModalRoute // Table
 , ActionsMenu, Search, Table, MaxRecords, NoRecords, Paginate, Export, DownloadFileConnect, Filter // Block
 , StatBlock, ActionBar, CodeBlock // common
-, Alert, Collapse, CustomBtn, Delete, Error, Fade, GBLink, GBX, Iframe, Image, ImageDisplay, history, LinearBar, Loader, Popup, Portal, Redirect, Tabs, Tab, types, util // Glossary
+, Alert, Collapse, CustomBtn, Delete, Error, Fade, GBLink, GBX, Iframe, Image, ImageDisplay, history, LinearBar, Loader, Popup, Balloon, Portal, Redirect, Tabs, Tab, types, util // Glossary
 , FeesGlossary // Help Desk
 , HelpDesk, TicketForm, zohoCats, Articles, HelpDeskButton // GBX
 , CustomTemplate, Editor, handleFile, BlockOption // Editor

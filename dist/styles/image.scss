@@ -318,7 +318,7 @@ button.imageCover {
 .photoSection.PhotoList {
 
   .imageComponent img {
-    border-radius: 0px;
+    //border-radius: 0px;
   }
 
   position: relative;
@@ -631,6 +631,33 @@ button.imageCover {
 
 .mediaLibrary {
 
+	.uploadEditorContainer {
+	  position: relative;
+	  height: auto;
+	  overflow: hidden;
+	  padding-bottom: 50px;
+
+	  .menu {
+	    position: relative;
+	    display: flex;
+	    justify-content: center;
+	    align-items: center;
+	    bottom: 0px;
+	    left: 0;
+	    right: 0;
+	    height: 70px;
+	    background: $white;
+	    padding: 0 10px;
+	  }
+
+		.button-group {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+	}
+
 	.photoSection.SelectedPhoto {
 		width: 150px;
 		height: 150px;
@@ -689,4 +716,27 @@ button.imageCover {
 		background: #ffffff;
 	}
 
+}
+
+.uploadResizerContent {
+  position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 370px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+
+	.react-resizable {
+		position: absolute;
+		border: 1px dashed #000;
+		background: transparent;
+		margin: 0 auto;
+		overflow: hidden;
+	}
+}
+
+.editor-canvas {
 }

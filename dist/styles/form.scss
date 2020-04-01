@@ -78,7 +78,7 @@ button.input.hasValue {
 }
 
 input {
-  font-size: $normal-text-size;
+  font-size: $med-text-size;
   font-family: $font-family;
   height: 40px;
   background: transparent;
@@ -92,16 +92,16 @@ input {
 }
 
 input::-webkit-input-placeholder {
-  font-size: $normal-text-size;
+  font-size: $med-text-size;
   font-family: $font-family;
   color: $med-gray;
 }
 input::-moz-placeholder {
-  font-size: $normal-text-size;
+  font-size: $med-text-size;
   color: $med-gray;
 }
 input::-ms-input-placeholder {
-  font-size: $normal-text-size;
+  font-size: $med-text-size;
   color: $med-gray;
 }
 
