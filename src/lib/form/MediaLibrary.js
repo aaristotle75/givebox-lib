@@ -169,7 +169,7 @@ class UploadLibrary extends Component {
 
       items.push(
         <li key={0} className='ripple'>
-          <ModalLink id='imageDisplay' opts={{ url: this.state.preview, actions: actions }}><Image url={this.state.preview} size='original' maxSize='100px' alt='Media Item' /></ModalLink>
+          <ModalLink id='imageDisplay' opts={{ url: this.state.preview, actions: actions }}><Image url={this.state.preview} size='original' maxWidth='100px' maxHeight='auto' alt='Media Item' /></ModalLink>
           <div className='buttons'>
             <GBLink className='select' onClick={() => this.selectEditor(this.state.preview)}>Edit</GBLink>
           </div>
