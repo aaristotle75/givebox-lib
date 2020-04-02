@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import CKEditor from 'ckeditor4-react';
 import '../styles/editor.scss';
+import {
+	toggleModal,
+	ModalRoute,
+	ModalLink
+} from '../';
+import CKEditor4Upload from './CKEditor4UploadModal';
 
 CKEditor.editorUrl = 'https://cdn.ckeditor.com/4.14.0/full-all/ckeditor.js';
 
@@ -31,6 +37,7 @@ class CustomCKEditor4 extends Component {
   }
 
 	onBeforeLoad(CKEDITOR) {
+		const bindthis = this;
 
 		CKEDITOR.on( 'dialogDefinition', function( e ) {
 		    const dialogName = e.data.name;
@@ -45,13 +52,20 @@ class CustomCKEditor4 extends Component {
 				*/
 
 				if (dialogName === 'image2') {
+
 					const def = dialogDefinition;
+					const dialog = def.dialog;
 					def.title = 'Add/Edit Image';
 					def.width = 400;
 					def.height = 200;
 
+					dialog.on('show', function() {
+						bindthis.props.toggleModal('editorUpload', true);
+					});
+
 					const infoTab = dialogDefinition.getContents( 'info' );
 					const els = infoTab.elements;
+
 					const vbox = els[0];
 					const children = vbox.children[0].children;
 					const hboxInput = children[0];
@@ -63,6 +77,7 @@ class CustomCKEditor4 extends Component {
 
 					//console.log('execute opened', def, hboxBtn);
 					//console.log('execute hboxBtn', hboxBtn.onClick());
+					//hboxBtn.onClick();
 
 					const alt = els[1];
 					alt.hidden = true;
@@ -77,7 +92,7 @@ class CustomCKEditor4 extends Component {
 					const caption = els[4];
 					caption.hidden = true;
 
-					//console.log('execute els', els, hboxBtn, hboxInput);
+					console.log('execute els', els, hboxBtn, hboxInput);
 					/* debug
 					console.log('execute def', def);
 					console.log('execute info', info);
@@ -145,17 +160,21 @@ class CustomCKEditor4 extends Component {
 		} = this.state;
 
     return (
-      <div className='ck-content'>
-        <CKEditor
-					config={this.setConfig()}
-          data={content}
-          onChange={this.onChange}
-          onBlur={this.onBlur}
-          onFocus={this.onFocus}
-					type={this.props.type}
-					onBeforeLoad={this.onBeforeLoad}
-        />
-      </div>
+			<>
+        <ModalRoute optsProps={{ customOverlay: { zIndex: 10000000 } }} id='editorUpload' component={() => <CKEditor4Upload articleID={4} /> } effect='3DFlipVert' style={{ width: '60%' }} />
+	      <div className='ck-content'>
+	        <CKEditor
+						config={this.setConfig()}
+	          data={content}
+	          onChange={this.onChange}
+	          onBlur={this.onBlur}
+	          onFocus={this.onFocus}
+						type={this.props.type}
+						onBeforeLoad={this.onBeforeLoad}
+	        />
+	      </div>
+				<ModalLink id='editorUpload'>Open Editor Upload</ModalLink>
+			</>
     )
   }
 }
@@ -174,4 +193,5 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
+	toggleModal
 })(CustomCKEditor4);
