@@ -173,7 +173,6 @@ class CustomCKEditor4 extends Component {
 						onBeforeLoad={this.onBeforeLoad}
 	        />
 	      </div>
-				<ModalLink id='editorUpload'>Open Editor Upload</ModalLink>
 			</>
     )
   }
