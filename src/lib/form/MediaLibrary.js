@@ -256,7 +256,7 @@ class UploadLibrary extends Component {
 
     return (
       <div className='mediaLibrary'>
-        <ModalRoute id='imageDisplay' component={(props) =>
+        <ModalRoute optsProps={{ customOverlay: { zIndex: 10000001 } }} id='imageDisplay' component={(props) =>
           <ImageDisplay {...props} />
         } className='flexWrapper centerItems' effect='3DFlipVert' style={{ width: '60%' }} />
         { this.state.loading &&

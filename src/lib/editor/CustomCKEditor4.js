@@ -92,8 +92,8 @@ class CustomCKEditor4 extends Component {
 					const caption = els[4];
 					caption.hidden = true;
 
-					console.log('execute els', els, hboxBtn, hboxInput);
 					/* debug
+					console.log('execute els', els, hboxBtn, hboxInput);
 					console.log('execute def', def);
 					console.log('execute info', info);
 					console.log('execute els', els, hboxBtn, hboxInput);

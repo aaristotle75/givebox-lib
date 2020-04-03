@@ -35,7 +35,6 @@ class CKEditor4Upload extends Component {
 		} = this.state;
 
 		const CKEDITOR = this.CKEDITOR;
-		this.setState({ loading: true });
 
 		const button = CKEDITOR.dialog.getCurrent().getButton('ok');
 		this.timeout = setTimeout(() => {
@@ -57,6 +56,7 @@ class CKEditor4Upload extends Component {
 	}
 
 	handleSaveCallback(url) {
+		this.setState({ loading: true });
 		this.getMeta(url);
 	}
 
