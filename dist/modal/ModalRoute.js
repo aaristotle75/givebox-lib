@@ -61,7 +61,7 @@ class ModalRoute extends Component {
       open: open,
       closeBtnShow: closeBtnShow,
       customStyle: style,
-      closeCallback: has(opts, 'closeCallback') ? opts.closeCallback : null,
+      closeCallback: util.getValue(optsProps, 'closeCallback', null),
       disallowBgClose: disallowBgClose || util.getValue(optsProps, 'disallowBgClose', false),
       customOverlay: util.getValue(optsProps, 'customOverlay', customOverlay),
       appRef: appRef,

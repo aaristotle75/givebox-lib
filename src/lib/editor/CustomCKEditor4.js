@@ -20,6 +20,7 @@ class CustomCKEditor4 extends Component {
     this.onFocus = this.onFocus.bind(this);
 		this.setConfig = this.setConfig.bind(this);
 		this.onBeforeLoad = this.onBeforeLoad.bind(this);
+		this.onCloseUploadEditor = this.onCloseUploadEditor.bind(this);
 
     this.state = {
       content: this.props.content
@@ -42,22 +43,27 @@ class CustomCKEditor4 extends Component {
 		CKEDITOR.on( 'dialogDefinition', function( e ) {
 		    const dialogName = e.data.name;
 		    const dialogDefinition = e.data.definition;
+				const def = dialogDefinition;
+				const dialog = def.dialog;
 
-				/*
 				if (dialogName === 'link') {
-					const def = dialogDefinition;
-					const infoTab = def.getContents( 'info' );
+					def.width = 400;
+					def.minHeight = 75;
+					def.height = 75;
+					const infoTab = dialogDefinition.getContents( 'info' );
 					const els = infoTab.elements;
+					els[0].hidden = true;
+					els[1].hidden = true;
+
+					console.log('execute infoTab', infoTab);
 				}
-				*/
 
 				if (dialogName === 'image2') {
 
-					const def = dialogDefinition;
-					const dialog = def.dialog;
 					def.title = 'Add/Edit Image';
-					def.width = 400;
-					def.height = 200;
+					def.width = 300;
+					def.minHeight = 75;
+					def.height = 75;
 
 					dialog.on('show', function() {
 						bindthis.props.toggleModal('editorUpload', true);
@@ -72,12 +78,8 @@ class CustomCKEditor4 extends Component {
 					hboxInput.hidden = true;
 					hboxInput.label = 'Image URL';
 					const hboxBtn = children[1];
-					hboxBtn.label = 'Click here to Upload Image from Media Library';
+					hboxBtn.label = 'Click here to Upload Image';
 					hboxBtn.style = 'display:flex;justify-content:center;align-items:center;height:40px;margin-top:50px;width:90%;';
-
-					//console.log('execute opened', def, hboxBtn);
-					//console.log('execute hboxBtn', hboxBtn.onClick());
-					//hboxBtn.onClick();
 
 					const alt = els[1];
 					alt.hidden = true;
@@ -91,13 +93,6 @@ class CustomCKEditor4 extends Component {
 
 					const caption = els[4];
 					caption.hidden = true;
-
-					/* debug
-					console.log('execute els', els, hboxBtn, hboxInput);
-					console.log('execute def', def);
-					console.log('execute info', info);
-					console.log('execute els', els, hboxBtn, hboxInput);
-					*/
 				}
 		});
 	}
@@ -153,6 +148,11 @@ class CustomCKEditor4 extends Component {
 		if (this.props.onFocus) this.props.onFocus(content);
   }
 
+	onCloseUploadEditor() {
+		const CKEDITOR = window.CKEDITOR;
+		if (CKEDITOR) CKEDITOR.dialog.getCurrent().hide();
+	}
+
   render() {
 
 		const {
@@ -161,7 +161,7 @@ class CustomCKEditor4 extends Component {
 
     return (
 			<>
-        <ModalRoute optsProps={{ customOverlay: { zIndex: 10000000 } }} id='editorUpload' component={() => <CKEditor4Upload articleID={4} /> } effect='3DFlipVert' style={{ width: '60%' }} />
+        <ModalRoute optsProps={{ closeCallback: this.onCloseUploadEditor, customOverlay: { zIndex: 10000000 } }} id='editorUpload' component={() => <CKEditor4Upload articleID={4} /> } effect='3DFlipVert' style={{ width: '60%' }} />
 	      <div className='ck-content'>
 	        <CKEditor
 						config={this.setConfig()}
