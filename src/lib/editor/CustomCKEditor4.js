@@ -54,8 +54,6 @@ class CustomCKEditor4 extends Component {
 					const els = infoTab.elements;
 					els[0].hidden = true;
 					els[1].hidden = true;
-
-					console.log('execute infoTab', infoTab);
 				}
 
 				if (dialogName === 'image2') {
