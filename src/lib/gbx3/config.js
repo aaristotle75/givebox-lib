@@ -1,6 +1,7 @@
  const fundraiserBlocks = [
   {
 		name: 'logo',
+		title: 'Logo',
 		type: 'Media',
 		field: 'orgImageURL',
 		defaultFormat: {
@@ -14,9 +15,10 @@
 	},
 	{
 		name: 'title',
+		title: 'Title',
 		type: 'Text',
 		field: 'title',
-		defaultFormat: '<h2>{{TOKEN}}</h2>',
+		defaultFormat: '<span style="font-size:22px;">{{TOKEN}}</span>',
 		grid: {
 	    desktop: { i: 'title', x: 1, y: 0, w: 5, h: 2, enabled: true },
 	    mobile: { i: 'title', x: 1, y: 0, w: 5, h: 2, enabled: true }
@@ -24,6 +26,7 @@
 	},
 	{
 		name: 'orgName',
+		title: 'Organization Name',
 		type: 'Text',
 		field: 'orgName',
 		defaultFormat: '<span style="color:hsl(204,4%,58%);font-size:12px">{{TOKEN}}</span>',
@@ -34,6 +37,7 @@
 	},
 	{
 		name: 'media',
+		title: 'Media',
 		type: 'Media',
 		field: 'imageURL',
 		defaultFormat: {
@@ -54,6 +58,7 @@
 	},
 	{
 		name: 'summary',
+		title: 'Summary',
 		type: 'Text',
 		field: 'summary',
 		grid: {
@@ -63,6 +68,7 @@
 	},
 	{
 		name: 'paymentForm',
+		title: 'Payment Form',
 		type: 'Form',
 		remove: false,
 		grid: {
@@ -72,6 +78,7 @@
 	},
 	{
 		name: 'content',
+		title: 'Content',
 		type: 'Content',
 		field: 'description',
 		overflow: 'visible',

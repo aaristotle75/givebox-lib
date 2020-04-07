@@ -115,6 +115,22 @@ export default class Test extends Component {
 					onChange={this.onChange}
 					width={645}
 					height={600}
+					toolbar={[
+						[ 'Bold', 'Italic', '-', 'Font', '-', 'FontSize', 'TextColor', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', '-', 'Link', 'Unlink', '-', 'Image']]}
+					initCallback={(editor) => {
+						editor.focus();
+						const CKEDITOR = window.CKEDITOR;
+						const selection = editor.getSelection();
+						const getRanges = selection ? selection.getRanges() : [];
+						if (!util.isEmpty(getRanges)) {
+							const range = getRanges[0];
+							const pCon = range.startContainer.getAscendant('p',true);
+							const newRange = new CKEDITOR.dom.range(range.document);
+							newRange.moveToPosition(pCon, CKEDITOR.POSITION_AFTER_END);
+							newRange.select();
+						}
+					}}
+					type='inline'
 				/>
 				<div style={{ marginTop: 40 }}></div>
 				<Balloon

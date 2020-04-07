@@ -70,6 +70,13 @@ $light-gray: #f8f8f8;
   background: $white;
   @include box-shadow(1px 3px 3px 1px rgba(0,0,0,0.4));
 
+	@media (max-width: 500px) {
+		position: relative !important;
+		width: 100% !important;
+		height: 100% !important;
+  	border-radius: 0px;
+	}
+
   button.removeBtn {
     top: 8px;
     right: 8px;

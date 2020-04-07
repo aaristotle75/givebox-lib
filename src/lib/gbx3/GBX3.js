@@ -228,7 +228,7 @@ class GBXClass extends React.Component {
 		const article = this.props.article;
     Object.entries(blocks).forEach(([key, value]) => {
       if (value.grid[breakpoint].enabled === enabled) {
-			  const Block = Loadable({
+			  const BlockComponent = Loadable({
 			    loader: () => import(`./blocks/${value.type}`),
 			    loading: () => <></>
 			  });
@@ -242,8 +242,9 @@ class GBXClass extends React.Component {
 						data-grid={value.grid[breakpoint]}
 						ref={ref}
 					>
-						<Block
+						<BlockComponent
 							name={value.name}
+							title={value.title}
 							type={value.type}
 							field={value.field}
 							content={value.content}
