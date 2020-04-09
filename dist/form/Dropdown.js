@@ -257,7 +257,8 @@ class Dropdown extends Component {
       iconClosed,
       overlay,
       overlayDuration,
-      fixedLabel
+      fixedLabel,
+      readOnly
     } = this.props;
     const {
       open,
@@ -269,9 +270,10 @@ class Dropdown extends Component {
     } = this.state;
     const selectedValue = multi ? open ? multiCloseLabel : selectLabel : selected && (value || defaultValue) ? selected : selectLabel;
     const idleLabel = selectedValue === multiCloseLabel || selectedValue === selectLabel;
+    const readOnlyText = this.props.readOnlyText || `${label} is not editable`;
     return React.createElement("div", {
       style: style,
-      className: `input-group ${className || ''} ${error ? 'error tooltip' : ''}`
+      className: `input-group ${className || ''} ${readOnly ? 'readOnly tooltip' : ''} ${error ? 'error tooltip' : ''}`
     }, React.createElement(Fade, {
       in: open && overlay,
       duration: overlayDuration
@@ -282,13 +284,13 @@ class Dropdown extends Component {
       className: `dropdown ${this.props.color ? 'customColor' : ''} ${floatingLabel && 'floating-label'} ${status} ${fixedLabel ? 'fixed' : ''}`,
       style: dropdownStyle
     }, label && !floatingLabel && React.createElement("label", null, React.createElement(GBLink, {
-      onClick: open ? this.closeMenu : this.openMenu
+      onClick: open || readOnly ? this.closeMenu : this.openMenu
     }, label)), React.createElement("button", {
       style: buttonStyle,
       onMouseEnter: this.onMouseEnter,
       onMouseLeave: this.onMouseLeave,
       type: "button",
-      onClick: open ? this.closeMenu : this.openMenu
+      onClick: open || readOnly ? this.closeMenu : this.openMenu
     }, React.createElement("span", {
       ref: this.selectedRef,
       className: `label ${selected ? 'selected' : ''} ${idleLabel && 'idle'}`
@@ -309,12 +311,12 @@ class Dropdown extends Component {
       className: "dropdown-content-inner"
     }, this.listOptions()))), label && floatingLabel && React.createElement("label", null, React.createElement(GBLink, {
       className: "link label",
-      onClick: open ? this.closeMenu : this.openMenu
+      onClick: open || readOnly ? this.closeMenu : this.openMenu
     }, React.createElement("span", {
       ref: this.labelRef
     }, label)))), React.createElement("div", {
       className: `tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`
-    }, this.props.error, React.createElement("i", null)), React.createElement("div", {
+    }, this.props.error, readOnly ? readOnlyText : '', React.createElement("i", null)), React.createElement("div", {
       className: `errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`
     }, error));
   }

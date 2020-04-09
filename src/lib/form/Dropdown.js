@@ -206,7 +206,8 @@ class Dropdown extends Component {
       iconClosed,
       overlay,
       overlayDuration,
-      fixedLabel
+      fixedLabel,
+			readOnly
     } = this.props;
 
     const {
@@ -220,15 +221,16 @@ class Dropdown extends Component {
 
     const selectedValue = multi ? open ? multiCloseLabel : selectLabel : selected && (value || defaultValue) ? selected : selectLabel;
     const idleLabel = selectedValue === multiCloseLabel || selectedValue === selectLabel;
+    const readOnlyText = this.props.readOnlyText || `${label} is not editable`;
 
     return (
-      <div style={style} className={`input-group ${className || ''} ${error ? 'error tooltip' : ''}`}>
+      <div style={style} className={`input-group ${className || ''} ${readOnly ? 'readOnly tooltip' : ''} ${error ? 'error tooltip' : ''}`}>
         <Fade in={open && overlay} duration={overlayDuration}>
           <div onClick={this.closeMenu} className={`dropdown-cover ${display ? '' : 'displayNone'}`}></div>
         </Fade>
         <div className={`dropdown ${this.props.color ? 'customColor' : ''} ${floatingLabel && 'floating-label'} ${status} ${fixedLabel ? 'fixed' : ''}`} style={dropdownStyle}>
-          {label && !floatingLabel && <label><GBLink onClick={open ? this.closeMenu : this.openMenu}>{label}</GBLink></label>}
-          <button style={buttonStyle} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} type='button' onClick={open ? this.closeMenu : this.openMenu}><span ref={this.selectedRef} className={`label ${selected ? 'selected' : ''} ${idleLabel && 'idle'}`}>{selectedValue}</span><span ref={this.iconRef} className={`icon icon-${open ? multi ? iconMultiClose : iconOpened : iconClosed}`}></span></button>
+          {label && !floatingLabel && <label><GBLink onClick={open || readOnly ? this.closeMenu : this.openMenu}>{label}</GBLink></label>}
+          <button style={buttonStyle} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} type='button' onClick={open || readOnly ? this.closeMenu : this.openMenu}><span ref={this.selectedRef} className={`label ${selected ? 'selected' : ''} ${idleLabel && 'idle'}`}>{selectedValue}</span><span ref={this.iconRef} className={`icon icon-${open ? multi ? iconMultiClose : iconOpened : iconClosed}`}></span></button>
           <div ref={this.dropdownRef} style={{ ...contentStyle, boxShadow: this.props.color ? `none`: '', border: this.props.color && open ? `1px solid ${this.props.color}` : ''}} className={`${open ? 'opened' : ''} dropdown-content ${this.props.direction || direction}`}>
             <AnimateHeight
               duration={200}
@@ -239,10 +241,10 @@ class Dropdown extends Component {
               </div>
             </AnimateHeight>
           </div>
-          {label && floatingLabel && <label><GBLink className='link label' onClick={open ? this.closeMenu : this.openMenu}><span ref={this.labelRef}>{label}</span></GBLink></label>}
+          {label && floatingLabel && <label><GBLink className='link label' onClick={open || readOnly ? this.closeMenu : this.openMenu}><span ref={this.labelRef}>{label}</span></GBLink></label>}
         </div>
         <div className={`tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`}>
-          {this.props.error}
+          {this.props.error}{readOnly ? readOnlyText : ''}
           <i></i>
         </div>
         <div className={`errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`}>{error}</div>

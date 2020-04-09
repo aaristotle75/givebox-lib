@@ -120,9 +120,15 @@ export default class TestForm extends Component {
       <div>
         <h2>Form Elements</h2>
         <div className='formWrapper'>
-          {this.props.richText('emailList', { label: 'Email List', placeholder: 'Enter emails separated by commas', modal: false, required: false, allowLink: true })}
-
+          {this.props.dropdown('bankAccounts', {
+            options: list,
+            label: 'Bank Accounts',
+            selectLabel: 'Select the Bank Account',
+            required: true,
+						readOnly: false
+          })}
           {/*
+          {this.props.richText('emailList', { label: 'Email List', placeholder: 'Enter emails separated by commas', modal: false, required: false, allowLink: true })}
           {this.props.richText('content', { required: false, label: 'Rich Text', placeholder: 'Please write something...', modal: true, modalLabel: 'Open content editor', allowLink: true })}
           <div style={{ margin: '100px 0px' }}>
             <div dangerouslySetInnerHTML={{ __html: util.getValue(content, 'value') }}></div>
@@ -131,12 +137,6 @@ export default class TestForm extends Component {
           {this.props.textField('taxID', { readOnly: this.state.readOnly, readOnlyText: 'You cannot edit this field', placeholder: 'Enter federal Tax ID', label: 'Tax ID', validate: 'taxID', value: '10-1010101' })}
           <GBLink onClick={() => this.testFunc(100)}>Test Func</GBLink>
           {this.props.textField('amount', { value: '', label: 'Amount', fixedLabel: false, required: true })}
-          {this.props.dropdown('bankAccounts', {
-            options: list,
-            label: 'Bank Accounts',
-            selectLabel: 'Select the Bank Account',
-            required: true
-          })}
           {this.props.uploadField('imageURL', { parent: 'user', label: 'Image', debug: true })}
 
           {!this.state.webcam || 1===1 ?
