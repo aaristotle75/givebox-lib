@@ -249,7 +249,8 @@ class UploadLibrary extends Component {
     const {
       isFetching,
       library,
-			modalID
+			modalID,
+			showBtns
     } = this.props;
 
     const mimes = types.mime.image + ',' + types.mime.text + ',' + types.mime.applications;
@@ -308,10 +309,10 @@ class UploadLibrary extends Component {
             />
           }
         </div>
-        {!this.state.editor ?
+        {!this.state.editor && showBtns !== 'hide' ?
         <div style={{ marginBottom: 0 }} className='uploadBottom center button-group'>
-          <GBLink className='link' onClick={() => this.closeModalAndCancel()}>{this.props.cancelLabel}</GBLink>
-          <GBLink style={{ width: '150px' }} className='button' onClick={() => this.props.closeModalAndSave(modalID)}>{this.props.saveLabel}</GBLink>
+          {showBtns === 'all' || showBtns === 'cancel' ? <GBLink className='link' onClick={() => this.closeModalAndCancel()}>{this.props.cancelLabel}</GBLink> : <></>}
+          {showBtns === 'all' || showBtns === 'save' ? <GBLink style={{ width: '150px' }} className='button' onClick={() => this.props.closeModalAndSave(modalID)}>{this.props.saveLabel}</GBLink> : <></>}
         </div>
         : ''}
       </div>
@@ -324,7 +325,8 @@ UploadLibrary.defaultProps = {
 	modalID: 'uploadLibrary',
 	showButtons: 'all',
 	cancelLabel: 'Cancel',
-	saveLabel: 'Save'
+	saveLabel: 'Save',
+	showBtns: 'all'
 }
 
 function mapStateToProps(state, props) {

@@ -4,62 +4,46 @@ import {
   util,
 	GBLink,
 	Image,
-	Upload,
-	UploadLibrary,
+	MediaLibrary,
 	ModalRoute,
-	toggleModal
+	toggleModal,
+	Popup
 } from '../../';
-import Editor from '../tools/Editor';
-import { handleFile } from '../tools/util';
 import { BlockOption } from './Block';
 
 class Media extends Component {
 
   constructor(props) {
     super(props);
-		this.onBlur = this.onBlur.bind(this);
-		this.onChange = this.onChange.bind(this);
 		this.edit = this.edit.bind(this);
-		this.editorInit = this.editorInit.bind(this);
 		this.handleSaveCallback = this.handleSaveCallback.bind(this);
 		this.closeModalAndSave = this.closeModalAndSave.bind(this);
 		this.closeModalAndCancel = this.closeModalAndCancel.bind(this);
-		this.openMediaLibrary = this.openMediaLibrary.bind(this);
-
+		this.closeModalCallback = this.closeModalCallback.bind(this);
 		this.blockRef = this.props.blockRef.current;
 		if (this.blockRef) {
-			this.width = this.blockRef.clientWidth;
-			this.height = this.blockRef.clientHeight;
+			this.maxWidth = this.blockRef.clientWidth;
+			this.maxHeight = this.blockRef.clientHeight;
 		}
 
-		const defaultContent = `<img src="${util.imageUrlWithStyle(props.fieldValue, 'medium')}" alt="${props.name}" height="${this.height}" width="${this.width}" />`;
+		const size = util.getValue(props.defaultFormat, 'size', 'large');
+		const defaultContent = util.imageUrlWithStyle(props.fieldValue, size);
 		const content = this.props.content || defaultContent;
 
     this.state = {
 			content,
 			defaultContent: content,
-			edit: false
+			edit: false,
+			maxWidth: this.maxWidth || 550,
+			maxHeight: this.maxHeight || 550
     };
-		this.editor = null;
-		this.uploadedUrl = null;
   }
 
 	componentDidMount() {
 	}
 
-  onBlur(content) {
-		console.log('execute onBlur');
-    //this.setState({ content });
-		//this.props.updateBlock(this.props.name, { content });
-  }
-
-  onChange(content) {
-    this.setState({ content });
-    if (this.props.onChange) this.props.onChange(this.props.name, content);
-  }
-
 	edit() {
-		//this.props.toggleModal(this.props.modalID, true, { closeCallback: this.closeModalAndSave} );
+		this.props.toggleModal(this.props.modalID, true);
 		this.setState({ edit: true });
 	}
 
@@ -67,14 +51,13 @@ class Media extends Component {
 		console.log('execute remove');
 	}
 
-	editorInit(editor) {
-		this.editor = editor;
-		this.editor.editing.view.focus();
-	}
-
 	closeModalAndSave() {
-		this.props.toggleModal(this.props.modalID, false);
-		this.setState({ edit: false });
+		this.timeout = setTimeout(() => {
+			this.setState({ loading: false, edit: false }, () => {
+				this.props.updateBlock(this.props.name, { content: this.state.content });
+				this.props.toggleModal(this.props.modalID, false);
+			});
+		}, 0);
 	}
 
 	closeModalAndCancel() {
@@ -82,48 +65,45 @@ class Media extends Component {
 		this.setState({ content: this.state.defaultContent, edit: false });
 	}
 
-	handleSaveCallback(url, callback = null) {
-		console.log('execute', this.editor);
-		this.editor.model.change( writer => {
-		    const imageElement = writer.createElement( 'image', {
-		        src: url
-		    } );
-
-		    // Insert the image in the current selection location.
-		    this.editor.model.insertContent( imageElement, this.editor.model.document.selection );
-		});
-		this.props.toggleModal(this.props.modalID, false);
+	closeModalCallback(type) {
+		this.setState({ loading: true });
+		if (type === 'ok') {
+			this.closeModalAndSave();
+		} else {
+			this.closeModalAndCancel();
+		}
 	}
 
-	openMediaLibrary(editor) {
-		this.props.toggleModal(this.props.modalID, true);
+	handleSaveCallback(url) {
+		const size = util.getValue(this.props.defaultFormat, 'size', 'large');
+		this.setState({ loading: true, content: util.imageUrlWithStyle(url, size) }, () => this.closeModalAndSave());
 	}
 
   render() {
 
 		const {
-			editable,
+			title,
 			noRemove,
 			article,
-			modalID
+			modalID,
+			defaultFormat
 		} = this.props;
 
 		const {
 			edit,
-			defaultContent,
-			content
+			content,
+			maxWidth,
+			maxHeight
 		} = this.state;
 
-		const cleanHtml = util.cleanHtml(content);
 		const articleID = util.getValue(article, 'articleID', null);
 
 		const library = {
 			type: 'article',
-			borderRadius: 20,
+			borderRadius: 0,
 			articleID: articleID
 		}
 
-		console.log('execute', content, defaultContent, cleanHtml);
     return (
       <div className='block'>
 				<BlockOption
@@ -132,42 +112,35 @@ class Media extends Component {
 					editOnClick={this.edit}
 					removeOnClick={this.remove}
 				/>
-        <ModalRoute id={modalID} component={() =>
-          <UploadLibrary
-            image={content}
-            preview={content}
-            test='test'
-            handleSaveCallback={this.handleSaveCallback}
-            handleSave={handleFile}
-            articleID={articleID}
-            library={library}
-            closeModalAndSave={this.closeModalAndSave}
-						closeModalAndCancel={this.closeModalAndCancel}
-          />}
+        <ModalRoute
+					optsProps={{ closeCallback: this.onCloseUploadEditor, customOverlay: { zIndex: 10000000 } }}
+					id={modalID}
+					component={() =>
+						<>
+					    <MediaLibrary
+								modalID={modalID}
+								image={content}
+								preview={content}
+					      handleSaveCallback={this.handleSaveCallback}
+					      handleSave={util.handleFile}
+					      library={library}
+					      closeModalAndSave={this.closeModalAndSave}
+					      closeModalAndCancel={this.closeModalAndCancel}
+								showBtns={'hide'}
+								saveLabel={'close'}
+					    />
+							<div style={{ margin: 0 }} className='button-group center'>
+								<GBLink className='button' onClick={this.closeModalAndSave}>Close</GBLink>
+							</div>
+						</>
+					}
+					effect='3DFlipVert' style={{ width: '60%' }}
+					draggable={true}
+					draggableTitle={`Editing ${title}`}
+					closeCallback={this.closeModalCallback}
+					disallowBgClose={true}
 				/>
-				{edit && editable ?
-	        <Editor
-	          onChange={this.onChange}
-	          onBlur={this.onBlur}
-						content={defaultContent}
-						editorInit={this.editorInit}
-						width={this.width}
-						height={this.height}
-						config={{
-							toolbar: {
-								items: [
-									'mediaLibrary',
-									'mediaEmbed'
-								]
-							},
-							mediaLibrary: {
-								openMediaLibrary: this.openMediaLibrary
-							}
-						}}
-	        />
-				:
-					<div dangerouslySetInnerHTML={{ __html: cleanHtml }} />
-				}
+				<Image url={content} size={util.getValue(defaultFormat, 'size', 'large')} maxWidth={maxWidth} maxHeight={maxHeight} alt={`${util.getValue(article, 'title')}`} />
       </div>
     )
   }
@@ -175,7 +148,7 @@ class Media extends Component {
 
 function mapStateToProps(state, props) {
 
-	const modalID = `uploadLibrary-${props.name}`;
+	const modalID = `mediaBlock-${props.name}`;
 
   return {
 		modalID

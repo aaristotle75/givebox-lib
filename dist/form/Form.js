@@ -1008,6 +1008,7 @@ class Form extends Component {
         width: '60%'
       }
     }), React.createElement(ModalLink, {
+      allowCustom: true,
       id: "cvvModal"
     }, "What is CVV?"));
     return React.createElement("div", {

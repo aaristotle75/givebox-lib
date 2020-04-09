@@ -55,14 +55,14 @@ export default class Popup extends Component {
 	        >
 	          <div style={style} className={`popup ${open ? 'open' : 'closed'}`}>
 	            <div className='handle'><span className='title'>{title}</span></div>
-	            <GBLink disallowCustom={true} className='removeBtn' onClick={() => this.buttonClick('ok')}><span className='icon icon-x'></span></GBLink>
+	            <GBLink className='removeBtn' onClick={() => this.buttonClick('ok')}><span className='icon icon-x'></span></GBLink>
 	            <Fade in={open}>
 	              {this.props.children}
 	            </Fade>
 							{showButtons ?
 							<div className='button-group'>
-								{showButtons === 'cancel' || showButtons === 'all' ? <GBLink disallowCustom={true} className='popupBtn cancel' onClick={() => this.buttonClick('cancel')}>Cancel</GBLink> : <></>}
-								{showButtons === 'ok' || showButtons === 'all' ? <GBLink disallowCustom={true} className='popupBtn ok' onClick={() => this.buttonClick('ok')}>OK</GBLink> : <></>}
+								{showButtons === 'cancel' || showButtons === 'all' ? <GBLink className='popupBtn cancel' onClick={() => this.buttonClick('cancel')}>Cancel</GBLink> : <></>}
+								{showButtons === 'ok' || showButtons === 'all' ? <GBLink className='popupBtn ok' onClick={() => this.buttonClick('ok')}>OK</GBLink> : <></>}
 							</div> : <></>}
 	          </div>
 	        </Draggable>

@@ -324,6 +324,23 @@
 	  font-size: $small-text-size;
 	}
 
+	.dropdown button {
+		padding: 12px 0;
+	}
+
+	.dropdown button:hover {
+		border-bottom: 2px solid $mainColor;
+	}
+
+	.dropdown button .selected.label,
+	.dropdown .label:not(button) {
+	    font-size: $med-text-size;
+	}
+
+	.dropdown .icon {
+		top: 15px;
+	}
+
 	.dropdown-cover {
 	  display: none;
 	}

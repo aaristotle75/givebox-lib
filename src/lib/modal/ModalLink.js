@@ -38,7 +38,8 @@ class ModalLink extends Component {
       opts,
       style,
       onMouseEnter,
-      onMouseLeave
+      onMouseLeave,
+			allowCustom
     } = this.props;
 
     let component;
@@ -56,7 +57,7 @@ class ModalLink extends Component {
       }
       default: {
         component =
-          <GBLink style={style} className={`${className}`} type='button' onClick={() => this.onClick(id, opts)} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+          <GBLink allowCustom={allowCustom} style={style} className={`${className}`} type='button' onClick={() => this.onClick(id, opts)} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
             {this.props.children}
           </GBLink>
         ;
@@ -74,7 +75,8 @@ ModalLink.defaultProps = {
   type: 'link',
   className: '',
   style: {},
-  modalState: 'closed'
+  modalState: 'closed',
+	allowCustom: false
 }
 
 function mapStateToProps(state) {

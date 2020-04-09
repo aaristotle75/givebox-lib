@@ -48,10 +48,10 @@ class GBLink extends Component {
 			primaryColor,
 			disabled,
 			ripple,
-			disallowCustom
+			allowCustom
 		} = this.props;
 
-		const color = !disallowCustom && primaryColor ? { color: primaryColor } : {};
+		const color = allowCustom && primaryColor ? { color: primaryColor } : {};
 		const mergeStyle = {...color,  ...style, ...this.state.hoverStyle };
 
 		return (
@@ -67,7 +67,7 @@ GBLink.defaultProps = {
 	style: {},
 	disabled: false,
 	ripple: false,
-	disallowCustom: false
+	allowCustom: false
 }
 
 function mapStateToProps(state, props) {
@@ -81,11 +81,11 @@ function mapStateToProps(state, props) {
 	}
 
 	const className = props.className || '';
-	const hoverStyle = rgb && !props.disallowCustom ? { color: rgbColor } : {};
+	const hoverStyle = rgb && props.allowCustom ? { color: rgbColor } : props.hoverStyle || {};
 	const style = { ...props.style };
 
 
-	if (className.includes('button') && !props.disallowCustom ) {
+	if (className.includes('button') && props.allowCustom ) {
 		hoverStyle.backgroundColor = rgbColor;
 		hoverStyle.color = '#ffffff';
 		style.border = `1px solid ${rgbColor}`;
@@ -97,7 +97,6 @@ function mapStateToProps(state, props) {
 		style
   }
 }
-
 
 export default connect(mapStateToProps, {
 })(GBLink)

@@ -77,8 +77,8 @@ class SendEmail extends Component {
           color={this.props.primaryColor}
         />
         <div className='button-group center'>
-          <GBLink onClick={this.cancel}>Cancel</GBLink>
-          <GBLink className='button' onClick={() => this.props.toggleModal('sendEmail', false)}>Save & Close</GBLink>
+          <GBLink allowCustom={true} onClick={this.cancel}>Cancel</GBLink>
+          <GBLink allowCustom={true} className='button' onClick={() => this.props.toggleModal('sendEmail', false)}>Save & Close</GBLink>
         </div>
       </div>
     )

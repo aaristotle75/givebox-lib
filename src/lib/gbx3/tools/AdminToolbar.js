@@ -42,15 +42,15 @@ export default class AdminToolbar extends Component {
             <div className='logo'>
               <div className='loggedInGroup'>
                 <span className='loggedInAs'>Logged in as {util.getValue(access, 'userRole')}</span>
-                <GBLink disallowCustom={true} className='link show' onClick={() => window.open('https://admin.givebox.com', '_blank')}>{util.getValue(this.props.access, 'fullName')}</GBLink>
+                <GBLink className='link show' onClick={() => window.open('https://admin.givebox.com', '_blank')}>{util.getValue(this.props.access, 'fullName')}</GBLink>
               </div>
               <img src={util.imageUrlWithStyle('https://givebox.s3-us-west-1.amazonaws.com/public/gb-logo5.png', 'small')} alt='Givebox Logo' onClick={() => window.open('https://admin.givebox.com', '_blank')} />
             </div>
             <div className='button-group linkBar'>
-              <GBLink disallowCustom={true} className='link show' onClick={toggleEditable}>{editable ? 'Turn Editable Off' : 'Turn Editable On'}</GBLink>
-              <GBLink disallowCustom={true} onClick={toggleOutline}>{showOutline ? 'Hide Outline' : 'Show Outline'}</GBLink>
-              <GBLink disallowCustom={true} onClick={resetLayout}>Reset Layout</GBLink>
-              <GBLink disallowCustom={true} onClick={saveLayout}>Save Layout</GBLink>
+              <GBLink className='link show' onClick={toggleEditable}>{editable ? 'Turn Editable Off' : 'Turn Editable On'}</GBLink>
+              <GBLink onClick={toggleOutline}>{showOutline ? 'Hide Outline' : 'Show Outline'}</GBLink>
+              <GBLink onClick={resetLayout}>Reset Layout</GBLink>
+              <GBLink onClick={saveLayout}>Save Layout</GBLink>
             </div>
             <AnimateHeight
               duration={500}

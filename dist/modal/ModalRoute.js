@@ -38,7 +38,9 @@ class ModalRoute extends Component {
       appRef,
       disallowBgClose,
       draggable,
-      modalRootClass
+      modalRootClass,
+      closeCallback,
+      draggableTitle
     } = this.props;
     const modalRoot = document.getElementById('modal-root');
     const optsProps = { ...opts,
@@ -61,11 +63,12 @@ class ModalRoute extends Component {
       open: open,
       closeBtnShow: closeBtnShow,
       customStyle: style,
-      closeCallback: util.getValue(optsProps, 'closeCallback', null),
+      closeCallback: util.getValue(optsProps, 'closeCallback', closeCallback),
       disallowBgClose: disallowBgClose || util.getValue(optsProps, 'disallowBgClose', false),
       customOverlay: util.getValue(optsProps, 'customOverlay', customOverlay),
       appRef: appRef,
-      draggable: draggable
+      draggable: draggable,
+      draggableTitle: util.getValue(optsProps, 'draggableTitle', draggableTitle)
     }, component(optsProps))));
   }
 

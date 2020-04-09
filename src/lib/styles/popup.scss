@@ -69,6 +69,7 @@ $light-gray: #f8f8f8;
   padding: 40px 30px;
   background: $white;
   @include box-shadow(1px 3px 3px 1px rgba(0,0,0,0.4));
+	overflow: hidden;
 
 	@media (max-width: 500px) {
 		position: relative !important;
@@ -96,12 +97,13 @@ $light-gray: #f8f8f8;
 	.button-group {
 		position: absolute;
 		right: 20px;
-		bottom: 5px;
+		bottom: 0px;
 		margin: 0;
 		padding: 0;
 
 		button.popupBtn {
 			margin-right: 5px;
+			margin-bottom: 5px;
 		}
 	}
 

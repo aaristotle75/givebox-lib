@@ -243,7 +243,7 @@ class UploadEditorResizer extends Component {
 	            onImageReady={this.logCallback.bind(this, 'onImageReady')}
 	            image={this.state.image}
 	            className="editor-canvas"
-	            color={[37, 54, 85, .4]}
+	            color={[37, 54, 85, 0]}
 	            border={[0, 0]}
 							disableBoundaryChecks={true}
 	          />
@@ -284,7 +284,7 @@ class UploadEditorResizer extends Component {
 					*/}
 	        <div className='button-group'>
 	          <GBLink className='link' onClick={() => this.cancel()}>Cancel</GBLink>
-	          <GBLink style={{ width: '150px' }} className='button' onClick={() => this.save()}>Upload</GBLink>
+	          <GBLink style={{ width: '100px' }} className='button' onClick={() => this.save()}>Save</GBLink>
 	        </div>
         </div>
       </div>

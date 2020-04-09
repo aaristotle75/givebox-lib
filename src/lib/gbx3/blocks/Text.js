@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import {
   util,
 	GBLink,
-	Popup
+	Popup,
+	ModalRoute,
+	toggleModal
 } from '../../';
 import CustomCKEditor4 from '../../editor/CustomCKEditor4';
-import Editor from '../tools/Editor';
 import { BlockOption } from './Block';
 
-export default class Text extends Component {
+class Text extends Component {
 
   constructor(props) {
     super(props);
@@ -16,7 +18,8 @@ export default class Text extends Component {
 		this.onChange = this.onChange.bind(this);
 		this.edit = this.edit.bind(this);
 		this.editorInit = this.editorInit.bind(this);
-		this.buttonClick = this.buttonClick.bind(this);
+		this.closeModalCallback = this.closeModalCallback.bind(this);
+		this.closeModalButtons = this.closeModalButtons.bind(this);
 
 		const defaultContent = props.defaultFormat && props.fieldValue ? props.defaultFormat.replace('{{TOKEN}}', props.fieldValue) : `<p>${props.fieldValue}</p>`;
 		const content = this.props.content || defaultContent;
@@ -41,7 +44,6 @@ export default class Text extends Component {
 	}
 
   onBlur(content) {
-		console.log('execute onBlur');
     this.setState({ content });
 		// this.props.updateBlock(this.props.name, { content });
   }
@@ -51,13 +53,23 @@ export default class Text extends Component {
     if (this.props.onChange) this.props.onChange(this.props.name, content);
   }
 
-	edit(type, open = true) {
-		this.setState({ edit: open });
+	edit() {
+		this.props.toggleModal(this.props.modalID, true);
+		this.setState({ edit: true });
 	}
 
-	buttonClick(type, open) {
-		console.log('execute buttonClick', type, open);
+	closeModalCallback() {
+		this.props.updateBlock(this.props.name, { content: this.state.content });
 		this.setState({ edit: false });
+	}
+
+	closeModalButtons(type = 'save') {
+		if (type === 'save') {
+			this.closeModalCallback();
+		} else {
+			this.setState({ content: this.state.defaultContent, edit: false });
+		}
+		this.props.toggleModal(this.props.modalID, false);
 	}
 
 	remove() {
@@ -72,7 +84,7 @@ export default class Text extends Component {
   render() {
 
 		const {
-			editable,
+			modalID,
 			noRemove,
 			title
 		} = this.props;
@@ -92,47 +104,65 @@ export default class Text extends Component {
 					editOnClick={this.edit}
 					removeOnClick={this.remove}
 				/>
-				<Popup
-					title={`Editing ${title}`}
-					buttonCallback={this.buttonClick}
-					open={edit && editable ? true : false}
-					showButtons='ok'
-					style={{
-						width: `${this.width + 100}px`,
-						height: `${this.height + 200}px`,
-						padding: '40px 20px'
-					}}
-				>
-					<CustomCKEditor4
-						orgID={185}
-						articleID={587}
-						content={content}
-						onBlur={this.onBlur}
-						onChange={this.onChange}
-						width={'100%'}
-						height={`${this.height + 50}px`}
-						type='classic'
-						toolbar={[
-							[ 'Bold', 'Italic', '-', 'Font', '-', 'FontSize', 'TextColor', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight']
-						]}
-						initCallback={(editor) => {
-							editor.focus();
-							const CKEDITOR = window.CKEDITOR;
-							const selection = editor.getSelection();
-							const getRanges = selection ? selection.getRanges() : [];
-							if (!util.isEmpty(getRanges)) {
-								const range = getRanges[0];
-								const pCon = range.startContainer.getAscendant('p',true);
-								const newRange = new CKEDITOR.dom.range(range.document);
-								newRange.moveToPosition(pCon, CKEDITOR.POSITION_AFTER_END);
-								newRange.select();
-							}
-						}}
-						contentCss='https://givebox.s3-us-west-1.amazonaws.com/public/css/gbx3contents.css'
-					/>
-				</Popup>
+        <ModalRoute
+					optsProps={{ closeCallback: this.onCloseUploadEditor, customOverlay: { zIndex: 10000000 } }}
+					id={modalID}
+					component={() =>
+						<>
+							<CustomCKEditor4
+								orgID={185}
+								articleID={587}
+								content={content}
+								onBlur={this.onBlur}
+								onChange={this.onChange}
+								width={'100%'}
+								height={`${this.height + 50}px`}
+								type='classic'
+								toolbar={[
+									[ 'Bold', 'Italic', '-', 'Font', '-', 'FontSize', 'TextColor', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight']
+								]}
+								initCallback={(editor) => {
+									editor.focus();
+									const CKEDITOR = window.CKEDITOR;
+									const selection = editor.getSelection();
+									const getRanges = selection ? selection.getRanges() : [];
+									if (!util.isEmpty(getRanges)) {
+										const range = getRanges[0];
+										const pCon = range.startContainer.getAscendant('p',true);
+										const newRange = new CKEDITOR.dom.range(range.document);
+										newRange.moveToPosition(pCon, CKEDITOR.POSITION_AFTER_END);
+										newRange.select();
+									}
+								}}
+								contentCss='https://givebox.s3-us-west-1.amazonaws.com/public/css/gbx3contents.css'
+							/>
+							<div style={{ marginBottom: 0 }} className='button-group center'>
+								<GBLink className='link' onClick={() => this.closeModalButtons('cancel')}>Cancel</GBLink>
+								<GBLink className='button' onClick={this.closeModalButtons}>Save</GBLink>
+							</div>
+						</>
+					}
+					effect='3DFlipVert' style={{ width: '60%' }}
+					draggable={true}
+					draggableTitle={`Editing ${title}`}
+					closeCallback={this.closeModalCallback}
+					disallowBgClose={true}
+				/>
 				<div dangerouslySetInnerHTML={{ __html: cleanHtml }} />
       </div>
     )
   }
 }
+
+function mapStateToProps(state, props) {
+
+	const modalID = `mediaBlock-${props.name}`;
+
+  return {
+		modalID
+  }
+}
+
+export default connect(mapStateToProps, {
+	toggleModal
+})(Text);

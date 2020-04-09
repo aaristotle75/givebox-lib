@@ -73,7 +73,7 @@ class Modal extends Component {
       clearTimeout(this.timeout);
       this.timeout = null;
     }
-    this.closeModal();
+    this.closeModal(null, 'unmounted');
   }
 
   onEnter(pos) {
@@ -163,7 +163,7 @@ class Modal extends Component {
     }
   }
 
-  closeModal(callback, allowClose = true) {
+  closeModal(callback, type = 'ok', allowClose = true) {
     const bindthis = this;
     const transitionTimeMS = this.getTransitionDuration();
     const current = util.getValue(this.props.appRef, 'current', {});
@@ -178,7 +178,7 @@ class Modal extends Component {
       this.setState({open: false});
       this.closeTimer = setTimeout(function() {
   		  window.postMessage(bindthis.props.identifier, '*');
-        if (callback) callback();
+        if (callback) callback(type);
       }, transitionTimeMS);
     }
   }
@@ -209,7 +209,8 @@ class Modal extends Component {
       iconClose,
       appRef,
       identifier,
-      draggable
+      draggable,
+			draggableTitle
     } = this.props;
 
     let transition = effect.transition;
@@ -268,8 +269,9 @@ class Modal extends Component {
         style={prefix({ ...contentStyle, ...transition_style, ...openEffect })}
         onClick={stopPropagation}
       >
-        {(closeBtn) && <button style={closeBtnStyle} className='modalCloseBtn' onClick={() => this.closeModal(closeCallback)}>{iconClose}</button>}
-        <div className='modalTop'></div>
+        {(closeBtn) && <button style={closeBtnStyle} className='modalCloseBtn' onClick={() => this.closeModal(closeCallback, 'ok')}>{iconClose}</button>}
+				<div className='modalTop'></div>
+		    {draggable ? <div className='handle'><span className='title'><span className='icon icon-move'></span> {draggableTitle}</span></div> : <></>}
         {this.renderChildren()}
         {this.renderActions()}
         <Fade
@@ -283,10 +285,10 @@ class Modal extends Component {
     ;
 
     return (
-      <div className='modal'>
+      <div className={`modal ${draggable ? 'draggable' : ''}`}>
         <div
           ref={this.modalRef}
-          onClick={() => this.closeModal(closeCallback, this.props.disallowBgClose ? false : true)}
+          onClick={() => this.closeModal(closeCallback, 'ok', this.props.disallowBgClose ? false : true)}
           id={`modalOverlay-${identifier}`}
           className={`modalOverlay`} style={prefix({ ...overlayStyle, ...modalOverlayStyle})}
         >
@@ -296,9 +298,12 @@ class Modal extends Component {
             bottomOffset={'100px'}
           />
           {draggable ?
-            <Draggable>
-              {modalContent}
-            </Draggable>
+		        <Draggable
+		          allowAnyClick={false}
+		          handle={'.handle'}
+		        >
+							{modalContent}
+		        </Draggable>
           :
             modalContent
           }
@@ -322,7 +327,8 @@ Modal.defaultProps = {
   },
   actions: false,
   iconClose: <span className='icon icon-x'></span>,
-  draggable: false
+  draggable: false,
+	draggableTitle: ''
 };
 
 function mapStateToProps(state, props) {

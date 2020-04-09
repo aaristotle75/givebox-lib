@@ -206,13 +206,15 @@ class GBXClass extends React.Component {
     this.setState({ blocks });
 	}
 
-	updateBlock(name, obj = {}) {
+	updateBlock(name, obj = {}, callback) {
 		const blocks = this.state.blocks;
 		const index = blocks.findIndex(b => b.name === name);
 		if (index !== -1) {
 			blocks[index] = { ...blocks[index], ...obj };
 			console.log(blocks[index], blocks);
-			this.setState({ blocks });
+			this.setState({ blocks }, () => {
+				if (callback) callback();
+			});
 		}
 	}
 
