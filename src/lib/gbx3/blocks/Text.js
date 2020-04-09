@@ -105,7 +105,7 @@ class Text extends Component {
 					removeOnClick={this.remove}
 				/>
         <ModalRoute
-					optsProps={{ closeCallback: this.onCloseUploadEditor, customOverlay: { zIndex: 10000000 } }}
+					optsProps={{ closeCallback: this.onCloseUploadEditor }}
 					id={modalID}
 					component={() =>
 						<>
