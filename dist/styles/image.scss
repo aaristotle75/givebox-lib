@@ -126,10 +126,10 @@ button.imageCover {
 }
 
 .imageComponent {
-  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
+	align-items: center;
 
   img {
     display: inline-block;
