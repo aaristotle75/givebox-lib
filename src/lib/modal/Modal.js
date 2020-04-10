@@ -271,7 +271,7 @@ class Modal extends Component {
       >
         {(closeBtn) && <button style={closeBtnStyle} className='modalCloseBtn' onClick={() => this.closeModal(closeCallback, 'ok')}>{iconClose}</button>}
 				<div className='modalTop'></div>
-		    {draggable ? <div className='handle'><span className='title'><span className='icon icon-move'></span> {draggableTitle}</span></div> : <></>}
+		    {draggable ? <div className='handle'><span className='draggableTitle'><span className='icon icon-move'></span> {draggableTitle}</span></div> : <></>}
         {this.renderChildren()}
         {this.renderActions()}
         <Fade

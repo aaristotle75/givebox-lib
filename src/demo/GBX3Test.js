@@ -46,7 +46,7 @@ class GBXTest extends Component {
 					orgID={this.props.article.orgID}
 					kindID={this.props.article.kindID}
 					kind={this.props.article.kind}
-          autoSave={false}
+          autoSave={true}
 					save={this.save}
           access={util.getAuthorizedAccess(this.props.access, this.props.article.orgID)}
         />

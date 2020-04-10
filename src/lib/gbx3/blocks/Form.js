@@ -1,17 +1,21 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
 import {
   util,
   GBLink,
-	CustomBtn
+	toggleModal
 } from '../../';
 import PaymentForm from '../payment/PaymentForm';
+import { BlockOption } from './Block';
 
-export default class Form extends Component {
+class Form extends Component {
 
   constructor(props) {
     super(props);
+		this.edit = this.edit.bind(this);
     this.saveButton = this.saveButton.bind(this);
     this.state = {
+			edit: false
     };
   }
 
@@ -23,17 +27,39 @@ export default class Form extends Component {
     if (form) form.click();
   }
 
+	edit() {
+		//this.props.toggleModal(this.props.modalID, true);
+		this.setState({ edit: true });
+	}
+
+	remove() {
+		console.log('execute remove');
+	}
+
   render() {
 
     const {
-      article
+      article,
+			noRemove,
+			title,
+			modalID
     } = this.props;
+
+		const {
+			edit
+		} = this.state;
 
     const settings = util.getValue(article, 'giveboxSettings', {});
     const color = util.getValue(settings, 'primaryColor');
 
     return (
-      <>
+      <div className='block'>
+				<BlockOption
+					edit={edit}
+					noRemove={noRemove}
+					editOnClick={this.edit}
+					removeOnClick={this.remove}
+				/>
         <PaymentForm
           primaryColor={color}
           article={article}
@@ -47,7 +73,20 @@ export default class Form extends Component {
           <GBLink allowCustom={true} className='button' onClick={() => this.saveButton()}>Submit Form</GBLink>
           <GBLink allowCustom={true} onClick={() => console.log('onclick callback')}>No, thanks</GBLink>
         </div>
-      </>
+      </div>
     )
   }
 }
+
+function mapStateToProps(state, props) {
+
+	const modalID = `textBlock-${props.name}`;
+
+  return {
+		modalID
+  }
+}
+
+export default connect(mapStateToProps, {
+	toggleModal
+})(Form);

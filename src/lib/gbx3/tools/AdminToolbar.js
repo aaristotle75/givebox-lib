@@ -21,8 +21,10 @@ export default class AdminToolbar extends Component {
 		const {
 			toggleEditable,
 			toggleOutline,
+			toggleCollision,
 			editable,
 			showOutline,
+			collision,
 			resetLayout,
 			saveLayout,
 			access
@@ -49,6 +51,7 @@ export default class AdminToolbar extends Component {
             <div className='button-group linkBar'>
               <GBLink className='link show' onClick={toggleEditable}>{editable ? 'Turn Editable Off' : 'Turn Editable On'}</GBLink>
               <GBLink onClick={toggleOutline}>{showOutline ? 'Hide Outline' : 'Show Outline'}</GBLink>
+              <GBLink onClick={toggleCollision}>{collision ? 'Turn Freeform On' : 'Turn Freeform Off'}</GBLink>
               <GBLink onClick={resetLayout}>Reset Layout</GBLink>
               <GBLink onClick={saveLayout}>Save Layout</GBLink>
             </div>

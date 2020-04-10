@@ -41,13 +41,6 @@
 		type: 'Media',
 		field: 'imageURL',
 		defaultFormat: {
-			imgStyle: {
-	      display: 'inline-block',
-	      borderRadius: '20px',
-	      maxWidth: '300px',
-	      maxHeight: '300px',
-	      height: 'auto'
-			},
 			maxSize: '360px',
 			size: 'medium'
 		},

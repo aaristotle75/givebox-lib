@@ -38,7 +38,8 @@ export default class Image extends Component {
       style,
       maxWidth,
       maxHeight,
-      draggable
+      draggable,
+			minHeight
     } = this.props;
 
     let defaultSize = '175px';
@@ -74,7 +75,7 @@ export default class Image extends Component {
     const mergeStyle = { maxWidth: maxWidth || maxSize, maxHeight: maxHeight || maxSize, ...imgStyle };
 
     return (
-      <div onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} style={{ width: maxSize, height: 'auto',  ...style, ...this.state.hoverStyle  }} className={`imageComponent ${className || ''}`}>
+      <div onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} style={{ minHeight, width: maxSize, height: 'auto',  ...style, ...this.state.hoverStyle  }} className={`imageComponent ${className || ''}`}>
         {this.state.imageLoading  &&
         <div className='imageLoader'>
           <img src='https://s3-us-west-1.amazonaws.com/givebox/public/images/squareLoader.gif' alt='Loader' />
@@ -89,6 +90,7 @@ Image.defaultProps = {
   size: 'original',
   maxSize: '100%',
   maxHeight: null,
+	minHeight: '100px',
   maxWidth: null,
   draggable: false
 }

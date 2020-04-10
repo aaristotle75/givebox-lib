@@ -82,6 +82,20 @@
 
 .modal.draggable {
 
+	/*
+	.mediaLibrary .uploadLibraryContainer .menu	{
+		padding-top: 40px;
+	}
+
+	.mediaLibrary .uploadLibraryContainer {
+	  padding-top: 200px;
+	}
+
+	.mediaLibrary .uploadEditorContainer {
+	  padding-top: 30px;
+	}
+	*/
+
 	.modalCloseBtn {
 		top: 5px;
 		right: 5px;
@@ -90,10 +104,6 @@
 	.modalBottom:after,
 	.modalTop:after {
 		background: transparent;
-	}
-
-	.modalContent {
-		padding: 40px 10px 0 10px;
 	}
 
 	.handle {
@@ -107,7 +117,7 @@
 		background: transparent;
 		z-index: 9999999;
 
-		.title {
+		.draggableTitle {
 			display: flex;
 			align-items: center;
 			position: absolute;

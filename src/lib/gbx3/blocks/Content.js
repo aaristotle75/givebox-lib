@@ -9,7 +9,7 @@ import {
 import CustomCKEditor4 from '../../editor/CustomCKEditor4';
 import { BlockOption } from './Block';
 
-class Text extends Component {
+class Content extends Component {
 
   constructor(props) {
     super(props);
@@ -21,7 +21,6 @@ class Text extends Component {
 		this.closeModalButtons = this.closeModalButtons.bind(this);
 
 		const defaultContent = props.defaultFormat && props.fieldValue ? props.defaultFormat.replace('{{TOKEN}}', props.fieldValue) : `<p>${props.fieldValue}</p>`;
-
 		const content = util.getValue(this.props.info, 'content', defaultContent);
 
     this.state = {
@@ -106,7 +105,7 @@ class Text extends Component {
 					removeOnClick={this.remove}
 				/>
         <ModalRoute
-					optsProps={{ closeCallback: this.onCloseUploadEditor }}
+					optsProps={{ closeCallback: this.onCloseUploadEditor, customOverlay: { zIndex: 10000000 } }}
 					id={modalID}
 					component={() =>
 						<div className='modalWrapper'>
@@ -119,9 +118,6 @@ class Text extends Component {
 								width={'100%'}
 								height={`${this.height + 50}px`}
 								type='classic'
-								toolbar={[
-									[ 'Bold', 'Italic', '-', 'Font', '-', 'FontSize', 'TextColor', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight']
-								]}
 								initCallback={(editor) => {
 									editor.focus();
 									const CKEDITOR = window.CKEDITOR;
@@ -157,7 +153,7 @@ class Text extends Component {
 
 function mapStateToProps(state, props) {
 
-	const modalID = `textBlock-${props.name}`;
+	const modalID = `contentBlock-${props.name}`;
 
   return {
 		modalID
@@ -166,4 +162,4 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
 	toggleModal
-})(Text);
+})(Content);

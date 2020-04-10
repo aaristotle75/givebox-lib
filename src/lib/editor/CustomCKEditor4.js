@@ -5,7 +5,7 @@ import '../styles/editor.scss';
 import {
 	toggleModal,
 	ModalRoute,
-	ModalLink
+	Loader
 } from '../';
 import CKEditor4Upload from './CKEditor4UploadModal';
 
@@ -23,7 +23,8 @@ class CustomCKEditor4 extends Component {
 		this.onCloseUploadEditor = this.onCloseUploadEditor.bind(this);
 
     this.state = {
-      content: this.props.content
+      content: this.props.content,
+			loading: true
     };
   }
 
@@ -112,6 +113,7 @@ class CustomCKEditor4 extends Component {
 			on: {
         instanceReady: function(evt) {
           const editor = evt.editor;
+					bindthis.setState({ loading: false });
 					if (bindthis.props.initCallback) bindthis.props.initCallback(editor);
           // Register custom context for image widgets on the fly.
           editor.balloonToolbars.create({
@@ -153,13 +155,28 @@ class CustomCKEditor4 extends Component {
   render() {
 
 		const {
-			content
+			content,
+			loading
 		} = this.state;
 
     return (
 			<>
-        <ModalRoute optsProps={{ closeCallback: this.onCloseUploadEditor, customOverlay: { zIndex: 10000000 } }} id='editorUpload' component={() => <CKEditor4Upload articleID={4} /> } effect='3DFlipVert' style={{ width: '60%' }} />
+        <ModalRoute
+					optsProps={{
+						closeCallback: this.onCloseUploadEditor,
+						customOverlay: { zIndex: 10000000 }
+					}}
+					id='editorUpload'
+					component={() =>
+						<CKEditor4Upload articleID={4} />
+					}
+					effect='3DFlipVert'
+					style={{ width: '60%' }}
+					draggable={true}
+					draggableTitle={'Media Library'}
+				/>
 	      <div className='ck-content'>
+					{loading ? <Loader msg='Loading editor...' /> : <></>}
 	        <CKEditor
 						config={this.setConfig()}
 	          data={content}

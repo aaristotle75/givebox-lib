@@ -18,6 +18,7 @@ import {
 import AdminToolbar from './tools/AdminToolbar';
 import { initBlocks } from './config';
 import Loadable from 'react-loadable';
+import has from 'has';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -30,6 +31,7 @@ class GBXClass extends React.Component {
     this.widthChange = this.widthChange.bind(this);
     this.toggleEditable = this.toggleEditable.bind(this);
 		this.toggleOutline = this.toggleOutline.bind(this);
+		this.toggleCollision = this.toggleCollision.bind(this);
     this.resetLayout = this.resetLayout.bind(this);
     this.saveLayout = this.saveLayout.bind(this);
     this.success = this.success.bind(this);
@@ -47,9 +49,8 @@ class GBXClass extends React.Component {
 
     const givebox = props.kind ? util.getValue(props.article, 'giveboxSettings', {}) : util.getValue(props.article, 'givebox', {});
     const customTemplate = util.getValue(givebox, 'customTemplate', {});
-		const customBlocks = util.getValue(customTemplate, 'blocks', []);
-
-    const blocks = [ ...initBlocks[props.kind], ...customBlocks ];
+		const customBlocks = util.getValue(customTemplate, 'blocks');
+		const blocks = !util.isEmpty(customBlocks) ? customBlocks : initBlocks[props.kind];
 
     Object.entries(blocks).forEach(([key, value]) => {
       layouts.desktop.push(value.grid.desktop);
@@ -67,7 +68,8 @@ class GBXClass extends React.Component {
       success: false,
       error: false,
       editable: true,
-      showOutline: false
+      showOutline: false,
+			collision: false
     }
 
     this.gridRef = React.createRef();
@@ -123,8 +125,13 @@ class GBXClass extends React.Component {
 		this.setState({ showOutline })
   }
 
+	toggleCollision() {
+		const collision = this.state.collision ? false : true;
+		this.setState({ collision })
+  }
+
   resetLayout() {
-    console.log('execute resetLayout');
+		this.saveLayout(true);
   }
 
   layoutChange(layout, layouts) {
@@ -152,22 +159,16 @@ class GBXClass extends React.Component {
     }
   }
 
-  saveLayout() {
+  saveLayout(reset = false) {
 		// Need to handle creating new articles
-		const data = this.getData();
+		const data = this.getData(reset);
     const id = util.getValue(this.props.article, 'ID', null);
 
     if (this.props.autoSave) {
       this.props.sendResource(this.props.resourceName, {
         id: id ? [id] : null,
 				orgID: this.props.orgID,
-        data: {
-          giveboxSettings: {
-            customTemplate: {
-							blocks: this.state.blocks
-						}
-          }
-        },
+        data,
         method: id ? 'patch' : 'post',
         callback: (res, err) => {
           if (this.props.save) this.props.save(id, data, this.state.blocks, res, err);
@@ -182,11 +183,11 @@ class GBXClass extends React.Component {
     }
   }
 
-	getData() {
+	getData(reset) {
 		const data = this.state.data;
 		data.giveboxSettings = {
 			customTemplate: {
-				blocks: this.state.blocks
+				blocks: reset ? {} : this.state.blocks
 			}
 		};
 		return data;
@@ -210,8 +211,20 @@ class GBXClass extends React.Component {
 		const blocks = this.state.blocks;
 		const index = blocks.findIndex(b => b.name === name);
 		if (index !== -1) {
-			blocks[index] = { ...blocks[index], ...obj };
-			console.log(blocks[index], blocks);
+			const mobile = blocks[index].grid.mobile;
+			if (!has(mobile, 'info')) {
+				mobile.info = obj;
+			}
+			const desktop = blocks[index].grid.desktop;
+			if (!has(desktop, 'info')) {
+				desktop.info = obj;
+			}
+			const current = blocks[index].grid[this.state.breakpoint];
+			if (!has(current, 'info')) {
+				current.info = obj;
+			} else {
+				current.info = { ...current.info, ...obj };
+			}
 			this.setState({ blocks }, () => {
 				if (callback) callback();
 			});
@@ -258,6 +271,7 @@ class GBXClass extends React.Component {
 							updateBlock={this.updateBlock}
 							article={this.props.article}
 							blockRef={ref}
+							info={util.getValue(value.grid[breakpoint], 'info', {})}
 						/>
 					</div>
 	      );
@@ -272,7 +286,8 @@ class GBXClass extends React.Component {
 			layouts,
 			editable,
 			showOutline,
-			formStyle
+			formStyle,
+			collision
 		} = this.state;
 
 		return (
@@ -281,8 +296,10 @@ class GBXClass extends React.Component {
 					renderBlocks={this.renderBlocks}
 					toggleEditable={this.toggleEditable}
 					toggleOutline={this.toggleOutline}
+					toggleCollision={this.toggleCollision}
 					editable={editable}
 					showOutline={showOutline}
+					collision={collision}
 					resetLayout={this.resetLayout}
 					saveLayout={this.saveLayout}
 					access={this.props.access}
@@ -295,12 +312,14 @@ class GBXClass extends React.Component {
             e.preventDefault();
           }}
           onDrop={(e) => {
-            const block = e.dataTransfer.getData('block');
-            e.preventDefault();
-            const current = this.gridRef.current;
-            if (current.classList.contains('dragOver')) current.classList.remove('dragOver');
-            this.addBlock(block);
-          }}
+						if (editable) {
+	            const block = e.dataTransfer.getData('block');
+	            e.preventDefault();
+	            const current = this.gridRef.current;
+	            if (current.classList.contains('dragOver')) current.classList.remove('dragOver');
+	            this.addBlock(block);
+						}
+					}}
         >
           <div className='dragOverText'>Drop Page Element Here</div>
           <ResponsiveGridLayout
@@ -321,8 +340,8 @@ class GBXClass extends React.Component {
             autoSize={true}
 						draggableHandle={'.dragHandle'}
             draggableCancel={'.modal'}
-            verticalCompact={false}
-						preventCollision={true}
+            verticalCompact={true}
+						preventCollision={collision}
           >
 						{this.renderBlocks()}
           </ResponsiveGridLayout>

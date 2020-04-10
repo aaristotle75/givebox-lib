@@ -28,7 +28,7 @@ class Media extends Component {
 
 		const size = util.getValue(props.defaultFormat, 'size', 'large');
 		const defaultContent = util.imageUrlWithStyle(props.fieldValue, size);
-		const content = this.props.content || defaultContent;
+		const content = util.getValue(this.props.info, 'content', defaultContent);
 
     this.state = {
 			content,
@@ -97,11 +97,13 @@ class Media extends Component {
 		} = this.state;
 
 		const articleID = util.getValue(article, 'articleID', null);
+		const orgID = util.getValue(article, 'orgID', null);
 
 		const library = {
+			articleID,
+			orgID,
 			type: 'article',
-			borderRadius: 0,
-			articleID: articleID
+			borderRadius: 0
 		}
 
     return (
@@ -116,7 +118,7 @@ class Media extends Component {
 					optsProps={{ closeCallback: this.onCloseUploadEditor, customOverlay: { zIndex: 10000000 } }}
 					id={modalID}
 					component={() =>
-						<>
+						<div className='modalWrapper'>
 					    <MediaLibrary
 								modalID={modalID}
 								image={content}
@@ -132,7 +134,7 @@ class Media extends Component {
 							<div style={{ margin: 0 }} className='button-group center'>
 								<GBLink className='button' onClick={this.closeModalAndSave}>Close</GBLink>
 							</div>
-						</>
+						</div>
 					}
 					effect='3DFlipVert' style={{ width: '60%' }}
 					draggable={true}
@@ -140,7 +142,7 @@ class Media extends Component {
 					closeCallback={this.closeModalCallback}
 					disallowBgClose={true}
 				/>
-				<Image url={content} size={util.getValue(defaultFormat, 'size', 'large')} maxWidth={maxWidth} maxHeight={maxHeight} alt={`${util.getValue(article, 'title')}`} />
+				<Image url={content} size={util.getValue(defaultFormat, 'size', 'large')} minHeight={0} maxWidth={maxWidth} maxHeight={maxHeight} alt={`${util.getValue(article, 'title')}`} />
       </div>
     )
   }

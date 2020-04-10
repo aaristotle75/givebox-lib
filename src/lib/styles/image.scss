@@ -660,7 +660,7 @@ button.imageCover {
 
 	.photoSection.SelectedPhoto {
 		width: 150px;
-		height: 150px;
+		height: auto;
 		margin-left: 50px;
 	}
 
@@ -668,7 +668,7 @@ button.imageCover {
 	.uploadContainer {
 
 		height: 630px;
-		padding-bottom: 50px;
+		padding-bottom: 30px;
 
 		.dropzone {
 			width: 150px;
@@ -687,6 +687,9 @@ button.imageCover {
 			}
 		}
 
+    h4 {
+      margin: 5px;
+    }
 	}
 
 	.uploadLibraryContainer {
