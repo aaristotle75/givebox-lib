@@ -5,7 +5,8 @@ import {
   ModalLink,
   Collapse,
   UploadPrivate,
-  util
+  util,
+	Image
 } from '../lib';
 import Moment from 'moment';
 import Capture from '../lib/form/Capture';
@@ -120,6 +121,8 @@ export default class TestForm extends Component {
       <div>
         <h2>Form Elements</h2>
         <div className='formWrapper'>
+	        <Image url={'https://givebox-staging.s3.amazonaws.com/gbx%2F693a664e591131ad047eea8a3bc3e128%2F2020-04-09%2Fimage-png%2Foriginal'} alt={'test image aspect'}  maxSize={'500px'}  />
+
           {this.props.dropdown('bankAccounts', {
             options: list,
             label: 'Bank Accounts',

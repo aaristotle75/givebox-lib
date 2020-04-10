@@ -8,6 +8,7 @@ export default class Image extends Component {
     this.imageOnLoad = this.imageOnLoad.bind(this);
 		this.onMouseEnter = this.onMouseEnter.bind(this);
 		this.onMouseLeave = this.onMouseLeave.bind(this);
+		this.handleAspectRatio = this.handleAspectRatio.bind(this);
     this.state = {
       imageLoading: true,
       hoverStyle: {}
@@ -27,6 +28,33 @@ export default class Image extends Component {
 		if (this.props.hoverStyle) this.setState({ hoverStyle: {} });
 	}
 
+	handleAspectRatio(w, h) {
+		const size = {};
+		const maxWidth = this.props.maxWidth || this.props.maxSize;
+		const maxHeight = this.props.maxHeight || this.props.maxSize;
+		let ratio = 0;
+		let width = w;
+		let height = h;
+
+		if (width > maxWidth) {
+			ratio = maxWidth / width;
+			height = parseInt(height * ratio);
+			width = parseInt(width * ratio);
+		}
+
+		if (height > maxHeight) {
+			ratio = maxHeight / height;
+			width = parseInt(width * ratio);
+			height = parseInt(height * ratio);
+		}
+		size.width = width;
+		size.height = height;
+		size.maxWidth = maxWidth;
+		size.maxHeight = maxHeight;
+
+		return size;
+	}
+
   render() {
 
     const {
@@ -36,8 +64,6 @@ export default class Image extends Component {
       className,
       imgStyle,
       style,
-      maxWidth,
-      maxHeight,
       draggable
     } = this.props;
 
@@ -70,11 +96,13 @@ export default class Image extends Component {
 
       // no default
     }
-    const maxSize = this.props.maxSize || defaultSize;
-    const mergeStyle = { maxWidth: maxWidth || maxSize, maxHeight: maxHeight || maxSize, ...imgStyle };
+
+		const aspect = this.handleAspectRatio();
+
+    const mergeStyle = { width: aspect.width, maxWidth: aspect.maxWidth, height: aspect.height, maxHeight: aspect.maxHeight, ...imgStyle };
 
     return (
-      <div onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} style={{ width: maxSize, height: 'auto',  ...style, ...this.state.hoverStyle  }} className={`imageComponent ${className || ''}`}>
+      <div onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} style={{ width: aspect.width, height: aspect.height,  ...style, ...this.state.hoverStyle  }} className={`imageComponent ${className || ''}`}>
         {this.state.imageLoading  &&
         <div className='imageLoader'>
           <img src='https://s3-us-west-1.amazonaws.com/givebox/public/images/squareLoader.gif' alt='Loader' />
