@@ -116,7 +116,7 @@ class Content extends Component {
 								onBlur={this.onBlur}
 								onChange={this.onChange}
 								width={'100%'}
-								height={`${this.height + 50}px`}
+								height={`300px`}
 								type='classic'
 								initCallback={(editor) => {
 									editor.focus();
@@ -132,6 +132,7 @@ class Content extends Component {
 									}
 								}}
 								contentCss='https://givebox.s3-us-west-1.amazonaws.com/public/css/gbx3contents.css'
+								removePlugins='image,elementspath'
 							/>
 							<div style={{ marginBottom: 0 }} className='button-group center'>
 								<GBLink className='link' onClick={() => this.closeModalButtons('cancel')}>Cancel</GBLink>

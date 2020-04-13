@@ -1,0 +1,61 @@
+@import 'variables.scss';
+
+.gbx3 {
+
+	.amountsList {
+		position: absolute;
+		height: auto;
+		width: 100%;
+		overflow-x: hidden;
+		overflow-y: auto;
+		font-size: 14px;
+	}
+
+	.amountRow {
+		display: flex;
+		justify-content: flex-start;
+		width: 100%;
+		padding: 10px 0 10px 2%;
+		margin: 10px 0;
+		border-left: 4px solid $mainColor;
+	}
+
+	.amountDesc {
+		display: inline-block;
+		width: 83%;
+	}
+
+	.amountQty {
+		display: inline-block;
+		width: 15%;
+	}
+
+	.embed {
+		.amountDesc {
+			width: 100%;
+		}
+		.amountRow {
+			padding: 0;
+			margin: 0;
+			border-left: 0;
+		}
+
+	}
+
+	.amountInput {
+		position: relative;
+
+		.moneyAmount {
+			position: absolute;
+			top: 35px;
+			left: 0;
+			font-size: 40px;
+		}
+
+		input {
+			padding-left: 30px;
+			height: auto;
+		}
+	}
+
+}

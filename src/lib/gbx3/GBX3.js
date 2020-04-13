@@ -67,7 +67,7 @@ class GBXClass extends React.Component {
       breakpoint: 'desktop',
       success: false,
       error: false,
-      editable: true,
+      editable: false,
       showOutline: false,
 			collision: false
     }
@@ -270,6 +270,7 @@ class GBXClass extends React.Component {
 							toggleEditable={this.toggleEditable}
 							updateBlock={this.updateBlock}
 							article={this.props.article}
+							kind={this.props.kind}
 							blockRef={ref}
 							info={util.getValue(value.grid[breakpoint], 'info', {})}
 						/>

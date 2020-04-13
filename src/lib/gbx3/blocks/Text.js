@@ -117,7 +117,7 @@ class Text extends Component {
 								onBlur={this.onBlur}
 								onChange={this.onChange}
 								width={'100%'}
-								height={`${this.height + 50}px`}
+								height={`150px`}
 								type='classic'
 								toolbar={[
 									[ 'Bold', 'Italic', '-', 'Font', '-', 'FontSize', 'TextColor', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight']

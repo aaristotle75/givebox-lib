@@ -36,6 +36,16 @@
   	}
 	},
 	{
+		name: 'amounts',
+		title: 'Amounts',
+		type: 'Amounts',
+		field: 'amounts',
+		grid: {
+	    desktop: { i: 'amounts', x: 0, y: 2, w: 6, h: 22, enabled: true },
+	    mobile: { i: 'amounts', x: 0, y: 28, w: 6, h: 20, enabled: true }
+  	}
+	},
+	{
 		name: 'media',
 		title: 'Media',
 		type: 'Media',
@@ -45,8 +55,8 @@
 			size: 'medium'
 		},
 		grid: {
-	    desktop: { i: 'media', x: 6, y: 0, w: 4, h: 20, enabled: true },
-	    mobile: { i: 'media', x: 0, y: 2, w: 4, h: 20, enabled: true }
+	    desktop: { i: 'media', x: 6, y: 0, w: 6, h: 20, enabled: true },
+	    mobile: { i: 'media', x: 0, y: 2, w: 6, h: 20, enabled: true }
   	}
 	},
 	{
@@ -55,8 +65,8 @@
 		type: 'Text',
 		field: 'summary',
 		grid: {
-	    desktop: { i: 'summary', x: 0, y: 2, w: 6, h: 6, enabled: true },
-	    mobile: { i: 'summary', x: 0, y: 2, w: 6, h: 6, enabled: true }
+	    desktop: { i: 'summary', x: 6, y: 21, w: 6, h: 6, enabled: true },
+	    mobile: { i: 'summary', x: 0, y: 21, w: 6, h: 6, enabled: true }
   	}
 	},
 	{
@@ -65,8 +75,8 @@
 		type: 'Form',
 		remove: false,
 		grid: {
-	    desktop: { i: 'form', x: 0, y: 3, w: 12, h: 40, minW: 10, enabled: true },
-	    mobile: { i: 'form', x: 0, y: 3, w: 6, h: 60, minW: 4, enabled: true }
+	    desktop: { i: 'form', x: 0, y: 28, w: 12, h: 40, minW: 10, enabled: true },
+	    mobile: { i: 'form', x: 0, y: 48, w: 6, h: 60, minW: 4, enabled: true }
   	}
 	},
 	{
@@ -76,8 +86,8 @@
 		field: 'description',
 		overflow: 'visible',
 		grid: {
-	    desktop: { i: 'content', x: 0, y: 4, w: 6, h: 6, enabled: true },
-	    mobile: { i: 'content', x: 0, y: 4, w: 6, h: 6, enabled: true }
+	    desktop: { i: 'content', x: 0, y: 33, w: 12, h: 6, enabled: true },
+	    mobile: { i: 'content', x: 0, y: 109, w: 6, h: 6, enabled: true }
   	}
 	},
 ];
