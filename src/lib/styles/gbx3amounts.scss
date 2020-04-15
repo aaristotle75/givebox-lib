@@ -2,6 +2,16 @@
 
 .gbx3 {
 
+	/*----- Amount Form elements -----*/
+	.radio-group label.label {
+	   margin-left: 10px;
+		width: 100%;
+	}
+
+	.amountsSection {
+		position: relative;
+	}
+
 	.amountsList {
 		position: absolute;
 		height: auto;
@@ -30,6 +40,40 @@
 		width: 15%;
 	}
 
+	/*-------- Amount Entered -------*/
+	.amountInput {
+		position: relative;
+
+		.input-group {
+			padding: 0 0 10px 0;
+		}
+
+		.moneyAmount {
+			position: absolute;
+			top: 25px;
+			left: 0;
+			font-size: 40px;
+			font-weight: 300;
+		}
+
+		input {
+			line-height: 1em;
+			padding-left: 30px;
+			height: auto;
+			font-weight: 300;
+			@media screen and (max-width: 800px) {
+				font-size: inherit;
+			}
+		}
+	}
+
+	/*-------- Amount Radios -----*/
+	.amountRadioPrice {
+		font-size: 14px;
+		font-weight: 500;
+	}
+
+	/*--------- Embed Amount -------*/
 	.embed {
 		.amountDesc {
 			width: 100%;
@@ -42,20 +86,125 @@
 
 	}
 
-	.amountInput {
-		position: relative;
+}
+
+/*----- Recurring ------*/
+.recurringOption {
+	.modalTop,
+	.modalBottom {
+		display: none;
+	}
+
+	.input-group.dropdown-button .dropdown button {
+	   border: 1px solid transparent;
+	}
+
+	.input-group.dropdown-button .dropdown .label {
+	  color: $dark;
+	  font-weight: 400;
+		font-size: 20px;
+	}
+
+	.input-group.dropdown-button .dropdown .icon {
+	  color: $dark;
+	  font-size: 20px;
+	}
+
+}
+
+.recurringLink {
+	font-size: 14px;
+	margin-left: 10px;
+	height: 35px;
+}
+
+.recurring {
+	margin-top: 0px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	height: 450px;
+	font-size: 14px;
+
+	input {
+		font-size: 22px;
+		width: 100%;
+	}
+
+	input::-webkit-input-placeholder {
+	  font-size: 22px;
+	  font-family: $font-family;
+	  color: $med-blue-gray;
+	}
+	input::-moz-placeholder {
+	  font-size: 22px;
+	  color: $med-blue-gray;
+	}
+	input::-ms-input-placeholder {
+	  font-size: 22px;
+	  color: $med-blue-gray;
+	}
+
+	.amount {
+		margin: 0 0 20px 0;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
 
 		.moneyAmount {
-			position: absolute;
-			top: 35px;
-			left: 0;
-			font-size: 40px;
-		}
+			position: relative;
+			width: 100%;
+			font-weight: 300;
+			font-size: 50px;
 
-		input {
-			padding-left: 30px;
-			height: auto;
+			.symbol {
+				position: absolute;
+				top: 10px;
+				left: -25px;
+				font-size: 50%;
+			}
 		}
 	}
 
+	a.link {
+		font-size: 16px;
+	}
+
+	.maxRecurring {
+		margin: 20px 0;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.dropdown button {
+		font-size: 16px;
+		justify-content: center;
+	}
+
+	.endsAt,
+	.forever {
+		margin: 5px 0 0 0;
+		color: #465965;
+		font-weight: 300;
+		font-size: 14px;
+	}
+
+	.recurringTop {
+		h3 {
+			margin-top: 30px;
+    	font-size: 22px;
+			font-weight: 300;
+		}
+	}
+
+	.recurringBottom {
+		position: absolute;
+		bottom: 5px;
+
+		button {
+			font-size: 16px;
+		}
+	}
 }

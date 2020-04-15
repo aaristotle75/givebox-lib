@@ -20,7 +20,8 @@ class Text extends Component {
 		this.closeModalCallback = this.closeModalCallback.bind(this);
 		this.closeModalButtons = this.closeModalButtons.bind(this);
 
-		const defaultContent = props.defaultFormat && props.fieldValue ? props.defaultFormat.replace('{{TOKEN}}', props.fieldValue) : `<p>${props.fieldValue}</p>`;
+		const options = props.options;
+		const defaultContent = options.defaultFormat && props.fieldValue ? options.defaultFormat.replace('{{TOKEN}}', props.fieldValue) : `<p>${props.fieldValue}</p>`;
 
 		const content = util.getValue(this.props.info, 'content', defaultContent);
 
@@ -98,7 +99,7 @@ class Text extends Component {
 		const cleanHtml = util.cleanHtml(content);
 
     return (
-      <div className='block'>
+      <div style={{ }} className='block'>
 				<BlockOption
 					edit={edit}
 					noRemove={noRemove}

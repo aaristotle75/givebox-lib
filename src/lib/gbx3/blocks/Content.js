@@ -20,7 +20,8 @@ class Content extends Component {
 		this.closeModalCallback = this.closeModalCallback.bind(this);
 		this.closeModalButtons = this.closeModalButtons.bind(this);
 
-		const defaultContent = props.defaultFormat && props.fieldValue ? props.defaultFormat.replace('{{TOKEN}}', props.fieldValue) : `<p>${props.fieldValue}</p>`;
+		const options = props.options;
+		const defaultContent = options.defaultFormat && props.fieldValue ? options.defaultFormat.replace('{{TOKEN}}', props.fieldValue) : `<p>${props.fieldValue}</p>`;
 		const content = util.getValue(this.props.info, 'content', defaultContent);
 
     this.state = {

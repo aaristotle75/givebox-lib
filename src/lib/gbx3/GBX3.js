@@ -41,6 +41,7 @@ class GBXClass extends React.Component {
 		this.renderBlocks = this.renderBlocks.bind(this);
 		this.getData = this.getData.bind(this);
 		this.updateBlock = this.updateBlock.bind(this);
+		this.amountsCallback = this.amountsCallback.bind(this);
 
     const layouts = {
       desktop: [],
@@ -264,7 +265,7 @@ class GBXClass extends React.Component {
 							field={value.field}
 							content={value.content}
 							overflow={value.overflow}
-							defaultFormat={value.defaultFormat}
+							options={value.options}
 							fieldValue={fieldValue}
 							editable={editable}
 							toggleEditable={this.toggleEditable}
@@ -273,12 +274,17 @@ class GBXClass extends React.Component {
 							kind={this.props.kind}
 							blockRef={ref}
 							info={util.getValue(value.grid[breakpoint], 'info', {})}
+							amountsCallback={this.amountsCallback}
 						/>
 					</div>
 	      );
       }
     });
     return items;
+	}
+
+	amountsCallback(obj) {
+		console.log('execute amountsCallback', obj);
 	}
 
 	render() {
@@ -325,7 +331,7 @@ class GBXClass extends React.Component {
           <div className='dragOverText'>Drop Page Element Here</div>
           <ResponsiveGridLayout
 						id='testGrid'
-            className="layout"
+            className="blockGridLayout"
             layouts={layouts}
             breakpoints={{desktop: 701, mobile: 700 }}
             cols={{desktop: 12, mobile: 6}}

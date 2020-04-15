@@ -24,7 +24,9 @@ class Dropdown extends Component {
       value: '',
       direction: '',
       status: 'idle',
-      buttonStyle: {}
+      buttonStyle: {
+				color: props.color || ''
+			}
     }
     this.dropdownRef = React.createRef();
     this.labelRef = React.createRef();

@@ -4,7 +4,7 @@
 		title: 'Logo',
 		type: 'Media',
 		field: 'orgImageURL',
-		defaultFormat: {
+		options: {
 			maxSize: '55px',
 			size: 'small',
 		},
@@ -18,7 +18,9 @@
 		title: 'Title',
 		type: 'Text',
 		field: 'title',
-		defaultFormat: '<span style="font-size:22px;">{{TOKEN}}</span>',
+		options: {
+			defaultFormat: '<strong><span style="font-size:14px;">{{TOKEN}}</span></strong>'
+		},
 		grid: {
 	    desktop: { i: 'title', x: 1, y: 0, w: 5, h: 2, enabled: true },
 	    mobile: { i: 'title', x: 1, y: 0, w: 5, h: 2, enabled: true }
@@ -29,7 +31,9 @@
 		title: 'Organization Name',
 		type: 'Text',
 		field: 'orgName',
-		defaultFormat: '<span style="color:hsl(204,4%,58%);font-size:12px">{{TOKEN}}</span>',
+		options: {
+			defaultFormat: '<span style="color:hsl(204,4%,58%);font-size:12px">{{TOKEN}}</span>'
+		},
 		grid: {
 	    desktop: { i: 'orgName', x: 1, y: 1, w: 5, h: 2, enabled: true },
 	    mobile: { i: 'orgName', x: 1, y: 1, w: 5, h: 2, enabled: true }
@@ -50,7 +54,7 @@
 		title: 'Media',
 		type: 'Media',
 		field: 'imageURL',
-		defaultFormat: {
+		options: {
 			maxSize: '360px',
 			size: 'medium'
 		},
@@ -64,6 +68,7 @@
 		title: 'Summary',
 		type: 'Text',
 		field: 'summary',
+		options: {},
 		grid: {
 	    desktop: { i: 'summary', x: 6, y: 21, w: 6, h: 6, enabled: true },
 	    mobile: { i: 'summary', x: 0, y: 21, w: 6, h: 6, enabled: true }
@@ -85,6 +90,7 @@
 		type: 'Content',
 		field: 'description',
 		overflow: 'visible',
+		options: {},
 		grid: {
 	    desktop: { i: 'content', x: 0, y: 33, w: 12, h: 6, enabled: true },
 	    mobile: { i: 'content', x: 0, y: 109, w: 6, h: 6, enabled: true }

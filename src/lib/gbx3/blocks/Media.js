@@ -26,7 +26,7 @@ class Media extends Component {
 			this.maxHeight = this.blockRef.clientHeight;
 		}
 
-		const size = util.getValue(props.defaultFormat, 'size', 'large');
+		const size = util.getValue(props.options, 'size', 'large');
 		const defaultContent = util.imageUrlWithStyle(props.fieldValue, size);
 		const content = util.getValue(this.props.info, 'content', defaultContent);
 
@@ -75,7 +75,7 @@ class Media extends Component {
 	}
 
 	handleSaveCallback(url) {
-		const size = util.getValue(this.props.defaultFormat, 'size', 'large');
+		const size = util.getValue(this.props.options, 'size', 'large');
 		this.setState({ loading: true, content: util.imageUrlWithStyle(url, size) }, () => this.closeModalAndSave());
 	}
 
@@ -86,7 +86,7 @@ class Media extends Component {
 			noRemove,
 			article,
 			modalID,
-			defaultFormat
+			options
 		} = this.props;
 
 		const {
@@ -142,7 +142,7 @@ class Media extends Component {
 					closeCallback={this.closeModalCallback}
 					disallowBgClose={true}
 				/>
-				<Image url={content} size={util.getValue(defaultFormat, 'size', 'large')} minHeight={0} maxWidth={maxWidth} maxHeight={maxHeight} alt={`${util.getValue(article, 'title')}`} />
+				<Image url={content} size={util.getValue(options, 'size', 'large')} minHeight={0} maxWidth={maxWidth} maxHeight={maxHeight} alt={`${util.getValue(article, 'title')}`} />
       </div>
     )
   }

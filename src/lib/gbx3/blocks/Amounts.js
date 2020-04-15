@@ -35,6 +35,16 @@ class Amounts extends Component {
 			this.width = this.blockRef.clientWidth;
 			this.height = this.blockRef.clientHeight;
 		}
+    const settings = util.getValue(this.props.article, 'giveboxSettings', {});
+    const color = util.getValue(settings, 'primaryColor');
+		const styleEl = document.head.appendChild(document.createElement('style'));
+		styleEl.innerHTML = `
+			.radio:checked + label:after {
+				border: 1px solid ${color} !important;
+				background: ${color};
+			}
+		`;
+
 		this.getAmounts();
 	}
 
@@ -108,6 +118,8 @@ class Amounts extends Component {
 		} = this.state;
 
 		if (util.isEmpty(amountsList)) return <></>
+    const settings = util.getValue(article, 'giveboxSettings', {});
+    const color = util.getValue(settings, 'primaryColor');
 
     return (
       <div className='block'>
@@ -144,6 +156,10 @@ class Amounts extends Component {
 					defaultIndex={defaultIndex}
 					width={this.width}
 					height={this.height}
+					amountsCallback={this.props.amountsCallback}
+					color={color}
+					kind={this.props.kind}
+					allowRecurring={util.getValue(article, 'allowRecurring')}
 				/>
       </div>
     )

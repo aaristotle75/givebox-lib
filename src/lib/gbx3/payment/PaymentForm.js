@@ -248,7 +248,7 @@ class PaymentForm extends Component {
           in={util.getValue(formState, 'error', false)}
           duration={100}
         >
-          <div className='error'>{util.getValue(formState, 'errorMsg', 'Please fix field errors in red below')}</div>
+          <div className='mainError error'>{util.getValue(formState, 'errorMsg', 'Please fix field errors in red below')}</div>
         </Fade>
         <Form
           id='gbxForm'

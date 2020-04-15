@@ -59,7 +59,8 @@ class TextField extends Component {
       money,
       inputRef,
       inputMode,
-      color
+      color,
+			moneyStyle
     } = this.props;
 
     const {
@@ -78,7 +79,7 @@ class TextField extends Component {
     return (
         <div style={style} className={`input-group ${className || ''} textfield-group ${readOnly ? 'readOnly tooltip' : ''} ${error ? 'error tooltip' : ''} ${type === 'hidden' && 'hidden'} ${money ? 'money-group' : ''}`}>
           <div className={`floating-label ${this.state.status} ${fixedLabel && 'fixed'}`}>
-            {money && <div className={`moneyAmount ${value ? 'active' : 'noValue'}`}><span className='symbol'>{symbol}</span></div>}
+            {money && <div style={moneyStyle} className={`moneyAmount ${value ? 'active' : 'noValue'}`}><span className='symbol'>{symbol}</span></div>}
             <input
               autoFocus={autoFocus}
               id={id || name}
@@ -125,7 +126,8 @@ TextField.defaultProps = {
   symbol: '$',
   money: false,
   inputRef: null,
-  inputStyle: {}
+  inputStyle: {},
+	moneyStyle: {}
 }
 
 export default TextField;

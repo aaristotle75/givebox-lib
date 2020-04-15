@@ -34,7 +34,7 @@
 	p img {
 		margin: 0 10px;
 	}
-	
+
 	/*------ End Elements ------*/
 
 	.noRecords {
@@ -321,7 +321,15 @@
 	/*------ Payment Form ---------*/
 
 	.givebox-paymentform {
+
 	  padding: 0px 20px;
+
+		.mainError {
+			position: absolute;
+			top: 10px;
+			left: 10px;
+			font-size: 14px;
+		}
 	}
 
 	.dropdown button .selected.label {
