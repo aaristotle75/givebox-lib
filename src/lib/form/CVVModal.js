@@ -7,7 +7,7 @@ class CVVModal extends Component {
 	render() {
 
 		return (
-			<div className="modalContainer">
+			<div className="modalWrapper">
 				<div className="center">
           <img className="pciImage" src='https://s3-us-west-1.amazonaws.com/givebox/public/images/logo-box.svg' alt="Givebox" height="70px" width="135px" />
 				</div>

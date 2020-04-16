@@ -4,7 +4,8 @@ import {
   util,
 	GBLink,
 	ModalRoute,
-	toggleModal
+	toggleModal,
+	Collapse
 } from '../../';
 import CustomCKEditor4 from '../../editor/CustomCKEditor4';
 import { BlockOption } from './Block';
@@ -107,37 +108,47 @@ class Text extends Component {
 					removeOnClick={this.remove}
 				/>
         <ModalRoute
+					className='gbx3'
 					optsProps={{ closeCallback: this.onCloseUploadEditor }}
 					id={modalID}
 					component={() =>
 						<div className='modalWrapper'>
-							<CustomCKEditor4
-								orgID={util.getValue(article, 'orgID', null)}
-								articleID={util.getValue(article, 'articleID', null)}
-								content={content}
-								onBlur={this.onBlur}
-								onChange={this.onChange}
-								width={'100%'}
-								height={`150px`}
-								type='classic'
-								toolbar={[
-									[ 'Bold', 'Italic', '-', 'Font', '-', 'FontSize', 'TextColor', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight']
-								]}
-								initCallback={(editor) => {
-									editor.focus();
-									const CKEDITOR = window.CKEDITOR;
-									const selection = editor.getSelection();
-									const getRanges = selection ? selection.getRanges() : [];
-									if (!util.isEmpty(getRanges)) {
-										const range = getRanges[0];
-										const pCon = range.startContainer.getAscendant('p',true);
-										const newRange = new CKEDITOR.dom.range(range.document);
-										newRange.moveToPosition(pCon, CKEDITOR.POSITION_AFTER_END);
-										newRange.select();
-									}
-								}}
-								contentCss='https://givebox.s3-us-west-1.amazonaws.com/public/css/gbx3contents.css'
-							/>
+							<Collapse
+								label={`Edit ${title}`}
+								iconPrimary='edit'
+							>
+								<div className='formSectionContainer'>
+									<div className='formSection'>
+										<CustomCKEditor4
+											orgID={util.getValue(article, 'orgID', null)}
+											articleID={util.getValue(article, 'articleID', null)}
+											content={content}
+											onBlur={this.onBlur}
+											onChange={this.onChange}
+											width={'100%'}
+											height={`150px`}
+											type='classic'
+											toolbar={[
+												[ 'Bold', 'Italic', '-', 'Font', '-', 'FontSize', 'TextColor', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight']
+											]}
+											initCallback={(editor) => {
+												editor.focus();
+												const CKEDITOR = window.CKEDITOR;
+												const selection = editor.getSelection();
+												const getRanges = selection ? selection.getRanges() : [];
+												if (!util.isEmpty(getRanges)) {
+													const range = getRanges[0];
+													const pCon = range.startContainer.getAscendant('p',true);
+													const newRange = new CKEDITOR.dom.range(range.document);
+													newRange.moveToPosition(pCon, CKEDITOR.POSITION_AFTER_END);
+													newRange.select();
+												}
+											}}
+											contentCss='https://givebox.s3-us-west-1.amazonaws.com/public/css/gbx3contents.css'
+										/>
+									</div>
+								</div>
+							</Collapse>
 							<div style={{ marginBottom: 0 }} className='button-group center'>
 								<GBLink className='link' onClick={() => this.closeModalButtons('cancel')}>Cancel</GBLink>
 								<GBLink className='button' onClick={this.closeModalButtons}>Save</GBLink>

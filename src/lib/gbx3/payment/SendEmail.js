@@ -54,8 +54,8 @@ class SendEmail extends Component {
   render() {
 
     return (
-      <div>
-        <h3 className='center'>{this.props.headerText}</h3>
+      <div className='modalWrapper'>
+        <h3 style={{ marginBottom: 20 }} className='center'>{this.props.headerText}</h3>
         <TextField
           name='recipients'
           label='Email Recipients'

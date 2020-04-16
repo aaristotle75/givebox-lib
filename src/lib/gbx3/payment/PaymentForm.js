@@ -130,7 +130,7 @@ class PaymentFormClass extends Component {
     ;
 
     const sendEmailLink =
-      <ModalLink id='sendEmail' opts={{ sendEmailCallback: this.sendEmailCallback, sendEmail: this.state.sendEmail, headerText: sendEmail.headerText }}>{sendEmail.linkText}</ModalLink>
+      <ModalLink id='sendEmail' allowCustom={true} opts={{ sendEmailCallback: this.sendEmailCallback, sendEmail: this.state.sendEmail, headerText: sendEmail.headerText }}>{sendEmail.linkText}</ModalLink>
     ;
 
     const fields = [
@@ -170,7 +170,7 @@ class PaymentFormClass extends Component {
 
     return (
       <>
-        <ModalRoute id='sendEmail' modalRootClass='gbxModal' component={() => <SendEmail {...this.props} /> } effect='3DFlipVert' style={{ width: '50%' }} />
+        <ModalRoute className='gbx3' id='sendEmail' modalRootClass='gbxModal' component={(props) => <SendEmail {...props} /> } effect='3DFlipVert' style={{ width: '50%' }} />
         <>
           {this.renderFields()}
           {this.props.saveButton(this.processForm, { style: { margin: 0, padding: 0, height: 0, width: 0, visibility: 'hidden' } })}

@@ -7,7 +7,7 @@ import {
 	MediaLibrary,
 	ModalRoute,
 	toggleModal,
-	Popup
+	Collapse
 } from '../../';
 import { BlockOption } from './Block';
 
@@ -20,6 +20,8 @@ class Media extends Component {
 		this.closeModalAndSave = this.closeModalAndSave.bind(this);
 		this.closeModalAndCancel = this.closeModalAndCancel.bind(this);
 		this.closeModalCallback = this.closeModalCallback.bind(this);
+		this.handleBorderRadius = this.handleBorderRadius.bind(this);
+		this.setRadius = this.setRadius.bind(this);
 		this.blockRef = this.props.blockRef.current;
 		if (this.blockRef) {
 			this.maxWidth = this.blockRef.clientWidth;
@@ -27,11 +29,13 @@ class Media extends Component {
 		}
 
 		const size = util.getValue(props.options, 'size', 'large');
+		const borderRadius = util.getValue(props.options, 'borderRadius', 5);
 		const defaultContent = util.imageUrlWithStyle(props.fieldValue, size);
 		const content = util.getValue(this.props.info, 'content', defaultContent);
 
     this.state = {
 			content,
+			borderRadius,
 			defaultContent: content,
 			edit: false,
 			maxWidth: this.maxWidth || 550,
@@ -40,6 +44,10 @@ class Media extends Component {
   }
 
 	componentDidMount() {
+	}
+
+	componentWillUnmount() {
+		//console.log('execute componentWillUnmount');
 	}
 
 	edit() {
@@ -54,15 +62,24 @@ class Media extends Component {
 	closeModalAndSave() {
 		this.timeout = setTimeout(() => {
 			this.setState({ loading: false, edit: false }, () => {
-				this.props.updateBlock(this.props.name, { content: this.state.content });
+				this.props.updateBlock(
+					this.props.name,
+					{
+						content: this.state.content
+					},
+					{
+						borderRadius: this.state.borderRadius
+					}
+				);
 				this.props.toggleModal(this.props.modalID, false);
 			});
 		}, 0);
 	}
 
 	closeModalAndCancel() {
-		this.props.toggleModal(this.props.modalID, false);
-		this.setState({ content: this.state.defaultContent, edit: false });
+		this.setState({ content: this.state.defaultContent, borderRadius: this.state.borderRadius, edit: false }, () => {
+			this.props.toggleModal(this.props.modalID, false);
+		});
 	}
 
 	closeModalCallback(type) {
@@ -79,6 +96,15 @@ class Media extends Component {
 		this.setState({ loading: true, content: util.imageUrlWithStyle(url, size) }, () => this.closeModalAndSave());
 	}
 
+  handleBorderRadius(e) {
+    const borderRadius = parseInt(e.target.value)
+    this.setState({ borderRadius })
+  }
+
+	setRadius(borderRadius) {
+    this.setState({ borderRadius })
+	}
+
   render() {
 
 		const {
@@ -86,14 +112,17 @@ class Media extends Component {
 			noRemove,
 			article,
 			modalID,
-			options
+			options,
+			maxRadius,
+			minRadius
 		} = this.props;
 
 		const {
 			edit,
 			content,
 			maxWidth,
-			maxHeight
+			maxHeight,
+			borderRadius
 		} = this.state;
 
 		const articleID = util.getValue(article, 'articleID', null);
@@ -115,24 +144,62 @@ class Media extends Component {
 					removeOnClick={this.remove}
 				/>
         <ModalRoute
+					className='gbx3'
 					optsProps={{ closeCallback: this.onCloseUploadEditor, customOverlay: { zIndex: 10000000 } }}
 					id={modalID}
 					component={() =>
 						<div className='modalWrapper'>
-					    <MediaLibrary
-								modalID={modalID}
-								image={content}
-								preview={content}
-					      handleSaveCallback={this.handleSaveCallback}
-					      handleSave={util.handleFile}
-					      library={library}
-					      closeModalAndSave={this.closeModalAndSave}
-					      closeModalAndCancel={this.closeModalAndCancel}
-								showBtns={'hide'}
-								saveLabel={'close'}
-					    />
+							<Collapse
+								label={'Media Library'}
+								iconPrimary='image'
+								id={'gbx3-mediaLibrary'}
+							>
+								<div className='formSectionContainer'>
+									<div className='formSection'>
+								    <MediaLibrary
+											modalID={modalID}
+											image={content}
+											preview={content}
+								      handleSaveCallback={this.handleSaveCallback}
+								      handleSave={util.handleFile}
+								      library={library}
+								      closeModalAndSave={this.closeModalAndSave}
+								      closeModalAndCancel={this.closeModalAndCancel}
+											showBtns={'hide'}
+											saveLabel={'close'}
+								    />
+									</div>
+								</div>
+							</Collapse>
+							<Collapse
+								label={'Image Properties'}
+								iconPrimary='settings'
+								id={'gbx3-imageProperties'}
+							>
+								<div className='formSectionContainer'>
+									<div className='formSection'>
+										<div className='input-group'>
+											<label className='label'>Image Radius</label>
+						          <div className='scale'>
+						            <GBLink onClick={() => this.setRadius(minRadius)}><span className='icon small icon-image'></span></GBLink>
+						            <input
+						              name="borderRadius"
+						              type="range"
+						              onChange={this.handleBorderRadius}
+						              min={minRadius}
+						              max={maxRadius}
+						              step="0"
+						              value={borderRadius}
+						            />
+						            <GBLink onClick={() => this.setRadius(maxRadius)}><span className='icon icon-image'></span></GBLink>
+						          </div>
+										</div>
+									</div>
+								</div>
+							</Collapse>
 							<div style={{ margin: 0 }} className='button-group center'>
-								<GBLink className='button' onClick={this.closeModalAndSave}>Close</GBLink>
+								<GBLink className='link' onClick={this.closeModalAndCancel}>Cancel</GBLink>
+								<GBLink className='button' onClick={this.closeModalAndSave}>Save</GBLink>
 							</div>
 						</div>
 					}
@@ -142,10 +209,15 @@ class Media extends Component {
 					closeCallback={this.closeModalCallback}
 					disallowBgClose={true}
 				/>
-				<Image url={content} size={util.getValue(options, 'size', 'large')} minHeight={0} maxWidth={maxWidth} maxHeight={maxHeight} alt={`${util.getValue(article, 'title')}`} />
+				<Image imgStyle={{ borderRadius: `${borderRadius}%` }} url={content} size={util.getValue(options, 'size', 'large')} minHeight={0} maxWidth={maxWidth} maxHeight={maxHeight} alt={`${util.getValue(article, 'title')}`} />
       </div>
     )
   }
+}
+
+Media.defaultProps = {
+	minRadius: 0,
+	maxRadius: 50
 }
 
 function mapStateToProps(state, props) {

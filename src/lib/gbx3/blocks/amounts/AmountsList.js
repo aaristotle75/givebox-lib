@@ -58,11 +58,12 @@ class AmountsList extends Component {
 
 		const interval = util.getValue(recurring, 'interval');
 		const paymentMax = util.getValue(recurring, 'paymentMax');
+		const recurringDisplay = renderRecurringName(kind, interval, paymentMax);
 
 		return (
 			<div className='recurringLink'>
 				<ModalRoute
-					className='recurringOption'
+					className='gbx3 recurringOption'
 					id='recurringOption'
 					style={{ width: '50%' }}
 					optsProps={{
@@ -83,8 +84,8 @@ class AmountsList extends Component {
 						/>
 					}
 				/>
-				<span style={{ display: 'block' }}>{renderRecurringName(kind, interval, paymentMax)}</span>
-				<ModalLink id='recurringOption' allowCustom={true}>{interval === 'once' ? 'Click Here for Recurring Donation Options' : 'Edit Your Recurring Donation'}</ModalLink>
+				<span style={{ display: 'block' }}>{recurringDisplay.text}</span>
+				<ModalLink id='recurringOption' allowCustom={true}>{interval === 'once' ? `Click Here for Recurring ${recurringDisplay.name} Options` : `Edit Your Recurring ${recurringDisplay.name}`}</ModalLink>
 			</div>
 		)
 	}
@@ -220,7 +221,6 @@ class AmountsList extends Component {
 		const recurringLinkHeight = 35;
 		const amountsListHeight = this.props.height - (style.height + recurringLinkHeight);
 		const customIsDefaultOnlyAmount = customID === defaultID && items.length === 1 ? true : false;
-
 		const amountInput =
 			<div key={'amountInput'} className='amountInput'>
 				<TextField
@@ -245,7 +245,10 @@ class AmountsList extends Component {
 			<>
 				{amountInput}
 				{allowRecurring ? this.renderRecurringOption(amountEntered) : <></>}
-				{!util.isEmpty(items) && !customIsDefaultOnlyAmount ? <div style={{ height: amountsListHeight }} className='amountsList'>{items}</div> : <></>}
+				{!util.isEmpty(items) && !customIsDefaultOnlyAmount ?
+					<div style={{ maxHeight: amountsListHeight }} className='amountsList'>{items}</div>
+				: <></>
+				}
 			</>
 		)
 	}
@@ -256,7 +259,6 @@ class AmountsList extends Component {
 		style.inputStyle = amountInputStyle[index];
 		style.moneyStyle = amountInputMoneyStyle[index];
 		style.height = amountInputHeights[index].height;
-		console.log('execute', index);
 		return style;
 	}
 

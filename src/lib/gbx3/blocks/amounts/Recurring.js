@@ -95,7 +95,7 @@ class Recurring extends Component {
     } = this.state;
 
     return (
-      <>
+      <div className='modalWrapper'>
         <div className='recurring'>
 					<div className='recurringTop'>
 						<h3>Customize Your Recurring {util.toTitleCase(this.props.topText)}</h3>
@@ -181,7 +181,7 @@ class Recurring extends Component {
 						</div>
 					</div>
         </div>
-      </>
+      </div>
     )
   }
 }
@@ -190,19 +190,39 @@ export default Recurring;
 
 
 export const renderRecurringName = (kind, interval, max = null) => {
-	let name = 'One-Time Donation';
+	const obj = {};
+	let name = '';
+
+	switch (kind) {
+		case 'invoice': {
+			name = 'Payment';
+			break;
+		}
+
+		case 'fundraiser': {
+			name = 'Donation';
+			break;
+		}
+
+		// no default
+	}
+
+	let text = `One-Time ${name}`;
+
 	switch (interval) {
 		case 'monthly':
-			name = `Monthly Donation ${max ? `for ${max} Month${max > 1 ? 's' : ''}` : ''}`;
+			text = `Monthly ${name} ${max ? `for ${max} Month${max > 1 ? 's' : ''}` : ''}`;
 			break;
 		case 'quarterly':
-			name = `Quarterly Donation ${max ? `for ${max} Quarter${max > 1 ? 's' : ''}`: ''}`;
+			text = `Quarterly ${name} ${max ? `for ${max} Quarter${max > 1 ? 's' : ''}`: ''}`;
 			break;
 		case 'annually':
-			name = `Yearly Donation ${max ? `for ${max} Year${max > 1 ? 's' : ''}` : ''}`;
+			text = `Yearly ${name} ${max ? `for ${max} Year${max > 1 ? 's' : ''}` : ''}`;
 			break;
 
 		// no default
 	}
-	return name;
+	obj.name = name;
+	obj.text = text;
+	return obj;
 }

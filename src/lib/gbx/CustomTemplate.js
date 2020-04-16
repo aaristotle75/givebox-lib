@@ -1,9 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Responsive, WidthProvider } from 'react-grid-layout';
-import 'react-grid-layout/css/styles.css';
-import 'react-resizable/css/styles.css';
-import '../styles/gbx.scss';
 import {
   GBLink,
   util,

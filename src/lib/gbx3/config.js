@@ -1,5 +1,13 @@
- const fundraiserBlocks = [
-  {
+
+export const defaultOptions = {
+	gbxStyle: {
+		maxWidth: 1000
+	},
+	primaryColor: ''
+};
+
+const fundraiserBlocks = [
+	{
 		name: 'logo',
 		title: 'Logo',
 		type: 'Media',
@@ -7,6 +15,7 @@
 		options: {
 			maxSize: '55px',
 			size: 'small',
+			borderRadius: 20
 		},
 		grid: {
 	    desktop: { i: 'logo', x: 0, y: 0, w: 1, h: 4, enabled: true },
@@ -56,7 +65,8 @@
 		field: 'imageURL',
 		options: {
 			maxSize: '360px',
-			size: 'medium'
+			size: 'medium',
+			borderRadius: 5
 		},
 		grid: {
 	    desktop: { i: 'media', x: 6, y: 0, w: 6, h: 20, enabled: true },
@@ -98,6 +108,15 @@
 	},
 ];
 
+const invoiceBlocks = fundraiserBlocks;
+const eventBlocks = fundraiserBlocks;
+const sweepstakesBlocks = fundraiserBlocks;
+const membershipBlocks = fundraiserBlocks;
+
 export const initBlocks = {
-	fundraiser: fundraiserBlocks
+	fundraiser: fundraiserBlocks,
+	invoice: invoiceBlocks,
+	event: eventBlocks,
+	sweepstakes: sweepstakesBlocks,
+	membership: membershipBlocks
 };

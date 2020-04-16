@@ -2,6 +2,19 @@
 
 .gbx3 {
 
+	::-webkit-scrollbar {
+	    width: 6px;
+	}
+
+	::-webkit-scrollbar-track {
+	  background-color: transparent;
+	}
+
+	::-webkit-scrollbar-thumb {
+	  outline: 0;
+	  border-radius: 20px;
+	}
+
 	/*----- Amount Form elements -----*/
 	.radio-group label.label {
 	   margin-left: 10px;
@@ -17,8 +30,12 @@
 		height: auto;
 		width: 100%;
 		overflow-x: hidden;
-		overflow-y: auto;
+		overflow-y: hidden;
 		font-size: 14px;
+	}
+
+	.amountsList:hover {
+		overflow-y: scroll;
 	}
 
 	.amountRow {
@@ -183,20 +200,16 @@
 		justify-content: center;
 	}
 
+	.dropdown button:hover {
+		border-bottom: 1px solid transparent !important;
+	}
+
 	.endsAt,
 	.forever {
 		margin: 5px 0 0 0;
 		color: #465965;
 		font-weight: 300;
 		font-size: 14px;
-	}
-
-	.recurringTop {
-		h3 {
-			margin-top: 30px;
-    	font-size: 22px;
-			font-weight: 300;
-		}
 	}
 
 	.recurringBottom {

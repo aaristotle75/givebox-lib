@@ -1,5 +1,42 @@
 @import 'variables.scss';
 
+.gbxModal,
+.modalContent.gbx3 {
+	.modalTop,
+	.modalBottom {
+		display: none;
+	}
+
+	button.link {
+		font-size: 14px;
+	}
+
+	h3 {
+		margin: 10px 0;
+  	font-size: 22px;
+		font-weight: 300;
+	}
+
+	.cke_top {
+		background: transparent !important;
+		border-bottom: 1px solid $greenLight !important;
+	}
+
+	.cke_bottom {
+		background: transparent !important;
+		border-top: 1px solid $greenLight !important;
+	}
+
+	.cke_resizer {
+	   border-color: transparent $greenLight transparent transparent !important;
+	}
+
+	.cke_chrome {
+		border: 0 !important;
+	}
+
+}
+
 .gbx3 {
 
 	/*------ Elements --------*/
@@ -175,65 +212,73 @@
 
 	/*------- Admin Custom Area -----*/
 
+	.adminCustomAreaOpen {
+		position: absolute;
+		top: 10px;
+		left: 10px;
+	  z-index: 1999999;
+		cursor: pointer;
+
+		.icon {
+			font-size: 30px;
+		}
+	}
+
+	.adminCustomAreaClose {
+		position: absolute;
+		top: 15px;
+		left: 170px;
+		z-index: 1999999;
+		cursor: pointer;
+
+		.icon {
+			color: $med-blue-gray;
+			font-size: 18px;
+		}
+	}
+
+	.adminCustomAreaOpen.open { display: none; }
+	.adminCustomAreaClose.close { display: none; }
+
+	.adminCustomArea.open {
+		width: 200px;
+	}
+
+	.adminCustomArea.close {
+		width: 0px;
+	}
+
 	.adminCustomArea {
-	  position: fixed;
+	  position: absolute;
 	  left: 0;
-	  right: 0;
+	  top: 0;
 	  bottom: 0;
 	  background: $dark-blue-gray;
-	  width: 100%;
-	  margin: 0 auto;
-	  z-index: 999999;
-
-	  .logo {
-	    position: absolute;
-	    right: 10px;
-	    top: 5px;
-	    display: flex;
-	    justify-content: center;
-	    align-items: center;
-
-	    .loggedInGroup {
-	      text-align: right;
-	      margin-right: 20px;
-	    }
-
-	    .loggedInAs {
-	      font-size: 10px;
-	      color: $med-blue-gray;
-	      display: block;
-	    }
-
-	    button.link {
-	      color: $white;
-	      font-size: 12px;
-	    }
-
-	    img {
-	      cursor: pointer;
-	      height: 25px;
-	      width: 25px;
-	    }
-	  }
+		width: 100%;
+		max-width: 200px;
+	  z-index: 899999;
+		margin: 0;
+		@include transition(width .5s);
 
 	  .button-group.linkBar {
-	    display: flex;
-	    justify-content: flex-start;
-	    margin: 10px;
-	    margin-left: 50px;
-	  }
+			position: relative;
+			margin-top: 60px;
+			width: auto;
 
-	  button.link {
-	    font-size: 14px;
-	    color: $mainColorLight;
-	  }
+			button.link {
+				display: block;
+				font-size: 14px;
+		    color: $mainColorLight;
+				margin: 5px 10px;
+			}
 
-	  button.link:hover {
-	    color: $white;
-	  }
+		  button.link:hover {
+		    color: $white;
+		  }
 
-	  button.link:not(.show) {
-	    visibility: hidden;
+		  button.link:not(.show) {
+		    visibility: hidden;
+		  }
 	  }
 
 	  .handle {
@@ -250,10 +295,50 @@
 	  }
 	}
 
-	.adminCustomArea.editable {
-	  button.link {
-	    visibility: visible;
+	.logo {
+		position: absolute;
+		top: 10px;
+		height: 30px;
+		width: 100%;
+		max-width: 200px;
+	  display: flex;
+	  justify-content: center;
+	  align-items: center;
+
+	  img {
+	    cursor: pointer;
+	    height: 25px;
+	    width: 25px;
 	  }
+	}
+
+	.loggedInGroup {
+		position: absolute;
+		bottom: 10px;
+		height: 30px;
+		width: 100%;
+		max-width: 200px;
+		margin: 0 10px;
+
+	  .loggedInAs {
+	    font-size: 10px;
+	    color: $med-blue-gray;
+	    display: block;
+	  }
+
+	  button.link {
+	    color: $white;
+	    font-size: 12px;
+	  }
+	}
+
+	.adminCustomArea.editable {
+
+	  .button-group.linkBar {
+		  button.link {
+		    visibility: visible;
+		  }
+		}
 	}
 
 	/*------- End Admin Custom Area -----*/
@@ -405,12 +490,14 @@
 	button.button {
 	  border-radius: 20px;
 	  font-size: 16px;
-	  background-color: transparent;
+		color: $mainColor;
+	  background-color: $white;
 	  @include default-transition(.5s);
 	}
 
 	button.button:hover {
-	  background-color: $off-white;
+	  background-color: $mainColor;
+		color: $white;
 	}
 
 	button.gbxBtn {
@@ -434,12 +521,37 @@
 	/*----- End Payment Form ------*/
 
 
+	/*------- Media Library -------*/
+
+  .scale {
+    margin: 0 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    @media (max-width: 600px) { margin: 0; }
+
+    .icon.small {
+      font-size: $small-text-size;
+      margin-right: 5px;
+    }
+    .icon {
+      font-size: $large-text-size;
+      margin-left: 5px;
+    }
+  }
+
 	/*------- Responsive ---------*/
 
 	@media (max-width: 800px) {
 	  .modalContent:not(.campaignForm) {
 	      width: 100% !important;
 	  }
+
+		.dropdown button .selected.label,
+		.dropdown .label:not(button) {
+		   font-size: 1em;
+		}
+
 	}
 
 }

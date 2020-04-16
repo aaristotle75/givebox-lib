@@ -5,18 +5,16 @@ import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import '../styles/gbx3.scss';
 import {
-  GBLink,
   util,
   sendResource,
 	getResource,
-	resourceProp,
 	setCustomProp,
   types,
-  Alert,
-	Loader
+	Loader,
+	toggleModal
 } from '../';
 import AdminToolbar from './tools/AdminToolbar';
-import { initBlocks } from './config';
+import { defaultOptions, initBlocks } from './config';
 import Loadable from 'react-loadable';
 import has from 'has';
 
@@ -42,6 +40,7 @@ class GBXClass extends React.Component {
 		this.getData = this.getData.bind(this);
 		this.updateBlock = this.updateBlock.bind(this);
 		this.amountsCallback = this.amountsCallback.bind(this);
+		this.updateOptions = this.updateOptions.bind(this);
 
     const layouts = {
       desktop: [],
@@ -51,7 +50,13 @@ class GBXClass extends React.Component {
     const givebox = props.kind ? util.getValue(props.article, 'giveboxSettings', {}) : util.getValue(props.article, 'givebox', {});
     const customTemplate = util.getValue(givebox, 'customTemplate', {});
 		const customBlocks = util.getValue(customTemplate, 'blocks');
+		const customOptions = util.getValue(customTemplate, 'options');
 		const blocks = !util.isEmpty(customBlocks) ? customBlocks : initBlocks[props.kind];
+		const options = !util.isEmpty(customOptions) ? customOptions : defaultOptions;
+    const settings = util.getValue(props.article, 'giveboxSettings', {});
+    const primaryColor = util.getValue(settings, 'primaryColor');
+		options.primaryColor = options.primaryColor || primaryColor;
+
 
     Object.entries(blocks).forEach(([key, value]) => {
       layouts.desktop.push(value.grid.desktop);
@@ -59,16 +64,14 @@ class GBXClass extends React.Component {
     });
 
     this.state = {
+			options,
 			blocks,
 			layouts,
 			data: {},
-      formStyle: {
-        maxWidth: '1000px'
-      },
       breakpoint: 'desktop',
       success: false,
       error: false,
-      editable: false,
+      editable: true,
       showOutline: false,
 			collision: false
     }
@@ -185,10 +188,16 @@ class GBXClass extends React.Component {
   }
 
 	getData(reset) {
-		const data = this.state.data;
+		const {
+			options,
+			data,
+			blocks
+		} = this.state;
 		data.giveboxSettings = {
+			primaryColor: util.getValue(options, 'primaryColor', null),
 			customTemplate: {
-				blocks: reset ? {} : this.state.blocks
+				options: reset ? {} : options,
+				blocks: reset ? {} : blocks
 			}
 		};
 		return data;
@@ -197,8 +206,11 @@ class GBXClass extends React.Component {
   addBlock(block) {
     const blocks = this.state.blocks;
     const breakpoint = this.state.breakpoint;
+		console.log('Add Block', block, breakpoint);
+		/*
     blocks[block].grid[breakpoint].enabled = true;
     this.setState({ blocks });
+		*/
 	}
 
   removeBlock(block) {
@@ -208,23 +220,26 @@ class GBXClass extends React.Component {
     this.setState({ blocks });
 	}
 
-	updateBlock(name, obj = {}, callback) {
+	updateBlock(name, info = {}, options = {}, callback) {
 		const blocks = this.state.blocks;
 		const index = blocks.findIndex(b => b.name === name);
 		if (index !== -1) {
-			const mobile = blocks[index].grid.mobile;
+			const block = blocks[index];
+			block.options = { ...block.options, ...options };
+
+			const mobile = block.grid.mobile;
 			if (!has(mobile, 'info')) {
-				mobile.info = obj;
+				mobile.info = info;
 			}
-			const desktop = blocks[index].grid.desktop;
+			const desktop = block.grid.desktop;
 			if (!has(desktop, 'info')) {
-				desktop.info = obj;
+				desktop.info = info;
 			}
-			const current = blocks[index].grid[this.state.breakpoint];
+			const current = block.grid[this.state.breakpoint];
 			if (!has(current, 'info')) {
-				current.info = obj;
+				current.info = info;
 			} else {
-				current.info = { ...current.info, ...obj };
+				current.info = { ...current.info, ...info };
 			}
 			this.setState({ blocks }, () => {
 				if (callback) callback();
@@ -237,7 +252,8 @@ class GBXClass extends React.Component {
 			blocks,
 			breakpoint,
 			showOutline,
-			editable
+			editable,
+			options
 		} = this.state;
 
     const items = [];
@@ -275,6 +291,7 @@ class GBXClass extends React.Component {
 							blockRef={ref}
 							info={util.getValue(value.grid[breakpoint], 'info', {})}
 							amountsCallback={this.amountsCallback}
+							primaryColor={options.primaryColor}
 						/>
 					</div>
 	      );
@@ -287,18 +304,23 @@ class GBXClass extends React.Component {
 		console.log('execute amountsCallback', obj);
 	}
 
+	updateOptions(obj = {}) {
+		const options = { ...this.state.options, ...obj };
+		this.setState({ options });
+	}
+
 	render() {
 
 		const {
 			layouts,
 			editable,
 			showOutline,
-			formStyle,
+			options,
 			collision
 		} = this.state;
 
 		return (
-			<div style={formStyle} className='gbx3'>
+			<div style={util.getValue(options, 'gbxStyle', {})} className='gbx3'>
 				<AdminToolbar
 					renderBlocks={this.renderBlocks}
 					toggleEditable={this.toggleEditable}
@@ -310,6 +332,11 @@ class GBXClass extends React.Component {
 					resetLayout={this.resetLayout}
 					saveLayout={this.saveLayout}
 					access={this.props.access}
+					updateOptions={this.updateOptions}
+					options={options}
+					toggleModal={this.props.toggleModal}
+				  setCustomProp={this.props.setCustomProp}
+					primaryColor={this.props.primaryColor}
 				/>
         <div
           ref={this.gridRef}
@@ -399,18 +426,21 @@ function mapStateToProps(state, props) {
   const resource = util.getValue(state.resource, resourceName, {});
   const isFetching = util.getValue(resource, 'isFetching', false);
   const article = util.getValue(resource, 'data', {});
+	const primaryColor = util.getValue(state.custom, 'primaryColor');
 
   return {
 		resourceName,
     resource,
     isFetching,
     article,
-    access: util.getValue(state.resource, 'access', {})
+    access: util.getValue(state.resource, 'access', {}),
+		primaryColor
   }
 }
 
 export default connect(mapStateToProps, {
   sendResource,
 	getResource,
-	setCustomProp
+	setCustomProp,
+	toggleModal
 })(GBX);

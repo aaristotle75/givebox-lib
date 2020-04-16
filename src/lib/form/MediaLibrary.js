@@ -283,7 +283,7 @@ class UploadLibrary extends Component {
                 >
                   <span className='text'>
 										<span>Drag & Drop</span>
-										<span className='icon icon-plus'></span>
+										<span className='icon icon-file-plus'></span>
 										<span>Browse File</span>
 									</span>
                 </Dropzone>

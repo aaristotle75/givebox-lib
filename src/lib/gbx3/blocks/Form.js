@@ -41,16 +41,12 @@ class Form extends Component {
     const {
       article,
 			noRemove,
-			title,
-			modalID
+			primaryColor
     } = this.props;
 
 		const {
 			edit
 		} = this.state;
-
-    const settings = util.getValue(article, 'giveboxSettings', {});
-    const color = util.getValue(settings, 'primaryColor');
 
     return (
       <div className='block'>
@@ -61,7 +57,7 @@ class Form extends Component {
 					removeOnClick={this.remove}
 				/>
         <PaymentForm
-          primaryColor={color}
+          primaryColor={primaryColor}
           article={article}
           phone={{ enabled: true, required: false }}
           address={{ enabled: true, required: false }}

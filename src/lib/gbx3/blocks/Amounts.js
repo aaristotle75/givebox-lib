@@ -22,7 +22,8 @@ class Amounts extends Component {
 			amountsList: [],
 			customIndex: 6,
 			defaultIndex: 6,
-			edit: false
+			edit: false,
+			primaryColor: this.props.primaryColor
     };
 		this.blockRef = null;
 		this.width = null;
@@ -35,17 +36,25 @@ class Amounts extends Component {
 			this.width = this.blockRef.clientWidth;
 			this.height = this.blockRef.clientHeight;
 		}
-    const settings = util.getValue(this.props.article, 'giveboxSettings', {});
-    const color = util.getValue(settings, 'primaryColor');
+		this.setStyle();
+		this.getAmounts();
+	}
+
+	setStyle() {
+		const color = this.state.primaryColor;
+		const rgb = util.hexToRgb(color);
+		const color2 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .1)`;
 		const styleEl = document.head.appendChild(document.createElement('style'));
 		styleEl.innerHTML = `
 			.radio:checked + label:after {
 				border: 1px solid ${color} !important;
 				background: ${color};
 			}
-		`;
 
-		this.getAmounts();
+			.amountsSection ::-webkit-scrollbar-thumb {
+			  background-color: ${color2};
+			}
+		`;
 	}
 
 	edit() {
@@ -114,12 +123,11 @@ class Amounts extends Component {
 			edit,
 			amountsList,
 			customIndex,
-			defaultIndex
+			defaultIndex,
+			primaryColor
 		} = this.state;
 
 		if (util.isEmpty(amountsList)) return <></>
-    const settings = util.getValue(article, 'giveboxSettings', {});
-    const color = util.getValue(settings, 'primaryColor');
 
     return (
       <div className='block'>
@@ -157,7 +165,7 @@ class Amounts extends Component {
 					width={this.width}
 					height={this.height}
 					amountsCallback={this.props.amountsCallback}
-					color={color}
+					color={primaryColor}
 					kind={this.props.kind}
 					allowRecurring={util.getValue(article, 'allowRecurring')}
 				/>
