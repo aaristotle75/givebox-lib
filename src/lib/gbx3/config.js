@@ -3,7 +3,13 @@ export const defaultOptions = {
 	gbxStyle: {
 		maxWidth: 1000
 	},
-	primaryColor: ''
+	primaryColor: '',
+	button: {
+		bgColor: '',
+		fontSize: 16,
+		borderRadius: 10,
+		width: 200
+	}
 };
 
 const fundraiserBlocks = [
@@ -53,6 +59,13 @@ const fundraiserBlocks = [
 		title: 'Amounts',
 		type: 'Amounts',
 		field: 'amounts',
+		options: {
+			button: {
+				enabled: true,
+				text: 'Select Amount',
+				type: 'button'
+			}
+		},
 		grid: {
 	    desktop: { i: 'amounts', x: 0, y: 2, w: 6, h: 22, enabled: true },
 	    mobile: { i: 'amounts', x: 0, y: 28, w: 6, h: 20, enabled: true }

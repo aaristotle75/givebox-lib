@@ -4,10 +4,13 @@ import {
   util,
 	GBLink,
 	ModalRoute,
-	toggleModal
+	toggleModal,
+	Collapse
 } from '../../';
 import AmountsEdit from './amounts/AmountsEdit';
 import AmountsList from './amounts/AmountsList';
+import Button from './Button';
+import ButtonEdit from './ButtonEdit';
 import { BlockOption } from './Block';
 
 class Amounts extends Component {
@@ -16,9 +19,17 @@ class Amounts extends Component {
     super(props);
 		this.getAmounts = this.getAmounts.bind(this);
 		this.edit = this.edit.bind(this);
+		this.buttonUpdated = this.buttonUpdated.bind(this);
 		this.closeModalCallback = this.closeModalCallback.bind(this);
 		this.closeModalButtons = this.closeModalButtons.bind(this);
+		this.renderAmountsList = this.renderAmountsList.bind(this);
+		this.closeModalAmountsListCallback = this.closeModalAmountsListCallback.bind(this);
+
+		const button = {...util.getValue(props.globalOptions, 'button', {}), ...util.getValue(props.options, 'button', {}) };
+
     this.state = {
+			button,
+			newButtonChanges: {},
 			amountsList: [],
 			customIndex: 6,
 			defaultIndex: 6,
@@ -54,6 +65,10 @@ class Amounts extends Component {
 			.amountsSection ::-webkit-scrollbar-thumb {
 			  background-color: ${color2};
 			}
+
+			.modalContent.gbx3 .amountRow {
+				border-left: 4px solid ${color};
+			}
 		`;
 	}
 
@@ -63,7 +78,8 @@ class Amounts extends Component {
 	}
 
 	closeModalCallback() {
-		//this.props.updateBlock(this.props.name, { content: this.state.content });
+		const button = { ...this.state.button };
+		this.props.updateBlock(this.props.name, null, { button });
 		this.setState({ edit: false });
 	}
 
@@ -74,6 +90,10 @@ class Amounts extends Component {
 			this.setState({ edit: false });
 		}
 		this.props.toggleModal(this.props.modalID, false);
+	}
+
+	closeModalAmountsListCallback() {
+		console.log('execute closeModalAmountsListCallback');
 	}
 
 	remove() {
@@ -111,6 +131,41 @@ class Amounts extends Component {
 		});
 	}
 
+	renderAmountsList(embed = false) {
+
+		const {
+			article
+		} = this.props;
+
+		const {
+			amountsList,
+			customIndex,
+			defaultIndex,
+			primaryColor,
+			button
+		} = this.state;
+
+		return (
+			<AmountsList
+				embed={embed}
+				list={amountsList}
+				customIndex={customIndex}
+				defaultIndex={defaultIndex}
+				width={this.width}
+				height={this.height}
+				amountsCallback={this.props.amountsCallback}
+				color={primaryColor}
+				kind={this.props.kind}
+				allowRecurring={util.getValue(article, 'allowRecurring')}
+				buttonEnabled={util.getValue(button, 'enabled', false)}
+			/>
+		)
+	}
+
+	buttonUpdated(button) {
+		this.setState({ button });
+	}
+
   render() {
 
 		const {
@@ -122,15 +177,13 @@ class Amounts extends Component {
 		const {
 			edit,
 			amountsList,
-			customIndex,
-			defaultIndex,
-			primaryColor
+			button
 		} = this.state;
 
 		if (util.isEmpty(amountsList)) return <></>
 
     return (
-      <div className='block'>
+      <div className={`block ${util.getValue(button, 'enabled', false) ? 'flexCenter' : ''}`}>
 				<BlockOption
 					edit={edit}
 					noRemove={noRemove}
@@ -142,9 +195,34 @@ class Amounts extends Component {
 					id={modalID}
 					component={() =>
 						<div className='modalWrapper'>
-							<AmountsEdit
-								article={article}
-							/>
+							<Collapse
+								label={'Options'}
+								iconPrimary='sliders'
+								id={'gbx3-options'}
+							>
+								<div className='formSectionContainer'>
+									<div className='formSection'>
+										<ButtonEdit
+											label={'Enable Amounts Button'}
+											button={button}
+											update={this.buttonUpdated}
+										/>
+									</div>
+								</div>
+							</Collapse>
+							<Collapse
+								label={'Edit Amounts'}
+								iconPrimary='edit'
+								id={'gbx3-amounts'}
+							>
+								<div className='formSectionContainer'>
+									<div className='formSection'>
+										<AmountsEdit
+											article={article}
+										/>
+									</div>
+								</div>
+							</Collapse>
 							<div style={{ marginBottom: 0 }} className='button-group center'>
 								<GBLink className='link' onClick={() => this.closeModalButtons('cancel')}>Cancel</GBLink>
 								<GBLink className='button' onClick={this.closeModalButtons}>Save</GBLink>
@@ -157,18 +235,33 @@ class Amounts extends Component {
 					closeCallback={this.closeModalCallback}
 					disallowBgClose={true}
 				/>
-				<AmountsList
-					embed={true}
-					list={amountsList}
-					customIndex={customIndex}
-					defaultIndex={defaultIndex}
-					width={this.width}
-					height={this.height}
-					amountsCallback={this.props.amountsCallback}
-					color={primaryColor}
-					kind={this.props.kind}
-					allowRecurring={util.getValue(article, 'allowRecurring')}
-				/>
+				{util.getValue(button, 'enabled', false) ?
+					<>
+						<ModalRoute
+							className='gbx3'
+							id='amountsList'
+							component={() =>
+								<div className='modalContainers'>
+									<div className='topContainer'></div>
+									<div className='middleContainer'>
+										{this.renderAmountsList()}
+									</div>
+									<div className='bottomContainer'></div>
+								</div>
+							}
+							effect='3DFlipVert' style={{ width: '60%' }}
+							draggable={false}
+							closeCallback={this.closeModalAmountsListCallback}
+							disallowBgClose={false}
+						/>
+						<Button
+							modalID={`amountsList`}
+							button={button}
+						/>
+					</>
+				:
+					this.renderAmountsList(true)
+				}
       </div>
     )
   }

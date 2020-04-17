@@ -66,7 +66,7 @@ class Form extends Component {
           editable={this.props.editable}
         />
         <div className='button-group'>
-          <GBLink allowCustom={true} className='button' onClick={() => this.saveButton()}>Submit Form</GBLink>
+          <GBLink solidColor={true} allowCustom={true} className='button' onClick={() => this.saveButton()}>Submit Form</GBLink>
           <GBLink allowCustom={true} onClick={() => console.log('onclick callback')}>No, thanks</GBLink>
         </div>
       </div>

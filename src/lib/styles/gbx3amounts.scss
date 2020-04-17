@@ -1,5 +1,6 @@
 @import 'variables.scss';
 
+
 .gbx3 {
 
 	::-webkit-scrollbar {
@@ -38,18 +39,13 @@
 		overflow-y: scroll;
 	}
 
-	.amountRow {
-		display: flex;
-		justify-content: flex-start;
-		width: 100%;
-		padding: 10px 0 10px 2%;
-		margin: 10px 0;
-		border-left: 4px solid $mainColor;
-	}
-
 	.amountDesc {
-		display: inline-block;
-		width: 83%;
+		width: 100%;
+	}
+	.amountRow {
+		padding: 0;
+		margin: 0;
+		border-left: 0;
 	}
 
 	.amountQty {
@@ -88,19 +84,6 @@
 	.amountRadioPrice {
 		font-size: 14px;
 		font-weight: 500;
-	}
-
-	/*--------- Embed Amount -------*/
-	.embed {
-		.amountDesc {
-			width: 100%;
-		}
-		.amountRow {
-			padding: 0;
-			margin: 0;
-			border-left: 0;
-		}
-
 	}
 
 }
@@ -220,4 +203,37 @@
 			font-size: 16px;
 		}
 	}
+}
+
+/*------- Modal Specific ------*/
+.modalContent.gbx3 {
+	.amountInput {
+		padding-top: 20px;
+	}
+
+	.amountsList {
+		position: relative;
+		height: auto;
+		width: 100%;
+		margin-top: 10px;
+	}
+	.amountRow {
+		display: flex;
+		justify-content: flex-start;
+		width: 100%;
+		padding: 0px 0 0px 2%;
+		margin: 10px 0;
+		border-left: 4px solid $mainColor;
+		background: $white;
+	}
+
+	.amountDesc {
+		display: inline-block;
+		width: 83%;
+	}
+
+	.radio-group label.label {
+		padding: 20px 0;
+	}
+
 }

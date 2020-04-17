@@ -17,8 +17,7 @@ class AmountsList extends Component {
 
   constructor(props) {
     super(props);
-		this.renderEmbedAmounts = this.renderEmbedAmounts.bind(this);
-		this.renderModalAmounts = this.renderModalAmounts.bind(this);
+		this.renderAmounts = this.renderAmounts.bind(this);
 		this.onChangeAmountRadio = this.onChangeAmountRadio.bind(this);
 		this.onChangeEnteredAmount = this.onChangeEnteredAmount.bind(this);
 		this.onBlurEnteredAmount = this.onBlurEnteredAmount.bind(this);
@@ -160,10 +159,11 @@ class AmountsList extends Component {
 		this.props.amountsCallback(obj);
 	}
 
-	renderEmbedAmounts() {
+	renderAmounts() {
 		const {
 			list,
-			allowRecurring
+			allowRecurring,
+			buttonEnabled
 		} = this.props;
 
 		const {
@@ -219,7 +219,7 @@ class AmountsList extends Component {
 
 		const style = this.getAmountInputStyle(length);
 		const recurringLinkHeight = 35;
-		const amountsListHeight = this.props.height - (style.height + recurringLinkHeight);
+		const amountsListHeight = !buttonEnabled ? this.props.height - (style.height + recurringLinkHeight) : 'auto';
 		const customIsDefaultOnlyAmount = customID === defaultID && items.length === 1 ? true : false;
 		const amountInput =
 			<div key={'amountInput'} className='amountInput'>
@@ -262,45 +262,19 @@ class AmountsList extends Component {
 		return style;
 	}
 
-	renderModalAmounts() {
-		const {
-			list
-		} = this.props;
-		const items = [];
-
-		Object.entries(list).forEach(([key, value]) => {
-			items.push(
-				<div key={key} className='amountRow'>
-					<div className='amountDesc'>
-						{value.name}
-					</div>
-					<div className='amountQty'>
-						<Choice
-							name={value.ID}
-							onChange={this.onChangeQty}
-							type='radio'
-							label={value.name}
-						/>
-					</div>
-				</div>
-			);
-		});
-
-		return items;
-	}
-
   render() {
 
 		const {
-			embed
+			embed,
+			buttonEnabled
 		} = this.props;
 
-		const height = embed ? `${this.props.height}px` : 'auto';
+		const height = embed && !buttonEnabled ? `${this.props.height}px` : 'auto';
 
     return (
 			<div className={`${embed ? 'embed' : ''}`}>
 	      <div style={{ height: height }} className='amountsSection'>
-					{embed ? this.renderEmbedAmounts() : this.renderModalAmounts()}
+					{this.renderAmounts()}
 	      </div>
 			</div>
     )

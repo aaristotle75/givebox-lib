@@ -243,3 +243,20 @@ export const accountType = (type) => {
 export const socialIcons = (type, size = 50) => {
   return <img style={{ height: size, width: size }} src={`https://givebox.s3-us-west-1.amazonaws.com/public/images/social-${type}.png`} alt={`${type}`} />;
 }
+
+
+export const fontSizeOptions = (r1, r2) => {
+	const items = [];
+	for (let i = r1; i <= r2; i++) {
+		if (i % 2 === 0) {
+			items.push(
+				{
+					primaryText: `${i}px`,
+					secondaryText: <span style={{ fontSize: i }}>Example Font Size</span>,
+					value: i
+				}
+			);
+		}
+	}
+	return items;
+}

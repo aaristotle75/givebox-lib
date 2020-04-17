@@ -8,11 +8,12 @@ import {
 	ModalRoute,
 	TextField,
 	ColorPicker,
+	Dropdown,
 	Fade,
 	Collapse,
-	_v
+	_v,
+	types
 } from '../../';
-import Draggable from 'react-draggable';
 import AnimateHeight from 'react-animate-height';
 
 export default class AdminToolbar extends Component {
@@ -25,6 +26,7 @@ export default class AdminToolbar extends Component {
 		this.state = {
 			primaryColor: util.getValue(options, 'primaryColor'),
 			gbxStyle: util.getValue(options, 'gbxStyle', {}),
+			button: util.getValue(options, 'button', {}),
 			open: this.props.open
     };
   }
@@ -38,6 +40,7 @@ export default class AdminToolbar extends Component {
 		if (type !== 'cancel') {
 			this.props.updateOptions({
 					gbxStyle: this.state.gbxStyle,
+					button: this.state.button,
 					primaryColor: this.state.primaryColor
 			});
 			this.props.setCustomProp('primaryColor', this.state.primaryColor);
@@ -50,15 +53,18 @@ export default class AdminToolbar extends Component {
 			toggleEditable,
 			toggleOutline,
 			toggleCollision,
+			toggleCollapse,
 			editable,
 			showOutline,
 			collision,
+			collapse,
 			resetLayout,
 			saveLayout,
 			access
 		} = this.props;
 
 		const {
+			button,
 			gbxStyle,
 			primaryColor,
 			open
@@ -83,6 +89,7 @@ export default class AdminToolbar extends Component {
 	            <GBLink className='link show' onClick={toggleEditable}>{editable ? 'Turn Editable Off' : 'Turn Editable On'}</GBLink>
 	            <GBLink onClick={toggleOutline}>{showOutline ? 'Hide Outline' : 'Show Outline'}</GBLink>
 	            <GBLink onClick={toggleCollision}>{collision ? 'Turn Freeform On' : 'Turn Freeform Off'}</GBLink>
+	            <GBLink onClick={toggleCollapse}>{collapse ? 'Turn Compact On' : 'Turn Compact Off'}</GBLink>
 	            <GBLink onClick={resetLayout}>Reset Layout</GBLink>
 	            <GBLink onClick={saveLayout}>Save Layout</GBLink>
 							<ModalLink id='paymentForm-options'>Options</ModalLink>
@@ -92,7 +99,7 @@ export default class AdminToolbar extends Component {
 								component={() =>
 									<div className='modalWrapper'>
 										<Collapse
-											label={'Options'}
+											label={'Payment Form Options'}
 											id={'editing-paymentForm-options'}
 											iconPrimary='layout'
 										>
@@ -128,6 +135,61 @@ export default class AdminToolbar extends Component {
 														inputMode='numeric'
 														maxLength={4}
 													/>
+												</div>
+											</div>
+										</Collapse>
+										<Collapse
+											label={'Button Options'}
+											id={'editing-button-options'}
+											iconPrimary='layout'
+										>
+											<div className='formSectionContainer'>
+												<div className='formSection'>
+													<ColorPicker
+														name='bgColor'
+														fixedLabel={true}
+														label='Button Background Color'
+														onAccept={(name, value) => {
+															const button = this.state.button;
+															button.bgColor = value;
+															this.setState({ button });
+														}}
+														value={util.getValue(button, 'bgColor', primaryColor)}
+														modalID='colorPickerBgColor'
+														opts={{
+															customOverlay: {
+																zIndex: 9999909
+															}
+														}}
+													/>
+													<TextField
+														name='width'
+														value={util.getValue(button, 'width')}
+														onChange={(e) => {
+													    e.preventDefault();
+													    const value = parseInt(_v.formatNumber(e.target.value));
+															const button = this.state.button;
+															button.width = value;
+															this.setState({ button });
+														}}
+														fixedLabel={true}
+														label='Button Width'
+														placeholder='Enter Button Width (Optional)'
+														inputMode='numeric'
+														maxLength={3}
+													/>
+								          <Dropdown
+														label='Button Font Size'
+														fixedLabel={true}
+								            name='fontSize'
+								            defaultValue={parseInt(util.getValue(button, 'fontSize', 16))}
+								            onChange={(name, value) => {
+															const button = this.state.button;
+															button.fontSize = value;
+															this.setState({ button });
+														}}
+								            options={types.fontSizeOptions(10, 28)}
+								          />
 												</div>
 											</div>
 										</Collapse>

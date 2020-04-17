@@ -1,0 +1,117 @@
+@import 'variables.scss';
+
+.gbxModal,
+.modalContent.gbx3 {
+
+	.modalContainers {
+		background: $very-light-gray;
+	}
+
+	.topContainer {
+		position: absolute;
+		height: 60px;
+		padding: 10px;
+		top: 0;
+		left: 0;
+		right: 0;
+		background: $white;
+    border-bottom: 1px solid $light-gray;
+	}
+
+	.middleContainer {
+		position: relative;
+		width: 100%;
+		height: auto;
+		margin: 60px 0px;
+		padding: 0 20px;
+	}
+
+	.bottomContainer {
+		position: absolute;
+		height: 60px;
+		padding: 10px;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		background: $white;
+    border-top: 1px solid $light-gray;
+	}
+
+	.modalTop,
+	.modalBottom {
+		display: none;
+	}
+
+	button.link {
+		font-size: 14px;
+	}
+
+	h3 {
+		margin: 10px 0;
+  	font-size: 22px;
+		font-weight: 300;
+	}
+
+	.cke_top {
+		background: transparent !important;
+		border-bottom: 1px solid $greenLight !important;
+	}
+
+	.cke_bottom {
+		background: transparent !important;
+		border-top: 1px solid $greenLight !important;
+	}
+
+	.cke_resizer {
+	   border-color: transparent $greenLight transparent transparent !important;
+	}
+
+	.cke_chrome {
+		border: 0 !important;
+	}
+
+	/*------- Responsive ------*/
+	@media (max-width: 768px) {
+		.topContainer {
+			position: fixed;
+		}
+
+		.middleContainer {
+			position: relative;
+			width: 100%;
+			height: auto;
+			margin: 60px 0px 0 0;
+			padding: 0 5px;
+		}
+
+		.bottomContainer {
+			display: none;
+		}
+	}
+}
+
+.gbxModal {
+  .modal .modalWrapper {
+    padding-top: 0px;
+  }
+
+  .modalTop,
+  .modalBottom {
+    display: none;
+  }
+
+  .modalContainer {
+    padding: 20px 10px;
+  }
+
+  .modal .modalContent {
+    border-radius: 20px;
+    padding: 20px;
+  }
+
+  .modal .RichEditor-root {
+      padding: 0px;
+      margin-top: 10px;
+  }
+
+}

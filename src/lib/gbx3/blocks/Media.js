@@ -179,9 +179,9 @@ class Media extends Component {
 								<div className='formSectionContainer'>
 									<div className='formSection'>
 										<div className='input-group'>
-											<label className='label'>Image Radius</label>
+											<label className='label'>Image Roundness</label>
 						          <div className='scale'>
-						            <GBLink onClick={() => this.setRadius(minRadius)}><span className='icon small icon-image'></span></GBLink>
+						            <GBLink onClick={() => this.setRadius(minRadius)}><span className='icon icon-square'></span></GBLink>
 						            <input
 						              name="borderRadius"
 						              type="range"
@@ -191,7 +191,7 @@ class Media extends Component {
 						              step="0"
 						              value={borderRadius}
 						            />
-						            <GBLink onClick={() => this.setRadius(maxRadius)}><span className='icon icon-image'></span></GBLink>
+						            <GBLink onClick={() => this.setRadius(maxRadius)}><span className='icon icon-circle'></span></GBLink>
 						          </div>
 										</div>
 									</div>

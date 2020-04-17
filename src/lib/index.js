@@ -88,8 +88,6 @@ import Articles from './helpdesk/Articles';
 import HelpDeskButton from './helpdesk/HelpDeskButton';
 
 // GBX
-import CustomTemplate from './gbx/CustomTemplate';
-import Editor from './gbx3/tools/Editor';
 import { handleFile } from './gbx3/tools/util';
 import { BlockOption } from './gbx3/blocks/Block';
 
@@ -199,8 +197,6 @@ export {
   HelpDeskButton,
 
   // GBX
-  CustomTemplate,
-	Editor,
 	handleFile,
 	BlockOption,
 

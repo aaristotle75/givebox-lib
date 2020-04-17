@@ -4,6 +4,7 @@ import { Responsive, WidthProvider } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import '../styles/gbx3.scss';
+import '../styles/gbx3modal.scss';
 import {
   util,
   sendResource,
@@ -30,6 +31,7 @@ class GBXClass extends React.Component {
     this.toggleEditable = this.toggleEditable.bind(this);
 		this.toggleOutline = this.toggleOutline.bind(this);
 		this.toggleCollision = this.toggleCollision.bind(this);
+		this.toggleCollapse = this.toggleCollapse.bind(this);
     this.resetLayout = this.resetLayout.bind(this);
     this.saveLayout = this.saveLayout.bind(this);
     this.success = this.success.bind(this);
@@ -71,9 +73,10 @@ class GBXClass extends React.Component {
       breakpoint: 'desktop',
       success: false,
       error: false,
-      editable: true,
+      editable: false,
       showOutline: false,
-			collision: false
+			collision: true,
+			collapse: false
     }
 
     this.gridRef = React.createRef();
@@ -132,6 +135,11 @@ class GBXClass extends React.Component {
 	toggleCollision() {
 		const collision = this.state.collision ? false : true;
 		this.setState({ collision })
+  }
+
+	toggleCollapse() {
+		const collapse = this.state.collapse ? false : true;
+		this.setState({ collapse })
   }
 
   resetLayout() {
@@ -282,6 +290,7 @@ class GBXClass extends React.Component {
 							content={value.content}
 							overflow={value.overflow}
 							options={value.options}
+							globalOptions={options}
 							fieldValue={fieldValue}
 							editable={editable}
 							toggleEditable={this.toggleEditable}
@@ -316,7 +325,8 @@ class GBXClass extends React.Component {
 			editable,
 			showOutline,
 			options,
-			collision
+			collision,
+			collapse
 		} = this.state;
 
 		return (
@@ -326,9 +336,11 @@ class GBXClass extends React.Component {
 					toggleEditable={this.toggleEditable}
 					toggleOutline={this.toggleOutline}
 					toggleCollision={this.toggleCollision}
+					toggleCollapse={this.toggleCollapse}
 					editable={editable}
 					showOutline={showOutline}
 					collision={collision}
+					collapse={collapse}
 					resetLayout={this.resetLayout}
 					saveLayout={this.saveLayout}
 					access={this.props.access}
@@ -374,7 +386,7 @@ class GBXClass extends React.Component {
             autoSize={true}
 						draggableHandle={'.dragHandle'}
             draggableCancel={'.modal'}
-            verticalCompact={true}
+            verticalCompact={collapse}
 						preventCollision={collision}
           >
 						{this.renderBlocks()}
@@ -417,7 +429,7 @@ class GBX extends React.Component {
 }
 
 GBX.defaultProps = {
-  breakpointWidth: 701
+  breakpointWidth: 768
 }
 
 function mapStateToProps(state, props) {

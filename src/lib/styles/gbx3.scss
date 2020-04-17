@@ -1,41 +1,5 @@
 @import 'variables.scss';
 
-.gbxModal,
-.modalContent.gbx3 {
-	.modalTop,
-	.modalBottom {
-		display: none;
-	}
-
-	button.link {
-		font-size: 14px;
-	}
-
-	h3 {
-		margin: 10px 0;
-  	font-size: 22px;
-		font-weight: 300;
-	}
-
-	.cke_top {
-		background: transparent !important;
-		border-bottom: 1px solid $greenLight !important;
-	}
-
-	.cke_bottom {
-		background: transparent !important;
-		border-top: 1px solid $greenLight !important;
-	}
-
-	.cke_resizer {
-	   border-color: transparent $greenLight transparent transparent !important;
-	}
-
-	.cke_chrome {
-		border: 0 !important;
-	}
-
-}
 
 .gbx3 {
 
@@ -373,35 +337,6 @@
 	/*-------- End Drop Area ---------*/
 
 
-	/*--------- Modal ---------*/
-
-	.gbxModal {
-	  .modal .modalWrapper {
-	    padding-top: 0px;
-	  }
-
-	  .modalTop,
-	  .modalBottom {
-	    display: none;
-	  }
-
-	  .modalContainer {
-	    padding: 20px 10px;
-	  }
-
-	  .modal .modalContent {
-	    border-radius: 20px;
-	    padding: 20px;
-	  }
-
-	  .modal .RichEditor-root {
-	      padding: 0px;
-	      margin-top: 10px;
-	  }
-
-	}
-	/*------- End Modal ----------*/
-
 
 	/*------ Payment Form ---------*/
 
@@ -490,14 +425,14 @@
 	button.button {
 	  border-radius: 20px;
 	  font-size: 16px;
-		color: $mainColor;
-	  background-color: $white;
+		//color: $mainColor;
+	  //background-color: $white;
 	  @include default-transition(.5s);
 	}
 
 	button.button:hover {
-	  background-color: $mainColor;
-		color: $white;
+	  //background-color: $mainColor;
+		//color: $white;
 	}
 
 	button.gbxBtn {
@@ -542,7 +477,7 @@
 
 	/*------- Responsive ---------*/
 
-	@media (max-width: 800px) {
+	@media (max-width: 768px) {
 	  .modalContent:not(.campaignForm) {
 	      width: 100% !important;
 	  }

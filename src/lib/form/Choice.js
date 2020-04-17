@@ -9,6 +9,7 @@ class Choice extends Component {
     super(props);
     this.onChange = this.onChange.bind(this);
     this.onChangeLink = this.onChangeLink.bind(this);
+		this.onBlur = this.onBlur.bind(this);
   }
 
   componentDidMount() {
@@ -27,6 +28,10 @@ class Choice extends Component {
       }
     }
   }
+
+	onBlur() {
+		if (this.props.onBlur) this.props.onBlur();
+	}
 
   onChange(name, value) {
     this.props.onChange(name, value);
