@@ -58,6 +58,7 @@ class Button extends Component {
 
     return (
       <>
+				{util.getValue(button, 'embedAllowed', false) ?
 				<Choice
 					type='checkbox'
 					name='enabled'
@@ -69,7 +70,7 @@ class Button extends Component {
 					}}
 					checked={enabled}
 					value={enabled}
-				/>
+				/> : <></>}
 	      <AnimateHeight
 	        duration={500}
 	        height={enabled ? 'auto' : 0}

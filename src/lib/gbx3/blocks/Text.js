@@ -86,6 +86,7 @@ class Text extends Component {
   render() {
 
 		const {
+			name,
 			modalID,
 			noRemove,
 			title,
@@ -100,7 +101,7 @@ class Text extends Component {
 		const cleanHtml = util.cleanHtml(content);
 
     return (
-      <div style={{ }} className='block'>
+      <div style={{ }} className={`block ${name}Block`}>
 				<BlockOption
 					edit={edit}
 					noRemove={noRemove}

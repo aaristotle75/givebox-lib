@@ -171,6 +171,11 @@
 	  color: $mainColorLight
 	}
 
+	// Name blocks
+	.titleBlock {
+		line-height: 1em;
+	}
+
 	/*---------- End Blocks ------------ */
 
 
@@ -180,7 +185,7 @@
 		position: absolute;
 		top: 10px;
 		left: 10px;
-	  z-index: 1999999;
+		z-index: 900000;
 		cursor: pointer;
 
 		.icon {
@@ -192,7 +197,7 @@
 		position: absolute;
 		top: 15px;
 		left: 170px;
-		z-index: 1999999;
+		z-index: 900000;
 		cursor: pointer;
 
 		.icon {
@@ -342,7 +347,7 @@
 
 	.givebox-paymentform {
 
-	  padding: 0px 20px;
+	  padding: 0;
 
 		.mainError {
 			position: absolute;

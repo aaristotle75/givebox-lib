@@ -4,6 +4,7 @@ import GBLink from '../common/GBLink';
 import Fade from '../common/Fade';
 import * as util from '../common/utility';
 import AnimateHeight from 'react-animate-height';
+import Portal from '../common/Portal';
 import has from 'has';
 
 class Dropdown extends Component {
@@ -26,9 +27,12 @@ class Dropdown extends Component {
       status: 'idle',
       buttonStyle: {
 				color: props.color || ''
-			}
+			},
+			mounted: false
     }
     this.dropdownRef = React.createRef();
+		this.dropdownInputRef = React.createRef();
+		this.dropdownButton = React.createRef();
     this.labelRef = React.createRef();
     this.selectedRef = React.createRef();
     this.iconRef = React.createRef();
@@ -45,9 +49,17 @@ class Dropdown extends Component {
         selected: init.primaryText
       });
     }
+		this.setState({ mounted: true });
   }
 
   componentDidUpdate(prevProps, prevState) {
+		if (prevState.mounted !== this.state.mounted) {
+			if (this.props.dropRef) {
+				const dropRef = this.props.dropRef.current;
+				console.log('execute', this.props.dropRef, dropRef);
+			}
+		}
+
     if (prevProps.value !== this.props.value) {
       let init = lookup(this.props.options, 'value', this.props.value);
       if (!isEmpty(init)) {
@@ -209,7 +221,11 @@ class Dropdown extends Component {
       overlay,
       overlayDuration,
       fixedLabel,
-			readOnly
+			readOnly,
+			portal,
+			portalID,
+			portalRootEl,
+			portalClass
     } = this.props;
 
     const {
@@ -224,25 +240,36 @@ class Dropdown extends Component {
     const selectedValue = multi ? open ? multiCloseLabel : selectLabel : selected && (value || defaultValue) ? selected : selectLabel;
     const idleLabel = selectedValue === multiCloseLabel || selectedValue === selectLabel;
     const readOnlyText = this.props.readOnlyText || `${label} is not editable`;
+    const portalRoot = document.getElementById(portalRootEl);
+
+		const dropdownContent =
+	    <div ref={this.dropdownRef} style={{ ...contentStyle, boxShadow: this.props.color ? `none`: '', border: this.props.color && open ? `1px solid ${this.props.color}` : ''}} className={`${open ? 'opened' : ''} dropdown-content ${this.props.direction || direction}`}>
+	      <AnimateHeight
+	        duration={200}
+	        height={open ? 'auto' : 0}
+	      >
+	        <div className='dropdown-content-inner'>
+	          {this.listOptions()}
+	        </div>
+	      </AnimateHeight>
+	    </div>
+		;
+
+		const dropdownPortal =
+      <Portal id={portalID} rootEl={portalRoot} className={`dropdown ${portalClass}`}>
+				{dropdownContent}
+      </Portal>
+		;
 
     return (
-      <div style={style} className={`input-group ${className || ''} ${readOnly ? 'readOnly tooltip' : ''} ${error ? 'error tooltip' : ''}`}>
+      <div ref={this.dropdownInputRef} style={style} className={`input-group ${className || ''} ${readOnly ? 'readOnly tooltip' : ''} ${error ? 'error tooltip' : ''}`}>
         <Fade in={open && overlay} duration={overlayDuration}>
           <div onClick={this.closeMenu} className={`dropdown-cover ${display ? '' : 'displayNone'}`}></div>
         </Fade>
         <div className={`dropdown ${this.props.color ? 'customColor' : ''} ${floatingLabel && 'floating-label'} ${status} ${fixedLabel ? 'fixed' : ''}`} style={dropdownStyle}>
           {label && !floatingLabel && <label><GBLink onClick={open || readOnly ? this.closeMenu : this.openMenu}>{label}</GBLink></label>}
-          <button style={buttonStyle} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} type='button' onClick={open || readOnly ? this.closeMenu : this.openMenu}><span ref={this.selectedRef} className={`label ${selected ? 'selected' : ''} ${idleLabel && 'idle'}`}>{selectedValue}</span><span ref={this.iconRef} className={`icon icon-${open ? multi ? iconMultiClose : iconOpened : iconClosed}`}></span></button>
-          <div ref={this.dropdownRef} style={{ ...contentStyle, boxShadow: this.props.color ? `none`: '', border: this.props.color && open ? `1px solid ${this.props.color}` : ''}} className={`${open ? 'opened' : ''} dropdown-content ${this.props.direction || direction}`}>
-            <AnimateHeight
-              duration={200}
-              height={open ? 'auto' : 0}
-            >
-              <div className='dropdown-content-inner'>
-                {this.listOptions()}
-              </div>
-            </AnimateHeight>
-          </div>
+          <button ref={this.dropdownButton} style={buttonStyle} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} type='button' onClick={open || readOnly ? this.closeMenu : this.openMenu}><span ref={this.selectedRef} className={`label ${selected ? 'selected' : ''} ${idleLabel && 'idle'}`}>{selectedValue}</span><span ref={this.iconRef} className={`icon icon-${open ? multi ? iconMultiClose : iconOpened : iconClosed}`}></span></button>
+					{portal ? dropdownPortal : dropdownContent}
           {label && floatingLabel && <label><GBLink className='link label' onClick={open || readOnly ? this.closeMenu : this.openMenu}><span ref={this.labelRef}>{label}</span></GBLink></label>}
         </div>
         <div className={`tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`}>
@@ -256,6 +283,9 @@ class Dropdown extends Component {
 }
 
 Dropdown.defaultProps = {
+	portalClass: 'dropdown-portal',
+	portalRootEl: 'modal-root',
+	portalID: 'dropdown-portal',
   name: 'defaultSelect',
   multi: false,
   multiCloseLabel: 'Close Menu',
@@ -269,7 +299,8 @@ Dropdown.defaultProps = {
   overlayDuration: 200,
   overlay: true,
   direction: '',
-	defaultColor: '#4775f8'
+	defaultColor: '#4775f8',
+	portal: false
 }
 
 export default Dropdown;

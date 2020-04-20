@@ -13,7 +13,7 @@ class GBXTest extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: 735
+      id: 4
     };
     this.timeout = false;
   }

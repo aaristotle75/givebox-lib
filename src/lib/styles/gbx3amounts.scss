@@ -53,6 +53,43 @@
 		width: 15%;
 	}
 
+	/*-------- Ticket Amount Specific----------*/
+	.ticketAmountRow {
+		display: flex;
+		justify-content: space-between;
+
+		.ticketDesc {
+			display: inline-block;
+			width: 85%;
+		}
+
+		.input-group.dropdown-button .dropdown button {
+		   border: 1px solid transparent;
+		}
+
+		.input-group.dropdown-button .dropdown .label {
+		  color: $dark;
+		  font-weight: 400;
+			font-size: 20px;
+		}
+
+		.input-group.dropdown-button .dropdown .icon {
+		  color: $dark;
+		  font-size: 20px;
+		}
+
+		.dropdown button {
+			font-size: 16px;
+			justify-content: center;
+		}
+
+		.dropdown button:hover {
+			border-bottom: 1px solid transparent !important;
+		}
+
+	}
+
+
 	/*-------- Amount Entered -------*/
 	.amountInput {
 		position: relative;
@@ -145,6 +182,15 @@
 	  color: $med-blue-gray;
 	}
 
+	.dropdown button {
+		font-size: 16px;
+		justify-content: center;
+	}
+
+	.dropdown button:hover {
+		border-bottom: 1px solid transparent !important;
+	}
+
 	.amount {
 		margin: 0 0 20px 0;
 		display: flex;
@@ -178,15 +224,6 @@
 		align-items: center;
 	}
 
-	.dropdown button {
-		font-size: 16px;
-		justify-content: center;
-	}
-
-	.dropdown button:hover {
-		border-bottom: 1px solid transparent !important;
-	}
-
 	.endsAt,
 	.forever {
 		margin: 5px 0 0 0;
@@ -205,6 +242,9 @@
 	}
 }
 
+/*------ END GBX3 ------*/
+
+
 /*------- Modal Specific ------*/
 .modalContent.gbx3 {
 	.amountInput {
@@ -217,6 +257,7 @@
 		width: 100%;
 		margin-top: 10px;
 	}
+
 	.amountRow {
 		display: flex;
 		justify-content: flex-start;

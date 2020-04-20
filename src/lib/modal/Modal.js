@@ -59,6 +59,7 @@ class Modal extends Component {
       scrolled: false
     }
     this.modalRef = React.createRef();
+		this.modalContentRef = React.createRef();
   }
 
   componentDidMount() {
@@ -90,6 +91,7 @@ class Modal extends Component {
   toTop() {
     //const el = document.getElementById('layout-main');
     animateScrollTo(0, { element: this.modalRef.current });
+    animateScrollTo(0, { element: this.modalContentRef.current });
   }
 
   onClose(callback) {
@@ -266,10 +268,17 @@ class Modal extends Component {
 
     const modalContent =
       <div
+        id={`modalContent-${identifier}`}
+				ref={this.modalContentRef}
         className={`modalContent ${className}`}
         style={prefix({ ...contentStyle, ...transition_style, ...openEffect })}
         onClick={stopPropagation}
       >
+        <Waypoint
+          onEnter={this.onEnter}
+          onLeave={this.onExit}
+          bottomOffset={'100px'}
+        />
         {(closeBtn) && <button style={closeBtnStyle} className='modalCloseBtn' onClick={() => this.closeModal(closeCallback, 'ok')}>{iconClose}</button>}
 				<div className='modalTop'></div>
 		    {draggable ?
@@ -301,11 +310,6 @@ class Modal extends Component {
           id={`modalOverlay-${identifier}`}
           className={`modalOverlay`} style={prefix({ ...overlayStyle, ...modalOverlayStyle})}
         >
-          <Waypoint
-            onEnter={this.onEnter}
-            onLeave={this.onExit}
-            bottomOffset={'100px'}
-          />
           {draggable ?
 		        <Draggable
 		          allowAnyClick={false}

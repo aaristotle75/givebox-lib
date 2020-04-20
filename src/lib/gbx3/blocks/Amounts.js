@@ -9,6 +9,7 @@ import {
 } from '../../';
 import AmountsEdit from './amounts/AmountsEdit';
 import AmountsList from './amounts/AmountsList';
+import TicketsList from './amounts/TicketsList';
 import Button from './Button';
 import ButtonEdit from './ButtonEdit';
 import { BlockOption } from './Block';
@@ -134,7 +135,8 @@ class Amounts extends Component {
 	renderAmountsList(embed = false) {
 
 		const {
-			article
+			article,
+			kind
 		} = this.props;
 
 		const {
@@ -145,21 +147,47 @@ class Amounts extends Component {
 			button
 		} = this.state;
 
-		return (
-			<AmountsList
-				embed={embed}
-				list={amountsList}
-				customIndex={customIndex}
-				defaultIndex={defaultIndex}
-				width={this.width}
-				height={this.height}
-				amountsCallback={this.props.amountsCallback}
-				color={primaryColor}
-				kind={this.props.kind}
-				allowRecurring={util.getValue(article, 'allowRecurring')}
-				buttonEnabled={util.getValue(button, 'enabled', false)}
-			/>
-		)
+		switch (kind) {
+			case 'event':
+			case 'membership':
+			case 'sweepstakes': {
+				return (
+					<TicketsList
+						embed={false}
+						list={amountsList}
+						customIndex={customIndex}
+						defaultIndex={defaultIndex}
+						width={this.width}
+						height={this.height}
+						amountsCallback={this.props.amountsCallback}
+						color={primaryColor}
+						kind={this.props.kind}
+						buttonEnabled={util.getValue(button, 'enabled', false)}
+					/>
+				)
+			}
+
+			case 'fundraiser':
+			case 'invoices':
+			default: {
+				return (
+					<AmountsList
+						embed={embed}
+						list={amountsList}
+						customIndex={customIndex}
+						defaultIndex={defaultIndex}
+						width={this.width}
+						height={this.height}
+						amountsCallback={this.props.amountsCallback}
+						color={primaryColor}
+						kind={this.props.kind}
+						allowRecurring={util.getValue(article, 'allowRecurring')}
+						buttonEnabled={util.getValue(button, 'enabled', false)}
+					/>
+				)
+			}
+		}
+
 	}
 
 	buttonUpdated(button) {
@@ -242,11 +270,22 @@ class Amounts extends Component {
 							id='amountsList'
 							component={() =>
 								<div className='modalContainers'>
-									<div className='topContainer'></div>
+									<div className='topContainer'>
+										<h3 className='center'>{util.getValue(button, 'text', 'Select Amount')}</h3>
+									</div>
 									<div className='middleContainer'>
 										{this.renderAmountsList()}
 									</div>
-									<div className='bottomContainer'></div>
+									<div className='bottomContainer'>
+										<div className='cartInfo'>
+											<GBLink allowCustom={true} onClick={() => console.log('items in cart')}><span style={{ display: 'block', fontSize: 12 }}>Items in Cart (8)</span></GBLink>
+											<span style={{ display: 'block' }}><span style={{ fontSize: 12 }}>Sub Total:</span> <span className='strong'>{util.money(300)}</span></span>
+										</div>
+										<div className='button-group'>
+											<GBLink allowCustom={true} onClick={() => console.log('Show more items')}>SHOP MORE ITEMS</GBLink>
+											<GBLink className='button' allowCustom={true} onClick={() => console.log('checkout')}>CHECKOUT</GBLink>
+										</div>
+									</div>
 								</div>
 							}
 							effect='3DFlipVert' style={{ width: '60%' }}

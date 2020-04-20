@@ -155,7 +155,7 @@ export default class AdminToolbar extends Component {
 															this.setState({ button });
 														}}
 														value={util.getValue(button, 'bgColor', primaryColor)}
-														modalID='colorPickerBgColor'
+														modalID='colorPickerButtonBgColor'
 														opts={{
 															customOverlay: {
 																zIndex: 9999909

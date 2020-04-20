@@ -34,7 +34,7 @@ const fundraiserBlocks = [
 		type: 'Text',
 		field: 'title',
 		options: {
-			defaultFormat: '<strong><span style="font-size:14px;">{{TOKEN}}</span></strong>'
+			defaultFormat: '<span style="font-size:16px;">{{TOKEN}}</span>'
 		},
 		grid: {
 	    desktop: { i: 'title', x: 1, y: 0, w: 5, h: 2, enabled: true },
@@ -61,6 +61,7 @@ const fundraiserBlocks = [
 		field: 'amounts',
 		options: {
 			button: {
+				embedAllowed: true,
 				enabled: true,
 				text: 'Select Amount',
 				type: 'button'
