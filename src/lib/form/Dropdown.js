@@ -28,11 +28,12 @@ class Dropdown extends Component {
       buttonStyle: {
 				color: props.color || ''
 			},
+			contentStyle: {},
 			mounted: false
     }
     this.dropdownRef = React.createRef();
-		this.dropdownInputRef = React.createRef();
-		this.dropdownButton = React.createRef();
+		this.inputRef = React.createRef();
+		this.buttonRef = React.createRef();
     this.labelRef = React.createRef();
     this.selectedRef = React.createRef();
     this.iconRef = React.createRef();
@@ -53,12 +54,6 @@ class Dropdown extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-		if (prevState.mounted !== this.state.mounted) {
-			if (this.props.dropRef) {
-				const dropRef = this.props.dropRef.current;
-				console.log('execute', this.props.dropRef, dropRef);
-			}
-		}
 
     if (prevProps.value !== this.props.value) {
       let init = lookup(this.props.options, 'value', this.props.value);
@@ -107,10 +102,29 @@ class Dropdown extends Component {
     if (this.props.fieldProp) this.props.fieldProp(this.props.name, { error: false });
     if (this.props.formProp) this.props.formProp({ error: false, errorMsg: '' });
     const ref = this.dropdownRef.current;
+		const buttonRef = this.buttonRef.current;
     const height = window.innerHeight;
     const rect = ref.getBoundingClientRect();
+
     let direction = '';
-    if ((height - rect.top) < 300) direction = 'top';
+		if (this.props.portalID) {
+			const buttonRect = buttonRef.getBoundingClientRect();
+			const contentWidth = this.props.contentWidth || 200;
+			const contentWidthStr = `${contentWidth}px`;
+			ref.style.position = 'fixed';
+			ref.style.width = contentWidthStr;
+			ref.style.minWidth = contentWidthStr;
+			const offsetBottom = height - buttonRect.bottom;
+			if (offsetBottom < 300) {
+				ref.style.bottom = `${offsetBottom}px`;
+			} else {
+				ref.style.top = `${buttonRect.y}px`;
+			}
+			ref.style.left = `${buttonRect.x - (contentWidth / 1.75) }px`;
+		} else {
+			if ((height - rect.top) < 300) direction = 'top';
+		}
+
     this.setState({direction, open: true, display: true});
     if (!this.props.multi) document.addEventListener('click', this.closeMenu);
   }
@@ -222,7 +236,6 @@ class Dropdown extends Component {
       overlayDuration,
       fixedLabel,
 			readOnly,
-			portal,
 			portalID,
 			portalRootEl,
 			portalClass
@@ -262,14 +275,14 @@ class Dropdown extends Component {
 		;
 
     return (
-      <div ref={this.dropdownInputRef} style={style} className={`input-group ${className || ''} ${readOnly ? 'readOnly tooltip' : ''} ${error ? 'error tooltip' : ''}`}>
+      <div ref={this.inputRef} style={style} className={`input-group ${className || ''} ${readOnly ? 'readOnly tooltip' : ''} ${error ? 'error tooltip' : ''}`}>
         <Fade in={open && overlay} duration={overlayDuration}>
           <div onClick={this.closeMenu} className={`dropdown-cover ${display ? '' : 'displayNone'}`}></div>
         </Fade>
         <div className={`dropdown ${this.props.color ? 'customColor' : ''} ${floatingLabel && 'floating-label'} ${status} ${fixedLabel ? 'fixed' : ''}`} style={dropdownStyle}>
           {label && !floatingLabel && <label><GBLink onClick={open || readOnly ? this.closeMenu : this.openMenu}>{label}</GBLink></label>}
-          <button ref={this.dropdownButton} style={buttonStyle} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} type='button' onClick={open || readOnly ? this.closeMenu : this.openMenu}><span ref={this.selectedRef} className={`label ${selected ? 'selected' : ''} ${idleLabel && 'idle'}`}>{selectedValue}</span><span ref={this.iconRef} className={`icon icon-${open ? multi ? iconMultiClose : iconOpened : iconClosed}`}></span></button>
-					{portal ? dropdownPortal : dropdownContent}
+          <button ref={this.buttonRef} style={buttonStyle} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} type='button' onClick={open || readOnly ? this.closeMenu : this.openMenu}><span ref={this.selectedRef} className={`label ${selected ? 'selected' : ''} ${idleLabel && 'idle'}`}>{selectedValue}</span><span ref={this.iconRef} className={`icon icon-${open ? multi ? iconMultiClose : iconOpened : iconClosed}`}></span></button>
+					{portalID ? dropdownPortal : dropdownContent}
           {label && floatingLabel && <label><GBLink className='link label' onClick={open || readOnly ? this.closeMenu : this.openMenu}><span ref={this.labelRef}>{label}</span></GBLink></label>}
         </div>
         <div className={`tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`}>
@@ -284,8 +297,8 @@ class Dropdown extends Component {
 
 Dropdown.defaultProps = {
 	portalClass: 'dropdown-portal',
-	portalRootEl: 'modal-root',
-	portalID: 'dropdown-portal',
+	portalRootEl: 'dropdown-root',
+	portalID: false,
   name: 'defaultSelect',
   multi: false,
   multiCloseLabel: 'Close Menu',
@@ -299,8 +312,7 @@ Dropdown.defaultProps = {
   overlayDuration: 200,
   overlay: true,
   direction: '',
-	defaultColor: '#4775f8',
-	portal: false
+	defaultColor: '#4775f8'
 }
 
 export default Dropdown;

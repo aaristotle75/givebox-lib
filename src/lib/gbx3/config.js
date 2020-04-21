@@ -123,7 +123,17 @@ const fundraiserBlocks = [
 ];
 
 const invoiceBlocks = fundraiserBlocks;
-const eventBlocks = fundraiserBlocks;
+const eventBlocks = [
+	...fundraiserBlocks,
+	{
+		name: 'amounts',
+		options: {
+			button: {
+				text: 'Select Tickets'
+			}
+		}
+	}
+];
 const sweepstakesBlocks = fundraiserBlocks;
 const membershipBlocks = fundraiserBlocks;
 

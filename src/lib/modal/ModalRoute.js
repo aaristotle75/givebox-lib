@@ -12,6 +12,10 @@ class ModalRoute extends Component {
   constructor(props) {
     super(props);
     this.receiveMessage = this.receiveMessage.bind(this);
+		this.modalOpenCallback = this.modalOpenCallback.bind(this);
+		this.state = {
+			opened: false
+		};
   }
 
   componentDidMount() {
@@ -25,6 +29,10 @@ class ModalRoute extends Component {
       }
     }
   }
+
+	modalOpenCallback(open) {
+		this.setState({ opened: true });
+	}
 
   render() {
 
@@ -47,7 +55,10 @@ class ModalRoute extends Component {
 
     const modalRoot = document.getElementById('modal-root');
 
-    const optsProps = { ...opts, ...this.props.optsProps };
+    const optsProps = {
+			...opts,
+			...this.props.optsProps
+		};
 		const customOverlay = this.props.customOverlay || {};
 
     if (!modalRoot) {
@@ -71,8 +82,9 @@ class ModalRoute extends Component {
               appRef={appRef}
               draggable={draggable}
 							draggableTitle={util.getValue(optsProps, 'draggableTitle', draggableTitle)}
+							modalOpenCallback={this.modalOpenCallback}
             >
-              {component(optsProps)}
+              { this.state.opened ? component(optsProps) : <></> }
             </Modal>
           </Portal>
         }

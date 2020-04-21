@@ -207,6 +207,7 @@ class App extends Component {
             />
           </AppContext.Provider>
         </div>
+				<div id='dropdown-root'></div>
         <div id='modal-root' ref={this.modalRef}></div>
         <div id='calendar-root'></div>
         <div id='help-center'></div>

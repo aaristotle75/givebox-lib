@@ -64,7 +64,7 @@ class Modal extends Component {
 
   componentDidMount() {
     //window.addEventListener('resize', this.handleResize.bind(this));
-    setTimeout(() => this.setState({open: this.props.open}),0);
+    setTimeout(() => this.setState({open: this.props.open}, this.props.modalOpenCallback),0);
     this.onClose();
   }
 

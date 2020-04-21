@@ -48,48 +48,6 @@
 		border-left: 0;
 	}
 
-	.amountQty {
-		display: inline-block;
-		width: 15%;
-	}
-
-	/*-------- Ticket Amount Specific----------*/
-	.ticketAmountRow {
-		display: flex;
-		justify-content: space-between;
-
-		.ticketDesc {
-			display: inline-block;
-			width: 85%;
-		}
-
-		.input-group.dropdown-button .dropdown button {
-		   border: 1px solid transparent;
-		}
-
-		.input-group.dropdown-button .dropdown .label {
-		  color: $dark;
-		  font-weight: 400;
-			font-size: 20px;
-		}
-
-		.input-group.dropdown-button .dropdown .icon {
-		  color: $dark;
-		  font-size: 20px;
-		}
-
-		.dropdown button {
-			font-size: 16px;
-			justify-content: center;
-		}
-
-		.dropdown button:hover {
-			border-bottom: 1px solid transparent !important;
-		}
-
-	}
-
-
 	/*-------- Amount Entered -------*/
 	.amountInput {
 		position: relative;
@@ -276,5 +234,101 @@
 	.radio-group label.label {
 		padding: 20px 0;
 	}
+
+	/*-------- Ticket Amount Specific----------*/
+	.ticketsList {
+		position: relative;
+		height: auto;
+		width: 100%;
+		overflow: hidden;
+	}
+
+	.ticketAmountRow {
+		width: 100%;
+		padding: 10px 0;
+		margin: 15px 0;
+		border-left: 4px solid $mainColor;
+		background: $white;
+		overflow: hidden;
+
+		.ticketDescRow {
+			display: flex;
+			justify-content: flex-start;
+		}
+
+		.ticketDesc {
+			width: 85%;
+			padding: 10px;
+			font-size: 16px;
+			line-height: 1.3em;
+
+			.ticketDescAmount {
+				display: block;
+				color: $med-gray;
+				font-weight: 300;
+			}
+		}
+
+		.ticketQty {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.ticketShowDetailsLink {
+			display: block;
+			font-size: 14px;
+		}
+
+		.ticketDetails {
+			display: block;
+    	//@include box-shadow(1px 4px 5px 0px transparentize($med-blue-gray, .8));
+		}
+
+		.ticketDetailsContainer {
+			padding: 10px;
+		}
+
+		.input-group {
+			margin: 0;
+			padding: 10px 0;
+		}
+
+		.input-group.dropdown-quantity .dropdown {
+		}
+
+		.input-group.dropdown-quantity .dropdown button {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 70px;
+			height: 50px;
+			border: 1px solid $light-gray;
+		}
+
+		.input-group.dropdown-quantity .dropdown button:hover {
+			border-bottom: 1px solid $light-gray !important;
+		}
+
+		.input-group.dropdown-quantity .dropdown .label {
+		  color: $dark;
+			font-size: 16px;
+		  font-weight: 400;
+		}
+
+		.input-group.dropdown-quantity .label.idle {
+			color: $dark !important;
+		}
+
+		.input-group.dropdown-quantity .dropdown .icon {
+			position: relative;
+			top: 0;
+			right: 0;
+		  font-size: 20px;
+			margin-left: 10px;
+		}
+
+	}
+
 
 }

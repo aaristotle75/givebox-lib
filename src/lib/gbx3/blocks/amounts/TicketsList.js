@@ -3,14 +3,12 @@ import { connect } from 'react-redux';
 import {
   util,
 	_v,
-	ModalLink,
-	ModalRoute,
 	toggleModal,
-	Choice,
-	Portal,
+	GBLink,
 	Dropdown
 } from '../../../';
 import '../../../styles/gbx3amounts.scss';
+import AnimateHeight from 'react-animate-height';
 
 class TicketsList extends Component {
 
@@ -20,12 +18,25 @@ class TicketsList extends Component {
 		this.handleAmountChanges = this.handleAmountChanges.bind(this);
 		this.setAmounts = this.setAmounts.bind(this);
 		this.onChangeQty = this.onChangeQty.bind(this);
+		this.toggleShowDetails = this.toggleShowDetails.bind(this);
     this.state = {
+			ticketsSelected: [],
+			showDetails: []
     };
 		this.amountInputRef = React.createRef();
   }
 
 	componentDidMount() {
+	}
+
+	toggleShowDetails(id) {
+		const showDetails = this.state.showDetails;
+		const index = showDetails.findIndex((el) => {
+			return el === id;
+		});
+		if (index === -1) showDetails.push(id);
+		else showDetails.splice(index, 1);
+		this.setState({ showDetails });
 	}
 
 	setAmounts(amount) {
@@ -41,60 +52,82 @@ class TicketsList extends Component {
 		this.props.amountsCallback(obj);
 	}
 
-	onChangeQty(name, value) {
-		console.log('execute onChangeQty', name, value);
+	onChangeQty(name, value, ticket) {
+		const ticketsSelected = this.state.ticketsSelected;
+		const index = ticketsSelected.findIndex(x => x.ID === ticket.ID);
+		const qty = parseInt(value);
+		if (index === -1 && qty > 0) {
+			ticketsSelected.push({
+				ticket,
+				qty,
+				ID: ticket.ID
+			});
+		} else {
+			if (qty > 0) ticketsSelected[index] = { ...ticketsSelected[index], qty };
+			else ticketsSelected.splice(index, 1);
+		}
+		this.setState({ ticketsSelected });
 	}
 
 	renderAmounts() {
 		const {
-			list
+			list,
+			article
 		} = this.props;
+
+		const {
+			ticketsSelected,
+			showDetails
+		} = this.state;
 
 		const items = [];
 
 		const options = [];
-		const dropdownRefs = {};
+		for ( let i = 0; i < util.getValue(article, 'maxQuantity', 1); i++) {
+			options.push({
+				primaryText: i === 0 ? 'None' : i,
+				value: i
+			});
+		}
 
 		if (!util.isEmpty(list)) {
 			Object.entries(list).forEach(([key, value]) => {
 				if (value.enabled) {
-					dropdownRefs[value.ID] = React.createRef();
+					const index = ticketsSelected.findIndex(x => x.ID === value.ID);
+					const selected = util.getValue(ticketsSelected, index, {});
+					const qty = util.getValue(selected, 'qty', 0);
 					items.push(
-						<div key={key} className='amountRow ticketAmountRow'>
-							<div className='ticketDesc'>
-								{value.name}
+						<div key={key} className='ticketAmountRow'>
+							<div className='ticketDescRow'>
+								<div className='ticketDesc'>
+									{value.name}
+									<span className='ticketDescAmount'>{util.money(value.price/100)}</span>
+									{value.description ? <GBLink allowCustom={true} className='link ticketShowDetailsLink' onClick={() => this.toggleShowDetails(value.ID)}>{showDetails.includes(value.ID) ? 'Hide Info' : 'Show Info'}</GBLink> : <></>}
+								</div>
+								<div className='ticketQty'>
+									<Dropdown
+										portalID={`amountQty-dropdown-portal-${value.ID}`}
+										portal={true}
+					          className='dropdown-quantity'
+					          contentWidth={100}
+					          name='unitQty'
+					          defaultValue={qty}
+										color={this.props.color}
+					          onChange={(name, val) => this.onChangeQty(name, val, value)}
+					          options={options}
+										selectLabel={0}
+										value={qty}
+									/>
+								</div>
 							</div>
-							<div className='amountQty' ref={dropdownRefs[value.ID]}>
-								<Dropdown
-									dropRef={dropdownRefs[value.ID]}
-									portalID={`amountQty-dropdown-portal-${value.ID}`}
-									portal={false}
-				          className='dropdown-button'
-				          style={{width: '100%' }}
-				          name='unitQty'
-				          defaultValue={0}
-									color={this.props.color}
-				          onChange={this.onChangeQty}
-				          options={[
-				            {
-				              primaryText: 'One-Time',
-				              value: 'once'
-				            },
-				            {
-				              primaryText: 'Monthly',
-				              value: 'monthly'
-				            },
-				            {
-				              primaryText: 'Quarterly',
-				              value: 'quarterly'
-				            },
-				            {
-				              primaryText: 'Yearly',
-				              value: 'annually'
-				            }
-				          ]}
-								/>
-							</div>
+							<AnimateHeight
+								duration={200}
+								height={showDetails.includes(value.ID) ? 'auto' : 0}
+							>
+								<div className='ticketDetails'>
+									<div className='ticketDetailsContainer' dangerouslySetInnerHTML={{ __html: value.description }} />
+								</div>
+							</AnimateHeight>
 						</div>
 					);
 				}
@@ -102,9 +135,9 @@ class TicketsList extends Component {
 		}
 
 		return (
-			<>
-				<div className='amountsList'>{items}</div>
-			</>
+			<div className='ticketsList'>
+				{items}
+			</div>
 		)
 	}
 

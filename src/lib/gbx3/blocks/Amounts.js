@@ -63,10 +63,15 @@ class Amounts extends Component {
 				background: ${color};
 			}
 
+			.dropdown .dropdown-content::-webkit-scrollbar-thumb {
+			  background-color: ${color};
+			}
+
 			.amountsSection ::-webkit-scrollbar-thumb {
 			  background-color: ${color2};
 			}
 
+			.modalContent.gbx3 .ticketAmountRow,
 			.modalContent.gbx3 .amountRow {
 				border-left: 4px solid ${color};
 			}
@@ -163,6 +168,7 @@ class Amounts extends Component {
 						color={primaryColor}
 						kind={this.props.kind}
 						buttonEnabled={util.getValue(button, 'enabled', false)}
+						article={this.props.article}
 					/>
 				)
 			}
