@@ -53,6 +53,7 @@ import Redirect from './common/Redirect';
 import Tabs, { Tab } from './common/Tabs';
 import * as types from './common/types';
 import * as util from './common/utility';
+import Video from './common/Video';
 
 import FeesGlossary from './glossary/Fees';
 
@@ -185,6 +186,7 @@ export {
   Tab,
   types,
   util,
+	Video,
 
   // Glossary
   FeesGlossary,

@@ -43,6 +43,7 @@ class GBXClass extends React.Component {
 		this.updateBlock = this.updateBlock.bind(this);
 		this.amountsCallback = this.amountsCallback.bind(this);
 		this.updateOptions = this.updateOptions.bind(this);
+		this.setStyle = this.setStyle.bind(this);
 
     const layouts = {
       desktop: [],
@@ -73,7 +74,7 @@ class GBXClass extends React.Component {
       breakpoint: 'desktop',
       success: false,
       error: false,
-      editable: false,
+      editable: true,
       showOutline: false,
 			collision: true,
 			collapse: false
@@ -88,6 +89,7 @@ class GBXClass extends React.Component {
     if (gridWidth < this.props.breakpointWidth) {
       this.setState({ breakpoint: 'mobile' });
     }
+		this.setStyle();
   }
 
   componentWillUnmount() {
@@ -96,6 +98,38 @@ class GBXClass extends React.Component {
       this.timeout = null;
     }
   }
+
+	setStyle() {
+		const options = this.state.options;
+		const color = util.getValue(options, 'primaryColor');
+		const rgb = util.hexToRgb(color);
+		const color2 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .1)`;
+		const styleEl = document.head.appendChild(document.createElement('style'));
+		styleEl.innerHTML = `
+			.radio:checked + label:after {
+				border: 1px solid ${color} !important;
+				background: ${color};
+			}
+
+			.dropdown .dropdown-content::-webkit-scrollbar-thumb {
+			  background-color: ${color};
+			}
+
+			.amountsSection ::-webkit-scrollbar-thumb {
+			  background-color: ${color2};
+			}
+
+			.modalContent.gbx3 .ticketAmountRow,
+			.modalContent.gbx3 .amountRow {
+				border-left: 4px solid ${color} !important;
+			}
+
+			.gbx3 button.modalToTop:hover {
+			  background: ${color};
+			}
+
+		`;
+	}
 
   success() {
     this.setState({ success: true });
@@ -143,7 +177,8 @@ class GBXClass extends React.Component {
   }
 
   resetLayout() {
-		this.saveLayout(true);
+		const blocks = initBlocks[this.props.kind];
+		this.setState({ blocks }, this.saveLayout(true));
   }
 
   layoutChange(layout, layouts) {
@@ -264,6 +299,7 @@ class GBXClass extends React.Component {
 			options
 		} = this.state;
 
+		console.log('execute renderBlocks', blocks);
     const items = [];
 		const article = this.props.article;
     Object.entries(blocks).forEach(([key, value]) => {

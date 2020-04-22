@@ -6,8 +6,9 @@
 
   .panel {
     margin: 10px 0;
+		text-align: center;
 
-    .panelItem {
+		.panelItem {
       margin: 0 10px 0 0;
       display: inline-block;
     }
@@ -26,12 +27,15 @@
 /*-------- Demo purposes ------*/
 .statsTab {
 
-  text-align: left;
+	button.panelTab {
+		text-align: center;
+	}
 
   .panelTab {
     color: $light-med-gray;
     padding: 10px;
     background: transparentize($primary, .8);
+		text-align: center;
   }
 
   .panelTab:hover {
@@ -54,4 +58,11 @@
   .panel {
     border-bottom: 1px solid transparentize($primary, .8);
   }
+
+	.stepLabel {
+
+		.icon {
+			margin: 0 5px;
+		}
+	}
 }

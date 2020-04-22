@@ -61,6 +61,7 @@
     "react-highlight": "^0.12.0",
     "react-iframe-resizer-super": "^0.2.2",
     "react-oembed-container": "^0.3.0",
+    "react-player": "^1.15.3",
     "react-prefixr": "^0.1.0",
     "react-quill": "^1.3.3",
     "react-recaptcha-v3": "^1.1.0",

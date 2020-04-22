@@ -48,34 +48,7 @@ class Amounts extends Component {
 			this.width = this.blockRef.clientWidth;
 			this.height = this.blockRef.clientHeight;
 		}
-		this.setStyle();
 		this.getAmounts();
-	}
-
-	setStyle() {
-		const color = this.state.primaryColor;
-		const rgb = util.hexToRgb(color);
-		const color2 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .1)`;
-		const styleEl = document.head.appendChild(document.createElement('style'));
-		styleEl.innerHTML = `
-			.radio:checked + label:after {
-				border: 1px solid ${color} !important;
-				background: ${color};
-			}
-
-			.dropdown .dropdown-content::-webkit-scrollbar-thumb {
-			  background-color: ${color};
-			}
-
-			.amountsSection ::-webkit-scrollbar-thumb {
-			  background-color: ${color2};
-			}
-
-			.modalContent.gbx3 .ticketAmountRow,
-			.modalContent.gbx3 .amountRow {
-				border-left: 4px solid ${color};
-			}
-		`;
 	}
 
 	edit() {
@@ -277,7 +250,8 @@ class Amounts extends Component {
 							component={() =>
 								<div className='modalContainers'>
 									<div className='topContainer'>
-										<h3 className='center'>{util.getValue(button, 'text', 'Select Amount')}</h3>
+										<h3 style={{ padding: 0, margin: 0 }}>{util.getValue(button, 'text', 'Select Amount')}</h3>
+										<span style={{ fontWeight: 300 }} className='center'>{util.getValue(article, 'title')}</span>
 									</div>
 									<div className='middleContainer'>
 										{this.renderAmountsList()}

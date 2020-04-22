@@ -34,11 +34,13 @@ class Choice extends Component {
 	}
 
   onChange(name, value) {
-    this.props.onChange(name, value);
+    if (this.props.onChange) this.props.onChange(name, value);
+		else console.error('No props onChange');
   }
 
   onChangeLink(name, value) {
-    this.props.onChange(name, value);
+    if (this.props.onChange) this.props.onChange(name, value);
+		else console.error('No props onChange');
   }
 
   render() {
@@ -92,6 +94,7 @@ class Choice extends Component {
 }
 
 Choice.defaultProps = {
+	type: 'checkbox',
   useIcon: true
 }
 

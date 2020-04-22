@@ -131,6 +131,13 @@ button.imageCover {
   justify-content: center;
 	align-items: center;
 
+	.errorMsg {
+		width: 100%;
+		text-align: center;
+		color: $red;
+		font-size: 14px;
+	}
+
   img {
     display: inline-block;
     width: auto;

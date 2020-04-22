@@ -342,7 +342,7 @@ Modal.defaultProps = {
   iconClose: <span className='icon icon-x'></span>,
   draggable: false,
 	draggableTitle: '',
-	draggableTitleClass: 'editMode'
+	draggableTitleClass: ''
 };
 
 function mapStateToProps(state, props) {
