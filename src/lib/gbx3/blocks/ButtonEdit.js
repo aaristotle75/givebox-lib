@@ -12,14 +12,12 @@ import {
 	GBLink,
 	ModalLink
 } from '../../';
-import Button from './Button';
 import AnimateHeight from 'react-animate-height';
 
 class ButtonEdit extends Component {
 
   constructor(props) {
     super(props);
-		this.handleBorderRadius = this.handleBorderRadius.bind(this);
 		this.setRadius = this.setRadius.bind(this);
 		const button = this.props.button;
 		const borderRadius = util.getValue(button, 'borderRadius', util.getValue(props.options, 'borderRadius', 5));
@@ -36,11 +34,6 @@ class ButtonEdit extends Component {
 	componentWillUnmount() {
 		this.setState({ button: this.props.button });
 	}
-
-  handleBorderRadius(e) {
-    const borderRadius = parseInt(e.target.value)
-    this.setState({ borderRadius })
-  }
 
 	setRadius(borderRadius) {
 		const button = this.state.button;

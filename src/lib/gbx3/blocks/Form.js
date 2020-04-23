@@ -7,6 +7,7 @@ import {
 } from '../../';
 import PaymentForm from '../payment/PaymentForm';
 import { BlockOption } from './Block';
+import Button from './Button';
 
 class Form extends Component {
 
@@ -14,7 +15,11 @@ class Form extends Component {
     super(props);
 		this.edit = this.edit.bind(this);
     this.saveButton = this.saveButton.bind(this);
+
+		const button = {...util.getValue(props.globalOptions, 'button', {}), ...util.getValue(props.options, 'button', {}) };
     this.state = {
+			button,
+			defaultButton: { ...button },
 			edit: false
     };
   }
@@ -45,7 +50,8 @@ class Form extends Component {
     } = this.props;
 
 		const {
-			edit
+			edit,
+			button
 		} = this.state;
 
     return (
@@ -66,7 +72,10 @@ class Form extends Component {
           editable={this.props.editable}
         />
         <div className='button-group'>
-          <GBLink solidColor={true} allowCustom={true} className='button' onClick={() => this.saveButton()}>Submit Form</GBLink>
+					<Button
+						onClick={this.saveButton}
+						button={button}
+					/>
           <GBLink allowCustom={true} onClick={() => console.log('onclick callback')}>No, thanks</GBLink>
         </div>
       </div>

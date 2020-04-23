@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
   util,
-	ModalLink
+	ModalLink,
+	GBLink
 } from '../../';
 
 class Button extends Component {
@@ -20,7 +21,8 @@ class Button extends Component {
   render() {
 
 		const {
-			modalID
+			modalID,
+			onClick
 		} = this.props;
 
 		const {
@@ -37,9 +39,17 @@ class Button extends Component {
 		style.padding = `${paddingTopBottom}px 25px`;
 
     return (
-			<ModalLink style={style} customColor={util.getValue(button, 'bgColor', null)} solidColor={type === 'button' ? true : false} allowCustom={true} className={`${type}`} id={modalID}>
-				{util.getValue(button, 'text', 'Button Text')}
-			</ModalLink>
+			<>
+			{modalID ?
+				<ModalLink style={style} customColor={util.getValue(button, 'bgColor', null)} solidColor={type === 'button' ? true : false} allowCustom={true} className={`${type}`} id={modalID}>
+					{util.getValue(button, 'text', 'Button Text')}
+				</ModalLink>
+				:
+				<GBLink style={style} customColor={util.getValue(button, 'bgColor', null)} solidColor={type === 'button' ? true : false} allowCustom={true} className={`${type}`} onClick={onClick}>
+					{util.getValue(button, 'text', 'Button Text')}
+				</GBLink>
+			}
+			</>
     )
   }
 }
