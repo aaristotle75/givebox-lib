@@ -226,7 +226,6 @@ class UploadLibrary extends Component {
       <div className='photoSection PhotoList'>
         {!util.isEmpty(items) ?
         <div>
-          <h4>Your Photos</h4>
           <ul>{items}</ul>
           {paginate ?
             <div className='flexCenter flexColumn'>
@@ -289,6 +288,9 @@ class UploadLibrary extends Component {
                 </Dropzone>
               	{this.listSelected()}
               </div>
+							<div className='yourphotos'>
+								<h4>Your Photos</h4>
+							</div>
             </div>
             <div className='content'>
               {this.listMedia()}

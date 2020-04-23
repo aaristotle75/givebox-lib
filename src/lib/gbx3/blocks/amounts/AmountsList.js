@@ -48,7 +48,8 @@ class AmountsList extends Component {
 
 	renderRecurringOption(amountEntered) {
 		const {
-			kind
+			kind,
+			allowRecurring
 		} = this.props;
 
 		const {
@@ -84,7 +85,8 @@ class AmountsList extends Component {
 					}
 				/>
 				<span style={{ display: 'block' }}>{recurringDisplay.text}</span>
-				<ModalLink id='recurringOption' allowCustom={true}>{interval === 'once' ? `Click Here for Recurring ${recurringDisplay.name} Options` : `Edit Your Recurring ${recurringDisplay.name}`}</ModalLink>
+				{allowRecurring ?
+				<ModalLink id='recurringOption' allowCustom={true}>{interval === 'once' ? `Click Here for Recurring ${recurringDisplay.name} Options` : `Edit Your Recurring ${recurringDisplay.name}`}</ModalLink> : <></>}
 			</div>
 		)
 	}
@@ -244,7 +246,7 @@ class AmountsList extends Component {
 		return (
 			<>
 				{amountInput}
-				{allowRecurring ? this.renderRecurringOption(amountEntered) : <></>}
+				{this.renderRecurringOption(amountEntered)}
 				{!util.isEmpty(items) && !customIsDefaultOnlyAmount ?
 					<div style={{ maxHeight: amountsListHeight }} className='amountsList'>{items}</div>
 				: <></>

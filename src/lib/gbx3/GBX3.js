@@ -39,10 +39,11 @@ class GBXClass extends React.Component {
 		this.addBlock = this.addBlock.bind(this);
 		this.removeBlock = this.removeBlock.bind(this);
 		this.renderBlocks = this.renderBlocks.bind(this);
-		this.getData = this.getData.bind(this);
 		this.updateBlock = this.updateBlock.bind(this);
 		this.amountsCallback = this.amountsCallback.bind(this);
 		this.updateOptions = this.updateOptions.bind(this);
+		this.updateData = this.updateData.bind(this);
+		this.getData = this.getData.bind(this);
 		this.setStyle = this.setStyle.bind(this);
 
     const layouts = {
@@ -52,10 +53,10 @@ class GBXClass extends React.Component {
 
     const givebox = props.kind ? util.getValue(props.article, 'giveboxSettings', {}) : util.getValue(props.article, 'givebox', {});
     const customTemplate = util.getValue(givebox, 'customTemplate', {});
-		const customBlocks = util.getValue(customTemplate, 'blocks');
-		const customOptions = util.getValue(customTemplate, 'options');
+		const customBlocks = util.getValue(customTemplate, 'blocks', []);
+		const customOptions = util.getValue(customTemplate, 'options', {});
 		const blocks = !util.isEmpty(customBlocks) ? customBlocks : initBlocks[props.kind];
-		const options = !util.isEmpty(customOptions) ? customOptions : defaultOptions;
+		const options = { ...defaultOptions, ...customOptions };
     const settings = util.getValue(props.article, 'giveboxSettings', {});
     const primaryColor = util.getValue(settings, 'primaryColor');
 		options.primaryColor = options.primaryColor || primaryColor;
@@ -102,33 +103,35 @@ class GBXClass extends React.Component {
 	setStyle() {
 		const options = this.state.options;
 		const color = util.getValue(options, 'primaryColor');
-		const rgb = util.hexToRgb(color);
-		const color2 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .1)`;
-		const styleEl = document.head.appendChild(document.createElement('style'));
-		styleEl.innerHTML = `
-			.radio:checked + label:after {
-				border: 1px solid ${color} !important;
-				background: ${color};
-			}
+		if (color) {
+			const rgb = util.hexToRgb(color);
+			const color2 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .1)`;
+			const styleEl = document.head.appendChild(document.createElement('style'));
+			styleEl.innerHTML = `
+				.radio:checked + label:after {
+					border: 1px solid ${color} !important;
+					background: ${color};
+				}
 
-			.dropdown .dropdown-content::-webkit-scrollbar-thumb {
-			  background-color: ${color};
-			}
+				.dropdown .dropdown-content.customColor::-webkit-scrollbar-thumb {
+				  background-color: ${color};
+				}
 
-			.amountsSection ::-webkit-scrollbar-thumb {
-			  background-color: ${color2};
-			}
+				.amountsSection ::-webkit-scrollbar-thumb {
+				  background-color: ${color2};
+				}
 
-			.modalContent.gbx3 .ticketAmountRow,
-			.modalContent.gbx3 .amountRow {
-				border-left: 4px solid ${color} !important;
-			}
+				.modalContent.gbx3 .ticketAmountRow,
+				.modalContent.gbx3 .amountRow {
+					border-left: 4px solid ${color} !important;
+				}
 
-			.gbx3 button.modalToTop:hover {
-			  background: ${color};
-			}
+				.gbx3 button.modalToTop:hover {
+				  background: ${color};
+				}
 
-		`;
+			`;
+		}
 	}
 
   success() {
@@ -236,6 +239,7 @@ class GBXClass extends React.Component {
 			data,
 			blocks
 		} = this.state;
+
 		data.giveboxSettings = {
 			primaryColor: util.getValue(options, 'primaryColor', null),
 			customTemplate: {
@@ -244,6 +248,11 @@ class GBXClass extends React.Component {
 			}
 		};
 		return data;
+	}
+
+	updateData(obj = {}) {
+		const data = { ...this.state.data, ...obj };
+		console.log('execute', data);
 	}
 
   addBlock(block) {
@@ -263,22 +272,24 @@ class GBXClass extends React.Component {
     this.setState({ blocks });
 	}
 
-	updateBlock(name, info = {}, options = {}, callback) {
+	updateBlock(name, info = {}, options = {}, callback, updateSpecificGrid) {
 		const blocks = this.state.blocks;
 		const index = blocks.findIndex(b => b.name === name);
 		if (index !== -1) {
 			const block = blocks[index];
 			block.options = { ...block.options, ...options };
-
 			const mobile = block.grid.mobile;
-			if (!has(mobile, 'info')) {
+			const desktop = block.grid.desktop;
+			const current = block.grid[this.state.breakpoint];
+
+			if (!has(mobile, 'info') || !updateSpecificGrid) {
 				mobile.info = info;
 			}
-			const desktop = block.grid.desktop;
-			if (!has(desktop, 'info')) {
+
+			if (!has(desktop, 'info') || !updateSpecificGrid) {
 				desktop.info = info;
 			}
-			const current = block.grid[this.state.breakpoint];
+
 			if (!has(current, 'info')) {
 				current.info = info;
 			} else {
@@ -299,7 +310,6 @@ class GBXClass extends React.Component {
 			options
 		} = this.state;
 
-		console.log('execute renderBlocks', blocks);
     const items = [];
 		const article = this.props.article;
     Object.entries(blocks).forEach(([key, value]) => {
@@ -337,6 +347,7 @@ class GBXClass extends React.Component {
 							info={util.getValue(value.grid[breakpoint], 'info', {})}
 							amountsCallback={this.amountsCallback}
 							primaryColor={options.primaryColor}
+							updateData={this.updateData}
 						/>
 					</div>
 	      );

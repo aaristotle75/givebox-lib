@@ -8,18 +8,21 @@ import {
 	ColorPicker,
 	_v,
 	Dropdown,
-	types
+	types,
+	GBLink,
+	ModalLink
 } from '../../';
+import Button from './Button';
 import AnimateHeight from 'react-animate-height';
 
-class Button extends Component {
+class ButtonEdit extends Component {
 
   constructor(props) {
     super(props);
 		this.handleBorderRadius = this.handleBorderRadius.bind(this);
 		this.setRadius = this.setRadius.bind(this);
-		const borderRadius = util.getValue(props.options, 'borderRadius', 5);
 		const button = this.props.button;
+		const borderRadius = util.getValue(button, 'borderRadius', util.getValue(props.options, 'borderRadius', 5));
 
     this.state = {
 			button,
@@ -30,24 +33,33 @@ class Button extends Component {
 	componentDidMount() {
 	}
 
+	componentWillUnmount() {
+		this.setState({ button: this.props.button });
+	}
+
   handleBorderRadius(e) {
     const borderRadius = parseInt(e.target.value)
     this.setState({ borderRadius })
   }
 
 	setRadius(borderRadius) {
-    this.setState({ borderRadius })
+		const button = this.state.button;
+		button.borderRadius = borderRadius;
+    this.setState({ button, borderRadius })
 	}
 
   render() {
 
 		const {
-			button
+			button,
+			borderRadius
 		} = this.state;
 
 		const {
 			label,
-			primaryColor
+			primaryColor,
+			maxRadius,
+			minRadius
 		} = this.props;
 
 		const enabled = util.getValue(button, 'enabled', false);
@@ -55,6 +67,14 @@ class Button extends Component {
 		const bgColor = util.getValue(button, 'bgColor', primaryColor);
 		const width = util.getValue(button, 'width');
 		const fontSize = util.getValue(button, 'fontSize');
+
+		const type = util.getValue(button, 'type', 'button');
+		const paddingTopBottom = fontSize >= 20 ? 15 : 10;
+		const style = {}
+		style.borderRadius = `${util.getValue(button, 'borderRadius', 0)}px`;
+		style.fontSize = `${fontSize}px`;
+		style.width = util.getValue(button, 'width');
+		style.padding = `${paddingTopBottom}px 25px`;
 
     return (
       <>
@@ -66,7 +86,7 @@ class Button extends Component {
 					onChange={(name, value) => {
 						const button = this.state.button;
 						button.enabled = button.enabled ? false : true;
-						this.setState({ button }, this.props.update(button));
+						this.setState({ button }, this.props.optionsUpdated('button', button));
 					}}
 					checked={enabled}
 					value={enabled}
@@ -89,7 +109,7 @@ class Button extends Component {
 						}}
 						onBlur={() => {
 							const button = this.state.button;
-							this.props.update(button);
+							this.props.optionsUpdated('buttton', button);
 						}}
 					/>
 					<ColorPicker
@@ -99,7 +119,7 @@ class Button extends Component {
 						onAccept={(name, value) => {
 							const button = this.state.button;
 							button.bgColor = value;
-							this.setState({ button }, this.props.update(button));
+							this.setState({ button }, this.props.optionsUpdated('button', button));
 						}}
 						value={bgColor}
 						modalID='colorPickerBgColor'
@@ -121,7 +141,7 @@ class Button extends Component {
 						}}
 						onBlur={() => {
 							const button = this.state.button;
-							this.props.update(button);
+							this.props.optionsUpdated('button', button);
 						}}
 						fixedLabel={true}
 						label='Button Width'
@@ -137,17 +157,51 @@ class Button extends Component {
             onChange={(name, value) => {
 							const button = this.state.button;
 							button.fontSize = value;
-							this.setState({ button }, this.props.update(button));
+							this.setState({ button }, this.props.optionsUpdated('button', button));
 						}}
             options={types.fontSizeOptions(10, 28)}
-          />
+						portalID={`button-fontSize-dropdown-portal`}
+						portal={true}
+					  contentWidth={400}
+						portalLeftOffset={1}
+						rectXY={false}
+					/>
+					<div className='input-group'>
+						<label className='label'>Button Roundness</label>
+					  <div className='scale'>
+					    <GBLink onClick={() => this.setRadius(minRadius)}><span className='icon icon-square'></span></GBLink>
+					    <input
+					      name="borderRadius"
+					      type="range"
+					      onChange={(e) => {
+							    const borderRadius = parseInt(e.target.value)
+									const button = this.state.button;
+									button.borderRadius = borderRadius;
+									this.setState({ button, borderRadius }, this.props.optionsUpdated('button', button));
+								}}
+					      min={minRadius}
+					      max={maxRadius}
+					      step="0"
+					      value={borderRadius}
+					    />
+					    <GBLink onClick={() => this.setRadius(maxRadius)}><span className='icon icon-circle'></span></GBLink>
+					  </div>
+					</div>
+					<div className='input-group'>
+						<label className='label'>Button Preview</label>
+						<div style={{ marginTop: 10 }} className='flexCenter'>
+							<ModalLink style={style} customColor={util.getValue(button, 'bgColor', null)} solidColor={type === 'button' ? true : false} allowCustom={true} className={`${type}`} id={'amountsList'}>
+								{util.getValue(button, 'text', 'Button Text')}
+							</ModalLink>
+						</div>
+					</div>
 	      </AnimateHeight>
       </>
     )
   }
 }
 
-Button.defaultProps = {
+ButtonEdit.defaultProps = {
 	minRadius: 0,
 	maxRadius: 50,
 	label: 'Enabled Button'
@@ -164,4 +218,4 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
 	toggleModal
-})(Button);
+})(ButtonEdit);

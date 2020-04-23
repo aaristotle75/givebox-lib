@@ -5,13 +5,16 @@ import {
 	GBLink,
 	ModalRoute,
 	toggleModal,
-	Collapse
+	Collapse,
+	Tabs,
+	Tab
 } from '../../';
 import AmountsEdit from './amounts/AmountsEdit';
 import AmountsList from './amounts/AmountsList';
 import TicketsList from './amounts/TicketsList';
 import Button from './Button';
 import ButtonEdit from './ButtonEdit';
+import RecurringEdit from './amounts/RecurringEdit';
 import { BlockOption } from './Block';
 
 class Amounts extends Component {
@@ -20,17 +23,20 @@ class Amounts extends Component {
     super(props);
 		this.getAmounts = this.getAmounts.bind(this);
 		this.edit = this.edit.bind(this);
-		this.buttonUpdated = this.buttonUpdated.bind(this);
+		this.optionsUpdated = this.optionsUpdated.bind(this);
 		this.closeModalCallback = this.closeModalCallback.bind(this);
 		this.closeModalButtons = this.closeModalButtons.bind(this);
 		this.renderAmountsList = this.renderAmountsList.bind(this);
 		this.closeModalAmountsListCallback = this.closeModalAmountsListCallback.bind(this);
 
 		const button = {...util.getValue(props.globalOptions, 'button', {}), ...util.getValue(props.options, 'button', {}) };
+		const recurring = util.getValue(props.options, 'recurring', {});
 
     this.state = {
 			button,
-			newButtonChanges: {},
+			defaultButton: { ...button },
+			recurring,
+			defaultRecurring: { ...recurring },
 			amountsList: [],
 			customIndex: 6,
 			defaultIndex: 6,
@@ -66,7 +72,11 @@ class Amounts extends Component {
 		if (type === 'save') {
 			this.closeModalCallback();
 		} else {
-			this.setState({ edit: false });
+			this.setState({
+				edit: false,
+				recurring: this.state.defaultRecurring,
+				button: this.state.defaultButton
+			});
 		}
 		this.props.toggleModal(this.props.modalID, false);
 	}
@@ -122,7 +132,8 @@ class Amounts extends Component {
 			customIndex,
 			defaultIndex,
 			primaryColor,
-			button
+			button,
+			recurring
 		} = this.state;
 
 		switch (kind) {
@@ -160,7 +171,7 @@ class Amounts extends Component {
 						amountsCallback={this.props.amountsCallback}
 						color={primaryColor}
 						kind={this.props.kind}
-						allowRecurring={util.getValue(article, 'allowRecurring')}
+						allowRecurring={util.getValue(recurring, 'enabled', true)}
 						buttonEnabled={util.getValue(button, 'enabled', false)}
 					/>
 				)
@@ -169,8 +180,8 @@ class Amounts extends Component {
 
 	}
 
-	buttonUpdated(button) {
-		this.setState({ button });
+	optionsUpdated(name, obj) {
+		this.setState({ [name]: obj });
 	}
 
   render() {
@@ -178,13 +189,15 @@ class Amounts extends Component {
 		const {
 			modalID,
 			noRemove,
-			article
+			article,
+			kind
 		} = this.props;
 
 		const {
 			edit,
 			amountsList,
-			button
+			button,
+			recurring
 		} = this.state;
 
 		if (util.isEmpty(amountsList)) return <></>
@@ -202,34 +215,63 @@ class Amounts extends Component {
 					id={modalID}
 					component={() =>
 						<div className='modalWrapper'>
-							<Collapse
-								label={'Options'}
-								iconPrimary='sliders'
-								id={'gbx3-options'}
+							<Tabs
+								default={'edit'}
+								className='statsTab'
 							>
-								<div className='formSectionContainer'>
-									<div className='formSection'>
-										<ButtonEdit
-											label={'Enable Amounts Button'}
-											button={button}
-											update={this.buttonUpdated}
-										/>
+								<Tab id='edit' label={<span className='stepLabel'>Edit Amounts</span>}>
+								<Collapse
+									label={'Edit Amounts'}
+									iconPrimary='edit'
+									id={'gbx3-amounts-edit'}
+								>
+									<div className='formSectionContainer'>
+										<div className='formSection'>
+											<AmountsEdit
+												article={article}
+											/>
+										</div>
 									</div>
-								</div>
-							</Collapse>
-							<Collapse
-								label={'Edit Amounts'}
-								iconPrimary='edit'
-								id={'gbx3-amounts'}
-							>
-								<div className='formSectionContainer'>
-									<div className='formSection'>
-										<AmountsEdit
-											article={article}
-										/>
-									</div>
-								</div>
-							</Collapse>
+								</Collapse>
+								</Tab>
+								<Tab id='buttonOption' label={<span className='stepLabel'>Customize Button</span>}>
+									<Collapse
+										label={'Customize Button'}
+										iconPrimary='link-2'
+										id={'gbx3-amounts-button'}
+									>
+										<div className='formSectionContainer'>
+											<div className='formSection'>
+												<ButtonEdit
+													label={'Enable Amounts Button'}
+													button={button}
+													optionsUpdated={this.optionsUpdated}
+												/>
+											</div>
+										</div>
+									</Collapse>
+								</Tab>
+								{util.getValue(recurring, 'allowed', false) ?
+								<Tab id='recurringOption' label={<span className='stepLabel'>Recurring Options</span>}>
+									<Collapse
+										label={'Recurring Options'}
+										iconPrimary='repeat'
+										id={'gbx3-amounts-recurring'}
+									>
+										<div className='formSectionContainer'>
+											<div className='formSection'>
+												<RecurringEdit
+													recurring={recurring}
+													article={article}
+													kind={kind}
+													updateData={this.props.updateData}
+													optionsUpdated={this.optionsUpdated}
+												/>
+											</div>
+										</div>
+									</Collapse>
+								</Tab> : <></>}
+							</Tabs>
 							<div style={{ marginBottom: 0 }} className='button-group center'>
 								<GBLink className='link' onClick={() => this.closeModalButtons('cancel')}>Cancel</GBLink>
 								<GBLink className='button' onClick={this.closeModalButtons}>Save</GBLink>

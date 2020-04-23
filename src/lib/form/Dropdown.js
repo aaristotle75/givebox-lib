@@ -105,6 +105,7 @@ class Dropdown extends Component {
 		const buttonRef = this.buttonRef.current;
     const height = window.innerHeight;
     const rect = ref.getBoundingClientRect();
+		const rectXY = this.props.rectXY;
 
     let direction = '';
 		if (this.props.portalID) {
@@ -118,9 +119,10 @@ class Dropdown extends Component {
 			if (offsetBottom < 300) {
 				ref.style.bottom = `${offsetBottom}px`;
 			} else {
-				ref.style.top = `${buttonRect.y}px`;
+				ref.style.top = `${rectXY ? buttonRect.y : buttonRect.top}px`;
 			}
-			ref.style.left = `${buttonRect.x - (contentWidth / 1.75) }px`;
+			const leftOffset = `${(rectXY ? buttonRect.x : buttonRect.width) - (contentWidth / this.props.portalLeftOffset) }px`;
+			ref.style.left = leftOffset;
 		} else {
 			if ((height - rect.top) < 300) direction = 'top';
 		}
@@ -256,7 +258,7 @@ class Dropdown extends Component {
     const portalRoot = document.getElementById(portalRootEl);
 
 		const dropdownContent =
-	    <div ref={this.dropdownRef} style={{ ...contentStyle, boxShadow: this.props.color ? `none`: '', border: this.props.color && open ? `1px solid ${this.props.color}` : ''}} className={`${open ? 'opened' : ''} dropdown-content ${this.props.direction || direction}`}>
+	    <div ref={this.dropdownRef} style={{ ...contentStyle, boxShadow: this.props.color ? `none`: '', border: this.props.color && open ? `1px solid ${this.props.color}` : ''}} className={`${open ? 'opened' : ''} dropdown-content ${this.props.direction || direction} ${this.props.color ? 'customColor' : ''}`}>
 	      <AnimateHeight
 	        duration={200}
 	        height={open ? 'auto' : 0}
@@ -296,6 +298,8 @@ class Dropdown extends Component {
 }
 
 Dropdown.defaultProps = {
+	rectXY: true,
+	portalLeftOffset: 1.75,
 	portalClass: 'dropdown-portal',
 	portalRootEl: 'dropdown-root',
 	portalID: false,

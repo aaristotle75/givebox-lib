@@ -158,7 +158,7 @@ class Recurring extends Component {
 		            height={paymentMax ? 'auto' : 0}
 		          >
 								<div className='endsAt'>
-									<span>Your {this.props.topText} will end {this.getEndDate(interval, paymentMax)}</span>
+									<span>Your recurring {this.props.topText} will end {this.getEndDate(interval, paymentMax)}</span>
 								</div>
           		</AnimateHeight>
 		          <AnimateHeight

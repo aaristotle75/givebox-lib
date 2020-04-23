@@ -10,6 +10,7 @@ class Button extends Component {
   constructor(props) {
     super(props);
     this.state = {
+			button: this.props.button
     };
   }
 
@@ -19,15 +20,18 @@ class Button extends Component {
   render() {
 
 		const {
-			modalID,
-			button
+			modalID
 		} = this.props;
+
+		const {
+			button
+		} = this.state;
 
 		const type = util.getValue(button, 'type', 'button');
 		const fontSize = util.getValue(button, 'fontSize', 16);
-		const paddingTopBottom = fontSize >= 20 ? 15 : 10;		
+		const paddingTopBottom = fontSize >= 20 ? 15 : 10;
 		const style = {}
-		style.borderRadius = `${util.getValue(button, 'borderRadius', 20)}px`;
+		style.borderRadius = `${util.getValue(button, 'borderRadius', 0)}px`;
 		style.fontSize = `${fontSize}px`;
 		style.width = util.getValue(button, 'width');
 		style.padding = `${paddingTopBottom}px 25px`;

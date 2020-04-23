@@ -1,5 +1,32 @@
 @import 'variables.scss';
 
+/*---------- Scale ----------*/
+.rotate,
+.scale {
+  margin: 0 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  @media (max-width: 600px) { margin: 0; }
+}
+
+.rotate {
+  .icon {
+    margin: 0 5px;
+  }
+}
+
+.scale {
+  .icon.small {
+    font-size: $small-text-size;
+    margin-right: 5px;
+  }
+  .icon {
+    font-size: $large-text-size;
+    margin-left: 5px;
+  }
+}
+
 /*----------- Image ----------*/
 .image {
   position: relative;
@@ -457,32 +484,6 @@ button.imageCover {
     flex-direction: column;
     padding-top: 40px;
   }
-
-  .rotate,
-  .scale {
-    margin: 0 5%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    @media (max-width: 600px) { margin: 0; }
-  }
-
-  .rotate {
-    .icon {
-      margin: 0 5px;
-    }
-  }
-
-  .scale {
-    .icon.small {
-      font-size: $small-text-size;
-      margin-right: 5px;
-    }
-    .icon {
-      font-size: $large-text-size;
-      margin-left: 5px;
-    }
-  }
 }
 
 .loadImage {
@@ -700,7 +701,7 @@ button.imageCover {
 	}
 
 	.uploadLibraryContainer {
-		padding-top: 180px;
+		padding-top: 200px;
 
 		.menu {
 			position: absolute;
@@ -713,6 +714,9 @@ button.imageCover {
 	      align-items: center;
 	      margin: 0px;
 	    }
+		}
+		.yourphotos {
+			margin-top: 10px;
 		}
 	}
 	.uploadBottom {

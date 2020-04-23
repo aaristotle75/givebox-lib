@@ -64,9 +64,13 @@ const amounts = {
 	options: {
 		button: {
 			embedAllowed: true,
-			enabled: true,
+			enabled: false,
 			text: 'Select Amount',
 			type: 'button'
+		},
+		recurring: {
+			allowed: true,
+			enabled: true
 		}
 	},
 	grid: {
@@ -149,6 +153,8 @@ const eventBlocks = [
 			...amounts.options,
 			button: {
 				...amounts.options.button,
+				embedAllowed: false,
+				enabled: true,
 				text: 'Select Tickets'
 			}
 		}
