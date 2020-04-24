@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-  util,
+	util,
 	GBLink,
 	ModalRoute,
 	toggleModal,
@@ -19,8 +19,8 @@ import { BlockOption } from './Block';
 
 class Amounts extends Component {
 
-  constructor(props) {
-    super(props);
+	constructor(props) {
+		super(props);
 		this.getAmounts = this.getAmounts.bind(this);
 		this.edit = this.edit.bind(this);
 		this.optionsUpdated = this.optionsUpdated.bind(this);
@@ -32,7 +32,7 @@ class Amounts extends Component {
 		const button = {...util.getValue(props.globalOptions, 'button', {}), ...util.getValue(props.options, 'button', {}) };
 		const recurring = util.getValue(props.options, 'recurring', {});
 
-    this.state = {
+		this.state = {
 			button,
 			defaultButton: { ...button },
 			recurring,
@@ -42,11 +42,11 @@ class Amounts extends Component {
 			defaultIndex: 6,
 			edit: false,
 			primaryColor: this.props.primaryColor
-    };
+		};
 		this.blockRef = null;
 		this.width = null;
 		this.height = null;
-  }
+	}
 
 	componentDidMount() {
 		this.blockRef = this.props.blockRef.current;
@@ -184,7 +184,7 @@ class Amounts extends Component {
 		this.setState({ [name]: obj });
 	}
 
-  render() {
+	render() {
 
 		const {
 			modalID,
@@ -202,15 +202,15 @@ class Amounts extends Component {
 
 		if (util.isEmpty(amountsList)) return <></>
 
-    return (
-      <div className={`block ${util.getValue(button, 'enabled', false) ? 'flexCenter' : ''}`}>
+		return (
+			<div className={`block ${util.getValue(button, 'enabled', false) ? 'flexCenter' : ''}`}>
 				<BlockOption
 					edit={edit}
 					noRemove={noRemove}
 					editOnClick={this.edit}
 					removeOnClick={this.remove}
 				/>
-        <ModalRoute
+				<ModalRoute
 					optsProps={{ closeCallback: this.closeModalCallback }}
 					id={modalID}
 					component={() =>
@@ -229,6 +229,7 @@ class Amounts extends Component {
 										<div className='formSection'>
 											<AmountsEdit
 												article={article}
+												amountsList={amountsList}
 											/>
 										</div>
 									</div>
@@ -323,18 +324,18 @@ class Amounts extends Component {
 				:
 					this.renderAmountsList(true)
 				}
-      </div>
-    )
-  }
+			</div>
+		)
+	}
 }
 
 function mapStateToProps(state, props) {
 
 	const modalID = `amountBlock-${props.name}`;
 
-  return {
+	return {
 		modalID
-  }
+	}
 }
 
 export default connect(mapStateToProps, {
