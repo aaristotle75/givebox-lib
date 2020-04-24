@@ -15,9 +15,9 @@
 		left: 0;
 		right: 0;
 		background: $white;
-    border-bottom: 1px solid $light-gray;
-	  display: flex;
-	  justify-content: center;
+		border-bottom: 1px solid $light-gray;
+			display: flex;
+			justify-content: center;
 		align-items: center;
 		flex-direction: column;
 	}
@@ -38,9 +38,9 @@
 		left: 0;
 		right: 0;
 		background: $white;
-    border-top: 1px solid $light-gray;
-	  display: flex;
-	  justify-content: space-between;
+		border-top: 1px solid $light-gray;
+		display: flex;
+		justify-content: space-between;
 		align-items: center;
 		z-index: 1;
 	}
@@ -56,7 +56,7 @@
 
 	h3 {
 		margin: 10px 0;
-  	font-size: 22px;
+		font-size: 22px;
 		font-weight: 300;
 	}
 
@@ -71,7 +71,7 @@
 	}
 
 	.cke_resizer {
-	   border-color: transparent $greenLight transparent transparent !important;
+		 border-color: transparent $greenLight transparent transparent !important;
 	}
 
 	.cke_chrome {
@@ -99,27 +99,27 @@
 }
 
 .gbxModal {
-  .modal .modalWrapper {
-    padding-top: 0px;
-  }
+	.modal .modalWrapper {
+	padding-top: 0px;
+	}
 
-  .modalTop,
-  .modalBottom {
-    display: none;
-  }
+	.modalTop,
+	.modalBottom {
+	display: none;
+	}
 
-  .modalContainer {
-    padding: 20px 10px;
-  }
+	.modalContainer {
+	padding: 20px 10px;
+	}
 
-  .modal .modalContent {
-    border-radius: 20px;
-    padding: 20px;
-  }
+	.modal .modalContent {
+	border-radius: 20px;
+	padding: 20px;
+	}
 
-  .modal .RichEditor-root {
-      padding: 0px;
-      margin-top: 10px;
-  }
+	.modal .RichEditor-root {
+		padding: 0px;
+		margin-top: 10px;
+	}
 
 }
