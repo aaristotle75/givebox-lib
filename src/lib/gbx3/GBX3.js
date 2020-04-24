@@ -6,11 +6,11 @@ import 'react-resizable/css/styles.css';
 import '../styles/gbx3.scss';
 import '../styles/gbx3modal.scss';
 import {
-  util,
-  sendResource,
+	util,
+	sendResource,
 	getResource,
 	setCustomProp,
-  types,
+	types,
 	Loader,
 	toggleModal
 } from '../';
@@ -21,21 +21,22 @@ import has from 'has';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
+
 class GBXClass extends React.Component {
 
 	constructor(props) {
 		super(props);
-    this.layoutChange = this.layoutChange.bind(this);
-    this.breakpointChange = this.breakpointChange.bind(this);
-    this.widthChange = this.widthChange.bind(this);
-    this.toggleEditable = this.toggleEditable.bind(this);
+		this.layoutChange = this.layoutChange.bind(this);
+		this.breakpointChange = this.breakpointChange.bind(this);
+		this.widthChange = this.widthChange.bind(this);
+		this.toggleEditable = this.toggleEditable.bind(this);
 		this.toggleOutline = this.toggleOutline.bind(this);
 		this.toggleCollision = this.toggleCollision.bind(this);
 		this.toggleCollapse = this.toggleCollapse.bind(this);
-    this.resetLayout = this.resetLayout.bind(this);
-    this.saveLayout = this.saveLayout.bind(this);
-    this.success = this.success.bind(this);
-    this.error = this.error.bind(this);
+		this.resetLayout = this.resetLayout.bind(this);
+		this.saveLayout = this.saveLayout.bind(this);
+		this.success = this.success.bind(this);
+		this.error = this.error.bind(this);
 		this.addBlock = this.addBlock.bind(this);
 		this.removeBlock = this.removeBlock.bind(this);
 		this.renderBlocks = this.renderBlocks.bind(this);
@@ -46,59 +47,59 @@ class GBXClass extends React.Component {
 		this.getData = this.getData.bind(this);
 		this.setStyle = this.setStyle.bind(this);
 
-    const layouts = {
-      desktop: [],
-      mobile: [],
-    };
+		const layouts = {
+			desktop: [],
+			mobile: [],
+		};
 
-    const givebox = props.kind ? util.getValue(props.article, 'giveboxSettings', {}) : util.getValue(props.article, 'givebox', {});
-    const customTemplate = util.getValue(givebox, 'customTemplate', {});
+		const givebox = props.kind ? util.getValue(props.article, 'giveboxSettings', {}) : util.getValue(props.article, 'givebox', {});
+		const customTemplate = util.getValue(givebox, 'customTemplate', {});
 		const customBlocks = util.getValue(customTemplate, 'blocks', []);
 		const customOptions = util.getValue(customTemplate, 'options', {});
 		const blocks = !util.isEmpty(customBlocks) ? customBlocks : initBlocks[props.kind];
 		const options = { ...defaultOptions, ...customOptions };
-    const settings = util.getValue(props.article, 'giveboxSettings', {});
-    const primaryColor = util.getValue(settings, 'primaryColor');
+		const settings = util.getValue(props.article, 'giveboxSettings', {});
+		const primaryColor = util.getValue(settings, 'primaryColor');
 		options.primaryColor = options.primaryColor || primaryColor;
 
 
-    Object.entries(blocks).forEach(([key, value]) => {
-      layouts.desktop.push(value.grid.desktop);
-      layouts.mobile.push(value.grid.mobile);
-    });
+		Object.entries(blocks).forEach(([key, value]) => {
+			layouts.desktop.push(value.grid.desktop);
+			layouts.mobile.push(value.grid.mobile);
+		});
 
-    this.state = {
+		this.state = {
 			options,
 			blocks,
 			layouts,
 			data: {},
-      breakpoint: 'desktop',
-      success: false,
-      error: false,
-      editable: true,
-      showOutline: false,
+			breakpoint: 'desktop',
+			success: false,
+			error: false,
+			editable: true,
+			showOutline: false,
 			collision: true,
 			collapse: false
-    }
+		}
 
-    this.gridRef = React.createRef();
+		this.gridRef = React.createRef();
 		this.blockRefs = {};
 	}
 
-  componentDidMount() {
-    const gridWidth = this.gridRef.current.clientWidth;
-    if (gridWidth < this.props.breakpointWidth) {
-      this.setState({ breakpoint: 'mobile' });
-    }
+	componentDidMount() {
+		const gridWidth = this.gridRef.current.clientWidth;
+		if (gridWidth < this.props.breakpointWidth) {
+			this.setState({ breakpoint: 'mobile' });
+		}
 		this.setStyle();
-  }
+	}
 
-  componentWillUnmount() {
-    if (this.timeout) {
-      clearTimeout(this.timeout);
-      this.timeout = null;
-    }
-  }
+	componentWillUnmount() {
+		if (this.timeout) {
+			clearTimeout(this.timeout);
+			this.timeout = null;
+		}
+	}
 
 	setStyle() {
 		const options = this.state.options;
@@ -114,11 +115,11 @@ class GBXClass extends React.Component {
 				}
 
 				.dropdown .dropdown-content.customColor::-webkit-scrollbar-thumb {
-				  background-color: ${color};
+					background-color: ${color};
 				}
 
 				.amountsSection ::-webkit-scrollbar-thumb {
-				  background-color: ${color2};
+					background-color: ${color2};
 				}
 
 				.modalContent.gbx3 .ticketAmountRow,
@@ -127,69 +128,69 @@ class GBXClass extends React.Component {
 				}
 
 				.gbx3 button.modalToTop:hover {
-				  background: ${color};
+					background: ${color};
 				}
 
 			`;
 		}
 	}
 
-  success() {
-    this.setState({ success: true });
-    this.timeout = setTimeout(() => {
-      this.setState({ success: false });
-      this.timeout = null;
-    }, 2500);
-  }
+	success() {
+		this.setState({ success: true });
+		this.timeout = setTimeout(() => {
+			this.setState({ success: false });
+			this.timeout = null;
+		}, 2500);
+	}
 
-  error() {
-    this.setState({ error: true });
-    this.timeout = setTimeout(() => {
-      this.setState({ error: false });
-      this.timeout = null;
-    }, 2500);
-  }
+	error() {
+		this.setState({ error: true });
+		this.timeout = setTimeout(() => {
+			this.setState({ error: false });
+			this.timeout = null;
+		}, 2500);
+	}
 
-  breakpointChange(breakpoint, cols) {
-    this.setState({ breakpoint });
-  }
+	breakpointChange(breakpoint, cols) {
+		this.setState({ breakpoint });
+	}
 
-  widthChange(width, margin, cols) {
-    //console.log('execute widthChange', width, margin, cols);
-  }
+	widthChange(width, margin, cols) {
+		//console.log('execute widthChange', width, margin, cols);
+	}
 
-  toggleEditable() {
-    const editable = this.state.editable ? false : true;
-    const showOutline = !editable ? false : this.state.showOutline;
-    this.setState({ editable, showOutline });
-  }
+	toggleEditable() {
+		const editable = this.state.editable ? false : true;
+		const showOutline = !editable ? false : this.state.showOutline;
+		this.setState({ editable, showOutline });
+	}
 
-  toggleOutline() {
+	toggleOutline() {
 		const showOutline = this.state.showOutline ? false : true;
 		this.setState({ showOutline })
-  }
+	}
 
 	toggleCollision() {
 		const collision = this.state.collision ? false : true;
 		this.setState({ collision })
-  }
+	}
 
 	toggleCollapse() {
 		const collapse = this.state.collapse ? false : true;
 		this.setState({ collapse })
-  }
+	}
 
-  resetLayout() {
+	resetLayout() {
 		const blocks = initBlocks[this.props.kind];
 		this.setState({ blocks }, this.saveLayout(true));
-  }
+	}
 
-  layoutChange(layout, layouts) {
-    const breakpoint = this.state.breakpoint;
-    const blocks = this.state.blocks;
-    const breakpointLayout = util.getValue(layouts, breakpoint);
-    if (breakpointLayout) {
-      breakpointLayout.forEach((value) => {
+	layoutChange(layout, layouts) {
+		const breakpoint = this.state.breakpoint;
+		const blocks = this.state.blocks;
+		const breakpointLayout = util.getValue(layouts, breakpoint);
+		if (breakpointLayout) {
+			breakpointLayout.forEach((value) => {
 				const index = blocks.findIndex(b => b.name === value.i);
 				if (index !== -1) {
 					const block = util.getValue(blocks, index);
@@ -197,41 +198,41 @@ class GBXClass extends React.Component {
 						const grid = util.getValue(block, 'grid', {});
 						const gridBreak = util.getValue(grid, breakpoint);
 						if (!util.isEmpty(gridBreak)) {
-			        gridBreak.x = value.x;
-			        gridBreak.y = value.y;
-			        gridBreak.w = value.w;
-			        gridBreak.h = value.h;
+							gridBreak.x = value.x;
+							gridBreak.y = value.y;
+							gridBreak.w = value.w;
+							gridBreak.h = value.h;
 						}
 					}
 				}
-      });
-      this.setState({ blocks, layouts });
-    }
-  }
+			});
+			this.setState({ blocks, layouts });
+		}
+	}
 
-  saveLayout(reset = false) {
+	saveLayout(reset = false) {
 		// Need to handle creating new articles
 		const data = this.getData(reset);
-    const id = util.getValue(this.props.article, 'ID', null);
+		const id = util.getValue(this.props.article, 'ID', null);
 
-    if (this.props.autoSave) {
-      this.props.sendResource(this.props.resourceName, {
-        id: id ? [id] : null,
+		if (this.props.autoSave) {
+			this.props.sendResource(this.props.resourceName, {
+				id: id ? [id] : null,
 				orgID: this.props.orgID,
-        data,
-        method: id ? 'patch' : 'post',
-        callback: (res, err) => {
-          if (this.props.save) this.props.save(id, data, this.state.blocks, res, err);
-        }
-      });
-    } else {
-      if (this.props.save) {
-        this.props.save(id, data, this.state.blocks);
-      } else {
-        console.error('Not saved: this.props.save not found');
-      }
-    }
-  }
+				data,
+				method: id ? 'patch' : 'post',
+				callback: (res, err) => {
+					if (this.props.save) this.props.save(id, data, this.state.blocks, res, err);
+				}
+			});
+		} else {
+			if (this.props.save) {
+				this.props.save(id, data, this.state.blocks);
+			} else {
+				console.error('Not saved: this.props.save not found');
+			}
+		}
+	}
 
 	getData(reset) {
 		const {
@@ -255,21 +256,21 @@ class GBXClass extends React.Component {
 		console.log('execute', data);
 	}
 
-  addBlock(block) {
-    const blocks = this.state.blocks;
-    const breakpoint = this.state.breakpoint;
+	addBlock(block) {
+		const blocks = this.state.blocks;
+		const breakpoint = this.state.breakpoint;
 		console.log('Add Block', block, breakpoint);
 		/*
-    blocks[block].grid[breakpoint].enabled = true;
-    this.setState({ blocks });
+		blocks[block].grid[breakpoint].enabled = true;
+		this.setState({ blocks });
 		*/
 	}
 
-  removeBlock(block) {
-    const blocks = this.state.blocks;
-    const breakpoint = this.state.breakpoint;
-    blocks[block].grid[breakpoint].enabled = false;
-    this.setState({ blocks });
+	removeBlock(block) {
+		const blocks = this.state.blocks;
+		const breakpoint = this.state.breakpoint;
+		blocks[block].grid[breakpoint].enabled = false;
+		this.setState({ blocks });
 	}
 
 	updateBlock(name, info = {}, options = {}, callback, updateSpecificGrid) {
@@ -310,18 +311,18 @@ class GBXClass extends React.Component {
 			options
 		} = this.state;
 
-    const items = [];
+		const items = [];
 		const article = this.props.article;
-    Object.entries(blocks).forEach(([key, value]) => {
-      if (value.grid[breakpoint].enabled === enabled) {
-			  const BlockComponent = Loadable({
-			    loader: () => import(`./blocks/${value.type}`),
-			    loading: () => <></>
-			  });
+		Object.entries(blocks).forEach(([key, value]) => {
+			if (value.grid[breakpoint].enabled === enabled) {
+				const BlockComponent = Loadable({
+					loader: () => import(`./blocks/${value.type}`),
+					loading: () => <></>
+				});
 				const fieldValue = util.getValue(article, value.field);
 				const ref = React.createRef();
-	      items.push(
-	        <div
+				items.push(
+					<div
 						className={`${showOutline ? 'outline' : ''}`}
 						id={`block-${value.name}`}
 						key={value.name}
@@ -350,10 +351,10 @@ class GBXClass extends React.Component {
 							updateData={this.updateData}
 						/>
 					</div>
-	      );
-      }
-    });
-    return items;
+				);
+			}
+		});
+		return items;
 	}
 
 	amountsCallback(obj) {
@@ -394,51 +395,51 @@ class GBXClass extends React.Component {
 					updateOptions={this.updateOptions}
 					options={options}
 					toggleModal={this.props.toggleModal}
-				  setCustomProp={this.props.setCustomProp}
+					setCustomProp={this.props.setCustomProp}
 					primaryColor={this.props.primaryColor}
 				/>
-        <div
-          ref={this.gridRef}
-          style={{ marginBottom: 20 }}
-          className={`column dropArea ${editable ? 'editable' : ''}`}
-          onDragOver={(e) => {
-            e.preventDefault();
-          }}
-          onDrop={(e) => {
+				<div
+					ref={this.gridRef}
+					style={{ marginBottom: 20 }}
+					className={`column dropArea ${editable ? 'editable' : ''}`}
+					onDragOver={(e) => {
+						e.preventDefault();
+					}}
+					onDrop={(e) => {
 						if (editable) {
-	            const block = e.dataTransfer.getData('block');
-	            e.preventDefault();
-	            const current = this.gridRef.current;
-	            if (current.classList.contains('dragOver')) current.classList.remove('dragOver');
-	            this.addBlock(block);
+							const block = e.dataTransfer.getData('block');
+							e.preventDefault();
+							const current = this.gridRef.current;
+							if (current.classList.contains('dragOver')) current.classList.remove('dragOver');
+							this.addBlock(block);
 						}
 					}}
-        >
-          <div className='dragOverText'>Drop Page Element Here</div>
-          <ResponsiveGridLayout
+				>
+					<div className='dragOverText'>Drop Page Element Here</div>
+					<ResponsiveGridLayout
 						id='testGrid'
-            className="blockGridLayout"
-            layouts={layouts}
-            breakpoints={{desktop: 701, mobile: 700 }}
-            cols={{desktop: 12, mobile: 6}}
-            rowHeight={15}
-            onLayoutChange={this.layoutChange}
-            onBreakpointChange={this.breakpointChange}
-            onWidthChange={this.widthChange}
-            isDraggable={editable}
-            isResizable={editable}
-            isDroppable={false}
-            margin={[0, 0]}
-            containerPadding={[0, 0]}
-            autoSize={true}
+						className="blockGridLayout"
+						layouts={layouts}
+						breakpoints={{desktop: 701, mobile: 700 }}
+						cols={{desktop: 12, mobile: 6}}
+						rowHeight={15}
+						onLayoutChange={this.layoutChange}
+						onBreakpointChange={this.breakpointChange}
+						onWidthChange={this.widthChange}
+						isDraggable={editable}
+						isResizable={editable}
+						isDroppable={false}
+						margin={[0, 0]}
+						containerPadding={[0, 0]}
+						autoSize={true}
 						draggableHandle={'.dragHandle'}
-            draggableCancel={'.modal'}
-            verticalCompact={collapse}
+						draggableCancel={'.modal'}
+						verticalCompact={collapse}
 						preventCollision={collision}
-          >
+					>
 						{this.renderBlocks()}
-          </ResponsiveGridLayout>
-        </div>
+					</ResponsiveGridLayout>
+				</div>
 			</div>
 		)
 	}
@@ -456,49 +457,49 @@ class GBX extends React.Component {
 					if (!err && !util.isEmpty(res)) {
 						const settings = util.getValue(res, 'giveboxSettings', {});
 						const color = util.getValue(settings, 'primaryColor', '#4775f8');
-				    this.props.setCustomProp('primaryColor', color);
+						this.props.setCustomProp('primaryColor', color);
 					}
 				}
 			});
 		}
 	}
 
-  render() {
+	render() {
 
 		if (this.props.kindID && util.isEmpty(this.props.article)) return <Loader msg='Loading article resource...' />
 
-    return (
-      <GBXClass
-        {...this.props}
-      />
-    )
-  }
+		return (
+			<GBXClass
+				{...this.props}
+			/>
+		)
+	}
 }
 
 GBX.defaultProps = {
-  breakpointWidth: 768
+	breakpointWidth: 768
 }
 
 function mapStateToProps(state, props) {
 
 	const resourceName = `org${types.kind(props.kind).api.item}`;
-  const resource = util.getValue(state.resource, resourceName, {});
-  const isFetching = util.getValue(resource, 'isFetching', false);
-  const article = util.getValue(resource, 'data', {});
+	const resource = util.getValue(state.resource, resourceName, {});
+	const isFetching = util.getValue(resource, 'isFetching', false);
+	const article = util.getValue(resource, 'data', {});
 	const primaryColor = util.getValue(state.custom, 'primaryColor');
 
-  return {
+	return {
 		resourceName,
-    resource,
-    isFetching,
-    article,
-    access: util.getValue(state.resource, 'access', {}),
+		resource,
+		isFetching,
+		article,
+		access: util.getValue(state.resource, 'access', {}),
 		primaryColor
-  }
+	}
 }
 
 export default connect(mapStateToProps, {
-  sendResource,
+	sendResource,
 	getResource,
 	setCustomProp,
 	toggleModal
