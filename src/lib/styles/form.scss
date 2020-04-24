@@ -1,15 +1,15 @@
 @import 'variables.scss';
 
 form {
-  position: relative;
+	position: relative;
 }
 
 form:not(.clean) {
-  padding: 10px 0;
+	padding: 10px 0;
 }
 
 form button {
-  margin: 20px 0 0 0;
+	margin: 20px 0 0 0;
 }
 
 /*--------- Form ----------*/
@@ -17,18 +17,18 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active  {
-    -webkit-box-shadow: 0 0 0 30px white inset !important;
+		-webkit-box-shadow: 0 0 0 30px white inset !important;
 }
 
 .fieldContext {
-  padding: 0 5px;
-  font-weight: 300;
-  font-size: $small-text-size;
-  color: $med-gray;
+	padding: 0 5px;
+	font-weight: 300;
+	font-size: $small-text-size;
+	color: $med-gray;
 }
 
 .formWrapper {
-  width: 100%;
+	width: 100%;
 }
 
 .field-group {
@@ -36,187 +36,187 @@ input:-webkit-autofill:active  {
  width: 100%;
 
  .col {
-  display: inline-block;
+	display: inline-block;
  }
 }
 
 /*-------------- Input -----------------*/
 .input-group:not(.hidden) {
-  position: relative;
-  padding: 20px 0;
-  margin: 0 5px;
+	position: relative;
+	padding: 20px 0;
+	margin: 0 5px;
 }
 
 .input-group {
-  .customLink {
-    position: absolute;
-    top: 40px;
-  }
+	.customLink {
+		position: absolute;
+		top: 40px;
+	}
 }
 
 button.input {
-  font-size: $normal-text-size;
-  font-family: $font-family;
-  color: $med-gray;
-  height: 40px;
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid $light;
-  box-sizing: border-box;
-  transition: all .3s linear;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  text-align: left;
-  @media screen and (max-width: $mobile-width) {
-    font-size: 16px;
-  }
+	font-size: $normal-text-size;
+	font-family: $font-family;
+	color: $med-gray;
+	height: 40px;
+	background: transparent;
+	border: none;
+	border-bottom: 1px solid $light;
+	box-sizing: border-box;
+	transition: all .3s linear;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	text-align: left;
+	@media screen and (max-width: $mobile-width) {
+		font-size: 16px;
+	}
 }
 
 button.input.hasValue {
-  color: $primary;
+	color: $primary;
 }
 
 input {
-  font-size: $med-text-size;
-  font-family: $font-family;
-  height: 40px;
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid $light;
-  box-sizing: border-box;
-  transition: all .3s linear;
-  @media screen and (max-width: $mobile-width) {
-    font-size: 16px;
-  }
+	font-size: $med-text-size;
+	font-family: $font-family;
+	height: 40px;
+	background: transparent;
+	border: none;
+	border-bottom: 1px solid $light;
+	box-sizing: border-box;
+	transition: all .3s linear;
+	@media screen and (max-width: $mobile-width) {
+		font-size: 16px;
+	}
 }
 
 input::-webkit-input-placeholder {
-  font-size: $med-text-size;
-  font-family: $font-family;
-  color: $med-gray;
+	font-size: $med-text-size;
+	font-family: $font-family;
+	color: $med-gray;
 }
 input::-moz-placeholder {
-  font-size: $med-text-size;
-  color: $med-gray;
+	font-size: $med-text-size;
+	color: $med-gray;
 }
 input::-ms-input-placeholder {
-  font-size: $med-text-size;
-  color: $med-gray;
+	font-size: $med-text-size;
+	color: $med-gray;
 }
 
 input:focus {
-  outline: 0;
+	outline: 0;
 }
 
 .input-bottom {
-  position: absolute;
-  height: 2px;
-  z-index: 101;
-  width: 100%;
-  bottom: 0;
+	position: absolute;
+	height: 2px;
+	z-index: 101;
+	width: 100%;
+	bottom: 0;
 }
 
 .input-bottom.idle {
-  background: $light;
-  transform: scaleX(0);
-  -webkit-transform: scaleX(0);
-  @include default-transition(.25s);
+	background: $light;
+	transform: scaleX(0);
+	-webkit-transform: scaleX(0);
+	@include default-transition(.25s);
 }
 
 .input-bottom.active {
-  background: $primary;
-  transform: scaleX(1);
-  -webkit-transform: scaleX(1);
-  @include default-transition(.25s);
+	background: $primary;
+	transform: scaleX(1);
+	-webkit-transform: scaleX(1);
+	@include default-transition(.25s);
 }
 
 .input-bottom.error {
-  background: $red;
-  transform: scaleX(1);
-  -webkit-transform: scaleX(1);
-  @include default-transition(.25s);
+	background: $red;
+	transform: scaleX(1);
+	-webkit-transform: scaleX(1);
+	@include default-transition(.25s);
 }
 
 input:not(.checkbox) {
-  width: 100%;
+	width: 100%;
 }
 
 // Icon button on the right side of an input field
 .input-button {
-  position: absolute;
-  top: 12px;
-  right: 5px;
-  bottom: 0;
-  margin: 0 !important;
+	position: absolute;
+	top: 12px;
+	right: 5px;
+	bottom: 0;
+	margin: 0 !important;
 }
 
 .input-button .icon {
-  font-size: $huge-text-size;
+	font-size: $huge-text-size;
 }
 
 // Money
 .money-group {
 
-  .moneyAmount {
-    position: absolute;
-    top: 12px;
-    left: 0px;
-    color: $med-gray;
-  }
+	.moneyAmount {
+		position: absolute;
+		top: 12px;
+		left: 0px;
+		color: $med-gray;
+	}
 
-  .moneyAmount.active {
-    color: $dark;
-  }
+	.moneyAmount.active {
+		color: $dark;
+	}
 
-  input {
-    padding-left: 10px;
-  }
+	input {
+		padding-left: 10px;
+	}
 }
 
 /*----------- Labels ---------------*/
 label, .label {
-  color: $med-gray;
-  font-size: $small-text-size;
+	color: $med-gray;
+	font-size: $small-text-size;
 }
 
 label.idle, .label.idle {
-  color: $med-gray !important;
+	color: $med-gray !important;
 }
 
 .floating-label {
-  position: relative;
-  margin-bottom: 0px;
+	position: relative;
+	margin-bottom: 0px;
 }
 
 .floating-label label {
-  position: absolute;
-  top: calc(50% - 20px);
-  left: 0;
-  opacity: 0;
-  transition: all .3s ease;
+	position: absolute;
+	top: calc(50% - 20px);
+	left: 0;
+	opacity: 0;
+	transition: all .3s ease;
 }
 
 .floating-label.fixed label {
-  opacity: 1;
-  transform: translateY(-10px);
+	opacity: 1;
+	transform: translateY(-10px);
 }
 
 .floating-label input:not(:placeholder-shown) + label {
-  transform: translateY(-10px);
-  opacity: 1;
+	transform: translateY(-10px);
+	opacity: 1;
 }
 
 .floating-label.active label {
-  color: $primary;
+	color: $primary;
 }
 
 label.active {
-  color: $mainColor;
+	color: $mainColor;
 }
 
 .error label.idle {
-  color: $red !important;
+	color: $red !important;
 }
 
 /*---------- Textarea -------*/
@@ -228,54 +228,54 @@ label.active {
 
 .richtext-embed {
 
-  .RichEditor-editor {
-    max-height: 150px;
-    overflow-y: auto;
-    overflow-x: hidden;
-  }
+	.RichEditor-editor {
+		max-height: 150px;
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
 }
 
 .modal {
 
-  .RichEditor-root {
-    padding: 20px;
-  }
+	.RichEditor-root {
+		padding: 20px;
+	}
 
 }
 
 .error {
-  .RichEditor-editor {
-    .public-DraftEditorPlaceholder-inner {
-      color: $red;
-    }
-  }
+	.RichEditor-editor {
+		.public-DraftEditorPlaceholder-inner {
+			color: $red;
+		}
+	}
 }
 
 /********** CHOICE GROUP **************/
 .choice-group {
-  position: relative;
-  padding: 10px 5px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
+	position: relative;
+	padding: 10px 5px;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
 }
 
 .choice-group.error {
-  .icon {
-    color: $red;
-  }
+	.icon {
+		color: $red;
+	}
 }
 
 /*--------------- Checkbox ---------------*/
 .checkbox-group {
-  label {
-    cursor: pointer;
-    display: inline;
-  }
+	label {
+		cursor: pointer;
+		display: inline;
+	}
 
-  label.label {
-    margin-left: 10px;
-  }
+	label.label {
+		margin-left: 10px;
+	}
 }
 
 .checkbox {
@@ -285,33 +285,33 @@ label.active {
 .checkbox + label {
 	background-color: #fafafa;
 	border: 1px solid #cacece;
-  @include box-shadow(0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05));
+	@include box-shadow(0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05));
 	padding: 9px;
 	border-radius: 3px;
 	display: inline-block;
 	position: relative;
-  vertical-align: middle;
+	vertical-align: middle;
 }
 
 .checkbox + label:active, .checkbox:checked + label:active {
-  @include box-shadow(0 1px 2px rgba(0,0,0,0.05), inset 0px 1px 3px rgba(0,0,0,0.1));
+	@include box-shadow(0 1px 2px rgba(0,0,0,0.05), inset 0px 1px 3px rgba(0,0,0,0.1));
 }
 
 .checkbox:checked + label {
 	background-color: #e9ecee;
 	border: 1px solid #adb8c0;
-  @include box-shadow(0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05), inset 15px 10px -12px rgba(255,255,255,0.1))
+	@include box-shadow(0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05), inset 15px 10px -12px rgba(255,255,255,0.1))
 	color: $primary;
 }
 
 .checkbox:checked + label:after {
 	content: '\2714';
 	font-size: 14px;
-  @include browser(firefox) {
-    font-size: 22px;
-    top: -1px;
-  }
-  font-weight: 500;
+	@include browser(firefox) {
+		font-size: 22px;
+		top: -1px;
+	}
+	font-weight: 500;
 	position: absolute;
 	top: 2px;
 	left: 3px;
@@ -320,14 +320,14 @@ label.active {
 
 /*---------------- Radio -------------*/
 .radio-group {
-  label {
-    cursor: pointer;
-    display: inline;
-  }
+	label {
+		cursor: pointer;
+		display: inline;
+	}
 
-  label.label {
-    margin-left: 10px;
-  }
+	label.label {
+		margin-left: 10px;
+	}
 }
 
 .radio {
@@ -343,20 +343,20 @@ label.active {
 	border-radius: 50px;
 	display: inline-block;
 	position: relative;
-  vertical-align: middle;
+	vertical-align: middle;
 	transition: all .2s ease-in-out;
 	&:before, &:after {
-    content: '';
-    position: absolute;
-    top: -1px;
-    left: 0;
-    width: 16px;
-    height: 16px;
-    text-align: center;
-    color: $med-blue-gray;
-    font-family: Times;
-    border-radius: 50%;
-    transition: all .3s ease;
+		content: '';
+		position: absolute;
+		top: -1px;
+		left: 0;
+		width: 16px;
+		height: 16px;
+		text-align: center;
+		color: $med-blue-gray;
+		font-family: Times;
+		border-radius: 50%;
+		transition: all .3s ease;
 	}
 }
 
@@ -388,404 +388,404 @@ label.active {
 /*----------------- Dropdown --------------*/
 
 .dropdown-cover {
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100%;
-  cursor: pointer;
-  background: rgba(0,0,0,.5);
-  z-index: 1000000;
+	position: fixed;
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+	background: rgba(0,0,0,.5);
+	z-index: 1000000;
 }
 
 .dropdown {
 
-  position: relative;
-  display: inline-block;
-  width: 100%;
-  clear: both;
+	position: relative;
+	display: inline-block;
+	width: 100%;
+	clear: both;
 
-  .icon {
-    position: absolute;
-    top: 8px;
-    right: 10px;
-    bottom: 0;
-    color: $med-gray;
-    font-size: $small-text-size;
-  }
+	.icon {
+		position: absolute;
+		top: 8px;
+		right: 10px;
+		bottom: 0;
+		color: $med-gray;
+		font-size: $small-text-size;
+	}
 
-  button {
-    background-color: transparent;
-    color: $med-gray;
-    padding: 10px 0;
-    font-family: $font-family;
-    font-size: $normal-text-size;
-    letter-spacing: 0;
-    border-radius: 0px;
-    border-bottom: 1px solid $light;
-    cursor: pointer;
-    width: 100%;
-    text-align: left;
-    margin: 0;
-  }
+	button {
+		background-color: transparent;
+		color: $med-gray;
+		padding: 10px 0;
+		font-family: $font-family;
+		font-size: $normal-text-size;
+		letter-spacing: 0;
+		border-radius: 0px;
+		border-bottom: 1px solid $light;
+		cursor: pointer;
+		width: 100%;
+		text-align: left;
+		margin: 0;
+	}
 
-  button:hover:not(.label) {
-    @include default-transition(.25s);
-    border-bottom: 1px solid $mainColor;
-    .label {
-      color: $mainColor !important;
-    }
-  }
+	button:hover:not(.label) {
+		@include default-transition(.25s);
+		border-bottom: 1px solid $mainColor;
+		.label {
+			color: $mainColor !important;
+		}
+	}
 
-  label {
-    button {
-      border-bottom: none;
-    }
-  }
+	label {
+		button {
+			border-bottom: none;
+		}
+	}
 
-  .label {
-    color: $dark-gray;
-    font-size: $normal-text-size;
-  }
+	.label {
+		color: $dark-gray;
+		font-size: $normal-text-size;
+	}
 
-  .dropdown-content {
-    display: block;
-    position: absolute;
-    background-color: $off-white;
-    min-width: 200px;
-    width: 100%;
-    max-height: 300px;
-    @include box-shadow(0px 4px 8px 0px rgba(0,0,0,0.2));
-    z-index: 1000000;
-    overflow-y: auto;
-    overflow-x: hidden;
-  }
+	.dropdown-content {
+		display: block;
+		position: absolute;
+		background-color: $off-white;
+		min-width: 200px;
+		width: 100%;
+		max-height: 300px;
+		@include box-shadow(0px 4px 8px 0px rgba(0,0,0,0.2));
+		z-index: 1000000;
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
 
-  .dropdown-content.top {
-    display: block;
-    position: absolute;
-    background-color: $off-white;
-    bottom: 25px;
-    min-width: 200px;
-    width: 100%;
-    max-height: 300px;
-    @include box-shadow(0px 4px 8px 0px rgba(0,0,0,0.2));
-    z-index: 1000000;
-    overflow-y: auto;
-    overflow-x: hidden;
-  }
+	.dropdown-content.top {
+		display: block;
+		position: absolute;
+		background-color: $off-white;
+		bottom: 25px;
+		min-width: 200px;
+		width: 100%;
+		max-height: 300px;
+		@include box-shadow(0px 4px 8px 0px rgba(0,0,0,0.2));
+		z-index: 1000000;
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
 
-  .dropdown-item.disabled {
-    color: $med-blue-gray;
-  }
+	.dropdown-item.disabled {
+		color: $med-blue-gray;
+	}
 
-  .dropdown-item.disabled:hover {
-    color: $med-blue-gray;
-    background: transparent;
-    cursor: not-allowed;
-  }
+	.dropdown-item.disabled:hover {
+		color: $med-blue-gray;
+		background: transparent;
+		cursor: not-allowed;
+	}
 
-  .dropdown-item {
-    padding: 10px 5px;
-    cursor: pointer;
-    display: block;
-    width: auto;
-    color: $dark-gray;
-    text-align: left;
+	.dropdown-item {
+		padding: 10px 5px;
+		cursor: pointer;
+		display: block;
+		width: auto;
+		color: $dark-gray;
+		text-align: left;
 
-    .dropdown-container {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-    }
+		.dropdown-container {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+		}
 
-    .leftSide {
-      display: block;
-    }
+		.leftSide {
+			display: block;
+		}
 
-    .rightSide {
-      display: block;
-    }
+		.rightSide {
+			display: block;
+		}
 
-    .icon {
-      position: relative;
-      display: inline-block;
-      top: 0;
-      right: 0;
-      margin-left: 0;
-      margin-right: 5px;
-      color: $primary;
-      font-size: $normal-text-size;
-    }
+		.icon {
+			position: relative;
+			display: inline-block;
+			top: 0;
+			right: 0;
+			margin-left: 0;
+			margin-right: 5px;
+			color: $primary;
+			font-size: $normal-text-size;
+		}
 
-    .secondaryText {
-      display: block;
-    }
-  }
+		.secondaryText {
+			display: block;
+		}
+	}
 
-  .dropdown-item:hover {
-    background: $primary;
-    color: $white;
-  }
+	.dropdown-item:hover {
+		background: $primary;
+		color: $white;
+	}
 
-  .dropdown-item.selected { color: $primary; }
-  .dropdown-item.selected:hover { color: $white; }
+	.dropdown-item.selected { color: $primary; }
+	.dropdown-item.selected:hover { color: $white; }
 
-  .dropdown-item.bottom {
-    cursor: default;
-  }
+	.dropdown-item.bottom {
+		cursor: default;
+	}
 
-  .dropdown-item.bottom button:hover {
-    background: $white;
-    color: $mainColor;
-    border-bottom: 0;
-  }
+	.dropdown-item.bottom button:hover {
+		background: $white;
+		color: $mainColor;
+		border-bottom: 0;
+	}
 }
 
 .dropdown {
-  button .label.idle {
-    color: $med-blue-gray !important;
-  }
+	button .label.idle {
+		color: $med-blue-gray !important;
+	}
 
-  .dropdown-item-actions button {
-    color: $mainColor;
-    font-size: $med-text-size;
-  }
+	.dropdown-item-actions button {
+		color: $mainColor;
+		font-size: $med-text-size;
+	}
 }
 
 .dropdown.active {
-    .icon,
-    button.label {
-      border: 0 !important;
-      color: $mainColor !important;
-    }
+		.icon,
+		button.label {
+			border: 0 !important;
+			color: $mainColor !important;
+		}
 }
 
 /*----------- Max Records Dropdown -------------*/
 .maxRecords {
-  .input-group {
-    margin: 0;
-    vertical-align: middle;
-    text-align: center;
-    padding-bottom: 0px;
-  }
+	.input-group {
+		margin: 0;
+		vertical-align: middle;
+		text-align: center;
+		padding-bottom: 0px;
+	}
 
-  .dropdown {
-    width: 75px;
+	.dropdown {
+		width: 75px;
 
-    .icon { display: none; }
+		.icon { display: none; }
 
-    button {
-      width: auto;
-      border-bottom: none;
-    }
+		button {
+			width: auto;
+			border-bottom: none;
+		}
 
-    .dropdown-content { min-width: 75px; }
+		.dropdown-content { min-width: 75px; }
 
-    .label { color: $primary; font-size: $small-text-size; }
-  }
+		.label { color: $primary; font-size: $small-text-size; }
+	}
 
-  button.link,
-  button.link:hover {
-    display: inline-block;
-    color: $dark;
-  }
+	button.link,
+	button.link:hover {
+		display: inline-block;
+		color: $dark;
+	}
 
-  label {
-    font-size: $tiny-text-size;
-    margin-right: 10px;
-  }
+	label {
+		font-size: $tiny-text-size;
+		margin-right: 10px;
+	}
 }
 
 /*----------- Errors ------------*/
 .error {
-  color: $red;
+	color: $red;
 
-  .errorMsg {
-    display: block;
-  }
+	.errorMsg {
+		display: block;
+	}
 
-  .moneyAmount,
-  .moneyAmount.active,
-  .moneyAmount.noValue .symbol {
-    color: $red;
-  }
+	.moneyAmount,
+	.moneyAmount.active,
+	.moneyAmount.noValue .symbol {
+		color: $red;
+	}
 
-  label { color: $red; }
+	label { color: $red; }
 
-  .floating-label input:focus + label {
-    color: $red;
-  }
+	.floating-label input:focus + label {
+		color: $red;
+	}
 
-  input {
-    color: $red;
-    border: none;
-  }
+	input {
+		color: $red;
+		border: none;
+	}
 
-  input::-webkit-input-placeholder {
-    color: $red !important;
-  }
-  input::-moz-placeholder {
-    color: $red !important;
-  }
-  input::-ms-input-placeholder {
-    color: $red !important;
-  }
+	input::-webkit-input-placeholder {
+		color: $red !important;
+	}
+	input::-moz-placeholder {
+		color: $red !important;
+	}
+	input::-ms-input-placeholder {
+		color: $red !important;
+	}
 
-  .checkbox {
-    border: 2px solid $red;
-  }
+	.checkbox {
+		border: 2px solid $red;
+	}
 
-  .dropdown {
+	.dropdown {
 
-    button {
-      border: none;
-      border-bottom: 2px solid $red;
-      color: $red;
-    }
+		button {
+			border: none;
+			border-bottom: 2px solid $red;
+			color: $red;
+		}
 
-    button.label {
-      border-bottom: none;
-    }
+		button.label {
+			border-bottom: none;
+		}
 
-    .label .idle,
-    label .idle,
-    .label {
-      color: $red !important;
-    }
-  }
+		.label .idle,
+		label .idle,
+		.label {
+			color: $red !important;
+		}
+	}
 }
 
 .error.tooltip .tooltipTop {
-  color: $white;
-  background-color: $red;
+	color: $white;
+	background-color: $red;
 }
 
 .error.tooltip .tooltipTop i::after {
-  background-color: $red;
+	background-color: $red;
 }
 
 .readOnly.tooltip .tooltipTop {
-  color: $dark;
-  background-color: $light-gray;
+	color: $dark;
+	background-color: $light-gray;
 }
 
 .readOnly.tooltip .tooltipTop i::after {
-  background-color: $light-gray;
+	background-color: $light-gray;
 }
 
 /*-------- Alert Messages ---------*/
 .alertMsg {
 
-  position: relative;
+	position: relative;
 
-  button.close {
-    background: transparent;
-    position: absolute;
-    top: 5px;
-    right: 0px;
-    color: $white;
-  }
+	button.close {
+		background: transparent;
+		position: absolute;
+		top: 5px;
+		right: 0px;
+		color: $white;
+	}
 }
 
 .warning {
-  display: block;
-  padding: 10px;
-  background: $orange;
-  vertical-align: middle;
+	display: block;
+	padding: 10px;
+	background: $orange;
+	vertical-align: middle;
 
-  .msgText {
-    display: inline-block;
-    vertical-align: middle;
-    color: $white;
-  }
+	.msgText {
+		display: inline-block;
+		vertical-align: middle;
+		color: $white;
+	}
 }
 
 .success {
-  display: block;
-  padding: 10px;
-  background: $green;
-  vertical-align: middle;
+	display: block;
+	padding: 10px;
+	background: $green;
+	vertical-align: middle;
 
-  .msgText {
-    display: inline-block;
-    vertical-align: middle;
-    color: $white;
-  }
+	.msgText {
+		display: inline-block;
+		vertical-align: middle;
+		color: $white;
+	}
 
-  button.link {
-    font-size: $med-text-size;
-    color: $mainColor;
-  }
-  button.link:hover {
-    color: $mainColor2;
-  }
+	button.link {
+		font-size: $med-text-size;
+		color: $mainColor;
+	}
+	button.link:hover {
+		color: $mainColor2;
+	}
 }
 
 .alertMsg-enter {
-  opacity: 0.01;
+	opacity: 0.01;
 }
 .alertMsg-enter-active {
-  opacity: 1;
-  transition: all 500ms ease-out;
+	opacity: 1;
+	transition: all 500ms ease-out;
 }
 .alertMsg-exit {
-  opacity: 1;
+	opacity: 1;
 }
 .alertMsg-exit-active {
-  opacity: 0.01;
-  transition: all 500ms ease-out;
+	opacity: 0.01;
+	transition: all 500ms ease-out;
 }
 
 /*-------- Credit Card ---------*/
 .creditCard-group {
 
-  position: relative;
+	position: relative;
 
-  .cardsAccepted {
-  	position: absolute;
-  	height: 50px;
-  	width: 160px;
-  	top: -20px;
-  	left: -5px;
-  	background-image: url('https://s3-us-west-1.amazonaws.com/givebox/public/images/cards-accepted3.png');
-  	background-image: url('https://s3-us-west-1.amazonaws.com/givebox/public/images/cards-accepted3.svg');
-  	background-repeat: no-repeat;
-  	background-size: 130px 21px;
-  }
+	.cardsAccepted {
+		position: absolute;
+		height: 50px;
+		width: 160px;
+		top: -20px;
+		left: -5px;
+		background-image: url('https://s3-us-west-1.amazonaws.com/givebox/public/images/cards-accepted3.png');
+		background-image: url('https://s3-us-west-1.amazonaws.com/givebox/public/images/cards-accepted3.svg');
+		background-repeat: no-repeat;
+		background-size: 130px 21px;
+	}
 }
 
 .input-group.creditCard {
-  margin-top: 20px;
+	margin-top: 20px;
 }
 
 .creditCard {
 
-  input {
-    padding-left: 50px;
-  }
+	input {
+		padding-left: 50px;
+	}
 
-  .checkmark {
-    position: absolute;
-    top: 30px;
-    right: 20px;
-    bottom: 0;
+	.checkmark {
+		position: absolute;
+		top: 30px;
+		right: 20px;
+		bottom: 0;
 
-    .icon {
-      color: $green;
-    }
-  }
-  .cardType {
-  	position: absolute;
-  	top: 10px;
-  	left: 0px;
-  	width: 35px;
-  	height: 22px;
-  	background-repeat: no-repeat;
-  	background-size: 31px 21px;
-  }
+		.icon {
+			color: $green;
+		}
+	}
+	.cardType {
+		position: absolute;
+		top: 10px;
+		left: 0px;
+		width: 35px;
+		height: 22px;
+		background-repeat: no-repeat;
+		background-size: 31px 21px;
+	}
 
 }
 
@@ -795,9 +795,9 @@ label.active {
 }
 
 .default {
-  background-image: url('https://s3-us-west-1.amazonaws.com/givebox/public/images/card-default3.png');
-  background-image: url('https://s3-us-west-1.amazonaws.com/givebox/public/images/card-default3.svg');
-  opacity: .5;
+	background-image: url('https://s3-us-west-1.amazonaws.com/givebox/public/images/card-default3.png');
+	background-image: url('https://s3-us-west-1.amazonaws.com/givebox/public/images/card-default3.svg');
+	opacity: .5;
 }
 
 .visa {
@@ -822,518 +822,519 @@ label.active {
 
 /*---------- PASSWORD STRENGTH -----*/
 .passwordStrength {
-  color: $med-gray;
-  position: absolute;
-  height: 2px;
-  z-index: 101;
-  width: 100%;
-  bottom: 0;
+	color: $med-gray;
+	position: absolute;
+	height: 2px;
+	z-index: 101;
+	width: 100%;
+	bottom: 0;
 
-  .label {
-    margin-top: 5px;
-    font-size: $tiny-text-size;
-  }
+	.label {
+		margin-top: 5px;
+		font-size: $tiny-text-size;
+	}
 
-  .tooltip .tooltipTop {
-    top: -40px;
-    color: $white;
-    background-color: $mainColor;
-  }
+	.tooltip .tooltipTop {
+		top: -40px;
+		color: $white;
+		background-color: $mainColor;
+	}
 
-  .tooltip .tooltipTop i {
-    left: 10%;
-    margin-left: -12px;
-  }
+	.tooltip .tooltipTop i {
+		left: 10%;
+		margin-left: -12px;
+	}
 
-  .tooltip .tooltipTop i::after {
-    background-color: $mainColor;
-  }
+	.tooltip .tooltipTop i::after {
+		background-color: $mainColor;
+	}
 
-  .error {
+	.error {
 
-    .label {
-      text-align: left;
-      color: $red;
-    }
+		.label {
+			text-align: left;
+			color: $red;
+		}
 
-    .tooltipTop {
-      background-color: $red;
-    }
+		.tooltipTop {
+			background-color: $red;
+		}
 
-    .tooltipTop i::after {
-      background-color: $red;
-    }
-  }
+		.tooltipTop i::after {
+			background-color: $red;
+		}
+	}
 }
 
 
 /*---------- Linear Progress ---------*/
 .linearProgress {
-  position: relative;
-  width: 100%;
-  height: 3px;
-  background: transparent;
+	position: relative;
+	width: 100%;
+	height: 3px;
+	background: transparent;
 }
 
 .linearProgressBar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 0%;
-  height: 3px;
-  background: $med-gray;
-  background: -moz-linear-gradient(left,  #5d6cc1 0%, #75e8d3 100%);
-  background: -webkit-linear-gradient(left,  #5d6cc1 0%,#75e8d3 100%);
-  background: linear-gradient(to right,  #5d6cc1 0%,#75e8d3 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5d6cc1', endColorstr='#75e8d3',GradientType=1 );
-  z-index: 9;
-  transition: all .5s ease-in;
-  -webkit-transition: all .5s ease-in;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 0%;
+	height: 3px;
+	background: $med-gray;
+	background: -moz-linear-gradient(left,  #5d6cc1 0%, #75e8d3 100%);
+	background: -webkit-linear-gradient(left,  #5d6cc1 0%,#75e8d3 100%);
+	background: linear-gradient(to right,  #5d6cc1 0%,#75e8d3 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5d6cc1', endColorstr='#75e8d3',GradientType=1 );
+	z-index: 9;
+	transition: all .5s ease-in;
+	-webkit-transition: all .5s ease-in;
 }
 
 .linearProgressBarAnimation {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 0%;
-  height: 3px;
-  -webkit-animation: progressBarAnimation 1s ease-out;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 0%;
+	height: 3px;
+	-webkit-animation: progressBarAnimation 1s ease-out;
 	-webkit-animation-iteration-count: infinite;
-  z-index: 10;
-  background: #75e8d3;
-  transition: all .5s ease-in;
-  -webkit-transition: all .5s ease-in;
+	z-index: 10;
+	background: #75e8d3;
+	transition: all .5s ease-in;
+	-webkit-transition: all .5s ease-in;
 }
 
 /*--------- CHARACTER COUNTER -----*/
 .characterCount {
-  position: absolute;
-  height: 2px;
-  z-index: 101;
-  width: 100%;
-  bottom: 0;
+	position: absolute;
+	height: 2px;
+	z-index: 101;
+	width: 100%;
+	bottom: 0;
 }
 
 .characterCount .text {
-  font-size: $tiny-text-size;
-  color: $med-gray;
+	font-size: $tiny-text-size;
+	color: $med-gray;
 }
 
 .characterCount .text strong {
-  font-weight: 500;
-  color: $med-gray;
+	font-weight: 500;
+	color: $med-gray;
 }
 
 /*------- Disabled ------*/
 .disabled {
 
-  .input-bottom,
-  .input-bottom.active,
-  .input-bottom.idle {
-    background: $light;
-  }
+	.input-bottom,
+	.input-bottom.active,
+	.input-bottom.idle {
+		background: $light;
+	}
 
-  label, .label,
-  label.active,
-  label.idle {
-    color: $light !important;
-  }
+	label, .label,
+	label.active,
+	label.idle {
+		color: $light !important;
+	}
 
-  input {
-    color: $light !important;
-    border-bottom: 1px solid $light;
-  }
+	input {
+		color: $light !important;
+		border-bottom: 1px solid $light;
+	}
 
-  input::-webkit-input-placeholder {
-    font-size: $normal-text-size;
-    font-family: $font-family;
-    color: $med-blue-gray;
-  }
-  input::-moz-placeholder {
-    font-size: $normal-text-size;
-    color: $med-blue-gray;
-  }
-  input::-ms-input-placeholder {
-    font-size: $normal-text-size;
-    color: $med-blue-gray;
-  }
+	input::-webkit-input-placeholder {
+		font-size: $normal-text-size;
+		font-family: $font-family;
+		color: $med-blue-gray;
+	}
+	input::-moz-placeholder {
+		font-size: $normal-text-size;
+		color: $med-blue-gray;
+	}
+	input::-ms-input-placeholder {
+		font-size: $normal-text-size;
+		color: $med-blue-gray;
+	}
 }
 
 /*-------- WHERE -----------*/
 .pac-container {
-  z-index: 99999999;
-  border-bottom-right-radius: 20px;
-  border-bottom-left-radius: 20px;
+	z-index: 99999999;
+	border-bottom-right-radius: 20px;
+	border-bottom-left-radius: 20px;
 }
 
 .pac-item {
-  cursor: pointer;
+	cursor: pointer;
 }
 
 .pac-item:hover {
-  background: $mainColor;
-  color: $white;
+	background: $mainColor;
+	color: $white;
 }
 
 .where-group {
-  .input-group {
-    padding-bottom: 5px;
-  }
+	.input-group {
+		padding-bottom: 5px;
+	}
 
-  button.manualLink {
-    display: flex;
-    align-items: center;
-    margin-left: 5px;
-    .icon {
-      margin-left: 5px;
-    }
-  }
+	button.manualLink {
+		display: flex;
+		align-items: center;
+		margin-left: 5px;
+		.icon {
+			margin-left: 5px;
+		}
+	}
 
-  .where-manual-container {
-    padding: 10px 5px;
-    @media (max-width: 600px) {
-      padding: 10px 0;
-    }
-  }
+	.where-manual-container {
+		padding: 10px 5px;
+		@media (max-width: 600px) {
+			padding: 10px 0;
+		}
+	}
 
-  .cityStateZip {
-    display: flex;
-    align-items: center;
+	.cityStateZip {
+		display: flex;
+		align-items: center;
 
-    .city { width: 40%; }
-    .state {
-      width: 40%;
-      .dropdown button {
-        margin-top: 5px;
-        padding-top: 5px;
-        padding-bottom: 5px;
-      }
-      .dropdown label {
-        margin-top: -5px;
-      }
-    }
-    .zip { width: 20%; }
-    @media (max-width: 600px) {
-      display: flex;
-      flex-direction: column;
-      .city { width: 100%; }
-      .state {
-        width: 100%;
-        .dropdown button {
-          margin-top: 5px;
-          padding-top: 5px;
-          padding-bottom: 5px;
-        }
-        .dropdown label {
-          margin-top: -5px;
-        }
-      }
-      .zip { width: 100%; }
-    }
-  }
+		.city { width: 40%; }
+		.state {
+			width: 40%;
+			.dropdown button {
+				margin-top: 5px;
+				padding-top: 5px;
+				padding-bottom: 5px;
+			}
+			.dropdown label {
+				margin-top: -5px;
+			}
+		}
+		.zip { width: 20%; }
+		@media (max-width: 600px) {
+			display: flex;
+			flex-direction: column;
+			.city { width: 100%; }
+			.state {
+				width: 100%;
+				.dropdown button {
+					margin-top: 5px;
+					padding-top: 5px;
+					padding-bottom: 5px;
+				}
+				.dropdown label {
+					margin-top: -5px;
+				}
+			}
+			.zip { width: 100%; }
+		}
+	}
 
 }
 
 .photoshop-picker {
-  width: 500px !important;
-  @media (max-width: 600px) {
-    width: 100% !important;
-  }
-  background: $white !important;
-  box-shadow: none !important;
+	width: 500px !important;
+	@media (max-width: 600px) {
+		width: 100% !important;
+	}
+	background: $white !important;
+	box-shadow: none !important;
 }
 
 .photoshop-picker div:first-of-type {
 }
 
 .colorPickerLabel {
-  display: flex;
-  align-items: center;
+	display: flex;
+	align-items: center;
 }
 
 .colorPickerExample {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  margin-right: 10px;
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	margin-right: 10px;
 }
 
 // Moved over from Cloud to be used Globally
 
 
 .editMode {
-  padding: 10px 0 15px 0;
-  vertical-align: top;
-  font-size: 50%;
-  color: $mainColor;
-  white-space: nowrap;
-  display: block;
-  @include animation(pulsateBrighter 2s infinite linear);
+	padding: 10px 0 15px 0;
+	vertical-align: top;
+	font-size: 50%;
+	color: $mainColor;
+	white-space: nowrap;
+	display: block;
+	@include animation(pulsateBrighter 2s infinite linear);
 }
 
+.enableField,
 .enableColumn {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
 
-  .icon {
-    font-size: 1.75em;
-  }
+	.icon {
+		font-size: 1.75em;
+	}
 }
 
 input {
-  line-height: 1.5em;
+	line-height: 1.5em;
 }
 
 .moneyAmount.noValue .symbol {
-  color: $med-blue-gray
+	color: $med-blue-gray
 }
 
 .input-bottom.active {
-  background: $mainColor;
-  transform: scaleX(1);
-  -webkit-transform: scaleX(1);
-  @include default-transition(.25s);
+	background: $mainColor;
+	transform: scaleX(1);
+	-webkit-transform: scaleX(1);
+	@include default-transition(.25s);
 }
 
 input::-webkit-input-placeholder {
-  font-size: $normal-text-size;
-  font-family: $font-family;
-  color: $med-blue-gray;
-  font-weight: 300;
+	font-size: $normal-text-size;
+	font-family: $font-family;
+	color: $med-blue-gray;
+	font-weight: 300;
 }
 input::-moz-placeholder {
-  font-size: $normal-text-size;
-  color: $med-blue-gray;
-  font-weight: 300;
+	font-size: $normal-text-size;
+	color: $med-blue-gray;
+	font-weight: 300;
 }
 input::-ms-input-placeholder {
-  font-size: $normal-text-size;
-  color: $med-blue-gray;
-  font-weight: 300;
+	font-size: $normal-text-size;
+	color: $med-blue-gray;
+	font-weight: 300;
 }
 
 form {
 
-  .tabs .panel {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 30px;
-  }
+	.tabs .panel {
+		display: flex;
+		justify-content: center;
+		margin-bottom: 30px;
+	}
 
-  .statsTab button.panelTab {
-    font-weight: 300;
-    padding: 5px 30px;
-  }
+	.statsTab button.panelTab {
+		font-weight: 300;
+		padding: 5px 30px;
+	}
 
-  .statsTab button.panelTab:hover {
-    color: $secondColor;
-  }
+	.statsTab button.panelTab:hover {
+		color: $secondColor;
+	}
 
-  h4 {
-    margin-bottom: 0;
-  }
+	h4 {
+		margin-bottom: 0;
+	}
 
-  .flexStart.formInfo .choice-group:not(.right) {
-    width: 250px;
-  }
+	.flexStart.formInfo .choice-group:not(.right) {
+		width: 250px;
+	}
 
-  .flexStart.formInfo .choice-group.right {
-    margin-left: 20px;
-    @media only screen and (max-width: 600px) {
-      text-align: left;
-      margin-left: 0px;
-    }
-  }
+	.flexStart.formInfo .choice-group.right {
+		margin-left: 20px;
+		@media only screen and (max-width: 600px) {
+			text-align: left;
+			margin-left: 0px;
+		}
+	}
 
-  .flexStart.formInfo {
-    @media only screen and (max-width: 600px) {
-      flex-direction: column;
-    }
-  }
+	.flexStart.formInfo {
+		@media only screen and (max-width: 600px) {
+			flex-direction: column;
+		}
+	}
 
-  .imageURL {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    .input-group {
-      display: inline-block;
-      width: 200px;
-      margin: 0;
-      padding: 0;
-    }
-  }
+	.imageURL {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+		.input-group {
+			display: inline-block;
+			width: 200px;
+			margin: 0;
+			padding: 0;
+		}
+	}
 
 }
 
 /*------ Sortable ---------*/
 .sortableElement {
-  z-index: 999999999;
-  cursor: pointer;
+	z-index: 999999999;
+	cursor: pointer;
 }
 
 .sortableListItem.notOnForm {
-  opacity: .5;
+	opacity: .5;
 }
 
 .sortableListItem {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 
-  .column {
-    display: inline-block;
-  }
+	.column {
+		display: inline-block;
+	}
 
-  .actions button {
-    display: block;
-    font-size: $small-text-size;
-    margin: 0;
-    text-align: left;
-  }
+	.actions button {
+		display: block;
+		font-size: $small-text-size;
+		margin: 0;
+		text-align: left;
+	}
 
-  .defaultField {
-    display: block;
-    font-size: $small-text-size;
-    color: $mainColor2;
-    cursor: default;
-  }
+	.defaultField {
+		display: block;
+		font-size: $small-text-size;
+		color: $mainColor2;
+		cursor: default;
+	}
 
 }
 
 .sortableElement:hover button.sortable .icon {
-  color: $mainColor;
+	color: $mainColor;
 }
 
 
 /*------ Tooltip Sortable-------*/
 .tooltip.sortable {
-  .tooltipTop {
-    background: #253655;
-  }
+	.tooltipTop {
+		background: #253655;
+	}
 }
 
 button.tooltip.sortable {
-  .icon {
-    @include default-transition(.25s);
-    color: $light;
-  }
+	.icon {
+		@include default-transition(.25s);
+		color: $light;
+	}
 }
 
 button.tooltip.sortable:hover {
-  .icon {
-    color: $mainColor;
-  }
+	.icon {
+		color: $mainColor;
+	}
 }
 
 .tooltip.right .tooltipTop {
-  right: 0;
-  left: 0;
-  min-width: 100px;
+	right: 0;
+	left: 0;
+	min-width: 100px;
 }
 
 .tooltip.right .tooltipTop i {
-  position: absolute;
-  top: 100%;
-  right: 20%;
-  margin-left: 0px;
-  width: 24px;
-  height: 12px;
-  overflow: hidden;
+	position: absolute;
+	top: 100%;
+	right: 20%;
+	margin-left: 0px;
+	width: 24px;
+	height: 12px;
+	overflow: hidden;
 }
 
 .formSectionContainer {
-  padding: 3px 5px;
-  border-radius: 20px;
-  background: $light;
-  background: -moz-linear-gradient(left,  $light 0%, $greenLight 100%);
-  background: -webkit-linear-gradient(left,  $light 0%, $greenLight 100%);
-  background: linear-gradient(to right,  $light 0%, $greenLight 100%);
+	padding: 3px 5px;
+	border-radius: 20px;
+	background: $light;
+	background: -moz-linear-gradient(left,  $light 0%, $greenLight 100%);
+	background: -webkit-linear-gradient(left,  $light 0%, $greenLight 100%);
+	background: linear-gradient(to right,  $light 0%, $greenLight 100%);
 }
 
 .formSection {
-  padding: 10px 20px 20px 20px;
-  margin: 2px 0;
-  background: $white;
-  border-radius: 20px;
+	padding: 10px 20px 20px 20px;
+	margin: 2px 0;
+	background: $white;
+	border-radius: 20px;
 }
 
 .modalContent.campaignForm {
-  .modalFormContainer {
-    padding: 0 20px;
-    @media (max-width: 849px) {
-      padding: 0 10px;
-    }
-  }
+	.modalFormContainer {
+		padding: 0 20px;
+		@media (max-width: 849px) {
+			padding: 0 10px;
+		}
+	}
 }
 
 .modal {
-  .modalFormContainer.where-group {
-    padding: 40px 40px;
-  }
+	.modalFormContainer.where-group {
+		padding: 40px 40px;
+	}
 }
 
 .addRow {
-  padding: 10px 0;
+	padding: 10px 0;
 }
 
 .amountForm {
-  padding-top: 20px;
+	padding-top: 20px;
 
-  .actions {
-    button {
-      margin-top: 5px;
-    }
-  }
+	.actions {
+		button {
+			margin-top: 5px;
+		}
+	}
 
-  .actions.center {
-    display: flex;
-    justify-content: center;
-  }
+	.actions.center {
+		display: flex;
+		justify-content: center;
+	}
 
-  button.tooltip {
-    margin-top: 0 !important;
-  }
+	button.tooltip {
+		margin-top: 0 !important;
+	}
 }
 
 .gbxform {
 
-  iframe {
-    width: 770px;
-    min-height: 650px !important;
-    overflow: hidden;
-  }
+	iframe {
+		width: 770px;
+		min-height: 650px !important;
+		overflow: hidden;
+	}
 }
 
 /*------- Dropdown ----------*/
 .dropdown {
-  .dropdown-item.bottom button:hover {
-    color: $secondColor;
-    background: transparent;
-  }
+	.dropdown-item.bottom button:hover {
+		color: $secondColor;
+		background: transparent;
+	}
 
 }
 
 /*------ Dropzone -------*/
 .dropzone-group {
-  label {
-    position: absolute;
-    top: 0;
-  }
+	label {
+		position: absolute;
+		top: 0;
+	}
 }
 
 
 .dropzoneImageContainer {
-  .dropzoneLoader {
-    margin-bottom: 10px;
-    font-size: $small-text-size;
-    color: $med-gray;
-    img {
-      margin-left: 10px;
-    }
-  }
+	.dropzoneLoader {
+		margin-bottom: 10px;
+		font-size: $small-text-size;
+		color: $med-gray;
+		img {
+			margin-left: 10px;
+		}
+	}
 }
 
 /*-------- Input Range ------*/
@@ -1363,134 +1364,134 @@ $contrast: 5% !default;
 $ie-bottom-track-color: darken($track-color, $contrast) !default;
 
 @mixin shadow($shadow-size, $shadow-blur, $shadow-color) {
-  box-shadow: $shadow-size $shadow-size $shadow-blur $shadow-color, 0 0 $shadow-size lighten($shadow-color, 5%);
+	box-shadow: $shadow-size $shadow-size $shadow-blur $shadow-color, 0 0 $shadow-size lighten($shadow-color, 5%);
 }
 
 @mixin track {
-  cursor: default;
-  height: $track-height;
-  transition: all .2s ease;
-  width: $track-width;
+	cursor: default;
+	height: $track-height;
+	transition: all .2s ease;
+	width: $track-width;
 }
 
 @mixin thumb($adjustment: 0) {
-  @include shadow($thumb-shadow-size, $thumb-shadow-blur, $thumb-shadow-color);
-  background: $thumb-color;
-  border: $thumb-border-width solid $thumb-border-color;
-  border-radius: $thumb-radius;
-  cursor: pointer;
-  height: $thumb-height + $adjustment;
-  width: $thumb-width + $adjustment;
+	@include shadow($thumb-shadow-size, $thumb-shadow-blur, $thumb-shadow-color);
+	background: $thumb-color;
+	border: $thumb-border-width solid $thumb-border-color;
+	border-radius: $thumb-radius;
+	cursor: pointer;
+	height: $thumb-height + $adjustment;
+	width: $thumb-width + $adjustment;
 }
 
 @mixin disabled {
-  cursor: not-allowed;
+	cursor: not-allowed;
 }
 
 [type='range'] {
-  -webkit-appearance: none;
-  background: transparent;
-  margin: $thumb-height / 2 0;
-  width: $track-width;
-  border-bottom: 0px;
+	-webkit-appearance: none;
+	background: transparent;
+	margin: $thumb-height / 2 0;
+	width: $track-width;
+	border-bottom: 0px;
 
-  &::-moz-focus-outer {
-    border: 0;
-  }
+	&::-moz-focus-outer {
+		border: 0;
+	}
 
-  &:focus {
-    outline: 0;
+	&:focus {
+		outline: 0;
 
-    &::-webkit-slider-runnable-track {
-      background: lighten($track-color, $contrast);
-    }
+		&::-webkit-slider-runnable-track {
+			background: lighten($track-color, $contrast);
+		}
 
-    &::-ms-fill-lower {
-      background: $track-color;
-    }
+		&::-ms-fill-lower {
+			background: $track-color;
+		}
 
-    &::-ms-fill-upper {
-      background: lighten($track-color, $contrast);
-    }
-  }
+		&::-ms-fill-upper {
+			background: lighten($track-color, $contrast);
+		}
+	}
 
-  &::-webkit-slider-runnable-track {
-    @include track;
-    @include shadow($track-shadow-size, $track-shadow-blur, $track-shadow-color);
-    background: $track-color;
-    border: $track-border-width solid $track-border-color;
-    border-radius: $track-radius;
-  }
+	&::-webkit-slider-runnable-track {
+		@include track;
+		@include shadow($track-shadow-size, $track-shadow-blur, $track-shadow-color);
+		background: $track-color;
+		border: $track-border-width solid $track-border-color;
+		border-radius: $track-radius;
+	}
 
-  &::-webkit-slider-thumb {
-    @include thumb;
-    -webkit-appearance: none;
-    margin-top: ((-$track-border-width * 2 + $track-height) / 2 - $thumb-height / 2);
-  }
+	&::-webkit-slider-thumb {
+		@include thumb;
+		-webkit-appearance: none;
+		margin-top: ((-$track-border-width * 2 + $track-height) / 2 - $thumb-height / 2);
+	}
 
-  &::-moz-range-track {
-    @include shadow($track-shadow-size, $track-shadow-blur, $track-shadow-color);
-    @include track;
-    background: $track-color;
-    border: $track-border-width solid $track-border-color;
-    border-radius: $track-radius;
-    height: $track-height / 2;
-  }
+	&::-moz-range-track {
+		@include shadow($track-shadow-size, $track-shadow-blur, $track-shadow-color);
+		@include track;
+		background: $track-color;
+		border: $track-border-width solid $track-border-color;
+		border-radius: $track-radius;
+		height: $track-height / 2;
+	}
 
-  &::-moz-range-thumb {
-    @include thumb(-4);
-  }
+	&::-moz-range-thumb {
+		@include thumb(-4);
+	}
 
-  &::-ms-track {
-    @include track;
-    background: transparent;
-    border-color: transparent;
-    border-width: ($thumb-height / 2) 0;
-    color: transparent;
-  }
+	&::-ms-track {
+		@include track;
+		background: transparent;
+		border-color: transparent;
+		border-width: ($thumb-height / 2) 0;
+		color: transparent;
+	}
 
-  &::-ms-fill-lower {
-    @include shadow($track-shadow-size, $track-shadow-blur, $track-shadow-color);
-    background: $ie-bottom-track-color;
-    border: $track-border-width solid $track-border-color;
-    border-radius: ($track-radius * 2);
-  }
+	&::-ms-fill-lower {
+		@include shadow($track-shadow-size, $track-shadow-blur, $track-shadow-color);
+		background: $ie-bottom-track-color;
+		border: $track-border-width solid $track-border-color;
+		border-radius: ($track-radius * 2);
+	}
 
-  &::-ms-fill-upper {
-    @include shadow($track-shadow-size, $track-shadow-blur, $track-shadow-color);
-    background: $track-color;
-    border: $track-border-width solid $track-border-color;
-    border-radius: ($track-radius * 2);
-  }
+	&::-ms-fill-upper {
+		@include shadow($track-shadow-size, $track-shadow-blur, $track-shadow-color);
+		background: $track-color;
+		border: $track-border-width solid $track-border-color;
+		border-radius: ($track-radius * 2);
+	}
 
-  &::-ms-thumb {
-    @include thumb(-4);
-    margin-top: $track-height / 4;
-  }
+	&::-ms-thumb {
+		@include thumb(-4);
+		margin-top: $track-height / 4;
+	}
 
-  &:disabled {
-    &::-webkit-slider-thumb {
-      @include disabled;
-    }
+	&:disabled {
+		&::-webkit-slider-thumb {
+			@include disabled;
+		}
 
-    &::-moz-range-thumb {
-      @include disabled;
-    }
+		&::-moz-range-thumb {
+			@include disabled;
+		}
 
-    &::-ms-thumb {
-      @include disabled;
-    }
+		&::-ms-thumb {
+			@include disabled;
+		}
 
-    &::-webkit-slider-runnable-track {
-      @include disabled;
-    }
+		&::-webkit-slider-runnable-track {
+			@include disabled;
+		}
 
-    &::-ms-fill-lower {
-      @include disabled;
-    }
+		&::-ms-fill-lower {
+			@include disabled;
+		}
 
-    &::-ms-fill-upper {
-      @include disabled;
-    }
-  }
+		&::-ms-fill-upper {
+			@include disabled;
+		}
+	}
 }

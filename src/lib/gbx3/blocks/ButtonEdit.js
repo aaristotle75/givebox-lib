@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-  util,
+	util,
 	toggleModal,
 	Choice,
 	TextField,
@@ -13,38 +13,42 @@ import {
 	ModalLink
 } from '../../';
 import AnimateHeight from 'react-animate-height';
+import Button from './Button';
 
 class ButtonEdit extends Component {
 
-  constructor(props) {
-    super(props);
+	constructor(props) {
+		super(props);
 		this.setRadius = this.setRadius.bind(this);
-		const button = this.props.button;
-		const borderRadius = util.getValue(button, 'borderRadius', util.getValue(props.options, 'borderRadius', 5));
+		this.updateButton = this.updateButton.bind(this);
+		const borderRadius = util.getValue(props.button, 'borderRadius', util.getValue(props.options, 'borderRadius', 5));
 
-    this.state = {
-			button,
+		this.state = {
 			borderRadius
-    };
-  }
+		};
+	}
 
 	componentDidMount() {
 	}
 
 	componentWillUnmount() {
-		this.setState({ button: this.props.button });
+	}
+
+	updateButton(name, value) {
+		const button = { ...this.props.button };
+		button[name] = value;
+		this.props.optionsUpdated('button', button);
 	}
 
 	setRadius(borderRadius) {
-		const button = this.state.button;
+		const button = { ...this.props.button };
 		button.borderRadius = borderRadius;
-    this.setState({ button, borderRadius })
+		this.setState({ borderRadius }, this.props.optionsUpdated('button', button))
 	}
 
-  render() {
+	render() {
 
 		const {
-			button,
 			borderRadius
 		} = this.state;
 
@@ -52,7 +56,9 @@ class ButtonEdit extends Component {
 			label,
 			primaryColor,
 			maxRadius,
-			minRadius
+			minRadius,
+			modalID,
+			button
 		} = this.props;
 
 		const enabled = util.getValue(button, 'enabled', false);
@@ -61,33 +67,24 @@ class ButtonEdit extends Component {
 		const width = util.getValue(button, 'width');
 		const fontSize = util.getValue(button, 'fontSize');
 
-		const type = util.getValue(button, 'type', 'button');
-		const paddingTopBottom = fontSize >= 20 ? 15 : 10;
-		const style = {}
-		style.borderRadius = `${util.getValue(button, 'borderRadius', 0)}px`;
-		style.fontSize = `${fontSize}px`;
-		style.width = util.getValue(button, 'width');
-		style.padding = `${paddingTopBottom}px 25px`;
-
-    return (
-      <>
+		return (
+			<>
 				{util.getValue(button, 'embedAllowed', false) ?
 				<Choice
 					type='checkbox'
 					name='enabled'
 					label={label}
 					onChange={(name, value) => {
-						const button = this.state.button;
-						button.enabled = button.enabled ? false : true;
-						this.setState({ button }, this.props.optionsUpdated('button', button));
+						const enabled = this.props.button.enabled ? false : true;
+						this.updateButton('enabled', enabled);
 					}}
 					checked={enabled}
 					value={enabled}
 				/> : <></>}
-	      <AnimateHeight
-	        duration={500}
-	        height={enabled ? 'auto' : 0}
-	      >
+				<AnimateHeight
+					duration={500}
+					height={enabled ? 'auto' : 0}
+				>
 					<TextField
 						name='text'
 						label='Button Text'
@@ -95,14 +92,9 @@ class ButtonEdit extends Component {
 						placeholder='Enter Button Text'
 						value={textValue}
 						onChange={(e) => {
-							const button = this.state.button;
 							const value = e.currentTarget.value;
 							button.text = value;
-							this.setState({ button });
-						}}
-						onBlur={() => {
-							const button = this.state.button;
-							this.props.optionsUpdated('buttton', button);
+							this.updateButton('text', value);
 						}}
 					/>
 					<ColorPicker
@@ -110,9 +102,7 @@ class ButtonEdit extends Component {
 						fixedLabel={true}
 						label='Button Background Color'
 						onAccept={(name, value) => {
-							const button = this.state.button;
-							button.bgColor = value;
-							this.setState({ button }, this.props.optionsUpdated('button', button));
+							this.updateButton('bgColor', value);
 						}}
 						value={bgColor}
 						modalID='colorPickerBgColor'
@@ -126,15 +116,9 @@ class ButtonEdit extends Component {
 						name='width'
 						value={width}
 						onChange={(e) => {
-					    e.preventDefault();
-					    const value = parseInt(_v.formatNumber(e.target.value));
-							const button = this.state.button;
-							button.width = value;
-							this.setState({ button });
-						}}
-						onBlur={() => {
-							const button = this.state.button;
-							this.props.optionsUpdated('button', button);
+							e.preventDefault();
+							const value = parseInt(_v.formatNumber(e.target.value));
+							this.updateButton('width', value);
 						}}
 						fixedLabel={true}
 						label='Button Width'
@@ -142,61 +126,58 @@ class ButtonEdit extends Component {
 						inputMode='numeric'
 						maxLength={3}
 					/>
-          <Dropdown
+					<Dropdown
 						label='Button Font Size'
 						fixedLabel={true}
-            name='fontSize'
-            defaultValue={parseInt(fontSize)}
-            onChange={(name, value) => {
-							const button = this.state.button;
-							button.fontSize = value;
-							this.setState({ button }, this.props.optionsUpdated('button', button));
+						name='fontSize'
+						defaultValue={parseInt(fontSize)}
+						onChange={(name, value) => {
+							this.updateButton('fontSize', value);
 						}}
-            options={types.fontSizeOptions(10, 28)}
+						options={types.fontSizeOptions(10, 28)}
 						portalID={`button-fontSize-dropdown-portal`}
 						portal={true}
-					  contentWidth={400}
+						contentWidth={400}
 						portalLeftOffset={1}
 						rectXY={false}
 					/>
 					<div className='input-group'>
 						<label className='label'>Button Roundness</label>
-					  <div className='scale'>
-					    <GBLink onClick={() => this.setRadius(minRadius)}><span className='icon icon-square'></span></GBLink>
-					    <input
-					      name="borderRadius"
-					      type="range"
-					      onChange={(e) => {
-							    const borderRadius = parseInt(e.target.value)
-									const button = this.state.button;
-									button.borderRadius = borderRadius;
-									this.setState({ button, borderRadius }, this.props.optionsUpdated('button', button));
+						<div className='scale'>
+							<GBLink onClick={() => this.setRadius(minRadius)}><span className='icon icon-square'></span></GBLink>
+							<input
+								name="borderRadius"
+								type="range"
+								onChange={(e) => {
+									const borderRadius = parseInt(e.target.value)
+									this.setRadius(borderRadius);
 								}}
-					      min={minRadius}
-					      max={maxRadius}
-					      step="0"
-					      value={borderRadius}
-					    />
-					    <GBLink onClick={() => this.setRadius(maxRadius)}><span className='icon icon-circle'></span></GBLink>
-					  </div>
+								min={minRadius}
+								max={maxRadius}
+								step="0"
+								value={borderRadius}
+							/>
+							<GBLink onClick={() => this.setRadius(maxRadius)}><span className='icon icon-circle'></span></GBLink>
+						</div>
 					</div>
 					<div className='input-group'>
 						<label className='label'>Button Preview</label>
 						<div style={{ marginTop: 10 }} className='flexCenter'>
-							<ModalLink style={style} customColor={util.getValue(button, 'bgColor', null)} solidColor={type === 'button' ? true : false} allowCustom={true} className={`${type}`} id={'amountsList'}>
-								{util.getValue(button, 'text', 'Button Text')}
-							</ModalLink>
+							<Button
+								modalID={modalID}
+								button={button}
+							/>
 						</div>
 					</div>
-	      </AnimateHeight>
-      </>
-    )
-  }
+				</AnimateHeight>
+			</>
+		)
+	}
 }
 
 ButtonEdit.defaultProps = {
 	minRadius: 0,
-	maxRadius: 50,
+	maxRadius: 20,
 	label: 'Enabled Button'
 }
 
@@ -204,7 +185,7 @@ function mapStateToProps(state, props) {
 
 	const primaryColor = util.getValue(state.custom, 'primaryColor');
 
-  return {
+	return {
 		primaryColor
 	}
 }

@@ -209,7 +209,7 @@ class GBXClass extends React.Component {
 		}
 	}
 
-	saveLayout(reset = false) {
+	saveLayout(reset = false, isSending = true) {
 		// Need to handle creating new articles
 		const data = this.getData(reset);
 		const id = util.getValue(this.props.article, 'ID', null);
@@ -222,7 +222,8 @@ class GBXClass extends React.Component {
 				method: id ? 'patch' : 'post',
 				callback: (res, err) => {
 					if (this.props.save) this.props.save(id, data, this.state.blocks, res, err);
-				}
+				},
+				isSending
 			});
 		} else {
 			if (this.props.save) {
@@ -250,9 +251,11 @@ class GBXClass extends React.Component {
 		return data;
 	}
 
-	updateData(obj = {}) {
+	updateData(obj = {}, save = false, isSending) {
 		const data = { ...this.state.data, ...obj };
-		console.log('execute', data);
+		this.setState({ data }, () => {
+			if (save) this.saveLayout(false, isSending);
+		});
 	}
 
 	addBlock(block) {

@@ -1,33 +1,28 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { PureComponent } from 'react';
 import {
-  util,
+	util,
 	ModalLink,
 	GBLink
 } from '../../';
 
-class Button extends Component {
+export default class Button extends PureComponent {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-			button: this.props.button
-    };
-  }
+	constructor(props) {
+		super(props);
+		this.state = {
+		};
+	}
 
 	componentDidMount() {
 	}
 
-  render() {
+	render() {
 
 		const {
 			modalID,
-			onClick
-		} = this.props;
-
-		const {
+			onClick,
 			button
-		} = this.state;
+		} = this.props;
 
 		const type = util.getValue(button, 'type', 'button');
 		const fontSize = util.getValue(button, 'fontSize', 16);
@@ -38,7 +33,7 @@ class Button extends Component {
 		style.width = util.getValue(button, 'width');
 		style.padding = `${paddingTopBottom}px 25px`;
 
-    return (
+		return (
 			<>
 			{modalID ?
 				<ModalLink style={style} customColor={util.getValue(button, 'bgColor', null)} solidColor={type === 'button' ? true : false} allowCustom={true} className={`${type}`} id={modalID}>
@@ -50,21 +45,6 @@ class Button extends Component {
 				</GBLink>
 			}
 			</>
-    )
-  }
-}
-
-Button.defaultProps = {
-}
-
-function mapStateToProps(state, props) {
-
-	const primaryColor = util.getValue(state.custom, 'primaryColor');
-
-  return {
-		primaryColor
+		)
 	}
 }
-
-export default connect(mapStateToProps, {
-})(Button);

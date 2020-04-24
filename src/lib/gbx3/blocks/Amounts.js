@@ -23,11 +23,12 @@ class Amounts extends Component {
 		super(props);
 		this.getAmounts = this.getAmounts.bind(this);
 		this.edit = this.edit.bind(this);
+		this.amountsListUpdated = this.amountsListUpdated.bind(this);
 		this.optionsUpdated = this.optionsUpdated.bind(this);
-		this.closeModalCallback = this.closeModalCallback.bind(this);
-		this.closeModalButtons = this.closeModalButtons.bind(this);
 		this.renderAmountsList = this.renderAmountsList.bind(this);
-		this.closeModalAmountsListCallback = this.closeModalAmountsListCallback.bind(this);
+		this.closeModalAmountsList = this.closeModalAmountsList.bind(this);
+		this.closeModalAmountsEdit = this.closeModalAmountsEdit.bind(this);
+		this.validateAmountsBeforeSave = this.validateAmountsBeforeSave.bind(this);
 
 		const button = {...util.getValue(props.globalOptions, 'button', {}), ...util.getValue(props.options, 'button', {}) };
 		const recurring = util.getValue(props.options, 'recurring', {});
@@ -41,7 +42,9 @@ class Amounts extends Component {
 			customIndex: 6,
 			defaultIndex: 6,
 			edit: false,
-			primaryColor: this.props.primaryColor
+			primaryColor: this.props.primaryColor,
+			validateAmounts: true,
+			amountField: 'amounts'
 		};
 		this.blockRef = null;
 		this.width = null;
@@ -62,27 +65,48 @@ class Amounts extends Component {
 		this.setState({ edit: true });
 	}
 
-	closeModalCallback() {
-		const button = { ...this.state.button };
-		this.props.updateBlock(this.props.name, null, { button });
-		this.setState({ edit: false });
-	}
+	closeModalAmountsEdit(type = 'save') {
+		if (type !== 'cancel') {
+			const button = { ...this.state.button };
+			const recurring = { ...this.state.recurring };
+			const amountsList = [ ...this.state.amountsList ];
+			const customIndex = this.state.customIndexDefault;
+			const defaultIndex = this.state.defaultIndexDefault;
+			this.props.updateData({
+				customIndex,
+				defaultIndex,
+				[this.state.amountField]: {
+					list: amountsList
+				}
+			}, true);
 
-	closeModalButtons(type = 'save') {
-		if (type === 'save') {
-			this.closeModalCallback();
+			this.props.updateBlock(this.props.name, null, {
+				button,
+				recurring,
+				amountsList,
+				customIndex,
+				defaultIndex
+			});
+			this.setState({ edit: false });
 		} else {
 			this.setState({
 				edit: false,
-				recurring: this.state.defaultRecurring,
-				button: this.state.defaultButton
+				button: { ...this.state.defaultButton },
+				recurring: { ...this.state.defaultRecurring },
+				amountsList: [ ...this.state.amountsListDefault ],
+				customIndex: this.state.customIndexDefault,
+				defaultIndex: this.state.defaultIndexDefault
 			});
 		}
-		this.props.toggleModal(this.props.modalID, false);
+		this.props.toggleModal(this.props.modalID, false)
 	}
 
-	closeModalAmountsListCallback() {
-		console.log('execute closeModalAmountsListCallback');
+	validateAmountsBeforeSave(validateAmounts, callback) {
+		this.setState({ validateAmounts }, callback)
+	}
+
+	closeModalAmountsList() {
+		console.log('execute closeModalAmountsList');
 	}
 
 	remove() {
@@ -91,7 +115,7 @@ class Amounts extends Component {
 
 	getAmounts() {
 		const article = this.props.article;
-		let amountField = '';
+		let amountField = this.state.amountField;
 		switch(this.props.kind) {
 			case 'sweepstakes':
 			case 'event': {
@@ -114,9 +138,13 @@ class Amounts extends Component {
 		const amountsObj = util.getValue(article, amountField, {});
 		const amountsList = util.getValue(amountsObj, 'list', []);
 		this.setState({
+			amountField,
 			amountsList,
+			amountsListDefault: amountsList,
 			customIndex: util.getValue(article, 'amountIndexCustom', 6),
-			defaultIndex: util.getValue(article, 'amountIndexDefault', 6)
+			customIndexDefault: util.getValue(article, 'amountIndexCustom', 6),
+			defaultIndex: util.getValue(article, 'amountIndexDefault', 6),
+			defaultIndexDefault: util.getValue(article, 'amountIndexDefault', 6)
 		});
 	}
 
@@ -143,7 +171,7 @@ class Amounts extends Component {
 				return (
 					<TicketsList
 						embed={false}
-						list={amountsList}
+						amountsList={amountsList}
 						customIndex={customIndex}
 						defaultIndex={defaultIndex}
 						width={this.width}
@@ -152,7 +180,7 @@ class Amounts extends Component {
 						color={primaryColor}
 						kind={this.props.kind}
 						buttonEnabled={util.getValue(button, 'enabled', false)}
-						article={this.props.article}
+						article={article}
 					/>
 				)
 			}
@@ -163,7 +191,7 @@ class Amounts extends Component {
 				return (
 					<AmountsList
 						embed={embed}
-						list={amountsList}
+						amountsList={amountsList}
 						customIndex={customIndex}
 						defaultIndex={defaultIndex}
 						width={this.width}
@@ -180,8 +208,12 @@ class Amounts extends Component {
 
 	}
 
+	amountsListUpdated(amountsList) {
+		this.setState({ amountsList });
+	}
+
 	optionsUpdated(name, obj) {
-		this.setState({ [name]: obj });
+		this.setState({ [name]: { ...obj } });
 	}
 
 	render() {
@@ -211,8 +243,14 @@ class Amounts extends Component {
 					removeOnClick={this.remove}
 				/>
 				<ModalRoute
-					optsProps={{ closeCallback: this.closeModalCallback }}
 					id={modalID}
+					className='gbx3amountsEdit'
+					optsProps={{ closeCallback: this.closeModalAmountsEdit }}
+					effect='3DFlipVert' style={{ width: '60%' }}
+					draggable={true}
+					draggableTitle={`Editing Amounts`}
+					closeCallback={this.closeModalAmountsEdit}
+					disallowBgClose={true}
 					component={() =>
 						<div className='modalWrapper'>
 							<Tabs
@@ -230,6 +268,9 @@ class Amounts extends Component {
 											<AmountsEdit
 												article={article}
 												amountsList={amountsList}
+												kind={kind}
+												modalID={modalID}
+												amountsListUpdated={this.amountsListUpdated}
 											/>
 										</div>
 									</div>
@@ -274,16 +315,11 @@ class Amounts extends Component {
 								</Tab> : <></>}
 							</Tabs>
 							<div style={{ marginBottom: 0 }} className='button-group center'>
-								<GBLink className='link' onClick={() => this.closeModalButtons('cancel')}>Cancel</GBLink>
-								<GBLink className='button' onClick={this.closeModalButtons}>Save</GBLink>
+								<GBLink className='link' onClick={() => this.closeModalAmountsEdit('cancel')}>Cancel</GBLink>
+								<GBLink className='button' onClick={this.closeModalAmountsEdit}>Save</GBLink>
 							</div>
 						</div>
 					}
-					effect='3DFlipVert' style={{ width: '60%' }}
-					draggable={true}
-					draggableTitle={`Editing Amounts`}
-					closeCallback={this.closeModalCallback}
-					disallowBgClose={true}
 				/>
 				{util.getValue(button, 'enabled', false) ?
 					<>
@@ -313,7 +349,7 @@ class Amounts extends Component {
 							}
 							effect='3DFlipVert' style={{ width: '60%' }}
 							draggable={false}
-							closeCallback={this.closeModalAmountsListCallback}
+							closeCallback={this.closeModalAmountsList}
 							disallowBgClose={false}
 						/>
 						<Button

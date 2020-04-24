@@ -1,0 +1,31 @@
+@import 'variables.scss';
+
+.gbx3amountsEdit {
+
+	.formSection {
+	}
+
+	.amountsEditRow {
+		width: 100%;
+		padding: 10px;
+		margin: 15px 0;
+		border-left: 2px solid $mainColor;
+		background: $white;
+
+		.input-group {
+			padding: 0;
+			margin: 0;
+		}
+	}
+
+	.amountsEditRow.notOnForm {
+		border-left: 2px solid $med-blue-gray;
+	}
+
+	.enableField {
+		.icon {
+			font-size: 1.5em;
+		}
+	}
+
+}

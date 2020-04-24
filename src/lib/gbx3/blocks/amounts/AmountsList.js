@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-  util,
+	util,
 	_v,
 	ModalLink,
 	ModalRoute,
@@ -15,8 +15,8 @@ import '../../../styles/gbx3amounts.scss';
 
 class AmountsList extends Component {
 
-  constructor(props) {
-    super(props);
+	constructor(props) {
+		super(props);
 		this.renderAmounts = this.renderAmounts.bind(this);
 		this.onChangeAmountRadio = this.onChangeAmountRadio.bind(this);
 		this.onChangeEnteredAmount = this.onChangeEnteredAmount.bind(this);
@@ -27,16 +27,16 @@ class AmountsList extends Component {
 		this.setCustomSelected = this.setCustomSelected.bind(this);
 		this.setRecurring = this.setRecurring.bind(this);
 		this.onCloseRecurringOptions = this.onCloseRecurringOptions.bind(this);
-    this.state = {
+		this.state = {
 			amountRadioSelected: null,
 			amountEntered: '',
 			recurring: {
 				interval: 'once',
 				paymentMax: ''
 			}
-    };
+		};
 		this.amountInputRef = React.createRef();
-  }
+	}
 
 	componentDidMount() {
 		this.setDefaultIDs();
@@ -98,12 +98,14 @@ class AmountsList extends Component {
 
 	setDefaultIDs() {
 		const {
-			list
+			amountsList,
+			customIndex,
+			defaultIndex
 		} = this.props;
-		if (!util.isEmpty(list)) {
-			const customAmount = util.getValue(this.props.list, this.props.customIndex, {});
+		if (!util.isEmpty(amountsList)) {
+			const customAmount = util.getValue(amountsList, customIndex, {});
 			const customID = util.getValue(customAmount, 'ID', null);
-			const defaultAmount = util.getValue(this.props.list, this.props.defaultIndex, {});
+			const defaultAmount = util.getValue(amountsList, defaultIndex, {});
 			const defaultID = util.getValue(defaultAmount, 'ID', null);
 			this.setState({ customID, defaultID });
 		}
@@ -124,12 +126,12 @@ class AmountsList extends Component {
 
 	onChangeAmountRadio(name, value) {
 		const {
-			list
+			amountsList
 		} = this.props;
-		if (!util.isEmpty(list)) {
-			const index = this.props.list.findIndex(x => x.ID === value);
+		if (!util.isEmpty(amountsList)) {
+			const index = amountsList.findIndex(x => x.ID === value);
 			if (index !== -1) {
-				const obj = util.getValue(list, index, {});
+				const obj = util.getValue(amountsList, index, {});
 				const ID = util.getValue(obj, 'ID', null);
 				const price = util.getValue(obj, 'price', 0);
 				const customSelected = this.setCustomSelected(ID);
@@ -163,8 +165,7 @@ class AmountsList extends Component {
 
 	renderAmounts() {
 		const {
-			list,
-			allowRecurring,
+			amountsList,
 			buttonEnabled
 		} = this.props;
 
@@ -179,8 +180,8 @@ class AmountsList extends Component {
 		let amountEntered = this.state.amountEntered;
 		let length = 0;
 
-		if (!util.isEmpty(list)) {
-			Object.entries(list).forEach(([key, value]) => {
+		if (!util.isEmpty(amountsList)) {
+			Object.entries(amountsList).forEach(([key, value]) => {
 				const isCustom = customID === value.ID ? true : false;
 				const isDefault = defaultID === value.ID ? true : false;
 				if (value.enabled) {
@@ -264,7 +265,7 @@ class AmountsList extends Component {
 		return style;
 	}
 
-  render() {
+	render() {
 
 		const {
 			embed,
@@ -273,20 +274,20 @@ class AmountsList extends Component {
 
 		const height = embed && !buttonEnabled ? `${this.props.height}px` : 'auto';
 
-    return (
+		return (
 			<div className={`${embed ? 'embed' : ''}`}>
-	      <div style={{ height: height }} className='amountsSection'>
+				<div style={{ height: height }} className='amountsSection'>
 					{this.renderAmounts()}
-	      </div>
+				</div>
 			</div>
-    )
-  }
+		)
+	}
 }
 
 function mapStateToProps(state, props) {
 
-  return {
-  }
+	return {
+	}
 }
 
 export default connect(mapStateToProps, {
