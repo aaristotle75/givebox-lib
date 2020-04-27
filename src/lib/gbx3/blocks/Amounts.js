@@ -24,6 +24,8 @@ class Amounts extends Component {
 		this.getAmounts = this.getAmounts.bind(this);
 		this.edit = this.edit.bind(this);
 		this.amountsListUpdated = this.amountsListUpdated.bind(this);
+		this.customUpdated = this.customUpdated.bind(this);
+		this.defaultUpdated = this.defaultUpdated.bind(this);
 		this.optionsUpdated = this.optionsUpdated.bind(this);
 		this.renderAmountsList = this.renderAmountsList.bind(this);
 		this.closeModalAmountsList = this.closeModalAmountsList.bind(this);
@@ -70,11 +72,11 @@ class Amounts extends Component {
 			const button = { ...this.state.button };
 			const recurring = { ...this.state.recurring };
 			const amountsList = [ ...this.state.amountsList ];
-			const customIndex = this.state.customIndexDefault;
-			const defaultIndex = this.state.defaultIndexDefault;
+			const customIndex = this.state.customIndex;
+			const defaultIndex = this.state.defaultIndex;
 			this.props.updateData({
-				customIndex,
-				defaultIndex,
+				amountIndexCustom: customIndex,
+				amountIndexDefault: defaultIndex,
 				[this.state.amountField]: {
 					list: amountsList
 				}
@@ -95,7 +97,9 @@ class Amounts extends Component {
 				recurring: { ...this.state.defaultRecurring },
 				amountsList: [ ...this.state.amountsListDefault ],
 				customIndex: this.state.customIndexDefault,
-				defaultIndex: this.state.defaultIndexDefault
+				customID: this.state.customIDDefault,
+				defaultIndex: this.state.defaultIndexDefault,
+				defaultID: this.state.defaultIDDefault
 			});
 		}
 		this.props.toggleModal(this.props.modalID, false)
@@ -114,22 +118,26 @@ class Amounts extends Component {
 	}
 
 	getAmounts() {
-		const article = this.props.article;
+		const {
+			article,
+			kind
+		} = this.props;
+
 		let amountField = this.state.amountField;
-		switch(this.props.kind) {
-			case 'sweepstakes':
+		switch(kind) {
+			case 'sweepstake':
 			case 'event': {
 				amountField = 'tickets';
 				break;
 			}
 
-			case 'memberships': {
+			case 'membership': {
 				amountField = 'subscriptions';
 				break;
 			}
 
-			case 'fundraisers':
-			case 'invoices':
+			case 'fundraiser':
+			case 'invoice':
 			default: {
 				amountField = 'amounts';
 				break;
@@ -137,14 +145,38 @@ class Amounts extends Component {
 		}
 		const amountsObj = util.getValue(article, amountField, {});
 		const amountsList = util.getValue(amountsObj, 'list', []);
+
+		let customIndex = null;
+		let defaultIndex = null;
+
+		switch (kind) {
+			case 'fundraiser':
+			case 'invoice': {
+				customIndex = util.getValue(article, 'amountIndexCustom', 6);
+				defaultIndex = util.getValue(article, 'amountIndexDefault', 6);
+				break;
+			}
+
+			// no default
+		}
+
+		const customAmount = util.getValue(amountsList, customIndex, {});
+		const customID = util.getValue(customAmount, 'ID', null);
+		const defaultAmount = util.getValue(amountsList, defaultIndex, {});
+		const defaultID = util.getValue(defaultAmount, 'ID', null);
+
 		this.setState({
 			amountField,
 			amountsList,
+			customIndex,
+			customID,
+			defaultIndex,
+			defaultID,
 			amountsListDefault: amountsList,
-			customIndex: util.getValue(article, 'amountIndexCustom', 6),
-			customIndexDefault: util.getValue(article, 'amountIndexCustom', 6),
-			defaultIndex: util.getValue(article, 'amountIndexDefault', 6),
-			defaultIndexDefault: util.getValue(article, 'amountIndexDefault', 6)
+			customIndexDefault: customIndex,
+			customIDDefault: customID,
+			defaultIndexDefault: defaultIndex,
+			defaultIDDefault: defaultID
 		});
 	}
 
@@ -158,7 +190,9 @@ class Amounts extends Component {
 		const {
 			amountsList,
 			customIndex,
+			customID,
 			defaultIndex,
+			defaultID,
 			primaryColor,
 			button,
 			recurring
@@ -167,7 +201,7 @@ class Amounts extends Component {
 		switch (kind) {
 			case 'event':
 			case 'membership':
-			case 'sweepstakes': {
+			case 'sweepstake': {
 				return (
 					<TicketsList
 						embed={false}
@@ -186,14 +220,16 @@ class Amounts extends Component {
 			}
 
 			case 'fundraiser':
-			case 'invoices':
+			case 'invoice':
 			default: {
 				return (
 					<AmountsList
 						embed={embed}
 						amountsList={amountsList}
 						customIndex={customIndex}
+						customID={customID}
 						defaultIndex={defaultIndex}
+						defaultID={defaultID}
 						width={this.width}
 						height={this.height}
 						amountsCallback={this.props.amountsCallback}
@@ -208,8 +244,36 @@ class Amounts extends Component {
 
 	}
 
-	amountsListUpdated(amountsList) {
+	amountsListUpdated(amounts, sort = false, config = {}) {
+		const amountsList = amounts;
+		if (sort) {
+			amountsList.forEach((value, key) => {
+				const customField = config.hasCustomField && value.ID === this.state.customID ? true : false;
+				const defaultField = config.hasDefaultField && value.ID === this.state.defaultID ? true : false;
+				if (customField) this.customUpdated(key, value.ID);
+				if (defaultField) this.defaultUpdated(key, value.ID);
+				amountsList[key].orderBy = key;
+			});
+		}
 		this.setState({ amountsList });
+	}
+
+	customUpdated(index, ID) {
+		const customIndex = parseInt(index);
+		const customID = parseInt(ID);
+		this.setState({
+			customIndex,
+			customID
+		});
+	}
+
+	defaultUpdated(index, ID) {
+		const defaultIndex = parseInt(index);
+		const defaultID = parseInt(ID);
+		this.setState({
+			defaultIndex,
+			defaultID
+		});
 	}
 
 	optionsUpdated(name, obj) {
@@ -229,7 +293,11 @@ class Amounts extends Component {
 			edit,
 			amountsList,
 			button,
-			recurring
+			recurring,
+			customIndex,
+			customID,
+			defaultIndex,
+			defaultID
 		} = this.state;
 
 		if (util.isEmpty(amountsList)) return <></>
@@ -271,6 +339,12 @@ class Amounts extends Component {
 												kind={kind}
 												modalID={modalID}
 												amountsListUpdated={this.amountsListUpdated}
+												customIndex={customIndex}
+												customID={customID}
+												customUpdated={this.customUpdated}
+												defaultIndex={defaultIndex}
+												defaultID={defaultID}
+												defaultUpdated={this.defaultUpdated}
 											/>
 										</div>
 									</div>

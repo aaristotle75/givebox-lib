@@ -22,7 +22,6 @@ class AmountsList extends Component {
 		this.onChangeEnteredAmount = this.onChangeEnteredAmount.bind(this);
 		this.onBlurEnteredAmount = this.onBlurEnteredAmount.bind(this);
 		this.handleAmountChanges = this.handleAmountChanges.bind(this);
-		this.setDefaultIDs = this.setDefaultIDs.bind(this);
 		this.setAmounts = this.setAmounts.bind(this);
 		this.setCustomSelected = this.setCustomSelected.bind(this);
 		this.setRecurring = this.setRecurring.bind(this);
@@ -39,7 +38,6 @@ class AmountsList extends Component {
 	}
 
 	componentDidMount() {
-		this.setDefaultIDs();
 	}
 
 	onCloseRecurringOptions(modalID) {
@@ -96,25 +94,10 @@ class AmountsList extends Component {
 		this.setState({ recurring });
 	}
 
-	setDefaultIDs() {
-		const {
-			amountsList,
-			customIndex,
-			defaultIndex
-		} = this.props;
-		if (!util.isEmpty(amountsList)) {
-			const customAmount = util.getValue(amountsList, customIndex, {});
-			const customID = util.getValue(customAmount, 'ID', null);
-			const defaultAmount = util.getValue(amountsList, defaultIndex, {});
-			const defaultID = util.getValue(defaultAmount, 'ID', null);
-			this.setState({ customID, defaultID });
-		}
-	}
-
 	setCustomSelected(ID) {
 		const amountInputRef = this.amountInputRef.current;
 		if (amountInputRef) amountInputRef.focus();
-		const customSelected = parseInt(this.state.customID) === parseInt(ID) ? true : false;
+		const customSelected = parseInt(this.props.customID) === parseInt(ID) ? true : false;
 		return customSelected;
 	}
 
@@ -166,13 +149,10 @@ class AmountsList extends Component {
 	renderAmounts() {
 		const {
 			amountsList,
-			buttonEnabled
-		} = this.props;
-
-		const {
+			buttonEnabled,
 			customID,
 			defaultID
-		} = this.state;
+		} = this.props;
 
 		const items = [];
 
@@ -184,6 +164,7 @@ class AmountsList extends Component {
 			Object.entries(amountsList).forEach(([key, value]) => {
 				const isCustom = customID === value.ID ? true : false;
 				const isDefault = defaultID === value.ID ? true : false;
+				
 				if (value.enabled) {
 					length++;
 
@@ -210,7 +191,7 @@ class AmountsList extends Component {
 									value={value.ID}
 									onChange={this.onChangeAmountRadio}
 									type='radio'
-									label={<span>{!isCustom ? <span className='amountRadioPrice'>{util.money(value.price/100)}{`${value.name ? ' ' : ''}`}</span> : <></>}{value.name}</span>}
+									label={<span>{!isCustom ? <span className='amountRadioPrice'>{util.money(value.price/100)}{`${value.name ? ' ' : ''}`}</span> : <></>}{isCustom && !value.name ? 'Enter any amount' : value.name}</span>}
 									checked={amountRadioSelected}
 								/>
 							</div>

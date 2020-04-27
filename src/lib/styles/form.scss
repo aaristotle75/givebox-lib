@@ -367,7 +367,7 @@ label.active {
 	border-radius: 50px;
 	position: absolute;
 	top: 3px;
-	background: $primary;
+	background: $mainColor;
 	@include box-shadow(inset 0px 0px 10px rgba(0,0,0,0.3));
 	text-shadow: 0px;
 	left: 3px;
