@@ -7,7 +7,9 @@ import {
 	toggleModal,
 	Collapse,
 	Tabs,
-	Tab
+	Tab,
+	types,
+	sendResource
 } from '../../';
 import AmountsEdit from './amounts/AmountsEdit';
 import AmountsList from './amounts/AmountsList';
@@ -15,6 +17,7 @@ import TicketsList from './amounts/TicketsList';
 import Button from './Button';
 import ButtonEdit from './ButtonEdit';
 import RecurringEdit from './amounts/RecurringEdit';
+import { amountFieldsConfig } from './amounts/amountFieldsConfig';
 import { BlockOption } from './Block';
 
 class Amounts extends Component {
@@ -45,8 +48,7 @@ class Amounts extends Component {
 			defaultIndex: 6,
 			edit: false,
 			primaryColor: this.props.primaryColor,
-			validateAmounts: true,
-			amountField: 'amounts'
+			validateAmounts: true
 		};
 		this.blockRef = null;
 		this.width = null;
@@ -77,7 +79,7 @@ class Amounts extends Component {
 			this.props.updateData({
 				amountIndexCustom: customIndex,
 				amountIndexDefault: defaultIndex,
-				[this.state.amountField]: {
+				[types.kind(this.props.kind).amountField]: {
 					list: amountsList
 				}
 			}, true);
@@ -123,27 +125,7 @@ class Amounts extends Component {
 			kind
 		} = this.props;
 
-		let amountField = this.state.amountField;
-		switch(kind) {
-			case 'sweepstake':
-			case 'event': {
-				amountField = 'tickets';
-				break;
-			}
-
-			case 'membership': {
-				amountField = 'subscriptions';
-				break;
-			}
-
-			case 'fundraiser':
-			case 'invoice':
-			default: {
-				amountField = 'amounts';
-				break;
-			}
-		}
-		const amountsObj = util.getValue(article, amountField, {});
+		const amountsObj = util.getValue(article, types.kind(kind).amountField, {});
 		const amountsList = util.getValue(amountsObj, 'list', []);
 
 		let customIndex = null;
@@ -166,7 +148,6 @@ class Amounts extends Component {
 		const defaultID = util.getValue(defaultAmount, 'ID', null);
 
 		this.setState({
-			amountField,
 			amountsList,
 			customIndex,
 			customID,
@@ -244,7 +225,8 @@ class Amounts extends Component {
 
 	}
 
-	amountsListUpdated(amounts, sort = false, config = {}) {
+	amountsListUpdated(amounts, sort = false) {
+		const config = util.getValue(amountFieldsConfig, this.props.kind, {});
 		const amountsList = amounts;
 		if (sort) {
 			amountsList.forEach((value, key) => {
@@ -312,9 +294,9 @@ class Amounts extends Component {
 				/>
 				<ModalRoute
 					id={modalID}
-					className='gbx3amountsEdit'
+					className='gbx3 gbx3amountsEdit'
 					optsProps={{ closeCallback: this.closeModalAmountsEdit }}
-					effect='3DFlipVert' style={{ width: '60%' }}
+					effect='3DFlipVert' style={{ width: '70%' }}
 					draggable={true}
 					draggableTitle={`Editing Amounts`}
 					closeCallback={this.closeModalAmountsEdit}
@@ -345,6 +327,7 @@ class Amounts extends Component {
 												defaultIndex={defaultIndex}
 												defaultID={defaultID}
 												defaultUpdated={this.defaultUpdated}
+												sendResource={this.props.sendResource}
 											/>
 										</div>
 									</div>
@@ -449,5 +432,6 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
-	toggleModal
+	toggleModal,
+	sendResource
 })(Amounts);

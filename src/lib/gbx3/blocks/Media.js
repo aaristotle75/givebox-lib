@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-  util,
+	util,
 	GBLink,
 	Image,
 	MediaLibrary,
@@ -20,8 +20,8 @@ import AnimateHeight from 'react-animate-height';
 
 class Media extends Component {
 
-  constructor(props) {
-    super(props);
+	constructor(props) {
+		super(props);
 		this.edit = this.edit.bind(this);
 		this.handleSaveCallback = this.handleSaveCallback.bind(this);
 		this.closeModalAndSave = this.closeModalAndSave.bind(this);
@@ -45,7 +45,7 @@ class Media extends Component {
 		const defaultContent = mediaType === 'image' ? util.imageUrlWithStyle(props.fieldValue, size) : {};
 		const content = util.getValue(this.props.info, mediaType, defaultContent);
 
-    this.state = {
+		this.state = {
 			content,
 			borderRadius,
 			mediaType,
@@ -60,8 +60,8 @@ class Media extends Component {
 				error: false,
 				validatedURL: util.getValue(content, 'validatedURL', null)
 			}
-    };
-  }
+		};
+	}
 
 	componentDidMount() {
 	}
@@ -149,13 +149,13 @@ class Media extends Component {
 		}, () => this.closeModalCallback('ok'));
 	}
 
-  handleBorderRadius(e) {
-    const borderRadius = parseInt(e.target.value)
-    this.setState({ borderRadius })
-  }
+	handleBorderRadius(e) {
+		const borderRadius = parseInt(e.target.value)
+		this.setState({ borderRadius })
+	}
 
 	setRadius(borderRadius) {
-    this.setState({ borderRadius })
+		this.setState({ borderRadius })
 	}
 
 	onChangeVideo(e) {
@@ -193,7 +193,7 @@ class Media extends Component {
 		)
 	}
 
-  render() {
+	render() {
 
 		const {
 			title,
@@ -225,15 +225,15 @@ class Media extends Component {
 			borderRadius: 0
 		}
 
-    return (
-      <div className='block'>
+		return (
+			<div className='block'>
 				<BlockOption
 					edit={edit}
 					noRemove={noRemove}
 					editOnClick={this.edit}
 					removeOnClick={this.remove}
 				/>
-        <ModalRoute
+				<ModalRoute
 					className='gbx3'
 					optsProps={{ closeCallback: this.onCloseUploadEditor, customOverlay: { zIndex: 10000000 } }}
 					id={modalID}
@@ -254,18 +254,18 @@ class Media extends Component {
 									>
 										<div className='formSectionContainer'>
 											<div className='formSection'>
-										    <MediaLibrary
+												<MediaLibrary
 													modalID={modalID}
 													image={mediaType === 'image' ? content : null}
 													preview={mediaType === 'image' ? content : null}
-										      handleSaveCallback={this.handleSaveCallback}
-										      handleSave={util.handleFile}
-										      library={library}
-										      closeModalAndCancel={this.closeModalCallback}
-										      closeModalAndSave={() => this.closeModalCallback('ok')}
+													handleSaveCallback={this.handleSaveCallback}
+													handleSave={util.handleFile}
+													library={library}
+													closeModalAndCancel={this.closeModalCallback}
+													closeModalAndSave={() => this.closeModalCallback('ok')}
 													showBtns={'hide'}
 													saveLabel={'close'}
-										    />
+												/>
 											</div>
 										</div>
 									</Collapse>
@@ -278,19 +278,19 @@ class Media extends Component {
 											<div className='formSection'>
 												<div className='input-group'>
 													<label className='label'>Image Roundness</label>
-								          <div className='scale'>
-								            <GBLink onClick={() => this.setRadius(minRadius)}><span className='icon icon-square'></span></GBLink>
-								            <input
-								              name="borderRadius"
-								              type="range"
-								              onChange={this.handleBorderRadius}
-								              min={minRadius}
-								              max={maxRadius}
-								              step="0"
-								              value={borderRadius}
-								            />
-								            <GBLink onClick={() => this.setRadius(maxRadius)}><span className='icon icon-circle'></span></GBLink>
-								          </div>
+													<div className='scale'>
+														<GBLink onClick={() => this.setRadius(minRadius)}><span className='icon icon-square'></span></GBLink>
+														<input
+															name="borderRadius"
+															type="range"
+															onChange={this.handleBorderRadius}
+															min={minRadius}
+															max={maxRadius}
+															step="0"
+															value={borderRadius}
+														/>
+														<GBLink onClick={() => this.setRadius(maxRadius)}><span className='icon icon-circle'></span></GBLink>
+													</div>
 												</div>
 											</div>
 										</div>
@@ -311,7 +311,7 @@ class Media extends Component {
 													name='video'
 													label='Embed Video URL'
 													fixedLabel={true}
-													placeholder='Enter Embed Vidoe URL'
+													placeholder='Enter Embed Video URL'
 													onChange={this.onChangeVideo}
 													value={util.getValue(video, 'URL')}
 												/>
@@ -326,9 +326,9 @@ class Media extends Component {
 													}}
 												/>
 												{util.getValue(video, 'validatedURL') ?
-		                    <div className='fieldContext'>
-		                      <span className='smallText flexStart centerItems'><span style={{ fontWeight: 300 }}>Video will not auto-play in preview.</span></span>
-		                    </div> : <></>}
+												<div className='fieldContext'>
+													<span className='smallText flexStart centerItems'><span style={{ fontWeight: 300 }}>Video will not auto-play in preview.</span></span>
+												</div> : <></>}
 												<AnimateHeight
 													duration={200}
 													height={util.getValue(video, 'validatedURL') ? 'auto' : 0}
@@ -362,9 +362,9 @@ class Media extends Component {
 				:
 					this.renderVideo()
 				}
-      </div>
-    )
-  }
+			</div>
+		)
+	}
 }
 
 Media.defaultProps = {
@@ -376,9 +376,9 @@ function mapStateToProps(state, props) {
 
 	const modalID = `mediaBlock-${props.name}`;
 
-  return {
+	return {
 		modalID
-  }
+	}
 }
 
 export default connect(mapStateToProps, {

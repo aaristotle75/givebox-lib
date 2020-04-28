@@ -3,17 +3,20 @@ import {
 	util,
 	GBLink,
 	TextField,
-	_v
+	_v,
+	types
 } from '../../../';
 import {SortableContainer, SortableElement, SortableHandle} from 'react-sortable-hoc';
 import '../../../styles/gbx3amountsEdit.scss';
 import { amountFieldsConfig } from './amountFieldsConfig';
+import AnimateHeight from 'react-animate-height';
+import CustomCKEditor4 from '../../../editor/CustomCKEditor4';
 const arrayMove = require('array-move');
 
 const DragHandle = SortableHandle(() => {
 	return (
 		<GBLink ripple={false} className='tooltip sortable right'>
-			<span className='tooltipTop'>Drag & drop to change the order.</span>
+			<span className='tooltipTop'><i />Drag & drop to change the order.</span>
 			<span className='icon icon-move'></span>
 		</GBLink>
 	)
@@ -49,7 +52,6 @@ export default class AmountsEdit extends Component {
 		this.priceField = this.priceField.bind(this);
 		this.nameField = this.nameField.bind(this);
 		this.descField = this.descField.bind(this);
-		this.defaultField = this.defaultField.bind(this);
 		this.getAmount = this.getAmount.bind(this);
 		this.deleteAmount = this.deleteAmount.bind(this);
 		this.addAmount = this.addAmount.bind(this);
@@ -69,9 +71,8 @@ export default class AmountsEdit extends Component {
 	}
 
 	onSortEnd = ({oldIndex, newIndex, collection}) => {
-		const config = util.getValue(amountFieldsConfig, this.props.kind, {});
 		const amountsList = [ ...this.props.amountsList ];
-		this.props.amountsListUpdated(arrayMove(amountsList, oldIndex, newIndex), true, config);
+		this.props.amountsListUpdated(arrayMove(amountsList, oldIndex, newIndex), true);
 	};
 
 
@@ -93,22 +94,49 @@ export default class AmountsEdit extends Component {
 	deleteAmount(ID) {
 		const amountsList = [ ...this.props.amountsList ];
 		const index = amountsList.findIndex(x => x.ID === ID);
-		console.log('execute deleteAmount', ID, index);
+		const amount = amountsList[index];
+		this.props.sendResource(types.kind(this.props.kind).api.amount, {
+			id: [amount[`${this.props.kind}ID`], amount.ID],
+			method: 'delete',
+			reload: false,
+			callback: (res, err) => {
+				amountsList.splice(index, 1);
+				this.props.amountsListUpdated(amountsList, true);
+			}
+		});
 	}
 
-	addAmount(ID) {
+	addAmount() {
 		const amountsList = [ ...this.props.amountsList ];
-		const index = amountsList.findIndex(x => x.ID === ID);
-		console.log('execute addAmount', ID, index);
+		const length = amountsList.length;
+		const amount = amountsList[length - 1];
+		this.props.sendResource(`${types.kind(this.props.kind).api.amount}s`, {
+			id: [amount[`${this.props.kind}ID`]],
+			method: 'post',
+			data: {
+				price: 0,
+				name: '',
+				description: '',
+				enabled: false,
+				max: null,
+				orderBy: length
+			},
+			reload: false,
+			callback: (res, err) => {
+				if (!err && !util.isEmpty(res)) {
+					amountsList.push(res);
+					this.props.amountsListUpdated(amountsList, true);
+				}
+			}
+		});
 	}
 
-	enabledField(ID) {
-		const config = util.getValue(amountFieldsConfig, this.props.kind, {});
+	enabledField(ID, fieldProps, config) {
 		const amount = this.getAmount(ID);
 		const isDefault = config.hasDefaultField && this.props.defaultID === ID ? true : false;
 		return (
 			<div className={`enableField ${isDefault ? 'tooltip' : ''}`}>
-				{isDefault ? <span className={`tooltipTop`}>To disable amount please change the default to a different amount.</span> : <></>}
+				{isDefault ? <span className={`tooltipTop`}><i />To disable amount please change the default to a different amount.</span> : <></>}
 				<GBLink
 					className={`${amount.enabled ? '' : 'link gray'}`}
 					onClick={() => {
@@ -143,7 +171,7 @@ export default class AmountsEdit extends Component {
 
 		return (
 			<TextField
-				className={`${amount.enabled ? '' : 'notOnForm'}`}
+				className={`${customField ? 'customField' : ''} ${amount.enabled ? '' : 'notOnForm'}`}
 				name={fieldName}
 				label={util.getValue(fieldProps, 'label')}
 				fixedLabel={true}
@@ -165,22 +193,93 @@ export default class AmountsEdit extends Component {
 		)
 	}
 
-	nameField() {
+	nameField(ID, fieldProps, config) {
+		const {
+			customID
+		} = this.props;
 
+		const amount = this.getAmount(ID);
+		const fieldName = `name${ID}`;
+		const customField = config.hasCustomField && customID === ID ? true : false;
+
+		return (
+			<TextField
+				className={`${customField ? 'customField' : ''} ${amount.enabled ? '' : 'notOnForm'}`}
+				name={fieldName}
+				label={util.getValue(fieldProps, 'label')}
+				fixedLabel={false}
+				placeholder={util.getValue(fieldProps, 'placeholder')}
+				onChange={(e) => {
+					const name = e.currentTarget.value;
+					this.updateAmounts(ID, { name });
+				}}
+				value={customField && !amount.name ? util.getValue(fieldProps, 'customFieldDefault', '') : amount.name}
+				count={true}
+				maxLength={60}
+			/>
+		)
 	}
 
-	descField() {
-
-	}
-
-	defaultField() {
-
+	descField(ID) {
+		const {
+			article
+		} = this.props;
+		const amount = this.getAmount(ID);
+		return (
+			<div className='longdescRow'>
+				<div style={{ width: '10%' }} className='column'>&nbsp;</div>
+				<div style={{ width: '85%' }} className='column descField'>
+					<GBLink
+						style={{ fontSize: 12 }}
+						onClick={() => {
+							const showDetails = amount.showDetails ? false : true;
+							this.updateAmounts(ID, { showDetails });
+						}}>
+						{amount.description ? 'Edit' : 'Add'} Long Description <span className={`icon icon-${amount.showDetails ? 'minus' : 'plus'}`}></span>
+					</GBLink>
+				</div>
+				<AnimateHeight
+					duration={200}
+					height={amount.showDetails ? 'auto' : 0}
+				>
+					<div className='showDetails'>
+						<CustomCKEditor4
+							orgID={util.getValue(article, 'orgID', null)}
+							articleID={util.getValue(article, 'articleID', null)}
+							content={amount.description}
+							onChange={(description) => {
+								this.updateAmounts(ID, { description });
+							}}
+							width={'100%'}
+							height={`300px`}
+							type='classic'
+							initCallback={(editor) => {
+								editor.focus();
+								const CKEDITOR = window.CKEDITOR;
+								const selection = editor.getSelection();
+								const getRanges = selection ? selection.getRanges() : [];
+								if (!util.isEmpty(getRanges)) {
+									const range = getRanges[0];
+									const pCon = range.startContainer.getAscendant('p',true);
+									const newRange = new CKEDITOR.dom.range(range.document);
+									newRange.moveToPosition(pCon, CKEDITOR.POSITION_AFTER_END);
+									newRange.select();
+								}
+							}}
+							contentCss='https://givebox.s3-us-west-1.amazonaws.com/public/css/gbx3contents.css'
+							removePlugins='image,elementspath'
+						/>
+					</div>
+				</AnimateHeight>
+			</div>
+		)
 	}
 
 	renderAmountsList() {
 		const items = [];
 		const {
-			amountsList
+			amountsList,
+			customID
 		} = this.props;
 
 		const config = util.getValue(amountFieldsConfig, this.props.kind, {});
@@ -191,6 +290,7 @@ export default class AmountsEdit extends Component {
 			Object.entries(amountsList).forEach(([key, value]) => {
 				numEnabled = value.enabled ? numEnabled + 1 : numEnabled;
 				const fieldItems = [];
+				const customField = customID === value.ID && config.hasCustomField ? true : false;
 				Object.entries(fields).forEach(([fieldKey, fieldProps]) => {
 					fieldItems.push(
 						<div key={fieldKey} className={`column ${util.getValue(fieldProps, 'className')}`} style={{ width: `${fieldProps.width}%` }}>
@@ -207,24 +307,24 @@ export default class AmountsEdit extends Component {
 					value.ID === this.props.defaultID ?
 						<span className='defaultAmount tooltip sortable right' style={{ fontSize: 12 }}>
 							Default
-							<span className='tooltipTop'>This is the default amount selected for the user.</span>
+							<span className='tooltipTop'><i />This is the default amount selected for the user.</span>
 						</span>
 					:
 						<GBLink className={`link ${!value.enabled ? 'sortable tooltip right' : ''}`} style={{ fontSize: 12 }} onClick={() => value.enabled ? this.props.defaultUpdated(key, value.ID) : console.error('Cannot set a disabled amount as the default')}>
 							Set Default
-							{!value.enabled ? <span className='tooltipTop'>Must be enabled to set as the default.</span> : <></>}
+							{!value.enabled ? <span className='tooltipTop'><i />Must be enabled to set as the default.</span> : <></>}
 						</GBLink>
 				: <></> ;
 
 				const deleteField = amountsList.length > 1 ?
-					<GBLink className={`link ${value.enabled ? 'sortable tooltip right' : ''}`} style={{ fontSize: 18 }} onClick={() => value.enabled ? console.error('Cannot delete an enabled amount.') : this.deleteAmount(value.ID)}>
+					<GBLink className={`link ${value.enabled || customField ? 'sortable tooltip right' : ''}`} style={{ fontSize: 18 }} onClick={() => value.enabled || customField ? console.error(`${customField ? 'Cannot delete custom field.' : 'Cannot delete an enabled amount.'}`) : this.deleteAmount(value.ID)}>
 						<span className='icon icon-x'></span>
-						{value.enabled ? <span style={{ left: '-20px' }} className='tooltipTop'>You must disable the amount before you can delete it.</span> : <></>}
+						{value.enabled || customField ? <span style={{ left: '-20px' }} className='tooltipTop'><i />{customField ? 'The custom amount field cannot be deleted.' : 'You must disable the amount before you can delete it.'}</span> : <></>}
 					</GBLink>
 				: <></> ;
 
 				fieldItems.push(
-					<div key={'rightButtonGroup'} className='column amountsRightSideButtonGroup' style={{ width: '20%' }}>
+					<div key={'rightButtonGroup'} className='column amountsRightSideButtonGroup' style={{ width: `${util.getValue(config.buttonGroup, 'width', 20)}%` }}>
 						{draggable}
 						{defaultField}
 						{deleteField}
@@ -233,7 +333,8 @@ export default class AmountsEdit extends Component {
 
 				items.push(
 					<div key={key} className={`amountsEditRow sortableListItem ${value.enabled ? '' : 'notOnForm'}`} disabled={util.getValue(config, 'disableSort', false)}>
-						{fieldItems}
+						<div className='fieldItems'>{fieldItems}</div>
+						{this.descField(value.ID)}
 					</div>
 				);
 			});
@@ -241,9 +342,18 @@ export default class AmountsEdit extends Component {
 
 		const rows =  <SortableList onSortStart={this.onSortStart} onSortMove={this.onSortMove} helperClass='sortableHelper' hideSortableGhost={true} useDragHandle={true} items={items} onSortEnd={this.onSortEnd} />;
 
+		const addAmount =
+			<div style={{ marginTop: '20px' }} className='flexCenter'>
+				<GBLink style={{ verticalAlign: 'middle' }} onClick={() => this.addAmount()}>
+					<span className='icon icon-plus-square'></span> New {types.kind(this.props.kind).amountDesc}
+				</GBLink>
+			</div>
+		;
+
 		return (
 			<div className='amountsEditList'>
 				{rows}
+				{numEnabled >= amountsList.length ? addAmount : <></>}
 			</div>
 		)
 	}

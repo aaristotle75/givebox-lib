@@ -4,21 +4,21 @@
 .gbx3 {
 
 	::-webkit-scrollbar {
-	    width: 6px;
+			width: 6px;
 	}
 
 	::-webkit-scrollbar-track {
-	  background-color: transparent;
+		background-color: transparent;
 	}
 
 	::-webkit-scrollbar-thumb {
-	  outline: 0;
-	  border-radius: 20px;
+		outline: 0;
+		border-radius: 20px;
 	}
 
 	/*----- Amount Form elements -----*/
 	.radio-group label.label {
-	   margin-left: 10px;
+		 margin-left: 10px;
 		width: 100%;
 	}
 
@@ -91,18 +91,18 @@
 	}
 
 	.input-group.dropdown-button .dropdown button {
-	   border: 1px solid transparent;
+		 border: 1px solid transparent;
 	}
 
 	.input-group.dropdown-button .dropdown .label {
-	  color: $dark;
-	  font-weight: 400;
+		color: $dark;
+		font-weight: 400;
 		font-size: 20px;
 	}
 
 	.input-group.dropdown-button .dropdown .icon {
-	  color: $dark;
-	  font-size: 20px;
+		color: $dark;
+		font-size: 20px;
 	}
 
 }
@@ -127,17 +127,17 @@
 	}
 
 	input::-webkit-input-placeholder {
-	  font-size: 22px;
-	  font-family: $font-family;
-	  color: $med-blue-gray;
+		font-size: 22px;
+		font-family: $font-family;
+		color: $med-blue-gray;
 	}
 	input::-moz-placeholder {
-	  font-size: 22px;
-	  color: $med-blue-gray;
+		font-size: 22px;
+		color: $med-blue-gray;
 	}
 	input::-ms-input-placeholder {
-	  font-size: 22px;
-	  color: $med-blue-gray;
+		font-size: 22px;
+		color: $med-blue-gray;
 	}
 
 	.dropdown button {
@@ -221,14 +221,32 @@
 		justify-content: flex-start;
 		width: 100%;
 		padding: 0px 0 0px 2%;
-		margin: 10px 0;
+		margin: 15px 0;
 		border-left: 4px solid $mainColor;
 		background: $white;
+		@include default-transition(.25s);
+	}
+
+	.amountRow:hover {
+		background: transparentize($mainColor, .95);
 	}
 
 	.amountDesc {
 		display: inline-block;
 		width: 83%;
+	}
+
+	.amountShowDetailsLink {
+		display: block;
+	}
+
+	.amountDetails {
+		display: block;
+		//@include box-shadow(1px 4px 5px 0px transparentize($med-blue-gray, .8));
+	}
+
+	.amountDetailsContainer {
+		padding: 10px;
 	}
 
 	.radio-group label.label {
@@ -282,7 +300,7 @@
 
 		.ticketDetails {
 			display: block;
-    	//@include box-shadow(1px 4px 5px 0px transparentize($med-blue-gray, .8));
+			//@include box-shadow(1px 4px 5px 0px transparentize($med-blue-gray, .8));
 		}
 
 		.ticketDetailsContainer {
@@ -311,9 +329,9 @@
 		}
 
 		.input-group.dropdown-quantity .dropdown .label {
-		  color: $dark;
+			color: $dark;
 			font-size: 16px;
-		  font-weight: 400;
+			font-weight: 400;
 		}
 
 		.input-group.dropdown-quantity .label.idle {
@@ -324,7 +342,7 @@
 			position: relative;
 			top: 0;
 			right: 0;
-		  font-size: 20px;
+			font-size: 20px;
 			margin-left: 10px;
 		}
 

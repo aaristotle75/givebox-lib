@@ -7,11 +7,13 @@ import {
 	ModalRoute,
 	toggleModal,
 	Choice,
-	TextField
+	TextField,
+	GBLink
 } from '../../../';
 import Recurring, { renderRecurringName } from './Recurring';
 import { amountInputStyle, amountInputMoneyStyle, amountInputHeights } from './amountsStyle';
 import '../../../styles/gbx3amounts.scss';
+import AnimateHeight from 'react-animate-height';
 
 class AmountsList extends Component {
 
@@ -26,18 +28,30 @@ class AmountsList extends Component {
 		this.setCustomSelected = this.setCustomSelected.bind(this);
 		this.setRecurring = this.setRecurring.bind(this);
 		this.onCloseRecurringOptions = this.onCloseRecurringOptions.bind(this);
+		this.toggleShowDetails = this.toggleShowDetails.bind(this);
 		this.state = {
 			amountRadioSelected: null,
 			amountEntered: '',
 			recurring: {
 				interval: 'once',
 				paymentMax: ''
-			}
+			},
+			showDetails: []
 		};
 		this.amountInputRef = React.createRef();
 	}
 
 	componentDidMount() {
+	}
+
+	toggleShowDetails(id) {
+		const showDetails = this.state.showDetails;
+		const index = showDetails.findIndex((el) => {
+			return el === id;
+		});
+		if (index === -1) showDetails.push(id);
+		else showDetails.splice(index, 1);
+		this.setState({ showDetails });
 	}
 
 	onCloseRecurringOptions(modalID) {
@@ -154,6 +168,10 @@ class AmountsList extends Component {
 			defaultID
 		} = this.props;
 
+		const {
+			showDetails
+		} = this.state;
+
 		const items = [];
 
 		let amountRadioSelected = this.state.amountRadioSelected;
@@ -164,7 +182,7 @@ class AmountsList extends Component {
 			Object.entries(amountsList).forEach(([key, value]) => {
 				const isCustom = customID === value.ID ? true : false;
 				const isDefault = defaultID === value.ID ? true : false;
-				
+
 				if (value.enabled) {
 					length++;
 
@@ -194,6 +212,15 @@ class AmountsList extends Component {
 									label={<span>{!isCustom ? <span className='amountRadioPrice'>{util.money(value.price/100)}{`${value.name ? ' ' : ''}`}</span> : <></>}{isCustom && !value.name ? 'Enter any amount' : value.name}</span>}
 									checked={amountRadioSelected}
 								/>
+								{value.description ? <GBLink style={{ fontSize: 12, margin: '5px 0 5px 10px' }} allowCustom={true} className='link amountShowDetailsLink' onClick={() => this.toggleShowDetails(value.ID)}>{showDetails.includes(value.ID) ? 'Less Info' : 'More Info'} <span className={`icon icon-${showDetails.includes(value.ID) ? 'minus' : 'plus'}`}></span></GBLink> : <></>}
+								<AnimateHeight
+									duration={200}
+									height={showDetails.includes(value.ID) ? 'auto' : 0}
+								>
+									<div className='amountDetails'>
+										<div className='amountDetailsContainer' dangerouslySetInnerHTML={{ __html: value.description }} />
+									</div>
+								</AnimateHeight>
 							</div>
 						</div>
 					);

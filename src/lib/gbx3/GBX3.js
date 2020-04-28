@@ -75,7 +75,7 @@ class GBXClass extends React.Component {
 			breakpoint: 'desktop',
 			success: false,
 			error: false,
-			editable: true,
+			editable: false,
 			showOutline: false,
 			collision: true,
 			collapse: false
@@ -106,6 +106,7 @@ class GBXClass extends React.Component {
 		if (color) {
 			const rgb = util.hexToRgb(color);
 			const color2 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .1)`;
+			const color3 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .5)`;
 			const styleEl = document.head.appendChild(document.createElement('style'));
 			styleEl.innerHTML = `
 				.radio:checked + label:after {
@@ -124,6 +125,10 @@ class GBXClass extends React.Component {
 				.modalContent.gbx3 .ticketAmountRow,
 				.modalContent.gbx3 .amountRow {
 					border-left: 4px solid ${color} !important;
+				}
+
+				.modalContent.gbx3 .amountRow:hover {
+					background: ${color3};
 				}
 
 				.gbx3 button.modalToTop:hover {

@@ -3,6 +3,41 @@
 
 .gbx3amountsEdit {
 
+	.column {
+		margin: 0 5px;
+	}
+
+	.fieldItems {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.longdescRow {
+		margin: 12px 0 0 0;
+		padding: 0;
+
+		.column { display: inline-block; }
+	}
+
+	.showDetails {
+		padding: 10px 10%;
+	}
+
+	.tooltipTop:not(.readOnly) {
+		top: -10px;
+	}
+
+	.readOnly.tooltip .tooltipTop {
+			color: $white;
+			background-color: $dark-blue-gray;
+	}
+
+	.readOnly.tooltip .tooltipTop i::after {
+		color: $white;
+		background-color: $dark-blue-gray;
+	}
+
 	.formSection {
 	}
 
@@ -14,16 +49,20 @@
 		opacity: 1;
 	}
 
-	.amountsEditRow.notOnForm {
+	.sortableListItem {
+		display: block;
+	}
+
+	.amountsEditRow.notOnForm:hover {
 		background: transparentize($med-blue-gray, .95);
 	}
 
 	.amountsEditRow {
 		width: 100%;
-		padding: 10px;
+		padding: 15px 5px 15px 0;
 		margin: 15px 0;
 		border-left: 2px solid $mainColor;
-		background: transparentize($mainColorLight, .95);
+		background: $white;
 		cursor: default;
 		@include default-transition(.25s);
 
@@ -47,7 +86,7 @@
 	}
 
 	.amountsEditRow:hover {
-		border-left: 2px solid $mainColorLight;
+		//border-left: 2px solid $mainColorLight;
 		background: transparentize($mainColorLight, .9);
 
 		.amountsRightSideButtonGroup {
@@ -75,6 +114,21 @@
 		button.link {
 			opacity: 0;
 			@include transition(opacity .5s);
+		}
+	}
+
+	.customField {
+		input::-webkit-input-placeholder {
+			color: $dark-blue-gray;
+			font-weight: 400;
+		}
+		input::-moz-placeholder {
+			color: $dark-blue-gray;
+			font-weight: 400;
+		}
+		input::-ms-input-placeholder {
+			color: $dark-blue-gray;
+			font-weight: 400;
 		}
 	}
 
