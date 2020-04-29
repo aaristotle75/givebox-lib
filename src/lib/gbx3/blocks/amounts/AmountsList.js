@@ -212,7 +212,7 @@ class AmountsList extends Component {
 									label={<span>{!isCustom ? <span className='amountRadioPrice'>{util.money(value.price/100)}{`${value.name ? ' ' : ''}`}</span> : <></>}{isCustom && !value.name ? 'Enter any amount' : value.name}</span>}
 									checked={amountRadioSelected}
 								/>
-								{value.description ? <GBLink style={{ fontSize: 12, margin: '5px 0 5px 10px' }} allowCustom={true} className='link amountShowDetailsLink' onClick={() => this.toggleShowDetails(value.ID)}>{showDetails.includes(value.ID) ? 'Less Info' : 'More Info'} <span className={`icon icon-${showDetails.includes(value.ID) ? 'minus' : 'plus'}`}></span></GBLink> : <></>}
+								{value.description && !this.props.embed ? <GBLink style={{ fontSize: 12, margin: '5px 0 5px 10px' }} allowCustom={true} className='link amountShowDetailsLink' onClick={() => this.toggleShowDetails(value.ID)}>{showDetails.includes(value.ID) ? 'Less Info' : 'More Info'} <span className={`icon icon-${showDetails.includes(value.ID) ? 'minus' : 'plus'}`}></span></GBLink> : <></>}
 								<AnimateHeight
 									duration={200}
 									height={showDetails.includes(value.ID) ? 'auto' : 0}
