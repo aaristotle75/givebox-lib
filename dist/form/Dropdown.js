@@ -4,6 +4,7 @@ import GBLink from '../common/GBLink';
 import Fade from '../common/Fade';
 import * as util from '../common/utility';
 import AnimateHeight from 'react-animate-height';
+import Portal from '../common/Portal';
 import has from 'has';
 
 class Dropdown extends Component {
@@ -23,9 +24,15 @@ class Dropdown extends Component {
       value: '',
       direction: '',
       status: 'idle',
-      buttonStyle: {}
+      buttonStyle: {
+        color: props.color || ''
+      },
+      contentStyle: {},
+      mounted: false
     };
     this.dropdownRef = React.createRef();
+    this.inputRef = React.createRef();
+    this.buttonRef = React.createRef();
     this.labelRef = React.createRef();
     this.selectedRef = React.createRef();
     this.iconRef = React.createRef();
@@ -47,6 +54,10 @@ class Dropdown extends Component {
         selected: init.primaryText
       });
     }
+
+    this.setState({
+      mounted: true
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -107,10 +118,33 @@ class Dropdown extends Component {
       errorMsg: ''
     });
     const ref = this.dropdownRef.current;
+    const buttonRef = this.buttonRef.current;
     const height = window.innerHeight;
     const rect = ref.getBoundingClientRect();
+    const rectXY = this.props.rectXY;
     let direction = '';
-    if (height - rect.top < 300) direction = 'top';
+
+    if (this.props.portalID) {
+      const buttonRect = buttonRef.getBoundingClientRect();
+      const contentWidth = this.props.contentWidth || 200;
+      const contentWidthStr = `${contentWidth}px`;
+      ref.style.position = 'fixed';
+      ref.style.width = contentWidthStr;
+      ref.style.minWidth = contentWidthStr;
+      const offsetBottom = height - buttonRect.bottom;
+
+      if (offsetBottom < 300) {
+        ref.style.bottom = `${offsetBottom}px`;
+      } else {
+        ref.style.top = `${rectXY ? buttonRect.y : buttonRect.top}px`;
+      }
+
+      const leftOffset = `${(rectXY ? buttonRect.x : buttonRect.width) - contentWidth / this.props.portalLeftOffset}px`;
+      ref.style.left = leftOffset;
+    } else {
+      if (height - rect.top < 300) direction = 'top';
+    }
+
     this.setState({
       direction,
       open: true,
@@ -258,7 +292,10 @@ class Dropdown extends Component {
       overlay,
       overlayDuration,
       fixedLabel,
-      readOnly
+      readOnly,
+      portalID,
+      portalRootEl,
+      portalClass
     } = this.props;
     const {
       open,
@@ -271,7 +308,27 @@ class Dropdown extends Component {
     const selectedValue = multi ? open ? multiCloseLabel : selectLabel : selected && (value || defaultValue) ? selected : selectLabel;
     const idleLabel = selectedValue === multiCloseLabel || selectedValue === selectLabel;
     const readOnlyText = this.props.readOnlyText || `${label} is not editable`;
+    const portalRoot = document.getElementById(portalRootEl);
+    const dropdownContent = React.createElement("div", {
+      ref: this.dropdownRef,
+      style: { ...contentStyle,
+        boxShadow: this.props.color ? `none` : '',
+        border: this.props.color && open ? `1px solid ${this.props.color}` : ''
+      },
+      className: `${open ? 'opened' : ''} dropdown-content ${this.props.direction || direction} ${this.props.color ? 'customColor' : ''}`
+    }, React.createElement(AnimateHeight, {
+      duration: 200,
+      height: open ? 'auto' : 0
+    }, React.createElement("div", {
+      className: "dropdown-content-inner"
+    }, this.listOptions())));
+    const dropdownPortal = React.createElement(Portal, {
+      id: portalID,
+      rootEl: portalRoot,
+      className: `dropdown ${portalClass}`
+    }, dropdownContent);
     return React.createElement("div", {
+      ref: this.inputRef,
       style: style,
       className: `input-group ${className || ''} ${readOnly ? 'readOnly tooltip' : ''} ${error ? 'error tooltip' : ''}`
     }, React.createElement(Fade, {
@@ -286,6 +343,7 @@ class Dropdown extends Component {
     }, label && !floatingLabel && React.createElement("label", null, React.createElement(GBLink, {
       onClick: open || readOnly ? this.closeMenu : this.openMenu
     }, label)), React.createElement("button", {
+      ref: this.buttonRef,
       style: buttonStyle,
       onMouseEnter: this.onMouseEnter,
       onMouseLeave: this.onMouseLeave,
@@ -297,19 +355,7 @@ class Dropdown extends Component {
     }, selectedValue), React.createElement("span", {
       ref: this.iconRef,
       className: `icon icon-${open ? multi ? iconMultiClose : iconOpened : iconClosed}`
-    })), React.createElement("div", {
-      ref: this.dropdownRef,
-      style: { ...contentStyle,
-        boxShadow: this.props.color ? `none` : '',
-        border: this.props.color && open ? `1px solid ${this.props.color}` : ''
-      },
-      className: `${open ? 'opened' : ''} dropdown-content ${this.props.direction || direction}`
-    }, React.createElement(AnimateHeight, {
-      duration: 200,
-      height: open ? 'auto' : 0
-    }, React.createElement("div", {
-      className: "dropdown-content-inner"
-    }, this.listOptions()))), label && floatingLabel && React.createElement("label", null, React.createElement(GBLink, {
+    })), portalID ? dropdownPortal : dropdownContent, label && floatingLabel && React.createElement("label", null, React.createElement(GBLink, {
       className: "link label",
       onClick: open || readOnly ? this.closeMenu : this.openMenu
     }, React.createElement("span", {
@@ -324,6 +370,11 @@ class Dropdown extends Component {
 }
 
 Dropdown.defaultProps = {
+  rectXY: true,
+  portalLeftOffset: 1.75,
+  portalClass: 'dropdown-portal',
+  portalRootEl: 'dropdown-root',
+  portalID: false,
   name: 'defaultSelect',
   multi: false,
   multiCloseLabel: 'Close Menu',

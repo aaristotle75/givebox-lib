@@ -881,7 +881,8 @@ class Form extends Component {
     const params = Object.assign({}, defaultParams, {
       className: '',
       type: 'richText',
-      fixedLabel: true
+      fixedLabel: true,
+      autoFocus: true
     }, opts);
     return React.createElement(RichTextField, {
       name: name,

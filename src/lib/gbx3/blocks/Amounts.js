@@ -35,7 +35,14 @@ class Amounts extends Component {
 		this.closeModalAmountsEdit = this.closeModalAmountsEdit.bind(this);
 		this.validateAmountsBeforeSave = this.validateAmountsBeforeSave.bind(this);
 
-		const button = {...util.getValue(props.globalOptions, 'button', {}), ...util.getValue(props.options, 'button', {}) };
+		const primaryColor = util.getValue(props.globalOptions, 'primaryColor');
+		const globalButton = { ...util.getValue(props.globalOptions, 'button', {}) };
+		const globalButtonStyle = { ...util.getValue(globalButton, 'style', {}) };
+		const customButton = { ...util.getValue(props.options, 'button', {}) };
+		const customButtonStyle = { ...util.getValue(customButton, 'style', {}) };
+		const button = !util.isEmpty(customButton) && util.getValue(customButton, 'overrideGlobalStyle') ? { ...globalButton, ...customButton, ...globalButtonStyle, ...customButtonStyle } : { ...globalButton, ...globalButtonStyle };
+		button.bgColor = button.bgColor || primaryColor;
+
 		const recurring = util.getValue(props.options, 'recurring', {});
 
 		this.state = {
@@ -101,7 +108,7 @@ class Amounts extends Component {
 				customIndex: this.state.customIndexDefault,
 				customID: this.state.customIDDefault,
 				defaultIndex: this.state.defaultIndexDefault,
-				defaultID: this.state.defaultIDDefault
+				defaultID: this.state.defaultIDDefault,
 			});
 		}
 		this.props.toggleModal(this.props.modalID, false)
@@ -345,6 +352,7 @@ class Amounts extends Component {
 													label={'Enable Amounts Button'}
 													button={button}
 													optionsUpdated={this.optionsUpdated}
+													modalID={'amountsList'}
 												/>
 											</div>
 										</div>

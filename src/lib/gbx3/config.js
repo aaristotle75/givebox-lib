@@ -5,10 +5,16 @@ export const defaultOptions = {
 	},
 	primaryColor: '',
 	button: {
-		bgColor: '',
-		fontSize: 16,
-		borderRadius: 10,
-		width: 200
+		embedAllowed: false,
+		enabled: false,
+		type: 'button',
+		text: 'Button Example',
+		style: {
+			bgColor: '',
+			fontSize: 16,
+			borderRadius: 10,
+			width: 200
+		}
 	}
 };
 
@@ -23,9 +29,9 @@ const logo = {
 		borderRadius: 20
 	},
 	grid: {
-	  desktop: { i: 'logo', x: 0, y: 0, w: 1, h: 4, enabled: true },
-	  mobile: { i: 'logo', x: 0, y: 0, w: 1, h: 4, enabled: true }
-  }
+		desktop: { i: 'logo', x: 0, y: 0, w: 1, h: 4, enabled: true },
+		mobile: { i: 'logo', x: 0, y: 0, w: 1, h: 4, enabled: true }
+	}
 };
 
 const title = {
@@ -37,9 +43,9 @@ const title = {
 		defaultFormat: '<span style="font-size:16px;">{{TOKEN}}</span>'
 	},
 	grid: {
-	  desktop: { i: 'title', x: 1, y: 0, w: 5, h: 2, enabled: true },
-	  mobile: { i: 'title', x: 1, y: 0, w: 5, h: 2, enabled: true }
-  }
+		desktop: { i: 'title', x: 1, y: 0, w: 5, h: 2, enabled: true },
+		mobile: { i: 'title', x: 1, y: 0, w: 5, h: 2, enabled: true }
+	}
 };
 
 const orgName = {
@@ -51,9 +57,9 @@ const orgName = {
 		defaultFormat: '<span style="color:hsl(204,4%,58%);font-size:12px">{{TOKEN}}</span>'
 	},
 	grid: {
-	  desktop: { i: 'orgName', x: 1, y: 1, w: 5, h: 2, enabled: true },
-	  mobile: { i: 'orgName', x: 1, y: 1, w: 5, h: 2, enabled: true }
-  }
+		desktop: { i: 'orgName', x: 1, y: 1, w: 5, h: 2, enabled: true },
+		mobile: { i: 'orgName', x: 1, y: 1, w: 5, h: 2, enabled: true }
+	}
 };
 
 const amounts = {
@@ -63,10 +69,13 @@ const amounts = {
 	field: 'amounts',
 	options: {
 		button: {
-			embedAllowed: true,
+			embedAllowed: false,
 			enabled: false,
 			text: 'Select Amount',
-			type: 'button'
+			overrideGlobalStyle: false,
+			style: {
+
+			}
 		},
 		recurring: {
 			allowed: true,
@@ -74,9 +83,9 @@ const amounts = {
 		}
 	},
 	grid: {
-	  desktop: { i: 'amounts', x: 0, y: 2, w: 6, h: 22, enabled: true },
-	  mobile: { i: 'amounts', x: 0, y: 28, w: 6, h: 20, enabled: true }
-  }
+		desktop: { i: 'amounts', x: 0, y: 2, w: 6, h: 22, enabled: true },
+		mobile: { i: 'amounts', x: 0, y: 28, w: 6, h: 20, enabled: true }
+	}
 };
 
 const media = {
@@ -90,9 +99,9 @@ const media = {
 		borderRadius: 5
 	},
 	grid: {
-	  desktop: { i: 'media', x: 6, y: 0, w: 6, h: 20, enabled: true },
-	  mobile: { i: 'media', x: 0, y: 2, w: 6, h: 20, enabled: true }
-  }
+		desktop: { i: 'media', x: 6, y: 0, w: 6, h: 20, enabled: true },
+		mobile: { i: 'media', x: 0, y: 2, w: 6, h: 20, enabled: true }
+	}
 };
 
 const summary = {
@@ -102,9 +111,9 @@ const summary = {
 	field: 'summary',
 	options: {},
 	grid: {
-	  desktop: { i: 'summary', x: 6, y: 21, w: 6, h: 6, enabled: true },
-	  mobile: { i: 'summary', x: 0, y: 21, w: 6, h: 6, enabled: true }
-  }
+		desktop: { i: 'summary', x: 6, y: 21, w: 6, h: 6, enabled: true },
+		mobile: { i: 'summary', x: 0, y: 21, w: 6, h: 6, enabled: true }
+	}
 };
 
 const content = {
@@ -115,9 +124,9 @@ const content = {
 	overflow: 'visible',
 	options: {},
 	grid: {
-	  desktop: { i: 'content', x: 0, y: 33, w: 12, h: 6, enabled: true },
-	  mobile: { i: 'content', x: 0, y: 109, w: 6, h: 6, enabled: true }
-  }
+		desktop: { i: 'content', x: 0, y: 33, w: 12, h: 6, enabled: true },
+		mobile: { i: 'content', x: 0, y: 109, w: 6, h: 6, enabled: true }
+	}
 };
 
 const paymentForm = {
@@ -126,9 +135,9 @@ const paymentForm = {
 	type: 'Form',
 	remove: false,
 	grid: {
-	  desktop: { i: 'form', x: 0, y: 28, w: 12, h: 40, minW: 10, enabled: true },
-	  mobile: { i: 'form', x: 0, y: 48, w: 6, h: 60, minW: 4, enabled: true }
-  }
+		desktop: { i: 'form', x: 0, y: 28, w: 12, h: 40, minW: 10, enabled: true },
+		mobile: { i: 'form', x: 0, y: 48, w: 6, h: 60, minW: 4, enabled: true }
+	}
 };
 
 const fundraiserBlocks = [

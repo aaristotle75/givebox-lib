@@ -25,18 +25,27 @@ export default class AdminToolbar extends Component {
 		this.toggleOpen = this.toggleOpen.bind(this);
 		this.setRadius = this.setRadius.bind(this);
 		const options = this.props.options;
+		const primaryColor = util.getValue(options, 'primaryColor');
+		const gbxStyle = util.getValue(options, 'gbxStyle', {});
+		const globalButton = util.getValue(options, 'button', {});
+		const button = { ...globalButton };
+		button.style.bgColor = button.style.bgColor || primaryColor;
+
 		this.state = {
-			primaryColor: util.getValue(options, 'primaryColor'),
-			gbxStyle: util.getValue(options, 'gbxStyle', {}),
-			button: util.getValue(options, 'button', {}),
-			open: this.props.open
+			primaryColor,
+			gbxStyle,
+			button,
+			primaryColorDefault: primaryColor,
+			gbxStyleDefault: { ...gbxStyle },
+			buttonDefault: { ...button },
+			open: this.props.open,
 		};
 	}
 
 	setRadius(borderRadius) {
 		const button = this.state.button;
-		button.borderRadius = borderRadius;
-		this.setState({ button, borderRadius })
+		button.style.borderRadius = borderRadius;
+		this.setState({ button })
 	}
 
 	toggleOpen() {
@@ -52,6 +61,12 @@ export default class AdminToolbar extends Component {
 					primaryColor: this.state.primaryColor
 			});
 			this.props.setCustomProp('primaryColor', this.state.primaryColor);
+		} else {
+			this.setState({
+				primaryColor: this.state.primaryColorDefault,
+				gbxStyle: { ...this.state.gbxStyleDefault },
+				button: { ...this.state.buttonDefault }
+			});
 		}
 	}
 
@@ -77,21 +92,22 @@ export default class AdminToolbar extends Component {
 			button,
 			gbxStyle,
 			primaryColor,
-			open,
-			borderRadius
+			open
 		} = this.state;
 
 		const rootEl = document.getElementById('gbx-form-root');
-
-		const fontSize = util.getValue(button, 'fontSize');
 		const type = util.getValue(button, 'type', 'button');
+		const buttonStyle = util.getValue(button, 'style', {});
+		const fontSize = util.getValue(buttonStyle, 'fontSize', 12);
 		const paddingTopBottom = fontSize >= 20 ? 15 : 10;
-		const style = {}
-		style.borderRadius = `${util.getValue(button, 'borderRadius', 0)}px`;
+		const style = {};
+		style.borderRadius = util.getValue(buttonStyle, 'borderRadius', 0);
 		style.fontSize = `${fontSize}px`;
-		style.width = util.getValue(button, 'width');
+		style.width = util.getValue(buttonStyle, 'width');
 		style.padding = `${paddingTopBottom}px 25px`;
+		style.bgColor = util.getValue(buttonStyle, 'bgColor');
 
+		console.log('execute render style', style, buttonStyle);
 		return (
 			<Portal id={'gbx-form-portal'} rootEl={rootEl} className={`gbx3 ${editable ? 'editable' : ''}`}>
 				<GBLink onClick={this.toggleOpen} className={`link adminCustomAreaOpen ${open ? 'open' : 'close'}`}><span className='icon icon-menu'></span></GBLink>
@@ -171,10 +187,10 @@ export default class AdminToolbar extends Component {
 														label='Button Background Color'
 														onAccept={(name, value) => {
 															const button = this.state.button;
-															button.bgColor = value;
+															button.style.bgColor = value;
 															this.setState({ button });
 														}}
-														value={util.getValue(button, 'bgColor', primaryColor)}
+														value={util.getValue(buttonStyle, 'bgColor', primaryColor)}
 														modalID='colorPickerButtonBgColor'
 														opts={{
 															customOverlay: {
@@ -184,12 +200,12 @@ export default class AdminToolbar extends Component {
 													/>
 													<TextField
 														name='width'
-														value={util.getValue(button, 'width')}
+														value={util.getValue(buttonStyle, 'width')}
 														onChange={(e) => {
 															e.preventDefault();
 															const value = parseInt(_v.formatNumber(e.target.value));
 															const button = this.state.button;
-															button.width = value;
+															button.style.width = value;
 															this.setState({ button });
 														}}
 														fixedLabel={true}
@@ -202,10 +218,10 @@ export default class AdminToolbar extends Component {
 														label='Button Font Size'
 														fixedLabel={true}
 														name='fontSize'
-														defaultValue={parseInt(util.getValue(button, 'fontSize', 16))}
+														defaultValue={parseInt(util.getValue(buttonStyle, 'fontSize', 16))}
 														onChange={(name, value) => {
 															const button = this.state.button;
-															button.fontSize = value;
+															button.style.fontSize = value;
 															this.setState({ button });
 														}}
 														options={types.fontSizeOptions(10, 28)}
@@ -219,14 +235,12 @@ export default class AdminToolbar extends Component {
 																type="range"
 																onChange={(e) => {
 																	const borderRadius = parseInt(e.target.value)
-																	const button = this.state.button;
-																	button.borderRadius = borderRadius;
-																	this.setState({ button, borderRadius });
+																	this.setRadius(borderRadius);
 																}}
 																min={minRadius}
 																max={maxRadius}
 																step="0"
-																value={borderRadius}
+																value={util.getValue(buttonStyle, 'borderRadius', 10)}
 															/>
 															<GBLink onClick={() => this.setRadius(maxRadius)}><span className='icon icon-circle'></span></GBLink>
 														</div>
@@ -234,7 +248,7 @@ export default class AdminToolbar extends Component {
 													<div className='input-group'>
 														<label className='label'>Button Preview</label>
 														<div style={{ marginTop: 10 }} className='flexCenter'>
-															<GBLink style={style} customColor={util.getValue(button, 'bgColor', null)} solidColor={type === 'button' ? true : false} allowCustom={true} className={`${type}`}>
+															<GBLink style={style} customColor={util.getValue(buttonStyle, 'bgColor', null)} solidColor={type === 'button' ? true : false} allowCustom={true} className={`${type}`}>
 																{this.props.buttonLabel}
 															</GBLink>
 														</div>

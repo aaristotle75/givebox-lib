@@ -57,13 +57,14 @@ class Modal extends Component {
       scrolled: false
     };
     this.modalRef = React.createRef();
+    this.modalContentRef = React.createRef();
   }
 
   componentDidMount() {
     //window.addEventListener('resize', this.handleResize.bind(this));
     setTimeout(() => this.setState({
       open: this.props.open
-    }), 0);
+    }, this.props.modalOpenCallback), 0);
     this.onClose();
   }
 
@@ -97,6 +98,9 @@ class Modal extends Component {
     //const el = document.getElementById('layout-main');
     animateScrollTo(0, {
       element: this.modalRef.current
+    });
+    animateScrollTo(0, {
+      element: this.modalContentRef.current
     });
   }
 
@@ -225,7 +229,8 @@ class Modal extends Component {
       appRef,
       identifier,
       draggable,
-      draggableTitle
+      draggableTitle,
+      draggableTitleClass
     } = this.props;
     let transition = effect.transition;
 
@@ -281,13 +286,19 @@ class Modal extends Component {
     }
 
     const modalContent = React.createElement("div", {
+      id: `modalContent-${identifier}`,
+      ref: this.modalContentRef,
       className: `modalContent ${className}`,
       style: prefix({ ...contentStyle,
         ...transition_style,
         ...openEffect
       }),
       onClick: stopPropagation
-    }, closeBtn && React.createElement("button", {
+    }, React.createElement(Waypoint, {
+      onEnter: this.onEnter,
+      onLeave: this.onExit,
+      bottomOffset: '100px'
+    }), closeBtn && React.createElement("button", {
       style: closeBtnStyle,
       className: "modalCloseBtn",
       onClick: () => this.closeModal(closeCallback, 'ok')
@@ -296,10 +307,10 @@ class Modal extends Component {
     }), draggable ? React.createElement("div", {
       className: "handle"
     }, React.createElement("span", {
-      className: "title"
-    }, React.createElement("span", {
       className: "icon icon-move"
-    }), " ", draggableTitle)) : React.createElement(React.Fragment, null), this.renderChildren(), this.renderActions(), React.createElement(Fade, {
+    }), React.createElement("span", {
+      className: `draggableTitle ${draggableTitleClass}`
+    }, draggableTitle)) : React.createElement(React.Fragment, null), this.renderChildren(), this.renderActions(), React.createElement(Fade, {
       duration: 500,
       in: this.state.scrolled
     }, React.createElement(GBLink, {
@@ -320,11 +331,7 @@ class Modal extends Component {
       style: prefix({ ...overlayStyle,
         ...modalOverlayStyle
       })
-    }, React.createElement(Waypoint, {
-      onEnter: this.onEnter,
-      onLeave: this.onExit,
-      bottomOffset: '100px'
-    }), draggable ? React.createElement(Draggable, {
+    }, draggable ? React.createElement(Draggable, {
       allowAnyClick: false,
       handle: '.handle'
     }, modalContent) : modalContent));
@@ -349,7 +356,8 @@ Modal.defaultProps = {
     className: "icon icon-x"
   }),
   draggable: false,
-  draggableTitle: ''
+  draggableTitle: '',
+  draggableTitleClass: ''
 };
 
 function mapStateToProps(state, props) {

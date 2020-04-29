@@ -21,14 +21,10 @@ class ButtonEdit extends Component {
 		super(props);
 		this.setRadius = this.setRadius.bind(this);
 		this.updateButton = this.updateButton.bind(this);
-		const borderRadius = util.getValue(props.button, 'borderRadius', util.getValue(props.options, 'borderRadius', 5));
-
-		this.state = {
-			borderRadius
-		};
 	}
 
 	componentDidMount() {
+		console.log('execute', this.props.button);
 	}
 
 	componentWillUnmount() {
@@ -43,14 +39,10 @@ class ButtonEdit extends Component {
 	setRadius(borderRadius) {
 		const button = { ...this.props.button };
 		button.borderRadius = borderRadius;
-		this.setState({ borderRadius }, this.props.optionsUpdated('button', button))
+		this.props.optionsUpdated('button', button);
 	}
 
 	render() {
-
-		const {
-			borderRadius
-		} = this.state;
 
 		const {
 			label,
@@ -66,6 +58,7 @@ class ButtonEdit extends Component {
 		const bgColor = util.getValue(button, 'bgColor', primaryColor);
 		const width = util.getValue(button, 'width');
 		const fontSize = util.getValue(button, 'fontSize');
+		const borderRadius = util.getValue(button, 'borderRadius', 10);
 
 		return (
 			<>

@@ -124,7 +124,8 @@ class ContentField extends Component {
 
 ContentField.defaultProps = {
   name: 'defaultContentField',
-  modalLabel: 'Open Editor'
+  modalLabel: 'Open Editor',
+  autoFocus: true
 };
 
 function mapStateToProps(state, props) {
@@ -147,7 +148,8 @@ const Editor = props => {
     fieldName: props.name,
     wysiwyg: props.wysiwyg,
     allowLink: props.allowLink,
-    color: props.color
+    color: props.color,
+    autoFocus: props.autoFocus
   }), props.closeModalAndSave && !props.hideCloseModalAndSaveButtons && props.modal ? React.createElement("div", {
     className: "center button-group"
   }, React.createElement(GBLink, {

@@ -58,7 +58,7 @@ class GBXClass extends React.Component {
 		const blocks = !util.isEmpty(customBlocks) ? customBlocks : initBlocks[props.kind];
 		const options = { ...defaultOptions, ...customOptions };
 		const settings = util.getValue(props.article, 'giveboxSettings', {});
-		const primaryColor = util.getValue(settings, 'primaryColor');
+		const primaryColor = util.getValue(settings, 'primaryColor', this.props.defaultPrimaryColor);
 		options.primaryColor = options.primaryColor || primaryColor;
 
 
@@ -75,7 +75,7 @@ class GBXClass extends React.Component {
 			breakpoint: 'desktop',
 			success: false,
 			error: false,
-			editable: false,
+			editable: true,
 			showOutline: false,
 			collision: true,
 			collapse: false
@@ -106,7 +106,7 @@ class GBXClass extends React.Component {
 		if (color) {
 			const rgb = util.hexToRgb(color);
 			const color2 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .1)`;
-			const color3 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .5)`;
+			const color3 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .05)`;
 			const styleEl = document.head.appendChild(document.createElement('style'));
 			styleEl.innerHTML = `
 				.radio:checked + label:after {
@@ -186,7 +186,8 @@ class GBXClass extends React.Component {
 
 	resetLayout() {
 		const blocks = initBlocks[this.props.kind];
-		this.setState({ blocks }, this.saveLayout(true));
+		const options = defaultOptions;
+		this.setState({ blocks, options }, this.saveLayout(true));
 	}
 
 	layoutChange(layout, layouts) {
@@ -370,7 +371,7 @@ class GBXClass extends React.Component {
 
 	updateOptions(obj = {}) {
 		const options = { ...this.state.options, ...obj };
-		this.setState({ options });
+		this.setState({ options }, this.setStyle);
 	}
 
 	render() {
@@ -463,7 +464,7 @@ class GBX extends React.Component {
 				callback: (res, err) => {
 					if (!err && !util.isEmpty(res)) {
 						const settings = util.getValue(res, 'giveboxSettings', {});
-						const color = util.getValue(settings, 'primaryColor', '#4775f8');
+						const color = util.getValue(settings, 'primaryColor', this.props.defaultPrimaryColor);
 						this.props.setCustomProp('primaryColor', color);
 					}
 				}
@@ -484,7 +485,8 @@ class GBX extends React.Component {
 }
 
 GBX.defaultProps = {
-	breakpointWidth: 768
+	breakpointWidth: 768,
+	defaultPrimaryColor: '#4775f8'
 }
 
 function mapStateToProps(state, props) {

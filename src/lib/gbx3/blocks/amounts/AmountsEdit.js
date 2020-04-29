@@ -268,6 +268,7 @@ export default class AmountsEdit extends Component {
 							}}
 							contentCss='https://givebox.s3-us-west-1.amazonaws.com/public/css/gbx3contents.css'
 							removePlugins='image,elementspath'
+							loaderClass='gbx3amountsEdit'
 						/>
 					</div>
 				</AnimateHeight>

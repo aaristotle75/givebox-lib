@@ -37,7 +37,9 @@ class ModalLink extends Component {
       style,
       onMouseEnter,
       onMouseLeave,
-      allowCustom
+      allowCustom,
+      solidColor,
+      customColor
     } = this.props;
     let component;
 
@@ -64,8 +66,10 @@ class ModalLink extends Component {
       default:
         {
           component = React.createElement(GBLink, {
+            customColor: customColor,
             allowCustom: allowCustom,
             style: style,
+            solidColor: solidColor,
             className: `${className}`,
             type: "button",
             onClick: () => this.onClick(id, opts),
@@ -86,7 +90,8 @@ ModalLink.defaultProps = {
   className: '',
   style: {},
   modalState: 'closed',
-  allowCustom: false
+  allowCustom: false,
+  customColor: false
 };
 
 function mapStateToProps(state) {

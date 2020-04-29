@@ -49,6 +49,7 @@ import Redirect from './common/Redirect';
 import Tabs, { Tab } from './common/Tabs';
 import * as types from './common/types';
 import * as util from './common/utility';
+import Video from './common/Video';
 import FeesGlossary from './glossary/Fees';
 import { toggleModal, removeResource, resourceProp, getAPI, sendAPI, setAppRef, setModalRef, setProp, setPrefs, setCustomProp } from './api/actions';
 import { app, resource, send, modal, preferences, custom } from './api/reducers';
@@ -61,8 +62,6 @@ import { zohoCats } from './helpdesk/zohoCats';
 import Articles from './helpdesk/Articles';
 import HelpDeskButton from './helpdesk/HelpDeskButton'; // GBX
 
-import CustomTemplate from './gbx/CustomTemplate';
-import Editor from './gbx3/tools/Editor';
 import { handleFile } from './gbx3/tools/util';
 import { BlockOption } from './gbx3/blocks/Block'; // Editor
 
@@ -76,8 +75,8 @@ Form, _v, selectOptions, Select, TextField, Dropdown, RichTextField, Choice, Cal
 , ModalLink, ModalRoute // Table
 , ActionsMenu, Search, Table, MaxRecords, NoRecords, Paginate, Export, DownloadFileConnect, Filter // Block
 , StatBlock, ActionBar, CodeBlock // common
-, Alert, Collapse, CustomBtn, Delete, Error, Fade, GBLink, GBX, Iframe, Image, ImageDisplay, history, LinearBar, Loader, Popup, Balloon, Portal, Redirect, Tabs, Tab, types, util // Glossary
+, Alert, Collapse, CustomBtn, Delete, Error, Fade, GBLink, GBX, Iframe, Image, ImageDisplay, history, LinearBar, Loader, Popup, Balloon, Portal, Redirect, Tabs, Tab, types, util, Video // Glossary
 , FeesGlossary // Help Desk
 , HelpDesk, TicketForm, zohoCats, Articles, HelpDeskButton // GBX
-, CustomTemplate, Editor, handleFile, BlockOption // Editor
+, handleFile, BlockOption // Editor
 , CustomCKEditor4, CKEditorUpload };

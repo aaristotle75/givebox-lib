@@ -63,7 +63,8 @@ class TextField extends Component {
       money,
       inputRef,
       inputMode,
-      color
+      color,
+      moneyStyle
     } = this.props;
     const {
       status
@@ -81,6 +82,7 @@ class TextField extends Component {
     }, React.createElement("div", {
       className: `floating-label ${this.state.status} ${fixedLabel && 'fixed'}`
     }, money && React.createElement("div", {
+      style: moneyStyle,
       className: `moneyAmount ${value ? 'active' : 'noValue'}`
     }, React.createElement("span", {
       className: "symbol"
@@ -130,10 +132,11 @@ class TextField extends Component {
 TextField.defaultProps = {
   name: 'defaultTextField',
   type: 'text',
-  maxlength: 64,
+  maxLength: 64,
   symbol: '$',
   money: false,
   inputRef: null,
-  inputStyle: {}
+  inputStyle: {},
+  moneyStyle: {}
 };
 export default TextField;

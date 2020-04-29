@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-  util,
+	util,
 	_v,
 	toggleModal,
 	GBLink,
@@ -12,19 +12,19 @@ import AnimateHeight from 'react-animate-height';
 
 class TicketsList extends Component {
 
-  constructor(props) {
-    super(props);
+	constructor(props) {
+		super(props);
 		this.renderAmounts = this.renderAmounts.bind(this);
 		this.handleAmountChanges = this.handleAmountChanges.bind(this);
 		this.setAmounts = this.setAmounts.bind(this);
 		this.onChangeQty = this.onChangeQty.bind(this);
 		this.toggleShowDetails = this.toggleShowDetails.bind(this);
-    this.state = {
+		this.state = {
 			ticketsSelected: [],
 			showDetails: []
-    };
+		};
 		this.amountInputRef = React.createRef();
-  }
+	}
 
 	componentDidMount() {
 	}
@@ -71,7 +71,7 @@ class TicketsList extends Component {
 
 	renderAmounts() {
 		const {
-			list,
+			amountsList,
 			article
 		} = this.props;
 
@@ -90,8 +90,8 @@ class TicketsList extends Component {
 			});
 		}
 
-		if (!util.isEmpty(list)) {
-			Object.entries(list).forEach(([key, value]) => {
+		if (!util.isEmpty(amountsList)) {
+			Object.entries(amountsList).forEach(([key, value]) => {
 				if (value.enabled) {
 					const index = ticketsSelected.findIndex(x => x.ID === value.ID);
 					const selected = util.getValue(ticketsSelected, index, {});
@@ -108,13 +108,13 @@ class TicketsList extends Component {
 									<Dropdown
 										portalID={`amountQty-dropdown-portal-${value.ID}`}
 										portal={true}
-					          className='dropdown-quantity'
-					          contentWidth={100}
-					          name='unitQty'
-					          defaultValue={qty}
+										className='dropdown-quantity'
+										contentWidth={100}
+										name='unitQty'
+										defaultValue={qty}
 										color={this.props.color}
-					          onChange={(name, val) => this.onChangeQty(name, val, value)}
-					          options={options}
+										onChange={(name, val) => this.onChangeQty(name, val, value)}
+										options={options}
 										selectLabel={0}
 										value={qty}
 									/>
@@ -141,7 +141,7 @@ class TicketsList extends Component {
 		)
 	}
 
-  render() {
+	render() {
 
 		const {
 			embed,
@@ -150,20 +150,20 @@ class TicketsList extends Component {
 
 		const height = embed && !buttonEnabled ? `${this.props.height}px` : 'auto';
 
-    return (
+		return (
 			<div className={`${embed ? 'embed' : ''}`}>
-	      <div style={{ height: height }} className='amountsSection'>
+				<div style={{ height: height }} className='amountsSection'>
 					{this.renderAmounts()}
-	      </div>
+				</div>
 			</div>
-    )
-  }
+		)
+	}
 }
 
 function mapStateToProps(state, props) {
 
-  return {
-  }
+	return {
+	}
 }
 
 export default connect(mapStateToProps, {

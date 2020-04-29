@@ -13,37 +13,37 @@ CKEditor.editorUrl = 'https://cdn.ckeditor.com/4.14.0/full-all/ckeditor.js';
 
 class CustomCKEditor4 extends Component {
 
-  constructor(props) {
-    super(props);
-    this.onBlur = this.onBlur.bind(this);
-    this.onChange = this.onChange.bind(this);
-    this.onFocus = this.onFocus.bind(this);
+	constructor(props) {
+		super(props);
+		this.onBlur = this.onBlur.bind(this);
+		this.onChange = this.onChange.bind(this);
+		this.onFocus = this.onFocus.bind(this);
 		this.setConfig = this.setConfig.bind(this);
 		this.onBeforeLoad = this.onBeforeLoad.bind(this);
 		this.onCloseUploadEditor = this.onCloseUploadEditor.bind(this);
 
-    this.state = {
-      content: this.props.content,
+		this.state = {
+			content: this.props.content,
 			loading: true
-    };
-  }
+		};
+	}
 
-  componentDidMount() {
-  }
+	componentDidMount() {
+	}
 
-  componentWillUnmount() {
-    if (this.timeout) {
-      clearTimeout(this.timeout);
-      this.timeout = null;
-    }
-  }
+	componentWillUnmount() {
+		if (this.timeout) {
+			clearTimeout(this.timeout);
+			this.timeout = null;
+		}
+	}
 
 	onBeforeLoad(CKEDITOR) {
 		const bindthis = this;
 
 		CKEDITOR.on( 'dialogDefinition', function( e ) {
-		    const dialogName = e.data.name;
-		    const dialogDefinition = e.data.definition;
+				const dialogName = e.data.name;
+				const dialogDefinition = e.data.definition;
 				const def = dialogDefinition;
 				const dialog = def.dialog;
 
@@ -101,67 +101,67 @@ class CustomCKEditor4 extends Component {
 		const defaultConfig = {
 			width: this.props.width,
 			height: this.props.height,
-      extraPlugins: 'autoembed,balloontoolbar,image2',
+			extraPlugins: 'autoembed,balloontoolbar,image2',
 			removePlugins: this.props.removePlugins,
 			contentsCss: this.props.contentCss,
 			toolbar: this.props.toolbar,
 			removeButtons: 'Save,NewPage,Preview,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Find,Replace,SelectAll,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Strike,Subscript,Superscript,CopyFormatting,RemoveFormat,Blockquote,CreateDiv,JustifyBlock,Language,BidiRtl,BidiLtr,Flash,Smiley,PageBreak,Iframe,About,Styles,SpecialChar,Maximize,Source,Scayt,Format,Anchor,Underline',
 			image_previewText: ' ',
-      image2_disableResizer: false,
-      removeDialogTabs: 'image:advanced;link:advanced;link:target',
+			image2_disableResizer: false,
+			removeDialogTabs: 'image:advanced;link:advanced;link:target',
 			disallowedContent: 'img{width,height}',
 			on: {
-        instanceReady: function(evt) {
-          const editor = evt.editor;
+				instanceReady: function(evt) {
+					const editor = evt.editor;
 					bindthis.setState({ loading: false });
 					if (bindthis.props.initCallback) bindthis.props.initCallback(editor);
-          // Register custom context for image widgets on the fly.
-          editor.balloonToolbars.create({
-            buttons: 'Link,Unlink,Image',
-            widgets: 'image'
-          });
-        }
-      },
-	    filebrowserImageBrowseUrl: `/upload?articleID=${this.props.articleID}`,
-	    filebrowserWindowWidth: '640',
-	    filebrowserWindowHeight: '600'
+					// Register custom context for image widgets on the fly.
+					editor.balloonToolbars.create({
+						buttons: 'Link,Unlink,Image',
+						widgets: 'image'
+					});
+				}
+			},
+			filebrowserImageBrowseUrl: `/upload?articleID=${this.props.articleID}`,
+			filebrowserWindowWidth: '640',
+			filebrowserWindowHeight: '600'
 		}
 		const config = { ...defaultConfig, ...this.props.config };
 		return config;
 	}
 
-  onBlur(e) {
-    let content = e.editor.getData();
-    this.setState({ content});
+	onBlur(e) {
+		let content = e.editor.getData();
+		this.setState({ content});
 		if (this.props.onBlur) this.props.onBlur(content);
-  }
+	}
 
-  onChange(e) {
-    let content = e.editor.getData();
-    this.setState({ content });
+	onChange(e) {
+		let content = e.editor.getData();
+		this.setState({ content });
 		if (this.props.onChange) this.props.onChange(content);
-  }
+	}
 
-  onFocus(e) {
-    let content = e.editor.getData();
+	onFocus(e) {
+		let content = e.editor.getData();
 		if (this.props.onFocus) this.props.onFocus(content);
-  }
+	}
 
 	onCloseUploadEditor() {
 		const CKEDITOR = window.CKEDITOR;
 		if (CKEDITOR) CKEDITOR.dialog.getCurrent().hide();
 	}
 
-  render() {
+	render() {
 
 		const {
 			content,
 			loading
 		} = this.state;
 
-    return (
+		return (
 			<>
-        <ModalRoute
+				<ModalRoute
 					optsProps={{
 						closeCallback: this.onCloseUploadEditor,
 						customOverlay: { zIndex: 10000000 }
@@ -175,21 +175,21 @@ class CustomCKEditor4 extends Component {
 					draggable={true}
 					draggableTitle={'Media Library'}
 				/>
-	      <div className='ck-content'>
-					{loading ? <Loader msg='Loading editor...' /> : <></>}
-	        <CKEditor
+				<div className='ck-content'>
+					{loading ? <Loader className={`ckeditor4 ${this.props.loaderClass}`} msg='Loading editor...' /> : <></>}
+					<CKEditor
 						config={this.setConfig()}
-	          data={content}
-	          onChange={this.onChange}
-	          onBlur={this.onBlur}
-	          onFocus={this.onFocus}
+						data={content}
+						onChange={this.onChange}
+						onBlur={this.onBlur}
+						onFocus={this.onFocus}
 						type={this.props.type}
 						onBeforeLoad={this.onBeforeLoad}
-	        />
-	      </div>
+					/>
+				</div>
 			</>
-    )
-  }
+		)
+	}
 }
 
 CustomCKEditor4.defaultProps = {
@@ -202,12 +202,13 @@ CustomCKEditor4.defaultProps = {
 		[ 'Bold', 'Italic', '-', 'Font', '-', 'FontSize', 'TextColor', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', '-', 'Link', 'Unlink', '-', 'Image']
 	],
 	contentCss: 'https://givebox.s3-us-west-1.amazonaws.com/public/css/contents.css',
-	removePlugins: 'image,elementspath,resize'
+	removePlugins: 'image,elementspath,resize',
+	loaderClass: ''
 };
 
 function mapStateToProps(state) {
-  return {
-  }
+	return {
+	}
 }
 
 export default connect(mapStateToProps, {

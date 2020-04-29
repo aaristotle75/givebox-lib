@@ -1,5 +1,32 @@
 @import 'variables.scss';
 
+/*---------- Scale ----------*/
+.rotate,
+.scale {
+  margin: 0 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  @media (max-width: 600px) { margin: 0; }
+}
+
+.rotate {
+  .icon {
+    margin: 0 5px;
+  }
+}
+
+.scale {
+  .icon.small {
+    font-size: $small-text-size;
+    margin-right: 5px;
+  }
+  .icon {
+    font-size: $large-text-size;
+    margin-left: 5px;
+  }
+}
+
 /*----------- Image ----------*/
 .image {
   position: relative;
@@ -130,6 +157,13 @@ button.imageCover {
   flex-direction: column;
   justify-content: center;
 	align-items: center;
+
+	.errorMsg {
+		width: 100%;
+		text-align: center;
+		color: $red;
+		font-size: 14px;
+	}
 
   img {
     display: inline-block;
@@ -450,32 +484,6 @@ button.imageCover {
     flex-direction: column;
     padding-top: 40px;
   }
-
-  .rotate,
-  .scale {
-    margin: 0 5%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    @media (max-width: 600px) { margin: 0; }
-  }
-
-  .rotate {
-    .icon {
-      margin: 0 5px;
-    }
-  }
-
-  .scale {
-    .icon.small {
-      font-size: $small-text-size;
-      margin-right: 5px;
-    }
-    .icon {
-      font-size: $large-text-size;
-      margin-left: 5px;
-    }
-  }
 }
 
 .loadImage {
@@ -660,7 +668,7 @@ button.imageCover {
 
 	.photoSection.SelectedPhoto {
 		width: 150px;
-		height: 150px;
+		height: auto;
 		margin-left: 50px;
 	}
 
@@ -668,7 +676,7 @@ button.imageCover {
 	.uploadContainer {
 
 		height: 630px;
-		padding-bottom: 50px;
+		padding-bottom: 30px;
 
 		.dropzone {
 			width: 150px;
@@ -687,10 +695,13 @@ button.imageCover {
 			}
 		}
 
+    h4 {
+      margin: 5px;
+    }
 	}
 
 	.uploadLibraryContainer {
-		padding-top: 180px;
+		padding-top: 200px;
 
 		.menu {
 			position: absolute;
@@ -703,6 +714,9 @@ button.imageCover {
 	      align-items: center;
 	      margin: 0px;
 	    }
+		}
+		.yourphotos {
+			margin-top: 10px;
 		}
 	}
 	.uploadBottom {

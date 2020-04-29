@@ -11,6 +11,10 @@ class ModalRoute extends Component {
   constructor(props) {
     super(props);
     this.receiveMessage = this.receiveMessage.bind(this);
+    this.modalOpenCallback = this.modalOpenCallback.bind(this);
+    this.state = {
+      opened: false
+    };
   }
 
   componentDidMount() {
@@ -23,6 +27,12 @@ class ModalRoute extends Component {
         this.props.toggleModal(e.data, false);
       }
     }
+  }
+
+  modalOpenCallback(open) {
+    this.setState({
+      opened: true
+    });
   }
 
   render() {
@@ -68,8 +78,9 @@ class ModalRoute extends Component {
       customOverlay: util.getValue(optsProps, 'customOverlay', customOverlay),
       appRef: appRef,
       draggable: draggable,
-      draggableTitle: util.getValue(optsProps, 'draggableTitle', draggableTitle)
-    }, component(optsProps))));
+      draggableTitle: util.getValue(optsProps, 'draggableTitle', draggableTitle),
+      modalOpenCallback: this.modalOpenCallback
+    }, this.state.opened ? component(optsProps) : React.createElement(React.Fragment, null))));
   }
 
 }

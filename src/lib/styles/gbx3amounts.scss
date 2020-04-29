@@ -214,11 +214,10 @@
 		height: auto;
 		width: 100%;
 		margin-top: 10px;
+		overflow: hidden;
 	}
 
 	.amountRow {
-		display: flex;
-		justify-content: flex-start;
 		width: 100%;
 		padding: 0px 0 0px 2%;
 		margin: 15px 0;
@@ -231,10 +230,34 @@
 		background: transparentize($mainColor, .95);
 	}
 
+	.amountDescRow {
+		display: flex;
+		justify-content: flex-start;
+	}
+
 	.amountDesc {
 		display: inline-block;
-		width: 83%;
+		width: 85%;
+
+		.amountDescText {
+			font-size: 16px;
+			line-height: 1.3em;
+			font-weight: 400;
+			margin-left: 10px;
+		}
+
+		.amountDescAmount {
+			display: block;
+			color: $med-gray;
+			font-weight: 300;
+		}
 	}
+
+	.amountDescMore {
+		display: inline-block;
+		margin-top: 30px;
+	}
+
 
 	.amountShowDetailsLink {
 		display: block;
@@ -251,6 +274,10 @@
 
 	.radio-group label.label {
 		padding: 20px 0;
+	}
+
+	.recurringLink {
+		height: 45px;
 	}
 
 	/*-------- Ticket Amount Specific----------*/

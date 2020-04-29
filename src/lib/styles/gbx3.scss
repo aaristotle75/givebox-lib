@@ -6,30 +6,30 @@
 	/*------ Elements --------*/
 
 	h1, h2, h3, h4 {
-	  margin: 0;
-	  font-weight: 400;
+		margin: 0;
+		font-weight: 400;
 	}
 
 	h1 {
-	  font-size: 22px;
+		font-size: 22px;
 	}
 
 	h2 {
-	  font-size: 20px;
+		font-size: 20px;
 	}
 
 	h3 {
-	  font-size: 18px;
+		font-size: 18px;
 	}
 
 	h4 {
-	  font-size: 16px;
+		font-size: 16px;
 	}
 
 	p {
-	  margin: 0;
-	  font-size: 14px;
-	  font-weight: 400;
+		margin: 0;
+		font-size: 14px;
+		font-weight: 400;
 	}
 
 	p img {
@@ -38,65 +38,72 @@
 
 	/*------ End Elements ------*/
 
+	/*-------- General Form ----*/
+	.choice-group {
+		button .icon {
+			font-size: 1.5em;
+		}
+	}
+
 	.noRecords {
-	  color: $med-blue-gray;
-	  font-size: 14px;
+		color: $med-blue-gray;
+		font-size: 14px;
 	}
 
 	/*------- Grid ---------*/
 
 	.react-grid-item {
-	  background: transparent;
-	  z-index: 1;
-	  border: 2px solid transparent;
+		background: transparent;
+		z-index: 1;
+		border: 2px solid transparent;
 	}
 
 	.react-grid-item.outline {
-	  border: 2px solid $mainColor;
+		border: 2px solid $mainColor;
 	}
 
 	.react-grid-item > .react-resizable-handle {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    bottom: 0;
-    right: 0;
-    cursor: se-resize;
+		position: absolute;
+		width: 20px;
+		height: 20px;
+		bottom: 0;
+		right: 0;
+		cursor: se-resize;
 	}
 
 	.react-grid-item.react-grid-placeholder {
-	    background: $mainColorLight;
-	    opacity: .3;
-	    transition-duration: 100ms;
-	    z-index: 2;
-	    border-radius: 4px;
-	    -webkit-user-select: none;
-	    -moz-user-select: none;
-	    -ms-user-select: none;
-	    -o-user-select: none;
-	    user-select: none;
+			background: $mainColorLight;
+			opacity: .3;
+			transition-duration: 100ms;
+			z-index: 2;
+			border-radius: 4px;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			-o-user-select: none;
+			user-select: none;
 	}
 
 	.dragHandle {
 		display: none;
-	  cursor: grab;
+		cursor: grab;
 		z-index: 3;
 	}
 
 	.dragHandle:hover {
-	  @include default-transition(1s);
+		@include default-transition(1s);
 	}
 
 	.editable {
 
-	  .react-grid-item:hover {
-	    border: 2px solid $mainColor;
+		.react-grid-item:hover {
+			border: 2px solid $mainColor;
 
-	    .blockOptions {
-	      display: flex;
-	      justify-content: center;
-	      align-items: center;
-	    }
+			.blockOptions {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
 
 			.dragHandle {
 				display: block;
@@ -110,10 +117,10 @@
 
 	/*---------- Blocks ------------ */
 	.block {
-	  position: absolute;
-	  top: 0; bottom: 0; right: 0; left: 0;
-	  height: 100%;
-	  width: 100%;
+		position: absolute;
+		top: 0; bottom: 0; right: 0; left: 0;
+		height: 100%;
+		width: 100%;
 
 		.edit-group {
 			position: absolute;
@@ -124,51 +131,51 @@
 	}
 
 	.blockOptions {
-	  display: none;
-	  position: absolute;
-	  top: 5%; bottom: 5%; right: 5%; left: 5%;
-	  height: 90%;
-	  width: 90%;
-	  color: $white;
-	  background: transparentize($mainColor, .3);
-	  z-index: 2;
+		display: none;
+		position: absolute;
+		top: 5%; bottom: 5%; right: 5%; left: 5%;
+		height: 90%;
+		width: 90%;
+		color: $white;
+		background: transparentize($mainColor, .3);
+		z-index: 2;
 	}
 
 	button.blockRemove {
-	  background: transparent;
-	  position: absolute;
-	  top: 0px;
-	  right: 2px;
+		background: transparent;
+		position: absolute;
+		top: 0px;
+		right: 2px;
 		color: $white;
 
-	  .icon {
+		.icon {
 			color: $white;
-	    font-size: 16px;
-	  }
+			font-size: 16px;
+		}
 	}
 	button.blockRemove:hover {
-	  .icon {
-	    color: $mainColorLight;
-	  }
+		.icon {
+			color: $mainColorLight;
+		}
 	}
 
 	.blockEdit {
-	  display: flex;
-	  align-items: center;
-	  background: transparent;
-	  color: $white;
-	  font-size: 14px;
-	  font-weight: 400;
+		display: flex;
+		align-items: center;
+		background: transparent;
+		color: $white;
+		font-size: 14px;
+		font-weight: 400;
 		margin: 0 5px;
-	  .icon {
-	    display: inline-block;
-	    font-size: 20px;
-	    margin-right: 5px;
-	  }
+		.icon {
+			display: inline-block;
+			font-size: 20px;
+			margin-right: 5px;
+		}
 	}
 
 	.blockEdit:hover {
-	  color: $mainColorLight
+		color: $mainColorLight
 	}
 
 	// Name blocks
@@ -218,18 +225,18 @@
 	}
 
 	.adminCustomArea {
-	  position: absolute;
-	  left: 0;
-	  top: 0;
-	  bottom: 0;
-	  background: $dark-blue-gray;
+		position: absolute;
+		left: 0;
+		top: 0;
+		bottom: 0;
+		background: $dark-blue-gray;
 		width: 100%;
 		max-width: 200px;
-	  z-index: 899999;
+		z-index: 899999;
 		margin: 0;
 		@include transition(width .5s);
 
-	  .button-group.linkBar {
+		.button-group.linkBar {
 			position: relative;
 			margin-top: 60px;
 			width: auto;
@@ -237,31 +244,31 @@
 			button.link {
 				display: block;
 				font-size: 14px;
-		    color: $mainColorLight;
+				color: $mainColorLight;
 				margin: 5px 10px;
 			}
 
-		  button.link:hover {
-		    color: $white;
-		  }
+			button.link:hover {
+				color: $white;
+			}
 
-		  button.link:not(.show) {
-		    visibility: hidden;
-		  }
-	  }
+			button.link:not(.show) {
+				visibility: hidden;
+			}
+		}
 
-	  .handle {
-	    cursor: grab;
-	    position: absolute;
-	    top: 12px;
-	    left: 20px;
-	    color: $mainColorLight;
-	  }
+		.handle {
+			cursor: grab;
+			position: absolute;
+			top: 12px;
+			left: 20px;
+			color: $mainColorLight;
+		}
 
-	  .handle:hover {
-	    color: $white;
-	    @include default-transition(1s);
-	  }
+		.handle:hover {
+			color: $white;
+			@include default-transition(1s);
+		}
 	}
 
 	.logo {
@@ -270,15 +277,15 @@
 		height: 30px;
 		width: 100%;
 		max-width: 200px;
-	  display: flex;
-	  justify-content: center;
-	  align-items: center;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 
-	  img {
-	    cursor: pointer;
-	    height: 25px;
-	    width: 25px;
-	  }
+		img {
+			cursor: pointer;
+			height: 25px;
+			width: 25px;
+		}
 	}
 
 	.loggedInGroup {
@@ -289,24 +296,24 @@
 		max-width: 200px;
 		margin: 0 10px;
 
-	  .loggedInAs {
-	    font-size: 10px;
-	    color: $med-blue-gray;
-	    display: block;
-	  }
+		.loggedInAs {
+			font-size: 10px;
+			color: $med-blue-gray;
+			display: block;
+		}
 
-	  button.link {
-	    color: $white;
-	    font-size: 12px;
-	  }
+		button.link {
+			color: $white;
+			font-size: 12px;
+		}
 	}
 
 	.adminCustomArea.editable {
 
-	  .button-group.linkBar {
-		  button.link {
-		    visibility: visible;
-		  }
+		.button-group.linkBar {
+			button.link {
+				visibility: visible;
+			}
 		}
 	}
 
@@ -316,27 +323,27 @@
 	/*--------- Drop Area ------*/
 
 	.dropArea {
-	  background: transparent;
-	  @include default-transition(.25s);
+		background: transparent;
+		@include default-transition(.25s);
 
-	  .dragOverText {
-	    display: none;
-	    text-align: center;
-	    font-size: 20px;
-	    color: $white;
-	    position: absolute;
-	    top: 50%;
-	    right: 0; left: 0; bottom: 0;
-	    text-align: center;
-	    z-index: 3;
-	  }
+		.dragOverText {
+			display: none;
+			text-align: center;
+			font-size: 20px;
+			color: $white;
+			position: absolute;
+			top: 50%;
+			right: 0; left: 0; bottom: 0;
+			text-align: center;
+			z-index: 3;
+		}
 	}
 
 	.dropArea.dragOver {
-	  background: transparentize($mainColor, .7);
-	  .dragOverText {
-	    display: block;
-	  }
+		background: transparentize($mainColor, .7);
+		.dragOverText {
+			display: block;
+		}
 	}
 
 	/*-------- End Drop Area ---------*/
@@ -347,7 +354,7 @@
 
 	.givebox-paymentform {
 
-	  padding: 0;
+		padding: 0;
 
 		.mainError {
 			position: absolute;
@@ -357,7 +364,7 @@
 		}
 
 		.dropdown button .selected.label {
-		  font-size: $small-text-size;
+			font-size: $small-text-size;
 		}
 
 		.dropdown button {
@@ -370,7 +377,7 @@
 
 		.dropdown button .selected.label,
 		.dropdown .label:not(button) {
-		    font-size: $med-text-size;
+				font-size: $med-text-size;
 		}
 
 		.dropdown .icon {
@@ -378,85 +385,85 @@
 		}
 
 		.dropdown-cover {
-		  display: none;
+			display: none;
 		}
 	}
 
 
 	.mobileFriendly {
-	  margin: 100px 0;
+		margin: 100px 0;
 	}
 
 	.imageComponent {
-	  flex-direction: row;
+		flex-direction: row;
 	}
 
 	.creditCard {
-	  .checkmark {
-	    right: 5px;
-	  }
+		.checkmark {
+			right: 5px;
+		}
 	}
 
 	.creditCard-group .cardsAccepted {
-	    top: -35px;
+			top: -35px;
 	}
 
 	.column {
-	  display: inline-block;
-	  float: none;
+		display: inline-block;
+		float: none;
 	}
 
 
 	label, .label {
-	  white-space: nowrap;
-	  font-size: 12px;
+		white-space: nowrap;
+		font-size: 12px;
 	}
 
 	.cvvModal button.link {
 	}
 
 	.button-group {
-	  button.link,
-	  button.button {
-	    margin: 0 10px;
-	  }
+		button.link,
+		button.button {
+			margin: 0 10px;
+		}
 	}
 
 	button.link {
-	  font-size: 12px;
-	  @include default-transition(.5s);
-	  margin: 0;
+		font-size: 12px;
+		@include default-transition(.5s);
+		margin: 0;
 	}
 
 	button.button {
-	  border-radius: 20px;
-	  font-size: 16px;
+		border-radius: 20px;
+		font-size: 16px;
 		//color: $mainColor;
-	  //background-color: $white;
-	  @include default-transition(.5s);
+		//background-color: $white;
+		@include default-transition(.5s);
 	}
 
 	button.button:hover {
-	  //background-color: $mainColor;
+		//background-color: $mainColor;
 		//color: $white;
 	}
 
 	button.gbxBtn {
-	  font-weight: 300;
-	  font-size: 16px;
-	  color: $white;
-	  background: $med-blue-gray;
-	  padding: 10px 20px;
-	  border-radius: 20px;
-	  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55);
-	  @include default-transition(.5s);
+		font-weight: 300;
+		font-size: 16px;
+		color: $white;
+		background: $med-blue-gray;
+		padding: 10px 20px;
+		border-radius: 20px;
+		box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55);
+		@include default-transition(.5s);
 	}
 
 	button.gbxBtn:hover {
-	  color: $white;
-	  background: $med-blue-gray;
-	  opacity: .7;
-	  @include default-transition(.5s);
+		color: $white;
+		background: $med-blue-gray;
+		opacity: .7;
+		@include default-transition(.5s);
 	}
 
 	/*----- End Payment Form ------*/
@@ -464,33 +471,33 @@
 
 	/*------- Media Library -------*/
 
-  .scale {
-    margin: 0 5%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    @media (max-width: 600px) { margin: 0; }
+	.scale {
+		margin: 0 5%;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		@media (max-width: 600px) { margin: 0; }
 
-    .icon.small {
-      font-size: $small-text-size;
-      margin-right: 5px;
-    }
-    .icon {
-      font-size: $large-text-size;
-      margin-left: 5px;
-    }
-  }
+		.icon.small {
+			font-size: $small-text-size;
+			margin-right: 5px;
+		}
+		.icon {
+			font-size: $large-text-size;
+			margin-left: 5px;
+		}
+	}
 
 	/*------- Responsive ---------*/
 
 	@media (max-width: 768px) {
-	  .modalContent:not(.campaignForm) {
-	      width: 100% !important;
-	  }
+		.modalContent:not(.campaignForm) {
+				width: 100% !important;
+		}
 
 		.dropdown button .selected.label,
 		.dropdown .label:not(button) {
-		   font-size: 1em;
+			 font-size: 1em;
 		}
 
 	}

@@ -8,6 +8,7 @@ class Choice extends Component {
     super(props);
     this.onChange = this.onChange.bind(this);
     this.onChangeLink = this.onChangeLink.bind(this);
+    this.onBlur = this.onBlur.bind(this);
   }
 
   componentDidMount() {
@@ -29,12 +30,16 @@ class Choice extends Component {
     }
   }
 
+  onBlur() {
+    if (this.props.onBlur) this.props.onBlur();
+  }
+
   onChange(name, value) {
-    this.props.onChange(name, value);
+    if (this.props.onChange) this.props.onChange(name, value);else console.error('No props onChange');
   }
 
   onChangeLink(name, value) {
-    this.props.onChange(name, value);
+    if (this.props.onChange) this.props.onChange(name, value);else console.error('No props onChange');
   }
 
   render() {
@@ -57,7 +62,7 @@ class Choice extends Component {
     return React.createElement("div", {
       style: style,
       className: `choice-group ${className || ''} ${type}-group  ${error ? 'error tooltip' : ''}`
-    }, useIcon ? React.createElement(GBLink, {
+    }, useIcon && type !== 'radio' ? React.createElement(GBLink, {
       style: {
         color: !error ? color : ''
       },
@@ -89,6 +94,7 @@ class Choice extends Component {
 }
 
 Choice.defaultProps = {
+  type: 'checkbox',
   useIcon: true
 };
 export default Choice;

@@ -165,7 +165,8 @@ class AmountsList extends Component {
 			amountsList,
 			buttonEnabled,
 			customID,
-			defaultID
+			defaultID,
+			embed
 		} = this.props;
 
 		const {
@@ -201,27 +202,48 @@ class AmountsList extends Component {
 						}
 					}
 
+					const label = embed ?
+						<span>
+							{!isCustom ?
+								<span className='amountRadioPrice'>{util.money(value.price/100)}{`${value.name ? ' ' : ''}`}</span>
+							: <></>}
+							{isCustom && !value.name ? 'Enter any amount' : value.name}
+						</span>
+					:
+						<div className='amountDescText'>
+							{isCustom && !value.name ? 'Enter any amount' : value.name}
+							<span className='amountDescAmount'>
+								{!isCustom ? util.money(value.price/100) : <></>}
+							</span>
+						</div>
+					;
+
 					items.push(
 						<div key={key} className='amountRow'>
-							<div className='amountDesc'>
-								<Choice
-									name={`ID`}
-									value={value.ID}
-									onChange={this.onChangeAmountRadio}
-									type='radio'
-									label={<span>{!isCustom ? <span className='amountRadioPrice'>{util.money(value.price/100)}{`${value.name ? ' ' : ''}`}</span> : <></>}{isCustom && !value.name ? 'Enter any amount' : value.name}</span>}
-									checked={amountRadioSelected}
-								/>
-								{value.description && !this.props.embed ? <GBLink style={{ fontSize: 12, margin: '5px 0 5px 10px' }} allowCustom={true} className='link amountShowDetailsLink' onClick={() => this.toggleShowDetails(value.ID)}>{showDetails.includes(value.ID) ? 'Less Info' : 'More Info'} <span className={`icon icon-${showDetails.includes(value.ID) ? 'minus' : 'plus'}`}></span></GBLink> : <></>}
-								<AnimateHeight
-									duration={200}
-									height={showDetails.includes(value.ID) ? 'auto' : 0}
-								>
-									<div className='amountDetails'>
-										<div className='amountDetailsContainer' dangerouslySetInnerHTML={{ __html: value.description }} />
-									</div>
-								</AnimateHeight>
+							<div className='amountDescRow'>
+								<div className='amountDesc'>
+									<Choice
+										name={`ID`}
+										value={value.ID}
+										onChange={this.onChangeAmountRadio}
+										type='radio'
+										label={label}
+										checked={amountRadioSelected}
+									/>
+								</div>
+								{!this.props.embed && value.description ?
+								<div className='amountDescMore'>
+									<GBLink style={{ fontSize: 12, margin: '5px 0 5px 10px' }} allowCustom={true} className='link amountShowDetailsLink' onClick={() => this.toggleShowDetails(value.ID)}>{showDetails.includes(value.ID) ? 'Less Info' : 'More Info'} <span className={`icon icon-${showDetails.includes(value.ID) ? 'minus' : 'plus'}`}></span></GBLink>
+								</div> : <></>}
 							</div>
+							<AnimateHeight
+								duration={200}
+								height={showDetails.includes(value.ID) ? 'auto' : 0}
+							>
+								<div className='amountDetails'>
+									<div className='amountDetailsContainer' dangerouslySetInnerHTML={{ __html: value.description }} />
+								</div>
+							</AnimateHeight>
 						</div>
 					);
 				}

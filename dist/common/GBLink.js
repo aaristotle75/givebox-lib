@@ -52,16 +52,10 @@ class GBLink extends Component {
       id,
       className,
       style,
-      primaryColor,
       disabled,
-      ripple,
-      allowCustom
+      ripple
     } = this.props;
-    const color = allowCustom && primaryColor ? {
-      color: primaryColor
-    } : {};
-    const mergeStyle = { ...color,
-      ...style,
+    const mergeStyle = { ...style,
       ...this.state.hoverStyle
     };
     return React.createElement("button", {
@@ -85,12 +79,14 @@ GBLink.defaultProps = {
   style: {},
   disabled: false,
   ripple: false,
-  allowCustom: false
+  allowCustom: false,
+  customColor: false,
+  solidColor: false
 };
 
 function mapStateToProps(state, props) {
   const custom = util.getValue(state, 'custom', {});
-  const primaryColor = util.getValue(custom, 'primaryColor');
+  const primaryColor = props.customColor || util.getValue(custom, 'primaryColor');
   const rgb = primaryColor ? util.hexToRgb(primaryColor) : '';
   let rgbColor = null;
 
@@ -102,7 +98,15 @@ function mapStateToProps(state, props) {
   const hoverStyle = rgb && props.allowCustom ? {
     color: rgbColor
   } : props.hoverStyle || {};
-  const style = { ...props.style
+  const customStyle = {};
+
+  if (props.allowCustom && primaryColor) {
+    customStyle.color = props.solidColor ? '#ffffff' : primaryColor;
+    customStyle.backgroundColor = props.solidColor ? primaryColor : null;
+  }
+
+  const style = { ...customStyle,
+    ...props.style
   };
 
   if (className.includes('button') && props.allowCustom) {

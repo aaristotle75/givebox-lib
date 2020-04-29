@@ -50,7 +50,7 @@ class ContentEditor extends Component {
   }
 
   componentDidMount() {
-    this.inputRef.current.focus();
+    if (this.props.autoFocus) this.inputRef.current.focus();
   }
 
   componentDidUpdate(prevProps, prevState) {

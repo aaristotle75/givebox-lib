@@ -82,6 +82,20 @@
 
 .modal.draggable {
 
+	/*
+	.mediaLibrary .uploadLibraryContainer .menu	{
+		padding-top: 40px;
+	}
+
+	.mediaLibrary .uploadLibraryContainer {
+	  padding-top: 200px;
+	}
+
+	.mediaLibrary .uploadEditorContainer {
+	  padding-top: 30px;
+	}
+	*/
+
 	.modalCloseBtn {
 		top: 5px;
 		right: 5px;
@@ -92,41 +106,37 @@
 		background: transparent;
 	}
 
-	.modalContent {
-		padding: 40px 10px 0 10px;
-	}
-
 	.handle {
 	  cursor: move;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	  position: absolute;
-	  top: 0px;
+		top: 0px;
 	  left: 0px;
 		right: 0px;
 		height: 30px;
-	  color: $mainColor;
 		background: transparent;
 		z-index: 9999999;
 
-		.title {
-			display: flex;
-			align-items: center;
-			position: absolute;
-			top: 0px;
-			left: 5px;
-	    font-weight: bold;
-	    font-size: 12px;
-	    color: #484848;
-	    padding: 12px 19px 12px 12px;
-	    letter-spacing: .3px;
+		.icon {
+		  position: absolute;
+			top: 8px;
+		  left: 10px;
+			font-size: 14px;
+		}
 
-			.icon {
-				font-size: 14px;
-				margin-right: 10px;
-			}
+		.icon:hover {
+			color: $mainColorLight;
+		}
 
-			.icon:hover {
-				color: $mainColor;
-			}
+		.draggableTitle {
+			margin-top: 10px;
+	    vertical-align: top;
+	    font-size: 22px;
+	    font-weight: 300;
+	    white-space: nowrap;
+	    display: block;
 		}
 	}
 }

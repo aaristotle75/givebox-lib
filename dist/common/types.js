@@ -70,9 +70,12 @@ export function kind(kind) {
         obj.kind = 'event';
         obj.kindPlural = 'events';
         obj.header = 'Events';
+        obj.amountField = 'tickets';
+        obj.amountDesc = 'Ticket';
         obj.api = {
           item: 'Event',
-          list: 'Events'
+          list: 'Events',
+          amount: 'orgEventTicket'
         };
         obj.icon = 'calendar';
         break;
@@ -91,9 +94,12 @@ export function kind(kind) {
         obj.kind = 'fundraiser';
         obj.kindPlural = 'fundraisers';
         obj.header = 'Donation Forms';
+        obj.amountField = 'amounts';
+        obj.amountDesc = 'Amount';
         obj.api = {
           item: 'Fundraiser',
-          list: 'Fundraisers'
+          list: 'Fundraisers',
+          amount: 'orgFundraiserAmount'
         };
         obj.icon = 'heart';
         break;
@@ -112,9 +118,12 @@ export function kind(kind) {
         obj.kind = 'invoice';
         obj.kindPlural = 'invoices';
         obj.header = 'Invoices';
+        obj.amountField = 'amounts';
+        obj.amountDesc = 'Amount';
         obj.api = {
           item: 'Invoice',
-          list: 'Invoices'
+          list: 'Invoices',
+          amount: 'orgInvoiceAmount'
         };
         obj.icon = 'briefcase';
         break;
@@ -133,9 +142,12 @@ export function kind(kind) {
         obj.kind = 'membership';
         obj.kindPlural = 'memberships';
         obj.header = 'Memberships';
+        obj.amountField = 'subscriptions';
+        obj.amountDesc = 'Subscription';
         obj.api = {
           item: 'Membership',
-          list: 'Memberships'
+          list: 'Memberships',
+          amount: 'orgMembershipSubscription'
         };
         obj.icon = 'clipboard';
         break;
@@ -154,9 +166,12 @@ export function kind(kind) {
         obj.kind = 'sweepstake';
         obj.kindPlural = 'sweepstakes';
         obj.header = 'Sweepstakes';
+        obj.amountField = 'tickets';
+        obj.amountDesc = 'Ticket';
         obj.api = {
           item: 'Sweepstake',
-          list: 'Sweepstakes'
+          list: 'Sweepstakes',
+          amount: 'orgSweepstakeTicket'
         };
         obj.icon = 'gift';
         break;
@@ -251,4 +266,23 @@ export const socialIcons = (type, size = 50) => {
     src: `https://givebox.s3-us-west-1.amazonaws.com/public/images/social-${type}.png`,
     alt: `${type}`
   });
+};
+export const fontSizeOptions = (r1, r2) => {
+  const items = [];
+
+  for (let i = r1; i <= r2; i++) {
+    if (i % 2 === 0) {
+      items.push({
+        primaryText: `${i}px`,
+        secondaryText: React.createElement("span", {
+          style: {
+            fontSize: i
+          }
+        }, "Example Font Size"),
+        value: i
+      });
+    }
+  }
+
+  return items;
 };
