@@ -70,6 +70,17 @@ import {
 	setCustomProp
 } from './api/actions';
 
+import {
+	updateInfo,
+	updateBlocks,
+	updateBlock,
+	updateGlobals,
+	updateGlobal,
+	updateData,
+	updateAdmin,
+	updateCart
+} from './api/gbx3actions';
+
 import { app, resource, send, modal, preferences, custom } from './api/reducers';
 
 import {
@@ -124,6 +135,16 @@ export {
 	setProp,
 	setPrefs,
 	setCustomProp,
+
+// gbx3 actions
+	updateInfo,
+	updateBlocks,
+	updateBlock,
+	updateGlobals,
+	updateGlobal,
+	updateData,
+	updateAdmin,
+	updateCart,
 
 	// API
 	giveboxAPI,

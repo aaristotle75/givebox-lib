@@ -46,6 +46,7 @@ class GBXTest extends Component {
 			<div>
 				<GBX
 					orgID={this.props.article.orgID}
+					articleID={this.state.id}
 					kindID={this.props.article.kindID}
 					kind={this.props.article.kind}
 					autoSave={true}

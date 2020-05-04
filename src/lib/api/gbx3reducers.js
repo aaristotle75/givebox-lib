@@ -1,20 +1,30 @@
 import  * as types  from './gbx3actionTypes';
 
 export function gbx3(state = {
-	kind: null,
+	info: {
+		breakpoint: 'desktop'
+	},
 	blocks: {},
-	options: {},
-	data: {}
+	globals: {},
+	admin: {
+		editable: true,
+		collision: true,
+		collapse: false,
+		outline: false
+	},
+	data: {},
+	cart: {}
 }, action) {
 	switch (action.type) {
-		case types.UPDATE_GBX3:
+		case types.UPDATE_INFO:
 			return Object.assign({}, state, {
-				...state,
-				[action.key]: action.value
+				info: {
+					...state.info,
+					...action.info,
+				}
 			});
 		case types.UPDATE_BLOCKS:
 			return Object.assign({}, state, {
-				...state,
 				blocks: {
 					...state.blocks,
 					...action.blocks,
@@ -22,7 +32,6 @@ export function gbx3(state = {
 			});
 		case types.UPDATE_BLOCK:
 			return Object.assign({}, state, {
-				...state,
 				blocks: {
 					...state.blocks,
 					[action.name]: {
@@ -31,31 +40,49 @@ export function gbx3(state = {
 					}
 				}
 			});
-		case types.UPDATE_OPTIONS:
+		case types.UPDATE_GLOBALS:
 			return Object.assign({}, state, {
-				...state,
-				options: {
-					...state.options,
-					...action.options,
+				globals: {
+					...state.globals,
+					...action.globals,
 				}
 			});
-		case types.UPDATE_OPTION:
+		case types.UPDATE_GLOBAL:
 			return Object.assign({}, state, {
-				...state,
-				options: {
-					...state.options,
+				globals: {
+					...state.globals,
 					[action.name]: {
-						...state.options[action.name],
-						...action.option
+						...state.globals[action.name],
+						...action.global
 					}
 				}
 			});
 		case types.UPDATE_DATA:
 			return Object.assign({}, state, {
-				...state,
 				data: {
 					...state.data,
 					...action.data,
+				}
+			});
+		case types.UPDATE_ADMIN:
+			return Object.assign({}, state, {
+				admin: {
+					...state.admin,
+					...action.admin,
+				}
+			});
+		case types.UPDATE_CART:
+			return Object.assign({}, state, {
+				cart: {
+					...state.cart,
+					...action.cart,
+				}
+			});
+		case types.UPDATE_ORDER:
+			return Object.assign({}, state, {
+				order: {
+					...state.order,
+					...action.order,
 				}
 			});
 		default:

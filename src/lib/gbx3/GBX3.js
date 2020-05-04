@@ -6,43 +6,101 @@ import {
 	util,
 	Loader,
 	getResource,
-	setCustomProp
+	setCustomProp,
+	updateInfo,
+	updateBlocks,
+	updateGlobals,
+	updateData
 } from '../';
-
+import { defaultGlobals, defaultBlocks } from './config';
+import 'react-grid-layout/css/styles.css';
+import 'react-resizable/css/styles.css';
+import '../styles/gbx3.scss';
+import '../styles/gbx3modal.scss';
 
 class GBX3 extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.loadGBX3 = this.loadGBX3.bind(this);
 		this.state = {
-
+			loading: true
 		};
 	}
 
 	componentDidMount() {
-		if (util.isEmpty(this.props.article) && this.props.kindID) {
-			this.props.getResource(this.props.resourceName, {
-				id: [this.props.kindID],
-				orgID: this.props.orgID,
+		const {
+			orgID,
+			articleID,
+			kindID,
+			kind
+		} = this.props;
+
+		this.loadGBX3({
+			orgID,
+			articleID,
+			kindID,
+			kind
+		});
+	}
+
+	loadGBX3({
+		orgID,
+		articleID,
+		kindID,
+		kind
+	}) {
+
+		const apiName = `org${types.kind(kind).api.item}`;
+		const globals = { ...defaultGlobals };
+		const blocks = { ...util.getValue(defaultBlocks, kind, {}) };
+
+		if (kindID) {
+			this.props.getResource(apiName, {
+				id: [kindID],
+				orgID: orgID,
 				callback: (res, err) => {
 					if (!err && !util.isEmpty(res)) {
 						const settings = util.getValue(res, 'giveboxSettings', {});
-						const color = util.getValue(settings, 'primaryColor', this.props.defaultPrimaryColor);
-						this.props.setCustomProp('primaryColor', color);
+						const themeColor = util.getValue(settings, 'primaryColor', this.props.defaultPrimaryColor);
+						const customTemplate = util.getValue(settings, 'customTemplate', {});
+						Object.assign({}, globals, {
+							gbxStyle: { themeColor }
+						}, {
+							...util.getValue(customTemplate, 'globals', {})
+						});
+						Object.assign({}, blocks, {
+							...util.getValue(customTemplate, 'blocks', {})
+						});
+
+						this.props.updateInfo({
+							orgID,
+							articleID,
+							kindID,
+							kind,
+							apiName
+						});
+						this.props.updateBlocks(blocks);
+						this.props.updateGlobals(globals);
+						this.props.updateData(res);
 					}
+					this.setState({ loading: false });
 				}
 			});
+		} else {
+			this.setState({ loading: false });
 		}
 	}
 
 	render() {
 
-		if (this.props.kindID && util.isEmpty(this.props.article)) return <Loader msg='Loading article resource...' />
+		if (this.state.loading) return <Loader msg='Initiating GBX3' />;
 
 		return (
 			<div className='gbx3'>
 				<Layout
 					{...this.props}
+					loadGBX3={this.loadGBX3}
 				/>
 			</div>
 		)
@@ -56,21 +114,16 @@ GBX3.defaultProps = {
 }
 
 function mapStateToProps(state, props) {
-	const resourceName = `org${types.kind(props.kind).api.item}`;
-	const resource = util.getValue(state.resource, resourceName, {});
-	const isFetching = util.getValue(resource, 'isFetching', false);
-	const article = util.getValue(resource, 'data', {});
 
 	return {
-		resourceName,
-		resource,
-		isFetching,
-		article,
-		access: util.getValue(state.resource, 'access', {})
 	}
 }
 
 export default connect(mapStateToProps, {
 	getResource,
-	setCustomProp
+	setCustomProp,
+	updateInfo,
+	updateBlocks,
+	updateGlobals,
+	updateData
 })(GBX3);

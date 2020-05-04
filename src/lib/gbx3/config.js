@@ -1,5 +1,5 @@
 
-export const defaultOptions = {
+export const defaultGlobals = {
 	gbxStyle: {
 		maxWidth: 1000,
 		themeColor: ''
@@ -140,7 +140,8 @@ const paymentForm = {
 	}
 };
 
-const fundraiserBlocks = [
+/*
+const fundraiserBlocks = {
 	logo,
 	title,
 	orgName,
@@ -149,15 +150,22 @@ const fundraiserBlocks = [
 	summary,
 	content,
 	paymentForm
-];
+};
+*/
+
+const fundraiserBlocks = {
+	title,
+	orgName,
+	summary
+};
 
 const invoiceBlocks = fundraiserBlocks;
 
-const eventBlocks = [
+const eventBlocks = {
 	logo,
 	title,
 	orgName,
-	{ ...amounts, ...{
+	amounts: { ...amounts, ...{
 		options: {
 			...amounts.options,
 			button: {
@@ -172,11 +180,11 @@ const eventBlocks = [
 	summary,
 	content,
 	paymentForm
-];
+};
 const sweepstakesBlocks = fundraiserBlocks;
 const membershipBlocks = fundraiserBlocks;
 
-export const initBlocks = {
+export const defaultBlocks = {
 	fundraiser: fundraiserBlocks,
 	invoice: invoiceBlocks,
 	event: eventBlocks,
