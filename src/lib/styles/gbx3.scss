@@ -38,6 +38,21 @@
 
 	/*------ End Elements ------*/
 
+	/*------- Init GBX3 Layout ---*/
+	.gbx3AdminContainer {
+		width: 200px;
+		height: auto;
+		background: red;
+	}
+
+	.gbx3Container {
+		width: 100%;
+		max-width: 1000px;
+		background: blue;
+		height: auto;
+	}
+
+
 	/*-------- General Form ----*/
 	.choice-group {
 		button .icon {

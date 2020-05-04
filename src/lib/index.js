@@ -58,25 +58,25 @@ import Video from './common/Video';
 import FeesGlossary from './glossary/Fees';
 
 import {
-  toggleModal,
-  removeResource,
-  resourceProp,
-  getAPI,
-  sendAPI,
-  setAppRef,
-  setModalRef,
-  setProp,
-  setPrefs,
-  setCustomProp
+	toggleModal,
+	removeResource,
+	resourceProp,
+	getAPI,
+	sendAPI,
+	setAppRef,
+	setModalRef,
+	setProp,
+	setPrefs,
+	setCustomProp
 } from './api/actions';
 
 import { app, resource, send, modal, preferences, custom } from './api/reducers';
 
 import {
-  getResource,
-  reloadResource,
-  sendResource,
-  savePrefs
+	getResource,
+	reloadResource,
+	sendResource,
+	savePrefs
 } from './api/helpers';
 
 import * as giveboxAPI from './api/givebox';
@@ -88,119 +88,112 @@ import { zohoCats } from './helpdesk/zohoCats';
 import Articles from './helpdesk/Articles';
 import HelpDeskButton from './helpdesk/HelpDeskButton';
 
-// GBX
-import { handleFile } from './gbx3/tools/util';
-import { BlockOption } from './gbx3/blocks/Block';
 
 // Editor
 import CustomCKEditor4 from './editor/CustomCKEditor4';
 import CKEditorUpload from './editor/CKEditorUpload';
 
 export {
-  // Form
-  Form,
-  _v,
-  selectOptions,
-  Select,
-  TextField,
-  Dropdown,
-  RichTextField,
-  Choice,
-  CalendarField,
-  CalendarRange,
-  Checkbox,
+	// Form
+	Form,
+	_v,
+	selectOptions,
+	Select,
+	TextField,
+	Dropdown,
+	RichTextField,
+	Choice,
+	CalendarField,
+	CalendarRange,
+	Checkbox,
 	ColorPicker,
 	Upload,
 	UploadLibrary,
-  UploadPrivate,
-  WhereField,
+	UploadPrivate,
+	WhereField,
 	MediaLibrary,
 
-  // actions
-  toggleModal,
-  removeResource,
-  resourceProp,
-  getAPI,
-  sendAPI,
-  setAppRef,
-  setModalRef,
-  setProp,
-  setPrefs,
-  setCustomProp,
+	// actions
+	toggleModal,
+	removeResource,
+	resourceProp,
+	getAPI,
+	sendAPI,
+	setAppRef,
+	setModalRef,
+	setProp,
+	setPrefs,
+	setCustomProp,
 
-  // API
-  giveboxAPI,
-  getResource,
-  reloadResource,
-  sendResource,
-  savePrefs,
+	// API
+	giveboxAPI,
+	getResource,
+	reloadResource,
+	sendResource,
+	savePrefs,
 
-  // reducers
-  app,
-  resource,
-  send,
-  modal,
-  preferences,
-  custom,
+	// reducers
+	app,
+	resource,
+	send,
+	modal,
+	preferences,
+	custom,
 
-  // Modal
-  ModalLink,
-  ModalRoute,
+	// Modal
+	ModalLink,
+	ModalRoute,
 
-  // Table
-  ActionsMenu,
-  Search,
-  Table,
-  MaxRecords,
-  NoRecords,
-  Paginate,
-  Export,
-  DownloadFileConnect,
-  Filter,
+	// Table
+	ActionsMenu,
+	Search,
+	Table,
+	MaxRecords,
+	NoRecords,
+	Paginate,
+	Export,
+	DownloadFileConnect,
+	Filter,
 
-  // Block
-  StatBlock,
-  ActionBar,
-  CodeBlock,
+	// Block
+	StatBlock,
+	ActionBar,
+	CodeBlock,
 
-  // common
-  Alert,
-  Collapse,
+	// common
+	Alert,
+	Collapse,
 	CustomBtn,
-  Delete,
-  Error,
-  Fade,
-  GBLink,
-  GBX,
-  Iframe,
-  Image,
-  ImageDisplay,
-  history,
-  LinearBar,
-  Loader,
+	Delete,
+	Error,
+	Fade,
+	GBLink,
+	GBX,
+	Iframe,
+	Image,
+	ImageDisplay,
+	history,
+	LinearBar,
+	Loader,
 	Popup,
 	Balloon,
-  Portal,
-  Redirect,
-  Tabs,
-  Tab,
-  types,
-  util,
+	Portal,
+	Redirect,
+	Tabs,
+	Tab,
+	types,
+	util,
 	Video,
 
-  // Glossary
-  FeesGlossary,
+	// Glossary
+	FeesGlossary,
 
-  // Help Desk
-  HelpDesk,
-  TicketForm,
-  zohoCats,
-  Articles,
-  HelpDeskButton,
-
-  // GBX
-	handleFile,
-	BlockOption,
+	// Help Desk
+	HelpDesk,
+	TicketForm,
+	zohoCats,
+	Articles,
+	HelpDeskButton,
 
 	// Editor
 	CustomCKEditor4,

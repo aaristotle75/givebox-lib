@@ -16,7 +16,7 @@ class GBLink extends Component {
 	}
 
 	onClick(e) {
-    e.preventDefault();
+		e.preventDefault();
 		if (this.linkRef) {
 			this.linkRef.current.blur();
 		}
@@ -52,9 +52,9 @@ class GBLink extends Component {
 		const mergeStyle = { ...style, ...this.state.hoverStyle };
 
 		return (
-	    <button ref={this.linkRef} disabled={disabled} type='button' id={id} className={`${ripple ? 'ripple' : ''} ${className || 'link'}`} onClick={this.onClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} style={mergeStyle}>
-	      {this.props.children}
-	    </button>
+			<button ref={this.linkRef} disabled={disabled} type='button' id={id} className={`${ripple ? 'ripple' : ''} ${className || 'link'}`} onClick={this.onClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} style={mergeStyle}>
+				{this.props.children}
+			</button>
 		)
 	}
 };
@@ -98,11 +98,11 @@ function mapStateToProps(state, props) {
 		style.border = `1px solid ${rgbColor}`;
 	}
 
-  return {
+	return {
 		primaryColor,
 		hoverStyle,
 		style
-  }
+	}
 }
 
 export default connect(mapStateToProps, {

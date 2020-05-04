@@ -1,0 +1,6 @@
+export const UPDATE_GBX3 = 'UPDATE_GBX3';
+export const UPDATE_BLOCKS = 'UPDATE_BLOCKS';
+export const UPDATE_BLOCK = 'UPDATE_BLOCK';
+export const UPDATE_OPTIONS = 'UPDATE_OPTIONS';
+export const UPDATE_OPTION = 'UPDATE_OPTION';
+export const UPDATE_DATA = 'UPDATE_DATA';

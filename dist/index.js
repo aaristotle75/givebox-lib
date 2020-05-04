@@ -60,10 +60,7 @@ import HelpDesk from './helpdesk/HelpDesk';
 import TicketForm from './helpdesk/TicketForm';
 import { zohoCats } from './helpdesk/zohoCats';
 import Articles from './helpdesk/Articles';
-import HelpDeskButton from './helpdesk/HelpDeskButton'; // GBX
-
-import { handleFile } from './gbx3/tools/util';
-import { BlockOption } from './gbx3/blocks/Block'; // Editor
+import HelpDeskButton from './helpdesk/HelpDeskButton'; // Editor
 
 import CustomCKEditor4 from './editor/CustomCKEditor4';
 import CKEditorUpload from './editor/CKEditorUpload';
@@ -77,6 +74,5 @@ Form, _v, selectOptions, Select, TextField, Dropdown, RichTextField, Choice, Cal
 , StatBlock, ActionBar, CodeBlock // common
 , Alert, Collapse, CustomBtn, Delete, Error, Fade, GBLink, GBX, Iframe, Image, ImageDisplay, history, LinearBar, Loader, Popup, Balloon, Portal, Redirect, Tabs, Tab, types, util, Video // Glossary
 , FeesGlossary // Help Desk
-, HelpDesk, TicketForm, zohoCats, Articles, HelpDeskButton // GBX
-, handleFile, BlockOption // Editor
+, HelpDesk, TicketForm, zohoCats, Articles, HelpDeskButton // Editor
 , CustomCKEditor4, CKEditorUpload };

@@ -463,8 +463,7 @@ export function onLoaded(element, callback) {
 }
 ;
 export function cloneObj(obj) {
-  return { ...obj
-  };
+  return JSON.parse(JSON.stringify(obj));
 }
 export function makeAPIQuery(obj) {
   let sort,

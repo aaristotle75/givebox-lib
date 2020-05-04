@@ -544,6 +544,7 @@ class Form extends Component {
 
   calendarField(name, opts) {
     const field = has(this.state.fields, name) ? this.state.fields[name] : null;
+    console.log('execute calendarField', this.defaults);
     const defaults = cloneObj(this.defaults);
     const params = Object.assign({}, defaults, {
       enableTime: false,

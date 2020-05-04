@@ -1,9 +1,9 @@
 
 export const defaultOptions = {
 	gbxStyle: {
-		maxWidth: 1000
+		maxWidth: 1000,
+		themeColor: ''
 	},
-	primaryColor: '',
 	button: {
 		embedAllowed: false,
 		enabled: false,
