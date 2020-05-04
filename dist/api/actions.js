@@ -160,8 +160,8 @@ export function getAPI(resource, endpoint, search, callback, reload, customName,
             break;
         }
       }).catch(function (error) {
-        dispatch(resourceCatchError(customName || resource, error));
-        dispatch(receiveResource(customName || resource, endpoint, {}, null, search));
+        dispatch(resourceCatchError(customName || resource, error)); //dispatch(receiveResource(customName || resource, endpoint, {}, null, search));
+
         if (callback) callback(null, error);
       });
     }

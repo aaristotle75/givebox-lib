@@ -454,9 +454,12 @@ export function onLoaded(element,callback){
 };
 
 export function cloneObj(obj) {
-	return JSON.parse(JSON.stringify(obj));
+	return { ...obj };
 }
 
+export function deepClone(obj) {
+	return JSON.parse(JSON.stringify(obj));
+}
 
 export function makeAPIQuery(obj) {
 	let sort, order, str = '?s=cloud';
