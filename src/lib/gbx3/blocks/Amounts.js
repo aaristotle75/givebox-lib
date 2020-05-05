@@ -4,12 +4,12 @@ import {
 	util,
 	GBLink,
 	ModalRoute,
-	toggleModal,
 	Collapse,
 	Tabs,
 	Tab,
 	types,
-	sendResource
+	sendResource,
+	updateData
 } from '../../';
 import AmountsEdit from './amounts/AmountsEdit';
 import AmountsList from './amounts/AmountsList';
@@ -18,13 +18,13 @@ import Button from './Button';
 import ButtonEdit from './ButtonEdit';
 import RecurringEdit from './amounts/RecurringEdit';
 import { amountFieldsConfig } from './amounts/amountFieldsConfig';
+import has from 'has';
 
 class Amounts extends Component {
 
 	constructor(props) {
 		super(props);
 		this.getAmounts = this.getAmounts.bind(this);
-		this.edit = this.edit.bind(this);
 		this.amountsListUpdated = this.amountsListUpdated.bind(this);
 		this.customUpdated = this.customUpdated.bind(this);
 		this.defaultUpdated = this.defaultUpdated.bind(this);
@@ -34,8 +34,8 @@ class Amounts extends Component {
 		this.closeModalAmountsEdit = this.closeModalAmountsEdit.bind(this);
 		this.validateAmountsBeforeSave = this.validateAmountsBeforeSave.bind(this);
 
-		const primaryColor = util.getValue(props.globalOptions, 'primaryColor');
-		const globalButton = { ...util.getValue(props.globalOptions, 'button', {}) };
+		const primaryColor = this.props.primaryColor;
+		const globalButton = { ...util.getValue(props.globals, 'button', {}) };
 		const globalButtonStyle = { ...util.getValue(globalButton, 'style', {}) };
 		const customButton = { ...util.getValue(props.options, 'button', {}) };
 		const customButtonStyle = { ...util.getValue(customButton, 'style', {}) };
@@ -45,16 +45,15 @@ class Amounts extends Component {
 		const recurring = util.getValue(props.options, 'recurring', {});
 
 		this.state = {
+			primaryColor,
 			button,
-			defaultButton: { ...button },
 			recurring,
-			defaultRecurring: { ...recurring },
+			defaultButton: util.deepClone(button),
+			defaultRecurring: util.deepClone(recurring),
 			amountsList: [],
 			customIndex: 6,
 			defaultIndex: 6,
-			edit: false,
-			primaryColor: this.props.primaryColor,
-			validateAmounts: true
+			formError: []
 		};
 		this.blockRef = null;
 		this.width = null;
@@ -70,18 +69,17 @@ class Amounts extends Component {
 		this.getAmounts();
 	}
 
-	edit() {
-		this.props.toggleModal(this.props.modalID, true);
-		this.setState({ edit: true });
-	}
-
 	closeModalAmountsEdit(type = 'save') {
+		util.toTop(`modalOverlay-${this.props.modalID}`);
+		console.log('formError', this.state.formError);
+		/*
 		if (type !== 'cancel') {
 			const button = { ...this.state.button };
 			const recurring = { ...this.state.recurring };
 			const amountsList = [ ...this.state.amountsList ];
 			const customIndex = this.state.customIndex;
 			const defaultIndex = this.state.defaultIndex;
+
 			this.props.updateData({
 				amountIndexCustom: customIndex,
 				amountIndexDefault: defaultIndex,
@@ -90,48 +88,49 @@ class Amounts extends Component {
 				}
 			}, true);
 
-			this.props.updateBlock(this.props.name, null, {
+			this.props.updateBlock(null, {
 				button,
 				recurring,
 				amountsList,
 				customIndex,
 				defaultIndex
 			});
-			this.setState({ edit: false });
 		} else {
 			this.setState({
-				edit: false,
-				button: { ...this.state.defaultButton },
-				recurring: { ...this.state.defaultRecurring },
-				amountsList: [ ...this.state.amountsListDefault ],
+				button: util.deepClone(this.state.defaultButton),
+				recurring: util.deepClone(this.state.defaultRecurring),
+				amountsList: util.deepClone(this.state.amountsListDefault),
 				customIndex: this.state.customIndexDefault,
 				customID: this.state.customIDDefault,
 				defaultIndex: this.state.defaultIndexDefault,
 				defaultID: this.state.defaultIDDefault,
-			});
+			}, this.props.closeEditModal);
 		}
-		this.props.toggleModal(this.props.modalID, false)
+		*/
 	}
 
-	validateAmountsBeforeSave(validateAmounts, callback) {
-		this.setState({ validateAmounts }, callback)
+	validateAmountsBeforeSave(formErrorID, error, callback) {
+		const formError = this.state.formError;
+		if (error) {
+			if (!formError.includes(formErrorID)) formError.push(formErrorID);
+		} else {
+			const index = formError.indexOf(formErrorID);
+			if (index !== -1) formError.splice(index, 1);
+		}
+		this.setState({ formError }, callback)
 	}
 
 	closeModalAmountsList() {
 		console.log('execute closeModalAmountsList');
 	}
 
-	remove() {
-		console.log('execute remove');
-	}
-
 	getAmounts() {
 		const {
-			article,
+			data,
 			kind
 		} = this.props;
 
-		const amountsObj = util.getValue(article, types.kind(kind).amountField, {});
+		const amountsObj = util.getValue(data, types.kind(kind).amountField, {});
 		const amountsList = util.getValue(amountsObj, 'list', []);
 
 		let customIndex = null;
@@ -140,8 +139,8 @@ class Amounts extends Component {
 		switch (kind) {
 			case 'fundraiser':
 			case 'invoice': {
-				customIndex = util.getValue(article, 'amountIndexCustom', 6);
-				defaultIndex = util.getValue(article, 'amountIndexDefault', 6);
+				customIndex = util.getValue(data, 'amountIndexCustom', 6);
+				defaultIndex = util.getValue(data, 'amountIndexDefault', 6);
 				break;
 			}
 
@@ -170,7 +169,7 @@ class Amounts extends Component {
 	renderAmountsList(embed = false) {
 
 		const {
-			article,
+			data,
 			kind
 		} = this.props;
 
@@ -201,7 +200,7 @@ class Amounts extends Component {
 						color={primaryColor}
 						kind={this.props.kind}
 						buttonEnabled={util.getValue(button, 'enabled', false)}
-						article={article}
+						article={data}
 					/>
 				)
 			}
@@ -272,13 +271,11 @@ class Amounts extends Component {
 
 		const {
 			modalID,
-			noRemove,
-			article,
+			data,
 			kind
 		} = this.props;
 
 		const {
-			edit,
 			amountsList,
 			button,
 			recurring,
@@ -316,7 +313,7 @@ class Amounts extends Component {
 									<div className='formSectionContainer'>
 										<div className='formSection'>
 											<AmountsEdit
-												article={article}
+												article={data}
 												amountsList={amountsList}
 												kind={kind}
 												modalID={modalID}
@@ -328,6 +325,7 @@ class Amounts extends Component {
 												defaultID={defaultID}
 												defaultUpdated={this.defaultUpdated}
 												sendResource={this.props.sendResource}
+												validateAmountsBeforeSave={this.validateAmountsBeforeSave}
 											/>
 										</div>
 									</div>
@@ -362,7 +360,7 @@ class Amounts extends Component {
 											<div className='formSection'>
 												<RecurringEdit
 													recurring={recurring}
-													article={article}
+													article={data}
 													kind={kind}
 													updateData={this.props.updateData}
 													optionsUpdated={this.optionsUpdated}
@@ -384,11 +382,15 @@ class Amounts extends Component {
 						<ModalRoute
 							className='gbx3'
 							id='amountsList'
+							effect='3DFlipVert' style={{ width: '60%' }}
+							draggable={false}
+							closeCallback={this.closeModalAmountsList}
+							disallowBgClose={false}
 							component={() =>
 								<div className='modalContainers'>
 									<div className='topContainer'>
 										<h3 style={{ padding: 0, margin: 0 }}>{util.getValue(button, 'text', 'Select Amount')}</h3>
-										<span style={{ fontWeight: 300 }} className='center'>{util.getValue(article, 'title')}</span>
+										<span style={{ fontWeight: 300 }} className='center'>{util.getValue(data, 'title')}</span>
 									</div>
 									<div className='middleContainer'>
 										{this.renderAmountsList()}
@@ -405,10 +407,6 @@ class Amounts extends Component {
 									</div>
 								</div>
 							}
-							effect='3DFlipVert' style={{ width: '60%' }}
-							draggable={false}
-							closeCallback={this.closeModalAmountsList}
-							disallowBgClose={false}
 						/>
 						<Button
 							modalID={`amountsList`}
@@ -425,14 +423,15 @@ class Amounts extends Component {
 
 function mapStateToProps(state, props) {
 
-	const modalID = `amountBlock-${props.name}`;
+	const gbx3 = util.getValue(state, 'gbx3', {});
+	const data = util.getValue(gbx3, 'data', {});
 
 	return {
-		modalID
+		data
 	}
 }
 
 export default connect(mapStateToProps, {
-	toggleModal,
-	sendResource
+	sendResource,
+	updateData
 })(Amounts);

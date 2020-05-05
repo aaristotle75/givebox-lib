@@ -119,7 +119,8 @@ const summary = {
 const content = {
 	name: 'content',
 	title: 'Content',
-	type: 'Content',
+	type: 'Text',
+	subType: 'content',
 	field: 'description',
 	overflow: 'visible',
 	options: {},
@@ -154,9 +155,14 @@ const fundraiserBlocks = {
 */
 
 const fundraiserBlocks = {
+	logo,
 	title,
 	orgName,
-	summary
+	amounts,
+	media,
+	summary,
+	content,
+	paymentForm
 };
 
 const invoiceBlocks = fundraiserBlocks;

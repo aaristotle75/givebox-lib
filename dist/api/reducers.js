@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import * as types from './actionTypes';
+import { gbx3 } from './gbx3reducers';
 import has from 'has';
 export function preferences(state = {}, action) {
   switch (action.type) {
@@ -191,14 +192,15 @@ const appReducer = combineReducers({
   resource,
   modal,
   send,
-  custom
+  custom,
+  gbx3
 });
 
 const rootReducers = (state, action) => {
   /*
   if (action.type === 'USER_LOGOUT') {
-    const { routing } = state;
-    state = { routing };
+  	const { routing } = state;
+  	state = { routing };
   }
   */
   return appReducer(state, action);

@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import {
 	util,
 	GBLink,
 	ModalRoute,
-	toggleModal,
 	Collapse
 } from '../../';
-import CustomCKEditor4 from '../../editor/CustomCKEditor4';
+import Editor from './Editor';
 
-class Text extends Component {
+export default class Text extends Component {
 
 	constructor(props) {
 		super(props);
@@ -21,7 +19,7 @@ class Text extends Component {
 
 		const defaultContent = options.defaultFormat && props.fieldValue ? options.defaultFormat.replace('{{TOKEN}}', props.fieldValue) : `<p>${props.fieldValue}</p>`;
 
-		const content = util.getValue(props.blockContent, 'content', defaultContent);
+		const content = util.getValue(props.blockContent, 'html', defaultContent);
 
 		this.state = {
 			content,
@@ -53,7 +51,7 @@ class Text extends Component {
 
 	closeEditModal(type = 'save') {
 		if (type !== 'cancel') {
-			this.props.updateBlock({ content: this.state.content });
+			this.props.updateBlock({ html: this.state.content });
 		} else {
 			this.setState({ content: this.state.defaultContent }, this.props.closeEditModal);
 		}
@@ -65,7 +63,8 @@ class Text extends Component {
 			modalID,
 			title,
 			articleID,
-			orgID
+			orgID,
+			block
 		} = this.props;
 
 		const {
@@ -73,13 +72,19 @@ class Text extends Component {
 		} = this.state;
 
 		const cleanHtml = util.cleanHtml(content);
+		const subType = util.getValue(block, 'subType');
 
 		return (
-			<div style={{ }} className={`textBlock`}>
+			<div className={`${subType === 'content' ? 'contentBlock' : 'textBlock'}`}>
 				<ModalRoute
 					className='gbx3'
 					optsProps={{ closeCallback: this.onCloseUploadEditor }}
 					id={modalID}
+					effect='3DFlipVert' style={{ width: '60%' }}
+					draggable={true}
+					draggableTitle={`Editing ${title}`}
+					closeCallback={this.closeEditModal}
+					disallowBgClose={true}
 					component={() =>
 						<div className='modalWrapper'>
 							<Collapse
@@ -88,32 +93,13 @@ class Text extends Component {
 							>
 								<div className='formSectionContainer'>
 									<div className='formSection'>
-										<CustomCKEditor4
+										<Editor
 											orgID={orgID}
 											articleID={articleID}
 											content={content}
 											onBlur={this.onBlur}
 											onChange={this.onChange}
-											width={'100%'}
-											height={`150px`}
-											type='classic'
-											toolbar={[
-												[ 'Bold', 'Italic', '-', 'Font', '-', 'FontSize', 'TextColor', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight']
-											]}
-											initCallback={(editor) => {
-												editor.focus();
-												const CKEDITOR = window.CKEDITOR;
-												const selection = editor.getSelection();
-												const getRanges = selection ? selection.getRanges() : [];
-												if (!util.isEmpty(getRanges)) {
-													const range = getRanges[0];
-													const pCon = range.startContainer.getAscendant('p',true);
-													const newRange = new CKEDITOR.dom.range(range.document);
-													newRange.moveToPosition(pCon, CKEDITOR.POSITION_AFTER_END);
-													newRange.select();
-												}
-											}}
-											contentCss='https://givebox.s3-us-west-1.amazonaws.com/public/css/gbx3contents.css'
+											subType={subType}
 										/>
 									</div>
 								</div>
@@ -124,24 +110,9 @@ class Text extends Component {
 							</div>
 						</div>
 					}
-					effect='3DFlipVert' style={{ width: '60%' }}
-					draggable={true}
-					draggableTitle={`Editing ${title}`}
-					closeCallback={this.closeEditModal}
-					disallowBgClose={true}
 				/>
 				<div dangerouslySetInnerHTML={{ __html: cleanHtml }} />
 			</div>
 		)
 	}
 }
-
-function mapStateToProps(state, props) {
-
-	return {
-	}
-}
-
-export default connect(mapStateToProps, {
-	toggleModal
-})(Text);

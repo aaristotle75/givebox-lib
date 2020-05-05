@@ -10,7 +10,7 @@ import {SortableContainer, SortableElement, SortableHandle} from 'react-sortable
 import '../../../styles/gbx3amountsEdit.scss';
 import { amountFieldsConfig } from './amountFieldsConfig';
 import AnimateHeight from 'react-animate-height';
-import CustomCKEditor4 from '../../../editor/CustomCKEditor4';
+import Editor from '../Editor';
 const arrayMove = require('array-move');
 
 const DragHandle = SortableHandle(() => {
@@ -55,8 +55,7 @@ export default class AmountsEdit extends Component {
 		this.getAmount = this.getAmount.bind(this);
 		this.deleteAmount = this.deleteAmount.bind(this);
 		this.addAmount = this.addAmount.bind(this);
-		this.state = {
-		};
+		this.validateEnabledAmount = this.validateEnabledAmount.bind(this);
 	}
 
 	componentDidMount() {
@@ -131,19 +130,40 @@ export default class AmountsEdit extends Component {
 		});
 	}
 
+	validateEnabledAmount(ID, enabled) {
+		const {
+			customID
+		} = this.props;
+		const config = util.getValue(amountFieldsConfig, this.props.kind, {});
+		const amount = this.getAmount(ID);
+		const customField = config.hasCustomField && customID === ID ? true : false;
+		const displayValue = amount.priceDisplay || (amount.price && amount.price !== 0 ? amount.price/100 : '');
+		let error = false;
+		if (enabled && !customField && !_v.validateNumber(displayValue, _v.limits.txMin, _v.limits.txMax) && !util.getValue(amount, 'freeSingleEntry')) {
+			error = `Enabled amounts must be between $${_v.limits.txMin} and $${util.numberWithCommas(_v.limits.txMax)}.`;
+		} else if (!enabled && !_v.validateNumber(displayValue, 0, _v.limits.txMax)) {
+			error = `Amounts cannot exceed $${util.numberWithCommas(_v.limits.txMax)}.`;
+		}
+
+		return error;
+	}
+
 	enabledField(ID, fieldProps, config) {
 		const amount = this.getAmount(ID);
 		const isDefault = config.hasDefaultField && this.props.defaultID === ID ? true : false;
+		const error = this.validateEnabledAmount(ID, amount.enabled);
+
 		return (
 			<div className={`enableField ${isDefault ? 'tooltip' : ''}`}>
 				{isDefault ? <span className={`tooltipTop`}><i />To disable amount please change the default to a different amount.</span> : <></>}
 				<GBLink
-					className={`${amount.enabled ? '' : 'link gray'}`}
+					className={`${amount.enabled ? error ? 'error' : '' : 'link gray'}`}
 					onClick={() => {
 						let enabled = amount.enabled ? false : true;
 						if (config.hasDefaultField && isDefault && !enabled) {
 							enabled = true;
 						}
+						this.props.validateAmountsBeforeSave(ID, this.validateEnabledAmount(ID, enabled));
 						this.updateAmounts(ID, { enabled });
 					}}
 				>
@@ -162,12 +182,7 @@ export default class AmountsEdit extends Component {
 		const fieldName = `price${ID}`;
 		const displayValue = amount.priceDisplay || (amount.price && amount.price !== 0 ? amount.price/100 : '');
 		const customField = config.hasCustomField && customID === ID ? true : false;
-		let error = false;
-		if (amount.enabled && !customField && !_v.validateNumber(displayValue, _v.limits.txMin, _v.limits.txMax) && !util.getValue(amount, 'freeSingleEntry')) {
-			error = `Enabled amounts must be between $${_v.limits.txMin} and $${util.numberWithCommas(_v.limits.txMax)}.`;
-		} else if (!amount.enabled && !_v.validateNumber(displayValue, 0, _v.limits.txMax)) {
-			error = `Amounts cannot exceed $${util.numberWithCommas(_v.limits.txMax)}.`;
-		}
+		const error = this.validateEnabledAmount(ID, amount.enabled);
 
 		return (
 			<TextField
@@ -176,6 +191,9 @@ export default class AmountsEdit extends Component {
 				label={util.getValue(fieldProps, 'label')}
 				fixedLabel={true}
 				placeholder={customField ? 'Any Amount' : util.getValue(fieldProps, 'placeholder', '0.00')}
+				onBlur={(e) => {
+					this.props.validateAmountsBeforeSave(ID, this.validateEnabledAmount(ID, amount.enabled));
+				}}
 				onChange={(e) => {
 					const value = e.currentTarget.value;
 					const priceDisplay = _v.formatNumber(value);
@@ -243,32 +261,15 @@ export default class AmountsEdit extends Component {
 					height={amount.showDetails ? 'auto' : 0}
 				>
 					<div className='showDetails'>
-						<CustomCKEditor4
+						<Editor
 							orgID={util.getValue(article, 'orgID', null)}
 							articleID={util.getValue(article, 'articleID', null)}
 							content={amount.description}
+							subType='content'
+							loaderClass='gbx3amountsEdit'
 							onChange={(description) => {
 								this.updateAmounts(ID, { description });
 							}}
-							width={'100%'}
-							height={`300px`}
-							type='classic'
-							initCallback={(editor) => {
-								editor.focus();
-								const CKEDITOR = window.CKEDITOR;
-								const selection = editor.getSelection();
-								const getRanges = selection ? selection.getRanges() : [];
-								if (!util.isEmpty(getRanges)) {
-									const range = getRanges[0];
-									const pCon = range.startContainer.getAscendant('p',true);
-									const newRange = new CKEDITOR.dom.range(range.document);
-									newRange.moveToPosition(pCon, CKEDITOR.POSITION_AFTER_END);
-									newRange.select();
-								}
-							}}
-							contentCss='https://givebox.s3-us-west-1.amazonaws.com/public/css/gbx3contents.css'
-							removePlugins='image,elementspath'
-							loaderClass='gbx3amountsEdit'
 						/>
 					</div>
 				</AnimateHeight>

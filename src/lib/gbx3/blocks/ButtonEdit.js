@@ -9,8 +9,7 @@ import {
 	_v,
 	Dropdown,
 	types,
-	GBLink,
-	ModalLink
+	GBLink
 } from '../../';
 import AnimateHeight from 'react-animate-height';
 import Button from './Button';

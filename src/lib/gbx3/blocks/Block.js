@@ -39,7 +39,7 @@ class Block extends React.Component {
 		this.setState({ editModalOpen: false });
 	}
 
-	updateBlock(content, options = {}, updateSpecificGrid = false, callback = this.closeEditModal) {
+	updateBlock(content = {}, options = {}, updateSpecificGrid = false, callback = this.closeEditModal) {
 		const {
 			name,
 			block,
@@ -52,8 +52,20 @@ class Block extends React.Component {
 
 		this.props.updateBlock(name, Object.assign({}, block, {
 			grid: {
-				mobile: { ...block.grid.mobile, content: mobileContent },
-				desktop: { ...block.grid.desktop, content: desktopContent }
+				mobile: {
+					...block.grid.mobile,
+					content: {
+						...util.getValue(block.grid.mobile, 'content', {}),
+						...mobileContent
+					}
+				},
+				desktop: {
+					...block.grid.desktop,
+					content: {
+						...util.getValue(block.grid.desktop, 'content', {}),
+						...desktopContent
+					}
+				}
 			},
 			options: {
 				...block.options,
@@ -70,11 +82,12 @@ class Block extends React.Component {
 
 		const grid = util.getValue(block, 'grid', {});
 		const gridBreakpoint = util.getValue(grid, breakpoint, {});
-		return util.getValue(gridBreakpoint, 'content');
+		return util.getValue(gridBreakpoint, 'content', {});
 	}
 
 	renderChildren() {
 		const {
+			kind,
 			breakpoint,
 			articleID,
 			orgID,
@@ -88,6 +101,7 @@ class Block extends React.Component {
 
 		const childrenWithProps = React.Children.map(this.props.children,
 			(child) => React.cloneElement(child, {
+				kind,
 				articleID,
 				orgID,
 				name,
@@ -138,6 +152,7 @@ function mapStateToProps(state, props) {
 	const modalID = `modalBlock-${props.name}`;
 	const gbx3 = util.getValue(state, 'gbx3', {});
 	const info = util.getValue(gbx3, 'info', {});
+	const kind = util.getValue(info, 'kind');
 	const articleID = util.getValue(info, 'articleID');
 	const orgID = util.getValue(info, 'orgID');
 	const blocks = util.getValue(gbx3, 'blocks', {});
@@ -148,6 +163,7 @@ function mapStateToProps(state, props) {
 	const fieldValue = util.getValue(data, dataField);
 
 	return {
+		kind,
 		articleID,
 		orgID,
 		modalID,

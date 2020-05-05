@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import {
 	util,
 	GBLink,
 	Image,
 	MediaLibrary,
 	ModalRoute,
-	toggleModal,
 	Collapse,
 	Tabs,
 	Tab,
@@ -17,15 +15,14 @@ import {
 } from '../../';
 import AnimateHeight from 'react-animate-height';
 
-class Media extends Component {
+export default class Media extends Component {
 
 	constructor(props) {
 		super(props);
-		this.edit = this.edit.bind(this);
 		this.handleSaveCallback = this.handleSaveCallback.bind(this);
 		this.closeModalAndSave = this.closeModalAndSave.bind(this);
 		this.closeModalAndCancel = this.closeModalAndCancel.bind(this);
-		this.closeModalCallback = this.closeModalCallback.bind(this);
+		this.closeEditModal = this.closeEditModal.bind(this);
 		this.handleBorderRadius = this.handleBorderRadius.bind(this);
 		this.onChangeVideo = this.onChangeVideo.bind(this);
 		this.videoOnReady = this.videoOnReady.bind(this);
@@ -38,11 +35,12 @@ class Media extends Component {
 			this.maxHeight = this.blockRef.clientHeight;
 		}
 
-		const size = util.getValue(props.options, 'size', 'large');
-		const borderRadius = util.getValue(props.options, 'borderRadius', 5);
-		const mediaType = util.getValue(props.options, 'mediaType', 'image');
+		const options = props.options;
+		const size = util.getValue(options, 'size', 'large');
+		const borderRadius = util.getValue(options, 'borderRadius', 5);
+		const mediaType = util.getValue(options, 'mediaType', 'image');
 		const defaultContent = mediaType === 'image' ? util.imageUrlWithStyle(props.fieldValue, size) : {};
-		const content = util.getValue(this.props.info, mediaType, defaultContent);
+		const content = util.getValue(props.blockContent, mediaType, defaultContent);
 
 		this.state = {
 			content,
@@ -50,7 +48,6 @@ class Media extends Component {
 			mediaType,
 			defaultMediaType: mediaType,
 			defaultContent: content,
-			edit: false,
 			maxWidth: this.maxWidth || 550,
 			maxHeight: this.maxHeight || 550,
 			video: {
@@ -73,15 +70,6 @@ class Media extends Component {
 		this.setState({ step });
 	}
 
-	edit() {
-		this.props.toggleModal(this.props.modalID, true);
-		this.setState({ edit: true });
-	}
-
-	remove() {
-		console.log('execute remove');
-	}
-
 	closeModalAndSave() {
 		const {
 			content,
@@ -92,7 +80,6 @@ class Media extends Component {
 		this.timeout = setTimeout(() => {
 			this.setState({ loading: false, edit: false }, () => {
 				this.props.updateBlock(
-					this.props.name,
 					{
 						[mediaType]: content
 					},
@@ -101,13 +88,11 @@ class Media extends Component {
 						mediaType
 					}
 				);
-				this.props.toggleModal(this.props.modalID, false);
 			});
 		}, 0);
 	}
 
 	closeModalAndCancel() {
-
 		const {
 			defaultMediaType,
 			defaultContent,
@@ -125,14 +110,12 @@ class Media extends Component {
 				error: false
 			},
 			edit: false
-		}, () => {
-			this.props.toggleModal(this.props.modalID, false);
-		});
+		}, this.props.closeEditModal);
 	}
 
-	closeModalCallback(type) {
+	closeEditModal(type = 'save') {
 		this.setState({ loading: true });
-		if (type === 'ok') {
+		if (type !== 'cancel') {
 			this.closeModalAndSave();
 		} else {
 			this.closeModalAndCancel();
@@ -145,7 +128,7 @@ class Media extends Component {
 			loading: true,
 			mediaType: 'image',
 			content: util.imageUrlWithStyle(url, size)
-		}, () => this.closeModalCallback('ok'));
+		}, () => this.closeEditModal('save'));
 	}
 
 	handleBorderRadius(e) {
@@ -196,8 +179,8 @@ class Media extends Component {
 
 		const {
 			title,
-			noRemove,
-			article,
+			orgID,
+			articleID,
 			modalID,
 			options,
 			maxRadius,
@@ -205,7 +188,6 @@ class Media extends Component {
 		} = this.props;
 
 		const {
-			edit,
 			content,
 			maxWidth,
 			maxHeight,
@@ -213,9 +195,6 @@ class Media extends Component {
 			video,
 			mediaType
 		} = this.state;
-
-		const articleID = util.getValue(article, 'articleID', null);
-		const orgID = util.getValue(article, 'orgID', null);
 
 		const library = {
 			articleID,
@@ -230,6 +209,11 @@ class Media extends Component {
 					className='gbx3'
 					optsProps={{ closeCallback: this.onCloseUploadEditor, customOverlay: { zIndex: 10000000 } }}
 					id={modalID}
+					effect='3DFlipVert' style={{ width: '60%' }}
+					draggable={true}
+					draggableTitle={`Editing ${title}`}
+					closeCallback={this.closeEditModal}
+					disallowBgClose={true}
 					component={() =>
 						<div className='modalWrapper'>
 							<Tabs
@@ -254,8 +238,8 @@ class Media extends Component {
 													handleSaveCallback={this.handleSaveCallback}
 													handleSave={util.handleFile}
 													library={library}
-													closeModalAndCancel={this.closeModalCallback}
-													closeModalAndSave={() => this.closeModalCallback('ok')}
+													closeModalAndCancel={this.closeEditModal}
+													closeModalAndSave={() => this.closeEditModal('save')}
 													showBtns={'hide'}
 													saveLabel={'close'}
 												/>
@@ -339,19 +323,14 @@ class Media extends Component {
 								</Tab>
 							</Tabs>
 							<div style={{ margin: 0 }} className='button-group center'>
-								<GBLink className='link' onClick={this.closeModalCallback}>Cancel</GBLink>
-								<GBLink className='button' onClick={() => this.closeModalCallback('ok')}>Save</GBLink>
+								<GBLink className='link' onClick={this.closeEditModal}>Cancel</GBLink>
+								<GBLink className='button' onClick={() => this.closeEditModal('save')}>Save</GBLink>
 							</div>
 						</div>
 					}
-					effect='3DFlipVert' style={{ width: '60%' }}
-					draggable={true}
-					draggableTitle={`Editing ${title}`}
-					closeCallback={this.closeModalCallback}
-					disallowBgClose={true}
 				/>
 				{ mediaType === 'image' ?
-					<Image imgStyle={{ borderRadius: `${borderRadius}%` }} url={content} size={util.getValue(options, 'size', 'large')} minHeight={0} maxWidth={maxWidth} maxHeight={maxHeight} alt={`${util.getValue(article, 'title')}`} />
+					<Image imgStyle={{ borderRadius: `${borderRadius}%` }} url={content} size={util.getValue(options, 'size', 'large')} minHeight={0} maxWidth={maxWidth} maxHeight={maxHeight} alt={title} />
 				:
 					this.renderVideo()
 				}
@@ -364,16 +343,3 @@ Media.defaultProps = {
 	minRadius: 0,
 	maxRadius: 50
 }
-
-function mapStateToProps(state, props) {
-
-	const modalID = `mediaBlock-${props.name}`;
-
-	return {
-		modalID
-	}
-}
-
-export default connect(mapStateToProps, {
-	toggleModal
-})(Media);

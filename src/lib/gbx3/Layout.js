@@ -7,6 +7,7 @@ import {
 	util
 } from '../';
 import Block from './blocks/Block';
+import has from 'has';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -59,22 +60,22 @@ class Layout extends React.Component {
 
 	layoutChange(layout, layouts) {
 		const {
-			breakpoint,
-			blocks
+			breakpoint
 		} = this.props;
 
+		const blocks = util.cloneObj(this.props.blocks);
 		const breakpointLayout = util.getValue(layouts, breakpoint);
 		if (breakpointLayout) {
 			breakpointLayout.forEach((value) => {
-				const block = util.getValue(blocks, value);
-				if (!util.isEmpty(block)) {
-					const grid = util.getValue(block, 'grid', {});
-					const gridBreak = util.getValue(grid, breakpoint);
-					if (!util.isEmpty(gridBreak)) {
-						gridBreak.x = value.x;
-						gridBreak.y = value.y;
-						gridBreak.w = value.w;
-						gridBreak.h = value.h;
+				const block = value.i;
+				if (has(blocks, block)) {
+					if (has(blocks[block], 'grid')) {
+						if (has(blocks[block].grid, breakpoint)) {
+							blocks[block].grid[breakpoint].x = value.x;
+							blocks[block].grid[breakpoint].y = value.y;
+							blocks[block].grid[breakpoint].w = value.w;
+							blocks[block].grid[breakpoint].h = value.h;
+						}
 					}
 				}
 			});
