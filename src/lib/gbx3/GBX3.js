@@ -96,6 +96,8 @@ class GBX3 extends React.Component {
 
 		if (this.state.loading) return <Loader msg='Initiating GBX3' />;
 
+		console.log('execute', this.props.access);
+
 		return (
 			<div className='gbx3'>
 				<Layout

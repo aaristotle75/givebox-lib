@@ -35,7 +35,7 @@ $dark-blue-gray: #253655;
 $red: #e83b2e;
 $yellow: #fbe810;
 $yelloworange: #FFCC80;
-$orange: #ecab1f;
+$orange: #ffb156;
 $green: #59efe8; // Gren Glow #6cfec9;  // Glow #6cfef7 // Orig Green #35e6b2
 $greenDark: #27ab84;
 
@@ -94,40 +94,40 @@ $canvasOverlay: rgba(37, 54, 85, .1);
 $sonarAlertColor: $green;
 
 @mixin box-shadow($shadows...) {
-  -moz-box-: $shadows;
-  -webkit-box-shadow: $shadows;
-  box-shadow: $shadows;
+	-moz-box-: $shadows;
+	-webkit-box-shadow: $shadows;
+	box-shadow: $shadows;
 }
 
 @mixin drop-shadow($shadows...) {
-  -webkit-filter: drop-shadow($shadows);
-  filter: drop-shadow($shadows);
+	-webkit-filter: drop-shadow($shadows);
+	filter: drop-shadow($shadows);
 }
 
 @mixin default-transition($transitions...) {
-  transition-duration: $transitions;
-  -webkit-transition-duration: $transitions;
+	transition-duration: $transitions;
+	-webkit-transition-duration: $transitions;
 }
 
 @mixin transition($transitions...) {
-  transition: $transitions;
-  -webkit-transition: $transitions;
+	transition: $transitions;
+	-webkit-transition: $transitions;
 }
 
 @mixin animation($animations...) {
-  animation: $animations;
-  -webkit-animation: $animations;
+	animation: $animations;
+	-webkit-animation: $animations;
 }
 
 @mixin browser($browsers) {
-  @each $browser in $browsers {
-    html[data-browser*="#{$browser}"] & {
-      @content;
-    }
-  }
+	@each $browser in $browsers {
+		html[data-browser*="#{$browser}"] & {
+			@content;
+		}
+	}
 }
 
 @mixin filter($filter...) {
-  -webkit-filter: $filter;
-  filter: $filter;
+	-webkit-filter: $filter;
+	filter: $filter;
 }

@@ -9,7 +9,8 @@ import {
 	Tab,
 	types,
 	sendResource,
-	updateData
+	updateData,
+	Fade
 } from '../../';
 import AmountsEdit from './amounts/AmountsEdit';
 import AmountsList from './amounts/AmountsList';
@@ -18,7 +19,7 @@ import Button from './Button';
 import ButtonEdit from './ButtonEdit';
 import RecurringEdit from './amounts/RecurringEdit';
 import { amountFieldsConfig } from './amounts/amountFieldsConfig';
-import has from 'has';
+import AnimateHeight from 'react-animate-height';
 
 class Amounts extends Component {
 
@@ -33,6 +34,10 @@ class Amounts extends Component {
 		this.closeModalAmountsList = this.closeModalAmountsList.bind(this);
 		this.closeModalAmountsEdit = this.closeModalAmountsEdit.bind(this);
 		this.validateAmountsBeforeSave = this.validateAmountsBeforeSave.bind(this);
+		this.resetToDefaults = this.resetToDefaults.bind(this);
+		this.callbackBeforeStep = this.callbackBeforeStep.bind(this);
+		this.callbackAfterStep = this.callbackAfterStep.bind(this);
+		this.setTab = this.setTab.bind(this);
 
 		const primaryColor = this.props.primaryColor;
 		const globalButton = { ...util.getValue(props.globals, 'button', {}) };
@@ -51,9 +56,11 @@ class Amounts extends Component {
 			defaultButton: util.deepClone(button),
 			defaultRecurring: util.deepClone(recurring),
 			amountsList: [],
+			amountsListEditable: [],
 			customIndex: 6,
 			defaultIndex: 6,
-			formError: []
+			formError: [],
+			tab: 'edit'
 		};
 		this.blockRef = null;
 		this.width = null;
@@ -71,43 +78,55 @@ class Amounts extends Component {
 
 	closeModalAmountsEdit(type = 'save') {
 		util.toTop(`modalOverlay-${this.props.modalID}`);
-		console.log('formError', this.state.formError);
-		/*
+		this.setTab('edit');
+		const {
+			formError
+		} = this.state;
 		if (type !== 'cancel') {
-			const button = { ...this.state.button };
-			const recurring = { ...this.state.recurring };
-			const amountsList = [ ...this.state.amountsList ];
-			const customIndex = this.state.customIndex;
-			const defaultIndex = this.state.defaultIndex;
+			if (util.isEmpty(formError)) {
+				const button = { ...this.state.button };
+				const recurring = { ...this.state.recurring };
+				const amountsList = [ ...this.state.amountsListEditable ];
+				const customIndex = this.state.customIndex;
+				const defaultIndex = this.state.defaultIndex;
 
-			this.props.updateData({
-				amountIndexCustom: customIndex,
-				amountIndexDefault: defaultIndex,
-				[types.kind(this.props.kind).amountField]: {
-					list: amountsList
-				}
-			}, true);
+				this.props.updateData({
+					amountIndexCustom: customIndex,
+					amountIndexDefault: defaultIndex,
+					[types.kind(this.props.kind).amountField]: {
+						list: amountsList
+					}
+				}, true);
 
-			this.props.updateBlock(null, {
-				button,
-				recurring,
-				amountsList,
-				customIndex,
-				defaultIndex
-			});
+				this.props.updateBlock(null, {
+					button,
+					recurring,
+					amountsList,
+					customIndex,
+					defaultIndex
+				});
+			} else {
+				if (type === 'ok') this.resetToDefaults(this.props.closeEditModal);
+			}
 		} else {
-			this.setState({
-				button: util.deepClone(this.state.defaultButton),
-				recurring: util.deepClone(this.state.defaultRecurring),
-				amountsList: util.deepClone(this.state.amountsListDefault),
-				customIndex: this.state.customIndexDefault,
-				customID: this.state.customIDDefault,
-				defaultIndex: this.state.defaultIndexDefault,
-				defaultID: this.state.defaultIDDefault,
-			}, this.props.closeEditModal);
+			this.resetToDefaults(this.props.closeEditModal);
 		}
-		*/
 	}
+
+	resetToDefaults(callback = () => {}) {
+		this.setState({
+			button: util.deepClone(this.state.defaultButton),
+			recurring: util.deepClone(this.state.defaultRecurring),
+			amountsList: util.deepClone(this.state.amountsListDefault),
+			amountsListEditable: util.deepClone(this.state.amountsListDefault),
+			customIndex: this.state.customIndexDefault,
+			customID: this.state.customIDDefault,
+			defaultIndex: this.state.defaultIndexDefault,
+			defaultID: this.state.defaultIDDefault,
+			formError: []
+		}, callback);
+	}
+
 
 	validateAmountsBeforeSave(formErrorID, error, callback) {
 		const formError = this.state.formError;
@@ -154,6 +173,7 @@ class Amounts extends Component {
 
 		this.setState({
 			amountsList,
+			amountsListEditable: util.deepClone(amountsList),
 			customIndex,
 			customID,
 			defaultIndex,
@@ -242,7 +262,7 @@ class Amounts extends Component {
 				amountsList[key].orderBy = key;
 			});
 		}
-		this.setState({ amountsList });
+		this.setState({ amountsListEditable: amountsList });
 	}
 
 	customUpdated(index, ID) {
@@ -267,6 +287,20 @@ class Amounts extends Component {
 		this.setState({ [name]: { ...obj } });
 	}
 
+	setTab(tab) {
+		console.log('execute', tab);
+		this.setState({ tab });
+	}
+
+	async callbackBeforeStep(key) {
+		let validate = true;
+		if (!util.isEmpty(this.state.formError)) validate = false;
+		return validate;
+	}
+
+	callbackAfterStep(tab) {
+	}
+
 	render() {
 
 		const {
@@ -277,12 +311,15 @@ class Amounts extends Component {
 
 		const {
 			amountsList,
+			amountsListEditable,
 			button,
 			recurring,
 			customIndex,
 			customID,
 			defaultIndex,
-			defaultID
+			defaultID,
+			formError,
+			tab
 		} = this.state;
 
 		if (util.isEmpty(amountsList)) return <></>
@@ -301,35 +338,46 @@ class Amounts extends Component {
 					component={() =>
 						<div className='modalWrapper'>
 							<Tabs
-								default={'edit'}
+								default={tab}
 								className='statsTab'
+								callbackBefore={this.callbackBeforeStep}
 							>
 								<Tab id='edit' label={<span className='stepLabel'>Edit Amounts</span>}>
-								<Collapse
-									label={'Edit Amounts'}
-									iconPrimary='edit'
-									id={'gbx3-amounts-edit'}
-								>
-									<div className='formSectionContainer'>
-										<div className='formSection'>
-											<AmountsEdit
-												article={data}
-												amountsList={amountsList}
-												kind={kind}
-												modalID={modalID}
-												amountsListUpdated={this.amountsListUpdated}
-												customIndex={customIndex}
-												customID={customID}
-												customUpdated={this.customUpdated}
-												defaultIndex={defaultIndex}
-												defaultID={defaultID}
-												defaultUpdated={this.defaultUpdated}
-												sendResource={this.props.sendResource}
-												validateAmountsBeforeSave={this.validateAmountsBeforeSave}
-											/>
-										</div>
-									</div>
-								</Collapse>
+									<>
+										<AnimateHeight
+											duration={200}
+											height={!util.isEmpty(formError) ? 'auto' : 0}
+										>
+										<Fade in={!util.isEmpty(formError) ? true : false}>
+											<div className={`flexCenter error`}>You must fix the issues below in red before you can save or switch tabs.</div>
+										</Fade>
+										</AnimateHeight>
+										<Collapse
+											label={'Edit Amounts'}
+											iconPrimary='edit'
+											id={'gbx3-amounts-edit'}
+										>
+											<div className='formSectionContainer'>
+												<div className='formSection'>
+													<AmountsEdit
+														article={data}
+														amountsList={amountsListEditable}
+														kind={kind}
+														modalID={modalID}
+														amountsListUpdated={this.amountsListUpdated}
+														customIndex={customIndex}
+														customID={customID}
+														customUpdated={this.customUpdated}
+														defaultIndex={defaultIndex}
+														defaultID={defaultID}
+														defaultUpdated={this.defaultUpdated}
+														sendResource={this.props.sendResource}
+														validateAmountsBeforeSave={this.validateAmountsBeforeSave}
+													/>
+												</div>
+											</div>
+										</Collapse>
+									</>
 								</Tab>
 								<Tab id='buttonOption' label={<span className='stepLabel'>Customize Button</span>}>
 									<Collapse

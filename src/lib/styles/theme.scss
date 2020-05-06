@@ -2,244 +2,244 @@
 
 /*------- Common ----------*/
 body {
-  font-family: $font-family;
-  color: $dark-gray;
+	font-family: $font-family;
+	color: $dark-gray;
 }
 
 h1 { font-size: 1.5em }
 h2 { font-size: 1.17em }
 
 h1, h2, h3, h4, h5 {
-  font-weight: 300;
+	font-weight: 300;
 }
 
 .strong {
-  font-weight: 500;
+	font-weight: 500;
 }
 
 //img {image-rendering: optimizeSpeed;image-rendering: -moz-crisp-edges;image-rendering: -webkit-optimize-contrast;image-rendering: optimize-contrast;image-rendering: pixelated; -ms-interpolation-mode: nearest-neighbor; }
 
 .imageComponent.noRadius {
-  img {
-    border-radius: 0px !important;
-  }
+	img {
+		border-radius: 0px !important;
+	}
 }
 
 .superOnly { display: none !important; }
 
 .super {
-  .superOnly { display: block !important; }
+	.superOnly { display: block !important; }
 }
 
 .section {
-  margin: 2px 0;
-  display: flex;
-  justify-content: space-between;
-  background: $white;
-  border-radius: 20px;
+	margin: 2px 0;
+	display: flex;
+	justify-content: space-between;
+	background: $white;
+	border-radius: 20px;
 }
 
 .sectionContainer {
-  border-radius: 20px;
-  padding: 3px 5px;
-  background: $light;
-  background: -moz-linear-gradient(left,  $light 0%, $greenLight 100%);
-  background: -webkit-linear-gradient(left,  $light 0%, $greenLight 100%);
-  background: linear-gradient(to right,  $light 0%, $greenLight 100%);
+	border-radius: 20px;
+	padding: 3px 5px;
+	background: $light;
+	background: -moz-linear-gradient(left,  $light 0%, $greenLight 100%);
+	background: -webkit-linear-gradient(left,  $light 0%, $greenLight 100%);
+	background: linear-gradient(to right,  $light 0%, $greenLight 100%);
 }
 
 .sectionItem {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .subsectionTitle {
-  display: block;
-  color: $med-blue-gray;
-  font-size: $normal-text-size;
-  font-weight: 300;
-  margin-top: 10px;
+	display: block;
+	color: $med-blue-gray;
+	font-size: $normal-text-size;
+	font-weight: 300;
+	margin-top: 10px;
 }
 
 .empty {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #B0BEC5;
-  font-weight: 300;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #B0BEC5;
+	font-weight: 300;
 }
 
 .mainColor {
-  color: $mainColor !important;
+	color: $mainColor !important;
 }
 
 .transparent {
-  color: transparent !important;
+	color: transparent !important;
 }
 
 .green {
-  color: $green !important;
+	color: $green !important;
 }
 
 .magenta {
-  color: $magenta !important;
+	color: $magenta !important;
 }
 
 .seaBlue {
-  color: $seaBlue !important;
+	color: $seaBlue !important;
 }
 
 .deepBlue {
-  color: $deepBlue !important;
+	color: $deepBlue !important;
 }
 
 .bloodRed {
-  color: $bloodRed !important;
+	color: $bloodRed !important;
 }
 
 .deepOrange {
-  color: $deepOrange !important;
+	color: $deepOrange !important;
 }
 
 .purple {
-  color: $purple !important;
+	color: $purple !important;
 }
 
 .light-med-gray {
-  color: $light-med-gray !important;
+	color: $light-med-gray !important;
 }
 
 .collapse {
-  button.sectionLink {
-    color: $mainColor;
-  }
+	button.sectionLink {
+		color: $mainColor;
+	}
 
-  button.sectionLink:hover {
-    color: $secondColor;
-  }
+	button.sectionLink:hover {
+		color: $secondColor;
+	}
 }
 
 .tinyText {
-  font-size: $tiny-text-size;
+	font-size: $tiny-text-size;
 }
 
 .descBlock {
-  font-size: $normal-text-size;
-  .line {
-    display: block;
-    margin: 10px 0;
-  }
+	font-size: $normal-text-size;
+	.line {
+		display: block;
+		margin: 10px 0;
+	}
 
-  .detailsLabel {
-    font-weight: 300;
-  }
+	.detailsLabel {
+		font-weight: 300;
+	}
 
-  .stackedLabel {
-    display: block;
-    font-weight: 300;
-  }
+	.stackedLabel {
+		display: block;
+		font-weight: 300;
+	}
 }
 
 a, button.link, button.button {
-  font-weight: 300;
-  color: $mainColor;
+	font-weight: 300;
+	color: $mainColor;
 }
 
 a:hover, button.link:hover, button.button:hover {
-  color: $secondColor;
+	color: $secondColor;
 }
 
 button.secondary {
-  color: transparentize($mainColor, .4);
+	color: transparentize($mainColor, .4);
 }
 
 .date {
-  font-size: $small-text-size;
-  color: $med-gray;
-  font-weight: 300;
+	font-size: $small-text-size;
+	color: $med-gray;
+	font-weight: 300;
 }
 
 .grayout {
-  .date {
-    color: $med-blue-gray;
-  }
+	.date {
+		color: $med-blue-gray;
+	}
 }
 
 label, .label {
-  font-weight: 300;
+	font-weight: 300;
 }
 
 /*------- LAYOUT ----------*/
 
 .layout {
-  display: flex;
-  min-height: 100vh;
-  height: 100vh;
-  width: 100%;
+	display: flex;
+	min-height: 100vh;
+	height: 100vh;
+	width: 100%;
 }
 
 .flexTop {
-  display: flex;
-  flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
 .flexBetween {
-  display: flex;
-  justify-content: space-between;
+	display: flex;
+	justify-content: space-between;
 }
 
 .flexStart {
-  display: flex;
-  justify-content: flex-start;
+	display: flex;
+	justify-content: flex-start;
 }
 
 .flexCenter {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .flexColumn {
-  flex-direction: column;
+	flex-direction: column;
 }
 
 .centerItems {
-  align-items: center;
+	align-items: center;
 }
 
 .column {
-  display: block;
-  width: 100%;
+	display: block;
+	width: 100%;
 }
 
 .column50 {
-  vertical-align: top;
-  display: inline-block;
-  width: 50%;
+	vertical-align: top;
+	display: inline-block;
+	width: 50%;
 }
 
 .column66 {
-  vertical-align: top;
-  display: inline-block;
-  width: 66%;
+	vertical-align: top;
+	display: inline-block;
+	width: 66%;
 }
 
 .column33 {
-  vertical-align: top;
-  display: inline-block;
-  width: 33%;
+	vertical-align: top;
+	display: inline-block;
+	width: 33%;
 }
 
 .column25 {
-  vertical-align: top;
-  display: inline-block;
-  width: 25%;
+	vertical-align: top;
+	display: inline-block;
+	width: 25%;
 }
 
 .blur {
-  @include filter(blur(8px));
-  @include default-transition(.5s);
+	@include filter(blur(8px));
+	@include default-transition(.5s);
 }
 
 
@@ -247,1469 +247,1469 @@ label, .label {
 
 /*--- Layout Main ---*/
 .layout-main {
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  width: 100%;
-  background: $white;
+	flex: 1;
+	overflow-y: auto;
+	overflow-x: hidden;
+	width: 100%;
+	background: $white;
 }
 
 .layout-main-wrapper {
 
-  .container {
-    max-width: $main-max-width;
-    padding: 5px 20px 10px 20px;
-  }
+	.container {
+		max-width: $main-max-width;
+		padding: 5px 20px 10px 20px;
+	}
 
-  .mainContent {
-    background: $white;
-  }
+	.mainContent {
+		background: $white;
+	}
 
 }
 
 .layout-cover {
-  display: none;
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  cursor: pointer;
-  background: $dark-blue-gray;
-  @include transition(opacity .35s ease);
-  opacity: 0;
-  z-index: 3000;
+	display: none;
+	position: fixed;
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	cursor: pointer;
+	background: $dark-blue-gray;
+	@include transition(opacity .35s ease);
+	opacity: 0;
+	z-index: 3000;
 }
 
 /*------- Header -----------*/
 .title {
 
-  .noLink {
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    color: $light-med-gray;
-    font-size: $large-text-size;
+	.noLink {
+		display: flex;
+		align-items: center;
+		flex-direction: row;
+		color: $light-med-gray;
+		font-size: $large-text-size;
 
-    .icon {
-      padding-right: 5px;
-      color: $light-med-gray;
-      font-size: $large-text-size;
-    }
-  }
+		.icon {
+			padding-right: 5px;
+			color: $light-med-gray;
+			font-size: $large-text-size;
+		}
+	}
 
-  button.link {
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    color: $mainColor;
-    font-weight: 400;
-    font-size: $large-text-size;
-    .icon {
-      padding-right: 5px;
-      color: $mainColor;
-      font-size: $large-text-size;
-    }
-  }
-  button.link:hover {
-    color: $secondColor;
-    .icon {
-      color: $secondColor;
-      @include default-transition(.25s);
-    }
-  }
-  .childLink {
-    color: $light-med-gray;
-  }
+	button.link {
+		display: flex;
+		align-items: center;
+		flex-direction: row;
+		color: $mainColor;
+		font-weight: 400;
+		font-size: $large-text-size;
+		.icon {
+			padding-right: 5px;
+			color: $mainColor;
+			font-size: $large-text-size;
+		}
+	}
+	button.link:hover {
+		color: $secondColor;
+		.icon {
+			color: $secondColor;
+			@include default-transition(.25s);
+		}
+	}
+	.childLink {
+		color: $light-med-gray;
+	}
 }
 
 .layout-top {
-  background: $white;
+	background: $white;
 }
 
 header.navbar {
-  left: $layout-left-width;
-  height: $layout-top-height;
-  padding-bottom: 16px;
-  padding-top: 3px;
-  border: 0 solid $light-gray;
-  border-bottom: 1px solid $light-gray;
-  @include transition(border-bottom-width .2s linear,background-color .2s linear);
-  background: transparent;
+	left: $layout-left-width;
+	height: $layout-top-height;
+	padding-bottom: 16px;
+	padding-top: 3px;
+	border: 0 solid $light-gray;
+	border-bottom: 1px solid $light-gray;
+	@include transition(border-bottom-width .2s linear,background-color .2s linear);
+	background: transparent;
 
-  .left-menu-open {
-    position: absolute;
-    left: 0px;
-    z-index: 1100;
+	.left-menu-open {
+		position: absolute;
+		left: 0px;
+		z-index: 1100;
 
-    button:hover .icon {
-      color: $mainColor2;
-      @include default-transition(.25s);
-    }
+		button:hover .icon {
+			color: $mainColor2;
+			@include default-transition(.25s);
+		}
 
-    .icon {
-      font-size: 1.8em;
-      color: $mainColor;
-    }
-  }
+		.icon {
+			font-size: 1.8em;
+			color: $mainColor;
+		}
+	}
 
-  .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: $main-max-width;
-    margin-left: 0;
-    padding: 0 20px;
-  }
+	.container {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		max-width: $main-max-width;
+		margin-left: 0;
+		padding: 0 20px;
+	}
 }
 
 /*-------- Sub Header --------*/
 .fixed header.subNavFixed {
-  height: auto;
-  @include box-shadow(0px 5px 3px -3px $med-gray);
+	height: auto;
+	@include box-shadow(0px 5px 3px -3px $med-gray);
 
-  .subNavContent {
+	.subNavContent {
 
-    .imageComponent {
-      display: none;
-    }
+		.imageComponent {
+			display: none;
+		}
 
-    .leftSide {
-      display: flex;
-      flex-direction: row-reverse;
-      align-items: center;
-      margin-right: 20px;
-    }
+		.leftSide {
+			display: flex;
+			flex-direction: row-reverse;
+			align-items: center;
+			margin-right: 20px;
+		}
 
-    .balance {
-      flex: 1;
-      margin-top: 5px;
-      h1 {
-        margin-top: 0px;
-        margin-bottom: 0px;
-        font-size: 2em;
-        height: auto;
-      }
-      button { margin-top: 2px; }
-    }
+		.balance {
+			flex: 1;
+			margin-top: 5px;
+			h1 {
+				margin-top: 0px;
+				margin-bottom: 0px;
+				font-size: 2em;
+				height: auto;
+			}
+			button { margin-top: 2px; }
+		}
 
-    .actionsMenu {
-      flex: 0;
-      display: inline;
-    }
+		.actionsMenu {
+			flex: 0;
+			display: inline;
+		}
 
-  	.actionsMenu button.menuLabel {
-      margin-top: 5px;
-      margin-right: 20px;
-  	  width: 155px;
-      padding: 12px;
-      text-align: center;
-  	}
+		.actionsMenu button.menuLabel {
+			margin-top: 5px;
+			margin-right: 20px;
+			width: 155px;
+			padding: 12px;
+			text-align: center;
+		}
 
-    .searchBlock {
-      margin-top: 0;
-      margin-bottom: 0px;
-    }
+		.searchBlock {
+			margin-top: 0;
+			margin-bottom: 0px;
+		}
 
-    .date,
-    .menu:not(.alwaysShow) {
-      display: none;
-    }
+		.date,
+		.menu:not(.alwaysShow) {
+			display: none;
+		}
 
-    .filter {
-      margin-top: 0px;
-    }
-  }
+		.filter {
+			margin-top: 0px;
+		}
+	}
 }
 
 header.subNavFixed {
-  position: fixed;
-  top: 0;
-  right: 0px;
-  left: $layout-left-width;
-  height: 0;
-  padding-right: 5px;
-  z-index: 1000;
-  background: $white;
+	position: fixed;
+	top: 0;
+	right: 0px;
+	left: $layout-left-width;
+	height: 0;
+	padding-right: 5px;
+	z-index: 1000;
+	background: $white;
 }
 
 header.subNav {
-  min-height: 56px;
-  border: 0 solid transparent;
-  transition: border-bottom-width 0s linear,background-color .2s linear;
-  background: transparent;
-  .container {
-    max-width: $main-max-width;
-    margin-left: 0;
-    padding-top: 10px;
-    padding-bottom: 10px;
-  }
+	min-height: 56px;
+	border: 0 solid transparent;
+	transition: border-bottom-width 0s linear,background-color .2s linear;
+	background: transparent;
+	.container {
+		max-width: $main-max-width;
+		margin-left: 0;
+		padding-top: 10px;
+		padding-bottom: 10px;
+	}
 }
 
 .subNavContent {
 
-  .imageComponent {
-    margin-right: 20px;
-    img { border-radius: 0; }
-  }
+	.imageComponent {
+		margin-right: 20px;
+		img { border-radius: 0; }
+	}
 
 	.actionsMenu button.menuLabel {
-	  padding: 7px 15px 7px 15px;
-	  line-height: 17px;
+		padding: 7px 15px 7px 15px;
+		line-height: 17px;
 		text-align: center;
 		background: none;
-    color: $mainColor;
-    border: 1px solid $mainColor;
+		color: $mainColor;
+		border: 1px solid $mainColor;
 
-    .icon {
-      display: none;
-    }
+		.icon {
+			display: none;
+		}
 	}
 
 	.actionsMenu button.menuLabel:hover {
-	  color: $white;
-	  background-color: $mainColor;
-	  @include default-transition(.25s);
+		color: $white;
+		background-color: $mainColor;
+		@include default-transition(.25s);
 	}
 
-  button.button {
-    margin: 0;
-  }
+	button.button {
+		margin: 0;
+	}
 
-  .actionsMenu-item button {
-    width: 100%;
-  }
+	.actionsMenu-item button {
+		width: 100%;
+	}
 
-  .filterWrapper {
-    button.link {
-      position: absolute;
-      top: -15px;
-      right: 0px;
-      font-size: $small-text-size;
-      color: $mainColor;
-      font-weight: 300;
-      margin-right: 5px;
-    }
-  }
+	.filterWrapper {
+		button.link {
+			position: absolute;
+			top: -15px;
+			right: 0px;
+			font-size: $small-text-size;
+			color: $mainColor;
+			font-weight: 300;
+			margin-right: 5px;
+		}
+	}
 
-  .filter {
-    text-align: right;
-  }
+	.filter {
+		text-align: right;
+	}
 }
 
 /*------- Scrollbar -------*/
 ::-webkit-scrollbar {
-    width: 6px;
+		width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background-color: transparent;
+	background-color: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: $overlayColor;
-  outline: 0;
-  border-radius: 20px;
+	background-color: $overlayColor;
+	outline: 0;
+	border-radius: 20px;
 }
 
 .dropdown .dropdown-content::-webkit-scrollbar {
-    width: 4px;
+		width: 4px;
 }
 
 .dropdown .dropdown-content::-webkit-scrollbar-track {
-  margin: 10px 0;
-  background-color: $white;
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
+	margin: 10px 0;
+	background-color: $white;
+	border-top-right-radius: 20px;
+	border-bottom-right-radius: 20px;
 }
 
 .dropdown .dropdown-content::-webkit-scrollbar-thumb {
-  background-color: $mainColor;
-  outline: 0;
-  border-radius: 20px;
+	background-color: $mainColor;
+	outline: 0;
+	border-radius: 20px;
 }
 
 .dropdown.customColor .dropdown-content::-webkit-scrollbar-thumb {
-  background-color: $med-blue-gray;
-  outline: 0;
-  border-radius: 20px;
+	background-color: $med-blue-gray;
+	outline: 0;
+	border-radius: 20px;
 }
 
 /*------- Actions Block -----*/
 .actionsBlock {
-  text-align: right;
-  vertical-align: top;
+	text-align: right;
+	vertical-align: top;
 }
 
 
 /*------- Glossary Button ------*/
 
 button.glossary {
-  font-size: $small-text-size;
-  color: $light-med-gray;
-  cursor: text;
-  pointer-events: none;
+	font-size: $small-text-size;
+	color: $light-med-gray;
+	cursor: text;
+	pointer-events: none;
 }
 
 button.glossary:hover {
-  color: $light-med-gray;
+	color: $light-med-gray;
 }
 
 /*------ Search Block -------*/
 
 .searchBlock.center {
-  text-align: center;
+	text-align: center;
 }
 
 .searchBlock.left {
-  text-align: left;
+	text-align: left;
 }
 
 .searchBlock {
-  display: block;
-  width: 100%;
-  margin-top: 10px;
-  text-align: right;
+	display: block;
+	width: 100%;
+	margin-top: 10px;
+	text-align: right;
 
-  .search {
-    display: inline-block;
-    width: 300px;
+	.search {
+		display: inline-block;
+		width: 300px;
 
-    .input-button {
-      top: 10px;
-    }
+		.input-button {
+			top: 10px;
+		}
 
-  }
+	}
 
-  .searchBtn .icon {
-    font-size: $large-text-size;
-    font-weight: $icon-weight;
-  }
+	.searchBtn .icon {
+		font-size: $large-text-size;
+		font-weight: $icon-weight;
+	}
 
-  .searchResetBtn .icon {
-    font-size: $large-text-size;
-    font-weight: $icon-weight;
-  }
+	.searchResetBtn .icon {
+		font-size: $large-text-size;
+		font-weight: $icon-weight;
+	}
 
-  .searchResetBtn:hover .icon,
-  .searchBtn:hover .icon {
-    color: $mainColor;
-  }
+	.searchResetBtn:hover .icon,
+	.searchBtn:hover .icon {
+		color: $mainColor;
+	}
 
 }
 
 /*------- Balance Block --------*/
 .leftSide {
-  display: flex;
+	display: flex;
 }
 
 .balance {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
 
-  h1 {
-    display: flex;
-    color: $green;
-    margin: 0;
-    margin-bottom: 5px;
-    font-size: 3.5em;
-    font-weight: 300;
-    height: 80px;
-    @media (max-width: 1300px) { font-size: 4.5vw; }
-    @media (max-width: 600px) { font-size: 12vw; }
-  }
+	h1 {
+		display: flex;
+		color: $green;
+		margin: 0;
+		margin-bottom: 5px;
+		font-size: 3.5em;
+		font-weight: 300;
+		height: 80px;
+		@media (max-width: 1300px) { font-size: 4.5vw; }
+		@media (max-width: 600px) { font-size: 12vw; }
+	}
 
-  .moneyAmount {
-    align-self: center;
-    .symbol {
-    	display: inline;
-    	font-size: 45%;
-      vertical-align: top;
-    }
-    .dollarAmount {
-      vertical-align: top;
-    }
-    .centAmount {
-      vertical-align: top;
-    }
-    .centSymbol {
-      font-family: times, Sans-serif;
-      font-size: 55%;
-    }
-    .dollarComma {
-      font-size: 65%;
-    }
-  }
+	.moneyAmount {
+		align-self: center;
+		.symbol {
+			display: inline;
+			font-size: 45%;
+			vertical-align: top;
+		}
+		.dollarAmount {
+			vertical-align: top;
+		}
+		.centAmount {
+			vertical-align: top;
+		}
+		.centSymbol {
+			font-family: times, Sans-serif;
+			font-size: 55%;
+		}
+		.dollarComma {
+			font-size: 65%;
+		}
+	}
 
-  button {
-    margin-top: 2px;
-    align-self: start;
-    margin-left: 5px;
-  }
+	button {
+		margin-top: 2px;
+		align-self: start;
+		margin-left: 5px;
+	}
 
-  .dropdown button {
-    padding: 0px 0px 2px 0px;
-    border-color: $light-gray;
-  }
+	.dropdown button {
+		padding: 0px 0px 2px 0px;
+		border-color: $light-gray;
+	}
 
 }
 
 /*------ Stat Block ---------*/
 .statBlock {
-  display: inline-block;
-  padding: 0;
-  height: 100%;
-  width: 50%;
+	display: inline-block;
+	padding: 0;
+	height: 100%;
+	width: 50%;
 
-  li,
-  li:nth-child(even) {
-    background: transparent;
-  }
+	li,
+	li:nth-child(even) {
+		background: transparent;
+	}
 }
 
 /*------- Left Side ---------*/
 .layout-left {
-  width: $layout-left-width;
-  max-height: 100vh;
-  overflow-y: auto;
-  overflow-x: hidden;
-  @include transition(width .5s);
+	width: $layout-left-width;
+	max-height: 100vh;
+	overflow-y: auto;
+	overflow-x: hidden;
+	@include transition(width .5s);
 }
 
 .layout-left-content {
-  position: fixed;
-  top: 0;
-  width: $layout-left-width;
-  max-height: 100vh;
-  overflow-y: auto;
-  overflow-x: hidden;
-  backface-visibility: hidden;
-  @include transition(width .5s);
-  z-index: 1000;
+	position: fixed;
+	top: 0;
+	width: $layout-left-width;
+	max-height: 100vh;
+	overflow-y: auto;
+	overflow-x: hidden;
+	backface-visibility: hidden;
+	@include transition(width .5s);
+	z-index: 1000;
 	padding-bottom: 100px;
 }
 
 .layout-left .layout-left-content {
-  height: 100vh;
-  background: $mainColor2;
-  background-image: url(https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/layout-left-bg-new.png), linear-gradient(to bottom, #1818c8 0%,#25acd1 85%,#35e6b2 100%);
-  //background: linear-gradient(to bottom, $mainColor2 0%,$mainColor 100%);
-  background-position: center bottom;
-  background-repeat: no-repeat;
-  background-size: $layout-left-width auto;
+	height: 100vh;
+	background: $mainColor2;
+	background-image: url(https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/layout-left-bg-new.png), linear-gradient(to bottom, #1818c8 0%,#25acd1 85%,#35e6b2 100%);
+	//background: linear-gradient(to bottom, $mainColor2 0%,$mainColor 100%);
+	background-position: center bottom;
+	background-repeat: no-repeat;
+	background-size: $layout-left-width auto;
 }
 
 .layout-left-container {
-  .logo {
-    text-align: center;
-  	-webkit-animation: pulsateBrighter 2s ease-out;
-  	-webkit-animation-iteration-count: infinite;
-    img {
-      width: 35px;
-      height: 35px;
-      margin-top: 13px;
-      margin-bottom: 21px;
-    }
-  }
+	.logo {
+		text-align: center;
+		-webkit-animation: pulsateBrighter 2s ease-out;
+		-webkit-animation-iteration-count: infinite;
+		img {
+			width: 35px;
+			height: 35px;
+			margin-top: 13px;
+			margin-bottom: 21px;
+		}
+	}
 
-  .nav ul {
-    position: relative;
-    width: 100%;
-  }
+	.nav ul {
+		position: relative;
+		width: 100%;
+	}
 
-  .active-indicator {
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    margin: 0;
-    width: $layout-left-width;
-    height: 49px;
-    background: transparent;
-    //border-left: 3px solid $secondColor;
-    transition: all 700ms;
-    z-index: 1003;
-  	-webkit-animation: pulsateBrighter 2s ease-out;
-  	-webkit-animation-iteration-count: infinite;
-  }
+	.active-indicator {
+		position: absolute;
+		left: 0px;
+		top: 0px;
+		margin: 0;
+		width: $layout-left-width;
+		height: 49px;
+		background: transparent;
+		//border-left: 3px solid $secondColor;
+		transition: all 700ms;
+		z-index: 1003;
+		-webkit-animation: pulsateBrighter 2s ease-out;
+		-webkit-animation-iteration-count: infinite;
+	}
 
-  .active-indicator-bar {
-    margin-top: 5px;
-    height: 42px;
-    width: 5px;
-    background: $secondColor;
-    z-index: 1005;
-  	-webkit-animation-iteration-count: infinite;
-    border-radius: 20px;
-  }
+	.active-indicator-bar {
+		margin-top: 5px;
+		height: 42px;
+		width: 5px;
+		background: $secondColor;
+		z-index: 1005;
+		-webkit-animation-iteration-count: infinite;
+		border-radius: 20px;
+	}
 
-  .nav li {
-    display: flex;
-    align-items: center;
-    padding: 15px;
-    padding-left: 10px;
-    color: $white;
-    font-size: 1em;
-    font-weight: 300;
-    letter-spacing: 1px;
-    cursor: pointer;
-    border-left: 3px solid transparent;
-    overflow: hidden;
-    white-space: nowrap;
+	.nav li {
+		display: flex;
+		align-items: center;
+		padding: 15px;
+		padding-left: 10px;
+		color: $white;
+		font-size: 1em;
+		font-weight: 300;
+		letter-spacing: 1px;
+		cursor: pointer;
+		border-left: 3px solid transparent;
+		overflow: hidden;
+		white-space: nowrap;
 
-    .icon {
-      position: relative;
-      display: inline-block;
-      width: 40px;
-      padding-right: 10px;
-      text-align: center;
-      vertical-align: middle;
-      z-index: 1004;
-      font-size: 1.3em;
-    }
+		.icon {
+			position: relative;
+			display: inline-block;
+			width: 40px;
+			padding-right: 10px;
+			text-align: center;
+			vertical-align: middle;
+			z-index: 1004;
+			font-size: 1.3em;
+		}
 
-    .text {
-      position: relative;
-      display: inline-block;
-      text-align: left;
-      vertical-align: middle;
-      z-index: 1004;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-    }
-  }
+		.text {
+			position: relative;
+			display: inline-block;
+			text-align: left;
+			vertical-align: middle;
+			z-index: 1004;
+			text-transform: uppercase;
+			letter-spacing: 1.5px;
+		}
+	}
 
-  .nav li:hover {
-    color: $secondColor;
-    @include default-transition(.25s);
-  }
+	.nav li:hover {
+		color: $secondColor;
+		@include default-transition(.25s);
+	}
 
-  .nav li.active {
-    .icon,
-    .text {
-      color: $secondColor;
-    	-webkit-animation: pulsateBrighter 2s ease-out;
-    	-webkit-animation-iteration-count: infinite;
-    }
-  }
+	.nav li.active {
+		.icon,
+		.text {
+			color: $secondColor;
+			-webkit-animation: pulsateBrighter 2s ease-out;
+			-webkit-animation-iteration-count: infinite;
+		}
+	}
 
-  .nav li.hasChildren {
-    //background: transparentize($mainColor2, .8);
-  }
+	.nav li.hasChildren {
+		//background: transparentize($mainColor2, .8);
+	}
 
-  .nav li.sublist {
-    font-size: $small-text-size;
-    padding-left: 25px;
-    //background: transparentize($mainColor2, .8);
-  }
+	.nav li.sublist {
+		font-size: $small-text-size;
+		padding-left: 25px;
+		//background: transparentize($mainColor2, .8);
+	}
 
 }
 
 /*------ Lists --------*/
 ul.selectable {
 
-  li {
-    display: flex;
-    background: $white;
-    border: 0;
-    border-top: 1px solid $light;
-    margin: 0;
-    border-radius: 20px;
-  }
+	li {
+		display: flex;
+		background: $white;
+		border: 0;
+		border-top: 1px solid $light;
+		margin: 0;
+		border-radius: 20px;
+	}
 
-  li:first-child {
-    border-top: none;
-  }
+	li:first-child {
+		border-top: none;
+	}
 
-  li:nth-child(even) {
-    background: $white;
-  }
+	li:nth-child(even) {
+		background: $white;
+	}
 
-  li:hover {
-    background: $mainColor;
-    color: $white;
-    @include default-transition(.25s);
-    .gray {
-      color: $white !important;
-    }
-    .icon {
-      color: $white;
-    }
-    .date {
-      color: $white;
-    }
-  }
+	li:hover {
+		background: $mainColor;
+		color: $white;
+		@include default-transition(.25s);
+		.gray {
+			color: $white !important;
+		}
+		.icon {
+			color: $white;
+		}
+		.date {
+			color: $white;
+		}
+	}
 
-  .imgWrapper {
-    overflow: hidden;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 45px;
-    height: 45px;
-    border-radius: 20px;
-    border: 1px solid $light-gray;
-  }
+	.imgWrapper {
+		overflow: hidden;
+		position: relative;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 45px;
+		height: 45px;
+		border-radius: 20px;
+		border: 1px solid $light-gray;
+	}
 
-  img {
-    display: inline;
-    margin: 0 auto;
-    height: 100%;
-    width: auto;
-    border-radius: 20px;
-  }
+	img {
+		display: inline;
+		margin: 0 auto;
+		height: 100%;
+		width: auto;
+		border-radius: 20px;
+	}
 
-  .defaultOrgImg {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 45px;
-    width: 45px;
-    border-radius: 20px;
-    color: $white;
-    background: $light-gray;
-    vertical-align: middle;
-    text-align: center;
+	.defaultOrgImg {
+		position: relative;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 45px;
+		width: 45px;
+		border-radius: 20px;
+		color: $white;
+		background: $light-gray;
+		vertical-align: middle;
+		text-align: center;
 
-    .icon {
-      font-size: 25px;
-    }
-  }
+		.icon {
+			font-size: 25px;
+		}
+	}
 
-  .liContent {
-    margin-left: 10px;
-  }
+	.liContent {
+		margin-left: 10px;
+	}
 
 }
 
 /*--------- Button, Links, Menus --------*/
 
 .button-group {
-  button.button {
-    margin: 0 5px;
-  }
+	button.button {
+		margin: 0 5px;
+	}
 }
 
 button {
-  font-family: $font-family;
-  font-size: $normal-text-size;
+	font-family: $font-family;
+	font-size: $normal-text-size;
 }
 
 button.gray {
-  color: $light-med-gray !important;
-  font-weight: 300;
+	color: $light-med-gray !important;
+	font-weight: 300;
 }
 
 button.gray:hover {
-  color: $secondColor !important;
-  @include default-transition(.25s);
+	color: $secondColor !important;
+	@include default-transition(.25s);
 }
 
 button:hover {
-  @include default-transition(.25s);
+	@include default-transition(.25s);
 }
 
 .buttonAnimation {
-  @include animation(pulsateSlightlyBrighter 2s infinite ease-out);
+	@include animation(pulsateSlightlyBrighter 2s infinite ease-out);
 }
 
 button.button {
-  font-size: $normal-text-size;
-  letter-spacing: 0px;
-  font-family: $font-family;
-  color: $mainColor;
-  display: inline-block;
-  padding: 10px 20px 10px 20px;
-  line-height: 17px;
-  text-transform: none;
-  background-color: transparent;
-  cursor: pointer;
-  font-weight: 300;
-  @include box-shadow(none);
-  border: 1px solid $mainColor;
-  border-radius: 20px;
+	font-size: $normal-text-size;
+	letter-spacing: 0px;
+	font-family: $font-family;
+	color: $mainColor;
+	display: inline-block;
+	padding: 10px 20px 10px 20px;
+	line-height: 17px;
+	text-transform: none;
+	background-color: transparent;
+	cursor: pointer;
+	font-weight: 300;
+	@include box-shadow(none);
+	border: 1px solid $mainColor;
+	border-radius: 20px;
 }
 
 button.button:hover {
-  color: $white;
-  background-color: $mainColor;
-  //background: linear-gradient(to bottom, $mainColor2 0%,$mainColor 100%);
-  @include default-transition(.25s);
+	color: $white;
+	background-color: $mainColor;
+	//background: linear-gradient(to bottom, $mainColor2 0%,$mainColor 100%);
+	@include default-transition(.25s);
 }
 
 button.button:disabled {
-  cursor: not-allowed;
-  color: $light-med-gray;
-  border: 1px solid $light-med-gray;
-  background-color: $white;
+	cursor: not-allowed;
+	color: $light-med-gray;
+	border: 1px solid $light-med-gray;
+	background-color: $white;
 }
 
 button.button:hover:disabled {
-  color: $light-med-gray;
-  border: 1px solid $light-med-gray;
-  background-color: $white;
+	color: $light-med-gray;
+	border: 1px solid $light-med-gray;
+	background-color: $white;
 }
 
 button.button.secondary {
-  background-color: $white;
-  color: $mainColor;
-  border: 1px solid $mainColor;
-  font-weight: 300;
+	background-color: $white;
+	color: $mainColor;
+	border: 1px solid $mainColor;
+	font-weight: 300;
 }
 
 button.button.secondary:hover {
-  background-color: $mainColor;
-  color: $white;
-  @include default-transition(.25s);
+	background-color: $mainColor;
+	color: $white;
+	@include default-transition(.25s);
 }
 
 .actionsMenu.normalButton button.menuLabel {
-  font-size: $normal-text-size;
-  letter-spacing: 0px;
-  font-family: $font-family;
-  color: $mainColor;
-  display: inline-block;
-  padding: 10px 20px 10px 20px;
-  line-height: 17px;
-  text-transform: none;
-  background-color: transparent;
-  cursor: pointer;
-  font-weight: 300;
-  @include box-shadow(none);
-  border: 1px solid $mainColor;
-  border-radius: 20px;
+	font-size: $normal-text-size;
+	letter-spacing: 0px;
+	font-family: $font-family;
+	color: $mainColor;
+	display: inline-block;
+	padding: 10px 20px 10px 20px;
+	line-height: 17px;
+	text-transform: none;
+	background-color: transparent;
+	cursor: pointer;
+	font-weight: 300;
+	@include box-shadow(none);
+	border: 1px solid $mainColor;
+	border-radius: 20px;
 
-  .icon {
-    color: $mainColor;
-    vertical-align: middle;
-    margin-bottom: 2px;
-  }
+	.icon {
+		color: $mainColor;
+		vertical-align: middle;
+		margin-bottom: 2px;
+	}
 }
 
 
 .actionsMenu button.menuLabel {
-  background: transparent;
-  color: $mainColor;
-  padding: 5px;
-  font-family: $font-family;
-  font-size: 0.83em;
-  font-weight: 300;
-  letter-spacing: 0;
-  border-radius: 20px;
-  border: 0;
-  cursor: pointer;
-  box-shadow: none;
-  width: 100%;
-  text-align: right;
-  margin: 0;
-  vertical-align: middle;
+	background: transparent;
+	color: $mainColor;
+	padding: 5px;
+	font-family: $font-family;
+	font-size: 0.83em;
+	font-weight: 300;
+	letter-spacing: 0;
+	border-radius: 20px;
+	border: 0;
+	cursor: pointer;
+	box-shadow: none;
+	width: 100%;
+	text-align: right;
+	margin: 0;
+	vertical-align: middle;
 
-  .icon {
-    color: $mainColor;
-    vertical-align: middle;
-    margin-bottom: 2px;
-  }
+	.icon {
+		color: $mainColor;
+		vertical-align: middle;
+		margin-bottom: 2px;
+	}
 }
 
 .actionsMenu button:hover.menuLabel,
 .actionsMenu button:hover .icon {
-  color: $secondColor;
+	color: $secondColor;
 }
 
 .actionsMenu button.menuLabel:disabled {
-  display: none;
+	display: none;
 }
 
 .actionsMenu {
 
-  .actionsMenu-content {
-    min-width: 250px;
-    max-width: 100%;
-    width: auto;
-    max-height: initial;
-    right: 0;
-    border-radius: 20px;
-    background-color: $white;
-    overflow-y: visible;
-    overflow-x: visible;
-  }
+	.actionsMenu-content {
+		min-width: 250px;
+		max-width: 100%;
+		width: auto;
+		max-height: initial;
+		right: 0;
+		border-radius: 20px;
+		background-color: $white;
+		overflow-y: visible;
+		overflow-x: visible;
+	}
 
-  .actionsMenu-content.opened {
-    border: 1px solid $mainColor;
-    @include box-shadow(0px 3px 6px 0px transparentize($mainColor2, .4));
-  }
+	.actionsMenu-content.opened {
+		border: 1px solid $mainColor;
+		@include box-shadow(0px 3px 6px 0px transparentize($mainColor2, .4));
+	}
 
-  white-space: nowrap;
+	white-space: nowrap;
 
-  .icon {
-    position: static;
-    display: inline-block;
-    top: 0px;
-    right: 0px;
-    bottom: 0;
-    color: $med-gray;
-    font-size: $small-text-size;
-    margin-left: 5px;
-  }
+	.icon {
+		position: static;
+		display: inline-block;
+		top: 0px;
+		right: 0px;
+		bottom: 0;
+		color: $med-gray;
+		font-size: $small-text-size;
+		margin-left: 5px;
+	}
 
-  .actionsMenu-text {
-    margin: 15px 0 15px 0;
-    border-radius: 20px;
-  }
+	.actionsMenu-text {
+		margin: 15px 0 15px 0;
+		border-radius: 20px;
+	}
 
-  .actionsMenu-item.button {
-    margin: 0px;
-    padding: 0;
-  }
+	.actionsMenu-item.button {
+		margin: 0px;
+		padding: 0;
+	}
 
-  .actionsMenu-item {
-    white-space: pre-wrap;
-    word-break: break-word;
-    button {
-      padding: 15px 25px;
-      text-align: right;
-      width: 100%;
-      color: $mainColor;
-      background: transparent;
-      margin: 0;
-      border: 0;
-      border-bottom: 1px solid $light;
-      border-radius: 0px;
-    }
+	.actionsMenu-item {
+		white-space: pre-wrap;
+		word-break: break-word;
+		button {
+			padding: 15px 25px;
+			text-align: right;
+			width: 100%;
+			color: $mainColor;
+			background: transparent;
+			margin: 0;
+			border: 0;
+			border-bottom: 1px solid $light;
+			border-radius: 0px;
+		}
 
-    button:hover {
-      color: $white;
-      background: $mainColor;
-    }
-  }
+		button:hover {
+			color: $white;
+			background: $mainColor;
+		}
+	}
 
-  .actionsMenu-item:last-child {
-    button {
-      border-bottom: 0;
-    }
-  }
+	.actionsMenu-item:last-child {
+		button {
+			border-bottom: 0;
+		}
+	}
 }
 
 .input-button .icon {
-  color: $med-gray;
-  font-size: $normal-text-size;
+	color: $med-gray;
+	font-size: $normal-text-size;
 }
 
 button.input-button:hover .icon {
-  color: $mainColor;
+	color: $mainColor;
 }
 
 button.toTop {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  padding: 15px;
-  border: 1px solid $light-gray;
-  color: $med-gray;
-  background: transparentize($white, .3);
-  z-index: 1000;
-  max-width: $main-max-width;
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	padding: 15px;
+	border: 1px solid $light-gray;
+	color: $med-gray;
+	background: transparentize($white, .3);
+	z-index: 1000;
+	max-width: $main-max-width;
 
-  .icon { font-size: $large-text-size; }
+	.icon { font-size: $large-text-size; }
 }
 
 button.toTop:hover {
-  color: $white;
-  background: $mainColor;
+	color: $white;
+	background: $mainColor;
 }
 
 button.input {
-  font-weight: 300;
-  font-size: $normal-text-size;
-  color: $med-blue-gray;
+	font-weight: 300;
+	font-size: $normal-text-size;
+	color: $med-blue-gray;
 }
 
 button.input.hasValue {
-  color: $mainColor;
+	color: $mainColor;
 }
 
 button.supportLink {
-  color: $med-gray;
-  font-size: $small-text-size;
+	color: $med-gray;
+	font-size: $small-text-size;
 }
 
 /*------- Table ----------*/
 
 .givebox-lib-table {
 
-  width: 100%;
-  border-radius: 20px;
-  background: $white;
-  margin: 0;
-  padding: 0;
+	width: 100%;
+	border-radius: 20px;
+	background: $white;
+	margin: 0;
+	padding: 0;
 
-  table {
-    margin: 0;
-  }
+	table {
+		margin: 0;
+	}
 
-  th, tr {
-    background: transparent;
-  }
+	th, tr {
+		background: transparent;
+	}
 
-  thead tr:hover {
-    background: transparent;
-  }
+	thead tr:hover {
+		background: transparent;
+	}
 
-  th {
-    color: $med-blue-gray;
-    font-weight: 300;
-    padding: 20px 5px;
-  }
+	th {
+		color: $med-blue-gray;
+		font-weight: 300;
+		padding: 20px 5px;
+	}
 
-  th.sort:hover {
-    color: $mainColor;
-    background: transparent;
-  }
+	th.sort:hover {
+		color: $mainColor;
+		background: transparent;
+	}
 
-  th.sort .icon {
-    vertical-align: top;
-    font-size: $tiny-text-size;
-  }
+	th.sort .icon {
+		vertical-align: top;
+		font-size: $tiny-text-size;
+	}
 
-  tbody tr:not(:first-child):not(.detailsRow) {
-    border-top: 1px solid $light;
-  }
+	tbody tr:not(:first-child):not(.detailsRow) {
+		border-top: 1px solid $light;
+	}
 
-  tbody tr:hover {
-    background: $white;
-  }
+	tbody tr:hover {
+		background: $white;
+	}
 
-  tbody td {
-    vertical-align: middle;
-    padding: 20px 5px;
-    white-space: pre-wrap;
-    word-break: break-word;
-    font-size: $normal-text-size;
-    @media (max-width: 1100px) { font-size: 1.6vw; }
-    @media (max-width: 900px) { font-size: 2vw; }
-    @media (max-width: 600px) { font-size: $normal-text-size }
-  }
+	tbody td {
+		vertical-align: middle;
+		padding: 20px 5px;
+		white-space: pre-wrap;
+		word-break: break-word;
+		font-size: $normal-text-size;
+		@media (max-width: 1100px) { font-size: 1.6vw; }
+		@media (max-width: 900px) { font-size: 2vw; }
+		@media (max-width: 600px) { font-size: $normal-text-size }
+	}
 
-  tbody td.actionsRow {
-    padding: 20px 0;
-  }
+	tbody td.actionsRow {
+		padding: 20px 0;
+	}
 
-  tr:nth-child(even) {
-    background: $white;
-  }
+	tr:nth-child(even) {
+		background: $white;
+	}
 
-  .altRow {
-    background: $white;
-  }
+	.altRow {
+		background: $white;
+	}
 
-  tr.detailsRow {
-    border-top: none;
-  }
+	tr.detailsRow {
+		border-top: none;
+	}
 
-  tbody tr .detailsIcon {
-    text-align: center;
-    .icon {
-      color: $mainColor;
-      opacity: .2;
-      font-size: 1.5em;
-      vertical-align: middle;
-      @include default-transition(.5s);
-    }
-  }
+	tbody tr .detailsIcon {
+		text-align: center;
+		.icon {
+			color: $mainColor;
+			opacity: .2;
+			font-size: 1.5em;
+			vertical-align: middle;
+			@include default-transition(.5s);
+		}
+	}
 
-  tbody tr:hover .detailsIcon {
-    .icon {
-      color: $mainColor;
-      opacity: 1;
-      @include animation(pulsateBrighter 2s ease-out infinite);
-    }
-  }
+	tbody tr:hover .detailsIcon {
+		.icon {
+			color: $mainColor;
+			opacity: 1;
+			@include animation(pulsateBrighter 2s ease-out infinite);
+		}
+	}
 
-  .details {
-    background: $light;
-    background: -moz-linear-gradient(left,  $light 50%, $greenLight 100%);
-    background: -webkit-linear-gradient(left,  $light 50%, $greenLight 100%);
-    background: linear-gradient(to right,  $light 50%, $greenLight 100%);
-    padding: 0;
+	.details {
+		background: $light;
+		background: -moz-linear-gradient(left,  $light 50%, $greenLight 100%);
+		background: -webkit-linear-gradient(left,  $light 50%, $greenLight 100%);
+		background: linear-gradient(to right,  $light 50%, $greenLight 100%);
+		padding: 0;
 
-    .description {
-      .line {
-        padding: 7px 0;
-      }
-    }
+		.description {
+			.line {
+				padding: 7px 0;
+			}
+		}
 
-    .dropdown .label:not(button) {
-      font-size: $small-text-size;
-    }
-    .input-group.dropdown-button .dropdown .icon {
-      font-size: $small-text-size;
-    }
-  }
+		.dropdown .label:not(button) {
+			font-size: $small-text-size;
+		}
+		.input-group.dropdown-button .dropdown .icon {
+			font-size: $small-text-size;
+		}
+	}
 
-  .detailsContent {
-    width: 100%;
-    padding: 0;
-    padding-bottom: 30px;
-  }
+	.detailsContent {
+		width: 100%;
+		padding: 0;
+		padding-bottom: 30px;
+	}
 
-  tbody tr.detailsOpen {
-    @include default-transition(.25s);
-    background: $light;
-    background: -moz-linear-gradient(left,  $light 50%, $greenLight 100%);
-    background: -webkit-linear-gradient(left,  $light 50%, $greenLight 100%);
-    background: linear-gradient(to right,  $light 50%, $greenLight 100%);
-    background-attachment: fixed;
+	tbody tr.detailsOpen {
+		@include default-transition(.25s);
+		background: $light;
+		background: -moz-linear-gradient(left,  $light 50%, $greenLight 100%);
+		background: -webkit-linear-gradient(left,  $light 50%, $greenLight 100%);
+		background: linear-gradient(to right,  $light 50%, $greenLight 100%);
+		background-attachment: fixed;
 
-    .detailsIcon .icon {
-      color: $light-med-gray;
-    }
+		.detailsIcon .icon {
+			color: $light-med-gray;
+		}
 
-    td:not(.primaryRow) {
+		td:not(.primaryRow) {
 
-    }
-  }
+		}
+	}
 
-  tbody tr.detailsOpen .actionsMenu button.menuLabel {
-  }
+	tbody tr.detailsOpen .actionsMenu button.menuLabel {
+	}
 
-  .actionsMenu button.menuLabel .icon {
-    font-size: $med-text-size;
-    margin-right: 3px;
-  }
+	.actionsMenu button.menuLabel .icon {
+		font-size: $med-text-size;
+		margin-right: 3px;
+	}
 
-  tbody tr.detailsOpen:hover {
+	tbody tr.detailsOpen:hover {
 
-    .detailsIcon .icon {
-      color: $mainColor;
-    }
-  }
+		.detailsIcon .icon {
+			color: $mainColor;
+		}
+	}
 
-  .detailsTitle {
-    display: none;
-    padding-top: 0;
-    font-weight: 300;
-    letter-spacing: 1px;
-    color: $med-gray;
-    border-bottom: 1px solid $light-med-gray;
-  }
+	.detailsTitle {
+		display: none;
+		padding-top: 0;
+		font-weight: 300;
+		letter-spacing: 1px;
+		color: $med-gray;
+		border-bottom: 1px solid $light-med-gray;
+	}
 
-  tfoot {
+	tfoot {
 
-    font-size: $normal-text-size;
+		font-size: $normal-text-size;
 
-    .footerLabel {
-      font-size: $small-text-size;
-      color: $med-blue-dark-gray;
-      font-weight: 300;
-      border-bottom: 1px dashed $light-gray;
-    }
+		.footerLabel {
+			font-size: $small-text-size;
+			color: $med-blue-dark-gray;
+			font-weight: 300;
+			border-bottom: 1px dashed $light-gray;
+		}
 
-    tr {
-      line-height: 20px;
-      padding: 10px 0;
-      font-weight: 400;
-    }
+		tr {
+			line-height: 20px;
+			padding: 10px 0;
+			font-weight: 400;
+		}
 
-    tr:first-child td {
-      padding-top: 20px;
-    }
+		tr:first-child td {
+			padding-top: 20px;
+		}
 
-  }
+	}
 
-  .description {
+	.description {
 
-    .input-group {
-      padding: 0;
-      margin: 0;
-    }
+		.input-group {
+			padding: 0;
+			margin: 0;
+		}
 
-    .detailsLabel {
-      display: block;
-      font-weight: 300;
-      color: $med-gray;
-      font-size: $small-text-size;
-    }
+		.detailsLabel {
+			display: block;
+			font-weight: 300;
+			color: $med-gray;
+			font-size: $small-text-size;
+		}
 
-    .column50 {
-      vertical-align: top;
-      white-space: pre-wrap;
-    }
-  }
+		.column50 {
+			vertical-align: top;
+			white-space: pre-wrap;
+		}
+	}
 
 }
 
 .noRecords {
-  .normalText {
-    color: $light-med-gray;
-    font-weight: 300;
-    font-size: $normal-text-size;
-  }
+	.normalText {
+		color: $light-med-gray;
+		font-weight: 300;
+		font-size: $normal-text-size;
+	}
 }
 
 
 /*---------- Filter -----------*/
 .filterWrapper {
-  position: relative;
+	position: relative;
 
-  button.link {
-    vertical-align: middle;
-    font-size: $small-text-size;
-    color: $mainColor;
-    font-weight: 300;
-    margin-right: 5px;
+	button.link {
+		vertical-align: middle;
+		font-size: $small-text-size;
+		color: $mainColor;
+		font-weight: 300;
+		margin-right: 5px;
 
-    .icon {
-      margin-left: 2px;
-    }
-  }
+		.icon {
+			margin-left: 2px;
+		}
+	}
 
-  button.link:hover {
-    color: $secondColor;
-  }
+	button.link:hover {
+		color: $secondColor;
+	}
 }
 
 .filter {
-  position: relative;
-  display: block;
+	position: relative;
+	display: block;
 
-  .filter-content {
-    box-shadow: none;
-    padding-bottom: 0px;
-    margin-bottom: 0px;
-    background: transparent;
-    padding: 30px 0;
-    overflow-x: auto;
-  }
+	.filter-content {
+		box-shadow: none;
+		padding-bottom: 0px;
+		margin-bottom: 0px;
+		background: transparent;
+		padding: 30px 0;
+		overflow-x: auto;
+	}
 }
 
 /*----------- Max Records Dropdown -------------*/
 .exportRecordsLink {
 
-  .exportRecordsText {
-    margin-right: 5px;
-  }
+	.exportRecordsText {
+		margin-right: 5px;
+	}
 
-  button.link {
-    color: $mainColor;
-    font-weight: 300;
-  }
+	button.link {
+		color: $mainColor;
+		font-weight: 300;
+	}
 
-  button.link:hover {
-    color: $secondColor;
-  }
+	button.link:hover {
+		color: $secondColor;
+	}
 }
 
 .maxRecords {
 
-  .dropdown {
-    width: 125px;
-    .label {
-      font-size: $tiny-text-size;
-      color: $med-gray;
-    }
-    button:hover {
-      .label { color: $mainColor; }
-    }
-  }
+	.dropdown {
+		width: 125px;
+		.label {
+			font-size: $tiny-text-size;
+			color: $med-gray;
+		}
+		button:hover {
+			.label { color: $mainColor; }
+		}
+	}
 
-  button.link {
-    font-weight: 400;
-    color: $med-gray;
-  }
-  button.link:hover {
-    color: $mainColor;
-  }
+	button.link {
+		font-weight: 400;
+		color: $med-gray;
+	}
+	button.link:hover {
+		color: $mainColor;
+	}
 }
 
 .recordCount {
-  color: $med-gray;
+	color: $med-gray;
 }
 
 
 /*----------- Tabs -------------*/
 .statsTab {
-  .panel {
-    border-bottom: none;
-  }
-  .panelTab {
-    color: $med-gray;
-    background: transparent;
-    border-bottom: 2px solid transparent;
-    min-width: 100px;
-  }
+	.panel {
+		border-bottom: none;
+	}
+	.panelTab {
+		color: $med-gray;
+		background: transparent;
+		border-bottom: 2px solid transparent;
+		min-width: 100px;
+	}
 
-  button.panelTab.selected {
-    color: $mainColor;
-    background: transparent;
-    border-bottom: 2px solid $mainColor;
-    @include default-transition(1s);
-    @include animation(pulsateBrighter 2s infinite linear);
-  }
+	button.panelTab.selected {
+		color: $mainColor;
+		background: transparent;
+		border-bottom: 2px solid $mainColor;
+		@include default-transition(1s);
+		@include animation(pulsateBrighter 2s infinite linear);
+	}
 
-  .panelTab:hover {
-    background: transparent;
-  }
+	.panelTab:hover {
+		background: transparent;
+	}
 
-  button {
-    font-size: $normal-text-size;
-  }
+	button {
+		font-size: $normal-text-size;
+	}
 
 }
 
 .floating-label button.label {
-  color: $med-gray;
+	color: $med-gray;
 }
 
 .floating-label.active label {
-  color: $mainColor;
+	color: $mainColor;
 }
 
 .search {
-  .input-group:not(.hidden) {
-    position: relative;
-    padding: 0;
-    margin: 0;
-  }
+	.input-group:not(.hidden) {
+		position: relative;
+		padding: 0;
+		margin: 0;
+	}
 
-  input {
-    padding-right: 45px;
-    height: 35px;
-    border-bottom: 1px solid $light;
-  }
+	input {
+		padding-right: 45px;
+		height: 35px;
+		border-bottom: 1px solid $light;
+	}
 
-  .input-bottom.idle {
-    background: $light;
-  }
+	.input-bottom.idle {
+		background: $light;
+	}
 
-  .icon {
-    color: $light-med-gray;
-  }
+	.icon {
+		color: $light-med-gray;
+	}
 }
 
 .dropdown-cover {
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  cursor: pointer;
-  background: $overlayColor;
-  z-index: 4000;
+	position: fixed;
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	cursor: pointer;
+	background: $overlayColor;
+	z-index: 4000;
 }
 
 .modal .dropdown-cover {
-  border-radius: 20px;
+	border-radius: 20px;
 }
 
 .dropdown .dropdown-content {
-  border-radius: 20px;
-  background: $white;
+	border-radius: 20px;
+	background: $white;
 }
 
 .dropdown .dropdown-content.opened {
-  border: 1px solid $mainColor;
-  @include box-shadow(0px 3px 6px 0px transparentize($mainColor2, .4));
+	border: 1px solid $mainColor;
+	@include box-shadow(0px 3px 6px 0px transparentize($mainColor2, .4));
 }
 
 .dropdown .dropdown-content-inner {
-  margin: 15px 0;
+	margin: 15px 0;
 }
 
 .dropdown-content.top {
-  .dropdown-content-inner {
-    margin: 0px 0;
-  }
+	.dropdown-content-inner {
+		margin: 0px 0;
+	}
 }
 
 .dropdown .dropdown-item.selected {
-  color: $mainColor;
+	color: $mainColor;
 }
 
 .dropdown .dropdown-item {
-  padding: 15px 25px;
-  border-bottom: 1px solid $light;
+	padding: 15px 25px;
+	border-bottom: 1px solid $light;
 }
 
 .dropdown .dropdown-item-actions {
-  display: inline;
-  float: right;
+	display: inline;
+	float: right;
 }
 
 .dropdown .dropdown-item:last-child {
-  border-bottom: 0;
+	border-bottom: 0;
 }
 
 .dropdown .dropdown-item:hover {
-  background: $mainColor;
-  color: $white;
-  .icon { color: $white; }
-  .dropdown-item-actions button.link {
-    color: $white;
-    border: 0;
-  }
-  .dropdown-item-actions button.link:hover {
-    color: $light-gray;
-    border: 0;
-  }
-  .date {
-    color: $white;
-  }
+	background: $mainColor;
+	color: $white;
+	.icon { color: $white; }
+	.dropdown-item-actions button.link {
+		color: $white;
+		border: 0;
+	}
+	.dropdown-item-actions button.link:hover {
+		color: $light-gray;
+		border: 0;
+	}
+	.date {
+		color: $white;
+	}
 }
 
 .dropdown-item button.link {
-  border-bottom: 0;
+	border-bottom: 0;
 }
 
 .dropdown-item.bottom {
-  cursor: default;
-  button {
-    border-bottom: 0;
-  }
-  button.link {
-    font-size: $med-text-size;
-  }
+	cursor: default;
+	button {
+		border-bottom: 0;
+	}
+	button.link {
+		font-size: $med-text-size;
+	}
 }
 .dropdown .dropdown-item.bottom:hover,
 .dropdown-item.bottom:hover {
-  background: $white;
-  color: $mainColor;
-  border-bottom: 0;
+	background: $white;
+	color: $mainColor;
+	border-bottom: 0;
 }
 
 .dropdown .label:not(button) {
-  font-size: $normal-text-size;
+	font-size: $normal-text-size;
 }
 
 .dropdown .label.idle {
-  font-weight: 300;
+	font-weight: 300;
 }
 
 .dropdown label button {
-  color: $med-gray;
+	color: $med-gray;
 }
 
 .dropdown button .label {
-  font-weight: 400;
+	font-weight: 400;
 }
 
 .dropdown button.label {
-  font-size: 1em;
+	font-size: 1em;
 }
 
 .input-group.dropdown-button {
-    padding: 0;
-    margin-left: 0px;
+		padding: 0;
+		margin-left: 0px;
 
-    .label.idle {
-      color: $mainColor !important;
-    }
+		.label.idle {
+			color: $mainColor !important;
+		}
 
-    .dropdown .dropdown-content-inner .icon {
-    }
+		.dropdown .dropdown-content-inner .icon {
+		}
 
-    .dropdown .dropdown-item {
-      .icon {
-        font-size: $small-text-size;
-      }
-    }
+		.dropdown .dropdown-item {
+			.icon {
+				font-size: $small-text-size;
+			}
+		}
 
-    .dropdown .dropdown-item:hover {
-      .icon {
-        color: $white;
-      }
-    }
+		.dropdown .dropdown-item:hover {
+			.icon {
+				color: $white;
+			}
+		}
 
-    .dropdown .icon {
-      position: initial;
-      color: $mainColor;
-      font-size: $normal-text-size;
-      margin-left: 5px;
-    }
-    .dropdown .label {
-      color: $mainColor;
-      font-weight: 300;
-    }
+		.dropdown .icon {
+			position: initial;
+			color: $mainColor;
+			font-size: $normal-text-size;
+			margin-left: 5px;
+		}
+		.dropdown .label {
+			color: $mainColor;
+			font-weight: 300;
+		}
 
-    .dropdown button {
-      display: flex;
-      align-items: center;
-      border: 0;
-    }
+		.dropdown button {
+			display: flex;
+			align-items: center;
+			border: 0;
+		}
 
-    .dropdown button:hover {
-      .label,
-      .icon {
-        color: $secondColor !important;
-        @include default-transition(.5s);
-      }
-    }
+		.dropdown button:hover {
+			.label,
+			.icon {
+				color: $secondColor !important;
+				@include default-transition(.5s);
+			}
+		}
 }
 
 .input-group.dropdown-button.publish {
-  .dropdown button {
-    font-size: $med-text-size;
-  }
+	.dropdown button {
+		font-size: $med-text-size;
+	}
 }
 
 // Error
 .error {
-  .dropdown-item.bottom {
-    button,
-    button.button,
-    button.link {
-      color: $mainColor;
-    }
-  }
+	.dropdown-item.bottom {
+		button,
+		button.button,
+		button.link {
+			color: $mainColor;
+		}
+	}
 }
 
 .alertMsg {
 
-  .warning {
-    background: $red;
-  }
+	.warning {
+		background: $red;
+	}
 
-  .msgText {
-    text-align: center;
-    max-width: $main-max-width;
-  }
-  .icon {
-    vertical-align: middle;
-    font-size: $huge-text-size;
-  }
+	.msgText {
+		text-align: center;
+		max-width: $main-max-width;
+	}
+	.icon {
+		vertical-align: middle;
+		font-size: $huge-text-size;
+	}
 
-  margin-bottom: 20px;
+	margin-bottom: 20px;
 
-  .error {
-    text-align: center;
-  }
+	.error {
+		text-align: center;
+	}
 }
 
 .success {
-  background: $green;
+	background: $green;
 
-  .msgText {
-    color: $white;
-  }
+	.msgText {
+		color: $white;
+	}
 }
 
 .formBtn-group {
-  width: 100%;
-  clear: both;
+	width: 100%;
+	clear: both;
 }
 
 .RichEditor-styleButton {
-  color: $mainColor;
+	color: $mainColor;
 }
 
 .RichEditor-editor .public-DraftEditorPlaceholder-inner {
-  font-weight: 300;
-  font-size: $normal-text-size;
+	font-weight: 300;
+	font-size: $normal-text-size;
 }
 
 .RichEditor-controls {
-  font-size: $med-text-size;
+	font-size: $med-text-size;
 }
 
 .DraftEditor-editorContainer {
@@ -1717,282 +1717,293 @@ button.supportLink {
 
 .modal {
 
-  .richtext-nopadding {
-    .RichEditor-root {
-      padding: 0px;
-    }
-  }
+	.richtext-nopadding {
+		.RichEditor-root {
+			padding: 0px;
+		}
+	}
 
-  .RichEditor-root {
-    padding: 20px;
-    margin-top: 20px;
-  }
+	.RichEditor-root {
+		padding: 20px;
+		margin-top: 20px;
+	}
 }
 
 /*-------- Status -----------*/
 
 .merchantStatus {
 
-  background: $white;
+	background: $white;
 
-  .alertMsg {
-    margin-bottom: 0px;
-    padding-bottom: 5px;
+	.alertMsg {
+		margin-bottom: 0px;
+		padding-bottom: 5px;
 
-    button.link {
-      font-weight: 400;
-      display: block;
-    }
+		.warning {
+			background: $orange;
 
-    .msgText {
-      display: flex;
-      justify-content: center;
-    }
+			.msgText {
+				display: flex;
+				justify-content: center;
+				color: $white;
+			}
+		}
 
-    .icon {
-      margin-top: 2px;
-      vertical-align: top;
-    }
 
-    .statusMsg {
-      display: flex;
-      flex-direction: column;
-      padding: 5px 10px 5px 0;
-      align-items: center;
-      margin-left: 10px;
-    }
+		button.link {
+			font-weight: 400;
+			display: block;
+		}
 
-    button.close {
-      right: 0px;
-      font-size: $tiny-text-size;
-    }
-    button.close:hover {
-      color: $light-med-gray;
-    }
-  }
+		.msgText {
+			display: flex;
+			justify-content: center;
+		}
 
-  button.link.needsValidated {
-    color: $deepOrange;
-    font-size: $small-text-size;
-  }
+		.icon {
+			margin-top: 2px;
+			vertical-align: top;
+		}
 
-  button.link.validated {
-    color: $green;
-    font-size: $small-text-size;
-  }
+		.statusMsg {
+			display: flex;
+			flex-direction: column;
+			padding: 5px 10px 5px 0;
+			align-items: center;
+			margin-left: 10px;
+		}
+
+		button.close {
+			right: 0px;
+			font-size: $tiny-text-size;
+		}
+		button.close:hover {
+			color: $light-med-gray;
+		}
+	}
+
+	button.link.needsValidated {
+		color: $deepOrange;
+		font-size: $small-text-size;
+	}
+
+	button.link.validated {
+		color: $green;
+		font-size: $small-text-size;
+	}
 }
 
 /*-------- Dashboard ----------*/
 .dashboard {
 
-  .top {
-    display: flex;
-  }
+	.top {
+		display: flex;
+	}
 
-  .left {
-    width: 200px;
-  }
+	.left {
+		width: 200px;
+	}
 
 }
 
 /*-------- Money ------------*/
 
 .txState {
-  font-weight: 300;
+	font-weight: 300;
 }
 
 .txState.chargeback {
-  color: $red;
+	color: $red;
 }
 
 .descAmount {
-  display: none;
-  margin-right: 5px;
+	display: none;
+	margin-right: 5px;
 }
 
 .transferMoney {
-  .balance {
-    button.link { align-self: center; }
-  }
+	.balance {
+		button.link { align-self: center; }
+	}
 }
 
 .transferAmount {
-  display: block;
-  margin-top: 20px;
+	display: block;
+	margin-top: 20px;
 
-  label {
-    display: block;
-  }
+	label {
+		display: block;
+	}
 
-  .moneyAmount {
-    margin-top: 5px;
-    display: block;
-    font-size: $huge-text-size;
-    font-weight: 300;
-  }
+	.moneyAmount {
+		margin-top: 5px;
+		display: block;
+		font-size: $huge-text-size;
+		font-weight: 300;
+	}
 }
 
 /*------ Merchant Form -----*/
 .merchantForm {
-  position: relative;
+	position: relative;
 
-  h3 {
-    margin-left: 5px;
-    margin-bottom: 10px;
-  }
+	h3 {
+		margin-left: 5px;
+		margin-bottom: 10px;
+	}
 }
 
 /*-------- Modal ----------*/
 .modal {
 
-  .modalOverlay {
-    background: $overlayColor;
-  }
+	.modalOverlay {
+		background: $overlayColor;
+	}
 
-  .modalWrapper {
-    position: relative;
-    display: block;
-    margin: 0;
-    padding: 20px 10px;
-    padding-top: 40px;
-    border-radius: 20px;
-  }
+	.modalWrapper {
+		position: relative;
+		display: block;
+		margin: 0;
+		padding: 20px 10px;
+		padding-top: 40px;
+		border-radius: 20px;
+	}
 
-  .modalContent {
-    border-radius: 20px;
-    overflow: hidden;
-    background: transparentize($white, 0) !important;
-  }
+	.modalContent {
+		border-radius: 20px;
+		overflow: hidden;
+		background: transparentize($white, 0) !important;
+	}
 
-  h2 {
-    font-size: 1.5em;
-    color: $dark-blue-gray;
-    font-weight: 300;
-    margin-top: 0px;
-  }
+	h2 {
+		font-size: 1.5em;
+		color: $dark-blue-gray;
+		font-weight: 300;
+		margin-top: 0px;
+	}
 
-  .modalCloseBtn {
-    top: 0px;
-    right: 0;
-    z-index: 999999999;
+	.modalCloseBtn {
+		top: 0px;
+		right: 0;
+		z-index: 999999999;
 
-    .icon {
-      color: $med-gray;
-      font-size: $normal-text-size;
-    }
-  }
+		.icon {
+			color: $med-gray;
+			font-size: $normal-text-size;
+		}
+	}
 
-  button.modalCloseBtn:hover {
-    .icon { color: $mainColor; }
-  }
+	button.modalCloseBtn:hover {
+		.icon { color: $mainColor; }
+	}
 
-  button.modalToTop:hover {
-    color: $white;
-  }
+	button.modalToTop:hover {
+		color: $white;
+	}
 
 }
 
 .modalFormContainer {
-  padding: 0px 40px;
+	padding: 0px 40px;
 
-  h2 {
-    font-size: 1.5em;
-    color: $dark-blue-gray;
-    font-weight: 300;
-    margin-top: 0px;
-  }
+	h2 {
+		font-size: 1.5em;
+		color: $dark-blue-gray;
+		font-weight: 300;
+		margin-top: 0px;
+	}
 
-  h2.pageTitle {
-    text-align: center;
-  }
+	h2.pageTitle {
+		text-align: center;
+	}
 }
 
 .modalPreview {
-  .modalTop,
-  .modalBottom {
-    display: none;
-  }
-  .modalWrapper {
-    padding-top: 20px;
-  }
+	.modalTop,
+	.modalBottom {
+		display: none;
+	}
+	.modalWrapper {
+		padding-top: 20px;
+	}
 }
 
 .modalTop {
-  position: fixed;
-  top: -1px;
-  height: 30px;
-  width: 100%;
-  overflow: hidden;
-  border-top-right-radius: 20px;
-  border-top-left-radius: 20px;
-  z-index: 999999;
+	position: fixed;
+	top: -1px;
+	height: 30px;
+	width: 100%;
+	overflow: hidden;
+	border-top-right-radius: 20px;
+	border-top-left-radius: 20px;
+	z-index: 999999;
 }
 
 .modalTop::after {
-  content: "";
-  background: url('https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/modal-top-bg5.png') repeat-x;
-  background-size: 1000px 30px;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  position: absolute;
-  opacity: 1;
-  height: 30px;
-  border-top-right-radius: 20px;
-  border-top-left-radius: 20px;
+	content: "";
+	background: url('https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/modal-top-bg5.png') repeat-x;
+	background-size: 1000px 30px;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	position: absolute;
+	opacity: 1;
+	height: 30px;
+	border-top-right-radius: 20px;
+	border-top-left-radius: 20px;
 }
 
 .modalBottom {
-  clear: both;
-  position: relative;
-  display: block;
-  bottom: 0px;
-  height: 28px;
-  width: auto;
-  overflow: hidden;
-  border-bottom-right-radius: 20px;
-  border-bottom-left-radius: 20px;
-  z-index: 999999;
+	clear: both;
+	position: relative;
+	display: block;
+	bottom: 0px;
+	height: 28px;
+	width: auto;
+	overflow: hidden;
+	border-bottom-right-radius: 20px;
+	border-bottom-left-radius: 20px;
+	z-index: 999999;
 }
 
 .modalBottom::after {
-  content: "";
-  background: url('https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/modal-bottom-bg5.png') repeat-x bottom;
-  background-size: 1000px 28px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  position: absolute;
-  opacity: 1;
-  height: 28px;
-  border-bottom-right-radius: 20px;
-  border-bottom-left-radius: 20px;
+	content: "";
+	background: url('https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/modal-bottom-bg5.png') repeat-x bottom;
+	background-size: 1000px 28px;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	position: absolute;
+	opacity: 1;
+	height: 28px;
+	border-bottom-right-radius: 20px;
+	border-bottom-left-radius: 20px;
 }
 
 /*------- Flatpickr Calendar -------*/
 .flatpickr-calendar {
-  @include box-shadow(0px 4px 8px 0px rgba(0,0,0,0.6));
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
+	@include box-shadow(0px 4px 8px 0px rgba(0,0,0,0.6));
+	border-bottom-left-radius: 20px;
+	border-bottom-right-radius: 20px;
 }
 
 .flatpickr-time {
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
+	border-bottom-left-radius: 20px;
+	border-bottom-right-radius: 20px;
 }
 
 .flatpickr-innerContainer {
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
+	border-bottom-left-radius: 0px;
+	border-bottom-right-radius: 0px;
 }
 
 .flatpickr-day.selected,
 .flatpickr-day.selected:hover,
 .flatpickr-day:hover {
-  background: $mainColor !important;
-  border-color: $mainColor !important;
-  color: $white !important;
+	background: $mainColor !important;
+	border-color: $mainColor !important;
+	color: $white !important;
 }
 
 /*-------- Loader ----------*/
@@ -2002,54 +2013,54 @@ button.supportLink {
 
 /*------- Share ---------*/
 .share {
-  ul {
+	ul {
 
 
-  }
+	}
 
-  li {
-    margin: 0 10px;
-    display: inline-block;
-    cursor: pointer;
-  }
+	li {
+		margin: 0 10px;
+		display: inline-block;
+		cursor: pointer;
+	}
 
-  li:hover {
-    img {
-      @include filter(brightness(120%));
-    }
-  }
+	li:hover {
+		img {
+			@include filter(brightness(120%));
+		}
+	}
 }
 
 
 ul.share {
-  li:hover {
-    img {
-      @include filter(brightness(120%));
-    }
-  }
+	li:hover {
+		img {
+			@include filter(brightness(120%));
+		}
+	}
 }
 
 /*-------- HTML INJECTION - Used for email templates and other HTML templates */
 .html-injection {
-  td { padding: 0; margin: 0; }
-  p {
-    font-size: 12px;
-    margin: 0;
-  }
+	td { padding: 0; margin: 0; }
+	p {
+		font-size: 12px;
+		margin: 0;
+	}
 	img { border: 0; text-decoration: none; height: auto; outline: none; }
 	table { border-collapse:collapse !important; }
 
-  .flexTop {
-    display: flex;
-    flex-direction: column;
-  }
+	.flexTop {
+		display: flex;
+		flex-direction: column;
+	}
 
 	#emailContainer { width: 500px; }
 	#invoice { margin: 10px 0 10px 0; }
 	#ticket { margin: 20px 0 20px 0; }
-  #ticketBackground {
-    background: url('https://s3-us-west-1.amazonaws.com/givebox/public/images/ticket-template3.png') no-repeat;
-  }
+	#ticketBackground {
+		background: url('https://s3-us-west-1.amazonaws.com/givebox/public/images/ticket-template3.png') no-repeat;
+	}
 
 	h1 { font-size: 22px; font-weight: 500; margin: 5px 0 5px 0; }
 	h2 { font-size: 18px; font-weight: 400; margin: 5px 0 5px 0; }
@@ -2073,79 +2084,79 @@ ul.share {
 	.verySmallText { font-size: 10px; }
 
 	@media screen and (max-width: 550px) {
-	  #emailContainer { width: 360px; }
-	  #templateColumns{ width:100% !important; }
-	  .templateColumnContainer{ width:100% !important;  }
+		#emailContainer { width: 360px; }
+		#templateColumns{ width:100% !important; }
+		.templateColumnContainer{ width:100% !important;  }
 	}
 }
 
 .customers {
-  header.subNavFixed .subNavContent .balance {
-    display: flex;
-    align-items: flex-start;
-    margin-left: 20px;
-  }
+	header.subNavFixed .subNavContent .balance {
+		display: flex;
+		align-items: flex-start;
+		margin-left: 20px;
+	}
 }
 
 .emailList {
-  .actionsMenu {
+	.actionsMenu {
 
-    button.menuLabel {
-      text-align: center;
-      font-size: $normal-text-size;
-    }
+		button.menuLabel {
+			text-align: center;
+			font-size: $normal-text-size;
+		}
 
-    .icon {
-      font-size: $normal-text-size;
-    }
+		.icon {
+			font-size: $normal-text-size;
+		}
 
-    .actionsMenu-content {
-      width: 300px;
-      left: 0;
-      right: 0;
-      margin: 0 auto;
-    }
+		.actionsMenu-content {
+			width: 300px;
+			left: 0;
+			right: 0;
+			margin: 0 auto;
+		}
 
-    .actionsMenu-item button {
-      text-align: left;
-      font-size: $large-text-size;
-    }
+		.actionsMenu-item button {
+			text-align: left;
+			font-size: $large-text-size;
+		}
 
-  }
+	}
 }
 
 .emailListContainer {
-  .selectButtons {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+	.selectButtons {
+		display: flex;
+		justify-content: center;
+		align-items: center;
 
-    .link {
-      font-size: $small-text-size;
-    }
-  }
-  ul {
-    margin: 20px 0;
-    max-height: 200px;
-    overflow-y: scroll;
-    overflow-x: hidden;
-  }
+		.link {
+			font-size: $small-text-size;
+		}
+	}
+	ul {
+		margin: 20px 0;
+		max-height: 200px;
+		overflow-y: scroll;
+		overflow-x: hidden;
+	}
 
 }
 
 .selectedCount {
-  font-size: $small-text-size;
-  color: $med-gray;
+	font-size: $small-text-size;
+	color: $med-gray;
 }
 
 button.importGmail {
-  img {
-    @include filter(brightness(90%));
-  }
+	img {
+		@include filter(brightness(90%));
+	}
 }
 
 button.importGmail:hover {
-  img {
-    @include filter(brightness(100%));
-  }
+	img {
+		@include filter(brightness(100%));
+	}
 }

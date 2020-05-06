@@ -33,6 +33,7 @@ export function toggleModal(identifier, open, opts = {}) {
 	return (dispatch, getState) => {
 		const modals = util.getValue(getState(), 'modal', {});
 		let openModals = [];
+		let allowSetModal = false;
 		if (!util.isEmpty(modals)) {
 			const filtered = util.filterObj(modals, 'open', true);
 			openModals = Object.keys(filtered);
@@ -40,18 +41,20 @@ export function toggleModal(identifier, open, opts = {}) {
 		if (open) {
 			if (!openModals.includes(identifier)) {
 				openModals.push(identifier);
+				allowSetModal = true;
 			}
 		} else {
 			const index = openModals.indexOf(identifier);
 			if (index !== -1) {
 				openModals.splice(index, 1);
+				allowSetModal = true;
 			}
 		}
 		let topModal = null;
 		if (!util.isEmpty(openModals)) {
 			topModal = openModals[openModals.length - 1]
 		}
-		dispatch(setModal(identifier, open, topModal, opts));
+		if (allowSetModal) dispatch(setModal(identifier, open, topModal, opts));
 	}
 }
 

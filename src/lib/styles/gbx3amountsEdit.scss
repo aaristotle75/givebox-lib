@@ -20,6 +20,10 @@
 		.column { display: inline-block; }
 	}
 
+	.descField:not(.showDetailsOpen) {
+		opacity: 0;
+	}
+
 	.showDetails {
 		padding: 10px 10%;
 	}
@@ -93,6 +97,10 @@
 			button.link {
 				opacity: 1;
 			}
+		}
+
+		.descField {
+			opacity: 1;
 		}
 	}
 

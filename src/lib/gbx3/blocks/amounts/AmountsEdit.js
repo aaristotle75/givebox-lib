@@ -130,14 +130,14 @@ export default class AmountsEdit extends Component {
 		});
 	}
 
-	validateEnabledAmount(ID, enabled) {
+	validateEnabledAmount(ID, enabled, priceDisplay) {
 		const {
 			customID
 		} = this.props;
 		const config = util.getValue(amountFieldsConfig, this.props.kind, {});
 		const amount = this.getAmount(ID);
 		const customField = config.hasCustomField && customID === ID ? true : false;
-		const displayValue = amount.priceDisplay || (amount.price && amount.price !== 0 ? amount.price/100 : '');
+		const displayValue = priceDisplay || ( amount.priceDisplay || (amount.price && amount.price !== 0 ? amount.price/100 : '') );
 		let error = false;
 		if (enabled && !customField && !_v.validateNumber(displayValue, _v.limits.txMin, _v.limits.txMax) && !util.getValue(amount, 'freeSingleEntry')) {
 			error = `Enabled amounts must be between $${_v.limits.txMin} and $${util.numberWithCommas(_v.limits.txMax)}.`;
@@ -198,6 +198,7 @@ export default class AmountsEdit extends Component {
 					const value = e.currentTarget.value;
 					const priceDisplay = _v.formatNumber(value);
 					const price = util.formatMoneyForAPI(value);
+					this.props.validateAmountsBeforeSave(ID, this.validateEnabledAmount(ID, amount.enabled, priceDisplay));
 					this.updateAmounts(ID, { priceDisplay, price });
 				}}
 				maxLength={8}
@@ -243,14 +244,14 @@ export default class AmountsEdit extends Component {
 			article
 		} = this.props;
 		const amount = this.getAmount(ID);
+		const showDetails = amount.showDetails ? false : true;
 		return (
 			<div className='longdescRow'>
-				<div style={{ width: '10%' }} className='column'>&nbsp;</div>
-				<div style={{ width: '85%' }} className='column descField'>
+				<div style={{ width: '25%' }} className='column'>&nbsp;</div>
+				<div style={{ width: '70%' }} className={`column descField ${amount.showDetails ? 'showDetailsOpen' : ''}`}>
 					<GBLink
 						style={{ fontSize: 12 }}
 						onClick={() => {
-							const showDetails = amount.showDetails ? false : true;
 							this.updateAmounts(ID, { showDetails });
 						}}>
 						{amount.description ? 'Edit' : 'Add'} Long Description <span className={`icon icon-${amount.showDetails ? 'minus' : 'plus'}`}></span>

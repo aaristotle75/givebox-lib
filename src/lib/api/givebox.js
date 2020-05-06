@@ -199,6 +199,10 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
 			endpoint = `orgs/${id[0]}/underwriting-info`;
 			break;
 		}
+		case 'orgUnderwritingInfo': {
+			endpoint = `orgs/${orgID}/underwriting-info`;
+			break;
+		}
 		case 'underwritingDocs': {
 			endpoint = `orgs/${id[0]}/underwriting-documents`;
 			break;
