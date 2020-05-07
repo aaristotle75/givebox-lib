@@ -1,23 +1,3 @@
-
-export const defaultGlobals = {
-	gbxStyle: {
-		maxWidth: 1000,
-		themeColor: ''
-	},
-	button: {
-		embedAllowed: false,
-		enabled: false,
-		type: 'button',
-		text: 'Button Example',
-		style: {
-			bgColor: '',
-			fontSize: 16,
-			borderRadius: 10,
-			width: 200
-		}
-	}
-};
-
 const logo = {
 	name: 'logo',
 	title: 'Logo',

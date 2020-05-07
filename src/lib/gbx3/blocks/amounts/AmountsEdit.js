@@ -56,6 +56,9 @@ export default class AmountsEdit extends Component {
 		this.deleteAmount = this.deleteAmount.bind(this);
 		this.addAmount = this.addAmount.bind(this);
 		this.validateEnabledAmount = this.validateEnabledAmount.bind(this);
+		this.state = {
+			deleteError: []
+		};
 	}
 
 	componentDidMount() {
@@ -94,13 +97,14 @@ export default class AmountsEdit extends Component {
 		const amountsList = [ ...this.props.amountsList ];
 		const index = amountsList.findIndex(x => x.ID === ID);
 		const amount = amountsList[index];
+
 		this.props.sendResource(types.kind(this.props.kind).api.amount, {
 			id: [amount[`${this.props.kind}ID`], amount.ID],
 			method: 'delete',
 			reload: false,
 			callback: (res, err) => {
 				amountsList.splice(index, 1);
-				this.props.amountsListUpdated(amountsList, true);
+				this.props.amountsListUpdated(amountsList, true, true);
 			}
 		});
 	}
@@ -124,7 +128,7 @@ export default class AmountsEdit extends Component {
 			callback: (res, err) => {
 				if (!err && !util.isEmpty(res)) {
 					amountsList.push(res);
-					this.props.amountsListUpdated(amountsList, true);
+					this.props.amountsListUpdated(amountsList, true, true);
 				}
 			}
 		});
@@ -285,6 +289,7 @@ export default class AmountsEdit extends Component {
 			customID
 		} = this.props;
 
+		const formError = !util.isEmpty(this.props.formError);
 		const config = util.getValue(amountFieldsConfig, this.props.kind, {});
 		const fields = util.getValue(config, 'fields');
 		let numEnabled = 0;
@@ -320,9 +325,9 @@ export default class AmountsEdit extends Component {
 				: <></> ;
 
 				const deleteField = amountsList.length > 1 ?
-					<GBLink className={`link ${value.enabled || customField ? 'sortable tooltip right' : ''}`} style={{ fontSize: 18 }} onClick={() => value.enabled || customField ? console.error(`${customField ? 'Cannot delete custom field.' : 'Cannot delete an enabled amount.'}`) : this.deleteAmount(value.ID)}>
+					<GBLink className={`link ${value.enabled || customField || formError ? 'sortable tooltip right' : ''}`} style={{ fontSize: 18 }} onClick={() => value.enabled || customField || formError ? console.error(`${customField ? 'Cannot delete custom field.' : formError ? 'Cannot delete amount with form errors.' : 'Cannot delete an enabled amount.'}`) : this.deleteAmount(value.ID)}>
 						<span className='icon icon-x'></span>
-						{value.enabled || customField ? <span style={{ left: '-20px' }} className='tooltipTop'><i />{customField ? 'The custom amount field cannot be deleted.' : 'You must disable the amount before you can delete it.'}</span> : <></>}
+						{value.enabled || customField || formError ? <span style={{ left: '-20px' }} className='tooltipTop'><i />{customField ? 'The custom amount field cannot be deleted.' : formError ? 'Please fix errors in red before deleting.' : 'You must disable the amount before you can delete it.'}</span> : <></>}
 					</GBLink>
 				: <></> ;
 
@@ -356,7 +361,7 @@ export default class AmountsEdit extends Component {
 		return (
 			<div className='amountsEditList'>
 				{rows}
-				{numEnabled >= amountsList.length ? addAmount : <></>}
+				{numEnabled >= amountsList.length && !formError ? addAmount : <></>}
 			</div>
 		)
 	}

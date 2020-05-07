@@ -1,4 +1,8 @@
 import * as types from './gbx3actionTypes';
+import {
+	util,
+	sendResource
+} from '../';
 
 export function updateInfo(info) {
 	return {
@@ -63,4 +67,25 @@ export function updateOrder(order) {
 		type: types.UPDATE_ORDER,
 		order
 	}
+}
+
+export function saveGBX3(data = {}, isSending = true, callback) {
+	return (dispatch, getState) => {
+		const gbx3 = util.getValue(getState(), 'gbx3', {});
+		const info = util.getValue(gbx3, 'info', {});
+		dispatch(sendResource(util.getValue(info, 'apiName'), {
+			id: [util.getValue(info, 'kindID')],
+			orgID: util.getValue(info, 'orgID'),
+			data,
+			method: 'patch',
+			callback: (res, err) => {
+				if (callback) callback(res, err);
+			},
+			isSending
+		}));
+	}
+}
+
+export function resetGBX3() {
+	console.log('execute resetGBX3');
 }

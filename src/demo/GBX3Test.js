@@ -14,7 +14,7 @@ class GBXTest extends Component {
 		super(props);
 		this.state = {
 			//id: 735,
-			id: 383037
+			id: 383042
 			//id: 4
 		};
 		this.timeout = false;
@@ -51,7 +51,7 @@ class GBXTest extends Component {
 					kind={this.props.article.kind}
 					autoSave={true}
 					save={this.save}
-					access={util.getAuthorizedAccess(this.props.access, this.props.article.orgID)}
+					editable={true}
 				/>
 			</div>
 		)
@@ -67,8 +67,7 @@ function mapStateToProps(state, props) {
 	return {
 		resource,
 		isFetching,
-		article,
-		access: util.getValue(state.resource, 'access', {})
+		article
 	}
 }
 

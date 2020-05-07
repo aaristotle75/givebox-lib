@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Layout from './Layout';
+import Admin from './Admin';
 import {
 	types,
 	util,
@@ -10,9 +11,10 @@ import {
 	updateInfo,
 	updateBlocks,
 	updateGlobals,
-	updateData
+	updateData,
+	updateAdmin
 } from '../';
-import { defaultGlobals, defaultBlocks } from './config';
+import { defaultBlocks } from './config';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import '../styles/gbx3.scss';
@@ -22,7 +24,6 @@ class GBX3 extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.loadGBX3 = this.loadGBX3.bind(this);
 		this.state = {
 			loading: true
 		};
@@ -33,14 +34,16 @@ class GBX3 extends React.Component {
 			orgID,
 			articleID,
 			kindID,
-			kind
+			kind,
+			editable
 		} = this.props;
 
 		this.loadGBX3({
 			orgID,
 			articleID,
 			kindID,
-			kind
+			kind,
+			editable
 		});
 	}
 
@@ -48,11 +51,16 @@ class GBX3 extends React.Component {
 		orgID,
 		articleID,
 		kindID,
-		kind
+		kind,
+		editable
 	}) {
 
+		const {
+			access,
+			globals
+		} = this.props;
+
 		const apiName = `org${types.kind(kind).api.item}`;
-		const globals = { ...defaultGlobals };
 		const blocks = { ...util.getValue(defaultBlocks, kind, {}) };
 
 		if (kindID) {
@@ -64,11 +72,7 @@ class GBX3 extends React.Component {
 						const settings = util.getValue(res, 'giveboxSettings', {});
 						const themeColor = util.getValue(settings, 'primaryColor', this.props.defaultPrimaryColor);
 						const customTemplate = util.getValue(settings, 'customTemplate', {});
-						Object.assign({}, globals, {
-							gbxStyle: { themeColor }
-						}, {
-							...util.getValue(customTemplate, 'globals', {})
-						});
+
 						Object.assign({}, blocks, {
 							...util.getValue(customTemplate, 'blocks', {})
 						});
@@ -81,8 +85,18 @@ class GBX3 extends React.Component {
 							apiName
 						});
 						this.props.updateBlocks(blocks);
-						this.props.updateGlobals(globals);
+						this.props.updateGlobals(
+							Object.assign({}, globals, {
+								gbxStyle: { themeColor }
+							}, {
+								...util.getValue(customTemplate, 'globals', {})
+							})
+						);
 						this.props.updateData(res);
+						this.props.updateAdmin({
+							editable,
+							hasAccessToEdit: util.getAuthorizedAccess(access, orgID)
+						});
 					}
 					this.setState({ loading: false });
 				}
@@ -96,12 +110,12 @@ class GBX3 extends React.Component {
 
 		if (this.state.loading) return <Loader msg='Initiating GBX3' />;
 
-		console.log('execute', this.props.access);
-
 		return (
 			<div className='gbx3'>
+				<Admin
+					loadGBX3={this.loadGBX3}
+				/>
 				<Layout
-					{...this.props}
 					loadGBX3={this.loadGBX3}
 				/>
 			</div>
@@ -112,12 +126,17 @@ class GBX3 extends React.Component {
 
 GBX3.defaultProps = {
 	breakpointWidth: 768,
-	defaultPrimaryColor: '#4775f8'
+	defaultPrimaryColor: '#4775f8',
+	editable: false
 }
 
 function mapStateToProps(state, props) {
 
+	const gbx3 = util.getValue(state, 'gbx3', {});
+
 	return {
+		access: util.getValue(state.resource, 'access', {}),
+		globals: util.getValue(gbx3, 'globals', {})
 	}
 }
 
@@ -127,5 +146,6 @@ export default connect(mapStateToProps, {
 	updateInfo,
 	updateBlocks,
 	updateGlobals,
-	updateData
+	updateData,
+	updateAdmin
 })(GBX3);

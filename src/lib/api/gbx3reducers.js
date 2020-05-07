@@ -5,9 +5,27 @@ export function gbx3(state = {
 		breakpoint: 'desktop'
 	},
 	blocks: {},
-	globals: {},
+	globals: {
+		gbxStyle: {
+			maxWidth: 1000,
+			primaryColor: ''
+		},
+		button: {
+			embedAllowed: false,
+			enabled: false,
+			type: 'button',
+			text: 'Button Example',
+			style: {
+				bgColor: '',
+				fontSize: 16,
+				borderRadius: 10,
+				width: 200
+			}
+		}
+	},
 	admin: {
-		editable: true,
+		hasAccessToEdit: false,
+		editable: false,
 		collision: true,
 		collapse: false,
 		outline: false

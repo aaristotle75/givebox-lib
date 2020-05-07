@@ -78,7 +78,9 @@ import {
 	updateGlobal,
 	updateData,
 	updateAdmin,
-	updateCart
+	updateCart,
+	saveGBX3,
+	resetGBX3
 } from './api/gbx3actions';
 
 import { app, resource, send, modal, preferences, custom } from './api/reducers';
@@ -145,6 +147,8 @@ export {
 	updateData,
 	updateAdmin,
 	updateCart,
+	saveGBX3,
+	resetGBX3,
 
 	// API
 	giveboxAPI,

@@ -1,10 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Admin from './Admin';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import Loadable from 'react-loadable';
 import {
-	util
+	util,
+	updateBlocks,
+	updateData,
+	updateInfo
 } from '../';
 import Block from './blocks/Block';
 import has from 'has';
@@ -126,26 +128,27 @@ class Layout extends React.Component {
 			collapse,
 			collision,
 			editable,
-			globals
+			globals,
+			hasAccessToEdit
 		} = this.props;
 
 		const {
 			layouts
 		} = this.state;
 
+		const isEditable = hasAccessToEdit && editable ? true : false;
+
 		return (
-			<div style={util.getValue(globals, 'gbxStyle', {})} className='gbx3'>
-				<Admin
-				/>
+			<div style={util.getValue(globals, 'gbxStyle', {})} className='gbx3Container'>
 				<div
 					ref={this.gridRef}
 					style={{ marginBottom: 20 }}
-					className={`column dropArea ${editable ? 'editable' : ''}`}
+					className={`column dropArea ${isEditable ? 'editable' : ''}`}
 					onDragOver={(e) => {
 						e.preventDefault();
 					}}
 					onDrop={(e) => {
-						if (editable) {
+						if (isEditable) {
 							const block = e.dataTransfer.getData('block');
 							e.preventDefault();
 							const current = this.gridRef.current;
@@ -194,12 +197,14 @@ function mapStateToProps(state, props) {
 	const gbx3 = util.getValue(state, 'gbx3', {});
 	const admin = util.getValue(gbx3, 'admin', {});
 	const info = util.getValue(gbx3, 'info', {});
+	const hasAccessToEdit = util.getValue(admin, 'hasAccessToEdit');
 	const editable = util.getValue(admin, 'editable');
 	const collision = util.getValue(admin, 'collision');
 	const collapse = util.getValue(admin, 'collapse');
 	const breakpoint = util.getValue(info, 'breakpoint');
 
 	return {
+		hasAccessToEdit,
 		editable,
 		collision,
 		collapse,
@@ -210,4 +215,7 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
+	updateBlocks,
+	updateData,
+	updateInfo
 })(Layout);

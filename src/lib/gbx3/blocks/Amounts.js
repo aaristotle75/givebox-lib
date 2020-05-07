@@ -10,6 +10,7 @@ import {
 	types,
 	sendResource,
 	updateData,
+	saveGBX3,
 	Fade
 } from '../../';
 import AmountsEdit from './amounts/AmountsEdit';
@@ -35,6 +36,7 @@ class Amounts extends Component {
 		this.closeModalAmountsEdit = this.closeModalAmountsEdit.bind(this);
 		this.validateAmountsBeforeSave = this.validateAmountsBeforeSave.bind(this);
 		this.resetToDefaults = this.resetToDefaults.bind(this);
+		this.saveEditedAmounts = this.saveEditedAmounts.bind(this);
 		this.callbackBeforeStep = this.callbackBeforeStep.bind(this);
 		this.callbackAfterStep = this.callbackAfterStep.bind(this);
 		this.setTab = this.setTab.bind(this);
@@ -84,33 +86,55 @@ class Amounts extends Component {
 		} = this.state;
 		if (type !== 'cancel') {
 			if (util.isEmpty(formError)) {
-				const button = { ...this.state.button };
-				const recurring = { ...this.state.recurring };
-				const amountsList = [ ...this.state.amountsListEditable ];
-				const customIndex = this.state.customIndex;
-				const defaultIndex = this.state.defaultIndex;
-
-				this.props.updateData({
-					amountIndexCustom: customIndex,
-					amountIndexDefault: defaultIndex,
-					[types.kind(this.props.kind).amountField]: {
-						list: amountsList
-					}
-				}, true);
-
-				this.props.updateBlock(null, {
-					button,
-					recurring,
-					amountsList,
-					customIndex,
-					defaultIndex
-				});
+				this.saveEditedAmounts(true);
 			} else {
 				if (type === 'ok') this.resetToDefaults(this.props.closeEditModal);
 			}
 		} else {
 			this.resetToDefaults(this.props.closeEditModal);
 		}
+	}
+
+	saveEditedAmounts(saveBlock) {
+		const button = { ...this.state.button };
+		const recurring = { ...this.state.recurring };
+		const amountsList = [ ...this.state.amountsListEditable ];
+		const customIndex = this.state.customIndex;
+		const customID = this.state.customID;
+		const defaultIndex = this.state.defaultIndex;
+		const defaultID = this.state.defaultID;
+
+		this.setState({
+			button,
+			recurring,
+			amountsList,
+			customIndex,
+			customID,
+			defaultIndex,
+			defaultID,
+			defaultButton: util.deepClone(button),
+			defaultRecurring: util.deepClone(recurring),
+			amountsListDefault: util.deepClone(amountsList),
+			customIndexDefault: customIndex,
+			customIDDefault: customID,
+			defaultIndexDefault: defaultIndex,
+			defaultIDDefault: defaultID
+		}, () => {
+			this.props.updateData({
+				amountIndexCustom: customIndex,
+				amountIndexDefault: defaultIndex,
+				[types.kind(this.props.kind).amountField]: {
+					list: amountsList
+				}
+			});
+
+			if (saveBlock) {
+				this.props.updateBlock(null, {
+					button,
+					recurring
+				});
+			}
+		});
 	}
 
 	resetToDefaults(callback = () => {}) {
@@ -127,6 +151,55 @@ class Amounts extends Component {
 		}, callback);
 	}
 
+	amountsListUpdated(amounts, sort = false, save = false) {
+		const config = util.getValue(amountFieldsConfig, this.props.kind, {});
+		const data = {};
+		const amountsList = amounts;
+		if (sort || save) {
+			let customIndex, defaultIndex;
+			amountsList.forEach((value, key) => {
+				customIndex = config.hasCustomField && value.ID === this.state.customID ? key : false;
+				defaultIndex = config.hasDefaultField && value.ID === this.state.defaultID ? key : false;
+				if (customIndex) this.customUpdated(key, value.ID);
+				if (defaultIndex) this.defaultUpdated(key, value.ID);
+				amountsList[key].orderBy = key;
+			});
+			data.amountIndexCustom = customIndex || null;
+			data.amountIndexDefault = defaultIndex || null;
+			data[types.kind(this.props.kind).amountField] = {
+				list: amountsList
+			};
+		}
+		this.setState({ amountsListEditable: amountsList }, () => {
+			if (save) this.props.saveGBX3(data, false, (res, err) => {
+				if (!err && !util.isEmpty(res)) {
+					this.saveEditedAmounts();
+				}
+			});
+		});
+	}
+
+	customUpdated(index, ID) {
+		const customIndex = parseInt(index);
+		const customID = parseInt(ID);
+		this.setState({
+			customIndex,
+			customID
+		});
+	}
+
+	defaultUpdated(index, ID) {
+		const defaultIndex = parseInt(index);
+		const defaultID = parseInt(ID);
+		this.setState({
+			defaultIndex,
+			defaultID
+		});
+	}
+
+	optionsUpdated(name, obj) {
+		this.setState({ [name]: { ...obj } });
+	}
 
 	validateAmountsBeforeSave(formErrorID, error, callback) {
 		const formError = this.state.formError;
@@ -250,45 +323,7 @@ class Amounts extends Component {
 
 	}
 
-	amountsListUpdated(amounts, sort = false) {
-		const config = util.getValue(amountFieldsConfig, this.props.kind, {});
-		const amountsList = amounts;
-		if (sort) {
-			amountsList.forEach((value, key) => {
-				const customField = config.hasCustomField && value.ID === this.state.customID ? true : false;
-				const defaultField = config.hasDefaultField && value.ID === this.state.defaultID ? true : false;
-				if (customField) this.customUpdated(key, value.ID);
-				if (defaultField) this.defaultUpdated(key, value.ID);
-				amountsList[key].orderBy = key;
-			});
-		}
-		this.setState({ amountsListEditable: amountsList });
-	}
-
-	customUpdated(index, ID) {
-		const customIndex = parseInt(index);
-		const customID = parseInt(ID);
-		this.setState({
-			customIndex,
-			customID
-		});
-	}
-
-	defaultUpdated(index, ID) {
-		const defaultIndex = parseInt(index);
-		const defaultID = parseInt(ID);
-		this.setState({
-			defaultIndex,
-			defaultID
-		});
-	}
-
-	optionsUpdated(name, obj) {
-		this.setState({ [name]: { ...obj } });
-	}
-
 	setTab(tab) {
-		console.log('execute', tab);
 		this.setState({ tab });
 	}
 
@@ -373,6 +408,7 @@ class Amounts extends Component {
 														defaultUpdated={this.defaultUpdated}
 														sendResource={this.props.sendResource}
 														validateAmountsBeforeSave={this.validateAmountsBeforeSave}
+														formError={this.state.formError}
 													/>
 												</div>
 											</div>
@@ -481,5 +517,6 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
 	sendResource,
+	saveGBX3,
 	updateData
 })(Amounts);
