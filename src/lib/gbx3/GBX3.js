@@ -10,6 +10,7 @@ import {
 	setCustomProp,
 	updateInfo,
 	updateBlocks,
+	updateDefaults,
 	updateGlobals,
 	updateData,
 	updateAdmin
@@ -56,12 +57,10 @@ class GBX3 extends React.Component {
 	}) {
 
 		const {
-			access,
-			globals
+			access
 		} = this.props;
 
 		const apiName = `org${types.kind(kind).api.item}`;
-		const blocks = { ...util.getValue(defaultBlocks, kind, {}) };
 
 		if (kindID) {
 			this.props.getResource(apiName, {
@@ -70,12 +69,8 @@ class GBX3 extends React.Component {
 				callback: (res, err) => {
 					if (!err && !util.isEmpty(res)) {
 						const settings = util.getValue(res, 'giveboxSettings', {});
-						const themeColor = util.getValue(settings, 'primaryColor', this.props.defaultPrimaryColor);
+						const primaryColor = util.getValue(settings, 'primaryColor', this.props.defaultPrimaryColor);
 						const customTemplate = util.getValue(settings, 'customTemplate', {});
-
-						Object.assign({}, blocks, {
-							...util.getValue(customTemplate, 'blocks', {})
-						});
 
 						this.props.updateInfo({
 							orgID,
@@ -84,18 +79,33 @@ class GBX3 extends React.Component {
 							kind,
 							apiName
 						});
+
+						const blocks = {
+							...util.getValue(defaultBlocks, kind, {}),
+							...util.getValue(customTemplate, 'blocks', {})
+						};
+
+						const globals = {
+							...this.props.globals,
+							...{
+								gbxStyle: {
+									...this.props.globals.gbxStyle,
+									primaryColor
+								},
+							},
+							...util.getValue(customTemplate, 'globals', {})
+						};
+
 						this.props.updateBlocks(blocks);
-						this.props.updateGlobals(
-							Object.assign({}, globals, {
-								gbxStyle: { themeColor }
-							}, {
-								...util.getValue(customTemplate, 'globals', {})
-							})
-						);
+						this.props.updateGlobals(globals);
 						this.props.updateData(res);
 						this.props.updateAdmin({
 							editable,
 							hasAccessToEdit: util.getAuthorizedAccess(access, orgID)
+						});
+						this.props.updateDefaults({
+							blocks,
+							data: res
 						});
 					}
 					this.setState({ loading: false });
@@ -145,6 +155,7 @@ export default connect(mapStateToProps, {
 	setCustomProp,
 	updateInfo,
 	updateBlocks,
+	updateDefaults,
 	updateGlobals,
 	updateData,
 	updateAdmin

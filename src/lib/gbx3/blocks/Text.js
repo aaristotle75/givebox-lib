@@ -51,7 +51,7 @@ export default class Text extends Component {
 
 	closeEditModal(type = 'save') {
 		if (type !== 'cancel') {
-			this.props.updateBlock({ html: this.state.content });
+			this.props.saveBlock({ html: this.state.content });
 		} else {
 			this.setState({ content: this.state.defaultContent }, this.props.closeEditModal);
 		}

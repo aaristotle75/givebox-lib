@@ -4,9 +4,12 @@ const logo = {
 	type: 'Media',
 	field: 'orgImageURL',
 	options: {
-		maxSize: '55px',
-		size: 'small',
-		borderRadius: 20
+		mediaType: 'image',
+		image: {
+			maxSize: '55px',
+			size: 'small',
+			borderRadius: 20
+		}
 	},
 	grid: {
 		desktop: { i: 'logo', x: 0, y: 0, w: 1, h: 4, enabled: true },
@@ -75,8 +78,13 @@ const media = {
 	field: 'imageURL',
 	options: {
 		mediaType: 'image',
-		size: 'medium',
-		borderRadius: 5
+		image: {
+			size: 'medium',
+			borderRadius: 5
+		},
+		video: {
+			auto: true
+		}
 	},
 	grid: {
 		desktop: { i: 'media', x: 6, y: 0, w: 6, h: 20, enabled: true },

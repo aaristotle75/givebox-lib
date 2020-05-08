@@ -31,7 +31,8 @@ export function gbx3(state = {
 		outline: false
 	},
 	data: {},
-	cart: {}
+	cart: {},
+	defaults: {}
 }, action) {
 	switch (action.type) {
 		case types.UPDATE_INFO:
@@ -101,6 +102,23 @@ export function gbx3(state = {
 				order: {
 					...state.order,
 					...action.order,
+				}
+			});
+		case types.UPDATE_DEFAULTS:
+			return Object.assign({}, state, {
+				defaults: {
+					...state.defaults,
+					...action.defaults,
+				}
+			});
+		case types.UPDATE_DEFAULT:
+			return Object.assign({}, state, {
+				defaults: {
+					...state.defaults,
+					[action.name]: {
+						...state.defaults[action.name],
+						...action.defaults
+					}
 				}
 			});
 		default:

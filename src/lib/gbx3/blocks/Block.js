@@ -4,7 +4,8 @@ import {
 	GBLink,
 	util,
 	toggleModal,
-	updateBlock
+	updateBlock,
+	saveGBX3
 } from '../../';
 
 class Block extends React.Component {
@@ -15,7 +16,7 @@ class Block extends React.Component {
 		this.renderChildren = this.renderChildren.bind(this);
 		this.onClickRemove = this.onClickRemove.bind(this);
 		this.onClickEdit = this.onClickEdit.bind(this);
-		this.updateBlock = this.updateBlock.bind(this);
+		this.saveBlock = this.saveBlock.bind(this);
 		this.getBlockContent = this.getBlockContent.bind(this);
 		this.state = {
 			editModalOpen: false
@@ -39,7 +40,7 @@ class Block extends React.Component {
 		this.setState({ editModalOpen: false });
 	}
 
-	updateBlock(content = {}, options = {}, updateSpecificGrid = false, callback = this.closeEditModal) {
+	async saveBlock(content = {}, options = {}, saveGBX3 = true, callback = this.closeEditModal, updateSpecificGrid = false) {
 		const {
 			name,
 			block,
@@ -50,7 +51,7 @@ class Block extends React.Component {
 
 		const desktopContent = updateSpecificGrid && breakpoint === 'desktop' ? content : !updateSpecificGrid ? content : this.getBlockContent('desktop');
 
-		this.props.updateBlock(name, Object.assign({}, block, {
+		const updated = await this.props.updateBlock(name, Object.assign({}, block, {
 			grid: {
 				mobile: {
 					...block.grid.mobile,
@@ -72,7 +73,10 @@ class Block extends React.Component {
 				...options
 			}
 		}));
-		if (callback) callback();
+		if (updated) {
+			if (saveGBX3) this.props.saveGBX3(null, false, callback);
+			else callback();
+		}
 	}
 
 	getBlockContent(breakpoint) {
@@ -111,7 +115,7 @@ class Block extends React.Component {
 				options,
 				fieldValue,
 				blockContent: this.getBlockContent(breakpoint),
-				updateBlock: this.updateBlock,
+				saveBlock: this.saveBlock,
 				title: util.getValue(block, 'title', name),
 				closeEditModal: this.closeEditModal
 			})
@@ -176,5 +180,6 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
 	toggleModal,
-	updateBlock
+	updateBlock,
+	saveGBX3
 })(Block);

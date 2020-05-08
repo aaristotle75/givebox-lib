@@ -8,7 +8,9 @@ import {
 	Portal,
 	Fade,
 	ModalLink,
-	Alert
+	Alert,
+	resetGBX3,
+	saveGBX3
 } from '../';
 import GlobalsEdit from './blocks/GlobalsEdit';
 import AnimateHeight from 'react-animate-height';
@@ -64,8 +66,8 @@ class Admin extends React.Component {
 							<GBLink onClick={() => this.props.updateAdmin({ outline: outline ? false : true })}>{outline ? 'Hide Outline' : 'Show Outline'}</GBLink>
 							<GBLink onClick={() => this.props.updateAdmin({ collision: collision ? false : true })}>{collision ? 'Turn Freeform On' : 'Turn Freeform Off'}</GBLink>
 							<GBLink onClick={() => this.props.updateAdmin({ collapse: collapse ? false : true })}>{collapse ? 'Turn Compact On' : 'Turn Compact Off'}</GBLink>
-							<GBLink onClick={this.resetGBX}>Reset</GBLink>
-							<GBLink onClick={this.saveGBX}>Save</GBLink>
+							<GBLink onClick={this.props.resetGBX3}>Reset</GBLink>
+							<GBLink onClick={() => this.props.saveGBX3(null, true)}>Save</GBLink>
 							<ModalLink id='paymentForm-options'>Options</ModalLink>
 							<ModalRoute
 								optsProps={{ closeCallback: this.closeGBXOptionsCallback }}
@@ -122,5 +124,7 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
-	updateAdmin
+	updateAdmin,
+	resetGBX3,
+	saveGBX3
 })(Admin);

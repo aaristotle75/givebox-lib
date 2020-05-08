@@ -26,6 +26,21 @@ export function updateBlock(name, block) {
 	}
 }
 
+export function updateDefaults(defaults = {}) {
+	return {
+		type: types.UPDATE_DEFAULTS,
+		defaults
+	}
+}
+
+export function updateDefault(name, defaults) {
+	return {
+		type: types.UPDATE_DEFAULT,
+		name,
+		defaults
+	}
+}
+
 export function updateGlobals(globals = {}) {
 	return {
 		type: types.UPDATE_GLOBALS,
@@ -69,23 +84,42 @@ export function updateOrder(order) {
 	}
 }
 
-export function saveGBX3(data = {}, isSending = true, callback) {
+export function saveGBX3(obj = {}, isSending = false, callback) {
+
 	return (dispatch, getState) => {
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
 		const info = util.getValue(gbx3, 'info', {});
+		const blocks = util.getValue(gbx3, 'blocks', {});
+		const globals = util.getValue(gbx3, 'globals', {});
+		const data = {
+			...util.getValue(gbx3, 'data', {}),
+			giveboxSettings: {
+				customTemplate: {
+					blocks,
+					globals
+				}
+			},
+			...obj
+		};
+
 		dispatch(sendResource(util.getValue(info, 'apiName'), {
 			id: [util.getValue(info, 'kindID')],
 			orgID: util.getValue(info, 'orgID'),
 			data,
 			method: 'patch',
-			callback: (res, err) => {
-				if (callback) callback(res, err);
-			},
+			callback,
 			isSending
 		}));
 	}
 }
 
 export function resetGBX3() {
-	console.log('execute resetGBX3');
+	return (dispatch, getState) => {
+		const gbx3 = util.getValue(getState(), 'gbx3', {});
+		const defaults = util.getValue(gbx3, 'defaults', {});
+		const blocks = util.getValue(defaults, 'blocks', {});
+		const data = util.getValue(defaults, 'data', {});
+		dispatch(updateBlocks(blocks));
+		dispatch(updateData(data));
+	}
 }

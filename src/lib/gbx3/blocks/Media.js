@@ -14,6 +14,7 @@ import {
 	Video
 } from '../../';
 import AnimateHeight from 'react-animate-height';
+import has from 'has';
 
 export default class Media extends Component {
 
@@ -24,38 +25,47 @@ export default class Media extends Component {
 		this.closeModalAndCancel = this.closeModalAndCancel.bind(this);
 		this.closeEditModal = this.closeEditModal.bind(this);
 		this.handleBorderRadius = this.handleBorderRadius.bind(this);
+		this.updateImage = this.updateImage.bind(this);
 		this.onChangeVideo = this.onChangeVideo.bind(this);
 		this.videoOnReady = this.videoOnReady.bind(this);
 		this.renderVideo = this.renderVideo.bind(this);
 		this.setRadius = this.setRadius.bind(this);
-		this.setStep = this.setStep.bind(this);
 		this.blockRef = this.props.blockRef.current;
 		if (this.blockRef) {
 			this.maxWidth = this.blockRef.clientWidth;
 			this.maxHeight = this.blockRef.clientHeight;
 		}
 
-		const options = props.options;
-		const size = util.getValue(options, 'size', 'large');
-		const borderRadius = util.getValue(options, 'borderRadius', 5);
+		const {
+			options,
+			blockContent
+		} = props;
+
 		const mediaType = util.getValue(options, 'mediaType', 'image');
-		const defaultContent = mediaType === 'image' ? util.imageUrlWithStyle(props.fieldValue, size) : {};
-		const content = util.getValue(props.blockContent, mediaType, defaultContent);
+		const imageDefault = util.getValue(options, 'image', {});
+		const videoDefault = util.getValue(options, 'video', {});
+
+		const image = {
+			...imageDefault,
+			...util.getValue(blockContent, 'image', {})
+		};
+
+		const video = {
+			...videoDefault,
+			...util.getValue(blockContent, 'video', {})
+		};
+
+		if (!has(image, 'URL')) image.URL = props.fieldValue;
 
 		this.state = {
-			content,
-			borderRadius,
 			mediaType,
+			image,
+			video,
+			defaultImage: util.deepClone(image),
+			defaultVideo: util.deepClone(video),
 			defaultMediaType: mediaType,
-			defaultContent: content,
 			maxWidth: this.maxWidth || 550,
-			maxHeight: this.maxHeight || 550,
-			video: {
-				URL: util.getValue(content, 'URL', null),
-				auto: util.getValue(content, 'auto', true),
-				error: false,
-				validatedURL: util.getValue(content, 'validatedURL', null)
-			}
+			maxHeight: this.maxHeight || 550
 		};
 	}
 
@@ -66,25 +76,21 @@ export default class Media extends Component {
 		//console.log('execute componentWillUnmount');
 	}
 
-	setStep(step) {
-		this.setState({ step });
-	}
-
 	closeModalAndSave() {
 		const {
-			content,
-			borderRadius,
+			image,
+			video,
 			mediaType
 		} = this.state;
 
 		this.timeout = setTimeout(() => {
 			this.setState({ loading: false, edit: false }, () => {
-				this.props.updateBlock(
+				this.props.saveBlock(
 					{
-						[mediaType]: content
+						image,
+						video
 					},
 					{
-						borderRadius,
 						mediaType
 					}
 				);
@@ -95,21 +101,14 @@ export default class Media extends Component {
 	closeModalAndCancel() {
 		const {
 			defaultMediaType,
-			defaultContent,
-			borderRadius
+			defaultImage,
+			defaultVideo
 		} = this.state;
 
 		this.setState({
 			mediaType: defaultMediaType,
-			content: defaultContent,
-			borderRadius,
-			video: {
-				URL: util.getValue(defaultContent, 'URL', null),
-				validatedURL: util.getValue(defaultContent, 'validatedURL', null),
-				auto: util.getValue(defaultContent, 'auto', true),
-				error: false
-			},
-			edit: false
+			image: util.deepClone(defaultImage),
+			video: util.deepClone(defaultVideo)
 		}, this.props.closeEditModal);
 	}
 
@@ -123,21 +122,27 @@ export default class Media extends Component {
 	}
 
 	handleSaveCallback(url) {
-		const size = util.getValue(this.props.options, 'size', 'large');
+		const image = this.state.image;
+		image.URL = util.imageUrlWithStyle(url, image.size);
 		this.setState({
-			loading: true,
+			image,
 			mediaType: 'image',
-			content: util.imageUrlWithStyle(url, size)
+			loading: true
 		}, () => this.closeEditModal('save'));
 	}
 
+	updateImage(key, value) {
+		const image = this.state.image;
+		image[key] = value;
+		this.setState({ image });
+	}
+
 	handleBorderRadius(e) {
-		const borderRadius = parseInt(e.target.value)
-		this.setState({ borderRadius })
+		this.updateImage('borderRadius', +e.target.value);
 	}
 
 	setRadius(borderRadius) {
-		this.setState({ borderRadius })
+		this.updateImage('borderRadius', borderRadius);
 	}
 
 	onChangeVideo(e) {
@@ -151,7 +156,7 @@ export default class Media extends Component {
 
 	videoOnReady() {
 		//console.log('execute videoOnReady');
-		this.setState({ mediaType: 'video', content: this.state.video });
+		//this.setState({ content: this.state.video });
 	}
 
 	renderVideo(preview = false) {
@@ -182,16 +187,14 @@ export default class Media extends Component {
 			orgID,
 			articleID,
 			modalID,
-			options,
 			maxRadius,
 			minRadius
 		} = this.props;
 
 		const {
-			content,
 			maxWidth,
 			maxHeight,
-			borderRadius,
+			image,
 			video,
 			mediaType
 		} = this.state;
@@ -219,7 +222,11 @@ export default class Media extends Component {
 							<Tabs
 								default={mediaType}
 								className='statsTab'
+								callbackAfter={(tab) => {
+									this.setState({ mediaType: tab });
+								}}
 							>
+								{!util.isEmpty(image) ?
 								<Tab
 									id='image'
 									label={<span className='stepLabel'>Image</span>}
@@ -233,12 +240,12 @@ export default class Media extends Component {
 											<div className='formSection'>
 												<MediaLibrary
 													modalID={modalID}
-													image={mediaType === 'image' ? content : null}
-													preview={mediaType === 'image' ? content : null}
+													image={mediaType === 'image' ? util.getValue(image, 'URL') : null}
+													preview={mediaType === 'image' ? util.getValue(image, 'URL') : null}
 													handleSaveCallback={this.handleSaveCallback}
 													handleSave={util.handleFile}
 													library={library}
-													closeModalAndCancel={this.closeEditModal}
+													closeModalAndCancel={() => this.closeEditModal('cancel')}
 													closeModalAndSave={() => this.closeEditModal('save')}
 													showBtns={'hide'}
 													saveLabel={'close'}
@@ -264,7 +271,7 @@ export default class Media extends Component {
 															min={minRadius}
 															max={maxRadius}
 															step="0"
-															value={borderRadius}
+															value={util.getValue(image, 'borderRadius')}
 														/>
 														<GBLink onClick={() => this.setRadius(maxRadius)}><span className='icon icon-circle'></span></GBLink>
 													</div>
@@ -272,7 +279,8 @@ export default class Media extends Component {
 											</div>
 										</div>
 									</Collapse>
-								</Tab>
+								</Tab> : <></> }
+								{ !util.isEmpty(video) ?
 								<Tab
 									id='video'
 									label={<span className='stepLabel'>Video</span>}
@@ -313,24 +321,24 @@ export default class Media extends Component {
 													<div className='input-group'>
 														<label className='label'>Video Preview</label>
 														<div style={{ marginTop: 10 }} className='flexCenter'>
-															{this.renderVideo(true)}
+															{mediaType === 'video' ? this.renderVideo(true) : <></>}
 														</div>
 													</div>
 												</AnimateHeight>
 											</div>
 										</div>
 									</Collapse>
-								</Tab>
+								</Tab> : <></> }
 							</Tabs>
 							<div style={{ margin: 0 }} className='button-group center'>
-								<GBLink className='link' onClick={this.closeEditModal}>Cancel</GBLink>
+								<GBLink className='link' onClick={() => this.closeEditModal('cancel')}>Cancel</GBLink>
 								<GBLink className='button' onClick={() => this.closeEditModal('save')}>Save</GBLink>
 							</div>
 						</div>
 					}
 				/>
 				{ mediaType === 'image' ?
-					<Image imgStyle={{ borderRadius: `${borderRadius}%` }} url={content} size={util.getValue(options, 'size', 'large')} minHeight={0} maxWidth={maxWidth} maxHeight={maxHeight} alt={title} />
+					<Image imgStyle={{ borderRadius: `${util.getValue(image, 'borderRadius')}%` }} url={util.getValue(image, 'URL')} size={util.getValue(image, 'size')} minHeight={0} maxWidth={maxWidth} maxHeight={maxHeight} alt={title} />
 				:
 					this.renderVideo()
 				}

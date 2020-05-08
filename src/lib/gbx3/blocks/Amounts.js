@@ -129,7 +129,7 @@ class Amounts extends Component {
 			});
 
 			if (saveBlock) {
-				this.props.updateBlock(null, {
+				this.props.saveBlock(null, {
 					button,
 					recurring
 				});
@@ -156,16 +156,17 @@ class Amounts extends Component {
 		const data = {};
 		const amountsList = amounts;
 		if (sort || save) {
-			let customIndex, defaultIndex;
+			let customIndex = null;
+			let defaultIndex = null;
 			amountsList.forEach((value, key) => {
 				customIndex = config.hasCustomField && value.ID === this.state.customID ? key : false;
 				defaultIndex = config.hasDefaultField && value.ID === this.state.defaultID ? key : false;
-				if (customIndex) this.customUpdated(key, value.ID);
-				if (defaultIndex) this.defaultUpdated(key, value.ID);
+				if (customIndex || customIndex === 0) this.customUpdated(key, value.ID);
+				if (defaultIndex || defaultIndex === 0) this.defaultUpdated(key, value.ID);
 				amountsList[key].orderBy = key;
 			});
-			data.amountIndexCustom = customIndex || null;
-			data.amountIndexDefault = defaultIndex || null;
+			data.amountIndexCustom = customIndex;
+			data.amountIndexDefault = defaultIndex;
 			data[types.kind(this.props.kind).amountField] = {
 				list: amountsList
 			};

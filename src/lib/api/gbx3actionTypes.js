@@ -7,3 +7,5 @@ export const UPDATE_DATA = 'UPDATE_DATA';
 export const UPDATE_ADMIN = 'UPDATE_ADMIN';
 export const UPDATE_CART = 'UPDATE_CART';
 export const UPDATE_ORDER = 'UPDATE_ORDER';
+export const UPDATE_DEFAULTS = 'UPDATE_DEFAULTS';
+export const UPDATE_DEFAULT = 'UPDATE_DEFAULT';
