@@ -100,7 +100,11 @@ class Block extends React.Component {
 			blockRef,
 			modalID,
 			options,
-			fieldValue
+			fieldValue,
+			gbxStyle,
+			globalButton,
+			globalButtonStyle,
+			primaryColor
 		} = this.props;
 
 		const childrenWithProps = React.Children.map(this.props.children,
@@ -114,6 +118,10 @@ class Block extends React.Component {
 				modalID,
 				options,
 				fieldValue,
+				gbxStyle,
+				globalButton,
+				globalButtonStyle,
+				primaryColor,
 				blockContent: this.getBlockContent(breakpoint),
 				saveBlock: this.saveBlock,
 				title: util.getValue(block, 'title', name),
@@ -155,6 +163,12 @@ function mapStateToProps(state, props) {
 
 	const modalID = `modalBlock-${props.name}`;
 	const gbx3 = util.getValue(state, 'gbx3', {});
+	const globals = util.getValue(gbx3, 'globals', {});
+	const gbxStyle = util.getValue(globals, 'gbxStyle', {});
+	const gbxPrimaryColor = util.getValue(gbxStyle, 'primaryColor');
+	const globalButton = util.getValue(globals, 'button', {});
+	const globalButtonStyle = util.getValue(globalButton, 'style', {});
+	const primaryColor = util.getValue(globalButtonStyle, 'bgColor', gbxPrimaryColor);
 	const info = util.getValue(gbx3, 'info', {});
 	const kind = util.getValue(info, 'kind');
 	const articleID = util.getValue(info, 'articleID');
@@ -166,6 +180,7 @@ function mapStateToProps(state, props) {
 	const data = util.getValue(gbx3, 'data', {});
 	const fieldValue = util.getValue(data, dataField);
 
+
 	return {
 		kind,
 		articleID,
@@ -174,6 +189,10 @@ function mapStateToProps(state, props) {
 		block,
 		options,
 		fieldValue,
+		gbxStyle,
+		globalButtonStyle,
+		globalButton,
+		primaryColor,
 		breakpoint: util.getValue(info, 'breakpoint')
 	}
 }

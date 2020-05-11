@@ -48,13 +48,14 @@ class ButtonEdit extends Component {
 			minRadius,
 			modalID,
 			button,
+			globalButtonStyle,
 			globalOption
 		} = this.props;
 
 		const enabled = util.getValue(button, 'enabled', false);
 		const textValue = util.getValue(button, 'text');
 
-		const buttonStyle = { ...util.getValue(button, 'style', {}) };
+		const buttonStyle = { ...globalButtonStyle, ...util.getValue(button, 'style', {}) };
 		const bgColor = util.getValue(buttonStyle, 'bgColor', primaryColor);
 		const width = util.getValue(buttonStyle, 'width');
 		const fontSize = util.getValue(buttonStyle, 'fontSize');
@@ -169,16 +170,24 @@ class ButtonEdit extends Component {
 
 ButtonEdit.defaultProps = {
 	minRadius: 0,
-	maxRadius: 20,
+	maxRadius: 30,
 	label: 'Enabled Button'
 }
 
 function mapStateToProps(state, props) {
 
-	const primaryColor = util.getValue(state.custom, 'primaryColor');
+	const gbx3 = util.getValue(state, 'gbx3', {});
+	const globals = util.getValue(gbx3, 'globals', {});
+	const gbxStyle = util.getValue(globals, 'gbxStyle', {});
+	const gbxPrimaryColor = util.getValue(gbxStyle, 'primaryColor');
+	const globalButton = util.getValue(globals, 'button', {});
+	const globalButtonStyle = util.getValue(globalButton, 'style', {});
+	const primaryColor = util.getValue(globalButtonStyle, 'bgColor', gbxPrimaryColor);
 
 	return {
-		primaryColor
+		primaryColor,
+		globalButton,
+		globalButtonStyle
 	}
 }
 

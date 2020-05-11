@@ -1,11 +1,12 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
 import {
 	util,
 	ModalLink,
 	GBLink
 } from '../../';
 
-export default class Button extends PureComponent {
+class Button extends PureComponent {
 
 	constructor(props) {
 		super(props);
@@ -21,13 +22,17 @@ export default class Button extends PureComponent {
 		const {
 			modalID,
 			onClick,
-			button
+			button,
+			globalButtonStyle
 		} = this.props;
 
 		const type = util.getValue(button, 'type', 'button');
-		const style = { ...util.getValue(button, 'style', {}) };
+		const style = { ...globalButtonStyle, ...util.getValue(button, 'style', {}) };
+
 		const fontSize = parseInt(util.getValue(style, 'fontSize', 16));
 		const paddingTopBottom = fontSize >= 20 ? 15 : 10;
+
+
 		style.width = util.getValue(style, 'width', 150);
 		style.fontSize = fontSize;
 		style.padding = `${paddingTopBottom}px 25px`;
@@ -48,3 +53,23 @@ export default class Button extends PureComponent {
 		)
 	}
 }
+
+function mapStateToProps(state, props) {
+
+	const gbx3 = util.getValue(state, 'gbx3', {});
+	const globals = util.getValue(gbx3, 'globals', {});
+	const gbxStyle = util.getValue(globals, 'gbxStyle', {});
+	const gbxPrimaryColor = util.getValue(gbxStyle, 'primaryColor');
+	const globalButton = util.getValue(globals, 'button', {});
+	const globalButtonStyle = util.getValue(globalButton, 'style', {});
+	const primaryColor = util.getValue(globalButton, 'bgColor', gbxPrimaryColor);
+
+	return {
+		primaryColor,
+		globalButton,
+		globalButtonStyle
+	}
+}
+
+export default connect(mapStateToProps, {
+})(Button);

@@ -25,6 +25,7 @@ class GBX3 extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.loadGBX3 = this.loadGBX3.bind(this);
 		this.state = {
 			loading: true
 		};
@@ -92,6 +93,13 @@ class GBX3 extends React.Component {
 									...this.props.globals.gbxStyle,
 									primaryColor
 								},
+								button: {
+									...this.props.globals.button,
+									style: {
+										...util.getValue(this.props.globals.button, 'style', {}),
+										bgColor: primaryColor
+									}
+								}
 							},
 							...util.getValue(customTemplate, 'globals', {})
 						};

@@ -116,10 +116,28 @@ export function saveGBX3(obj = {}, isSending = false, callback) {
 export function resetGBX3() {
 	return (dispatch, getState) => {
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
-		const defaults = util.getValue(gbx3, 'defaults', {});
-		const blocks = util.getValue(defaults, 'blocks', {});
-		const data = util.getValue(defaults, 'data', {});
-		dispatch(updateBlocks(blocks));
-		dispatch(updateData(data));
+		const info = util.getValue(gbx3, 'info', {});
+		const data = {
+			...util.getValue(gbx3, 'data', {}),
+			giveboxSettings: {
+				customTemplate: {
+					blocks: {},
+					globals: {}
+				}
+			}
+		};
+
+		dispatch(sendResource(util.getValue(info, 'apiName'), {
+			id: [util.getValue(info, 'kindID')],
+			orgID: util.getValue(info, 'orgID'),
+			data,
+			method: 'patch',
+			callback: (res, err) => {
+				dispatch(updateBlocks({}));
+				dispatch(updateGlobals({}));
+				dispatch(updateData(res));
+			},
+			isSending: true
+		}));
 	}
 }

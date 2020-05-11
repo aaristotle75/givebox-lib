@@ -61,7 +61,8 @@ class AmountsList extends Component {
 	renderRecurringOption(amountEntered) {
 		const {
 			kind,
-			allowRecurring
+			allowRecurring,
+			color
 		} = this.props;
 
 		const {
@@ -91,14 +92,14 @@ class AmountsList extends Component {
 							paymentMax={paymentMax}
 							setRecurring={this.setRecurring}
 							amount={(amountEntered && parseFloat(amountEntered) !== 0.00 ? amountEntered : '')}
-							color={this.props.color}
+							color={color}
 							onCloseRecurringOptions={this.onCloseRecurringOptions}
 						/>
 					}
 				/>
 				<span style={{ display: 'block' }}>{recurringDisplay.text}</span>
 				{allowRecurring ?
-				<ModalLink id='recurringOption' allowCustom={true}>{interval === 'once' ? `Click Here for Recurring ${recurringDisplay.name} Options` : `Edit Your Recurring ${recurringDisplay.name}`}</ModalLink> : <></>}
+				<ModalLink id='recurringOption' allowCustom={true} customColor={color}>{interval === 'once' ? `Click Here for Recurring ${recurringDisplay.name} Options` : `Edit Your Recurring ${recurringDisplay.name}`}</ModalLink> : <></>}
 			</div>
 		)
 	}

@@ -42,14 +42,10 @@ class Amounts extends Component {
 		this.setTab = this.setTab.bind(this);
 
 		const primaryColor = this.props.primaryColor;
-		const globalButton = { ...util.getValue(props.globals, 'button', {}) };
-		const globalButtonStyle = { ...util.getValue(globalButton, 'style', {}) };
-		const customButton = { ...util.getValue(props.options, 'button', {}) };
-		const customButtonStyle = { ...util.getValue(customButton, 'style', {}) };
-		const button = !util.isEmpty(customButton) && util.getValue(customButton, 'overrideGlobalStyle') ? { ...globalButton, ...customButton, ...globalButtonStyle, ...customButtonStyle } : { ...globalButton, ...globalButtonStyle };
-		button.bgColor = button.bgColor || primaryColor;
+		const options = props.options;
 
-		const recurring = util.getValue(props.options, 'recurring', {});
+		const recurring = util.getValue(options, 'recurring', {});
+		const button = util.getValue(options, 'button', {});
 
 		this.state = {
 			primaryColor,
@@ -264,7 +260,8 @@ class Amounts extends Component {
 
 		const {
 			data,
-			kind
+			kind,
+			primaryColor
 		} = this.props;
 
 		const {
@@ -273,7 +270,6 @@ class Amounts extends Component {
 			customID,
 			defaultIndex,
 			defaultID,
-			primaryColor,
 			button,
 			recurring
 		} = this.state;
@@ -342,7 +338,8 @@ class Amounts extends Component {
 		const {
 			modalID,
 			data,
-			kind
+			kind,
+			primaryColor
 		} = this.props;
 
 		const {
@@ -482,12 +479,12 @@ class Amounts extends Component {
 									</div>
 									<div className='bottomContainer'>
 										<div className='cartInfo'>
-											<GBLink allowCustom={true} onClick={() => console.log('items in cart')}><span style={{ display: 'block', fontSize: 12 }}>Items in Cart (8)</span></GBLink>
+											<GBLink allowCustom={true} customColor={primaryColor} onClick={() => console.log('items in cart')}><span style={{ display: 'block', fontSize: 12 }}>Items in Cart (8)</span></GBLink>
 											<span style={{ display: 'block' }}><span style={{ fontSize: 12 }}>Sub Total:</span> <span className='strong'>{util.money(300)}</span></span>
 										</div>
 										<div className='button-group'>
-											<GBLink allowCustom={true} onClick={() => console.log('Show more items')}>SHOP MORE ITEMS</GBLink>
-											<GBLink className='button' allowCustom={true} onClick={() => console.log('checkout')}>CHECKOUT</GBLink>
+											<GBLink allowCustom={true} customColor={primaryColor} onClick={() => console.log('Show more items')}>SHOP MORE ITEMS</GBLink>
+											<GBLink className='button' allowCustom={true} customColor={primaryColor} solidColor={true} onClick={() => console.log('checkout')}>CHECKOUT</GBLink>
 										</div>
 									</div>
 								</div>

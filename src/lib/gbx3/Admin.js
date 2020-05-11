@@ -10,7 +10,9 @@ import {
 	ModalLink,
 	Alert,
 	resetGBX3,
-	saveGBX3
+	saveGBX3,
+	toggleModal,
+	updateGlobals
 } from '../';
 import GlobalsEdit from './blocks/GlobalsEdit';
 import AnimateHeight from 'react-animate-height';
@@ -20,7 +22,12 @@ class Admin extends React.Component {
 	constructor(props) {
 		super(props);
 		this.toggleOpen = this.toggleOpen.bind(this);
+		this.closeGBXOptionsCallback = this.closeGBXOptionsCallback.bind(this);
+		this.updatePrimaryColor = this.updatePrimaryColor.bind(this);
+		const globals = props.globals;
 		this.state = {
+			globals,
+			globalsDefault: util.deepClone(globals),
 			open: false
 		};
 	}
@@ -29,10 +36,50 @@ class Admin extends React.Component {
 		this.setState({ open: this.state.open ? false : true });
 	}
 
+	updatePrimaryColor(value) {
+		const globals = {
+			...this.state.globals,
+			gbxStyle: {
+				...this.state.globals.gbxStyle,
+				primaryColor: value
+			},
+			button: {
+				...this.state.globals.button,
+				style: {
+					...this.state.globals.button.style,
+					bgColor: value
+				}
+			}
+		};
+		this.setState({ globals });
+	}
+
+	async closeGBXOptionsCallback(type = 'save') {
+
+		const {
+			globals,
+			globalsDefault
+		} = this.state;
+		if (type !== 'cancel') {
+			this.setState({
+				globalsDefault: util.deepClone(globals)
+			});
+			const updated = await this.props.updateGlobals(globals);
+			if (updated) this.props.saveGBX3(null, false, () => {
+				this.props.toggleModal('paymentForm-options', false);
+			});
+		} else {
+			this.setState({
+				globals: util.deepClone(globalsDefault)
+			}, this.props.toggleModal('paymentForm-options', false));
+		}
+	}
+
 	render() {
 
 		const {
-			open
+			open,
+			globals
 		} = this.state;
 
 		const {
@@ -72,7 +119,13 @@ class Admin extends React.Component {
 							<ModalRoute
 								optsProps={{ closeCallback: this.closeGBXOptionsCallback }}
 								id={'paymentForm-options'}
-								component={() => <GlobalsEdit /> }
+								component={() => (
+									<GlobalsEdit
+										closeGBXOptionsCallback={this.closeGBXOptionsCallback}
+										updatePrimaryColor={this.updatePrimaryColor}
+										globals={globals}
+									/>
+								 )}
 								effect='3DFlipVert' style={{ width: '60%' }}
 								draggable={true}
 								draggableTitle={`Editing Payment Form`}
@@ -95,7 +148,6 @@ class Admin extends React.Component {
 			</Portal>
 		)
 	}
-
 }
 
 Admin.defaultProps = {
@@ -105,6 +157,8 @@ function mapStateToProps(state, props) {
 
 	const gbx3 = util.getValue(state, 'gbx3', {});
 	const admin = util.getValue(gbx3, 'admin', {});
+	const globals = util.getValue(gbx3, 'globals', {});
+	const gbxStyle = util.getValue(globals, 'gbxStyle', {});
 	const access = util.getValue(state.resource, 'access');
 	const hasAccessToEdit = util.getValue(admin, 'hasAccessToEdit');
 	const editable = util.getValue(admin, 'editable');
@@ -116,6 +170,8 @@ function mapStateToProps(state, props) {
 		access,
 		hasAccessToEdit,
 		admin,
+		globals,
+		gbxStyle,
 		editable,
 		collision,
 		collapse,
@@ -126,5 +182,7 @@ function mapStateToProps(state, props) {
 export default connect(mapStateToProps, {
 	updateAdmin,
 	resetGBX3,
-	saveGBX3
+	saveGBX3,
+	toggleModal,
+	updateGlobals
 })(Admin);

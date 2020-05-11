@@ -52,10 +52,9 @@ const amounts = {
 	field: 'amounts',
 	options: {
 		button: {
-			embedAllowed: false,
-			enabled: false,
+			embedAllowed: true,
+			enabled: true,
 			text: 'Select Amount',
-			overrideGlobalStyle: false,
 			style: {
 
 			}

@@ -15,8 +15,10 @@ class Form extends Component {
 		this.edit = this.edit.bind(this);
 		this.saveButton = this.saveButton.bind(this);
 
-		const button = {...util.getValue(props.globalOptions, 'button', {}), ...util.getValue(props.options, 'button', {}) };
+		const options = props.options;
+		const button = util.getValue(options, 'button', {});
 		this.state = {
+
 			button,
 			defaultButton: { ...button },
 			edit: false
@@ -67,7 +69,7 @@ class Form extends Component {
 						onClick={this.saveButton}
 						button={button}
 					/>
-					<GBLink allowCustom={true} onClick={() => console.log('onclick callback')}>No, thanks</GBLink>
+					<GBLink allowCustom={true} customColor={primaryColor} onClick={() => console.log('onclick callback')}>No, thanks</GBLink>
 				</div>
 			</div>
 		)
@@ -77,9 +79,15 @@ class Form extends Component {
 function mapStateToProps(state, props) {
 
 	const modalID = `textBlock-${props.name}`;
+	const gbx3 = util.getValue(state, 'gbx3', {});
+	const globals = util.getValue(gbx3, 'globals', {});
+	const gbxStyle = util.getValue(globals, 'gbxStyle', {});
+	const primaryColor = util.getValue(gbxStyle, 'primaryColor', {});
 
 	return {
-		modalID
+		modalID,
+		gbxStyle,
+		primaryColor
 	}
 }
 

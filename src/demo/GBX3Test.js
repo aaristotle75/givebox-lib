@@ -14,7 +14,7 @@ class GBXTest extends Component {
 		super(props);
 		this.state = {
 			//id: 735,
-			id: 383045
+			id: 383049
 			//id: 4
 		};
 		this.timeout = false;
@@ -51,7 +51,7 @@ class GBXTest extends Component {
 					kind={this.props.article.kind}
 					autoSave={true}
 					save={this.save}
-					editable={true}
+					editable={false}
 				/>
 			</div>
 		)

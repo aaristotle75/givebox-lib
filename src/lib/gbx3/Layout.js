@@ -201,6 +201,7 @@ function mapStateToProps(state, props) {
 	const editable = util.getValue(admin, 'editable');
 	const collision = util.getValue(admin, 'collision');
 	const collapse = util.getValue(admin, 'collapse');
+	const outline = util.getValue(admin, 'outline');
 	const breakpoint = util.getValue(info, 'breakpoint');
 
 	return {
@@ -208,6 +209,7 @@ function mapStateToProps(state, props) {
 		editable,
 		collision,
 		collapse,
+		outline,
 		breakpoint,
 		blocks: util.getValue(gbx3, 'blocks', {}),
 		globals: util.getValue(gbx3, 'globals', {})
