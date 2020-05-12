@@ -375,6 +375,18 @@
 
 		padding: 0;
 
+		input {
+			border-bottom: 1px solid $light-gray;
+		}
+
+		.input-group {
+			padding: 15px 0;
+		}
+
+		.input-bottom.idle {
+			background: $light-gray;
+		}
+
 		.mainError {
 			position: absolute;
 			top: 10px;
@@ -388,6 +400,7 @@
 
 		.dropdown button {
 			padding: 12px 0;
+			border-bottom: 1px solid $light-gray;
 		}
 
 		.dropdown button:hover {
@@ -396,7 +409,10 @@
 
 		.dropdown button .selected.label,
 		.dropdown .label:not(button) {
-				font-size: $med-text-size;
+			font-size: $med-text-size;
+			@media (max-width: 768px) {
+				font-size: $normal-text-size;
+			}
 		}
 
 		.dropdown .icon {

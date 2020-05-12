@@ -9,6 +9,7 @@ import {
 	getResource,
 	setCustomProp,
 	updateInfo,
+	updateLayouts,
 	updateBlocks,
 	updateDefaults,
 	updateGlobals,
@@ -104,6 +105,17 @@ class GBX3 extends React.Component {
 							...util.getValue(customTemplate, 'globals', {})
 						};
 
+						const layouts = {
+							desktop: [],
+							mobile: []
+						};
+
+						Object.entries(blocks).forEach(([key, value]) => {
+							layouts.desktop.push(value.grid.desktop);
+							layouts.mobile.push(value.grid.mobile);
+						});
+
+						this.props.updateLayouts(layouts);
 						this.props.updateBlocks(blocks);
 						this.props.updateGlobals(globals);
 						this.props.updateData(res);
@@ -112,6 +124,7 @@ class GBX3 extends React.Component {
 							hasAccessToEdit: util.getAuthorizedAccess(access, orgID)
 						});
 						this.props.updateDefaults({
+							layouts,
 							blocks,
 							data: res
 						});
@@ -162,6 +175,7 @@ export default connect(mapStateToProps, {
 	getResource,
 	setCustomProp,
 	updateInfo,
+	updateLayouts,
 	updateBlocks,
 	updateDefaults,
 	updateGlobals,

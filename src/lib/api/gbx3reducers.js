@@ -42,6 +42,13 @@ export function gbx3(state = {
 					...action.info,
 				}
 			});
+		case types.UPDATE_LAYOUTS:
+			return Object.assign({}, state, {
+				layouts: {
+					...state.layouts,
+					...action.layouts,
+				}
+			});
 		case types.UPDATE_BLOCKS:
 			return Object.assign({}, state, {
 				blocks: {

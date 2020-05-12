@@ -4,6 +4,7 @@ import { Responsive, WidthProvider } from 'react-grid-layout';
 import Loadable from 'react-loadable';
 import {
 	util,
+	updateLayouts,
 	updateBlocks,
 	updateData,
 	updateInfo
@@ -22,20 +23,6 @@ class Layout extends React.Component {
 		this.breakpointChange = this.breakpointChange.bind(this);
 		this.widthChange = this.widthChange.bind(this);
 		this.layoutChange = this.layoutChange.bind(this);
-		const layouts = {
-			desktop: [],
-			mobile: []
-		};
-
-		Object.entries(props.blocks).forEach(([key, value]) => {
-			layouts.desktop.push(value.grid.desktop);
-			layouts.mobile.push(value.grid.mobile);
-		});
-
-		this.state = {
-			layouts
-		};
-
 		this.gridRef = React.createRef();
 	}
 
@@ -65,7 +52,7 @@ class Layout extends React.Component {
 			breakpoint
 		} = this.props;
 
-		const blocks = util.cloneObj(this.props.blocks);
+		const blocks = util.deepClone(this.props.blocks);
 		const breakpointLayout = util.getValue(layouts, breakpoint);
 		if (breakpointLayout) {
 			breakpointLayout.forEach((value) => {
@@ -81,6 +68,7 @@ class Layout extends React.Component {
 					}
 				}
 			});
+			this.props.updateLayouts(layouts);
 			this.props.updateBlocks(blocks);
 		}
 	}
@@ -125,16 +113,13 @@ class Layout extends React.Component {
 	render() {
 
 		const {
+			layouts,
 			collapse,
 			collision,
 			editable,
 			globals,
 			hasAccessToEdit
 		} = this.props;
-
-		const {
-			layouts
-		} = this.state;
 
 		const isEditable = hasAccessToEdit && editable ? true : false;
 
@@ -195,6 +180,7 @@ Layout.defaultProps = {
 function mapStateToProps(state, props) {
 
 	const gbx3 = util.getValue(state, 'gbx3', {});
+	const layouts = util.getValue(gbx3, 'layouts', {});
 	const admin = util.getValue(gbx3, 'admin', {});
 	const info = util.getValue(gbx3, 'info', {});
 	const hasAccessToEdit = util.getValue(admin, 'hasAccessToEdit');
@@ -206,6 +192,7 @@ function mapStateToProps(state, props) {
 
 	return {
 		hasAccessToEdit,
+		layouts,
 		editable,
 		collision,
 		collapse,
@@ -217,6 +204,7 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
+	updateLayouts,
 	updateBlocks,
 	updateData,
 	updateInfo

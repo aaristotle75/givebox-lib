@@ -72,6 +72,7 @@ import {
 
 import {
 	updateInfo,
+	updateLayouts,
 	updateBlocks,
 	updateBlock,
 	updateDefaults,
@@ -142,6 +143,7 @@ export {
 
 // gbx3 actions
 	updateInfo,
+	updateLayouts,
 	updateBlocks,
 	updateBlock,
 	updateDefaults,

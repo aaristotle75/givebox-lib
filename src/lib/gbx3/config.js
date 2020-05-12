@@ -123,7 +123,7 @@ const paymentForm = {
 	type: 'Form',
 	remove: false,
 	grid: {
-		desktop: { i: 'form', x: 0, y: 28, w: 12, h: 40, minW: 10, enabled: true },
+		desktop: { i: 'form', x: 0, y: 28, w: 12, h: 40, minW: 6, enabled: true },
 		mobile: { i: 'form', x: 0, y: 48, w: 6, h: 60, minW: 4, enabled: true }
 	}
 };

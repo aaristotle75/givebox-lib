@@ -11,6 +11,13 @@ export function updateInfo(info) {
 	}
 }
 
+export function updateLayouts(layouts = {}) {
+	return {
+		type: types.UPDATE_LAYOUTS,
+		layouts
+	}
+}
+
 export function updateBlocks(blocks = {}) {
 	return {
 		type: types.UPDATE_BLOCKS,

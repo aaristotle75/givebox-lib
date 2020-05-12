@@ -1,4 +1,5 @@
 export const UPDATE_INFO = 'UPDATE_INFO';
+export const UPDATE_LAYOUTS = 'UPDATE_LAYOUTS';
 export const UPDATE_BLOCKS = 'UPDATE_BLOCKS';
 export const UPDATE_BLOCK = 'UPDATE_BLOCK';
 export const UPDATE_GLOBALS = 'UPDATE_GLOBALS';

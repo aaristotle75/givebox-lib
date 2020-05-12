@@ -12,13 +12,12 @@ class Form extends Component {
 
 	constructor(props) {
 		super(props);
-		this.edit = this.edit.bind(this);
 		this.saveButton = this.saveButton.bind(this);
 
 		const options = props.options;
 		const button = util.getValue(options, 'button', {});
-		this.state = {
 
+		this.state = {
 			button,
 			defaultButton: { ...button },
 			edit: false
@@ -31,11 +30,6 @@ class Form extends Component {
 	saveButton() {
 		const form = document.getElementById(`gbxForm-form-saveButton`);
 		if (form) form.click();
-	}
-
-	edit() {
-		//this.props.toggleModal(this.props.modalID, true);
-		this.setState({ edit: true });
 	}
 
 	remove() {
@@ -54,7 +48,7 @@ class Form extends Component {
 		} = this.state;
 
 		return (
-			<div className='block'>
+			<div className='formBlock'>
 				<PaymentForm
 					primaryColor={primaryColor}
 					article={article}
