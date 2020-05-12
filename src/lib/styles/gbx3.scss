@@ -1,6 +1,5 @@
 @import 'variables.scss';
 
-
 .gbx3 {
 
 	/*------ Elements --------*/
@@ -537,4 +536,36 @@
 
 	}
 
+}
+
+/*-------- Send Email --------*/
+.gbxModal.sendEmail {
+
+	.RichEditor-root h1 {
+		font-size: 1.5em;
+		margin: 0;
+	}
+
+	.RichEditor-root h2 {
+		font-size: 1.3em;
+		margin: 0;
+	}
+
+	.RichEditor-root h3 {
+		font-size: 1.1em;
+		margin: 0;
+	}
+
+	.RichEditor-root h4 {
+		font-size: 1em;
+		margin: 0;
+	}
+
+	.RichEditor-editor {
+		cursor: text;
+		font-size: $normal-text-size;
+		margin-top: 10px;
+		text-align: left;
+		color: $dark;
+	}
 }
