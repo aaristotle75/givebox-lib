@@ -1010,6 +1010,7 @@ class Form extends Component {
       }
     }), React.createElement(ModalLink, {
       allowCustom: true,
+      customColor: this.props.primaryColor,
       id: "cvvModal"
     }, "What is CVV?"));
     return React.createElement("div", {

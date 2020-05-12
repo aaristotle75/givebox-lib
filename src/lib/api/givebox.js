@@ -558,6 +558,10 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
 			endpoint = `orgs/${getIndex(id, 0, orgID)}/status`;
 			break;
 		}
+		case 'orgSubmitToVantiv': {
+			endpoint = `orgs/${getIndex(id, 0, orgID)}/vantiv`;
+			break;
+		}
 		case 'orgContactRequest': {
 			endpoint = `orgs/${orgID}/contact-request`;
 			break;

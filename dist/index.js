@@ -52,7 +52,7 @@ import * as util from './common/utility';
 import Video from './common/Video';
 import FeesGlossary from './glossary/Fees';
 import { toggleModal, removeResource, resourceProp, getAPI, sendAPI, setAppRef, setModalRef, setProp, setPrefs, setCustomProp } from './api/actions';
-import { updateInfo, updateBlocks, updateBlock, updateGlobals, updateGlobal, updateData, updateAdmin, updateCart } from './api/gbx3actions';
+import { updateInfo, updateBlocks, updateBlock, updateDefaults, updateDefault, updateGlobals, updateGlobal, updateData, updateAdmin, updateCart, saveGBX3, resetGBX3 } from './api/gbx3actions';
 import { app, resource, send, modal, preferences, custom } from './api/reducers';
 import { getResource, reloadResource, sendResource, savePrefs } from './api/helpers';
 import * as giveboxAPI from './api/givebox'; // Help Desk
@@ -68,7 +68,7 @@ import CKEditorUpload from './editor/CKEditorUpload';
 export { // Form
 Form, _v, selectOptions, Select, TextField, Dropdown, RichTextField, Choice, CalendarField, CalendarRange, Checkbox, ColorPicker, Upload, UploadLibrary, UploadPrivate, WhereField, MediaLibrary // actions
 , toggleModal, removeResource, resourceProp, getAPI, sendAPI, setAppRef, setModalRef, setProp, setPrefs, setCustomProp // gbx3 actions
-, updateInfo, updateBlocks, updateBlock, updateGlobals, updateGlobal, updateData, updateAdmin, updateCart // API
+, updateInfo, updateBlocks, updateBlock, updateDefaults, updateDefault, updateGlobals, updateGlobal, updateData, updateAdmin, updateCart, saveGBX3, resetGBX3 // API
 , giveboxAPI, getResource, reloadResource, sendResource, savePrefs // reducers
 , app, resource, send, modal, preferences, custom // Modal
 , ModalLink, ModalRoute // Table
