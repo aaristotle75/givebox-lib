@@ -4,6 +4,14 @@ import {
 	sendResource
 } from '../';
 
+export function updateGBX3(name, value) {
+	return {
+		type: types.UPDATE_GBX3,
+		name,
+		value
+	}
+}
+
 export function updateInfo(info) {
 	return {
 		type: types.UPDATE_INFO,
@@ -95,12 +103,14 @@ export function saveGBX3(obj = {}, isSending = false, callback) {
 
 	return (dispatch, getState) => {
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
+		const gbxData = util.getValue(gbx3, 'data', {});
 		const info = util.getValue(gbx3, 'info', {});
 		const blocks = util.getValue(gbx3, 'blocks', {});
 		const globals = util.getValue(gbx3, 'globals', {});
 		const data = {
-			...util.getValue(gbx3, 'data', {}),
+			...gbxData,
 			giveboxSettings: {
+				...util.getValue(gbxData, 'giveboxSettings', {}),
 				customTemplate: {
 					blocks,
 					globals
@@ -109,12 +119,16 @@ export function saveGBX3(obj = {}, isSending = false, callback) {
 			...obj
 		};
 
+		dispatch(updateGBX3('saveStatus', 'saving'));
 		dispatch(sendResource(util.getValue(info, 'apiName'), {
 			id: [util.getValue(info, 'kindID')],
 			orgID: util.getValue(info, 'orgID'),
 			data,
 			method: 'patch',
-			callback,
+			callback: (res, err) => {
+				dispatch(updateGBX3('saveStatus', 'done'));
+				if (callback) callback(res, err);
+			},
 			isSending
 		}));
 	}

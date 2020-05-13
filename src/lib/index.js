@@ -71,6 +71,7 @@ import {
 } from './api/actions';
 
 import {
+	updateGBX3,
 	updateInfo,
 	updateLayouts,
 	updateBlocks,
@@ -142,6 +143,7 @@ export {
 	setCustomProp,
 
 // gbx3 actions
+	updateGBX3,
 	updateInfo,
 	updateLayouts,
 	updateBlocks,

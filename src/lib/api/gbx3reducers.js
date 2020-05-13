@@ -1,6 +1,7 @@
 import  * as types  from './gbx3actionTypes';
 
 export function gbx3(state = {
+	saveStatus: 'done',
 	info: {
 		breakpoint: 'desktop'
 	},
@@ -35,6 +36,10 @@ export function gbx3(state = {
 	defaults: {}
 }, action) {
 	switch (action.type) {
+		case types.UPDATE_GBX3:
+			return Object.assign({}, state, {
+				[action.name]: action.value
+			});
 		case types.UPDATE_INFO:
 			return Object.assign({}, state, {
 				info: {

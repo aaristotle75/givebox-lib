@@ -7,7 +7,8 @@ import {
 	updateLayouts,
 	updateBlocks,
 	updateData,
-	updateInfo
+	updateInfo,
+	saveGBX3
 } from '../';
 import Block from './blocks/Block';
 import has from 'has';
@@ -47,9 +48,10 @@ class Layout extends React.Component {
 		//console.log('execute widthChange', width, margin, cols);
 	}
 
-	layoutChange(layout, layouts) {
+	async layoutChange(layout, layouts) {
 		const {
-			breakpoint
+			breakpoint,
+			editable
 		} = this.props;
 
 		const blocks = util.deepClone(this.props.blocks);
@@ -68,8 +70,14 @@ class Layout extends React.Component {
 					}
 				}
 			});
-			this.props.updateLayouts(layouts);
-			this.props.updateBlocks(blocks);
+			if (editable) {
+				const updated = [];
+				const layoutsUpdated = await this.props.updateLayouts(layouts);
+				const blocksUpdated = await this.props.updateBlocks(blocks);
+				if (layoutsUpdated) updated.push('layoutsUpdated');
+				if (blocksUpdated) updated.push('blocksUpdated');
+				if (updated.length === 2) this.props.saveGBX3();
+			}
 		}
 	}
 
@@ -207,5 +215,6 @@ export default connect(mapStateToProps, {
 	updateLayouts,
 	updateBlocks,
 	updateData,
-	updateInfo
+	updateInfo,
+	saveGBX3
 })(Layout);

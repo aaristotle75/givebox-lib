@@ -129,8 +129,10 @@ class PaymentFormClass extends Component {
 			</div>
 		;
 
+		const linkText = sendEmail.linkText || 'Send an Email Message';
+
 		const sendEmailLink =
-			<ModalLink id='sendEmail' allowCustom={true} customColor={this.props.primaryColor} opts={{ sendEmailCallback: this.sendEmailCallback, sendEmail: this.state.sendEmail, headerText: sendEmail.headerText }}>{sendEmail.linkText}</ModalLink>
+			<ModalLink id='sendEmail' allowCustom={true} customColor={this.props.primaryColor} opts={{ sendEmailCallback: this.sendEmailCallback, sendEmail: this.state.sendEmail, headerText: linkText }}>{linkText}</ModalLink>
 		;
 
 		const fields = [

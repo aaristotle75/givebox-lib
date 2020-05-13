@@ -125,6 +125,28 @@ const paymentForm = {
 	grid: {
 		desktop: { i: 'form', x: 0, y: 28, w: 12, h: 40, minW: 6, enabled: true },
 		mobile: { i: 'form', x: 0, y: 48, w: 6, h: 60, minW: 4, enabled: true }
+	},
+	options: {
+		button: {
+			embedAllowed: true,
+			enabled: true,
+			text: 'GIVE NOW',
+			style: {}
+		},
+		form: {
+			feeOption: false,
+			passFees: true,
+			addressInfo: 0,
+			phoneInfo: 0,
+			workInfo: 0,
+			noteInfo: 0,
+			notePlaceholder: '',
+			allowSelection: true,
+			sendEmail: {
+				enabled: true,
+				linkText: 'Send an Email Message to Your Friends'
+			},
+		}
 	}
 };
 

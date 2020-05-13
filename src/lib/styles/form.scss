@@ -650,6 +650,10 @@ label.active {
 			border-bottom: none;
 		}
 
+		button .label.idle {
+			color: $red !important;
+		}
+
 		.label .idle,
 		label .idle,
 		.label {

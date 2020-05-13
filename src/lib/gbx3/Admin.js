@@ -83,6 +83,7 @@ class Admin extends React.Component {
 		} = this.state;
 
 		const {
+			saveStatus,
 			editable,
 			collision,
 			collapse,
@@ -97,6 +98,9 @@ class Admin extends React.Component {
 
 		return (
 			<Portal id={'modal-root'} rootEl={rootEl} className={`gbx3 ${editable ? 'editable' : ''}`}>
+				<AnimateHeight height={saveStatus === 'saving' ? 'auto' : 0 } duration={500}>
+					<div className='autoSaved'>Saving...</div>
+				</AnimateHeight>
 				<GBLink onClick={this.toggleOpen} className={`link adminCustomAreaOpen ${open ? 'open' : 'close'}`}><span className='icon icon-menu'></span></GBLink>
 				<GBLink onClick={this.toggleOpen} className={`link adminCustomAreaClose ${open ? 'open' : 'close'}`}><span className='icon icon-x'></span></GBLink>
 				<div className={`adminCustomArea ${editable ? 'editable' : ''} ${open ? 'open' : 'close'}`}>
@@ -156,6 +160,7 @@ Admin.defaultProps = {
 function mapStateToProps(state, props) {
 
 	const gbx3 = util.getValue(state, 'gbx3', {});
+	const saveStatus = util.getValue(gbx3, 'saveStatus');
 	const admin = util.getValue(gbx3, 'admin', {});
 	const globals = util.getValue(gbx3, 'globals', {});
 	const gbxStyle = util.getValue(globals, 'gbxStyle', {});
@@ -167,6 +172,7 @@ function mapStateToProps(state, props) {
 	const outline = util.getValue(admin, 'outline');
 
 	return {
+		saveStatus,
 		access,
 		hasAccessToEdit,
 		admin,

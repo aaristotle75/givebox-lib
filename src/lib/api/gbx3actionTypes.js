@@ -1,3 +1,4 @@
+export const UPDATE_GBX3 = 'UPDATE_GBX3';
 export const UPDATE_INFO = 'UPDATE_INFO';
 export const UPDATE_LAYOUTS = 'UPDATE_LAYOUTS';
 export const UPDATE_BLOCKS = 'UPDATE_BLOCKS';

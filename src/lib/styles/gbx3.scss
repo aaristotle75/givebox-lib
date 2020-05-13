@@ -52,15 +52,50 @@
 
 
 	/*-------- General Form ----*/
+	.autoSaved {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		margin: 0 auto;
+		height: 25px;
+		width: 80px;
+		background: transparentize($green, .2);
+		color: $white;
+		font-size: 12px;
+		font-weight: 400;
+		z-index: 9999999;
+		border-bottom-left-radius: 5px;
+		border-bottom-right-radius: 5px;
+	}
+
 	.choice-group {
 		button .icon {
 			font-size: 1.5em;
 		}
 	}
 
+	.dropown button.link {
+		font-size: 12px;
+	}
+
+	.checkbox-group label.label {
+		 margin-left: 10px;
+		 font-size: 14px;
+	}
+
 	.noRecords {
 		color: $med-blue-gray;
 		font-size: 14px;
+	}
+
+	p.formSubHeader {
+		font-weight: 300;
+		font-size: 1em;
+		margin: 20px 0 10px 0;
 	}
 
 	/*------ LIB Components -----*/
@@ -400,6 +435,11 @@
 		.dropdown button {
 			padding: 12px 0;
 			border-bottom: 1px solid $light-gray;
+		}
+
+		.error .dropdown button {
+			padding: 12px 0;
+			border-bottom: 2px solid $red;
 		}
 
 		.dropdown button:hover {

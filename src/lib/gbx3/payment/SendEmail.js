@@ -90,6 +90,7 @@ class SendEmail extends Component {
 }
 
 SendEmail.defaultProps = {
+	headerText: 'Send an Email Message'
 }
 
 function mapStateToProps(state, props) {
