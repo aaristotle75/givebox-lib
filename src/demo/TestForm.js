@@ -131,6 +131,7 @@ export default class TestForm extends Component {
 						readOnly: false
 					})}
 					{this.props.richText('content', { required: false, label: 'Rich Text', placeholder: 'Please write something...', modal: false, wysiwyg: false, autoFocus: false, modalLabel: 'Open content editor', allowLink: true })}
+					{this.props.calendarField('dob', { minDate: 1589451379, label: 'Date of Birth', enableTime: false, enableTimeOption: false, required: true, validate: 'date', validateOpts: { }, utc: false })}
 					{/*
 					{this.props.richText('emailList', { label: 'Email List', placeholder: 'Enter emails separated by commas', modal: false, required: false, allowLink: true })}
 					{this.props.richText('content', { required: false, label: 'Rich Text', placeholder: 'Please write something...', modal: true, modalLabel: 'Open content editor', allowLink: true })}

@@ -166,7 +166,7 @@ class Recurring extends Component {
 								height={!paymentMax ? 'auto' : 0}
 							>
 								<div className='forever'>
-									Leave blank, if you want to {typeText} every {this.recurringName(interval).alt2} ongoing until canceled.
+									Leave blank if you want to {typeText} every {this.recurringName(interval).alt2} ongoing until canceled.
 								</div>
 							</AnimateHeight>
 						</div>

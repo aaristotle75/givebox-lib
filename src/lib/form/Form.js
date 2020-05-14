@@ -469,6 +469,7 @@ class Form extends Component {
 				enableTime={field ? field.enableTime : params.enableTime}
 				enableTimeOption={params.enableTimeOption}
 				enableTimeOptionLabel={params.enableTimeOptionLabel}
+				minDate={params.minDate}
 				group={field ? field.group : params.group}
 				readOnly={field ? field.readOnly : params.readOnly}
 				onChangeCalendar={this.onChangeCalendar}

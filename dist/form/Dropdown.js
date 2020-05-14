@@ -305,7 +305,7 @@ class Dropdown extends Component {
       status,
       buttonStyle
     } = this.state;
-    const selectedValue = multi ? open ? multiCloseLabel : selectLabel : selected && (value || defaultValue) ? selected : selectLabel;
+    const selectedValue = multi ? open ? multiCloseLabel : selectLabel : selected && (value || value === 0 || defaultValue || defaultValue === 0) ? selected : selectLabel;
     const idleLabel = selectedValue === multiCloseLabel || selectedValue === selectLabel;
     const readOnlyText = this.props.readOnlyText || `${label} is not editable`;
     const portalRoot = document.getElementById(portalRootEl);

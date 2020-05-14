@@ -166,8 +166,10 @@ class CalendarField extends Component {
       enableTime
     } = this.state;
     const dateFormat = enableTime ? 'm/d/Y h:iK' : 'm/d/Y';
+    const momentFormat = enableTime ? 'MM/DD/YYYY h:mmA' : 'MM/DD/YYYY';
     const labelStyle = util.cloneObj(customLabel);
     const modalEl = document.getElementById('calendar-root');
+    const minDate = util.getDate(this.props.minDate, momentFormat);
     return React.createElement(Flatpickr, {
       className: `${enableTimeOption ? 'enableTimeOption' : ''} ${className || ''}`,
       ref: this.flatpickrRef,
@@ -181,6 +183,7 @@ class CalendarField extends Component {
         dateFormat: dateFormat,
         enableTime: enableTimeOption ? true : enableTime,
         minuteIncrement: 1,
+        minDate: minDate || null,
         static: staticOption,
         clickOpens: allowInput ? false : true,
         wrap: true,
@@ -248,6 +251,7 @@ CalendarField.defaultProps = {
   enableTime: false,
   enableTimeOption: false,
   enableTimeOptionLabel: 'Enable time',
+  minDate: null,
   staticOption: false,
   icon: React.createElement("span", {
     className: "icon icon-calendar"
