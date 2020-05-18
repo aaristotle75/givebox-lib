@@ -4,6 +4,7 @@ import {
 	util,
 	GBLink,
 	ModalRoute,
+	ModalLink,
 	Collapse,
 	Tabs,
 	Tab,
@@ -462,7 +463,7 @@ class Amounts extends Component {
 				{util.getValue(button, 'enabled', false) ?
 					<>
 						<ModalRoute
-							className='gbx3'
+							className='gbx3 givebox-paymentform'
 							id='amountsList'
 							effect='3DFlipVert' style={{ width: '60%' }}
 							draggable={false}
@@ -479,12 +480,12 @@ class Amounts extends Component {
 									</div>
 									<div className='bottomContainer'>
 										<div className='cartInfo'>
-											<GBLink allowCustom={true} customColor={primaryColor} onClick={() => console.log('items in cart')}><span style={{ display: 'block', fontSize: 12 }}>Items in Cart (8)</span></GBLink>
+											<ModalLink id='cart' opts={{ tab: 'cart', hello: 'world' }} allowCustom={true} customColor={primaryColor}><span style={{ display: 'block', fontSize: 12 }}>Items in Cart (8)</span></ModalLink>
 											<span style={{ display: 'block' }}><span style={{ fontSize: 12 }}>Sub Total:</span> <span className='strong'>{util.money(300)}</span></span>
 										</div>
 										<div className='button-group'>
-											<GBLink allowCustom={true} customColor={primaryColor} onClick={() => console.log('Show more items')}>SHOP MORE ITEMS</GBLink>
-											<GBLink className='button' allowCustom={true} customColor={primaryColor} solidColor={true} onClick={() => console.log('checkout')}>CHECKOUT</GBLink>
+											<ModalLink id='shop' allowCustom={true} customColor={primaryColor}>SHOP MORE ITEMS</ModalLink>
+											<ModalLink id='cart' opts={{ tab: 'checkout' }} className='button' allowCustom={true} customColor={primaryColor} solidColor={true}>CHECKOUT</ModalLink>
 										</div>
 									</div>
 								</div>

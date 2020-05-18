@@ -17,11 +17,11 @@ class GBXTest extends Component {
 			id: 383050
 			//id: 4
 		};
-		this.timeout = false;
+		this.mounted = false;
 	}
 
 	componentDidMount() {
-		this.timeout = true;
+		this.mounted = true;
 		this.props.getResource('article', {
 			id: [this.state.id]
 		});
@@ -51,7 +51,7 @@ class GBXTest extends Component {
 					kind={this.props.article.kind}
 					autoSave={true}
 					save={this.save}
-					editable={true}
+					editable={false}
 				/>
 			</div>
 		)

@@ -92,7 +92,7 @@ class FormEdit extends Component {
 						<div className='formSection'>
 							<Dropdown
 								name='phoneInfo'
-								label={'Phone Number'}
+								label={'Collect Customer Phone Number'}
 								fixedLabel={true}
 								defaultValue={+phoneInfo}
 								onChange={(name, value) => {
@@ -102,7 +102,7 @@ class FormEdit extends Component {
 							/>
 							<Dropdown
 								name='addressInfo'
-								label={'Address'}
+								label={'Collect Customer Address'}
 								fixedLabel={true}
 								defaultValue={+addressInfo}
 								onChange={(name, value) => {
@@ -112,7 +112,7 @@ class FormEdit extends Component {
 							/>
 							<Dropdown
 								name='workInfo'
-								label={'Occupation and Employer'}
+								label={'Collect Customer Occupation and Employer'}
 								fixedLabel={true}
 								defaultValue={+workInfo}
 								onChange={(name, value) => {
@@ -122,7 +122,7 @@ class FormEdit extends Component {
 							/>
 							<Dropdown
 								name='noteInfo'
-								label={'Custom Field'}
+								label={'Collect a Custom Field'}
 								fixedLabel={true}
 								defaultValue={+noteInfo}
 								onChange={(name, value) => {

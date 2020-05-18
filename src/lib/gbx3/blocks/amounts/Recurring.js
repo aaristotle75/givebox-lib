@@ -176,10 +176,16 @@ class Recurring extends Component {
 							<GBLink
 								allowCustom={true}
 								customColor={this.props.color}
+								className='link'
+								onClick={() => this.props.onCloseRecurringOptions(this.props.modalID)}
+							>Close</GBLink>
+							<GBLink
+								allowCustom={true}
+								customColor={this.props.color}
 								solidColor={true}
 								className='button'
 								onClick={() => this.props.onCloseRecurringOptions(this.props.modalID)}
-							>Close & Checkout</GBLink>
+							>Confirm</GBLink>
 						</div>
 					</div>
 				</div>

@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Layout from './Layout';
 import Admin from './Admin';
+import Cart from './payment/Cart';
+import Shop from './shop/Shop';
 import {
 	types,
 	util,
@@ -14,7 +16,8 @@ import {
 	updateDefaults,
 	updateGlobals,
 	updateData,
-	updateAdmin
+	updateAdmin,
+	ModalRoute
 } from '../';
 import { defaultBlocks } from './config';
 import 'react-grid-layout/css/styles.css';
@@ -27,6 +30,7 @@ class GBX3 extends React.Component {
 	constructor(props) {
 		super(props);
 		this.loadGBX3 = this.loadGBX3.bind(this);
+		this.setStyle = this.setStyle.bind(this);
 		this.state = {
 			loading: true
 		};
@@ -48,6 +52,12 @@ class GBX3 extends React.Component {
 			kind,
 			editable
 		});
+	}
+
+	componentDidUpdate(prevProps) {
+		if (prevProps.primaryColor !== this.props.primaryColor) {
+			this.setStyle();
+		}
 	}
 
 	loadGBX3({
@@ -128,12 +138,56 @@ class GBX3 extends React.Component {
 							blocks,
 							data: res
 						});
+						this.setStyle();
 					}
 					this.setState({ loading: false });
 				}
 			});
 		} else {
 			this.setState({ loading: false });
+		}
+	}
+
+	setStyle() {
+		const color = this.props.primaryColor;
+
+		if (color) {
+			const rgb = util.hexToRgb(color);
+			const color2 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .1)`;
+			const color3 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .05)`;
+			const styleEl = document.head.appendChild(document.createElement('style'));
+			styleEl.innerHTML = `
+				.radio:checked + label:after {
+					border: 1px solid ${color} !important;
+					background: ${color};
+				}
+
+				.dropdown .dropdown-content.customColor::-webkit-scrollbar-thumb {
+					background-color: ${color};
+				}
+
+				.amountsSection ::-webkit-scrollbar-thumb {
+					background-color: ${color2};
+				}
+
+				.modalContent.gbx3 .ticketAmountRow,
+				.modalContent.gbx3 .amountRow {
+					border-left: 4px solid ${color} !important;
+				}
+
+				.modalContent.gbx3 .amountRow:hover {
+					background: ${color3};
+				}
+
+				.gbx3 button.modalToTop:hover {
+					background: ${color};
+				}
+
+				.modal .givebox-paymentform button.modalCloseBtn:hover .icon {
+					color: ${color};
+				}
+
+			`;
 		}
 	}
 
@@ -148,6 +202,22 @@ class GBX3 extends React.Component {
 				/>
 				<Layout
 					loadGBX3={this.loadGBX3}
+				/>
+				<ModalRoute
+					id='cart'
+					className='gbx3 givebox-paymentform'
+					effect='3DFlipVert'
+					style={{ width: '70%' }}
+					disallowBgClose={true}
+					component={(props) => <Cart {...props} />}
+				/>
+				<ModalRoute
+					id='shop'
+					className='gbx3 givebox-paymentform'
+					effect='3DFlipVert'
+					style={{ width: '70%' }}
+					disallowBgClose={true}
+					component={(props) => <Shop {...props} />}
 				/>
 			</div>
 		)
@@ -164,10 +234,14 @@ GBX3.defaultProps = {
 function mapStateToProps(state, props) {
 
 	const gbx3 = util.getValue(state, 'gbx3', {});
+	const globals = util.getValue(gbx3, 'globals', {});
+	const gbxStyle = util.getValue(globals, 'gbxStyle', {});
+	const primaryColor = util.getValue(gbxStyle, 'primaryColor');
 
 	return {
 		access: util.getValue(state.resource, 'access', {}),
-		globals: util.getValue(gbx3, 'globals', {})
+		globals,
+		primaryColor
 	}
 }
 

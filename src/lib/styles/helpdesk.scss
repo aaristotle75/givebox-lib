@@ -85,112 +85,126 @@
 		}
 	}
 
-  .RichEditor-root {
-    font-family: $font-family;
-    padding-top: 0;
-  }
+	.RichEditor-root {
+		font-family: $font-family;
+		padding-top: 0;
+	}
 
-  .RichEditor-editor {
-    margin-top: 0;
+	.RichEditor-editor {
+		margin-top: 0;
 
-    .public-DraftEditorPlaceholder-inner,
-    .public-DraftStyleDefault-ltr {
-      font-size: 1.1em;
-    }
-  }
+		.public-DraftEditorPlaceholder-inner,
+		.public-DraftStyleDefault-ltr {
+			font-size: 1.1em;
+		}
+	}
 
-  .attachment {
-    position: relative;
+	.attachment {
+		position: relative;
 		margin-bottom: 40px;
 
-    .loadImage {
-      position: absolute;
-      background: rgba(255, 255, 255, .7);
-    }
-  }
+		.loadImage {
+			position: absolute;
+			background: rgba(255, 255, 255, .7);
+		}
+	}
 
-  .dropzoneImageContainer {
+	.dropzoneImageContainer {
 		width: 100%;
 		min-height: 100%;
-    .dropzone-icon {
-      font-size: 75px;
-    }
-  }
+		.dropzone-icon {
+			font-size: 75px;
+		}
+	}
 
-  .dropzone {
+	.dropzone {
 		align-items: flex-start;
 		text-align: left;
 		border: 0px;
-    width: 100%;
-    height: 50px;
+		width: 100%;
+		height: 50px;
 
 		.icon {
 			margin-left: 5px;
 		}
-  }
+	}
 
 }
 
 /**-------- Help Desk Customization ----------*/
 .helpdeskContainer {
-  position: fixed;
-  right: 0;
-  top: 20%;
-  width: 0;
-  height: auto;
-  background: $white;
-  overflow-y: auto;
-  overflow-x: hidden;
-  z-index: 1999991;
-  border-radius: 20px;
-  background: $bar1Gradient;
+	position: fixed;
+	right: 0;
+	top: 20%;
+	width: 0;
+	height: auto;
+	background: $white;
+	overflow-y: auto;
+	overflow-x: hidden;
+	z-index: 1999991;
+	border-radius: 20px;
+	background: $bar1Gradient;
 
-  .handle {
-    cursor: grab;
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    color: $white;
-  }
+	@media (max-width: 768px) {
+		position: absolute;
+		top: 0;
+		right: 0;
+		left: 0;
+		bottom: 0;
+	}
 
-  .handle:hover {
-    color: $mainColorLight;
-    @include default-transition(1s);
-  }
+	.handle {
+		cursor: grab;
+		position: absolute;
+		top: 20px;
+		left: 20px;
+		color: $white;
+	}
+
+	.handle:hover {
+		color: $mainColorLight;
+		@include default-transition(1s);
+	}
 }
 
 .helpdeskContainer.closed {
-  width: 0px;
-  height: 400px;
-  @include transition(width .5s);
+	width: 0px;
+	height: 400px;
+	@include transition(width .5s);
+	@media (max-width: 768px) {
+		height: auto;
+	}
 }
 
 .helpdeskContainer.open {
-  width: 500px;
-  @include transition(width .5s);
+	width: 500px;
+	@include transition(width .5s);
+	@media (max-width: 768px) {
+		width: 100%;
+	}
 }
 
 .helpDeskButton {
-  position: fixed;
-  right: -20px;
-  top: 40%;
-  width: 70px;
-  height: 30px;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
-  background: $mainColor;
-  color: $white;
-  z-index: 1999991;
-  transform: rotate(-90deg);
-  -webkit-transform: rotate(-90deg);
-  @include animation(pulsateSlightlyBrighter 2s infinite ease-out);
+	position: fixed;
+	right: -20px;
+	top: 40%;
+	width: 70px;
+	height: 30px;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-left-radius: 0px;
+	border-bottom-right-radius: 0px;
+	background: $mainColor;
+	color: $white;
+	z-index: 1999991;
+	transform: rotate(-90deg);
+	-webkit-transform: rotate(-90deg);
+	@include animation(pulsateSlightlyBrighter 2s infinite ease-out);
 }
 
 .helpDeskButton:hover {
-  background: $mainColorLight;
-  @include default-transition(.25s);
+	background: $mainColorLight;
+	@include default-transition(.25s);
 }
 
 .helpdesk {
@@ -200,64 +214,64 @@
 		right: 30px;
 		top: 15px;
 
-    button.link {
-      color: $white;
-    }
+		button.link {
+			color: $white;
+		}
 
-    button.link:hover {
-      color: $mainColorLight;
-    }
+		button.link:hover {
+			color: $mainColorLight;
+		}
 	}
 
-  .statsTab .panel {
-    display: flex;
-    justify-content: center;
-  }
+	.statsTab .panel {
+		display: flex;
+		justify-content: center;
+	}
 
-  .statsTab button.panelTab {
-    color: $white;
-  }
-
-  .statsTab button.panelTab:hover:not(.selected) {
-    color: $mainColorLight;
-  }
-
-  .statsTab button.panelTab.selected {
+	.statsTab button.panelTab {
 		color: $white;
-    border-bottom: 2px solid $mainColorLight;
-  }
+	}
 
-  .sectionContainer,
-  .formSectionContainer {
-    background: transparent;
-  }
+	.statsTab button.panelTab:hover:not(.selected) {
+		color: $mainColorLight;
+	}
 
-  .formSection {
-    padding-bottom: 0;
-  }
+	.statsTab button.panelTab.selected {
+		color: $white;
+		border-bottom: 2px solid $mainColorLight;
+	}
 
-  .dropzone {
-    border: 1px solid transparent;
-    background: $white;
-  }
+	.sectionContainer,
+	.formSectionContainer {
+		background: transparent;
+	}
 
-  .dropzone .icon, {
-      color: $mainColor;
-  }
+	.formSection {
+		padding-bottom: 0;
+	}
 
-  .dropzone .text {
-    color: $mainColor;
-    font-size: 1em;
-  }
+	.dropzone {
+		border: 1px solid transparent;
+		background: $white;
+	}
 
-  .dropzone:hover {
-    border: 1px solid $mainColorLight;
-    @include default-transition(.5s);
-    .text,
-    .icon {
-      @include default-transition(.5s);
-      color: $mainColorLight;
-    }
-  }
+	.dropzone .icon, {
+			color: $mainColor;
+	}
+
+	.dropzone .text {
+		color: $mainColor;
+		font-size: 1em;
+	}
+
+	.dropzone:hover {
+		border: 1px solid $mainColorLight;
+		@include default-transition(.5s);
+		.text,
+		.icon {
+			@include default-transition(.5s);
+			color: $mainColorLight;
+		}
+	}
 
 }

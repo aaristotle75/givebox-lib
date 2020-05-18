@@ -3,101 +3,119 @@ import { util, GBLink } from '../';
 
 class Tabs extends Component {
 
-  constructor(props) {
-    super(props);
-    this.renderTabPanel = this.renderTabPanel.bind(this);
-    this.renderChildren = this.renderChildren.bind(this);
-    this.onTabClick = this.onTabClick.bind(this);
-    this.state = {
-      selectedTab: props.default || ''
-    };
-  }
+	constructor(props) {
+		super(props);
+		this.renderTabPanel = this.renderTabPanel.bind(this);
+		this.renderChildren = this.renderChildren.bind(this);
+		this.onTabClick = this.onTabClick.bind(this);
+		this.state = {
+			selectedTab: props.default || ''
+		};
+	}
 
-  componentDidMount() {
-  }
+	componentDidMount() {
+	}
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.default !== this.props.default) {
-      if (this.state.selectedTab !== this.props.default) {
-        this.onTabClick(this.props.default);
-      }
-    }
-  }
+	componentDidUpdate(prevProps) {
+		if (prevProps.default !== this.props.default) {
+			if (this.state.selectedTab !== this.props.default) {
+				this.onTabClick(this.props.default);
+			}
+		}
+	}
 
-  async onTabClick(key) {
-    const promise = new Promise((resolve, reject) => {
-      let validate = true;
-      if (typeof this.props.callbackBefore === 'function') {
-        validate = this.props.callbackBefore(key);
-      }
-      resolve(validate);
-    });
-    let validate = await promise;
-    if (validate) {
-      this.setState({selectedTab: key});
-      if (this.props.callbackAfter) this.props.callbackAfter(key);
-    }
-  }
+	async onTabClick(key) {
+		const promise = new Promise((resolve, reject) => {
+			let validate = true;
+			if (typeof this.props.callbackBefore === 'function') {
+				validate = this.props.callbackBefore(key);
+			}
+			resolve(validate);
+		});
+		let validate = await promise;
+		if (validate) {
+			this.setState({selectedTab: key});
+			if (this.props.callbackAfter) this.props.callbackAfter(key);
+		}
+	}
 
-  renderTabPanel() {
-    const items = [];
-    const bindthis = this;
-    if (!util.isEmpty(this.props.children)) {
-      Object.entries(this.props.children).forEach(([key, value]) => {
-        if (!util.isEmpty(value)) {
-          if (util.getValue(value.props, 'id')) {
-            items.push(
-              <div style={bindthis.props.tabStyle} key={key} className={`panelItem`}>
-                <GBLink disabled={util.getValue(value.props, 'disabled')} className={`${util.getValue(value.props, 'disabled') ? 'disabled' : ''} ripple panelTab ${(value.props.id === bindthis.state.selectedTab) && 'selected'}`} style={bindthis.props.tabsStyle} onClick={() => bindthis.onTabClick(value.props.id)}>{value.props.label}</GBLink>
-              </div>
-            );
-          }
-        }
-      });
-    }
-    return (
-      <div style={this.props.panelStyle} className={`panel`}>{items}</div>
-    )
-  }
+	renderTabPanel() {
+		const {
+			allowCustom,
+			customColor,
+			solidColor
+		} = this.props;
 
-  renderChildren() {
-    const childrenWithProps = React.Children.map(this.props.children,
-      (child) => React.cloneElement(child, {
-        selectedTab: this.state.selectedTab
-      })
-    );
-    return childrenWithProps;
-  }
+		const {
+			selectedTab
+		} = this.state;
+		const items = [];
+		const bindthis = this;
+		if (!util.isEmpty(this.props.children)) {
+			Object.entries(this.props.children).forEach(([key, value]) => {
+				const selectedStyle = {
+					borderBottom: customColor ? `2px solid ${customColor}` : ''
+				};
+				const tabStyle = value.props.id === selectedTab ? { ...this.props.tabStyle, ...selectedStyle } : { ...this.props.tabStyle };
+				const isSelected = value.props.id === selectedTab ? true : false;
 
-  render() {
+				if (!util.isEmpty(value)) {
+					if (util.getValue(value.props, 'id')) {
+						items.push(
+							<div style={bindthis.props.tabStyle} key={key} className={`panelItem`}>
+								<GBLink allowCustom={isSelected ? allowCustom : false} customColor={customColor} solidColor={solidColor} disabled={util.getValue(value.props, 'disabled')} className={`${util.getValue(value.props, 'disabled') ? 'disabled' : ''} ripple panelTab ${isSelected && 'selected'}`} style={tabStyle} onClick={() => bindthis.onTabClick(value.props.id)}>{value.props.label}</GBLink>
+							</div>
+						);
+					}
+				}
+			});
+		}
+		return (
+			<div style={this.props.panelStyle} className={`panel`}>{items}</div>
+		)
+	}
 
-    const {
-      style,
-      className
-    } = this.props;
+	renderChildren() {
+		const childrenWithProps = React.Children.map(this.props.children,
+			(child) => React.cloneElement(child, {
+				selectedTab: this.state.selectedTab
+			})
+		);
+		return childrenWithProps;
+	}
 
-    return (
-      <div className={`tabs ${className}`} style={style}>
-        {this.renderTabPanel()}
-        {this.props.intro}
-        {this.renderChildren()}
-      </div>
-    );
-  }
+	render() {
+
+		const {
+			style,
+			className
+		} = this.props;
+
+		return (
+			<div className={`tabs ${className}`} style={style}>
+				{this.renderTabPanel()}
+				{this.props.intro}
+				{this.renderChildren()}
+			</div>
+		);
+	}
 }
 
 Tabs.defaultProps = {
-  callbackBefore: null,
-  callbackAfter: null
+	callbackBefore: null,
+	callbackAfter: null,
+	allowCustom: false,
+	customColor: false,
+	solidColor: false
 }
 
 export default Tabs;
 
 
 export const Tab = (props) => {
-  return (
-    <div className={`tab ${(props.id !== props.selectedTab) && 'displayNone'} ${props.className || ''}`}>
-      {props.children}
-    </div>
-  );
+	return (
+		<div className={`tab ${(props.id !== props.selectedTab) && 'displayNone'} ${props.className || ''}`}>
+			{props.children}
+		</div>
+	);
 }

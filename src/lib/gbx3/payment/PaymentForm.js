@@ -172,7 +172,7 @@ class PaymentFormClass extends Component {
 
 		return (
 			<>
-				<ModalRoute className='gbx3' id='sendEmail' modalRootClass='sendEmail gbxModal' component={(props) => <SendEmail {...props} {...this.props} /> } effect='3DFlipVert' style={{ width: '50%' }} />
+				<ModalRoute className='gbx3 givebox-paymentform' id='sendEmail' modalRootClass='sendEmail gbxModal' component={(props) => <SendEmail {...props} {...this.props} /> } effect='3DFlipVert' style={{ width: '50%' }} />
 				<>
 					{this.renderFields()}
 					{this.props.saveButton(this.processForm, { style: { margin: 0, padding: 0, height: 0, width: 0, visibility: 'hidden' } })}

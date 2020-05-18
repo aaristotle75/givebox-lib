@@ -76,12 +76,9 @@ class AmountsList extends Component {
 		return (
 			<div className='recurringLink'>
 				<ModalRoute
-					className='gbx3 recurringOption'
 					id='recurringOption'
+					className='gbx3 givebox-paymentform recurringOption'
 					style={{ width: '50%' }}
-					optsProps={{
-						closeCallback: this.onCloseRecurringOptions
-					}}
 					component={() =>
 						<Recurring
 							recurringText={`How often would you like to donate this amount?`}
@@ -167,7 +164,8 @@ class AmountsList extends Component {
 			buttonEnabled,
 			customID,
 			defaultID,
-			embed
+			embed,
+			color
 		} = this.props;
 
 		const {
@@ -234,7 +232,7 @@ class AmountsList extends Component {
 								</div>
 								{!this.props.embed && value.description ?
 								<div className='amountDescMore'>
-									<GBLink style={{ fontSize: 12, margin: '5px 0 5px 10px' }} allowCustom={true} className='link amountShowDetailsLink' onClick={() => this.toggleShowDetails(value.ID)}>{showDetails.includes(value.ID) ? 'Less Info' : 'More Info'} <span className={`icon icon-${showDetails.includes(value.ID) ? 'minus' : 'plus'}`}></span></GBLink>
+									<GBLink style={{ fontSize: 12, margin: '5px 0 5px 10px' }} allowCustom={true} customColor={color} className='link amountShowDetailsLink' onClick={() => this.toggleShowDetails(value.ID)}>{showDetails.includes(value.ID) ? 'Less Info' : 'More Info'} <span className={`icon icon-${showDetails.includes(value.ID) ? 'minus' : 'plus'}`}></span></GBLink>
 								</div> : <></>}
 							</div>
 							<AnimateHeight

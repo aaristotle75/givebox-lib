@@ -138,7 +138,7 @@ class CalendarField extends Component {
 		const momentFormat = enableTime ? 'MM/DD/YYYY h:mmA' : 'MM/DD/YYYY';
 		const labelStyle = util.cloneObj(customLabel);
 		const modalEl = document.getElementById('calendar-root');
-		const minDate = util.getDate(this.props.minDate, momentFormat);
+		const minDate = this.props.minDate ? util.getDate(this.props.minDate, momentFormat) : null;
 
 		return (
 			<Flatpickr
@@ -154,7 +154,7 @@ class CalendarField extends Component {
 					dateFormat: dateFormat,
 					enableTime: enableTimeOption ? true : enableTime,
 					minuteIncrement: 1,
-					minDate: minDate || null,
+					minDate: minDate,
 					static: staticOption,
 					clickOpens: allowInput ? false : true,
 					wrap: true,
