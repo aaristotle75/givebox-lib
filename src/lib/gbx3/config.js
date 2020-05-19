@@ -53,7 +53,7 @@ const amounts = {
 	options: {
 		button: {
 			embedAllowed: true,
-			enabled: true,
+			enabled: false,
 			text: 'Select Amount',
 			style: {
 
@@ -128,7 +128,6 @@ const paymentForm = {
 	},
 	options: {
 		button: {
-			embedAllowed: true,
 			enabled: true,
 			text: 'GIVE NOW',
 			style: {}
@@ -170,8 +169,7 @@ const fundraiserBlocks = {
 	amounts,
 	media,
 	summary,
-	content,
-	paymentForm
+	content
 };
 
 const invoiceBlocks = fundraiserBlocks;

@@ -62,7 +62,8 @@ class AmountsList extends Component {
 		const {
 			kind,
 			allowRecurring,
-			color
+			color,
+			breakpoint
 		} = this.props;
 
 		const {
@@ -81,6 +82,7 @@ class AmountsList extends Component {
 					style={{ width: '50%' }}
 					component={() =>
 						<Recurring
+							breakpoint={breakpoint}
 							recurringText={`How often would you like to donate this amount?`}
 							topText='donation'
 							typeText='donate'
@@ -108,7 +110,7 @@ class AmountsList extends Component {
 
 	setCustomSelected(ID) {
 		const amountInputRef = this.amountInputRef.current;
-		if (amountInputRef) amountInputRef.focus();
+		if (amountInputRef && this.props.breakpoint !== 'mobile') amountInputRef.focus();
 		const customSelected = parseInt(this.props.customID) === parseInt(ID) ? true : false;
 		return customSelected;
 	}
@@ -165,7 +167,8 @@ class AmountsList extends Component {
 			customID,
 			defaultID,
 			embed,
-			color
+			color,
+			breakpoint
 		} = this.props;
 
 		const {
@@ -259,6 +262,7 @@ class AmountsList extends Component {
 					autoFocus={true}
 					inputRef={this.amountInputRef}
 					name='amountInput'
+					inputMode='decimal'
 					placeholder={0}
 					color={this.props.color}
 					onChange={this.onChangeEnteredAmount}

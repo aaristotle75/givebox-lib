@@ -98,6 +98,16 @@
 
 		.bottomContainer {
 			top: 0;
+			margin: 0 auto;
+			width: 100%;
+
+			.hideOnMobile {
+				display: none;
+			}
+
+			.button-group {
+				max-width: 150px;
+			}
 		}
 	}
 }

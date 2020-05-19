@@ -40,7 +40,7 @@ class Block extends React.Component {
 		this.setState({ editModalOpen: false });
 	}
 
-	async saveBlock(content = {}, options = {}, saveGBX3 = true, callback = this.closeEditModal, updateSpecificGrid = false) {
+	async saveBlock(content = {}, options = {}, grid = {}, saveGBX3 = true, callback = this.closeEditModal, updateSpecificGrid = false) {
 		const {
 			name,
 			block,
@@ -48,20 +48,22 @@ class Block extends React.Component {
 		} = this.props;
 
 		const mobileContent = updateSpecificGrid && breakpoint === 'mobile' ? content : !updateSpecificGrid ? content : this.getBlockContent('mobile');
+		const mobileGrid = breakpoint === 'mobile' ? { ...block.grid.mobile, ...grid } : block.grid.mobile;
 
 		const desktopContent = updateSpecificGrid && breakpoint === 'desktop' ? content : !updateSpecificGrid ? content : this.getBlockContent('desktop');
+		const desktopGrid = breakpoint === 'desktop' ? { ...block.grid.desktop, ...grid } : block.grid.desktop;
 
 		const updated = await this.props.updateBlock(name, Object.assign({}, block, {
 			grid: {
 				mobile: {
-					...block.grid.mobile,
+					...mobileGrid,
 					content: {
 						...util.getValue(block.grid.mobile, 'content', {}),
 						...mobileContent
 					}
 				},
 				desktop: {
-					...block.grid.desktop,
+					...desktopGrid,
 					content: {
 						...util.getValue(block.grid.desktop, 'content', {}),
 						...desktopContent
@@ -122,6 +124,7 @@ class Block extends React.Component {
 				globalButton,
 				globalButtonStyle,
 				primaryColor,
+				breakpoint,
 				blockContent: this.getBlockContent(breakpoint),
 				saveBlock: this.saveBlock,
 				title: util.getValue(block, 'title', name),
@@ -163,6 +166,7 @@ function mapStateToProps(state, props) {
 
 	const modalID = `modalBlock-${props.name}`;
 	const gbx3 = util.getValue(state, 'gbx3', {});
+	const layouts = util.getValue(gbx3, 'layouts', {});
 	const globals = util.getValue(gbx3, 'globals', {});
 	const gbxStyle = util.getValue(globals, 'gbxStyle', {});
 	const gbxPrimaryColor = util.getValue(gbxStyle, 'primaryColor');
@@ -180,12 +184,12 @@ function mapStateToProps(state, props) {
 	const data = util.getValue(gbx3, 'data', {});
 	const fieldValue = util.getValue(data, dataField);
 
-
 	return {
 		kind,
 		articleID,
 		orgID,
 		modalID,
+		layouts,
 		block,
 		options,
 		fieldValue,

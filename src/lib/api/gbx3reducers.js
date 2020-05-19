@@ -8,7 +8,7 @@ export function gbx3(state = {
 	blocks: {},
 	globals: {
 		gbxStyle: {
-			maxWidth: 1000,
+			maxWidth: 850,
 			primaryColor: ''
 		},
 		button: {

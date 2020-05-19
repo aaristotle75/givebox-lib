@@ -746,6 +746,27 @@ label.active {
 /*-------- Credit Card ---------*/
 .creditCard-group {
 
+	.col.creditCard {
+		width: 60%;
+		@media (max-width: 600px) {
+			width: 100%;
+		}
+	}
+
+	.col.ccexpire {
+		width: 20%;
+		@media (max-width: 600px) {
+			width: 100%;
+		}
+	}
+
+	.col.cvv {
+		width: 20%;
+		@media (max-width: 600px) {
+			width: 100%;
+		}
+	}
+
 	position: relative;
 
 	.cardsAccepted {

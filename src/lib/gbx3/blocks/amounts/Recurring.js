@@ -86,7 +86,8 @@ class Recurring extends Component {
 		const {
 			amount,
 			recurringText,
-			typeText
+			typeText,
+			breakpoint
 		} = this.props;
 
 		const {
@@ -137,6 +138,7 @@ class Recurring extends Component {
 						<div className='maxRecurring'>
 							How many {this.recurringName(interval).alt.toLowerCase()} would you like to {typeText} this amount?
 							<TextField
+								inputMode='numeric'
 								style={{width: '210px' }}
 								inputStyle={{ textAlign: 'center' }}
 								label=''

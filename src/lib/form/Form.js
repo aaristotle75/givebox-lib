@@ -880,13 +880,13 @@ class Form extends Component {
 		return (
 
 			<div style={params.style} className={`field-group creditCard-group`}>
-				<div style={{width: '60%'}} className='col'>
+				<div className='creditCard col'>
 					{this.creditCard('ccnumber', {label: params.ccnumberLabel || 'Credit Card', fixedLabel: params.ccnumberfixedLabel || true, hideLabel: params.hideLabel, placeholder: params.placeholder, readOnly: params.readOnly, required: params.required, debug: params.debug})}
 				</div>
-				<div style={{width: '20%'}} className='col'>
+				<div className='ccexpire col'>
 					{this.textField('ccexpire', {label: params.ccxpireLabel || 'Expiration', fixedLabel: params.ccexpirefixedLabel || true, placeholder: 'MM/YY', required: params.required, value: params.ccexpireValue || '', validate: 'ccexpire', maxLength: 5, count: false, debug: params.debug, inputMode: 'numeric', onChange: this.onChangeCCExpire })}
 				</div>
-				<div style={{width: '20%'}} className='col'>
+				<div className='cvv col'>
 					{this.textField('cvv', {label: 'CVV', customLabel: cvvModal, fixedLabel: true, placeholder: 'CVV', required: params.required, maxLength: 3, count: false, debug: params.debug, inputMode: 'numeric'})}
 				</div>
 				<div className='clear'></div>

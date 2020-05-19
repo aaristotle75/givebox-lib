@@ -4,6 +4,8 @@ import {
 	getResource,
 	sendResource
 } from '../../';
+import Block from '../blocks/Block';
+import Form from '../blocks/Form';
 
 class Checkout extends Component {
 
@@ -28,8 +30,15 @@ class Checkout extends Component {
 	render() {
 
 		return (
-			<div>
-				<h2>Checkout</h2>
+			<div className='formSectionContainer'>
+				<div className='formSection'>
+					<Block
+						name='paymentForm'
+						blockRef={React.createRef()}
+					>
+						<Form />
+					</Block>
+				</div>
 			</div>
 		)
 	}

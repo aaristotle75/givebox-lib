@@ -262,7 +262,8 @@ class Amounts extends Component {
 		const {
 			data,
 			kind,
-			primaryColor
+			primaryColor,
+			breakpoint
 		} = this.props;
 
 		const {
@@ -281,6 +282,7 @@ class Amounts extends Component {
 			case 'sweepstake': {
 				return (
 					<TicketsList
+						breakpoint={breakpoint}
 						embed={false}
 						amountsList={amountsList}
 						customIndex={customIndex}
@@ -301,6 +303,7 @@ class Amounts extends Component {
 			default: {
 				return (
 					<AmountsList
+						breakpoint={breakpoint}
 						embed={embed}
 						amountsList={amountsList}
 						customIndex={customIndex}
@@ -484,7 +487,7 @@ class Amounts extends Component {
 											<span style={{ display: 'block' }}><span style={{ fontSize: 12 }}>Sub Total:</span> <span className='strong'>{util.money(300)}</span></span>
 										</div>
 										<div className='button-group'>
-											<ModalLink id='shop' allowCustom={true} customColor={primaryColor}>SHOP MORE ITEMS</ModalLink>
+											<ModalLink className='hideOnMobile' id='shop' allowCustom={true} customColor={primaryColor}>SHOP MORE ITEMS</ModalLink>
 											<ModalLink id='cart' opts={{ tab: 'checkout' }} className='button' allowCustom={true} customColor={primaryColor} solidColor={true}>CHECKOUT</ModalLink>
 										</div>
 									</div>

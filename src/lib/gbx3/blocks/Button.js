@@ -41,7 +41,7 @@ class Button extends PureComponent {
 		return (
 			<>
 			{modalID ?
-				<ModalLink style={style} customColor={util.getValue(style, 'bgColor', null)} solidColor={type === 'button' ? true : false} allowCustom={true} className={`${type}`} id={modalID}>
+				<ModalLink opts={this.props.opts} style={style} customColor={util.getValue(style, 'bgColor', null)} solidColor={type === 'button' ? true : false} allowCustom={true} className={`${type}`} id={modalID}>
 					{util.getValue(button, 'text', 'Button Text')}
 				</ModalLink>
 				:
@@ -53,6 +53,10 @@ class Button extends PureComponent {
 		)
 	}
 }
+
+Button.defaultProps = {
+	opts: {}
+};
 
 function mapStateToProps(state, props) {
 

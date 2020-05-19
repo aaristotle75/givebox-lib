@@ -11,6 +11,7 @@ import {
 	saveGBX3
 } from '../';
 import Block from './blocks/Block';
+import Form from './blocks/Form';
 import has from 'has';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
@@ -70,6 +71,7 @@ class Layout extends React.Component {
 					}
 				}
 			});
+
 			if (editable) {
 				const updated = [];
 				const layoutsUpdated = await this.props.updateLayouts(layouts);
@@ -77,6 +79,8 @@ class Layout extends React.Component {
 				if (layoutsUpdated) updated.push('layoutsUpdated');
 				if (blocksUpdated) updated.push('blocksUpdated');
 				if (updated.length === 2) this.props.saveGBX3();
+			} else {
+				this.props.updateLayouts(layouts);
 			}
 		}
 	}
@@ -133,47 +137,57 @@ class Layout extends React.Component {
 
 		return (
 			<div style={util.getValue(globals, 'gbxStyle', {})} className='gbx3Container'>
-				<div
-					ref={this.gridRef}
-					style={{ marginBottom: 20 }}
-					className={`column dropArea ${isEditable ? 'editable' : ''}`}
-					onDragOver={(e) => {
-						e.preventDefault();
-					}}
-					onDrop={(e) => {
-						if (isEditable) {
-							const block = e.dataTransfer.getData('block');
+				<div className='layout-column'>
+					<div
+						ref={this.gridRef}
+						style={{ marginBottom: 20 }}
+						className={`column dropArea ${isEditable ? 'editable' : ''}`}
+						onDragOver={(e) => {
 							e.preventDefault();
-							const current = this.gridRef.current;
-							if (current.classList.contains('dragOver')) current.classList.remove('dragOver');
-							this.addBlock(block);
-						}
-					}}
-				>
-					<div className='dragOverText'>Drop Page Element Here</div>
-					<ResponsiveGridLayout
-						id='testGrid'
-						className="blockGridLayout"
-						layouts={layouts}
-						breakpoints={{desktop: 701, mobile: 700 }}
-						cols={{desktop: 12, mobile: 6}}
-						rowHeight={15}
-						onLayoutChange={this.layoutChange}
-						onBreakpointChange={this.breakpointChange}
-						onWidthChange={this.widthChange}
-						isDraggable={editable}
-						isResizable={editable}
-						isDroppable={false}
-						margin={[0, 0]}
-						containerPadding={[0, 0]}
-						autoSize={true}
-						draggableHandle={'.dragHandle'}
-						draggableCancel={'.modal'}
-						verticalCompact={collapse}
-						preventCollision={collision}
+						}}
+						onDrop={(e) => {
+							if (isEditable) {
+								const block = e.dataTransfer.getData('block');
+								e.preventDefault();
+								const current = this.gridRef.current;
+								if (current.classList.contains('dragOver')) current.classList.remove('dragOver');
+								this.addBlock(block);
+							}
+						}}
 					>
-						{this.renderBlocks()}
-					</ResponsiveGridLayout>
+						<div className='dragOverText'>Drop Page Element Here</div>
+						<ResponsiveGridLayout
+							id='testGrid'
+							className="blockGridLayout"
+							layouts={layouts}
+							breakpoints={{desktop: 701, mobile: 700 }}
+							cols={{desktop: 12, mobile: 6}}
+							rowHeight={15}
+							onLayoutChange={this.layoutChange}
+							onBreakpointChange={this.breakpointChange}
+							onWidthChange={this.widthChange}
+							isDraggable={editable}
+							isResizable={editable}
+							isDroppable={false}
+							margin={[0, 0]}
+							containerPadding={[0, 0]}
+							autoSize={true}
+							draggableHandle={'.dragHandle'}
+							draggableCancel={'.modal'}
+							verticalCompact={collapse}
+							preventCollision={collision}
+						>
+							{this.renderBlocks()}
+						</ResponsiveGridLayout>
+					</div>
+				</div>
+				<div className='layout-column'>
+					<Block
+						name='paymentForm'
+						ref={React.createRef()}
+					>
+						<Form />
+					</Block>
 				</div>
 			</div>
 		)

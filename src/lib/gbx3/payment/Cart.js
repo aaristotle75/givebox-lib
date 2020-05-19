@@ -15,6 +15,7 @@ class Cart extends Component {
 	constructor(props) {
 		super(props);
 		this.setTab = this.setTab.bind(this);
+		this.renderItemsInCart = this.renderItemsInCart.bind(this);
 		this.state = {
 			tab: props.tab
 		};
@@ -36,6 +37,16 @@ class Cart extends Component {
 		this.setState({ tab });
 	}
 
+	renderItemsInCart() {
+		const items = [];
+
+		return (
+			<div className='itemsInCart'>
+				{ !util.isEmpty(items) ? items : <span className='flexCenter noRecords'>No Items in Cart</span> }
+			</div>
+		);
+	}
+
 	render() {
 
 		const {
@@ -55,7 +66,11 @@ class Cart extends Component {
 					customColor={primaryColor}
 				>
 					<Tab id='cart' label={<span className='stepLabel'>Items in Cart</span>}>
-						Items in Cart
+						<div className='formSectionContainer'>
+							<div className='formSection'>
+								{this.renderItemsInCart()}
+							</div>
+						</div>
 					</Tab>
 					<Tab id='checkout' label={<span className='stepLabel'>Checkout</span>}>
 						<Checkout />
