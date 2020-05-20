@@ -95,28 +95,30 @@ class Layout extends React.Component {
 		const items = [];
 
 		Object.entries(blocks).forEach(([key, value]) => {
-			if (value.grid[breakpoint].enabled === enabled) {
-				const BlockComponent = Loadable({
-					loader: () => import(`./blocks/${value.type}`),
-					loading: () => <></>
-				});
-				const ref = React.createRef();
-				items.push(
-					<div
-						className={`${outline ? 'outline' : ''}`}
-						id={`block-${value.name}`}
-						key={value.name}
-						data-grid={value.grid[breakpoint]}
-						ref={ref}
-					>
-						<Block
-							name={value.name}
-							blockRef={ref}
+			if (!util.isEmpty(value.grid)) {
+				if (value.grid[breakpoint].enabled === enabled) {
+					const BlockComponent = Loadable({
+						loader: () => import(`./blocks/${value.type}`),
+						loading: () => <></>
+					});
+					const ref = React.createRef();
+					items.push(
+						<div
+							className={`${outline ? 'outline' : ''}`}
+							id={`block-${value.name}`}
+							key={value.name}
+							data-grid={value.grid[breakpoint]}
+							ref={ref}
 						>
-							<BlockComponent />
-						</Block>
-					</div>
-				);
+							<Block
+								name={value.name}
+								blockRef={ref}
+							>
+								<BlockComponent />
+							</Block>
+						</div>
+					);
+				}
 			}
 		});
 		return items;
@@ -126,8 +128,8 @@ class Layout extends React.Component {
 
 		const {
 			layouts,
-			collapse,
-			collision,
+			verticalCompact,
+			preventCollision,
 			editable,
 			globals,
 			hasAccessToEdit
@@ -136,12 +138,12 @@ class Layout extends React.Component {
 		const isEditable = hasAccessToEdit && editable ? true : false;
 
 		return (
-			<div style={util.getValue(globals, 'gbxStyle', {})} className='gbx3Container'>
+			<div style={util.getValue(globals, 'gbxStyle', {})} className={`gbx3Container ${isEditable ? 'editable' : ''}`}>
 				<div className='layout-column'>
 					<div
 						ref={this.gridRef}
 						style={{ marginBottom: 20 }}
-						className={`column dropArea ${isEditable ? 'editable' : ''}`}
+						className={`column dropArea`}
 						onDragOver={(e) => {
 							e.preventDefault();
 						}}
@@ -162,7 +164,7 @@ class Layout extends React.Component {
 							layouts={layouts}
 							breakpoints={{desktop: 701, mobile: 700 }}
 							cols={{desktop: 12, mobile: 6}}
-							rowHeight={15}
+							rowHeight={10}
 							onLayoutChange={this.layoutChange}
 							onBreakpointChange={this.breakpointChange}
 							onWidthChange={this.widthChange}
@@ -174,20 +176,23 @@ class Layout extends React.Component {
 							autoSize={true}
 							draggableHandle={'.dragHandle'}
 							draggableCancel={'.modal'}
-							verticalCompact={collapse}
-							preventCollision={collision}
+							verticalCompact={verticalCompact}
+							preventCollision={preventCollision}
 						>
 							{this.renderBlocks()}
 						</ResponsiveGridLayout>
 					</div>
 				</div>
 				<div className='layout-column'>
-					<Block
-						name='paymentForm'
-						ref={React.createRef()}
-					>
-						<Form />
-					</Block>
+					<div className='react-grid-item'>
+						<Block
+							name='paymentForm'
+							blockRef={React.createRef()}
+							style={{ position: 'relative' }}
+						>
+							<Form />
+						</Block>
+					</div>
 				</div>
 			</div>
 		)
@@ -207,8 +212,8 @@ function mapStateToProps(state, props) {
 	const info = util.getValue(gbx3, 'info', {});
 	const hasAccessToEdit = util.getValue(admin, 'hasAccessToEdit');
 	const editable = util.getValue(admin, 'editable');
-	const collision = util.getValue(admin, 'collision');
-	const collapse = util.getValue(admin, 'collapse');
+	const preventCollision = util.getValue(admin, 'preventCollision');
+	const verticalCompact = util.getValue(admin, 'verticalCompact');
 	const outline = util.getValue(admin, 'outline');
 	const breakpoint = util.getValue(info, 'breakpoint');
 
@@ -216,8 +221,8 @@ function mapStateToProps(state, props) {
 		hasAccessToEdit,
 		layouts,
 		editable,
-		collision,
-		collapse,
+		preventCollision,
+		verticalCompact,
 		outline,
 		breakpoint,
 		blocks: util.getValue(gbx3, 'blocks', {}),

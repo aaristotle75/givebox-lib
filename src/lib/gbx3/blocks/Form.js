@@ -134,7 +134,6 @@ class Form extends Component {
 		const workInfo = this.getInfo('workInfo');
 		const noteInfo = this.getInfo('noteInfo');
 
-
 		return (
 			<div className='formBlock'>
 				<ModalRoute

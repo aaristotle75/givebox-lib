@@ -99,7 +99,7 @@ export function updateOrder(order) {
 	}
 }
 
-export function saveGBX3(obj = {}, isSending = false, callback) {
+export function saveGBX3(obj = {}, isSending = false, callback, updateLayout) {
 
 	return (dispatch, getState) => {
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
@@ -119,6 +119,21 @@ export function saveGBX3(obj = {}, isSending = false, callback) {
 			...obj
 		};
 
+		if (updateLayout) {
+			const layouts = {
+				desktop: [],
+				mobile: []
+			};
+
+			Object.entries(blocks).forEach(([key, value]) => {
+				if (!util.isEmpty(value.grid)) {
+					layouts.desktop.push(value.grid.desktop);
+					layouts.mobile.push(value.grid.mobile);
+				}
+			});
+
+			dispatch(updateLayouts(layouts));
+		}
 		dispatch(updateGBX3('saveStatus', 'saving'));
 		dispatch(sendResource(util.getValue(info, 'apiName'), {
 			id: [util.getValue(info, 'kindID')],

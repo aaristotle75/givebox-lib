@@ -29,7 +29,7 @@ export default class Text extends Component {
 		this.blockRef = null;
 		this.width = null;
 		this.height = null;
-		this.cleanHTMLRef = React.createRef();
+		this.displayRef = React.createRef();
 	}
 
 	componentDidMount() {
@@ -41,9 +41,7 @@ export default class Text extends Component {
 	}
 
 	componentDidUpdate() {
-		const clientHTMLRef = this.cleanHTMLRef.current;
-		this.height = clientHTMLRef.clientHeight;
-		console.log('execute height', this.height);
+		this.props.setDisplayHeight(this.displayRef);
 	}
 
 	onBlur(content) {
@@ -58,7 +56,7 @@ export default class Text extends Component {
 
 	closeEditModal(type = 'save') {
 		if (type !== 'cancel') {
-			this.props.saveBlock({ html: this.state.content }, null, { h: parseInt(this.height/ 15) });
+			this.props.saveBlock({ html: this.state.content }, null);
 		} else {
 			this.setState({ content: this.state.defaultContent }, this.props.closeEditModal);
 		}
@@ -118,7 +116,7 @@ export default class Text extends Component {
 						</div>
 					}
 				/>
-				<div ref={this.cleanHTMLRef} dangerouslySetInnerHTML={{ __html: cleanHtml }} />
+				<div ref={this.displayRef} dangerouslySetInnerHTML={{ __html: cleanHtml }} />
 			</div>
 		)
 	}

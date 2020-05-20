@@ -55,7 +55,6 @@ class Amounts extends Component {
 			defaultButton: util.deepClone(button),
 			defaultRecurring: util.deepClone(recurring),
 			amountsList: [],
-			amountsListEditable: [],
 			customIndex: 6,
 			defaultIndex: 6,
 			formError: [],
@@ -95,7 +94,7 @@ class Amounts extends Component {
 	saveEditedAmounts(saveBlock) {
 		const button = { ...this.state.button };
 		const recurring = { ...this.state.recurring };
-		const amountsList = [ ...this.state.amountsListEditable ];
+		const amountsList = [ ...this.state.amountsList ];
 		const customIndex = this.state.customIndex;
 		const customID = this.state.customID;
 		const defaultIndex = this.state.defaultIndex;
@@ -139,7 +138,6 @@ class Amounts extends Component {
 			button: util.deepClone(this.state.defaultButton),
 			recurring: util.deepClone(this.state.defaultRecurring),
 			amountsList: util.deepClone(this.state.amountsListDefault),
-			amountsListEditable: util.deepClone(this.state.amountsListDefault),
 			customIndex: this.state.customIndexDefault,
 			customID: this.state.customIDDefault,
 			defaultIndex: this.state.defaultIndexDefault,
@@ -168,7 +166,7 @@ class Amounts extends Component {
 				list: amountsList
 			};
 		}
-		this.setState({ amountsListEditable: amountsList }, () => {
+		this.setState({ amountsList }, () => {
 			if (save) this.props.saveGBX3(data, false, (res, err) => {
 				if (!err && !util.isEmpty(res)) {
 					this.saveEditedAmounts();
@@ -244,12 +242,11 @@ class Amounts extends Component {
 
 		this.setState({
 			amountsList,
-			amountsListEditable: util.deepClone(amountsList),
 			customIndex,
 			customID,
 			defaultIndex,
 			defaultID,
-			amountsListDefault: amountsList,
+			amountsListDefault: util.deepClone(amountsList),
 			customIndexDefault: customIndex,
 			customIDDefault: customID,
 			defaultIndexDefault: defaultIndex,
@@ -294,6 +291,7 @@ class Amounts extends Component {
 						kind={this.props.kind}
 						buttonEnabled={util.getValue(button, 'enabled', false)}
 						article={data}
+						setDisplayHeight={this.props.setDisplayHeight}
 					/>
 				)
 			}
@@ -317,6 +315,7 @@ class Amounts extends Component {
 						kind={this.props.kind}
 						allowRecurring={util.getValue(recurring, 'enabled', true)}
 						buttonEnabled={util.getValue(button, 'enabled', false)}
+						setDisplayHeight={this.props.setDisplayHeight}
 					/>
 				)
 			}
@@ -348,7 +347,6 @@ class Amounts extends Component {
 
 		const {
 			amountsList,
-			amountsListEditable,
 			button,
 			recurring,
 			customIndex,
@@ -398,7 +396,7 @@ class Amounts extends Component {
 												<div className='formSection'>
 													<AmountsEdit
 														article={data}
-														amountsList={amountsListEditable}
+														amountsList={amountsList}
 														kind={kind}
 														modalID={modalID}
 														amountsListUpdated={this.amountsListUpdated}

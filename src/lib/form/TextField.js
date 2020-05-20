@@ -60,7 +60,8 @@ class TextField extends Component {
 			inputRef,
 			inputMode,
 			color,
-			moneyStyle
+			moneyStyle,
+			autoComplete
 		} = this.props;
 
 		const {
@@ -92,7 +93,7 @@ class TextField extends Component {
 							onChange={this.props.onChange}
 							onBlur={this.onBlur}
 							onFocus={this.onFocus}
-							autoComplete='nope'
+							autoComplete={autoComplete}
 							value={value}
 							maxLength={maxLength}
 							style={inputStyle}
@@ -127,7 +128,8 @@ TextField.defaultProps = {
 	money: false,
 	inputRef: null,
 	inputStyle: {},
-	moneyStyle: {}
+	moneyStyle: {},
+	autoComplete: 'nope'
 }
 
 export default TextField;

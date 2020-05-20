@@ -12,8 +12,8 @@ const logo = {
 		}
 	},
 	grid: {
-		desktop: { i: 'logo', x: 0, y: 0, w: 1, h: 4, enabled: true },
-		mobile: { i: 'logo', x: 0, y: 0, w: 1, h: 4, enabled: true }
+		desktop: { i: 'logo', x: 0, y: 0, w: 1, h: 7, enabled: true },
+		mobile: { i: 'logo', x: 0, y: 0, w: 1, h: 7, enabled: true }
 	}
 };
 
@@ -65,8 +65,8 @@ const amounts = {
 		}
 	},
 	grid: {
-		desktop: { i: 'amounts', x: 0, y: 2, w: 6, h: 22, enabled: true },
-		mobile: { i: 'amounts', x: 0, y: 28, w: 6, h: 20, enabled: true }
+		desktop: { i: 'amounts', x: 0, y: 2, w: 6, h: 17, enabled: true },
+		mobile: { i: 'amounts', x: 0, y: 28, w: 6, h: 17, enabled: true }
 	}
 };
 
@@ -86,8 +86,8 @@ const media = {
 		}
 	},
 	grid: {
-		desktop: { i: 'media', x: 6, y: 0, w: 6, h: 20, enabled: true },
-		mobile: { i: 'media', x: 0, y: 2, w: 6, h: 20, enabled: true }
+		desktop: { i: 'media', x: 6, y: 0, w: 6, h: 24, enabled: true },
+		mobile: { i: 'media', x: 0, y: 2, w: 6, h: 24, enabled: true }
 	}
 };
 
@@ -98,8 +98,8 @@ const summary = {
 	field: 'summary',
 	options: {},
 	grid: {
-		desktop: { i: 'summary', x: 6, y: 21, w: 6, h: 6, enabled: true },
-		mobile: { i: 'summary', x: 0, y: 21, w: 6, h: 6, enabled: true }
+		desktop: { i: 'summary', x: 6, y: 21, w: 6, h: 10, enabled: true },
+		mobile: { i: 'summary', x: 0, y: 21, w: 6, h: 10, enabled: true }
 	}
 };
 
@@ -110,10 +110,12 @@ const content = {
 	subType: 'content',
 	field: 'description',
 	overflow: 'visible',
-	options: {},
+	options: {
+		defaultFormat: '<span>About Your Fundraiser</span>'
+	},
 	grid: {
-		desktop: { i: 'content', x: 0, y: 33, w: 12, h: 6, enabled: true },
-		mobile: { i: 'content', x: 0, y: 109, w: 6, h: 6, enabled: true }
+		desktop: { i: 'content', x: 0, y: 24, w: 12, h: 10, enabled: true },
+		mobile: { i: 'content', x: 0, y: 109, w: 6, h: 10, enabled: true }
 	}
 };
 
@@ -122,10 +124,6 @@ const paymentForm = {
 	title: 'Payment Form',
 	type: 'Form',
 	remove: false,
-	grid: {
-		desktop: { i: 'form', x: 0, y: 28, w: 12, h: 40, minW: 6, enabled: true },
-		mobile: { i: 'form', x: 0, y: 48, w: 6, h: 60, minW: 4, enabled: true }
-	},
 	options: {
 		button: {
 			enabled: true,
@@ -149,27 +147,14 @@ const paymentForm = {
 	}
 };
 
-/*
 const fundraiserBlocks = {
 	logo,
 	title,
 	orgName,
 	amounts,
 	media,
-	summary,
 	content,
 	paymentForm
-};
-*/
-
-const fundraiserBlocks = {
-	logo,
-	title,
-	orgName,
-	amounts,
-	media,
-	summary,
-	content
 };
 
 const invoiceBlocks = fundraiserBlocks;

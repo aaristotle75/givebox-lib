@@ -22,17 +22,24 @@
 		width: 100%;
 	}
 
+	.amountsBlock {
+
+		.embed {
+			position: relative;
+			display: block;
+		}
+	}
+
 	.amountsSection {
 		position: relative;
 	}
 
 	.amountsList {
-		position: absolute;
+		position: relative;
 		height: auto;
 		width: 100%;
-		overflow-x: hidden;
-		overflow-y: hidden;
-		font-size: 14px;
+		margin-top: 10px;
+		overflow: hidden;
 	}
 
 	.amountsList:hover {

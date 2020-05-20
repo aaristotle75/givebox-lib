@@ -121,8 +121,10 @@ class GBX3 extends React.Component {
 						};
 
 						Object.entries(blocks).forEach(([key, value]) => {
-							layouts.desktop.push(value.grid.desktop);
-							layouts.mobile.push(value.grid.mobile);
+							if (!util.isEmpty(value.grid)) {
+								layouts.desktop.push(value.grid.desktop);
+								layouts.mobile.push(value.grid.mobile);
+							}
 						});
 
 						this.props.updateLayouts(layouts);

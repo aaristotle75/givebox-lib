@@ -85,8 +85,8 @@ class Admin extends React.Component {
 		const {
 			saveStatus,
 			editable,
-			collision,
-			collapse,
+			preventCollision,
+			verticalCompact,
 			outline,
 			access,
 			hasAccessToEdit
@@ -115,8 +115,8 @@ class Admin extends React.Component {
 						<div className='button-group linkBar'>
 							<GBLink className='link show' onClick={() => this.props.updateAdmin({ editable: editable ? false : true }) }>{editable ? 'Turn Editable Off' : 'Turn Editable On'}</GBLink>
 							<GBLink onClick={() => this.props.updateAdmin({ outline: outline ? false : true })}>{outline ? 'Hide Outline' : 'Show Outline'}</GBLink>
-							<GBLink onClick={() => this.props.updateAdmin({ collision: collision ? false : true })}>{collision ? 'Turn Freeform On' : 'Turn Freeform Off'}</GBLink>
-							<GBLink onClick={() => this.props.updateAdmin({ collapse: collapse ? false : true })}>{collapse ? 'Turn Compact On' : 'Turn Compact Off'}</GBLink>
+							<GBLink onClick={() => this.props.updateAdmin({ preventCollision: preventCollision ? false : true })}>Prevent Collision {preventCollision ? 'true' : 'false'}</GBLink>
+							<GBLink onClick={() => this.props.updateAdmin({ verticalCompact: verticalCompact ? false : true })}>Vertical Compact {verticalCompact ? 'true' : 'false'}</GBLink>
 							<GBLink onClick={this.props.resetGBX3}>Reset</GBLink>
 							<GBLink onClick={() => this.props.saveGBX3(null, true)}>Save</GBLink>
 							<ModalLink id='paymentForm-options'>Options</ModalLink>
@@ -167,8 +167,8 @@ function mapStateToProps(state, props) {
 	const access = util.getValue(state.resource, 'access');
 	const hasAccessToEdit = util.getValue(admin, 'hasAccessToEdit');
 	const editable = util.getValue(admin, 'editable');
-	const collision = util.getValue(admin, 'collision');
-	const collapse = util.getValue(admin, 'collapse');
+	const preventCollision = util.getValue(admin, 'preventCollision');
+	const verticalCompact = util.getValue(admin, 'verticalCompact');
 	const outline = util.getValue(admin, 'outline');
 
 	return {
@@ -179,8 +179,8 @@ function mapStateToProps(state, props) {
 		globals,
 		gbxStyle,
 		editable,
-		collision,
-		collapse,
+		preventCollision,
+		verticalCompact,
 		outline
 	}
 }

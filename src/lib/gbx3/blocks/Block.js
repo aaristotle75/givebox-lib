@@ -5,7 +5,8 @@ import {
 	util,
 	toggleModal,
 	updateBlock,
-	saveGBX3
+	saveGBX3,
+	updateLayouts
 } from '../../';
 
 class Block extends React.Component {
@@ -18,12 +19,19 @@ class Block extends React.Component {
 		this.onClickEdit = this.onClickEdit.bind(this);
 		this.saveBlock = this.saveBlock.bind(this);
 		this.getBlockContent = this.getBlockContent.bind(this);
+		this.setDisplayHeight = this.setDisplayHeight.bind(this);
 		this.state = {
 			editModalOpen: false
 		};
+		this.height = null;
 	}
 
-	componentDidMount() {
+	setDisplayHeight(ref) {
+		if (ref) {
+			if (ref.current) {
+				this.height = ref.current.clientHeight;
+			}
+		}
 	}
 
 	onClickEdit() {
@@ -40,44 +48,56 @@ class Block extends React.Component {
 		this.setState({ editModalOpen: false });
 	}
 
-	async saveBlock(content = {}, options = {}, grid = {}, saveGBX3 = true, callback = this.closeEditModal, updateSpecificGrid = false) {
+	async saveBlock(content = {}, options = {}, saveGBX3 = true, callback = this.closeEditModal, updateSpecificGrid = false) {
 		const {
 			name,
 			block,
 			breakpoint
 		} = this.props;
 
+		const grid = {};
+		if (this.height) grid.h = parseInt(this.height / 10);
+
 		const mobileContent = updateSpecificGrid && breakpoint === 'mobile' ? content : !updateSpecificGrid ? content : this.getBlockContent('mobile');
-		const mobileGrid = breakpoint === 'mobile' ? { ...block.grid.mobile, ...grid } : block.grid.mobile;
+		const mobileGrid = !util.isEmpty(block.grid) ? breakpoint === 'mobile' ? { ...block.grid.mobile, ...grid } : block.grid.mobile : {};
 
 		const desktopContent = updateSpecificGrid && breakpoint === 'desktop' ? content : !updateSpecificGrid ? content : this.getBlockContent('desktop');
-		const desktopGrid = breakpoint === 'desktop' ? { ...block.grid.desktop, ...grid } : block.grid.desktop;
+		const desktopGrid = !util.isEmpty(block.grid) ? breakpoint === 'desktop' ? { ...block.grid.desktop, ...grid } : block.grid.desktop : {};
 
-		const updated = await this.props.updateBlock(name, Object.assign({}, block, {
-			grid: {
-				mobile: {
-					...mobileGrid,
-					content: {
-						...util.getValue(block.grid.mobile, 'content', {}),
-						...mobileContent
-					}
-				},
-				desktop: {
-					...desktopGrid,
-					content: {
-						...util.getValue(block.grid.desktop, 'content', {}),
-						...desktopContent
-					}
+		const blockGrid = !util.isEmpty(block.grid) ? {
+			mobile: {
+				...mobileGrid,
+				content: {
+					...util.getValue(block.grid.mobile, 'content', {}),
+					...mobileContent
 				}
 			},
+			desktop: {
+				...desktopGrid,
+				content: {
+					...util.getValue(block.grid.desktop, 'content', {}),
+					...desktopContent
+				}
+			}
+		} : {};
+
+		const updated = [];
+		const blocksUpdated = await this.props.updateBlock(name, Object.assign({}, block, {
+			grid: blockGrid,
 			options: {
 				...block.options,
 				...options
 			}
 		}));
-		if (updated) {
-			if (saveGBX3) this.props.saveGBX3(null, false, callback);
-			else callback();
+		if (blocksUpdated) updated.push('blocksUpdated');
+
+		const saveCallback = () => {
+			callback();
+		};
+
+		if (updated.length === 1) {
+			if (saveGBX3) this.props.saveGBX3(null, false, saveCallback, !util.isEmpty(grid) ? true : false);
+			else saveCallback();
 		}
 	}
 
@@ -128,7 +148,8 @@ class Block extends React.Component {
 				blockContent: this.getBlockContent(breakpoint),
 				saveBlock: this.saveBlock,
 				title: util.getValue(block, 'title', name),
-				closeEditModal: this.closeEditModal
+				closeEditModal: this.closeEditModal,
+				setDisplayHeight: this.setDisplayHeight
 			})
 		);
 		return childrenWithProps;
@@ -138,7 +159,7 @@ class Block extends React.Component {
 
 		const {
 			name,
-			block
+			style
 		} = this.props;
 
 		const {
@@ -146,11 +167,9 @@ class Block extends React.Component {
 		} = this.state;
 
 		return (
-			<div className={`block ${name}Block`}>
-				<div className={`blockOptions ${editModalOpen ? 'displayNone' : ''}`}>
+			<div style={style} className={`block ${name}Block`}>
+				<div className={`dragHandle blockOptions ${editModalOpen ? 'displayNone' : ''}`}>
 					<GBLink className='blockEdit' onClick={this.onClickEdit}><span className='icon icon-edit'></span>Edit</GBLink>
-					<div className='dragHandle blockEdit'><span className='icon icon-move'></span></div>
-					{util.getValue(block, 'remove', true) ? <GBLink className='link blockRemove' onClick={this.onClickRemove}><span className='icon icon-x'></span></GBLink> : ''}
 				</div>
 				{this.renderChildren()}
 			</div>
@@ -160,6 +179,7 @@ class Block extends React.Component {
 }
 
 Block.defaultProps = {
+	style: {}
 }
 
 function mapStateToProps(state, props) {
@@ -204,5 +224,6 @@ function mapStateToProps(state, props) {
 export default connect(mapStateToProps, {
 	toggleModal,
 	updateBlock,
+	updateLayouts,
 	saveGBX3
 })(Block);

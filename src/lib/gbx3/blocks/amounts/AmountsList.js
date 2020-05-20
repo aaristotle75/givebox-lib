@@ -39,9 +39,14 @@ class AmountsList extends Component {
 			showDetails: []
 		};
 		this.amountInputRef = React.createRef();
+		this.displayRef = React.createRef();
 	}
 
 	componentDidMount() {
+	}
+
+	componentDidUpdate() {
+		this.props.setDisplayHeight(this.displayRef);
 	}
 
 	toggleShowDetails(id) {
@@ -167,8 +172,7 @@ class AmountsList extends Component {
 			customID,
 			defaultID,
 			embed,
-			color,
-			breakpoint
+			color
 		} = this.props;
 
 		const {
@@ -253,8 +257,6 @@ class AmountsList extends Component {
 		}
 
 		const style = this.getAmountInputStyle(length);
-		const recurringLinkHeight = 35;
-		const amountsListHeight = !buttonEnabled ? this.props.height - (style.height + recurringLinkHeight) : 'auto';
 		const customIsDefaultOnlyAmount = customID === defaultID && items.length === 1 ? true : false;
 		const amountInput =
 			<div key={'amountInput'} className='amountInput'>
@@ -273,6 +275,7 @@ class AmountsList extends Component {
 					moneyStyle={style.moneyStyle}
 					value={amountEntered}
 					readOnly={amountRadioSelected === customID ? false : true}
+					autoComplete={'new-password'}
 				/>
 			</div>
 		;
@@ -282,7 +285,7 @@ class AmountsList extends Component {
 				{amountInput}
 				{this.renderRecurringOption(amountEntered)}
 				{!util.isEmpty(items) && !customIsDefaultOnlyAmount ?
-					<div style={{ maxHeight: amountsListHeight }} className='amountsList'>{items}</div>
+					<div className='amountsList'>{items}</div>
 				: <></>
 				}
 			</>
@@ -305,11 +308,11 @@ class AmountsList extends Component {
 			buttonEnabled
 		} = this.props;
 
-		const height = embed && !buttonEnabled ? `${this.props.height}px` : 'auto';
+		//const height = embed && !buttonEnabled ? `${this.props.height}px` : 'auto';
 
 		return (
-			<div className={`${embed ? 'embed' : ''}`}>
-				<div style={{ height: height }} className='amountsSection'>
+			<div ref={this.displayRef} className={`${embed ? 'embed' : ''}`}>
+				<div className='amountsSection'>
 					{this.renderAmounts()}
 				</div>
 			</div>

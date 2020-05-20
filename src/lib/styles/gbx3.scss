@@ -2,6 +2,13 @@
 
 .gbx3 {
 
+		/*------ Autofill handling -----*/
+	input:-internal-autofill-selected {
+		-webkit-appearance: menulist-button;
+		background-color: $white !important;
+		background-image: none !important;
+	}
+
 	/*------ Elements --------*/
 
 	h1, h2, h3, h4 {
@@ -126,6 +133,7 @@
 		bottom: 0;
 		right: 0;
 		cursor: se-resize;
+		z-index: 3;
 	}
 
 	.react-grid-item.react-grid-placeholder {
@@ -142,7 +150,6 @@
 	}
 
 	.dragHandle {
-		display: none;
 		cursor: grab;
 		z-index: 3;
 	}
@@ -154,7 +161,6 @@
 	.editable {
 
 		.react-grid-item:hover {
-			border: 2px solid $mainColor;
 
 			.blockOptions {
 				display: flex;
@@ -162,9 +168,6 @@
 				align-items: center;
 			}
 
-			.dragHandle {
-				display: block;
-			}
 		}
 
 	}
@@ -190,12 +193,17 @@
 	.blockOptions {
 		display: none;
 		position: absolute;
-		top: 5%; bottom: 5%; right: 5%; left: 5%;
-		height: 90%;
-		width: 90%;
+		top: 0; bottom: 0; right: 0; left: 0;
+		height: 100%;
+		width: 100%;
+		min-height: 20px;
 		color: $white;
-		background: transparentize($mainColor, .3);
+		background: transparentize($mainColor, .4);
 		z-index: 2;
+	}
+
+	.displayBlock {
+		position: relative;
 	}
 
 	button.blockRemove {
@@ -232,12 +240,12 @@
 	}
 
 	.blockEdit:hover {
-		color: $mainColorLight
+		color: $light-gray;
 	}
 
 	// Name blocks
 	.titleBlock {
-		line-height: .9em;
+		line-height: 1em;
 	}
 
 	/*---------- End Blocks ------------ */
