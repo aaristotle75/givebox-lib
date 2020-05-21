@@ -8,10 +8,12 @@ import {
 	updateBlocks,
 	updateData,
 	updateInfo,
-	saveGBX3
+	saveGBX3,
+	GBLink
 } from '../';
 import Block from './blocks/Block';
 import Form from './blocks/Form';
+import Scroll from 'react-scroll';
 import has from 'has';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
@@ -85,6 +87,16 @@ class Layout extends React.Component {
 		}
 	}
 
+	scrollTo(name) {
+		const scroller = Scroll.scroller;
+		scroller.scrollTo(name, {
+			duration: 500,
+			delay: 0,
+			smooth: true,
+			containerId: 'gbx3'
+		});
+	}
+
 	renderBlocks(enabled = true) {
 		const {
 			breakpoint,
@@ -113,6 +125,7 @@ class Layout extends React.Component {
 							<Block
 								name={value.name}
 								blockRef={ref}
+								scrollTo={this.scrollTo}
 							>
 								<BlockComponent />
 							</Block>
@@ -136,6 +149,7 @@ class Layout extends React.Component {
 		} = this.props;
 
 		const isEditable = hasAccessToEdit && editable ? true : false;
+		const Element = Scroll.Element;
 
 		return (
 			<div style={util.getValue(globals, 'gbxStyle', {})} className={`gbx3Container ${isEditable ? 'editable' : ''}`}>
@@ -183,17 +197,19 @@ class Layout extends React.Component {
 						</ResponsiveGridLayout>
 					</div>
 				</div>
-				<div className='layout-column'>
-					<div className='react-grid-item'>
-						<Block
-							name='paymentForm'
-							blockRef={React.createRef()}
-							style={{ position: 'relative' }}
-						>
-							<Form />
-						</Block>
+				<Element name='checkout'>
+					<div className='layout-column'>
+						<div className='react-grid-item'>
+							<Block
+								name='paymentForm'
+								blockRef={React.createRef()}
+								style={{ position: 'relative' }}
+							>
+								<Form />
+							</Block>
+						</div>
 					</div>
-				</div>
+				</Element>
 			</div>
 		)
 	}

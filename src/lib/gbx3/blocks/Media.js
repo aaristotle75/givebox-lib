@@ -83,19 +83,23 @@ export default class Media extends Component {
 			mediaType
 		} = this.state;
 
-		this.timeout = setTimeout(() => {
-			this.setState({ loading: false, edit: false }, () => {
-				this.props.saveBlock(
-					{
-						image,
-						video
-					},
-					{
-						mediaType
-					}
-				);
-			});
-		}, 0);
+		if (mediaType === 'video' && !video.validatedURL) {
+			this.closeModalAndCancel();
+		} else {
+			this.timeout = setTimeout(() => {
+				this.setState({ loading: false, edit: false }, () => {
+					this.props.saveBlock(
+						{
+							image,
+							video
+						},
+						{
+							mediaType
+						}
+					);
+				});
+			}, 0);
+		}
 	}
 
 	closeModalAndCancel() {

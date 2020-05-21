@@ -153,12 +153,22 @@ class GBX3 extends React.Component {
 	setStyle() {
 		const color = this.props.primaryColor;
 
+		/*
+		.gbx3Layout {
+			background: #ffffff;
+			background: -webkit-linear-gradient(to bottom, ${color2} 0%, #ffffff 100%);
+			background: -moz-linear-gradient(to bottom, ${color2} 0%, #ffffff 100%);
+			background: linear-gradient(to bottom, ${color2} 0%, #ffffff 100%);
+		}
+		*/
+
 		if (color) {
 			const rgb = util.hexToRgb(color);
 			const color2 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .1)`;
 			const color3 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .05)`;
 			const styleEl = document.head.appendChild(document.createElement('style'));
 			styleEl.innerHTML = `
+
 				.radio:checked + label:after {
 					border: 1px solid ${color} !important;
 					background: ${color};
@@ -198,7 +208,7 @@ class GBX3 extends React.Component {
 		if (this.state.loading) return <Loader msg='Initiating GBX3' />;
 
 		return (
-			<div className='gbx3'>
+			<div id='gbx3' className='gbx3 gbx3Layout'>
 				<Admin
 					loadGBX3={this.loadGBX3}
 				/>

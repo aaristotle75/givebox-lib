@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import {
 	util,
 	GBLink,
+	toggleModal,
 	ModalRoute,
 	ModalLink,
 	Collapse,
@@ -22,6 +23,7 @@ import ButtonEdit from './ButtonEdit';
 import RecurringEdit from './amounts/RecurringEdit';
 import { amountFieldsConfig } from './amounts/amountFieldsConfig';
 import AnimateHeight from 'react-animate-height';
+import scrollToComponent from 'react-scroll-to-component';
 
 class Amounts extends Component {
 
@@ -481,12 +483,23 @@ class Amounts extends Component {
 									</div>
 									<div className='bottomContainer'>
 										<div className='cartInfo'>
-											<ModalLink id='cart' opts={{ tab: 'cart', hello: 'world' }} allowCustom={true} customColor={primaryColor}><span style={{ display: 'block', fontSize: 12 }}>Items in Cart (8)</span></ModalLink>
+											<ModalLink id='cart' opts={{ tab: 'cart' }} allowCustom={true} customColor={primaryColor}><span style={{ display: 'block', fontSize: 12 }}>Items in Cart (8)</span></ModalLink>
 											<span style={{ display: 'block' }}><span style={{ fontSize: 12 }}>Sub Total:</span> <span className='strong'>{util.money(300)}</span></span>
 										</div>
 										<div className='button-group'>
 											<ModalLink className='hideOnMobile' id='shop' allowCustom={true} customColor={primaryColor}>SHOP MORE ITEMS</ModalLink>
-											<ModalLink id='cart' opts={{ tab: 'checkout' }} className='button' allowCustom={true} customColor={primaryColor} solidColor={true}>CHECKOUT</ModalLink>
+											<GBLink
+												className='button'
+												allowCustom={true}
+												customColor={primaryColor}
+												solidColor={true}
+												onClick={() => {
+													this.props.scrollTo('checkout');
+													this.props.toggleModal('amountsList');
+												}}
+											>
+												CHECKOUT
+											</GBLink>
 										</div>
 									</div>
 								</div>
@@ -516,6 +529,7 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
+	toggleModal,
 	sendResource,
 	saveGBX3,
 	updateData

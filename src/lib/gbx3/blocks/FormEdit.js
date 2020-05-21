@@ -15,7 +15,6 @@ class FormEdit extends Component {
 		this.updateForm = this.updateForm.bind(this);
 		this.infoOptions = this.infoOptions.bind(this);
 		this.state = {
-
 		};
 	}
 

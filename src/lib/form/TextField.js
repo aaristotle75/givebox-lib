@@ -11,7 +11,8 @@ class TextField extends Component {
 		this.onBlur = this.onBlur.bind(this);
 		this.inputRef = React.createRef();
 		this.state = {
-			status: 'idle'
+			status: 'idle',
+			color: props.color
 		}
 	}
 
@@ -19,6 +20,13 @@ class TextField extends Component {
 		const params = Object.assign({}, this.props.params, { ref: this.props.inputRef || this.inputRef });
 		if (params.type === 'hidden') params.required = false;
 		if (this.props.createField) this.props.createField(this.props.name, params);
+	}
+
+	componentDidUpdate(prevProps) {
+		console.log('execute', prevProps.color, this.props.color);
+		if (prevProps.color !== this.props.color) {
+			this.setState({ color: this.props.color });
+		}
 	}
 
 	onFocus(e) {
@@ -59,13 +67,13 @@ class TextField extends Component {
 			money,
 			inputRef,
 			inputMode,
-			color,
 			moneyStyle,
 			autoComplete
 		} = this.props;
 
 		const {
-			status
+			status,
+			color
 		} = this.state;
 
 		const labelStyle = {

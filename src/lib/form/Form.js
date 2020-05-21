@@ -573,7 +573,7 @@ class Form extends Component {
 				createField={createField}
 				params={params}
 				useIcon={params.useIcon}
-				color={params.color}
+				color={params.color || this.props.primaryColor}
 			/>
 		)
 	}
@@ -619,7 +619,7 @@ class Form extends Component {
 				fieldProp={this.fieldProp}
 				formProp={this.formProp}
 				inputRef={params.ref}
-				color={params.color}
+				color={params.color || this.props.primaryColor}
 			/>
 		)
 	}
@@ -735,7 +735,7 @@ class Form extends Component {
 				inputRef={params.ref}
 				customLink={params.customLink}
 				inputMode={params.inputMode}
-				color={params.color}
+				color={params.color || this.props.primaryColor}
 			/>
 		)
 	}
@@ -776,7 +776,7 @@ class Form extends Component {
 				closeModalAndSave={this.closeModalAndSave}
 				hideCloseModalAndSaveButtons={params.hideCloseModalAndSaveButtons}
 				disallowModalBgClose={params.disallowModalBgClose}
-				color={params.color}
+				color={params.color || this.props.primaryColor}
 			/>
 		)
 	}
@@ -858,7 +858,7 @@ class Form extends Component {
 				maxLength={field ? field.maxLength : params.maxLength}
 				createField={this.createField}
 				params={params}
-				color={params.color}
+				color={params.color || this.props.primaryColor}
 			/>
 		)
 	}

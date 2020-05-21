@@ -126,7 +126,8 @@ class Block extends React.Component {
 			gbxStyle,
 			globalButton,
 			globalButtonStyle,
-			primaryColor
+			primaryColor,
+			scrollTo
 		} = this.props;
 
 		const childrenWithProps = React.Children.map(this.props.children,
@@ -145,6 +146,7 @@ class Block extends React.Component {
 				globalButtonStyle,
 				primaryColor,
 				breakpoint,
+				scrollTo,
 				blockContent: this.getBlockContent(breakpoint),
 				saveBlock: this.saveBlock,
 				title: util.getValue(block, 'title', name),

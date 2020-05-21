@@ -43,9 +43,7 @@ class Routes extends Component {
 									path='/'
 									render={() => <Redirect to='/dashboard' />}
 								/>
-								<Header />
-								<Sidebar />
-								<div id='contentContainer' className='contentContainer'>
+								<div id='contentContainer' className=''>
 									<Switch location={location}>
 										<Route path='/dashboard' render={(props) => loadComponent('demo/Dashboard')}  />
 										<Route exact path='/list' render={(props) => loadComponent('demo/ItemsList', {routeProps: props})}  />

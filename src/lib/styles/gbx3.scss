@@ -1,5 +1,18 @@
 @import 'variables.scss';
 
+.gbx3Layout {
+	display: flex;
+	justify-content: center;
+	min-height: 100vh;
+	height: 100vh;
+	width: 100%;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	padding: 10px 0;
+	background: $white;
+	@include bgGradient(to bottom, $light-gray 0%, $white 20%);
+}
+
 .gbx3 {
 
 		/*------ Autofill handling -----*/
@@ -52,6 +65,7 @@
 	}
 
 	.gbx3Container {
+		position: relative;
 		width: 100%;
 		max-width: 1000px;
 		height: auto;
@@ -423,6 +437,10 @@
 
 	.givebox-paymentform {
 
+		border-top-left-radius: 10px;
+		border-top-right-radius: 10px;
+		background: $white;
+
 		padding: 0;
 
 		input {
@@ -475,6 +493,12 @@
 
 		.dropdown-cover {
 			display: none;
+		}
+
+		@media (max-width: 849px) {
+		form .tabs .panel {
+				display: block;
+			}
 		}
 	}
 

@@ -152,7 +152,7 @@ class App extends Component {
 			routeProps: null,
 			props: null,
 			callback: null,
-			className: 'content'
+			className: ''
 		};
 		const options = { ...defaults, ...opt };
 		let modal = false;

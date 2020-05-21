@@ -51,7 +51,7 @@ class GBXTest extends Component {
 					kind={this.props.article.kind}
 					autoSave={true}
 					save={this.save}
-					editable={true}
+					editable={false}
 				/>
 			</div>
 		)
