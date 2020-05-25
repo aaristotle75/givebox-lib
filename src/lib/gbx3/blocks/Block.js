@@ -56,13 +56,13 @@ class Block extends React.Component {
 		} = this.props;
 
 		const grid = {};
-		if (this.height) grid.h = parseInt(this.height / 10);
+		if (this.height) grid.h = Math.ceil(parseFloat(this.height / 10));
 
 		const mobileContent = updateSpecificGrid && breakpoint === 'mobile' ? content : !updateSpecificGrid ? content : this.getBlockContent('mobile');
-		const mobileGrid = !util.isEmpty(block.grid) ? breakpoint === 'mobile' ? { ...block.grid.mobile, ...grid } : block.grid.mobile : {};
+		const mobileGrid = !util.isEmpty(block.grid) ? !updateSpecificGrid || breakpoint === 'mobile' ? { ...block.grid.mobile, ...grid } : block.grid.mobile : {};
 
 		const desktopContent = updateSpecificGrid && breakpoint === 'desktop' ? content : !updateSpecificGrid ? content : this.getBlockContent('desktop');
-		const desktopGrid = !util.isEmpty(block.grid) ? breakpoint === 'desktop' ? { ...block.grid.desktop, ...grid } : block.grid.desktop : {};
+		const desktopGrid = !util.isEmpty(block.grid) ? !updateSpecificGrid || breakpoint === 'desktop' ? { ...block.grid.desktop, ...grid } : block.grid.desktop : {};
 
 		const blockGrid = !util.isEmpty(block.grid) ? {
 			mobile: {

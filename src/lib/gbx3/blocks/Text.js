@@ -56,7 +56,8 @@ export default class Text extends Component {
 
 	closeEditModal(type = 'save') {
 		if (type !== 'cancel') {
-			this.props.saveBlock({ html: this.state.content }, null);
+			const subType = util.getValue(this.props.block, 'subType');
+			this.props.saveBlock({ html: this.state.content }, {}, true, this.props.closeEditModal, subType === 'content' ? true : false);
 		} else {
 			this.setState({ content: this.state.defaultContent }, this.props.closeEditModal);
 		}
@@ -85,7 +86,7 @@ export default class Text extends Component {
 					className='gbx3'
 					optsProps={{ closeCallback: this.onCloseUploadEditor }}
 					id={modalID}
-					effect='3DFlipVert' style={{ width: '60%' }}
+					effect='3DFlipVert' style={{ width: '70%' }}
 					draggable={true}
 					draggableTitle={`Editing ${title}`}
 					closeCallback={this.closeEditModal}

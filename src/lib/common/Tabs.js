@@ -43,7 +43,8 @@ class Tabs extends Component {
 		const {
 			allowCustom,
 			customColor,
-			solidColor
+			solidColor,
+			borderSize
 		} = this.props;
 
 		const {
@@ -54,7 +55,7 @@ class Tabs extends Component {
 		if (!util.isEmpty(this.props.children)) {
 			Object.entries(this.props.children).forEach(([key, value]) => {
 				const selectedStyle = {
-					borderBottom: customColor ? `2px solid ${customColor}` : ''
+					borderBottom: customColor ? `${borderSize || '2px'} solid ${customColor}` : ''
 				};
 				const tabStyle = value.props.id === selectedTab ? { ...this.props.tabStyle, ...selectedStyle } : { ...this.props.tabStyle };
 				const isSelected = value.props.id === selectedTab ? true : false;

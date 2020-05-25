@@ -41,6 +41,7 @@ class FormEdit extends Component {
 	render() {
 
 		const {
+			echeck,
 			feeOption,
 			passFees,
 			addressInfo,
@@ -55,11 +56,21 @@ class FormEdit extends Component {
 		return (
 			<>
 				<Collapse
-					label={`Credit Card Fee Options`}
+					label={`Payment Options`}
 					iconPrimary='edit'
 				>
 					<div className='formSectionContainer'>
 						<div className='formSection'>
+							<Choice
+								type='checkbox'
+								name='echeck'
+								label={'Allow customers to pay by eCheck'}
+								onChange={(name, value) => {
+									this.updateForm('echeck', echeck ? false : true);
+								}}
+								checked={passFees}
+								value={passFees}
+							/>
 							<Choice
 								type='checkbox'
 								name='passFees'

@@ -39,14 +39,9 @@ class AmountsList extends Component {
 			showDetails: []
 		};
 		this.amountInputRef = React.createRef();
-		this.displayRef = React.createRef();
 	}
 
 	componentDidMount() {
-	}
-
-	componentDidUpdate() {
-		this.props.setDisplayHeight(this.displayRef);
 	}
 
 	toggleShowDetails(id) {
@@ -311,7 +306,7 @@ class AmountsList extends Component {
 		//const height = embed && !buttonEnabled ? `${this.props.height}px` : 'auto';
 
 		return (
-			<div ref={this.displayRef} className={`${embed ? 'embed' : ''}`}>
+			<div className={`${embed ? 'embed' : ''}`}>
 				<div className='amountsSection'>
 					{this.renderAmounts()}
 				</div>

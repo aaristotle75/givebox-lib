@@ -152,7 +152,7 @@ class Dropdown extends Component {
 				value: value,
 				selected: selected
 			});
-			this.props.onChange(this.props.name, value);
+			this.props.onChange(this.props.name, value, selected);
 		}
 	}
 
@@ -178,7 +178,7 @@ class Dropdown extends Component {
 					<div style={{ color: selected ? bindthis.props.color || '' : ''}} ref={bindthis.itemRefs[dataValue]} onMouseEnter={() => { const ref = bindthis.itemRefs[dataValue].current; ref.style.setProperty('background', value.disabled ? '' : bindthis.props.color); ref.style.setProperty('color', selected && bindthis.props.color ? '#ffffff' : ''); } } onMouseLeave={() => { const ref = bindthis.itemRefs[dataValue].current; ref.style.setProperty('background', ''); ref.style.setProperty('color', selected ? bindthis.props.color : ''); } } data-selected={value.primaryText} data-value={dataValue} onClick={(e) => bindthis.onClick(e, value.disabled)} className={`dropdown-item ${selected ? 'selected' : ''} ${value.disabled ? 'disabled' : ''}`} key={dataValue}>
 						<div className='dropdown-container'>
 							<div className='leftSide'>
-								{bindthis.props.multi && selected && bindthis.props.iconMultiChecked} {value.primaryText}
+								{bindthis.props.multi && selected ? <span className={`icon icon-${bindthis.props.iconMultiChecked}`}></span> : ''} {value.primaryText}
 								{value.secondaryText && <span className='secondaryText'>{value.secondaryText}</span>}
 							</div>
 							<div className='rightSide'>

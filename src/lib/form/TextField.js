@@ -23,7 +23,6 @@ class TextField extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		console.log('execute', prevProps.color, this.props.color);
 		if (prevProps.color !== this.props.color) {
 			this.setState({ color: this.props.color });
 		}
@@ -107,7 +106,7 @@ class TextField extends Component {
 							style={inputStyle}
 							inputMode={inputMode}
 						/>
-						{label && <label style={labelStyle} htmlFor={name}>{customLabel || label}</label>}
+						{ (customLabel || label) && <label style={labelStyle} htmlFor={name}>{customLabel || label}</label>}
 						<div style={inputBottomStyle} className={`input-bottom ${error ? 'error' : this.state.status}`}></div>
 						{this.props.children}
 						{strength && <PasswordStrength password={value} error={error} />}

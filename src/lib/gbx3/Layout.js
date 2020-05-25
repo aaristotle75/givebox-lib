@@ -8,8 +8,7 @@ import {
 	updateBlocks,
 	updateData,
 	updateInfo,
-	saveGBX3,
-	GBLink
+	saveGBX3
 } from '../';
 import Block from './blocks/Block';
 import Form from './blocks/Form';
@@ -22,28 +21,18 @@ class Layout extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.setBreakpoint = this.setBreakpoint;
 		this.renderBlocks = this.renderBlocks.bind(this);
-		this.breakpointChange = this.breakpointChange.bind(this);
+		this.onBreakpointChange = this.onBreakpointChange.bind(this);
 		this.widthChange = this.widthChange.bind(this);
 		this.layoutChange = this.layoutChange.bind(this);
 		this.gridRef = React.createRef();
 	}
 
 	componentDidMount() {
-		this.setBreakpoint();
 	}
 
-	setBreakpoint() {
-		let breakpoint = 'desktop';
-		const gridWidth = this.gridRef.current.clientWidth;
-		if (gridWidth < this.props.breakpointWidth) {
-			breakpoint = 'mobile';
-		}
-		this.props.updateInfo({ breakpoint });
-	}
-
-	breakpointChange(breakpoint, cols) {
+	onBreakpointChange(breakpoint, cols) {
+		console.log('onBreakpointChange', breakpoint);
 		this.props.updateInfo({ breakpoint });
 	}
 
@@ -145,7 +134,8 @@ class Layout extends React.Component {
 			preventCollision,
 			editable,
 			globals,
-			hasAccessToEdit
+			hasAccessToEdit,
+			breakpoint
 		} = this.props;
 
 		const isEditable = hasAccessToEdit && editable ? true : false;
@@ -156,7 +146,6 @@ class Layout extends React.Component {
 				<div className='layout-column'>
 					<div
 						ref={this.gridRef}
-						style={{ marginBottom: 20 }}
 						className={`column dropArea`}
 						onDragOver={(e) => {
 							e.preventDefault();
@@ -176,11 +165,11 @@ class Layout extends React.Component {
 							id='testGrid'
 							className="blockGridLayout"
 							layouts={layouts}
-							breakpoints={{desktop: 701, mobile: 700 }}
+							breakpoints={{desktop: 768, mobile: 767 }}
 							cols={{desktop: 12, mobile: 6}}
 							rowHeight={10}
 							onLayoutChange={this.layoutChange}
-							onBreakpointChange={this.breakpointChange}
+							onBreakpointChange={this.onBreakpointChange}
 							onWidthChange={this.widthChange}
 							isDraggable={editable}
 							isResizable={editable}
@@ -197,8 +186,8 @@ class Layout extends React.Component {
 						</ResponsiveGridLayout>
 					</div>
 				</div>
-				<Element name='checkout'>
-					<div className='layout-column'>
+				<div className='layout-column'>
+					<Element name='checkout'>
 						<div className='react-grid-item'>
 							<Block
 								name='paymentForm'
@@ -208,16 +197,13 @@ class Layout extends React.Component {
 								<Form />
 							</Block>
 						</div>
-					</div>
-				</Element>
+					</Element>
+				</div>
+				{breakpoint === 'mobile' ? <div className='bottomOffset'>&nbsp;</div> : <></>}
 			</div>
 		)
 	}
 
-}
-
-Layout.defaultProps = {
-	breakpointWidth: 768
 }
 
 function mapStateToProps(state, props) {

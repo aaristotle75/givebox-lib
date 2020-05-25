@@ -14,7 +14,7 @@ class GBXTest extends Component {
 		super(props);
 		this.state = {
 			//id: 735,
-			id: 383058
+			id: 383060
 			//id: 4
 		};
 		this.mounted = false;

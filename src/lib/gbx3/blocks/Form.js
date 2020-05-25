@@ -121,7 +121,8 @@ class Form extends Component {
 		const {
 			primaryColor,
 			title,
-			modalID
+			modalID,
+			breakpoint
 		} = this.props;
 
 		const {
@@ -139,7 +140,7 @@ class Form extends Component {
 				<ModalRoute
 					className='gbx3'
 					id={modalID}
-					effect='3DFlipVert' style={{ width: '60%' }}
+					effect='3DFlipVert' style={{ width: '70%' }}
 					draggable={true}
 					draggableTitle={`Editing ${title}`}
 					closeCallback={this.closeEditModal}
@@ -184,12 +185,14 @@ class Form extends Component {
 				/>
 				<PaymentForm
 					primaryColor={primaryColor}
+					echeck={util.getValue(form, 'echeck', true)}
 					phone={{ enabled: phoneInfo.enabled, required: phoneInfo.required }}
 					address={{ enabled: addressInfo.enabled, required: addressInfo.required }}
 					work={{ enabled: workInfo.enabled, required: workInfo.required }}
 					custom={{ enabled: noteInfo.enabled, required: noteInfo.required, placeholder: util.getValue(form, 'notePlaceholder', 'Enter a Note') }}
 					sendEmail={util.getValue(form, 'sendEmail', true)}
 					editable={this.props.editable}
+					breakpoint={breakpoint}
 				/>
 				<div className='button-group'>
 					<Button

@@ -5,36 +5,41 @@ import {
 	selectOptions,
 	ModalLink,
 	Form,
-	Fade,
 	ModalRoute,
 	Tab,
 	Tabs
 } from '../../';
 import Moment from 'moment';
 import SendEmail from './SendEmail';
+import ApplePay from './ApplePay';
+import Echeck from './Echeck';
+import AnimateHeight from 'react-animate-height';
 
 class PaymentFormClass extends Component {
 
 	constructor(props) {
 		super(props);
 		this.paymentOptions = this.paymentOptions.bind(this);
+		this.fieldLayout = this.fieldLayout.bind(this);
 		this.renderFields = this.renderFields.bind(this);
 		this.customOnChange = this.customOnChange.bind(this);
 		this.processForm = this.processForm.bind(this);
 		this.formSavedCallback = this.formSavedCallback.bind(this);
 		this.sendEmailCallback = this.sendEmailCallback.bind(this);
-		this.getBankName = this.getBankName.bind(this);
 		this.state = {
 			loading: false,
 			sendEmail: {
 				recipients: '',
 				message: util.getValue(this.props.sendEmail, 'defaultMsg', '')
 			},
-			bankName: ''
+			applepay: false
 		}
 	}
 
 	componentDidMount() {
+		if (window.ApplePaySession) {
+			this.setState({ applepay: true });
+		}
 	}
 
 	componentWillUnmount() {
@@ -103,64 +108,128 @@ class PaymentFormClass extends Component {
 		});
 	}
 
-	getBankName(name, value) {
-		const bindthis = this;
-		const routingNumber = value;
-		const url = `https://www.routingnumbers.info/api/name.json?rn=${routingNumber}`;
-		if (value.length === 9 && (value !== util.getValue(this.props.item, 'routingNumber'))) {
-			const x = new XMLHttpRequest();
-			x.onload = function() {
-				if (!util.isEmpty(this.response)) {
-					const json = JSON.parse(this.response);
-					bindthis.setState({ bankName: util.getValue(json, 'name') });
-				}
-			};
-			x.open('GET', url);
-			x.send();
-		} else if (value.length === 9 && (value === util.getValue(this.props.item, 'routingNumber'))) {
-			this.setState({ bankName: util.getValue(this.props.item, 'bankName') });
-		} else {
-			this.setState({ bankName: '' });
-		}
-	}
-
 	paymentOptions() {
 
 		const {
-			bankName
-		} = this.state;
-
-		const {
-			primaryColor
+			primaryColor,
+			echeck
 		} = this.props;
+
+		const tabs = [];
+		tabs.push(
+			<Tab key={'creditcard'} id={'creditcard'} label={<span className='tabLabel'>Pay by Credit Card</span>}>
+				{this.props.creditCardGroup({ required: true, placeholder: 'xxxx xxxx xxxx xxxx', debug: false, cvvModalRootClass: 'gbxModal' })}
+			</Tab>
+		);
+
+		if (echeck) {
+			tabs.push(
+				<Tab key={'echeck'} id={'echeck'} label={<span className='tabLabel'>Pay by eCheck</span>}>
+					<Echeck primaryColor={primaryColor} textField={this.props.textField} />
+				</Tab>
+			);
+		}
+
+		if (this.state.applepay) {
+			tabs.push(
+				<Tab key={'applepay'} id={'applepay'} label={<span className='tabLabel'>Pay using Apple Pay</span>}>
+					<ApplePay />
+				</Tab>
+			);
+		}
 
 		return (
 			<Tabs
-				default='creditCard'
+				default='echeck'
 				className='paymentFormTabs'
 				allowCustom={true}
 				customColor={primaryColor}
+				borderSize={'1px'}
 			>
-				<Tab id='creditCard' label={<span className='tabLabel'>Pay by Credit Card</span>}>
-					{this.props.creditCardGroup({ required: true, placeholder: 'xxxx xxxx xxxx xxxx', debug: false, cvvModalRootClass: 'gbxModal' })}
-				</Tab>
-				<Tab id='echeck' label={<span className='tabLabel'>Pay by eCheck</span>}>
-					<Fade
-						in={bankName ? true : false}
-					>
-						<span className='green date'>{this.state.bankName}</span>
-					</Fade>
-					<div>
-						<div className='column' style={{ width: '50%' }}>{this.props.textField('accountNumber', { placeholder: 'Account Number',  label: 'Account Number', required: true })}</div>
-						<div className='column' style={{ width: '50%' }}>{this.props.textField('routingNumber', { placeholder: 'Routing Number',  label: 'Routing Number', required: true, maxLength: 9, onChange: this.getBankName })}</div>
-					</div>
-				</Tab>
-				<Tab id='applepay' label={<span className='tabLabel'>Pay by Apple Pay</span>}>
-
-				</Tab>
+				{tabs}
 			</Tabs>
 		)
 
+	}
+
+	fieldLayout() {
+		const {
+			phone,
+			address,
+			work,
+			custom,
+			sendEmail,
+			breakpoint
+		} = this.props;
+
+		const mobile = breakpoint === 'mobile' ? true : false;
+		const layout = [];
+
+		// Phone enabled
+		if (!address.enabled & phone.enabled) {
+			layout.push(
+				{ width: '50%', field: 'name', order: mobile ? 2 : 1 },
+				{ width: '50%', field: 'payment', order: mobile ? 1 : 2 },
+				{ width: '50%', field: 'email' },
+				{ width: '25%', field: 'phone' },
+				{ width: '25%', field: 'zip' }
+			);
+
+		// Address enabled
+	} else if (address.enabled & !phone.enabled) {
+			layout.push(
+				{ width: '25%', field: 'name', order: mobile ? 2 : 1 },
+				{ width: '25%', field: 'email', order: mobile ? 2 : 1 },
+				{ width: '50%', field: 'payment', order: mobile ? 1 : 2 },
+				{ width: '50%', field: 'address' },
+				{ width: '20%', field: 'city' },
+				{ width: '20%', field: 'state' },
+				{ width: '10%', field: 'zip' }
+			);
+
+		// Address and Phone enabled
+	} else if (address.enabled && phone.enabled) {
+			layout.push(
+				{ width: '50%', field: 'name', order: mobile ? 2 : 1 },
+				{ width: '50%', field: 'payment', order: mobile ? 1 : 2 },
+				{ width: '50%', field: 'email' },
+				{ width: '50%', field: 'phone' },
+				{ width: '50%', field: 'address' },
+				{ width: '20%', field: 'city' },
+				{ width: '20%', field: 'state' },
+				{ width: '10%', field: 'zip' }
+			);
+
+		// Basic
+		} else {
+			layout.push(
+				{ width: '50%', field: 'name', order: mobile ? 2 : 1 },
+				{ width: '50%', field: 'payment', order: mobile ? 1 : 2 },
+				{ width: '50%', field: 'email' },
+				{ width: '50%', field: 'zip' }
+			);
+		}
+
+		if (work.enabled) {
+			layout.push(
+				{ width: '50%', field: 'employer' },
+				{ width: '50%', field: 'occupation' }
+			);
+		}
+
+		if (custom.enabled) {
+			layout.push(
+				{ width: '100%', field: 'custom' }
+			);
+		}
+
+		if (sendEmail.enabled) {
+			layout.push(
+				{ width: '100%', field: 'sendEmail' }
+			);
+		}
+
+		return layout;
 	}
 
 	renderFields() {
@@ -173,64 +242,53 @@ class PaymentFormClass extends Component {
 			sendEmail
 		} = this.props;
 
-		const name = this.props.textField('name', { placeholder: 'Your Name',  label: 'Name', required: true });
-		const email = this.props.textField('email', {required: true, placeholder: 'Your Email Address', label: 'Email', validate: 'email', inputMode: 'email' });
-		const phoneField = this.props.textField('phone', {required: phone.required, label: 'Phone', placeholder: 'Phone Number', validate: 'phone', inputMode: 'tel' });
-		const addressField = this.props.textField('address', { required: address.required, label: 'Address', placeholder: 'Street Address' });
-		const city = this.props.textField('city', { required: address.required, label: 'City', placeholder: 'City' });
-		const zip = this.props.textField('zip', { required: true, label: 'Zip Code', placeholder: 'Zip Code', maxLength: 5, inputMode: 'numeric' });
-		const state = this.props.dropdown('state', {label: 'State', fixedLabel: false, selectLabel: 'State', options: selectOptions.states, required: address.required })
-		const employer = this.props.textField('employer', { required: work.required, label: 'Employer', placeholder: 'Employer' });
-		const occupation = this.props.textField('occupation', { required: work.required, label: 'Occupation', placeholder: 'Occupation' });
-		const customField = this.props.textField('note', { required: custom.required, label: custom.placeholder, hideLabel: true, placeholder: custom.placeholder });
-
-		const cityStateZipGroup =
-			<div>
-				<div className='column' style={{ width: '40%' }}>{city}</div>
-				<div className='column' style={{ width: '40%' }}>{state}</div>
-				<div className='column' style={{ width: '20%' }}>{zip}</div>
+		const headerText =
+			<div className='paymentFormHeader'>
+				<span className='paymentFormHeaderTitle'>Payment Info</span>
+				<span className='paymentFormHeaderText'>
+					Please enter your payment information.
+				</span>
 			</div>
 		;
+		const fields = {};
+
+		fields.payment = this.paymentOptions();
+		fields.name =
+			<div className='column'>
+				{headerText}
+				{this.props.textField('name', { placeholder: 'Your Name',  label: 'Name', required: true })}
+			</div>
+		;
+		fields.email = this.props.textField('email', {required: true, placeholder: 'Your Email Address', label: 'Email', validate: 'email', inputMode: 'email' });
+		fields.phone = this.props.textField('phone', {required: phone.required, label: 'Phone', placeholder: 'Phone Number', validate: 'phone', inputMode: 'tel' });
+		fields.address = this.props.textField('address', { required: address.required, label: 'Address', placeholder: 'Street Address' });
+		fields.city = this.props.textField('city', { required: address.required, label: 'City', placeholder: 'City' });
+		fields.zip = this.props.textField('zip', { required: true, label: 'Zip Code', placeholder: 'Zip Code', maxLength: 5, inputMode: 'numeric' });
+		fields.state = this.props.dropdown('state', {label: 'State', fixedLabel: false, selectLabel: 'State', options: selectOptions.states, required: address.required })
+		fields.employer = this.props.textField('employer', { required: work.required, label: 'Employer', placeholder: 'Employer' });
+		fields.occupation = this.props.textField('occupation', { required: work.required, label: 'Occupation', placeholder: 'Occupation' });
+		fields.custom = this.props.textField('note', { required: custom.required, label: custom.placeholder, hideLabel: true, placeholder: custom.placeholder });
+
 
 		const linkText = sendEmail.linkText || 'Send an Email Message';
 
-		const sendEmailLink =
+		fields.sendEmail =
 			<ModalLink id='sendEmail' allowCustom={true} customColor={this.props.primaryColor} opts={{ sendEmailCallback: this.sendEmailCallback, sendEmail: this.state.sendEmail, headerText: linkText }}>{linkText}</ModalLink>
 		;
 
-		const fields = [
-			{ name: 'name', field: name, enabled: true, order: 1 },
-			{ name: 'email', field: email, enabled: true, order: 2 },
-			{ name: 'phone', field: phoneField, enabled: phone.enabled, order: 3 },
-			{ name: 'address', field: addressField, enabled: address.enabled, order: 4, width: '100%' },
-			{ name: 'zip', field: address.enabled ? cityStateZipGroup : zip, enabled: true, order: 5, width: address.enabled ? '100%' : '50%' },
-			{ name: 'employer', field: employer, enabled: work.enabled, order: 6 },
-			{ name: 'occupation', field: occupation, enabled: work.enabled, order: 7 },
-			{ name: 'custom', field: customField, enabled: custom.enabled, order: 8, width: '100%' },
-			{ name: 'sendEmail', field: sendEmailLink, enabled: sendEmail.enabled, order: 9, width: '100%' }
-		];
-
-		util.sortByField(fields, 'order', 'ASC');
-
 		const items = [];
+		const fieldLayout = util.sortByField(this.fieldLayout(), 'order', 'ASC');
 
-		items.push(
-			<div className='column' key='paymentOptions'>
-				{this.paymentOptions()}
-			</div>
-		);
-		Object.entries(fields).forEach(([key, value]) => {
-			if (value.enabled) {
-				items.push(
-					<div
-						key={key}
-						className='column'
-						style={{ width: this.props.breakpoint === 'mobile' ? '100%' : util.getValue(value, 'width', '50%') }}
-					>
-						{value.field}
-					</div>
-				);
-			}
+		Object.entries(fieldLayout).forEach(([key, value]) => {
+			items.push(
+				<div
+					key={key}
+					className='column'
+					style={{ width: this.props.breakpoint === 'mobile' ? '100%' : util.getValue(value, 'width', '50%') }}
+				>
+					{util.getValue(fields, value.field)}
+				</div>
+			);
 		});
 
 		return items;
@@ -254,51 +312,11 @@ class PaymentForm extends Component {
 
 	constructor(props){
 		super(props);
-		this.handleResize = this.handleResize.bind(this);
 		this.formStateCallback = this.formStateCallback.bind(this);
 		this.state = {
-			windowWidthChange: window.innerWidth,
-			breakpoint: window.innerWidth > props.breakpointSize ? 'desktop' : 'mobile',
 			formState: {}
 		}
-		this._isMounted = false;
 		this.formRef = React.createRef();
-	}
-
-	componentDidMount() {
-		const current = this.formRef.current;
-		const width = current.clientWidth;
-		this.setState({
-			windowWidthChange: width,
-			breakpoint: width > this.props.breakpointSize ? 'desktop' : 'mobile'
-		});
-		this._isMounted = true;
-		if (this._isMounted) {
-			window.addEventListener('resize', this.handleResize.bind(this));
-		}
-	}
-
-	componentWillUnmount() {
-		this._isMounted = false;
-		window.removeEventListener('resize', this.handleResize.bind(this));
-		if (this.timeout) {
-			clearTimeout(this.timeout);
-			this.timeout = null;
-		}
-	}
-
-	handleResize(e) {
-		if (this._isMounted) {
-			const current = this.formRef.current;
-			const width = current.clientWidth;
-			this.setState({
-				windowWidthChange: width
-			});
-			const breakpoint = width > this.props.breakpointSize ? 'desktop' : 'mobile';
-			if (breakpoint !== this.state.breakpoint) {
-				this.setState({ breakpoint });
-			}
-		}
 	}
 
 	formStateCallback(formState) {
@@ -308,24 +326,24 @@ class PaymentForm extends Component {
 	render() {
 
 		const {
-			breakpoint,
 			formState
 		} = this.state;
 
 		const {
+			breakpoint,
 			primaryColor
 		} = this.props;
 
 		return (
 			<div ref={this.formRef} className='givebox-paymentform'>
-				<Fade
-					in={util.getValue(formState, 'error', false)}
-					duration={100}
+				<AnimateHeight
+					height={util.getValue(formState, 'error', false) ? 'auto' : 0}
 				>
 					<div className='mainError error'>{util.getValue(formState, 'errorMsg', 'Please fix field errors in red below')}</div>
-				</Fade>
+				</AnimateHeight>
 				<Form
 					id='gbxForm'
+					className='clean'
 					name={'gbxForm'}
 					errorMsg={false}
 					successMsg={false}

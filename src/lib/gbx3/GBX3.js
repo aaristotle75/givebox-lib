@@ -238,7 +238,6 @@ class GBX3 extends React.Component {
 }
 
 GBX3.defaultProps = {
-	breakpointWidth: 768,
 	defaultPrimaryColor: '#4775f8',
 	editable: false
 }

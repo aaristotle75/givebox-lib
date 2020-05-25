@@ -887,6 +887,37 @@ class Form extends Component {
 					{this.textField('ccexpire', {label: params.ccxpireLabel || 'Expiration', fixedLabel: params.ccexpirefixedLabel || true, placeholder: 'MM/YY', required: params.required, value: params.ccexpireValue || '', validate: 'ccexpire', maxLength: 5, count: false, debug: params.debug, inputMode: 'numeric', onChange: this.onChangeCCExpire })}
 				</div>
 				<div className='cvv col'>
+					{this.textField('cvv', {label: 'CVV', customLabel: cvvModal, fixedLabel: true, placeholder: 'CVV', required: params.required, maxLength: 3, count: false, debug: params.debug, validate: 'number', inputMode: 'numeric'})}
+				</div>
+				<div className='clear'></div>
+			</div>
+		)
+	}
+
+	echeckGroup(opts) {
+		const defaults = cloneObj(this.defaults);
+		const params = Object.assign({}, defaults, {
+			className: '',
+			required: true
+		}, opts);
+
+		const cvvModal =
+			<div className='cvvModal'>
+				<ModalRoute modalRootClass={params.cvvModalRootClass} id='cvvModal' component={() => { return <CVVModal /> }} effect='3DFlipVert' style={{ width: '60%' }} />
+				<ModalLink allowCustom={true} customColor={this.props.primaryColor} id='cvvModal'>What is CVV?</ModalLink>
+			</div>
+		;
+
+		return (
+
+			<div style={params.style} className={`field-group echeck-group`}>
+				<div className='col'>
+					{this.creditCard('ccnumber', {label: params.ccnumberLabel || 'Credit Card', fixedLabel: params.ccnumberfixedLabel || true, hideLabel: params.hideLabel, placeholder: params.placeholder, readOnly: params.readOnly, required: params.required, debug: params.debug})}
+				</div>
+				<div className='ccexpire col'>
+					{this.textField('ccexpire', {label: params.ccxpireLabel || 'Expiration', fixedLabel: params.ccexpirefixedLabel || true, placeholder: 'MM/YY', required: params.required, value: params.ccexpireValue || '', validate: 'ccexpire', maxLength: 5, count: false, debug: params.debug, inputMode: 'numeric', onChange: this.onChangeCCExpire })}
+				</div>
+				<div className='cvv col'>
 					{this.textField('cvv', {label: 'CVV', customLabel: cvvModal, fixedLabel: true, placeholder: 'CVV', required: params.required, maxLength: 3, count: false, debug: params.debug, inputMode: 'numeric'})}
 				</div>
 				<div className='clear'></div>

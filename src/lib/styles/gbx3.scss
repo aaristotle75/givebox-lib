@@ -1,5 +1,7 @@
 @import 'variables.scss';
 
+$breakpoint: 768px;
+
 .gbx3Layout {
 	display: flex;
 	justify-content: center;
@@ -11,6 +13,16 @@
 	padding: 10px 0;
 	background: $white;
 	@include bgGradient(to bottom, $light-gray 0%, $white 20%);
+
+	.bottomOffset {
+		display: table;
+		height: 0px;
+
+		@media (max-width: $breakpoint) {
+			height: 75px;
+		}
+	}
+
 }
 
 .gbx3 {
@@ -56,20 +68,6 @@
 	}
 
 	/*------ End Elements ------*/
-
-	/*------- Init GBX3 Layout ---*/
-	.gbx3AdminContainer {
-		width: 200px;
-		height: auto;
-		background: red;
-	}
-
-	.gbx3Container {
-		position: relative;
-		width: 100%;
-		max-width: 1000px;
-		height: auto;
-	}
 
 
 	/*-------- General Form ----*/
@@ -125,8 +123,20 @@
 	}
 
 	/*------- Grid ---------*/
+	.gbx3AdminContainer {
+		width: 200px;
+		height: auto;
+	}
+
+	.gbx3Container {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		max-width: 1000px;
+		height: auto;
+	}
+
 	.layout-column {
-		position: relative;
 		width: 100%;
 	}
 
@@ -170,6 +180,10 @@
 
 	.dragHandle:hover {
 		@include default-transition(1s);
+	}
+
+	.paymentFormBlock .dragHandle {
+		cursor: default;
 	}
 
 	.editable {
@@ -260,6 +274,10 @@
 	// Name blocks
 	.titleBlock {
 		line-height: 1em;
+	}
+
+	.contentBlock {
+		word-wrap: break-word;
 	}
 
 	/*---------- End Blocks ------------ */
@@ -431,17 +449,33 @@
 
 	/*------ Payment Form ---------*/
 
-	.formBlock {
-		position: relative;
-	}
-
 	.givebox-paymentform {
 
 		border-top-left-radius: 10px;
 		border-top-right-radius: 10px;
 		background: $white;
+		padding: 20px 0;
 
-		padding: 0;
+		.paymentFormHeader {
+			position: absolute;
+			top: 35px;
+			left: 5px;
+			@media (max-width: $breakpoint) {
+				display: none;
+			}
+
+			.paymentFormHeaderTitle {
+				font-size: 1em;
+			}
+
+			.paymentFormHeaderText {
+				display: block;
+				margin-top: 5px;
+				font-size: 12px;
+				font-weight: 300;
+			}
+		}
+
 
 		input {
 			border-bottom: 1px solid $light-gray;
@@ -458,7 +492,8 @@
 		.mainError {
 			position: relative;
 			font-size: 14px;
-			margin-bottom: 20px;
+			margin-bottom: 5px;
+			text-align: center;
 		}
 
 		.dropdown button .selected.label {
@@ -482,7 +517,7 @@
 		.dropdown button .selected.label,
 		.dropdown .label:not(button) {
 			font-size: $med-text-size;
-			@media (max-width: 768px) {
+			@media (max-width: $breakpoint) {
 				font-size: $normal-text-size;
 			}
 		}
@@ -493,6 +528,36 @@
 
 		.dropdown-cover {
 			display: none;
+		}
+
+		.paymentFormTabs {
+			.panel {
+				margin-top: 0;
+				button {
+					font-size: 12px;
+					font-weight: 300;
+				}
+			}
+		}
+
+		.payMethods-group {
+			position: relative;
+			margin-top: 20px;
+		}
+
+		.payMethods {
+			position: absolute;
+			height: 50px;
+			width: 100%;
+			top: -10px;
+			left: 5px;
+			z-index: 0;
+
+			.bankname {
+				position: absolute;
+				left: 205px;
+				top: 7px;
+			}
 		}
 
 		@media (max-width: 849px) {
@@ -603,7 +668,7 @@
 
 	/*------- Responsive ---------*/
 
-	@media (max-width: 768px) {
+	@media (max-width: $breakpoint) {
 		.modalContent:not(.campaignForm) {
 				width: 100% !important;
 		}

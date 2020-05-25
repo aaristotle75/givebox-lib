@@ -23,7 +23,6 @@ import ButtonEdit from './ButtonEdit';
 import RecurringEdit from './amounts/RecurringEdit';
 import { amountFieldsConfig } from './amounts/amountFieldsConfig';
 import AnimateHeight from 'react-animate-height';
-import scrollToComponent from 'react-scroll-to-component';
 
 class Amounts extends Component {
 
@@ -65,6 +64,7 @@ class Amounts extends Component {
 		this.blockRef = null;
 		this.width = null;
 		this.height = null;
+		this.displayRef = React.createRef();
 	}
 
 	componentDidMount() {
@@ -74,6 +74,10 @@ class Amounts extends Component {
 			this.height = this.blockRef.clientHeight;
 		}
 		this.getAmounts();
+	}
+
+	componentDidUpdate() {
+		this.props.setDisplayHeight(this.displayRef);
 	}
 
 	closeModalAmountsEdit(type = 'save') {
@@ -211,7 +215,7 @@ class Amounts extends Component {
 	}
 
 	closeModalAmountsList() {
-		console.log('execute closeModalAmountsList');
+		//console.log('execute closeModalAmountsList');
 	}
 
 	getAmounts() {
@@ -463,56 +467,58 @@ class Amounts extends Component {
 						</div>
 					}
 				/>
-				{util.getValue(button, 'enabled', false) ?
-					<>
-						<ModalRoute
-							className='gbx3 givebox-paymentform'
-							id='amountsList'
-							effect='3DFlipVert' style={{ width: '60%' }}
-							draggable={false}
-							closeCallback={this.closeModalAmountsList}
-							disallowBgClose={false}
-							component={() =>
-								<div className='modalContainers'>
-									<div className='topContainer'>
-										<h3 style={{ padding: 0, margin: 0 }}>{util.getValue(button, 'text', 'Select Amount')}</h3>
-										<span style={{ fontWeight: 300 }} className='center'>{util.getValue(data, 'title')}</span>
-									</div>
-									<div className='middleContainer'>
-										{this.renderAmountsList()}
-									</div>
-									<div className='bottomContainer'>
-										<div className='cartInfo'>
-											<ModalLink id='cart' opts={{ tab: 'cart' }} allowCustom={true} customColor={primaryColor}><span style={{ display: 'block', fontSize: 12 }}>Items in Cart (8)</span></ModalLink>
-											<span style={{ display: 'block' }}><span style={{ fontSize: 12 }}>Sub Total:</span> <span className='strong'>{util.money(300)}</span></span>
+				<div ref={this.displayRef}>
+					{util.getValue(button, 'enabled', false) ?
+						<>
+							<ModalRoute
+								className='gbx3 givebox-paymentform'
+								id='amountsList'
+								effect='3DFlipVert' style={{ width: '60%' }}
+								draggable={false}
+								closeCallback={this.closeModalAmountsList}
+								disallowBgClose={false}
+								component={() =>
+									<div className='modalContainers'>
+										<div className='topContainer'>
+											<h3 style={{ padding: 0, margin: 0 }}>{util.getValue(button, 'text', 'Select Amount')}</h3>
+											<span style={{ fontWeight: 300 }} className='center'>{util.getValue(data, 'title')}</span>
 										</div>
-										<div className='button-group'>
-											<ModalLink className='hideOnMobile' id='shop' allowCustom={true} customColor={primaryColor}>SHOP MORE ITEMS</ModalLink>
-											<GBLink
-												className='button'
-												allowCustom={true}
-												customColor={primaryColor}
-												solidColor={true}
-												onClick={() => {
-													this.props.scrollTo('checkout');
-													this.props.toggleModal('amountsList');
-												}}
-											>
-												CHECKOUT
-											</GBLink>
+										<div className='middleContainer'>
+											{this.renderAmountsList()}
+										</div>
+										<div className='bottomContainer'>
+											<div className='cartInfo'>
+												<ModalLink id='cart' opts={{ tab: 'cart' }} allowCustom={true} customColor={primaryColor}><span style={{ display: 'block', fontSize: 12 }}>Items in Cart (8)</span></ModalLink>
+												<span style={{ display: 'block' }}><span style={{ fontSize: 12 }}>Sub Total:</span> <span className='strong'>{util.money(300)}</span></span>
+											</div>
+											<div className='button-group'>
+												<ModalLink className='hideOnMobile' id='shop' allowCustom={true} customColor={primaryColor}>SHOP MORE ITEMS</ModalLink>
+												<GBLink
+													className='button'
+													allowCustom={true}
+													customColor={primaryColor}
+													solidColor={true}
+													onClick={() => {
+														this.props.scrollTo('checkout');
+														this.props.toggleModal('amountsList');
+													}}
+												>
+													CHECKOUT
+												</GBLink>
+											</div>
 										</div>
 									</div>
-								</div>
-							}
-						/>
-						<Button
-							modalID={`amountsList`}
-							button={button}
-						/>
-					</>
-				:
-					this.renderAmountsList(true)
-				}
+								}
+							/>
+							<Button
+								modalID={`amountsList`}
+								button={button}
+							/>
+						</>
+					:
+						this.renderAmountsList(true)
+					}
+				</div>
 			</div>
 		)
 	}
