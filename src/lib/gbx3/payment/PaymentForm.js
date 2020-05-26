@@ -273,7 +273,9 @@ class PaymentFormClass extends Component {
 		const linkText = sendEmail.linkText || 'Send an Email Message';
 
 		fields.sendEmail =
-			<ModalLink id='sendEmail' allowCustom={true} customColor={this.props.primaryColor} opts={{ sendEmailCallback: this.sendEmailCallback, sendEmail: this.state.sendEmail, headerText: linkText }}>{linkText}</ModalLink>
+			<div style={{ marginLeft: 8 }}>
+				<ModalLink id='sendEmail' allowCustom={true} customColor={this.props.primaryColor} opts={{ sendEmailCallback: this.sendEmailCallback, sendEmail: this.state.sendEmail, headerText: linkText }}>{linkText}</ModalLink>
+			</div>
 		;
 
 		const items = [];
@@ -298,7 +300,16 @@ class PaymentFormClass extends Component {
 
 		return (
 			<>
-				<ModalRoute className='gbx3 givebox-paymentform' id='sendEmail' modalRootClass='sendEmail gbxModal' component={(props) => <SendEmail {...props} {...this.props} /> } effect='3DFlipVert' style={{ width: '50%' }} />
+				<ModalRoute
+					className='gbx3 givebox-paymentform'
+					id='sendEmail'
+					modalRootClass='sendEmail gbxModal'
+					component={(props) =>
+						<SendEmail {...props} {...this.props} />
+					}
+					effect='3DFlipVert'
+					style={{ width: '50%' }}
+				/>
 				<>
 					{this.renderFields()}
 					{this.props.saveButton(this.processForm, { style: { margin: 0, padding: 0, height: 0, width: 0, visibility: 'hidden' } })}

@@ -486,7 +486,7 @@ class Amounts extends Component {
 										<div className='middleContainer'>
 											{this.renderAmountsList()}
 										</div>
-										<div className='bottomContainer'>
+										<div className='bottomContainer spaceBetween'>
 											<div className='cartInfo'>
 												<ModalLink id='cart' opts={{ tab: 'cart' }} allowCustom={true} customColor={primaryColor}><span style={{ display: 'block', fontSize: 12 }}>Items in Cart (8)</span></ModalLink>
 												<span style={{ display: 'block' }}><span style={{ fontSize: 12 }}>Sub Total:</span> <span className='strong'>{util.money(300)}</span></span>

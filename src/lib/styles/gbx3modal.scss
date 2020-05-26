@@ -39,9 +39,18 @@
 		right: 0;
 		background: $white;
 		border-top: 1px solid $light-gray;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
+		z-index: 1;
+	}
+
+	.bottomContainer2 {
+		position: absolute;
+		height: 80px;
+		padding: 10px;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		background: $white;
+		border-top: 1px solid $light-gray;
 		z-index: 1;
 	}
 

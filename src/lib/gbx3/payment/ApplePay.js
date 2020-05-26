@@ -13,12 +13,14 @@ class ApplePay extends Component {
 	componentDidMount() {
 		if (window.ApplePaySession) {
 			var merchantIdentifier = 'merchant.com.givebox.gbx';
+			/*
 			var promise = window.ApplePaySession.canMakePaymentsWithActiveCard(merchantIdentifier);
 			promise.then(function (canMakePayments) {
 				if (canMakePayments) {
 					this.setState({ canMakePayments: true });
 				}
 			});
+			*/
 		}
 	}
 

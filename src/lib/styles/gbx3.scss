@@ -448,13 +448,14 @@ $breakpoint: 768px;
 
 
 	/*------ Payment Form ---------*/
-
-	.givebox-paymentform {
-
+	.formBlock {
 		border-top-left-radius: 10px;
 		border-top-right-radius: 10px;
 		background: $white;
 		padding: 20px 0;
+	}
+
+	.givebox-paymentform {
 
 		.paymentFormHeader {
 			position: absolute;
@@ -549,7 +550,7 @@ $breakpoint: 768px;
 			position: absolute;
 			height: 50px;
 			width: 100%;
-			top: -10px;
+			top: -15px;
 			left: 5px;
 			z-index: 0;
 
@@ -566,7 +567,6 @@ $breakpoint: 768px;
 			}
 		}
 	}
-
 
 	.mobileFriendly {
 		margin: 100px 0;
@@ -642,6 +642,135 @@ $breakpoint: 768px;
 		background: $med-blue-gray;
 		opacity: .7;
 		@include default-transition(.5s);
+	}
+
+	.formBottomSection {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		margin-top: 20px;
+
+		@media (max-width: $breakpoint) {
+			flex-direction: column;
+		}
+
+		.choice-group {
+			padding: 0;
+		}
+
+		.checkbox-group label.label {
+			font-size: 12px;
+		}
+
+		.totalsContainer {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			width: 50%;
+			@media (max-width: $breakpoint) {
+				width: 100%;
+			}
+		}
+
+		.totalsSection {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			width: 100%;
+
+			.leftSide {
+				width: 40%;
+				@media (max-width: $breakpoint) {
+					display: none;
+				}
+			}
+
+			.rightSide {
+				width: 60%;
+				@media (max-width: $breakpoint) {
+					width: 100%;
+				}
+			}
+
+			.totalsList {
+				display: flex;
+				justify-content: flex-start;
+				@media (max-width: $breakpoint) {
+					padding: 10px 0;
+					justify-content: center;
+				}
+
+				.line {
+					font-size: 12px;
+					display: block;
+					padding-right: 5px;
+				}
+
+				.totalLine {
+					font-size: 1.6em;
+				}
+			}
+		}
+
+		.buttonSection {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			width: 50%;
+			margin: 0;
+			@media (max-width: $breakpoint) {
+				margin-top: 20px;
+				width: 100%;
+			}
+		}
+	}
+
+	.sectionContent {
+		position: relative;
+		padding: 20px;
+
+		ul {
+			margin-left: 20px;
+			list-style-type: disc;
+			li {
+				display: list-item !important;
+				margin: 5px 5px;
+				display: block;
+				font-size: 14px;
+			}
+		}
+
+		p {
+			padding: 5px 0;
+		}
+
+		h4 {
+			font-weight: 300;
+			text-transform: uppercase;
+			margin: 20px 0 5px 0;
+		}
+
+		.address {
+			font-size: 12px;
+		}
+
+		.title,
+		.line {
+			display: block;
+		}
+
+		.copyright {
+			display: block;
+			font-size: 12px;
+		}
+	}
+
+	/*------- Echeck ----------*/
+	.echeckCol {
+		width: 50%;
+		@media (max-width: $breakpoint) {
+			width: 100%;
+		}
 	}
 
 	/*----- End Payment Form ------*/

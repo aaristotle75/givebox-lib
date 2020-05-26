@@ -50,12 +50,13 @@ class Echeck extends Component {
 
 		const echeckHowModal =
 			<div className='cvvModal'>
+				<span style={{ marginRight: 10 }}>Account Number</span>
 				<ModalLink id='echeckHow' customColor={primaryColor} allowCustom={true}>What is eCheck?</ModalLink>
 			</div>
 		;
 
 		return (
-			<div style={{ padding: '20px 0 0 0' }} className='input-group'>
+			<div style={{ padding: '20px 0 0 0', margin: 0 }} className='input-group'>
 				<ModalRoute
 					id='echeckHow'
 					className='gbx3'
@@ -76,8 +77,8 @@ class Echeck extends Component {
 					</div>
 				</div>
 				<div>
-					<div className='column' style={{ width: '50%' }}>{this.props.textField('accountNumber', { placeholder: 'Bank Account Number', fixedLabel: true, customLabel: echeckHowModal, required: true, maxLength: 21, validate: 'number', inputMode: 'numeric' })}</div>
-					<div className='column' style={{ width: '50%' }}>{this.props.textField('routingNumber', { placeholder: 'Bank Routing Number', fixedLabel: true, label: 'Routing Number', required: true, maxLength: 9, validate: 'number', onChange: this.getBankName, inputMode: 'numeric' })}</div>
+					<div className='col echeckCol'>{this.props.textField('accountNumber', { placeholder: 'Bank Account Number', label: 'Bank Account Number', fixedLabel: true, customLabel: echeckHowModal, required: true, maxLength: 16, validate: 'number', inputMode: 'numeric' })}</div>
+					<div className='col echeckCol'>{this.props.textField('routingNumber', { placeholder: 'Bank Routing Number', fixedLabel: true, label: 'Routing Number', required: true, maxLength: 9, validate: 'number', onChange: this.getBankName, inputMode: 'numeric' })}</div>
 				</div>
 			</div>
 		)

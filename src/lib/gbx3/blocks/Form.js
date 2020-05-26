@@ -5,15 +5,19 @@ import {
 	GBLink,
 	toggleModal,
 	ModalRoute,
+	ModalLink,
 	Collapse,
 	Tabs,
 	Tab,
-	updateData
+	updateData,
+	Choice
 } from '../../';
 import PaymentForm from '../payment/PaymentForm';
 import FormEdit from './FormEdit';
 import ButtonEdit from './ButtonEdit';
 import Button from './Button';
+import Terms from '../payment/Terms';
+import Totals from '../payment/Totals';
 
 class Form extends Component {
 
@@ -23,6 +27,7 @@ class Form extends Component {
 		this.closeEditModal = this.closeEditModal.bind(this);
 		this.optionsUpdated = this.optionsUpdated.bind(this);
 		this.getInfo = this.getInfo.bind(this);
+		this.setOrder = this.setOrder.bind(this);
 		const options = props.options;
 		const button = util.getValue(options, 'button', {});
 		const form = util.getValue(options, 'form', {});
@@ -31,7 +36,11 @@ class Form extends Component {
 			button,
 			form,
 			defaultForm: util.deepClone(form),
-			defaultButton: util.deepClone(button)
+			defaultButton: util.deepClone(button),
+			order: {
+				terms: true,
+				passFees: true
+			}
 		};
 	}
 
@@ -116,6 +125,12 @@ class Form extends Component {
 		}
 	}
 
+	setOrder(key, value) {
+		const order = this.state.order;
+		order[key] = value;
+		this.setState({ order });
+	}
+
 	render() {
 
 		const {
@@ -127,13 +142,15 @@ class Form extends Component {
 
 		const {
 			button,
-			form
+			form,
+			order
 		} = this.state;
 
 		const phoneInfo = this.getInfo('phoneInfo');
 		const addressInfo = this.getInfo('addressInfo');
 		const workInfo = this.getInfo('workInfo');
 		const noteInfo = this.getInfo('noteInfo');
+		const passFees = util.getValue(order, 'passFees', false);
 
 		return (
 			<div className='formBlock'>
@@ -194,11 +211,48 @@ class Form extends Component {
 					editable={this.props.editable}
 					breakpoint={breakpoint}
 				/>
-				<div className='button-group'>
-					<Button
-						onClick={this.saveButton}
-						button={button}
+				<div className='formBottomSection'>
+					<Totals
+						setOrder={this.setOrder}
+						passFees={passFees}
+						primaryColor={primaryColor}
+						toggleModal={this.props.toggleModal}
 					/>
+					<div className='buttonSection'>
+						<div style={{ marginBottom: 10 }}>
+							<Choice
+								label='I Accept the Terms & Conditions'
+								value={order.terms}
+								checked={order.terms}
+								onChange={() => {
+									this.setOrder('terms', order.terms ? false : true)
+								}}
+								color={primaryColor}
+								error={!order.terms ? 'You Must Accept the Terms & Conditions to Continue' : false}
+								errorType={'tooltip'}
+							/>
+						</div>
+						<div style={{ margin: '20px 0' }}>
+							<Button
+								onClick={this.saveButton}
+								button={button}
+							/>
+						</div>
+						<ModalRoute
+							id='terms'
+							effect='3DFlipVert'
+							style={{ width: '60%' }}
+							className='gbx3'
+							component={() =>
+									<Terms
+										setOrder={this.setOrder}
+										primaryColor={primaryColor}
+										toggleModal={this.props.toggleModal}
+									/>
+								}
+							/>
+							<ModalLink style={{ marginTop: 10 }} allowCustom={true} customColor={primaryColor} id='terms'>Read Terms and Conditions</ModalLink>
+					</div>
 				</div>
 			</div>
 		)
