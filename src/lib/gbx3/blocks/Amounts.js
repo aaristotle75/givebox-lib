@@ -131,9 +131,11 @@ class Amounts extends Component {
 			});
 
 			if (saveBlock) {
-				this.props.saveBlock(null, {
-					button,
-					recurring
+				this.props.saveBlock({
+					options: {
+						button,
+						recurring
+					}
 				});
 			}
 		});
@@ -252,6 +254,7 @@ class Amounts extends Component {
 			customID,
 			defaultIndex,
 			defaultID,
+			defaultAmount,
 			amountsListDefault: util.deepClone(amountsList),
 			customIndexDefault: customIndex,
 			customIDDefault: customID,
@@ -270,6 +273,7 @@ class Amounts extends Component {
 		} = this.props;
 
 		const {
+			defaultAmount,
 			amountsList,
 			customIndex,
 			customID,
@@ -309,6 +313,7 @@ class Amounts extends Component {
 					<AmountsList
 						breakpoint={breakpoint}
 						embed={embed}
+						defaultAmount={defaultAmount}
 						amountsList={amountsList}
 						customIndex={customIndex}
 						customID={customID}

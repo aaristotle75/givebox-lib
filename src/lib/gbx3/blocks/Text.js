@@ -57,7 +57,12 @@ export default class Text extends Component {
 	closeEditModal(type = 'save') {
 		if (type !== 'cancel') {
 			const subType = util.getValue(this.props.block, 'subType');
-			this.props.saveBlock({ html: this.state.content }, {}, true, this.props.closeEditModal, subType === 'content' ? true : false);
+			this.props.saveBlock({
+				content: {
+					html: this.state.content
+				},
+				updateSpecificGrid: subType === 'content' ? true : false
+			});
 		} else {
 			this.setState({ content: this.state.defaultContent }, this.props.closeEditModal);
 		}

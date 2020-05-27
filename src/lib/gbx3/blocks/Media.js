@@ -88,15 +88,15 @@ export default class Media extends Component {
 		} else {
 			this.timeout = setTimeout(() => {
 				this.setState({ loading: false, edit: false }, () => {
-					this.props.saveBlock(
-						{
+					this.props.saveBlock({
+						content: {
 							image,
 							video
 						},
-						{
+						options: {
 							mediaType
 						}
-					);
+					});
 				});
 			}, 0);
 		}

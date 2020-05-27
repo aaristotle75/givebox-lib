@@ -214,6 +214,7 @@ class GBX3 extends React.Component {
 				/>
 				<Layout
 					loadGBX3={this.loadGBX3}
+					primaryColor={this.props.primaryColor}
 				/>
 				<ModalRoute
 					id='cart'

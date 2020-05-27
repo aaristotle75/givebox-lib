@@ -8,7 +8,8 @@ import {
 	toggleModal,
 	Choice,
 	TextField,
-	GBLink
+	GBLink,
+	updateCartItem
 } from '../../../';
 import Recurring, { renderRecurringName } from './Recurring';
 import { amountInputStyle, amountInputMoneyStyle, amountInputHeights } from './amountsStyle';
@@ -29,9 +30,19 @@ class AmountsList extends Component {
 		this.setRecurring = this.setRecurring.bind(this);
 		this.onCloseRecurringOptions = this.onCloseRecurringOptions.bind(this);
 		this.toggleShowDetails = this.toggleShowDetails.bind(this);
+		this.updateCart = this.updateCart.bind(this);
+		this.setUnitID = this.setUnitID.bind(this);
+
+		const defaultAmount = props.defaultAmount;
+		const amountForAPI = util.getValue(defaultAmount, 'price', 0);
+		const defaultPrice = amountForAPI/100;
+
 		this.state = {
+			amountForAPI,
+			unitID: props.defaultID,
+			customAmount: props.customIndex === props.defaultIndex ? true : false,
 			amountRadioSelected: null,
-			amountEntered: '',
+			amountEntered: defaultPrice || '',
 			recurring: {
 				interval: 'once',
 				paymentMax: ''
@@ -42,6 +53,7 @@ class AmountsList extends Component {
 	}
 
 	componentDidMount() {
+		this.updateCart();
 	}
 
 	toggleShowDetails(id) {
@@ -103,9 +115,33 @@ class AmountsList extends Component {
 		)
 	}
 
+	updateCart(obj = {}) {
+		const {
+			amountForAPI: amount,
+			unitID,
+			customAmount
+		} = this.state;
+		const item = {
+			unitID,
+			amount,
+			customAmount,
+			quantity: 1,
+			...obj
+		};
+		this.props.updateCartItem(unitID, item, false);
+	}
+
+	setUnitID(unitID, callback) {
+		this.setState({ unitID }, () => {
+			if (callback) callback();
+		});
+	}
+
 	setRecurring(obj = {}) {
 		const recurring = { ...this.state.recurring, ...obj };
-		this.setState({ recurring });
+		this.setState({ recurring }, () => {
+			this.updateCart();
+		});
 	}
 
 	setCustomSelected(ID) {
@@ -115,10 +151,12 @@ class AmountsList extends Component {
 		return customSelected;
 	}
 
-	setAmounts(amount) {
+	setAmounts(amount, customAmount) {
 		const amountEntered = _v.formatNumber(amount);
 		const amountForAPI =  util.formatMoneyForAPI(amount);
-		this.setState({ amountEntered, amountForAPI });
+		this.setState({ amountEntered, amountForAPI, customAmount }, () => {
+			this.updateCart();
+		});
 	}
 
 	onChangeAmountRadio(name, value) {
@@ -133,19 +171,21 @@ class AmountsList extends Component {
 				const price = util.getValue(obj, 'price', 0);
 				const customSelected = this.setCustomSelected(ID);
 				const amount = customSelected ? '' : price/100;
-				this.setState({ customSelected, amountRadioSelected: value}, this.setAmounts(amount));
+				this.setState({ customSelected, amountRadioSelected: value}, () => {
+					this.setUnitID(ID, () => this.setAmounts(amount, customSelected));
+				});
 			}
 		}
 	}
 
 	onChangeEnteredAmount(e) {
 		const amount = e.currentTarget.value;
-		this.setAmounts(amount);
+		this.setAmounts(amount, this.state.customAmount);
 	}
 
 	onBlurEnteredAmount(e) {
-		const amount = e.currentTarget.value;
-		this.setAmounts(amount);
+		//const amount = e.currentTarget.value;
+		//this.setAmounts(amount);
 	}
 
 	handleAmountChanges() {
@@ -163,7 +203,6 @@ class AmountsList extends Component {
 	renderAmounts() {
 		const {
 			amountsList,
-			buttonEnabled,
 			customID,
 			defaultID,
 			embed,
@@ -299,8 +338,7 @@ class AmountsList extends Component {
 	render() {
 
 		const {
-			embed,
-			buttonEnabled
+			embed
 		} = this.props;
 
 		//const height = embed && !buttonEnabled ? `${this.props.height}px` : 'auto';
@@ -317,10 +355,15 @@ class AmountsList extends Component {
 
 function mapStateToProps(state, props) {
 
+	const gbx3 = util.getValue(state, 'gbx3', {});
+	const cart = util.getValue(gbx3, 'cart', []);
+
 	return {
+		cart
 	}
 }
 
 export default connect(mapStateToProps, {
-	toggleModal
+	toggleModal,
+	updateCartItem
 })(AmountsList);

@@ -4,10 +4,12 @@ import {
 	Image,
 	Choice,
 	ModalLink,
-	ModalRoute
+	ModalRoute,
+	util
 } from '../../';
 import AboutFee from './AboutFee';
 import Security from './Security';
+import Goal from './Goal';
 
 class Totals extends Component {
 
@@ -23,6 +25,9 @@ class Totals extends Component {
 	render() {
 
 		const {
+			hasCustomGoal,
+			raised,
+			goal,
 			subTotal,
 			giveboxFee,
 			fee,
@@ -44,18 +49,24 @@ class Totals extends Component {
 				/>
 				<div className='totalsSection'>
 					<div className='leftSide'>
-						<ModalRoute
-							id='security'
-							className='gbx3'
-							style={{ width: '60%' }}
-							component={() =>
-								<Security
-									primaryColor={primaryColor}
-									toggleModal={this.props.toggleModal}
+						{hasCustomGoal && raised > 0 ?
+							<Goal raised={raised} goal={goal} primaryColor={primaryColor} />
+						:
+							<>
+								<ModalRoute
+									id='security'
+									className='gbx3'
+									style={{ width: '60%' }}
+									component={() =>
+										<Security
+											primaryColor={primaryColor}
+											toggleModal={this.props.toggleModal}
+										/>
+									}
 								/>
-							}
-						/>
-						<ModalLink id='security'><Image url='https://s3-us-west-1.amazonaws.com/givebox/public/images/logo-box.svg' alt='Givebox Security' /></ModalLink>
+								<ModalLink id='security'><Image url='https://s3-us-west-1.amazonaws.com/givebox/public/images/logo-box.svg' alt='Givebox Security' /></ModalLink>
+							</>
+						}
 					</div>
 					<div className='rightSide'>
 						<div className='totalsList'>
@@ -66,10 +77,10 @@ class Totals extends Component {
 								<span className='totalLine'>Total:</span>
 							</div>
 							<div>
-								<span className='line'>{subTotal}</span>
-								<span className='line'>{giveboxFee}</span>
-								<span className='line'>{fee}</span>
-								<span className='totalLine'>{total}</span>
+								<span className='line'>{util.money(subTotal)}</span>
+								<span className='line'>{util.money(giveboxFee)}</span>
+								<span className='line'>{util.money(fee)}</span>
+								<span className='totalLine'>{util.money(total)}</span>
 							</div>
 						</div>
 					</div>
@@ -93,12 +104,21 @@ class Totals extends Component {
 
 function mapStateToProps(state, props) {
 
-	const subTotal = (0).toFixed(2);
+	const gbx3 = util.getValue(state, 'gbx3', {});
+	const cart = util.getValue(gbx3, 'cart', {});
+	const data = util.getValue(gbx3, 'data', {});
+	const hasCustomGoal = util.getValue(data, 'hasCustomGoal', false);
+	const raised = util.getValue(data, 'raised', 0);
+	const goal = util.getValue(data, 'goal', 0);
+	const subTotal = (util.getValue(cart, 'subTotal', 0)/100).toFixed(2);
 	const giveboxFee = (0).toFixed(2);
-	const fee = (0).toFixed(2);
-	const total = (0).toFixed(2);
+	const fee = (util.getValue(cart, 'fee', 0)/100).toFixed(2);
+	const total = (util.getValue(cart, 'total', 0)/100).toFixed(2);
 
 	return {
+		hasCustomGoal,
+		raised,
+		goal,
 		subTotal,
 		giveboxFee,
 		fee,

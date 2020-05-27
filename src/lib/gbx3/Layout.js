@@ -8,12 +8,15 @@ import {
 	updateBlocks,
 	updateData,
 	updateInfo,
-	saveGBX3
+	saveGBX3,
+	Image,
+	GBLink
 } from '../';
 import Block from './blocks/Block';
 import Form from './blocks/Form';
 import Scroll from 'react-scroll';
 import has from 'has';
+import Moment from 'moment';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -198,6 +201,15 @@ class Layout extends React.Component {
 							</Block>
 						</div>
 					</Element>
+				</div>
+				<div className='layout-column'>
+					<div className='gbx3Footer flexCenter flexColumn'>
+						<Image url='https://s3-us-west-1.amazonaws.com/givebox/public/gb-logo5.svg' maxSize={'30px'} style={{ minHeight: 30 }} />
+						<div className="copyright">
+							&copy; {Moment().format('YYYY')} Givebox<br />
+							<GBLink allowCustom={true} customColor={this.props.primaryColor} onClick={() => window.open('https://givebox.com')}>www.givebox.com</GBLink>
+						</div>
+					</div>
 				</div>
 				{breakpoint === 'mobile' ? <div className='bottomOffset'>&nbsp;</div> : <></>}
 			</div>

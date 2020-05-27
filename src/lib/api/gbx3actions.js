@@ -92,10 +92,54 @@ export function updateCart(cart) {
 	}
 }
 
+export function updateCartItem(unitID, item = {}, multiItems = true) {
+	return (dispatch, getState) => {
+		const gbx3 = util.getValue(getState(), 'gbx3', {});
+		const info = util.getValue(gbx3, 'info', {});
+		const articleID = util.getValue(info, 'articleID');
+		const cart = util.getValue(gbx3, 'cart', {});
+		const items = util.getValue(cart, 'items', []);
+		const index = items.findIndex(i => i.unitID === unitID);
+		item.articleID = articleID;
+		if (index === -1) {
+			if (item.quantity > 0) {
+				if (multiItems) items.push(item);
+				else {
+					// If multiItems is false find and remove the previous item per articleID
+					const removeIndex = items.findIndex(i => i.articleID === articleID);
+					if (removeIndex !== -1) items.splice(removeIndex, 1);
+					items.push(item);
+				}
+			}
+		} else {
+			if (item.quantity > 0) items[index] = { ...items[index], ...item };
+			else items.splice(index, 1);
+		}
+		cart.subTotal = util.sum(items, 'amount');
+		dispatch(updateCart(cart));
+	}
+}
+
 export function updateOrder(order) {
 	return {
 		type: types.UPDATE_ORDER,
 		order
+	}
+}
+
+export function updateCustomer(name, value) {
+	return {
+		type: types.UPDATE_CUSTOMER,
+		name,
+		value
+	}
+}
+
+export function updatePaymethod(name, value) {
+	return {
+		type: types.UPDATE_PAYMETHOD,
+		name,
+		value
 	}
 }
 

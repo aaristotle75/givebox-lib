@@ -72,8 +72,8 @@ class Form extends Component {
 				form,
 				defaultButton: util.deepClone(button),
 				defaultForm: util.deepClone(form)
-			}, async () => {
-				const updated = await this.props.updateData({
+			}, () => {
+				const data = {
 					passFees,
 					giveboxSettings: {
 						feeOption,
@@ -84,13 +84,14 @@ class Form extends Component {
 						notePlaceholder,
 						allowSelection
 					}
-				});
-				if (updated) {
-					this.props.saveBlock(null, {
+				};
+				this.props.saveBlock({
+					data,
+					options: {
 						button,
 						form
-					});
-				}
+					}
+				});
 			});
 		} else {
 			this.setState({

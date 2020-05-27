@@ -35,6 +35,7 @@ import ActionBar from './block/ActionBar';
 import CodeBlock from './block/CodeBlock';
 
 import { Alert } from './common/Alert';
+import CircularProgress from './common/CircularProgress';
 import Collapse from './common/Collapse';
 import CustomBtn from './common/CustomBtn';
 import Delete from './common/Delete';
@@ -83,6 +84,10 @@ import {
 	updateData,
 	updateAdmin,
 	updateCart,
+	updateCartItem,
+	updateOrder,
+	updateCustomer,
+	updatePaymethod,
 	saveGBX3,
 	resetGBX3
 } from './api/gbx3actions';
@@ -155,6 +160,10 @@ export {
 	updateData,
 	updateAdmin,
 	updateCart,
+	updateCartItem,
+	updateOrder,
+	updateCustomer,
+	updatePaymethod,
 	saveGBX3,
 	resetGBX3,
 
@@ -195,6 +204,7 @@ export {
 
 	// common
 	Alert,
+	CircularProgress,
 	Collapse,
 	CustomBtn,
 	Delete,

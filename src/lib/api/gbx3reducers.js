@@ -32,7 +32,16 @@ export function gbx3(state = {
 		outline: false
 	},
 	data: {},
-	cart: {},
+	cart: {
+		subTotal: 0,
+		total: 0,
+		fee: 0,
+		items: []
+	},
+	order: {
+		customer: {},
+		paymethod: {}
+	},
 	defaults: {}
 }, action) {
 	switch (action.type) {
@@ -106,7 +115,7 @@ export function gbx3(state = {
 			return Object.assign({}, state, {
 				cart: {
 					...state.cart,
-					...action.cart,
+					...action.cart
 				}
 			});
 		case types.UPDATE_ORDER:
@@ -114,6 +123,26 @@ export function gbx3(state = {
 				order: {
 					...state.order,
 					...action.order,
+				}
+			});
+		case types.UPDATE_CUSTOMER:
+			return Object.assign({}, state, {
+				order: {
+					...state.order,
+					customer: {
+						...state.order.customer,
+						[action.name]: action.value
+					},
+				}
+			});
+		case types.UPDATE_PAYMETHOD:
+			return Object.assign({}, state, {
+				order: {
+					...state.order,
+					paymethod: {
+						...state.order.paymethod,
+						[action.name]: action.value
+					},
 				}
 			});
 		case types.UPDATE_DEFAULTS:

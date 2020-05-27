@@ -5,6 +5,7 @@ import {
 	util,
 	toggleModal,
 	updateBlock,
+	updateData,
 	saveGBX3,
 	updateLayouts
 } from '../../';
@@ -48,12 +49,29 @@ class Block extends React.Component {
 		this.setState({ editModalOpen: false });
 	}
 
-	async saveBlock(content = {}, options = {}, saveGBX3 = true, callback = this.closeEditModal, updateSpecificGrid = false) {
+	async saveBlock(params = {}) {
 		const {
 			name,
 			block,
 			breakpoint
 		} = this.props;
+
+		const opts = {
+			content: {},
+			options: {},
+			data: {},
+			saveGBX3: true,
+			callback: this.closeEditModal,
+			updateSpecificGrid: false,
+			...params
+		};
+
+		const content = { ...opts.content };
+		const options = { ...opts.options };
+		const data = { ...opts.data };
+		const saveGBX3 = opts.saveGBX3;
+		const callback = opts.callback;
+		const updateSpecificGrid = opts.updateSpecificGrid;
 
 		const grid = {};
 		if (this.height) grid.h = Math.ceil(parseFloat(this.height / 10));
@@ -82,6 +100,8 @@ class Block extends React.Component {
 		} : {};
 
 		const updated = [];
+		const checkForUpdatesCount = !util.isEmpty(data) ? 2 : 1;
+
 		const blocksUpdated = await this.props.updateBlock(name, Object.assign({}, block, {
 			grid: blockGrid,
 			options: {
@@ -91,11 +111,16 @@ class Block extends React.Component {
 		}));
 		if (blocksUpdated) updated.push('blocksUpdated');
 
+		if (!util.isEmpty(data)) {
+			const dataUpdated = await this.props.updateData(data);
+			if (dataUpdated) updated.push('dataUpdated');
+		}
+
 		const saveCallback = () => {
 			callback();
 		};
 
-		if (updated.length === 1) {
+		if (updated.length === checkForUpdatesCount) {
 			if (saveGBX3) this.props.saveGBX3(null, false, saveCallback, !util.isEmpty(grid) ? true : false);
 			else saveCallback();
 		}
@@ -226,6 +251,7 @@ function mapStateToProps(state, props) {
 export default connect(mapStateToProps, {
 	toggleModal,
 	updateBlock,
+	updateData,
 	updateLayouts,
 	saveGBX3
 })(Block);

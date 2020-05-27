@@ -140,7 +140,7 @@ class PaymentFormClass extends Component {
 
 		return (
 			<Tabs
-				default='echeck'
+				default='creditcard'
 				className='paymentFormTabs'
 				allowCustom={true}
 				customColor={primaryColor}

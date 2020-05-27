@@ -381,6 +381,12 @@ export function dataURLtoFile(dataurl, filename) {
 	return new File([u8arr], filename, {type:mime});
 }
 
+export function sum(items, prop) {
+	return items.reduce( function(a, b){
+			 return a + b[prop];
+	 }, 0);
+}
+
 export function calcAmount(amount, fee, passFees, gross = false) {
 	if (passFees) {
 		if (gross) return parseFloat((amount/100)+(fee/100)).toFixed(2);

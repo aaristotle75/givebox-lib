@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-  util,
+	util,
 	Dropdown
 } from '../../../';
 
 class RecurringEdit extends Component {
 
-  constructor(props) {
-    super(props);
+	constructor(props) {
+		super(props);
 		this.renderRecurringByKind = this.renderRecurringByKind.bind(this);
 
-    this.state = {
+		this.state = {
 			recurring: this.props.recurring
-    };
-  }
+		};
+	}
 
 	componentDidMount() {
 	}
@@ -40,12 +40,12 @@ class RecurringEdit extends Component {
 				const recurring = { enabled: util.getValue(article, 'allowRecurring', true), ...this.state.recurring };
 				return (
 					<>
-		        <Dropdown
+						<Dropdown
 							label='Allow Recurring Option'
 							fixedLabel={true}
-		          name='allowRecurring'
-		          defaultValue={util.getValue(recurring, 'enabled', true) ? 'yes' : 'no'}
-		          onChange={(name, value) => {
+							name='allowRecurring'
+							defaultValue={util.getValue(recurring, 'enabled', true) ? 'yes' : 'no'}
+							onChange={(name, value) => {
 								const allowRecurring = value === 'yes' ? true : false;
 								const data = {
 									allowRecurring
@@ -57,11 +57,11 @@ class RecurringEdit extends Component {
 									this.props.updateData(data);
 								});
 							}}
-					    options={[
-					      { primaryText: 'Yes', value: 'yes' },
-					      { primaryText: 'No', value: 'no' }
-					    ]}
-		        />
+							options={[
+								{ primaryText: 'Yes', value: 'yes' },
+								{ primaryText: 'No', value: 'no' }
+							]}
+						/>
 					</>
 				)
 			}
@@ -74,14 +74,10 @@ class RecurringEdit extends Component {
 		}
 	}
 
-  render() {
+	render() {
 
-		const {
-			article
-		} = this.props;
-
-    return this.renderRecurringByKind();
-  }
+		return this.renderRecurringByKind();
+	}
 }
 
 RecurringEdit.defaultProps = {
@@ -89,7 +85,7 @@ RecurringEdit.defaultProps = {
 
 function mapStateToProps(state, props) {
 
-  return {
+	return {
 	}
 }
 
