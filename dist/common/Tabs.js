@@ -43,11 +43,29 @@ class Tabs extends Component {
   }
 
   renderTabPanel() {
+    const {
+      allowCustom,
+      customColor,
+      solidColor,
+      borderSize
+    } = this.props;
+    const {
+      selectedTab
+    } = this.state;
     const items = [];
     const bindthis = this;
 
     if (!util.isEmpty(this.props.children)) {
       Object.entries(this.props.children).forEach(([key, value]) => {
+        const selectedStyle = {
+          borderBottom: customColor ? `${borderSize || '2px'} solid ${customColor}` : ''
+        };
+        const tabStyle = value.props.id === selectedTab ? { ...this.props.tabStyle,
+          ...selectedStyle
+        } : { ...this.props.tabStyle
+        };
+        const isSelected = value.props.id === selectedTab ? true : false;
+
         if (!util.isEmpty(value)) {
           if (util.getValue(value.props, 'id')) {
             items.push(React.createElement("div", {
@@ -55,9 +73,12 @@ class Tabs extends Component {
               key: key,
               className: `panelItem`
             }, React.createElement(GBLink, {
+              allowCustom: isSelected ? allowCustom : false,
+              customColor: customColor,
+              solidColor: solidColor,
               disabled: util.getValue(value.props, 'disabled'),
-              className: `${util.getValue(value.props, 'disabled') ? 'disabled' : ''} ripple panelTab ${value.props.id === bindthis.state.selectedTab && 'selected'}`,
-              style: bindthis.props.tabsStyle,
+              className: `${util.getValue(value.props, 'disabled') ? 'disabled' : ''} ripple panelTab ${isSelected && 'selected'}`,
+              style: tabStyle,
               onClick: () => bindthis.onTabClick(value.props.id)
             }, value.props.label)));
           }
@@ -93,7 +114,10 @@ class Tabs extends Component {
 
 Tabs.defaultProps = {
   callbackBefore: null,
-  callbackAfter: null
+  callbackAfter: null,
+  allowCustom: false,
+  customColor: false,
+  solidColor: false
 };
 export default Tabs;
 export const Tab = props => {

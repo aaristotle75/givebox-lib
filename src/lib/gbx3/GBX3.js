@@ -16,6 +16,7 @@ import {
 	updateDefaults,
 	updateGlobals,
 	updateData,
+	updateFees,
 	updateAdmin,
 	ModalRoute
 } from '../';
@@ -75,6 +76,16 @@ class GBX3 extends React.Component {
 		const apiName = `org${types.kind(kind).api.item}`;
 
 		if (kindID) {
+			this.props.getResource('articleFeeSettings', {
+				id: [articleID],
+				reload: true,
+				callback: (res, err) => {
+					if (!err && !util.isEmpty(res)) {
+						this.props.updateFees(res);
+					}
+				}
+			});
+
 			this.props.getResource(apiName, {
 				id: [kindID],
 				orgID: orgID,
@@ -266,5 +277,6 @@ export default connect(mapStateToProps, {
 	updateDefaults,
 	updateGlobals,
 	updateData,
+	updateFees,
 	updateAdmin
 })(GBX3);

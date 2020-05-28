@@ -2,26 +2,26 @@
 
 /*-------- Common -----------*/
 body {
-  line-height: inherit;
-  height: 100%;
-  overflow: hidden;
-  margin: 0px;
-  box-sizing: border-box;
-  background: transparent;
-  font-family: $font-family;
-  color: $dark-gray;
+	line-height: inherit;
+	height: 100%;
+	overflow: hidden;
+	margin: 0px;
+	box-sizing: border-box;
+	background: transparent;
+	font-family: $font-family;
+	color: $dark-gray;
 }
 
 article, aside, h1, h2, h3, h4, h5, h6, hgroup, nav, section, .largeText, .normalText, .smallText {
-  display: block;
+	display: block;
 }
 
 strong {
-  font-weight: 500;
+	font-weight: 500;
 }
 
 .italic {
-  font-style: italic;
+	font-style: italic;
 }
 
 h1 { margin: 0.67em 0; font-size: 2.00em; font-weight: $header-weight; }
@@ -56,7 +56,7 @@ p { margin: 10px 0; font-size: $normal-text-size; font-weight: $font-weight; }
 }
 
 .clear {
-  clear: both !important;
+	clear: both !important;
 }
 
 .yellow { color: $yellow !important; }
@@ -66,69 +66,75 @@ p { margin: 10px 0; font-size: $normal-text-size; font-weight: $font-weight; }
 .gray { color: $light-med-gray !important; }
 
 .blur {
-  @include filter(blur(3px));
-  @include default-transition(.5s);
+	@include filter(blur(3px));
+	@include default-transition(.5s);
+}
+
+.spaceBetween {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
 .flexCenter {
-  display: flex;
-  justify-content: center;
+	display: flex;
+	justify-content: center;
 }
 
 /*-------- Links ------------*/
 
 a {
-  color: $primary;
-  cursor: pointer;
-  text-decoration: none;
+	color: $primary;
+	cursor: pointer;
+	text-decoration: none;
 }
 
 a:hover {
-  color: transparentize($primary, .3);
-  @include default-transition(.25s);
+	color: transparentize($primary, .3);
+	@include default-transition(.25s);
 }
 
 a.button {
-  font-size: 12px;
-  letter-spacing: .5px;
-  font-family: $font-family;
-  color: $white;
-  display: inline-block;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 20px 10px 20px;
-  line-height: 17px;
-  text-transform: none;
-  background-color: $primary;
-  cursor: pointer;
-  font-weight: 500;
-  @include box-shadow(0px 1px 2px 0px rgba(0,0,0,0.55));
+	font-size: 12px;
+	letter-spacing: .5px;
+	font-family: $font-family;
+	color: $white;
+	display: inline-block;
+	border: none;
+	border-radius: 5px;
+	padding: 10px 20px 10px 20px;
+	line-height: 17px;
+	text-transform: none;
+	background-color: $primary;
+	cursor: pointer;
+	font-weight: 500;
+	@include box-shadow(0px 1px 2px 0px rgba(0,0,0,0.55));
 }
 
 a.button:hover {
-  background-color: $secondary;
-  @include default-transition(.25s);
+	background-color: $secondary;
+	@include default-transition(.25s);
 }
 
 a.button.disabled {
-  cursor: not-allowed;
-  background-color: transparentize($primary, .5);
+	cursor: not-allowed;
+	background-color: transparentize($primary, .5);
 }
 
 a.button:hover.disabled {
-  background-color: transparentize($primary, .5);
+	background-color: transparentize($primary, .5);
 }
 
 /*-------- Button --------*/
 button {
 	background: transparent;
 	box-shadow: none;
-  border: none;
-  cursor: pointer;
+	border: none;
+	cursor: pointer;
 }
 
 button:hover {
-  @include default-transition(.25s);
+	@include default-transition(.25s);
 }
 
 button:focus {
@@ -136,112 +142,112 @@ button:focus {
 }
 
 button.link {
-  background: none;
-  color: $primary;
-  border: none;
-  padding: 0 !important;
-  margin: 0;
-  font-family: $font-family;
-  font-size: $normal-text-size;
+	background: none;
+	color: $primary;
+	border: none;
+	padding: 0 !important;
+	margin: 0;
+	font-family: $font-family;
+	font-size: $normal-text-size;
 }
 
 button.link:hover {
-  color: transparentize($primary, .3);
-  @include default-transition(.25s);
+	color: transparentize($primary, .3);
+	@include default-transition(.25s);
 }
 
 button.button {
-  font-family: $font-family;
-  color: $white;
-  display: inline-block;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 20px 10px 20px;
-  line-height: 17px;
-  background-color: $primary;
-  cursor: pointer;
-  @include box-shadow(0px 1px 2px 0px rgba(0,0,0,0.55));
+	font-family: $font-family;
+	color: $white;
+	display: inline-block;
+	border: none;
+	border-radius: 5px;
+	padding: 10px 20px 10px 20px;
+	line-height: 17px;
+	background-color: $primary;
+	cursor: pointer;
+	@include box-shadow(0px 1px 2px 0px rgba(0,0,0,0.55));
 }
 
 button.button:hover {
-  background-color: $secondary;
-  @include default-transition(.25s);
+	background-color: $secondary;
+	@include default-transition(.25s);
 }
 
 button.button:disabled {
-  cursor: not-allowed;
-  background-color: transparentize($primary, .5);
+	cursor: not-allowed;
+	background-color: transparentize($primary, .5);
 }
 
 button.button:hover:disabled {
-  background-color: transparentize($primary, .5);
+	background-color: transparentize($primary, .5);
 }
 
 button.button.secondary {
-  background-color: $off-white;
-  color: $light-med-gray;
+	background-color: $off-white;
+	color: $light-med-gray;
 }
 
 button.button.secondary:hover {
-  background-color: transparentize($light-gray, .5);
-  @include default-transition(.25s);
+	background-color: transparentize($light-gray, .5);
+	@include default-transition(.25s);
 }
 
 button.modalToTop {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  padding: 15px;
-  border: 1px solid $light-gray;
-  color: $med-gray;
-  background: transparentize($white, .3);
-  z-index: 9999999;
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	padding: 15px;
+	border: 1px solid $light-gray;
+	color: $med-gray;
+	background: transparentize($white, .3);
+	z-index: 9999999;
 
-  .icon { font-size: $large-text-size; }
+	.icon { font-size: $large-text-size; }
 }
 
 button.modalToTop:hover {
-  color: $white;
-  background: $mainColor;
+	color: $white;
+	background: $mainColor;
 }
 
 /*------- Lists ----------*/
 ul {
-  list-style-type: none;
+	list-style-type: none;
 }
 
 li {
 }
 
 ul.selectable {
-  li {
-    background: $off-white;
-    margin: 5px 0;
-    padding: 5px 0; // overwirde padding in component style
-    cursor: pointer;
-  }
+	li {
+		background: $off-white;
+		margin: 5px 0;
+		padding: 5px 0; // overwirde padding in component style
+		cursor: pointer;
+	}
 
-  li:nth-child(even) {
-    background: $light;
-  }
+	li:nth-child(even) {
+		background: $light;
+	}
 
-  li:hover {
-    background: $light-gray;
-    cursor: pointer;
-    @include default-transition(.25s);
-  }
+	li:hover {
+		background: $light-gray;
+		cursor: pointer;
+		@include default-transition(.25s);
+	}
 
-  img {
-    display: inline-block;
-    height: 50px;
-    width: 50px;
-    vertical-align: middle;
-  }
+	img {
+		display: inline-block;
+		height: 50px;
+		width: 50px;
+		vertical-align: middle;
+	}
 
-  .liContent {
-    vertical-align: top;
-    display: inline-block;
-  }
+	.liContent {
+		vertical-align: top;
+		display: inline-block;
+	}
 
 }
 
@@ -251,47 +257,47 @@ ul.selectable {
 
 .moneyAmount {
 
-  .symbol {
-  	display: inline;
-  	vertical-align: top;
-  	font-size: 75%;
-  	white-space: nowrap;
-  }
+	.symbol {
+		display: inline;
+		vertical-align: top;
+		font-size: 75%;
+		white-space: nowrap;
+	}
 }
 
 /*------- Collapse -----------*/
 .collapse {
 
-  margin: 40px 0;
-  //border-bottom: 1px solid $light;
+	margin: 40px 0;
+	//border-bottom: 1px solid $light;
 
-  button.sectionLink {
-    display: flex;
-    justify-content: space-between;
-    color: $med-gray;
-    font-size: $normal-text-size;
-    font-weight: 300;
-    padding-bottom: 10px !important;
-    width: 100%;
-    align-items: center;
+	button.sectionLink {
+		display: flex;
+		justify-content: space-between;
+		color: $med-gray;
+		font-size: $normal-text-size;
+		font-weight: 300;
+		padding-bottom: 10px !important;
+		width: 100%;
+		align-items: center;
 
-    .sectionText {
-      display: flex;
+		.sectionText {
+			display: flex;
 
-      .icon {
-        font-size: $large-text-size;
-        margin-right: 10px;
-        font-weight: 300;
-      }
-    }
-  }
+			.icon {
+				font-size: $large-text-size;
+				margin-right: 10px;
+				font-weight: 300;
+			}
+		}
+	}
 
-  button.sectionLink:hover {
-    @include default-transition(.25s);
-    color: $mainColor;
-  }
+	button.sectionLink:hover {
+		@include default-transition(.25s);
+		color: $mainColor;
+	}
 }
 
 .collapse.noBorder {
-  border: 0;
+	border: 0;
 }

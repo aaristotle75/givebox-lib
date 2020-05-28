@@ -179,7 +179,7 @@ class Dropdown extends Component {
         value: value,
         selected: selected
       });
-      this.props.onChange(this.props.name, value);
+      this.props.onChange(this.props.name, value, selected);
     }
   }
 
@@ -229,7 +229,9 @@ class Dropdown extends Component {
           className: "dropdown-container"
         }, React.createElement("div", {
           className: "leftSide"
-        }, bindthis.props.multi && selected && bindthis.props.iconMultiChecked, " ", value.primaryText, value.secondaryText && React.createElement("span", {
+        }, bindthis.props.multi && selected ? React.createElement("span", {
+          className: `icon icon-${bindthis.props.iconMultiChecked}`
+        }) : '', " ", value.primaryText, value.secondaryText && React.createElement("span", {
           className: "secondaryText"
         }, value.secondaryText)), React.createElement("div", {
           className: "rightSide"

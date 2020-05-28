@@ -78,6 +78,13 @@ export function updateData(data) {
 	}
 }
 
+export function updateFees(fees) {
+	return {
+		type: types.UPDATE_FEES,
+		fees
+	}
+}
+
 export function updateAdmin(admin) {
 	return {
 		type: types.UPDATE_ADMIN,
@@ -95,12 +102,14 @@ export function updateCart(cart) {
 export function updateCartItem(unitID, item = {}, multiItems = true) {
 	return (dispatch, getState) => {
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
+		const fees = util.getValue(gbx3, 'fees', {});
 		const info = util.getValue(gbx3, 'info', {});
 		const articleID = util.getValue(info, 'articleID');
 		const cart = util.getValue(gbx3, 'cart', {});
 		const items = util.getValue(cart, 'items', []);
 		const index = items.findIndex(i => i.unitID === unitID);
 		item.articleID = articleID;
+		item.fees = fees;
 		if (index === -1) {
 			if (item.quantity > 0) {
 				if (multiItems) items.push(item);
@@ -116,8 +125,29 @@ export function updateCartItem(unitID, item = {}, multiItems = true) {
 			else items.splice(index, 1);
 		}
 		cart.subTotal = util.sum(items, 'amount');
+		dispatch(calcFee(101, fees));
 		dispatch(updateCart(cart));
 	}
+}
+
+function calcFee(amount = 0, fees = {}) {
+	return (dispatch, getState) => {
+		const gbx3 = util.getValue(getState(), 'gbx3', {});
+		const order = util.getValue(gbx3, 'order', {});
+		const paymethod = util.getValue(order, 'paymethod', {});
+		const cardType = util.getValue(paymethod, 'cardType');
+		const feePrefix = cardType === 'amex' ? 'amexFnd' : 'fnd';
+		const pctFee = util.getValue(fees, `${feePrefix}PctFee`, 290);
+		const fixFee = util.getValue(fees, `${feePrefix}FixFee`, 29);
+		const percent = +((pctFee/10000).toFixed(4)*parseFloat(amount));
+		const fixed = +((fixFee/100).toFixed(2));
+		const fee = +((percent + fixed).toFixed(2));
+		return fee;
+	}
+}
+
+export function updateCartTotals() {
+
 }
 
 export function updateOrder(order) {

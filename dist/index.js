@@ -31,6 +31,7 @@ import StatBlock from './block/StatBlock';
 import ActionBar from './block/ActionBar';
 import CodeBlock from './block/CodeBlock';
 import { Alert } from './common/Alert';
+import CircularProgress from './common/CircularProgress';
 import Collapse from './common/Collapse';
 import CustomBtn from './common/CustomBtn';
 import Delete from './common/Delete';
@@ -52,7 +53,7 @@ import * as util from './common/utility';
 import Video from './common/Video';
 import FeesGlossary from './glossary/Fees';
 import { toggleModal, removeResource, resourceProp, getAPI, sendAPI, setAppRef, setModalRef, setProp, setPrefs, setCustomProp } from './api/actions';
-import { updateGBX3, updateInfo, updateLayouts, updateBlocks, updateBlock, updateDefaults, updateDefault, updateGlobals, updateGlobal, updateData, updateAdmin, updateCart, saveGBX3, resetGBX3 } from './api/gbx3actions';
+import { updateGBX3, updateInfo, updateLayouts, updateBlocks, updateBlock, updateDefaults, updateDefault, updateGlobals, updateGlobal, updateData, updateAdmin, updateCart, updateCartItem, updateOrder, updateCustomer, updatePaymethod, saveGBX3, resetGBX3 } from './api/gbx3actions';
 import { app, resource, send, modal, preferences, custom } from './api/reducers';
 import { getResource, reloadResource, sendResource, savePrefs } from './api/helpers';
 import * as giveboxAPI from './api/givebox'; // Help Desk
@@ -68,13 +69,13 @@ import CKEditorUpload from './editor/CKEditorUpload';
 export { // Form
 Form, _v, selectOptions, Select, TextField, Dropdown, RichTextField, Choice, CalendarField, CalendarRange, Checkbox, ColorPicker, Upload, UploadLibrary, UploadPrivate, WhereField, MediaLibrary // actions
 , toggleModal, removeResource, resourceProp, getAPI, sendAPI, setAppRef, setModalRef, setProp, setPrefs, setCustomProp // gbx3 actions
-, updateGBX3, updateInfo, updateLayouts, updateBlocks, updateBlock, updateDefaults, updateDefault, updateGlobals, updateGlobal, updateData, updateAdmin, updateCart, saveGBX3, resetGBX3 // API
+, updateGBX3, updateInfo, updateLayouts, updateBlocks, updateBlock, updateDefaults, updateDefault, updateGlobals, updateGlobal, updateData, updateAdmin, updateCart, updateCartItem, updateOrder, updateCustomer, updatePaymethod, saveGBX3, resetGBX3 // API
 , giveboxAPI, getResource, reloadResource, sendResource, savePrefs // reducers
 , app, resource, send, modal, preferences, custom // Modal
 , ModalLink, ModalRoute // Table
 , ActionsMenu, Search, Table, MaxRecords, NoRecords, Paginate, Export, DownloadFileConnect, Filter // Block
 , StatBlock, ActionBar, CodeBlock // common
-, Alert, Collapse, CustomBtn, Delete, Error, Fade, GBLink, GBX, Iframe, Image, ImageDisplay, history, LinearBar, Loader, Popup, Balloon, Portal, Redirect, Tabs, Tab, types, util, Video // Glossary
+, Alert, CircularProgress, Collapse, CustomBtn, Delete, Error, Fade, GBLink, GBX, Iframe, Image, ImageDisplay, history, LinearBar, Loader, Popup, Balloon, Portal, Redirect, Tabs, Tab, types, util, Video // Glossary
 , FeesGlossary // Help Desk
 , HelpDesk, TicketForm, zohoCats, Articles, HelpDeskButton // Editor
 , CustomCKEditor4, CKEditorUpload };

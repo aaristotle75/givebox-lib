@@ -77,8 +77,8 @@ class Echeck extends Component {
 					</div>
 				</div>
 				<div>
-					<div className='col echeckCol'>{this.props.textField('accountNumber', { placeholder: 'Bank Account Number', label: 'Bank Account Number', fixedLabel: true, customLabel: echeckHowModal, required: true, maxLength: 16, validate: 'number', inputMode: 'numeric' })}</div>
-					<div className='col echeckCol'>{this.props.textField('routingNumber', { placeholder: 'Bank Routing Number', fixedLabel: true, label: 'Routing Number', required: true, maxLength: 9, validate: 'number', onChange: this.getBankName, inputMode: 'numeric' })}</div>
+					<div className='col echeckCol'>{this.props.textField('accountNumber', { placeholder: 'Bank Account Number', label: 'Bank Account Number', fixedLabel: true, customLabel: echeckHowModal, required: false, maxLength: 16, validate: 'number', inputMode: 'numeric' })}</div>
+					<div className='col echeckCol'>{this.props.textField('routingNumber', { placeholder: 'Bank Routing Number', fixedLabel: true, label: 'Routing Number', required: false, maxLength: 9, validate: 'number', onChange: this.getBankName, inputMode: 'numeric' })}</div>
 				</div>
 			</div>
 		)

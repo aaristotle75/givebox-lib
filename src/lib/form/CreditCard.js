@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Fade from '../common/Fade';
 import * as _v from './formValidate';
 import * as util from '../common/utility';
-var lookup = require('binlookup')('8e161ba2-5874-40d0-834c-b63cf8468c9f');
+const lookup = require('binlookup')('8e161ba2-5874-40d0-834c-b63cf8468c9f');
 
 class CreditCard extends Component {
 
@@ -42,16 +42,15 @@ class CreditCard extends Component {
 		const length = obj.apiValue.length;
 		let doBinLookup = false;
 		let cardType = length < 4 ? 'default' : this.state.cardType;
-		if (length === 4) doBinLookup = true;
-		if (cardType === 'default' && length >= 15) doBinLookup = true;
+		if (length === 4 || ( cardType === 'amex' && length === 15 ) || ( cardType !== 'amex' && length === 16) ) doBinLookup = true;
 
 		if (doBinLookup) {
-			lookup(obj.apiValue, (err, data) => {
+			lookup(obj.apiValue.slice(0, 9), (err, data) => {
 				const cardType = util.getValue(data, 'scheme', 'default');
-				this.setState({ cardType }, this.props.onChange(name, obj.value, cardType));
+				this.setState({ cardType }, this.props.onChange(name, obj.value, cardType, data));
 			});
 		} else {
-			this.setState({ cardType }, this.props.onChange(name, obj.value, cardType));
+			this.setState({ cardType }, this.props.onChange(name, obj.value, cardType, {}));
 		}
 	}
 

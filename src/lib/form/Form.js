@@ -397,12 +397,14 @@ class Form extends Component {
 		}
 	}
 
-	onChangeCreditCard(name, val, cardType) {
+	onChangeCreditCard(name, val, cardType, binData) {
 		const obj = _v.formatCreditCard(val);
 		const field = this.state.fields[name];
 		const value = obj.value;
 		const apiValue = obj.apiValue;
 		this.fieldProp(name, {value, apiValue, cardType, error: false});
+
+		field.binData = { ...getValue(field, 'binData', {}), ...binData };
 
 		if (cardType === 'amex') {
 			this.fieldProp('cvv', { maxLength: 4 });
@@ -422,6 +424,7 @@ class Form extends Component {
 			this.fieldProp(name, {checked: false});
 		}
 
+		if (field.onChange) field.onChange(name, value, cardType, field, this.state.fields);
 		if (field.debug) console.log('onChangeCreditCard', name, field);
 	}
 
@@ -881,13 +884,13 @@ class Form extends Component {
 
 			<div style={params.style} className={`field-group creditCard-group`}>
 				<div className='creditCard col'>
-					{this.creditCard('ccnumber', {label: params.ccnumberLabel || 'Credit Card', fixedLabel: params.ccnumberfixedLabel || true, hideLabel: params.hideLabel, placeholder: params.placeholder, readOnly: params.readOnly, required: params.required, debug: params.debug})}
+					{this.creditCard('ccnumber', {label: params.ccnumberLabel || 'Credit Card', fixedLabel: params.ccnumberfixedLabel || true, hideLabel: params.hideLabel, placeholder: params.placeholder, readOnly: params.readOnly, required: params.required, onChange: params.onChange, onBlur: params.onBlur, debug: params.debug})}
 				</div>
 				<div className='ccexpire col'>
-					{this.textField('ccexpire', {label: params.ccxpireLabel || 'Expiration', fixedLabel: params.ccexpirefixedLabel || true, placeholder: 'MM/YY', required: params.required, value: params.ccexpireValue || '', validate: 'ccexpire', maxLength: 5, count: false, debug: params.debug, inputMode: 'numeric', onChange: this.onChangeCCExpire })}
+					{this.textField('ccexpire', {label: params.ccxpireLabel || 'Expiration', fixedLabel: params.ccexpirefixedLabel || true, placeholder: 'MM/YY', required: params.required, value: params.ccexpireValue || '', validate: 'ccexpire', maxLength: 5, count: false, debug: params.debug, inputMode: 'numeric', onChange: this.onChangeCCExpire, onBlur: params.onBlurCCExpire })}
 				</div>
 				<div className='cvv col'>
-					{this.textField('cvv', {label: 'CVV', customLabel: cvvModal, fixedLabel: true, placeholder: 'CVV', required: params.required, maxLength: 3, count: false, debug: params.debug, validate: 'number', inputMode: 'numeric'})}
+					{this.textField('cvv', {label: 'CVV', customLabel: cvvModal, fixedLabel: true, placeholder: 'CVV', required: params.required, maxLength: 3, count: false, debug: params.debug, validate: 'number', inputMode: 'numeric', onBlur: params.onBlurCVV })}
 				</div>
 				<div className='clear'></div>
 			</div>

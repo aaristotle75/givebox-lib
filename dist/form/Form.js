@@ -708,7 +708,7 @@ class Form extends Component {
       createField: createField,
       params: params,
       useIcon: params.useIcon,
-      color: params.color
+      color: params.color || this.props.primaryColor
     });
   }
 
@@ -750,7 +750,7 @@ class Form extends Component {
       fieldProp: this.fieldProp,
       formProp: this.formProp,
       inputRef: params.ref,
-      color: params.color
+      color: params.color || this.props.primaryColor
     });
   }
 
@@ -872,7 +872,7 @@ class Form extends Component {
       inputRef: params.ref,
       customLink: params.customLink,
       inputMode: params.inputMode,
-      color: params.color
+      color: params.color || this.props.primaryColor
     });
   }
 
@@ -910,7 +910,7 @@ class Form extends Component {
       closeModalAndSave: this.closeModalAndSave,
       hideCloseModalAndSaveButtons: params.hideCloseModalAndSaveButtons,
       disallowModalBgClose: params.disallowModalBgClose,
-      color: params.color
+      color: params.color || this.props.primaryColor
     });
   }
 
@@ -987,7 +987,7 @@ class Form extends Component {
       maxLength: field ? field.maxLength : params.maxLength,
       createField: this.createField,
       params: params,
-      color: params.color
+      color: params.color || this.props.primaryColor
     });
   }
 
@@ -1018,10 +1018,7 @@ class Form extends Component {
       style: params.style,
       className: `field-group creditCard-group`
     }, React.createElement("div", {
-      style: {
-        width: '60%'
-      },
-      className: "col"
+      className: "creditCard col"
     }, this.creditCard('ccnumber', {
       label: params.ccnumberLabel || 'Credit Card',
       fixedLabel: params.ccnumberfixedLabel || true,
@@ -1031,10 +1028,7 @@ class Form extends Component {
       required: params.required,
       debug: params.debug
     })), React.createElement("div", {
-      style: {
-        width: '20%'
-      },
-      className: "col"
+      className: "ccexpire col"
     }, this.textField('ccexpire', {
       label: params.ccxpireLabel || 'Expiration',
       fixedLabel: params.ccexpirefixedLabel || true,
@@ -1048,10 +1042,75 @@ class Form extends Component {
       inputMode: 'numeric',
       onChange: this.onChangeCCExpire
     })), React.createElement("div", {
-      style: {
-        width: '20%'
+      className: "cvv col"
+    }, this.textField('cvv', {
+      label: 'CVV',
+      customLabel: cvvModal,
+      fixedLabel: true,
+      placeholder: 'CVV',
+      required: params.required,
+      maxLength: 3,
+      count: false,
+      debug: params.debug,
+      validate: 'number',
+      inputMode: 'numeric'
+    })), React.createElement("div", {
+      className: "clear"
+    }));
+  }
+
+  echeckGroup(opts) {
+    const defaults = cloneObj(this.defaults);
+    const params = Object.assign({}, defaults, {
+      className: '',
+      required: true
+    }, opts);
+    const cvvModal = React.createElement("div", {
+      className: "cvvModal"
+    }, React.createElement(ModalRoute, {
+      modalRootClass: params.cvvModalRootClass,
+      id: "cvvModal",
+      component: () => {
+        return React.createElement(CVVModal, null);
       },
+      effect: "3DFlipVert",
+      style: {
+        width: '60%'
+      }
+    }), React.createElement(ModalLink, {
+      allowCustom: true,
+      customColor: this.props.primaryColor,
+      id: "cvvModal"
+    }, "What is CVV?"));
+    return React.createElement("div", {
+      style: params.style,
+      className: `field-group echeck-group`
+    }, React.createElement("div", {
       className: "col"
+    }, this.creditCard('ccnumber', {
+      label: params.ccnumberLabel || 'Credit Card',
+      fixedLabel: params.ccnumberfixedLabel || true,
+      hideLabel: params.hideLabel,
+      placeholder: params.placeholder,
+      readOnly: params.readOnly,
+      required: params.required,
+      debug: params.debug
+    })), React.createElement("div", {
+      className: "ccexpire col"
+    }, this.textField('ccexpire', {
+      label: params.ccxpireLabel || 'Expiration',
+      fixedLabel: params.ccexpirefixedLabel || true,
+      placeholder: 'MM/YY',
+      required: params.required,
+      value: params.ccexpireValue || '',
+      validate: 'ccexpire',
+      maxLength: 5,
+      count: false,
+      debug: params.debug,
+      inputMode: 'numeric',
+      onChange: this.onChangeCCExpire
+    })), React.createElement("div", {
+      className: "cvv col"
     }, this.textField('cvv', {
       label: 'CVV',
       customLabel: cvvModal,

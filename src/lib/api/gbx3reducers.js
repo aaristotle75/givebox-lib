@@ -32,6 +32,7 @@ export function gbx3(state = {
 		outline: false
 	},
 	data: {},
+	fees: {},
 	cart: {
 		subTotal: 0,
 		total: 0,
@@ -102,6 +103,13 @@ export function gbx3(state = {
 				data: {
 					...state.data,
 					...action.data,
+				}
+			});
+		case types.UPDATE_FEES:
+			return Object.assign({}, state, {
+				fees: {
+					...state.fees,
+					...action.fees,
 				}
 			});
 		case types.UPDATE_ADMIN:

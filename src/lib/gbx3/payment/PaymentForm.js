@@ -7,7 +7,9 @@ import {
 	Form,
 	ModalRoute,
 	Tab,
-	Tabs
+	Tabs,
+	updatePaymethod,
+	updateCustomer
 } from '../../';
 import Moment from 'moment';
 import SendEmail from './SendEmail';
@@ -26,13 +28,18 @@ class PaymentFormClass extends Component {
 		this.processForm = this.processForm.bind(this);
 		this.formSavedCallback = this.formSavedCallback.bind(this);
 		this.sendEmailCallback = this.sendEmailCallback.bind(this);
+		this.onCreditCardChange = this.onCreditCardChange.bind(this);
+		this.onPaymethodTabBefore = this.onPaymethodTabBefore.bind(this);
+		this.onPaymethodTabAfter = this.onPaymethodTabAfter.bind(this);
+		this.setPaymethod = this.setPaymethod.bind(this);
 		this.state = {
 			loading: false,
 			sendEmail: {
 				recipients: '',
 				message: util.getValue(this.props.sendEmail, 'defaultMsg', '')
 			},
-			applepay: false
+			applepay: false,
+			paymethod: 'creditcard'
 		}
 	}
 
@@ -40,6 +47,7 @@ class PaymentFormClass extends Component {
 		if (window.ApplePaySession) {
 			this.setState({ applepay: true });
 		}
+		this.setPaymethod(this.state.paymethod);
 	}
 
 	componentWillUnmount() {
@@ -94,6 +102,60 @@ class PaymentFormClass extends Component {
 		*/
 	}
 
+	onCreditCardChange(name, value, cardType, field) {
+		const {
+			paymethod
+		} = this.props;
+		if (util.getValue(paymethod, 'cardType') !== cardType) this.props.updatePaymethod('cardType', cardType);
+	}
+
+	onPaymethodTabBefore(key) {
+		this.setPaymethod(key);
+		return true;
+	}
+
+	onPaymethodTabAfter(key) {
+	}
+
+	setPaymethod(method) {
+		const {
+			paymethod
+		} = this.props;
+
+		switch (method) {
+			case 'echeck': {
+				this.props.fieldProp('accountNumber', { required: true });
+				this.props.fieldProp('routingNumber', { required: true });
+				this.props.fieldProp('ccnumber', { required: false, error: false });
+				this.props.fieldProp('ccexpire', { required: false, error: false });
+				this.props.fieldProp('cvv', { required: false, error: false });
+				break;
+			}
+
+			case 'applepay': {
+				this.props.fieldProp('accountNumber', { required: false, error: false });
+				this.props.fieldProp('routingNumber', { required: false, error: false });
+				this.props.fieldProp('ccnumber', { required: false, error: false });
+				this.props.fieldProp('ccexpire', { required: false, error: false });
+				this.props.fieldProp('cvv', { required: false, error: false });
+				break;
+			}
+
+			case 'creditcard': {
+				this.props.fieldProp('ccnumber', { required: true });
+				this.props.fieldProp('ccexpire', { required: true });
+				this.props.fieldProp('cvv', { required: true });
+				this.props.fieldProp('accountNumber', { required: false, error: false });
+				this.props.fieldProp('routingNumber', { required: false, error: false });
+				break;
+			}
+
+			// no default
+		}
+		this.setState({ paymethod: method });
+		if (util.getValue(paymethod, 'method') !== method) this.props.updatePaymethod('method', method);
+	}
+
 	customOnChange(name, value) {
 		console.log('customOnChange', name, value);
 		//this.props.fieldProp(name, { value });
@@ -118,7 +180,13 @@ class PaymentFormClass extends Component {
 		const tabs = [];
 		tabs.push(
 			<Tab key={'creditcard'} id={'creditcard'} label={<span className='tabLabel'>Pay by Credit Card</span>}>
-				{this.props.creditCardGroup({ required: true, placeholder: 'xxxx xxxx xxxx xxxx', debug: false, cvvModalRootClass: 'gbxModal' })}
+				{this.props.creditCardGroup({
+					required: false,
+					placeholder: 'xxxx xxxx xxxx xxxx',
+					debug: false,
+					cvvModalRootClass: 'gbxModal',
+					onChange: this.onCreditCardChange
+				})}
 			</Tab>
 		);
 
@@ -140,11 +208,13 @@ class PaymentFormClass extends Component {
 
 		return (
 			<Tabs
-				default='creditcard'
+				default={this.state.paymethod}
 				className='paymentFormTabs'
 				allowCustom={true}
 				customColor={primaryColor}
 				borderSize={'1px'}
+				callbackBefore={this.onPaymethodTabBefore}
+				callbackAfter={this.onPaymethodTabAfter}
 			>
 				{tabs}
 			</Tabs>
@@ -400,9 +470,19 @@ PaymentForm.defaultProps = {
 }
 
 function mapStateToProps(state, props) {
+
+	const gbx3 = util.getValue(state, 'gbx3', {});
+	const order = util.getValue(gbx3, 'order', {});
+	const paymethod = util.getValue(order, 'paymethod', {});
+	const customer = util.getValue(order, 'customer', {});
+
 	return {
+		paymethod,
+		customer
 	}
 }
 
 export default connect(mapStateToProps, {
+	updatePaymethod,
+	updateCustomer
 })(PaymentForm)

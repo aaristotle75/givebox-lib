@@ -95,13 +95,13 @@ class CreditCard extends Component {
     };
     const inputBottomStyle = {
       background: status === 'active' ? color : ''
-    };
-    const hideCardsAccepted = value ? cardType !== 'default' ? true : false : false;
+    }; //const hideCardsAccepted = value ? cardType !== 'default' ? true : false : false;
+
     return React.createElement("div", {
       style: style,
       className: `input-group ${className || ''} creditCard ${error ? 'error tooltip' : ''}`
     }, React.createElement(Fade, {
-      in: hideCardsAccepted ? false : true
+      in: true
     }, React.createElement("div", {
       className: `cardsAccepted`
     })), React.createElement("div", {
@@ -131,14 +131,7 @@ class CreditCard extends Component {
     }, label), React.createElement("div", {
       style: inputBottomStyle,
       className: `input-bottom ${error ? 'error' : this.state.status}`
-    })), React.createElement(Fade, {
-      duration: 200,
-      in: checked ? true : false
-    }, React.createElement("div", {
-      className: `checkmark`
-    }, React.createElement("i", {
-      className: "icon icon-check"
-    }))), React.createElement("div", {
+    })), React.createElement("div", {
       className: `tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`
     }, error, React.createElement("i", null)), React.createElement("div", {
       className: `errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`
