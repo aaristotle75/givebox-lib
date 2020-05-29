@@ -8,8 +8,7 @@ import {
 	ModalRoute,
 	Tab,
 	Tabs,
-	updatePaymethod,
-	updateCustomer
+	updateCart
 } from '../../';
 import Moment from 'moment';
 import SendEmail from './SendEmail';
@@ -103,10 +102,7 @@ class PaymentFormClass extends Component {
 	}
 
 	onCreditCardChange(name, value, cardType, field) {
-		const {
-			paymethod
-		} = this.props;
-		if (util.getValue(paymethod, 'cardType') !== cardType) this.props.updatePaymethod('cardType', cardType);
+		if (this.props.cardType !== cardType) this.props.updateCart({ cardType });
 	}
 
 	onPaymethodTabBefore(key) {
@@ -117,12 +113,9 @@ class PaymentFormClass extends Component {
 	onPaymethodTabAfter(key) {
 	}
 
-	setPaymethod(method) {
-		const {
-			paymethod
-		} = this.props;
+	setPaymethod(paymethod) {
 
-		switch (method) {
+		switch (paymethod) {
 			case 'echeck': {
 				this.props.fieldProp('accountNumber', { required: true });
 				this.props.fieldProp('routingNumber', { required: true });
@@ -152,8 +145,8 @@ class PaymentFormClass extends Component {
 
 			// no default
 		}
-		this.setState({ paymethod: method });
-		if (util.getValue(paymethod, 'method') !== method) this.props.updatePaymethod('method', method);
+		this.setState({ paymethod });
+		if (this.props.paymethod !== paymethod) this.props.updateCart({ paymethod });
 	}
 
 	customOnChange(name, value) {
@@ -472,17 +465,16 @@ PaymentForm.defaultProps = {
 function mapStateToProps(state, props) {
 
 	const gbx3 = util.getValue(state, 'gbx3', {});
-	const order = util.getValue(gbx3, 'order', {});
-	const paymethod = util.getValue(order, 'paymethod', {});
-	const customer = util.getValue(order, 'customer', {});
+	const cart = util.getValue(gbx3, 'cart', {});
+	const paymethod = util.getValue(cart, 'paymethod');
+	const cardType = util.getValue(cart, 'cardType');
 
 	return {
 		paymethod,
-		customer
+		cardType
 	}
 }
 
 export default connect(mapStateToProps, {
-	updatePaymethod,
-	updateCustomer
+	updateCart
 })(PaymentForm)

@@ -150,29 +150,6 @@ export function updateCartTotals() {
 
 }
 
-export function updateOrder(order) {
-	return {
-		type: types.UPDATE_ORDER,
-		order
-	}
-}
-
-export function updateCustomer(name, value) {
-	return {
-		type: types.UPDATE_CUSTOMER,
-		name,
-		value
-	}
-}
-
-export function updatePaymethod(name, value) {
-	return {
-		type: types.UPDATE_PAYMETHOD,
-		name,
-		value
-	}
-}
-
 export function saveGBX3(obj = {}, isSending = false, callback, updateLayout) {
 
 	return (dispatch, getState) => {

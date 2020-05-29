@@ -86,9 +86,6 @@ import {
 	updateAdmin,
 	updateCart,
 	updateCartItem,
-	updateOrder,
-	updateCustomer,
-	updatePaymethod,
 	saveGBX3,
 	resetGBX3
 } from './api/gbx3actions';
@@ -163,9 +160,6 @@ export {
 	updateAdmin,
 	updateCart,
 	updateCartItem,
-	updateOrder,
-	updateCustomer,
-	updatePaymethod,
 	saveGBX3,
 	resetGBX3,
 
