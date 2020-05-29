@@ -16,6 +16,7 @@ import {
 	updateDefaults,
 	updateGlobals,
 	updateData,
+	updateCart,
 	updateFees,
 	updateAdmin,
 	ModalRoute
@@ -25,6 +26,7 @@ import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import '../styles/gbx3.scss';
 import '../styles/gbx3modal.scss';
+import has from 'has';
 
 class GBX3 extends React.Component {
 
@@ -43,8 +45,13 @@ class GBX3 extends React.Component {
 			articleID,
 			kindID,
 			kind,
-			editable
+			editable,
+			preview
 		} = this.props;
+
+		const info = {};
+		if (preview) info.preview = true;
+		this.props.updateInfo(info);
 
 		this.loadGBX3({
 			orgID,
@@ -94,6 +101,9 @@ class GBX3 extends React.Component {
 						const settings = util.getValue(res, 'giveboxSettings', {});
 						const primaryColor = util.getValue(settings, 'primaryColor', this.props.defaultPrimaryColor);
 						const customTemplate = util.getValue(settings, 'customTemplate', {});
+
+						const passFees = util.getValue(res, 'passFees');
+						this.props.updateCart({ passFees });
 
 						this.props.updateInfo({
 							orgID,
@@ -277,6 +287,7 @@ export default connect(mapStateToProps, {
 	updateDefaults,
 	updateGlobals,
 	updateData,
+	updateCart,
 	updateFees,
 	updateAdmin
 })(GBX3);

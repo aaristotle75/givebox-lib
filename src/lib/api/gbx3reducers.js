@@ -3,6 +3,7 @@ import  * as types  from './gbx3actionTypes';
 export function gbx3(state = {
 	saveStatus: 'done',
 	info: {
+		preview: false,
 		breakpoint: 'desktop'
 	},
 	blocks: {},
@@ -34,11 +35,16 @@ export function gbx3(state = {
 	data: {},
 	fees: {},
 	cart: {
+		open: true,
+		zeroAmountAllowed: false,
+		confirmation: false,
 		paymethod: 'creditcard',
 		cardType: 'default',
 		subTotal: 0,
 		total: 0,
 		fee: 0,
+		passFees: false,
+		acceptedTerms: true,
 		items: []
 	},
 	order: {

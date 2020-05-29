@@ -63,16 +63,6 @@ class FormEdit extends Component {
 						<div className='formSection'>
 							<Choice
 								type='checkbox'
-								name='echeck'
-								label={'Allow customers to pay by eCheck'}
-								onChange={(name, value) => {
-									this.updateForm('echeck', echeck ? false : true);
-								}}
-								checked={echeck}
-								value={echeck}
-							/>
-							<Choice
-								type='checkbox'
 								name='passFees'
 								label={'Customer Pays the Credit Card Fee by Default'}
 								onChange={(name, value) => {
@@ -90,6 +80,16 @@ class FormEdit extends Component {
 								}}
 								checked={feeOption}
 								value={feeOption}
+							/>
+							<Choice
+								type='checkbox'
+								name='echeck'
+								label={'Allow customers to pay by eCheck'}
+								onChange={(name, value) => {
+									this.updateForm('echeck', echeck ? false : true);
+								}}
+								checked={echeck}
+								value={echeck}
 							/>
 						</div>
 					</div>

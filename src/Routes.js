@@ -54,7 +54,7 @@ class Routes extends Component {
 										<Route path='/about' render={(props) => loadComponent('demo/About')}  />
 										<Route path='/contact' render={(props) => loadComponent('demo/Contact')}  />
 										<Route path='/helpdesk' render={(props) => loadComponent('demo/HelpDeskDemo')}  />
-										<Route path='/gbx3' render={(props) => loadComponent('demo/GBX3Test')}  />
+										<Route path='/gbx3' render={(props) => loadComponent('demo/GBX3Test', { routeProps: props })}  />
 										<Route path='/test' component={Test} />
 										<Route path='/editor' component={UploadEditorTest} />
 										<Route path='/upload' render={(props) => loadComponent('modal/lib/editor/CKEditorUpload',  { useProjectRoot: false, routeProps: props })}  />

@@ -10,6 +10,7 @@ import {
 	Tabs,
 	Tab,
 	updateData,
+	updateCart,
 	Choice
 } from '../../';
 import PaymentForm from '../payment/PaymentForm';
@@ -18,6 +19,8 @@ import ButtonEdit from './ButtonEdit';
 import Button from './Button';
 import Terms from '../payment/Terms';
 import Totals from '../payment/Totals';
+import Cart from '../payment/Cart';
+import Confirmation from '../payment/Confirmation';
 
 class Form extends Component {
 
@@ -27,7 +30,7 @@ class Form extends Component {
 		this.closeEditModal = this.closeEditModal.bind(this);
 		this.optionsUpdated = this.optionsUpdated.bind(this);
 		this.getInfo = this.getInfo.bind(this);
-		this.setOrder = this.setOrder.bind(this);
+		this.setCart = this.setCart.bind(this);
 		const options = props.options;
 		const button = util.getValue(options, 'button', {});
 		const form = util.getValue(options, 'form', {});
@@ -48,6 +51,7 @@ class Form extends Component {
 	}
 
 	closeEditModal(type = 'save') {
+
 		const {
 			button,
 			defaultButton,
@@ -67,6 +71,11 @@ class Form extends Component {
 		} = form;
 
 		if (type !== 'cancel') {
+			// Check if cart should be updated
+			if (this.props.passFees !== passFees) {
+				this.props.updateCart({ passFees });
+			}
+
 			this.setState({
 				button,
 				form,
@@ -126,10 +135,10 @@ class Form extends Component {
 		}
 	}
 
-	setOrder(key, value) {
-		const order = this.state.order;
-		order[key] = value;
-		this.setState({ order });
+	setCart(key, value) {
+		const cart = this.props.cart;
+		cart[key] = value;
+		this.props.updateCart(cart);
 	}
 
 	render() {
@@ -138,20 +147,21 @@ class Form extends Component {
 			primaryColor,
 			title,
 			modalID,
-			breakpoint
+			breakpoint,
+			confirmation,
+			passFees,
+			acceptedTerms
 		} = this.props;
 
 		const {
 			button,
-			form,
-			order
+			form
 		} = this.state;
 
 		const phoneInfo = this.getInfo('phoneInfo');
 		const addressInfo = this.getInfo('addressInfo');
 		const workInfo = this.getInfo('workInfo');
 		const noteInfo = this.getInfo('noteInfo');
-		const passFees = util.getValue(order, 'passFees', false);
 
 		return (
 			<div className='formBlock'>
@@ -201,35 +211,38 @@ class Form extends Component {
 						</div>
 					}
 				/>
-				<PaymentForm
-					primaryColor={primaryColor}
-					echeck={util.getValue(form, 'echeck', true)}
-					phone={{ enabled: phoneInfo.enabled, required: phoneInfo.required }}
-					address={{ enabled: addressInfo.enabled, required: addressInfo.required }}
-					work={{ enabled: workInfo.enabled, required: workInfo.required }}
-					custom={{ enabled: noteInfo.enabled, required: noteInfo.required, placeholder: util.getValue(form, 'notePlaceholder', 'Enter a Note') }}
-					sendEmail={util.getValue(form, 'sendEmail', true)}
-					editable={this.props.editable}
-					breakpoint={breakpoint}
-				/>
+				<Cart primaryColor={primaryColor} />
+				{confirmation ? <Confirmation /> :
+					<PaymentForm
+						primaryColor={primaryColor}
+						echeck={util.getValue(form, 'echeck', true)}
+						phone={{ enabled: phoneInfo.enabled, required: phoneInfo.required }}
+						address={{ enabled: addressInfo.enabled, required: addressInfo.required }}
+						work={{ enabled: workInfo.enabled, required: workInfo.required }}
+						custom={{ enabled: noteInfo.enabled, required: noteInfo.required, placeholder: util.getValue(form, 'notePlaceholder', 'Enter a Note') }}
+						sendEmail={util.getValue(form, 'sendEmail', true)}
+						editable={this.props.editable}
+						breakpoint={breakpoint}
+					/>
+				}
 				<div className='formBottomSection'>
 					<Totals
-						setOrder={this.setOrder}
-						passFees={passFees}
+						setCart={this.setCart}
 						primaryColor={primaryColor}
 						toggleModal={this.props.toggleModal}
 					/>
+					{confirmation ? '' :
 					<div className='buttonSection'>
 						<div style={{ marginBottom: 10 }}>
 							<Choice
 								label='I Accept the Terms & Conditions'
-								value={order.terms}
-								checked={order.terms}
+								value={acceptedTerms}
+								checked={acceptedTerms}
 								onChange={() => {
-									this.setOrder('terms', order.terms ? false : true)
+									this.setCart('acceptedTerms', acceptedTerms ? false : true)
 								}}
 								color={primaryColor}
-								error={!order.terms ? 'You Must Accept the Terms & Conditions to Continue' : false}
+								error={!acceptedTerms ? 'You Must Accept the Terms & Conditions to Continue' : false}
 								errorType={'tooltip'}
 							/>
 						</div>
@@ -246,14 +259,14 @@ class Form extends Component {
 							className='gbx3'
 							component={() =>
 									<Terms
-										setOrder={this.setOrder}
+										setCart={this.setCart}
 										primaryColor={primaryColor}
 										toggleModal={this.props.toggleModal}
 									/>
 								}
 							/>
 							<ModalLink style={{ marginTop: 10 }} allowCustom={true} customColor={primaryColor} id='terms'>Read Terms and Conditions</ModalLink>
-					</div>
+					</div> }
 				</div>
 			</div>
 		)
@@ -263,11 +276,19 @@ class Form extends Component {
 function mapStateToProps(state, props) {
 
 	const gbx3 = util.getValue(state, 'gbx3', {});
+	const cart = util.getValue(gbx3, 'cart', {});
+	const passFees = util.getValue(cart, 'passFees');
+	const acceptedTerms = util.getValue(cart, 'acceptedTerms');
+	const confirmation = util.getValue(cart, 'confirmation');
 	const globals = util.getValue(gbx3, 'globals', {});
 	const gbxStyle = util.getValue(globals, 'gbxStyle', {});
 	const primaryColor = util.getValue(gbxStyle, 'primaryColor', {});
 
 	return {
+		cart,
+		passFees,
+		acceptedTerms,
+		confirmation,
 		gbxStyle,
 		primaryColor
 	}
@@ -275,5 +296,6 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
 	toggleModal,
-	updateData
+	updateData,
+	updateCart
 })(Form);

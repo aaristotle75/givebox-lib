@@ -12,7 +12,7 @@ class Terms extends Component {
 	}
 
 	acceptTerms() {
-		this.props.setOrder('terms', true);
+		this.props.setCart('acceptedTerms', true);
 		this.props.toggleModal('terms', false);
 	}
 

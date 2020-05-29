@@ -52,6 +52,7 @@ class GBXTest extends Component {
 					autoSave={true}
 					save={this.save}
 					editable={false}
+					preview={true}
 				/>
 			</div>
 		)

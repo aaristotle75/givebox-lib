@@ -25,6 +25,7 @@ class Totals extends Component {
 	render() {
 
 		const {
+			paymethod,
 			hasCustomGoal,
 			raised,
 			goal,
@@ -33,20 +34,23 @@ class Totals extends Component {
 			fee,
 			total,
 			primaryColor,
-			passFees
+			passFees,
+			feeOption,
+			confirmation
 		} = this.props;
 
 		return (
 			<div className='totalsContainer'>
+				{confirmation || !feeOption ? '' :
 				<Choice
-					label='Cover the Cost of the Credit Card Fee'
+					label={`Cover the Cost of the Fee`}
 					value={passFees}
 					checked={passFees}
 					onChange={() => {
-						this.props.setOrder('passFees', passFees ? false : true)
+						this.props.setCart('passFees', passFees ? false : true)
 					}}
 					color={primaryColor}
-				/>
+				/> }
 				<div className='totalsSection'>
 					<div className='leftSide'>
 						{hasCustomGoal && raised > 0 ?
@@ -70,10 +74,10 @@ class Totals extends Component {
 					</div>
 					<div className='rightSide'>
 						<div className='totalsList'>
-							<div>
+							<div style={{ width: 100 }}>
 								<span className='line'>Sub Total:</span>
 								<span className='line'>Givebox Fee:</span>
-								<span className='line'>Credit Card Fee:</span>
+								<span className='line'>{paymethod === 'creditcard' ? 'Credit Card' : 'eCheck'} Fee:</span>
 								<span className='totalLine'>Total:</span>
 							</div>
 							<div>
@@ -106,16 +110,25 @@ function mapStateToProps(state, props) {
 
 	const gbx3 = util.getValue(state, 'gbx3', {});
 	const cart = util.getValue(gbx3, 'cart', {});
+	const passFees = util.getValue(cart, 'passFees');
+	const confirmation = util.getValue(cart, 'confirmation');
+	const paymethod = util.getValue(cart, 'paymethod');
 	const data = util.getValue(gbx3, 'data', {});
+	const settings = util.getValue(data, 'giveboxSettings', {});
+	const feeOption = util.getValue(settings, 'feeOption');
 	const hasCustomGoal = util.getValue(data, 'hasCustomGoal', false);
 	const raised = util.getValue(data, 'raised', 0);
 	const goal = util.getValue(data, 'goal', 0);
-	const subTotal = (util.getValue(cart, 'subTotal', 0)/100).toFixed(2);
+	const subTotal = util.getValue(cart, 'subTotal', 0);
 	const giveboxFee = (0).toFixed(2);
-	const fee = (util.getValue(cart, 'fee', 0)/100).toFixed(2);
-	const total = (util.getValue(cart, 'total', 0)/100).toFixed(2);
+	const fee = util.getValue(cart, 'fee', 0);
+	const total = util.getValue(cart, 'total', 0);
 
 	return {
+		passFees,
+		feeOption,
+		confirmation,
+		paymethod,
 		hasCustomGoal,
 		raised,
 		goal,

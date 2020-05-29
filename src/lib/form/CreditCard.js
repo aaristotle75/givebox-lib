@@ -42,7 +42,9 @@ class CreditCard extends Component {
 		const length = obj.apiValue.length;
 		let doBinLookup = false;
 		let cardType = length < 4 ? 'default' : this.state.cardType;
-		if (length === 4 || ( cardType === 'amex' && length === 15 ) || ( cardType !== 'amex' && length === 16) ) doBinLookup = true;
+		if (length === 4
+			|| ( (cardType === 'amex' || cardType === 'default') && length === 15 )
+			|| ( (cardType !== 'amex' || cardType === 'default') && length === 16) ) doBinLookup = true;
 
 		if (doBinLookup) {
 			lookup(obj.apiValue.slice(0, 9), (err, data) => {
@@ -68,9 +70,7 @@ class CreditCard extends Component {
 			className,
 			error,
 			errorType,
-			maxLength,
 			value,
-			checked,
 			hideLabel,
 			color
 		} = this.props;
@@ -109,7 +109,7 @@ class CreditCard extends Component {
 							onFocus={this.onFocus}
 							autoComplete='new-password'
 							value={value}
-							maxLength={maxLength}
+							maxLength={19}
 							inputMode='numeric'
 						/>
 						{!hideLabel && label && <label style={labelStyle} htmlFor={name}>{label}</label>}
@@ -128,7 +128,6 @@ class CreditCard extends Component {
 CreditCard.defaultProps = {
 	name: 'defaultCreditCardField',
 	type: 'text',
-	maxlength: 64,
 	checked: false,
 	placeholder: 'xxxx xxxx xxxx xxxx',
 	hideLabel: false

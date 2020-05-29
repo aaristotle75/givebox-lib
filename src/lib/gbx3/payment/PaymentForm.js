@@ -8,7 +8,8 @@ import {
 	ModalRoute,
 	Tab,
 	Tabs,
-	updateCart
+	updateCart,
+	GBLink
 } from '../../';
 import Moment from 'moment';
 import SendEmail from './SendEmail';
@@ -38,7 +39,8 @@ class PaymentFormClass extends Component {
 				message: util.getValue(this.props.sendEmail, 'defaultMsg', '')
 			},
 			applepay: false,
-			paymethod: 'creditcard'
+			paymethod: 'creditcard',
+			amountError: false
 		}
 	}
 
@@ -72,6 +74,10 @@ class PaymentFormClass extends Component {
 	}
 
 	processForm(fields) {
+		const {
+			passFees
+		} = this.props;
+
 		const data = {};
 		Object.entries(fields).forEach(([key, value]) => {
 			if (value.autoReturn) data[key] = value.value;
@@ -167,12 +173,15 @@ class PaymentFormClass extends Component {
 
 		const {
 			primaryColor,
-			echeck
+			echeck,
+			breakpoint
 		} = this.props;
 
 		const tabs = [];
+		const mobile = breakpoint === 'mobile' ? true : false;
+
 		tabs.push(
-			<Tab key={'creditcard'} id={'creditcard'} label={<span className='tabLabel'>Pay by Credit Card</span>}>
+			<Tab key={'creditcard'} id={'creditcard'} label={<span className='tabLabel'>{mobile ? 'Credit Card' : 'Pay by Credit Card'}</span>}>
 				{this.props.creditCardGroup({
 					required: false,
 					placeholder: 'xxxx xxxx xxxx xxxx',
@@ -185,7 +194,7 @@ class PaymentFormClass extends Component {
 
 		if (echeck) {
 			tabs.push(
-				<Tab key={'echeck'} id={'echeck'} label={<span className='tabLabel'>Pay by eCheck</span>}>
+				<Tab key={'echeck'} id={'echeck'} label={<span className='tabLabel'>{mobile ? 'eCheck' : 'Pay by eCheck'}</span>}>
 					<Echeck primaryColor={primaryColor} textField={this.props.textField} />
 				</Tab>
 			);
@@ -193,7 +202,7 @@ class PaymentFormClass extends Component {
 
 		if (this.state.applepay) {
 			tabs.push(
-				<Tab key={'applepay'} id={'applepay'} label={<span className='tabLabel'>Pay using Apple Pay</span>}>
+				<Tab key={'applepay'} id={'applepay'} label={<span className='tabLabel'>{mobile ? 'Apple Pay' : 'Pay using Apple Pay'}</span>}>
 					<ApplePay />
 				</Tab>
 			);
@@ -302,23 +311,43 @@ class PaymentFormClass extends Component {
 			address,
 			work,
 			custom,
-			sendEmail
+			sendEmail,
+			primaryColor,
+			breakpoint,
+			openCart
 		} = this.props;
+
+		const mobile = breakpoint === 'mobile' ? true : false;
 
 		const headerText =
 			<div className='paymentFormHeader'>
 				<span className='paymentFormHeaderTitle'>Payment Info</span>
 				<span className='paymentFormHeaderText'>
 					Please enter your payment information.
+					<GBLink
+						style={{ marginLeft: 5 }}
+						allowCustom={true}
+						customColor={primaryColor}
+						onClick={() => {
+						const open = openCart ? false : true;
+						this.props.updateCart({ open });
+					}}>
+						{openCart ? 'Hide' : 'View'} the items in your cart.
+					</GBLink>
 				</span>
 			</div>
 		;
 		const fields = {};
 
-		fields.payment = this.paymentOptions();
+		fields.payment =
+			<div className='column'>
+				{mobile ? headerText : ''}
+				{this.paymentOptions()}
+			</div>
+		;
 		fields.name =
 			<div className='column'>
-				{headerText}
+				{mobile ? '' : headerText}
 				{this.props.textField('name', { placeholder: 'Your Name',  label: 'Name', required: true })}
 			</div>
 		;
@@ -337,7 +366,7 @@ class PaymentFormClass extends Component {
 
 		fields.sendEmail =
 			<div style={{ marginLeft: 8 }}>
-				<ModalLink id='sendEmail' allowCustom={true} customColor={this.props.primaryColor} opts={{ sendEmailCallback: this.sendEmailCallback, sendEmail: this.state.sendEmail, headerText: linkText }}>{linkText}</ModalLink>
+				<ModalLink id='sendEmail' allowCustom={true} customColor={primaryColor} opts={{ sendEmailCallback: this.sendEmailCallback, sendEmail: this.state.sendEmail, headerText: linkText }}>{linkText}</ModalLink>
 			</div>
 		;
 
@@ -466,10 +495,16 @@ function mapStateToProps(state, props) {
 
 	const gbx3 = util.getValue(state, 'gbx3', {});
 	const cart = util.getValue(gbx3, 'cart', {});
+	const cartItems = util.getValue(gbx3, 'items');
+	const passFees = util.getValue(cart, 'passFees');
+	const openCart = util.getValue(cart, 'open');
 	const paymethod = util.getValue(cart, 'paymethod');
 	const cardType = util.getValue(cart, 'cardType');
 
 	return {
+		cartItems,
+		passFees,
+		openCart,
 		paymethod,
 		cardType
 	}

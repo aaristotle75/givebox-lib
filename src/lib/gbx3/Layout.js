@@ -206,7 +206,7 @@ class Layout extends React.Component {
 					<div className='gbx3Footer flexCenter flexColumn'>
 						<Image url='https://s3-us-west-1.amazonaws.com/givebox/public/gb-logo5.svg' maxSize={'30px'} style={{ minHeight: 30 }} />
 						<div className="copyright">
-							&copy; {Moment().format('YYYY')} Givebox<br />
+							<span>&copy; {Moment().format('YYYY')} Givebox</span>
 							<GBLink allowCustom={true} customColor={this.props.primaryColor} onClick={() => window.open('https://givebox.com')}>www.givebox.com</GBLink>
 						</div>
 					</div>

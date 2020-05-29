@@ -260,6 +260,12 @@ label.active {
 	align-items: center;
 }
 
+.choice-group.tooltip {
+	.tooltipTop {
+		top: -15px;
+	}
+}
+
 .choice-group.error {
 	.icon {
 		color: $red;

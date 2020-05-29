@@ -108,7 +108,8 @@ $breakpoint: 768px;
 
 	.noRecords {
 		color: $med-blue-gray;
-		font-size: 14px;
+		font-size: 12px;
+		font-weight: 300;
 	}
 
 	p.formSubHeader {
@@ -138,6 +139,7 @@ $breakpoint: 768px;
 
 	.layout-column {
 		width: 100%;
+		height: auto;
 	}
 
 	.react-grid-item {
@@ -455,28 +457,28 @@ $breakpoint: 768px;
 		padding: 20px 0;
 	}
 
-	.givebox-paymentform {
-
-		.paymentFormHeader {
-			position: absolute;
-			top: 35px;
-			left: 5px;
-			@media (max-width: $breakpoint) {
-				display: none;
-			}
-
-			.paymentFormHeaderTitle {
-				font-size: 1em;
-			}
-
-			.paymentFormHeaderText {
-				display: block;
-				margin-top: 5px;
-				font-size: 12px;
-				font-weight: 300;
-			}
+	.paymentFormHeader {
+		position: absolute;
+		top: 20px;
+		left: 5px;
+		@media (max-width: $breakpoint) {
+			position: relative;
+			margin: 50px 0 50px 0;
 		}
+	}
 
+	.paymentFormHeaderTitle {
+		font-size: 1em;
+	}
+
+	.paymentFormHeaderText {
+		display: block;
+		margin-top: 5px;
+		font-size: 12px;
+		font-weight: 300;
+	}
+
+	.givebox-paymentform {
 
 		input {
 			border-bottom: 1px solid $light-gray;
@@ -646,7 +648,7 @@ $breakpoint: 768px;
 
 	.formBottomSection {
 		display: flex;
-		justify-content: space-between;
+		justify-content: center;
 		align-items: flex-start;
 		margin-top: 20px;
 
@@ -712,10 +714,14 @@ $breakpoint: 768px;
 					font-size: 12px;
 					display: block;
 					padding-right: 5px;
+					white-space: nowrap;
+					overflow: hidden;
 				}
 
 				.totalLine {
 					font-size: 1.6em;
+					white-space: nowrap;
+					overflow: hidden;
 				}
 			}
 		}
@@ -861,6 +867,19 @@ $breakpoint: 768px;
 		}
 	}
 
+	/*--------- Receipt Confirmation -----*/
+	.confirmation {
+
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+
+		.successfulText {
+			font-size: .9em;
+			color: $green;
+		}
+	}
 
 }
 /*--------- End GBX3 ---------*/
@@ -896,4 +915,59 @@ $breakpoint: 768px;
 		text-align: left;
 		color: $dark;
 	}
+}
+
+/*------- Cart ---------*/
+.gbx3Cart {
+
+	padding: 20px 0;
+	@media (max-width: $breakpoint) {
+		margin-top: 50px;
+	}
+
+	.paymentFormHeaderTitle {
+		position: relative;
+		color: $white;
+		padding: 10px 5px;
+
+		.closeCart {
+			position: absolute;
+			top: 10px;
+			right: 20px;
+		}
+		button.closeCart {
+			color: $white;
+		}
+
+		button.closeCart:hover {
+			color: $med-blue-gray;
+		}
+	}
+
+	.itemsInCart {
+
+		.cartItemRow {
+			display: table;
+			width: 100%;
+			padding: 20px 5px;
+			border-bottom: 1px solid $very-light-gray;
+		}
+
+		.col {
+			display: table-cell;
+		}
+
+		.descCol {
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-start;
+		}
+
+		.itemSubTitle,
+		.itemActions {
+			font-size: 12px;
+		}
+
+	}
+
 }

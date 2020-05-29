@@ -832,7 +832,6 @@ class Form extends Component {
 			cardType: 'default',
 			placeholder: 'xxxx xxxx xxxx xxxx',
 			validate: 'creditCard',
-			maxLength: 19,
 			hideLabel: false
 		}, opts);
 
@@ -858,7 +857,6 @@ class Form extends Component {
 				value={field ? field.value : params.value}
 				error={field ? field.error : params.error }
 				errorType={params.errorType}
-				maxLength={field ? field.maxLength : params.maxLength}
 				createField={this.createField}
 				params={params}
 				color={params.color || this.props.primaryColor}

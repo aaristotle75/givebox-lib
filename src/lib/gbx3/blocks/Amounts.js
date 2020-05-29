@@ -326,6 +326,7 @@ class Amounts extends Component {
 						kind={this.props.kind}
 						allowRecurring={util.getValue(recurring, 'enabled', true)}
 						buttonEnabled={util.getValue(button, 'enabled', false)}
+						article={data}
 						setDisplayHeight={this.props.setDisplayHeight}
 					/>
 				)

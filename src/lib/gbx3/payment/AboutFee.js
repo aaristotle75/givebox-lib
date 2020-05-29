@@ -33,6 +33,8 @@ class AboutFee extends Component {
 					<h4>CREDIT CARD FEES</h4>
 					<p>VISA, MasterCard and Discover processing fee is 2.9% plus 29 cents.</p>
 					<p>AMEX processing fee is 3.5% plus 35 cents.</p>
+					<h4>ECHECK FEE</h4>
+					<p>The Bank fee to make an electronic payment from your checking account is 2.9% plus 29 cents.</p>
 				</div>
 				<div className='bottomContainer2 flexCenter'>
 					<div className='button-group'>

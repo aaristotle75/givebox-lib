@@ -115,17 +115,56 @@ class AmountsList extends Component {
 		)
 	}
 
+	getNameIfBlank(kind) {
+		switch (kind) {
+			case 'invoice': {
+				return 'Invoice Payment';
+			}
+
+			case 'fundraiser':
+			default: {
+				return 'Donation';
+			}
+		}
+	}
+
 	updateCart(obj = {}) {
 		const {
-			amountForAPI: amount,
+			amountsList,
+			kind,
+			article
+		} = this.props;
+
+		const {
+			amountForAPI: priceper,
 			unitID,
 			customAmount
 		} = this.state;
+
+		const quantity = 1;
+		const amount = priceper * quantity;
+		const orgID = util.getValue(article, 'orgID');
+		const orgName = util.getValue(article, 'orgName');
+
+		let name = 'Item';
+		if (!util.isEmpty(amountsList)) {
+			const index = amountsList.findIndex(x => x.ID === unitID);
+			if (index !== -1) {
+				const obj = util.getValue(amountsList, index, {});
+				name = util.getValue(obj, 'name', this.getNameIfBlank(kind));
+			}
+		}
+
 		const item = {
 			unitID,
+			name,
 			amount,
+			priceper,
 			customAmount,
-			quantity: 1,
+			quantity,
+			orgID,
+			orgName,
+			changeQty: false,
 			...obj
 		};
 		this.props.updateCartItem(unitID, item, false);

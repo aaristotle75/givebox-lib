@@ -1,5 +1,6 @@
 @import 'variables.scss';
 
+$breakpoint: 768px;
 
 .gbx3 {
 
@@ -23,7 +24,6 @@
 	}
 
 	.amountsBlock {
-
 		.embed {
 			position: relative;
 			display: block;

@@ -92,15 +92,22 @@ export function updateAdmin(admin) {
 	}
 }
 
-export function updateCart(cart) {
+function saveCart(cart) {
 	return {
 		type: types.UPDATE_CART,
 		cart
 	}
 }
 
+export function updateCart(cart) {
+	return async (dispatch, getState) => {
+		const cartUpdated = await dispatch(saveCart(cart));
+		if (cartUpdated) dispatch(calcCart());
+	}
+}
+
 export function updateCartItem(unitID, item = {}, multiItems = true) {
-	return (dispatch, getState) => {
+	return async (dispatch, getState) => {
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
 		const fees = util.getValue(gbx3, 'fees', {});
 		const info = util.getValue(gbx3, 'info', {});
@@ -110,6 +117,8 @@ export function updateCartItem(unitID, item = {}, multiItems = true) {
 		const index = items.findIndex(i => i.unitID === unitID);
 		item.articleID = articleID;
 		item.fees = fees;
+		item.amountFormatted = item.amount/100;
+		cart.zeroAmountAllowed = util.getValue(item, 'zeroAmountAllowed', false);
 		if (index === -1) {
 			if (item.quantity > 0) {
 				if (multiItems) items.push(item);
@@ -124,30 +133,45 @@ export function updateCartItem(unitID, item = {}, multiItems = true) {
 			if (item.quantity > 0) items[index] = { ...items[index], ...item };
 			else items.splice(index, 1);
 		}
-		cart.subTotal = util.sum(items, 'amount');
-		dispatch(calcFee(101, fees));
-		dispatch(updateCart(cart));
+		const cartUpdated = await dispatch(saveCart(cart));
+		if (cartUpdated) dispatch(calcCart());
 	}
 }
 
 function calcFee(amount = 0, fees = {}) {
 	return (dispatch, getState) => {
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
-		const order = util.getValue(gbx3, 'order', {});
-		const paymethod = util.getValue(order, 'paymethod', {});
-		const cardType = util.getValue(paymethod, 'cardType');
-		const feePrefix = cardType === 'amex' ? 'amexFnd' : 'fnd';
+		const cart = util.getValue(gbx3, 'cart', {});
+		const passFees = util.getValue(cart, 'passFees');
+		const paymethod = util.getValue(cart, 'paymethod', {});
+		const cardType = util.getValue(cart, 'cardType');
+		const feePrefix = cardType === 'amex' && paymethod === 'creditcard' ? 'amexFnd' : 'fnd';
 		const pctFee = util.getValue(fees, `${feePrefix}PctFee`, 290);
-		const fixFee = util.getValue(fees, `${feePrefix}FixFee`, 29);
-		const percent = +((pctFee/10000).toFixed(4)*parseFloat(amount));
+		const fixFee = amount !== 0 ? util.getValue(fees, `${feePrefix}FixFee`, 29) : 0;
+		const percent = +((pctFee/10000).toFixed(4)*parseFloat(amount/100));
 		const fixed = +((fixFee/100).toFixed(2));
-		const fee = +((percent + fixed).toFixed(2));
+		const fee = passFees ? +((percent + fixed).toFixed(2)) : 0;
 		return fee;
 	}
 }
 
-export function updateCartTotals() {
-
+export function calcCart() {
+	return (dispatch, getState) => {
+		const gbx3 = util.getValue(getState(), 'gbx3', {});
+		const cart = util.getValue(gbx3, 'cart', {});
+		const items = util.getValue(cart, 'items', []);
+		cart.subTotal = 0;
+		cart.fee = 0;
+		cart.total = 0;
+		if (!util.isEmpty(items)) {
+			Object.entries(items).forEach(([key, value]) => {
+				cart.subTotal = cart.subTotal + value.amountFormatted;
+				cart.fee = cart.fee + dispatch(calcFee(value.amount, value.fees));
+			});
+		}
+		cart.total = (cart.subTotal + cart.fee).toFixed(2);
+		dispatch(saveCart(cart));
+	}
 }
 
 export function saveGBX3(obj = {}, isSending = false, callback, updateLayout) {
@@ -155,13 +179,14 @@ export function saveGBX3(obj = {}, isSending = false, callback, updateLayout) {
 	return (dispatch, getState) => {
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
 		const gbxData = util.getValue(gbx3, 'data', {});
+		const settings = util.getValue(gbxData, 'giveboxSettings', {});
 		const info = util.getValue(gbx3, 'info', {});
 		const blocks = util.getValue(gbx3, 'blocks', {});
 		const globals = util.getValue(gbx3, 'globals', {});
 		const data = {
 			...gbxData,
 			giveboxSettings: {
-				...util.getValue(gbxData, 'giveboxSettings', {}),
+				...settings,
 				customTemplate: {
 					blocks,
 					globals
