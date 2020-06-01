@@ -26,6 +26,7 @@ import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import '../styles/gbx3.scss';
 import '../styles/gbx3modal.scss';
+import reactReferer from 'react-referer';
 import has from 'has';
 
 class GBX3 extends React.Component {
@@ -81,6 +82,7 @@ class GBX3 extends React.Component {
 		} = this.props;
 
 		const apiName = `org${types.kind(kind).api.item}`;
+		const sourceLocation = reactReferer.referer();
 
 		if (kindID) {
 			this.props.getResource('articleFeeSettings', {
@@ -110,7 +112,8 @@ class GBX3 extends React.Component {
 							articleID,
 							kindID,
 							kind,
-							apiName
+							apiName,
+							sourceLocation: this.props.sourceLocation || sourceLocation
 						});
 
 						const blocks = {
@@ -187,6 +190,7 @@ class GBX3 extends React.Component {
 			const rgb = util.hexToRgb(color);
 			const color2 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .1)`;
 			const color3 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .05)`;
+			const color4 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .4)`;
 			const styleEl = document.head.appendChild(document.createElement('style'));
 			styleEl.innerHTML = `
 
@@ -218,6 +222,13 @@ class GBX3 extends React.Component {
 
 				.modal .givebox-paymentform button.modalCloseBtn:hover .icon {
 					color: ${color};
+				}
+
+				.gbx3Cart .paymentFormHeaderTitle {
+					background: ${color};
+					background: -webkit-linear-gradient(to bottom, ${color} 30%, ${color4} 100%);
+					background: -moz-linear-gradient(to bottom, ${color} 30%, ${color4} 100%);
+					background: linear-gradient(to bottom, ${color} 30%, ${color4} 100%);
 				}
 
 			`;
@@ -268,13 +279,16 @@ function mapStateToProps(state, props) {
 
 	const gbx3 = util.getValue(state, 'gbx3', {});
 	const globals = util.getValue(gbx3, 'globals', {});
+	const info = util.getValue(gbx3, 'info', {});
+	const sourceLocation = util.getValue(info, 'sourceLocation');
 	const gbxStyle = util.getValue(globals, 'gbxStyle', {});
 	const primaryColor = util.getValue(gbxStyle, 'primaryColor');
 
 	return {
 		access: util.getValue(state.resource, 'access', {}),
 		globals,
-		primaryColor
+		primaryColor,
+		sourceLocation
 	}
 }
 

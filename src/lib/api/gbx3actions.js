@@ -106,22 +106,36 @@ export function updateCart(cart) {
 	}
 }
 
-export function updateCartItem(unitID, item = {}, multiItems = true) {
+export function updateCartItem(unitID, item = {}) {
 	return async (dispatch, getState) => {
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
 		const fees = util.getValue(gbx3, 'fees', {});
 		const info = util.getValue(gbx3, 'info', {});
 		const articleID = util.getValue(info, 'articleID');
+		const orgID = util.getValue(info, 'orgID');
+		const articleKind = util.getValue(info, 'kind');
+		const kindID = util.getValue(info, 'kindID');
 		const cart = util.getValue(gbx3, 'cart', {});
 		const items = util.getValue(cart, 'items', []);
 		const index = items.findIndex(i => i.unitID === unitID);
+		const quantity = parseInt(util.getValue(item, 'quantity', 1));
+		const amount = parseInt(quantity * util.getValue(item, 'priceper', 0));
+		const allowMultiItems = util.getValue(item, 'allowMultiItems', true);
+
+		item.amount = amount;
 		item.articleID = articleID;
+		item.orgID = orgID;
+		item.articleKind = articleKind;
+		item.kindID = kindID;
 		item.fees = fees;
-		item.amountFormatted = item.amount/100;
+		item.amountFormatted = amount/100;
+		item.sourceType = util.getValue(info, 'sourceType');
+		item.sourceLocation = util.getValue(info, 'sourceLocation');
+
 		cart.zeroAmountAllowed = util.getValue(item, 'zeroAmountAllowed', false);
 		if (index === -1) {
-			if (item.quantity > 0) {
-				if (multiItems) items.push(item);
+			if (quantity > 0) {
+				if (allowMultiItems) items.push(item);
 				else {
 					// If multiItems is false find and remove the previous item per articleID
 					const removeIndex = items.findIndex(i => i.articleID === articleID);
@@ -130,7 +144,7 @@ export function updateCartItem(unitID, item = {}, multiItems = true) {
 				}
 			}
 		} else {
-			if (item.quantity > 0) items[index] = { ...items[index], ...item };
+			if (quantity > 0) items[index] = { ...items[index], ...item };
 			else items.splice(index, 1);
 		}
 		const cartUpdated = await dispatch(saveCart(cart));
@@ -159,12 +173,14 @@ export function calcCart() {
 	return (dispatch, getState) => {
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
 		const cart = util.getValue(gbx3, 'cart', {});
+		const passFees = util.getValue(cart, 'passFees');
 		const items = util.getValue(cart, 'items', []);
 		cart.subTotal = 0;
 		cart.fee = 0;
 		cart.total = 0;
 		if (!util.isEmpty(items)) {
 			Object.entries(items).forEach(([key, value]) => {
+				value.passFees = passFees;
 				cart.subTotal = cart.subTotal + value.amountFormatted;
 				cart.fee = cart.fee + dispatch(calcFee(value.amount, value.fees));
 			});

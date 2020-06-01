@@ -75,9 +75,11 @@ class PaymentFormClass extends Component {
 
 	processForm(fields) {
 		const {
-			passFees
+			passFees,
+			amount
 		} = this.props;
 
+		console.log('execute', fields);
 		const data = {};
 		Object.entries(fields).forEach(([key, value]) => {
 			if (value.autoReturn) data[key] = value.value;
@@ -183,6 +185,7 @@ class PaymentFormClass extends Component {
 		tabs.push(
 			<Tab key={'creditcard'} id={'creditcard'} label={<span className='tabLabel'>{mobile ? 'Credit Card' : 'Pay by Credit Card'}</span>}>
 				{this.props.creditCardGroup({
+					group: 'paymethod',
 					required: false,
 					placeholder: 'xxxx xxxx xxxx xxxx',
 					debug: false,
@@ -500,13 +503,15 @@ function mapStateToProps(state, props) {
 	const openCart = util.getValue(cart, 'open');
 	const paymethod = util.getValue(cart, 'paymethod');
 	const cardType = util.getValue(cart, 'cardType');
+	const amount = util.getValue(cart, 'subTotal', 0);
 
 	return {
 		cartItems,
 		passFees,
 		openCart,
 		paymethod,
-		cardType
+		cardType,
+		amount
 	}
 }
 

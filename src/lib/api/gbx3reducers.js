@@ -4,7 +4,9 @@ export function gbx3(state = {
 	saveStatus: 'done',
 	info: {
 		preview: false,
-		breakpoint: 'desktop'
+		breakpoint: 'desktop',
+		sourceType: 'embed',
+		sourceLocation: null
 	},
 	blocks: {},
 	globals: {

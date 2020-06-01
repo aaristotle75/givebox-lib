@@ -940,11 +940,27 @@ $breakpoint: 768px;
 		}
 
 		button.closeCart:hover {
-			color: $med-blue-gray;
+			color: $light-gray;
 		}
 	}
 
 	.itemsInCart {
+
+		.dropdown-quantity {
+			padding: 0;
+			margin: 0 0 0 10px;
+			display: inline-block;
+			width: 45px;
+
+			.dropdown .icon {
+				display: none;
+				top: 3px;
+			}
+		}
+
+		.dropdown button {
+			padding: 0;
+		}
 
 		.cartItemRow {
 			display: table;
@@ -965,6 +981,7 @@ $breakpoint: 768px;
 
 		.itemSubTitle,
 		.itemActions {
+			margin-top: 2px;
 			font-size: 12px;
 		}
 

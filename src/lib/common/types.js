@@ -275,3 +275,71 @@ export const fontSizeOptions = (r1, r2) => {
 	}
 	return items;
 }
+
+export function recurringName(value) {
+	const obj = {};
+	switch (value) {
+		case 'once':
+			obj.name = 'One-time';
+			obj.alt = 'Once';
+			obj.alt2 = 'once';
+			break;
+		case 'monthly':
+			obj.name = 'Monthly';
+			obj.alt = 'Months';
+			obj.alt2 = 'month';
+			break;
+		case 'quarterly':
+			obj.name = 'Quarterly';
+			obj.alt = 'Quarters';
+			obj.alt2 = 'quarter';
+			obj.short = '';
+			break;
+		case 'annually':
+			obj.name = 'Yearly';
+			obj.alt = 'Years';
+			obj.alt2 = 'year';
+			break;
+		default:
+			break;
+	}
+	return obj;
+}
+
+export const renderRecurringName = (kind, interval, max = null) => {
+	const obj = {};
+	let name = '';
+
+	switch (kind) {
+		case 'invoice': {
+			name = 'Payment';
+			break;
+		}
+
+		case 'fundraiser': {
+			name = 'Donation';
+			break;
+		}
+
+		// no default
+	}
+
+	let text = `One-Time ${name}`;
+
+	switch (interval) {
+		case 'monthly':
+			text = `Monthly ${name} ${max ? `for ${max} Month${max > 1 ? 's' : ''}` : ''}`;
+			break;
+		case 'quarterly':
+			text = `Quarterly ${name} ${max ? `for ${max} Quarter${max > 1 ? 's' : ''}`: ''}`;
+			break;
+		case 'annually':
+			text = `Yearly ${name} ${max ? `for ${max} Year${max > 1 ? 's' : ''}` : ''}`;
+			break;
+
+		// no default
+	}
+	obj.name = name;
+	obj.text = text;
+	return obj;
+}

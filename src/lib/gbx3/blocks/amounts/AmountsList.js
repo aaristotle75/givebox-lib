@@ -9,9 +9,10 @@ import {
 	Choice,
 	TextField,
 	GBLink,
-	updateCartItem
+	updateCartItem,
+	types
 } from '../../../';
-import Recurring, { renderRecurringName } from './Recurring';
+import Recurring from './Recurring';
 import { amountInputStyle, amountInputMoneyStyle, amountInputHeights } from './amountsStyle';
 import '../../../styles/gbx3amounts.scss';
 import AnimateHeight from 'react-animate-height';
@@ -45,7 +46,8 @@ class AmountsList extends Component {
 			amountEntered: defaultPrice || '',
 			recurring: {
 				interval: 'once',
-				paymentMax: ''
+				paymentMax: '',
+				frequency: 1
 			},
 			showDetails: []
 		};
@@ -84,7 +86,7 @@ class AmountsList extends Component {
 
 		const interval = util.getValue(recurring, 'interval');
 		const paymentMax = util.getValue(recurring, 'paymentMax');
-		const recurringDisplay = renderRecurringName(kind, interval, paymentMax);
+		const recurringDisplay = types.renderRecurringName(kind, interval, paymentMax);
 
 		return (
 			<div className='recurringLink'>
@@ -138,36 +140,45 @@ class AmountsList extends Component {
 		const {
 			amountForAPI: priceper,
 			unitID,
-			customAmount
+			customAmount,
+			recurring
 		} = this.state;
 
 		const quantity = 1;
-		const amount = priceper * quantity;
-		const orgID = util.getValue(article, 'orgID');
 		const orgName = util.getValue(article, 'orgName');
+		const maxQuantity = util.getValue(article, 'maxQuantity', 10);
+		const allowQtyChange = false;
+		const allowMultiItems = false;
 
 		let name = 'Item';
+		let availableQty = 1;
 		if (!util.isEmpty(amountsList)) {
 			const index = amountsList.findIndex(x => x.ID === unitID);
 			if (index !== -1) {
-				const obj = util.getValue(amountsList, index, {});
-				name = util.getValue(obj, 'name', this.getNameIfBlank(kind));
+				const selectedItem = util.getValue(amountsList, index, {});
+				name = util.getValue(selectedItem, 'name', this.getNameIfBlank(kind));
+				availableQty = allowQtyChange ? util.getValue(selectedItem, 'max', maxQuantity) - util.getValue(selectedItem, 'sold', 0) + quantity : quantity;
 			}
 		}
+
+		availableQty = 10;
 
 		const item = {
 			unitID,
 			name,
-			amount,
 			priceper,
 			customAmount,
 			quantity,
-			orgID,
 			orgName,
-			changeQty: false,
+			availableQty,
+			maxQuantity,
+			allowQtyChange,
+			allowMultiItems,
+			...recurring,
 			...obj
 		};
-		this.props.updateCartItem(unitID, item, false);
+
+		this.props.updateCartItem(unitID, item);
 	}
 
 	setUnitID(unitID, callback) {

@@ -3,7 +3,8 @@ import {
 	util,
 	TextField,
 	Dropdown,
-	GBLink
+	GBLink,
+	types
 } from '../../../';
 import AnimateHeight from 'react-animate-height';
 import Moment from 'moment';
@@ -26,38 +27,8 @@ class Recurring extends Component {
 
 	onChangeRecurring(name, interval) {
 		const forever = interval === 'once' ? true : this.state.forever;
-		const paymentMax = interval === 'once' ? '' : this.state.paymentMax;
+		const paymentMax = interval === 'once' ? null : this.state.paymentMax || null;
 		this.setState({ forever, paymentMax, interval }, this.props.setRecurring({ interval, paymentMax }));
-	}
-
-	recurringName(value) {
-		const obj = {};
-		switch (value) {
-			case 'once':
-				obj.name = 'One-time';
-				obj.alt = 'Once';
-				obj.alt2 = 'once';
-				break;
-			case 'monthly':
-				obj.name = 'Monthly';
-				obj.alt = 'Months';
-				obj.alt2 = 'month';
-				break;
-			case 'quarterly':
-				obj.name = 'Quarterly';
-				obj.alt = 'Quarters';
-				obj.alt2 = 'quarter';
-				obj.short = '';
-				break;
-			case 'annually':
-				obj.name = 'Yearly';
-				obj.alt = 'Years';
-				obj.alt2 = 'year';
-				break;
-			default:
-				break;
-		}
-		return obj;
 	}
 
 	getEndDate(interval, value) {
@@ -86,8 +57,7 @@ class Recurring extends Component {
 		const {
 			amount,
 			recurringText,
-			typeText,
-			breakpoint
+			typeText
 		} = this.props;
 
 		const {
@@ -136,19 +106,19 @@ class Recurring extends Component {
 						height={interval !== 'once' ? 'auto' : 0}
 					>
 						<div className='maxRecurring'>
-							How many {this.recurringName(interval).alt.toLowerCase()} would you like to {typeText} this amount?
+							How many {types.recurringName(interval).alt.toLowerCase()} would you like to {typeText} this amount?
 							<TextField
 								inputMode='numeric'
 								style={{width: '210px' }}
 								inputStyle={{ textAlign: 'center' }}
 								label=''
 								fixedLabel={false}
-								placeholder={`Enter # of ${util.toTitleCase(this.recurringName(interval).alt)}`}
+								placeholder={`Enter # of ${util.toTitleCase(types.recurringName(interval).alt)}`}
 								name='paymentMax'
-								value={paymentMax}
+								value={paymentMax || ''}
 								onChange={(e) => {
 									const value = isNaN(e.currentTarget.value) ? '' : parseInt(e.currentTarget.value);
-									const paymentMax = value || '';
+									const paymentMax = value || null;
 									this.setState({ paymentMax, forever: value ? false : true });
 									this.props.setRecurring({ paymentMax });
 								}}
@@ -168,7 +138,7 @@ class Recurring extends Component {
 								height={!paymentMax ? 'auto' : 0}
 							>
 								<div className='forever'>
-									Leave blank if you want to {typeText} every {this.recurringName(interval).alt2} ongoing until canceled.
+									Leave blank if you want to {typeText} every {types.recurringName(interval).alt2} ongoing until canceled.
 								</div>
 							</AnimateHeight>
 						</div>
@@ -197,42 +167,3 @@ class Recurring extends Component {
 }
 
 export default Recurring;
-
-
-export const renderRecurringName = (kind, interval, max = null) => {
-	const obj = {};
-	let name = '';
-
-	switch (kind) {
-		case 'invoice': {
-			name = 'Payment';
-			break;
-		}
-
-		case 'fundraiser': {
-			name = 'Donation';
-			break;
-		}
-
-		// no default
-	}
-
-	let text = `One-Time ${name}`;
-
-	switch (interval) {
-		case 'monthly':
-			text = `Monthly ${name} ${max ? `for ${max} Month${max > 1 ? 's' : ''}` : ''}`;
-			break;
-		case 'quarterly':
-			text = `Quarterly ${name} ${max ? `for ${max} Quarter${max > 1 ? 's' : ''}`: ''}`;
-			break;
-		case 'annually':
-			text = `Yearly ${name} ${max ? `for ${max} Year${max > 1 ? 's' : ''}` : ''}`;
-			break;
-
-		// no default
-	}
-	obj.name = name;
-	obj.text = text;
-	return obj;
-}
