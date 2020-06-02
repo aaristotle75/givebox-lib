@@ -85,7 +85,7 @@ class TextField extends Component {
 		const readOnlyText = this.props.readOnlyText || `${label} is not editable`;
 
 		return (
-				<div style={style} className={`input-group ${className || ''} textfield-group ${readOnly ? 'readOnly tooltip' : ''} ${error ? 'error tooltip' : ''} ${type === 'hidden' && 'hidden'} ${money ? 'money-group' : ''}`}>
+				<div style={style} className={`input-group ${type === 'hidden' ? 'input-hidden' : ''} ${className || ''} textfield-group ${readOnly ? 'readOnly tooltip' : ''} ${error ? 'error tooltip' : ''} ${type === 'hidden' && 'hidden'} ${money ? 'money-group' : ''}`}>
 					<div className={`floating-label ${this.state.status} ${fixedLabel && 'fixed'}`}>
 						{money && <div style={moneyStyle} className={`moneyAmount ${value ? 'active' : 'noValue'}`}><span className='symbol'>{symbol}</span></div>}
 						<input

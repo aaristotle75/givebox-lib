@@ -9,7 +9,8 @@ import {
 	Tab,
 	Tabs,
 	updateCart,
-	GBLink
+	GBLink,
+	Loader
 } from '../../';
 import Moment from 'moment';
 import SendEmail from './SendEmail';
@@ -33,7 +34,7 @@ class PaymentFormClass extends Component {
 		this.onPaymethodTabAfter = this.onPaymethodTabAfter.bind(this);
 		this.setPaymethod = this.setPaymethod.bind(this);
 		this.state = {
-			loading: false,
+			processingPayment: false,
 			sendEmail: {
 				recipients: '',
 				message: util.getValue(this.props.sendEmail, 'defaultMsg', '')
@@ -75,38 +76,128 @@ class PaymentFormClass extends Component {
 
 	processForm(fields) {
 		const {
-			passFees,
-			amount
+			cardType,
+			paymethod,
+			cartItems: items,
+			amount,
+			zeroAmountAllowed
 		} = this.props;
 
-		console.log('execute', fields);
-		const data = {};
-		Object.entries(fields).forEach(([key, value]) => {
-			if (value.autoReturn) data[key] = value.value;
-			if (key === 'name') {
-				const name = util.splitName(value.value);
-				data.firstname = name.first;
-				data.lastname = name.last;
-			}
-			if (key === 'ccnumber') data.number = value.apiValue;
-			if (key === 'ccexpire') {
-				const ccexpire = util.getSplitStr(value.value, '/', 2, -1);
-				data.expMonth = parseInt(ccexpire[0]);
-				data.expYear = parseInt(`${Moment().format('YYYY').slice(0, 2)}${ccexpire[1]}`);
-			}
-		});
+		const {
+			sendEmail
+		} = this.state;
 
-		console.log('processForm', data);
-		/*
-		this.props.sendResource(
-			this.props.resource,
-			{
-				id: [this.props.id],
-				method: 'patch',
-				data: data,
-				callback: this.processCallback.bind(this),
+		const data = {
+			items: [],
+			paymethod: {}
+		};
+
+		if ( util.isEmpty(items) || ( !zeroAmountAllowed && (!amount || parseInt(amount) === 0) ) ) {
+			this.props.formProp({ error: true, errorMsg: <span>The amount to process cannot be {util.money(0)}. Please select an amount.</span> });
+		} else {
+
+			// Get notes and sendemail
+			const noteValue = util.getValue(fields.note, 'value');
+			const message = util.getValue(sendEmail, 'message');
+			const emails = !util.isEmpty(sendEmail.recipients) ? sendEmail.recipients.split(/,/) : [];
+
+			const note = noteValue || message || !util.isEmpty(emails) ? {
+				message,
+				emails,
+				value: noteValue
+			} : null;
+
+			// Get the last item and add the note
+			const [lastItem] = items.slice(-1);
+
+			Object.entries(items).forEach(([key, value]) => {
+				data.items.push({
+					unitID: value.unitID,
+					articleID: value.articleID,
+					articleKind: value.articleKind,
+					sourceType: value.sourceType || null,
+					sourceLocation: value.sourceLocation || null,
+					amount: value.amount,
+					customAmount: value.customAmount,
+					quantity: value.quantity,
+					interval: value.interval || null,
+					frequency: value.frequency || null,
+					paymentMax: parseInt(value.paymentMax) || null,
+					note: ( lastItem.unitID === value.unitID ) && note ? note : null
+				});
 			});
-		*/
+
+
+
+			const nameField = util.getValue(fields, 'name');
+			const name = util.splitName(util.getValue(nameField, 'value'));
+			const firstname = name.first;
+			const lastname = name.last;
+			const fullName = `${firstname} ${lastname}`;
+
+			data.customer = {
+				firstname,
+				lastname,
+				email: util.getValue(fields.email, 'value', null),
+				occupation: util.getValue(fields.occupation, 'value', null),
+				employer: util.getValue(fields.employer, 'value', null),
+				phone: util.getValue(fields.phone, 'value', null),
+				address: {
+					line1: util.getValue(fields.line1, 'value', null),
+					city: util.getValue(fields.city, 'value', null),
+					state: util.getValue(fields.state, 'value', null),
+					zip: util.getValue(fields.zip, 'value', null)
+				}
+			}
+
+			switch (paymethod) {
+				case 'creditcard': {
+					const ccexpire = util.getSplitStr(util.getValue(fields.ccexpire, 'value'), '/', 2, -1);
+					data.paymethod.creditcard = {
+						name: fullName,
+						number: util.getValue(fields.ccnumber, 'apiValue', null),
+						cvv: util.getValue(fields.cvv, 'value', null),
+						type: cardType ? cardType.toUpperCase() : null,
+						expMonth: parseInt(ccexpire[0]),
+						expYear: parseInt(`${Moment().format('YYYY').slice(0, 2)}${ccexpire[1]}`)
+					};
+					break;
+				}
+
+				case 'echeck': {
+					data.paymethod.echeck = {
+						number: util.getValue(fields.accountNumber, 'value', null),
+						name: fullName,
+						bankName: util.getValue(fields.bankName, 'value', null),
+						type: 'checking',
+						routingNumber: util.getValue(fields.routingNumber, 'value', null),
+						zip: util.getValue(fields.zip, 'value', null)
+					}
+					break;
+				}
+
+				case 'applepay': {
+					break;
+				}
+
+				default: {
+					console.error('no paymethod specified');
+				}
+			}
+
+			console.log('processForm', data);
+			/*
+			this.props.sendResource(
+				this.props.resource,
+				{
+					id: [this.props.id],
+					method: 'patch',
+					data: data,
+					callback: this.processCallback.bind(this),
+				});
+			*/
+		}
+
 	}
 
 	onCreditCardChange(name, value, cardType, field) {
@@ -198,7 +289,7 @@ class PaymentFormClass extends Component {
 		if (echeck) {
 			tabs.push(
 				<Tab key={'echeck'} id={'echeck'} label={<span className='tabLabel'>{mobile ? 'eCheck' : 'Pay by eCheck'}</span>}>
-					<Echeck primaryColor={primaryColor} textField={this.props.textField} />
+					<Echeck primaryColor={primaryColor} textField={this.props.textField} fieldProp={this.props.fieldProp} />
 				</Tab>
 			);
 		}
@@ -325,19 +416,20 @@ class PaymentFormClass extends Component {
 		const headerText =
 			<div className='paymentFormHeader'>
 				<span className='paymentFormHeaderTitle'>Payment Info</span>
-				<span className='paymentFormHeaderText'>
-					Please enter your payment information.
-					<GBLink
-						style={{ marginLeft: 5 }}
-						allowCustom={true}
-						customColor={primaryColor}
-						onClick={() => {
-						const open = openCart ? false : true;
-						this.props.updateCart({ open });
-					}}>
-						{openCart ? 'Hide' : 'View'} the items in your cart.
-					</GBLink>
-				</span>
+				<div className='paymentFormHeaderText'>
+					<AnimateHeight height={openCart ? 0 : 'auto'}>
+						<GBLink
+							allowCustom={true}
+							customColor={primaryColor}
+							onClick={() => {
+							const open = openCart ? false : true;
+							this.props.updateCart({ open });
+						}}>
+							{openCart ? 'Hide' : 'View'} the items in your cart.
+						</GBLink>
+					</AnimateHeight>
+					<span style={{ display: 'block' }}>Please enter your payment information.</span>
+				</div>
 			</div>
 		;
 		const fields = {};
@@ -354,14 +446,14 @@ class PaymentFormClass extends Component {
 				{this.props.textField('name', { placeholder: 'Your Name',  label: 'Name', required: true })}
 			</div>
 		;
-		fields.email = this.props.textField('email', {required: true, placeholder: 'Your Email Address', label: 'Email', validate: 'email', inputMode: 'email' });
-		fields.phone = this.props.textField('phone', {required: phone.required, label: 'Phone', placeholder: 'Phone Number', validate: 'phone', inputMode: 'tel' });
-		fields.address = this.props.textField('address', { required: address.required, label: 'Address', placeholder: 'Street Address' });
-		fields.city = this.props.textField('city', { required: address.required, label: 'City', placeholder: 'City' });
-		fields.zip = this.props.textField('zip', { required: true, label: 'Zip Code', placeholder: 'Zip Code', maxLength: 5, inputMode: 'numeric' });
-		fields.state = this.props.dropdown('state', {label: 'State', fixedLabel: false, selectLabel: 'State', options: selectOptions.states, required: address.required })
-		fields.employer = this.props.textField('employer', { required: work.required, label: 'Employer', placeholder: 'Employer' });
-		fields.occupation = this.props.textField('occupation', { required: work.required, label: 'Occupation', placeholder: 'Occupation' });
+		fields.email = this.props.textField('email', { group: 'customer', required: true, placeholder: 'Your Email Address', label: 'Email', validate: 'email', inputMode: 'email' });
+		fields.phone = this.props.textField('phone', { group: 'customer', required: phone.required, label: 'Phone', placeholder: 'Phone Number', validate: 'phone', inputMode: 'tel' });
+		fields.address = this.props.textField('line1', { group: 'address', required: address.required, label: 'Address', placeholder: 'Street Address' });
+		fields.city = this.props.textField('city', { group: 'address', required: address.required, label: 'City', placeholder: 'City' });
+		fields.state = this.props.dropdown('state', { group: 'address', label: 'State', fixedLabel: false, selectLabel: 'State', options: selectOptions.states, required: address.required })
+		fields.zip = this.props.textField('zip', { group: 'address', required: true, label: 'Zip Code', placeholder: 'Zip Code', maxLength: 5, inputMode: 'numeric' });
+		fields.employer = this.props.textField('employer', { group: 'customer', required: work.required, label: 'Employer', placeholder: 'Employer' });
+		fields.occupation = this.props.textField('occupation', { group: 'customer', required: work.required, label: 'Occupation', placeholder: 'Occupation' });
 		fields.custom = this.props.textField('note', { required: custom.required, label: custom.placeholder, hideLabel: true, placeholder: custom.placeholder });
 
 
@@ -393,6 +485,10 @@ class PaymentFormClass extends Component {
 
 	render() {
 
+		const {
+			processingPayment
+		} = this.state;
+
 		return (
 			<>
 				<ModalRoute
@@ -406,6 +502,7 @@ class PaymentFormClass extends Component {
 					style={{ width: '50%' }}
 				/>
 				<>
+					{ processingPayment ? <Loader msg='Please wait while transaction is processed...' forceText={true} /> : <></> }
 					{this.renderFields()}
 					{this.props.saveButton(this.processForm, { style: { margin: 0, padding: 0, height: 0, width: 0, visibility: 'hidden' } })}
 				</>
@@ -498,16 +595,16 @@ function mapStateToProps(state, props) {
 
 	const gbx3 = util.getValue(state, 'gbx3', {});
 	const cart = util.getValue(gbx3, 'cart', {});
-	const cartItems = util.getValue(gbx3, 'items');
-	const passFees = util.getValue(cart, 'passFees');
+	const zeroAmountAllowed = util.getValue(cart, 'zeroAmountAllowed', false);
+	const cartItems = util.getValue(cart, 'items');
 	const openCart = util.getValue(cart, 'open');
 	const paymethod = util.getValue(cart, 'paymethod');
 	const cardType = util.getValue(cart, 'cardType');
 	const amount = util.getValue(cart, 'subTotal', 0);
 
 	return {
+		zeroAmountAllowed,
 		cartItems,
-		passFees,
 		openCart,
 		paymethod,
 		cardType,

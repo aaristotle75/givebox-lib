@@ -39,7 +39,12 @@ export function gbx3(state = {
 	cart: {
 		open: true,
 		zeroAmountAllowed: false,
-		confirmation: false,
+		confirmation: {
+			email: 'me@buddyteal.com',
+			fullName: 'Buddy Teal',
+			bankName: 'US Bank',
+			cardType: 'VISA'
+		},
 		paymethod: 'creditcard',
 		cardType: 'default',
 		subTotal: 0,

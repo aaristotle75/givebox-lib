@@ -26,7 +26,9 @@ class Echeck extends Component {
 			x.onload = function() {
 				if (!util.isEmpty(this.response)) {
 					const json = JSON.parse(this.response);
-					bindthis.setState({ bankName: util.getValue(json, 'name') });
+					const bankName = util.getValue(json, 'name');
+					bindthis.setState({ bankName });
+					bindthis.props.fieldProp('bankName', { value: bankName });
 				}
 			};
 			x.open('GET', url);
@@ -72,13 +74,14 @@ class Echeck extends Component {
 						<Fade
 							in={bankName ? true : false}
 						>
-							<span className='green date'>{this.state.bankName}</span>
+							<span className='date'>{this.state.bankName}</span>
 						</Fade>
 					</div>
 				</div>
 				<div>
-					<div className='col echeckCol'>{this.props.textField('accountNumber', { group: 'paymethod', placeholder: 'Bank Account Number', label: 'Bank Account Number', fixedLabel: true, customLabel: echeckHowModal, required: false, maxLength: 16, validate: 'number', inputMode: 'numeric' })}</div>
-					<div className='col echeckCol'>{this.props.textField('routingNumber', { group: 'paymethod', placeholder: 'Bank Routing Number', fixedLabel: true, label: 'Routing Number', required: false, maxLength: 9, validate: 'number', onChange: this.getBankName, inputMode: 'numeric' })}</div>
+					{this.props.textField('bankName', { type: 'hidden', value: this.state.bankName })}
+					<div className='col echeckCol'>{this.props.textField('accountNumber', { group: 'paymethod', placeholder: 'Bank Account Number', label: 'Bank Account Number', fixedLabel: true, customLabel: echeckHowModal, required: false, maxLength: 16, inputMode: 'numeric' })}</div>
+					<div className='col echeckCol'>{this.props.textField('routingNumber', { group: 'paymethod', placeholder: 'Bank Routing Number', fixedLabel: true, label: 'Routing Number', required: false, maxLength: 9, onChange: this.getBankName, inputMode: 'numeric' })}</div>
 				</div>
 			</div>
 		)

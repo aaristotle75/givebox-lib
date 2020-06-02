@@ -47,6 +47,11 @@ input:-webkit-autofill:active  {
 	margin: 0 5px;
 }
 
+.input-hidden {
+	padding: 0px !important;
+	margin: 0px !important;
+}
+
 .input-group {
 	.customLink {
 		position: absolute;

@@ -115,8 +115,11 @@ class Form extends Component {
 	}
 
 	saveButton() {
+		this.props.toggleModal('paymentConfirmation', true);
+		/*
 		const form = document.getElementById(`gbxForm-form-saveButton`);
 		if (form) form.click();
+		*/
 	}
 
 	remove() {
@@ -148,8 +151,6 @@ class Form extends Component {
 			title,
 			modalID,
 			breakpoint,
-			confirmation,
-			passFees,
 			acceptedTerms
 		} = this.props;
 
@@ -212,26 +213,23 @@ class Form extends Component {
 					}
 				/>
 				<Cart primaryColor={primaryColor} />
-				{confirmation ? <Confirmation /> :
-					<PaymentForm
-						primaryColor={primaryColor}
-						echeck={util.getValue(form, 'echeck', true)}
-						phone={{ enabled: phoneInfo.enabled, required: phoneInfo.required }}
-						address={{ enabled: addressInfo.enabled, required: addressInfo.required }}
-						work={{ enabled: workInfo.enabled, required: workInfo.required }}
-						custom={{ enabled: noteInfo.enabled, required: noteInfo.required, placeholder: util.getValue(form, 'notePlaceholder', 'Enter a Note') }}
-						sendEmail={util.getValue(form, 'sendEmail', true)}
-						editable={this.props.editable}
-						breakpoint={breakpoint}
-					/>
-				}
+				<PaymentForm
+					primaryColor={primaryColor}
+					echeck={util.getValue(form, 'echeck', true)}
+					phone={{ enabled: phoneInfo.enabled, required: phoneInfo.required }}
+					address={{ enabled: addressInfo.enabled, required: addressInfo.required }}
+					work={{ enabled: workInfo.enabled, required: workInfo.required }}
+					custom={{ enabled: noteInfo.enabled, required: noteInfo.required, placeholder: util.getValue(form, 'notePlaceholder', 'Enter a Note') }}
+					sendEmail={util.getValue(form, 'sendEmail', true)}
+					editable={this.props.editable}
+					breakpoint={breakpoint}
+				/>
 				<div className='formBottomSection'>
 					<Totals
 						setCart={this.setCart}
 						primaryColor={primaryColor}
 						toggleModal={this.props.toggleModal}
 					/>
-					{confirmation ? '' :
 					<div className='buttonSection'>
 						<div style={{ marginBottom: 10 }}>
 							<Choice
@@ -258,16 +256,23 @@ class Form extends Component {
 							style={{ width: '60%' }}
 							className='gbx3'
 							component={() =>
-									<Terms
-										setCart={this.setCart}
-										primaryColor={primaryColor}
-										toggleModal={this.props.toggleModal}
-									/>
-								}
-							/>
-							<ModalLink style={{ marginTop: 10 }} allowCustom={true} customColor={primaryColor} id='terms'>Read Terms and Conditions</ModalLink>
-					</div> }
+								<Terms
+									setCart={this.setCart}
+									primaryColor={primaryColor}
+									toggleModal={this.props.toggleModal}
+								/>
+							}
+						/>
+						<ModalLink style={{ marginTop: 10 }} allowCustom={true} customColor={primaryColor} id='terms'>Read Terms and Conditions</ModalLink>
+					</div>
 				</div>
+				<ModalRoute
+					id='paymentConfirmation'
+					effect='3Dsign'
+					style={{ width: '60%' }}
+					className='gbx3'
+					component={() => <Confirmation /> }
+				/>
 			</div>
 		)
 	}
@@ -279,7 +284,6 @@ function mapStateToProps(state, props) {
 	const cart = util.getValue(gbx3, 'cart', {});
 	const passFees = util.getValue(cart, 'passFees');
 	const acceptedTerms = util.getValue(cart, 'acceptedTerms');
-	const confirmation = util.getValue(cart, 'confirmation');
 	const globals = util.getValue(gbx3, 'globals', {});
 	const gbxStyle = util.getValue(globals, 'gbxStyle', {});
 	const primaryColor = util.getValue(gbxStyle, 'primaryColor', {});
@@ -288,7 +292,6 @@ function mapStateToProps(state, props) {
 		cart,
 		passFees,
 		acceptedTerms,
-		confirmation,
 		gbxStyle,
 		primaryColor
 	}
