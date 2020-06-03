@@ -13,7 +13,8 @@ import {
 	sendResource,
 	updateData,
 	saveGBX3,
-	Fade
+	Fade,
+	updateCart
 } from '../../';
 import AmountsEdit from './amounts/AmountsEdit';
 import AmountsList from './amounts/AmountsList';
@@ -354,7 +355,9 @@ class Amounts extends Component {
 			modalID,
 			data,
 			kind,
-			primaryColor
+			primaryColor,
+			numCartItems,
+			subTotal
 		} = this.props;
 
 		const {
@@ -494,8 +497,20 @@ class Amounts extends Component {
 										</div>
 										<div className='bottomContainer spaceBetween'>
 											<div className='cartInfo'>
-												<ModalLink id='cart' opts={{ tab: 'cart' }} allowCustom={true} customColor={primaryColor}><span style={{ display: 'block', fontSize: 12 }}>Items in Cart (8)</span></ModalLink>
-												<span style={{ display: 'block' }}><span style={{ fontSize: 12 }}>Sub Total:</span> <span className='strong'>{util.money(300)}</span></span>
+												<AnimateHeight height={numCartItems > 0 && parseInt(subTotal) > 0 ? 'auto' : 0}>
+													<GBLink
+														allowCustom={true}
+														customColor={primaryColor}
+														onClick={() => {
+															this.props.updateCart({ open: true });
+															this.props.scrollTo('checkout');
+															this.props.toggleModal('amountsList');
+														}}
+													>
+														<span style={{ display: 'block', fontSize: 12 }}>Items in Cart ({numCartItems})</span>
+													</GBLink>
+													<span style={{ display: 'block' }}><span style={{ fontSize: 12 }}>Sub Total:</span> <span className='strong'>{util.money(subTotal)}</span></span>
+												</AnimateHeight>
 											</div>
 											<div className='button-group'>
 												<ModalLink className='hideOnMobile' id='shop' allowCustom={true} customColor={primaryColor}>SHOP MORE ITEMS</ModalLink>
@@ -534,9 +549,15 @@ function mapStateToProps(state, props) {
 
 	const gbx3 = util.getValue(state, 'gbx3', {});
 	const data = util.getValue(gbx3, 'data', {});
+	const cart = util.getValue(gbx3, 'cart', {});
+	const cartItems = util.getValue(cart, 'items', []);
+	const subTotal = util.getValue(cart, 'subTotal', 0);
+	const numCartItems = cartItems.length;
 
 	return {
-		data
+		data,
+		numCartItems,
+		subTotal
 	}
 }
 
@@ -544,5 +565,6 @@ export default connect(mapStateToProps, {
 	toggleModal,
 	sendResource,
 	saveGBX3,
-	updateData
+	updateData,
+	updateCart
 })(Amounts);

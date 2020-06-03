@@ -42,8 +42,10 @@ class CreditCard extends Component {
 		const length = obj.apiValue.length;
 		let doBinLookup = false;
 		let cardType = length < 4 ? 'default' : this.state.cardType;
-		if (length === 4
-			|| ( (cardType === 'amex' || cardType === 'default') && length === 15 )
+		if (length === 4) {
+			cardType = _v.identifyCardTypes(obj.apiValue.slice(0, 4));
+		}
+		if ( ( (cardType === 'amex' || cardType === 'default') && length === 15 )
 			|| ( (cardType !== 'amex' || cardType === 'default') && length === 16) ) doBinLookup = true;
 
 		if (doBinLookup) {

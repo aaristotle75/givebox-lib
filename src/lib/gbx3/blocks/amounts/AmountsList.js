@@ -21,6 +21,7 @@ class AmountsList extends Component {
 
 	constructor(props) {
 		super(props);
+		this.checkCart = this.checkCart.bind(this);
 		this.renderAmounts = this.renderAmounts.bind(this);
 		this.onChangeAmountRadio = this.onChangeAmountRadio.bind(this);
 		this.onChangeEnteredAmount = this.onChangeEnteredAmount.bind(this);
@@ -55,7 +56,30 @@ class AmountsList extends Component {
 	}
 
 	componentDidMount() {
-		this.updateCart();
+		this.checkCart();
+	}
+
+	checkCart() {
+		const {
+			cart,
+			article
+		} = this.props;
+
+		const cartItems = util.getValue(cart, 'items', []);
+		const index = cartItems.findIndex(i => i.articleID === article.articleID);
+		if (index !== -1) {
+			// init from cart
+			const obj = util.getValue(cartItems, index, {});
+			const ID = util.getValue(obj, 'unitID', null);
+			const amount = util.getValue(obj, 'amountFormatted', 0);
+			const customAmount = util.getValue(obj, 'customAmount');
+			this.setState({ customAmount, amountRadioSelected: ID}, () => {
+				this.setUnitID(ID, () => this.setAmounts(amount, customAmount));
+			});
+		} else {
+			// Use defaults set in contructor
+			this.updateCart()
+		}
 	}
 
 	toggleShowDetails(id) {

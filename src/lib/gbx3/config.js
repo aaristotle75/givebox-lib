@@ -140,6 +140,7 @@ const paymentForm = {
 			noteInfo: 0,
 			notePlaceholder: '',
 			allowSelection: true,
+			allowSharing: true,
 			sendEmail: {
 				enabled: true,
 				linkText: 'Send an Email Message to Your Friends'

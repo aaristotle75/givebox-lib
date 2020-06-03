@@ -35,13 +35,12 @@ class Totals extends Component {
 			total,
 			primaryColor,
 			passFees,
-			feeOption,
-			confirmation
+			feeOption
 		} = this.props;
 
 		return (
 			<div className='totalsContainer'>
-				{confirmation || !feeOption ? '' :
+				{feeOption ?
 				<Choice
 					label={`Cover the Cost of the Fee`}
 					value={passFees}
@@ -50,7 +49,7 @@ class Totals extends Component {
 						this.props.setCart('passFees', passFees ? false : true)
 					}}
 					color={primaryColor}
-				/> }
+				/> : <></> }
 				<div className='totalsSection'>
 					<div className='leftSide'>
 						{hasCustomGoal && raised > 0 ?
@@ -111,7 +110,6 @@ function mapStateToProps(state, props) {
 	const gbx3 = util.getValue(state, 'gbx3', {});
 	const cart = util.getValue(gbx3, 'cart', {});
 	const passFees = util.getValue(cart, 'passFees');
-	const confirmation = util.getValue(cart, 'confirmation');
 	const paymethod = util.getValue(cart, 'paymethod');
 	const data = util.getValue(gbx3, 'data', {});
 	const settings = util.getValue(data, 'giveboxSettings', {});
@@ -127,7 +125,6 @@ function mapStateToProps(state, props) {
 	return {
 		passFees,
 		feeOption,
-		confirmation,
 		paymethod,
 		hasCustomGoal,
 		raised,

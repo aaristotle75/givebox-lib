@@ -42,6 +42,8 @@ class GBXTest extends Component {
 
 		if (util.isEmpty(this.props.article)) return <Loader msg='Loading article...' />
 
+		console.log('execute', this.props);
+
 		return (
 			<div>
 				<GBX
@@ -53,6 +55,7 @@ class GBXTest extends Component {
 					save={this.save}
 					editable={false}
 					preview={true}
+					queryParams={this.props.queryParams}
 				/>
 			</div>
 		)

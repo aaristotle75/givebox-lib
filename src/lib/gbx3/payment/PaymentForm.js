@@ -10,7 +10,8 @@ import {
 	Tabs,
 	updateCart,
 	GBLink,
-	Loader
+	Loader,
+	toggleModal
 } from '../../';
 import Moment from 'moment';
 import SendEmail from './SendEmail';
@@ -126,8 +127,6 @@ class PaymentFormClass extends Component {
 					note: ( lastItem.unitID === value.unitID ) && note ? note : null
 				});
 			});
-
-
 
 			const nameField = util.getValue(fields, 'name');
 			const name = util.splitName(util.getValue(nameField, 'value'));
@@ -613,5 +612,6 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
-	updateCart
+	updateCart,
+	toggleModal
 })(PaymentForm)

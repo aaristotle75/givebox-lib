@@ -876,13 +876,71 @@ $breakpoint: 768px;
 		flex-direction: column;
 		padding: 20px;
 
+		.subText {
+			font-size: 18px;
+			font-weight: 300;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			padding: 5px 0;
+			@media (max-width: $breakpoint) {
+				font-size: .9em;
+				font-size: 500;
+			}
+		}
+
 		.successfulText {
 			font-size: .9em;
 			margin: 10px 0;
+
+			.group {
+				display: flex;
+				justify-content: flex-start;
+				align-items: center;
+				margin: 10px 0;
+
+				.icon {
+					margin-right: 5px;
+				}
+			}
+
+			.inlineText {
+				display: inline-block;
+				padding-bottom: 5px;
+			}
+
+			.line {
+				display: block;
+				padding-bottom: 5px;
+			}
+
+			.titleText {
+				font-size: 22px;
+				font-weight: 300;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				padding: 5px 0;
+				.icon {
+					font-size: 40px;
+					margin-bottom: 5px;
+				}
+
+				@media (max-width: $breakpoint) {
+					font-weight: 600;
+					font-size: .9em;
+					.icon {
+						font-size: 30px;
+						margin-bottom: 5px;
+					}
+				}
+			}
 		}
 
 		.share {
-			padding: 20px 0;
+			ul {
+				padding: 20px 0;
+			}
 		}
 	}
 

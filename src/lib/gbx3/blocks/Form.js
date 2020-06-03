@@ -271,7 +271,12 @@ class Form extends Component {
 					effect='3Dsign'
 					style={{ width: '60%' }}
 					className='gbx3'
-					component={() => <Confirmation /> }
+					component={() =>
+						<Confirmation
+							form={form}
+							primaryColor={primaryColor}
+						/>
+					}
 				/>
 			</div>
 		)

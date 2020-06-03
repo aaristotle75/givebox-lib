@@ -27,7 +27,9 @@ import 'react-resizable/css/styles.css';
 import '../styles/gbx3.scss';
 import '../styles/gbx3modal.scss';
 import reactReferer from 'react-referer';
-import has from 'has';
+import { loadReCaptcha } from 'react-recaptcha-v3';
+
+const RECAPTCHA_KEY = '6Lddf3wUAAAAADzJFZ9siQeegVC_PNHBIBQivCJ';
 
 class GBX3 extends React.Component {
 
@@ -61,6 +63,17 @@ class GBX3 extends React.Component {
 			kind,
 			editable
 		});
+	}
+
+	// Recaptcha, tracking etc..
+	loadExtras() {
+		const bodyEl = document.getElementsByTagName('body')[0];
+		if (!this.props.preview) {
+			bodyEl.classList.add('live');
+			loadReCaptcha(RECAPTCHA_KEY);
+		} else {
+			bodyEl.classList.add('preview');
+		}
 	}
 
 	componentDidUpdate(prevProps) {

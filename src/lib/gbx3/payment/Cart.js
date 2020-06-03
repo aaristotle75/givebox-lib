@@ -69,7 +69,7 @@ class Cart extends Component {
 
 	renderItemsInCart() {
 		const {
-			cart,
+			cartItems,
 			primaryColor
 		} = this.props;
 
@@ -78,7 +78,6 @@ class Cart extends Component {
 		} = this.state;
 
 		const items = [];
-		const cartItems = util.getValue(cart, 'items', []);
 
 		if (!util.isEmpty(cartItems)) {
 			const numCartItems = cartItems.length;
@@ -160,11 +159,15 @@ Cart.defaultProps = {
 function mapStateToProps(state, props) {
 	const gbx3 = util.getValue(state, 'gbx3', {});
 	const cart = util.getValue(gbx3, 'cart', {});
+	const cartItems = util.getValue(cart, 'items', []);
+	const cartHasItems = !util.isEmpty(cartItems) ? true : false;
 	const total = util.getValue(cart, 'total');
-	const open = util.getValue(cart, 'open');
+	const open = !cartHasItems ? false : util.getValue(cart, 'open');
 
 	return {
 		cart,
+		cartItems,
+		cartHasItems,
 		total,
 		open
 	}

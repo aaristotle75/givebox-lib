@@ -1,5 +1,16 @@
 @import 'variables.scss';
 
+$breakpoint: 768px;
+
+.modalContent.givebox-paymentform {
+	button.modalToTop {
+		bottom: 100px;
+		@media (max-width: $breakpoint) {
+			bottom: 0px;
+		}
+	}
+}
+
 .gbxModal,
 .modalContent.gbx3 {
 

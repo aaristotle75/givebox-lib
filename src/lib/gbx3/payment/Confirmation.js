@@ -2,8 +2,18 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import {
 	util,
-	updateCart
+	updateCart,
+	types,
+	GBLink
 } from '../../';
+import {
+	FacebookShareButton,
+	TwitterShareButton,
+	PinterestShareButton,
+	LinkedinShareButton
+} from 'react-share';
+
+const GBX_SHARE = process.env.REACT_APP_GBX_SHARE;
 
 class Confirmation extends Component {
 
@@ -27,12 +37,24 @@ class Confirmation extends Component {
 
 		const item = [];
 
+		item.push(
+			<span key={'receiptEmailed'} className='group'>
+				<span className='icon icon-check'></span>
+				<span className='inlineText'>An email receipt has been sent to <strong>{util.getValue(confirmation, 'email')}</strong>.</span>
+			</span>
+		);
 		switch (paymethod) {
 			case 'echeck': {
 				item.push(
 					<span key={paymethod}>
-						<span style={{ display: 'block', paddingBottom: 5 }}>Your bank account has been charged in the amount of <strong>{util.money(total)}</strong>.</span>
-						The charge will show up in your <strong>{util.getValue(confirmation, 'bankName')}</strong> Transactions with a description similar to "{descriptor}".
+						<span className='group'>
+							<span className='icon icon-check'></span>
+							<span className='inlineText'>Your <strong>{util.getValue(confirmation, 'bankName')}</strong> bank account has been charged in the amount of <strong>{util.money(total)}</strong>.</span>
+						</span>
+						<span className='group'>
+							<span className='icon icon-check'></span>
+							<span className='inlineText'>The charge will show in your bank statement with the description {descriptor}.</span>
+						</span>
 					</span>
 				);
 				break;
@@ -43,13 +65,26 @@ class Confirmation extends Component {
 			default: {
 				item.push(
 					<span key={paymethod}>
-						<span style={{ display: 'block', paddingBottom: 5 }}>Your credit card has been charged in the amount of <strong>{util.money(total)}</strong>.</span>
-						The charge will show up in your <strong>{util.getValue(confirmation, 'cardType')}</strong> card transactions with a description similar to <strong>{descriptor}</strong>.
+						<span className='group'>
+							<span className='icon icon-check'></span>
+							<span className='inlineText'>Your <strong>{util.getValue(confirmation, 'cardType')}</strong> card has been charged in the amount of <strong>{util.money(total)}</strong>.</span>
+						</span>
+						<span className='group'>
+							<span className='icon icon-check'></span>
+							<span className='inlineText'>The charge will show up in your credit card or bank statement with the description <strong>{descriptor}</strong>.</span>
+						</span>
 					</span>
 				);
 				break;
 			}
 		}
+
+		item.push(
+			<span key={'thankyou'} className='group'>
+				<span className='icon icon-check'></span>
+				<span className='inlineText'>Thank you for your support!</span>
+			</span>
+		);
 
 		return (
 			<div className='successfulText'>
@@ -61,20 +96,88 @@ class Confirmation extends Component {
 	render() {
 
 		const {
-			confirmation
+			data: article,
+			form,
+			primaryColor
 		} = this.props;
 
-		console.log('execute confirmation', confirmation);
+		const shareLink = `${GBX_SHARE}/${util.getValue(article, 'articleID')}`;
+		const title = util.getValue(article, 'title');
+		const image = util.imageUrlWithStyle(article.imageURL, 'medium');
+		const description = util.getValue(article, 'summary');
+		const shareIconSize = 35;
+		const allowShare = util.getValue(form, 'allowShare', false);
 
 		return (
 			<div className='modalWrapper confirmation'>
 				<div className='successfulText'>
-					<span style={{ display: 'block', fontSize: '1.1em', padding: '5px 0' }} className='green'><span className='icon icon-check'></span> Your transaction has been processed successfully!</span>
-					<span style={{ display: 'block' }}>An email receipt has been sent to <strong>{util.getValue(confirmation, 'email')}</strong>.</span>
+					<span className='titleText' style={{ color: primaryColor }}>
+						<span className='icon icon-check-circle'></span>
+						Your transaction has been processed successfully!
+					</span>
 				</div>
 				{this.renderPaymethodText()}
+				{ allowShare ?
 				<div className='share'>
-					Share
+					<div className='subText'>
+						Please tell people about us by sharing below.
+					</div>
+					<ul className="center">
+						<li>
+							<FacebookShareButton
+								url={shareLink}
+								quote={title}
+								onShareWindowClose={() => this.linkClicked('facebook')}
+							>
+								{types.socialIcons('facebook', shareIconSize)}
+							</FacebookShareButton>
+						</li>
+						<li>
+							<TwitterShareButton
+								url={shareLink}
+								title={title}
+								onShareWindowClose={() => this.linkClicked('twitter')}
+							>
+								{types.socialIcons('twitter', shareIconSize)}
+							</TwitterShareButton>
+						</li>
+						{image ?
+						<li>
+							<PinterestShareButton
+								url={shareLink}
+								media={image}
+								windowWidth={700}
+								windowHeight={600}
+								onShareWindowClose={() => this.linkClicked('pinterest')}
+							>
+								{types.socialIcons('pinterest', shareIconSize)}
+							</PinterestShareButton>
+						</li> : ''}
+						<li>
+							<LinkedinShareButton
+								url={shareLink}
+								title={title}
+								description={description}
+								onShareWindowClose={() => this.linkClicked('linkedin')}
+							>
+								{types.socialIcons('linkedin', shareIconSize)}
+							</LinkedinShareButton>
+						</li>
+					</ul>
+				</div> : <></> }
+				<div className='successfulText'>
+					<div className='subText'>
+						<span style={{ marginBottom: 20 }} className='line'>Have a Nonprofit or know someone who does?</span>
+						<GBLink
+							className='button'
+							customColor={primaryColor}
+							allowCustom={true}
+							solidColor={true}
+							onClick={() => window.open('https://www.givebox.com')}
+						>
+							Learn About Givebox
+						</GBLink>
+					</div>
 				</div>
 			</div>
 		)
@@ -94,7 +197,8 @@ function mapStateToProps(state, props) {
 		paymethod,
 		total,
 		confirmation,
-		descriptor
+		descriptor,
+		data
 	}
 }
 

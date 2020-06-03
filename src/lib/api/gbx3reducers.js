@@ -40,6 +40,7 @@ export function gbx3(state = {
 		open: true,
 		zeroAmountAllowed: false,
 		confirmation: {
+			display: false,
 			email: 'me@buddyteal.com',
 			fullName: 'Buddy Teal',
 			bankName: 'US Bank',

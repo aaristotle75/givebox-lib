@@ -50,7 +50,8 @@ class FormEdit extends Component {
 			noteInfo,
 			notePlaceholder,
 			sendEmail,
-			allowSelection
+			allowSelection,
+			allowShare
 		} = this.props.form;
 
 		return (
@@ -161,6 +162,16 @@ class FormEdit extends Component {
 				>
 					<div className='formSectionContainer'>
 						<div className='formSection'>
+							<Choice
+								type='checkbox'
+								name='allowShare'
+								label={'Allow this form to be shared'}
+								onChange={(name, value) => {
+									this.updateForm('allowShare', allowShare ? false : true);
+								}}
+								checked={allowShare}
+								value={allowShare}
+							/>
 							<Choice
 								type='checkbox'
 								name='allowSelection'
