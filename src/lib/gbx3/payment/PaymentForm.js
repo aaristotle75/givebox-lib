@@ -11,7 +11,8 @@ import {
 	updateCart,
 	GBLink,
 	Loader,
-	toggleModal
+	toggleModal,
+	processTransaction
 } from '../../';
 import Moment from 'moment';
 import SendEmail from './SendEmail';
@@ -28,6 +29,7 @@ class PaymentFormClass extends Component {
 		this.renderFields = this.renderFields.bind(this);
 		this.customOnChange = this.customOnChange.bind(this);
 		this.processForm = this.processForm.bind(this);
+		this.processCallback = this.processCallback.bind(this);
 		this.formSavedCallback = this.formSavedCallback.bind(this);
 		this.sendEmailCallback = this.sendEmailCallback.bind(this);
 		this.onCreditCardChange = this.onCreditCardChange.bind(this);
@@ -51,6 +53,14 @@ class PaymentFormClass extends Component {
 			this.setState({ applepay: true });
 		}
 		this.setPaymethod(this.state.paymethod);
+	}
+
+	componentDidUpdate(prevProps) {
+		const itemsChange = prevProps.cartItems.length !== this.props.cartItems.length ? true : false;
+		const amountChange = prevProps.amount !== this.props.amount ? true : false;
+		if (itemsChange || amountChange) {
+			if (this.props.formState.error) this.props.formProp({ error: false });
+		}
 	}
 
 	componentWillUnmount() {
@@ -81,7 +91,9 @@ class PaymentFormClass extends Component {
 			paymethod,
 			cartItems: items,
 			amount,
-			zeroAmountAllowed
+			zeroAmountAllowed,
+			emailBlastToken,
+			emailBlastEmail
 		} = this.props;
 
 		const {
@@ -90,8 +102,12 @@ class PaymentFormClass extends Component {
 
 		const data = {
 			items: [],
-			paymethod: {}
+			paymethod: {},
+			emailBlastToken,
+			emailBlastEmail
 		};
+
+		let error = false;
 
 		if ( util.isEmpty(items) || ( !zeroAmountAllowed && (!amount || parseInt(amount) === 0) ) ) {
 			this.props.formProp({ error: true, errorMsg: <span>The amount to process cannot be {util.money(0)}. Please select an amount.</span> });
@@ -152,14 +168,38 @@ class PaymentFormClass extends Component {
 			switch (paymethod) {
 				case 'creditcard': {
 					const ccexpire = util.getSplitStr(util.getValue(fields.ccexpire, 'value'), '/', 2, -1);
+					const type = cardType ? cardType.toUpperCase() : null;
+					const cvv = util.getValue(fields.cvv, 'value', null);
+					const cvvValidDigits = cardType === 'amex' ? 4 : 3;
+					if (cvv.length < cvvValidDigits) {
+						this.props.formProp({ error: true, errorMsg: 'CVV is invalid.' });
+						this.props.fieldProp('cvv', { error: `CVV must be ${cvvValidDigits} digits` });
+						error = true;
+					}
+					const binData = util.getValue(fields.ccnumber, 'binData', {});
+					const number = util.getValue(fields.ccnumber, 'apiValue', null);
+					const expMonth = parseInt(ccexpire[0]);
+					const expYear = parseInt(`${Moment().format('YYYY').slice(0, 2)}${ccexpire[1]}`);
+
+					data.paymethod.name = fullName;
+					data.paymethod.cvv = cvv;
+					data.paymethod.type = type;
+					data.paymethod.binData = binData;
+					data.paymethod.number = number;
+					data.paymethod.expMonth = expMonth;
+					data.paymethod.expYear = expYear;
+
+					/*
 					data.paymethod.creditcard = {
+						cvv,
+						type,
+						binData: util.getValue(fields.ccnumber, 'binData', {}),
 						name: fullName,
 						number: util.getValue(fields.ccnumber, 'apiValue', null),
-						cvv: util.getValue(fields.cvv, 'value', null),
-						type: cardType ? cardType.toUpperCase() : null,
 						expMonth: parseInt(ccexpire[0]),
 						expYear: parseInt(`${Moment().format('YYYY').slice(0, 2)}${ccexpire[1]}`)
 					};
+					*/
 					break;
 				}
 
@@ -184,17 +224,9 @@ class PaymentFormClass extends Component {
 				}
 			}
 
-			console.log('processForm', data);
-			/*
-			this.props.sendResource(
-				this.props.resource,
-				{
-					id: [this.props.id],
-					method: 'patch',
-					data: data,
-					callback: this.processCallback.bind(this),
-				});
-			*/
+			if (!error) {
+				this.props.processTransaction(data, this.processCallback);
+			}
 		}
 
 	}
@@ -593,6 +625,9 @@ PaymentForm.defaultProps = {
 function mapStateToProps(state, props) {
 
 	const gbx3 = util.getValue(state, 'gbx3', {});
+	const info = util.getValue(gbx3, 'info', {});
+	const emailBlastToken = util.getValue(info, 'ebToken', null);
+	const emailBlastEmail = util.getValue(info, 'ebEmail', null);
 	const cart = util.getValue(gbx3, 'cart', {});
 	const zeroAmountAllowed = util.getValue(cart, 'zeroAmountAllowed', false);
 	const cartItems = util.getValue(cart, 'items');
@@ -602,6 +637,8 @@ function mapStateToProps(state, props) {
 	const amount = util.getValue(cart, 'subTotal', 0);
 
 	return {
+		emailBlastToken,
+		emailBlastEmail,
 		zeroAmountAllowed,
 		cartItems,
 		openCart,
@@ -613,5 +650,6 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
 	updateCart,
-	toggleModal
+	toggleModal,
+	processTransaction
 })(PaymentForm)

@@ -115,11 +115,9 @@ class Form extends Component {
 	}
 
 	saveButton() {
-		this.props.toggleModal('paymentConfirmation', true);
-		/*
+		//this.props.toggleModal('paymentConfirmation', true);
 		const form = document.getElementById(`gbxForm-form-saveButton`);
 		if (form) form.click();
-		*/
 	}
 
 	remove() {
@@ -268,7 +266,7 @@ class Form extends Component {
 				</div>
 				<ModalRoute
 					id='paymentConfirmation'
-					effect='3Dsign'
+					effect='scaleUp'
 					style={{ width: '60%' }}
 					className='gbx3'
 					component={() =>

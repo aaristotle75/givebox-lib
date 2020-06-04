@@ -269,3 +269,19 @@ export function resetGBX3() {
 		}));
 	}
 }
+
+export function processTransaction(data, callback) {
+	return (dispatch, getState) => {
+		const grecaptcha = window.grecaptcha;
+		grecaptcha.ready(function() {
+			grecaptcha.execute(process.env.REACT_APP_RECAPTCHA_KEY, {action: 'payment'})
+			.then(function(token) {
+				dispatch(sendResource('purchaseOrder', {
+					data,
+					callback,
+					query: `rc=${token}`
+				}));
+			})
+		});
+	}
+}

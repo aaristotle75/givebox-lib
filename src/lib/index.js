@@ -68,7 +68,8 @@ import {
 	setModalRef,
 	setProp,
 	setPrefs,
-	setCustomProp
+	setCustomProp,
+	sendResponse
 } from './api/actions';
 
 import {
@@ -87,7 +88,8 @@ import {
 	updateCart,
 	updateCartItem,
 	saveGBX3,
-	resetGBX3
+	resetGBX3,
+	processTransaction
 } from './api/gbx3actions';
 
 import { app, resource, send, modal, preferences, custom } from './api/reducers';
@@ -144,6 +146,7 @@ export {
 	setProp,
 	setPrefs,
 	setCustomProp,
+	sendResponse,
 
 // gbx3 actions
 	updateGBX3,
@@ -162,6 +165,7 @@ export {
 	updateCartItem,
 	saveGBX3,
 	resetGBX3,
+	processTransaction,
 
 	// API
 	giveboxAPI,

@@ -799,8 +799,21 @@ label.active {
 
 .creditCard {
 
+	$creditCardLetterSpacing: .5px;
+
+	input::-webkit-input-placeholder {
+		letter-spacing: $creditCardLetterSpacing;
+	}
+	input::-moz-placeholder {
+		letter-spacing: $creditCardLetterSpacing;
+	}
+	input::-ms-input-placeholder {
+		letter-spacing: $creditCardLetterSpacing;
+	}
+
 	input {
 		padding-left: 50px;
+		letter-spacing: $creditCardLetterSpacing;
 	}
 
 	.checkmark {

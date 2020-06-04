@@ -397,14 +397,12 @@ class Form extends Component {
 		}
 	}
 
-	onChangeCreditCard(name, val, cardType, binData) {
+	onChangeCreditCard(name, val, cardType) {
 		const obj = _v.formatCreditCard(val);
 		const field = this.state.fields[name];
 		const value = obj.value;
 		const apiValue = obj.apiValue;
 		this.fieldProp(name, {value, apiValue, cardType, error: false});
-
-		field.binData = { ...getValue(field, 'binData', {}), ...binData };
 
 		if (cardType === 'amex') {
 			this.fieldProp('cvv', { maxLength: 4 });
@@ -858,6 +856,7 @@ class Form extends Component {
 				error={field ? field.error : params.error }
 				errorType={params.errorType}
 				createField={this.createField}
+				fieldProp={this.fieldProp}
 				params={params}
 				color={params.color || this.props.primaryColor}
 			/>
@@ -889,7 +888,7 @@ class Form extends Component {
 					{this.textField('ccexpire', { group: params.group, label: params.ccxpireLabel || 'Expiration', fixedLabel: params.ccexpirefixedLabel || true, placeholder: 'MM/YY', required: params.required, value: params.ccexpireValue || '', validate: 'ccexpire', maxLength: 5, count: false, debug: params.debug, inputMode: 'numeric', onChange: this.onChangeCCExpire, onBlur: params.onBlurCCExpire })}
 				</div>
 				<div className='cvv col'>
-					{this.textField('cvv', { group: params.group, label: 'CVV', customLabel: cvvModal, fixedLabel: true, placeholder: 'CVV', required: params.required, maxLength: 3, count: false, debug: params.debug, validate: 'number', inputMode: 'numeric', onBlur: params.onBlurCVV })}
+					{this.textField('cvv', { group: params.group, label: 'CVV', customLabel: cvvModal, fixedLabel: true, placeholder: 'CVV', required: params.required, maxLength: 3, count: false, debug: params.debug, validate: 'cvv', inputMode: 'numeric', onBlur: params.onBlurCVV })}
 				</div>
 				<div className='clear'></div>
 			</div>
@@ -1115,7 +1114,7 @@ class Form extends Component {
 				if (value.error) error = true;
 			}
 		});
-		this.formProp({error: error});
+		this.formProp({error: error, errorMsg: 'Please fix errors below in red.'});
 		return error;
 	}
 

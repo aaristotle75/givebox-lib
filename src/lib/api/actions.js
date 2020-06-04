@@ -198,7 +198,7 @@ function sendRequest(resource, endpoint, method, data, isSending = true) {
 	}
 }
 
-function sendResponse(resource, response, error) {
+export function sendResponse(resource, response, error) {
 	return {
 		type: types.SEND_RESPONSE,
 		resource: resource,
@@ -281,7 +281,6 @@ export function sendAPI(
 				} else {
 					errorMsg.data.message = 'Javascript error occurred.';
 					dispatch(sendResponse(resource, {}, error));
-					console.error('Error', error);
 					if (callback) callback(null, errorMsg);
 				}
 			})

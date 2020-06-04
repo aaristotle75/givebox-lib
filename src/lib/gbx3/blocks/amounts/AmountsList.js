@@ -220,8 +220,8 @@ class AmountsList extends Component {
 
 	setCustomSelected(ID) {
 		const amountInputRef = this.amountInputRef.current;
-		if (amountInputRef && this.props.breakpoint !== 'mobile') amountInputRef.focus();
 		const customSelected = parseInt(this.props.customID) === parseInt(ID) ? true : false;
+		if (amountInputRef && this.props.breakpoint !== 'mobile' && customSelected) amountInputRef.focus();
 		return customSelected;
 	}
 
@@ -280,7 +280,8 @@ class AmountsList extends Component {
 			customID,
 			defaultID,
 			embed,
-			color
+			color,
+			noFocus
 		} = this.props;
 
 		const {
@@ -369,7 +370,7 @@ class AmountsList extends Component {
 		const amountInput =
 			<div key={'amountInput'} className='amountInput'>
 				<TextField
-					autoFocus={true}
+					autoFocus={noFocus ? false : true}
 					inputRef={this.amountInputRef}
 					name='amountInput'
 					inputMode='decimal'
@@ -431,8 +432,11 @@ function mapStateToProps(state, props) {
 
 	const gbx3 = util.getValue(state, 'gbx3', {});
 	const cart = util.getValue(gbx3, 'cart', []);
+	const info = util.getValue(gbx3, 'info', {});
+	const noFocus = util.getValue(info, 'noFocus');
 
 	return {
+		noFocus,
 		cart
 	}
 }

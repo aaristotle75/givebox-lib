@@ -37,6 +37,7 @@ export function gbx3(state = {
 	data: {},
 	fees: {},
 	cart: {
+		processing: false,
 		open: true,
 		zeroAmountAllowed: false,
 		confirmation: {

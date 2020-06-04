@@ -12,7 +12,8 @@ class TextField extends Component {
 		this.inputRef = React.createRef();
 		this.state = {
 			status: 'idle',
-			color: props.color
+			color: props.color,
+			maxLength: props.maxLength
 		}
 	}
 
@@ -25,6 +26,9 @@ class TextField extends Component {
 	componentDidUpdate(prevProps) {
 		if (prevProps.color !== this.props.color) {
 			this.setState({ color: this.props.color });
+		}
+		if (prevProps.maxLength !== this.props.maxLength) {
+			this.setState({ maxLength: this.props.maxLength });
 		}
 	}
 
@@ -58,7 +62,6 @@ class TextField extends Component {
 			className,
 			error,
 			errorType,
-			maxLength,
 			value,
 			strength,
 			count,
@@ -72,7 +75,8 @@ class TextField extends Component {
 
 		const {
 			status,
-			color
+			color,
+			maxLength
 		} = this.state;
 
 		const labelStyle = {

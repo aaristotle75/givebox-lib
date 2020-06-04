@@ -9,6 +9,7 @@ import {
 	util,
 	Loader,
 	getResource,
+	sendResource,
 	setCustomProp,
 	updateInfo,
 	updateLayouts,
@@ -28,47 +29,101 @@ import '../styles/gbx3.scss';
 import '../styles/gbx3modal.scss';
 import reactReferer from 'react-referer';
 import { loadReCaptcha } from 'react-recaptcha-v3';
+import has from 'has';
 
-const RECAPTCHA_KEY = '6Lddf3wUAAAAADzJFZ9siQeegVC_PNHBIBQivCJ';
+const RECAPTCHA_KEY = process.env.REACT_APP_RECAPTCHA_KEY;
 
 class GBX3 extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.setInfo = this.setInfo.bind(this);
 		this.loadGBX3 = this.loadGBX3.bind(this);
+		this.setLoading = this.setLoading.bind(this);
 		this.setStyle = this.setStyle.bind(this);
+		this.setTracking = this.setTracking.bind(this);
+		this.setRecaptcha = this.setRecaptcha.bind(this);
 		this.state = {
 			loading: true
 		};
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
 		const {
-			orgID,
 			articleID,
-			kindID,
-			kind,
-			editable,
-			preview
+			editable
 		} = this.props;
 
-		const info = {};
-		if (preview) info.preview = true;
-		this.props.updateInfo(info);
+		const setInfo = await this.setInfo();
 
-		this.loadGBX3({
-			orgID,
-			articleID,
-			kindID,
-			kind,
-			editable
-		});
+		if (setInfo) {
+			this.loadGBX3({
+				articleID,
+				editable
+			});
+		}
 	}
 
-	// Recaptcha, tracking etc..
-	loadExtras() {
+	async componentDidUpdate(prevProps) {
+		const {
+			articleID,
+			editable
+		} = this.props;
+
+		if (prevProps.primaryColor !== this.props.primaryColor) {
+			this.setStyle();
+		}
+
+		const articleIDChanged = prevProps.articleID !== this.props.articleID ? true : false;
+		if (articleIDChanged) {
+			const setInfo = await this.setInfo();
+			if (setInfo) {
+				this.loadGBX3({
+					articleID,
+					editable
+				});
+			}
+		}
+	}
+
+	setLoading(loading) {
+		this.setState({ loading });
+	}
+
+	async setInfo() {
+		const {
+			queryParams,
+			info,
+			orgID,
+			articleID
+		} = this.props;
+
+		info.articleID = articleID;
+		info.orgID = orgID;
+		info.preview = has(queryParams, 'preview') ? true : false;
+		info.signup = has(queryParams, 'signup') ? true : false;
+		info.locked = has(queryParams, 'locked') ? true : false;
+		info.noFocus = has(queryParams, 'noFocus') ? true : false;
+		info.receipt = has(queryParams, 'receipt') ? true : false;
+		info.noloaderbg = has(queryParams, 'noloaderbg') ? true : false;
+		info.deactivated = has(queryParams, 'deactivated') ? true : false;
+		info.ebToken = util.getValue(queryParams, 'eb', null);
+		info.ebEmail = util.getValue(queryParams, 'm', null);
+
+		const sourceLocation = reactReferer.referer();
+		info.sourceLocation = this.props.sourceLocation || sourceLocation;
+
+		const infoUpdated = await this.props.updateInfo(info);
+		if (infoUpdated) return true;
+	}
+
+	setRecaptcha() {
+		const {
+			preview
+		} = this.props.info;
+
 		const bodyEl = document.getElementsByTagName('body')[0];
-		if (!this.props.preview) {
+		if (!preview) {
 			bodyEl.classList.add('live');
 			loadReCaptcha(RECAPTCHA_KEY);
 		} else {
@@ -76,17 +131,35 @@ class GBX3 extends React.Component {
 		}
 	}
 
-	componentDidUpdate(prevProps) {
-		if (prevProps.primaryColor !== this.props.primaryColor) {
-			this.setStyle();
+	setTracking() {
+		const {
+			info,
+			articleID
+		} = this.props;
+
+		const {
+			preview,
+			ebToken,
+			ebEmail
+		} = info;
+
+		if (!preview) {
+			const data = {
+				type: 'details',
+				articleID,
+				ebToken,
+				ebEmail
+			};
+			this.props.sendResource('articleView', {
+				data,
+				id: [articleID],
+				isSending: false
+			});
 		}
 	}
 
-	loadGBX3({
-		orgID,
+	async loadGBX3({
 		articleID,
-		kindID,
-		kind,
 		editable
 	}) {
 
@@ -94,97 +167,113 @@ class GBX3 extends React.Component {
 			access
 		} = this.props;
 
-		const apiName = `org${types.kind(kind).api.item}`;
-		const sourceLocation = reactReferer.referer();
+		this.setLoading(true);
 
-		if (kindID) {
-			this.props.getResource('articleFeeSettings', {
-				id: [articleID],
-				reload: true,
-				callback: (res, err) => {
-					if (!err && !util.isEmpty(res)) {
-						this.props.updateFees(res);
-					}
-				}
-			});
+		this.props.getResource('article', {
+			id: [articleID],
+			reload: true,
+			callback: (res, err) => {
+				if (!util.isEmpty(res) && !err) {
+					const kind = util.getValue(res, 'kind');
+					const kindID = util.getValue(res, 'kindID');
+					const orgID = util.getValue(res, 'orgID');
 
-			this.props.getResource(apiName, {
-				id: [kindID],
-				orgID: orgID,
-				callback: (res, err) => {
-					if (!err && !util.isEmpty(res)) {
-						const settings = util.getValue(res, 'giveboxSettings', {});
-						const primaryColor = util.getValue(settings, 'primaryColor', this.props.defaultPrimaryColor);
-						const customTemplate = util.getValue(settings, 'customTemplate', {});
+					if (kindID) {
+						const apiName = `org${types.kind(kind).api.item}`;
 
-						const passFees = util.getValue(res, 'passFees');
-						this.props.updateCart({ passFees });
-
-						this.props.updateInfo({
-							orgID,
-							articleID,
-							kindID,
-							kind,
-							apiName,
-							sourceLocation: this.props.sourceLocation || sourceLocation
-						});
-
-						const blocks = {
-							...util.getValue(defaultBlocks, kind, {}),
-							...util.getValue(customTemplate, 'blocks', {})
-						};
-
-						const globals = {
-							...this.props.globals,
-							...{
-								gbxStyle: {
-									...this.props.globals.gbxStyle,
-									primaryColor
-								},
-								button: {
-									...this.props.globals.button,
-									style: {
-										...util.getValue(this.props.globals.button, 'style', {}),
-										bgColor: primaryColor
-									}
+						this.props.getResource('articleFeeSettings', {
+							id: [articleID],
+							reload: true,
+							callback: (res, err) => {
+								if (!err && !util.isEmpty(res)) {
+									this.props.updateFees(res);
 								}
-							},
-							...util.getValue(customTemplate, 'globals', {})
-						};
-
-						const layouts = {
-							desktop: [],
-							mobile: []
-						};
-
-						Object.entries(blocks).forEach(([key, value]) => {
-							if (!util.isEmpty(value.grid)) {
-								layouts.desktop.push(value.grid.desktop);
-								layouts.mobile.push(value.grid.mobile);
 							}
 						});
 
-						this.props.updateLayouts(layouts);
-						this.props.updateBlocks(blocks);
-						this.props.updateGlobals(globals);
-						this.props.updateData(res);
-						this.props.updateAdmin({
-							editable,
-							hasAccessToEdit: util.getAuthorizedAccess(access, orgID)
+						this.props.getResource(apiName, {
+							id: [kindID],
+							orgID: orgID,
+							callback: (res, err) => {
+								if (!err && !util.isEmpty(res)) {
+									const settings = util.getValue(res, 'giveboxSettings', {});
+									const primaryColor = util.getValue(settings, 'primaryColor', this.props.defaultPrimaryColor);
+									const customTemplate = util.getValue(settings, 'customTemplate', {});
+									const passFees = util.getValue(res, 'passFees');
+
+									this.props.updateCart({ passFees });
+									this.props.updateInfo({
+										orgID,
+										articleID,
+										kindID,
+										kind,
+										apiName
+									});
+
+									const blocks = {
+										...util.getValue(defaultBlocks, kind, {}),
+										...util.getValue(customTemplate, 'blocks', {})
+									};
+
+									const globals = {
+										...this.props.globals,
+										...{
+											gbxStyle: {
+												...this.props.globals.gbxStyle,
+												primaryColor
+											},
+											button: {
+												...this.props.globals.button,
+												style: {
+													...util.getValue(this.props.globals.button, 'style', {}),
+													bgColor: primaryColor
+												}
+											}
+										},
+										...util.getValue(customTemplate, 'globals', {})
+									};
+
+									const layouts = {
+										desktop: [],
+										mobile: []
+									};
+
+									Object.entries(blocks).forEach(([key, value]) => {
+										if (!util.isEmpty(value.grid)) {
+											layouts.desktop.push(value.grid.desktop);
+											layouts.mobile.push(value.grid.mobile);
+										}
+									});
+
+									this.props.updateLayouts(layouts);
+									this.props.updateBlocks(blocks);
+									this.props.updateGlobals(globals);
+									this.props.updateData(res);
+									this.props.updateAdmin({
+										editable,
+										hasAccessToEdit: util.getAuthorizedAccess(access, orgID)
+									});
+									this.props.updateDefaults({
+										layouts,
+										blocks,
+										data: res
+									});
+
+									this.setStyle();
+									this.setRecaptcha();
+									this.setTracking();
+								}
+								this.setLoading(false);
+							}
 						});
-						this.props.updateDefaults({
-							layouts,
-							blocks,
-							data: res
-						});
-						this.setStyle();
+					} else {
+						this.setLoading(false);
 					}
-					this.setState({ loading: false });
+				} else {
+					this.setLoading(false);
 				}
-			});
-		} else {
-			this.setState({ loading: false });
-		}
+			}
+		});
 	}
 
 	setStyle() {
@@ -243,7 +332,6 @@ class GBX3 extends React.Component {
 					background: -moz-linear-gradient(to bottom, ${color} 30%, ${color4} 100%);
 					background: linear-gradient(to bottom, ${color} 30%, ${color4} 100%);
 				}
-
 			`;
 		}
 	}
@@ -298,15 +386,17 @@ function mapStateToProps(state, props) {
 	const primaryColor = util.getValue(gbxStyle, 'primaryColor');
 
 	return {
-		access: util.getValue(state.resource, 'access', {}),
+		info,
 		globals,
 		primaryColor,
-		sourceLocation
+		sourceLocation,
+		access: util.getValue(state.resource, 'access', {})
 	}
 }
 
 export default connect(mapStateToProps, {
 	getResource,
+	sendResource,
 	setCustomProp,
 	updateInfo,
 	updateLayouts,

@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-	util,
-	getResource,
-	sendResource,
-	Loader
+	util
 } from '../lib';
 import GBX from '../lib/gbx3/GBX3';
 
@@ -22,9 +19,6 @@ class GBXTest extends Component {
 
 	componentDidMount() {
 		this.mounted = true;
-		this.props.getResource('article', {
-			id: [this.state.id]
-		});
 	}
 
 	componentWillUnmount() {
@@ -34,27 +28,20 @@ class GBXTest extends Component {
 		}
 	}
 
-	save(id, data, blocks) {
-		console.log('execute save', id, data, blocks);
+	saveCallback(id, data, blocks) {
+		console.log('execute saveCallback', id, data, blocks);
 	}
 
 	render() {
 
-		if (util.isEmpty(this.props.article)) return <Loader msg='Loading article...' />
-
-		console.log('execute', this.props);
+		const articleID = 383060; // null;
 
 		return (
 			<div>
 				<GBX
-					orgID={this.props.article.orgID}
-					articleID={this.state.id}
-					kindID={this.props.article.kindID}
-					kind={this.props.article.kind}
-					autoSave={true}
-					save={this.save}
+					articleID={articleID}
+					saveCallback={this.saveCallback}
 					editable={false}
-					preview={true}
 					queryParams={this.props.queryParams}
 				/>
 			</div>
@@ -64,18 +51,9 @@ class GBXTest extends Component {
 
 function mapStateToProps(state, props) {
 
-	const resource = util.getValue(state.resource, 'article', {});
-	const isFetching = util.getValue(resource, 'isFetching', false);
-	const article = util.getValue(resource, 'data', {});
-
 	return {
-		resource,
-		isFetching,
-		article
 	}
 }
 
 export default connect(mapStateToProps, {
-	sendResource,
-	getResource
 })(GBXTest);

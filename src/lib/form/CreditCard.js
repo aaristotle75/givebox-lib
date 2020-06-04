@@ -51,10 +51,13 @@ class CreditCard extends Component {
 		if (doBinLookup) {
 			lookup(obj.apiValue.slice(0, 9), (err, data) => {
 				const cardType = util.getValue(data, 'scheme', 'default');
-				this.setState({ cardType }, this.props.onChange(name, obj.value, cardType, data));
+				this.setState({ cardType }, () => {
+					this.props.onChange(name, obj.value, cardType);
+					this.props.fieldProp('ccnumber', { binData: data });
+				});
 			});
 		} else {
-			this.setState({ cardType }, this.props.onChange(name, obj.value, cardType, {}));
+			this.setState({ cardType }, this.props.onChange(name, obj.value, cardType));
 		}
 	}
 
