@@ -59,13 +59,21 @@ class AmountsList extends Component {
 		this.checkCart();
 	}
 
+	componentDidUpdate(prevProps) {
+		if ( (prevProps.numCartItems !== this.props.numCartItems) && this.props.numCartItems === 0) {
+			this.setState({
+				amountRadioSelected: this.props.customID,
+				amountEntered: 0
+			});
+		}
+	}
+
 	checkCart() {
 		const {
-			cart,
+			cartItems,
 			article
 		} = this.props;
 
-		const cartItems = util.getValue(cart, 'items', []);
 		const index = cartItems.findIndex(i => i.articleID === article.articleID);
 		if (index !== -1) {
 			// init from cart
@@ -78,7 +86,7 @@ class AmountsList extends Component {
 			});
 		} else {
 			// Use defaults set in contructor
-			this.updateCart()
+			this.updateCart();
 		}
 	}
 
@@ -169,7 +177,7 @@ class AmountsList extends Component {
 		} = this.state;
 
 		const quantity = 1;
-		const orgName = util.getValue(article, 'orgName');
+		const articleTitle = util.getValue(article, 'title');
 		const maxQuantity = util.getValue(article, 'maxQuantity', 10);
 		const allowQtyChange = false;
 		const allowMultiItems = false;
@@ -180,7 +188,7 @@ class AmountsList extends Component {
 			const index = amountsList.findIndex(x => x.ID === unitID);
 			if (index !== -1) {
 				const selectedItem = util.getValue(amountsList, index, {});
-				name = util.getValue(selectedItem, 'name', this.getNameIfBlank(kind));
+				name = customAmount ? `Custom ${types.kind(kind).amountDesc}` : util.getValue(selectedItem, 'name', this.getNameIfBlank(kind));
 				availableQty = allowQtyChange ? util.getValue(selectedItem, 'max', maxQuantity) - util.getValue(selectedItem, 'sold', 0) + quantity : quantity;
 			}
 		}
@@ -189,11 +197,11 @@ class AmountsList extends Component {
 
 		const item = {
 			unitID,
+			articleTitle,
 			name,
 			priceper,
 			customAmount,
 			quantity,
-			orgName,
 			availableQty,
 			maxQuantity,
 			allowQtyChange,
@@ -432,12 +440,16 @@ function mapStateToProps(state, props) {
 
 	const gbx3 = util.getValue(state, 'gbx3', {});
 	const cart = util.getValue(gbx3, 'cart', []);
+	const cartItems = util.getValue(cart, 'items', []);
+	const numCartItems = cartItems.length;
 	const info = util.getValue(gbx3, 'info', {});
 	const noFocus = util.getValue(info, 'noFocus');
 
 	return {
 		noFocus,
-		cart
+		cart,
+		cartItems,
+		numCartItems
 	}
 }
 

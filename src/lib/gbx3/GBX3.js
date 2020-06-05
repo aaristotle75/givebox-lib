@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Layout from './Layout';
 import Admin from './Admin';
-import Cart from './payment/Cart';
 import Shop from './shop/Shop';
 import {
 	types,
@@ -11,6 +10,7 @@ import {
 	getResource,
 	sendResource,
 	setCustomProp,
+	clearGBX3,
 	updateInfo,
 	updateLayouts,
 	updateBlocks,
@@ -39,6 +39,7 @@ class GBX3 extends React.Component {
 		super(props);
 		this.setInfo = this.setInfo.bind(this);
 		this.loadGBX3 = this.loadGBX3.bind(this);
+		this.reloadGBX3 = this.reloadGBX3.bind(this);
 		this.setLoading = this.setLoading.bind(this);
 		this.setStyle = this.setStyle.bind(this);
 		this.setTracking = this.setTracking.bind(this);
@@ -59,7 +60,8 @@ class GBX3 extends React.Component {
 		if (setInfo) {
 			this.loadGBX3({
 				articleID,
-				editable
+				editable,
+				display: 'shop'
 			});
 		}
 	}
@@ -158,9 +160,19 @@ class GBX3 extends React.Component {
 		}
 	}
 
+	async reloadGBX3(articleID) {
+		const {
+			editable
+		} = this.props;
+		this.setLoading(true);
+		const gbx3Cleared = await this.props.clearGBX3();
+		if (gbx3Cleared) this.loadGBX3({ articleID, editable });
+	}
+
 	async loadGBX3({
 		articleID,
-		editable
+		editable,
+		display
 	}) {
 
 		const {
@@ -177,6 +189,7 @@ class GBX3 extends React.Component {
 					const kind = util.getValue(res, 'kind');
 					const kindID = util.getValue(res, 'kindID');
 					const orgID = util.getValue(res, 'orgID');
+					const orgName = util.getValue(res, 'orgName');
 
 					if (kindID) {
 						const apiName = `org${types.kind(kind).api.item}`;
@@ -204,10 +217,12 @@ class GBX3 extends React.Component {
 									this.props.updateCart({ passFees });
 									this.props.updateInfo({
 										orgID,
+										orgName,
 										articleID,
 										kindID,
 										kind,
-										apiName
+										apiName,
+										display: display || 'layout'
 									});
 
 									const blocks = {
@@ -336,6 +351,33 @@ class GBX3 extends React.Component {
 		}
 	}
 
+	renderDisplay() {
+		const {
+			info
+		} = this.props;
+
+		switch (info.display) {
+			case 'shop': {
+				return (
+					<Shop
+						reloadGBX3={this.reloadGBX3}
+						{...this.props}
+					/>
+				)
+			}
+
+			case 'layout':
+			default: {
+				return (
+					<Layout
+						loadGBX3={this.loadGBX3}
+						primaryColor={this.props.primaryColor}
+					/>
+				)
+			}
+		}
+	}
+
 	render() {
 
 		if (this.state.loading) return <Loader msg='Initiating GBX3' />;
@@ -345,18 +387,7 @@ class GBX3 extends React.Component {
 				<Admin
 					loadGBX3={this.loadGBX3}
 				/>
-				<Layout
-					loadGBX3={this.loadGBX3}
-					primaryColor={this.props.primaryColor}
-				/>
-				<ModalRoute
-					id='cart'
-					className='gbx3 givebox-paymentform'
-					effect='3DFlipVert'
-					style={{ width: '70%' }}
-					disallowBgClose={true}
-					component={(props) => <Cart {...props} />}
-				/>
+				{this.renderDisplay()}
 				<ModalRoute
 					id='shop'
 					className='gbx3 givebox-paymentform'
@@ -398,6 +429,7 @@ export default connect(mapStateToProps, {
 	getResource,
 	sendResource,
 	setCustomProp,
+	clearGBX3,
 	updateInfo,
 	updateLayouts,
 	updateBlocks,

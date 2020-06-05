@@ -5,6 +5,9 @@ import {
 	GBLink,
 	updateCart,
 	updateCartItem,
+	updateInfo,
+	resetCart,
+	toggleModal,
 	Dropdown,
 	types
 } from '../../';
@@ -86,9 +89,18 @@ class Cart extends Component {
 					<div key={key} className='cartItemRow'>
 						<div style={{ width: '70%' }} className='col'>
 							<div className='itemName'>{value.name}</div>
+							<div className='itemSubTitle'><strong>{value.articleTitle}</strong></div>
 							<div className='itemSubTitle'>{value.orgName}</div>
 							<div className='itemActions'>
-									Quantity { !showQtyDropdown.includes(value.unitID) || ( showQtyDropdown.includes(value.unitID) && !value.allowQtyChange) || (showQtyDropdown.includes(value.unitID) && value.availableQty <= 0) ? <span style={{ marginLeft: 7, display: 'inline-block' }}>{value.quantity}</span> : <></> }
+									Quantity {
+										!showQtyDropdown.includes(value.unitID)
+										|| ( showQtyDropdown.includes(value.unitID) && !value.allowQtyChange)
+										|| (showQtyDropdown.includes(value.unitID) && value.availableQty <= 0)
+									?
+										<span style={{ marginLeft: 7, display: 'inline-block' }}>{value.quantity}</span>
+									:
+										<></>
+									}
 									{ showQtyDropdown.includes(value.unitID) ?
 										<span>
 											{ value.allowQtyChange && value.availableQty > 0 ?
@@ -144,6 +156,14 @@ class Cart extends Component {
 				<AnimateHeight height={open ? 'auto' : 0}>
 					<div className='paymentFormHeaderTitle'>
 						Your Cart
+						<GBLink
+							style={{ right: '60px' }}
+							className='link closeCart'
+							onClick={() => {
+								this.props.updateInfo({ display: 'shop' });
+							}}>
+								Shop
+							</GBLink>
 						<GBLink className='link closeCart' onClick={() => this.props.updateCart({ open: false })}><span className='icon icon-x'></span></GBLink>
 					</div>
 					{this.renderItemsInCart()}
@@ -175,5 +195,8 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
 	updateCartItem,
-	updateCart
+	updateCart,
+	updateInfo,
+	resetCart,
+	toggleModal
 })(Cart);

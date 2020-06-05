@@ -74,6 +74,7 @@ import {
 
 import {
 	updateGBX3,
+	clearGBX3,
 	updateInfo,
 	updateLayouts,
 	updateBlocks,
@@ -87,8 +88,11 @@ import {
 	updateAdmin,
 	updateCart,
 	updateCartItem,
+	updateConfirmation,
 	saveGBX3,
 	resetGBX3,
+	resetCart,
+	resetConfirmation,
 	processTransaction
 } from './api/gbx3actions';
 
@@ -150,6 +154,7 @@ export {
 
 // gbx3 actions
 	updateGBX3,
+	clearGBX3,
 	updateInfo,
 	updateLayouts,
 	updateBlocks,
@@ -163,8 +168,11 @@ export {
 	updateAdmin,
 	updateCart,
 	updateCartItem,
+	updateConfirmation,
 	saveGBX3,
 	resetGBX3,
+	resetCart,
+	resetConfirmation,
 	processTransaction,
 
 	// API

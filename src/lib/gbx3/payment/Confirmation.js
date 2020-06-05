@@ -4,7 +4,8 @@ import {
 	util,
 	updateCart,
 	types,
-	GBLink
+	GBLink,
+	resetConfirmation
 } from '../../';
 import {
 	FacebookShareButton,
@@ -27,12 +28,18 @@ class Confirmation extends Component {
 	componentDidMount() {
 	}
 
+	componentWillUnmount() {
+		this.props.resetConfirmation();
+	}
+
 	renderPaymethodText() {
 		const {
 			paymethod,
-			confirmation,
+			email,
+			bankName,
+			cardType,
 			descriptor,
-			total
+			cartTotal
 		} = this.props;
 
 		const item = [];
@@ -40,7 +47,7 @@ class Confirmation extends Component {
 		item.push(
 			<span key={'receiptEmailed'} className='group'>
 				<span className='icon icon-check'></span>
-				<span className='inlineText'>An email receipt has been sent to <strong>{util.getValue(confirmation, 'email')}</strong>.</span>
+				<span className='inlineText'>An email receipt has been sent to <strong>{email}</strong>.</span>
 			</span>
 		);
 		switch (paymethod) {
@@ -49,7 +56,7 @@ class Confirmation extends Component {
 					<span key={paymethod}>
 						<span className='group'>
 							<span className='icon icon-check'></span>
-							<span className='inlineText'>Your <strong>{util.getValue(confirmation, 'bankName')}</strong> bank account has been charged in the amount of <strong>{util.money(total)}</strong>.</span>
+							<span className='inlineText'>Your <strong>{bankName}</strong> bank account has been charged in the amount of <strong>{util.money(cartTotal)}</strong>.</span>
 						</span>
 						<span className='group'>
 							<span className='icon icon-check'></span>
@@ -67,7 +74,7 @@ class Confirmation extends Component {
 					<span key={paymethod}>
 						<span className='group'>
 							<span className='icon icon-check'></span>
-							<span className='inlineText'>Your <strong>{util.getValue(confirmation, 'cardType')}</strong> card has been charged in the amount of <strong>{util.money(total)}</strong>.</span>
+							<span className='inlineText'>Your <strong>{cardType}</strong> card has been charged in the amount of <strong>{util.money(cartTotal)}</strong>.</span>
 						</span>
 						<span className='group'>
 							<span className='icon icon-check'></span>
@@ -98,7 +105,8 @@ class Confirmation extends Component {
 		const {
 			data: article,
 			form,
-			primaryColor
+			primaryColor,
+			firstname
 		} = this.props;
 
 		const shareLink = `${GBX_SHARE}/${util.getValue(article, 'articleID')}`;
@@ -113,14 +121,14 @@ class Confirmation extends Component {
 				<div className='successfulText'>
 					<span className='titleText' style={{ color: primaryColor }}>
 						<span className='icon icon-check-circle'></span>
-						Your transaction has been processed successfully!
+						{firstname}, your transaction has been processed successfully!
 					</span>
 				</div>
 				{this.renderPaymethodText()}
 				{ allowShare ?
 				<div className='share'>
 					<div className='subText'>
-						Please tell people about us by sharing below.
+						{firstname}, please help us grow our community by sharing below.
 					</div>
 					<ul className="center">
 						<li>
@@ -186,22 +194,29 @@ class Confirmation extends Component {
 
 function mapStateToProps(state, props) {
 	const gbx3 = util.getValue(state, 'gbx3', {});
-	const cart = util.getValue(gbx3, 'cart', {});
-	const paymethod = util.getValue(cart, 'paymethod');
-	const total = util.getValue(cart, 'total', 0);
-	const confirmation = util.getValue(cart, 'confirmation', {});
+	const confirmation = util.getValue(gbx3, 'confirmation', {});
+	const firstname = util.getValue(confirmation, 'firstname');
+	const email = util.getValue(confirmation, 'email');
+	const bankName = util.getValue(confirmation, 'bankName');
+	const cardType = util.getValue(confirmation, 'cardType');
+	const paymethod = util.getValue(confirmation, 'paymethod');
+	const cartTotal = util.getValue(confirmation, 'cartTotal', 0);
 	const data = util.getValue(gbx3, 'data', {});
 	const descriptor = util.getValue(data, 'orgBillingDescriptor', 'GBX*GIVEBOX');
 
 	return {
+		firstname,
+		email,
+		bankName,
+		cardType,
 		paymethod,
-		total,
-		confirmation,
+		cartTotal,
 		descriptor,
 		data
 	}
 }
 
 export default connect(mapStateToProps, {
-	updateCart
+	updateCart,
+	resetConfirmation
 })(Confirmation);

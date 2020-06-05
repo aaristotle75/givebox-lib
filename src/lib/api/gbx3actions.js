@@ -12,6 +12,12 @@ export function updateGBX3(name, value) {
 	}
 }
 
+export function clearGBX3() {
+	return {
+		type: types.CLEAR_GBX3
+	}
+}
+
 export function updateInfo(info) {
 	return {
 		type: types.UPDATE_INFO,
@@ -92,10 +98,29 @@ export function updateAdmin(admin) {
 	}
 }
 
+export function updateConfirmation(confirmation) {
+	return {
+		type: types.UPDATE_CONFIRMATION,
+		confirmation
+	}
+}
+
+export function resetConfirmation() {
+	return {
+		type: types.RESET_CONFIRMATION
+	}
+}
+
 function saveCart(cart) {
 	return {
 		type: types.UPDATE_CART,
 		cart
+	}
+}
+
+export function resetCart() {
+	return {
+		type: types.RESET_CART
 	}
 }
 
@@ -113,6 +138,7 @@ export function updateCartItem(unitID, item = {}) {
 		const info = util.getValue(gbx3, 'info', {});
 		const articleID = util.getValue(info, 'articleID');
 		const orgID = util.getValue(info, 'orgID');
+		const orgName = util.getValue(info, 'orgName');
 		const articleKind = util.getValue(info, 'kind');
 		const kindID = util.getValue(info, 'kindID');
 		const cart = util.getValue(gbx3, 'cart', {});
@@ -124,6 +150,7 @@ export function updateCartItem(unitID, item = {}) {
 
 		item.amount = amount;
 		item.articleID = articleID;
+		item.orgName = orgName;
 		item.orgID = orgID;
 		item.articleKind = articleKind;
 		item.kindID = kindID;
@@ -134,17 +161,15 @@ export function updateCartItem(unitID, item = {}) {
 
 		cart.zeroAmountAllowed = util.getValue(item, 'zeroAmountAllowed', false);
 		if (index === -1) {
-			if (quantity > 0) {
-				if (allowMultiItems) items.push(item);
-				else {
-					// If multiItems is false find and remove the previous item per articleID
-					const removeIndex = items.findIndex(i => i.articleID === articleID);
-					if (removeIndex !== -1) items.splice(removeIndex, 1);
-					items.push(item);
-				}
+			if (allowMultiItems && +amount > 0) items.push(item);
+			else {
+				// If multiItems is false find and remove the previous item per articleID
+				const removeIndex = items.findIndex(i => i.articleID === articleID);
+				if (removeIndex !== -1) items.splice(removeIndex, 1);
+				if (+amount > 0) items.push(item);
 			}
 		} else {
-			if (quantity > 0) items[index] = { ...items[index], ...item };
+			if (+amount > 0) items[index] = { ...items[index], ...item };
 			else items.splice(index, 1);
 		}
 		const cartUpdated = await dispatch(saveCart(cart));

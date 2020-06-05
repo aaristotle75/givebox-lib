@@ -77,7 +77,7 @@ class Amounts extends Component {
 		this.getAmounts();
 	}
 
-	componentDidUpdate() {
+	componentDidUpdate(prevProps) {
 		this.props.setDisplayHeight(this.displayRef);
 	}
 

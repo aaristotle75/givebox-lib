@@ -12,7 +12,9 @@ import {
 	GBLink,
 	Loader,
 	toggleModal,
-	processTransaction
+	processTransaction,
+	resetCart,
+	updateConfirmation
 } from '../../';
 import Moment from 'moment';
 import SendEmail from './SendEmail';
@@ -71,24 +73,23 @@ class PaymentFormClass extends Component {
 	}
 
 	formSavedCallback() {
-		if (this.props.callback) {
-			this.props.callback(arguments[0]);
-		}
+		this.props.toggleModal('paymentConfirmation', true);
+		this.props.resetCart();
 	}
 
 	processCallback(res, err) {
 		if (!err) {
-			this.props.formSaved(() => this.formSavedCallback(res.ID));
+			this.formSavedCallback();
 		} else {
 			if (!this.props.getErrors(err)) this.props.formProp({error: this.props.savingErrorMsg});
 		}
-		return;
 	}
 
-	processForm(fields) {
+	async processForm(fields) {
 		const {
 			cardType,
 			paymethod,
+			cartTotal,
 			cartItems: items,
 			amount,
 			zeroAmountAllowed,
@@ -137,6 +138,7 @@ class PaymentFormClass extends Component {
 					amount: value.amount,
 					customAmount: value.customAmount,
 					quantity: value.quantity,
+					passFees: value.passFees,
 					interval: value.interval || null,
 					frequency: value.frequency || null,
 					paymentMax: parseInt(value.paymentMax) || null,
@@ -149,11 +151,12 @@ class PaymentFormClass extends Component {
 			const firstname = name.first;
 			const lastname = name.last;
 			const fullName = `${firstname} ${lastname}`;
+			const email = util.getValue(fields.email, 'value', null);
 
 			data.customer = {
 				firstname,
 				lastname,
-				email: util.getValue(fields.email, 'value', null),
+				email,
 				occupation: util.getValue(fields.occupation, 'value', null),
 				employer: util.getValue(fields.employer, 'value', null),
 				phone: util.getValue(fields.phone, 'value', null),
@@ -225,7 +228,16 @@ class PaymentFormClass extends Component {
 			}
 
 			if (!error) {
-				this.props.processTransaction(data, this.processCallback);
+				const confirmationUpdated = await this.props.updateConfirmation({
+					email,
+					firstname,
+					lastname,
+					paymethod,
+					cartTotal,
+					bankName: util.getValue(fields.bankName, 'value', null),
+					cardType: cardType ? cardType.toUpperCase() : null
+				});
+				if (confirmationUpdated) this.props.processTransaction(data, this.processCallback);
 			}
 		}
 
@@ -629,6 +641,7 @@ function mapStateToProps(state, props) {
 	const emailBlastToken = util.getValue(info, 'ebToken', null);
 	const emailBlastEmail = util.getValue(info, 'ebEmail', null);
 	const cart = util.getValue(gbx3, 'cart', {});
+	const cartTotal = util.getValue(cart, 'total', 0);
 	const zeroAmountAllowed = util.getValue(cart, 'zeroAmountAllowed', false);
 	const cartItems = util.getValue(cart, 'items');
 	const openCart = util.getValue(cart, 'open');
@@ -641,6 +654,7 @@ function mapStateToProps(state, props) {
 		emailBlastEmail,
 		zeroAmountAllowed,
 		cartItems,
+		cartTotal,
 		openCart,
 		paymethod,
 		cardType,
@@ -651,5 +665,7 @@ function mapStateToProps(state, props) {
 export default connect(mapStateToProps, {
 	updateCart,
 	toggleModal,
-	processTransaction
+	processTransaction,
+	resetCart,
+	updateConfirmation
 })(PaymentForm)

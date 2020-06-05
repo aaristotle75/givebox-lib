@@ -52,6 +52,18 @@ export function groupBy(list, keyGetter) {
 		return map;
 }
 
+export function group(array, prop) {
+	if (!isEmpty(array)) {
+		const group = array.reduce((a, b) => {
+			if (!a[b[prop]]) a[b[prop]] = [];
+			a[b[prop]].push(b);
+			return a;
+		},{});
+		return group;
+	}
+	return {};
+}
+
 export function roundNumber(rnum, rlength) {
 		var newnumber = Math.round(rnum * Math.pow(10, rlength)) / Math.pow(10, rlength);
 		return newnumber;
@@ -484,7 +496,6 @@ export function makeAPIQuery(obj) {
 	if (obj.query) str = str + '&q=' + obj.query;
 	return str;
 }
-
 
 /**
 * Check if a resource has been loaded

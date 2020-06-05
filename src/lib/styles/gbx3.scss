@@ -1051,3 +1051,89 @@ $breakpoint: 768px;
 	}
 
 }
+
+.gbx3Shop {
+	align-items: center;
+
+	.articleGroupList {
+		margin-top: 10px;
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		@media (max-width: $breakpoint) {
+			margin-top: 20px;
+		}
+	}
+
+	.articleGroup {
+		padding: 2% 5%;
+		width: auto;
+		@media (max-width: $breakpoint) {
+			padding: 2% 0;
+		}
+
+		button.link {
+			text-align: left;
+			font-size: 18px;
+			margin-left: 10px;
+			width: 100%;
+			@media (max-width: $breakpoint) {
+				font-size: 22px;
+				margin-top: 20px;
+			}
+		}
+	}
+
+	.articleList {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+		flex-wrap: wrap;
+	}
+
+	.articleItem {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: 10px;
+		margin: 20px;
+		height: 275px;
+		width: 200px;
+		overflow: visible;
+		cursor: pointer;
+
+		.articleImage {
+			width: 200px;
+			height: 200px;
+			.imageComponent {
+				display: flex;
+				justify-content: center;
+				align-items: flex-start;
+				overflow: hidden;
+			}
+			img {
+
+				@include default-transition(.25s);
+			}
+		}
+
+		.articleImage:hover img {
+			transform: scale(1.5);
+		}
+
+		.articleText {
+			position: relative;
+			margin-top: 10px;
+			font-size: .9em;
+		}
+	}
+
+	.articleItem:hover {
+
+		.articleText {
+			opacity: .8;
+		}
+	}
+
+}

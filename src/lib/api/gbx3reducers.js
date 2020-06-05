@@ -1,8 +1,33 @@
 import  * as types  from './gbx3actionTypes';
 
+const defaultCart = {
+	processing: false,
+	open: true,
+	zeroAmountAllowed: false,
+	paymethod: 'creditcard',
+	cardType: 'default',
+	subTotal: 0,
+	total: 0,
+	fee: 0,
+	passFees: false,
+	acceptedTerms: true,
+	items: []
+};
+
+const defaultConfirmation = {
+	email: 'jane_smitht@test.com',
+	firstname: 'Jane',
+	lastname: 'Smith',
+	paymethod: 'creditCard',
+	bankName: 'US Bank',
+	cardType: 'VISA',
+	cartTotal: 100
+}
+
 export function gbx3(state = {
 	saveStatus: 'done',
 	info: {
+		display: 'layout',
 		preview: false,
 		breakpoint: 'desktop',
 		sourceType: 'embed',
@@ -36,26 +61,8 @@ export function gbx3(state = {
 	},
 	data: {},
 	fees: {},
-	cart: {
-		processing: false,
-		open: true,
-		zeroAmountAllowed: false,
-		confirmation: {
-			display: false,
-			email: 'me@buddyteal.com',
-			fullName: 'Buddy Teal',
-			bankName: 'US Bank',
-			cardType: 'VISA'
-		},
-		paymethod: 'creditcard',
-		cardType: 'default',
-		subTotal: 0,
-		total: 0,
-		fee: 0,
-		passFees: false,
-		acceptedTerms: true,
-		items: []
-	},
+	cart: defaultCart,
+	confirmation: defaultConfirmation,
 	order: {
 		customer: {},
 		paymethod: {}
@@ -66,6 +73,15 @@ export function gbx3(state = {
 		case types.UPDATE_GBX3:
 			return Object.assign({}, state, {
 				[action.name]: action.value
+			});
+		case types.CLEAR_GBX3:
+			return Object.assign({}, state, {
+				blocks: {},
+				defaults: {},
+				data: {},
+				fees: {},
+				globals: {},
+				layouts: {}
 			});
 		case types.UPDATE_INFO:
 			return Object.assign({}, state, {
@@ -142,6 +158,24 @@ export function gbx3(state = {
 					...state.cart,
 					...action.cart
 				}
+			});
+		case types.RESET_CART:
+			return Object.assign({}, state, {
+				cart: {
+					...defaultCart,
+					items: []
+				}
+			});
+		case types.UPDATE_CONFIRMATION:
+			return Object.assign({}, state, {
+				confirmation: {
+					...state.confirmation,
+					...action.confirmation
+				}
+			});
+		case types.RESET_CONFIRMATION:
+			return Object.assign({}, state, {
+				confirmation: defaultConfirmation
 			});
 		case types.UPDATE_DEFAULTS:
 			return Object.assign({}, state, {
