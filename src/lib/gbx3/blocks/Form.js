@@ -210,7 +210,10 @@ class Form extends Component {
 						</div>
 					}
 				/>
-				<Cart primaryColor={primaryColor} />
+				<Cart
+					primaryColor={primaryColor}
+					showShop={util.getValue(form, 'allowSelection', true)}
+				/>
 				<PaymentForm
 					primaryColor={primaryColor}
 					echeck={util.getValue(form, 'echeck', true)}

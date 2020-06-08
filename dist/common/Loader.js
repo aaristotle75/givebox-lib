@@ -38,7 +38,7 @@ export default class Loader extends Component {
   }
 
   createSVG() {
-    const svg = React.createElement("img", {
+    const svg = /*#__PURE__*/React.createElement("img", {
       alt: "Givebox loader",
       className: `loaderSVG ${this.state.end ? 'fadeOut' : ''}`,
       src: "https://s3-us-west-1.amazonaws.com/givebox/public/gb-logo3.svg",
@@ -54,23 +54,24 @@ export default class Loader extends Component {
       forceText,
       className
     } = this.props;
-    if (!this.state.rootEl) return React.createElement("div", null);
+    if (!this.state.rootEl) return (/*#__PURE__*/React.createElement("div", null)
+    );
     const showMsg = !!forceText;
-    return this.state.showLoader ? React.createElement(Portal, {
+    return this.state.showLoader ? /*#__PURE__*/React.createElement(Portal, {
       id: "loadingPortal",
       rootEl: this.state.rootEl
-    }, React.createElement("div", null, React.createElement("div", {
+    }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
       className: `loader ${className}`
-    }), React.createElement("div", {
+    }), /*#__PURE__*/React.createElement("div", {
       className: "loaderContent"
-    }, React.createElement("div", {
+    }, /*#__PURE__*/React.createElement("div", {
       className: "loadingText"
-    }, React.createElement("div", null, this.createSVG()), React.createElement("span", {
+    }, /*#__PURE__*/React.createElement("div", null, this.createSVG()), /*#__PURE__*/React.createElement("span", {
       className: `${showMsg ? '' : 'displayNone'}`,
       style: {
         color: `${textColor ? textColor : '#fff'}`
       }
-    }, msg))))) : React.createElement("div", null);
+    }, msg))))) : /*#__PURE__*/React.createElement("div", null);
   }
 
 }

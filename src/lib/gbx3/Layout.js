@@ -6,6 +6,7 @@ import {
 	util,
 	updateLayouts,
 	updateBlocks,
+	updateBlock,
 	updateData,
 	updateInfo,
 	saveGBX3,
@@ -14,6 +15,7 @@ import {
 } from '../';
 import Block from './blocks/Block';
 import Form from './blocks/Form';
+import blockTemplates from './blocks/blockTemplates';
 import Scroll from 'react-scroll';
 import has from 'has';
 import Moment from 'moment';
@@ -28,6 +30,8 @@ class Layout extends React.Component {
 		this.onBreakpointChange = this.onBreakpointChange.bind(this);
 		this.widthChange = this.widthChange.bind(this);
 		this.layoutChange = this.layoutChange.bind(this);
+		this.addBlock = this.addBlock.bind(this);
+		this.removeBlock = this.removeBlock.bind(this);
 		this.gridRef = React.createRef();
 	}
 
@@ -89,6 +93,21 @@ class Layout extends React.Component {
 		});
 	}
 
+	addBlock(type) {
+		const blocks = this.props.blocks;
+		const newBlock = util.getValue(blockTemplates, type, {});
+		let blockName = util.getValue(newBlock, 'name', type);
+		if (blockName in blocks) {
+			console.log('blockName is in blocks', blockName);
+		}
+		console.log('execute addBlock', blockName, newBlock);
+		//this.props.updateBlock(blockName, newBlock);
+	}
+
+	removeBlock(type) {
+		console.log('remove block', type);
+	}
+
 	renderBlocks(enabled = true) {
 		const {
 			breakpoint,
@@ -148,15 +167,16 @@ class Layout extends React.Component {
 			<div style={util.getValue(globals, 'gbxStyle', {})} className={`gbx3Container ${isEditable ? 'editable' : ''}`}>
 				<div className='layout-column'>
 					<div
+						id='gbx3DropArea'
 						ref={this.gridRef}
 						className={`column dropArea`}
 						onDragOver={(e) => {
 							e.preventDefault();
 						}}
 						onDrop={(e) => {
+							e.preventDefault();
 							if (isEditable) {
-								const block = e.dataTransfer.getData('block');
-								e.preventDefault();
+								const block = e.dataTransfer.getData('text/plain');
 								const current = this.gridRef.current;
 								if (current.classList.contains('dragOver')) current.classList.remove('dragOver');
 								this.addBlock(block);
@@ -247,6 +267,7 @@ function mapStateToProps(state, props) {
 export default connect(mapStateToProps, {
 	updateLayouts,
 	updateBlocks,
+	updateBlock,
 	updateData,
 	updateInfo,
 	saveGBX3

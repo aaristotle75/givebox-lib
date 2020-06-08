@@ -175,7 +175,7 @@ class FormEdit extends Component {
 							<Choice
 								type='checkbox'
 								name='allowSelection'
-								label={'Give Users an Option to View Other Enabled Forms'}
+								label={'Give Users an Option to Shop other Items'}
 								onChange={(name, value) => {
 									this.updateForm('allowSelection', allowSelection ? false : true);
 								}}

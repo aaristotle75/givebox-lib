@@ -72,7 +72,7 @@ class Paginate extends Component {
     if (this.props.pages <= pageRange) {
       for (let i = 1; i <= pages; i++) {
         id = 'page-' + i;
-        page = React.createElement("li", {
+        page = /*#__PURE__*/React.createElement("li", {
           key: id,
           id: id,
           onClick: e => this.onPageClick(e),
@@ -94,7 +94,7 @@ class Paginate extends Component {
 
       for (let i = 1; i <= pages; i++) {
         id = 'page-' + i;
-        page = React.createElement("li", {
+        page = /*#__PURE__*/React.createElement("li", {
           key: id,
           id: id,
           onClick: e => this.onPageClick(e),
@@ -122,7 +122,7 @@ class Paginate extends Component {
 
         if (breakLabelValue !== breakView) {
           var breakId = breakId === 'leftSide' ? breakId = 'rightSide' : 'leftSide';
-          breakView = React.createElement("li", {
+          breakView = /*#__PURE__*/React.createElement("li", {
             onClick: breakId === 'leftSide' ? e => this.handlePreviousPage(e) : e => this.handleNextPage(e),
             id: breakId,
             key: `breakView-${i}`,
@@ -185,22 +185,24 @@ class Paginate extends Component {
     } = this.state;
 
     if (!parseInt(count)) {
-      return React.createElement("div", null);
+      return (/*#__PURE__*/React.createElement("div", null)
+      );
     }
 
-    return React.createElement("div", {
-      className: `paginate ${align}`
-    }, count && React.createElement("div", {
-      className: "recordCount"
-    }, React.createElement("span", null, "Showing ", range1, "-", range2, " of ", count)), pages > 1 ? React.createElement("div", null, React.createElement("ul", {
-      className: containerClassName
-    }, React.createElement("li", {
-      onClick: e => this.handlePreviousPage(e),
-      className: `page ${previousClassName} ${activePage <= 1 ? disabledClassName : ''}`
-    }, iconPrevious), this.pagination(), React.createElement("li", {
-      onClick: e => this.handleNextPage(e),
-      className: `page ${nextClassName} ${activePage >= pages ? disabledClassName : ''}`
-    }, iconNext))) : React.createElement("div", null));
+    return (/*#__PURE__*/React.createElement("div", {
+        className: `paginate ${align}`
+      }, count && /*#__PURE__*/React.createElement("div", {
+        className: "recordCount"
+      }, /*#__PURE__*/React.createElement("span", null, "Showing ", range1, "-", range2, " of ", count)), pages > 1 ? /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("ul", {
+        className: containerClassName
+      }, /*#__PURE__*/React.createElement("li", {
+        onClick: e => this.handlePreviousPage(e),
+        className: `page ${previousClassName} ${activePage <= 1 ? disabledClassName : ''}`
+      }, iconPrevious), this.pagination(), /*#__PURE__*/React.createElement("li", {
+        onClick: e => this.handleNextPage(e),
+        className: `page ${nextClassName} ${activePage >= pages ? disabledClassName : ''}`
+      }, iconNext))) : /*#__PURE__*/React.createElement("div", null))
+    );
   }
 
 }
@@ -218,10 +220,10 @@ Paginate.defaultProps = {
   pageClassName: 'page',
   activeClassName: 'active',
   previousClassName: 'previous',
-  iconPrevious: React.createElement("span", {
+  iconPrevious: /*#__PURE__*/React.createElement("span", {
     className: "icon icon-arrow-left"
   }),
-  iconNext: React.createElement("span", {
+  iconNext: /*#__PURE__*/React.createElement("span", {
     className: "icon icon-arrow-right"
   }),
   nextClassName: 'next',

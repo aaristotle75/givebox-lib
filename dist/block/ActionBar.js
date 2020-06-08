@@ -15,7 +15,7 @@ class ActionBar extends Component {
     if (!util.isEmpty(this.props.options)) {
       const width = `${parseFloat(100 / this.props.options.length).toFixed(0)}%`;
       this.props.options.forEach(function (value, key) {
-        items.push(React.createElement("li", {
+        items.push( /*#__PURE__*/React.createElement("li", {
           style: {
             width
           },
@@ -31,10 +31,11 @@ class ActionBar extends Component {
     const {
       style
     } = this.props;
-    return React.createElement("ul", {
-      style: style,
-      className: "actionBar"
-    }, this.listOptions());
+    return (/*#__PURE__*/React.createElement("ul", {
+        style: style,
+        className: "actionBar"
+      }, this.listOptions())
+    );
   }
 
 }

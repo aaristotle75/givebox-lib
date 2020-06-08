@@ -63,7 +63,7 @@ class AmountsList extends Component {
 		if ( (prevProps.numCartItems !== this.props.numCartItems) && this.props.numCartItems === 0) {
 			this.setState({
 				amountRadioSelected: this.props.customID,
-				amountEntered: 0
+				amountEntered: ''
 			});
 		}
 	}
@@ -234,7 +234,7 @@ class AmountsList extends Component {
 	}
 
 	setAmounts(amount, customAmount) {
-		const amountEntered = _v.formatNumber(amount);
+		const amountEntered = customAmount && !amount ? '' : _v.formatNumber(amount);
 		const amountForAPI =  util.formatMoneyForAPI(amount);
 		this.setState({ amountEntered, amountForAPI, customAmount }, () => {
 			this.updateCart();
@@ -421,14 +421,16 @@ class AmountsList extends Component {
 	render() {
 
 		const {
-			embed
+			editModalOpen,
+			embed,
+			height
 		} = this.props;
 
 		//const height = embed && !buttonEnabled ? `${this.props.height}px` : 'auto';
 
 		return (
 			<div className={`${embed ? 'embed' : ''}`}>
-				<div className='amountsSection'>
+				<div style={{ height: embed && !editModalOpen ? height : '' }} className='amountsSection'>
 					{this.renderAmounts()}
 				</div>
 			</div>

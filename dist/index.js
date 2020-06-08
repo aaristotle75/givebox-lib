@@ -52,8 +52,8 @@ import * as types from './common/types';
 import * as util from './common/utility';
 import Video from './common/Video';
 import FeesGlossary from './glossary/Fees';
-import { toggleModal, removeResource, resourceProp, getAPI, sendAPI, setAppRef, setModalRef, setProp, setPrefs, setCustomProp } from './api/actions';
-import { updateGBX3, updateInfo, updateLayouts, updateBlocks, updateBlock, updateDefaults, updateDefault, updateGlobals, updateGlobal, updateData, updateAdmin, updateCart, updateCartItem, updateOrder, updateCustomer, updatePaymethod, saveGBX3, resetGBX3 } from './api/gbx3actions';
+import { toggleModal, removeResource, resourceProp, getAPI, sendAPI, setAppRef, setModalRef, setProp, setPrefs, setCustomProp, sendResponse } from './api/actions';
+import { updateGBX3, clearGBX3, updateInfo, updateLayouts, updateBlocks, updateBlock, updateDefaults, updateDefault, updateGlobals, updateGlobal, updateData, updateFees, updateAdmin, updateCart, updateCartItem, updateConfirmation, saveGBX3, resetGBX3, resetCart, resetConfirmation, processTransaction } from './api/gbx3actions';
 import { app, resource, send, modal, preferences, custom } from './api/reducers';
 import { getResource, reloadResource, sendResource, savePrefs } from './api/helpers';
 import * as giveboxAPI from './api/givebox'; // Help Desk
@@ -68,8 +68,8 @@ import CustomCKEditor4 from './editor/CustomCKEditor4';
 import CKEditorUpload from './editor/CKEditorUpload';
 export { // Form
 Form, _v, selectOptions, Select, TextField, Dropdown, RichTextField, Choice, CalendarField, CalendarRange, Checkbox, ColorPicker, Upload, UploadLibrary, UploadPrivate, WhereField, MediaLibrary // actions
-, toggleModal, removeResource, resourceProp, getAPI, sendAPI, setAppRef, setModalRef, setProp, setPrefs, setCustomProp // gbx3 actions
-, updateGBX3, updateInfo, updateLayouts, updateBlocks, updateBlock, updateDefaults, updateDefault, updateGlobals, updateGlobal, updateData, updateAdmin, updateCart, updateCartItem, updateOrder, updateCustomer, updatePaymethod, saveGBX3, resetGBX3 // API
+, toggleModal, removeResource, resourceProp, getAPI, sendAPI, setAppRef, setModalRef, setProp, setPrefs, setCustomProp, sendResponse // gbx3 actions
+, updateGBX3, clearGBX3, updateInfo, updateLayouts, updateBlocks, updateBlock, updateDefaults, updateDefault, updateGlobals, updateGlobal, updateData, updateFees, updateAdmin, updateCart, updateCartItem, updateConfirmation, saveGBX3, resetGBX3, resetCart, resetConfirmation, processTransaction // API
 , giveboxAPI, getResource, reloadResource, sendResource, savePrefs // reducers
 , app, resource, send, modal, preferences, custom // Modal
 , ModalLink, ModalRoute // Table

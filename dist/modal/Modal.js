@@ -8,7 +8,6 @@ import Fade from '../common/Fade';
 import GBLink from '../common/GBLink';
 import Draggable from 'react-draggable';
 import { util } from '../';
-import has from 'has';
 
 const prefix = require('react-prefixr');
 
@@ -56,8 +55,8 @@ class Modal extends Component {
       mobile: window.innerWidth < this.props.mobileBreakpoint ? true : false,
       scrolled: false
     };
-    this.modalRef = React.createRef();
-    this.modalContentRef = React.createRef();
+    this.modalRef = /*#__PURE__*/React.createRef();
+    this.modalContentRef = /*#__PURE__*/React.createRef();
   }
 
   componentDidMount() {
@@ -129,23 +128,25 @@ class Modal extends Component {
 
     if (this.props.actions) {
       this.props.actions.forEach(function (value) {
-        actions.push(React.createElement("span", {
+        actions.push( /*#__PURE__*/React.createElement("span", {
           key: value.primary,
           className: `${value.primary ? 'primary' : 'secondary'}`
-        }, React.createElement("button", {
+        }, /*#__PURE__*/React.createElement("button", {
           onClick: () => value.onClick()
         }, value.label)));
       });
     }
 
     if (!isEmpty(actions)) {
-      return React.createElement("div", {
-        className: "actionBtnsContainer"
-      }, React.createElement("div", {
-        className: "actionBtns"
-      }, actions));
+      return (/*#__PURE__*/React.createElement("div", {
+          className: "actionBtnsContainer"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "actionBtns"
+        }, actions))
+      );
     } else {
-      return React.createElement("div", null);
+      return (/*#__PURE__*/React.createElement("div", null)
+      );
     }
   }
 
@@ -208,7 +209,7 @@ class Modal extends Component {
   }
 
   renderChildren() {
-    const childrenWithProps = React.Children.map(this.props.children, child => React.cloneElement(child, {}));
+    const childrenWithProps = React.Children.map(this.props.children, child => /*#__PURE__*/React.cloneElement(child, {}));
     return childrenWithProps;
   }
 
@@ -285,7 +286,7 @@ class Modal extends Component {
       }
     }
 
-    const modalContent = React.createElement("div", {
+    const modalContent = /*#__PURE__*/React.createElement("div", {
       id: `modalContent-${identifier}`,
       ref: this.modalContentRef,
       className: `modalContent ${className}`,
@@ -294,47 +295,48 @@ class Modal extends Component {
         ...openEffect
       }),
       onClick: stopPropagation
-    }, React.createElement(Waypoint, {
+    }, /*#__PURE__*/React.createElement(Waypoint, {
       onEnter: this.onEnter,
       onLeave: this.onExit,
       bottomOffset: '100px'
-    }), closeBtn && React.createElement("button", {
+    }), closeBtn && /*#__PURE__*/React.createElement("button", {
       style: closeBtnStyle,
       className: "modalCloseBtn",
       onClick: () => this.closeModal(closeCallback, 'ok')
-    }, iconClose), React.createElement("div", {
+    }, iconClose), /*#__PURE__*/React.createElement("div", {
       className: "modalTop"
-    }), draggable ? React.createElement("div", {
+    }), draggable ? /*#__PURE__*/React.createElement("div", {
       className: "handle"
-    }, React.createElement("span", {
+    }, /*#__PURE__*/React.createElement("span", {
       className: "icon icon-move"
-    }), React.createElement("span", {
+    }), /*#__PURE__*/React.createElement("span", {
       className: `draggableTitle ${draggableTitleClass}`
-    }, draggableTitle)) : React.createElement(React.Fragment, null), this.renderChildren(), this.renderActions(), React.createElement(Fade, {
+    }, draggableTitle)) : /*#__PURE__*/React.createElement(React.Fragment, null), this.renderChildren(), this.renderActions(), /*#__PURE__*/React.createElement(Fade, {
       duration: 500,
       in: this.state.scrolled
-    }, React.createElement(GBLink, {
+    }, /*#__PURE__*/React.createElement(GBLink, {
       onClick: this.toTop,
       className: `modalToTop ${this.state.scrolled ? '' : 'displayNone'}`
-    }, React.createElement("span", {
+    }, /*#__PURE__*/React.createElement("span", {
       className: "icon icon-chevrons-up"
-    }))), React.createElement("div", {
+    }))), /*#__PURE__*/React.createElement("div", {
       className: "modalBottom"
     }));
-    return React.createElement("div", {
-      className: `modal ${draggable ? 'draggable' : ''}`
-    }, React.createElement("div", {
-      ref: this.modalRef,
-      onClick: () => this.closeModal(closeCallback, 'ok', this.props.disallowBgClose ? false : true),
-      id: `modalOverlay-${identifier}`,
-      className: `modalOverlay`,
-      style: prefix({ ...overlayStyle,
-        ...modalOverlayStyle
-      })
-    }, draggable ? React.createElement(Draggable, {
-      allowAnyClick: false,
-      handle: '.handle'
-    }, modalContent) : modalContent));
+    return (/*#__PURE__*/React.createElement("div", {
+        className: `modal ${draggable ? 'draggable' : ''}`
+      }, /*#__PURE__*/React.createElement("div", {
+        ref: this.modalRef,
+        onClick: () => this.closeModal(closeCallback, 'ok', this.props.disallowBgClose ? false : true),
+        id: `modalOverlay-${identifier}`,
+        className: `modalOverlay`,
+        style: prefix({ ...overlayStyle,
+          ...modalOverlayStyle
+        })
+      }, draggable ? /*#__PURE__*/React.createElement(Draggable, {
+        allowAnyClick: false,
+        handle: '.handle'
+      }, modalContent) : modalContent))
+    );
   }
 
 }
@@ -352,7 +354,7 @@ Modal.defaultProps = {
     color: '#9aa7ad'
   },
   actions: false,
-  iconClose: React.createElement("span", {
+  iconClose: /*#__PURE__*/React.createElement("span", {
     className: "icon icon-x"
   }),
   draggable: false,

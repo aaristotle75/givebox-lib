@@ -47,6 +47,11 @@ input:-webkit-autofill:active  {
 	margin: 0 5px;
 }
 
+.input-hidden {
+	padding: 0px !important;
+	margin: 0px !important;
+}
+
 .input-group {
 	.customLink {
 		position: absolute;
@@ -258,6 +263,12 @@ label.active {
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
+}
+
+.choice-group.tooltip {
+	.tooltipTop {
+		top: -15px;
+	}
 }
 
 .choice-group.error {
@@ -788,8 +799,21 @@ label.active {
 
 .creditCard {
 
+	$creditCardLetterSpacing: .5px;
+
+	input::-webkit-input-placeholder {
+		letter-spacing: $creditCardLetterSpacing;
+	}
+	input::-moz-placeholder {
+		letter-spacing: $creditCardLetterSpacing;
+	}
+	input::-ms-input-placeholder {
+		letter-spacing: $creditCardLetterSpacing;
+	}
+
 	input {
 		padding-left: 50px;
+		letter-spacing: $creditCardLetterSpacing;
 	}
 
 	.checkmark {

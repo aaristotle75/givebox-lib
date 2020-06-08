@@ -59,28 +59,30 @@ class ModalRoute extends Component {
     const customOverlay = this.props.customOverlay || {};
 
     if (!modalRoot) {
-      return React.createElement(Loader, null);
+      return (/*#__PURE__*/React.createElement(Loader, null)
+      );
     }
 
-    return React.createElement("div", null, open && React.createElement(Portal, {
-      id: id,
-      rootEl: modalRoot,
-      className: `${modalRootClass}`
-    }, React.createElement(Modal, {
-      className: className,
-      identifier: id,
-      effect: effect,
-      open: open,
-      closeBtnShow: closeBtnShow,
-      customStyle: style,
-      closeCallback: util.getValue(optsProps, 'closeCallback', closeCallback),
-      disallowBgClose: disallowBgClose || util.getValue(optsProps, 'disallowBgClose', false),
-      customOverlay: util.getValue(optsProps, 'customOverlay', customOverlay),
-      appRef: appRef,
-      draggable: draggable,
-      draggableTitle: util.getValue(optsProps, 'draggableTitle', draggableTitle),
-      modalOpenCallback: this.modalOpenCallback
-    }, this.state.opened ? component(optsProps) : React.createElement(React.Fragment, null))));
+    return (/*#__PURE__*/React.createElement("div", null, open && /*#__PURE__*/React.createElement(Portal, {
+        id: id,
+        rootEl: modalRoot,
+        className: `${modalRootClass}`
+      }, /*#__PURE__*/React.createElement(Modal, {
+        className: className,
+        identifier: id,
+        effect: effect,
+        open: open,
+        closeBtnShow: closeBtnShow,
+        customStyle: style,
+        closeCallback: util.getValue(optsProps, 'closeCallback', closeCallback),
+        disallowBgClose: disallowBgClose || util.getValue(optsProps, 'disallowBgClose', false),
+        customOverlay: util.getValue(optsProps, 'customOverlay', customOverlay),
+        appRef: appRef,
+        draggable: draggable,
+        draggableTitle: util.getValue(optsProps, 'draggableTitle', draggableTitle),
+        modalOpenCallback: this.modalOpenCallback
+      }, this.state.opened ? component(optsProps) : /*#__PURE__*/React.createElement(React.Fragment, null))))
+    );
   }
 
 }

@@ -14,7 +14,7 @@ class ActionsMenu extends Component {
       display: false,
       direction: ''
     };
-    this.dropdownRef = React.createRef();
+    this.dropdownRef = /*#__PURE__*/React.createRef();
   }
 
   componentDidMount() {}
@@ -69,7 +69,7 @@ class ActionsMenu extends Component {
 
     if (!util.isEmpty(this.props.options)) {
       this.props.options.forEach(function (value, key) {
-        items.push(React.createElement("div", {
+        items.push( /*#__PURE__*/React.createElement("div", {
           className: `actionsMenu-item ${bindthis.props.itemClass}`,
           key: key
         }, value));
@@ -94,31 +94,32 @@ class ActionsMenu extends Component {
       display,
       direction
     } = this.state;
-    return React.createElement("div", {
-      className: `actionsMenu ${className || ''}`,
-      style: style
-    }, React.createElement(Fade, {
-      in: open && overlay,
-      duration: overlayDuration
-    }, React.createElement("div", {
-      onClick: this.closeMenu,
-      className: `dropdown-cover ${display ? '' : 'displayNone'}`
-    })), React.createElement("button", {
-      disabled: !!util.isEmpty(this.props.options),
-      className: "menuLabel",
-      type: "button",
-      onClick: open ? this.closeMenu : this.openMenu
-    }, !util.isEmpty(this.props.options) ? label : 'No Actions', React.createElement("span", {
-      className: `${util.isEmpty(this.props.options) && 'displayNone'}`
-    }, open ? iconOpened : iconClosed)), React.createElement("div", {
-      ref: this.dropdownRef,
-      className: `${open ? 'opened' : ''} actionsMenu-content ${this.props.direction || direction}`
-    }, React.createElement(AnimateHeight, {
-      duration: 200,
-      height: open ? 'auto' : 0
-    }, React.createElement("i", null), React.createElement("div", {
-      className: "actionsMenu-text"
-    }, this.listOptions()))));
+    return (/*#__PURE__*/React.createElement("div", {
+        className: `actionsMenu ${className || ''}`,
+        style: style
+      }, /*#__PURE__*/React.createElement(Fade, {
+        in: open && overlay,
+        duration: overlayDuration
+      }, /*#__PURE__*/React.createElement("div", {
+        onClick: this.closeMenu,
+        className: `dropdown-cover ${display ? '' : 'displayNone'}`
+      })), /*#__PURE__*/React.createElement("button", {
+        disabled: !!util.isEmpty(this.props.options),
+        className: "menuLabel",
+        type: "button",
+        onClick: open ? this.closeMenu : this.openMenu
+      }, !util.isEmpty(this.props.options) ? label : 'No Actions', /*#__PURE__*/React.createElement("span", {
+        className: `${util.isEmpty(this.props.options) && 'displayNone'}`
+      }, open ? iconOpened : iconClosed)), /*#__PURE__*/React.createElement("div", {
+        ref: this.dropdownRef,
+        className: `${open ? 'opened' : ''} actionsMenu-content ${this.props.direction || direction}`
+      }, /*#__PURE__*/React.createElement(AnimateHeight, {
+        duration: 200,
+        height: open ? 'auto' : 0
+      }, /*#__PURE__*/React.createElement("i", null), /*#__PURE__*/React.createElement("div", {
+        className: "actionsMenu-text"
+      }, this.listOptions()))))
+    );
   }
 
 }
@@ -127,10 +128,10 @@ ActionsMenu.defaultProps = {
   label: 'Actions',
   className: '',
   itemClass: 'button',
-  iconOpened: React.createElement("span", {
+  iconOpened: /*#__PURE__*/React.createElement("span", {
     className: "icon icon-chevron-down"
   }),
-  iconClosed: React.createElement("span", {
+  iconClosed: /*#__PURE__*/React.createElement("span", {
     className: "icon icon-chevron-right"
   }),
   overlayDuration: 200,

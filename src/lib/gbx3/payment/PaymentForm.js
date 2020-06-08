@@ -38,6 +38,7 @@ class PaymentFormClass extends Component {
 		this.onPaymethodTabBefore = this.onPaymethodTabBefore.bind(this);
 		this.onPaymethodTabAfter = this.onPaymethodTabAfter.bind(this);
 		this.setPaymethod = this.setPaymethod.bind(this);
+		this.onCustomerChange = this.onCustomerChange.bind(this);
 		this.state = {
 			processingPayment: false,
 			sendEmail: {
@@ -296,6 +297,11 @@ class PaymentFormClass extends Component {
 		//this.props.fieldProp(name, { value });
 	}
 
+	onCustomerChange(name, value) {
+		const customer = { ...this.props.cartCustomer, [name]: value };
+		if (value) this.props.updateCart({ customer });
+	}
+
 	sendEmailCallback(recipients, message) {
 		this.setState({
 			sendEmail: {
@@ -451,7 +457,8 @@ class PaymentFormClass extends Component {
 			sendEmail,
 			primaryColor,
 			breakpoint,
-			openCart
+			openCart,
+			cartCustomer
 		} = this.props;
 
 		const mobile = breakpoint === 'mobile' ? true : false;
@@ -486,17 +493,17 @@ class PaymentFormClass extends Component {
 		fields.name =
 			<div className='column'>
 				{mobile ? '' : headerText}
-				{this.props.textField('name', { placeholder: 'Your Name',  label: 'Name', required: true })}
+				{this.props.textField('name', { placeholder: 'Your Name',  label: 'Name', required: true, onBlur: this.onCustomerChange, value: util.getValue(cartCustomer, 'name') })}
 			</div>
 		;
-		fields.email = this.props.textField('email', { group: 'customer', required: true, placeholder: 'Your Email Address', label: 'Email', validate: 'email', inputMode: 'email' });
-		fields.phone = this.props.textField('phone', { group: 'customer', required: phone.required, label: 'Phone', placeholder: 'Phone Number', validate: 'phone', inputMode: 'tel' });
-		fields.address = this.props.textField('line1', { group: 'address', required: address.required, label: 'Address', placeholder: 'Street Address' });
-		fields.city = this.props.textField('city', { group: 'address', required: address.required, label: 'City', placeholder: 'City' });
-		fields.state = this.props.dropdown('state', { group: 'address', label: 'State', fixedLabel: false, selectLabel: 'State', options: selectOptions.states, required: address.required })
-		fields.zip = this.props.textField('zip', { group: 'address', required: true, label: 'Zip Code', placeholder: 'Zip Code', maxLength: 5, inputMode: 'numeric' });
-		fields.employer = this.props.textField('employer', { group: 'customer', required: work.required, label: 'Employer', placeholder: 'Employer' });
-		fields.occupation = this.props.textField('occupation', { group: 'customer', required: work.required, label: 'Occupation', placeholder: 'Occupation' });
+		fields.email = this.props.textField('email', { group: 'customer', required: true, placeholder: 'Your Email Address', label: 'Email', validate: 'email', inputMode: 'email', onBlur: this.onCustomerChange, value: util.getValue(cartCustomer, 'email') });
+		fields.phone = this.props.textField('phone', { group: 'customer', required: phone.required, label: 'Phone', placeholder: 'Phone Number', validate: 'phone', inputMode: 'tel', onBlur: this.onCustomerChange, value: util.getValue(cartCustomer, 'phone') });
+		fields.address = this.props.textField('line1', { group: 'address', required: address.required, label: 'Address', placeholder: 'Street Address', onBlur: this.onCustomerChange, value: util.getValue(cartCustomer, 'line1') });
+		fields.city = this.props.textField('city', { group: 'address', required: address.required, label: 'City', placeholder: 'City', onBlur: this.onCustomerChange, value: util.getValue(cartCustomer, 'city') });
+		fields.state = this.props.dropdown('state', { group: 'address', label: 'State', fixedLabel: false, selectLabel: 'State', options: selectOptions.states, required: address.required, onBlur: this.onCustomerChange, value: util.getValue(cartCustomer, 'state') })
+		fields.zip = this.props.textField('zip', { group: 'address', required: true, label: 'Zip Code', placeholder: 'Zip Code', maxLength: 5, inputMode: 'numeric', onBlur: this.onCustomerChange, value: util.getValue(cartCustomer, 'zip') });
+		fields.employer = this.props.textField('employer', { group: 'customer', required: work.required, label: 'Employer', placeholder: 'Employer', onBlur: this.onCustomerChange, value: util.getValue(cartCustomer, 'employer') });
+		fields.occupation = this.props.textField('occupation', { group: 'customer', required: work.required, label: 'Occupation', placeholder: 'Occupation', onBlur: this.onCustomerChange, value: util.getValue(cartCustomer, 'occupation') });
 		fields.custom = this.props.textField('note', { required: custom.required, label: custom.placeholder, hideLabel: true, placeholder: custom.placeholder });
 
 
@@ -643,6 +650,7 @@ function mapStateToProps(state, props) {
 	const cart = util.getValue(gbx3, 'cart', {});
 	const cartTotal = util.getValue(cart, 'total', 0);
 	const zeroAmountAllowed = util.getValue(cart, 'zeroAmountAllowed', false);
+	const cartCustomer = util.getValue(cart, 'customer', {});
 	const cartItems = util.getValue(cart, 'items');
 	const openCart = util.getValue(cart, 'open');
 	const paymethod = util.getValue(cart, 'paymethod');
@@ -653,6 +661,7 @@ function mapStateToProps(state, props) {
 		emailBlastToken,
 		emailBlastEmail,
 		zeroAmountAllowed,
+		cartCustomer,
 		cartItems,
 		cartTotal,
 		openCart,

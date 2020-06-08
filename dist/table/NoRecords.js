@@ -8,13 +8,14 @@ export default class NoRecords extends Component {
       align,
       text
     } = this.props;
-    return React.createElement("div", {
-      className: `noRecords ${align}`
-    }, React.createElement("span", {
-      className: "normalText"
-    }, text), link && React.createElement(GBLink, {
-      onClick: link
-    }, label));
+    return (/*#__PURE__*/React.createElement("div", {
+        className: `noRecords ${align}`
+      }, /*#__PURE__*/React.createElement("span", {
+        className: "normalText"
+      }, text), link && /*#__PURE__*/React.createElement(GBLink, {
+        onClick: link
+      }, label))
+    );
   }
 
 }

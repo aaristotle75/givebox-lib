@@ -75,8 +75,8 @@ class Block extends React.Component {
 
 		const grid = {};
 		if (this.height) grid.h = Math.ceil(parseFloat(this.height / 10));
-		const addHeight = parseInt(grid.h * .3);
-		if (breakpoint === 'mobile' && grid.h) grid.h = grid.h + addHeight;
+		const addHeight = breakpoint === 'mobile' ? parseInt(grid.h * .3) : parseInt(grid.h * .1);
+		if (grid.h) grid.h = grid.h + addHeight;
 
 		const mobileContent = updateSpecificGrid && breakpoint === 'mobile' ? content : !updateSpecificGrid ? content : this.getBlockContent('mobile');
 		const mobileGrid = !util.isEmpty(block.grid) ? !updateSpecificGrid || breakpoint === 'mobile' ? { ...block.grid.mobile, ...grid } : block.grid.mobile : {};
@@ -178,7 +178,8 @@ class Block extends React.Component {
 				saveBlock: this.saveBlock,
 				title: util.getValue(block, 'title', name),
 				closeEditModal: this.closeEditModal,
-				setDisplayHeight: this.setDisplayHeight
+				setDisplayHeight: this.setDisplayHeight,
+				editModalOpen: this.state.editModalOpen
 			})
 		);
 		return childrenWithProps;

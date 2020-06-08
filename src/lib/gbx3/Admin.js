@@ -27,13 +27,12 @@ class Admin extends React.Component {
 		const globals = props.globals;
 		this.state = {
 			globals,
-			globalsDefault: util.deepClone(globals),
-			open: false
+			globalsDefault: util.deepClone(globals)
 		};
 	}
 
 	toggleOpen() {
-		this.setState({ open: this.state.open ? false : true });
+		this.props.updateAdmin({ open: this.props.openAdmin ? false : true });
 	}
 
 	updatePrimaryColor(value) {
@@ -75,14 +74,53 @@ class Admin extends React.Component {
 		}
 	}
 
+	renderAvailableBlocks() {
+		const {
+			availableBlocks
+		} = this.props;
+
+		const items = [];
+
+		availableBlocks.forEach((value) => {
+			items.push(
+				<div
+					key={value}
+					className='draggableBlock'
+					draggable={true}
+					onDragStart={(e) => {
+						e.dataTransfer.setData('text/plain', value);
+						const el = document.getElementById('gbx3DropArea');
+						if (el) {
+							if (!el.classList.contains('dragOver')) el.classList.add('dragOver');
+						}
+					}}
+					onDragEnd={(e) => {
+						const el = document.getElementById('gbx3DropArea');
+						if (el) {
+							if (el.classList.contains('dragOver')) el.classList.remove('dragOver');
+						}
+					}}
+				>
+					Add {value}
+				</div>
+			);
+		});
+
+		return (
+			<div className='availableBlocks'>
+				{items}
+			</div>
+		)
+	}
+
 	render() {
 
 		const {
-			open,
 			globals
 		} = this.state;
 
 		const {
+			openAdmin: open,
 			saveStatus,
 			editable,
 			preventCollision,
@@ -108,41 +146,40 @@ class Admin extends React.Component {
 						<div className='logo'>
 							<img src={util.imageUrlWithStyle('https://givebox.s3-us-west-1.amazonaws.com/public/gb-logo5.png', 'small')} alt='Givebox Logo' onClick={() => window.open('https://admin.givebox.com', '_blank')} />
 						</div>
+						<div className='adminSectionContainer'>
+							<div className='adminSectionTitle'>Actions</div>
+							<div className='button-group linkBar'>
+								<GBLink className='link show' onClick={() => this.props.updateAdmin({ editable: editable ? false : true }) }>{editable ? 'Turn Editable Off' : 'Turn Editable On'}</GBLink>
+								<GBLink onClick={() => this.props.updateAdmin({ outline: outline ? false : true })}>{outline ? 'Hide Outline' : 'Show Outline'}</GBLink>
+								<GBLink onClick={() => this.props.updateAdmin({ preventCollision: preventCollision ? false : true })}>Prevent Collision {preventCollision ? 'true' : 'false'}</GBLink>
+								<GBLink onClick={() => this.props.updateAdmin({ verticalCompact: verticalCompact ? false : true })}>Vertical Compact {verticalCompact ? 'true' : 'false'}</GBLink>
+								<GBLink onClick={this.props.resetGBX3}>Reset</GBLink>
+								<GBLink onClick={() => this.props.saveGBX3(null, true)}>Save</GBLink>
+								<ModalLink id='paymentForm-options'>Options</ModalLink>
+								<ModalRoute
+									optsProps={{ closeCallback: this.closeGBXOptionsCallback }}
+									id={'paymentForm-options'}
+									component={() => (
+										<GlobalsEdit
+											closeGBXOptionsCallback={this.closeGBXOptionsCallback}
+											updatePrimaryColor={this.updatePrimaryColor}
+											globals={globals}
+										/>
+									 )}
+									effect='3DFlipVert' style={{ width: '60%' }}
+									draggable={true}
+									draggableTitle={`Editing Payment Form`}
+									closeCallback={this.closeGBXOptionsCallback}
+									disallowBgClose={true}
+								/>
+							</div>
+							<div className='adminSectionTitle'>Content</div>
+							{this.renderAvailableBlocks()}
+						</div>
 						<div className='loggedInGroup'>
 							<span className='loggedInAs'>Logged in as {util.getValue(access, 'userRole')}</span>
 							<GBLink className='link show' onClick={() => window.open('https://admin.givebox.com', '_blank')}>{util.getValue(this.props.access, 'fullName')}</GBLink>
 						</div>
-						<div className='button-group linkBar'>
-							<GBLink className='link show' onClick={() => this.props.updateAdmin({ editable: editable ? false : true }) }>{editable ? 'Turn Editable Off' : 'Turn Editable On'}</GBLink>
-							<GBLink onClick={() => this.props.updateAdmin({ outline: outline ? false : true })}>{outline ? 'Hide Outline' : 'Show Outline'}</GBLink>
-							<GBLink onClick={() => this.props.updateAdmin({ preventCollision: preventCollision ? false : true })}>Prevent Collision {preventCollision ? 'true' : 'false'}</GBLink>
-							<GBLink onClick={() => this.props.updateAdmin({ verticalCompact: verticalCompact ? false : true })}>Vertical Compact {verticalCompact ? 'true' : 'false'}</GBLink>
-							<GBLink onClick={this.props.resetGBX3}>Reset</GBLink>
-							<GBLink onClick={() => this.props.saveGBX3(null, true)}>Save</GBLink>
-							<ModalLink id='paymentForm-options'>Options</ModalLink>
-							<ModalRoute
-								optsProps={{ closeCallback: this.closeGBXOptionsCallback }}
-								id={'paymentForm-options'}
-								component={() => (
-									<GlobalsEdit
-										closeGBXOptionsCallback={this.closeGBXOptionsCallback}
-										updatePrimaryColor={this.updatePrimaryColor}
-										globals={globals}
-									/>
-								 )}
-								effect='3DFlipVert' style={{ width: '60%' }}
-								draggable={true}
-								draggableTitle={`Editing Payment Form`}
-								closeCallback={this.closeGBXOptionsCallback}
-								disallowBgClose={true}
-							/>
-						</div>
-						<AnimateHeight
-							duration={500}
-							height={editable ? 'auto' : 1}
-						>
-							<div>Blocks available</div>
-						</AnimateHeight>
 						<div className='alertContainer'>
 							<Alert alert='error' display={this.state.error} msg={'Error saving, check console'} />
 							<Alert alert='success' display={this.state.success} msg={'Custom Template Saved'} />
@@ -162,6 +199,8 @@ function mapStateToProps(state, props) {
 	const gbx3 = util.getValue(state, 'gbx3', {});
 	const saveStatus = util.getValue(gbx3, 'saveStatus');
 	const admin = util.getValue(gbx3, 'admin', {});
+	const openAdmin = util.getValue(admin, 'open');
+	const availableBlocks = util.getValue(admin, 'availableBlocks', []);
 	const globals = util.getValue(gbx3, 'globals', {});
 	const gbxStyle = util.getValue(globals, 'gbxStyle', {});
 	const access = util.getValue(state.resource, 'access');
@@ -172,6 +211,8 @@ function mapStateToProps(state, props) {
 	const outline = util.getValue(admin, 'outline');
 
 	return {
+		openAdmin,
+		availableBlocks,
 		saveStatus,
 		access,
 		hasAccessToEdit,

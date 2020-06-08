@@ -25,14 +25,20 @@ $breakpoint: 768px;
 
 	.amountsBlock {
 		.embed {
-			position: relative;
-			display: block;
 		}
 	}
 
 	.amountsSection {
 		position: relative;
+		height: auto;
 	}
+
+	/*
+	.amountsSection:hover {
+		overflow-x: hidden;
+		overflow-y: auto;
+	}
+	*/
 
 	.amountsList {
 		position: relative;

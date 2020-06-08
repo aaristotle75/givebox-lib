@@ -7,12 +7,13 @@ class CharacterCount extends Component {
       count,
       style
     } = this.props;
-    return React.createElement("div", {
-      style: style,
-      className: "characterCount"
-    }, React.createElement("span", {
-      className: "text"
-    }, "Max characters ", React.createElement("strong", null, count, "/", max)));
+    return (/*#__PURE__*/React.createElement("div", {
+        style: style,
+        className: "characterCount"
+      }, /*#__PURE__*/React.createElement("span", {
+        className: "text"
+      }, "Max characters ", /*#__PURE__*/React.createElement("strong", null, count, "/", max)))
+    );
   }
 
 }

@@ -73,44 +73,48 @@ class Table extends Component {
   }
 
   renderSearch() {
-    return React.createElement(Search, {
-      name: this.props.name,
-      customName: this.props.customName,
-      placeholder: this.props.searchPlaceholder,
-      align: this.props.searchAlign,
-      style: this.props.searchStyle
-    });
+    return (/*#__PURE__*/React.createElement(Search, {
+        name: this.props.name,
+        customName: this.props.customName,
+        placeholder: this.props.searchPlaceholder,
+        align: this.props.searchAlign,
+        style: this.props.searchStyle
+      })
+    );
   }
 
   renderMaxRecords(direction) {
-    return React.createElement(MaxRecords, {
-      name: this.props.name,
-      customName: this.props.customName,
-      style: this.props.maxRecordsStyle,
-      textStyle: this.props.maxRecordsTextStyle,
-      align: this.props.maxRecordsAlign,
-      records: this.props.maxRecords,
-      direction: direction
-    });
+    return (/*#__PURE__*/React.createElement(MaxRecords, {
+        name: this.props.name,
+        customName: this.props.customName,
+        style: this.props.maxRecordsStyle,
+        textStyle: this.props.maxRecordsTextStyle,
+        align: this.props.maxRecordsAlign,
+        records: this.props.maxRecords,
+        direction: direction
+      })
+    );
   }
 
   renderPagination() {
-    return React.createElement(Paginate, {
-      name: this.props.name,
-      customName: this.props.customName,
-      align: this.props.paginateAlign,
-      nextIcon: this.props.nextIcon,
-      previousIcon: this.props.previousIcon
-    });
+    return (/*#__PURE__*/React.createElement(Paginate, {
+        name: this.props.name,
+        customName: this.props.customName,
+        align: this.props.paginateAlign,
+        nextIcon: this.props.nextIcon,
+        previousIcon: this.props.previousIcon
+      })
+    );
   }
 
   renderExport() {
-    return React.createElement(Export, {
-      name: this.props.name,
-      customName: this.props.customName,
-      align: this.props.exportAlign,
-      desc: this.props.exportDesc
-    });
+    return (/*#__PURE__*/React.createElement(Export, {
+        name: this.props.name,
+        customName: this.props.customName,
+        align: this.props.exportAlign,
+        desc: this.props.exportDesc
+      })
+    );
   }
 
   render() {
@@ -138,32 +142,33 @@ class Table extends Component {
     const headers = tableData.headers;
     const rows = tableData.rows;
     const footer = tableData.footer;
-    return React.createElement("div", {
-      className: `givebox-lib-table ${className || ''}`
-    }, (searchDisplay === 'top' || searchDisplay === 'both') && this.renderSearch(), (exportDisplay === 'top' || exportDisplay === 'both') && this.renderExport(), filters && React.createElement(Filter, {
-      name: name,
-      options: filters
-    }), (paginationDisplay === 'top' || paginationDisplay === 'both') && this.renderPagination(), (maxRecordsDisplay === 'top' || maxRecordsDisplay === 'both') && this.renderMaxRecords(), React.createElement("table", {
-      style: this.props.tableStyle
-    }, showHeader && React.createElement(TableHead, {
-      headers: headers,
-      sortColumn: this.sortColumn,
-      sort: sort,
-      iconSortAsc: iconSortAsc,
-      iconSortDesc: iconSortDesc,
-      order: order
-    }), React.createElement(TableBody, {
-      rows: rows,
-      length: headers.length,
-      detailsLink: this.detailsLink,
-      iconDetailsExpand: iconDetailsExpand,
-      iconDetailsCollapse: iconDetailsCollapse,
-      detailsTitle: detailsTitle,
-      defaultOpen: defaultOpen,
-      noRecordsText: this.props.noRecordsText
-    }), showFooter && React.createElement(TableFoot, {
-      footer: footer
-    })), (searchDisplay === 'bottom' || searchDisplay === 'both') && this.renderSearch(), (exportDisplay === 'bottom' || exportDisplay === 'both') && this.renderExport(), (paginationDisplay === 'bottom' || paginationDisplay === 'both') && this.renderPagination(), (maxRecordsDisplay === 'bottom' || maxRecordsDisplay === 'both') && this.renderMaxRecords('top'));
+    return (/*#__PURE__*/React.createElement("div", {
+        className: `givebox-lib-table ${className || ''}`
+      }, (searchDisplay === 'top' || searchDisplay === 'both') && this.renderSearch(), (exportDisplay === 'top' || exportDisplay === 'both') && this.renderExport(), filters && /*#__PURE__*/React.createElement(Filter, {
+        name: name,
+        options: filters
+      }), (paginationDisplay === 'top' || paginationDisplay === 'both') && this.renderPagination(), (maxRecordsDisplay === 'top' || maxRecordsDisplay === 'both') && this.renderMaxRecords(), /*#__PURE__*/React.createElement("table", {
+        style: this.props.tableStyle
+      }, showHeader && /*#__PURE__*/React.createElement(TableHead, {
+        headers: headers,
+        sortColumn: this.sortColumn,
+        sort: sort,
+        iconSortAsc: iconSortAsc,
+        iconSortDesc: iconSortDesc,
+        order: order
+      }), /*#__PURE__*/React.createElement(TableBody, {
+        rows: rows,
+        length: headers.length,
+        detailsLink: this.detailsLink,
+        iconDetailsExpand: iconDetailsExpand,
+        iconDetailsCollapse: iconDetailsCollapse,
+        detailsTitle: detailsTitle,
+        defaultOpen: defaultOpen,
+        noRecordsText: this.props.noRecordsText
+      }), showFooter && /*#__PURE__*/React.createElement(TableFoot, {
+        footer: footer
+      })), (searchDisplay === 'bottom' || searchDisplay === 'both') && this.renderSearch(), (exportDisplay === 'bottom' || exportDisplay === 'both') && this.renderExport(), (paginationDisplay === 'bottom' || paginationDisplay === 'both') && this.renderPagination(), (maxRecordsDisplay === 'bottom' || maxRecordsDisplay === 'both') && this.renderMaxRecords('top'))
+    );
   }
 
 }
@@ -176,16 +181,16 @@ Table.defaultProps = {
   exportDisplay: 'none',
   maxRecordsDisplay: 'bottom',
   paginationDisplay: 'bottom',
-  iconSortAsc: React.createElement("span", {
+  iconSortAsc: /*#__PURE__*/React.createElement("span", {
     className: "icon icon-chevron-up"
   }),
-  iconSortDesc: React.createElement("span", {
+  iconSortDesc: /*#__PURE__*/React.createElement("span", {
     className: "icon icon-chevron-down"
   }),
-  iconDetailsExpand: React.createElement("span", {
+  iconDetailsExpand: /*#__PURE__*/React.createElement("span", {
     className: "icon icon-plus-circle"
   }),
-  iconDetailsCollapse: React.createElement("span", {
+  iconDetailsCollapse: /*#__PURE__*/React.createElement("span", {
     className: "icon icon-minus-circle"
   }),
   detailsTitle: ''
@@ -224,14 +229,14 @@ const TableHead = ({
   if (!util.isEmpty(headers)) {
     Object.entries(headers).forEach(([key, value]) => {
       if (value.name === '*details') {
-        items.push(React.createElement("th", {
+        items.push( /*#__PURE__*/React.createElement("th", {
           key: key,
           style: {
             width: value.width
           }
         }));
       } else {
-        items.push(React.createElement("th", {
+        items.push( /*#__PURE__*/React.createElement("th", {
           colSpan: value.colspan,
           onClick: () => sortColumn(value.sort),
           className: `${value.sort && 'sort'}`,
@@ -245,7 +250,8 @@ const TableHead = ({
     });
   }
 
-  return React.createElement("thead", null, React.createElement("tr", null, items));
+  return (/*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, items))
+  );
 };
 
 class TableBody extends Component {
@@ -307,55 +313,55 @@ class TableBody extends Component {
           if (has(value, 'details')) {
             if (!has(value, 'key')) console.error('Add a key property for proper handling');
             id = `${passkey}-${value.key}-details`;
-            ref = React.createRef();
+            ref = /*#__PURE__*/React.createRef();
             const icon = bindthis.state.details.includes(id) ? iconDetailsCollapse : iconDetailsExpand;
-            td.push(React.createElement("td", {
+            td.push( /*#__PURE__*/React.createElement("td", {
               onClick: () => ref ? bindthis.detailsLink(ref) : '',
               className: 'detailsIcon hasDetails',
               key: key
             }, icon));
-            details.push(React.createElement("tr", {
+            details.push( /*#__PURE__*/React.createElement("tr", {
               ref: ref,
               className: `${bindthis.state.details.includes(id) ? 'detailsOpen' : ''} detailsRow`,
               id: id,
               key: id
-            }, React.createElement("td", {
+            }, /*#__PURE__*/React.createElement("td", {
               className: "detailsRow",
               colSpan: length
-            }, React.createElement(AnimateHeight, {
+            }, /*#__PURE__*/React.createElement(AnimateHeight, {
               duration: 500,
               height: bindthis.state.details.includes(id) ? 'auto' : 0
-            }, React.createElement("div", {
+            }, /*#__PURE__*/React.createElement("div", {
               className: "details",
               style: {
                 paddingRight: has(value, 'width') ? value.width : '',
                 paddingLeft: has(value, 'width') ? value.width : 0
               }
-            }, React.createElement("div", {
+            }, /*#__PURE__*/React.createElement("div", {
               className: "detailsTitle"
-            }, detailsTitle), React.createElement("div", {
+            }, detailsTitle), /*#__PURE__*/React.createElement("div", {
               className: "detailsContent"
             }, value.details))))));
           } else {
             if (has(value, 'options')) {
               options = value.options;
             } else {
-              if (has(value, 'actions')) td.push(React.createElement("td", {
+              if (has(value, 'actions')) td.push( /*#__PURE__*/React.createElement("td", {
                 className: "actionsRow",
                 key: key
-              }, React.createElement("span", {
+              }, /*#__PURE__*/React.createElement("span", {
                 className: ` ${has(value, 'secondary') && bindthis.state.details.includes(id) ? 'hidden' : ''}`
-              }, value.actions)));else td.push(React.createElement("td", {
+              }, value.actions)));else td.push( /*#__PURE__*/React.createElement("td", {
                 onClick: () => ref ? bindthis.detailsLink(ref) : '',
                 className: `${ref ? 'hasDetails' : ''} ${value.primary ? 'primaryRow' : ''}`,
                 key: key
-              }, React.createElement("span", {
+              }, /*#__PURE__*/React.createElement("span", {
                 className: `${!value.primary && !has(value, 'actions') && !has(value, 'always') && bindthis.state.details.includes(id) ? 'hidden' : ''}`
               }, value.value)));
             }
           }
         });
-        const tr = React.createElement("tr", {
+        const tr = /*#__PURE__*/React.createElement("tr", {
           className: `${bindthis.state.details.includes(id) ? 'detailsOpen' : ''} ${key % 2 === 0 ? '' : 'altRow'} ${options.grayout ? 'grayout' : ''}`,
           key: key
         }, td);
@@ -363,13 +369,13 @@ class TableBody extends Component {
         if (!util.isEmpty(details)) items.push(details);
       });
     } else {
-      items.push(React.createElement("tr", {
+      items.push( /*#__PURE__*/React.createElement("tr", {
         key: 0
-      }, React.createElement("td", {
+      }, /*#__PURE__*/React.createElement("td", {
         className: "noRecordsRow",
         colSpan: length || 1,
         align: "center"
-      }, React.createElement(NoRecords, {
+      }, /*#__PURE__*/React.createElement(NoRecords, {
         text: this.props.noRecordsText
       }))));
     }
@@ -378,7 +384,8 @@ class TableBody extends Component {
   }
 
   render() {
-    return React.createElement("tbody", null, this.renderItems());
+    return (/*#__PURE__*/React.createElement("tbody", null, this.renderItems())
+    );
   }
 
 }
@@ -392,17 +399,18 @@ const TableFoot = ({
     footer.forEach((value, key) => {
       const item = [];
       Object.entries(value).forEach(([key, value]) => {
-        item.push(React.createElement("td", {
+        item.push( /*#__PURE__*/React.createElement("td", {
           key: key,
           align: value.align || 'left',
           colSpan: value.colspan || 1
         }, value.value));
       });
-      items.push(React.createElement("tr", {
+      items.push( /*#__PURE__*/React.createElement("tr", {
         key: key
       }, item));
     });
   }
 
-  return React.createElement("tfoot", null, items);
+  return (/*#__PURE__*/React.createElement("tfoot", null, items)
+  );
 };

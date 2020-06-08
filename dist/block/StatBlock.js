@@ -14,7 +14,7 @@ class StatBlock extends Component {
 
     if (!util.isEmpty(this.props.options)) {
       this.props.options.forEach(function (value, key) {
-        items.push(React.createElement("li", {
+        items.push( /*#__PURE__*/React.createElement("li", {
           key: key
         }, value));
       });
@@ -28,10 +28,11 @@ class StatBlock extends Component {
       style,
       children
     } = this.props;
-    return React.createElement("div", {
-      className: "statBlock",
-      style: style
-    }, children, React.createElement("ul", null, this.listOptions()));
+    return (/*#__PURE__*/React.createElement("div", {
+        className: "statBlock",
+        style: style
+      }, children, /*#__PURE__*/React.createElement("ul", null, this.listOptions()))
+    );
   }
 
 }

@@ -24,7 +24,8 @@ class ContentField extends Component {
   }
 
   renderEditor(props) {
-    return React.createElement(Editor, props);
+    return (/*#__PURE__*/React.createElement(Editor, props)
+    );
   }
 
   onFocus(name, content, hasText) {
@@ -80,44 +81,45 @@ class ContentField extends Component {
     const inputBottomStyle = {
       background: status === 'active' ? color : ''
     };
-    return React.createElement("div", {
-      style: style,
-      className: `input-group ${className || ''} richtext-group ${error ? 'error tooltip' : ''}`
-    }, React.createElement("div", {
-      className: `errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`
-    }, error), !modal && label && React.createElement("label", {
-      style: labelStyle,
-      className: `${this.state.status}`,
-      htmlFor: name
-    }, label), React.createElement("div", {
-      className: `floating-label ${this.state.status} ${fixedLabel && 'fixed'}`
-    }, modal ? React.createElement("div", null, React.createElement(ModalRoute, {
-      id: id,
-      component: props => this.renderEditor({ ...this.props,
-        ...props
-      })
-    }), React.createElement(ModalLink, {
-      opts: {
-        disallowBgClose: disallowModalBgClose
-      },
-      className: `input ${value ? 'hasValue' : ''}`,
-      id: id,
-      onMouseEnter: this.onMouseEnter,
-      onMouseLeave: this.onMouseLeave
-    }, modalLabel)) : React.createElement("div", {
-      className: "richtext-embed"
-    }, React.createElement(Editor, _extends({}, this.props, {
-      onBlur: this.onBlur,
-      onFocus: this.onFocus
-    }))), modal && label && React.createElement("label", {
-      style: labelStyle,
-      htmlFor: name
-    }, label), React.createElement("div", {
-      style: inputBottomStyle,
-      className: `input-bottom ${error ? 'error' : this.state.status}`
-    })), React.createElement("div", {
-      className: `tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`
-    }, error, React.createElement("i", null)));
+    return (/*#__PURE__*/React.createElement("div", {
+        style: style,
+        className: `input-group ${className || ''} richtext-group ${error ? 'error tooltip' : ''}`
+      }, /*#__PURE__*/React.createElement("div", {
+        className: `errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`
+      }, error), !modal && label && /*#__PURE__*/React.createElement("label", {
+        style: labelStyle,
+        className: `${this.state.status}`,
+        htmlFor: name
+      }, label), /*#__PURE__*/React.createElement("div", {
+        className: `floating-label ${this.state.status} ${fixedLabel && 'fixed'}`
+      }, modal ? /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(ModalRoute, {
+        id: id,
+        component: props => this.renderEditor({ ...this.props,
+          ...props
+        })
+      }), /*#__PURE__*/React.createElement(ModalLink, {
+        opts: {
+          disallowBgClose: disallowModalBgClose
+        },
+        className: `input ${value ? 'hasValue' : ''}`,
+        id: id,
+        onMouseEnter: this.onMouseEnter,
+        onMouseLeave: this.onMouseLeave
+      }, modalLabel)) : /*#__PURE__*/React.createElement("div", {
+        className: "richtext-embed"
+      }, /*#__PURE__*/React.createElement(Editor, _extends({}, this.props, {
+        onBlur: this.onBlur,
+        onFocus: this.onFocus
+      }))), modal && label && /*#__PURE__*/React.createElement("label", {
+        style: labelStyle,
+        htmlFor: name
+      }, label), /*#__PURE__*/React.createElement("div", {
+        style: inputBottomStyle,
+        className: `input-bottom ${error ? 'error' : this.state.status}`
+      })), /*#__PURE__*/React.createElement("div", {
+        className: `tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`
+      }, error, /*#__PURE__*/React.createElement("i", null)))
+    );
   }
 
 }
@@ -138,28 +140,29 @@ function mapStateToProps(state, props) {
 export default connect(mapStateToProps, {})(ContentField);
 
 const Editor = props => {
-  return React.createElement("div", null, React.createElement(RichTextEditor, {
-    onChange: props.onChange,
-    onBlur: props.onBlur,
-    onFocus: props.onFocus,
-    placeholder: props.placeholder,
-    content: props.value,
-    updateContent: props.updateContent,
-    fieldName: props.name,
-    wysiwyg: props.wysiwyg,
-    allowLink: props.allowLink,
-    color: props.color,
-    autoFocus: props.autoFocus
-  }), props.closeModalAndSave && !props.hideCloseModalAndSaveButtons && props.modal ? React.createElement("div", {
-    className: "center button-group"
-  }, React.createElement(GBLink, {
-    className: "link",
-    onClick: () => props.closeModalAndSave(props.id, false)
-  }, "Cancel"), React.createElement(GBLink, {
-    style: {
-      width: 150
-    },
-    className: "button",
-    onClick: () => props.closeModalAndSave(props.id)
-  }, "Save")) : '');
+  return (/*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(RichTextEditor, {
+      onChange: props.onChange,
+      onBlur: props.onBlur,
+      onFocus: props.onFocus,
+      placeholder: props.placeholder,
+      content: props.value,
+      updateContent: props.updateContent,
+      fieldName: props.name,
+      wysiwyg: props.wysiwyg,
+      allowLink: props.allowLink,
+      color: props.color,
+      autoFocus: props.autoFocus
+    }), props.closeModalAndSave && !props.hideCloseModalAndSaveButtons && props.modal ? /*#__PURE__*/React.createElement("div", {
+      className: "center button-group"
+    }, /*#__PURE__*/React.createElement(GBLink, {
+      className: "link",
+      onClick: () => props.closeModalAndSave(props.id, false)
+    }, "Cancel"), /*#__PURE__*/React.createElement(GBLink, {
+      style: {
+        width: 150
+      },
+      className: "button",
+      onClick: () => props.closeModalAndSave(props.id)
+    }, "Save")) : '')
+  );
 };

@@ -21,6 +21,7 @@ const title = {
 	name: 'title',
 	title: 'Title',
 	type: 'Text',
+	remove: false,
 	field: 'title',
 	options: {
 		defaultFormat: '<span style="font-size:16px;">{{TOKEN}}</span>'
@@ -49,6 +50,7 @@ const amounts = {
 	name: 'amounts',
 	title: 'Amounts',
 	type: 'Amounts',
+	remove: false,
 	field: 'amounts',
 	options: {
 		button: {
@@ -65,8 +67,8 @@ const amounts = {
 		}
 	},
 	grid: {
-		desktop: { i: 'amounts', x: 0, y: 2, w: 6, h: 17, enabled: true },
-		mobile: { i: 'amounts', x: 0, y: 28, w: 6, h: 17, enabled: true }
+		desktop: { i: 'amounts', x: 0, y: 2, w: 6, h: 42, enabled: true },
+		mobile: { i: 'amounts', x: 0, y: 28, w: 6, h: 42, enabled: true }
 	}
 };
 
@@ -74,6 +76,7 @@ const media = {
 	name: 'media',
 	title: 'Media',
 	type: 'Media',
+	remove: false,
 	field: 'imageURL',
 	options: {
 		mediaType: 'image',
@@ -110,9 +113,7 @@ const content = {
 	subType: 'content',
 	field: 'description',
 	overflow: 'visible',
-	options: {
-		defaultFormat: '<span>About Your Fundraiser</span>'
-	},
+	options: {},
 	grid: {
 		desktop: { i: 'content', x: 0, y: 24, w: 12, h: 10, enabled: true },
 		mobile: { i: 'content', x: 0, y: 109, w: 6, h: 10, enabled: true }

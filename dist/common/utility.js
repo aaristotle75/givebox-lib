@@ -48,6 +48,18 @@ export function groupBy(list, keyGetter) {
   });
   return map;
 }
+export function group(array, prop) {
+  if (!isEmpty(array)) {
+    const group = array.reduce((a, b) => {
+      if (!a[b[prop]]) a[b[prop]] = [];
+      a[b[prop]].push(b);
+      return a;
+    }, {});
+    return group;
+  }
+
+  return {};
+}
 export function roundNumber(rnum, rlength) {
   var newnumber = Math.round(rnum * Math.pow(10, rlength)) / Math.pow(10, rlength);
   return newnumber;
@@ -408,11 +420,12 @@ export function money(amount, symbol = '$', cents = true, showNegative = true) {
     negative = true;
   }
 
-  return React.createElement("span", {
-    className: `moneyAmount ${negative && 'negativeAmount'}`
-  }, negative && '-', React.createElement("span", {
-    className: "symbol"
-  }, symbol), numberWithCommas(parseFloat(amount).toFixed(cents ? 2 : 0)));
+  return (/*#__PURE__*/React.createElement("span", {
+      className: `moneyAmount ${negative && 'negativeAmount'}`
+    }, negative && '-', /*#__PURE__*/React.createElement("span", {
+      className: "symbol"
+    }, symbol), numberWithCommas(parseFloat(amount).toFixed(cents ? 2 : 0)))
+  );
 }
 export function formatMoneyForAPI(amount) {
   if (!amount) return 0;
@@ -566,14 +579,15 @@ export function getDate(timestamp, format, opts = {}) {
   const local = Moment.unix(timestamp).local().format(format);
 
   if (options.modal) {
-    return React.createElement(ModalLink, {
-      className: options.modalClass,
-      id: options.modalID,
-      opts: {
-        ts: timestamp,
-        local: local
-      }
-    }, date);
+    return (/*#__PURE__*/React.createElement(ModalLink, {
+        className: options.modalClass,
+        id: options.modalID,
+        opts: {
+          ts: timestamp,
+          local: local
+        }
+      }, date)
+    );
   } else {
     return date;
   }
@@ -745,15 +759,16 @@ export function makeAddress(where, showCountry = true) {
   if (where.country) obj.line3 = where.country;
 
   if (!isEmpty(obj)) {
-    return React.createElement("div", {
-      className: "address"
-    }, obj.line1 && React.createElement("span", {
-      className: "line"
-    }, obj.line1), obj.line2 && React.createElement("span", {
-      className: "line"
-    }, obj.line2), obj.line3 && showCountry && React.createElement("span", {
-      className: "line"
-    }, obj.line3));
+    return (/*#__PURE__*/React.createElement("div", {
+        className: "address"
+      }, obj.line1 && /*#__PURE__*/React.createElement("span", {
+        className: "line"
+      }, obj.line1), obj.line2 && /*#__PURE__*/React.createElement("span", {
+        className: "line"
+      }, obj.line2), obj.line3 && showCountry && /*#__PURE__*/React.createElement("span", {
+        className: "line"
+      }, obj.line3))
+    );
   } else {
     return '';
   }

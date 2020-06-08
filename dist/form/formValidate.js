@@ -42,15 +42,15 @@ export function formatDecimal(value) {
   const length = nLength(val);
   val = val.toString();
   if (length === 1) {
-    newVal = `.0${val}`;
+  	newVal = `.0${val}`;
   }
   if (length === 2) {
-    newVal = `.${val.slice(-2)}`;
+  	newVal = `.${val.slice(-2)}`;
   }
   if (length > 2) {
-    const decimal = val.slice(-2);
-    const int = val.slice(0, -2);
-    newVal = `${int}.${decimal}`;
+  	const decimal = val.slice(-2);
+  	const int = val.slice(0, -2);
+  	newVal = `${int}.${decimal}`;
   }
   console.log('newVal val', newVal, val);
   return isNaN(newVal) || parseInt(val) === 0 || isNaN(val) ? '' : numberWithCommas(newVal);
@@ -72,7 +72,7 @@ export function identifyCardTypes(ccnumber) {
   } else if (/^6(?:011|5[0-9]{2})$/.test(ccnumber)) {
     return 'discover';
   } else {
-    return 'noCardType';
+    return '';
   }
 } // validate the full length card number
 

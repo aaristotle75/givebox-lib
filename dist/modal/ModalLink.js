@@ -46,7 +46,7 @@ class ModalLink extends Component {
     switch (type) {
       case 'li':
         {
-          component = React.createElement("li", {
+          component = /*#__PURE__*/React.createElement("li", {
             className: className,
             onClick: () => this.onClick(id, opts)
           }, this.props.children);
@@ -55,7 +55,7 @@ class ModalLink extends Component {
 
       case 'div':
         {
-          component = React.createElement("div", {
+          component = /*#__PURE__*/React.createElement("div", {
             style: style,
             className: `${className}`,
             onClick: () => this.onClick(id, opts)
@@ -65,7 +65,7 @@ class ModalLink extends Component {
 
       default:
         {
-          component = React.createElement(GBLink, {
+          component = /*#__PURE__*/React.createElement(GBLink, {
             customColor: customColor,
             allowCustom: allowCustom,
             style: style,

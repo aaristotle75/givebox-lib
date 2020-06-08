@@ -34,26 +34,27 @@ class Checkbox extends Component {
       checked
     } = this.state;
     let id = `${name}-checkbox`;
-    return React.createElement("div", {
-      style: style,
-      className: `input-group ${className || ''} checkbox-group  ${error ? 'error tooltip' : ''}`
-    }, React.createElement("input", {
-      type: "checkbox",
-      name: name,
-      onChange: this.onChange,
-      checked: checked,
-      className: "checkbox",
-      id: id
-    }), React.createElement("label", {
-      htmlFor: id
-    }), label && React.createElement("label", {
-      className: "label",
-      onClick: this.onChange
-    }, label), React.createElement("div", {
-      className: `tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`
-    }, this.props.error, React.createElement("i", null)), React.createElement("div", {
-      className: `errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`
-    }, error));
+    return (/*#__PURE__*/React.createElement("div", {
+        style: style,
+        className: `input-group ${className || ''} checkbox-group  ${error ? 'error tooltip' : ''}`
+      }, /*#__PURE__*/React.createElement("input", {
+        type: "checkbox",
+        name: name,
+        onChange: this.onChange,
+        checked: checked,
+        className: "checkbox",
+        id: id
+      }), /*#__PURE__*/React.createElement("label", {
+        htmlFor: id
+      }), label && /*#__PURE__*/React.createElement("label", {
+        className: "label",
+        onClick: this.onChange
+      }, label), /*#__PURE__*/React.createElement("div", {
+        className: `tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`
+      }, this.props.error, /*#__PURE__*/React.createElement("i", null)), /*#__PURE__*/React.createElement("div", {
+        className: `errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`
+      }, error))
+    );
   }
 
 }

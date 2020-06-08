@@ -11,7 +11,8 @@ const defaultCart = {
 	fee: 0,
 	passFees: false,
 	acceptedTerms: true,
-	items: []
+	items: [],
+	customer: {}
 };
 
 const defaultConfirmation = {
@@ -53,20 +54,22 @@ export function gbx3(state = {
 		}
 	},
 	admin: {
+		open: true,
 		hasAccessToEdit: false,
-		editable: false,
+		editable: true,
 		preventCollision: true,
 		verticalCompact: true,
-		outline: false
+		outline: false,
+		availableBlocks: [
+			'text',
+			'content',
+			'media'
+		],
 	},
 	data: {},
 	fees: {},
 	cart: defaultCart,
 	confirmation: defaultConfirmation,
-	order: {
-		customer: {},
-		paymethod: {}
-	},
 	defaults: {}
 }, action) {
 	switch (action.type) {
@@ -163,6 +166,7 @@ export function gbx3(state = {
 			return Object.assign({}, state, {
 				cart: {
 					...defaultCart,
+					customer: {},
 					items: []
 				}
 			});

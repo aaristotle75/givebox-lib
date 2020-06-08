@@ -156,42 +156,45 @@ class Filter extends Component {
     switch (value.field) {
       case 'calendarRange':
         {
-          return React.createElement("div", {
-            key: key,
-            className: "col rangeCol"
-          }, this.props.calendarRange(value.name, {
-            options: value.options,
-            colWidth: '50%',
-            enableTime: value.enableTime,
-            overlay: value.overlay,
-            overlayDuration: value.overlayDuration
-          }));
+          return (/*#__PURE__*/React.createElement("div", {
+              key: key,
+              className: "col rangeCol"
+            }, this.props.calendarRange(value.name, {
+              options: value.options,
+              colWidth: '50%',
+              enableTime: value.enableTime,
+              overlay: value.overlay,
+              overlayDuration: value.overlayDuration
+            }))
+          );
         }
 
       case 'dropdown':
         {
-          return React.createElement("div", {
-            key: key,
-            className: "col dropdownCol"
-          }, this.props.dropdown(value.name, {
-            options: value.options,
-            selectLabel: value.selectLabel,
-            filter: value.filter || value.name,
-            operator: value.operator,
-            value: value.value,
-            multi: value.multi,
-            debug: value.debug,
-            direction: 'bottom',
-            onChange: value.onChange
-          }));
+          return (/*#__PURE__*/React.createElement("div", {
+              key: key,
+              className: "col dropdownCol"
+            }, this.props.dropdown(value.name, {
+              options: value.options,
+              selectLabel: value.selectLabel,
+              filter: value.filter || value.name,
+              operator: value.operator,
+              value: value.value,
+              multi: value.multi,
+              debug: value.debug,
+              direction: 'bottom',
+              onChange: value.onChange
+            }))
+          );
         }
 
       case 'filler':
         {
-          return React.createElement("div", {
-            key: key,
-            className: "col fillerCol"
-          });
+          return (/*#__PURE__*/React.createElement("div", {
+              key: key,
+              className: "col fillerCol"
+            })
+          );
         }
       // no default
     }
@@ -214,20 +217,21 @@ class Filter extends Component {
     const {
       allowDisabled
     } = this.props;
-    return React.createElement("div", {
-      className: `filter-content center`
-    }, this.listOptions(), React.createElement("div", {
-      className: "clear"
-    }), React.createElement("div", {
-      className: "button-group"
-    }, React.createElement("button", {
-      className: "button",
-      type: "button",
-      onClick: this.ignoreFilters
-    }, "Ignore Filters"), this.props.saveButton(this.processForm, {
-      label: 'Apply Filters',
-      allowDisabled: allowDisabled
-    })));
+    return (/*#__PURE__*/React.createElement("div", {
+        className: `filter-content center`
+      }, this.listOptions(), /*#__PURE__*/React.createElement("div", {
+        className: "clear"
+      }), /*#__PURE__*/React.createElement("div", {
+        className: "button-group"
+      }, /*#__PURE__*/React.createElement("button", {
+        className: "button",
+        type: "button",
+        onClick: this.ignoreFilters
+      }, "Ignore Filters"), this.props.saveButton(this.processForm, {
+        label: 'Apply Filters',
+        allowDisabled: allowDisabled
+      })))
+    );
   }
 
 }

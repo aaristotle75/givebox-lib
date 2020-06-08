@@ -30,12 +30,12 @@ class Dropdown extends Component {
       contentStyle: {},
       mounted: false
     };
-    this.dropdownRef = React.createRef();
-    this.inputRef = React.createRef();
-    this.buttonRef = React.createRef();
-    this.labelRef = React.createRef();
-    this.selectedRef = React.createRef();
-    this.iconRef = React.createRef();
+    this.dropdownRef = /*#__PURE__*/React.createRef();
+    this.inputRef = /*#__PURE__*/React.createRef();
+    this.buttonRef = /*#__PURE__*/React.createRef();
+    this.labelRef = /*#__PURE__*/React.createRef();
+    this.selectedRef = /*#__PURE__*/React.createRef();
+    this.iconRef = /*#__PURE__*/React.createRef();
     this.itemRefs = {};
   }
 
@@ -199,13 +199,13 @@ class Dropdown extends Component {
       let selected = bindthis.props.multi ? util.getValue(bindthis.props, 'value') ? bindthis.props.value.includes(dataValue) ? true : false : false : selectedValue === dataValue ? true : false;
 
       if (has(value, 'bottom')) {
-        items.push(React.createElement("div", {
+        items.push( /*#__PURE__*/React.createElement("div", {
           key: 'bottom',
           style: value.style
         }, value.bottom));
       } else {
-        bindthis.itemRefs[dataValue] = React.createRef();
-        items.push(React.createElement("div", {
+        bindthis.itemRefs[dataValue] = /*#__PURE__*/React.createRef();
+        items.push( /*#__PURE__*/React.createElement("div", {
           style: {
             color: selected ? bindthis.props.color || '' : ''
           },
@@ -225,24 +225,24 @@ class Dropdown extends Component {
           onClick: e => bindthis.onClick(e, value.disabled),
           className: `dropdown-item ${selected ? 'selected' : ''} ${value.disabled ? 'disabled' : ''}`,
           key: dataValue
-        }, React.createElement("div", {
+        }, /*#__PURE__*/React.createElement("div", {
           className: "dropdown-container"
-        }, React.createElement("div", {
+        }, /*#__PURE__*/React.createElement("div", {
           className: "leftSide"
-        }, bindthis.props.multi && selected ? React.createElement("span", {
+        }, bindthis.props.multi && selected ? /*#__PURE__*/React.createElement("span", {
           className: `icon icon-${bindthis.props.iconMultiChecked}`
-        }) : '', " ", value.primaryText, value.secondaryText && React.createElement("span", {
+        }) : '', " ", value.primaryText, value.secondaryText && /*#__PURE__*/React.createElement("span", {
           className: "secondaryText"
-        }, value.secondaryText)), React.createElement("div", {
+        }, value.secondaryText)), /*#__PURE__*/React.createElement("div", {
           className: "rightSide"
-        }, value.rightText && React.createElement("span", {
+        }, value.rightText && /*#__PURE__*/React.createElement("span", {
           className: "rightText"
-        }, value.rightText), value.actions ? React.createElement("span", {
+        }, value.rightText), value.actions ? /*#__PURE__*/React.createElement("span", {
           className: "dropdown-item-actions"
         }, value.actions) : ''))));
       }
     });
-    return items ? items : React.createElement("option", null, "None");
+    return items ? items : /*#__PURE__*/React.createElement("option", null, "None");
   }
 
   onMouseEnter(e) {
@@ -311,62 +311,63 @@ class Dropdown extends Component {
     const idleLabel = selectedValue === multiCloseLabel || selectedValue === selectLabel;
     const readOnlyText = this.props.readOnlyText || `${label} is not editable`;
     const portalRoot = document.getElementById(portalRootEl);
-    const dropdownContent = React.createElement("div", {
+    const dropdownContent = /*#__PURE__*/React.createElement("div", {
       ref: this.dropdownRef,
       style: { ...contentStyle,
         boxShadow: this.props.color ? `none` : '',
         border: this.props.color && open ? `1px solid ${this.props.color}` : ''
       },
       className: `${open ? 'opened' : ''} dropdown-content ${this.props.direction || direction} ${this.props.color ? 'customColor' : ''}`
-    }, React.createElement(AnimateHeight, {
+    }, /*#__PURE__*/React.createElement(AnimateHeight, {
       duration: 200,
       height: open ? 'auto' : 0
-    }, React.createElement("div", {
+    }, /*#__PURE__*/React.createElement("div", {
       className: "dropdown-content-inner"
     }, this.listOptions())));
-    const dropdownPortal = React.createElement(Portal, {
+    const dropdownPortal = /*#__PURE__*/React.createElement(Portal, {
       id: portalID,
       rootEl: portalRoot,
       className: `dropdown ${portalClass}`
     }, dropdownContent);
-    return React.createElement("div", {
-      ref: this.inputRef,
-      style: style,
-      className: `input-group ${className || ''} ${readOnly ? 'readOnly tooltip' : ''} ${error ? 'error tooltip' : ''}`
-    }, React.createElement(Fade, {
-      in: open && overlay,
-      duration: overlayDuration
-    }, React.createElement("div", {
-      onClick: this.closeMenu,
-      className: `dropdown-cover ${display ? '' : 'displayNone'}`
-    })), React.createElement("div", {
-      className: `dropdown ${this.props.color ? 'customColor' : ''} ${floatingLabel && 'floating-label'} ${status} ${fixedLabel ? 'fixed' : ''}`,
-      style: dropdownStyle
-    }, label && !floatingLabel && React.createElement("label", null, React.createElement(GBLink, {
-      onClick: open || readOnly ? this.closeMenu : this.openMenu
-    }, label)), React.createElement("button", {
-      ref: this.buttonRef,
-      style: buttonStyle,
-      onMouseEnter: this.onMouseEnter,
-      onMouseLeave: this.onMouseLeave,
-      type: "button",
-      onClick: open || readOnly ? this.closeMenu : this.openMenu
-    }, React.createElement("span", {
-      ref: this.selectedRef,
-      className: `label ${selected ? 'selected' : ''} ${idleLabel && 'idle'}`
-    }, selectedValue), React.createElement("span", {
-      ref: this.iconRef,
-      className: `icon icon-${open ? multi ? iconMultiClose : iconOpened : iconClosed}`
-    })), portalID ? dropdownPortal : dropdownContent, label && floatingLabel && React.createElement("label", null, React.createElement(GBLink, {
-      className: "link label",
-      onClick: open || readOnly ? this.closeMenu : this.openMenu
-    }, React.createElement("span", {
-      ref: this.labelRef
-    }, label)))), React.createElement("div", {
-      className: `tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`
-    }, this.props.error, readOnly ? readOnlyText : '', React.createElement("i", null)), React.createElement("div", {
-      className: `errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`
-    }, error));
+    return (/*#__PURE__*/React.createElement("div", {
+        ref: this.inputRef,
+        style: style,
+        className: `input-group ${className || ''} ${readOnly ? 'readOnly tooltip' : ''} ${error ? 'error tooltip' : ''}`
+      }, /*#__PURE__*/React.createElement(Fade, {
+        in: open && overlay,
+        duration: overlayDuration
+      }, /*#__PURE__*/React.createElement("div", {
+        onClick: this.closeMenu,
+        className: `dropdown-cover ${display ? '' : 'displayNone'}`
+      })), /*#__PURE__*/React.createElement("div", {
+        className: `dropdown ${this.props.color ? 'customColor' : ''} ${floatingLabel && 'floating-label'} ${status} ${fixedLabel ? 'fixed' : ''}`,
+        style: dropdownStyle
+      }, label && !floatingLabel && /*#__PURE__*/React.createElement("label", null, /*#__PURE__*/React.createElement(GBLink, {
+        onClick: open || readOnly ? this.closeMenu : this.openMenu
+      }, label)), /*#__PURE__*/React.createElement("button", {
+        ref: this.buttonRef,
+        style: buttonStyle,
+        onMouseEnter: this.onMouseEnter,
+        onMouseLeave: this.onMouseLeave,
+        type: "button",
+        onClick: open || readOnly ? this.closeMenu : this.openMenu
+      }, /*#__PURE__*/React.createElement("span", {
+        ref: this.selectedRef,
+        className: `label ${selected ? 'selected' : ''} ${idleLabel && 'idle'}`
+      }, selectedValue), /*#__PURE__*/React.createElement("span", {
+        ref: this.iconRef,
+        className: `icon icon-${open ? multi ? iconMultiClose : iconOpened : iconClosed}`
+      })), portalID ? dropdownPortal : dropdownContent, label && floatingLabel && /*#__PURE__*/React.createElement("label", null, /*#__PURE__*/React.createElement(GBLink, {
+        className: "link label",
+        onClick: open || readOnly ? this.closeMenu : this.openMenu
+      }, /*#__PURE__*/React.createElement("span", {
+        ref: this.labelRef
+      }, label)))), /*#__PURE__*/React.createElement("div", {
+        className: `tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`
+      }, this.props.error, readOnly ? readOnlyText : '', /*#__PURE__*/React.createElement("i", null)), /*#__PURE__*/React.createElement("div", {
+        className: `errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`
+      }, error))
+    );
   }
 
 }

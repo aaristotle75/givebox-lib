@@ -23,7 +23,8 @@ export default class Portal extends Component {
   }
 
   render() {
-    return ReactDOM.createPortal(this.props.children, this.el);
+    return (/*#__PURE__*/ReactDOM.createPortal(this.props.children, this.el)
+    );
   }
 
 }

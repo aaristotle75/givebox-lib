@@ -13,14 +13,14 @@ class Select extends Component {
 
     if (!isEmpty(options)) {
       options.forEach(function (value, key) {
-        items.push(React.createElement("option", {
+        items.push( /*#__PURE__*/React.createElement("option", {
           key: key,
           value: value.value
         }, value.primaryText));
       });
     }
 
-    return items ? items : React.createElement("option", null, "None");
+    return items ? items : /*#__PURE__*/React.createElement("option", null, "None");
   }
 
   render() {
@@ -32,15 +32,16 @@ class Select extends Component {
       selected,
       required
     } = this.props;
-    return React.createElement("select", {
-      name: name,
-      className: className,
-      style: style,
-      onChange: onChange,
-      value: selected,
-      required: required,
-      autoComplete: "off"
-    }, this.listOptions());
+    return (/*#__PURE__*/React.createElement("select", {
+        name: name,
+        className: className,
+        style: style,
+        onChange: onChange,
+        value: selected,
+        required: required,
+        autoComplete: "off"
+      }, this.listOptions())
+    );
   }
 
 }

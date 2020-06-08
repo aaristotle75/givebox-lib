@@ -58,21 +58,23 @@ class MaxRecords extends Component {
     } = this.props;
 
     if (!count || error) {
-      return React.createElement("div", null);
+      return (/*#__PURE__*/React.createElement("div", null)
+      );
     }
 
-    return React.createElement("div", {
-      style: style,
-      className: `maxRecords ${align}`
-    }, React.createElement(Dropdown, {
-      name: "maxRecords",
-      label: "Per page",
-      defaultValue: parseInt(max),
-      onChange: this.onChange,
-      options: this.setOptions(),
-      floatingLabel: false,
-      direction: direction
-    }));
+    return (/*#__PURE__*/React.createElement("div", {
+        style: style,
+        className: `maxRecords ${align}`
+      }, /*#__PURE__*/React.createElement(Dropdown, {
+        name: "maxRecords",
+        label: "Per page",
+        defaultValue: parseInt(max),
+        onChange: this.onChange,
+        options: this.setOptions(),
+        floatingLabel: false,
+        direction: direction
+      }))
+    );
   }
 
 }

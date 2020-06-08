@@ -108,28 +108,29 @@ class Search extends Component {
     } = this.state;
     const searchName = `${name}Search`;
     const defaultPlaceholder = 'Search';
-    return React.createElement("div", {
-      style: style,
-      className: `search ${align}`
-    }, React.createElement(TextField, {
-      id: id || searchName,
-      name: searchName,
-      placeholder: placeholder ? placeholder : defaultPlaceholder,
-      onChange: this.onChange,
-      value: searchValue,
-      autoFocus: searchValue ? true : false
-    }, React.createElement("div", {
-      className: "input-button"
-    }, React.createElement("button", {
-      className: "searchBtn",
-      id: "searchBtn",
-      onClick: this.onSearch,
-      type: "button"
-    }, iconSearch), React.createElement("button", {
-      className: `searchResetBtn ${!this.state.resetSearch && 'displayNone'}`,
-      onClick: this.resetSearch,
-      type: "button"
-    }, iconClose))));
+    return (/*#__PURE__*/React.createElement("div", {
+        style: style,
+        className: `search ${align}`
+      }, /*#__PURE__*/React.createElement(TextField, {
+        id: id || searchName,
+        name: searchName,
+        placeholder: placeholder ? placeholder : defaultPlaceholder,
+        onChange: this.onChange,
+        value: searchValue,
+        autoFocus: searchValue ? true : false
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "input-button"
+      }, /*#__PURE__*/React.createElement("button", {
+        className: "searchBtn",
+        id: "searchBtn",
+        onClick: this.onSearch,
+        type: "button"
+      }, iconSearch), /*#__PURE__*/React.createElement("button", {
+        className: `searchResetBtn ${!this.state.resetSearch && 'displayNone'}`,
+        onClick: this.resetSearch,
+        type: "button"
+      }, iconClose))))
+    );
   }
 
 }
@@ -137,10 +138,10 @@ class Search extends Component {
 Search.defaultProps = {
   id: null,
   align: 'center',
-  iconSearch: React.createElement("span", {
+  iconSearch: /*#__PURE__*/React.createElement("span", {
     className: "icon icon-search"
   }),
-  iconClose: React.createElement("span", {
+  iconClose: /*#__PURE__*/React.createElement("span", {
     className: "icon icon-x"
   })
 };

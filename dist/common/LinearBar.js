@@ -43,15 +43,16 @@ class LinearBar extends Component {
       style,
       width: this.props.progress + '%'
     };
-    return React.createElement("div", {
-      className: "linearProgress"
-    }, React.createElement("div", {
-      style: finalstyle,
-      className: `linearProgressBarAnimation ${color}`
-    }), React.createElement("div", {
-      style: finalstyle,
-      className: `linearProgressBar ${color}`
-    }));
+    return (/*#__PURE__*/React.createElement("div", {
+        className: "linearProgress"
+      }, /*#__PURE__*/React.createElement("div", {
+        style: finalstyle,
+        className: `linearProgressBarAnimation ${color}`
+      }), /*#__PURE__*/React.createElement("div", {
+        style: finalstyle,
+        className: `linearProgressBar ${color}`
+      }))
+    );
   }
 
 }

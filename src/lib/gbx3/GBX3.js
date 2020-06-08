@@ -61,9 +61,14 @@ class GBX3 extends React.Component {
 			this.loadGBX3({
 				articleID,
 				editable,
-				display: 'shop'
+				display: 'layout'
 			});
 		}
+		window.addEventListener('scroll',() => {
+			window.scrollTop = Math.max(1, Math.min(window.scrollTop,
+			window.scrollHeight - window.clientHeight - 1));
+			}
+		);
 	}
 
 	async componentDidUpdate(prevProps) {
@@ -305,7 +310,7 @@ class GBX3 extends React.Component {
 
 		if (color) {
 			const rgb = util.hexToRgb(color);
-			const color2 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .1)`;
+			//const color2 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .1)`;
 			const color3 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .05)`;
 			const color4 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .4)`;
 			const styleEl = document.head.appendChild(document.createElement('style'));
@@ -320,8 +325,8 @@ class GBX3 extends React.Component {
 					background-color: ${color};
 				}
 
-				.amountsSection ::-webkit-scrollbar-thumb {
-					background-color: ${color2};
+				.amountsSection::-webkit-scrollbar-thumb {
+					background-color: ${color4};
 				}
 
 				.modalContent.gbx3 .ticketAmountRow,
@@ -404,7 +409,7 @@ class GBX3 extends React.Component {
 
 GBX3.defaultProps = {
 	defaultPrimaryColor: '#4775f8',
-	editable: false
+	editable: true
 }
 
 function mapStateToProps(state, props) {

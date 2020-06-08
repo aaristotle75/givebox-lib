@@ -143,6 +143,7 @@ export function updateCartItem(unitID, item = {}) {
 		const kindID = util.getValue(info, 'kindID');
 		const cart = util.getValue(gbx3, 'cart', {});
 		const items = util.getValue(cart, 'items', []);
+		const numOfItems = items.length;
 		const index = items.findIndex(i => i.unitID === unitID);
 		const quantity = parseInt(util.getValue(item, 'quantity', 1));
 		const amount = parseInt(quantity * util.getValue(item, 'priceper', 0));
@@ -172,6 +173,7 @@ export function updateCartItem(unitID, item = {}) {
 			if (+amount > 0) items[index] = { ...items[index], ...item };
 			else items.splice(index, 1);
 		}
+		if (!item.orderBy) item.orderBy = numOfItems + 1;
 		const cartUpdated = await dispatch(saveCart(cart));
 		if (cartUpdated) dispatch(calcCart());
 	}

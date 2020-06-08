@@ -148,7 +148,8 @@ class Cart extends Component {
 	render() {
 
 		const {
-			open
+			open,
+			showShop
 		} = this.props;
 
 		return (
@@ -156,6 +157,7 @@ class Cart extends Component {
 				<AnimateHeight height={open ? 'auto' : 0}>
 					<div className='paymentFormHeaderTitle'>
 						Your Cart
+						{showShop ?
 						<GBLink
 							style={{ right: '60px' }}
 							className='link closeCart'
@@ -163,7 +165,7 @@ class Cart extends Component {
 								this.props.updateInfo({ display: 'shop' });
 							}}>
 								Shop
-							</GBLink>
+							</GBLink> : <></>}
 						<GBLink className='link closeCart' onClick={() => this.props.updateCart({ open: false })}><span className='icon icon-x'></span></GBLink>
 					</div>
 					{this.renderItemsInCart()}

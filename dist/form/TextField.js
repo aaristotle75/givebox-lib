@@ -8,10 +8,11 @@ class TextField extends Component {
     super(props);
     this.onFocus = this.onFocus.bind(this);
     this.onBlur = this.onBlur.bind(this);
-    this.inputRef = React.createRef();
+    this.inputRef = /*#__PURE__*/React.createRef();
     this.state = {
       status: 'idle',
-      color: props.color
+      color: props.color,
+      maxLength: props.maxLength
     };
   }
 
@@ -27,6 +28,12 @@ class TextField extends Component {
     if (prevProps.color !== this.props.color) {
       this.setState({
         color: this.props.color
+      });
+    }
+
+    if (prevProps.maxLength !== this.props.maxLength) {
+      this.setState({
+        maxLength: this.props.maxLength
       });
     }
   }
@@ -64,7 +71,6 @@ class TextField extends Component {
       className,
       error,
       errorType,
-      maxLength,
       value,
       strength,
       count,
@@ -77,7 +83,8 @@ class TextField extends Component {
     } = this.props;
     const {
       status,
-      color
+      color,
+      maxLength
     } = this.state;
     const labelStyle = {
       color: status === 'active' ? color : ''
@@ -86,55 +93,56 @@ class TextField extends Component {
       background: status === 'active' ? color : ''
     };
     const readOnlyText = this.props.readOnlyText || `${label} is not editable`;
-    return React.createElement("div", {
-      style: style,
-      className: `input-group ${className || ''} textfield-group ${readOnly ? 'readOnly tooltip' : ''} ${error ? 'error tooltip' : ''} ${type === 'hidden' && 'hidden'} ${money ? 'money-group' : ''}`
-    }, React.createElement("div", {
-      className: `floating-label ${this.state.status} ${fixedLabel && 'fixed'}`
-    }, money && React.createElement("div", {
-      style: moneyStyle,
-      className: `moneyAmount ${value ? 'active' : 'noValue'}`
-    }, React.createElement("span", {
-      className: "symbol"
-    }, symbol)), React.createElement("input", {
-      autoFocus: autoFocus,
-      id: id || name,
-      ref: inputRef || this.inputRef,
-      name: name,
-      type: type,
-      placeholder: placeholder,
-      required: type === 'hidden' ? false : required,
-      readOnly: readOnly,
-      onChange: this.props.onChange,
-      onBlur: this.onBlur,
-      onFocus: this.onFocus,
-      autoComplete: autoComplete,
-      value: value,
-      maxLength: maxLength,
-      style: inputStyle,
-      inputMode: inputMode
-    }), (customLabel || label) && React.createElement("label", {
-      style: labelStyle,
-      htmlFor: name
-    }, customLabel || label), React.createElement("div", {
-      style: inputBottomStyle,
-      className: `input-bottom ${error ? 'error' : this.state.status}`
-    }), this.props.children, strength && React.createElement(PasswordStrength, {
-      password: value,
-      error: error
-    }), React.createElement("div", {
-      className: "customLink"
-    }, this.props.customLink) || '', count && type !== 'password' && type !== 'hidden' && React.createElement(Fade, {
-      in: this.state.status === 'active' && value ? true : false,
-      duration: 200
-    }, React.createElement(CharacterCount, {
-      max: maxLength,
-      count: value.length
-    }))), React.createElement("div", {
-      className: `tooltipTop ${(errorType !== 'tooltip' || strength) && 'displayNone'}`
-    }, error, readOnly ? readOnlyText : '', React.createElement("i", null)), React.createElement("div", {
-      className: `errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`
-    }, error));
+    return (/*#__PURE__*/React.createElement("div", {
+        style: style,
+        className: `input-group ${type === 'hidden' ? 'input-hidden' : ''} ${className || ''} textfield-group ${readOnly ? 'readOnly tooltip' : ''} ${error ? 'error tooltip' : ''} ${type === 'hidden' && 'hidden'} ${money ? 'money-group' : ''}`
+      }, /*#__PURE__*/React.createElement("div", {
+        className: `floating-label ${this.state.status} ${fixedLabel && 'fixed'}`
+      }, money && /*#__PURE__*/React.createElement("div", {
+        style: moneyStyle,
+        className: `moneyAmount ${value ? 'active' : 'noValue'}`
+      }, /*#__PURE__*/React.createElement("span", {
+        className: "symbol"
+      }, symbol)), /*#__PURE__*/React.createElement("input", {
+        autoFocus: autoFocus,
+        id: id || name,
+        ref: inputRef || this.inputRef,
+        name: name,
+        type: type,
+        placeholder: placeholder,
+        required: type === 'hidden' ? false : required,
+        readOnly: readOnly,
+        onChange: this.props.onChange,
+        onBlur: this.onBlur,
+        onFocus: this.onFocus,
+        autoComplete: autoComplete,
+        value: value,
+        maxLength: maxLength,
+        style: inputStyle,
+        inputMode: inputMode
+      }), (customLabel || label) && /*#__PURE__*/React.createElement("label", {
+        style: labelStyle,
+        htmlFor: name
+      }, customLabel || label), /*#__PURE__*/React.createElement("div", {
+        style: inputBottomStyle,
+        className: `input-bottom ${error ? 'error' : this.state.status}`
+      }), this.props.children, strength && /*#__PURE__*/React.createElement(PasswordStrength, {
+        password: value,
+        error: error
+      }), /*#__PURE__*/React.createElement("div", {
+        className: "customLink"
+      }, this.props.customLink) || '', count && type !== 'password' && type !== 'hidden' && /*#__PURE__*/React.createElement(Fade, {
+        in: this.state.status === 'active' && value ? true : false,
+        duration: 200
+      }, /*#__PURE__*/React.createElement(CharacterCount, {
+        max: maxLength,
+        count: value.length
+      }))), /*#__PURE__*/React.createElement("div", {
+        className: `tooltipTop ${(errorType !== 'tooltip' || strength) && 'displayNone'}`
+      }, error, readOnly ? readOnlyText : '', /*#__PURE__*/React.createElement("i", null)), /*#__PURE__*/React.createElement("div", {
+        className: `errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`
+      }, error))
+    );
   }
 
 }

@@ -82,21 +82,22 @@ class PasswordStrength extends Component {
       progress,
       color
     } = this.state;
-    return React.createElement("div", {
-      className: "passwordStrength"
-    }, React.createElement("div", {
-      className: "indicator"
-    }, React.createElement(LinearBar, {
-      progress: progress,
-      style: {
-        backgroundColor: 'rgb(189, 189, 189)'
-      },
-      color: color
-    })), React.createElement("div", null, React.createElement("div", {
-      className: `${error && 'error'} label tooltip`
-    }, "Password strength ", strength, React.createElement("div", {
-      className: "tooltipTop"
-    }, "Passwords must be at least 8 characters long. The stongest passwords have at least one upper case letter, at least one number and one of these special characters !@#$&*", React.createElement("i", null)))));
+    return (/*#__PURE__*/React.createElement("div", {
+        className: "passwordStrength"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "indicator"
+      }, /*#__PURE__*/React.createElement(LinearBar, {
+        progress: progress,
+        style: {
+          backgroundColor: 'rgb(189, 189, 189)'
+        },
+        color: color
+      })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+        className: `${error && 'error'} label tooltip`
+      }, "Password strength ", strength, /*#__PURE__*/React.createElement("div", {
+        className: "tooltipTop"
+      }, "Passwords must be at least 8 characters long. The stongest passwords have at least one upper case letter, at least one number and one of these special characters !@#$&*", /*#__PURE__*/React.createElement("i", null)))))
+    );
   }
 
 }

@@ -68,11 +68,11 @@ class Tabs extends Component {
 
         if (!util.isEmpty(value)) {
           if (util.getValue(value.props, 'id')) {
-            items.push(React.createElement("div", {
+            items.push( /*#__PURE__*/React.createElement("div", {
               style: bindthis.props.tabStyle,
               key: key,
               className: `panelItem`
-            }, React.createElement(GBLink, {
+            }, /*#__PURE__*/React.createElement(GBLink, {
               allowCustom: isSelected ? allowCustom : false,
               customColor: customColor,
               solidColor: solidColor,
@@ -86,14 +86,15 @@ class Tabs extends Component {
       });
     }
 
-    return React.createElement("div", {
-      style: this.props.panelStyle,
-      className: `panel`
-    }, items);
+    return (/*#__PURE__*/React.createElement("div", {
+        style: this.props.panelStyle,
+        className: `panel`
+      }, items)
+    );
   }
 
   renderChildren() {
-    const childrenWithProps = React.Children.map(this.props.children, child => React.cloneElement(child, {
+    const childrenWithProps = React.Children.map(this.props.children, child => /*#__PURE__*/React.cloneElement(child, {
       selectedTab: this.state.selectedTab
     }));
     return childrenWithProps;
@@ -104,10 +105,11 @@ class Tabs extends Component {
       style,
       className
     } = this.props;
-    return React.createElement("div", {
-      className: `tabs ${className}`,
-      style: style
-    }, this.renderTabPanel(), this.props.intro, this.renderChildren());
+    return (/*#__PURE__*/React.createElement("div", {
+        className: `tabs ${className}`,
+        style: style
+      }, this.renderTabPanel(), this.props.intro, this.renderChildren())
+    );
   }
 
 }
@@ -121,7 +123,8 @@ Tabs.defaultProps = {
 };
 export default Tabs;
 export const Tab = props => {
-  return React.createElement("div", {
-    className: `tab ${props.id !== props.selectedTab && 'displayNone'} ${props.className || ''}`
-  }, props.children);
+  return (/*#__PURE__*/React.createElement("div", {
+      className: `tab ${props.id !== props.selectedTab && 'displayNone'} ${props.className || ''}`
+    }, props.children)
+  );
 };

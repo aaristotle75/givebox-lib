@@ -169,7 +169,8 @@ export function sendResource(resource, opts = {}) {
     isSending: true,
     trackActivity: true,
     orgID: null,
-    userID: null
+    userID: null,
+    query: null
   };
   const options = { ...defaults,
     ...opts
@@ -185,12 +186,16 @@ export function sendResource(resource, opts = {}) {
     }); // Only dispatch if an api.endpoint exists
 
     if (api.endpoint) {
-      let endpoint = API_URL + api.endpoint; // If endpoint is create new than slice off new and set method to POST
+      let endpoint = `${API_URL}${api.endpoint}`; // If endpoint is create new than slice off new and set method to POST
 
       if (endpoint.slice(-3) === 'new') {
         method = 'POST'; // This slices off the /new from the endpoint
 
         endpoint = endpoint.slice(0, -4);
+      }
+
+      if (options.query) {
+        endpoint = `${endpoint}?${options.query}`;
       }
 
       return dispatch(sendAPI(resource, endpoint, method, options.data, options.callback, options.reload ? reloadResource : null, options.resourcesToLoad || options.toLoad, options.customName, options.multi, options.isSending, options.trackActivity, options.sendData));

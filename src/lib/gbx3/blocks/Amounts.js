@@ -329,6 +329,7 @@ class Amounts extends Component {
 						buttonEnabled={util.getValue(button, 'enabled', false)}
 						article={data}
 						setDisplayHeight={this.props.setDisplayHeight}
+						editModalOpen={this.props.editModalOpen}
 					/>
 				)
 			}
@@ -372,7 +373,7 @@ class Amounts extends Component {
 			tab
 		} = this.state;
 
-		if (util.isEmpty(amountsList)) return <></>
+		if (util.isEmpty(amountsList)) return <></>;
 
 		return (
 			<div className={`block ${util.getValue(button, 'enabled', false) ? 'flexCenter' : ''}`}>
