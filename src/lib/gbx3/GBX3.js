@@ -181,7 +181,8 @@ class GBX3 extends React.Component {
 	}) {
 
 		const {
-			access
+			access,
+			availableBlocks
 		} = this.props;
 
 		this.setLoading(true);
@@ -230,10 +231,10 @@ class GBX3 extends React.Component {
 										display: display || 'layout'
 									});
 
-									const blocks = {
-										...util.getValue(defaultBlocks, kind, {}),
-										...util.getValue(customTemplate, 'blocks', {})
-									};
+									const blocksDefault = util.getValue(defaultBlocks, kind, {});
+									const blocksCustom = util.getValue(customTemplate, 'blocks', {});
+
+									const blocks = !util.isEmpty(blocksCustom) ? blocksCustom : blocksDefault;
 
 									const globals = {
 										...this.props.globals,
@@ -265,11 +266,22 @@ class GBX3 extends React.Component {
 										}
 									});
 
+									if (!util.isEmpty(blocksCustom)) {
+
+										// Check if not all default blocks are present
+										// If not, add them to the availableBlocks array
+										// which are blocks available but not used
+										Object.keys(blocksDefault).forEach((key) => {
+											if (!(key in blocks)) availableBlocks.push(key);
+										})
+									}
+
 									this.props.updateLayouts(layouts);
 									this.props.updateBlocks(blocks);
 									this.props.updateGlobals(globals);
 									this.props.updateData(res);
 									this.props.updateAdmin({
+										availableBlocks,
 										editable,
 										hasAccessToEdit: util.getAuthorizedAccess(access, orgID)
 									});
@@ -390,7 +402,7 @@ class GBX3 extends React.Component {
 		return (
 			<div id='gbx3' className='gbx3 gbx3Layout'>
 				<Admin
-					loadGBX3={this.loadGBX3}
+					reloadGBX3={this.reloadGBX3}
 				/>
 				{this.renderDisplay()}
 				<ModalRoute
@@ -417,6 +429,8 @@ function mapStateToProps(state, props) {
 	const gbx3 = util.getValue(state, 'gbx3', {});
 	const globals = util.getValue(gbx3, 'globals', {});
 	const info = util.getValue(gbx3, 'info', {});
+	const admin = util.getValue(gbx3, 'admin', {});
+	const availableBlocks = util.getValue(admin, 'availableBlocks', []);
 	const sourceLocation = util.getValue(info, 'sourceLocation');
 	const gbxStyle = util.getValue(globals, 'gbxStyle', {});
 	const primaryColor = util.getValue(gbxStyle, 'primaryColor');
@@ -426,6 +440,7 @@ function mapStateToProps(state, props) {
 		globals,
 		primaryColor,
 		sourceLocation,
+		availableBlocks,
 		access: util.getValue(state.resource, 'access', {})
 	}
 }

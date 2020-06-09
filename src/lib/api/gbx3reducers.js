@@ -61,9 +61,9 @@ export function gbx3(state = {
 		verticalCompact: true,
 		outline: false,
 		availableBlocks: [
-			'text',
-			'content',
-			'media'
+			'textBlock',
+			'contentBlock',
+			'mediaBlock'
 		],
 	},
 	data: {},
@@ -115,6 +115,13 @@ export function gbx3(state = {
 						...state.blocks[action.name],
 						...action.block
 					}
+				}
+			});
+		case types.REMOVE_BLOCK:
+			delete state.blocks[action.name];
+			return Object.assign({}, state, {
+				blocks: {
+					...state.blocks
 				}
 			});
 		case types.UPDATE_GLOBALS:

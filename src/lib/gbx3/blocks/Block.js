@@ -5,6 +5,7 @@ import {
 	util,
 	toggleModal,
 	updateBlock,
+	removeBlock,
 	updateData,
 	saveGBX3,
 	updateLayouts
@@ -40,8 +41,9 @@ class Block extends React.Component {
 		this.setState({ editModalOpen: true });
 	}
 
-	onClickRemove() {
-		console.log('execute onClickRemove', this.props.name);
+	async onClickRemove() {
+		const blockRemoved = await this.props.removeBlock(this.props.name);
+		if (blockRemoved) this.setState({ editModalOpen: false }, this.props.toggleModal(this.props.modalID, false));
 	}
 
 	closeEditModal() {
@@ -179,7 +181,8 @@ class Block extends React.Component {
 				title: util.getValue(block, 'title', name),
 				closeEditModal: this.closeEditModal,
 				setDisplayHeight: this.setDisplayHeight,
-				editModalOpen: this.state.editModalOpen
+				editModalOpen: this.state.editModalOpen,
+				onClickRemove: this.onClickRemove
 			})
 		);
 		return childrenWithProps;
@@ -254,6 +257,7 @@ function mapStateToProps(state, props) {
 export default connect(mapStateToProps, {
 	toggleModal,
 	updateBlock,
+	removeBlock,
 	updateData,
 	updateLayouts,
 	saveGBX3

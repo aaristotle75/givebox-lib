@@ -664,10 +664,27 @@ $breakpoint: 768px;
 	}
 
 	.button-group {
+		position: relative;
 		button.link,
 		button.button {
 			margin: 0 10px;
 		}
+		button.link.remove {
+			position: absolute;
+			display: flex;
+			align-items: center;
+			top: 10px;
+			left: 20px;
+			color: $red;
+			font-weight: 400;
+			.icon {
+				margin-right: 5px;
+			}
+		}
+		button.link.remove:hover {
+			opacity: .6;
+		}
+
 	}
 
 	button.link {

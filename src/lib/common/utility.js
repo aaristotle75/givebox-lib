@@ -284,6 +284,12 @@ export function getCookie(cname) {
 		return '';
 }
 
+export function uniqueHash(length = 10) {
+	const hash = makeHash(length);
+	const now = Date.now();
+	return hash + now;
+}
+
 export function makeHash(length) {
 		let text = '';
 		const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

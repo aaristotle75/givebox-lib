@@ -3,6 +3,7 @@ import {
 	util,
 	sendResource
 } from '../';
+import blockTemplates from '../gbx3/blocks/blockTemplates';
 
 export function updateGBX3(name, value) {
 	return {
@@ -44,6 +45,36 @@ export function updateBlock(name, block) {
 		type: types.UPDATE_BLOCK,
 		name,
 		block
+	}
+}
+
+export function addBlock(type) {
+	return (dispatch, getState) => {
+		const gbx3 = util.getValue(getState(), 'gbx3', {});
+		const blocks = util.getValue(gbx3, 'blocks', {});
+		const admin = util.getValue(gbx3, 'admin', {});
+		const availableBlocks = util.getValue(admin, 'availableBlocks', []);
+		const newBlock = util.getValue(blockTemplates, type, {});
+		let blockName = util.getValue(newBlock, 'name', type);
+		if (blockName in blocks) {
+			const hash = util.uniqueHash();
+			blockName = `${blockName}-${hash}`;
+			newBlock.name = blockName;
+			newBlock.grid.desktop.i = blockName;
+			newBlock.grid.mobile.i = blockName;
+		}
+		if (!newBlock.multiple) {
+			availableBlocks.slice(availableBlocks.indexOf(blockName), 1);
+		}
+		dispatch(updateAdmin({ availableBlocks }));
+		dispatch(updateBlock(blockName, newBlock));
+	}
+}
+
+export function removeBlock(name) {
+	return {
+		type: types.REMOVE_BLOCK,
+		name
 	}
 }
 

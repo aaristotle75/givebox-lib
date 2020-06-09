@@ -11,11 +11,11 @@ import {
 	updateInfo,
 	saveGBX3,
 	Image,
-	GBLink
+	GBLink,
+	addBlock
 } from '../';
 import Block from './blocks/Block';
 import Form from './blocks/Form';
-import blockTemplates from './blocks/blockTemplates';
 import Scroll from 'react-scroll';
 import has from 'has';
 import Moment from 'moment';
@@ -30,8 +30,6 @@ class Layout extends React.Component {
 		this.onBreakpointChange = this.onBreakpointChange.bind(this);
 		this.widthChange = this.widthChange.bind(this);
 		this.layoutChange = this.layoutChange.bind(this);
-		this.addBlock = this.addBlock.bind(this);
-		this.removeBlock = this.removeBlock.bind(this);
 		this.gridRef = React.createRef();
 	}
 
@@ -91,21 +89,6 @@ class Layout extends React.Component {
 			smooth: true,
 			containerId: 'gbx3'
 		});
-	}
-
-	addBlock(type) {
-		const blocks = this.props.blocks;
-		const newBlock = util.getValue(blockTemplates, type, {});
-		let blockName = util.getValue(newBlock, 'name', type);
-		if (blockName in blocks) {
-			console.log('blockName is in blocks', blockName);
-		}
-		console.log('execute addBlock', blockName, newBlock);
-		//this.props.updateBlock(blockName, newBlock);
-	}
-
-	removeBlock(type) {
-		console.log('remove block', type);
 	}
 
 	renderBlocks(enabled = true) {
@@ -176,10 +159,10 @@ class Layout extends React.Component {
 						onDrop={(e) => {
 							e.preventDefault();
 							if (isEditable) {
-								const block = e.dataTransfer.getData('text/plain');
+								const block = e.dataTransfer.getData('text');
 								const current = this.gridRef.current;
 								if (current.classList.contains('dragOver')) current.classList.remove('dragOver');
-								this.addBlock(block);
+								this.props.addBlock(block);
 							}
 						}}
 					>
@@ -270,5 +253,6 @@ export default connect(mapStateToProps, {
 	updateBlock,
 	updateData,
 	updateInfo,
-	saveGBX3
+	saveGBX3,
+	addBlock
 })(Layout);

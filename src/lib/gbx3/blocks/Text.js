@@ -17,7 +17,7 @@ export default class Text extends Component {
 
 		const options = props.options;
 
-		const defaultContent = options.defaultFormat && props.fieldValue ? options.defaultFormat.replace('{{TOKEN}}', props.fieldValue) : props.fieldValue ? `<p>${props.fieldValue}</p>` : `<p>${options.defaultFormat}</p>`;
+		const defaultContent = options.defaultFormat && props.fieldValue ? options.defaultFormat.replace('{{TOKEN}}', props.fieldValue) : props.fieldValue ? `<p>props.fieldValue${props.fieldValue}</p>` : `<p>${options.defaultFormat || `Please add ${props.name}`}</p>`;
 
 		const content = util.getValue(props.blockContent, 'html', defaultContent);
 
@@ -84,6 +84,7 @@ export default class Text extends Component {
 
 		const cleanHtml = util.cleanHtml(content);
 		const subType = util.getValue(block, 'subType');
+		const nonremovable = util.getValue(block, 'nonremovable', false);
 
 		return (
 			<div className={`${subType === 'content' ? 'contentBlock' : 'textBlock'}`}>
@@ -116,6 +117,7 @@ export default class Text extends Component {
 								</div>
 							</Collapse>
 							<div style={{ marginBottom: 0 }} className='button-group center'>
+								{!nonremovable ? <GBLink className='link remove' onClick={this.props.onClickRemove}><span className='icon icon-trash-2'></span> Remove</GBLink> : <></>}
 								<GBLink className='link' onClick={() => this.closeEditModal('cancel')}>Cancel</GBLink>
 								<GBLink className='button' onClick={this.closeEditModal}>Save</GBLink>
 							</div>

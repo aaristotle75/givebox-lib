@@ -5,6 +5,7 @@ export const UPDATE_LAYOUTS = 'UPDATE_LAYOUTS';
 export const UPDATE_LAYOUT = 'UPDATE_LAYOUT';
 export const RESET_LAYOUTS = 'RESET_LAYOUTS';
 export const UPDATE_BLOCKS = 'UPDATE_BLOCKS';
+export const REMOVE_BLOCK = 'REMOVE_BLOCK';
 export const RESET_BLOCKS = 'RESET_BLOCKS';
 export const UPDATE_BLOCK = 'UPDATE_BLOCK';
 export const UPDATE_GLOBALS = 'UPDATE_GLOBALS';

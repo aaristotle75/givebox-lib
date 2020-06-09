@@ -15,6 +15,7 @@ import {
 	updateGlobals
 } from '../';
 import GlobalsEdit from './blocks/GlobalsEdit';
+import blockTemplates from './blocks/blockTemplates';
 import AnimateHeight from 'react-animate-height';
 
 class Admin extends React.Component {
@@ -24,6 +25,7 @@ class Admin extends React.Component {
 		this.toggleOpen = this.toggleOpen.bind(this);
 		this.closeGBXOptionsCallback = this.closeGBXOptionsCallback.bind(this);
 		this.updatePrimaryColor = this.updatePrimaryColor.bind(this);
+		this.reset = this.reset.bind(this);
 		const globals = props.globals;
 		this.state = {
 			globals,
@@ -101,7 +103,7 @@ class Admin extends React.Component {
 						}
 					}}
 				>
-					Add {value}
+					Add {blockTemplates[value].title}
 				</div>
 			);
 		});
@@ -111,6 +113,11 @@ class Admin extends React.Component {
 				{items}
 			</div>
 		)
+	}
+
+	async reset() {
+		const GBX3reset = await this.props.resetGBX3();
+		if (GBX3reset) window.reload();
 	}
 
 	render() {
@@ -153,7 +160,7 @@ class Admin extends React.Component {
 								<GBLink onClick={() => this.props.updateAdmin({ outline: outline ? false : true })}>{outline ? 'Hide Outline' : 'Show Outline'}</GBLink>
 								<GBLink onClick={() => this.props.updateAdmin({ preventCollision: preventCollision ? false : true })}>Prevent Collision {preventCollision ? 'true' : 'false'}</GBLink>
 								<GBLink onClick={() => this.props.updateAdmin({ verticalCompact: verticalCompact ? false : true })}>Vertical Compact {verticalCompact ? 'true' : 'false'}</GBLink>
-								<GBLink onClick={this.props.resetGBX3}>Reset</GBLink>
+								<GBLink onClick={this.reset}>Reset</GBLink>
 								<GBLink onClick={() => this.props.saveGBX3(null, true)}>Save</GBLink>
 								<ModalLink id='paymentForm-options'>Options</ModalLink>
 								<ModalRoute
@@ -198,6 +205,8 @@ function mapStateToProps(state, props) {
 
 	const gbx3 = util.getValue(state, 'gbx3', {});
 	const saveStatus = util.getValue(gbx3, 'saveStatus');
+	const info = util.getValue(gbx3, 'info', {});
+	const articleID = util.getValue(info, 'articleID');
 	const admin = util.getValue(gbx3, 'admin', {});
 	const openAdmin = util.getValue(admin, 'open');
 	const availableBlocks = util.getValue(admin, 'availableBlocks', []);
@@ -211,6 +220,7 @@ function mapStateToProps(state, props) {
 	const outline = util.getValue(admin, 'outline');
 
 	return {
+		articleID,
 		openAdmin,
 		availableBlocks,
 		saveStatus,
