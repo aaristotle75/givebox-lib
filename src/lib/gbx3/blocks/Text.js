@@ -17,7 +17,7 @@ export default class Text extends Component {
 
 		const options = props.options;
 
-		const defaultContent = options.defaultFormat && props.fieldValue ? options.defaultFormat.replace('{{TOKEN}}', props.fieldValue) : props.fieldValue ? `<p>props.fieldValue${props.fieldValue}</p>` : `<p>${options.defaultFormat || `Please add ${props.name}`}</p>`;
+		const defaultContent = options.defaultFormat && props.fieldValue ? options.defaultFormat.replace('{{TOKEN}}', props.fieldValue) : props.fieldValue ? `<p>props.fieldValue${props.fieldValue}</p>` : `<p>${options.defaultFormat || `Please add ${props.title}`}</p>`;
 
 		const content = util.getValue(props.blockContent, 'html', defaultContent);
 

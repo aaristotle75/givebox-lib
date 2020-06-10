@@ -2,8 +2,8 @@ import * as types from './gbx3actionTypes';
 import {
 	util,
 	sendResource
-} from '../';
-import blockTemplates from '../gbx3/blocks/blockTemplates';
+} from '../../';
+import blockTemplates from '../blocks/blockTemplates';
 
 export function updateGBX3(name, value) {
 	return {
@@ -48,8 +48,9 @@ export function updateBlock(name, block) {
 	}
 }
 
-export function addBlock(type) {
+export function addBlock(type, w, h, ref) {
 	return (dispatch, getState) => {
+		const current = ref ? ref.current : null;
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
 		const blocks = util.getValue(gbx3, 'blocks', {});
 		const admin = util.getValue(gbx3, 'admin', {});
@@ -63,8 +64,16 @@ export function addBlock(type) {
 			newBlock.grid.desktop.i = blockName;
 			newBlock.grid.mobile.i = blockName;
 		}
+		const positionX = w - current.offsetLeft;
+		const y = Math.ceil(parseFloat(h / 10));
+		const x = +(positionX / current.clientWidth) >= .5 ? 6 : 0;
+
+		newBlock.grid.desktop.y = y;
+		newBlock.grid.desktop.x = x;
+
 		if (!newBlock.multiple) {
-			availableBlocks.slice(availableBlocks.indexOf(blockName), 1);
+			const index = availableBlocks.indexOf(blockName)
+			availableBlocks.splice(index, 1);
 		}
 		dispatch(updateAdmin({ availableBlocks }));
 		dispatch(updateBlock(blockName, newBlock));
@@ -72,6 +81,21 @@ export function addBlock(type) {
 }
 
 export function removeBlock(name) {
+	return (dispatch, getState) => {
+		const gbx3 = util.getValue(getState(), 'gbx3', {});
+		const blocks = util.getValue(gbx3, 'blocks', {});
+		const admin = util.getValue(gbx3, 'admin', {});
+		const availableBlocks = util.getValue(admin, 'availableBlocks', []);
+		const block = util.getValue(blocks, name, {});
+		if (!util.getValue(block, 'multiple')) {
+			if (!(name in availableBlocks)) availableBlocks.push(name);
+		}
+		dispatch(updateAdmin({ availableBlocks }));
+		dispatch(deleteBlock(name));
+	}
+}
+
+function deleteBlock(name) {
 	return {
 		type: types.REMOVE_BLOCK,
 		name
@@ -299,7 +323,7 @@ export function saveGBX3(obj = {}, isSending = false, callback, updateLayout) {
 	}
 }
 
-export function resetGBX3() {
+export function resetGBX3(callback) {
 	return (dispatch, getState) => {
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
 		const info = util.getValue(gbx3, 'info', {});
@@ -322,6 +346,7 @@ export function resetGBX3() {
 				dispatch(updateBlocks({}));
 				dispatch(updateGlobals({}));
 				dispatch(updateData(res));
+				window.location.reload();
 			},
 			isSending: true
 		}));

@@ -115,9 +115,8 @@ class Admin extends React.Component {
 		)
 	}
 
-	async reset() {
-		const GBX3reset = await this.props.resetGBX3();
-		if (GBX3reset) window.reload();
+	reset() {
+		this.props.resetGBX3();
 	}
 
 	render() {
@@ -180,8 +179,10 @@ class Admin extends React.Component {
 									disallowBgClose={true}
 								/>
 							</div>
-							<div className='adminSectionTitle'>Content</div>
-							{this.renderAvailableBlocks()}
+							<AnimateHeight height={editable ? 'auto' : 0}>
+								<div className='adminSectionTitle'>Content</div>
+								{this.renderAvailableBlocks()}
+							</AnimateHeight>
 						</div>
 						<div className='loggedInGroup'>
 							<span className='loggedInAs'>Logged in as {util.getValue(access, 'userRole')}</span>

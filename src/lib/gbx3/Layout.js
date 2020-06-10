@@ -67,7 +67,7 @@ class Layout extends React.Component {
 					}
 				}
 			});
-
+			console.log('execute layoutChange', layouts);
 			if (editable) {
 				const updated = [];
 				const layoutsUpdated = await this.props.updateLayouts(layouts);
@@ -159,10 +159,12 @@ class Layout extends React.Component {
 						onDrop={(e) => {
 							e.preventDefault();
 							if (isEditable) {
+								const w = e.clientX;
+								const h = e.clientY;
 								const block = e.dataTransfer.getData('text');
 								const current = this.gridRef.current;
 								if (current.classList.contains('dragOver')) current.classList.remove('dragOver');
-								this.props.addBlock(block);
+								this.props.addBlock(block, w, h, this.gridRef);
 							}
 						}}
 					>
@@ -179,14 +181,14 @@ class Layout extends React.Component {
 							onWidthChange={this.widthChange}
 							isDraggable={editable}
 							isResizable={editable}
-							isDroppable={false}
 							margin={[0, 0]}
 							containerPadding={[0, 0]}
 							autoSize={true}
 							draggableHandle={'.dragHandle'}
 							draggableCancel={'.modal'}
-							verticalCompact={verticalCompact}
+							compactType={null}
 							preventCollision={preventCollision}
+							isDroppable={false}
 						>
 							{this.renderBlocks()}
 						</ResponsiveGridLayout>

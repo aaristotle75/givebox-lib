@@ -416,7 +416,6 @@ class GBX3 extends React.Component {
 			</div>
 		)
 	}
-
 }
 
 GBX3.defaultProps = {

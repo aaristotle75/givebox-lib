@@ -94,17 +94,17 @@ const media = {
 	}
 };
 
-const content = {
-	name: 'content',
-	title: 'Content',
+const description = {
+	name: 'description',
+	title: 'Description',
 	type: 'Text',
 	subType: 'content',
 	field: 'summary',
 	overflow: 'visible',
 	options: {},
 	grid: {
-		desktop: { i: 'content', x: 0, y: 24, w: 12, h: 10, enabled: true },
-		mobile: { i: 'content', x: 0, y: 109, w: 6, h: 10, enabled: true }
+		desktop: { i: 'description', x: 6, y: 24, w: 6, h: 10, enabled: true },
+		mobile: { i: 'description', x: 0, y: 48, w: 6, h: 10, enabled: true }
 	}
 };
 
@@ -147,8 +147,8 @@ const textBlock = {
 		defaultFormat: '<span>Enter Text</span>'
 	},
 	grid: {
-		desktop: { i: 'textBlock', x: 1, y: 0, w: 5, h: 2, enabled: true },
-		mobile: { i: 'textBlock', x: 1, y: 0, w: 5, h: 2, enabled: true }
+		desktop: { i: 'textBlock', x: 1, y: 0, w: 6, h: 2, enabled: true },
+		mobile: { i: 'textBlock', x: 1, y: 0, w: 6, h: 2, enabled: true }
 	}
 };
 
@@ -156,14 +156,14 @@ const contentBlock = {
 	name: 'contentBlock',
 	title: 'Content',
 	type: 'Text',
-	multiple: true,
 	subType: 'content',
+	multiple: true,
 	overflow: 'visible',
 	options: {
 		defaultFormat: '<span>Enter Content</span>'
 	},
 	grid: {
-		desktop: { i: 'contentBlock', x: 0, y: 24, w: 12, h: 10, enabled: true },
+		desktop: { i: 'contentBlock', x: 0, y: 24, w: 6, h: 10, enabled: true },
 		mobile: { i: 'contentBlock', x: 0, y: 109, w: 6, h: 10, enabled: true }
 	}
 };
@@ -196,7 +196,7 @@ const blockTemplates = {
 	orgName,
 	amounts,
 	media,
-	content,
+	description,
 	paymentForm,
 	textBlock,
 	contentBlock,

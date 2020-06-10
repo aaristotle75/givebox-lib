@@ -96,7 +96,7 @@ import {
 	resetCart,
 	resetConfirmation,
 	processTransaction
-} from './api/gbx3actions';
+} from './gbx3/redux/gbx3actions';
 
 import { app, resource, send, modal, preferences, custom } from './api/reducers';
 

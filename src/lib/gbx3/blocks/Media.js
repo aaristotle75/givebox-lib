@@ -192,7 +192,8 @@ export default class Media extends Component {
 			articleID,
 			modalID,
 			maxRadius,
-			minRadius
+			minRadius,
+			block
 		} = this.props;
 
 		const {
@@ -209,6 +210,8 @@ export default class Media extends Component {
 			type: 'article',
 			borderRadius: 0
 		}
+
+		const nonremovable = util.getValue(block, 'nonremovable', false);
 
 		return (
 			<div className='mediaBlock'>
@@ -335,6 +338,7 @@ export default class Media extends Component {
 								</Tab> : <></> }
 							</Tabs>
 							<div style={{ margin: 0 }} className='button-group center'>
+								{!nonremovable ? <GBLink className='link remove' onClick={this.props.onClickRemove}><span className='icon icon-trash-2'></span> Remove</GBLink> : <></>}
 								<GBLink className='link' onClick={() => this.closeEditModal('cancel')}>Cancel</GBLink>
 								<GBLink className='button' onClick={() => this.closeEditModal('save')}>Save</GBLink>
 							</div>

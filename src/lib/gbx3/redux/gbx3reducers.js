@@ -58,7 +58,7 @@ export function gbx3(state = {
 		hasAccessToEdit: false,
 		editable: true,
 		preventCollision: true,
-		verticalCompact: true,
+		verticalCompact: false,
 		outline: false,
 		availableBlocks: [
 			'textBlock',
