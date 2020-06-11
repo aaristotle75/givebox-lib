@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Layout from './Layout';
-import Admin from './Admin';
-import Shop from './shop/Shop';
+import Shop from './Shop';
+import Admin from './admin/Admin';
+import CreateNew from './admin/CreateNew';
 import {
 	types,
 	util,
@@ -38,6 +39,7 @@ class GBX3 extends React.Component {
 	constructor(props) {
 		super(props);
 		this.setInfo = this.setInfo.bind(this);
+		this.loadCreateNew = this.loadCreateNew.bind(this);
 		this.loadGBX3 = this.loadGBX3.bind(this);
 		this.reloadGBX3 = this.reloadGBX3.bind(this);
 		this.setLoading = this.setLoading.bind(this);
@@ -58,11 +60,15 @@ class GBX3 extends React.Component {
 		const setInfo = await this.setInfo();
 
 		if (setInfo) {
-			this.loadGBX3({
-				articleID,
-				editable,
-				display: 'layout'
-			});
+			if (articleID) {
+				this.loadGBX3({
+					articleID,
+					editable,
+					display: 'layout'
+				});
+			} else {
+				this.loadCreateNew();
+			}
 		}
 		window.addEventListener('scroll',() => {
 			window.scrollTop = Math.max(1, Math.min(window.scrollTop,
@@ -91,6 +97,20 @@ class GBX3 extends React.Component {
 				});
 			}
 		}
+	}
+
+	loadCreateNew() {
+		const {
+			access,
+			kind
+		} = this.props;
+
+		const orgID = util.getValue(access, 'orgID');
+		this.props.updateAdmin({
+			hasAccessToEdit: util.getAuthorizedAccess(access, orgID)
+		});
+		this.props.updateInfo({ kind, display: 'createNew' });
+		this.setLoading(false);
 	}
 
 	setLoading(loading) {
@@ -219,6 +239,9 @@ class GBX3 extends React.Component {
 									const primaryColor = util.getValue(settings, 'primaryColor', this.props.defaultPrimaryColor);
 									const customTemplate = util.getValue(settings, 'customTemplate', {});
 									const passFees = util.getValue(res, 'passFees');
+									const amountsObj = util.getValue(res, types.kind(kind).amountField, {});
+									const amountsList = util.getValue(amountsObj, 'list', []);
+									console.log('execute amountsList', amountsList, amountsList.length);
 
 									this.props.updateCart({ passFees });
 									this.props.updateInfo({
@@ -383,6 +406,14 @@ class GBX3 extends React.Component {
 				)
 			}
 
+			case 'createNew': {
+				return (
+					<CreateNew
+
+					/>
+				)
+			}
+
 			case 'layout':
 			default: {
 				return (
@@ -420,7 +451,8 @@ class GBX3 extends React.Component {
 
 GBX3.defaultProps = {
 	defaultPrimaryColor: '#4775f8',
-	editable: true
+	editable: true,
+	kind: 'fundraiser'
 }
 
 function mapStateToProps(state, props) {

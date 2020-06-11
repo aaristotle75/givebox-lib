@@ -67,8 +67,8 @@ const amounts = {
 		}
 	},
 	grid: {
-		desktop: { i: 'amounts', x: 0, y: 2, w: 6, h: 42, enabled: true },
-		mobile: { i: 'amounts', x: 0, y: 28, w: 6, h: 42, enabled: true }
+		desktop: { i: 'amounts', x: 0, y: 2, w: 6, h: 17, enabled: true },
+		mobile: { i: 'amounts', x: 0, y: 28, w: 6, h: 17, enabled: true }
 	}
 };
 

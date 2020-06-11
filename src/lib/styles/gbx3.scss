@@ -1130,6 +1130,7 @@ $breakpoint: 768px;
 
 }
 
+/*---------- SHOP --------*/
 .gbx3Shop {
 	align-items: center;
 
@@ -1213,5 +1214,41 @@ $breakpoint: 768px;
 			opacity: .8;
 		}
 	}
+}
+/*------ END SHOP ------*/
+
+
+/*--------- CREATE NEW -------*/
+.gbx3CreateNew {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	.intro {
+		text-align: center;
+		margin: 40px 0;
+	}
+
+	h2 {
+		margin: 20px 0;
+	}
+
+	.button-group {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin: 20px 0;
+	}
+
+	button.button {
+		margin: 0 !important;
+	}
+
+	button.smallText {
+		margin-top: 20px;
+	}
 
 }
+
+
+/*-------- END CREATE NEW -----*/

@@ -9,7 +9,7 @@ import {
 	Loader,
 	Image,
 	types
-} from '../../';
+} from '../';
 import AnimateHeight from 'react-animate-height';
 
 class Shop extends Component {
