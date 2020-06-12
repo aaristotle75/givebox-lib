@@ -5,7 +5,9 @@ import {
 	types,
 	Dropdown,
 	GBLink,
-	Image
+	Image,
+	createFundraiser,
+	updateInfo
 } from '../../';
 
 class CreateNew extends React.Component {
@@ -19,7 +21,7 @@ class CreateNew extends React.Component {
 	}
 
 	onChangeKind(name, value) {
-		console.log('execute onChangeKind', name, value);
+		this.props.updateInfo({ kind: value });
 	}
 
 	kindOptions() {
@@ -51,9 +53,10 @@ class CreateNew extends React.Component {
 		return (
 			<div style={util.getValue(globals, 'gbxStyle', {})}  className='gbx3Container gbx3CreateNew modalWrapper'>
 				<div className='intro'>
-					Start raising money with two easy steps<br />Create & Share!
+					<h2 style={{ marginBottom: 10 }}>Create & Share!</h2>
+					Start raising money with two easy steps.
 				</div>
-				<Image url='https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/raise-fundraiser-lg.png' maxSize={200} />
+				<Image url={`https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/raise-${kind}-lg.png`} maxSize={200} alt={types.kind(kind).namePlural} />
 				<div style={{ marginTop: 20 }} className='step'>
 					<h2><span style={{ fontWeight: 300 }}>Step 1:</span> Create</h2>
 					What kind of fundraiser do you want to start?
@@ -61,12 +64,12 @@ class CreateNew extends React.Component {
 						className='dropdown-button'
 						style={{width: '210px' }}
 						name='kind'
-						defaultValue={kind}
+						value={kind}
 						onChange={this.onChangeKind}
 						options={this.kindOptions()}
 					/>
 					<div className='button-group'>
-						<GBLink className='button' onClick={() => console.log(``)}>Create {types.kind(kind).name}</GBLink>
+						<GBLink className='button' onClick={this.props.createFundraiser}>Create {types.kind(kind).name}</GBLink>
 						<GBLink className='link smallText' onClick={() => console.log('Do this later')}>Do This Later</GBLink>
 					</div>
 				</div>
@@ -95,4 +98,6 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
+	createFundraiser,
+	updateInfo
 })(CreateNew);

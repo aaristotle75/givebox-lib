@@ -26,6 +26,7 @@ const defaultConfirmation = {
 }
 
 export function gbx3(state = {
+	loading: false,
 	saveStatus: 'done',
 	info: {
 		display: 'layout',
@@ -56,7 +57,7 @@ export function gbx3(state = {
 	admin: {
 		open: true,
 		hasAccessToEdit: false,
-		editable: true,
+		editable: false,
 		preventCollision: true,
 		verticalCompact: false,
 		outline: false,
@@ -76,6 +77,10 @@ export function gbx3(state = {
 		case types.UPDATE_GBX3:
 			return Object.assign({}, state, {
 				[action.name]: action.value
+			});
+		case types.SET_LOADING:
+			return Object.assign({}, state, {
+				loading: action.loading
 			});
 		case types.CLEAR_GBX3:
 			return Object.assign({}, state, {

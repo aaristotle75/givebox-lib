@@ -73,6 +73,8 @@ import {
 } from './api/actions';
 
 import {
+	loadGBX3,
+	createFundraiser,
 	updateGBX3,
 	clearGBX3,
 	updateInfo,
@@ -95,6 +97,7 @@ import {
 	resetGBX3,
 	resetCart,
 	resetConfirmation,
+	setLoading,
 	processTransaction
 } from './gbx3/redux/gbx3actions';
 
@@ -155,6 +158,8 @@ export {
 	sendResponse,
 
 // gbx3 actions
+	loadGBX3,
+	createFundraiser,
 	updateGBX3,
 	clearGBX3,
 	updateInfo,
@@ -176,6 +181,7 @@ export {
 	saveGBX3,
 	resetGBX3,
 	resetCart,
+	setLoading,
 	resetConfirmation,
 	processTransaction,
 

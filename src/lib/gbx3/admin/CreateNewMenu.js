@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import {
 	util,
 	GBLink,
-	types
+	types,
+	updateInfo
 } from '../../';
 
 class CreateNewMenu extends React.Component {
@@ -21,7 +22,7 @@ class CreateNewMenu extends React.Component {
 			items.push(
 				<GBLink
 					key={value}
-					onClick={() => console.log('onClick createNew', value)}
+					onClick={() => this.props.updateInfo({ kind: value })}
 				>
 					{types.kind(value).name}
 				</GBLink>
@@ -39,7 +40,7 @@ class CreateNewMenu extends React.Component {
 
 		return (
 			<div className='createNewMenu'>
-				<div className='adminSectionTitle'>Create New</div>
+				<div className='adminSectionTitle'>Step 1: Create</div>
 				{this.renderTypes()}
 			</div>
 		)
@@ -55,4 +56,5 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
+	updateInfo
 })(CreateNewMenu);

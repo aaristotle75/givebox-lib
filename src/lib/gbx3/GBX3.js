@@ -5,25 +5,19 @@ import Shop from './Shop';
 import Admin from './admin/Admin';
 import CreateNew from './admin/CreateNew';
 import {
+	loadGBX3,
 	types,
 	util,
 	Loader,
 	getResource,
 	sendResource,
 	setCustomProp,
+	setLoading,
 	clearGBX3,
 	updateInfo,
-	updateLayouts,
-	updateBlocks,
-	updateDefaults,
-	updateGlobals,
-	updateData,
-	updateCart,
-	updateFees,
 	updateAdmin,
 	ModalRoute
 } from '../';
-import { defaultBlocks } from './config';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import '../styles/gbx3.scss';
@@ -42,30 +36,24 @@ class GBX3 extends React.Component {
 		this.loadCreateNew = this.loadCreateNew.bind(this);
 		this.loadGBX3 = this.loadGBX3.bind(this);
 		this.reloadGBX3 = this.reloadGBX3.bind(this);
-		this.setLoading = this.setLoading.bind(this);
 		this.setStyle = this.setStyle.bind(this);
 		this.setTracking = this.setTracking.bind(this);
 		this.setRecaptcha = this.setRecaptcha.bind(this);
 		this.state = {
-			loading: true
 		};
 	}
 
 	async componentDidMount() {
 		const {
-			articleID,
-			editable
+			articleID
 		} = this.props;
 
+		this.props.setLoading(true);
 		const setInfo = await this.setInfo();
 
 		if (setInfo) {
 			if (articleID) {
-				this.loadGBX3({
-					articleID,
-					editable,
-					display: 'layout'
-				});
+				this.loadGBX3(articleID);
 			} else {
 				this.loadCreateNew();
 			}
@@ -79,8 +67,7 @@ class GBX3 extends React.Component {
 
 	async componentDidUpdate(prevProps) {
 		const {
-			articleID,
-			editable
+			articleID
 		} = this.props;
 
 		if (prevProps.primaryColor !== this.props.primaryColor) {
@@ -91,10 +78,7 @@ class GBX3 extends React.Component {
 		if (articleIDChanged) {
 			const setInfo = await this.setInfo();
 			if (setInfo) {
-				this.loadGBX3({
-					articleID,
-					editable
-				});
+				this.loadGBX3(articleID);
 			}
 		}
 	}
@@ -109,12 +93,8 @@ class GBX3 extends React.Component {
 		this.props.updateAdmin({
 			hasAccessToEdit: util.getAuthorizedAccess(access, orgID)
 		});
-		this.props.updateInfo({ kind, display: 'createNew' });
-		this.setLoading(false);
-	}
-
-	setLoading(loading) {
-		this.setState({ loading });
+		this.props.updateInfo({ kind, orgID, display: 'createNew' });
+		this.props.setLoading(false);
 	}
 
 	async setInfo() {
@@ -186,147 +166,18 @@ class GBX3 extends React.Component {
 	}
 
 	async reloadGBX3(articleID) {
-		const {
-			editable
-		} = this.props;
-		this.setLoading(true);
+		this.props.setLoading(true);
 		const gbx3Cleared = await this.props.clearGBX3();
-		if (gbx3Cleared) this.loadGBX3({ articleID, editable });
+		if (gbx3Cleared) this.loadGBX3(articleID);
 	}
 
-	async loadGBX3({
-		articleID,
-		editable,
-		display
-	}) {
+	loadGBX3(articleID) {
 
-		const {
-			access,
-			availableBlocks
-		} = this.props;
-
-		this.setLoading(true);
-
-		this.props.getResource('article', {
-			id: [articleID],
-			reload: true,
-			callback: (res, err) => {
-				if (!util.isEmpty(res) && !err) {
-					const kind = util.getValue(res, 'kind');
-					const kindID = util.getValue(res, 'kindID');
-					const orgID = util.getValue(res, 'orgID');
-					const orgName = util.getValue(res, 'orgName');
-
-					if (kindID) {
-						const apiName = `org${types.kind(kind).api.item}`;
-
-						this.props.getResource('articleFeeSettings', {
-							id: [articleID],
-							reload: true,
-							callback: (res, err) => {
-								if (!err && !util.isEmpty(res)) {
-									this.props.updateFees(res);
-								}
-							}
-						});
-
-						this.props.getResource(apiName, {
-							id: [kindID],
-							orgID: orgID,
-							callback: (res, err) => {
-								if (!err && !util.isEmpty(res)) {
-									const settings = util.getValue(res, 'giveboxSettings', {});
-									const primaryColor = util.getValue(settings, 'primaryColor', this.props.defaultPrimaryColor);
-									const customTemplate = util.getValue(settings, 'customTemplate', {});
-									const passFees = util.getValue(res, 'passFees');
-									const amountsObj = util.getValue(res, types.kind(kind).amountField, {});
-									const amountsList = util.getValue(amountsObj, 'list', []);
-									console.log('execute amountsList', amountsList, amountsList.length);
-
-									this.props.updateCart({ passFees });
-									this.props.updateInfo({
-										orgID,
-										orgName,
-										articleID,
-										kindID,
-										kind,
-										apiName,
-										display: display || 'layout'
-									});
-
-									const blocksDefault = util.getValue(defaultBlocks, kind, {});
-									const blocksCustom = util.getValue(customTemplate, 'blocks', {});
-
-									const blocks = !util.isEmpty(blocksCustom) ? blocksCustom : blocksDefault;
-
-									const globals = {
-										...this.props.globals,
-										...{
-											gbxStyle: {
-												...this.props.globals.gbxStyle,
-												primaryColor
-											},
-											button: {
-												...this.props.globals.button,
-												style: {
-													...util.getValue(this.props.globals.button, 'style', {}),
-													bgColor: primaryColor
-												}
-											}
-										},
-										...util.getValue(customTemplate, 'globals', {})
-									};
-
-									const layouts = {
-										desktop: [],
-										mobile: []
-									};
-
-									Object.entries(blocks).forEach(([key, value]) => {
-										if (!util.isEmpty(value.grid)) {
-											layouts.desktop.push(value.grid.desktop);
-											layouts.mobile.push(value.grid.mobile);
-										}
-									});
-
-									if (!util.isEmpty(blocksCustom)) {
-
-										// Check if not all default blocks are present
-										// If not, add them to the availableBlocks array
-										// which are blocks available but not used
-										Object.keys(blocksDefault).forEach((key) => {
-											if (!(key in blocks)) availableBlocks.push(key);
-										})
-									}
-
-									this.props.updateLayouts(layouts);
-									this.props.updateBlocks(blocks);
-									this.props.updateGlobals(globals);
-									this.props.updateData(res);
-									this.props.updateAdmin({
-										availableBlocks,
-										editable,
-										hasAccessToEdit: util.getAuthorizedAccess(access, orgID)
-									});
-									this.props.updateDefaults({
-										layouts,
-										blocks,
-										data: res
-									});
-
-									this.setStyle();
-									this.setRecaptcha();
-									this.setTracking();
-								}
-								this.setLoading(false);
-							}
-						});
-					} else {
-						this.setLoading(false);
-					}
-				} else {
-					this.setLoading(false);
-				}
+		this.props.loadGBX3(articleID, (res, err) => {
+			if (!err && !util.isEmpty(res)) {
+				this.setStyle();
+				this.setRecaptcha();
+				this.setTracking();
 			}
 		});
 	}
@@ -428,7 +279,7 @@ class GBX3 extends React.Component {
 
 	render() {
 
-		if (this.state.loading) return <Loader msg='Initiating GBX3' />;
+		if (this.props.loading) return <Loader msg='Initiating GBX3' />;
 
 		return (
 			<div id='gbx3' className='gbx3 gbx3Layout'>
@@ -450,44 +301,35 @@ class GBX3 extends React.Component {
 }
 
 GBX3.defaultProps = {
-	defaultPrimaryColor: '#4775f8',
-	editable: true,
 	kind: 'fundraiser'
 }
 
 function mapStateToProps(state, props) {
 
 	const gbx3 = util.getValue(state, 'gbx3', {});
+	const loading = util.getValue(gbx3, 'loading');
 	const globals = util.getValue(gbx3, 'globals', {});
 	const info = util.getValue(gbx3, 'info', {});
-	const admin = util.getValue(gbx3, 'admin', {});
-	const availableBlocks = util.getValue(admin, 'availableBlocks', []);
 	const sourceLocation = util.getValue(info, 'sourceLocation');
 	const gbxStyle = util.getValue(globals, 'gbxStyle', {});
 	const primaryColor = util.getValue(gbxStyle, 'primaryColor');
 
 	return {
+		loading,
 		info,
-		globals,
 		primaryColor,
 		sourceLocation,
-		availableBlocks,
 		access: util.getValue(state.resource, 'access', {})
 	}
 }
 
 export default connect(mapStateToProps, {
+	loadGBX3,
 	getResource,
 	sendResource,
 	setCustomProp,
+	setLoading,
 	clearGBX3,
 	updateInfo,
-	updateLayouts,
-	updateBlocks,
-	updateDefaults,
-	updateGlobals,
-	updateData,
-	updateCart,
-	updateFees,
 	updateAdmin
 })(GBX3);

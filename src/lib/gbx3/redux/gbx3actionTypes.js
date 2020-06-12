@@ -1,4 +1,5 @@
 export const UPDATE_GBX3 = 'UPDATE_GBX3';
+export const SET_LOADING = 'SET_LOADING';
 export const CLEAR_GBX3 = 'CLEAR_GBX3';
 export const UPDATE_INFO = 'UPDATE_INFO';
 export const UPDATE_LAYOUTS = 'UPDATE_LAYOUTS';

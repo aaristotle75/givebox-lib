@@ -73,8 +73,8 @@ function mapStateToProps(state, props) {
 
 	const custom = util.getValue(state, 'custom', {});
 	const primaryColor = props.customColor || util.getValue(custom, 'primaryColor');
-
 	const rgb = primaryColor ? util.hexToRgb(primaryColor) : '';
+
 	let rgbColor = null;
 	if (rgb) {
 		rgbColor = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .7)`;
@@ -82,15 +82,14 @@ function mapStateToProps(state, props) {
 
 	const className = props.className || '';
 	const hoverStyle = rgb && props.allowCustom ? { color: rgbColor } : props.hoverStyle || {};
-
 	const customStyle = {};
+
 	if (props.allowCustom && primaryColor) {
 		customStyle.color = props.solidColor ? '#ffffff' : primaryColor;
 		customStyle.backgroundColor = props.solidColor ? primaryColor : null;
 	}
 
 	const style = { ...customStyle, ...props.style };
-
 
 	if (className.includes('button') && props.allowCustom ) {
 		hoverStyle.backgroundColor = rgbColor;

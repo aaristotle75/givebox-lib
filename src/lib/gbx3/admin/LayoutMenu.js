@@ -5,8 +5,11 @@ import {
 	util,
 	ModalLink,
 	ModalRoute,
+	updateAdmin,
 	updateGlobals,
-	saveGBX3
+	resetGBX3,
+	saveGBX3,
+	toggleModal
 } from '../../';
 import GlobalsEdit from '../blocks/GlobalsEdit';
 import AnimateHeight from 'react-animate-height';
@@ -182,6 +185,9 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
+	updateAdmin,
 	updateGlobals,
-	saveGBX3
+	resetGBX3,
+	saveGBX3,
+	toggleModal
 })(LayoutMenu);

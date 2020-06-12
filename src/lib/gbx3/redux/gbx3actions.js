@@ -1,15 +1,26 @@
 import * as types from './gbx3actionTypes';
 import {
 	util,
+	types as types2,
+	getResource,
 	sendResource
 } from '../../';
 import blockTemplates from '../blocks/blockTemplates';
+import { defaultBlocks } from '../config';
+import { kindData } from './kindDataTemplates';
 
 export function updateGBX3(name, value) {
 	return {
 		type: types.UPDATE_GBX3,
 		name,
 		value
+	}
+}
+
+export function setLoading(loading) {
+	return {
+		type: types.SET_LOADING,
+		loading
 	}
 }
 
@@ -366,5 +377,160 @@ export function processTransaction(data, callback) {
 				}));
 			})
 		});
+	}
+}
+
+export function createFundraiser(callback) {
+
+	return (dispatch, getState) => {
+		const gbx3 = util.getValue(getState(), 'gbx3', {});
+		const info = util.getValue(gbx3, 'info', {});
+		const kind = util.getValue(info, 'kind', 'fundraiser');
+		const orgID = util.getValue(info, 'orgID');
+		const resourceName = `org${types2.kind(kind).api.list}`;
+		const data = kindData[kind];
+		dispatch(sendResource(resourceName, {
+			orgID,
+			data,
+			callback: (res, err) => {
+				if (!err && !util.isEmpty(res)) {
+
+				}
+				if (callback) callback(res, err);
+			}
+		}));
+	}
+}
+
+export function loadGBX3(articleID, callback) {
+
+	return async (dispatch, getState) => {
+
+		dispatch(setLoading(true));
+		const gbx3 = util.getValue(getState(), 'gbx3', {});
+		const resource = util.getValue(getState(), 'resource', {});
+		const access = util.getValue(resource, 'access', {});
+		const globalsState = util.getValue(gbx3, 'globals', {});
+		const admin = util.getValue(gbx3, 'admin', {});
+		const availableBlocks = util.getValue(admin, 'availableBlocks', {});
+
+		dispatch(getResource('article', {
+			id: [articleID],
+			reload: true,
+			callback: (res, err) => {
+				if (!util.isEmpty(res) && !err) {
+					const kind = util.getValue(res, 'kind');
+					const kindID = util.getValue(res, 'kindID');
+					const orgID = util.getValue(res, 'orgID');
+					const orgName = util.getValue(res, 'orgName');
+
+					if (kindID) {
+						const apiName = `org${types2.kind(kind).api.item}`;
+
+						dispatch(getResource('articleFeeSettings', {
+							id: [articleID],
+							reload: true,
+							callback: (res, err) => {
+								if (!err && !util.isEmpty(res)) {
+									dispatch(updateFees(res));
+								}
+							}
+						}));
+
+						dispatch(getResource(apiName, {
+							id: [kindID],
+							orgID: orgID,
+							callback: (res, err) => {
+								if (!err && !util.isEmpty(res)) {
+									const settings = util.getValue(res, 'giveboxSettings', {});
+									const primaryColor = util.getValue(settings, 'primaryColor', '#4775f8');
+									const customTemplate = util.getValue(settings, 'customTemplate', {});
+									const passFees = util.getValue(res, 'passFees');
+									const amountsObj = util.getValue(res, types2.kind(kind).amountField, {});
+									const amountsList = util.getValue(amountsObj, 'list', []);
+									//console.log('execute amountsList', amountsList, amountsList.length);
+
+									dispatch(updateCart({ passFees }));
+									dispatch(updateInfo({
+										orgID,
+										orgName,
+										articleID,
+										kindID,
+										kind,
+										apiName,
+										display: 'layout'
+									}));
+
+									const blocksDefault = util.getValue(defaultBlocks, kind, {});
+									const blocksCustom = util.getValue(customTemplate, 'blocks', {});
+
+									const blocks = !util.isEmpty(blocksCustom) ? blocksCustom : blocksDefault;
+
+									const globals = {
+										...globalsState,
+										...{
+											gbxStyle: {
+												...util.getValue(globalsState, 'gbxStyle', {}),
+												primaryColor
+											},
+											button: {
+												...util.getValue(globalsState, 'button', {}),
+												style: {
+													...util.getValue(util.getValue(globalsState, 'button', {}), 'style', {}),
+													bgColor: primaryColor
+												}
+											}
+										},
+										...util.getValue(customTemplate, 'globals', {})
+									};
+
+									const layouts = {
+										desktop: [],
+										mobile: []
+									};
+
+									Object.entries(blocks).forEach(([key, value]) => {
+										if (!util.isEmpty(value.grid)) {
+											layouts.desktop.push(value.grid.desktop);
+											layouts.mobile.push(value.grid.mobile);
+										}
+									});
+
+									if (!util.isEmpty(blocksCustom)) {
+
+										// Check if not all default blocks are present
+										// If not, add them to the availableBlocks array
+										// which are blocks available but not used
+										Object.keys(blocksDefault).forEach((key) => {
+											if (!(key in blocks)) availableBlocks.push(key);
+										})
+									}
+
+									dispatch(updateLayouts(layouts));
+									dispatch(updateBlocks(blocks));
+									dispatch(updateGlobals(globals));
+									dispatch(updateData(res));
+									dispatch(updateAdmin({
+										availableBlocks,
+										hasAccessToEdit: util.getAuthorizedAccess(access, orgID)
+									}));
+									dispatch(updateDefaults({
+										layouts,
+										blocks,
+										data: res
+									}));
+									callback(res, err)
+								}
+								dispatch(setLoading(false));
+							}
+						}));
+					} else {
+						dispatch(setLoading(false));
+					}
+				} else {
+					dispatch(setLoading(false));
+				}
+			}
+		}));
 	}
 }

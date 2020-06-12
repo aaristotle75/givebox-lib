@@ -34,7 +34,7 @@ class GBXTest extends Component {
 
 	render() {
 
-		const articleID = null; //383061;
+		const articleID = 383061;
 
 		return (
 			<div>

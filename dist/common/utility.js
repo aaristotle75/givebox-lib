@@ -183,15 +183,20 @@ export function objectLength(object) {
 export function hexToRgb(hex) {
   // Expand shorthand form (e.g. '03F') to full form (e.g. '0033FF')
   const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-  hex = hex.replace(shorthandRegex, function (m, r, g, b) {
-    return r + r + g + g + b + b;
-  });
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result ? {
-    r: parseInt(result[1], 16),
-    g: parseInt(result[2], 16),
-    b: parseInt(result[3], 16)
-  } : null;
+
+  if (!hex) {
+    hex = hex.replace(shorthandRegex, function (m, r, g, b) {
+      return r + r + g + g + b + b;
+    });
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : null;
+  } else {
+    return {};
+  }
 }
 export function removeFromArr(array, element) {
   const arr = array;
@@ -272,6 +277,11 @@ export function getCookie(cname) {
   }
 
   return '';
+}
+export function uniqueHash(length = 10) {
+  const hash = makeHash(length);
+  const now = Date.now();
+  return hash + now;
 }
 export function makeHash(length) {
   let text = '';
@@ -489,7 +499,7 @@ export function deepClone(obj) {
 }
 export function makeAPIQuery(obj) {
   let sort,
-      order,
+      order = '',
       str = '?s=cloud';
 
   if (obj.queryOnly) {
@@ -497,8 +507,13 @@ export function makeAPIQuery(obj) {
   }
 
   if (obj.sort && obj.order) {
-    if (obj.order === 'desc') order = '-';else order = '';
+    if (obj.order === 'desc' && obj.sort.substring(0, 2) !== '-') order = '-';else if (obj.sort.substring(0, 2) !== '-') order = '';
     sort = order + obj.sort;
+    /*
+    if (sort.substring(0, 2) === '--') {
+    	sort = sort.substr(1);
+    }
+    */
   }
 
   if (obj.max) str = str + '&max=' + obj.max;
