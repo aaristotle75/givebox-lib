@@ -383,6 +383,7 @@ export function processTransaction(data, callback) {
 export function createFundraiser(callback) {
 
 	return (dispatch, getState) => {
+		dispatch(setLoading(true));
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
 		const info = util.getValue(gbx3, 'info', {});
 		const kind = util.getValue(info, 'kind', 'fundraiser');
@@ -394,9 +395,14 @@ export function createFundraiser(callback) {
 			data,
 			callback: (res, err) => {
 				if (!err && !util.isEmpty(res)) {
-
+					dispatch(loadGBX3(res.articleID, () => {
+						dispatch(updateInfo({ display: 'layout' }));
+						dispatch(updateAdmin({ editable: true }));
+						if (callback) callback(res, err);
+					}));
+				} else {
+					if (callback) callback(res, err);
 				}
-				if (callback) callback(res, err);
 			}
 		}));
 	}
@@ -532,5 +538,66 @@ export function loadGBX3(articleID, callback) {
 				}
 			}
 		}));
+	}
+}
+
+export function setStyle(color) {
+
+	return (dispatch, getState) => {
+		/*
+		.gbx3Layout {
+			background: #ffffff;
+			background: -webkit-linear-gradient(to bottom, ${color2} 0%, #ffffff 100%);
+			background: -moz-linear-gradient(to bottom, ${color2} 0%, #ffffff 100%);
+			background: linear-gradient(to bottom, ${color2} 0%, #ffffff 100%);
+		}
+		*/
+
+		if (color) {
+			const rgb = util.hexToRgb(color);
+			//const color2 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .1)`;
+			const color3 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .05)`;
+			const color4 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .4)`;
+			const styleEl = document.head.appendChild(document.createElement('style'));
+			styleEl.innerHTML = `
+
+				.radio:checked + label:after {
+					border: 1px solid ${color} !important;
+					background: ${color};
+				}
+
+				.dropdown .dropdown-content.customColor::-webkit-scrollbar-thumb {
+					background-color: ${color};
+				}
+
+				.amountsSection::-webkit-scrollbar-thumb {
+					background-color: ${color4};
+				}
+
+				.modalContent.gbx3 .ticketAmountRow,
+				.modalContent.gbx3 .amountRow {
+					border-left: 4px solid ${color} !important;
+				}
+
+				.modalContent.gbx3 .amountRow:hover {
+					background: ${color3};
+				}
+
+				.gbx3 button.modalToTop:hover {
+					background: ${color};
+				}
+
+				.modal .givebox-paymentform button.modalCloseBtn:hover .icon {
+					color: ${color};
+				}
+
+				.gbx3Cart .paymentFormHeaderTitle {
+					background: ${color};
+					background: -webkit-linear-gradient(to bottom, ${color} 30%, ${color4} 100%);
+					background: -moz-linear-gradient(to bottom, ${color} 30%, ${color4} 100%);
+					background: linear-gradient(to bottom, ${color} 30%, ${color4} 100%);
+				}
+			`;
+		}
 	}
 }

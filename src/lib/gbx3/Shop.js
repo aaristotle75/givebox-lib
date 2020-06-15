@@ -88,7 +88,7 @@ class Shop extends Component {
 									<Image url={util.imageUrlWithStyle(value.imageURL, 'medium')} maxSize={200} />
 								</div>
 								<div className='articleText'>
-									<span>{value.title}{value.title}</span>
+									<span>{value.title}</span>
 								</div>
 							</div>
 						);

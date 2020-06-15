@@ -77,6 +77,11 @@ export default class Media extends Component {
 	}
 
 	closeModalAndSave() {
+
+		const {
+			block
+		} = this.props;
+
 		const {
 			image,
 			video,
@@ -86,9 +91,29 @@ export default class Media extends Component {
 		if (mediaType === 'video' && !video.validatedURL) {
 			this.closeModalAndCancel();
 		} else {
+			const data = {};
+			const imageURL = util.getValue(image, 'URL');
+			const videoURL = util.getValue(video, 'validatedURL');
+			switch (util.getValue(block, 'updateField')) {
+				case 'once': {
+					if (imageURL && !util.checkImage(imageURL)) {
+						data.imageURL =  imageURL.replace(/medium$/i, 'original');
+					}
+					break;
+				}
+
+				case 'multi': {
+					if (imageURL) data.imageURL = imageURL.replace(/medium$/i, 'original');
+					if (videoURL) data.videoURL = videoURL;
+					break;
+				}
+
+				// no default
+			}
 			this.timeout = setTimeout(() => {
 				this.setState({ loading: false, edit: false }, () => {
 					this.props.saveBlock({
+						data,
 						content: {
 							image,
 							video

@@ -53,7 +53,7 @@ import * as util from './common/utility';
 import Video from './common/Video';
 import FeesGlossary from './glossary/Fees';
 import { toggleModal, removeResource, resourceProp, getAPI, sendAPI, setAppRef, setModalRef, setProp, setPrefs, setCustomProp, sendResponse } from './api/actions';
-import { updateGBX3, clearGBX3, updateInfo, updateLayouts, updateBlocks, updateBlock, addBlock, removeBlock, updateDefaults, updateDefault, updateGlobals, updateGlobal, updateData, updateFees, updateAdmin, updateCart, updateCartItem, updateConfirmation, saveGBX3, resetGBX3, resetCart, resetConfirmation, processTransaction } from './gbx3/redux/gbx3actions';
+import { loadGBX3, createFundraiser, updateGBX3, clearGBX3, updateInfo, updateLayouts, updateBlocks, updateBlock, addBlock, removeBlock, updateDefaults, updateDefault, updateGlobals, updateGlobal, updateData, updateFees, updateAdmin, updateCart, updateCartItem, updateConfirmation, saveGBX3, resetGBX3, resetCart, resetConfirmation, setLoading, processTransaction } from './gbx3/redux/gbx3actions';
 import { app, resource, send, modal, preferences, custom } from './api/reducers';
 import { getResource, reloadResource, sendResource, savePrefs } from './api/helpers';
 import * as giveboxAPI from './api/givebox'; // Help Desk
@@ -69,7 +69,7 @@ import CKEditorUpload from './editor/CKEditorUpload';
 export { // Form
 Form, _v, selectOptions, Select, TextField, Dropdown, RichTextField, Choice, CalendarField, CalendarRange, Checkbox, ColorPicker, Upload, UploadLibrary, UploadPrivate, WhereField, MediaLibrary // actions
 , toggleModal, removeResource, resourceProp, getAPI, sendAPI, setAppRef, setModalRef, setProp, setPrefs, setCustomProp, sendResponse // gbx3 actions
-, updateGBX3, clearGBX3, updateInfo, updateLayouts, updateBlocks, removeBlock, addBlock, updateBlock, updateDefaults, updateDefault, updateGlobals, updateGlobal, updateData, updateFees, updateAdmin, updateCart, updateCartItem, updateConfirmation, saveGBX3, resetGBX3, resetCart, resetConfirmation, processTransaction // API
+, loadGBX3, createFundraiser, updateGBX3, clearGBX3, updateInfo, updateLayouts, updateBlocks, removeBlock, addBlock, updateBlock, updateDefaults, updateDefault, updateGlobals, updateGlobal, updateData, updateFees, updateAdmin, updateCart, updateCartItem, updateConfirmation, saveGBX3, resetGBX3, resetCart, setLoading, resetConfirmation, processTransaction // API
 , giveboxAPI, getResource, reloadResource, sendResource, savePrefs // reducers
 , app, resource, send, modal, preferences, custom // Modal
 , ModalLink, ModalRoute // Table

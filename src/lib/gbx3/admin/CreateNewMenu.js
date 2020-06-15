@@ -23,6 +23,7 @@ class CreateNewMenu extends React.Component {
 				<GBLink
 					key={value}
 					onClick={() => this.props.updateInfo({ kind: value })}
+					className='link show'
 				>
 					{types.kind(value).name}
 				</GBLink>

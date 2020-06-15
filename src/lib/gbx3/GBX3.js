@@ -6,6 +6,7 @@ import Admin from './admin/Admin';
 import CreateNew from './admin/CreateNew';
 import {
 	loadGBX3,
+	setStyle,
 	types,
 	util,
 	Loader,
@@ -36,7 +37,6 @@ class GBX3 extends React.Component {
 		this.loadCreateNew = this.loadCreateNew.bind(this);
 		this.loadGBX3 = this.loadGBX3.bind(this);
 		this.reloadGBX3 = this.reloadGBX3.bind(this);
-		this.setStyle = this.setStyle.bind(this);
 		this.setTracking = this.setTracking.bind(this);
 		this.setRecaptcha = this.setRecaptcha.bind(this);
 		this.state = {
@@ -71,7 +71,7 @@ class GBX3 extends React.Component {
 		} = this.props;
 
 		if (prevProps.primaryColor !== this.props.primaryColor) {
-			this.setStyle();
+			this.props.setStyle(this.props.primaryColor);
 		}
 
 		const articleIDChanged = prevProps.articleID !== this.props.articleID ? true : false;
@@ -175,71 +175,11 @@ class GBX3 extends React.Component {
 
 		this.props.loadGBX3(articleID, (res, err) => {
 			if (!err && !util.isEmpty(res)) {
-				this.setStyle();
+				this.props.setStyle(this.props.primaryColor);
 				this.setRecaptcha();
 				this.setTracking();
 			}
 		});
-	}
-
-	setStyle() {
-		const color = this.props.primaryColor;
-
-		/*
-		.gbx3Layout {
-			background: #ffffff;
-			background: -webkit-linear-gradient(to bottom, ${color2} 0%, #ffffff 100%);
-			background: -moz-linear-gradient(to bottom, ${color2} 0%, #ffffff 100%);
-			background: linear-gradient(to bottom, ${color2} 0%, #ffffff 100%);
-		}
-		*/
-
-		if (color) {
-			const rgb = util.hexToRgb(color);
-			//const color2 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .1)`;
-			const color3 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .05)`;
-			const color4 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .4)`;
-			const styleEl = document.head.appendChild(document.createElement('style'));
-			styleEl.innerHTML = `
-
-				.radio:checked + label:after {
-					border: 1px solid ${color} !important;
-					background: ${color};
-				}
-
-				.dropdown .dropdown-content.customColor::-webkit-scrollbar-thumb {
-					background-color: ${color};
-				}
-
-				.amountsSection::-webkit-scrollbar-thumb {
-					background-color: ${color4};
-				}
-
-				.modalContent.gbx3 .ticketAmountRow,
-				.modalContent.gbx3 .amountRow {
-					border-left: 4px solid ${color} !important;
-				}
-
-				.modalContent.gbx3 .amountRow:hover {
-					background: ${color3};
-				}
-
-				.gbx3 button.modalToTop:hover {
-					background: ${color};
-				}
-
-				.modal .givebox-paymentform button.modalCloseBtn:hover .icon {
-					color: ${color};
-				}
-
-				.gbx3Cart .paymentFormHeaderTitle {
-					background: ${color};
-					background: -webkit-linear-gradient(to bottom, ${color} 30%, ${color4} 100%);
-					background: -moz-linear-gradient(to bottom, ${color} 30%, ${color4} 100%);
-					background: linear-gradient(to bottom, ${color} 30%, ${color4} 100%);
-				}
-			`;
-		}
 	}
 
 	renderDisplay() {
@@ -325,6 +265,7 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
 	loadGBX3,
+	setStyle,
 	getResource,
 	sendResource,
 	setCustomProp,

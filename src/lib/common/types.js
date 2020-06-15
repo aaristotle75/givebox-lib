@@ -10,8 +10,8 @@ export function bankStatus(status, voidCheck) {
 		}
 
 		case 'declined': {
-			obj.name = 'Declined';
-			obj.color = 'red';
+			obj.name = voidCheck ? 'Declined' : 'Please upload another void check or bank statement';
+			obj.color = voidCheck ? 'red' : 'orange';
 			break;
 		}
 

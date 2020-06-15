@@ -3,6 +3,7 @@ const logo = {
 	title: 'Logo',
 	type: 'Media',
 	field: 'orgImageURL',
+	updateField: 'once',
 	options: {
 		mediaType: 'image',
 		image: {
@@ -23,6 +24,7 @@ const title = {
 	type: 'Text',
 	nonremovable: true,
 	field: 'title',
+	updateField: 'string',
 	options: {
 		defaultFormat: '<span style="font-size:16px;">{{TOKEN}}</span>'
 	},
@@ -78,6 +80,7 @@ const media = {
 	type: 'Media',
 	nonremovable: true,
 	field: 'imageURL',
+	updateField: 'multi',
 	options: {
 		mediaType: 'image',
 		image: {
@@ -99,7 +102,8 @@ const description = {
 	title: 'Description',
 	type: 'Text',
 	subType: 'content',
-	field: 'summary',
+	field: 'description',
+	updateField: 'html',
 	overflow: 'visible',
 	options: {},
 	grid: {

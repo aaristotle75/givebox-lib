@@ -17,7 +17,7 @@ export default class Text extends Component {
 
 		const options = props.options;
 
-		const defaultContent = options.defaultFormat && props.fieldValue ? options.defaultFormat.replace('{{TOKEN}}', props.fieldValue) : props.fieldValue ? `<p>props.fieldValue${props.fieldValue}</p>` : `<p>${options.defaultFormat || `Please add ${props.title}`}</p>`;
+		const defaultContent = options.defaultFormat && props.fieldValue ? options.defaultFormat.replace('{{TOKEN}}', props.fieldValue) : props.fieldValue ? `<p>${props.fieldValue}</p>` : `<p>${options.defaultFormat || `Please add ${props.title}`}</p>`;
 
 		const content = util.getValue(props.blockContent, 'html', defaultContent);
 
@@ -55,11 +55,22 @@ export default class Text extends Component {
 	}
 
 	closeEditModal(type = 'save') {
+		const {
+			block
+		} = this.props;
+
+		const {
+			content
+		} = this.state;
 		if (type !== 'cancel') {
+			const data = {};
+			const updateField = util.getValue(block, 'updateField');
+			if (updateField) data[block.field] = updateField === 'string' ? util.stripHtml(content) : content;
 			const subType = util.getValue(this.props.block, 'subType');
 			this.props.saveBlock({
+				data,
 				content: {
-					html: this.state.content
+					html: content
 				},
 				updateSpecificGrid: subType === 'content' ? true : false
 			});

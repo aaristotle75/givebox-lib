@@ -98,6 +98,7 @@ import {
 	resetCart,
 	resetConfirmation,
 	setLoading,
+	setStyle,
 	processTransaction
 } from './gbx3/redux/gbx3actions';
 
@@ -183,6 +184,7 @@ export {
 	resetCart,
 	setLoading,
 	resetConfirmation,
+	setStyle,
 	processTransaction,
 
 	// API
