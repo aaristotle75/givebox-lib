@@ -14,7 +14,7 @@ const logo = {
 	},
 	grid: {
 		desktop: { i: 'logo', x: 0, y: 0, w: 1, h: 7, enabled: true },
-		mobile: { i: 'logo', x: 0, y: 0, w: 1, h: 7, enabled: true }
+		mobile: { i: 'logo', x: 0, y: 0, w: 1, h: 7, static: true, enabled: true }
 	}
 };
 
@@ -30,7 +30,7 @@ const title = {
 	},
 	grid: {
 		desktop: { i: 'title', x: 1, y: 0, w: 5, h: 2, enabled: true },
-		mobile: { i: 'title', x: 1, y: 0, w: 5, h: 2, enabled: true }
+		mobile: { i: 'title', x: 1, y: 0, w: 5, h: 2, static: true, enabled: true }
 	}
 };
 
@@ -44,7 +44,30 @@ const orgName = {
 	},
 	grid: {
 		desktop: { i: 'orgName', x: 1, y: 1, w: 5, h: 2, enabled: true },
-		mobile: { i: 'orgName', x: 1, y: 1, w: 5, h: 2, enabled: true }
+		mobile: { i: 'orgName', x: 1, y: 2, w: 5, h: 2, static: true, enabled: true }
+	}
+};
+
+const media = {
+	name: 'media',
+	title: 'Media',
+	type: 'Media',
+	nonremovable: true,
+	field: 'imageURL',
+	updateField: 'multi',
+	options: {
+		mediaType: 'image',
+		image: {
+			size: 'medium',
+			borderRadius: 5
+		},
+		video: {
+			auto: true
+		}
+	},
+	grid: {
+		desktop: { i: 'media', x: 6, y: 0, w: 6, h: 24, enabled: true },
+		mobile: { i: 'media', x: 0, y: 8, w: 6, h: 24, static: true, enabled: true }
 	}
 };
 
@@ -70,45 +93,7 @@ const amounts = {
 	},
 	grid: {
 		desktop: { i: 'amounts', x: 0, y: 2, w: 6, h: 17, enabled: true },
-		mobile: { i: 'amounts', x: 0, y: 28, w: 6, h: 17, enabled: true }
-	}
-};
-
-const media = {
-	name: 'media',
-	title: 'Media',
-	type: 'Media',
-	nonremovable: true,
-	field: 'imageURL',
-	updateField: 'multi',
-	options: {
-		mediaType: 'image',
-		image: {
-			size: 'medium',
-			borderRadius: 5
-		},
-		video: {
-			auto: true
-		}
-	},
-	grid: {
-		desktop: { i: 'media', x: 6, y: 0, w: 6, h: 24, enabled: true },
-		mobile: { i: 'media', x: 0, y: 2, w: 6, h: 24, enabled: true }
-	}
-};
-
-const description = {
-	name: 'description',
-	title: 'Description',
-	type: 'Text',
-	subType: 'content',
-	field: 'description',
-	updateField: 'html',
-	overflow: 'visible',
-	options: {},
-	grid: {
-		desktop: { i: 'description', x: 6, y: 24, w: 6, h: 10, enabled: true },
-		mobile: { i: 'description', x: 0, y: 48, w: 6, h: 10, enabled: true }
+		mobile: { i: 'amounts', x: 0, y: 32, w: 6, h: 17, static: true, enabled: true }
 	}
 };
 
@@ -142,17 +127,33 @@ const paymentForm = {
 	}
 };
 
+const description = {
+	name: 'description',
+	title: 'Description',
+	type: 'Text',
+	subType: 'content',
+	field: 'description',
+	updateField: 'html',
+	mobileRelativeBlock: true,
+	options: {},
+	grid: {
+		desktop: { i: 'description', x: 6, y: 24, w: 6, h: 10, enabled: true },
+		mobile: { i: 'description', x: 0, y: 48, w: 6, h: 10, enabled: false }
+	}
+};
+
 const textBlock = {
 	name: 'textBlock',
 	title: 'Text',
 	type: 'Text',
 	multiple: true,
+	mobileRelativeBlock: true,
 	options: {
 		defaultFormat: '<span>Enter Text</span>'
 	},
 	grid: {
 		desktop: { i: 'textBlock', x: 1, y: 0, w: 6, h: 2, enabled: true },
-		mobile: { i: 'textBlock', x: 1, y: 0, w: 6, h: 2, enabled: true }
+		mobile: { i: 'textBlock', x: 1, y: 0, w: 6, h: 2, enabled: false }
 	}
 };
 
@@ -163,12 +164,13 @@ const contentBlock = {
 	subType: 'content',
 	multiple: true,
 	overflow: 'visible',
+	mobileRelativeBlock: true,
 	options: {
 		defaultFormat: '<span>Enter Content</span>'
 	},
 	grid: {
 		desktop: { i: 'contentBlock', x: 0, y: 24, w: 6, h: 10, enabled: true },
-		mobile: { i: 'contentBlock', x: 0, y: 109, w: 6, h: 10, enabled: true }
+		mobile: { i: 'contentBlock', x: 0, y: 48, w: 6, h: 10, enabled: false }
 	}
 };
 
@@ -178,6 +180,7 @@ const mediaBlock = {
 	type: 'Media',
 	multiple: true,
 	field: 'imageURL',
+	mobileRelativeBlock: true,
 	options: {
 		mediaType: 'image',
 		image: {
@@ -190,7 +193,7 @@ const mediaBlock = {
 	},
 	grid: {
 		desktop: { i: 'mediaBlock', x: 6, y: 0, w: 6, h: 24, enabled: true },
-		mobile: { i: 'mediaBlock', x: 0, y: 2, w: 6, h: 24, enabled: true }
+		mobile: { i: 'mediaBlock', x: 0, y: 2, w: 6, h: 24, enabled: false }
 	}
 };
 

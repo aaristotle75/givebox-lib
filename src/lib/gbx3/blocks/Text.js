@@ -66,13 +66,11 @@ export default class Text extends Component {
 			const data = {};
 			const updateField = util.getValue(block, 'updateField');
 			if (updateField) data[block.field] = updateField === 'string' ? util.stripHtml(content) : content;
-			const subType = util.getValue(this.props.block, 'subType');
 			this.props.saveBlock({
 				data,
 				content: {
 					html: content
-				},
-				updateSpecificGrid: subType === 'content' ? true : false
+				}
 			});
 		} else {
 			this.setState({ content: this.state.defaultContent }, this.props.closeEditModal);

@@ -16,6 +16,10 @@ $breakpoint: 768px;
 	background: $white;
 	@include bgGradient(to bottom, $light-gray 0%, $white 20%);
 
+	@media (max-width: $breakpoint) {
+		padding: 50px 0;
+	}
+
 	.bottomOffset {
 		display: table;
 		height: 0px;
@@ -148,6 +152,16 @@ $breakpoint: 768px;
 		z-index: 1;
 		border: 2px solid transparent;
 	}
+
+	/*
+	.react-grid-item.stack {
+		display: block !important;
+		position: relative !important;
+		height: auto !important;
+		width: 100% !important;
+		transform: none !important;
+	}
+	*/
 
 	.react-grid-item.outline {
 		border: 2px solid $mainColor;
@@ -1134,13 +1148,23 @@ $breakpoint: 768px;
 .gbx3Shop {
 	align-items: center;
 
+	@media (max-width: $breakpoint) {
+		padding: 20px 0;
+	}
+
+	.shopTop {
+		position: relative;
+		margin-bottom: 20px;
+	}
+
 	.articleGroupList {
-		margin-top: 10px;
+		padding-top: 10px;
 		display: flex;
 		flex-direction: column;
+		align-items: flex-start;
 		width: 100%;
 		@media (max-width: $breakpoint) {
-			margin-top: 20px;
+			padding-top: 20px;
 		}
 	}
 

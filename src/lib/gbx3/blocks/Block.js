@@ -64,7 +64,6 @@ class Block extends React.Component {
 			data: {},
 			saveGBX3: true,
 			callback: this.closeEditModal,
-			updateSpecificGrid: false,
 			...params
 		};
 
@@ -73,18 +72,17 @@ class Block extends React.Component {
 		const data = { ...opts.data };
 		const saveGBX3 = opts.saveGBX3;
 		const callback = opts.callback;
-		const updateSpecificGrid = opts.updateSpecificGrid;
 
 		const grid = {};
 		if (this.height) grid.h = Math.ceil(parseFloat(this.height / 10));
-		const addHeight = breakpoint === 'mobile' ? parseInt(grid.h * .3) : parseInt(grid.h * .1);
+		const addHeight = parseInt(grid.h * .1);
 		if (grid.h) grid.h = grid.h + addHeight;
 
-		const mobileContent = updateSpecificGrid && breakpoint === 'mobile' ? content : !updateSpecificGrid ? content : this.getBlockContent('mobile');
-		const mobileGrid = !util.isEmpty(block.grid) ? !updateSpecificGrid || breakpoint === 'mobile' ? { ...block.grid.mobile, ...grid } : block.grid.mobile : {};
+		const mobileContent = content || this.getBlockContent('mobile');
+		const mobileGrid = !util.isEmpty(block.grid) ? { ...block.grid.mobile, ...grid } : {};
 
-		const desktopContent = updateSpecificGrid && breakpoint === 'desktop' ? content : !updateSpecificGrid ? content : this.getBlockContent('desktop');
-		const desktopGrid = !util.isEmpty(block.grid) ? !updateSpecificGrid || breakpoint === 'desktop' ? { ...block.grid.desktop, ...grid } : block.grid.desktop : {};
+		const desktopContent = content || this.getBlockContent('desktop');
+		const desktopGrid = !util.isEmpty(block.grid) ? { ...block.grid.desktop, ...grid } : {};
 
 		const blockGrid = !util.isEmpty(block.grid) ? {
 			mobile: {

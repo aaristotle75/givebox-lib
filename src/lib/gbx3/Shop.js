@@ -138,7 +138,7 @@ class Shop extends Component {
 			<div style={util.getValue(globals, 'gbxStyle', {})}  className='gbx3Container gbx3Shop modalWrapper'>
 				<h2>{orgName}</h2>
 				<GBLink
-					style={{ marginTop: 5 }}
+					style={{ margin: '5px 0 20px 0' }}
 					className='link'
 					allowCustom={true}
 					customColor={primaryColor}

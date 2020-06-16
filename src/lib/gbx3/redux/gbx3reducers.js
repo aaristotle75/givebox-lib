@@ -55,9 +55,9 @@ export function gbx3(state = {
 		}
 	},
 	admin: {
-		open: true,
+		open: false,
+		editable: false,
 		hasAccessToEdit: false,
-		editable: true,
 		preventCollision: true,
 		verticalCompact: false,
 		outline: false,

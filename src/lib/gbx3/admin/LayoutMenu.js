@@ -21,6 +21,7 @@ class LayoutMenu extends React.Component {
 		super(props);
 		this.closeGBXOptionsCallback = this.closeGBXOptionsCallback.bind(this);
 		this.updatePrimaryColor = this.updatePrimaryColor.bind(this);
+		this.renderAvailableBlocks = this.renderAvailableBlocks.bind(this);
 		this.reset = this.reset.bind(this);
 		const globals = props.globals;
 		this.state = {

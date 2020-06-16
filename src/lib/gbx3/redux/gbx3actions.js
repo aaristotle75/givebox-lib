@@ -64,6 +64,8 @@ export function addBlock(type, w, h, ref) {
 		const current = ref ? ref.current : null;
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
 		const blocks = util.getValue(gbx3, 'blocks', {});
+		const info = util.getValue(gbx3, 'info', {});
+		const breakpoint = util.getValue(info, 'breakpoint');
 		const admin = util.getValue(gbx3, 'admin', {});
 		const availableBlocks = util.getValue(admin, 'availableBlocks', []);
 		const newBlock = util.getValue(blockTemplates, type, {});

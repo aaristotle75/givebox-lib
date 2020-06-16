@@ -26,7 +26,8 @@ class Layout extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.renderBlocks = this.renderBlocks.bind(this);
+		this.renderGridBlocks = this.renderGridBlocks.bind(this);
+		this.renderRelativeBlocks = this.renderRelativeBlocks.bind(this);
 		this.onBreakpointChange = this.onBreakpointChange.bind(this);
 		this.widthChange = this.widthChange.bind(this);
 		this.layoutChange = this.layoutChange.bind(this);
@@ -67,7 +68,6 @@ class Layout extends React.Component {
 					}
 				}
 			});
-			console.log('execute layoutChange', layouts);
 			if (editable) {
 				const updated = [];
 				const layoutsUpdated = await this.props.updateLayouts(layouts);
@@ -91,7 +91,7 @@ class Layout extends React.Component {
 		});
 	}
 
-	renderBlocks(enabled = true) {
+	renderGridBlocks() {
 		const {
 			breakpoint,
 			outline,
@@ -102,15 +102,16 @@ class Layout extends React.Component {
 
 		Object.entries(blocks).forEach(([key, value]) => {
 			if (!util.isEmpty(value.grid)) {
-				if (value.grid[breakpoint].enabled === enabled) {
+				if (value.grid[breakpoint].enabled) {
 					const BlockComponent = Loadable({
 						loader: () => import(`./blocks/${value.type}`),
 						loading: () => <></>
 					});
 					const ref = React.createRef();
+					const stack = util.getValue(value.grid[breakpoint], 'stack', false);
 					items.push(
 						<div
-							className={`${outline ? 'outline' : ''}`}
+							className={`${stack ? 'stack' : ''} ${outline ? 'outline' : ''}`}
 							id={`block-${value.name}`}
 							key={value.name}
 							data-grid={value.grid[breakpoint]}
@@ -131,11 +132,37 @@ class Layout extends React.Component {
 		return items;
 	}
 
+	renderRelativeBlocks() {
+		const {
+			breakpoint,
+			outline,
+			blocks
+		} = this.props;
+
+		const items = [];
+		const Element = Scroll.Element;
+
+		items.push(
+			<Element name='checkout'>
+				<div className='react-grid-item'>
+					<Block
+						name='paymentForm'
+						blockRef={React.createRef()}
+						style={{ position: 'relative' }}
+					>
+						<Form />
+					</Block>
+				</div>
+			</Element>
+		);
+
+		return items;
+	}
+
 	render() {
 
 		const {
 			layouts,
-			verticalCompact,
 			preventCollision,
 			editable,
 			globals,
@@ -144,7 +171,6 @@ class Layout extends React.Component {
 		} = this.props;
 
 		const isEditable = hasAccessToEdit && editable ? true : false;
-		const Element = Scroll.Element;
 
 		return (
 			<div style={util.getValue(globals, 'gbxStyle', {})} className={`gbx3Container ${isEditable ? 'editable' : ''}`}>
@@ -152,7 +178,7 @@ class Layout extends React.Component {
 					<div
 						id='gbx3DropArea'
 						ref={this.gridRef}
-						className={`column dropArea`}
+						className={`dropArea`}
 						onDragOver={(e) => {
 							e.preventDefault();
 						}}
@@ -181,8 +207,8 @@ class Layout extends React.Component {
 							onWidthChange={this.widthChange}
 							isDraggable={editable}
 							isResizable={editable}
-							margin={[0, 0]}
-							containerPadding={[0, 0]}
+							margin={{desktop: [0, 0], mobile: [0, 1]}}
+							containerPadding={{desktop: [0, 0], mobile: [0, 0]}}
 							autoSize={true}
 							draggableHandle={'.dragHandle'}
 							draggableCancel={'.modal'}
@@ -190,22 +216,12 @@ class Layout extends React.Component {
 							preventCollision={preventCollision}
 							isDroppable={false}
 						>
-							{this.renderBlocks()}
+							{this.renderGridBlocks()}
 						</ResponsiveGridLayout>
 					</div>
 				</div>
 				<div className='layout-column'>
-					<Element name='checkout'>
-						<div className='react-grid-item'>
-							<Block
-								name='paymentForm'
-								blockRef={React.createRef()}
-								style={{ position: 'relative' }}
-							>
-								<Form />
-							</Block>
-						</div>
-					</Element>
+					{this.renderRelativeBlocks()}
 				</div>
 				<div className='layout-column'>
 					<div className='gbx3Footer flexCenter flexColumn'>
