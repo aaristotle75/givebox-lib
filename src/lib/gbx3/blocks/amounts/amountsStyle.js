@@ -63,3 +63,48 @@ export const amountInputMoneyStyle = {
 		height: 120
 	}
 };
+
+export function defaultAmountHeight(num) {
+	let height = 0;
+	switch (num) {
+		case 1: {
+			height = 22;
+			break;
+		}
+
+		case 2: {
+			height = 22;
+			break;
+		}
+
+		case 3: {
+			height = 26;
+			break;
+		}
+
+		case 4: {
+			height = 29;
+			break;
+		}
+
+		case 5: {
+			height = 33;
+			break;
+		}
+
+		case 6: {
+			height = 37;
+			break;
+		}
+
+		case 7: {
+			height = 40;
+			break;
+		}
+
+		// no default
+	}
+	console.log('execute amountsSectionHeight', num, height);
+
+	return height;
+}

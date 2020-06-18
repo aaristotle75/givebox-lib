@@ -135,7 +135,8 @@ class Amounts extends Component {
 				this.props.saveBlock({
 					options: {
 						button,
-						recurring
+						recurring,
+						autoHeight: util.getValue(button, 'enabled') ? false : true
 					}
 				});
 			}

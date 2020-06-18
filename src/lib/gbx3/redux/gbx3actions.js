@@ -5,6 +5,7 @@ import {
 	getResource,
 	sendResource
 } from '../../';
+import { defaultAmountHeight } from '../blocks/amounts/amountsStyle';
 import blockTemplates from '../blocks/blockTemplates';
 import { defaultBlocks } from '../config';
 import { kindData } from './kindDataTemplates';
@@ -454,9 +455,6 @@ export function loadGBX3(articleID, callback) {
 									const primaryColor = util.getValue(settings, 'primaryColor', '#4775f8');
 									const customTemplate = util.getValue(settings, 'customTemplate', {});
 									const passFees = util.getValue(res, 'passFees');
-									const amountsObj = util.getValue(res, types2.kind(kind).amountField, {});
-									const amountsList = util.getValue(amountsObj, 'list', []);
-									//console.log('execute amountsList', amountsList, amountsList.length);
 
 									dispatch(updateCart({ passFees }));
 									dispatch(updateInfo({
@@ -471,7 +469,6 @@ export function loadGBX3(articleID, callback) {
 
 									const blocksDefault = util.getValue(defaultBlocks, kind, {});
 									const blocksCustom = util.getValue(customTemplate, 'blocks', {});
-
 									const blocks = !util.isEmpty(blocksCustom) ? blocksCustom : blocksDefault;
 
 									const globals = {
@@ -492,6 +489,22 @@ export function loadGBX3(articleID, callback) {
 										...util.getValue(customTemplate, 'globals', {})
 									};
 
+									if (!util.isEmpty(blocksCustom)) {
+										// Check if not all default blocks are present
+										// If not, add them to the availableBlocks array
+										// which are blocks available but not used
+										Object.keys(blocksDefault).forEach((key) => {
+											if (!(key in blocks)) availableBlocks.push(key);
+										})
+									} else {
+										// Check how many amounts and set amounts grid height
+										const amountsObj = util.getValue(res, types2.kind(kind).amountField, {});
+										const amountsList = util.getValue(amountsObj, 'list', []);
+										const amountsListEnabled = amountsList.filter(a => a.enabled === true);
+										const amountsSectionHeight = defaultAmountHeight(amountsListEnabled.length);
+										blocks.amounts.grid.desktop.h = amountsSectionHeight;
+									}
+
 									const layouts = {
 										desktop: [],
 										mobile: []
@@ -503,16 +516,6 @@ export function loadGBX3(articleID, callback) {
 											layouts.mobile.push(value.grid.mobile);
 										}
 									});
-
-									if (!util.isEmpty(blocksCustom)) {
-
-										// Check if not all default blocks are present
-										// If not, add them to the availableBlocks array
-										// which are blocks available but not used
-										Object.keys(blocksDefault).forEach((key) => {
-											if (!(key in blocks)) availableBlocks.push(key);
-										})
-									}
 
 									dispatch(updateLayouts(layouts));
 									dispatch(updateBlocks(blocks));

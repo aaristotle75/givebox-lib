@@ -3,15 +3,15 @@ import ReactPlayer from 'react-player';
 
 export default class Video extends Component {
 
-  constructor(props) {
-    super(props);
-    this.onReady = this.onReady.bind(this);
+	constructor(props) {
+		super(props);
+		this.onReady = this.onReady.bind(this);
 		this.onError = this.onError.bind(this);
-    this.state = {
-      loading: props.playing && !props.preview ? true : false,
+		this.state = {
+			loading: props.playing && !props.preview ? true : false,
 			error: false
-    }
-  }
+		}
+	}
 
 	componentDidUpdate(prevProps) {
 		if (prevProps.url !== this.props.url) {
@@ -19,38 +19,38 @@ export default class Video extends Component {
 		}
 	}
 
-  onReady() {
-    this.setState({ loading: false });
-    if (this.props.onReady) this.props.onReady();
-  }
+	onReady() {
+		this.setState({ loading: false });
+		if (this.props.onReady) this.props.onReady();
+	}
 
 	onError() {
 		this.setState({ error: true });
 		if (this.props.onError) this.props.onError();
 	}
 
-  render() {
+	render() {
 
-    const {
-      url,
-      className,
-      style,
-      maxWidth,
-      maxHeight,
+		const {
+			url,
+			className,
+			style,
+			maxWidth,
+			maxHeight,
 			minHeight,
 			maxSize,
 			playing,
 			preview
-    } = this.props;
+		} = this.props;
 
-    const mergeStyle = { maxWidth: maxWidth || maxSize, maxHeight: maxHeight || maxSize, ...style };
+		const mergeStyle = { maxWidth: maxWidth || maxSize, maxHeight: maxHeight || maxSize, ...style };
 
-    return (
-      <div style={{ minHeight, width: maxSize, height: 'auto',  ...style }} className={`imageComponent ${className || ''}`}>
-        {this.state.loading  &&
-        <div className='imageLoader'>
-          <img src='https://s3-us-west-1.amazonaws.com/givebox/public/images/squareLoader.gif' alt='Loader' />
-        </div>}
+		return (
+			<div style={{ minHeight, width: maxSize, height: 'auto',  ...style }} className={`imageComponent ${className || ''}`}>
+				{this.state.loading  &&
+				<div className='imageLoader'>
+					<img src='https://s3-us-west-1.amazonaws.com/givebox/public/images/squareLoader.gif' alt='Loader' />
+				</div>}
 				{this.state.error ?
 					<div className='errorMsg'>
 						Sorry, an error occurred trying to play the video.<br />
@@ -63,19 +63,20 @@ export default class Video extends Component {
 						onReady={this.onReady}
 						onError={this.onError}
 						style={mergeStyle}
+						width='100%'
 						light={!preview && !playing ? true : false }
 					/>
 				}
-      </div>
-    )
-  }
+			</div>
+		)
+	}
 }
 
 Video.defaultProps = {
-  maxSize: '100%',
-  maxHeight: null,
+	maxSize: '100%',
+	maxHeight: null,
 	minHeight: '100px',
-  maxWidth: null,
+	maxWidth: null,
 	playing: false,
 	preview: false
 }

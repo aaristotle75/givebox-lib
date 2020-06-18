@@ -3,7 +3,6 @@
 $breakpoint: 768px;
 
 .gbx3Layout {
-	position: relative;
 	display: flex;
 	justify-content: center;
 	min-height: 100vh;
@@ -11,13 +10,13 @@ $breakpoint: 768px;
 	width: 100%;
 	overflow-x: hidden;
 	overflow-y: scroll;
- -webkit-overflow-scrolling: touch;
+ -webkit-overflow-scrolling: auto;
 	padding: 10px 0;
 	background: $white;
 	@include bgGradient(to bottom, $light-gray 0%, $white 20%);
 
 	@media (max-width: $breakpoint) {
-		padding: 50px 0;
+		//padding: 50px 0;
 	}
 
 	.bottomOffset {
@@ -31,6 +30,165 @@ $breakpoint: 768px;
 }
 
 .gbx3 {
+
+	/*------ Layout ------*/
+
+	$topHeaderHeight: 75px;
+	$topPanelHeight: 50px;
+	$topOffset: $topHeaderHeight + $topPanelHeight;
+
+	.gbx3AdminContainer {
+		width: 200px;
+		height: auto;
+	}
+
+	.gbx3Container {
+		display: table;
+		width: 100%;
+		max-width: 1000px;
+		height: 100vh;
+	}
+
+	.layout-column {
+		display: table-row;
+		width: 100%;
+		height: 100%;
+	}
+
+	.gbx3LayoutWrapper {
+		position: relative;
+	}
+
+	.gbx3AdminLayout {
+		overflow: hidden;
+	}
+
+	// Top Header
+	.gbx3TopHeader {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: $topHeaderHeight;
+		width: 100%;
+		background: gray;
+	}
+
+	// Top Panel
+	.topPanel {
+		position: fixed;
+		top: $topHeaderHeight;
+		left: 0;
+		right: 0;
+		height: $topPanelHeight;
+		width: 100%;
+		background: blue;
+	}
+
+	// Left Panel
+	.leftPanel {
+		position: absolute;
+		top: $topOffset;
+		left: 0;
+		bottom: 0;
+		background: $dark-blue-gray;
+		width: 100%;
+		max-width: 200px;
+		z-index: 899999;
+		margin: 0;
+		overflow-x: hidden;
+		overflow-y: auto;
+		@include transition(width .5s);
+
+		::-webkit-scrollbar {
+				width: 6px;
+		}
+
+		::-webkit-scrollbar-track {
+			background-color: $dark-blue-gray;
+		}
+
+		::-webkit-scrollbar-thumb {
+			outline: 0;
+			border-radius: 20px;
+			background: $mainColorLight;
+		}
+	}
+
+	.leftPanelOpen {
+		position: absolute;
+		top: $topOffset;
+		left: 10px;
+		z-index: 900000;
+		cursor: pointer;
+
+		.icon {
+			font-size: 30px;
+		}
+	}
+
+	.leftPanelClose {
+		position: absolute;
+		top: $topOffset;
+		left: 170px;
+		z-index: 900000;
+		cursor: pointer;
+
+		.icon {
+			color: $med-blue-gray;
+			font-size: 18px;
+		}
+	}
+
+	.leftPanelOpen.open { display: none; }
+	.leftPanelClose.close { display: none; }
+
+	.leftPanel.open {
+		width: 200px;
+	}
+
+	.leftPanel.close {
+		width: 0px;
+	}
+
+	.middleAdminContainer {
+		position: relative;
+		height: 100%;
+		width: 100%;
+	}
+
+	// Stage Container
+	.stageContainer {
+		display: block;
+		margin-top: $topOffset;
+		overflow-y: hidden;
+		/*
+		position: fixed;
+		top: $topOffset;
+		left: 0;
+		right: 0;
+		bottom: $topOffset + 100px;
+		height: 100%;
+		overflow-y: scroll;
+		//width: $breakpoint + 100;
+		//overflow-x: scroll;
+		*/
+		@include transition(left .5s);
+
+		.gbx3Layout {
+			overflow-y: visible;
+		}
+	}
+
+	.stageContainer.open {
+		padding-left: 200px;
+	}
+
+	.stageScroller {
+		position: relative;
+		height: 100vh;
+		overflow: scroll;
+	}
 
 		/*------ Autofill handling -----*/
 	input:-internal-autofill-selected {
@@ -69,7 +227,12 @@ $breakpoint: 768px;
 	}
 
 	p img {
-		margin: 0 10px;
+		padding: 0 10px;
+		@media (max-width: $breakpoint) {
+			margin: 0;
+			width: 100%;
+			height: auto;
+		}
 	}
 
 	/*------ End Elements ------*/
@@ -129,22 +292,14 @@ $breakpoint: 768px;
 	}
 
 	/*------- Grid ---------*/
-	.gbx3AdminContainer {
-		width: 200px;
-		height: auto;
+
+	.react-grid-item.mobileRelativeBlock {
+		padding: 10px 0;
 	}
 
-	.gbx3Container {
-		display: flex;
-		flex-direction: column;
-		width: 100%;
-		max-width: 1000px;
-		height: auto;
-	}
-
-	.layout-column {
-		width: 100%;
-		height: auto;
+	.react-grid-item.mobileRelativeBlockTop {
+		padding: 0;
+		text-align: center;
 	}
 
 	.react-grid-item {
@@ -302,69 +457,7 @@ $breakpoint: 768px;
 
 	/*------- Admin Custom Area -----*/
 
-	.adminCustomAreaOpen {
-		position: absolute;
-		top: 10px;
-		left: 10px;
-		z-index: 900000;
-		cursor: pointer;
-
-		.icon {
-			font-size: 30px;
-		}
-	}
-
-	.adminCustomAreaClose {
-		position: absolute;
-		top: 15px;
-		left: 170px;
-		z-index: 900000;
-		cursor: pointer;
-
-		.icon {
-			color: $med-blue-gray;
-			font-size: 18px;
-		}
-	}
-
-	.adminCustomAreaOpen.open { display: none; }
-	.adminCustomAreaClose.close { display: none; }
-
-	.adminCustomArea.open {
-		width: 200px;
-	}
-
-	.adminCustomArea.close {
-		width: 0px;
-	}
-
 	.adminCustomArea {
-		position: absolute;
-		left: 0;
-		top: 0;
-		bottom: 0;
-		background: $dark-blue-gray;
-		width: 100%;
-		max-width: 200px;
-		z-index: 899999;
-		margin: 0;
-		overflow-x: hidden;
-		overflow-y: auto;
-		@include transition(width .5s);
-
-		::-webkit-scrollbar {
-				width: 6px;
-		}
-
-		::-webkit-scrollbar-track {
-			background-color: $dark-blue-gray;
-		}
-
-		::-webkit-scrollbar-thumb {
-			outline: 0;
-			border-radius: 20px;
-			background: $mainColorLight;
-		}
 
 		.adminSectionContainer {
 			position: relative;
@@ -1139,33 +1232,26 @@ $breakpoint: 768px;
 			margin-top: 2px;
 			font-size: 12px;
 		}
-
 	}
-
 }
 
 /*---------- SHOP --------*/
 .gbx3Shop {
-	align-items: center;
 
 	@media (max-width: $breakpoint) {
-		padding: 20px 0;
+		padding: 30px 0;
 	}
 
 	.shopTop {
 		position: relative;
-		margin-bottom: 20px;
+		text-align: center;
 	}
 
 	.articleGroupList {
-		padding-top: 10px;
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
 		width: 100%;
-		@media (max-width: $breakpoint) {
-			padding-top: 20px;
-		}
 	}
 
 	.articleGroup {
@@ -1182,16 +1268,20 @@ $breakpoint: 768px;
 			width: 100%;
 			@media (max-width: $breakpoint) {
 				font-size: 22px;
-				margin-top: 20px;
 			}
 		}
 	}
 
 	.articleList {
+		position: relative;
+		height: 100%;
 		display: flex;
-		justify-content: flex-start;
+		justify-content: center;
 		align-items: center;
 		flex-wrap: wrap;
+		@media (max-width: $breakpoint) {
+			justify-content: center;
+		}
 	}
 
 	.articleItem {
@@ -1245,6 +1335,7 @@ $breakpoint: 768px;
 /*--------- CREATE NEW -------*/
 .gbx3CreateNew {
 	display: flex;
+	flex-direction: column;
 	align-items: center;
 
 	.intro {

@@ -57,32 +57,43 @@ class Admin extends React.Component {
 			hasAccessToEdit
 		} = this.props;
 
-		const rootEl = document.getElementById('gbx-form-root');
-
 		if (!hasAccessToEdit) return <></>;
 
 		return (
-			<Portal id={'modal-root'} rootEl={rootEl} className={`gbx3 ${editable ? 'editable' : ''}`}>
+			<div className={`gbx3AdminLayout ${editable ? 'editable' : ''}`}>
 				<AnimateHeight height={saveStatus === 'saving' ? 'auto' : 0 } duration={500}>
 					<div className='autoSaved'>Saving...</div>
 				</AnimateHeight>
-				<GBLink onClick={this.toggleOpen} className={`link adminCustomAreaOpen ${open ? 'open' : 'close'}`}><span className='icon icon-menu'></span></GBLink>
-				<GBLink onClick={this.toggleOpen} className={`link adminCustomAreaClose ${open ? 'open' : 'close'}`}><span className='icon icon-x'></span></GBLink>
-				<div className={`adminCustomArea ${editable ? 'editable' : ''} ${open ? 'open' : 'close'}`}>
-					<div className='logo'>
-						<img src={util.imageUrlWithStyle('https://givebox.s3-us-west-1.amazonaws.com/public/gb-logo5.png', 'small')} alt='Givebox Logo' onClick={() => window.open('https://admin.givebox.com', '_blank')} />
-					</div>
-					<Fade in={open ? true : false} >
-						<div className='adminSectionContainer'>
-							{this.renderMenu()}
+				<GBLink onClick={this.toggleOpen} className={`link leftPanelOpen ${open ? 'open' : 'close'}`}><span className='icon icon-menu'></span></GBLink>
+				<GBLink onClick={this.toggleOpen} className={`link leftPanelClose ${open ? 'open' : 'close'}`}><span className='icon icon-x'></span></GBLink>
+				<div className={`gbx3TopHeader`}>
+
+				</div>
+				<div className={`topPanel`}>
+
+				</div>
+				<div className={`leftPanel ${open ? 'open' : 'close'}`}>
+					<div className={`adminCustomArea ${editable ? 'editable' : ''}`}>
+						<div className='logo'>
+							<img src={util.imageUrlWithStyle('https://givebox.s3-us-west-1.amazonaws.com/public/gb-logo5.png', 'small')} alt='Givebox Logo' onClick={() => window.open('https://admin.givebox.com', '_blank')} />
 						</div>
-					</Fade>
-					<div className='loggedInGroup'>
-						<span className='loggedInAs'>Logged in as {util.getValue(access, 'userRole')}</span>
-						<GBLink className='link show' onClick={() => window.open('https://admin.givebox.com', '_blank')}>{util.getValue(this.props.access, 'fullName')}</GBLink>
+						<Fade in={open ? true : false} >
+							<div className='adminSectionContainer'>
+								{this.renderMenu()}
+							</div>
+						</Fade>
+						<div className='loggedInGroup'>
+							<span className='loggedInAs'>Logged in as {util.getValue(access, 'userRole')}</span>
+							<GBLink className='link show' onClick={() => window.open('https://admin.givebox.com', '_blank')}>{util.getValue(this.props.access, 'fullName')}</GBLink>
+						</div>
 					</div>
 				</div>
-			</Portal>
+				<div className={`stageContainer ${open ? 'open' : 'close'}`}>
+					<div className='stageScroller'>
+						{this.props.children}
+					</div>
+				</div>
+			</div>
 		)
 	}
 }

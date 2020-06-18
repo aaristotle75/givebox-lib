@@ -2,7 +2,7 @@ import  * as types  from './gbx3actionTypes';
 
 const defaultCart = {
 	processing: false,
-	open: true,
+	open: false,
 	zeroAmountAllowed: false,
 	paymethod: 'creditcard',
 	cardType: 'default',
@@ -29,7 +29,7 @@ export function gbx3(state = {
 	loading: false,
 	saveStatus: 'done',
 	info: {
-		display: 'layout',
+		display: 'shop',
 		preview: false,
 		breakpoint: 'desktop',
 		sourceType: 'embed',

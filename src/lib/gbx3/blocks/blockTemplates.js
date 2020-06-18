@@ -4,6 +4,8 @@ const logo = {
 	type: 'Media',
 	field: 'orgImageURL',
 	updateField: 'once',
+	mobileRelativeBlock: false,
+	mobileClassName: 'mobileRelativeBlockTop',
 	options: {
 		mediaType: 'image',
 		image: {
@@ -14,7 +16,7 @@ const logo = {
 	},
 	grid: {
 		desktop: { i: 'logo', x: 0, y: 0, w: 1, h: 7, enabled: true },
-		mobile: { i: 'logo', x: 0, y: 0, w: 1, h: 7, static: true, enabled: true }
+		mobile: { i: 'logo', x: 0, y: 0, w: 1, h: 7, static: true, enabled: false }
 	}
 };
 
@@ -25,12 +27,14 @@ const title = {
 	nonremovable: true,
 	field: 'title',
 	updateField: 'string',
+	mobileRelativeBlock: 1,
+	mobileClassName: 'mobileRelativeBlockTop',
 	options: {
 		defaultFormat: '<span style="font-size:16px;">{{TOKEN}}</span>'
 	},
 	grid: {
 		desktop: { i: 'title', x: 1, y: 0, w: 5, h: 2, enabled: true },
-		mobile: { i: 'title', x: 1, y: 0, w: 5, h: 2, static: true, enabled: true }
+		mobile: { i: 'title', x: 1, y: 0, w: 5, h: 2, static: true, enabled: false }
 	}
 };
 
@@ -39,12 +43,14 @@ const orgName = {
 	title: 'Organization Name',
 	type: 'Text',
 	field: 'orgName',
+	mobileRelativeBlock: 2,
+	mobileClassName: 'mobileRelativeBlockTop',
 	options: {
 		defaultFormat: '<span style="color:hsl(204,4%,58%);font-size:12px">{{TOKEN}}</span>'
 	},
 	grid: {
 		desktop: { i: 'orgName', x: 1, y: 1, w: 5, h: 2, enabled: true },
-		mobile: { i: 'orgName', x: 1, y: 2, w: 5, h: 2, static: true, enabled: true }
+		mobile: { i: 'orgName', x: 1, y: 2, w: 5, h: 2, static: true, enabled: false }
 	}
 };
 
@@ -55,6 +61,7 @@ const media = {
 	nonremovable: true,
 	field: 'imageURL',
 	updateField: 'multi',
+	mobileRelativeBlock: 3,
 	options: {
 		mediaType: 'image',
 		image: {
@@ -67,7 +74,7 @@ const media = {
 	},
 	grid: {
 		desktop: { i: 'media', x: 6, y: 0, w: 6, h: 24, enabled: true },
-		mobile: { i: 'media', x: 0, y: 8, w: 6, h: 24, static: true, enabled: true }
+		mobile: { i: 'media', x: 0, y: 8, w: 6, h: 24, enabled: false }
 	}
 };
 
@@ -77,6 +84,7 @@ const amounts = {
 	type: 'Amounts',
 	nonremovable: true,
 	field: 'amounts',
+	mobileRelativeBlock: 4,
 	options: {
 		button: {
 			embedAllowed: true,
@@ -92,8 +100,8 @@ const amounts = {
 		}
 	},
 	grid: {
-		desktop: { i: 'amounts', x: 0, y: 2, w: 6, h: 17, enabled: true },
-		mobile: { i: 'amounts', x: 0, y: 32, w: 6, h: 17, static: true, enabled: true }
+		desktop: { i: 'amounts', x: 0, y: 2, w: 6, h: 22, enabled: true },
+		mobile: { i: 'amounts', x: 0, y: 32, w: 6, h: 22, static: true, enabled: false }
 	}
 };
 
@@ -134,11 +142,11 @@ const description = {
 	subType: 'content',
 	field: 'description',
 	updateField: 'html',
-	mobileRelativeBlock: true,
+	mobileRelativeBlock: 5,
 	options: {},
 	grid: {
-		desktop: { i: 'description', x: 6, y: 24, w: 6, h: 10, enabled: true },
-		mobile: { i: 'description', x: 0, y: 48, w: 6, h: 10, enabled: false }
+		desktop: { i: 'description', x: 6, y: 25, w: 6, h: 4, enabled: true },
+		mobile: { i: 'description', x: 0, y: 48, w: 6, h: 4, enabled: false }
 	}
 };
 
@@ -147,7 +155,7 @@ const textBlock = {
 	title: 'Text',
 	type: 'Text',
 	multiple: true,
-	mobileRelativeBlock: true,
+	mobileRelativeBlock: 10,
 	options: {
 		defaultFormat: '<span>Enter Text</span>'
 	},
@@ -164,7 +172,7 @@ const contentBlock = {
 	subType: 'content',
 	multiple: true,
 	overflow: 'visible',
-	mobileRelativeBlock: true,
+	mobileRelativeBlock: 10,
 	options: {
 		defaultFormat: '<span>Enter Content</span>'
 	},
@@ -180,7 +188,7 @@ const mediaBlock = {
 	type: 'Media',
 	multiple: true,
 	field: 'imageURL',
-	mobileRelativeBlock: true,
+	mobileRelativeBlock: 10,
 	options: {
 		mediaType: 'image',
 		image: {

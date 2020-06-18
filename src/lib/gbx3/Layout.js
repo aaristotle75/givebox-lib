@@ -38,7 +38,6 @@ class Layout extends React.Component {
 	}
 
 	onBreakpointChange(breakpoint, cols) {
-		console.log('onBreakpointChange', breakpoint);
 		this.props.updateInfo({ breakpoint });
 	}
 
@@ -87,7 +86,7 @@ class Layout extends React.Component {
 			duration: 500,
 			delay: 0,
 			smooth: true,
-			containerId: 'gbx3'
+			containerId: 'gbx3Layout'
 		});
 	}
 
@@ -108,10 +107,9 @@ class Layout extends React.Component {
 						loading: () => <></>
 					});
 					const ref = React.createRef();
-					const stack = util.getValue(value.grid[breakpoint], 'stack', false);
 					items.push(
 						<div
-							className={`${stack ? 'stack' : ''} ${outline ? 'outline' : ''}`}
+							className={`${outline ? 'outline' : ''}`}
 							id={`block-${value.name}`}
 							key={value.name}
 							data-grid={value.grid[breakpoint]}
@@ -141,10 +139,49 @@ class Layout extends React.Component {
 
 		const items = [];
 		const Element = Scroll.Element;
+		if (!util.isEmpty(blocks) && breakpoint === 'mobile') {
+			const relativeBlocks = [];
+			Object.entries(blocks).forEach(([key, value]) => {
+				if (util.getValue(value, 'mobileRelativeBlock')) {
+					relativeBlocks.push(value);
+				}
+			});
+			util.sortByField(relativeBlocks, 'mobileRelativeBlock', 'ASC');
+			if (!util.isEmpty(relativeBlocks)) {
+				Object.entries(relativeBlocks).forEach(([key, value]) => {
+					const BlockComponent = Loadable({
+						loader: () => import(`./blocks/${value.type}`),
+						loading: () => <></>
+					});
+					const ref = React.createRef();
+					items.push(
+						<div
+							className={`react-grid-item ${util.getValue(value, 'mobileClassName', 'mobileRelativeBlock')} ${outline ? 'outline' : ''}`}
+							id={`block-${value.name}`}
+							key={value.name}
+							ref={ref}
+						>
+							<Block
+								name={value.name}
+								blockRef={React.createRef()}
+								scrollTo={this.scrollTo}
+								style={{ position: 'relative' }}
+							>
+								<BlockComponent />
+							</Block>
+						</div>
+					);
+				});
+			}
+		}
 
 		items.push(
-			<Element name='checkout'>
-				<div className='react-grid-item'>
+			<Element key='paymentForm' name='checkout'>
+				<div
+					className={`react-grid-item ${outline ? 'outline' : ''}`}
+					id='block-paymentForm'
+					ref={React.createRef()}
+				>
 					<Block
 						name='paymentForm'
 						blockRef={React.createRef()}
@@ -207,7 +244,7 @@ class Layout extends React.Component {
 							onWidthChange={this.widthChange}
 							isDraggable={editable}
 							isResizable={editable}
-							margin={{desktop: [0, 0], mobile: [0, 1]}}
+							margin={{desktop: [0, 0], mobile: [0, 0]}}
 							containerPadding={{desktop: [0, 0], mobile: [0, 0]}}
 							autoSize={true}
 							draggableHandle={'.dragHandle'}

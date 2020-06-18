@@ -54,14 +54,14 @@ class Block extends React.Component {
 	async saveBlock(params = {}) {
 		const {
 			name,
-			block,
-			breakpoint
+			block
 		} = this.props;
 
 		const opts = {
 			content: {},
 			options: {},
 			data: {},
+			autoHeight: true,
 			saveGBX3: true,
 			callback: this.closeEditModal,
 			...params
@@ -74,9 +74,11 @@ class Block extends React.Component {
 		const callback = opts.callback;
 
 		const grid = {};
-		if (this.height) grid.h = Math.ceil(parseFloat(this.height / 10));
-		const addHeight = parseInt(grid.h * .1);
-		if (grid.h) grid.h = grid.h + addHeight;
+		if (opts.autoHeight) {
+			if (this.height) grid.h = Math.ceil(parseFloat(this.height / 10));
+			const addHeight = parseInt(grid.h * .1);
+			if (grid.h) grid.h = grid.h + addHeight;
+		}
 
 		const mobileContent = content || this.getBlockContent('mobile');
 		const mobileGrid = !util.isEmpty(block.grid) ? { ...block.grid.mobile, ...grid } : {};

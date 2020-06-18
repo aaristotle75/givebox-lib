@@ -51,7 +51,7 @@ class CreateNew extends React.Component {
 		}
 
 		return (
-			<div style={util.getValue(globals, 'gbxStyle', {})}  className='gbx3Container gbx3CreateNew modalWrapper'>
+			<div style={util.getValue(globals, 'gbxStyle', {})}  className='gbx3CreateNew modalWrapper'>
 				<div className='intro'>
 					<h2 style={{ marginBottom: 10 }}>Create & Share!</h2>
 					Start raising money with two easy steps.

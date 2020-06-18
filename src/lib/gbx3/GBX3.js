@@ -45,10 +45,12 @@ class GBX3 extends React.Component {
 
 	async componentDidMount() {
 		const {
-			articleID
+			articleID,
+			editable
 		} = this.props;
 
 		this.props.setLoading(true);
+		if (editable) this.props.updateAdmin({ editable, open: true });
 		const setInfo = await this.setInfo();
 
 		if (setInfo) {
@@ -102,11 +104,13 @@ class GBX3 extends React.Component {
 			queryParams,
 			info,
 			orgID,
-			articleID
+			articleID,
+			kind
 		} = this.props;
 
 		info.articleID = articleID;
 		info.orgID = orgID;
+		if (kind) info.kind = kind;
 		info.preview = has(queryParams, 'preview') ? true : false;
 		info.signup = has(queryParams, 'signup') ? true : false;
 		info.locked = has(queryParams, 'locked') ? true : false;
@@ -187,53 +191,70 @@ class GBX3 extends React.Component {
 			info
 		} = this.props;
 
+		const items = [];
+
 		switch (info.display) {
 			case 'shop': {
-				return (
+				items.push(
 					<Shop
 						reloadGBX3={this.reloadGBX3}
 						{...this.props}
 					/>
 				)
+				break;
 			}
 
 			case 'createNew': {
-				return (
+				items.push(
 					<CreateNew
 
 					/>
 				)
+				break;
 			}
 
 			case 'layout':
 			default: {
-				return (
+				items.push(
 					<Layout
 						loadGBX3={this.loadGBX3}
 						primaryColor={this.props.primaryColor}
 					/>
 				)
+				break;
 			}
 		}
+		return items;
 	}
 
 	render() {
 
+		const {
+			hasAccessToEdit
+		} = this.props;
+
 		if (this.props.loading) return <Loader msg='Initiating GBX3' />;
 
 		return (
-			<div id='gbx3' className='gbx3 gbx3Layout'>
-				<Admin
-					reloadGBX3={this.reloadGBX3}
-				/>
-				{this.renderDisplay()}
+			<div className='gbx3'>
+				{hasAccessToEdit ?
+					<Admin
+						reloadGBX3={this.reloadGBX3}
+					>
+						{this.renderDisplay()}
+					</Admin>
+				:
+					<div id='gbx3Layout' className='gbx3Layout'>
+						{this.renderDisplay()}
+					</div>
+				}
 				<ModalRoute
 					id='shop'
 					className='gbx3 givebox-paymentform'
 					effect='3DFlipVert'
 					style={{ width: '70%' }}
 					disallowBgClose={true}
-					component={(props) => <Shop {...props} />}
+					component={(props) => <Shop {...props} reloadGBX3={this.reloadGBX3} />}
 				/>
 			</div>
 		)
@@ -253,12 +274,15 @@ function mapStateToProps(state, props) {
 	const sourceLocation = util.getValue(info, 'sourceLocation');
 	const gbxStyle = util.getValue(globals, 'gbxStyle', {});
 	const primaryColor = util.getValue(gbxStyle, 'primaryColor');
+	const admin = util.getValue(gbx3, 'admin', {});
+	const hasAccessToEdit = util.getValue(admin, 'hasAccessToEdit');
 
 	return {
 		loading,
 		info,
 		primaryColor,
 		sourceLocation,
+		hasAccessToEdit,
 		access: util.getValue(state.resource, 'access', {})
 	}
 }

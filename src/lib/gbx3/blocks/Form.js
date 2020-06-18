@@ -48,6 +48,7 @@ class Form extends Component {
 	}
 
 	componentDidMount() {
+		if (this.props.receipt) this.props.toggleModal('paymentConfirmation', true);
 	}
 
 	closeEditModal(type = 'save') {
@@ -293,13 +294,16 @@ function mapStateToProps(state, props) {
 	const globals = util.getValue(gbx3, 'globals', {});
 	const gbxStyle = util.getValue(globals, 'gbxStyle', {});
 	const primaryColor = util.getValue(gbxStyle, 'primaryColor', {});
+	const info = util.getValue(gbx3, 'info', {});
+	const receipt = util.getValue(info, 'receipt', false);
 
 	return {
 		cart,
 		passFees,
 		acceptedTerms,
 		gbxStyle,
-		primaryColor
+		primaryColor,
+		receipt
 	}
 }
 

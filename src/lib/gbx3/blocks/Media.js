@@ -64,7 +64,7 @@ export default class Media extends Component {
 			defaultImage: util.deepClone(image),
 			defaultVideo: util.deepClone(video),
 			defaultMediaType: mediaType,
-			maxWidth: this.maxWidth || 550,
+			maxWidth: this.maxWidth || null,
 			maxHeight: this.maxHeight || 550
 		};
 	}
@@ -201,9 +201,10 @@ export default class Media extends Component {
 				url={util.getValue(video, 'validatedURL')}
 				onReady={this.videoOnReady}
 				style={{
-					maxWidth,
+					maxWidth: maxWidth || '100%',
 					maxHeight
 				}}
+				maxHeight={maxHeight}
 				preview={preview}
 			/>
 		)
@@ -239,7 +240,7 @@ export default class Media extends Component {
 		const nonremovable = util.getValue(block, 'nonremovable', false);
 
 		return (
-			<div className='mediaBlock'>
+			<>
 				<ModalRoute
 					className='gbx3'
 					optsProps={{ closeCallback: this.onCloseUploadEditor, customOverlay: { zIndex: 10000000 } }}
@@ -375,7 +376,7 @@ export default class Media extends Component {
 				:
 					this.renderVideo()
 				}
-			</div>
+			</>
 		)
 	}
 }

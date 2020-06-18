@@ -458,6 +458,7 @@ class PaymentFormClass extends Component {
 			primaryColor,
 			breakpoint,
 			openCart,
+			numCartItems,
 			cartCustomer
 		} = this.props;
 
@@ -467,7 +468,7 @@ class PaymentFormClass extends Component {
 			<div className='paymentFormHeader'>
 				<span className='paymentFormHeaderTitle'>Payment Info</span>
 				<div className='paymentFormHeaderText'>
-					<AnimateHeight height={openCart ? 0 : 'auto'}>
+					<AnimateHeight height={numCartItems < 1 ? 0 : 'auto'}>
 						<GBLink
 							allowCustom={true}
 							customColor={primaryColor}
@@ -651,7 +652,8 @@ function mapStateToProps(state, props) {
 	const cartTotal = util.getValue(cart, 'total', 0);
 	const zeroAmountAllowed = util.getValue(cart, 'zeroAmountAllowed', false);
 	const cartCustomer = util.getValue(cart, 'customer', {});
-	const cartItems = util.getValue(cart, 'items');
+	const cartItems = util.getValue(cart, 'items', []);
+	const numCartItems = cartItems.length;
 	const openCart = util.getValue(cart, 'open');
 	const paymethod = util.getValue(cart, 'paymethod');
 	const cardType = util.getValue(cart, 'cardType');
@@ -663,6 +665,7 @@ function mapStateToProps(state, props) {
 		zeroAmountAllowed,
 		cartCustomer,
 		cartItems,
+		numCartItems,
 		cartTotal,
 		openCart,
 		paymethod,

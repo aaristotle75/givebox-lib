@@ -34,14 +34,16 @@ class GBXTest extends Component {
 
 	render() {
 
-		const articleID = 383071;
+		const articleID = 735; //735; //383071;
 
 		return (
 			<div>
 				<GBX
+					orgID={185}
 					articleID={articleID}
 					saveCallback={this.saveCallback}
 					queryParams={this.props.queryParams}
+					editable={true}
 				/>
 			</div>
 		)
