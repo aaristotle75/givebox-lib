@@ -5,530 +5,530 @@
 
 a[href^="http://maps.google.com/maps"]{display:none !important}
 a[href^="https://maps.google.com/maps"]{display:none !important}
-  /*the desired background for the map*/
+	/*the desired background for the map*/
 #map_canvas{background-color:#fff !important}
 
 img[src="https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/map-marker.png"] {
-  @include animation(pulsateBrighter 1s ease-out infinite);
+	@include animation(pulsateBrighter 1s ease-out infinite);
 }
 
 img[src="https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/map-marker.png"]:hover {
-  @include animation(pulsateDimmer 1s ease-out infinite);
+	@include animation(pulsateDimmer 1s ease-out infinite);
 }
 
 img[src="https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/map-marker-blue.png"] {
-  //@include animation(pulsateBrighter 2s ease-out infinite);
+	//@include animation(pulsateBrighter 2s ease-out infinite);
 }
 
 .gmnoprint a, .gmnoprint span, .gm-style-cc {
-    display:none;
+		display:none;
 }
 .gmnoprint div {
-    background:none !important;
+		background:none !important;
 }
 
 .bar.greenBar {
-  border-right: 4px solid $green;
+	border-right: 4px solid $green;
 }
 
 .bar.seaBlueBar {
-  border-right: 4px solid $seaBlue;
+	border-right: 4px solid $seaBlue;
 }
 
 .bar.purpleBar {
-  border-right: 4px solid $purple;
+	border-right: 4px solid $purple;
 }
 
 .bar.magentaBar {
-  border-right: 4px solid $magenta;
+	border-right: 4px solid $magenta;
 }
 
 .bar1Gradient {
-  background: $bar1Gradient !important;
-  @include animation(pulsateBrighter 2s ease-out infinite);
+	background: $bar1Gradient !important;
+	@include animation(pulsateBrighter 2s ease-out infinite);
 }
 
 .bar2Gradient {
-  background: $bar2Gradient !important;
-  @include animation(pulsateBrighter 2s ease-out infinite);
+	background: $bar2Gradient !important;
+	@include animation(pulsateBrighter 2s ease-out infinite);
 }
 
 .bar3Gradient {
-  background: $bar3Gradient !important;
-  @include animation(pulsateBrighter 2s ease-out infinite);
+	background: $bar3Gradient !important;
+	@include animation(pulsateBrighter 2s ease-out infinite);
 }
 
 .bar4Gradient {
-  background: $bar4Gradient !important;
-  @include animation(pulsateBrighter 2s ease-out infinite);
+	background: $bar4Gradient !important;
+	@include animation(pulsateBrighter 2s ease-out infinite);
 }
 
 .analytics {
 
-  .menu {
-    height: 50px;
-    display: flex;
-    justify-content: space-between;
+	.menu {
+		height: 50px;
+		display: flex;
+		justify-content: space-between;
 
-    button.link {
-      margin: 5px 0px 0 10px;
-      font-weight: 300;
-    }
+		button.link {
+			margin: 5px 0px 0 10px;
+			font-weight: 300;
+		}
 
-    button.active {
-      color: $med-blue-gray;
-      cursor: default;
-    }
-  }
+		button.active {
+			color: $med-blue-gray;
+			cursor: default;
+		}
+	}
 
-  .anaylticsMapContainer {
-    position: relative;
-  }
+	.anaylticsMapContainer {
+		position: relative;
+	}
 
-  .analyticsMap {
-    width: 100%;
-    height: 250px;
-    overflow: hidden;
-    position: relative;
-    border-radius: 20px;
-  }
+	.analyticsMap {
+		width: 100%;
+		height: 250px;
+		overflow: hidden;
+		position: relative;
+		border-radius: 20px;
+	}
 
-  .timeline {
-    width: 80%;
-    height: 300px;
+	.timeline {
+		width: 80%;
+		height: 300px;
 
-    .dateRange {
+		.dateRange {
 
-      button.link {
-        display: flex;
-        align-items: center;
-        margin-left: 5px;
+			button.link {
+				display: flex;
+				align-items: center;
+				margin-left: 5px;
 
-        .icon {
-          font-size: $large-text-size;
-          margin-right: 10px;
-          font-weight: 300;
-        }
-      }
-    }
-  }
+				.icon {
+					font-size: $large-text-size;
+					margin-right: 10px;
+					font-weight: 300;
+				}
+			}
+		}
+	}
 
-  .totalStats {
-    width: 20%;
-    height: 300px;
+	.totalStats {
+		width: 20%;
+		height: 300px;
 
-    .menu {
-      justify-content: flex-end;
-    }
+		.menu {
+			justify-content: flex-end;
+		}
 
-    .total {
-      font-weight: 300;
-      white-space: nowrap;
-      overflow: hidden;
-      .moneyAmount {
-        align-self: center;
-        .symbol {
-        	display: inline;
-        	font-size: 45%;
-          vertical-align: top;
-        }
-        .dollarAmount {
-          vertical-align: top;
-        }
-        .dollarComma {
-          font-size: 65%;
-        }
-      }
+		.total {
+			font-weight: 300;
+			white-space: nowrap;
+			overflow: hidden;
+			.moneyAmount {
+				align-self: center;
+				.symbol {
+					display: inline;
+					font-size: 45%;
+					vertical-align: top;
+				}
+				.dollarAmount {
+					vertical-align: top;
+				}
+				.dollarComma {
+					font-size: 65%;
+				}
+			}
 
-    }
+		}
 
-    .stats {
-      text-align: right;
-      color: $green;
+		.stats {
+			text-align: right;
+			color: $green;
 
-      .total {
-        font-size: 2.5em;
-      }
-    }
+			.total {
+				font-size: 2.5em;
+			}
+		}
 
-    .substats {
-      text-align: right;
-      margin-bottom: 8px;
-      color: $deepBlue;
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
+		.substats {
+			text-align: right;
+			margin-bottom: 8px;
+			color: $deepBlue;
+			display: flex;
+			justify-content: flex-end;
+			align-items: center;
 
-      .bar {
-        margin-left: 10px;
-        height: 25px;
-        width: 4px;
-        background: $deepBlue;
-      }
+			.bar {
+				margin-left: 10px;
+				height: 25px;
+				width: 4px;
+				background: $deepBlue;
+			}
 
-      .number {
+			.number {
 
-      }
+			}
 
-      .total {
-        font-size: 1.1em;
-      }
-    }
+			.total {
+				font-size: 1.1em;
+			}
+		}
 
-    .label {
-      display: block;
-      font-size: $small-text-size;
-      color: $med-blue-gray;
-    }
-  }
+		.label {
+			display: block;
+			font-size: $small-text-size;
+			color: $med-blue-gray;
+		}
+	}
 
-  .map {
-    width: 65%;
-    min-width: 420px;
-    height: auto;
-    border-radius: 20px;
-  }
+	.map {
+		width: 65%;
+		min-width: 420px;
+		height: auto;
+		border-radius: 20px;
+	}
 
-  .radar {
-    position: relative;
-    width: 35%;
-    height: 250px;
-  }
+	.radar {
+		position: relative;
+		width: 35%;
+		height: 250px;
+	}
 
-  .statsBox {
-    width: 24%;
-    height: 100px;
-    background: $white;
-    border-radius: 20px;
-    font-weight: 300;
-    display: flex;
-    flex-direction: column;
-    padding: 10px 10px 10px 10px;
+	.statsBox {
+		width: 24%;
+		height: 100px;
+		background: $white;
+		border-radius: 20px;
+		font-weight: 300;
+		display: flex;
+		flex-direction: column;
+		padding: 10px 10px 10px 10px;
 
-    .topPart {
-      padding: 0 10px;
-      padding-bottom: 10px;
-      font-size: $small-text-size;
-      color: $med-blue-gray;
-      white-space: nowrap;
-      overflow: hidden;
-    }
+		.topPart {
+			padding: 0 10px;
+			padding-bottom: 10px;
+			font-size: $small-text-size;
+			color: $med-blue-gray;
+			white-space: nowrap;
+			overflow: hidden;
+		}
 
-    .bottomPart {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px;
-      white-space: nowrap;
-      overflow: hidden;
-    }
+		.bottomPart {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 10px;
+			white-space: nowrap;
+			overflow: hidden;
+		}
 
-    .bar {
-      width: 4px;
-      height: 40px;
-      background: blue;
-      margin-right: 10px;
-      z-index: 100;
-    }
+		.bar {
+			width: 4px;
+			height: 40px;
+			background: blue;
+			margin-right: 10px;
+			z-index: 100;
+		}
 
-    .total {
-      color: $deepBlue;
-      font-size: 1.75em;
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
+		.total {
+			color: $deepBlue;
+			font-size: 1.75em;
+			display: flex;
+			justify-content: flex-start;
+			align-items: center;
 
-      .bar {
-        width: 4px;
-        height: 30px;
-      }
+			.bar {
+				width: 4px;
+				height: 30px;
+			}
 
-    }
+		}
 
-    .total.greenBar {
-      border-left: 4px solid $green;
-    }
+		.total.greenBar {
+			border-left: 4px solid $green;
+		}
 
-    .total.seaBlueBar {
-      border-left: 4px solid $seaBlue;
-    }
+		.total.seaBlueBar {
+			border-left: 4px solid $seaBlue;
+		}
 
-    .total.magentaBar {
-      border-left: 4px solid $magenta;
-    }
+		.total.magentaBar {
+			border-left: 4px solid $magenta;
+		}
 
-    .total.deepOrangeBar {
-      border-left: 4px solid $deepOrange;
-    }
+		.total.deepOrangeBar {
+			border-left: 4px solid $deepOrange;
+		}
 
-    .total.purpleBar {
-      border-left: 4px solid $purple;
-    }
+		.total.purpleBar {
+			border-left: 4px solid $purple;
+		}
 
-    .direction {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      .icon {
-        font-size: 1em;
-      }
-      .diff {
-        color: $med-blue-gray;
-        font-size: 1em;
-      }
-    }
-  }
+		.direction {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			.icon {
+				font-size: 1em;
+			}
+			.diff {
+				color: $med-blue-gray;
+				font-size: 1em;
+			}
+		}
+	}
 
-  .topCampaignsContent {
-    width: 340px;
-    height: 100%;
-    overflow: hidden;
-    white-space: nowrap;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding-bottom: 20px;
-  }
+	.topCampaignsContent {
+		width: 340px;
+		height: 100%;
+		overflow: hidden;
+		white-space: nowrap;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		padding-bottom: 20px;
+	}
 
-  .topCampaignsBarChart {
-    min-width: 400px;
-    width: 100%;
-  }
+	.topCampaignsBarChart {
+		min-width: 400px;
+		width: 100%;
+	}
 
-  .topCustomers {
-    min-width: 200px;
-  }
+	.topCustomers {
+		min-width: 200px;
+	}
 
-  .topCustomersContent {
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-bottom: 20px;
-  }
+	.topCustomersContent {
+		height: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding-bottom: 20px;
+	}
 
-  .topCustomersPiechart {
-    overflow: visible;
-  }
+	.topCustomersPiechart {
+		overflow: visible;
+	}
 
-  .topTransactions {
-    width: 200px;
-  }
+	.topTransactions {
+		width: 200px;
+	}
 
-  .topTransactionsContent {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-bottom: 20px;
-  }
+	.topTransactionsContent {
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding-bottom: 20px;
+	}
 
 }
 
 .latestTransactions {
-  margin: 20px 0;
+	margin: 20px 0;
 }
 
 .transactionItem {
-  padding: 5px 0;
+	padding: 5px 0;
 
-  .topText {
-    display: block;
-    color: $med-blue-gray;
-    font-size: $tiny-text-size;
-  }
-  button.link {
-    text-align: left;
-    font-size: $med-text-size;
-    color: $mainColor;
-  }
+	.topText {
+		display: block;
+		color: $med-blue-gray;
+		font-size: $tiny-text-size;
+	}
+	button.link {
+		text-align: left;
+		font-size: $med-text-size;
+		color: $mainColor;
+	}
 }
 
 @media (max-width: 800px ) {
-  .analytics {
-    .section {
-      flex-direction: column;
-      justify-content: center;
-      height: auto;
-    }
+	.analytics {
+		.section {
+			flex-direction: column;
+			justify-content: center;
+			height: auto;
+		}
 
-    .map,
-    .radar,
-    .statsBox,
-    .timeline,
-    .totalStats,
-    .topCampaignsContent,
-    .topCampaignsBarChart,
-    .topCustomers {
-      width: 100%;
-    }
+		.map,
+		.radar,
+		.statsBox,
+		.timeline,
+		.totalStats,
+		.topCampaignsContent,
+		.topCampaignsBarChart,
+		.topCustomers {
+			width: 100%;
+		}
 
-    .topCustomersPiechart {
-      margin-bottom: 0;
-    }
+		.topCustomersPiechart {
+			margin-bottom: 0;
+		}
 
-    .topCustomersContent {
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding-bottom: 20px;
-    }
+		.topCustomersContent {
+			height: 100%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			padding-bottom: 20px;
+		}
 
-    .totalStats {
-      padding-right: 20px;
-    }
+		.totalStats {
+			padding-right: 20px;
+		}
 
-    .statsBox {
-      margin: 5px 0;
-    }
+		.statsBox {
+			margin: 5px 0;
+		}
 
-    .radar {
-      margin-top: 20px;
-    }
-  }
+		.radar {
+			margin-top: 20px;
+		}
+	}
 }
 
 /*------ Sortable ---------*/
 .sortableSection {
-  z-index: 999999999;
-  cursor: pointer;
+	z-index: 999999999;
+	cursor: pointer;
 }
 
 .sortableSectionItem {
-  position: relative;
+	position: relative;
 }
 
 button.sectionSortable {
-  position: absolute;
-  top: 2px;
-  right: 40px;
+	position: absolute;
+	top: 2px;
+	right: 40px;
 }
 
 .sortableSection:hover button.sectionSortable .icon {
-  color: $mainColor;
+	color: $mainColor;
 }
 
 
 /*------ Tooltip sectionSortable*/
 .tooltip.sectionSortable {
-  .tooltipTop {
-    background: #253655;
-  }
+	.tooltipTop {
+		background: #253655;
+	}
 }
 
 button.tooltip.sectionSortable {
-  .icon {
-    @include default-transition(.25s);
-    color: transparent;
-  }
+	.icon {
+		@include default-transition(.25s);
+		color: transparent;
+	}
 }
 
 .realTime {
-  position: relative;
-  width: 100%;
-  //background: $dark-blue-gray; #1818c8
-  //background: linear-gradient(to bottom, $med-blue-dark-gray 0%, $dark-blue-gray 100%);
-  background: linear-gradient(to right, #1818c8 0%, $dark-blue-gray 100%);
-  color: $white;
-  font-size: $small-text-size;
+	position: relative;
+	width: 100%;
+	//background: $dark-blue-gray; #1818c8
+	//background: linear-gradient(to bottom, $med-blue-dark-gray 0%, $dark-blue-gray 100%);
+	background: linear-gradient(to right, #1818c8 0%, $dark-blue-gray 100%);
+	color: $white;
+	font-size: $small-text-size;
 
-  .realTimeFlex {
-    display: flex;
-  }
+	.realTimeFlex {
+		display: flex;
+	}
 
-  .realTimeTotal {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 270px;
-    overflow: hidden;
-    white-space: wrap;
-    .moneyAmount {
-      font-size: 1.7em;
-    }
+	.realTimeTotal {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		width: 270px;
+		overflow: hidden;
+		white-space: wrap;
+		.moneyAmount {
+			font-size: 1.7em;
+		}
 
-    .centAmount {
-      font-size: 75%;
-    }
+		.centAmount {
+			font-size: 75%;
+		}
 
-    .date {
-      color: $med-blue-gray;
-    }
+		.date {
+			color: $med-blue-gray;
+		}
 
-    .change {
-      .moneyAmount {
-        font-size: 1.2em;
-      }
+		.change {
+			.moneyAmount {
+				font-size: 1.2em;
+			}
 
-      display: block;
-      font-size: $small-text-size;
-      color: $green;
-    }
-  }
+			display: block;
+			font-size: $small-text-size;
+			color: $green;
+		}
+	}
 
-  button.close {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    color: $white;
-  }
+	button.close {
+		position: absolute;
+		right: 10px;
+		top: 10px;
+		color: $white;
+	}
 
-  .realTimeLoader {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 75px;
-    width: 100%;
-    margin-right: 40px;
-  }
+	.realTimeLoader {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 75px;
+		width: 100%;
+		margin-right: 40px;
+	}
 
-  .ticker {
-    height: 75px;
-    width: 100%;
-    padding: 0 10px;
-    margin-right: 40px;
-  }
+	.ticker {
+		height: 75px;
+		width: 100%;
+		padding: 0 10px;
+		margin-right: 40px;
+	}
 
-  .description:hover {
-    background: transparentize($mainColor, .6);
-    @include default-transition(.5s);
-  }
+	.description:hover {
+		background: transparentize($mainColor, .6);
+		@include default-transition(.5s);
+	}
 
-  .description {
-    min-width: 150px;
-    max-width: 200px;
-    overflow: hidden;
-    white-space: wrap;
-    display: inline-block;
-    padding: 10px;
-    cursor: pointer;
+	.description {
+		min-width: 150px;
+		max-width: 200px;
+		overflow: hidden;
+		white-space: wrap;
+		display: inline-block;
+		padding: 10px;
+		cursor: pointer;
 
-    .line {
-      display: block;
-    }
-    .amount {
-      color: $green;
-      font-size: 1em;
-    }
-    .smallText {
-      font-size: .5em;
-    }
-    .date {
-      color: $med-blue-gray;
-    }
-  }
+		.line {
+			display: block;
+		}
+		.amount {
+			color: $green;
+			font-size: 1em;
+		}
+		.smallText {
+			font-size: .5em;
+		}
+		.date {
+			color: $med-blue-gray;
+		}
+	}
 
-  .ticker_element {
-  }
+	.ticker_element {
+	}
 }
 
 .inpageLoader {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 /*---- END ANALYTICS ------*/
@@ -541,574 +541,267 @@ $ad-min: 200px;
 
 
 .adStats {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  width: 100%;
-  height: auto;
-  background: transparent;
-  font-weight: 300;
-  color: $white;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	width: 100%;
+	height: auto;
+	background: transparent;
+	font-weight: 300;
+	color: $white;
 
-  .label {
-    display: block;
-    font-weight: 300;
-    font-size: $small-text-size !important;
-    color: $med-blue-gray;
-  }
+	.label {
+		display: block;
+		font-weight: 300;
+		font-size: $small-text-size !important;
+		color: $med-blue-gray;
+	}
 
-  .line {
-    text-align: center;
-    padding: 10px 0 10px 0;
-  }
+	.line {
+		text-align: center;
+		padding: 10px 0 10px 0;
+	}
 
-  .smallText {
-    font-weight: 300;
-    font-size: $small-text-size;
-  }
+	.smallText {
+		font-weight: 300;
+		font-size: $small-text-size;
+	}
 
 }
 
 .adContainer.graphicDivider {
 
-  padding-top: 60px;
+	padding-top: 60px;
 
-  .adContainerGraphic {
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    height: 40px;
-    opacity: .3;
-    background: url('https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/curved-line.png') no-repeat center;
-  }
+	.adContainerGraphic {
+		display: block;
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		width: 100%;
+		height: 40px;
+		opacity: .3;
+		background: url('https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/curved-line.png') no-repeat center;
+	}
 }
 
 .adContainer {
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  //max-width: 840px;
-  clear: both;
-  border-top-left-radius: 50%;
-  border-top-right-radius: 50%;
-  //background: linear-gradient(to bottom, $light 0%, $white 5%);
+	position: relative;
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	//max-width: 840px;
+	clear: both;
+	border-top-left-radius: 50%;
+	border-top-right-radius: 50%;
+	//background: linear-gradient(to bottom, $light 0%, $white 5%);
 
-  @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: center;
-    background: none;
-  }
+	@media (max-width: 768px) {
+		flex-direction: column;
+		align-items: center;
+		background: none;
+	}
 
-  .adContainerGraphic {
-    display: none;
-  }
+	.adContainerGraphic {
+		display: none;
+	}
 
-  .adContent {
-    position: absolute;
-    display: table;
-    margin: 0 auto;
-    width: 100%;
-  }
+	.adContent {
+		position: absolute;
+		display: table;
+		margin: 0 auto;
+		width: 100%;
+	}
 
-  .adItem {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    margin: 0px 10px 10px 10px;
-    width: 200px;
-    max-width: $ad-max;
-    height: auto;
-    border-radius: 20px;
-    //@include box-shadow(0px 2px 2px 0px rgba(0,0,0,0.4));
-    overflow: hidden;
-  }
+	.adItem {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		margin: 0px 10px 10px 10px;
+		width: 200px;
+		max-width: $ad-max;
+		height: auto;
+		border-radius: 20px;
+		//@include box-shadow(0px 2px 2px 0px rgba(0,0,0,0.4));
+		overflow: hidden;
+	}
 
-  .product {
-    border-radius: 20px;
-    min-width: $ad-min;
-    max-width: $ad-max;
-    width: 100%;
-    min-height: $ad-min;
-    height: auto;
-    cursor: pointer;
-    color: $white;
+	.product {
+		border-radius: 20px;
+		min-width: $ad-min;
+		max-width: $ad-max;
+		width: 100%;
+		min-height: $ad-min;
+		height: auto;
+		cursor: pointer;
+		color: $white;
 
-    img {
-      min-width: $ad-min;
-      max-width: $ad-max;
-      width: 100%;
-      min-height: $ad-min;
-      height: auto;
-      border-radius: 20px;
-    }
+		img {
+			min-width: $ad-min;
+			max-width: $ad-max;
+			width: 100%;
+			min-height: $ad-min;
+			height: auto;
+			border-radius: 20px;
+		}
 
-    .details {
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      content: "";
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) rotateY(90deg);
-      transform-origin: 100%;
-      background: linear-gradient(to bottom, $deepBlue 0%, $seaBlue 100%);
-      opacity: 0;
-      transition: all 0.4s ease-in;
-      border-bottom-left-radius: 50%;
-    }
+		.details {
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			content: "";
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%) rotateY(90deg);
+			transform-origin: 100%;
+			background: linear-gradient(to bottom, $deepBlue 0%, $seaBlue 100%);
+			opacity: 0;
+			transition: all 0.4s ease-in;
+			border-bottom-left-radius: 50%;
+		}
 
-  }
+	}
 
-  .productLink {
-    position: absolute;
-    bottom: 15px;
-    right: 0;
-    left: 0;
-    margin: 0 auto;
-    cursor: pointer;
-    color: $secondColor;
-    font-weight: 300;
-    opacity: 0;
-    @include transition(opacity .5s ease-out);
-    background: transparent;
-    padding: 5px 15px;
-    border-radius: 15px;
-    text-align: center;
-  }
+	.productLink {
+		position: absolute;
+		bottom: 15px;
+		right: 0;
+		left: 0;
+		margin: 0 auto;
+		cursor: pointer;
+		color: $secondColor;
+		font-weight: 300;
+		opacity: 0;
+		@include transition(opacity .5s ease-out);
+		background: transparent;
+		padding: 5px 15px;
+		border-radius: 15px;
+		text-align: center;
+	}
 
-  .productLink:hover {
-    color: $white;
-  }
+	.productLink:hover {
+		color: $white;
+	}
 
-  .product:hover + .bottomLink {
-    @include default-transition(.25s);
-    opacity: 0;
-  }
+	.product:hover + .bottomLink {
+		@include default-transition(.25s);
+		opacity: 0;
+	}
 
-  .product:hover {
-    overflow: hidden;
-    img {
-      @include default-transition(.5s);
-      @include filter(blur(10px));
-    }
+	.product:hover {
+		overflow: hidden;
+		img {
+			@include default-transition(.5s);
+			@include filter(blur(10px));
+		}
 
-    .adContent {
-      @include default-transition(.5s);
-      @include filter(blur(4px));
-    }
+		.adContent {
+			@include default-transition(.5s);
+			@include filter(blur(4px));
+		}
 
-    .productLink {
-      opacity: 1;
-    }
+		.productLink {
+			opacity: 1;
+		}
 
-    .details {
-      transform: translate(-50%, -50%) rotateY(0deg);
-      opacity: .92;
-    }
+		.details {
+			transform: translate(-50%, -50%) rotateY(0deg);
+			opacity: .92;
+		}
 
-    .bottom {
-      @include default-transition(.5s);
-      opacity: 0;
-    }
-  }
+		.bottom {
+			@include default-transition(.5s);
+			opacity: 0;
+		}
+	}
 
-  .productStats {
-    color: $white;
-    font-weight: 400;
-    font-size: $small-text-size;
-  }
+	.productStats {
+		color: $white;
+		font-weight: 400;
+		font-size: $small-text-size;
+	}
 
-  button.productLink {
-    color: $secondColor;
-  }
+	button.productLink {
+		color: $secondColor;
+	}
 
-  button.productLink:hover {
-    color: $white;
-  }
-
-
-  /*------ Email Blasts --------*/
-
-  .emailBlasts {
-    .adContent.top {
-      top: 35px;
-      text-align: center;
-      color: $dark;
-      font-weight: 400;
-      font-size: $normal-text-size;
-    }
-
-    .adContent.bottom {
-      bottom: 20px;
-      text-align: center;
-      font-size: $small-text-size;
-      color: $mainColor;
-    }
-  }
+	button.productLink:hover {
+		color: $white;
+	}
 
 
-  .addUsers {
+	/*------ Email Blasts --------*/
 
-    .adContent.bottom {
-      bottom: 8px;
-      text-align: center;
-      color: $dark;
-      font-weight: 400;
-      font-size: $med-text-size;
-    }
-  }
+	.emailBlasts {
+		.adContent.top {
+			top: 35px;
+			text-align: center;
+			color: $dark;
+			font-weight: 400;
+			font-size: $normal-text-size;
+		}
 
-  .share {
+		.adContent.bottom {
+			bottom: 20px;
+			text-align: center;
+			font-size: $small-text-size;
+			color: $mainColor;
+		}
+	}
 
-    .adContent.top {
-      top: 35px;
-      text-align: center;
-      color: $dark;
-      font-weight: 400;
-      font-size: $med-text-size;
-    }
-  }
 
-  .iconOnTop {
+	.addUsers {
 
-    .productStats {
+		.adContent.bottom {
+			bottom: 8px;
+			text-align: center;
+			color: $dark;
+			font-weight: 400;
+			font-size: $med-text-size;
+		}
+	}
 
-      .line {
-        text-align: center;
-        width: 75%;
-      }
-    }
+	.share {
 
-    .icon {
-      color: $secondColor;
-      font-size: 3em;
-    }
+		.adContent.top {
+			top: 35px;
+			text-align: center;
+			color: $dark;
+			font-weight: 400;
+			font-size: $med-text-size;
+		}
+	}
 
-    .icon:hover {
-      color: $white;
-    }
+	.iconOnTop {
 
-    .productLink {
-      font-size: $normal-text-size;
-      bottom: 25px;
-      font-weight: 300;
-    }
+		.productStats {
 
-  }
+			.line {
+				text-align: center;
+				width: 75%;
+			}
+		}
+
+		.icon {
+			color: $secondColor;
+			font-size: 3em;
+		}
+
+		.icon:hover {
+			color: $white;
+		}
+
+		.productLink {
+			font-size: $normal-text-size;
+			bottom: 25px;
+			font-weight: 300;
+		}
+
+	}
 }
 
 /*---- END ADS ------*/
-
-
-/*------- AVATAR --------*/
-button.link:hover .avatarImage {
-  //border: 1px solid $secondColor;
-}
-
-.avatarLink {
-  position: relative;
-
-  button.link {
-    display: flex;
-    align-items: center;
-    color: $mainColor;
-    font-size: $large-text-size;
-    font-weight: 400;
-
-    .orgName {
-      vertical-align: middle;
-    }
-  }
-
-  button.link:hover {
-    color: $secondColor;
-    @include default-transition(.25s);
-
-    .avatarImage {
-      //border: 1px solid $secondColor;
-      @include default-transition(.25s);
-    }
-
-    .defaultAvatarImage {
-      color: $mainColor;
-      border: 1px solid $mainColor;
-      .icon {
-        font-size: $normal-text-size;
-        color: $mainColor;
-      }
-    }
-  }
-
-  .icon {
-    font-size: $small-text-size;
-    font-weight: 500;
-  }
-
-  .link {
-    font-size: $large-text-size;
-    font-weight: 300;
-  }
-
-  .avatarImage {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    width: 45px;
-    height: 45px;
-    text-align: center;
-    overflow: hidden;
-    margin: 0 10px;
-    border: 1px solid $light-gray;
-
-    img {
-      display: inline;
-      margin: 0 auto;
-      height: 100%;
-      width: auto;
-    }
-  }
-}
-
-.avatarLink .defaultAvatarImage {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 10px;
-  height: 45px;
-  width: 45px;
-  border-radius: 50%;
-  color: $white;
-  background: $light-gray;
-  vertical-align: middle;
-  text-align: center;
-
-  .icon {
-    font-size: $normal-text-size;
-  }
-}
-
-.avatarMenu {
-
-  padding: 0 20px;
-
-  .validate button.link {
-    color: $orange;
-    font-size: $normal-text-size;
-  }
-
-  .validate button.link:hover {
-    color: $yellow;
-    text-decoration: underline;
-  }
-
-  h4 { margin-bottom: 0px; }
-
-  .avatarImage {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    width: 80px;
-    height: 80px;
-    text-align: center;
-    overflow: hidden;
-    border: 1px solid $light-gray;
-
-    img {
-      display: inline;
-      margin: 0 auto;
-      height: 100%;
-      width: auto;
-    }
-  }
-
-  .defaultAvatar {
-
-    button.link {
-      height: 80px;
-      width: 80px;
-      color: $white;
-      font-size: $tiny-text-size;
-      border-radius: 50%;
-      background: $light-gray;
-    }
-
-    button.link:hover {
-      color: $mainColor;
-      border: 1px solid $mainColor;
-      @include default-transition(.2s);
-
-      .defaultAvatarImage {
-        .icon {
-          color: $mainColor;
-        }
-      }
-    }
-
-    .defaultAvatarImage {
-      .icon {
-        top: 17px;
-        font-size: 3em;
-        color: $white;
-      }
-    }
-  }
-
-  .orgImage {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  	width: 175px;
-  	height: 175px;
-    text-align: center;
-    overflow: hidden;
-
-    img {
-      display: inline;
-      margin: 0 auto;
-      height: 100%;
-      width: auto;
-    }
-  }
-
-  .defaultOrg {
-
-    button.link {
-      height: 160px;
-      width: 160px;
-      color: $white;
-      font-weight: 400;
-      font-size: $normal-text-size;
-      border-radius: 20px;
-      background: $light-gray;
-    }
-
-    button.link:hover {
-      color: $mainColor;
-      border: 1px solid $mainColor;
-      @include default-transition(.2s);
-
-      .defaultOrgImage {
-        .icon {
-          color: $mainColor;
-        }
-      }
-    }
-
-    .defaultOrgImage {
-      .icon {
-        top: 17px;
-        font-size: 5em;
-        color: $white;
-      }
-    }
-  }
-
-  .logoSection {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-  }
-
-
-  .topSection {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    border-top: 1px solid $light-gray;
-    padding: 10px 0 0 0;
-    margin-top: 20px;
-
-    h3 { margin: 0; margin-top: 0px; margin-bottom: 0px; }
-
-    .line {
-      display: block;
-      padding: 4px 0;
-    }
-
-    .leftSide {
-      margin-right: 20px;
-    }
-
-    .rightSide {
-    }
-
-  }
-
-  .listSection {
-    padding: 10px 0;
-    border-bottom: 1px solid $light-gray;
-
-    .icon {
-      display: inline-block;
-      width: 20px;
-      margin-right: 10px;
-      color: $mainColor;
-      font-weight: 700;
-      text-align: center;
-      vertical-align: middle;
-    }
-
-    .text {
-      display: inline-block;
-      text-align: left;
-      vertical-align: middle;
-    }
-  }
-
-  .bottomSection {
-    margin-left: 5px;
-    padding: 20px 0;
-  }
-
-  .link { font-weight: 400; }
-
-  li:not(:first-child) {
-    border-top: 1px solid $light-med-gray;
-  }
-
-  li {
-    text-align: left;
-    padding: 15px 5px;
-    color: $med-gray;
-    cursor: pointer;
-    border: none !important;
-    border-radius: 20px;
-  }
-
-  li:hover {
-    background: $mainColor;
-    color: $white;
-    @include default-transition(.25s);
-    .icon { color: $white; }
-  }
-
-  .close {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    font-size: $normal-text-size;
-    color: $med-gray;
-  }
-
-  .close:hover {
-    color: $mainColor;
-  }
-
-}
-
-/*------ END AVATAR ------*/
-
 
 
 /*------- CAMPAIGNS -------*/
@@ -1117,301 +810,301 @@ $image-max: 338px;
 
 .campaigns {
 
-  .searchBlockContainer {
-    position: relative;
-  }
+	.searchBlockContainer {
+		position: relative;
+	}
 
-  .subNavFixed {
-    .botCreated {
-      top: 24px;
-    }
-  }
+	.subNavFixed {
+		.botCreated {
+			top: 24px;
+		}
+	}
 
-  .botCreated {
-    position: absolute;
-    top: 28px;
-    z-index: 1000;
-    @media (max-width: 992px) {
-      display: none;
-    }
-  }
+	.botCreated {
+		position: absolute;
+		top: 28px;
+		z-index: 1000;
+		@media (max-width: 992px) {
+			display: none;
+		}
+	}
 
-  .imageComponent {
-    img {
-      border-radius: 0px;
-    }
-  }
+	.imageComponent {
+		img {
+			border-radius: 0px;
+		}
+	}
 
-  .subNavContent {
+	.subNavContent {
 
-    .filter {
-      margin-top: 15px;
-    }
+		.filter {
+			margin-top: 15px;
+		}
 
-    .filterWrapper {
-      margin-top: 10px;
-      button.link {
-        top: -12px;
-      }
-    }
-  }
+		.filterWrapper {
+			margin-top: 10px;
+			button.link {
+				top: -12px;
+			}
+		}
+	}
 
-  .campaignStats {
+	.campaignStats {
 
-    .total {
-      margin: 15px 0;
-      text-align: right;
-      padding-right: 15px;
-    }
+		.total {
+			margin: 15px 0;
+			text-align: right;
+			padding-right: 15px;
+		}
 
-    .bar {
-      width: 4px;
-      height: 30px;
-      background: blue;
-      margin-right: 10px;
-      z-index: 100;
-    }
+		.bar {
+			width: 4px;
+			height: 30px;
+			background: blue;
+			margin-right: 10px;
+			z-index: 100;
+		}
 
-    .line {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-    }
+		.line {
+			display: flex;
+			justify-content: flex-end;
+			align-items: center;
+		}
 
-    .amount {
-      color: $dark-blue-gray;
-      font-size: 1.5em;
-      font-weight: 300;
-    }
+		.amount {
+			color: $dark-blue-gray;
+			font-size: 1.5em;
+			font-weight: 300;
+		}
 
-    .primary {
-      .amount {
-        font-size: 3em;
-      }
-    }
+		.primary {
+			.amount {
+				font-size: 3em;
+			}
+		}
 
-    .label {
-      display: block;
-      color: $med-blue-gray;
-      font-size: $small-text-size;
-    }
-  }
+		.label {
+			display: block;
+			color: $med-blue-gray;
+			font-size: $small-text-size;
+		}
+	}
 
-  /*-------- Sub Header --------*/
-  .fixed header.subNavFixed {
+	/*-------- Sub Header --------*/
+	.fixed header.subNavFixed {
 
-    .subNavContent {
+		.subNavContent {
 
-      .filterWrapper {
-        margin-top: 10px;
-        button.link {
-          top: -12px;
-        }
-      }
+			.filterWrapper {
+				margin-top: 10px;
+				button.link {
+					top: -12px;
+				}
+			}
 
-      .leftSide {
-        display: flex;
-        flex-direction: row-reverse;
-        margin-right: 20px;
-      }
+			.leftSide {
+				display: flex;
+				flex-direction: row-reverse;
+				margin-right: 20px;
+			}
 
-      .balance {
-        flex: 1;
-        flex-direction: row;
-        align-items: center;
+			.balance {
+				flex: 1;
+				flex-direction: row;
+				align-items: center;
 
-        .input-group {
-          margin-left: 10px;
-        }
+				.input-group {
+					margin-left: 10px;
+				}
 
-        h1 {
-          margin-top: 0px;
-          margin-bottom: 0px;
-          font-size: 2em;
-          height: auto;
-        }
-        button { margin-top: 2px; }
+				h1 {
+					margin-top: 0px;
+					margin-bottom: 0px;
+					font-size: 2em;
+					height: auto;
+				}
+				button { margin-top: 2px; }
 
-        .dropdown button {
-          padding: 0px 0 3px 0;
-        }
-      }
-    }
-  }
-
-
-  /*------- Balance Block --------*/
-  .balance {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-
-    h1 {
-      height: 60px;
-      margin-bottom: 5px;
-    }
-
-    .input-group {
-      padding: 0;
-      margin-left: 0px;
-    }
-
-  }
+				.dropdown button {
+					padding: 0px 0 3px 0;
+				}
+			}
+		}
+	}
 
 
-  @media (max-width: 992px) {
+	/*------- Balance Block --------*/
+	.balance {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
 
-  	/*-------- Sub Header --------*/
-  	.fixed header.subNavFixed {
-  		.subNavContent {
-  			.leftSide {
-  				margin-left: 50px;
-  			}
-  	    .balance {
-  	      margin-top: 0px;
-  				h1 {
-            margin-top: 0px;
-          }
-  				.dropdown .dropdown-content {
-  					position: fixed;
-            width: auto;
-  				}
-  			}
-  		}
-  	}
+		h1 {
+			height: 60px;
+			margin-bottom: 5px;
+		}
 
-  	.subNavContent {
-  	  .balance {
-        align-items: flex-start;
-  	    h1 {
-  				color: $light-gray;
-          margin-top: 0px;
-          height: 45px;
-  	    }
-  			.dropdown .label,
-  			.dropdown .icon {
-  				color: $light-gray;
-  			}
-  	  }
-  	}
-  }
+		.input-group {
+			padding: 0;
+			margin-left: 0px;
+		}
 
-  @media only screen and (max-width: 600px) {
+	}
 
-    .input-group.dropdown-button .dropdown button {
-      display: block;
-    }
 
-  	.fixed header.subNavFixed {
-  		.subNavContent {
-  			.balance {
-          display: flex;
-  				justify-content: flex-start;
-  				flex-direction: row-reverse;
-          margin-top: 5px;
-  				h1 {
-  					margin-left: 10px;
-  					height: auto;
-  				}
-  			}
+	@media (max-width: 992px) {
 
-        .dropdown {
-          width: 100%;
-          vertical-align: middle;
-          button {
-            text-align: right;
-            vertical-align: middle;
-          }
-          .icon {
-            position: relative;
-            right: 0;
-            top: 2px;
-            margin: 0 10px;
-          }
-        }
-  		}
-  	}
+		/*-------- Sub Header --------*/
+		.fixed header.subNavFixed {
+			.subNavContent {
+				.leftSide {
+					margin-left: 50px;
+				}
+				.balance {
+					margin-top: 0px;
+					h1 {
+						margin-top: 0px;
+					}
+					.dropdown .dropdown-content {
+						position: fixed;
+						width: auto;
+					}
+				}
+			}
+		}
 
-  	.subNavContent {
-  		.balance {
-  			align-items: center;
-  			justify-content: center;
-        h1 {
-          height: 60px;
-        }
-  		}
-      .dropdown {
-        width: 100%;
-        vertical-align: middle;
-        button {
-          text-align: center;
-          vertical-align: middle;
-        }
-        .icon {
-          position: relative;
-          right: 0;
-          top: 2px;
-          margin: 0 10px;
-        }
-      }
-    }
-  }
+		.subNavContent {
+			.balance {
+				align-items: flex-start;
+				h1 {
+					color: $light-gray;
+					margin-top: 0px;
+					height: 45px;
+				}
+				.dropdown .label,
+				.dropdown .icon {
+					color: $light-gray;
+				}
+			}
+		}
+	}
 
-  .landing {
+	@media only screen and (max-width: 600px) {
 
-    button.sectionSortable {
-      top: 20px;
-    }
+		.input-group.dropdown-button .dropdown button {
+			display: block;
+		}
 
-    .givebox-lib-table {
-      tbody td {
-        padding: 5px;
-        font-size: $med-text-size;
-      }
-    }
+		.fixed header.subNavFixed {
+			.subNavContent {
+				.balance {
+					display: flex;
+					justify-content: flex-start;
+					flex-direction: row-reverse;
+					margin-top: 5px;
+					h1 {
+						margin-left: 10px;
+						height: auto;
+					}
+				}
 
-    .section {
-      flex-direction: column;
-      padding: 10px 0;
-    }
+				.dropdown {
+					width: 100%;
+					vertical-align: middle;
+					button {
+						text-align: right;
+						vertical-align: middle;
+					}
+					.icon {
+						position: relative;
+						right: 0;
+						top: 2px;
+						margin: 0 10px;
+					}
+				}
+			}
+		}
 
-    .analytics {
+		.subNavContent {
+			.balance {
+				align-items: center;
+				justify-content: center;
+				h1 {
+					height: 60px;
+				}
+			}
+			.dropdown {
+				width: 100%;
+				vertical-align: middle;
+				button {
+					text-align: center;
+					vertical-align: middle;
+				}
+				.icon {
+					position: relative;
+					right: 0;
+					top: 2px;
+					margin: 0 10px;
+				}
+			}
+		}
+	}
 
-      .statsSection {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        overflow: hidden;
+	.landing {
 
-        .statsBox {
-          width: 100%;
-          justify-content: center;
-        }
-      }
-    }
+		button.sectionSortable {
+			top: 20px;
+		}
 
-    .collapse {
-      margin: 20px 0;
-    }
+		.givebox-lib-table {
+			tbody td {
+				padding: 5px;
+				font-size: $med-text-size;
+			}
+		}
 
-    .row {
-      display: flex;
-      justify-content: space-between;
-      @media (max-width: 1100px) {
-        flex-direction: column;
-      }
+		.section {
+			flex-direction: column;
+			padding: 10px 0;
+		}
 
-      .column {
-        display: inline-block;
-        width: 49%;
-        @media (max-width: 1100px) {
-          display: block;
-          width: 100%;
-        }
-      }
+		.analytics {
 
-    }
-  }
+			.statsSection {
+				width: 100%;
+				display: flex;
+				justify-content: center;
+				overflow: hidden;
+
+				.statsBox {
+					width: 100%;
+					justify-content: center;
+				}
+			}
+		}
+
+		.collapse {
+			margin: 20px 0;
+		}
+
+		.row {
+			display: flex;
+			justify-content: space-between;
+			@media (max-width: 1100px) {
+				flex-direction: column;
+			}
+
+			.column {
+				display: inline-block;
+				width: 49%;
+				@media (max-width: 1100px) {
+					display: block;
+					width: 100%;
+				}
+			}
+
+		}
+	}
 
 }
 
@@ -1421,34 +1114,34 @@ $image-max: 338px;
 
 /*------- CHARTS --------*/
 .recharts-default-tooltip {
-  width: 150px;
-  overflow: hidden;
-  white-space: normal !important;
-  word-wrap: break-word;
+	width: 150px;
+	overflow: hidden;
+	white-space: normal !important;
+	word-wrap: break-word;
 }
 
 .chart {
 
-  .empty {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: $light-med-gray;
-    font-weight: 300;
-  }
+	.empty {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: $light-med-gray;
+		font-weight: 300;
+	}
 
 }
 
 .chartLoader {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .loadingText {
-  color: $med-blue-gray;
-  font-weight: 300;
-  margin-right: 10px;
+	color: $med-blue-gray;
+	font-weight: 300;
+	margin-right: 10px;
 }
 /*------- END CHARTS --------*/
 
@@ -1456,43 +1149,43 @@ $image-max: 338px;
 /*------- FORM --------*/
 .gbxform {
 
-  iframe {
-    width: 770px;
-    min-height: 750px !important;
-    overflow: auto;
-  }
+	iframe {
+		width: 770px;
+		min-height: 750px !important;
+		overflow: auto;
+	}
 }
 
 .readOnly.tooltip .tooltipTop {
-  color: $white;
-  background-color: $dark-blue-gray;
+	color: $white;
+	background-color: $dark-blue-gray;
 }
 
 .readOnly.tooltip .tooltipTop i::after {
-  background-color: $dark-blue-gray;
+	background-color: $dark-blue-gray;
 }
 
 .formSectionContainer {
-  .description {
+	.description {
 
-    h3 {
-      margin: 30px 0 10px 0;
-    }
-    .line {
-      padding: 10px 0;
-    }
-    .detailsLabel {
-      display: block;
-      font-weight: 300;
-      color: $med-gray;
-      font-size: $small-text-size;
-    }
+		h3 {
+			margin: 30px 0 10px 0;
+		}
+		.line {
+			padding: 10px 0;
+		}
+		.detailsLabel {
+			display: block;
+			font-weight: 300;
+			color: $med-gray;
+			font-size: $small-text-size;
+		}
 
-    .column50 {
-      vertical-align: top;
-      white-space: pre-wrap;
-    }
-  }
+		.column50 {
+			vertical-align: top;
+			white-space: pre-wrap;
+		}
+	}
 }
 /*------- END FORM --------*/
 
@@ -1500,26 +1193,26 @@ $image-max: 338px;
 /*------- GLOSSARY --------*/
 .glossary {
 
-  padding: 20px;
+	padding: 20px;
 
-  p {
-    font-weight: 300;
-    font-size: $med-text-size;
-  }
+	p {
+		font-weight: 300;
+		font-size: $med-text-size;
+	}
 
-  strong {
-    font-size: $med-text-size;
-    font-weight: 400;
-  }
+	strong {
+		font-size: $med-text-size;
+		font-weight: 400;
+	}
 
-  ul {
-    font-weight: 300;
-    margin: 20px 0 30px 0;
-    list-style-type: disc;
-    li {
-      margin: 20px 20px;
-    }
-  }
+	ul {
+		font-weight: 300;
+		margin: 20px 0 30px 0;
+		list-style-type: disc;
+		li {
+			margin: 20px 20px;
+		}
+	}
 
 }
 /*------- END GLOSSARY --------*/
@@ -1531,162 +1224,162 @@ $imageSize: 210px;
 
 /*----------- Image ----------*/
 .image {
-  position: relative;
-  width: 100%;
-  img {
-    width: 100%;
-    height: auto;
-  }
+	position: relative;
+	width: 100%;
+	img {
+		width: 100%;
+		height: auto;
+	}
 }
 
 .imagePlaceholder {
-  position: relative;
-  display: inline-block;
-  height: $imageSize;
-  width: $imageSize;
-  border-radius: 20px;
-  color: $white;
-  background: $light-gray;
-  vertical-align: middle;
-  text-align: center;
+	position: relative;
+	display: inline-block;
+	height: $imageSize;
+	width: $imageSize;
+	border-radius: 20px;
+	color: $white;
+	background: $light-gray;
+	vertical-align: middle;
+	text-align: center;
 
-  .icon {
-    position: absolute;
-    left:0; right:0;
-    top:45px; bottom:0;
-    margin: auto;
-    font-size: 120px;
-    font-weight: 200;
-    max-width:100%;
-    max-height:100%;
-  }
+	.icon {
+		position: absolute;
+		left:0; right:0;
+		top:45px; bottom:0;
+		margin: auto;
+		font-size: 120px;
+		font-weight: 200;
+		max-width:100%;
+		max-height:100%;
+	}
 }
 
 .imageCover {
-  position: absolute;
-  width: 100%;
-  max-width: $imageSize;
-  height: auto;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  cursor: pointer;
-  opacity: 0;
-  @include transition(opacity .5s ease-out);
+	position: absolute;
+	width: 100%;
+	max-width: $imageSize;
+	height: auto;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	cursor: pointer;
+	opacity: 0;
+	@include transition(opacity .5s ease-out);
 }
 
 button.imageCover {
-  margin: 0;
+	margin: 0;
 }
 
 .imageLink {
-  position: absolute;
-  bottom: 5px;
-  right: 10px;
-  cursor: pointer;
-  color: $white;
-  font-weight: 300;
-  opacity: 0;
-  @include transition(opacity .5s ease-out);
-  background: $overlayColor;
-  padding: 5px 15px;
-  border-radius: 15px;
+	position: absolute;
+	bottom: 5px;
+	right: 10px;
+	cursor: pointer;
+	color: $white;
+	font-weight: 300;
+	opacity: 0;
+	@include transition(opacity .5s ease-out);
+	background: $overlayColor;
+	padding: 5px 15px;
+	border-radius: 15px;
 }
 
 .imageLink:hover {
-  color: $secondColor;
+	color: $secondColor;
 }
 
 .image:hover {
-  .imageLink {
-    opacity: 1;
-  }
+	.imageLink {
+		opacity: 1;
+	}
 
-  .imageCover {
-    opacity: 1;
-    background: $overlayColor;
-  }
+	.imageCover {
+		opacity: 1;
+		background: $overlayColor;
+	}
 }
 
 
 .modalImage {
-  margin-bottom: 20px;
-  .image {
-    display: inline-block;
-    max-width: $imageSize;
-    img {
-      max-width: $imageSize;
-    }
-  }
-  .imagePlaceholder {
-    height: $imageSize;
-    width: $imageSize;
-  }
-  .imageCover {
-    max-width: $imageSize;
-  }
+	margin-bottom: 20px;
+	.image {
+		display: inline-block;
+		max-width: $imageSize;
+		img {
+			max-width: $imageSize;
+		}
+	}
+	.imagePlaceholder {
+		height: $imageSize;
+		width: $imageSize;
+	}
+	.imageCover {
+		max-width: $imageSize;
+	}
 }
 
 .description {
-  .image {
-    max-width: $imageSize;
-    img {
-      max-width: $imageSize;
-      border-radius: 20px;
-    }
-  }
-  .imagePlaceholder {
-    height: $imageSize;
-    width: $imageSize;
-  }
-  .imageCover {
-    max-width: $imageSize;
-    border-radius: 20px;
-  }
+	.image {
+		max-width: $imageSize;
+		img {
+			max-width: $imageSize;
+			border-radius: 20px;
+		}
+	}
+	.imagePlaceholder {
+		height: $imageSize;
+		width: $imageSize;
+	}
+	.imageCover {
+		max-width: $imageSize;
+		border-radius: 20px;
+	}
 }
 
 /*----- default image -------*/
 .imageComponent.noFlex {
-  display: block;
-  vertical-align: middle;
-  text-align: center;
+	display: block;
+	vertical-align: middle;
+	text-align: center;
 }
 
 .imageComponent {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 
-  img {
-    display: inline-block;
-    width: auto;
-    height: auto;
-  }
+	img {
+		display: inline-block;
+		width: auto;
+		height: auto;
+	}
 
-  .imageLoader {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    img {
-      width: auto !important;
-      height: auto !important;
-      min-height: auto !important;
-      min-width: auto !important;
-      border-radius: 0 !important;
-    }
-  }
+	.imageLoader {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		img {
+			width: auto !important;
+			height: auto !important;
+			min-height: auto !important;
+			min-width: auto !important;
+			border-radius: 0 !important;
+		}
+	}
 }
 
 .dropzone {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  text-align: center;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	text-align: center;
 	width: $imageSize;
 	height: $imageSize;
 	border-radius: 20px;
@@ -1698,357 +1391,357 @@ button.imageCover {
 .dropzone:hover {
 	background-color: $mainColor;
 	border: 1px solid $white;
-  @include default-transition(.25s);
+	@include default-transition(.25s);
 
-  .dropzone-icon {
-    color: $white;
-  }
+	.dropzone-icon {
+		color: $white;
+	}
 
 }
 
 .dropzone .text {
 	font-size: $normal-text-size;
 	font-weight: 300;
-  color: $mainColor;
+	color: $mainColor;
 }
 
 .dropzone:hover .text {
-  color: #fff;
+	color: #fff;
 }
 
 .dropzoneImageContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: $imageSize;
-  height: auto;
-  min-height: $imageSize;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: $imageSize;
+	height: auto;
+	min-height: $imageSize;
 
-  .imageLoader {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    img {
-      width: auto !important;
-      height: auto !important;
-      min-height: auto !important;
-      min-width: auto !important;
-      border-radius: 0 !important;
-    }
-  }
+	.imageLoader {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		img {
+			width: auto !important;
+			height: auto !important;
+			min-height: auto !important;
+			min-width: auto !important;
+			border-radius: 0 !important;
+		}
+	}
 
-  .dropzone-icon {
-    font-size: 100px;
-    color: $mainColor;
-  }
+	.dropzone-icon {
+		font-size: 100px;
+		color: $mainColor;
+	}
 
-  button.link {
-    position: relative;
-    display: block;
-  }
+	button.link {
+		position: relative;
+		display: block;
+	}
 }
 
 .dropzoneImage {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 
-  img {
-    display: block;
-    max-width: $imageSize;
-    max-height: $imageSize;
-    width: auto;
-    height: auto;
-    border-radius: 20px;
-  }
+	img {
+		display: block;
+		max-width: $imageSize;
+		max-height: $imageSize;
+		width: auto;
+		height: auto;
+		border-radius: 20px;
+	}
 
-  .imageLoader {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    img {
-      width: auto !important;
-      height: auto !important;
-      min-height: auto !important;
-      min-width: auto !important;
-      border-radius: 0 !important;
-    }
-  }
+	.imageLoader {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		img {
+			width: auto !important;
+			height: auto !important;
+			min-height: auto !important;
+			min-width: auto !important;
+			border-radius: 0 !important;
+		}
+	}
 }
 
 .uploadContainer {
-  position: relative;
-  height: 500px;
-  width: 100%;
+	position: relative;
+	height: 500px;
+	width: 100%;
 
-  .dropzone {
-    width: $imageSize;
-    height: 50px;
-    border-radius: 20px;
-  }
+	.dropzone {
+		width: $imageSize;
+		height: 50px;
+		border-radius: 20px;
+	}
 }
 
 .uploadLibraryContainer {
-  position: relative;
-  height: 100%;
-  padding-top: 250px;
-  overflow: hidden;
+	position: relative;
+	height: 100%;
+	padding-top: 250px;
+	overflow: hidden;
 
-  .menu {
-    position: fixed;
-    display: flex;
-    justify-content: flex-start;
-    flex-direction: column;
-    top: 0px;
-    left: 0;
-    right: 0;
-    height: 250px;
-    margin: 0 10px;
-    padding-top: 20px;
-    background: $white;
-    border-bottom: 1px solid $light;
+	.menu {
+		position: fixed;
+		display: flex;
+		justify-content: flex-start;
+		flex-direction: column;
+		top: 0px;
+		left: 0;
+		right: 0;
+		height: 250px;
+		margin: 0 10px;
+		padding-top: 20px;
+		background: $white;
+		border-bottom: 1px solid $light;
 
-    .button-group {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 20px 0 10px 0;
-    }
+		.button-group {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin: 20px 0 10px 0;
+		}
 
-    button.button {
-      width: $imageSize;
-      height: 50px;
-    }
+		button.button {
+			width: $imageSize;
+			height: 50px;
+		}
 
-    h4 {
-      margin: 0;
-    }
-  }
+		h4 {
+			margin: 0;
+		}
+	}
 
-  .content {
-    position: relative;
-    height: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
-    margin: 0 0 10px 0;
-    padding: 0 10px 10px 10px;
-  }
+	.content {
+		position: relative;
+		height: 100%;
+		overflow-y: auto;
+		overflow-x: hidden;
+		margin: 0 0 10px 0;
+		padding: 0 10px 10px 10px;
+	}
 }
 
 .photoSection.PhotoList {
 
-  .imageComponent img {
-    border-radius: 0px;
-  }
+	.imageComponent img {
+		border-radius: 0px;
+	}
 
-  position: relative;
+	position: relative;
 
-  ul:not(.pagination) {
-    display: flex;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    margin: 0 auto;
+	ul:not(.pagination) {
+		display: flex;
+		justify-content: flex-start;
+		flex-wrap: wrap;
+		align-items: center;
+		width: 100%;
+		height: 100%;
+		margin: 0 auto;
 
-    li.noPhoto {
-      width: 100%;
-      justify-content: flex-start;
-      color: $med-blue-gray;
-    }
+		li.noPhoto {
+			width: 100%;
+			justify-content: flex-start;
+			color: $med-blue-gray;
+		}
 
-    li.noPhoto.center {
-      justify-content: center;
-    }
+		li.noPhoto.center {
+			justify-content: center;
+		}
 
-    li {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: none;
-      border: 0;
-      width: 100px;
-      height: 100px;
-      padding: 0;
-      margin: 5px;
-    }
+		li {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: none;
+			border: 0;
+			width: 100px;
+			height: 100px;
+			padding: 0;
+			margin: 5px;
+		}
 
-    img {
-      vertical-align: middle;
-      height: auto;
-      width: auto;
-      border: 4px solid transparent;
-    }
+		img {
+			vertical-align: middle;
+			height: auto;
+			width: auto;
+			border: 4px solid transparent;
+		}
 
-    li:hover {
-      .buttons {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        @include default-transition(.25s);
-      }
-      img {
-        @include filter(blur(2px));
-        border: 4px solid $mainColor;
-        @include default-transition(.25s);
-      }
-    }
+		li:hover {
+			.buttons {
+				display: flex;
+				justify-content: space-around;
+				align-items: center;
+				@include default-transition(.25s);
+			}
+			img {
+				@include filter(blur(2px));
+				border: 4px solid $mainColor;
+				@include default-transition(.25s);
+			}
+		}
 
-    .buttons {
-      position: absolute;
-      bottom: 0;
-      display: none;
-      button {
-        margin: 0 5px;
-      }
-    }
+		.buttons {
+			position: absolute;
+			bottom: 0;
+			display: none;
+			button {
+				margin: 0 5px;
+			}
+		}
 
-    button.select {
-      color: $white;
-      background: transparentize($dark-blue-gray, .3);
-      border-radius: 20px;
-      font-weight: 300;
-      padding: 5px 10px;
-      font-size: $small-text-size;
-    }
+		button.select {
+			color: $white;
+			background: transparentize($dark-blue-gray, .3);
+			border-radius: 20px;
+			font-weight: 300;
+			padding: 5px 10px;
+			font-size: $small-text-size;
+		}
 
-    button.select:hover {
-      background: $mainColor;
-      color: $white;
-      @include default-transition(.25s);
-    }
+		button.select:hover {
+			background: $mainColor;
+			color: $white;
+			@include default-transition(.25s);
+		}
 
-    button.delete {
-      text-align: center;
-      border-radius: 20px;
-      font-weight: 300;
-      width: 30px;
-      height: 30px;
-      background: transparentize($dark-blue-gray, .3);
-      color: $white;
-      .icon {
-        display: inline-block;
-        margin-top: 5px;
-      }
-    }
+		button.delete {
+			text-align: center;
+			border-radius: 20px;
+			font-weight: 300;
+			width: 30px;
+			height: 30px;
+			background: transparentize($dark-blue-gray, .3);
+			color: $white;
+			.icon {
+				display: inline-block;
+				margin-top: 5px;
+			}
+		}
 
-    button.delete:hover {
-      color: $secondColor;
-      @include default-transition(.25s);
-    }
+		button.delete:hover {
+			color: $secondColor;
+			@include default-transition(.25s);
+		}
 
-  }
+	}
 }
 
 .uploadEditorContainer {
-  position: relative;
-  height: 100%;
-  overflow: hidden;
-  padding-bottom: 50px;
+	position: relative;
+	height: 100%;
+	overflow: hidden;
+	padding-bottom: 50px;
 
-  .menu {
-    position: absolute;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    bottom: 0px;
-    left: 0;
-    right: 0;
-    height: 70px;
-    background: $white;
-    padding: 0 10px;
-  }
+	.menu {
+		position: absolute;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		bottom: 0px;
+		left: 0;
+		right: 0;
+		height: 70px;
+		background: $white;
+		padding: 0 10px;
+	}
 
-  .content {
-    position: relative;
-    height: 100%;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding-top: 40px;
-  }
+	.content {
+		position: relative;
+		height: 100%;
+		overflow: hidden;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+		padding-top: 40px;
+	}
 
-  .rotate,
-  .scale {
-    margin: 0 5%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    @media (max-width: 600px) { margin: 0; }
-  }
+	.rotate,
+	.scale {
+		margin: 0 5%;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		@media (max-width: 600px) { margin: 0; }
+	}
 
-  .rotate {
-    .icon {
-      margin: 0 5px;
-    }
-  }
+	.rotate {
+		.icon {
+			margin: 0 5px;
+		}
+	}
 
-  .scale {
-    .icon.small {
-      font-size: $small-text-size;
-      margin-right: 5px;
-    }
-    .icon {
-      font-size: $large-text-size;
-      margin-left: 5px;
-    }
-  }
+	.scale {
+		.icon.small {
+			font-size: $small-text-size;
+			margin-right: 5px;
+		}
+		.icon {
+			font-size: $large-text-size;
+			margin-left: 5px;
+		}
+	}
 }
 
 .loadImage {
-  position: fixed;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: transparentize($dark-blue-gray, .05);
-  //color: $white;
-  z-index: 1;
+	position: fixed;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: transparentize($dark-blue-gray, .05);
+	//color: $white;
+	z-index: 1;
 
-  .loadingBarWrap {
-    width: 90%;
-    display: flex;
-    justify-content: flex-start;
-    flex-direction: column;
-  }
+	.loadingBarWrap {
+		width: 90%;
+		display: flex;
+		justify-content: flex-start;
+		flex-direction: column;
+	}
 
-  .loadingText {
-    font-size: $med-text-size;
-    font-weight: 300;
-    color: $white;
-    margin-bottom: 10px;
-  }
+	.loadingText {
+		font-size: $med-text-size;
+		font-weight: 300;
+		color: $white;
+		margin-bottom: 10px;
+	}
 
-  .loadingBar {
-    width: 100%;
-    height: 10px;
-    background: transparent;
-    border-radius: 20px;
-  }
+	.loadingBar {
+		width: 100%;
+		height: 10px;
+		background: transparent;
+		border-radius: 20px;
+	}
 }
 
 .imageDisplay {
-  .actionsMenu {
-    width: auto;
+	.actionsMenu {
+		width: auto;
 
-    button.menuLabel {
-      font-size: $normal-text-size;
-    }
-  }
+		button.menuLabel {
+			font-size: $normal-text-size;
+		}
+	}
 }
 /*------ END IMAGE ------*/
 
@@ -2056,154 +1749,154 @@ button.imageCover {
 /*------- LAUNCH ---------*/
 .mobileApp {
 
-  .title {
-    position: absolute;
-    display: flex;
-    justify-content: flex-start;
-    bottom: 60px;
-    left: 11px;
-    text-align: left;
-    z-index: 10000;
-    width: 160px;
-    color: $med-gray;
+	.title {
+		position: absolute;
+		display: flex;
+		justify-content: flex-start;
+		bottom: 60px;
+		left: 11px;
+		text-align: left;
+		z-index: 10000;
+		width: 160px;
+		color: $med-gray;
 
-    img {
-      width: 32px;
-      height: 32px;
-      border-radius: 0px;
-      max-width: 32px;
-      margin-right: 3px;
-      border: 1px solid $mainColor;
-    }
-  }
+		img {
+			width: 32px;
+			height: 32px;
+			border-radius: 0px;
+			max-width: 32px;
+			margin-right: 3px;
+			border: 1px solid $mainColor;
+		}
+	}
 }
 
 .swipeApp {
 
-  .title {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    top: 15px;
-    left: 0px;
-    text-align: center;
-    z-index: 10000;
-    width: 175px;
-    color: $med-gray;
+	.title {
+		position: absolute;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		top: 15px;
+		left: 0px;
+		text-align: center;
+		z-index: 10000;
+		width: 175px;
+		color: $med-gray;
 
-    img {
-      width: 35px;
-      height: 35px;
-      border-radius: 0px;
-      max-width: 35px;
-      margin-bottom: 2px;
-      border: 1px solid $mainColor;
-    }
-  }
+		img {
+			width: 35px;
+			height: 35px;
+			border-radius: 0px;
+			max-width: 35px;
+			margin-bottom: 2px;
+			border: 1px solid $mainColor;
+		}
+	}
 
-  .orgLogo {
-    position: absolute;
-    top: 104px;
-    left: 10px;
-    z-index: 10000;
+	.orgLogo {
+		position: absolute;
+		top: 104px;
+		left: 10px;
+		z-index: 10000;
 
-    img {
-      width: 25px;
-      height: 25px;
-      border-radius: 0px;
-      max-width: 25px;
-      margin-bottom: 0px;
-      border: 1px solid $mainColor;
-    }
-  }
+		img {
+			width: 25px;
+			height: 25px;
+			border-radius: 0px;
+			max-width: 25px;
+			margin-bottom: 0px;
+			border: 1px solid $mainColor;
+		}
+	}
 }
 
 .launch {
 
-  .tabs.previewTab {
-    .panel {
-      justify-content: center;
-      margin-bottom: 40px !important;
-    }
-    button.panelTab {
-      font-size: $normal-text-size;
-      margin: 0;
-    }
-  }
-  .caption {
-    display: block;
-    padding-top: 10px;
-    font-weight: 300;
-    font-size: $small-text-size;
-  }
+	.tabs.previewTab {
+		.panel {
+			justify-content: center;
+			margin-bottom: 40px !important;
+		}
+		button.panelTab {
+			font-size: $normal-text-size;
+			margin: 0;
+		}
+	}
+	.caption {
+		display: block;
+		padding-top: 10px;
+		font-weight: 300;
+		font-size: $small-text-size;
+	}
 
-  .choice-group {
+	.choice-group {
 
-    button .icon {
-      display: flex;
-      align-items: center;
-      font-size: 22px;
-    }
+		button .icon {
+			display: flex;
+			align-items: center;
+			font-size: 22px;
+		}
 
-    label {
-      color: #253655;
-    }
-  }
+		label {
+			color: #253655;
+		}
+	}
 
-  .image {
-    img {
-      border-radius: 20px;
-    }
-  }
+	.image {
+		img {
+			border-radius: 20px;
+		}
+	}
 
-  .imageCover {
-    z-index: 10001;
-    border-radius: 20px;
-  }
+	.imageCover {
+		z-index: 10001;
+		border-radius: 20px;
+	}
 
-  .imageLink {
-    left: 0;
-    right: 0;
-    text-align: center;
-  }
+	.imageLink {
+		left: 0;
+		right: 0;
+		text-align: center;
+	}
 }
 
 .balance .moneyAmount .centAmount {
-    vertical-align: top;
-    font-size: 100%;
+		vertical-align: top;
+		font-size: 100%;
 }
 
 button.link {
-  vertical-align: middle;
-  .icon {
-    vertical-align: middle;
-  }
+	vertical-align: middle;
+	.icon {
+		vertical-align: middle;
+	}
 }
 
 button.smallText {
-  font-size: $small-text-size !important;
+	font-size: $small-text-size !important;
 }
 
 .codeBlockText.alignCenter {
-  align-items: center;
+	align-items: center;
 }
 
 .codeBlockText {
-  align-items: flex-start;
-  font-weight: 300;
-  font-size: $med-text-size;
-  button {
-    font-size: $med-text-size !important;
-    vertical-align: top;
-  }
+	align-items: flex-start;
+	font-weight: 300;
+	font-size: $med-text-size;
+	button {
+		font-size: $med-text-size !important;
+		vertical-align: top;
+	}
 }
 
 .launch {
-  .stepLabelText {
-    margin-right: 10px;
-  }
+	.stepLabelText {
+		margin-right: 10px;
+	}
 }
 
 /*------ END LAUNCH -------*/
@@ -2212,109 +1905,109 @@ button.smallText {
 /*------ MONEY -------*/
 .finance {
 
-  .analytics {
+	.analytics {
 
-    .statsSection {
-      width: 24%;
-      @media (max-width: 801px) {
-        width: 100%;
-      }
-      overflow: hidden;
-    }
+		.statsSection {
+			width: 24%;
+			@media (max-width: 801px) {
+				width: 100%;
+			}
+			overflow: hidden;
+		}
 
-    .statsBox {
-      width: 100%;
-      height: 75px;
-      padding: 5px 10px;
+		.statsBox {
+			width: 100%;
+			height: 75px;
+			padding: 5px 10px;
 
-      .topPart {
-        padding: 0 5px;
-      }
+			.topPart {
+				padding: 0 5px;
+			}
 
-      .bottomPart {
-        justify-content: flex-start;
-        padding: 5px;
-        overflow: visible;
-        .diff {
-          margin-left: 10px;
-        }
-      }
+			.bottomPart {
+				justify-content: flex-start;
+				padding: 5px;
+				overflow: visible;
+				.diff {
+					margin-left: 10px;
+				}
+			}
 
-      .total {
-        font-size: 1.5em;
-        @media (min-width: 801px) and (max-width: 1200px) {
-          font-size: 2vw;
-        }
-      }
-    }
-  }
+			.total {
+				font-size: 1.5em;
+				@media (min-width: 801px) and (max-width: 1200px) {
+					font-size: 2vw;
+				}
+			}
+		}
+	}
 }
 
 .fraudMonitor {
 
-  ul {
-    margin: 10px;
-    text-align: left;
-    .label {
-      font-weight: 400;
-      font-size: $med-text-size;
-      margin-right: 5px;
-    }
-    li {
-      margin: 10px 0;
-      display: flex;
-      align-items: center;
-      font-weight: 300;
-      .dropdown button {
-        font-size: $med-text-size;
-      }
-    }
-  }
+	ul {
+		margin: 10px;
+		text-align: left;
+		.label {
+			font-weight: 400;
+			font-size: $med-text-size;
+			margin-right: 5px;
+		}
+		li {
+			margin: 10px 0;
+			display: flex;
+			align-items: center;
+			font-weight: 300;
+			.dropdown button {
+				font-size: $med-text-size;
+			}
+		}
+	}
 
-  h2 button.link {
-    margin-left: 10px;
-    font-size: $tiny-text-size;
-  }
+	h2 button.link {
+		margin-left: 10px;
+		font-size: $tiny-text-size;
+	}
 }
 
 .transferMoney {
 
-  .balance-block {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
+	.balance-block {
+		display: flex;
+		justify-content: space-around;
+		align-items: center;
 
-    .amounts {
-      width: 45%;
-      padding-left: 10px;
-      .line {
-        justify-content: flex-start;
-      }
-    }
+		.amounts {
+			width: 45%;
+			padding-left: 10px;
+			.line {
+				justify-content: flex-start;
+			}
+		}
 
-    .labels {
-      width: 55%;
-      .line {
-        justify-content: flex-end;
-      }
-      button {
-        font-weight: 400;
-        font-size: $small-text-size;
-      }
-    }
+		.labels {
+			width: 55%;
+			.line {
+				justify-content: flex-end;
+			}
+			button {
+				font-weight: 400;
+				font-size: $small-text-size;
+			}
+		}
 
-    .line {
-      font-weight: 300;
-      display: flex;
-      align-items: center;
-      margin: 10px 0;
-    }
+		.line {
+			font-weight: 300;
+			display: flex;
+			align-items: center;
+			margin: 10px 0;
+		}
 
-    .total {
-      font-size: $large-text-size;
-    }
+		.total {
+			font-size: $large-text-size;
+		}
 
-  }
+	}
 
 }
 /*------ END MONEY -------*/
@@ -2323,98 +2016,98 @@ button.smallText {
 /*------ PAGES ---------*/
 .pages {
 
-  .tabs.stepsTab .panel {
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 10px;
-  }
+	.tabs.stepsTab .panel {
+		display: flex;
+		justify-content: space-around;
+		margin-bottom: 10px;
+	}
 
 }
 
 label.givingPageUpload {
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  text-align: center;
+	left: 0;
+	right: 0;
+	margin: 0 auto;
+	text-align: center;
 }
 
 /*------ Sortable ---------*/
 .sortableCampaignList {
-  z-index: 999999999;
-  cursor: pointer;
+	z-index: 999999999;
+	cursor: pointer;
 }
 
 .sortableCampaignListItem {
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+	cursor: pointer;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
 .sortableCampaignListItem:hover {
-  background: $light;
-  @include default-transition(.25s);
-  border-radius: 20px;
+	background: $light;
+	@include default-transition(.25s);
+	border-radius: 20px;
 }
 
 button.campaignListSortable {
 }
 
 .sortableCampaignList:hover button.campaignListSortable .icon {
-  color: $mainColor;
+	color: $mainColor;
 }
 
 
 /*------ Tooltip sectionSortable*/
 .tooltip.campaignListSortable {
-  .tooltipTop {
-    background: #253655;
-    right: 0px;
-    left: -20px;
-    top: 0px;
-    min-width: 100px;
-  }
+	.tooltipTop {
+		background: #253655;
+		right: 0px;
+		left: -20px;
+		top: 0px;
+		min-width: 100px;
+	}
 }
 
 button.tooltip.campaignListSortable {
-  .icon {
-    @include default-transition(.25s);
-    color: $mainColor;
-  }
+	.icon {
+		@include default-transition(.25s);
+		color: $mainColor;
+	}
 }
 
 button.tooltip.campaignListSortable:hover {
-  .icon {
-    color: $secondColor;
-  }
+	.icon {
+		color: $secondColor;
+	}
 }
 
 .campaignList,
 .sortableCampaignListItem {
 
-  .imagePlaceholder {
-    height: 45px;
-    width: 45px;
-  }
+	.imagePlaceholder {
+		height: 45px;
+		width: 45px;
+	}
 
-  .imagePlaceholder .icon {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 7px;
-    bottom: 0;
-    margin: auto;
-    font-size: 30px;
-  }
+	.imagePlaceholder .icon {
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 7px;
+		bottom: 0;
+		margin: auto;
+		font-size: 30px;
+	}
 
-  .imgWrapper {
-    img {
-      min-width: 45px;
-      width: 45px;
-      height: 45px;
-      border-radius: 20px;
-    }
-  }
+	.imgWrapper {
+		img {
+			min-width: 45px;
+			width: 45px;
+			height: 45px;
+			border-radius: 20px;
+		}
+	}
 }
 /*----- END PAGES -------*/
 
@@ -2422,298 +2115,298 @@ button.tooltip.campaignListSortable:hover {
 /*----- PAGINATE -------*/
 /*----------- Pagination ------------*/
 .paginate {
-  padding-top: 40px;
+	padding-top: 40px;
 }
 
 .pagination .icon {
-  font-size: $large-text-size;
+	font-size: $large-text-size;
 }
 
 .pagination li {
-  border-radius: 50%;
-  padding: 13px;
-  margin: 0 5px;
-  width: 40px;
-  height: 40px;
+	border-radius: 50%;
+	padding: 13px;
+	margin: 0 5px;
+	width: 40px;
+	height: 40px;
 }
 
 .pagination .page {
-  color: $med-gray;
+	color: $med-gray;
 }
 
 .pagination .page:hover {
-  color: $mainColor;
-  background: transparent;
+	color: $mainColor;
+	background: transparent;
 }
 
 .pagination .active {
-  color: $light-med-gray;
-  text-decoration: underline;
+	color: $light-med-gray;
+	text-decoration: underline;
 }
 
 .pagination .active:hover {
-  color: $med-gray;
-  background: #FFFFFF;
+	color: $med-gray;
+	background: #FFFFFF;
 }
 
 .pagination .previous {
-  border-top-left-radius: none;
-  border-bottom-left-radius: none;
-  border-radius: 50%;
+	border-top-left-radius: none;
+	border-bottom-left-radius: none;
+	border-radius: 50%;
 }
 
 .pagination .previous:hover {
-  color: $mainColor;
-  background: transparent;
+	color: $mainColor;
+	background: transparent;
 }
 
 .pagination .next {
-  border-top-right-radius: none;
-  border-bottom-right-radius: none;
-  border-radius: 50%;
+	border-top-right-radius: none;
+	border-bottom-right-radius: none;
+	border-radius: 50%;
 }
 
 .pagination .next:hover {
-  color: $mainColor;
-  background: transparent;
+	color: $mainColor;
+	background: transparent;
 }
 
 .pagination .break {
-  width: 5%;
-  color: $med-gray;
-  margin: 0px;
+	width: 5%;
+	color: $med-gray;
+	margin: 0px;
 }
 
 .pagination .break:hover {
-  color: $med-gray;
-  background: transparent;
+	color: $med-gray;
+	background: transparent;
 }
 
 .pagination .disabled {
-  color: $light-med-gray;
-  background: transparent;
+	color: $light-med-gray;
+	background: transparent;
 }
 
 .pagination .disabled:hover {
-  color: $light-med-gray;
-  background: transparent;
+	color: $light-med-gray;
+	background: transparent;
 }
 /*----- END PAGINATE -------*/
 
 
 /*----- PRODUCT -------*/
 .productContainer {
-  display: flex;
-  justify-content: space-between;
-  @media (max-width: 768px) {
-    margin-top: 20px;
-    flex-direction: column;
-    align-items: center;
-  }
+	display: flex;
+	justify-content: space-between;
+	@media (max-width: 768px) {
+		margin-top: 20px;
+		flex-direction: column;
+		align-items: center;
+	}
 }
 
 .slick-prev,
 .slick-next {
-  display: none !important;
+	display: none !important;
 }
 
 .productSlickWrap {
-  position: relative;
-  display: block;
-  text-align: center;
-  width: $product-max + 40px;
+	position: relative;
+	display: block;
+	text-align: center;
+	width: $product-max + 40px;
 }
 
 .slick-slider.productWrapper {
 
-  .slick-list {
-  }
+	.slick-list {
+	}
 
-  .slick-slide {
-  }
+	.slick-slide {
+	}
 }
 
 button.productTitle {
-  width: 100%;
-  color: $mainColor;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  font-size: $large-text-size;
-  font-weight: 300;
-  .count {
-    text-align: center;
-    display: inline-block;
-    width: 20px;
-  }
-  .text {
-    text-align: left;
-    padding-left: 20px;
-    display: inline-block;
-  }
+	width: 100%;
+	color: $mainColor;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	font-size: $large-text-size;
+	font-weight: 300;
+	.count {
+		text-align: center;
+		display: inline-block;
+		width: 20px;
+	}
+	.text {
+		text-align: left;
+		padding-left: 20px;
+		display: inline-block;
+	}
 }
 
 .productItem {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  margin: 0px 20px 40px 20px;
-  width: 100%;
-  max-width: $product-max;
-  height: auto;
-  border-radius: 20px;
-  @include box-shadow(0px 2px 2px 0px rgba(0,0,0,0.4));
-  overflow: hidden;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	margin: 0px 20px 40px 20px;
+	width: 100%;
+	max-width: $product-max;
+	height: auto;
+	border-radius: 20px;
+	@include box-shadow(0px 2px 2px 0px rgba(0,0,0,0.4));
+	overflow: hidden;
 }
 
 .productDescription {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 100%;
-  margin-left: 10px;
-  background: transparent;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	width: 100%;
+	margin-left: 10px;
+	background: transparent;
 
-  button {
-    margin: 20px 0 20px 0;
-  }
+	button {
+		margin: 20px 0 20px 0;
+	}
 }
 
 .productStats {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  width: 100%;
-  height: auto;
-  background: transparent;
-  color: $white;
-  font-weight: 300;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	width: 100%;
+	height: auto;
+	background: transparent;
+	color: $white;
+	font-weight: 300;
 
-  .label {
-    display: block;
-    font-weight: 300;
-    font-size: $small-text-size !important;
-    color: $light;
-  }
+	.label {
+		display: block;
+		font-weight: 300;
+		font-size: $small-text-size !important;
+		color: $light;
+	}
 
-  .line {
-    text-align: center;
-    padding: 10px 0 10px 0;
-  }
+	.line {
+		text-align: center;
+		padding: 10px 0 10px 0;
+	}
 
-  .count {
-    font-size: 5em;
-  }
+	.count {
+		font-size: 5em;
+	}
 
-  .amount {
-    font-size: 2em;
-  }
+	.amount {
+		font-size: 2em;
+	}
 }
 
 .product {
-  position: relative;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
-  width: $product-max;
-  max-width: $product-max;
-  height: auto;
-  overflow: hidden;
-  img {
-    width: $product-max;
-    max-width: $product-max;
-    height: auto;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 0px;
-  }
+	position: relative;
+	border-top-left-radius: 20px;
+	border-top-right-radius: 20px;
+	width: $product-max;
+	max-width: $product-max;
+	height: auto;
+	overflow: hidden;
+	img {
+		width: $product-max;
+		max-width: $product-max;
+		height: auto;
+		border-top-left-radius: 20px;
+		border-top-right-radius: 20px;
+		border-bottom-left-radius: 0px;
+		border-bottom-right-radius: 0px;
+	}
 
-  .details {
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    content: "";
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotateY(90deg);
-    transform-origin: 100%;
-    background: linear-gradient(to bottom, $mainColor2 0%,$mainColor 100%);
-    opacity: 0;
-    transition: all 0.4s ease-in;
-    border-bottom-left-radius: 50%;
+	.details {
+		border-top-left-radius: 20px;
+		border-top-right-radius: 20px;
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		content: "";
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%) rotateY(90deg);
+		transform-origin: 100%;
+		background: linear-gradient(to bottom, $mainColor2 0%,$mainColor 100%);
+		opacity: 0;
+		transition: all 0.4s ease-in;
+		border-bottom-left-radius: 50%;
 
 
-    .content {
-      position: relative;
-      border-radius: 20px;
-      margin-top: 50%;
-      background: transparent;
+		.content {
+			position: relative;
+			border-radius: 20px;
+			margin-top: 50%;
+			background: transparent;
 
-      .button {
-        background: $white;
-      }
+			.button {
+				background: $white;
+			}
 
-      .button:hover {
-        background: $mainColor;
-      }
+			.button:hover {
+				background: $mainColor;
+			}
 
-    }
-  }
+		}
+	}
 }
 
 button.productLink {
-  position: absolute;
-  bottom: 15px;
-  right: 0;
-  left: 0;
-  font-weight: 300;
-  opacity: 0;
-  @include transition(opacity .5s ease-out);
-  background: transparent;
-  padding: 5px 15px;
-  border-radius: 15px;
-  text-align: center;
-  color: $secondColor;
-  width: 100%;
+	position: absolute;
+	bottom: 15px;
+	right: 0;
+	left: 0;
+	font-weight: 300;
+	opacity: 0;
+	@include transition(opacity .5s ease-out);
+	background: transparent;
+	padding: 5px 15px;
+	border-radius: 15px;
+	text-align: center;
+	color: $secondColor;
+	width: 100%;
 }
 
 button.productLink:hover {
-  color: $white;
+	color: $white;
 }
 
 .product:hover {
-  img {
-    @include default-transition(.5s);
-    @include filter(blur(10px));
-  }
+	img {
+		@include default-transition(.5s);
+		@include filter(blur(10px));
+	}
 
-  .productLink {
-    opacity: 1;
-  }
+	.productLink {
+		opacity: 1;
+	}
 
-  .details {
-    transform: translate(-50%, -50%) rotateY(0deg);
-    opacity: .8;
-  }
+	.details {
+		transform: translate(-50%, -50%) rotateY(0deg);
+		opacity: .8;
+	}
 }
 
 .showDetails {
 
-  img {
-    @include default-transition(.5s);
-    @include filter(blur(10px));
-  }
+	img {
+		@include default-transition(.5s);
+		@include filter(blur(10px));
+	}
 
-  .productLink {
-    opacity: 1;
-  }
+	.productLink {
+		opacity: 1;
+	}
 
-  .details {
-    transform: translate(-50%, -50%) rotateY(0deg) !important;
-    opacity: .8 !important;
-  }
+	.details {
+		transform: translate(-50%, -50%) rotateY(0deg) !important;
+		opacity: .8 !important;
+	}
 }
 /*----- END PRODUCT -------*/
 
@@ -2721,83 +2414,83 @@ button.productLink:hover {
 /*------ RADAR ---------*/
 .sonarContainer {
 
-  .topContainer {
-    position: absolute;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    margin: auto;
-    width: 250px;
-    height: 250px;
-    z-index: 1000;
-    padding: 10px 0;
+	.topContainer {
+		position: absolute;
+		right: 0;
+		left: 0;
+		bottom: 0;
+		margin: auto;
+		width: 250px;
+		height: 250px;
+		z-index: 1000;
+		padding: 10px 0;
 
-    button.link {
-      font-size: $small-text-size;
-    }
+		button.link {
+			font-size: $small-text-size;
+		}
 
-    .topWrapper {
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      flex-direction: column;
-    }
-  }
+		.topWrapper {
+			display: flex;
+			justify-content: flex-start;
+			align-items: center;
+			flex-direction: column;
+		}
+	}
 
-  .bottomContainer {
-    position: absolute;
-    right: 0;
-    left: 0;
-    bottom: 10px;
-    margin: auto;
-    width: 250px;
-    z-index: 1000;
+	.bottomContainer {
+		position: absolute;
+		right: 0;
+		left: 0;
+		bottom: 10px;
+		margin: auto;
+		width: 250px;
+		z-index: 1000;
 
-    button.link {
-      font-size: $small-text-size;
-    }
+		button.link {
+			font-size: $small-text-size;
+		}
 
-    .bottomWrapper {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      flex-direction: column;
-    }
-  }
+		.bottomWrapper {
+			display: flex;
+			justify-content: flex-end;
+			align-items: center;
+			flex-direction: column;
+		}
+	}
 
-  .bottomText {
-    color: $med-blue-gray;
-    font-size: $tiny-text-size;
-  }
+	.bottomText {
+		color: $med-blue-gray;
+		font-size: $tiny-text-size;
+	}
 
-  .latestTransactions {
-    margin: 0px 0;
-  }
+	.latestTransactions {
+		margin: 0px 0;
+	}
 
-  .transactionItem {
-    padding: 0px 0;
+	.transactionItem {
+		padding: 0px 0;
 
-    .topText {
-      display: block;
-      color: $med-blue-gray;
-      font-size: $tiny-text-size;
-    }
-    button.link {
-      font-size: $med-text-size;
-      color: $mainColor;
-    }
-  }
+		.topText {
+			display: block;
+			color: $med-blue-gray;
+			font-size: $tiny-text-size;
+		}
+		button.link {
+			font-size: $med-text-size;
+			color: $mainColor;
+		}
+	}
 }
 
 .sonar {
-  position: absolute;
-  top: 15px;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  margin: auto;
-  width: 200px;
-  height: 200px;
+	position: absolute;
+	top: 15px;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	margin: auto;
+	width: 200px;
+	height: 200px;
 }
 
 .ring {
@@ -2808,7 +2501,7 @@ button.productLink:hover {
 	width: 100%;
 	height: 100%;
 	z-index: 1;
-  @include animation(pulseSonar 6s ease-out infinite);
+	@include animation(pulseSonar 6s ease-out infinite);
 
 	&.ring-2 {
 		animation-delay: 2000ms
@@ -2824,117 +2517,117 @@ button.productLink:hover {
 }
 
 @keyframes pulseSonar {
-  0% {
-      box-shadow: 0 0 0 15px rgba($mainColor, 1);
-      transform: scale(0);
-      opacity: 0;
-  }
+	0% {
+			box-shadow: 0 0 0 15px rgba($mainColor, 1);
+			transform: scale(0);
+			opacity: 0;
+	}
 
-  10% {
-      box-shadow: 0 0 0 15px rgba($secondColor, 0.66);
-      opacity: 1;
-  }
+	10% {
+			box-shadow: 0 0 0 15px rgba($secondColor, 0.66);
+			opacity: 1;
+	}
 
-  30% {
-      box-shadow: 0 0 0 15px rgba($secondColor, 0.33);
-  }
+	30% {
+			box-shadow: 0 0 0 15px rgba($secondColor, 0.33);
+	}
 
-  100% {
-      box-shadow: 0 0 0 1px rgba($secondColor, 0);
-      transform: scale(1);
-  }
+	100% {
+			box-shadow: 0 0 0 1px rgba($secondColor, 0);
+			transform: scale(1);
+	}
 }
 
 @keyframes pulseSonarAlert {
-  0% {
-      box-shadow: 0 0 0 15px rgba($sonarAlertColor, 1);
-      transform: scale(0);
-      opacity: 0;
-  }
+	0% {
+			box-shadow: 0 0 0 15px rgba($sonarAlertColor, 1);
+			transform: scale(0);
+			opacity: 0;
+	}
 
-  50% {
-      box-shadow: 0 0 0 15px rgba($sonarAlertColor, 0.66);
-      opacity: 1;
-  }
+	50% {
+			box-shadow: 0 0 0 15px rgba($sonarAlertColor, 0.66);
+			opacity: 1;
+	}
 
-  70% {
-      box-shadow: 0 0 0 15px rgba($sonarAlertColor, 0.33);
-  }
+	70% {
+			box-shadow: 0 0 0 15px rgba($sonarAlertColor, 0.33);
+	}
 
-  100% {
-      box-shadow: 0 0 0 1px rgba($sonarAlertColor, 0);
-      transform: scale(1);
-  }
+	100% {
+			box-shadow: 0 0 0 1px rgba($sonarAlertColor, 0);
+			transform: scale(1);
+	}
 }
 
 .clockContainer {
-  position: absolute;
-  top: 15px;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  margin: auto;
-  width: 200px;
-  height: 200px;
+	position: absolute;
+	top: 15px;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	margin: auto;
+	width: 200px;
+	height: 200px;
 }
 
 .alert {
 
-  .topContainer {
-    button.link {
-      color: $sonarAlertColor;
-      @include animation(pulsateBrighter 1s infinite linear);
-    }
-  }
+	.topContainer {
+		button.link {
+			color: $sonarAlertColor;
+			@include animation(pulsateBrighter 1s infinite linear);
+		}
+	}
 
-  .topText {
-    color: $sonarAlertColor;
-    @include animation(pulsateBrighter 1s infinite linear);
-  }
+	.topText {
+		color: $sonarAlertColor;
+		@include animation(pulsateBrighter 1s infinite linear);
+	}
 
-  .bottomText {
-    color: $sonarAlertColor;
-    @include animation(pulsateBrighter 1s infinite linear);
-  }
+	.bottomText {
+		color: $sonarAlertColor;
+		@include animation(pulsateBrighter 1s infinite linear);
+	}
 
-  .ring {
-    @include animation(pulseSonarAlert 3s ease-out infinite, pulsateBrighter 1s infinite linear);
+	.ring {
+		@include animation(pulseSonarAlert 3s ease-out infinite, pulsateBrighter 1s infinite linear);
 
-  	&.ring-2 {
-  		animation-delay: 1000ms
-  	}
+		&.ring-2 {
+			animation-delay: 1000ms
+		}
 
-  	&.ring-3 {
-  		animation-delay: 2000ms
-  	}
+		&.ring-3 {
+			animation-delay: 2000ms
+		}
 
-  	&.ring-4 {
-  		animation-delay: 3000ms
-  	}
-  }
+		&.ring-4 {
+			animation-delay: 3000ms
+		}
+	}
 
-  .clock {
-    opacity: 1;
+	.clock {
+		opacity: 1;
 
-    .center {
-      background: $sonarAlertColor;
-      @include animation(pulsateBrighter .5s infinite linear);
-      @include transition(height .5s ease-out, width .5s ease-out);
-      height: 20px;
-      width: 20px;
-    }
+		.center {
+			background: $sonarAlertColor;
+			@include animation(pulsateBrighter .5s infinite linear);
+			@include transition(height .5s ease-out, width .5s ease-out);
+			height: 20px;
+			width: 20px;
+		}
 
-    .second {
-      display: none;
-      width: 2px;
-      opacity: .7;
-      @include animation(time 2s infinite linear, pulsateBrighter .5s infinite linear);
-      &:before {
-        background: $sonarAlertColor;
-        width: 3px;
-      }
-    }
-  }
+		.second {
+			display: none;
+			width: 2px;
+			opacity: .7;
+			@include animation(time 2s infinite linear, pulsateBrighter .5s infinite linear);
+			&:before {
+				background: $sonarAlertColor;
+				width: 3px;
+			}
+		}
+	}
 }
 
 .idle {
@@ -2942,57 +2635,57 @@ button.productLink:hover {
 }
 
 .clock {
-  position: relative;
-  height: 200px;
-  width: 200px;
-  background: $white;
-  box-sizing: border-box;
-  border-radius: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
+	position: relative;
+	height: 200px;
+	width: 200px;
+	background: $white;
+	box-sizing: border-box;
+	border-radius: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto;
 
-  .center {
-    height: 6px;
-    width: 6px;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    margin: auto;
-    background: $mainColor;
-    border-radius: 100%;
-  }
+	.center {
+		height: 6px;
+		width: 6px;
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		margin: auto;
+		background: $mainColor;
+		border-radius: 100%;
+	}
 
-  .second {
-    width: 2px;
-    height: 100%;
-    position: absolute;
-    left: 0;
-    right: 0;
-    margin: 0 auto;
-    opacity: .2;
-    //animation: time 60s infinite linear;
-    @include animation(time 10s infinite linear);
-    &:before {
-      position: absolute;
-      content: "";
-      background: $mainColor;
-      height: 80px;
-      width: 2px;
-      top: 10px;
-    }
-  }
+	.second {
+		width: 2px;
+		height: 100%;
+		position: absolute;
+		left: 0;
+		right: 0;
+		margin: 0 auto;
+		opacity: .2;
+		//animation: time 60s infinite linear;
+		@include animation(time 10s infinite linear);
+		&:before {
+			position: absolute;
+			content: "";
+			background: $mainColor;
+			height: 80px;
+			width: 2px;
+			top: 10px;
+		}
+	}
 }
 
 @keyframes time {
-  to {
-    transform: rotate(360deg);
-  }
+	to {
+		transform: rotate(360deg);
+	}
 }
 /*----- END RADAR --------*/
 
@@ -3000,244 +2693,244 @@ button.productLink:hover {
 /*----- SETTINGS ----------*/
 .settings {
 
-  .avatar .imageComponent {
-    border-radius: 50%;
-  }
+	.avatar .imageComponent {
+		border-radius: 50%;
+	}
 
 }
 
 .settingsPage h2.pageTitle {
-  display: none;
-  font-size: 1.5em;
-  color: $med-gray;
-  font-weight: 300;
-  margin-top: 20px;
-  margin-bottom: 0px;
-  @media (max-width: 600px) {
-    text-align: center;
-    display: block;
-  }
+	display: none;
+	font-size: 1.5em;
+	color: $med-gray;
+	font-weight: 300;
+	margin-top: 20px;
+	margin-bottom: 0px;
+	@media (max-width: 600px) {
+		text-align: center;
+		display: block;
+	}
 }
 
 .settings.landing +
-  .layout-main-wrapper .container {
-    padding: 5px 40px 10px 40px;
-    display: flex;
-    justify-content: center;
+	.layout-main-wrapper .container {
+		padding: 5px 40px 10px 40px;
+		display: flex;
+		justify-content: center;
 }
 
 .settings {
 
-  header.subNav {
-    min-height: 0;
-  }
+	header.subNav {
+		min-height: 0;
+	}
 
-  .settingsListContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+	.settingsListContainer {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
 
-  ul.settingsList {
+	ul.settingsList {
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-wrap: wrap;
 
-    li {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      font-size: 1.3em;
-      max-width: 250px;
-      min-width: 250px;
-      height: 175px;
-      background: $white;
-      margin: 10px 30px 30px 30px;
-      border-radius: 20px;
-      color: $mainColor;
-      cursor: pointer;
-      //@include box-shadow(0px 2px 2px 0px rgba(0,0,0,0.4));
-      @media (max-width: 520px) {
-        min-width: 70%;
-        max-width: 70%;
-      }
+		li {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			font-size: 1.3em;
+			max-width: 250px;
+			min-width: 250px;
+			height: 175px;
+			background: $white;
+			margin: 10px 30px 30px 30px;
+			border-radius: 20px;
+			color: $mainColor;
+			cursor: pointer;
+			//@include box-shadow(0px 2px 2px 0px rgba(0,0,0,0.4));
+			@media (max-width: 520px) {
+				min-width: 70%;
+				max-width: 70%;
+			}
 
-      .icon {
-        font-size: 2em;
-        margin-bottom: 10px;
-      }
+			.icon {
+				font-size: 2em;
+				margin-bottom: 10px;
+			}
 
-      .text {
-        margin-top: 10px;
-        font-weight: 300;
-      }
+			.text {
+				margin-top: 10px;
+				font-weight: 300;
+			}
 
-      img {
-        @include filter(brightness(90%));
-      }
-    }
+			img {
+				@include filter(brightness(90%));
+			}
+		}
 
-    li:hover {
-      color: $secondColor;
-      @include default-transition(.5s);
-      img {
-        @include filter(brightness(100%));
-        @include default-transition(.5s);
-      }
-    }
+		li:hover {
+			color: $secondColor;
+			@include default-transition(.5s);
+			img {
+				@include filter(brightness(100%));
+				@include default-transition(.5s);
+			}
+		}
 
-  }
+	}
 
 }
 
 /*------- MEDIA LIBRARY ---------*/
 .imageComponent.noFlex {
-  display: inline-block;
-  text-align: center;
-  vertical-align: middle;
+	display: inline-block;
+	text-align: center;
+	vertical-align: middle;
 }
 
 .modalFormContainer .mediaContainer {
-  justify-content: center;
+	justify-content: center;
 }
 
 .mediaContainer {
-  display: flex;
-  justify-content: flex-start;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  margin: 0 auto;
+	display: flex;
+	justify-content: flex-start;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+	margin: 0 auto;
 
-  .input-group {
-    margin: 0;
-    padding: 0;
-  }
+	.input-group {
+		margin: 0;
+		padding: 0;
+	}
 }
 
 .mediaLibrary {
-  .paginate {
-    padding: 0;
-  }
+	.paginate {
+		padding: 0;
+	}
 }
 
 .mediaList {
 
-  ul {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    margin: 0 auto;
+	ul {
+		display: flex;
+		justify-content: center;
+		flex-wrap: wrap;
+		align-items: center;
+		width: 100%;
+		height: 100%;
+		margin: 0 auto;
 
-    li.uploadField {
-      display: flex;
-      align-items: center;
-    }
+		li.uploadField {
+			display: flex;
+			align-items: center;
+		}
 
-    li.uploadField:hover {
-      background: transparent;
-    }
+		li.uploadField:hover {
+			background: transparent;
+		}
 
-    li:not(.uploadField) {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: none;
-      border: 0;
-      width: 200px;
-      height: 200px;
-      padding: 0;
-      margin: 5px;
-    }
+		li:not(.uploadField) {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: none;
+			border: 0;
+			width: 200px;
+			height: 200px;
+			padding: 0;
+			margin: 5px;
+		}
 
-    img {
-      vertical-align: middle;
-      border-radius: 20px;
-      max-height: 179px;
-      max-width: 179px;
-      height: auto;
-      width: auto;
-      border: 4px solid transparent;
-    }
+		img {
+			vertical-align: middle;
+			border-radius: 20px;
+			max-height: 179px;
+			max-width: 179px;
+			height: auto;
+			width: auto;
+			border: 4px solid transparent;
+		}
 
-    li:hover:not(.uploadField) {
-      .buttons {
-        display: flex;
-        @include default-transition(.25s);
-      }
-      img {
-        @include filter(blur(2px));
-        border: 4px solid $mainColor;
-        @include default-transition(.25s);
-      }
-    }
+		li:hover:not(.uploadField) {
+			.buttons {
+				display: flex;
+				@include default-transition(.25s);
+			}
+			img {
+				@include filter(blur(2px));
+				border: 4px solid $mainColor;
+				@include default-transition(.25s);
+			}
+		}
 
-    .buttons {
-      position: absolute;
-      bottom: 0;
-      display: none;
-      button {
-        margin: 0 5px;
-      }
-    }
+		.buttons {
+			position: absolute;
+			bottom: 0;
+			display: none;
+			button {
+				margin: 0 5px;
+			}
+		}
 
-    button.select {
-      color: $white;
-      background: transparentize($dark-blue-gray, .3);
-      border-radius: 20px;
-      font-weight: 300;
-      width: 100px;
-      height: 30px;
-    }
+		button.select {
+			color: $white;
+			background: transparentize($dark-blue-gray, .3);
+			border-radius: 20px;
+			font-weight: 300;
+			width: 100px;
+			height: 30px;
+		}
 
-    button.select:hover {
-      background: $mainColor;
-      color: $white;
-      @include default-transition(.25s);
-    }
+		button.select:hover {
+			background: $mainColor;
+			color: $white;
+			@include default-transition(.25s);
+		}
 
-    button.delete {
-      text-align: center;
-      border-radius: 20px;
-      font-weight: 300;
-      width: 30px;
-      height: 30px;
-      background: transparentize($dark-blue-gray, .3);
-      color: $white;
-      .icon {
-        display: inline-block;
-        margin-top: 5px;
-      }
-    }
+		button.delete {
+			text-align: center;
+			border-radius: 20px;
+			font-weight: 300;
+			width: 30px;
+			height: 30px;
+			background: transparentize($dark-blue-gray, .3);
+			color: $white;
+			.icon {
+				display: inline-block;
+				margin-top: 5px;
+			}
+		}
 
-    button.delete:hover {
-      color: $secondColor;
-      @include default-transition(.25s);
-    }
+		button.delete:hover {
+			color: $secondColor;
+			@include default-transition(.25s);
+		}
 
-  }
+	}
 }
 
 .permButtons {
-  button.link {
-    font-size: $small-text-size;
-  }
+	button.link {
+		font-size: $small-text-size;
+	}
 }
 
 .permList {
-  display: block;
-  text-align: left;
+	display: block;
+	text-align: left;
 }
 
 .permGroup {
-  margin-bottom: 30px;
+	margin-bottom: 30px;
 }
 
 .permItems {
@@ -3248,6 +2941,6 @@ button.productLink:hover {
 }
 
 .alerts {
-  padding: 0 10px;
+	padding: 0 10px;
 }
 /*----- END SETTINGS --------*/

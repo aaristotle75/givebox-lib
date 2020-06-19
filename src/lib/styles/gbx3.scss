@@ -3,17 +3,13 @@
 $breakpoint: 768px;
 
 .gbx3Layout {
-	display: flex;
-	justify-content: center;
-	min-height: 100vh;
+	position: relative;
+	display: block;
 	height: 100vh;
 	width: 100%;
-	overflow-x: hidden;
 	overflow-y: scroll;
- -webkit-overflow-scrolling: auto;
-	padding: 10px 0;
-	background: $white;
-	@include bgGradient(to bottom, $light-gray 0%, $white 20%);
+	overflow-x: hidden;
+	-webkit-overflow-scrolling: auto;
 
 	@media (max-width: $breakpoint) {
 		//padding: 50px 0;
@@ -31,11 +27,31 @@ $breakpoint: 768px;
 
 .gbx3 {
 
+	::-webkit-scrollbar {
+			width: 6px;
+			height: 10px;
+	}
+
+	::-webkit-scrollbar-track {
+		background-color: transparent;
+	}
+
+	::-webkit-scrollbar-thumb {
+		outline: 0;
+		border-radius: 20px;
+	}
+
 	/*------ Layout ------*/
 
-	$topHeaderHeight: 75px;
-	$topPanelHeight: 50px;
+	$topHeaderHeight: 50px;
+	$topPanelHeight: 40px;
 	$topOffset: $topHeaderHeight + $topPanelHeight;
+
+	.centerAlign {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
 
 	.gbx3AdminContainer {
 		width: 200px;
@@ -44,19 +60,18 @@ $breakpoint: 768px;
 
 	.gbx3Container {
 		display: table;
+		margin: 0 auto;
+		height: auto;
 		width: 100%;
-		max-width: 1000px;
-		height: 100vh;
+		padding: 10px;
+		background: $white;
+		@include bgGradient(to bottom, $light-gray 0%, $white 20%);
 	}
 
 	.layout-column {
 		display: table-row;
 		width: 100%;
 		height: 100%;
-	}
-
-	.gbx3LayoutWrapper {
-		position: relative;
 	}
 
 	.gbx3AdminLayout {
@@ -71,7 +86,32 @@ $breakpoint: 768px;
 		right: 0;
 		height: $topHeaderHeight;
 		width: 100%;
-		background: gray;
+
+		.avatarLink button.link {
+			color: $mainColor;
+			font-size: 1.3em;
+			font-weight: 400;
+		}
+
+		.avatarLink button.link:hover {
+			color: $mainColorLight;
+		}
+	}
+
+	.headerLeftSide {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		button.link {
+			font-size: 1em;
+		}
+		.logo {
+			img {
+				cursor: pointer;
+				height: 35px;
+				width: auto;
+			}
+		}
 	}
 
 	// Top Panel
@@ -82,7 +122,83 @@ $breakpoint: 768px;
 		right: 0;
 		height: $topPanelHeight;
 		width: 100%;
-		background: blue;
+		background: linear-gradient(to right, $mainColor 0%, $green 100%);;
+	}
+
+	.topPanelContainer {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		height: $topPanelHeight;
+
+		.adminPanelTabs {
+			button.link {
+				color: $white;
+				font-size: 1em;
+				font-weight: 500;
+				margin: 0;
+				height: $topPanelHeight;
+				width: 120px;
+				border: 0;
+				@media (max-width: $breakpoint) {
+					width: 90px;
+				}
+			}
+
+			button.link:hover {
+				color: $white;
+				border: 0;
+				background: transparentize($white, .8);
+			}
+
+			button.link.selected {
+				color: $white;
+				border: 0;
+				background: transparentize($white, .8);
+			}
+
+			button.link.selected:hover {
+				color: $white;
+				border: 0;
+				background: transparentize($white, .8);
+			}
+		}
+
+		button.link.side {
+			display: flex;
+			align-items: center;
+			margin: 0 20px;
+			color: $white;
+			font-size: 1em;
+		}
+		button.link.side:hover {
+			color: $light-gray;
+		}
+
+		.leftSide {
+			width: 20%;
+			white-space: nowrap;
+			.icon {
+				font-size: 22px;
+				margin-right: 5px;
+			}
+		}
+
+		.middle {
+			white-space: nowrap;
+		}
+
+		.rightSide {
+			color: $white;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 20%;
+			white-space: nowrap;
+			.icon {
+				font-size: 22px;
+			}
+		}
 	}
 
 	// Left Panel
@@ -94,7 +210,7 @@ $breakpoint: 768px;
 		background: $dark-blue-gray;
 		width: 100%;
 		max-width: 200px;
-		z-index: 899999;
+		z-index: 900001;
 		margin: 0;
 		overflow-x: hidden;
 		overflow-y: auto;
@@ -117,30 +233,52 @@ $breakpoint: 768px;
 
 	.leftPanelOpen {
 		position: absolute;
-		top: $topOffset;
+		top: $topOffset + 30px;
 		left: 10px;
 		z-index: 900000;
 		cursor: pointer;
-
+		@include transition(left .5);
 		.icon {
 			font-size: 30px;
 		}
 	}
 
+	.leftPanelOpenGraphic {
+		display: flex;
+		justify-content: center;
+		align-items: flex-start;
+		flex-direction: column;
+		padding: 10px;
+		width: 50px;
+		height: 50px;
+		border-radius: 50%;
+		color: $white;
+		//background: linear-gradient(to right, $mainColor 0%, $green 100%);
+		background: $mainColor;
+		@include default-transition(.5s);
+	}
+
+	.leftPanelOpenGraphic:hover {
+		background: transparentize($mainColor, .1);
+		//background: linear-gradient(to left, $mainColor 0%, $green 100%);
+	}
+
 	.leftPanelClose {
 		position: absolute;
-		top: $topOffset;
+		top: $topOffset + 10px;
 		left: 170px;
-		z-index: 900000;
+		z-index: 900002;
 		cursor: pointer;
 
 		.icon {
 			color: $med-blue-gray;
-			font-size: 18px;
+			font-size: 22px;
 		}
 	}
 
-	.leftPanelOpen.open { display: none; }
+	.leftPanelOpen.open {
+		left: 150px;
+	}
 	.leftPanelClose.close { display: none; }
 
 	.leftPanel.open {
@@ -159,38 +297,123 @@ $breakpoint: 768px;
 
 	// Stage Container
 	.stageContainer {
-		display: block;
-		margin-top: $topOffset;
-		overflow-y: hidden;
-		/*
 		position: fixed;
 		top: $topOffset;
 		left: 0;
 		right: 0;
-		bottom: $topOffset + 100px;
-		height: 100%;
-		overflow-y: scroll;
-		//width: $breakpoint + 100;
-		//overflow-x: scroll;
-		*/
+		bottom: 50px;
+		height: auto;
+		width: auto;
+		overflow-y: auto;
+		overflow-x: auto;
+		background: $light-gray;
 		@include transition(left .5s);
+		@media (max-width: $breakpoint) {
+			padding: 10px 0;
+		}
 
 		.gbx3Layout {
-			overflow-y: visible;
+			height: auto;
+			overflow-y: hidden;
+			min-width: 850px;
+			@media (max-width: $breakpoint) {
+				min-width: 100%;
+			}
+		}
+
+		.gbx3Container {
+		}
+
+		.gbx3Footer {
+			.footerContainer {
+				display: none;
+			}
+		}
+	}
+
+	.stageAligner {
+		display: block;
+		margin: 0 auto;
+		padding: 20px;
+		@media (max-width: $breakpoint) {
+			padding: 0;
 		}
 	}
 
 	.stageContainer.open {
-		padding-left: 200px;
+		left: 200px;
+
+		@media (max-width: $breakpoint) {
+			left: 0px;
+		}
 	}
 
-	.stageScroller {
+	.gbx3Footer {
 		position: relative;
-		height: 100vh;
-		overflow: scroll;
+		display: block;
+
+		.copyright {
+			margin-top: 10px;
+			display: flex;
+			font-size: 12px;
+			flex-direction: column;
+			justify-content: center;
+		}
 	}
 
-		/*------ Autofill handling -----*/
+	.bottomPanel {
+		position: fixed;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		height: 50px;
+		background: $white;
+		width: auto;
+		padding: 10px;
+		border-top: 1px solid $light-gray;
+		@include transition(left .5s);
+	}
+
+	.bottomPanel.open {
+		left: 200px;
+		@media (max-width: $breakpoint) {
+			left: 0px;
+		}
+	}
+
+	.adminPanelTabs {
+
+		.button-group {
+			margin: 0;
+			padding: 0;
+		}
+
+		button.link {
+			color: $dark;
+			font-size: 1em;
+			font-weight: 500;
+			border-bottom: 2px solid transparent;
+		}
+
+		button.link.selected {
+			color: $mainColor;
+			border-bottom: 2px solid $mainColor;
+		}
+
+		button.link.selected:hover {
+			color: $mainColor;
+			border-bottom: 2px solid $mainColor;
+		}
+
+		button.link:hover {
+			color: $mainColorLight;
+		}
+	}
+
+	/*-------- END Layout --------*/
+
+
+	/*------ Autofill handling -----*/
 	input:-internal-autofill-selected {
 		-webkit-appearance: menulist-button;
 		background-color: $white !important;
@@ -250,7 +473,7 @@ $breakpoint: 768px;
 		margin: 0 auto;
 		height: 25px;
 		width: 80px;
-		background: transparentize($green, .2);
+		background: transparentize($mainColor, 0);
 		color: $white;
 		font-size: 12px;
 		font-weight: 400;
@@ -398,7 +621,7 @@ $breakpoint: 768px;
 		width: 100%;
 		min-height: 20px;
 		color: $white;
-		background: transparentize($mainColor, .4);
+		background: transparentize($mainColorLight, .3);
 		z-index: 2;
 	}
 
@@ -461,14 +684,13 @@ $breakpoint: 768px;
 
 		.adminSectionContainer {
 			position: relative;
-			margin-top: 60px;
 			width: auto;
 			height: auto;
 		}
 
 		.adminSectionTitle {
 			font-size: 18px;
-			color: $white;
+			color: $light-gray;
 			font-weight: 300;
 			margin: 10px;
 			display: block;
@@ -535,43 +757,6 @@ $breakpoint: 768px;
 		.handle:hover {
 			color: $white;
 			@include default-transition(1s);
-		}
-	}
-
-	.logo {
-		position: absolute;
-		top: 10px;
-		height: 30px;
-		width: 100%;
-		max-width: 200px;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-
-		img {
-			cursor: pointer;
-			height: 25px;
-			width: 25px;
-		}
-	}
-
-	.loggedInGroup {
-		position: absolute;
-		bottom: 10px;
-		height: 30px;
-		width: 100%;
-		max-width: 200px;
-		margin: 0 10px;
-
-		.loggedInAs {
-			font-size: 10px;
-			color: $med-blue-gray;
-			display: block;
-		}
-
-		button.link {
-			color: $white;
-			font-size: 12px;
 		}
 	}
 
@@ -1042,16 +1227,6 @@ $breakpoint: 768px;
 		margin-left: 5px;
 	}
 
-	.gbx3Footer {
-		.copyright {
-			margin-top: 10px;
-			display: flex;
-			font-size: 12px;
-			flex-direction: column;
-			justify-content: center;
-		}
-	}
-
 	/*--------- Receipt Confirmation -----*/
 	.confirmation {
 
@@ -1366,3 +1541,52 @@ $breakpoint: 768px;
 
 
 /*-------- END CREATE NEW -----*/
+
+
+/*------ React Toggle Track -----*/
+.gbx3 {
+
+	.react-toggle {
+	}
+
+	.react-toggle-track {
+		height: 18px;
+		width: 45px;
+		background: linear-gradient(to right, $white 0%, $med-blue-gray 100%);
+	}
+
+	.react-toggle-thumb {
+		top: -3px;
+		width: 25px;
+		height: 25px;
+		@include box-shadow(0px 1px 2px 0px rgba(0, 0, 0, 0.55));
+		border: 0;
+	}
+
+	.react-toggle--checked .react-toggle-track {
+		height: 18px;
+		width: 45px;
+		background: linear-gradient(to right, $mainColor 0%, $mainColorLight 100%);
+	}
+
+	.react-toggle--checked .react-toggle-thumb {
+		left: 22px;
+		border-color: transparent;
+		box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55) !important;
+	}
+
+	.react-toggle--focus .react-toggle-thumb {
+		box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55) !important;
+	}
+
+	.react-toggle--checked:active .react-toggle-thumb {
+		box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55) !important;
+	}
+
+	.react-toggle:active {
+		.react-toggle-thumb {
+			box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55) !important;
+		}
+	}
+
+}

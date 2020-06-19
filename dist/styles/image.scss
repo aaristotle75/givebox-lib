@@ -3,159 +3,159 @@
 /*---------- Scale ----------*/
 .rotate,
 .scale {
-  margin: 0 5%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  @media (max-width: 600px) { margin: 0; }
+	margin: 0 5%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	@media (max-width: 600px) { margin: 0; }
 }
 
 .rotate {
-  .icon {
-    margin: 0 5px;
-  }
+	.icon {
+		margin: 0 5px;
+	}
 }
 
 .scale {
-  .icon.small {
-    font-size: $small-text-size;
-    margin-right: 5px;
-  }
-  .icon {
-    font-size: $large-text-size;
-    margin-left: 5px;
-  }
+	.icon.small {
+		font-size: $small-text-size;
+		margin-right: 5px;
+	}
+	.icon {
+		font-size: $large-text-size;
+		margin-left: 5px;
+	}
 }
 
 /*----------- Image ----------*/
 .image {
-  position: relative;
-  width: 100%;
-  img {
-    width: 100%;
-    height: auto;
-  }
+	position: relative;
+	width: 100%;
+	img {
+		width: 100%;
+		height: auto;
+	}
 }
 
 .imagePlaceholder {
-  position: relative;
-  display: inline-block;
-  height: 175px;
-  width: 175px;
-  border-radius: 20px;
-  color: $white;
-  background: $light-gray;
-  vertical-align: middle;
-  text-align: center;
+	position: relative;
+	display: inline-block;
+	height: 175px;
+	width: 175px;
+	border-radius: 20px;
+	color: $white;
+	background: $light-gray;
+	vertical-align: middle;
+	text-align: center;
 
-  .icon {
-    position: absolute;
-    left:0; right:0;
-    top:40px; bottom:0;
-    margin: auto;
-    font-size: 100px;
-    font-weight: 200;
-    max-width:100%;
-    max-height:100%;
-  }
+	.icon {
+		position: absolute;
+		left:0; right:0;
+		top:40px; bottom:0;
+		margin: auto;
+		font-size: 100px;
+		font-weight: 200;
+		max-width:100%;
+		max-height:100%;
+	}
 }
 
 .imageCover {
-  position: absolute;
-  width: 100%;
-  max-width: 175px;
-  height: auto;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  cursor: pointer;
-  opacity: 0;
-  @include transition(opacity .5s ease-out);
+	position: absolute;
+	width: 100%;
+	max-width: 175px;
+	height: auto;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	cursor: pointer;
+	opacity: 0;
+	@include transition(opacity .5s ease-out);
 }
 
 button.imageCover {
-  margin: 0;
+	margin: 0;
 }
 
 .imageLink {
-  position: absolute;
-  bottom: 5px;
-  right: 10px;
-  cursor: pointer;
-  color: $white;
-  font-weight: 300;
-  opacity: 0;
-  @include transition(opacity .5s ease-out);
-  background: $overlayColor;
-  padding: 5px 15px;
-  border-radius: 15px;
+	position: absolute;
+	bottom: 5px;
+	right: 10px;
+	cursor: pointer;
+	color: $white;
+	font-weight: 300;
+	opacity: 0;
+	@include transition(opacity .5s ease-out);
+	background: $overlayColor;
+	padding: 5px 15px;
+	border-radius: 15px;
 }
 
 .imageLink:hover {
-  color: $secondColor;
+	color: $secondColor;
 }
 
 .image:hover {
-  .imageLink {
-    opacity: 1;
-  }
+	.imageLink {
+		opacity: 1;
+	}
 
-  .imageCover {
-    opacity: 1;
-    background: $overlayColor;
-  }
+	.imageCover {
+		opacity: 1;
+		background: $overlayColor;
+	}
 }
 
 
 .modalImage {
-  margin-bottom: 20px;
-  .image {
-    display: inline-block;
-    max-width: 175px;
-    img {
-      max-width: 200px;
-    }
-  }
-  .imagePlaceholder {
-    height: 175px;
-    width: 175px;
-  }
-  .imageCover {
-    max-width: 175px;
-  }
+	margin-bottom: 20px;
+	.image {
+		display: inline-block;
+		max-width: 175px;
+		img {
+			max-width: 200px;
+		}
+	}
+	.imagePlaceholder {
+		height: 175px;
+		width: 175px;
+	}
+	.imageCover {
+		max-width: 175px;
+	}
 }
 
 .description {
-  .image {
-    max-width: 175px;
-    img {
-      max-width: 200px;
-      border-radius: 20px;
-    }
-  }
-  .imagePlaceholder {
-    height: 175px;
-    width: 175px;
-  }
-  .imageCover {
-    max-width: 175px;
-    border-radius: 20px;
-  }
+	.image {
+		max-width: 175px;
+		img {
+			max-width: 200px;
+			border-radius: 20px;
+		}
+	}
+	.imagePlaceholder {
+		height: 175px;
+		width: 175px;
+	}
+	.imageCover {
+		max-width: 175px;
+		border-radius: 20px;
+	}
 }
 
 /*----- default image -------*/
 
 .imageComponent.noFlex {
-  display: block;
-  vertical-align: middle;
-  text-align: center;
+	display: block;
+	vertical-align: middle;
+	text-align: center;
 }
 
 .imageComponent {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 	align-items: center;
 
 	.errorMsg {
@@ -165,34 +165,37 @@ button.imageCover {
 		font-size: 14px;
 	}
 
-  img {
-    display: inline-block;
-    width: auto;
-    height: auto;
-  }
+	img {
+		display: inline-block;
+		width: auto;
+		height: auto;
+		@media (max-width: 480px) {
+			width: 100%;
+		}
+	}
 
-  .imageLoader {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    img {
-      width: auto !important;
-      height: auto !important;
-      min-height: auto !important;
-      min-width: auto !important;
-      border-radius: 0 !important;
-    }
-  }
+	.imageLoader {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		img {
+			width: auto !important;
+			height: auto !important;
+			min-height: auto !important;
+			min-width: auto !important;
+			border-radius: 0 !important;
+		}
+	}
 }
 
 .dropzone {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  text-align: center;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	text-align: center;
 	width: 175px;
 	height: 175px;
 	border-radius: 20px;
@@ -204,459 +207,459 @@ button.imageCover {
 .dropzone:hover {
 	background-color: $mainColor;
 	border: 1px solid $white;
-  @include default-transition(.25s);
+	@include default-transition(.25s);
 
-  .dropzone-icon {
-    color: $white;
-  }
+	.dropzone-icon {
+		color: $white;
+	}
 
 }
 
 .dropzone .text {
 	font-size: $normal-text-size;
 	font-weight: 300;
-  color: $mainColor;
+	color: $mainColor;
 }
 
 .dropzone:hover .text {
-  color: #fff;
+	color: #fff;
 }
 
 .dropzoneImageContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 200px;
-  height: auto;
-  min-height: 200px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 200px;
+	height: auto;
+	min-height: 200px;
 
-  .imageLoader {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    img {
-      width: auto !important;
-      height: auto !important;
-      min-height: auto !important;
-      min-width: auto !important;
-      border-radius: 0 !important;
-    }
-  }
+	.imageLoader {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		img {
+			width: auto !important;
+			height: auto !important;
+			min-height: auto !important;
+			min-width: auto !important;
+			border-radius: 0 !important;
+		}
+	}
 
-  .dropzone-icon {
-    font-size: 100px;
-    color: $mainColor;
-  }
+	.dropzone-icon {
+		font-size: 100px;
+		color: $mainColor;
+	}
 
-  button.link {
-    position: relative;
-    display: block;
-  }
+	button.link {
+		position: relative;
+		display: block;
+	}
 }
 
 .dropzoneImage {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 
-  img {
-    display: block;
-    max-width: 175px;
-    max-height: 175px;
-    width: auto;
-    height: auto;
-    border-radius: 20px;
-  }
+	img {
+		display: block;
+		max-width: 175px;
+		max-height: 175px;
+		width: auto;
+		height: auto;
+		border-radius: 20px;
+	}
 
-  .imageLoader {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    img {
-      width: auto !important;
-      height: auto !important;
-      min-height: auto !important;
-      min-width: auto !important;
-      border-radius: 0 !important;
-    }
-  }
+	.imageLoader {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		img {
+			width: auto !important;
+			height: auto !important;
+			min-height: auto !important;
+			min-width: auto !important;
+			border-radius: 0 !important;
+		}
+	}
 }
 
 .uploadContainer {
-  position: relative;
-  height: 500px;
-  width: 100%;
+	position: relative;
+	height: 500px;
+	width: 100%;
 
-  .dropzone {
-    width: 200px;
-    height: 50px;
-    border-radius: 20px;
-  }
+	.dropzone {
+		width: 200px;
+		height: 50px;
+		border-radius: 20px;
+	}
 }
 
 .uploadLibraryContainer {
-  position: relative;
-  height: 100%;
-  padding-top: 250px;
-  overflow: hidden;
+	position: relative;
+	height: 100%;
+	padding-top: 250px;
+	overflow: hidden;
 
-  .menu {
-    position: fixed;
-    display: flex;
-    justify-content: flex-start;
-    flex-direction: column;
-    top: 0px;
-    left: 0;
-    right: 0;
-    height: 250px;
-    margin: 0 10px;
-    padding-top: 20px;
-    background: $white;
-    border-bottom: 1px solid $light;
+	.menu {
+		position: fixed;
+		display: flex;
+		justify-content: flex-start;
+		flex-direction: column;
+		top: 0px;
+		left: 0;
+		right: 0;
+		height: 250px;
+		margin: 0 10px;
+		padding-top: 20px;
+		background: $white;
+		border-bottom: 1px solid $light;
 
-    .button-group {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 20px 0 10px 0;
-    }
+		.button-group {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin: 20px 0 10px 0;
+		}
 
-    button.button {
-      width: 200px;
-      height: 50px;
-    }
+		button.button {
+			width: 200px;
+			height: 50px;
+		}
 
-    h4 {
-      margin: 0;
-    }
-  }
+		h4 {
+			margin: 0;
+		}
+	}
 
-  .content {
-    position: relative;
-    height: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
-    margin: 0 0 10px 0;
-    padding: 0 10px 10px 10px;
-  }
+	.content {
+		position: relative;
+		height: 100%;
+		overflow-y: auto;
+		overflow-x: hidden;
+		margin: 0 0 10px 0;
+		padding: 0 10px 10px 10px;
+	}
 }
 
 .photoSection.PhotoList {
 
-  .imageComponent img {
-    //border-radius: 0px;
-  }
+	.imageComponent img {
+		//border-radius: 0px;
+	}
 
-  position: relative;
+	position: relative;
 
-  ul:not(.pagination) {
-    display: flex;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    margin: 0 auto;
+	ul:not(.pagination) {
+		display: flex;
+		justify-content: flex-start;
+		flex-wrap: wrap;
+		align-items: center;
+		width: 100%;
+		height: 100%;
+		margin: 0 auto;
 
-    li.noPhoto {
-      width: 100%;
-      justify-content: flex-start;
-      color: $med-blue-gray;
-    }
+		li.noPhoto {
+			width: 100%;
+			justify-content: flex-start;
+			color: $med-blue-gray;
+		}
 
-    li.noPhoto.center {
-      justify-content: center;
-    }
+		li.noPhoto.center {
+			justify-content: center;
+		}
 
-    li {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: none;
-      border: 0;
-      width: 100px;
-      height: 100px;
-      padding: 0;
-      margin: 5px;
-    }
+		li {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: none;
+			border: 0;
+			width: 100px;
+			height: 100px;
+			padding: 0;
+			margin: 5px;
+		}
 
-    img {
-      vertical-align: middle;
-      height: auto;
-      width: auto;
-      border: 4px solid transparent;
-    }
+		img {
+			vertical-align: middle;
+			height: auto;
+			width: auto;
+			border: 4px solid transparent;
+		}
 
-    li:hover {
-      .buttons {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        @include default-transition(.25s);
-      }
-      img {
-        @include filter(blur(2px));
-        border: 4px solid $mainColor;
-        @include default-transition(.25s);
-      }
-    }
+		li:hover {
+			.buttons {
+				display: flex;
+				justify-content: space-around;
+				align-items: center;
+				@include default-transition(.25s);
+			}
+			img {
+				@include filter(blur(2px));
+				border: 4px solid $mainColor;
+				@include default-transition(.25s);
+			}
+		}
 
-    .buttons {
-      position: absolute;
-      bottom: 0;
-      display: none;
-      button {
-        margin: 0 5px;
-      }
-    }
+		.buttons {
+			position: absolute;
+			bottom: 0;
+			display: none;
+			button {
+				margin: 0 5px;
+			}
+		}
 
-    button.select {
-      color: $white;
-      background: transparentize($dark-blue-gray, .3);
-      border-radius: 20px;
-      font-weight: 300;
-      padding: 5px 10px;
-      font-size: $small-text-size;
-    }
+		button.select {
+			color: $white;
+			background: transparentize($dark-blue-gray, .3);
+			border-radius: 20px;
+			font-weight: 300;
+			padding: 5px 10px;
+			font-size: $small-text-size;
+		}
 
-    button.select:hover {
-      background: $mainColor;
-      color: $white;
-      @include default-transition(.25s);
-    }
+		button.select:hover {
+			background: $mainColor;
+			color: $white;
+			@include default-transition(.25s);
+		}
 
-    button.delete {
-      text-align: center;
-      border-radius: 20px;
-      font-weight: 300;
-      width: 30px;
-      height: 30px;
-      background: transparentize($dark-blue-gray, .3);
-      color: $white;
-      .icon {
-        display: inline-block;
-        margin-top: 5px;
-      }
-    }
+		button.delete {
+			text-align: center;
+			border-radius: 20px;
+			font-weight: 300;
+			width: 30px;
+			height: 30px;
+			background: transparentize($dark-blue-gray, .3);
+			color: $white;
+			.icon {
+				display: inline-block;
+				margin-top: 5px;
+			}
+		}
 
-    button.delete:hover {
-      color: $secondColor;
-      @include default-transition(.25s);
-    }
+		button.delete:hover {
+			color: $secondColor;
+			@include default-transition(.25s);
+		}
 
-  }
+	}
 }
 
 .uploadEditorContainer {
-  position: relative;
-  height: 100%;
-  overflow: hidden;
-  padding-bottom: 50px;
+	position: relative;
+	height: 100%;
+	overflow: hidden;
+	padding-bottom: 50px;
 
-  .menu {
-    position: absolute;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    bottom: 0px;
-    left: 0;
-    right: 0;
-    height: 70px;
-    background: $white;
-    padding: 0 10px;
-  }
+	.menu {
+		position: absolute;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		bottom: 0px;
+		left: 0;
+		right: 0;
+		height: 70px;
+		background: $white;
+		padding: 0 10px;
+	}
 
-  .content {
-    position: relative;
-    height: 100%;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding-top: 40px;
-  }
+	.content {
+		position: relative;
+		height: 100%;
+		overflow: hidden;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+		padding-top: 40px;
+	}
 }
 
 .loadImage {
-  position: fixed;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: transparentize($dark-blue-gray, .05);
-  //color: $white;
-  z-index: 1;
+	position: fixed;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: transparentize($dark-blue-gray, .05);
+	//color: $white;
+	z-index: 1;
 
-  .loadingBarWrap {
-    width: 90%;
-    display: flex;
-    justify-content: flex-start;
-    flex-direction: column;
-  }
+	.loadingBarWrap {
+		width: 90%;
+		display: flex;
+		justify-content: flex-start;
+		flex-direction: column;
+	}
 
-  .loadingText {
-    font-size: $med-text-size;
-    font-weight: 300;
-    color: $white;
-    margin-bottom: 10px;
-  }
+	.loadingText {
+		font-size: $med-text-size;
+		font-weight: 300;
+		color: $white;
+		margin-bottom: 10px;
+	}
 
-  .loadingBar {
-    width: 100%;
-    height: 10px;
-    background: transparent;
-    border-radius: 20px;
-  }
+	.loadingBar {
+		width: 100%;
+		height: 10px;
+		background: transparent;
+		border-radius: 20px;
+	}
 }
 
 .imageDisplay {
-  .actionsMenu {
-    width: auto;
+	.actionsMenu {
+		width: auto;
 
-    button.menuLabel {
-      font-size: $normal-text-size;
-    }
-  }
+		button.menuLabel {
+			font-size: $normal-text-size;
+		}
+	}
 }
 
 
 .privateUpload {
-  position: relative;
+	position: relative;
 
-  .loadImage {
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    top: 10px;
-    left: 10px;
-    right: 10px;
-    bottom: 10px;
-    background: transparentize($dark-blue-gray, .05);
-    //color: $white;
-    z-index: 1;
-    border-radius: 20px;
-  }
+	.loadImage {
+		position: absolute;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		top: 10px;
+		left: 10px;
+		right: 10px;
+		bottom: 10px;
+		background: transparentize($dark-blue-gray, .05);
+		//color: $white;
+		z-index: 1;
+		border-radius: 20px;
+	}
 
-  .dropzoneImageContainer {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 200px;
-    height: auto;
-    min-height: 200px;
-  }
+	.dropzoneImageContainer {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		width: 200px;
+		height: auto;
+		min-height: 200px;
+	}
 
 }
 
 .privateUpload.alt {
 
-  .loadImage {
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-    background: transparentize($dark-blue-gray, .05);
-    //color: $white;
-    z-index: 1;
-    border-radius: 20px;
+	.loadImage {
+		position: absolute;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		top: 0px;
+		left: 0px;
+		right: 0px;
+		bottom: 0px;
+		background: transparentize($dark-blue-gray, .05);
+		//color: $white;
+		z-index: 1;
+		border-radius: 20px;
 
-    .loadingText {
-      font-size: $small-text-size;
-      font-weight: 300;
-      color: $white;
-      margin-bottom: 5px;
-    }
-  }
+		.loadingText {
+			font-size: $small-text-size;
+			font-weight: 300;
+			color: $white;
+			margin-bottom: 5px;
+		}
+	}
 
-  .dropzoneImageContainer {
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    min-width: 175px;
-    width: 100%;
-    height: auto;
-    min-height: 40px;
-  }
-  .dropzone {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-  	width: auto;
-  	height: 40px;
-  	border-radius: 20px;
-    overflow: hidden;
-    padding: 10px 20px;
+	.dropzoneImageContainer {
+		position: relative;
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		min-width: 175px;
+		width: 100%;
+		height: auto;
+		min-height: 40px;
+	}
+	.dropzone {
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-start;
+		align-items: center;
+		width: auto;
+		height: 40px;
+		border-radius: 20px;
+		overflow: hidden;
+		padding: 10px 20px;
 
-    .text {
-      white-space: nowrap;
-    }
+		.text {
+			white-space: nowrap;
+		}
 
-    .dropzone-icon {
-      font-size: 20px;
-      margin-right: 5px;
-    }
-  }
+		.dropzone-icon {
+			font-size: 20px;
+			margin-right: 5px;
+		}
+	}
 
-  .dropzone:hover {
-  	background-color: $mainColor;
-  	border: 1px solid $white;
-    @include default-transition(.25s);
+	.dropzone:hover {
+		background-color: $mainColor;
+		border: 1px solid $white;
+		@include default-transition(.25s);
 
-    .dropzone-icon {
-      font-size: 20px;
-      color: $white;
-    }
+		.dropzone-icon {
+			font-size: 20px;
+			color: $white;
+		}
 
-  }
+	}
 
 }
 
 .successMsg {
-  color: $green;
+	color: $green;
 }
 
 .mediaLibrary {
 
 	.uploadEditorContainer {
-	  position: relative;
-	  height: auto;
-	  overflow: hidden;
-	  padding-bottom: 50px;
+		position: relative;
+		height: auto;
+		overflow: hidden;
+		padding-bottom: 50px;
 
-	  .menu {
-	    position: relative;
-	    display: flex;
-	    justify-content: center;
-	    align-items: center;
-	    bottom: 0px;
-	    left: 0;
-	    right: 0;
-	    height: 70px;
-	    background: $white;
-	    padding: 0 10px;
-	  }
+		.menu {
+			position: relative;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			bottom: 0px;
+			left: 0;
+			right: 0;
+			height: 70px;
+			background: $white;
+			padding: 0 10px;
+		}
 
 		.button-group {
 			display: flex;
@@ -695,9 +698,9 @@ button.imageCover {
 			}
 		}
 
-    h4 {
-      margin: 5px;
-    }
+		h4 {
+			margin: 5px;
+		}
 	}
 
 	.uploadLibraryContainer {
@@ -708,12 +711,12 @@ button.imageCover {
 			height: 180px;
 			padding-top: 10px;
 
-	    .menu-group {
-	      display: flex;
-	      justify-content: center;
-	      align-items: center;
-	      margin: 0px;
-	    }
+			.menu-group {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				margin: 0px;
+			}
 		}
 		.yourphotos {
 			margin-top: 10px;
@@ -734,15 +737,15 @@ button.imageCover {
 }
 
 .uploadResizerContent {
-  position: relative;
+	position: relative;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	height: 370px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  margin: 0;
-  padding: 0;
+	overflow-y: auto;
+	overflow-x: hidden;
+	margin: 0;
+	padding: 0;
 
 	.react-resizable {
 		position: absolute;

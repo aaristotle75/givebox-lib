@@ -127,7 +127,7 @@ class LayoutMenu extends React.Component {
 
 		return (
 			<div className='layoutMenu'>
-				<div className='adminSectionTitle'>Actions</div>
+				<div className='adminSectionTitle'>Form Designer</div>
 				<div className='button-group linkBar'>
 					<GBLink className='link show' onClick={() => this.props.updateAdmin({ editable: editable ? false : true }) }>{editable ? 'Turn Editable Off' : 'Turn Editable On'}</GBLink>
 					<GBLink onClick={() => this.props.updateAdmin({ outline: outline ? false : true })}>{outline ? 'Hide Outline' : 'Show Outline'}</GBLink>

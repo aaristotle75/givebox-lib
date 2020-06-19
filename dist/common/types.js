@@ -12,7 +12,7 @@ export function bankStatus(status, voidCheck) {
 
     case 'declined':
       {
-        obj.name = voidCheck ? 'Declined' : 'Previously Declined. Please upload another void check or bank statement';
+        obj.name = voidCheck ? 'Declined' : 'Please upload another void check or bank statement';
         obj.color = voidCheck ? 'red' : 'orange';
         break;
       }

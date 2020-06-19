@@ -224,7 +224,11 @@ class GBX3 extends React.Component {
 				break;
 			}
 		}
-		return items;
+		return (
+			<div id='gbx3Layout' className='gbx3Layout'>
+				{items}
+			</div>
+		)
 	}
 
 	render() {
@@ -244,9 +248,7 @@ class GBX3 extends React.Component {
 						{this.renderDisplay()}
 					</Admin>
 				:
-					<div id='gbx3Layout' className='gbx3Layout'>
-						{this.renderDisplay()}
-					</div>
+					this.renderDisplay()
 				}
 				<ModalRoute
 					id='shop'

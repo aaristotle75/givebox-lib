@@ -83,16 +83,25 @@ class App extends Component {
 				role: util.getValue(user, 'role'),
 				permissions: [],
 				type: 'organization',
+				is2FAVerified: true,
 				userID: user.ID,
 				initial: user.firstName.charAt(0).toUpperCase() + user.lastName.charAt(0).toUpperCase(),
 				firstName: user.firstName,
 				lastName: user.lastName,
 				fullName: user.firstName + ' ' + user.lastName,
 				email: user.email,
-				orgName: orgName,
-				orgID: orgID,
-				orgSlug: util.getValue(org, 'slug')
+				userImage: user.imageURL,
+				masker: has(res, 'masker') ? true : false,
+				theme: user.preferences ? user.preferences.cloudTheme : 'light',
+				animations: user.preferences ? user.preferences.animations : false,
+				orgName: res.organization.name,
+				orgImage: res.organization.imageURL,
+				orgID: res.organization.ID,
+				orgSlug: res.organization.slug,
+				underwritingStatus: res.organization.underwritingStatus,
+				status: res.organization.status
 			};
+
 			// Check member for access
 			if (has(res, 'member')) {
 				access.isOwner = util.getValue(res.member, 'isOwner');

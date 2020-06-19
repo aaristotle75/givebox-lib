@@ -282,7 +282,7 @@ class Modal extends Component {
 				<div className='modalTop'></div>
 				{draggable ?
 					<div className='handle'>
-						<span className='icon icon-move'></span>
+						{!mobile ? <span className='icon icon-move'></span> : <></>}
 						<span className={`draggableTitle ${draggableTitleClass}`}>
 							{draggableTitle}
 						</span>
@@ -309,7 +309,7 @@ class Modal extends Component {
 					id={`modalOverlay-${identifier}`}
 					className={`modalOverlay`} style={prefix({ ...overlayStyle, ...modalOverlayStyle})}
 				>
-					{draggable ?
+					{draggable && !mobile ?
 						<Draggable
 							allowAnyClick={false}
 							handle={'.handle'}
@@ -327,7 +327,7 @@ class Modal extends Component {
 
 Modal.defaultProps = {
 	disallowBgClose: false,
-	mobileBreakpoint: 800,
+	mobileBreakpoint: 768,
 	customStyle: {},
 	effect: 'fall',
 	closeBtnShow: true,

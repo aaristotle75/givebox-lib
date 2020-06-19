@@ -208,9 +208,10 @@ class Layout extends React.Component {
 		} = this.props;
 
 		const isEditable = hasAccessToEdit && editable ? true : false;
+		const style = { ...util.getValue(globals, 'gbxStyle', {}), maxWidth: '850px' };
 
 		return (
-			<div style={util.getValue(globals, 'gbxStyle', {})} className={`gbx3Container ${isEditable ? 'editable' : ''}`}>
+			<div style={style} className={`gbx3Container ${isEditable ? 'editable' : ''}`}>
 				<div className='layout-column'>
 					<div
 						id='gbx3DropArea'
@@ -261,11 +262,13 @@ class Layout extends React.Component {
 					{this.renderRelativeBlocks()}
 				</div>
 				<div className='layout-column'>
-					<div className='gbx3Footer flexCenter flexColumn'>
-						<Image url='https://s3-us-west-1.amazonaws.com/givebox/public/gb-logo5.svg' maxSize={'30px'} style={{ minHeight: 30 }} />
-						<div className="copyright">
-							<span>&copy; {Moment().format('YYYY')} Givebox</span>
-							<GBLink allowCustom={true} customColor={this.props.primaryColor} onClick={() => window.open('https://givebox.com')}>www.givebox.com</GBLink>
+					<div className='gbx3Footer'>
+						<div className='footerContainer flexCenter flexColumn'>
+							<Image url='https://s3-us-west-1.amazonaws.com/givebox/public/gb-logo5.svg' maxSize={'30px'} style={{ minHeight: 30 }} />
+							<div className="copyright">
+								<span>&copy; {Moment().format('YYYY')} Givebox</span>
+								<GBLink allowCustom={true} customColor={this.props.primaryColor} onClick={() => window.open('https://givebox.com')}>www.givebox.com</GBLink>
+							</div>
 						</div>
 					</div>
 				</div>
