@@ -46,16 +46,12 @@ $breakpoint: 768px;
 	$topHeaderHeight: 50px;
 	$topPanelHeight: 40px;
 	$topOffset: $topHeaderHeight + $topPanelHeight;
+	$panelWidth: 220px;
 
 	.centerAlign {
 		display: flex;
 		justify-content: center;
 		align-items: center;
-	}
-
-	.gbx3AdminContainer {
-		width: 200px;
-		height: auto;
 	}
 
 	.gbx3Container {
@@ -102,9 +98,6 @@ $breakpoint: 768px;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		button.link {
-			font-size: 1em;
-		}
 		.logo {
 			img {
 				cursor: pointer;
@@ -122,7 +115,7 @@ $breakpoint: 768px;
 		right: 0;
 		height: $topPanelHeight;
 		width: 100%;
-		background: linear-gradient(to right, $mainColor 0%, $green 100%);;
+		background: linear-gradient(to right, $mainColorDark 15%, $green 100%);;
 	}
 
 	.topPanelContainer {
@@ -169,7 +162,8 @@ $breakpoint: 768px;
 			align-items: center;
 			margin: 0 20px;
 			color: $white;
-			font-size: 1em;
+			font-size: 14px;
+			font-weight: 400;
 		}
 		button.link.side:hover {
 			color: $light-gray;
@@ -179,8 +173,8 @@ $breakpoint: 768px;
 			width: 20%;
 			white-space: nowrap;
 			.icon {
-				font-size: 22px;
-				margin-right: 5px;
+				font-size: 20px;
+				margin-right: 2px;
 			}
 		}
 
@@ -207,13 +201,19 @@ $breakpoint: 768px;
 		top: $topOffset;
 		left: 0;
 		bottom: 0;
-		background: $dark-blue-gray;
 		width: 100%;
-		max-width: 200px;
+		max-width: $panelWidth;
 		z-index: 900001;
 		margin: 0;
+		padding: 0;
+		white-space: nowrap;
 		overflow-x: hidden;
-		overflow-y: auto;
+		overflow-y: hidden;
+		background: $mainColorDark;
+		background-image: url(https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/layout-left-bg-new.png), linear-gradient(to bottom, $mainColorDark 30%, $green 100%);
+		background-position: center bottom;
+		background-repeat: no-repeat;
+		background-size: $layout-left-width auto;
 		@include transition(width .5s);
 
 		::-webkit-scrollbar {
@@ -229,7 +229,104 @@ $breakpoint: 768px;
 			border-radius: 20px;
 			background: $mainColorLight;
 		}
+
+		.adminPanelTabs {
+
+			position: relative;
+			height: 50px;
+			width: $panelWidth;
+			overflow: hidden;
+			white-space: nowrap;
+			display: flex;
+			justify-content: space-between;
+			background: $mainColorDark;
+
+			button.link {
+				color: $white;
+				font-size: 14px;
+				font-weight: 400;
+				margin: 0;
+				height: 50px;
+				width: auto;
+				border: 0;
+				flex-grow: 1;
+				border-bottom: 2px solid transparent;
+			}
+
+			button.link:hover {
+				color: $white;
+				border: 0;
+				border-bottom: 2px solid $green;
+			}
+
+			button.link.selected {
+				color: $white;
+				border: 0;
+				border-bottom: 2px solid $green;
+			}
+
+			button.link.selected:hover {
+				color: $white;
+				border: 0;
+				border-bottom: 2px solid $green;
+			}
+		}
+
+		ul {
+			li {
+				width: $panelWidth;
+				height: auto;
+				padding: 15px 10px;
+				margin: 1px 0;
+				cursor: pointer;
+				color: $white;
+				font-size: 14px;
+				background: transparentize($mainColor, .7);
+				@include default-transition(.5s);
+			}
+
+			li:hover {
+				background: transparentize($green, .4);
+			}
+
+		}
 	}
+
+	.leftPanelContainer {
+		display: block;
+		height: 100%;
+		overflow-y: auto;
+		overflow-x: hidden;
+		-webkit-overflow-scrolling: auto;
+	}
+
+	.leftPanelTop {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: $panelWidth;
+		height: 90px;
+	}
+
+	.leftPanelScroller {
+		display: block;
+		height: auto;
+		margin-top: 90px;
+	}
+
+	.leftPanelHeader {
+		display: block;
+		color: $light-gray;
+		height: 40px;
+		width: $panelWidth;
+		overflow: hidden;
+		white-space: nowrap;
+		padding: 10px;
+		font-weight: 300;
+		font-size: 18px;
+		background: $mainColorMedium;
+	}
+
 
 	.leftPanelOpen {
 		position: absolute;
@@ -265,24 +362,23 @@ $breakpoint: 768px;
 
 	.leftPanelClose {
 		position: absolute;
-		top: $topOffset + 10px;
-		left: 170px;
+		top: 10px;
+		right: 10px;
 		z-index: 900002;
 		cursor: pointer;
 
 		.icon {
-			color: $med-blue-gray;
+			color: $light-gray;
 			font-size: 22px;
 		}
 	}
 
 	.leftPanelOpen.open {
-		left: 150px;
+		left: $panelWidth - 50px;
 	}
-	.leftPanelClose.close { display: none; }
 
 	.leftPanel.open {
-		width: 200px;
+		width: $panelWidth;
 	}
 
 	.leftPanel.close {
@@ -301,12 +397,12 @@ $breakpoint: 768px;
 		top: $topOffset;
 		left: 0;
 		right: 0;
-		bottom: 50px;
+		bottom: 0;
 		height: auto;
 		width: auto;
 		overflow-y: auto;
 		overflow-x: auto;
-		background: $light-gray;
+		background: $white;
 		@include transition(left .5s);
 		@media (max-width: $breakpoint) {
 			padding: 10px 0;
@@ -331,6 +427,11 @@ $breakpoint: 768px;
 		}
 	}
 
+	.stageContainer.hasBottom {
+		background: $light-gray;
+		bottom: 50px;
+	}
+
 	.stageAligner {
 		display: block;
 		margin: 0 auto;
@@ -341,7 +442,7 @@ $breakpoint: 768px;
 	}
 
 	.stageContainer.open {
-		left: 200px;
+		left: $panelWidth;
 
 		@media (max-width: $breakpoint) {
 			left: 0px;
@@ -375,7 +476,7 @@ $breakpoint: 768px;
 	}
 
 	.bottomPanel.open {
-		left: 200px;
+		left: $panelWidth;
 		@media (max-width: $breakpoint) {
 			left: 0px;
 		}
@@ -569,7 +670,7 @@ $breakpoint: 768px;
 	}
 
 	.dragHandle {
-		cursor: grab;
+		cursor: move;
 		z-index: 3;
 	}
 
@@ -621,7 +722,7 @@ $breakpoint: 768px;
 		width: 100%;
 		min-height: 20px;
 		color: $white;
-		background: transparentize($mainColorLight, .3);
+		background: transparentize($mainColorLight, .4);
 		z-index: 2;
 	}
 
@@ -676,100 +777,6 @@ $breakpoint: 768px;
 	}
 
 	/*---------- End Blocks ------------ */
-
-
-	/*------- Admin Custom Area -----*/
-
-	.adminCustomArea {
-
-		.adminSectionContainer {
-			position: relative;
-			width: auto;
-			height: auto;
-		}
-
-		.adminSectionTitle {
-			font-size: 18px;
-			color: $light-gray;
-			font-weight: 300;
-			margin: 10px;
-			display: block;
-		}
-
-		.availableBlocks {
-			position: relative;
-			max-height: 300px;
-			width: auto;
-			overflow-x: hidden;
-			overflow-y: scroll;
-			@include default-transition(.25s);
-
-			.draggableBlock {
-				display: flex;
-				flex-direction: column;
-				justify-content: center;
-				align-items: center;
-				flex-wrap: wrap;
-				width: 150px;
-				height: 50px;
-				color: #ffffff;
-				font-size: 12px;
-				margin: 10px;
-				background: $mainColorLight;
-				cursor: pointer;
-			}
-
-			.draggableBlock:hover {
-				background: transparentize($mainColorLight, .3);
-			}
-
-		}
-
-		.button-group.linkBar {
-			position: relative;
-			width: auto;
-			height: auto;
-
-			button.link {
-				display: block;
-				font-size: 14px;
-				color: $mainColorLight;
-				margin: 5px 10px;
-			}
-
-			button.link:hover {
-				color: $white;
-			}
-
-			button.link:not(.show) {
-				visibility: hidden;
-			}
-		}
-
-		.handle {
-			cursor: grab;
-			position: absolute;
-			top: 12px;
-			left: 20px;
-			color: $mainColorLight;
-		}
-
-		.handle:hover {
-			color: $white;
-			@include default-transition(1s);
-		}
-	}
-
-	.adminCustomArea.editable {
-
-		.button-group.linkBar {
-			button.link {
-				visibility: visible;
-			}
-		}
-	}
-
-	/*------- End Admin Custom Area -----*/
 
 
 	/*--------- Drop Area ------*/

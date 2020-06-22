@@ -1,13 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Layout from './Layout';
-import Shop from './Shop';
 import Admin from './admin/Admin';
-import CreateNew from './admin/CreateNew';
 import {
 	loadGBX3,
 	setStyle,
-	types,
 	util,
 	Loader,
 	getResource,
@@ -16,8 +13,7 @@ import {
 	setLoading,
 	clearGBX3,
 	updateInfo,
-	updateAdmin,
-	ModalRoute
+	updateAdmin
 } from '../';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
@@ -93,9 +89,10 @@ class GBX3 extends React.Component {
 
 		const orgID = util.getValue(access, 'orgID');
 		this.props.updateAdmin({
+			step: 'create',
 			hasAccessToEdit: util.getAuthorizedAccess(access, orgID)
 		});
-		this.props.updateInfo({ kind, orgID, display: 'createNew' });
+		this.props.updateInfo({ kind });
 		this.props.setLoading(false);
 	}
 
@@ -125,6 +122,8 @@ class GBX3 extends React.Component {
 		info.sourceLocation = this.props.sourceLocation || sourceLocation;
 
 		const infoUpdated = await this.props.updateInfo(info);
+
+		if (has(queryParams, 'publicView')) this.props.updateAdmin({ publicView: true });
 		if (infoUpdated) return true;
 	}
 
@@ -186,78 +185,43 @@ class GBX3 extends React.Component {
 		});
 	}
 
-	renderDisplay() {
+	renderStage() {
 		const {
-			info
+			hasAccessToEdit,
+			publicView
 		} = this.props;
 
 		const items = [];
 
-		switch (info.display) {
-			case 'shop': {
-				items.push(
-					<Shop
-						reloadGBX3={this.reloadGBX3}
-						{...this.props}
-					/>
-				)
-				break;
-			}
-
-			case 'createNew': {
-				items.push(
-					<CreateNew
-
-					/>
-				)
-				break;
-			}
-
-			case 'layout':
-			default: {
-				items.push(
-					<Layout
-						loadGBX3={this.loadGBX3}
-						primaryColor={this.props.primaryColor}
-					/>
-				)
-				break;
-			}
+		if (hasAccessToEdit && !publicView) {
+			items.push(
+				<Admin
+					key={'admin'}
+					loadGBX3={this.loadGBX3}
+					reloadGBX3={this.reloadGBX3}
+				/>
+			)
+		} else {
+			items.push(
+				<Layout
+					key={'public'}
+					loadGBX3={this.loadGBX3}
+					reloadGBX3={this.reloadGBX3}
+					primaryColor={this.props.primaryColor}
+				/>
+			)
 		}
-		return (
-			<div id='gbx3Layout' className='gbx3Layout'>
-				{items}
-			</div>
-		)
+
+		return items;
 	}
 
 	render() {
-
-		const {
-			hasAccessToEdit
-		} = this.props;
 
 		if (this.props.loading) return <Loader msg='Initiating GBX3' />;
 
 		return (
 			<div className='gbx3'>
-				{hasAccessToEdit ?
-					<Admin
-						reloadGBX3={this.reloadGBX3}
-					>
-						{this.renderDisplay()}
-					</Admin>
-				:
-					this.renderDisplay()
-				}
-				<ModalRoute
-					id='shop'
-					className='gbx3 givebox-paymentform'
-					effect='3DFlipVert'
-					style={{ width: '70%' }}
-					disallowBgClose={true}
-					component={(props) => <Shop {...props} reloadGBX3={this.reloadGBX3} />}
-				/>
+				{this.renderStage()}
 			</div>
 		)
 	}
@@ -278,6 +242,7 @@ function mapStateToProps(state, props) {
 	const primaryColor = util.getValue(gbxStyle, 'primaryColor');
 	const admin = util.getValue(gbx3, 'admin', {});
 	const hasAccessToEdit = util.getValue(admin, 'hasAccessToEdit');
+	const publicView = util.getValue(admin, 'publicView');
 
 	return {
 		loading,
@@ -285,6 +250,7 @@ function mapStateToProps(state, props) {
 		primaryColor,
 		sourceLocation,
 		hasAccessToEdit,
+		publicView,
 		access: util.getValue(state.resource, 'access', {})
 	}
 }

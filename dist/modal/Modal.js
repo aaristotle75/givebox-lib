@@ -307,9 +307,9 @@ class Modal extends Component {
       className: "modalTop"
     }), draggable ? /*#__PURE__*/React.createElement("div", {
       className: "handle"
-    }, /*#__PURE__*/React.createElement("span", {
+    }, !mobile ? /*#__PURE__*/React.createElement("span", {
       className: "icon icon-move"
-    }), /*#__PURE__*/React.createElement("span", {
+    }) : /*#__PURE__*/React.createElement(React.Fragment, null), /*#__PURE__*/React.createElement("span", {
       className: `draggableTitle ${draggableTitleClass}`
     }, draggableTitle)) : /*#__PURE__*/React.createElement(React.Fragment, null), this.renderChildren(), this.renderActions(), /*#__PURE__*/React.createElement(Fade, {
       duration: 500,
@@ -332,7 +332,7 @@ class Modal extends Component {
         style: prefix({ ...overlayStyle,
           ...modalOverlayStyle
         })
-      }, draggable ? /*#__PURE__*/React.createElement(Draggable, {
+      }, draggable && !mobile ? /*#__PURE__*/React.createElement(Draggable, {
         allowAnyClick: false,
         handle: '.handle'
       }, modalContent) : modalContent))
@@ -343,7 +343,7 @@ class Modal extends Component {
 
 Modal.defaultProps = {
   disallowBgClose: false,
-  mobileBreakpoint: 800,
+  mobileBreakpoint: 768,
   customStyle: {},
   effect: 'fall',
   closeBtnShow: true,

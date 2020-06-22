@@ -6,19 +6,20 @@ import {
 	ModalLink,
 	ModalRoute,
 	updateAdmin,
+	toggleAdminLeftPanel,
 	updateGlobals,
 	resetGBX3,
 	saveGBX3,
 	toggleModal
 } from '../../';
 import GlobalsEdit from '../blocks/GlobalsEdit';
-import AnimateHeight from 'react-animate-height';
 import blockTemplates from '../blocks/blockTemplates';
 
-class LayoutMenu extends React.Component {
+class DesignMenu extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.switchPanelType = this.switchPanelType.bind(this);
 		this.closeGBXOptionsCallback = this.closeGBXOptionsCallback.bind(this);
 		this.updatePrimaryColor = this.updatePrimaryColor.bind(this);
 		this.renderAvailableBlocks = this.renderAvailableBlocks.bind(this);
@@ -26,8 +27,13 @@ class LayoutMenu extends React.Component {
 		const globals = props.globals;
 		this.state = {
 			globals,
-			globalsDefault: util.deepClone(globals)
+			globalsDefault: util.deepClone(globals),
+			panelType: 'layout'
 		};
+	}
+
+	switchPanelType(panelType) {
+		this.setState({ panelType });
 	}
 
 	updatePrimaryColor(value) {
@@ -115,48 +121,64 @@ class LayoutMenu extends React.Component {
 	render() {
 
 		const {
-			globals
+			globals,
+			panelType
 		} = this.state;
 
 		const {
 			editable,
 			preventCollision,
 			verticalCompact,
-			outline
+			outline,
+			openAdmin: open
 		} = this.props;
 
 		return (
-			<div className='layoutMenu'>
-				<div className='adminSectionTitle'>Form Designer</div>
-				<div className='button-group linkBar'>
-					<GBLink className='link show' onClick={() => this.props.updateAdmin({ editable: editable ? false : true }) }>{editable ? 'Turn Editable Off' : 'Turn Editable On'}</GBLink>
-					<GBLink onClick={() => this.props.updateAdmin({ outline: outline ? false : true })}>{outline ? 'Hide Outline' : 'Show Outline'}</GBLink>
-					<GBLink onClick={() => this.props.updateAdmin({ preventCollision: preventCollision ? false : true })}>Prevent Collision {preventCollision ? 'true' : 'false'}</GBLink>
-					<GBLink onClick={() => this.props.updateAdmin({ verticalCompact: verticalCompact ? false : true })}>Vertical Compact {verticalCompact ? 'true' : 'false'}</GBLink>
-					<GBLink onClick={this.reset}>Reset</GBLink>
-					<GBLink onClick={() => this.props.saveGBX3(null, true)}>Save</GBLink>
-					<ModalLink id='paymentForm-options'>Options</ModalLink>
-					<ModalRoute
-						optsProps={{ closeCallback: this.closeGBXOptionsCallback }}
-						id={'paymentForm-options'}
-						component={() => (
-							<GlobalsEdit
-								closeGBXOptionsCallback={this.closeGBXOptionsCallback}
-								updatePrimaryColor={this.updatePrimaryColor}
-								globals={globals}
-							/>
-						 )}
-						effect='3DFlipVert' style={{ width: '60%' }}
-						draggable={true}
-						draggableTitle={`Editing Payment Form`}
-						closeCallback={this.closeGBXOptionsCallback}
-						disallowBgClose={true}
-					/>
+			<div className='leftPanelContainer'>
+				<div className='leftPanelTop'>
+					<div className='leftPanelHeader'>
+						Design Menu
+						<GBLink onClick={this.props.toggleAdminLeftPanel} className={`link leftPanelClose ${open ? 'open' : 'close'}`}><span className='icon icon-x'></span></GBLink>
+					</div>
+					<div className='middle centerAlign adminPanelTabs'>
+						<GBLink className={`ripple link ${panelType === 'layout' ? 'selected' : ''}`} onClick={() => this.switchPanelType('layout')}>Layout</GBLink>
+						<GBLink className={`ripple link ${panelType === 'style' ? 'selected' : ''}`} onClick={() => this.switchPanelType('style')}>Style</GBLink>
+						<GBLink className={`ripple link ${panelType === 'tools' ? 'selected' : ''}`} onClick={() => this.switchPanelType('tools')}>Tools</GBLink>
+					</div>
 				</div>
-				<AnimateHeight height={editable ? 'auto' : 0}>
-					<div className='adminSectionTitle'>Content</div>
-					{this.renderAvailableBlocks()}
-				</AnimateHeight>
+				<div className={`leftPanelScroller`}>
+					<ul>
+						<li className='link show' onClick={() => this.props.updateAdmin({ editable: editable ? false : true }) }>{editable ? 'Turn Editable Off' : 'Turn Editable On'}</li>
+						<li onClick={() => this.props.updateAdmin({ outline: outline ? false : true })}>{outline ? 'Hide Outline' : 'Show Outline'}</li>
+						<li onClick={() => this.props.updateAdmin({ preventCollision: preventCollision ? false : true })}>Prevent Collision {preventCollision ? 'true' : 'false'}</li>
+						<li onClick={() => this.props.updateAdmin({ verticalCompact: verticalCompact ? false : true })}>Vertical Compact {verticalCompact ? 'true' : 'false'}</li>
+						<li onClick={this.reset}>Reset</li>
+						<li onClick={() => this.props.saveGBX3(null, true)}>Save</li>
+						<ModalLink type='li' id='paymentForm-options'>Options</ModalLink>
+						<ModalRoute
+							optsProps={{ closeCallback: this.closeGBXOptionsCallback }}
+							id={'paymentForm-options'}
+							component={() => (
+								<GlobalsEdit
+									closeGBXOptionsCallback={this.closeGBXOptionsCallback}
+									updatePrimaryColor={this.updatePrimaryColor}
+									globals={globals}
+								/>
+							 )}
+							effect='3DFlipVert' style={{ width: '60%' }}
+							draggable={true}
+							draggableTitle={`Editing Payment Form`}
+							closeCallback={this.closeGBXOptionsCallback}
+							disallowBgClose={true}
+						/>
+					</ul>
+					{/*
+					<AnimateHeight height={editable ? 'auto' : 0}>
+						<div className='adminSectionTitle'>Content</div>
+						{this.renderAvailableBlocks()}
+					</AnimateHeight>
+					*/}
+				</div>
 			</div>
 		)
 	}
@@ -166,6 +188,7 @@ function mapStateToProps(state, props) {
 
 	const gbx3 = util.getValue(state, 'gbx3', {});
 	const admin = util.getValue(gbx3, 'admin', {});
+	const openAdmin = util.getValue(admin, 'open');
 	const availableBlocks = util.getValue(admin, 'availableBlocks', []);
 	const globals = util.getValue(gbx3, 'globals', {});
 	const gbxStyle = util.getValue(globals, 'gbxStyle', {});
@@ -181,14 +204,16 @@ function mapStateToProps(state, props) {
 		editable,
 		preventCollision,
 		verticalCompact,
-		outline
+		outline,
+		openAdmin
 	}
 }
 
 export default connect(mapStateToProps, {
 	updateAdmin,
+	toggleAdminLeftPanel,
 	updateGlobals,
 	resetGBX3,
 	saveGBX3,
 	toggleModal
-})(LayoutMenu);
+})(DesignMenu);

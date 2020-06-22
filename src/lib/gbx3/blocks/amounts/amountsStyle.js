@@ -104,7 +104,6 @@ export function defaultAmountHeight(num) {
 
 		// no default
 	}
-	console.log('execute amountsSectionHeight', num, height);
 
 	return height;
 }

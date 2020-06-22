@@ -693,7 +693,7 @@ button.glossary:hover {
 .layout-left .layout-left-content {
 	height: 100vh;
 	background: $mainColor2;
-	background-image: url(https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/layout-left-bg-new.png), linear-gradient(to bottom, #1818c8 0%,#25acd1 85%,#35e6b2 100%);
+	background-image: url(https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/layout-left-bg-new.png), linear-gradient(to bottom, $mainColorDark 20%, $green 100%);
 	//background: linear-gradient(to bottom, $mainColor2 0%,$mainColor 100%);
 	background-position: center bottom;
 	background-repeat: no-repeat;

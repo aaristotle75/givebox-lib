@@ -139,13 +139,12 @@ class Shop extends Component {
 		|| this.state.loading) return <Loader msg='Loading articles...' />
 
 		const {
-			globals,
 			primaryColor,
 			orgName
 		} = this.props;
 
 		return (
-			<div style={util.getValue(globals, 'gbxStyle', {})}  className='gbx3Container gbx3Shop modalWrapper'>
+			<div className='gbx3Shop modalWrapper'>
 				<div className='shopTop'>
 					<h2>{orgName}</h2>
 					<GBLink
@@ -169,7 +168,6 @@ function mapStateToProps(state, props) {
 
 	const articles = util.getValue(state.resource, 'shopArticles', {});
 	const gbx3 = util.getValue(state, 'gbx3', {});
-	const globals = util.getValue(gbx3, 'globals', {});
 	const info = util.getValue(gbx3, 'info', {});
 	const selecteedArticleID = util.getValue(info, 'articleID');
 	const orgID = util.getValue(info, 'orgID');
@@ -179,7 +177,6 @@ function mapStateToProps(state, props) {
 	return {
 		selecteedArticleID,
 		articles,
-		globals,
 		orgID,
 		orgName,
 		kind

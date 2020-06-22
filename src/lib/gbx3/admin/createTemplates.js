@@ -42,6 +42,6 @@ const fundraiser = {
 	}
 };
 
-export const kindData = {
+export const createData = {
 	fundraiser
 };

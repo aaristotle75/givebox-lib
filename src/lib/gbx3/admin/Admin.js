@@ -3,18 +3,18 @@ import { connect } from 'react-redux';
 import {
 	util,
 	updateAdmin,
+	toggleAdminLeftPanel,
 	GBLink,
-	Fade,
 	resetGBX3,
 	saveGBX3,
 	toggleModal,
 	ModalRoute,
 	ModalLink
 } from '../../';
-import CreateNewMenu from './CreateNewMenu';
-import LayoutMenu from './LayoutMenu';
+import Create from './Create';
+import Design from './Design';
+import Share from './Share';
 import AvatarMenu from './AvatarMenu';
-import ReceiptEdit from './ReceiptEdit';
 import Logo from '../Logo';
 import AnimateHeight from 'react-animate-height';
 import Toggle from 'react-toggle';
@@ -24,28 +24,16 @@ class Admin extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.toggleOpen = this.toggleOpen.bind(this);
-		this.renderMenu = this.renderMenu.bind(this);
+		this.renderStep = this.renderStep.bind(this);
 		this.exitAdmin = this.exitAdmin.bind(this);
-		this.switchCreateType = this.switchCreateType.bind(this);
 		this.togglePreviewForm = this.togglePreviewForm.bind(this);
 		this.state = {
-			createType: 'form',
 			previewForm: false
 		};
 	}
 
-	toggleOpen() {
-		this.props.updateAdmin({ open: this.props.openAdmin ? false : true });
-	}
-
 	exitAdmin() {
 		console.log('execute exitAdmin');
-	}
-
-	switchCreateType(createType) {
-		console.log('execute switchCreateType', createType);
-		this.setState({ createType });
 	}
 
 	togglePreviewForm(value) {
@@ -53,22 +41,28 @@ class Admin extends React.Component {
 		this.setState({ previewForm });
 	}
 
-	renderMenu() {
+	renderStep() {
 		const {
-			display
+			step
 		} = this.props;
 
-		switch (display) {
-			case 'createNew': {
+		switch (step) {
+			case 'create': {
 				return (
-					<CreateNewMenu />
+					<Create />
 				)
 			}
 
-			case 'layout':
+			case 'share': {
+				return (
+					<Share />
+				)
+			}
+
+			case 'design':
 			default: {
 				return (
-					<LayoutMenu />
+					<Design />
 				)
 			}
 		}
@@ -77,11 +71,11 @@ class Admin extends React.Component {
 	render() {
 
 		const {
-			createType,
 			previewForm
 		} = this.state;
 
 		const {
+			step,
 			openAdmin: open,
 			saveStatus,
 			editable,
@@ -93,6 +87,7 @@ class Admin extends React.Component {
 		if (!hasAccessToEdit) return <></>;
 
 		const mobile = breakpoint === 'mobile' ? true : false;
+		const topShowAdminPanelAndPreview = step === 'create' ? false : true;
 
 		return (
 			<div className={`gbx3AdminLayout ${editable ? 'editable' : ''}`}>
@@ -106,12 +101,11 @@ class Admin extends React.Component {
 				<AnimateHeight height={saveStatus === 'saving' ? 'auto' : 0 } duration={500}>
 					<div className='autoSaved'>Saving...</div>
 				</AnimateHeight>
-				<GBLink onClick={this.toggleOpen} className={`link leftPanelOpen ${open ? 'open' : 'close'}`}>
+				<GBLink onClick={this.props.toggleAdminLeftPanel} className={`link leftPanelOpen ${open ? 'open' : 'close'}`}>
 					<div className='leftPanelOpenGraphic'>
-						<span className='icon icon-layout'></span>
+						<span className='icon icon-edit'></span>
 					</div>
 				</GBLink>
-				<GBLink onClick={this.toggleOpen} className={`link leftPanelClose ${open ? 'open' : 'close'}`}><span className='icon icon-x'></span></GBLink>
 				<div className={`gbx3TopHeader`}>
 					<header className={`navbar`}>
 						<div className='container'>
@@ -135,43 +129,28 @@ class Admin extends React.Component {
 							<GBLink className='link side' onClick={() => this.exitAdmin()}><span className='icon icon-chevron-left'></span>{!mobile ? 'Exit Builder' : ''}</GBLink>
 						</div>
 						<div className='middle centerAlign adminPanelTabs'>
+							{topShowAdminPanelAndPreview ?
 							<div className='button-group'>
-								<GBLink className={`ripple link ${createType === 'form' ? 'selected' : ''}`} onClick={() => this.switchCreateType('form')}>CREATE</GBLink>
-								<GBLink className={`ripple link ${createType === 'receipt' ? 'selected' : ''}`} onClick={() => this.switchCreateType('receipt')}>SHARE</GBLink>
+								<GBLink className={`ripple link ${step === 'design' ? 'selected' : ''}`} onClick={() => this.props.updateAdmin({ step: 'design' })}>DESIGN</GBLink>
+								<GBLink className={`ripple link ${step === 'share' ? 'selected' : ''}`} onClick={() => this.props.updateAdmin({ step: 'share' })}>SHARE</GBLink>
 							</div>
+							: <></> }
 						</div>
 						<div className='rightSide'>
-							<GBLink className='link side' style={{ marginRight: 10 }} onClick={this.togglePreviewForm}>{mobile ? <span className='icon icon-eye'></span> : 'Preview Form'}</GBLink>
-							<Toggle
-								icons={false}
-								checked={previewForm}
-								onChange={this.togglePreviewForm}
-							/>
+							{topShowAdminPanelAndPreview ?
+								<>
+									<GBLink className='link side' style={{ marginRight: 10 }} onClick={this.togglePreviewForm}>{mobile ? <span className='icon icon-eye'></span> : 'Preview Form'}</GBLink>
+									<Toggle
+										icons={false}
+										checked={previewForm}
+										onChange={this.togglePreviewForm}
+									/>
+								</>
+							: <></> }
 						</div>
 					</div>
 				</div>
-				<div className={`leftPanel ${open ? 'open' : 'close'}`}>
-					<div className={`adminCustomArea ${editable ? 'editable' : ''}`}>
-						<Fade in={open ? true : false} >
-							<div className='adminSectionContainer'>
-								{this.renderMenu()}
-							</div>
-						</Fade>
-					</div>
-				</div>
-				<div className={`stageContainer ${open ? 'open' : 'close'}`}>
-					<div className='stageAligner'>
-						{createType === 'form' ? this.props.children : <ReceiptEdit />}
-					</div>
-				</div>
-				<div className={`bottomPanel ${open ? 'open' : 'close'}`}>
-					<div className='centerAlign adminPanelTabs'>
-						<div className='button-group'>
-							<GBLink style={{ marginRight: 20 }} className={`ripple link ${createType === 'form' ? 'selected' : ''}`} onClick={() => this.switchCreateType('form')}>Payment Form</GBLink>
-							<GBLink style={{ marginLeft: 20 }} className={`ripple link ${createType === 'receipt' ? 'selected' : ''}`} onClick={() => this.switchCreateType('receipt')}>Thank You Receipt</GBLink>
-						</div>
-					</div>
-				</div>
+				{this.renderStep()}
 			</div>
 		)
 	}
@@ -189,6 +168,7 @@ function mapStateToProps(state, props) {
 	const display = util.getValue(info, 'display');
 	const articleID = util.getValue(info, 'articleID');
 	const admin = util.getValue(gbx3, 'admin', {});
+	const step = util.getValue(admin, 'step');
 	const openAdmin = util.getValue(admin, 'open');
 	const access = util.getValue(state.resource, 'access');
 	const hasAccessToEdit = util.getValue(admin, 'hasAccessToEdit');
@@ -199,6 +179,7 @@ function mapStateToProps(state, props) {
 		display,
 		articleID,
 		openAdmin,
+		step,
 		saveStatus,
 		access,
 		hasAccessToEdit,
@@ -209,6 +190,7 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
 	updateAdmin,
+	toggleAdminLeftPanel,
 	resetGBX3,
 	saveGBX3,
 	toggleModal

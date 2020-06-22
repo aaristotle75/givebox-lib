@@ -26,9 +26,10 @@ const defaultConfirmation = {
 }
 
 export function gbx3(state = {
-	loading: false,
+	loading: true,
 	saveStatus: 'done',
 	info: {
+		stage: 'public',
 		display: 'shop',
 		preview: false,
 		breakpoint: 'desktop',
@@ -56,6 +57,9 @@ export function gbx3(state = {
 	},
 	admin: {
 		open: false,
+		step: 'create',
+		createType: 'form',
+		publicView: false,
 		editable: false,
 		hasAccessToEdit: false,
 		preventCollision: true,

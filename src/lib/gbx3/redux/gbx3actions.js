@@ -8,7 +8,7 @@ import {
 import { defaultAmountHeight } from '../blocks/amounts/amountsStyle';
 import blockTemplates from '../blocks/blockTemplates';
 import { defaultBlocks } from '../config';
-import { kindData } from './kindDataTemplates';
+import { createData } from '../admin/createTemplates';
 
 export function updateGBX3(name, value) {
 	return {
@@ -164,6 +164,15 @@ export function updateAdmin(admin) {
 	return {
 		type: types.UPDATE_ADMIN,
 		admin
+	}
+}
+
+export function toggleAdminLeftPanel() {
+	return (dispatch, getState) => {
+		const gbx3 = util.getValue(getState(), 'gbx3', {});
+		const admin = util.getValue(gbx3, 'admin', {});
+		const open = util.getValue(admin, 'open');
+		dispatch(updateAdmin({ open: open ? false : true }));
 	}
 }
 
@@ -383,24 +392,24 @@ export function processTransaction(data, callback) {
 	}
 }
 
-export function createFundraiser(callback) {
+export function createFundraiser(createKind, callback) {
 
 	return (dispatch, getState) => {
 		dispatch(setLoading(true));
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
 		const info = util.getValue(gbx3, 'info', {});
-		const kind = util.getValue(info, 'kind', 'fundraiser');
+		const kind = createKind || util.getValue(info, 'kind', 'fundraiser');
 		const orgID = util.getValue(info, 'orgID');
 		const resourceName = `org${types2.kind(kind).api.list}`;
-		const data = kindData[kind];
+		const data = createData[kind];
 		dispatch(sendResource(resourceName, {
 			orgID,
 			data,
 			callback: (res, err) => {
 				if (!err && !util.isEmpty(res)) {
 					dispatch(loadGBX3(res.articleID, () => {
-						dispatch(updateInfo({ display: 'layout' }));
-						dispatch(updateAdmin({ editable: true }));
+						dispatch(updateInfo({ display: 'article', kind }));
+						dispatch(updateAdmin({ step: 'design', editable: true }));
 						if (callback) callback(res, err);
 					}));
 				} else {
@@ -464,7 +473,7 @@ export function loadGBX3(articleID, callback) {
 										kindID,
 										kind,
 										apiName,
-										display: 'layout'
+										display: 'article'
 									}));
 
 									const blocksDefault = util.getValue(defaultBlocks, kind, {});
@@ -523,7 +532,8 @@ export function loadGBX3(articleID, callback) {
 									dispatch(updateData(res));
 									dispatch(updateAdmin({
 										availableBlocks,
-										hasAccessToEdit: util.getAuthorizedAccess(access, orgID)
+										hasAccessToEdit: util.getAuthorizedAccess(access, orgID),
+										step: 'design'
 									}));
 									dispatch(updateDefaults({
 										layouts,
