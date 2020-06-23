@@ -902,3 +902,27 @@ export function blob2S3(
 	x.open(s3.method, s3.action);
 	x.send(formData);
 }
+
+export function toggle(bool, options) {
+	const opts = {
+		style: {
+			margin: '0 10px;',
+		},
+		className: '',
+		onText: 'ON',
+		onStyle: {
+			color: '#FFFFFF',
+		},
+		offText: 'OFF',
+		offStyle: {
+			color: '#B0BEC5',
+		},
+		...options
+	}
+	const text = bool ? opts.onText : opts.offText;
+	const boolStyle = bool ? opts.onStyle : opts.offStyle;
+	const style = { ...opts.style, ...boolStyle };
+	return (
+		<span style={style} className={`${opts.className} toggleUtil`}>{text}</span>
+	)
+}

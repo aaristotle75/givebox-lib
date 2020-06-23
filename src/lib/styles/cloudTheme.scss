@@ -63,6 +63,10 @@ img[src="https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/ma
 	@include animation(pulsateBrighter 2s ease-out infinite);
 }
 
+.moneyAmount {
+	white-space: nowrap;
+}
+
 .analytics {
 
 	.menu {

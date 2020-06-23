@@ -70,6 +70,15 @@ $breakpoint: 768px;
 		height: 100%;
 	}
 
+	.layoutMenu {
+		.toggleUtil {
+			float: right;
+			.icon {
+				font-size: 18px;
+			}
+		}
+	}
+
 	.gbx3AdminLayout {
 		overflow: hidden;
 	}

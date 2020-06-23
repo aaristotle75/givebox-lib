@@ -2,30 +2,61 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
 	util,
-	types,
-	GBLink,
-	updateInfo
+	updateAdmin,
+	updateGlobals,
+	resetGBX3,
+	saveGBX3,
+	toggleModal
 } from '../../';
+import blockTemplates from '../blocks/blockTemplates';
 
-class CreateMenuLayout extends React.Component {
+class DesignMenuLayout extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.renderActiveBlocks = this.renderActiveBlocks.bind(this);
+		this.renderAvailableBlocks = this.renderAvailableBlocks.bind(this);
 		this.state = {
 		};
 	}
 
-	renderTypes() {
-		const items= [];
+	renderActiveBlocks() {
+		const {
+			blocks
+		} = this.props;
+		const items = [];
 
-		types.kinds().forEach((value) => {
+		return items;
+	}
+
+	renderAvailableBlocks() {
+		const {
+			availableBlocks
+		} = this.props;
+
+		const items = [];
+
+		availableBlocks.forEach((value) => {
 			items.push(
 				<li
 					key={value}
-					onClick={() => this.props.createFundraiser(value)}
-					className='link show'
+					className='draggableBlock'
+					draggable={true}
+					onDragStart={(e) => {
+						e.dataTransfer.setData('text/plain', value);
+						const el = document.getElementById('gbx3DropArea');
+						if (el) {
+							if (!el.classList.contains('dragOver')) el.classList.add('dragOver');
+						}
+					}}
+					onDragEnd={(e) => {
+						const el = document.getElementById('gbx3DropArea');
+						if (el) {
+							if (el.classList.contains('dragOver')) el.classList.remove('dragOver');
+						}
+					}}
 				>
-					<span style={{ marginRight: 5 }} className={`icon icon-${types.kind(value).icon}`}></span> {types.kind(value).name}
+					Add {blockTemplates[value].title}
 				</li>
 			);
 		});
@@ -40,23 +71,14 @@ class CreateMenuLayout extends React.Component {
 	render() {
 
 		const {
-			editable,
-			openAdmin: open
+			editable
 		} = this.props;
 
 		return (
 			<div className='layoutMenu'>
-				<div className='leftPanelHeader'>
-					Create New
-					<GBLink onClick={this.props.toggleAdminLeftPanel} className={`link leftPanelClose ${open ? 'open' : 'close'}`}><span className='icon icon-x'></span></GBLink>
-				</div>
-				<div className='middle centerAlign adminPanelTabs'>
-				</div>
-				<div className={`adminCustomArea ${editable ? 'editable' : ''}`}>
-					<div className='adminSectionContainer'>
-						{this.renderTypes()}
-					</div>
-				</div>
+				<ul>
+					<li className='link show' onClick={() => this.props.updateAdmin({ editable: editable ? false : true }) }>{editable ? 'Turn Editable Off' : 'Turn Editable On'}</li>
+				</ul>
 			</div>
 		)
 	}
@@ -66,15 +88,23 @@ function mapStateToProps(state, props) {
 
 	const gbx3 = util.getValue(state, 'gbx3', {});
 	const admin = util.getValue(gbx3, 'admin', {});
-	const openAdmin = util.getValue(admin, 'open');
+	const availableBlocks = util.getValue(admin, 'availableBlocks', []);
+	const globals = util.getValue(gbx3, 'globals', {});
+	const gbxStyle = util.getValue(globals, 'gbxStyle', {});
 	const editable = util.getValue(admin, 'editable');
 
 	return {
-		editable,
-		openAdmin
+		availableBlocks,
+		globals,
+		gbxStyle,
+		editable
 	}
 }
 
 export default connect(mapStateToProps, {
-	updateInfo
-})(CreateMenuLayout);
+	updateAdmin,
+	updateGlobals,
+	resetGBX3,
+	saveGBX3,
+	toggleModal
+})(DesignMenuLayout);

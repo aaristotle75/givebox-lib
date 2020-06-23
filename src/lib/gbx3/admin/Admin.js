@@ -126,7 +126,7 @@ class Admin extends React.Component {
 				<div className={`topPanel`}>
 					<div className='topPanelContainer'>
 						<div className='leftSide'>
-							<GBLink className='link side' onClick={() => this.exitAdmin()}><span className='icon icon-chevron-left'></span>{!mobile ? 'Exit Builder' : ''}</GBLink>
+							<GBLink className='link side' onClick={() => this.exitAdmin()}><span className='icon icon-chevron-left'></span>{!mobile ? 'Exit Form Builder' : ''}</GBLink>
 						</div>
 						<div className='middle centerAlign adminPanelTabs'>
 							{topShowAdminPanelAndPreview ?
