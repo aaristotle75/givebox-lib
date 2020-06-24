@@ -64,7 +64,11 @@ class App extends Component {
 
 			const org = util.getValue(res, 'organization', {});
 			const orgID = util.getValue(org, 'ID', null);
-			const orgName = util.getValue(org, 'name', 'Super');
+			const orgName = util.getValue(org, 'name');
+			const orgImage = util.getValue(org, 'imageURL');
+			const orgSlug = util.getValue(org, 'slug');
+			const underwritingStatus = util.getValue(org, 'underwritingStatus');
+			const status = util.getValue(org, 'status');
 
 			// Set the selected org
 			this.props.resourceProp('orgID', orgID);
@@ -94,12 +98,12 @@ class App extends Component {
 				masker: has(res, 'masker') ? true : false,
 				theme: user.preferences ? user.preferences.cloudTheme : 'light',
 				animations: user.preferences ? user.preferences.animations : false,
-				orgName: res.organization.name,
-				orgImage: res.organization.imageURL,
-				orgID: res.organization.ID,
-				orgSlug: res.organization.slug,
-				underwritingStatus: res.organization.underwritingStatus,
-				status: res.organization.status
+				orgName,
+				orgImage,
+				orgID,
+				orgSlug,
+				underwritingStatus,
+				status
 			};
 
 			// Check member for access

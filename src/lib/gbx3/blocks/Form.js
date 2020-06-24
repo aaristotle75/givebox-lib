@@ -43,7 +43,8 @@ class Form extends Component {
 			order: {
 				terms: true,
 				passFees: true
-			}
+			},
+			hasBeenUpdated: false
 		};
 	}
 
@@ -57,7 +58,8 @@ class Form extends Component {
 			button,
 			defaultButton,
 			form,
-			defaultForm
+			defaultForm,
+			hasBeenUpdated
 		} = this.state;
 
 		const {
@@ -97,6 +99,7 @@ class Form extends Component {
 				};
 				this.props.saveBlock({
 					data,
+					hasBeenUpdated,
 					options: {
 						button,
 						form
@@ -126,7 +129,7 @@ class Form extends Component {
 	}
 
 	optionsUpdated(name, obj) {
-		this.setState({ [name]: { ...obj } });
+		this.setState({ [name]: { ...obj }, hasBeenUpdated: true });
 	}
 
 	getInfo(info) {

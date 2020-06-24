@@ -294,10 +294,23 @@ $breakpoint: 768px;
 				@include default-transition(.5s);
 			}
 
-			li:hover {
+			li:hover:not(.listHeader) {
 				background: transparentize($green, .4);
 			}
 
+			li.draggableBlock {
+				cursor: move;
+			}
+
+			li.listHeader {
+				font-size: 12px;
+				text-align: center;
+				cursor: default;
+				padding: 10px;
+				color: $light-gray;
+				background: transparentize($mainColorDark, .4);
+				text-transform: uppercase;
+			}
 		}
 	}
 
@@ -758,6 +771,7 @@ $breakpoint: 768px;
 	}
 
 	.blockEdit {
+		position: relative;
 		display: flex;
 		align-items: center;
 		background: transparent;
@@ -769,6 +783,35 @@ $breakpoint: 768px;
 			display: inline-block;
 			font-size: 20px;
 			margin-right: 5px;
+		}
+
+		button {
+			display: flex;
+			justify-content: center;
+			align-items: flex-start;
+			flex-direction: column;
+			color: $white;
+			height: 35px;
+			width: 35px;
+			margin: 0 5px;
+			border-radius: 50%;
+			.icon {
+				margin-left: 2px;
+				margin-right: 0;
+				font-size: 20px;
+			}
+		}
+
+		button:hover {
+			opacity: .8;
+		}
+
+		button.blockRemoveButton {
+			background: $red;
+		}
+
+		button.blockEditButton {
+			background: $mainColor;
 		}
 	}
 
@@ -791,26 +834,25 @@ $breakpoint: 768px;
 	/*--------- Drop Area ------*/
 
 	.dropArea {
-		background: transparent;
+		position: relative;
 		@include default-transition(.25s);
 
 		.dragOverText {
 			display: none;
-			text-align: center;
+			justify-content: center;
+			align-items: center;
 			font-size: 20px;
 			color: $white;
 			position: absolute;
-			top: 50%;
-			right: 0; left: 0; bottom: 0;
-			text-align: center;
-			z-index: 3;
+			top:: 0; right: 0; left: 0; bottom: 0;
+			z-index: 99999999;
 		}
 	}
 
 	.dropArea.dragOver {
-		background: transparentize($mainColor, .7);
+		background: transparentize($mainColorLight, .5);
 		.dragOverText {
-			display: block;
+			display: flex;
 		}
 	}
 
@@ -819,6 +861,10 @@ $breakpoint: 768px;
 
 
 	/*------ Payment Form ---------*/
+	.editable .formBlock {
+		background: transparent;
+	}
+
 	.formBlock {
 		border-top-left-radius: 10px;
 		border-top-right-radius: 10px;
@@ -829,7 +875,7 @@ $breakpoint: 768px;
 	.paymentFormHeader {
 		position: absolute;
 		top: 20px;
-		left: 5px;
+		left: 0;
 		@media (max-width: $breakpoint) {
 			position: relative;
 			margin: 50px 0 50px 0;

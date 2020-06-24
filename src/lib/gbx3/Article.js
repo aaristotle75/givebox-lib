@@ -254,10 +254,8 @@ class Article extends React.Component {
 						>
 							{this.renderGridBlocks()}
 						</ResponsiveGridLayout>
+						{this.renderRelativeBlocks()}
 					</div>
-				</div>
-				<div className='layout-column'>
-					{this.renderRelativeBlocks()}
 				</div>
 				<div className='layout-column'>
 					<div className='gbx3Footer'>

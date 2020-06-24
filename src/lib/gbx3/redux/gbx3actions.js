@@ -60,13 +60,11 @@ export function updateBlock(name, block) {
 	}
 }
 
-export function addBlock(type, w, h, ref) {
+export function addBlock(type, w = 0, h = 0, ref) {
 	return (dispatch, getState) => {
 		const current = ref ? ref.current : null;
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
 		const blocks = util.getValue(gbx3, 'blocks', {});
-		const info = util.getValue(gbx3, 'info', {});
-		const breakpoint = util.getValue(info, 'breakpoint');
 		const admin = util.getValue(gbx3, 'admin', {});
 		const availableBlocks = util.getValue(admin, 'availableBlocks', []);
 		const newBlock = util.getValue(blockTemplates, type, {});
@@ -78,9 +76,10 @@ export function addBlock(type, w, h, ref) {
 			newBlock.grid.desktop.i = blockName;
 			newBlock.grid.mobile.i = blockName;
 		}
-		const positionX = w - current.offsetLeft;
 		const y = Math.ceil(parseFloat(h / 10));
-		const x = +(positionX / current.clientWidth) >= .5 ? 6 : 0;
+		//const positionX = w - current.offsetLeft;
+		//const x = +(positionX / current.clientWidth) >= .5 ? 6 : 0;
+		const x = 0;
 
 		newBlock.grid.desktop.y = y;
 		newBlock.grid.desktop.x = x;
@@ -104,7 +103,7 @@ export function removeBlock(name) {
 		if (!util.getValue(block, 'multiple')) {
 			if (!(name in availableBlocks)) availableBlocks.push(name);
 		}
-		dispatch(updateAdmin({ availableBlocks }));
+		dispatch(updateAdmin({ availableBlocks, editBlock: '' }));
 		dispatch(deleteBlock(name));
 	}
 }
@@ -441,6 +440,7 @@ export function loadGBX3(articleID, callback) {
 					const kindID = util.getValue(res, 'kindID');
 					const orgID = util.getValue(res, 'orgID');
 					const orgName = util.getValue(res, 'orgName');
+					const hasAccessToEdit = util.getAuthorizedAccess(access, orgID);
 
 					if (kindID) {
 						const apiName = `org${types2.kind(kind).api.item}`;
@@ -532,7 +532,9 @@ export function loadGBX3(articleID, callback) {
 									dispatch(updateData(res));
 									dispatch(updateAdmin({
 										availableBlocks,
-										hasAccessToEdit: util.getAuthorizedAccess(access, orgID),
+										hasAccessToEdit,
+										editable: hasAccessToEdit ? true : false,
+										open: hasAccessToEdit ? true : false,
 										step: 'design'
 									}));
 									dispatch(updateDefaults({

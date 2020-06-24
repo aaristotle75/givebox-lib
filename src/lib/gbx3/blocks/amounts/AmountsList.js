@@ -422,16 +422,14 @@ class AmountsList extends Component {
 	render() {
 
 		const {
-			editModalOpen,
-			embed,
-			height
+			embed
 		} = this.props;
 
 		//const height = embed && !buttonEnabled ? `${this.props.height}px` : 'auto';
 
 		return (
 			<div className={`${embed ? 'embed' : ''}`}>
-				<div style={{ height: embed && !editModalOpen ? height : '' }} className='amountsSection'>
+				<div className='amountsSection'>
 					{this.renderAmounts()}
 				</div>
 			</div>

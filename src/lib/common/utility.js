@@ -906,7 +906,7 @@ export function blob2S3(
 export function toggle(bool, options) {
 	const opts = {
 		style: {
-			margin: '0 10px;',
+			margin: '0 10px',
 		},
 		className: '',
 		onText: 'ON',

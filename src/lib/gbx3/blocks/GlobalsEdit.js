@@ -3,9 +3,7 @@ import {
 	util,
 	GBLink,
 	Collapse,
-	ColorPicker,
-	TextField,
-	_v
+	ColorPicker
 } from '../../';
 
 export default class GlobalsEdit extends React.Component {

@@ -33,7 +33,7 @@ class DesignMenuTools extends React.Component {
 		return (
 			<div className='layoutMenu'>
 				<ul>
-					<li className='link show' onClick={() => this.props.updateAdmin({ editable: editable ? false : true }) }>Editable {util.toggle(editable)}</li>
+					<li onClick={() => this.props.updateAdmin({ editable: editable ? false : true }) }>Editable {util.toggle(editable)}</li>
 					<li onClick={() => this.props.updateAdmin({ outline: outline ? false : true })}>Grid Outline {util.toggle(outline, { onText: <span className='icon icon-eye'></span>, offText: <span className='icon icon-eye-off'></span>})}</li>
 					<li onClick={() => this.props.updateAdmin({ preventCollision: preventCollision ? false : true })}>Prevent Collision {util.toggle(preventCollision)}</li>
 					<li onClick={() => this.props.updateAdmin({ verticalCompact: verticalCompact ? false : true })}>Vertical Compact {util.toggle(verticalCompact)}</li>

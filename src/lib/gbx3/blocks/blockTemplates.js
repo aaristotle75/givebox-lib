@@ -1,4 +1,5 @@
 const logo = {
+	order: 1,
 	name: 'logo',
 	title: 'Logo',
 	type: 'Media',
@@ -20,7 +21,26 @@ const logo = {
 	}
 };
 
+const orgName = {
+	order: 2,
+	name: 'orgName',
+	title: 'Organization Name',
+	type: 'Text',
+	field: 'orgName',
+	mobileRelativeBlock: 2,
+	mobileClassName: 'mobileRelativeBlockTop',
+	options: {
+		defaultFormat: '<span style="color:hsl(204,4%,58%);font-size:12px">{{TOKEN}}</span>'
+	},
+	grid: {
+		desktop: { i: 'orgName', x: 1, y: 1, w: 5, h: 2, enabled: true },
+		mobile: { i: 'orgName', x: 1, y: 2, w: 5, h: 2, static: true, enabled: false }
+	}
+};
+
+
 const title = {
+	order: 3,
 	name: 'title',
 	title: 'Title',
 	type: 'Text',
@@ -38,23 +58,8 @@ const title = {
 	}
 };
 
-const orgName = {
-	name: 'orgName',
-	title: 'Organization Name',
-	type: 'Text',
-	field: 'orgName',
-	mobileRelativeBlock: 2,
-	mobileClassName: 'mobileRelativeBlockTop',
-	options: {
-		defaultFormat: '<span style="color:hsl(204,4%,58%);font-size:12px">{{TOKEN}}</span>'
-	},
-	grid: {
-		desktop: { i: 'orgName', x: 1, y: 1, w: 5, h: 2, enabled: true },
-		mobile: { i: 'orgName', x: 1, y: 2, w: 5, h: 2, static: true, enabled: false }
-	}
-};
-
 const media = {
+	order: 4,
 	name: 'media',
 	title: 'Media',
 	type: 'Media',
@@ -79,6 +84,7 @@ const media = {
 };
 
 const amounts = {
+	order: 5,
 	name: 'amounts',
 	title: 'Amounts',
 	type: 'Amounts',
@@ -106,10 +112,11 @@ const amounts = {
 };
 
 const paymentForm = {
+	order: 7,
 	name: 'paymentForm',
 	title: 'Payment Form',
 	type: 'Form',
-	remove: false,
+	nonremovable: true,
 	options: {
 		button: {
 			enabled: true,
@@ -129,13 +136,14 @@ const paymentForm = {
 			allowSharing: true,
 			sendEmail: {
 				enabled: true,
-				linkText: 'Send an Email Message to Your Friends'
+				linkText: 'Send an Email Message'
 			},
 		}
 	}
 };
 
 const description = {
+	order: 6,
 	name: 'description',
 	title: 'Description',
 	type: 'Text',
@@ -160,7 +168,7 @@ const textBlock = {
 		defaultFormat: '<span>Enter Text</span>'
 	},
 	grid: {
-		desktop: { i: 'textBlock', x: 1, y: 0, w: 6, h: 2, enabled: true },
+		desktop: { i: 'textBlock', x: 1, y: 0, w: 12, h: 2, enabled: true },
 		mobile: { i: 'textBlock', x: 1, y: 0, w: 6, h: 2, enabled: false }
 	}
 };
@@ -177,8 +185,8 @@ const contentBlock = {
 		defaultFormat: '<span>Enter Content</span>'
 	},
 	grid: {
-		desktop: { i: 'contentBlock', x: 0, y: 24, w: 6, h: 10, enabled: true },
-		mobile: { i: 'contentBlock', x: 0, y: 48, w: 6, h: 10, enabled: false }
+		desktop: { i: 'contentBlock', x: 0, y: 0, w: 12, h: 4, enabled: true },
+		mobile: { i: 'contentBlock', x: 0, y: 0, w: 6, h: 4, enabled: false }
 	}
 };
 
@@ -200,7 +208,7 @@ const mediaBlock = {
 		}
 	},
 	grid: {
-		desktop: { i: 'mediaBlock', x: 6, y: 0, w: 6, h: 24, enabled: true },
+		desktop: { i: 'mediaBlock', x: 6, y: 0, w: 12, h: 24, enabled: true },
 		mobile: { i: 'mediaBlock', x: 0, y: 2, w: 6, h: 24, enabled: false }
 	}
 };

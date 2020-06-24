@@ -60,7 +60,8 @@ class Amounts extends Component {
 			customIndex: 6,
 			defaultIndex: 6,
 			formError: [],
-			tab: 'edit'
+			tab: 'edit',
+			hasBeenUpdated: false
 		};
 		this.blockRef = null;
 		this.width = null;
@@ -99,6 +100,7 @@ class Amounts extends Component {
 	}
 
 	saveEditedAmounts(saveBlock) {
+		const hasBeenUpdated = this.state.hasBeenUpdated;
 		const button = { ...this.state.button };
 		const recurring = { ...this.state.recurring };
 		const amountsList = [ ...this.state.amountsList ];
@@ -133,6 +135,7 @@ class Amounts extends Component {
 
 			if (saveBlock) {
 				this.props.saveBlock({
+					hasBeenUpdated,
 					options: {
 						button,
 						recurring,
@@ -176,7 +179,7 @@ class Amounts extends Component {
 				list: amountsList
 			};
 		}
-		this.setState({ amountsList }, () => {
+		this.setState({ amountsList, hasBeenUpdated: true }, () => {
 			if (save) this.props.saveGBX3(data, false, (res, err) => {
 				if (!err && !util.isEmpty(res)) {
 					this.saveEditedAmounts();
@@ -190,7 +193,8 @@ class Amounts extends Component {
 		const customID = parseInt(ID);
 		this.setState({
 			customIndex,
-			customID
+			customID,
+			hasBeenUpdated: true
 		});
 	}
 
@@ -199,12 +203,13 @@ class Amounts extends Component {
 		const defaultID = parseInt(ID);
 		this.setState({
 			defaultIndex,
-			defaultID
+			defaultID,
+			hasBeenUpdated: true
 		});
 	}
 
 	optionsUpdated(name, obj) {
-		this.setState({ [name]: { ...obj } });
+		this.setState({ [name]: { ...obj }, hasBeenUpdated: true });
 	}
 
 	validateAmountsBeforeSave(formErrorID, error, callback) {
@@ -303,7 +308,6 @@ class Amounts extends Component {
 						kind={this.props.kind}
 						buttonEnabled={util.getValue(button, 'enabled', false)}
 						article={data}
-						setDisplayHeight={this.props.setDisplayHeight}
 					/>
 				)
 			}
@@ -329,7 +333,6 @@ class Amounts extends Component {
 						allowRecurring={util.getValue(recurring, 'enabled', true)}
 						buttonEnabled={util.getValue(button, 'enabled', false)}
 						article={data}
-						setDisplayHeight={this.props.setDisplayHeight}
 						editModalOpen={this.props.editModalOpen}
 					/>
 				)

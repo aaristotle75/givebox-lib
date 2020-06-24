@@ -4,6 +4,7 @@ import {
 	GBLink,
 	util,
 	toggleModal,
+	updateAdmin,
 	updateBlock,
 	removeBlock,
 	updateData,
@@ -22,9 +23,6 @@ class Block extends React.Component {
 		this.saveBlock = this.saveBlock.bind(this);
 		this.getBlockContent = this.getBlockContent.bind(this);
 		this.setDisplayHeight = this.setDisplayHeight.bind(this);
-		this.state = {
-			editModalOpen: false
-		};
 		this.height = null;
 	}
 
@@ -38,17 +36,20 @@ class Block extends React.Component {
 
 	onClickEdit() {
 		this.props.toggleModal(this.props.modalID, true);
-		this.setState({ editModalOpen: true });
+		this.props.updateAdmin({ editBlock: this.props.name });
 	}
 
 	async onClickRemove() {
 		const blockRemoved = await this.props.removeBlock(this.props.name);
-		if (blockRemoved) this.setState({ editModalOpen: false }, this.props.toggleModal(this.props.modalID, false));
+		if (blockRemoved) {
+			this.props.updateAdmin({ editBlock: '' });
+			this.props.toggleModal(this.props.modalID, false);
+		}
 	}
 
 	closeEditModal() {
 		this.props.toggleModal(this.props.modalID, false);
-		this.setState({ editModalOpen: false });
+		this.props.updateAdmin({ editBlock: '' });
 	}
 
 	async saveBlock(params = {}) {
@@ -61,6 +62,7 @@ class Block extends React.Component {
 			content: {},
 			options: {},
 			data: {},
+			hasBeenUpdated: false,
 			autoHeight: true,
 			saveGBX3: true,
 			callback: this.closeEditModal,
@@ -76,8 +78,8 @@ class Block extends React.Component {
 		const grid = {};
 		if (opts.autoHeight) {
 			if (this.height) grid.h = Math.ceil(parseFloat(this.height / 10));
-			const addHeight = parseInt(grid.h * .1);
-			if (grid.h) grid.h = grid.h + addHeight;
+			///const addHeight = parseInt(grid.h * .1);
+			//if (grid.h) grid.h = grid.h + addHeight;
 		}
 
 		const mobileContent = content || this.getBlockContent('mobile');
@@ -103,30 +105,34 @@ class Block extends React.Component {
 			}
 		} : {};
 
-		const updated = [];
-		const checkForUpdatesCount = !util.isEmpty(data) ? 2 : 1;
-
-		const blocksUpdated = await this.props.updateBlock(name, Object.assign({}, block, {
-			grid: blockGrid,
-			options: {
-				...block.options,
-				...options
-			}
-		}));
-		if (blocksUpdated) updated.push('blocksUpdated');
-
-		if (!util.isEmpty(data)) {
-			const dataUpdated = await this.props.updateData(data);
-			if (dataUpdated) updated.push('dataUpdated');
-		}
-
 		const saveCallback = () => {
 			callback();
 		};
 
-		if (updated.length === checkForUpdatesCount) {
-			if (saveGBX3) this.props.saveGBX3(null, false, saveCallback, !util.isEmpty(grid) ? true : false);
-			else saveCallback();
+		if (opts.hasBeenUpdated) {
+			const updated = [];
+			const checkForUpdatesCount = !util.isEmpty(data) ? 2 : 1;
+
+			const blocksUpdated = await this.props.updateBlock(name, Object.assign({}, block, {
+				grid: blockGrid,
+				options: {
+					...block.options,
+					...options
+				}
+			}));
+			if (blocksUpdated) updated.push('blocksUpdated');
+
+			if (!util.isEmpty(data)) {
+				const dataUpdated = await this.props.updateData(data);
+				if (dataUpdated) updated.push('dataUpdated');
+			}
+
+			if (updated.length === checkForUpdatesCount) {
+				if (saveGBX3 && opts.hasBeenUpdated) this.props.saveGBX3(null, false, saveCallback, !util.isEmpty(grid) ? true : false);
+				else saveCallback();
+			}
+		} else {
+			saveCallback();
 		}
 	}
 
@@ -181,7 +187,6 @@ class Block extends React.Component {
 				title: util.getValue(block, 'title', name),
 				closeEditModal: this.closeEditModal,
 				setDisplayHeight: this.setDisplayHeight,
-				editModalOpen: this.state.editModalOpen,
 				onClickRemove: this.onClickRemove
 			})
 		);
@@ -192,17 +197,18 @@ class Block extends React.Component {
 
 		const {
 			name,
-			style
+			style,
+			editBlock,
+			nonremovable
 		} = this.props;
-
-		const {
-			editModalOpen
-		} = this.state;
 
 		return (
 			<div style={style} className={`block ${name}Block`}>
-				<div className={`dragHandle blockOptions ${editModalOpen ? 'displayNone' : ''}`}>
-					<GBLink className='blockEdit' onClick={this.onClickEdit}><span className='icon icon-edit'></span>Edit</GBLink>
+				<div className={`dragHandle blockOptions ${editBlock === name ? 'displayNone' : ''}`}>
+					<div className='blockEdit'>
+						{!nonremovable ? <GBLink className='blockRemoveButton' onClick={() => this.onClickRemove()}><span className='icon icon-trash-2'></span></GBLink> : <></>}
+						<GBLink className='blockEditButton' onClick={this.onClickEdit}><span className='icon icon-edit'></span></GBLink>
+					</div>
 				</div>
 				{this.renderChildren()}
 			</div>
@@ -219,6 +225,8 @@ function mapStateToProps(state, props) {
 
 	const modalID = `modalBlock-${props.name}`;
 	const gbx3 = util.getValue(state, 'gbx3', {});
+	const admin = util.getValue(gbx3, 'admin', {});
+	const editBlock = util.getValue(admin, 'editBlock');
 	const layouts = util.getValue(gbx3, 'layouts', {});
 	const globals = util.getValue(gbx3, 'globals', {});
 	const gbxStyle = util.getValue(globals, 'gbxStyle', {});
@@ -232,18 +240,21 @@ function mapStateToProps(state, props) {
 	const orgID = util.getValue(info, 'orgID');
 	const blocks = util.getValue(gbx3, 'blocks', {});
 	const block = util.getValue(blocks, props.name, {});
+	const nonremovable = util.getValue(block, 'nonremovable');
 	const dataField = util.getValue(block, 'field');
 	const options = util.getValue(block, 'options', {});
 	const data = util.getValue(gbx3, 'data', {});
 	const fieldValue = util.getValue(data, dataField);
 
 	return {
+		editBlock,
 		kind,
 		articleID,
 		orgID,
 		modalID,
 		layouts,
 		block,
+		nonremovable,
 		options,
 		fieldValue,
 		gbxStyle,
@@ -255,6 +266,7 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
+	updateAdmin,
 	toggleModal,
 	updateBlock,
 	removeBlock,

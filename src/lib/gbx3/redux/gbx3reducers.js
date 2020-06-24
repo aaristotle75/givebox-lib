@@ -56,6 +56,7 @@ export function gbx3(state = {
 		}
 	},
 	admin: {
+		editBlock: '',
 		open: false,
 		step: 'create',
 		createType: 'form',

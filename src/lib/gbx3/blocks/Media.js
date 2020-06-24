@@ -65,7 +65,8 @@ export default class Media extends Component {
 			defaultVideo: util.deepClone(video),
 			defaultMediaType: mediaType,
 			maxWidth: this.maxWidth || null,
-			maxHeight: this.maxHeight || 550
+			maxHeight: this.maxHeight || 550,
+			hasBeenUpdated: false
 		};
 	}
 
@@ -85,7 +86,8 @@ export default class Media extends Component {
 		const {
 			image,
 			video,
-			mediaType
+			mediaType,
+			hasBeenUpdated
 		} = this.state;
 
 		if (mediaType === 'video' && !video.validatedURL) {
@@ -114,6 +116,7 @@ export default class Media extends Component {
 				this.setState({ loading: false, edit: false }, () => {
 					this.props.saveBlock({
 						data,
+						hasBeenUpdated,
 						content: {
 							image,
 							video
@@ -156,14 +159,15 @@ export default class Media extends Component {
 		this.setState({
 			image,
 			mediaType: 'image',
-			loading: true
+			loading: true,
+			hasBeenUpdated: true
 		}, () => this.closeEditModal('save'));
 	}
 
 	updateImage(key, value) {
 		const image = this.state.image;
 		image[key] = value;
-		this.setState({ image });
+		this.setState({ image, hasBeenUpdated: true });
 	}
 
 	handleBorderRadius(e) {
@@ -180,7 +184,7 @@ export default class Media extends Component {
 		video.validatedURL = _v.validateURL(URL) ? URL : video.validatedURL;
 		video.URL = URL;
 		if (video.error) video.error = false;
-		this.setState({ video });
+		this.setState({ video, hasBeenUpdated: true });
 	}
 
 	videoOnReady() {

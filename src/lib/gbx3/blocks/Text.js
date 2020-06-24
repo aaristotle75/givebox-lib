@@ -22,6 +22,7 @@ export default class Text extends Component {
 		const content = util.getValue(props.blockContent, 'html', defaultContent);
 
 		this.state = {
+			hasBeenUpdated: false,
 			content,
 			defaultContent: content
 		};
@@ -50,7 +51,7 @@ export default class Text extends Component {
 	}
 
 	onChange(content) {
-		this.setState({ content });
+		this.setState({ content, hasBeenUpdated: true });
 		if (this.props.onChange) this.props.onChange(this.props.name, content);
 	}
 
@@ -60,7 +61,8 @@ export default class Text extends Component {
 		} = this.props;
 
 		const {
-			content
+			content,
+			hasBeenUpdated
 		} = this.state;
 		if (type !== 'cancel') {
 			const data = {};
@@ -68,6 +70,7 @@ export default class Text extends Component {
 			if (updateField) data[block.field] = updateField === 'string' ? util.stripHtml(content) : content;
 			this.props.saveBlock({
 				data,
+				hasBeenUpdated,
 				content: {
 					html: content
 				}

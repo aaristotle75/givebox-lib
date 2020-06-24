@@ -2,11 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
 	util,
+	toggleModal,
 	updateAdmin,
-	updateGlobals,
-	resetGBX3,
-	saveGBX3,
-	toggleModal
+	addBlock
 } from '../../';
 import blockTemplates from '../blocks/blockTemplates';
 
@@ -16,8 +14,15 @@ class DesignMenuLayout extends React.Component {
 		super(props);
 		this.renderActiveBlocks = this.renderActiveBlocks.bind(this);
 		this.renderAvailableBlocks = this.renderAvailableBlocks.bind(this);
+		this.editBlock = this.editBlock.bind(this);
 		this.state = {
 		};
+	}
+
+	editBlock(name) {
+		const modalID = `modalBlock-${name}`;
+		this.props.toggleModal(modalID, true);
+		this.props.updateAdmin({ editBlock: name });
 	}
 
 	renderActiveBlocks() {
@@ -25,8 +30,31 @@ class DesignMenuLayout extends React.Component {
 			blocks
 		} = this.props;
 		const items = [];
+		const orderedBlocks = [];
 
-		return items;
+		Object.entries(blocks).forEach(([key, value]) => {
+			if (!util.getValue(value, 'multiple')) {
+				orderedBlocks.push(value);
+			}
+		});
+		util.sortByField(orderedBlocks, 'order', 'ASC');
+
+		Object.entries(orderedBlocks).forEach(([key, value]) => {
+			items.push(
+				<li
+					key={key}
+					onClick={() => this.editBlock(value.name)}
+				>
+					{value.title}
+				</li>
+			);
+		});
+
+		return (
+			<ul>
+				{items}
+			</ul>
+		);
 	}
 
 	renderAvailableBlocks() {
@@ -41,6 +69,16 @@ class DesignMenuLayout extends React.Component {
 				<li
 					key={value}
 					className='draggableBlock'
+					onMouseUp={() => {
+						const dropArea = document.getElementById('gbx3DropArea');
+						const paymentForm = document.getElementById('block-paymentForm');
+						if (dropArea && paymentForm) {
+							const dropAreaheight = dropArea.clientHeight;
+							const paymentFormHeight = paymentForm.clientHeight;
+							const height = dropAreaheight - paymentFormHeight;
+							this.props.addBlock(value, 0, height);
+						}
+					}}
 					draggable={true}
 					onDragStart={(e) => {
 						e.dataTransfer.setData('text/plain', value);
@@ -63,6 +101,7 @@ class DesignMenuLayout extends React.Component {
 
 		return (
 			<ul>
+				<li className='listHeader'>Add Page Elements</li>
 				{items}
 			</ul>
 		)
@@ -70,15 +109,10 @@ class DesignMenuLayout extends React.Component {
 
 	render() {
 
-		const {
-			editable
-		} = this.props;
-
 		return (
 			<div className='layoutMenu'>
-				<ul>
-					<li className='link show' onClick={() => this.props.updateAdmin({ editable: editable ? false : true }) }>{editable ? 'Turn Editable Off' : 'Turn Editable On'}</li>
-				</ul>
+				{this.renderActiveBlocks()}
+				{this.renderAvailableBlocks()}
 			</div>
 		)
 	}
@@ -87,24 +121,18 @@ class DesignMenuLayout extends React.Component {
 function mapStateToProps(state, props) {
 
 	const gbx3 = util.getValue(state, 'gbx3', {});
+	const blocks = util.getValue(gbx3, 'blocks', {});
 	const admin = util.getValue(gbx3, 'admin', {});
 	const availableBlocks = util.getValue(admin, 'availableBlocks', []);
-	const globals = util.getValue(gbx3, 'globals', {});
-	const gbxStyle = util.getValue(globals, 'gbxStyle', {});
-	const editable = util.getValue(admin, 'editable');
 
 	return {
-		availableBlocks,
-		globals,
-		gbxStyle,
-		editable
+		blocks,
+		availableBlocks
 	}
 }
 
 export default connect(mapStateToProps, {
+	toggleModal,
 	updateAdmin,
-	updateGlobals,
-	resetGBX3,
-	saveGBX3,
-	toggleModal
+	addBlock
 })(DesignMenuLayout);

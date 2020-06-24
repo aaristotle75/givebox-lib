@@ -42,11 +42,17 @@ class GBX3 extends React.Component {
 	async componentDidMount() {
 		const {
 			articleID,
-			editable
+			editable,
+			hasAccessToEdit
 		} = this.props;
 
 		this.props.setLoading(true);
-		if (editable) this.props.updateAdmin({ editable, open: true });
+		if ((editable && hasAccessToEdit) || hasAccessToEdit) {
+			this.props.updateAdmin({ editable, open: true });
+		} else {
+			this.props.updateAdmin({ editable: false });
+		}
+
 		const setInfo = await this.setInfo();
 
 		if (setInfo) {
