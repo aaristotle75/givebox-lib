@@ -71,11 +71,12 @@ class GBX3 extends React.Component {
 
 	async componentDidUpdate(prevProps) {
 		const {
-			articleID
+			articleID,
+			primaryColor
 		} = this.props;
 
 		if (prevProps.primaryColor !== this.props.primaryColor) {
-			this.props.setStyle(this.props.primaryColor);
+			this.props.setStyle({ primaryColor });
 		}
 
 		const articleIDChanged = prevProps.articleID !== this.props.articleID ? true : false;
@@ -182,9 +183,13 @@ class GBX3 extends React.Component {
 
 	loadGBX3(articleID) {
 
+		const {
+			primaryColor
+		} = this.props;
+
 		this.props.loadGBX3(articleID, (res, err) => {
 			if (!err && !util.isEmpty(res)) {
-				this.props.setStyle(this.props.primaryColor);
+				this.props.setStyle({ primaryColor });
 				this.setRecaptcha();
 				this.setTracking();
 			}
@@ -251,6 +256,7 @@ function mapStateToProps(state, props) {
 	const publicView = util.getValue(admin, 'publicView');
 
 	return {
+		globals,
 		loading,
 		info,
 		primaryColor,

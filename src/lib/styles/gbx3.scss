@@ -10,9 +10,11 @@ $breakpoint: 768px;
 	overflow-y: scroll;
 	overflow-x: hidden;
 	-webkit-overflow-scrolling: auto;
+	background: #ffffff;
+	padding: 20px;
 
 	@media (max-width: $breakpoint) {
-		//padding: 50px 0;
+		padding: 0;
 	}
 
 	.bottomOffset {
@@ -39,6 +41,16 @@ $breakpoint: 768px;
 	::-webkit-scrollbar-thumb {
 		outline: 0;
 		border-radius: 20px;
+	}
+
+	input::-webkit-input-placeholder {
+		color: $placeholder-gray;
+	}
+	input::-moz-placeholder {
+		color: $placeholder-gray;
+	}
+	input::-ms-input-placeholder {
+		color: $placeholder-gray;
 	}
 
 	/*------ Layout ------*/
@@ -302,6 +314,31 @@ $breakpoint: 768px;
 				cursor: move;
 			}
 
+			li.stylePanel {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				padding: 5px 10px;
+
+				.colorpicker-group {
+					padding: 0;
+
+					.colorPickerText { display: none; }
+
+					label {
+						display: none;
+						color: $white;
+					}
+					button.input {
+						border: 0;
+					}
+					button.input.hasValue {
+						color: $white;
+					}
+					.input-bottom { display: none; }
+				}
+			}
+
 			li.listHeader {
 				font-size: 12px;
 				text-align: center;
@@ -311,6 +348,20 @@ $breakpoint: 768px;
 				background: transparentize($mainColorDark, .4);
 				text-transform: uppercase;
 			}
+		}
+	}
+
+	.leftPanelDropdown {
+		display: inline-block;
+		padding: 0;
+
+		.dropdown button {
+			border: 0;
+			.label { color: $white; }
+			.icon { display: none; }
+		}
+		.dropdown button:hover {
+			.label { color: $mainColorLight !important; }
 		}
 	}
 
@@ -457,7 +508,7 @@ $breakpoint: 768px;
 	.stageAligner {
 		display: block;
 		margin: 0 auto;
-		padding: 20px;
+		padding: 0;
 		@media (max-width: $breakpoint) {
 			padding: 0;
 		}
@@ -744,7 +795,7 @@ $breakpoint: 768px;
 		width: 100%;
 		min-height: 20px;
 		color: $white;
-		background: transparentize($mainColorLight, .4);
+		background: transparentize($mainColorLight, .7);
 		z-index: 2;
 	}
 
@@ -807,11 +858,11 @@ $breakpoint: 768px;
 		}
 
 		button.blockRemoveButton {
-			background: $red;
+			background: transparentize($red, .2);
 		}
 
 		button.blockEditButton {
-			background: $mainColor;
+			background: transparentize($mainColorLight, 0);
 		}
 	}
 
@@ -868,7 +919,6 @@ $breakpoint: 768px;
 	.formBlock {
 		border-top-left-radius: 10px;
 		border-top-right-radius: 10px;
-		background: $white;
 		padding: 20px 0;
 	}
 
@@ -1050,6 +1100,7 @@ $breakpoint: 768px;
 	button.button {
 		border-radius: 20px;
 		font-size: 16px;
+		font-weight: 400;
 		//color: $mainColor;
 		//background-color: $white;
 		@include default-transition(.5s);

@@ -40,7 +40,10 @@ export function gbx3(state = {
 	globals: {
 		gbxStyle: {
 			maxWidth: 850,
-			primaryColor: ''
+			primaryColor: '',
+			bgColor: '',
+			textColor: '',
+			backgroundColor: ''
 		},
 		button: {
 			embedAllowed: false,
@@ -48,6 +51,7 @@ export function gbx3(state = {
 			type: 'button',
 			text: 'Button Example',
 			style: {
+				textColor: '#ffffff',
 				bgColor: '',
 				fontSize: 16,
 				borderRadius: 10,

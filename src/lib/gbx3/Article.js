@@ -200,6 +200,7 @@ class Article extends React.Component {
 
 		const {
 			layouts,
+			verticalCompact,
 			preventCollision,
 			editable,
 			hasAccessToEdit,
@@ -248,7 +249,7 @@ class Article extends React.Component {
 							autoSize={true}
 							draggableHandle={'.dragHandle'}
 							draggableCancel={'.modal'}
-							compactType={null}
+							compactType={verticalCompact ? 'vertical' : null}
 							preventCollision={preventCollision}
 							isDroppable={false}
 						>

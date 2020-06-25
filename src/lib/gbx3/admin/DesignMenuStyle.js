@@ -2,92 +2,198 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
 	util,
+	updateGlobal,
 	updateGlobals,
 	saveGBX3,
 	toggleModal,
-	ModalLink,
-	ModalRoute
+	ColorPicker,
+	setStyle,
+	Dropdown
 } from '../../';
-import GlobalsEdit from '../blocks/GlobalsEdit';
 
 class DesignMenuStyle extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.closeGBXOptionsCallback = this.closeGBXOptionsCallback.bind(this);
 		this.updatePrimaryColor = this.updatePrimaryColor.bind(this);
-		const globals = props.globals;
+		this.colorPickerCallback = this.colorPickerCallback.bind(this);
+		this.updateStyle = this.updateStyle.bind(this);
+		this.backgroundOpacityOptions = this.backgroundOpacityOptions.bind(this);
 		this.state = {
-			globals,
-			globalsDefault: util.deepClone(globals)
-		};
+			colorPickerOpen: [],
+			opacityDropdownOpen: false
+		}
 	}
 
-	updatePrimaryColor(value) {
+	async updatePrimaryColor(value) {
+
+		const {
+			gbxStyle
+		} = this.props;
+
+		const {
+			button
+		} = this.props.globals;
+
 		const globals = {
-			...this.state.globals,
 			gbxStyle: {
-				...this.state.globals.gbxStyle,
+				...gbxStyle,
 				primaryColor: value
 			},
 			button: {
-				...this.state.globals.button,
+				...button,
 				style: {
-					...this.state.globals.button.style,
+					...button.style,
 					bgColor: value
 				}
 			}
 		};
-		this.setState({ globals });
+		const globalsUpdated = await this.props.updateGlobals(globals);
+		if (globalsUpdated) {
+			this.props.saveGBX3(null, false, null);
+		}
 	}
 
-	async closeGBXOptionsCallback(type = 'save') {
+	async updateStyle(name, value) {
 
-		const {
-			globals,
-			globalsDefault
-		} = this.state;
-		if (type !== 'cancel') {
-			this.setState({
-				globalsDefault: util.deepClone(globals)
-			});
-			const updated = await this.props.updateGlobals(globals);
-			if (updated) this.props.saveGBX3(null, false, () => {
-				this.props.toggleModal('paymentForm-options', false);
-			});
-		} else {
-			this.setState({
-				globals: util.deepClone(globalsDefault)
-			}, this.props.toggleModal('paymentForm-options', false));
+		const gbxStyle = {
+			...this.props.gbxStyle,
+			[name]: value
+		};
+		const globalUpdated = await this.props.updateGlobal('gbxStyle', gbxStyle);
+		if (globalUpdated) {
+			this.props.setStyle({ [name]: value });
+			this.props.saveGBX3(null, false, null);
 		}
+	}
+
+	colorPickerCallback(modalID) {
+		const colorPickerOpen = this.state.colorPickerOpen;
+		if (colorPickerOpen.includes(modalID)) {
+			colorPickerOpen.splice(colorPickerOpen.indexOf(modalID), 1);
+		} else {
+			colorPickerOpen.push(modalID);
+		}
+		this.setState({ colorPickerOpen });
+	}
+
+	backgroundOpacityOptions() {
+		const items = [];
+		for (let i=0; i <= 10; i++) {
+			const perc = i * 10;
+			//const actualValue = +((perc / 100).toFixed(1));
+			items.push({ primaryText: `${perc}%`, value: i });
+		}
+		return items;
 	}
 
 	render() {
 
 		const {
-			globals
+			gbxStyle
 		} = this.props;
+
+		const {
+			colorPickerOpen,
+			opacityDropdownOpen
+		} = this.state;
+
+		const colorPickerTheme = 'colorPickerTheme';
+		const colorPickerTextColor = 'colorPickerTextColor';
+		const colorPickerBackgroundColor = 'colorPickerBackgroundColor';
 
 		return (
 			<div className='layoutMenu'>
 				<ul>
-					<ModalLink type='li' id='paymentForm-options'>Options</ModalLink>
-					<ModalRoute
-						optsProps={{ closeCallback: this.closeGBXOptionsCallback }}
-						id={'paymentForm-options'}
-						component={() => (
-							<GlobalsEdit
-								closeGBXOptionsCallback={this.closeGBXOptionsCallback}
-								updatePrimaryColor={this.updatePrimaryColor}
-								globals={globals}
-							/>
-						 )}
-						effect='3DFlipVert' style={{ width: '60%' }}
-						draggable={true}
-						draggableTitle={`Editing Payment Form`}
-						closeCallback={this.closeGBXOptionsCallback}
-						disallowBgClose={true}
-					/>
+					<li onClick={() => this.colorPickerCallback(colorPickerTheme)} className='stylePanel'>
+						Theme Color
+						<ColorPicker
+							open={colorPickerOpen.includes(colorPickerTheme)}
+							name='primaryColor'
+							fixedLabel={true}
+							label='Theme Color'
+							onAccept={(name, value) => {
+								this.colorPickerCallback(colorPickerTheme);
+								this.updatePrimaryColor(value);
+							}}
+							onCancel={() => this.colorPickerCallback(colorPickerTheme)}
+							value={util.getValue(gbxStyle, 'primaryColor')}
+							modalID={colorPickerTheme}
+							opts={{
+								customOverlay: {
+									zIndex: 9999909
+								}
+							}}
+						/>
+					</li>
+					<li onClick={() => this.colorPickerCallback(colorPickerTextColor)} className='stylePanel'>
+						Text Color
+						<ColorPicker
+							open={colorPickerOpen.includes(colorPickerTextColor)}
+							name='textColor'
+							fixedLabel={true}
+							label='Text Color'
+							onAccept={(name, value) => {
+								this.colorPickerCallback(colorPickerTextColor);
+								this.updateStyle('textColor', value);
+							}}
+							onCancel={() => this.colorPickerCallback(colorPickerTextColor)}
+							value={util.getValue(gbxStyle, 'textColor', '#000000')}
+							modalID={colorPickerTextColor}
+							opts={{
+								customOverlay: {
+									zIndex: 9999909
+								}
+							}}
+						/>
+					</li>
+					<li onClick={() => this.colorPickerCallback(colorPickerBackgroundColor)} className='stylePanel'>
+						Background Color
+						<ColorPicker
+							open={colorPickerOpen.includes(colorPickerBackgroundColor)}
+							name='backgroundColor'
+							fixedLabel={true}
+							label='Background Color'
+							onAccept={(name, value) => {
+								this.colorPickerCallback(colorPickerBackgroundColor);
+								this.updateStyle('backgroundColor', value);
+							}}
+							onCancel={() => this.colorPickerCallback(colorPickerBackgroundColor)}
+							value={util.getValue(gbxStyle, 'backgroundColor', '#ffffff')}
+							modalID={colorPickerBackgroundColor}
+							opts={{
+								customOverlay: {
+									zIndex: 9999909
+								}
+							}}
+						/>
+					</li>
+					<li
+						onClick={() => {
+							const opacityDropdownOpen = this.state.opacityDropdownOpen ? false : true;
+							this.setState({ opacityDropdownOpen });
+						}}
+						className='stylePanel'
+					>
+						Background Opacity
+						<Dropdown
+							open={opacityDropdownOpen}
+							portalID={`leftPanel-backgroundOpacity`}
+							portal={true}
+							name='backgroundOpacity'
+							contentWidth={100}
+							label={''}
+							className='leftPanelDropdown'
+							fixedLabel={true}
+							defaultValue={+(util.getValue(gbxStyle, 'backgroundOpacity', 1) * 10)}
+							onChange={(name, value) => {
+								const backgroundOpacity = +(value / 10);
+								console.log('execute onChange', value, backgroundOpacity);
+								this.updateStyle('backgroundOpacity', backgroundOpacity);
+							}}
+							options={this.backgroundOpacityOptions()}
+						/>
+					</li>
 				</ul>
 			</div>
 		)
@@ -107,7 +213,9 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
+	updateGlobal,
 	updateGlobals,
 	saveGBX3,
-	toggleModal
+	toggleModal,
+	setStyle
 })(DesignMenuStyle);

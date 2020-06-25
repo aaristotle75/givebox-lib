@@ -57,6 +57,7 @@ class ButtonEdit extends Component {
 
 		const buttonStyle = { ...globalButtonStyle, ...util.getValue(button, 'style', {}) };
 		const bgColor = util.getValue(buttonStyle, 'bgColor', primaryColor);
+		const textColor = util.getValue(buttonStyle, 'textColor', '#ffffff');
 		const width = util.getValue(buttonStyle, 'width');
 		const fontSize = util.getValue(buttonStyle, 'fontSize');
 		const borderRadius = util.getValue(buttonStyle, 'borderRadius', 10);
@@ -99,6 +100,21 @@ class ButtonEdit extends Component {
 						}}
 						value={bgColor}
 						modalID='colorPickerBgColor'
+						opts={{
+							customOverlay: {
+								zIndex: 9999909
+							}
+						}}
+					/>
+					<ColorPicker
+						name='textColor'
+						fixedLabel={true}
+						label='Button Text Color'
+						onAccept={(name, value) => {
+							this.updateButton('textColor', value, true);
+						}}
+						value={textColor}
+						modalID='colorPickeTextColor'
 						opts={{
 							customOverlay: {
 								zIndex: 9999909

@@ -477,6 +477,8 @@ export function loadGBX3(articleID, callback) {
 									}));
 
 									const blocksDefault = util.getValue(defaultBlocks, kind, {});
+									const globalsCustom = util.getValue(customTemplate, 'globals', {});
+									const gbxStyleCustom = util.getValue(globalsCustom, 'gbxStyle', {});
 									const blocksCustom = util.getValue(customTemplate, 'blocks', {});
 									const blocks = !util.isEmpty(blocksCustom) ? blocksCustom : blocksDefault;
 
@@ -485,6 +487,7 @@ export function loadGBX3(articleID, callback) {
 										...{
 											gbxStyle: {
 												...util.getValue(globalsState, 'gbxStyle', {}),
+												...gbxStyleCustom,
 												primaryColor
 											},
 											button: {
@@ -558,36 +561,107 @@ export function loadGBX3(articleID, callback) {
 	}
 }
 
-export function setStyle(color) {
+export function setTextStyle(color) {
+
+}
+
+export function setStyle(options = {}) {
+
+	const opts = {
+		primaryColor: null,
+		textColor: null,
+		backgroundColor: null,
+		backgroundOpacity: null,
+		backgroundBorderRadius: null,
+		...options
+	};
 
 	return (dispatch, getState) => {
-		/*
-		.gbx3Layout {
-			background: #ffffff;
-			background: -webkit-linear-gradient(to bottom, ${color2} 0%, #ffffff 100%);
-			background: -moz-linear-gradient(to bottom, ${color2} 0%, #ffffff 100%);
-			background: linear-gradient(to bottom, ${color2} 0%, #ffffff 100%);
+		const gbx3 = util.getValue(getState(), 'gbx3', {});
+		const globals = util.getValue(gbx3, 'globals', {});
+		const gbxStyle = util.getValue(globals, 'gbxStyle', {});
+		const color = opts.primaryColor || util.getValue(gbxStyle, 'primaryColor');
+		const textColor = opts.textColor || util.getValue(gbxStyle, 'textColor');
+		const backgroundColor = opts.backgroundColor || util.getValue(gbxStyle, 'backgroundColor');
+		const backgroundOpacity = opts.backgroundOpacity || util.getValue(gbxStyle, 'backgroundOpacity', 1);
+		const backgroundBorderRadius = opts.backgroundBorderRadius || util.getValue(gbxStyle, 'backgroundBorderRadius', 0);
+
+		let textStyleStr = '';
+		let colorStyleStr = '';
+		let backgroundColorStyleStr = '';
+		let styleInnerHTML = '';
+
+		if (textColor) {
+			textStyleStr = `
+				.gbx3Layout,
+				.gbx3Layout label,
+				.gbx3Layout .label {
+					color: ${textColor};
+				}
+				.gbx3Layout input {
+					color: ${textColor};
+				}
+				.gbx3Layout .amountInput .moneyAmount {
+					color: ${textColor};
+				}
+				.gbx3 .paymentFormTabs .panel button {
+					color: ${textColor};
+				}
+				.gbx3Layout .radio + label {
+					border: 1px solid ${textColor};
+				}
+
+			`;
 		}
-		*/
+
+		if (backgroundColor) {
+			const rgb = util.hexToRgb(backgroundColor);
+			const backgroundColor1 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${backgroundOpacity})`;
+			//const backgroundColor2 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .1)`;
+
+			/*
+				background: -webkit-linear-gradient(to bottom, ${backgroundColor1} 0%, ${backgroundColor2} 20%);
+				background: -moz-linear-gradient(to bottom, ${backgroundColor1} 0%, ${backgroundColor2} 20%);
+				background: linear-gradient(to bottom, ${backgroundColor1} 0%, ${backgroundColor2} 20%);
+			*/
+
+			backgroundColorStyleStr = `
+				.gbx3 .gbx3Container {
+					border-radius: ${backgroundBorderRadius};
+					background: ${backgroundColor1};
+				}
+				.gbx3Layout .radio + label {
+					background-color: ${backgroundColor1};
+				}
+				.gbx3Layout .radio:checked + label {
+					background-color: ${backgroundColor1};
+				}
+			`;
+		}
 
 		if (color) {
 			const rgb = util.hexToRgb(color);
-			//const color2 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .1)`;
+			const color2 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .1)`;
 			const color3 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .05)`;
 			const color4 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .4)`;
-			const styleEl = document.head.appendChild(document.createElement('style'));
-			styleEl.innerHTML = `
+			colorStyleStr = `
+				.gbx3Layout {
+					background: ${color};
+					background: -webkit-linear-gradient(to bottom, ${color} 0%, ${color2} 100%);
+					background: -moz-linear-gradient(to bottom, ${color} 0%, ${color2} 100%);
+					background: linear-gradient(to bottom, ${color} 0%, ${color2} 100%);
+				}
 
-				.radio:checked + label:after {
+				.gbx3Layout .radio:checked + label:after {
 					border: 1px solid ${color} !important;
 					background: ${color};
 				}
 
-				.dropdown .dropdown-content.customColor::-webkit-scrollbar-thumb {
+				.gbx3Layout .dropdown .dropdown-content.customColor::-webkit-scrollbar-thumb {
 					background-color: ${color};
 				}
 
-				.amountsSection::-webkit-scrollbar-thumb {
+				.gbx3Layout .amountsSection::-webkit-scrollbar-thumb {
 					background-color: ${color4};
 				}
 
@@ -600,7 +674,7 @@ export function setStyle(color) {
 					background: ${color3};
 				}
 
-				.gbx3 button.modalToTop:hover {
+				.gbx3Layout button.modalToTop:hover {
 					background: ${color};
 				}
 
@@ -615,6 +689,15 @@ export function setStyle(color) {
 					background: linear-gradient(to bottom, ${color} 30%, ${color4} 100%);
 				}
 			`;
+		}
+
+		if (backgroundColorStyleStr) styleInnerHTML = styleInnerHTML + backgroundColorStyleStr;
+		if (textStyleStr) styleInnerHTML = styleInnerHTML + textStyleStr;
+		if (colorStyleStr) styleInnerHTML = styleInnerHTML + colorStyleStr;
+
+		if (styleInnerHTML) {
+			const styleEl = document.head.appendChild(document.createElement('style'));
+			styleEl.innerHTML = styleInnerHTML;
 		}
 	}
 }

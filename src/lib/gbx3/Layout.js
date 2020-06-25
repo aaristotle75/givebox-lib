@@ -60,9 +60,9 @@ class Layout extends React.Component {
 		} = this.props;
 
 		const isEditable = hasAccessToEdit && editable ? true : false;
-		const style = { ...util.getValue(globals, 'gbxStyle', {}), maxWidth: '850px' };
+		const style = { maxWidth: '850px' };
 		return (
-			<div className='gbx3Layout'>
+			<div id='gbx3Layout' className='gbx3Layout'>
 				<div style={style} className={`gbx3Container ${isEditable ? 'editable' : ''}`}>
 					{this.renderDisplay()}
 					<ModalRoute

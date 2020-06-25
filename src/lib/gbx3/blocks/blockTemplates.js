@@ -30,7 +30,7 @@ const orgName = {
 	mobileRelativeBlock: 2,
 	mobileClassName: 'mobileRelativeBlockTop',
 	options: {
-		defaultFormat: '<span style="color:hsl(204,4%,58%);font-size:12px">{{TOKEN}}</span>'
+		defaultFormat: '<span style="font-size:12px">{{TOKEN}}</span>'
 	},
 	grid: {
 		desktop: { i: 'orgName', x: 1, y: 1, w: 5, h: 2, enabled: true },

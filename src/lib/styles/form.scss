@@ -845,7 +845,6 @@ label.active {
 
 .default {
 	background-image: url('https://s3-us-west-1.amazonaws.com/givebox/public/images/card-default3.png');
-	background-image: url('https://s3-us-west-1.amazonaws.com/givebox/public/images/card-default3.svg');
 	opacity: .5;
 }
 
@@ -1105,6 +1104,7 @@ label.active {
 	width: 20px;
 	height: 20px;
 	margin-right: 10px;
+	border: 1px solid $med-blue-gray;
 }
 
 // Moved over from Cloud to be used Globally

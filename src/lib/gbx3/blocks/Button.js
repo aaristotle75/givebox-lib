@@ -41,11 +41,11 @@ class Button extends PureComponent {
 		return (
 			<>
 			{modalID ?
-				<ModalLink opts={this.props.opts} style={style} customColor={util.getValue(style, 'bgColor', null)} solidColor={type === 'button' ? true : false} allowCustom={true} className={`${type}`} id={modalID}>
+				<ModalLink opts={this.props.opts} style={style} customColor={util.getValue(style, 'bgColor', null)} solidColor={type === 'button' ? true : false} allowCustom={true} solidTextColor={util.getValue(style, 'textColor', null)} className={`${type}`} id={modalID}>
 					{util.getValue(button, 'text', 'Button Text')}
 				</ModalLink>
 				:
-				<GBLink style={style} customColor={util.getValue(style, 'bgColor', null)} solidColor={type === 'button' ? true : false} allowCustom={true} className={`${type}`} onClick={onClick}>
+				<GBLink style={style} customColor={util.getValue(style, 'bgColor', null)} solidColor={type === 'button' ? true : false} allowCustom={true} solidTextColor={util.getValue(style, 'textColor', null)} className={`${type}`} onClick={onClick}>
 					{util.getValue(button, 'text', 'Button Text')}
 				</GBLink>
 			}
