@@ -384,7 +384,7 @@ export function processTransaction(data, callback) {
 				dispatch(sendResource('purchaseOrder', {
 					data,
 					callback,
-					query: `rc=${token}`
+					query: `rc=${token}&version=3&primary=${util.getValue(data, 'articleID')}`
 				}));
 			})
 		});
@@ -444,7 +444,6 @@ export function loadGBX3(articleID, callback) {
 
 					if (kindID) {
 						const apiName = `org${types2.kind(kind).api.item}`;
-
 						dispatch(getResource('articleFeeSettings', {
 							id: [articleID],
 							reload: true,
@@ -457,6 +456,7 @@ export function loadGBX3(articleID, callback) {
 
 						dispatch(getResource(apiName, {
 							id: [kindID],
+							reload: true,
 							orgID: orgID,
 							callback: (res, err) => {
 								if (!err && !util.isEmpty(res)) {
@@ -473,7 +473,8 @@ export function loadGBX3(articleID, callback) {
 										kindID,
 										kind,
 										apiName,
-										display: 'article'
+										display: 'article',
+										orgImage: util.getValue(access, 'orgImage')
 									}));
 
 									const blocksDefault = util.getValue(defaultBlocks, kind, {});
@@ -570,9 +571,14 @@ export function setStyle(options = {}) {
 	const opts = {
 		primaryColor: null,
 		textColor: null,
+		pageColor: null,
+		pageOpacity: null,
+		pageRadius: null,
 		backgroundColor: null,
+		backgroundImage: null,
 		backgroundOpacity: null,
-		backgroundBorderRadius: null,
+		backgroundBlur: null,
+		placeholderColor: null,
 		...options
 	};
 
@@ -580,18 +586,28 @@ export function setStyle(options = {}) {
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
 		const globals = util.getValue(gbx3, 'globals', {});
 		const gbxStyle = util.getValue(globals, 'gbxStyle', {});
+		const info = util.getValue(gbx3, 'info', {});
+		const breakpoint = util.getValue(info, 'breakpoint');
 		const color = opts.primaryColor || util.getValue(gbxStyle, 'primaryColor');
-		const textColor = opts.textColor || util.getValue(gbxStyle, 'textColor');
-		const backgroundColor = opts.backgroundColor || util.getValue(gbxStyle, 'backgroundColor');
+		const textColor = opts.textColor || util.getValue(gbxStyle, 'textColor', '#253655');
+		const pageColor = opts.pageColor || util.getValue(gbxStyle, 'pageColor', '#ffffff');
+		const pageOpacity = opts.pageOpacity || util.getValue(gbxStyle, 'pageOpacity', 1);
+		const pageRadius = opts.pageRadius || util.getValue(gbxStyle, 'pageRadius', 10);
+		const backgroundColor = opts.backgroundColor || util.getValue(gbxStyle, 'backgroundColor', color);
+		const backgroundImage = opts.backgroundImage || util.getValue(gbxStyle, 'backgroundImage');
 		const backgroundOpacity = opts.backgroundOpacity || util.getValue(gbxStyle, 'backgroundOpacity', 1);
-		const backgroundBorderRadius = opts.backgroundBorderRadius || util.getValue(gbxStyle, 'backgroundBorderRadius', 0);
+		const backgroundBlur = opts.backgroundBlur || util.getValue(gbxStyle, 'backgroundBlur', 0);
+		const placeholderColor = opts.placeholderColor || util.getValue(gbxStyle, 'placeholderColor');
 
 		let textStyleStr = '';
 		let colorStyleStr = '';
+		let pageColorStyleStr = '';
 		let backgroundColorStyleStr = '';
 		let styleInnerHTML = '';
 
 		if (textColor) {
+			const rgb = util.hexToRgb(placeholderColor || textColor);
+			const textColor2 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${placeholderColor ? 1 : .5})`;
 			textStyleStr = `
 				.gbx3Layout,
 				.gbx3Layout label,
@@ -611,46 +627,99 @@ export function setStyle(options = {}) {
 					border: 1px solid ${textColor};
 				}
 
+				.gbx3Layout input::-webkit-input-placeholder {
+					color: ${textColor2};
+				}
+				.gbx3Layout input::-moz-placeholder {
+					color: ${textColor2};
+				}
+				.gbx3Layout input::-ms-input-placeholder {
+					color: ${textColor2};
+				}
+
+				.gbx3 .givebox-paymentform input {
+					border-bottom: 1px solid ${textColor2};
+				}
+
+				.gbx3Layout input {
+					border-bottom: 1px solid ${textColor2};
+				}
+				.gbx3Layout .moneyAmount.noValue .symbol {
+					color: ${textColor2};
+				}
+
+				.gbx3 .givebox-paymentform .dropdown button:not(.link) {
+					border-bottom: 1px solid ${textColor2};
+				}
+
+				.gbx3 .gbx3Layout .dropdown button .label.idle {
+					color: ${textColor2} !important;
+				}
+
+				.gbx3 .gbx3Layout .dropdown button .icon {
+					 color: ${textColor2};
+				}
+
+				.gbx3 .givebox-paymentform .input-bottom.idle {
+					 background: ${textColor2};
+				}
+
 			`;
 		}
 
-		if (backgroundColor) {
-			const rgb = util.hexToRgb(backgroundColor);
-			const backgroundColor1 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${backgroundOpacity})`;
-			//const backgroundColor2 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .1)`;
+		if (pageColor) {
+			const rgb = util.hexToRgb(pageColor);
+			const pageColor1 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${pageOpacity})`;
 
-			/*
-				background: -webkit-linear-gradient(to bottom, ${backgroundColor1} 0%, ${backgroundColor2} 20%);
-				background: -moz-linear-gradient(to bottom, ${backgroundColor1} 0%, ${backgroundColor2} 20%);
-				background: linear-gradient(to bottom, ${backgroundColor1} 0%, ${backgroundColor2} 20%);
-			*/
-
-			backgroundColorStyleStr = `
+			pageColorStyleStr = `
 				.gbx3 .gbx3Container {
-					border-radius: ${backgroundBorderRadius};
-					background: ${backgroundColor1};
+					border-radius: ${+(pageRadius)}px;
+					background: ${pageColor1};
 				}
 				.gbx3Layout .radio + label {
-					background-color: ${backgroundColor1};
+					background-color: ${pageColor1};
 				}
 				.gbx3Layout .radio:checked + label {
-					background-color: ${backgroundColor1};
+					background-color: ${pageColor1};
+				}
+			`;
+		}
+
+		let backgroundImageInnerHTML = '';
+		if (backgroundImage && breakpoint === 'desktop') {
+			backgroundImageInnerHTML = `
+				.gbx3LayoutBackground {
+						background-image: url("${backgroundImage}");
+						background-position: center;
+						background-repeat: no-repeat;
+						background-size: cover;
+						filter: blur(${backgroundBlur}px);
+						-webkit-filter: blur(${backgroundBlur}px);
+				}
+			`;
+		}
+
+		if (backgroundColor || color) {
+			const bgColor = backgroundColor || color;
+			const rgb = util.hexToRgb(bgColor);
+			const bgColor1 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${backgroundOpacity})`;
+			const bgColor2 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${backgroundOpacity})`;
+			backgroundColorStyleStr = `
+				.gbx3Layout {
+					background: ${bgColor1};
+					background: -webkit-linear-gradient(to bottom, ${bgColor1} 0%, ${bgColor2} 100%);
+					background: -moz-linear-gradient(to bottom, ${bgColor1} 0%, ${bgColor2} 100%);
+					background: linear-gradient(to bottom, ${bgColor1} 0%, ${bgColor2} 100%);
 				}
 			`;
 		}
 
 		if (color) {
 			const rgb = util.hexToRgb(color);
-			const color2 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .1)`;
+			//const color2 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .1)`;
 			const color3 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .05)`;
 			const color4 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .4)`;
 			colorStyleStr = `
-				.gbx3Layout {
-					background: ${color};
-					background: -webkit-linear-gradient(to bottom, ${color} 0%, ${color2} 100%);
-					background: -moz-linear-gradient(to bottom, ${color} 0%, ${color2} 100%);
-					background: linear-gradient(to bottom, ${color} 0%, ${color2} 100%);
-				}
 
 				.gbx3Layout .radio:checked + label:after {
 					border: 1px solid ${color} !important;
@@ -688,12 +757,18 @@ export function setStyle(options = {}) {
 					background: -moz-linear-gradient(to bottom, ${color} 30%, ${color4} 100%);
 					background: linear-gradient(to bottom, ${color} 30%, ${color4} 100%);
 				}
+
+				.gbx3Shop button.link {
+					color: ${color};
+				}
 			`;
 		}
 
-		if (backgroundColorStyleStr) styleInnerHTML = styleInnerHTML + backgroundColorStyleStr;
+		if (pageColorStyleStr) styleInnerHTML = styleInnerHTML + pageColorStyleStr;
 		if (textStyleStr) styleInnerHTML = styleInnerHTML + textStyleStr;
 		if (colorStyleStr) styleInnerHTML = styleInnerHTML + colorStyleStr;
+		if (backgroundColorStyleStr) styleInnerHTML = styleInnerHTML + backgroundColorStyleStr;
+		if (backgroundImageInnerHTML) styleInnerHTML = styleInnerHTML + backgroundImageInnerHTML;
 
 		if (styleInnerHTML) {
 			const styleEl = document.head.appendChild(document.createElement('style'));

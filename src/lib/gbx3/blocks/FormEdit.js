@@ -4,7 +4,8 @@ import {
 	Choice,
 	TextField,
 	Dropdown,
-	Collapse
+	Collapse,
+	_v
 } from '../../';
 import AnimateHeight from 'react-animate-height';
 
@@ -15,6 +16,7 @@ class FormEdit extends Component {
 		this.updateForm = this.updateForm.bind(this);
 		this.infoOptions = this.infoOptions.bind(this);
 		this.state = {
+			goalError: ''
 		};
 	}
 
@@ -51,7 +53,9 @@ class FormEdit extends Component {
 			notePlaceholder,
 			sendEmail,
 			allowSelection,
-			allowShare
+			allowShare,
+			hasCustomGoal,
+			goal
 		} = this.props.form;
 
 		return (
@@ -182,6 +186,30 @@ class FormEdit extends Component {
 								checked={allowSelection}
 								value={allowSelection}
 							/>
+							<Choice
+								type='checkbox'
+								name='hasCustomGoal'
+								label={'Do You Want to Set a Goal?'}
+								onChange={(name, value) => {
+									this.updateForm('hasCustomGoal', hasCustomGoal ? false : true);
+								}}
+								checked={hasCustomGoal}
+								value={hasCustomGoal}
+							/>
+							<AnimateHeight height={hasCustomGoal ? 'auto' : 0}>
+								<TextField
+									label='Goal Amount'
+									fixedLabel={true}
+									placeholder='Enter the Goal Amount'
+									money={true}
+									value={goal ? goal/100 : ''}
+									maxLength={7}
+									onChange={(e) => {
+										const value = +(e.currentTarget.value * 100);
+										this.updateForm('goal', value);
+									}}
+								/>
+							</AnimateHeight>
 							<Choice
 								type='checkbox'
 								name='sendEmail'

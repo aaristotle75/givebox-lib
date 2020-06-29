@@ -138,6 +138,8 @@ const paymentForm = {
 				enabled: true,
 				linkText: 'Send an Email Message'
 			},
+			hasCustomGoal: false,
+			goal: 50000
 		}
 	}
 };
@@ -213,7 +215,7 @@ const mediaBlock = {
 	}
 };
 
-const blockTemplates = {
+export const blockTemplates = {
 	logo,
 	title,
 	orgName,

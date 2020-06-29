@@ -69,7 +69,7 @@ class Echeck extends Component {
 					)}
 				/>
 				<div className='payMethods'>
-					<img src='https://givebox.s3-us-west-1.amazonaws.com/public/images/echeck-logo.png' height='25' alt='eCheck logo' />
+					<img src='https://givebox.s3-us-west-1.amazonaws.com/public/images/card-echeck.png' width='31' height='21' alt='eCheck logo' />
 					<div className='bankname'>
 						<Fade
 							in={bankName ? true : false}

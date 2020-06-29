@@ -10,6 +10,7 @@ import {
 	setStyle,
 	Dropdown
 } from '../../';
+import DesignMenuStyleImage from './DesignMenuStyleImage';
 
 class DesignMenuStyle extends React.Component {
 
@@ -18,10 +19,15 @@ class DesignMenuStyle extends React.Component {
 		this.updatePrimaryColor = this.updatePrimaryColor.bind(this);
 		this.colorPickerCallback = this.colorPickerCallback.bind(this);
 		this.updateStyle = this.updateStyle.bind(this);
-		this.backgroundOpacityOptions = this.backgroundOpacityOptions.bind(this);
+		this.opacityOptions = this.opacityOptions.bind(this);
+		this.blurOptions = this.blurOptions.bind(this);
+		this.pageRadiusOptions = this.pageRadiusOptions.bind(this);
 		this.state = {
 			colorPickerOpen: [],
-			opacityDropdownOpen: false
+			opacityDropdownOpen: false,
+			roundnessDropdownOpen: false,
+			backgroundOpacityDropdownOpen: false,
+			backgroundBlurDropdownOpen: false
 		}
 	}
 
@@ -77,12 +83,29 @@ class DesignMenuStyle extends React.Component {
 		this.setState({ colorPickerOpen });
 	}
 
-	backgroundOpacityOptions() {
+	opacityOptions() {
+		const items = [];
+		for (let i=0; i <= 20; i++) {
+			const perc = i * 5;
+			items.push({ primaryText: `${perc}%`, value: perc });
+		}
+		return util.sortByField(items, 'value');
+	}
+
+	pageRadiusOptions() {
 		const items = [];
 		for (let i=0; i <= 10; i++) {
-			const perc = i * 10;
-			//const actualValue = +((perc / 100).toFixed(1));
-			items.push({ primaryText: `${perc}%`, value: i });
+			const value = +(i * 5);
+			items.push({ primaryText: `${value}px`, value});
+		}
+		return items;
+	}
+
+	blurOptions() {
+		const items = [];
+		for (let i=0; i <= 20; i++) {
+			const perc = i * 5;
+			items.push({ primaryText: `${perc}%`, value: perc});
 		}
 		return items;
 	}
@@ -95,12 +118,36 @@ class DesignMenuStyle extends React.Component {
 
 		const {
 			colorPickerOpen,
-			opacityDropdownOpen
+			opacityDropdownOpen,
+			roundnessDropdownOpen,
+			backgroundOpacityDropdownOpen,
+			backgroundBlurDropdownOpen
 		} = this.state;
 
 		const colorPickerTheme = 'colorPickerTheme';
 		const colorPickerTextColor = 'colorPickerTextColor';
+		const colorPickerPageColor = 'colorPickerPageColor';
 		const colorPickerBackgroundColor = 'colorPickerBackgroundColor';
+		const colorPickerPlaceholderColor = 'colorPickerPlaceholderColor';
+
+		const primaryColor = util.getValue(gbxStyle, 'primaryColor');
+		const textColor = util.getValue(gbxStyle, 'textColor', '#000000');
+		const pageColor = util.getValue(gbxStyle, 'pageColor', '#ffffff');
+		const pageOpacity = +(util.getValue(gbxStyle, 'pageOpacity', 1) * 100);
+		const pageRadius = +(util.getValue(gbxStyle, 'pageRadius', 0));
+		const backgroundColor = util.getValue(gbxStyle, 'backgroundColor', util.getValue(gbxStyle, 'primaryColor'));
+		const placeholderColor = util.getValue(gbxStyle, 'placeholderColor', textColor);
+		const backgroundImage = util.getValue(gbxStyle, 'backgroundImage');
+		const backgroundOpacity = +(util.getValue(gbxStyle, 'backgroundOpacity', 1) * 100);
+		const backgroundBlur = util.getValue(gbxStyle, 'backgroundBlur', 0);
+
+		const extraColors = [
+			primaryColor,
+			textColor,
+			pageColor,
+			backgroundColor,
+			placeholderColor
+		];
 
 		return (
 			<div className='layoutMenu'>
@@ -117,13 +164,14 @@ class DesignMenuStyle extends React.Component {
 								this.updatePrimaryColor(value);
 							}}
 							onCancel={() => this.colorPickerCallback(colorPickerTheme)}
-							value={util.getValue(gbxStyle, 'primaryColor')}
+							value={primaryColor}
 							modalID={colorPickerTheme}
 							opts={{
 								customOverlay: {
 									zIndex: 9999909
 								}
 							}}
+							extraColors={extraColors}
 						/>
 					</li>
 					<li onClick={() => this.colorPickerCallback(colorPickerTextColor)} className='stylePanel'>
@@ -138,15 +186,89 @@ class DesignMenuStyle extends React.Component {
 								this.updateStyle('textColor', value);
 							}}
 							onCancel={() => this.colorPickerCallback(colorPickerTextColor)}
-							value={util.getValue(gbxStyle, 'textColor', '#000000')}
+							value={textColor}
 							modalID={colorPickerTextColor}
 							opts={{
 								customOverlay: {
 									zIndex: 9999909
 								}
 							}}
+							extraColors={extraColors}
 						/>
 					</li>
+					<li className='listHeader'>Page Style</li>
+					<li onClick={() => this.colorPickerCallback(colorPickerPageColor)} className='stylePanel'>
+						Page Color
+						<ColorPicker
+							open={colorPickerOpen.includes(colorPickerPageColor)}
+							name='pageColor'
+							fixedLabel={true}
+							label='Page Color'
+							onAccept={(name, value) => {
+								this.colorPickerCallback(colorPickerPageColor);
+								this.updateStyle('pageColor', value);
+							}}
+							onCancel={() => this.colorPickerCallback(colorPickerPageColor)}
+							value={pageColor}
+							modalID={colorPickerPageColor}
+							opts={{
+								customOverlay: {
+									zIndex: 9999909
+								}
+							}}
+							extraColors={extraColors}
+						/>
+					</li>
+					<li
+						onClick={() => {
+							const opacityDropdownOpen = this.state.opacityDropdownOpen ? false : true;
+							this.setState({ opacityDropdownOpen });
+						}}
+						className='stylePanel'
+					>
+						Page Opacity
+						<Dropdown
+							open={opacityDropdownOpen}
+							portalID={`leftPanel-pageOpacity`}
+							portal={true}
+							name='pageOpacity'
+							contentWidth={100}
+							label={''}
+							className='leftPanelDropdown'
+							fixedLabel={true}
+							defaultValue={pageOpacity}
+							onChange={(name, value) => {
+								const pageOpacity = +(value / 100);
+								this.updateStyle('pageOpacity', pageOpacity);
+							}}
+							options={this.opacityOptions()}
+						/>
+					</li>
+					<li
+						onClick={() => {
+							const roundnessDropdownOpen = this.state.roundnessDropdownOpen ? false : true;
+							this.setState({ roundnessDropdownOpen });
+						}}
+						className='stylePanel'
+					>
+						Page Roundness
+						<Dropdown
+							open={roundnessDropdownOpen}
+							portalID={`leftPanel-pageRadius`}
+							portal={true}
+							name='pageRadius'
+							contentWidth={100}
+							label={''}
+							className='leftPanelDropdown'
+							fixedLabel={true}
+							defaultValue={pageRadius}
+							onChange={(name, value) => {
+								this.updateStyle('pageRadius', value);
+							}}
+							options={this.pageRadiusOptions()}
+						/>
+					</li>
+					<li className='listHeader'>Background Style</li>
 					<li onClick={() => this.colorPickerCallback(colorPickerBackgroundColor)} className='stylePanel'>
 						Background Color
 						<ColorPicker
@@ -159,25 +281,35 @@ class DesignMenuStyle extends React.Component {
 								this.updateStyle('backgroundColor', value);
 							}}
 							onCancel={() => this.colorPickerCallback(colorPickerBackgroundColor)}
-							value={util.getValue(gbxStyle, 'backgroundColor', '#ffffff')}
+							value={backgroundColor}
 							modalID={colorPickerBackgroundColor}
 							opts={{
 								customOverlay: {
 									zIndex: 9999909
 								}
 							}}
+							extraColors={extraColors}
 						/>
 					</li>
+					<DesignMenuStyleImage
+						imageURL={backgroundImage}
+						selectedCallback={(imageURL, changed) => {
+							if (changed) this.updateStyle('backgroundImage', imageURL);
+						}}
+						removeImage={() => {
+							this.updateStyle('backgroundImage', '');
+						}}
+					/>
 					<li
 						onClick={() => {
-							const opacityDropdownOpen = this.state.opacityDropdownOpen ? false : true;
-							this.setState({ opacityDropdownOpen });
+							const backgroundOpacityDropdownOpen = this.state.backgroundOpacityDropdownOpen ? false : true;
+							this.setState({ backgroundOpacityDropdownOpen });
 						}}
 						className='stylePanel'
 					>
 						Background Opacity
 						<Dropdown
-							open={opacityDropdownOpen}
+							open={backgroundOpacityDropdownOpen}
 							portalID={`leftPanel-backgroundOpacity`}
 							portal={true}
 							name='backgroundOpacity'
@@ -185,13 +317,60 @@ class DesignMenuStyle extends React.Component {
 							label={''}
 							className='leftPanelDropdown'
 							fixedLabel={true}
-							defaultValue={+(util.getValue(gbxStyle, 'backgroundOpacity', 1) * 10)}
+							defaultValue={backgroundOpacity}
 							onChange={(name, value) => {
-								const backgroundOpacity = +(value / 10);
-								console.log('execute onChange', value, backgroundOpacity);
+								const backgroundOpacity = +(value / 100);
 								this.updateStyle('backgroundOpacity', backgroundOpacity);
 							}}
-							options={this.backgroundOpacityOptions()}
+							options={this.opacityOptions()}
+						/>
+					</li>
+					<li
+						onClick={() => {
+							const backgroundBlurDropdownOpen = this.state.backgroundBlurDropdownOpen ? false : true;
+							this.setState({ backgroundBlurDropdownOpen });
+						}}
+						className='stylePanel'
+					>
+						Background Blur
+						<Dropdown
+							open={backgroundBlurDropdownOpen}
+							portalID={`leftPanel-backgroundBlur`}
+							portal={true}
+							name='backgroundBlur'
+							contentWidth={100}
+							label={''}
+							selectLabel='Select'
+							className='leftPanelDropdown'
+							fixedLabel={true}
+							defaultValue={backgroundBlur}
+							onChange={(name, value) => {
+								this.updateStyle('backgroundBlur', +(value));
+							}}
+							options={this.blurOptions()}
+						/>
+					</li>
+					<li className='listHeader'>Form Style</li>
+					<li onClick={() => this.colorPickerCallback(colorPickerPlaceholderColor)} className='stylePanel'>
+						Placeholder Color
+						<ColorPicker
+							open={colorPickerOpen.includes(colorPickerPlaceholderColor)}
+							name='placeholderColor'
+							fixedLabel={true}
+							label='Placeholder Color'
+							onAccept={(name, value) => {
+								this.colorPickerCallback(colorPickerPlaceholderColor);
+								this.updateStyle('placeholderColor', value);
+							}}
+							onCancel={() => this.colorPickerCallback(colorPickerPlaceholderColor)}
+							value={placeholderColor}
+							modalID={colorPickerPlaceholderColor}
+							opts={{
+								customOverlay: {
+									zIndex: 9999909
+								}
+							}}
+							extraColors={extraColors}
 						/>
 					</li>
 				</ul>

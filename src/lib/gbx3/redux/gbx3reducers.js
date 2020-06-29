@@ -42,7 +42,10 @@ export function gbx3(state = {
 			maxWidth: 850,
 			primaryColor: '',
 			bgColor: '',
-			textColor: '',
+			textColor: '#253655',
+			pageColor: '#ffffff',
+			pageRadius: 10,
+			pageOpacity: 1,
 			backgroundColor: ''
 		},
 		button: {
@@ -63,7 +66,7 @@ export function gbx3(state = {
 		editBlock: '',
 		open: false,
 		step: 'create',
-		createType: 'form',
+		createType: 'receipt',
 		publicView: false,
 		editable: false,
 		hasAccessToEdit: false,

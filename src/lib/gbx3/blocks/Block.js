@@ -26,6 +26,9 @@ class Block extends React.Component {
 		this.height = null;
 	}
 
+	componentDidMount() {
+	}
+
 	setDisplayHeight(ref) {
 		if (ref) {
 			if (ref.current) {
@@ -162,7 +165,8 @@ class Block extends React.Component {
 			globalButton,
 			globalButtonStyle,
 			primaryColor,
-			scrollTo
+			scrollTo,
+			reloadGBX3
 		} = this.props;
 
 		const childrenWithProps = React.Children.map(this.props.children,
@@ -182,6 +186,7 @@ class Block extends React.Component {
 				primaryColor,
 				breakpoint,
 				scrollTo,
+				reloadGBX3,
 				blockContent: this.getBlockContent(breakpoint),
 				saveBlock: this.saveBlock,
 				title: util.getValue(block, 'title', name),

@@ -12,7 +12,8 @@ import {
 	saveGBX3,
 	Image,
 	GBLink,
-	addBlock
+	addBlock,
+	setStyle
 } from '../';
 import Block from './blocks/Block';
 import Form from './blocks/Form';
@@ -37,8 +38,9 @@ class Article extends React.Component {
 	componentDidMount() {
 	}
 
-	onBreakpointChange(breakpoint, cols) {
-		this.props.updateInfo({ breakpoint });
+	async onBreakpointChange(breakpoint, cols) {
+		const infoUpdated = await this.props.updateInfo({ breakpoint });
+		if (infoUpdated) this.props.setStyle();
 	}
 
 	widthChange(width, margin, cols) {
@@ -94,7 +96,8 @@ class Article extends React.Component {
 		const {
 			breakpoint,
 			outline,
-			blocks
+			blocks,
+			reloadGBX3
 		} = this.props;
 
 		const items = [];
@@ -119,6 +122,7 @@ class Article extends React.Component {
 								name={value.name}
 								blockRef={ref}
 								scrollTo={this.scrollTo}
+								reloadGBX3={reloadGBX3}
 							>
 								<BlockComponent />
 							</Block>
@@ -134,11 +138,13 @@ class Article extends React.Component {
 		const {
 			breakpoint,
 			outline,
-			blocks
+			blocks,
+			reloadGBX3
 		} = this.props;
 
 		const items = [];
 		const Element = Scroll.Element;
+
 		if (!util.isEmpty(blocks) && breakpoint === 'mobile') {
 			const relativeBlocks = [];
 			Object.entries(blocks).forEach(([key, value]) => {
@@ -166,6 +172,7 @@ class Article extends React.Component {
 								blockRef={React.createRef()}
 								scrollTo={this.scrollTo}
 								style={{ position: 'relative' }}
+								reloadGBX3={reloadGBX3}
 							>
 								<BlockComponent />
 							</Block>
@@ -186,6 +193,7 @@ class Article extends React.Component {
 						name='paymentForm'
 						blockRef={React.createRef()}
 						style={{ position: 'relative' }}
+						reloadGBX3={reloadGBX3}
 					>
 						<Form />
 					</Block>
@@ -309,5 +317,6 @@ export default connect(mapStateToProps, {
 	updateData,
 	updateInfo,
 	saveGBX3,
-	addBlock
+	addBlock,
+	setStyle
 })(Article);

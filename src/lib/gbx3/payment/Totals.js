@@ -26,17 +26,21 @@ class Totals extends Component {
 
 		const {
 			paymethod,
-			hasCustomGoal,
 			raised,
-			goal,
 			subTotal,
 			giveboxFee,
 			fee,
 			total,
 			primaryColor,
 			passFees,
-			feeOption
+			feeOption,
+			block
 		} = this.props;
+
+		const options = util.getValue(block, 'options', {});
+		const form = util.getValue(options, 'form', {});
+		const goal = util.getValue(form, 'goal');
+		const hasCustomGoal = util.getValue(form, 'hasCustomGoal');
 
 		return (
 			<div className='totalsContainer'>

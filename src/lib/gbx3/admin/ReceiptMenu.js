@@ -5,11 +5,10 @@ import {
 	util,
 	toggleAdminLeftPanel
 } from '../../';
-import DesignMenuLayout from './DesignMenuLayout';
-import DesignMenuStyle from './DesignMenuStyle';
-import DesignMenuTools from './DesignMenuTools';
+import ReceiptMenuLayout from './ReceiptMenuLayout';
+import ReceiptMenuStyle from './ReceiptMenuStyle';
 
-class DesignMenu extends React.Component {
+class ReceiptMenu extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -28,20 +27,14 @@ class DesignMenu extends React.Component {
 		switch (this.state.panelType) {
 			case 'style': {
 				return (
-					<DesignMenuStyle />
-				)
-			}
-
-			case 'tools': {
-				return (
-					<DesignMenuTools />
+					<ReceiptMenuStyle />
 				)
 			}
 
 			case 'layout':
 			default: {
 				return (
-					<DesignMenuLayout />
+					<ReceiptMenuLayout />
 				)
 			}
 		}
@@ -61,13 +54,12 @@ class DesignMenu extends React.Component {
 			<div className='leftPanelContainer'>
 				<div className='leftPanelTop'>
 					<div className='leftPanelHeader'>
-						Payment Form Menu
+						Receipt Email Menu
 						<GBLink onClick={this.props.toggleAdminLeftPanel} className={`link leftPanelClose ${open ? 'open' : 'close'}`}><span className='icon icon-x'></span></GBLink>
 					</div>
 					<div className='middle centerAlign adminPanelTabs'>
 						<GBLink className={`ripple link ${panelType === 'layout' ? 'selected' : ''}`} onClick={() => this.switchPanelType('layout')}>Elements</GBLink>
 						<GBLink className={`ripple link ${panelType === 'style' ? 'selected' : ''}`} onClick={() => this.switchPanelType('style')}>Style</GBLink>
-						<GBLink className={`ripple link ${panelType === 'tools' ? 'selected' : ''}`} onClick={() => this.switchPanelType('tools')}>Tools</GBLink>
 					</div>
 				</div>
 				<div className={`leftPanelScroller`}>
@@ -91,4 +83,4 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
 	toggleAdminLeftPanel
-})(DesignMenu);
+})(ReceiptMenu);

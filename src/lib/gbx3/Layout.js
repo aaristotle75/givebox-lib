@@ -6,6 +6,7 @@ import {
 } from '../';
 import Shop from './Shop';
 import Article from './Article';
+import Confirmation from './payment/Confirmation';
 
 class Layout extends React.Component {
 
@@ -42,6 +43,7 @@ class Layout extends React.Component {
 				items.push(
 					<Article
 						key={'article'}
+						reloadGBX3={this.props.reloadGBX3}
 						loadGBX3={this.props.loadGBX3}
 						primaryColor={this.props.primaryColor}
 					/>
@@ -55,13 +57,14 @@ class Layout extends React.Component {
 	render() {
 		const {
 			editable,
-			globals,
 			hasAccessToEdit
 		} = this.props;
 
 		const isEditable = hasAccessToEdit && editable ? true : false;
 		const style = { maxWidth: '850px' };
 		return (
+			<>
+			<div className='gbx3LayoutBackground'></div>
 			<div id='gbx3Layout' className='gbx3Layout'>
 				<div style={style} className={`gbx3Container ${isEditable ? 'editable' : ''}`}>
 					{this.renderDisplay()}
@@ -73,8 +76,18 @@ class Layout extends React.Component {
 						disallowBgClose={true}
 						component={(props) => <Shop {...props} reloadGBX3={this.props.reloadGBX3} />}
 					/>
+					<ModalRoute
+						id='paymentConfirmation'
+						effect='scaleUp'
+						style={{ width: '60%' }}
+						className='gbx3'
+						component={() =>
+							<Confirmation primaryColor={this.props.primaryColor} />
+						}
+					/>
 				</div>
 			</div>
+			</>
 		)
 	}
 

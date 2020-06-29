@@ -9,7 +9,8 @@ import {
 	resetCart,
 	toggleModal,
 	Dropdown,
-	types
+	types,
+	Image
 } from '../../';
 import AnimateHeight from 'react-animate-height';
 
@@ -73,7 +74,8 @@ class Cart extends Component {
 	renderItemsInCart() {
 		const {
 			cartItems,
-			primaryColor
+			primaryColor,
+			reloadGBX3
 		} = this.props;
 
 		const {
@@ -87,7 +89,10 @@ class Cart extends Component {
 			Object.entries(cartItems).forEach(([key, value]) => {
 				items.push(
 					<div key={key} className='cartItemRow'>
-						<div style={{ width: '70%' }} className='col'>
+						<div style={{ width: '10%', verticalAlign: 'middle', paddingRight: 10, whiteSpace: 'nowrap'  }} className='col'>
+							<GBLink onClick={() => reloadGBX3(value.articleID)}><Image url={value.articleImageURL} maxSize={50} size='small' minHeight={50} /></GBLink>
+						</div>
+						<div style={{ width: '60%' }} className='col'>
 							<div className='itemName'>{value.name}</div>
 							<div className='itemSubTitle'><strong>{value.articleTitle}</strong></div>
 							<div className='itemSubTitle'>{value.orgName}</div>

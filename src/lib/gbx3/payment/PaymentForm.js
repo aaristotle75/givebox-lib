@@ -14,7 +14,8 @@ import {
 	toggleModal,
 	processTransaction,
 	resetCart,
-	updateConfirmation
+	updateConfirmation,
+	updateInfo
 } from '../../';
 import Moment from 'moment';
 import SendEmail from './SendEmail';
@@ -75,6 +76,7 @@ class PaymentFormClass extends Component {
 
 	formSavedCallback() {
 		this.props.toggleModal('paymentConfirmation', true);
+		this.props.updateInfo({ display: 'shop' });
 		this.props.resetCart();
 	}
 
@@ -185,25 +187,15 @@ class PaymentFormClass extends Component {
 					const expMonth = parseInt(ccexpire[0]);
 					const expYear = parseInt(`${Moment().format('YYYY').slice(0, 2)}${ccexpire[1]}`);
 
-					data.paymethod.name = fullName;
-					data.paymethod.cvv = cvv;
-					data.paymethod.type = type;
-					data.paymethod.binData = binData;
-					data.paymethod.number = number;
-					data.paymethod.expMonth = expMonth;
-					data.paymethod.expYear = expYear;
-
-					/*
-					data.paymethod.creditcard = {
+					data.paymethod.card = {
 						cvv,
 						type,
-						binData: util.getValue(fields.ccnumber, 'binData', {}),
-						name: fullName,
-						number: util.getValue(fields.ccnumber, 'apiValue', null),
-						expMonth: parseInt(ccexpire[0]),
-						expYear: parseInt(`${Moment().format('YYYY').slice(0, 2)}${ccexpire[1]}`)
+						binData,
+						number,
+						expMonth,
+						expYear,
+						name: fullName
 					};
-					*/
 					break;
 				}
 
@@ -494,18 +486,26 @@ class PaymentFormClass extends Component {
 		fields.name =
 			<div className='column'>
 				{mobile ? '' : headerText}
-				{this.props.textField('name', { placeholder: 'Your Name',  label: 'Name', required: true, onBlur: this.onCustomerChange, value: util.getValue(cartCustomer, 'name') })}
+				{this.props.textField('name', { placeholder: 'Your Name', fixedLabel: true, label: 'Name', required: true, onBlur: this.onCustomerChange, value: util.getValue(cartCustomer, 'name') })}
 			</div>
 		;
-		fields.email = this.props.textField('email', { group: 'customer', required: true, placeholder: 'Your Email Address', label: 'Email', validate: 'email', inputMode: 'email', onBlur: this.onCustomerChange, value: util.getValue(cartCustomer, 'email') });
-		fields.phone = this.props.textField('phone', { group: 'customer', required: phone.required, label: 'Phone', placeholder: 'Phone Number', validate: 'phone', inputMode: 'tel', onBlur: this.onCustomerChange, value: util.getValue(cartCustomer, 'phone') });
-		fields.address = this.props.textField('line1', { group: 'address', required: address.required, label: 'Address', placeholder: 'Street Address', onBlur: this.onCustomerChange, value: util.getValue(cartCustomer, 'line1') });
-		fields.city = this.props.textField('city', { group: 'address', required: address.required, label: 'City', placeholder: 'City', onBlur: this.onCustomerChange, value: util.getValue(cartCustomer, 'city') });
-		fields.state = this.props.dropdown('state', { group: 'address', label: 'State', fixedLabel: false, selectLabel: 'State', options: selectOptions.states, required: address.required, onBlur: this.onCustomerChange, value: util.getValue(cartCustomer, 'state') })
-		fields.zip = this.props.textField('zip', { group: 'address', required: true, label: 'Zip Code', placeholder: 'Zip Code', maxLength: 5, inputMode: 'numeric', onBlur: this.onCustomerChange, value: util.getValue(cartCustomer, 'zip') });
-		fields.employer = this.props.textField('employer', { group: 'customer', required: work.required, label: 'Employer', placeholder: 'Employer', onBlur: this.onCustomerChange, value: util.getValue(cartCustomer, 'employer') });
-		fields.occupation = this.props.textField('occupation', { group: 'customer', required: work.required, label: 'Occupation', placeholder: 'Occupation', onBlur: this.onCustomerChange, value: util.getValue(cartCustomer, 'occupation') });
-		fields.custom = this.props.textField('note', { required: custom.required, label: custom.placeholder, hideLabel: true, placeholder: custom.placeholder });
+		fields.email = this.props.textField('email', { group: 'customer', required: true, placeholder: 'Your Email Address', label: 'Email', fixedLabel: true, validate: 'email', inputMode: 'email', onBlur: this.onCustomerChange, value: util.getValue(cartCustomer, 'email') });
+
+		fields.phone = this.props.textField('phone', { group: 'customer', required: phone.required, label: 'Phone', fixedLabel: true, placeholder: 'Phone Number', validate: 'phone', inputMode: 'tel', onBlur: this.onCustomerChange, value: util.getValue(cartCustomer, 'phone') });
+
+		fields.address = this.props.textField('line1', { group: 'address', required: address.required, label: 'Address', fixedLabel: true, placeholder: 'Street Address', onBlur: this.onCustomerChange, value: util.getValue(cartCustomer, 'line1') });
+
+		fields.city = this.props.textField('city', { group: 'address', required: address.required, label: 'City', fixedLabel: true, placeholder: 'City', onBlur: this.onCustomerChange, value: util.getValue(cartCustomer, 'city') });
+
+		fields.state = this.props.dropdown('state', { group: 'address', label: 'State', fixedLabel: true, selectLabel: 'State', options: selectOptions.states, required: address.required, onBlur: this.onCustomerChange, value: util.getValue(cartCustomer, 'state') })
+
+		fields.zip = this.props.textField('zip', { group: 'address', required: true, label: 'Zip Code', fixedLabel: true, placeholder: 'Zip Code', maxLength: 5, inputMode: 'numeric', onBlur: this.onCustomerChange, value: util.getValue(cartCustomer, 'zip') });
+
+		fields.employer = this.props.textField('employer', { group: 'customer', required: work.required, label: 'Employer', fixedLabel: true, placeholder: 'Employer', onBlur: this.onCustomerChange, value: util.getValue(cartCustomer, 'employer') });
+
+		fields.occupation = this.props.textField('occupation', { group: 'customer', required: work.required, label: 'Occupation', fixedLabel: true, placeholder: 'Occupation', onBlur: this.onCustomerChange, value: util.getValue(cartCustomer, 'occupation') });
+
+		fields.custom = this.props.textField('note', { required: custom.required, label: custom.placeholder, fixedLabel: true, hideLabel: true, placeholder: custom.placeholder });
 
 
 		const linkText = sendEmail.linkText || 'Send an Email Message';
@@ -679,5 +679,6 @@ export default connect(mapStateToProps, {
 	toggleModal,
 	processTransaction,
 	resetCart,
-	updateConfirmation
+	updateConfirmation,
+	updateInfo
 })(PaymentForm)

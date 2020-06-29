@@ -137,6 +137,15 @@ export function sortByField(obj, fieldToSort, direction = 'DESC') {
 	return obj.sort(propCompare(fieldToSort, direction));
 }
 
+export function sortNumbers(array, order = 'asc') {
+	if (order === 'asc') {
+		array.sort((a, b) => a - b);
+	} else {
+		array.sort((a, b) => b - a);
+	}
+	return array;
+}
+
 function propCompare(prop, direction) {
 	return function(a, b) {
 		switch(direction) {

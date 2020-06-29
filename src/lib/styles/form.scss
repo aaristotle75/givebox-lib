@@ -1094,6 +1094,25 @@ label.active {
 .photoshop-picker div:first-of-type {
 }
 
+.extraColorsContainer {
+	margin-top: 20px;
+}
+
+.extraColorsHeader {
+	font-size: 12px;
+	font-weight: 400px;
+	margin-bottom: 5px;
+}
+
+.extraColors {
+	display: flex;
+	align-items: flex-start;
+
+	.extraColorSquare {
+		border: 1px solid $placeholder-gray;
+	}
+}
+
 .colorPickerLabel {
 	display: flex;
 	align-items: center;

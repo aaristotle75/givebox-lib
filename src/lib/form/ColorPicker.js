@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { PhotoshopPicker } from 'react-color';
 import {
 	ModalRoute,
-	ModalLink
+	ModalLink,
+	util
 } from '../';
 import { toggleModal } from '../api/actions';
 
@@ -59,7 +60,7 @@ class ColorPicker extends Component {
 
 	onChange(color, e) {
 		this.timeout = setTimeout(() => {
-			this.setState({ hex: color.hex });
+			this.setState({ hex: util.getValue(color, 'hex', color) });
 			this.timeout = null;
 		}, 0);
 	}
@@ -89,6 +90,37 @@ class ColorPicker extends Component {
 		this.setState({status: 'idle'});
 	}
 
+	renderExtraColors() {
+		const {
+			extraColors,
+			extraColorsHeader
+		} = this.props;
+		const colors = [];
+		const items = [];
+		if (!util.isEmpty(extraColors)) {
+			extraColors.forEach((value) => {
+				if (!colors.includes(value)) {
+					items.push(
+						<div key={value} onClick={() => this.onChange(value)} style={{ background: value, height: 30, width: 30 }} className='extraColorSquare'></div>
+					);
+					colors.push(value);
+				}
+			});
+		}
+		if (!util.isEmpty(items)) {
+			return (
+				<div className='extraColorsContainer'>
+					<div className='extraColorsHeader'>{extraColorsHeader}</div>
+					<div className='extraColors'>
+						{items}
+					</div>
+				</div>
+			)
+		} else {
+			return '';
+		}
+	}
+
 	renderColorPicker() {
 		const item = [];
 		const style = {
@@ -105,6 +137,7 @@ class ColorPicker extends Component {
 				},
 			}
 		};
+
 		const picker =
 			<PhotoshopPicker
 				styles={style}
@@ -118,8 +151,9 @@ class ColorPicker extends Component {
 		if (this.props.modal) {
 			item.push(
 				<div key={'colorPicker'} className='modalWrapper'>
-					<div className='flexCenter'>
+					<div className='flexCenter flexColumn'>
 						{picker}
+						{this.renderExtraColors()}
 					</div>
 				</div>
 			);
@@ -127,6 +161,7 @@ class ColorPicker extends Component {
 			item.push(
 				<div key={'colorPicker'}>
 					{picker}
+					{this.renderExtraColors()}
 				</div>
 			);
 		}
@@ -191,7 +226,8 @@ ColorPicker.defaultProps = {
 	modal: true,
 	modalLabel: 'Select Color',
 	modalID: 'colorPicker',
-	defaultColor: '#45a8dc'
+	defaultColor: '#45a8dc',
+	extraColorsHeader: 'Current Color Pallete'
 }
 
 function mapStateToProps(state, props) {

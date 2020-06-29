@@ -1,9 +1,15 @@
 @import 'variables.scss';
 
-$breakpoint: 768px;
+.gbx3LayoutBackground {
+	height: 100vh;
+	width: 100%;
+}
 
 .gbx3Layout {
-	position: relative;
+	top: 0;
+	left: 0;
+	right: 0;
+	position: absolute;
 	display: block;
 	height: 100vh;
 	width: 100%;
@@ -320,6 +326,10 @@ $breakpoint: 768px;
 				align-items: center;
 				padding: 5px 10px;
 
+				.stylePanelBackgroundImageIndicator {
+					padding: 10px 0;
+				}
+
 				.colorpicker-group {
 					padding: 0;
 
@@ -360,8 +370,8 @@ $breakpoint: 768px;
 			.label { color: $white; }
 			.icon { display: none; }
 		}
-		.dropdown button:hover {
-			.label { color: $mainColorLight !important; }
+		.dropdown button:not(.link):hover {
+			.label { color: $white !important; }
 		}
 	}
 
@@ -379,11 +389,12 @@ $breakpoint: 768px;
 		left: 0;
 		width: $panelWidth;
 		height: 90px;
+		z-index: 10;
 	}
 
 	.leftPanelScroller {
+		position: relative;
 		display: block;
-		height: auto;
 		margin-top: 90px;
 	}
 
@@ -478,7 +489,7 @@ $breakpoint: 768px;
 		background: $white;
 		@include transition(left .5s);
 		@media (max-width: $breakpoint) {
-			padding: 10px 0;
+			padding: 0;
 		}
 
 		.gbx3Layout {
@@ -636,6 +647,18 @@ $breakpoint: 768px;
 
 
 	/*-------- General Form ----*/
+	.gbx3Layout {
+		.dropdown button {
+			.label.idle {
+				color: $placeholder-gray !important;
+			}
+			.icon {
+				color: $placeholder-gray;
+			}
+		}
+	}
+
+
 	.autoSaved {
 		display: flex;
 		justify-content: center;
@@ -833,13 +856,12 @@ $breakpoint: 768px;
 		.icon {
 			display: inline-block;
 			font-size: 20px;
-			margin-right: 5px;
 		}
 
 		button {
 			display: flex;
 			justify-content: center;
-			align-items: flex-start;
+			align-items: center;
 			flex-direction: column;
 			color: $white;
 			height: 35px;
@@ -847,8 +869,6 @@ $breakpoint: 768px;
 			margin: 0 5px;
 			border-radius: 50%;
 			.icon {
-				margin-left: 2px;
-				margin-right: 0;
 				font-size: 20px;
 			}
 		}
@@ -968,7 +988,7 @@ $breakpoint: 768px;
 			font-size: $small-text-size;
 		}
 
-		.dropdown button {
+		.dropdown button:not(.link) {
 			padding: 12px 0;
 			border-bottom: 1px solid $light-gray;
 		}
@@ -978,7 +998,7 @@ $breakpoint: 768px;
 			border-bottom: 2px solid $red;
 		}
 
-		.dropdown button:hover {
+		.dropdown button:not(.link):hover {
 			border-bottom: 2px solid $mainColor;
 		}
 
@@ -1073,6 +1093,7 @@ $breakpoint: 768px;
 		button.button {
 			margin: 0 10px;
 		}
+
 		button.link.remove {
 			position: absolute;
 			display: flex;
@@ -1081,6 +1102,12 @@ $breakpoint: 768px;
 			left: 20px;
 			color: $red;
 			font-weight: 400;
+			@media (max-width: $breakpoint) {
+				.buttonText {
+					display: none;
+				}
+			}
+
 			.icon {
 				margin-right: 5px;
 			}
@@ -1544,7 +1571,7 @@ $breakpoint: 768px;
 
 	.articleGroup {
 		padding: 2% 5%;
-		width: auto;
+		width: 100%;
 		@media (max-width: $breakpoint) {
 			padding: 2% 0;
 		}

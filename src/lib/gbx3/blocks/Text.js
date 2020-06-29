@@ -129,7 +129,7 @@ export default class Text extends Component {
 								</div>
 							</Collapse>
 							<div style={{ marginBottom: 0 }} className='button-group center'>
-								{!nonremovable ? <GBLink className='link remove' onClick={this.props.onClickRemove}><span className='icon icon-trash-2'></span> Remove</GBLink> : <></>}
+								{!nonremovable ? <GBLink className='link remove' onClick={this.props.onClickRemove}><span className='icon icon-trash-2'></span> <span className='buttonText'>Remove</span></GBLink> : <></>}
 								<GBLink className='link' onClick={() => this.closeEditModal('cancel')}>Cancel</GBLink>
 								<GBLink className='button' onClick={this.closeEditModal}>Save</GBLink>
 							</div>

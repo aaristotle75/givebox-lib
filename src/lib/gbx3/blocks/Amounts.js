@@ -444,7 +444,7 @@ class Amounts extends Component {
 										<div className='formSectionContainer'>
 											<div className='formSection'>
 												<ButtonEdit
-													label={'Enable Amounts Button'}
+													label={'Use a Button Instead of Showing Amounts on the Form'}
 													button={button}
 													optionsUpdated={this.optionsUpdated}
 													modalID={'amountsList'}

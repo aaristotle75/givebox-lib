@@ -6,8 +6,9 @@ import {
 	updateAdmin
 } from '../../';
 import Layout from '../Layout';
-import ReceiptEdit from './ReceiptEdit';
+import ReceiptEmailEdit from './ReceiptEmailEdit';
 import DesignMenu from './DesignMenu';
+import ReceiptMenu from './ReceiptMenu';
 
 class Design extends React.Component {
 
@@ -32,7 +33,11 @@ class Design extends React.Component {
 		return (
 			<>
 				<div className={`leftPanel ${open ? 'open' : 'close'}`}>
-					<DesignMenu />
+					{ createType === 'form' ?
+						<DesignMenu />
+					:
+						<ReceiptMenu />
+					}
 				</div>
 				<div className={`stageContainer hasBottom ${open ? 'open' : 'close'}`}>
 					<div className='stageAligner'>
@@ -42,7 +47,7 @@ class Design extends React.Component {
 								reloadGBX3={this.props.reloadGBX3}
 							/>
 						:
-							<ReceiptEdit
+							<ReceiptEmailEdit
 
 							/>
 						}

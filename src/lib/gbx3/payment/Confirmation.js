@@ -104,7 +104,7 @@ class Confirmation extends Component {
 
 		const {
 			data: article,
-			form,
+			allowSharing,
 			primaryColor,
 			firstname
 		} = this.props;
@@ -114,7 +114,6 @@ class Confirmation extends Component {
 		const image = util.imageUrlWithStyle(article.imageURL, 'medium');
 		const description = util.getValue(article, 'summary');
 		const shareIconSize = 35;
-		const allowShare = util.getValue(form, 'allowShare', false);
 
 		return (
 			<div className='modalWrapper confirmation'>
@@ -125,7 +124,7 @@ class Confirmation extends Component {
 					</span>
 				</div>
 				{this.renderPaymethodText()}
-				{ allowShare ?
+				{ allowSharing ?
 				<div className='share'>
 					<div className='subText'>
 						{firstname}, please help us grow our community by sharing below.
@@ -195,6 +194,11 @@ class Confirmation extends Component {
 function mapStateToProps(state, props) {
 	const gbx3 = util.getValue(state, 'gbx3', {});
 	const confirmation = util.getValue(gbx3, 'confirmation', {});
+	const blocks = util.getValue(gbx3, 'blocks', {});
+	const paymentFormBlock = util.getValue(blocks, 'paymentForm', {});
+	const paymentFormOptions = util.getValue(paymentFormBlock, 'options', {});
+	const form = util.getValue(paymentFormOptions, 'form', {});
+	const allowSharing = util.getValue(form, 'allowSharing');
 	const firstname = util.getValue(confirmation, 'firstname');
 	const email = util.getValue(confirmation, 'email');
 	const bankName = util.getValue(confirmation, 'bankName');
@@ -212,7 +216,8 @@ function mapStateToProps(state, props) {
 		paymethod,
 		cartTotal,
 		descriptor,
-		data
+		data,
+		allowSharing
 	}
 }
 

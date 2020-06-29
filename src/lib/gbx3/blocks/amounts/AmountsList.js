@@ -74,6 +74,10 @@ class AmountsList extends Component {
 			article
 		} = this.props;
 
+		const {
+			recurring
+		} = this.state;
+
 		const index = cartItems.findIndex(i => i.articleID === article.articleID);
 		if (index !== -1) {
 			// init from cart
@@ -81,7 +85,17 @@ class AmountsList extends Component {
 			const ID = util.getValue(obj, 'unitID', null);
 			const amount = util.getValue(obj, 'amountFormatted', 0);
 			const customAmount = util.getValue(obj, 'customAmount');
-			this.setState({ customAmount, amountRadioSelected: ID}, () => {
+			const interval = util.getValue(obj, 'interval');
+			const paymentMax = util.getValue(obj, 'paymentMax');
+			this.setState({
+				customAmount,
+				amountRadioSelected: ID,
+				recurring: {
+					...recurring,
+					interval,
+					paymentMax
+				}
+			}, () => {
 				this.setUnitID(ID, () => this.setAmounts(amount, customAmount));
 			});
 		} else {
@@ -179,6 +193,7 @@ class AmountsList extends Component {
 		const quantity = 1;
 		const articleTitle = util.getValue(article, 'title');
 		const maxQuantity = util.getValue(article, 'maxQuantity', 10);
+		const articleImageURL = util.getValue(article, 'imageURL');
 		const allowQtyChange = false;
 		const allowMultiItems = false;
 
@@ -198,6 +213,7 @@ class AmountsList extends Component {
 		const item = {
 			unitID,
 			articleTitle,
+			articleImageURL,
 			name,
 			priceper,
 			customAmount,

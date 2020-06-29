@@ -684,6 +684,9 @@ button.imageCover {
 		.dropzone {
 			width: 150px;
 			height: 150px;
+			@media (max-width: $breakpoint) {
+				height: 125px;
+			}
 
 			.icon {
 				font-size: 32px;

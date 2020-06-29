@@ -20,7 +20,6 @@ import Button from './Button';
 import Terms from '../payment/Terms';
 import Totals from '../payment/Totals';
 import Cart from '../payment/Cart';
-import Confirmation from '../payment/Confirmation';
 
 class Form extends Component {
 
@@ -70,7 +69,9 @@ class Form extends Component {
 			workInfo,
 			noteInfo,
 			notePlaceholder,
-			allowSelection
+			allowSelection,
+			hasCustomGoal,
+			goal
 		} = form;
 
 		if (type !== 'cancel') {
@@ -87,6 +88,8 @@ class Form extends Component {
 			}, () => {
 				const data = {
 					passFees,
+					hasCustomGoal: !goal ? false : hasCustomGoal,
+					goal,
 					giveboxSettings: {
 						feeOption,
 						addressInfo,
@@ -153,7 +156,8 @@ class Form extends Component {
 			title,
 			modalID,
 			breakpoint,
-			acceptedTerms
+			acceptedTerms,
+			reloadGBX3
 		} = this.props;
 
 		const {
@@ -217,6 +221,7 @@ class Form extends Component {
 				<Cart
 					primaryColor={primaryColor}
 					showShop={util.getValue(form, 'allowSelection', true)}
+					reloadGBX3={reloadGBX3}
 				/>
 				<PaymentForm
 					primaryColor={primaryColor}
@@ -234,6 +239,7 @@ class Form extends Component {
 						setCart={this.setCart}
 						primaryColor={primaryColor}
 						toggleModal={this.props.toggleModal}
+						block={this.props.block}
 					/>
 					<div className='buttonSection'>
 						<div style={{ marginBottom: 10 }}>
@@ -271,18 +277,6 @@ class Form extends Component {
 						<ModalLink style={{ marginTop: 10 }} allowCustom={true} customColor={primaryColor} id='terms'>Read Terms and Conditions</ModalLink>
 					</div>
 				</div>
-				<ModalRoute
-					id='paymentConfirmation'
-					effect='scaleUp'
-					style={{ width: '60%' }}
-					className='gbx3'
-					component={() =>
-						<Confirmation
-							form={form}
-							primaryColor={primaryColor}
-						/>
-					}
-				/>
 			</div>
 		)
 	}
