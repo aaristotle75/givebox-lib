@@ -58,7 +58,8 @@ class Block extends React.Component {
 	async saveBlock(params = {}) {
 		const {
 			name,
-			block
+			block,
+			breakpoint
 		} = this.props;
 
 		const opts = {
@@ -86,10 +87,9 @@ class Block extends React.Component {
 		}
 
 		const mobileContent = content || this.getBlockContent('mobile');
-		const mobileGrid = !util.isEmpty(block.grid) ? { ...block.grid.mobile, ...grid } : {};
-
+		const mobileGrid = { ...block.grid.mobile };
 		const desktopContent = content || this.getBlockContent('desktop');
-		const desktopGrid = !util.isEmpty(block.grid) ? { ...block.grid.desktop, ...grid } : {};
+		const desktopGrid = breakpoint === 'desktop' ? { ...block.grid.desktop, ...grid } : { ...block.grid.desktop };
 
 		const blockGrid = !util.isEmpty(block.grid) ? {
 			mobile: {
@@ -116,13 +116,18 @@ class Block extends React.Component {
 			const updated = [];
 			const checkForUpdatesCount = !util.isEmpty(data) ? 2 : 1;
 
-			const blocksUpdated = await this.props.updateBlock(name, Object.assign({}, block, {
+			const blockToUpdate = {
+				...block,
 				grid: blockGrid,
 				options: {
 					...block.options,
 					...options
 				}
-			}));
+			}
+
+			this.props.updateBlock(name, blockToUpdate);
+			const blocksUpdated = true; //await this.props.updateBlock(name, blockToUpdate);
+
 			if (blocksUpdated) updated.push('blocksUpdated');
 
 			if (!util.isEmpty(data)) {

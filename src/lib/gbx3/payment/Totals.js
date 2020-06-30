@@ -34,7 +34,8 @@ class Totals extends Component {
 			primaryColor,
 			passFees,
 			feeOption,
-			block
+			block,
+			placeholderColor
 		} = this.props;
 
 		const options = util.getValue(block, 'options', {});
@@ -57,7 +58,7 @@ class Totals extends Component {
 				<div className='totalsSection'>
 					<div className='leftSide'>
 						{hasCustomGoal && raised > 0 ?
-							<Goal raised={raised} goal={goal} primaryColor={primaryColor} />
+							<Goal raised={raised} goal={goal} primaryColor={primaryColor} placeholderColor={placeholderColor} />
 						:
 							<>
 								<ModalRoute
@@ -125,6 +126,9 @@ function mapStateToProps(state, props) {
 	const giveboxFee = (0).toFixed(2);
 	const fee = util.getValue(cart, 'fee', 0);
 	const total = util.getValue(cart, 'total', 0);
+	const globals = util.getValue(gbx3, 'globals', {});
+	const gbxStyle = util.getValue(globals, 'gbxStyle', {});
+	const placeholderColor = util.getValue(gbxStyle, 'placeholderColor');
 
 	return {
 		passFees,
@@ -136,7 +140,8 @@ function mapStateToProps(state, props) {
 		subTotal,
 		giveboxFee,
 		fee,
-		total
+		total,
+		placeholderColor
 	}
 }
 

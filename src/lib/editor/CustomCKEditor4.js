@@ -105,7 +105,7 @@ class CustomCKEditor4 extends Component {
 			removePlugins: this.props.removePlugins,
 			contentsCss: this.props.contentCss,
 			toolbar: this.props.toolbar,
-			removeButtons: 'Save,NewPage,Preview,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Find,Replace,SelectAll,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Strike,Subscript,Superscript,CopyFormatting,RemoveFormat,Blockquote,CreateDiv,JustifyBlock,Language,BidiRtl,BidiLtr,Flash,Smiley,PageBreak,Iframe,About,Styles,SpecialChar,Maximize,Source,Scayt,Format,Anchor,Underline',
+			removeButtons: 'Save,NewPage,Preview,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Find,Replace,SelectAll,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Strike,Subscript,Superscript,CopyFormatting,RemoveFormat,Blockquote,CreateDiv,JustifyBlock,Language,BidiRtl,BidiLtr,Flash,Smiley,PageBreak,Iframe,About,Styles,SpecialChar,Maximize,Source,Scayt,Format,Anchor,Underline,Link,Unlink',
 			image_previewText: ' ',
 			image2_disableResizer: false,
 			removeDialogTabs: 'image:advanced;link:advanced;link:target',
@@ -117,7 +117,7 @@ class CustomCKEditor4 extends Component {
 					if (bindthis.props.initCallback) bindthis.props.initCallback(editor);
 					// Register custom context for image widgets on the fly.
 					editor.balloonToolbars.create({
-						buttons: 'Link,Unlink,Image',
+						buttons: 'Image',
 						widgets: 'image'
 					});
 				}
@@ -199,7 +199,7 @@ CustomCKEditor4.defaultProps = {
 	width: '100%',
 	type: 'classic',
 	toolbar: [
-		[ 'Bold', 'Italic', '-', 'Font', '-', 'FontSize', 'TextColor', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', '-', 'Link', 'Unlink', '-', 'Image']
+		[ 'Bold', 'Italic', '-', 'Font', '-', 'FontSize', 'TextColor', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', '-', 'Image']
 	],
 	contentCss: 'https://givebox.s3-us-west-1.amazonaws.com/public/css/contents.css',
 	removePlugins: 'image,elementspath,resize',

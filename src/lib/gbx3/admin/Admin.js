@@ -26,19 +26,17 @@ class Admin extends React.Component {
 		super(props);
 		this.renderStep = this.renderStep.bind(this);
 		this.exitAdmin = this.exitAdmin.bind(this);
-		this.togglePreviewForm = this.togglePreviewForm.bind(this);
-		this.state = {
-			previewForm: false
-		};
+		this.togglePreview = this.togglePreview.bind(this);
+		this.renderTopPanel = this.renderTopPanel.bind(this);
 	}
 
 	exitAdmin() {
 		console.log('execute exitAdmin');
 	}
 
-	togglePreviewForm(value) {
-		const previewForm = this.state.previewForm ? false : true;
-		this.setState({ previewForm });
+	togglePreview(value) {
+		const previewMode = this.props.previewMode ? false : true;
+		this.props.updateAdmin({ previewMode, editable: previewMode ? false : true });
 	}
 
 	renderStep() {
@@ -68,29 +66,61 @@ class Admin extends React.Component {
 		}
 	}
 
-	render() {
-
-		const {
-			previewForm
-		} = this.state;
-
+	renderTopPanel() {
 		const {
 			step,
-			openAdmin: open,
-			saveStatus,
-			editable,
-			access,
-			hasAccessToEdit,
-			breakpoint
+			createType,
+			breakpoint,
+			previewMode
 		} = this.props;
-
-		if (!hasAccessToEdit) return <></>;
 
 		const mobile = breakpoint === 'mobile' ? true : false;
 		const topShowAdminPanelAndPreview = step === 'create' ? false : true;
 
 		return (
-			<div className={`gbx3AdminLayout ${editable ? 'editable' : ''}`}>
+			<div className='topPanelContainer'>
+				<div className='leftSide'>
+					<GBLink className='link side' onClick={() => this.exitAdmin()}><span className='icon icon-chevron-left'></span>{!mobile ? 'Exit Form Builder' : ''}</GBLink>
+				</div>
+				<div className='middle centerAlign adminPanelTabs'>
+					{topShowAdminPanelAndPreview ?
+					<div className='button-group'>
+						<GBLink className={`ripple link ${step === 'design' ? 'selected' : ''}`} onClick={() => this.props.updateAdmin({ step: 'design' })}>DESIGN</GBLink>
+						<GBLink className={`ripple link ${step === 'share' ? 'selected' : ''}`} onClick={() => this.props.updateAdmin({ step: 'share' })}>SHARE</GBLink>
+					</div>
+					: <></> }
+				</div>
+				<div className='rightSide'>
+					{topShowAdminPanelAndPreview ?
+						<>
+							<GBLink className='link side' style={{ marginRight: 10 }} onClick={this.togglePreview}>{mobile ? <span className='icon icon-eye'></span> : 'Preview Form'}</GBLink>
+							<Toggle
+								icons={false}
+								checked={previewMode}
+								onChange={this.togglePreview}
+							/>
+						</>
+					: <></> }
+				</div>
+			</div>
+		)
+	}
+
+	render() {
+
+		const {
+			previewMode,
+			saveStatus,
+			editable,
+			access,
+			hasAccessToEdit,
+			openAdmin: open
+		} = this.props;
+
+		if (!hasAccessToEdit) return <></>;
+
+		return (
+			<div className={`gbx3AdminLayout ${editable ? 'editable' : ''} ${previewMode ? 'previewMode' : ''}`}>
 				<ModalRoute
 					id='avatarMenu'
 					effect='3DFlipVert'
@@ -124,31 +154,7 @@ class Admin extends React.Component {
 					</header>
 				</div>
 				<div className={`topPanel`}>
-					<div className='topPanelContainer'>
-						<div className='leftSide'>
-							<GBLink className='link side' onClick={() => this.exitAdmin()}><span className='icon icon-chevron-left'></span>{!mobile ? 'Exit Form Builder' : ''}</GBLink>
-						</div>
-						<div className='middle centerAlign adminPanelTabs'>
-							{topShowAdminPanelAndPreview ?
-							<div className='button-group'>
-								<GBLink className={`ripple link ${step === 'design' ? 'selected' : ''}`} onClick={() => this.props.updateAdmin({ step: 'design' })}>DESIGN</GBLink>
-								<GBLink className={`ripple link ${step === 'share' ? 'selected' : ''}`} onClick={() => this.props.updateAdmin({ step: 'share' })}>SHARE</GBLink>
-							</div>
-							: <></> }
-						</div>
-						<div className='rightSide'>
-							{topShowAdminPanelAndPreview ?
-								<>
-									<GBLink className='link side' style={{ marginRight: 10 }} onClick={this.togglePreviewForm}>{mobile ? <span className='icon icon-eye'></span> : 'Preview Form'}</GBLink>
-									<Toggle
-										icons={false}
-										checked={previewForm}
-										onChange={this.togglePreviewForm}
-									/>
-								</>
-							: <></> }
-						</div>
-					</div>
+					{this.renderTopPanel()}
 				</div>
 				{this.renderStep()}
 			</div>
@@ -169,6 +175,8 @@ function mapStateToProps(state, props) {
 	const articleID = util.getValue(info, 'articleID');
 	const admin = util.getValue(gbx3, 'admin', {});
 	const step = util.getValue(admin, 'step');
+	const createType = util.getValue(admin, 'createType');
+	const previewMode = util.getValue(admin, 'previewMode');
 	const openAdmin = util.getValue(admin, 'open');
 	const access = util.getValue(state.resource, 'access');
 	const hasAccessToEdit = util.getValue(admin, 'hasAccessToEdit');
@@ -180,6 +188,8 @@ function mapStateToProps(state, props) {
 		articleID,
 		openAdmin,
 		step,
+		createType,
+		previewMode,
 		saveStatus,
 		access,
 		hasAccessToEdit,

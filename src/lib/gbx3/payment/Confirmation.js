@@ -78,7 +78,7 @@ class Confirmation extends Component {
 						</span>
 						<span className='group'>
 							<span className='icon icon-check'></span>
-							<span className='inlineText'>The charge will show up in your credit card or bank statement with the description <strong>{descriptor}</strong>.</span>
+							<span className='inlineText'>The charge will show up in your credit card or bank statement with the description <strong>GBX*{descriptor}</strong>.</span>
 						</span>
 					</span>
 				);

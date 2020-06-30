@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-  util,
+	util,
 	MediaLibrary,
 	Loader,
 	toggleModal
@@ -9,22 +9,26 @@ import {
 
 class CKEditor4Upload extends Component {
 
-  constructor(props) {
-    super(props);
+	constructor(props) {
+		super(props);
 		this.closeModalAndSave = this.closeModalAndSave.bind(this);
 		this.closeModalAndCancel = this.closeModalAndCancel.bind(this);
 		this.handleSaveCallback = this.handleSaveCallback.bind(this);
 		this.setImage = this.setImage.bind(this);
 		this.getMeta = this.getMeta.bind(this);
 		this.handleAspectRatio = this.handleAspectRatio.bind(this);
-    this.state = {
+		this.state = {
 			url: '',
 			loading: false
-    };
+		};
 		this.CKEDITOR = window.CKEDITOR;
-  }
+	}
 
 	componentDidMount() {
+	}
+
+	componentWillUmount() {
+		this.timeout = null;
 	}
 
 	closeModalAndSave() {
@@ -62,11 +66,11 @@ class CKEditor4Upload extends Component {
 
 	getMeta(url) {
 		const bindthis = this;
-	  const img = new Image();
-    img.onload = function() {
+		const img = new Image();
+		img.onload = function() {
 			bindthis.handleAspectRatio(this.src, this.width, this.height);
-    };
-    img.src = url;
+		};
+		img.src = url;
 	}
 
 	handleAspectRatio(url, w, h) {
@@ -106,7 +110,7 @@ class CKEditor4Upload extends Component {
 		url_field.setValue(url);
 	}
 
-  render() {
+	render() {
 
 		const {
 			url,
@@ -120,27 +124,27 @@ class CKEditor4Upload extends Component {
 			borderRadius: 0
 		}
 
-    return (
+		return (
 			<div className='modalWrapper'>
 				{loading ? <Loader msg='Saving...' /> : <></>}
-	      <MediaLibrary
+				<MediaLibrary
 					modalID='editorUpload'
 					image={url}
 					preview={url}
-	        handleSaveCallback={this.handleSaveCallback}
-	        handleSave={util.handleFile}
-	        library={library}
-	        closeModalAndSave={this.closeModalAndSave}
-	        closeModalAndCancel={this.closeModalAndCancel}
-	      />
+					handleSaveCallback={this.handleSaveCallback}
+					handleSave={util.handleFile}
+					library={library}
+					closeModalAndSave={this.closeModalAndSave}
+					closeModalAndCancel={this.closeModalAndCancel}
+				/>
 			</div>
-    )
-  }
+		)
+	}
 }
 
 function mapStateToProps(state) {
-  return {
-  }
+	return {
+	}
 }
 
 export default connect(mapStateToProps, {

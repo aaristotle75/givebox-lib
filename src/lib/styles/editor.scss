@@ -1,38 +1,38 @@
 @import 'variables.scss';
 
 .editor {
-  box-sizing: border-box;
-  border: 1px solid #ddd;
-  cursor: text;
-  padding: 16px;
-  border-radius: 2px;
-  margin-bottom: 2em;
-  box-shadow: inset 0px 1px 8px -3px #ABABAB;
-  background: #fefefe;
+	box-sizing: border-box;
+	border: 1px solid #ddd;
+	cursor: text;
+	padding: 16px;
+	border-radius: 2px;
+	margin-bottom: 2em;
+	box-shadow: inset 0px 1px 8px -3px #ABABAB;
+	background: #fefefe;
 }
 
 .editor :global(.public-DraftEditor-content) {
-  min-height: 140px;
+	min-height: 140px;
 }
 
 .headlineButtonWrapper {
-  display: inline-block;
+	display: inline-block;
 }
 
 .headlineButton {
-  background: #fbfbfb;
-  color: #888;
-  font-size: 18px;
-  border: 0;
-  padding-top: 5px;
-  vertical-align: bottom;
-  height: 34px;
-  width: 36px;
+	background: #fbfbfb;
+	color: #888;
+	font-size: 18px;
+	border: 0;
+	padding-top: 5px;
+	vertical-align: bottom;
+	height: 34px;
+	width: 36px;
 }
 
 .headlineButton:hover,
 .headlineButton:focus {
-  background: #f3f3f3;
+	background: #f3f3f3;
 }
 
 .cke_chrome {
@@ -43,6 +43,17 @@
 	color: blue !important;
 }
 
+@media (max-width: $breakpoint) {
+	.cke_dialog_container {
+		display: none !important;
+	}
+
+	.cke_dialog_background_cover {
+		display: none !important;
+		z-index: 1 !important;
+	}
+}
+
 .cke_dialog_background_cover {
 	background: $overlayColor !important;
 	opacity: 1 !important;
@@ -50,7 +61,7 @@
 
 .cke_dialog_body {
 	border-radius: 20px !important;
-  @include box-shadow(1px 3px 3px 1px rgba(0,0,0,0.4));
+	@include box-shadow(1px 3px 3px 1px rgba(0,0,0,0.4));
 }
 
 .cke_dialog_title {
@@ -100,16 +111,16 @@ a.cke_dialog_ui_button_ok:focus {
 }
 
 .cke_reset_all, .cke_reset_all *, .cke_reset_all a, .cke_reset_all textarea {
-    white-space: normal !important;
+		white-space: normal !important;
 }
 
 .cke_editable a {
-  text-decoration: none !important;
+	text-decoration: none !important;
 }
 
 #cke_editor1,
-.cke_dialog_background_cover,
 .cke_dialog_container,
+.cke_dialog_background_cover,
 .cke_balloon.cke_balloontoolbar,
 .cke_panel {
 	z-index: 9999999 !important;

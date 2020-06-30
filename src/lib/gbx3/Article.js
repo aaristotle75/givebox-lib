@@ -13,7 +13,8 @@ import {
 	Image,
 	GBLink,
 	addBlock,
-	setStyle
+	setStyle,
+	updateAdmin
 } from '../';
 import Block from './blocks/Block';
 import Form from './blocks/Form';
@@ -39,7 +40,11 @@ class Article extends React.Component {
 	}
 
 	async onBreakpointChange(breakpoint, cols) {
+		const {
+			editable
+		} = this.props;
 		const infoUpdated = await this.props.updateInfo({ breakpoint });
+		if (editable) this.props.updateAdmin({ editBlock: '' });
 		if (infoUpdated) this.props.setStyle();
 	}
 
@@ -318,5 +323,6 @@ export default connect(mapStateToProps, {
 	updateInfo,
 	saveGBX3,
 	addBlock,
-	setStyle
+	setStyle,
+	updateAdmin
 })(Article);

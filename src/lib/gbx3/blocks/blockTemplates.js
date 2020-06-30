@@ -171,7 +171,7 @@ const textBlock = {
 	},
 	grid: {
 		desktop: { i: 'textBlock', x: 1, y: 0, w: 12, h: 2, enabled: true },
-		mobile: { i: 'textBlock', x: 1, y: 0, w: 6, h: 2, enabled: false }
+		mobile: { i: 'textBlock', x: 1, y: 0, w: 6, h: 2, enabled: true }
 	}
 };
 

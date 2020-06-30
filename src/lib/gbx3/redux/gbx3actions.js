@@ -68,28 +68,34 @@ export function addBlock(type, w = 0, h = 0, ref) {
 		const admin = util.getValue(gbx3, 'admin', {});
 		const availableBlocks = util.getValue(admin, 'availableBlocks', []);
 		const newBlock = util.getValue(blockTemplates, type, {});
-		let blockName = util.getValue(newBlock, 'name', type);
-		if (blockName in blocks) {
-			const hash = util.uniqueHash();
-			blockName = `${blockName}-${hash}`;
-			newBlock.name = blockName;
-			newBlock.grid.desktop.i = blockName;
-			newBlock.grid.mobile.i = blockName;
-		}
-		const y = Math.ceil(parseFloat(h / 10));
-		//const positionX = w - current.offsetLeft;
-		//const x = +(positionX / current.clientWidth) >= .5 ? 6 : 0;
-		const x = 0;
+		if (!util.isEmpty(newBlock)) {
+			let blockName = util.getValue(newBlock, 'name', type);
+			if (blockName in blocks) {
+				const hash = util.uniqueHash();
+				blockName = `${blockName}-${hash}`;
+				newBlock.name = blockName;
+				if (!util.isEmpty(util.getValue(newBlock, 'grid'))) {
+					newBlock.grid.desktop.i = blockName;
+					newBlock.grid.mobile.i = blockName;
+				}
+			}
+			const y = Math.ceil(parseFloat(h / 10));
+			//const positionX = w - current.offsetLeft;
+			//const x = +(positionX / current.clientWidth) >= .5 ? 6 : 0;
+			const x = 0;
 
-		newBlock.grid.desktop.y = y;
-		newBlock.grid.desktop.x = x;
+			if (!util.isEmpty(util.getValue(newBlock, 'grid'))) {
+				newBlock.grid.desktop.y = y;
+				newBlock.grid.desktop.x = x;
+			}
 
-		if (!newBlock.multiple) {
-			const index = availableBlocks.indexOf(blockName)
-			availableBlocks.splice(index, 1);
+			if (!newBlock.multiple) {
+				const index = availableBlocks.indexOf(blockName)
+				availableBlocks.splice(index, 1);
+			}
+			dispatch(updateAdmin({ availableBlocks }));
+			dispatch(updateBlock(blockName, newBlock));
 		}
-		dispatch(updateAdmin({ availableBlocks }));
-		dispatch(updateBlock(blockName, newBlock));
 	}
 }
 
@@ -377,6 +383,11 @@ export function resetGBX3(callback) {
 
 export function processTransaction(data, callback) {
 	return (dispatch, getState) => {
+		const gbx3 = util.getValue(getState(), 'gbx3', {});
+		const articleData = util.getValue(gbx3, 'data', {});
+		const receiptHTML = util.getValue(articleData, 'receiptHTML');
+		const version = !util.isEmpty(receiptHTML) ? `&version=3&primary=${util.getValue(data, 'articleID')}` : '';
+
 		const grecaptcha = window.grecaptcha;
 		grecaptcha.ready(function() {
 			grecaptcha.execute(process.env.REACT_APP_RECAPTCHA_KEY, {action: 'payment'})
@@ -384,7 +395,7 @@ export function processTransaction(data, callback) {
 				dispatch(sendResource('purchaseOrder', {
 					data,
 					callback,
-					query: `rc=${token}&version=3&primary=${util.getValue(data, 'articleID')}`
+					query: `rc=${token}${version}`
 				}));
 			})
 		});
@@ -672,7 +683,7 @@ export function setStyle(options = {}) {
 			const pageColor1 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${pageOpacity})`;
 
 			pageColorStyleStr = `
-				.gbx3 .gbx3Container {
+				.gbx3 .gbx3Container:not(.gbx3ReceiptContainer) {
 					border-radius: ${+(pageRadius)}px;
 					background: ${pageColor1};
 				}
@@ -705,7 +716,7 @@ export function setStyle(options = {}) {
 			const bgColor1 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${backgroundOpacity})`;
 			const bgColor2 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${backgroundOpacity})`;
 			backgroundColorStyleStr = `
-				.gbx3Layout {
+				.gbx3Layout:not(.gbx3ReceiptLayout) {
 					background: ${bgColor1};
 					background: -webkit-linear-gradient(to bottom, ${bgColor1} 0%, ${bgColor2} 100%);
 					background: -moz-linear-gradient(to bottom, ${bgColor1} 0%, ${bgColor2} 100%);
@@ -774,5 +785,27 @@ export function setStyle(options = {}) {
 			const styleEl = document.head.appendChild(document.createElement('style'));
 			styleEl.innerHTML = styleInnerHTML;
 		}
+	}
+}
+
+export function resetGBX3Receipt(callback) {
+	return (dispatch, getState) => {
+		const gbx3 = util.getValue(getState(), 'gbx3', {});
+		const info = util.getValue(gbx3, 'info', {});
+		const data = {
+			receiptHTML: '',
+			receiptConfig: {}
+		};
+
+		dispatch(sendResource(util.getValue(info, 'apiName'), {
+			id: [util.getValue(info, 'kindID')],
+			orgID: util.getValue(info, 'orgID'),
+			data,
+			method: 'patch',
+			callback: (res, err) => {
+				dispatch(updateData(res));
+			},
+			isSending: true
+		}));
 	}
 }

@@ -57,7 +57,8 @@ class Goal extends Component{
 
 		const {
 			raised,
-			primaryColor
+			primaryColor,
+			placeholderColor
 		} = this.props;
 
 		const {
@@ -79,7 +80,7 @@ class Goal extends Component{
 					cornersWidth={1}
 					size={90}
 					fillColor="transparent"
-					trackColor="#EEEEEE"
+					trackColor={placeholderColor}
 					progressColor={primaryColor}>
 				</Progress>
 			</div>

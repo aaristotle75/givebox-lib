@@ -46,7 +46,8 @@ export function gbx3(state = {
 			pageColor: '#ffffff',
 			pageRadius: 10,
 			pageOpacity: 1,
-			backgroundColor: ''
+			backgroundColor: '',
+			placeholderColor: ''
 		},
 		button: {
 			embedAllowed: false,
@@ -66,7 +67,8 @@ export function gbx3(state = {
 		editBlock: '',
 		open: false,
 		step: 'create',
-		createType: 'receipt',
+		createType: 'form',
+		previewMode: false,
 		publicView: false,
 		editable: false,
 		hasAccessToEdit: false,
@@ -78,6 +80,7 @@ export function gbx3(state = {
 			'contentBlock',
 			'mediaBlock'
 		],
+		receipt: {}
 	},
 	data: {},
 	fees: {},

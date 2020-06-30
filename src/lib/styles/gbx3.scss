@@ -101,6 +101,54 @@
 		overflow: hidden;
 	}
 
+	.gbx3AdminLayout.previewMode {
+		.gbx3TopHeader {
+			height: 0;
+		}
+
+		.topPanel {
+			top: 0;
+			z-index: 10;
+		}
+
+		.leftPanel.open {
+			width: 0;
+		}
+
+		.stageContainer {
+			position: inherit;
+			top: 0;
+			margin-top: 0; //$topPanelHeight;
+			bottom: 0;
+			background: $white;
+			overflow-y: hidden;
+			z-index: 9;
+
+			.gbx3Layout {
+				padding-top: $topPanelHeight + 20px;
+				height: 100vh;
+				overflow-y: auto;
+			}
+
+		}
+
+		.stageContainer.open {
+			left: 0;
+		}
+
+		.leftPanelOpen {
+			display: none;
+		}
+
+		.bottomPanel.open {
+			left: 0;
+		}
+
+		.bottomPanel {
+			display: none;
+		}
+	}
+
 	// Top Header
 	.gbx3TopHeader {
 		position: fixed;
@@ -109,6 +157,9 @@
 		right: 0;
 		height: $topHeaderHeight;
 		width: 100%;
+		overflow: hidden;
+		white-space: nowrap;
+		@include transition(height .25s);
 
 		.avatarLink button.link {
 			color: $mainColor;
@@ -143,6 +194,7 @@
 		height: $topPanelHeight;
 		width: 100%;
 		background: linear-gradient(to right, $mainColorDark 15%, $green 100%);;
+		@include transition(top .25s);
 	}
 
 	.topPanelContainer {
@@ -499,6 +551,11 @@
 			@media (max-width: $breakpoint) {
 				min-width: 100%;
 			}
+		}
+
+		.gbx3ReceiptLayout {
+			overflow-y: auto;
+			height: 100%;
 		}
 
 		.gbx3Container {

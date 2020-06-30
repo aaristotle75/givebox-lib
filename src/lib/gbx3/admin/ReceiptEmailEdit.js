@@ -6,7 +6,9 @@ import {
 	util,
 	GBLink,
 	Image,
-	CustomCKEditor4
+	CustomCKEditor4,
+	saveGBX3,
+	updateData
 } from '../../';
 import Moment from 'moment';
 
@@ -20,7 +22,8 @@ class ReceiptEmailEdit extends React.Component {
 		super(props);
 		this.onBlur = this.onBlur.bind(this);
 		this.onChange = this.onChange.bind(this);
-		this.setTemplate = this.setTemplate.bind(this);
+		this.setPreviewHTML = this.setPreviewHTML.bind(this);
+		this.save = this.save.bind(this);
 
 		const info = props.info;
 		const receiptConfig = props.receiptConfig;
@@ -42,17 +45,33 @@ class ReceiptEmailEdit extends React.Component {
 			'{{articleimage}}': util.imageUrlWithStyle(articleImageURL, 'medium'),
 			'{{message}}': `Write your content for your audience...`
 		};
+
+		console.log('execute', receiptConfig);
+
 		const content = util.getValue(receiptConfig, 'content', `${util.replaceAll(defaultContent, tokens)}`);
 
 		this.state = {
+			content
 		};
+	}
+
+	componentDidMount() {
+		this.setPreviewHTML()
+	}
+
+	componentWillUnmount() {
+		if (this.timeout) {
+			clearTimeout(this.timeout);
+			this.timeout = null;
+		}
 	}
 
 	onBlur(value) {
 		const content = util.cleanHtml(value);
 		this.setState({ content },
 			() => {
-				this.setTemplate()
+				this.save(true);
+				this.setPreviewHTML()
 			}
 		);
 	}
@@ -61,36 +80,38 @@ class ReceiptEmailEdit extends React.Component {
 		const content = util.cleanHtml(value);
 		this.setState({ content },
 			() => {
-				this.setTemplate()
+				this.save();
+				this.setPreviewHTML()
 			}
 		);
 	}
 
-	setTemplate(display = false) {
+	setPreviewHTML() {
 		const {
 			info
 		} = this.props;
 
 		const content = this.state.content;
 		const tokens = {
-			'{{orgname}}': util.getValue(info, 'orgName'),
 			'{{content}}': content
 		};
 
 		const html = util.replaceAll(emailTemplate, tokens);
+	}
 
-		/*
-		this.props.setTemplateHTML(`${content}`);
-		this.props.setTemplateConfig({
+	async save(saveGBX3 = false) {
+		const {
 			content
-		});
-		*/
+		} = this.state;
 
-		if (display) {
-			return (
-				<div dangerouslySetInnerHTML={{ __html: html }} />
-			);
+		const obj = {
+			receiptHTML: content,
+			receiptConfig: {
+				content
+			}
 		}
+		const dataUpdated = await this.props.updateData(obj);
+		if (dataUpdated && saveGBX3) this.props.saveGBX3(obj);
 	}
 
 	render() {
@@ -104,24 +125,22 @@ class ReceiptEmailEdit extends React.Component {
 		} = this.state;
 
 		return (
-			<>
-				{/*<CodeBlock className='alignCenter' type="javascript" regularText={<label style={{ display: 'block' }} className='label'>Share Link</label>} text={link} name='Click here to Copy Link' nameIcon={false} nameStyle={{}} />*/}
-				<div style={{ paddingTop: 0 }} className='input-group'>
-					<label className='label'>Email Content</label>
+			<div className='gbx3Layout gbx3ReceiptLayout'>
+				<div className='gbx3Container gbx3ReceiptContainer'>
+					<div className='block flexCenter'>
+						<CustomCKEditor4
+							orgID={util.getValue(info, 'orgID', null)}
+							articleID={util.getValue(info, 'articleID', null)}
+							 onChange={this.onChange}
+							onBlur={this.onBlur}
+							content={content}
+							width={600}
+							height={'600'}
+							type='classic'
+						/>
+					</div>
 				</div>
-				<div className='block flexCenter'>
-					<CustomCKEditor4
-						orgID={util.getValue(info, 'orgID', null)}
-						articleID={util.getValue(info, 'articleID', null)}
-						 onChange={this.onChange}
-						onBlur={this.onBlur}
-						content={content}
-						width={600}
-						height={400}
-						type='classic'
-					/>
-				</div>
-			</>
+			</div>
 		)
 	}
 }
@@ -137,9 +156,12 @@ function mapStateToProps(state, props) {
 	return {
 		info,
 		data,
+		receiptConfig,
 		receiptStyle
 	}
 }
 
 export default connect(mapStateToProps, {
+	saveGBX3,
+	updateData
 })(ReceiptEmailEdit);
