@@ -55,18 +55,13 @@ class Layout extends React.Component {
 	}
 
 	render() {
-		const {
-			editable,
-			hasAccessToEdit
-		} = this.props;
 
-		const isEditable = hasAccessToEdit && editable ? true : false;
 		const style = { maxWidth: '850px' };
 		return (
 			<>
 			<div className='gbx3LayoutBackground'></div>
 			<div id='gbx3Layout' className='gbx3Layout'>
-				<div style={style} className={`gbx3Container ${isEditable ? 'editable' : ''}`}>
+				<div style={style} className={`gbx3Container`}>
 					{this.renderDisplay()}
 					<ModalRoute
 						id='shop'
@@ -98,14 +93,9 @@ function mapStateToProps(state, props) {
 	const gbx3 = util.getValue(state, 'gbx3', {});
 	const info = util.getValue(gbx3, 'info', {});
 	const display = util.getValue(info, 'display');
-	const admin = util.getValue(gbx3, 'admin', {});
-	const hasAccessToEdit = util.getValue(admin, 'hasAccessToEdit');
-	const editable = util.getValue(admin, 'editable');
 
 	return {
 		display,
-		hasAccessToEdit,
-		editable,
 		globals: util.getValue(gbx3, 'globals', {})
 	}
 }

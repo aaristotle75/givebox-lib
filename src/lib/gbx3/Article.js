@@ -6,7 +6,6 @@ import {
 	util,
 	updateLayouts,
 	updateBlocks,
-	updateBlock,
 	updateData,
 	updateInfo,
 	saveGBX3,
@@ -55,7 +54,8 @@ class Article extends React.Component {
 	async layoutChange(layout, layouts) {
 		const {
 			breakpoint,
-			editable
+			editable,
+			blockType
 		} = this.props;
 
 		const blocks = util.deepClone(this.props.blocks);
@@ -76,13 +76,13 @@ class Article extends React.Component {
 			});
 			if (editable) {
 				const updated = [];
-				const layoutsUpdated = await this.props.updateLayouts(layouts);
-				const blocksUpdated = await this.props.updateBlocks(blocks);
+				const layoutsUpdated = await this.props.updateLayouts(blockType, layouts);
+				const blocksUpdated = await this.props.updateBlocks(blockType, blocks);
 				if (layoutsUpdated) updated.push('layoutsUpdated');
 				if (blocksUpdated) updated.push('blocksUpdated');
 				if (updated.length === 2) this.props.saveGBX3();
 			} else {
-				this.props.updateLayouts(layouts);
+				this.props.updateLayouts(blockType, layouts);
 			}
 		}
 	}
@@ -292,16 +292,17 @@ class Article extends React.Component {
 function mapStateToProps(state, props) {
 
 	const gbx3 = util.getValue(state, 'gbx3', {});
-	const layouts = util.getValue(gbx3, 'layouts', {});
 	const admin = util.getValue(gbx3, 'admin', {});
 	const info = util.getValue(gbx3, 'info', {});
+	const blockType = util.getValue(info, 'blockType');
+	const layouts = util.getValue(gbx3, `layouts.${blockType}`, {});
+	const blocks = util.getValue(gbx3, `blocks.${blockType}`, {});
 	const hasAccessToEdit = util.getValue(admin, 'hasAccessToEdit');
 	const editable = util.getValue(admin, 'editable');
 	const preventCollision = util.getValue(admin, 'preventCollision');
 	const verticalCompact = util.getValue(admin, 'verticalCompact');
 	const outline = util.getValue(admin, 'outline');
 	const breakpoint = util.getValue(info, 'breakpoint');
-
 	return {
 		hasAccessToEdit,
 		layouts,
@@ -310,7 +311,8 @@ function mapStateToProps(state, props) {
 		verticalCompact,
 		outline,
 		breakpoint,
-		blocks: util.getValue(gbx3, 'blocks', {}),
+		blockType,
+		blocks,
 		globals: util.getValue(gbx3, 'globals', {})
 	}
 }
@@ -318,7 +320,6 @@ function mapStateToProps(state, props) {
 export default connect(mapStateToProps, {
 	updateLayouts,
 	updateBlocks,
-	updateBlock,
 	updateData,
 	updateInfo,
 	saveGBX3,

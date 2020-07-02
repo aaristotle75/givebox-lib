@@ -212,7 +212,8 @@ class Modal extends Component {
 			identifier,
 			draggable,
 			draggableTitle,
-			draggableTitleClass
+			draggableTitleClass,
+			buttonGroup
 		} = this.props;
 
 		let transition = effect.transition;
@@ -290,6 +291,11 @@ class Modal extends Component {
 					: <></>
 				}
 				{this.renderChildren()}
+				{ buttonGroup && !mobile ?
+					<div className='modalButtonGroup'>
+						{buttonGroup}
+					</div>
+				: <></> }
 				{this.renderActions()}
 				<Fade
 					duration={500}
@@ -309,6 +315,12 @@ class Modal extends Component {
 					id={`modalOverlay-${identifier}`}
 					className={`modalOverlay`} style={prefix({ ...overlayStyle, ...modalOverlayStyle})}
 				>
+					{mobile && buttonGroup ?
+						<div className='modalButtonGroup'>
+							{buttonGroup}
+							{(closeBtn) && <button style={closeBtnStyle} className='modalCloseBtn' onClick={() => this.closeModal(closeCallback, 'ok')}>{iconClose}</button>}
+						</div>
+					: <></> }
 					{draggable && !mobile ?
 						<Draggable
 							allowAnyClick={false}

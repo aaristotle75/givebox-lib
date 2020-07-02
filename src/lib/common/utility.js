@@ -4,6 +4,7 @@ import has from 'has';
 import animateScrollTo from 'animated-scroll-to';
 import ModalLink from '../modal/ModalLink';
 import sanitizeHtml from 'sanitize-html';
+import get from 'get-value';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -643,11 +644,16 @@ export function search(haystack, needle, found = []) {
 	return found;
 };
 
-export function getValue(obj, prop, returnIfEmpty = '') {
+export function getValue(obj, prop, returnIfEmpty = '', debug) {
+	const returnObj = get(obj, prop);
+	if (debug) console.log(obj, prop, returnObj);
+	return (returnObj || typeof(returnObj) === 'boolean') || returnObj === 0 || returnObj === false ? returnObj : returnIfEmpty;
+	/*
 	if (typeof obj === 'undefined') return returnIfEmpty;
 	if (isEmpty(obj) || !obj) return returnIfEmpty;
 	if (has(obj, prop)) return (obj[prop] || typeof(obj[prop]) === 'boolean') || obj[prop] === 0 || obj[prop] === false ? obj[prop] : returnIfEmpty;
 	return returnIfEmpty;
+	*/
 }
 
 export function getIndex(array, index, returnIfEmpty = '') {

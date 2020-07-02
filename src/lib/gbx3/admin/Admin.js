@@ -9,7 +9,8 @@ import {
 	saveGBX3,
 	toggleModal,
 	ModalRoute,
-	ModalLink
+	ModalLink,
+	setLoading
 } from '../../';
 import Create from './Create';
 import Design from './Design';
@@ -28,6 +29,7 @@ class Admin extends React.Component {
 		this.exitAdmin = this.exitAdmin.bind(this);
 		this.togglePreview = this.togglePreview.bind(this);
 		this.renderTopPanel = this.renderTopPanel.bind(this);
+		this.changePreviewDevice = this.changePreviewDevice.bind(this);
 	}
 
 	exitAdmin() {
@@ -71,39 +73,94 @@ class Admin extends React.Component {
 			step,
 			createType,
 			breakpoint,
-			previewMode
+			previewMode,
+			previewDevice
 		} = this.props;
 
 		const mobile = breakpoint === 'mobile' ? true : false;
-		const topShowAdminPanelAndPreview = step === 'create' ? false : true;
+		const leftSide = [];
+		const middle = [];
+		const rightSide = [];
+
+		if (previewMode) {
+			leftSide.push(
+				<GBLink key={'leftSide'} className='link side' onClick={() => this.togglePreview()}><span className='icon icon-chevron-left'></span>{!mobile ? 'Exit Preview' : ''}</GBLink>
+			);
+		} else {
+			leftSide.push(
+				<GBLink key={'leftSide'} className='link side' onClick={() => this.exitAdmin()}><span className='icon icon-chevron-left'></span>{!mobile ? 'Exit Form Builder' : ''}</GBLink>
+			);
+		}
+
+		if (step !== 'create') {
+			if (!mobile) {
+				rightSide.push(
+					<div
+						className='rightSide'
+						key='rightSide'
+					>
+						<GBLink className='link side' style={{ marginRight: 10 }} onClick={this.togglePreview}>{ mobile ? <span className='icon icon-eye'></span> : <span>Preview {createType === 'form' ? 'Form' : 'Email' }</span> }</GBLink>
+						<Toggle
+							icons={false}
+							checked={previewMode}
+							onChange={this.togglePreview}
+						/>
+					</div>
+				);
+			} else {
+				rightSide.push(<div className='rightSide' key='rightSide'>&nbsp;</div>)
+			}
+
+			if (previewMode) {
+				switch (createType) {
+					case 'receipt': {
+
+						break;
+					}
+
+					case 'form':
+					default: {
+						middle.push(
+							<div key={'middle'} className='button-group middle'>
+								<GBLink className={`ripple link ${previewDevice === 'phone' ? 'selected' : ''}`} onClick={() => this.changePreviewDevice('phone')}><span className='icon icon-smartphone'></span><span className='iconText'>Mobile</span></GBLink>
+								<GBLink className={`ripple link ${previewDevice === 'desktop' ? 'selected' : ''}`} onClick={() => this.changePreviewDevice('desktop')}><span className='icon icon-monitor'></span><span className='iconText'>Desktop</span></GBLink>
+							</div>
+						);
+						break;
+					}
+				}
+			} else {
+				middle.push(
+					<div key={'middle'} className='button-group'>
+						<GBLink className={`ripple link ${step === 'design' ? 'selected' : ''}`} onClick={() => this.props.updateAdmin({ step: 'design' })}>DESIGN</GBLink>
+						<GBLink className={`ripple link ${step === 'share' ? 'selected' : ''}`} onClick={() => this.props.updateAdmin({ step: 'share' })}>SHARE</GBLink>
+					</div>
+				);
+			}
+		}
 
 		return (
 			<div className='topPanelContainer'>
 				<div className='leftSide'>
-					<GBLink className='link side' onClick={() => this.exitAdmin()}><span className='icon icon-chevron-left'></span>{!mobile ? 'Exit Form Builder' : ''}</GBLink>
+					{leftSide}
 				</div>
 				<div className='middle centerAlign adminPanelTabs'>
-					{topShowAdminPanelAndPreview ?
-					<div className='button-group'>
-						<GBLink className={`ripple link ${step === 'design' ? 'selected' : ''}`} onClick={() => this.props.updateAdmin({ step: 'design' })}>DESIGN</GBLink>
-						<GBLink className={`ripple link ${step === 'share' ? 'selected' : ''}`} onClick={() => this.props.updateAdmin({ step: 'share' })}>SHARE</GBLink>
-					</div>
-					: <></> }
+					{middle}
 				</div>
-				<div className='rightSide'>
-					{topShowAdminPanelAndPreview ?
-						<>
-							<GBLink className='link side' style={{ marginRight: 10 }} onClick={this.togglePreview}>{mobile ? <span className='icon icon-eye'></span> : 'Preview Form'}</GBLink>
-							<Toggle
-								icons={false}
-								checked={previewMode}
-								onChange={this.togglePreview}
-							/>
-						</>
-					: <></> }
-				</div>
+				{rightSide}
 			</div>
 		)
+	}
+
+	async changePreviewDevice(previewDevice) {
+		this.props.setLoading(true);
+		const adminUpdated = await this.props.updateAdmin({ previewDevice });
+		if (adminUpdated) {
+			this.timeout = setTimeout(() => {
+				this.props.setLoading(false);
+				this.timeout = null;
+			}, 0);
+		}
 	}
 
 	render() {
@@ -175,6 +232,7 @@ function mapStateToProps(state, props) {
 	const articleID = util.getValue(info, 'articleID');
 	const admin = util.getValue(gbx3, 'admin', {});
 	const step = util.getValue(admin, 'step');
+	const previewDevice = util.getValue(admin, 'previewDevice');
 	const createType = util.getValue(admin, 'createType');
 	const previewMode = util.getValue(admin, 'previewMode');
 	const openAdmin = util.getValue(admin, 'open');
@@ -189,6 +247,7 @@ function mapStateToProps(state, props) {
 		openAdmin,
 		step,
 		createType,
+		previewDevice,
 		previewMode,
 		saveStatus,
 		access,
@@ -203,5 +262,6 @@ export default connect(mapStateToProps, {
 	toggleAdminLeftPanel,
 	resetGBX3,
 	saveGBX3,
-	toggleModal
+	toggleModal,
+	setLoading
 })(Admin);

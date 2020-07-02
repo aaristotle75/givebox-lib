@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import {
 	util,
 	GBLink,
@@ -16,7 +17,7 @@ import {
 import AnimateHeight from 'react-animate-height';
 import has from 'has';
 
-export default class Media extends Component {
+class Media extends Component {
 
 	constructor(props) {
 		super(props);
@@ -66,7 +67,8 @@ export default class Media extends Component {
 			defaultMediaType: mediaType,
 			maxWidth: this.maxWidth || null,
 			maxHeight: this.maxHeight || 550,
-			hasBeenUpdated: false
+			hasBeenUpdated: false,
+			mediaLibraryEditorIsOpen: false
 		};
 	}
 
@@ -223,7 +225,8 @@ export default class Media extends Component {
 			modalID,
 			maxRadius,
 			minRadius,
-			block
+			block,
+			breakpoint
 		} = this.props;
 
 		const {
@@ -231,7 +234,8 @@ export default class Media extends Component {
 			maxHeight,
 			image,
 			video,
-			mediaType
+			mediaType,
+			mediaLibraryEditorIsOpen
 		} = this.state;
 
 		const library = {
@@ -286,10 +290,15 @@ export default class Media extends Component {
 													closeModalAndSave={() => this.closeEditModal('save')}
 													showBtns={'hide'}
 													saveLabel={'close'}
+													imageEditorOpenCallback={(open) => {
+														this.setState({ mediaLibraryEditorIsOpen: open });
+													}}
+													mobile={breakpoint === 'mobile' ? true : false }
 												/>
 											</div>
 										</div>
 									</Collapse>
+									{!mediaLibraryEditorIsOpen ?
 									<Collapse
 										label={'Image Options'}
 										iconPrimary='sliders'
@@ -315,7 +324,7 @@ export default class Media extends Component {
 												</div>
 											</div>
 										</div>
-									</Collapse>
+									</Collapse> : <></> }
 								</Tab> : <></> }
 								{ !util.isEmpty(video) ?
 								<Tab
@@ -367,12 +376,17 @@ export default class Media extends Component {
 									</Collapse>
 								</Tab> : <></> }
 							</Tabs>
+						</div>
+					}
+					buttonGroup={
+						!mediaLibraryEditorIsOpen ?
+						<div className='gbx3'>
 							<div style={{ margin: 0 }} className='button-group center'>
 								{!nonremovable ? <GBLink className='link remove' onClick={this.props.onClickRemove}><span className='icon icon-trash-2'></span> <span className='buttonText'>Remove</span></GBLink> : <></>}
 								<GBLink className='link' onClick={() => this.closeEditModal('cancel')}>Cancel</GBLink>
 								<GBLink className='button' onClick={() => this.closeEditModal('save')}>Save</GBLink>
 							</div>
-						</div>
+						</div> : <></>
 					}
 				/>
 				{ mediaType === 'image' ?
@@ -389,3 +403,15 @@ Media.defaultProps = {
 	minRadius: 0,
 	maxRadius: 50
 }
+
+function mapStateToProps(state, props) {
+
+	const editable = util.getValue(state, 'gbx3.admin.editable');
+
+	return {
+		editable
+	}
+}
+
+export default connect(mapStateToProps, {
+})(Media);

@@ -46,8 +46,6 @@ class ReceiptEmailEdit extends React.Component {
 			'{{message}}': `Write your content for your audience...`
 		};
 
-		console.log('execute', receiptConfig);
-
 		const content = util.getValue(receiptConfig, 'content', `${util.replaceAll(defaultContent, tokens)}`);
 
 		this.state = {
@@ -56,7 +54,6 @@ class ReceiptEmailEdit extends React.Component {
 	}
 
 	componentDidMount() {
-		this.setPreviewHTML()
 	}
 
 	componentWillUnmount() {
@@ -71,7 +68,6 @@ class ReceiptEmailEdit extends React.Component {
 		this.setState({ content },
 			() => {
 				this.save(true);
-				this.setPreviewHTML()
 			}
 		);
 	}
@@ -81,7 +77,6 @@ class ReceiptEmailEdit extends React.Component {
 		this.setState({ content },
 			() => {
 				this.save();
-				this.setPreviewHTML()
 			}
 		);
 	}
@@ -97,6 +92,9 @@ class ReceiptEmailEdit extends React.Component {
 		};
 
 		const html = util.replaceAll(emailTemplate, tokens);
+		return (
+			<div style={{ background: '#ffffff', width: '100%', maxWidth: 550 }} dangerouslySetInnerHTML={{ __html: content }} />
+		);
 	}
 
 	async save(saveGBX3 = false) {
@@ -117,7 +115,9 @@ class ReceiptEmailEdit extends React.Component {
 	render() {
 
 		const {
-			info
+			info,
+			breakpoint,
+			previewMode
 		} = this.props;
 
 		const {
@@ -128,16 +128,20 @@ class ReceiptEmailEdit extends React.Component {
 			<div className='gbx3Layout gbx3ReceiptLayout'>
 				<div className='gbx3Container gbx3ReceiptContainer'>
 					<div className='block flexCenter'>
+					{previewMode ?
+						this.setPreviewHTML()
+					:
 						<CustomCKEditor4
 							orgID={util.getValue(info, 'orgID', null)}
 							articleID={util.getValue(info, 'articleID', null)}
 							 onChange={this.onChange}
 							onBlur={this.onBlur}
 							content={content}
-							width={600}
+							width={breakpoint === 'mobile' ? 'auto' : 600}
 							height={'600'}
-							type='classic'
+							type={breakpoint === 'mobile' ? 'classic' : 'inline'}
 						/>
+					}
 					</div>
 				</div>
 			</div>
@@ -148,13 +152,18 @@ class ReceiptEmailEdit extends React.Component {
 function mapStateToProps(state, props) {
 
 	const gbx3 = util.getValue(state, 'gbx3', {});
+	const admin = util.getValue(gbx3, 'admin', {});
+	const previewMode = util.getValue(admin, 'previewMode');
 	const info = util.getValue(gbx3, 'info', {});
+	const breakpoint = util.getValue(info, 'breakpoint');
 	const data = util.getValue(gbx3, 'data', {});
 	const receiptConfig = util.getValue(data, 'receiptConfig', {});
 	const receiptStyle = util.getValue(receiptConfig, 'style', {});
 
 	return {
+		previewMode,
 		info,
+		breakpoint,
 		data,
 		receiptConfig,
 		receiptStyle

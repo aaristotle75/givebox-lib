@@ -441,6 +441,11 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
 			endpoint = `orgs`;
 			break;
 		}
+		case 'gbx3Org': {
+			endpoint = `orgs/${orgID}`;
+			break;
+		}
+
 		case 'org': {
 			endpoint = `orgs/${getIndex(id, 0, orgID)}`;
 			break;

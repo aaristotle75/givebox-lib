@@ -130,7 +130,9 @@ class GBX3 extends React.Component {
 
 		const infoUpdated = await this.props.updateInfo(info);
 
-		if (has(queryParams, 'publicView')) this.props.updateAdmin({ publicView: true });
+		if (has(queryParams, 'public')) {
+			this.props.updateAdmin({ publicView: true });
+		}
 		if (infoUpdated) return true;
 	}
 

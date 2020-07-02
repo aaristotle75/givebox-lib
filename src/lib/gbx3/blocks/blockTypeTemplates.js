@@ -1,4 +1,4 @@
-const logo = {
+const articleLogo = {
 	order: 1,
 	name: 'logo',
 	title: 'Logo',
@@ -21,7 +21,7 @@ const logo = {
 	}
 };
 
-const orgName = {
+const articleOrgName = {
 	order: 2,
 	name: 'orgName',
 	title: 'Organization Name',
@@ -39,7 +39,7 @@ const orgName = {
 };
 
 
-const title = {
+const articleTitle = {
 	order: 3,
 	name: 'title',
 	title: 'Title',
@@ -58,7 +58,7 @@ const title = {
 	}
 };
 
-const media = {
+const articleMedia = {
 	order: 4,
 	name: 'media',
 	title: 'Media',
@@ -144,7 +144,7 @@ const paymentForm = {
 	}
 };
 
-const description = {
+const articleDescription = {
 	order: 6,
 	name: 'description',
 	title: 'Description',
@@ -215,17 +215,27 @@ const mediaBlock = {
 	}
 };
 
-export const blockTemplates = {
-	logo,
-	title,
-	orgName,
-	amounts,
-	media,
-	description,
-	paymentForm,
-	textBlock,
-	contentBlock,
-	mediaBlock
+export const blockTypeTemplates = {
+	article: {
+		logo: articleLogo,
+		title: articleTitle,
+		orgName: articleOrgName,
+		amounts,
+		media: articleMedia,
+		description: articleDescription,
+		paymentForm,
+		textBlock,
+		contentBlock,
+		mediaBlock
+	},
+	receipt: {
+		textBlock,
+		contentBlock,
+		mediaBlock
+	},
+	org: {
+
+	}
 };
 
-export default blockTemplates;
+export default blockTypeTemplates;

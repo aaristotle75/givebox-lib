@@ -1,29 +1,29 @@
-import blockTemplates from './blocks/blockTemplates';
+import blockTypeTemplates from './blocks/blockTypeTemplates';
 
-const logo = blockTemplates.logo;
-const title = blockTemplates.title;
-const orgName = blockTemplates.orgName;
-const amounts = blockTemplates.amounts;
-const media = blockTemplates.media;
-const description = blockTemplates.description;
-const paymentForm = blockTemplates.paymentForm;
+const articleLogo = blockTypeTemplates.article.logo;
+const articleTitle = blockTypeTemplates.article.title;
+const articleOrgName = blockTypeTemplates.article.orgName;
+const amounts = blockTypeTemplates.article.amounts;
+const articleMedia = blockTypeTemplates.article.media;
+const articleDescription = blockTypeTemplates.article.description;
+const paymentForm = blockTypeTemplates.article.paymentForm;
 
 const fundraiserBlocks = {
-	logo,
-	title,
-	orgName,
+	logo: articleLogo,
+	title: articleTitle,
+	orgName: articleOrgName,
 	amounts,
-	media,
-	description,
+	media: articleMedia,
+	description: articleDescription,
 	paymentForm
 };
 
 const invoiceBlocks = fundraiserBlocks;
 
 const eventBlocks = {
-	logo,
-	title,
-	orgName,
+	logo: articleLogo,
+	title: articleTitle,
+	orgName: articleOrgName,
 	amounts: { ...amounts, ...{
 		options: {
 			...amounts.options,
@@ -35,17 +35,20 @@ const eventBlocks = {
 			}
 		}
 	}},
-	media,
-	description,
+	media: articleMedia,
+	description: articleDescription,
 	paymentForm
 };
 const sweepstakesBlocks = fundraiserBlocks;
 const membershipBlocks = fundraiserBlocks;
 
-export const defaultBlocks = {
+export const defaultArticleBlocks = {
 	fundraiser: fundraiserBlocks,
 	invoice: invoiceBlocks,
 	event: eventBlocks,
 	sweepstakes: sweepstakesBlocks,
 	membership: membershipBlocks
 };
+
+export const defaultReceiptBlocks = {
+}

@@ -30,12 +30,12 @@ export default class Editor extends PureComponent {
 		} = this.props;
 
 		const contentCss = 'https://givebox.s3-us-west-1.amazonaws.com/public/css/gbx3contents.css';
-		let toolbar =	[ 'Bold', 'Italic', '-', 'Font', '-', 'FontSize', 'TextColor', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight'];
+		let toolbar =	[ 'Bold', 'Italic', '-', 'FontSize', 'TextColor', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight'];
 		let height = '150px';
 		let removePlugins = 'elementspath';
 
 		if (subType === 'content') {
-			toolbar =	[ 'Bold', 'Italic', '-', 'Font', '-', 'FontSize', 'TextColor', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', '-', 'Link', 'Unlink', '-', 'Image'];
+			toolbar =	[ 'Bold', 'Italic', '-', 'FontSize', 'TextColor', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', '-', 'Link', 'Unlink', '-', 'Image'];
 			height = '300px';
 			removePlugins = 'image,elementspath';
 		}

@@ -52,6 +52,15 @@
 		display: none !important;
 		z-index: 1 !important;
 	}
+
+	.cke_float {
+		display: block !important;
+		position: fixed !important;
+		top: 0 !important;
+		z-index: 99999999 !important;
+		visibility: visible !important;
+	}
+
 }
 
 .cke_dialog_background_cover {

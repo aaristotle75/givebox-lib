@@ -3,6 +3,9 @@
 .gbx3LayoutBackground {
 	height: 100vh;
 	width: 100%;
+	@media (max-width: $breakpoint) {
+		display: none;
+	}
 }
 
 .gbx3Layout {
@@ -29,6 +32,16 @@
 
 		@media (max-width: $breakpoint) {
 			height: 75px;
+		}
+	}
+}
+
+.gbx3Layout:not(.gbx3ReceiptLayout) {
+	@media (max-width: $breakpoint) {
+		p img {
+		margin: 0;
+		width: 100%;
+		height: auto;
 		}
 	}
 }
@@ -80,6 +93,9 @@
 		padding: 10px;
 		background: $white;
 		@include bgGradient(to bottom, $light-gray 0%, $white 20%);
+		@media (max-width: $breakpoint) {
+			border-radius: 0px !important;
+		}
 	}
 
 	.layout-column {
@@ -102,6 +118,11 @@
 	}
 
 	.gbx3AdminLayout.previewMode {
+
+		.desktopWrapper {
+			top: $topPanelHeight;
+		}
+
 		.gbx3TopHeader {
 			height: 0;
 		}
@@ -112,22 +133,24 @@
 		}
 
 		.leftPanel.open {
-			width: 0;
+			display: none;
 		}
 
 		.stageContainer {
-			position: inherit;
+			position: relative;
 			top: 0;
-			margin-top: 0; //$topPanelHeight;
+			margin-top: 0px;
+			padding: $topPanelHeight + 40px 0;
 			bottom: 0;
 			background: $white;
-			overflow-y: hidden;
+			overflow-y: auto;
+			height: 100vh;
 			z-index: 9;
 
 			.gbx3Layout {
-				padding-top: $topPanelHeight + 20px;
 				height: 100vh;
 				overflow-y: auto;
+				padding-top: $topPanelHeight + 20px;
 			}
 
 		}
@@ -259,6 +282,21 @@
 
 		.middle {
 			white-space: nowrap;
+			.button-group {
+				button.link {
+					text-align: center;
+					.icon {
+						display: block;
+						font-size: 24px;
+					}
+					.iconText {
+						display: block;
+						margin-top: 0px;
+						font-size: 10px;
+						font-weight: 300;
+					}
+				}
+			}
 		}
 
 		.rightSide {
@@ -556,9 +594,19 @@
 		.gbx3ReceiptLayout {
 			overflow-y: auto;
 			height: 100%;
+			background: $light-gray;
 		}
 
 		.gbx3Container {
+		}
+
+		.gbx3ReceiptContainer {
+			max-width: 600px;
+			width: 550px;
+			background: #ffffff;
+			@media (max-width: $breakpoint) {
+				width: 100%;
+			}
 		}
 
 		.gbx3Footer {
@@ -693,17 +741,18 @@
 
 	p img {
 		padding: 0 10px;
-		@media (max-width: $breakpoint) {
-			margin: 0;
-			width: 100%;
-			height: auto;
-		}
 	}
 
 	/*------ End Elements ------*/
 
 
 	/*-------- General Form ----*/
+	.formSection {
+		@media (max-width: $breakpoint) {
+			padding: 10px 0 20px 0;
+		}
+	}
+
 	.gbx3Layout {
 		.dropdown button {
 			.label.idle {
@@ -1163,6 +1212,7 @@
 				.buttonText {
 					display: none;
 				}
+				.icon { font-size: 18px; }
 			}
 
 			.icon {

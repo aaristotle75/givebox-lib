@@ -49,7 +49,8 @@ function mapStateToProps(state, props) {
 
 	const gbx3 = util.getValue(state, 'gbx3', {});
 	const admin = util.getValue(gbx3, 'admin', {});
-	const availableBlocks = util.getValue(admin, 'availableBlocks', []);
+	const blockType = util.getValue(gbx3, 'info.blockType');
+	const availableBlocks = util.getValue(admin, `availableBlocks.${blockType}`, []);
 	const globals = util.getValue(gbx3, 'globals', {});
 	const gbxStyle = util.getValue(globals, 'gbxStyle', {});
 	const editable = util.getValue(admin, 'editable');

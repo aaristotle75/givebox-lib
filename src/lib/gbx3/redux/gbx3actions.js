@@ -6,8 +6,8 @@ import {
 	sendResource
 } from '../../';
 import { defaultAmountHeight } from '../blocks/amounts/amountsStyle';
-import blockTemplates from '../blocks/blockTemplates';
-import { defaultBlocks } from '../config';
+import blockTypeTemplates from '../blocks/blockTypeTemplates';
+import { defaultArticleBlocks } from '../config';
 import { createData } from '../admin/createTemplates';
 
 export function updateGBX3(name, value) {
@@ -38,25 +38,28 @@ export function updateInfo(info) {
 	}
 }
 
-export function updateLayouts(layouts = {}) {
+export function updateLayouts(blockType, layouts = {}) {
 	return {
 		type: types.UPDATE_LAYOUTS,
-		layouts
+		layouts,
+		blockType
 	}
 }
 
-export function updateBlocks(blocks = {}) {
+export function updateBlocks(blockType, blocks = {}) {
 	return {
 		type: types.UPDATE_BLOCKS,
-		blocks
+		blocks,
+		blockType
 	}
 }
 
-export function updateBlock(name, block) {
+export function updateBlock(blockType, name, block) {
 	return {
 		type: types.UPDATE_BLOCK,
 		name,
-		block
+		block,
+		blockType
 	}
 }
 
@@ -64,9 +67,12 @@ export function addBlock(type, w = 0, h = 0, ref) {
 	return (dispatch, getState) => {
 		const current = ref ? ref.current : null;
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
-		const blocks = util.getValue(gbx3, 'blocks', {});
+		const info = util.getValue(gbx3, 'info', {});
+		const blockType = util.getValue(info, 'blockType');
+		const blocks = util.getValue(gbx3, `blocks.${blockType}`, {});
 		const admin = util.getValue(gbx3, 'admin', {});
-		const availableBlocks = util.getValue(admin, 'availableBlocks', []);
+		const availableBlocks = util.getValue(admin, `availableBlocks.${blockType}`, []);
+		const blockTemplates = util.getValue(blockTypeTemplates, blockType);
 		const newBlock = util.getValue(blockTemplates, type, {});
 		if (!util.isEmpty(newBlock)) {
 			let blockName = util.getValue(newBlock, 'name', type);
@@ -93,8 +99,8 @@ export function addBlock(type, w = 0, h = 0, ref) {
 				const index = availableBlocks.indexOf(blockName)
 				availableBlocks.splice(index, 1);
 			}
-			dispatch(updateAdmin({ availableBlocks }));
-			dispatch(updateBlock(blockName, newBlock));
+			dispatch(updateAvailableBlocks(availableBlocks));
+			dispatch(updateBlock(blockType, blockName, newBlock));
 		}
 	}
 }
@@ -102,37 +108,26 @@ export function addBlock(type, w = 0, h = 0, ref) {
 export function removeBlock(name) {
 	return (dispatch, getState) => {
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
-		const blocks = util.getValue(gbx3, 'blocks', {});
+		const info = util.getValue(gbx3, 'info', {});
+		const blockType = util.getValue(info, 'blockType');
+		const blocks = util.getValue(gbx3, `blocks.${blockType}`, {});
 		const admin = util.getValue(gbx3, 'admin', {});
-		const availableBlocks = util.getValue(admin, 'availableBlocks', []);
+		const availableBlocks = util.getValue(admin, `availableBlocks.${blockType}`, []);
 		const block = util.getValue(blocks, name, {});
 		if (!util.getValue(block, 'multiple')) {
 			if (!(name in availableBlocks)) availableBlocks.push(name);
 		}
-		dispatch(updateAdmin({ availableBlocks, editBlock: '' }));
-		dispatch(deleteBlock(name));
+		dispatch(updateAvailableBlocks(availableBlocks));
+		dispatch(updateAdmin({ editBlock: '' }));
+		dispatch(deleteBlock(name, blockType));
 	}
 }
 
-function deleteBlock(name) {
+function deleteBlock(name, blockType) {
 	return {
 		type: types.REMOVE_BLOCK,
-		name
-	}
-}
-
-export function updateDefaults(defaults = {}) {
-	return {
-		type: types.UPDATE_DEFAULTS,
-		defaults
-	}
-}
-
-export function updateDefault(name, defaults) {
-	return {
-		type: types.UPDATE_DEFAULT,
 		name,
-		defaults
+		blockType
 	}
 }
 
@@ -169,6 +164,15 @@ export function updateAdmin(admin) {
 	return {
 		type: types.UPDATE_ADMIN,
 		admin
+	}
+}
+
+export function updateAvailableBlocks(available) {
+	return (dispatch, getState) => {
+		const blockType = util.getValue(getState(), 'gbx3.info.blockType');
+		const availableBlocks = util.getValue(getState(), 'gbx3.admin.availableBlocks', []);
+		availableBlocks[blockType] = available;
+		dispatch(updateAdmin({ availableBlocks }));
 	}
 }
 
@@ -300,14 +304,23 @@ export function calcCart() {
 	}
 }
 
-export function saveGBX3(obj = {}, isSending = false, callback, updateLayout) {
+export function saveGBX3(options = {}) {
+
+	const opts = {
+		obj: {},
+		isSending: false,
+		callback: null,
+		updateLayout: false,
+		...options
+	};
 
 	return (dispatch, getState) => {
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
 		const gbxData = util.getValue(gbx3, 'data', {});
 		const settings = util.getValue(gbxData, 'giveboxSettings', {});
 		const info = util.getValue(gbx3, 'info', {});
-		const blocks = util.getValue(gbx3, 'blocks', {});
+		const blockType = util.getValue(info, 'blockType');
+		const blocks = util.getValue(gbx3, `blocks.${blockType}`, {});
 		const globals = util.getValue(gbx3, 'globals', {});
 		const data = {
 			...gbxData,
@@ -318,10 +331,10 @@ export function saveGBX3(obj = {}, isSending = false, callback, updateLayout) {
 					globals
 				}
 			},
-			...obj
+			...opts.obj
 		};
 
-		if (updateLayout) {
+		if (opts.updateLayout) {
 			const layouts = {
 				desktop: [],
 				mobile: []
@@ -334,7 +347,7 @@ export function saveGBX3(obj = {}, isSending = false, callback, updateLayout) {
 				}
 			});
 
-			dispatch(updateLayouts(layouts));
+			dispatch(updateLayouts(blockType, layouts));
 		}
 		dispatch(updateGBX3('saveStatus', 'saving'));
 		dispatch(sendResource(util.getValue(info, 'apiName'), {
@@ -344,9 +357,9 @@ export function saveGBX3(obj = {}, isSending = false, callback, updateLayout) {
 			method: 'patch',
 			callback: (res, err) => {
 				dispatch(updateGBX3('saveStatus', 'done'));
-				if (callback) callback(res, err);
+				if (opts.callback) opts.callback(res, err);
 			},
-			isSending
+			isSending: opts.isSending
 		}));
 	}
 }
@@ -355,6 +368,7 @@ export function resetGBX3(callback) {
 	return (dispatch, getState) => {
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
 		const info = util.getValue(gbx3, 'info', {});
+		const blockType = util.getValue(info, 'blockType');
 		const data = {
 			...util.getValue(gbx3, 'data', {}),
 			giveboxSettings: {
@@ -371,7 +385,7 @@ export function resetGBX3(callback) {
 			data,
 			method: 'patch',
 			callback: (res, err) => {
-				dispatch(updateBlocks({}));
+				dispatch(updateBlocks(blockType, {}));
 				dispatch(updateGlobals({}));
 				dispatch(updateData(res));
 				window.location.reload();
@@ -440,7 +454,9 @@ export function loadGBX3(articleID, callback) {
 		const access = util.getValue(resource, 'access', {});
 		const globalsState = util.getValue(gbx3, 'globals', {});
 		const admin = util.getValue(gbx3, 'admin', {});
-		const availableBlocks = util.getValue(admin, 'availableBlocks', {});
+		const info = util.getValue(gbx3, 'info', {});
+		const blockType = util.getValue(info, 'blockType');
+		const availableBlocks = util.getValue(admin, `availableBlocks.${blockType}`, [], true);
 
 		dispatch(getResource('article', {
 			id: [articleID],
@@ -488,7 +504,7 @@ export function loadGBX3(articleID, callback) {
 										orgImage: util.getValue(access, 'orgImage')
 									}));
 
-									const blocksDefault = util.getValue(defaultBlocks, kind, {});
+									const blocksDefault = util.getValue(defaultArticleBlocks, kind, {});
 									const globalsCustom = util.getValue(customTemplate, 'globals', {});
 									const gbxStyleCustom = util.getValue(globalsCustom, 'gbxStyle', {});
 									const blocksCustom = util.getValue(customTemplate, 'blocks', {});
@@ -541,21 +557,16 @@ export function loadGBX3(articleID, callback) {
 										}
 									});
 
-									dispatch(updateLayouts(layouts));
-									dispatch(updateBlocks(blocks));
+									dispatch(updateLayouts(blockType, layouts));
+									dispatch(updateBlocks(blockType, blocks));
 									dispatch(updateGlobals(globals));
 									dispatch(updateData(res));
+									dispatch(updateAvailableBlocks(availableBlocks));
 									dispatch(updateAdmin({
-										availableBlocks,
 										hasAccessToEdit,
 										editable: hasAccessToEdit ? true : false,
 										open: hasAccessToEdit ? true : false,
 										step: 'design'
-									}));
-									dispatch(updateDefaults({
-										layouts,
-										blocks,
-										data: res
 									}));
 									callback(res, err)
 								}

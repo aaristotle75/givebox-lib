@@ -11,6 +11,7 @@ import {
 	saveGBX3,
 	updateLayouts
 } from '../../';
+import has from 'has';
 
 class Block extends React.Component {
 
@@ -59,7 +60,8 @@ class Block extends React.Component {
 		const {
 			name,
 			block,
-			breakpoint
+			breakpoint,
+			blockType
 		} = this.props;
 
 		const opts = {
@@ -87,7 +89,7 @@ class Block extends React.Component {
 		}
 
 		const mobileContent = content || this.getBlockContent('mobile');
-		const mobileGrid = { ...block.grid.mobile };
+		const mobileGrid = has(block.grid, 'mobile') ? { ...block.grid.mobile } : {};
 		const desktopContent = content || this.getBlockContent('desktop');
 		const desktopGrid = breakpoint === 'desktop' ? { ...block.grid.desktop, ...grid } : { ...block.grid.desktop };
 
@@ -125,9 +127,7 @@ class Block extends React.Component {
 				}
 			}
 
-			this.props.updateBlock(name, blockToUpdate);
-			const blocksUpdated = true; //await this.props.updateBlock(name, blockToUpdate);
-
+			const blocksUpdated = await this.props.updateBlock(blockType, name, blockToUpdate);
 			if (blocksUpdated) updated.push('blocksUpdated');
 
 			if (!util.isEmpty(data)) {
@@ -136,7 +136,12 @@ class Block extends React.Component {
 			}
 
 			if (updated.length === checkForUpdatesCount) {
-				if (saveGBX3 && opts.hasBeenUpdated) this.props.saveGBX3(null, false, saveCallback, !util.isEmpty(grid) ? true : false);
+				if (saveGBX3 && opts.hasBeenUpdated) {
+					this.props.saveGBX3({
+						callback: saveCallback,
+						updateLayout: !util.isEmpty(grid) ? true : false
+					});
+				}
 				else saveCallback();
 			}
 		} else {
@@ -237,7 +242,6 @@ function mapStateToProps(state, props) {
 	const gbx3 = util.getValue(state, 'gbx3', {});
 	const admin = util.getValue(gbx3, 'admin', {});
 	const editBlock = util.getValue(admin, 'editBlock');
-	const layouts = util.getValue(gbx3, 'layouts', {});
 	const globals = util.getValue(gbx3, 'globals', {});
 	const gbxStyle = util.getValue(globals, 'gbxStyle', {});
 	const gbxPrimaryColor = util.getValue(gbxStyle, 'primaryColor');
@@ -248,7 +252,9 @@ function mapStateToProps(state, props) {
 	const kind = util.getValue(info, 'kind');
 	const articleID = util.getValue(info, 'articleID');
 	const orgID = util.getValue(info, 'orgID');
-	const blocks = util.getValue(gbx3, 'blocks', {});
+	const blockType = util.getValue(info, 'blockType');
+	const layouts = util.getValue(gbx3, `layouts.${blockType}`, {});
+	const blocks = util.getValue(gbx3, `blocks.${blockType}`, {});
 	const block = util.getValue(blocks, props.name, {});
 	const nonremovable = util.getValue(block, 'nonremovable');
 	const dataField = util.getValue(block, 'field');
@@ -263,6 +269,7 @@ function mapStateToProps(state, props) {
 		orgID,
 		modalID,
 		layouts,
+		blockType,
 		block,
 		nonremovable,
 		options,

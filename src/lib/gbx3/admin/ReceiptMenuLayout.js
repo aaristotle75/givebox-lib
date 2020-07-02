@@ -5,7 +5,7 @@ import {
 	toggleModal,
 	updateAdmin
 } from '../../';
-import blockTemplates from '../blocks/blockTemplates';
+import blockTypeTemplates from '../blocks/blockTypeTemplates';
 
 class ReceiptMenuLayout extends React.Component {
 
@@ -58,12 +58,15 @@ class ReceiptMenuLayout extends React.Component {
 
 	renderAvailableBlocks() {
 		const {
-			availableBlocks
+			availableBlocks,
+			blockType
 		} = this.props;
 
 		const items = [];
+		const blockTemplates = util.getValue(blockTypeTemplates, blockType, {});
 
 		availableBlocks.forEach((value) => {
+			const block = util.getValue(blockTemplates, 'value', {});
 			items.push(
 				<li
 					key={value}
@@ -93,7 +96,7 @@ class ReceiptMenuLayout extends React.Component {
 						}
 					}}
 				>
-					Add {blockTemplates[value].title}
+					Add {block.title}
 				</li>
 			);
 		});
@@ -110,7 +113,7 @@ class ReceiptMenuLayout extends React.Component {
 
 		return (
 			<div className='layoutMenu'>
-				{this.renderAvailableBlocks()}
+				Layout Menu
 			</div>
 		)
 	}
@@ -119,11 +122,14 @@ class ReceiptMenuLayout extends React.Component {
 function mapStateToProps(state, props) {
 
 	const gbx3 = util.getValue(state, 'gbx3', {});
-	const blocks = util.getValue(gbx3, 'blocks', {});
+	const info = util.getValue(gbx3, 'info', {});
+	const blockType = util.getValue(info, 'blockType');
+	const blocks = util.getValue(gbx3, `blocks.${blockType}`, {});
 	const admin = util.getValue(gbx3, 'admin', {});
-	const availableBlocks = util.getValue(admin, 'availableBlocks', []);
+	const availableBlocks = util.getValue(admin, `availableBlocks.${blockType}`, []);
 
 	return {
+		blockType,
 		blocks,
 		availableBlocks
 	}

@@ -474,6 +474,10 @@ class Amounts extends Component {
 									</Collapse>
 								</Tab> : <></>}
 							</Tabs>
+						</div>
+					}
+					buttonGroup={
+						<div className='gbx3'>
 							<div style={{ marginBottom: 0 }} className='button-group center'>
 								<GBLink className='link' onClick={() => this.closeModalAmountsEdit('cancel')}>Cancel</GBLink>
 								<GBLink className='button' onClick={this.closeModalAmountsEdit}>Save</GBLink>
@@ -509,7 +513,7 @@ class Amounts extends Component {
 														onClick={() => {
 															this.props.updateCart({ open: true });
 															this.props.scrollTo('checkout');
-															this.props.toggleModal('amountsList');
+															this.props.toggleModal('amountsList', false);
 														}}
 													>
 														<span style={{ display: 'block', fontSize: 12 }}>Items in Cart ({numCartItems})</span>
@@ -526,7 +530,7 @@ class Amounts extends Component {
 													solidColor={true}
 													onClick={() => {
 														this.props.scrollTo('checkout');
-														this.props.toggleModal('amountsList');
+														this.props.toggleModal('amountsList', false);
 													}}
 												>
 													CHECKOUT

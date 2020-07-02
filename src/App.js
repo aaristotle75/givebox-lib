@@ -205,7 +205,7 @@ class App extends Component {
 	render() {
 
 		return (
-			<div className={`${this.state.mobile ? 'mobile' : 'desktop'}`}>
+			<>
 				<div id='app-root' ref={this.appRef}>
 					<AppContext.Provider
 						value={{
@@ -225,7 +225,7 @@ class App extends Component {
 				<div id='calendar-root'></div>
 				<div id='help-center'></div>
 				<div id='gbx-form-root'></div>
-			</div>
+			</>
 		);
 	}
 }
