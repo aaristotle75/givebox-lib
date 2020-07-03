@@ -99,7 +99,7 @@ class Admin extends React.Component {
 						className='rightSide'
 						key='rightSide'
 					>
-						<GBLink className='link side' style={{ marginRight: 10 }} onClick={this.togglePreview}>{ mobile ? <span className='icon icon-eye'></span> : <span>Preview {createType === 'form' ? 'Form' : 'Email' }</span> }</GBLink>
+						<GBLink className='link side' style={{ marginRight: 10 }} onClick={this.togglePreview}>{ mobile ? <span className='icon icon-eye'></span> : <span>Preview {createType === 'article' ? 'Form' : 'Email' }</span> }</GBLink>
 						<Toggle
 							icons={false}
 							checked={previewMode}

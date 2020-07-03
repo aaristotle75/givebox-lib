@@ -109,7 +109,7 @@ class ReceiptEmailEdit extends React.Component {
 			}
 		}
 		const dataUpdated = await this.props.updateData(obj);
-		if (dataUpdated && saveGBX3) this.props.saveGBX3(obj);
+		if (dataUpdated && saveGBX3) this.props.saveGBX3('receipt', { obj });
 	}
 
 	render() {

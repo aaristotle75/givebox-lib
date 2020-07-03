@@ -62,7 +62,6 @@ export function gbx3(state = {
 	loading: true,
 	saveStatus: 'done',
 	info: {
-		blockType: 'article',
 		stage: 'public',
 		display: 'shop',
 		preview: false,
@@ -93,11 +92,10 @@ export function gbx3(state = {
 	},
 	data: {},
 	admin: {
-		blockType: 'article',
 		editBlock: '',
 		open: false,
 		step: 'create',
-		createType: 'form',
+		createType: 'article',
 		previewDevice: 'desktop',
 		previewMode: false,
 		publicView: false,

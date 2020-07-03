@@ -6,8 +6,8 @@ import {
 	sendResource
 } from '../../';
 import { defaultAmountHeight } from '../blocks/amounts/amountsStyle';
-import blockTypeTemplates from '../blocks/blockTypeTemplates';
-import { defaultArticleBlocks } from '../config';
+import blockTemplates from '../blocks/blockTemplates';
+import { defaultArticleBlocks, defaultReceiptBlocks } from '../config';
 import { createData } from '../admin/createTemplates';
 
 export function updateGBX3(name, value) {
@@ -63,16 +63,13 @@ export function updateBlock(blockType, name, block) {
 	}
 }
 
-export function addBlock(type, w = 0, h = 0, ref) {
+export function addBlock(blockType, type, w = 0, h = 0, ref) {
 	return (dispatch, getState) => {
 		const current = ref ? ref.current : null;
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
-		const info = util.getValue(gbx3, 'info', {});
-		const blockType = util.getValue(info, 'blockType');
 		const blocks = util.getValue(gbx3, `blocks.${blockType}`, {});
 		const admin = util.getValue(gbx3, 'admin', {});
 		const availableBlocks = util.getValue(admin, `availableBlocks.${blockType}`, []);
-		const blockTemplates = util.getValue(blockTypeTemplates, blockType);
 		const newBlock = util.getValue(blockTemplates, type, {});
 		if (!util.isEmpty(newBlock)) {
 			let blockName = util.getValue(newBlock, 'name', type);
@@ -105,11 +102,9 @@ export function addBlock(type, w = 0, h = 0, ref) {
 	}
 }
 
-export function removeBlock(name) {
+export function removeBlock(blockType, name) {
 	return (dispatch, getState) => {
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
-		const info = util.getValue(gbx3, 'info', {});
-		const blockType = util.getValue(info, 'blockType');
 		const blocks = util.getValue(gbx3, `blocks.${blockType}`, {});
 		const admin = util.getValue(gbx3, 'admin', {});
 		const availableBlocks = util.getValue(admin, `availableBlocks.${blockType}`, []);
@@ -304,10 +299,10 @@ export function calcCart() {
 	}
 }
 
-export function saveGBX3(options = {}) {
+export function saveGBX3(blockType, options = {}) {
 
 	const opts = {
-		obj: {},
+		data: {},
 		isSending: false,
 		callback: null,
 		updateLayout: false,
@@ -319,10 +314,9 @@ export function saveGBX3(options = {}) {
 		const gbxData = util.getValue(gbx3, 'data', {});
 		const settings = util.getValue(gbxData, 'giveboxSettings', {});
 		const info = util.getValue(gbx3, 'info', {});
-		const blockType = util.getValue(info, 'blockType');
 		const blocks = util.getValue(gbx3, `blocks.${blockType}`, {});
 		const globals = util.getValue(gbx3, 'globals', {});
-		const data = {
+		const dataObj = {
 			...gbxData,
 			giveboxSettings: {
 				...settings,
@@ -331,7 +325,7 @@ export function saveGBX3(options = {}) {
 					globals
 				}
 			},
-			...opts.obj
+			...opts.dataObj
 		};
 
 		if (opts.updateLayout) {
@@ -353,7 +347,7 @@ export function saveGBX3(options = {}) {
 		dispatch(sendResource(util.getValue(info, 'apiName'), {
 			id: [util.getValue(info, 'kindID')],
 			orgID: util.getValue(info, 'orgID'),
-			data,
+			data: dataObj,
 			method: 'patch',
 			callback: (res, err) => {
 				dispatch(updateGBX3('saveStatus', 'done'));
@@ -368,7 +362,7 @@ export function resetGBX3(callback) {
 	return (dispatch, getState) => {
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
 		const info = util.getValue(gbx3, 'info', {});
-		const blockType = util.getValue(info, 'blockType');
+		const blockType = 'article';
 		const data = {
 			...util.getValue(gbx3, 'data', {}),
 			giveboxSettings: {
@@ -454,8 +448,7 @@ export function loadGBX3(articleID, callback) {
 		const access = util.getValue(resource, 'access', {});
 		const globalsState = util.getValue(gbx3, 'globals', {});
 		const admin = util.getValue(gbx3, 'admin', {});
-		const info = util.getValue(gbx3, 'info', {});
-		const blockType = util.getValue(info, 'blockType');
+		const blockType = 'article';
 		const availableBlocks = util.getValue(admin, `availableBlocks.${blockType}`, [], true);
 
 		dispatch(getResource('article', {
@@ -551,7 +544,7 @@ export function loadGBX3(articleID, callback) {
 									};
 
 									Object.entries(blocks).forEach(([key, value]) => {
-										if (!util.isEmpty(value.grid)) {
+										if (!util.getValue(value, 'noGrid')) {
 											layouts.desktop.push(value.grid.desktop);
 											layouts.mobile.push(value.grid.mobile);
 										}
@@ -568,6 +561,12 @@ export function loadGBX3(articleID, callback) {
 										open: hasAccessToEdit ? true : false,
 										step: 'design'
 									}));
+
+									// Get and Set Thank You Email Receipt
+									const receiptCustom = util.getValue(res, 'receiptConfig.blocks', {});
+									const receiptBlocks = !util.isEmpty(receiptCustom) ? receiptCustom : defaultReceiptBlocks;
+									dispatch(updateBlocks('receipt', receiptBlocks));
+
 									callback(res, err)
 								}
 								dispatch(setLoading(false));
@@ -629,7 +628,7 @@ export function setStyle(options = {}) {
 
 		if (textColor) {
 			const rgb = util.hexToRgb(placeholderColor || textColor);
-			const textColor2 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${placeholderColor ? 1 : .5})`;
+			const textColor2 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${placeholderColor ? 1 : .2})`;
 			textStyleStr = `
 				.gbx3Layout,
 				.gbx3Layout label,

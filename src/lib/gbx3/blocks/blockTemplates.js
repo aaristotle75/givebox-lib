@@ -1,10 +1,10 @@
-const articleLogo = {
+export const logo = {
 	order: 1,
 	name: 'logo',
 	title: 'Logo',
 	type: 'Media',
 	field: 'orgImageURL',
-	updateField: 'once',
+	updateOptions: 'once',
 	mobileRelativeBlock: false,
 	mobileClassName: 'mobileRelativeBlockTop',
 	options: {
@@ -21,7 +21,7 @@ const articleLogo = {
 	}
 };
 
-const articleOrgName = {
+export const orgName = {
 	order: 2,
 	name: 'orgName',
 	title: 'Organization Name',
@@ -39,14 +39,14 @@ const articleOrgName = {
 };
 
 
-const articleTitle = {
+export const title = {
 	order: 3,
 	name: 'title',
 	title: 'Title',
 	type: 'Text',
 	nonremovable: true,
 	field: 'title',
-	updateField: 'string',
+	updateOptions: 'string',
 	mobileRelativeBlock: 1,
 	mobileClassName: 'mobileRelativeBlockTop',
 	options: {
@@ -58,14 +58,14 @@ const articleTitle = {
 	}
 };
 
-const articleMedia = {
+export const media = {
 	order: 4,
 	name: 'media',
 	title: 'Media',
 	type: 'Media',
 	nonremovable: true,
 	field: 'imageURL',
-	updateField: 'multi',
+	updateOptions: 'replace',
 	mobileRelativeBlock: 3,
 	options: {
 		mediaType: 'image',
@@ -83,7 +83,7 @@ const articleMedia = {
 	}
 };
 
-const amounts = {
+export const amounts = {
 	order: 5,
 	name: 'amounts',
 	title: 'Amounts',
@@ -111,12 +111,13 @@ const amounts = {
 	}
 };
 
-const paymentForm = {
+export const paymentForm = {
 	order: 7,
 	name: 'paymentForm',
 	title: 'Payment Form',
 	type: 'Form',
 	nonremovable: true,
+	noGrid: true,
 	options: {
 		button: {
 			enabled: true,
@@ -144,15 +145,17 @@ const paymentForm = {
 	}
 };
 
-const articleDescription = {
+export const description = {
 	order: 6,
 	name: 'description',
 	title: 'Description',
 	type: 'Text',
 	subType: 'content',
 	field: 'description',
-	updateField: 'html',
+	updateOptions: 'html',
 	mobileRelativeBlock: 5,
+	mobileNoUpdateDesktopGrid: true,
+	scrollable: true,
 	options: {},
 	grid: {
 		desktop: { i: 'description', x: 6, y: 25, w: 6, h: 4, enabled: true },
@@ -160,9 +163,9 @@ const articleDescription = {
 	}
 };
 
-const textBlock = {
+export const textBlock = {
 	name: 'textBlock',
-	title: 'Text',
+	title: 'Short Text',
 	type: 'Text',
 	multiple: true,
 	mobileRelativeBlock: 10,
@@ -175,14 +178,16 @@ const textBlock = {
 	}
 };
 
-const contentBlock = {
+export const contentBlock = {
 	name: 'contentBlock',
-	title: 'Content',
+	title: 'Long Text',
 	type: 'Text',
 	subType: 'content',
 	multiple: true,
 	overflow: 'visible',
 	mobileRelativeBlock: 10,
+	mobileNoUpdateDesktopGrid: true,
+	scrollable: true,
 	options: {
 		defaultFormat: '<span>Enter Content</span>'
 	},
@@ -192,7 +197,7 @@ const contentBlock = {
 	}
 };
 
-const mediaBlock = {
+export const mediaBlock = {
 	name: 'mediaBlock',
 	title: 'Media',
 	type: 'Media',
@@ -215,27 +220,17 @@ const mediaBlock = {
 	}
 };
 
-export const blockTypeTemplates = {
-	article: {
-		logo: articleLogo,
-		title: articleTitle,
-		orgName: articleOrgName,
-		amounts,
-		media: articleMedia,
-		description: articleDescription,
-		paymentForm,
-		textBlock,
-		contentBlock,
-		mediaBlock
-	},
-	receipt: {
-		textBlock,
-		contentBlock,
-		mediaBlock
-	},
-	org: {
-
-	}
+export const blockTemplates = {
+	logo,
+	title,
+	orgName,
+	amounts,
+	media,
+	description,
+	paymentForm,
+	textBlock,
+	contentBlock,
+	mediaBlock
 };
 
-export default blockTypeTemplates;
+export default blockTemplates;

@@ -6,7 +6,7 @@ import {
 	updateAdmin,
 	addBlock
 } from '../../';
-import blockTypeTemplates from '../blocks/blockTypeTemplates';
+import blockTemplates from '../blocks/blockTemplates';
 
 class DesignMenuLayout extends React.Component {
 
@@ -20,9 +20,12 @@ class DesignMenuLayout extends React.Component {
 	}
 
 	editBlock(name) {
-		const modalID = `modalBlock-${name}`;
+		const {
+			blockType
+		} = this.props;
+		const modalID = `modalBlock-${blockType}-${name}`;
 		this.props.toggleModal(modalID, true);
-		this.props.updateAdmin({ editBlock: name });
+		this.props.updateAdmin({ editBlock: `${blockType}-${name}` });
 	}
 
 	renderActiveBlocks() {
@@ -59,12 +62,10 @@ class DesignMenuLayout extends React.Component {
 
 	renderAvailableBlocks() {
 		const {
-			availableBlocks,
-			blockType
+			availableBlocks
 		} = this.props;
 
 		const items = [];
-		const blockTemplates = util.getValue(blockTypeTemplates, blockType, {});
 
 		availableBlocks.forEach((value) => {
 			const block = util.getValue(blockTemplates, value, {});
@@ -79,7 +80,7 @@ class DesignMenuLayout extends React.Component {
 							const dropAreaheight = dropArea.clientHeight;
 							const paymentFormHeight = paymentForm.clientHeight;
 							const height = dropAreaheight - paymentFormHeight;
-							this.props.addBlock(value, 0, height);
+							this.props.addBlock('article', value, 0, height);
 						}
 					}}
 					draggable={true}
@@ -124,8 +125,7 @@ class DesignMenuLayout extends React.Component {
 function mapStateToProps(state, props) {
 
 	const gbx3 = util.getValue(state, 'gbx3', {});
-	const info = util.getValue(gbx3, 'info', {});
-	const blockType = util.getValue(info, 'blockType');
+	const blockType = 'article';
 	const blocks = util.getValue(gbx3, `blocks.${blockType}`, {});
 	const admin = util.getValue(gbx3, 'admin', {});
 	const availableBlocks = util.getValue(admin, `availableBlocks.${blockType}`, []);

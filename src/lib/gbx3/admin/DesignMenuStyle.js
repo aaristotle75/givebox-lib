@@ -56,7 +56,7 @@ class DesignMenuStyle extends React.Component {
 		};
 		const globalsUpdated = await this.props.updateGlobals(globals);
 		if (globalsUpdated) {
-			this.props.saveGBX3(null, false, null);
+			this.props.saveGBX3('article');
 		}
 	}
 
@@ -69,7 +69,7 @@ class DesignMenuStyle extends React.Component {
 		const globalUpdated = await this.props.updateGlobal('gbxStyle', gbxStyle);
 		if (globalUpdated) {
 			this.props.setStyle({ [name]: value });
-			this.props.saveGBX3(null, false, null);
+			this.props.saveGBX3('article');
 		}
 	}
 

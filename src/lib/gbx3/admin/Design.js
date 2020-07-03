@@ -24,8 +24,7 @@ class Design extends React.Component {
 	}
 
 	async switchCreateType(createType) {
-		const infoUpdated = await this.props.updateInfo({ blockType: createType === 'receipt' ? 'receipt' : 'article' });
-		if (infoUpdated) this.props.updateAdmin({ createType });
+		this.props.updateAdmin({ createType });
 	}
 
 	renderDisplay() {
@@ -47,12 +46,12 @@ class Design extends React.Component {
 				break;
 			}
 
-			case 'form':
+			case 'article':
 			default: {
 				if (previewMode) {
 					items.push(
 						<div
-							key={'form'}
+							key={'article'}
 							className={`deviceLayoutWrapper ${previewDevice}Wrapper` }>
 							<div className='stagePreview'>
 								<iframe src={`${GBX3_URL}?public`} title={`${util.toTitleCase(previewDevice)} Preview`} />
@@ -84,7 +83,7 @@ class Design extends React.Component {
 		return (
 			<>
 				<div className={`leftPanel ${open ? 'open' : 'close'}`}>
-					{ createType === 'form' ?
+					{ createType === 'article' ?
 						<DesignMenu />
 					:
 						<ReceiptMenu />
@@ -101,7 +100,7 @@ class Design extends React.Component {
 				<div className={`bottomPanel ${open ? 'open' : 'close'}`}>
 					<div className='centerAlign adminPanelTabs'>
 						<div className='button-group'>
-							<GBLink style={{ marginRight: 20 }} className={`ripple link ${createType === 'form' ? 'selected' : ''}`} onClick={() => this.switchCreateType('form')}>Payment Form</GBLink>
+							<GBLink style={{ marginRight: 20 }} className={`ripple link ${createType === 'article' ? 'selected' : ''}`} onClick={() => this.switchCreateType('article')}>Payment Form</GBLink>
 							<GBLink style={{ marginLeft: 20 }} className={`ripple link ${createType === 'receipt' ? 'selected' : ''}`} onClick={() => this.switchCreateType('receipt')}>Thank You Email</GBLink>
 						</div>
 					</div>

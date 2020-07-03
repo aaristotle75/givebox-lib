@@ -5,7 +5,7 @@ import {
 	toggleModal,
 	updateAdmin
 } from '../../';
-import blockTypeTemplates from '../blocks/blockTypeTemplates';
+import blockTemplates from '../blocks/blockTemplates';
 
 class ReceiptMenuLayout extends React.Component {
 
@@ -19,9 +19,12 @@ class ReceiptMenuLayout extends React.Component {
 	}
 
 	editBlock(name) {
-		const modalID = `modalBlock-${name}`;
+		const {
+			blockType
+		} = this.props;
+		const modalID = `modalBlock-${blockType}-${name}`;
 		this.props.toggleModal(modalID, true);
-		this.props.updateAdmin({ editBlock: name });
+		this.props.updateAdmin({ editBlock: `${blockType}-${name}` });
 	}
 
 	renderActiveBlocks() {
@@ -58,27 +61,22 @@ class ReceiptMenuLayout extends React.Component {
 
 	renderAvailableBlocks() {
 		const {
-			availableBlocks,
-			blockType
+			availableBlocks
 		} = this.props;
 
 		const items = [];
-		const blockTemplates = util.getValue(blockTypeTemplates, blockType, {});
 
 		availableBlocks.forEach((value) => {
-			const block = util.getValue(blockTemplates, 'value', {});
+			const block = util.getValue(blockTemplates, value, {});
 			items.push(
 				<li
 					key={value}
 					className='draggableBlock'
 					onMouseUp={() => {
 						const dropArea = document.getElementById('gbx3DropArea');
-						const paymentForm = document.getElementById('block-paymentForm');
-						if (dropArea && paymentForm) {
-							const dropAreaheight = dropArea.clientHeight;
-							const paymentFormHeight = paymentForm.clientHeight;
-							const height = dropAreaheight - paymentFormHeight;
-							this.props.addBlock(value, 0, height);
+						if (dropArea) {
+							const height = dropArea.clientHeight;
+							this.props.addBlock('receipt', value, 0, height);
 						}
 					}}
 					draggable={true}
@@ -113,7 +111,8 @@ class ReceiptMenuLayout extends React.Component {
 
 		return (
 			<div className='layoutMenu'>
-				Layout Menu
+				{this.renderActiveBlocks()}
+				{this.renderAvailableBlocks()}
 			</div>
 		)
 	}
@@ -122,8 +121,7 @@ class ReceiptMenuLayout extends React.Component {
 function mapStateToProps(state, props) {
 
 	const gbx3 = util.getValue(state, 'gbx3', {});
-	const info = util.getValue(gbx3, 'info', {});
-	const blockType = util.getValue(info, 'blockType');
+	const blockType = 'receipt';
 	const blocks = util.getValue(gbx3, `blocks.${blockType}`, {});
 	const admin = util.getValue(gbx3, 'admin', {});
 	const availableBlocks = util.getValue(admin, `availableBlocks.${blockType}`, []);

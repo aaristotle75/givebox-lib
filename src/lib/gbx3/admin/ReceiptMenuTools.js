@@ -26,7 +26,7 @@ class ReceiptMenuTools extends React.Component {
 			<div className='layoutMenu'>
 				<ul>
 					<li onClick={this.reset}>Reset Receipt</li>
-					<li onClick={() => this.props.saveGBX3(null, true)}>Save</li>
+					<li onClick={() => this.props.saveGBX3('receipt', { isSending: true })}>Save</li>
 				</ul>
 			</div>
 		)

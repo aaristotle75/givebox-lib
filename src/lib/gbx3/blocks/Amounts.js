@@ -180,11 +180,11 @@ class Amounts extends Component {
 			};
 		}
 		this.setState({ amountsList, hasBeenUpdated: true }, () => {
-			if (save) this.props.saveGBX3(data, false, (res, err) => {
+			if (save) this.props.saveGBX3('article', { data, callback: (res, err) => {
 				if (!err && !util.isEmpty(res)) {
 					this.saveEditedAmounts();
 				}
-			});
+			}});
 		});
 	}
 

@@ -497,7 +497,7 @@
 		white-space: nowrap;
 		padding: 10px;
 		font-weight: 300;
-		font-size: 18px;
+		font-size: 16px;
 		background: $mainColorMedium;
 	}
 
@@ -543,7 +543,7 @@
 
 		.icon {
 			color: $light-gray;
-			font-size: 22px;
+			font-size: 20px;
 		}
 	}
 
@@ -764,7 +764,6 @@
 		}
 	}
 
-
 	.autoSaved {
 		display: flex;
 		justify-content: center;
@@ -977,6 +976,9 @@
 			.icon {
 				font-size: 20px;
 			}
+			@media (max-width: $breakpoint) {
+				margin: 0 10px;
+			}
 		}
 
 		button:hover {
@@ -999,6 +1001,13 @@
 	// Name blocks
 	.titleBlock {
 		line-height: 1em;
+	}
+
+	.scrollableBlock {
+		position: relative;
+		display: block;
+		overflow-x: hidden;
+		overflow-y: auto;
 	}
 
 	.contentBlock {
@@ -1265,8 +1274,8 @@
 
 	.formBottomSection {
 		display: flex;
-		justify-content: center;
-		align-items: flex-start;
+		justify-content: space-around;
+		align-items: center;
 		margin-top: 20px;
 
 		@media (max-width: $breakpoint) {
@@ -1283,40 +1292,39 @@
 
 		.totalsContainer {
 			display: flex;
-			flex-direction: column;
+			flex-direction: row;
+			justify-content: space-around;
 			align-items: center;
 			width: 50%;
+			flex-wrap: nowrap;
 			@media (max-width: $breakpoint) {
+				flex-direction: column;
 				width: 100%;
 			}
 		}
 
-		.totalsSection {
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			width: 100%;
-
+		.goalSection {
 			@media (max-width: $breakpoint) {
-				flex-direction: column;
-				justify-content: center;
-				align-items: center;
+				margin-bottom: 20px;
 			}
+		}
 
-			.leftSide {
+		.totalsSection {
+			width: 220px;
+			@media (max-width: $breakpoint) {
 				display: flex;
-				justify-content: center;
-				width: 40%;
-				@media (max-width: $breakpoint) {
-					display: none;
-				}
+				flex-direction: column;
+				align-items: center;
+				width: 100%;
 			}
 
-			.rightSide {
-				width: 60%;
-				@media (max-width: $breakpoint) {
-					width: 100%;
-				}
+			.totalsListTop {
+				height: 20px;
+				margin-bottom: 8px;
+			}
+
+			.totalsListBottom {
+				margin-top: 15px;
 			}
 
 			.totalsList {

@@ -98,7 +98,7 @@ class Media extends Component {
 			const data = {};
 			const imageURL = util.getValue(image, 'URL');
 			const videoURL = util.getValue(video, 'validatedURL');
-			switch (util.getValue(block, 'updateField')) {
+			switch (util.getValue(block, 'updateOptions')) {
 				case 'once': {
 					if (imageURL && !util.checkImage(imageURL)) {
 						data.imageURL =  imageURL.replace(/medium$/i, 'original');
@@ -106,7 +106,7 @@ class Media extends Component {
 					break;
 				}
 
-				case 'multi': {
+				case 'replace': {
 					if (imageURL) data.imageURL = imageURL.replace(/medium$/i, 'original');
 					if (videoURL) data.videoURL = videoURL;
 					break;

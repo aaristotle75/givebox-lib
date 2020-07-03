@@ -80,7 +80,7 @@ class Article extends React.Component {
 				const blocksUpdated = await this.props.updateBlocks(blockType, blocks);
 				if (layoutsUpdated) updated.push('layoutsUpdated');
 				if (blocksUpdated) updated.push('blocksUpdated');
-				if (updated.length === 2) this.props.saveGBX3();
+				if (updated.length === 2) this.props.saveGBX3(blockType);
 			} else {
 				this.props.updateLayouts(blockType, layouts);
 			}
@@ -108,7 +108,7 @@ class Article extends React.Component {
 		const items = [];
 
 		Object.entries(blocks).forEach(([key, value]) => {
-			if (!util.isEmpty(value.grid)) {
+			if (!util.getValue(value, 'noGrid')) {
 				if (value.grid[breakpoint].enabled) {
 					const BlockComponent = Loadable({
 						loader: () => import(`./blocks/${value.type}`),
@@ -128,6 +128,7 @@ class Article extends React.Component {
 								blockRef={ref}
 								scrollTo={this.scrollTo}
 								reloadGBX3={reloadGBX3}
+								blockType={'article'}
 							>
 								<BlockComponent />
 							</Block>
@@ -178,6 +179,7 @@ class Article extends React.Component {
 								scrollTo={this.scrollTo}
 								style={{ position: 'relative' }}
 								reloadGBX3={reloadGBX3}
+								blockType={'article'}
 							>
 								<BlockComponent />
 							</Block>
@@ -199,6 +201,7 @@ class Article extends React.Component {
 						blockRef={React.createRef()}
 						style={{ position: 'relative' }}
 						reloadGBX3={reloadGBX3}
+						blockType={'article'}
 					>
 						<Form />
 					</Block>
@@ -240,7 +243,7 @@ class Article extends React.Component {
 								const block = e.dataTransfer.getData('text');
 								const current = this.gridRef.current;
 								if (current.classList.contains('dragOver')) current.classList.remove('dragOver');
-								this.props.addBlock(block, w, h, this.gridRef);
+								this.props.addBlock('article', block, w, h, this.gridRef);
 							}
 						}}
 					>
@@ -294,7 +297,7 @@ function mapStateToProps(state, props) {
 	const gbx3 = util.getValue(state, 'gbx3', {});
 	const admin = util.getValue(gbx3, 'admin', {});
 	const info = util.getValue(gbx3, 'info', {});
-	const blockType = util.getValue(info, 'blockType');
+	const blockType = 'article';
 	const layouts = util.getValue(gbx3, `layouts.${blockType}`, {});
 	const blocks = util.getValue(gbx3, `blocks.${blockType}`, {});
 	const hasAccessToEdit = util.getValue(admin, 'hasAccessToEdit');

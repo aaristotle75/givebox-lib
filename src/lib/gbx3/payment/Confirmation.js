@@ -194,8 +194,7 @@ class Confirmation extends Component {
 function mapStateToProps(state, props) {
 	const gbx3 = util.getValue(state, 'gbx3', {});
 	const confirmation = util.getValue(gbx3, 'confirmation', {});
-	const info = util.getValue(gbx3, 'info', {});
-	const blockType = util.getValue(info, 'blockType');
+	const blockType = 'article';
 	const blocks = util.getValue(gbx3, `blocks.${blockType}`, {});
 	const paymentFormBlock = util.getValue(blocks, 'paymentForm', {});
 	const paymentFormOptions = util.getValue(paymentFormBlock, 'options', {});

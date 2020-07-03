@@ -45,66 +45,53 @@ class Totals extends Component {
 
 		return (
 			<div className='totalsContainer'>
-				{feeOption ?
-				<Choice
-					label={`Cover the Cost of the Fee`}
-					value={passFees}
-					checked={passFees}
-					onChange={() => {
-						this.props.setCart('passFees', passFees ? false : true)
-					}}
-					color={primaryColor}
-				/> : <></> }
-				<div className='totalsSection'>
-					<div className='leftSide'>
-						{hasCustomGoal && raised > 0 ?
-							<Goal raised={raised} goal={goal} primaryColor={primaryColor} placeholderColor={placeholderColor} />
-						:
-							<>
-								<ModalRoute
-									id='security'
-									className='gbx3'
-									style={{ width: '60%' }}
-									component={() =>
-										<Security
-											primaryColor={primaryColor}
-											toggleModal={this.props.toggleModal}
-										/>
-									}
-								/>
-								<ModalLink id='security'><Image url='https://s3-us-west-1.amazonaws.com/givebox/public/images/logo-box.svg' alt='Givebox Security' /></ModalLink>
-							</>
-						}
+				{ (hasCustomGoal && raised > 0)  &&
+					<div className='goalSection'>
+						<Goal raised={raised} goal={goal} primaryColor={primaryColor} placeholderColor={placeholderColor} />
 					</div>
-					<div className='rightSide'>
-						<div className='totalsList'>
-							<div style={{ width: 100 }}>
-								<span className='line'>Sub Total:</span>
-								<span className='line'>Givebox Fee:</span>
-								<span className='line'>{paymethod === 'creditcard' ? 'Credit Card' : 'eCheck'} Fee:</span>
-								<span className='totalLine'>Total:</span>
-							</div>
-							<div>
-								<span className='line'>{util.money(subTotal)}</span>
-								<span className='line'>{util.money(giveboxFee)}</span>
-								<span className='line'>{util.money(fee)}</span>
-								<span className='totalLine'>{util.money(total)}</span>
-							</div>
+				}
+				<div className='totalsSection'>
+					<div className='totalsListTop'>
+					{feeOption ?
+					<Choice
+						label={`Cover the Cost of the Fee`}
+						value={passFees}
+						checked={passFees}
+						onChange={() => {
+							this.props.setCart('passFees', passFees ? false : true)
+						}}
+						color={primaryColor}
+					/> : <></> }
+					</div>
+					<div className='totalsList'>
+						<div style={{ width: 100 }}>
+							<span className='line'>Sub Total:</span>
+							<span className='line'>Givebox Fee:</span>
+							<span className='line'>{paymethod === 'creditcard' ? 'Credit Card' : 'eCheck'} Fee:</span>
+							<span className='totalLine'>Total:</span>
+						</div>
+						<div>
+							<span className='line'>{util.money(subTotal)}</span>
+							<span className='line'>{util.money(giveboxFee)}</span>
+							<span className='line'>{util.money(fee)}</span>
+							<span className='totalLine'>{util.money(total)}</span>
 						</div>
 					</div>
-				</div>
-				<ModalRoute
-					id='aboutFee'
-					className='gbx3'
-					style={{ width: '50%' }}
-					component={() =>
-						<AboutFee
-							primaryColor={primaryColor}
-							toggleModal={this.props.toggleModal}
+					<div className='totalsListBottom'>
+						<ModalRoute
+							id='aboutFee'
+							className='gbx3'
+							style={{ width: '50%' }}
+							component={() =>
+								<AboutFee
+									primaryColor={primaryColor}
+									toggleModal={this.props.toggleModal}
+								/>
+							}
 						/>
-					}
-				/>
-				<ModalLink allowCustom={true} customColor={primaryColor} id='aboutFee'>Learn More About the Fees</ModalLink>
+						<ModalLink allowCustom={true} customColor={primaryColor} id='aboutFee'>Learn More About the Fees</ModalLink>
+					</div>
+				</div>
 			</div>
 		)
 	}
@@ -128,7 +115,10 @@ function mapStateToProps(state, props) {
 	const total = util.getValue(cart, 'total', 0);
 	const globals = util.getValue(gbx3, 'globals', {});
 	const gbxStyle = util.getValue(globals, 'gbxStyle', {});
-	const placeholderColor = util.getValue(gbxStyle, 'placeholderColor');
+	const textColor = util.getValue(gbxStyle, 'textColor', '#253655');
+	const rgb = util.hexToRgb(textColor);
+	const textColor2 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .2)`;
+	const placeholderColor = util.getValue(gbxStyle, 'placeholderColor', textColor2);
 
 	return {
 		passFees,

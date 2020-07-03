@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import {
 	util,
 	GBLink,
@@ -7,7 +8,7 @@ import {
 } from '../../';
 import Editor from './Editor';
 
-export default class Text extends Component {
+class Text extends Component {
 
 	constructor(props) {
 		super(props);
@@ -66,8 +67,8 @@ export default class Text extends Component {
 		} = this.state;
 		if (type !== 'cancel') {
 			const data = {};
-			const updateField = util.getValue(block, 'updateField');
-			if (updateField) data[block.field] = updateField === 'string' ? util.stripHtml(content) : content;
+			const updateOptions = util.getValue(block, 'updateOptions');
+			if (updateOptions) data[block.field] = updateOptions === 'string' ? util.stripHtml(content) : content;
 			this.props.saveBlock({
 				data,
 				hasBeenUpdated,
@@ -147,3 +148,12 @@ export default class Text extends Component {
 		)
 	}
 }
+
+function mapStateToProps(state, props) {
+
+	return {
+	}
+}
+
+export default connect(mapStateToProps, {
+})(Text);
