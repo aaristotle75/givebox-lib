@@ -77,67 +77,24 @@ class Block extends React.Component {
 			autoHeight: true,
 			saveGBX3: true,
 			callback: this.closeEditModal,
+			height: this.height,
+			width: this.width,
 			...params
 		};
 
-		const content = { ...opts.content };
-		const options = { ...opts.options };
-		const data = { ...opts.data };
-		const saveGBX3 = opts.saveGBX3;
-		const callback = opts.callback;
-
 		const grid = {};
 		if (opts.autoHeight) {
-			if (this.height) grid.h = Math.ceil(parseFloat(this.height / 10));
-			///const addHeight = parseInt(grid.h * .1);
-			//if (grid.h) grid.h = grid.h + addHeight;
+			if (opts.height) grid.h = Math.ceil(parseFloat(opts.height / 10));
 		}
 
-		const desktopGrid = !util.getValue(block, 'mobileNoUpdateDesktopGrid') ? { ...util.getValue(block, 'grid.desktop', {}), ...grid } : { ...util.getValue(block, 'grid.desktop', {}) };
-
-		const saveCallback = () => {
-			callback();
-		};
-
-		if (opts.hasBeenUpdated) {
-			const updated = [];
-			const checkForUpdatesCount = !util.isEmpty(data) ? 2 : 1;
-
-			const blockToUpdate = {
-				...block,
-				content: content || this.getBlockContent(),
-				grid: {
-					...util.getValue(block, 'grid', {}),
-					desktop: {
-					...util.getValue(block, 'grid.desktop', {}),
-					...desktopGrid
-					}
-				},
-				options: {
-					...block.options,
-					...options
-				}
-			}
-
-			const blocksUpdated = await this.props.updateBlock(blockType, name, blockToUpdate);
-			if (blocksUpdated) updated.push('blocksUpdated');
-
-			if (!util.isEmpty(data)) {
-				const dataUpdated = await this.props.updateData(data);
-				if (dataUpdated) updated.push('dataUpdated');
-			}
-
-			if (updated.length === checkForUpdatesCount) {
-				if (saveGBX3 && opts.hasBeenUpdated) {
-					this.props.saveGBX3(blockType, {
-						callback: saveCallback,
-						updateLayout: !util.isEmpty(grid) ? true : false
-					});
-				}
-				else saveCallback();
-			}
-		} else {
-			saveCallback();
+		if (this.props.saveBlock) {
+			this.props.saveBlock({
+				name,
+				block,
+				blockType,
+				grid,
+				opts
+			});
 		}
 	}
 

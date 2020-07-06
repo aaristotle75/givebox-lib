@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import {
 	util,
 	toggleModal,
-	updateAdmin
+	updateAdmin,
+	addBlock
 } from '../../';
 import blockTemplates from '../blocks/blockTemplates';
 
@@ -135,5 +136,6 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
 	toggleModal,
-	updateAdmin
+	updateAdmin,
+	addBlock
 })(ReceiptMenuLayout);

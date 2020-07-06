@@ -89,7 +89,9 @@ class Media extends Component {
 			image,
 			video,
 			mediaType,
-			hasBeenUpdated
+			hasBeenUpdated,
+			maxWidth,
+			maxHeight
 		} = this.state;
 
 		if (mediaType === 'video' && !video.validatedURL) {
@@ -124,7 +126,9 @@ class Media extends Component {
 							video
 						},
 						options: {
-							mediaType
+							mediaType,
+							width: maxWidth,
+							height: maxHeight
 						}
 					});
 				});

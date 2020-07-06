@@ -646,7 +646,7 @@ export function search(haystack, needle, found = []) {
 
 export function getValue(obj, prop, returnIfEmpty = '', debug) {
 	const returnObj = get(obj, prop);
-	if (debug) console.log(obj, prop, returnObj);
+	if (debug) console.log(debug, obj, prop, returnObj);
 	return (returnObj || typeof(returnObj) === 'boolean') || returnObj === 0 || returnObj === false ? returnObj : returnIfEmpty;
 	/*
 	if (typeof obj === 'undefined') return returnIfEmpty;

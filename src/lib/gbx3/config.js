@@ -53,10 +53,13 @@ export const defaultArticleBlocks = {
 };
 
 export const defaultReceiptBlocks = {
-	logo,
-	orgName,
+	orgName: {
+		...orgName,
+		order: 2
+	},
 	title: {
 		...title,
+		order: 1,
 		updateOptions: null
 	},
 	media: {

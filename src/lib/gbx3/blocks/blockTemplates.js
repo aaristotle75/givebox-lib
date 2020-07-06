@@ -164,6 +164,7 @@ export const description = {
 };
 
 export const textBlock = {
+	order: 6,
 	name: 'textBlock',
 	title: 'Short Text',
 	type: 'Text',
@@ -179,6 +180,7 @@ export const textBlock = {
 };
 
 export const contentBlock = {
+	order: 6,
 	name: 'contentBlock',
 	title: 'Long Text',
 	type: 'Text',
@@ -198,6 +200,7 @@ export const contentBlock = {
 };
 
 export const mediaBlock = {
+	order: 6,
 	name: 'mediaBlock',
 	title: 'Media',
 	type: 'Media',

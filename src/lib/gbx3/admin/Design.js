@@ -7,7 +7,7 @@ import {
 	updateInfo
 } from '../../';
 import Layout from '../Layout';
-import ReceiptEmailEdit from './ReceiptEmailEdit';
+import ReceiptEmail from './ReceiptEmail';
 import DesignMenu from './DesignMenu';
 import ReceiptMenu from './ReceiptMenu';
 
@@ -39,7 +39,7 @@ class Design extends React.Component {
 		switch(createType) {
 			case 'receipt': {
 				items.push(
-					<ReceiptEmailEdit
+					<ReceiptEmail
 						key={'receipt'}
 					/>
 				);
@@ -61,7 +61,7 @@ class Design extends React.Component {
 				} else {
 					items.push(
 						<Layout
-							key={'form'}
+							key={'article'}
 							loadGBX3={this.props.loadGBX3}
 							reloadGBX3={this.props.reloadGBX3}
 						/>

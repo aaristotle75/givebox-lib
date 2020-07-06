@@ -358,6 +358,76 @@ export function saveGBX3(blockType, options = {}) {
 	}
 }
 
+export function saveReceipt(options = {}) {
+
+	const opts = {
+		isSending: false,
+		callback: null,
+		...options
+	};
+
+	return (dispatch, getState) => {
+		const gbx3 = util.getValue(getState(), 'gbx3', {});
+		const articleData = util.getValue(gbx3, 'data', {});
+		const receiptConfig = util.getValue(gbx3, 'data.receiptConfig', {});
+		const apiName = util.getValue(gbx3, 'info.apiName');
+		const kindID = util.getValue(gbx3, 'info.kindID');
+		const orgID = util.getValue(gbx3, 'info.orgID');
+		const blocks = util.getValue(gbx3, `blocks.receipt`, {});
+
+		let receiptHTML = '';
+		const orderedBlocks = [];
+		Object.entries(blocks).forEach(([key, value]) => {
+			orderedBlocks.push(value);
+		});
+		util.sortByField(orderedBlocks, 'order', 'ASC');
+
+		console.log('execute orderedBlocks', orderedBlocks);
+
+		Object.entries(orderedBlocks).forEach(([key, value]) => {
+			switch (value.type) {
+				case 'Media': {
+					const imageURL = util.getValue(value, 'content.image.URL', util.getValue(articleData, `${util.getValue(value, 'field')}`));
+					if (imageURL) receiptHTML = receiptHTML + `<p style="text-align:center"><img style="max-width:500px;" src="${util.imageUrlWithStyle(imageURL, util.getValue(value, 'content.image.size', util.getValue(value, 'options.image.size', 'medium')))}" alt="Media" /></p>`;
+					break;
+				}
+
+				case 'Text':
+				default: {
+					const fieldValue =  util.getValue(articleData, `${util.getValue(value, 'field')}`);
+					const defaultContent = util.getValue(value, 'options.defaultFormat') && fieldValue ? value.options.defaultFormat.replace('{{TOKEN}}', fieldValue) : fieldValue || '';
+					const content = util.getValue(value, 'content.html', defaultContent);
+					if (content) {
+						receiptHTML = receiptHTML + `<p style="text-align:center">${content}</p>`;
+					}
+					break;
+				}
+			}
+		});
+
+		const dataObj = {
+			receiptHTML,
+			receiptConfig: {
+				...receiptConfig,
+				blocks
+			}
+		};
+
+		dispatch(updateGBX3('saveStatus', 'saving'));
+		dispatch(sendResource(apiName, {
+			id: [kindID],
+			orgID,
+			data: dataObj,
+			method: 'patch',
+			callback: (res, err) => {
+				dispatch(updateGBX3('saveStatus', 'done'));
+				if (opts.callback) opts.callback(res, err);
+			},
+			isSending: opts.isSending
+		}));
+	}
+}
+
 export function resetGBX3(callback) {
 	return (dispatch, getState) => {
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
@@ -449,7 +519,7 @@ export function loadGBX3(articleID, callback) {
 		const globalsState = util.getValue(gbx3, 'globals', {});
 		const admin = util.getValue(gbx3, 'admin', {});
 		const blockType = 'article';
-		const availableBlocks = util.getValue(admin, `availableBlocks.${blockType}`, [], true);
+		const availableBlocks = util.getValue(admin, `availableBlocks.${blockType}`, []);
 
 		dispatch(getResource('article', {
 			id: [articleID],
@@ -813,7 +883,8 @@ export function resetGBX3Receipt(callback) {
 			data,
 			method: 'patch',
 			callback: (res, err) => {
-				dispatch(updateData(res));
+				dispatch(updateBlocks('receipt', {}));
+				window.location.reload();
 			},
 			isSending: true
 		}));

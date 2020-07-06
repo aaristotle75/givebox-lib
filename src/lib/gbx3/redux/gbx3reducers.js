@@ -95,7 +95,7 @@ export function gbx3(state = {
 		editBlock: '',
 		open: false,
 		step: 'create',
-		createType: 'article',
+		createType: 'receipt',
 		previewDevice: 'desktop',
 		previewMode: false,
 		publicView: false,

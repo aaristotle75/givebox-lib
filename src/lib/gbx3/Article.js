@@ -6,6 +6,7 @@ import {
 	util,
 	updateLayouts,
 	updateBlocks,
+	updateBlock,
 	updateData,
 	updateInfo,
 	saveGBX3,
@@ -27,6 +28,7 @@ class Article extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.saveBlock = this.saveBlock.bind(this);
 		this.renderGridBlocks = this.renderGridBlocks.bind(this);
 		this.renderRelativeBlocks = this.renderRelativeBlocks.bind(this);
 		this.onBreakpointChange = this.onBreakpointChange.bind(this);
@@ -36,6 +38,68 @@ class Article extends React.Component {
 	}
 
 	componentDidMount() {
+	}
+
+	async saveBlock(args) {
+		const {
+			name,
+			blockType,
+			block,
+			grid,
+			opts
+		} = args;
+
+		const {
+			data,
+			content,
+			callback,
+			options,
+			hasBeenUpdated,
+			saveGBX3
+		} = opts;
+
+		const desktopGrid = !util.getValue(block, 'mobileNoUpdateDesktopGrid') ? { ...util.getValue(block, 'grid.desktop', {}), ...grid } : { ...util.getValue(block, 'grid.desktop', {}) };
+
+		if (opts.hasBeenUpdated) {
+			const updated = [];
+			const checkForUpdatesCount = !util.isEmpty(data) ? 2 : 1;
+
+			const blockToUpdate = {
+				...block,
+				content,
+				grid: {
+					...util.getValue(block, 'grid', {}),
+					desktop: {
+					...util.getValue(block, 'grid.desktop', {}),
+					...desktopGrid
+					}
+				},
+				options: {
+					...block.options,
+					...options
+				}
+			}
+
+			const blocksUpdated = await this.props.updateBlock(blockType, name, blockToUpdate);
+			if (blocksUpdated) updated.push('blocksUpdated');
+
+			if (!util.isEmpty(data)) {
+				const dataUpdated = await this.props.updateData(data);
+				if (dataUpdated) updated.push('dataUpdated');
+			}
+
+			if (updated.length === checkForUpdatesCount) {
+				if (saveGBX3 && hasBeenUpdated) {
+					this.props.saveGBX3(blockType, {
+						callback,
+						updateLayout: !util.isEmpty(grid) ? true : false
+					});
+				}
+				else callback();
+			}
+		} else {
+			callback();
+		}
 	}
 
 	async onBreakpointChange(breakpoint, cols) {
@@ -129,6 +193,7 @@ class Article extends React.Component {
 								scrollTo={this.scrollTo}
 								reloadGBX3={reloadGBX3}
 								blockType={'article'}
+								saveBlock={this.saveBlock}
 							>
 								<BlockComponent />
 							</Block>
@@ -180,6 +245,7 @@ class Article extends React.Component {
 								style={{ position: 'relative' }}
 								reloadGBX3={reloadGBX3}
 								blockType={'article'}
+								saveBlock={this.saveBlock}
 							>
 								<BlockComponent />
 							</Block>
@@ -202,6 +268,7 @@ class Article extends React.Component {
 						style={{ position: 'relative' }}
 						reloadGBX3={reloadGBX3}
 						blockType={'article'}
+						saveBlock={this.saveBlock}
 					>
 						<Form />
 					</Block>
@@ -323,6 +390,7 @@ function mapStateToProps(state, props) {
 export default connect(mapStateToProps, {
 	updateLayouts,
 	updateBlocks,
+	updateBlock,
 	updateData,
 	updateInfo,
 	saveGBX3,
