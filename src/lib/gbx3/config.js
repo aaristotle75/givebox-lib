@@ -55,19 +55,30 @@ export const defaultArticleBlocks = {
 export const defaultReceiptBlocks = {
 	orgName: {
 		...orgName,
-		order: 2
+		order: 2,
+		options: {
+			defaultFormat: '<p style="text-align:center;font-size:12px">{{TOKEN}}</p>'
+		},
 	},
 	title: {
 		...title,
 		order: 1,
-		updateOptions: null
+		updateOptions: null,
+		options: {
+			defaultFormat: '<p style="text-align:center;font-size:16px">{{TOKEN}}</p>'
+		},
 	},
 	media: {
 		...media,
+		disallowRadius: true,
 		updateOptions: null,
 		...{
 		options: {
 			...media.options,
+			image: {
+				...media.options.image,
+				borderRadius: 0
+			},
 			video: null
 		}}
 	},

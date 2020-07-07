@@ -250,6 +250,7 @@ class Media extends Component {
 		}
 
 		const nonremovable = util.getValue(block, 'nonremovable', false);
+		const disallowRadius = util.getValue(block, 'disallowRadius');
 
 		return (
 			<>
@@ -302,7 +303,7 @@ class Media extends Component {
 											</div>
 										</div>
 									</Collapse>
-									{!mediaLibraryEditorIsOpen ?
+									{!mediaLibraryEditorIsOpen && !disallowRadius ?
 									<Collapse
 										label={'Image Options'}
 										iconPrimary='sliders'
@@ -394,7 +395,7 @@ class Media extends Component {
 					}
 				/>
 				{ mediaType === 'image' ?
-					<Image imgStyle={{ borderRadius: `${util.getValue(image, 'borderRadius')}%` }} url={util.getValue(image, 'URL')} size={util.getValue(image, 'size')} minHeight={0} maxWidth={maxWidth} maxHeight={maxHeight} alt={title} />
+					<Image imgStyle={{ borderRadius: disallowRadius ? 0 : `${util.getValue(image, 'borderRadius')}%` }} url={util.getValue(image, 'URL')} size={util.getValue(image, 'size')} minHeight={0} maxWidth={maxWidth} maxHeight={maxHeight} alt={title} />
 				:
 					this.renderVideo()
 				}

@@ -37,8 +37,20 @@ class Admin extends React.Component {
 	}
 
 	togglePreview(value) {
+		const {
+			createType
+		} = this.props;
+
 		const previewMode = this.props.previewMode ? false : true;
 		this.props.updateAdmin({ previewMode, editable: previewMode ? false : true });
+		if (createType === 'receipt' && this.props.previewMode) {
+			const iframeEl = document.getElementById('emailIframePreview');
+			if (iframeEl) {
+				iframeEl.contentWindow.location.replace('about:blank');
+				console.log('execute iframeEl', iframeEl);
+			}
+		}
+
 	}
 
 	renderStep() {

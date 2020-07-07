@@ -160,6 +160,7 @@ class Block extends React.Component {
 	render() {
 
 		const {
+			editable,
 			name,
 			style,
 			editBlock,
@@ -172,7 +173,7 @@ class Block extends React.Component {
 
 		return (
 			<div className='block'>
-				<div className={`dragHandle blockOptions ${editBlock === `${blockType}-${name}` ? 'displayNone' : ''}`}>
+				<div className={`dragHandle blockOptions ${editBlock === `${blockType}-${name}` || !editable ? 'displayNone' : ''}`}>
 					<div className='blockEdit'>
 						{!nonremovable ? <GBLink className='blockRemoveButton' onClick={() => this.onClickRemove()}><span className='icon icon-trash-2'></span></GBLink> : <></>}
 						<GBLink className='blockEditButton' onClick={this.onClickEdit}><span className='icon icon-edit'></span></GBLink>
@@ -195,6 +196,7 @@ function mapStateToProps(state, props) {
 
 	const gbx3 = util.getValue(state, 'gbx3', {});
 	const admin = util.getValue(gbx3, 'admin', {});
+	const editable = util.getValue(admin, 'editable');
 	const editBlock = util.getValue(admin, 'editBlock');
 	const globals = util.getValue(gbx3, 'globals', {});
 	const gbxStyle = util.getValue(globals, 'gbxStyle', {});
@@ -219,6 +221,7 @@ function mapStateToProps(state, props) {
 
 
 	return {
+		editable,
 		editBlock,
 		kind,
 		articleID,

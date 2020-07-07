@@ -211,7 +211,7 @@ export const mediaBlock = {
 		mediaType: 'image',
 		image: {
 			size: 'medium',
-			borderRadius: 5
+			borderRadius: 0
 		},
 		video: {
 			auto: true

@@ -173,7 +173,7 @@ class Article extends React.Component {
 
 		Object.entries(blocks).forEach(([key, value]) => {
 			if (!util.getValue(value, 'noGrid')) {
-				if (value.grid[breakpoint].enabled) {
+				if (util.getValue(value, `grid.${breakpoint}.enabled`)) {
 					const BlockComponent = Loadable({
 						loader: () => import(`./blocks/${value.type}`),
 						loading: () => <></>

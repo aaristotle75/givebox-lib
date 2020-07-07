@@ -17,6 +17,7 @@ class ReceiptEmailEdit extends React.Component {
 	constructor(props) {
 		super(props);
 		this.setPreviewHTML = this.setPreviewHTML.bind(this);
+		this.iframePreviewRef = React.createRef();
 	}
 
 	componentDidMount() {
@@ -40,9 +41,11 @@ class ReceiptEmailEdit extends React.Component {
 		};
 
 		const html = util.replaceAll(emailTemplate, tokens);
-		return (
-			<div style={{ background: '#ffffff', width: '100%', maxWidth: 550 }} dangerouslySetInnerHTML={{ __html: content }} />
-		);
+
+		const iframeRef = util.getValue(this.iframePreviewRef, 'current', {});
+		if (iframeRef) {
+			iframeRef.contentDocument.write(html);
+		}
 	}
 
 
@@ -56,9 +59,13 @@ class ReceiptEmailEdit extends React.Component {
 		return (
 			<div className='gbx3Layout gbx3ReceiptLayout'>
 				<div className='gbx3Container gbx3ReceiptContainer'>
-					<div className='block flexCenter'>
+					<div className='block'>
+					<iframe id='emailIframePreview' className='emailIframe' style={{ height: previewMode ? '100vh' : 0 }} ref={this.iframePreviewRef}></iframe>
 					{previewMode ?
-						this.setPreviewHTML()
+						<>
+							{this.setPreviewHTML()}
+
+						</>
 					:
 						<ReceiptEmailLayout />
 					}

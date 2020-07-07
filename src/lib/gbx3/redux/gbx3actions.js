@@ -382,8 +382,6 @@ export function saveReceipt(options = {}) {
 		});
 		util.sortByField(orderedBlocks, 'order', 'ASC');
 
-		console.log('execute orderedBlocks', orderedBlocks);
-
 		Object.entries(orderedBlocks).forEach(([key, value]) => {
 			switch (value.type) {
 				case 'Media': {
@@ -398,7 +396,7 @@ export function saveReceipt(options = {}) {
 					const defaultContent = util.getValue(value, 'options.defaultFormat') && fieldValue ? value.options.defaultFormat.replace('{{TOKEN}}', fieldValue) : fieldValue || '';
 					const content = util.getValue(value, 'content.html', defaultContent);
 					if (content) {
-						receiptHTML = receiptHTML + `<p style="text-align:center">${content}</p>`;
+						receiptHTML = receiptHTML + content;
 					}
 					break;
 				}
@@ -420,6 +418,7 @@ export function saveReceipt(options = {}) {
 			data: dataObj,
 			method: 'patch',
 			callback: (res, err) => {
+				dispatch(updateData(res));
 				dispatch(updateGBX3('saveStatus', 'done'));
 				if (opts.callback) opts.callback(res, err);
 			},
@@ -705,6 +704,11 @@ export function setStyle(options = {}) {
 				.gbx3Layout .label {
 					color: ${textColor};
 				}
+
+				.gbx3Layout .floating-label button.label {
+					color: ${textColor};
+				}
+
 				.gbx3Layout input {
 					color: ${textColor};
 				}
@@ -714,6 +718,7 @@ export function setStyle(options = {}) {
 				.gbx3 .paymentFormTabs .panel button {
 					color: ${textColor};
 				}
+
 				.gbx3Layout .radio + label {
 					border: 1px solid ${textColor};
 				}
@@ -753,6 +758,10 @@ export function setStyle(options = {}) {
 
 				.gbx3 .givebox-paymentform .input-bottom.idle {
 					 background: ${textColor2};
+				}
+
+				.gbx3Cart .itemsInCart .cartItemRow {
+					border-bottom: 1px solid ${textColor2};
 				}
 
 			`;
