@@ -68,7 +68,7 @@ class DesignMenuLayout extends React.Component {
 		const items = [];
 
 		availableBlocks.forEach((value) => {
-			const block = util.getValue(blockTemplates, value, {});
+			const block = util.getValue(blockTemplates.article, value, {});
 			items.push(
 				<li
 					key={value}

@@ -45,16 +45,15 @@ class Block extends React.Component {
 		this.props.updateAdmin({ editBlock: `${blockType}-${this.props.name}` });
 	}
 
-	async onClickRemove() {
+	onClickRemove() {
 		const {
 			blockType
 		} = this.props;
 
-		const blockRemoved = await this.props.removeBlock(blockType, this.props.name);
-		if (blockRemoved) {
-			this.props.updateAdmin({ editBlock: '' });
-			this.props.toggleModal(this.props.modalID, false);
-		}
+		this.props.removeBlock(blockType, this.props.name);
+		this.props.updateAdmin({ editBlock: '' });
+		this.props.toggleModal(this.props.modalID, false);
+		if (this.props.removeCallback) this.props.removeCallback(blockType, this.props.name);
 	}
 
 	closeEditModal() {
@@ -84,7 +83,7 @@ class Block extends React.Component {
 
 		const grid = {};
 		if (opts.autoHeight) {
-			if (opts.height) grid.h = Math.ceil(parseFloat(opts.height / 10));
+			if (opts.height) grid.h = Math.ceil(parseFloat(opts.height / 10)) + 1;
 		}
 
 		if (this.props.saveBlock) {
@@ -162,6 +161,7 @@ class Block extends React.Component {
 		const {
 			editable,
 			name,
+			type,
 			style,
 			editBlock,
 			nonremovable,
@@ -170,16 +170,17 @@ class Block extends React.Component {
 		} = this.props;
 
 		const scrollableBlock = util.getValue(block, 'scrollable');
+		const blockIsBeingEdited = editBlock === `${blockType}-${name}` ? true : false;
 
 		return (
-			<div className='block'>
-				<div className={`dragHandle blockOptions ${editBlock === `${blockType}-${name}` || !editable ? 'displayNone' : ''}`}>
+			<div className={`block`}>
+				<div className={`dragHandle blockOptions ${blockIsBeingEdited || !editable ? 'displayNone' : ''}`}>
 					<div className='blockEdit'>
 						{!nonremovable ? <GBLink className='blockRemoveButton' onClick={() => this.onClickRemove()}><span className='icon icon-trash-2'></span></GBLink> : <></>}
 						<GBLink className='blockEditButton' onClick={this.onClickEdit}><span className='icon icon-edit'></span></GBLink>
 					</div>
 				</div>
-				<div style={style} className={`block ${name}Block ${scrollableBlock ? 'scrollableBlock' : ''}`}>
+				<div style={style} className={`block block${type} ${name}Block ${blockIsBeingEdited ? 'editingBlock' : ''} ${scrollableBlock ? 'scrollableBlock' : ''}`}>
 					{this.renderChildren()}
 				</div>
 			</div>
@@ -214,6 +215,7 @@ function mapStateToProps(state, props) {
 	const block = util.getValue(blocks, props.name, {});
 	const nonremovable = util.getValue(block, 'nonremovable');
 	const dataField = util.getValue(block, 'field');
+	const type = util.getValue(block, 'type');
 	const options = util.getValue(block, 'options', {});
 	const data = util.getValue(gbx3, 'data', {});
 	const fieldValue = util.getValue(data, dataField);
@@ -230,6 +232,7 @@ function mapStateToProps(state, props) {
 		layouts,
 		blockType,
 		block,
+		type,
 		nonremovable,
 		options,
 		fieldValue,

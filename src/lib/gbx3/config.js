@@ -1,4 +1,4 @@
-import blockTemplates from './blocks/blockTemplates';
+import * as blockTemplates from './blocks/blockTemplates';
 
 const logo = blockTemplates.logo;
 const title = blockTemplates.title;
@@ -86,4 +86,4 @@ export const defaultReceiptBlocks = {
 		...description,
 		updateOptions: null
 	}
-}
+};

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { imageUrlWithStyle, getValue } from './utility';
+import { imageUrlWithStyle } from './utility';
 
 export default class Image extends Component {
 
@@ -89,7 +89,6 @@ export default class Image extends Component {
 		}
 		const maxSize = this.props.maxSize || defaultSize;
 		const mergeStyle = { maxWidth: maxWidth || maxSize, maxHeight: maxHeight || maxSize, ...imgStyle };
-
 		const src = size === 'inherit' ? url : imageUrlWithStyle(url, size)
 
 		if (debug) console.log('execute render src', src);
@@ -97,9 +96,10 @@ export default class Image extends Component {
 		return (
 			<div onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} style={{ minHeight, width: maxSize, height: 'auto',  ...style, ...this.state.hoverStyle  }} className={`imageComponent ${className || ''}`}>
 				{this.state.imageLoading  &&
-				<div className='imageLoader'>
-					<img src='https://s3-us-west-1.amazonaws.com/givebox/public/images/squareLoader.gif' alt='Loader' />
-				</div>}
+					<div className='imageLoader'>
+						<img src='https://s3-us-west-1.amazonaws.com/givebox/public/images/squareLoader.gif' alt='Loader' />
+					</div>
+				}
 				<img style={mergeStyle} src={src} alt={alt || url} onLoad={this.imageOnLoad} onError={this.onError} draggable={draggable} />
 			</div>
 		)

@@ -27,9 +27,11 @@ class Media extends Component {
 		this.closeEditModal = this.closeEditModal.bind(this);
 		this.handleBorderRadius = this.handleBorderRadius.bind(this);
 		this.updateImage = this.updateImage.bind(this);
+		this.updateVideo = this.updateVideo.bind(this);
 		this.onChangeVideo = this.onChangeVideo.bind(this);
 		this.videoOnReady = this.videoOnReady.bind(this);
 		this.renderVideo = this.renderVideo.bind(this);
+		this.renderImage = this.renderImage.bind(this);
 		this.setRadius = this.setRadius.bind(this);
 		this.blockRef = this.props.blockRef.current;
 		if (this.blockRef) {
@@ -116,6 +118,7 @@ class Media extends Component {
 
 				// no default
 			}
+			console.log('save video', video);
 			this.timeout = setTimeout(() => {
 				this.setState({ loading: false, edit: false }, () => {
 					this.props.saveBlock({
@@ -176,6 +179,12 @@ class Media extends Component {
 		this.setState({ image, hasBeenUpdated: true });
 	}
 
+	updateVideo(key, value) {
+		const video = this.state.video;
+		video[key] = value;
+		this.setState({ video, hasBeenUpdated: true });
+	}
+
 	handleBorderRadius(e) {
 		this.updateImage('borderRadius', +e.target.value);
 	}
@@ -205,19 +214,57 @@ class Media extends Component {
 			maxHeight
 		} = this.state;
 
-		return (
-			<Video
-				playing={util.getValue(video, 'auto', false)}
-				url={util.getValue(video, 'validatedURL')}
-				onReady={this.videoOnReady}
-				style={{
-					maxWidth: maxWidth || '100%',
-					maxHeight
-				}}
-				maxHeight={maxHeight}
-				preview={preview}
-			/>
-		)
+		if (util.getValue(video, 'URL')) {
+			return (
+				<Video
+					playing={util.getValue(video, 'auto', false)}
+					url={util.getValue(video, 'validatedURL')}
+					onReady={this.videoOnReady}
+					style={{
+						maxWidth: maxWidth || '100%',
+						maxHeight
+					}}
+					maxHeight={maxHeight}
+					preview={preview}
+				/>
+			)
+		} else {
+			return (
+				<div className='mediaPlaceholder'>
+					<span className='icon icon-video'></span>
+					Add Video
+				</div>
+			)
+		}
+	}
+
+	renderImage() {
+		const {
+			title,
+			block
+		} = this.props;
+
+		const {
+			maxWidth,
+			maxHeight,
+			image
+		} = this.state;
+
+		const disallowRadius = util.getValue(block, 'disallowRadius');
+		const url = util.getValue(image, 'URL');
+
+		if (url) {
+			return (
+				<Image imgStyle={{ borderRadius: disallowRadius ? 0 : `${util.getValue(image, 'borderRadius')}%` }} url={url} size={util.getValue(image, 'size')} minHeight={0} maxWidth={maxWidth} maxHeight={maxHeight} alt={title} />
+			)
+		} else {
+			return (
+				<div className='mediaPlaceholder'>
+					<span className='icon icon-instagram'></span>
+					Add Image
+				</div>
+			)
+		}
 	}
 
 	render() {
@@ -234,8 +281,6 @@ class Media extends Component {
 		} = this.props;
 
 		const {
-			maxWidth,
-			maxHeight,
 			image,
 			video,
 			mediaType,
@@ -357,8 +402,7 @@ class Media extends Component {
 													checked={util.getValue(video, 'auto', false)}
 													onChange={() => {
 														const video = this.state.video;
-														video.auto = video.auto ? false : true;
-														this.setState({ video });
+														this.updateVideo('auto', video.auto ? false : true);
 													}}
 												/>
 												{util.getValue(video, 'validatedURL') ?
@@ -395,7 +439,7 @@ class Media extends Component {
 					}
 				/>
 				{ mediaType === 'image' ?
-					<Image imgStyle={{ borderRadius: disallowRadius ? 0 : `${util.getValue(image, 'borderRadius')}%` }} url={util.getValue(image, 'URL')} size={util.getValue(image, 'size')} minHeight={0} maxWidth={maxWidth} maxHeight={maxHeight} alt={title} />
+					this.renderImage()
 				:
 					this.renderVideo()
 				}

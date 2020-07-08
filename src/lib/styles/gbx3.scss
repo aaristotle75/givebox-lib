@@ -36,7 +36,35 @@
 	}
 }
 
-.gbx3Layout:not(.gbx3ReceiptLayout) {
+.gbx3ReceiptLayout {
+	top: 0;
+	left: 0;
+	right: 0;
+	position: absolute;
+	display: block;
+	height: 100vh;
+	width: 100%;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	-webkit-overflow-scrolling: auto;
+	background: #ffffff;
+	padding: 20px;
+
+	@media (max-width: $breakpoint) {
+		padding: 0;
+	}
+
+	.bottomOffset {
+		display: table;
+		height: 0px;
+
+		@media (max-width: $breakpoint) {
+			height: 75px;
+		}
+	}
+}
+
+.gbx3Layout {
 	@media (max-width: $breakpoint) {
 		p img {
 		margin: 0;
@@ -47,6 +75,10 @@
 }
 
 .gbx3 {
+
+	.sortableListItem {
+		background: blue;
+	}
 
 	::-webkit-scrollbar {
 			width: 6px;
@@ -97,6 +129,24 @@
 			border-radius: 0px !important;
 		}
 	}
+
+	.gbx3ReceiptContainer {
+		display: table;
+		margin: 0 auto;
+		height: auto;
+		width: 100%;
+		padding: 10px;
+		background: $white;
+		@include bgGradient(to bottom, $light-gray 0%, $white 20%);
+		@media (max-width: $breakpoint) {
+			border-radius: 0px !important;
+		}
+
+		p {
+			margin: 5px 0;
+		}
+	}
+
 
 	.layout-column {
 		display: table-row;
@@ -159,6 +209,12 @@
 			z-index: 9;
 
 			.gbx3Layout {
+				height: 100vh;
+				overflow-y: auto;
+				padding-top: $topPanelHeight + 20px;
+			}
+
+			.gbx3ReceiptContainer {
 				height: 100vh;
 				overflow-y: auto;
 				padding-top: $topPanelHeight + 20px;
@@ -1022,7 +1078,7 @@
 		line-height: 1em;
 	}
 
-	.scrollableBlock {
+	.scrollableBlock:not(.editingBlock) {
 		position: relative;
 		display: block;
 		overflow-x: hidden;
@@ -1031,6 +1087,29 @@
 
 	.contentBlock {
 		word-wrap: break-word;
+	}
+
+	.blockMedia {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.mediaPlaceholder {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		width: 300px;
+		height: 200px;
+		background: $very-light-gray;
+		border: 1px solid $med-blue-gray;
+		color: $med-blue-gray;
+		font-size: 14px;
+		.icon {
+			font-size: 40px;
+			color: $med-blue-gray;
+		}
 	}
 
 	/*---------- End Blocks ------------ */

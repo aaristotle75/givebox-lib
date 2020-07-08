@@ -63,14 +63,14 @@ export function updateBlock(blockType, name, block) {
 	}
 }
 
-export function addBlock(blockType, type, w = 0, h = 0, ref) {
-	return (dispatch, getState) => {
+export function addBlock(blockType, type, w = 0, h = 0, ref, callback) {
+	return async (dispatch, getState) => {
 		const current = ref ? ref.current : null;
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
 		const blocks = util.getValue(gbx3, `blocks.${blockType}`, {});
 		const admin = util.getValue(gbx3, 'admin', {});
-		const availableBlocks = util.getValue(admin, `availableBlocks.${blockType}`, []);
-		const newBlock = util.getValue(blockTemplates, type, {});
+		const availableBlocks = util.deepClone(util.getValue(admin, `availableBlocks.${blockType}`, []));
+		const newBlock = util.getValue(blockTemplates[blockType], type, {});
 		if (!util.isEmpty(newBlock)) {
 			let blockName = util.getValue(newBlock, 'name', type);
 			if (blockName in blocks) {
@@ -96,23 +96,26 @@ export function addBlock(blockType, type, w = 0, h = 0, ref) {
 				const index = availableBlocks.indexOf(blockName)
 				availableBlocks.splice(index, 1);
 			}
-			dispatch(updateAvailableBlocks(availableBlocks));
-			dispatch(updateBlock(blockType, blockName, newBlock));
+			dispatch(updateAvailableBlocks(blockType, availableBlocks));
+			const blockUpdated = await dispatch(updateBlock(blockType, blockName, newBlock));
+			if (blockUpdated && callback) callback();
 		}
 	}
 }
 
-export function removeBlock(blockType, name) {
+export function removeBlock(blockType, name, callback) {
 	return (dispatch, getState) => {
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
 		const blocks = util.getValue(gbx3, `blocks.${blockType}`, {});
 		const admin = util.getValue(gbx3, 'admin', {});
-		const availableBlocks = util.getValue(admin, `availableBlocks.${blockType}`, []);
+		const availableBlocks = util.deepClone(util.getValue(admin, `availableBlocks.${blockType}`, []));
 		const block = util.getValue(blocks, name, {});
 		if (!util.getValue(block, 'multiple')) {
-			if (!(name in availableBlocks)) availableBlocks.push(name);
+			if (!availableBlocks.includes(name)) {
+				availableBlocks.push(name);
+			}
 		}
-		dispatch(updateAvailableBlocks(availableBlocks));
+		dispatch(updateAvailableBlocks(blockType, availableBlocks));
 		dispatch(updateAdmin({ editBlock: '' }));
 		dispatch(deleteBlock(name, blockType));
 	}
@@ -162,11 +165,12 @@ export function updateAdmin(admin) {
 	}
 }
 
-export function updateAvailableBlocks(available) {
+export function updateAvailableBlocks(blockType, available) {
 	return (dispatch, getState) => {
-		const blockType = util.getValue(getState(), 'gbx3.info.blockType');
-		const availableBlocks = util.getValue(getState(), 'gbx3.admin.availableBlocks', []);
-		availableBlocks[blockType] = available;
+		const availableBlocks = {
+			...util.getValue(getState(), 'gbx3.admin.availableBlocks', {}),
+			[blockType]: available
+		};
 		dispatch(updateAdmin({ availableBlocks }));
 	}
 }
@@ -463,7 +467,7 @@ export function processTransaction(data, callback) {
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
 		const articleData = util.getValue(gbx3, 'data', {});
 		const receiptHTML = util.getValue(articleData, 'receiptHTML');
-		const version = !util.isEmpty(receiptHTML) ? `&version=3&primary=${util.getValue(data, 'articleID')}` : '';
+		const version = !util.isEmpty(receiptHTML) ? `&version=3&primary=${util.getValue(articleData, 'articleID')}` : '';
 
 		const grecaptcha = window.grecaptcha;
 		grecaptcha.ready(function() {
@@ -475,6 +479,7 @@ export function processTransaction(data, callback) {
 					query: `rc=${token}${version}`
 				}));
 			})
+			.catch(error => console.error('Need to use givebox.local for grecaptcha'))
 		});
 	}
 }
@@ -518,7 +523,7 @@ export function loadGBX3(articleID, callback) {
 		const globalsState = util.getValue(gbx3, 'globals', {});
 		const admin = util.getValue(gbx3, 'admin', {});
 		const blockType = 'article';
-		const availableBlocks = util.getValue(admin, `availableBlocks.${blockType}`, []);
+		const availableBlocks = util.deepClone(util.getValue(admin, `availableBlocks.${blockType}`, []));
 
 		dispatch(getResource('article', {
 			id: [articleID],
@@ -623,7 +628,7 @@ export function loadGBX3(articleID, callback) {
 									dispatch(updateBlocks(blockType, blocks));
 									dispatch(updateGlobals(globals));
 									dispatch(updateData(res));
-									dispatch(updateAvailableBlocks(availableBlocks));
+									dispatch(updateAvailableBlocks(blockType, availableBlocks));
 									dispatch(updateAdmin({
 										hasAccessToEdit,
 										editable: hasAccessToEdit ? true : false,

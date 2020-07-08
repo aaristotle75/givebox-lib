@@ -182,7 +182,7 @@ export const textBlock = {
 export const contentBlock = {
 	order: 6,
 	name: 'contentBlock',
-	title: 'Long Text',
+	title: 'Text',
 	type: 'Text',
 	subType: 'content',
 	multiple: true,
@@ -199,13 +199,12 @@ export const contentBlock = {
 	}
 };
 
-export const mediaBlock = {
+export const imageBlock = {
 	order: 6,
-	name: 'mediaBlock',
-	title: 'Media',
+	name: 'imageBlock',
+	title: 'Image',
 	type: 'Media',
 	multiple: true,
-	field: 'imageURL',
 	mobileRelativeBlock: 10,
 	options: {
 		mediaType: 'image',
@@ -218,12 +217,35 @@ export const mediaBlock = {
 		}
 	},
 	grid: {
-		desktop: { i: 'mediaBlock', x: 6, y: 0, w: 12, h: 24, enabled: true },
-		mobile: { i: 'mediaBlock', x: 0, y: 2, w: 6, h: 24, enabled: false }
+		desktop: { i: 'imageBlock', x: 6, y: 0, w: 12, h: 24, enabled: true },
+		mobile: { i: 'imageBlock', x: 0, y: 2, w: 6, h: 24, enabled: false }
 	}
 };
 
-export const blockTemplates = {
+export const videoBlock = {
+	order: 6,
+	name: 'videoBlock',
+	title: 'Video',
+	type: 'Media',
+	multiple: true,
+	mobileRelativeBlock: 10,
+	options: {
+		mediaType: 'video',
+		image: {
+			size: 'medium',
+			borderRadius: 0
+		},
+		video: {
+			auto: true
+		}
+	},
+	grid: {
+		desktop: { i: 'videoBlock', x: 6, y: 0, w: 12, h: 24, enabled: true },
+		mobile: { i: 'videoBlock', x: 0, y: 2, w: 6, h: 24, enabled: false }
+	}
+};
+
+export const templates = {
 	logo,
 	title,
 	orgName,
@@ -231,9 +253,35 @@ export const blockTemplates = {
 	media,
 	description,
 	paymentForm,
-	textBlock,
 	contentBlock,
-	mediaBlock
+	imageBlock,
+	videoBlock
+};
+
+export const blockTemplates = {
+	article: {
+		...templates
+	},
+	receipt: {
+		...templates,
+		imageBlock: {
+			...imageBlock,
+			disallowRadius: true,
+			updateOptions: null,
+			...{
+			options: {
+				...media.options,
+				image: {
+					...media.options.image,
+					borderRadius: 0
+				},
+				video: null
+			}}
+		}
+	},
+	org: {
+		...templates
+	}
 };
 
 export default blockTemplates;

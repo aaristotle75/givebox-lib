@@ -53,9 +53,9 @@ const defaultButton = {
 }
 
 const availableBlocks = [
-	'textBlock',
 	'contentBlock',
-	'mediaBlock'
+	'imageBlock',
+	'videoBlock'
 ];
 
 export function gbx3(state = {
@@ -95,7 +95,7 @@ export function gbx3(state = {
 		editBlock: '',
 		open: false,
 		step: 'create',
-		createType: 'receipt',
+		createType: 'article',
 		previewDevice: 'desktop',
 		previewMode: false,
 		publicView: false,
@@ -105,9 +105,20 @@ export function gbx3(state = {
 		verticalCompact: false,
 		outline: false,
 		availableBlocks: {
-			article: availableBlocks,
-			org: availableBlocks,
-			receipt: availableBlocks
+			article: [
+				'contentBlock',
+				'imageBlock',
+				'videoBlock'
+			],
+			org: [
+				'contentBlock',
+				'imageBlock',
+				'videoBlock'
+			],
+			receipt: [
+				'contentBlock',
+				'imageBlock'
+			]
 		}
 	},
 	fees: {},

@@ -57,18 +57,17 @@ class ReceiptEmailEdit extends React.Component {
 		} = this.props;
 
 		return (
-			<div className='gbx3Layout gbx3ReceiptLayout'>
-				<div className='gbx3Container gbx3ReceiptContainer'>
+			<div className='gbx3ReceiptLayout'>
+				<div className='gbx3ReceiptContainer'>
 					<div className='block'>
-					<iframe id='emailIframePreview' className='emailIframe' style={{ height: previewMode ? '100vh' : 0 }} ref={this.iframePreviewRef}></iframe>
-					{previewMode ?
-						<>
-							{this.setPreviewHTML()}
-
-						</>
-					:
-						<ReceiptEmailLayout />
-					}
+						<iframe id='emailIframePreview' className='emailIframe' style={{ height: previewMode ? '100vh' : 0 }} ref={this.iframePreviewRef}></iframe>
+						{previewMode ?
+							this.setPreviewHTML()
+						:
+							<div className='flexCenter'>
+								<ReceiptEmailLayout />
+							</div>
+						}
 					</div>
 				</div>
 			</div>

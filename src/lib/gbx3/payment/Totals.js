@@ -25,6 +25,7 @@ class Totals extends Component {
 	render() {
 
 		const {
+			cardType,
 			paymethod,
 			raised,
 			subTotal,
@@ -64,10 +65,10 @@ class Totals extends Component {
 					/> : <></> }
 					</div>
 					<div className='totalsList'>
-						<div style={{ width: 100 }}>
+						<div style={{ width: 120 }}>
 							<span className='line'>Sub Total:</span>
 							<span className='line'>Givebox Fee:</span>
-							<span className='line'>{paymethod === 'creditcard' ? 'Credit Card' : 'eCheck'} Fee:</span>
+							<span className='line'>{ ( paymethod === 'creditcard' || !paymethod ) ? ( cardType === 'default' || !cardType) ? 'Credit Card' : cardType.toUpperCase() : 'eCheck'} Fee:</span>
 							<span className='totalLine'>Total:</span>
 						</div>
 						<div>
@@ -103,6 +104,7 @@ function mapStateToProps(state, props) {
 	const cart = util.getValue(gbx3, 'cart', {});
 	const passFees = util.getValue(cart, 'passFees');
 	const paymethod = util.getValue(cart, 'paymethod');
+	const cardType = util.getValue(cart, 'cardType');
 	const data = util.getValue(gbx3, 'data', {});
 	const settings = util.getValue(data, 'giveboxSettings', {});
 	const feeOption = util.getValue(settings, 'feeOption');
@@ -121,6 +123,7 @@ function mapStateToProps(state, props) {
 	const placeholderColor = util.getValue(gbxStyle, 'placeholderColor', textColor2);
 
 	return {
+		cardType,
 		passFees,
 		feeOption,
 		paymethod,

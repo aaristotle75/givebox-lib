@@ -3,27 +3,20 @@ import { connect } from 'react-redux';
 import Loadable from 'react-loadable';
 import {
 	util,
+	addBlock,
 	updateAdmin,
 	updateBlock,
+	updateBlocks,
 	saveReceipt,
 	GBLink
 } from '../../';
 import Block from '../blocks/Block';
-import {SortableContainer, SortableElement, SortableHandle} from 'react-sortable-hoc';
+import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 const arrayMove = require('array-move');
-
-const DragHandle = SortableHandle(() => {
-	return (
-		<GBLink ripple={false} className='tooltip sortable right'>
-			<span className='tooltipTop'><i />Drag & drop to change the order.</span>
-			<span className='icon icon-move'></span>
-		</GBLink>
-	)
-});
 
 const SortableItem = SortableElement(({value}) => {
 	return (
-		<div className='gbx3amountsEdit sortableElement' >
+		<div className='gbx3 sortableElement' >
 			{value}
 		</div>
 	)
@@ -44,8 +37,13 @@ class ReceiptEmailLayout extends React.Component {
 	constructor(props) {
 		super(props);
 		this.renderRelativeBlocks = this.renderRelativeBlocks.bind(this);
+		this.setOrderedBlocks = this.setOrderedBlocks.bind(this);
 		this.saveBlock = this.saveBlock.bind(this);
+		this.removeCallback = this.removeCallback.bind(this);
 		this.gridRef = React.createRef();
+		this.state = {
+			orderedBlocks: []
+		}
 	}
 
 	componentDidMount() {
@@ -56,6 +54,32 @@ class ReceiptEmailLayout extends React.Component {
 		if (!receiptHTML) {
 			this.props.saveReceipt();
 		}
+
+		this.setOrderedBlocks();
+	}
+
+	componentDidUpdate(prevProps) {
+		if (Object.keys(prevProps.blocks).length !== Object.keys(this.props.blocks).length) {
+			this.setOrderedBlocks();
+		}
+	}
+
+	setOrderedBlocks() {
+		const {
+			blocks
+		} = this.props;
+
+		const blocksArr = [];
+		Object.entries(blocks).forEach(([key, value]) => {
+			if (value) blocksArr.push(value);
+		});
+		util.sortByField(blocksArr, 'order', 'ASC');
+
+		const orderedBlocks = [];
+		Object.entries(blocksArr).forEach(([key, value]) => {
+			if (value) orderedBlocks.push(value.name);
+		});
+		this.setState({ orderedBlocks });
 	}
 
 	onSortStart(e) {
@@ -68,13 +92,32 @@ class ReceiptEmailLayout extends React.Component {
 
 	onSortEnd = async ({oldIndex, newIndex, collection}) => {
 		const {
-			blocks
-		} = this.props;
-		arrayMove(blocks, oldIndex, newIndex);
-		console.log('execute blocks', blocks);
-		//const blocksUpdated = await this.props.updateBlocks('receipt', blocks);
-		//if (blocksUpdated) this.props.saveReceipt();
+			orderedBlocks
+		} = this.state;
+
+		const blocks = util.deepClone(this.props.blocks);
+
+		if (oldIndex !== newIndex) {
+		const newOrder = arrayMove(orderedBlocks, oldIndex, newIndex);
+		newOrder.forEach((value, key) => {
+			const block = util.getValue(blocks, value, {});
+			if (!util.isEmpty(block)) {
+				block.order = key;
+			}
+		});
+		this.setState({ orderedBlocks: newOrder });
+		const blocksUpdated = await this.props.updateBlocks('receipt', blocks);
+		if (blocksUpdated) this.props.saveReceipt();
+		}
 	};
+
+	removeCallback() {
+		this.props.saveReceipt({
+			callback: () => {
+				this.setOrderedBlocks();
+			}
+		});
+	}
 
 	async saveBlock(args) {
 		const {
@@ -119,42 +162,44 @@ class ReceiptEmailLayout extends React.Component {
 
 		const items = [];
 
-		if (!util.isEmpty(blocks)) {
-			const relativeBlocks = [];
-			Object.entries(blocks).forEach(([key, value]) => {
-				relativeBlocks.push(value);
-			});
-			util.sortByField(relativeBlocks, 'mobileRelativeBlock', 'ASC');
-			if (!util.isEmpty(relativeBlocks)) {
-				Object.entries(relativeBlocks).forEach(([key, value]) => {
-					const BlockComponent = Loadable({
-						loader: () => import(`../blocks/${value.type}`),
-						loading: () => <></>
-					});
-					const ref = React.createRef();
-					items.push(
-						<div
-							className={`react-grid-item mobileClassName ${outline ? 'outline' : ''}`}
-							id={`block-${value.name}`}
-							key={value.name}
-							ref={ref}
-						>
-							<Block
-								name={value.name}
-								blockRef={React.createRef()}
-								style={{ position: 'relative' }}
-								blockType={'receipt'}
-								saveBlock={this.saveBlock}
-							>
-								<BlockComponent />
-							</Block>
-						</div>
-					);
+		const orderedBlocks = [];
+		Object.entries(blocks).forEach(([key, value]) => {
+			orderedBlocks.push(value);
+		});
+		util.sortByField(orderedBlocks, 'order', 'ASC');
+
+		if (!util.isEmpty(orderedBlocks)) {
+			Object.entries(orderedBlocks).forEach(([key, value]) => {
+				const BlockComponent = Loadable({
+					loader: () => import(`../blocks/${value.type}`),
+					loading: () => <></>
 				});
-			}
+				const ref = React.createRef();
+				items.push(
+					<div
+						className={`sortableListItem react-grid-item mobileClassName ${outline ? 'outline' : ''}`}
+						id={`block-${value.name}`}
+						key={value.name}
+						ref={ref}
+					>
+						<Block
+							name={value.name}
+							blockRef={React.createRef()}
+							style={{ position: 'relative' }}
+							blockType={'receipt'}
+							saveBlock={this.saveBlock}
+							removeCallback={this.removeCallback}
+						>
+							<BlockComponent />
+						</Block>
+					</div>
+				);
+			});
 		}
 
-		return items;
+		const rows =  <SortableList onSortStart={this.onSortStart} onSortMove={this.onSortMove} helperClass='sortableHelper' hideSortableGhost={true} useDragHandle={false} items={items} onSortEnd={this.onSortEnd} />;
+
+		return rows;
 	}
 
 	render() {
@@ -184,7 +229,9 @@ class ReceiptEmailLayout extends React.Component {
 								const block = e.dataTransfer.getData('text');
 								const current = this.gridRef.current;
 								if (current.classList.contains('dragOver')) current.classList.remove('dragOver');
-								this.props.addBlock('receipt', block, w, h, this.gridRef);
+								this.props.addBlock('receipt', block, w, h, this.gridRef, () => {
+									console.log('execute addBlock callback');
+								});
 							}
 						}}
 					>
@@ -222,7 +269,9 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
+	addBlock,
 	updateAdmin,
 	updateBlock,
+	updateBlocks,
 	saveReceipt
 })(ReceiptEmailLayout);

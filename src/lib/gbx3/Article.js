@@ -41,6 +41,11 @@ class Article extends React.Component {
 	}
 
 	async saveBlock(args) {
+
+		const {
+			breakpoint
+		} = this.props;
+
 		const {
 			name,
 			blockType,
@@ -58,7 +63,9 @@ class Article extends React.Component {
 			saveGBX3
 		} = opts;
 
-		const desktopGrid = !util.getValue(block, 'mobileNoUpdateDesktopGrid') ? { ...util.getValue(block, 'grid.desktop', {}), ...grid } : { ...util.getValue(block, 'grid.desktop', {}) };
+		const desktopGrid = breakpoint === 'mobile' && util.getValue(block, 'mobileNoUpdateDesktopGrid') ? { ...util.getValue(block, 'grid.desktop', {}) } :  { ...util.getValue(block, 'grid.desktop', {}), ...grid };
+
+		console.log('execute', desktopGrid, grid);
 
 		if (opts.hasBeenUpdated) {
 			const updated = [];
