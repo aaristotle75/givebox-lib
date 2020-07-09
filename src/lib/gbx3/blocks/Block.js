@@ -171,6 +171,7 @@ class Block extends React.Component {
 		} = this.props;
 
 		const buttonEnabled = util.getValue(options, 'button.enabled', false);
+		const buttonAlign = util.getValue(options, 'button.style.align', 'flexCenter');
 		const scrollableBlock = util.getValue(block, 'scrollable');
 		const blockIsBeingEdited = editBlock === `${blockType}-${name}` ? true : false;
 
@@ -185,9 +186,9 @@ class Block extends React.Component {
 				<div
 					style={{
 						...style,
-						overflow: buttonEnabled ? 'hidden' : ''
+						overflow: buttonEnabled ? 'visible' : ''
 					}}
-					className={`block block${type} ${name}Block ${blockIsBeingEdited ? 'editingBlock' : ''} ${scrollableBlock && !buttonEnabled ? 'scrollableBlock' : ''} ${buttonEnabled ? 'flexCenter' : ''}`}
+					className={`block block${type} ${name}Block ${blockIsBeingEdited ? 'editingBlock' : ''} ${scrollableBlock && !buttonEnabled ? 'scrollableBlock' : ''} ${buttonEnabled ? buttonAlign : ''}`}
 				>
 					{this.renderChildren()}
 				</div>

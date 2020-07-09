@@ -124,6 +124,7 @@
 		width: 100%;
 		padding: 10px;
 		background: $white;
+		overflow: hidden;
 		@include bgGradient(to bottom, $light-gray 0%, $white 20%);
 		@media (max-width: $breakpoint) {
 			border-radius: 0px !important;

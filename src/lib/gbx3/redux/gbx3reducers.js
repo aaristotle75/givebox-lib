@@ -48,15 +48,10 @@ const defaultButton = {
 		bgColor: '',
 		fontSize: 16,
 		borderRadius: 10,
-		width: 200
+		width: 200,
+		align: 'flexCenter'
 	}
 }
-
-const availableBlocks = [
-	'contentBlock',
-	'imageBlock',
-	'videoBlock'
-];
 
 export function gbx3(state = {
 	loading: true,

@@ -47,6 +47,7 @@ class ButtonEdit extends Component {
 			maxRadius,
 			minRadius,
 			modalID,
+			gbxStyle,
 			button,
 			globalButtonStyle,
 			globalOption
@@ -60,7 +61,23 @@ class ButtonEdit extends Component {
 		const textColor = util.getValue(buttonStyle, 'textColor', '#ffffff');
 		const width = util.getValue(buttonStyle, 'width');
 		const fontSize = util.getValue(buttonStyle, 'fontSize');
+		const align = util.getValue(buttonStyle, 'align');
 		const borderRadius = util.getValue(buttonStyle, 'borderRadius', 10);
+
+		const globalTextColor = util.getValue(gbxStyle, 'textColor', '#000000');
+		const pageColor = util.getValue(gbxStyle, 'pageColor', '#ffffff');
+		const backgroundColor = util.getValue(gbxStyle, 'backgroundColor', util.getValue(gbxStyle, 'primaryColor'));
+		const placeholderColor = util.getValue(gbxStyle, 'placeholderColor', textColor);
+
+		const extraColors = [
+			primaryColor,
+			textColor,
+			globalTextColor,
+			pageColor,
+			bgColor,
+			backgroundColor,
+			placeholderColor
+		];
 
 		return (
 			<>
@@ -105,6 +122,7 @@ class ButtonEdit extends Component {
 								zIndex: 9999909
 							}
 						}}
+						extraColors={extraColors}
 					/>
 					<ColorPicker
 						name='textColor'
@@ -120,6 +138,7 @@ class ButtonEdit extends Component {
 								zIndex: 9999909
 							}
 						}}
+						extraColors={extraColors}
 					/>
 					<TextField
 						name='width'
@@ -145,6 +164,21 @@ class ButtonEdit extends Component {
 						}}
 						options={types.fontSizeOptions(10, 28)}
 						portalID={`button-fontSize-dropdown-portal`}
+						portal={true}
+						contentWidth={400}
+						portalLeftOffset={1}
+						rectXY={false}
+					/>
+					<Dropdown
+						label='Button Alignment'
+						fixedLabel={true}
+						name='align'
+						defaultValue={align}
+						onChange={(name, value) => {
+							this.updateButton('align', value, true);
+						}}
+						options={types.alignOptions()}
+						portalID={`button-align-dropdown-portal`}
 						portal={true}
 						contentWidth={400}
 						portalLeftOffset={1}
@@ -201,6 +235,7 @@ function mapStateToProps(state, props) {
 	const primaryColor = util.getValue(globalButtonStyle, 'bgColor', gbxPrimaryColor);
 
 	return {
+		gbxStyle,
 		primaryColor,
 		globalButton,
 		globalButtonStyle

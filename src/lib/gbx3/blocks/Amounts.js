@@ -380,7 +380,7 @@ class Amounts extends Component {
 		if (util.isEmpty(amountsList)) return <></>;
 
 		return (
-			<div className={`block ${util.getValue(button, 'enabled', false) ? 'flexCenter' : ''}`}>
+			<div className={`block ${util.getValue(button, 'enabled', false) ? util.getValue(button, 'style.align', 'flexCenter') : ''}`}>
 				<ModalRoute
 					id={modalID}
 					className='gbx3 gbx3amountsEdit'

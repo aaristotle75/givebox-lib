@@ -81,6 +81,16 @@ p { margin: 10px 0; font-size: $normal-text-size; font-weight: $font-weight; }
 	justify-content: center;
 }
 
+.flexStart {
+	display: flex;
+	justify-content: flex-start;
+}
+
+.flexEnd {
+	display: flex;
+	justify-content: flex-end;
+}
+
 /*-------- Links ------------*/
 
 a {
