@@ -4,9 +4,14 @@ import {
 	util,
 	GBLink,
 	ModalRoute,
-	Collapse
+	Tabs,
+	Tab,
+	Collapse,
+	toggleModal
 } from '../../';
 import Editor from './Editor';
+import Button from './Button';
+import ButtonEdit from './ButtonEdit';
 
 class Text extends Component {
 
@@ -15,17 +20,22 @@ class Text extends Component {
 		this.onBlur = this.onBlur.bind(this);
 		this.onChange = this.onChange.bind(this);
 		this.closeEditModal = this.closeEditModal.bind(this);
+		this.optionsUpdated = this.optionsUpdated.bind(this);
 
 		const options = props.options;
 
 		const defaultContent = options.defaultFormat && props.fieldValue ? options.defaultFormat.replace('{{TOKEN}}', props.fieldValue) : props.fieldValue ? `<p>${props.fieldValue}</p>` : `<p>${options.defaultFormat || `Please add ${props.title}`}</p>`;
 
+		const button = util.getValue(options, 'button', {});
 		const content = util.getValue(props.blockContent, 'html', defaultContent);
 
 		this.state = {
-			hasBeenUpdated: false,
 			content,
-			defaultContent: content
+			button,
+			defaultButton: util.deepClone(button),
+			defaultContent: content,
+			hasBeenUpdated: false,
+			tab: 'edit'
 		};
 		this.editor = null;
 		this.blockRef = null;
@@ -63,6 +73,9 @@ class Text extends Component {
 
 		const {
 			content,
+			defaultContent,
+			button,
+			defaultButton,
 			hasBeenUpdated
 		} = this.state;
 		if (type !== 'cancel') {
@@ -74,31 +87,50 @@ class Text extends Component {
 				hasBeenUpdated,
 				content: {
 					html: content
+				},
+				options: {
+					button
 				}
 			});
 		} else {
-			this.setState({ content: this.state.defaultContent }, this.props.closeEditModal);
+			this.setState({
+				content: defaultContent,
+				button: util.deepClone(defaultButton),
+			}, this.props.closeEditModal);
 		}
+	}
+
+	optionsUpdated(name, obj) {
+		this.setState({ [name]: { ...obj }, hasBeenUpdated: true });
+	}
+
+	setTab(tab) {
+		this.setState({ tab });
 	}
 
 	render() {
 
 		const {
+			name,
 			modalID,
 			title,
 			articleID,
 			orgID,
 			block,
-			breakpoint
+			breakpoint,
+			primaryColor
 		} = this.props;
 
 		const {
-			content
+			content,
+			button,
+			tab
 		} = this.state;
 
 		const cleanHtml = util.cleanHtml(content);
 		const subType = util.getValue(block, 'subType');
 		const nonremovable = util.getValue(block, 'nonremovable', false);
+		const buttonEnabled = util.getValue(button, 'enabled', false);
 
 		return (
 			<div className={`${subType === 'content' ? 'contentBlock' : 'textBlock'}`}>
@@ -113,24 +145,49 @@ class Text extends Component {
 					disallowBgClose={true}
 					component={() =>
 						<div className='modalWrapper'>
-							<Collapse
-								label={`Edit ${title}`}
-								iconPrimary='edit'
+							<Tabs
+								default={tab}
+								className='statsTab'
 							>
-								<div className='formSectionContainer'>
-									<div className='formSection'>
-										<Editor
-											orgID={orgID}
-											articleID={articleID}
-											content={content}
-											onBlur={this.onBlur}
-											onChange={this.onChange}
-											subType={subType}
-											type={breakpoint === 'mobile' ? 'classic' : 'classic'}
-										/>
-									</div>
-								</div>
-							</Collapse>
+								<Tab id='edit' label={<span className='stepLabel'>Edit {title}</span>}>
+									<Collapse
+										label={`Edit ${title}`}
+										iconPrimary='edit'
+									>
+										<div className='formSectionContainer'>
+											<div className='formSection'>
+												<Editor
+													orgID={orgID}
+													articleID={articleID}
+													content={content}
+													onBlur={this.onBlur}
+													onChange={this.onChange}
+													subType={subType}
+													type={breakpoint === 'mobile' ? 'classic' : 'classic'}
+												/>
+											</div>
+										</div>
+									</Collapse>
+								</Tab>
+								<Tab id='buttonOption' label={<span className='stepLabel'>Customize Button</span>}>
+									<Collapse
+										label={'Customize Button'}
+										iconPrimary='link-2'
+										id={`${name}-button`}
+									>
+										<div className='formSectionContainer'>
+											<div className='formSection'>
+												<ButtonEdit
+													label={`Use a Button Instead of Showing ${title} on the Form`}
+													button={button}
+													optionsUpdated={this.optionsUpdated}
+													modalID={`${name}-overlay`}
+												/>
+											</div>
+										</div>
+									</Collapse>
+								</Tab>
+							</Tabs>
 						</div>
 					}
 					buttonGroup={
@@ -143,7 +200,48 @@ class Text extends Component {
 						</div>
 					}
 				/>
-				<div ref={this.displayRef} dangerouslySetInnerHTML={{ __html: cleanHtml }} />
+				{buttonEnabled ?
+				<div ref={this.displayRef}>
+					<ModalRoute
+						className='gbx3'
+						id={`${name}-overlay`}
+						effect='3DFlipVert' style={{ width: '60%' }}
+						draggable={false}
+						disallowBgClose={false}
+						component={() =>
+							<div className='modalContainers'>
+								<div className='topContainer'>
+									<h3 style={{ padding: 0, margin: 0 }}>{util.getValue(button, 'text', 'Select Amount')}</h3>
+								</div>
+								<div className='middleContainer'>
+									<div style={{ padding: '20px 10px' }} ref={this.displayRef} dangerouslySetInnerHTML={{ __html: cleanHtml }} />
+								</div>
+								<div className='bottomContainer'>
+									<div className='button-group' style={{ display: 'flex', justifyContent: 'flex-end' }}>
+										<GBLink
+											className='button'
+											allowCustom={true}
+											customColor={primaryColor}
+											solidColor={true}
+											onClick={() => {
+												this.props.toggleModal(`${name}-overlay`, false);
+											}}
+										>
+											CLOSE
+										</GBLink>
+									</div>
+								</div>
+							</div>
+						}
+					/>
+					<Button
+						modalID={`${name}-overlay`}
+						button={button}
+					/>
+				</div>
+				:
+					<div ref={this.displayRef} dangerouslySetInnerHTML={{ __html: cleanHtml }} />
+				}
 			</div>
 		)
 	}
@@ -151,9 +249,13 @@ class Text extends Component {
 
 function mapStateToProps(state, props) {
 
+	const primaryColor = util.getValue(state, 'gbx3.globals.gbxStyle.primaryColor');
+
 	return {
+		primaryColor
 	}
 }
 
 export default connect(mapStateToProps, {
+	toggleModal
 })(Text);

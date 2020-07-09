@@ -5,11 +5,11 @@ import {
 	GBLink,
 	updateAdmin,
 	updateInfo
-} from '../../';
-import Layout from '../Layout';
-import ReceiptEmail from './ReceiptEmail';
-import DesignMenu from './DesignMenu';
-import ReceiptMenu from './ReceiptMenu';
+} from '../../../';
+import Layout from '../../Layout';
+import ArticleMenu from './ArticleMenu';
+import ReceiptEmail from '../receipt/ReceiptEmail';
+import ReceiptMenu from '../receipt/ReceiptMenu';
 
 const GBX3_URL = process.env.REACT_APP_GBX3_URL;
 
@@ -84,7 +84,7 @@ class Design extends React.Component {
 			<>
 				<div className={`leftPanel ${open ? 'open' : 'close'}`}>
 					{ createType === 'article' ?
-						<DesignMenu />
+						<ArticleMenu />
 					:
 						<ReceiptMenu />
 					}

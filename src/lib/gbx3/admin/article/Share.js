@@ -4,7 +4,7 @@ import {
 	util,
 	types,
 	updateInfo
-} from '../../';
+} from '../../../';
 import ShareMenu from './ShareMenu';
 
 class Share extends React.Component {

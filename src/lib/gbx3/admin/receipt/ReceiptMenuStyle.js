@@ -9,7 +9,7 @@ import {
 	ColorPicker,
 	setStyle,
 	Dropdown
-} from '../../';
+} from '../../../';
 
 class ReceiptMenuStyle extends React.Component {
 

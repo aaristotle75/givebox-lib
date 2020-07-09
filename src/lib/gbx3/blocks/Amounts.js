@@ -496,7 +496,7 @@ class Amounts extends Component {
 								closeCallback={this.closeModalAmountsList}
 								disallowBgClose={false}
 								component={() =>
-									<div className='modalContainers'>
+									<div className='modalContainers lightGray'>
 										<div className='topContainer'>
 											<h3 style={{ padding: 0, margin: 0 }}>{util.getValue(button, 'text', 'Select Amount')}</h3>
 											<span style={{ fontWeight: 300 }} className='center'>{util.getValue(data, 'title')}</span>

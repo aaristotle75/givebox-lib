@@ -9,7 +9,7 @@ import {
 	CustomCKEditor4,
 	saveGBX3,
 	updateData
-} from '../../';
+} from '../../../';
 import Moment from 'moment';
 
 const emailTemplate = require('html-loader!./receiptEmailTemplate.html');

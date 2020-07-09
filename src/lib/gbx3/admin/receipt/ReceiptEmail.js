@@ -4,7 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
 	util
-} from '../../';
+} from '../../../';
 import Moment from 'moment';
 import ReceiptEmailLayout from './ReceiptEmailLayout';
 

@@ -5,10 +5,10 @@ import {
 	toggleModal,
 	updateAdmin,
 	addBlock
-} from '../../';
-import blockTemplates from '../blocks/blockTemplates';
+} from '../../../';
+import blockTemplates from '../../blocks/blockTemplates';
 
-class DesignMenuLayout extends React.Component {
+class ReceiptMenuLayout extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -68,19 +68,16 @@ class DesignMenuLayout extends React.Component {
 		const items = [];
 
 		availableBlocks.forEach((value) => {
-			const block = util.getValue(blockTemplates.article, value, {});
+			const block = util.getValue(blockTemplates.receipt, value, {});
 			items.push(
 				<li
 					key={value}
 					className='draggableBlock'
 					onMouseUp={() => {
 						const dropArea = document.getElementById('gbx3DropArea');
-						const paymentForm = document.getElementById('block-paymentForm');
-						if (dropArea && paymentForm) {
-							const dropAreaheight = dropArea.clientHeight;
-							const paymentFormHeight = paymentForm.clientHeight;
-							const height = dropAreaheight - paymentFormHeight;
-							this.props.addBlock('article', value, 0, height);
+						if (dropArea) {
+							const height = dropArea.clientHeight;
+							this.props.addBlock('receipt', value, 0, height);
 						}
 					}}
 					draggable={true}
@@ -125,7 +122,7 @@ class DesignMenuLayout extends React.Component {
 function mapStateToProps(state, props) {
 
 	const gbx3 = util.getValue(state, 'gbx3', {});
-	const blockType = 'article';
+	const blockType = 'receipt';
 	const blocks = util.getValue(gbx3, `blocks.${blockType}`, {});
 	const admin = util.getValue(gbx3, 'admin', {});
 	const availableBlocks = util.getValue(admin, `availableBlocks.${blockType}`, []);
@@ -141,4 +138,4 @@ export default connect(mapStateToProps, {
 	toggleModal,
 	updateAdmin,
 	addBlock
-})(DesignMenuLayout);
+})(ReceiptMenuLayout);

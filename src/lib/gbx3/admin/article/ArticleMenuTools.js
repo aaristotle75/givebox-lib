@@ -6,9 +6,9 @@ import {
 	resetGBX3,
 	saveGBX3,
 	toggleModal
-} from '../../';
+} from '../../../';
 
-class DesignMenuTools extends React.Component {
+class ArticleMenuTools extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -74,4 +74,4 @@ export default connect(mapStateToProps, {
 	resetGBX3,
 	saveGBX3,
 	toggleModal
-})(DesignMenuTools);
+})(ArticleMenuTools);

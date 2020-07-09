@@ -8,9 +8,9 @@ import {
 	GBLink,
 	util,
 	toggleModal
-} from '../../';
+} from '../../../';
 
-class DesignMenuStyleImage extends Component {
+class ArticleMenuStyleImage extends Component {
 
 	constructor(props) {
 		super(props);
@@ -160,4 +160,4 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
 	toggleModal
-})(DesignMenuStyleImage);
+})(ArticleMenuStyleImage);

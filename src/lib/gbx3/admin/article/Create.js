@@ -8,7 +8,7 @@ import {
 	Image,
 	createFundraiser,
 	updateInfo
-} from '../../';
+} from '../../../';
 import CreateMenu from './CreateMenu';
 
 class Create extends React.Component {

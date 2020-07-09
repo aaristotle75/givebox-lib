@@ -9,10 +9,10 @@ import {
 	ColorPicker,
 	setStyle,
 	Dropdown
-} from '../../';
-import DesignMenuStyleImage from './DesignMenuStyleImage';
+} from '../../../';
+import ArticleMenuStyleImage from './ArticleMenuStyleImage';
 
-class DesignMenuStyle extends React.Component {
+class ArticleMenuStyle extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -291,7 +291,7 @@ class DesignMenuStyle extends React.Component {
 							extraColors={extraColors}
 						/>
 					</li>
-					<DesignMenuStyleImage
+					<ArticleMenuStyleImage
 						imageURL={backgroundImage}
 						selectedCallback={(imageURL, changed) => {
 							if (changed) this.updateStyle('backgroundImage', imageURL);
@@ -397,4 +397,4 @@ export default connect(mapStateToProps, {
 	saveGBX3,
 	toggleModal,
 	setStyle
-})(DesignMenuStyle);
+})(ArticleMenuStyle);

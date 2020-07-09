@@ -4,12 +4,12 @@ import {
 	GBLink,
 	util,
 	toggleAdminLeftPanel
-} from '../../';
-import ReceiptMenuLayout from './ReceiptMenuLayout';
-import ReceiptMenuStyle from './ReceiptMenuStyle';
-import ReceiptMenuTools from './ReceiptMenuTools';
+} from '../../../';
+import ArticleMenuLayout from './ArticleMenuLayout';
+import ArticleMenuStyle from './ArticleMenuStyle';
+import ArticleMenuTools from './ArticleMenuTools';
 
-class ReceiptMenu extends React.Component {
+class ArticleMenu extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -28,20 +28,20 @@ class ReceiptMenu extends React.Component {
 		switch (this.state.panelType) {
 			case 'style': {
 				return (
-					<ReceiptMenuStyle />
+					<ArticleMenuStyle />
 				)
 			}
 
 			case 'tools': {
 				return (
-					<ReceiptMenuTools />
+					<ArticleMenuTools />
 				)
 			}
 
 			case 'layout':
 			default: {
 				return (
-					<ReceiptMenuLayout />
+					<ArticleMenuLayout />
 				)
 			}
 		}
@@ -61,11 +61,12 @@ class ReceiptMenu extends React.Component {
 			<div className='leftPanelContainer'>
 				<div className='leftPanelTop'>
 					<div className='leftPanelHeader'>
-						Thank You Email Menu
+						Payment Form Menu
 						<GBLink onClick={this.props.toggleAdminLeftPanel} className={`link leftPanelClose ${open ? 'open' : 'close'}`}><span className='icon icon-x'></span></GBLink>
 					</div>
 					<div className='middle centerAlign adminPanelTabs'>
 						<GBLink className={`ripple link ${panelType === 'layout' ? 'selected' : ''}`} onClick={() => this.switchPanelType('layout')}>Elements</GBLink>
+						<GBLink className={`ripple link ${panelType === 'style' ? 'selected' : ''}`} onClick={() => this.switchPanelType('style')}>Style</GBLink>
 						<GBLink className={`ripple link ${panelType === 'tools' ? 'selected' : ''}`} onClick={() => this.switchPanelType('tools')}>Tools</GBLink>
 					</div>
 				</div>
@@ -90,4 +91,4 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
 	toggleAdminLeftPanel
-})(ReceiptMenu);
+})(ArticleMenu);

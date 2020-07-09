@@ -12,9 +12,9 @@ import {
 	ModalLink,
 	setLoading
 } from '../../';
-import Create from './Create';
-import Design from './Design';
-import Share from './Share';
+import Design from './article/Design';
+import Create from './article/Create';
+import Share from './article/Share';
 import AvatarMenu from './AvatarMenu';
 import Logo from '../Logo';
 import AnimateHeight from 'react-animate-height';

@@ -5,7 +5,7 @@ import {
 	resetGBX3Receipt,
 	saveGBX3,
 	toggleModal
-} from '../../';
+} from '../../../';
 
 class ReceiptMenuTools extends React.Component {
 

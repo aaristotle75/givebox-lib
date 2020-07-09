@@ -7,10 +7,9 @@ import {
 	updateAdmin,
 	updateBlock,
 	updateBlocks,
-	saveReceipt,
-	GBLink
-} from '../../';
-import Block from '../blocks/Block';
+	saveReceipt
+} from '../../../';
+import Block from '../../blocks/Block';
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 const arrayMove = require('array-move');
 
@@ -157,7 +156,8 @@ class ReceiptEmailLayout extends React.Component {
 	renderRelativeBlocks() {
 		const {
 			outline,
-			blocks
+			blocks,
+			breakpoint
 		} = this.props;
 
 		const items = [];
@@ -171,7 +171,7 @@ class ReceiptEmailLayout extends React.Component {
 		if (!util.isEmpty(orderedBlocks)) {
 			Object.entries(orderedBlocks).forEach(([key, value]) => {
 				const BlockComponent = Loadable({
-					loader: () => import(`../blocks/${value.type}`),
+					loader: () => import(`../../blocks/${value.type}`),
 					loading: () => <></>
 				});
 				const ref = React.createRef();
@@ -199,7 +199,7 @@ class ReceiptEmailLayout extends React.Component {
 
 		const rows =  <SortableList onSortStart={this.onSortStart} onSortMove={this.onSortMove} helperClass='sortableHelper' hideSortableGhost={true} useDragHandle={false} items={items} onSortEnd={this.onSortEnd} />;
 
-		return rows;
+		return breakpoint === 'mobile' ? items : rows;
 	}
 
 	render() {

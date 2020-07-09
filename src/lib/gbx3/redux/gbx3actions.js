@@ -8,7 +8,7 @@ import {
 import { defaultAmountHeight } from '../blocks/amounts/amountsStyle';
 import blockTemplates from '../blocks/blockTemplates';
 import { defaultArticleBlocks, defaultReceiptBlocks } from '../config';
-import { createData } from '../admin/createTemplates';
+import { createData } from '../admin/article/createTemplates';
 
 export function updateGBX3(name, value) {
 	return {

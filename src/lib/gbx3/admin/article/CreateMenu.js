@@ -7,7 +7,7 @@ import {
 	updateInfo,
 	toggleAdminLeftPanel,
 	createFundraiser
-} from '../../';
+} from '../../../';
 
 class CreateMenu extends React.Component {
 

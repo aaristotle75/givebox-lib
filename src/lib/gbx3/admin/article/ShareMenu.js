@@ -2,12 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
 	util,
-	types,
 	GBLink,
 	updateInfo,
 	toggleAdminLeftPanel,
 	createFundraiser
-} from '../../';
+} from '../../../';
 
 class ShareMenu extends React.Component {
 
@@ -20,7 +19,6 @@ class ShareMenu extends React.Component {
 	render() {
 
 		const {
-			editable,
 			openAdmin: open
 		} = this.props;
 

@@ -145,6 +145,25 @@ export const paymentForm = {
 	}
 };
 
+export const summary = {
+	order: 6,
+	name: 'summary',
+	title: 'Summary',
+	type: 'Text',
+	subType: 'content',
+	field: 'summary',
+	updateOptions: 'html',
+	mobileRelativeBlock: 5,
+	mobileNoUpdateDesktopGrid: true,
+	scrollable: false,
+	options: {
+	},
+	grid: {
+		desktop: { i: 'summary', x: 6, y: 25, w: 6, h: 2, enabled: true },
+		mobile: { i: 'summary', x: 0, y: 48, w: 6, h: 4, enabled: false }
+	}
+};
+
 export const description = {
 	order: 6,
 	name: 'description',
@@ -156,9 +175,16 @@ export const description = {
 	mobileRelativeBlock: 5,
 	mobileNoUpdateDesktopGrid: true,
 	scrollable: true,
-	options: {},
+	options: {
+		button: {
+			embedAllowed: true,
+			enabled: true,
+			text: 'Learn More',
+			style: {}
+		}
+	},
 	grid: {
-		desktop: { i: 'description', x: 6, y: 25, w: 6, h: 4, enabled: true },
+		desktop: { i: 'description', x: 6, y: 27, w: 6, h: 4, enabled: true },
 		mobile: { i: 'description', x: 0, y: 48, w: 6, h: 4, enabled: false }
 	}
 };
@@ -251,6 +277,7 @@ export const templates = {
 	orgName,
 	amounts,
 	media,
+	summary,
 	description,
 	paymentForm,
 	contentBlock,

@@ -166,9 +166,11 @@ class Block extends React.Component {
 			editBlock,
 			nonremovable,
 			block,
+			options,
 			blockType
 		} = this.props;
 
+		const buttonEnabled = util.getValue(options, 'button.enabled', false);
 		const scrollableBlock = util.getValue(block, 'scrollable');
 		const blockIsBeingEdited = editBlock === `${blockType}-${name}` ? true : false;
 
@@ -180,7 +182,13 @@ class Block extends React.Component {
 						<GBLink className='blockEditButton' onClick={this.onClickEdit}><span className='icon icon-edit'></span></GBLink>
 					</div>
 				</div>
-				<div style={style} className={`block block${type} ${name}Block ${blockIsBeingEdited ? 'editingBlock' : ''} ${scrollableBlock ? 'scrollableBlock' : ''}`}>
+				<div
+					style={{
+						...style,
+						overflow: buttonEnabled ? 'hidden' : ''
+					}}
+					className={`block block${type} ${name}Block ${blockIsBeingEdited ? 'editingBlock' : ''} ${scrollableBlock && !buttonEnabled ? 'scrollableBlock' : ''} ${buttonEnabled ? 'flexCenter' : ''}`}
+				>
 					{this.renderChildren()}
 				</div>
 			</div>
