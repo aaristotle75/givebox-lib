@@ -231,7 +231,8 @@ class Modal extends Component {
       identifier,
       draggable,
       draggableTitle,
-      draggableTitleClass
+      draggableTitleClass,
+      buttonGroup
     } = this.props;
     let transition = effect.transition;
 
@@ -311,7 +312,9 @@ class Modal extends Component {
       className: "icon icon-move"
     }) : /*#__PURE__*/React.createElement(React.Fragment, null), /*#__PURE__*/React.createElement("span", {
       className: `draggableTitle ${draggableTitleClass}`
-    }, draggableTitle)) : /*#__PURE__*/React.createElement(React.Fragment, null), this.renderChildren(), this.renderActions(), /*#__PURE__*/React.createElement(Fade, {
+    }, draggableTitle)) : /*#__PURE__*/React.createElement(React.Fragment, null), this.renderChildren(), buttonGroup && !mobile ? /*#__PURE__*/React.createElement("div", {
+      className: "modalButtonGroup"
+    }, buttonGroup) : /*#__PURE__*/React.createElement(React.Fragment, null), this.renderActions(), /*#__PURE__*/React.createElement(Fade, {
       duration: 500,
       in: this.state.scrolled
     }, /*#__PURE__*/React.createElement(GBLink, {
@@ -332,7 +335,13 @@ class Modal extends Component {
         style: prefix({ ...overlayStyle,
           ...modalOverlayStyle
         })
-      }, draggable && !mobile ? /*#__PURE__*/React.createElement(Draggable, {
+      }, mobile && buttonGroup ? /*#__PURE__*/React.createElement("div", {
+        className: "modalButtonGroup"
+      }, buttonGroup, closeBtn && /*#__PURE__*/React.createElement("button", {
+        style: closeBtnStyle,
+        className: "modalCloseBtn",
+        onClick: () => this.closeModal(closeCallback, 'ok')
+      }, iconClose)) : /*#__PURE__*/React.createElement(React.Fragment, null), draggable && !mobile ? /*#__PURE__*/React.createElement(Draggable, {
         allowAnyClick: false,
         handle: '.handle'
       }, modalContent) : modalContent))

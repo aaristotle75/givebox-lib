@@ -287,6 +287,19 @@ export const fontSizeOptions = (r1, r2) => {
 
   return items;
 };
+export function alignOptions() {
+  const items = [{
+    primaryText: 'Left',
+    value: 'flexStart'
+  }, {
+    primaryText: 'Center',
+    value: 'flexCenter'
+  }, {
+    primaryText: 'Right',
+    value: 'flexEnd'
+  }];
+  return items;
+}
 export function recurringName(value) {
   const obj = {};
 

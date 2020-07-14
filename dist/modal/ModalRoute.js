@@ -50,7 +50,8 @@ class ModalRoute extends Component {
       draggable,
       modalRootClass,
       closeCallback,
-      draggableTitle
+      draggableTitle,
+      buttonGroup
     } = this.props;
     const modalRoot = document.getElementById('modal-root');
     const optsProps = { ...opts,
@@ -80,7 +81,8 @@ class ModalRoute extends Component {
         appRef: appRef,
         draggable: draggable,
         draggableTitle: util.getValue(optsProps, 'draggableTitle', draggableTitle),
-        modalOpenCallback: this.modalOpenCallback
+        modalOpenCallback: this.modalOpenCallback,
+        buttonGroup: buttonGroup
       }, this.state.opened ? component(optsProps) : /*#__PURE__*/React.createElement(React.Fragment, null))))
     );
   }

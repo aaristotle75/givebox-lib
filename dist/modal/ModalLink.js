@@ -39,6 +39,7 @@ class ModalLink extends Component {
       onMouseLeave,
       allowCustom,
       solidColor,
+      solidTextColor,
       customColor
     } = this.props;
     let component;
@@ -70,6 +71,7 @@ class ModalLink extends Component {
             allowCustom: allowCustom,
             style: style,
             solidColor: solidColor,
+            solidTextColor: solidTextColor,
             className: `${className}`,
             type: "button",
             onClick: () => this.onClick(id, opts),

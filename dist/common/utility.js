@@ -4,6 +4,7 @@ import has from 'has';
 import animateScrollTo from 'animated-scroll-to';
 import ModalLink from '../modal/ModalLink';
 import sanitizeHtml from 'sanitize-html';
+import get from 'get-value';
 const API_URL = process.env.REACT_APP_API_URL;
 export const imageUrlWithStyle = function (imageURL, style) {
   if (imageURL) {
@@ -128,6 +129,15 @@ export function translateSort(sort) {
 }
 export function sortByField(obj, fieldToSort, direction = 'DESC') {
   return obj.sort(propCompare(fieldToSort, direction));
+}
+export function sortNumbers(array, order = 'asc') {
+  if (order === 'asc') {
+    array.sort((a, b) => a - b);
+  } else {
+    array.sort((a, b) => b - a);
+  }
+
+  return array;
 }
 
 function propCompare(prop, direction) {
@@ -652,11 +662,16 @@ export function search(haystack, needle, found = []) {
   return found;
 }
 ;
-export function getValue(obj, prop, returnIfEmpty = '') {
+export function getValue(obj, prop, returnIfEmpty = '', debug) {
+  const returnObj = get(obj, prop);
+  if (debug) console.log(debug, obj, prop, returnObj);
+  return returnObj || typeof returnObj === 'boolean' || returnObj === 0 || returnObj === false ? returnObj : returnIfEmpty;
+  /*
   if (typeof obj === 'undefined') return returnIfEmpty;
   if (isEmpty(obj) || !obj) return returnIfEmpty;
-  if (has(obj, prop)) return obj[prop] || typeof obj[prop] === 'boolean' || obj[prop] === 0 || obj[prop] === false ? obj[prop] : returnIfEmpty;
+  if (has(obj, prop)) return (obj[prop] || typeof(obj[prop]) === 'boolean') || obj[prop] === 0 || obj[prop] === false ? obj[prop] : returnIfEmpty;
   return returnIfEmpty;
+  */
 }
 export function getIndex(array, index, returnIfEmpty = '') {
   if (typeof array === 'undefined') {
@@ -915,4 +930,31 @@ export function blob2S3(file, s3, fileName, callback, progressCallback) {
 
   x.open(s3.method, s3.action);
   x.send(formData);
+}
+export function toggle(bool, options) {
+  const opts = {
+    style: {
+      margin: '0 10px'
+    },
+    className: '',
+    onText: 'ON',
+    onStyle: {
+      color: '#FFFFFF'
+    },
+    offText: 'OFF',
+    offStyle: {
+      color: '#B0BEC5'
+    },
+    ...options
+  };
+  const text = bool ? opts.onText : opts.offText;
+  const boolStyle = bool ? opts.onStyle : opts.offStyle;
+  const style = { ...opts.style,
+    ...boolStyle
+  };
+  return (/*#__PURE__*/React.createElement("span", {
+      style: style,
+      className: `${opts.className} toggleUtil`
+    }, text)
+  );
 }

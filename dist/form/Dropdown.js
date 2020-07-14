@@ -61,6 +61,14 @@ class Dropdown extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    if (prevProps.open !== this.props.open) {
+      if (this.props.open) {
+        this.openMenu();
+      } else {
+        this.closeMenu();
+      }
+    }
+
     if (prevProps.value !== this.props.value) {
       let init = lookup(this.props.options, 'value', this.props.value);
 

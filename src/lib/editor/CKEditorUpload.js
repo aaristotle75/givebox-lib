@@ -1,27 +1,26 @@
 import React, { Component } from 'react';
 import {
-  util,
+	util,
 	MediaLibrary,
 	Loader
 } from '../';
 
-
 export default class CKEditorUpload extends Component {
 
-  constructor(props) {
-    super(props);
+	constructor(props) {
+		super(props);
 		this.closeModalAndSave = this.closeModalAndSave.bind(this);
 		this.closeModalAndCancel = this.closeModalAndCancel.bind(this);
 		this.handleSaveCallback = this.handleSaveCallback.bind(this);
 		this.handleImageSize = this.handleImageSize.bind(this);
 		this.getMeta = this.getMeta.bind(this);
 		this.handleAspectRatio = this.handleAspectRatio.bind(this);
-    this.state = {
+		this.state = {
 			url: '',
 			loading: false
-    };
+		};
 		this.CKEDITOR = window.opener.CKEDITOR;
-  }
+	}
 
 	componentDidMount() {
 		const container = document.getElementById('contentContainer');
@@ -73,11 +72,11 @@ export default class CKEditorUpload extends Component {
 
 	getMeta(url) {
 		const bindthis = this;
-	  const img = new Image();
-    img.onload = function() {
+		const img = new Image();
+		img.onload = function() {
 			bindthis.handleAspectRatio(this.src, this.width, this.height);
-    };
-    img.src = url;
+		};
+		img.src = url;
 	}
 
 	handleAspectRatio(url, w, h) {
@@ -115,7 +114,7 @@ export default class CKEditorUpload extends Component {
 		height_field.setValue(height);
 	}
 
-  render() {
+	render() {
 
 		const {
 			url,
@@ -129,19 +128,19 @@ export default class CKEditorUpload extends Component {
 			borderRadius: 0
 		}
 
-    return (
+		return (
 			<div>
 				{loading ? <Loader msg='Saving...' /> : <></>}
-	      <MediaLibrary
+				<MediaLibrary
 					image={url}
 					preview={url}
-	        handleSaveCallback={this.handleSaveCallback}
-	        handleSave={util.handleFile}
-	        library={library}
-	        closeModalAndSave={this.closeModalAndSave}
-	        closeModalAndCancel={this.closeModalAndCancel}
-	      />
+					handleSaveCallback={this.handleSaveCallback}
+					handleSave={util.handleFile}
+					library={library}
+					closeModalAndSave={this.closeModalAndSave}
+					closeModalAndCancel={this.closeModalAndCancel}
+				/>
 			</div>
-    )
-  }
+		)
+	}
 }

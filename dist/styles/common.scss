@@ -81,6 +81,16 @@ p { margin: 10px 0; font-size: $normal-text-size; font-weight: $font-weight; }
 	justify-content: center;
 }
 
+.flexStart {
+	display: flex;
+	justify-content: flex-start;
+}
+
+.flexEnd {
+	display: flex;
+	justify-content: flex-end;
+}
+
 /*-------- Links ------------*/
 
 a {
@@ -300,4 +310,65 @@ ul.selectable {
 
 .collapse.noBorder {
 	border: 0;
+}
+
+/*------- Tablet and Phone wrappers --------*/
+.deviceLayoutWrapper {
+	position: relative;
+	margin: auto;
+	transform-origin: top;
+	background: #fff;
+	overflow: hidden;
+
+	.stagePreview {
+		overflow: hidden;
+
+		iframe {
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+		}
+
+	}
+}
+
+.phoneWrapper {
+	width: 380px;
+	padding: 50px 20px;
+	border-radius: 40px;
+	border: 1px solid #ccc;
+
+	.stagePreview {
+		width: 340px;
+		height: 570px;
+		border: 1px solid #ccc;
+	}
+}
+
+.desktopWrapper {
+	position: absolute;
+	top: 0; left: 0; right: 0; bottom: 0;
+	width: 100%;
+	padding: 0px;
+	border-radius: 0px;
+
+	.stagePreview {
+		width: 100%;
+		height: 100%;
+	}
+}
+
+.phoneWrapper:before {
+	position: absolute;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	border: 1px solid #ccc;
+	bottom: 5px;
+	left: 50%;
+	content: "";
+	display: inline-block;
+	-webkit-transform: translateX(-50%);
+	-ms-transform: translateX(-50%);
+	transform: translateX(-50%);
 }

@@ -89,10 +89,17 @@ function mapStateToProps(state, props) {
   const custom = util.getValue(state, 'custom', {});
   const primaryColor = props.customColor || util.getValue(custom, 'primaryColor');
   const rgb = primaryColor ? util.hexToRgb(primaryColor) : '';
+  const rgbText = props.solidTextColor ? util.hexToRgb(props.solidTextColor) : '';
   let rgbColor = null;
 
   if (rgb) {
     rgbColor = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .7)`;
+  }
+
+  let rgbTextColor = null;
+
+  if (rgbText) {
+    rgbTextColor = `rgba(${rgbText.r}, ${rgbText.g}, ${rgbText.b}, .7)`;
   }
 
   const className = props.className || '';
@@ -102,7 +109,7 @@ function mapStateToProps(state, props) {
   const customStyle = {};
 
   if (props.allowCustom && primaryColor) {
-    customStyle.color = props.solidColor ? '#ffffff' : primaryColor;
+    customStyle.color = props.solidColor ? props.solidTextColor || '#ffffff' : primaryColor;
     customStyle.backgroundColor = props.solidColor ? primaryColor : null;
   }
 
@@ -112,7 +119,7 @@ function mapStateToProps(state, props) {
 
   if (className.includes('button') && props.allowCustom) {
     hoverStyle.backgroundColor = rgbColor;
-    hoverStyle.color = '#ffffff';
+    hoverStyle.color = props.solidTextColor ? rgbTextColor : '#ffffff';
     style.border = `1px solid ${rgbColor}`;
   }
 
