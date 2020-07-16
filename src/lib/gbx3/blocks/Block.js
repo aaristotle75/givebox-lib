@@ -177,7 +177,8 @@ class Block extends React.Component {
 
 		return (
 			<div className={`block`}>
-				<div className={`dragHandle blockOptions ${blockIsBeingEdited || !editable ? 'displayNone' : ''}`}>
+				<div className={`blockOptions ${name}Block ${blockIsBeingEdited || !editable ? 'displayNone' : ''}`}>
+					<div className='dragHandle'></div>
 					<div className='blockEdit'>
 						{!nonremovable ? <GBLink className='blockRemoveButton' onClick={() => this.onClickRemove()}><span className='icon icon-trash-2'></span></GBLink> : <></>}
 						<GBLink className='blockEditButton' onClick={this.onClickEdit}><span className='icon icon-edit'></span></GBLink>

@@ -65,7 +65,6 @@ class Article extends React.Component {
 
 		const desktopGrid = breakpoint === 'mobile' && util.getValue(block, 'mobileNoUpdateDesktopGrid') ? { ...util.getValue(block, 'grid.desktop', {}) } :  { ...util.getValue(block, 'grid.desktop', {}), ...grid };
 
-		console.log('execute', desktopGrid, grid);
 
 		if (opts.hasBeenUpdated) {
 			const updated = [];

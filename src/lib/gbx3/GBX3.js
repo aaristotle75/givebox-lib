@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import Layout from './Layout';
 import Admin from './admin/Admin';
 import {
-	loadGBX3,
-	setStyle,
 	util,
 	Loader,
 	getResource,
@@ -13,8 +11,11 @@ import {
 	setLoading,
 	clearGBX3,
 	updateInfo,
-	updateAdmin
+	updateAdmin,
+	loadGBX3,
+	setStyle
 } from '../';
+
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import '../styles/gbx3.scss';
@@ -47,7 +48,7 @@ class GBX3 extends React.Component {
 		} = this.props;
 
 		this.props.setLoading(true);
-		if ((editable && hasAccessToEdit) || hasAccessToEdit) {
+		if ((editable && (hasAccessToEdit) || hasAccessToEdit)) {
 			this.props.updateAdmin({ editable, open: true });
 		} else {
 			this.props.updateAdmin({ editable: false });

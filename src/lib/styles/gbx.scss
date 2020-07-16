@@ -1,493 +1,493 @@
 @import 'variables.scss';
 
 .noRecords {
-  color: $med-blue-gray;
-  font-size: 14px;
+	color: $med-blue-gray;
+	font-size: 14px;
 }
 
 .dropArea {
-  background: transparent;
-  @include default-transition(.25s);
+	background: transparent;
+	@include default-transition(.25s);
 
-  .dragOverText {
-    display: none;
-    text-align: center;
-    font-size: 20px;
-    color: $white;
-    position: absolute;
-    top: 50%;
-    right: 0; left: 0; bottom: 0;
-    text-align: center;
-    z-index: 3;
-  }
+	.dragOverText {
+		display: none;
+		text-align: center;
+		font-size: 20px;
+		color: $white;
+		position: absolute;
+		top: 50%;
+		right: 0; left: 0; bottom: 0;
+		text-align: center;
+		z-index: 3;
+	}
 }
 
 .dropArea.dragOver {
-  background: transparentize($mainColor, .7);
-  .dragOverText {
-    display: block;
-  }
+	background: transparentize($mainColor, .7);
+	.dragOverText {
+		display: block;
+	}
 }
 
 .cardHeaderSubtitle {
-  display: block;
-  font-size: 12px;
-  color: rgba(38,50,56,.7);
+	display: block;
+	font-size: 12px;
+	color: rgba(38,50,56,.7);
 }
 
 .pageElement {
-  position: absolute;
-  top: 0; bottom: 0; right: 0; left: 0;
-  height: 100%;
-  width: 100%;
+	position: absolute;
+	top: 0; bottom: 0; right: 0; left: 0;
+	height: 100%;
+	width: 100%;
 }
 
 .board {
-  min-height: 400px;
-  min-width: 500px;
+	min-height: 400px;
+	min-width: 500px;
 }
 
 .pageElementsAvailable {
-  position: relative;
-  align-items: center;
-  width: 100%;
-  height: 80px;
-  overflow-y: hidden;
-  overflow-x: auto;
-  margin-bottom: 20px;
+	position: relative;
+	align-items: center;
+	width: 100%;
+	height: 80px;
+	overflow-y: hidden;
+	overflow-x: auto;
+	margin-bottom: 20px;
 }
 
 .pageElementAvailableContainer {
-  position: relative;
-  color: $white;
-  background: transparent;
-  font-size: 12px;
-  font-weight: 500;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 5px;
-  width: 80px;
-  height: 70px;
-  border: 1px solid $mainColor;
-  border-radius: 10px;
-  @include default-transition(.25s);
+	position: relative;
+	color: $white;
+	background: transparent;
+	font-size: 12px;
+	font-weight: 500;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 0 5px;
+	width: 80px;
+	height: 70px;
+	border: 1px solid $mainColor;
+	border-radius: 10px;
+	@include default-transition(.25s);
 }
 
 .pageElementAvailableContainer:hover {
-  color: transparent;
-  .toolBar {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+	color: transparent;
+	.toolBar {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
 }
 
 .toolBar {
-  display: none;
-  position: absolute;
-  top: 0; bottom: 0; right: 0; left: 0;
-  height: 100%;
-  width: 100%;
-  background: transparentize($mainColor, .3);
-  color: $white;
-  z-index: 2;
-  font-size: 14px;
-  border-radius: 10px;
+	display: none;
+	position: absolute;
+	top: 0; bottom: 0; right: 0; left: 0;
+	height: 100%;
+	width: 100%;
+	background: transparentize($mainColor, .3);
+	color: $white;
+	z-index: 2;
+	font-size: 14px;
+	border-radius: 10px;
 }
 
 .toolBar button {
-  color: $white;
-  font-size: 16px;
-  font-weight: 500;
+	color: $white;
+	font-size: 16px;
+	font-weight: 500;
 }
 
 .pageElementBar {
-  display: none;
-  position: absolute;
-  top: 5%; bottom: 5%; right: 5%; left: 5%;
-  height: 90%;
-  width: 90%;
-  color: $white;
-  background: transparentize($mainColor, .3);
-  z-index: 2;
+	display: none;
+	position: absolute;
+	top: 5%; bottom: 5%; right: 5%; left: 5%;
+	height: 90%;
+	width: 90%;
+	color: $white;
+	background: transparentize($mainColor, .3);
+	z-index: 2;
 }
 
 button.removeBtn {
-  background: transparent;
-  position: absolute;
-  top: -5px;
-  right: -15px;
+	background: transparent;
+	position: absolute;
+	top: -5px;
+	right: -15px;
 
-  .icon {
-    color: $white;
-    font-size: 16px;
-  }
+	.icon {
+		color: $white;
+		font-size: 16px;
+	}
 }
 button.removeBtn:hover {
-  .icon {
-    color: $mainColorLight;
-  }
+	.icon {
+		color: $mainColorLight;
+	}
 }
 
 button.editBtn {
-  display: flex;
-  align-items: center;
-  background: transparent;
-  color: $white;
-  font-size: 16px;
-  font-weight: 400;
-  .icon {
-    display: inline-block;
-    font-size: 24px;
-    margin-right: 5px;
-  }
+	display: flex;
+	align-items: center;
+	background: transparent;
+	color: $white;
+	font-size: 16px;
+	font-weight: 400;
+	.icon {
+		display: inline-block;
+		font-size: 24px;
+		margin-right: 5px;
+	}
 }
 
 button.editBtn:hover {
-  color: $mainColorLight
+	color: $mainColorLight
 }
 
 button.availableBtn {
 	white-space: nowrap;
-  background: transparent;
-  color: $white;
-  font-size: 12px;
-  font-weight: 400;
-  .icon {
-    display: block;
-    font-size: 24px;
-    margin-bottom: 5px;
-  }
+	background: transparent;
+	color: $white;
+	font-size: 12px;
+	font-weight: 400;
+	.icon {
+		display: block;
+		font-size: 24px;
+		margin-bottom: 5px;
+	}
 }
 
 button.availableBtn:hover {
-  color: $mainColorLight
+	color: $mainColorLight
 }
 
 .react-grid-item {
-  background: transparent;
-  z-index: 1;
-  border: 2px solid transparent;
+	background: transparent;
+	z-index: 1;
+	border: 2px solid transparent;
 }
 
 .react-grid-item.outline {
-  border: 2px solid $mainColorLight;
+	border: 2px solid $mainColorLight;
 }
 
 .adminCustomArea {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: $dark-blue-gray;
-  width: 100%;
-  margin: 0 auto;
-  z-index: 999999;
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: $dark-blue-gray;
+	width: 100%;
+	margin: 0 auto;
+	z-index: 999999;
 
-  .logo {
-    position: absolute;
-    right: 10px;
-    top: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+	.logo {
+		position: absolute;
+		right: 10px;
+		top: 5px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 
-    .loggedInGroup {
-      text-align: right;
-      margin-right: 20px;
-    }
+		.loggedInGroup {
+			text-align: right;
+			margin-right: 20px;
+		}
 
-    .loggedInAs {
-      font-size: 10px;
-      color: $med-blue-gray;
-      display: block;
-    }
+		.loggedInAs {
+			font-size: 10px;
+			color: $med-blue-gray;
+			display: block;
+		}
 
-    button.link {
-      color: $white;
-      font-size: 12px;
-    }
+		button.link {
+			color: $white;
+			font-size: 12px;
+		}
 
-    img {
-      cursor: pointer;
-      height: 25px;
-      width: 25px;
-    }
-  }
+		img {
+			cursor: pointer;
+			height: 25px;
+			width: 25px;
+		}
+	}
 
-  .button-group.linkBar {
-    display: flex;
-    justify-content: flex-start;
-    margin: 10px;
-    margin-left: 50px;
-  }
+	.button-group.linkBar {
+		display: flex;
+		justify-content: flex-start;
+		margin: 10px;
+		margin-left: 50px;
+	}
 
-  button.link {
-    font-size: 14px;
-    color: $mainColorLight;
-  }
+	button.link {
+		font-size: 14px;
+		color: $mainColorLight;
+	}
 
-  button.link:hover {
-    color: $white;
-  }
+	button.link:hover {
+		color: $white;
+	}
 
-  button.link:not(.show) {
-    visibility: hidden;
-  }
+	button.link:not(.show) {
+		visibility: hidden;
+	}
 
-  .handle {
-    cursor: grab;
-    position: absolute;
-    top: 12px;
-    left: 20px;
-    color: $mainColorLight;
-  }
+	.handle {
+		cursor: grab;
+		position: absolute;
+		top: 12px;
+		left: 20px;
+		color: $mainColorLight;
+	}
 
-  .handle:hover {
-    color: $white;
-    @include default-transition(1s);
-  }
+	.handle:hover {
+		color: $white;
+		@include default-transition(1s);
+	}
 }
 
 .adminCustomArea.editableForm {
-  button.link {
-    visibility: visible;
-  }
+	button.link {
+		visibility: visible;
+	}
 }
 
 // Modal
 .gbxModal {
-  .modal .modalWrapper {
-    padding-top: 0px;
-  }
+	.modal .modalWrapper {
+		padding-top: 0px;
+	}
 
-  .modalTop,
-  .modalBottom {
-    display: none;
-  }
+	.modalTop,
+	.modalBottom {
+		display: none;
+	}
 
-  .modalContainer {
-    padding: 20px 10px;
-  }
+	.modalContainer {
+		padding: 20px 10px;
+	}
 
-  .modal .modalContent {
-    border-radius: 20px;
-    padding: 20px;
-  }
+	.modal .modalContent123 {
+		border-radius: 20px;
+		padding: 20px;
+	}
 
-  .modal .RichEditor-root {
-      padding: 0px;
-      margin-top: 10px;
-  }
+	.modal .RichEditor-root {
+			padding: 0px;
+			margin-top: 10px;
+	}
 
 }
 
 .givebox-paymentform {
-  padding: 0px 20px;
+	padding: 0px 20px;
 }
 
 .gbxFormWrapper {
 
-  .dropdown button .selected.label {
-    font-size: $small-text-size;
-  }
+	.dropdown button .selected.label {
+		font-size: $small-text-size;
+	}
 
-  .dropdown-cover {
-    display: none;
-  }
+	.dropdown-cover {
+		display: none;
+	}
 
-  .mobileFriendly {
-    margin: 100px 0;
-  }
+	.mobileFriendly {
+		margin: 100px 0;
+	}
 
-  .imageComponent {
-    flex-direction: row;
-  }
+	.imageComponent {
+		flex-direction: row;
+	}
 
-  .creditCard {
-    .checkmark {
-      right: 5px;
-    }
-  }
+	.creditCard {
+		.checkmark {
+			right: 5px;
+		}
+	}
 
-  .creditCard-group .cardsAccepted {
-      top: -35px;
-  }
+	.creditCard-group .cardsAccepted {
+			top: -35px;
+	}
 
-  .column {
-    display: inline-block;
-    float: none;
-  }
-
-
-  label, .label {
-    white-space: nowrap;
-    font-size: 12px;
-  }
-
-  /*------- Button & Link -------*/
-
-  .cvvModal button.link {
-  }
-
-  .button-group {
-    button.link,
-    button.button {
-      margin: 0 10px;
-    }
-  }
-
-  button.link {
-    font-size: 12px;
-    @include default-transition(.5s);
-    margin: 0;
-  }
-
-  button.button {
-    border-radius: 20px;
-    font-size: 16px;
-    background-color: transparent;
-    @include default-transition(.5s);
-  }
-
-  button.button:hover {
-    background-color: $off-white;
-  }
-
-  button.gbxBtn {
-    font-weight: 300;
-    font-size: 16px;
-    color: $white;
-    background: $med-blue-gray;
-    padding: 10px 20px;
-    border-radius: 20px;
-    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55);
-    @include default-transition(.5s);
-  }
-
-  button.gbxBtn:hover {
-    color: $white;
-    background: $med-blue-gray;
-    opacity: .7;
-    @include default-transition(.5s);
-  }
-
-  // raw elements
-
-  h1, h2, h3, h4 {
-    margin: 0;
-    font-weight: 400;
-  }
-
-  h1 {
-    font-size: 22px;
-  }
-
-  h2 {
-    font-size: 20px;
-  }
-
-  h3 {
-    font-size: 18px;
-  }
-
-  h4 {
-    font-size: 16px;
-  }
-
-  p {
-    margin: 0;
-    font-size: 14px;
-    font-weight: 400;
-  }
+	.column {
+		display: inline-block;
+		float: none;
+	}
 
 
-  // Responsive
-  @media (max-width: 800px) {
-    .modalContent:not(.campaignForm) {
-        width: 100% !important;
-    }
-  }
+	label, .label {
+		white-space: nowrap;
+		font-size: 12px;
+	}
+
+	/*------- Button & Link -------*/
+
+	.cvvModal button.link {
+	}
+
+	.button-group {
+		button.link,
+		button.button {
+			margin: 0 10px;
+		}
+	}
+
+	button.link {
+		font-size: 12px;
+		@include default-transition(.5s);
+		margin: 0;
+	}
+
+	button.button {
+		border-radius: 20px;
+		font-size: 16px;
+		background-color: transparent;
+		@include default-transition(.5s);
+	}
+
+	button.button:hover {
+		background-color: $off-white;
+	}
+
+	button.gbxBtn {
+		font-weight: 300;
+		font-size: 16px;
+		color: $white;
+		background: $med-blue-gray;
+		padding: 10px 20px;
+		border-radius: 20px;
+		box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55);
+		@include default-transition(.5s);
+	}
+
+	button.gbxBtn:hover {
+		color: $white;
+		background: $med-blue-gray;
+		opacity: .7;
+		@include default-transition(.5s);
+	}
+
+	// raw elements
+
+	h1, h2, h3, h4 {
+		margin: 0;
+		font-weight: 400;
+	}
+
+	h1 {
+		font-size: 22px;
+	}
+
+	h2 {
+		font-size: 20px;
+	}
+
+	h3 {
+		font-size: 18px;
+	}
+
+	h4 {
+		font-size: 16px;
+	}
+
+	p {
+		margin: 0;
+		font-size: 14px;
+		font-weight: 400;
+	}
+
+
+	// Responsive
+	@media (max-width: 800px) {
+		.modalContent:not(.campaignForm) {
+				width: 100% !important;
+		}
+	}
 }
 
 
 .editableForm {
 
-  .react-grid-item {
-    cursor: grab;
-  }
+	.react-grid-item {
+		cursor: grab;
+	}
 
-  .react-grid-item:hover {
-    border: 2px solid $mainColorLight;
-    background: $mainColor;
+	.react-grid-item:hover {
+		border: 2px solid $mainColorLight;
+		background: $mainColor;
 
-    .pageElementBar {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-  }
+		.pageElementBar {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+	}
 }
 
 
 .pageElementPropertyBar {
-  position: fixed;
-  right: 0;
-  top: 20%;
-  width: 400px;
-  height: auto;
-  z-index: 1999991;
-  border-radius: 20px;
-  padding: 30px;
-  background: $white;
-  @include box-shadow(1px 3px 3px 1px rgba(0,0,0,0.4));
+	position: fixed;
+	right: 0;
+	top: 20%;
+	width: 400px;
+	height: auto;
+	z-index: 1999991;
+	border-radius: 20px;
+	padding: 30px;
+	background: $white;
+	@include box-shadow(1px 3px 3px 1px rgba(0,0,0,0.4));
 
-  .editHeader {
-    position: absolute;
-    top: 15px;
-    left: 35px;
-    font-size: 1.3em;
-    font-weight: 400;
-  }
+	.editHeader {
+		position: absolute;
+		top: 15px;
+		left: 35px;
+		font-size: 1.3em;
+		font-weight: 400;
+	}
 
-  .handle {
-    cursor: grab;
-    position: absolute;
-    top: 20px;
-    left: 8px;
-    color: $mainColor;
-  }
+	.handle {
+		cursor: grab;
+		position: absolute;
+		top: 20px;
+		left: 8px;
+		color: $mainColor;
+	}
 
-  .handle:hover {
-    color: $mainColorLight;
-    @include default-transition(1s);
-  }
+	.handle:hover {
+		color: $mainColorLight;
+		@include default-transition(1s);
+	}
 
-  button.removeBtn {
-    top: 8px;
-    right: 8px;
+	button.removeBtn {
+		top: 8px;
+		right: 8px;
 
-    .icon {
-      color: $mainColor;
-      font-size: 16px;
-    }
-  }
-  button.removeBtn:hover {
-    .icon {
-      color: $mainColorLight;
-    }
-  }
+		.icon {
+			color: $mainColor;
+			font-size: 16px;
+		}
+	}
+	button.removeBtn:hover {
+		.icon {
+			color: $mainColorLight;
+		}
+	}
 
 }
 
 .pageElementPropertyBar.closed {
-  width: 0px;
-  height: 400px;
-  @include transition(width .5s);
+	width: 0px;
+	height: 400px;
+	@include transition(width .5s);
 }
 
 .pageElementPropertyBar.open {
-  width: 500px;
-  @include transition(width .5s);
+	width: 500px;
+	@include transition(width .5s);
 }

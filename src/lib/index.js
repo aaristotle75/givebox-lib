@@ -104,7 +104,20 @@ import {
 	processTransaction
 } from './gbx3/redux/gbx3actions';
 
-import { app, resource, send, modal, preferences, custom } from './api/reducers';
+import {
+	gbx3 as gbx3reducer
+} from './gbx3/redux/gbx3reducers';
+
+import GBX3 from './gbx3/GBX3';
+
+import {
+	app,
+	resource,
+	send,
+	modal,
+	preferences,
+	custom
+} from './api/reducers';
 
 import {
 	getResource,
@@ -158,6 +171,10 @@ export {
 	setPrefs,
 	setCustomProp,
 	sendResponse,
+
+// gbx3
+	GBX3,
+	gbx3reducer,
 
 // gbx3 actions
 	loadGBX3,

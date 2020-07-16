@@ -943,19 +943,6 @@
 			user-select: none;
 	}
 
-	.dragHandle {
-		cursor: move;
-		z-index: 3;
-	}
-
-	.dragHandle:hover {
-		@include default-transition(1s);
-	}
-
-	.paymentFormBlock .dragHandle {
-		cursor: default;
-	}
-
 	.editable {
 
 		.react-grid-item > .react-resizable-handle {
@@ -1008,6 +995,23 @@
 		position: relative;
 	}
 
+	.dragHandle {
+		position: absolute;
+		top: 0; bottom: 0; right: 0; left: 0;
+		height: 100%;
+		width: 100%;
+		cursor: move;
+		z-index: 3;
+	}
+
+	.dragHandle:hover {
+		@include default-transition(1s);
+	}
+
+	.paymentFormBlock .dragHandle {
+		cursor: default;
+	}
+
 	button.blockRemove {
 		background: transparent;
 		position: absolute;
@@ -1027,14 +1031,18 @@
 	}
 
 	.blockEdit {
-		position: relative;
+		position: absolute;
+		top: 0; bottom: 0; right: 0; left: 0;
+		width: 1px;
+		margin: 0 auto;
 		display: flex;
+		justify-content: center;
 		align-items: center;
 		background: transparent;
 		color: $white;
 		font-size: 14px;
 		font-weight: 400;
-		margin: 0 5px;
+		z-index: 5;
 		.icon {
 			display: inline-block;
 			font-size: 20px;
@@ -1376,7 +1384,7 @@
 		display: flex;
 		justify-content: space-around;
 		align-items: center;
-		margin-top: 20px;
+		margin-top: 0px;
 
 		@media (max-width: $breakpoint) {
 			flex-direction: column;
