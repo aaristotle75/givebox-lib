@@ -35,6 +35,7 @@
 		"flatpickr": "^4.6.3",
 		"get-value": "^3.0.1",
 		"has": "^1.0.3",
+		"history": "^5.0.0",
 		"html-to-draftjs": "^1.5.0",
 		"iframe-resizer": "^4.2.11",
 		"js-cookie": "^2.2.1",

@@ -322,6 +322,7 @@ class Article extends React.Component {
 					>
 						<div className='dragOverText'>Drop Page Element Here</div>
 						<ResponsiveGridLayout
+							layouts={layouts}
 							id='testGrid'
 							className="blockGridLayout"
 							breakpoints={{desktop: 768, mobile: 767 }}

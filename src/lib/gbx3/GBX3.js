@@ -35,6 +35,7 @@ class GBX3 extends React.Component {
 		this.reloadGBX3 = this.reloadGBX3.bind(this);
 		this.setTracking = this.setTracking.bind(this);
 		this.setRecaptcha = this.setRecaptcha.bind(this);
+		this.renderStage = this.renderStage.bind(this);
 		this.state = {
 		};
 	}

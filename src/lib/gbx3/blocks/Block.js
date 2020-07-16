@@ -86,6 +86,8 @@ class Block extends React.Component {
 			if (opts.height) grid.h = Math.ceil(parseFloat(opts.height / 10)) + 1;
 		}
 
+		console.log('execute height', opts.height, grid.h);
+
 		if (this.props.saveBlock) {
 			this.props.saveBlock({
 				name,

@@ -74,7 +74,10 @@ class Admin extends React.Component {
 			case 'design':
 			default: {
 				return (
-					<Design />
+					<Design
+						reloadGBX3={this.props.reloadGBX3}
+						loadGBX3={this.props.loadGBX3}
+					/>
 				)
 			}
 		}
