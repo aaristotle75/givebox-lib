@@ -337,45 +337,44 @@ class Dropdown extends Component {
       rootEl: portalRoot,
       className: `dropdown ${portalClass}`
     }, dropdownContent);
-    return (/*#__PURE__*/React.createElement("div", {
-        ref: this.inputRef,
-        style: style,
-        className: `input-group ${className || ''} ${readOnly ? 'readOnly tooltip' : ''} ${error ? 'error tooltip' : ''}`
-      }, /*#__PURE__*/React.createElement(Fade, {
-        in: open && overlay,
-        duration: overlayDuration
-      }, /*#__PURE__*/React.createElement("div", {
-        onClick: this.closeMenu,
-        className: `dropdown-cover ${display ? '' : 'displayNone'}`
-      })), /*#__PURE__*/React.createElement("div", {
-        className: `dropdown ${this.props.color ? 'customColor' : ''} ${floatingLabel && 'floating-label'} ${status} ${fixedLabel ? 'fixed' : ''}`,
-        style: dropdownStyle
-      }, label && !floatingLabel && /*#__PURE__*/React.createElement("label", null, /*#__PURE__*/React.createElement(GBLink, {
-        onClick: open || readOnly ? this.closeMenu : this.openMenu
-      }, label)), /*#__PURE__*/React.createElement("button", {
-        ref: this.buttonRef,
-        style: buttonStyle,
-        onMouseEnter: this.onMouseEnter,
-        onMouseLeave: this.onMouseLeave,
-        type: "button",
-        onClick: open || readOnly ? this.closeMenu : this.openMenu
-      }, /*#__PURE__*/React.createElement("span", {
-        ref: this.selectedRef,
-        className: `label ${selected ? 'selected' : ''} ${idleLabel && 'idle'}`
-      }, selectedValue), /*#__PURE__*/React.createElement("span", {
-        ref: this.iconRef,
-        className: `icon icon-${open ? multi ? iconMultiClose : iconOpened : iconClosed}`
-      })), portalID ? dropdownPortal : dropdownContent, label && floatingLabel && /*#__PURE__*/React.createElement("label", null, /*#__PURE__*/React.createElement(GBLink, {
-        className: "link label",
-        onClick: open || readOnly ? this.closeMenu : this.openMenu
-      }, /*#__PURE__*/React.createElement("span", {
-        ref: this.labelRef
-      }, label)))), /*#__PURE__*/React.createElement("div", {
-        className: `tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`
-      }, this.props.error, readOnly ? readOnlyText : '', /*#__PURE__*/React.createElement("i", null)), /*#__PURE__*/React.createElement("div", {
-        className: `errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`
-      }, error))
-    );
+    return /*#__PURE__*/React.createElement("div", {
+      ref: this.inputRef,
+      style: style,
+      className: `input-group ${className || ''} ${readOnly ? 'readOnly tooltip' : ''} ${error ? 'error tooltip' : ''}`
+    }, /*#__PURE__*/React.createElement(Fade, {
+      in: open && overlay,
+      duration: overlayDuration
+    }, /*#__PURE__*/React.createElement("div", {
+      onClick: this.closeMenu,
+      className: `dropdown-cover ${display ? '' : 'displayNone'}`
+    })), /*#__PURE__*/React.createElement("div", {
+      className: `dropdown ${this.props.color ? 'customColor' : ''} ${floatingLabel && 'floating-label'} ${status} ${fixedLabel ? 'fixed' : ''}`,
+      style: dropdownStyle
+    }, label && !floatingLabel && /*#__PURE__*/React.createElement("label", null, /*#__PURE__*/React.createElement(GBLink, {
+      onClick: open || readOnly ? this.closeMenu : this.openMenu
+    }, label)), /*#__PURE__*/React.createElement("button", {
+      ref: this.buttonRef,
+      style: buttonStyle,
+      onMouseEnter: this.onMouseEnter,
+      onMouseLeave: this.onMouseLeave,
+      type: "button",
+      onClick: open || readOnly ? this.closeMenu : this.openMenu
+    }, /*#__PURE__*/React.createElement("span", {
+      ref: this.selectedRef,
+      className: `label ${selected ? 'selected' : ''} ${idleLabel && 'idle'}`
+    }, selectedValue), /*#__PURE__*/React.createElement("span", {
+      ref: this.iconRef,
+      className: `icon icon-${open ? multi ? iconMultiClose : iconOpened : iconClosed}`
+    })), portalID ? dropdownPortal : dropdownContent, label && floatingLabel && /*#__PURE__*/React.createElement("label", null, /*#__PURE__*/React.createElement(GBLink, {
+      className: "link label",
+      onClick: open || readOnly ? this.closeMenu : this.openMenu
+    }, /*#__PURE__*/React.createElement("span", {
+      ref: this.labelRef
+    }, label)))), /*#__PURE__*/React.createElement("div", {
+      className: `tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`
+    }, this.props.error, readOnly ? readOnlyText : '', /*#__PURE__*/React.createElement("i", null)), /*#__PURE__*/React.createElement("div", {
+      className: `errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`
+    }, error));
   }
 
 }

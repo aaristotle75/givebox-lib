@@ -98,35 +98,32 @@ class DownloadFile extends Component {
     } = this.state;
 
     if (util.isLoading(resource)) {
-      return (/*#__PURE__*/React.createElement("div", null)
-      );
+      return /*#__PURE__*/React.createElement("div", null);
     } else {
-      if (util.isEmpty(resource.data)) return (/*#__PURE__*/React.createElement("div", null)
-      );
+      if (util.isEmpty(resource.data)) return /*#__PURE__*/React.createElement("div", null);
     }
 
-    return (/*#__PURE__*/React.createElement("div", {
-        className: "center"
-      }, this.state.downloading ? /*#__PURE__*/React.createElement(Loader, {
-        msg: "Downloading File"
-      }) : '', /*#__PURE__*/React.createElement(Alert, {
-        alert: "success",
-        display: success,
-        msg: success
-      }), /*#__PURE__*/React.createElement(Alert, {
-        alert: "error",
-        display: this.state.error,
-        msg: this.state.error
-      }), /*#__PURE__*/React.createElement("h3", null, `You are about to download ${text || name}.`), /*#__PURE__*/React.createElement("div", {
-        className: "button-group"
-      }, /*#__PURE__*/React.createElement(GBLink, {
-        className: "link",
-        onClick: () => this.props.toggleModal(this.props.modalID, false)
-      }, success ? 'Close' : 'Cancel'), /*#__PURE__*/React.createElement(GBLink, {
-        className: "button",
-        onClick: this.onClick
-      }, "Download Report ", success ? 'Again' : '')))
-    );
+    return /*#__PURE__*/React.createElement("div", {
+      className: "center"
+    }, this.state.downloading ? /*#__PURE__*/React.createElement(Loader, {
+      msg: "Downloading File"
+    }) : '', /*#__PURE__*/React.createElement(Alert, {
+      alert: "success",
+      display: success,
+      msg: success
+    }), /*#__PURE__*/React.createElement(Alert, {
+      alert: "error",
+      display: this.state.error,
+      msg: this.state.error
+    }), /*#__PURE__*/React.createElement("h3", null, `You are about to download ${text || name}.`), /*#__PURE__*/React.createElement("div", {
+      className: "button-group"
+    }, /*#__PURE__*/React.createElement(GBLink, {
+      className: "link",
+      onClick: () => this.props.toggleModal(this.props.modalID, false)
+    }, success ? 'Close' : 'Cancel'), /*#__PURE__*/React.createElement(GBLink, {
+      className: "button",
+      onClick: this.onClick
+    }, "Download Report ", success ? 'Again' : '')));
   }
 
 }
@@ -155,22 +152,21 @@ export default class ExportLink extends Component {
     } = this.props;
     const modalID = 'downloadReport'; //`export${name}`;
 
-    return (/*#__PURE__*/React.createElement("div", {
-        style: style,
-        className: `exportRecordsLink ${align}`
-      }, /*#__PURE__*/React.createElement(ModalLink, {
-        id: modalID,
-        className: "link",
-        opts: {
-          name,
-          customName,
-          link,
-          resource,
-          text,
-          modalID
-        }
-      }, link))
-    );
+    return /*#__PURE__*/React.createElement("div", {
+      style: style,
+      className: `exportRecordsLink ${align}`
+    }, /*#__PURE__*/React.createElement(ModalLink, {
+      id: modalID,
+      className: "link",
+      opts: {
+        name,
+        customName,
+        link,
+        resource,
+        text,
+        modalID
+      }
+    }, link));
   }
 
 }

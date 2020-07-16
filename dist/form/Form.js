@@ -561,35 +561,34 @@ class Form extends Component {
       params.dateFormat = params.enableTime ? 'MM/DD/YYYY H:mm' : 'MM/DD/YYYY';
     }
 
-    return (/*#__PURE__*/React.createElement(CalendarField, {
-        name: name,
-        required: field ? field.required : params.required,
-        rangeRequired: field ? field.rangeRequired : params.rangeRequired,
-        enableTime: field ? field.enableTime : params.enableTime,
-        enableTimeOption: params.enableTimeOption,
-        enableTimeOptionLabel: params.enableTimeOptionLabel,
-        minDate: params.minDate,
-        group: field ? field.group : params.group,
-        readOnly: field ? field.readOnly : params.readOnly,
-        onChangeCalendar: this.onChangeCalendar,
-        defaultValue: params.value,
-        label: params.label,
-        fixedLabel: params.fixedLabel,
-        style: params.style,
-        className: params.className,
-        error: field ? field.error : params.error,
-        errorType: params.errorType,
-        createField: this.createField,
-        params: params,
-        overlay: params.overlay,
-        overlayDuration: params.overlayDuration,
-        dateFormat: params.dateFormat,
-        fieldProp: this.fieldProp,
-        utc: params.utc,
-        allowInput: params.allowInput,
-        placeholder: params.placeholder
-      })
-    );
+    return /*#__PURE__*/React.createElement(CalendarField, {
+      name: name,
+      required: field ? field.required : params.required,
+      rangeRequired: field ? field.rangeRequired : params.rangeRequired,
+      enableTime: field ? field.enableTime : params.enableTime,
+      enableTimeOption: params.enableTimeOption,
+      enableTimeOptionLabel: params.enableTimeOptionLabel,
+      minDate: params.minDate,
+      group: field ? field.group : params.group,
+      readOnly: field ? field.readOnly : params.readOnly,
+      onChangeCalendar: this.onChangeCalendar,
+      defaultValue: params.value,
+      label: params.label,
+      fixedLabel: params.fixedLabel,
+      style: params.style,
+      className: params.className,
+      error: field ? field.error : params.error,
+      errorType: params.errorType,
+      createField: this.createField,
+      params: params,
+      overlay: params.overlay,
+      overlayDuration: params.overlayDuration,
+      dateFormat: params.dateFormat,
+      fieldProp: this.fieldProp,
+      utc: params.utc,
+      allowInput: params.allowInput,
+      placeholder: params.placeholder
+    });
   }
 
   calendarRange(name, opts) {
@@ -614,57 +613,56 @@ class Form extends Component {
       rangeRequired: true,
       utc: true
     }, opts);
-    return (/*#__PURE__*/React.createElement("div", {
-        style: params.style,
-        className: `field-group`
-      }, /*#__PURE__*/React.createElement("div", {
-        style: {
-          width: params.colWidth
-        },
-        className: "col"
-      }, this.calendarField(params.range1Name, {
-        required: params.required,
-        rangeRequired: params.rangeRequired,
-        enableTime: params.range1EnableTime || params.enableTime,
-        placeholder: params.range1Placeholder,
-        enableTimeOption: params.range1EnableTimeOption || params.enableTimeOption,
-        enableTimeOptionLabel: params.enableTimeOptionLabel,
-        value: params.range1Value,
-        label: params.range1Label,
-        range: 'start',
-        rangeEndField: params.range2Name,
-        debug: params.debug,
-        filter: name,
-        validate: 'calendarRange',
-        overlay: params.overlay,
-        overlayDuration: params.overlayDuration,
-        utc: params.utc
-      })), /*#__PURE__*/React.createElement("div", {
-        style: {
-          width: params.colWidth
-        },
-        className: "col"
-      }, this.calendarField(params.range2Name, {
-        required: params.required,
-        rangeRequired: params.rangeRequired,
-        enableTime: params.range2EnableTime || params.enableTime,
-        placeholder: params.range2Placeholder,
-        enableTimeOption: params.range2EnableTimeOption || params.enableTimeOption,
-        enableTimeOptionLabel: params.enableTimeOptionLabel,
-        value: params.range2Value,
-        label: params.range2Label,
-        range: 'end',
-        rangeStartField: params.range1Name,
-        debug: params.debug,
-        filter: name,
-        validate: 'calendarRange',
-        overlay: params.overlay,
-        overlayDuration: params.overlayDuration,
-        utc: params.utc
-      })), /*#__PURE__*/React.createElement("div", {
-        className: "clear"
-      }))
-    );
+    return /*#__PURE__*/React.createElement("div", {
+      style: params.style,
+      className: `field-group`
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        width: params.colWidth
+      },
+      className: "col"
+    }, this.calendarField(params.range1Name, {
+      required: params.required,
+      rangeRequired: params.rangeRequired,
+      enableTime: params.range1EnableTime || params.enableTime,
+      placeholder: params.range1Placeholder,
+      enableTimeOption: params.range1EnableTimeOption || params.enableTimeOption,
+      enableTimeOptionLabel: params.enableTimeOptionLabel,
+      value: params.range1Value,
+      label: params.range1Label,
+      range: 'start',
+      rangeEndField: params.range2Name,
+      debug: params.debug,
+      filter: name,
+      validate: 'calendarRange',
+      overlay: params.overlay,
+      overlayDuration: params.overlayDuration,
+      utc: params.utc
+    })), /*#__PURE__*/React.createElement("div", {
+      style: {
+        width: params.colWidth
+      },
+      className: "col"
+    }, this.calendarField(params.range2Name, {
+      required: params.required,
+      rangeRequired: params.rangeRequired,
+      enableTime: params.range2EnableTime || params.enableTime,
+      placeholder: params.range2Placeholder,
+      enableTimeOption: params.range2EnableTimeOption || params.enableTimeOption,
+      enableTimeOptionLabel: params.enableTimeOptionLabel,
+      value: params.range2Value,
+      label: params.range2Label,
+      range: 'end',
+      rangeStartField: params.range1Name,
+      debug: params.debug,
+      filter: name,
+      validate: 'calendarRange',
+      overlay: params.overlay,
+      overlayDuration: params.overlayDuration,
+      utc: params.utc
+    })), /*#__PURE__*/React.createElement("div", {
+      className: "clear"
+    }));
   }
 
   choice(name, opts) {
@@ -694,26 +692,25 @@ class Form extends Component {
       // no default
     }
 
-    return (/*#__PURE__*/React.createElement(Choice, {
-        name: name,
-        type: params.type,
-        checked: field ? field.checked : params.checked,
-        value: params.value,
-        customValue: params.customValue,
-        group: field ? field.group : params.group,
-        readOnly: field ? field.readOnly : params.readOnly,
-        onChange: onChange,
-        className: params.className,
-        style: params.style,
-        label: params.label,
-        error: field ? field.error : params.error,
-        errorType: params.errorType,
-        createField: createField,
-        params: params,
-        useIcon: params.useIcon,
-        color: params.color || this.props.primaryColor
-      })
-    );
+    return /*#__PURE__*/React.createElement(Choice, {
+      name: name,
+      type: params.type,
+      checked: field ? field.checked : params.checked,
+      value: params.value,
+      customValue: params.customValue,
+      group: field ? field.group : params.group,
+      readOnly: field ? field.readOnly : params.readOnly,
+      onChange: onChange,
+      className: params.className,
+      style: params.style,
+      label: params.label,
+      error: field ? field.error : params.error,
+      errorType: params.errorType,
+      createField: createField,
+      params: params,
+      useIcon: params.useIcon,
+      color: params.color || this.props.primaryColor
+    });
   }
 
   dropdown(name, opts) {
@@ -725,38 +722,37 @@ class Form extends Component {
       fixedLabel: true
     }, opts);
     const defaultValue = field ? field.value : params.value;
-    return (/*#__PURE__*/React.createElement(Dropdown, {
-        name: name,
-        options: params.options,
-        required: field ? field.required : params.required,
-        group: field ? field.group : params.group,
-        readOnly: field ? field.readOnly : params.readOnly,
-        onChange: this.onChangeDropdown,
-        defaultValue: defaultValue,
-        selectLabel: field ? field.selectLabel : params.selectLabel,
-        label: params.label,
-        floatingLabel: params.floatingLabel,
-        fixedLabel: params.fixedLabel,
-        style: params.style,
-        contentStyle: params.contentStyle,
-        className: params.className,
-        error: field ? field.error : params.error,
-        errorType: params.errorType,
-        createField: this.createField,
-        value: field ? field.value : '',
-        params: params,
-        overlay: params.overlay,
-        overlayDuration: params.overlayDuration,
-        direction: params.direction,
-        multi: field ? field.multi : params.multi,
-        multiCloseLabel: params.multiCloseLabel,
-        multiCloseCallback: params.multiCloseCallback,
-        fieldProp: this.fieldProp,
-        formProp: this.formProp,
-        inputRef: params.ref,
-        color: params.color || this.props.primaryColor
-      })
-    );
+    return /*#__PURE__*/React.createElement(Dropdown, {
+      name: name,
+      options: params.options,
+      required: field ? field.required : params.required,
+      group: field ? field.group : params.group,
+      readOnly: field ? field.readOnly : params.readOnly,
+      onChange: this.onChangeDropdown,
+      defaultValue: defaultValue,
+      selectLabel: field ? field.selectLabel : params.selectLabel,
+      label: params.label,
+      floatingLabel: params.floatingLabel,
+      fixedLabel: params.fixedLabel,
+      style: params.style,
+      contentStyle: params.contentStyle,
+      className: params.className,
+      error: field ? field.error : params.error,
+      errorType: params.errorType,
+      createField: this.createField,
+      value: field ? field.value : '',
+      params: params,
+      overlay: params.overlay,
+      overlayDuration: params.overlayDuration,
+      direction: params.direction,
+      multi: field ? field.multi : params.multi,
+      multiCloseLabel: params.multiCloseLabel,
+      multiCloseCallback: params.multiCloseCallback,
+      fieldProp: this.fieldProp,
+      formProp: this.formProp,
+      inputRef: params.ref,
+      color: params.color || this.props.primaryColor
+    });
   }
 
   uploadField(name, opts) {
@@ -768,34 +764,33 @@ class Form extends Component {
       library: {},
       articleID: null
     }, opts);
-    return (/*#__PURE__*/React.createElement(Upload, {
-        name: name,
-        className: params.className,
-        label: params.label,
-        labelClass: params.labelClass,
-        uploadLabel: params.uploadLabel,
-        style: params.style,
-        required: field ? field.required : params.required,
-        group: field ? field.group : params.group,
-        onChange: this.onChangeDropzone,
-        saveCallback: params.saveCallback || null,
-        onBlur: this.onBlur,
-        onFocus: this.onFocus,
-        value: field ? field.value : params.value,
-        error: field ? field.error : params.error,
-        errorType: params.errorType,
-        createField: this.createField,
-        fieldProp: this.fieldProp,
-        clear: field ? field.clear : null,
-        noPreview: params.noPreview,
-        customLink: params.customLink,
-        library: params.library,
-        disallowModalBgClose: params.disallowModalBgClose,
-        closeModalAndSave: this.closeModalAndSave,
-        params: params,
-        maxSize: params.maxSize
-      })
-    );
+    return /*#__PURE__*/React.createElement(Upload, {
+      name: name,
+      className: params.className,
+      label: params.label,
+      labelClass: params.labelClass,
+      uploadLabel: params.uploadLabel,
+      style: params.style,
+      required: field ? field.required : params.required,
+      group: field ? field.group : params.group,
+      onChange: this.onChangeDropzone,
+      saveCallback: params.saveCallback || null,
+      onBlur: this.onBlur,
+      onFocus: this.onFocus,
+      value: field ? field.value : params.value,
+      error: field ? field.error : params.error,
+      errorType: params.errorType,
+      createField: this.createField,
+      fieldProp: this.fieldProp,
+      clear: field ? field.clear : null,
+      noPreview: params.noPreview,
+      customLink: params.customLink,
+      library: params.library,
+      disallowModalBgClose: params.disallowModalBgClose,
+      closeModalAndSave: this.closeModalAndSave,
+      params: params,
+      maxSize: params.maxSize
+    });
   }
 
   textField(name, opts) {
@@ -846,41 +841,40 @@ class Form extends Component {
     }
 
     maxLength = maxLength || params.maxLength;
-    return (/*#__PURE__*/React.createElement(TextField, {
-        id: params.id,
-        name: name,
-        className: params.className,
-        label: params.label,
-        customLabel: params.customLabel,
-        fixedLabel: params.fixedLabel,
-        style: params.style,
-        placeholder: field ? field.placeholder : params.placeholder,
-        type: field ? field.type : params.type,
-        required: field ? field.required : params.required,
-        group: field ? field.group : params.group,
-        readOnly: field ? field.readOnly : params.readOnly,
-        readOnlyText: field ? field.readOnlyText : params.readOnlyText,
-        autoFocus: field ? field.autoFocus : params.autoFocus,
-        onChange: this.onChange,
-        onBlur: this.onBlur,
-        onFocus: this.onFocus,
-        value: field ? field.value : params.value,
-        error: field ? field.error : params.error,
-        errorType: params.errorType,
-        maxLength: maxLength,
-        createField: this.createField,
-        params: params,
-        strength: params.strength,
-        count: params.count,
-        meta: params.meta,
-        symbol: params.validateOpts.symbol,
-        money: params.validate === 'money' || params.validateOpts.validate === 'money' ? true : false,
-        inputRef: params.ref,
-        customLink: params.customLink,
-        inputMode: params.inputMode,
-        color: params.color || this.props.primaryColor
-      })
-    );
+    return /*#__PURE__*/React.createElement(TextField, {
+      id: params.id,
+      name: name,
+      className: params.className,
+      label: params.label,
+      customLabel: params.customLabel,
+      fixedLabel: params.fixedLabel,
+      style: params.style,
+      placeholder: field ? field.placeholder : params.placeholder,
+      type: field ? field.type : params.type,
+      required: field ? field.required : params.required,
+      group: field ? field.group : params.group,
+      readOnly: field ? field.readOnly : params.readOnly,
+      readOnlyText: field ? field.readOnlyText : params.readOnlyText,
+      autoFocus: field ? field.autoFocus : params.autoFocus,
+      onChange: this.onChange,
+      onBlur: this.onBlur,
+      onFocus: this.onFocus,
+      value: field ? field.value : params.value,
+      error: field ? field.error : params.error,
+      errorType: params.errorType,
+      maxLength: maxLength,
+      createField: this.createField,
+      params: params,
+      strength: params.strength,
+      count: params.count,
+      meta: params.meta,
+      symbol: params.validateOpts.symbol,
+      money: params.validate === 'money' || params.validateOpts.validate === 'money' ? true : false,
+      inputRef: params.ref,
+      customLink: params.customLink,
+      inputMode: params.inputMode,
+      color: params.color || this.props.primaryColor
+    });
   }
 
   richText(name, opts) {
@@ -892,34 +886,33 @@ class Form extends Component {
       fixedLabel: true,
       autoFocus: true
     }, opts);
-    return (/*#__PURE__*/React.createElement(RichTextField, {
-        name: name,
-        className: params.className,
-        label: params.label,
-        fixedLabel: params.fixedLabel,
-        modal: params.modal,
-        modalLabel: params.modalLabel,
-        modalID: params.modalID,
-        style: params.style,
-        placeholder: field ? field.placeholder : params.placeholder,
-        required: field ? field.required : params.required,
-        group: field ? field.group : params.group,
-        autoFocus: field ? field.autoFocus : params.autoFocus,
-        onChange: this.onChangeRichText,
-        value: field ? field.value : params.value,
-        updateContent: field ? field.updateContent || null : null,
-        error: field ? field.error : params.error,
-        errorType: params.errorType,
-        createField: this.createField,
-        wysiwyg: params.wysiwyg,
-        allowLink: params.allowLink,
-        params: params,
-        closeModalAndSave: this.closeModalAndSave,
-        hideCloseModalAndSaveButtons: params.hideCloseModalAndSaveButtons,
-        disallowModalBgClose: params.disallowModalBgClose,
-        color: params.color || this.props.primaryColor
-      })
-    );
+    return /*#__PURE__*/React.createElement(RichTextField, {
+      name: name,
+      className: params.className,
+      label: params.label,
+      fixedLabel: params.fixedLabel,
+      modal: params.modal,
+      modalLabel: params.modalLabel,
+      modalID: params.modalID,
+      style: params.style,
+      placeholder: field ? field.placeholder : params.placeholder,
+      required: field ? field.required : params.required,
+      group: field ? field.group : params.group,
+      autoFocus: field ? field.autoFocus : params.autoFocus,
+      onChange: this.onChangeRichText,
+      value: field ? field.value : params.value,
+      updateContent: field ? field.updateContent || null : null,
+      error: field ? field.error : params.error,
+      errorType: params.errorType,
+      createField: this.createField,
+      wysiwyg: params.wysiwyg,
+      allowLink: params.allowLink,
+      params: params,
+      closeModalAndSave: this.closeModalAndSave,
+      hideCloseModalAndSaveButtons: params.hideCloseModalAndSaveButtons,
+      disallowModalBgClose: params.disallowModalBgClose,
+      color: params.color || this.props.primaryColor
+    });
   }
 
   closeModalAndSave(id, save = true) {
@@ -938,26 +931,25 @@ class Form extends Component {
       className: '',
       fixedLabel: true
     }, opts);
-    return (/*#__PURE__*/React.createElement(ModalField, {
-        id: params.id,
-        name: name,
-        className: params.className,
-        label: params.label,
-        fixedLabel: params.fixedLabel,
-        modalLabel: params.modalLabel,
-        style: params.style,
-        placeholder: field ? field.placeholder : params.placeholder,
-        required: field ? field.required : params.required,
-        group: field ? field.group : params.group,
-        value: field ? field.value : params.value,
-        error: field ? field.error : params.error,
-        errorType: params.errorType,
-        createField: this.createField,
-        opts: params.opts,
-        disallowModalBgClose: params.disallowModalBgClose,
-        params: params
-      })
-    );
+    return /*#__PURE__*/React.createElement(ModalField, {
+      id: params.id,
+      name: name,
+      className: params.className,
+      label: params.label,
+      fixedLabel: params.fixedLabel,
+      modalLabel: params.modalLabel,
+      style: params.style,
+      placeholder: field ? field.placeholder : params.placeholder,
+      required: field ? field.required : params.required,
+      group: field ? field.group : params.group,
+      value: field ? field.value : params.value,
+      error: field ? field.error : params.error,
+      errorType: params.errorType,
+      createField: this.createField,
+      opts: params.opts,
+      disallowModalBgClose: params.disallowModalBgClose,
+      params: params
+    });
   }
 
   creditCard(name, opts) {
@@ -971,33 +963,32 @@ class Form extends Component {
       validate: 'creditCard',
       hideLabel: false
     }, opts);
-    return (/*#__PURE__*/React.createElement(CreditCard, {
-        name: name,
-        className: params.className,
-        cardType: field ? field.cardType : params.cardType,
-        checked: field ? field.checked : params.checked,
-        label: params.label,
-        fixedLabel: params.fixedLabel,
-        hideLabel: params.hideLabel,
-        style: params.style,
-        placeholder: field ? field.placeholder : params.placeholder,
-        type: field ? field.type : params.type,
-        required: field ? field.required : params.required,
-        group: field ? field.group : params.group,
-        readOnly: field ? field.readOnly : params.readOnly,
-        autoFocus: field ? field.autoFocus : params.autoFocus,
-        onChange: this.onChangeCreditCard,
-        onBlur: this.onBlur,
-        onFocus: this.onFocus,
-        value: field ? field.value : params.value,
-        error: field ? field.error : params.error,
-        errorType: params.errorType,
-        createField: this.createField,
-        fieldProp: this.fieldProp,
-        params: params,
-        color: params.color || this.props.primaryColor
-      })
-    );
+    return /*#__PURE__*/React.createElement(CreditCard, {
+      name: name,
+      className: params.className,
+      cardType: field ? field.cardType : params.cardType,
+      checked: field ? field.checked : params.checked,
+      label: params.label,
+      fixedLabel: params.fixedLabel,
+      hideLabel: params.hideLabel,
+      style: params.style,
+      placeholder: field ? field.placeholder : params.placeholder,
+      type: field ? field.type : params.type,
+      required: field ? field.required : params.required,
+      group: field ? field.group : params.group,
+      readOnly: field ? field.readOnly : params.readOnly,
+      autoFocus: field ? field.autoFocus : params.autoFocus,
+      onChange: this.onChangeCreditCard,
+      onBlur: this.onBlur,
+      onFocus: this.onFocus,
+      value: field ? field.value : params.value,
+      error: field ? field.error : params.error,
+      errorType: params.errorType,
+      createField: this.createField,
+      fieldProp: this.fieldProp,
+      params: params,
+      color: params.color || this.props.primaryColor
+    });
   }
 
   creditCardGroup(opts) {
@@ -1013,8 +1004,7 @@ class Form extends Component {
       modalRootClass: params.cvvModalRootClass,
       id: "cvvModal",
       component: () => {
-        return (/*#__PURE__*/React.createElement(CVVModal, null)
-        );
+        return /*#__PURE__*/React.createElement(CVVModal, null);
       },
       effect: "3DFlipVert",
       style: {
@@ -1025,57 +1015,56 @@ class Form extends Component {
       customColor: this.props.primaryColor,
       id: "cvvModal"
     }, "What is CVV?"));
-    return (/*#__PURE__*/React.createElement("div", {
-        style: params.style,
-        className: `field-group creditCard-group`
-      }, /*#__PURE__*/React.createElement("div", {
-        className: "creditCard col"
-      }, this.creditCard('ccnumber', {
-        group: params.group,
-        label: params.ccnumberLabel || 'Credit Card',
-        fixedLabel: params.ccnumberfixedLabel || true,
-        hideLabel: params.hideLabel,
-        placeholder: params.placeholder,
-        readOnly: params.readOnly,
-        required: params.required,
-        onChange: params.onChange,
-        onBlur: params.onBlur,
-        debug: params.debug
-      })), /*#__PURE__*/React.createElement("div", {
-        className: "ccexpire col"
-      }, this.textField('ccexpire', {
-        group: params.group,
-        label: params.ccxpireLabel || 'Expiration',
-        fixedLabel: params.ccexpirefixedLabel || true,
-        placeholder: 'MM/YY',
-        required: params.required,
-        value: params.ccexpireValue || '',
-        validate: 'ccexpire',
-        maxLength: 5,
-        count: false,
-        debug: params.debug,
-        inputMode: 'numeric',
-        onChange: this.onChangeCCExpire,
-        onBlur: params.onBlurCCExpire
-      })), /*#__PURE__*/React.createElement("div", {
-        className: "cvv col"
-      }, this.textField('cvv', {
-        group: params.group,
-        label: 'CVV',
-        customLabel: cvvModal,
-        fixedLabel: true,
-        placeholder: 'CVV',
-        required: params.required,
-        maxLength: 3,
-        count: false,
-        debug: params.debug,
-        validate: 'cvv',
-        inputMode: 'numeric',
-        onBlur: params.onBlurCVV
-      })), /*#__PURE__*/React.createElement("div", {
-        className: "clear"
-      }))
-    );
+    return /*#__PURE__*/React.createElement("div", {
+      style: params.style,
+      className: `field-group creditCard-group`
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "creditCard col"
+    }, this.creditCard('ccnumber', {
+      group: params.group,
+      label: params.ccnumberLabel || 'Credit Card',
+      fixedLabel: params.ccnumberfixedLabel || true,
+      hideLabel: params.hideLabel,
+      placeholder: params.placeholder,
+      readOnly: params.readOnly,
+      required: params.required,
+      onChange: params.onChange,
+      onBlur: params.onBlur,
+      debug: params.debug
+    })), /*#__PURE__*/React.createElement("div", {
+      className: "ccexpire col"
+    }, this.textField('ccexpire', {
+      group: params.group,
+      label: params.ccxpireLabel || 'Expiration',
+      fixedLabel: params.ccexpirefixedLabel || true,
+      placeholder: 'MM/YY',
+      required: params.required,
+      value: params.ccexpireValue || '',
+      validate: 'ccexpire',
+      maxLength: 5,
+      count: false,
+      debug: params.debug,
+      inputMode: 'numeric',
+      onChange: this.onChangeCCExpire,
+      onBlur: params.onBlurCCExpire
+    })), /*#__PURE__*/React.createElement("div", {
+      className: "cvv col"
+    }, this.textField('cvv', {
+      group: params.group,
+      label: 'CVV',
+      customLabel: cvvModal,
+      fixedLabel: true,
+      placeholder: 'CVV',
+      required: params.required,
+      maxLength: 3,
+      count: false,
+      debug: params.debug,
+      validate: 'cvv',
+      inputMode: 'numeric',
+      onBlur: params.onBlurCVV
+    })), /*#__PURE__*/React.createElement("div", {
+      className: "clear"
+    }));
   }
 
   echeckGroup(opts) {
@@ -1090,8 +1079,7 @@ class Form extends Component {
       modalRootClass: params.cvvModalRootClass,
       id: "cvvModal",
       component: () => {
-        return (/*#__PURE__*/React.createElement(CVVModal, null)
-        );
+        return /*#__PURE__*/React.createElement(CVVModal, null);
       },
       effect: "3DFlipVert",
       style: {
@@ -1102,49 +1090,48 @@ class Form extends Component {
       customColor: this.props.primaryColor,
       id: "cvvModal"
     }, "What is CVV?"));
-    return (/*#__PURE__*/React.createElement("div", {
-        style: params.style,
-        className: `field-group echeck-group`
-      }, /*#__PURE__*/React.createElement("div", {
-        className: "col"
-      }, this.creditCard('ccnumber', {
-        label: params.ccnumberLabel || 'Credit Card',
-        fixedLabel: params.ccnumberfixedLabel || true,
-        hideLabel: params.hideLabel,
-        placeholder: params.placeholder,
-        readOnly: params.readOnly,
-        required: params.required,
-        debug: params.debug
-      })), /*#__PURE__*/React.createElement("div", {
-        className: "ccexpire col"
-      }, this.textField('ccexpire', {
-        label: params.ccxpireLabel || 'Expiration',
-        fixedLabel: params.ccexpirefixedLabel || true,
-        placeholder: 'MM/YY',
-        required: params.required,
-        value: params.ccexpireValue || '',
-        validate: 'ccexpire',
-        maxLength: 5,
-        count: false,
-        debug: params.debug,
-        inputMode: 'numeric',
-        onChange: this.onChangeCCExpire
-      })), /*#__PURE__*/React.createElement("div", {
-        className: "cvv col"
-      }, this.textField('cvv', {
-        label: 'CVV',
-        customLabel: cvvModal,
-        fixedLabel: true,
-        placeholder: 'CVV',
-        required: params.required,
-        maxLength: 3,
-        count: false,
-        debug: params.debug,
-        inputMode: 'numeric'
-      })), /*#__PURE__*/React.createElement("div", {
-        className: "clear"
-      }))
-    );
+    return /*#__PURE__*/React.createElement("div", {
+      style: params.style,
+      className: `field-group echeck-group`
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "col"
+    }, this.creditCard('ccnumber', {
+      label: params.ccnumberLabel || 'Credit Card',
+      fixedLabel: params.ccnumberfixedLabel || true,
+      hideLabel: params.hideLabel,
+      placeholder: params.placeholder,
+      readOnly: params.readOnly,
+      required: params.required,
+      debug: params.debug
+    })), /*#__PURE__*/React.createElement("div", {
+      className: "ccexpire col"
+    }, this.textField('ccexpire', {
+      label: params.ccxpireLabel || 'Expiration',
+      fixedLabel: params.ccexpirefixedLabel || true,
+      placeholder: 'MM/YY',
+      required: params.required,
+      value: params.ccexpireValue || '',
+      validate: 'ccexpire',
+      maxLength: 5,
+      count: false,
+      debug: params.debug,
+      inputMode: 'numeric',
+      onChange: this.onChangeCCExpire
+    })), /*#__PURE__*/React.createElement("div", {
+      className: "cvv col"
+    }, this.textField('cvv', {
+      label: 'CVV',
+      customLabel: cvvModal,
+      fixedLabel: true,
+      placeholder: 'CVV',
+      required: params.required,
+      maxLength: 3,
+      count: false,
+      debug: params.debug,
+      inputMode: 'numeric'
+    })), /*#__PURE__*/React.createElement("div", {
+      className: "clear"
+    }));
   }
 
   whereField(name, opts) {
@@ -1157,40 +1144,39 @@ class Form extends Component {
       where: {},
       fixedLabel: true
     }, opts);
-    return (/*#__PURE__*/React.createElement(WhereField, {
-        name: name,
-        className: params.className,
-        label: params.label,
-        fixedLabel: params.fixedLabel,
-        style: params.style,
-        placeholder: field ? field.placeholder : params.placeholder,
-        modalLabel: params.modalLabel,
-        modalID: params.modalID || 'defaultWhereField',
-        manualLabel: params.manualLabel,
-        type: field ? field.type : params.type,
-        required: field ? field.required : params.required,
-        group: field ? field.group : params.group,
-        readOnly: field ? field.readOnly : params.readOnly,
-        autoFocus: field ? field.autoFocus : params.autoFocus,
-        onChange: this.onChangeWhere,
-        onBlur: this.onBlur,
-        onFocus: this.onFocus,
-        value: field ? field.value : params.value,
-        error: field ? field.error : params.error,
-        errorType: params.errorType,
-        maxLength: params.maxLength,
-        createField: this.createField,
-        params: params,
-        meta: params.meta,
-        fieldProp: this.fieldProp,
-        dropdown: this.dropdown,
-        field: field,
-        fields: this.state.fields,
-        textField: this.textField,
-        closeModalAndSave: this.closeModalAndSave,
-        disallowModalBgClose: params.disallowModalBgClose
-      })
-    );
+    return /*#__PURE__*/React.createElement(WhereField, {
+      name: name,
+      className: params.className,
+      label: params.label,
+      fixedLabel: params.fixedLabel,
+      style: params.style,
+      placeholder: field ? field.placeholder : params.placeholder,
+      modalLabel: params.modalLabel,
+      modalID: params.modalID || 'defaultWhereField',
+      manualLabel: params.manualLabel,
+      type: field ? field.type : params.type,
+      required: field ? field.required : params.required,
+      group: field ? field.group : params.group,
+      readOnly: field ? field.readOnly : params.readOnly,
+      autoFocus: field ? field.autoFocus : params.autoFocus,
+      onChange: this.onChangeWhere,
+      onBlur: this.onBlur,
+      onFocus: this.onFocus,
+      value: field ? field.value : params.value,
+      error: field ? field.error : params.error,
+      errorType: params.errorType,
+      maxLength: params.maxLength,
+      createField: this.createField,
+      params: params,
+      meta: params.meta,
+      fieldProp: this.fieldProp,
+      dropdown: this.dropdown,
+      field: field,
+      fields: this.state.fields,
+      textField: this.textField,
+      closeModalAndSave: this.closeModalAndSave,
+      disallowModalBgClose: params.disallowModalBgClose
+    });
   }
 
   colorPicker(name, opts) {
@@ -1199,30 +1185,29 @@ class Form extends Component {
       className: '',
       fixedLabel: true
     }, opts);
-    return (/*#__PURE__*/React.createElement(ColorPicker, {
-        name: name,
-        className: params.className,
-        fixedLabel: params.fixedLabel,
-        label: params.label,
-        style: params.style,
-        required: field ? field.required : params.required,
-        group: field ? field.group : params.group,
-        onChange: this.onChange,
-        saveCallback: params.saveCallback || null,
-        onBlur: this.onBlur,
-        onFocus: this.onFocus,
-        value: field ? field.value : params.value,
-        error: field ? field.error : params.error,
-        errorType: params.errorType,
-        createField: this.createField,
-        fieldProp: this.fieldProp,
-        formProp: this.formProp,
-        clear: field ? field.clear : null,
-        params: params,
-        toggleModal: this.props.toggleModal,
-        disallowModalBgClose: params.disallowModalBgClose
-      })
-    );
+    return /*#__PURE__*/React.createElement(ColorPicker, {
+      name: name,
+      className: params.className,
+      fixedLabel: params.fixedLabel,
+      label: params.label,
+      style: params.style,
+      required: field ? field.required : params.required,
+      group: field ? field.group : params.group,
+      onChange: this.onChange,
+      saveCallback: params.saveCallback || null,
+      onBlur: this.onBlur,
+      onFocus: this.onFocus,
+      value: field ? field.value : params.value,
+      error: field ? field.error : params.error,
+      errorType: params.errorType,
+      createField: this.createField,
+      fieldProp: this.fieldProp,
+      formProp: this.formProp,
+      clear: field ? field.clear : null,
+      params: params,
+      toggleModal: this.props.toggleModal,
+      disallowModalBgClose: params.disallowModalBgClose
+    });
   }
   /**
   * Get Errors returned from the API
@@ -1321,34 +1306,31 @@ class Form extends Component {
       ...opts
     };
     const id = `${this.props.id}-saveButton`;
-    return (/*#__PURE__*/React.createElement("button", {
-        ref: this.saveButtonRef,
-        id: id,
-        className: `button ${options.className}`,
-        style: options.style,
-        type: "button",
-        disabled: !this.state.updated && options.allowDisabled ? true : false,
-        onClick: e => this.validateForm(e, callback, options.group)
-      }, options.label)
-    );
+    return /*#__PURE__*/React.createElement("button", {
+      ref: this.saveButtonRef,
+      id: id,
+      className: `button ${options.className}`,
+      style: options.style,
+      type: "button",
+      disabled: !this.state.updated && options.allowDisabled ? true : false,
+      onClick: e => this.validateForm(e, callback, options.group)
+    }, options.label);
   }
 
   errorAlert() {
-    return (/*#__PURE__*/React.createElement(Alert, {
-        alert: "error",
-        display: this.state.error,
-        msg: this.state.errorMsg
-      })
-    );
+    return /*#__PURE__*/React.createElement(Alert, {
+      alert: "error",
+      display: this.state.error,
+      msg: this.state.errorMsg
+    });
   }
 
   successAlert() {
-    return (/*#__PURE__*/React.createElement(Alert, {
-        alert: "success",
-        display: this.state.saved,
-        msg: this.state.savedMsg
-      })
-    );
+    return /*#__PURE__*/React.createElement(Alert, {
+      alert: "success",
+      display: this.state.saved,
+      msg: this.state.savedMsg
+    });
   }
 
   fieldError(name, msg) {
@@ -1358,10 +1340,9 @@ class Form extends Component {
       if (this.state.fields[name].error) error = this.state.fields[name].error;
     }
 
-    return (/*#__PURE__*/React.createElement("div", {
-        className: `error ${!error && 'displayNone'}`
-      }, msg ? msg : error)
-    );
+    return /*#__PURE__*/React.createElement("div", {
+      className: `error ${!error && 'displayNone'}`
+    }, msg ? msg : error);
   }
 
   checkForErrors(fields, group) {
@@ -1573,24 +1554,23 @@ class Form extends Component {
       errorMsg,
       successMsg
     } = this.props;
-    return (/*#__PURE__*/React.createElement("form", {
-        autoComplete: "nope",
-        name: name,
-        id: id,
-        className: `${id} ${className || ''}`,
-        onSubmit: this.validateForm,
-        noValidate: true
-      }, /*#__PURE__*/React.createElement("input", {
-        autoComplete: "false",
-        name: "hidden",
-        type: "text",
-        style: {
-          display: 'none'
-        }
-      }), this.props.showLoader === 'display' && this.props.isSending && /*#__PURE__*/React.createElement(Loader, {
-        msg: 'Sending data'
-      }), errorMsg && this.errorAlert(), successMsg && this.successAlert(), this.renderChildren())
-    );
+    return /*#__PURE__*/React.createElement("form", {
+      autoComplete: "nope",
+      name: name,
+      id: id,
+      className: `${id} ${className || ''}`,
+      onSubmit: this.validateForm,
+      noValidate: true
+    }, /*#__PURE__*/React.createElement("input", {
+      autoComplete: "false",
+      name: "hidden",
+      type: "text",
+      style: {
+        display: 'none'
+      }
+    }), this.props.showLoader === 'display' && this.props.isSending && /*#__PURE__*/React.createElement(Loader, {
+      msg: 'Sending data'
+    }), errorMsg && this.errorAlert(), successMsg && this.successAlert(), this.renderChildren());
   }
 
 }

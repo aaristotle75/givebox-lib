@@ -170,77 +170,76 @@ class CalendarField extends Component {
     const labelStyle = util.cloneObj(customLabel);
     const modalEl = document.getElementById('calendar-root');
     const minDate = this.props.minDate ? util.getDate(this.props.minDate, momentFormat) : null;
-    return (/*#__PURE__*/React.createElement(Flatpickr, {
-        className: `${enableTimeOption ? 'enableTimeOption' : ''} ${className || ''}`,
-        ref: this.flatpickrRef,
-        value: date,
-        onChange: this.onChange,
-        onOpen: this.onOpen,
-        onClose: this.onClose,
-        options: {
-          inline: inline,
-          allowInput: allowInput,
-          dateFormat: dateFormat,
-          enableTime: enableTimeOption ? true : enableTime,
-          minuteIncrement: 1,
-          minDate: minDate,
-          static: staticOption,
-          clickOpens: allowInput ? false : true,
-          wrap: true,
-          appendTo: modalEl,
-          utc: utc ? true : false
-        }
-      }, /*#__PURE__*/React.createElement("div", {
-        id: `flatpickr-${name}`,
-        className: `flatpickr ${enableTimeOption ? 'enableTimeOption' : ''}`
-      }, /*#__PURE__*/React.createElement(Fade, {
-        in: open && overlay,
-        duration: overlayDuration
-      }, /*#__PURE__*/React.createElement("div", {
-        onClick: this.closeCalendar,
-        className: `dropdown-cover ${display ? '' : 'displayNone'}`
-      })), /*#__PURE__*/React.createElement("div", {
-        className: `input-group ${error && 'error tooltip'}`
-      }, /*#__PURE__*/React.createElement("div", {
-        className: `floating-label ${this.state.status} ${fixedLabel && 'fixed'}`
-      }, allowInput ? /*#__PURE__*/React.createElement("input", {
-        name: name,
-        style: style,
-        type: "text",
-        placeholder: placeholder || enableTime ? 'mm/dd/yyyy h:mmA' : 'mm/dd/yyyy',
-        "data-input": true,
-        onBlur: this.onBlur,
-        onFocus: this.onFocus,
-        step: step,
-        onChange: this.onChangeInput,
-        value: this.state.value,
-        maxLength: 16,
-        ref: this.inputRef
-      }) : /*#__PURE__*/React.createElement("input", {
-        type: "text",
-        placeholder: placeholder || enableTime ? 'mm/dd/yyyy h:mmA' : 'mm/dd/yyyy',
-        "data-input": true
-      }), /*#__PURE__*/React.createElement("label", {
-        htmlFor: name,
-        style: labelStyle
-      }, label), /*#__PURE__*/React.createElement("div", {
-        className: `input-bottom ${error ? 'error' : this.state.status}`
-      })), /*#__PURE__*/React.createElement("button", {
-        type: "button",
-        className: "input-button",
-        title: "toggle",
-        "data-toggle": true
-      }, icon), /*#__PURE__*/React.createElement("div", {
-        className: `tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`
-      }, this.props.error, /*#__PURE__*/React.createElement("i", null)), /*#__PURE__*/React.createElement("div", {
-        className: `errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`
-      }, error)), enableTimeOption && /*#__PURE__*/React.createElement(Checkbox, {
-        name: `enableTime-${name}`,
-        label: enableTimeOptionLabel,
-        checked: enableTime,
-        onChange: this.toggleEnableTime
-      })))
-    );
+    return /*#__PURE__*/React.createElement(Flatpickr, {
+      className: `${enableTimeOption ? 'enableTimeOption' : ''} ${className || ''}`,
+      ref: this.flatpickrRef,
+      value: date,
+      onChange: this.onChange,
+      onOpen: this.onOpen,
+      onClose: this.onClose,
+      options: {
+        inline: inline,
+        allowInput: allowInput,
+        dateFormat: dateFormat,
+        enableTime: enableTimeOption ? true : enableTime,
+        minuteIncrement: 1,
+        minDate: minDate,
+        static: staticOption,
+        clickOpens: allowInput ? false : true,
+        wrap: true,
+        appendTo: modalEl,
+        utc: utc ? true : false
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      id: `flatpickr-${name}`,
+      className: `flatpickr ${enableTimeOption ? 'enableTimeOption' : ''}`
+    }, /*#__PURE__*/React.createElement(Fade, {
+      in: open && overlay,
+      duration: overlayDuration
+    }, /*#__PURE__*/React.createElement("div", {
+      onClick: this.closeCalendar,
+      className: `dropdown-cover ${display ? '' : 'displayNone'}`
+    })), /*#__PURE__*/React.createElement("div", {
+      className: `input-group ${error && 'error tooltip'}`
+    }, /*#__PURE__*/React.createElement("div", {
+      className: `floating-label ${this.state.status} ${fixedLabel && 'fixed'}`
+    }, allowInput ? /*#__PURE__*/React.createElement("input", {
+      name: name,
+      style: style,
+      type: "text",
+      placeholder: placeholder || enableTime ? 'mm/dd/yyyy h:mmA' : 'mm/dd/yyyy',
+      "data-input": true,
+      onBlur: this.onBlur,
+      onFocus: this.onFocus,
+      step: step,
+      onChange: this.onChangeInput,
+      value: this.state.value,
+      maxLength: 16,
+      ref: this.inputRef
+    }) : /*#__PURE__*/React.createElement("input", {
+      type: "text",
+      placeholder: placeholder || enableTime ? 'mm/dd/yyyy h:mmA' : 'mm/dd/yyyy',
+      "data-input": true
+    }), /*#__PURE__*/React.createElement("label", {
+      htmlFor: name,
+      style: labelStyle
+    }, label), /*#__PURE__*/React.createElement("div", {
+      className: `input-bottom ${error ? 'error' : this.state.status}`
+    })), /*#__PURE__*/React.createElement("button", {
+      type: "button",
+      className: "input-button",
+      title: "toggle",
+      "data-toggle": true
+    }, icon), /*#__PURE__*/React.createElement("div", {
+      className: `tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`
+    }, this.props.error, /*#__PURE__*/React.createElement("i", null)), /*#__PURE__*/React.createElement("div", {
+      className: `errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`
+    }, error)), enableTimeOption && /*#__PURE__*/React.createElement(Checkbox, {
+      name: `enableTime-${name}`,
+      label: enableTimeOptionLabel,
+      checked: enableTime,
+      onChange: this.toggleEnableTime
+    })));
   }
 
 }

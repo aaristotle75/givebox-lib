@@ -86,11 +86,10 @@ class Tabs extends Component {
       });
     }
 
-    return (/*#__PURE__*/React.createElement("div", {
-        style: this.props.panelStyle,
-        className: `panel`
-      }, items)
-    );
+    return /*#__PURE__*/React.createElement("div", {
+      style: this.props.panelStyle,
+      className: `panel`
+    }, items);
   }
 
   renderChildren() {
@@ -105,11 +104,10 @@ class Tabs extends Component {
       style,
       className
     } = this.props;
-    return (/*#__PURE__*/React.createElement("div", {
-        className: `tabs ${className}`,
-        style: style
-      }, this.renderTabPanel(), this.props.intro, this.renderChildren())
-    );
+    return /*#__PURE__*/React.createElement("div", {
+      className: `tabs ${className}`,
+      style: style
+    }, this.renderTabPanel(), this.props.intro, this.renderChildren());
   }
 
 }
@@ -123,8 +121,7 @@ Tabs.defaultProps = {
 };
 export default Tabs;
 export const Tab = props => {
-  return (/*#__PURE__*/React.createElement("div", {
-      className: `tab ${props.id !== props.selectedTab && 'displayNone'} ${props.className || ''}`
-    }, props.children)
-  );
+  return /*#__PURE__*/React.createElement("div", {
+    className: `tab ${props.id !== props.selectedTab && 'displayNone'} ${props.className || ''}`
+  }, props.children);
 };

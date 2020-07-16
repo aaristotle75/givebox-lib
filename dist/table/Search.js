@@ -108,29 +108,28 @@ class Search extends Component {
     } = this.state;
     const searchName = `${name}Search`;
     const defaultPlaceholder = 'Search';
-    return (/*#__PURE__*/React.createElement("div", {
-        style: style,
-        className: `search ${align}`
-      }, /*#__PURE__*/React.createElement(TextField, {
-        id: id || searchName,
-        name: searchName,
-        placeholder: placeholder ? placeholder : defaultPlaceholder,
-        onChange: this.onChange,
-        value: searchValue,
-        autoFocus: searchValue ? true : false
-      }, /*#__PURE__*/React.createElement("div", {
-        className: "input-button"
-      }, /*#__PURE__*/React.createElement("button", {
-        className: "searchBtn",
-        id: "searchBtn",
-        onClick: this.onSearch,
-        type: "button"
-      }, iconSearch), /*#__PURE__*/React.createElement("button", {
-        className: `searchResetBtn ${!this.state.resetSearch && 'displayNone'}`,
-        onClick: this.resetSearch,
-        type: "button"
-      }, iconClose))))
-    );
+    return /*#__PURE__*/React.createElement("div", {
+      style: style,
+      className: `search ${align}`
+    }, /*#__PURE__*/React.createElement(TextField, {
+      id: id || searchName,
+      name: searchName,
+      placeholder: placeholder ? placeholder : defaultPlaceholder,
+      onChange: this.onChange,
+      value: searchValue,
+      autoFocus: searchValue ? true : false
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "input-button"
+    }, /*#__PURE__*/React.createElement("button", {
+      className: "searchBtn",
+      id: "searchBtn",
+      onClick: this.onSearch,
+      type: "button"
+    }, iconSearch), /*#__PURE__*/React.createElement("button", {
+      className: `searchResetBtn ${!this.state.resetSearch && 'displayNone'}`,
+      onClick: this.resetSearch,
+      type: "button"
+    }, iconClose))));
   }
 
 }

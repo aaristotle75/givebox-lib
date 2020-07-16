@@ -32,29 +32,28 @@ export default class CalendarRange extends Component {
       range2Error
     } = this.props;
     const dateFormat = enableTime ? 'MM/DD/YYYY H:mm' : 'MM/DD/YYYY';
-    return (/*#__PURE__*/React.createElement("div", {
-        style: style,
-        className: `field-group`
-      }, /*#__PURE__*/React.createElement("div", {
-        className: "col"
-      }, /*#__PURE__*/React.createElement(CalendarField, {
-        enableTime: enableTime,
-        label: labelFrom || 'From',
-        error: range1Error,
-        name: nameFrom,
-        defaultValue: Moment.unix(range1Value).format(dateFormat),
-        onChangeCalendar: this.onChangeRange1
-      })), /*#__PURE__*/React.createElement("div", {
-        className: "col"
-      }, /*#__PURE__*/React.createElement(CalendarField, {
-        enableTime: enableTime,
-        label: labelTo || 'To',
-        error: range2Error,
-        name: nameTo,
-        defaultValue: Moment.unix(range2Value).format(dateFormat),
-        onChangeCalendar: this.onChangeRange2
-      })))
-    );
+    return /*#__PURE__*/React.createElement("div", {
+      style: style,
+      className: `field-group`
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "col"
+    }, /*#__PURE__*/React.createElement(CalendarField, {
+      enableTime: enableTime,
+      label: labelFrom || 'From',
+      error: range1Error,
+      name: nameFrom,
+      defaultValue: Moment.unix(range1Value).format(dateFormat),
+      onChangeCalendar: this.onChangeRange1
+    })), /*#__PURE__*/React.createElement("div", {
+      className: "col"
+    }, /*#__PURE__*/React.createElement(CalendarField, {
+      enableTime: enableTime,
+      label: labelTo || 'To',
+      error: range2Error,
+      name: nameTo,
+      defaultValue: Moment.unix(range2Value).format(dateFormat),
+      onChangeCalendar: this.onChangeRange2
+    })));
   }
 
 }

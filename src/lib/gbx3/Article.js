@@ -324,7 +324,6 @@ class Article extends React.Component {
 						<ResponsiveGridLayout
 							id='testGrid'
 							className="blockGridLayout"
-							layouts={layouts}
 							breakpoints={{desktop: 768, mobile: 767 }}
 							cols={{desktop: 12, mobile: 6}}
 							rowHeight={10}

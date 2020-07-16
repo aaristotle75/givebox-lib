@@ -32,16 +32,15 @@ class Select extends Component {
       selected,
       required
     } = this.props;
-    return (/*#__PURE__*/React.createElement("select", {
-        name: name,
-        className: className,
-        style: style,
-        onChange: onChange,
-        value: selected,
-        required: required,
-        autoComplete: "off"
-      }, this.listOptions())
-    );
+    return /*#__PURE__*/React.createElement("select", {
+      name: name,
+      className: className,
+      style: style,
+      onChange: onChange,
+      value: selected,
+      required: required,
+      autoComplete: "off"
+    }, this.listOptions());
   }
 
 }

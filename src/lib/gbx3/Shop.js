@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-	getResource,
-	sendResource,
 	updateInfo,
 	GBLink,
 	util,
@@ -11,6 +9,7 @@ import {
 	types
 } from '../';
 import AnimateHeight from 'react-animate-height';
+import { getResource } from '../api/helpers';
 
 class Shop extends Component {
 
@@ -25,9 +24,9 @@ class Shop extends Component {
 		this.timeout = false;
 	}
 
-	async componentDidMount() {
+	componentDidMount() {
 		const articles = util.getValue(this.props.articles, 'data', []);
-		const orgID = await this.props.orgID;
+		const orgID = this.props.orgID;
 		if (orgID && util.isEmpty(articles)) {
 			this.props.getResource('orgArticles', {
 				customName: 'shopArticles',
@@ -184,7 +183,6 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
-	sendResource,
 	getResource,
 	updateInfo
 })(Shop);

@@ -35,25 +35,22 @@ export class Alert extends Component {
   renderAlert(alert, msg) {
     switch (alert) {
       case 'error':
-        return (/*#__PURE__*/React.createElement(Error, {
-            msg: msg,
-            icon: this.props.iconError
-          })
-        );
+        return /*#__PURE__*/React.createElement(Error, {
+          msg: msg,
+          icon: this.props.iconError
+        });
 
       case 'success':
-        return (/*#__PURE__*/React.createElement(Success, {
-            msg: msg,
-            icon: this.props.iconSuccess
-          })
-        );
+        return /*#__PURE__*/React.createElement(Success, {
+          msg: msg,
+          icon: this.props.iconSuccess
+        });
 
       case 'warning':
-        return (/*#__PURE__*/React.createElement(Warning, {
-            msg: msg,
-            icon: this.props.iconWarning
-          })
-        );
+        return /*#__PURE__*/React.createElement(Warning, {
+          msg: msg,
+          icon: this.props.iconWarning
+        });
       // no default
     }
   }
@@ -74,18 +71,17 @@ export class Alert extends Component {
       iconClose
     } = this.props;
     const showAlert = display && this.state.display !== 'hide' ? true : false;
-    return (/*#__PURE__*/React.createElement(CSSTransition, {
-        in: showAlert ? true : false,
-        timeout: 300,
-        classNames: "alertMsg",
-        unmountOnExit: true
-      }, /*#__PURE__*/React.createElement("div", {
-        className: "alertMsg"
-      }, closeBtn && /*#__PURE__*/React.createElement(GBLink, {
-        onClick: this.close,
-        className: "close"
-      }, iconClose), this.renderAlert(alert, msg)))
-    );
+    return /*#__PURE__*/React.createElement(CSSTransition, {
+      in: showAlert ? true : false,
+      timeout: 300,
+      classNames: "alertMsg",
+      unmountOnExit: true
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "alertMsg"
+    }, closeBtn && /*#__PURE__*/React.createElement(GBLink, {
+      onClick: this.close,
+      className: "close"
+    }, iconClose), this.renderAlert(alert, msg)));
   }
 
 }
@@ -107,32 +103,29 @@ export const Error = ({
   msg,
   icon
 }) => {
-  return (/*#__PURE__*/React.createElement("div", {
-      className: `error`
-    }, /*#__PURE__*/React.createElement("span", {
-      className: "msgText"
-    }, icon, " ", msg || msgs.error))
-  );
+  return /*#__PURE__*/React.createElement("div", {
+    className: `error`
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "msgText"
+  }, icon, " ", msg || msgs.error));
 };
 export const Success = ({
   msg,
   icon
 }) => {
-  return (/*#__PURE__*/React.createElement("div", {
-      className: `success`
-    }, /*#__PURE__*/React.createElement("span", {
-      className: "msgText"
-    }, icon, " ", msg))
-  );
+  return /*#__PURE__*/React.createElement("div", {
+    className: `success`
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "msgText"
+  }, icon, " ", msg));
 };
 export const Warning = ({
   msg,
   icon
 }) => {
-  return (/*#__PURE__*/React.createElement("div", {
-      className: `warning`
-    }, /*#__PURE__*/React.createElement("span", {
-      className: "msgText"
-    }, icon, " ", msg))
-  );
+  return /*#__PURE__*/React.createElement("div", {
+    className: `warning`
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "msgText"
+  }, icon, " ", msg));
 };

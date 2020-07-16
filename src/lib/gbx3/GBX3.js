@@ -5,8 +5,6 @@ import Admin from './admin/Admin';
 import {
 	util,
 	Loader,
-	getResource,
-	sendResource,
 	setCustomProp,
 	setLoading,
 	clearGBX3,
@@ -15,16 +13,17 @@ import {
 	loadGBX3,
 	setStyle
 } from '../';
-
+import { sendResource } from '../api/helpers';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import '../styles/gbx3.scss';
 import '../styles/gbx3modal.scss';
 import reactReferer from 'react-referer';
-import { loadReCaptcha } from 'react-recaptcha-v3';
+import { loadRecaptcha } from 'react-recaptcha-v3';
 import has from 'has';
 
 const RECAPTCHA_KEY = process.env.REACT_APP_RECAPTCHA_KEY;
+const ENV = process.env.REACT_APP_ENV;
 
 class GBX3 extends React.Component {
 
@@ -145,7 +144,7 @@ class GBX3 extends React.Component {
 		const bodyEl = document.getElementsByTagName('body')[0];
 		if (!preview) {
 			bodyEl.classList.add('live');
-			loadReCaptcha(RECAPTCHA_KEY);
+			loadRecaptcha(RECAPTCHA_KEY);
 		} else {
 			bodyEl.classList.add('preview');
 		}
@@ -163,7 +162,7 @@ class GBX3 extends React.Component {
 			ebEmail
 		} = info;
 
-		if (!preview) {
+		if (!preview && ENV === 'production') {
 			const data = {
 				type: 'details',
 				articleID,
@@ -273,7 +272,6 @@ function mapStateToProps(state, props) {
 export default connect(mapStateToProps, {
 	loadGBX3,
 	setStyle,
-	getResource,
 	sendResource,
 	setCustomProp,
 	setLoading,

@@ -94,32 +94,31 @@ class ActionsMenu extends Component {
       display,
       direction
     } = this.state;
-    return (/*#__PURE__*/React.createElement("div", {
-        className: `actionsMenu ${className || ''}`,
-        style: style
-      }, /*#__PURE__*/React.createElement(Fade, {
-        in: open && overlay,
-        duration: overlayDuration
-      }, /*#__PURE__*/React.createElement("div", {
-        onClick: this.closeMenu,
-        className: `dropdown-cover ${display ? '' : 'displayNone'}`
-      })), /*#__PURE__*/React.createElement("button", {
-        disabled: !!util.isEmpty(this.props.options),
-        className: "menuLabel",
-        type: "button",
-        onClick: open ? this.closeMenu : this.openMenu
-      }, !util.isEmpty(this.props.options) ? label : 'No Actions', /*#__PURE__*/React.createElement("span", {
-        className: `${util.isEmpty(this.props.options) && 'displayNone'}`
-      }, open ? iconOpened : iconClosed)), /*#__PURE__*/React.createElement("div", {
-        ref: this.dropdownRef,
-        className: `${open ? 'opened' : ''} actionsMenu-content ${this.props.direction || direction}`
-      }, /*#__PURE__*/React.createElement(AnimateHeight, {
-        duration: 200,
-        height: open ? 'auto' : 0
-      }, /*#__PURE__*/React.createElement("i", null), /*#__PURE__*/React.createElement("div", {
-        className: "actionsMenu-text"
-      }, this.listOptions()))))
-    );
+    return /*#__PURE__*/React.createElement("div", {
+      className: `actionsMenu ${className || ''}`,
+      style: style
+    }, /*#__PURE__*/React.createElement(Fade, {
+      in: open && overlay,
+      duration: overlayDuration
+    }, /*#__PURE__*/React.createElement("div", {
+      onClick: this.closeMenu,
+      className: `dropdown-cover ${display ? '' : 'displayNone'}`
+    })), /*#__PURE__*/React.createElement("button", {
+      disabled: !!util.isEmpty(this.props.options),
+      className: "menuLabel",
+      type: "button",
+      onClick: open ? this.closeMenu : this.openMenu
+    }, !util.isEmpty(this.props.options) ? label : 'No Actions', /*#__PURE__*/React.createElement("span", {
+      className: `${util.isEmpty(this.props.options) && 'displayNone'}`
+    }, open ? iconOpened : iconClosed)), /*#__PURE__*/React.createElement("div", {
+      ref: this.dropdownRef,
+      className: `${open ? 'opened' : ''} actionsMenu-content ${this.props.direction || direction}`
+    }, /*#__PURE__*/React.createElement(AnimateHeight, {
+      duration: 200,
+      height: open ? 'auto' : 0
+    }, /*#__PURE__*/React.createElement("i", null), /*#__PURE__*/React.createElement("div", {
+      className: "actionsMenu-text"
+    }, this.listOptions()))));
   }
 
 }

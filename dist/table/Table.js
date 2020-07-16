@@ -73,48 +73,44 @@ class Table extends Component {
   }
 
   renderSearch() {
-    return (/*#__PURE__*/React.createElement(Search, {
-        name: this.props.name,
-        customName: this.props.customName,
-        placeholder: this.props.searchPlaceholder,
-        align: this.props.searchAlign,
-        style: this.props.searchStyle
-      })
-    );
+    return /*#__PURE__*/React.createElement(Search, {
+      name: this.props.name,
+      customName: this.props.customName,
+      placeholder: this.props.searchPlaceholder,
+      align: this.props.searchAlign,
+      style: this.props.searchStyle
+    });
   }
 
   renderMaxRecords(direction) {
-    return (/*#__PURE__*/React.createElement(MaxRecords, {
-        name: this.props.name,
-        customName: this.props.customName,
-        style: this.props.maxRecordsStyle,
-        textStyle: this.props.maxRecordsTextStyle,
-        align: this.props.maxRecordsAlign,
-        records: this.props.maxRecords,
-        direction: direction
-      })
-    );
+    return /*#__PURE__*/React.createElement(MaxRecords, {
+      name: this.props.name,
+      customName: this.props.customName,
+      style: this.props.maxRecordsStyle,
+      textStyle: this.props.maxRecordsTextStyle,
+      align: this.props.maxRecordsAlign,
+      records: this.props.maxRecords,
+      direction: direction
+    });
   }
 
   renderPagination() {
-    return (/*#__PURE__*/React.createElement(Paginate, {
-        name: this.props.name,
-        customName: this.props.customName,
-        align: this.props.paginateAlign,
-        nextIcon: this.props.nextIcon,
-        previousIcon: this.props.previousIcon
-      })
-    );
+    return /*#__PURE__*/React.createElement(Paginate, {
+      name: this.props.name,
+      customName: this.props.customName,
+      align: this.props.paginateAlign,
+      nextIcon: this.props.nextIcon,
+      previousIcon: this.props.previousIcon
+    });
   }
 
   renderExport() {
-    return (/*#__PURE__*/React.createElement(Export, {
-        name: this.props.name,
-        customName: this.props.customName,
-        align: this.props.exportAlign,
-        desc: this.props.exportDesc
-      })
-    );
+    return /*#__PURE__*/React.createElement(Export, {
+      name: this.props.name,
+      customName: this.props.customName,
+      align: this.props.exportAlign,
+      desc: this.props.exportDesc
+    });
   }
 
   render() {
@@ -142,33 +138,32 @@ class Table extends Component {
     const headers = tableData.headers;
     const rows = tableData.rows;
     const footer = tableData.footer;
-    return (/*#__PURE__*/React.createElement("div", {
-        className: `givebox-lib-table ${className || ''}`
-      }, (searchDisplay === 'top' || searchDisplay === 'both') && this.renderSearch(), (exportDisplay === 'top' || exportDisplay === 'both') && this.renderExport(), filters && /*#__PURE__*/React.createElement(Filter, {
-        name: name,
-        options: filters
-      }), (paginationDisplay === 'top' || paginationDisplay === 'both') && this.renderPagination(), (maxRecordsDisplay === 'top' || maxRecordsDisplay === 'both') && this.renderMaxRecords(), /*#__PURE__*/React.createElement("table", {
-        style: this.props.tableStyle
-      }, showHeader && /*#__PURE__*/React.createElement(TableHead, {
-        headers: headers,
-        sortColumn: this.sortColumn,
-        sort: sort,
-        iconSortAsc: iconSortAsc,
-        iconSortDesc: iconSortDesc,
-        order: order
-      }), /*#__PURE__*/React.createElement(TableBody, {
-        rows: rows,
-        length: headers.length,
-        detailsLink: this.detailsLink,
-        iconDetailsExpand: iconDetailsExpand,
-        iconDetailsCollapse: iconDetailsCollapse,
-        detailsTitle: detailsTitle,
-        defaultOpen: defaultOpen,
-        noRecordsText: this.props.noRecordsText
-      }), showFooter && /*#__PURE__*/React.createElement(TableFoot, {
-        footer: footer
-      })), (searchDisplay === 'bottom' || searchDisplay === 'both') && this.renderSearch(), (exportDisplay === 'bottom' || exportDisplay === 'both') && this.renderExport(), (paginationDisplay === 'bottom' || paginationDisplay === 'both') && this.renderPagination(), (maxRecordsDisplay === 'bottom' || maxRecordsDisplay === 'both') && this.renderMaxRecords('top'))
-    );
+    return /*#__PURE__*/React.createElement("div", {
+      className: `givebox-lib-table ${className || ''}`
+    }, (searchDisplay === 'top' || searchDisplay === 'both') && this.renderSearch(), (exportDisplay === 'top' || exportDisplay === 'both') && this.renderExport(), filters && /*#__PURE__*/React.createElement(Filter, {
+      name: name,
+      options: filters
+    }), (paginationDisplay === 'top' || paginationDisplay === 'both') && this.renderPagination(), (maxRecordsDisplay === 'top' || maxRecordsDisplay === 'both') && this.renderMaxRecords(), /*#__PURE__*/React.createElement("table", {
+      style: this.props.tableStyle
+    }, showHeader && /*#__PURE__*/React.createElement(TableHead, {
+      headers: headers,
+      sortColumn: this.sortColumn,
+      sort: sort,
+      iconSortAsc: iconSortAsc,
+      iconSortDesc: iconSortDesc,
+      order: order
+    }), /*#__PURE__*/React.createElement(TableBody, {
+      rows: rows,
+      length: headers.length,
+      detailsLink: this.detailsLink,
+      iconDetailsExpand: iconDetailsExpand,
+      iconDetailsCollapse: iconDetailsCollapse,
+      detailsTitle: detailsTitle,
+      defaultOpen: defaultOpen,
+      noRecordsText: this.props.noRecordsText
+    }), showFooter && /*#__PURE__*/React.createElement(TableFoot, {
+      footer: footer
+    })), (searchDisplay === 'bottom' || searchDisplay === 'both') && this.renderSearch(), (exportDisplay === 'bottom' || exportDisplay === 'both') && this.renderExport(), (paginationDisplay === 'bottom' || paginationDisplay === 'both') && this.renderPagination(), (maxRecordsDisplay === 'bottom' || maxRecordsDisplay === 'both') && this.renderMaxRecords('top'));
   }
 
 }
@@ -250,8 +245,7 @@ const TableHead = ({
     });
   }
 
-  return (/*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, items))
-  );
+  return /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, items));
 };
 
 class TableBody extends Component {
@@ -384,8 +378,7 @@ class TableBody extends Component {
   }
 
   render() {
-    return (/*#__PURE__*/React.createElement("tbody", null, this.renderItems())
-    );
+    return /*#__PURE__*/React.createElement("tbody", null, this.renderItems());
   }
 
 }
@@ -411,6 +404,5 @@ const TableFoot = ({
     });
   }
 
-  return (/*#__PURE__*/React.createElement("tfoot", null, items)
-  );
+  return /*#__PURE__*/React.createElement("tfoot", null, items);
 };

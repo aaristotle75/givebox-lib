@@ -93,56 +93,55 @@ class TextField extends Component {
       background: status === 'active' ? color : ''
     };
     const readOnlyText = this.props.readOnlyText || `${label} is not editable`;
-    return (/*#__PURE__*/React.createElement("div", {
-        style: style,
-        className: `input-group ${type === 'hidden' ? 'input-hidden' : ''} ${className || ''} textfield-group ${readOnly ? 'readOnly tooltip' : ''} ${error ? 'error tooltip' : ''} ${type === 'hidden' && 'hidden'} ${money ? 'money-group' : ''}`
-      }, /*#__PURE__*/React.createElement("div", {
-        className: `floating-label ${this.state.status} ${fixedLabel && 'fixed'}`
-      }, money && /*#__PURE__*/React.createElement("div", {
-        style: moneyStyle,
-        className: `moneyAmount ${value ? 'active' : 'noValue'}`
-      }, /*#__PURE__*/React.createElement("span", {
-        className: "symbol"
-      }, symbol)), /*#__PURE__*/React.createElement("input", {
-        autoFocus: autoFocus,
-        id: id || name,
-        ref: inputRef || this.inputRef,
-        name: name,
-        type: type,
-        placeholder: placeholder,
-        required: type === 'hidden' ? false : required,
-        readOnly: readOnly,
-        onChange: this.props.onChange,
-        onBlur: this.onBlur,
-        onFocus: this.onFocus,
-        autoComplete: autoComplete,
-        value: value,
-        maxLength: maxLength,
-        style: inputStyle,
-        inputMode: inputMode
-      }), (customLabel || label) && /*#__PURE__*/React.createElement("label", {
-        style: labelStyle,
-        htmlFor: name
-      }, customLabel || label), /*#__PURE__*/React.createElement("div", {
-        style: inputBottomStyle,
-        className: `input-bottom ${error ? 'error' : this.state.status}`
-      }), this.props.children, strength && /*#__PURE__*/React.createElement(PasswordStrength, {
-        password: value,
-        error: error
-      }), /*#__PURE__*/React.createElement("div", {
-        className: "customLink"
-      }, this.props.customLink) || '', count && type !== 'password' && type !== 'hidden' && /*#__PURE__*/React.createElement(Fade, {
-        in: this.state.status === 'active' && value ? true : false,
-        duration: 200
-      }, /*#__PURE__*/React.createElement(CharacterCount, {
-        max: maxLength,
-        count: value.length
-      }))), /*#__PURE__*/React.createElement("div", {
-        className: `tooltipTop ${(errorType !== 'tooltip' || strength) && 'displayNone'}`
-      }, error, readOnly ? readOnlyText : '', /*#__PURE__*/React.createElement("i", null)), /*#__PURE__*/React.createElement("div", {
-        className: `errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`
-      }, error))
-    );
+    return /*#__PURE__*/React.createElement("div", {
+      style: style,
+      className: `input-group ${type === 'hidden' ? 'input-hidden' : ''} ${className || ''} textfield-group ${readOnly ? 'readOnly tooltip' : ''} ${error ? 'error tooltip' : ''} ${type === 'hidden' && 'hidden'} ${money ? 'money-group' : ''}`
+    }, /*#__PURE__*/React.createElement("div", {
+      className: `floating-label ${this.state.status} ${fixedLabel && 'fixed'}`
+    }, money && /*#__PURE__*/React.createElement("div", {
+      style: moneyStyle,
+      className: `moneyAmount ${value ? 'active' : 'noValue'}`
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "symbol"
+    }, symbol)), /*#__PURE__*/React.createElement("input", {
+      autoFocus: autoFocus,
+      id: id || name,
+      ref: inputRef || this.inputRef,
+      name: name,
+      type: type,
+      placeholder: placeholder,
+      required: type === 'hidden' ? false : required,
+      readOnly: readOnly,
+      onChange: this.props.onChange,
+      onBlur: this.onBlur,
+      onFocus: this.onFocus,
+      autoComplete: autoComplete,
+      value: value,
+      maxLength: maxLength,
+      style: inputStyle,
+      inputMode: inputMode
+    }), (customLabel || label) && /*#__PURE__*/React.createElement("label", {
+      style: labelStyle,
+      htmlFor: name
+    }, customLabel || label), /*#__PURE__*/React.createElement("div", {
+      style: inputBottomStyle,
+      className: `input-bottom ${error ? 'error' : this.state.status}`
+    }), this.props.children, strength && /*#__PURE__*/React.createElement(PasswordStrength, {
+      password: value,
+      error: error
+    }), /*#__PURE__*/React.createElement("div", {
+      className: "customLink"
+    }, this.props.customLink) || '', count && type !== 'password' && type !== 'hidden' && /*#__PURE__*/React.createElement(Fade, {
+      in: this.state.status === 'active' && value ? true : false,
+      duration: 200
+    }, /*#__PURE__*/React.createElement(CharacterCount, {
+      max: maxLength,
+      count: value.length
+    }))), /*#__PURE__*/React.createElement("div", {
+      className: `tooltipTop ${(errorType !== 'tooltip' || strength) && 'displayNone'}`
+    }, error, readOnly ? readOnlyText : '', /*#__PURE__*/React.createElement("i", null)), /*#__PURE__*/React.createElement("div", {
+      className: `errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`
+    }, error));
   }
 
 }

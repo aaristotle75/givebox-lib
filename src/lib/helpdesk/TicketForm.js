@@ -8,7 +8,7 @@ import {
 	Fade,
 	GBLink
 } from '../';
-import { loadReCaptcha } from 'react-recaptcha-v3';
+import { loadRecaptcha } from 'react-recaptcha-v3';
 import Attachment from './Attachment';
 import { searchContact, createAccount, createContact, createTicket, createAttachment } from './zohoDeskAPI';
 
@@ -31,7 +31,7 @@ class TicketFormClass extends Component {
 	}
 
 	componentDidMount() {
-		//loadReCaptcha(RECAPTCHA_KEY, () => console.log('callback'));
+		loadRecaptcha(RECAPTCHA_KEY, () => console.log('callback'));
 	}
 
 	async processForm(fields) {

@@ -233,38 +233,37 @@ class ContentEditor extends Component {
       }, "Confirm"));
     }
 
-    return (/*#__PURE__*/React.createElement("div", {
-        className: "RichEditor-root"
-      }, wysiwyg === 'display' ? /*#__PURE__*/React.createElement("div", {
-        className: "wysiwyg"
-      }, /*#__PURE__*/React.createElement(BlockStyleControls, {
-        editorState: editorState,
-        onToggle: this.toggleBlockType,
-        color: color
-      }), /*#__PURE__*/React.createElement(InlineStyleControls, {
-        editorState: editorState,
-        onToggle: this.toggleInlineStyle,
-        promptForLink: this.promptForLink,
-        removeLink: this.removeLink,
-        allowLink: allowLink,
-        color: color
-      })) : '', urlInput, /*#__PURE__*/React.createElement("div", {
-        className: className,
-        onClick: this.focus
-      }, /*#__PURE__*/React.createElement(Editor, {
-        blockStyleFn: getBlockStyle,
-        customStyleMap: styleMap,
-        editorState: editorState,
-        handleKeyCommand: this.handleKeyCommand,
-        onChange: this.onChange,
-        onBlur: this.onBlur,
-        onFocus: this.onFocus,
-        onTab: this.onTab,
-        placeholder: placeholder ? placeholder : 'Enter text...',
-        ref: this.inputRef,
-        spellCheck: true
-      })))
-    );
+    return /*#__PURE__*/React.createElement("div", {
+      className: "RichEditor-root"
+    }, wysiwyg === 'display' ? /*#__PURE__*/React.createElement("div", {
+      className: "wysiwyg"
+    }, /*#__PURE__*/React.createElement(BlockStyleControls, {
+      editorState: editorState,
+      onToggle: this.toggleBlockType,
+      color: color
+    }), /*#__PURE__*/React.createElement(InlineStyleControls, {
+      editorState: editorState,
+      onToggle: this.toggleInlineStyle,
+      promptForLink: this.promptForLink,
+      removeLink: this.removeLink,
+      allowLink: allowLink,
+      color: color
+    })) : '', urlInput, /*#__PURE__*/React.createElement("div", {
+      className: className,
+      onClick: this.focus
+    }, /*#__PURE__*/React.createElement(Editor, {
+      blockStyleFn: getBlockStyle,
+      customStyleMap: styleMap,
+      editorState: editorState,
+      handleKeyCommand: this.handleKeyCommand,
+      onChange: this.onChange,
+      onBlur: this.onBlur,
+      onFocus: this.onFocus,
+      onTab: this.onTab,
+      placeholder: placeholder ? placeholder : 'Enter text...',
+      ref: this.inputRef,
+      spellCheck: true
+    })));
   }
 
 }
@@ -309,14 +308,13 @@ class StyleButton extends React.Component {
       className += ' RichEditor-activeButton';
     }
 
-    return (/*#__PURE__*/React.createElement("span", {
-        style: {
-          color: this.props.color
-        },
-        className: className,
-        onMouseDown: this.onToggle
-      }, this.props.label)
-    );
+    return /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: this.props.color
+      },
+      className: className,
+      onMouseDown: this.onToggle
+    }, this.props.label);
   }
 
 }
@@ -341,17 +339,16 @@ const BlockStyleControls = props => {
   } = props;
   const selection = editorState.getSelection();
   const blockType = editorState.getCurrentContent().getBlockForKey(selection.getStartKey()).getType();
-  return (/*#__PURE__*/React.createElement("div", {
-      className: "RichEditor-controls"
-    }, BLOCK_TYPES.map(type => /*#__PURE__*/React.createElement(StyleButton, {
-      key: type.label,
-      active: type.style === blockType,
-      label: type.label,
-      onToggle: props.onToggle,
-      style: type.style,
-      color: props.color
-    })))
-  );
+  return /*#__PURE__*/React.createElement("div", {
+    className: "RichEditor-controls"
+  }, BLOCK_TYPES.map(type => /*#__PURE__*/React.createElement(StyleButton, {
+    key: type.label,
+    active: type.style === blockType,
+    label: type.label,
+    onToggle: props.onToggle,
+    style: type.style,
+    color: props.color
+  })));
 };
 
 const INLINE_STYLES = [{
@@ -367,23 +364,22 @@ const INLINE_STYLES = [{
 
 const InlineStyleControls = props => {
   const currentStyle = props.editorState.getCurrentInlineStyle();
-  return (/*#__PURE__*/React.createElement("div", {
-      className: "RichEditor-controls"
-    }, props.allowLink ? /*#__PURE__*/React.createElement("span", {
-      onMouseDown: props.promptForLink,
-      className: "RichEditor-styleButton"
-    }, "Add Link") : '', props.allowLink ? /*#__PURE__*/React.createElement("span", {
-      onMouseDown: props.removeLink,
-      className: "RichEditor-styleButton"
-    }, "Remove Link") : '', INLINE_STYLES.map(type => /*#__PURE__*/React.createElement(StyleButton, {
-      key: type.label,
-      active: currentStyle.has(type.style),
-      label: type.label,
-      onToggle: props.onToggle,
-      style: type.style,
-      color: props.color
-    })))
-  );
+  return /*#__PURE__*/React.createElement("div", {
+    className: "RichEditor-controls"
+  }, props.allowLink ? /*#__PURE__*/React.createElement("span", {
+    onMouseDown: props.promptForLink,
+    className: "RichEditor-styleButton"
+  }, "Add Link") : '', props.allowLink ? /*#__PURE__*/React.createElement("span", {
+    onMouseDown: props.removeLink,
+    className: "RichEditor-styleButton"
+  }, "Remove Link") : '', INLINE_STYLES.map(type => /*#__PURE__*/React.createElement(StyleButton, {
+    key: type.label,
+    active: currentStyle.has(type.style),
+    label: type.label,
+    onToggle: props.onToggle,
+    style: type.style,
+    color: props.color
+  })));
 };
 
 export default ContentEditor;
@@ -399,8 +395,7 @@ const Link = props => {
   const {
     url
   } = props.contentState.getEntity(props.entityKey).getData();
-  return (/*#__PURE__*/React.createElement("a", {
-      href: url
-    }, props.children)
-  );
+  return /*#__PURE__*/React.createElement("a", {
+    href: url
+  }, props.children);
 };

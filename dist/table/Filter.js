@@ -59,30 +59,29 @@ class Filter extends Component {
     const {
       open
     } = this.state;
-    return (/*#__PURE__*/React.createElement("div", {
-        className: "filterWrapper"
-      }, /*#__PURE__*/React.createElement("button", {
-        className: "link",
-        type: "button",
-        onClick: open ? this.closeMenu : this.openMenu
-      }, /*#__PURE__*/React.createElement("span", null, label, open ? iconOpened : iconClosed)), /*#__PURE__*/React.createElement("div", {
-        className: "filter",
-        style: style
-      }, /*#__PURE__*/React.createElement(AnimateHeight, {
-        duration: 500,
-        height: this.state.open ? 'auto' : 0
-      }, /*#__PURE__*/React.createElement(Form, {
-        name: name
-      }, /*#__PURE__*/React.createElement(FilterForm, {
-        allowDisabled: allowDisabled,
-        closeMenu: this.closeMenu,
-        name: name,
-        customName: customName,
-        options: options,
-        alwaysFilter: alwaysFilter,
-        callback: callback
-      })))))
-    );
+    return /*#__PURE__*/React.createElement("div", {
+      className: "filterWrapper"
+    }, /*#__PURE__*/React.createElement("button", {
+      className: "link",
+      type: "button",
+      onClick: open ? this.closeMenu : this.openMenu
+    }, /*#__PURE__*/React.createElement("span", null, label, open ? iconOpened : iconClosed)), /*#__PURE__*/React.createElement("div", {
+      className: "filter",
+      style: style
+    }, /*#__PURE__*/React.createElement(AnimateHeight, {
+      duration: 500,
+      height: this.state.open ? 'auto' : 0
+    }, /*#__PURE__*/React.createElement(Form, {
+      name: name
+    }, /*#__PURE__*/React.createElement(FilterForm, {
+      allowDisabled: allowDisabled,
+      closeMenu: this.closeMenu,
+      name: name,
+      customName: customName,
+      options: options,
+      alwaysFilter: alwaysFilter,
+      callback: callback
+    })))));
   }
 
 }

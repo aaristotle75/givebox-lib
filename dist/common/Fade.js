@@ -15,15 +15,14 @@ const Fade = props => {
       opacity: 1
     }
   };
-  return (/*#__PURE__*/React.createElement(Transition, {
-      in: props.in,
-      timeout: duration
-    }, state => /*#__PURE__*/React.createElement("div", {
-      style: { ...defaultStyle,
-        ...transitionStyles[state]
-      }
-    }, props.children))
-  );
+  return /*#__PURE__*/React.createElement(Transition, {
+    in: props.in,
+    timeout: duration
+  }, state => /*#__PURE__*/React.createElement("div", {
+    style: { ...defaultStyle,
+      ...transitionStyles[state]
+    }
+  }, props.children));
 };
 
 export default Fade;

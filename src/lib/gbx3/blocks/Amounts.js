@@ -10,12 +10,12 @@ import {
 	Tabs,
 	Tab,
 	types,
-	sendResource,
 	updateData,
 	saveGBX3,
 	Fade,
 	updateCart
 } from '../../';
+import { sendResource } from '../../api/helpers';
 import AmountsEdit from './amounts/AmountsEdit';
 import AmountsList from './amounts/AmountsList';
 import TicketsList from './amounts/TicketsList';

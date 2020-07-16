@@ -59,37 +59,36 @@ class Choice extends Component {
     let id = type === 'radio' ? `${value}-${type}` : `${name}-${type}`;
     let isChecked = checked;
     if (type === 'radio') isChecked = checked === value ? true : false;
-    return (/*#__PURE__*/React.createElement("div", {
-        style: style,
-        className: `choice-group ${className || ''} ${type}-group  ${error ? 'error tooltip' : ''}`
-      }, useIcon && type !== 'radio' ? /*#__PURE__*/React.createElement(GBLink, {
-        style: {
-          color: !error ? color : ''
-        },
-        onClick: () => this.onChangeLink(name, value)
-      }, isChecked ? /*#__PURE__*/React.createElement("span", {
-        className: "icon icon-check-square"
-      }) : /*#__PURE__*/React.createElement("span", {
-        className: "icon icon-square"
-      })) : /*#__PURE__*/React.createElement("input", {
-        type: type,
-        name: name,
-        onChange: () => this.onChange(name, value),
-        checked: isChecked,
-        className: type,
-        id: id,
-        value: value || checked
-      }), /*#__PURE__*/React.createElement("label", {
-        htmlFor: id
-      }), label && /*#__PURE__*/React.createElement("label", {
-        className: "label",
-        onClick: () => this.onChange(name, value)
-      }, label), /*#__PURE__*/React.createElement("div", {
-        className: `tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`
-      }, this.props.error, /*#__PURE__*/React.createElement("i", null)), /*#__PURE__*/React.createElement("div", {
-        className: `errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`
-      }, error))
-    );
+    return /*#__PURE__*/React.createElement("div", {
+      style: style,
+      className: `choice-group ${className || ''} ${type}-group  ${error ? 'error tooltip' : ''}`
+    }, useIcon && type !== 'radio' ? /*#__PURE__*/React.createElement(GBLink, {
+      style: {
+        color: !error ? color : ''
+      },
+      onClick: () => this.onChangeLink(name, value)
+    }, isChecked ? /*#__PURE__*/React.createElement("span", {
+      className: "icon icon-check-square"
+    }) : /*#__PURE__*/React.createElement("span", {
+      className: "icon icon-square"
+    })) : /*#__PURE__*/React.createElement("input", {
+      type: type,
+      name: name,
+      onChange: () => this.onChange(name, value),
+      checked: isChecked,
+      className: type,
+      id: id,
+      value: value || checked
+    }), /*#__PURE__*/React.createElement("label", {
+      htmlFor: id
+    }), label && /*#__PURE__*/React.createElement("label", {
+      className: "label",
+      onClick: () => this.onChange(name, value)
+    }, label), /*#__PURE__*/React.createElement("div", {
+      className: `tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`
+    }, this.props.error, /*#__PURE__*/React.createElement("i", null)), /*#__PURE__*/React.createElement("div", {
+      className: `errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`
+    }, error));
   }
 
 }

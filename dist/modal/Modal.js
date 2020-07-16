@@ -138,15 +138,13 @@ class Modal extends Component {
     }
 
     if (!isEmpty(actions)) {
-      return (/*#__PURE__*/React.createElement("div", {
-          className: "actionBtnsContainer"
-        }, /*#__PURE__*/React.createElement("div", {
-          className: "actionBtns"
-        }, actions))
-      );
+      return /*#__PURE__*/React.createElement("div", {
+        className: "actionBtnsContainer"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "actionBtns"
+      }, actions));
     } else {
-      return (/*#__PURE__*/React.createElement("div", null)
-      );
+      return /*#__PURE__*/React.createElement("div", null);
     }
   }
 
@@ -325,27 +323,26 @@ class Modal extends Component {
     }))), /*#__PURE__*/React.createElement("div", {
       className: "modalBottom"
     }));
-    return (/*#__PURE__*/React.createElement("div", {
-        className: `modal ${draggable ? 'draggable' : ''}`
-      }, /*#__PURE__*/React.createElement("div", {
-        ref: this.modalRef,
-        onClick: () => this.closeModal(closeCallback, 'ok', this.props.disallowBgClose ? false : true),
-        id: `modalOverlay-${identifier}`,
-        className: `modalOverlay`,
-        style: prefix({ ...overlayStyle,
-          ...modalOverlayStyle
-        })
-      }, mobile && buttonGroup ? /*#__PURE__*/React.createElement("div", {
-        className: "modalButtonGroup"
-      }, buttonGroup, closeBtn && /*#__PURE__*/React.createElement("button", {
-        style: closeBtnStyle,
-        className: "modalCloseBtn",
-        onClick: () => this.closeModal(closeCallback, 'ok')
-      }, iconClose)) : /*#__PURE__*/React.createElement(React.Fragment, null), draggable && !mobile ? /*#__PURE__*/React.createElement(Draggable, {
-        allowAnyClick: false,
-        handle: '.handle'
-      }, modalContent) : modalContent))
-    );
+    return /*#__PURE__*/React.createElement("div", {
+      className: `modal ${draggable ? 'draggable' : ''}`
+    }, /*#__PURE__*/React.createElement("div", {
+      ref: this.modalRef,
+      onClick: () => this.closeModal(closeCallback, 'ok', this.props.disallowBgClose ? false : true),
+      id: `modalOverlay-${identifier}`,
+      className: `modalOverlay`,
+      style: prefix({ ...overlayStyle,
+        ...modalOverlayStyle
+      })
+    }, mobile && buttonGroup ? /*#__PURE__*/React.createElement("div", {
+      className: "modalButtonGroup"
+    }, buttonGroup, closeBtn && /*#__PURE__*/React.createElement("button", {
+      style: closeBtnStyle,
+      className: "modalCloseBtn",
+      onClick: () => this.closeModal(closeCallback, 'ok')
+    }, iconClose)) : /*#__PURE__*/React.createElement(React.Fragment, null), draggable && !mobile ? /*#__PURE__*/React.createElement(Draggable, {
+      allowAnyClick: false,
+      handle: '.handle'
+    }, modalContent) : modalContent));
   }
 
 }

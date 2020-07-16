@@ -104,46 +104,45 @@ class CreditCard extends Component {
       background: status === 'active' ? color : ''
     }; //const hideCardsAccepted = value ? cardType !== 'default' ? true : false : false;
 
-    return (/*#__PURE__*/React.createElement("div", {
-        style: style,
-        className: `input-group ${className || ''} creditCard ${error ? 'error tooltip' : ''}`
-      }, /*#__PURE__*/React.createElement(Fade, {
-        in: true
-      }, /*#__PURE__*/React.createElement("div", {
-        className: `cardsAccepted`
-      })), /*#__PURE__*/React.createElement("div", {
-        className: `floating-label ${fixedLabel && 'fixed'}`
-      }, /*#__PURE__*/React.createElement(Fade, {
-        in: cardType ? true : false
-      }, /*#__PURE__*/React.createElement("div", {
-        className: `cardType ${cardType}`
-      })), /*#__PURE__*/React.createElement("input", {
-        autoFocus: autoFocus,
-        ref: this.inputRef,
-        name: name,
-        type: 'text',
-        readOnly: readOnly,
-        required: required,
-        placeholder: placeholder,
-        onChange: this.onChange,
-        onBlur: this.onBlur,
-        onFocus: this.onFocus,
-        autoComplete: "new-password",
-        value: value,
-        maxLength: 19,
-        inputMode: "numeric"
-      }), !hideLabel && label && /*#__PURE__*/React.createElement("label", {
-        style: labelStyle,
-        htmlFor: name
-      }, label), /*#__PURE__*/React.createElement("div", {
-        style: inputBottomStyle,
-        className: `input-bottom ${error ? 'error' : this.state.status}`
-      })), /*#__PURE__*/React.createElement("div", {
-        className: `tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`
-      }, error, /*#__PURE__*/React.createElement("i", null)), /*#__PURE__*/React.createElement("div", {
-        className: `errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`
-      }, error))
-    );
+    return /*#__PURE__*/React.createElement("div", {
+      style: style,
+      className: `input-group ${className || ''} creditCard ${error ? 'error tooltip' : ''}`
+    }, /*#__PURE__*/React.createElement(Fade, {
+      in: true
+    }, /*#__PURE__*/React.createElement("div", {
+      className: `cardsAccepted`
+    })), /*#__PURE__*/React.createElement("div", {
+      className: `floating-label ${fixedLabel && 'fixed'}`
+    }, /*#__PURE__*/React.createElement(Fade, {
+      in: cardType ? true : false
+    }, /*#__PURE__*/React.createElement("div", {
+      className: `cardType ${cardType}`
+    })), /*#__PURE__*/React.createElement("input", {
+      autoFocus: autoFocus,
+      ref: this.inputRef,
+      name: name,
+      type: 'text',
+      readOnly: readOnly,
+      required: required,
+      placeholder: placeholder,
+      onChange: this.onChange,
+      onBlur: this.onBlur,
+      onFocus: this.onFocus,
+      autoComplete: "new-password",
+      value: value,
+      maxLength: 19,
+      inputMode: "numeric"
+    }), !hideLabel && label && /*#__PURE__*/React.createElement("label", {
+      style: labelStyle,
+      htmlFor: name
+    }, label), /*#__PURE__*/React.createElement("div", {
+      style: inputBottomStyle,
+      className: `input-bottom ${error ? 'error' : this.state.status}`
+    })), /*#__PURE__*/React.createElement("div", {
+      className: `tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`
+    }, error, /*#__PURE__*/React.createElement("i", null)), /*#__PURE__*/React.createElement("div", {
+      className: `errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`
+    }, error));
   }
 
 }

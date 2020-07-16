@@ -258,15 +258,14 @@ export const accountType = type => {
   }
 };
 export const socialIcons = (type, size = 50) => {
-  return (/*#__PURE__*/React.createElement("img", {
-      style: {
-        height: size,
-        width: size
-      },
-      src: `https://givebox.s3-us-west-1.amazonaws.com/public/images/social-${type}.png`,
-      alt: `${type}`
-    })
-  );
+  return /*#__PURE__*/React.createElement("img", {
+    style: {
+      height: size,
+      width: size
+    },
+    src: `https://givebox.s3-us-west-1.amazonaws.com/public/images/social-${type}.png`,
+    alt: `${type}`
+  });
 };
 export const fontSizeOptions = (r1, r2) => {
   const items = [];

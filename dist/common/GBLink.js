@@ -58,18 +58,17 @@ class GBLink extends Component {
     const mergeStyle = { ...style,
       ...this.state.hoverStyle
     };
-    return (/*#__PURE__*/React.createElement("button", {
-        ref: this.linkRef,
-        disabled: disabled,
-        type: "button",
-        id: id,
-        className: `${ripple ? 'ripple' : ''} ${className || 'link'}`,
-        onClick: this.onClick,
-        onMouseEnter: this.onMouseEnter,
-        onMouseLeave: this.onMouseLeave,
-        style: mergeStyle
-      }, this.props.children)
-    );
+    return /*#__PURE__*/React.createElement("button", {
+      ref: this.linkRef,
+      disabled: disabled,
+      type: "button",
+      id: id,
+      className: `${ripple ? 'ripple' : ''} ${className || 'link'}`,
+      onClick: this.onClick,
+      onMouseEnter: this.onMouseEnter,
+      onMouseLeave: this.onMouseLeave,
+      style: mergeStyle
+    }, this.props.children);
   }
 
 }

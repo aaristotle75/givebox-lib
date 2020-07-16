@@ -54,8 +54,7 @@ export default class Loader extends Component {
       forceText,
       className
     } = this.props;
-    if (!this.state.rootEl) return (/*#__PURE__*/React.createElement("div", null)
-    );
+    if (!this.state.rootEl) return /*#__PURE__*/React.createElement("div", null);
     const showMsg = !!forceText;
     return this.state.showLoader ? /*#__PURE__*/React.createElement(Portal, {
       id: "loadingPortal",

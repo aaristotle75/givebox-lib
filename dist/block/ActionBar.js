@@ -31,11 +31,10 @@ class ActionBar extends Component {
     const {
       style
     } = this.props;
-    return (/*#__PURE__*/React.createElement("ul", {
-        style: style,
-        className: "actionBar"
-      }, this.listOptions())
-    );
+    return /*#__PURE__*/React.createElement("ul", {
+      style: style,
+      className: "actionBar"
+    }, this.listOptions());
   }
 
 }

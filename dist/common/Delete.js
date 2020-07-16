@@ -83,24 +83,23 @@ class Delete extends Component {
     const {
       desc
     } = this.props;
-    return (/*#__PURE__*/React.createElement("div", {
-        className: "center"
-      }, this.state.loading && this.props.loader('Deleting...'), /*#__PURE__*/React.createElement(Alert, {
-        alert: "success",
-        display: this.state.success,
-        msg: this.state.success
-      }), /*#__PURE__*/React.createElement(Alert, {
-        alert: "error",
-        display: this.state.error,
-        msg: this.state.error
-      }), /*#__PURE__*/React.createElement("h3", null, "You are about to delete", /*#__PURE__*/React.createElement("br", null), " ", desc), /*#__PURE__*/React.createElement("div", {
-        className: "button-group"
-      }, /*#__PURE__*/React.createElement("button", {
-        className: "button",
-        type: "button",
-        onClick: this.confirm
-      }, "Confirm Delete")))
-    );
+    return /*#__PURE__*/React.createElement("div", {
+      className: "center"
+    }, this.state.loading && this.props.loader('Deleting...'), /*#__PURE__*/React.createElement(Alert, {
+      alert: "success",
+      display: this.state.success,
+      msg: this.state.success
+    }), /*#__PURE__*/React.createElement(Alert, {
+      alert: "error",
+      display: this.state.error,
+      msg: this.state.error
+    }), /*#__PURE__*/React.createElement("h3", null, "You are about to delete", /*#__PURE__*/React.createElement("br", null), " ", desc), /*#__PURE__*/React.createElement("div", {
+      className: "button-group"
+    }, /*#__PURE__*/React.createElement("button", {
+      className: "button",
+      type: "button",
+      onClick: this.confirm
+    }, "Confirm Delete")));
   }
 
 }

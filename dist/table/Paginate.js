@@ -185,24 +185,22 @@ class Paginate extends Component {
     } = this.state;
 
     if (!parseInt(count)) {
-      return (/*#__PURE__*/React.createElement("div", null)
-      );
+      return /*#__PURE__*/React.createElement("div", null);
     }
 
-    return (/*#__PURE__*/React.createElement("div", {
-        className: `paginate ${align}`
-      }, count && /*#__PURE__*/React.createElement("div", {
-        className: "recordCount"
-      }, /*#__PURE__*/React.createElement("span", null, "Showing ", range1, "-", range2, " of ", count)), pages > 1 ? /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("ul", {
-        className: containerClassName
-      }, /*#__PURE__*/React.createElement("li", {
-        onClick: e => this.handlePreviousPage(e),
-        className: `page ${previousClassName} ${activePage <= 1 ? disabledClassName : ''}`
-      }, iconPrevious), this.pagination(), /*#__PURE__*/React.createElement("li", {
-        onClick: e => this.handleNextPage(e),
-        className: `page ${nextClassName} ${activePage >= pages ? disabledClassName : ''}`
-      }, iconNext))) : /*#__PURE__*/React.createElement("div", null))
-    );
+    return /*#__PURE__*/React.createElement("div", {
+      className: `paginate ${align}`
+    }, count && /*#__PURE__*/React.createElement("div", {
+      className: "recordCount"
+    }, /*#__PURE__*/React.createElement("span", null, "Showing ", range1, "-", range2, " of ", count)), pages > 1 ? /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("ul", {
+      className: containerClassName
+    }, /*#__PURE__*/React.createElement("li", {
+      onClick: e => this.handlePreviousPage(e),
+      className: `page ${previousClassName} ${activePage <= 1 ? disabledClassName : ''}`
+    }, iconPrevious), this.pagination(), /*#__PURE__*/React.createElement("li", {
+      onClick: e => this.handleNextPage(e),
+      className: `page ${nextClassName} ${activePage >= pages ? disabledClassName : ''}`
+    }, iconNext))) : /*#__PURE__*/React.createElement("div", null));
   }
 
 }
