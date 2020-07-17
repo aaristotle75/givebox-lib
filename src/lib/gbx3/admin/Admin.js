@@ -37,19 +37,17 @@ class Admin extends React.Component {
 		this.props.updateInfo({ stage: 'admin' });
 	}
 
-	exitAdmin() {
+	async exitAdmin() {
 		const {
-			project,
-			exitURL
+			project
 		} = this.props;
 
 		if (project === 'share') {
-			this.props.updateAdmin({ publicView: true });
+			const infoUpdated = await this.props.updateInfo({ stage: 'public' });
+			if (infoUpdated) this.props.updateAdmin({ publicView: true });
 		} else {
-
+			if (this.props.exitCallback) this.props.exitCallback();
 		}
-
-		console.log('execute exitAdmin');
 	}
 
 	togglePreview(value) {
@@ -154,6 +152,10 @@ class Admin extends React.Component {
 							<div key={'middle'} className='button-group middle'>
 								<GBLink className={`ripple link ${previewDevice === 'phone' ? 'selected' : ''}`} onClick={() => this.changePreviewDevice('phone')}><span className='icon icon-smartphone'></span><span className='iconText'>Mobile</span></GBLink>
 								<GBLink className={`ripple link ${previewDevice === 'desktop' ? 'selected' : ''}`} onClick={() => this.changePreviewDevice('desktop')}><span className='icon icon-monitor'></span><span className='iconText'>Desktop</span></GBLink>
+								<GBLink className={`ripple link ${previewDevice === 'public' ? 'selected' : ''}`} onClick={async () => {
+									const infoUpdated = await this.props.updateInfo({ stage: 'public' });
+									if (infoUpdated) this.props.updateAdmin({ publicView: true });
+								}}><span className='icon icon-external-link'></span><span className='iconText'>Public View</span></GBLink>
 							</div>
 						);
 						break;
@@ -261,7 +263,6 @@ function mapStateToProps(state, props) {
 	const display = util.getValue(info, 'display');
 	const articleID = util.getValue(info, 'articleID');
 	const project = util.getValue(info, 'project');
-	const exitURL = util.getValue(info, 'exitURL');
 	const admin = util.getValue(gbx3, 'admin', {});
 	const step = util.getValue(admin, 'step');
 	const previewDevice = util.getValue(admin, 'previewDevice');
@@ -274,7 +275,6 @@ function mapStateToProps(state, props) {
 
 	return {
 		project,
-		exitURL,
 		breakpoint,
 		display,
 		articleID,

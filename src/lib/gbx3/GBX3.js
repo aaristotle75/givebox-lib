@@ -215,6 +215,7 @@ class GBX3 extends React.Component {
 					key={'admin'}
 					loadGBX3={this.loadGBX3}
 					reloadGBX3={this.reloadGBX3}
+					exitCallback={this.props.exitCallback}
 				/>
 			)
 		} else {
