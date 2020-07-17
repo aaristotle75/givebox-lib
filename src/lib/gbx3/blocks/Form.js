@@ -222,6 +222,8 @@ class Form extends Component {
 					primaryColor={primaryColor}
 					showShop={util.getValue(form, 'allowSelection', true)}
 					reloadGBX3={reloadGBX3}
+					cartTitle={util.getValue(form, 'cartTitle', null)}
+					shopTitle={util.getValue(form, 'shopTitle', null)}
 				/>
 				<PaymentForm
 					primaryColor={primaryColor}

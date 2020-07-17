@@ -140,7 +140,9 @@ export const paymentForm = {
 				linkText: 'Send an Email Message'
 			},
 			hasCustomGoal: false,
-			goal: 50000
+			goal: 50000,
+			cartTitle: 'Your Cart',
+			shopTitle: 'Shop More Items'
 		}
 	}
 };

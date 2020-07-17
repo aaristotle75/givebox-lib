@@ -55,7 +55,9 @@ class FormEdit extends Component {
 			allowSelection,
 			allowShare,
 			hasCustomGoal,
-			goal
+			goal,
+			cartTitle,
+			shopTitle
 		} = this.props.form;
 
 		return (
@@ -161,6 +163,45 @@ class FormEdit extends Component {
 					</div>
 				</Collapse>
 				<Collapse
+					label={`Cart Options`}
+					iconPrimary='edit'
+				>
+					<div className='formSectionContainer'>
+						<div className='formSection'>
+							<TextField
+								label='Cart Title'
+								fixedLabel={true}
+								placeholder='Enter the title for "Your Cart"'
+								value={cartTitle}
+								onChange={(e) => {
+									const value = e.currentTarget.value;
+									this.updateForm('cartTitle', value);
+								}}
+							/>
+							<Choice
+								type='checkbox'
+								name='allowSelection'
+								label={'Give Users an Option to Shop other Items'}
+								onChange={(name, value) => {
+									this.updateForm('allowSelection', allowSelection ? false : true);
+								}}
+								checked={allowSelection}
+								value={allowSelection}
+							/>
+							<TextField
+								label='Shop More Items Title'
+								fixedLabel={true}
+								placeholder='Enter the title for "Shop More Items"'
+								value={shopTitle}
+								onChange={(e) => {
+									const value = e.currentTarget.value;
+									this.updateForm('shopTitle', value);
+								}}
+							/>
+						</div>
+					</div>
+				</Collapse>
+				<Collapse
 					label={`Other Options`}
 					iconPrimary='edit'
 				>
@@ -175,16 +216,6 @@ class FormEdit extends Component {
 								}}
 								checked={allowShare}
 								value={allowShare}
-							/>
-							<Choice
-								type='checkbox'
-								name='allowSelection'
-								label={'Give Users an Option to Shop other Items'}
-								onChange={(name, value) => {
-									this.updateForm('allowSelection', allowSelection ? false : true);
-								}}
-								checked={allowSelection}
-								value={allowSelection}
 							/>
 							<Choice
 								type='checkbox'

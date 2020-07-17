@@ -154,14 +154,16 @@ class Cart extends Component {
 
 		const {
 			open,
-			showShop
+			showShop,
+			cartTitle,
+			shopTitle
 		} = this.props;
 
 		return (
 				<AnimateHeight height={open ? 'auto' : 0}>
 					<div className='gbx3Cart'>
 						<div className='paymentFormHeaderTitle'>
-							Your Cart
+							{cartTitle || 'Your Cart'}
 							{showShop ?
 							<GBLink
 								style={{ right: '60px' }}
@@ -169,7 +171,7 @@ class Cart extends Component {
 								onClick={() => {
 									this.props.updateInfo({ display: 'shop' });
 								}}>
-									Shop
+									{shopTitle || 'Shop More Items'}
 								</GBLink> : <></>}
 							<GBLink className='link closeCart' onClick={() => this.props.updateCart({ open: false })}><span className='icon icon-x'></span></GBLink>
 						</div>

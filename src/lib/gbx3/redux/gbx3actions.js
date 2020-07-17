@@ -770,6 +770,10 @@ export function setStyle(options = {}) {
 					border-bottom: 1px solid ${textColor2};
 				}
 
+				.gbx3Cart .paymentFormHeaderTitle {
+					color: ${textColor};
+				}
+
 			`;
 		}
 
@@ -857,11 +861,8 @@ export function setStyle(options = {}) {
 					color: ${color};
 				}
 
-				.gbx3Cart .paymentFormHeaderTitle {
-					background: ${color};
-					background: -webkit-linear-gradient(to bottom, ${color} 30%, ${color4} 100%);
-					background: -moz-linear-gradient(to bottom, ${color} 30%, ${color4} 100%);
-					background: linear-gradient(to bottom, ${color} 30%, ${color4} 100%);
+				.gbx3Cart .paymentFormHeaderTitle button.closeCart {
+					color: ${color};
 				}
 
 				.gbx3Shop button.link {

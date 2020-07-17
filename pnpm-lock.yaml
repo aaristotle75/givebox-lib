@@ -17,10 +17,12 @@ dependencies:
   draft-js-plugins-editor: 3.0.0_ac5afbc32cb00a9bdfd2dda9da1ac0c4
   draftjs-to-html: 0.9.1
   draftjs-to-markdown: 0.6.0
+  eslint-plugin-react-hooks: 4.0.8
   file-saver: 2.0.2
   flatpickr: 4.6.3
   get-value: 3.0.1
   has: 1.0.3
+  history: 5.0.0
   html-to-draftjs: 1.5.0_46c3f249abd67767ce4bd045f11ed08d
   iframe-resizer: 4.2.11
   js-cookie: 2.2.1
@@ -70,7 +72,7 @@ devDependencies:
   babel-core: 7.0.0-bridge.0
   babel-preset-env: 1.7.0
   babel-preset-react-es2015: 1.3.0
-  eslint-config-react-app: 5.2.1
+  eslint-config-react-app: 5.2.1_eslint-plugin-react-hooks@4.0.8
   html-loader: 1.1.0
   immutable: 4.0.0-rc.12
   node-sass: 4.14.1
@@ -4795,9 +4797,10 @@ packages:
       eslint-plugin-react: 7.x
     resolution:
       integrity: sha512-Ovi6Bva67OjXrom9Y/SLJRkrGqKhMAL0XCH8BizPhjEVEhYczl2ZKiNZI2CuqO5/CJwAfMwRXAVGY0KToWr1aA==
-  /eslint-config-react-app/5.2.1:
+  /eslint-config-react-app/5.2.1_eslint-plugin-react-hooks@4.0.8:
     dependencies:
       confusing-browser-globals: 1.0.9
+      eslint-plugin-react-hooks: 4.0.8
     dev: true
     peerDependencies:
       '@typescript-eslint/eslint-plugin': 2.x
@@ -4891,6 +4894,13 @@ packages:
       eslint: ^3 || ^4 || ^5
     resolution:
       integrity: sha512-7gSSmwb3A+fQwtw0arguwMdOdzmKUgnUcbSNlo+GjKLAQFuC2EZxWqG9XHRI8VscBJD5a8raz3RuxQNFW+XJbw==
+  /eslint-plugin-react-hooks/4.0.8:
+    engines:
+      node: '>=10'
+    peerDependencies:
+      eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0
+    resolution:
+      integrity: sha512-6SSb5AiMCPd8FDJrzah+Z4F44P2CdOaK026cXFV+o/xSRzfOiV1FNFeLl2z6xm3yqWOQEZ5OfVgiec90qV2xrQ==
   /eslint-plugin-react/7.12.4_eslint@5.12.0:
     dependencies:
       array-includes: 3.1.1
@@ -6030,6 +6040,12 @@ packages:
     dev: true
     resolution:
       integrity: sha512-36nwAD620w12kuzPAsyINPWJqlNbij+hpK1k9XRloDtym8mxzGYl2c17LnV6IAGB2Dmg4tEa7G7DlawS0+qjew==
+  /history/5.0.0:
+    dependencies:
+      '@babel/runtime': 7.10.5
+    dev: false
+    resolution:
+      integrity: sha512-3NyRMKIiFSJmIPdq7FxkNMJkQ7ZEtVblOQ38VtKaA0zZMW1Eo6Q6W8oDKEflr1kNNTItSnk4JMCO1deeSgbLLg==
   /hmac-drbg/1.0.1:
     dependencies:
       hash.js: 1.1.7
@@ -12829,10 +12845,12 @@ specifiers:
   draftjs-to-html: ^0.9.1
   draftjs-to-markdown: ^0.6.0
   eslint-config-react-app: ^5.2.1
+  eslint-plugin-react-hooks: ^4.0.8
   file-saver: ^2.0.2
   flatpickr: ^4.6.3
   get-value: ^3.0.1
   has: ^1.0.3
+  history: ^5.0.0
   html-loader: ^1.1.0
   html-to-draftjs: ^1.5.0
   iframe-resizer: ^4.2.11
