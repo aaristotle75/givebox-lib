@@ -57,6 +57,7 @@ export function gbx3(state = {
 	loading: true,
 	saveStatus: 'done',
 	info: {
+		project: 'share',
 		stage: 'public',
 		display: 'shop',
 		preview: false,
@@ -132,12 +133,19 @@ export function gbx3(state = {
 			});
 		case types.CLEAR_GBX3:
 			return Object.assign({}, state, {
-				blocks: {},
-				defaults: {},
+				blocks: {
+					...state.blocks,
+					article: {},
+					receipt: {}
+				},
 				data: {},
 				fees: {},
 				globals: {},
-				layouts: {}
+				layouts: {
+					...state.layouts,
+					article: {},
+					receipt: {}
+				}
 			});
 		case types.UPDATE_INFO:
 			return Object.assign({}, state, {

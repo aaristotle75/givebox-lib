@@ -54,7 +54,7 @@ class Design extends React.Component {
 							key={'article'}
 							className={`deviceLayoutWrapper ${previewDevice}Wrapper` }>
 							<div className='stagePreview'>
-								<iframe src={`${GBX3_URL}?public`} title={`${util.toTitleCase(previewDevice)} Preview`} />
+								<iframe src={`${GBX3_URL}?public&preview`} title={`${util.toTitleCase(previewDevice)} Preview`} />
 							</div>
 						</div>
 					);

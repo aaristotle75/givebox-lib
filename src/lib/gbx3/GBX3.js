@@ -19,7 +19,7 @@ import 'react-resizable/css/styles.css';
 import '../styles/gbx3.scss';
 import '../styles/gbx3modal.scss';
 import reactReferer from 'react-referer';
-import { loadRecaptcha } from 'react-recaptcha-v3';
+import { loadReCaptcha } from 'react-recaptcha-v3';
 import has from 'has';
 
 const RECAPTCHA_KEY = process.env.REACT_APP_RECAPTCHA_KEY;
@@ -129,11 +129,12 @@ class GBX3 extends React.Component {
 		const sourceLocation = reactReferer.referer();
 		info.sourceLocation = this.props.sourceLocation || sourceLocation;
 
-		const infoUpdated = await this.props.updateInfo(info);
 
-		if (has(queryParams, 'public')) {
+		if (has(queryParams, 'public') || this.props.public) {
 			this.props.updateAdmin({ publicView: true });
 		}
+
+		const infoUpdated = await this.props.updateInfo(info);
 		if (infoUpdated) return true;
 	}
 
@@ -145,7 +146,7 @@ class GBX3 extends React.Component {
 		const bodyEl = document.getElementsByTagName('body')[0];
 		if (!preview) {
 			bodyEl.classList.add('live');
-			loadRecaptcha(RECAPTCHA_KEY);
+			loadReCaptcha(RECAPTCHA_KEY);
 		} else {
 			bodyEl.classList.add('preview');
 		}

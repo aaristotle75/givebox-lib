@@ -8,6 +8,21 @@
 	}
 }
 
+.hasAccessToEditPublic {
+	position: fixed;
+	top: 10px;
+	right: 10px;
+
+	.avatarLink {
+		cursor: pointer;
+		@include transition(opacity .25s);
+	}
+
+	.avatarLink:hover {
+		opacity: .9;
+	}
+}
+
 .gbx3Layout {
 	top: 0;
 	left: 0;

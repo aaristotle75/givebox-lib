@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
 	util,
+	updateInfo,
 	updateAdmin,
 	toggleAdminLeftPanel,
 	GBLink,
@@ -32,6 +33,10 @@ class Admin extends React.Component {
 		this.changePreviewDevice = this.changePreviewDevice.bind(this);
 	}
 
+	componentDidMount() {
+		this.props.updateInfo({ stage: 'admin' });
+	}
+
 	exitAdmin() {
 		console.log('execute exitAdmin');
 	}
@@ -47,7 +52,6 @@ class Admin extends React.Component {
 			const iframeEl = document.getElementById('emailIframePreview');
 			if (iframeEl) {
 				iframeEl.contentWindow.location.replace('about:blank');
-				console.log('execute iframeEl', iframeEl);
 			}
 		}
 
@@ -273,6 +277,7 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
+	updateInfo,
 	updateAdmin,
 	toggleAdminLeftPanel,
 	resetGBX3,

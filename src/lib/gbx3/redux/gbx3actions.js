@@ -618,9 +618,10 @@ export function loadGBX3(articleID, callback) {
 									};
 
 									Object.entries(blocks).forEach(([key, value]) => {
-										if (!util.getValue(value, 'noGrid')) {
-											layouts.desktop.push(value.grid.desktop);
-											layouts.mobile.push(value.grid.mobile);
+										const grid = util.getValue(value, 'grid', {});
+										if (!util.isEmpty(grid)) {
+											if (!util.isEmpty(util.getValue(grid, 'desktop'))) layouts.desktop.push(value.grid.desktop);
+											if (!util.isEmpty(util.getValue(grid, 'mobile'))) layouts.mobile.push(value.grid.mobile);
 										}
 									});
 

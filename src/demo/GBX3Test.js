@@ -44,7 +44,7 @@ class GBXTest extends Component {
 					articleID={articleID}
 					saveCallback={this.saveCallback}
 					queryParams={this.props.queryParams}
-					editable={true}
+					public={true}
 				/>
 			</div>
 		)
