@@ -38,6 +38,17 @@ class Admin extends React.Component {
 	}
 
 	exitAdmin() {
+		const {
+			project,
+			exitURL
+		} = this.props;
+
+		if (project === 'share') {
+			this.props.updateAdmin({ publicView: true });
+		} else {
+
+		}
+
 		console.log('execute exitAdmin');
 	}
 
@@ -249,6 +260,8 @@ function mapStateToProps(state, props) {
 	const breakpoint = util.getValue(info, 'breakpoint');
 	const display = util.getValue(info, 'display');
 	const articleID = util.getValue(info, 'articleID');
+	const project = util.getValue(info, 'project');
+	const exitURL = util.getValue(info, 'exitURL');
 	const admin = util.getValue(gbx3, 'admin', {});
 	const step = util.getValue(admin, 'step');
 	const previewDevice = util.getValue(admin, 'previewDevice');
@@ -260,6 +273,8 @@ function mapStateToProps(state, props) {
 	const editable = util.getValue(admin, 'editable');
 
 	return {
+		project,
+		exitURL,
 		breakpoint,
 		display,
 		articleID,

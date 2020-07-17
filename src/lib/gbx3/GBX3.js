@@ -128,7 +128,8 @@ class GBX3 extends React.Component {
 
 		const sourceLocation = reactReferer.referer();
 		info.sourceLocation = this.props.sourceLocation || sourceLocation;
-
+		if (this.props.project) info.project = this.props.project;
+		if (this.props.exitURL) info.exitURL = this.props.exitURL;
 
 		if (has(queryParams, 'public') || this.props.public) {
 			this.props.updateAdmin({ publicView: true });

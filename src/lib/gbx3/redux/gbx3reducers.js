@@ -58,6 +58,7 @@ export function gbx3(state = {
 	saveStatus: 'done',
 	info: {
 		project: 'share',
+		exitURL: null,
 		stage: 'public',
 		display: 'shop',
 		preview: false,
