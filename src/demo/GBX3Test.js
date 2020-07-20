@@ -34,7 +34,7 @@ class GBXTest extends Component {
 
 	render() {
 
-		const articleID = 651; //651; //735; //383071;
+		const articleID = 4; // 13; // 739; // 4; //651; //735; //383071;
 
 		return (
 			<div>
@@ -44,7 +44,7 @@ class GBXTest extends Component {
 					articleID={articleID}
 					saveCallback={this.saveCallback}
 					queryParams={this.props.queryParams}
-					public={true}
+					public={false}
 					project={'share'}
 					exitCallback={() => console.log('exit callback')}
 				/>

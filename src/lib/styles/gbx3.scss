@@ -538,7 +538,7 @@
 
 	.leftPanelDropdown {
 		display: inline-block;
-		padding: 0;
+		padding: 0 !important;
 
 		.dropdown button {
 			border: 0;
@@ -548,6 +548,11 @@
 		.dropdown button:not(.link):hover {
 			.label { color: $white !important; }
 		}
+
+		.dropdown button:hover:not(.label) {
+				border-bottom: 0;
+		}
+
 	}
 
 	.leftPanelContainer {

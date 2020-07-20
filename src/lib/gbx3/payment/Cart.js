@@ -112,6 +112,7 @@ class Cart extends Component {
 											<Dropdown
 												portalID={`itemQty-dropdown-portal-${value.unitID}`}
 												portal={true}
+												portalClass={'gbx3 dropdown-portal'}
 												className='dropdown-quantity'
 												contentWidth={100}
 												name='qunatity'

@@ -604,12 +604,14 @@ export function loadGBX3(articleID, callback) {
 											if (!(key in blocks)) availableBlocks.push(key);
 										})
 									} else {
-										// Check how many amounts and set amounts grid height
-										const amountsObj = util.getValue(res, types2.kind(kind).amountField, {});
-										const amountsList = util.getValue(amountsObj, 'list', []);
-										const amountsListEnabled = amountsList.filter(a => a.enabled === true);
-										const amountsSectionHeight = defaultAmountHeight(amountsListEnabled.length);
-										blocks.amounts.grid.desktop.h = amountsSectionHeight;
+										// Check how many amounts and set amounts grid height only for fundraisers or invoices
+										if (kind === 'fundraiser' || kind === 'invoice') {
+											const amountsObj = util.getValue(res, types2.kind(kind).amountField, {});
+											const amountsList = util.getValue(amountsObj, 'list', []);
+											const amountsListEnabled = amountsList.filter(a => a.enabled === true);
+											const amountsSectionHeight = defaultAmountHeight(amountsListEnabled.length);
+											blocks.amounts.grid.desktop.h = amountsSectionHeight;
+										}
 									}
 
 									const layouts = {
@@ -704,6 +706,8 @@ export function setStyle(options = {}) {
 		if (textColor) {
 			const rgb = util.hexToRgb(placeholderColor || textColor);
 			const textColor2 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${placeholderColor ? 1 : .2})`;
+			const textColor3 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${placeholderColor ? .5 : .2})`;
+
 			textStyleStr = `
 				.gbx3Layout,
 				.gbx3Layout label,
@@ -767,7 +771,7 @@ export function setStyle(options = {}) {
 				}
 
 				.gbx3Cart .itemsInCart .cartItemRow {
-					border-bottom: 1px solid ${textColor2};
+					border-bottom: 1px dashed ${textColor3};
 				}
 
 				.gbx3Cart .paymentFormHeaderTitle {
@@ -861,8 +865,20 @@ export function setStyle(options = {}) {
 					color: ${color};
 				}
 
+				.gbx3Cart .itemsInCart .dropdown button:hover:not(.label) {
+					border-bottom: 1px solid ${color};
+				}
+
+				.gbx3Cart .itemsInCart .dropdown button:hover:not(.label) .label {
+					color: ${color} !important;
+				}
+
 				.gbx3Cart .paymentFormHeaderTitle button.closeCart {
 					color: ${color};
+				}
+
+				.gbx3.dropdown-portal .dropdown-content.customColor::-webkit-scrollbar-thumb {
+					background-color: ${color};
 				}
 
 				.gbx3Shop button.link {

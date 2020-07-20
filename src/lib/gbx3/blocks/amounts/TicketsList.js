@@ -5,7 +5,9 @@ import {
 	_v,
 	toggleModal,
 	GBLink,
-	Dropdown
+	Dropdown,
+	types,
+	updateCartItem
 } from '../../../';
 import '../../../styles/gbx3amounts.scss';
 import AnimateHeight from 'react-animate-height';
@@ -14,19 +16,80 @@ class TicketsList extends Component {
 
 	constructor(props) {
 		super(props);
+		this.checkCart = this.checkCart.bind(this);
 		this.renderAmounts = this.renderAmounts.bind(this);
-		this.handleAmountChanges = this.handleAmountChanges.bind(this);
-		this.setAmounts = this.setAmounts.bind(this);
 		this.onChangeQty = this.onChangeQty.bind(this);
 		this.toggleShowDetails = this.toggleShowDetails.bind(this);
+		this.updateCart = this.updateCart.bind(this);
+		this.getCartItems = this.getCartItems.bind(this);
 		this.state = {
-			ticketsSelected: [],
 			showDetails: []
 		};
 		this.amountInputRef = React.createRef();
 	}
 
 	componentDidMount() {
+		this.checkCart();
+	}
+
+	checkCart() {
+		const {
+			cartItems,
+			article
+		} = this.props;
+
+		const {
+			recurring
+		} = this.state;
+	}
+
+	getNameIfBlank(kind) {
+		switch (kind) {
+			case 'membership': {
+				return 'Membership Subscription';
+			}
+			case 'sweepstake': {
+				return 'Sweepstakes Entry';
+			}
+
+			case 'event':
+			default: {
+				return 'Event Ticket';
+			}
+		}
+	}
+
+	updateCart(selectedItem, quantity, obj = {}) {
+		const {
+			kind,
+			article
+		} = this.props;
+
+		const articleTitle = util.getValue(article, 'title');
+		const maxQuantity = util.getValue(article, 'maxQuantity', 10);
+		const articleImageURL = util.getValue(article, 'imageURL');
+		const allowQtyChange = true;
+		const allowMultiItems = true;
+
+		const unitID = +selectedItem.ID;
+		const name = util.getValue(selectedItem, 'name', this.getNameIfBlank(kind));
+		const availableQty = allowQtyChange ? util.getValue(selectedItem, 'max', maxQuantity) - util.getValue(selectedItem, 'sold', 0) + quantity : quantity;
+
+		const item = {
+			unitID,
+			articleTitle,
+			articleImageURL,
+			name,
+			quantity,
+			availableQty,
+			maxQuantity,
+			allowQtyChange,
+			allowMultiItems,
+			priceper: selectedItem.price,
+			...obj
+		};
+
+		this.props.updateCartItem(unitID, item);
 	}
 
 	toggleShowDetails(id) {
@@ -39,34 +102,18 @@ class TicketsList extends Component {
 		this.setState({ showDetails });
 	}
 
-	setAmounts(amount) {
-		const amountEntered = _v.formatNumber(amount);
-		const amountForAPI =  util.formatMoneyForAPI(amount);
-		this.setState({ amountEntered, amountForAPI });
-	}
+	getCartItems() {
+		const {
+			cartItems,
+			article
+		} = this.props;
 
-	handleAmountChanges() {
-		const obj = {
-			amount: this.state.amountAPIValue
-		};
-		this.props.amountsCallback(obj);
+		const items = cartItems.filter(i => i.articleID === article.articleID);
+		return items;
 	}
 
 	onChangeQty(name, value, ticket) {
-		const ticketsSelected = this.state.ticketsSelected;
-		const index = ticketsSelected.findIndex(x => x.ID === ticket.ID);
-		const qty = parseInt(value);
-		if (index === -1 && qty > 0) {
-			ticketsSelected.push({
-				ticket,
-				qty,
-				ID: ticket.ID
-			});
-		} else {
-			if (qty > 0) ticketsSelected[index] = { ...ticketsSelected[index], qty };
-			else ticketsSelected.splice(index, 1);
-		}
-		this.setState({ ticketsSelected });
+		this.updateCart(ticket, +value);
 	}
 
 	renderAmounts() {
@@ -76,12 +123,11 @@ class TicketsList extends Component {
 		} = this.props;
 
 		const {
-			ticketsSelected,
 			showDetails
 		} = this.state;
 
+		const cartItems = this.getCartItems();
 		const items = [];
-
 		const options = [];
 		for ( let i = 0; i < util.getValue(article, 'maxQuantity', 1); i++) {
 			options.push({
@@ -93,9 +139,8 @@ class TicketsList extends Component {
 		if (!util.isEmpty(amountsList)) {
 			Object.entries(amountsList).forEach(([key, value]) => {
 				if (value.enabled) {
-					const index = ticketsSelected.findIndex(x => x.ID === value.ID);
-					const selected = util.getValue(ticketsSelected, index, {});
-					const qty = util.getValue(selected, 'qty', 0);
+					const selected = cartItems.find(x => x.unitID === value.ID);
+					const qty = util.getValue(selected, 'quantity', 0);
 					items.push(
 						<div key={key} className='ticketAmountRow'>
 							<div className='ticketDescRow'>
@@ -108,6 +153,7 @@ class TicketsList extends Component {
 									<Dropdown
 										portalID={`amountQty-dropdown-portal-${value.ID}`}
 										portal={true}
+										portalClass={'gbx3 dropdown-portal'}
 										className='dropdown-quantity'
 										contentWidth={100}
 										name='unitQty'
@@ -162,10 +208,25 @@ class TicketsList extends Component {
 
 function mapStateToProps(state, props) {
 
+	const gbx3 = util.getValue(state, 'gbx3', {});
+	const cart = util.getValue(gbx3, 'cart', []);
+	const cartItems = util.getValue(cart, 'items', []);
+	const numCartItems = cartItems.length;
+	const info = util.getValue(gbx3, 'info', {});
+	const noFocus = util.getValue(info, 'noFocus');
+	const admin = util.getValue(gbx3, 'admin', {});
+	const editable = util.getValue(admin, 'editable');
+
 	return {
+		noFocus,
+		cart,
+		cartItems,
+		numCartItems,
+		editable
 	}
 }
 
 export default connect(mapStateToProps, {
+	updateCartItem,
 	toggleModal
 })(TicketsList);

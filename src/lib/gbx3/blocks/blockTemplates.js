@@ -27,14 +27,14 @@ export const orgName = {
 	title: 'Organization Name',
 	type: 'Text',
 	field: 'orgName',
-	mobileRelativeBlock: 2,
+	mobileRelativeBlock: 1,
 	mobileClassName: 'mobileRelativeBlockTop',
 	options: {
 		defaultFormat: '<span style="font-size:12px">{{TOKEN}}</span>'
 	},
 	grid: {
-		desktop: { i: 'orgName', x: 1, y: 1, w: 5, h: 2, enabled: true },
-		mobile: { i: 'orgName', x: 1, y: 2, w: 5, h: 2, static: true, enabled: false }
+		desktop: { i: 'orgName', x: 1, y: 0, w: 5, h: 1, enabled: true },
+		mobile: { i: 'orgName', x: 1, y: 0, w: 5, h: 1, static: true, enabled: false }
 	}
 };
 
@@ -47,14 +47,14 @@ export const title = {
 	nonremovable: true,
 	field: 'title',
 	updateOptions: 'string',
-	mobileRelativeBlock: 1,
+	mobileRelativeBlock: 2,
 	mobileClassName: 'mobileRelativeBlockTop',
 	options: {
 		defaultFormat: '<span style="font-size:16px;">{{TOKEN}}</span>'
 	},
 	grid: {
-		desktop: { i: 'title', x: 1, y: 0, w: 5, h: 2, enabled: true },
-		mobile: { i: 'title', x: 1, y: 0, w: 5, h: 2, static: true, enabled: false }
+		desktop: { i: 'title', x: 1, y: 2, w: 5, h: 3, enabled: true },
+		mobile: { i: 'title', x: 1, y: 2, w: 5, h: 3, static: true, enabled: false }
 	}
 };
 
@@ -106,7 +106,7 @@ export const amounts = {
 		}
 	},
 	grid: {
-		desktop: { i: 'amounts', x: 0, y: 2, w: 6, h: 22, enabled: true },
+		desktop: { i: 'amounts', x: 0, y: 7, w: 6, h: 22, enabled: true },
 		mobile: { i: 'amounts', x: 0, y: 32, w: 6, h: 22, static: true, enabled: false }
 	}
 };
@@ -186,7 +186,7 @@ export const description = {
 		}
 	},
 	grid: {
-		desktop: { i: 'description', x: 6, y: 27, w: 6, h: 4, enabled: true },
+		desktop: { i: 'description', x: 6, y: 26, w: 6, h: 3, enabled: true },
 		mobile: { i: 'description', x: 0, y: 48, w: 6, h: 4, enabled: false }
 	}
 };
@@ -279,7 +279,6 @@ export const templates = {
 	orgName,
 	amounts,
 	media,
-	summary,
 	description,
 	paymentForm,
 	contentBlock,

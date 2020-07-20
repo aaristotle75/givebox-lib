@@ -5,7 +5,6 @@ const title = blockTemplates.title;
 const orgName = blockTemplates.orgName;
 const amounts = blockTemplates.amounts;
 const media = blockTemplates.media;
-const summary = blockTemplates.summary;
 const description = blockTemplates.description;
 const paymentForm = blockTemplates.paymentForm;
 
@@ -15,7 +14,6 @@ const fundraiserBlocks = {
 	orgName,
 	amounts,
 	media,
-	summary,
 	description,
 	paymentForm
 };
@@ -40,7 +38,6 @@ const eventBlocks = {
 		}}
 	},
 	media,
-	summary,
 	description,
 	paymentForm
 };
