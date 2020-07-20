@@ -50,13 +50,11 @@ class Dashboard extends Component {
 
 	render() {
 
-		const color = util.hexToRgb('#6cfef7');
-		console.log('execute', color);
+		//const color = util.hexToRgb('#6cfef7');
 
 		return (
 			<div>
 				<h2>Dashboard</h2>
-				{/*
 				<Form
 					name='testForm'
 					options={{
@@ -64,7 +62,6 @@ class Dashboard extends Component {
 					}}>
 					<TestForm {...this.props} />
 				</Form>
-				*/}
 			{/*
 			<Image maxSize={'125px'} url={`https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/raise-fundraiser.png`} size='inherit' alt={`Customers`} />
 			<ModalLink id='testModal'>Modal Form</ModalLink>

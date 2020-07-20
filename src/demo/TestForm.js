@@ -121,18 +121,18 @@ export default class TestForm extends Component {
 			<div>
 				<h2>Form Elements</h2>
 				<div className='formWrapper'>
-					<Image url={'https://givebox-staging.s3.amazonaws.com/gbx%2F693a664e591131ad047eea8a3bc3e128%2F2020-04-09%2Fimage-png%2Foriginal'} alt={'test image aspect'}  maxSize={'500px'}  />
-
-					{this.props.dropdown('bankAccounts', {
-						options: list,
-						label: 'Bank Accounts',
-						selectLabel: 'Select the Bank Account',
-						required: true,
-						readOnly: false
-					})}
-					{this.props.richText('content', { required: false, label: 'Rich Text', placeholder: 'Please write something...', modal: false, wysiwyg: false, autoFocus: false, modalLabel: 'Open content editor', allowLink: true })}
-					{this.props.calendarField('dob', { label: 'Date of Birth', enableTime: false, enableTimeOption: false, required: true, validate: 'date', validateOpts: { }, utc: false })}
+					{this.props.calendarField('testdate', { label: 'Test Date', enableTime: true, enableTimeOption: true, required: true, validate: 'date', validateOpts: { }, utc: false })}
 					{/*
+						<Image url={'https://givebox-staging.s3.amazonaws.com/gbx%2F693a664e591131ad047eea8a3bc3e128%2F2020-04-09%2Fimage-png%2Foriginal'} alt={'test image aspect'}  maxSize={'500px'}  />
+
+						{this.props.dropdown('bankAccounts', {
+							options: list,
+							label: 'Bank Accounts',
+							selectLabel: 'Select the Bank Account',
+							required: true,
+							readOnly: false
+						})}
+						{this.props.richText('content', { required: false, label: 'Rich Text', placeholder: 'Please write something...', modal: false, wysiwyg: false, autoFocus: false, modalLabel: 'Open content editor', allowLink: true })}
 					{this.props.richText('emailList', { label: 'Email List', placeholder: 'Enter emails separated by commas', modal: false, required: false, allowLink: true })}
 					{this.props.richText('content', { required: false, label: 'Rich Text', placeholder: 'Please write something...', modal: true, modalLabel: 'Open content editor', allowLink: true })}
 					<div style={{ margin: '100px 0px' }}>

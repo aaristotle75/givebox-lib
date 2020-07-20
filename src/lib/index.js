@@ -6,7 +6,6 @@ import RichTextField from './form/RichTextField';
 import Choice from './form/Choice';
 import CalendarField from './form/CalendarField';
 import CalendarRange from './form/CalendarRange';
-import Checkbox from './form/Checkbox';
 import ColorPicker from './form/ColorPicker';
 import WhereField from './form/WhereField';
 import Upload from './form/Upload';
@@ -151,7 +150,6 @@ export {
 	Choice,
 	CalendarField,
 	CalendarRange,
-	Checkbox,
 	ColorPicker,
 	Upload,
 	UploadLibrary,

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import 'flatpickr/dist/themes/light.css';
 import Flatpickr from 'react-flatpickr';
 import Moment from 'moment';
-import { util, _v, Fade, Checkbox } from '../';
+import { util, _v, Fade, Choice } from '../';
 
 class CalendarField extends Component {
   constructor(props) {
@@ -234,7 +234,7 @@ class CalendarField extends Component {
       className: `tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`
     }, this.props.error, /*#__PURE__*/React.createElement("i", null)), /*#__PURE__*/React.createElement("div", {
       className: `errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`
-    }, error)), enableTimeOption && /*#__PURE__*/React.createElement(Checkbox, {
+    }, error)), enableTimeOption && /*#__PURE__*/React.createElement(Choice, {
       name: `enableTime-${name}`,
       label: enableTimeOptionLabel,
       checked: enableTime,

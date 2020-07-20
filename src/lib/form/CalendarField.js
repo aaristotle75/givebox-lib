@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import 'flatpickr/dist/themes/light.css';
 import Flatpickr from 'react-flatpickr';
 import Moment from 'moment';
-import { util, _v, Fade, Checkbox } from '../';
+import { util, _v, Fade, Choice } from '../';
 
 class CalendarField extends Component {
 
@@ -91,7 +91,8 @@ class CalendarField extends Component {
 		if (this.props.onChangeCalendar) this.props.onChangeCalendar(ts, this.props.name);
 	}
 
-	toggleEnableTime(enableTime, name) {
+	toggleEnableTime(name, value) {
+		const enableTime = this.state.enableTime ? false : true;
 		this.setState({ enableTime });
 		const dateFormat = enableTime ? 'MM/DD/YYYY h:mmA' : 'MM/DD/YYYY';
 		this.props.fieldProp(this.props.name, { enableTime });
@@ -197,7 +198,7 @@ class CalendarField extends Component {
 						<div className={`errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`}>{error}</div>
 					</div>
 					{enableTimeOption &&
-						<Checkbox
+						<Choice
 							name={`enableTime-${name}`}
 							label={enableTimeOptionLabel}
 							checked={enableTime}
