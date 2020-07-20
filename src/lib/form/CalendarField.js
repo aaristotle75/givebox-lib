@@ -202,6 +202,7 @@ class CalendarField extends Component {
 							name={`enableTime-${name}`}
 							label={enableTimeOptionLabel}
 							checked={enableTime}
+							value={enableTime}
 							onChange={this.toggleEnableTime}
 						/>
 					}

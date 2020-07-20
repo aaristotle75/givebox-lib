@@ -116,7 +116,8 @@ class CalendarField extends Component {
     if (this.props.onChangeCalendar) this.props.onChangeCalendar(ts, this.props.name);
   }
 
-  toggleEnableTime(enableTime, name) {
+  toggleEnableTime(name, value) {
+    const enableTime = this.state.enableTime ? false : true;
     this.setState({
       enableTime
     });
@@ -238,6 +239,7 @@ class CalendarField extends Component {
       name: `enableTime-${name}`,
       label: enableTimeOptionLabel,
       checked: enableTime,
+      value: enableTime,
       onChange: this.toggleEnableTime
     })));
   }
