@@ -119,7 +119,8 @@ class TicketsList extends Component {
 	renderAmounts() {
 		const {
 			amountsList,
-			article
+			article,
+			color
 		} = this.props;
 
 		const {
@@ -129,8 +130,10 @@ class TicketsList extends Component {
 		const cartItems = this.getCartItems();
 		const items = [];
 		const options = [];
-		for ( let i = 0; i < util.getValue(article, 'maxQuantity', 1); i++) {
+		for ( let i = 0; i <= util.getValue(article, 'maxQuantity', 1); i++) {
+			const selectedText = i === 0 ? 0 : null;
 			options.push({
+				selectedText,
 				primaryText: i === 0 ? 'None' : i,
 				value: i
 			});
@@ -147,7 +150,7 @@ class TicketsList extends Component {
 								<div className='ticketDesc'>
 									{value.name}
 									<span className='ticketDescAmount'>{util.money(value.price/100)}</span>
-									{value.description ? <GBLink allowCustom={true} className='link ticketShowDetailsLink' onClick={() => this.toggleShowDetails(value.ID)}>{showDetails.includes(value.ID) ? 'Hide Info' : 'Show Info'}</GBLink> : <></>}
+									{value.description ? <GBLink allowCustom={true} customColor={color} className='link ticketShowDetailsLink' onClick={() => this.toggleShowDetails(value.ID)}>{showDetails.includes(value.ID) ? 'Hide Info' : 'Show Info'}</GBLink> : <></>}
 								</div>
 								<div className='ticketQty'>
 									<Dropdown

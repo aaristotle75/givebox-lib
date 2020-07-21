@@ -223,10 +223,6 @@ export function updateCartItem(unitID, item = {}) {
 		const fees = util.getValue(gbx3, 'fees', {});
 		const info = util.getValue(gbx3, 'info', {});
 		const articleID = util.getValue(info, 'articleID');
-		const orgID = util.getValue(info, 'orgID');
-		const orgName = util.getValue(info, 'orgName');
-		const articleKind = util.getValue(info, 'kind');
-		const kindID = util.getValue(info, 'kindID');
 		const cart = util.getValue(gbx3, 'cart', {});
 		const items = util.getValue(cart, 'items', []);
 		const numOfItems = items.length;
@@ -236,18 +232,20 @@ export function updateCartItem(unitID, item = {}) {
 		const allowMultiItems = util.getValue(item, 'allowMultiItems', true);
 
 		item.amount = amount;
-		item.articleID = articleID;
-		item.orgName = orgName;
-		item.orgID = orgID;
-		item.articleKind = articleKind;
-		item.kindID = kindID;
 		item.fees = fees;
 		item.amountFormatted = amount/100;
-		item.sourceType = util.getValue(info, 'sourceType');
-		item.sourceLocation = util.getValue(info, 'sourceLocation');
 
 		cart.zeroAmountAllowed = util.getValue(item, 'zeroAmountAllowed', false);
 		if (index === -1) {
+			const articleID = util.getValue(info, 'articleID');
+
+			item.sourceType = util.getValue(info, 'sourceType');
+			item.sourceLocation = util.getValue(info, 'sourceLocation');
+			item.articleID = articleID;
+			item.orgName = util.getValue(info, 'orgName');
+			item.orgID = util.getValue(info, 'orgID');
+			item.articleKind = util.getValue(info, 'kind');
+			item.kindID = util.getValue(info, 'kindID');
 			if (allowMultiItems && +amount > 0) items.push(item);
 			else {
 				// If multiItems is false find and remove the previous item per articleID

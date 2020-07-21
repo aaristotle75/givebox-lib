@@ -283,6 +283,38 @@ export default class AmountsEdit extends Component {
 		)
 	}
 
+	maxField(ID, fieldProps, config) {
+
+		const amount = this.getAmount(ID);
+		const fieldName = `max${ID}`;
+		const sold = +util.getValue(amount, 'sold', 0);
+		const max = +util.getValue(amount, 'max', 0);
+		const inStock = util.getValue(amount, 'inStock', +(max - sold));
+		//const error = this.validateEnabledAmount(ID, amount.enabled);
+		const error = false;
+		console.log('execute maxField', amount);
+
+		return (
+			<TextField
+				className={`${amount.enabled ? '' : 'notOnForm'}`}
+				name={fieldName}
+				label={util.getValue(fieldProps, 'label')}
+				fixedLabel={true}
+				placeholder={util.getValue(fieldProps, 'placeholder', '0')}
+				onChange={(e) => {
+					const value = e.currentTarget.value;
+					const inStock = _v.formatNumber(value);
+					const max = +(inStock + sold);
+					this.updateAmounts(ID, { inStock, max });
+				}}
+				maxLength={7}
+				value={inStock || ''}
+				error={error}
+				errorType={'tooltip'}
+			/>
+		)
+	}
+
 	renderAmountsList() {
 		const items = [];
 		const {

@@ -84,6 +84,9 @@ export const defaultReceiptBlocks = {
 	},
 	description: {
 		...description,
-		updateOptions: null
+		updateOptions: null,
+		options: {
+			button: {}
+		},
 	}
 };

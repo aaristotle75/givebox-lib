@@ -47,7 +47,7 @@ class Dropdown extends Component {
 		if (!isEmpty(init)) {
 			this.setState({
 				value: init.value,
-				selected: init.primaryText
+				selected: util.getValue(init, 'selectedText', init.primaryText)
 			});
 		}
 		this.setState({ mounted: true });
@@ -68,12 +68,12 @@ class Dropdown extends Component {
 			if (!isEmpty(init)) {
 				this.setState({
 					value: init.value,
-					selected: init.primaryText
+					selected: util.getValue(init, 'selectedText', init.primaryText)
 				});
 			} else {
 				this.setState({
 					value: this.props.options[0].value,
-					selected: this.props.options[0].primaryText
+					selected: util.getValue(this.props.options[0], 'selectedText', this.props.options[0].primaryText)
 				});
 			}
 		}
@@ -83,7 +83,7 @@ class Dropdown extends Component {
 			if (!isEmpty(init)) {
 				this.setState({
 					value: init.value,
-					selected: init.primaryText
+					selected: util.getValue(init, 'selectedText', init.primaryText)
 				});
 				if (this.props.fieldProp) this.props.fieldProp(this.props.name, { value: init.value });
 			}
@@ -156,9 +156,9 @@ class Dropdown extends Component {
 			const selected = e.currentTarget.getAttribute('data-selected');
 			const open = this.props.multi ? true : false;
 			this.setState({
-				open: open,
-				value: value,
-				selected: selected
+				open,
+				value,
+				selected
 			});
 			this.props.onChange(this.props.name, value, selected);
 		}
@@ -183,7 +183,7 @@ class Dropdown extends Component {
 			} else {
 				bindthis.itemRefs[dataValue] = React.createRef();
 				items.push(
-					<div style={{ color: selected ? bindthis.props.color || '' : ''}} ref={bindthis.itemRefs[dataValue]} onMouseEnter={() => { const ref = bindthis.itemRefs[dataValue].current; ref.style.setProperty('background', value.disabled ? '' : bindthis.props.color); ref.style.setProperty('color', selected && bindthis.props.color ? '#ffffff' : ''); } } onMouseLeave={() => { const ref = bindthis.itemRefs[dataValue].current; ref.style.setProperty('background', ''); ref.style.setProperty('color', selected ? bindthis.props.color : ''); } } data-selected={value.primaryText} data-value={dataValue} onClick={(e) => bindthis.onClick(e, value.disabled)} className={`dropdown-item ${selected ? 'selected' : ''} ${value.disabled ? 'disabled' : ''}`} key={dataValue}>
+					<div style={{ color: selected ? bindthis.props.color || '' : ''}} ref={bindthis.itemRefs[dataValue]} onMouseEnter={() => { const ref = bindthis.itemRefs[dataValue].current; ref.style.setProperty('background', value.disabled ? '' : bindthis.props.color); ref.style.setProperty('color', selected && bindthis.props.color ? '#ffffff' : ''); } } onMouseLeave={() => { const ref = bindthis.itemRefs[dataValue].current; ref.style.setProperty('background', ''); ref.style.setProperty('color', selected ? bindthis.props.color : ''); } } data-selected={util.getValue(value, 'selectedText', value.primaryText)} data-value={dataValue} onClick={(e) => bindthis.onClick(e, value.disabled)} className={`dropdown-item ${selected ? 'selected' : ''} ${value.disabled ? 'disabled' : ''}`} key={dataValue}>
 						<div className='dropdown-container'>
 							<div className='leftSide'>
 								{bindthis.props.multi && selected ? <span className={`icon icon-${bindthis.props.iconMultiChecked}`}></span> : ''} {value.primaryText}

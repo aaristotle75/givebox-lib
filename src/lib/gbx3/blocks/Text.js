@@ -169,6 +169,7 @@ class Text extends Component {
 										</div>
 									</Collapse>
 								</Tab>
+								{ !util.isEmpty(button) ?
 								<Tab id='buttonOption' label={<span className='stepLabel'>Customize Button</span>}>
 									<Collapse
 										label={'Customize Button'}
@@ -186,7 +187,7 @@ class Text extends Component {
 											</div>
 										</div>
 									</Collapse>
-								</Tab>
+								</Tab> : <></> }
 							</Tabs>
 						</div>
 					}
