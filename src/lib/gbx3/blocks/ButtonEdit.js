@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
 	util,
-	toggleModal,
 	Choice,
 	TextField,
 	ColorPicker,
@@ -13,6 +12,7 @@ import {
 } from '../../';
 import AnimateHeight from 'react-animate-height';
 import Button from './Button';
+import { toggleModal } from '../../api/actions';
 
 class ButtonEdit extends Component {
 

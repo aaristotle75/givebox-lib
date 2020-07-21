@@ -2,11 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
 	util,
-	GBLink,
+	GBLink
+} from '../../../';
+import {
 	updateInfo,
 	toggleAdminLeftPanel,
 	createFundraiser
-} from '../../../';
+} from '../../redux/gbx3actions';
 
 class ShareMenu extends React.Component {
 

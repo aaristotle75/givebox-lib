@@ -2,10 +2,8 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import {
 	util,
-	updateCart,
 	types,
-	GBLink,
-	resetConfirmation
+	GBLink
 } from '../../';
 import {
 	FacebookShareButton,
@@ -13,6 +11,10 @@ import {
 	PinterestShareButton,
 	LinkedinShareButton
 } from 'react-share';
+import {
+	updateCart,
+	resetConfirmation
+} from '../redux/gbx3actions';
 
 const GBX_SHARE = process.env.REACT_APP_GBX_SHARE;
 

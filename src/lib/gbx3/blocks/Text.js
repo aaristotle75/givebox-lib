@@ -6,12 +6,12 @@ import {
 	ModalRoute,
 	Tabs,
 	Tab,
-	Collapse,
-	toggleModal
+	Collapse
 } from '../../';
 import Editor from './Editor';
 import Button from './Button';
 import ButtonEdit from './ButtonEdit';
+import { toggleModal } from '../../api/actions';
 
 class Text extends Component {
 

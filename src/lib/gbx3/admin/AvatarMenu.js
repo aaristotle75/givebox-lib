@@ -2,9 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
 	util,
-	GBLink,
-	toggleModal
+	GBLink
 } from '../../';
+import { toggleModal } from '../../api/actions';
 
 class AvatarMenu extends React.Component {
 

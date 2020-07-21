@@ -2,15 +2,17 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
 	util,
-	updateGlobal,
-	updateGlobals,
-	saveGBX3,
-	toggleModal,
 	ColorPicker,
-	setStyle,
 	Dropdown
 } from '../../../';
 import ArticleMenuStyleImage from './ArticleMenuStyleImage';
+import {
+	setStyle,
+	updateGlobal,
+	updateGlobals,
+	saveGBX3
+} from '../../redux/gbx3actions';
+import { toggleModal } from '../../../api/actions';
 
 class ArticleMenuStyle extends React.Component {
 

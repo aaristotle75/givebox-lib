@@ -4,14 +4,7 @@ import Layout from './Layout';
 import Admin from './admin/Admin';
 import {
 	util,
-	Loader,
-	setCustomProp,
-	setLoading,
-	clearGBX3,
-	updateInfo,
-	updateAdmin,
-	loadGBX3,
-	setStyle
+	Loader
 } from '../';
 import { sendResource } from '../api/helpers';
 import 'react-grid-layout/css/styles.css';
@@ -21,6 +14,17 @@ import '../styles/gbx3modal.scss';
 import reactReferer from 'react-referer';
 import { loadReCaptcha } from 'react-recaptcha-v3';
 import has from 'has';
+import {
+	setLoading,
+	clearGBX3,
+	updateInfo,
+	updateAdmin,
+	loadGBX3,
+	setStyle
+} from './redux/gbx3actions';
+import {
+	setCustomProp
+} from '../api/actions';
 
 const RECAPTCHA_KEY = process.env.REACT_APP_RECAPTCHA_KEY;
 const ENV = process.env.REACT_APP_ENV;

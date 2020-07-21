@@ -2,14 +2,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
 	util,
-	GBLink,
-	updateAdmin,
-	updateInfo
+	GBLink
 } from '../../../';
 import Layout from '../../Layout';
 import ArticleMenu from './ArticleMenu';
 import ReceiptEmail from '../receipt/ReceiptEmail';
 import ReceiptMenu from '../receipt/ReceiptMenu';
+import {
+	updateAdmin,
+	updateInfo
+} from '../../redux/gbx3actions';
 
 const GBX3_URL = process.env.REACT_APP_GBX3_URL;
 

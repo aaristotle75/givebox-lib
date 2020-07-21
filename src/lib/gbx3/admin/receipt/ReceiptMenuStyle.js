@@ -2,14 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
 	util,
+	ColorPicker
+} from '../../../';
+import {
+	setStyle,
 	updateGlobal,
 	updateGlobals,
-	saveGBX3,
-	toggleModal,
-	ColorPicker,
-	setStyle,
-	Dropdown
-} from '../../../';
+	saveGBX3
+} from '../../redux/gbx3actions';
+import { toggleModal } from '../../../api/actions';
 
 class ReceiptMenuStyle extends React.Component {
 

@@ -6,11 +6,13 @@ import {
 	util,
 	GBLink,
 	Image,
-	CustomCKEditor4,
-	saveGBX3,
-	updateData
+	CustomCKEditor4
 } from '../../../';
 import Moment from 'moment';
+import {
+	saveGBX3,
+	updateData
+} from '../../redux/gbx3actions';
 
 const emailTemplate = require('html-loader!./receiptEmailTemplate.html');
 const defaultContent = require('html-loader!./receiptEmailDefaultContent.html');

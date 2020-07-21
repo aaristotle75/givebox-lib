@@ -2,15 +2,18 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Loadable from 'react-loadable';
 import {
-	util,
+	util
+} from '../../../';
+import Block from '../../blocks/Block';
+import { SortableContainer, SortableElement } from 'react-sortable-hoc';
+import {
 	addBlock,
 	updateAdmin,
 	updateBlock,
 	updateBlocks,
 	saveReceipt
-} from '../../../';
-import Block from '../../blocks/Block';
-import { SortableContainer, SortableElement } from 'react-sortable-hoc';
+} from '../../redux/gbx3actions';
+
 const arrayMove = require('array-move');
 
 const SortableItem = SortableElement(({value}) => {

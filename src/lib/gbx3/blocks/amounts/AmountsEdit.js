@@ -11,6 +11,7 @@ import '../../../styles/gbx3amountsEdit.scss';
 import { amountFieldsConfig } from './amountFieldsConfig';
 import AnimateHeight from 'react-animate-height';
 import Editor from '../Editor';
+
 const arrayMove = require('array-move');
 
 const DragHandle = SortableHandle(() => {

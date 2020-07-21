@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-	updateInfo,
 	GBLink,
 	util,
 	Loader,
@@ -10,6 +9,9 @@ import {
 } from '../';
 import AnimateHeight from 'react-animate-height';
 import { getResource } from '../api/helpers';
+import {
+	updateInfo
+} from './redux/gbx3actions';
 
 class Shop extends Component {
 

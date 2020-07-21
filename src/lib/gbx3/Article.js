@@ -4,23 +4,25 @@ import { Responsive, WidthProvider } from 'react-grid-layout';
 import Loadable from 'react-loadable';
 import {
 	util,
-	updateLayouts,
-	updateBlocks,
-	updateBlock,
-	updateData,
-	updateInfo,
-	saveGBX3,
 	Image,
-	GBLink,
-	addBlock,
-	setStyle,
-	updateAdmin
+	GBLink
 } from '../';
 import Block from './blocks/Block';
 import Form from './blocks/Form';
 import Scroll from 'react-scroll';
 import has from 'has';
 import Moment from 'moment';
+import {
+	addBlock,
+	setStyle,
+	updateAdmin,
+	updateLayouts,
+	updateBlocks,
+	updateBlock,
+	updateData,
+	updateInfo,
+	saveGBX3
+} from './redux/gbx3actions';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 

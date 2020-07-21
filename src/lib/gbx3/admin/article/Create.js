@@ -5,11 +5,13 @@ import {
 	types,
 	Dropdown,
 	GBLink,
-	Image,
-	createFundraiser,
-	updateInfo
+	Image
 } from '../../../';
 import CreateMenu from './CreateMenu';
+import {
+	createFundraiser,
+	updateInfo
+} from '../../redux/gbx3actions';
 
 class Create extends React.Component {
 

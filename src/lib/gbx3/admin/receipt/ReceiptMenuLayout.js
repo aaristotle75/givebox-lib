@@ -1,12 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-	util,
-	toggleModal,
-	updateAdmin,
-	addBlock
+	util
 } from '../../../';
 import blockTemplates from '../../blocks/blockTemplates';
+import {
+	updateAdmin,
+	addBlock
+} from '../../redux/gbx3actions';
+import { toggleModal } from '../../../api/actions';
 
 class ReceiptMenuLayout extends React.Component {
 

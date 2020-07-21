@@ -1,11 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-	util,
+	util
+} from '../../../';
+import {
 	resetGBX3Receipt,
 	saveGBX3,
-	toggleModal
-} from '../../../';
+} from '../../redux/gbx3actions';
+import { toggleModal } from '../../../api/actions';
 
 class ReceiptMenuTools extends React.Component {
 

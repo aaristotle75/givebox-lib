@@ -3,14 +3,11 @@ import { connect } from 'react-redux';
 import {
 	util,
 	GBLink,
-	toggleModal,
 	ModalRoute,
 	ModalLink,
 	Collapse,
 	Tabs,
 	Tab,
-	updateData,
-	updateCart,
 	Choice
 } from '../../';
 import PaymentForm from '../payment/PaymentForm';
@@ -20,6 +17,11 @@ import Button from './Button';
 import Terms from '../payment/Terms';
 import Totals from '../payment/Totals';
 import Cart from '../payment/Cart';
+import { toggleModal } from '../../api/actions';
+import {
+	updateData,
+	updateCart
+} from '../redux/gbx3actions';
 
 class Form extends Component {
 

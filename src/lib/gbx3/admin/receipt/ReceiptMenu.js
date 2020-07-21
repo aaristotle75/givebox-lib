@@ -2,12 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
 	GBLink,
-	util,
-	toggleAdminLeftPanel
+	util
 } from '../../../';
 import ReceiptMenuLayout from './ReceiptMenuLayout';
 import ReceiptMenuStyle from './ReceiptMenuStyle';
 import ReceiptMenuTools from './ReceiptMenuTools';
+import {
+	toggleAdminLeftPanel
+} from '../../redux/gbx3actions';
 
 class ReceiptMenu extends React.Component {
 

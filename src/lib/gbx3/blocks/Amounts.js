@@ -3,17 +3,13 @@ import { connect } from 'react-redux';
 import {
 	util,
 	GBLink,
-	toggleModal,
 	ModalRoute,
 	ModalLink,
 	Collapse,
 	Tabs,
 	Tab,
 	types,
-	updateData,
-	saveGBX3,
-	Fade,
-	updateCart
+	Fade
 } from '../../';
 import { sendResource } from '../../api/helpers';
 import AmountsEdit from './amounts/AmountsEdit';
@@ -24,6 +20,12 @@ import ButtonEdit from './ButtonEdit';
 import RecurringEdit from './amounts/RecurringEdit';
 import { amountFieldsConfig } from './amounts/amountFieldsConfig';
 import AnimateHeight from 'react-animate-height';
+import { toggleModal } from '../../api/actions';
+import {
+	updateData,
+	saveGBX3,
+	updateCart
+} from '../redux/gbx3actions';
 
 class Amounts extends Component {
 

@@ -3,16 +3,18 @@ import { connect } from 'react-redux';
 import {
 	util,
 	GBLink,
-	updateCart,
-	updateCartItem,
-	updateInfo,
-	resetCart,
-	toggleModal,
 	Dropdown,
 	types,
 	Image
 } from '../../';
 import AnimateHeight from 'react-animate-height';
+import {
+	updateCart,
+	updateCartItem,
+	updateInfo,
+	resetCart
+} from '../redux/gbx3actions';
+import { toggleModal } from '../../api/actions';
 
 class Cart extends Component {
 

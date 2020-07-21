@@ -3,11 +3,13 @@ import { connect } from 'react-redux';
 import {
 	util,
 	types,
-	GBLink,
+	GBLink
+} from '../../../';
+import {
 	updateInfo,
 	toggleAdminLeftPanel,
 	createFundraiser
-} from '../../../';
+} from '../../redux/gbx3actions';
 
 class CreateMenu extends React.Component {
 

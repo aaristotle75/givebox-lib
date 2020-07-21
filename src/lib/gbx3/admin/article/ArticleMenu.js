@@ -2,12 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
 	GBLink,
-	util,
-	toggleAdminLeftPanel
+	util
 } from '../../../';
 import ArticleMenuLayout from './ArticleMenuLayout';
 import ArticleMenuStyle from './ArticleMenuStyle';
 import ArticleMenuTools from './ArticleMenuTools';
+import {
+	toggleAdminLeftPanel
+} from '../../redux/gbx3actions';
 
 class ArticleMenu extends React.Component {
 

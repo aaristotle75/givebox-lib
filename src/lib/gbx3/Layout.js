@@ -2,12 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
 	util,
-	updateAdmin,
 	ModalRoute
 } from '../';
 import Shop from './Shop';
 import Article from './Article';
 import Confirmation from './payment/Confirmation';
+import {
+	updateAdmin
+} from './redux/gbx3actions';
 
 class Layout extends React.Component {
 

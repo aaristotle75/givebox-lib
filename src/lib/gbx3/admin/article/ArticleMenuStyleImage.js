@@ -6,9 +6,9 @@ import {
 	MediaLibrary,
 	Collapse,
 	GBLink,
-	util,
-	toggleModal
+	util
 } from '../../../';
+import { toggleModal } from '../../../api/actions';
 
 class ArticleMenuStyleImage extends Component {
 

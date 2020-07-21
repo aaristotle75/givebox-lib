@@ -1,12 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-	util,
+	util
+} from '../../../';
+import {
 	updateAdmin,
 	resetGBX3,
-	saveGBX3,
-	toggleModal
-} from '../../../';
+	saveGBX3
+} from '../../redux/gbx3actions';
+import { toggleModal } from '../../../api/actions';
 
 class ArticleMenuTools extends React.Component {
 

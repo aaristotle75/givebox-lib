@@ -4,9 +4,9 @@ import {
 	TextField,
 	RichTextField,
 	util,
-	GBLink,
-	toggleModal
+	GBLink
 } from '../../';
+import { toggleModal } from '../../api/actions';
 
 class SendEmail extends Component {
 

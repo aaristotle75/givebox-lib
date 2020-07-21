@@ -2,15 +2,15 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
 	util,
-	_v,
-	toggleModal,
 	GBLink,
-	Dropdown,
-	types,
-	updateCartItem
+	Dropdown
 } from '../../../';
 import '../../../styles/gbx3amounts.scss';
 import AnimateHeight from 'react-animate-height';
+import {
+	updateCartItem
+} from '../../redux/gbx3actions';
+import { toggleModal } from '../../../api/actions';
 
 class TicketsList extends Component {
 

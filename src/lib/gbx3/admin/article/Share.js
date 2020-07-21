@@ -2,10 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
 	util,
-	types,
-	updateInfo
+	types
 } from '../../../';
 import ShareMenu from './ShareMenu';
+import {
+	updateInfo
+} from '../../redux/gbx3actions';
 
 class Share extends React.Component {
 

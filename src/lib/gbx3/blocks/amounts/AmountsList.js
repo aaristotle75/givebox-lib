@@ -5,17 +5,19 @@ import {
 	_v,
 	ModalLink,
 	ModalRoute,
-	toggleModal,
 	Choice,
 	TextField,
 	GBLink,
-	updateCartItem,
 	types
 } from '../../../';
 import Recurring from './Recurring';
 import { amountInputStyle, amountInputMoneyStyle, amountInputHeights } from './amountsStyle';
 import '../../../styles/gbx3amounts.scss';
 import AnimateHeight from 'react-animate-height';
+import {
+	updateCartItem
+} from '../../redux/gbx3actions';
+import { toggleModal } from '../../../api/actions';
 
 class AmountsList extends Component {
 
