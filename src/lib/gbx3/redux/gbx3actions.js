@@ -237,7 +237,7 @@ export function updateCartItem(unitID, item = {}) {
 
 		cart.zeroAmountAllowed = util.getValue(item, 'zeroAmountAllowed', false);
 		if (index === -1) {
-			const articleID = util.getValue(info, 'articleID');
+			const articleID = +util.getValue(info, 'articleID');
 
 			item.sourceType = util.getValue(info, 'sourceType');
 			item.sourceLocation = util.getValue(info, 'sourceLocation');
