@@ -2,16 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
 	util,
-	updateInfo,
-	updateAdmin,
-	toggleAdminLeftPanel,
 	GBLink,
-	resetGBX3,
-	saveGBX3,
-	toggleModal,
 	ModalRoute,
-	ModalLink,
-	setLoading
+	ModalLink
 } from '../../';
 import Design from './article/Design';
 import Create from './article/Create';
@@ -21,6 +14,15 @@ import Logo from '../Logo';
 import AnimateHeight from 'react-animate-height';
 import Toggle from 'react-toggle';
 import 'react-toggle/style.css';
+import { toggleModal } from '../../api/actions';
+import {
+	updateInfo,
+	updateAdmin,
+	toggleAdminLeftPanel,
+	resetGBX3,
+	saveGBX3,
+	setLoading
+} from '../redux/gbx3actions';
 
 class Admin extends React.Component {
 

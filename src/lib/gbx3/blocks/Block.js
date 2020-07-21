@@ -2,15 +2,17 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
 	GBLink,
-	util,
-	toggleModal,
+	util
+} from '../../';
+import { toggleModal } from '../../api/actions';
+import {
 	updateAdmin,
 	updateBlock,
 	removeBlock,
 	updateData,
 	saveGBX3,
 	updateLayouts
-} from '../../';
+} from '../redux/gbx3actions';
 
 class Block extends React.Component {
 

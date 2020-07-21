@@ -8,20 +8,22 @@ import {
 	ModalRoute,
 	Tab,
 	Tabs,
-	updateCart,
 	GBLink,
-	Loader,
-	toggleModal,
-	processTransaction,
-	resetCart,
-	updateConfirmation,
-	updateInfo
+	Loader
 } from '../../';
 import Moment from 'moment';
 import SendEmail from './SendEmail';
 import ApplePay from './ApplePay';
 import Echeck from './Echeck';
 import AnimateHeight from 'react-animate-height';
+import { toggleModal } from '../../api/actions';
+import {
+	processTransaction,
+	resetCart,
+	updateConfirmation,
+	updateInfo,
+	updateCart
+} from '../redux/gbx3actions';
 
 class PaymentFormClass extends Component {
 
