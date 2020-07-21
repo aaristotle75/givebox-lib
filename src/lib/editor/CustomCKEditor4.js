@@ -98,6 +98,8 @@ class CustomCKEditor4 extends Component {
 
 	setConfig() {
 		const bindthis = this;
+		const removeButtons = 'Save,NewPage,Preview,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Find,Replace,SelectAll,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Strike,Subscript,Superscript,CopyFormatting,RemoveFormat,Blockquote,CreateDiv,JustifyBlock,Language,BidiRtl,BidiLtr,Flash,Smiley,PageBreak,Iframe,About,Styles,SpecialChar,Maximize,Source,Scayt,Format,Anchor,Underline' + this.props.removeButtons;
+
 		const defaultConfig = {
 			width: this.props.width,
 			height: this.props.height,
@@ -105,7 +107,7 @@ class CustomCKEditor4 extends Component {
 			removePlugins: this.props.removePlugins,
 			contentsCss: this.props.contentCss,
 			toolbar: this.props.toolbar,
-			removeButtons: 'Save,NewPage,Preview,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Find,Replace,SelectAll,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Strike,Subscript,Superscript,CopyFormatting,RemoveFormat,Blockquote,CreateDiv,JustifyBlock,Language,BidiRtl,BidiLtr,Flash,Smiley,PageBreak,Iframe,About,Styles,SpecialChar,Maximize,Source,Scayt,Format,Anchor,Underline',
+			removeButtons,
 			image_previewText: ' ',
 			image2_disableResizer: false,
 			removeDialogTabs: 'image:advanced;link:advanced;link:target',
@@ -117,7 +119,7 @@ class CustomCKEditor4 extends Component {
 					if (bindthis.props.initCallback) bindthis.props.initCallback(editor);
 					// Register custom context for image widgets on the fly.
 					editor.balloonToolbars.create({
-						buttons: 'Link,Unlink,Image',
+						buttons: bindthis.props.balloonButtons,
 						widgets: 'image'
 					});
 				}
@@ -203,7 +205,9 @@ CustomCKEditor4.defaultProps = {
 	],
 	contentCss: 'https://givebox.s3-us-west-1.amazonaws.com/public/css/contents.css',
 	removePlugins: 'image,elementspath,resize',
-	loaderClass: ''
+	removeButtons: '',
+	loaderClass: '',
+	balloonButtons: 'Link,Unlink,Image'
 };
 
 function mapStateToProps(state) {

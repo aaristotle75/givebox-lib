@@ -33,9 +33,10 @@ export default class Editor extends PureComponent {
 		let toolbar =	[ 'Bold', 'Italic', '-', 'FontSize', 'TextColor', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight'];
 		let height = '150px';
 		let removePlugins = 'elementspath';
+		let removeButtons = 'Link,Unlink';
 
 		if (subType === 'content') {
-			toolbar =	[ 'Bold', 'Italic', '-', 'FontSize', 'TextColor', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', '-', 'Link', 'Unlink', '-', 'Image'];
+			toolbar =	[ 'Bold', 'Italic', '-', 'FontSize', 'TextColor', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', '-', 'Image'];
 			height = '300px';
 			removePlugins = 'image,elementspath';
 		}
@@ -53,6 +54,8 @@ export default class Editor extends PureComponent {
 				toolbar={[toolbar]}
 				contentCss={contentCss}
 				removePlugins={removePlugins}
+				removeButtons={removeButtons}
+				balloonButtons={'Image'}
 				loaderClass={loaderClass}
 				initCallback={(editor) => {
 					editor.focus();
