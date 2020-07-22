@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import {
 	util,
 	GBLink,
-	Dropdown
+	Dropdown,
+	types
 } from '../../../';
 import '../../../styles/gbx3amounts.scss';
 import AnimateHeight from 'react-animate-height';
@@ -22,6 +23,7 @@ class TicketsList extends Component {
 		this.toggleShowDetails = this.toggleShowDetails.bind(this);
 		this.updateCart = this.updateCart.bind(this);
 		this.getCartItems = this.getCartItems.bind(this);
+		this.quantityOptions = this.quantityOptions.bind(this);
 		this.state = {
 			showDetails: []
 		};
@@ -66,14 +68,17 @@ class TicketsList extends Component {
 		} = this.props;
 
 		const articleTitle = util.getValue(article, 'title');
-		const maxQuantity = util.getValue(article, 'maxQuantity', 10);
+		const maxQuantity = util.getValue(article, 'maxQuantity', 1);
 		const articleImageURL = util.getValue(article, 'imageURL');
 		const allowQtyChange = true;
 		const allowMultiItems = true;
 
 		const unitID = +selectedItem.ID;
 		const name = util.getValue(selectedItem, 'name', this.getNameIfBlank(kind));
-		const availableQty = allowQtyChange ? util.getValue(selectedItem, 'max', maxQuantity) - util.getValue(selectedItem, 'sold', 0) + quantity : quantity;
+		const max = +util.getValue(selectedItem, 'max', 0);
+		const sold =  +util.getValue(selectedItem, 'sold', 0);
+		const inStock = max - sold
+		const availableQty = inStock < maxQuantity ? inStock : maxQuantity;
 
 		const item = {
 			unitID,
@@ -116,21 +121,9 @@ class TicketsList extends Component {
 		this.updateCart(ticket, +value);
 	}
 
-	renderAmounts() {
-		const {
-			amountsList,
-			article,
-			color
-		} = this.props;
-
-		const {
-			showDetails
-		} = this.state;
-
-		const cartItems = this.getCartItems();
-		const items = [];
+	quantityOptions(max) {
 		const options = [];
-		for ( let i = 0; i <= util.getValue(article, 'maxQuantity', 1); i++) {
+		for ( let i = 0; i <= max; i++) {
 			const selectedText = i === 0 ? 0 : null;
 			options.push({
 				selectedText,
@@ -139,9 +132,32 @@ class TicketsList extends Component {
 			});
 		}
 
+		return options;
+	}
+
+	renderAmounts() {
+		const {
+			article,
+			amountsList,
+			color,
+			showInStock,
+			kind
+		} = this.props;
+
+		const {
+			showDetails
+		} = this.state;
+
+		const maxQuantity = util.getValue(article, 'maxQuantity', 1);
+		const cartItems = this.getCartItems();
+		const items = [];
+		const defaultOptions = this.quantityOptions(maxQuantity);
+
 		if (!util.isEmpty(amountsList)) {
 			Object.entries(amountsList).forEach(([key, value]) => {
-				if (value.enabled) {
+				const inStock = util.getValue(value, 'max', 0) - util.getValue(value, 'sold', 0);
+				if (value.enabled && inStock > 0) {
+					const options = inStock < maxQuantity ? this.quantityOptions(inStock) : defaultOptions;
 					const selected = cartItems.find(x => x.unitID === value.ID);
 					const qty = util.getValue(selected, 'quantity', 0);
 					items.push(
@@ -150,6 +166,7 @@ class TicketsList extends Component {
 								<div className='ticketDesc'>
 									{value.name}
 									<span className='ticketDescAmount'>{util.money(value.price/100)}</span>
+									{showInStock ? <span className='ticketDescInStock'>{inStock} Available</span> : <></> }
 									{value.description ? <GBLink allowCustom={true} customColor={color} className='link ticketShowDetailsLink' onClick={() => this.toggleShowDetails(value.ID)}>{showDetails.includes(value.ID) ? 'Hide Info' : 'Show Info'}</GBLink> : <></>}
 								</div>
 								<div className='ticketQty'>

@@ -5,6 +5,7 @@ $breakpoint: 768px;
 .modalContent.givebox-paymentform {
 	button.modalToTop {
 		bottom: 100px;
+		right: 0px;
 		@media (max-width: $breakpoint) {
 			bottom: 0px;
 		}

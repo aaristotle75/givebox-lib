@@ -855,6 +855,10 @@ export function setStyle(options = {}) {
 					background: ${color3};
 				}
 
+				.modalContent.givebox-paymentform button.modalToTop:hover {
+					background: ${color};
+				}
+
 				.gbx3Layout button.modalToTop:hover {
 					background: ${color};
 				}

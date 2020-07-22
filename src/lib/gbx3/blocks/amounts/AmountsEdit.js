@@ -292,7 +292,6 @@ export default class AmountsEdit extends Component {
 		const inStock = util.getValue(amount, 'inStock', +(max - sold));
 		//const error = this.validateEnabledAmount(ID, amount.enabled);
 		const error = false;
-		console.log('execute maxField', amount);
 
 		return (
 			<TextField
@@ -302,8 +301,7 @@ export default class AmountsEdit extends Component {
 				fixedLabel={true}
 				placeholder={util.getValue(fieldProps, 'placeholder', '0')}
 				onChange={(e) => {
-					const value = e.currentTarget.value;
-					const inStock = _v.formatNumber(value);
+					const inStock = +e.currentTarget.value;
 					const max = +(inStock + sold);
 					this.updateAmounts(ID, { inStock, max });
 				}}

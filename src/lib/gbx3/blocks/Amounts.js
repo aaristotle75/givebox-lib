@@ -9,7 +9,9 @@ import {
 	Tabs,
 	Tab,
 	types,
-	Fade
+	Fade,
+	TextField,
+	Choice
 } from '../../';
 import { sendResource } from '../../api/helpers';
 import AmountsEdit from './amounts/AmountsEdit';
@@ -50,14 +52,17 @@ class Amounts extends Component {
 		const options = props.options;
 
 		const recurring = util.getValue(options, 'recurring', {});
+		const extras = util.getValue(options, 'extras', {});
 		const button = util.getValue(options, 'button', {});
 
 		this.state = {
 			primaryColor,
 			button,
 			recurring,
+			extras,
 			defaultButton: util.deepClone(button),
 			defaultRecurring: util.deepClone(recurring),
+			defaultExtras: util.deepClone(extras),
 			amountsList: [],
 			customIndex: 6,
 			defaultIndex: 6,
@@ -105,6 +110,7 @@ class Amounts extends Component {
 		const hasBeenUpdated = this.state.hasBeenUpdated;
 		const button = { ...this.state.button };
 		const recurring = { ...this.state.recurring };
+		const extras = { ...this.state.extras };
 		const amountsList = [ ...this.state.amountsList ];
 		const customIndex = this.state.customIndex;
 		const customID = this.state.customID;
@@ -114,6 +120,7 @@ class Amounts extends Component {
 		this.setState({
 			button,
 			recurring,
+			extras,
 			amountsList,
 			customIndex,
 			customID,
@@ -141,6 +148,7 @@ class Amounts extends Component {
 					options: {
 						button,
 						recurring,
+						extras,
 						autoHeight: util.getValue(button, 'enabled') ? false : true
 					}
 				});
@@ -152,6 +160,7 @@ class Amounts extends Component {
 		this.setState({
 			button: util.deepClone(this.state.defaultButton),
 			recurring: util.deepClone(this.state.defaultRecurring),
+			extras: util.deepClone(this.state.defaultExtras),
 			amountsList: util.deepClone(this.state.amountsListDefault),
 			customIndex: this.state.customIndexDefault,
 			customID: this.state.customIDDefault,
@@ -278,7 +287,8 @@ class Amounts extends Component {
 			data,
 			kind,
 			primaryColor,
-			breakpoint
+			breakpoint,
+			options
 		} = this.props;
 
 		const {
@@ -310,6 +320,7 @@ class Amounts extends Component {
 						kind={this.props.kind}
 						buttonEnabled={util.getValue(button, 'enabled', false)}
 						article={data}
+						showInStock={util.getValue(options, 'extras.showInStock')}
 					/>
 				)
 			}
@@ -371,6 +382,7 @@ class Amounts extends Component {
 			amountsList,
 			button,
 			recurring,
+			extras,
 			customIndex,
 			customID,
 			defaultIndex,
@@ -380,6 +392,8 @@ class Amounts extends Component {
 		} = this.state;
 
 		if (util.isEmpty(amountsList)) return <></>;
+
+		const maxQuantity = util.getValue(extras, 'maxQuantity') || util.getValue(data, 'maxQuantity');
 
 		return (
 			<div className={`block ${util.getValue(button, 'enabled', false) ? util.getValue(button, 'style.align', 'flexCenter') : ''}`}>
@@ -455,10 +469,56 @@ class Amounts extends Component {
 										</div>
 									</Collapse>
 								</Tab>
-								{util.getValue(recurring, 'allowed', false) ?
-								<Tab id='recurringOption' label={<span className='stepLabel'>Recurring Options</span>}>
+								<Tab id='amountOptions' label={<span className='stepLabel'>Options</span>}>
+									{!util.isEmpty(extras) ?
 									<Collapse
-										label={'Recurring Options'}
+										label={`${types.kind(kind).amountDesc} Options`}
+										iconPrimary='chevrons-up'
+										id={'gbx3-amounts-ticketOptions'}
+									>
+										<div className='formSectionContainer'>
+											<div className='formSection'>
+												<TextField
+													name='maxQuantity'
+													label={`Max ${types.kind(kind).amountLabel} That Can Be Purchased At One Time`}
+													fixedLabel={true}
+													placeholder={0}
+													value={maxQuantity || ''}
+													maxLength={2}
+													onChange={(e) => {
+														const value = +e.currentTarget.value;
+														const maxQuantity = value && value !== 0 ? value > 99 ? 99 : value : '';
+														const data = {
+															maxQuantity
+														};
+														const extras = this.state.extras;
+														extras.maxQuantity = maxQuantity;
+														this.setState({ extras }, () => {
+															this.optionsUpdated('extras', extras);
+															this.props.updateData(data);
+														});
+													}}
+												/>
+												<Choice
+													type='checkbox'
+													name='showInStock'
+													label={`Show How Many ${types.kind(kind).amountLabel} Are Available`}
+													onChange={(name, value) => {
+														const extras = this.state.extras;
+														extras.showInStock = extras.showInStock ? false : true;
+														this.setState({ extras }, () => {
+															this.optionsUpdated('extras', extras);
+														});
+													}}
+													checked={util.getValue(extras, 'showInStock', true)}
+													value={util.getValue(extras, 'showInStock', true)}
+												/>
+											</div>
+										</div>
+									</Collapse> : <></> }
+									{ !util.isEmpty(recurring) ?
+									<Collapse
+										label={'Recurring Option'}
 										iconPrimary='repeat'
 										id={'gbx3-amounts-recurring'}
 									>
@@ -473,8 +533,8 @@ class Amounts extends Component {
 												/>
 											</div>
 										</div>
-									</Collapse>
-								</Tab> : <></>}
+									</Collapse> : <></> }
+								</Tab>
 							</Tabs>
 						</div>
 					}

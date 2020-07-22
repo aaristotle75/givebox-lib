@@ -13,7 +13,7 @@ import {
 	updateInfo
 } from '../../redux/gbx3actions';
 
-const GBX3_URL = process.env.REACT_APP_GBX3_URL;
+const GBX3_URL = process.env.REACT_APP_GBX_URL;
 
 class Design extends React.Component {
 
@@ -33,7 +33,8 @@ class Design extends React.Component {
 		const {
 			createType,
 			previewDevice,
-			previewMode
+			previewMode,
+			articleID
 		} = this.props;
 
 		const items = [];
@@ -56,7 +57,7 @@ class Design extends React.Component {
 							key={'article'}
 							className={`deviceLayoutWrapper ${previewDevice}Wrapper` }>
 							<div className='stagePreview'>
-								<iframe src={`${GBX3_URL}?public&preview`} title={`${util.toTitleCase(previewDevice)} Preview`} />
+								<iframe src={`${GBX3_URL}/${articleID}/?public&preview`} title={`${util.toTitleCase(previewDevice)} Preview`} />
 							</div>
 						</div>
 					);
@@ -116,12 +117,14 @@ function mapStateToProps(state, props) {
 
 	const gbx3 = util.getValue(state, 'gbx3', {});
 	const admin = util.getValue(gbx3, 'admin', {});
+	const articleID = util.getValue(gbx3, 'info.articleID');
 	const previewMode = util.getValue(admin, 'previewMode');
 	const previewDevice = util.getValue(admin, 'previewDevice');
 	const openAdmin = util.getValue(admin, 'open');
 	const createType = util.getValue(admin, 'createType');
 
 	return {
+		articleID,
 		previewMode,
 		previewDevice,
 		openAdmin,

@@ -1771,6 +1771,14 @@
 			width: 100%;
 			padding: 20px 5px;
 			border-bottom: 1px solid $very-light-gray;
+
+			.dropdown button {
+				border-bottom: 0;
+			}
+
+			.dropdown button:hover {
+				border-bottom: 0 !important;
+			}
 		}
 
 		.col {

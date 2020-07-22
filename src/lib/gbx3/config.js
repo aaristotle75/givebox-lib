@@ -34,7 +34,12 @@ const eventBlocks = {
 				embedAllowed: false,
 				enabled: true,
 				text: 'Select Tickets'
-			}
+			},
+			extras: {
+				maxQuantity: '',
+				showInStock: false
+			},
+			recurring: {}
 		}}
 	},
 	media,
