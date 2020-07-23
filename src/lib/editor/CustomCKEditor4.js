@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import CKEditor from 'ckeditor4-react';
 import '../styles/editor.scss';
 import {
-	toggleModal,
 	ModalRoute,
 	Loader
 } from '../';
+import { toggleModal } from '../api/actions';
 import CKEditor4Upload from './CKEditor4UploadModal';
 
 CKEditor.editorUrl = 'https://cdn.ckeditor.com/4.14.0/full-all/ckeditor.js';

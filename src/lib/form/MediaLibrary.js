@@ -264,7 +264,6 @@ class MediaLibrary extends Component {
 		if (mimes.readable.charAt( mimes.readable.length - 1 ) === ',') {
 			mimes.readable = mimes.readable.slice(0, -1);
 		}
-		console.log('execute acceptedMimes', acceptedMimes, mimes);
 		return mimes;
 	}
 

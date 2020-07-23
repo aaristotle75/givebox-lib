@@ -419,6 +419,7 @@ button.imageCover {
 			position: absolute;
 			bottom: 0;
 			display: none;
+			z-index: 2;
 			button {
 				margin: 0 5px;
 			}
@@ -644,6 +645,12 @@ button.imageCover {
 }
 
 .mediaLibrary {
+
+	.errorMsg {
+		text-align: center;
+		color: $red;
+		font-size: 12px;
+	}
 
 	.uploadEditorContainer {
 		position: relative;
