@@ -109,6 +109,7 @@ class Block extends React.Component {
 
 	renderChildren() {
 		const {
+			data,
 			kind,
 			breakpoint,
 			articleID,
@@ -130,6 +131,7 @@ class Block extends React.Component {
 
 		const childrenWithProps = React.Children.map(this.props.children,
 			(child) => React.cloneElement(child, {
+				data,
 				kind,
 				articleID,
 				orgID,
@@ -235,6 +237,7 @@ function mapStateToProps(state, props) {
 
 
 	return {
+		data,
 		editable,
 		editBlock,
 		kind,

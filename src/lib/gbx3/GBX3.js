@@ -52,7 +52,7 @@ class GBX3 extends React.Component {
 		} = this.props;
 
 		this.props.setLoading(true);
-		if ((editable && (hasAccessToEdit) || hasAccessToEdit)) {
+		if ((editable && hasAccessToEdit) || hasAccessToEdit) {
 			this.props.updateAdmin({ editable, open: true });
 		} else {
 			this.props.updateAdmin({ editable: false });

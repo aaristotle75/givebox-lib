@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import {
 	util,
 	GBLink,
-	ModalRoute,
-	Collapse
+	ModalRoute
 } from '../../';
 import DateEdit from './DateEdit';
 import { toggleModal } from '../../api/actions';
@@ -17,14 +16,21 @@ class Date extends Component {
 		this.onChange = this.onChange.bind(this);
 		this.closeEditModal = this.closeEditModal.bind(this);
 		this.optionsUpdated = this.optionsUpdated.bind(this);
-		this.dateUpdated = this.dateUpdated.bind(this);
+		this.contentUpdated = this.contentUpdated.bind(this);
 
+		const data = props.data;
 		const options = props.options;
-		const date = util.getValue(props.block, 'content', {});
+		const content = {
+			...util.getValue(props.block, 'content', {}),
+			range1: util.getValue(data, util.getValue(options, 'range1DataField')),
+			range2: util.getValue(data, util.getValue(options, 'range2DataField')),
+			range1Time: util.getValue(data, util.getValue(options, 'range1TimeDataField')),
+			range2Time: util.getValue(data, util.getValue(options, 'range2TimeDataField'))
+		}
 
 		this.state = {
-			date,
-			defaultDate: util.deepClone(date),
+			content,
+			defaultContent: util.deepClone(content),
 			options,
 			hasBeenUpdated: false
 		};
@@ -62,42 +68,51 @@ class Date extends Component {
 		} = this.props;
 
 		const {
-			date,
-			defaultDate,
+			content,
+			defaultContent,
+			options,
 			hasBeenUpdated
 		} = this.state;
+
 		if (type !== 'cancel') {
-			const data = {};
+			const data = {
+				[options.range1DataField]: content.range1,
+				[options.range2DataField]: content.range2,
+				[options.range1TimeDataField]: content.range1Time,
+				[options.range2TimeDataField]: content.range2Time
+			};
 			const updateOptions = util.getValue(block, 'updateOptions');
 
 			this.props.saveBlock({
 				data,
 				hasBeenUpdated,
-				content: date,
+				content,
 				options: {
 				}
 			});
 		} else {
 			this.setState({
-				content: defaultDate
+				content: defaultContent
 			}, this.props.closeEditModal);
 		}
 	}
 
-	optionsUpdated(name, value) {
-		const options = this.state.options;
-		options[name] = value;
+	optionsUpdated(options) {
 		this.setState({
-			options,
+			options: {
+				...this.state.options,
+				...options
+			},
 			hasBeenUpdated: true
 		});
 	}
 
-	dateUpdated(name, value) {
-		const date = this.state.date;
-		date[name] = value;
+	contentUpdated(content) {
 		this.setState({
-			date,
+			content: {
+				...this.state.content,
+				...content
+			},
 			hasBeenUpdated: true
 		});
 	}
@@ -117,7 +132,7 @@ class Date extends Component {
 		} = this.props;
 
 		const {
-			date,
+			content,
 			options
 		} = this.state;
 
@@ -137,9 +152,9 @@ class Date extends Component {
 					component={() =>
 						<DateEdit
 							{...this.props}
-							date={date}
+							content={content}
 							options={options}
-							dateUpdated={this.dateUpdated}
+							contentUpdated={this.contentUpdated}
 							optionsUpdated={this.optionsUpdated}
 						/>
 					}

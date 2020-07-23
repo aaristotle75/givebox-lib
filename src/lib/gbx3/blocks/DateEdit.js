@@ -12,24 +12,45 @@ class DateForm extends Component {
 	constructor(props) {
 		super(props);
 		this.onChange = this.onChange.bind(this);
+		this.onChangeLabel = this.onChangeLabel.bind(this);
 		this.state = {
 		}
 	}
 
-	onChange(name, date) {
-		console.log('execute onChange', name, date);
-		if (this.props.onChange) this.props.onChange(name, date);
+	onChange(name, value, field) {
+		const {
+			content
+		} = this.props;
+
+		const enableTime = util.getValue(field, 'enableTime');
+		let ts = value;
+		if (name === 'range1') {
+			ts = value >= content.range2 ? content.range2 - 1 : value;
+		}
+
+		if (name === 'range2') {
+			ts = value <= content.range1 ? content.range1 + 1 : value;
+		}
+
+		this.props.contentUpdated({
+			[name]: ts,
+			[`${name}Time`]: enableTime
+		});
+	}
+
+	onChangeLabel(name, value) {
+		this.props.contentUpdated({
+			[name]: value
+		});
 	}
 
 	render() {
 
 		const {
-			date,
+			content,
 			options,
 			title
 		} = this.props;
-
-		console.log('execute date options', date, options);
 
 		const hasRange = util.getValue(options, 'range');
 
@@ -46,22 +67,22 @@ class DateForm extends Component {
 									rangeRequired: false,
 									enableTimeOption: util.getValue(options, 'enableTimeOption'),
 									enableTimeOptionLabel: 'Show Date & Time',
-									range1Name: util.getValue(options, 'range1Name'),
-									range1Label: 'Event Start Date',
-									range1EnableTime: util.getValue(options, 'range1Time'),
-									range1Value: util.getValue(date, 'range1'),
+									range1Name: 'range1',
+									range1Label: util.getValue(options, 'range1Label'),
+									range1EnableTime: util.getValue(content, 'range1Time'),
+									range1Value: util.getValue(content, 'range1'),
 									range1OnChange: this.onChange,
-									range2Label: 'Event End Date',
-									range2Name: util.getValue(options, 'range2Name'),
-									range2EnableTime: util.getValue(options, 'range2Time'),
-									range2Value: util.getValue(date, 'range2'),
+									range2Label: util.getValue(options, 'range2Label'),
+									range2Name: 'range2',
+									range2EnableTime: util.getValue(content, 'range2Time'),
+									range2Value: util.getValue(content, 'range2'),
 									range2OnChange: this.onChange,
 								})
 							:
 								this.props.calendarField('range1', {
 									label: util.getValue(options, 'range1Label'),
 									fixedLabel: true,
-									enableTime: util.getValue(options, 'range1Time'),
+									enableTime: util.getValue(content, 'range1Time'),
 									enableTimeOption: util.getValue(options, 'enableTimeOption'),
 									enableTimeOptionLabel: 'Show Date & Time',
 									onChange: this.onChange
@@ -69,19 +90,21 @@ class DateForm extends Component {
 							}
 							<div className='col' style={{ width: hasRange ? '50%' : '100%' }}>
 								{this.props.textField('range1Label', {
-									value: util.getValue(date, 'range1Label'),
+									value: util.getValue(content, 'range1Label'),
 									label: `${util.getValue(options, 'range1Label')} Label`,
 									fixedLabel: true,
-									placeholder: 'Enter Label'
+									placeholder: 'Enter Label',
+									onChange: this.onChangeLabel
 								})}
 							</div>
 							{ hasRange ?
 								<div className='col' style={{ width: '50%' }}>
 									{this.props.textField('range2Label', {
-										value: util.getValue(date, 'range2Label'),
+										value: util.getValue(content, 'range2Label'),
 										label: `${util.getValue(options, 'range2Label')} Label`,
 										fixedLabel: true,
-										placeholder: 'Enter Label'
+										placeholder: 'Enter Label',
+										onChange: this.onChangeLabel
 									})}
 								</div>
 							: <></> }

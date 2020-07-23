@@ -122,19 +122,21 @@ export const date = {
 	mobileRelativeBlock: 4,
 	mobileClassName: 'mobileRelativeBlockTop',
 	content: {
-		range1: '',
-		range2: '',
+		range1: null,
+		range2: null,
 		range1Label: 'Event Starts',
-		range2Label: 'Event Ends'
+		range2Label: 'Event Ends',
+		range1Time: true,
+		range2Time: true
 	},
 	options: {
 		enableTimeOption: true,
-		range: false,
-		range1Name: 'when',
-		range1Time: true,
+		range: true,
+		range1DataField: 'when',
+		range1TimeDataField: 'whenShowTime',
 		range1Label: 'Event Start Date',
-		range2Name: 'endsAt',
-		range2Time: true,
+		range2DataField: 'endsAt',
+		range2TimeDataField: 'endsAtShowTime',
 		range2Label: 'Event End Date'
 	},
 	grid: {
