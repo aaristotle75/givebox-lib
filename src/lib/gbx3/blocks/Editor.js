@@ -26,7 +26,8 @@ export default class Editor extends PureComponent {
 			onChange,
 			type,
 			width,
-			loaderClass
+			loaderClass,
+			acceptedMimes
 		} = this.props;
 
 		const contentCss = 'https://givebox.s3-us-west-1.amazonaws.com/public/css/gbx3contents.css';
@@ -57,6 +58,7 @@ export default class Editor extends PureComponent {
 				removeButtons={removeButtons}
 				balloonButtons={'Image'}
 				loaderClass={loaderClass}
+				acceptedMimes={acceptedMimes}
 				initCallback={(editor) => {
 					editor.focus();
 					const CKEDITOR = window.CKEDITOR;

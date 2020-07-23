@@ -5,7 +5,7 @@ import {
 	Loader
 } from '../';
 
-export default class CKEditorUpload extends Component {
+class CKEditorUpload extends Component {
 
 	constructor(props) {
 		super(props);
@@ -121,6 +121,10 @@ export default class CKEditorUpload extends Component {
 			loading
 		} = this.state;
 
+		const {
+			acceptedMimes
+		} = this.props;
+
 		const articleID = util.getValue(this.props.queryParams, 'articleID');
 		const library = {
 			articleID,
@@ -128,6 +132,7 @@ export default class CKEditorUpload extends Component {
 			borderRadius: 0
 		}
 
+		console.log('execute CKEditorUpload', acceptedMimes);
 		return (
 			<div>
 				{loading ? <Loader msg='Saving...' /> : <></>}
@@ -139,8 +144,15 @@ export default class CKEditorUpload extends Component {
 					library={library}
 					closeModalAndSave={this.closeModalAndSave}
 					closeModalAndCancel={this.closeModalAndCancel}
+					acceptedMimes={acceptedMimes}
 				/>
 			</div>
 		)
 	}
 }
+
+CKEditorUpload.defaultProps = {
+	acceptedMimes: ['image']
+}
+
+export default CKEditorUpload;

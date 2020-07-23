@@ -117,6 +117,10 @@ class CKEditor4Upload extends Component {
 			loading
 		} = this.state;
 
+		const {
+			acceptedMimes
+		} = this.props;
+
 		const articleID = util.getValue(this.props.queryParams, 'articleID');
 		const library = {
 			articleID,
@@ -136,10 +140,15 @@ class CKEditor4Upload extends Component {
 					library={library}
 					closeModalAndSave={this.closeModalAndSave}
 					closeModalAndCancel={this.closeModalAndCancel}
+					acceptedMimes={acceptedMimes}
 				/>
 			</div>
 		)
 	}
+}
+
+CKEditor4Upload.defaultProps = {
+	acceptedMimes: ['image']
 }
 
 function mapStateToProps(state) {

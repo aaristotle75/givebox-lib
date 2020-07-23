@@ -6,9 +6,10 @@ import {
 	sendResource
 } from '../../';
 import { defaultAmountHeight } from '../blocks/amounts/amountsStyle';
-import blockTemplates from '../blocks/blockTemplates';
-import { defaultArticleBlocks, defaultReceiptBlocks } from '../config';
+import { blockTemplates, defaultBlocks } from '../blocks/blockTemplates';
 import { createData } from '../admin/article/createTemplates';
+import has from 'has';
+const merge = require('deepmerge');
 
 export function updateGBX3(name, value) {
 	return {
@@ -69,8 +70,9 @@ export function addBlock(blockType, type, w = 0, h = 0, ref, callback) {
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
 		const blocks = util.getValue(gbx3, `blocks.${blockType}`, {});
 		const admin = util.getValue(gbx3, 'admin', {});
+		const kind = util.getValue(gbx3, 'info.kind');
 		const availableBlocks = util.deepClone(util.getValue(admin, `availableBlocks.${blockType}`, []));
-		const newBlock = util.getValue(blockTemplates[blockType], type, {});
+		const newBlock = blockType === 'article' ? util.getValue(blockTemplates[blockType][kind], type, {}) : util.getValue(blockTemplates[blockType], type, {});
 		if (!util.isEmpty(newBlock)) {
 			let blockName = util.getValue(newBlock, 'name', type);
 			if (blockName in blocks) {
@@ -222,7 +224,6 @@ export function updateCartItem(unitID, item = {}) {
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
 		const fees = util.getValue(gbx3, 'fees', {});
 		const info = util.getValue(gbx3, 'info', {});
-		const articleID = util.getValue(info, 'articleID');
 		const cart = util.getValue(gbx3, 'cart', {});
 		const items = util.getValue(cart, 'items', []);
 		const numOfItems = items.length;
@@ -246,6 +247,7 @@ export function updateCartItem(unitID, item = {}) {
 			item.orgID = util.getValue(info, 'orgID');
 			item.articleKind = util.getValue(info, 'kind');
 			item.kindID = util.getValue(info, 'kindID');
+
 			if (allowMultiItems && +amount > 0) items.push(item);
 			else {
 				// If multiItems is false find and remove the previous item per articleID
@@ -521,7 +523,8 @@ export function loadGBX3(articleID, callback) {
 		const globalsState = util.getValue(gbx3, 'globals', {});
 		const admin = util.getValue(gbx3, 'admin', {});
 		const blockType = 'article';
-		const availableBlocks = util.deepClone(util.getValue(admin, `availableBlocks.${blockType}`, []));
+		const availableBlocks = util.deepClone(util.getValue(admin, `availableBlocks.article`, []));
+		const receiptAvailableBlocks = util.deepClone(util.getValue(admin, `availableBlocks.receipt`, []));
 
 		dispatch(getResource('article', {
 			id: [articleID],
@@ -569,11 +572,23 @@ export function loadGBX3(articleID, callback) {
 										orgImage: util.getValue(access, 'orgImage')
 									}));
 
-									const blocksDefault = util.getValue(defaultArticleBlocks, kind, {});
+									const blocksCustom = util.getValue(customTemplate, 'blocks', {});
+									const articleBlocks = util.getValue(blockTemplates, `article.${kind}`, {});
+									const blocksDefault = {};
+									defaultBlocks.article[kind].forEach((value) => {
+										if (!util.isEmpty(blocksCustom)) {
+											if (has(blocksCustom, value)) {
+												blocksDefault[value] = articleBlocks[value];
+											}
+										} else {
+											blocksDefault[value] = articleBlocks[value];
+										}
+									});
 									const globalsCustom = util.getValue(customTemplate, 'globals', {});
 									const gbxStyleCustom = util.getValue(globalsCustom, 'gbxStyle', {});
-									const blocksCustom = util.getValue(customTemplate, 'blocks', {});
-									const blocks = !util.isEmpty(blocksCustom) ? blocksCustom : blocksDefault;
+
+									//const blocks = !util.isEmpty(blocksCustom) ? blocksCustom : blocksDefault;
+									const blocks = merge(blocksDefault, blocksCustom);
 
 									const globals = {
 										...globalsState,
@@ -598,8 +613,10 @@ export function loadGBX3(articleID, callback) {
 										// Check if not all default blocks are present
 										// If not, add them to the availableBlocks array
 										// which are blocks available but not used
-										Object.keys(blocksDefault).forEach((key) => {
-											if (!(key in blocks)) availableBlocks.push(key);
+										Object.keys(articleBlocks).forEach((key) => {
+											if (!(key in blocks) && !availableBlocks.includes(key)) {
+												availableBlocks.push(key);
+											}
 										})
 									} else {
 										// Check how many amounts and set amounts grid height only for fundraisers or invoices
@@ -639,7 +656,20 @@ export function loadGBX3(articleID, callback) {
 
 									// Get and Set Thank You Email Receipt
 									const receiptCustom = util.getValue(res, 'receiptConfig.blocks', {});
-									const receiptBlocks = !util.isEmpty(receiptCustom) ? receiptCustom : defaultReceiptBlocks;
+									const receiptTemplateBlocks = util.getValue(blockTemplates, `receipt`, {});
+									const receiptDefault = {};
+									defaultBlocks.receipt.forEach((value) => {
+										receiptDefault[value] = receiptTemplateBlocks[value];
+									});
+									const receiptBlocks = merge(receiptDefault, receiptCustom);
+									if (!util.isEmpty(receiptCustom)) {
+										Object.keys(receiptTemplateBlocks).forEach((key) => {
+											if (!(key in receiptBlocks) && !receiptAvailableBlocks.includes(key)) {
+												receiptAvailableBlocks.push(key);
+											}
+										})
+									}
+
 									dispatch(updateBlocks('receipt', receiptBlocks));
 
 									callback(res, err)

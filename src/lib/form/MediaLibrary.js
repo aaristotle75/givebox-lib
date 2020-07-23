@@ -19,10 +19,11 @@ import UploadEditorResizer from './UploadEditorResizer';
 import { Line } from 'rc-progress';
 import has from 'has';
 
-class UploadLibrary extends Component {
+class MediaLibrary extends Component {
 
 	constructor(props) {
 		super(props);
+		this.getMimes = this.getMimes.bind(this);
 		this.handleDrop = this.handleDrop.bind(this);
 		this.handleDropAccepted = this.handleDropAccepted.bind(this);
 		this.handleDropRejected = this.handleDropRejected.bind(this);
@@ -145,12 +146,12 @@ class UploadLibrary extends Component {
 	}
 
 	handleDropAccepted(files) {
-		this.setState({ loading: 'Accepting file...' });
+		this.setState({ error: false, loading: 'Accepting file...' });
 		this.readFile(files[0], this.newUploadProgress);
 	}
 
 	handleDropRejected(files) {
-		console.log('rejected');
+		this.setState({ error: true });
 	}
 
 	closeModalAndCancel() {
@@ -241,6 +242,32 @@ class UploadLibrary extends Component {
 		);
 	}
 
+	getMimes() {
+		const {
+			acceptedMimes
+		} = this.props;
+
+		const mimes = {
+			format: '',
+			readable: ''
+		};
+		acceptedMimes.forEach((value, key) => {
+			mimes.format = mimes.format + `${types.mime[value]},`;
+			mimes.readable = mimes.readable + `${types.mimeReadable[value]},`;
+			if (acceptedMimes.length !== (key + 1)) {
+				mimes.readable = mimes.readable + ' ';
+			}
+		});
+		if (mimes.format.charAt( mimes.format.length - 1 ) === ',') {
+			mimes.format = mimes.format.slice(0, -1);
+		}
+		if (mimes.readable.charAt( mimes.readable.length - 1 ) === ',') {
+			mimes.readable = mimes.readable.slice(0, -1);
+		}
+		console.log('execute acceptedMimes', acceptedMimes, mimes);
+		return mimes;
+	}
+
 	render() {
 
 		const {
@@ -251,7 +278,11 @@ class UploadLibrary extends Component {
 			mobile
 		} = this.props;
 
-		const mimes = types.mime.image + ',' + types.mime.text + ',' + types.mime.applications;
+		const {
+			error
+		} = this.state;
+
+		const mimes = this.getMimes();
 
 		return (
 			<div className='mediaLibrary'>
@@ -273,11 +304,11 @@ class UploadLibrary extends Component {
 						<div className='menu'>
 							<div className='menu-group'>
 								<Dropzone
-									className='dropzone'
+									className={`dropzone ${error ? 'error' : ''}`}
 									onDrop={this.handleDrop}
 									onDropAccepted={this.handleDropAccepted}
 									onDropRejected={this.handleDropRejected}
-									accept={mimes}
+									accept={mimes.format}
 								>
 									<span className='text'>
 										{!mobile && <span>Add File</span>}
@@ -287,6 +318,12 @@ class UploadLibrary extends Component {
 								</Dropzone>
 								{this.listSelected()}
 							</div>
+							{ error ?
+								<div className='errorMsg'>
+									<strong>File format not supported. Please upload one of the following formats.</strong><br />
+									{mimes.readable}
+								</div>
+							: <></> }
 							<div className='yourphotos'>
 								<h4>Your Photos</h4>
 							</div>
@@ -321,14 +358,15 @@ class UploadLibrary extends Component {
 	}
 }
 
-UploadLibrary.defaultProps = {
+MediaLibrary.defaultProps = {
 	selectedLabel: 'Selected Photo',
 	modalID: 'uploadLibrary',
 	showButtons: 'all',
 	cancelLabel: 'Cancel',
 	saveLabel: 'Update',
 	showBtns: 'all',
-	mobile: false
+	mobile: false,
+	acceptedMimes: ['image', 'text', 'applications']
 }
 
 function mapStateToProps(state, props) {
@@ -352,4 +390,4 @@ export default connect(mapStateToProps, {
 	sendResource,
 	removeResource,
 	toggleModal
-})(UploadLibrary);
+})(MediaLibrary);

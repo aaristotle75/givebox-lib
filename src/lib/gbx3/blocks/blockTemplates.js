@@ -111,6 +111,38 @@ export const amounts = {
 	}
 };
 
+export const date = {
+	order: 4,
+	name: 'date',
+	title: 'Date',
+	type: 'Date',
+	nonremovable: false,
+	field: 'date',
+	updateOptions: '',
+	mobileRelativeBlock: 4,
+	mobileClassName: 'mobileRelativeBlockTop',
+	content: {
+		range1: '',
+		range2: '',
+		range1Label: 'Event Starts',
+		range2Label: 'Event Ends'
+	},
+	options: {
+		enableTimeOption: true,
+		range: false,
+		range1Name: 'when',
+		range1Time: true,
+		range1Label: 'Event Start Date',
+		range2Name: 'endsAt',
+		range2Time: true,
+		range2Label: 'Event End Date'
+	},
+	grid: {
+		desktop: { i: 'date', x: 0, y: 22, w: 6, h: 3, enabled: true },
+		mobile: { i: 'date', x: 0, y: 2, w: 5, h: 3, static: true, enabled: false }
+	}
+};
+
 export const paymentForm = {
 	order: 7,
 	name: 'paymentForm',
@@ -273,7 +305,7 @@ export const videoBlock = {
 	}
 };
 
-export const templates = {
+const articleBlocks = {
 	logo,
 	title,
 	orgName,
@@ -284,14 +316,85 @@ export const templates = {
 	contentBlock,
 	imageBlock,
 	videoBlock
+}
+
+const fundraiser = {
+	...articleBlocks
+};
+
+const event = {
+	...articleBlocks,
+	amounts: {
+		...amounts,
+		...{
+		options: {
+			...amounts.options,
+			button: {
+				...amounts.options.button,
+				embedAllowed: false,
+				enabled: true,
+				text: 'Select Tickets'
+			},
+			extras: {
+				maxQuantity: '',
+				showInStock: false
+			},
+			recurring: {}
+		}}
+	},
+	when: {
+		...date,
+		name: 'when',
+		title: 'When is the Event'
+	}
 };
 
 export const blockTemplates = {
 	article: {
-		...templates
+		fundraiser,
+		event,
+		invoice: fundraiser,
+		membership: fundraiser,
+		sweepstake: fundraiser
 	},
 	receipt: {
-		...templates,
+		contentBlock,
+		orgName: {
+			...orgName,
+			order: 2,
+			options: {
+				defaultFormat: '<p style="text-align:center;font-size:12px">{{TOKEN}}</p>'
+			},
+		},
+		title: {
+			...title,
+			order: 1,
+			updateOptions: null,
+			options: {
+				defaultFormat: '<p style="text-align:center;font-size:16px">{{TOKEN}}</p>'
+			},
+		},
+		media: {
+			...media,
+			disallowRadius: true,
+			updateOptions: null,
+			...{
+			options: {
+				...media.options,
+				image: {
+					...media.options.image,
+					borderRadius: 0
+				},
+				video: null
+			}}
+		},
+		description: {
+			...description,
+			updateOptions: null,
+			options: {
+				button: {}
+			},
+		},
 		imageBlock: {
 			...imageBlock,
 			disallowRadius: true,
@@ -308,8 +411,41 @@ export const blockTemplates = {
 		}
 	},
 	org: {
-		...templates
+		title,
+		orgName,
+		media,
+		description
 	}
 };
 
-export default blockTemplates;
+const articleDefaults = [
+	'logo',
+	'title',
+	'orgName',
+	'amounts',
+	'media',
+	'description',
+	'paymentForm'
+];
+
+export const defaultBlocks = {
+	article: {
+		fundraiser: [ ...articleDefaults ],
+		invoice: [ ...articleDefaults ],
+		event: [ ...articleDefaults, 'when' ],
+		sweepstake: [ ...articleDefaults ],
+		membership: [ ...articleDefaults ]
+	},
+	receipt: [
+		'title',
+		'orgName',
+		'media',
+		'description'
+	],
+	org: [
+		'title',
+		'orgName',
+		'media',
+		'description'
+	]
+}

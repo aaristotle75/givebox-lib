@@ -4,6 +4,7 @@ const logo = blockTemplates.logo;
 const title = blockTemplates.title;
 const orgName = blockTemplates.orgName;
 const amounts = blockTemplates.amounts;
+const date = blockTemplates.date;
 const media = blockTemplates.media;
 const description = blockTemplates.description;
 const paymentForm = blockTemplates.paymentForm;
@@ -41,6 +42,10 @@ const eventBlocks = {
 			},
 			recurring: {}
 		}}
+	},
+	date: {
+		...date,
+		title: 'When is the Event'
 	},
 	media,
 	description,

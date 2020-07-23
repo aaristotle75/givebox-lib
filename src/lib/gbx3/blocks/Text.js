@@ -164,6 +164,7 @@ class Text extends Component {
 													onChange={this.onChange}
 													subType={subType}
 													type={breakpoint === 'mobile' ? 'classic' : 'classic'}
+													acceptedMimes={['image']}
 												/>
 											</div>
 										</div>

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import {
 	util
 } from '../../../';
-import blockTemplates from '../../blocks/blockTemplates';
+import { blockTemplates } from '../../blocks/blockTemplates';
 import {
 	updateAdmin,
 	addBlock

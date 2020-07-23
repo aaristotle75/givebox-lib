@@ -161,6 +161,10 @@ class CustomCKEditor4 extends Component {
 			loading
 		} = this.state;
 
+		const {
+			acceptedMimes
+		} = this.props;
+
 		return (
 			<>
 				<ModalRoute
@@ -170,7 +174,10 @@ class CustomCKEditor4 extends Component {
 					}}
 					id='editorUpload'
 					component={() =>
-						<CKEditor4Upload articleID={4} />
+						<CKEditor4Upload
+							articleID={4}
+							acceptedMimes={acceptedMimes}
+						/>
 					}
 					effect='3DFlipVert'
 					style={{ width: '60%' }}

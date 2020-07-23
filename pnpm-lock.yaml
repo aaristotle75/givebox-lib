@@ -6,6 +6,7 @@ dependencies:
   binlookup: 2.0.1
   ckeditor4: 4.14.1
   ckeditor4-react: 1.1.1_ckeditor4@4.14.1+react@16.13.1
+  deepmerge: 4.2.2
   detect-browser: 3.0.1
   draft-js: 0.11.6_react-dom@16.13.1+react@16.13.1
   draft-js-buttons: 2.0.2_ac5afbc32cb00a9bdfd2dda9da1ac0c4
@@ -12833,6 +12834,7 @@ specifiers:
   binlookup: ^2.0.1
   ckeditor4: ^4.14.1
   ckeditor4-react: ^1.1.1
+  deepmerge: ^4.2.2
   detect-browser: ^3.0.1
   draft-js: ^0.11.6
   draft-js-buttons: ^2.0.2

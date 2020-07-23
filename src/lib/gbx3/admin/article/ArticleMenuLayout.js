@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import {
 	util
 } from '../../../';
-import blockTemplates from '../../blocks/blockTemplates';
+import { blockTemplates } from '../../blocks/blockTemplates';
 import {
 	updateAdmin,
 	addBlock
@@ -64,13 +64,14 @@ class ArticleMenuLayout extends React.Component {
 
 	renderAvailableBlocks() {
 		const {
-			availableBlocks
+			availableBlocks,
+			kind
 		} = this.props;
 
 		const items = [];
 
 		availableBlocks.forEach((value) => {
-			const block = util.getValue(blockTemplates.article, value, {});
+			const block = util.getValue(blockTemplates.article[kind], value, {});
 			items.push(
 				<li
 					key={value}
@@ -130,11 +131,13 @@ function mapStateToProps(state, props) {
 	const blockType = 'article';
 	const blocks = util.getValue(gbx3, `blocks.${blockType}`, {});
 	const admin = util.getValue(gbx3, 'admin', {});
+	const kind = util.getValue(gbx3, 'info.kind');
 	const availableBlocks = util.getValue(admin, `availableBlocks.${blockType}`, []);
 
 	return {
 		blockType,
 		blocks,
+		kind,
 		availableBlocks
 	}
 }
