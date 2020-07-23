@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import {
 	util,
 	MediaLibrary,
-	Loader,
-	toggleModal
+	Loader
 } from '../';
+import { toggleModal } from '../api/actions';
 
 class CKEditor4Upload extends Component {
 
