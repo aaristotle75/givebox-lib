@@ -138,7 +138,7 @@ class DateForm extends Component {
 							this.props.calendarRange('event range', {
 								rangeRequired: false,
 								enableTimeOption,
-								enableTimeOptionLabel: 'Show Date & Time',
+								enableTimeOptionLabel: 'Show Time',
 								range1Name: 'range1',
 								range1Label,
 								range1EnableTime: range1Time,
