@@ -60,7 +60,7 @@ class Create extends React.Component {
 				</div>
 				<div className={`stageContainer ${open ? 'open' : 'close'}`}>
 					<div className='stageAligner'>
-						<div className='gbx3CreateNew'>
+						<div className='gbx3Centered'>
 							<div className='intro'>
 								<h2 style={{ marginBottom: 10 }}>Create, Design & Share!</h2>
 								Start raising money in three easy steps.

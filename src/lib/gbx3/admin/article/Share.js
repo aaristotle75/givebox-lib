@@ -8,13 +8,58 @@ import ShareMenu from './ShareMenu';
 import {
 	updateInfo
 } from '../../redux/gbx3actions';
+import ShareSocial from './ShareSocial';
+import ShareEmbed from './ShareEmbed';
+import ShareEmailBlast from './ShareEmailBlast';
 
 class Share extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.renderSubStep = this.renderSubStep.bind(this);
 		this.state = {
 		};
+	}
+
+	renderSubStep() {
+		const {
+			subStep
+		} = this.props;
+
+		const item = [];
+		switch (subStep) {
+
+			case 'emailBlast': {
+				item.push(
+					<ShareEmailBlast key='shareEmailBlast' />
+				);
+				break;
+			}
+
+			case 'embed': {
+				item.push(
+					<ShareEmbed key='shareEmbed' />
+				);
+				break;
+			}
+
+			case 'social':
+			default: {
+				item.push(
+					<ShareSocial key='shareSocial' />
+				);
+				break;
+			}
+
+		}
+
+
+		return (
+			<div>
+				{item}
+			</div>
+		)
+
 	}
 
 	render() {
@@ -39,12 +84,7 @@ class Share extends React.Component {
 				</div>
 				<div className={`stageContainer ${open ? 'open' : 'close'}`}>
 					<div className='stageAligner'>
-						<div className='gbx3CreateNew'>
-							<div className='intro'>
-								<h2 style={{ marginBottom: 10 }}>Share {types.kind(kind).name}</h2>
-								Share to social and send an email blast.
-							</div>
-						</div>
+						{this.renderSubStep()}
 					</div>
 				</div>
 			</>
@@ -62,12 +102,14 @@ function mapStateToProps(state, props) {
 	const kind = util.getValue(info, 'kind');
 	const globals = util.getValue(gbx3, 'globals', {});
 	const admin = util.getValue(gbx3, 'admin', {});
+	const subStep = util.getValue(admin, 'subStep');
 	const openAdmin = util.getValue(admin, 'open');
 	const hasAccessToEdit = util.getValue(admin, 'hasAccessToEdit');
 
 	return {
 		kind,
 		globals,
+		subStep,
 		openAdmin,
 		hasAccessToEdit
 	}

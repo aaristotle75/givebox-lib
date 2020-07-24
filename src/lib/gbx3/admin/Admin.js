@@ -33,6 +33,9 @@ class Admin extends React.Component {
 		this.togglePreview = this.togglePreview.bind(this);
 		this.renderTopPanel = this.renderTopPanel.bind(this);
 		this.changePreviewDevice = this.changePreviewDevice.bind(this);
+		this.state = {
+			referrerStep: ''
+		};
 	}
 
 	componentDidMount() {
@@ -58,7 +61,12 @@ class Admin extends React.Component {
 		} = this.props;
 
 		const previewMode = this.props.previewMode ? false : true;
-		this.props.updateAdmin({ previewMode, editable: previewMode ? false : true });
+		let step = this.state.referrerStep || this.props.step;
+		if (previewMode) {
+			step = 'design';
+			this.setState({ referrerStep: this.props.step });
+		}
+		this.props.updateAdmin({ previewMode, step, editable: previewMode ? false : true });
 		if (createType === 'receipt' && this.props.previewMode) {
 			const iframeEl = document.getElementById('emailIframePreview');
 			if (iframeEl) {

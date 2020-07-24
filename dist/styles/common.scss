@@ -91,6 +91,10 @@ p { margin: 10px 0; font-size: $normal-text-size; font-weight: $font-weight; }
 	justify-content: flex-end;
 }
 
+.noWrapText {
+	white-space: nowrap;
+}
+
 /*-------- Links ------------*/
 
 a {

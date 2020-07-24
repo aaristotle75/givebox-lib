@@ -6,6 +6,7 @@ import {
 } from '../../../';
 import {
 	updateInfo,
+	updateAdmin,
 	toggleAdminLeftPanel,
 	createFundraiser
 } from '../../redux/gbx3actions';
@@ -14,14 +15,20 @@ class ShareMenu extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.updateSubStep = this.updateSubStep.bind(this);
 		this.state = {
 		};
+	}
+
+	updateSubStep(subStep) {
+		this.props.updateAdmin({ subStep });
 	}
 
 	render() {
 
 		const {
-			openAdmin: open
+			openAdmin: open,
+			subStep
 		} = this.props;
 
 		return (
@@ -37,10 +44,22 @@ class ShareMenu extends React.Component {
 				<div className={`leftPanelScroller`}>
 					<ul>
 						<li
-							onClick={() =>  console.log('')}
+							onClick={() =>  this.updateSubStep('social')}
+							className='link show'
+						>
+							Social Media
+						</li>
+						<li
+							onClick={() =>  this.updateSubStep('embed')}
 							className='link show'
 						>
 							Embed Widget
+						</li>
+						<li
+							onClick={() =>  this.updateSubStep('emailBlast')}
+							className='link show'
+						>
+							Email Blast
 						</li>
 					</ul>
 				</div>
@@ -55,6 +74,7 @@ function mapStateToProps(state, props) {
 	const admin = util.getValue(gbx3, 'admin', {});
 	const openAdmin = util.getValue(admin, 'open');
 	const editable = util.getValue(admin, 'editable');
+	const subStep = util.getValue(admin, 'subStep');
 
 	return {
 		editable,
@@ -64,6 +84,7 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
 	updateInfo,
+	updateAdmin,
 	toggleAdminLeftPanel,
 	createFundraiser
 })(ShareMenu);

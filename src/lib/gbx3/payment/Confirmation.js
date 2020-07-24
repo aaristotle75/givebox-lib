@@ -2,21 +2,13 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import {
 	util,
-	types,
 	GBLink
 } from '../../';
-import {
-	FacebookShareButton,
-	TwitterShareButton,
-	PinterestShareButton,
-	LinkedinShareButton
-} from 'react-share';
 import {
 	updateCart,
 	resetConfirmation
 } from '../redux/gbx3actions';
-
-const GBX_SHARE = process.env.REACT_APP_GBX_SHARE;
+import Social from '../blocks/Social';
 
 class Confirmation extends Component {
 
@@ -105,17 +97,10 @@ class Confirmation extends Component {
 	render() {
 
 		const {
-			data: article,
 			allowSharing,
 			primaryColor,
 			firstname
 		} = this.props;
-
-		const shareLink = `${GBX_SHARE}/${util.getValue(article, 'articleID')}`;
-		const title = util.getValue(article, 'title');
-		const image = util.imageUrlWithStyle(article.imageURL, 'medium');
-		const description = util.getValue(article, 'summary');
-		const shareIconSize = 35;
 
 		return (
 			<div className='modalWrapper confirmation'>
@@ -127,53 +112,14 @@ class Confirmation extends Component {
 				</div>
 				{this.renderPaymethodText()}
 				{ allowSharing ?
-				<div className='share'>
-					<div className='subText'>
-						{firstname}, please help us grow our community by sharing below.
-					</div>
-					<ul className="center">
-						<li>
-							<FacebookShareButton
-								url={shareLink}
-								quote={title}
-								onShareWindowClose={() => this.linkClicked('facebook')}
-							>
-								{types.socialIcons('facebook', shareIconSize)}
-							</FacebookShareButton>
-						</li>
-						<li>
-							<TwitterShareButton
-								url={shareLink}
-								title={title}
-								onShareWindowClose={() => this.linkClicked('twitter')}
-							>
-								{types.socialIcons('twitter', shareIconSize)}
-							</TwitterShareButton>
-						</li>
-						{image ?
-						<li>
-							<PinterestShareButton
-								url={shareLink}
-								media={image}
-								windowWidth={700}
-								windowHeight={600}
-								onShareWindowClose={() => this.linkClicked('pinterest')}
-							>
-								{types.socialIcons('pinterest', shareIconSize)}
-							</PinterestShareButton>
-						</li> : ''}
-						<li>
-							<LinkedinShareButton
-								url={shareLink}
-								title={title}
-								description={description}
-								onShareWindowClose={() => this.linkClicked('linkedin')}
-							>
-								{types.socialIcons('linkedin', shareIconSize)}
-							</LinkedinShareButton>
-						</li>
-					</ul>
-				</div> : <></> }
+					<Social
+						subText={
+							<div className='subText'>
+								{firstname}, please help us grow our community by sharing below.
+							</div>
+						}
+					/>
+				: <></> }
 				<div className='successfulText'>
 					<div className='subText'>
 						<span style={{ marginBottom: 20 }} className='line'>Have a Nonprofit or know someone who does?</span>
@@ -219,7 +165,6 @@ function mapStateToProps(state, props) {
 		paymethod,
 		cartTotal,
 		descriptor,
-		data,
 		allowSharing
 	}
 }
