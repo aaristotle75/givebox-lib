@@ -466,8 +466,7 @@ export function processTransaction(data, callback) {
 	return (dispatch, getState) => {
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
 		const articleData = util.getValue(gbx3, 'data', {});
-		const receiptHTML = util.getValue(articleData, 'receiptHTML');
-		const version = !util.isEmpty(receiptHTML) ? `&version=3&primary=${util.getValue(articleData, 'articleID')}` : '';
+		const version = `&version=3&primary=${util.getValue(articleData, 'articleID')}`;
 
 		const grecaptcha = window.grecaptcha;
 		grecaptcha.ready(function() {

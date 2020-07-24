@@ -124,17 +124,22 @@ export const date = {
 	content: {
 		range1: null,
 		range2: null,
-		range1Label: 'Event Starts',
-		range2Label: 'Event Ends',
+		range1Label: 'Starts:',
+		range2Label: 'Ends:',
 		range1Time: true,
-		range2Time: true
+		range1DateFormat: '',
+		range2Time: true,
+		dateFormat: 'MMMM Do, YYYY',
+		htmlTemplate: ''
 	},
 	options: {
 		enableTimeOption: true,
 		range: true,
+		range1Token: '{{startdate}}',
 		range1DataField: 'when',
 		range1TimeDataField: 'whenShowTime',
 		range1Label: 'Event Start Date',
+		range2Token: '{{enddate}}',
 		range2DataField: 'endsAt',
 		range2TimeDataField: 'endsAtShowTime',
 		range2Label: 'Event End Date'
@@ -329,25 +334,34 @@ const event = {
 	amounts: {
 		...amounts,
 		...{
-		options: {
-			...amounts.options,
-			button: {
-				...amounts.options.button,
-				embedAllowed: false,
-				enabled: true,
-				text: 'Select Tickets'
+			options: {
+				...amounts.options,
+				button: {
+					...amounts.options.button,
+					embedAllowed: false,
+					enabled: true,
+					text: 'Select Tickets'
+				},
+				extras: {
+					maxQuantity: '',
+					showInStock: false
+				},
+				recurring: {}
 			},
-			extras: {
-				maxQuantity: '',
-				showInStock: false
-			},
-			recurring: {}
-		}}
+			grid: {
+				desktop: { i: 'amounts', x: 0, y: 13, w: 6, h: 6, enabled: true },
+				mobile: { i: 'amounts', x: 0, y: 32, w: 6, h: 4, static: true, enabled: false }
+			}
+		}
 	},
 	when: {
 		...date,
 		name: 'when',
-		title: 'When is the Event'
+		title: 'When is the Event',
+		grid: {
+			desktop: { i: 'date', x: 0, y: 8, w: 6, h: 4, enabled: true },
+			mobile: { i: 'date', x: 0, y: 2, w: 5, h: 3, static: true, enabled: false }
+		}
 	}
 };
 

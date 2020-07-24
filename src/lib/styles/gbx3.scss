@@ -92,6 +92,44 @@
 
 .gbx3 {
 
+	.flatpickr input,
+	.dropdown button:not(.label) {
+		font-size: 14px;
+		font-weight: 400;
+	}
+
+	.line {
+		display: block;
+	}
+
+	/* Date Specific */
+	.dateSection {
+		.dateDisplay {
+			display: block;
+		}
+	}
+
+	.editorPreview {
+
+	}
+
+	.helperText {
+		padding: 10px;
+		font-size: 12px;
+
+		.line {
+			padding: 5px 0;
+		}
+
+		.helperTextTitle {
+			font-weight: 500;
+			font-size: 12px;
+		}
+		.input-group {
+			padding: 0px;
+		}
+	}
+
 	.sortableListItem {
 		background: blue;
 	}

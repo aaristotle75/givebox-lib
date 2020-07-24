@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import {
 	util,
 	GBLink,
-	ModalRoute
+	ModalRoute,
+	Loader
 } from '../../';
 import DateEdit from './DateEdit';
 import { toggleModal } from '../../api/actions';
@@ -17,6 +18,8 @@ class Date extends Component {
 		this.closeEditModal = this.closeEditModal.bind(this);
 		this.optionsUpdated = this.optionsUpdated.bind(this);
 		this.contentUpdated = this.contentUpdated.bind(this);
+		this.dateFormat = this.dateFormat.bind(this);
+		this.setHTML = this.setHTML.bind(this);
 
 		const data = props.data;
 		const options = props.options;
@@ -29,6 +32,8 @@ class Date extends Component {
 		}
 
 		this.state = {
+			html: '',
+			htmlEditable: '',
 			content,
 			defaultContent: util.deepClone(content),
 			options,
@@ -46,6 +51,7 @@ class Date extends Component {
 			this.width = this.blockRef.clientWidth;
 			this.height = this.blockRef.clientHeight;
 		}
+		this.setHTML();
 	}
 
 	componentDidUpdate() {
@@ -104,7 +110,7 @@ class Date extends Component {
 				...options
 			},
 			hasBeenUpdated: true
-		});
+		}, this.setHTML);
 	}
 
 	contentUpdated(content) {
@@ -114,11 +120,58 @@ class Date extends Component {
 				...content
 			},
 			hasBeenUpdated: true
-		});
+		}, this.setHTML);
 	}
 
-	setTab(tab) {
-		this.setState({ tab });
+	dateFormat(name) {
+		const {
+			content
+		} = this.state;
+
+		const value = util.getValue(content, name);
+		const time = util.getValue(content, `${name}Time`);
+		const timeFormat = 'h:mmA';
+		const dateFormat = util.getValue(content, 'dateFormat');
+
+		if (value) return util.getDate(value, `${dateFormat}${time ? `  ${timeFormat}` : ''}`);
+		return null;
+	}
+
+	setHTML() {
+		const {
+			range1Label,
+			range2Label,
+			htmlTemplate
+		} = this.state.content;
+
+		const {
+			range1Token,
+			range2Token
+		} = this.state.options;
+
+		const range1 = this.dateFormat('range1');
+		const range1HTML = range1 ?
+			`<p><span style="color:#B0BEC5;">${range1Label}</span> ${range1Token}</p>`
+		: '';
+		const range2 = this.dateFormat('range2');
+		const range2HTML = range2 ?
+			`<p><span style="color:#B0BEC5;">${range2Label}</span> ${range2Token}</p>`
+		: '';
+
+		const tokens = {
+			[range1Token]: range1,
+			[range2Token]: range2
+		};
+
+		const defaultTemplate = `
+			${range1HTML}
+			${range2HTML}
+		`;
+
+		const htmlEditable = htmlTemplate || defaultTemplate;
+		const html = util.replaceAll(htmlEditable, tokens);
+
+		this.setState({ html, htmlEditable });
 	}
 
 	render() {
@@ -133,10 +186,13 @@ class Date extends Component {
 
 		const {
 			content,
-			options
+			options,
+			html,
+			htmlEditable
 		} = this.state;
 
 		const nonremovable = util.getValue(block, 'nonremovable', false);
+		const cleanHtml = util.cleanHtml(html);
 
 		return (
 			<div className={`dateBlock`}>
@@ -156,6 +212,9 @@ class Date extends Component {
 							options={options}
 							contentUpdated={this.contentUpdated}
 							optionsUpdated={this.optionsUpdated}
+							html={html}
+							htmlEditable={htmlEditable}
+							dateFormat={this.dateFormat}
 						/>
 					}
 					buttonGroup={
@@ -168,9 +227,7 @@ class Date extends Component {
 						</div>
 					}
 				/>
-				<div className='eventDate'>
-					EVENT DATE
-				</div>
+				<div ref={this.displayRef} dangerouslySetInnerHTML={{ __html: cleanHtml }} />
 			</div>
 		)
 	}
