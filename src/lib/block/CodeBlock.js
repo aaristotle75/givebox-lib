@@ -6,70 +6,71 @@ import Highlight from 'react-highlight';
 class CodeBlock extends Component{
 	constructor(props){
 		super(props);
-  	this.onCopy = this.onCopy.bind(this);
-    this.state = {
-      copied: false,
-    };
+		this.onCopy = this.onCopy.bind(this);
+		this.state = {
+			copied: false,
+		};
 	}
 
 	componentDidMount() {
 		document.addEventListener('copy', e => {
-		  const textContent = e.target.textContent;
-		  const filterText = 'CopyToClipboard\n';
-		  if (textContent.startsWith(filterText)) {
-		    e.clipboardData.setData('text/plain', textContent.replace(filterText, ''));
-		    e.preventDefault();
-		  }
+			const textContent = e.target.textContent;
+			const filterText = 'CopyToClipboard\n';
+			if (textContent.startsWith(filterText)) {
+				e.clipboardData.setData('text/plain', textContent.replace(filterText, ''));
+				e.preventDefault();
+			}
 		});
 	}
 
-  componentWillUnmount() {
-    if (this.timeout) {
-      clearTimeout(this.timeout);
-      this.timeout = null;
-    }
-  }
+	componentWillUnmount() {
+		if (this.timeout) {
+			clearTimeout(this.timeout);
+			this.timeout = null;
+		}
+	}
 
-  onCopy() {
+	onCopy() {
 		this.setState({copied: true });
 		this.timeout = setTimeout(() => {
 			this.setState({copied: false });
-      this.timeout = null;
+			this.timeout = null;
 		}, 1000);
 	}
 
 	render() {
 		const {
-      text,
-      name,
+			text,
+			name,
 			nameStyle,
 			nameIcon,
-      type,
+			type,
 			copiedText,
 			copiedTextStyle,
-			regularText
+			regularText,
+			style
 		} = this.props;
 
-    const {
-      copied
-    } = this.state;
+		const {
+			copied
+		} = this.state;
 
 		return (
-      <div className="codeBlockComponent">
+			<div style={style} className="codeBlockComponent">
 				<div className={`codeBlockText ${this.props.className}`}>
 					{regularText}
-	        <CopyToClipboard name={name} text={text} onCopy={() => this.onCopy()}>
-	          <span className="copy">
-	            <GBLink>{(nameIcon) && <i className="material-icons"><span className="icon-copy"></span></i>}<span style={nameStyle}>{name}</span></GBLink>
-	        	</span>
-	        </CopyToClipboard>
+					<CopyToClipboard name={name} text={text} onCopy={() => this.onCopy()}>
+						<span className="copy">
+							<GBLink>{(nameIcon) && <i className="material-icons"><span className="icon-copy"></span></i>}<span style={nameStyle}>{name}</span></GBLink>
+						</span>
+					</CopyToClipboard>
 				</div>
-        <div className="codeBlock wordwrap">
-          <Highlight className={`${type} code ${copied ? 'highlight' : ''}`}>
-            {text}
-          </Highlight>
-        </div>
-      </div>
+				<div className="codeBlock wordwrap">
+					<Highlight className={`${type} code ${copied ? 'highlight' : ''}`}>
+						{text}
+					</Highlight>
+				</div>
+			</div>
 		)
 	}
 };

@@ -120,6 +120,7 @@ class GBX3 extends React.Component {
 		info.articleID = articleID;
 		info.orgID = orgID;
 		if (kind) info.kind = kind;
+		info.modal = has(queryParams, 'modal') ? true : false;
 		info.preview = has(queryParams, 'preview') ? true : false;
 		info.signup = has(queryParams, 'signup') ? true : false;
 		info.locked = has(queryParams, 'locked') ? true : false;

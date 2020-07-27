@@ -27,9 +27,14 @@ class Share extends React.Component {
 					<Social
 						shareIconSize={55}
 						subText={
-							<div className='subText'>
-								The biggest audience is on social media and one of the best ways<br /> to quickly gain visitors and raise money.
-							</div>
+							<>
+								<div className='subText'>
+									The biggest audience is on social media and sharing is one of the best ways<br /> to quickly gain visitors and raise money.
+								</div>
+								<div className='subText'>
+									Click one of the icons below to share now.
+								</div>
+							</>
 						}
 					/>
 				</div>

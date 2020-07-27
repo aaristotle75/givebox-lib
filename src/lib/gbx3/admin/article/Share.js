@@ -5,11 +5,16 @@ import {
 	types
 } from '../../../';
 import ShareMenu from './ShareMenu';
+import ShareLink from './ShareLink';
+import {
+	sendResource
+} from '../../../api/helpers';
 import {
 	updateInfo
 } from '../../redux/gbx3actions';
 import ShareSocial from './ShareSocial';
 import ShareEmbed from './ShareEmbed';
+import ShareIframe from './ShareIframe';
 import ShareEmailBlast from './ShareEmailBlast';
 
 class Share extends React.Component {
@@ -19,6 +24,20 @@ class Share extends React.Component {
 		this.renderSubStep = this.renderSubStep.bind(this);
 		this.state = {
 		};
+	}
+
+	componentDidMount() {
+		/*
+		this.props.sendResource('gbxPreview', {
+			id: [this.props.articleID],
+			method: 'post',
+			reload: true,
+			data: {},
+			callback: (res, err) => {
+				console.log('execute gbxPreview', res, err);
+			}
+		});
+		*/
 	}
 
 	renderSubStep() {
@@ -39,6 +58,13 @@ class Share extends React.Component {
 			case 'embed': {
 				item.push(
 					<ShareEmbed key='shareEmbed' />
+				);
+				break;
+			}
+
+			case 'iframe': {
+				item.push(
+					<ShareIframe key='shareIframe' />
 				);
 				break;
 			}
@@ -87,6 +113,11 @@ class Share extends React.Component {
 						{this.renderSubStep()}
 					</div>
 				</div>
+				<div className={`bottomPanel ${open ? 'open' : 'close'}`}>
+					<div className='centerAlign adminPanelTabs'>
+						<ShareLink />
+					</div>
+				</div>
 			</>
 		)
 	}
@@ -100,6 +131,7 @@ function mapStateToProps(state, props) {
 	const gbx3 = util.getValue(state, 'gbx3', {});
 	const info = util.getValue(gbx3, 'info', {});
 	const kind = util.getValue(info, 'kind');
+	const articleID = util.getValue(info, 'articleID');
 	const globals = util.getValue(gbx3, 'globals', {});
 	const admin = util.getValue(gbx3, 'admin', {});
 	const subStep = util.getValue(admin, 'subStep');
@@ -108,6 +140,7 @@ function mapStateToProps(state, props) {
 
 	return {
 		kind,
+		articleID,
 		globals,
 		subStep,
 		openAdmin,
@@ -116,5 +149,6 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
+	sendResource,
 	updateInfo
 })(Share);

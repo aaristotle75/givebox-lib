@@ -15,11 +15,11 @@ import {
 const REACT_APP_GBX_WIDGET = process.env.REACT_APP_GBX_WIDGET;
 const REACT_APP_GBX_URL = process.env.REACT_APP_GBX_URL;
 
-class ShareEmbed extends React.Component {
+class ShareIframe extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.btnScript = this.btnScript.bind(this);
+		this.iframeScript = this.iframeScript.bind(this);
 		this.toggleAuto = this.toggleAuto.bind(this);
 		this.loadGBX = this.loadGBX.bind(this);
 		this.state = {
@@ -31,21 +31,15 @@ class ShareEmbed extends React.Component {
 		//window.GIVEBOX.init({ env: 'staging'});
 	}
 
-	btnScript() {
+	iframeScript() {
 		const {
-			articleID: ID,
-			kind
+			articleID: ID
 		} = this.props;
 
-		const src = REACT_APP_GBX_WIDGET;
-		const auto = this.state.autoPop ? true : false;
-		const autoParam = 'auto:'+ID;
-		const script =
-		`<script type='text/javascript' src='${src}'></script>
-		<script type='text/javascript'>document.addEventListener('DOMContentLoaded',GIVEBOX.init([{${auto ? autoParam : ''}}]));</script>
-		<button type='button' class='givebox-btn gb-style' data-givebox='${ID}'>${types.kind(kind).cta}</button>`;
-
-		return script;
+		const src = `${REACT_APP_GBX_WIDGET}/${ID}?public=true&noFocus=true`;
+		const iframe =
+		`<iframe src="${src}" frameBorder="no" scrolling="auto" height="800px" width="100%"></iframe>`;
+		return iframe;
 	}
 
 	toggleAuto() {
@@ -61,28 +55,16 @@ class ShareEmbed extends React.Component {
 	render() {
 
 		const {
-			kind,
-			primaryColor
+			kind
 		} = this.props;
-
-		const {
-			autoPop
-		} = this.state;
 
 		return (
 			<div className='gbx3Centered'>
 				<div className='intro shareAdmin'>
-					<h2 style={{ marginBottom: 10 }}>Embed Your {types.kind(kind).name} On Your Website</h2>
+					<h2 style={{ marginBottom: 10 }}>Embed An iFrame of Your {types.kind(kind).name} On Your Website</h2>
 					<div className='step'>
-						<CodeBlock style={{ fontSize: '1em' }} className='alignCenter' type='javascript' regularText={<h2><span style={{ fontWeight: 300 }}>Step 1:</span> Copy the Embed Code</h2>} text={this.btnScript()} name={` Click here to Copy Embed Code`} nameIcon={false} nameStyle={{}} />
-						<Choice
-							name='swipeApp'
-							onChange={this.toggleAuto}
-							type='checkbox'
-							label='Auto pop on your website'
-							value={autoPop}
-							checked={autoPop}
-						/>
+						<CodeBlock style={{ fontSize: '1em' }} className='alignCenter' type='javascript' regularText={<h2><span style={{ fontWeight: 300 }}>Step 1:</span> Copy the iFrame Code</h2>} text={this.iframeScript()} name={` Click here to Copy iFrame Code`} nameIcon={false} nameStyle={{}} />
+
 					</div>
 					<div style={{ marginTop: 20 }} className='step'>
 						<h2 style={{ marginBottom: 0 }}><span style={{ fontWeight: 300 }}>Step 2:</span> Paste into Your Website HTML</h2>
@@ -98,7 +80,7 @@ class ShareEmbed extends React.Component {
 								</span>
 								<span className='group'>
 									<span className='icon icon-arrow-right'></span>
-									<span className='inlineText'>Style the button with CSS or inline Styles.</span>
+									<span className='inlineText'>Style the iFrame to make sure it fits your website.</span>
 								</span>
 								<span className='group'>
 									<span className='icon icon-arrow-right'></span>
@@ -113,7 +95,7 @@ class ShareEmbed extends React.Component {
 	}
 }
 
-ShareEmbed.defaultProps = {
+ShareIframe.defaultProps = {
 }
 
 function mapStateToProps(state, props) {
@@ -133,4 +115,4 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
 	updateInfo
-})(ShareEmbed);
+})(ShareIframe);

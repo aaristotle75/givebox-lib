@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
 	util,
-	ModalRoute
+	ModalRoute,
+	GBLink
 } from '../';
 import Shop from './Shop';
 import Article from './Article';
@@ -16,11 +17,17 @@ class Layout extends React.Component {
 	constructor(props) {
 		super(props);
 		this.renderDisplay = this.renderDisplay.bind(this);
+		this.closeGBXModal = this.closeGBXModal.bind(this);
 		this.state = {
 		}
 	}
 
 	componentDidMount() {
+	}
+
+	closeGBXModal() {
+		window.postMessage('closeGivebox', '*');
+		window.parent.postMessage('closeGivebox', '*');
 	}
 
 	renderDisplay() {
@@ -63,7 +70,9 @@ class Layout extends React.Component {
 			access,
 			preview,
 			stage,
-			hasAccessToEdit
+			hasAccessToEdit,
+			primaryColor,
+			modal
 		} = this.props;
 
 		const style = { maxWidth: '850px' };
@@ -86,6 +95,7 @@ class Layout extends React.Component {
 			<div id='gbx3Layout' className='gbx3Layout'>
 				{showAvatar ? avatar : '' }
 				<div style={style} className={`gbx3Container`}>
+					{modal ? <GBLink customColor={primaryColor} allowCustom={true} className='closeGBXModalButton' onClick={() => this.closeGBXModal()}><span className='icon icon-x'></span></GBLink> : <></>}
 					{this.renderDisplay()}
 					<ModalRoute
 						id='shop'
@@ -117,12 +127,14 @@ function mapStateToProps(state, props) {
 	const access = util.getValue(state, 'resource.access');
 	const gbx3 = util.getValue(state, 'gbx3', {});
 	const info = util.getValue(gbx3, 'info', {});
+	const modal = util.getValue(info, 'modal');
 	const stage = util.getValue(info, 'stage');
 	const preview = util.getValue(info, 'preview');
 	const display = util.getValue(info, 'display');
 	const hasAccessToEdit = util.getValue(gbx3, 'admin.hasAccessToEdit');
 
 	return {
+		modal,
 		access,
 		display,
 		stage,

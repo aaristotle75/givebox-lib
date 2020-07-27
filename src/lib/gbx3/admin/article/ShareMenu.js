@@ -56,6 +56,12 @@ class ShareMenu extends React.Component {
 							Embed Widget
 						</li>
 						<li
+							onClick={() =>  this.updateSubStep('iframe')}
+							className='link show'
+						>
+							Embed iFrame
+						</li>
+						<li
 							onClick={() =>  this.updateSubStep('emailBlast')}
 							className='link show'
 						>

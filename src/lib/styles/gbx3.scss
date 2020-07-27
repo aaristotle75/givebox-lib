@@ -172,6 +172,7 @@
 	}
 
 	.gbx3Container {
+		position: relative;
 		display: table;
 		margin: 0 auto;
 		height: auto;
@@ -182,6 +183,12 @@
 		@include bgGradient(to bottom, $light-gray 0%, $white 20%);
 		@media (max-width: $breakpoint) {
 			border-radius: 0px !important;
+		}
+
+		.closeGBXModalButton {
+			position: absolute;
+			top: 0;
+			right: 0;
 		}
 	}
 
@@ -1210,7 +1217,63 @@
 
 	/*-------- End Drop Area ---------*/
 
+	/*--------- Receipt Confirmation -----*/
+	.confirmation {
 
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		padding: 20px;
+
+		.successfulText {
+			font-size: .9em;
+			margin: 10px 0;
+
+			.group {
+				display: flex;
+				justify-content: flex-start;
+				align-items: center;
+				margin: 10px 0;
+
+				.icon {
+					margin-right: 5px;
+				}
+			}
+
+			.inlineText {
+				display: inline-block;
+				padding-bottom: 5px;
+			}
+
+			.line {
+				display: block;
+				padding-bottom: 5px;
+			}
+
+			.titleText {
+				font-size: 22px;
+				font-weight: 300;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				padding: 5px 0;
+				.icon {
+					font-size: 40px;
+					margin-bottom: 5px;
+				}
+
+				@media (max-width: $breakpoint) {
+					font-weight: 600;
+					font-size: .9em;
+					.icon {
+						font-size: 30px;
+						margin-bottom: 5px;
+					}
+				}
+			}
+		}
+	}
 
 	/*------ Payment Form ---------*/
 	.editable .formBlock {
@@ -1648,64 +1711,6 @@
 		margin-left: 5px;
 	}
 
-	/*--------- Receipt Confirmation -----*/
-	.confirmation {
-
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		flex-direction: column;
-		padding: 20px;
-
-		.successfulText {
-			font-size: .9em;
-			margin: 10px 0;
-
-			.group {
-				display: flex;
-				justify-content: flex-start;
-				align-items: center;
-				margin: 10px 0;
-
-				.icon {
-					margin-right: 5px;
-				}
-			}
-
-			.inlineText {
-				display: inline-block;
-				padding-bottom: 5px;
-			}
-
-			.line {
-				display: block;
-				padding-bottom: 5px;
-			}
-
-			.titleText {
-				font-size: 22px;
-				font-weight: 300;
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				padding: 5px 0;
-				.icon {
-					font-size: 40px;
-					margin-bottom: 5px;
-				}
-
-				@media (max-width: $breakpoint) {
-					font-weight: 600;
-					font-size: .9em;
-					.icon {
-						font-size: 30px;
-						margin-bottom: 5px;
-					}
-				}
-			}
-		}
-	}
-
 	.subText {
 		font-size: 18px;
 		font-weight: 300;
@@ -1720,8 +1725,48 @@
 	}
 
 	.share {
+
 		ul {
 			padding: 20px 0;
+		}
+	}
+
+	.shareAdmin {
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
+		padding: 0 20px;
+
+		.confirmation .successfulText .inlineText {
+			text-align: left;
+		}
+
+		.codeBlockComponent {
+			text-align: center;
+
+			button.link {
+				font-size: 16px;
+				margin-bottom: 10px;
+			}
+
+			.codeBlocktext {
+
+			}
+
+			.codeBlock {
+				display: inline-block;
+				width: 80%;
+				@media (max-width: $breakpoint ) {
+					width: 100%;
+				}
+
+				.hljs {
+					border: 1px solid $med-blue-gray;
+				}
+			}
+		}
+		.choice-group {
+			justify-content: center;
 		}
 	}
 
