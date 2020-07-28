@@ -25,7 +25,7 @@ class Share extends React.Component {
 				<div className='intro'>
 					<h2 style={{ marginBottom: 10 }}>Share Your {types.kind(kind).name} On Social Media</h2>
 					<Social
-						shareIconSize={55}
+						shareIconSize={45}
 						subText={
 							<>
 								<div className='subText'>

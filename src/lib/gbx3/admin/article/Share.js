@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
 	util,
-	types
+	types,
+	Alert
 } from '../../../';
 import ShareMenu from './ShareMenu';
 import ShareLink from './ShareLink';
@@ -93,7 +94,8 @@ class Share extends React.Component {
 		const {
 			openAdmin: open,
 			hasAccessToEdit,
-			kind
+			kind,
+			webApp
 		} = this.props;
 
 
@@ -109,6 +111,7 @@ class Share extends React.Component {
 					<ShareMenu />
 				</div>
 				<div className={`stageContainer ${open ? 'open' : 'close'}`}>
+					<Alert alert='passive' display={util.getPublishStatus(kind, webApp) === 'private' ? true : false} msg={`Your ${types.kind(kind).name} is Set to Private`} />
 					<div className='stageAligner'>
 						{this.renderSubStep()}
 					</div>
@@ -137,6 +140,7 @@ function mapStateToProps(state, props) {
 	const subStep = util.getValue(admin, 'subStep');
 	const openAdmin = util.getValue(admin, 'open');
 	const hasAccessToEdit = util.getValue(admin, 'hasAccessToEdit');
+	const webApp = util.getValue(gbx3, 'data.publishedStatus.webApp');
 
 	return {
 		kind,
@@ -144,7 +148,8 @@ function mapStateToProps(state, props) {
 		globals,
 		subStep,
 		openAdmin,
-		hasAccessToEdit
+		hasAccessToEdit,
+		webApp
 	}
 }
 

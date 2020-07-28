@@ -705,6 +705,21 @@ label.active {
 	}
 }
 
+.passive {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 10px;
+	background: $light-gray;
+	vertical-align: middle;
+
+	.msgText {
+		display: inline-block;
+		vertical-align: middle;
+		color: $med-blue-dark-gray;
+	}
+}
+
 .warning {
 	display: block;
 	padding: 10px;

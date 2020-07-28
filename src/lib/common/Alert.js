@@ -5,108 +5,119 @@ import GBLink from './GBLink';
 
 export class Alert extends Component {
 
-  constructor(props) {
-    super(props);
-    this.renderAlert = this.renderAlert.bind(this);
-    this.close = this.close.bind(this);
-    this.state = {
-      display: this.props.display ? 'show' : 'hide'
-    };
-  }
+	constructor(props) {
+		super(props);
+		this.renderAlert = this.renderAlert.bind(this);
+		this.close = this.close.bind(this);
+		this.state = {
+			display: this.props.display ? 'show' : 'hide'
+		};
+	}
 
-  componentDidMount() {
-  }
+	componentDidMount() {
+	}
 
-  componentDidUpdate(nextProps) {
-    if (this.props.display !== nextProps.display) {
-      this.timeout = setTimeout(() => {
-        this.setState({display: this.props.display ? 'show' : 'hide'})
-        this.timeout = null;
-      }, 0);
-    }
-  }
+	componentDidUpdate(nextProps) {
+		if (this.props.display !== nextProps.display) {
+			this.timeout = setTimeout(() => {
+				this.setState({display: this.props.display ? 'show' : 'hide'})
+				this.timeout = null;
+			}, 0);
+		}
+	}
 
-  componentWillUnmount() {
-    if (this.timeout) {
-      clearTimeout(this.timeout);
-      this.timeout = null;
-    }
-  }
+	componentWillUnmount() {
+		if (this.timeout) {
+			clearTimeout(this.timeout);
+			this.timeout = null;
+		}
+	}
 
-  renderAlert(alert, msg) {
-    switch (alert) {
-      case 'error':
-        return <Error msg={msg} icon={this.props.iconError} />
-      case 'success':
-        return <Success msg={msg} icon={this.props.iconSuccess} />
-      case 'warning':
-        return <Warning msg={msg} icon={this.props.iconWarning} />
+	renderAlert(alert, msg) {
+		switch (alert) {
+			case 'error':
+				return <Error msg={msg} icon={this.props.iconError} />
+			case 'success':
+				return <Success msg={msg} icon={this.props.iconSuccess} />
+			case 'warning':
+				return <Warning msg={msg} icon={this.props.iconWarning} />
+			case 'passive':
+				return <Passive msg={msg} icon={this.props.iconPassive} />
 
-      // no default
-    }
-  }
+			// no default
+		}
+	}
 
-  close() {
-    this.setState({ display: 'hide' });
-    if (this.props.callback) this.props.callback();
-  }
+	close() {
+		this.setState({ display: 'hide' });
+		if (this.props.callback) this.props.callback();
+	}
 
-  render() {
+	render() {
 
-    const {
-      alert,
-      msg,
-      display,
-      closeBtn,
-      iconClose
-    } = this.props;
+		const {
+			alert,
+			msg,
+			display,
+			closeBtn,
+			iconClose
+		} = this.props;
 
-    const showAlert = display && (this.state.display !== 'hide') ? true : false;
+		const showAlert = display && (this.state.display !== 'hide') ? true : false;
 
-    return (
-      <CSSTransition
-        in={showAlert ? true : false}
-        timeout={300}
-        classNames='alertMsg'
-        unmountOnExit
-      >
-        <div className='alertMsg'>
-          {closeBtn && <GBLink onClick={this.close} className='close'>{iconClose}</GBLink>}
-          {this.renderAlert(alert, msg)}
-        </div>
-      </CSSTransition>
-    )
+		return (
+			<CSSTransition
+				in={showAlert ? true : false}
+				timeout={300}
+				classNames='alertMsg'
+				unmountOnExit
+			>
+				<div className='alertMsg'>
+					{closeBtn && <GBLink onClick={this.close} className='close'>{iconClose}</GBLink>}
+					{this.renderAlert(alert, msg)}
+				</div>
+			</CSSTransition>
+		)
 
-  }
+	}
 }
 
 Alert.defaultProps = {
-  iconClose: <span className='icon icon-x'></span>,
-  iconError: <span className='icon icon-alert-circle'></span>,
-  iconSuccess: <span className='icon icon-check-circle'></span>,
-  iconWarning: <span className='icon icon-alert-circle'></span>
+	iconClose: <span className='icon icon-x'></span>,
+	iconError: <span className='icon icon-alert-circle'></span>,
+	iconSuccess: <span className='icon icon-check-circle'></span>,
+	iconWarning: <span className='icon icon-alert-circle'></span>,
+	iconPassive: <span className='icon icon-alert-circle'></span>
 }
 
 export const Error = ({msg, icon}) => {
-  return (
-    <div className={`error`}>
-      <span className='msgText'>{icon} {msg || msgs.error}</span>
-    </div>
-  )
+	return (
+		<div className={`error`}>
+			<span className='msgText'>{icon} {msg || msgs.error}</span>
+		</div>
+	)
 }
 
 export const Success = ({msg, icon}) => {
-  return (
-    <div className={`success`}>
-      <span className='msgText'>{icon} {msg}</span>
-    </div>
-  )
+	return (
+		<div className={`success`}>
+			<span className='msgText'>{icon} {msg}</span>
+		</div>
+	)
 }
 
 export const Warning = ({msg, icon}) => {
-  return (
-    <div className={`warning`}>
-      <span className='msgText'>{icon} {msg}</span>
-    </div>
-  )
+	return (
+		<div className={`warning`}>
+			<span className='msgText'>{icon} {msg}</span>
+		</div>
+	)
+}
+
+export const Passive = ({msg, icon}) => {
+	return (
+		<div className={`passive`}>
+			<span className='msgText'>{icon} {msg}</span>
+		</div>
+	)
 }

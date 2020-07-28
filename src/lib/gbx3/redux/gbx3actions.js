@@ -650,7 +650,7 @@ export function loadGBX3(articleID, callback) {
 										hasAccessToEdit,
 										editable: hasAccessToEdit ? true : false,
 										open: hasAccessToEdit ? true : false,
-										step: 'design'
+										step: 'share'
 									}));
 
 									// Get and Set Thank You Email Receipt

@@ -90,6 +90,10 @@
 	}
 }
 
+.dropdown .secondaryText {
+	font-size: 12px;
+}
+
 .gbx3 {
 
 	.flatpickr input,
@@ -1722,6 +1726,15 @@
 			font-size: .9em;
 			font-size: 500;
 		}
+	}
+
+	.shareLink {
+		color: $mainColor;
+	}
+
+	.shareLink:hover {
+		color: $mainColorLight;
+		@include default-transition(.25s);
 	}
 
 	.share {

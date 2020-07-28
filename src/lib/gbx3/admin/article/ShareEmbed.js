@@ -74,7 +74,7 @@ class ShareEmbed extends React.Component {
 				<div className='intro shareAdmin'>
 					<h2 style={{ marginBottom: 10 }}>Embed Your {types.kind(kind).name} On Your Website</h2>
 					<div className='step'>
-						<CodeBlock style={{ fontSize: '1em' }} className='alignCenter' type='javascript' regularText={<h2><span style={{ fontWeight: 300 }}>Step 1:</span> Copy the Embed Code</h2>} text={this.btnScript()} name={` Click here to Copy Embed Code`} nameIcon={false} nameStyle={{}} />
+						<CodeBlock style={{ fontSize: '1em' }} className='alignCenter' type='javascript' regularText={<h2><span style={{ fontWeight: 300 }}>Step 1:</span> Copy the Embed Code</h2>} text={this.btnScript()} name={` Click Here to Copy Embed Code`} nameIcon={false} nameStyle={{}} />
 						<Choice
 							name='swipeApp'
 							onChange={this.toggleAuto}

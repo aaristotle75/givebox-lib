@@ -63,7 +63,7 @@ class ShareIframe extends React.Component {
 				<div className='intro shareAdmin'>
 					<h2 style={{ marginBottom: 10 }}>Embed An iFrame of Your {types.kind(kind).name} On Your Website</h2>
 					<div className='step'>
-						<CodeBlock style={{ fontSize: '1em' }} className='alignCenter' type='javascript' regularText={<h2><span style={{ fontWeight: 300 }}>Step 1:</span> Copy the iFrame Code</h2>} text={this.iframeScript()} name={` Click here to Copy iFrame Code`} nameIcon={false} nameStyle={{}} />
+						<CodeBlock style={{ fontSize: '1em' }} className='alignCenter' type='javascript' regularText={<h2><span style={{ fontWeight: 300 }}>Step 1:</span> Copy the iFrame Code</h2>} text={this.iframeScript()} name={` Click Here to Copy iFrame Code`} nameIcon={false} nameStyle={{}} />
 
 					</div>
 					<div style={{ marginTop: 20 }} className='step'>
