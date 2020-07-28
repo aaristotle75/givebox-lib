@@ -51,6 +51,12 @@ export class Alert extends Component {
           msg: msg,
           icon: this.props.iconWarning
         });
+
+      case 'passive':
+        return /*#__PURE__*/React.createElement(Passive, {
+          msg: msg,
+          icon: this.props.iconPassive
+        });
       // no default
     }
   }
@@ -97,6 +103,9 @@ Alert.defaultProps = {
   }),
   iconWarning: /*#__PURE__*/React.createElement("span", {
     className: "icon icon-alert-circle"
+  }),
+  iconPassive: /*#__PURE__*/React.createElement("span", {
+    className: "icon icon-alert-circle"
   })
 };
 export const Error = ({
@@ -125,6 +134,16 @@ export const Warning = ({
 }) => {
   return /*#__PURE__*/React.createElement("div", {
     className: `warning`
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "msgText"
+  }, icon, " ", msg));
+};
+export const Passive = ({
+  msg,
+  icon
+}) => {
+  return /*#__PURE__*/React.createElement("div", {
+    className: `passive`
   }, /*#__PURE__*/React.createElement("span", {
     className: "msgText"
   }, icon, " ", msg));

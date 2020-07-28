@@ -954,3 +954,22 @@ export function toggle(bool, options) {
     className: `${opts.className} toggleUtil`
   }, text);
 }
+export function getPublishStatus(kind, webApp) {
+  let status = 'public';
+
+  switch (kind) {
+    case 'fundraiser':
+      {
+        if (webApp) status = 'public';else status = 'private';
+        break;
+      }
+
+    default:
+      {
+        if (webApp) status = 'private';else status = 'public';
+        break;
+      }
+  }
+
+  return status;
+}

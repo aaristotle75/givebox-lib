@@ -87,7 +87,8 @@ export function kind(kind) {
         obj.api = {
           item: 'Event',
           list: 'Events',
-          amount: 'orgEventTicket'
+          amount: 'orgEventTicket',
+          publish: 'orgEventPublish'
         };
         obj.icon = 'calendar';
         break;
@@ -111,7 +112,8 @@ export function kind(kind) {
         obj.api = {
           item: 'Fundraiser',
           list: 'Fundraisers',
-          amount: 'orgFundraiserAmount'
+          amount: 'orgFundraiserAmount',
+          publish: 'orgFundraiserPublish'
         };
         obj.icon = 'heart';
         break;
@@ -135,7 +137,8 @@ export function kind(kind) {
         obj.api = {
           item: 'Invoice',
           list: 'Invoices',
-          amount: 'orgInvoiceAmount'
+          amount: 'orgInvoiceAmount',
+          publish: 'orgInvoicePublish'
         };
         obj.icon = 'briefcase';
         break;
@@ -159,7 +162,8 @@ export function kind(kind) {
         obj.api = {
           item: 'Membership',
           list: 'Memberships',
-          amount: 'orgMembershipSubscription'
+          amount: 'orgMembershipSubscription',
+          publish: 'orgMembershipPublish'
         };
         obj.icon = 'clipboard';
         break;
@@ -183,7 +187,8 @@ export function kind(kind) {
         obj.api = {
           item: 'Sweepstake',
           list: 'Sweepstakes',
-          amount: 'orgSweepstakeTicket'
+          amount: 'orgSweepstakeTicket',
+          publish: 'orgSweepstakePublish'
         };
         obj.icon = 'gift';
         break;
