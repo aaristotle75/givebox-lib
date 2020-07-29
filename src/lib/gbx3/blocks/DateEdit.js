@@ -105,7 +105,7 @@ class DateForm extends Component {
 			html,
 			htmlEditable,
 			articleID,
-			orgID,
+			orgID
 		} = this.props;
 
 		const {

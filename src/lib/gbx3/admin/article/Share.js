@@ -86,7 +86,6 @@ class Share extends React.Component {
 				{item}
 			</div>
 		)
-
 	}
 
 	render() {

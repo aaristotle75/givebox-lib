@@ -958,6 +958,7 @@ class Form extends Component {
 				readOnly={field ? field.readOnly : params.readOnly}
 				autoFocus={field ? field.autoFocus : params.autoFocus}
 				onChange={this.onChangeWhere}
+				whereCallback={params.whereCallback}
 				onBlur={this.onBlur}
 				onFocus={this.onFocus}
 				value={field ? field.value : params.value}

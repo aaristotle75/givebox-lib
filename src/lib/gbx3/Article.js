@@ -381,6 +381,7 @@ function mapStateToProps(state, props) {
 	const verticalCompact = util.getValue(admin, 'verticalCompact');
 	const outline = util.getValue(admin, 'outline');
 	const breakpoint = util.getValue(info, 'breakpoint');
+
 	return {
 		hasAccessToEdit,
 		layouts,

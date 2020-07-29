@@ -762,7 +762,7 @@ export function stripHtml(html){
 		return temporalDivElement.textContent || temporalDivElement.innerText || "";
 }
 
-export function makeAddress(where, showCountry = true) {
+export function makeAddress(where, showCountry = true, returnObj = false) {
 	const obj = {};
 	if (where.address) obj.line1 = where.address;
 	if (where.city || where.state || where.zip) {
@@ -770,15 +770,19 @@ export function makeAddress(where, showCountry = true) {
 	}
 	if (where.country) obj.line3 = where.country;
 	if (!isEmpty(obj)) {
-		return (
-			<div className='address'>
-				{obj.line1 && <span className='line'>{obj.line1}</span>}
-				{obj.line2 && <span className='line'>{obj.line2}</span>}
-				{obj.line3 && showCountry && <span className='line'>{obj.line3}</span>}
-			</div>
-		)
+		if (returnObj) return obj;
+		else {
+			return (
+				<div className='address'>
+					{obj.line1 && <span className='line'>{obj.line1}</span>}
+					{obj.line2 && <span className='line'>{obj.line2}</span>}
+					{obj.line3 && showCountry && <span className='line'>{obj.line3}</span>}
+				</div>
+			)
+		}
 	} else {
-		return '';
+		if (returnObj) return {};
+		else return '';
 	}
 }
 

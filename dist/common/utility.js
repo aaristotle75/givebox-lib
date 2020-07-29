@@ -776,7 +776,7 @@ export function stripHtml(html) {
 
   return temporalDivElement.textContent || temporalDivElement.innerText || "";
 }
-export function makeAddress(where, showCountry = true) {
+export function makeAddress(where, showCountry = true, returnObj = false) {
   const obj = {};
   if (where.address) obj.line1 = where.address;
 
@@ -787,17 +787,19 @@ export function makeAddress(where, showCountry = true) {
   if (where.country) obj.line3 = where.country;
 
   if (!isEmpty(obj)) {
-    return /*#__PURE__*/React.createElement("div", {
-      className: "address"
-    }, obj.line1 && /*#__PURE__*/React.createElement("span", {
-      className: "line"
-    }, obj.line1), obj.line2 && /*#__PURE__*/React.createElement("span", {
-      className: "line"
-    }, obj.line2), obj.line3 && showCountry && /*#__PURE__*/React.createElement("span", {
-      className: "line"
-    }, obj.line3));
+    if (returnObj) return obj;else {
+      return /*#__PURE__*/React.createElement("div", {
+        className: "address"
+      }, obj.line1 && /*#__PURE__*/React.createElement("span", {
+        className: "line"
+      }, obj.line1), obj.line2 && /*#__PURE__*/React.createElement("span", {
+        className: "line"
+      }, obj.line2), obj.line3 && showCountry && /*#__PURE__*/React.createElement("span", {
+        className: "line"
+      }, obj.line3));
+    }
   } else {
-    return '';
+    if (returnObj) return {};else return '';
   }
 }
 export const equals = function (array, array2) {

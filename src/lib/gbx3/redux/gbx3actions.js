@@ -558,6 +558,7 @@ export function loadGBX3(articleID, callback) {
 									const primaryColor = util.getValue(settings, 'primaryColor', '#4775f8');
 									const customTemplate = util.getValue(settings, 'customTemplate', {});
 									const passFees = util.getValue(res, 'passFees');
+									const publishStatus = util.getPublishStatus(kind, util.getValue(res, 'publishedStatus.webApp'));
 
 									dispatch(updateCart({ passFees }));
 									dispatch(updateInfo({
@@ -567,6 +568,7 @@ export function loadGBX3(articleID, callback) {
 										kindID,
 										kind,
 										apiName,
+										publishStatus,
 										display: 'article',
 										orgImage: util.getValue(access, 'orgImage')
 									}));
@@ -650,7 +652,7 @@ export function loadGBX3(articleID, callback) {
 										hasAccessToEdit,
 										editable: hasAccessToEdit ? true : false,
 										open: hasAccessToEdit ? true : false,
-										step: 'share'
+										step: 'design'
 									}));
 
 									// Get and Set Thank You Email Receipt

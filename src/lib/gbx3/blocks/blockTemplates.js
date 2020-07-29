@@ -150,6 +150,41 @@ export const date = {
 	}
 };
 
+export const where = {
+	order: 4,
+	name: 'where',
+	title: 'Where',
+	type: 'Where',
+	nonremovable: true,
+	field: 'where',
+	updateOptions: 'object',
+	mobileRelativeBlock: 2,
+	mobileClassName: 'mobileRelativeBlockTop',
+	content: {
+		where: {
+			address: '',
+			city: '',
+			state: '',
+			zip: '',
+			country: '',
+			coordinates: {
+				lat: null,
+				long: null
+			}
+		},
+		htmlTemplate: ''
+	},
+	options: {
+		inputLabel: 'Event Location',
+		inputPlaceholder: 'Add Event Location',
+		mapLink: true
+	},
+	grid: {
+		desktop: { i: 'where', x: 0, y: 22, w: 6, h: 3, enabled: true },
+		mobile: { i: 'where', x: 0, y: 2, w: 5, h: 3, static: true, enabled: false }
+	}
+};
+
 export const paymentForm = {
 	order: 7,
 	name: 'paymentForm',
@@ -349,7 +384,7 @@ const event = {
 				recurring: {}
 			},
 			grid: {
-				desktop: { i: 'amounts', x: 0, y: 13, w: 6, h: 6, enabled: true },
+				desktop: { i: 'amounts', x: 0, y: 18, w: 6, h: 6, enabled: true },
 				mobile: { i: 'amounts', x: 0, y: 32, w: 6, h: 4, static: true, enabled: false }
 			}
 		}
@@ -362,7 +397,15 @@ const event = {
 			desktop: { i: 'date', x: 0, y: 8, w: 6, h: 4, enabled: true },
 			mobile: { i: 'date', x: 0, y: 2, w: 5, h: 3, static: true, enabled: false }
 		}
-	}
+	},
+	where: {
+		...where,
+		title: 'Where is the Event',
+		grid: {
+			desktop: { i: 'date', x: 0, y: 13, w: 6, h: 4, enabled: true },
+			mobile: { i: 'date', x: 0, y: 2, w: 5, h: 3, static: true, enabled: false }
+		}
+	},
 };
 
 export const blockTemplates = {
@@ -448,7 +491,7 @@ export const defaultBlocks = {
 	article: {
 		fundraiser: [ ...articleDefaults ],
 		invoice: [ ...articleDefaults ],
-		event: [ ...articleDefaults, 'when' ],
+		event: [ ...articleDefaults, 'when', 'where' ],
 		sweepstake: [ ...articleDefaults ],
 		membership: [ ...articleDefaults ]
 	},

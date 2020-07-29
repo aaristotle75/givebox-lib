@@ -71,6 +71,9 @@ class Layout extends React.Component {
 			preview,
 			stage,
 			hasAccessToEdit,
+			publishStatus,
+			display,
+			orgName,
 			primaryColor,
 			modal
 		} = this.props;
@@ -89,10 +92,27 @@ class Layout extends React.Component {
 
 		const showAvatar = (stage !== 'admin') && !preview && hasAccessToEdit ? true : false;
 
+		const noAccess = (!hasAccessToEdit || (hasAccessToEdit && !preview && stage === 'public' )) && (publishStatus === 'private') && (display === 'article') ? true : false;
+
 		return (
 			<>
+			{ noAccess ?
+				<div className='noAccessToGBX'>
+					<span style={{ fontSize: 30, margin: '10px 0' }} className='icon icon-lock'></span>
+					<span>This page is set to private.</span>
+					{hasAccessToEdit ?
+						<GBLink onClick={() => this.props.updateAdmin({ publicView: false })}>
+							<span className='icon icon-chevron-left'></span> Go back to Form Builder
+						</GBLink>
+					:
+						<GBLink onClick={() => console.log('shop')}>
+							Click here to visit<br /><span style={{ fontWeight: 400 }}>{orgName}</span><br />
+						</GBLink>
+					}
+				</div>
+			: ''}
 			<div className='gbx3LayoutBackground'></div>
-			<div id='gbx3Layout' className='gbx3Layout'>
+			<div id='gbx3Layout' className={`gbx3Layout ${noAccess ? 'noAccess' : ''}`}>
 				{showAvatar ? avatar : '' }
 				<div style={style} className={`gbx3Container`}>
 					{modal ? <GBLink customColor={primaryColor} allowCustom={true} className='closeGBXModalButton' onClick={() => this.closeGBXModal()}><span className='icon icon-x'></span></GBLink> : <></>}
@@ -132,6 +152,8 @@ function mapStateToProps(state, props) {
 	const preview = util.getValue(info, 'preview');
 	const display = util.getValue(info, 'display');
 	const hasAccessToEdit = util.getValue(gbx3, 'admin.hasAccessToEdit');
+	const publishStatus = util.getValue(info, 'publishStatus');
+	const orgName = util.getValue(info, 'orgName');
 
 	return {
 		modal,
@@ -140,6 +162,8 @@ function mapStateToProps(state, props) {
 		stage,
 		preview,
 		hasAccessToEdit,
+		publishStatus,
+		orgName,
 		globals: util.getValue(gbx3, 'globals', {})
 	}
 }

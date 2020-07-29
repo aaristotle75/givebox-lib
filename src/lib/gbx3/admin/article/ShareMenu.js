@@ -3,9 +3,7 @@ import { connect } from 'react-redux';
 import {
 	util,
 	GBLink,
-	ModalLink,
-	Dropdown,
-	types
+	ModalLink
 } from '../../../';
 import {
 	updateInfo,
@@ -15,6 +13,7 @@ import {
 	toggleAdminLeftPanel
 } from '../../redux/gbx3actions';
 import { sendResource } from '../../../api/helpers';
+import Publish from './Publish';
 
 const CLOUD_URL = process.env.REACT_APP_CLOUD_URL;
 
@@ -23,63 +22,12 @@ class ShareMenu extends React.Component {
 	constructor(props) {
 		super(props);
 		this.updateSubStep = this.updateSubStep.bind(this);
-		this.updatePublishStatus = this.updatePublishStatus.bind(this);
 		this.state = {
-			publishOpen: false
 		};
 	}
 
 	updateSubStep(subStep) {
 		this.props.updateAdmin({ subStep });
-	}
-
-	async updatePublishStatus(value) {
-		const {
-			kind,
-			kindID,
-			orgID
-		} = this.props;
-
-		const publishStatus = util.deepClone(this.props.publishStatus);
-		switch (kind) {
-			case 'fundraiser': {
-				if (value === 'public') {
-					publishStatus.webApp = true;
-					publishStatus.mobileApp = true;
-					publishStatus.swipeApp = true;
-				} else {
-					publishStatus.webApp = false;
-					publishStatus.mobileApp = false;
-					publishStatus.swipeApp = true;
-				}
-				break;
-			}
-
-			default: {
-				if (value === 'public') {
-					publishStatus.webApp = false;
-					publishStatus.mobileApp = false;
-					publishStatus.swipeApp = true;
-				} else {
-					publishStatus.webApp = true;
-					publishStatus.mobileApp = true;
-					publishStatus.swipeApp = true;
-				}
-				break;
-			}
-		}
-		const dataUpdated = await this.props.updateData({
-			publishedStatus: publishStatus
-		});
-		if (dataUpdated) {
-			this.props.sendResource(types.kind(kind).api.publish, {
-				orgID,
-				id: [kindID],
-				method: 'patch',
-				isSending: false,
-				data: publishStatus
-			});
-		}
 	}
 
 	render() {
@@ -103,37 +51,7 @@ class ShareMenu extends React.Component {
 					</div>
 				</div>
 				<div style={{ marginTop: 50 }} className={`leftPanelScroller`}>
-					<ul>
-						<li className='listHeader'>Status & Visibility</li>
-						<li
-							onClick={() => {
-								const publishOpen = this.state.publishOpen ? false : true;
-								this.setState({ publishOpen });
-							}}
-							className='stylePanel'
-						>
-							Visibility
-							<Dropdown
-								open={publishOpen}
-								portalClass={'gbx3'}
-								portalID={`leftPanel-publishStatus`}
-								portal={true}
-								name='publishStatus'
-								contentWidth={175}
-								label={''}
-								className='leftPanelDropdown'
-								fixedLabel={true}
-								defaultValue={util.getPublishStatus(kind, webApp)}
-								onChange={(name, value) => {
-									this.updatePublishStatus(value);
-								}}
-								options={[
-									{ primaryText: 'Public', secondaryText: 'Visible to Everyone.', value: 'public' },
-									{ primaryText: 'Private', secondaryText: 'Only visible to site admins.', value: 'private' }
-								]}
-							/>
-						</li>
-					</ul>
+					<Publish />
 					<ul>
 						<li className='listHeader'>Sharing</li>
 						<li onClick={() => this.updateSubStep('social')}>
