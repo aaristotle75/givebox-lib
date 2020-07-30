@@ -37,7 +37,16 @@ const membership = {
 };
 
 const sweepstake = {
-	...event
+	fields: {
+		enabled: { label: '', width: 10, className: 'left action' },
+		price: { label: 'Price', placeholder: '0.00', width: 15 },
+		name: { label: '', placeholder: 'Add a Ticket Short Description', width: 55, customFieldDefault: '' },
+		entries: { label: 'Entries Per Ticket', placeholder: '0', width: 10 }
+	},
+	buttonGroup: { width: 10 },
+	hasDefaultField: false,
+	hasCustomField: false,
+	skipFreeEntry: true
 };
 
 export const amountFieldsConfig = {

@@ -2169,3 +2169,63 @@
 	}
 
 }
+
+.gbx3 {
+
+	.moneyAmount.noValue .symbol {
+		color: $placeholder-gray;
+	}
+
+	.countdownTimer {
+		.completed {
+			position: absolute;
+			left: 0;
+			width: 100%;
+			text-align: center;
+			z-index: 100000;
+		}
+
+		.completed h2 {
+			margin-top: 30px;
+			color: #D50000;
+			font-size: 16px;
+		}
+
+		.timer {
+			text-align: center;
+			vertical-align: middle;
+			padding: 5px;
+			float: left;
+		}
+
+		.timer .number {
+			font-size: 35px;
+			display: block;
+		}
+
+		.timer .text {
+			font-size: 10px;
+			display: block;
+			margin-top: -5px;
+		}
+
+		.completedStyle .text,
+		.completedStyle .number {
+			color: #EEEEEE;
+		}
+
+		.timerContainer {
+			position: relative;
+		}
+
+		.timerContainer .timerInfo {
+			position: absolute;
+			top: 10px;
+			left: 0;
+			text-align: center;
+			width: 80px;
+			height: 80px;
+		}
+	}
+
+}

@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import PasswordStrength from './PasswordStrength';
 import CharacterCount from './CharacterCount';
+import {
+	util
+} from '../../'
 import Fade from '../common/Fade';
 
 class TextField extends Component {
@@ -117,7 +120,7 @@ class TextField extends Component {
 						{<div className='customLink'>{this.props.customLink}</div> || ''}
 						{count && type !== 'password' && type !== 'hidden' &&
 							<Fade in={this.state.status === 'active' && value ? true : false} duration={200}>
-								<CharacterCount max={maxLength} count={value.length} />
+								<CharacterCount max={maxLength} count={value ? value.length : 0} />
 							</Fade>
 						}
 					</div>

@@ -313,6 +313,32 @@ export default class AmountsEdit extends Component {
 		)
 	}
 
+	entriesField(ID, fieldProps, config) {
+
+		const amount = this.getAmount(ID);
+		const fieldName = `entries${ID}`;
+		const entries = +util.getValue(amount, 'entries', 0);
+		const error = false;
+
+		return (
+			<TextField
+				className={`${amount.enabled ? '' : 'notOnForm'}`}
+				name={fieldName}
+				label={util.getValue(fieldProps, 'label')}
+				fixedLabel={true}
+				placeholder={util.getValue(fieldProps, 'placeholder', '0')}
+				onChange={(e) => {
+					const entries = +e.currentTarget.value;
+					this.updateAmounts(ID, { entries });
+				}}
+				maxLength={7}
+				value={entries || ''}
+				error={error}
+				errorType={'tooltip'}
+			/>
+		)
+	}
+
 	renderAmountsList() {
 		const items = [];
 		const {

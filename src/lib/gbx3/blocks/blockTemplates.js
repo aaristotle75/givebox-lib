@@ -111,6 +111,26 @@ export const amounts = {
 	}
 };
 
+export const countdown = {
+	order: 4,
+	name: 'countdown',
+	title: 'Countdown',
+	type: 'Countdown',
+	nonremovable: true,
+	mobileRelativeBlock: 4,
+	mobileClassName: 'mobileRelativeBlockTop',
+	content: {
+		endsAt: null,
+		goal: null
+	},
+	options: {
+	},
+	grid: {
+		desktop: { i: 'countdown', x: 0, y: 22, w: 6, h: 3, enabled: true },
+		mobile: { i: 'countdown', x: 0, y: 2, w: 5, h: 3, static: true, enabled: false }
+	}
+};
+
 export const date = {
 	order: 4,
 	name: 'date',
@@ -407,13 +427,71 @@ const event = {
 	},
 };
 
+const sweepstake = {
+	...articleBlocks,
+	countdown: {
+		...countdown,
+		grid: {
+			desktop: { i: 'date', x: 0, y: 8, w: 6, h: 10, enabled: true },
+			mobile: { i: 'date', x: 0, y: 2, w: 5, h: 3, static: true, enabled: false }
+		}
+	},
+	amounts: {
+		...amounts,
+		...{
+			options: {
+				...amounts.options,
+				button: {
+					...amounts.options.button,
+					embedAllowed: false,
+					enabled: true,
+					text: 'Select Tickets'
+				},
+				extras: {
+					maxQuantity: '',
+					showInStock: false
+				},
+				recurring: {}
+			},
+			grid: {
+				desktop: { i: 'amounts', x: 0, y: 19, w: 6, h: 6, enabled: true },
+				mobile: { i: 'amounts', x: 0, y: 32, w: 6, h: 4, static: true, enabled: false }
+			}
+		}
+	},
+	description: {
+		...description,
+		options: {
+			button: {
+				embedAllowed: true,
+				enabled: true,
+				text: 'Sweepstakes Details',
+				style: {
+					width: 250
+				}
+			}
+		},
+	},
+	paymentForm: {
+		...paymentForm,
+		options: {
+			...paymentForm.options,
+			button: {
+				enabled: true,
+				text: 'ENTER TO WIN',
+				style: {}
+			}
+		}
+	}
+};
+
 export const blockTemplates = {
 	article: {
 		fundraiser,
 		event,
 		invoice: fundraiser,
 		membership: fundraiser,
-		sweepstake: fundraiser
+		sweepstake
 	},
 	receipt: {
 		contentBlock,
@@ -491,7 +569,7 @@ export const defaultBlocks = {
 		fundraiser: [ ...articleDefaults ],
 		invoice: [ ...articleDefaults ],
 		event: [ ...articleDefaults, 'when', 'where' ],
-		sweepstake: [ ...articleDefaults ],
+		sweepstake: [ ...articleDefaults, 'countdown' ],
 		membership: [ ...articleDefaults ]
 	},
 	receipt: [

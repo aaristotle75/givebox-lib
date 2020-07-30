@@ -258,6 +258,15 @@ class Amounts extends Component {
 				break;
 			}
 
+			case 'sweepstake': {
+				const index = amountsList.findIndex(a => a.freeSingleEntry === true);
+				if (index >= 0) {
+					amountsList.splice(index, 1);
+				}
+				console.log('execute sweepstakes amountsLlist', amountsList);
+				break;
+			}
+
 			// no default
 		}
 
