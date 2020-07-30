@@ -89,6 +89,7 @@ export function gbx3(state = {
 	data: {},
 	admin: {
 		editBlock: '',
+		editBlockJustAdded: false,
 		open: false,
 		step: 'create',
 		subStep: '',

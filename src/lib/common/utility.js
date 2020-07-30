@@ -762,7 +762,7 @@ export function stripHtml(html){
 		return temporalDivElement.textContent || temporalDivElement.innerText || "";
 }
 
-export function makeAddress(where, showCountry = true, returnObj = false) {
+export function makeAddress(where, showCountry = true, returnObj = false, format = 'stacked', noHTML) {
 	const obj = {};
 	if (where.address) obj.line1 = where.address;
 	if (where.city || where.state || where.zip) {
@@ -772,13 +772,32 @@ export function makeAddress(where, showCountry = true, returnObj = false) {
 	if (!isEmpty(obj)) {
 		if (returnObj) return obj;
 		else {
-			return (
-				<div className='address'>
-					{obj.line1 && <span className='line'>{obj.line1}</span>}
-					{obj.line2 && <span className='line'>{obj.line2}</span>}
-					{obj.line3 && showCountry && <span className='line'>{obj.line3}</span>}
-				</div>
-			)
+			switch (format) {
+				case 'horizontal': {
+					if (noHTML) {
+						return (
+							`${obj.line1 ? `${obj.line1} ` : ''}${obj.line2 ? `${obj.line2}` : ''}${obj.line3 ? ` ${obj.line3}` : ''}`
+						)
+					} else {
+						return (
+							<div className='address'>
+								{`${obj.line1 ? `${obj.line1} ` : ''}${obj.line2 ? `${obj.line2}` : ''}${obj.line3 ? ` ${obj.line3}` : ''}`}
+							</div>
+						)
+					}
+				}
+
+				case 'stacked':
+				default: {
+					return (
+						<div className='address'>
+							{obj.line1 && <span className='line'>{obj.line1}</span>}
+							{obj.line2 && <span className='line'>{obj.line2}</span>}
+							{obj.line3 && showCountry && <span className='line'>{obj.line3}</span>}
+						</div>
+					)
+				}
+			}
 		}
 	} else {
 		if (returnObj) return {};

@@ -38,6 +38,7 @@ class Where extends Component {
 			content,
 			defaultContent: util.deepClone(content),
 			options,
+			defaultOptions: util.deepClone(options),
 			hasBeenUpdated: false
 		};
 		this.blockRef = null;
@@ -78,24 +79,25 @@ class Where extends Component {
 			content,
 			defaultContent,
 			options,
+			defaultOptions,
 			hasBeenUpdated
 		} = this.state;
 
 		if (type !== 'cancel') {
 			const data = {
+				where: util.getValue(content, 'where', null)
 			};
-			const updateOptions = util.getValue(block, 'updateOptions');
 
 			this.props.saveBlock({
 				data,
 				hasBeenUpdated,
 				content,
-				options: {
-				}
+				options
 			});
 		} else {
 			this.setState({
-				content: defaultContent
+				content: defaultContent,
+				options: defaultOptions
 			}, this.props.closeEditModal);
 		}
 	}
@@ -138,15 +140,15 @@ class Where extends Component {
 		const state = util.getValue(where, 'state');
 		const zip = util.getValue(where, 'zip');
 		const country = util.getValue(where, 'country');
-		const citystatezip = `${city}${state ? `, ${state}`: ''} ${zip ? ` ${zip}`: ''}`;
+		const citystatezip = `${city ? '{{city}}' : ''}${state ? ` {{state}}`: ''} ${zip ? ` {{zip}}`: ''}`;
 
 		let locationHTML = '';
-		if (address) locationHTML = `<p>${address}</p>`;
+		if (address) locationHTML = `<p>{{streetaddress}}</p>`;
 		if (city || state || zip) locationHTML = locationHTML + `<p>${citystatezip}</p>`;
-		if (country) locationHTML = locationHTML + `<p>${country}</p>`;
+		if (country) locationHTML = locationHTML + `<p>{{country}}</p>`;
 
 		const tokens = {
-			'{{addressLine}}': address,
+			'{{streetaddress}}': address,
 			'{{city}}': city,
 			'{{state}}': state,
 			'{{zip}}': zip,
@@ -170,7 +172,8 @@ class Where extends Component {
 			modalID,
 			title,
 			block,
-			primaryColor
+			primaryColor,
+			data
 		} = this.props;
 
 		const {
@@ -179,6 +182,19 @@ class Where extends Component {
 			html,
 			htmlEditable
 		} = this.state;
+
+		const {
+			where
+		} = content;
+
+		const {
+			coordinates
+		} = where;
+
+		const {
+			lat,
+			long
+		} = coordinates;
 
 		const nonremovable = util.getValue(block, 'nonremovable', false);
 		const cleanHtml = util.cleanHtml(html);
@@ -216,13 +232,26 @@ class Where extends Component {
 					}
 				/>
 				<div ref={this.displayRef}>
-					<div dangerouslySetInnerHTML={{ __html: cleanHtml }} />
-					{ util.getValue(options, 'mapLink') ?
-						<Map
-							where={util.getValue(content, 'where', {})}
-							displayRef={this.displayRef}
-						/>
-					: ''}
+					{ util.getValue(options, 'mapLink') && ( lat && long )  ?
+						<>
+							<ModalRoute
+								id='whereMap'
+								className='gbx3'
+								component={() =>
+									<Map
+										markerTitle={util.getValue(data, 'title')}
+										where={where}
+									/>
+								}
+							/>
+							<ModalLink type='div' id='whereMap' className='whereMapLink'>
+								<div className='viewMapLink'>View Map</div>
+								<div dangerouslySetInnerHTML={{ __html: cleanHtml }} />
+							</ModalLink>
+						</>
+					:
+						<div dangerouslySetInnerHTML={{ __html: cleanHtml }} />
+					}
 				</div>
 			</div>
 		)

@@ -5,6 +5,7 @@ import {
 	getResource,
 	sendResource
 } from '../../';
+import { toggleModal } from '../../api/actions';
 import { defaultAmountHeight } from '../blocks/amounts/amountsStyle';
 import { blockTemplates, defaultBlocks } from '../blocks/blockTemplates';
 import { createData } from '../admin/article/createTemplates';
@@ -100,7 +101,11 @@ export function addBlock(blockType, type, w = 0, h = 0, ref, callback) {
 			}
 			dispatch(updateAvailableBlocks(blockType, availableBlocks));
 			const blockUpdated = await dispatch(updateBlock(blockType, blockName, newBlock));
-			if (blockUpdated && callback) callback();
+			if (blockUpdated) {
+				dispatch(updateAdmin({ editBlock: `${blockType}-${blockName}`, editBlockJustAdded: true }));
+				dispatch(toggleModal(`modalBlock-${blockType}-${blockName}`, true));
+				if (callback) callback();
+			}
 		}
 	}
 }
@@ -884,6 +889,10 @@ export function setStyle(options = {}) {
 
 				.modalContent.gbx3 .amountRow:hover {
 					background: ${color3};
+				}
+
+				.gbx3 .viewMapLink {
+					color: ${color};
 				}
 
 				.modalContent.givebox-paymentform button.modalToTop:hover {

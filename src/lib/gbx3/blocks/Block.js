@@ -44,7 +44,7 @@ class Block extends React.Component {
 		} = this.props;
 
 		this.props.toggleModal(this.props.modalID, true);
-		this.props.updateAdmin({ editBlock: `${blockType}-${this.props.name}` });
+		this.props.updateAdmin({ editBlock: `${blockType}-${this.props.name}`, editBlockJustAdded: false });
 	}
 
 	onClickRemove() {
@@ -53,14 +53,22 @@ class Block extends React.Component {
 		} = this.props;
 
 		this.props.removeBlock(blockType, this.props.name);
-		this.props.updateAdmin({ editBlock: '' });
+		this.props.updateAdmin({ editBlock: '', editBlockJustAdded: false });
 		this.props.toggleModal(this.props.modalID, false);
 		if (this.props.removeCallback) this.props.removeCallback(blockType, this.props.name);
 	}
 
-	closeEditModal() {
-		this.props.toggleModal(this.props.modalID, false);
-		this.props.updateAdmin({ editBlock: '' });
+	closeEditModal(hasBeenUpdated = false) {
+		const {
+			editBlockJustAdded
+		} = this.props;
+
+		if (editBlockJustAdded && !hasBeenUpdated) {
+			this.onClickRemove();
+		} else {
+			this.props.toggleModal(this.props.modalID, false);
+			this.props.updateAdmin({ editBlock: '', editBlockJustAdded: false });
+		}
 	}
 
 	async saveBlock(params = {}) {
@@ -213,6 +221,7 @@ function mapStateToProps(state, props) {
 	const admin = util.getValue(gbx3, 'admin', {});
 	const editable = util.getValue(admin, 'editable');
 	const editBlock = util.getValue(admin, 'editBlock');
+	const editBlockJustAdded = util.getValue(admin, 'editBlockJustAdded');
 	const globals = util.getValue(gbx3, 'globals', {});
 	const gbxStyle = util.getValue(globals, 'gbxStyle', {});
 	const gbxPrimaryColor = util.getValue(gbxStyle, 'primaryColor');
@@ -240,6 +249,7 @@ function mapStateToProps(state, props) {
 		data,
 		editable,
 		editBlock,
+		editBlockJustAdded,
 		kind,
 		articleID,
 		orgID,

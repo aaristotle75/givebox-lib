@@ -99,6 +99,7 @@ class WhereFieldForm extends Component {
 			this.timeout = setTimeout(() => {
 				const myLatLng = new google.maps.LatLng(lat, lng);
 				const map = new google.maps.Map(this.mapRef.current, {
+					disableDefaultUI: true,
 					zoom: 12,
 					center: myLatLng
 				});
@@ -210,6 +211,19 @@ class WhereField extends Component {
 
 	clearWhere() {
 		this.props.fieldProp(this.props.name, { value: '', where: {} });
+		const where = {
+			address: '',
+			city: '',
+			state: '',
+			zip: '',
+			country: '',
+			coordinates: {
+				lat: null,
+				long: null
+			}
+		};
+
+		if (this.props.whereCallback) this.props.whereCallback(where);
 	}
 
 	render() {

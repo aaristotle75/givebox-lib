@@ -67,7 +67,6 @@ class Article extends React.Component {
 
 		const desktopGrid = breakpoint === 'mobile' && util.getValue(block, 'mobileNoUpdateDesktopGrid') ? { ...util.getValue(block, 'grid.desktop', {}) } :  { ...util.getValue(block, 'grid.desktop', {}), ...grid };
 
-
 		if (opts.hasBeenUpdated) {
 			const updated = [];
 			const checkForUpdatesCount = !util.isEmpty(data) ? 2 : 1;
@@ -103,7 +102,7 @@ class Article extends React.Component {
 						updateLayout: !util.isEmpty(grid) ? true : false
 					});
 				}
-				else callback();
+				else callback(true);
 			}
 		} else {
 			callback();

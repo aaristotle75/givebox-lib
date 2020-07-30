@@ -1,3 +1,4 @@
+/*global google*/
 import React, {Component} from 'react';
 import {
 	util
@@ -6,19 +7,19 @@ import {
 class Map extends Component{
 	constructor(props){
 		super(props);
-		this.initMap = this.initMap.bind(this);
-		this.initCallback = this.initCallback.bind(this);
-		this.initiated = false;
+		this.drawMap = this.drawMap.bind(this);
+		this.mapRef = React.createRef();
 	}
 
 	componentDidMount() {
-		this.initMap(this.initCallback);
+		this.drawMap();
 	}
 
-	initMap(callback = null) {
+	drawMap() {
 
 		const {
-			where
+			where,
+			markerTitle
 		} = this.props;
 
 		const {
@@ -26,46 +27,58 @@ class Map extends Component{
 			long: lng
 		} = util.getValue(where, 'coordinates', {});
 
-		const uluru = { lat, lng };
-		const map = new window.google.maps.Map(document.getElementById('map'), {
-			disableDefaultUI: true,
-			zoom: 10,
-			zoomControl: true,
-			center: uluru
-		});
+		if (lat && lng) {
+			this.timeout = setTimeout(() => {
+				const address = util.makeAddress(where, true, false, 'horizontal', true);
+				const myLatLng = new google.maps.LatLng(lat, lng);
+				const map = new google.maps.Map(this.mapRef.current, {
+					disableDefaultUI: true,
+					zoom: 12,
+					center: myLatLng
+				});
 
-		const marker = new window.google.maps.Marker({
-			position: uluru,
-			map: map,
-			title: 'Givebox Map'
-		});
+				const marker = new google.maps.Marker({
+					position: myLatLng,
+					title: address || markerTitle
+				});
+				marker.setMap(map);
 
-		if (callback) callback();
-	}
+				const infoWindow = new google.maps.InfoWindow({
+					content: `
+						<strong>${markerTitle}</strong><br />
+						${address}
+					`
+				});
 
-	initCallback() {
-		window.google.maps.event.addDomListener(window, 'resize', this.initMap);
-		window.google.maps.event.addDomListener(window, 'load', this.initMap);
+				google.maps.event.addListener(marker, 'click', function() {
+					infoWindow.open(map,marker);
+				});
+
+				this.setState({ map: true });
+				this.timeout = null;
+			}, 0);
+		}
 	}
 
 	render() {
 
 		const {
-			displayRef
+			where
 		} = this.props;
 
-		const current = displayRef.current;
-		let height = 100;
-		if (current) {
-			height = current.clientHeight;
-		}
-		console.log('execute', height, current);
 		return (
-			<div className='modalWrapper'>
-				<div ref="map" id="map"></div>
+			<div style={{ paddingTop: 10 }} className='modalWrapper'>
+				<div className='whereMap'>
+					{util.makeAddress(where, true, false, 'horizontal')}
+					<div className='theMap' ref={this.mapRef}></div>
+				</div>
 			</div>
 		)
 	}
+};
+
+Map.defaultProps = {
+	markerTitle: 'Location (Approximate)'
 };
 
 export default Map;

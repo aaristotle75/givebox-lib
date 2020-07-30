@@ -161,7 +161,7 @@ class DateForm extends Component {
 							})
 						}
 						<div style={{ marginTop: 10 }} className='helperText'>
-							<div style={{ fontWeight: 500 }} className='line'>Style Editor</div>
+							<div className='line label'>Style Editor</div>
 							<Editor
 								orgID={orgID}
 								articleID={articleID}
@@ -173,13 +173,13 @@ class DateForm extends Component {
 							/>
 						</div>
 						<div style={{ marginTop: 10 }} className='helperText'>
-							<div style={{ fontWeight: 500 }} className='line'>Tokens</div>
+							<div className='line label'>Tokens</div>
 							<div className='line'>{range1Token} = {this.props.dateFormat('range1')}</div>
 							<div className='line'>{range2Token} = {this.props.dateFormat('range2')}</div>
-							<div className='line'>Do not change the token directly in the editor. If you want to change the Date/Time use the Calendar inputs.</div>
+							<div className='line'>Do not change the token values directly in the editor. If you want to change the Date/Time use the Calendar inputs.</div>
 						</div>
 						<div style={{ paddingBottom: 0 }} className='helperText'>
-							<div style={{ marginBottom: 0, fontWeight: 500 }} className='line'>Date Format</div>
+							<div style={{ marginBottom: 0 }} className='line label'>Date Format</div>
 							{this.props.dropdown('dateFormat', {
 								label: '',
 								fixedLabel: false,
@@ -194,7 +194,7 @@ class DateForm extends Component {
 							})}
 						</div>
 						<div className='helperText'>
-							<div style={{ marginBottom: 5, fontWeight: 500 }} className='line'>Preview</div>
+							<div style={{ marginBottom: 5 }} className='line label'>Preview</div>
 							<div ref={this.displayRef} dangerouslySetInnerHTML={{ __html: html }} />
 						</div>
 					</div>

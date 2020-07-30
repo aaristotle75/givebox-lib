@@ -157,8 +157,7 @@ export const where = {
 	type: 'Where',
 	nonremovable: true,
 	field: 'where',
-	updateOptions: 'object',
-	mobileRelativeBlock: 2,
+	mobileRelativeBlock: 4,
 	mobileClassName: 'mobileRelativeBlockTop',
 	content: {
 		where: {
@@ -180,7 +179,7 @@ export const where = {
 		mapLink: true
 	},
 	grid: {
-		desktop: { i: 'where', x: 0, y: 22, w: 6, h: 3, enabled: true },
+		desktop: { i: 'where', x: 0, y: 22, w: 6, h: 4, enabled: true },
 		mobile: { i: 'where', x: 0, y: 2, w: 5, h: 3, static: true, enabled: false }
 	}
 };
@@ -384,7 +383,7 @@ const event = {
 				recurring: {}
 			},
 			grid: {
-				desktop: { i: 'amounts', x: 0, y: 18, w: 6, h: 6, enabled: true },
+				desktop: { i: 'amounts', x: 0, y: 19, w: 6, h: 6, enabled: true },
 				mobile: { i: 'amounts', x: 0, y: 32, w: 6, h: 4, static: true, enabled: false }
 			}
 		}
@@ -394,7 +393,7 @@ const event = {
 		name: 'when',
 		title: 'When is the Event',
 		grid: {
-			desktop: { i: 'date', x: 0, y: 8, w: 6, h: 4, enabled: true },
+			desktop: { i: 'date', x: 0, y: 8, w: 6, h: 3, enabled: true },
 			mobile: { i: 'date', x: 0, y: 2, w: 5, h: 3, static: true, enabled: false }
 		}
 	},
@@ -402,7 +401,7 @@ const event = {
 		...where,
 		title: 'Where is the Event',
 		grid: {
-			desktop: { i: 'date', x: 0, y: 13, w: 6, h: 4, enabled: true },
+			desktop: { i: 'date', x: 0, y: 13, w: 6, h: 5, enabled: true },
 			mobile: { i: 'date', x: 0, y: 2, w: 5, h: 3, static: true, enabled: false }
 		}
 	},

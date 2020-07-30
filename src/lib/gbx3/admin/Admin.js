@@ -175,7 +175,7 @@ class Admin extends React.Component {
 				middle.push(
 					<div key={'middle'} className='button-group'>
 						<GBLink className={`ripple link ${step === 'design' ? 'selected' : ''}`} onClick={() => this.props.updateAdmin({ step: 'design' })}>DESIGN</GBLink>
-						<GBLink className={`ripple link ${step === 'share' ? 'selected' : ''}`} onClick={() => this.props.updateAdmin({ step: 'share' })}>SHARE</GBLink>
+						<GBLink className={`ripple link ${step === 'share' ? 'selected' : ''}`} onClick={() => this.props.updateAdmin({ step: 'share', createType: 'article' })}>SHARE</GBLink>
 					</div>
 				);
 			}

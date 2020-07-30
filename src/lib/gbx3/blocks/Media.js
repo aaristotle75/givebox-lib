@@ -118,7 +118,6 @@ class Media extends Component {
 
 				// no default
 			}
-			console.log('save video', video);
 			this.timeout = setTimeout(() => {
 				this.setState({ loading: false, edit: false }, () => {
 					this.props.saveBlock({
@@ -370,6 +369,12 @@ class Media extends Component {
 															value={util.getValue(image, 'borderRadius')}
 														/>
 														<GBLink onClick={() => this.setRadius(maxRadius)}><span className='icon icon-circle'></span></GBLink>
+													</div>
+												</div>
+												<div className='helperText'>
+													<div className='line label'>Preview</div>
+													<div className='line'>
+														{this.renderImage()}
 													</div>
 												</div>
 											</div>
