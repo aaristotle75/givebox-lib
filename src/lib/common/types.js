@@ -156,7 +156,7 @@ export function kind(kind) {
 		case 'membership': {
 			obj.name = 'Membership';
 			obj.namePlural = 'Memberships';
-			obj.amountLabel = 'Membership Amounts';
+			obj.amountLabel = 'Subscriptions';
 			obj.btnName = obj.name;
 			obj.cta = 'Purchase Membership';
 			obj.txName = 'Membership purchase';

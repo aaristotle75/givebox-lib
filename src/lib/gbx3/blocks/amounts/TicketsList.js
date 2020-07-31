@@ -12,6 +12,7 @@ import {
 	updateCartItem
 } from '../../redux/gbx3actions';
 import { toggleModal } from '../../../api/actions';
+import has from 'has';
 
 class TicketsList extends Component {
 
@@ -68,8 +69,9 @@ class TicketsList extends Component {
 		} = this.props;
 
 		const articleTitle = util.getValue(article, 'title');
-		const maxQuantity = util.getValue(article, 'maxQuantity', 1);
+		const maxQuantity = util.getValue(article, 'maxQuantity', 99);
 		const articleImageURL = util.getValue(article, 'imageURL');
+		const hasMax = has(article, 'maxQuantity') ? true : false;
 		const allowQtyChange = true;
 		const allowMultiItems = true;
 
@@ -78,13 +80,14 @@ class TicketsList extends Component {
 		const max = +util.getValue(selectedItem, 'max', 0);
 		const sold =  +util.getValue(selectedItem, 'sold', 0);
 		const inStock = max - sold
-		const availableQty = inStock < maxQuantity ? inStock : maxQuantity;
+		const availableQty = inStock < maxQuantity && hasMax ? inStock : maxQuantity;
 
 		const item = {
 			unitID,
 			articleTitle,
 			articleImageURL,
 			name,
+			hasMax,
 			quantity,
 			availableQty,
 			maxQuantity,
@@ -140,15 +143,31 @@ class TicketsList extends Component {
 			article,
 			amountsList,
 			color,
-			showInStock,
-			kind
+			showInStock
 		} = this.props;
 
 		const {
 			showDetails
 		} = this.state;
 
-		const maxQuantity = util.getValue(article, 'maxQuantity', 1);
+		const recurringIntervals = util.getValue(article, 'recurringIntervals');
+		const recurringOptions = [];
+
+		const recurringDefaultOptions = {
+			once: { selectedText: 'One-Time', primaryText: 'Pay One-Time', value: 'once' },
+			monthly: { selectedText: 'Monthly', primaryText: 'Auto-Pay Monthly', value: 'monthly' },
+			quarterly: 	{ selectedText: 'Quarterly', primaryText: 'Auto-Pay Quarterly', value: 'quarterly' },
+			annually: { selectedText: 'Yearly', primaryText: 'Auto-Pay Yearly', value: 'annually' }
+		};
+
+		if (!util.isEmpty(recurringIntervals)) {
+			recurringIntervals.forEach((value) => {
+				recurringOptions.push(recurringDefaultOptions[value]);
+			});
+		}
+
+		const maxQuantity = util.getValue(article, 'maxQuantity', 99);
+		const hasMax = has(article, 'maxQuantity') ? true : false;
 		const cartItems = this.getCartItems();
 		const items = [];
 		const defaultOptions = this.quantityOptions(maxQuantity);
@@ -156,10 +175,12 @@ class TicketsList extends Component {
 		if (!util.isEmpty(amountsList)) {
 			Object.entries(amountsList).forEach(([key, value]) => {
 				const inStock = util.getValue(value, 'max', 0) - util.getValue(value, 'sold', 0);
-				if (value.enabled && inStock > 0) {
-					const options = inStock < maxQuantity ? this.quantityOptions(inStock) : defaultOptions;
+				if (value.enabled && ( inStock > 0 || !hasMax )) {
+					const options = inStock < maxQuantity && hasMax ? this.quantityOptions(inStock) : defaultOptions;
 					const selected = cartItems.find(x => x.unitID === value.ID);
 					const qty = util.getValue(selected, 'quantity', 0);
+					const recurringIntervalValue = util.getValue(selected, 'interval', util.getValue(article, 'recurringDefaultInterval', 'once'));
+
 					items.push(
 						<div key={key} className='ticketAmountRow'>
 							<div className='ticketDescRow'>
@@ -179,11 +200,41 @@ class TicketsList extends Component {
 										name='unitQty'
 										defaultValue={qty}
 										color={this.props.color}
-										onChange={(name, val) => this.onChangeQty(name, val, value)}
+										onChange={(name, val) => {
+											this.updateCart(value, +val, {
+												interval: !util.isEmpty(recurringIntervals) ? recurringIntervalValue : null,
+												paymentMax: '',
+												frequency: 1
+											});
+										}}
 										options={options}
 										selectLabel={0}
 										value={qty}
 									/>
+									<AnimateHeight
+										duration={200}
+										height={!util.isEmpty(recurringIntervals) && qty ? 'auto' : 0}
+									>
+										<Dropdown
+											portalID={`amountRecurring-dropdown-portal-${value.ID}`}
+											portal={true}
+											portalClass={'gbx3 dropdown-portal'}
+											className='dropdown-recurring'
+											contentWidth={200}
+											name='recurringInterval'
+											defaultValue={recurringIntervalValue}
+											color={this.props.color}
+											onChange={(name, val) => {
+												this.updateCart(value, +qty, {
+													interval: val,
+													paymentMax: '',
+													frequency: 1
+												});
+											}}
+											options={recurringOptions}
+											value={recurringIntervalValue}
+										/>
+									</AnimateHeight>
 								</div>
 							</div>
 							<AnimateHeight

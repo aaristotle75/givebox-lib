@@ -121,7 +121,7 @@ export const countdown = {
 	mobileClassName: 'mobileRelativeBlockTop',
 	content: {
 		endsAt: null,
-		goal: null
+		endsAtTime: true
 	},
 	options: {
 	},
@@ -485,12 +485,42 @@ const sweepstake = {
 	}
 };
 
+const membership = {
+	...articleBlocks,
+	amounts: {
+		...amounts,
+		...{
+			options: {
+				...amounts.options,
+				button: {
+					...amounts.options.button,
+					embedAllowed: false,
+					enabled: true,
+					text: 'Select Subscription'
+				},
+				extras: {
+					maxQuantity: '',
+					showInStock: false
+				},
+				recurring: {
+					recurringIntervals: [],
+					recurringDefaultInterval: ''
+				}
+			},
+			grid: {
+				desktop: { i: 'amounts', x: 0, y: 10, w: 6, h: 6, enabled: true },
+				mobile: { i: 'amounts', x: 0, y: 32, w: 6, h: 4, static: true, enabled: false }
+			}
+		}
+	}
+};
+
 export const blockTemplates = {
 	article: {
 		fundraiser,
 		event,
 		invoice: fundraiser,
-		membership: fundraiser,
+		membership,
 		sweepstake
 	},
 	receipt: {

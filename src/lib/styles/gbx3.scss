@@ -2176,6 +2176,11 @@
 		color: $placeholder-gray;
 	}
 
+	.countdownTimer.completedStyle .text,
+	.countdownTimer.completedStyle .number {
+		color: #EEEEEE;
+	}
+
 	.countdownTimer {
 		.completed {
 			position: absolute;
@@ -2207,11 +2212,6 @@
 			font-size: 10px;
 			display: block;
 			margin-top: -5px;
-		}
-
-		.completedStyle .text,
-		.completedStyle .number {
-			color: #EEEEEE;
 		}
 
 		.timerContainer {

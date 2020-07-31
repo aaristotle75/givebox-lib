@@ -3,10 +3,14 @@ import { connect } from 'react-redux';
 import CircularProgress from '../../common/CircularProgress';
 import Moment from 'moment';
 import {
-	util
+	util,
+	ModalRoute,
+	GBLink
 } from '../../';
+import CountdownEdit from './CountdownEdit';
 
-class Countdown extends Component{
+class Countdown extends Component {
+
 	constructor(props){
 		super(props);
 		this.closeEditModal = this.closeEditModal.bind(this);
@@ -128,7 +132,8 @@ class Countdown extends Component{
 
 		if (type !== 'cancel') {
 			const data = {
-				where: util.getValue(content, 'where', null)
+				status: util.getValue(content, 'status', null),
+				endsAt: util.getValue(content, 'endsAt', null)
 			};
 
 			this.props.saveBlock({
@@ -371,10 +376,14 @@ class Countdown extends Component{
 	render() {
 
 		const {
-			primaryColor
+			modalID,
+			primaryColor,
+			title,
+			block
 		} = this.props;
 
 		const {
+			content,
 			daysProgress,
 			days,
 			hoursProgress,
@@ -389,8 +398,37 @@ class Countdown extends Component{
 		var size = 80;
 		var corners = 2;
 
+		const nonremovable = util.getValue(block, 'nonremovable', false);
+
 		return (
 			<div className={`countdownTimer ${completed ? 'completedStyle' : ''}`}>
+				<ModalRoute
+					className='gbx3'
+					optsProps={{ closeCallback: this.onCloseUploadEditor }}
+					id={modalID}
+					effect='3DFlipVert' style={{ width: '70%' }}
+					draggable={true}
+					draggableTitle={`Editing ${title}`}
+					closeCallback={this.closeEditModal}
+					disallowBgClose={true}
+					component={() =>
+						<CountdownEdit
+							{...this.props}
+							content={content}
+							contentUpdated={this.contentUpdated}
+							optionsUpdated={this.optionsUpdated}
+						/>
+					}
+					buttonGroup={
+						<div className='gbx3'>
+							<div style={{ marginBottom: 0 }} className='button-group center'>
+								{!nonremovable ? <GBLink className='link remove' onClick={this.props.onClickRemove}><span className='icon icon-trash-2'></span> <span className='buttonText'>Remove</span></GBLink> : <></>}
+								<GBLink className='link' onClick={() => this.closeEditModal('cancel')}>Cancel</GBLink>
+								<GBLink className='button' onClick={this.closeEditModal}>Save</GBLink>
+							</div>
+						</div>
+					}
+				/>
 				{completed &&
 				<div className="completed">
 					<h2>The Sweepstakes has ended.</h2>

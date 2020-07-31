@@ -156,8 +156,9 @@ class DateForm extends Component {
 								fixedLabel: true,
 								enableTime: range1Time,
 								enableTimeOption,
-								enableTimeOptionLabel: 'Show Date & Time',
-								onChange: this.onChange
+								enableTimeOptionLabel: 'Show Time',
+								onChange: this.onChange,
+								value: range1
 							})
 						}
 						<div style={{ marginTop: 10 }} className='helperText'>

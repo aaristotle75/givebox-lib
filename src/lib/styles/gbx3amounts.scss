@@ -328,6 +328,7 @@ $breakpoint: 768px;
 			display: flex;
 			justify-content: center;
 			align-items: center;
+			flex-direction: column;
 		}
 
 		.ticketShowDetailsLink {
@@ -347,6 +348,22 @@ $breakpoint: 768px;
 		.input-group {
 			margin: 0;
 			padding: 10px 0;
+		}
+
+		.input-group.dropdown-recurring,
+		.input-group.dropdown-quantity {
+			padding: 0;
+		}
+
+		.input-group.dropdown-recurring {
+			.dropdown button .label {
+				font-size: 14px;
+				font-weight: 300;
+			}
+			.dropdown button:hover {
+				border-bottom: 1px solid transparent !important;
+			}
+			.dropdown .icon { display: none; }
 		}
 
 		.input-group.dropdown-quantity .dropdown {

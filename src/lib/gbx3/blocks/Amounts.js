@@ -263,7 +263,6 @@ class Amounts extends Component {
 				if (index >= 0) {
 					amountsList.splice(index, 1);
 				}
-				console.log('execute sweepstakes amountsLlist', amountsList);
 				break;
 			}
 

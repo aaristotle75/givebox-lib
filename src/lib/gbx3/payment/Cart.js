@@ -58,9 +58,10 @@ class Cart extends Component {
 
 	getQuantityOptions(item = {}) {
 		const availableQty = +util.getValue(item, 'availableQty', 1);
-		const maxQuantity = +util.getValue(item, 'maxQuantity', 1);
+		const maxQuantity = +util.getValue(item, 'maxQuantity', 99);
+		const hasMax = util.getValue(item, 'hasMax');
 		const options = [];
-		let max = availableQty < maxQuantity ? availableQty : maxQuantity;
+		let max = availableQty < maxQuantity && hasMax ? availableQty : maxQuantity;
 
 		for (let i = 1; i <= max; i++) {
 			options.push(
