@@ -6,7 +6,7 @@ import {
 	util,
 	Loader
 } from '../';
-import { sendResource } from '../api/helpers';
+import { getResource, sendResource } from '../api/helpers';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import '../styles/gbx3.scss';
@@ -40,6 +40,8 @@ class GBX3 extends React.Component {
 		this.setTracking = this.setTracking.bind(this);
 		this.setRecaptcha = this.setRecaptcha.bind(this);
 		this.renderStage = this.renderStage.bind(this);
+		this.onClickVolunteerFundraiser = this.onClickVolunteerFundraiser.bind(this);
+		this.onClickVolunteerFundraiserAuthenticated = this.onClickVolunteerFundraiserAuthenticated.bind(this);
 		this.state = {
 		};
 	}
@@ -93,17 +95,44 @@ class GBX3 extends React.Component {
 		}
 	}
 
-	loadCreateNew() {
+
+	onClickVolunteerFundraiserAuthenticated() {
+
+	}
+
+	onClickVolunteerFundraiser() {
+		const {
+			access
+		} = this.props;
+
+		if (util.isEmpty(access)) {
+			// open signup
+			console.log('execute open signup');
+		} else {
+			// proceed to create fundraiser
+			this.loadCreateNew(true);
+		}
+		console.log('execute onClickVolunteerFundraiser', access);
+	}
+
+	loadCreateNew(volunteer) {
 		const {
 			access,
 			kind
 		} = this.props;
 
 		const orgID = util.getValue(access, 'orgID');
-		this.props.updateAdmin({
+		const obj = {
 			step: 'create',
-			hasAccessToEdit: util.getAuthorizedAccess(access, orgID)
-		});
+			hasAccessToEdit: util.getAuthorizedAccess(access, orgID, volunteer)
+		};
+
+		if (volunteer) {
+			obj.volunteer = true;
+			obj.volunteerID = util.getValue(access, 'userID', null);
+		}
+
+		this.props.updateAdmin(obj);
 		this.props.updateInfo({ kind });
 		this.props.setLoading(false);
 	}
@@ -221,6 +250,7 @@ class GBX3 extends React.Component {
 					loadGBX3={this.loadGBX3}
 					reloadGBX3={this.reloadGBX3}
 					exitCallback={this.props.exitCallback}
+					loadCreateNew={this.loadCreateNew}
 				/>
 			)
 		} else {
@@ -230,6 +260,7 @@ class GBX3 extends React.Component {
 					loadGBX3={this.loadGBX3}
 					reloadGBX3={this.reloadGBX3}
 					primaryColor={this.props.primaryColor}
+					onClickVolunteerFundraiser={this.onClickVolunteerFundraiser}
 				/>
 			)
 		}
@@ -281,6 +312,7 @@ function mapStateToProps(state, props) {
 export default connect(mapStateToProps, {
 	loadGBX3,
 	setStyle,
+	getResource,
 	sendResource,
 	setCustomProp,
 	setLoading,

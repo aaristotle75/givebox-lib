@@ -42,6 +42,82 @@ const fundraiser = {
 	}
 };
 
+const invoice = {
+	...fundraiser,
+	title: 'New Invoice'
+};
+
+const event = {
+	...dataTemplate,
+	title: 'New Event',
+	status: 'open',
+	maxQuantity: 10,
+	maxTickets: null,
+	soldTickets: null,
+	numAvailableTickets: null,
+	when: null,
+	whenShowTime: false,
+	endsAt: null,
+	endsAtShowTime: false,
+	where: {
+		address: null,
+		city: null,
+		state: null,
+		zip: null,
+		country: null,
+		coordinates: {
+			lat: null,
+			long: null
+		}
+	},
+	tickets: {
+		list: [{
+			enabled: true,
+			max: 100,
+			orderBy: 0
+		}]
+	}
+};
+
+const membership = {
+	...dataTemplate,
+	title: 'New Membership',
+	status: 'open',
+	maxQuantity: 10,
+	recurringIntervals: [
+		'once',
+		'monthly',
+		'annually'
+	],
+	recurringDefaultInterval: 'once',
+	subscriptions: {
+		list: [{
+			enabled: true,
+			max: 100,
+			orderBy: 0
+		}]
+	}
+};
+
+const sweepstake = {
+	...dataTemplate,
+	title: 'New Sweepstakes',
+	status: 'open',
+	maxQuantity: 10,
+	endsAt: null,
+	tickets: {
+		list: [{
+			enabled: true,
+			entries: 1,
+			orderBy: 0
+		}]
+	}
+};
+
 export const createData = {
-	fundraiser
+	fundraiser,
+	invoice,
+	event,
+	membership,
+	sweepstake
 };

@@ -56,6 +56,7 @@ class Layout extends React.Component {
 						reloadGBX3={this.props.reloadGBX3}
 						loadGBX3={this.props.loadGBX3}
 						primaryColor={this.props.primaryColor}
+						onClickVolunteerFundraiser={this.props.onClickVolunteerFundraiser}
 					/>
 				)
 				break;
@@ -114,7 +115,12 @@ class Layout extends React.Component {
 			<div className='gbx3LayoutBackground'></div>
 			<div id='gbx3Layout' className={`gbx3Layout ${noAccess ? 'noAccess' : ''}`}>
 				{showAvatar ? avatar : '' }
-				<div style={style} className={`gbx3Container`}>
+				<div
+					style={{
+						...style
+					}}
+					className={`gbx3Container`}
+				>
 					{modal ? <GBLink customColor={primaryColor} allowCustom={true} className='closeGBXModalButton' onClick={() => this.closeGBXModal()}><span className='icon icon-x'></span></GBLink> : <></>}
 					{this.renderDisplay()}
 					<ModalRoute

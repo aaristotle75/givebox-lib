@@ -23,6 +23,7 @@ import {
 	updateInfo,
 	saveGBX3
 } from './redux/gbx3actions';
+import Social from './blocks/Social';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -294,10 +295,15 @@ class Article extends React.Component {
 			preventCollision,
 			editable,
 			hasAccessToEdit,
-			breakpoint
+			breakpoint,
+			stage,
+			orgName,
+			primaryColor
 		} = this.props;
 
 		const isEditable = hasAccessToEdit && editable ? true : false;
+
+		const publicOnly = stage === 'public' ? true : false;
 
 		return (
 			<>
@@ -351,6 +357,18 @@ class Article extends React.Component {
 				<div className='layout-column'>
 					<div className='gbx3Footer'>
 						<div className='footerContainer flexCenter flexColumn'>
+							{ publicOnly ?
+							<div style={{ marginBottom: 20 }} className='publicActionBar'>
+								<Social />
+								<GBLink
+									onClick={() => this.props.onClickVolunteerFundraiser()}
+									className='link p2pLink'
+									customColor={primaryColor}
+									allowCustom={true}
+								>
+									Support {orgName}<br /> by starting a Peer-2-Peer Fundraiser
+								</GBLink>
+							</div> : ''}
 							<Image url='https://s3-us-west-1.amazonaws.com/givebox/public/gb-logo5.svg' maxSize={'30px'} style={{ minHeight: 30 }} />
 							<div className="copyright">
 								<span>&copy; {Moment().format('YYYY')} Givebox</span>
@@ -371,6 +389,8 @@ function mapStateToProps(state, props) {
 	const gbx3 = util.getValue(state, 'gbx3', {});
 	const admin = util.getValue(gbx3, 'admin', {});
 	const info = util.getValue(gbx3, 'info', {});
+	const stage = util.getValue(info, 'stage');
+	const orgName = util.getValue(info, 'orgName');
 	const blockType = 'article';
 	const layouts = util.getValue(gbx3, `layouts.${blockType}`, {});
 	const blocks = util.getValue(gbx3, `blocks.${blockType}`, {});
@@ -380,8 +400,11 @@ function mapStateToProps(state, props) {
 	const verticalCompact = util.getValue(admin, 'verticalCompact');
 	const outline = util.getValue(admin, 'outline');
 	const breakpoint = util.getValue(info, 'breakpoint');
+	const primaryColor = util.getValue(gbx3, 'globals.gbxStyle.primaryColor');
 
 	return {
+		stage,
+		orgName,
 		hasAccessToEdit,
 		layouts,
 		editable,
@@ -391,6 +414,7 @@ function mapStateToProps(state, props) {
 		breakpoint,
 		blockType,
 		blocks,
+		primaryColor,
 		globals: util.getValue(gbx3, 'globals', {})
 	}
 }

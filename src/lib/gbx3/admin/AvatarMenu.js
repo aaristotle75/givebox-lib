@@ -6,18 +6,20 @@ import {
 } from '../../';
 import { toggleModal } from '../../api/actions';
 
+const CLOUD_URL = process.env.REACT_APP_CLOUD_URL;
+
 class AvatarMenu extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.directLink = this.directLink.bind(this);
+		this.myAccountLink = this.myAccountLink.bind(this);
 		this.state = {
 		};
 	}
 
-	directLink(link) {
-		this.props.toggleModal('avatar', false);
-		console.log('execute directLink', link);
+	myAccountLink(link) {
+		this.props.toggleModal('avatarMenu', false);
+		console.log('execute myAccountLink', link);
 		//this.props.history.push(link);
 	}
 
@@ -33,12 +35,12 @@ class AvatarMenu extends React.Component {
 					<div className='logoSection'>
 						<h3 style={{ marginTop: 0, paddingTop: 0 }}>{access.orgName}</h3>
 						{access.orgImage ?
-							<GBLink onClick={() => this.directLink('/pages')}>
+							<GBLink onClick={() => this.myAccountLink()}>
 								<div className='orgImage'><img src={util.imageUrlWithStyle(access.orgImage, 'original')} alt='Org Logo' /></div>
 							</GBLink>
 						:
 							<div className='defaultOrg'>
-								<GBLink onClick={() => this.directLink('/pages')}>
+								<GBLink onClick={() => this.myAccountLink()}>
 									<span className='defaultOrgImage'><span className='icon icon-instagram'></span></span>
 									<br />Add Logo
 								</GBLink>
@@ -48,12 +50,12 @@ class AvatarMenu extends React.Component {
 					<div className='topSection'>
 						<div className='leftSide'>
 							{access.userImage ?
-								<GBLink onClick={() => this.directLink('/settings/myaccount')}>
+								<GBLink onClick={() => this.myAccountLink()}>
 									<div className='avatarImage'><img src={util.imageUrlWithStyle(access.userImage, 'medium')} alt='Avatar Medium Circle' /></div>
 								</GBLink>
 							:
 								<div className='defaultAvatar'>
-									<GBLink onClick={() => this.directLink('/settings/myaccount')}>
+									<GBLink onClick={() => this.myAccountLink()}>
 										<span className='defaultAvatarImage'><span className='icon'>{access.initial}</span></span>
 										<br />{access.masker ? 'Masquerader' : 'Add Avatar'}
 									</GBLink>
@@ -67,7 +69,7 @@ class AvatarMenu extends React.Component {
 					</div>
 					<div className='listSection'>
 						<ul>
-							<li onClick={() => this.directLink('/settings/myaccount')}><span className='icon icon-user'></span> <span className='text'>My Account</span></li>
+							<li onClick={() => this.myAccountLink()}><span className='icon icon-user'></span> <span className='text'>My Account</span></li>
 						</ul>
 					</div>
 					<div className='bottomSection'>

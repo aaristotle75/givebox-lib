@@ -265,6 +265,15 @@
 		align-items: center;
 	}
 
+	.publicActionBar {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		position: relative;
+		background: transparent;
+	}
+
 	.gbx3Container {
 		position: relative;
 		display: table;
@@ -405,6 +414,7 @@
 		width: 100%;
 		overflow: hidden;
 		white-space: nowrap;
+		background: $white;
 		@include transition(height .25s);
 
 		.avatarLink button.link {
@@ -427,6 +437,16 @@
 				cursor: pointer;
 				height: 35px;
 				width: auto;
+			}
+		}
+
+		button.button,
+		button.link {
+			display: flex;
+			align-items: center;
+			margin-left: 20px;
+			.icon {
+				margin-right: 5px;
 			}
 		}
 	}

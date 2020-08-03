@@ -35,6 +35,7 @@ const defaultStyle = {
 	pageRadius: 10,
 	pageOpacity: 1,
 	backgroundColor: '',
+	backgroundOpacity: .6,
 	placeholderColor: ''
 }
 

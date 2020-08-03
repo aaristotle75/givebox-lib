@@ -208,6 +208,8 @@ class Admin extends React.Component {
 	render() {
 
 		const {
+			step,
+			articleID,
 			previewMode,
 			saveStatus,
 			editable,
@@ -240,6 +242,12 @@ class Admin extends React.Component {
 						<div className='container'>
 							<div className='headerLeftSide'>
 								<Logo className='logo' />
+								{ articleID ?
+									step === 'create' ?
+										<GBLink onClick={() => this.props.loadGBX3(articleID)}><span className='icon icon-chevron-left'></span> Go Back</GBLink>
+									:
+										<GBLink className='button' onClick={() => this.props.loadCreateNew()}>Create New</GBLink>
+								: '' }
 							</div>
 							<div className='avatarLink'>
 								<ModalLink id='avatarMenu' className='link'>

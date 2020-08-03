@@ -149,7 +149,7 @@ export function kind(kind) {
       {
         obj.name = 'Membership';
         obj.namePlural = 'Memberships';
-        obj.amountLabel = 'Membership Amounts';
+        obj.amountLabel = 'Subscriptions';
         obj.btnName = obj.name;
         obj.cta = 'Purchase Membership';
         obj.txName = 'Membership purchase';

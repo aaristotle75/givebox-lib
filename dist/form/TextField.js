@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PasswordStrength from './PasswordStrength';
 import CharacterCount from './CharacterCount';
+import { util } from '../../';
 import Fade from '../common/Fade';
 
 class TextField extends Component {
@@ -136,7 +137,7 @@ class TextField extends Component {
       duration: 200
     }, /*#__PURE__*/React.createElement(CharacterCount, {
       max: maxLength,
-      count: value.length
+      count: value ? value.length : 0
     }))), /*#__PURE__*/React.createElement("div", {
       className: `tooltipTop ${(errorType !== 'tooltip' || strength) && 'displayNone'}`
     }, error, readOnly ? readOnlyText : '', /*#__PURE__*/React.createElement("i", null)), /*#__PURE__*/React.createElement("div", {

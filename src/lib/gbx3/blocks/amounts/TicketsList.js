@@ -18,7 +18,6 @@ class TicketsList extends Component {
 
 	constructor(props) {
 		super(props);
-		this.checkCart = this.checkCart.bind(this);
 		this.renderAmounts = this.renderAmounts.bind(this);
 		this.onChangeQty = this.onChangeQty.bind(this);
 		this.toggleShowDetails = this.toggleShowDetails.bind(this);
@@ -32,18 +31,6 @@ class TicketsList extends Component {
 	}
 
 	componentDidMount() {
-		this.checkCart();
-	}
-
-	checkCart() {
-		const {
-			cartItems,
-			article
-		} = this.props;
-
-		const {
-			recurring
-		} = this.state;
 	}
 
 	getNameIfBlank(kind) {
@@ -76,7 +63,14 @@ class TicketsList extends Component {
 		const allowMultiItems = true;
 
 		const unitID = +selectedItem.ID;
-		const name = util.getValue(selectedItem, 'name', this.getNameIfBlank(kind));
+		let name = util.getValue(selectedItem, 'name', this.getNameIfBlank(kind));
+		if (kind === 'sweepstake') {
+			if (!selectedItem.name) {
+				const entries = +selectedItem.entries || 1;
+				name = <span>{entries} {entries > 1 ? 'Entries' : 'Entry'} for {util.money(selectedItem.price/100)}</span>;
+			}
+		}
+
 		const max = +util.getValue(selectedItem, 'max', 0);
 		const sold =  +util.getValue(selectedItem, 'sold', 0);
 		const inStock = max - sold
@@ -143,7 +137,8 @@ class TicketsList extends Component {
 			article,
 			amountsList,
 			color,
-			showInStock
+			showInStock,
+			kind
 		} = this.props;
 
 		const {
@@ -174,6 +169,14 @@ class TicketsList extends Component {
 
 		if (!util.isEmpty(amountsList)) {
 			Object.entries(amountsList).forEach(([key, value]) => {
+				const price = util.money(value.price/100);
+				let name = value.name;
+				if (kind === 'sweepstake') {
+					if (!value.name) {
+						const entries = +value.entries || 1;
+						name = <span>{entries} {entries > 1 ? 'Entries' : 'Entry'} for {price}</span>;
+					}
+				}
 				const inStock = util.getValue(value, 'max', 0) - util.getValue(value, 'sold', 0);
 				if (value.enabled && ( inStock > 0 || !hasMax )) {
 					const options = inStock < maxQuantity && hasMax ? this.quantityOptions(inStock) : defaultOptions;
@@ -185,8 +188,8 @@ class TicketsList extends Component {
 						<div key={key} className='ticketAmountRow'>
 							<div className='ticketDescRow'>
 								<div className='ticketDesc'>
-									{value.name}
-									<span className='ticketDescAmount'>{util.money(value.price/100)}</span>
+									{name}
+									<span className='ticketDescAmount'>{price}</span>
 									{showInStock ? <span className='ticketDescInStock'>{inStock} Available</span> : <></> }
 									{value.description ? <GBLink allowCustom={true} customColor={color} className='link ticketShowDetailsLink' onClick={() => this.toggleShowDetails(value.ID)}>{showDetails.includes(value.ID) ? 'Hide Info' : 'Show Info'}</GBLink> : <></>}
 								</div>
