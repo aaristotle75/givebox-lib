@@ -17,10 +17,9 @@ class AvatarMenu extends React.Component {
 		};
 	}
 
-	myAccountLink(link) {
+	myAccountLink() {
 		this.props.toggleModal('avatarMenu', false);
-		console.log('execute myAccountLink', link);
-		//this.props.history.push(link);
+		window.location.href = CLOUD_URL;
 	}
 
 	render() {

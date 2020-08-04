@@ -7,6 +7,7 @@ import {
 	Loader
 } from '../';
 import { getResource, sendResource } from '../api/helpers';
+import { setAccess } from '../api/actions';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import '../styles/gbx3.scss';
@@ -25,9 +26,11 @@ import {
 import {
 	setCustomProp
 } from '../api/actions';
+import GBXEntry from '../common/GBXEntry';
 
 const RECAPTCHA_KEY = process.env.REACT_APP_RECAPTCHA_KEY;
 const ENV = process.env.REACT_APP_ENV;
+const ENTRY_URL = process.env.REACT_APP_ENTRY_URL;
 
 class GBX3 extends React.Component {
 
@@ -41,7 +44,9 @@ class GBX3 extends React.Component {
 		this.setRecaptcha = this.setRecaptcha.bind(this);
 		this.renderStage = this.renderStage.bind(this);
 		this.onClickVolunteerFundraiser = this.onClickVolunteerFundraiser.bind(this);
-		this.onClickVolunteerFundraiserAuthenticated = this.onClickVolunteerFundraiserAuthenticated.bind(this);
+		this.signupCallback = this.signupCallback.bind(this);
+		this.authenticateVolunteer = this.authenticateVolunteer.bind(this);
+		this.checkVolunteerIntegrity = this.checkVolunteerIntegrity.bind(this);
 		this.state = {
 		};
 	}
@@ -95,9 +100,27 @@ class GBX3 extends React.Component {
 		}
 	}
 
+	authenticateVolunteer(res, err) {
+		if (err) {
+			window.location.href = ENTRY_URL;
+		} else {
+			this.props.setAccess(res, () => {
+				const iframe = document.getElementById('givebox-entry-widget');
+				iframe.contentWindow.postMessage('closeWidget', '*');
+				this.loadCreateNew(true);
+			});
+		}
+	}
 
-	onClickVolunteerFundraiserAuthenticated() {
-
+	signupCallback(e) {
+		if (e.data === 'signupCallback') {
+			this.props.getResource('session', {
+				reload: true,
+				callback: (res, err) => {
+					this.authenticateVolunteer(res, err);
+				}
+			});
+		}
 	}
 
 	onClickVolunteerFundraiser() {
@@ -107,15 +130,19 @@ class GBX3 extends React.Component {
 
 		if (util.isEmpty(access)) {
 			// open signup
-			console.log('execute open signup');
+			window.addEventListener('message', this.signupCallback, false);
+			GBXEntry.init([{ env: ENV, url: `${ENTRY_URL}/signup/wallet?modal=true&callback=true`, auto: true }]);
 		} else {
 			// proceed to create fundraiser
 			this.loadCreateNew(true);
 		}
-		console.log('execute onClickVolunteerFundraiser', access);
 	}
 
-	loadCreateNew(volunteer) {
+	checkVolunteerIntegrity() {
+
+	}
+
+	loadCreateNew(isVolunteer) {
 		const {
 			access,
 			kind
@@ -124,16 +151,17 @@ class GBX3 extends React.Component {
 		const orgID = util.getValue(access, 'orgID');
 		const obj = {
 			step: 'create',
-			hasAccessToEdit: util.getAuthorizedAccess(access, orgID, volunteer)
+			publicView: false,
+			hasAccessToEdit: isVolunteer ? true : util.getAuthorizedAccess(access, orgID)
 		};
 
-		if (volunteer) {
+		if (isVolunteer) {
 			obj.volunteer = true;
 			obj.volunteerID = util.getValue(access, 'userID', null);
 		}
 
 		this.props.updateAdmin(obj);
-		this.props.updateInfo({ kind });
+		this.props.updateInfo({ kind, stage: 'admin' });
 		this.props.setLoading(false);
 	}
 
@@ -312,6 +340,7 @@ function mapStateToProps(state, props) {
 export default connect(mapStateToProps, {
 	loadGBX3,
 	setStyle,
+	setAccess,
 	getResource,
 	sendResource,
 	setCustomProp,

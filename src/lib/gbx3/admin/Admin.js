@@ -55,6 +55,10 @@ class Admin extends React.Component {
 		}
 	}
 
+	goBack(articleID) {
+		this.props.loadGBX3(articleID);
+	}
+
 	togglePreview(value) {
 		const {
 			createType
@@ -214,6 +218,7 @@ class Admin extends React.Component {
 			saveStatus,
 			editable,
 			access,
+			isVolunteer,
 			hasAccessToEdit,
 			openAdmin: open
 		} = this.props;
@@ -244,7 +249,7 @@ class Admin extends React.Component {
 								<Logo className='logo' />
 								{ articleID ?
 									step === 'create' ?
-										<GBLink onClick={() => this.props.loadGBX3(articleID)}><span className='icon icon-chevron-left'></span> Go Back</GBLink>
+										!isVolunteer ? <GBLink onClick={() => this.goBack(articleID)}><span className='icon icon-chevron-left'></span> Go Back</GBLink> : ''
 									:
 										<GBLink className='button' onClick={() => this.props.loadCreateNew()}>Create New</GBLink>
 								: '' }
@@ -283,6 +288,7 @@ function mapStateToProps(state, props) {
 	const project = util.getValue(info, 'project');
 	const admin = util.getValue(gbx3, 'admin', {});
 	const step = util.getValue(admin, 'step');
+	const isVolunteer = util.getValue(admin, 'volunteer');
 	const previewDevice = util.getValue(admin, 'previewDevice');
 	const createType = util.getValue(admin, 'createType');
 	const previewMode = util.getValue(admin, 'previewMode');
@@ -298,6 +304,7 @@ function mapStateToProps(state, props) {
 		articleID,
 		openAdmin,
 		step,
+		isVolunteer,
 		createType,
 		previewDevice,
 		previewMode,

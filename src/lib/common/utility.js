@@ -872,13 +872,15 @@ export function deviceOS() {
 	}
 }
 
-export function getAuthorizedAccess(access, orgID) {
+export function getAuthorizedAccess(access, orgID, volunteerID) {
 	let hasAccess = false;
 	const fullName = getValue(access, 'fullName');
 	const userOrgID = getValue(access, 'orgID', null);
 	const userRole = getValue(access, 'role', null);
+	const userID = getValue(access, 'userID', null);
 	if (userRole === 'super') hasAccess = true;
 	if (userRole === 'admin' && userOrgID === orgID) hasAccess = true;
+	if (userRole === 'user' && volunteerID === userID ) hasAccess = true;
 	const obj = {
 		fullName,
 		userRole

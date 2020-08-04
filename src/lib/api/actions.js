@@ -58,6 +58,62 @@ export function toggleModal(identifier, open, opts = {}) {
 	}
 }
 
+export function setAccess(res, callback) {
+	return (dispatch, getState) => {
+		const org = util.getValue(res, 'organization', {});
+		const orgID = util.getValue(org, 'ID', null);
+		const orgName = util.getValue(org, 'name', null);
+		const orgImage = util.getValue(org, 'imageURL', null);
+		const orgSlug = util.getValue(org, 'slug', null);
+		const underwritingStatus = util.getValue(org, 'underwritingStatus', null);
+		const status = util.getValue(org, 'status', null);
+
+		// Set the selected org
+		if (orgID) dispatch(resourceProp('orgID', orgID));
+
+		// Check if this is a masquerade
+		let user;
+		if (has(res, 'masker')) user = res.masker;
+		else user = res.user;
+
+		if (user.ID) dispatch(resourceProp('userID', user.ID));
+
+		// set access
+		const access = {
+			...util.getValue(getState(), 'resource.access', {}),
+			isOwner: false,
+			role: util.getValue(user, 'role'),
+			permissions: [],
+			type: 'organization',
+			is2FAVerified: true,
+			userID: user.ID,
+			initial: user.firstName.charAt(0).toUpperCase() + user.lastName.charAt(0).toUpperCase(),
+			firstName: user.firstName,
+			lastName: user.lastName,
+			fullName: user.firstName + ' ' + user.lastName,
+			email: user.email,
+			userImage: user.imageURL,
+			masker: has(res, 'masker') ? true : false,
+			theme: user.preferences ? user.preferences.cloudTheme : 'light',
+			animations: user.preferences ? user.preferences.animations : false,
+			orgName,
+			orgImage,
+			orgID,
+			orgSlug,
+			underwritingStatus,
+			status
+		};
+
+		// Check member for access
+		if (has(res, 'member')) {
+			access.isOwner = util.getValue(res.member, 'isOwner');
+			access.permissions = util.getValue(res.member, 'permissions');
+		}
+		dispatch(resourceProp('access', access));
+		if (callback) callback(access);
+	}
+}
+
 export function resourceProp(key, value) {
 	return {
 		type: types.SET_RESOURCE_PROP,

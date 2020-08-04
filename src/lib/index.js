@@ -60,6 +60,7 @@ import FeesGlossary from './glossary/Fees';
 import {
 	toggleModal,
 	removeResource,
+	setAccess,
 	resourceProp,
 	getAPI,
 	sendAPI,
@@ -160,6 +161,7 @@ export {
 	// actions
 	toggleModal,
 	removeResource,
+	setAccess,
 	resourceProp,
 	getAPI,
 	sendAPI,
