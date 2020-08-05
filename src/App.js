@@ -232,7 +232,6 @@ class App extends Component {
 
 function mapStateToProps(state) {
 	return {
-		session: state.resource.session ? state.resource.session : {}
 	}
 }
 

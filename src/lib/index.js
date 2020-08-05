@@ -101,6 +101,7 @@ import {
 	resetConfirmation,
 	setLoading,
 	setStyle,
+	resetStyle,
 	processTransaction
 } from './gbx3/redux/gbx3actions';
 
@@ -205,6 +206,7 @@ export {
 	setLoading,
 	resetConfirmation,
 	setStyle,
+	resetStyle,
 	processTransaction,
 
 	// API

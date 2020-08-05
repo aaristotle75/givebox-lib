@@ -47,6 +47,7 @@ class GBX3 extends React.Component {
 		this.signupCallback = this.signupCallback.bind(this);
 		this.authenticateVolunteer = this.authenticateVolunteer.bind(this);
 		this.checkVolunteerIntegrity = this.checkVolunteerIntegrity.bind(this);
+		this.determineWhatToLoad = this.determineWhatToLoad.bind(this);
 		this.state = {
 		};
 	}
@@ -95,9 +96,14 @@ class GBX3 extends React.Component {
 		if (articleIDChanged) {
 			const setInfo = await this.setInfo();
 			if (setInfo) {
+				console.log('execute componentDidUpdate loadGBX3');
 				this.loadGBX3(articleID);
 			}
 		}
+	}
+
+	determineWhatToLoad() {
+
 	}
 
 	authenticateVolunteer(res, err) {
@@ -105,8 +111,6 @@ class GBX3 extends React.Component {
 			window.location.href = ENTRY_URL;
 		} else {
 			this.props.setAccess(res, () => {
-				const iframe = document.getElementById('givebox-entry-widget');
-				iframe.contentWindow.postMessage('closeWidget', '*');
 				this.loadCreateNew(true);
 			});
 		}
@@ -159,7 +163,6 @@ class GBX3 extends React.Component {
 			obj.volunteer = true;
 			obj.volunteerID = util.getValue(access, 'userID', null);
 		}
-
 		this.props.updateAdmin(obj);
 		this.props.updateInfo({ kind, stage: 'admin' });
 		this.props.setLoading(false);

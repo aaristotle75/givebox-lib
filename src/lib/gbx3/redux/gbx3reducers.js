@@ -27,30 +27,43 @@ const defaultConfirmation = {
 }
 
 const defaultStyle = {
-	maxWidth: 850,
-	primaryColor: '',
-	bgColor: '',
-	textColor: '#253655',
-	pageColor: '#ffffff',
-	pageRadius: 10,
-	pageOpacity: 1,
-	backgroundColor: '',
-	backgroundOpacity: .6,
-	placeholderColor: ''
-}
-
-const defaultButton = {
-	embedAllowed: false,
-	enabled: false,
-	type: 'button',
-	text: 'Button Example',
-	style: {
-		textColor: '#ffffff',
+	gbxStyle: {
+		maxWidth: 850,
+		primaryColor: '',
 		bgColor: '',
-		fontSize: 16,
-		borderRadius: 10,
-		width: 200,
-		align: 'flexCenter'
+		textColor: '#253655',
+		pageColor: '#ffffff',
+		pageRadius: 10,
+		pageOpacity: 1,
+		backgroundColor: '',
+		backgroundOpacity: .6,
+		placeholderColor: ''
+	},
+	orgStyle: {
+		maxWidth: 850,
+		primaryColor: '',
+		bgColor: '',
+		textColor: '#253655',
+		pageColor: '#ffffff',
+		pageRadius: 10,
+		pageOpacity: 1,
+		backgroundColor: '',
+		backgroundOpacity: .6,
+		placeholderColor: ''
+	},
+	button: {
+		embedAllowed: false,
+		enabled: false,
+		type: 'button',
+		text: 'Button Example',
+		style: {
+			textColor: '#ffffff',
+			bgColor: '',
+			fontSize: 16,
+			borderRadius: 10,
+			width: 200,
+			align: 'flexCenter'
+		}
 	}
 }
 
@@ -78,13 +91,13 @@ export function gbx3(state = {
 	},
 	globals: {
 		gbxStyle: {
-			...defaultStyle
+			...defaultStyle.gbxStyle
 		},
 		orgStyle: {
-			...defaultStyle
+			...defaultStyle.orgStyle
 		},
 		button: {
-			...defaultButton
+			...defaultStyle.button
 		}
 	},
 	data: {},
@@ -92,7 +105,7 @@ export function gbx3(state = {
 		editBlock: '',
 		editBlockJustAdded: false,
 		open: false,
-		step: 'create',
+		step: 'design',
 		subStep: '',
 		createType: 'article',
 		previewDevice: 'desktop',
@@ -133,6 +146,15 @@ export function gbx3(state = {
 		case types.SET_LOADING:
 			return Object.assign({}, state, {
 				loading: action.loading
+			});
+		case types.RESET_STYLE:
+			return Object.assign({}, state, {
+				globals: {
+					...state.globals,
+					[action.styleType]: {
+						...defaultStyle[action.styleType]
+					}
+				}
 			});
 		case types.CLEAR_GBX3:
 			return Object.assign({}, state, {

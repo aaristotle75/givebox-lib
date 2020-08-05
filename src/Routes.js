@@ -12,7 +12,6 @@ class Routes extends Component {
 
 		const {
 			loadComponent,
-			session,
 			authenticated
 		} = this.props;
 

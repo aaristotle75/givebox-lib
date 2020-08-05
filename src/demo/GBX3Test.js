@@ -34,8 +34,8 @@ class GBXTest extends Component {
 
 	render() {
 
-		// 383086 // 1130 // 383064; // 13; // 739; // 4; //651; //735; //383071;
-		const articleID = 651;
+		// 383101 // 1130 // 383064; // 13; // 739; // 4; //651; //735; //383071;
+		const articleID = 383102;
 
 		return (
 			<div>

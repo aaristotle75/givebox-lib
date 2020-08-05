@@ -494,18 +494,24 @@ export function createFundraiser(createKind, callback) {
 		dispatch(setLoading(true));
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
 		const info = util.getValue(gbx3, 'info', {});
+		const admin = util.getValue(gbx3, 'admin', {});
 		const kind = createKind || util.getValue(info, 'kind', 'fundraiser');
 		const orgID = util.getValue(info, 'orgID');
 		const resourceName = `org${types2.kind(kind).api.list}`;
 		const data = createData[kind];
+		data.volunteer = util.getValue(admin, 'volunteer', null);
+		data.volunteerID = util.getValue(admin, 'volunteerID', null);
+		dispatch(setLoading(false));
 		dispatch(sendResource(resourceName, {
 			orgID,
 			data,
 			callback: (res, err) => {
 				if (!err && !util.isEmpty(res)) {
-					dispatch(loadGBX3(res.articleID, () => {
+					dispatch(loadGBX3(res.articleID, async () => {
 						dispatch(updateInfo({ display: 'article', kind }));
 						dispatch(updateAdmin({ step: 'design', editable: true }));
+						const styleReset = await dispatch(resetStyle('gbxStyle'));
+						if (styleReset) dispatch(setStyle());
 						if (callback) callback(res, err);
 					}));
 				} else {
@@ -539,7 +545,6 @@ export function loadGBX3(articleID, callback) {
 					const kindID = util.getValue(res, 'kindID');
 					const orgID = util.getValue(res, 'orgID');
 					const orgName = util.getValue(res, 'orgName');
-					const hasAccessToEdit = util.getAuthorizedAccess(access, orgID);
 
 					if (kindID) {
 						const apiName = `org${types2.kind(kind).api.item}`;
@@ -564,6 +569,9 @@ export function loadGBX3(articleID, callback) {
 									const customTemplate = util.getValue(settings, 'customTemplate', {});
 									const passFees = util.getValue(res, 'passFees');
 									const publishStatus = util.getPublishStatus(kind, util.getValue(res, 'publishedStatus.webApp'));
+									const volunteer = util.getValue(res, 'volunteer');
+									const volunteerID = util.getValue(res, 'volunteerID');
+									const hasAccessToEdit = util.getAuthorizedAccess(access, orgID, volunteer ? volunteerID : null);
 
 									dispatch(updateCart({ passFees }));
 									dispatch(updateInfo({
@@ -648,17 +656,24 @@ export function loadGBX3(articleID, callback) {
 										}
 									});
 
+									const admin = {
+										hasAccessToEdit,
+										editable: hasAccessToEdit ? true : false,
+										open: hasAccessToEdit ? true : false,
+										step: 'design'
+									};
+
+									if (volunteer) {
+										admin.volunteer = true;
+										admin.volunteerID = volunteerID;
+									}
+
 									dispatch(updateLayouts(blockType, layouts));
 									dispatch(updateBlocks(blockType, blocks));
 									dispatch(updateGlobals(globals));
 									dispatch(updateData(res));
 									dispatch(updateAvailableBlocks(blockType, availableBlocks));
-									dispatch(updateAdmin({
-										hasAccessToEdit,
-										editable: hasAccessToEdit ? true : false,
-										open: hasAccessToEdit ? true : false,
-										step: 'design'
-									}));
+									dispatch(updateAdmin(admin));
 
 									// Get and Set Thank You Email Receipt
 									const receiptCustom = util.getValue(res, 'receiptConfig.blocks', {});
@@ -696,6 +711,13 @@ export function loadGBX3(articleID, callback) {
 
 export function setTextStyle(color) {
 
+}
+
+export function resetStyle(styleType) {
+	return {
+		styleType,
+		type: types.RESET_STYLE
+	}
 }
 
 export function setStyle(options = {}) {

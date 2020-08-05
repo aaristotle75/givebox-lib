@@ -6,6 +6,7 @@ export const logo = {
 	field: 'orgImageURL',
 	updateOptions: 'once',
 	mobileRelativeBlock: false,
+	volunteerRestriction: true,
 	mobileClassName: 'mobileRelativeBlockTop',
 	options: {
 		mediaType: 'image',
@@ -28,6 +29,7 @@ export const orgName = {
 	type: 'Text',
 	field: 'orgName',
 	mobileRelativeBlock: 1,
+	volunteerRestriction: true,
 	mobileClassName: 'mobileRelativeBlockTop',
 	options: {
 		defaultFormat: '<span style="font-size:12px">{{TOKEN}}</span>'
