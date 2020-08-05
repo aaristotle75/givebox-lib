@@ -97,16 +97,35 @@ class UploadEditorResizer extends Component {
 	}
 
 	saveMediaItem(url) {
-		this.props.sendResource(this.props.super ? 'superOrgMediaItems' : 'orgMediaItems', {
-			id: this.props.orgID ? [this.props.orgID] : null,
-			data: {
-				URL: url
-			},
-			method: 'post',
-			resourcesToLoad: this.props.super ? ['superOrgMediaItems'] : ['orgMediaItems'],
-			callback: this.saveMediaItemCallback,
-			isSending: false
-		});
+		const {
+			saveMediaType
+		} = this.props;
+
+
+		if (saveMediaType === 'article') {
+			this.props.sendResource('articleMediaItems', {
+				id: [this.props.articleID],
+				data: {
+					URL: url
+				},
+				method: 'post',
+				resourcesToLoad: ['articleMediaItems'],
+				callback: this.saveMediaItemCallback,
+				isSending: false
+			});
+		} else {
+			this.props.sendResource(this.props.super ? 'superOrgMediaItems' : 'orgMediaItems', {
+				id: this.props.orgID ? [this.props.orgID] : null,
+				data: {
+					URL: url
+				},
+				method: 'post',
+				resourcesToLoad: this.props.super ? ['superOrgMediaItems'] : ['orgMediaItems'],
+				callback: this.saveMediaItemCallback,
+				isSending: false
+			});
+		}
+
 	}
 
 	saveMediaItemCallback(res, err) {

@@ -287,6 +287,7 @@ class Media extends Component {
 		} = this.state;
 
 		const library = {
+			saveMediaType: 'article',
 			articleID,
 			orgID,
 			type: 'article',
@@ -295,6 +296,8 @@ class Media extends Component {
 
 		const nonremovable = util.getValue(block, 'nonremovable', false);
 		const disallowRadius = util.getValue(block, 'disallowRadius');
+
+		console.log('execute Media', library);
 
 		return (
 			<>

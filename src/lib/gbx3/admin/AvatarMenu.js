@@ -5,28 +5,70 @@ import {
 	GBLink
 } from '../../';
 import { toggleModal } from '../../api/actions';
+import {
+	updateAdmin
+} from '../redux/gbx3actions';
 
 const CLOUD_URL = process.env.REACT_APP_CLOUD_URL;
+const WALLET_URL = process.env.REACT_APP_WALLET_URL;
 
 class AvatarMenu extends React.Component {
 
 	constructor(props) {
 		super(props);
 		this.myAccountLink = this.myAccountLink.bind(this);
+		this.directLink = this.directLink.bind(this);
+		this.adminLink = this.adminLink.bind(this);
 		this.state = {
 		};
 	}
 
 	myAccountLink() {
+		const {
+			access
+		} = this.props;
+
 		this.props.toggleModal('avatarMenu', false);
-		window.location.href = CLOUD_URL;
+		window.location.href = util.getValue(access, 'role') === 'user' ? WALLET_URL : CLOUD_URL;
 	}
+
+	directLink(url) {
+		this.props.toggleModal('avatarMenu', false);
+		window.location.href = url;
+	}
+
+	adminLink(obj = {}) {
+		this.props.toggleModal('avatarMenu', false);
+		this.props.updateAdmin(obj);
+	}
+
+
 
 	render() {
 
 		const {
-			access
+			access,
+			hasAccessToEdit
 		} = this.props;
+
+		const isWallet = util.getValue(access, 'role') === 'user' ? true : false;
+		const baseURL = isWallet ? WALLET_URL : CLOUD_URL;
+		const myAccountText = isWallet ? 'Go to Your Wallet' : 'Got to Nonprofit Admin';
+
+		const menuList = [];
+
+		menuList.push(
+			<li key='myAccount' onClick={() => this.directLink(`${baseURL}/settings`)}><span className='icon icon-user'></span> <span className='text'>My Account</span></li>
+		)
+		if (hasAccessToEdit) {
+			menuList.push(
+				<li key='edit' onClick={() => this.adminLink({ publicView: false })}><span className='icon icon-edit'></span> <span className='text'>Edit Form</span></li>
+			);
+
+			menuList.push(
+				<li key='share' onClick={() => this.adminLink({ publicView: false })}><span className='icon icon-share'></span> <span className='text'>Share Form</span></li>
+			);
+		}
 
 		return (
 			<div className='modalWrapper'>
@@ -34,27 +76,22 @@ class AvatarMenu extends React.Component {
 					<div className='logoSection'>
 						<h3 style={{ marginTop: 0, paddingTop: 0 }}>{access.orgName}</h3>
 						{access.orgImage ?
-							<GBLink onClick={() => this.myAccountLink()}>
+							<GBLink onClick={() => this.directLink(`${baseURL}/settings`)}>
 								<div className='orgImage'><img src={util.imageUrlWithStyle(access.orgImage, 'original')} alt='Org Logo' /></div>
 							</GBLink>
 						:
-							<div className='defaultOrg'>
-								<GBLink onClick={() => this.myAccountLink()}>
-									<span className='defaultOrgImage'><span className='icon icon-instagram'></span></span>
-									<br />Add Logo
-								</GBLink>
-							</div>
+							''
 						}
 					</div>
 					<div className='topSection'>
 						<div className='leftSide'>
 							{access.userImage ?
-								<GBLink onClick={() => this.myAccountLink()}>
+								<GBLink onClick={() => this.directLink(`${baseURL}/settings`)}>
 									<div className='avatarImage'><img src={util.imageUrlWithStyle(access.userImage, 'medium')} alt='Avatar Medium Circle' /></div>
 								</GBLink>
 							:
 								<div className='defaultAvatar'>
-									<GBLink onClick={() => this.myAccountLink()}>
+									<GBLink onClick={() => this.directLink(`${baseURL}/settings`)}>
 										<span className='defaultAvatarImage'><span className='icon'>{access.initial}</span></span>
 										<br />{access.masker ? 'Masquerader' : 'Add Avatar'}
 									</GBLink>
@@ -68,11 +105,11 @@ class AvatarMenu extends React.Component {
 					</div>
 					<div className='listSection'>
 						<ul>
-							<li onClick={() => this.myAccountLink()}><span className='icon icon-user'></span> <span className='text'>My Account</span></li>
-						</ul>
+							{menuList}
+					</ul>
 					</div>
 					<div className='bottomSection'>
-						<GBLink onClick={() => console.log('End Builder')}>Exit Builder</GBLink>
+						<GBLink onClick={() => this.myAccountLink()}>{myAccountText}</GBLink>
 					</div>
 				</div>
 			</div>
@@ -84,13 +121,17 @@ AvatarMenu.defaultProps = {
 }
 
 function mapStateToProps(state, props) {
+
 	const access = util.getValue(state.resource, 'access');
+	const hasAccessToEdit = util.getValue(state, 'gbx3.admin.hasAccessToEdit');
 
 	return {
-		access
+		access,
+		hasAccessToEdit
 	}
 }
 
 export default connect(mapStateToProps, {
-	toggleModal
+	toggleModal,
+	updateAdmin
 })(AvatarMenu);

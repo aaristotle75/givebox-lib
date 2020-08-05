@@ -343,6 +343,8 @@ class MediaLibrary extends Component {
 							borderRadius={util.getValue(library, 'borderRadius')}
 							super={util.getValue(library, 'super', false)}
 							orgID={util.getValue(library, 'orgID', null)}
+							articleID={util.getValue(library, 'articleID', null)}
+							saveMediaType={util.getValue(library, 'saveMediaType')}
 						/>
 					}
 				</div>
@@ -371,7 +373,7 @@ MediaLibrary.defaultProps = {
 function mapStateToProps(state, props) {
 
 	const library = props.library;
-	const resourceName = util.getValue(library, 'super') ? 'superOrgMediaItems' : 'orgMediaItems';
+	const resourceName = util.getValue(library, 'super') ? 'superOrgMediaItems' : props.saveMediaType === 'article' ? 'articleMediaItems' : 'orgMediaItems';
 	const items = state.resource[resourceName] ? state.resource[resourceName] : {};
 	const articleItems = state.resource.articleMediaItems ? state.resource.articleMediaItems : {};
 

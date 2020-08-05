@@ -11,6 +11,7 @@ import Confirmation from './payment/Confirmation';
 import {
 	updateAdmin
 } from './redux/gbx3actions';
+import AvatarMenuButton from './admin/AvatarMenuButton';
 
 class Layout extends React.Component {
 
@@ -81,17 +82,25 @@ class Layout extends React.Component {
 
 		const style = { maxWidth: '850px' };
 
-		const avatar =
+		const avatarMenu =
 			<div className='hasAccessToEditPublic'>
+				<AvatarMenuButton />
+				{ hasAccessToEdit ?
 				<div onClick={() => this.props.updateAdmin({ publicView: false })} className='avatarLink'>
-					{access.userImage ? <div className='avatarImage'><img src={util.imageUrlWithStyle(access.userImage, 'small')} alt='Avatar Small Circle' /></div> :
-						<div className='defaultAvatarImage'>{access.initial}</div>
-					}
-				</div>
+					<div className='editGraphic'>
+						<span className='icon icon-edit'></span>
+					</div>
+				</div> : ''}
+				{ hasAccessToEdit ?
+				<div onClick={() => this.props.updateAdmin({ publicView: false })} className='avatarLink'>
+					<div className='editGraphic'>
+						<span className='icon icon-share'></span>
+					</div>
+				</div> : ''}
 			</div>
 		;
 
-		const showAvatar = (stage !== 'admin') && !preview && hasAccessToEdit ? true : false;
+		const showAvatarMenu = (stage !== 'admin') && !preview && !util.isEmpty(access) ? true : false;
 
 		const noAccess = (!hasAccessToEdit || (hasAccessToEdit && !preview && stage === 'public' )) && (publishStatus === 'private') && (display === 'article') ? true : false;
 
@@ -114,7 +123,7 @@ class Layout extends React.Component {
 			: ''}
 			<div className='gbx3LayoutBackground'></div>
 			<div id='gbx3Layout' className={`gbx3Layout ${noAccess ? 'noAccess' : ''}`}>
-				{showAvatar ? avatar : '' }
+				{showAvatarMenu ? avatarMenu : '' }
 				<div
 					style={{
 						...style

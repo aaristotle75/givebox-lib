@@ -4,7 +4,8 @@ import Layout from './Layout';
 import Admin from './admin/Admin';
 import {
 	util,
-	Loader
+	Loader,
+	ModalRoute
 } from '../';
 import { getResource, sendResource } from '../api/helpers';
 import { setAccess } from '../api/actions';
@@ -27,6 +28,7 @@ import {
 	setCustomProp
 } from '../api/actions';
 import GBXEntry from '../common/GBXEntry';
+import AvatarMenu from './admin/AvatarMenu';
 
 const RECAPTCHA_KEY = process.env.REACT_APP_RECAPTCHA_KEY;
 const ENV = process.env.REACT_APP_ENV;
@@ -306,6 +308,13 @@ class GBX3 extends React.Component {
 		return (
 			<div className='gbx3'>
 				{this.renderStage()}
+				<ModalRoute
+					id='avatarMenu'
+					effect='3DFlipVert'
+					style={{ width: '40%' }}
+					disallowBgClose={false}
+					component={(props) => <AvatarMenu />}
+				/>
 			</div>
 		)
 	}

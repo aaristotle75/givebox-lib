@@ -3,13 +3,11 @@ import { connect } from 'react-redux';
 import {
 	util,
 	GBLink,
-	ModalRoute,
 	ModalLink
 } from '../../';
 import Design from './article/Design';
 import Create from './article/Create';
 import Share from './article/Share';
-import AvatarMenu from './AvatarMenu';
 import Logo from '../Logo';
 import AnimateHeight from 'react-animate-height';
 import Toggle from 'react-toggle';
@@ -23,6 +21,7 @@ import {
 	saveGBX3,
 	setLoading
 } from '../redux/gbx3actions';
+import AvatarMenuButton from './AvatarMenuButton';
 
 class Admin extends React.Component {
 
@@ -227,18 +226,11 @@ class Admin extends React.Component {
 
 		return (
 			<div className={`gbx3AdminLayout ${editable ? 'editable' : ''} ${previewMode ? 'previewMode' : ''}`}>
-				<ModalRoute
-					id='avatarMenu'
-					effect='3DFlipVert'
-					style={{ width: '40%' }}
-					disallowBgClose={false}
-					component={(props) => <AvatarMenu />}
-				/>
 				<AnimateHeight height={saveStatus === 'saving' ? 'auto' : 0 } duration={500}>
 					<div className='autoSaved'>Saving...</div>
 				</AnimateHeight>
 				<GBLink onClick={this.props.toggleAdminLeftPanel} className={`link leftPanelOpen ${open ? 'open' : 'close'}`}>
-					<div className='leftPanelOpenGraphic'>
+					<div className='editGraphic'>
 						<span className='icon icon-edit'></span>
 					</div>
 				</GBLink>
@@ -254,14 +246,7 @@ class Admin extends React.Component {
 										<GBLink className='button' onClick={() => this.props.loadCreateNew()}>Create New</GBLink>
 								: '' }
 							</div>
-							<div className='avatarLink'>
-								<ModalLink id='avatarMenu' className='link'>
-									<span className='orgName'>{util.getValue(access, 'orgName')}</span>
-									{access.userImage ? <div className='avatarImage'><img src={util.imageUrlWithStyle(access.userImage, 'small')} alt='Avatar Small Circle' /></div> :
-										<div className='defaultAvatarImage'>{access.initial}</div>
-									}
-								</ModalLink>
-							</div>
+							<AvatarMenuButton />
 						</div>
 					</header>
 				</div>

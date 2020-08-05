@@ -28,8 +28,13 @@ class Create extends React.Component {
 	}
 
 	kindOptions() {
+		const {
+			isVolunteer
+		} = this.props;
+
 		const options = [];
 		types.kinds().forEach((value) => {
+			if (isVolunteer && (value === 'invoice' || value === 'membership')) return;
 			options.push({
 				value,
 				primaryText: types.kind(value).name
@@ -43,7 +48,9 @@ class Create extends React.Component {
 		const {
 			openAdmin: open,
 			hasAccessToEdit,
-			kind
+			kind,
+			isVolunteer,
+			orgName
 		} = this.props;
 
 
@@ -63,7 +70,15 @@ class Create extends React.Component {
 						<div className='gbx3Centered'>
 							<div className='intro'>
 								<h2 style={{ marginBottom: 10 }}>Create, Design & Share!</h2>
-								Start raising money in three easy steps.
+								{isVolunteer ?
+									<span>
+										Start raising money for<br />
+										<strong>{orgName}</strong><br />
+										in three easy steps.
+									</span>
+								:
+									<span>Start raising money in three easy steps.</span>
+								}
 							</div>
 							<Image url={`https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/raise-${kind}-lg.png`} maxSize={200} alt={types.kind(kind).namePlural} />
 							<div style={{ marginTop: 20 }} className='step'>
@@ -98,14 +113,18 @@ function mapStateToProps(state, props) {
 	const gbx3 = util.getValue(state, 'gbx3', {});
 	const info = util.getValue(gbx3, 'info', {});
 	const kind = util.getValue(info, 'kind');
+	const orgName = util.getValue(info, 'orgName');
 	const globals = util.getValue(gbx3, 'globals', {});
 	const admin = util.getValue(gbx3, 'admin', {});
+	const isVolunteer = util.getValue(admin, 'volunteer');
 	const openAdmin = util.getValue(admin, 'open');
 	const hasAccessToEdit = util.getValue(admin, 'hasAccessToEdit');
 
 	return {
 		kind,
+		orgName,
 		globals,
+		isVolunteer,
 		openAdmin,
 		hasAccessToEdit
 	}

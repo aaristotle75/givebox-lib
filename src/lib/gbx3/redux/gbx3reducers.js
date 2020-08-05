@@ -29,25 +29,25 @@ const defaultConfirmation = {
 const defaultStyle = {
 	gbxStyle: {
 		maxWidth: 850,
-		primaryColor: '',
+		primaryColor: '#4385f5',
 		bgColor: '',
 		textColor: '#253655',
 		pageColor: '#ffffff',
 		pageRadius: 10,
 		pageOpacity: 1,
-		backgroundColor: '',
+		backgroundColor: '#4385f5',
 		backgroundOpacity: .6,
 		placeholderColor: ''
 	},
 	orgStyle: {
 		maxWidth: 850,
-		primaryColor: '',
+		primaryColor: '#4385f5',
 		bgColor: '',
 		textColor: '#253655',
 		pageColor: '#ffffff',
 		pageRadius: 10,
 		pageOpacity: 1,
-		backgroundColor: '',
+		backgroundColor: '#4385f5',
 		backgroundOpacity: .6,
 		placeholderColor: ''
 	},

@@ -20,9 +20,14 @@ class CreateMenu extends React.Component {
 	}
 
 	renderTypes() {
+		const {
+			isVolunteer
+		} = this.props;
+
 		const items= [];
 
 		types.kinds().forEach((value) => {
+			if (isVolunteer && (value === 'invoice' || value === 'membership')) return;
 			items.push(
 				<li
 					key={value}
@@ -71,10 +76,12 @@ function mapStateToProps(state, props) {
 	const admin = util.getValue(gbx3, 'admin', {});
 	const openAdmin = util.getValue(admin, 'open');
 	const editable = util.getValue(admin, 'editable');
+	const isVolunteer = util.getValue(admin, 'volunteer');
 
 	return {
 		editable,
-		openAdmin
+		openAdmin,
+		isVolunteer
 	}
 }
 
