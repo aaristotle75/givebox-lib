@@ -186,15 +186,17 @@ class Block extends React.Component {
 		const buttonAlign = util.getValue(options, 'button.style.align', 'flexCenter');
 		const scrollableBlock = util.getValue(block, 'scrollable');
 		const blockIsBeingEdited = editBlock === `${blockType}-${name}` ? true : false;
+		const notEditable = util.getValue(block, 'volunteerNoEdit');
 
 		return (
 			<div className={`block`}>
 				<div className={`blockOptions ${name}Block ${blockIsBeingEdited || !editable ? 'displayNone' : ''}`}>
 					<div className='dragHandle'></div>
+					{ !notEditable ?
 					<div className='blockEdit'>
 						{!nonremovable ? <GBLink className='blockRemoveButton' onClick={() => this.onClickRemove()}><span className='icon icon-trash-2'></span></GBLink> : <></>}
 						<GBLink className='blockEditButton' onClick={this.onClickEdit}><span className='icon icon-edit'></span></GBLink>
-					</div>
+					</div> : '' }
 				</div>
 				<div
 					style={{

@@ -91,7 +91,7 @@ class FormEdit extends Component {
 							<Choice
 								type='checkbox'
 								name='echeck'
-								label={'Allow customers to pay by eCheck'}
+								label={'Allow customers to Pay by eCheck'}
 								onChange={(name, value) => {
 									this.updateForm('echeck', echeck ? false : true);
 								}}

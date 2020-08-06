@@ -297,8 +297,6 @@ class Media extends Component {
 		const nonremovable = util.getValue(block, 'nonremovable', false);
 		const disallowRadius = util.getValue(block, 'disallowRadius');
 
-		console.log('execute Media', library);
-
 		return (
 			<>
 				<ModalRoute
