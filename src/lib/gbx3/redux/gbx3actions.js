@@ -781,6 +781,7 @@ export function setStyle(options = {}) {
 				.gbx3Layout .amountInput .moneyAmount {
 					color: ${textColor};
 				}
+
 				.gbx3 .paymentFormTabs .panel button {
 					color: ${textColor};
 				}

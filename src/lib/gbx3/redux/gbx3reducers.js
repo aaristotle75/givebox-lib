@@ -58,7 +58,7 @@ const defaultStyle = {
 		text: 'Button Example',
 		style: {
 			textColor: '#ffffff',
-			bgColor: '',
+			bgColor: '#4385f5',
 			fontSize: 16,
 			borderRadius: 10,
 			width: 200,

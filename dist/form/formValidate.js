@@ -4,8 +4,15 @@ export function validateAddress(address) {
   return regex.test(address) ? false : true;
 }
 export function validateEmail(email) {
+  let validate = false;
   const regex = /^(([^<>()[\]\\.,;:\s@']+(\.[^<>()[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return regex.test(email);
+  const nonaasciiRegex = /[^\x20-\x7E]/;
+
+  if (regex.test(email) && !nonaasciiRegex.test(email)) {
+    validate = true;
+  }
+
+  return validate;
 }
 export function validateNumber(value, min, max, decimal = true) {
   let validate = true;

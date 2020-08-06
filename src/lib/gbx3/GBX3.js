@@ -98,7 +98,6 @@ class GBX3 extends React.Component {
 		if (articleIDChanged) {
 			const setInfo = await this.setInfo();
 			if (setInfo) {
-				console.log('execute componentDidUpdate loadGBX3');
 				this.loadGBX3(articleID);
 			}
 		}
