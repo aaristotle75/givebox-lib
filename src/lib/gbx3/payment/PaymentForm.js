@@ -50,8 +50,8 @@ class PaymentFormClass extends Component {
 				recipients: '',
 				message: util.getValue(this.props.sendEmail, 'defaultMsg', '')
 			},
-			applepay: true,
-			paymethod: 'applepay',
+			applepay: false,
+			paymethod: 'creditcard',
 			amountError: false
 		}
 	}
