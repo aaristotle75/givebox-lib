@@ -157,7 +157,8 @@ class GBX3 extends React.Component {
 		const obj = {
 			step: 'create',
 			publicView: false,
-			hasAccessToEdit: isVolunteer ? true : util.getAuthorizedAccess(access, orgID)
+			hasAccessToCreate: isVolunteer ? true : util.getAuthorizedAccess(access, orgID),
+			hasAccessToEdit: util.getAuthorizedAccess(access, orgID)
 		};
 
 		if (isVolunteer) {
@@ -194,7 +195,8 @@ class GBX3 extends React.Component {
 
 		const sourceLocation = reactReferer.referer();
 		info.sourceLocation = this.props.sourceLocation || sourceLocation;
-		if (this.props.project) info.project = this.props.project;
+		info.project = util.getValue(queryParams, 'project', this.props.project || null);
+		
 		if (this.props.exitURL) info.exitURL = this.props.exitURL;
 
 		if (has(queryParams, 'public') || this.props.public) {
@@ -269,13 +271,14 @@ class GBX3 extends React.Component {
 
 	renderStage() {
 		const {
+			hasAccessToCreate,
 			hasAccessToEdit,
 			publicView
 		} = this.props;
 
 		const items = [];
 
-		if (hasAccessToEdit && !publicView) {
+		if ((hasAccessToCreate || hasAccessToEdit) && !publicView) {
 			items.push(
 				<Admin
 					key={'admin'}
@@ -334,6 +337,7 @@ function mapStateToProps(state, props) {
 	const primaryColor = util.getValue(gbxStyle, 'primaryColor');
 	const admin = util.getValue(gbx3, 'admin', {});
 	const hasAccessToEdit = util.getValue(admin, 'hasAccessToEdit');
+	const hasAccessToCreate = util.getValue(admin, 'hasAccessToCreate');
 	const publicView = util.getValue(admin, 'publicView');
 
 	return {
@@ -343,6 +347,7 @@ function mapStateToProps(state, props) {
 		primaryColor,
 		sourceLocation,
 		hasAccessToEdit,
+		hasAccessToCreate,
 		publicView,
 		access: util.getValue(state.resource, 'access', {})
 	}

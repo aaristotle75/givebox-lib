@@ -25,6 +25,8 @@ import {
 	updateCart
 } from '../redux/gbx3actions';
 
+const ENV = process.env.REACT_APP_ENV;
+
 class PaymentFormClass extends Component {
 
 	constructor(props) {
@@ -48,14 +50,14 @@ class PaymentFormClass extends Component {
 				recipients: '',
 				message: util.getValue(this.props.sendEmail, 'defaultMsg', '')
 			},
-			applepay: false,
-			paymethod: 'creditcard',
+			applepay: true,
+			paymethod: 'applepay',
 			amountError: false
 		}
 	}
 
 	componentDidMount() {
-		if (window.ApplePaySession) {
+		if (window.ApplePaySession && ENV !== 'local') {
 			this.setState({ applepay: true });
 		}
 		this.setPaymethod(this.state.paymethod);

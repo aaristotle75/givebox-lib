@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import { Image, GBLink } from '../../';
+
+const ENV = process.env.REACT_APP_ENV;
 
 class ApplePay extends Component {
 
@@ -11,28 +12,30 @@ class ApplePay extends Component {
 	}
 
 	componentDidMount() {
-		if (window.ApplePaySession) {
+		if (window.ApplePaySession && ENV !== 'local') {
 			var merchantIdentifier = 'merchant.com.givebox.gbx';
-			/*
 			var promise = window.ApplePaySession.canMakePaymentsWithActiveCard(merchantIdentifier);
-			promise.then(function (canMakePayments) {
-				if (canMakePayments) {
+			promise.then(function (canMakePaymentsWithActiveCard) {
+				if (canMakePaymentsWithActiveCard) {
 					this.setState({ canMakePayments: true });
 				}
 			});
-			*/
 		}
 	}
 
 	render() {
 
 		return (
-			<div style={{ padding: '20px 0 0 0' }} className='input-group'>
+			<div style={{ padding: '20px 0 0 0', margin: 0 }} className='input-group'>
 				<div className='payMethods'>
-					<img src='https://givebox.s3-us-west-1.amazonaws.com/public/images/applepay.png' height='25' alt='eCheck logo' />
+					<img src='https://givebox.s3-us-west-1.amazonaws.com/public/images/applepay.png' height='21' alt='Apple Pay' />
 				</div>
-				<div>
-					{this.state.canMakePayments ? <div className='green'>Apple Pay Button</div> : <div className='error'>Cannot make payments</div> }
+				<div className='input-group'>
+					{this.state.canMakePayments ?
+						<div class="apple-pay-button apple-pay-button-white"></div>
+						:
+						<div style={{ fontSize: 14 }} className='error'>You have no paymethod in your Apple Wallet.</div>
+					}
 				</div>
 			</div>
 		)

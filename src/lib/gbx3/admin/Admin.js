@@ -219,10 +219,11 @@ class Admin extends React.Component {
 			access,
 			isVolunteer,
 			hasAccessToEdit,
+			hasAccessToCreate,
 			openAdmin: open
 		} = this.props;
 
-		if (!hasAccessToEdit) return <></>;
+		if (!hasAccessToEdit && !hasAccessToCreate) return  <div className='flexCenter flexColumn centeritems'>You do not have access.</div>;
 
 		return (
 			<div className={`gbx3AdminLayout ${editable ? 'editable' : ''} ${previewMode ? 'previewMode' : ''}`}>
@@ -239,9 +240,9 @@ class Admin extends React.Component {
 						<div className='container'>
 							<div className='headerLeftSide'>
 								<Logo className='logo' />
-								{ articleID ?
+								{ articleID && !isVolunteer?
 									step === 'create' ?
-										!isVolunteer ? <GBLink onClick={() => this.goBack(articleID)}><span className='icon icon-chevron-left'></span> Go Back</GBLink> : ''
+										<GBLink onClick={() => this.goBack(articleID)}><span className='icon icon-chevron-left'></span> Go Back</GBLink>
 									:
 										<GBLink className='button' onClick={() => this.props.loadCreateNew()}>Create New</GBLink>
 								: '' }
@@ -280,6 +281,7 @@ function mapStateToProps(state, props) {
 	const openAdmin = util.getValue(admin, 'open');
 	const access = util.getValue(state.resource, 'access');
 	const hasAccessToEdit = util.getValue(admin, 'hasAccessToEdit');
+	const hasAccessToCreate = util.getValue(admin, 'hasAccessToCreate');
 	const editable = util.getValue(admin, 'editable');
 
 	return {
@@ -296,6 +298,7 @@ function mapStateToProps(state, props) {
 		saveStatus,
 		access,
 		hasAccessToEdit,
+		hasAccessToCreate,
 		admin,
 		editable
 	}

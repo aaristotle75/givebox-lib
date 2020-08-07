@@ -52,12 +52,19 @@ class MediaLibrary extends Component {
 	}
 
 	componentDidMount() {
-		const library = this.props.library;
-		const orgID = util.getValue(library, 'orgID');
-		this.props.getResource(this.props.resourceName, {
-			id: orgID ? [orgID] : null
-		});
-		if (util.getValue(this.props.library, 'articleID')) this.props.getResource('articleMediaItems', { id: [this.props.library.articleID], reload: true });
+		const {
+			articleID,
+			orgID,
+			saveMediaType
+		} = this.props;
+
+		if (saveMediaType === 'article' && articleID) {
+			this.props.getResource('articleMediaItems', { id: [articleID], reload: true });
+		} else {
+			this.props.getResource(this.props.resourceName, {
+				id: orgID ? [orgID] : null
+			});
+		}
 	}
 
 	componentDidUpdate(prev) {
@@ -194,6 +201,10 @@ class MediaLibrary extends Component {
 	}
 
 	listMedia() {
+		const {
+
+		} = this.props;
+
 		const items = [];
 		let paginate = false;
 		if (!util.isEmpty(this.props.items)) {
@@ -209,7 +220,7 @@ class MediaLibrary extends Component {
 				);
 
 				actions.push(
-					<ModalLink className='button' id='delete' opts={{ callback: () => this.props.toggleModal('imageDisplay', false), id: value.ID, resource: 'orgMediaItem', resourcesToLoad: ['orgMediaItems'], desc: <div style={{display: 'inline-block', width: 'auto', textAlign: 'center', margin: '10px 0'}}><Image url={value.URL} size='small' maxSize='75px' alt='Media Item' /></div>, showLoader: 'no'  }}>Delete</ModalLink>
+					<ModalLink className='button' id='delete' opts={{ callback: () => this.props.toggleModal('imageDisplay', false), id: value.ID, resource: 'orgMediaItem', resourcesToLoad: ['orgMediaItems', 'articleMediaItems'], desc: <div style={{display: 'inline-block', width: 'auto', textAlign: 'center', margin: '10px 0'}}><Image url={value.URL} size='small' maxSize='75px' alt='Media Item' /></div>, showLoader: 'no'  }}>Delete</ModalLink>
 				);
 
 				items.push(
@@ -237,7 +248,7 @@ class MediaLibrary extends Component {
 						</div>
 					: ''}
 				</div>
-				: ''}
+				: <div className='noRecords flexCenter'>No Photos Uploaded</div>}
 			</div>
 		);
 	}
@@ -373,11 +384,17 @@ MediaLibrary.defaultProps = {
 function mapStateToProps(state, props) {
 
 	const library = props.library;
-	const resourceName = util.getValue(library, 'super') ? 'superOrgMediaItems' : props.saveMediaType === 'article' ? 'articleMediaItems' : 'orgMediaItems';
+	const saveMediaType = util.getValue(library, 'saveMediaType');
+	const orgID = util.getValue(library, 'orgID');
+	const articleID = util.getValue(library, 'articleID');
+	const resourceName = util.getValue(library, 'super') ? 'superOrgMediaItems' : saveMediaType === 'article' ? 'articleMediaItems' : 'orgMediaItems';
 	const items = state.resource[resourceName] ? state.resource[resourceName] : {};
 	const articleItems = state.resource.articleMediaItems ? state.resource.articleMediaItems : {};
 
 	return {
+		saveMediaType,
+		orgID,
+		articleID,
 		resourceName,
 		items: has(items, 'data') ? items.data : {},
 		articleItems: has(articleItems, 'data') ? articleItems.data : {},

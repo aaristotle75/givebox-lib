@@ -185,8 +185,12 @@ class App extends Component {
 
 		const routeProps = options.routeProps;
 		const location = util.getValue(routeProps, 'location', {});
+		const match = util.getValue(routeProps, 'match', {});
 		const search = util.getValue(location, 'search', {});
+		const routeParams = util.getValue(match, 'params', {});
 		const queryParams = queryString.parse(search);
+
+		console.log('execute routeProps', routeProps);
 
 		return (
 			<div id={`content-root`} className={options.className}>
@@ -194,6 +198,7 @@ class App extends Component {
 					{...options.props}
 					loader={this.loader}
 					routeProps={options.routeProps}
+					routeParams={routeParams}
 					mobile={this.state.mobile}
 					loadComponent={this.loadComponent}
 					queryParams={queryParams}

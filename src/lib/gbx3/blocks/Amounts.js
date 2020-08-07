@@ -453,6 +453,7 @@ class Amounts extends Component {
 														sendResource={this.props.sendResource}
 														validateAmountsBeforeSave={this.validateAmountsBeforeSave}
 														formError={this.state.formError}
+														orgID={util.getValue(data, 'orgID')}
 													/>
 												</div>
 											</div>

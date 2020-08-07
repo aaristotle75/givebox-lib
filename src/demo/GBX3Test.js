@@ -34,8 +34,13 @@ class GBXTest extends Component {
 
 	render() {
 
+		const {
+			queryParams,
+			routeParams
+		} = this.props;
+
 		// 383102 // 1130 // 383064; // 13; // 739; // 4; //651; //735; //383071;
-		const articleID = 383102;
+		const articleID = +util.getValue(routeParams, 'articleID', 383102);
 
 		return (
 			<div>
@@ -44,7 +49,7 @@ class GBXTest extends Component {
 					orgID={185}
 					articleID={articleID}
 					saveCallback={this.saveCallback}
-					queryParams={this.props.queryParams}
+					queryParams={queryParams}
 					public={false}
 					project={'share'}
 					exitCallback={() => console.log('exit callback')}

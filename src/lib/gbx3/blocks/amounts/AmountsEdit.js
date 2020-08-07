@@ -95,11 +95,15 @@ export default class AmountsEdit extends Component {
 	}
 
 	deleteAmount(ID) {
+		const {
+			orgID
+		} = this.props;
 		const amountsList = [ ...this.props.amountsList ];
 		const index = amountsList.findIndex(x => x.ID === ID);
 		const amount = amountsList[index];
 
 		this.props.sendResource(types.kind(this.props.kind).api.amount, {
+			orgID,
 			id: [amount[`${this.props.kind}ID`], amount.ID],
 			method: 'delete',
 			reload: false,
@@ -111,10 +115,14 @@ export default class AmountsEdit extends Component {
 	}
 
 	addAmount() {
+		const {
+			orgID
+		} = this.props;
 		const amountsList = [ ...this.props.amountsList ];
 		const length = amountsList.length;
 		const amount = amountsList[length - 1];
 		this.props.sendResource(`${types.kind(this.props.kind).api.amount}s`, {
+			orgID,
 			id: [amount[`${this.props.kind}ID`]],
 			method: 'post',
 			data: {
