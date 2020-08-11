@@ -34,8 +34,8 @@ class ArticleMenuStyleImage extends Component {
 		//console.log('execute componentWillUnmount');
 	}
 
-	handleSaveCallback(url) {
-		const imageURL= util.imageUrlWithStyle(url, 'large');
+	handleSaveCallback(url, justUploaded) {
+		const imageURL= justUploaded ? url : util.imageUrlWithStyle(url, 'large');
 		this.setState({
 			imageURL,
 			hasBeenUpdated: true
@@ -85,6 +85,7 @@ class ArticleMenuStyleImage extends Component {
 		} = this.props;
 
 		const library = {
+			saveMediaType: 'article',
 			articleID,
 			orgID,
 			type: 'article',

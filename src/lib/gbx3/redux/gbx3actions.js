@@ -857,7 +857,7 @@ export function setStyle(options = {}) {
 		}
 
 		let backgroundImageInnerHTML = '';
-		if (backgroundImage && breakpoint === 'desktop') {
+		if (breakpoint === 'desktop') {
 			backgroundImageInnerHTML = `
 				.gbx3LayoutBackground {
 						background-image: url("${backgroundImage}");

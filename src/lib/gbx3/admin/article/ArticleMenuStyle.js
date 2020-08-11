@@ -299,6 +299,7 @@ class ArticleMenuStyle extends React.Component {
 							if (changed) this.updateStyle('backgroundImage', imageURL);
 						}}
 						removeImage={() => {
+							this.props.toggleModal('designMenuStyleBackgroundImage', false);
 							this.updateStyle('backgroundImage', '');
 						}}
 					/>
