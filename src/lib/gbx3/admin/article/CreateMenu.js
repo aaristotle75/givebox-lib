@@ -48,17 +48,9 @@ class CreateMenu extends React.Component {
 
 	render() {
 
-		const {
-			openAdmin: open
-		} = this.props;
-
 		return (
 			<div className='leftPanelContainer'>
 				<div className='leftPanelTop'>
-					<div className='leftPanelHeader'>
-						Create Menu
-						<GBLink onClick={this.props.toggleAdminLeftPanel} className={`link leftPanelClose ${open ? 'open' : 'close'}`}><span className='icon icon-x'></span></GBLink>
-					</div>
 					<div className='middle centerAlign adminPanelTabs'>
 					</div>
 				</div>

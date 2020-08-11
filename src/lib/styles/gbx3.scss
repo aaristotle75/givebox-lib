@@ -1,4 +1,5 @@
 @import 'variables.scss';
+@import 'variables2.scss';
 
 .gbx3LayoutBackground {
 	position: relative;
@@ -7,6 +8,13 @@
 	@media (max-width: $breakpoint) {
 		//display: none;
 	}
+}
+
+.centered {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
 .hasAccessToEditPublic {
@@ -311,7 +319,7 @@
 	/*------ Layout ------*/
 
 	$topHeaderHeight: 50px;
-	$topPanelHeight: 40px;
+	$topPanelHeight: 50px;
 	$topOffset: $topHeaderHeight + $topPanelHeight;
 	$panelWidth: 220px;
 
@@ -515,7 +523,7 @@
 		right: 0;
 		height: $topPanelHeight;
 		width: 100%;
-		background: linear-gradient(to right, $mainColorDark 15%, $green 100%);;
+		background: linear-gradient(to right, $mainColorMedium 15%, $green 100%);;
 		@include transition(top .25s);
 	}
 
@@ -528,15 +536,15 @@
 		.adminPanelTabs {
 			button.link {
 				color: $white;
-				font-size: 1em;
+				font-size: 14px;
 				font-weight: 400;
-				letter-spacing: 1.5px;
 				margin: 0;
 				height: $topPanelHeight;
-				width: 120px;
+				width: 150px;
 				border: 0;
 				@media (max-width: $breakpoint) {
 					width: 90px;
+					font-size: 12px;
 				}
 			}
 
@@ -576,7 +584,17 @@
 			white-space: nowrap;
 			.icon {
 				font-size: 20px;
-				margin-right: 2px;
+				margin-right: 10px;
+			}
+			.leftPanelClose {
+				.icon {
+					color: $light-gray;
+					font-size: 25px;
+					margin-left: 20px;
+					@media (max-width: $breakpoint) {
+						margin-left: 0px;
+					}
+				}
 			}
 		}
 
@@ -587,7 +605,7 @@
 					text-align: center;
 					.icon {
 						display: block;
-						font-size: 24px;
+						font-size: 28px;
 					}
 					.iconText {
 						display: block;
@@ -626,8 +644,8 @@
 		white-space: nowrap;
 		overflow-x: hidden;
 		overflow-y: hidden;
-		background: $mainColorDark;
-		background-image: url(https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/layout-left-bg-new.png), linear-gradient(to bottom, $mainColorDark 30%, $green 100%);
+		background: $mainColorMedium;
+		background-image: url(https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/layout-left-bg-new.png), linear-gradient(to bottom, $mainColorMedium 30%, $green 100%);
 		background-position: center bottom;
 		background-repeat: no-repeat;
 		background-size: $layout-left-width auto;
@@ -656,7 +674,7 @@
 			white-space: nowrap;
 			display: flex;
 			justify-content: space-between;
-			background: $mainColorDark;
+			background: $mainColor;
 
 			button.link {
 				color: $white;
@@ -783,27 +801,22 @@
 		top: 0;
 		left: 0;
 		width: $panelWidth;
-		height: 90px;
+		height: 50px;
 		z-index: 10;
 	}
 
 	.leftPanelScroller {
 		position: relative;
 		display: block;
-		margin-top: 90px;
+		margin-top: 50px;
 	}
 
 	.leftPanelHeader {
-		display: block;
-		color: $light-gray;
-		height: 40px;
-		width: $panelWidth;
+		color: $white;
 		overflow: hidden;
 		white-space: nowrap;
-		padding: 10px;
 		font-weight: 300;
 		font-size: 16px;
-		background: $mainColorMedium;
 	}
 
 
@@ -816,19 +829,6 @@
 		@include transition(left .5);
 		.icon {
 			font-size: 30px;
-		}
-	}
-
-	.leftPanelClose {
-		position: absolute;
-		top: 10px;
-		right: 10px;
-		z-index: 900002;
-		cursor: pointer;
-
-		.icon {
-			color: $light-gray;
-			font-size: 20px;
 		}
 	}
 

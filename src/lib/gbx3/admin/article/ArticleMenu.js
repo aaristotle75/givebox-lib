@@ -55,17 +55,9 @@ class ArticleMenu extends React.Component {
 			panelType
 		} = this.state;
 
-		const {
-			openAdmin: open
-		} = this.props;
-
 		return (
 			<div className='leftPanelContainer'>
 				<div className='leftPanelTop'>
-					<div className='leftPanelHeader'>
-						Payment Form Menu
-						<GBLink onClick={this.props.toggleAdminLeftPanel} className={`link leftPanelClose ${open ? 'open' : 'close'}`}><span className='icon icon-x'></span></GBLink>
-					</div>
 					<div className='middle centerAlign adminPanelTabs'>
 						<GBLink className={`ripple link ${panelType === 'layout' ? 'selected' : ''}`} onClick={() => this.switchPanelType('layout')}>Elements</GBLink>
 						<GBLink className={`ripple link ${panelType === 'style' ? 'selected' : ''}`} onClick={() => this.switchPanelType('style')}>Style</GBLink>
