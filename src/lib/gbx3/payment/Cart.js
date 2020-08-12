@@ -155,7 +155,7 @@ class Cart extends Component {
 
 		const {
 			open,
-			showShop,
+			showCart,
 			cartTitle,
 			shopTitle
 		} = this.props;
@@ -165,7 +165,7 @@ class Cart extends Component {
 					<div className='gbx3Cart'>
 						<div className='paymentFormHeaderTitle'>
 							{cartTitle || 'Your Cart'}
-							{showShop ?
+							{showCart ?
 							<GBLink
 								style={{ right: '60px' }}
 								className='link closeCart'

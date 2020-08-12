@@ -38,6 +38,7 @@ import Error from './common/Error';
 import Fade from './common/Fade';
 import GBLink from './common/GBLink';
 import GBX from './common/GBX';
+import Icon from './common/Icon';
 import Iframe from './common/Iframe';
 import Image from './common/Image';
 import ImageDisplay from './common/ImageDisplay';
@@ -77,7 +78,7 @@ Form, _v, selectOptions, Select, TextField, Dropdown, RichTextField, Choice, Cal
 , ModalLink, ModalRoute // Table
 , ActionsMenu, Search, Table, MaxRecords, NoRecords, Paginate, Export, DownloadFileConnect, Filter // Block
 , StatBlock, ActionBar, CodeBlock // common
-, Alert, CircularProgress, Collapse, CustomBtn, Delete, Error, Fade, GBLink, GBX, Iframe, Image, ImageDisplay, history, LinearBar, Loader, Popup, Balloon, Portal, Redirect, Tabs, Tab, types, util, Video // Glossary
+, Alert, CircularProgress, Collapse, CustomBtn, Delete, Error, Fade, GBLink, GBX, Icon, Iframe, Image, ImageDisplay, history, LinearBar, Loader, Popup, Balloon, Portal, Redirect, Tabs, Tab, types, util, Video // Glossary
 , FeesGlossary // Help Desk
 , HelpDesk, TicketForm, zohoCats, Articles, HelpDeskButton // Editor
 , CustomCKEditor4, CKEditorUpload };

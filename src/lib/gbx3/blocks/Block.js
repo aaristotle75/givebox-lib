@@ -134,7 +134,8 @@ class Block extends React.Component {
 			globalButtonStyle,
 			primaryColor,
 			scrollTo,
-			reloadGBX3
+			reloadGBX3,
+			isVolunteer
 		} = this.props;
 
 		const childrenWithProps = React.Children.map(this.props.children,
@@ -157,6 +158,7 @@ class Block extends React.Component {
 				breakpoint,
 				scrollTo,
 				reloadGBX3,
+				isVolunteer,
 				blockContent: this.getBlockContent(),
 				saveBlock: this.saveBlock,
 				title: util.getValue(block, 'title', name),
@@ -179,14 +181,15 @@ class Block extends React.Component {
 			nonremovable,
 			block,
 			options,
-			blockType
+			blockType,
+			isVolunteer
 		} = this.props;
 
 		const buttonEnabled = util.getValue(options, 'button.enabled', false);
 		const buttonAlign = util.getValue(options, 'button.style.align', 'flexCenter');
 		const scrollableBlock = util.getValue(block, 'scrollable');
 		const blockIsBeingEdited = editBlock === `${blockType}-${name}` ? true : false;
-		const notEditable = util.getValue(block, 'volunteerNoEdit');
+		const notEditable = util.getValue(block, 'volunteerNoEdit') && isVolunteer ? true : false;
 
 		return (
 			<div className={`block`}>
@@ -223,6 +226,7 @@ function mapStateToProps(state, props) {
 	const admin = util.getValue(gbx3, 'admin', {});
 	const editable = util.getValue(admin, 'editable');
 	const editBlock = util.getValue(admin, 'editBlock');
+	const isVolunteer = util.getValue(admin, 'isVolunteer');
 	const editBlockJustAdded = util.getValue(admin, 'editBlockJustAdded');
 	const globals = util.getValue(gbx3, 'globals', {});
 	const gbxStyle = util.getValue(globals, 'gbxStyle', {});
@@ -251,6 +255,7 @@ function mapStateToProps(state, props) {
 		data,
 		editable,
 		editBlock,
+		isVolunteer,
 		editBlockJustAdded,
 		kind,
 		articleID,

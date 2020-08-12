@@ -63,7 +63,7 @@ class GBX3 extends React.Component {
 
 		this.props.setLoading(true);
 		if ((editable && hasAccessToEdit) || hasAccessToEdit) {
-			this.props.updateAdmin({ editable, open: true });
+			this.props.updateAdmin({ editable });
 		} else {
 			this.props.updateAdmin({ editable: false });
 		}
@@ -162,7 +162,7 @@ class GBX3 extends React.Component {
 		};
 
 		if (isVolunteer) {
-			obj.volunteer = true;
+			obj.isVolunteer = true;
 			obj.volunteerID = util.getValue(access, 'userID', null);
 		}
 		this.props.updateAdmin(obj);
@@ -196,7 +196,7 @@ class GBX3 extends React.Component {
 		const sourceLocation = reactReferer.referer();
 		info.sourceLocation = this.props.sourceLocation || sourceLocation;
 		info.project = util.getValue(queryParams, 'project', this.props.project || null);
-		
+
 		if (this.props.exitURL) info.exitURL = this.props.exitURL;
 
 		if (has(queryParams, 'public') || this.props.public) {

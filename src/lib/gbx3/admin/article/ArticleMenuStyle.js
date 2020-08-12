@@ -154,6 +154,7 @@ class ArticleMenuStyle extends React.Component {
 		return (
 			<div className='layoutMenu'>
 				<ul>
+					<li className='listHeader'>Form Style</li>
 					<li onClick={() => this.colorPickerCallback(colorPickerTheme)} className='stylePanel'>
 						Theme Color
 						<ColorPicker
@@ -190,6 +191,28 @@ class ArticleMenuStyle extends React.Component {
 							onCancel={() => this.colorPickerCallback(colorPickerTextColor)}
 							value={textColor}
 							modalID={colorPickerTextColor}
+							opts={{
+								customOverlay: {
+									zIndex: 9999909
+								}
+							}}
+							extraColors={extraColors}
+						/>
+					</li>
+					<li onClick={() => this.colorPickerCallback(colorPickerPlaceholderColor)} className='stylePanel'>
+						Placeholder Color
+						<ColorPicker
+							open={colorPickerOpen.includes(colorPickerPlaceholderColor)}
+							name='placeholderColor'
+							fixedLabel={true}
+							label='Placeholder Color'
+							onAccept={(name, value) => {
+								this.colorPickerCallback(colorPickerPlaceholderColor);
+								this.updateStyle('placeholderColor', value);
+							}}
+							onCancel={() => this.colorPickerCallback(colorPickerPlaceholderColor)}
+							value={placeholderColor}
+							modalID={colorPickerPlaceholderColor}
 							opts={{
 								customOverlay: {
 									zIndex: 9999909
@@ -351,29 +374,6 @@ class ArticleMenuStyle extends React.Component {
 								this.updateStyle('backgroundBlur', +(value));
 							}}
 							options={this.blurOptions()}
-						/>
-					</li>
-					<li className='listHeader'>Form Style</li>
-					<li onClick={() => this.colorPickerCallback(colorPickerPlaceholderColor)} className='stylePanel'>
-						Placeholder Color
-						<ColorPicker
-							open={colorPickerOpen.includes(colorPickerPlaceholderColor)}
-							name='placeholderColor'
-							fixedLabel={true}
-							label='Placeholder Color'
-							onAccept={(name, value) => {
-								this.colorPickerCallback(colorPickerPlaceholderColor);
-								this.updateStyle('placeholderColor', value);
-							}}
-							onCancel={() => this.colorPickerCallback(colorPickerPlaceholderColor)}
-							value={placeholderColor}
-							modalID={colorPickerPlaceholderColor}
-							opts={{
-								customOverlay: {
-									zIndex: 9999909
-								}
-							}}
-							extraColors={extraColors}
 						/>
 					</li>
 				</ul>

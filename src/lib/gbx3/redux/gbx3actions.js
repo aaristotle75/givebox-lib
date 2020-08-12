@@ -499,7 +499,7 @@ export function createFundraiser(createKind, callback) {
 		const orgID = util.getValue(info, 'orgID');
 		const resourceName = `org${types2.kind(kind).api.list}`;
 		const data = createData[kind];
-		data.volunteer = util.getValue(admin, 'volunteer', null);
+		data.volunteer = util.getValue(admin, 'isVolunteer', null);
 		data.volunteerID = util.getValue(admin, 'volunteerID', null);
 		dispatch(setLoading(false));
 		dispatch(sendResource(resourceName, {
@@ -569,9 +569,8 @@ export function loadGBX3(articleID, callback) {
 									const customTemplate = util.getValue(settings, 'customTemplate', {});
 									const passFees = util.getValue(res, 'passFees');
 									const publishStatus = util.getPublishStatus(kind, util.getValue(res, 'publishedStatus.webApp'));
-									const volunteer = util.getValue(res, 'volunteer');
 									const volunteerID = util.getValue(res, 'volunteerID');
-									const hasAccessToEdit = util.getAuthorizedAccess(access, orgID, volunteer ? volunteerID : null);
+									const hasAccessToEdit = util.getAuthorizedAccess(access, orgID,  util.getValue(res, 'volunteer') ? volunteerID : null);
 
 									dispatch(updateCart({ passFees }));
 									dispatch(updateInfo({
@@ -659,12 +658,11 @@ export function loadGBX3(articleID, callback) {
 									const admin = {
 										hasAccessToEdit,
 										editable: hasAccessToEdit ? true : false,
-										open: hasAccessToEdit ? true : false,
 										step: 'design'
 									};
 
-									if (volunteer) {
-										admin.volunteer = true;
+									if (util.getValue(hasAccessToEdit, 'isVolunteer')) {
+										admin.isVolunteer = true;
 										admin.volunteerID = volunteerID;
 									}
 

@@ -237,7 +237,7 @@ export const paymentForm = {
 			hasCustomGoal: false,
 			goal: 50000,
 			cartTitle: 'Your Cart',
-			shopTitle: 'Shop More Items'
+			shopTitle: 'Browse More Items'
 		}
 	}
 };

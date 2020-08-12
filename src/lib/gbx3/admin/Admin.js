@@ -9,14 +9,9 @@ import Create from './article/Create';
 import Logo from '../Logo';
 import AnimateHeight from 'react-animate-height';
 import 'react-toggle/style.css';
-import { toggleModal } from '../../api/actions';
 import {
 	updateInfo,
-	updateAdmin,
-	toggleAdminLeftPanel,
-	resetGBX3,
-	saveGBX3,
-	setLoading
+	updateAdmin
 } from '../redux/gbx3actions';
 import AvatarMenuButton from './AvatarMenuButton';
 
@@ -105,7 +100,7 @@ class Admin extends React.Component {
 									step === 'create' ?
 										<GBLink onClick={() => this.goBack(articleID)}><span className='icon icon-chevron-left'></span> Go Back</GBLink>
 									:
-										<GBLink className='button' onClick={() => this.props.loadCreateNew()}>Create New</GBLink>
+										<GBLink style={{ fontSize: '14px' }} className='link' onClick={() => this.props.loadCreateNew()}>Create New Form</GBLink>
 								: '' }
 							</div>
 							<AvatarMenuButton />
@@ -132,7 +127,7 @@ function mapStateToProps(state, props) {
 	const project = util.getValue(info, 'project');
 	const admin = util.getValue(gbx3, 'admin', {});
 	const step = util.getValue(admin, 'step');
-	const isVolunteer = util.getValue(admin, 'volunteer');
+	const isVolunteer = util.getValue(admin, 'isVolunteer');
 	const previewMode = util.getValue(admin, 'previewMode');
 	const openAdmin = util.getValue(admin, 'open');
 	const access = util.getValue(state.resource, 'access');
@@ -160,10 +155,5 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
 	updateInfo,
-	updateAdmin,
-	toggleAdminLeftPanel,
-	resetGBX3,
-	saveGBX3,
-	toggleModal,
-	setLoading
+	updateAdmin
 })(Admin);

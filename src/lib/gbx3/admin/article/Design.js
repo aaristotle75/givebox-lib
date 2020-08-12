@@ -13,7 +13,8 @@ import ReceiptMenu from '../receipt/ReceiptMenu';
 import {
 	updateAdmin,
 	updateInfo,
-	toggleAdminLeftPanel
+	toggleAdminLeftPanel,
+	setLoading
 } from '../../redux/gbx3actions';
 import Toggle from 'react-toggle';
 import { FaMagic, FaPalette, FaDraftingCompass } from 'react-icons/fa';
@@ -32,8 +33,11 @@ class Design extends React.Component {
 		this.togglePreview = this.togglePreview.bind(this);
 		this.renderTopPanel = this.renderTopPanel.bind(this);
 		this.changePreviewDevice = this.changePreviewDevice.bind(this);
+		this.previewReceipt = this.previewReceipt.bind(this);
+		this.previewArticle = this.previewArticle.bind(this);
 		this.state = {
 		};
+		this.iframePreviewRef = React.createRef();
 	}
 
 	renderTopPanel() {
@@ -68,13 +72,8 @@ class Design extends React.Component {
 		if (!previewMode) {
 			if (open) {
 				leftSide.push(
-					<GBLink key={'leftSide'} className='link side' onClick={() => this.props.toggleAdminLeftPanel()}>{!mobile ? contentObj[createType].icon : <span className='icon icon-x'></span>}{!mobile ? <span>{contentObj[createType].menuText} Menu <span className='icon icon-x'></span></span> : ''}</GBLink>
+					<GBLink key={'leftSide'} className='link side' onClick={() => this.props.toggleAdminLeftPanel()}>{!mobile ? contentObj[createType].icon : <span className='icon icon-x'></span>}{!mobile ? <span className='flexCenter centerItems'>{contentObj[createType].menuText} Menu <span className='leftPanelClose icon icon-x'></span></span> : ''}</GBLink>
 				);
-				/*
-				leftSide.push(
-					<GBLink key={'leftSide'} className='link side' onClick={() => this.props.toggleAdminLeftPanel()}>{!mobile ? <span>{contentObj[createType].icon}{contentObj[createType].menuText} Menu</span> : ''}<span className='leftPanelClose icon icon-x'></span></GBLink>
-				);
-				*/
 			} else {
 				leftSide.push(
 					<GBLink key={'leftSide'} className='link side' onClick={() => this.props.toggleAdminLeftPanel()}><Icon><GoBeaker /></Icon>{!mobile ? 'Advanced Settings' : ''}</GBLink>
@@ -88,7 +87,7 @@ class Design extends React.Component {
 					className='rightSide'
 					key='rightSide'
 				>
-					<GBLink className='link side' style={{ marginRight: 10 }} onClick={this.togglePreview}>{ mobile ? <span className='icon icon-eye'></span> : <span>Preview {createType === 'article' ? 'Form' : 'Email' }</span> }</GBLink>
+					<GBLink className='link side' style={{ marginRight: 10 }} onClick={this.togglePreview}>{ mobile ? <span className='icon icon-eye'></span> : <span>Preview Mode</span> }</GBLink>
 					<Toggle
 						icons={false}
 						checked={previewMode}
@@ -101,33 +100,19 @@ class Design extends React.Component {
 		}
 
 		if (previewMode) {
-			switch (createType) {
-				case 'receipt': {
-
-					break;
-				}
-
-				case 'form':
-				default: {
-					middle.push(
-						<div key={'middle'} className='button-group middle'>
-							<GBLink className={`ripple link ${previewDevice === 'phone' ? 'selected' : ''}`} onClick={() => this.changePreviewDevice('phone')}><span className='icon icon-smartphone'></span><span className='iconText'>Mobile</span></GBLink>
-							<GBLink className={`ripple link ${previewDevice === 'desktop' ? 'selected' : ''}`} onClick={() => this.changePreviewDevice('desktop')}><span className='icon icon-monitor'></span><span className='iconText'>Desktop</span></GBLink>
-							<GBLink className={`ripple link ${previewDevice === 'public' ? 'selected' : ''}`} onClick={async () => {
-								const infoUpdated = await this.props.updateInfo({ stage: 'public' });
-								if (infoUpdated) this.props.updateAdmin({ publicView: true });
-							}}><span className='icon icon-external-link'></span><span className='iconText'>Public View</span></GBLink>
-						</div>
-					);
-					break;
-				}
-			}
+			middle.push(
+				<div key={'middle'} className='button-group middle'>
+					<GBLink className={`ripple link ${previewDevice === 'phone' ? 'selected' : ''}`} onClick={() => this.previewArticle('phone')}><span className='icon icon-smartphone'></span><span className='iconText'>Mobile</span></GBLink>
+					<GBLink className={`ripple link ${previewDevice === 'desktop' ? 'selected' : ''}`} onClick={() => this.previewArticle('desktop')}><span className='icon icon-monitor'></span><span className='iconText'>Desktop</span></GBLink>
+					<GBLink className={`ripple link ${previewDevice === 'receipt' ? 'selected' : ''}`} onClick={() => this.previewReceipt()}><span className='icon icon-mail'></span><span className='iconText'>Receipt</span></GBLink>
+				</div>
+			);
 		} else {
 			middle.push(
 				<div key={'middle'} className='button-group'>
-					<GBLink className={`ripple link ${createType === 'article' ? 'selected' : ''}`} onClick={() => this.switchCreateType('article')}><span className='centered'>{contentObj.article.icon}{contentObj.article.menuText}</span></GBLink>
-					<GBLink className={`ripple link ${createType === 'receipt' ? 'selected' : ''}`} onClick={() => this.switchCreateType('receipt')}><span className='centered'>{contentObj.receipt.icon}{contentObj.receipt.menuText}</span></GBLink>
-					<GBLink className={`ripple link ${createType === 'share' ? 'selected' : ''}`} onClick={() => this.props.updateAdmin({ step: 'share', createType: 'article' })}><span className='centered'>{contentObj.share.icon}{contentObj.share.menuText}</span></GBLink>
+					<GBLink className={`ripple link ${createType === 'article' ? 'selected' : ''}`} onClick={() => this.switchCreateType('article')}><span className='centered'>{contentObj.article.icon}<span className='menuText'>{contentObj.article.menuText}</span></span></GBLink>
+					<GBLink className={`ripple link ${createType === 'receipt' ? 'selected' : ''}`} onClick={() => this.switchCreateType('receipt')}><span className='centered'>{contentObj.receipt.icon}<span className='menuText'>{contentObj.receipt.menuText}</span></span></GBLink>
+					<GBLink className={`ripple link ${createType === 'share' ? 'selected' : ''}`} onClick={() => this.props.updateAdmin({ step: 'share', createType: 'article' })}><span className='centered'>{contentObj.share.icon}<span className='menuText'>{contentObj.share.menuText}</span></span></GBLink>
 				</div>
 			);
 		}
@@ -145,18 +130,15 @@ class Design extends React.Component {
 		)
 	}
 
-	togglePreview(value) {
+	togglePreview() {
+
 		const {
 			createType
 		} = this.props;
 
 		const previewMode = this.props.previewMode ? false : true;
-		let step = this.state.referrerStep || this.props.step;
-		if (previewMode) {
-			step = 'design';
-			this.setState({ referrerStep: this.props.step });
-		}
-		this.props.updateAdmin({ previewMode, step, editable: previewMode ? false : true });
+		this.props.updateAdmin({ previewMode, editable: previewMode ? false : true });
+
 		if (createType === 'receipt' && this.props.previewMode) {
 			const iframeEl = document.getElementById('emailIframePreview');
 			if (iframeEl) {
@@ -176,6 +158,17 @@ class Design extends React.Component {
 		}
 	}
 
+	async previewReceipt() {
+		const createTypeUpdated = await this.props.updateAdmin({ createType: 'receipt', previewDevice: 'receipt' });
+	}
+
+	async previewArticle(previewDevice) {
+		const createTypeUpdated = await this.props.updateAdmin({ createType: 'article' });
+		if (createTypeUpdated) {
+			this.changePreviewDevice(previewDevice);
+		}
+	}
+
 	async switchCreateType(createType) {
 		this.props.updateAdmin({ createType });
 	}
@@ -192,11 +185,24 @@ class Design extends React.Component {
 
 		switch(createType) {
 			case 'receipt': {
-				items.push(
-					<ReceiptEmail
-						key={'receipt'}
-					/>
-				);
+				if (previewMode) {
+					items.push(
+						<div key='receipt' className='gbx3ReceiptLayout'>
+							<div className='gbx3ReceiptContainer'>
+								<div className='block'>
+									<iframe id='emailIframePreview' className='emailIframe' style={{ height: previewMode ? '100vh' : 0 }} ref={this.iframePreviewRef}></iframe>
+									<ReceiptEmail iframePreviewRef={this.iframePreviewRef} />
+								</div>
+							</div>
+						</div>
+					);
+				} else {
+					items.push(
+						<ReceiptEmail
+							key={'receipt'}
+						/>
+					);
+				}
 				break;
 			}
 
@@ -292,5 +298,6 @@ function mapStateToProps(state, props) {
 export default connect(mapStateToProps, {
 	updateAdmin,
 	updateInfo,
-	toggleAdminLeftPanel
+	toggleAdminLeftPanel,
+	setLoading
 })(Design);

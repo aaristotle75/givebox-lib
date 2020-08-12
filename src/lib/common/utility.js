@@ -880,11 +880,15 @@ export function getAuthorizedAccess(access, orgID, volunteerID) {
 	const userID = getValue(access, 'userID', null);
 	if (userRole === 'super') hasAccess = true;
 	if (userRole === 'admin' && userOrgID === orgID) hasAccess = true;
-	if (userRole === 'user' && volunteerID === userID ) hasAccess = true;
 	const obj = {
 		fullName,
 		userRole
 	}
+	if (userRole === 'user' && volunteerID === userID ) {
+		hasAccess = true;
+		obj.isVolunteer = true;
+	}
+
 	return hasAccess ? obj : false;
 }
 

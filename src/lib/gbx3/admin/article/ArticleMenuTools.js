@@ -9,6 +9,7 @@ import {
 	saveGBX3
 } from '../../redux/gbx3actions';
 import { toggleModal } from '../../../api/actions';
+import Publish from './Publish';
 
 class ArticleMenuTools extends React.Component {
 
@@ -35,13 +36,14 @@ class ArticleMenuTools extends React.Component {
 		return (
 			<div className='layoutMenu'>
 				<ul>
-					<li onClick={() => this.props.updateAdmin({ editable: editable ? false : true }) }>Editable {util.toggle(editable)}</li>
-					<li onClick={() => this.props.updateAdmin({ outline: outline ? false : true })}>Grid Outline {util.toggle(outline, { onText: <span className='icon icon-eye'></span>, offText: <span className='icon icon-eye-off'></span>})}</li>
+					{/*<li onClick={() => this.props.updateAdmin({ editable: editable ? false : true }) }>Editable {util.toggle(editable)}</li>*/}
+					<li onClick={() => this.props.updateAdmin({ outline: outline ? false : true })}>Edit Box Outlines {util.toggle(outline, { onText: <span className='icon icon-eye'></span>, offText: <span className='icon icon-eye-off'></span>})}</li>
 					<li onClick={() => this.props.updateAdmin({ preventCollision: preventCollision ? false : true })}>Prevent Collision {util.toggle(preventCollision)}</li>
 					<li onClick={() => this.props.updateAdmin({ verticalCompact: verticalCompact ? false : true })}>Vertical Compact {util.toggle(verticalCompact)}</li>
 					<li onClick={this.reset}>Reset Layout</li>
-					<li onClick={() => this.props.saveGBX3('article', { isSending: true })}>Save</li>
+					{/*<li onClick={() => this.props.saveGBX3('article', { isSending: true })}>Save</li>*/}
 				</ul>
+				<Publish />
 			</div>
 		)
 	}

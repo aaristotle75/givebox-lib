@@ -68,7 +68,7 @@ function mapStateToProps(state, props) {
 	const admin = util.getValue(gbx3, 'admin', {});
 	const openAdmin = util.getValue(admin, 'open');
 	const editable = util.getValue(admin, 'editable');
-	const isVolunteer = util.getValue(admin, 'volunteer');
+	const isVolunteer = util.getValue(admin, 'isVolunteer');
 
 	return {
 		editable,

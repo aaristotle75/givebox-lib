@@ -276,7 +276,8 @@ class Media extends Component {
 			maxRadius,
 			minRadius,
 			block,
-			breakpoint
+			breakpoint,
+			isVolunteer
 		} = this.props;
 
 		const {
@@ -287,7 +288,7 @@ class Media extends Component {
 		} = this.state;
 
 		const library = {
-			saveMediaType: 'article',
+			saveMediaType: isVolunteer ? 'article' : 'org',
 			articleID,
 			orgID,
 			type: 'article',
@@ -372,12 +373,13 @@ class Media extends Component {
 														<GBLink onClick={() => this.setRadius(maxRadius)}><span className='icon icon-circle'></span></GBLink>
 													</div>
 												</div>
+												{util.getValue(image, 'URL') ?
 												<div className='helperText'>
 													<div className='line label'>Preview</div>
 													<div className='line'>
 														{this.renderImage()}
 													</div>
-												</div>
+												</div> : ''}
 											</div>
 										</div>
 									</Collapse> : <></> }

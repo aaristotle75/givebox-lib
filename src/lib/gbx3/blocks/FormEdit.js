@@ -63,7 +63,7 @@ class FormEdit extends Component {
 		return (
 			<>
 				<Collapse
-					label={`Payment Options`}
+					label={`Banking Fee Options`}
 					iconPrimary='edit'
 				>
 					<div className='formSectionContainer'>
@@ -71,7 +71,7 @@ class FormEdit extends Component {
 							<Choice
 								type='checkbox'
 								name='passFees'
-								label={'Customer Pays the Credit Card Fee by Default'}
+								label={'Customer Pays the Credit Card Fee'}
 								onChange={(name, value) => {
 									this.updateForm('passFees', passFees ? false : true);
 								}}
@@ -81,7 +81,7 @@ class FormEdit extends Component {
 							<Choice
 								type='checkbox'
 								name='feeOption'
-								label={'Customer has the Option to Pay the Credit Card Fee'}
+								label={'Customer Has Option to Pay Credit Card Fee'}
 								onChange={(name, value) => {
 									this.updateForm('feeOption', feeOption ? false : true);
 								}}
@@ -91,7 +91,7 @@ class FormEdit extends Component {
 							<Choice
 								type='checkbox'
 								name='echeck'
-								label={'Allow customers to Pay by eCheck'}
+								label={'Allow Customers to Pay by eCheck'}
 								onChange={(name, value) => {
 									this.updateForm('echeck', echeck ? false : true);
 								}}
@@ -102,7 +102,26 @@ class FormEdit extends Component {
 					</div>
 				</Collapse>
 				<Collapse
-					label={`Additional Customer Fields`}
+					label={`Customer Payment Options`}
+					iconPrimary='edit'
+				>
+					<div className='formSectionContainer'>
+						<div className='formSection'>
+							<Choice
+								type='checkbox'
+								name='echeck'
+								label={'Enable Electronic Check Payments'}
+								onChange={(name, value) => {
+									this.updateForm('echeck', echeck ? false : true);
+								}}
+								checked={echeck}
+								value={echeck}
+							/>
+						</div>
+					</div>
+				</Collapse>
+				<Collapse
+					label={`Customer Info Options`}
 					iconPrimary='edit'
 				>
 					<div className='formSectionContainer'>
@@ -129,7 +148,7 @@ class FormEdit extends Component {
 							/>
 							<Dropdown
 								name='workInfo'
-								label={'Collect Customer Occupation and Employer'}
+								label={'Collect Customer Occupation and Employer Name'}
 								fixedLabel={true}
 								defaultValue={+workInfo}
 								onChange={(name, value) => {
@@ -139,7 +158,7 @@ class FormEdit extends Component {
 							/>
 							<Dropdown
 								name='noteInfo'
-								label={'Collect a Custom Field'}
+								label={'Collect Custom Info'}
 								fixedLabel={true}
 								defaultValue={+noteInfo}
 								onChange={(name, value) => {
@@ -151,7 +170,7 @@ class FormEdit extends Component {
 								<TextField
 									label='Custom Field Placeholder'
 									fixedLabel={true}
-									placeholder='Enter a Custom Placeholder'
+									placeholder='Ex. On Behalf of Jane Doe'
 									value={notePlaceholder}
 									onChange={(e) => {
 										const value = e.currentTarget.value;
@@ -163,46 +182,7 @@ class FormEdit extends Component {
 					</div>
 				</Collapse>
 				<Collapse
-					label={`Cart Options`}
-					iconPrimary='edit'
-				>
-					<div className='formSectionContainer'>
-						<div className='formSection'>
-							<TextField
-								label='Cart Title'
-								fixedLabel={true}
-								placeholder='Enter the title for "Your Cart"'
-								value={cartTitle}
-								onChange={(e) => {
-									const value = e.currentTarget.value;
-									this.updateForm('cartTitle', value);
-								}}
-							/>
-							<Choice
-								type='checkbox'
-								name='allowSelection'
-								label={'Give Users an Option to Shop other Items'}
-								onChange={(name, value) => {
-									this.updateForm('allowSelection', allowSelection ? false : true);
-								}}
-								checked={allowSelection}
-								value={allowSelection}
-							/>
-							<TextField
-								label='Shop More Items Title'
-								fixedLabel={true}
-								placeholder='Enter the title for "Shop More Items"'
-								value={shopTitle}
-								onChange={(e) => {
-									const value = e.currentTarget.value;
-									this.updateForm('shopTitle', value);
-								}}
-							/>
-						</div>
-					</div>
-				</Collapse>
-				<Collapse
-					label={`Other Options`}
+					label={`Advanced Options`}
 					iconPrimary='edit'
 				>
 					<div className='formSectionContainer'>
@@ -210,7 +190,7 @@ class FormEdit extends Component {
 							<Choice
 								type='checkbox'
 								name='allowShare'
-								label={'Allow this form to be shared'}
+								label={'Allow Customers to Share Form'}
 								onChange={(name, value) => {
 									this.updateForm('allowShare', allowShare ? false : true);
 								}}
@@ -220,7 +200,7 @@ class FormEdit extends Component {
 							<Choice
 								type='checkbox'
 								name='hasCustomGoal'
-								label={'Do You Want to Set a Goal?'}
+								label={'Set Fundraising Goal'}
 								onChange={(name, value) => {
 									this.updateForm('hasCustomGoal', hasCustomGoal ? false : true);
 								}}
@@ -252,6 +232,50 @@ class FormEdit extends Component {
 								checked={sendEmail.enabled}
 								value={sendEmail.enabled}
 							/>
+							<Choice
+								type='checkbox'
+								name='allowSelection'
+								label={'Enable Cart'}
+								onChange={(name, value) => {
+									this.updateForm('allowSelection', allowSelection ? false : true);
+								}}
+								checked={allowSelection}
+								value={allowSelection}
+							/>
+							<AnimateHeight height={allowSelection ? 'auto' : 0}>
+								<TextField
+									label='Cart Title'
+									fixedLabel={true}
+									placeholder='Enter the title for "Your Cart"'
+									value={cartTitle}
+									onChange={(e) => {
+										const value = e.currentTarget.value;
+										this.updateForm('cartTitle', value);
+									}}
+								/>
+								<TextField
+									label='Browse More Items Title'
+									fixedLabel={true}
+									placeholder='Browse More Items Title"'
+									value={shopTitle}
+									onChange={(e) => {
+										const value = e.currentTarget.value;
+										this.updateForm('shopTitle', value);
+									}}
+								/>
+							</AnimateHeight>
+							{/*
+							<Choice
+								type='checkbox'
+								name='sendEmail'
+								label={'Give Users an Option to Send an Email Message'}
+								onChange={(name, value) => {
+									sendEmail.enabled = sendEmail.enabled ? false : true;
+									this.updateForm('sendEmail', sendEmail);
+								}}
+								checked={sendEmail.enabled}
+								value={sendEmail.enabled}
+							/>
 							<AnimateHeight height={sendEmail.enabled ? 'auto' : 0}>
 								<TextField
 									label='Send Email Link Text'
@@ -265,6 +289,7 @@ class FormEdit extends Component {
 									}}
 								/>
 							</AnimateHeight>
+							*/}
 						</div>
 					</div>
 				</Collapse>

@@ -319,7 +319,7 @@
 	/*------ Layout ------*/
 
 	$topHeaderHeight: 50px;
-	$topPanelHeight: 50px;
+	$topPanelHeight: 60px;
 	$topOffset: $topHeaderHeight + $topPanelHeight;
 	$panelWidth: 220px;
 
@@ -536,15 +536,20 @@
 		.adminPanelTabs {
 			button.link {
 				color: $white;
-				font-size: 14px;
-				font-weight: 400;
 				margin: 0;
 				height: $topPanelHeight;
 				width: 150px;
 				border: 0;
 				@media (max-width: $breakpoint) {
 					width: 90px;
-					font-size: 12px;
+				}
+				.menuText {
+					font-size: 14px;
+					font-weight: 300;
+					margin-top: 5px;
+					@media (max-width: $breakpoint) {
+						font-size: 10px;
+					}
 				}
 			}
 
@@ -573,7 +578,7 @@
 			margin: 0 20px;
 			color: $white;
 			font-size: 14px;
-			font-weight: 400;
+			font-weight: 300;
 		}
 		button.link.side:hover {
 			color: $light-gray;
@@ -586,15 +591,10 @@
 				font-size: 20px;
 				margin-right: 10px;
 			}
-			.leftPanelClose {
-				.icon {
-					color: $light-gray;
-					font-size: 25px;
-					margin-left: 20px;
-					@media (max-width: $breakpoint) {
-						margin-left: 0px;
-					}
-				}
+			.icon.leftPanelClose {
+				color: $white;
+				font-size: 20px;
+				margin-left: 20px;
 			}
 		}
 
@@ -609,9 +609,12 @@
 					}
 					.iconText {
 						display: block;
-						margin-top: 0px;
-						font-size: 10px;
+						margin-top: 5px;
+						font-size: 14px;
 						font-weight: 300;
+						@media (max-width: $breakpoint) {
+							font-size: 10px;
+						}
 					}
 				}
 			}
@@ -1203,7 +1206,7 @@
 		width: 100%;
 		min-height: 20px;
 		color: $white;
-		background: transparentize($mainColorLight, .7);
+		background: transparentize($green, .4);
 		z-index: 2;
 	}
 
@@ -1291,7 +1294,7 @@
 		}
 
 		button.blockEditButton {
-			background: transparentize($mainColorLight, 0);
+			background: transparentize($mainColorDark, 0);
 		}
 	}
 

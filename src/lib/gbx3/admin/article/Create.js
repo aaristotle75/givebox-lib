@@ -183,7 +183,7 @@ function mapStateToProps(state, props) {
 	const orgName = util.getValue(info, 'orgName');
 	const globals = util.getValue(gbx3, 'globals', {});
 	const admin = util.getValue(gbx3, 'admin', {});
-	const isVolunteer = util.getValue(admin, 'volunteer');
+	const isVolunteer = util.getValue(admin, 'isVolunteer');
 	const volunteerID = util.getValue(admin, 'volunteerID');
 	const openAdmin = util.getValue(admin, 'open');
 	const hasAccessToEdit = util.getValue(admin, 'hasAccessToEdit');

@@ -455,7 +455,8 @@ class PaymentFormClass extends Component {
 			breakpoint,
 			openCart,
 			numCartItems,
-			cartCustomer
+			cartCustomer,
+			showCart
 		} = this.props;
 
 		const mobile = breakpoint === 'mobile' ? true : false;
@@ -464,7 +465,7 @@ class PaymentFormClass extends Component {
 			<div className='paymentFormHeader'>
 				<span className='paymentFormHeaderTitle'>Payment Info</span>
 				<div className='paymentFormHeaderText'>
-					<AnimateHeight height={numCartItems < 1 ? 0 : 'auto'}>
+					<AnimateHeight height={numCartItems < 1 || !showCart ? 0 : 'auto'}>
 						<GBLink
 							allowCustom={true}
 							customColor={primaryColor}

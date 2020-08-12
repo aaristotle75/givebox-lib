@@ -118,7 +118,6 @@ class ArticleMenuLayout extends React.Component {
 
 		return (
 			<div className='layoutMenu'>
-				{this.renderActiveBlocks()}
 				{this.renderAvailableBlocks()}
 			</div>
 		)

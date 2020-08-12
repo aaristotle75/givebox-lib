@@ -61,9 +61,11 @@ const GBXEntry = (function() {
 
 	function closeWidget() {
 		var iframe = document.getElementById(iframeId);
-		iframe.src = '';
-		iframe.style.display = 'none';
-		iframe.style.visibility = 'hidden';
+		if (iframe) {
+			iframe.src = '';
+			iframe.style.display = 'none';
+			iframe.style.visibility = 'hidden';
+		}
 		var overlay = document.getElementById('widgetOverlay');
 		if (overlay) {
 			overlay.parentNode.removeChild(overlay);

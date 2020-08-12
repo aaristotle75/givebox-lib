@@ -171,6 +171,7 @@ class Form extends Component {
 		const addressInfo = this.getInfo('addressInfo');
 		const workInfo = this.getInfo('workInfo');
 		const noteInfo = this.getInfo('noteInfo');
+		const showCart = util.getValue(form, 'allowSelection', true);
 
 		return (
 			<div className='formBlock'>
@@ -220,13 +221,14 @@ class Form extends Component {
 						</div>
 					}
 				/>
+				{showCart ?
 				<Cart
 					primaryColor={primaryColor}
-					showShop={util.getValue(form, 'allowSelection', true)}
+					showCart={showCart}
 					reloadGBX3={reloadGBX3}
 					cartTitle={util.getValue(form, 'cartTitle', null)}
 					shopTitle={util.getValue(form, 'shopTitle', null)}
-				/>
+				/> : ''}
 				<PaymentForm
 					primaryColor={primaryColor}
 					echeck={util.getValue(form, 'echeck', true)}
@@ -235,6 +237,7 @@ class Form extends Component {
 					work={{ enabled: workInfo.enabled, required: workInfo.required }}
 					custom={{ enabled: noteInfo.enabled, required: noteInfo.required, placeholder: util.getValue(form, 'notePlaceholder', 'Enter a Note') }}
 					sendEmail={util.getValue(form, 'sendEmail', true)}
+					showCart={showCart}
 					editable={this.props.editable}
 					breakpoint={breakpoint}
 				/>
