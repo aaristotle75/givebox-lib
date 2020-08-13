@@ -3,6 +3,7 @@ import {
 	util,
 	GBLink,
 	TextField,
+	Choice,
 	_v,
 	types
 } from '../../../';
@@ -169,9 +170,13 @@ export default class AmountsEdit extends Component {
 		return (
 			<div className={`enableField ${isDefault ? 'tooltip' : ''}`}>
 				{isDefault ? <span className={`tooltipTop`}><i />To disable amount please change the default to a different amount.</span> : <></>}
-				<GBLink
+				<Choice
 					className={`${amount.enabled ? error ? 'error' : '' : 'link gray'}`}
-					onClick={() => {
+					type='checkbox'
+					toggle={true}
+					name='enabled'
+					label={''}
+					onChange={() => {
 						let enabled = amount.enabled ? false : true;
 						if (config.hasDefaultField && isDefault && !enabled) {
 							enabled = true;
@@ -179,9 +184,9 @@ export default class AmountsEdit extends Component {
 						this.props.validateAmountsBeforeSave(ID, this.validateEnabledAmount(ID, enabled));
 						this.updateAmounts(ID, { enabled });
 					}}
-				>
-					{amount.enabled ? <span className='icon icon-check-square'></span> : <span className='icon icon-square'></span>}
-				</GBLink>
+					checked={amount.enabled}
+					value={amount.enabled}
+				/>
 			</div>
 		)
 	}

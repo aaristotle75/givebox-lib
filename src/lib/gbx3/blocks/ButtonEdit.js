@@ -92,6 +92,7 @@ class ButtonEdit extends Component {
 					}}
 					checked={enabled}
 					value={enabled}
+					toggle={true}
 				/> : <></>}
 				<AnimateHeight
 					duration={500}

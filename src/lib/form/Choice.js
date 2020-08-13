@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { cloneObj } from '../common/utility';
 import GBLink from '../common/GBLink';
+import Toggle from 'react-toggle';
 import has from 'has';
 
 class Choice extends Component {
@@ -56,7 +57,8 @@ class Choice extends Component {
 			value,
 			checked,
 			useIcon,
-			color
+			color,
+			toggle
 		} = this.props;
 
 		let id = type === 'radio' ? `${value}-${type}` : `${name}-${type}`;
@@ -66,10 +68,17 @@ class Choice extends Component {
 
 		return (
 			<div style={style} className={`choice-group ${className || ''} ${type}-group  ${error ? 'error tooltip' : ''}`}>
-				{useIcon && type !== 'radio' ?
-					<GBLink style={{ color: !error ? color : '' }} onClick={() => this.onChangeLink(name, value)}>
-						{isChecked ? <span className='icon icon-check-square'></span> : <span className='icon icon-square'></span>}
-					</GBLink>
+				{(useIcon || toggle) && type !== 'radio' ?
+					toggle ?
+						<Toggle
+							icons={false}
+							checked={isChecked}
+							onChange={() => this.onChange(name, value)}
+						/>
+					:
+						<GBLink style={{ color: !error ? color : '' }} onClick={() => this.onChangeLink(name, value)}>
+							{isChecked ? <span className='icon icon-check-square'></span> : <span className='icon icon-square'></span>}
+						</GBLink>
 				:
 				<input
 					type={type}
@@ -95,7 +104,8 @@ class Choice extends Component {
 
 Choice.defaultProps = {
 	type: 'checkbox',
-	useIcon: true
+	useIcon: true,
+	toggle: false
 }
 
 export default Choice;

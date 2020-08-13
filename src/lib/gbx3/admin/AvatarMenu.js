@@ -42,13 +42,12 @@ class AvatarMenu extends React.Component {
 		this.props.updateAdmin(obj);
 	}
 
-
-
 	render() {
 
 		const {
 			access,
-			hasAccessToEdit
+			hasAccessToEdit,
+			step
 		} = this.props;
 
 		const isWallet = util.getValue(access, 'role') === 'user' ? true : false;
@@ -60,7 +59,7 @@ class AvatarMenu extends React.Component {
 		menuList.push(
 			<li key='myAccount' onClick={() => this.directLink(`${baseURL}/settings`)}><span className='icon icon-user'></span> <span className='text'>My Account</span></li>
 		)
-		if (hasAccessToEdit) {
+		if (hasAccessToEdit && step !== 'create') {
 			menuList.push(
 				<li key='edit' onClick={() => this.adminLink({ publicView: false })}><span className='icon icon-edit'></span> <span className='text'>Edit Form</span></li>
 			);
@@ -124,10 +123,12 @@ function mapStateToProps(state, props) {
 
 	const access = util.getValue(state.resource, 'access');
 	const hasAccessToEdit = util.getValue(state, 'gbx3.admin.hasAccessToEdit');
+	const step = util.getValue(state, 'gbx3.admin.step');
 
 	return {
 		access,
-		hasAccessToEdit
+		hasAccessToEdit,
+		step
 	}
 }
 

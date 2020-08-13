@@ -1,27 +1,33 @@
 @import 'variables.scss';
 
+.tabs.hideTabLabel {
+	.panel .panelItem button {
+		border-bottom: 1px solid transparent !important;
+	}
+}
+
 .tabs {
 
-  vertical-align: top;
+	vertical-align: top;
 
-  .panel {
-    margin: 10px 0;
+	.panel {
+		margin: 10px 0;
 		text-align: center;
 
 		.panelItem {
-      margin: 0 10px 0 0;
-      display: inline-block;
-    }
+			margin: 0 10px 0 0;
+			display: inline-block;
+		}
 
-  }
+	}
 
-  .tab {
-  }
+	.tab {
+	}
 
 }
 
 .panelTab {
-  white-space: nowrap;
+	white-space: nowrap;
 }
 
 /*-------- Demo purposes ------*/
@@ -31,33 +37,33 @@
 		text-align: center;
 	}
 
-  .panelTab {
-    color: $light-med-gray;
-    padding: 10px;
-    background: transparentize($primary, .8);
+	.panelTab {
+		color: $light-med-gray;
+		padding: 10px;
+		background: transparentize($primary, .8);
 		text-align: center;
-  }
+	}
 
-  .panelTab:hover {
-    background: $primary;
-  }
+	.panelTab:hover {
+		background: $primary;
+	}
 
-  .panelTab.selected {
-    color: $dark;
-  }
+	.panelTab.selected {
+		color: $dark;
+	}
 
-  .panelTab.disabled {
-    opacity: .4;
-    cursor: not-allowed;
-  }
+	.panelTab.disabled {
+		opacity: .4;
+		cursor: not-allowed;
+	}
 
-  .panelTab.disabled:hover {
-    color: $light-med-gray;
-  }
+	.panelTab.disabled:hover {
+		color: $light-med-gray;
+	}
 
-  .panel {
-    border-bottom: 1px solid transparentize($primary, .8);
-  }
+	.panel {
+		border-bottom: 1px solid transparentize($primary, .8);
+	}
 
 	.stepLabel {
 

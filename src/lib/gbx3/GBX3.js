@@ -311,6 +311,7 @@ class GBX3 extends React.Component {
 			<div className='gbx3'>
 				{this.renderStage()}
 				<ModalRoute
+					className='gbx3'
 					id='avatarMenu'
 					effect='3DFlipVert'
 					style={{ width: '40%' }}

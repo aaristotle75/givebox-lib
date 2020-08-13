@@ -308,7 +308,7 @@ class Modal extends Component {
 		;
 
 		return (
-			<div className={`modal ${draggable ? 'draggable' : ''}`}>
+			<div className={`modal ${className} ${draggable ? 'draggable' : ''}`}>
 				<div
 					ref={this.modalRef}
 					onClick={() => this.closeModal(closeCallback, 'ok', this.props.disallowBgClose ? false : true)}

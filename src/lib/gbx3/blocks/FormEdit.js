@@ -77,6 +77,7 @@ class FormEdit extends Component {
 								}}
 								checked={passFees}
 								value={passFees}
+								toggle={true}
 							/>
 							<Choice
 								type='checkbox'
@@ -87,16 +88,7 @@ class FormEdit extends Component {
 								}}
 								checked={feeOption}
 								value={feeOption}
-							/>
-							<Choice
-								type='checkbox'
-								name='echeck'
-								label={'Allow Customers to Pay by eCheck'}
-								onChange={(name, value) => {
-									this.updateForm('echeck', echeck ? false : true);
-								}}
-								checked={echeck}
-								value={echeck}
+								toggle={true}
 							/>
 						</div>
 					</div>
@@ -116,6 +108,7 @@ class FormEdit extends Component {
 								}}
 								checked={echeck}
 								value={echeck}
+								toggle={true}
 							/>
 						</div>
 					</div>
@@ -196,6 +189,7 @@ class FormEdit extends Component {
 								}}
 								checked={allowShare}
 								value={allowShare}
+								toggle={true}
 							/>
 							<Choice
 								type='checkbox'
@@ -206,6 +200,7 @@ class FormEdit extends Component {
 								}}
 								checked={hasCustomGoal}
 								value={hasCustomGoal}
+								toggle={true}
 							/>
 							<AnimateHeight height={hasCustomGoal ? 'auto' : 0}>
 								<TextField
@@ -231,6 +226,7 @@ class FormEdit extends Component {
 								}}
 								checked={sendEmail.enabled}
 								value={sendEmail.enabled}
+								toggle={true}
 							/>
 							<Choice
 								type='checkbox'
@@ -241,6 +237,7 @@ class FormEdit extends Component {
 								}}
 								checked={allowSelection}
 								value={allowSelection}
+								toggle={true}
 							/>
 							<AnimateHeight height={allowSelection ? 'auto' : 0}>
 								<TextField

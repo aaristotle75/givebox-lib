@@ -324,7 +324,7 @@ class Modal extends Component {
       className: "modalBottom"
     }));
     return /*#__PURE__*/React.createElement("div", {
-      className: `modal ${draggable ? 'draggable' : ''}`
+      className: `modal ${className} ${draggable ? 'draggable' : ''}`
     }, /*#__PURE__*/React.createElement("div", {
       ref: this.modalRef,
       onClick: () => this.closeModal(closeCallback, 'ok', this.props.disallowBgClose ? false : true),

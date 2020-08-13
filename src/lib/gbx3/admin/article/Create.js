@@ -29,6 +29,7 @@ class Create extends React.Component {
 		this.createFundraiser = this.createFundraiser.bind(this);
 		this.createFundraiserCallback = this.createFundraiserCallback.bind(this);
 		this.handleVolunteerAlreadyCreatedFundraiserKind = this.handleVolunteerAlreadyCreatedFundraiserKind.bind(this);
+		this.renderKindDisplay = this.renderKindDisplay.bind(this);
 		this.state = {
 		};
 	}
@@ -51,6 +52,34 @@ class Create extends React.Component {
 			});
 		});
 		return options;
+	}
+
+	renderKindDisplay() {
+		const {
+			isVolunteer
+		} = this.props;
+
+		const items = [];
+		types.kinds().forEach((value) => {
+			if (isVolunteer && (value === 'invoice' || value === 'membership')) return;
+			items.push(
+				<div key={value} className='createKindItem'>
+					<Image url={`https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/raise-${value}-lg.png`} maxSize={130} alt={types.kind(value).namePlural} />
+					<span className='createKindItemText'>
+						{types.kind(value).name}
+					</span>
+				</div>
+			);
+		});
+
+		return (
+			<div className='createKindSection'>
+				<span className='intro'>What kind of payment form would you like to create?</span>
+				<div className='createKindList'>
+					{items}
+				</div>
+			</div>
+		);
 	}
 
 	createFundraiser() {
@@ -127,46 +156,36 @@ class Create extends React.Component {
 		}
 
 		return (
-			<>
+			<div className='createStep'>
 				<div className={`leftPanel ${open ? 'open' : 'close'}`}>
 					<CreateMenu />
 				</div>
 				<div className={`stageContainer ${open ? 'open' : 'close'}`}>
 					<div className='stageAligner'>
 						<div className='gbx3Centered'>
-							<div className='intro'>
-								<h2 style={{ marginBottom: 10 }}>Create, Design & Share!</h2>
-								{isVolunteer ?
-									<span>
-										Start raising money for<br />
-										<strong>{orgName}</strong><br />
-										in three easy steps.
-									</span>
-								:
-									<span>Start raising money in three easy steps.</span>
-								}
-							</div>
-							<Image url={`https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/raise-${kind}-lg.png`} maxSize={200} alt={types.kind(kind).namePlural} />
-							<div style={{ marginTop: 20 }} className='step'>
-								<h2><span style={{ fontWeight: 300 }}>Step 1:</span> Create</h2>
-								What kind of fundraiser do you want to start?
-								<Dropdown
-									className='dropdown-button'
-									style={{width: '210px' }}
-									name='kind'
-									value={kind}
-									onChange={this.onChangeKind}
-									options={this.kindOptions()}
-								/>
-								<div className='button-group'>
-									<GBLink className='button' onClick={this.createFundraiser}>Create {types.kind(kind).name}</GBLink>
-									<GBLink className='link smallText' onClick={() => console.log('Do this later')}>Do This Later</GBLink>
+							<div className='stepSection'>
+								<div className='intro'>
+									{isVolunteer ?
+										<span>
+											Raise money for<br />
+											<strong>{orgName}</strong><br />
+											in three easy steps.
+										</span>
+									:
+										<span>Collect money in three simple steps.</span>
+									}
+								</div>
+								<div className='steps'>
+									<div className='step'><span className='icon icon-check-circle'></span> Design Form</div>
+									<div className='step'><span className='icon icon-check-circle'></span> Customize Receipt</div>
+									<div className='step'><span className='icon icon-check-circle'></span> Share Form</div>
 								</div>
 							</div>
+							{this.renderKindDisplay()}
 						</div>
 					</div>
 				</div>
-			</>
+			</div>
 		)
 	}
 }

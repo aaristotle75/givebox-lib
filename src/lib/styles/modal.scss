@@ -10,7 +10,7 @@
 		right: 0;
 		bottom: 0;
 		perspective: 1300;
-		background: rgba(0, 0, 0, 0.4);
+		background: transparentize($very-light-gray, .2);
 		z-index: 999990;
 		overflow-x: hidden !important;
 		overflow-y: auto;
@@ -26,7 +26,8 @@
 		margin: 5% auto;
 		background: #fff;
 		border-radius: 5px;
-		box-shadow: 0 5px 10px rgba(0, 0, 0, .3);
+		border: 1px solid $light-gray;
+		box-shadow: 0 3px 5px $light-med-gray;
 		z-index: 999991;
 		overflow-x: hidden !important;
 		@media (max-width: $breakpoint) {

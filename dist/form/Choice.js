@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { cloneObj } from '../common/utility';
 import GBLink from '../common/GBLink';
+import Toggle from 'react-toggle';
 import has from 'has';
 
 class Choice extends Component {
@@ -54,7 +55,8 @@ class Choice extends Component {
       value,
       checked,
       useIcon,
-      color
+      color,
+      toggle
     } = this.props;
     let id = type === 'radio' ? `${value}-${type}` : `${name}-${type}`;
     let isChecked = checked;
@@ -62,7 +64,11 @@ class Choice extends Component {
     return /*#__PURE__*/React.createElement("div", {
       style: style,
       className: `choice-group ${className || ''} ${type}-group  ${error ? 'error tooltip' : ''}`
-    }, useIcon && type !== 'radio' ? /*#__PURE__*/React.createElement(GBLink, {
+    }, (useIcon || toggle) && type !== 'radio' ? toggle ? /*#__PURE__*/React.createElement(Toggle, {
+      icons: false,
+      checked: isChecked,
+      onChange: () => this.onChange(name, value)
+    }) : /*#__PURE__*/React.createElement(GBLink, {
       style: {
         color: !error ? color : ''
       },
@@ -95,6 +101,7 @@ class Choice extends Component {
 
 Choice.defaultProps = {
   type: 'checkbox',
-  useIcon: true
+  useIcon: true,
+  toggle: false
 };
 export default Choice;

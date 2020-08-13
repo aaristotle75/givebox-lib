@@ -412,6 +412,7 @@ class Media extends Component {
 														const video = this.state.video;
 														this.updateVideo('auto', video.auto ? false : true);
 													}}
+													toggle={true}
 												/>
 												{util.getValue(video, 'validatedURL') ?
 												<div className='fieldContext'>

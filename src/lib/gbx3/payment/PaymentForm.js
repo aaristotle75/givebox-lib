@@ -315,19 +315,24 @@ class PaymentFormClass extends Component {
 			breakpoint
 		} = this.props;
 
+		const creditCard = this.props.creditCardGroup({
+			group: 'paymethod',
+			required: false,
+			placeholder: 'xxxx xxxx xxxx xxxx',
+			debug: false,
+			cvvModalRootClass: 'gbxModal',
+			onChange: this.onCreditCardChange
+		});
+
+		let showCreditCardTabLabel = false;
+		if (echeck || this.state.applepay) showCreditCardTabLabel = true;
+
 		const tabs = [];
 		const mobile = breakpoint === 'mobile' ? true : false;
 
 		tabs.push(
-			<Tab key={'creditcard'} id={'creditcard'} label={<span className='tabLabel'>{mobile ? 'Credit Card' : 'Pay by Credit Card'}</span>}>
-				{this.props.creditCardGroup({
-					group: 'paymethod',
-					required: false,
-					placeholder: 'xxxx xxxx xxxx xxxx',
-					debug: false,
-					cvvModalRootClass: 'gbxModal',
-					onChange: this.onCreditCardChange
-				})}
+			<Tab key={'creditcard'} id={'creditcard'} label={showCreditCardTabLabel ? <span className='tabLabel'>{mobile ? 'Credit Card' : 'Pay by Credit Card'}</span> : ''}>
+				{creditCard}
 			</Tab>
 		);
 
@@ -350,7 +355,7 @@ class PaymentFormClass extends Component {
 		return (
 			<Tabs
 				default={this.state.paymethod}
-				className='paymentFormTabs'
+				className={`paymentFormTabs ${showCreditCardTabLabel ? '' : 'hideTabLabel'}`}
 				allowCustom={true}
 				customColor={primaryColor}
 				borderSize={'1px'}

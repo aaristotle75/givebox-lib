@@ -1,6 +1,6 @@
 const GBXEntry = (function() {
 
-	var blackOverlayStyle = 'position:fixed;background:#000;opacity:.5;top:0px;bottom:0px;left:0px;right:0px;z-index:10000008;';
+	var blackOverlayStyle = 'position:fixed;background:#e8ebed;opacity:.9;top:0px;bottom:0px;left:0px;right:0px;z-index:10000008;';
 
 	var giveboxStyle = 'position:absolute;top:0;right:0;bottom:0;left:0;border:none;white-space:nowrap;background-color:rgba(0,0,0,0);z-index:2147483647;text-align:center;width:100%;height:100%;overflow-y:scroll;overflow-x:hidden;display:none;';
 

@@ -76,7 +76,7 @@ export const media = {
 			borderRadius: 5
 		},
 		video: {
-			auto: true
+			auto: false
 		}
 	},
 	grid: {

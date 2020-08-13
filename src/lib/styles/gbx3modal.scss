@@ -2,6 +2,12 @@
 
 $breakpoint: 768px;
 
+.gbx3.modal {
+	.modalOverlay {
+		background: transparentize($very-light-gray, .2);
+	}
+}
+
 .modalContent.givebox-paymentform {
 	button.modalToTop {
 		bottom: 100px;

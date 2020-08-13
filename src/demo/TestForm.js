@@ -6,7 +6,8 @@ import {
 	Collapse,
 	UploadPrivate,
 	util,
-	Image
+	Image,
+	Choice
 } from '../lib';
 import Moment from 'moment';
 import Capture from '../lib/form/Capture';
@@ -117,12 +118,27 @@ export default class TestForm extends Component {
 		const fields = util.getValue(formState, 'fields', {});
 		const content = util.getValue(fields, 'content', {});
 
+		const {
+			passFees
+		} = this.state;
+
 		return (
 			<div>
 				<h2>Form Elements</h2>
 				<div className='formWrapper'>
-					{this.props.calendarField('testdate', { label: 'Test Date', enableTime: true, enableTimeOption: true, required: true, validate: 'date', validateOpts: { }, utc: false })}
+					<Choice
+						type='checkbox'
+						toggle={true}
+						name='passFees'
+						label={'Customer Pays the Credit Card Fee'}
+						onChange={(name, value) => {
+							this.setState({ passFees: passFees ? false : true });
+						}}
+						checked={passFees}
+						value={passFees}
+					/>
 					{/*
+						{this.props.calendarField('testdate', { label: 'Test Date', enableTime: true, enableTimeOption: true, required: true, validate: 'date', validateOpts: { }, utc: false })}
 						<Image url={'https://givebox-staging.s3.amazonaws.com/gbx%2F693a664e591131ad047eea8a3bc3e128%2F2020-04-09%2Fimage-png%2Foriginal'} alt={'test image aspect'}  maxSize={'500px'}  />
 
 						{this.props.dropdown('bankAccounts', {
