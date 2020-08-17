@@ -2,12 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
 	util,
-	GBLink
+	GBLink,
+	Icon
 } from '../../';
 import { toggleModal } from '../../api/actions';
 import {
 	updateAdmin
 } from '../redux/gbx3actions';
+import { AiOutlineNotification } from 'react-icons/ai';
 
 const CLOUD_URL = process.env.REACT_APP_CLOUD_URL;
 const WALLET_URL = process.env.REACT_APP_WALLET_URL;
@@ -52,7 +54,7 @@ class AvatarMenu extends React.Component {
 
 		const isWallet = util.getValue(access, 'role') === 'user' ? true : false;
 		const baseURL = isWallet ? WALLET_URL : CLOUD_URL;
-		const myAccountText = isWallet ? 'Go to Your Wallet' : 'Got to Nonprofit Admin';
+		const myAccountText = isWallet ? 'Go to Your Wallet' : 'Go to Nonprofit Admin';
 
 		const menuList = [];
 
@@ -65,7 +67,7 @@ class AvatarMenu extends React.Component {
 			);
 
 			menuList.push(
-				<li key='share' onClick={() => this.adminLink({ publicView: false })}><span className='icon icon-share'></span> <span className='text'>Share Form</span></li>
+				<li key='share' onClick={() => this.adminLink({ publicView: false })}><Icon><AiOutlineNotification /></Icon> <span className='text'>Share Form</span></li>
 			);
 		}
 

@@ -29,6 +29,7 @@ import {
 } from '../api/actions';
 import GBXEntry from '../common/GBXEntry';
 import AvatarMenu from './admin/AvatarMenu';
+import Share from './admin/article/Share';
 
 const RECAPTCHA_KEY = process.env.REACT_APP_RECAPTCHA_KEY;
 const ENV = process.env.REACT_APP_ENV;
@@ -317,6 +318,16 @@ class GBX3 extends React.Component {
 					style={{ width: '40%' }}
 					disallowBgClose={false}
 					component={(props) => <AvatarMenu />}
+				/>
+				<ModalRoute
+					className='gbx3'
+					id='share'
+					effect='3DFlipVert'
+					style={{ width: '80%' }}
+					disallowBgClose={false}
+					draggable={false}
+					draggableTitle={``}
+					component={(props) => <Share />}
 				/>
 			</div>
 		)

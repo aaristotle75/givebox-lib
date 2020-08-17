@@ -21,18 +21,14 @@ class Share extends React.Component {
 		} = this.props;
 
 		return (
-			<div className='gbx3Centered'>
-				<div className='intro'>
-					<h2 style={{ marginBottom: 10 }}>Share Your {types.kind(kind).name} On Social Media</h2>
+			<div className='formSectionContainer'>
+				<div className='formSection'>
 					<Social
 						shareIconSize={45}
 						subText={
 							<>
 								<div className='subText'>
-									The biggest audience is on social media and sharing is one of the best ways<br /> to quickly gain visitors and raise money.
-								</div>
-								<div className='subText'>
-									Click one of the icons below to share now.
+									Select Where You'd Like to Share Your {types.kind(kind).name}.
 								</div>
 							</>
 						}

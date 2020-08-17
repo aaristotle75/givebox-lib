@@ -229,7 +229,7 @@ class Text extends Component {
 												this.props.toggleModal(`${name}-overlay`, false);
 											}}
 										>
-											CLOSE
+											Close
 										</GBLink>
 									</div>
 								</div>

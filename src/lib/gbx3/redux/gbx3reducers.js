@@ -64,6 +64,17 @@ const defaultStyle = {
 			width: 200,
 			align: 'flexCenter'
 		}
+	},
+	embedButton: {
+		autoPop: true,
+		type: 'button',
+		text: 'Button Text',
+		textColor: '#ffffff',
+		bgColor: '#4385f5',
+		fontSize: 16,
+		borderRadius: 10,
+		textAlign: 'center',
+		padding: '10px 20px;'
 	}
 }
 
@@ -98,6 +109,9 @@ export function gbx3(state = {
 		},
 		button: {
 			...defaultStyle.button
+		},
+		embedButton: {
+			...defaultStyle.embedButton
 		}
 	},
 	data: {},

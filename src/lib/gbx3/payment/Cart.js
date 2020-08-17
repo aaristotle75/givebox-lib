@@ -130,7 +130,7 @@ class Cart extends Component {
 									:
 										( numCartItems > 1) || ( value.allowQtyChange && value.availableQty > 0 ) ?
 										<GBLink style={{ marginLeft: 10 }} onClick={() => this.toggleShowQtyDropdown(value.unitID)} customColor={primaryColor} allowCustom={true}>
-											Change
+											Edit Quantity
 										</GBLink> : <></>
 									}
 							</div>

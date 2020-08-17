@@ -29,12 +29,13 @@ class Logo extends React.Component {
 			maxHeight,
 			alt,
 			className,
-			logoURL
+			logoURL,
+			theme
 		} = this.props;
 
 		return (
 			<div className={className} onClick={this.onClick}>
-				<Image minHeight={'0px'} maxWidth={maxWidth} maxHeight={maxHeight} maxSize={maxSize} url={logoURL[breakpoint]} alt={alt} />
+				<Image minHeight={'0px'} maxWidth={maxWidth} maxHeight={maxHeight} maxSize={maxSize} url={logoURL[breakpoint][theme]} alt={alt} />
 			</div>
 		)
 	}
@@ -42,9 +43,16 @@ class Logo extends React.Component {
 
 Logo.defaultProps = {
 	alt: 'Givebox',
+	theme: 'dark',
 	logoURL: {
-		desktop: 'https://s3-us-west-1.amazonaws.com/givebox-marketing/images/2020/06/19054759/givebox_logo2020-grey-text.png',
-		mobile: 'https://givebox.s3-us-west-1.amazonaws.com/public/gb-logo5.png'
+		desktop: {
+			dark: 'https://s3-us-west-1.amazonaws.com/givebox-marketing/images/2020/06/19054759/givebox_logo2020-grey-text.png',
+			light: 'https://givebox-marketing.s3.us-west-1.amazonaws.com/images/2020/01/19210256/givebox_logo2020_white-text.svg'
+		},
+		mobile: {
+			dark: 'https://givebox.s3-us-west-1.amazonaws.com/public/gb-logo5.png',
+			light: 'https://givebox.s3-us-west-1.amazonaws.com/public/gb-logo5.png'
+		}
 	}
 }
 

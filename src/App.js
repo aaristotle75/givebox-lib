@@ -190,8 +190,6 @@ class App extends Component {
 		const routeParams = util.getValue(match, 'params', {});
 		const queryParams = queryString.parse(search);
 
-		console.log('execute routeProps', routeProps);
-
 		return (
 			<div id={`content-root`} className={options.className}>
 				<Component

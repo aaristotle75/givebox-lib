@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import {
 	util,
 	GBLink,
-	Icon
+	Icon,
+	ModalLink
 } from '../../../';
 import Layout from '../../Layout';
 import Share from './Share';
@@ -17,10 +18,10 @@ import {
 	setLoading
 } from '../../redux/gbx3actions';
 import Toggle from 'react-toggle';
-import { FaMagic, FaPalette, FaDraftingCompass } from 'react-icons/fa';
-import { IoMdMegaphone, IoIosAirplane } from 'react-icons/io';
-import { GoMegaphone, GoBeaker } from 'react-icons/go';
+import { FaPalette } from 'react-icons/fa';
+import { GoBeaker } from 'react-icons/go';
 import { FiPenTool } from 'react-icons/fi';
+import { AiOutlineNotification } from 'react-icons/ai';
 
 const GBX3_URL = process.env.REACT_APP_GBX_URL;
 
@@ -65,7 +66,7 @@ class Design extends React.Component {
 			},
 			share: {
 				menuText: !mobile ? 'Share Form' : 'Share',
-				icon: <Icon><GoMegaphone /></Icon>
+				icon: <Icon><AiOutlineNotification /></Icon>
 			}
 		};
 
@@ -104,7 +105,7 @@ class Design extends React.Component {
 				<div key={'middle'} className='button-group middle'>
 					<GBLink className={`ripple link ${previewDevice === 'phone' ? 'selected' : ''}`} onClick={() => this.previewArticle('phone')}><span className='icon icon-smartphone'></span><span className='iconText'>Mobile</span></GBLink>
 					<GBLink className={`ripple link ${previewDevice === 'desktop' ? 'selected' : ''}`} onClick={() => this.previewArticle('desktop')}><span className='icon icon-monitor'></span><span className='iconText'>Desktop</span></GBLink>
-					<GBLink className={`ripple link ${previewDevice === 'receipt' ? 'selected' : ''}`} onClick={() => this.previewReceipt()}><span className='icon icon-mail'></span><span className='iconText'>Receipt</span></GBLink>
+					<ModalLink className={`ripple link ${previewDevice === 'receipt' ? 'selected' : ''}`} onClick={() => this.previewReceipt()}><span className='icon icon-mail'></span><span className='iconText'>Receipt</span></ModalLink>
 				</div>
 			);
 		} else {
@@ -112,7 +113,7 @@ class Design extends React.Component {
 				<div key={'middle'} className='button-group'>
 					<GBLink className={`ripple link ${createType === 'article' ? 'selected' : ''}`} onClick={() => this.switchCreateType('article')}><span className='centered'>{contentObj.article.icon}<span className='menuText'>{contentObj.article.menuText}</span></span></GBLink>
 					<GBLink className={`ripple link ${createType === 'receipt' ? 'selected' : ''}`} onClick={() => this.switchCreateType('receipt')}><span className='centered'>{contentObj.receipt.icon}<span className='menuText'>{contentObj.receipt.menuText}</span></span></GBLink>
-					<GBLink className={`ripple link ${createType === 'share' ? 'selected' : ''}`} onClick={() => this.props.updateAdmin({ step: 'share', createType: 'article' })}><span className='centered'>{contentObj.share.icon}<span className='menuText'>{contentObj.share.menuText}</span></span></GBLink>
+					<ModalLink id='share' className={`ripple link ${createType === 'share' ? 'selected' : ''}`}><span className='centered'>{contentObj.share.icon}<span className='menuText'>{contentObj.share.menuText}</span></span></ModalLink>
 				</div>
 			);
 		}

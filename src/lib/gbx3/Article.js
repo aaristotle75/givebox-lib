@@ -3,15 +3,12 @@ import { connect } from 'react-redux';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import Loadable from 'react-loadable';
 import {
-	util,
-	Image,
-	GBLink
+	util
 } from '../';
 import Block from './blocks/Block';
 import Form from './blocks/Form';
 import Scroll from 'react-scroll';
 import has from 'has';
-import Moment from 'moment';
 import {
 	addBlock,
 	setStyle,
@@ -23,7 +20,7 @@ import {
 	updateInfo,
 	saveGBX3
 } from './redux/gbx3actions';
-import Social from './blocks/Social';
+import Footer from './Footer';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -138,10 +135,12 @@ class Article extends React.Component {
 				if (has(blocks, block)) {
 					if (has(blocks[block], 'grid')) {
 						if (has(blocks[block].grid, breakpoint)) {
-							blocks[block].grid[breakpoint].x = value.x;
-							blocks[block].grid[breakpoint].y = value.y;
-							blocks[block].grid[breakpoint].w = value.w;
-							blocks[block].grid[breakpoint].h = value.h;
+							if (!util.isEmpty(blocks[block].grid[breakpoint])) {
+								if (has(blocks[block].grid[breakpoint], 'x')) blocks[block].grid[breakpoint].x = value.x;
+								if (has(blocks[block].grid[breakpoint], 'y')) blocks[block].grid[breakpoint].y = value.y;
+								if (has(blocks[block].grid[breakpoint], 'w')) blocks[block].grid[breakpoint].w = value.w;
+								if (has(blocks[block].grid[breakpoint], 'h')) blocks[block].grid[breakpoint].h = value.h;
+							}
 						}
 					}
 				}
@@ -295,15 +294,10 @@ class Article extends React.Component {
 			preventCollision,
 			editable,
 			hasAccessToEdit,
-			breakpoint,
-			stage,
-			orgName,
-			primaryColor
+			breakpoint
 		} = this.props;
 
 		const isEditable = hasAccessToEdit && editable ? true : false;
-
-		const publicOnly = stage === 'public' ? true : false;
 
 		return (
 			<>
@@ -355,27 +349,9 @@ class Article extends React.Component {
 					</div>
 				</div>
 				<div className='layout-column'>
-					<div className='gbx3Footer'>
-						<div className='footerContainer flexCenter flexColumn'>
-							{ publicOnly ?
-							<div style={{ marginBottom: 20 }} className='publicActionBar'>
-								<Social />
-								<GBLink
-									onClick={() => this.props.onClickVolunteerFundraiser()}
-									className='link p2pLink'
-									customColor={primaryColor}
-									allowCustom={true}
-								>
-									Support {orgName}<br /> by starting a Peer-2-Peer Fundraiser
-								</GBLink>
-							</div> : ''}
-							<Image url='https://s3-us-west-1.amazonaws.com/givebox/public/gb-logo5.svg' maxSize={'30px'} style={{ minHeight: 30 }} />
-							<div className="copyright">
-								<span>&copy; {Moment().format('YYYY')} Givebox</span>
-								<GBLink allowCustom={true} customColor={this.props.primaryColor} onClick={() => window.open('https://givebox.com')}>www.givebox.com</GBLink>
-							</div>
-						</div>
-					</div>
+					<Footer
+						onClickVolunteerFundraiser={this.props.onClickVolunteerFundraiser}
+					/>
 				</div>
 				{breakpoint === 'mobile' ? <div className='bottomOffset'>&nbsp;</div> : <></>}
 			</>
@@ -389,8 +365,6 @@ function mapStateToProps(state, props) {
 	const gbx3 = util.getValue(state, 'gbx3', {});
 	const admin = util.getValue(gbx3, 'admin', {});
 	const info = util.getValue(gbx3, 'info', {});
-	const stage = util.getValue(info, 'stage');
-	const orgName = util.getValue(info, 'orgName');
 	const blockType = 'article';
 	const layouts = util.getValue(gbx3, `layouts.${blockType}`, {});
 	const blocks = util.getValue(gbx3, `blocks.${blockType}`, {});
@@ -400,11 +374,8 @@ function mapStateToProps(state, props) {
 	const verticalCompact = util.getValue(admin, 'verticalCompact');
 	const outline = util.getValue(admin, 'outline');
 	const breakpoint = util.getValue(info, 'breakpoint');
-	const primaryColor = util.getValue(gbx3, 'globals.gbxStyle.primaryColor');
 
 	return {
-		stage,
-		orgName,
 		hasAccessToEdit,
 		layouts,
 		editable,
@@ -414,7 +385,6 @@ function mapStateToProps(state, props) {
 		breakpoint,
 		blockType,
 		blocks,
-		primaryColor,
 		globals: util.getValue(gbx3, 'globals', {})
 	}
 }

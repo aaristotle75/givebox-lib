@@ -263,7 +263,7 @@ class Form extends Component {
 				}
 			}
 		} else {
-			console.error(`No field prop: ${name}`);
+			console.log(`No field prop: ${name}`);
 		}
 	}
 

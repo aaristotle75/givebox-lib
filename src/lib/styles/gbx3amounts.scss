@@ -360,6 +360,9 @@ $breakpoint: 768px;
 				font-size: 14px;
 				font-weight: 300;
 			}
+			.dropdown button {
+				border-bottom: 1px solid transparent !important;
+			}
 			.dropdown button:hover {
 				border-bottom: 1px solid transparent !important;
 			}

@@ -9,7 +9,10 @@ import {
 } from '../../../';
 import GBX from '../../../common/GBX';
 import {
-	updateInfo
+	updateInfo,
+	updateGlobal,
+	updateGlobals,
+	saveGBX3
 } from '../../redux/gbx3actions';
 
 const REACT_APP_GBX_WIDGET = process.env.REACT_APP_GBX_WIDGET;
@@ -22,13 +25,48 @@ class ShareEmbed extends React.Component {
 		this.btnScript = this.btnScript.bind(this);
 		this.toggleAuto = this.toggleAuto.bind(this);
 		this.loadGBX = this.loadGBX.bind(this);
+		this.copyCallback = this.copyCallback.bind(this);
+		this.colorPickerCallback = this.colorPickerCallback.bind(this);
+		this.updateStyle = this.updateStyle.bind(this);
 		this.state = {
-			autoPop: true
+			colorPickerOpen: [],
+			autoPop: true,
+			copied: false
 		}
 	}
 
 	componentDidMount() {
 		//window.GIVEBOX.init({ env: 'staging'});
+	}
+
+	colorPickerCallback(modalID) {
+		const colorPickerOpen = this.state.colorPickerOpen;
+		if (colorPickerOpen.includes(modalID)) {
+			colorPickerOpen.splice(colorPickerOpen.indexOf(modalID), 1);
+		} else {
+			colorPickerOpen.push(modalID);
+		}
+		this.setState({ colorPickerOpen });
+	}
+
+	async updateStyle(name, value) {
+
+		const embedButton = {
+			...this.props.embedButton,
+			[name]: value
+		};
+		const globalUpdated = await this.props.updateGlobal('embedButton', embedButton);
+		if (globalUpdated) {
+			this.props.saveGBX3('article');
+		}
+	}
+
+	copyCallback() {
+		this.setState({ copied: true });
+		this.timeout = setTimeout(() => {
+			this.setState({ copied: false });
+			this.timeout = null;
+		}, 1000);
 	}
 
 	btnScript() {
@@ -66,46 +104,31 @@ class ShareEmbed extends React.Component {
 		} = this.props;
 
 		const {
-			autoPop
+			autoPop,
+			copied
 		} = this.state;
 
 		return (
-			<div className='gbx3Centered'>
-				<div className='intro shareAdmin'>
-					<h2 style={{ marginBottom: 10 }}>Embed Your {types.kind(kind).name} On Your Website</h2>
-					<div className='step'>
-						<CodeBlock style={{ fontSize: '1em' }} className='alignCenter' type='javascript' regularText={<h2><span style={{ fontWeight: 300 }}>Step 1:</span> Copy the Embed Code</h2>} text={this.btnScript()} name={` Click Here to Copy Embed Code`} nameIcon={false} nameStyle={{}} />
-						<Choice
-							name='swipeApp'
-							onChange={this.toggleAuto}
-							type='checkbox'
-							label='Auto pop on your website'
-							value={autoPop}
-							checked={autoPop}
-						/>
-					</div>
-					<div style={{ marginTop: 20 }} className='step'>
-						<h2 style={{ marginBottom: 0 }}><span style={{ fontWeight: 300 }}>Step 2:</span> Paste into Your Website HTML</h2>
-						<div className='confirmation'>
-							<div className='successfulText'>
-								<span className='group'>
-									<span className='icon icon-arrow-right'></span>
-									<span className='inlineText'>Copy the code from Step 1 into the body of your website HTML.</span>
-								</span>
-								<span className='group'>
-									<span className='icon icon-arrow-right'></span>
-									<span className='inlineText'>Place the code in the HTML where you want it to show.</span>
-								</span>
-								<span className='group'>
-									<span className='icon icon-arrow-right'></span>
-									<span className='inlineText'>Style the button with CSS or inline Styles.</span>
-								</span>
-								<span className='group'>
-									<span className='icon icon-arrow-right'></span>
-									<span className='inlineText'>If you need help contact your web developer or Givebox Support.</span>
-								</span>
-							</div>
-						</div>
+			<div className='shareWeb'>
+				<div className='column'>
+					<Choice
+						name='swipeApp'
+						onChange={this.toggleAuto}
+						type='checkbox'
+						label='Auto pop on your website'
+						value={autoPop}
+						checked={autoPop}
+						toggle={true}
+					/>
+				</div>
+				<div className='column'>
+					<div className='subText'>Popup Widget Code</div>
+					<p>Copy and paste this code anywhere in your website's HTML to pop the widget.</p>
+
+					<CodeBlock copyCallback={this.copyCallback} style={{ fontSize: '1em' }} className='flexCenter flexColumn' type='javascript' regularText={''} text={this.btnScript()} name={<div className='copyButton'>Click Here to Copy Code</div>} nameIcon={false} nameStyle={{}} />
+					<div className={`codeCopied ${copied ? 'copied' : ''}`}>
+						<span className='icon icon-check-circle'></span>
+						Copied
 					</div>
 				</div>
 			</div>
@@ -123,14 +146,19 @@ function mapStateToProps(state, props) {
 	const kind = util.getValue(info, 'kind');
 	const articleID = util.getValue(info, 'articleID');
 	const primaryColor = util.getValue(state, 'gbx3.globals.gbxStyle.primaryColor');
+	const embedButton = util.getValue(state, 'gbx3.globals.embedButton', {});
 
 	return {
 		kind,
 		articleID,
-		primaryColor
+		primaryColor,
+		embedButton
 	}
 }
 
 export default connect(mapStateToProps, {
-	updateInfo
+	updateInfo,
+	updateGlobal,
+	updateGlobals,
+	saveGBX3
 })(ShareEmbed);

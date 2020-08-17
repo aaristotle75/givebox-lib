@@ -45,7 +45,7 @@ class AboutFee extends Component {
 							customColor={primaryColor}
 							onClick={() => this.props.toggleModal('aboutFee', false)}
 							solidColor={true}
-						>GOOD TO KNOW</GBLink>
+						>Good to Know</GBLink>
 					</div>
 				</div>
 			</div>

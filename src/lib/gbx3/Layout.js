@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import {
 	util,
 	ModalRoute,
-	GBLink
+	GBLink,
+	Icon
 } from '../';
 import Shop from './Shop';
 import Article from './Article';
@@ -12,6 +13,7 @@ import {
 	updateAdmin
 } from './redux/gbx3actions';
 import AvatarMenuButton from './admin/AvatarMenuButton';
+import { AiOutlineNotification } from 'react-icons/ai';
 
 class Layout extends React.Component {
 
@@ -94,7 +96,7 @@ class Layout extends React.Component {
 				{ hasAccessToEdit ?
 				<div onClick={() => this.props.updateAdmin({ publicView: false })} className='avatarLink'>
 					<div className='editGraphic'>
-						<span className='icon icon-share'></span>
+						<Icon><AiOutlineNotification /></Icon>
 					</div>
 				</div> : ''}
 			</div>

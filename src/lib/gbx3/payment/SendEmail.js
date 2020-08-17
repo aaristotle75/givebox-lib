@@ -18,7 +18,7 @@ class SendEmail extends Component {
 		this.cancel = this.cancel.bind(this);
 		this.state = {
 			recipients: util.getValue(props.sendEmail, 'recipients', ''),
-			message: util.getValue(props.sendEmail, 'message', '')
+			message: util.getValue(props.sendEmail, 'message', `I support ${props.orgName} and wanted to share their efforts with you.`)
 		};
 	}
 
@@ -59,7 +59,10 @@ class SendEmail extends Component {
 
 		return (
 			<div className='modalWrapper'>
-				<h3 style={{ marginBottom: 20 }} className='center'>{this.props.headerText}</h3>
+				<h3 style={{ marginBottom: 20 }} className='center'>
+					{this.props.headerText}<br />
+					<span style={{ fontSize: 14 }}>This Email Will be Sent When Your Transaction is Made</span>
+				</h3>
 				<TextField
 					name='recipients'
 					label='Email Recipients'
@@ -90,11 +93,15 @@ class SendEmail extends Component {
 }
 
 SendEmail.defaultProps = {
-	headerText: 'Send an Email Message'
+	headerText: 'Compose Email'
 }
 
 function mapStateToProps(state, props) {
+
+	const orgName = util.getValue(state, 'gbx3.data.orgName', 'organization');
+
 	return {
+		orgName
 	}
 }
 

@@ -199,41 +199,55 @@
 
 .gbx3 {
 
+	.avatarLink {
+		overflow: hidden;
+
+		button.link {
+			font-size: 1em;
+			font-weight: 400;
+		}
+	}
+
 	.avatarMenu li:hover {
 		background: linear-gradient(to right, $mainColor 0%, $green 100%);
 	}
 
+	.avatarLink button.link .defaultAvatarImage {
+		background: transparentize($light-med-gray, .5);
+		color: $white;
+		border: 1px solid transparent;
+		@include default-transition(.5s);
+	}
+
+	.avatarLink button.link:hover .defaultAvatarImage {
+		background: transparentize($light-med-gray, .5);
+		color: $white;
+		border: 1px solid transparent;
+		opacity: .7;
+	}
+
+	.avatarLink .editGraphic {
+		background: transparentize($light-med-gray, .5);
+		color: $white;
+	}
+
+	.avatarLink .editGraphic:hover {
+		background: transparentize($light-med-gray, .5);
+		color: $white;
+		opacity: .7;
+	}
+
 	.hasAccessToEditPublic {
-		.avatarLink button.link .defaultAvatarImage {
-			background: transparentize($light-med-gray, .3);
-			color: $white;
-			border: 1px solid transparent;
-			@include default-transition(.5s);
-		}
 
-		.avatarLink button.link:hover .defaultAvatarImage {
-			background: transparentize($light-med-gray, .3);
-			color: $white;
-			border: 1px solid transparent;
-			opacity: .7;
-		}
-
-		.avatarLink .editGraphic {
-			background: transparentize($light-med-gray, .3);
-			color: $white;
-		}
-
-		.avatarLink .editGraphic:hover {
-			background: transparentize($light-med-gray, .3);
-			color: $white;
-			opacity: .7;
+		button.link {
+			letter-spacing: 1px;
 		}
 	}
 
 	.editGraphic {
 		display: flex;
 		justify-content: center;
-		align-items: flex-start;
+		align-items: center;
 		flex-direction: column;
 		padding: 10px;
 		width: 45px;
@@ -244,7 +258,7 @@
 		background: $mainColor;
 		@include default-transition(.5s);
 		.icon {
-			font-size: 25px !important;
+			font-size: 22px !important;
 		}
 	}
 
@@ -496,6 +510,7 @@
 	}
 
 	.headerLeftSide {
+		width: 30%;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
@@ -506,6 +521,13 @@
 				width: auto;
 			}
 		}
+	}
+
+	.headerMiddle {
+		width: 40%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 
 		button.button,
 		button.link {
@@ -516,6 +538,14 @@
 				margin-right: 5px;
 			}
 		}
+	}
+
+	.headerRightSide {
+		width: 30%;
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		flex-wrap: wrap;
 	}
 
 	// Top Panel
@@ -1457,12 +1487,12 @@
 	}
 
 	.paymentFormHeaderTitle {
-		font-size: 1em;
+		font-size: 1.1em;
 	}
 
 	.paymentFormHeaderText {
 		display: block;
-		margin-top: 5px;
+		margin-top: 0px;
 		font-size: 12px;
 		font-weight: 300;
 	}
@@ -1884,15 +1914,6 @@
 		}
 	}
 
-	.shareLink {
-		color: $mainColor;
-	}
-
-	.shareLink:hover {
-		color: $mainColorLight;
-		@include default-transition(.25s);
-	}
-
 	.share {
 
 		ul {
@@ -2146,9 +2167,112 @@
 }
 /*------ END SHOP ------*/
 
+.copyButton {
+	padding: 10px 20px;
+	background: $white;
+	color: $mainColor;
+	border: 1px solid $mainColor;
+	border-radius: 20px;
+	@include default-transition(.5s);
+	font-size: 16px;
+	font-weight: 400;
+	margin: 10px 0;
+}
 
+.copyButton:hover {
+	background: $mainColor;
+	color: $white;
+}
+
+/*------- SHARE LINK ------*/
+.shareLink {
+
+	.codeBlock .highlight.hljs {
+		background: $white;
+		color: $green;
+		.hljs-comment {
+			color: $green;
+		}
+	}
+
+	.hljs {
+		display: none;
+		background: $white;
+		text-align: center;
+	}
+
+	.shareLinkEditable {
+		position: relative;
+		width: 80%;
+	}
+
+	.shareLinkEditableText {
+		margin-bottom: 20px;
+		font-weight: 300;
+	}
+
+	.shareLinkPrefix {
+		position: absolute;
+		top: 8px;
+		left: 0;
+		font-size: 18px;
+		font-weight: 300;
+	}
+
+	.input-group {
+		padding-top: 10px !important;
+	}
+
+	input {
+		font-size: 18px;
+		padding-left: 159px;
+	}
+}
+
+
+.shareWeb {
+	.column {
+		width: 50%;
+		padding: 20px;
+		@media (max-width: $breakpoint) {
+			width: 100%;
+			padding: 20px 0;
+		}
+	}
+
+	.subText {
+		align-items: flex-start;
+	}
+
+	p {
+		margin: 0;
+		font-size: 14px;
+	}
+
+}
 /*--------- CREATE NEW -------*/
 .createStep {
+
+	.gbx3TopHeader {
+		.avatarLink button.link {
+			color: $white;
+		}
+
+		.headerMiddle {
+			button.button,
+			button.link {
+				color: $white;
+				.icon {
+					color: $white;
+				}
+			}
+		}
+
+		.avatarLink button.link:hover {
+			color: transparentize($mainColor, .3);
+		}
+
+	}
 
 	.stageContainer {
 		top: 0px;
@@ -2188,7 +2312,7 @@
 		align-items: center;
 		justify-content: center;
 		width: 100%;
-		height: 350px;
+		height: 375px;
 		color: $white;
 		background: $mainColor;
 		background: linear-gradient(to right, $mainColor 0%, $green 100%);
@@ -2214,6 +2338,7 @@
 			font-size: 30px;
 			color: $green;
 			margin-right: 10px;
+			@include animation(pulsateBrighter 2s ease-out infinite);
 		}
 	}
 
@@ -2276,6 +2401,12 @@
 			font-weight: 400;
 			color: $mainColor;
 			margin-top: 15px;
+			text-align: center;
+		}
+
+		.icon {
+			color: $mainColor;
+			font-size: 60px;
 		}
 
 		img {
@@ -2284,11 +2415,13 @@
 	}
 
 	.createKindItem:hover {
-		border: 4px solid $mainColor;
+		border: 4px solid $green;
 
+		.icon,
 		.createKindItemText {
 			color: transparentize($mainColor, .3);
 		}
+
 
 		img {
 			transform: scale(1.2);

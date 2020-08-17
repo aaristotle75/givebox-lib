@@ -383,7 +383,8 @@ class Amounts extends Component {
 			kind,
 			primaryColor,
 			numCartItems,
-			subTotal
+			subTotal,
+			form
 		} = this.props;
 
 		const {
@@ -402,6 +403,8 @@ class Amounts extends Component {
 		if (util.isEmpty(amountsList)) return <></>;
 
 		const maxQuantity = util.getValue(extras, 'maxQuantity') || util.getValue(data, 'maxQuantity');
+		const showCart = util.getValue(form, 'allowSelection', true);
+		const shopTitle = util.getValue(form, 'shopTitle', 'Browse More Items');
 
 		return (
 			<div className={`block ${util.getValue(button, 'enabled', false) ? util.getValue(button, 'style.align', 'flexCenter') : ''}`}>
@@ -578,6 +581,7 @@ class Amounts extends Component {
 										<div className='bottomContainer spaceBetween'>
 											<div className='cartInfo'>
 												<AnimateHeight height={numCartItems > 0 && parseInt(subTotal) > 0 ? 'auto' : 0}>
+													{showCart ?
 													<GBLink
 														allowCustom={true}
 														customColor={primaryColor}
@@ -588,12 +592,12 @@ class Amounts extends Component {
 														}}
 													>
 														<span style={{ display: 'block', fontSize: 12 }}>Items in Cart ({numCartItems})</span>
-													</GBLink>
+													</GBLink> : ''}
 													<span style={{ display: 'block' }}><span style={{ fontSize: 12 }}>Sub Total:</span> <span className='strong'>{util.money(subTotal)}</span></span>
 												</AnimateHeight>
 											</div>
 											<div className='button-group'>
-												<ModalLink className='hideOnMobile' id='shop' allowCustom={true} customColor={primaryColor}>SHOP MORE ITEMS</ModalLink>
+												<ModalLink className='hideOnMobile' id='shop' allowCustom={true} customColor={primaryColor}>{shopTitle}</ModalLink>
 												<GBLink
 													className='button'
 													allowCustom={true}
@@ -604,7 +608,7 @@ class Amounts extends Component {
 														this.props.toggleModal('amountsList', false);
 													}}
 												>
-													CHECKOUT
+													Pay Now
 												</GBLink>
 											</div>
 										</div>
@@ -632,10 +636,12 @@ function mapStateToProps(state, props) {
 	const cart = util.getValue(gbx3, 'cart', {});
 	const cartItems = util.getValue(cart, 'items', []);
 	const subTotal = util.getValue(cart, 'subTotal', 0);
+	const form = util.getValue(gbx3, 'blocks.article.paymentForm.options.form', {});
 	const numCartItems = cartItems.length;
 
 	return {
 		data,
+		form,
 		numCartItems,
 		subTotal
 	}

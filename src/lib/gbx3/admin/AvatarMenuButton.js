@@ -25,13 +25,14 @@ class AvatarMenuButton extends React.Component {
 	render() {
 
 		const {
-			access
+			access,
+			stage
 		} = this.props;
 
 		return (
 			<div className='avatarLink'>
 				<ModalLink id='avatarMenu' className='link'>
-					<span className='orgName'>{util.getValue(access, 'orgName')}</span>
+					{stage !== 'public' ? <span className='orgName'>{util.getValue(access, 'orgName')}</span> : ''}
 					{access.userImage ? <div className='avatarImage'><img src={util.imageUrlWithStyle(access.userImage, 'small')} alt='Avatar Small Circle' /></div> :
 						<div className='defaultAvatarImage'>{access.initial}</div>
 					}
@@ -45,10 +46,13 @@ AvatarMenuButton.defaultProps = {
 }
 
 function mapStateToProps(state, props) {
+
 	const access = util.getValue(state.resource, 'access');
+	const stage = util.getValue(state, 'gbx3.info.stage');
 
 	return {
-		access
+		access,
+		stage
 	}
 }
 

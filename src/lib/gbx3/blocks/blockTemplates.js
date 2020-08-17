@@ -230,9 +230,10 @@ export const paymentForm = {
 			notePlaceholder: '',
 			allowSelection: true,
 			allowSharing: true,
+			showP2P: true,
 			sendEmail: {
 				enabled: true,
-				linkText: 'Send an Email Message'
+				linkText: 'Share via Email'
 			},
 			hasCustomGoal: false,
 			goal: 50000,

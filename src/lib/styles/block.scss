@@ -1,5 +1,28 @@
 @import 'variables.scss';
 
+.codeCopied.copied {
+	display: flex;
+}
+
+.codeCopied {
+	display: none;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	position: fixed;
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	color: $green;
+	font-size: 1.1em;
+	background: transparentize($white, .2);
+	.icon {
+		font-size: 70px;
+		color: $green;
+	}
+}
+
 /*------- Action Bar --------*/
 ul.actionBar {
 	vertical-align: top;

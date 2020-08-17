@@ -5,6 +5,7 @@ import {
 	TextField,
 	Dropdown,
 	Collapse,
+	util,
 	_v
 } from '../../';
 import AnimateHeight from 'react-animate-height';
@@ -53,7 +54,8 @@ class FormEdit extends Component {
 			notePlaceholder,
 			sendEmail,
 			allowSelection,
-			allowShare,
+			allowSharing,
+			showP2P,
 			hasCustomGoal,
 			goal,
 			cartTitle,
@@ -182,15 +184,27 @@ class FormEdit extends Component {
 						<div className='formSection'>
 							<Choice
 								type='checkbox'
-								name='allowShare'
+								name='allowSharing'
 								label={'Allow Customers to Share Form'}
 								onChange={(name, value) => {
-									this.updateForm('allowShare', allowShare ? false : true);
+									this.updateForm('allowSharing', allowSharing ? false : true);
 								}}
-								checked={allowShare}
-								value={allowShare}
+								checked={allowSharing}
+								value={allowSharing}
 								toggle={true}
 							/>
+							{this.props.allowP2P ?
+							<Choice
+								type='checkbox'
+								name='showP2P'
+								label={'Allow Customers to Create Peer-2-Peer Fundraisers'}
+								onChange={(name, value) => {
+									this.updateForm('showP2P', showP2P ? false : true);
+								}}
+								checked={showP2P}
+								value={showP2P}
+								toggle={true}
+							/> : ''}
 							<Choice
 								type='checkbox'
 								name='hasCustomGoal'
@@ -300,7 +314,10 @@ FormEdit.defaultProps = {
 
 function mapStateToProps(state, props) {
 
+	const allowP2P = util.getValue(state, 'resource.org.data.allowVolunteers', true);
+
 	return {
+		allowP2P
 	}
 }
 

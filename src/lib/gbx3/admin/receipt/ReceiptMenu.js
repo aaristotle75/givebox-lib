@@ -60,7 +60,7 @@ class ReceiptMenu extends React.Component {
 				<div className='leftPanelTop'>
 					<div className='middle centerAlign adminPanelTabs'>
 						<GBLink className={`ripple link ${panelType === 'layout' ? 'selected' : ''}`} onClick={() => this.switchPanelType('layout')}>Elements</GBLink>
-						<GBLink className={`ripple link ${panelType === 'tools' ? 'selected' : ''}`} onClick={() => this.switchPanelType('tools')}>Tools</GBLink>
+						<GBLink className={`ripple link ${panelType === 'tools' ? 'selected' : ''}`} onClick={() => this.switchPanelType('tools')}>Preferences</GBLink>
 					</div>
 				</div>
 				<div className={`leftPanelScroller`}>

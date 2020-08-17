@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
 	util,
-	GBLink
+	GBLink,
+	Icon
 } from '../../';
 import Design from './article/Design';
 import Create from './article/Create';
@@ -14,6 +15,7 @@ import {
 	updateAdmin
 } from '../redux/gbx3actions';
 import AvatarMenuButton from './AvatarMenuButton';
+import { AiOutlineFullscreen } from 'react-icons/ai';
 
 class Admin extends React.Component {
 
@@ -81,13 +83,21 @@ class Admin extends React.Component {
 			editable,
 			isVolunteer,
 			hasAccessToEdit,
-			hasAccessToCreate
+			hasAccessToCreate,
+			breakpoint
 		} = this.props;
 
 		if (!hasAccessToEdit && !hasAccessToCreate) return  <div className='flexCenter flexColumn centeritems'>You do not have access.</div>;
 
+		let theme = 'dark';
+		if (step === 'create') {
+			theme = 'light';
+		}
+
+		const isMobile = breakpoint === 'mobile' ? true : false;
+
 		return (
-			<div className={`gbx3AdminLayout ${editable ? 'editable' : ''} ${previewMode ? 'previewMode' : ''}`}>
+			<div className={`gbx3AdminLayout ${step}Step ${editable ? 'editable' : ''} ${previewMode ? 'previewMode' : ''}`}>
 				<AnimateHeight height={saveStatus === 'saving' ? 'auto' : 0 } duration={500}>
 					<div className='autoSaved'>Saving...</div>
 				</AnimateHeight>
@@ -95,15 +105,23 @@ class Admin extends React.Component {
 					<header className={`navbar`}>
 						<div className='container'>
 							<div className='headerLeftSide'>
-								<Logo className='logo' />
+								<Logo theme={theme} className='logo' />
+							</div>
+							<div className='headerMiddle'>
 								{ articleID && !isVolunteer?
 									step === 'create' ?
-										<GBLink onClick={() => this.goBack(articleID)}><span className='icon icon-chevron-left'></span> Go Back</GBLink>
+										<GBLink style={{ fontSize: '14px' }} onClick={() => this.goBack(articleID)}><span className='icon icon-chevron-left'></span> Go Back</GBLink>
 									:
-										<GBLink style={{ fontSize: '14px' }} className='link' onClick={() => this.props.loadCreateNew()}>Create New Form</GBLink>
+										<GBLink style={{ fontSize: '14px' }} className='link' onClick={() => this.props.loadCreateNew()}><span className='icon icon-plus'></span> { isMobile ? 'New' : 'Create New Form' }</GBLink>
 								: '' }
+								<GBLink style={{ fontSize: '14px' }} className='link' onClick={() => this.exitAdmin()}><Icon><AiOutlineFullscreen /></Icon>{ isMobile ? 'Exit' : 'Exit Form Builder' }</GBLink>
 							</div>
-							<AvatarMenuButton />
+							<div className='headerRightSide'>
+								<AvatarMenuButton />
+							</div>
+						</div>
+						<div className='headerMiddle'>
+
 						</div>
 					</header>
 				</div>

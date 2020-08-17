@@ -78,7 +78,7 @@ class Terms extends Component {
 							customColor={primaryColor}
 							onClick={this.acceptTerms}
 							solidColor={true}
-						>I AGREE</GBLink>
+						>I Agree</GBLink>
 					</div>
 				</div>
 			</div>

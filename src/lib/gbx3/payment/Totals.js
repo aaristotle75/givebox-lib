@@ -55,7 +55,7 @@ class Totals extends Component {
 					<div className='totalsListTop'>
 					{feeOption ?
 					<Choice
-						label={`Cover the Cost of the Fee`}
+						label={`Pay Credit Card Fee`}
 						value={passFees}
 						checked={passFees}
 						onChange={() => {

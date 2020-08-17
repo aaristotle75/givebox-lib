@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import {
 	util,
 	types,
-	Alert
+	Alert,
+	Image,
+	Icon
 } from '../../../';
-import ShareMenu from './ShareMenu';
-import ShareLink from './ShareLink';
 import {
 	sendResource
 } from '../../../api/helpers';
@@ -14,16 +14,24 @@ import {
 	updateInfo
 } from '../../redux/gbx3actions';
 import ShareSocial from './ShareSocial';
-import ShareEmbed from './ShareEmbed';
-import ShareIframe from './ShareIframe';
 import ShareEmailBlast from './ShareEmailBlast';
+import { FiCopy } from 'react-icons/fi';
+import { TiSocialFacebook } from 'react-icons/ti';
+import { MdWeb } from 'react-icons/md';
+import { FiPenTool } from 'react-icons/fi';
+import ShareLinkCopy from './ShareLinkCopy';
+import ShareLinkEdit from './ShareLinkEdit';
+import ShareWeb from './ShareWeb';
 
 class Share extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.renderSubStep = this.renderSubStep.bind(this);
+		this.renderShareType = this.renderShareType.bind(this);
+		this.renderShareList = this.renderShareList.bind(this);
+		this.setShareTypeSelected = this.setShareTypeSelected.bind(this);
 		this.state = {
+			shareTypeSelected: 'web'
 		};
 	}
 
@@ -41,13 +49,53 @@ class Share extends React.Component {
 		*/
 	}
 
-	renderSubStep() {
+	setShareTypeSelected(shareTypeSelected) {
+		this.setState({ shareTypeSelected });
+	}
+
+	renderShareList() {
 		const {
-			subStep
+			kind,
+			isVolunteer
 		} = this.props;
 
+		const shareTypes = [
+			{ type: 'copy', name: 'Copy Your Link', icon: <Icon><FiCopy /></Icon>, imageURL: '' },
+			{ type: 'edit', name: 'Edit Your Link', icon: <Icon><FiPenTool /></Icon>, imageURL: '', restricted: true },
+			{ type: 'social', name: 'Share to Social Media', icon: <Icon><TiSocialFacebook /></Icon>, imageURL: '' },
+			{ type: 'web', name: 'Add to Your Website', icon: <Icon><MdWeb /></Icon>, imageURL: '' }
+		];
+
+		const items = [];
+		shareTypes.forEach((value, key) => {
+			items.push(
+				<div key={key} className='createKindItem' onClick={() => this.setShareTypeSelected(value.type)}>
+					{/*<Image url={`https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/raise-${value}-lg.png`} maxSize={130} alt={types.kind(value).namePlural} />*/}
+					{value.icon}
+					<span className='createKindItemText'>
+						{value.name}
+					</span>
+				</div>
+			);
+		});
+
+		return (
+			<div className='createKindSection'>
+				<span className='intro'>Share Your {types.kind(kind).name}</span>
+				<div className='createKindList'>
+					{items}
+				</div>
+			</div>
+		);
+	}
+
+	renderShareType() {
+		const {
+			shareTypeSelected
+		} = this.state;
+
 		const item = [];
-		switch (subStep) {
+		switch (shareTypeSelected) {
 
 			case 'emailBlast': {
 				item.push(
@@ -56,16 +104,23 @@ class Share extends React.Component {
 				break;
 			}
 
-			case 'embed': {
+			case 'web': {
 				item.push(
-					<ShareEmbed key='shareEmbed' />
+					<ShareWeb key='shareWeb' />
 				);
 				break;
 			}
 
-			case 'iframe': {
+			case 'edit': {
 				item.push(
-					<ShareIframe key='shareIframe' />
+					<ShareLinkEdit key='shareLinkEdit' />
+				);
+				break;
+			}
+
+			case 'copy': {
+				item.push(
+					<ShareLinkCopy key='shareLinkCopy' />
 				);
 				break;
 			}
@@ -91,36 +146,20 @@ class Share extends React.Component {
 	render() {
 
 		const {
-			openAdmin: open,
-			hasAccessToEdit,
 			kind,
 			webApp
 		} = this.props;
 
 
-		if (!hasAccessToEdit) {
-			return (
-				<div className='flexCenter flexColumn centeritems'>You do not have access.</div>
-			)
-		}
-
 		return (
-			<>
-				<div className={`leftPanel ${open ? 'open' : 'close'}`}>
-					<ShareMenu />
-				</div>
-				<div className={`stageContainer ${open ? 'open' : 'close'}`}>
+			<div className='createStep'>
+				<div style={{ paddingTop: 0 }} className={`modalWrapper`}>
 					<Alert alert='passive' display={util.getPublishStatus(kind, webApp) === 'private' ? true : false} msg={`Your ${types.kind(kind).name} is Set to Private`} />
-					<div className='stageAligner'>
-						{this.renderSubStep()}
-					</div>
+
+					{this.renderShareList()}
+					{this.renderShareType()}
 				</div>
-				<div className={`bottomPanel ${open ? 'open' : 'close'}`}>
-					<div className='centerAlign adminPanelTabs'>
-						<ShareLink />
-					</div>
-				</div>
-			</>
+			</div>
 		)
 	}
 }
@@ -137,8 +176,6 @@ function mapStateToProps(state, props) {
 	const globals = util.getValue(gbx3, 'globals', {});
 	const admin = util.getValue(gbx3, 'admin', {});
 	const subStep = util.getValue(admin, 'subStep');
-	const openAdmin = util.getValue(admin, 'open');
-	const hasAccessToEdit = util.getValue(admin, 'hasAccessToEdit');
 	const webApp = util.getValue(gbx3, 'data.publishedStatus.webApp');
 
 	return {
@@ -146,8 +183,6 @@ function mapStateToProps(state, props) {
 		articleID,
 		globals,
 		subStep,
-		openAdmin,
-		hasAccessToEdit,
 		webApp
 	}
 }

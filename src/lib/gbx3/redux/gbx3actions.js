@@ -344,9 +344,10 @@ export function saveGBX3(blockType, options = {}) {
 			};
 
 			Object.entries(blocks).forEach(([key, value]) => {
-				if (!util.isEmpty(value.grid)) {
-					layouts.desktop.push(value.grid.desktop);
-					layouts.mobile.push(value.grid.mobile);
+				const grid = util.getValue(value, 'grid', {});
+				if (!util.isEmpty(grid)) {
+					if (!util.isEmpty(util.getValue(grid, 'desktop'))) layouts.desktop.push(value.grid.desktop);
+					if (!util.isEmpty(util.getValue(grid, 'mobile'))) layouts.mobile.push(value.grid.mobile);
 				}
 			});
 
@@ -599,6 +600,7 @@ export function loadGBX3(articleID, callback) {
 									});
 									const globalsCustom = util.getValue(customTemplate, 'globals', {});
 									const gbxStyleCustom = util.getValue(globalsCustom, 'gbxStyle', {});
+									const embedButtonCustom = util.getValue(globalsCustom, 'embedButton', {});
 
 									//const blocks = !util.isEmpty(blocksCustom) ? blocksCustom : blocksDefault;
 									const blocks = merge(blocksDefault, blocksCustom);
@@ -617,6 +619,11 @@ export function loadGBX3(articleID, callback) {
 													...util.getValue(util.getValue(globalsState, 'button', {}), 'style', {}),
 													bgColor: primaryColor
 												}
+											},
+											embedButton: {
+												...util.getValue(globalsState, 'embedButton', {}),
+												text: types2.kind(kind).cta,
+												...embedButtonCustom
 											}
 										},
 										...util.getValue(customTemplate, 'globals', {})

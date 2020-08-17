@@ -31,6 +31,7 @@ class CodeBlock extends Component{
 	}
 
 	onCopy() {
+		if (this.props.copyCallback) this.props.copyCallback();
 		this.setState({copied: true });
 		this.timeout = setTimeout(() => {
 			this.setState({copied: false });

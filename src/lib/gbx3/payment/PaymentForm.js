@@ -518,11 +518,11 @@ class PaymentFormClass extends Component {
 		fields.custom = this.props.textField('note', { required: custom.required, label: custom.placeholder, fixedLabel: true, hideLabel: true, placeholder: custom.placeholder });
 
 
-		const linkText = sendEmail.linkText || 'Send an Email Message';
+		const linkText = sendEmail.linkText || 'Share via Email';
 
 		fields.sendEmail =
 			<div style={{ marginLeft: 8 }}>
-				<ModalLink id='sendEmail' allowCustom={true} customColor={primaryColor} opts={{ sendEmailCallback: this.sendEmailCallback, sendEmail: this.state.sendEmail, headerText: linkText }}>{linkText}</ModalLink>
+				<ModalLink id='sendEmail' allowCustom={true} customColor={primaryColor} opts={{ sendEmailCallback: this.sendEmailCallback, sendEmail: this.state.sendEmail, headerText: sendEmail.headerText || 'Compose Email' }}>{linkText}</ModalLink>
 			</div>
 		;
 
@@ -646,8 +646,8 @@ PaymentForm.defaultProps = {
 	},
 	sendEmail: {
 		enabled: true,
-		linkText: 'Tell your friends link',
-		headerText: 'Tell your friends header!',
+		linkText: 'Share via Email',
+		headerText: 'Compose Email',
 		defaultMsg: ''
 	}
 }

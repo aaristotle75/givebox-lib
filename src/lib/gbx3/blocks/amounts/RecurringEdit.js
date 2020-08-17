@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import {
 	util,
 	Dropdown,
-	GBLink
+	GBLink,
+	Choice
 } from '../../../';
 
 class RecurringEdit extends Component {
@@ -70,9 +71,13 @@ class RecurringEdit extends Component {
 						<div key={value.value} style={{ padding: '10px 5px 10px 0' }} className={`amountsEditRow ${enabled ? '' : 'notOnForm'}`}>
 							<div style={{ width: '20%' }} className={`column enableField ${isDefault ? 'tooltip' : ''}`}>
 								{isDefault ? <span className={`tooltipTop`}><i />To disable option please change the default to a different option.</span> : <></>}
-								<GBLink
-									className={`link flexCenter centerItems ${enabled ? '' : 'link gray'}`}
-									onClick={() => {
+								<Choice
+									className={`link ${enabled ? '' : 'link gray'}`}
+									type={'checkbox'}
+									toggle={true}
+									name={'enabled'}
+									label={value.primaryText}
+									onChange={() => {
 										if (enabled) {
 											if (!isDefault) recurringIntervals.splice(index, 1);
 										} else {
@@ -85,10 +90,9 @@ class RecurringEdit extends Component {
 										this.props.optionsUpdated('recurring', { ...recurring, recurringIntervals });
 										this.props.updateData(data);
 									}}
-								>
-									<span style={{ paddingLeft: 10 }}>{enabled ? <span className='icon icon-check-square'></span> : <span className='icon icon-square'></span>}</span>
-									<span style={{ paddingLeft: 20 }}>{value.primaryText}</span>
-								</GBLink>
+									checked={enabled}
+									value={enabled}
+								/>
 							</div>
 							<div className='column' style={{ width: '20%' }}>
 								{isDefault ?
