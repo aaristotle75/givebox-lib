@@ -49,7 +49,8 @@ class CodeBlock extends Component{
 			copiedText,
 			copiedTextStyle,
 			regularText,
-			style
+			style,
+			showCopied
 		} = this.props;
 
 		const {
@@ -71,6 +72,11 @@ class CodeBlock extends Component{
 						{text}
 					</Highlight>
 				</div>
+				{ showCopied ?
+				<div className={`codeCopied ${copied ? 'copied' : ''}`}>
+					<span className='icon icon-check-circle'></span>
+					<span className='copiedText'>Copied</span>
+				</div> : '' }
 			</div>
 		)
 	}
@@ -86,7 +92,8 @@ CodeBlock.defaultProps = {
 	nameStyle: {
 		fontSize: 14
 	},
-	nameIcon: true
+	nameIcon: true,
+	showCopied: false
 }
 
 export default CodeBlock;

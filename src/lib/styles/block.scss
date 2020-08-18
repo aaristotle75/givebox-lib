@@ -1,25 +1,42 @@
 @import 'variables.scss';
 
 .codeCopied.copied {
-	display: flex;
+	opacity: 1;
+	height: 100%;
+	width: 100%;
+	background: transparentize($white, .2);
+	.icon {
+		opacity: 1;
+	}
+	.copiedText {
+		opacity: 1;
+	}
 }
 
 .codeCopied {
-	display: none;
+	display: flex;
+	opacity: 0;
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
 	position: fixed;
+	height: 0px;
+	width: 0px;
 	top: 0;
 	right: 0;
 	left: 0;
 	bottom: 0;
 	color: $green;
 	font-size: 1.1em;
-	background: transparentize($white, .2);
+	@include transition(background .5s);
+	background: transparent;
 	.icon {
+		opacity: 0;
 		font-size: 70px;
 		color: $green;
+	}
+	.copiedText {
+		opacity: 0;
 	}
 }
 

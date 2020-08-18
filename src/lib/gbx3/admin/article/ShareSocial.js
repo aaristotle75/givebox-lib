@@ -28,7 +28,7 @@ class Share extends React.Component {
 						subText={
 							<>
 								<div className='subText'>
-									Select Where You'd Like to Share Your {types.kind(kind).name}.
+									Select Where You'd Like to Share Your {types.kind(kind).name}
 								</div>
 							</>
 						}

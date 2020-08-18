@@ -105,7 +105,7 @@ class Design extends React.Component {
 				<div key={'middle'} className='button-group middle'>
 					<GBLink className={`ripple link ${previewDevice === 'phone' ? 'selected' : ''}`} onClick={() => this.previewArticle('phone')}><span className='icon icon-smartphone'></span><span className='iconText'>Mobile</span></GBLink>
 					<GBLink className={`ripple link ${previewDevice === 'desktop' ? 'selected' : ''}`} onClick={() => this.previewArticle('desktop')}><span className='icon icon-monitor'></span><span className='iconText'>Desktop</span></GBLink>
-					<ModalLink className={`ripple link ${previewDevice === 'receipt' ? 'selected' : ''}`} onClick={() => this.previewReceipt()}><span className='icon icon-mail'></span><span className='iconText'>Receipt</span></ModalLink>
+					<GBLink className={`ripple link ${previewDevice === 'receipt' ? 'selected' : ''}`} onClick={() => this.previewReceipt()}><span className='icon icon-mail'></span><span className='iconText'>Receipt</span></GBLink>
 				</div>
 			);
 		} else {
@@ -138,14 +138,18 @@ class Design extends React.Component {
 		} = this.props;
 
 		const previewMode = this.props.previewMode ? false : true;
-		this.props.updateAdmin({ previewMode, editable: previewMode ? false : true });
+		let previewDevice = 'desktop';
 
-		if (createType === 'receipt' && this.props.previewMode) {
-			const iframeEl = document.getElementById('emailIframePreview');
-			if (iframeEl) {
-				iframeEl.contentWindow.location.replace('about:blank');
+		if (createType === 'receipt') {
+			previewDevice = 'receipt';
+			if (this.props.previewMode) {
+				const iframeEl = document.getElementById('emailIframePreview');
+				if (iframeEl) {
+					iframeEl.contentWindow.location.replace('about:blank');
+				}
 			}
 		}
+		this.props.updateAdmin({ previewDevice, previewMode, editable: previewMode ? false : true });
 	}
 
 	async changePreviewDevice(previewDevice) {
@@ -159,8 +163,8 @@ class Design extends React.Component {
 		}
 	}
 
-	async previewReceipt() {
-		const createTypeUpdated = await this.props.updateAdmin({ createType: 'receipt', previewDevice: 'receipt' });
+	previewReceipt() {
+		this.props.updateAdmin({ createType: 'receipt', previewDevice: 'receipt' });
 	}
 
 	async previewArticle(previewDevice) {

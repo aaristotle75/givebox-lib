@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import {
 	util,
 	ModalRoute,
+	ModalLink,
 	GBLink,
 	Icon
 } from '../';
@@ -94,11 +95,11 @@ class Layout extends React.Component {
 					</div>
 				</div> : ''}
 				{ hasAccessToEdit ?
-				<div onClick={() => this.props.updateAdmin({ publicView: false })} className='avatarLink'>
+				<ModalLink type='div' id='share' className='avatarLink'>
 					<div className='editGraphic'>
 						<Icon><AiOutlineNotification /></Icon>
 					</div>
-				</div> : ''}
+				</ModalLink> : ''}
 			</div>
 		;
 

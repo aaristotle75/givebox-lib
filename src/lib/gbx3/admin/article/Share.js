@@ -31,7 +31,7 @@ class Share extends React.Component {
 		this.renderShareList = this.renderShareList.bind(this);
 		this.setShareTypeSelected = this.setShareTypeSelected.bind(this);
 		this.state = {
-			shareTypeSelected: 'web'
+			shareTypeSelected: 'copy'
 		};
 	}
 
@@ -59,6 +59,10 @@ class Share extends React.Component {
 			isVolunteer
 		} = this.props;
 
+		const {
+			shareTypeSelected
+		} = this.state;
+
 		const shareTypes = [
 			{ type: 'copy', name: 'Copy Your Link', icon: <Icon><FiCopy /></Icon>, imageURL: '' },
 			{ type: 'edit', name: 'Edit Your Link', icon: <Icon><FiPenTool /></Icon>, imageURL: '', restricted: true },
@@ -71,10 +75,11 @@ class Share extends React.Component {
 			items.push(
 				<div key={key} className='createKindItem' onClick={() => this.setShareTypeSelected(value.type)}>
 					{/*<Image url={`https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/raise-${value}-lg.png`} maxSize={130} alt={types.kind(value).namePlural} />*/}
-					{value.icon}
-					<span className='createKindItemText'>
+					<div className='createIcon'>{value.icon}</div>
+					<span style={{ fontSize: '1em' }} className='createKindItemText'>
 						{value.name}
 					</span>
+					<div className='shareIndicator'>{ shareTypeSelected === value.type ? <span className='icon icon-chevron-down'></span> : '' }</div>
 				</div>
 			);
 		});
@@ -154,8 +159,7 @@ class Share extends React.Component {
 		return (
 			<div className='createStep'>
 				<div style={{ paddingTop: 0 }} className={`modalWrapper`}>
-					<Alert alert='passive' display={util.getPublishStatus(kind, webApp) === 'private' ? true : false} msg={`Your ${types.kind(kind).name} is Set to Private`} />
-
+					<Alert style={{ marginTop: 20 }} alert='error' display={util.getPublishStatus(kind, webApp) === 'private' ? true : false} msg={`Your ${types.kind(kind).name} is Set to Private`} />
 					{this.renderShareList()}
 					{this.renderShareType()}
 				</div>

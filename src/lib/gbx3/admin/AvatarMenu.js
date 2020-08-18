@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import {
 	util,
 	GBLink,
-	Icon
+	Icon,
+	ModalLink
 } from '../../';
 import { toggleModal } from '../../api/actions';
 import {
@@ -67,7 +68,7 @@ class AvatarMenu extends React.Component {
 			);
 
 			menuList.push(
-				<li key='share' onClick={() => this.adminLink({ publicView: false })}><Icon><AiOutlineNotification /></Icon> <span className='text'>Share Form</span></li>
+				<ModalLink type='li' id='share' key={'share'}><Icon><AiOutlineNotification /></Icon> <span className='text'>Share Form</span></ModalLink>
 			);
 		}
 

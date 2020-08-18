@@ -36,7 +36,7 @@ class ShareIframe extends React.Component {
 			articleID: ID
 		} = this.props;
 
-		const src = `${REACT_APP_GBX_WIDGET}/${ID}?public=true&noFocus=true`;
+		const src = `${REACT_APP_GBX_URL}/${ID}?public=true&noFocus=true`;
 		const iframe =
 		`<iframe src="${src}" frameBorder="no" scrolling="auto" height="800px" width="100%"></iframe>`;
 		return iframe;
@@ -54,41 +54,13 @@ class ShareIframe extends React.Component {
 
 	render() {
 
-		const {
-			kind
-		} = this.props;
-
 		return (
-			<div className='gbx3Centered'>
-				<div className='shareAdmin'>
-					<h2 style={{ marginBottom: 10 }}>Embed An iFrame of Your {types.kind(kind).name} On Your Website</h2>
-					<div className='step'>
-						<CodeBlock style={{ fontSize: '1em' }} className='alignCenter' type='javascript' regularText={<h2><span style={{ fontWeight: 300 }}>Step 1:</span> Copy the iFrame Code</h2>} text={this.iframeScript()} name={` Click Here to Copy iFrame Code`} nameIcon={false} nameStyle={{}} />
+			<div className='shareWeb'>
+				<div style={{ width: '100%' }} className='column'>
+					<div className='subText'>Embed iFrame Code</div>
+					<p>Copy and paste this code anywhere in your website's HTML where you want the form to show.</p>
 
-					</div>
-					<div style={{ marginTop: 20 }} className='step'>
-						<h2 style={{ marginBottom: 0 }}><span style={{ fontWeight: 300 }}>Step 2:</span> Paste into Your Website HTML</h2>
-						<div className='confirmation'>
-							<div className='successfulText'>
-								<span className='group'>
-									<span className='icon icon-arrow-right'></span>
-									<span className='inlineText'>Copy the code from Step 1 into the body of your website HTML.</span>
-								</span>
-								<span className='group'>
-									<span className='icon icon-arrow-right'></span>
-									<span className='inlineText'>Place the code in the HTML where you want it to show.</span>
-								</span>
-								<span className='group'>
-									<span className='icon icon-arrow-right'></span>
-									<span className='inlineText'>Style the iFrame to make sure it fits your website.</span>
-								</span>
-								<span className='group'>
-									<span className='icon icon-arrow-right'></span>
-									<span className='inlineText'>If you need help contact your web developer or Givebox Support.</span>
-								</span>
-							</div>
-						</div>
-					</div>
+					<CodeBlock showCopied={true} style={{ fontSize: '1em' }} className='flexCenter flexColumn' type='javascript' regularText={''} text={this.iframeScript()} name={<div style={{ margin: '20px 0' }} className='copyButton'>Click Here to Copy Code</div>} nameIcon={false} nameStyle={{}} />
 				</div>
 			</div>
 		)

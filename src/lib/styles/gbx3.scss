@@ -71,6 +71,12 @@
 
 .gbx3 {
 
+	.hljs {
+		background: $white;
+		border-radius: 10px;
+		border: 2px dashed $mainColor;
+	}
+
 	#map {
 		width: 100%;
 		min-height: 400px;
@@ -1921,45 +1927,6 @@
 		}
 	}
 
-	.shareAdmin {
-		display: flex;
-		justify-content: center;
-		flex-direction: column;
-		padding: 0 20px;
-
-		.confirmation .successfulText .inlineText {
-			text-align: left;
-		}
-
-		.codeBlockComponent {
-			text-align: center;
-
-			button.link {
-				font-size: 16px;
-				margin-bottom: 10px;
-			}
-
-			.codeBlocktext {
-
-			}
-
-			.codeBlock {
-				display: inline-block;
-				width: 80%;
-				@media (max-width: $breakpoint ) {
-					width: 100%;
-				}
-
-				.hljs {
-					border: 1px solid $med-blue-gray;
-				}
-			}
-		}
-		.choice-group {
-			justify-content: center;
-		}
-	}
-
 }
 /*--------- End GBX3 ---------*/
 
@@ -2213,7 +2180,7 @@
 
 	.shareLinkPrefix {
 		position: absolute;
-		top: 8px;
+		top: 9px;
 		left: 0;
 		font-size: 18px;
 		font-weight: 300;
@@ -2232,12 +2199,24 @@
 
 .shareWeb {
 	.column {
+		vertical-align: top;
 		width: 50%;
 		padding: 20px;
 		@media (max-width: $breakpoint) {
 			width: 100%;
 			padding: 20px 0;
 		}
+
+		.choice-group,
+		.input-group {
+			padding: 15px 0 !important;
+			margin: 0 !important;
+		}
+
+	}
+
+	.settingsHeader {
+		margin-bottom: 20px;
 	}
 
 	.subText {
@@ -2250,6 +2229,8 @@
 	}
 
 }
+
+
 /*--------- CREATE NEW -------*/
 .createStep {
 
@@ -2404,14 +2385,27 @@
 			text-align: center;
 		}
 
-		.icon {
-			color: $mainColor;
-			font-size: 60px;
+		.createIcon {
+			.icon {
+				color: $mainColor;
+				font-size: 60px;
+			}
 		}
 
 		img {
 			@include default-transition(.25s);
 		}
+
+		.shareIndicator {
+			height: 20px;
+			margin-top: 10px;
+			.icon {
+				font-size: 25px;
+				color: $mainColor;
+				@include animation(pulsateBrighter 2s ease-out infinite);
+			}
+		}
+
 	}
 
 	.createKindItem:hover {
@@ -2421,7 +2415,6 @@
 		.createKindItemText {
 			color: transparentize($mainColor, .3);
 		}
-
 
 		img {
 			transform: scale(1.2);
@@ -2556,4 +2549,47 @@
 		.apple-pay-button-white-with-line {
 				-apple-pay-button-style: white-outline;
 		}
+}
+
+.subTabs {
+	button.panelTab {
+		text-align: center;
+	}
+
+	.panelTab {
+		color: $light-med-gray;
+		padding: 10px;
+		background: transparent;
+		text-align: center;
+	}
+
+	.panelTab:hover {
+		color: $green;
+		background: transparent;
+	}
+
+	.panelTab.selected {
+		color: $mainColor;
+		//@include animation(pulsateBrighter 2s ease-out infinite);
+	}
+
+	.panelTab.disabled {
+		opacity: .4;
+		cursor: not-allowed;
+	}
+
+	.panelTab.disabled:hover {
+		color: $light-med-gray;
+	}
+
+	.panel {
+		border-bottom: 1px solid transparentize($green, .8);
+	}
+
+	.stepLabel {
+
+		.icon {
+			margin: 0 5px;
+		}
+	}
 }

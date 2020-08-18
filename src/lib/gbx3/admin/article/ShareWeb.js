@@ -43,7 +43,7 @@ class ShareWeb extends Component {
 				<div className='formSection'>
 					<Tabs
 						default={'pop'}
-						className='statsTab'
+						className='subTabs'
 					>
 						<Tab id='pop' label={<span className='stepLabel'>Embed Popup Widget</span>}>
 							<ShareWebPop />
