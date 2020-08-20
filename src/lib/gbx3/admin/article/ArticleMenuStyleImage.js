@@ -77,7 +77,8 @@ class ArticleMenuStyleImage extends Component {
 		const {
 			modalID,
 			articleID,
-			orgID
+			orgID,
+			isVolunteer
 		} = this.props;
 
 		const {
@@ -85,7 +86,7 @@ class ArticleMenuStyleImage extends Component {
 		} = this.props;
 
 		const library = {
-			saveMediaType: 'article',
+			saveMediaType: isVolunteer ? 'article' : 'org',
 			articleID,
 			orgID,
 			type: 'article',
@@ -151,11 +152,13 @@ function mapStateToProps(state, props) {
 	const info = util.getValue(gbx3, 'info', {});
 	const articleID = util.getValue(info, 'articleID');
 	const orgID = util.getValue(info, 'orgID');
+	const isVolunteer = util.getValue(gbx3, 'admin.isVolunteer');
 
 	return {
 		modalID,
 		articleID,
-		orgID
+		orgID,
+		isVolunteer
 	}
 }
 

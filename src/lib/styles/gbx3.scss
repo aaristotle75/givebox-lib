@@ -1,9 +1,14 @@
 @import 'variables.scss';
 
 .gbx3LayoutBackground {
-	position: relative;
-	height: 100vh;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
 	width: 100%;
+	height: auto;
+	min-height: 100%;
 	@media (max-width: $breakpoint) {
 		//display: none;
 	}
@@ -48,7 +53,7 @@
 	overflow-y: scroll;
 	overflow-x: hidden;
 	-webkit-overflow-scrolling: auto;
-	background: #ffffff;
+	background: transparent;
 	padding: 20px;
 
 	@media (max-width: $breakpoint) {
@@ -370,6 +375,7 @@
 		padding: 10px;
 		background: $white;
 		overflow: hidden;
+		@include box-shadow(1px 1px 5px 3px rgba(0, 0, 0, 0.25));
 		@include bgGradient(to bottom, $light-gray 0%, $white 20%);
 		@media (max-width: $breakpoint) {
 			border-radius: 0px !important;
@@ -501,8 +507,9 @@
 		width: 100%;
 		overflow: hidden;
 		white-space: nowrap;
-		background: transparent;
+		background: $white;
 		@include transition(height .25s);
+		z-index: 3;
 
 		.avatarLink button.link {
 			color: $mainColor;
@@ -564,6 +571,8 @@
 		width: 100%;
 		background: linear-gradient(to right, $mainColorMedium 15%, $green 100%);;
 		@include transition(top .25s);
+		@include box-shadow(1px 1px 5px 3px rgba(0, 0, 0, 0.25));
+		z-index: 2;
 	}
 
 	.topPanelContainer {
@@ -880,6 +889,7 @@
 
 	.leftPanel.open {
 		width: $panelWidth;
+		@include box-shadow(0px 2px 2px 1px rgba(0, 0, 0, 0.45));
 	}
 
 	.leftPanel.close {
@@ -952,9 +962,11 @@
 	}
 
 	.stageAligner {
+		position: relative;
 		display: block;
 		margin: 0 auto;
 		padding: 0;
+		height: 100vh;
 		@media (max-width: $breakpoint) {
 			padding: 0;
 		}
@@ -2234,7 +2246,13 @@
 /*--------- CREATE NEW -------*/
 .createStep {
 
+	.stageContainer.open {
+		left: 0;
+	}
+
+
 	.gbx3TopHeader {
+		background: transparent;
 		.avatarLink button.link {
 			color: $white;
 		}

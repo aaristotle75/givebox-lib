@@ -195,7 +195,7 @@ class Design extends React.Component {
 						<div key='receipt' className='gbx3ReceiptLayout'>
 							<div className='gbx3ReceiptContainer'>
 								<div className='block'>
-									<iframe id='emailIframePreview' className='emailIframe' style={{ height: previewMode ? '100vh' : 0 }} ref={this.iframePreviewRef}></iframe>
+									<iframe id='emailIframePreview' className='emailIframe' style={{ height: previewMode ? '100vh' : 0 }} ref={this.iframePreviewRef} title='Email iFrame Preview'></iframe>
 									<ReceiptEmail iframePreviewRef={this.iframePreviewRef} />
 								</div>
 							</div>
@@ -267,10 +267,13 @@ class Design extends React.Component {
 					}
 				</div>
 				<div
-					key={'form'}
-					className={`stageContainer ${open ? 'open' : 'close'}`}
+					id='GBX3StageAligner'
+					className='stageAligner'
 				>
-					<div className='stageAligner'>
+					<div
+						key={'form'}
+						className={`stageContainer ${open ? 'open' : 'close'}`}
+					>
 						{this.renderDisplay()}
 					</div>
 				</div>

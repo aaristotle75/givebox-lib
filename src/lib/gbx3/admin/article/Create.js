@@ -153,9 +153,6 @@ class Create extends React.Component {
 
 		return (
 			<div className='createStep'>
-				<div className={`leftPanel ${open ? 'open' : 'close'}`}>
-					<CreateMenu />
-				</div>
 				<div className={`stageContainer ${open ? 'open' : 'close'}`}>
 					<div className='stageAligner'>
 						<div className='gbx3Centered'>

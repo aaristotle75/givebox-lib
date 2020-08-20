@@ -85,6 +85,16 @@ class Layout extends React.Component {
 
 		const style = { maxWidth: '850px' };
 
+		console.log('execute stage', stage);
+		let gbx3BackgroundHeight = 'auto';
+		if (stage === 'admin') {
+			const el = document.getElementById('GBX3StageAligner');
+			if (el) {
+				const height = el.clientHeight + 100;
+				gbx3BackgroundHeight = `${height}px`;
+			}
+		}
+
 		const avatarMenu =
 			<div className='hasAccessToEditPublic'>
 				<AvatarMenuButton />
@@ -124,7 +134,7 @@ class Layout extends React.Component {
 					}
 				</div>
 			: ''}
-			<div className='gbx3LayoutBackground'></div>
+			<div style={{ height: gbx3BackgroundHeight }} className='gbx3LayoutBackground'></div>
 			<div id='gbx3Layout' className={`gbx3Layout ${noAccess ? 'noAccess' : ''}`}>
 				{showAvatarMenu ? avatarMenu : '' }
 				<div

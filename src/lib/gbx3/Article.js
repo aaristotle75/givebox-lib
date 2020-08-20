@@ -151,7 +151,11 @@ class Article extends React.Component {
 				const blocksUpdated = await this.props.updateBlocks(blockType, blocks);
 				if (layoutsUpdated) updated.push('layoutsUpdated');
 				if (blocksUpdated) updated.push('blocksUpdated');
-				if (updated.length === 2) this.props.saveGBX3(blockType);
+				if (updated.length === 2) this.props.saveGBX3(blockType, {
+					callback: () => {
+						//this.props.setStyle();
+					}
+				});
 			} else {
 				this.props.updateLayouts(blockType, layouts);
 			}

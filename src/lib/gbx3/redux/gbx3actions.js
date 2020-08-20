@@ -746,6 +746,7 @@ export function setStyle(options = {}) {
 		const globals = util.getValue(gbx3, 'globals', {});
 		const gbxStyle = util.getValue(globals, 'gbxStyle', {});
 		const info = util.getValue(gbx3, 'info', {});
+		const stage = util.getValue(info, 'stage');
 		const breakpoint = util.getValue(info, 'breakpoint');
 		const color = opts.primaryColor || util.getValue(gbxStyle, 'primaryColor');
 		const textColor = opts.textColor || util.getValue(gbxStyle, 'textColor', '#253655');
@@ -762,6 +763,7 @@ export function setStyle(options = {}) {
 		let colorStyleStr = '';
 		let pageColorStyleStr = '';
 		let backgroundColorStyleStr = '';
+		let backgroundImageInnerHTML = '';
 		let styleInnerHTML = '';
 
 		if (textColor) {
@@ -861,31 +863,42 @@ export function setStyle(options = {}) {
 			`;
 		}
 
-		let backgroundImageInnerHTML = '';
-		if (breakpoint === 'desktop') {
-			backgroundImageInnerHTML = `
-				.gbx3LayoutBackground {
-						background-image: url("${backgroundImage}");
-						background-position: center;
-						background-repeat: no-repeat;
-						background-size: cover;
-						filter: blur(${backgroundBlur}px);
-						-webkit-filter: blur(${backgroundBlur}px);
-				}
-			`;
-		}
-
 		if (backgroundColor || color) {
 			const bgColor = backgroundColor || color;
 			const rgb = util.hexToRgb(bgColor);
-			const bgColor1 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${backgroundOpacity})`;
+			const bgColorLight = util.pSBC(0.2, bgColor);
+			const rgbLight = util.hexToRgb(bgColorLight);
+
+			const bgColor1 = `rgba(${rgbLight.r}, ${rgbLight.g}, ${rgbLight.b}, ${backgroundOpacity})`;
 			const bgColor2 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${backgroundOpacity})`;
+
+			/*
 			backgroundColorStyleStr = `
 				.gbx3Layout:not(.gbx3ReceiptLayout) {
 					background: ${bgColor1};
-					background: -webkit-linear-gradient(to bottom, ${bgColor1} 0%, ${bgColor2} 100%);
-					background: -moz-linear-gradient(to bottom, ${bgColor1} 0%, ${bgColor2} 100%);
-					background: linear-gradient(to bottom, ${bgColor1} 0%, ${bgColor2} 100%);
+					background: -webkit-linear-gradient(to bottom, ${bgColor1} 0%, ${bgColor2} 70%) no-repeat center center fixed;
+					background: -moz-linear-gradient(to bottom, ${bgColor1} 0%, ${bgColor2} 70%) no-repeat center center fixed;
+					background: linear-gradient(to bottom, ${bgColor1} 0%, ${bgColor2} 70%) no-repeat center center fixed;
+					-webkit-background-size: cover;
+					-moz-background-size: cover;
+					-o-background-size: cover;
+					background-size: cover;
+				}
+			`;
+			*/
+
+			backgroundImageInnerHTML = `
+				.gbx3LayoutBackground {
+					background: ${bgColor1};
+					background: -webkit-linear-gradient(to bottom, ${bgColor1} 0%, ${bgColor2} 70%), url("${backgroundImage}") no-repeat center center fixed;
+					background: -moz-linear-gradient(to bottom, ${bgColor1} 0%, ${bgColor2} 70%), url("${backgroundImage}") no-repeat center center fixed;
+					background: linear-gradient(to bottom, ${bgColor1} 0%, ${bgColor2} 70%), url("${backgroundImage}") no-repeat center center fixed;
+					-webkit-background-size: cover;
+					-moz-background-size: cover;
+					-o-background-size: cover;
+					background-size: cover;
+					filter: blur(${backgroundBlur}px);
+					-webkit-filter: blur(${backgroundBlur}px);
 				}
 			`;
 		}
@@ -964,8 +977,14 @@ export function setStyle(options = {}) {
 		if (backgroundImageInnerHTML) styleInnerHTML = styleInnerHTML + backgroundImageInnerHTML;
 
 		if (styleInnerHTML) {
-			const styleEl = document.head.appendChild(document.createElement('style'));
-			styleEl.innerHTML = styleInnerHTML;
+			const el = document.getElementById('customGBX3Style');
+			if (el) {
+				el.innerHTML = styleInnerHTML;
+			} else {
+				const styleEl = document.head.appendChild(document.createElement('style'));
+				styleEl.setAttribute('id', 'customGBX3Style');
+				styleEl.innerHTML = styleInnerHTML;
+			}
 		}
 	}
 }

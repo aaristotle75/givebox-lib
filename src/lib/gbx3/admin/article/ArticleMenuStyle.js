@@ -316,16 +316,6 @@ class ArticleMenuStyle extends React.Component {
 							extraColors={extraColors}
 						/>
 					</li>
-					<ArticleMenuStyleImage
-						imageURL={backgroundImage}
-						selectedCallback={(imageURL, changed) => {
-							if (changed) this.updateStyle('backgroundImage', imageURL);
-						}}
-						removeImage={() => {
-							this.props.toggleModal('designMenuStyleBackgroundImage', false);
-							this.updateStyle('backgroundImage', '');
-						}}
-					/>
 					<li
 						onClick={() => {
 							const backgroundOpacityDropdownOpen = this.state.backgroundOpacityDropdownOpen ? false : true;
@@ -351,6 +341,16 @@ class ArticleMenuStyle extends React.Component {
 							options={this.opacityOptions()}
 						/>
 					</li>
+					<ArticleMenuStyleImage
+						imageURL={backgroundImage}
+						selectedCallback={(imageURL, changed) => {
+							if (changed) this.updateStyle('backgroundImage', imageURL);
+						}}
+						removeImage={() => {
+							this.props.toggleModal('designMenuStyleBackgroundImage', false);
+							this.updateStyle('backgroundImage', '');
+						}}
+					/>
 					<li
 						onClick={() => {
 							const backgroundBlurDropdownOpen = this.state.backgroundBlurDropdownOpen ? false : true;
@@ -358,7 +358,7 @@ class ArticleMenuStyle extends React.Component {
 						}}
 						className='stylePanel'
 					>
-						Background Blur
+						Background Image Blur
 						<Dropdown
 							open={backgroundBlurDropdownOpen}
 							portalID={`leftPanel-backgroundBlur`}

@@ -91,10 +91,11 @@ class Media extends Component {
 			image,
 			video,
 			mediaType,
-			hasBeenUpdated,
 			maxWidth,
 			maxHeight
 		} = this.state;
+
+		let hasBeenUpdated = this.state.hasBeenUpdated;
 
 		if (mediaType === 'video' && !video.validatedURL) {
 			this.closeModalAndCancel();
@@ -102,6 +103,9 @@ class Media extends Component {
 			const data = {};
 			const imageURL = util.getValue(image, 'URL');
 			const videoURL = util.getValue(video, 'validatedURL');
+
+			if ((imageURL || videoURL) && !hasBeenUpdated) hasBeenUpdated = true;
+
 			switch (util.getValue(block, 'updateOptions')) {
 				case 'once': {
 					if (imageURL && !util.checkImage(imageURL)) {

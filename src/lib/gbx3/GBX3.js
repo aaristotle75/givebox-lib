@@ -309,7 +309,7 @@ class GBX3 extends React.Component {
 		if (this.props.loading) return <Loader msg='Initiating GBX3' />;
 
 		return (
-			<div className='gbx3'>
+			<div id='gbx3MainWrapper' className='gbx3'>
 				{this.renderStage()}
 				<ModalRoute
 					className='gbx3'
