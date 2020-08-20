@@ -126,6 +126,7 @@ export default class TestForm extends Component {
 			<div>
 				<h2>Form Elements</h2>
 				<div className='formWrapper'>
+					{this.props.dropdown('states', {label: 'States', options: selectOptions.states, value: 'CA'})}
 					<Choice
 						type='checkbox'
 						toggle={true}

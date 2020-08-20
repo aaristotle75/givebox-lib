@@ -151,6 +151,30 @@ export const states = [{
 }, {
   value: 'WY',
   primaryText: 'Wyoming'
+}, {
+  bottom: 'US Territories',
+  style: {
+    color: '#B0BEC5',
+    padding: '15px 25px'
+  }
+}, {
+  value: 'AS',
+  primaryText: 'American Samoa'
+}, {
+  value: 'GU',
+  primaryText: 'Guam'
+}, {
+  value: 'MP',
+  primaryText: 'Northern Mariana Islands'
+}, {
+  value: 'PR',
+  primaryText: 'Puerto Rico'
+}, {
+  value: 'UM',
+  primaryText: 'United States Minor Outlying Islands'
+}, {
+  value: 'VI',
+  primaryText: 'Virgin Islands'
 }];
 export const legalTypes = [//{ value: 'INDIVIDUAL_SOLE_PROPRIETORSHIP', primaryText: 'Sole Proprietor' },
 {

@@ -49,23 +49,30 @@ export const states = [
  { value: 'WA', primaryText: 'Washington' },
  { value: 'WV', primaryText: 'West Virginia' },
  { value: 'WI', primaryText: 'Wisconsin' },
- { value: 'WY', primaryText: 'Wyoming' }
+ { value: 'WY', primaryText: 'Wyoming' },
+ { bottom: 'US Territories', style: { color: '#B0BEC5', padding: '15px 25px'} },
+ { value: 'AS', primaryText: 'American Samoa' },
+ { value: 'GU', primaryText: 'Guam' },
+ { value: 'MP', primaryText: 'Northern Mariana Islands' },
+ { value: 'PR', primaryText: 'Puerto Rico' },
+ { value: 'UM', primaryText: 'United States Minor Outlying Islands' },
+ { value: 'VI', primaryText: 'Virgin Islands' }
 ];
 
 export const legalTypes = [
-  //{ value: 'INDIVIDUAL_SOLE_PROPRIETORSHIP', primaryText: 'Sole Proprietor' },
-  { value: 'CORPORATION', primaryText: 'Corporation' },
-  { value: 'LIMITED_LIABILITY_COMPANY', primaryText: 'Limited Liability Company' },
-  //{ value: 'PARTNERSHIP', primaryText: 'Partnership' },
-  { value: 'TAX_EXEMPT_ORGANIZATION', primaryText: 'Tax Exempt Organization' },
-  //{ value: 'GOVERNMENT_AGENCY', primaryText: 'Government Agency' }
+	//{ value: 'INDIVIDUAL_SOLE_PROPRIETORSHIP', primaryText: 'Sole Proprietor' },
+	{ value: 'CORPORATION', primaryText: 'Corporation' },
+	{ value: 'LIMITED_LIABILITY_COMPANY', primaryText: 'Limited Liability Company' },
+	//{ value: 'PARTNERSHIP', primaryText: 'Partnership' },
+	{ value: 'TAX_EXEMPT_ORGANIZATION', primaryText: 'Tax Exempt Organization' },
+	//{ value: 'GOVERNMENT_AGENCY', primaryText: 'Government Agency' }
 ];
 
 
 export const articleKinds = [
-  { value: 'fundraiser', primaryText: 'Fundraiser' },
-  { value: 'event', primaryText: 'Event' },
-  { value: 'invoice', primaryText: 'Invoice' },
-  { value: 'membership', primaryText: 'Membership' },
-  { value: 'sweepstake', primaryText: 'Sweepstake' },
+	{ value: 'fundraiser', primaryText: 'Fundraiser' },
+	{ value: 'event', primaryText: 'Event' },
+	{ value: 'invoice', primaryText: 'Invoice' },
+	{ value: 'membership', primaryText: 'Membership' },
+	{ value: 'sweepstake', primaryText: 'Sweepstake' },
 ];
