@@ -85,14 +85,11 @@ class Layout extends React.Component {
 
 		const style = { maxWidth: '850px' };
 
-		console.log('execute stage', stage);
 		let gbx3BackgroundHeight = 'auto';
-		if (stage === 'admin') {
-			const el = document.getElementById('GBX3StageAligner');
-			if (el) {
-				const height = el.clientHeight + 100;
-				gbx3BackgroundHeight = `${height}px`;
-			}
+		const el = document.getElementById('GBX3StageAligner');
+		if (el) {
+			const height = el.clientHeight + 100;
+			gbx3BackgroundHeight = `${height}px`;
 		}
 
 		const avatarMenu =

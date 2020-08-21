@@ -902,8 +902,7 @@ export function setStyle(options = {}) {
 				}
 			`;
 		}
-
-		console.log('execute setStyle', color);
+		
 		if (color) {
 			const rgb = util.hexToRgb(color);
 			//const color2 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .1)`;
