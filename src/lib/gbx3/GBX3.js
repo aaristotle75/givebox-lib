@@ -257,13 +257,9 @@ class GBX3 extends React.Component {
 
 	loadGBX3(articleID) {
 
-		const {
-			primaryColor
-		} = this.props;
-
 		this.props.loadGBX3(articleID, (res, err) => {
 			if (!err && !util.isEmpty(res)) {
-				this.props.setStyle({ primaryColor });
+				this.props.setStyle();
 				this.setRecaptcha();
 				this.setTracking();
 			}
