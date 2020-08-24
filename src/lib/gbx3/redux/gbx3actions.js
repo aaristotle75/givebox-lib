@@ -172,6 +172,19 @@ export function updateAdmin(admin) {
 	}
 }
 
+export function updateHelperBlocks(blockType, key, value) {
+	return (dispatch, getState) => {
+		const helperBlocks = {
+			...util.getValue(getState(), 'gbx3.admin.helperBlocks', {}),
+			[blockType]: {
+				...util.getValue(getState(), `gbx3.admin.helperBlocks.${blockType}`, {}),
+				[key]: value
+			}
+		};
+		dispatch(updateAdmin({ helperBlocks }));
+	}
+}
+
 export function updateAvailableBlocks(blockType, available) {
 	return (dispatch, getState) => {
 		const availableBlocks = {
@@ -902,7 +915,7 @@ export function setStyle(options = {}) {
 				}
 			`;
 		}
-		
+
 		if (color) {
 			const rgb = util.hexToRgb(color);
 			//const color2 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .1)`;

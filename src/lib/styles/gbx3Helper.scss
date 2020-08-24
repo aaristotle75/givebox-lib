@@ -1,0 +1,182 @@
+@import 'variables.scss';
+
+$helperColor: $pinkSlightlyDarker;
+
+.gbx3HelperButton {
+	position: fixed;
+	left: 20px;
+	top: 100px;
+}
+
+.gbx3Helper {
+
+	position: absolute;
+	z-index: 9999999;
+
+	.helperContainer {
+		position: relative;
+		display: block;
+		text-align: center;
+		vertical-align: middle;
+		max-width: 300px;
+		color: #fff;
+		cursor: pointer;
+
+		.helperText {
+			display: block;
+			font-size: 14px;
+		}
+	}
+
+	.helperContainer {
+
+		.helperIcon {
+			display: block;
+			.icon {
+				 font-size: 40px;
+			}
+		}
+
+		h1 {
+			 font-size: 20px;
+			 margin: 0 0 5px 0;
+	 }
+
+	 .text {
+			font-size: 14px;
+			color: #fff;
+		}
+
+	}
+
+	.helperDefaultActions {
+		position: absolute;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		bottom: -30px;
+		right: 0;
+		width: 100%;
+		background: $white;
+		height: 30px;
+		border-bottom-left-radius: 20px;
+		border-bottom-right-radius: 20px;
+
+		button.link {
+			display: flex;
+			align-items: center;
+			font-weight: 400;
+			.icon {
+				margin-right: 5px;
+			}
+		}
+	}
+
+	.helperTop {
+		position: relative;
+		background: $helperColor;
+		border-radius: .4em;
+		padding: 10px 30px 10px 30px;
+		animation: ButtonPulsate 2s ease-in-out infinite;
+		-webkit-animation: ButtonPulsate 2s ease-in-out infinite;
+	}
+
+	.helperTop:hover {
+		background: transparentize($helperColor, .1);
+	}
+
+	.helperTop:after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 50%;
+		width: 0;
+		height: 0;
+		border: 14px solid transparent;
+		border-bottom-color: $helperColor;
+		border-top: 0;
+		border-left: 0;
+		margin-left: -7px;
+		margin-top: -14px;
+		overflow: visible;
+	}
+
+	.helperRight {
+		position: relative;
+		background: $helperColor;
+		border-radius: .4em;
+		padding: 10px 30px 10px 30px;
+	}
+
+	.helperRight:hover {
+		background: transparentize($helperColor, .1);
+	}
+
+	.helperRight:after {
+		content: '';
+		position: absolute;
+		right: 0;
+		top: 50%;
+		width: 0;
+		height: 0;
+		border: 14px solid transparent;
+		border-left-color: $helperColor;
+		border-right: 0;
+		border-bottom: 0;
+		margin-top: -7px;
+		margin-right: -14px;
+	}
+
+	.helperBottom {
+		position: relative;
+		background: $helperColor;
+		border-radius: .4em;
+		padding: 10px 30px 10px 30px;
+	}
+
+	.helperBottom:hover {
+		background: transparentize($helperColor, .1);
+	}
+
+	.helperBottom:after {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		left: 50%;
+		width: 0;
+		height: 0;
+		border: 14px solid transparent;
+		border-top-color: $helperColor;
+		border-bottom: 0;
+		border-left: 0;
+		margin-left: -7px;
+		margin-bottom: -14px;
+	}
+
+	.helperLeft {
+		position: relative;
+		background: $helperColor;
+		border-radius: .4em;
+		padding: 10px 30px 10px 30px;
+	}
+
+	.helperLeft:hover {
+		background: transparentize($helperColor, .1);
+	}
+
+	.helperLeft:after {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 50%;
+		width: 0;
+		height: 0;
+		border: 14px solid transparent;
+		border-right-color: $helperColor;
+		border-left: 0;
+		border-bottom: 0;
+		margin-top: -7px;
+		margin-left: -14px;
+	}
+
+}

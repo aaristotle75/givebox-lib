@@ -22,6 +22,7 @@ import { FaPalette } from 'react-icons/fa';
 import { GoBeaker } from 'react-icons/go';
 import { FiPenTool } from 'react-icons/fi';
 import { AiOutlineNotification } from 'react-icons/ai';
+import Helper from '../../Helper';
 
 const GBX3_URL = process.env.REACT_APP_GBX_URL;
 
@@ -274,6 +275,7 @@ class Design extends React.Component {
 						key={'form'}
 						className={`stageContainer ${open ? 'open' : 'close'}`}
 					>
+						<Helper blockType='article' />
 						{this.renderDisplay()}
 					</div>
 				</div>

@@ -146,6 +146,23 @@ export function gbx3(state = {
 				'contentBlock',
 				'imageBlock'
 			]
+		},
+		helperBlocks: {
+			article: {
+				helperOpen: true,
+				helperCheckStep: true,
+				helperStep: 1,
+				helpersAvailable: [
+					{ step: 1, blockName: 'logo' },
+					{ step: 2, blockName: 'title' },
+					{ step: 3, blockName: 'media' },
+					{ step: 4, blockName: 'description' },
+					{ step: 5, blockName: 'share' }
+				]
+			},
+			org: {
+
+			}
 		}
 	},
 	fees: {},

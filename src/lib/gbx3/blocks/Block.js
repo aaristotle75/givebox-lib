@@ -250,7 +250,6 @@ function mapStateToProps(state, props) {
 	const fieldValue = util.getValue(data, dataField);
 	const modalID = `modalBlock-${blockType}-${props.name}`;
 
-
 	return {
 		data,
 		editable,
