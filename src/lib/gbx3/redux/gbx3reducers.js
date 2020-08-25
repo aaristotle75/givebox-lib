@@ -83,7 +83,7 @@ export function gbx3(state = {
 	saveStatus: 'done',
 	info: {
 		project: 'share',
-		stage: 'public',
+		stage: null,
 		display: 'shop',
 		preview: false,
 		breakpoint: 'desktop',
@@ -116,6 +116,7 @@ export function gbx3(state = {
 	},
 	data: {},
 	admin: {
+		loadingLayout: true,
 		editBlock: '',
 		editBlockJustAdded: false,
 		open: false,
@@ -149,15 +150,16 @@ export function gbx3(state = {
 		},
 		helperBlocks: {
 			article: {
-				helperOpen: true,
-				helperCheckStep: true,
-				helperStep: 1,
+				helperSidebarShow: false,
+				helperOpen: false,
+				helperStep: 3,
+				helper: {},
 				helpersAvailable: [
-					{ step: 1, blockName: 'logo' },
-					{ step: 2, blockName: 'title' },
-					{ step: 3, blockName: 'media' },
-					{ step: 4, blockName: 'description' },
-					{ step: 5, blockName: 'share' }
+					{ step: 1, blockName: 'logo', todo: true },
+					{ step: 2, blockName: 'title', todo: true },
+					{ step: 3, blockName: 'media', todo: true },
+					{ step: 4, blockName: 'description', todo: true },
+					{ step: 5, blockName: 'share', todo: true }
 				]
 			},
 			org: {

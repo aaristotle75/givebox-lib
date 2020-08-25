@@ -2,6 +2,14 @@
 
 $breakpoint: 768px;
 
+.gbx3.popupWrapper {
+	.popupOverlay {
+		position: absolute;
+		background: transparentize($white, .3);
+		overflow-y: auto;
+	}
+}
+
 .gbx3.modal {
 	.modalOverlay {
 		background: transparentize($very-light-gray, .2);

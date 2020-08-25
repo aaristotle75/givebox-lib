@@ -9,6 +9,7 @@ import { toggleModal } from '../../api/actions';
 import { defaultAmountHeight } from '../blocks/amounts/amountsStyle';
 import { blockTemplates, defaultBlocks } from '../blocks/blockTemplates';
 import { createData } from '../admin/article/createTemplates';
+import { helpers } from '../helpers/helperTemplates';
 import has from 'has';
 const merge = require('deepmerge');
 
@@ -169,6 +170,71 @@ export function updateAdmin(admin) {
 	return {
 		type: types.UPDATE_ADMIN,
 		admin
+	}
+}
+
+export function closeHelper(blockType) {
+	return (dispatch, getState) => {
+		dispatch(updateHelperBlocks(blockType, 'helperOpen', false));
+		dispatch(updateHelperBlocks(blockType, 'helperSidebarShow', true));
+	}
+}
+
+export function nextHelperStep(blockType, check = true, startFromBeginning = false ) {
+	return (dispatch, getState) => {
+		const gbx3 = util.getValue(getState(), 'gbx3', {});
+		const helperBlocks = util.getValue(gbx3, `admin.helperBlocks.${blockType}`, {});
+		const helperStep = startFromBeginning ? 0 : util.getValue(helperBlocks, 'helperStep');
+		const helpersAvailable = util.getValue(helperBlocks, 'helpersAvailable', []);
+
+		let nextStep = null;
+		let completed = false;
+		Object.entries(helpersAvailable).forEach(([key, value]) => {
+			if (!nextStep && value.todo && ( value.step > helperStep)) {
+				nextStep = value.step;
+			}
+			if (!value.todo) completed = true;
+		});
+		dispatch(updateHelperBlocks(blockType, 'helperStep', nextStep));
+		if (!completed) {
+			dispatch(updateHelperBlocks(blockType, 'helperSidebarShow', true));
+			dispatch(updateHelperBlocks(blockType, 'helperOpen', false));
+		}
+		if (check) dispatch(checkForHelper(blockType, nextStep));
+	}
+}
+
+export function checkForHelper(blockType, nextStep) {
+	return (dispatch, getState) => {
+		const gbx3 = util.getValue(getState(), 'gbx3', {});
+		const data = util.getValue(gbx3, 'data', {});
+		const helpersTurnedOff = util.getValue(getState(), `preferences.gbx3Helpers.${blockType}`);
+		const helperBlocks = util.getValue(gbx3, `admin.helperBlocks.${blockType}`, {});
+		const helperOpen = util.getValue(helperBlocks, 'helperOpen');
+		const helperStep = nextStep || util.getValue(helperBlocks, 'helperStep');
+		const helpersAvailable = util.getValue(helperBlocks, 'helpersAvailable', []);
+		const currentHelper = helpersAvailable.find(h => h.step === helperStep);
+		const currentHelperBlockName = util.getValue(currentHelper, 'blockName');
+		const helper = util.getValue(helpers, `${blockType}.${currentHelperBlockName}`, {});
+		const isVolunteer = util.getValue(gbx3, 'admin.isVolunteer');
+
+		if (!helpersTurnedOff) {
+			if (!helperOpen && !util.isEmpty(helper)) {
+				if (isVolunteer && util.getValue(helper, 'volunteerRestricted')) {
+					dispatch(nextHelperStep(blockType));
+					return;
+				} else {
+					dispatch(updateHelperBlocks(blockType, 'helper', helper));
+					dispatch(updateHelperBlocks(blockType, 'helperOpen', true));
+					dispatch(updateHelperBlocks(blockType, 'helperSidebarShow', false));
+					return;
+				}
+			} else {
+				dispatch(updateHelperBlocks(blockType, 'helperSidebarShow', true));
+				return;
+			}
+		}
+		return;
 	}
 }
 

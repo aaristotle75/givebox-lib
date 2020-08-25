@@ -20,6 +20,7 @@ import {
 	updateInfo,
 	saveGBX3
 } from './redux/gbx3actions';
+import Helper from './helpers/Helper';
 import Footer from './Footer';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
@@ -109,8 +110,10 @@ class Article extends React.Component {
 
 	async onBreakpointChange(breakpoint, cols) {
 		const {
-			editable
+			editable,
+			stage
 		} = this.props;
+		console.log('execute onBreakpointChange', stage);
 		const infoUpdated = await this.props.updateInfo({ breakpoint });
 		if (editable) this.props.updateAdmin({ editBlock: '' });
 		if (infoUpdated) this.props.setStyle();
@@ -357,6 +360,10 @@ class Article extends React.Component {
 						onClickVolunteerFundraiser={this.props.onClickVolunteerFundraiser}
 					/>
 				</div>
+				<Helper
+					blockType='article'
+					portalBindID='gbx3Layout'
+				/>
 				{breakpoint === 'mobile' ? <div className='bottomOffset'>&nbsp;</div> : <></>}
 			</>
 		)
@@ -369,6 +376,7 @@ function mapStateToProps(state, props) {
 	const gbx3 = util.getValue(state, 'gbx3', {});
 	const admin = util.getValue(gbx3, 'admin', {});
 	const info = util.getValue(gbx3, 'info', {});
+	const stage = util.getValue(info, 'stage');
 	const blockType = 'article';
 	const layouts = util.getValue(gbx3, `layouts.${blockType}`, {});
 	const blocks = util.getValue(gbx3, `blocks.${blockType}`, {});
@@ -380,6 +388,7 @@ function mapStateToProps(state, props) {
 	const breakpoint = util.getValue(info, 'breakpoint');
 
 	return {
+		stage,
 		hasAccessToEdit,
 		layouts,
 		editable,

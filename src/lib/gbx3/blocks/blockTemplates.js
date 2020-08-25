@@ -14,17 +14,6 @@ export const logo = {
 			maxSize: '55px',
 			size: 'small',
 			borderRadius: 20
-		},
-		helper: {
-			volunteer: false,
-			title: 'Add Your Logo',
-			text: 'A logo adds branded trust to your payment form.',
-			style: {
-				top: -10,
-				left: 75
-			},
-			className: 'helperLeft',
-			action: 'edit'
 		}
 	},
 	grid: {
@@ -63,16 +52,7 @@ export const title = {
 	mobileRelativeBlock: 2,
 	mobileClassName: 'mobileRelativeBlockTop',
 	options: {
-		defaultFormat: '<span style="font-size:16px;">{{TOKEN}}</span>',
-		helper: {
-			title: 'Enter a Title',
-			text: 'A good title...',
-			style: {
-				top: 0,
-				right: 0
-			},
-			className: 'helperBottom'
-		}
+		defaultFormat: '<span style="font-size:16px;">{{TOKEN}}</span>'
 	},
 	grid: {
 		desktop: { i: 'title', x: 1, y: 2, w: 5, h: 3, enabled: true },
@@ -97,15 +77,6 @@ export const media = {
 		},
 		video: {
 			auto: false
-		},
-		helper: {
-			title: 'Add an Image or Video',
-			text: 'A good image or video...',
-			style: {
-				top: 0,
-				right: 0
-			},
-			className: 'helperLeft'
 		}
 	},
 	grid: {
@@ -308,14 +279,6 @@ export const description = {
 			enabled: true,
 			text: 'Learn More',
 			style: {}
-		},
-		helper: {
-			title: 'Enter a Description',
-			text: 'A good desc...',
-			style: {
-				top: 0,
-			},
-			className: 'helperLeft'
 		}
 	},
 	grid: {

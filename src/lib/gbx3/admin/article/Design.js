@@ -22,7 +22,6 @@ import { FaPalette } from 'react-icons/fa';
 import { GoBeaker } from 'react-icons/go';
 import { FiPenTool } from 'react-icons/fi';
 import { AiOutlineNotification } from 'react-icons/ai';
-import Helper from '../../Helper';
 
 const GBX3_URL = process.env.REACT_APP_GBX_URL;
 
@@ -114,7 +113,7 @@ class Design extends React.Component {
 				<div key={'middle'} className='button-group'>
 					<GBLink className={`ripple link ${createType === 'article' ? 'selected' : ''}`} onClick={() => this.switchCreateType('article')}><span className='centered'>{contentObj.article.icon}<span className='menuText'>{contentObj.article.menuText}</span></span></GBLink>
 					<GBLink className={`ripple link ${createType === 'receipt' ? 'selected' : ''}`} onClick={() => this.switchCreateType('receipt')}><span className='centered'>{contentObj.receipt.icon}<span className='menuText'>{contentObj.receipt.menuText}</span></span></GBLink>
-					<ModalLink id='share' className={`ripple link ${createType === 'share' ? 'selected' : ''}`}><span className='centered'>{contentObj.share.icon}<span className='menuText'>{contentObj.share.menuText}</span></span></ModalLink>
+					<ModalLink id='share' className={`ripple link ${createType === 'share' ? 'selected' : ''}`}><span className='centered'>{contentObj.share.icon}<span id='helper-share' className='menuText'>{contentObj.share.menuText}</span></span></ModalLink>
 				</div>
 			);
 		}
@@ -275,7 +274,6 @@ class Design extends React.Component {
 						key={'form'}
 						className={`stageContainer ${open ? 'open' : 'close'}`}
 					>
-						<Helper blockType='article' />
 						{this.renderDisplay()}
 					</div>
 				</div>
