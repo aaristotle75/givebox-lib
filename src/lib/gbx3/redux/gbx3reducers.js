@@ -148,24 +148,11 @@ export function gbx3(state = {
 				'imageBlock'
 			]
 		},
-		helperBlocks: {
-			article: {
-				helperSidebarShow: false,
-				helperOpen: false,
-				helperStep: 3,
-				helper: {},
-				helpersAvailable: [
-					{ step: 1, blockName: 'logo', todo: true },
-					{ step: 2, blockName: 'title', todo: true },
-					{ step: 3, blockName: 'media', todo: true },
-					{ step: 4, blockName: 'description', todo: true },
-					{ step: 5, blockName: 'share', todo: true }
-				]
-			},
-			org: {
-
-			}
-		}
+	},
+	helperBlocks: {
+		article: {},
+		org: {},
+		receipt: {}
 	},
 	fees: {},
 	cart: defaultCart,
@@ -271,6 +258,16 @@ export function gbx3(state = {
 					[action.name]: {
 						...state.globals[action.name],
 						...action.global
+					}
+				}
+			});
+		case types.UPDATE_HELPERS:
+			return Object.assign({}, state, {
+				helperBlocks: {
+					...state.helperBlocks,
+					[action.blockType]: {
+						...state.helperBlocks[action.blockType],
+						...action.helperBlocks
 					}
 				}
 			});

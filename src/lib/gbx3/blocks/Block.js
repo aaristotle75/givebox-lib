@@ -47,6 +47,10 @@ class Block extends React.Component {
 		this.props.updateAdmin({ editBlock: `${blockType}-${this.props.name}`, editBlockJustAdded: false });
 	}
 
+	doThisLater() {
+
+	}
+
 	onClickRemove() {
 		const {
 			blockType
@@ -75,7 +79,8 @@ class Block extends React.Component {
 		const {
 			name,
 			block,
-			blockType
+			blockType,
+			helperBlocks
 		} = this.props;
 
 		const opts = {
@@ -101,6 +106,7 @@ class Block extends React.Component {
 				name,
 				block,
 				blockType,
+				helperBlocks,
 				grid,
 				opts
 			});
@@ -249,6 +255,7 @@ function mapStateToProps(state, props) {
 	const data = util.getValue(gbx3, 'data', {});
 	const fieldValue = util.getValue(data, dataField);
 	const modalID = `modalBlock-${blockType}-${props.name}`;
+	const helperBlocks = util.getValue(gbx3, `helperBlocks.${blockType}`, {});
 
 	return {
 		data,
@@ -271,6 +278,7 @@ function mapStateToProps(state, props) {
 		globalButtonStyle,
 		globalButton,
 		primaryColor,
+		helperBlocks,
 		breakpoint: util.getValue(info, 'breakpoint')
 	}
 }

@@ -14,6 +14,8 @@ import {
 	setStyle,
 	updateAdmin,
 	updateLayouts,
+	updateHelperBlocks,
+	nextHelperStep,
 	updateBlocks,
 	updateBlock,
 	updateData,
@@ -51,6 +53,7 @@ class Article extends React.Component {
 			name,
 			blockType,
 			block,
+			helperBlocks,
 			grid,
 			opts
 		} = args;
@@ -67,9 +70,9 @@ class Article extends React.Component {
 		const desktopGrid = breakpoint === 'mobile' && util.getValue(block, 'mobileNoUpdateDesktopGrid') ? { ...util.getValue(block, 'grid.desktop', {}) } :  { ...util.getValue(block, 'grid.desktop', {}), ...grid };
 
 		if (opts.hasBeenUpdated) {
-			const updated = [];
-			const checkForUpdatesCount = !util.isEmpty(data) ? 2 : 1;
+			let checkForUpdatesCount = 1;
 
+			const updated = [];
 			const blockToUpdate = {
 				...block,
 				content,
@@ -85,19 +88,36 @@ class Article extends React.Component {
 					...options
 				}
 			}
-
 			const blocksUpdated = await this.props.updateBlock(blockType, name, blockToUpdate);
 			if (blocksUpdated) updated.push('blocksUpdated');
 
+
 			if (!util.isEmpty(data)) {
+				checkForUpdatesCount = checkForUpdatesCount + 1;
 				const dataUpdated = await this.props.updateData(data);
 				if (dataUpdated) updated.push('dataUpdated');
+			}
+
+			const helpersAvailable = util.getValue(helperBlocks, 'helpersAvailable', []);
+			const helpersCompleted = util.getValue(helperBlocks, 'completed', []);
+			const helperIndex = helpersAvailable.findIndex(h => h.blockName === name);
+
+			if (helperIndex > -1 && !helpersCompleted.includes(name)) {
+				checkForUpdatesCount = checkForUpdatesCount + 1;
+				helpersCompleted.push(name);
+				const helperBlocksUpdated = await this.props.updateHelperBlocks(blockType, { completed: helpersCompleted });
+				if (helperBlocksUpdated) updated.push('helpersUpdated');
 			}
 
 			if (updated.length === checkForUpdatesCount) {
 				if (saveGBX3 && hasBeenUpdated) {
 					this.props.saveGBX3(blockType, {
-						callback,
+						callback: () => {
+							callback();
+							if (helperIndex > -1) {
+								this.props.nextHelperStep(blockType);
+							}
+						},
 						updateLayout: !util.isEmpty(grid) ? true : false
 					});
 				}
@@ -113,7 +133,6 @@ class Article extends React.Component {
 			editable,
 			stage
 		} = this.props;
-		console.log('execute onBreakpointChange', stage);
 		const infoUpdated = await this.props.updateInfo({ breakpoint });
 		if (editable) this.props.updateAdmin({ editBlock: '' });
 		if (infoUpdated) this.props.setStyle();
@@ -404,6 +423,8 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
 	updateLayouts,
+	updateHelperBlocks,
+	nextHelperStep,
 	updateBlocks,
 	updateBlock,
 	updateData,

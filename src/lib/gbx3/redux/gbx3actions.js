@@ -9,7 +9,7 @@ import { toggleModal } from '../../api/actions';
 import { defaultAmountHeight } from '../blocks/amounts/amountsStyle';
 import { blockTemplates, defaultBlocks } from '../blocks/blockTemplates';
 import { createData } from '../admin/article/createTemplates';
-import { helpers } from '../helpers/helperTemplates';
+import { helperTemplates } from '../helpers/helperTemplates';
 import has from 'has';
 const merge = require('deepmerge');
 
@@ -175,79 +175,145 @@ export function updateAdmin(admin) {
 
 export function closeHelper(blockType) {
 	return (dispatch, getState) => {
-		dispatch(updateHelperBlocks(blockType, 'helperOpen', false));
-		dispatch(updateHelperBlocks(blockType, 'helperSidebarShow', true));
+		dispatch(updateHelperBlocks(blockType, {
+			helperOpen: false,
+			helperSidebarShow: true
+		}));
 	}
 }
 
-export function nextHelperStep(blockType, check = true, startFromBeginning = false ) {
+export function checkHelperIfHasDefaultValue(blockType, helper) {
+	return (dispatch, getState) => {
+		const kind = util.getValue(getState(), `gbx3.info.kind`);
+		let data = null;
+		let isDefault = false;
+		switch (blockType) {
+			case 'article':
+			default: {
+				data = util.getValue(getState(), `gbx3.data`, {});
+				break;
+			}
+		}
+		const value = util.getValue(data, util.getValue(helper, 'field'));
+		if (!util.checkImage(value)) isDefault = false;
+
+		switch (util.getValue(helper, 'defaultCheck')) {
+			case 'image': {
+
+				break;
+			}
+
+			case 'text': {
+				if (value.includes(`New ${types2.kind(kind).name}`)) isDefault = true;
+				if (!value) isDefault = true;
+				break;
+			}
+
+			case 'share': {
+				isDefault = true;
+				break;
+			}
+			// no default
+		}
+
+		console.log('execute checkHelperIfHasDefaultValue', helper, isDefault, value);
+		return isDefault;
+	}
+}
+
+export function nextHelperStep(blockType, checkStep, returnNextStepOnly = false) {
 	return (dispatch, getState) => {
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
-		const helperBlocks = util.getValue(gbx3, `admin.helperBlocks.${blockType}`, {});
-		const helperStep = startFromBeginning ? 0 : util.getValue(helperBlocks, 'helperStep');
+		const helperBlocks = util.getValue(gbx3, `helperBlocks.${blockType}`, {});
+		const helperCompleted = util.getValue(helperBlocks, 'completed', []);
+		const helperStep = checkStep ||  util.getValue(helperBlocks, 'helperStep', 1);
 		const helpersAvailable = util.getValue(helperBlocks, 'helpersAvailable', []);
 
 		let nextStep = null;
-		let completed = false;
 		Object.entries(helpersAvailable).forEach(([key, value]) => {
-			if (!nextStep && value.todo && ( value.step > helperStep)) {
+			if (!nextStep && !helperCompleted.includes(value.blockName) && ( value.step > helperStep )) {
 				nextStep = value.step;
 			}
-			if (!value.todo) completed = true;
 		});
-		dispatch(updateHelperBlocks(blockType, 'helperStep', nextStep));
-		if (!completed) {
-			dispatch(updateHelperBlocks(blockType, 'helperSidebarShow', true));
-			dispatch(updateHelperBlocks(blockType, 'helperOpen', false));
+		if (!nextStep) {
+			Object.entries(helpersAvailable).forEach(([key, value]) => {
+				if (!nextStep && !helperCompleted.includes(value.blockName)) {
+					nextStep = +value.step;
+				}
+			});
 		}
-		if (check) dispatch(checkForHelper(blockType, nextStep));
+		if (returnNextStepOnly) {
+			return nextStep || 1;
+		} else {
+			if (nextStep) dispatch(checkForHelper(blockType, nextStep));
+			else {
+				dispatch(updateHelperBlocks(blockType, {
+					helperStep: 1,
+					helperOpen: false,
+					helperSidebarShow: true
+				}));
+			}
+		}
 	}
 }
 
 export function checkForHelper(blockType, nextStep) {
 	return (dispatch, getState) => {
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
-		const data = util.getValue(gbx3, 'data', {});
+		const availableBlocks = util.getValue(gbx3, `admin.availableBlocks.${blockType}`, []);
 		const helpersTurnedOff = util.getValue(getState(), `preferences.gbx3Helpers.${blockType}`);
-		const helperBlocks = util.getValue(gbx3, `admin.helperBlocks.${blockType}`, {});
-		const helperOpen = util.getValue(helperBlocks, 'helperOpen');
+		const helperBlocks = util.getValue(gbx3, `helperBlocks.${blockType}`, {});
+		const helperCompleted = util.getValue(helperBlocks, 'completed', []);
 		const helperStep = nextStep || util.getValue(helperBlocks, 'helperStep');
+		const lastStep = util.getValue(helperBlocks, 'lastStep');
 		const helpersAvailable = util.getValue(helperBlocks, 'helpersAvailable', []);
-		const currentHelper = helpersAvailable.find(h => h.step === helperStep);
-		const currentHelperBlockName = util.getValue(currentHelper, 'blockName');
-		const helper = util.getValue(helpers, `${blockType}.${currentHelperBlockName}`, {});
+		const helper = helpersAvailable.find(h => h.step === helperStep);
 		const isVolunteer = util.getValue(gbx3, 'admin.isVolunteer');
 
 		if (!helpersTurnedOff) {
-			if (!helperOpen && !util.isEmpty(helper)) {
-				if (isVolunteer && util.getValue(helper, 'volunteerRestricted')) {
-					dispatch(nextHelperStep(blockType));
-					return;
-				} else {
-					dispatch(updateHelperBlocks(blockType, 'helper', helper));
-					dispatch(updateHelperBlocks(blockType, 'helperOpen', true));
-					dispatch(updateHelperBlocks(blockType, 'helperSidebarShow', false));
-					return;
-				}
+			// If isVolunteer and the helper is volunteerRestricted go to next step
+			if ((isVolunteer && util.getValue(helper, 'volunteerRestricted')) || (helperCompleted.includes(helper.blockName))) {
+				dispatch(nextHelperStep(blockType));
 			} else {
-				dispatch(updateHelperBlocks(blockType, 'helperSidebarShow', true));
-				return;
+				// If a helperStep is not null and helper exists, open the helper and hide the sidebar
+				if (helperStep &&  !util.isEmpty(helper)) {
+					const isDefault = dispatch(checkHelperIfHasDefaultValue(blockType, helper));
+					if (isDefault && !availableBlocks.includes(helper.blockName)) {
+						dispatch(updateHelperBlocks(blockType, {
+							helperStep,
+							helperOpen: true,
+							helperSidebarShow: false
+						}));
+					} else {
+						const nextStep = dispatch(nextHelperStep(blockType, helperStep, true));
+						if (nextStep === lastStep) {
+							dispatch(updateHelperBlocks(blockType, {
+								helperOpen: true,
+								helperStep: lastStep,
+								helperSidebarShow: false
+							}));
+						} else {
+							dispatch(checkForHelper(blockType, nextStep));
+						}
+					}
+				} else {
+					// Close the helper, set the step to 1 and hide the sidebar
+					dispatch(updateHelperBlocks(blockType, {
+						helperOpen: false,
+						helperStep: 1,
+						helperSidebarShow: true
+					}));
+				}
 			}
 		}
-		return;
 	}
 }
 
-export function updateHelperBlocks(blockType, key, value) {
-	return (dispatch, getState) => {
-		const helperBlocks = {
-			...util.getValue(getState(), 'gbx3.admin.helperBlocks', {}),
-			[blockType]: {
-				...util.getValue(getState(), `gbx3.admin.helperBlocks.${blockType}`, {}),
-				[key]: value
-			}
-		};
-		dispatch(updateAdmin({ helperBlocks }));
+export function updateHelperBlocks(blockType, helperBlocks) {
+	return {
+		type: types.UPDATE_HELPERS,
+		blockType,
+		helperBlocks
 	}
 }
 
@@ -404,13 +470,16 @@ export function saveGBX3(blockType, options = {}) {
 		const info = util.getValue(gbx3, 'info', {});
 		const blocks = util.getValue(gbx3, `blocks.${blockType}`, {});
 		const globals = util.getValue(gbx3, 'globals', {});
+		const helperBlocks = util.getValue(gbx3, 'helperBlocks', {});
+
 		const dataObj = {
 			...gbxData,
 			giveboxSettings: {
 				...settings,
 				customTemplate: {
 					blocks,
-					globals
+					globals,
+					helperBlocks
 				}
 			},
 			...opts.dataObj
@@ -526,7 +595,8 @@ export function resetGBX3(callback) {
 			giveboxSettings: {
 				customTemplate: {
 					blocks: {},
-					globals: {}
+					globals: {},
+					helperBlocks: {}
 				}
 			}
 		};
@@ -708,6 +778,9 @@ export function loadGBX3(articleID, callback) {
 										...util.getValue(customTemplate, 'globals', {})
 									};
 
+									const helperBlocksCustom = util.getValue(customTemplate, `helperBlocks.${blockType}`, {});
+									const helperBlocks = !util.isEmpty(helperBlocksCustom) ? helperBlocksCustom : helperTemplates[blockType];
+
 									if (!util.isEmpty(blocksCustom)) {
 										// Check if not all default blocks are present
 										// If not, add them to the availableBlocks array
@@ -755,6 +828,7 @@ export function loadGBX3(articleID, callback) {
 									dispatch(updateLayouts(blockType, layouts));
 									dispatch(updateBlocks(blockType, blocks));
 									dispatch(updateGlobals(globals));
+									dispatch(updateHelperBlocks(blockType, helperBlocks));
 									dispatch(updateData(res));
 									dispatch(updateAvailableBlocks(blockType, availableBlocks));
 									dispatch(updateAdmin(admin));

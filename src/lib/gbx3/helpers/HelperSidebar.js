@@ -8,9 +8,6 @@ import {
 } from '../../';
 import '../../styles/gbx3Helper.scss';
 import {
-	updateAdmin,
-	updateHelperBlocks,
-	nextHelperStep,
 	checkForHelper
 } from '../redux/gbx3actions';
 import { GoChecklist } from 'react-icons/go';
@@ -29,10 +26,11 @@ class HelperSidebar extends React.Component {
 
 	onClick() {
 		const {
-			blockType
+			blockType,
+			isLastStep
 		} = this.props;
 
-		this.props.nextHelperStep(blockType, true, true);
+		this.props.checkForHelper(blockType, isLastStep ? 1 : null);
 	}
 
 	render() {
@@ -57,19 +55,19 @@ class HelperSidebar extends React.Component {
 function mapStateToProps(state, props) {
 
 	const blockType = props.blockType;
-	const helperBlocks = util.getValue(state, `gbx3.admin.helperBlocks.${blockType}`, {});
+	const helperBlocks = util.getValue(state, `gbx3.helperBlocks.${blockType}`, {});
 	const helperOpen = util.getValue(helperBlocks, 'helperOpen');
 	const helperSidebarShow = util.getValue(helperBlocks, `helperSidebarShow`);
+	const helperStep = util.getValue(helperBlocks, 'helperStep');
+	const isLastStep = util.getValue(helperBlocks, 'lastStep') === helperStep;
 
 	return {
 		helperOpen,
-		helperSidebarShow
+		helperSidebarShow,
+		isLastStep
 	}
 }
 
 export default connect(mapStateToProps, {
-	updateAdmin,
-	updateHelperBlocks,
-	nextHelperStep,
 	checkForHelper
 })(HelperSidebar);

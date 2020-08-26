@@ -25,6 +25,7 @@ class HelperPopup extends React.Component {
 
 		const {
 			helper,
+			isLastStep,
 			targetElement: el
 		} = this.props;
 
@@ -58,7 +59,10 @@ class HelperPopup extends React.Component {
 						</div>
 						<div className='helperDefaultActions'>
 							<GBLink onClick={() => this.props.onClick('turnOff')}><span style={{ marginRight: 2 }} className='icon icon-x'></span> Turn Off Help</GBLink>
-							<GBLink onClick={() => this.props.onClick('doLater')}>Skip <span style={{ marginLeft: 2 }} className='icon icon-chevron-right'></span></GBLink>
+							{ !isLastStep ?
+							<GBLink onClick={() => this.props.onClick('doLater')}>Skip <span style={{ marginLeft: 2 }} className='icon icon-chevron-right'></span></GBLink> :
+							<GBLink onClick={() => this.props.onClick('close')}>Continue Designing <span style={{ marginLeft: 2 }} className='icon icon-chevron-right'></span></GBLink>
+							}
 						</div>
 					</div>
 				</div>

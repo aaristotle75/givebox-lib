@@ -18,7 +18,6 @@ import {
 } from '../redux/gbx3actions';
 import { FiCheckCircle } from 'react-icons/fi';
 import HelperPopup from './HelperPopup';
-import { helpers } from './helperTemplates';
 import HelperSidebar from './HelperSidebar';
 
 class Helper extends React.Component {
@@ -41,45 +40,15 @@ class Helper extends React.Component {
 		this.props.checkForHelper(blockType);
 	}
 
-	componentDidUpdate(prevProps) {
-		const {
-			blockType
-		} = this.props;
-
-		/*
-		const numberOfSteps = helpersAvailable.length;
-
-		if (helperStep > numberOfSteps && helperOpen) {
-			this.props.updateHelperBlocks(blockType, 'helperOpen', false);
-			return;
-		}
-
-		if (((prevProps.editBlock !== this.props.editBlock) && editBlock && helperOpen)) {
-			this.props.updateHelperBlocks(blockType, 'helperOpen', false);
-			return;
-		}
-
-		if (((prevProps.helperCheckStep !== this.props.helperCheckStep) && !editBlock && !helperOpen)) {
-			this.props.updateHelperBlocks(blockType, 'helperOpen', true);
-			return;
-		}
-
-		if (!helperPrefs.includes(currentHelperBlockName) && helperCheckStep && !editBlock && !helperOpen && (helperStep <= numberOfSteps)) {
-			this.props.updateHelperBlocks(blockType, 'helperOpen', true);
-			return;
-		}
-		*/
-	}
-
 	onClickEdit() {
 		const {
 			blockType,
-			currentHelperBlockName
+			blockName
 		} = this.props;
 
-		const modalID = `modalBlock-${blockType}-${currentHelperBlockName}`;
+		const modalID = `modalBlock-${blockType}-${blockName}`;
 		this.props.toggleModal(modalID, true);
-		this.props.updateAdmin({ editBlock: `${blockType}-${currentHelperBlockName}`, editBlockJustAdded: false });
+		this.props.updateAdmin({ editBlock: `${blockType}-${blockName}`, editBlockJustAdded: false });
 	}
 
 	onClick(action) {
@@ -132,7 +101,8 @@ class Helper extends React.Component {
 			portalBindID,
 			stage,
 			blockType,
-			currentHelperBlockName: blockName,
+			blockName,
+			isLastStep,
 			helperOpen: open
 		} = this.props;
 
@@ -152,6 +122,7 @@ class Helper extends React.Component {
 				{ open ?
 				<Portal id={'gbx-helper-portal'} rootEl={rootEl} className='gbx3 popupWrapper'>
 					<HelperPopup
+						isLastStep={isLastStep}
 						helper={helper}
 						onClick={this.onClick}
 						targetElement={el}
@@ -167,13 +138,13 @@ function mapStateToProps(state, props) {
 
 	const blockType = props.blockType;
 	const editBlock = util.getValue(state, `gbx3.admin.editBlock`);
-	const helperBlocks = util.getValue(state, `gbx3.admin.helperBlocks.${blockType}`);
+	const helperBlocks = util.getValue(state, `gbx3.helperBlocks.${blockType}`);
 	const helperOpen = util.getValue(helperBlocks, 'helperOpen');
 	const helperStep = util.getValue(helperBlocks, 'helperStep');
+	const isLastStep = util.getValue(helperBlocks, 'lastStep') === helperStep;
 	const helpersAvailable = util.getValue(helperBlocks, 'helpersAvailable', []);
-	const currentHelper = helpersAvailable.find(h => h.step === helperStep);
-	const currentHelperBlockName = util.getValue(currentHelper, 'blockName');
-	const helper = util.getValue(helpers, `${blockType}.${currentHelperBlockName}`);
+	const helper = helpersAvailable.find(h => h.step === helperStep);
+	const blockName = util.getValue(helper, 'blockName');
 	const stage = util.getValue(state, 'gbx3.info.stage');
 	const preview = util.getValue(state, 'gbx3.info.preview');
 
@@ -182,9 +153,9 @@ function mapStateToProps(state, props) {
 		editBlock,
 		helperOpen,
 		helperStep,
+		isLastStep,
 		helpersAvailable,
-		currentHelper,
-		currentHelperBlockName,
+		blockName,
 		helper,
 		stage,
 		preview
