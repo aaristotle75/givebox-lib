@@ -4,7 +4,7 @@ export const helperTemplates = {
 		helperSidebarShow: false,
 		helperOpen: false,
 		helperStep: 1,
-		lastStep: 5,
+		lastStep: 6,
 		helpersAvailable: [
 			{
 				step: 1,
@@ -51,6 +51,22 @@ export const helperTemplates = {
 			},
 			{
 				step: 4,
+				blockName: 'themeColor',
+				title: 'Change the Theme Color',
+				text: 'Your color...',
+				style: {
+					top: 75,
+					left: 0
+				},
+				className: 'helperTop',
+				type: 'color',
+				targetID: 'topPanelContainer',
+				field: 'giveboxSettings.primaryColor',
+				defaultCheck: 'color',
+				skipText: 'Next'
+			},
+			{
+				step: 5,
 				blockName: 'description',
 				title: 'Add a Description',
 				text: 'A good desc...',
@@ -64,7 +80,7 @@ export const helperTemplates = {
 				defaultCheck: 'text'
 			},
 			{
-				step: 5,
+				step: 6,
 				blockName: 'share',
 				title: 'Share Your Form',
 				text: 'When you are done designing your form it is time to share it.',

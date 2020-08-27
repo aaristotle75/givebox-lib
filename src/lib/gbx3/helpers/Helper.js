@@ -16,7 +16,7 @@ import {
 	closeHelper,
 	updateHelperBlocks
 } from '../redux/gbx3actions';
-import { FiCheckCircle } from 'react-icons/fi';
+import { savePrefs } from '../../api/helpers';
 import HelperPopup from './HelperPopup';
 import HelperSidebar from './HelperSidebar';
 
@@ -24,20 +24,47 @@ class Helper extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.onClickEdit = this.onClickEdit.bind(this);
 		this.onClick = this.onClick.bind(this);
 		this.turnOffHelp = this.turnOffHelp.bind(this);
 		this.doThisLater = this.doThisLater.bind(this);
+		this.onClickEdit = this.onClickEdit.bind(this);
+		this.onClickColor = this.onClickColor.bind(this);
+		this.onClickShare = this.onClickShare.bind(this);
+		this.getElements = this.getElements.bind(this);
+
 		this.state = {
+			el: null,
+			rootEl: null
 		}
 	}
 
 	componentDidMount() {
+		this.getElements();
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (prevProps.helperStep !== this.props.helperStep) {
+			this.getElements();
+		}
+	}
+
+	getElements() {
 		const {
-			blockType
+			helper,
+			blockName,
+			blockType,
+			portalBindID
 		} = this.props;
 
-		this.props.checkForHelper(blockType);
+		const helperType = util.getValue(helper, 'type');
+		const elID = helperType === 'block' ? `block-${blockName}` : util.getValue(helper, 'targetID', `helper-${helperType}`);
+		const el = document.getElementById(elID) || document.getElementById('gbx3Layout');
+		const rootEl = document.getElementById(portalBindID);
+
+		this.setState({
+			el,
+			rootEl
+		}, this.props.checkForHelper(blockType));
 	}
 
 	onClickEdit() {
@@ -51,10 +78,19 @@ class Helper extends React.Component {
 		this.props.updateAdmin({ editBlock: `${blockType}-${blockName}`, editBlockJustAdded: false });
 	}
 
+	onClickColor() {
+		this.props.toggleModal('colorPickerTheme', true);
+	}
+
+	onClickShare() {
+		this.props.toggleModal('share', true);
+	}
+
 	onClick(action) {
 
 		const {
-			blockType
+			blockType,
+			helper
 		} = this.props;
 
 		switch (action) {
@@ -76,14 +112,31 @@ class Helper extends React.Component {
 
 			case 'edit':
 			default: {
-				this.onClickEdit();
+				switch (util.getValue(helper, 'type')) {
+					case 'color': {
+						this.onClickColor();
+						break;
+					}
+
+					case 'share': {
+						this.onClickShare();
+						break;
+					}
+
+					default: {
+						this.onClickEdit();
+					break;
+					}
+				}
 				break;
 			}
 		}
 	}
 
 	turnOffHelp() {
-		console.log('turn off help');
+		this.props.savePrefs({
+			gbx3Helpers: 'off'
+		});
 	}
 
 	doThisLater() {
@@ -98,20 +151,19 @@ class Helper extends React.Component {
 
 		const {
 			helper,
-			portalBindID,
 			stage,
 			blockType,
-			blockName,
 			isLastStep,
 			helperOpen: open
 		} = this.props;
 
-		const helperType = util.getValue(helper, 'type');
-		const elID = helperType === 'block' ? `block-${blockName}` : `helper-${helperType}`;
-		const el = document.getElementById(elID);
-		const rootEl = document.getElementById(portalBindID);
+		const {
+			el,
+			rootEl
+		} = this.state;
 
-		if (!el || !rootEl || stage === 'public') return <></>;
+		console.log('execute el', el, rootEl, stage);
+		if (!el || !rootEl || stage !== 'admin') return <></>;
 
 		return (
 			<>
@@ -126,6 +178,7 @@ class Helper extends React.Component {
 						helper={helper}
 						onClick={this.onClick}
 						targetElement={el}
+						blockType={blockType}
 					/>
 				</Portal>
 				: '' }

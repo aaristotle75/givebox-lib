@@ -320,7 +320,8 @@ class Article extends React.Component {
 			preventCollision,
 			editable,
 			hasAccessToEdit,
-			breakpoint
+			breakpoint,
+			stage
 		} = this.props;
 
 		const isEditable = hasAccessToEdit && editable ? true : false;
@@ -379,10 +380,11 @@ class Article extends React.Component {
 						onClickVolunteerFundraiser={this.props.onClickVolunteerFundraiser}
 					/>
 				</div>
+				{ stage === 'admin' ?
 				<Helper
 					blockType='article'
 					portalBindID='gbx3Layout'
-				/>
+				/> : '' }
 				{breakpoint === 'mobile' ? <div className='bottomOffset'>&nbsp;</div> : <></>}
 			</>
 		)

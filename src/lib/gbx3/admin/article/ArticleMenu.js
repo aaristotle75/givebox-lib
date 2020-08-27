@@ -18,7 +18,7 @@ class ArticleMenu extends React.Component {
 		this.switchPanelType = this.switchPanelType.bind(this);
 		this.renderPanel = this.renderPanel.bind(this);
 		this.state = {
-			panelType: 'layout'
+			panelType: 'style'
 		};
 	}
 
@@ -59,8 +59,8 @@ class ArticleMenu extends React.Component {
 			<div className='leftPanelContainer'>
 				<div className='leftPanelTop'>
 					<div className='middle centerAlign adminPanelTabs'>
-						<GBLink className={`ripple link ${panelType === 'layout' ? 'selected' : ''}`} onClick={() => this.switchPanelType('layout')}>Elements</GBLink>
 						<GBLink className={`ripple link ${panelType === 'style' ? 'selected' : ''}`} onClick={() => this.switchPanelType('style')}>Style</GBLink>
+						<GBLink className={`ripple link ${panelType === 'layout' ? 'selected' : ''}`} onClick={() => this.switchPanelType('layout')}>Elements</GBLink>
 						<GBLink className={`ripple link ${panelType === 'tools' ? 'selected' : ''}`} onClick={() => this.switchPanelType('tools')}>Preferences</GBLink>
 					</div>
 				</div>

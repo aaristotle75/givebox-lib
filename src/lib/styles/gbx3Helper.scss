@@ -32,6 +32,7 @@ $helperColor: $hotPink;
 	z-index: 999999;
 
 	@media (max-width: $breakpoint) {
+		position: fixed;
 		top: 0 !important;
 		right: 0 !important;
 		left: 0 !important;
@@ -56,9 +57,6 @@ $helperColor: $hotPink;
 			display: block;
 			font-size: 14px;
 		}
-	}
-
-	.helperContainer {
 
 		.closeBtn {
 			position: absolute;
@@ -111,7 +109,6 @@ $helperColor: $hotPink;
 		button.link:hover {
 			color: transparentize($white, .2);
 		}
-
 	}
 
 	.helperBubble {
@@ -189,4 +186,10 @@ $helperColor: $hotPink;
 		margin-left: -14px;
 	}
 
+}
+
+.helperColorPicker {
+	height: 0;
+	width: 0;
+	overflow: hidden;
 }

@@ -199,13 +199,17 @@ export function checkHelperIfHasDefaultValue(blockType, helper) {
 
 		switch (util.getValue(helper, 'defaultCheck')) {
 			case 'image': {
-
+				if (!util.checkImage(value) || !value) isDefault = true;
 				break;
 			}
 
 			case 'text': {
-				if (value.includes(`New ${types2.kind(kind).name}`)) isDefault = true;
-				if (!value) isDefault = true;
+				if (value.includes(`New ${types2.kind(kind).name}`) || value.includes('Please add Description') || !value) isDefault = true;
+				break;
+			}
+
+			case 'color': {
+				if (value.includes('#4385f5') || value.includes('#4775f8') || !value) isDefault = true;
 				break;
 			}
 
@@ -216,7 +220,6 @@ export function checkHelperIfHasDefaultValue(blockType, helper) {
 			// no default
 		}
 
-		console.log('execute checkHelperIfHasDefaultValue', helper, isDefault, value);
 		return isDefault;
 	}
 }
@@ -261,7 +264,7 @@ export function checkForHelper(blockType, nextStep) {
 	return (dispatch, getState) => {
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
 		const availableBlocks = util.getValue(gbx3, `admin.availableBlocks.${blockType}`, []);
-		const helpersTurnedOff = util.getValue(getState(), `preferences.gbx3Helpers.${blockType}`);
+		const helpersTurnedOff = util.getValue(getState(), `preferences.gbx3Helpers`) === 'off' ? true : false;
 		const helperBlocks = util.getValue(gbx3, `helperBlocks.${blockType}`, {});
 		const helperCompleted = util.getValue(helperBlocks, 'completed', []);
 		const helperStep = nextStep || util.getValue(helperBlocks, 'helperStep');
