@@ -115,31 +115,34 @@ class HelperPopup extends React.Component {
 		style.left = rect.x + util.getValue(helperStyle, 'left', 0);
 
 		return (
-			<Fade in={open}>
+			<div
+				className='gbx3Helper'
+				style={{
+				...util.getValue(helper, 'style', {}),
+				...style
+				}}
+			>
 				<div
-					className='gbx3Helper'
+					className='helperContainer'
 					style={{
-					...util.getValue(helper, 'style', {}),
-					...style
+						opacity: open ? 1 : 0
 					}}
 				>
-					<div className='helperContainer'>
-						<div className='closeBtn' onClick={() => this.props.onClick('close')}><span className='icon icon-x'></span></div>
-						<div onClick={() => this.props.onClick('edit')} className={`helperBubble ${helperClass}`}>
-							<h1>{util.getValue(helper, 'title')}</h1>
-							<span className='text'>{util.getValue(helper, 'text')}</span>
-							{this.renderHelperTypeExtra()}
-						</div>
-						<div className='helperDefaultActions'>
-							<GBLink onClick={() => this.props.onClick('turnOff')}><span style={{ marginRight: 2 }} className='icon icon-x'></span> Turn Off Help</GBLink>
-							{ !isLastStep ?
-							<GBLink onClick={() => this.props.onClick('doLater')}>{util.getValue(helper, 'skipText', 'Skip')} <span style={{ marginLeft: 2 }} className='icon icon-chevron-right'></span></GBLink> :
-							<GBLink onClick={() => this.props.onClick('close')}>Continue Designing <span style={{ marginLeft: 2 }} className='icon icon-chevron-right'></span></GBLink>
-							}
-						</div>
+					<div className='closeBtn' onClick={() => this.props.onClick('close')}><span className='icon icon-x'></span></div>
+					<div onClick={() => this.props.onClick('edit')} className={`helperBubble ${helperClass}`}>
+						<h1>{util.getValue(helper, 'title')}</h1>
+						<span className='text'>{util.getValue(helper, 'text')}</span>
+						{this.renderHelperTypeExtra()}
+					</div>
+					<div className='helperDefaultActions'>
+						<GBLink onClick={() => this.props.onClick('turnOff')}><span style={{ marginRight: 2 }} className='icon icon-x'></span> Turn Off Help</GBLink>
+						{ !isLastStep ?
+						<GBLink onClick={() => this.props.onClick('doLater')}>{util.getValue(helper, 'skipText', 'Skip')} <span style={{ marginLeft: 2 }} className='icon icon-chevron-right'></span></GBLink> :
+						<GBLink onClick={() => this.props.onClick('close')}>Continue Designing <span style={{ marginLeft: 2 }} className='icon icon-chevron-right'></span></GBLink>
+						}
 					</div>
 				</div>
-			</Fade>
+			</div>
 		)
 	}
 }

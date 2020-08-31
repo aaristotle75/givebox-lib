@@ -27,7 +27,7 @@ export const helperTemplates = {
 				title: 'Add a Title',
 				text: 'A good title...',
 				style: {
-					top: 30,
+					top: 50,
 					left: 15
 				},
 				className: 'helperTop',

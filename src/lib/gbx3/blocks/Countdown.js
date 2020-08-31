@@ -434,81 +434,83 @@ class Countdown extends Component {
 					<h2>The Sweepstakes has ended.</h2>
 				</div>
 				}
-				<div className="timer">
-					<div className="timerContainer">
-					<div className="timerInfo">
-						<span className="number">{days}</span>
-						<span className="text">Days</span>
+				<div className='timers'>
+					<div className="timer">
+						<div className="timerContainer">
+						<div className="timerInfo">
+							<span className="number">{days}</span>
+							<span className="text">Days</span>
+						</div>
+						</div>
+						<CircularProgress
+							progress={this.state.completed ? 0 : daysProgress}
+							startDegree={0}
+							progressWidth={5}
+							trackWidth={5}
+							cornersWidth={corners}
+							size={size}
+							fillColor="transparent"
+							trackColor={this.state.secondaryColor}
+							progressColor={primaryColor}>
+						</CircularProgress>
 					</div>
+					<div className="timer">
+						<div className="timerContainer">
+						<div className="timerInfo">
+							<span className="number">{hours}</span>
+							<span className="text">Hours</span>
+						</div>
+						</div>
+						<CircularProgress
+							progress={this.state.completed ? 0 : hoursProgress}
+							startDegree={0}
+							progressWidth={5}
+							trackWidth={5}
+							cornersWidth={corners}
+							size={size}
+							fillColor="transparent"
+							trackColor={this.state.secondaryColor}
+							progressColor={primaryColor}>
+						</CircularProgress>
 					</div>
-					<CircularProgress
-						progress={this.state.completed ? 0 : daysProgress}
-						startDegree={0}
-						progressWidth={5}
-						trackWidth={5}
-						cornersWidth={corners}
-						size={size}
-						fillColor="transparent"
-						trackColor={this.state.secondaryColor}
-						progressColor={primaryColor}>
-					</CircularProgress>
-				</div>
-				<div className="timer">
-					<div className="timerContainer">
-					<div className="timerInfo">
-						<span className="number">{hours}</span>
-						<span className="text">Hours</span>
+					<div className="timer">
+						<div className="timerContainer">
+						<div className="timerInfo">
+							<span className="number">{mins}</span>
+							<span className="text">Minutes</span>
+						</div>
+						</div>
+						<CircularProgress
+							progress={this.state.completed ? 0 : minsProgress}
+							startDegree={0}
+							progressWidth={5}
+							trackWidth={5}
+							cornersWidth={corners}
+							size={size}
+							fillColor="transparent"
+							trackColor={this.state.secondaryColor}
+							progressColor={primaryColor}>
+						</CircularProgress>
 					</div>
+					<div className="timer">
+						<div className="timerContainer">
+						<div className="timerInfo">
+							<span className="number">{secs}</span>
+							<span className="text">Seconds</span>
+						</div>
+						</div>
+						<CircularProgress
+							progress={this.state.completed ? 0 : secsProgress}
+							startDegree={0}
+							progressWidth={5}
+							trackWidth={5}
+							cornersWidth={corners}
+							size={size}
+							fillColor="transparent"
+							trackColor={this.state.secondaryColor}
+							progressColor={primaryColor}>
+						</CircularProgress>
 					</div>
-					<CircularProgress
-						progress={this.state.completed ? 0 : hoursProgress}
-						startDegree={0}
-						progressWidth={5}
-						trackWidth={5}
-						cornersWidth={corners}
-						size={size}
-						fillColor="transparent"
-						trackColor={this.state.secondaryColor}
-						progressColor={primaryColor}>
-					</CircularProgress>
-				</div>
-				<div className="timer">
-					<div className="timerContainer">
-					<div className="timerInfo">
-						<span className="number">{mins}</span>
-						<span className="text">Minutes</span>
-					</div>
-					</div>
-					<CircularProgress
-						progress={this.state.completed ? 0 : minsProgress}
-						startDegree={0}
-						progressWidth={5}
-						trackWidth={5}
-						cornersWidth={corners}
-						size={size}
-						fillColor="transparent"
-						trackColor={this.state.secondaryColor}
-						progressColor={primaryColor}>
-					</CircularProgress>
-				</div>
-				<div className="timer">
-					<div className="timerContainer">
-					<div className="timerInfo">
-						<span className="number">{secs}</span>
-						<span className="text">Seconds</span>
-					</div>
-					</div>
-					<CircularProgress
-						progress={this.state.completed ? 0 : secsProgress}
-						startDegree={0}
-						progressWidth={5}
-						trackWidth={5}
-						cornersWidth={corners}
-						size={size}
-						fillColor="transparent"
-						trackColor={this.state.secondaryColor}
-						progressColor={primaryColor}>
-					</CircularProgress>
 				</div>
 			</div>
 		)

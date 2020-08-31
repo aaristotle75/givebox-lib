@@ -171,11 +171,13 @@ class TicketsList extends Component {
 			Object.entries(amountsList).forEach(([key, value]) => {
 				const price = util.money(value.price/100);
 				let name = value.name;
+				let priceDesc = '';
 				if (kind === 'sweepstake') {
+					const entries = +value.entries || 1;
 					if (!value.name) {
-						const entries = +value.entries || 1;
 						name = <span>{entries} {entries > 1 ? 'Entries' : 'Entry'} for {price}</span>;
 					}
+					priceDesc = `per ${entries} ${entries > 1 ? 'Entries' : 'Entry'}`
 				}
 				const inStock = util.getValue(value, 'max', 0) - util.getValue(value, 'sold', 0);
 				if (value.enabled && ( inStock > 0 || !hasMax )) {
@@ -189,7 +191,7 @@ class TicketsList extends Component {
 							<div className='ticketDescRow'>
 								<div className='ticketDesc'>
 									{name}
-									<span className='ticketDescAmount'>{price}</span>
+									<span className='ticketDescAmount'>{price} {priceDesc}</span>
 									{showInStock ? <span className='ticketDescInStock'>{inStock} Available</span> : <></> }
 									{value.description ? <GBLink allowCustom={true} customColor={color} className='link ticketShowDetailsLink' onClick={() => this.toggleShowDetails(value.ID)}>{showDetails.includes(value.ID) ? 'Hide Info' : 'Show Info'}</GBLink> : <></>}
 								</div>

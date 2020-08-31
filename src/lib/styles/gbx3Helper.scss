@@ -1,4 +1,5 @@
 @import 'variables.scss';
+@import 'animations.scss';
 
 $helperColor: $hotPink;
 
@@ -43,6 +44,10 @@ $helperColor: $hotPink;
 		align-items: center !important;
 	}
 
+	.helperContainer:hover {
+		background: transparentize($helperColor, .1);
+	}
+
 	.helperContainer {
 		position: relative;
 		display: block;
@@ -52,6 +57,13 @@ $helperColor: $hotPink;
 		min-width: 250px;
 		color: #fff;
 		cursor: pointer;
+		border-top-left-radius: 10px;
+		border-top-right-radius: 10px;
+		background: $helperColor;
+		animation: pulsateBrighter 2s ease-in-out infinite;
+		-webkit-animation: pulsateBrighter 2s ease-in-out infinite;
+		opacity: 0;
+		@include transition(opacity .5s);
 
 		.helperText {
 			display: block;
@@ -113,16 +125,7 @@ $helperColor: $hotPink;
 
 	.helperBubble {
 		position: relative;
-		background: $helperColor;
-		border-top-left-radius: 10px;
-		border-top-right-radius: 10px;
 		padding: 10px 30px 10px 30px;
-		animation: ButtonPulsate 2s ease-in-out infinite;
-		-webkit-animation: ButtonPulsate 2s ease-in-out infinite;
-	}
-
-	.helperBubble:hover {
-		background: transparentize($helperColor, .1);
 	}
 
 	.helperTop:after {

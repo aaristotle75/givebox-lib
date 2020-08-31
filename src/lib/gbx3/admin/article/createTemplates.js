@@ -105,6 +105,8 @@ const sweepstake = {
 	status: 'open',
 	maxQuantity: 10,
 	endsAt: null,
+	goal: null,
+	allowPerTicketWinner: true,
 	tickets: {
 		list: [{
 			enabled: true,

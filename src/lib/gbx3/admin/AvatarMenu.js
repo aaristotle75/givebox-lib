@@ -10,7 +10,9 @@ import { toggleModal } from '../../api/actions';
 import {
 	updateAdmin
 } from '../redux/gbx3actions';
+import { savePrefs } from '../../api/helpers';
 import { AiOutlineNotification } from 'react-icons/ai';
+import { GoChecklist } from 'react-icons/go';
 
 const CLOUD_URL = process.env.REACT_APP_CLOUD_URL;
 const WALLET_URL = process.env.REACT_APP_WALLET_URL;
@@ -50,7 +52,8 @@ class AvatarMenu extends React.Component {
 		const {
 			access,
 			hasAccessToEdit,
-			step
+			step,
+			helperPref
 		} = this.props;
 
 		const isWallet = util.getValue(access, 'role') === 'user' ? true : false;
@@ -69,6 +72,17 @@ class AvatarMenu extends React.Component {
 
 			menuList.push(
 				<ModalLink type='li' id='share' key={'share'}><Icon><AiOutlineNotification /></Icon> <span className='text'>Share Form</span></ModalLink>
+			);
+
+			menuList.push(
+				<li type='li' key={'helperPref'} onClick={() => {
+					this.props.savePrefs({
+						gbx3Helpers: helperPref === 'off' ? 'on' : 'off'
+					});
+				}}
+				>
+					<Icon><GoChecklist /></Icon> <span className='text'>{ helperPref === 'off' ? 'Show' : 'Hide' } Helpers</span>
+				</li>
 			);
 		}
 
@@ -127,15 +141,18 @@ function mapStateToProps(state, props) {
 	const access = util.getValue(state.resource, 'access');
 	const hasAccessToEdit = util.getValue(state, 'gbx3.admin.hasAccessToEdit');
 	const step = util.getValue(state, 'gbx3.admin.step');
+	const helperPref = util.getValue(state, 'preferences.gbx3Helpers');
 
 	return {
 		access,
 		hasAccessToEdit,
-		step
+		step,
+		helperPref
 	}
 }
 
 export default connect(mapStateToProps, {
 	toggleModal,
-	updateAdmin
+	updateAdmin,
+	savePrefs
 })(AvatarMenu);

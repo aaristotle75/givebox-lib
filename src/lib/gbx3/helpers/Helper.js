@@ -3,9 +3,7 @@ import { connect } from 'react-redux';
 import {
 	util,
 	Fade,
-	Portal,
-	GBLink,
-	Icon
+	Portal
 } from '../../';
 import '../../styles/gbx3Helper.scss';
 import { toggleModal } from '../../api/actions';
@@ -154,6 +152,7 @@ class Helper extends React.Component {
 			stage,
 			blockType,
 			isLastStep,
+			helperPref,
 			helperOpen: open
 		} = this.props;
 
@@ -162,8 +161,7 @@ class Helper extends React.Component {
 			rootEl
 		} = this.state;
 
-		console.log('execute el', el, rootEl, stage);
-		if (!el || !rootEl || stage !== 'admin') return <></>;
+		if (!el || !rootEl || stage !== 'admin' || helperPref === 'off') return <></>;
 
 		return (
 			<>
@@ -200,6 +198,7 @@ function mapStateToProps(state, props) {
 	const blockName = util.getValue(helper, 'blockName');
 	const stage = util.getValue(state, 'gbx3.info.stage');
 	const preview = util.getValue(state, 'gbx3.info.preview');
+	const helperPref = util.getValue(state, 'preferences.gbx3Helpers');
 
 	return {
 		blockType,
@@ -211,7 +210,8 @@ function mapStateToProps(state, props) {
 		blockName,
 		helper,
 		stage,
-		preview
+		preview,
+		helperPref
 	}
 }
 
@@ -221,5 +221,6 @@ export default connect(mapStateToProps, {
 	checkForHelper,
 	nextHelperStep,
 	closeHelper,
-	updateHelperBlocks
+	updateHelperBlocks,
+	savePrefs
 })(Helper);
