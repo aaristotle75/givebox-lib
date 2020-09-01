@@ -27,7 +27,9 @@ export default class Editor extends PureComponent {
 			type,
 			width,
 			loaderClass,
-			acceptedMimes
+			acceptedMimes,
+			widgets,
+			balloonButtons
 		} = this.props;
 
 		const contentCss = 'https://givebox.s3-us-west-1.amazonaws.com/public/css/gbx3contents.css';
@@ -56,9 +58,10 @@ export default class Editor extends PureComponent {
 				contentCss={contentCss}
 				removePlugins={removePlugins}
 				removeButtons={removeButtons}
-				balloonButtons={'Image'}
+				balloonButtons={balloonButtons}
 				loaderClass={loaderClass}
 				acceptedMimes={acceptedMimes}
+				widgets={widgets}
 				initCallback={(editor) => {
 					editor.focus();
 					const CKEDITOR = window.CKEDITOR;
@@ -79,5 +82,6 @@ export default class Editor extends PureComponent {
 
 Editor.defaultProps = {
 	type: 'classic',
-	width: '100%'
+	width: '100%',
+	balloonButtons: 'Image'
 }

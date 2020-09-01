@@ -1,16 +1,25 @@
 @import 'variables.scss';
 
+$editAmountBreakpoint: 500px;
 
 .gbx3amountsEdit {
 
 	.column {
+		display: inline-block;
 		margin: 0 5px;
+		@media (max-width: $editAmountBreakpoint) {
+			width: 100% !important;
+		}
 	}
 
 	.fieldItems {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
+		display: block;
+
+		@media (max-width: $editAmountBreakpoint) {
+			display: flex;
+			flex-direction: column;
+			align-items: flex-start;
+		}
 	}
 
 	.longdescRow {
@@ -73,6 +82,9 @@
 		.input-group {
 			padding: 0;
 			margin: 0;
+			@media (max-width: $editAmountBreakpoint) {
+				margin: 20px 0;
+			}
 		}
 
 		input {
@@ -146,6 +158,43 @@
 	.amountsEditRow {
 		border-left: 2px solid $mainColorLight;
 		background: transparentize($mainColorLight, .9);
+	}
+}
+
+.gbx3amountsEdit {
+
+	.thumbnailField {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.amountThumb {
+		.mediaPlaceholder {
+			width: 60px;
+			height: 60px;
+			font-size: 12px;
+			font-weight: 300;
+			color: $mainColor;
+			border: 1px solid $mainColor;
+			background: $white;
+		}
+		.icon {
+			font-size: 20px;
+			color: $mainColor;
+		}
+	}
+
+	.amountThumb:hover {
+		.mediaPlaceholder {
+			color: $mainColorLight;
+			border: 1px solid $mainColorLight;
+			background: $white;
+		}
+		.icon {
+			font-size: 20px;
+			color: $mainColorLight;
+		}
 	}
 }
 

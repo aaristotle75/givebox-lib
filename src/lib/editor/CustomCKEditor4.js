@@ -120,7 +120,7 @@ class CustomCKEditor4 extends Component {
 					// Register custom context for image widgets on the fly.
 					editor.balloonToolbars.create({
 						buttons: bindthis.props.balloonButtons,
-						widgets: 'image'
+						widgets: bindthis.props.widgets
 					});
 				}
 			},
@@ -207,6 +207,7 @@ CustomCKEditor4.defaultProps = {
 	height: 'auto',
 	width: '100%',
 	type: 'classic',
+	widgets: 'image',
 	toolbar: [
 		[ 'Bold', 'Italic', '-', 'Font', '-', 'FontSize', 'TextColor', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', '-', 'Link', 'Unlink', '-', 'Image']
 	],

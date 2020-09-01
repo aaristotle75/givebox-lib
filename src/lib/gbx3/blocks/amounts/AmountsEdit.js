@@ -5,7 +5,12 @@ import {
 	TextField,
 	Choice,
 	_v,
-	types
+	types,
+	MediaLibrary,
+	ModalRoute,
+	ModalLink,
+	Collapse,
+	Image
 } from '../../../';
 import {SortableContainer, SortableElement, SortableHandle} from 'react-sortable-hoc';
 import '../../../styles/gbx3amountsEdit.scss';
@@ -58,6 +63,8 @@ export default class AmountsEdit extends Component {
 		this.deleteAmount = this.deleteAmount.bind(this);
 		this.addAmount = this.addAmount.bind(this);
 		this.validateEnabledAmount = this.validateEnabledAmount.bind(this);
+		this.handleThumbnailSaveCallback = this.handleThumbnailSaveCallback.bind(this);
+		this.thumbnailField = this.thumbnailField.bind(this);
 		this.state = {
 			deleteError: []
 		};
@@ -86,11 +93,15 @@ export default class AmountsEdit extends Component {
 		return amountsList[index];
 	}
 
-	updateAmounts(ID, obj = {}) {
+	updateAmounts(ID, obj = {}, customData = {}) {
 		const amountsList = [ ...this.props.amountsList ];
 		const index = amountsList.findIndex(x => x.ID === ID);
 		if (index !== -1) {
 			amountsList[index] = { ...amountsList[index], ...obj };
+			amountsList[index].customData = {
+				...util.getValue(amountsList[index], 'customData', {}),
+				...customData
+			}
 			this.props.amountsListUpdated(amountsList);
 		}
 	}
@@ -244,7 +255,7 @@ export default class AmountsEdit extends Component {
 				className={`${customField ? 'customField' : ''} ${amount.enabled ? '' : 'notOnForm'}`}
 				name={fieldName}
 				label={util.getValue(fieldProps, 'label')}
-				fixedLabel={false}
+				fixedLabel={true}
 				placeholder={util.getValue(fieldProps, 'placeholder')}
 				onChange={(e) => {
 					const name = e.currentTarget.value;
@@ -265,8 +276,7 @@ export default class AmountsEdit extends Component {
 		const showDetails = amount.showDetails ? false : true;
 		return (
 			<div className='longdescRow'>
-				<div style={{ width: '25%' }} className='column'>&nbsp;</div>
-				<div style={{ width: '70%' }} className={`column descField ${amount.showDetails ? 'showDetailsOpen' : ''}`}>
+				<div style={{ width: '100%' }} className={`column descField ${amount.showDetails ? 'showDetailsOpen' : ''}`}>
 					<GBLink
 						style={{ fontSize: 12 }}
 						onClick={() => {
@@ -286,6 +296,7 @@ export default class AmountsEdit extends Component {
 							content={amount.description}
 							subType='content'
 							loaderClass='gbx3amountsEdit'
+							balloonButtons={''}
 							onChange={(description) => {
 								this.updateAmounts(ID, { description });
 							}}
@@ -339,7 +350,7 @@ export default class AmountsEdit extends Component {
 				name={fieldName}
 				label={util.getValue(fieldProps, 'label')}
 				fixedLabel={true}
-				placeholder={util.getValue(fieldProps, 'placeholder', '0')}
+				placeholder={util.getValue(fieldProps, 'placeholder', 1)}
 				onChange={(e) => {
 					const entries = +e.currentTarget.value;
 					this.updateAmounts(ID, { entries });
@@ -349,6 +360,92 @@ export default class AmountsEdit extends Component {
 				error={error}
 				errorType={'tooltip'}
 			/>
+		)
+	}
+
+	handleThumbnailSaveCallback(url, ID, modalID) {
+		//console.log('execute handleThumbnailSaveCallback', ID, url);
+		this.updateAmounts(ID, {}, { thumbnailURL: url });
+		this.props.toggleModal(modalID, false);
+	}
+
+	thumbnailField(ID) {
+		const {
+			orgID,
+			articleID,
+			isVolunteer,
+			breakpoint
+		} = this.props;
+
+		const modalID = `amount-thumbnail-${ID}`;
+		const amount = this.getAmount(ID);
+		const customData = util.getValue(amount, 'customData', {});
+		const thumbnailURL = util.getValue(customData, 'thumbnailURL');
+
+		const library = {
+			saveMediaType: isVolunteer ? 'article' : 'org',
+			articleID,
+			orgID,
+			type: 'article',
+			borderRadius: 0
+		}
+
+		const previewImage = thumbnailURL ?
+			<Image url={thumbnailURL} size={'thumb'} minHeight={0} maxWidth={60} maxHeight={60} alt={'Thumbnail'} />
+		:
+			<div className='mediaPlaceholder'>
+				<span className='icon icon-instagram'></span>
+				Add Thumbnail
+			</div>
+		;
+
+		return (
+			<div className='thumbnailField'>
+				<ModalRoute
+					className='gbx3'
+					optsProps={{ customOverlay: { zIndex: 10000000 } }}
+					id={modalID}
+					effect='3DFlipVert' style={{ width: '60%' }}
+					draggable={true}
+					draggableTitle={`Add Thumbnail`}
+					closeCallback={() => console.log('execute closeCallback')}
+					disallowBgClose={true}
+					component={() =>
+						<div className='modalWrapper'>
+							<Collapse
+								label={'Image'}
+								iconPrimary='image'
+								id={'gbx3-mediaLibrary'}
+							>
+								<div className='formSectionContainer'>
+									<div className='formSection'>
+										<MediaLibrary
+											modalID={modalID}
+											image={thumbnailURL}
+											preview={thumbnailURL}
+											handleSaveCallback={(url) => this.handleThumbnailSaveCallback(url, ID, modalID)}
+											handleSave={util.handleFile}
+											library={library}
+											showBtns={'hide'}
+											saveLabel={'close'}
+											mobile={breakpoint === 'mobile' ? true : false }
+										/>
+									</div>
+								</div>
+							</Collapse>
+						</div>
+					}
+					buttonGroup={
+						<div style={{ margin: 0 }} className='button-group center'>
+							<GBLink className='link remove' onClick={() => console.log('execute remove thumbnail')}><span className='icon icon-trash-2'></span> <span className='buttonText'>Remove</span></GBLink>
+							<GBLink className='button' onClick={() => this.props.toggleModal(modalID, false)}>Close</GBLink>
+						</div>
+					}
+				/>
+				<ModalLink className='amountThumb' id={modalID}>
+					{previewImage}
+				</ModalLink>
+			</div>
 		)
 	}
 
@@ -402,17 +499,21 @@ export default class AmountsEdit extends Component {
 				: <></> ;
 
 				fieldItems.push(
-					<div key={'rightButtonGroup'} className='column amountsRightSideButtonGroup' style={{ width: `${util.getValue(config.buttonGroup, 'width', 20)}%` }}>
-						{draggable}
-						{defaultField}
-						{deleteField}
+					<div key={'rightButtonGroup'} className='column' style={{ width: `${util.getValue(config.buttonGroup, 'width', 20)}%` }}>
+						<div className='amountsRightSideButtonGroup'>
+							{draggable}
+							{defaultField}
+							{deleteField}
+						</div>
 					</div>
 				);
 
 				items.push(
 					<div key={key} className={`amountsEditRow sortableListItem ${value.enabled ? '' : 'notOnForm'}`} disabled={util.getValue(config, 'disableSort', false)}>
 						<div className='fieldItems'>{fieldItems}</div>
-						{this.descField(value.ID)}
+						<div className='fieldItems'>
+							<div className='column' style={{ width: '100%' }}>{this.descField(value.ID)}</div>
+						</div>
 					</div>
 				);
 			});

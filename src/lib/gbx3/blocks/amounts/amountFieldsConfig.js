@@ -1,8 +1,12 @@
+const enabledWidth = 8;
+const priceWidth = 10;
+const nameWidth = 40;
+
 const fundraiser = {
 	fields: {
-		enabled: { label: '', width: 10, className: 'left action' },
-		price: { label: 'Amount', placeholder: '0.00', width: 15 },
-		name: { label: '', placeholder: 'Add an Amount Short Description', width: 55, customFieldDefault: 'Enter any amount.' }
+		enabled: { label: '', width: enabledWidth, className: 'left action' },
+		price: { label: 'Amount', placeholder: '0.00', width: priceWidth },
+		name: { label: 'Amount Name', placeholder: 'Add an Amount Short Description', width: 60, customFieldDefault: 'Enter any amount.' }
 	},
 	buttonGroup: { width: 20 },
 	hasDefaultField: true,
@@ -15,9 +19,10 @@ const invoice = {
 
 const event = {
 	fields: {
-		enabled: { label: '', width: 10, className: 'left action' },
-		price: { label: 'Price', placeholder: '0.00', width: 15 },
-		name: { label: '', placeholder: 'Add a Ticket Short Description', width: 55, customFieldDefault: '' },
+		enabled: { label: '', width: enabledWidth, className: 'left action' },
+		thumbnail: { label: '', width: 12 },
+		price: { label: 'Price', placeholder: '0.00', width: priceWidth },
+		name: { label: 'Ticket Name', placeholder: 'Add a Ticket Short Description', width: nameWidth, customFieldDefault: '' },
 		max: { label: 'In Stock', placeholder: '0', width: 10 }
 	},
 	buttonGroup: { width: 10 },
@@ -28,9 +33,10 @@ const event = {
 
 const membership = {
 	fields: {
-		enabled: { label: '', width: 10, className: 'left action' },
-		price: { label: 'Price', placeholder: '0.00', width: 15 },
-		name: { label: '', placeholder: 'Add a Subscription Short Description', width: 55, customFieldDefault: '' },
+		enabled: { label: '', width: enabledWidth, className: 'left action' },
+		thumbnail: { label: '', width: 12 },
+		price: { label: 'Price', placeholder: '0.00', width: priceWidth },
+		name: { label: 'Subscription Name', placeholder: 'Add a Subscription Short Description', width: nameWidth, customFieldDefault: '' },
 		max: { label: 'Subscriptions Available', placeholder: '0', width: 10 }
 	},
 	buttonGroup: { width: 10 },
@@ -41,10 +47,11 @@ const membership = {
 
 const sweepstake = {
 	fields: {
-		enabled: { label: '', width: 10, className: 'left action' },
-		price: { label: 'Price', placeholder: '0.00', width: 15 },
-		name: { label: '', placeholder: 'Add a Ticket Short Description', width: 55, customFieldDefault: '' },
-		entries: { label: 'Entries Per Ticket', placeholder: '0', width: 10 }
+		enabled: { label: '', width: enabledWidth, className: 'left action' },
+		thumbnail: { label: '', width: 12 },
+		price: { label: 'Price', placeholder: '0.00', width: priceWidth },
+		name: { label: 'Ticket Name', placeholder: 'Add a Ticket Short Description', width: nameWidth, customFieldDefault: '' },
+		entries: { label: 'Entries Per Ticket', placeholder: 1, width: 10 }
 	},
 	buttonGroup: { width: 10 },
 	hasDefaultField: false,

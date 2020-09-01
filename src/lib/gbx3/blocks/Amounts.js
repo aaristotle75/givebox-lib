@@ -384,7 +384,10 @@ class Amounts extends Component {
 			primaryColor,
 			numCartItems,
 			subTotal,
-			form
+			form,
+			breakpoint,
+			isVolunteer,
+			articleID
 		} = this.props;
 
 		const {
@@ -412,7 +415,7 @@ class Amounts extends Component {
 					id={modalID}
 					className='gbx3 gbx3amountsEdit'
 					optsProps={{ closeCallback: this.closeModalAmountsEdit }}
-					effect='3DFlipVert' style={{ width: '70%' }}
+					effect='3DFlipVert' style={{ width: '80%' }}
 					draggable={true}
 					draggableTitle={`Editing Amounts`}
 					closeCallback={this.closeModalAmountsEdit}
@@ -457,6 +460,10 @@ class Amounts extends Component {
 														validateAmountsBeforeSave={this.validateAmountsBeforeSave}
 														formError={this.state.formError}
 														orgID={util.getValue(data, 'orgID')}
+														breakpoint={breakpoint}
+														isVolunteer={isVolunteer}
+														articleID={articleID}
+														toggleModal={this.props.toggleModal}
 													/>
 												</div>
 											</div>
@@ -494,7 +501,7 @@ class Amounts extends Component {
 													name='maxQuantity'
 													label={`Max ${types.kind(kind).amountLabel} That Can Be Purchased At One Time`}
 													fixedLabel={true}
-													placeholder={0}
+													placeholder={99}
 													value={maxQuantity || ''}
 													maxLength={2}
 													onChange={(e) => {
