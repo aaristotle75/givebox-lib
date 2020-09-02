@@ -13,7 +13,7 @@ const dataTemplate = {
 	'receiptConfig': null,
 	'SEOKeywords': null,
 	'imageURL': null,
-	'goal': 5000000,
+	'goal': null,
 	'passFees': true,
 	'giveboxSettings': {
 		'template': 'default',

@@ -14,7 +14,9 @@ import {
 	updateAdmin
 } from './redux/gbx3actions';
 import AvatarMenuButton from './admin/AvatarMenuButton';
-import { AiOutlineNotification } from 'react-icons/ai';
+import { AiOutlineNotification, AiOutlineTrophy } from 'react-icons/ai';
+
+const SHARE_URL = process.env.REACT_APP_GBX_SHARE;
 
 class Layout extends React.Component {
 
@@ -72,6 +74,7 @@ class Layout extends React.Component {
 	render() {
 
 		const {
+			orgSlug,
 			access,
 			preview,
 			stage,
@@ -80,7 +83,9 @@ class Layout extends React.Component {
 			display,
 			orgName,
 			primaryColor,
-			modal
+			modal,
+			kind,
+			status
 		} = this.props;
 
 		const style = { maxWidth: '850px' };
@@ -114,18 +119,34 @@ class Layout extends React.Component {
 
 		const noAccess = (!hasAccessToEdit || (hasAccessToEdit && !preview && stage === 'public' )) && (publishStatus === 'private') && (display === 'article') ? true : false;
 
+		const done = kind === 'sweepstake' && status === 'done' ? true : false;
+
 		return (
 			<>
-			{ noAccess ?
+			{ done ?
 				<div className='noAccessToGBX'>
-					<span style={{ fontSize: 30, margin: '10px 0' }} className='icon icon-lock'></span>
-					<span>This page is set to private.</span>
-					{hasAccessToEdit ?
-						<GBLink onClick={() => this.props.updateAdmin({ publicView: false })}>
-							<span className='icon icon-chevron-left'></span> Go back to Form Builder
+					<Icon><AiOutlineTrophy /></Icon>
+					<span className='center'>The Sweepstakes has Ended and the Winner Chosen</span>
+					{!hasAccessToEdit ?
+						<GBLink onClick={() => window.location.href = `${SHARE_URL}/${orgSlug}`}>
+							Click Here to Visit<br /><span style={{ fontWeight: 400 }}>{orgName}</span><br />
 						</GBLink>
 					:
-						<GBLink onClick={() => console.log('shop')}>
+						''
+					}
+				</div>
+			: ''}
+
+			{ noAccess ?
+				<div className='noAccessToGBX'>
+					<span className='icon icon-lock'></span>
+					<span className='center'>The Page is Set to Private</span>
+					{hasAccessToEdit ?
+						<GBLink onClick={() => this.props.updateAdmin({ publicView: false })}>
+							<span className='icon icon-chevron-left'></span> Go Back to Form Builder
+						</GBLink>
+					:
+						<GBLink onClick={() => window.location.href = `${SHARE_URL}/${orgSlug}`}>
 							Click here to visit<br /><span style={{ fontWeight: 400 }}>{orgName}</span><br />
 						</GBLink>
 					}
@@ -170,8 +191,11 @@ class Layout extends React.Component {
 function mapStateToProps(state, props) {
 
 	const access = util.getValue(state, 'resource.access');
+	const orgSlug = util.getValue(state, 'resource.article.data.orgSlug');
 	const gbx3 = util.getValue(state, 'gbx3', {});
 	const info = util.getValue(gbx3, 'info', {});
+	const kind = util.getValue(info, 'kind');
+	const status = util.getValue(gbx3, 'data.status');
 	const modal = util.getValue(info, 'modal');
 	const stage = util.getValue(info, 'stage');
 	const preview = util.getValue(info, 'preview');
@@ -181,6 +205,9 @@ function mapStateToProps(state, props) {
 	const orgName = util.getValue(info, 'orgName');
 
 	return {
+		orgSlug,
+		kind,
+		status,
 		modal,
 		access,
 		display,

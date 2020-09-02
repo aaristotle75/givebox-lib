@@ -6,7 +6,7 @@ const fundraiser = {
 	fields: {
 		enabled: { label: '', width: enabledWidth, className: 'left action' },
 		price: { label: 'Amount', placeholder: '0.00', width: priceWidth },
-		name: { label: 'Amount Name', placeholder: 'Add an Amount Short Description', width: 60, customFieldDefault: 'Enter any amount.' }
+		name: { label: 'Amount Name', placeholder: 'Add an Amount Short Description', width: 50, customFieldDefault: 'Enter any amount.' }
 	},
 	buttonGroup: { width: 20 },
 	hasDefaultField: true,
@@ -51,7 +51,7 @@ const sweepstake = {
 		thumbnail: { label: '', width: 12 },
 		price: { label: 'Price', placeholder: '0.00', width: priceWidth },
 		name: { label: 'Ticket Name', placeholder: 'Add a Ticket Short Description', width: nameWidth, customFieldDefault: '' },
-		entries: { label: 'Entries Per Ticket', placeholder: 1, width: 10 }
+		entries: { label: 'Entries Per Ticket', placeholder: 0, width: 10 }
 	},
 	buttonGroup: { width: 10 },
 	hasDefaultField: false,

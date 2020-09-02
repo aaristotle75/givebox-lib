@@ -452,7 +452,8 @@ const sweepstake = {
 				},
 				extras: {
 					maxQuantity: '',
-					showInStock: false
+					showInStock: false,
+					allowPerTicketWinner: null
 				},
 				recurring: {}
 			},

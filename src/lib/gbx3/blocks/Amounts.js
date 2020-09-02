@@ -28,6 +28,7 @@ import {
 	saveGBX3,
 	updateCart
 } from '../redux/gbx3actions';
+import has from 'has';
 
 class Amounts extends Component {
 
@@ -225,6 +226,7 @@ class Amounts extends Component {
 
 	validateAmountsBeforeSave(formErrorID, error, callback) {
 		const formError = this.state.formError;
+		console.log('execute', formError, formErrorID, error);
 		if (error) {
 			if (!formError.includes(formErrorID)) formError.push(formErrorID);
 		} else {
@@ -405,6 +407,7 @@ class Amounts extends Component {
 
 		if (util.isEmpty(amountsList)) return <></>;
 
+		const allowPerTicketWinner = util.getValue(extras, 'allowPerTicketWinner') || util.getValue(data, 'allowPerTicketWinner');
 		const maxQuantity = util.getValue(extras, 'maxQuantity') || util.getValue(data, 'maxQuantity');
 		const showCart = util.getValue(form, 'allowSelection', true);
 		const shopTitle = util.getValue(form, 'shopTitle', 'Browse More Items');
@@ -497,6 +500,47 @@ class Amounts extends Component {
 									>
 										<div className='formSectionContainer'>
 											<div className='formSection'>
+												{has(extras, 'allowPerTicketWinner') ?
+												<div style={{ margin: '10px 0' }}>
+													<Choice
+														type='checkbox'
+														name='enabled'
+														label={'Each Ticket in the Sweepstakes has a Winner'}
+														onChange={(name, value) => {
+															const extras = this.state.extras;
+															const allowPerTicketWinner = extras.allowPerTicketWinner ? false : true;
+															const data = {
+																allowPerTicketWinner
+															};
+															extras.allowPerTicketWinner = allowPerTicketWinner;
+															this.setState({ extras }, () => {
+																this.optionsUpdated('extras', extras);
+																this.props.updateData(data);
+															});
+														}}
+														checked={allowPerTicketWinner}
+														value={allowPerTicketWinner}
+														toggle={true}
+													/>
+													<div className='fieldContext'>
+														If this is toggled off, only one winner will be selected for the sweepstakes.
+													</div>
+												</div>
+												: ''}
+												<Choice
+													type='checkbox'
+													name='showInStock'
+													label={`Show How Many ${types.kind(kind).amountLabel} Are Available`}
+													onChange={(name, value) => {
+														const extras = this.state.extras;
+														extras.showInStock = extras.showInStock ? false : true;
+														this.setState({ extras }, () => {
+															this.optionsUpdated('extras', extras);
+														});
+													}}
+													checked={util.getValue(extras, 'showInStock', true)}
+													value={util.getValue(extras, 'showInStock', true)}
+												/>
 												<TextField
 													name='maxQuantity'
 													label={`Max ${types.kind(kind).amountLabel} That Can Be Purchased At One Time`}
@@ -517,20 +561,6 @@ class Amounts extends Component {
 															this.props.updateData(data);
 														});
 													}}
-												/>
-												<Choice
-													type='checkbox'
-													name='showInStock'
-													label={`Show How Many ${types.kind(kind).amountLabel} Are Available`}
-													onChange={(name, value) => {
-														const extras = this.state.extras;
-														extras.showInStock = extras.showInStock ? false : true;
-														this.setState({ extras }, () => {
-															this.optionsUpdated('extras', extras);
-														});
-													}}
-													checked={util.getValue(extras, 'showInStock', true)}
-													value={util.getValue(extras, 'showInStock', true)}
 												/>
 											</div>
 										</div>

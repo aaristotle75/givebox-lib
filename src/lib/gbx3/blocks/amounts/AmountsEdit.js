@@ -128,11 +128,17 @@ export default class AmountsEdit extends Component {
 
 	addAmount() {
 		const {
-			orgID
+			orgID,
+			kind
 		} = this.props;
 		const amountsList = [ ...this.props.amountsList ];
 		const length = amountsList.length;
 		const amount = amountsList[length - 1];
+
+		let entries = null;
+		if (kind === 'sweepstake') {
+			entries = 1;
+		}
 		this.props.sendResource(`${types.kind(this.props.kind).api.amount}s`, {
 			orgID,
 			id: [amount[`${this.props.kind}ID`]],
@@ -143,7 +149,8 @@ export default class AmountsEdit extends Component {
 				description: '',
 				enabled: false,
 				max: null,
-				orderBy: length
+				orderBy: length,
+				entries
 			},
 			reload: false,
 			callback: (res, err) => {
@@ -337,12 +344,21 @@ export default class AmountsEdit extends Component {
 		)
 	}
 
+	validateEnabledEntries(ID, enabled, entries) {
+		let error = false;
+		if (enabled && ( entries < 1 || !entries)) {
+			error = `Entries per ticket must be 1 or more.`;
+		}
+
+		return error;
+	}
+
 	entriesField(ID, fieldProps, config) {
 
 		const amount = this.getAmount(ID);
 		const fieldName = `entries${ID}`;
-		const entries = +util.getValue(amount, 'entries', 0);
-		const error = false;
+		const entries = +util.getValue(amount, 'entries');
+		const error = this.validateEnabledEntries(ID, amount.enabled, entries);
 
 		return (
 			<TextField
@@ -350,9 +366,13 @@ export default class AmountsEdit extends Component {
 				name={fieldName}
 				label={util.getValue(fieldProps, 'label')}
 				fixedLabel={true}
-				placeholder={util.getValue(fieldProps, 'placeholder', 1)}
+				placeholder={util.getValue(fieldProps, 'placeholder', 0)}
+				onBlur={(e) => {
+					this.props.validateAmountsBeforeSave(`${ID}-2`, this.validateEnabledEntries(ID, amount.enabled, entries));
+				}}
 				onChange={(e) => {
 					const entries = +e.currentTarget.value;
+					this.props.validateAmountsBeforeSave(`${ID}-2`, this.validateEnabledEntries(ID, amount.enabled, entries));
 					this.updateAmounts(ID, { entries });
 				}}
 				maxLength={7}

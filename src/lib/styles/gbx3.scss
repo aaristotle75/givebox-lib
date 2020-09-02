@@ -141,7 +141,7 @@
 
 	.noAccessToGBX {
 		position: fixed;
-		z-index: 99999999;
+		z-index: 99999;
 		top: 0; left: 0; right: 0; bottom: 0;
 		display: flex;
 		justify-content: center;
@@ -149,8 +149,13 @@
 		flex-direction: column;
 		background: transparentize($dark-blue-gray, .3); //transparentize($white, .7);;
 		color: $white;
-		font-size: 20px;
+		font-size: 18px;
 		font-weight: 400;
+
+		.icon {
+			font-size: 40px;
+			margin: 10px 0;
+		}
 
 		button.link {
 			margin: 20px 0;
