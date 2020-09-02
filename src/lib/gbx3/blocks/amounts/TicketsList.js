@@ -4,7 +4,7 @@ import {
 	util,
 	GBLink,
 	Dropdown,
-	types
+	Image
 } from '../../../';
 import '../../../styles/gbx3amounts.scss';
 import AnimateHeight from 'react-animate-height';
@@ -73,6 +73,8 @@ class TicketsList extends Component {
 
 		const max = +util.getValue(selectedItem, 'max', 0);
 		const sold =  +util.getValue(selectedItem, 'sold', 0);
+		const customData = util.getValue(selectedItem, 'customData', {});
+		const thumbnailURL = util.getValue(customData, 'thumbnailURL');
 		const inStock = max - sold
 		const availableQty = inStock < maxQuantity && hasMax ? inStock : maxQuantity;
 
@@ -87,6 +89,7 @@ class TicketsList extends Component {
 			maxQuantity,
 			allowQtyChange,
 			allowMultiItems,
+			thumbnailURL,
 			priceper: selectedItem.price,
 			...obj
 		};
@@ -170,6 +173,9 @@ class TicketsList extends Component {
 		if (!util.isEmpty(amountsList)) {
 			Object.entries(amountsList).forEach(([key, value]) => {
 				const price = util.money(value.price/100);
+				const customData = util.getValue(value, 'customData', {});
+				const thumbnailURL = util.getValue(customData, 'thumbnailURL');
+
 				let name = value.name;
 				let priceDesc = '';
 				if (kind === 'sweepstake') {
@@ -189,11 +195,15 @@ class TicketsList extends Component {
 					items.push(
 						<div key={key} className='ticketAmountRow'>
 							<div className='ticketDescRow'>
-								<div className='ticketDesc'>
+								{ thumbnailURL ?
+								<div style={{ width: '10%' }} className='ticketDescThumb'>
+									<Image url={thumbnailURL} size={'thumb'} maxSize={60} title={name} />
+								</div> : '' }
+								<div style={{ width: thumbnailURL ? '75%' : '85%' }} className='ticketDesc'>
 									{name}
 									<span className='ticketDescAmount'>{price} {priceDesc}</span>
 									{showInStock ? <span className='ticketDescInStock'>{inStock} Available</span> : <></> }
-									{value.description ? <GBLink allowCustom={true} customColor={color} className='link ticketShowDetailsLink' onClick={() => this.toggleShowDetails(value.ID)}>{showDetails.includes(value.ID) ? 'Hide Info' : 'Show Info'}</GBLink> : <></>}
+									{value.description ? <GBLink allowCustom={true} customColor={color} className='link ticketShowDetailsLink' onClick={() => this.toggleShowDetails(value.ID)}>{showDetails.includes(value.ID) ? 'Hide Info' : 'More Info'}</GBLink> : <></>}
 								</div>
 								<div className='ticketQty'>
 									<Dropdown

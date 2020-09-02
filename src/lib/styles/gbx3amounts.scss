@@ -303,10 +303,15 @@ $breakpoint: 768px;
 		.ticketDescRow {
 			display: flex;
 			justify-content: flex-start;
+			align-items: center;
+		}
+
+		.ticketDescThumb {
+			position: relative;
+			padding: 10px;
 		}
 
 		.ticketDesc {
-			width: 85%;
 			padding: 10px;
 			font-size: 16px;
 			line-height: 1.3em;

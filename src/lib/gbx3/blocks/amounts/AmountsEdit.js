@@ -364,7 +364,6 @@ export default class AmountsEdit extends Component {
 	}
 
 	handleThumbnailSaveCallback(url, ID, modalID) {
-		//console.log('execute handleThumbnailSaveCallback', ID, url);
 		this.updateAmounts(ID, {}, { thumbnailURL: url });
 		this.props.toggleModal(modalID, false);
 	}
@@ -437,7 +436,7 @@ export default class AmountsEdit extends Component {
 					}
 					buttonGroup={
 						<div style={{ margin: 0 }} className='button-group center'>
-							<GBLink className='link remove' onClick={() => console.log('execute remove thumbnail')}><span className='icon icon-trash-2'></span> <span className='buttonText'>Remove</span></GBLink>
+							<GBLink className='link remove' onClick={() => this.handleThumbnailSaveCallback('', ID, modalID)}><span className='icon icon-trash-2'></span> <span className='buttonText'>Remove</span></GBLink>
 							<GBLink className='button' onClick={() => this.props.toggleModal(modalID, false)}>Close</GBLink>
 						</div>
 					}

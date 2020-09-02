@@ -24,10 +24,14 @@ class ShareLinkEdit extends Component {
 		this.closeEditModal = this.closeEditModal.bind(this);
 		this.updateSlug = this.updateSlug.bind(this);
 		const slug = props.slug;
+		const hasCustomSlug = props.hasCustomSlug;
+		const articleID = props.articleID;
+		const newSlug = hasCustomSlug ? slug : articleID;
+
 		this.state = {
 			saving: false,
-			newSlug: slug,
-			newSlugDefault: slug,
+			newSlug,
+			newSlugDefault: newSlug,
 			error: false,
 			errorMsg: 'Invalid characters in the share link name',
 			errorUpdating: false,
