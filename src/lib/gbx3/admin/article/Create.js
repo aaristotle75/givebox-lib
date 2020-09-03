@@ -159,13 +159,13 @@ class Create extends React.Component {
 							<div className='stepSection'>
 								<div className='intro'>
 									{isVolunteer ?
-										<span>
+										<h2>
 											Raise money for<br />
 											<strong>{orgName}</strong><br />
 											in three easy steps.
-										</span>
+										</h2>
 									:
-										<span>Collect money in three simple steps.</span>
+										<h2>Collect money in three simple steps.</h2>
 									}
 								</div>
 								<div className='steps'>

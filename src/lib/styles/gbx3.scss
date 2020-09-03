@@ -2321,6 +2321,11 @@
 		background: $mainColor;
 		background: linear-gradient(to right, $mainColor 0%, $green 100%);
 		overflow: hidden;
+
+		h2 {
+			font-size: 1.5em;
+			font-weight: 300;
+		}
 	}
 
 	.steps {
@@ -2337,7 +2342,7 @@
 		color: $white;
 		margin: 0 20px;
 		font-size: 1.1em;
-		font-weight: 400;
+		font-weight: 300;
 		.icon {
 			font-size: 30px;
 			color: $green;
