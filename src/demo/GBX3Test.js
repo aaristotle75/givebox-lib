@@ -51,7 +51,7 @@ class GBXTest extends Component {
 					saveCallback={this.saveCallback}
 					queryParams={queryParams}
 					public={false}
-					project={'share'}
+					project={'admin'}
 					exitCallback={() => console.log('exit callback')}
 				/>
 			</div>

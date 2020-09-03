@@ -34,6 +34,16 @@ class Create extends React.Component {
 		};
 	}
 
+	componentDidMount() {
+		const {
+			autoCreate
+		} = this.props;
+
+		if (autoCreate) {
+			this.createFundraiser(autoCreate, true);
+		}
+	}
+
 	onChangeKind(name, value) {
 		this.props.updateInfo({ kind: value });
 	}
@@ -82,7 +92,8 @@ class Create extends React.Component {
 		);
 	}
 
-	createFundraiser(kind) {
+	createFundraiser(kind, autoCreate) {
+		if (autoCreate) this.props.updateInfo({ autoCreate: null });
 		this.props.createFundraiser(kind, this.createFundraiserCallback);
 	}
 
@@ -197,6 +208,7 @@ function mapStateToProps(state, props) {
 
 	const gbx3 = util.getValue(state, 'gbx3', {});
 	const info = util.getValue(gbx3, 'info', {});
+	const autoCreate = util.getValue(info, 'autoCreate');
 	const orgID = util.getValue(info, 'orgID');
 	const kind = util.getValue(info, 'kind');
 	const orgName = util.getValue(info, 'orgName');
@@ -210,6 +222,7 @@ function mapStateToProps(state, props) {
 	const userFundraisers = util.getValue(state, 'resource.userFundraisers');
 
 	return {
+		autoCreate,
 		kind,
 		orgID,
 		orgName,

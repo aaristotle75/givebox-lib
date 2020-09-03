@@ -176,13 +176,11 @@ class GBX3 extends React.Component {
 			queryParams,
 			info,
 			orgID,
-			articleID,
-			kind
+			articleID
 		} = this.props;
 
 		info.articleID = articleID;
 		info.orgID = orgID;
-		if (kind) info.kind = kind;
 		info.modal = has(queryParams, 'modal') ? true : false;
 		info.preview = has(queryParams, 'preview') ? true : false;
 		info.signup = has(queryParams, 'signup') ? true : false;
@@ -193,6 +191,7 @@ class GBX3 extends React.Component {
 		info.deactivated = has(queryParams, 'deactivated') ? true : false;
 		info.ebToken = util.getValue(queryParams, 'eb', null);
 		info.ebEmail = util.getValue(queryParams, 'm', null);
+		info.autoCreate = util.getValue(queryParams, 'autoCreate');
 
 		const sourceLocation = reactReferer.referer();
 		info.sourceLocation = this.props.sourceLocation || sourceLocation;

@@ -40,9 +40,8 @@ class Admin extends React.Component {
 		if (project === 'share') {
 			const infoUpdated = await this.props.updateInfo({ stage: 'public' });
 			if (infoUpdated) this.props.updateAdmin({ publicView: true });
-		} else {
-			if (this.props.exitCallback) this.props.exitCallback();
 		}
+		window.parent.postMessage('gbx3ExitCallback', '*');
 	}
 
 	goBack(articleID) {
