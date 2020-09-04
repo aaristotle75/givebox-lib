@@ -19,7 +19,7 @@ export const helperTemplates = {
 				className: 'helperLeft',
 				type: 'block',
 				field: 'orgImageURL',
-				defaultCheck: 'image'
+				defaultCheck: 'logo'
 			},
 			{
 				step: 2,
@@ -33,7 +33,7 @@ export const helperTemplates = {
 				className: 'helperTop',
 				type: 'block',
 				field: 'title',
-				defaultCheck: 'text'
+				defaultCheck: 'text-no-check'
 			},
 			{
 				step: 3,
@@ -47,7 +47,7 @@ export const helperTemplates = {
 				className: 'helperRight',
 				type: 'block',
 				field: 'imageURL',
-				defaultCheck: 'image'
+				defaultCheck: 'image-no-check'
 			},
 			{
 				step: 4,
@@ -62,7 +62,7 @@ export const helperTemplates = {
 				type: 'color',
 				targetID: 'topPanelContainer',
 				field: 'giveboxSettings.primaryColor',
-				defaultCheck: 'color',
+				defaultCheck: 'color-no-check',
 				skipText: 'Next'
 			},
 			{
@@ -77,7 +77,7 @@ export const helperTemplates = {
 				className: 'helperRight',
 				type: 'block',
 				field: 'description',
-				defaultCheck: 'text'
+				defaultCheck: 'text-no-check'
 			},
 			{
 				step: 6,

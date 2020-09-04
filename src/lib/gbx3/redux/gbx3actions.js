@@ -198,6 +198,11 @@ export function checkHelperIfHasDefaultValue(blockType, helper) {
 		if (!util.checkImage(value)) isDefault = false;
 
 		switch (util.getValue(helper, 'defaultCheck')) {
+			case 'logo': {
+				if (!util.checkImage(value) || !value) isDefault = true;
+				break;
+			}
+
 			case 'image': {
 				if (!util.checkImage(value) || !value) isDefault = true;
 				break;
@@ -213,11 +218,11 @@ export function checkHelperIfHasDefaultValue(blockType, helper) {
 				break;
 			}
 
-			case 'share': {
+			case 'share':
+			default: {
 				isDefault = true;
 				break;
 			}
-			// no default
 		}
 
 		return isDefault;
@@ -280,7 +285,7 @@ export function checkForHelper(blockType, nextStep) {
 			} else {
 				// If a helperStep is not null and helper exists, open the helper and hide the sidebar
 				if (helperStep &&  !util.isEmpty(helper)) {
-					const isDefault = true; //dispatch(checkHelperIfHasDefaultValue(blockType, helper));
+					const isDefault = dispatch(checkHelperIfHasDefaultValue(blockType, helper));
 					if (isDefault && !availableBlocks.includes(helper.blockName)) {
 						dispatch(updateHelperBlocks(blockType, {
 							helperStep,
