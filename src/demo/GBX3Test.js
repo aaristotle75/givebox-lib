@@ -46,7 +46,6 @@ class GBXTest extends Component {
 			<div>
 				<GBX
 					blockType={'article'}
-					orgID={185}
 					articleID={articleID}
 					saveCallback={this.saveCallback}
 					queryParams={queryParams}

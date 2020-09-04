@@ -49,7 +49,6 @@ class GBX3 extends React.Component {
 		this.onClickVolunteerFundraiser = this.onClickVolunteerFundraiser.bind(this);
 		this.signupCallback = this.signupCallback.bind(this);
 		this.authenticateVolunteer = this.authenticateVolunteer.bind(this);
-		this.checkVolunteerIntegrity = this.checkVolunteerIntegrity.bind(this);
 		this.determineWhatToLoad = this.determineWhatToLoad.bind(this);
 		this.state = {
 		};
@@ -144,10 +143,6 @@ class GBX3 extends React.Component {
 		}
 	}
 
-	checkVolunteerIntegrity() {
-
-	}
-
 	loadCreateNew(isVolunteer) {
 		const {
 			access,
@@ -176,12 +171,15 @@ class GBX3 extends React.Component {
 			queryParams,
 			info,
 			orgID,
-			articleID
+			articleID,
+			template,
+			modal
 		} = this.props;
 
+		info.template = template;
 		info.articleID = articleID;
 		info.orgID = orgID;
-		info.modal = has(queryParams, 'modal') ? true : false;
+		info.modal = has(queryParams, 'modal') || modal ? true : false;
 		info.preview = has(queryParams, 'preview') ? true : false;
 		info.signup = has(queryParams, 'signup') ? true : false;
 		info.locked = has(queryParams, 'locked') ? true : false;

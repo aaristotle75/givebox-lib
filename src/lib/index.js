@@ -42,6 +42,7 @@ import Error from './common/Error';
 import Fade from './common/Fade';
 import GBLink from './common/GBLink';
 import GBX from './common/GBX';
+import GBXWidget from './common/GBXWidget';
 import Icon from './common/Icon';
 import Iframe from './common/Iframe';
 import Image from './common/Image';
@@ -263,6 +264,7 @@ export {
 	Fade,
 	GBLink,
 	GBX,
+	GBXWidget,
 	Icon,
 	Iframe,
 	Image,

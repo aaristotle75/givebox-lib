@@ -102,12 +102,14 @@ class Article extends React.Component {
 			const helpersCompleted = util.getValue(helperBlocks, 'completed', []);
 			const helperIndex = helpersAvailable.findIndex(h => h.blockName === name);
 
+			/*
 			if (helperIndex > -1 && !helpersCompleted.includes(name)) {
 				checkForUpdatesCount = checkForUpdatesCount + 1;
 				helpersCompleted.push(name);
 				const helperBlocksUpdated = await this.props.updateHelperBlocks(blockType, { completed: helpersCompleted });
 				if (helperBlocksUpdated) updated.push('helpersUpdated');
 			}
+			*/
 
 			if (updated.length === checkForUpdatesCount) {
 				if (saveGBX3 && hasBeenUpdated) {

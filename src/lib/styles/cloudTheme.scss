@@ -941,6 +941,7 @@ $image-max: 338px;
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
+		justify-content: center;
 
 		h1 {
 			height: 60px;
@@ -952,6 +953,9 @@ $image-max: 338px;
 			margin-left: 0px;
 		}
 
+		button .label {
+			font-size: 1.1em;
+		}
 	}
 
 
