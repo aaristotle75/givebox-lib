@@ -58,7 +58,10 @@ class GBX3 extends React.Component {
 		const {
 			articleID,
 			editable,
-			hasAccessToEdit
+			hasAccessToEdit,
+			isVolunteer,
+			orgID,
+			orgName
 		} = this.props;
 
 		this.props.setLoading(true);
@@ -71,10 +74,18 @@ class GBX3 extends React.Component {
 		const setInfo = await this.setInfo();
 
 		if (setInfo) {
-			if (articleID) {
+			if (articleID && !isVolunteer) {
 				this.loadGBX3(articleID);
 			} else {
+				if (isVolunteer) {
+					const infoUpdated = await this.props.updateInfo({
+						orgID: orgID || ENV === 'production' ? 585 : 185,
+						orgName: orgName || ENV === 'production' ? 'Givebox' : 'Service Dogs of America'
+					});
+					if (infoUpdated) this.onClickVolunteerFundraiser();
+				} else {
 				this.loadCreateNew();
+				}
 			}
 		}
 		window.addEventListener('scroll',() => {

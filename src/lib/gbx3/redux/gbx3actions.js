@@ -357,6 +357,10 @@ export function resetConfirmation() {
 	}
 }
 
+export function shopMoreItems() {
+	console.log('execute shopMoreItems');
+}
+
 function saveCart(cart) {
 	return {
 		type: types.UPDATE_CART,

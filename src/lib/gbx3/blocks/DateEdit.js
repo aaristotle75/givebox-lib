@@ -9,6 +9,7 @@ import {
 import { toggleModal } from '../../api/actions';
 import Editor from './Editor';
 import Moment from 'moment';
+import AnimateHeight from 'react-animate-height';
 
 class DateForm extends Component {
 
@@ -34,7 +35,7 @@ class DateForm extends Component {
 		const enableTime = util.getValue(field, 'enableTime');
 		let ts = value;
 		if (name === 'range1') {
-			if (value >= content.range2) {
+			if (value > content.range2) {
 				ts = content.range2;
 				this.props.fieldProp('range1', { error: 'Date should be less than the end date.' });
 			} else {
@@ -43,7 +44,7 @@ class DateForm extends Component {
 		}
 
 		if (name === 'range2') {
-			if (value <= content.range1) {
+			if (value < content.range1) {
 				ts = content.range1;
 				this.props.fieldProp('range2', { error: 'Date should be greater than the start date.' });
 			} else {
@@ -161,43 +162,47 @@ class DateForm extends Component {
 								value: range1
 							})
 						}
-						<div style={{ marginTop: 10 }} className='helperText'>
-							<div className='line label'>Style Editor</div>
-							<Editor
-								orgID={orgID}
-								articleID={articleID}
-								content={htmlEditable}
-								onBlur={this.onBlurHTML}
-								onChange={this.onChangeHTML}
-								type={'classic'}
-								acceptedMimes={['image']}
-							/>
-						</div>
-						<div style={{ marginTop: 10 }} className='helperText'>
-							<div className='line label'>Tokens</div>
-							<div className='line'>{range1Token} = {this.props.dateFormat('range1')}</div>
-							<div className='line'>{range2Token} = {this.props.dateFormat('range2')}</div>
-							<div className='line'>Do not change the token values directly in the editor. If you want to change the Date/Time use the Calendar inputs.</div>
-						</div>
-						<div style={{ paddingBottom: 0 }} className='helperText'>
-							<div style={{ marginBottom: 0 }} className='line label'>Date Format</div>
-							{this.props.dropdown('dateFormat', {
-								label: '',
-								fixedLabel: false,
-								value: dateFormat,
-								selectLabel: 'Select Date Format',
-								onChange: (name, value) => {
-									this.props.contentUpdated({
-										dateFormat: value
-									});
-								},
-								options: this.formatOptions()
-							})}
-						</div>
-						<div className='helperText'>
-							<div style={{ marginBottom: 5 }} className='line label'>Preview</div>
-							<div ref={this.displayRef} dangerouslySetInnerHTML={{ __html: html }} />
-						</div>
+						<AnimateHeight height={range1 || range2  ? 'auto' : 0 } duration={500}>
+							<>
+							<div style={{ marginTop: 10 }} className='helperText'>
+								<div className='line label'>Style Editor</div>
+								<Editor
+									orgID={orgID}
+									articleID={articleID}
+									content={htmlEditable}
+									onBlur={this.onBlurHTML}
+									onChange={this.onChangeHTML}
+									type={'classic'}
+									acceptedMimes={['image']}
+								/>
+							</div>
+							<div style={{ marginTop: 10 }} className='helperText'>
+								<div className='line label'>Tokens</div>
+								<div className='line'>{range1Token} = {this.props.dateFormat('range1')}</div>
+								<div className='line'>{range2Token} = {this.props.dateFormat('range2')}</div>
+								<div className='line'>Do not change the token values directly in the editor. If you want to change the Date/Time use the Calendar inputs.</div>
+							</div>
+							<div style={{ paddingBottom: 0 }} className='helperText'>
+								<div style={{ marginBottom: 0 }} className='line label'>Date Format</div>
+								{this.props.dropdown('dateFormat', {
+									label: '',
+									fixedLabel: false,
+									value: dateFormat,
+									selectLabel: 'Select Date Format',
+									onChange: (name, value) => {
+										this.props.contentUpdated({
+											dateFormat: value
+										});
+									},
+									options: this.formatOptions()
+								})}
+							</div>
+							<div className='helperText'>
+								<div style={{ marginBottom: 5 }} className='line label'>Preview</div>
+								<div ref={this.displayRef} dangerouslySetInnerHTML={{ __html: html }} />
+							</div>
+							</>
+						</AnimateHeight>
 					</div>
 				</div>
 			</Collapse>

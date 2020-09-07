@@ -192,7 +192,7 @@ class Date extends Component {
 		} = this.state;
 
 		const nonremovable = util.getValue(block, 'nonremovable', false);
-		const cleanHtml = util.cleanHtml(html);
+		const cleanHtml = util.cleanHtml(html).trim();
 
 		return (
 			<div className={`dateBlock`}>
@@ -227,7 +227,7 @@ class Date extends Component {
 						</div>
 					}
 				/>
-				<div ref={this.displayRef} dangerouslySetInnerHTML={{ __html: cleanHtml }} />
+				{ cleanHtml ? <div dangerouslySetInnerHTML={{ __html: cleanHtml }} /> : <span>When is the Event?</span> }
 			</div>
 		)
 	}

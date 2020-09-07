@@ -248,6 +248,8 @@ export function validateCalendarRange(key, fields) {
 			if (Moment.unix(range.start).startOf('day').unix() > Moment.unix(range.end).endOf('day').unix()) validate = false;
 		}
 	}
+
+	console.log('execute validate calendar', fields[key].rangeRequired, range.start, range.end);
 	return validate;
 }
 

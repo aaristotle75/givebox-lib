@@ -177,7 +177,6 @@ export const where = {
 	name: 'where',
 	title: 'Where',
 	type: 'Where',
-	nonremovable: true,
 	field: 'where',
 	mobileRelativeBlock: 4,
 	mobileClassName: 'mobileRelativeBlockTop',

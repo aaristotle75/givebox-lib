@@ -29,6 +29,8 @@ class AvatarMenuButton extends React.Component {
 			stage
 		} = this.props;
 
+		if (util.isEmpty(access)) return <></>;
+
 		return (
 			<div className='avatarLink'>
 				<ModalLink id='avatarMenu' className='link'>

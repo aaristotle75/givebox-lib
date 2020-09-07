@@ -81,6 +81,7 @@ class Admin extends React.Component {
 			saveStatus,
 			editable,
 			isVolunteer,
+			access,
 			hasAccessToEdit,
 			hasAccessToCreate,
 			breakpoint
@@ -113,7 +114,8 @@ class Admin extends React.Component {
 									:
 										<GBLink style={{ fontSize: '14px' }} className='link' onClick={() => this.props.loadCreateNew()}><span className='icon icon-plus'></span> { isMobile ? 'New' : 'Create New Form' }</GBLink>
 								: '' }
-								<GBLink style={{ fontSize: '14px' }} className='link' onClick={() => this.exitAdmin()}><Icon><AiOutlineFullscreen /></Icon>{ isMobile ? 'Exit' : 'Exit Form Builder' }</GBLink>
+								{ !util.isEmpty(access) ?
+								<GBLink style={{ fontSize: '14px' }} className='link' onClick={() => this.exitAdmin()}><Icon><AiOutlineFullscreen /></Icon>{ isMobile ? 'Exit' : 'Exit Form Builder' }</GBLink> : <></> }
 							</div>
 							<div className='headerRightSide'>
 								<AvatarMenuButton />

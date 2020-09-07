@@ -84,7 +84,7 @@ class Create extends React.Component {
 
 		return (
 			<div className='createKindSection'>
-				<span className='intro'>What kind of payment form would you like to create?</span>
+				<span className='intro'>{ isVolunteer ? 'What kind of P2P fundraiser would you like to create?' : 'What kind of payment form would you like to create?' }</span>
 				<div className='createKindList'>
 					{items}
 				</div>

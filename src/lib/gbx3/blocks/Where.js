@@ -197,7 +197,7 @@ class Where extends Component {
 		} = coordinates;
 
 		const nonremovable = util.getValue(block, 'nonremovable', false);
-		const cleanHtml = util.cleanHtml(html);
+		const cleanHtml = util.cleanHtml(html).trim();
 
 		return (
 			<div className={`whereBlock`}>
@@ -246,11 +246,11 @@ class Where extends Component {
 							/>
 							<ModalLink type='div' id='whereMap' className='whereMapLink'>
 								<div className='viewMapLink'>View Map</div>
-								<div dangerouslySetInnerHTML={{ __html: cleanHtml }} />
+								{ cleanHtml ? <div dangerouslySetInnerHTML={{ __html: cleanHtml }} /> : <span>Where is the Event?</span> }
 							</ModalLink>
 						</>
 					:
-						<div dangerouslySetInnerHTML={{ __html: cleanHtml }} />
+						cleanHtml ? <div dangerouslySetInnerHTML={{ __html: cleanHtml }} /> : <span>Where is the Event?</span>
 					}
 				</div>
 			</div>

@@ -235,6 +235,7 @@ export function validateCalendarRange(key, fields) {
     }
   }
 
+  console.log('execute validate calendar', fields[key].rangeRequired, range.start, range.end);
   return validate;
 }
 export function formatDate(value, time = false) {
