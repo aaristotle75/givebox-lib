@@ -195,7 +195,6 @@ export function checkHelperIfHasDefaultValue(blockType, helper) {
 			}
 		}
 		const value = util.getValue(data, util.getValue(helper, 'field'));
-		if (!util.checkImage(value)) isDefault = false;
 
 		switch (util.getValue(helper, 'defaultCheck')) {
 			case 'logo': {
@@ -234,29 +233,29 @@ export function nextHelperStep(blockType, checkStep, returnNextStepOnly = false)
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
 		const helperBlocks = util.getValue(gbx3, `helperBlocks.${blockType}`, {});
 		const helperCompleted = util.getValue(helperBlocks, 'completed', []);
-		const helperStep = checkStep ||  util.getValue(helperBlocks, 'helperStep', 1);
+		const helperStep = checkStep || checkStep === 0 ? checkStep : util.getValue(helperBlocks, 'helperStep', 0);
 		const helpersAvailable = util.getValue(helperBlocks, 'helpersAvailable', []);
 
 		let nextStep = null;
 		Object.entries(helpersAvailable).forEach(([key, value]) => {
-			if (!nextStep && !helperCompleted.includes(value.blockName) && ( value.step > helperStep )) {
-				nextStep = value.step;
+			if ( (!nextStep && nextStep !== 0) && !helperCompleted.includes(value.blockName) && ( key > helperStep )) {
+				nextStep = key;
 			}
 		});
 		if (!nextStep) {
 			Object.entries(helpersAvailable).forEach(([key, value]) => {
-				if (!nextStep && !helperCompleted.includes(value.blockName)) {
-					nextStep = +value.step;
+				if ( (!nextStep && nextStep !== 0) && !helperCompleted.includes(value.blockName)) {
+					nextStep = +key;
 				}
 			});
 		}
 		if (returnNextStepOnly) {
-			return nextStep || 1;
+			return nextStep || 0;
 		} else {
-			if (nextStep) dispatch(checkForHelper(blockType, nextStep));
+			if (nextStep || nextStep === 0) dispatch(checkForHelper(blockType, nextStep));
 			else {
 				dispatch(updateHelperBlocks(blockType, {
-					helperStep: 1,
+					helperStep: 0,
 					helperOpen: false,
 					helperSidebarShow: true
 				}));
@@ -272,10 +271,10 @@ export function checkForHelper(blockType, nextStep) {
 		const helpersTurnedOff = util.getValue(getState(), `preferences.gbx3Helpers`) === 'off' ? true : false;
 		const helperBlocks = util.getValue(gbx3, `helperBlocks.${blockType}`, {});
 		const helperCompleted = util.getValue(helperBlocks, 'completed', []);
-		const helperStep = nextStep || util.getValue(helperBlocks, 'helperStep');
-		const lastStep = util.getValue(helperBlocks, 'lastStep');
+		const helperStep = ( nextStep || nextStep === 0 ) ? nextStep : util.getValue(helperBlocks, 'helperStep');
 		const helpersAvailable = util.getValue(helperBlocks, 'helpersAvailable', []);
-		const helper = helpersAvailable.find(h => h.step === helperStep);
+		const lastStep = helpersAvailable.length - 1;
+		const helper = util.getValue(helpersAvailable, helperStep, {});
 		const isVolunteer = util.getValue(gbx3, 'admin.isVolunteer');
 
 		if (!helpersTurnedOff) {
@@ -284,7 +283,7 @@ export function checkForHelper(blockType, nextStep) {
 				dispatch(nextHelperStep(blockType));
 			} else {
 				// If a helperStep is not null and helper exists, open the helper and hide the sidebar
-				if (helperStep &&  !util.isEmpty(helper)) {
+				if ( ( helperStep || helperStep === 0 ) &&  !util.isEmpty(helper)) {
 					const isDefault = dispatch(checkHelperIfHasDefaultValue(blockType, helper));
 					if (isDefault && !availableBlocks.includes(helper.blockName)) {
 						dispatch(updateHelperBlocks(blockType, {
@@ -297,7 +296,7 @@ export function checkForHelper(blockType, nextStep) {
 						if (nextStep === lastStep) {
 							dispatch(updateHelperBlocks(blockType, {
 								helperOpen: true,
-								helperStep: lastStep,
+								helperStep: nextStep,
 								helperSidebarShow: false
 							}));
 						} else {
@@ -791,7 +790,7 @@ export function loadGBX3(articleID, callback) {
 									};
 
 									const helperBlocksCustom = util.getValue(customTemplate, `helperBlocks.${blockType}`, {});
-									const helperBlocks = !util.isEmpty(helperBlocksCustom) ? helperBlocksCustom : helperTemplates[blockType];
+									const helperBlocks = !util.isEmpty(helperBlocksCustom) ? helperBlocksCustom : helperTemplates[blockType][kind];
 
 									if (!util.isEmpty(blocksCustom)) {
 										// Check if not all default blocks are present

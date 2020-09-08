@@ -191,10 +191,10 @@ function mapStateToProps(state, props) {
 	const editBlock = util.getValue(state, `gbx3.admin.editBlock`);
 	const helperBlocks = util.getValue(state, `gbx3.helperBlocks.${blockType}`);
 	const helperOpen = util.getValue(helperBlocks, 'helperOpen');
-	const helperStep = util.getValue(helperBlocks, 'helperStep');
-	const isLastStep = util.getValue(helperBlocks, 'lastStep') === helperStep;
+	const helperStep = +util.getValue(helperBlocks, 'helperStep', 0);
 	const helpersAvailable = util.getValue(helperBlocks, 'helpersAvailable', []);
-	const helper = helpersAvailable.find(h => h.step === helperStep);
+	const isLastStep = ( helpersAvailable.length - 1 ) === helperStep ? true : false;
+	const helper = util.getValue(helpersAvailable, helperStep, {});
 	const blockName = util.getValue(helper, 'blockName');
 	const stage = util.getValue(state, 'gbx3.info.stage');
 	const preview = util.getValue(state, 'gbx3.info.preview');

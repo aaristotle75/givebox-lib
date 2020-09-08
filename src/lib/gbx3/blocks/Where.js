@@ -10,6 +10,7 @@ import {
 import WhereEdit from './WhereEdit';
 import Map from './Map';
 import { toggleModal } from '../../api/actions';
+import sanitizeHtml from 'sanitize-html';
 
 class Where extends Component {
 
@@ -112,28 +113,21 @@ class Where extends Component {
 		}, this.setHTML);
 	}
 
-	contentUpdated(content) {
+	contentUpdated(content, callback) {
 		this.setState({
 			content: {
 				...this.state.content,
 				...content
 			},
 			hasBeenUpdated: true
-		}, this.setHTML);
+		}, () => { this.setHTML(callback);});
 	}
 
-	setHTML() {
+	setHTML(callback) {
 		const {
 			where,
 			htmlTemplate
 		} = this.state.content;
-
-		/*
-		const {
-			lat,
-			long
-		} = util.getValue(where, 'coordinates', {});
-		*/
 
 		const address = util.getValue(where, 'address');
 		const city = util.getValue(where, 'city');
@@ -162,18 +156,18 @@ class Where extends Component {
 		const htmlEditable = htmlTemplate || defaultTemplate;
 		const html = util.replaceAll(htmlEditable, tokens);
 
-		this.setState({ html, htmlEditable });
+		this.setState({ html, htmlEditable }, () => { if (callback) callback() });
 	}
 
 	render() {
 
 		const {
-			name,
 			modalID,
 			title,
 			block,
-			primaryColor,
-			data
+			data,
+			previewMode,
+			stage
 		} = this.props;
 
 		const {
@@ -199,6 +193,9 @@ class Where extends Component {
 		const nonremovable = util.getValue(block, 'nonremovable', false);
 		const cleanHtml = util.cleanHtml(html).trim();
 
+		const strippedHtml = util.stripHtml(cleanHtml);
+		const hasContent = strippedHtml ? true : false;
+
 		return (
 			<div className={`whereBlock`}>
 				<ModalRoute
@@ -219,6 +216,7 @@ class Where extends Component {
 							optionsUpdated={this.optionsUpdated}
 							html={html}
 							htmlEditable={htmlEditable}
+							closeEditModal={this.closeEditModal}
 						/>
 					}
 					buttonGroup={
@@ -246,11 +244,11 @@ class Where extends Component {
 							/>
 							<ModalLink type='div' id='whereMap' className='whereMapLink'>
 								<div className='viewMapLink'>View Map</div>
-								{ cleanHtml ? <div dangerouslySetInnerHTML={{ __html: cleanHtml }} /> : <span>Where is the Event?</span> }
+								{ hasContent || previewMode || stage === 'public' ? <div dangerouslySetInnerHTML={{ __html: cleanHtml }} /> : <span className='blockPlaceholderHtml'>Where is the Event?</span> }
 							</ModalLink>
 						</>
 					:
-						cleanHtml ? <div dangerouslySetInnerHTML={{ __html: cleanHtml }} /> : <span>Where is the Event?</span>
+						hasContent || previewMode || stage === 'public' ? <div dangerouslySetInnerHTML={{ __html: cleanHtml }} /> : <span className='blockPlaceholderHtml'>Where is the Event?</span>
 					}
 				</div>
 			</div>

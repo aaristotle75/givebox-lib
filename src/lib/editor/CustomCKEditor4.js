@@ -31,6 +31,12 @@ class CustomCKEditor4 extends Component {
 	componentDidMount() {
 	}
 
+	componentDidUpdate(prevProps) {
+		if (prevProps.content !== this.props.content) {
+			this.setState({ content: this.props.content });
+		}
+	}
+
 	componentWillUnmount() {
 		if (this.timeout) {
 			clearTimeout(this.timeout);

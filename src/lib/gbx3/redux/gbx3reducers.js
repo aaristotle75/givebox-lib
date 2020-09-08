@@ -83,7 +83,7 @@ export function gbx3(state = {
 	saveStatus: 'done',
 	info: {
 		project: 'share',
-		stage: null,
+		stage: 'public',
 		display: 'shop',
 		preview: false,
 		breakpoint: 'desktop',

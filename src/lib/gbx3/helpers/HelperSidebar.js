@@ -30,7 +30,7 @@ class HelperSidebar extends React.Component {
 			isLastStep
 		} = this.props;
 
-		this.props.checkForHelper(blockType, isLastStep ? 1 : null);
+		this.props.checkForHelper(blockType, isLastStep ? 0 : null);
 	}
 
 	render() {
@@ -58,8 +58,9 @@ function mapStateToProps(state, props) {
 	const helperBlocks = util.getValue(state, `gbx3.helperBlocks.${blockType}`, {});
 	const helperOpen = util.getValue(helperBlocks, 'helperOpen');
 	const helperSidebarShow = util.getValue(helperBlocks, `helperSidebarShow`);
-	const helperStep = util.getValue(helperBlocks, 'helperStep');
-	const isLastStep = util.getValue(helperBlocks, 'lastStep') === helperStep;
+	const helperStep = +util.getValue(helperBlocks, 'helperStep', 0);
+	const helpersAvailable = util.getValue(helperBlocks, 'helpersAvailable', []);
+	const isLastStep = ( helpersAvailable.length - 1 ) === helperStep ? true : false;
 
 	return {
 		helperOpen,

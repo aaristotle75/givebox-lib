@@ -141,7 +141,9 @@ class Block extends React.Component {
 			primaryColor,
 			scrollTo,
 			reloadGBX3,
-			isVolunteer
+			isVolunteer,
+			previewMode,
+			stage
 		} = this.props;
 
 		const childrenWithProps = React.Children.map(this.props.children,
@@ -165,6 +167,8 @@ class Block extends React.Component {
 				scrollTo,
 				reloadGBX3,
 				isVolunteer,
+				previewMode,
+				stage,
 				blockContent: this.getBlockContent(),
 				saveBlock: this.saveBlock,
 				title: util.getValue(block, 'title', name),
@@ -256,6 +260,8 @@ function mapStateToProps(state, props) {
 	const fieldValue = util.getValue(data, dataField);
 	const modalID = `modalBlock-${blockType}-${props.name}`;
 	const helperBlocks = util.getValue(gbx3, `helperBlocks.${blockType}`, {});
+	const previewMode = util.getValue(admin, 'previewMode');
+	const stage = util.getValue(info, 'stage');
 
 	return {
 		data,
@@ -279,6 +285,8 @@ function mapStateToProps(state, props) {
 		globalButton,
 		primaryColor,
 		helperBlocks,
+		previewMode,
+		stage,
 		breakpoint: util.getValue(info, 'breakpoint')
 	}
 }

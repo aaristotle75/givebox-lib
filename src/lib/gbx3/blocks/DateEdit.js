@@ -35,7 +35,7 @@ class DateForm extends Component {
 		const enableTime = util.getValue(field, 'enableTime');
 		let ts = value;
 		if (name === 'range1') {
-			if (value > content.range2) {
+			if (content.range2 && value > content.range2) {
 				ts = content.range2;
 				this.props.fieldProp('range1', { error: 'Date should be less than the end date.' });
 			} else {
@@ -44,7 +44,7 @@ class DateForm extends Component {
 		}
 
 		if (name === 'range2') {
-			if (value < content.range1) {
+			if (content.range1 && value < content.range1) {
 				ts = content.range1;
 				this.props.fieldProp('range2', { error: 'Date should be greater than the start date.' });
 			} else {
@@ -55,7 +55,7 @@ class DateForm extends Component {
 		this.props.contentUpdated({
 			[name]: ts,
 			[`${name}Time`]: enableTime
-		});
+		}, true, true);
 	}
 
 	onChangeLabel(name, value) {
@@ -81,7 +81,12 @@ class DateForm extends Component {
 			content
 		} = this.props;
 
-		const value = util.getValue(content, 'range1', Moment.unix());
+		const {
+			range1,
+			range2
+		} = content;
+
+		const value = range1 || range2 || Moment.unix();
 		const time = util.getValue(content, `range1Time`);
 		const timeFormat = 'h:mmA';
 		const formatA = 'MMMM Do, YYYY';
@@ -178,10 +183,11 @@ class DateForm extends Component {
 							</div>
 							<div style={{ marginTop: 10 }} className='helperText'>
 								<div className='line label'>Tokens</div>
-								<div className='line'>{range1Token} = {this.props.dateFormat('range1')}</div>
-								<div className='line'>{range2Token} = {this.props.dateFormat('range2')}</div>
+								{ range1 ? <div className='line'>{range1Token} = {this.props.dateFormat('range1')}</div> : '' }
+								{ range2 ? <div className='line'>{range2Token} = {this.props.dateFormat('range2')}</div> : '' }
 								<div className='line'>Do not change the token values directly in the editor. If you want to change the Date/Time use the Calendar inputs.</div>
 							</div>
+							{ range1 || range2 ?
 							<div style={{ paddingBottom: 0 }} className='helperText'>
 								<div style={{ marginBottom: 0 }} className='line label'>Date Format</div>
 								{this.props.dropdown('dateFormat', {
@@ -196,7 +202,7 @@ class DateForm extends Component {
 									},
 									options: this.formatOptions()
 								})}
-							</div>
+							</div> : '' }
 							<div className='helperText'>
 								<div style={{ marginBottom: 5 }} className='line label'>Preview</div>
 								<div ref={this.displayRef} dangerouslySetInnerHTML={{ __html: html }} />

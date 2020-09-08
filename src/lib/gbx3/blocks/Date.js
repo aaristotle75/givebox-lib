@@ -82,8 +82,8 @@ class Date extends Component {
 
 		if (type !== 'cancel') {
 			const data = {
-				[options.range1DataField]: content.range1,
-				[options.range2DataField]: content.range2,
+				[options.range1DataField]: content.range1 || null,
+				[options.range2DataField]: content.range2 || null,
 				[options.range1TimeDataField]: content.range1Time,
 				[options.range2TimeDataField]: content.range2Time
 			};
@@ -113,14 +113,14 @@ class Date extends Component {
 		}, this.setHTML);
 	}
 
-	contentUpdated(content) {
+	contentUpdated(content, setHTML = true, updateHTMLTemplate = false) {
 		this.setState({
 			content: {
 				...this.state.content,
 				...content
 			},
 			hasBeenUpdated: true
-		}, this.setHTML);
+		}, () => { if (setHTML) this.setHTML(updateHTMLTemplate); });
 	}
 
 	dateFormat(name) {
@@ -134,11 +134,13 @@ class Date extends Component {
 		const dateFormat = util.getValue(content, 'dateFormat');
 
 		if (value) return util.getDate(value, `${dateFormat}${time ? `  ${timeFormat}` : ''}`);
-		return null;
+		return '';
 	}
 
-	setHTML() {
+	setHTML(updateHTMLTemplate) {
 		const {
+			range1,
+			range2,
 			range1Label,
 			range2Label,
 			htmlTemplate
@@ -149,18 +151,18 @@ class Date extends Component {
 			range2Token
 		} = this.state.options;
 
-		const range1 = this.dateFormat('range1');
-		const range1HTML = range1 ?
+		const range1Value = this.dateFormat('range1');
+		const range1HTML = range1Value ?
 			`<p><span style="color:#B0BEC5;">${range1Label}</span> ${range1Token}</p>`
 		: '';
-		const range2 = this.dateFormat('range2');
-		const range2HTML = range2 ?
+		const range2Value = this.dateFormat('range2');
+		const range2HTML = range2Value ?
 			`<p><span style="color:#B0BEC5;">${range2Label}</span> ${range2Token}</p>`
 		: '';
 
 		const tokens = {
-			[range1Token]: range1,
-			[range2Token]: range2
+			[range1Token]: range1Value,
+			[range2Token]: range2Value
 		};
 
 		const defaultTemplate = `
@@ -168,8 +170,12 @@ class Date extends Component {
 			${range2HTML}
 		`;
 
-		const htmlEditable = htmlTemplate || defaultTemplate;
-		const html = util.replaceAll(htmlEditable, tokens);
+		const htmlEditable = range1 || range2 ? !updateHTMLTemplate && htmlTemplate ? htmlTemplate : defaultTemplate : '';
+		const html = range1 || range2 ? util.replaceAll(htmlEditable, tokens) : '';
+
+		this.contentUpdated({
+			htmlTemplate: htmlEditable
+		}, false);
 
 		this.setState({ html, htmlEditable });
 	}
@@ -177,11 +183,11 @@ class Date extends Component {
 	render() {
 
 		const {
-			name,
 			modalID,
 			title,
 			block,
-			primaryColor
+			previewMode,
+			stage
 		} = this.props;
 
 		const {
@@ -227,7 +233,7 @@ class Date extends Component {
 						</div>
 					}
 				/>
-				{ cleanHtml ? <div dangerouslySetInnerHTML={{ __html: cleanHtml }} /> : <span>When is the Event?</span> }
+				{ cleanHtml || previewMode || stage === 'public' ? <div dangerouslySetInnerHTML={{ __html: cleanHtml }} /> : <span className='blockPlaceholderHtml'>When is the Event?</span> }
 			</div>
 		)
 	}
