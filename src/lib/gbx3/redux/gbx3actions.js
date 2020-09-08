@@ -790,7 +790,12 @@ export function loadGBX3(articleID, callback) {
 									};
 
 									const helperBlocksCustom = util.getValue(customTemplate, `helperBlocks.${blockType}`, {});
-									const helperBlocks = !util.isEmpty(helperBlocksCustom) ? helperBlocksCustom : helperTemplates[blockType][kind];
+									const helperBlocks = !util.isEmpty(helperBlocksCustom) ?
+										{
+											...helperBlocksCustom,
+											helperStep: 0
+										}
+									: helperTemplates[blockType][kind];
 
 									if (!util.isEmpty(blocksCustom)) {
 										// Check if not all default blocks are present
