@@ -172,6 +172,7 @@ class Helper extends React.Component {
 				{ open ?
 				<Portal id={'gbx-helper-portal'} rootEl={rootEl} className='gbx3 popupWrapper'>
 					<HelperPopup
+						open={open}
 						isLastStep={isLastStep}
 						helper={helper}
 						onClick={this.onClick}
