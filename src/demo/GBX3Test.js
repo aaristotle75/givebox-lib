@@ -32,6 +32,10 @@ class GBXTest extends Component {
 		console.log('execute saveCallback', id, data, blocks);
 	}
 
+	backToOrgCallback(template) {
+		console.log('execute backToOrgCallback', template);
+	}
+
 	render() {
 
 		const {
@@ -55,6 +59,7 @@ class GBXTest extends Component {
 					project={'share'}
 					exitCallback={() => console.log('exit callback')}
 					isVolunteer={false}
+					backToOrgCallback={this.backToOrgCallback}
 				/>
 			</div>
 		)

@@ -121,6 +121,8 @@ class Layout extends React.Component {
 
 		const done = kind === 'sweepstake' && status === 'done' ? true : false;
 
+		const publicOnly = (stage !== 'admin') && !preview ? true : false;
+
 		return (
 			<>
 			{ done ?
@@ -152,6 +154,15 @@ class Layout extends React.Component {
 					}
 				</div>
 			: ''}
+
+			{ publicOnly && this.props.backToOrgCallback ?
+				<div onClick={() => this.props.backToOrgCallback('org')} className='backToOrgPage avatarLink'>
+					<div className='editGraphic'>
+						<span className='icon icon-chevron-left'></span>
+					</div>
+				</div>
+			:'' }
+
 			<div style={{ height: gbx3BackgroundHeight }} className='gbx3LayoutBackground'></div>
 			<div id='gbx3Layout' className={`gbx3Layout ${noAccess ? 'noAccess' : ''}`}>
 				{showAvatarMenu ? avatarMenu : '' }

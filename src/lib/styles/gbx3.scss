@@ -76,6 +76,33 @@
 
 .gbx3 {
 
+	.backToOrgPage {
+		position: fixed;
+		top: 10px;
+		left: 10px;
+		z-index: 99999998;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+
+		button.link {
+			font-size: 14px;
+			display: flex;
+			align-items: center;
+		}
+	}
+
+	.backToOrgPage.avatarLink {
+		cursor: pointer;
+		@include transition(opacity .25s);
+		margin: 5px 0;
+	}
+
+	.backToOrgPage.avatarLink:hover {
+		opacity: .9;
+	}
+
 	.hljs {
 		background: $white;
 		border-radius: 10px;

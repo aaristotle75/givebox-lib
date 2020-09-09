@@ -320,6 +320,7 @@ class GBX3 extends React.Component {
 					reloadGBX3={this.reloadGBX3}
 					primaryColor={this.props.primaryColor}
 					onClickVolunteerFundraiser={this.onClickVolunteerFundraiser}
+					backToOrgCallback={this.props.backToOrgCallback}
 				/>
 			)
 		}
