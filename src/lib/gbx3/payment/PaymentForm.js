@@ -58,7 +58,7 @@ class PaymentFormClass extends Component {
 
 	componentDidMount() {
 		if (window.ApplePaySession && ENV !== 'local') {
-			this.setState({ applepay: true });
+			this.setState({ applepay: false });
 		}
 		this.setPaymethod(this.state.paymethod);
 	}
