@@ -95,7 +95,7 @@ class Shop extends Component {
 								}}
 							>
 								<div className='articleImage'>
-									<Image url={util.imageUrlWithStyle(value.imageURL, 'medium')} maxSize={200} />
+									<Image url={util.imageUrlWithStyle(value.imageURL, 'thumb')} size='thumb' maxSize={50} />
 								</div>
 								<div className='articleText'>
 									<span>{value.title}</span>

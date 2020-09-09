@@ -25,7 +25,8 @@ import {
 	setStyle
 } from './redux/gbx3actions';
 import {
-	setCustomProp
+	setCustomProp,
+	toggleModal
 } from '../api/actions';
 import GBXEntry from '../common/GBXEntry';
 import AvatarMenu from './admin/AvatarMenu';
@@ -49,7 +50,7 @@ class GBX3 extends React.Component {
 		this.onClickVolunteerFundraiser = this.onClickVolunteerFundraiser.bind(this);
 		this.signupCallback = this.signupCallback.bind(this);
 		this.authenticateVolunteer = this.authenticateVolunteer.bind(this);
-		this.determineWhatToLoad = this.determineWhatToLoad.bind(this);
+		this.exitAdmin = this.exitAdmin.bind(this);
 		this.state = {
 		};
 	}
@@ -114,8 +115,16 @@ class GBX3 extends React.Component {
 		}
 	}
 
-	determineWhatToLoad() {
+	async exitAdmin() {
+		const {
+			project
+		} = this.props;
 
+		if (project === 'share') {
+			const infoUpdated = await this.props.updateInfo({ stage: 'public' });
+			if (infoUpdated) this.props.updateAdmin({ publicView: true });
+		}
+		window.parent.postMessage('gbx3ExitCallback', '*');
 	}
 
 	authenticateVolunteer(res, err) {
@@ -265,11 +274,20 @@ class GBX3 extends React.Component {
 
 	loadGBX3(articleID) {
 
+		const {
+			queryParams
+		} = this.props;
+
+		const share = has(queryParams, 'share') ? true : false;
+		const previewMode = has(queryParams, 'previewMode') ? true : false;
+
 		this.props.loadGBX3(articleID, (res, err) => {
 			if (!err && !util.isEmpty(res)) {
 				this.props.setStyle();
 				this.setRecaptcha();
 				this.setTracking();
+				if (share) this.props.toggleModal('share', true);
+				if (previewMode) this.props.updateAdmin({ previewDevice: 'desktop', previewMode: true });
 			}
 		});
 	}
@@ -291,6 +309,7 @@ class GBX3 extends React.Component {
 					reloadGBX3={this.reloadGBX3}
 					exitCallback={this.props.exitCallback}
 					loadCreateNew={this.loadCreateNew}
+					exitAdmin={this.exitAdmin}
 				/>
 			)
 		} else {
@@ -321,7 +340,7 @@ class GBX3 extends React.Component {
 					effect='3DFlipVert'
 					style={{ width: '40%' }}
 					disallowBgClose={false}
-					component={(props) => <AvatarMenu />}
+					component={(props) => <AvatarMenu exitAdmin={this.exitAdmin} />}
 				/>
 				<ModalRoute
 					className='gbx3'
@@ -379,5 +398,6 @@ export default connect(mapStateToProps, {
 	setLoading,
 	clearGBX3,
 	updateInfo,
-	updateAdmin
+	updateAdmin,
+	toggleModal
 })(GBX3);

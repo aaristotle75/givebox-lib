@@ -11,7 +11,7 @@ import {
 	updateAdmin
 } from '../redux/gbx3actions';
 import { savePrefs } from '../../api/helpers';
-import { AiOutlineNotification } from 'react-icons/ai';
+import { AiOutlineNotification, AiOutlineFullscreen } from 'react-icons/ai';
 import { GoChecklist } from 'react-icons/go';
 
 const CLOUD_URL = process.env.REACT_APP_CLOUD_URL;
@@ -53,7 +53,8 @@ class AvatarMenu extends React.Component {
 			access,
 			hasAccessToEdit,
 			step,
-			helperPref
+			helperPref,
+			stage
 		} = this.props;
 
 		const isWallet = util.getValue(access, 'role') === 'user' ? true : false;
@@ -84,6 +85,17 @@ class AvatarMenu extends React.Component {
 					<Icon><GoChecklist /></Icon> <span className='text'>{ helperPref === 'off' ? 'Show' : 'Hide' } Helpers</span>
 				</li>
 			);
+
+			if (stage === 'admin') {
+				menuList.push(
+					<li key={'exitBuilder'} onClick={() => {
+						this.props.exitAdmin();
+						this.props.toggleModal('avatarMenu', false);
+					}}>
+						<Icon><AiOutlineFullscreen /></Icon> <span className='text'>Exit Builder</span>
+					</li>
+				);
+			}
 		}
 
 		return (
@@ -142,12 +154,14 @@ function mapStateToProps(state, props) {
 	const hasAccessToEdit = util.getValue(state, 'gbx3.admin.hasAccessToEdit');
 	const step = util.getValue(state, 'gbx3.admin.step');
 	const helperPref = util.getValue(state, 'preferences.gbx3Helpers');
+	const stage = util.getValue(state, 'gbx3.info.stage');
 
 	return {
 		access,
 		hasAccessToEdit,
 		step,
-		helperPref
+		helperPref,
+		stage
 	}
 }
 

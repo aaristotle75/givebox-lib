@@ -16,7 +16,7 @@ const logo = {
 const title = {
 	blockName: 'title',
 	title: 'Add a Title',
-	text: 'A good title...',
+	text: 'A descriptive title increases form views.',
 	style: {
 		top: 50,
 		left: 15
@@ -30,7 +30,7 @@ const title = {
 const media = {
 	blockName: 'media',
 	title: 'Add an Image or Video',
-	text: 'A good image or video...',
+	text: 'A compelling image or video increases transactions.',
 	style: {
 		top: 100,
 		left: -175
@@ -44,7 +44,7 @@ const media = {
 const themeColor = {
 	blockName: 'themeColor',
 	title: 'Change the Theme Color',
-	text: 'Your color...',
+	text: 'Customize the accent color to your brand.',
 	style: {
 		top: 75,
 		left: 0
@@ -60,7 +60,7 @@ const themeColor = {
 const description = {
 	blockName: 'description',
 	title: 'Add a Description',
-	text: 'A good desc...',
+	text: 'Tell a good story.',
 	style: {
 		top: -20,
 		left: -150
@@ -74,7 +74,7 @@ const description = {
 const share = {
 	blockName: 'share',
 	title: 'Share Your Form',
-	text: 'When you are done designing your form it is time to share it.',
+	text: 'When you are done designing your form share it.',
 	style: {
 		top: 40,
 		left: -100

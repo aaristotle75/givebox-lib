@@ -22,7 +22,6 @@ class Admin extends React.Component {
 	constructor(props) {
 		super(props);
 		this.renderStep = this.renderStep.bind(this);
-		this.exitAdmin = this.exitAdmin.bind(this);
 		this.state = {
 			referrerStep: ''
 		};
@@ -30,18 +29,6 @@ class Admin extends React.Component {
 
 	componentDidMount() {
 		this.props.updateInfo({ stage: 'admin' });
-	}
-
-	async exitAdmin() {
-		const {
-			project
-		} = this.props;
-
-		if (project === 'share') {
-			const infoUpdated = await this.props.updateInfo({ stage: 'public' });
-			if (infoUpdated) this.props.updateAdmin({ publicView: true });
-		}
-		window.parent.postMessage('gbx3ExitCallback', '*');
 	}
 
 	goBack(articleID) {
@@ -115,7 +102,7 @@ class Admin extends React.Component {
 										<GBLink style={{ fontSize: '14px' }} className='link' onClick={() => this.props.loadCreateNew()}><span className='icon icon-plus'></span> { isMobile ? 'New' : 'Create New Form' }</GBLink>
 								: '' }
 								{ !util.isEmpty(access) ?
-								<GBLink style={{ fontSize: '14px' }} className='link' onClick={() => this.exitAdmin()}><Icon><AiOutlineFullscreen /></Icon>{ isMobile ? 'Exit' : 'Exit Form Builder' }</GBLink> : <></> }
+								<GBLink style={{ fontSize: '14px' }} className='link' onClick={() => this.props.exitAdmin()}><Icon><AiOutlineFullscreen /></Icon>{ isMobile ? 'Exit' : 'Exit Form Builder' }</GBLink> : <></> }
 							</div>
 							<div className='headerRightSide'>
 								<AvatarMenuButton />
