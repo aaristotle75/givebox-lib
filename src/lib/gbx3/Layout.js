@@ -180,7 +180,7 @@ class Layout extends React.Component {
 						effect='3DFlipVert'
 						style={{ width: '70%' }}
 						disallowBgClose={true}
-						component={(props) => <Shop {...props} reloadGBX3={this.props.reloadGBX3} />}
+						component={(props) => <Shop {...props} hideGoBack={true} reloadGBX3={this.props.reloadGBX3} />}
 					/>
 					<ModalRoute
 						id='paymentConfirmation'

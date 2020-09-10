@@ -5,7 +5,8 @@ import {
 	util,
 	Loader,
 	Image,
-	types
+	types,
+	Collapse
 } from '../';
 import AnimateHeight from 'react-animate-height';
 import { getResource } from '../api/helpers';
@@ -20,8 +21,10 @@ class Shop extends Component {
 		super(props);
 		this.renderArticles = this.renderArticles.bind(this);
 		this.toggleShow = this.toggleShow.bind(this);
+		const show = [props.kind];
+		if (props.kind !== 'fundraiser') show.push('fundraiser');
 		this.state = {
-			show: [props.kind],
+			show,
 			loading: true
 		};
 		this.timeout = false;
@@ -113,14 +116,18 @@ class Shop extends Component {
 							customColor={primaryColor}
 							onClick={() => this.toggleShow(key)}
 						>
-							{util.toTitleCase(types.kind(key).kindPlural)}
+							<span className={`icon icon-${types.kind(key).icon}`}></span> {util.toTitleCase(types.kind(key).kindPlural)}
 						</GBLink>
 						<AnimateHeight height={this.state.show.includes(key) ? 'auto' : 0}>
-							{!util.isEmpty(items) ?
-								<div className='articleList'>{items}</div>
-								:
-								<span className='noRecord'>No {util.toTitleCase(types.kind(key).kindPlural)} found</span>
-							}
+							<div className='formSectionContainer'>
+								<div className='formSection'>
+								{!util.isEmpty(items) ?
+									<div className='articleList'>{items}</div>
+									:
+									<span className='noRecord'>No {util.toTitleCase(types.kind(key).kindPlural)} found</span>
+								}
+								</div>
+							</div>
 						</AnimateHeight>
 					</div>
 				;
@@ -143,13 +150,15 @@ class Shop extends Component {
 		const {
 			primaryColor,
 			orgName,
-			selecteedArticleID
+			selecteedArticleID,
+			hideGoBack
 		} = this.props;
 
 		return (
 			<div className='gbx3Shop modalWrapper'>
 				<div className='shopTop'>
 					<h2>{orgName}</h2>
+					{ !hideGoBack ?
 					<GBLink
 						style={{ margin: '5px 0 20px 0' }}
 						className='link'
@@ -170,6 +179,7 @@ class Shop extends Component {
 						}}>
 							<span className='icon icon-chevron-left'></span> Go Back
 						</GBLink>
+						: '' }
 					</div>
 					{this.renderArticles()}
 			</div>

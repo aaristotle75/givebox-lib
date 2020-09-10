@@ -2119,7 +2119,7 @@
 
 		button.link {
 			text-align: left;
-			font-size: 18px;
+			font-size: 18px !important;
 			margin-left: 10px;
 			width: 100%;
 			@media (max-width: $breakpoint) {
