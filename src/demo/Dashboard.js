@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import TestForm from './TestForm';
-import { Form, Alert, Tabs, Tab, ModalLink, GBLink, Image, util } from '../lib';
+import { Form, Alert, Tabs, Tab, ModalLink, GBLink, Image, util, MediaLibrary } from '../lib';
 import { setCustomProp } from '../lib/api/actions';
 
 class Dashboard extends Component {
@@ -48,13 +48,39 @@ class Dashboard extends Component {
 		this.setState({ modalState });
 	}
 
+	handleSaveCallback(url) {
+		console.log('handleSaveCallback', url);
+	}
+
 	render() {
 
 		//const color = util.hexToRgb('#6cfef7');
 
+		const library = {
+			saveMediaType: 'org',
+			articleID: null,
+			orgID: 185,
+			type: 'org',
+			borderRadius: 0
+		}
+
 		return (
 			<div>
 				<h2>Dashboard</h2>
+					<MediaLibrary
+						handleSaveCallback={this.handleSaveCallback}
+						handleSave={util.handleFile}
+						library={library}
+						closeModalAndCancel={() => console.log('cancel')}
+						closeModalAndSave={() => console.log('save')}
+						showBtns={'hide'}
+						saveLabel={'close'}
+						imageEditorOpenCallback={(open) => {
+							console.log('execute callback', open)
+						}}
+					/>
+
+				{/*
 				<Form
 					name='testForm'
 					options={{
@@ -62,6 +88,7 @@ class Dashboard extends Component {
 					}}>
 					<TestForm {...this.props} />
 				</Form>
+				*/}
 			{/*
 			<Image maxSize={'125px'} url={`https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/raise-fundraiser.png`} size='inherit' alt={`Customers`} />
 			<ModalLink id='testModal'>Modal Form</ModalLink>

@@ -470,6 +470,7 @@
 			top: 0; right: 0; left: 0; bottom: 0;
 			width: 100%;
 			height: 100vh;
+			overflow-x: hidden;
 		}
 
 		.desktopWrapper {
@@ -1261,8 +1262,32 @@
 				align-items: center;
 			}
 
-		}
+			.receiptBlock {
+			}
 
+			.receiptBlockText {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+		}
+	}
+
+	.receiptBlock {
+		position: relative;
+		margin-top: 50px;
+	}
+
+	.receiptBlockText {
+		display: none;
+		position: absolute;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+		width: 100%;
+		height: 100%;
+		color: $white;
 	}
 
 	/*--------- End Grid ---------*/
@@ -1286,7 +1311,6 @@
 			color: $med-blue-gray;
 			font-style: italic;
 		}
-
 	}
 
 	.blockOptions {

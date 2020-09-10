@@ -10,6 +10,8 @@ import ReceiptEmailLayout from './ReceiptEmailLayout';
 
 const emailTemplate = require('html-loader!./receiptEmailTemplate.html');
 const defaultContent = require('html-loader!./receiptEmailDefaultContent.html');
+const bottomContent = require('html-loader!./receiptBottomTemplate.html');
+
 const GBX_SHARE = process.env.REACT_APP_GBX_SHARE;
 
 class ReceiptEmailEdit extends React.Component {
@@ -39,7 +41,8 @@ class ReceiptEmailEdit extends React.Component {
 
 		const content = receiptHTML;
 		const tokens = {
-			'{{content}}': content
+			'{{content}}': content,
+			'{{bottomcontent}}': bottomContent
 		};
 
 		const html = util.replaceAll(emailTemplate, tokens);

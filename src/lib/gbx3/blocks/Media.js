@@ -220,7 +220,7 @@ class Media extends Component {
 		if (util.getValue(video, 'URL')) {
 			return (
 				<Video
-					playing={util.getValue(video, 'auto', false)}
+					playing={this.props.stage !== 'admin' ? util.getValue(video, 'auto', false) : false}
 					url={util.getValue(video, 'validatedURL')}
 					onReady={this.videoOnReady}
 					style={{

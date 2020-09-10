@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React from 'react';
 import { connect } from 'react-redux';
 import Loadable from 'react-loadable';
@@ -13,6 +15,7 @@ import {
 	updateBlocks,
 	saveReceipt
 } from '../../redux/gbx3actions';
+const bottomContent = require('html-loader!./receiptBottomTemplate.html');
 
 const arrayMove = require('array-move');
 
@@ -210,6 +213,7 @@ class ReceiptEmailLayout extends React.Component {
 		const {
 			editable,
 			hasAccessToEdit,
+			reloadGBX3
 		} = this.props;
 
 		const isEditable = hasAccessToEdit && editable ? true : false;
@@ -240,6 +244,18 @@ class ReceiptEmailLayout extends React.Component {
 					>
 						<div className='dragOverText'>Drop Page Element Here</div>
 						{this.renderRelativeBlocks()}
+						<div
+							className={`react-grid-item`}
+							id='block-receiptBottom'
+							ref={React.createRef()}
+						>
+							<div className='block receiptBlock'>
+								<div className='receiptBlockText'>This is dynamically created by the system and non-editable.</div>
+							</div>
+							<div className='block receiptBlock'>
+								<div dangerouslySetInnerHTML={{ __html: bottomContent }} />
+							</div>
+						</div>
 					</div>
 				</div>
 			</>
