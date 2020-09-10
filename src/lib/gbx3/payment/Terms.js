@@ -1,19 +1,50 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
 import Moment from 'moment';
 import {
-	GBLink
+	GBLink,
+	Collapse,
+	Icon,
+	util
 } from '../../';
+import { GoLaw } from 'react-icons/go';
+import TermsSweepstakes from './TermsSweepstakes';
 
 class Terms extends Component {
 
 	constructor(props) {
 		super(props);
 		this.acceptTerms = this.acceptTerms.bind(this);
+		this.renderKindSpecific = this.renderKindSpecific.bind(this);
 	}
 
 	acceptTerms() {
 		this.props.setCart('acceptedTerms', true);
 		this.props.toggleModal('terms', false);
+	}
+
+	renderKindSpecific() {
+		const {
+			kind,
+			primaryColor
+		} = this.props;
+
+		const items = [];
+
+		switch (kind) {
+
+			case 'sweepstake': {
+				items.push(
+					<TermsSweepstakes key='sweepstakes' primaryColor={primaryColor} />
+				);
+				break;
+			}
+
+			// no default
+
+		}
+
+		return items;
 	}
 
 	render() {
@@ -27,7 +58,12 @@ class Terms extends Component {
 				<div className='center'>
 					<img className='pciImage' src='https://s3-us-west-1.amazonaws.com/givebox/public/images/logo-box.svg' alt='Givebox' height='70px' width='135px' />
 				</div>
-				<div className='sectionContent'>
+				<Collapse
+					label={'Givebox Terms and Conditions'}
+					customIcon={<Icon><GoLaw /></Icon>}
+					id={'givebox-terms'}
+				>
+					<div className='sectionContent'>
 						<h3 style={{ marginBottom: 0 }}>Givebox Terms and Conditions</h3>
 						<p>Givebox and its associates provide their services to you subject to the following conditions.</p>
 						<p>THIS AGREEMENT IS EXECUTED ELECTRONICALLY. BY ACCEPTING, YOU ARE AGREEING TO THE TERMS AND CONDITIONS FOR USE OF THE GIVEBOX SERVICES AS SET FORTH IN THIS AGREEMENT. YOU UNDERSTAND THAT YOU WILL BE BOUND BY THESE TERMS AND CONDITIONS. YOU WARRANT THAT YOU HAVE READ, UNDERSTAND, AND AGREE TO ALL OF THE TERMS OF THIS AGREEMENT, THAT YOU ARE AUTHORIZED TO ENTER INTO THIS AGREEMENT, AND THAT THIS AGREEMENT IS LEGALLY BINDING ON YOU. IF YOU DO NOT AGREE TO BE BOUND BY THIS AGREEMENT YOU SHALL NOT PARTICIPATE IN OR USE THE GIVEBOX SERVICES, RECEIVE ANY RIGHTS FROM GIVEBOX, OR ACCESS OR USE ANY MATERIALS OF GIVEBOX.</p>
@@ -51,14 +87,17 @@ class Terms extends Component {
 						APPLICABLE LAW
 						</p>
 						<p>
-						By visiting Givebox, you agree that the laws of the state of DEFINE_STATE, DEFINE_COUNTRY, without regard to principles of conflict of laws, will govern these Conditions of Use and any dispute of any sort that might arise between you and Givebox or its associates.</p>
-						<h4>DISPUTES</h4>
-						<p>Any dispute relating in any way to your visit to Givebox or to products you purchase through Givebox shall be submitted to confidential arbitration in DEFINE_STATE, DEFINE_COUNTRY, except that, to the extent you have in any manner violated or threatened to violate Givebox{`'`}s intellectual property rights, Givebox may seek injunctive or other appropriate relief in any state or federal court in the state of DEFINE_STATE, DEFINE_COUNTRY, and you consent to exclusive jurisdiction and venue in such courts. Arbitration under this agreement shall be conducted under the rules then prevailing of the American Arbitration Association. The arbitrators award shall be binding and may be entered as a judgment in any court of competent jurisdiction. To the fullest extent permitted by applicable law, no arbitration under this Agreement shall be joined to an arbitration involving any other party subject to this Agreement, whether through class arbitration proceedings or otherwise.</p>
-						<h4>SITE POLICIES, MODIFICATION, AND SEVERABILITY</h4>
-						<p>Please review our other policies, such as our Shipping and Returns policy, posted on this site. These policies also govern your visit to Givebox. We reserve the right to make changes to our site, policies, and these Conditions of Use at any time. If any of these conditions shall be deemed invalid, void, or for any reason unenforceable, that condition shall be deemed severable and shall not affect the validity and enforceability of any remaining condition.</p>
-						<h4>QUESTIONS</h4>
-						<p>Questions regarding our Conditions of Usage, Privacy Policy, or other policy related material can be directed to our support staff by visiting <GBLink allowCustom={true} customColor={primaryColor} onClick={() => window.open('https://support.givebox.com')}>Givebox Customer Support</GBLink>. Or you can email us at: <a href='mailto:support@givebox.com' style={{ color: primaryColor }}>support@givebox.com</a></p>
-				</div>
+							By visiting Givebox, you agree that the laws of the state of DEFINE_STATE, DEFINE_COUNTRY, without regard to principles of conflict of laws, will govern these Conditions of Use and any dispute of any sort that might arise between you and Givebox or its associates.</p>
+							<h4>DISPUTES</h4>
+							<p>Any dispute relating in any way to your visit to Givebox or to products you purchase through Givebox shall be submitted to confidential arbitration in DEFINE_STATE, DEFINE_COUNTRY, except that, to the extent you have in any manner violated or threatened to violate Givebox{`'`}s intellectual property rights, Givebox may seek injunctive or other appropriate relief in any state or federal court in the state of DEFINE_STATE, DEFINE_COUNTRY, and you consent to exclusive jurisdiction and venue in such courts. Arbitration under this agreement shall be conducted under the rules then prevailing of the American Arbitration Association. The arbitrators award shall be binding and may be entered as a judgment in any court of competent jurisdiction. To the fullest extent permitted by applicable law, no arbitration under this Agreement shall be joined to an arbitration involving any other party subject to this Agreement, whether through class arbitration proceedings or otherwise.</p>
+							<h4>SITE POLICIES, MODIFICATION, AND SEVERABILITY</h4>
+							<p>Please review our other policies, such as our Shipping and Returns policy, posted on this site. These policies also govern your visit to Givebox. We reserve the right to make changes to our site, policies, and these Conditions of Use at any time. If any of these conditions shall be deemed invalid, void, or for any reason unenforceable, that condition shall be deemed severable and shall not affect the validity and enforceability of any remaining condition.</p>
+							<h4>QUESTIONS</h4>
+							<p>Questions regarding our Conditions of Usage, Privacy Policy, or other policy related material can be directed to our support staff by visiting <GBLink allowCustom={true} customColor={primaryColor} onClick={() => window.open('https://support.givebox.com')}>Givebox Customer Support</GBLink>. Or you can email us at: <a href='mailto:support@givebox.com' style={{ color: primaryColor }}>support@givebox.com</a>
+						</p>
+					</div>
+				</Collapse>
+				{this.renderKindSpecific()}
 				<div style={{ paddingBottom: 100 }} className='sectionContent center'>
 					<h4>Payment will be processed by:</h4>
 					<img style={{paddingTop: 10 }} src='https://s3-us-west-1.amazonaws.com/givebox/public/gb-logo5.svg' height='40px' width='40px' alt='Givebox, Inc.' />
@@ -86,4 +125,14 @@ class Terms extends Component {
 	}
 };
 
-export default Terms;
+function mapStateToProps(state, props) {
+
+	const kind = util.getValue(state, 'gbx3.info.kind');
+
+	return {
+		kind
+	}
+}
+
+export default connect(mapStateToProps, {
+})(Terms);

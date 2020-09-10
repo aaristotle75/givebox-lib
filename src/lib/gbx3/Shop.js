@@ -10,7 +10,8 @@ import {
 import AnimateHeight from 'react-animate-height';
 import { getResource } from '../api/helpers';
 import {
-	updateInfo
+	updateInfo,
+	updateAdmin
 } from './redux/gbx3actions';
 
 class Shop extends Component {
@@ -141,7 +142,8 @@ class Shop extends Component {
 
 		const {
 			primaryColor,
-			orgName
+			orgName,
+			selecteedArticleID
 		} = this.props;
 
 		return (
@@ -154,7 +156,17 @@ class Shop extends Component {
 						allowCustom={true}
 						customColor={primaryColor}
 						onClick={() => {
-							this.props.updateInfo({ display: 'layout' });
+							if (selecteedArticleID) {
+								this.props.updateInfo({ display: 'layout' });
+							} else {
+								this.props.updateAdmin({
+									step: 'create',
+									publicView: false
+								});
+								this.props.updateInfo({
+									stage: 'admin'
+								});
+							}
 						}}>
 							<span className='icon icon-chevron-left'></span> Go Back
 						</GBLink>
@@ -186,5 +198,6 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
 	getResource,
-	updateInfo
+	updateInfo,
+	updateAdmin
 })(Shop);

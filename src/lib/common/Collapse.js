@@ -53,14 +53,15 @@ class Collapse extends Component {
 			label,
 			iconOpen,
 			iconClosed,
-			iconPrimary
+			iconPrimary,
+			customIcon
 		} = this.props;
 
 		return (
 			<div className={`collapse ${this.state.display ? 'noBorder' : ''} ${className || ''}`} style={style}>
 				<GBLink className='sectionLink ripple' onClick={() => this.toggleDisplay()}>
 					<span className='sectionText'>
-						<span className={`icon icon-${iconPrimary}`}></span>{label}
+						{customIcon || <span className={`icon icon-${iconPrimary}`}></span>}{label}
 					</span>
 					<span className={`icon icon-${this.state.display ? iconOpen : iconClosed}`}></span>
 				</GBLink>
