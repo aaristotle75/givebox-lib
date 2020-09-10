@@ -179,7 +179,7 @@ class Layout extends React.Component {
 						className='gbx3 givebox-paymentform'
 						effect='3DFlipVert'
 						style={{ width: '70%' }}
-						disallowBgClose={true}
+						disallowBgClose={false}
 						component={(props) => <Shop {...props} hideGoBack={true} reloadGBX3={this.props.reloadGBX3} />}
 					/>
 					<ModalRoute

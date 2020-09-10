@@ -5,8 +5,7 @@ import {
 	util,
 	Loader,
 	Image,
-	types,
-	Collapse
+	types
 } from '../';
 import AnimateHeight from 'react-animate-height';
 import { getResource } from '../api/helpers';
@@ -21,8 +20,10 @@ class Shop extends Component {
 		super(props);
 		this.renderArticles = this.renderArticles.bind(this);
 		this.toggleShow = this.toggleShow.bind(this);
-		const show = [props.kind];
-		if (props.kind !== 'fundraiser') show.push('fundraiser');
+		const show = [];
+		types.kinds().forEach((value) => {
+			show.push(value);
+		});
 		this.state = {
 			show,
 			loading: true
