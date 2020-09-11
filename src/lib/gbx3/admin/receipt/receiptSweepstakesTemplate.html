@@ -1,0 +1,121 @@
+<table border="0" cellpadding="10" cellspacing="0" width="100%" style="margin: 20px 0 20px 0; border-top: 1px dashed #767f84;">
+		<tr>
+				<td height="10px"></td>
+		</tr>
+		<tr>
+				<td align="center" valign="top">
+					<table align="center" border="0" cellpadding="5" cellspacing="0" width="482" height="254" background="https://s3-us-west-1.amazonaws.com/givebox/public/images/ticket-template3.png" class="templateColumnContainer">
+						<tr>
+							<td valign="top">
+								<table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" height="60px">
+									<tr><td height="10px"></td></tr>
+									<tr>
+										<td width="30px"></td>
+										<td width="60px">
+											<img src="{{$inf.OrgImageURL}}" style="border-radius: 5px;" height="50px" width="50px" alt="{{$inf.OrgName}}" />
+										</td>
+										<td valign="top" width="312px">
+											<h4 style="font-size: 14px; font-weight: 500; margin: 0; padding: 5px 0 0 0;">{{$inf.SweepstakeTitle}}</h4>
+											<h6 style="font-size: 10px; font-weight: 400; color: #000; margin: 0; padding: 0;">Sweepstakes presented by</h6>
+											<h5 style="font-size: 12px; font-weight: 400; color: #374dcf; margin: 0; padding: 0;">{{$inf.OrgName}}</h5>
+										</td>
+										<td width="80px"></td>
+									</tr>
+								</table>
+								<table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" height="135px">
+									<tr><td colspan="3" height="5px"></td></tr>
+									<tr>
+										<td width="170px"></td>
+										<td width="120px">
+											<img src="{{smallImageURL $inf.SweepstakeImageURL}}" alt="{{$inf.SweepstakeTitle}}" style="max-width: 120px; max-height: 120px;" height="120px" width="120px" />
+										</td>
+										<td width="192"></td>
+									</tr>
+									<tr><td colspan="3" height="5px"></td></tr>
+									<tr>
+										<td colspan="3" align="center">
+											<span style="font-size: 14px; font-weight: 500; margin: 0; padding: 5px 0 0 0;">Jane Doe</span><br>
+											<span style="font-size: 12px; font-weight: 400; margin: 0; padding: 0;">Enters you in sweepstakes for {{.#Entries}} entries</span>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</td>
+		</tr>
+		<tr>
+<td align="center" valign="top">
+<table border="0" cellpadding="10" cellspacing="0" width="100%" style="margin: 20px 0 20px 0;">
+		<tr>
+				<td align="center" valign="top">
+					<table align="center" border="0" cellpadding="5" cellspacing="0">
+						<tr>
+							<td align="center">
+								<span style="font-size: 16px; font-weight: 500; margin: 0; padding: 0px 0 0 0;">{{.#Entries}} entry numbers</span><br>
+								<span style="font-size: 10px; margin: 0; padding: 0;">a9be0180-426d-4c43-9e70-b89a0c9b9aa9</span><br>
+								<span style="font-size: 10px; margin: 0; padding: 0;">a7f7aba8-c970-43c2-a094-db2788210dbe</span><br>
+								<span style="font-size: 10px; margin: 0; padding: 0;">08ccbc2d-1aa0-409b-bb77-500ac6a30d60</span><br>
+								<span style="font-size: 10px; margin: 0; padding: 0;">7d42b792-3ced-430d-b566-d2d10b825d6b</span><br>
+								<span style="font-size: 10px; margin: 0; padding: 0;">df237dc7-08bb-449b-8d00-c3c1f6142ce0</span>
+							</td>
+						</tr>
+					</table>
+				</td>
+		</tr>
+		<tr>
+				<td align="center" valign="top">
+					<table align="center" border="0" cellpadding="5" cellspacing="0">
+						<tr>
+							<td align="center">
+								<span style="font-size: 16px; font-weight: 500; margin: 0; padding: 0px 0 0 0;">What happens next?</span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<table align="center" border="0" cellpadding="5" cellspacing="0" width="500px">
+									<tr>
+										<td width="40%" align="center">
+											<span style="font-size: 14px; font-weight: 500; margin: 0; padding: 5px 0 0 0;">{{ftimeMMMMDoYYYY $inf.SweepstakeEndsAt}}</span><br>
+											<span style="font-size: 12px; margin: 0; padding: 0;">The sweepstake closes.<br>Until then, keep an eye out for updates!</span>
+										</td>
+										<td width="20%"></td>
+										<td width="40%" align="center">
+											<span style="font-size: 14px; font-weight: 500; margin: 0; padding: 5px 0 0 0;">Around {{ftimeMMMMDoYYYY $inf.SweepstakeEndsAt+1WEEK}}</span>
+											<span style="font-size: 12px; margin: 0; padding: 0;">You'll find out if you won!<br>(We're rooting for you.)</span>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</td>
+		</tr>
+		<tr>
+				<td align="center" valign="top">
+					<table align="center" border="0" cellpadding="5" cellspacing="0">
+						<tr>
+							<td align="center">
+								<span style="font-size: 16px; font-weight: 500; margin: 0; padding: 0px 0 0 0;">Have any questions?</span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<table align="center" border="0" cellpadding="0" cellspacing="0" width="500px">
+									<tr>
+										<td width="100%" align="center">
+											<span style="font-size: 12px; margin: 0; padding: 0;">Please reach out to our amazing customer support team.</span><br>
+											<span style="font-size: 12px; margin: 0; padding: 0;"><a style="font-size: 12px; color: #374dcf;"  href="mailto:support@givebox.com">support@givebox.com</a></span>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</td>
+		</tr>
+</table>
+</td>
+</tr>
+<!-- END SWEEPSTAKES --->
+</table>

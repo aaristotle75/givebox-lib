@@ -10,7 +10,7 @@ import ReceiptEmailLayout from './ReceiptEmailLayout';
 
 const emailTemplate = require('html-loader!./receiptEmailTemplate.html');
 const defaultContent = require('html-loader!./receiptEmailDefaultContent.html');
-const orderConfirmation = require('html-loader!./receiptConfirmationTemplate.html');
+const orderConfirmationTemplate = require('html-loader!./receiptConfirmationTemplate.html');
 
 const GBX_SHARE = process.env.REACT_APP_GBX_SHARE;
 
@@ -36,8 +36,14 @@ class ReceiptEmailEdit extends React.Component {
 
 	setPreviewHTML() {
 		const {
-			receiptHTML
+			receiptHTML,
+			org
 		} = this.props;
+
+		const descriptor = util.getValue(org, 'billingDescriptor', 'BillingDescription');
+		const orderConfirmation = util.replaceAll(orderConfirmationTemplate, {
+			'{{descriptor}}' : `GBX*${descriptor}`
+		});
 
 		const content = receiptHTML;
 		const tokens = {
@@ -89,10 +95,12 @@ function mapStateToProps(state, props) {
 	const admin = util.getValue(gbx3, 'admin', {});
 	const previewMode = util.getValue(admin, 'previewMode');
 	const receiptHTML = util.getValue(gbx3, 'data.receiptHTML');
+	const org = util.getValue(state, 'resource.org.data', {});
 
 	return {
 		previewMode,
-		receiptHTML
+		receiptHTML,
+		org
 	}
 }
 
