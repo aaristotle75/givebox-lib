@@ -43,6 +43,8 @@ class Totals extends Component {
 		const form = util.getValue(options, 'form', {});
 		const goal = util.getValue(form, 'goal');
 		const hasCustomGoal = util.getValue(form, 'hasCustomGoal');
+		let payFeeLabel = `Pay Credit Card Fee`;
+		if (paymethod === 'echeck') payFeeLabel = `Pay eCheck Fee`;
 
 		return (
 			<div className='totalsContainer'>
@@ -55,7 +57,7 @@ class Totals extends Component {
 					<div className='totalsListTop'>
 					{feeOption ?
 					<Choice
-						label={`Pay Credit Card Fee`}
+						label={payFeeLabel}
 						value={passFees}
 						checked={passFees}
 						onChange={() => {

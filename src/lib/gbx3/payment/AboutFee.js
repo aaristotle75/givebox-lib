@@ -31,10 +31,10 @@ class AboutFee extends Component {
 						Givebox charges $0.00 (yes, that is zero) platform fee. The only platform that doesn't charge an additional platform fee on top of the credit card fee.
 					</p>
 					<h4>CREDIT CARD FEES</h4>
-					<p>VISA, MasterCard and Discover processing fee is 2.9% plus 29 cents.</p>
-					<p>AMEX processing fee is 3.5% plus 35 cents.</p>
+					<p>VISA, MasterCard and Discover processing fee is 2.9% the amount plus 29 cents per item.</p>
+					<p>AMEX processing fee is 3.5% the amount plus 35 cents per item.</p>
 					<h4>ECHECK FEE</h4>
-					<p>The Bank fee to make an electronic payment from your checking account is 2.9% plus 29 cents.</p>
+					<p>The Bank fee to make an electronic payment from your checking account is 2.9% the amount plus 29 cents per item.</p>
 				</div>
 				<div className='bottomContainer2 flexCenter'>
 					<div className='button-group'>

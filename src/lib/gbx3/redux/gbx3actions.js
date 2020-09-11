@@ -433,7 +433,27 @@ function calcFee(amount = 0, fees = {}) {
 		const passFees = util.getValue(cart, 'passFees');
 		const paymethod = util.getValue(cart, 'paymethod', {});
 		const cardType = util.getValue(cart, 'cardType');
-		const feePrefix = cardType === 'amex' && paymethod === 'creditcard' ? 'amexFnd' : 'fnd';
+		let feePrefix = 'fnd';
+		switch (paymethod) {
+			case 'echeck': {
+				feePrefix = 'echeck';
+				break;
+			}
+
+			case 'creditcard':
+			default: {
+				switch (cardType) {
+					case 'amex': {
+						feePrefix = 'amexFnd';
+						break;
+					}
+
+					// no default
+				}
+				break;
+			}
+		}
+
 		const pctFee = util.getValue(fees, `${feePrefix}PctFee`, 290);
 		const fixFee = amount !== 0 ? util.getValue(fees, `${feePrefix}FixFee`, 29) : 0;
 		const percent = +((pctFee/10000).toFixed(4)*parseFloat(amount/100));
