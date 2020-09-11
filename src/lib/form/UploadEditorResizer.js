@@ -87,8 +87,10 @@ class UploadEditorResizer extends Component {
 
 	save() {
 		this.props.setLoading('Processing Image...');
-		const data = this.editor.getImage().toDataURL();
-		const file = util.dataURLtoFile(data, `image.png`);
+		const fileName = util.getValue(this.props.file, 'name', 'image.png');
+		const fileType = util.getValue(this.props.file, 'type');
+		const data = this.editor.getImage().toDataURL(fileType);
+		const file = util.dataURLtoFile(data, fileName);
 		this.props.handleSave(file, this.saveCallback, this.props.encodeProgress);
 	}
 

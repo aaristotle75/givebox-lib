@@ -387,10 +387,10 @@ export function encodeDataURI(imageUrl, callback, progressCallback = null) {
 	}
 	xhr.open('GET', imageUrl);
 	xhr.responseType = 'arraybuffer'
-	xhr.onload = function() {
+	xhr.onload = function(response) {
 		let data;
 		let binary = '';
-		const type = 'image/jpeg'; // xhr.response['content-type'];
+		const type =  xhr.getResponseHeader('Content-type');
 		const bytes = new Uint8Array(xhr.response);
 		const len = bytes.byteLength;
 		for (let i = 0; i < len; i++) {
@@ -893,7 +893,6 @@ export function getAuthorizedAccess(access, orgID, volunteerID) {
 }
 
 export function handleFile(file, callback, progressCallback) {
-
 	const x = new XMLHttpRequest();
 	x.onload = function() {
 		if (this.status !== 200 || !this.response) {

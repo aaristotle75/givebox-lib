@@ -386,11 +386,10 @@ export function encodeDataURI(imageUrl, callback, progressCallback = null) {
   xhr.open('GET', imageUrl);
   xhr.responseType = 'arraybuffer';
 
-  xhr.onload = function () {
+  xhr.onload = function (response) {
     let data;
     let binary = '';
-    const type = 'image/jpeg'; // xhr.response['content-type'];
-
+    const type = xhr.getResponseHeader('Content-type');
     const bytes = new Uint8Array(xhr.response);
     const len = bytes.byteLength;
 

@@ -46,7 +46,8 @@ class MediaLibrary extends Component {
 			editor: false,
 			error: false,
 			loading: false,
-			percent: 0
+			percent: 0,
+			file: {}
 		}
 		this.uploadImageRef = React.createRef();
 	}
@@ -95,8 +96,9 @@ class MediaLibrary extends Component {
 		util.encodeDataURI(imageUrl, this.selectEditorCallback, this.encodeProgress);
 	}
 
-	selectEditorCallback(data) {
-		const file = util.dataURLtoFile(data, `image.png`);
+	selectEditorCallback(data, imageUrl) {
+		const fileName = imageUrl.split('\\').pop().split('/').pop();
+		const file = util.dataURLtoFile(data, fileName);
 		this.readFile(file, this.editPhoto);
 	}
 
@@ -118,8 +120,8 @@ class MediaLibrary extends Component {
 		reader.readAsDataURL(file);
 	}
 
-	editPhoto(url) {
-		this.setState({ image: url}, () => this.toggleEditor(true));
+	editPhoto(url, file) {
+		this.setState({ image: url, file }, () => this.toggleEditor(true));
 	}
 
 	encodeProgress(progress) {
@@ -130,8 +132,8 @@ class MediaLibrary extends Component {
 		console.log('drop');
 	}
 
-	newUploadProgressCallback(url) {
-		this.editPhoto(url);
+	newUploadProgressCallback(url, file) {
+		this.editPhoto(url, file);
 	}
 
 	newUploadProgress(url, file, callback = this.newUploadProgressCallback) {
@@ -146,7 +148,7 @@ class MediaLibrary extends Component {
 		xhr.responseType = 'arraybuffer'
 		xhr.onload = function() {
 			if (xhr.status === 200) {
-				callback(url);
+				callback(url, file);
 			}
 		};
 		xhr.send();
@@ -201,9 +203,6 @@ class MediaLibrary extends Component {
 	}
 
 	listMedia() {
-		const {
-
-		} = this.props;
 
 		const items = [];
 		let paginate = false;
@@ -346,6 +345,7 @@ class MediaLibrary extends Component {
 						<UploadEditorResizer
 							{...this.props}
 							image={this.state.image}
+							file={this.state.file}
 							toggleEditor={this.toggleEditor}
 							encodeProgress={this.encodeProgress}
 							setLoading={this.setLoading}
