@@ -25,7 +25,6 @@ class CoundownEditForm extends Component {
 
 		let ts = value;
 		let status = null;
-		console.log('execute onChange', ts, current);
 		if (ts > current) {
 			status = 'open';
 		} else {

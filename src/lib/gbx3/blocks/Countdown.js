@@ -7,6 +7,9 @@ import {
 	ModalRoute,
 	GBLink
 } from '../../';
+import {
+	getResource
+} from '../../api/helpers'
 import CountdownEdit from './CountdownEdit';
 
 class Countdown extends Component {
@@ -27,6 +30,7 @@ class Countdown extends Component {
 		this.hoursInitialProgress = this.hoursInitialProgress.bind(this);
 		this.minsInitialProgress = this.minsInitialProgress.bind(this);
 		this.secsInitialProgress = this.secsInitialProgress.bind(this);
+		this.checkStatus = this.checkStatus.bind(this);
 
 		const data = props.data;
 		const options = props.options;
@@ -58,11 +62,18 @@ class Countdown extends Component {
 	}
 
 	componentDidMount() {
-		if (this.props.data.status !== 'open') {
-			this.setState({completed: true});
-		} else {
+		const {
+			data
+		} = this.props;
+
+		const endsAt = util.getValue(data, 'endsAt', 0);
+		const now = +Moment.utc().format('X');
+
+		if (endsAt > now) {
 			this.setTimes();
 			this.setTimers();
+		} else {
+			this.setState({completed: true});
 		}
 
 		var colorObj = util.hexToRgb(this.props.primaryColor);
@@ -83,10 +94,39 @@ class Countdown extends Component {
 		clearTimeout(this.secsTimer);
 	}
 
-	componentWillUpdate(nextProps) {
+	componentDidUpdate(nextProps) {
 		if (util.getValue(nextProps.data, 'ID') !== util.getValue(this.props.data, 'ID')) {
 			// Reset timers
-			this.setTimers();
+			this.checkStatus();
+		}
+	}
+
+	checkStatus() {
+		const {
+			data
+		} = this.props;
+
+		const orgID = util.getValue(data, 'orgID');
+		const id = util.getValue(data, 'ID');
+
+		if (orgID && id) {
+			this.props.getResource('orgSweepstake', {
+				id: [id],
+				orgID,
+				reload: true,
+				callback: (res, err) => {
+					if (!util.isEmpty(res)) {
+						const endsAt = util.getValue(res, 'endsAt', 0);
+						const now = +Moment.utc().format('X');
+						if (now >= endsAt) {
+							this.setState({ completed: true });
+						} else {
+							this.setTimes();
+							this.setTimers();
+						}
+					}
+				}
+			});
 		}
 	}
 
@@ -118,9 +158,6 @@ class Countdown extends Component {
 	}
 
 	closeEditModal(type = 'save') {
-		const {
-			block
-		} = this.props;
 
 		const {
 			content,
@@ -343,7 +380,7 @@ class Countdown extends Component {
 			}
 		} else {
 			this.setState({secsProgress: 0});
-			this.setState({completed: true});
+			this.checkStatus();
 		}
 		if (this.state.mins === 0) this.setState({minsProgress: 0});
 		if (this.state.mins === 59) this.setState({minsProgress: 98.4});
@@ -443,7 +480,7 @@ class Countdown extends Component {
 						</div>
 						</div>
 						<CircularProgress
-							progress={this.state.completed ? 0 : daysProgress}
+							progress={completed ? 0 : daysProgress}
 							startDegree={0}
 							progressWidth={5}
 							trackWidth={5}
@@ -462,7 +499,7 @@ class Countdown extends Component {
 						</div>
 						</div>
 						<CircularProgress
-							progress={this.state.completed ? 0 : hoursProgress}
+							progress={completed ? 0 : hoursProgress}
 							startDegree={0}
 							progressWidth={5}
 							trackWidth={5}
@@ -481,7 +518,7 @@ class Countdown extends Component {
 						</div>
 						</div>
 						<CircularProgress
-							progress={this.state.completed ? 0 : minsProgress}
+							progress={completed ? 0 : minsProgress}
 							startDegree={0}
 							progressWidth={5}
 							trackWidth={5}
@@ -500,7 +537,7 @@ class Countdown extends Component {
 						</div>
 						</div>
 						<CircularProgress
-							progress={this.state.completed ? 0 : secsProgress}
+							progress={completed ? 0 : secsProgress}
 							startDegree={0}
 							progressWidth={5}
 							trackWidth={5}
@@ -534,4 +571,5 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
+	getResource
 })(Countdown);
