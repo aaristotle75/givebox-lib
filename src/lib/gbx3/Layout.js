@@ -101,13 +101,13 @@ class Layout extends React.Component {
 			<div className='hasAccessToEditPublic'>
 				<AvatarMenuButton />
 				{ hasAccessToEdit ?
-				<div onClick={() => this.props.updateAdmin({ publicView: false })} className='avatarLink'>
+				<div onClick={() => this.props.updateAdmin({ publicView: false })} className='avatarLink hideOnMobile'>
 					<div className='editGraphic'>
 						<span className='icon icon-edit'></span>
 					</div>
 				</div> : ''}
 				{ hasAccessToEdit ?
-				<ModalLink type='div' id='share' className='avatarLink'>
+				<ModalLink type='div' id='share' className='avatarLink hideOnMobile'>
 					<div className='editGraphic'>
 						<Icon><AiOutlineNotification /></Icon>
 					</div>

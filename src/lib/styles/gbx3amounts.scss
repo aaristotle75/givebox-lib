@@ -309,6 +309,9 @@ $breakpoint: 768px;
 		.ticketDescThumb {
 			position: relative;
 			padding: 10px;
+			@media (max-width: $breakpoint) {
+				display: none;
+			}
 		}
 
 		.ticketDesc {

@@ -141,7 +141,8 @@ class TicketsList extends Component {
 			amountsList,
 			color,
 			showInStock,
-			kind
+			kind,
+			breakpoint
 		} = this.props;
 
 		const {
@@ -199,7 +200,7 @@ class TicketsList extends Component {
 								<div style={{ width: '10%' }} className='ticketDescThumb'>
 									<Image url={thumbnailURL} size={'thumb'} maxSize={60} title={name} />
 								</div> : '' }
-								<div style={{ width: thumbnailURL ? '75%' : '85%' }} className='ticketDesc'>
+								<div style={{ width: thumbnailURL && breakpoint !== 'mobile' ? '75%' : '85%' }} className='ticketDesc'>
 									{name}
 									<span className='ticketDescAmount'>{price} {priceDesc}</span>
 									{showInStock ? <span className='ticketDescInStock'>{inStock} Available</span> : <></> }
