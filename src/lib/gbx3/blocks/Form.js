@@ -133,8 +133,10 @@ class Form extends Component {
 		console.log('execute remove');
 	}
 
-	optionsUpdated(name, obj) {
-		this.setState({ [name]: { ...obj }, hasBeenUpdated: true });
+	optionsUpdated(name, obj, callback) {
+		this.setState({ [name]: { ...obj }, hasBeenUpdated: true }, () => {
+			if (callback) callback();
+		});
 	}
 
 	getInfo(info) {
@@ -159,7 +161,9 @@ class Form extends Component {
 			modalID,
 			breakpoint,
 			acceptedTerms,
-			reloadGBX3
+			reloadGBX3,
+			kind,
+			orgID
 		} = this.props;
 
 		const {
@@ -191,6 +195,8 @@ class Form extends Component {
 							>
 								<Tab id='edit' label={<span className='stepLabel'>Edit Form Options</span>}>
 									<FormEdit
+										kind={kind}
+										orgID={orgID}
 										form={form}
 										optionsUpdated={this.optionsUpdated}
 									/>

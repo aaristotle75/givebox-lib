@@ -237,7 +237,13 @@ export const paymentForm = {
 			hasCustomGoal: false,
 			goal: 50000,
 			cartTitle: 'Your Cart',
-			shopTitle: 'Browse More Items'
+			shopTitle: 'Browse More Items',
+			checkoutDonation: false,
+			checkoutDonationAmount: 500,
+			checkoutDonationFormID: null,
+			checkoutDonationArticleID: null,
+			checkoutDonationFormTitle: '',
+			checkoutAmountID: null
 		}
 	}
 };

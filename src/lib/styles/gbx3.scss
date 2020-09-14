@@ -2689,3 +2689,65 @@
 		}
 	}
 }
+
+.gbx3 {
+	.checkoutDonationSelect {
+		ul {
+			margin: 20px;
+			@media (max-width: $breakpoint) {
+				margin: 20px 0;
+			}
+		}
+
+		li {
+			position: relative;
+			display: flex;
+			cursor: pointer;
+			margin: 10px 0;
+			padding: 20px 10px;
+			border-bottom: 1px solid  transparentize($green, .8);
+			@include default-transition(.25s);
+		}
+
+		li:hover:not(.noRecords) {
+			background: transparentize($green, .4);
+			.selectDonationForm {
+				display: block;
+			}
+			.selected {
+				color: $white;
+			}
+		}
+
+		.thumbnail {
+			overflow: hidden;
+			margin-right: 10px;
+			img {
+				border-radius: 5px;
+			}
+		}
+
+		.title {
+			width: 75%;
+			font-size: 1em;
+		}
+
+		.selectDonationForm {
+			display: none;
+			position: absolute;
+			top: 30px;
+			right: 10px;
+			color: $white;
+			@include default-transition(.25s);
+		}
+
+		.selectDonationForm:hover {
+			opacity: .6;
+		}
+
+		.selected {
+			color: $green;
+		}
+
+	}
+}

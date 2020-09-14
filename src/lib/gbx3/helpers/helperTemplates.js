@@ -173,7 +173,7 @@ export const helperTemplates = {
 				{
 					...amounts,
 					title: 'Add Event Tickets',
-					texte: 'Please add the event tickets.'
+					text: 'Please add the event tickets.'
 				},
 				media,
 				themeColor,
@@ -190,7 +190,7 @@ export const helperTemplates = {
 				{
 					...amounts,
 					title: 'Add Sweepstakes Tickets',
-					texte: 'Please add the tickets users can purchase to win.'
+					text: 'Please add the tickets users can purchase to win.'
 				},
 				media,
 				themeColor,
@@ -199,7 +199,20 @@ export const helperTemplates = {
 			]
 		},
 		membership: {
-			...helperTemplatesDefault
+			...helperTemplatesDefault,
+			helpersAvailable: [
+				logo,
+				title,
+				{
+					...amounts,
+					title: 'Add Membership Subscriptions',
+					text: 'Please add the subscriptions users can purchase.'
+				},
+				media,
+				themeColor,
+				description,
+				share
+			]
 		}
 	},
 	receipt: {

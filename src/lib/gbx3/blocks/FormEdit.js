@@ -9,12 +9,14 @@ import {
 	_v
 } from '../../';
 import AnimateHeight from 'react-animate-height';
+import CheckoutDonationEdit from './CheckoutDonationEdit';
 
 class FormEdit extends Component {
 
 	constructor(props) {
 		super(props);
 		this.updateForm = this.updateForm.bind(this);
+		this.updateMulti = this.updateMulti.bind(this);
 		this.infoOptions = this.infoOptions.bind(this);
 		this.state = {
 			goalError: ''
@@ -31,6 +33,14 @@ class FormEdit extends Component {
 		const form = { ...this.props.form };
 		form[name] = value;
 		this.props.optionsUpdated('form', form);
+	}
+
+	updateMulti(obj = {}, callback) {
+		const form = {
+			...this.props.form,
+			...obj
+		};
+		this.props.optionsUpdated('form', form, callback);
 	}
 
 	infoOptions(info) {
@@ -59,7 +69,13 @@ class FormEdit extends Component {
 			hasCustomGoal,
 			goal,
 			cartTitle,
-			shopTitle
+			shopTitle,
+			checkoutDonation,
+			checkoutDonationAmount,
+			checkoutDonationFormID,
+			checkoutDonationFormTitle,
+			kind,
+			orgID
 		} = this.props.form;
 
 		return (
@@ -163,6 +179,7 @@ class FormEdit extends Component {
 							/>
 							<AnimateHeight height={noteInfo > 0 ? 'auto' : 0}>
 								<TextField
+									name='notePlaceholder'
 									label='Custom Field Placeholder'
 									fixedLabel={true}
 									placeholder='Ex. On Behalf of Jane Doe'
@@ -218,6 +235,7 @@ class FormEdit extends Component {
 							/>
 							<AnimateHeight height={hasCustomGoal ? 'auto' : 0}>
 								<TextField
+									name='goal'
 									label='Goal Amount'
 									fixedLabel={true}
 									placeholder='Enter the Goal Amount'
@@ -255,6 +273,7 @@ class FormEdit extends Component {
 							/>
 							<AnimateHeight height={allowSelection ? 'auto' : 0}>
 								<TextField
+									name='cartTitle'
 									label='Cart Title'
 									fixedLabel={true}
 									placeholder='Enter the title for "Your Cart"'
@@ -265,6 +284,7 @@ class FormEdit extends Component {
 									}}
 								/>
 								<TextField
+									name='shopTitle'
 									label='Browse More Items Title'
 									fixedLabel={true}
 									placeholder='Browse More Items Title"'
@@ -301,6 +321,17 @@ class FormEdit extends Component {
 								/>
 							</AnimateHeight>
 							*/}
+							{ kind !== 'fundraiser' && 1===2 ?
+							<CheckoutDonationEdit
+								orgID={orgID}
+								updateForm={this.updateForm}
+								updateMulti={this.updateMulti}
+								checkoutDonation={checkoutDonation}
+								checkoutDonationAmount={checkoutDonationAmount}
+								checkoutDonationFormID={checkoutDonationFormID}
+								checkoutDonationFormTitle={checkoutDonationFormTitle}
+							/>
+							: '' }
 						</div>
 					</div>
 				</Collapse>
