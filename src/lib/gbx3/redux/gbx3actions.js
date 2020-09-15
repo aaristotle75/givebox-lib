@@ -1156,6 +1156,10 @@ export function setStyle(options = {}) {
 				.gbx3Shop button.link {
 					color: ${color};
 				}
+
+				.gbx3 .checkoutDonation .checkbox-group label.label {
+					color: ${color};
+				}
 			`;
 		}
 

@@ -71,6 +71,7 @@ class FormEdit extends Component {
 			cartTitle,
 			shopTitle,
 			checkoutDonation,
+			checkoutDonationText,
 			checkoutDonationAmount,
 			checkoutDonationFormID,
 			checkoutDonationFormTitle,
@@ -321,12 +322,13 @@ class FormEdit extends Component {
 								/>
 							</AnimateHeight>
 							*/}
-							{ kind !== 'fundraiser' && 1===2 ?
+							{ kind !== 'fundraiser' && 1 === 2 ?
 							<CheckoutDonationEdit
 								orgID={orgID}
 								updateForm={this.updateForm}
 								updateMulti={this.updateMulti}
 								checkoutDonation={checkoutDonation}
+								checkoutDonationText={checkoutDonationText}
 								checkoutDonationAmount={checkoutDonationAmount}
 								checkoutDonationFormID={checkoutDonationFormID}
 								checkoutDonationFormTitle={checkoutDonationFormTitle}

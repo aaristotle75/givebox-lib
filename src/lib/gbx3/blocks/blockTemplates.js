@@ -239,6 +239,7 @@ export const paymentForm = {
 			cartTitle: 'Your Cart',
 			shopTitle: 'Browse More Items',
 			checkoutDonation: false,
+			checkoutDonationText: '',
 			checkoutDonationAmount: 500,
 			checkoutDonationFormID: null,
 			checkoutDonationArticleID: null,

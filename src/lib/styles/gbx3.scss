@@ -2691,6 +2691,19 @@
 }
 
 .gbx3 {
+
+	.checkoutDonation {
+		position: relative;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-bottom: 20px;
+
+		.checkbox-group label.label {
+			font-size: 12px;
+		}
+	}
+
 	.checkoutDonationSelect {
 		ul {
 			margin: 20px;

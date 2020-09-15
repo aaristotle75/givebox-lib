@@ -17,6 +17,7 @@ import Button from './Button';
 import Terms from '../payment/Terms';
 import Totals from '../payment/Totals';
 import Cart from '../payment/Cart';
+import CheckoutDonation from './CheckoutDonation';
 import { toggleModal } from '../../api/actions';
 import {
 	updateData,
@@ -247,6 +248,9 @@ class Form extends Component {
 					editable={this.props.editable}
 					breakpoint={breakpoint}
 				/>
+				{ util.getValue(form, 'checkoutDonation') && kind !== 'fundraiser' ?
+				<CheckoutDonation form={form} />
+				: '' }
 				<div className='formBottomSection'>
 					<Totals
 						setCart={this.setCart}

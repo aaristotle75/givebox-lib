@@ -31,6 +31,7 @@ class CheckoutDonationEdit extends Component{
 
 		const {
 			checkoutDonation,
+			checkoutDonationText,
 			checkoutDonationAmount,
 			checkoutDonationFormID,
 			checkoutDonationFormTitle
@@ -70,6 +71,18 @@ class CheckoutDonationEdit extends Component{
 						</ModalLink>
 						<div style={{ padding: '5px 0' }} className='fieldContext'>{ checkoutDonationFormTitle ? checkoutDonationFormTitle : 'You must select a donation form for this feature to display to the user.' }</div>
 					</div>
+					<TextField
+						name='checkoutDonationText'
+						label='Call to Action Text on Form'
+						fixedLabel={true}
+						placeholder='E.g. Make a donation at checkout'
+						value={checkoutDonationText}
+						maxLength={128}
+						onChange={(name, value) => {
+							console.log('execute name value', name, value);
+							this.props.updateForm('checkoutDonationText', value);
+						}}
+					/>
 					<TextField
 						name='checkoutDonationAmount'
 						label='Default Donation Amount'
