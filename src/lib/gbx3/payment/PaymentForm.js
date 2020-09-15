@@ -314,7 +314,7 @@ class PaymentFormClass extends Component {
 			breakpoint
 		} = this.props;
 
-		const echeck = false;
+		const echeck = true;
 
 		const creditCard = this.props.creditCardGroup({
 			group: 'paymethod',
