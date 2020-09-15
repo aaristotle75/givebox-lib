@@ -23,7 +23,46 @@ class CheckoutDonation extends Component {
 	}
 
 	toggleChecked() {
+
+		const {
+			checkoutDonationAmount,
+			checkoutDonationFormID,
+			checkoutDonationArticleID,
+			checkoutDonationFormTitle,
+			checkoutAmountID,
+			checkoutDonationImageURL
+		} = this.props.form;
+
+		const opts = {
+			articleIDOverride: checkoutDonationArticleID,
+			kindOverride: 'fundraiser',
+			kindIDOverride: checkoutDonationFormID
+		};
+
+		const item = {
+			customAmount: true,
+			name: 'Donation at Checkout',
+			unitID: checkoutAmountID,
+			articleID: checkoutDonationArticleID,
+			articleTitle: checkoutDonationFormTitle,
+			articleImageURL: checkoutDonationImageURL,
+			priceper: checkoutDonationAmount,
+			allowQtyChange: false,
+			allowMultiItems: true,
+			interval: 'once',
+			frequency: 1,
+			removedCallback: () => {
+				this.setState({ checked: false })
+			}
+		};
 		const checked = this.state.checked ? false : true;
+		if (checked) {
+			item.quantity = 1;
+		} else {
+			item.quantity = 0;
+		}
+
+		this.props.updateCartItem(checkoutAmountID, item, opts, true);
 		this.setState({ checked });
 	}
 
@@ -42,7 +81,7 @@ class CheckoutDonation extends Component {
 				<Choice
 					type='checkbox'
 					name='checkoutDonation'
-					label={checkoutDonationText || 'Click here to make a donation at checkout'}
+					label={checkoutDonationText || 'Click here to add a donation at checkout'}
 					onChange={this.toggleChecked}
 					checked={checked}
 					value={checked}

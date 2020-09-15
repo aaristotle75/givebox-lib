@@ -244,6 +244,7 @@ export const paymentForm = {
 			checkoutDonationFormID: null,
 			checkoutDonationArticleID: null,
 			checkoutDonationFormTitle: '',
+			checkoutDonationImageURL: '',
 			checkoutAmountID: null
 		}
 	}

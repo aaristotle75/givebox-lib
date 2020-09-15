@@ -78,8 +78,8 @@ class CheckoutDonationEdit extends Component{
 						placeholder='E.g. Make a donation at checkout'
 						value={checkoutDonationText}
 						maxLength={128}
-						onChange={(name, value) => {
-							console.log('execute name value', name, value);
+						onChange={(e) => {
+							const value = e.currentTarget.value;
 							this.props.updateForm('checkoutDonationText', value);
 						}}
 					/>

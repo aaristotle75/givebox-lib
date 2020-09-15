@@ -380,8 +380,16 @@ export function updateCart(cart) {
 	}
 }
 
-export function updateCartItem(unitID, item = {}) {
+export function updateCartItem(unitID, item = {}, opts = {}, openCart = true) {
 	return async (dispatch, getState) => {
+
+		// options
+		const {
+			articleIDOverride,
+			kindOverride,
+			kindIDOverride
+		} = opts;
+
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
 		const fees = util.getValue(gbx3, 'fees', {});
 		const info = util.getValue(gbx3, 'info', {});
@@ -397,28 +405,47 @@ export function updateCartItem(unitID, item = {}) {
 		item.fees = fees;
 		item.amountFormatted = amount/100;
 
+		cart.open = cart.open || openCart ? true : false;
 		cart.zeroAmountAllowed = util.getValue(item, 'zeroAmountAllowed', false);
+		let addedOrRemoved = '';
 		if (index === -1) {
-			const articleID = +util.getValue(info, 'articleID');
+			const articleID = articleIDOverride || +util.getValue(info, 'articleID');
 
 			item.sourceType = util.getValue(info, 'sourceType');
 			item.sourceLocation = util.getValue(info, 'sourceLocation');
 			item.articleID = articleID;
 			item.orgName = util.getValue(info, 'orgName');
 			item.orgID = util.getValue(info, 'orgID');
-			item.articleKind = util.getValue(info, 'kind');
-			item.kindID = util.getValue(info, 'kindID');
+			item.articleKind = kindOverride || util.getValue(info, 'kind');
+			item.kindID = kindIDOverride || util.getValue(info, 'kindID');
 
-			if (allowMultiItems && +amount > 0) items.push(item);
-			else {
+			if (allowMultiItems && +amount > 0) {
+				items.push(item);
+				addedOrRemoved = 'added';
+			} else {
 				// If multiItems is false find and remove the previous item per articleID
 				const removeIndex = items.findIndex(i => i.articleID === articleID);
-				if (removeIndex !== -1) items.splice(removeIndex, 1);
-				if (+amount > 0) items.push(item);
+				if (removeIndex !== -1) {
+					items.splice(removeIndex, 1);
+					addedOrRemoved = 'removed';
+				}
+				if (+amount > 0) {
+					items.push(item);
+					addedOrRemoved = 'added';
+				}
 			}
 		} else {
 			if (+amount > 0) items[index] = { ...items[index], ...item };
-			else items.splice(index, 1);
+			else {
+				items.splice(index, 1);
+				addedOrRemoved = 'removed';
+			}
+		}
+		if (addedOrRemoved === 'added' && item.addedCallback) {
+			item.addedCallback();
+		}
+		if (addedOrRemoved === 'removed' && item.removedCallback) {
+			item.removedCallback();
 		}
 		if (!item.orderBy) item.orderBy = numOfItems + 1;
 		const cartUpdated = await dispatch(saveCart(cart));
@@ -1157,9 +1184,10 @@ export function setStyle(options = {}) {
 					color: ${color};
 				}
 
-				.gbx3 .checkoutDonation .checkbox-group label.label {
-					color: ${color};
+				.checkoutDonation .react-toggle--checked .react-toggle-track {
+					background: linear-gradient(to right, ${color} 0%, ${color4} 100%) !important;
 				}
+
 			`;
 		}
 

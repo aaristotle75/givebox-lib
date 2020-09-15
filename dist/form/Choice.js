@@ -89,7 +89,10 @@ class Choice extends Component {
       htmlFor: id
     }), label && /*#__PURE__*/React.createElement("label", {
       className: "label",
-      onClick: () => this.onChange(name, value)
+      onClick: () => {
+        this.onChange(name, value);
+        if (this.props.labelClick) this.props.labelClick();
+      }
     }, label), /*#__PURE__*/React.createElement("div", {
       className: `tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`
     }, this.props.error, /*#__PURE__*/React.createElement("i", null)), /*#__PURE__*/React.createElement("div", {

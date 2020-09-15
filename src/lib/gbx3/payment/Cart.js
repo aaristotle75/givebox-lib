@@ -99,18 +99,11 @@ class Cart extends Component {
 							<div className='itemSubTitle'><strong>{value.articleTitle}</strong></div>
 							<div className='itemSubTitle'>{value.orgName}</div>
 							<div className='itemActions'>
-									Quantity {
-										!showQtyDropdown.includes(value.unitID)
-										|| ( showQtyDropdown.includes(value.unitID) && !value.allowQtyChange)
-										|| (showQtyDropdown.includes(value.unitID) && value.availableQty <= 0)
-									?
-										<span style={{ marginLeft: 7, display: 'inline-block' }}>{value.quantity}</span>
+									{!value.allowQtyChange || value.availableQty <= 0 ?
+										<span style={{ marginRight: 38 }}>Quantity <span style={{ fontSize: 14, marginLeft: 7, display: 'inline-block' }}>{value.quantity}</span></span>
 									:
-										<></>
-									}
-									{ showQtyDropdown.includes(value.unitID) ?
-										<span>
-											{ value.allowQtyChange && value.availableQty > 0 ?
+										<>
+											Quantity
 											<Dropdown
 												portalID={`itemQty-dropdown-portal-${value.unitID}`}
 												portal={true}
@@ -124,17 +117,10 @@ class Cart extends Component {
 												selectLabel={0}
 												defaultValue={value.quantity}
 												value={value.quantity}
-											/> : <></> }
-											{ numCartItems > 1 ?
-												<GBLink style={{ marginLeft: 10 }} allowCustom={true} customColor={primaryColor} onClick={() =>this.onChangeQty('quantity', 0, value)}>Delete</GBLink>
-											: <></> }
-										</span>
-									:
-										( numCartItems > 1) || ( value.allowQtyChange && value.availableQty > 0 ) ?
-										<GBLink style={{ marginLeft: 10 }} onClick={() => this.toggleShowQtyDropdown(value.unitID)} customColor={primaryColor} allowCustom={true}>
-											Edit Quantity
-										</GBLink> : <></>
+											/>
+										</>
 									}
+									<GBLink style={{ marginLeft: 10 }} allowCustom={true} customColor={primaryColor} onClick={() => this.onChangeQty('quantity', 0, value)}>Delete</GBLink>
 							</div>
 						</div>
 						<div style={{ width: '30%', verticalAlign: 'middle', paddingRight: 10, whiteSpace: 'nowrap' }} className='col right'>

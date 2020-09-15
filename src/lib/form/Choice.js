@@ -91,7 +91,10 @@ class Choice extends Component {
 				/>
 				}
 				<label htmlFor={id}></label>
-				{label && <label className='label' onClick={() => this.onChange(name, value)}>{label}</label>}
+				{label && <label className='label' onClick={() => {
+					this.onChange(name, value);
+					if (this.props.labelClick) this.props.labelClick();
+				}}>{label}</label>}
 				<div className={`tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`}>
 					{this.props.error}
 					<i></i>

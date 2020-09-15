@@ -322,7 +322,7 @@ class FormEdit extends Component {
 								/>
 							</AnimateHeight>
 							*/}
-							{ kind !== 'fundraiser' && 1 === 2 ?
+							{ kind !== 'fundraiser' && 1 === 1 ?
 							<CheckoutDonationEdit
 								orgID={orgID}
 								updateForm={this.updateForm}

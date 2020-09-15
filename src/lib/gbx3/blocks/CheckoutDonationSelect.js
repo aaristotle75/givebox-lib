@@ -59,7 +59,8 @@ class CheckoutDonationSelect extends Component{
 							checkoutAmountID,
 							checkoutDonationFormID: ID,
 							checkoutDonationArticleID: util.getValue(res, 'articleID'),
-							checkoutDonationFormTitle: util.getValue(res, 'title')
+							checkoutDonationFormTitle: util.getValue(res, 'title'),
+							checkoutDonationImageURL: util.getValue(res, 'imageURL')
 						}, () => {
 							this.props.toggleModal('checkoutDonationSelect', false);
 						});

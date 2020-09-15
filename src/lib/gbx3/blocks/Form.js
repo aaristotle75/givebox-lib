@@ -248,9 +248,6 @@ class Form extends Component {
 					editable={this.props.editable}
 					breakpoint={breakpoint}
 				/>
-				{ util.getValue(form, 'checkoutDonation') && kind !== 'fundraiser' ?
-				<CheckoutDonation form={form} />
-				: '' }
 				<div className='formBottomSection'>
 					<Totals
 						setCart={this.setCart}
@@ -260,17 +257,9 @@ class Form extends Component {
 					/>
 					<div className='buttonSection'>
 						<div style={{ marginBottom: 10 }}>
-							<Choice
-								label='I Accept the Terms & Conditions'
-								value={acceptedTerms}
-								checked={acceptedTerms}
-								onChange={() => {
-									this.setCart('acceptedTerms', acceptedTerms ? false : true)
-								}}
-								color={primaryColor}
-								error={!acceptedTerms ? 'You Must Accept the Terms & Conditions to Continue' : false}
-								errorType={'tooltip'}
-							/>
+							{ util.getValue(form, 'checkoutDonation') && kind !== 'fundraiser' ?
+							<CheckoutDonation form={form} />
+							: '' }
 						</div>
 						<div style={{ margin: '20px 0' }}>
 							<Button
@@ -283,6 +272,7 @@ class Form extends Component {
 							effect='3DFlipVert'
 							style={{ width: '60%' }}
 							className='gbx3'
+							closeCallback={() => this.setCart('acceptedTerms', true)}
 							component={() =>
 								<Terms
 									setCart={this.setCart}
@@ -291,7 +281,22 @@ class Form extends Component {
 								/>
 							}
 						/>
-						<ModalLink style={{ marginTop: 10 }} allowCustom={true} customColor={primaryColor} id='terms'>Read Terms and Conditions</ModalLink>
+						<div style={{ marginTop: 10 }}>
+							<Choice
+								label='I Accept the Terms & Conditions'
+								value={acceptedTerms}
+								checked={acceptedTerms}
+								onChange={() => {
+									this.setCart('acceptedTerms', acceptedTerms ? false : true)
+								}}
+								labelClick={() => {
+									this.props.toggleModal('terms', true);
+								}}
+								color={primaryColor}
+								error={!acceptedTerms ? 'You Must Accept the Terms & Conditions to Continue' : false}
+								errorType={'tooltip'}
+							/>
+						</div>
 					</div>
 				</div>
 			</div>
