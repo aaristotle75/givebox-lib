@@ -257,7 +257,7 @@ class Form extends Component {
 					/>
 					<div className='buttonSection'>
 						<div style={{ marginBottom: 10 }}>
-							{ util.getValue(form, 'checkoutDonation') && kind !== 'fundraiser' ?
+							{ util.getValue(form, 'checkoutDonation') && util.getValue(form, 'checkoutDonationFormID') &&  kind !== 'fundraiser' ?
 							<CheckoutDonation form={form} />
 							: '' }
 						</div>

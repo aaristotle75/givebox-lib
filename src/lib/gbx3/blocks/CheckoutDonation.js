@@ -46,14 +46,15 @@ class CheckoutDonation extends Component {
 			articleID: checkoutDonationArticleID,
 			articleTitle: checkoutDonationFormTitle,
 			articleImageURL: checkoutDonationImageURL,
-			priceper: checkoutDonationAmount,
+			priceper: checkoutDonationAmount || 500,
 			allowQtyChange: false,
 			allowMultiItems: true,
 			interval: 'once',
 			frequency: 1,
 			removedCallback: () => {
 				this.setState({ checked: false })
-			}
+			},
+			changeAmount: true
 		};
 		const checked = this.state.checked ? false : true;
 		if (checked) {

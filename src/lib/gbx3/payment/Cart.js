@@ -126,6 +126,11 @@ class Cart extends Component {
 						<div style={{ width: '30%', verticalAlign: 'middle', paddingRight: 10, whiteSpace: 'nowrap' }} className='col right'>
 							{util.money(value.amountFormatted)}
 							{ value.interval ? <span style={{ display: 'block', fontSize: 12 }}>{types.renderRecurringName(value.articleKind, value.interval, value.paymentMax).text}</span> : <></> }
+							{ value.changeAmount ?
+								<GBLink allowCustom={true} customColor={primaryColor} onClick={() => reloadGBX3(value.articleID)}>
+									Change Amount
+								</GBLink>
+							: '' }
 						</div>
 					</div>
 				);
