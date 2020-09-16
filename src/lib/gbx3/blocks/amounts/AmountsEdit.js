@@ -136,8 +136,12 @@ export default class AmountsEdit extends Component {
 		const amount = amountsList[length - 1];
 
 		let entries = null;
+		let max = null;
 		if (kind === 'sweepstake') {
 			entries = 1;
+		}
+		if (kind === 'membership' || kind === 'event') {
+			max = 100;
 		}
 		this.props.sendResource(`${types.kind(this.props.kind).api.amount}s`, {
 			orgID,
@@ -148,8 +152,8 @@ export default class AmountsEdit extends Component {
 				name: '',
 				description: '',
 				enabled: false,
-				max: null,
 				orderBy: length,
+				max,
 				entries
 			},
 			reload: false,
