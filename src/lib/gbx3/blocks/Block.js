@@ -9,7 +9,6 @@ import {
 	updateAdmin,
 	updateBlock,
 	removeBlock,
-	updateData,
 	saveGBX3,
 	updateLayouts
 } from '../redux/gbx3actions';
@@ -256,7 +255,7 @@ function mapStateToProps(state, props) {
 	const dataField = util.getValue(block, 'field');
 	const type = util.getValue(block, 'type');
 	const options = util.getValue(block, 'options', {});
-	const data = util.getValue(gbx3, 'data', {});
+	const data = util.getValue(gbx3, blockType === 'org' ? 'orgData' : 'data', {});
 	const fieldValue = util.getValue(data, dataField);
 	const modalID = `modalBlock-${blockType}-${props.name}`;
 	const helperBlocks = util.getValue(gbx3, `helperBlocks.${blockType}`, {});
@@ -296,7 +295,6 @@ export default connect(mapStateToProps, {
 	toggleModal,
 	updateBlock,
 	removeBlock,
-	updateData,
 	updateLayouts,
 	saveGBX3
 })(Block);

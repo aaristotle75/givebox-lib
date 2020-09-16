@@ -138,9 +138,11 @@ class App extends Component {
 
 	initResources(orgID) {
 		// Get the org
+		/*
 		this.props.getResource('org', {
 			orgID: orgID || 185
 		});
+		*/
 	}
 
 	loader(msg, className = '') {

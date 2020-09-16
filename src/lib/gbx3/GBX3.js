@@ -12,6 +12,7 @@ import { setAccess } from '../api/actions';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import '../styles/gbx3.scss';
+import '../styles/gbx3org.scss';
 import '../styles/gbx3modal.scss';
 import reactReferer from 'react-referer';
 import { loadReCaptcha } from 'react-recaptcha-v3';
@@ -22,6 +23,7 @@ import {
 	updateInfo,
 	updateAdmin,
 	loadGBX3,
+	loadOrg,
 	setStyle
 } from './redux/gbx3actions';
 import {
@@ -42,6 +44,7 @@ class GBX3 extends React.Component {
 		super(props);
 		this.setInfo = this.setInfo.bind(this);
 		this.loadCreateNew = this.loadCreateNew.bind(this);
+		this.loadOrg = this.loadOrg.bind(this);
 		this.loadGBX3 = this.loadGBX3.bind(this);
 		this.reloadGBX3 = this.reloadGBX3.bind(this);
 		this.setTracking = this.setTracking.bind(this);
@@ -62,7 +65,8 @@ class GBX3 extends React.Component {
 			hasAccessToEdit,
 			isVolunteer,
 			orgID,
-			orgName
+			orgName,
+			isOrgPage
 		} = this.props;
 
 		this.props.setLoading(true);
@@ -75,7 +79,9 @@ class GBX3 extends React.Component {
 		const setInfo = await this.setInfo();
 
 		if (setInfo) {
-			if (articleID && !isVolunteer) {
+			if (isOrgPage && orgID) {
+				this.loadOrg(orgID);
+			} else if (articleID && !isVolunteer) {
 				this.loadGBX3(articleID);
 			} else {
 				if (isVolunteer) {
@@ -272,6 +278,24 @@ class GBX3 extends React.Component {
 		if (gbx3Cleared) this.loadGBX3(articleID);
 	}
 
+	loadOrg(orgID) {
+		const {
+			queryParams
+		} = this.props;
+
+		const share = has(queryParams, 'share') ? true : false;
+		const previewMode = has(queryParams, 'previewMode') ? true : false;
+
+		this.props.loadOrg(orgID, (res, err) => {
+			if (!err && !util.isEmpty(res)) {
+				this.props.setStyle();
+				if (share) this.props.toggleModal('share', true);
+				if (previewMode) this.props.updateAdmin({ previewDevice: 'desktop', previewMode: true });
+			}
+		});
+	}
+
+
 	loadGBX3(articleID) {
 
 		const {
@@ -391,6 +415,7 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
 	loadGBX3,
+	loadOrg,
 	setStyle,
 	setAccess,
 	getResource,

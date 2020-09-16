@@ -152,9 +152,9 @@ export function updateGlobal(name, global) {
 	}
 }
 
-export function updateData(data) {
+export function updateData(data, blockType) {
 	return {
-		type: types.UPDATE_DATA,
+		type: blockType === 'org' ? types.UPDATE_ORG : types.UPDATE_DATA,
 		data
 	}
 }
@@ -523,23 +523,36 @@ export function saveGBX3(blockType, options = {}) {
 
 	return (dispatch, getState) => {
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
-		const gbxData = util.getValue(gbx3, 'data', {});
+		const gbxData = util.getValue(gbx3, blockType === 'org' ? 'orgData' : 'data', {});
 		const settings = util.getValue(gbxData, 'giveboxSettings', {});
 		const info = util.getValue(gbx3, 'info', {});
 		const blocks = util.getValue(gbx3, `blocks.${blockType}`, {});
 		const globals = util.getValue(gbx3, 'globals', {});
 		const helperBlocks = util.getValue(gbx3, 'helperBlocks', {});
-
-		const dataObj = {
-			...gbxData,
-			giveboxSettings: {
-				...settings,
+		const giveboxSettings = blockType === 'org' ?
+			{
 				customTemplate: {
 					blocks,
 					globals,
 					helperBlocks
 				}
-			},
+			}
+		:
+			{
+				giveboxSettings: {
+					...settings,
+					customTemplate: {
+						blocks,
+						globals,
+						helperBlocks
+					}
+				}
+			}
+		;
+
+		const dataObj = {
+			...gbxData,
+			...giveboxSettings,
 			...opts.dataObj
 		};
 
@@ -559,9 +572,10 @@ export function saveGBX3(blockType, options = {}) {
 
 			dispatch(updateLayouts(blockType, layouts));
 		}
+		
 		dispatch(updateGBX3('saveStatus', 'saving'));
 		dispatch(sendResource(util.getValue(info, 'apiName'), {
-			id: [util.getValue(info, 'kindID')],
+			id: [blockType === 'org' ? util.getValue(info, 'orgID') : util.getValue(info, 'kindID')],
 			orgID: util.getValue(info, 'orgID'),
 			data: dataObj,
 			method: 'patch',
@@ -925,6 +939,130 @@ export function loadGBX3(articleID, callback) {
 				} else {
 					dispatch(setLoading(false));
 				}
+			}
+		}));
+	}
+}
+
+export function loadOrg(orgID, callback) {
+
+	return async (dispatch, getState) => {
+
+		dispatch(setLoading(true));
+		const gbx3 = util.getValue(getState(), 'gbx3', {});
+		const resource = util.getValue(getState(), 'resource', {});
+		const access = util.getValue(resource, 'access', {});
+		const globalsState = util.getValue(gbx3, 'globals', {});
+		const admin = util.getValue(gbx3, 'admin', {});
+		const blockType = 'org';
+		const availableBlocks = util.deepClone(util.getValue(admin, `availableBlocks.org`, []));
+
+		dispatch(getResource('org', {
+			id: [orgID],
+			reload: true,
+			customName: 'gbx3Org',
+			callback: (res, err) => {
+				if (!util.isEmpty(res) && !err) {
+					const orgID = util.getValue(res, 'ID');
+					const orgName = util.getValue(res, 'name');
+					const customTemplate = util.getValue(res, 'customTemplate', {});
+					const hasAccessToEdit = util.getAuthorizedAccess(access, orgID, null);
+					dispatch(updateInfo({
+						orgID,
+						orgName,
+						display: 'org',
+						orgImage: util.getValue(res, 'imageURL'),
+						apiName: 'org'
+					}));
+					const blocksCustom = util.getValue(customTemplate, 'blocks', {});
+					const orgBlocks = util.getValue(blockTemplates, `org`, {});
+					const blocksDefault = {};
+
+					defaultBlocks.org.forEach((value) => {
+						if (!util.isEmpty(blocksCustom)) {
+							if (has(blocksCustom, value)) {
+								blocksDefault[value] = orgBlocks[value];
+							}
+						} else {
+							blocksDefault[value] = orgBlocks[value];
+						}
+					});
+					const globalsCustom = util.getValue(customTemplate, 'globals', {});
+					const gbxStyleCustom = util.getValue(globalsCustom, 'gbxStyle', {});
+					const embedButtonCustom = util.getValue(globalsCustom, 'embedButton', {});
+
+					//const blocks = !util.isEmpty(blocksCustom) ? blocksCustom : blocksDefault;
+					const blocks = merge(blocksDefault, blocksCustom);
+
+					const globals = {
+						...globalsState,
+						...{
+							gbxStyle: {
+								...util.getValue(globalsState, 'gbxStyle', {}),
+								...gbxStyleCustom
+							},
+							button: {
+								...util.getValue(globalsState, 'button', {}),
+								style: {
+									...util.getValue(util.getValue(globalsState, 'button', {}), 'style', {}),
+								}
+							},
+							embedButton: {
+								...util.getValue(globalsState, 'embedButton', {}),
+								...embedButtonCustom
+							}
+						},
+						...util.getValue(customTemplate, 'globals', {})
+					};
+
+					const helperBlocksCustom = util.getValue(customTemplate, `helperBlocks.${blockType}`, {});
+					const helperBlocks = !util.isEmpty(helperBlocksCustom) ?
+						{
+							...helperBlocksCustom,
+							helperStep: 0
+						}
+					: helperTemplates[blockType];
+
+					if (!util.isEmpty(blocksCustom)) {
+						// Check if not all default blocks are present
+						// If not, add them to the availableBlocks array
+						// which are blocks available but not used
+						Object.keys(orgBlocks).forEach((key) => {
+							if (!(key in blocks) && !availableBlocks.includes(key)) {
+								availableBlocks.push(key);
+							}
+						})
+					}
+
+					const layouts = {
+						desktop: [],
+						mobile: []
+					};
+
+					Object.entries(blocks).forEach(([key, value]) => {
+						const grid = util.getValue(value, 'grid', {});
+						if (!util.isEmpty(grid)) {
+							if (!util.isEmpty(util.getValue(grid, 'desktop'))) layouts.desktop.push(value.grid.desktop);
+							if (!util.isEmpty(util.getValue(grid, 'mobile'))) layouts.mobile.push(value.grid.mobile);
+						}
+					});
+
+					const admin = {
+						hasAccessToEdit,
+						editable: hasAccessToEdit ? true : false,
+						step: 'design'
+					};
+
+					dispatch(updateLayouts(blockType, layouts));
+					dispatch(updateBlocks(blockType, blocks));
+					dispatch(updateGlobals(globals));
+					dispatch(updateHelperBlocks(blockType, helperBlocks));
+					dispatch(updateData(res, 'org'));
+					dispatch(updateAvailableBlocks(blockType, availableBlocks));
+					dispatch(updateAdmin(admin));
+				}
+				callback(res, err);
+				dispatch(setLoading(false));
 			}
 		}));
 	}

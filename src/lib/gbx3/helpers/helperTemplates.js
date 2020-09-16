@@ -219,6 +219,11 @@ export const helperTemplates = {
 
 	},
 	org: {
-
+		...helperTemplatesDefault,
+		helpersAvailable: [
+			logo,
+			description,
+			share
+		]
 	}
 }

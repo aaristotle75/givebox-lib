@@ -9,6 +9,7 @@ import {
 } from '../';
 import Shop from './Shop';
 import Article from './Article';
+import Org from './Org';
 import Confirmation from './payment/Confirmation';
 import {
 	updateAdmin
@@ -54,6 +55,19 @@ class Layout extends React.Component {
 				break;
 			}
 
+			case 'org': {
+				items.push(
+					<Org
+						key={'org'}
+						reloadGBX3={this.props.reloadGBX3}
+						loadGBX3={this.props.loadGBX3}
+						primaryColor={this.props.primaryColor}
+						onClickVolunteerFundraiser={this.props.onClickVolunteerFundraiser}
+					/>
+				)
+				break;
+			}
+
 			case 'article':
 			default: {
 				items.push(
@@ -88,7 +102,7 @@ class Layout extends React.Component {
 			status
 		} = this.props;
 
-		const style = { maxWidth: '850px' };
+		const style = { maxWidth: display === 'org' ? '100%' : '850px' };
 
 		let gbx3BackgroundHeight = 'auto';
 		const el = document.getElementById('GBX3StageAligner');
@@ -164,7 +178,7 @@ class Layout extends React.Component {
 			:'' }
 
 			<div style={{ height: gbx3BackgroundHeight }} className='gbx3LayoutBackground'></div>
-			<div id='gbx3Layout' className={`gbx3Layout ${noAccess ? 'noAccess' : ''}`}>
+			<div id='gbx3Layout' className={`gbx3Layout ${display} ${noAccess ? 'noAccess' : ''}`}>
 				{showAvatarMenu ? avatarMenu : '' }
 				<div
 					style={{

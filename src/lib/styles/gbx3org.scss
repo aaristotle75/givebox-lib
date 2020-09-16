@@ -1,0 +1,39 @@
+@import 'variables.scss';
+
+.gbx3Layout.org {
+	padding: 0px;
+	@media (max-width: $breakpoint) {
+		padding: 0;
+	}
+
+	.bottomOffset {
+		display: table;
+		height: 0px;
+
+		@media (max-width: $breakpoint) {
+			height: 75px;
+		}
+	}
+
+	.gbx3Container {
+		position: relative;
+		display: table;
+		margin: 0 auto;
+		height: auto;
+		width: 100%;
+		padding: 10px;
+		background: $white;
+		overflow: hidden;
+		border-radius: 0px !important;
+		@include box-shadow(none);
+		@include bgGradient(to bottom, $light-gray 0%, $white 20%);
+		@media (max-width: $breakpoint) {
+			border-radius: 0px !important;
+		}
+	}
+
+}
+
+.gbx3 {
+
+}

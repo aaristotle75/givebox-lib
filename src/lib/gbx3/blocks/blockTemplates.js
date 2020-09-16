@@ -588,8 +588,26 @@ export const blockTemplates = {
 		}
 	},
 	org: {
-		title,
-		orgName,
+		logo: {
+			...logo,
+			field: 'imageURL',
+			grid: {
+				desktop: { i: 'logo', x: 0, y: 0, w: 1, h: 7, enabled: true },
+				mobile: { i: 'logo', x: 0, y: 0, w: 1, h: 7, static: true, enabled: false }
+			},
+		},
+		orgName: {
+			...orgName,
+			type: 'Text',
+			field: 'name',
+			options: {
+				defaultFormat: '<span style="font-size:16px">{{TOKEN}}</span>'
+			},
+			grid: {
+				desktop: { i: 'orgName', x: 1, y: 0, w: 5, h: 1, enabled: true },
+				mobile: { i: 'orgName', x: 1, y: 0, w: 5, h: 1, static: true, enabled: false }
+			}
+		},
 		media,
 		description
 	}
@@ -620,7 +638,7 @@ export const defaultBlocks = {
 		'description'
 	],
 	org: [
-		'title',
+		'logo',
 		'orgName',
 		'media',
 		'description'
