@@ -51,42 +51,50 @@ class Admin extends React.Component {
 
 		switch (display) {
 			case 'org': {
-				header.push(
-					<div className='headerMiddle'>
-						{ !util.isEmpty(access) ?
-						<GBLink style={{ fontSize: '14px' }} className='link' onClick={() => this.props.exitAdmin()}><Icon><AiOutlineFullscreen /></Icon>{ isMobile ? 'Exit' : 'Exit Form Builder' }</GBLink> : <></> }
-					</div>
-				);
 				break;
 			}
 
 			case 'article':
 			default: {
-				header.push(
-					<div key='article' className='headerMiddle'>
-					{ articleID && !isVolunteer ?
-						step === 'create' ?
-							<GBLink style={{ fontSize: '14px' }} onClick={() => this.goBack(articleID)}><span className='icon icon-chevron-left'></span> Go Back</GBLink>
-						:
-							<GBLink style={{ fontSize: '14px' }} className='link' onClick={() => this.props.loadCreateNew()}><span className='icon icon-plus'></span> { isMobile ? 'New' : 'Create New Form' }</GBLink>
-					: '' }
-					</div>
-				);
+				if (articleID && !isVolunteer) {
+					if (step === 'create') {
+						header.push(
+							<GBLink key={'goback'} style={{ fontSize: '14px' }} onClick={() => this.goBack(articleID)}><span className='icon icon-chevron-left'></span> Go Back</GBLink>
+						)
+					} else {
+						header.push(
+							<GBLink key={'create'} style={{ fontSize: '14px' }} className='link' onClick={() => this.props.loadCreateNew()}><span className='icon icon-plus'></span> { isMobile ? 'New' : 'Create New Form' }</GBLink>
+						);
+					}
+				}
 				break;
 			}
 		}
+
+		if (!util.isEmpty(access)) {
+			header.push(
+				<GBLink key={'exit'} style={{ fontSize: '14px' }} className='link' onClick={() => this.props.exitAdmin()}><Icon><AiOutlineFullscreen /></Icon>{ isMobile ? 'Exit' : 'Exit Form Builder' }</GBLink>
+			)
+		}
+
+		return (
+			<div className='headerMiddle'>
+				{header}
+			</div>
+		)
 	}
 
 	renderAdminDisplay() {
 		const {
-			display
+			display,
+			step
 		} = this.props;
 
 		switch (display) {
 			case 'org': {
 				return (
 					<OrgAdmin
-
+						step={step}
 					/>
 				)
 			}
@@ -95,8 +103,8 @@ class Admin extends React.Component {
 			default: {
 				return (
 					<ArticleAdmin
-
-					 />
+						step={step}
+					/>
 				)
 			}
 		}

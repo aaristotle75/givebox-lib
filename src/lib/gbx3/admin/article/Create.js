@@ -3,11 +3,8 @@ import { connect } from 'react-redux';
 import {
 	util,
 	types,
-	Dropdown,
-	GBLink,
 	Image
 } from '../../../';
-import CreateMenu from './CreateMenu';
 import {
 	createFundraiser,
 	loadGBX3,
@@ -39,6 +36,7 @@ class Create extends React.Component {
 			autoCreate
 		} = this.props;
 
+		console.log('execute create');
 		if (autoCreate) {
 			this.createFundraiser(autoCreate, true);
 		}
@@ -150,7 +148,6 @@ class Create extends React.Component {
 			openAdmin: open,
 			hasAccessToEdit,
 			hasAccessToCreate,
-			kind,
 			isVolunteer,
 			orgName
 		} = this.props;

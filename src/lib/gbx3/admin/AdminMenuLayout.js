@@ -2,15 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
 	util
-} from '../../../';
-import { blockTemplates } from '../../blocks/blockTemplates';
+} from '../../';
+import { blockTemplates } from '../blocks/blockTemplates';
 import {
 	updateAdmin,
 	addBlock
-} from '../../redux/gbx3actions';
-import { toggleModal } from '../../../api/actions';
+} from '../redux/gbx3actions';
+import { toggleModal } from '../../api/actions';
 
-class ArticleMenuLayout extends React.Component {
+class AdminMenuLayout extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -127,7 +127,7 @@ class ArticleMenuLayout extends React.Component {
 function mapStateToProps(state, props) {
 
 	const gbx3 = util.getValue(state, 'gbx3', {});
-	const blockType = 'article';
+	const blockType = props.blockType;
 	const blocks = util.getValue(gbx3, `blocks.${blockType}`, {});
 	const admin = util.getValue(gbx3, 'admin', {});
 	const kind = util.getValue(gbx3, 'info.kind');
@@ -145,4 +145,4 @@ export default connect(mapStateToProps, {
 	toggleModal,
 	updateAdmin,
 	addBlock
-})(ArticleMenuLayout);
+})(AdminMenuLayout);

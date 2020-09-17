@@ -7,10 +7,10 @@ import {
 	Collapse,
 	GBLink,
 	util
-} from '../../../';
-import { toggleModal } from '../../../api/actions';
+} from '../../';
+import { toggleModal } from '../../api/actions';
 
-class ArticleMenuStyleImage extends Component {
+class AdminMenuStyleImage extends Component {
 
 	constructor(props) {
 		super(props);
@@ -164,4 +164,4 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
 	toggleModal
-})(ArticleMenuStyleImage);
+})(AdminMenuStyleImage);

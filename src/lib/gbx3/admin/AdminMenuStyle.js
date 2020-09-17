@@ -4,17 +4,17 @@ import {
 	util,
 	ColorPicker,
 	Dropdown
-} from '../../../';
-import ArticleMenuStyleImage from './ArticleMenuStyleImage';
+} from '../../';
+import AdminMenuStyleImage from './AdminMenuStyleImage';
 import {
 	setStyle,
 	updateGlobal,
 	updateGlobals,
 	saveGBX3
-} from '../../redux/gbx3actions';
-import { toggleModal } from '../../../api/actions';
+} from '../redux/gbx3actions';
+import { toggleModal } from '../../api/actions';
 
-class ArticleMenuStyle extends React.Component {
+class AdminMenuStyle extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -64,6 +64,10 @@ class ArticleMenuStyle extends React.Component {
 
 	async updateStyle(name, value) {
 
+		const {
+			blockType
+		} = this.props;
+
 		const gbxStyle = {
 			...this.props.gbxStyle,
 			[name]: value
@@ -71,7 +75,7 @@ class ArticleMenuStyle extends React.Component {
 		const globalUpdated = await this.props.updateGlobal('gbxStyle', gbxStyle);
 		if (globalUpdated) {
 			this.props.setStyle({ [name]: value });
-			this.props.saveGBX3('article');
+			this.props.saveGBX3(blockType);
 		}
 	}
 
@@ -115,7 +119,8 @@ class ArticleMenuStyle extends React.Component {
 	render() {
 
 		const {
-			gbxStyle
+			gbxStyle,
+			blockType
 		} = this.props;
 
 		const {
@@ -341,7 +346,8 @@ class ArticleMenuStyle extends React.Component {
 							options={this.opacityOptions()}
 						/>
 					</li>
-					<ArticleMenuStyleImage
+					<AdminMenuStyleImage
+						blockType={blockType}
 						imageURL={backgroundImage}
 						selectedCallback={(imageURL, changed) => {
 							if (changed) this.updateStyle('backgroundImage', imageURL);
@@ -400,4 +406,4 @@ export default connect(mapStateToProps, {
 	saveGBX3,
 	toggleModal,
 	setStyle
-})(ArticleMenuStyle);
+})(AdminMenuStyle);

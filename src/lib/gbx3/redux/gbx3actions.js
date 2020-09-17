@@ -572,7 +572,7 @@ export function saveGBX3(blockType, options = {}) {
 
 			dispatch(updateLayouts(blockType, layouts));
 		}
-		
+
 		dispatch(updateGBX3('saveStatus', 'saving'));
 		dispatch(sendResource(util.getValue(info, 'apiName'), {
 			id: [blockType === 'org' ? util.getValue(info, 'orgID') : util.getValue(info, 'kindID')],

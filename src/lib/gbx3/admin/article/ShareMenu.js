@@ -13,7 +13,7 @@ import {
 	toggleAdminLeftPanel
 } from '../../redux/gbx3actions';
 import { sendResource } from '../../../api/helpers';
-import Publish from './Publish';
+import Publish from '../Publish';
 
 const CLOUD_URL = process.env.REACT_APP_CLOUD_URL;
 

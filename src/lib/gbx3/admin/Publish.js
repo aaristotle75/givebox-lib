@@ -4,13 +4,13 @@ import {
 	util,
 	Dropdown,
 	types
-} from '../../../';
+} from '../../';
 import {
 	updateInfo,
 	updateAdmin,
 	updateData
-} from '../../redux/gbx3actions';
-import { sendResource } from '../../../api/helpers';
+} from '../redux/gbx3actions';
+import { sendResource } from '../../api/helpers';
 
 class Publish extends React.Component {
 

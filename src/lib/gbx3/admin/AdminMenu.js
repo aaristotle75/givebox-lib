@@ -3,15 +3,15 @@ import { connect } from 'react-redux';
 import {
 	GBLink,
 	util
-} from '../../../';
-import ArticleMenuLayout from './ArticleMenuLayout';
-import ArticleMenuStyle from './ArticleMenuStyle';
-import ArticleMenuTools from './ArticleMenuTools';
+} from '../../';
+import AdminMenuLayout from './AdminMenuLayout';
+import AdminMenuStyle from './AdminMenuStyle';
+import AdminMenuTools from './AdminMenuTools';
 import {
 	toggleAdminLeftPanel
-} from '../../redux/gbx3actions';
+} from '../redux/gbx3actions';
 
-class ArticleMenu extends React.Component {
+class AdminMenu extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -27,23 +27,27 @@ class ArticleMenu extends React.Component {
 	}
 
 	renderPanel() {
+		const {
+			blockType
+		} = this.props;
+
 		switch (this.state.panelType) {
 			case 'style': {
 				return (
-					<ArticleMenuStyle />
+					<AdminMenuStyle blockType={blockType} />
 				)
 			}
 
 			case 'tools': {
 				return (
-					<ArticleMenuTools />
+					<AdminMenuTools blockType={blockType} />
 				)
 			}
 
 			case 'layout':
 			default: {
 				return (
-					<ArticleMenuLayout />
+					<AdminMenuLayout blockType={blockType} />
 				)
 			}
 		}
@@ -85,4 +89,4 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
 	toggleAdminLeftPanel
-})(ArticleMenu);
+})(AdminMenu);

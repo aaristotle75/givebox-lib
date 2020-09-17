@@ -66,7 +66,8 @@ class GBX3 extends React.Component {
 			isVolunteer,
 			orgID,
 			orgName,
-			isOrgPage
+			blockType,
+			step
 		} = this.props;
 
 		this.props.setLoading(true);
@@ -79,19 +80,40 @@ class GBX3 extends React.Component {
 		const setInfo = await this.setInfo();
 
 		if (setInfo) {
-			if (isOrgPage && orgID) {
-				this.loadOrg(orgID);
-			} else if (articleID && !isVolunteer) {
-				this.loadGBX3(articleID);
-			} else {
-				if (isVolunteer) {
-					const infoUpdated = await this.props.updateInfo({
-						orgID: orgID || ENV === 'production' ? 585 : 185,
-						orgName: orgName || ENV === 'production' ? 'Givebox' : 'Service Dogs of America'
-					});
-					if (infoUpdated) this.onClickVolunteerFundraiser();
-				} else {
-				this.loadCreateNew();
+			switch (blockType) {
+				case 'org': {
+					this.loadOrg(orgID);
+					if (!orgID) console.error('Org ID is not defined');
+					else loadOrg(orgID);
+					break;
+				}
+
+				case 'article':
+				default: {
+					switch (step) {
+						case 'create': {
+							this.loadCreateNew();
+							break;
+						}
+
+						case 'design':
+						default: {
+							if (isVolunteer) {
+								const infoUpdated = await this.props.updateInfo({
+									orgID: orgID || ENV === 'production' ? 585 : 185,
+									orgName: orgName || ENV === 'production' ? 'Givebox' : 'Service Dogs of America'
+								});
+								if (infoUpdated) this.onClickVolunteerFundraiser();
+							} else {
+								if (articleID) this.loadGBX3(articleID);
+								else {
+									this.loadCreateNew();
+								}
+							}
+							break;
+						}
+					}
+					break;
 				}
 			}
 		}
@@ -123,11 +145,14 @@ class GBX3 extends React.Component {
 
 	async exitAdmin() {
 		const {
-			project
+			project,
+			articleID
 		} = this.props;
 
+		const display = !articleID ? 'org' : this.props.display;
+
 		if (project === 'share') {
-			const infoUpdated = await this.props.updateInfo({ stage: 'public' });
+			const infoUpdated = await this.props.updateInfo({ display, stage: 'public' });
 			if (infoUpdated) this.props.updateAdmin({ publicView: true });
 		}
 		window.parent.postMessage('gbx3ExitCallback', '*');

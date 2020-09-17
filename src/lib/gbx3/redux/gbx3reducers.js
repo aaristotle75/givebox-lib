@@ -39,18 +39,6 @@ const defaultStyle = {
 		backgroundOpacity: .6,
 		placeholderColor: ''
 	},
-	orgStyle: {
-		maxWidth: 850,
-		primaryColor: '#4385f5',
-		bgColor: '',
-		textColor: '#253655',
-		pageColor: '#ffffff',
-		pageRadius: 10,
-		pageOpacity: 1,
-		backgroundColor: '#4385f5',
-		backgroundOpacity: .6,
-		placeholderColor: ''
-	},
 	button: {
 		embedAllowed: false,
 		enabled: false,
@@ -84,7 +72,7 @@ export function gbx3(state = {
 	info: {
 		project: 'share',
 		stage: 'public',
-		display: 'shop',
+		display: 'article',
 		preview: false,
 		breakpoint: 'desktop',
 		sourceType: 'embed',
@@ -123,7 +111,7 @@ export function gbx3(state = {
 		open: false,
 		step: 'design',
 		subStep: '',
-		createType: 'article',
+		createType: 'layout',
 		previewDevice: 'desktop',
 		previewMode: false,
 		publicView: false,
@@ -282,7 +270,7 @@ export function gbx3(state = {
 		case types.UPDATE_ORG:
 			return Object.assign({}, state, {
 				orgData: {
-					...state.data,
+					...state.orgData,
 					...action.data,
 				}
 			});

@@ -2,16 +2,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
 	util
-} from '../../../';
+} from '../../';
 import {
 	updateAdmin,
 	resetGBX3,
 	saveGBX3
-} from '../../redux/gbx3actions';
-import { toggleModal } from '../../../api/actions';
+} from '../redux/gbx3actions';
+import { toggleModal } from '../../api/actions';
 import Publish from './Publish';
 
-class ArticleMenuTools extends React.Component {
+class AdminMenuTools extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -27,7 +27,6 @@ class ArticleMenuTools extends React.Component {
 	render() {
 
 		const {
-			editable,
 			outline,
 			preventCollision,
 			verticalCompact
@@ -53,7 +52,7 @@ function mapStateToProps(state, props) {
 
 	const gbx3 = util.getValue(state, 'gbx3', {});
 	const admin = util.getValue(gbx3, 'admin', {});
-	const blockType = util.getValue(gbx3, 'info.blockType');
+	const blockType = props.blockType;
 	const availableBlocks = util.getValue(admin, `availableBlocks.${blockType}`, []);
 	const globals = util.getValue(gbx3, 'globals', {});
 	const gbxStyle = util.getValue(globals, 'gbxStyle', {});
@@ -78,4 +77,4 @@ export default connect(mapStateToProps, {
 	resetGBX3,
 	saveGBX3,
 	toggleModal
-})(ArticleMenuTools);
+})(AdminMenuTools);

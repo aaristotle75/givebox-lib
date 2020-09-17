@@ -8,7 +8,7 @@ import {
 } from '../../../';
 import Layout from '../../Layout';
 import Share from './Share';
-import ArticleMenu from './ArticleMenu';
+import AdminMenu from '../AdminMenu';
 import ReceiptEmail from '../receipt/ReceiptEmail';
 import ReceiptMenu from '../receipt/ReceiptMenu';
 import {
@@ -57,7 +57,7 @@ class Design extends React.Component {
 		const rightSide = [];
 
 		const contentObj = {
-			article: {
+			layout: {
 				menuText: !mobile ? 'Design Form' : 'Design',
 				icon: <Icon><FaPalette /></Icon>
 			},
@@ -112,7 +112,7 @@ class Design extends React.Component {
 		} else {
 			middle.push(
 				<div key={'middle'} className='button-group'>
-					<GBLink className={`ripple link ${createType === 'article' ? 'selected' : ''}`} onClick={() => this.switchCreateType('article')}><span className='centered'>{contentObj.article.icon}<span className='menuText'>{contentObj.article.menuText}</span></span></GBLink>
+					<GBLink className={`ripple link ${createType === 'layout' ? 'selected' : ''}`} onClick={() => this.switchCreateType('article')}><span className='centered'>{contentObj.layout.icon}<span className='menuText'>{contentObj.layout.menuText}</span></span></GBLink>
 					<GBLink className={`ripple link ${createType === 'receipt' ? 'selected' : ''}`} onClick={() => this.switchCreateType('receipt')}><span className='centered'>{contentObj.receipt.icon}<span className='menuText'>{contentObj.receipt.menuText}</span></span></GBLink>
 					<ModalLink id='share' className={`ripple link ${createType === 'share' ? 'selected' : ''}`}><span className='centered'>{contentObj.share.icon}<span id='helper-share' className='menuText'>{contentObj.share.menuText}</span></span></ModalLink>
 				</div>
@@ -170,7 +170,7 @@ class Design extends React.Component {
 	}
 
 	async previewArticle(previewDevice) {
-		const createTypeUpdated = await this.props.updateAdmin({ createType: 'article' });
+		const createTypeUpdated = await this.props.updateAdmin({ createType: 'layout' });
 		if (createTypeUpdated) {
 			this.changePreviewDevice(previewDevice);
 		}
@@ -222,12 +222,12 @@ class Design extends React.Component {
 				break;
 			}
 
-			case 'article':
+			case 'layout':
 			default: {
 				if (previewMode) {
 					items.push(
 						<div
-							key={'article'}
+							key={'layout'}
 							className={`deviceLayoutWrapper ${previewDevice}Wrapper` }>
 							<div className='stagePreview'>
 								<iframe src={`${GBX3_URL}/${articleID}/?public&preview`} title={`${util.toTitleCase(previewDevice)} Preview`} />
@@ -237,7 +237,7 @@ class Design extends React.Component {
 				} else {
 					items.push(
 						<Layout
-							key={'article'}
+							key={'layout'}
 							loadGBX3={this.props.loadGBX3}
 							reloadGBX3={this.props.reloadGBX3}
 						/>
@@ -262,8 +262,10 @@ class Design extends React.Component {
 					{this.renderTopPanel()}
 				</div>
 				<div className={`leftPanel ${open ? 'open' : 'close'}`}>
-					{ createType === 'article' ?
-						<ArticleMenu />
+					{ createType === 'layout' ?
+						<AdminMenu
+							blockType={'article'}
+						/>
 					:
 						<ReceiptMenu />
 					}
