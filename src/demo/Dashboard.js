@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import TestForm from './TestForm';
-import { Form, Alert, Tabs, Tab, ModalLink, GBLink, Image, util, MediaLibrary } from '../lib';
+import { Form, Alert, Tabs, Tab, ModalLink, GBLink, Image, util, MediaLibrary, _v } from '../lib';
 import { setCustomProp } from '../lib/api/actions';
 
 class Dashboard extends Component {
@@ -52,6 +52,14 @@ class Dashboard extends Component {
 		console.log('handleSaveCallback', url);
 	}
 
+	getObfuscationXs(length) {
+		let xs = '';
+		for (let i=0; i <= length; i++) {
+			xs = xs + 'x';
+		}
+		return xs;
+	}
+
 	render() {
 
 		//const color = util.hexToRgb('#6cfef7');
@@ -67,6 +75,7 @@ class Dashboard extends Component {
 		return (
 			<div>
 				<h2>Dashboard</h2>
+					{/*
 					<MediaLibrary
 						handleSaveCallback={this.handleSaveCallback}
 						handleSave={util.handleFile}
@@ -79,7 +88,7 @@ class Dashboard extends Component {
 							console.log('execute callback', open)
 						}}
 					/>
-
+					*/}
 				{/*
 				<Form
 					name='testForm'

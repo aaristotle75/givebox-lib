@@ -5,8 +5,8 @@ import {
 	GBLink,
 	Icon
 } from '../../';
-import Design from './article/Design';
-import Create from './article/Create';
+import ArticleAdmin from './article/ArticleAdmin';
+import OrgAdmin from './org/OrgAdmin';
 import Logo from '../Logo';
 import AnimateHeight from 'react-animate-height';
 import 'react-toggle/style.css';
@@ -21,7 +21,8 @@ class Admin extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.renderStep = this.renderStep.bind(this);
+		this.renderAdminDisplay = this.renderAdminDisplay.bind(this);
+		this.renderHeaderMiddle = this.renderHeaderMiddle.bind(this);
 		this.state = {
 			referrerStep: ''
 		};
@@ -35,25 +36,67 @@ class Admin extends React.Component {
 		this.props.loadGBX3(articleID);
 	}
 
-	renderStep() {
+	renderHeaderMiddle() {
 		const {
-			step
+			display,
+			isVolunteer,
+			articleID,
+			step,
+			breakpoint,
+			access
 		} = this.props;
 
-		switch (step) {
-			case 'create': {
+		const isMobile = breakpoint === 'mobile' ? true : false;
+		const header = [];
+
+		switch (display) {
+			case 'org': {
+				header.push(
+					<div className='headerMiddle'>
+						{ !util.isEmpty(access) ?
+						<GBLink style={{ fontSize: '14px' }} className='link' onClick={() => this.props.exitAdmin()}><Icon><AiOutlineFullscreen /></Icon>{ isMobile ? 'Exit' : 'Exit Form Builder' }</GBLink> : <></> }
+					</div>
+				);
+				break;
+			}
+
+			case 'article':
+			default: {
+				header.push(
+					<div key='article' className='headerMiddle'>
+					{ articleID && !isVolunteer ?
+						step === 'create' ?
+							<GBLink style={{ fontSize: '14px' }} onClick={() => this.goBack(articleID)}><span className='icon icon-chevron-left'></span> Go Back</GBLink>
+						:
+							<GBLink style={{ fontSize: '14px' }} className='link' onClick={() => this.props.loadCreateNew()}><span className='icon icon-plus'></span> { isMobile ? 'New' : 'Create New Form' }</GBLink>
+					: '' }
+					</div>
+				);
+				break;
+			}
+		}
+	}
+
+	renderAdminDisplay() {
+		const {
+			display
+		} = this.props;
+
+		switch (display) {
+			case 'org': {
 				return (
-					<Create />
+					<OrgAdmin
+
+					/>
 				)
 			}
 
-			case 'design':
+			case 'article':
 			default: {
 				return (
-					<Design
-						reloadGBX3={this.props.reloadGBX3}
-						loadGBX3={this.props.loadGBX3}
-					/>
+					<ArticleAdmin
+
+					 />
 				)
 			}
 		}
@@ -63,15 +106,11 @@ class Admin extends React.Component {
 
 		const {
 			step,
-			articleID,
 			previewMode,
 			saveStatus,
 			editable,
-			isVolunteer,
-			access,
 			hasAccessToEdit,
-			hasAccessToCreate,
-			breakpoint
+			hasAccessToCreate
 		} = this.props;
 
 		if (!hasAccessToEdit && !hasAccessToCreate) return  <div className='flexCenter flexColumn centeritems'>You do not have access.</div>;
@@ -80,8 +119,6 @@ class Admin extends React.Component {
 		if (step === 'create') {
 			theme = 'light';
 		}
-
-		const isMobile = breakpoint === 'mobile' ? true : false;
 
 		return (
 			<div className={`gbx3AdminLayout ${step}Step ${editable ? 'editable' : ''} ${previewMode ? 'previewMode' : ''}`}>
@@ -94,26 +131,16 @@ class Admin extends React.Component {
 							<div className='headerLeftSide'>
 								<Logo theme={theme} className='logo' />
 							</div>
-							<div className='headerMiddle'>
-								{ articleID && !isVolunteer?
-									step === 'create' ?
-										<GBLink style={{ fontSize: '14px' }} onClick={() => this.goBack(articleID)}><span className='icon icon-chevron-left'></span> Go Back</GBLink>
-									:
-										<GBLink style={{ fontSize: '14px' }} className='link' onClick={() => this.props.loadCreateNew()}><span className='icon icon-plus'></span> { isMobile ? 'New' : 'Create New Form' }</GBLink>
-								: '' }
-								{ !util.isEmpty(access) ?
-								<GBLink style={{ fontSize: '14px' }} className='link' onClick={() => this.props.exitAdmin()}><Icon><AiOutlineFullscreen /></Icon>{ isMobile ? 'Exit' : 'Exit Form Builder' }</GBLink> : <></> }
-							</div>
+							{this.renderHeaderMiddle()}
 							<div className='headerRightSide'>
 								<AvatarMenuButton />
 							</div>
 						</div>
 						<div className='headerMiddle'>
-
 						</div>
 					</header>
 				</div>
-				{this.renderStep()}
+				{this.renderAdminDisplay()}
 			</div>
 		)
 	}

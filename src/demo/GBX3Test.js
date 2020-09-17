@@ -59,7 +59,7 @@ class GBXTest extends Component {
 					project={'share'}
 					exitCallback={() => console.log('exit callback')}
 					isVolunteer={false}
-					isOrgPage={true}
+					isOrgPage={false}
 				/>
 			</div>
 		)

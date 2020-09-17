@@ -143,7 +143,8 @@ TextField.defaultProps = {
 	inputRef: null,
 	inputStyle: {},
 	moneyStyle: {},
-	autoComplete: 'nope'
+	autoComplete: 'nope',
+	errorType: 'tooltip'
 }
 
 export default TextField;
