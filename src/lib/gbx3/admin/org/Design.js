@@ -7,7 +7,6 @@ import {
 	ModalLink
 } from '../../../';
 import Layout from '../../Layout';
-import Share from './Share';
 import AdminMenu from '../AdminMenu';
 import {
 	updateAdmin,
@@ -19,7 +18,6 @@ import {
 import Toggle from 'react-toggle';
 import { FaPalette } from 'react-icons/fa';
 import { GoBeaker } from 'react-icons/go';
-import { FiPenTool } from 'react-icons/fi';
 import { AiOutlineNotification } from 'react-icons/ai';
 
 const GBX3_URL = process.env.REACT_APP_GBX_URL;
@@ -33,8 +31,7 @@ class Design extends React.Component {
 		this.togglePreview = this.togglePreview.bind(this);
 		this.renderTopPanel = this.renderTopPanel.bind(this);
 		this.changePreviewDevice = this.changePreviewDevice.bind(this);
-		this.previewReceipt = this.previewReceipt.bind(this);
-		this.previewArticle = this.previewArticle.bind(this);
+		this.previewPage = this.previewPage.bind(this);
 		this.state = {
 		};
 		this.iframePreviewRef = React.createRef();
@@ -58,10 +55,6 @@ class Design extends React.Component {
 			layout: {
 				menuText: !mobile ? 'Design Form' : 'Design',
 				icon: <Icon><FaPalette /></Icon>
-			},
-			receipt: {
-				menuText: !mobile ? 'Customize Receipt' : 'Receipt',
-				icon: <Icon><FiPenTool /></Icon>
 			},
 			share: {
 				menuText: !mobile ? 'Share Form' : 'Share',
@@ -102,17 +95,15 @@ class Design extends React.Component {
 		if (previewMode) {
 			middle.push(
 				<div key={'middle'} className='button-group middle'>
-					<GBLink className={`ripple link ${previewDevice === 'phone' ? 'selected' : ''}`} onClick={() => this.previewArticle('phone')}><span className='icon icon-smartphone'></span><span className='iconText'>Mobile</span></GBLink>
-					<GBLink className={`ripple link ${previewDevice === 'desktop' ? 'selected' : ''}`} onClick={() => this.previewArticle('desktop')}><span className='icon icon-monitor'></span><span className='iconText'>Desktop</span></GBLink>
-					<GBLink className={`ripple link ${previewDevice === 'receipt' ? 'selected' : ''}`} onClick={() => this.previewReceipt()}><span className='icon icon-mail'></span><span className='iconText'>Receipt</span></GBLink>
+					<GBLink className={`ripple link ${previewDevice === 'phone' ? 'selected' : ''}`} onClick={() => this.previewPage('phone')}><span className='icon icon-smartphone'></span><span className='iconText'>Mobile</span></GBLink>
+					<GBLink className={`ripple link ${previewDevice === 'desktop' ? 'selected' : ''}`} onClick={() => this.previewPage('desktop')}><span className='icon icon-monitor'></span><span className='iconText'>Desktop</span></GBLink>
 				</div>
 			);
 		} else {
 			middle.push(
 				<div key={'middle'} className='button-group'>
 					<GBLink className={`ripple link ${createType === 'layout' ? 'selected' : ''}`} onClick={() => this.switchCreateType('article')}><span className='centered'>{contentObj.layout.icon}<span className='menuText'>{contentObj.layout.menuText}</span></span></GBLink>
-					<GBLink className={`ripple link ${createType === 'receipt' ? 'selected' : ''}`} onClick={() => this.switchCreateType('receipt')}><span className='centered'>{contentObj.receipt.icon}<span className='menuText'>{contentObj.receipt.menuText}</span></span></GBLink>
-					<ModalLink id='share' className={`ripple link ${createType === 'share' ? 'selected' : ''}`}><span className='centered'>{contentObj.share.icon}<span id='helper-share' className='menuText'>{contentObj.share.menuText}</span></span></ModalLink>
+					<ModalLink id='orgShare' className={`ripple link ${createType === 'share' ? 'selected' : ''}`}><span className='centered'>{contentObj.share.icon}<span id='helper-share' className='menuText'>{contentObj.share.menuText}</span></span></ModalLink>
 				</div>
 			);
 		}
@@ -132,22 +123,8 @@ class Design extends React.Component {
 
 	togglePreview() {
 
-		const {
-			createType
-		} = this.props;
-
 		const previewMode = this.props.previewMode ? false : true;
 		let previewDevice = 'desktop';
-
-		if (createType === 'receipt') {
-			previewDevice = 'receipt';
-			if (this.props.previewMode) {
-				const iframeEl = document.getElementById('emailIframePreview');
-				if (iframeEl) {
-					iframeEl.contentWindow.location.replace('about:blank');
-				}
-			}
-		}
 		this.props.closeHelper();
 		this.props.updateAdmin({ previewDevice, previewMode, editable: previewMode ? false : true });
 	}
@@ -163,11 +140,7 @@ class Design extends React.Component {
 		}
 	}
 
-	previewReceipt() {
-		this.props.updateAdmin({ createType: 'receipt', previewDevice: 'receipt' });
-	}
-
-	async previewArticle(previewDevice) {
+	async previewPage(previewDevice) {
 		const createTypeUpdated = await this.props.updateAdmin({ createType: 'layout' });
 		if (createTypeUpdated) {
 			this.changePreviewDevice(previewDevice);
@@ -189,15 +162,6 @@ class Design extends React.Component {
 		const items = [];
 
 		switch(createType) {
-			case 'share': {
-				items.push(
-					<Share
-						key={'share'}
-					/>
-				);
-				break;
-			}
-
 			case 'layout':
 			default: {
 				if (previewMode) {

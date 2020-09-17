@@ -121,7 +121,7 @@ class Layout extends React.Component {
 					</div>
 				</div> : ''}
 				{ hasAccessToEdit ?
-				<ModalLink type='div' id='share' className='avatarLink hideOnMobile'>
+				<ModalLink type='div' id={display === 'org' ? 'orgShare' : 'share'} className='avatarLink hideOnMobile'>
 					<div className='editGraphic'>
 						<Icon><AiOutlineNotification /></Icon>
 					</div>
@@ -131,8 +131,10 @@ class Layout extends React.Component {
 
 		const showAvatarMenu = (stage !== 'admin') && !preview && !util.isEmpty(access) ? true : false;
 
+		// This is article display specific
 		const noAccess = (!hasAccessToEdit || (hasAccessToEdit && !preview && stage === 'public' )) && (publishStatus === 'private') && (display === 'article') ? true : false;
 
+		// This is article sweepstakes specific
 		const done = kind === 'sweepstake' && status === 'done' ? true : false;
 
 		const publicOnly = (stage !== 'admin') && !preview ? true : false;

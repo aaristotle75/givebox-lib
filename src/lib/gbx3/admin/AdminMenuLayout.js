@@ -64,27 +64,31 @@ class AdminMenuLayout extends React.Component {
 
 	renderAvailableBlocks() {
 		const {
+			blockType,
 			availableBlocks,
 			kind
 		} = this.props;
 
 		const items = [];
+		const blockTemplate = blockType === 'article' ? blockTemplates.article[kind] : blockTemplates.org;
 
 		availableBlocks.forEach((value) => {
-			const block = util.getValue(blockTemplates.article[kind], value, {});
+			const block = util.getValue(blockTemplate, value, {});
 			items.push(
 				<li
 					key={value}
 					className='draggableBlock'
 					onMouseUp={() => {
-						const dropArea = document.getElementById('gbx3DropArea');
 						const paymentForm = document.getElementById('block-paymentForm');
-						if (dropArea && paymentForm) {
-							const dropAreaheight = dropArea.clientHeight;
+						const dropArea = document.getElementById('gbx3DropArea');
+						const dropAreaheight = dropArea.clientHeight;
+						let height = dropAreaheight;
+
+						if (paymentForm) {
 							const paymentFormHeight = paymentForm.clientHeight;
-							const height = dropAreaheight - paymentFormHeight;
-							this.props.addBlock('article', value, 0, height);
+							height = dropAreaheight - paymentFormHeight;
 						}
+						this.props.addBlock(blockType, value, 0, height);
 					}}
 					draggable={true}
 					onDragStart={(e) => {

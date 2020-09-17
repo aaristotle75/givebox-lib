@@ -68,13 +68,13 @@ export function updateBlock(blockType, name, block) {
 
 export function addBlock(blockType, type, w = 0, h = 0, ref, callback) {
 	return async (dispatch, getState) => {
-		const current = ref ? ref.current : null;
 		const gbx3 = util.getValue(getState(), 'gbx3', {});
 		const blocks = util.getValue(gbx3, `blocks.${blockType}`, {});
 		const admin = util.getValue(gbx3, 'admin', {});
 		const kind = util.getValue(gbx3, 'info.kind');
 		const availableBlocks = util.deepClone(util.getValue(admin, `availableBlocks.${blockType}`, []));
 		const newBlock = blockType === 'article' ? util.getValue(blockTemplates[blockType][kind], type, {}) : util.getValue(blockTemplates[blockType], type, {});
+
 		if (!util.isEmpty(newBlock)) {
 			let blockName = util.getValue(newBlock, 'name', type);
 			if (blockName in blocks) {

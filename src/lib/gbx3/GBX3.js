@@ -33,6 +33,7 @@ import {
 import GBXEntry from '../common/GBXEntry';
 import AvatarMenu from './admin/AvatarMenu';
 import Share from './admin/article/Share';
+import OrgShare from './admin/org/Share';
 
 const RECAPTCHA_KEY = process.env.REACT_APP_RECAPTCHA_KEY;
 const ENV = process.env.REACT_APP_ENV;
@@ -314,7 +315,7 @@ class GBX3 extends React.Component {
 		this.props.loadOrg(orgID, (res, err) => {
 			if (!err && !util.isEmpty(res)) {
 				this.props.setStyle();
-				if (share) this.props.toggleModal('share', true);
+				if (share) this.props.toggleModal('orgShare', true);
 				if (previewMode) this.props.updateAdmin({ previewDevice: 'desktop', previewMode: true });
 			}
 		});
@@ -401,6 +402,16 @@ class GBX3 extends React.Component {
 					draggable={false}
 					draggableTitle={``}
 					component={(props) => <Share />}
+				/>
+				<ModalRoute
+					className='gbx3'
+					id='orgShare'
+					effect='3DFlipVert'
+					style={{ width: '80%' }}
+					disallowBgClose={false}
+					draggable={false}
+					draggableTitle={``}
+					component={(props) => <OrgShare />}
 				/>
 			</div>
 		)

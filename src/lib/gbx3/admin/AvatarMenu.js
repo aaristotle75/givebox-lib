@@ -54,7 +54,8 @@ class AvatarMenu extends React.Component {
 			hasAccessToEdit,
 			step,
 			helperPref,
-			stage
+			stage,
+			display
 		} = this.props;
 
 		const isWallet = util.getValue(access, 'role') === 'user' ? true : false;
@@ -68,11 +69,11 @@ class AvatarMenu extends React.Component {
 		)
 		if (hasAccessToEdit && step !== 'create') {
 			menuList.push(
-				<li key='edit' onClick={() => this.adminLink({ publicView: false })}><span className='icon icon-edit'></span> <span className='text'>Edit Form</span></li>
+				<li key='edit' onClick={() => this.adminLink({ publicView: false })}><span className='icon icon-edit'></span> <span className='text'>Edit {display === 'org' ? 'Page' : 'Form' }</span></li>
 			);
 
 			menuList.push(
-				<ModalLink type='li' id='share' key={'share'}><Icon><AiOutlineNotification /></Icon> <span className='text'>Share Form</span></ModalLink>
+				<ModalLink type='li' id={display === 'org' ? 'orgShare' : 'share'} key={'share'}><Icon><AiOutlineNotification /></Icon> <span className='text'>Share {display === 'org' ? 'Page' : 'Form'}</span></ModalLink>
 			);
 
 			menuList.push(
@@ -155,13 +156,15 @@ function mapStateToProps(state, props) {
 	const step = util.getValue(state, 'gbx3.admin.step');
 	const helperPref = util.getValue(state, 'preferences.gbx3Helpers');
 	const stage = util.getValue(state, 'gbx3.info.stage');
+	const display = util.getValue(state, `gbx3.info.display`);
 
 	return {
 		access,
 		hasAccessToEdit,
 		step,
 		helperPref,
-		stage
+		stage,
+		display
 	}
 }
 

@@ -609,7 +609,10 @@ export const blockTemplates = {
 			}
 		},
 		media,
-		description
+		description,
+		contentBlock,
+		imageBlock,
+		videoBlock
 	}
 };
 

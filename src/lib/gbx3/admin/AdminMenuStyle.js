@@ -36,7 +36,8 @@ class AdminMenuStyle extends React.Component {
 	async updatePrimaryColor(value) {
 
 		const {
-			gbxStyle
+			gbxStyle,
+			blockType
 		} = this.props;
 
 		const {
@@ -58,7 +59,7 @@ class AdminMenuStyle extends React.Component {
 		};
 		const globalsUpdated = await this.props.updateGlobals(globals);
 		if (globalsUpdated) {
-			this.props.saveGBX3('article');
+			this.props.saveGBX3(blockType);
 		}
 	}
 

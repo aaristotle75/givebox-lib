@@ -7,7 +7,6 @@ import {
 	ModalLink
 } from '../../../';
 import Layout from '../../Layout';
-import Share from './Share';
 import AdminMenu from '../AdminMenu';
 import ReceiptEmail from '../receipt/ReceiptEmail';
 import ReceiptMenu from '../receipt/ReceiptMenu';
@@ -210,15 +209,6 @@ class Design extends React.Component {
 						/>
 					);
 				}
-				break;
-			}
-
-			case 'share': {
-				items.push(
-					<Share
-						key={'share'}
-					/>
-				);
 				break;
 			}
 

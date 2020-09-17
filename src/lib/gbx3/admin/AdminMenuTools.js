@@ -40,7 +40,6 @@ class AdminMenuTools extends React.Component {
 					<li onClick={() => this.props.updateAdmin({ preventCollision: preventCollision ? false : true })}>Prevent Collision {util.toggle(preventCollision)}</li>
 					<li onClick={() => this.props.updateAdmin({ verticalCompact: verticalCompact ? false : true })}>Vertical Compact {util.toggle(verticalCompact)}</li>
 					<li onClick={this.reset}>Reset Layout</li>
-					{/*<li onClick={() => this.props.saveGBX3('article', { isSending: true })}>Save</li>*/}
 				</ul>
 				<Publish />
 			</div>
