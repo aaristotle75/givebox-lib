@@ -8,11 +8,13 @@ import {
 import {
 	createFundraiser,
 	loadGBX3,
-	updateInfo
+	updateInfo,
+	clearGBX3
 } from '../../redux/gbx3actions';
 import {
 	getResource
 } from '../../../api/helpers';
+import history from '../../../common/history';
 
 const WALLET_URL = process.env.REACT_APP_WALLET_URL;
 const GBX_URL = process.env.REACT_APP_GBX_URL;
@@ -36,7 +38,6 @@ class Create extends React.Component {
 			autoCreate
 		} = this.props;
 
-		console.log('execute create');
 		if (autoCreate) {
 			this.createFundraiser(autoCreate, true);
 		}
@@ -90,9 +91,10 @@ class Create extends React.Component {
 		);
 	}
 
-	createFundraiser(kind, autoCreate) {
+	async createFundraiser(kind, autoCreate) {
 		if (autoCreate) this.props.updateInfo({ autoCreate: null });
-		this.props.createFundraiser(kind, this.createFundraiserCallback);
+		const cleared = await this.props.clearGBX3();
+		if (cleared) this.props.createFundraiser(kind, this.createFundraiserCallback);
 	}
 
 	createFundraiserCallback(res, err) {
@@ -116,7 +118,10 @@ class Create extends React.Component {
 					});
 				}
 			}
+		} else {
+			history.push(`${GBX_URL}/${util.getValue(res, 'articleID', 'new')}`);
 		}
+
 	}
 
 	handleVolunteerAlreadyCreatedFundraiserKind() {
@@ -237,5 +242,6 @@ export default connect(mapStateToProps, {
 	createFundraiser,
 	loadGBX3,
 	updateInfo,
-	getResource
+	getResource,
+	clearGBX3
 })(Create);

@@ -33,7 +33,8 @@ class Admin extends React.Component {
 	}
 
 	goBack(articleID) {
-		this.props.loadGBX3(articleID);
+		//this.props.loadGBX3(articleID);
+		this.props.updateAdmin({ step: 'design' });
 	}
 
 	renderHeaderMiddle() {

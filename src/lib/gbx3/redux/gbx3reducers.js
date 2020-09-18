@@ -169,15 +169,16 @@ export function gbx3(state = {
 		case types.CLEAR_GBX3:
 			return Object.assign({}, state, {
 				blocks: {
-					...state.blocks,
+					org: {},
 					article: {},
 					receipt: {}
 				},
 				data: {},
+				orgData: {},
 				fees: {},
 				globals: {},
 				layouts: {
-					...state.layouts,
+					org: {},
 					article: {},
 					receipt: {}
 				}

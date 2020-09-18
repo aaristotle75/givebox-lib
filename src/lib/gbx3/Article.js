@@ -371,7 +371,7 @@ class Article extends React.Component {
 							compactType={verticalCompact ? 'vertical' : null}
 							preventCollision={preventCollision}
 							isDroppable={false}
-							resizeHandles={['sw', 'se', 'ne', 'nw']}
+							resizeHandles={['sw', 'se']}
 						>
 							{this.renderGridBlocks()}
 						</ResponsiveGridLayout>
