@@ -1239,6 +1239,9 @@
 		right: 0;
 		cursor: se-resize;
 		z-index: 3;
+		opacity: .2;
+		border-right: 1px solid $mainColor;
+		border-bottom: 1px solid $mainColor;
 	}
 
 	.react-grid-item.react-grid-placeholder {
@@ -1258,6 +1261,10 @@
 
 		.react-grid-item > .react-resizable-handle {
 			display: block;
+		}
+
+		.react-grid-item:hover > .react-resizable-handle {
+			opacity: 1;
 		}
 
 		.react-grid-item:hover {
@@ -1309,6 +1316,10 @@
 			color: $med-blue-gray;
 			font-style: italic;
 		}
+	}
+
+	.backgroundBlock {
+
 	}
 
 	.blockOptions {
