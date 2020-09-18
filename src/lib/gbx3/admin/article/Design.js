@@ -77,7 +77,7 @@ class Design extends React.Component {
 				);
 			} else {
 				leftSide.push(
-					<GBLink key={'leftSide'} className='link side' onClick={() => this.props.toggleAdminLeftPanel()}><Icon><GoBeaker /></Icon>{!mobile ? 'Advanced Settings' : ''}</GBLink>
+					<GBLink key={'leftSide'} className='link side' onClick={() => this.props.toggleAdminLeftPanel()}><Icon><GoBeaker /></Icon>{!mobile ? 'Advanced Menu' : ''}</GBLink>
 				);
 			}
 		}
