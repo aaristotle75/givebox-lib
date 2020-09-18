@@ -102,7 +102,7 @@ class Layout extends React.Component {
 			status
 		} = this.props;
 
-		const style = { maxWidth: display === 'org' ? '100%' : '850px' };
+		const style = { maxWidth: display === 'org' ? '1000px' : '850px' };
 
 		let gbx3BackgroundHeight = 'auto';
 		const el = document.getElementById('GBX3StageAligner');
@@ -121,7 +121,7 @@ class Layout extends React.Component {
 					</div>
 				</div> : ''}
 				{ hasAccessToEdit ?
-				<ModalLink type='div' id={display === 'org' ? 'orgShare' : 'share'} className='avatarLink hideOnMobile'>
+				<ModalLink type='div' id={'share'} className='avatarLink hideOnMobile'>
 					<div className='editGraphic'>
 						<Icon><AiOutlineNotification /></Icon>
 					</div>

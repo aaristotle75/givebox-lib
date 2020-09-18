@@ -590,9 +590,18 @@ export const blockTemplates = {
 	org: {
 		logo: {
 			...logo,
+			mobileRelativeBlock: true,
 			field: 'imageURL',
+			options: {
+				mediaType: 'image',
+				image: {
+					maxSize: '160px',
+					size: 'medium',
+					borderRadius: 20
+				}
+			},
 			grid: {
-				desktop: { i: 'logo', x: 0, y: 0, w: 1, h: 7, enabled: true },
+				desktop: { i: 'logo', x: 0, y: 10, w: 12, h: 16, enabled: true },
 				mobile: { i: 'logo', x: 0, y: 0, w: 1, h: 7, static: true, enabled: false }
 			},
 		},
@@ -601,15 +610,30 @@ export const blockTemplates = {
 			type: 'Text',
 			field: 'name',
 			options: {
-				defaultFormat: '<span style="font-size:16px">{{TOKEN}}</span>'
+				defaultFormat: '<p style="text-align:center"><span style="font-size:22px">{{TOKEN}}</span></p>'
 			},
 			grid: {
-				desktop: { i: 'orgName', x: 1, y: 0, w: 5, h: 1, enabled: true },
-				mobile: { i: 'orgName', x: 1, y: 0, w: 5, h: 1, static: true, enabled: false }
+				desktop: { i: 'orgName', x: 0, y: 27, w: 12, h: 4, enabled: true },
+				mobile: { i: 'orgName', x: 1, y: 0, w: 6, h: 1, static: true, enabled: false }
 			}
 		},
-		media,
-		description,
+		description: {
+			...description,
+			options: {
+				button: {
+					embedAllowed: true,
+					enabled: true,
+					text: 'About Us',
+					style: {
+						width: 250
+					}
+				}
+			},
+			grid: {
+				desktop: { i: 'description', x: 0, y: 32, w: 12, h: 4, enabled: true },
+				mobile: { i: 'description', x: 1, y: 0, w: 6, h: 1, static: true, enabled: false }
+			}
+		},
 		contentBlock,
 		imageBlock,
 		videoBlock

@@ -2,17 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
 	util,
-	types,
-	CodeBlock,
-	Choice,
-	GBLink
-} from '../../../';
-import GBX from '../../../common/GBX';
+	CodeBlock
+} from '../../';
+import GBX from '../../common/GBX';
 import {
 	updateInfo
-} from '../../redux/gbx3actions';
+} from '../redux/gbx3actions';
 
-const REACT_APP_GBX_WIDGET = process.env.REACT_APP_GBX_WIDGET;
 const REACT_APP_GBX_URL = process.env.REACT_APP_GBX_URL;
 
 class ShareIframe extends React.Component {

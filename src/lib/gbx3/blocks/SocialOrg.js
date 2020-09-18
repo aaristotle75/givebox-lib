@@ -35,15 +35,15 @@ class Social extends Component {
 	render() {
 
 		const {
-			data: article,
+			data: org,
 			subText,
 			shareIconSize
 		} = this.props;
 
-		const shareLink = `${GBX_SHARE}/${util.getValue(article, 'articleID')}`;
-		const title = util.getValue(article, 'title');
-		const image = util.imageUrlWithStyle(article.imageURL, 'medium');
-		const description = util.getValue(article, 'summary');
+		const shareLink = `${GBX_SHARE}/${util.getValue(org, 'slug')}`;
+		const title = util.getValue(org, 'name');
+		const image = util.imageUrlWithStyle(org.imageURL, 'medium');
+		const description = `Check out how ${title} is doing good in the world.`;
 
 		return (
 			<div className='share'>
@@ -100,7 +100,7 @@ Social.defaultProps = {
 }
 
 function mapStateToProps(state, props) {
-	const data = util.getValue(state, 'gbx3.data', {});
+	const data = util.getValue(state, 'gbx3.orgData', {});
 
 	return {
 		data

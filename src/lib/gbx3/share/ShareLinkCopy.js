@@ -2,10 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
 	util,
-	CodeBlock,
-	types,
-	Fade
-} from '../../../';
+	CodeBlock
+} from '../../';
 
 class ShareLinkCopy extends Component {
 
@@ -41,8 +39,7 @@ class ShareLinkCopy extends Component {
 		const {
 			slug,
 			hasCustomSlug,
-			articleID,
-			kind
+			articleID
 		} = this.props;
 
 		const {
@@ -73,9 +70,10 @@ function mapStateToProps(state, props) {
 	const kind = util.getValue(state, 'gbx3.info.kind');
 	const kindID = util.getValue(state, 'gbx3.info.kindID');
 	const articleID = util.getValue(state, 'gbx3.info.articleID');
-	const slug = util.getValue(state, 'gbx3.data.slug');
-	const hasCustomSlug = util.getValue(state, 'gbx3.data.hasCustomSlug');
-
+	const display = util.getValue(state, 'gbx3.info.display');
+	const orgDisplay = display === 'org' ? true : false;
+	const slug = util.getValue(state, `gbx3.${orgDisplay ? 'orgData' : 'data'}.slug`);
+	const hasCustomSlug = orgDisplay ? true : util.getValue(state, 'gbx3.data.hasCustomSlug');
 
 	return {
 		kind,

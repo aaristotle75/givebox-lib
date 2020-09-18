@@ -5,17 +5,16 @@ import {
 	types,
 	CodeBlock,
 	Choice,
-	GBLink,
 	ColorPicker,
 	TextField
-} from '../../../';
-import GBX from '../../../common/GBX';
+} from '../../';
+import GBX from '../../common/GBX';
 import {
 	updateInfo,
 	updateGlobal,
 	updateGlobals,
 	saveGBX3
-} from '../../redux/gbx3actions';
+} from '../redux/gbx3actions';
 
 const ENV = process.env.REACT_APP_ENV;
 const REACT_APP_GBX_WIDGET = process.env.REACT_APP_GBX_WIDGET;
@@ -187,10 +186,6 @@ class ShareEmbed extends React.Component {
 			kind,
 			embedButton
 		} = this.props;
-
-		const {
-			copied
-		} = this.state;
 
 		const textValue = util.getValue(embedButton, 'text', '');
 		const autoPop = util.getValue(embedButton, 'autoPop');

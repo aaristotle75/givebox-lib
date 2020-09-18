@@ -73,7 +73,7 @@ class AvatarMenu extends React.Component {
 			);
 
 			menuList.push(
-				<ModalLink type='li' id={display === 'org' ? 'orgShare' : 'share'} key={'share'}><Icon><AiOutlineNotification /></Icon> <span className='text'>Share {display === 'org' ? 'Page' : 'Form'}</span></ModalLink>
+				<ModalLink type='li' id={'share'} key={'share'}><Icon><AiOutlineNotification /></Icon> <span className='text'>Share {display === 'org' ? 'Page' : 'Form'}</span></ModalLink>
 			);
 
 			menuList.push(
@@ -102,6 +102,7 @@ class AvatarMenu extends React.Component {
 		return (
 			<div className='modalWrapper'>
 				<div className='avatarMenu'>
+					{access.role === 'admin' ?
 					<div className='logoSection'>
 						<h3 style={{ marginTop: 0, paddingTop: 0 }}>{access.orgName}</h3>
 						{access.orgImage ?
@@ -111,8 +112,8 @@ class AvatarMenu extends React.Component {
 						:
 							''
 						}
-					</div>
-					<div className='topSection'>
+					</div> : '' }
+					<div style={{ borderTop: access.role !== 'admin' ? 0 : null }} className='topSection'>
 						<div className='leftSide'>
 							{access.userImage ?
 								<GBLink onClick={() => this.directLink(`${baseURL}/settings`)}>

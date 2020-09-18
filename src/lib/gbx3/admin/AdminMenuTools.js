@@ -21,7 +21,12 @@ class AdminMenuTools extends React.Component {
 	}
 
 	reset() {
-		this.props.resetGBX3();
+
+		const {
+			blockType
+		} = this.props;
+
+		this.props.resetGBX3(blockType);
 	}
 
 	render() {
@@ -30,7 +35,8 @@ class AdminMenuTools extends React.Component {
 			outline,
 			preventCollision,
 			verticalCompact,
-			editable
+			editable,
+			blockType
 		} = this.props;
 
 		return (
@@ -42,7 +48,7 @@ class AdminMenuTools extends React.Component {
 					<li onClick={() => this.props.updateAdmin({ verticalCompact: verticalCompact ? false : true })}>Vertical Compact {util.toggle(verticalCompact)}</li>
 					<li onClick={this.reset}>Reset Layout</li>
 				</ul>
-				<Publish />
+				{ blockType === 'article' ? <Publish /> : '' }
 			</div>
 		)
 	}

@@ -2,20 +2,15 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
 	util,
-	ModalRoute,
-	ModalLink,
 	TextField,
 	GBLink,
-	CodeBlock,
 	types,
-	Collapse,
 	Alert,
 	Loader
-} from '../../../';
-import { toggleModal } from '../../../api/actions';
-import { sendResource } from '../../../api/helpers';
-import { updateData } from '../../redux/gbx3actions';
-import AnimateHeight from 'react-animate-height';
+} from '../../';
+import { toggleModal } from '../../api/actions';
+import { sendResource } from '../../api/helpers';
+import { updateData } from '../redux/gbx3actions';
 
 class ShareLinkEdit extends Component {
 
@@ -59,24 +54,25 @@ class ShareLinkEdit extends Component {
 		} = this.state;
 
 		const {
-			kind,
 			kindID,
-			orgID
+			orgID,
+			apiName,
+			orgDisplay
 		} = this.props;
 
 		this.setState({ errorUpdating: false, saving: true });
 
 		if (!error) {
-			this.props.sendResource(`org${types.kind(kind).api.item}`, {
+			this.props.sendResource(apiName, {
 				orgID,
-				id: [kindID],
+				id: [orgDisplay ? orgID : kindID],
 				method: 'patch',
 				data: {
 					slug: newSlug
 				},
 				callback: (res, err) => {
 					if (!util.isEmpty(res) && !err) {
-						this.props.updateData(res);
+						this.props.updateData(res, orgDisplay ? 'org' : null);
 						this.setState({ success: true });
 						this.timeout = setTimeout(() => {
 							this.setState({ success: false });
@@ -115,17 +111,6 @@ class ShareLinkEdit extends Component {
 			successMsg,
 			saving
 		} = this.state;
-
-		const {
-			slug,
-			hasCustomSlug,
-			articleID,
-			kind
-		} = this.props;
-
-		const shareUrl = `${process.env.REACT_APP_GBX_SHARE}/${hasCustomSlug && slug ? slug : articleID}`;
-		const permShareUrl = `${process.env.REACT_APP_GBX_SHARE}/${articleID}`;
-		const newShareUrl = `${process.env.REACT_APP_GBX_SHARE}/${newSlug}`;
 
 		return (
 			<div className='shareLink formSectionContainer'>
@@ -178,16 +163,24 @@ function mapStateToProps(state, props) {
 	const kind = util.getValue(state, 'gbx3.info.kind');
 	const kindID = util.getValue(state, 'gbx3.info.kindID');
 	const articleID = util.getValue(state, 'gbx3.info.articleID');
-	const slug = util.getValue(state, 'gbx3.data.slug');
-	const hasCustomSlug = util.getValue(state, 'gbx3.data.hasCustomSlug');
+	const display = util.getValue(state, 'gbx3.info.display');
+	const orgDisplay = display === 'org' ? true : false;
+	const data = util.getValue(state, `gbx3.${orgDisplay ? 'orgData' : 'data'}`);
+	const orgID = util.getValue(data, `${orgDisplay ? 'ID' : 'orgID'}`);
+	const slug = util.getValue(data, 'slug');
+	const hasCustomSlug = orgDisplay ? true : util.getValue(data, 'hasCustomSlug');
+	const apiName = orgDisplay ? 'org' : `org${types.kind(kind).api.item}`;
 
 
 	return {
 		kind,
 		kindID,
 		articleID,
+		orgID,
+		orgDisplay,
 		slug,
-		hasCustomSlug
+		hasCustomSlug,
+		apiName
 	}
 }
 

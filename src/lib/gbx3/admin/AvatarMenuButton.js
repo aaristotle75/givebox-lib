@@ -34,7 +34,7 @@ class AvatarMenuButton extends React.Component {
 		return (
 			<div className='avatarLink'>
 				<ModalLink id='avatarMenu' className='link'>
-					{stage === 'admin' ? <span className='orgName'>{util.getValue(access, 'orgName')}</span> : ''}
+					{stage === 'admin' && access.role === 'admin' ? <span className='orgName'>{util.getValue(access, 'orgName')}</span> : ''}
 					{access.userImage ? <div className='avatarImage'><img src={util.imageUrlWithStyle(access.userImage, 'small')} alt='Avatar Small Circle' /></div> :
 						<div className='defaultAvatarImage'>{access.initial}</div>
 					}
