@@ -10,6 +10,9 @@ import { defaultAmountHeight } from '../blocks/amounts/amountsStyle';
 import { blockTemplates, defaultBlocks } from '../blocks/blockTemplates';
 import { createData } from '../admin/article/createTemplates';
 import { helperTemplates } from '../helpers/helperTemplates';
+import {
+	defaultStyle
+} from './gbx3defaults';
 import has from 'has';
 const merge = require('deepmerge');
 
@@ -830,18 +833,22 @@ export function loadGBX3(articleID, callback) {
 										...globalsState,
 										...{
 											gbxStyle: {
+												...defaultStyle.gbxStyle,
 												...util.getValue(globalsState, 'gbxStyle', {}),
 												...gbxStyleCustom,
 												primaryColor
 											},
 											button: {
+												...defaultStyle.button,
 												...util.getValue(globalsState, 'button', {}),
 												style: {
+													...defaultStyle.button.style,
 													...util.getValue(util.getValue(globalsState, 'button', {}), 'style', {}),
 													bgColor: primaryColor
 												}
 											},
 											embedButton: {
+												...defaultStyle.embedButton,
 												...util.getValue(globalsState, 'embedButton', {}),
 												text: types2.kind(kind).cta,
 												...embedButtonCustom
@@ -998,16 +1005,20 @@ export function loadOrg(orgID, callback) {
 						...globalsState,
 						...{
 							gbxStyle: {
+								...defaultStyle.gbxStyle,
 								...util.getValue(globalsState, 'gbxStyle', {}),
 								...gbxStyleCustom
 							},
 							button: {
+								...defaultStyle.button,
 								...util.getValue(globalsState, 'button', {}),
 								style: {
+									...defaultStyle.button.style,
 									...util.getValue(util.getValue(globalsState, 'button', {}), 'style', {}),
 								}
 							},
 							embedButton: {
+								...defaultStyle.embedButton,
 								...util.getValue(globalsState, 'embedButton', {}),
 								...embedButtonCustom
 							}
