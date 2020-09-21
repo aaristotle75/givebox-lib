@@ -21,6 +21,7 @@ import {
 	updateInfo,
 	saveGBX3
 } from './redux/gbx3actions';
+import Backgrounds from './backgrounds/Backgrounds';
 import Helper from './helpers/Helper';
 import Footer from './Footer';
 
@@ -307,6 +308,7 @@ class Org extends React.Component {
 
 		return (
 			<>
+				<Backgrounds />
 				<div className='layout-column'>
 					<div
 						id='gbx3DropArea'

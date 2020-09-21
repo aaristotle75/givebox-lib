@@ -42,25 +42,26 @@ class ModalLink extends Component {
 			allowCustom,
 			solidColor,
 			solidTextColor,
-			customColor
+			customColor,
+			linkRef
 		} = this.props;
 
 		let component;
 		switch(type) {
 			case 'li' : {
-				component = <li className={className} onClick={() => this.onClick(id, opts)}>{this.props.children}</li>;
+				component = <li ref={linkRef} className={className} onClick={() => this.onClick(id, opts)}>{this.props.children}</li>;
 				break;
 			}
 			case 'div': {
 				component =
-					<div style={style} className={`${className}`} onClick={() => this.onClick(id, opts)}>
+					<div ref={linkRef} style={style} className={`${className}`} onClick={() => this.onClick(id, opts)}>
 						{this.props.children}
 					</div>
 				break;
 			}
 			default: {
 				component =
-					<GBLink customColor={customColor} allowCustom={allowCustom} style={style} solidColor={solidColor} solidTextColor={solidTextColor} className={`${className}`} type='button' onClick={() => this.onClick(id, opts)} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+					<GBLink ref={linkRef} customColor={customColor} allowCustom={allowCustom} style={style} solidColor={solidColor} solidTextColor={solidTextColor} className={`${className}`} type='button' onClick={() => this.onClick(id, opts)} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
 						{this.props.children}
 					</GBLink>
 				;

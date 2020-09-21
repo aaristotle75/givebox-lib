@@ -18,6 +18,7 @@ export function gbx3(state = {
 		sourceType: 'embed',
 		sourceLocation: null
 	},
+	backgrounds: [],
 	blocks: {
 		org: {},
 		article: {},
@@ -168,6 +169,23 @@ export function gbx3(state = {
 					...state.blocks,
 					[action.blockType]: {
 						...blocks
+					}
+				}
+			});
+		case types.UPDATE_BACKGROUNDS:
+			return Object.assign({}, state, {
+				backgrounds: {
+					...state.backgrounds,
+					...action.backgrounds
+				}
+			});
+		case types.UPDATE_BACKGROUND:
+			return Object.assign({}, state, {
+				backgrounds: {
+					...state.backgrounds,
+					[action.index]: {
+						...state.backgrounds[action.index],
+						...action.background
 					}
 				}
 			});

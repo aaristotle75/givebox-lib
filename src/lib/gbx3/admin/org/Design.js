@@ -102,7 +102,7 @@ class Design extends React.Component {
 		} else {
 			middle.push(
 				<div key={'middle'} className='button-group'>
-					<GBLink className={`ripple link ${createType === 'layout' ? 'selected' : ''}`} onClick={() => this.switchCreateType('article')}><span className='centered'>{contentObj.layout.icon}<span className='menuText'>{contentObj.layout.menuText}</span></span></GBLink>
+					<GBLink className={`ripple link ${createType === 'layout' ? 'selected' : ''}`} onClick={() => this.switchCreateType('layout')}><span className='centered'>{contentObj.layout.icon}<span className='menuText'>{contentObj.layout.menuText}</span></span></GBLink>
 					<ModalLink id='share' className={`ripple link ${createType === 'share' ? 'selected' : ''}`}><span className='centered'>{contentObj.share.icon}<span id='helper-share' className='menuText'>{contentObj.share.menuText}</span></span></ModalLink>
 				</div>
 			);

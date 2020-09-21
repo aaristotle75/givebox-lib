@@ -52,6 +52,33 @@ export function updateLayouts(blockType, layouts = {}) {
 	}
 }
 
+export function addBackground(index, background) {
+	return (dispatch, getState) => {
+		console.log('execute Add Background');
+	}
+}
+
+export function removeBackground(index, background) {
+	return (dispatch, getState) => {
+		console.log('execute Remove Background');
+	}
+}
+
+export function updateBackgrounds(backgrounds) {
+	return {
+		type: types.UPDATE_BACKGROUNDS,
+		backgrounds
+	}
+}
+
+export function updateBackground(index, background) {
+	return {
+		type: types.UPDATE_BACKGROUND,
+		index,
+		background
+	}
+}
+
 export function updateBlocks(blockType, blocks = {}) {
 	return {
 		type: types.UPDATE_BLOCKS,
@@ -553,11 +580,18 @@ export function saveGBX3(blockType, options = {}) {
 			}
 		;
 
-		const dataObj = {
-			...gbxData,
-			...giveboxSettings,
-			...opts.dataObj
-		};
+		const dataObj = blockType === 'org' ?
+			{
+				...giveboxSettings,
+				...opts.dataObj
+			}
+		:
+			{
+				...gbxData,
+				...giveboxSettings,
+				...opts.dataObj
+			}
+		;
 
 		if (opts.updateLayout) {
 			const layouts = {
