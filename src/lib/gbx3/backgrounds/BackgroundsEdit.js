@@ -7,12 +7,13 @@ import {
 	Dropdown,
 	Collapse
 } from '../../';
+import { backgroundTemplate } from './backgroundTemplate';
 
 class BackgroundsEdit extends Component {
 
 	constructor(props) {
 		super(props);
-		this.opacityOptions = this.opacityOptions.bind(this);
+		this.updateBackground = this.updateBackground.bind(this);
 		this.state = {
 		};
 		this.mounted = false;
@@ -29,18 +30,23 @@ class BackgroundsEdit extends Component {
 		}
 	}
 
-	opacityOptions() {
-		const items = [];
-		for (let i=0; i <= 20; i++) {
-			const perc = i * 5;
-			items.push({ primaryText: `${perc}%`, value: perc });
-		}
-		return util.sortByField(items, 'value');
+	updateBackground(background) {
+		this.props.setBackground(background);
 	}
 
 	render() {
 
-		const extraColors = [];
+		const {
+			background,
+			primaryColor
+		} = this.props;
+
+		const bgColor = util.getValue(background, 'bgColor', primaryColor);
+
+		const extraColors = [
+			primaryColor,
+			bgColor
+		];
 
 		return (
 			<div className='modalWrapper'>
@@ -56,9 +62,11 @@ class BackgroundsEdit extends Component {
 								fixedLabel={true}
 								label='Background Color'
 								onAccept={(name, value) => {
-									console.log('onAccept', name, value)
+									this.updateBackground({
+										bgColor: value
+									});
 								}}
-								value={''}
+								value={bgColor}
 								modalID='backgroundsEdit-bgColor'
 								opts={{
 									customOverlay: {
@@ -68,18 +76,36 @@ class BackgroundsEdit extends Component {
 								extraColors={extraColors}
 							/>
 							<Dropdown
-								portalID={`backgroundsEdit-pageOpacity`}
+								portalID={`backgroundsEdit-opacity`}
 								portal={true}
 								name='pageOpacity'
 								contentWidth={100}
-								label={'Background Opacity'}
+								label={'Page Background Opacity'}
 								fixedLabel={true}
-								defaultValue={100}
+								defaultValue={util.getValue(background, 'opacity', 100)}
 								onChange={(name, value) => {
-									const pageOpacity = +(value / 100);
-									console.log('execute pageOpacity', pageOpacity);
+									const opacity = +(value / 100);
+									this.updateBackground({
+										opacity
+									});
 								}}
-								options={this.opacityOptions()}
+								options={util.opacityOptions()}
+							/>
+							<Dropdown
+								portalID={`backgroundsEdit-blur`}
+								portal={true}
+								name='backgroundBlur'
+								contentWidth={100}
+								label={'Page Background Blur'}
+								selectLabel='Select'
+								fixedLabel={true}
+								defaultValue={util.getValue(background, 'blur', 0)}
+								onChange={(name, value) => {
+									this.updateBackground({
+										blur: value
+									});
+								}}
+								options={util.blurOptions()}
 							/>
 						</div>
 					</div>

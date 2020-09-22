@@ -308,7 +308,7 @@ class Org extends React.Component {
 
 		return (
 			<>
-				<Backgrounds />
+				<Backgrounds blockType={'org'} />
 				<div className='layout-column'>
 					<div
 						id='gbx3DropArea'

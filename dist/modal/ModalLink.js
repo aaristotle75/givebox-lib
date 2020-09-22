@@ -40,7 +40,8 @@ class ModalLink extends Component {
       allowCustom,
       solidColor,
       solidTextColor,
-      customColor
+      customColor,
+      linkRef
     } = this.props;
     let component;
 
@@ -48,6 +49,7 @@ class ModalLink extends Component {
       case 'li':
         {
           component = /*#__PURE__*/React.createElement("li", {
+            ref: linkRef,
             className: className,
             onClick: () => this.onClick(id, opts)
           }, this.props.children);
@@ -57,6 +59,7 @@ class ModalLink extends Component {
       case 'div':
         {
           component = /*#__PURE__*/React.createElement("div", {
+            ref: linkRef,
             style: style,
             className: `${className}`,
             onClick: () => this.onClick(id, opts)
@@ -67,6 +70,7 @@ class ModalLink extends Component {
       default:
         {
           component = /*#__PURE__*/React.createElement(GBLink, {
+            ref: linkRef,
             customColor: customColor,
             allowCustom: allowCustom,
             style: style,

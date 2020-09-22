@@ -558,12 +558,14 @@ export function saveGBX3(blockType, options = {}) {
 		const info = util.getValue(gbx3, 'info', {});
 		const blocks = util.getValue(gbx3, `blocks.${blockType}`, {});
 		const globals = util.getValue(gbx3, 'globals', {});
+		const backgrounds = util.getValue(gbx3, 'backgrounds', []);
 		const helperBlocks = util.getValue(gbx3, 'helperBlocks', {});
 		const giveboxSettings = blockType === 'org' ?
 			{
 				customTemplate: {
 					blocks,
 					globals,
+					backgrounds,
 					helperBlocks
 				}
 			}
@@ -574,6 +576,7 @@ export function saveGBX3(blockType, options = {}) {
 					customTemplate: {
 						blocks,
 						globals,
+						backgrounds,
 						helperBlocks
 					}
 				}
@@ -705,6 +708,7 @@ export function resetGBX3(blockType = 'article') {
 				customTemplate: {
 					blocks: {},
 					globals: {},
+					backgrounds: [],
 					helperBlocks: {}
 				}
 			}
@@ -715,6 +719,7 @@ export function resetGBX3(blockType = 'article') {
 					customTemplate: {
 						blocks: {},
 						globals: {},
+						backgrounds: [],
 						helperBlocks: {}
 					}
 				}
@@ -1030,6 +1035,7 @@ export function loadOrg(orgID, callback) {
 						apiName: 'org'
 					}));
 					const blocksCustom = util.getValue(customTemplate, 'blocks', {});
+					const backgrounds = util.getValue(customTemplate, 'backgrounds', []);
 					const orgBlocks = util.getValue(blockTemplates, `org`, {});
 					const blocksDefault = {};
 
@@ -1113,6 +1119,7 @@ export function loadOrg(orgID, callback) {
 					};
 
 					dispatch(updateLayouts(blockType, layouts));
+					dispatch(updateBackgrounds(backgrounds));
 					dispatch(updateBlocks(blockType, blocks));
 					dispatch(updateGlobals(globals));
 					dispatch(updateHelperBlocks(blockType, helperBlocks));

@@ -1049,3 +1049,42 @@ export function pSBC(p, c0, c1, l) {
   a = f.a, t = t.a, f = a >= 0 || t >= 0, a = f ? a < 0 ? t : t < 0 ? a : a * P + t * p : 0;
   if (h) return "rgb" + (f ? "a(" : "(") + r + "," + g + "," + b + (f ? "," + m(a * 1000) / 1000 : "") + ")";else return "#" + (4294967296 + r * 16777216 + g * 65536 + b * 256 + (f ? m(a * 255) : 0)).toString(16).slice(1, f ? undefined : -2);
 }
+export function opacityOptions() {
+  const items = [];
+
+  for (let i = 0; i <= 20; i++) {
+    const perc = i * 5;
+    items.push({
+      primaryText: `${perc}%`,
+      value: perc
+    });
+  }
+
+  return sortByField(items, 'value');
+}
+export function pageRadiusOptions() {
+  const items = [];
+
+  for (let i = 0; i <= 10; i++) {
+    const value = +(i * 5);
+    items.push({
+      primaryText: `${value}px`,
+      value
+    });
+  }
+
+  return items;
+}
+export function blurOptions() {
+  const items = [];
+
+  for (let i = 0; i <= 20; i++) {
+    const perc = i * 5;
+    items.push({
+      primaryText: `${perc}%`,
+      value: perc
+    });
+  }
+
+  return items;
+}

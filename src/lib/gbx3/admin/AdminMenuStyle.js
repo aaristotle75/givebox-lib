@@ -21,9 +21,6 @@ class AdminMenuStyle extends React.Component {
 		this.updatePrimaryColor = this.updatePrimaryColor.bind(this);
 		this.colorPickerCallback = this.colorPickerCallback.bind(this);
 		this.updateStyle = this.updateStyle.bind(this);
-		this.opacityOptions = this.opacityOptions.bind(this);
-		this.blurOptions = this.blurOptions.bind(this);
-		this.pageRadiusOptions = this.pageRadiusOptions.bind(this);
 		this.state = {
 			colorPickerOpen: [],
 			opacityDropdownOpen: false,
@@ -88,33 +85,6 @@ class AdminMenuStyle extends React.Component {
 			colorPickerOpen.push(modalID);
 		}
 		this.setState({ colorPickerOpen });
-	}
-
-	opacityOptions() {
-		const items = [];
-		for (let i=0; i <= 20; i++) {
-			const perc = i * 5;
-			items.push({ primaryText: `${perc}%`, value: perc });
-		}
-		return util.sortByField(items, 'value');
-	}
-
-	pageRadiusOptions() {
-		const items = [];
-		for (let i=0; i <= 10; i++) {
-			const value = +(i * 5);
-			items.push({ primaryText: `${value}px`, value});
-		}
-		return items;
-	}
-
-	blurOptions() {
-		const items = [];
-		for (let i=0; i <= 20; i++) {
-			const perc = i * 5;
-			items.push({ primaryText: `${perc}%`, value: perc});
-		}
-		return items;
 	}
 
 	render() {
@@ -272,7 +242,7 @@ class AdminMenuStyle extends React.Component {
 								const pageOpacity = +(value / 100);
 								this.updateStyle('pageOpacity', pageOpacity);
 							}}
-							options={this.opacityOptions()}
+							options={util.opacityOptions()}
 						/>
 					</li>
 					<li
@@ -296,7 +266,7 @@ class AdminMenuStyle extends React.Component {
 							onChange={(name, value) => {
 								this.updateStyle('pageRadius', value);
 							}}
-							options={this.pageRadiusOptions()}
+							options={util.pageRadiusOptions()}
 						/>
 					</li>
 					<li className='listHeader'>Background Style</li>
@@ -344,7 +314,7 @@ class AdminMenuStyle extends React.Component {
 								const backgroundOpacity = +(value / 100);
 								this.updateStyle('backgroundOpacity', backgroundOpacity);
 							}}
-							options={this.opacityOptions()}
+							options={util.opacityOptions()}
 						/>
 					</li>
 					<AdminMenuStyleImage
@@ -380,7 +350,7 @@ class AdminMenuStyle extends React.Component {
 							onChange={(name, value) => {
 								this.updateStyle('backgroundBlur', +(value));
 							}}
-							options={this.blurOptions()}
+							options={util.blurOptions()}
 						/>
 					</li>
 				</ul>
