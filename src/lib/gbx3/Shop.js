@@ -204,9 +204,11 @@ class Shop extends Component {
 			orgName,
 			selecteedArticleID,
 			hideGoBack,
-			editable,
-			shopTitle
+			shopTitle,
+			stage
 		} = this.props;
+
+		const editable = this.props.editable && stage !== 'public' ? true : false;
 
 		return (
 			<div className={`gbx3Shop modalWrapper ${editable ? 'editable' : ''}`}>
@@ -272,6 +274,7 @@ function mapStateToProps(state, props) {
 	const orgName = util.getValue(info, 'orgName');
 	const kind = util.getValue(info, 'kind');
 	const editable = util.getValue(gbx3, 'admin.editable');
+	const stage = util.getValue(info, 'stage');
 	const shopTitle = util.getValue(gbx3, 'blocks.article.paymentForm.options.form.shopTitle');
 
 	return {
@@ -281,6 +284,7 @@ function mapStateToProps(state, props) {
 		orgName,
 		kind,
 		editable,
+		stage,
 		shopTitle
 	}
 }
