@@ -284,7 +284,7 @@ class Modal extends Component {
 				{draggable ?
 					<div className='handle'>
 						{!mobile ? <span className='icon icon-move'></span> : <></>}
-						<span className={`draggableTitle ${draggableTitleClass}`}>
+						<span className={`draggableTitle editingText ${draggableTitleClass}`}>
 							{draggableTitle}
 						</span>
 					</div>

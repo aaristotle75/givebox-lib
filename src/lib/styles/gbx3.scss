@@ -337,6 +337,13 @@
 
 	}
 
+	.formSectionHeader {
+		font-size: 1em;
+		font-weight: 300;
+		padding: 15px 5px 5px 5px;
+		border-bottom: 1px solid $greenLight;
+	}
+
 	.helperText {
 		padding: 10px 5px;
 		font-size: 12px;
@@ -2124,6 +2131,28 @@
 	}
 }
 
+.editableRowMenu {
+	display: none;
+	position: absolute;
+	right: 20px;
+	top: 25px;
+
+	button.link {
+		display: flex;
+		align-items: center;
+		font-size: 14px !important;
+		color: $mainColor;
+		@include default-transition(.25s);
+
+		.icon {
+			margin-right: 5px;
+		}
+	}
+	button.link:hover {
+		color: transparentize($mainColor, .6);
+	}
+}
+
 /*---------- SHOP --------*/
 .gbx3Shop {
 
@@ -2152,7 +2181,7 @@
 
 		button.link {
 			text-align: left;
-			font-size: 18px !important;
+			font-size: 18px;
 			margin-left: 10px;
 			width: 100%;
 			@media (max-width: $breakpoint) {
@@ -2199,10 +2228,6 @@
 			}
 		}
 
-		.articleImage:hover img {
-			transform: scale(1.5);
-		}
-
 		.articleText {
 			position: relative;
 			margin-top: 5px;
@@ -2212,12 +2237,30 @@
 	}
 
 	.articleItem:hover {
+		background: transparentize($green, .6);
+		.articleImage img {
+			transform: scale(1.5);
+		}
 
 		.articleText {
 			opacity: .8;
 		}
 	}
 }
+
+.gbx3Shop.editable {
+	.articleItem {
+		cursor: default;
+	}
+
+	.articleItem:hover {
+			background: transparent;
+		.editableRowMenu {
+			display: block;
+		}
+	}
+}
+
 /*------ END SHOP ------*/
 
 .copyButton {
@@ -2739,6 +2782,12 @@
 			}
 			.selected {
 				color: $white;
+			}
+		}
+
+		ul.editable {
+			li:hover {
+				background: transparent;
 			}
 		}
 

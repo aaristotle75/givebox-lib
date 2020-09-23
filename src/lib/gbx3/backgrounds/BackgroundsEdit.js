@@ -7,7 +7,6 @@ import {
 	Dropdown,
 	Collapse
 } from '../../';
-import { backgroundTemplate } from './backgroundTemplate';
 
 class BackgroundsEdit extends Component {
 
@@ -48,6 +47,8 @@ class BackgroundsEdit extends Component {
 			bgColor
 		];
 
+		const opacity = +(util.getValue(background, 'opacity', 1) * 100);
+
 		return (
 			<div className='modalWrapper'>
 				<Collapse
@@ -78,11 +79,11 @@ class BackgroundsEdit extends Component {
 							<Dropdown
 								portalID={`backgroundsEdit-opacity`}
 								portal={true}
-								name='pageOpacity'
+								name='opacity'
 								contentWidth={100}
 								label={'Page Background Opacity'}
 								fixedLabel={true}
-								defaultValue={util.getValue(background, 'opacity', 100)}
+								defaultValue={opacity}
 								onChange={(name, value) => {
 									const opacity = +(value / 100);
 									this.updateBackground({
@@ -99,10 +100,10 @@ class BackgroundsEdit extends Component {
 								label={'Page Background Blur'}
 								selectLabel='Select'
 								fixedLabel={true}
-								defaultValue={util.getValue(background, 'blur', 0)}
+								defaultValue={+util.getValue(background, 'blur', 0)}
 								onChange={(name, value) => {
 									this.updateBackground({
-										blur: value
+										blur: +value
 									});
 								}}
 								options={util.blurOptions()}

@@ -14,7 +14,7 @@ import {
 } from '../../api/actions';
 
 
-class CheckoutDonationSelect extends Component{
+class CheckoutDonationSelect extends Component {
 	constructor(props){
 		super(props);
 		this.renderDonationForms = this.renderDonationForms.bind(this);

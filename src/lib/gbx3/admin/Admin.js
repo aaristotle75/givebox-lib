@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import {
 	util,
 	GBLink,
-	Icon
+	Icon,
+	ModalRoute
 } from '../../';
 import ArticleAdmin from './article/ArticleAdmin';
 import OrgAdmin from './org/OrgAdmin';
@@ -15,6 +16,7 @@ import {
 	updateAdmin
 } from '../redux/gbx3actions';
 import AvatarMenuButton from './AvatarMenuButton';
+import ArticleList from './article/ArticleList';
 import { AiOutlineFullscreen } from 'react-icons/ai';
 
 class Admin extends React.Component {
@@ -119,7 +121,8 @@ class Admin extends React.Component {
 			saveStatus,
 			editable,
 			hasAccessToEdit,
-			hasAccessToCreate
+			hasAccessToCreate,
+			orgID
 		} = this.props;
 
 		if (!hasAccessToEdit && !hasAccessToCreate) return  <div className='flexCenter flexColumn centeritems'>You do not have access.</div>;
@@ -131,6 +134,14 @@ class Admin extends React.Component {
 
 		return (
 			<div className={`gbx3AdminLayout ${step}Step ${editable ? 'editable' : ''} ${previewMode ? 'previewMode' : ''}`}>
+				<ModalRoute
+					className='gbx3'
+					id='articleList'
+					effect='3DFlipVert'
+					style={{ width: '60%' }}
+					disallowBgClose={false}
+					component={(props) => <ArticleList {...props} orgID={orgID} />}
+				/>
 				<AnimateHeight height={saveStatus === 'saving' ? 'auto' : 0 } duration={500}>
 					<div className='autoSaved'>Saving...</div>
 				</AnimateHeight>
@@ -166,6 +177,7 @@ function mapStateToProps(state, props) {
 	const breakpoint = util.getValue(info, 'breakpoint');
 	const display = util.getValue(info, 'display');
 	const articleID = util.getValue(info, 'articleID');
+	const orgID = util.getValue(info, 'orgID');
 	const project = util.getValue(info, 'project');
 	const admin = util.getValue(gbx3, 'admin', {});
 	const step = util.getValue(admin, 'step');
@@ -182,6 +194,7 @@ function mapStateToProps(state, props) {
 		breakpoint,
 		display,
 		articleID,
+		orgID,
 		openAdmin,
 		step,
 		isVolunteer,

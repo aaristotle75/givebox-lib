@@ -150,3 +150,10 @@ $sonarAlertColor: $green;
 	background: -moz-linear-gradient($gradient);
 	background: linear-gradient($gradient);
 }
+
+.editingText {
+	display: block;
+	font-size: 12px;
+	color: $mainColor;
+	@include animation(pulsateBrighter 2s ease-out infinite);
+}

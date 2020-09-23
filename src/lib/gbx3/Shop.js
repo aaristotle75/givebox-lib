@@ -5,10 +5,14 @@ import {
 	util,
 	Loader,
 	Image,
-	types
+	types,
+	ModalLink
 } from '../';
 import AnimateHeight from 'react-animate-height';
-import { getResource } from '../api/helpers';
+import {
+	getResource,
+	sendResource
+} from '../api/helpers';
 import {
 	updateInfo,
 	updateAdmin
@@ -20,6 +24,8 @@ class Shop extends Component {
 		super(props);
 		this.renderArticles = this.renderArticles.bind(this);
 		this.toggleShow = this.toggleShow.bind(this);
+		this.updateArticle = this.updateArticle.bind(this);
+		this.getArticles = this.getArticles.bind(this);
 		const show = [];
 		types.kinds().forEach((value) => {
 			show.push(value);
@@ -32,12 +38,23 @@ class Shop extends Component {
 	}
 
 	componentDidMount() {
-		const articles = util.getValue(this.props.articles, 'data', []);
+		this.getArticles();
+	}
+
+	componentWillUnmount() {
+		if (this.timeout) {
+			clearTimeout(this.timeout);
+			this.timeout = null;
+		}
+	}
+
+	getArticles(reload) {
 		const orgID = this.props.orgID;
-		if (orgID && util.isEmpty(articles)) {
+		if (orgID) {
 			this.props.getResource('orgArticles', {
 				customName: 'shopArticles',
 				orgID,
+				reload,
 				search: {
 					filter: `givebox:true`,
 					order: 'asc',
@@ -52,13 +69,6 @@ class Shop extends Component {
 		}
 	}
 
-	componentWillUnmount() {
-		if (this.timeout) {
-			clearTimeout(this.timeout);
-			this.timeout = null;
-		}
-	}
-
 	toggleShow(kind) {
 		const show = this.state.show;
 		const index = show.findIndex((el) => {
@@ -69,9 +79,43 @@ class Shop extends Component {
 		this.setState({ show });
 	}
 
+	updateArticle(article, type = 'add', callback) {
+		const {
+			kindID,
+			kind,
+			orgID
+		} = article;
+
+		this.setState({ loading: true });
+
+		let givebox = true;
+		let resourcesToLoad = [];
+
+		if (type === 'remove') {
+			givebox = false;
+			resourcesToLoad.push('shopArticles');
+		}
+
+		const apiName = `org${types.kind(kind).api.item}Publish`;
+		this.props.sendResource(apiName, {
+			orgID,
+			resourcesToLoad,
+			id: [kindID],
+			data: {
+				givebox
+			},
+			method: 'patch',
+			callback: (res, err) => {
+				this.setState({ loading: false });
+				if (callback) callback();
+			}
+		});
+	}
+
 	renderArticles() {
 		const {
-			primaryColor
+			primaryColor,
+			editable
 		} = this.props;
 
 		const rgb = util.hexToRgb(primaryColor);
@@ -91,14 +135,21 @@ class Shop extends Component {
 								key={key}
 								className='articleItem'
 								onClick={async () => {
-									if (this.props.selecteedArticleID === value.ID) {
-										this.props.updateInfo({ display: 'layout' });
+									if (!editable) {
+										if (this.props.selecteedArticleID === value.ID) {
+											this.props.updateInfo({ display: 'layout' });
+										} else {
+											const displaySwitched = await this.props.updateInfo({ display: 'layout' });
+											if (displaySwitched) this.props.reloadGBX3(value.ID);
+										}
 									} else {
-										const displaySwitched = await this.props.updateInfo({ display: 'layout' });
-										if (displaySwitched) this.props.reloadGBX3(value.ID);
+										// do nothing on item click if editable
 									}
 								}}
 							>
+								<div className='editableRowMenu'>
+										<GBLink onClick={() => this.updateArticle(value, 'remove')}><span className='icon icon-x'></span> Remove From List</GBLink>
+								</div>
 								<div className='articleImage'>
 									<Image url={util.imageUrlWithStyle(value.imageURL, 'thumb')} size='thumb' maxSize={50} />
 								</div>
@@ -145,21 +196,41 @@ class Shop extends Component {
 
 	render() {
 
-		if (util.isLoading(this.props.articles)
-		|| this.state.loading) return <Loader msg='Loading articles...' />
-
 		const {
 			primaryColor,
 			orgName,
 			selecteedArticleID,
-			hideGoBack
+			hideGoBack,
+			editable,
+			shopTitle
 		} = this.props;
 
 		return (
-			<div className='gbx3Shop modalWrapper'>
+			<div className={`gbx3Shop modalWrapper ${editable ? 'editable' : ''}`}>
+				{ util.isLoading(this.props.articles)
+				|| this.state.loading ? <Loader msg='Loading articles...' /> : '' }
 				<div className='shopTop'>
+					{editable ? <span className='editingText'>Editing</span> : '' }
 					<h2>{orgName}</h2>
-					{ !hideGoBack ?
+					<span style={{ fontWeight: 300 }}>{shopTitle}</span>
+					{ editable ?
+						<div className='flexCenter' style={{ margin: '20px 0 10px 0' }}>
+							<ModalLink
+								id='articleList'
+								style={{ fontSize: 14 }}
+								opts={{
+									selectedText: <span><span className='icon icon-check'></span> Added</span>,
+									selectText: 'Add to Browse List',
+									filter: 'givebox:false',
+									callback: this.updateArticle,
+									closeCallback: () => {
+										this.getArticles(true);
+									}
+								}}
+							><span className='icon icon-plus'></span> Add a Form to the List</ModalLink>
+						</div>
+					: '' }
+					{ !hideGoBack && !editable ?
 					<GBLink
 						style={{ margin: '5px 0 20px 0' }}
 						className='link'
@@ -177,12 +248,12 @@ class Shop extends Component {
 									stage: 'admin'
 								});
 							}
-						}}>
-							<span className='icon icon-chevron-left'></span> Go Back
-						</GBLink>
+					}}>
+						<span className='icon icon-chevron-left'></span> Go Back
+					</GBLink>
 						: '' }
-					</div>
-					{this.renderArticles()}
+				</div>
+				{this.renderArticles()}
 			</div>
 		)
 	}
@@ -197,18 +268,23 @@ function mapStateToProps(state, props) {
 	const orgID = util.getValue(info, 'orgID');
 	const orgName = util.getValue(info, 'orgName');
 	const kind = util.getValue(info, 'kind');
+	const editable = util.getValue(gbx3, 'admin.editable');
+	const shopTitle = util.getValue(gbx3, 'blocks.article.paymentForm.options.form.shopTitle');
 
 	return {
 		selecteedArticleID,
 		articles,
 		orgID,
 		orgName,
-		kind
+		kind,
+		editable,
+		shopTitle
 	}
 }
 
 export default connect(mapStateToProps, {
 	getResource,
+	sendResource,
 	updateInfo,
 	updateAdmin
 })(Shop);

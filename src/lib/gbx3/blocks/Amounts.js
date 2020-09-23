@@ -409,8 +409,9 @@ class Amounts extends Component {
 
 		const allowPerTicketWinner = util.getValue(extras, 'allowPerTicketWinner') || util.getValue(data, 'allowPerTicketWinner');
 		const maxQuantity = util.getValue(extras, 'maxQuantity') || util.getValue(data, 'maxQuantity');
-		const showCart = util.getValue(form, 'allowSelection', true);
+		const showCart = true;
 		const shopTitle = util.getValue(form, 'shopTitle', 'Browse More Items');
+		const browseItems = util.getValue(form, 'allowSelection', true);
 
 		return (
 			<div className={`block ${util.getValue(button, 'enabled', false) ? util.getValue(button, 'style.align', 'flexCenter') : ''}`}>
@@ -634,7 +635,7 @@ class Amounts extends Component {
 												</AnimateHeight>
 											</div>
 											<div className='button-group'>
-												<ModalLink className='hideOnMobile' id='shop' allowCustom={true} customColor={primaryColor}>{shopTitle}</ModalLink>
+												{ browseItems ? <ModalLink className='hideOnMobile' id='shop' allowCustom={true} customColor={primaryColor}>{shopTitle}</ModalLink> : '' }
 												<GBLink
 													className='button'
 													allowCustom={true}

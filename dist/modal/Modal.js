@@ -309,7 +309,7 @@ class Modal extends Component {
     }, !mobile ? /*#__PURE__*/React.createElement("span", {
       className: "icon icon-move"
     }) : /*#__PURE__*/React.createElement(React.Fragment, null), /*#__PURE__*/React.createElement("span", {
-      className: `draggableTitle ${draggableTitleClass}`
+      className: `draggableTitle editingText ${draggableTitleClass}`
     }, draggableTitle)) : /*#__PURE__*/React.createElement(React.Fragment, null), this.renderChildren(), buttonGroup && !mobile ? /*#__PURE__*/React.createElement("div", {
       className: "modalButtonGroup"
     }, buttonGroup) : /*#__PURE__*/React.createElement(React.Fragment, null), this.renderActions(), /*#__PURE__*/React.createElement(Fade, {

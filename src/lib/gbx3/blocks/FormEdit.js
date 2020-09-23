@@ -6,7 +6,7 @@ import {
 	Dropdown,
 	Collapse,
 	util,
-	_v
+	ModalLink
 } from '../../';
 import AnimateHeight from 'react-animate-height';
 import CheckoutDonationEdit from './CheckoutDonationEdit';
@@ -200,10 +200,11 @@ class FormEdit extends Component {
 				>
 					<div className='formSectionContainer'>
 						<div className='formSection'>
+							<div className='formSectionHeader'>Visitor Options</div>
 							<Choice
 								type='checkbox'
 								name='allowSharing'
-								label={'Allow Customers to Share Form'}
+								label={'Allow Visitors to Share Form'}
 								onChange={(name, value) => {
 									this.updateForm('allowSharing', allowSharing ? false : true);
 								}}
@@ -211,11 +212,23 @@ class FormEdit extends Component {
 								value={allowSharing}
 								toggle={true}
 							/>
+							<Choice
+								type='checkbox'
+								name='sendEmail'
+								label={'Give Visitors an Option to Send an Email Message at Checkout'}
+								onChange={(name, value) => {
+									sendEmail.enabled = sendEmail.enabled ? false : true;
+									this.updateForm('sendEmail', sendEmail);
+								}}
+								checked={sendEmail.enabled}
+								value={sendEmail.enabled}
+								toggle={true}
+							/>
 							{this.props.allowP2P ?
 							<Choice
 								type='checkbox'
 								name='showP2P'
-								label={'Allow Customers to Create Peer-2-Peer Fundraisers'}
+								label={'Allow Visitors to Create Peer-2-Peer Fundraisers'}
 								onChange={(name, value) => {
 									this.updateForm('showP2P', showP2P ? false : true);
 								}}
@@ -223,6 +236,7 @@ class FormEdit extends Component {
 								value={showP2P}
 								toggle={true}
 							/> : ''}
+							<div className='formSectionHeader'>Goal Option</div>
 							<Choice
 								type='checkbox'
 								name='hasCustomGoal'
@@ -249,22 +263,23 @@ class FormEdit extends Component {
 									}}
 								/>
 							</AnimateHeight>
-							<Choice
-								type='checkbox'
-								name='sendEmail'
-								label={'Give Users an Option to Send an Email Message'}
-								onChange={(name, value) => {
-									sendEmail.enabled = sendEmail.enabled ? false : true;
-									this.updateForm('sendEmail', sendEmail);
+							<div className='formSectionHeader'>Cart Option</div>
+							<TextField
+								name='cartTitle'
+								label='Cart Title'
+								fixedLabel={true}
+								placeholder='Enter the title for "Your Cart"'
+								value={cartTitle}
+								onChange={(e) => {
+									const value = e.currentTarget.value;
+									this.updateForm('cartTitle', value);
 								}}
-								checked={sendEmail.enabled}
-								value={sendEmail.enabled}
-								toggle={true}
 							/>
+							<div className='formSectionHeader'>Browse Other Items Option <ModalLink style={{ marginLeft: 10 }} id='shop'>Edit Browse Other Items Overlay</ModalLink></div>
 							<Choice
 								type='checkbox'
 								name='allowSelection'
-								label={'Enable Cart'}
+								label={'Allow Browsing Other Items'}
 								onChange={(name, value) => {
 									this.updateForm('allowSelection', allowSelection ? false : true);
 								}}
@@ -273,17 +288,6 @@ class FormEdit extends Component {
 								toggle={true}
 							/>
 							<AnimateHeight height={allowSelection ? 'auto' : 0}>
-								<TextField
-									name='cartTitle'
-									label='Cart Title'
-									fixedLabel={true}
-									placeholder='Enter the title for "Your Cart"'
-									value={cartTitle}
-									onChange={(e) => {
-										const value = e.currentTarget.value;
-										this.updateForm('cartTitle', value);
-									}}
-								/>
 								<TextField
 									name='shopTitle'
 									label='Browse More Items Title'
@@ -322,17 +326,20 @@ class FormEdit extends Component {
 								/>
 							</AnimateHeight>
 							*/}
-							{ kind !== 'fundraiser' && 1 === 1 ?
-							<CheckoutDonationEdit
-								orgID={orgID}
-								updateForm={this.updateForm}
-								updateMulti={this.updateMulti}
-								checkoutDonation={checkoutDonation}
-								checkoutDonationText={checkoutDonationText}
-								checkoutDonationAmount={checkoutDonationAmount}
-								checkoutDonationFormID={checkoutDonationFormID}
-								checkoutDonationFormTitle={checkoutDonationFormTitle}
-							/>
+							{ kind !== 'fundraiser' ?
+							<>
+								<div className='formSectionHeader'>Donation at Checkout Option</div>
+								<CheckoutDonationEdit
+									orgID={orgID}
+									updateForm={this.updateForm}
+									updateMulti={this.updateMulti}
+									checkoutDonation={checkoutDonation}
+									checkoutDonationText={checkoutDonationText}
+									checkoutDonationAmount={checkoutDonationAmount}
+									checkoutDonationFormID={checkoutDonationFormID}
+									checkoutDonationFormTitle={checkoutDonationFormTitle}
+								/>
+							</>
 							: '' }
 						</div>
 					</div>
