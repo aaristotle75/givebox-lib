@@ -5,7 +5,8 @@ import {
 	GBLink,
 	Dropdown,
 	types,
-	Image
+	Image,
+	ModalLink
 } from '../../';
 import AnimateHeight from 'react-animate-height';
 import {
@@ -78,14 +79,9 @@ class Cart extends Component {
 			reloadGBX3
 		} = this.props;
 
-		const {
-			showQtyDropdown
-		} = this.state;
-
 		const items = [];
 
 		if (!util.isEmpty(cartItems)) {
-			const numCartItems = cartItems.length;
 			Object.entries(cartItems).forEach(([key, value]) => {
 				items.push(
 					<div key={key} className='cartItemRow'>
@@ -159,14 +155,13 @@ class Cart extends Component {
 						<div className='paymentFormHeaderTitle'>
 							{cartTitle || 'Your Cart'}
 							{browseItems ?
-							<GBLink
+							<ModalLink
 								style={{ right: '60px' }}
 								className='link closeCart'
-								onClick={() => {
-									this.props.updateInfo({ display: 'shop' });
-								}}>
+								id='shop'
+								>
 									{shopTitle || 'Shop More Items'}
-								</GBLink> : <></>}
+								</ModalLink> : <></>}
 							<GBLink className='link closeCart' onClick={() => this.props.updateCart({ open: false })}><span className='icon icon-x'></span></GBLink>
 						</div>
 						{this.renderItemsInCart()}

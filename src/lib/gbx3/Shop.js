@@ -32,13 +32,16 @@ class Shop extends Component {
 		});
 		this.state = {
 			show,
-			loading: true
+			loading: false
 		};
 		this.timeout = false;
 	}
 
 	componentDidMount() {
-		this.getArticles();
+		if (util.isEmpty(this.props.articles)) {
+			this.setState({ loading: true });
+			this.getArticles();
+		}
 	}
 
 	componentWillUnmount() {
@@ -163,7 +166,7 @@ class Shop extends Component {
 				const group =
 					<div key={key} className='articleGroup'>
 						<GBLink
-							style={{ borderBottom: `1px solid ${color2}` }}
+							style={{ fontSize: 18, borderBottom: `1px solid ${color2}` }}
 							allowCustom={true}
 							customColor={primaryColor}
 							onClick={() => this.toggleShow(key)}
@@ -207,8 +210,7 @@ class Shop extends Component {
 
 		return (
 			<div className={`gbx3Shop modalWrapper ${editable ? 'editable' : ''}`}>
-				{ util.isLoading(this.props.articles)
-				|| this.state.loading ? <Loader msg='Loading articles...' /> : '' }
+				{ this.state.loading ? <Loader msg='Loading articles...' /> : '' }
 				<div className='shopTop'>
 					{editable ? <span className='editingText'>Editing</span> : '' }
 					<h2>{orgName}</h2>
@@ -219,6 +221,7 @@ class Shop extends Component {
 								id='articleList'
 								style={{ fontSize: 14 }}
 								opts={{
+									notPublicText: 'This is Set to Private and Cannot be Added',
 									selectedText: <span><span className='icon icon-check'></span> Added</span>,
 									selectText: 'Add to Browse List',
 									filter: 'givebox:false',
@@ -232,7 +235,7 @@ class Shop extends Component {
 					: '' }
 					{ !hideGoBack && !editable ?
 					<GBLink
-						style={{ margin: '5px 0 20px 0' }}
+						style={{ display: 'block', margin: '5px 0 20px 0' }}
 						className='link'
 						allowCustom={true}
 						customColor={primaryColor}

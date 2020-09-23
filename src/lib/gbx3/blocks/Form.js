@@ -178,8 +178,6 @@ class Form extends Component {
 		const noteInfo = this.getInfo('noteInfo');
 		const browseItems = util.getValue(form, 'allowSelection', true);
 
-		console.log('execute form browseItems', form,  browseItems);
-
 		return (
 			<div className='formBlock'>
 				<ModalRoute

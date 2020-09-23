@@ -23,7 +23,8 @@ class ArticleList extends Component {
 		this.getArticles = this.getArticles.bind(this);
 		this.state = {
 			loading: false,
-			selected: []
+			selected: [],
+			count: 0
 		};
 	}
 
@@ -62,16 +63,27 @@ class ArticleList extends Component {
 	renderArticles() {
 		const {
 			selectedText,
-			selectText
+			selectText,
+			notPublicText,
+			checkPublic
 		} = this.props;
 
 		const items = []
 		const articles = util.getValue(this.props.articles, 'data', {});
+
 		Object.entries(articles).forEach(([key, value]) => {
+			const notPublic = (value.kind === 'fundraiser' && !value.publishedStatus.webApp) || (value.kind !== 'fundraiser' && value.publishedStatus.webApp) ? true : false;
 			items.push(
 				<div className='articleItem' onClick={() => this.onClickArticle(value)} key={key}>
 					<div className='editableRowMenu'>
-							{ this.state.selected.includes(value.ID) ? <span className='green'>{selectedText}</span> : <GBLink onClick={() => this.onClickArticle(value)}><span className='icon icon-x'></span> {selectText}</GBLink> }
+						{notPublic && checkPublic ?
+								<span style={{ fontSize: 14 }} className='gray'>{notPublicText}</span>
+							:
+							this.state.selected.includes(value.ID) ?
+								<span style={{ fontSize: 14 }} className='green'>{selectedText}</span>
+							:
+								<GBLink onClick={() => this.onClickArticle(value)}><span className='icon icon-x'></span> {selectText}</GBLink>
+						}
 					</div>
 					<div className='articleImage'>
 						<Image url={util.imageUrlWithStyle(value.imageURL, 'thumb')} size='thumb' maxSize={50} />
@@ -126,6 +138,8 @@ class ArticleList extends Component {
 };
 
 ArticleList.defaultProps = {
+	notPublicText: 'Set to Private',
+	checkPublic: true,
 	selectedText: 'Selected',
 	selectText: 'SELECT'
 }
