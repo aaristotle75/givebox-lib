@@ -107,7 +107,9 @@ class CoundownEditForm extends Component {
 						<Dropdown
 							portalID={`countdown-timezone`}
 							portal={true}
+							portalClass={'dropdown-left-portal'}
 							name='timezone'
+							portalLeftOffset={10}
 							contentWidth={300}
 							label={'Timezone'}
 							fixedLabel={true}
