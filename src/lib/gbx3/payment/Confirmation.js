@@ -32,11 +32,13 @@ class Confirmation extends Component {
 			email,
 			bankName,
 			cardType,
-			descriptor,
+			orgName,
 			cartTotal
 		} = this.props;
 
 		const item = [];
+		const descriptor = this.props.descriptor ? `GBX*${this.props.descriptor}` : util.makeDescriptor(orgName);
+		const echeckDescriptor = util.makeDescriptor(orgName, '');
 
 		item.push(
 			<span key={'receiptEmailed'} className='group'>
@@ -54,7 +56,7 @@ class Confirmation extends Component {
 						</span>
 						<span className='group'>
 							<span className='icon icon-check'></span>
-							<span className='inlineText'>The charge will show in your bank statement with the description {descriptor}.</span>
+							<span className='inlineText'>The charge will show in your bank statement with the description {echeckDescriptor}.</span>
 						</span>
 					</span>
 				);
@@ -72,7 +74,7 @@ class Confirmation extends Component {
 						</span>
 						<span className='group'>
 							<span className='icon icon-check'></span>
-							<span className='inlineText'>The charge will show up in your credit card or bank statement with the description <strong>GBX*{descriptor}</strong>.</span>
+							<span className='inlineText'>The charge will show up in your credit card or bank statement with the description <strong>{descriptor}</strong>.</span>
 						</span>
 					</span>
 				);
@@ -155,7 +157,8 @@ function mapStateToProps(state, props) {
 	const paymethod = util.getValue(confirmation, 'paymethod');
 	const cartTotal = util.getValue(confirmation, 'cartTotal', 0);
 	const data = util.getValue(gbx3, 'data', {});
-	const descriptor = util.getValue(data, 'orgBillingDescriptor', 'GBX*GIVEBOX');
+	const orgName = util.getValue(data, 'orgName');
+	const descriptor = util.getValue(data, 'orgBillingDescriptor');
 
 	return {
 		firstname,
@@ -164,6 +167,7 @@ function mapStateToProps(state, props) {
 		cardType,
 		paymethod,
 		cartTotal,
+		orgName,
 		descriptor,
 		allowSharing
 	}
