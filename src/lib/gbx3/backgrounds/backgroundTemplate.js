@@ -3,7 +3,7 @@ export const backgroundTemplate = {
 		width: 1000,
 		height: 230,
 		bgColor: '',
-		opacity: 1,
+		opacity: .6,
 		blur: 0,
 		imageURL: null
 	},

@@ -59,8 +59,18 @@ class Backgrounds extends Component {
 	}
 
 	async closeEditModal(type = 'save') {
+		const {
+			width,
+			height
+		} = this.state;
+
 		if (type !== 'cancel') {
-			const backgroundUpdated = await this.props.updateBackground(0, this.state.background);
+			const background = {
+				...this.state.background,
+				width,
+				height
+			};
+			const backgroundUpdated = await this.props.updateBackground(0, background);
 			if (backgroundUpdated) {
 				this.props.saveGBX3('org', {
 					callback: () => {
@@ -181,7 +191,7 @@ class Backgrounds extends Component {
 					effect='3DFlipVert' style={{ width: '70%' }}
 					draggable={true}
 					draggableTitle={`Editing Page Background`}
-					closeCallback={() => console.log('closeCallback')}
+					closeCallback={this.closeEditModal}
 					disallowBgClose={true}
 					component={() =>
 						<BackgroundsEdit
@@ -209,11 +219,11 @@ class Backgrounds extends Component {
 						onResizeStart={this.onResizeStart}
 						resizeHandles={['sw', 'se']}
 					>
-						<ModalLink id='background1' type='div' linkRef={this.backgroundRef} style={{ width, height }} className='backgroundPanel'></ModalLink>
+						<ModalLink id='background1' type='div' linkRef={this.backgroundRef} style={{ width, height }} className='backgroundPanelResizer'></ModalLink>
 					</ResizableBox>
-				:
-					<div ref={this.backgroundRef} style={{ width, height }} className='backgroundPanel'></div>
+				: ''
 				}
+				<div style={{ width, height }} className='backgroundPanel'></div>
 			</>
 		)
 	}

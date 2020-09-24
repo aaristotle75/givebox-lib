@@ -64,7 +64,6 @@ class AdminMenuStyleImage extends Component {
 	}
 
 	closeEditModal(type = 'save') {
-		this.setState({ loading: true });
 		if (type !== 'cancel') {
 			this.closeModalAndSave();
 		} else {
