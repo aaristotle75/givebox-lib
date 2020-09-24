@@ -104,17 +104,6 @@ class CoundownEditForm extends Component {
 								<span style={{ fontWeight: 300 }}>{dateDisplay}</span>
 							</div>
 						</AnimateHeight>
-						{this.props.calendarField('endsAt', {
-							label: 'Sweepstakes End Date/Time UTC',
-							fixedLabel: true,
-							enableTime: true,
-							enableTimeOption: false,
-							enableTimeOptionLabel: 'Show Time',
-							onChange: this.onChange,
-							value: endsAt,
-							validate: 'date',
-							utc: true
-						})}
 						<Dropdown
 							portalID={`countdown-timezone`}
 							portal={true}
@@ -128,6 +117,20 @@ class CoundownEditForm extends Component {
 							}}
 							options={this.timezoneOptions()}
 						/>
+						{this.props.calendarField('endsAt', {
+							label: 'Sweepstakes End Date/Time UTC',
+							fixedLabel: true,
+							enableTime: true,
+							enableTimeOption: false,
+							enableTimeOptionLabel: 'Show Time',
+							onChange: this.onChange,
+							value: endsAt,
+							validate: 'date',
+							utc: true
+						})}
+						<div className='fieldContext'>
+							The Date/Time is based on UTC (Coordinated Universal Time). Adjust the Date/Time accordingly to match your timezone.
+						</div>
 					</div>
 				</div>
 			</Collapse>
