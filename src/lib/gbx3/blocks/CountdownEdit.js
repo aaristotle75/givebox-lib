@@ -118,7 +118,7 @@ class CoundownEditForm extends Component {
 							options={this.timezoneOptions()}
 						/>
 						{this.props.calendarField('endsAt', {
-							label: 'Sweepstakes End Date/Time UTC',
+							label: 'Sweepstakes End Date/Time in UTC',
 							fixedLabel: true,
 							enableTime: true,
 							enableTimeOption: false,
