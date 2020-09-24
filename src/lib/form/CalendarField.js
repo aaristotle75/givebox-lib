@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import 'flatpickr/dist/themes/light.css';
 import Flatpickr from 'react-flatpickr';
-import Moment from 'moment';
+import Moment from 'moment-timezone';
 import { util, _v, Fade, Choice } from '../';
 
 class CalendarField extends Component {
@@ -100,7 +100,7 @@ class CalendarField extends Component {
 			const ts = this.props.utc ? Moment.utc(this.state.date, dateFormat).valueOf() : Moment(this.state.date, dateFormat).valueOf();
 			const dateStr =  util.getDate(ts/1000, dateFormat, { tz: false });
 			this.setState({ value: dateStr});
-			if (this.props.onChangeCalendar) this.props.onChangeCalendar(ts, this.props.name);
+			if (this.props.onChangeCalendar) this.props.onChangeCalendar(ts, this.props.name, enableTime);
 		}
 	}
 
