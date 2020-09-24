@@ -741,7 +741,8 @@ export function makeDescriptor(value, prefix = 'GBX*') {
   let descriptor;
   if (!value) return descriptor;
   let slug = value.replace(/[^a-zA-Z0-9,-.]/, '');
-  descriptor = slug.substr(0, 21);
+  let slugCleaned = slug.replace(/\s/g, '');
+  descriptor = slugCleaned.substr(0, 21);
   return prefix + descriptor.toUpperCase();
 }
 export function noSelection() {
