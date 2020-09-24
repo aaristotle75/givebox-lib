@@ -610,7 +610,7 @@ export const blockTemplates = {
 			type: 'Text',
 			field: 'name',
 			options: {
-				defaultFormat: '<p style="text-align:center"><span style="font-size:22px">{{TOKEN}}</span></p>'
+				defaultFormat: '<p style="text-align:center"><span style="font-weight:300;font-size:24px">{{TOKEN}}</span></p>'
 			},
 			grid: {
 				desktop: { i: 'orgName', x: 0, y: 27, w: 12, h: 4, enabled: true },
