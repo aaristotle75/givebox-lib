@@ -13,7 +13,8 @@ import CampaignsEdit from './CampaignsEdit';
 import { toggleModal } from '../../api/actions';
 import { getResource } from '../../api/helpers';
 import {
-	updateInfo
+	updateInfo,
+	clearGBX3
 } from '../redux/gbx3actions';
 import '../../styles/gbx3Campaigns.scss';
 import has from 'has';
@@ -62,7 +63,8 @@ class Campaigns extends Component {
 
 	async loadGBX(ID) {
 		const infoUpdated = await this.props.updateInfo({ originTemplate: 'org' });
-		if (infoUpdated) this.props.loadGBX3(ID);
+		const gbx3Cleared = await this.props.clearGBX3();
+		if (infoUpdated && gbx3Cleared) this.props.loadGBX3(ID);
 	}
 
 	setStyle() {
@@ -242,6 +244,10 @@ class Campaigns extends Component {
 			campaignsFetching
 		} = this.props;
 
+		const {
+			options
+		} = this.state;
+
 		const nonremovable = util.getValue(block, 'nonremovable', false);
 
 		return (
@@ -258,6 +264,9 @@ class Campaigns extends Component {
 					component={() =>
 						<CampaignsEdit
 							{...this.props}
+							optionsUpdated={this.optionsUpdated}
+							options={options}
+							getCampaigns={this.getCampaigns}
 						/>
 					}
 					buttonGroup={
@@ -294,5 +303,6 @@ function mapStateToProps(state, props) {
 export default connect(mapStateToProps, {
 	toggleModal,
 	getResource,
-	updateInfo
+	updateInfo,
+	clearGBX3
 })(Campaigns);
