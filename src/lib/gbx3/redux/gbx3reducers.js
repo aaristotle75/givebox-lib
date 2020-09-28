@@ -16,7 +16,8 @@ export function gbx3(state = {
 		preview: false,
 		breakpoint: 'desktop',
 		sourceType: 'embed',
-		sourceLocation: null
+		sourceLocation: null,
+		originTemplate: ''
 	},
 	backgrounds: [],
 	blocks: {
@@ -68,7 +69,8 @@ export function gbx3(state = {
 			org: [
 				'contentBlock',
 				'imageBlock',
-				'videoBlock'
+				'videoBlock',
+				'campaignsBlock'
 			],
 			receipt: [
 				'contentBlock',

@@ -138,6 +138,7 @@ class GBX3 extends React.Component {
 		if (articleIDChanged) {
 			const setInfo = await this.setInfo();
 			if (setInfo) {
+				console.log('componentDidUpdate', articleID);
 				this.loadGBX3(articleID);
 			}
 		}
@@ -246,6 +247,7 @@ class GBX3 extends React.Component {
 		info.sourceLocation = this.props.sourceLocation || sourceLocation;
 		info.project = util.getValue(queryParams, 'project', this.props.project || null);
 
+		if (this.props.backToOrgCallback) info.originTemplate = 'org';
 		if (this.props.exitURL) info.exitURL = this.props.exitURL;
 
 		if (has(queryParams, 'public') || this.props.public) {
@@ -365,6 +367,7 @@ class GBX3 extends React.Component {
 			items.push(
 				<Layout
 					key={'public'}
+					loadOrg={this.loadOrg}
 					loadGBX3={this.loadGBX3}
 					reloadGBX3={this.reloadGBX3}
 					primaryColor={this.props.primaryColor}

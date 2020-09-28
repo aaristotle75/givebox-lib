@@ -2,9 +2,9 @@ import React, { PureComponent } from 'react';
 import {
 	util
 } from '../../';
-import CustomCKEditor4 from '../../editor/CustomCKEditor4';
+import CustomCKEditor4 from '../lib/editor/CustomCKEditor4';
 
-export default class Editor extends PureComponent {
+export default class EditorTest extends PureComponent {
 
 	constructor(props) {
 		super(props);
@@ -44,6 +44,8 @@ export default class Editor extends PureComponent {
 			removePlugins = 'image,elementspath';
 		}
 
+		console.log('execute toolbar', toolbar);
+
 		return (
 			<CustomCKEditor4
 				orgID={orgID}
@@ -80,7 +82,7 @@ export default class Editor extends PureComponent {
 	}
 }
 
-Editor.defaultProps = {
+EditorTest.defaultProps = {
 	type: 'classic',
 	width: '100%',
 	balloonButtons: 'Image'

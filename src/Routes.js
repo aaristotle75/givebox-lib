@@ -4,7 +4,7 @@ import { util, ModalRoute, HelpDeskButton } from './lib';
 import Sidebar from './demo/Sidebar';
 import Header from './demo/Header';
 import Test from './demo/Test';
-import UploadEditorTest from './demo/UploadEditorTest';
+import EditorTest from './demo/EditorTest';
 
 class Routes extends Component {
 
@@ -56,7 +56,7 @@ class Routes extends Component {
 										<Route exact path='/gbx3' render={(props) => loadComponent('demo/GBX3Test', { routeProps: props })}  />
 										<Route exact path='/gbx3/:articleID' render={(props) => loadComponent('demo/GBX3Test', { routeProps: props })}  />
 										<Route path='/test' component={Test} />
-										<Route path='/editor' component={UploadEditorTest} />
+										<Route path='/editor' component={EditorTest} />
 										<Route path='/upload' render={(props) => loadComponent('modal/lib/editor/CKEditorUpload',  { useProjectRoot: false, routeProps: props })}  />
 										<Route render={() => <div>Error</div>} />
 									</Switch>

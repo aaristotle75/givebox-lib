@@ -25,11 +25,24 @@ class Layout extends React.Component {
 		super(props);
 		this.renderDisplay = this.renderDisplay.bind(this);
 		this.closeGBXModal = this.closeGBXModal.bind(this);
+		this.backToOrg = this.backToOrg.bind(this);
 		this.state = {
 		}
 	}
 
 	componentDidMount() {
+	}
+
+	backToOrg() {
+
+		const {
+			orgID
+		} = this.props;
+
+		if (this.props.backToOrgCallback) this.props.backToOrgCallback('org');
+		else {
+			this.props.loadOrg(orgID);
+		}
 	}
 
 	closeGBXModal() {
@@ -99,7 +112,8 @@ class Layout extends React.Component {
 			primaryColor,
 			modal,
 			kind,
-			status
+			status,
+			originTemplate
 		} = this.props;
 
 		const style = { maxWidth: display === 'org' ? '1000px' : '850px' };
@@ -171,8 +185,8 @@ class Layout extends React.Component {
 				</div>
 			: ''}
 
-			{ publicOnly && this.props.backToOrgCallback ?
-				<div onClick={() => this.props.backToOrgCallback('org')} className='backToOrgPage avatarLink'>
+			{ publicOnly && originTemplate === 'org' && display !== 'org' ?
+				<div onClick={() => this.backToOrg()} className='backToOrgPage avatarLink'>
 					<div className='editGraphic'>
 						<span className='icon icon-chevron-left'></span>
 					</div>
@@ -219,8 +233,10 @@ function mapStateToProps(state, props) {
 
 	const access = util.getValue(state, 'resource.access');
 	const orgSlug = util.getValue(state, 'resource.article.data.orgSlug');
+	const orgID = util.getValue(state, 'resource.article.data.orgID');
 	const gbx3 = util.getValue(state, 'gbx3', {});
 	const info = util.getValue(gbx3, 'info', {});
+	const originTemplate = util.getValue(info, 'originTemplate');
 	const kind = util.getValue(info, 'kind');
 	const status = util.getValue(gbx3, 'data.status');
 	const modal = util.getValue(info, 'modal');
@@ -233,6 +249,8 @@ function mapStateToProps(state, props) {
 
 	return {
 		orgSlug,
+		orgID,
+		originTemplate,
 		kind,
 		status,
 		modal,

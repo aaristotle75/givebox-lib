@@ -123,7 +123,7 @@ class BackgroundsEdit extends Component {
 		return (
 			<div className='modalWrapper'>
 				<Collapse
-					label={'Edit Background'}
+					label={'Edit Page Background'}
 					iconPrimary='edit'
 					id={'gbx3-background-edit'}
 				>
@@ -132,7 +132,7 @@ class BackgroundsEdit extends Component {
 							<ColorPicker
 								name='bgColor'
 								fixedLabel={true}
-								label='Background Color'
+								label='Page Background Color'
 								onAccept={(name, value) => {
 									this.updateBackground({
 										bgColor: value

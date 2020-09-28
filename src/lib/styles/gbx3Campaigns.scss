@@ -1,0 +1,196 @@
+@import 'variables.scss';
+
+$artHeight: 375px;
+
+.gbx3 {
+
+	.campaignsBlockList {
+
+		.paginate {
+			padding-top: 0px;
+		}
+
+		.pagination .active {
+			background: transparent;
+		}
+	}
+
+	.scrollableCampaignsList {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 75px;
+		overflow-y: auto;
+		overflow-x: hidden;
+		height: auto;
+		width: 100%;
+
+		@media (max-width: $breakpoint) {
+			position: relative;
+			height: 100%;
+			margin-bottom: 50px;
+			overflow-y: hidden;
+		}
+	}
+
+	.paginateCampaignsList {
+		position: absolute;
+		bottom: 0;
+		height: 75px;
+		width: 100%;
+
+		@media (max-width: $breakpoint) {
+			position: relative;
+			height: 100px;
+		}
+
+	}
+
+	ul.campaignsList {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-around;
+		list-style-type: none;
+
+		li {
+			display: flex;
+			flex: 1 0 31%;
+			margin: 5px;
+			justify-content: center;
+		}
+
+	}
+
+	.campaignContainer {
+		margin-top: 20px;
+	}
+
+	.articleCardWrapper {
+		position: relative;
+		display: flex;
+		align-items: center;
+		flex-direction: column;
+		width: 250px;
+		height: $artHeight;
+		padding: 0px;
+		margin: 20px 0px;
+		border-radius: 20px;
+	}
+
+	.articleCardShadow {
+		position: absolute;
+		top: 0;
+		right: 0;
+		left: 0;
+		bottom: 0;
+		width: 250px;
+		height: $artHeight;
+		border-radius: 20px;
+		//@include box-shadow(0px 3px 6px 0px transparentize($med-gray, .4));
+	}
+
+	.articleCard {
+		display: flex;
+		align-items: center;
+		flex-direction: column;
+		position: absolute;
+		top: 0;
+		right: 0;
+		left: 0;
+		bottom: 0;
+		width: 250px;
+		height: $artHeight;
+		border-radius: 20px;
+		overflow: hidden;
+		-webkit-mask-image: -webkit-radial-gradient(white, black);
+
+		.kind {
+			margin: 10px 0;
+			font-weight: 300;
+			display: flex;
+			align-items: center;
+			color: $med-blue-gray;
+			.icon {
+				font-size: 1.3em;
+				margin-right: 5px;
+			}
+			.kindText {
+				font-size: .83em;
+			}
+		}
+
+		.imageContainer {
+			position: relative;
+			height: 250px;
+			width: 250px;
+			overflow: hidden;
+		}
+
+		.image {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			height: 250px;
+			width: 250px;
+			overflow: hidden;
+			background: transparent;
+			img {
+				@include default-transition(.25s);
+			}
+
+			.imageCover {
+				max-width: 250px;
+				height: 250px;
+			}
+		}
+
+		.imageLink {
+			width: 60%;
+			left: 0px;
+			right: 0px;
+			bottom: 15px;
+			margin: 0 auto;
+			text-align: center;
+		}
+
+		.imageLink:hover {
+			color: $white;
+			@include default-transition(.25s);
+			@include drop-shadow(1px 5px 13px $dark-blue-gray);
+		}
+
+		.image:hover {
+			img {
+				transform: scale(1.5);
+			}
+		}
+
+		.imageBg {
+			position: absolute;
+			height: 250px;
+			width: 250px;
+			@include filter(blur(15px));
+			opacity: .4;
+		}
+
+		button.title {
+			font-weight: 400;
+			text-align: center;
+			padding: 5px !important;
+			font-size: $normal-text-size;
+			color: $med-blue-dark-gray;
+		}
+
+
+		button.title:hover {
+			color: $light-med-gray;
+		}
+
+		button.learnMore {
+			position: absolute;
+			bottom: 20px;
+		}
+	}
+}

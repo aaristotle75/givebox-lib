@@ -201,6 +201,7 @@ class Org extends React.Component {
 			breakpoint,
 			outline,
 			blocks,
+			loadGBX3,
 			reloadGBX3
 		} = this.props;
 
@@ -226,6 +227,7 @@ class Org extends React.Component {
 								name={value.name}
 								blockRef={ref}
 								scrollTo={this.scrollTo}
+								loadGBX3={loadGBX3}
 								reloadGBX3={reloadGBX3}
 								blockType={'org'}
 								saveBlock={this.saveBlock}

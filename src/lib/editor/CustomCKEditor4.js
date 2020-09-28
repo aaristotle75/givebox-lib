@@ -104,9 +104,15 @@ class CustomCKEditor4 extends Component {
 
 	setConfig() {
 		const bindthis = this;
-		const removeButtons = 'Save,NewPage,Preview,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Find,Replace,SelectAll,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Strike,Subscript,Superscript,CopyFormatting,RemoveFormat,Blockquote,CreateDiv,JustifyBlock,Language,BidiRtl,BidiLtr,Flash,Smiley,PageBreak,Iframe,About,Styles,SpecialChar,Maximize,Source,Scayt,Format,Anchor,Underline' + this.props.removeButtons;
+		const removeButtons = 'Save,NewPage,Preview,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Find,Replace,SelectAll,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Strike,Subscript,Superscript,CopyFormatting,RemoveFormat,Blockquote,CreateDiv,JustifyBlock,Language,BidiRtl,BidiLtr,Flash,Smiley,PageBreak,Iframe,About,SpecialChar,Maximize,Source,Scayt,Format,Anchor,Underline' + this.props.removeButtons;
 
 		const defaultConfig = {
+			stylesSet: [
+				{ name: 'Heavy Font', element: 'span', styles: { 'font-weight': '600' } },
+				{ name: 'Normal Font' , element: 'span', styles: { 'font-weight': '500' } },
+				{ name: 'Light Font' , element: 'span', styles: { 'font-weight': '400' } },
+				{ name: 'Thin Font' , element: 'span', styles: { 'font-weight': '300' } }
+			],
 			width: this.props.width,
 			height: this.props.height,
 			extraPlugins: 'autoembed,balloontoolbar,image2',
@@ -215,7 +221,7 @@ CustomCKEditor4.defaultProps = {
 	type: 'classic',
 	widgets: 'image',
 	toolbar: [
-		[ 'Bold', 'Italic', '-', 'Font', '-', 'FontSize', 'TextColor', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', '-', 'Link', 'Unlink', '-', 'Image']
+		[ 'Bold', 'Italic', '-', 'Font', '-', 'FontSize', 'TextColor', 'Styles', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', '-', 'Link', 'Unlink', '-', 'Image']
 	],
 	contentCss: 'https://givebox.s3-us-west-1.amazonaws.com/public/css/contents.css',
 	removePlugins: 'image,elementspath,resize',

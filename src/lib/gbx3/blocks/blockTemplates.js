@@ -376,6 +376,40 @@ export const videoBlock = {
 	}
 };
 
+export const mainCampaigns = {
+	order: 8,
+	name: 'mainCampaigns',
+	title: 'Main Campaigns',
+	type: 'Campaigns',
+	subType: 'main',
+	multiple: false,
+	mobileRelativeBlock: 10,
+	options: {
+		list: 'all', // options: all, kind specific, custom
+		customList: [],
+		pagination: true,
+		maxRecords: 3
+	},
+	style: {
+		borderRadius: 0,
+		titleFontSize: 18
+	},
+	grid: {
+		desktop: { i: 'mainCampaigns', x: 0, y: 38, w: 12, h: 52, enabled: true },
+		mobile: { i: 'mainCampaigns', x: 0, y: 2, w: 6, h: 24, enabled: false }
+	}
+};
+
+export const campaignsBlock = {
+	...mainCampaigns,
+	order: 8,
+	name: 'campaignsBlock',
+	title: 'Campaigns',
+	type: 'Campaigns',
+	multiple: true,
+	mobileRelativeBlock: 10
+};
+
 const articleBlocks = {
 	logo,
 	title,
@@ -634,6 +668,8 @@ export const blockTemplates = {
 				mobile: { i: 'description', x: 1, y: 0, w: 6, h: 1, static: true, enabled: false }
 			}
 		},
+		mainCampaigns,
+		campaignsBlock,
 		contentBlock,
 		imageBlock,
 		videoBlock
@@ -668,6 +704,7 @@ export const defaultBlocks = {
 		'logo',
 		'orgName',
 		'media',
-		'description'
+		'description',
+		'mainCampaigns'
 	]
 }
