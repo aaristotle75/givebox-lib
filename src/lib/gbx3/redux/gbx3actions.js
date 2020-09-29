@@ -1053,7 +1053,12 @@ export function loadOrg(orgID, callback) {
 					const embedButtonCustom = util.getValue(globalsCustom, 'embedButton', {});
 
 					//const blocks = !util.isEmpty(blocksCustom) ? blocksCustom : blocksDefault;
-					const blocks = merge(blocksDefault, blocksCustom);
+					const blocks = {
+						...blocksDefault,
+						...blocksCustom
+					};
+
+					//merge(blocksDefault, blocksCustom);
 
 					const globals = {
 						...globalsState,

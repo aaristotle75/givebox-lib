@@ -18,6 +18,7 @@ import {
 } from '../redux/gbx3actions';
 import '../../styles/gbx3Campaigns.scss';
 import has from 'has';
+const merge = require('deepmerge');
 
 class Campaigns extends Component {
 
@@ -28,8 +29,10 @@ class Campaigns extends Component {
 		this.onClickRemove = this.onClickRemove.bind(this);
 		this.closeEditModal = this.closeEditModal.bind(this);
 		this.optionsUpdated = this.optionsUpdated.bind(this);
+		this.customListUpdated = this.customListUpdated.bind(this);
 		this.getCampaigns = this.getCampaigns.bind(this);
 		this.renderCampaigns = this.renderCampaigns.bind(this);
+		this.filterCampaigns = this.filterCampaigns.bind(this);
 		this.setStyle = this.setStyle.bind(this);
 		this.onMouseEnter = this.onMouseEnter.bind(this);
 		this.onMouseLeave = this.onMouseLeave.bind(this);
@@ -39,8 +42,10 @@ class Campaigns extends Component {
 
 		this.state = {
 			options,
+			defaultOptions: util.deepClone(options),
 			hasBeenUpdated: true,
-			tab: 'edit'
+			tab: 'edit',
+			loading: false
 		};
 		this.blockRef = null;
 		this.width = null;
@@ -49,7 +54,27 @@ class Campaigns extends Component {
 	}
 
 	componentDidMount() {
+		const {
+			options,
+			orgID,
+			name
+		} = this.props;
+
+		if (!util.getValue(options, 'initiated')) {
+			this.props.getResource('orgArticles', {
+				customName: `${name}Init`,
+				orgID,
+				callback: (res, err) => {
+					// callback
+				},
+				search: {
+					filter: 'givebox:true',
+					max: 1000
+				}
+			});
+		}
 		this.getCampaigns();
+
 		this.blockRef = this.props.blockRef.current;
 		if (this.blockRef) {
 			this.width = this.blockRef.clientWidth;
@@ -108,31 +133,53 @@ class Campaigns extends Component {
 
 	closeEditModal(type = 'save') {
 		const {
-			block
-		} = this.props;
-
-		const {
+			options,
+			defaultOptions,
 			hasBeenUpdated
 		} = this.state;
+
 		if (type !== 'cancel') {
 			const data = {};
 			this.props.saveBlock({
 				data,
 				hasBeenUpdated,
-				content: {
-
-				},
-				options: {
-				}
+				options
 			});
 		} else {
 			this.setState({
+				options: util.deepClone(defaultOptions)
 			}, this.props.closeEditModal);
 		}
 	}
 
-	optionsUpdated(name, obj) {
-		this.setState({ [name]: { ...obj }, hasBeenUpdated: true });
+	customListUpdated(customList = [], callback) {
+		const options = this.state.options;
+
+		this.setState({
+			options: {
+				...options,
+				customList: [
+					...util.getValue(options, 'customList', []),
+					...customList
+				]
+			},
+			hasBeenUpdated: true
+		}, () => {
+			if (callback) callback();
+		});
+	}
+
+	optionsUpdated(opts = {}, callback) {
+
+		this.setState({
+			options: {
+				...this.state.options,
+				...opts
+			},
+			hasBeenUpdated: true
+		}, () => {
+			if (callback) callback();
+		});
 	}
 
 	setTab(tab) {
@@ -143,26 +190,46 @@ class Campaigns extends Component {
 		console.log('onClickRemove');
 	}
 
-	getCampaigns() {
+	getCampaigns(reload) {
 		const {
 			orgID,
-			name
+			name,
+			options,
 		} = this.props;
 
-		const filter = `givebox:true`; //`ID:383196%2CID:383193%2CID:383189`;
+		const filter = this.filterCampaigns();
+		console.log('execute getCampaigns', filter);
+		const max = util.getValue(options, 'maxRecords', 3);
 
 		this.props.getResource('orgArticles', {
 			customName: name,
 			orgID,
-			reload: true,
+			reload,
 			callback: (res, err) => {
 				this.setStyle();
 			},
 			search: {
 				filter,
-				max: 3
+				max
 			}
 		});
+	}
+
+	filterCampaigns(forAdding) {
+		const {
+			options
+		} = this.props;
+
+		let filter = '';
+		const customList = util.getValue(options, 'customList', []);
+		if (!util.isEmpty(customList)) {
+			customList.forEach((value) => {
+				filter = forAdding ? filter + `%3BID:!${value}` : filter + `%2CID:${value}`;
+			});
+		} else {
+			filter = forAdding ? 'givebox:false' : 'givebox:true';
+		}
+		return filter;
 	}
 
 	onMouseEnter(ID) {
@@ -241,18 +308,20 @@ class Campaigns extends Component {
 			modalID,
 			title,
 			block,
+			campaignsInit,
 			campaignsFetching
 		} = this.props;
 
 		const {
-			options
+			options,
+			loading
 		} = this.state;
 
 		const nonremovable = util.getValue(block, 'nonremovable', false);
 
 		return (
 			<div className={'campaignsBlock'}>
-				{ campaignsFetching ? <Loader msg={'Loading campaigns...'} /> : '' }
+				{ campaignsFetching || loading ? <Loader msg={'Loading campaigns...'} /> : '' }
 				<ModalRoute
 					className='gbx3'
 					id={modalID}
@@ -265,8 +334,10 @@ class Campaigns extends Component {
 						<CampaignsEdit
 							{...this.props}
 							optionsUpdated={this.optionsUpdated}
+							customListUpdated={this.customListUpdated}s
 							options={options}
-							getCampaigns={this.getCampaigns}
+							campaignsInit={campaignsInit}
+							filterCampaigns={this.filterCampaigns}
 						/>
 					}
 					buttonGroup={
@@ -288,6 +359,7 @@ class Campaigns extends Component {
 function mapStateToProps(state, props) {
 
 	const primaryColor = util.getValue(state, 'gbx3.globals.gbxStyle.primaryColor');
+	const campaignsInit = util.getValue(state, `resource.${props.name}Init.data`, {});
 	const campaigns = util.getValue(state, `resource.${props.name}.data`, {});
 	const campaignsTotal = util.getValue(state, `resource.${props.name}.meta.total`, 0);
 	const campaignsFetching = util.getValue(state, `resource.${props.name}.isFetching`, false);
@@ -295,6 +367,7 @@ function mapStateToProps(state, props) {
 	return {
 		primaryColor,
 		campaigns,
+		campaignsInit,
 		campaignsTotal,
 		campaignsFetching
 	}

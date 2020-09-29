@@ -34,8 +34,10 @@ class ArticleList extends Component {
 
 	getArticles() {
 		const {
-			filter
+			filterFunc
 		} = this.props;
+
+		const filter = filterFunc ? filterFunc() : this.props.filter;
 
 		this.props.getResource('orgArticles', {
 			customName: 'articlesList',
@@ -65,7 +67,8 @@ class ArticleList extends Component {
 			selectedText,
 			selectText,
 			notPublicText,
-			checkPublic
+			checkPublic,
+			isMobile
 		} = this.props;
 
 		const items = []
@@ -82,7 +85,7 @@ class ArticleList extends Component {
 							this.state.selected.includes(value.ID) ?
 								<span style={{ fontSize: 14 }} className='green'>{selectedText}</span>
 							:
-								<GBLink onClick={() => this.onClickArticle(value)}><span className='icon icon-x'></span> {selectText}</GBLink>
+								<GBLink onClick={() => this.onClickArticle(value)}><span className='icon icon-plus'></span> {isMobile ? 'Select' : selectText}</GBLink>
 						}
 					</div>
 					<div className='articleImage'>
@@ -110,7 +113,8 @@ class ArticleList extends Component {
 	render() {
 
 		const {
-			editable
+			editable,
+			title
 		} = this.props;
 
 		if (util.isLoading(this.props.articles)) return <Loader msg='Load Form List' />
@@ -120,7 +124,7 @@ class ArticleList extends Component {
 		return (
 			<div className={`gbx3Shop modalWrapper ${editable ? 'editable' : ''}`}>
 				{ this.state.loading ? <Loader msg='Selecting Forms...' /> : ''}
-				<h2 style={{ marginBottom: 20 }} className='center'>Select Forms</h2>
+				<h2 style={{ marginBottom: 20 }} className='center'>{title}</h2>
 				<div className='formSectionContainer'>
 					<div className='formSection'>
 						{this.renderArticles()}
@@ -138,6 +142,7 @@ class ArticleList extends Component {
 };
 
 ArticleList.defaultProps = {
+	title: 'Select Forms',
 	notPublicText: 'Set to Private',
 	checkPublic: true,
 	selectedText: 'Selected',
@@ -148,10 +153,12 @@ function mapStateToProps(state, props) {
 
 	const editable = util.getValue(state, 'gbx3.admin.editable');
 	const articles = util.getValue(state, 'resource.articlesList', {});
+	const isMobile = util.getValue(state, 'gbx3.info.breakpoint') === 'mobile' ? true : false;
 
 	return {
 		editable,
-		articles
+		articles,
+		isMobile
 	}
 }
 

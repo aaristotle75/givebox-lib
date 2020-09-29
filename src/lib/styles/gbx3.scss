@@ -2172,6 +2172,18 @@
 		width: 100%;
 	}
 
+	.articleGroupList.campaignsEdit {
+		@media (min-width: $breakpoint ) {
+			overflow-y: auto;
+			overflow-x: hidden;
+			max-height: 500px;
+		}
+	}
+
+	.articleGroupList.campaignsEdit::-webkit-scrollbar-thumb {
+		background-color: transparentize($green, .6);
+	}
+
 	.articleGroup {
 		padding: 2% 5%;
 		width: 100%;
@@ -2233,6 +2245,7 @@
 			margin-top: 5px;
 			margin-left: 10px;
 			font-size: .9em;
+			width: 70%;
 		}
 	}
 

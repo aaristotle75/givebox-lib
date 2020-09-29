@@ -26,6 +26,7 @@ class CheckoutDonationSelect extends Component {
 	}
 
 	componentDidMount() {
+		console.log('execute orgID', this.props.orgID);
 		this.props.getResource('orgFundraisers', {
 			customName: 'checkoutDonationForms',
 			orgID: this.props.orgID

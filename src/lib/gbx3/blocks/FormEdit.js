@@ -74,10 +74,13 @@ class FormEdit extends Component {
 			checkoutDonationText,
 			checkoutDonationAmount,
 			checkoutDonationFormID,
-			checkoutDonationFormTitle,
+			checkoutDonationFormTitle
+		} = this.props.form;
+
+		const {
 			kind,
 			orgID
-		} = this.props.form;
+		} = this.props;
 
 		return (
 			<>

@@ -58,6 +58,7 @@ class CheckoutDonationEdit extends Component{
 					component={(props) =>
 						<CheckoutDonationSelect
 							{...props}
+							orgID={this.props.orgID}
 							updateForm={this.props.updateForm}
 							updateMulti={this.props.updateMulti}
 						/>

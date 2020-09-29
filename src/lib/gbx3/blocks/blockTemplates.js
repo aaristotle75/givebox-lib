@@ -379,16 +379,17 @@ export const videoBlock = {
 export const mainCampaigns = {
 	order: 8,
 	name: 'mainCampaigns',
-	title: 'Main Campaigns',
+	title: 'Main Form List',
 	type: 'Campaigns',
 	subType: 'main',
 	multiple: false,
 	mobileRelativeBlock: 10,
 	options: {
-		list: 'all', // options: all, kind specific, custom
+		kindList: ['fundraiser', 'event', 'membership', 'sweepstake'],
 		customList: [],
 		pagination: true,
-		maxRecords: 3
+		maxRecords: 3,
+		initiated: false
 	},
 	style: {
 		borderRadius: 0,
@@ -404,7 +405,7 @@ export const campaignsBlock = {
 	...mainCampaigns,
 	order: 8,
 	name: 'campaignsBlock',
-	title: 'Campaigns',
+	title: 'Form List',
 	type: 'Campaigns',
 	multiple: true,
 	mobileRelativeBlock: 10
