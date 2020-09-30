@@ -2136,6 +2136,9 @@
 	position: absolute;
 	right: 20px;
 	top: 25px;
+	width: 125px;
+	justify-content: space-between;
+	align-items: center;
 
 	button.link {
 		display: flex;
@@ -2151,6 +2154,11 @@
 	button.link:hover {
 		color: transparentize($mainColor, .6);
 	}
+
+	.tooltip.right .tooltipTop {
+		top: -10px;
+	}
+
 }
 
 /*---------- SHOP --------*/
@@ -2177,6 +2185,7 @@
 			overflow-y: auto;
 			overflow-x: hidden;
 			max-height: 500px;
+			padding: 20px 0;
 		}
 	}
 
@@ -2262,14 +2271,22 @@
 }
 
 .gbx3Shop.editable {
+
+	.sortableListItem {
+		background: transparent;
+	}
+
 	.articleItem {
 		cursor: default;
+		.editableRowMenu.wasAdded {
+			display: block;
+		}
 	}
 
 	.articleItem:hover {
 			background: transparent;
 		.editableRowMenu {
-			display: block;
+			display: flex !important;
 		}
 	}
 }

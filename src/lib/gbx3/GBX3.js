@@ -138,7 +138,6 @@ class GBX3 extends React.Component {
 		if (articleIDChanged) {
 			const setInfo = await this.setInfo();
 			if (setInfo) {
-				console.log('componentDidUpdate', articleID);
 				this.loadGBX3(articleID);
 			}
 		}
@@ -147,15 +146,32 @@ class GBX3 extends React.Component {
 	async exitAdmin() {
 		const {
 			project,
-			articleID
+			articleID,
+			orgID,
+			originTemplate
 		} = this.props;
 
-		const display = !articleID ? 'org' : this.props.display;
+		const display = !articleID || originTemplate === 'org' ? 'org' : this.props.display;
 
 		if (project === 'share') {
 			const infoUpdated = await this.props.updateInfo({ display, stage: 'public' });
 			if (infoUpdated) this.props.updateAdmin({ publicView: true });
 		}
+		if (display !== this.props.display) {
+			switch (display) {
+				case 'org': {
+					this.loadOrg(orgID);
+					break;
+				}
+
+				case 'article':
+				default: {
+					this.loadGBX3(articleID);
+					break;
+				}
+			}
+		}
+
 		window.parent.postMessage('gbx3ExitCallback', '*');
 	}
 
@@ -213,8 +229,9 @@ class GBX3 extends React.Component {
 			obj.isVolunteer = true;
 			obj.volunteerID = util.getValue(access, 'userID', null);
 		}
+
 		this.props.updateAdmin(obj);
-		this.props.updateInfo({ kind, stage: 'admin' });
+		this.props.updateInfo({ kind, stage: 'admin', display: 'article' });
 		this.props.setLoading(false);
 	}
 
@@ -420,6 +437,8 @@ function mapStateToProps(state, props) {
 	const loading = util.getValue(gbx3, 'loading');
 	const globals = util.getValue(gbx3, 'globals', {});
 	const info = util.getValue(gbx3, 'info', {});
+	const originTemplate = util.getValue(info, 'originTemplate');
+	const display = util.getValue(info, 'display');
 	const sourceLocation = util.getValue(info, 'sourceLocation');
 	const gbxStyle = util.getValue(globals, 'gbxStyle', {});
 	const primaryColor = util.getValue(gbxStyle, 'primaryColor');
@@ -432,6 +451,8 @@ function mapStateToProps(state, props) {
 		globals,
 		loading,
 		info,
+		originTemplate,
+		display,
 		primaryColor,
 		sourceLocation,
 		hasAccessToEdit,

@@ -39,10 +39,22 @@ $artHeight: 375px;
 		bottom: 0;
 		height: 75px;
 		width: 100%;
+		text-align: center;
 
 		@media (max-width: $breakpoint) {
 			position: relative;
 			height: 100px;
+		}
+
+		.pagination {
+				a {
+					font-weight: 500;
+				}
+
+				.active a,
+				.disabled a {
+					color: $med-blue-gray;
+				}
 		}
 
 	}

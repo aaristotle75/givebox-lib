@@ -12,72 +12,73 @@ import {
 	ModalLink
 } from '../../';
 import { getResource } from '../../api/helpers';
+import {SortableContainer, SortableElement, SortableHandle} from 'react-sortable-hoc';
+const arrayMove = require('array-move');
+
+const DragHandle = SortableHandle(() => {
+	return (
+		<GBLink ripple={false} className='tooltip sortable right'>
+			<span className='tooltipTop'><i />Drag & drop to change the order.</span>
+			<span className='icon icon-move'></span>
+		</GBLink>
+	)
+});
+
+const SortableItem = SortableElement(({value}) => {
+	return (
+		<div className='gbx3Shop editable sortableElement' >
+			{value}
+		</div>
+	)
+});
+
+const SortableList = SortableContainer(({items}) => {
+	return (
+		<div>
+			{items.map((value, index) => (
+				<SortableItem key={`item-${index}`} index={index} value={value} />
+			))}
+		</div>
+	);
+});
 
 class CampaignsEdit extends Component{
 	constructor(props){
 		super(props);
+		this.onSortStart = this.onSortStart.bind(this);
+		this.onSortMove = this.onSortMove.bind(this);
+		this.onSortEnd = this.onSortEnd.bind(this);
+		this.updateCustomList = this.updateCustomList.bind(this);
 		this.maxRecordsOptions = this.maxRecordsOptions.bind(this);
 		this.renderArticles = this.renderArticles.bind(this);
 		this.updateCampaign = this.updateCampaign.bind(this);
-		this.getCampaignsForEdit = this.getCampaignsForEdit.bind(this);
-		this.setInitCampaigns = this.setInitCampaigns.bind(this);
 		this.state = {
+			customList: util.getValue(props.options, 'customList', [])
 		};
 	}
 
 	componentDidMount() {
-		const {
-			options
-		} = this.props;
-
-		if (!util.getValue(options, 'initiated')) {
-			this.setInitCampaigns();
-		} else {
-			this.getCampaignsForEdit();
-		}
 	}
 
-	setInitCampaigns() {
-		const {
-			campaignsInit
-		} = this.props;
+	onSortStart(e) {
+		util.noSelection();
+	}
 
-		const customList = [];
+	onSortMove(e) {
+		util.noSelection();
+	}
 
-		if (!util.isEmpty(campaignsInit)) {
-			Object.entries(campaignsInit).forEach(([key, value]) => {
-				customList.push(value.ID);
-			});
-		}
+	onSortEnd = ({oldIndex, newIndex, collection}) => {
+		const customList = [ ...this.state.customList ];
+		this.updateCustomList(arrayMove(customList, oldIndex, newIndex));
+	};
 
-		this.props.optionsUpdated({
-			customList,
-			initiated: true
+	updateCustomList(customList = []) {
+		this.setState({
+			customList
 		}, () => {
-			this.setState({ loading: false });
-			this.getCampaignsForEdit();
-		});
-	}
-
-	getCampaignsForEdit(reload) {
-		const {
-			orgID,
-			name
-		} = this.props;
-
-		const filter = this.props.filterCampaigns();
-
-		this.props.getResource('orgArticles', {
-			customName: name,
-			orgID,
-			reload,
-			callback: (res, err) => {
-				// callback
-			},
-			search: {
-				filter,
-				max: 1000
-			}
+			this.props.optionsUpdated('customList', customList);
+			this.forceUpdate();
 		});
 	}
 
@@ -91,51 +92,50 @@ class CampaignsEdit extends Component{
 	}
 
 	updateCampaign(article, type = 'add', callback) {
-		const {
-			options
-		} = this.props;
 
-		const customList = util.getValue(options, 'customList');
-
+		const customList = util.deepClone(this.state.customList);
 		const {
 			ID
 		} = article;
 
 		switch (type) {
 			case 'remove': {
-				const index = customList.indexOf(ID);
+				const index = customList.findIndex(c => c.ID === ID);
 				if (index >= 0) customList.splice(index, 1);
 				break;
 			}
 
 			case 'add':
 			default: {
-				customList.unshift(ID);
+				customList.unshift(this.props.setCustomListItem(article));
 				break;
 			}
 		}
-		this.props.customListUpdated(customList, () => {
-			this.getCampaignsForEdit(true);
-		})
+		this.setState({ customList }, () => {
+			this.props.optionsUpdated('customList', customList);
+			this.forceUpdate();
+		});
 	}
 
 	renderArticles() {
 		const {
-			campaigns,
+			options,
 			isMobile
 		} = this.props;
 
 		const items = [];
+		const customList = util.getValue(options, 'customList', []);
 
-		if (!util.isEmpty(campaigns)) {
-			Object.entries(campaigns).forEach(([key, value]) => {
+		if (!util.isEmpty(customList)) {
+			Object.entries(customList).forEach(([key, value]) => {
 				items.push(
 					<div
 						key={key}
-						className='articleItem'
+						className='articleItem sortableListItem'
 					>
 						<div className='editableRowMenu'>
-							<GBLink onClick={() => this.updateCampaign(value, 'remove')}><span className='icon icon-x'></span> {isMobile ? 'Remove' : 'Remove From List' }</GBLink>
+							<GBLink onClick={() => this.updateCampaign(value, 'remove')}><span className='icon icon-x'></span> Remove</GBLink>
+							<DragHandle />
 						</div>
 						<div className='articleImage'>
 							<Image url={util.imageUrlWithStyle(value.imageURL, 'thumb')} size='thumb' maxSize={50} />
@@ -151,10 +151,12 @@ class CampaignsEdit extends Component{
 			});
 		}
 
+		const rows =  <SortableList onSortStart={this.onSortStart} onSortMove={this.onSortMove} helperClass='sortableHelper' hideSortableGhost={true} useDragHandle={true} items={items} onSortEnd={this.onSortEnd} />;
+
 		return (
 			<div className='articleGroupList campaignsEdit'>
 				<div className='articleGroup'>
-				{!util.isEmpty(items) ? items : <span className='noRecords'>No Campaigns are Available</span>}
+				{!util.isEmpty(rows) ? rows : <span className='noRecords'>No Campaigns are Available</span>}
 				</div>
 			</div>
 		)
@@ -182,7 +184,7 @@ class CampaignsEdit extends Component{
 						>
 							<div className='formSectionContainer'>
 								<div className='formSection'>
-									<div className='flexCenter' style={{ margin: '20px 0 10px 0' }}>
+									<div className='flexCenter' style={{ margin: '20px 0 0px 0' }}>
 										<ModalLink
 											id='articleList'
 											style={{ fontSize: 14 }}
@@ -223,9 +225,7 @@ class CampaignsEdit extends Component{
 										fixedLabel={true}
 										defaultValue={+maxRecords}
 										onChange={(name, value) => {
-											this.props.optionsUpdated({
-												maxRecords: +value
-											});
+											this.props.optionsUpdated('maxRecords', +value);
 										}}
 										options={this.maxRecordsOptions()}
 									/>

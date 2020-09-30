@@ -385,11 +385,11 @@ export const mainCampaigns = {
 	multiple: false,
 	mobileRelativeBlock: 10,
 	options: {
-		kindList: ['fundraiser', 'event', 'membership', 'sweepstake'],
-		customList: [],
 		pagination: true,
 		maxRecords: 3,
-		initiated: false
+		initiated: false,
+		customList: [],
+		kindList: ['fundraiser', 'event', 'membership', 'sweepstake']
 	},
 	style: {
 		borderRadius: 0,

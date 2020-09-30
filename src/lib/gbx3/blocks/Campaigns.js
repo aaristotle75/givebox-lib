@@ -4,7 +4,6 @@ import {
 	util,
 	GBLink,
 	ModalRoute,
-	Paginate,
 	Loader,
 	types,
 	Image
@@ -17,8 +16,7 @@ import {
 	clearGBX3
 } from '../redux/gbx3actions';
 import '../../styles/gbx3Campaigns.scss';
-import has from 'has';
-const merge = require('deepmerge');
+import Pagination from "react-js-pagination";
 
 class Campaigns extends Component {
 
@@ -29,23 +27,24 @@ class Campaigns extends Component {
 		this.onClickRemove = this.onClickRemove.bind(this);
 		this.closeEditModal = this.closeEditModal.bind(this);
 		this.optionsUpdated = this.optionsUpdated.bind(this);
-		this.customListUpdated = this.customListUpdated.bind(this);
-		this.getCampaigns = this.getCampaigns.bind(this);
+		this.setInitCampaigns = this.setInitCampaigns.bind(this);
 		this.renderCampaigns = this.renderCampaigns.bind(this);
 		this.filterCampaigns = this.filterCampaigns.bind(this);
 		this.setStyle = this.setStyle.bind(this);
 		this.onMouseEnter = this.onMouseEnter.bind(this);
 		this.onMouseLeave = this.onMouseLeave.bind(this);
 		this.loadGBX = this.loadGBX.bind(this);
+		this.setCustomListItem = this.setCustomListItem.bind(this);
 
-		const options = props.options;
+		const options = util.deepClone(props.options);
 
 		this.state = {
 			options,
 			defaultOptions: util.deepClone(options),
 			hasBeenUpdated: true,
 			tab: 'edit',
-			loading: false
+			loading: false,
+			pageNumber: 1
 		};
 		this.blockRef = null;
 		this.width = null;
@@ -55,17 +54,22 @@ class Campaigns extends Component {
 
 	componentDidMount() {
 		const {
-			options,
 			orgID,
 			name
 		} = this.props;
 
-		if (!util.getValue(options, 'initiated')) {
+		const {
+			options
+		} = this.state;
+
+		const initiated = util.getValue(options, 'initiated');
+
+		if (!initiated) {
 			this.props.getResource('orgArticles', {
 				customName: `${name}Init`,
 				orgID,
 				callback: (res, err) => {
-					// callback
+					this.setInitCampaigns();
 				},
 				search: {
 					filter: 'givebox:true',
@@ -73,17 +77,21 @@ class Campaigns extends Component {
 				}
 			});
 		}
-		this.getCampaigns();
 
 		this.blockRef = this.props.blockRef.current;
 		if (this.blockRef) {
 			this.width = this.blockRef.clientWidth;
 			this.height = this.blockRef.clientHeight;
 		}
+
+		this.setStyle();
 	}
 
-	componentDidUpdate() {
+	componentDidUpdate(prevProps) {
 		this.props.setDisplayHeight(this.displayRef);
+		if (prevProps.primaryColor !== this.props.primaryColor) {
+			this.setStyle();
+		}
 	}
 
 	async loadGBX(ID) {
@@ -109,6 +117,15 @@ class Campaigns extends Component {
 			.gbx3 .campaignsBlockList .pagination .page:hover {
 				color: ${primaryColor};
 			}
+
+			.gbx3 .paginateCampaignsList .pagination a {
+				color: ${primaryColor};
+			}
+
+			.gbx3 .paginateCampaignsList .pagination a:hover {
+				color: ${color};
+			}
+
 		`;
 
 		const el = document.getElementById('campaignStyle');
@@ -148,34 +165,58 @@ class Campaigns extends Component {
 		} else {
 			this.setState({
 				options: util.deepClone(defaultOptions)
-			}, this.props.closeEditModal);
+			}, () => {
+				this.props.closeEditModal();
+			})
 		}
 	}
 
-	customListUpdated(customList = [], callback) {
-		const options = this.state.options;
+	setCustomListItem(article) {
+		const {
+			ID,
+			kindID,
+			kind,
+			title,
+			imageURL,
+			publishedStatus
+		} = article;
 
-		this.setState({
-			options: {
-				...options,
-				customList: [
-					...util.getValue(options, 'customList', []),
-					...customList
-				]
-			},
-			hasBeenUpdated: true
-		}, () => {
-			if (callback) callback();
+		return {
+			ID,
+			kindID,
+			kind,
+			title,
+			imageURL,
+			publishedStatus
+		}
+	}
+
+	setInitCampaigns() {
+		const {
+			campaignsInit
+		} = this.props;
+
+		const customList = [];
+
+		if (!util.isEmpty(campaignsInit)) {
+			Object.entries(campaignsInit).forEach(([key, value]) => {
+				customList.push(this.setCustomListItem(value));
+			});
+		}
+
+		this.optionsUpdated('initiated', true, () => {
+			this.optionsUpdated('customList', customList, () => {
+				this.setState({ loading: false });
+			})
 		});
 	}
 
-	optionsUpdated(opts = {}, callback) {
+	optionsUpdated(name, value, callback) {
+		const options = this.state.options;
+		options[name] = value;
 
 		this.setState({
-			options: {
-				...this.state.options,
-				...opts
-			},
+			options,
 			hasBeenUpdated: true
 		}, () => {
 			if (callback) callback();
@@ -190,41 +231,17 @@ class Campaigns extends Component {
 		console.log('onClickRemove');
 	}
 
-	getCampaigns(reload) {
-		const {
-			orgID,
-			name,
-			options,
-		} = this.props;
-
-		const filter = this.filterCampaigns();
-		console.log('execute getCampaigns', filter);
-		const max = util.getValue(options, 'maxRecords', 3);
-
-		this.props.getResource('orgArticles', {
-			customName: name,
-			orgID,
-			reload,
-			callback: (res, err) => {
-				this.setStyle();
-			},
-			search: {
-				filter,
-				max
-			}
-		});
-	}
-
 	filterCampaigns(forAdding) {
 		const {
 			options
-		} = this.props;
+		} = this.state;
 
-		let filter = '';
 		const customList = util.getValue(options, 'customList', []);
+		let filter = '';
+
 		if (!util.isEmpty(customList)) {
-			customList.forEach((value) => {
-				filter = forAdding ? filter + `%3BID:!${value}` : filter + `%2CID:${value}`;
+			Object.entries(customList).forEach(([key, value]) => {
+				filter = forAdding ? filter + `%3BID:!${value.ID}` : filter + `%2CID:${value.ID}`;
 			});
 		} else {
 			filter = forAdding ? 'givebox:false' : 'givebox:true';
@@ -240,16 +257,28 @@ class Campaigns extends Component {
 		//console.log('execute onMouseLeave');
 	}
 
+	handlePageChange(pageNumber) {
+		this.setState({ pageNumber });
+	}
+
 	renderCampaigns() {
 		const {
-			name,
-			campaigns,
-			campaignsTotal
+			options
 		} = this.props;
 
+		const {
+			pageNumber
+		} = this.state;
+
 		const items = [];
-		if (!util.isEmpty(campaigns)) {
-			Object.entries(campaigns).forEach(([key, value]) => {
+		const customList = util.deepClone(util.getValue(options, 'customList', []));
+		const maxRecords = util.getValue(options, 'maxRecords', 3);
+		const length = customList.length;
+		const start = (pageNumber - 1) * maxRecords;
+		const pageList = customList.splice(start, maxRecords);
+
+		if (!util.isEmpty(pageList)) {
+			Object.entries(pageList).forEach(([key, value]) => {
 				const status = util.getValue(value, 'publishedStatus', {});
 				const webApp = util.getValue(status, 'webApp', null);
 				const published = value.kind !== 'fundraiser' && webApp ? false : true;
@@ -292,10 +321,16 @@ class Campaigns extends Component {
 						{!util.isEmpty(items) ? items : <span className='noRecords'></span>}
 					</ul>
 				</div>
-				{ campaignsTotal > 3 ?
+				{ length > maxRecords ?
 				<div className='paginateCampaignsList'>
-					<Paginate
-						customName={name}
+					<Pagination
+						activePage={pageNumber}
+						itemsCountPerPage={maxRecords}
+						totalItemsCount={length}
+						pageRangeDisplayed={3}
+						onChange={this.handlePageChange.bind(this)}
+						hideDisabled={true}
+						hideFirstLastPages={true}
 					/>
 				</div> : '' }
 			</div>
@@ -308,7 +343,6 @@ class Campaigns extends Component {
 			modalID,
 			title,
 			block,
-			campaignsInit,
 			campaignsFetching
 		} = this.props;
 
@@ -318,38 +352,41 @@ class Campaigns extends Component {
 		} = this.state;
 
 		const nonremovable = util.getValue(block, 'nonremovable', false);
+		const initiated = util.getValue(options, 'initiated');
 
 		return (
 			<div className={'campaignsBlock'}>
 				{ campaignsFetching || loading ? <Loader msg={'Loading campaigns...'} /> : '' }
-				<ModalRoute
-					className='gbx3'
-					id={modalID}
-					effect='3DFlipVert' style={{ width: '70%' }}
-					draggable={true}
-					draggableTitle={`Editing ${title}`}
-					closeCallback={this.closeEditModal}
-					disallowBgClose={true}
-					component={() =>
-						<CampaignsEdit
-							{...this.props}
-							optionsUpdated={this.optionsUpdated}
-							customListUpdated={this.customListUpdated}s
-							options={options}
-							campaignsInit={campaignsInit}
-							filterCampaigns={this.filterCampaigns}
-						/>
-					}
-					buttonGroup={
-						<div className='gbx3'>
-							<div style={{ marginBottom: 0 }} className='button-group center'>
-								{!nonremovable ? <GBLink className='link remove' onClick={this.onClickRemove}><span className='icon icon-trash-2'></span> <span className='buttonText'>Remove</span></GBLink> : <></>}
-								<GBLink className='link' onClick={() => this.closeEditModal('cancel')}>Cancel</GBLink>
-								<GBLink className='button' onClick={this.closeEditModal}>Save</GBLink>
+				{ initiated ?
+					<ModalRoute
+						className='gbx3'
+						id={modalID}
+						effect='3DFlipVert' style={{ width: '70%' }}
+						draggable={true}
+						draggableTitle={`Editing ${title}`}
+						closeCallback={this.closeEditModal}
+						disallowBgClose={true}
+						component={() =>
+							<CampaignsEdit
+								{...this.props}
+								initiated={initiated}
+								optionsUpdated={this.optionsUpdated}
+								options={options}
+								filterCampaigns={this.filterCampaigns}
+								setCustomListItem={this.setCustomListItem}
+							/>
+						}
+						buttonGroup={
+							<div className='gbx3'>
+								<div style={{ marginBottom: 0 }} className='button-group center'>
+									{!nonremovable ? <GBLink className='link remove' onClick={this.onClickRemove}><span className='icon icon-trash-2'></span> <span className='buttonText'>Remove</span></GBLink> : <></>}
+									<GBLink className='link' onClick={() => this.closeEditModal('cancel')}>Cancel</GBLink>
+									<GBLink className='button' onClick={this.closeEditModal}>Save</GBLink>
+								</div>
 							</div>
-						</div>
-					}
-				/>
+						}
+					/>
+				: '' }
 				{this.renderCampaigns()}
 			</div>
 		)

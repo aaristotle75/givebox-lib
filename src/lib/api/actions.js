@@ -178,14 +178,6 @@ export function receiveResource(resource, endpoint, data, error, search, returnD
 	}
 }
 
-function resourceCatchError(resource, error) {
-	return {
-		type: types.RESOURCE_CATCH_ERROR,
-		resource: resource,
-		error: error
-	}
-}
-
 export function getAPI(
 	resource,
 	endpoint,

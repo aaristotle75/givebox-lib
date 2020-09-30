@@ -1014,6 +1014,8 @@ export function loadOrg(orgID, callback) {
 		const access = util.getValue(resource, 'access', {});
 		const globalsState = util.getValue(gbx3, 'globals', {});
 		const admin = util.getValue(gbx3, 'admin', {});
+		const info = util.getValue(gbx3, 'info', {});
+		const originTemplate = !util.getValue(info, 'originTemplate') ? 'org' : null;
 		const blockType = 'org';
 		const availableBlocks = util.deepClone(util.getValue(admin, `availableBlocks.org`, []));
 
@@ -1030,6 +1032,7 @@ export function loadOrg(orgID, callback) {
 					dispatch(updateInfo({
 						orgID,
 						orgName,
+						originTemplate,
 						display: 'org',
 						orgImage: util.getValue(res, 'imageURL'),
 						apiName: 'org'
@@ -1389,7 +1392,7 @@ export function setStyle(options = {}) {
 					background-color: ${color};
 				}
 
-				.gbx3Shop button.link {
+				.gbx3Shop:not(.editable) button.link {
 					color: ${color};
 				}
 

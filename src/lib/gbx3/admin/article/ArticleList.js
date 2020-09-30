@@ -75,14 +75,16 @@ class ArticleList extends Component {
 		const articles = util.getValue(this.props.articles, 'data', {});
 
 		Object.entries(articles).forEach(([key, value]) => {
-			const notPublic = (value.kind === 'fundraiser' && !value.publishedStatus.webApp) || (value.kind !== 'fundraiser' && value.publishedStatus.webApp) ? true : false;
+			const notPublic = (value.kind === 'fundraiser' && !value.publishedStatus.webApp) || (value.kind !== 'fundraiser' &&
+			value.publishedStatus.webApp) ? true : false;
+			const wasAdded = this.state.selected.includes(value.ID);
 			items.push(
 				<div className='articleItem' onClick={() => this.onClickArticle(value)} key={key}>
-					<div className='editableRowMenu'>
+					<div className={`editableRowMenu ${wasAdded ? 'wasAdded' : ''}`}>
 						{notPublic && checkPublic ?
 								<span style={{ fontSize: 14 }} className='gray'>{notPublicText}</span>
 							:
-							this.state.selected.includes(value.ID) ?
+							wasAdded ?
 								<span style={{ fontSize: 14 }} className='green'>{selectedText}</span>
 							:
 								<GBLink onClick={() => this.onClickArticle(value)}><span className='icon icon-plus'></span> {isMobile ? 'Select' : selectText}</GBLink>
