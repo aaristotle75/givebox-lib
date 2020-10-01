@@ -101,7 +101,8 @@ class PaymentFormClass extends Component {
 			amount,
 			zeroAmountAllowed,
 			emailBlastToken,
-			emailBlastEmail
+			emailBlastEmail,
+			sourceLocation
 		} = this.props;
 
 		const {
@@ -140,8 +141,8 @@ class PaymentFormClass extends Component {
 					unitID: value.unitID,
 					articleID: value.articleID,
 					articleKind: value.articleKind,
-					sourceType: value.sourceType || null,
-					sourceLocation: value.sourceLocation || null,
+					sourceType: 'embed',
+					sourceLocation,
 					amount: value.amount,
 					customAmount: value.customAmount,
 					quantity: value.quantity,
@@ -655,6 +656,8 @@ function mapStateToProps(state, props) {
 
 	const gbx3 = util.getValue(state, 'gbx3', {});
 	const info = util.getValue(gbx3, 'info', {});
+	const sourceLocation = util.getValue(info, 'sourceLocation');
+	const sourceType = util.getValue(info, 'sourceType');
 	const emailBlastToken = util.getValue(info, 'ebToken', null);
 	const emailBlastEmail = util.getValue(info, 'ebEmail', null);
 	const cart = util.getValue(gbx3, 'cart', {});
@@ -669,6 +672,8 @@ function mapStateToProps(state, props) {
 	const amount = util.getValue(cart, 'subTotal', 0);
 
 	return {
+		sourceLocation,
+		sourceType,
 		emailBlastToken,
 		emailBlastEmail,
 		zeroAmountAllowed,

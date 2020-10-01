@@ -114,7 +114,7 @@ export function gbx3(state = {
 					receipt: {}
 				},
 				data: {},
-				orgData: {},
+				orgData: action.keepOrgData ? state.orgData : {},
 				fees: {},
 				globals: {},
 				layouts: {

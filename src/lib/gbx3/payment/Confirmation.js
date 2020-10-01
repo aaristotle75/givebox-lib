@@ -9,6 +9,9 @@ import {
 	resetConfirmation
 } from '../redux/gbx3actions';
 import Social from '../blocks/Social';
+import ReactGA from 'react-ga';
+
+const ENV = process.env.REACT_APP_ENV;
 
 class Confirmation extends Component {
 
@@ -20,6 +23,27 @@ class Confirmation extends Component {
 	}
 
 	componentDidMount() {
+		const {
+			cartTotal,
+			orgName,
+			orgID,
+			preview
+		} = this.props;
+
+		if (ENV === 'production' && !preview) {
+			ReactGA.modalview('/confirmation', ['orgTracker']);
+			ReactGA.event({
+				category: 'Purchase',
+				action: 'Approved Transaction'
+			});
+
+			ReactGA.plugin.require('ec');
+			ReactGA.plugin.execute('ec', 'setAction', 'purchase', {
+				id: orgID,
+				name: orgName,
+				revenue: cartTotal
+			});
+		}
 	}
 
 	componentWillUnmount() {
@@ -158,18 +182,22 @@ function mapStateToProps(state, props) {
 	const cartTotal = util.getValue(confirmation, 'cartTotal', 0);
 	const data = util.getValue(gbx3, 'data', {});
 	const orgName = util.getValue(data, 'orgName');
+	const orgID = util.getValue(data, 'orgID');
 	const descriptor = util.getValue(data, 'orgBillingDescriptor');
+	const preview = util.getValue(gbx3, 'info.preview');
 
 	return {
+		orgID,
+		orgName,
 		firstname,
 		email,
 		bankName,
 		cardType,
 		paymethod,
 		cartTotal,
-		orgName,
 		descriptor,
-		allowSharing
+		allowSharing,
+		preview
 	}
 }
 

@@ -16,8 +16,10 @@ import {
 } from './redux/gbx3actions';
 import AvatarMenuButton from './admin/AvatarMenuButton';
 import { AiOutlineNotification, AiOutlineTrophy } from 'react-icons/ai';
+import ReactGA from 'react-ga';
 
 const SHARE_URL = process.env.REACT_APP_GBX_SHARE;
+const ENV = process.env.REACT_APP_ENV;
 
 class Layout extends React.Component {
 
@@ -26,11 +28,53 @@ class Layout extends React.Component {
 		this.renderDisplay = this.renderDisplay.bind(this);
 		this.closeGBXModal = this.closeGBXModal.bind(this);
 		this.backToOrg = this.backToOrg.bind(this);
+		this.gaInitialize = this.gaInitialize.bind(this);
+		this.gaPageTracking = this.gaPageTracking.bind(this);
 		this.state = {
 		}
 	}
 
 	componentDidMount() {
+	}
+
+	componentDidUpdate(prevProps) {
+		if (util.isEmpty(prevProps.orgData) && !util.isEmpty(this.props.orgData)) {
+			this.gaInitialize();
+			this.gaPageTracking();
+		}
+	}
+
+	gaInitialize() {
+		const {
+			orgData
+		} = this.props;
+
+		const gaPropertyID = util.getValue(orgData, 'gaPropertyID', null);
+		ReactGA.initialize('UA-75269457-5', {
+			debug: true
+		});
+
+		if (gaPropertyID) {
+			ReactGA.initialize([
+				{
+					trackingId: gaPropertyID,
+					gaOptions: {
+						name: 'orgTracker'
+					}
+				},
+			]);
+		}
+	}
+
+	gaPageTracking(page) {
+		const {
+			preview
+		} = this.props;
+
+		const pageView = page || window.location.pathname + window.location.search;
+		if (!preview && ENV === 'production') {
+			ReactGA.pageview(pageView, ['orgTracker']);
+		}
 	}
 
 	backToOrg() {
@@ -246,8 +290,10 @@ function mapStateToProps(state, props) {
 	const hasAccessToEdit = util.getValue(gbx3, 'admin.hasAccessToEdit');
 	const publishStatus = util.getValue(info, 'publishStatus');
 	const orgName = util.getValue(info, 'orgName');
+	const orgData = util.getValue(gbx3, 'orgData', {});
 
 	return {
+		orgData,
 		orgSlug,
 		orgID,
 		originTemplate,

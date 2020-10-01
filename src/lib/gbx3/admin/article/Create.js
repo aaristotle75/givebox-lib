@@ -93,7 +93,7 @@ class Create extends React.Component {
 
 	async createFundraiser(kind, autoCreate) {
 		if (autoCreate) this.props.updateInfo({ autoCreate: null });
-		const cleared = await this.props.clearGBX3();
+		const cleared = await this.props.clearGBX3(true);
 		if (cleared) this.props.createFundraiser(kind, this.createFundraiserCallback);
 	}
 

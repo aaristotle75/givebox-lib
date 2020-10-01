@@ -31,9 +31,10 @@ export function setLoading(loading) {
 	}
 }
 
-export function clearGBX3() {
+export function clearGBX3(keepOrgData) {
 	return {
-		type: types.CLEAR_GBX3
+		type: types.CLEAR_GBX3,
+		keepOrgData
 	}
 }
 
@@ -440,9 +441,6 @@ export function updateCartItem(unitID, item = {}, opts = {}, openCart = true) {
 		let addedOrRemoved = '';
 		if (index === -1) {
 			const articleID = articleIDOverride || +util.getValue(info, 'articleID');
-
-			item.sourceType = util.getValue(info, 'sourceType');
-			item.sourceLocation = util.getValue(info, 'sourceLocation');
 			item.articleID = articleID;
 			item.orgName = util.getValue(info, 'orgName');
 			item.orgID = util.getValue(info, 'orgID');
@@ -809,6 +807,7 @@ export function loadGBX3(articleID, callback) {
 		const resource = util.getValue(getState(), 'resource', {});
 		const access = util.getValue(resource, 'access', {});
 		const globalsState = util.getValue(gbx3, 'globals', {});
+		const orgData = util.getValue(gbx3, 'orgData', {});
 		const admin = util.getValue(gbx3, 'admin', {});
 		const blockType = 'article';
 		const availableBlocks = util.deepClone(util.getValue(admin, `availableBlocks.article`, []));
@@ -823,6 +822,20 @@ export function loadGBX3(articleID, callback) {
 					const kindID = util.getValue(res, 'kindID');
 					const orgID = util.getValue(res, 'orgID');
 					const orgName = util.getValue(res, 'orgName');
+
+					// If orgData orgID doesn't equal orgID get the orgData
+					if (orgID !== util.getValue(orgData, 'ID')) {
+						dispatch(getResource('org', {
+							id: [orgID],
+							reload: true,
+							customName: 'gbx3Org',
+							callback: (res, err) => {
+								if (!util.isEmpty(res) && !err) {
+									dispatch(updateData(res, 'org'));
+								}
+							}
+						}));
+					}
 
 					if (kindID) {
 						const apiName = `org${types2.kind(kind).api.item}`;

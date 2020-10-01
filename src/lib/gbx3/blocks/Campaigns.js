@@ -96,7 +96,7 @@ class Campaigns extends Component {
 
 	async loadGBX(ID) {
 		const infoUpdated = await this.props.updateInfo({ originTemplate: 'org' });
-		const gbx3Cleared = await this.props.clearGBX3();
+		const gbx3Cleared = await this.props.clearGBX3(true);
 		if (infoUpdated && gbx3Cleared) this.props.loadGBX3(ID);
 	}
 
@@ -206,7 +206,11 @@ class Campaigns extends Component {
 
 		this.optionsUpdated('initiated', true, () => {
 			this.optionsUpdated('customList', customList, () => {
-				this.setState({ loading: false });
+				const defaultOptions = util.deepClone(this.state.options);
+				this.setState({
+					defaultOptions,
+					loading: false
+				});
 			})
 		});
 	}
@@ -263,10 +267,7 @@ class Campaigns extends Component {
 
 	renderCampaigns() {
 		const {
-			options
-		} = this.props;
-
-		const {
+			options,
 			pageNumber
 		} = this.state;
 

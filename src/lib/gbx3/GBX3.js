@@ -260,7 +260,8 @@ class GBX3 extends React.Component {
 		info.ebEmail = util.getValue(queryParams, 'm', null);
 		info.autoCreate = util.getValue(queryParams, 'autoCreate');
 
-		const sourceLocation = reactReferer.referer();
+		const loc = util.getValue(queryParams, 'loc', reactReferer.referer());
+		const sourceLocation = loc || window.location.href;
 		info.sourceLocation = this.props.sourceLocation || sourceLocation;
 		info.project = util.getValue(queryParams, 'project', this.props.project || null);
 
@@ -318,7 +319,7 @@ class GBX3 extends React.Component {
 
 	async reloadGBX3(articleID) {
 		this.props.setLoading(true);
-		const gbx3Cleared = await this.props.clearGBX3();
+		const gbx3Cleared = await this.props.clearGBX3(true);
 		if (gbx3Cleared) this.loadGBX3(articleID);
 	}
 
@@ -428,7 +429,8 @@ class GBX3 extends React.Component {
 }
 
 GBX3.defaultProps = {
-	kind: 'fundraiser'
+	kind: 'fundraiser',
+	sourceLocation: null
 }
 
 function mapStateToProps(state, props) {

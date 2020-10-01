@@ -1089,3 +1089,16 @@ export function blurOptions() {
 
   return items;
 }
+export function maxRecordOptions() {
+  const items = [];
+
+  for (let i = 0; i <= 20; i++) {
+    const number = i * 5;
+    items.push({
+      primaryText: `${number} Per Page`,
+      value: number
+    });
+  }
+
+  return items;
+}

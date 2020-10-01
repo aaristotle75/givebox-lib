@@ -388,8 +388,7 @@ export const mainCampaigns = {
 		pagination: true,
 		maxRecords: 3,
 		initiated: false,
-		customList: [],
-		kindList: ['fundraiser', 'event', 'membership', 'sweepstake']
+		customList: []
 	},
 	style: {
 		borderRadius: 0,

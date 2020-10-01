@@ -22,12 +22,11 @@ class Paginate extends Component{
 		this.setRecordCount(this.props);
 	}
 
-	componentDidUpdate(nextProps) {
-		if ((this.props.activePage !== nextProps.activePage)
-				|| (this.props.max !== nextProps.max)
-				|| (this.props.count !== nextProps.count)
+	componentDidUpdate(prevProps, prevState) {
+		if ((this.props.activePage !== prevProps.activePage)
+				|| (this.props.max !== prevProps.max)
 			) {
-			this.setRecordCount(nextProps);
+			this.setRecordCount(this.props);
 		}
 	}
 

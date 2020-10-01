@@ -170,15 +170,6 @@ export function receiveResource(resource, endpoint, data, error, search, returnD
     returnData: returnData
   };
 }
-
-function resourceCatchError(resource, error) {
-  return {
-    type: types.RESOURCE_CATCH_ERROR,
-    resource: resource,
-    error: error
-  };
-}
-
 export function getAPI(resource, endpoint, search, callback, reload, customName, resourcesToLoad, reloadResource, fullResponse) {
   return (dispatch, getState) => {
     if (shouldGetAPI(getState(), customName || resource, reload)) {
