@@ -27,10 +27,11 @@ class Confirmation extends Component {
 			cartTotal,
 			orgName,
 			orgID,
-			preview
+			preview,
+			receipt
 		} = this.props;
 
-		if (ENV === 'production' && !preview) {
+		if (ENV === 'production' && !preview && !receipt) {
 			ReactGA.modalview('/confirmation', ['orgTracker']);
 			ReactGA.event({
 				category: 'Purchase',
@@ -185,6 +186,7 @@ function mapStateToProps(state, props) {
 	const orgID = util.getValue(data, 'orgID');
 	const descriptor = util.getValue(data, 'orgBillingDescriptor');
 	const preview = util.getValue(gbx3, 'info.preview');
+	const receipt = util.getValue(gbx3, 'info.receipt', false);
 
 	return {
 		orgID,
@@ -197,7 +199,8 @@ function mapStateToProps(state, props) {
 		cartTotal,
 		descriptor,
 		allowSharing,
-		preview
+		preview,
+		receipt
 	}
 }
 
