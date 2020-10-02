@@ -37,8 +37,8 @@ class Confirmation extends Component {
 				action: 'Approved Transaction'
 			});
 
-			ReactGA.plugin.require('ec');
-			ReactGA.plugin.execute('ec', 'setAction', 'purchase', {
+			ReactGA.plugin.require('ecommerce');
+			ReactGA.plugin.execute('ecommerce', 'addTransaction', {
 				id: orgID,
 				name: orgName,
 				revenue: cartTotal
