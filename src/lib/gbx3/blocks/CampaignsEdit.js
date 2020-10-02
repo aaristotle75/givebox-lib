@@ -119,8 +119,7 @@ class CampaignsEdit extends Component{
 
 	renderArticles() {
 		const {
-			options,
-			isMobile
+			options
 		} = this.props;
 
 		const items = [];
@@ -151,12 +150,12 @@ class CampaignsEdit extends Component{
 			});
 		}
 
-		const rows =  <SortableList onSortStart={this.onSortStart} onSortMove={this.onSortMove} helperClass='sortableHelper' hideSortableGhost={true} useDragHandle={true} items={items} onSortEnd={this.onSortEnd} />;
+		const rows =  !util.isEmpty(items) ? <SortableList onSortStart={this.onSortStart} onSortMove={this.onSortMove} helperClass='sortableHelper' hideSortableGhost={true} useDragHandle={true} items={items} onSortEnd={this.onSortEnd} /> : [];
 
 		return (
 			<div className='articleGroupList campaignsEdit'>
 				<div className='articleGroup'>
-				{!util.isEmpty(rows) ? rows : <span className='noRecords'>No Campaigns are Available</span>}
+				{!util.isEmpty(rows) ? rows : <span className='noRecords flexCenter'>Please Add a Form to the List</span>}
 				</div>
 			</div>
 		)

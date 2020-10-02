@@ -385,7 +385,6 @@ export const mainCampaigns = {
 	multiple: false,
 	mobileRelativeBlock: 10,
 	options: {
-		pagination: true,
 		maxRecords: 3,
 		initiated: false,
 		customList: []
@@ -407,7 +406,12 @@ export const campaignsBlock = {
 	title: 'Form List',
 	type: 'Campaigns',
 	multiple: true,
-	mobileRelativeBlock: 10
+	mobileRelativeBlock: 10,
+	options: {
+		maxRecords: 3,
+		initiated: true,
+		customList: []
+	}
 };
 
 const articleBlocks = {
