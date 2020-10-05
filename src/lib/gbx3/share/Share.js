@@ -69,8 +69,10 @@ class Share extends React.Component {
 		];
 
 		const items = [];
+		const orgDisplay = display === 'org' ? true : false;
+
 		shareTypes.forEach((value, key) => {
-			if (display === 'org' && value.org === 'hide') return;
+			if (orgDisplay && value.org === 'hide') return;
 			else {
 				items.push(
 					<div key={key} className='createKindItem' onClick={() => this.setShareTypeSelected(value.type)}>
@@ -86,7 +88,7 @@ class Share extends React.Component {
 
 		return (
 			<div className='createKindSection'>
-				<span className='intro'>Share Your {types.kind(kind).name}</span>
+				<span className='intro'>Share Your {orgDisplay ? 'Page' : types.kind(kind).name}</span>
 				<div className='createKindList'>
 					{items}
 				</div>

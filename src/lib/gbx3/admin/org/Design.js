@@ -21,6 +21,7 @@ import { GoBeaker } from 'react-icons/go';
 import { AiOutlineNotification } from 'react-icons/ai';
 
 const GBX3_URL = process.env.REACT_APP_GBX_URL;
+const ENV = process.env.REACT_APP_ENV;
 
 class Design extends React.Component {
 
@@ -53,11 +54,11 @@ class Design extends React.Component {
 
 		const contentObj = {
 			layout: {
-				menuText: !mobile ? 'Design Form' : 'Design',
+				menuText: !mobile ? 'Design Page' : 'Design',
 				icon: <Icon><FaPalette /></Icon>
 			},
 			share: {
-				menuText: !mobile ? 'Share Form' : 'Share',
+				menuText: !mobile ? 'Share Page' : 'Share',
 				icon: <Icon><AiOutlineNotification /></Icon>
 			}
 		};
@@ -156,10 +157,16 @@ class Design extends React.Component {
 			createType,
 			previewDevice,
 			previewMode,
-			articleID
+			orgSlug,
+			orgID
 		} = this.props;
 
 		const items = [];
+
+		let url = `${GBX3_URL}/${orgSlug}?public&preview`;
+		if (ENV === 'local') {
+			url = `${GBX3_URL}/${orgSlug}?orgID=${orgID}&template=org&public&preview`;
+		}
 
 		switch(createType) {
 			case 'layout':
@@ -170,7 +177,7 @@ class Design extends React.Component {
 							key={'layout'}
 							className={`deviceLayoutWrapper ${previewDevice}Wrapper` }>
 							<div className='stagePreview'>
-								<iframe src={`${GBX3_URL}/${articleID}/?public&preview`} title={`${util.toTitleCase(previewDevice)} Preview`} />
+								<iframe src={url} title={`${util.toTitleCase(previewDevice)} Preview`} />
 							</div>
 						</div>
 					);
@@ -231,6 +238,8 @@ function mapStateToProps(state, props) {
 	const previewDevice = util.getValue(admin, 'previewDevice');
 	const openAdmin = util.getValue(admin, 'open');
 	const createType = util.getValue(admin, 'createType');
+	const orgSlug = util.getValue(gbx3, 'orgData.slug');
+	const orgID = util.getValue(gbx3, 'orgData.ID');
 
 	return {
 		breakpoint,
@@ -238,7 +247,9 @@ function mapStateToProps(state, props) {
 		previewMode,
 		previewDevice,
 		openAdmin,
-		createType
+		createType,
+		orgSlug,
+		orgID
 	}
 }
 

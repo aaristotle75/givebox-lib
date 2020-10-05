@@ -221,8 +221,17 @@ export const helperTemplates = {
 	org: {
 		...helperTemplatesDefault,
 		helpersAvailable: [
-			logo,
-			description,
+			{
+				...logo,
+				style: {
+					top: 100,
+					left: 100
+				},
+				className: 'helperRight'
+			},
+			{
+			 ...description
+			 },
 			share
 		]
 	}

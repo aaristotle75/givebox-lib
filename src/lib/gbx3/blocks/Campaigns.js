@@ -55,7 +55,8 @@ class Campaigns extends Component {
 	componentDidMount() {
 		const {
 			orgID,
-			name
+			name,
+			campaignsInit
 		} = this.props;
 
 		const {
@@ -63,19 +64,24 @@ class Campaigns extends Component {
 		} = this.state;
 
 		const initiated = util.getValue(options, 'initiated');
+		const customList = util.getValue(options, 'customList', []);
 
-		if (!initiated) {
-			this.props.getResource('orgArticles', {
-				customName: `${name}Init`,
-				orgID,
-				callback: (res, err) => {
-					this.setInitCampaigns();
-				},
-				search: {
-					filter: 'givebox:true',
-					max: 1000
-				}
-			});
+		if (!initiated || util.isEmpty(customList)) {
+			if (!util.isEmpty(campaignsInit)) {
+				this.setInitCampaigns();
+			} else {
+				this.props.getResource('orgArticles', {
+					customName: `${name}Init`,
+					orgID,
+					callback: (res, err) => {
+						this.setInitCampaigns();
+					},
+					search: {
+						filter: 'givebox:true',
+						max: 1000
+					}
+				});
+			}
 		}
 
 		this.blockRef = this.props.blockRef.current;

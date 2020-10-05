@@ -180,7 +180,8 @@ class Backgrounds extends Component {
 
 		const {
 			editable,
-			primaryColor
+			primaryColor,
+			stage
 		} = this.props;
 
 		return (
@@ -207,7 +208,7 @@ class Backgrounds extends Component {
 						</div>
 					}
 				/>
-				{ editable ?
+				{ editable && stage !== 'public' ?
 					<ResizableBox
 						width={width}
 						height={height}
@@ -232,12 +233,14 @@ class Backgrounds extends Component {
 function mapStateToProps(state, props) {
 
 	const index = 0;
+	const stage = util.getValue(state, 'gbx3.info.stage');
 	const editable = util.getValue(state, 'gbx3.admin.editable');
 	const backgrounds = util.getValue(state, 'gbx3.backgrounds', []);
 	const background = util.getValue(backgrounds, index, backgroundTemplate[props.blockType]);
 	const primaryColor = util.getValue(state, 'gbx3.globals.gbxStyle.primaryColor');
 
 	return {
+		stage,
 		editable,
 		background,
 		primaryColor

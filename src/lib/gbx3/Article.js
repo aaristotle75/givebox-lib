@@ -132,8 +132,7 @@ class Article extends React.Component {
 
 	async onBreakpointChange(breakpoint, cols) {
 		const {
-			editable,
-			stage
+			editable
 		} = this.props;
 		const infoUpdated = await this.props.updateInfo({ breakpoint });
 		if (editable) this.props.updateAdmin({ editBlock: '' });
