@@ -50,6 +50,7 @@ class Admin extends React.Component {
 		} = this.props;
 
 		const isMobile = breakpoint === 'mobile' ? true : false;
+		const orgDisplay = display === 'org' ? true : false;
 		const header = [];
 
 		switch (display) {
@@ -76,7 +77,7 @@ class Admin extends React.Component {
 
 		if (!util.isEmpty(access)) {
 			header.push(
-				<GBLink key={'exit'} style={{ fontSize: '14px' }} className='link' onClick={() => this.props.exitAdmin()}><Icon><AiOutlineFullscreen /></Icon>{ isMobile ? 'Exit' : 'Exit Form Builder' }</GBLink>
+				<GBLink key={'exit'} style={{ fontSize: '14px' }} className='link' onClick={() => this.props.exitAdmin()}><Icon><AiOutlineFullscreen /></Icon>{ isMobile ? 'Exit' : `Exit ${orgDisplay ? 'Page' : 'Form'} Builder` }</GBLink>
 			)
 		}
 
