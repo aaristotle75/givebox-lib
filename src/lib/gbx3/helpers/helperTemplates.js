@@ -230,9 +230,18 @@ export const helperTemplates = {
 				className: 'helperRight'
 			},
 			{
-			 ...description
-			 },
-			share
+				...description,
+				style: {
+					top: -20,
+					left: 100
+				},
+				text: 'Describe your organization.'
+			},
+			{
+				...share,
+				title: 'Share Your Page',
+				text: 'When you are done designing your page share it.',
+			}
 		]
 	}
 }

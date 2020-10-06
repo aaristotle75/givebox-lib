@@ -46,7 +46,10 @@ class AdminMenuTools extends React.Component {
 					<li onClick={() => this.props.updateAdmin({ outline: outline ? false : true })}>Edit Box Outlines {util.toggle(outline, { onText: <span className='icon icon-eye'></span>, offText: <span className='icon icon-eye-off'></span>})}</li>
 					<li onClick={() => this.props.updateAdmin({ preventCollision: preventCollision ? false : true })}>Prevent Collision {util.toggle(preventCollision)}</li>
 					<li onClick={() => this.props.updateAdmin({ verticalCompact: verticalCompact ? false : true })}>Vertical Compact {util.toggle(verticalCompact)}</li>
-					<li onClick={this.reset}>Reset Layout</li>
+					<li onClick={this.reset}>
+						Reset
+						<span className='wrap smallText gray'>Caution! This resets everything<br /> including content.</span>
+					</li>
 				</ul>
 				{ blockType === 'article' ? <Publish /> : '' }
 			</div>
