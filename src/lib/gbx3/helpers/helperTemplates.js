@@ -223,6 +223,7 @@ export const helperTemplates = {
 		helpersAvailable: [
 			{
 				...logo,
+				text: 'A logo adds branded trust to your page.',
 				style: {
 					top: 100,
 					left: 100
