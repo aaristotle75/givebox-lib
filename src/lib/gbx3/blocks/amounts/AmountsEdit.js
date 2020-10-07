@@ -148,7 +148,7 @@ export default class AmountsEdit extends Component {
 			id: [amount[`${this.props.kind}ID`]],
 			method: 'post',
 			data: {
-				price: 0,
+				price: 1000,
 				name: '',
 				description: '',
 				enabled: true,
