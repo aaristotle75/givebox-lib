@@ -206,7 +206,12 @@ class Campaigns extends Component {
 
 		if (!util.isEmpty(campaignsInit)) {
 			Object.entries(campaignsInit).forEach(([key, value]) => {
-				customList.push(this.setCustomListItem(value));
+				const status = util.getValue(value, 'publishedStatus', {});
+				const webApp = util.getValue(status, 'webApp', null);
+				const published = value.kind !== 'fundraiser' && webApp ? false : true;
+				if (published) {
+					customList.push(this.setCustomListItem(value));
+				}
 			});
 		}
 
@@ -286,38 +291,34 @@ class Campaigns extends Component {
 
 		if (!util.isEmpty(pageList)) {
 			Object.entries(pageList).forEach(([key, value]) => {
-				const status = util.getValue(value, 'publishedStatus', {});
-				const webApp = util.getValue(status, 'webApp', null);
-				const published = value.kind !== 'fundraiser' && webApp ? false : true;
-				if (published) {
-					const imageURL = util.imageUrlWithStyle(value.imageURL, 'medium');
-					const imageStyle = {
-						background: `url(${imageURL}) no-repeat center`
-					};
-					const cardStyle = { WebkitBoxShadow: `0px 3px 6px 0px #465965` };
 
-					items.push(
-						<li key={key}>
-							<div className='articleCardWrapper' id={value.ID} onMouseEnter={() => this.onMouseEnter(value.ID)} onMouseLeave={() => this.onMouseLeave(value.ID)}>
-								<div className='articleCardShadow' style={cardStyle}></div>
-								<div className='articleCard'>
-									<div className='imageContainer'>
-										<div style={imageStyle} className='imageBg'></div>
-										<div className='image'>
-											<GBLink onClick={() => this.loadGBX(value.ID)}><Image maxSize={'250px'} url={imageURL} size='medium' alt={value.imageURL} /></GBLink>
-											<div className='imageCover' onClick={() => this.loadGBX(value.ID)}><div className='imageLink'>Learn More</div></div>
-										</div>
+				const imageURL = util.imageUrlWithStyle(value.imageURL, 'medium');
+				const imageStyle = {
+					background: `url(${imageURL}) no-repeat center`
+				};
+				const cardStyle = { WebkitBoxShadow: `0px 3px 6px 0px #465965` };
+
+				items.push(
+					<li key={key}>
+						<div className='articleCardWrapper' id={value.ID} onMouseEnter={() => this.onMouseEnter(value.ID)} onMouseLeave={() => this.onMouseLeave(value.ID)}>
+							<div className='articleCardShadow' style={cardStyle}></div>
+							<div className='articleCard'>
+								<div className='imageContainer'>
+									<div style={imageStyle} className='imageBg'></div>
+									<div className='image'>
+										<GBLink onClick={() => this.loadGBX(value.ID)}><Image maxSize={'250px'} url={imageURL} size='medium' alt={value.imageURL} /></GBLink>
+										<div className='imageCover' onClick={() => this.loadGBX(value.ID)}><div className='imageLink'>Learn More</div></div>
 									</div>
-									<div className='kind'>
-										<span className={`icon icon-${types.kind(value.kind).icon}`}></span>
-										<span className='kindText'>{value.kind === 'fundraiser' ? 'Fundraiser' : types.kind(value.kind).name}</span>
-									</div>
-									<GBLink className='link title' onClick={() => this.loadGBX(value.ID)}>{value.title}</GBLink>
 								</div>
+								<div className='kind'>
+									<span className={`icon icon-${types.kind(value.kind).icon}`}></span>
+									<span className='kindText'>{value.kind === 'fundraiser' ? 'Fundraiser' : types.kind(value.kind).name}</span>
+								</div>
+								<GBLink className='link title' onClick={() => this.loadGBX(value.ID)}>{value.title}</GBLink>
 							</div>
-						</li>
-					);
-				}
+						</div>
+					</li>
+				);
 			});
 		}
 

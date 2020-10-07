@@ -45,12 +45,12 @@ class GBXTest extends Component {
 
 		// 383102 // 1130 // 383064; // 13; // 739; // 4; //651; //735; //383071;
 		const articleID = +util.getValue(routeParams, 'articleID', null);
-		const orgID = 185;
+		const orgID = 605;
 
 		return (
 			<div>
 				<GBX
-					blockType={'article'}
+					blockType={'org'}
 					orgID={orgID}
 					articleID={articleID}
 					saveCallback={this.saveCallback}
