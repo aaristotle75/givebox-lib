@@ -584,13 +584,13 @@ export function saveGBX3(blockType, options = {}) {
 		const dataObj = blockType === 'org' ?
 			{
 				...giveboxSettings,
-				...opts.dataObj
+				...opts.data
 			}
 		:
 			{
 				...gbxData,
 				...giveboxSettings,
-				...opts.dataObj
+				...opts.data
 			}
 		;
 
