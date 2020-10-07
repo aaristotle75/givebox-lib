@@ -226,7 +226,6 @@ class Amounts extends Component {
 
 	validateAmountsBeforeSave(formErrorID, error, callback) {
 		const formError = this.state.formError;
-		console.log('execute', formError, formErrorID, error);
 		if (error) {
 			if (!formError.includes(formErrorID)) formError.push(formErrorID);
 		} else {

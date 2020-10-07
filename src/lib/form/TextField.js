@@ -89,7 +89,7 @@ class TextField extends Component {
 			background: status === 'active' ? color : ''
 		};
 
-		const readOnlyText = this.props.readOnlyText || `${label} is not editable`;
+		const readOnlyText = this.props.readOnlyText || `${label || name} is not editable`;
 
 		return (
 				<div style={style} className={`input-group ${type === 'hidden' ? 'input-hidden' : ''} ${className || ''} textfield-group ${readOnly ? 'readOnly tooltip' : ''} ${error ? 'error tooltip' : ''} ${type === 'hidden' && 'hidden'} ${money ? 'money-group' : ''}`}>

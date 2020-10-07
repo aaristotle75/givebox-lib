@@ -151,7 +151,7 @@ export default class AmountsEdit extends Component {
 				price: 0,
 				name: '',
 				description: '',
-				enabled: false,
+				enabled: true,
 				orderBy: length,
 				max,
 				entries
@@ -243,7 +243,7 @@ export default class AmountsEdit extends Component {
 				}}
 				maxLength={8}
 				money={customField ? false : true}
-				value={displayValue}
+				value={customField ? '' : displayValue}
 				error={error}
 				errorType={'tooltip'}
 				readOnly={customField ? true : false}
@@ -489,6 +489,7 @@ export default class AmountsEdit extends Component {
 				numEnabled = value.enabled ? numEnabled + 1 : numEnabled;
 				const fieldItems = [];
 				const customField = customID === value.ID && config.hasCustomField ? true : false;
+
 				Object.entries(fields).forEach(([fieldKey, fieldProps]) => {
 					fieldItems.push(
 						<div key={fieldKey} className={`column ${util.getValue(fieldProps, 'className')}`} style={{ width: `${fieldProps.width}%` }}>
@@ -546,8 +547,8 @@ export default class AmountsEdit extends Component {
 
 		const addAmount =
 			<div style={{ marginTop: '20px' }} className='flexCenter'>
-				<GBLink style={{ verticalAlign: 'middle' }} onClick={() => this.addAmount()}>
-					<span className='icon icon-plus-square'></span> New {types.kind(this.props.kind).amountDesc}
+				<GBLink style={{ fontSize: '1em', verticalAlign: 'middle' }} onClick={() => this.addAmount()}>
+					<span className='icon icon-plus-square'></span> Click Here to Add a New {types.kind(this.props.kind).amountDesc}
 				</GBLink>
 			</div>
 		;
