@@ -23,8 +23,8 @@ class Paginate extends Component{
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if ((this.props.activePage !== prevProps.activePage)
-				|| (this.props.max !== prevProps.max)
+		if ((this.props.activePage && this.props.activePage !== prevProps.activePage)
+				|| (this.props.max && this.props.max !== prevProps.max)
 			) {
 			this.setRecordCount(this.props);
 		}
@@ -226,11 +226,11 @@ function mapStateToProps(state, props) {
 	}
 
 	return {
-		resource: resource,
-		count: count,
-		max: max,
-		pages: pages,
-		activePage: activePage
+		resource,
+		count,
+		max,
+		pages,
+		activePage
 	}
 }
 
