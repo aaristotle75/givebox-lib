@@ -1,7 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-	util
+	util,
+	ModalLink,
+	ModalRoute,
+	GBLink
 } from '../../';
 import {
 	updateAdmin,
@@ -26,6 +29,7 @@ class AdminMenuTools extends React.Component {
 			blockType
 		} = this.props;
 
+		this.props.toggleModal('resetConfirmation', false);
 		this.props.resetGBX3(blockType);
 	}
 
@@ -41,15 +45,35 @@ class AdminMenuTools extends React.Component {
 
 		return (
 			<div className='layoutMenu'>
+				<ModalRoute
+					id='resetConfirmation'
+					effect='3DFlipVert'
+					style={{ width: '60%' }}
+					className='gbx3'
+					component={(props) =>
+						<div className='modalWrapper'>
+							<div className='center'>
+								<h2 style={{ marginBottom: 10 }}>Please confirm you want to reset.</h2>
+								All style, layout and content changes will be reverted to defaults.
+							</div>
+							<div style={{ marginBottom: 0 }} className='button-group center'>
+								<GBLink className='link' onClick={() => this.props.toggleModal('resetConfirmation', false)}>Cancel</GBLink>
+								<GBLink className='button' onClick={this.reset}>Confirm Reset</GBLink>
+							</div>
+						</div>
+					}
+				/>
 				<ul>
 					{<li onClick={() => this.props.updateAdmin({ editable: editable ? false : true }) }>Editable {util.toggle(editable)}</li>}
 					<li onClick={() => this.props.updateAdmin({ outline: outline ? false : true })}>Edit Box Outlines {util.toggle(outline, { onText: <span className='icon icon-eye'></span>, offText: <span className='icon icon-eye-off'></span>})}</li>
 					<li onClick={() => this.props.updateAdmin({ preventCollision: preventCollision ? false : true })}>Prevent Collision {util.toggle(preventCollision)}</li>
 					<li onClick={() => this.props.updateAdmin({ verticalCompact: verticalCompact ? false : true })}>Vertical Compact {util.toggle(verticalCompact)}</li>
-					<li onClick={this.reset}>
-						Reset
-						<span className='wrap smallText gray'>Caution! This resets everything<br /> including content.</span>
-					</li>
+					<ModalLink type='li' id='resetConfirmation'>
+						<>
+							Reset
+							<span className='wrap smallText gray'>Caution! This resets everything<br /> including content.</span>
+						</>
+					</ModalLink>
 				</ul>
 				{ blockType === 'article' ? <Publish /> : '' }
 			</div>
