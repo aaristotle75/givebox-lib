@@ -102,8 +102,7 @@ class Campaigns extends Component {
 
 	async loadGBX(ID) {
 		const infoUpdated = await this.props.updateInfo({ originTemplate: 'org' });
-		const gbx3Cleared = await this.props.clearGBX3(true);
-		if (infoUpdated && gbx3Cleared) this.props.loadGBX3(ID);
+		if (infoUpdated) this.props.reloadGBX3(ID);
 	}
 
 	setStyle() {

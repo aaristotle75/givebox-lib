@@ -8,8 +8,7 @@ import {
 } from '../../';
 import {
 	updateAdmin,
-	resetGBX3,
-	saveGBX3
+	resetGBX3
 } from '../redux/gbx3actions';
 import { toggleModal } from '../../api/actions';
 import Publish from './Publish';
@@ -108,6 +107,5 @@ function mapStateToProps(state, props) {
 export default connect(mapStateToProps, {
 	updateAdmin,
 	resetGBX3,
-	saveGBX3,
 	toggleModal
 })(AdminMenuTools);

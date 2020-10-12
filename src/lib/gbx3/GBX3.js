@@ -321,6 +321,7 @@ class GBX3 extends React.Component {
 		this.props.setLoading(true);
 		const gbx3Cleared = await this.props.clearGBX3(true);
 		if (gbx3Cleared) this.loadGBX3(articleID);
+		this.loadGBX3(articleID);
 	}
 
 	loadOrg(orgID) {
