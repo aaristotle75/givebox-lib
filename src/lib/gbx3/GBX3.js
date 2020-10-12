@@ -157,18 +157,16 @@ class GBX3 extends React.Component {
 			const infoUpdated = await this.props.updateInfo({ display, stage: 'public' });
 			if (infoUpdated) this.props.updateAdmin({ publicView: true });
 		}
-		if (display !== this.props.display) {
-			switch (display) {
-				case 'org': {
-					this.loadOrg(orgID);
-					break;
-				}
+		switch (display) {
+			case 'org': {
+				this.loadOrg(orgID);
+				break;
+			}
 
-				case 'article':
-				default: {
-					this.loadGBX3(articleID);
-					break;
-				}
+			case 'article':
+			default: {
+				this.loadGBX3(articleID);
+				break;
 			}
 		}
 
