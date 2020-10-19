@@ -1,74 +1,74 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-	util
+  util
 } from '../lib';
 import GBX from '../lib/gbx3/GBX3';
 
 class GBXTest extends Component {
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			//id: 587,
-			id: 383060,
-			//id: 4
-		};
-		this.mounted = false;
-	}
+  constructor(props) {
+    super(props);
+    this.state = {
+      //id: 587,
+      id: 383060,
+      //id: 4
+    };
+    this.mounted = false;
+  }
 
-	componentDidMount() {
-		this.mounted = true;
-	}
+  componentDidMount() {
+    this.mounted = true;
+  }
 
-	componentWillUnmount() {
-		if (this.timeout) {
-			clearTimeout(this.timeout);
-			this.timeout = null;
-		}
-	}
+  componentWillUnmount() {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+      this.timeout = null;
+    }
+  }
 
-	saveCallback(id, data, blocks) {
-		console.log('execute saveCallback', id, data, blocks);
-	}
+  saveCallback(id, data, blocks) {
+    console.log('execute saveCallback', id, data, blocks);
+  }
 
-	backToOrgCallback(template) {
-		console.log('execute backToOrgCallback', template);
-	}
+  backToOrgCallback(template) {
+    console.log('execute backToOrgCallback', template);
+  }
 
-	render() {
+  render() {
 
-		const {
-			queryParams,
-			routeParams
-		} = this.props;
+    const {
+      queryParams,
+      routeParams
+    } = this.props;
 
-		// 383102 // 1130 // 383064; // 13; // 739; // 4; //651; //735; //383071;
-		const articleID = +util.getValue(routeParams, 'articleID', null);
-		const orgID = 185;
+    // 383102 // 1130 // 383064; // 13; // 739; // 4; //651; //735; //383071;
+    const articleID = +util.getValue(routeParams, 'articleID', null);
+    const orgID = 312;
 
-		return (
-			<div>
-				<GBX
-					blockType={'org'}
-					orgID={orgID}
-					articleID={articleID}
-					saveCallback={this.saveCallback}
-					queryParams={queryParams}
-					public={false}
-					project={'share'}
-					exitCallback={() => console.log('exit callback')}
-					isVolunteer={false}
-				/>
-			</div>
-		)
-	}
+    return (
+      <div>
+        <GBX
+          blockType={'org'}
+          orgID={orgID}
+          articleID={articleID}
+          saveCallback={this.saveCallback}
+          queryParams={queryParams}
+          public={false}
+          project={'share'}
+          exitCallback={() => console.log('exit callback')}
+          isVolunteer={false}
+        />
+      </div>
+    )
+  }
 }
 
 function mapStateToProps(state, props) {
 
-	return {
-	}
+  return {
+  }
 }
 
 export default connect(mapStateToProps, {

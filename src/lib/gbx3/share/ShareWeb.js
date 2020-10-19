@@ -1,57 +1,65 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-	Tabs,
-	Tab
+  Tabs,
+  Tab
 } from '../../';
 import ShareWebPop from './ShareWebPop';
 import ShareWebIframe from './ShareWebIframe';
 
 class ShareWeb extends Component {
 
-	constructor(props) {
-		super(props);
-		this.state = {
-		};
-	}
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
+  }
 
-	componentDidMount() {
-		this.mounted = true;
-	}
+  componentDidMount() {
+    this.mounted = true;
+  }
 
-	componentWillUnmount() {
-		if (this.timeout) {
-			clearTimeout(this.timeout);
-			this.timeout = null;
-		}
-	}
+  componentWillUnmount() {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+      this.timeout = null;
+    }
+  }
 
-	render() {
+  render() {
 
-		return (
-			<div className='formSectionContainer'>
-				<div className='formSection'>
-					<Tabs
-						default={'pop'}
-						className='subTabs'
-					>
-						<Tab id='pop' label={<span className='stepLabel'>Embed Popup Widget</span>}>
-							<ShareWebPop />
-						</Tab>
-						<Tab id='iframe' label={<span className='stepLabel'>Embed iFrame</span>}>
-							<ShareWebIframe />
-						</Tab>
-					</Tabs>
-				</div>
-			</div>
-		)
-	}
+    const {
+      orgDisplay
+    } = this.props;
+
+    return (
+      <div className='formSectionContainer'>
+        <div className='formSection'>
+          <Tabs
+            default={orgDisplay ? 'iframe' : 'pop'}
+            className='subTabs'
+          >
+            { !orgDisplay ?
+              <Tab id='pop' label={<span className='stepLabel'>Embed Popup Widget</span>}>
+                <ShareWebPop />
+              </Tab>
+            : <></>}
+            <Tab id='iframe' label={<span className='stepLabel'>Embed iFrame</span>}>
+              <ShareWebIframe
+                orgDisplay={orgDisplay}
+              />
+            </Tab>
+          </Tabs>
+        </div>
+      </div>
+    )
+  }
 }
 
 function mapStateToProps(state, props) {
 
-	return {
-	}
+  return {
+  }
 }
 
 export default connect(mapStateToProps, {
