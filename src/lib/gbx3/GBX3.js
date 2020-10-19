@@ -82,9 +82,9 @@ class GBX3 extends React.Component {
     if (setInfo) {
       switch (blockType) {
         case 'org': {
-          this.loadOrg(orgID);
           if (!orgID) console.error('Org ID is not defined');
-          else loadOrg(orgID);
+          else if (step === 'create') this.loadCreateNew();
+          else this.loadOrg(orgID);
           break;
         }
 

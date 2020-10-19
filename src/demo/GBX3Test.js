@@ -52,6 +52,7 @@ class GBXTest extends Component {
         <GBX
           blockType={'org'}
           orgID={orgID}
+          step='create'
           articleID={articleID}
           saveCallback={this.saveCallback}
           queryParams={queryParams}
