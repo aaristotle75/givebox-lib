@@ -27,6 +27,12 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
 
   switch (resource) {
     // SUPER
+    case 'orgResendVerification':
+      {
+        endpoint = `orgs/${id[0]}/verifications`;
+        break;
+      }
+
     case 'superFeeSettings':
       {
         endpoint = `super/fee-settings`;
@@ -629,6 +635,12 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
     case 'orgs':
       {
         endpoint = `orgs`;
+        break;
+      }
+
+    case 'orgVerification':
+      {
+        endpoint = `orgs/${orgID}/verifications/${id[0]}`;
         break;
       }
 
