@@ -519,7 +519,7 @@ export function makeAPIQuery(obj) {
     sort = order + obj.sort;
     /*
     if (sort.substring(0, 2) === '--') {
-    	sort = sort.substr(1);
+      sort = sort.substr(1);
     }
     */
   }
@@ -586,7 +586,8 @@ export function getDate(timestamp, format, opts = {}) {
     tz: process.env.REACT_APP_TZ,
     modal: false,
     modalID: 'timezone',
-    modalClass: ''
+    modalClass: '',
+    style: {}
   };
   const options = { ...defaults,
     ...opts
@@ -603,6 +604,7 @@ export function getDate(timestamp, format, opts = {}) {
 
   if (options.modal) {
     return /*#__PURE__*/React.createElement(ModalLink, {
+      style: options.style,
       className: options.modalClass,
       id: options.modalID,
       opts: {
