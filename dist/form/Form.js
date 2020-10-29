@@ -327,6 +327,7 @@ class Form extends Component {
         });
       }
 
+      if (value) this.validateField(name, 'date', ts, field.validateOpts, field.parent, field);
       if (field.onChange) field.onChange(name, ts, field);
       if (field.debug) console.log('onChangeCalendar', name, field);
     }

@@ -40,6 +40,11 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
 
+    case 'superInstantFundraisingRefund': {
+      endpoint = `orgs/${id[0]}/instant-fundraising/refund`;
+      break;
+    }
+
     case 'superFeeSettings': {
       endpoint = `super/fee-settings`;
       break;

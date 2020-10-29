@@ -49,15 +49,15 @@ export function formatDecimal(value) {
   const length = nLength(val);
   val = val.toString();
   if (length === 1) {
-  	newVal = `.0${val}`;
+    newVal = `.0${val}`;
   }
   if (length === 2) {
-  	newVal = `.${val.slice(-2)}`;
+    newVal = `.${val.slice(-2)}`;
   }
   if (length > 2) {
-  	const decimal = val.slice(-2);
-  	const int = val.slice(0, -2);
-  	newVal = `${int}.${decimal}`;
+    const decimal = val.slice(-2);
+    const int = val.slice(0, -2);
+    newVal = `${int}.${decimal}`;
   }
   console.log('newVal val', newVal, val);
   return isNaN(newVal) || parseInt(val) === 0 || isNaN(val) ? '' : numberWithCommas(newVal);
