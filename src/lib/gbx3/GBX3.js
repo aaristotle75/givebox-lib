@@ -300,7 +300,7 @@ class GBX3 extends React.Component {
       ebEmail
     } = info;
 
-    if (!preview && ENV === 'production') {
+    if (!preview) {
       const data = {
         type: 'details',
         articleID,
