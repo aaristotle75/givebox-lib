@@ -103,6 +103,10 @@ export function getSplitStr(str, delimiter, num, index) {
     return arr;
   }
 }
+export function truncate(str, n) {
+  return str.length > n ? str.substr(0, n - 1) + '...' : str;
+}
+;
 export function toFixed(n, precision) {
   const match = RegExp('(\\d+\\.\\d{1,' + precision + '})(\\d)?').exec(n);
 
