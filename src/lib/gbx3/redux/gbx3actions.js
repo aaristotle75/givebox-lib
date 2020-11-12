@@ -778,8 +778,25 @@ export function cloneFundraiser(kind, kindID, callback) {
       callback: (res, err) => {
         if (!err && !util.isEmpty(res)) {
           const title = `Clone of ${util.getValue(res, 'title')}`;
+          const kindSpecific = {};
+          const d = new Date();
+          //const oneMonthFromNow = parseInt((d.setMonth(d.getMonth() + 1))/1000);
+
+          switch (kind) {
+            case 'membership':
+            case 'event':
+            case 'sweepstake': {
+              kindSpecific.when = null;
+              kindSpecific.endsAt = null;
+              kindSpecific.status = 'open';
+              break;
+            }
+
+            // no default
+          }
           const data = {
             ...res,
+            ...kindSpecific,
             title
           };
           dispatch(createFundraiser(kind, callback, data));

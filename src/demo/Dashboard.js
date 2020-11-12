@@ -189,6 +189,10 @@ class Dashboard extends Component {
       orgBankAccounts
     } = this.props;
 
+    const d = new Date();
+    const oneMonthFromNow = parseInt((d.setMonth(d.getMonth() + 1))/1000);
+    console.log('execute oneMonthFromNow', oneMonthFromNow);
+
     return (
       <div>
         <h2>Dashboard</h2>
