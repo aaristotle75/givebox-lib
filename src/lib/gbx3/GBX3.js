@@ -107,6 +107,7 @@ class GBX3 extends React.Component {
               } else {
                 if (articleID) this.loadGBX3(articleID);
                 else {
+                  // autocreate
                   this.loadCreateNew();
                 }
               }
@@ -257,6 +258,7 @@ class GBX3 extends React.Component {
     info.ebToken = util.getValue(queryParams, 'eb', null);
     info.ebEmail = util.getValue(queryParams, 'm', null);
     info.autoCreate = util.getValue(queryParams, 'autoCreate');
+    info.clone = util.getValue(queryParams, 'clone');
 
     const loc = util.getValue(queryParams, 'loc', reactReferer.referer());
     const sourceLocation = loc || window.location.href;

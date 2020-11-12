@@ -6,6 +6,7 @@ import {
   Image
 } from '../../../';
 import {
+  cloneFundraiser,
   createFundraiser,
   loadGBX3,
   updateInfo,
@@ -35,11 +36,12 @@ class Create extends React.Component {
 
   componentDidMount() {
     const {
-      autoCreate
+      autoCreate,
+      clone
     } = this.props;
 
     if (autoCreate) {
-      this.createFundraiser(autoCreate, true);
+      this.createFundraiser(autoCreate, true, clone);
     }
   }
 
@@ -91,10 +93,13 @@ class Create extends React.Component {
     );
   }
 
-  async createFundraiser(kind, autoCreate) {
-    if (autoCreate) this.props.updateInfo({ autoCreate: null });
+  async createFundraiser(kind, autoCreate, clone) {
+    if (autoCreate) this.props.updateInfo({ autoCreate: null, clone: null });
     const cleared = await this.props.clearGBX3(true);
-    if (cleared) this.props.createFundraiser(kind, this.createFundraiserCallback);
+    if (cleared) {
+      if (clone) this.props.cloneFundraiser(kind, clone, this.createFundraiserCallback);
+      else this.props.createFundraiser(kind, this.createFundraiserCallback);
+    }
     window.parent.postMessage('gbx3Created', '*');
   }
 
@@ -219,6 +224,7 @@ function mapStateToProps(state, props) {
   const gbx3 = util.getValue(state, 'gbx3', {});
   const info = util.getValue(gbx3, 'info', {});
   const autoCreate = util.getValue(info, 'autoCreate');
+  const clone = util.getValue(info, 'clone');
   const orgID = util.getValue(info, 'orgID');
   const kind = util.getValue(info, 'kind');
   const orgName = util.getValue(info, 'orgName');
@@ -233,6 +239,7 @@ function mapStateToProps(state, props) {
 
   return {
     autoCreate,
+    clone,
     kind,
     orgID,
     orgName,
@@ -247,6 +254,7 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
+  cloneFundraiser,
   createFundraiser,
   loadGBX3,
   updateInfo,
