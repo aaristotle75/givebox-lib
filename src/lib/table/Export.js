@@ -25,11 +25,16 @@ class DownloadFile extends Component {
   }
 
   makeLink(chrome = false) {
+    const {
+      id
+    } = this.props;
+
     const resource = this.props.resource;
     if (has(resource.search, 'page')) delete resource.search.page;
     const max = { max: 100000000 };
     const search = { ...resource.search, ...max };
     const link = this.props.getResource(this.props.name, {
+      id: id ? [id] : null,
       customName: this.props.customName || null,
       csv: true,
       search: search,
@@ -50,9 +55,9 @@ class DownloadFile extends Component {
     const filename = `${this.props.name}.csv`;
     const x = new XMLHttpRequest();
     x.onload = function() {
-    	if (this.status === 200) {
+      if (this.status === 200) {
         bindthis.downloadCallback(url, x.response, filename);
-    	} else {
+      } else {
         bindthis.setState({ error: 'Error downloading file' });
       }
     }
@@ -104,6 +109,10 @@ class DownloadFile extends Component {
   }
 }
 
+DownloadFile.defaultProps = {
+  id: null
+}
+
 function mapStateToProps(state, props) {
 
   const resource = state.resource[props.customName || props.name] ? state.resource[props.customName || props.name] : {};
@@ -130,21 +139,22 @@ export default class ExportLink extends Component {
       name,
       customName,
       resource,
-      text
+      text,
+      id
     } = this.props;
 
     const modalID = 'downloadReport'; //`export${name}`;
 
     return (
       <div style={style} className={`exportRecordsLink ${align}`}>
-        <ModalLink id={modalID} className='link' opts={{ name, customName, link, resource, text, modalID }}>{link}</ModalLink>
+        <ModalLink id={modalID} className='link' opts={{ id, name, customName, link, resource, text, modalID }}>{link}</ModalLink>
       </div>
     );
   }
 }
 
 ExportLink.defaultProps = {
-	align: 'center',
+  align: 'center',
   link: <span><span className='exportRecordsText'>Download Report</span> <span className='icon icon-download-cloud'></span></span>,
   text: ''
 }

@@ -28,6 +28,9 @@ class DownloadFile extends Component {
   }
 
   makeLink(chrome = false) {
+    const {
+      id
+    } = this.props;
     const resource = this.props.resource;
     if (has(resource.search, 'page')) delete resource.search.page;
     const max = {
@@ -37,6 +40,7 @@ class DownloadFile extends Component {
       ...max
     };
     const link = this.props.getResource(this.props.name, {
+      id: id ? [id] : null,
       customName: this.props.customName || null,
       csv: true,
       search: search,
@@ -128,6 +132,10 @@ class DownloadFile extends Component {
 
 }
 
+DownloadFile.defaultProps = {
+  id: null
+};
+
 function mapStateToProps(state, props) {
   const resource = state.resource[props.customName || props.name] ? state.resource[props.customName || props.name] : {};
   return {
@@ -148,7 +156,8 @@ export default class ExportLink extends Component {
       name,
       customName,
       resource,
-      text
+      text,
+      id
     } = this.props;
     const modalID = 'downloadReport'; //`export${name}`;
 
@@ -159,6 +168,7 @@ export default class ExportLink extends Component {
       id: modalID,
       className: "link",
       opts: {
+        id,
         name,
         customName,
         link,
