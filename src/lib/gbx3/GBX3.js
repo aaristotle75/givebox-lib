@@ -401,6 +401,7 @@ class GBX3 extends React.Component {
 
   render() {
 
+    // Test
     if (this.props.loading) return <Loader msg='Initiating GBX3' />;
 
     return (
