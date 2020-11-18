@@ -51,6 +51,7 @@
     "react-animate-height": "^2.0.22",
     "react-avatar-editor": "^11.0.9",
     "react-color": "^2.18.1",
+    "react-color-aaristotle": "^2.19.6",
     "react-copy-to-clipboard": "^5.0.2",
     "react-dom": "^16.13.1",
     "react-draft-wysiwyg": "^1.14.5",
@@ -84,8 +85,7 @@
   },
   "scripts": {
     "prestart": "cp -f ~/ssl/server.pem ./node_modules/webpack-dev-server/ssl || :",
-    "start": "HOST=amiller.givebox.com PORT=4000 react-scripts start",
-    "start-dev": "HOST=amiller.givebox.com PORT=4000 react-scripts start",
+    "start": "PORT=4000 react-scripts start",
     "start-pc": "set PORT=4000&& react-scripts start",
     "build": "rm -rf dist && NODE_ENV=production babel src/lib --out-dir dist --copy-files --ignore __tests__,spec.js,test.js,__snapshots__",
     "test": "react-scripts test",
