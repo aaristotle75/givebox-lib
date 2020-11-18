@@ -764,6 +764,12 @@ export function processTransaction(data, callback) {
   }
 }
 
+function setCloneFundraiser() {
+  return {
+    type: types.CLONE_GBX3
+  }
+}
+
 export function cloneFundraiser(kind, kindID, callback) {
   return (dispatch, getState) => {
     const gbx3 = util.getValue(getState(), 'gbx3', {});
@@ -805,6 +811,7 @@ export function cloneFundraiser(kind, kindID, callback) {
         }
       }
     }));
+    dispatch(setCloneFundraiser());
   }
 }
 
@@ -830,8 +837,10 @@ export function createFundraiser(createKind, callback, cloneData) {
           dispatch(loadGBX3(res.articleID, async () => {
             dispatch(updateInfo({ display: 'article', kind }));
             dispatch(updateAdmin({ step: 'design', editable: true }));
-            const styleReset = await dispatch(resetStyle('gbxStyle'));
-            if (styleReset) dispatch(setStyle());
+            if (!cloneData) {
+              const styleReset = await dispatch(resetStyle('gbxStyle'));
+              if (styleReset) dispatch(setStyle());
+            }
             if (callback) callback(res, err);
           }));
         } else {
@@ -1210,6 +1219,12 @@ export function resetStyle(styleType) {
   }
 }
 
+export function setStyles(style) {
+  return {
+    type: types.SET_STYLES
+  }
+}
+
 export function setStyle(options = {}) {
 
   const opts = {
@@ -1476,6 +1491,7 @@ export function setStyle(options = {}) {
         styleEl.innerHTML = styleInnerHTML;
       }
     }
+    dispatch(setStyles(styleInnerHTML));
   }
 }
 
