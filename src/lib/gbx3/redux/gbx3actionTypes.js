@@ -1,4 +1,5 @@
 export const UPDATE_GBX3 = 'UPDATE_GBX3';
+export const CLONE_GBX3 = 'CLONE_GBX3';
 export const SET_LOADING = 'SET_LOADING';
 export const CLEAR_GBX3 = 'CLEAR_GBX3';
 export const UPDATE_INFO = 'UPDATE_INFO';
@@ -24,4 +25,5 @@ export const RESET_CONFIRMATION = 'RESET_CONFIRMATION';
 export const UPDATE_DEFAULTS = 'UPDATE_DEFAULTS';
 export const UPDATE_DEFAULT = 'UPDATE_DEFAULT';
 export const RESET_STYLE = 'RESET_STYLE';
+export const SET_STYLES = 'SET_STYLES';
 export const UPDATE_HELPERS = 'UPDATE_HELPERS';
