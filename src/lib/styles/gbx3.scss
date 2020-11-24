@@ -1,2023 +1,2073 @@
 @import 'variables.scss';
 
 .gbx3LayoutBackground {
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	width: 100%;
-	height: auto;
-	min-height: 100%;
-	@media (max-width: $breakpoint) {
-		//display: none;
-	}
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  min-height: 100%;
+  @media (max-width: $breakpoint) {
+    //display: none;
+  }
 }
 
 .centered {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .hasAccessToEditPublic {
-	position: fixed;
-	top: 10px;
-	right: 10px;
-	z-index: 999990;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 999990;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
-	.avatarLink {
-		cursor: pointer;
-		@include transition(opacity .25s);
-		margin: 5px 0;
-	}
+  .avatarLink {
+    cursor: pointer;
+    @include transition(opacity .25s);
+    margin: 5px 0;
+  }
 
-	.avatarLink:hover {
-		opacity: .9;
-	}
+  .avatarLink:hover {
+    opacity: .9;
+  }
 }
 
 .gbx3Layout {
-	top: 0;
-	left: 0;
-	right: 0;
-	position: absolute;
-	display: block;
-	height: 100vh;
-	width: 100%;
-	overflow-y: scroll;
-	overflow-x: hidden;
-	-webkit-overflow-scrolling: auto;
-	background: transparent;
-	padding: 20px;
+  top: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
+  display: block;
+  height: 100vh;
+  width: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: auto;
+  background: transparent;
+  padding: 20px;
 
-	@media (max-width: $breakpoint) {
-		padding: 0;
-	}
+  @media (max-width: $breakpoint) {
+    padding: 0;
+  }
 
-	.bottomOffset {
-		display: table;
-		height: 0px;
+  .bottomOffset {
+    display: table;
+    height: 0px;
 
-		@media (max-width: $breakpoint) {
-			height: 75px;
-		}
-	}
+    @media (max-width: $breakpoint) {
+      height: 75px;
+    }
+  }
 }
 
 .gbx3Layout.noAccess {
-	@include filter(blur(30px));
+  @include filter(blur(30px));
 }
 
 .gbx3 {
 
-	@media (max-width: $breakpoint) {
-		.hideOnMobile {
-			display: none;
-		}
-	}
+  @media (max-width: $breakpoint) {
+    .hideOnMobile {
+      display: none;
+    }
+  }
 
-	.backToOrgPage {
-		position: fixed;
-		top: 10px;
-		left: 10px;
-		z-index: 99999998;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
+  .backToOrgPage {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 99999998;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
-		button.link {
-			font-size: 14px;
-			display: flex;
-			align-items: center;
-		}
-	}
+    button.link {
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+    }
+  }
 
-	.backToOrgPage.avatarLink {
-		cursor: pointer;
-		@include transition(opacity .25s);
-		margin: 5px 0;
-	}
+  .backToOrgPage.avatarLink {
+    cursor: pointer;
+    @include transition(opacity .25s);
+    margin: 5px 0;
+  }
 
-	.backToOrgPage.avatarLink:hover {
-		opacity: .9;
-	}
+  .backToOrgPage.avatarLink:hover {
+    opacity: .9;
+  }
 
-	.hljs {
-		background: $white;
-		border-radius: 10px;
-		border: 2px dashed $mainColor;
-	}
+  .hljs {
+    background: $white;
+    border-radius: 10px;
+    border: 2px dashed $mainColor;
+  }
 
-	#map {
-		width: 100%;
-		min-height: 400px;
-		height: auto;
-		background: #fff;
-	}
+  #map {
+    width: 100%;
+    min-height: 400px;
+    height: auto;
+    background: #fff;
+  }
 
-	.whereMap {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		flex-direction: column;
+  .whereMap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 
-		.markerTitle {
-			font-size: 16px;
-		}
+    .markerTitle {
+      font-size: 16px;
+    }
 
-		.address {
-			font-size: 16px;
-			margin: 10px 0;
-		}
-	}
+    .address {
+      font-size: 16px;
+      margin: 10px 0;
+    }
+  }
 
-	.theMap{
-		width: 100%;
-		min-height: 400px;
-		height: auto;
-		background: #fff;
-	}
+  .theMap{
+    width: 100%;
+    min-height: 400px;
+    height: auto;
+    background: #fff;
+  }
 
-	.whereMapLink {
-		cursor: pointer;
-	}
+  .whereMapLink {
+    cursor: pointer;
+  }
 
-	.viewMapLink {
-		display: none;
-		font-size: 12px;
-		position: absolute;
-		top: 5px;
-		right: 10px;
-	}
+  .viewMapLink {
+    display: none;
+    font-size: 12px;
+    position: absolute;
+    top: 5px;
+    right: 10px;
+  }
 
-	.whereMapLink:hover {
-		.viewMapLink {
-			display: block;
-		}
-	}
+  .whereMapLink:hover {
+    .viewMapLink {
+      display: block;
+    }
+  }
 
-	.alertMsg {
-		.passive {
-			padding: 15px 10px;
-			.msgText {
-				font-size: 14px;
-			}
-		}
-	}
+  .alertMsg {
+    .passive {
+      padding: 15px 10px;
+      .msgText {
+        font-size: 14px;
+      }
+    }
+  }
 
-	.noAccessToGBX {
-		position: fixed;
-		z-index: 99999;
-		top: 0; left: 0; right: 0; bottom: 0;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		flex-direction: column;
-		background: transparentize($dark-blue-gray, .3); //transparentize($white, .7);;
-		color: $white;
-		font-size: 18px;
-		font-weight: 400;
+  .noAccessToGBX {
+    position: fixed;
+    z-index: 99999;
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: transparentize($dark-blue-gray, .3); //transparentize($white, .7);;
+    color: $white;
+    font-size: 18px;
+    font-weight: 400;
 
-		.icon {
-			font-size: 40px;
-			margin: 10px 0;
-		}
+    .icon {
+      font-size: 40px;
+      margin: 10px 0;
+    }
 
-		button.link {
-			margin: 20px 0;
-			font-size: 14px;
-			color: $white;
-			text-align: center;
-		}
+    button.link {
+      margin: 20px 0;
+      font-size: 14px;
+      color: $white;
+      text-align: center;
+    }
 
-		button.link:hover {
-			color: $light-gray;
-		}
+    button.link:hover {
+      color: $light-gray;
+    }
 
-	}
+  }
 }
 
 .gbx3ReceiptLayout {
-	top: 0;
-	left: 0;
-	right: 0;
-	position: absolute;
-	display: block;
-	height: 100vh;
-	width: 100%;
-	overflow-y: scroll;
-	overflow-x: hidden;
-	-webkit-overflow-scrolling: auto;
-	background: #ffffff;
-	padding: 20px;
+  top: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
+  display: block;
+  height: 100vh;
+  width: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: auto;
+  background: #ffffff;
+  padding: 20px;
 
-	@media (max-width: $breakpoint) {
-		padding: 0;
-	}
+  @media (max-width: $breakpoint) {
+    padding: 0;
+  }
 
-	.bottomOffset {
-		display: table;
-		height: 0px;
+  .bottomOffset {
+    display: table;
+    height: 0px;
 
-		@media (max-width: $breakpoint) {
-			height: 75px;
-		}
-	}
+    @media (max-width: $breakpoint) {
+      height: 75px;
+    }
+  }
 }
 
 .gbx3Layout {
-	@media (max-width: $breakpoint) {
-		p img {
-		margin: 0;
-		width: 100%;
-		height: auto;
-		}
-	}
+  @media (max-width: $breakpoint) {
+    p img {
+    margin: 0;
+    width: 100%;
+    height: auto;
+    }
+  }
 }
 
 .dropdown .secondaryText {
-	font-size: 12px;
+  font-size: 12px;
 }
 
 .gbx3 {
 
-	.avatarLink {
-		overflow: hidden;
-
-		button.link {
-			font-size: 1em;
-			font-weight: 400;
-		}
-	}
-
-	.avatarMenu li:hover {
-		background: linear-gradient(to right, $mainColor 0%, $green 100%);
-	}
-
-	.avatarLink button.link .defaultAvatarImage {
-		background: transparentize($light-med-gray, .5);
-		color: $white;
-		border: 1px solid transparent;
-		@include default-transition(.5s);
-	}
-
-	.avatarLink button.link:hover .defaultAvatarImage {
-		background: transparentize($light-med-gray, .5);
-		color: $white;
-		border: 1px solid transparent;
-		opacity: .7;
-	}
-
-	.avatarLink .editGraphic {
-		background: transparentize($light-med-gray, .5);
-		color: $white;
-	}
-
-	.avatarLink .editGraphic:hover {
-		background: transparentize($light-med-gray, .5);
-		color: $white;
-		opacity: .7;
-	}
-
-	.hasAccessToEditPublic {
-
-		button.link {
-			letter-spacing: 1px;
-		}
-	}
-
-	.editGraphic {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		flex-direction: column;
-		padding: 10px;
-		width: 45px;
-		height: 45px;
-		border-radius: 50%;
-		color: $white;
-		//background: linear-gradient(to right, $mainColor 0%, $green 100%);
-		background: $mainColor;
-		@include default-transition(.5s);
-		.icon {
-			font-size: 22px !important;
-		}
-	}
-
-	.editGraphic:hover {
-		background: transparentize($mainColor, .1);
-		//background: linear-gradient(to left, $mainColor 0%, $green 100%);
-	}
-
-	.flatpickr input,
-	.dropdown button:not(.label) {
-		font-size: 14px;
-		font-weight: 400;
-	}
-
-	.line {
-		display: block;
-	}
-
-	/* Date Specific */
-	.dateSection {
-		.dateDisplay {
-			display: block;
-		}
-	}
-
-	.editorPreview {
-
-	}
-
-	.formSectionHeader {
-		font-size: 1em;
-		font-weight: 300;
-		padding: 15px 5px 5px 5px;
-		border-bottom: 1px solid $greenLight;
-	}
-
-	.helperText {
-		padding: 10px 5px;
-		font-size: 12px;
-
-		.line {
-			padding: 5px 0;
-		}
-
-		.line.label {
-			font-weight: 300;
-		}
-
-		.input-group {
-			padding: 0px;
-		}
-	}
-
-	.sortableListItem {
-		background: blue;
-	}
-
-	::-webkit-scrollbar {
-			width: 6px;
-			height: 10px;
-	}
-
-	::-webkit-scrollbar-track {
-		background-color: transparent;
-	}
-
-	::-webkit-scrollbar-thumb {
-		outline: 0;
-		border-radius: 20px;
-	}
-
-	input::-webkit-input-placeholder {
-		color: $placeholder-gray;
-	}
-	input::-moz-placeholder {
-		color: $placeholder-gray;
-	}
-	input::-ms-input-placeholder {
-		color: $placeholder-gray;
-	}
-
-	/*------ Layout ------*/
-
-	$topHeaderHeight: 50px;
-	$topPanelHeight: 60px;
-	$topOffset: $topHeaderHeight + $topPanelHeight;
-	$panelWidth: 220px;
-
-	.centerAlign {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-
-	.publicActionBar {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		flex-direction: column;
-		position: relative;
-		background: transparent;
-	}
-
-	.gbx3Container {
-		position: relative;
-		display: table;
-		margin: 0 auto;
-		height: auto;
-		width: 100%;
-		padding: 10px;
-		background: $white;
-		overflow: hidden;
-		@include box-shadow(1px 1px 5px 3px rgba(0, 0, 0, 0.25));
-		@include bgGradient(to bottom, $light-gray 0%, $white 20%);
-		@media (max-width: $breakpoint) {
-			border-radius: 0px !important;
-		}
-
-		.closeGBXModalButton {
-			position: absolute;
-			top: 0;
-			right: 0;
-			width: 20px;
-			height: 20px;
-		}
-	}
-
-	.gbx3ReceiptContainer {
-		display: table;
-		margin: 0 auto;
-		height: auto;
-		width: 100%;
-		padding: 10px;
-		background: $white;
-		@include bgGradient(to bottom, $light-gray 0%, $white 20%);
-		@media (max-width: $breakpoint) {
-			border-radius: 0px !important;
-		}
-
-		p {
-			margin: 5px 0;
-		}
-	}
-
-
-	.layout-column {
-		display: table-row;
-		width: 100%;
-		height: 100%;
-	}
-
-	.layoutMenu {
-		.toggleUtil {
-			float: right;
-			.icon {
-				font-size: 18px;
-			}
-		}
-	}
-
-	.gbx3AdminLayout {
-		overflow: hidden;
-	}
-
-	.gbx3AdminLayout.previewMode {
-
-		.gbx3ReceiptContainer {
-			background: $light-gray;
-		}
-
-		.emailIframe {
-			position: absolute;
-			top: 0; right: 0; left: 0; bottom: 0;
-			width: 100%;
-			height: 100vh;
-			overflow-x: hidden;
-		}
-
-		.desktopWrapper {
-			top: $topPanelHeight;
-		}
-
-		.gbx3TopHeader {
-			height: 0;
-		}
-
-		.topPanel {
-			top: 0;
-			z-index: 10;
-		}
-
-		.leftPanel.open {
-			display: none;
-		}
-
-		.stageContainer {
-			position: relative;
-			top: 0;
-			margin-top: 0px;
-			padding: $topPanelHeight + 40px 0;
-			bottom: 0;
-			background: $white;
-			overflow-y: auto;
-			height: 100vh;
-			z-index: 9;
-
-			.gbx3Layout {
-				height: 100vh;
-				overflow-y: auto;
-				padding-top: $topPanelHeight + 20px;
-			}
-
-			.gbx3ReceiptContainer {
-				height: 100vh;
-				overflow-y: auto;
-				padding-top: $topPanelHeight + 20px;
-			}
-
-		}
-
-		.stageContainer.open {
-			left: 0;
-		}
-
-		.leftPanelOpen {
-			display: none;
-		}
-
-		.bottomPanel.open {
-			left: 0;
-		}
-
-		.bottomPanel {
-			display: none;
-		}
-	}
-
-	// Top Header
-	.gbx3TopHeader {
-		position: fixed;
-		top: 0;
-		left: 0;
-		right: 0;
-		height: $topHeaderHeight;
-		width: 100%;
-		overflow: hidden;
-		white-space: nowrap;
-		background: $white;
-		@include transition(height .25s);
-		z-index: 3;
-
-		.avatarLink button.link {
-			color: $mainColor;
-			font-size: 1.1em;
-			font-weight: 400;
-		}
-
-		.avatarLink button.link:hover {
-			color: $mainColorLight;
-		}
-	}
-
-	.headerLeftSide {
-		width: 30%;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		.logo {
-			img {
-				cursor: pointer;
-				height: 35px;
-				width: auto;
-			}
-		}
-	}
-
-	.headerMiddle {
-		width: 40%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-
-		button.button,
-		button.link {
-			display: flex;
-			align-items: center;
-			margin-left: 20px;
-			.icon {
-				margin-right: 5px;
-			}
-		}
-	}
-
-	.headerRightSide {
-		width: 30%;
-		display: flex;
-		align-items: center;
-		justify-content: flex-end;
-		flex-wrap: wrap;
-	}
-
-	// Top Panel
-	.topPanel {
-		position: fixed;
-		top: $topHeaderHeight;
-		left: 0;
-		right: 0;
-		height: $topPanelHeight;
-		width: 100%;
-		background: linear-gradient(to right, $mainColorMedium 15%, $green 100%);;
-		@include transition(top .25s);
-		@include box-shadow(1px 1px 5px 3px rgba(0, 0, 0, 0.25));
-		z-index: 2;
-	}
-
-	.topPanelContainer {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		height: $topPanelHeight;
-
-		.adminPanelTabs {
-			button.link {
-				color: $white;
-				margin: 0;
-				height: $topPanelHeight;
-				width: 150px;
-				border: 0;
-				@media (max-width: $breakpoint) {
-					width: 90px;
-				}
-				.menuText {
-					font-size: 14px;
-					font-weight: 300;
-					margin-top: 5px;
-					@media (max-width: $breakpoint) {
-						font-size: 10px;
-					}
-				}
-			}
-
-			button.link:hover {
-				color: $white;
-				border: 0;
-				background: transparentize($white, .8);
-			}
-
-			button.link.selected {
-				color: $white;
-				border: 0;
-				background: transparentize($white, .8);
-			}
-
-			button.link.selected:hover {
-				color: $white;
-				border: 0;
-				background: transparentize($white, .8);
-			}
-		}
-
-		button.link.side {
-			display: flex;
-			align-items: center;
-			margin: 0 20px;
-			color: $white;
-			font-size: 14px;
-			font-weight: 300;
-		}
-		button.link.side:hover {
-			color: $light-gray;
-		}
-
-		.leftSide {
-			width: 20%;
-			white-space: nowrap;
-			.icon {
-				font-size: 20px;
-				margin-right: 10px;
-			}
-			.icon.leftPanelClose {
-				color: $white;
-				font-size: 20px;
-				margin-left: 20px;
-			}
-		}
-
-		.middle {
-			white-space: nowrap;
-			.button-group {
-				button.link {
-					text-align: center;
-					.icon {
-						display: block;
-						font-size: 28px;
-					}
-					.iconText {
-						display: block;
-						margin-top: 5px;
-						font-size: 14px;
-						font-weight: 300;
-						@media (max-width: $breakpoint) {
-							font-size: 10px;
-						}
-					}
-				}
-			}
-		}
-
-		.rightSide {
-			color: $white;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			width: 20%;
-			white-space: nowrap;
-			.icon {
-				font-size: 22px;
-			}
-		}
-	}
-
-	// Left Panel
-	.leftPanel {
-		position: absolute;
-		top: $topOffset;
-		left: 0;
-		bottom: 0;
-		width: 100%;
-		max-width: $panelWidth;
-		z-index: 900001;
-		margin: 0;
-		padding: 0;
-		white-space: nowrap;
-		overflow-x: hidden;
-		overflow-y: hidden;
-		background: $mainColorMedium;
-		background-image: url(https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/layout-left-bg-new.png), linear-gradient(to bottom, $mainColorMedium 30%, $green 100%);
-		background-position: center bottom;
-		background-repeat: no-repeat;
-		background-size: $layout-left-width auto;
-		@include transition(width .5s);
-
-		::-webkit-scrollbar {
-				width: 6px;
-		}
-
-		::-webkit-scrollbar-track {
-			background-color: $dark-blue-gray;
-		}
-
-		::-webkit-scrollbar-thumb {
-			outline: 0;
-			border-radius: 20px;
-			background: $mainColorLight;
-		}
-
-		.adminPanelTabs {
-
-			position: relative;
-			height: 50px;
-			width: $panelWidth;
-			overflow: hidden;
-			white-space: nowrap;
-			display: flex;
-			justify-content: space-between;
-			background: $mainColor;
-
-			button.link {
-				color: $white;
-				font-size: 14px;
-				font-weight: 400;
-				margin: 0;
-				height: 50px;
-				width: auto;
-				border: 0;
-				flex-grow: 1;
-				border-bottom: 2px solid transparent;
-			}
-
-			button.link:hover {
-				color: $white;
-				border: 0;
-				border-bottom: 2px solid $green;
-			}
-
-			button.link.selected {
-				color: $white;
-				border: 0;
-				border-bottom: 2px solid $green;
-			}
-
-			button.link.selected:hover {
-				color: $white;
-				border: 0;
-				border-bottom: 2px solid $green;
-			}
-		}
-
-		ul {
-			li {
-				width: $panelWidth;
-				height: auto;
-				padding: 15px 10px;
-				margin: 1px 0;
-				cursor: pointer;
-				color: $white;
-				font-size: 14px;
-				background: transparentize($mainColor, .7);
-				@include default-transition(.5s);
-			}
-
-			li:hover:not(.listHeader) {
-				background: transparentize($green, .4);
-			}
-
-			li.draggableBlock {
-				cursor: move;
-			}
-
-			li.stylePanel {
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-				padding: 5px 10px;
-
-				.stylePanelBackgroundImageIndicator {
-					padding: 10px 0;
-				}
-
-				.colorpicker-group {
-					padding: 0;
-
-					.colorPickerText { display: none; }
-
-					label {
-						display: none;
-						color: $white;
-					}
-					button.input {
-						border: 0;
-					}
-					button.input.hasValue {
-						color: $white;
-					}
-					.input-bottom { display: none; }
-				}
-			}
-
-			li.listHeader {
-				font-size: 12px;
-				text-align: center;
-				cursor: default;
-				padding: 10px;
-				color: $light-gray;
-				background: transparentize($mainColorDark, .4);
-				text-transform: uppercase;
-			}
-		}
-	}
-
-	.leftPanelDropdown {
-		display: inline-block;
-		padding: 0 !important;
-
-		.dropdown button {
-			border: 0;
-			.label { color: $white; }
-			.icon { display: none; }
-		}
-		.dropdown button:not(.link):hover {
-			.label { color: $white !important; }
-		}
-
-		.dropdown button:hover:not(.label) {
-				border-bottom: 0;
-		}
-
-	}
-
-	.leftPanelContainer {
-		display: block;
-		height: 100%;
-		overflow-y: auto;
-		overflow-x: hidden;
-		-webkit-overflow-scrolling: auto;
-	}
-
-	.leftPanelTop {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: $panelWidth;
-		height: 50px;
-		z-index: 10;
-	}
-
-	.leftPanelScroller {
-		position: relative;
-		display: block;
-		margin-top: 50px;
-	}
-
-	.leftPanelHeader {
-		color: $white;
-		overflow: hidden;
-		white-space: nowrap;
-		font-weight: 300;
-		font-size: 16px;
-	}
-
-
-	.leftPanelOpen {
-		position: absolute;
-		top: $topOffset + 30px;
-		left: 10px;
-		z-index: 900000;
-		cursor: pointer;
-		@include transition(left .5);
-		.icon {
-			font-size: 30px;
-		}
-	}
-
-	.leftPanelOpen.open {
-		left: $panelWidth - 50px;
-	}
-
-	.leftPanel.open {
-		width: $panelWidth;
-		@include box-shadow(0px 2px 2px 1px rgba(0, 0, 0, 0.45));
-	}
-
-	.leftPanel.close {
-		width: 0px;
-	}
-
-	.middleAdminContainer {
-		position: relative;
-		height: 100%;
-		width: 100%;
-	}
-
-	// Stage Container
-	.stageContainer {
-		position: fixed;
-		top: $topOffset;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		height: auto;
-		width: auto;
-		overflow-y: auto;
-		overflow-x: auto;
-		background: $white;
-		@include transition(left .5s);
-		@media (max-width: $breakpoint) {
-			padding: 0;
-		}
-
-		.gbx3Layout {
-			height: auto;
-			overflow-y: hidden;
-			min-width: 850px;
-			@media (max-width: $breakpoint) {
-				min-width: 100%;
-			}
-		}
-
-		.gbx3ReceiptLayout {
-			overflow-y: auto;
-			height: 100%;
-			background: $light-gray;
-		}
-
-		.gbx3Container {
-		}
-
-		.gbx3ReceiptContainer {
-			max-width: 600px;
-			width: 550px;
-			background: $white;
-			img {
-				margin: 10px 0;
-			}
-			@media (max-width: $breakpoint) {
-				width: 100%;
-			}
-		}
-
-		.gbx3Footer {
-			.footerContainer {
-				display: none;
-			}
-		}
-	}
-
-	.stageContainer.hasBottom {
-		background: $light-gray;
-		bottom: 50px;
-	}
-
-	.stageAligner {
-		position: relative;
-		display: block;
-		margin: 0 auto;
-		padding: 0;
-		height: 100vh;
-		@media (max-width: $breakpoint) {
-			padding: 0;
-		}
-	}
-
-	.stageContainer.open {
-		left: $panelWidth;
-
-		@media (max-width: $breakpoint) {
-			left: 0px;
-		}
-	}
-
-	.gbx3Footer {
-		position: relative;
-		display: block;
-
-		.copyright {
-			margin-top: 10px;
-			display: flex;
-			font-size: 12px;
-			flex-direction: column;
-			justify-content: center;
-		}
-	}
-
-	.bottomPanel {
-		position: fixed;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		height: 50px;
-		background: $white;
-		width: auto;
-		padding: 10px;
-		border-top: 1px solid $light-gray;
-		@include transition(left .5s);
-	}
-
-	.bottomPanel.open {
-		left: $panelWidth;
-		@media (max-width: $breakpoint) {
-			left: 0px;
-		}
-	}
-
-	.adminPanelTabs {
-
-		.button-group {
-			margin: 0;
-			padding: 0;
-		}
-
-		button.link {
-			color: $dark;
-			font-size: 1em;
-			font-weight: 400;
-			border-bottom: 2px solid transparent;
-		}
-
-		button.link.selected {
-			color: $mainColor;
-			border-bottom: 2px solid $mainColor;
-		}
-
-		button.link.selected:hover {
-			color: $mainColor;
-			border-bottom: 2px solid $mainColor;
-		}
-
-		button.link:hover {
-			color: $mainColorLight;
-		}
-	}
-
-	/*-------- END Layout --------*/
-
-
-	/*------ Autofill handling -----*/
-	input:-internal-autofill-selected {
-		-webkit-appearance: menulist-button;
-		background-color: $white !important;
-		background-image: none !important;
-	}
-
-	/*------ Elements --------*/
-
-	h1, h2, h3, h4 {
-		margin: 0;
-		font-weight: 400;
-	}
-
-	h1 {
-		font-size: 22px;
-	}
-
-	h2 {
-		font-size: 20px;
-	}
-
-	h3 {
-		font-size: 18px;
-	}
-
-	h4 {
-		font-size: 16px;
-	}
-
-	p {
-		margin: 0;
-		font-size: 14px;
-		font-weight: 400;
-	}
-
-	p img {
-		padding: 0 10px;
-	}
-
-	/*------ End Elements ------*/
-
-
-	/*-------- General Form ----*/
-	.formSection {
-		@media (max-width: $breakpoint) {
-			padding: 10px 0 20px 0;
-		}
-	}
-
-	.gbx3Layout {
-		.dropdown button {
-			.label.idle {
-				color: $placeholder-gray !important;
-			}
-			.icon {
-				color: $placeholder-gray;
-			}
-		}
-	}
-
-	.autoSaved {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		position: fixed;
-		top: 0;
-		left: 0;
-		right: 0;
-		margin: 0 auto;
-		height: 25px;
-		width: 80px;
-		background: transparentize($mainColor, 0);
-		color: $white;
-		font-size: 12px;
-		font-weight: 400;
-		z-index: 9999999;
-		border-bottom-left-radius: 5px;
-		border-bottom-right-radius: 5px;
-	}
-
-	.choice-group {
-		button .icon {
-			font-size: 1.5em;
-		}
-	}
-
-	.dropown button.link {
-		font-size: 12px;
-	}
-
-	.checkbox-group label.label {
-		 margin-left: 10px;
-		 font-size: 14px;
-	}
-
-	.noRecords {
-		color: $med-blue-gray;
-		font-size: 12px;
-		font-weight: 300;
-	}
-
-	p.formSubHeader {
-		font-weight: 300;
-		font-size: 1em;
-		margin: 20px 0 10px 0;
-	}
-
-	/*------ LIB Components -----*/
-	.collapse {
-		margin: 20px 0;
-	}
-
-	/*------- Grid ---------*/
-
-	.react-grid-item.mobileRelativeBlock {
-		padding: 10px 0;
-	}
-
-	.react-grid-item.mobileRelativeBlockTop {
-		padding: 0;
-		text-align: center;
-	}
-
-	.react-grid-item {
-		background: transparent;
-		z-index: 1;
-		border: 2px solid transparent;
-	}
-
-	/*
-	.react-grid-item.stack {
-		display: block !important;
-		position: relative !important;
-		height: auto !important;
-		width: 100% !important;
-		transform: none !important;
-	}
-	*/
-
-	.react-grid-item.outline {
-		border: 2px solid $mainColor;
-	}
-
-	.react-grid-item > .react-resizable-handle {
-		display: none;
-		position: absolute;
-		width: 20px;
-		height: 20px;
-		bottom: 0;
-		right: 0;
-		cursor: se-resize;
-		z-index: 3;
-		opacity: .2;
-		border-right: 1px solid $mainColor;
-		border-bottom: 1px solid $mainColor;
-	}
-
-	.react-grid-item.react-grid-placeholder {
-			background: $mainColorLight;
-			opacity: .3;
-			transition-duration: 100ms;
-			z-index: 2;
-			border-radius: 4px;
-			-webkit-user-select: none;
-			-moz-user-select: none;
-			-ms-user-select: none;
-			-o-user-select: none;
-			user-select: none;
-	}
-
-	.editable {
-
-		.react-grid-item > .react-resizable-handle {
-			display: block;
-		}
-
-		.react-grid-item:hover > .react-resizable-handle {
-			opacity: 1;
-		}
-
-		.react-grid-item:hover {
-
-			.blockOptions {
-				display: flex;
-				justify-content: center;
-				align-items: center;
-			}
-		}
-	}
-
-	.receiptBlock {
-		position: relative;
-		margin-top: 20px;
-		padding-top: 30px;
-	}
-
-	.receiptBottomText {
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		text-align: center;
-		margin: 0 auto;
-		font-size: 12px;
-		color: $med-blue-gray;
-		font-weight: 300;
-	}
-
-	/*--------- End Grid ---------*/
-
-
-	/*---------- Blocks ------------ */
-	.block {
-		position: relative;
-		top: 0; bottom: 0; right: 0; left: 0;
-		height: 100%;
-		width: 100%;
-
-		.edit-group {
-			position: absolute;
-			top: 0; left: 0; right: 0;
-			width: 100%;
-			margin: 0 auto;
-		}
-
-		.blockPlaceholderHtml {
-			color: $med-blue-gray;
-			font-style: italic;
-		}
-	}
-
-	.backgroundBlock {
-
-	}
-
-	.blockOptions {
-		display: none;
-		position: absolute;
-		top: 0; bottom: 0; right: 0; left: 0;
-		height: 100%;
-		width: 100%;
-		min-height: 20px;
-		color: $white;
-		background: transparentize($green, .4);
-		z-index: 2;
-	}
-
-	.displayBlock {
-		position: relative;
-	}
-
-	.dragHandle {
-		position: absolute;
-		top: 0; bottom: 0; right: 0; left: 0;
-		height: 100%;
-		width: 100%;
-		cursor: move;
-		z-index: 3;
-	}
-
-	.dragHandle:hover {
-		@include default-transition(1s);
-	}
-
-	.paymentFormBlock .dragHandle {
-		cursor: default;
-	}
-
-	button.blockRemove {
-		background: transparent;
-		position: absolute;
-		top: 0px;
-		right: 2px;
-		color: $white;
-
-		.icon {
-			color: $white;
-			font-size: 16px;
-		}
-	}
-	button.blockRemove:hover {
-		.icon {
-			color: $mainColorLight;
-		}
-	}
-
-	.blockEdit {
-		position: absolute;
-		top: 0; bottom: 0; right: 0; left: 0;
-		width: 1px;
-		margin: 0 auto;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		background: transparent;
-		color: $white;
-		font-size: 14px;
-		font-weight: 400;
-		z-index: 5;
-		.icon {
-			display: inline-block;
-			font-size: 20px;
-		}
-
-		button {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			flex-direction: column;
-			color: $white;
-			height: 35px;
-			width: 35px;
-			margin: 0 5px;
-			border-radius: 50%;
-			.icon {
-				font-size: 20px;
-			}
-			@media (max-width: $breakpoint) {
-				margin: 0 10px;
-			}
-		}
-
-		button:hover {
-			opacity: .8;
-		}
-
-		button.blockRemoveButton {
-			background: transparentize($red, .2);
-		}
-
-		button.blockEditButton {
-			background: transparentize($mainColorDark, 0);
-		}
-	}
-
-	.blockEdit:hover {
-		color: $light-gray;
-	}
-
-	// Name blocks
-	.titleBlock {
-	}
-
-	.whereBlock {
-		overflow: hidden;
-	}
-
-	.scrollableBlock:not(.editingBlock) {
-		position: relative;
-		display: block;
-		overflow-x: hidden;
-		overflow-y: auto;
-	}
-
-	.contentBlock {
-		word-wrap: break-word;
-	}
-
-	.blockMedia {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-
-	.mediaPlaceholder {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		width: 300px;
-		height: 200px;
-		background: $very-light-gray;
-		border: 1px solid $med-blue-gray;
-		color: $med-blue-gray;
-		font-size: 14px;
-		.icon {
-			font-size: 40px;
-			color: $med-blue-gray;
-		}
-	}
-
-	/*---------- End Blocks ------------ */
-
-
-	/*--------- Drop Area ------*/
-
-	.dropArea {
-		position: relative;
-		@include default-transition(.25s);
-
-		.dragOverText {
-			display: none;
-			justify-content: center;
-			align-items: center;
-			font-size: 20px;
-			color: $white;
-			position: absolute;
-			top:: 0; right: 0; left: 0; bottom: 0;
-			z-index: 99999999;
-		}
-	}
-
-	.dropArea.dragOver {
-		background: transparentize($mainColorLight, .5);
-		.dragOverText {
-			display: flex;
-		}
-	}
-
-	/*-------- End Drop Area ---------*/
-
-	/*--------- Receipt Confirmation -----*/
-	.confirmation {
-
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		flex-direction: column;
-		padding: 20px;
-
-		.successfulText {
-			font-size: .9em;
-			margin: 10px 0;
-
-			.group {
-				display: flex;
-				justify-content: flex-start;
-				align-items: center;
-				margin: 10px 0;
-
-				.icon {
-					margin-right: 5px;
-				}
-			}
-
-			.inlineText {
-				display: inline-block;
-				padding-bottom: 5px;
-			}
-
-			.line {
-				display: block;
-				padding-bottom: 5px;
-			}
-
-			.titleText {
-				font-size: 22px;
-				font-weight: 300;
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				padding: 5px 0;
-				.icon {
-					font-size: 40px;
-					margin-bottom: 5px;
-				}
-
-				@media (max-width: $breakpoint) {
-					font-weight: 600;
-					font-size: .9em;
-					.icon {
-						font-size: 30px;
-						margin-bottom: 5px;
-					}
-				}
-			}
-		}
-	}
-
-	/*------ Payment Form ---------*/
-	.editable .formBlock {
-		background: transparent;
-	}
-
-	.formBlock {
-		border-top-left-radius: 10px;
-		border-top-right-radius: 10px;
-		padding: 20px 0;
-	}
-
-	.paymentFormHeader {
-		position: absolute;
-		top: 20px;
-		left: 0;
-		@media (max-width: $breakpoint) {
-			position: relative;
-			margin: 50px 0 50px 0;
-		}
-	}
-
-	.paymentFormHeaderTitle {
-		font-size: 1.1em;
-	}
-
-	.paymentFormHeaderText {
-		display: block;
-		margin-top: 0px;
-		font-size: 12px;
-		font-weight: 300;
-	}
-
-	.givebox-paymentform {
-
-		input {
-			border-bottom: 1px solid $light-gray;
-		}
-
-		.input-group {
-			padding: 15px 0;
-		}
-
-		.input-bottom.idle {
-			background: $light-gray;
-		}
-
-		.mainError {
-			position: relative;
-			font-size: 14px;
-			margin-bottom: 5px;
-			text-align: center;
-		}
-
-		.dropdown button .selected.label {
-			font-size: $small-text-size;
-		}
-
-		.dropdown button:not(.link) {
-			padding: 12px 0;
-			border-bottom: 1px solid $light-gray;
-		}
-
-		.error .dropdown button {
-			padding: 12px 0;
-			border-bottom: 2px solid $red;
-		}
-
-		.dropdown button:not(.link):hover {
-			border-bottom: 2px solid $mainColor;
-		}
-
-		.dropdown button .selected.label,
-		.dropdown .label:not(button) {
-			font-size: $med-text-size;
-			@media (max-width: $breakpoint) {
-				font-size: $normal-text-size;
-			}
-		}
-
-		.dropdown .icon {
-			top: 15px;
-		}
-
-		.dropdown-cover {
-			display: none;
-		}
-
-		.paymentFormTabs {
-			.panel {
-				margin-top: 0;
-				button {
-					font-size: 12px;
-					font-weight: 300;
-				}
-			}
-		}
-
-		.payMethods-group {
-			position: relative;
-			margin-top: 20px;
-		}
-
-		.payMethods {
-			position: absolute;
-			height: 50px;
-			width: 100%;
-			top: -15px;
-			left: 5px;
-			z-index: 0;
-
-			.bankname {
-				position: absolute;
-				left: 205px;
-				top: 7px;
-			}
-		}
-
-		@media (max-width: 849px) {
-		form .tabs .panel {
-				display: block;
-			}
-		}
-	}
-
-	.mobileFriendly {
-		margin: 100px 0;
-	}
-
-	.imageComponent {
-		flex-direction: row;
-	}
-
-	.creditCard {
-		.checkmark {
-			right: 5px;
-		}
-	}
-
-	.creditCard-group .cardsAccepted {
-			top: -35px;
-	}
-
-	.column {
-		display: inline-block;
-		float: none;
-	}
-
-
-	label, .label {
-		white-space: nowrap;
-		font-size: 12px;
-	}
-
-	.cvvModal button.link {
-	}
-
-	.button-group {
-		position: relative;
-		button.link,
-		button.button {
-			margin: 0 10px;
-		}
-
-		button.link.remove {
-			position: absolute;
-			display: flex;
-			align-items: center;
-			top: 10px;
-			left: 20px;
-			color: $red;
-			font-weight: 400;
-			@media (max-width: $breakpoint) {
-				.buttonText {
-					display: none;
-				}
-				.icon { font-size: 18px; }
-			}
-
-			.icon {
-				margin-right: 5px;
-			}
-		}
-		button.link.remove:hover {
-			opacity: .6;
-		}
-
-	}
-
-	button.link {
-		font-size: 12px;
-		@include default-transition(.5s);
-		margin: 0;
-	}
-
-	button.button {
-		border-radius: 20px;
-		font-size: 16px;
-		font-weight: 400;
-		//color: $mainColor;
-		//background-color: $white;
-		@include default-transition(.5s);
-	}
-
-	button.button:hover {
-		//background-color: $mainColor;
-		//color: $white;
-	}
-
-	button.gbxBtn {
-		font-weight: 300;
-		font-size: 16px;
-		color: $white;
-		background: $med-blue-gray;
-		padding: 10px 20px;
-		border-radius: 20px;
-		box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55);
-		@include default-transition(.5s);
-	}
-
-	button.gbxBtn:hover {
-		color: $white;
-		background: $med-blue-gray;
-		opacity: .7;
-		@include default-transition(.5s);
-	}
-
-	.formBottomSection {
-		display: flex;
-		justify-content: space-around;
-		align-items: center;
-		margin-top: 0px;
-
-		@media (max-width: $breakpoint) {
-			flex-direction: column;
-		}
-
-		.choice-group {
-			padding: 0;
-		}
-
-		.checkbox-group label.label {
-			font-size: 12px;
-		}
-
-		.totalsContainer {
-			display: flex;
-			flex-direction: row;
-			justify-content: space-around;
-			align-items: center;
-			width: 50%;
-			flex-wrap: nowrap;
-			@media (max-width: $breakpoint) {
-				flex-direction: column;
-				width: 100%;
-			}
-		}
-
-		.goalSection {
-			@media (max-width: $breakpoint) {
-				margin-bottom: 20px;
-			}
-		}
-
-		.totalsSection {
-			width: 220px;
-			@media (max-width: $breakpoint) {
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				width: 100%;
-			}
-
-			.totalsListTop {
-				height: 20px;
-				margin-bottom: 8px;
-			}
-
-			.totalsListBottom {
-				margin-top: 15px;
-			}
-
-			.totalsList {
-				display: flex;
-				justify-content: flex-start;
-				@media (max-width: $breakpoint) {
-					padding: 10px 0;
-					justify-content: center;
-				}
-
-				.line {
-					font-size: 12px;
-					display: block;
-					padding-right: 5px;
-					white-space: nowrap;
-					overflow: hidden;
-				}
-
-				.totalLine {
-					font-size: 1.6em;
-					white-space: nowrap;
-					overflow: hidden;
-				}
-			}
-		}
-
-		.buttonSection {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			width: 50%;
-			margin: 0;
-			@media (max-width: $breakpoint) {
-				margin-top: 20px;
-				width: 100%;
-			}
-		}
-	}
-
-	.sectionContent {
-		position: relative;
-		padding: 20px;
-
-		ul {
-			margin-left: 20px;
-			list-style-type: disc;
-			li {
-				display: list-item !important;
-				margin: 5px 5px;
-				display: block;
-				font-size: 14px;
-			}
-		}
-
-		p {
-			padding: 5px 0;
-		}
-
-		h4 {
-			font-weight: 300;
-			text-transform: uppercase;
-			margin: 20px 0 5px 0;
-		}
-
-		.address {
-			font-size: 12px;
-		}
-
-		.title,
-		.line {
-			display: block;
-		}
-
-		.copyright {
-			display: block;
-			font-size: 12px;
-		}
-	}
-
-	/*------- Echeck ----------*/
-	.echeckCol {
-		width: 50%;
-		@media (max-width: $breakpoint) {
-			width: 100%;
-		}
-	}
-
-	/*----- End Payment Form ------*/
-
-
-	/*------- Media Library -------*/
-
-	.scale {
-		margin: 0 5%;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		@media (max-width: 600px) { margin: 0; }
-
-		.icon.small {
-			font-size: $small-text-size;
-			margin-right: 5px;
-		}
-		.icon {
-			font-size: $large-text-size;
-			margin-left: 5px;
-		}
-	}
-
-	/*------- Responsive ---------*/
-
-	@media (max-width: $breakpoint) {
-		.modalContent:not(.campaignForm) {
-				width: 100% !important;
-		}
-
-		.dropdown button .selected.label,
-		.dropdown .label:not(button) {
-			 font-size: 1em;
-		}
-
-	}
-
-	.goal {
-		position: relative;
-		width: 100%;
-		height: 100%;
-	}
-
-	.goalContainerText {
-		position: absolute;
-		width: 90px;
-		top: 20px;
-		left: 0px;
-		font-size: 12px;
-		text-align: center;
-	}
-
-	.goalRaisedText {
-		display: block;
-		font-size: 14px;
-		font-weight: 500;
-		text-align: center;
-	}
-
-	.goalText {
-		display: block;
-		text-align: center;
-	}
-
-	.goalPercentText {
-		display: block;
-		font-size: 22px;
-		text-align: center;
-		margin-left: 5px;
-	}
-
-	.subText {
-		font-size: 18px;
-		font-weight: 300;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		padding: 5px 0;
-		@media (max-width: $breakpoint) {
-			font-size: .9em;
-			font-size: 500;
-		}
-	}
-
-	.share {
-
-		ul {
-			padding: 20px 0;
-		}
-	}
+  .avatarLink {
+    overflow: hidden;
+
+    button.link {
+      font-size: 1em;
+      font-weight: 400;
+    }
+  }
+
+  .avatarMenu li:hover {
+    background: linear-gradient(to right, $mainColor 0%, $green 100%);
+  }
+
+  .avatarLink button.link .defaultAvatarImage {
+    background: transparentize($light-med-gray, .5);
+    color: $white;
+    border: 1px solid transparent;
+    @include default-transition(.5s);
+  }
+
+  .avatarLink button.link:hover .defaultAvatarImage {
+    background: transparentize($light-med-gray, .5);
+    color: $white;
+    border: 1px solid transparent;
+    opacity: .7;
+  }
+
+  .avatarLink .editGraphic {
+    background: transparentize($light-med-gray, .5);
+    color: $white;
+  }
+
+  .avatarLink .editGraphic:hover {
+    background: transparentize($light-med-gray, .5);
+    color: $white;
+    opacity: .7;
+  }
+
+  .hasAccessToEditPublic {
+
+    button.link {
+      letter-spacing: 1px;
+    }
+  }
+
+  .editGraphic {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 10px;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    color: $white;
+    //background: linear-gradient(to right, $mainColor 0%, $green 100%);
+    background: $mainColor;
+    @include default-transition(.5s);
+    .icon {
+      font-size: 22px !important;
+    }
+  }
+
+  .editGraphic:hover {
+    background: transparentize($mainColor, .1);
+    //background: linear-gradient(to left, $mainColor 0%, $green 100%);
+  }
+
+  .flatpickr input,
+  .dropdown button:not(.label) {
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  .line {
+    display: block;
+  }
+
+  /* Date Specific */
+  .dateSection {
+    .dateDisplay {
+      display: block;
+    }
+  }
+
+  .editorPreview {
+
+  }
+
+  .formSectionHeader {
+    font-size: 1em;
+    font-weight: 300;
+    padding: 15px 5px 5px 5px;
+    border-bottom: 1px solid $greenLight;
+  }
+
+  .helperText {
+    padding: 10px 5px;
+    font-size: 12px;
+
+    .line {
+      padding: 5px 0;
+    }
+
+    .line.label {
+      font-weight: 300;
+    }
+
+    .input-group {
+      padding: 0px;
+    }
+  }
+
+  .sortableListItem {
+    background: blue;
+  }
+
+  ::-webkit-scrollbar {
+      width: 6px;
+      height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    outline: 0;
+    border-radius: 20px;
+  }
+
+  input::-webkit-input-placeholder {
+    color: $placeholder-gray;
+  }
+  input::-moz-placeholder {
+    color: $placeholder-gray;
+  }
+  input::-ms-input-placeholder {
+    color: $placeholder-gray;
+  }
+
+  /*------ Layout ------*/
+
+  $topHeaderHeight: 50px;
+  $topPanelHeight: 60px;
+  $topOffset: $topHeaderHeight + $topPanelHeight;
+  $panelWidth: 220px;
+
+  .centerAlign {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .publicActionBar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+    background: transparent;
+  }
+
+  .gbx3Container {
+    position: relative;
+    display: table;
+    margin: 0 auto;
+    height: auto;
+    width: 100%;
+    padding: 10px;
+    background: $white;
+    overflow: hidden;
+    @include box-shadow(1px 1px 5px 3px rgba(0, 0, 0, 0.25));
+    @include bgGradient(to bottom, $light-gray 0%, $white 20%);
+    @media (max-width: $breakpoint) {
+      border-radius: 0px !important;
+    }
+
+    .closeGBXModalButton {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .gbx3ReceiptContainer {
+    display: table;
+    margin: 0 auto;
+    height: auto;
+    width: 100%;
+    padding: 10px;
+    background: $white;
+    @include bgGradient(to bottom, $light-gray 0%, $white 20%);
+    @media (max-width: $breakpoint) {
+      border-radius: 0px !important;
+    }
+
+    p {
+      margin: 5px 0;
+    }
+  }
+
+
+  .layout-column {
+    display: table-row;
+    width: 100%;
+    height: 100%;
+  }
+
+  .layoutMenu {
+    .toggleUtil {
+      float: right;
+      .icon {
+        font-size: 18px;
+      }
+    }
+  }
+
+  .gbx3AdminLayout {
+    overflow: hidden;
+  }
+
+  .gbx3AdminLayout.previewMode {
+
+    .gbx3ReceiptContainer {
+      background: $light-gray;
+    }
+
+    .emailIframe {
+      position: absolute;
+      top: 0; right: 0; left: 0; bottom: 0;
+      width: 100%;
+      height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .desktopWrapper {
+      top: $topPanelHeight;
+    }
+
+    .gbx3TopHeader {
+      height: 0;
+    }
+
+    .topPanel {
+      top: 0;
+      z-index: 10;
+    }
+
+    .leftPanel.open {
+      display: none;
+    }
+
+    .stageContainer {
+      position: relative;
+      top: 0;
+      margin-top: 0px;
+      padding: $topPanelHeight + 40px 0;
+      bottom: 0;
+      background: $white;
+      overflow-y: auto;
+      height: 100vh;
+      z-index: 9;
+
+      .gbx3Layout {
+        height: 100vh;
+        overflow-y: auto;
+        padding-top: $topPanelHeight + 20px;
+      }
+
+      .gbx3ReceiptContainer {
+        height: 100vh;
+        overflow-y: auto;
+        padding-top: $topPanelHeight + 20px;
+      }
+
+    }
+
+    .stageContainer.open {
+      left: 0;
+    }
+
+    .leftPanelOpen {
+      display: none;
+    }
+
+    .bottomPanel.open {
+      left: 0;
+    }
+
+    .bottomPanel {
+      display: none;
+    }
+  }
+
+  // Top Header
+  .gbx3TopHeader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: $topHeaderHeight;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    background: $white;
+    @include transition(height .25s);
+    z-index: 3;
+
+    .avatarLink button.link {
+      color: $mainColor;
+      font-size: 1.1em;
+      font-weight: 400;
+    }
+
+    .avatarLink button.link:hover {
+      color: $mainColorLight;
+    }
+  }
+
+  .headerLeftSide {
+    width: 30%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .logo {
+      img {
+        cursor: pointer;
+        height: 35px;
+        width: auto;
+      }
+    }
+  }
+
+  .headerMiddle {
+    width: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    button.button,
+    button.link {
+      display: flex;
+      align-items: center;
+      margin-left: 20px;
+      .icon {
+        margin-right: 5px;
+      }
+    }
+  }
+
+  .headerRightSide {
+    width: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+
+  // Top Panel
+  .topPanel {
+    position: fixed;
+    top: $topHeaderHeight;
+    left: 0;
+    right: 0;
+    height: $topPanelHeight;
+    width: 100%;
+    background: linear-gradient(to right, $mainColorMedium 15%, $green 100%);;
+    @include transition(top .25s);
+    @include box-shadow(1px 1px 5px 3px rgba(0, 0, 0, 0.25));
+    z-index: 2;
+  }
+
+  .topPanelContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: $topPanelHeight;
+
+    .adminPanelTabs {
+      button.link {
+        color: $white;
+        margin: 0;
+        height: $topPanelHeight;
+        width: 150px;
+        border: 0;
+        @media (max-width: $breakpoint) {
+          width: 90px;
+        }
+        .menuText {
+          font-size: 14px;
+          font-weight: 300;
+          margin-top: 5px;
+          @media (max-width: $breakpoint) {
+            font-size: 10px;
+          }
+        }
+      }
+
+      button.link:hover {
+        color: $white;
+        border: 0;
+        background: transparentize($white, .8);
+      }
+
+      button.link.selected {
+        color: $white;
+        border: 0;
+        background: transparentize($white, .8);
+      }
+
+      button.link.selected:hover {
+        color: $white;
+        border: 0;
+        background: transparentize($white, .8);
+      }
+    }
+
+    button.link.side {
+      display: flex;
+      align-items: center;
+      margin: 0 20px;
+      color: $white;
+      font-size: 14px;
+      font-weight: 300;
+    }
+    button.link.side:hover {
+      color: $light-gray;
+    }
+
+    .leftSide {
+      width: 20%;
+      white-space: nowrap;
+      .icon {
+        font-size: 20px;
+        margin-right: 10px;
+      }
+      .icon.leftPanelClose {
+        color: $white;
+        font-size: 20px;
+        margin-left: 20px;
+      }
+    }
+
+    .middle {
+      white-space: nowrap;
+      .button-group {
+        button.link {
+          text-align: center;
+          .icon {
+            display: block;
+            font-size: 28px;
+          }
+          .iconText {
+            display: block;
+            margin-top: 5px;
+            font-size: 14px;
+            font-weight: 300;
+            @media (max-width: $breakpoint) {
+              font-size: 10px;
+            }
+          }
+        }
+      }
+    }
+
+    .rightSide {
+      color: $white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 20%;
+      white-space: nowrap;
+      .icon {
+        font-size: 22px;
+      }
+    }
+  }
+
+  // Left Panel
+  .leftPanel {
+    position: absolute;
+    top: $topOffset;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: $panelWidth;
+    z-index: 900001;
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    background: $mainColorMedium;
+    background-image: url(https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/layout-left-bg-new.png), linear-gradient(to bottom, $mainColorMedium 30%, $green 100%);
+    background-position: center bottom;
+    background-repeat: no-repeat;
+    background-size: $layout-left-width auto;
+    @include transition(width .5s);
+
+    ::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background-color: $dark-blue-gray;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      outline: 0;
+      border-radius: 20px;
+      background: $mainColorLight;
+    }
+
+    .adminPanelTabs {
+
+      position: relative;
+      height: 50px;
+      width: $panelWidth;
+      overflow: hidden;
+      white-space: nowrap;
+      display: flex;
+      justify-content: space-between;
+      background: $mainColor;
+
+      button.link {
+        color: $white;
+        font-size: 14px;
+        font-weight: 400;
+        margin: 0;
+        height: 50px;
+        width: auto;
+        border: 0;
+        flex-grow: 1;
+        border-bottom: 2px solid transparent;
+      }
+
+      button.link:hover {
+        color: $white;
+        border: 0;
+        border-bottom: 2px solid $green;
+      }
+
+      button.link.selected {
+        color: $white;
+        border: 0;
+        border-bottom: 2px solid $green;
+      }
+
+      button.link.selected:hover {
+        color: $white;
+        border: 0;
+        border-bottom: 2px solid $green;
+      }
+    }
+
+    ul {
+      li {
+        width: $panelWidth;
+        height: auto;
+        padding: 15px 10px;
+        margin: 1px 0;
+        cursor: pointer;
+        color: $white;
+        font-size: 14px;
+        background: transparentize($mainColor, .7);
+        @include default-transition(.5s);
+      }
+
+      li:hover:not(.listHeader) {
+        background: transparentize($green, .4);
+      }
+
+      li.draggableBlock {
+        cursor: move;
+      }
+
+      li.stylePanel {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 5px 10px;
+
+        .stylePanelBackgroundImageIndicator {
+          padding: 10px 0;
+        }
+
+        .colorpicker-group {
+          padding: 0;
+
+          .colorPickerText { display: none; }
+
+          label {
+            display: none;
+            color: $white;
+          }
+          button.input {
+            border: 0;
+          }
+          button.input.hasValue {
+            color: $white;
+          }
+          .input-bottom { display: none; }
+        }
+      }
+
+      li.listHeader {
+        font-size: 12px;
+        text-align: center;
+        cursor: default;
+        padding: 10px;
+        color: $light-gray;
+        background: transparentize($mainColorDark, .4);
+        text-transform: uppercase;
+      }
+    }
+  }
+
+  .leftPanelDropdown {
+    display: inline-block;
+    padding: 0 !important;
+
+    .dropdown button {
+      border: 0;
+      .label { color: $white; }
+      .icon { display: none; }
+    }
+    .dropdown button:not(.link):hover {
+      .label { color: $white !important; }
+    }
+
+    .dropdown button:hover:not(.label) {
+        border-bottom: 0;
+    }
+
+  }
+
+  .leftPanelContainer {
+    display: block;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: auto;
+  }
+
+  .leftPanelTop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: $panelWidth;
+    height: 50px;
+    z-index: 10;
+  }
+
+  .leftPanelScroller {
+    position: relative;
+    display: block;
+    margin-top: 50px;
+  }
+
+  .leftPanelHeader {
+    color: $white;
+    overflow: hidden;
+    white-space: nowrap;
+    font-weight: 300;
+    font-size: 16px;
+  }
+
+
+  .leftPanelOpen {
+    position: absolute;
+    top: $topOffset + 30px;
+    left: 10px;
+    z-index: 900000;
+    cursor: pointer;
+    @include transition(left .5);
+    .icon {
+      font-size: 30px;
+    }
+  }
+
+  .leftPanelOpen.open {
+    left: $panelWidth - 50px;
+  }
+
+  .leftPanel.open {
+    width: $panelWidth;
+    @include box-shadow(0px 2px 2px 1px rgba(0, 0, 0, 0.45));
+  }
+
+  .leftPanel.close {
+    width: 0px;
+  }
+
+  .middleAdminContainer {
+    position: relative;
+    height: 100%;
+    width: 100%;
+  }
+
+  // Stage Container
+  .stageContainer {
+    position: fixed;
+    top: $topOffset;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: auto;
+    width: auto;
+    overflow-y: auto;
+    overflow-x: auto;
+    background: $white;
+    @include transition(left .5s);
+    @media (max-width: $breakpoint) {
+      padding: 0;
+    }
+
+    .gbx3Layout {
+      height: auto;
+      overflow-y: hidden;
+      min-width: 850px;
+      @media (max-width: $breakpoint) {
+        min-width: 100%;
+      }
+    }
+
+    .gbx3ReceiptLayout {
+      overflow-y: auto;
+      height: 100%;
+      background: $light-gray;
+    }
+
+    .gbx3Container {
+    }
+
+    .gbx3ReceiptContainer {
+      max-width: 600px;
+      width: 550px;
+      background: $white;
+      img {
+        margin: 10px 0;
+      }
+      @media (max-width: $breakpoint) {
+        width: 100%;
+      }
+    }
+
+    .gbx3Footer {
+      .footerContainer {
+        display: none;
+      }
+    }
+  }
+
+  .stageContainer.hasBottom {
+    background: $light-gray;
+    bottom: 50px;
+  }
+
+  .stageAligner {
+    position: relative;
+    display: block;
+    margin: 0 auto;
+    padding: 0;
+    height: 100vh;
+    @media (max-width: $breakpoint) {
+      padding: 0;
+    }
+  }
+
+  .stageContainer.open {
+    left: $panelWidth;
+
+    @media (max-width: $breakpoint) {
+      left: 0px;
+    }
+  }
+
+  .gbx3Footer {
+    position: relative;
+    display: block;
+
+    .copyright {
+      margin-top: 10px;
+      display: flex;
+      font-size: 12px;
+      flex-direction: column;
+      justify-content: center;
+    }
+  }
+
+  .bottomPanel {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 50px;
+    background: $white;
+    width: auto;
+    padding: 10px;
+    border-top: 1px solid $light-gray;
+    @include transition(left .5s);
+  }
+
+  .bottomPanel.open {
+    left: $panelWidth;
+    @media (max-width: $breakpoint) {
+      left: 0px;
+    }
+  }
+
+  .adminPanelTabs {
+
+    .button-group {
+      margin: 0;
+      padding: 0;
+    }
+
+    button.link {
+      color: $dark;
+      font-size: 1em;
+      font-weight: 400;
+      border-bottom: 2px solid transparent;
+    }
+
+    button.link.selected {
+      color: $mainColor;
+      border-bottom: 2px solid $mainColor;
+    }
+
+    button.link.selected:hover {
+      color: $mainColor;
+      border-bottom: 2px solid $mainColor;
+    }
+
+    button.link:hover {
+      color: $mainColorLight;
+    }
+  }
+
+  /*-------- END Layout --------*/
+
+
+  /*------ Autofill handling -----*/
+  input:-internal-autofill-selected {
+    -webkit-appearance: menulist-button;
+    background-color: $white !important;
+    background-image: none !important;
+  }
+
+  /*------ Elements --------*/
+
+  h1, h2, h3, h4 {
+    margin: 0;
+    font-weight: 400;
+  }
+
+  h1 {
+    font-size: 22px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  h3 {
+    font-size: 18px;
+  }
+
+  h4 {
+    font-size: 16px;
+  }
+
+  p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  p img {
+    padding: 0 10px;
+  }
+
+  /*------ End Elements ------*/
+
+
+  /*-------- General Form ----*/
+  .formSection {
+    @media (max-width: $breakpoint) {
+      padding: 10px 0 20px 0;
+    }
+  }
+
+  .gbx3Layout {
+    .dropdown button {
+      .label.idle {
+        color: $placeholder-gray !important;
+      }
+      .icon {
+        color: $placeholder-gray;
+      }
+    }
+  }
+
+  .autoSaved {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    height: 25px;
+    width: 80px;
+    background: transparentize($mainColor, 0);
+    color: $white;
+    font-size: 12px;
+    font-weight: 400;
+    z-index: 9999999;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+
+  .choice-group {
+    button .icon {
+      font-size: 1.5em;
+    }
+  }
+
+  .dropown button.link {
+    font-size: 12px;
+  }
+
+  .checkbox-group label.label {
+     margin-left: 10px;
+     font-size: 14px;
+  }
+
+  .noRecords {
+    color: $med-blue-gray;
+    font-size: 12px;
+    font-weight: 300;
+  }
+
+  p.formSubHeader {
+    font-weight: 300;
+    font-size: 1em;
+    margin: 20px 0 10px 0;
+  }
+
+  /*------ LIB Components -----*/
+  .collapse {
+    margin: 20px 0;
+  }
+
+  /*------- Grid ---------*/
+
+  .react-grid-item.mobileRelativeBlock {
+    padding: 10px 0;
+  }
+
+  .react-grid-item.mobileRelativeBlockTop {
+    padding: 0;
+    text-align: center;
+  }
+
+  .react-grid-item {
+    background: transparent;
+    z-index: 1;
+    border: 2px solid transparent;
+  }
+
+  /*
+  .react-grid-item.stack {
+    display: block !important;
+    position: relative !important;
+    height: auto !important;
+    width: 100% !important;
+    transform: none !important;
+  }
+  */
+
+  .react-grid-item.outline {
+    border: 2px solid $mainColor;
+  }
+
+  .react-grid-item > .react-resizable-handle {
+    display: none;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    bottom: 0;
+    right: 0;
+    cursor: se-resize;
+    z-index: 3;
+    opacity: .2;
+    border-right: 1px solid $mainColor;
+    border-bottom: 1px solid $mainColor;
+  }
+
+  .react-grid-item.react-grid-placeholder {
+      background: $mainColorLight;
+      opacity: .3;
+      transition-duration: 100ms;
+      z-index: 2;
+      border-radius: 4px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      -o-user-select: none;
+      user-select: none;
+  }
+
+  .editable {
+
+    .react-grid-item > .react-resizable-handle {
+      display: block;
+    }
+
+    .react-grid-item:hover > .react-resizable-handle {
+      opacity: 1;
+    }
+
+    .react-grid-item:hover {
+
+      .blockOptions {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+
+  .receiptBlock {
+    position: relative;
+    margin-top: 20px;
+    padding-top: 30px;
+  }
+
+  .receiptBottomText {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    margin: 0 auto;
+    font-size: 12px;
+    color: $med-blue-gray;
+    font-weight: 300;
+  }
+
+  /*--------- End Grid ---------*/
+
+
+  /*---------- Blocks ------------ */
+  .block {
+    position: relative;
+    top: 0; bottom: 0; right: 0; left: 0;
+    height: 100%;
+    width: 100%;
+
+    .edit-group {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .blockPlaceholderHtml {
+      color: $med-blue-gray;
+      font-style: italic;
+    }
+  }
+
+  .backgroundBlock {
+
+  }
+
+  .blockOptions {
+    display: none;
+    position: absolute;
+    top: 0; bottom: 0; right: 0; left: 0;
+    height: 100%;
+    width: 100%;
+    min-height: 20px;
+    color: $white;
+    background: transparentize($green, .4);
+    z-index: 2;
+  }
+
+  .displayBlock {
+    position: relative;
+  }
+
+  .dragHandle {
+    position: absolute;
+    top: 0; bottom: 0; right: 0; left: 0;
+    height: 100%;
+    width: 100%;
+    cursor: move;
+    z-index: 3;
+  }
+
+  .dragHandle:hover {
+    @include default-transition(1s);
+  }
+
+  .paymentFormBlock .dragHandle {
+    cursor: default;
+  }
+
+  button.blockRemove {
+    background: transparent;
+    position: absolute;
+    top: 0px;
+    right: 2px;
+    color: $white;
+
+    .icon {
+      color: $white;
+      font-size: 16px;
+    }
+  }
+  button.blockRemove:hover {
+    .icon {
+      color: $mainColorLight;
+    }
+  }
+
+  .blockEdit {
+    position: absolute;
+    top: 0; bottom: 0; right: 0; left: 0;
+    width: 1px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    color: $white;
+    font-size: 14px;
+    font-weight: 400;
+    z-index: 5;
+    .icon {
+      display: inline-block;
+      font-size: 20px;
+    }
+
+    button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      color: $white;
+      height: 35px;
+      width: 35px;
+      margin: 0 5px;
+      border-radius: 50%;
+      .icon {
+        font-size: 20px;
+      }
+      @media (max-width: $breakpoint) {
+        margin: 0 10px;
+      }
+    }
+
+    button:hover {
+      opacity: .8;
+    }
+
+    button.blockRemoveButton {
+      background: transparentize($red, .2);
+    }
+
+    button.blockEditButton {
+      background: transparentize($mainColorDark, 0);
+    }
+  }
+
+  .blockEdit:hover {
+    color: $light-gray;
+  }
+
+  // Name blocks
+  .titleBlock {
+  }
+
+  .whereBlock {
+    overflow: hidden;
+  }
+
+  .scrollableBlock:not(.editingBlock) {
+    position: relative;
+    display: block;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .contentBlock {
+    word-wrap: break-word;
+  }
+
+  .blockMedia {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .mediaPlaceholder {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    height: 200px;
+    background: $very-light-gray;
+    border: 1px solid $med-blue-gray;
+    color: $med-blue-gray;
+    font-size: 14px;
+    .icon {
+      font-size: 40px;
+      color: $med-blue-gray;
+    }
+  }
+
+  /*---------- End Blocks ------------ */
+
+
+  /*--------- Drop Area ------*/
+
+  .dropArea {
+    position: relative;
+    @include default-transition(.25s);
+
+    .dragOverText {
+      display: none;
+      justify-content: center;
+      align-items: center;
+      font-size: 20px;
+      color: $white;
+      position: absolute;
+      top:: 0; right: 0; left: 0; bottom: 0;
+      z-index: 99999999;
+    }
+  }
+
+  .dropArea.dragOver {
+    background: transparentize($mainColorLight, .5);
+    .dragOverText {
+      display: flex;
+    }
+  }
+
+  /*-------- End Drop Area ---------*/
+
+  /*--------- Receipt Confirmation -----*/
+  .confirmation {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+
+    .successfulText {
+      font-size: .9em;
+      margin: 10px 0;
+
+      .group {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin: 10px 0;
+
+        .icon {
+          margin-right: 5px;
+        }
+      }
+
+      .inlineText {
+        display: inline-block;
+        padding-bottom: 5px;
+      }
+
+      .line {
+        display: block;
+        padding-bottom: 5px;
+      }
+
+      .titleText {
+        font-size: 22px;
+        font-weight: 300;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 5px 0;
+        .icon {
+          font-size: 40px;
+          margin-bottom: 5px;
+        }
+
+        @media (max-width: $breakpoint) {
+          font-weight: 600;
+          font-size: .9em;
+          .icon {
+            font-size: 30px;
+            margin-bottom: 5px;
+          }
+        }
+      }
+    }
+  }
+
+  /*------ Payment Form ---------*/
+  .editable .formBlock {
+    background: transparent;
+  }
+
+  .formBlock {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 20px 0;
+  }
+
+  .paymentFormHeader {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    @media (max-width: $breakpoint) {
+      position: relative;
+      margin: 50px 0 50px 0;
+    }
+  }
+
+  .paymentFormHeaderTitle {
+    font-size: 1.1em;
+  }
+
+  .paymentFormHeaderText {
+    display: block;
+    margin-top: 0px;
+    font-size: 12px;
+    font-weight: 300;
+  }
+
+  .givebox-paymentform {
+
+    .sendEmailNote {
+      margin: 20px 0;
+
+      .optionalMessageTitle {
+        font-size: 1em;
+        display: block;
+      }
+
+      .richtext-group {
+        //margin: 0;
+      }
+
+      .RichEditor-root {
+        padding: 0;
+      }
+      .RichEditor-editor {
+        margin-top: 0;
+      }
+      .checkbox-group {
+        label.label {
+          font-size: 12px;
+        }
+      }
+
+      .RichEditor-editor .public-DraftEditor-content,
+      .RichEditor-editor .public-DraftEditorPlaceholder-root {
+        padding: 5px 0;
+      }
+
+      .public-DraftEditorPlaceholder-inner {
+        color: $placeholder-gray;
+        font-weight: 300;
+        font-size: 1.1em;
+        margin-left: 5px;
+      }
+
+      .DraftEditor-editorContainer {
+        border-bottom: 1px solid $placeholder-gray;
+      }
+
+      .collapse {
+        button {
+          padding: 0;
+        }
+        .icon {
+          display: none;
+        }
+      }
+    }
+
+    input {
+      border-bottom: 1px solid $light-gray;
+    }
+
+    .input-group {
+      padding: 15px 0;
+    }
+
+    .input-bottom.idle {
+      background: $light-gray;
+    }
+
+    .mainError {
+      position: relative;
+      font-size: 14px;
+      margin-bottom: 5px;
+      text-align: center;
+    }
+
+    .dropdown button .selected.label {
+      font-size: $small-text-size;
+    }
+
+    .dropdown button:not(.link) {
+      padding: 12px 0;
+      border-bottom: 1px solid $light-gray;
+    }
+
+    .error .dropdown button {
+      padding: 12px 0;
+      border-bottom: 2px solid $red;
+    }
+
+    .dropdown button:not(.link):hover {
+      border-bottom: 2px solid $mainColor;
+    }
+
+    .dropdown button .selected.label,
+    .dropdown .label:not(button) {
+      font-size: $med-text-size;
+      @media (max-width: $breakpoint) {
+        font-size: $normal-text-size;
+      }
+    }
+
+    .dropdown .icon {
+      top: 15px;
+    }
+
+    .dropdown-cover {
+      display: none;
+    }
+
+    .paymentFormTabs {
+      .panel {
+        margin-top: 0;
+        button {
+          font-size: 12px;
+          font-weight: 300;
+        }
+      }
+    }
+
+    .payMethods-group {
+      position: relative;
+      margin-top: 20px;
+    }
+
+    .payMethods {
+      position: absolute;
+      height: 50px;
+      width: 100%;
+      top: -15px;
+      left: 5px;
+      z-index: 0;
+
+      .bankname {
+        position: absolute;
+        left: 205px;
+        top: 7px;
+      }
+    }
+
+    @media (max-width: 849px) {
+    form .tabs .panel {
+        display: block;
+      }
+    }
+  }
+
+  .mobileFriendly {
+    margin: 100px 0;
+  }
+
+  .imageComponent {
+    flex-direction: row;
+  }
+
+  .creditCard {
+    .checkmark {
+      right: 5px;
+    }
+  }
+
+  .creditCard-group .cardsAccepted {
+      top: -35px;
+  }
+
+  .column {
+    display: inline-block;
+    float: none;
+  }
+
+
+  label, .label {
+    white-space: nowrap;
+    font-size: 12px;
+  }
+
+  .cvvModal button.link {
+  }
+
+  .button-group {
+    position: relative;
+    button.link,
+    button.button {
+      margin: 0 10px;
+    }
+
+    button.link.remove {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      top: 10px;
+      left: 20px;
+      color: $red;
+      font-weight: 400;
+      @media (max-width: $breakpoint) {
+        .buttonText {
+          display: none;
+        }
+        .icon { font-size: 18px; }
+      }
+
+      .icon {
+        margin-right: 5px;
+      }
+    }
+    button.link.remove:hover {
+      opacity: .6;
+    }
+
+  }
+
+  button.link {
+    font-size: 12px;
+    @include default-transition(.5s);
+    margin: 0;
+  }
+
+  button.button {
+    border-radius: 20px;
+    font-size: 16px;
+    font-weight: 400;
+    //color: $mainColor;
+    //background-color: $white;
+    @include default-transition(.5s);
+  }
+
+  button.button:hover {
+    //background-color: $mainColor;
+    //color: $white;
+  }
+
+  button.gbxBtn {
+    font-weight: 300;
+    font-size: 16px;
+    color: $white;
+    background: $med-blue-gray;
+    padding: 10px 20px;
+    border-radius: 20px;
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55);
+    @include default-transition(.5s);
+  }
+
+  button.gbxBtn:hover {
+    color: $white;
+    background: $med-blue-gray;
+    opacity: .7;
+    @include default-transition(.5s);
+  }
+
+  .formBottomSection {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 0px;
+
+    @media (max-width: $breakpoint) {
+      flex-direction: column;
+    }
+
+    .choice-group {
+      padding: 0;
+    }
+
+    .checkbox-group label.label {
+      font-size: 12px;
+    }
+
+    .totalsContainer {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      align-items: center;
+      width: 50%;
+      flex-wrap: nowrap;
+      @media (max-width: $breakpoint) {
+        flex-direction: column;
+        width: 100%;
+      }
+    }
+
+    .goalSection {
+      @media (max-width: $breakpoint) {
+        margin-bottom: 20px;
+      }
+    }
+
+    .totalsSection {
+      width: 220px;
+      @media (max-width: $breakpoint) {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+      }
+
+      .totalsListTop {
+        height: 20px;
+        margin-bottom: 8px;
+      }
+
+      .totalsListBottom {
+        margin-top: 15px;
+      }
+
+      .totalsList {
+        display: flex;
+        justify-content: flex-start;
+        @media (max-width: $breakpoint) {
+          padding: 10px 0;
+          justify-content: center;
+        }
+
+        .line {
+          font-size: 12px;
+          display: block;
+          padding-right: 5px;
+          white-space: nowrap;
+          overflow: hidden;
+        }
+
+        .totalLine {
+          font-size: 1.6em;
+          white-space: nowrap;
+          overflow: hidden;
+        }
+      }
+    }
+
+    .buttonSection {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 50%;
+      margin: 0;
+      @media (max-width: $breakpoint) {
+        margin-top: 20px;
+        width: 100%;
+      }
+    }
+  }
+
+  .sectionContent {
+    position: relative;
+    padding: 20px;
+
+    ul {
+      margin-left: 20px;
+      list-style-type: disc;
+      li {
+        display: list-item !important;
+        margin: 5px 5px;
+        display: block;
+        font-size: 14px;
+      }
+    }
+
+    p {
+      padding: 5px 0;
+    }
+
+    h4 {
+      font-weight: 300;
+      text-transform: uppercase;
+      margin: 20px 0 5px 0;
+    }
+
+    .address {
+      font-size: 12px;
+    }
+
+    .title,
+    .line {
+      display: block;
+    }
+
+    .copyright {
+      display: block;
+      font-size: 12px;
+    }
+  }
+
+  /*------- Echeck ----------*/
+  .echeckCol {
+    width: 50%;
+    @media (max-width: $breakpoint) {
+      width: 100%;
+    }
+  }
+
+  /*----- End Payment Form ------*/
+
+
+  /*------- Media Library -------*/
+
+  .scale {
+    margin: 0 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    @media (max-width: 600px) { margin: 0; }
+
+    .icon.small {
+      font-size: $small-text-size;
+      margin-right: 5px;
+    }
+    .icon {
+      font-size: $large-text-size;
+      margin-left: 5px;
+    }
+  }
+
+  /*------- Responsive ---------*/
+
+  @media (max-width: $breakpoint) {
+    .modalContent:not(.campaignForm) {
+        width: 100% !important;
+    }
+
+    .dropdown button .selected.label,
+    .dropdown .label:not(button) {
+       font-size: 1em;
+    }
+
+  }
+
+  .goal {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .goalContainerText {
+    position: absolute;
+    width: 90px;
+    top: 20px;
+    left: 0px;
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .goalRaisedText {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+  }
+
+  .goalText {
+    display: block;
+    text-align: center;
+  }
+
+  .goalPercentText {
+    display: block;
+    font-size: 22px;
+    text-align: center;
+    margin-left: 5px;
+  }
+
+  .subText {
+    font-size: 18px;
+    font-weight: 300;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5px 0;
+    @media (max-width: $breakpoint) {
+      font-size: .9em;
+      font-size: 500;
+    }
+  }
+
+  .share {
+
+    ul {
+      padding: 20px 0;
+    }
+  }
 
 }
 /*--------- End GBX3 ---------*/
@@ -2026,366 +2076,380 @@
 /*-------- Send Email --------*/
 .gbxModal.sendEmail {
 
-	.RichEditor-root h1 {
-		font-size: 1.5em;
-		margin: 0;
-	}
+  .RichEditor-root h1 {
+    font-size: 1.5em;
+    margin: 0;
+  }
 
-	.RichEditor-root h2 {
-		font-size: 1.3em;
-		margin: 0;
-	}
+  .RichEditor-root h2 {
+    font-size: 1.3em;
+    margin: 0;
+  }
 
-	.RichEditor-root h3 {
-		font-size: 1.1em;
-		margin: 0;
-	}
+  .RichEditor-root h3 {
+    font-size: 1.1em;
+    margin: 0;
+  }
 
-	.RichEditor-root h4 {
-		font-size: 1em;
-		margin: 0;
-	}
+  .RichEditor-root h4 {
+    font-size: 1em;
+    margin: 0;
+  }
 
-	.RichEditor-editor {
-		cursor: text;
-		font-size: $normal-text-size;
-		margin-top: 10px;
-		text-align: left;
-		color: $dark;
-	}
+  .RichEditor-editor {
+    cursor: text;
+    font-size: $normal-text-size;
+    margin-top: 10px;
+    text-align: left;
+    color: $dark;
+  }
 }
 
 /*------- Cart ---------*/
 .gbx3Cart {
 
-	padding: 20px 0;
-	@media (max-width: $breakpoint) {
-		margin-top: 50px;
-	}
+  padding: 20px 0;
+  @media (max-width: $breakpoint) {
+    margin-top: 50px;
+  }
 
-	.paymentFormHeaderTitle {
-		position: relative;
+  .paymentFormHeaderTitle {
+    position: relative;
 
-		.closeCart {
-			position: absolute;
-			top: 0px;
-			right: 20px;
-		}
-		button.closeCart {
-			color: $dark;
-		}
+    .closeCart {
+      position: absolute;
+      top: 0px;
+      right: 20px;
+    }
+    button.closeCart {
+      color: $dark;
+    }
 
-		button.closeCart:hover {
-			opacity: .7;
-		}
-	}
+    button.closeCart:hover {
+      opacity: .7;
+    }
+  }
 
-	.itemsInCart {
+  .itemsInCart {
 
-		.dropdown-quantity {
-			padding: 0;
-			margin: 0 0 0 10px;
-			display: inline-block;
-			width: 45px;
+    .choice-group {
+      padding: 0px;
+      margin: 0px;
+      margin-top: 5px;
+      flex-direction: row-reverse;
 
-			.dropdown .icon {
-				display: none;
-				top: 3px;
-			}
-		}
+      label.label {
+        font-size: 12px;
+        font-weight: 400;
+        margin-left: 0;
+        margin-right: 5px;
+      }
+    }
 
-		.dropdown button {
-			padding: 0;
-		}
+    .dropdown-quantity {
+      padding: 0;
+      margin: 0 0 0 10px;
+      display: inline-block;
+      width: 45px;
 
-		.cartItemRow {
-			display: table;
-			width: 100%;
-			padding: 20px 5px;
-			border-bottom: 1px solid $very-light-gray;
+      .dropdown .icon {
+        display: none;
+        top: 3px;
+      }
+    }
 
-			.dropdown button {
-				border-bottom: 0;
-			}
+    .dropdown button {
+      padding: 0;
+    }
 
-			.dropdown button:hover {
-				border-bottom: 0 !important;
-			}
-		}
+    .cartItemRow {
+      display: table;
+      width: 100%;
+      padding: 20px 5px;
+      border-bottom: 1px solid $very-light-gray;
 
-		.col {
-			display: table-cell;
-		}
+      .dropdown button {
+        border-bottom: 0;
+      }
 
-		.descCol {
-			display: flex;
-			flex-direction: column;
-			justify-content: flex-start;
-		}
+      .dropdown button:hover {
+        border-bottom: 0 !important;
+      }
+    }
 
-		.itemSubTitle,
-		.itemActions {
-			margin-top: 2px;
-			font-size: 12px;
-		}
-	}
+    .col {
+      display: table-cell;
+    }
+
+    .descCol {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    .itemSubTitle,
+    .itemActions {
+      margin-top: 2px;
+      font-size: 12px;
+    }
+  }
 }
 
 .editableRowMenu {
-	display: none;
-	position: absolute;
-	right: 20px;
-	top: 25px;
-	width: 125px;
-	justify-content: space-between;
-	align-items: center;
+  display: none;
+  position: absolute;
+  right: 20px;
+  top: 25px;
+  width: 125px;
+  justify-content: space-between;
+  align-items: center;
 
-	button.link {
-		display: flex;
-		align-items: center;
-		font-size: 14px !important;
-		color: $mainColor;
-		@include default-transition(.25s);
+  button.link {
+    display: flex;
+    align-items: center;
+    font-size: 14px !important;
+    color: $mainColor;
+    @include default-transition(.25s);
 
-		.icon {
-			margin-right: 5px;
-		}
-	}
-	button.link:hover {
-		color: transparentize($mainColor, .6);
-	}
+    .icon {
+      margin-right: 5px;
+    }
+  }
+  button.link:hover {
+    color: transparentize($mainColor, .6);
+  }
 
-	.tooltip.right .tooltipTop {
-		top: -10px;
-	}
+  .tooltip.right .tooltipTop {
+    top: -10px;
+  }
 
 }
 
 /*---------- SHOP --------*/
 .gbx3Shop {
 
-	@media (max-width: $breakpoint) {
-		padding: 30px 0;
-	}
+  @media (max-width: $breakpoint) {
+    padding: 30px 0;
+  }
 
-	.shopTop {
-		position: relative;
-		text-align: center;
-	}
+  .shopTop {
+    position: relative;
+    text-align: center;
+  }
 
-	.articleGroupList {
-		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
-		width: 100%;
-	}
+  .articleGroupList {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
 
-	.articleGroupList.campaignsEdit {
-		@media (min-width: $breakpoint ) {
-			overflow-y: auto;
-			overflow-x: hidden;
-			max-height: 500px;
-			padding: 20px 0;
-		}
-	}
+  .articleGroupList.campaignsEdit {
+    @media (min-width: $breakpoint ) {
+      overflow-y: auto;
+      overflow-x: hidden;
+      max-height: 500px;
+      padding: 20px 0;
+    }
+  }
 
-	.articleGroupList.campaignsEdit::-webkit-scrollbar-thumb {
-		background-color: transparentize($green, .6);
-	}
+  .articleGroupList.campaignsEdit::-webkit-scrollbar-thumb {
+    background-color: transparentize($green, .6);
+  }
 
-	.articleGroup {
-		padding: 2% 5%;
-		width: 100%;
-		@media (max-width: $breakpoint) {
-			padding: 2% 0;
-		}
+  .articleGroup {
+    padding: 2% 5%;
+    width: 100%;
+    @media (max-width: $breakpoint) {
+      padding: 2% 0;
+    }
 
-		button.link {
-			text-align: left;
-			font-size: 18px;
-			margin-left: 10px;
-			width: 100%;
-			@media (max-width: $breakpoint) {
-				font-size: 22px;
-			}
-		}
-	}
+    button.link {
+      text-align: left;
+      font-size: 18px;
+      margin-left: 10px;
+      width: 100%;
+      @media (max-width: $breakpoint) {
+        font-size: 22px;
+      }
+    }
+  }
 
-	.articleList {
-		position: relative;
-		height: 100%;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		flex-wrap: wrap;
-		@media (max-width: $breakpoint) {
-			justify-content: center;
-		}
-	}
+  .articleList {
+    position: relative;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    @media (max-width: $breakpoint) {
+      justify-content: center;
+    }
+  }
 
-	.articleItem {
-		position: relative;
-		display: flex;
-		justify-content: flex-start;
-		padding: 10px;
-		margin: 10px;
-		height: 70px;
-		width: 100%;
-		overflow: visible;
-		cursor: pointer;
+  .articleItem {
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    padding: 10px;
+    margin: 10px;
+    height: 70px;
+    width: 100%;
+    overflow: visible;
+    cursor: pointer;
 
-		.articleImage {
-			width: 50px;
-			height: 50px;
-			.imageComponent {
-				display: flex;
-				justify-content: center;
-				align-items: flex-start;
-				overflow: hidden;
-			}
-			img {
-				border-radius: 10px;
-				@include default-transition(.25s);
-			}
-		}
+    .articleImage {
+      width: 50px;
+      height: 50px;
+      .imageComponent {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        overflow: hidden;
+      }
+      img {
+        border-radius: 10px;
+        @include default-transition(.25s);
+      }
+    }
 
-		.articleText {
-			position: relative;
-			margin-top: 5px;
-			margin-left: 10px;
-			font-size: .9em;
-			width: 70%;
-		}
-	}
+    .articleText {
+      position: relative;
+      margin-top: 5px;
+      margin-left: 10px;
+      font-size: .9em;
+      width: 70%;
+    }
+  }
 
-	.articleItem:hover {
-		background: transparentize($green, .6);
-		.articleImage img {
-			transform: scale(1.5);
-		}
+  .articleItem:hover {
+    background: transparentize($green, .6);
+    .articleImage img {
+      transform: scale(1.5);
+    }
 
-		.articleText {
-			opacity: .8;
-		}
-	}
+    .articleText {
+      opacity: .8;
+    }
+  }
 }
 
 .gbx3Shop.editable {
 
-	.sortableListItem {
-		background: transparent;
-	}
+  .sortableListItem {
+    background: transparent;
+  }
 
-	.articleItem {
-		cursor: default;
-		.editableRowMenu.wasAdded {
-			display: block;
-		}
-	}
+  .articleItem {
+    cursor: default;
+    .editableRowMenu.wasAdded {
+      display: block;
+    }
+  }
 
-	.articleItem:hover {
-			background: transparent;
-		.editableRowMenu {
-			display: flex !important;
-		}
-	}
+  .articleItem:hover {
+      background: transparent;
+    .editableRowMenu {
+      display: flex !important;
+    }
+  }
 }
 
 /*------ END SHOP ------*/
 
 .copyButton {
-	padding: 10px 20px;
-	background: $white;
-	color: $mainColor;
-	border: 1px solid $mainColor;
-	border-radius: 20px;
-	@include default-transition(.5s);
-	font-size: 16px;
-	font-weight: 400;
-	margin: 10px 0;
+  padding: 10px 20px;
+  background: $white;
+  color: $mainColor;
+  border: 1px solid $mainColor;
+  border-radius: 20px;
+  @include default-transition(.5s);
+  font-size: 16px;
+  font-weight: 400;
+  margin: 10px 0;
 }
 
 .copyButton:hover {
-	background: $mainColor;
-	color: $white;
+  background: $mainColor;
+  color: $white;
 }
 
 /*------- SHARE LINK ------*/
 .shareLink {
 
-	.codeBlock .highlight.hljs {
-		background: $white;
-		color: $green;
-		.hljs-comment {
-			color: $green;
-		}
-	}
+  .codeBlock .highlight.hljs {
+    background: $white;
+    color: $green;
+    .hljs-comment {
+      color: $green;
+    }
+  }
 
-	.hljs {
-		display: none;
-		background: $white;
-		text-align: center;
-	}
+  .hljs {
+    display: none;
+    background: $white;
+    text-align: center;
+  }
 
-	.shareLinkEditable {
-		position: relative;
-		width: 80%;
-	}
+  .shareLinkEditable {
+    position: relative;
+    width: 80%;
+  }
 
-	.shareLinkEditableText {
-		margin-bottom: 20px;
-		font-weight: 300;
-	}
+  .shareLinkEditableText {
+    margin-bottom: 20px;
+    font-weight: 300;
+  }
 
-	.shareLinkPrefix {
-		position: absolute;
-		top: 9px;
-		left: 0;
-		font-size: 18px;
-		font-weight: 300;
-	}
+  .shareLinkPrefix {
+    position: absolute;
+    top: 9px;
+    left: 0;
+    font-size: 18px;
+    font-weight: 300;
+  }
 
-	.input-group {
-		padding-top: 10px !important;
-	}
+  .input-group {
+    padding-top: 10px !important;
+  }
 
-	input {
-		font-size: 18px;
-		padding-left: 159px;
-	}
+  input {
+    font-size: 18px;
+    padding-left: 159px;
+  }
 }
 
 
 .shareWeb {
-	.column {
-		vertical-align: top;
-		width: 50%;
-		padding: 20px;
-		@media (max-width: $breakpoint) {
-			width: 100%;
-			padding: 20px 0;
-		}
+  .column {
+    vertical-align: top;
+    width: 50%;
+    padding: 20px;
+    @media (max-width: $breakpoint) {
+      width: 100%;
+      padding: 20px 0;
+    }
 
-		.choice-group,
-		.input-group {
-			padding: 15px 0 !important;
-			margin: 0 !important;
-		}
+    .choice-group,
+    .input-group {
+      padding: 15px 0 !important;
+      margin: 0 !important;
+    }
 
-	}
+  }
 
-	.settingsHeader {
-		margin-bottom: 20px;
-	}
+  .settingsHeader {
+    margin-bottom: 20px;
+  }
 
-	.subText {
-		align-items: flex-start;
-	}
+  .subText {
+    align-items: flex-start;
+  }
 
-	p {
-		margin: 0;
-		font-size: 14px;
-	}
+  p {
+    margin: 0;
+    font-size: 14px;
+  }
 
 }
 
@@ -2393,203 +2457,203 @@
 /*--------- CREATE NEW -------*/
 .createStep {
 
-	.stageContainer.open {
-		left: 0;
-	}
+  .stageContainer.open {
+    left: 0;
+  }
 
 
-	.gbx3TopHeader {
-		background: transparent;
-		.avatarLink button.link {
-			color: $white;
-		}
+  .gbx3TopHeader {
+    background: transparent;
+    .avatarLink button.link {
+      color: $white;
+    }
 
-		.headerMiddle {
-			button.button,
-			button.link {
-				color: $white;
-				.icon {
-					color: $white;
-				}
-			}
-		}
+    .headerMiddle {
+      button.button,
+      button.link {
+        color: $white;
+        .icon {
+          color: $white;
+        }
+      }
+    }
 
-		.avatarLink button.link:hover {
-			color: transparentize($mainColor, .3);
-		}
+    .avatarLink button.link:hover {
+      color: transparentize($mainColor, .3);
+    }
 
-	}
+  }
 
-	.stageContainer {
-		top: 0px;
-		z-index: -1;
-	}
+  .stageContainer {
+    top: 0px;
+    z-index: -1;
+  }
 
-	.shapeBottom {
-		position: absolute;
-		bottom: -1px;
-		left: 0;
-		right: 0;
-		width: 50%;
-		-webkit-transform: rotate(180deg);
-		-ms-transform: rotate(180deg);
-		transform: rotate(180deg);
-		line-height: 0;
-		direction: ltr;
-	}
+  .shapeBottom {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    width: 50%;
+    -webkit-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg);
+    line-height: 0;
+    direction: ltr;
+  }
 
-	.shapeBottom-fill {
-		fill: #fff;
-	}
+  .shapeBottom-fill {
+    fill: #fff;
+  }
 
-	.shapeBottom svg {
-		display: block;
-		position: relative;
-		width: calc(300% + 1.3px);
-		height: 70px;
-		transform: translateX(-50%) rotateY(180deg);
-		left: 50%;
-	}
+  .shapeBottom svg {
+    display: block;
+    position: relative;
+    width: calc(300% + 1.3px);
+    height: 70px;
+    transform: translateX(-50%) rotateY(180deg);
+    left: 50%;
+  }
 
-	.stepSection {
-		position: relative;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		width: 100%;
-		height: 375px;
-		color: $white;
-		background: $mainColor;
-		background: linear-gradient(to right, $mainColor 0%, $green 100%);
-		overflow: hidden;
+  .stepSection {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 375px;
+    color: $white;
+    background: $mainColor;
+    background: linear-gradient(to right, $mainColor 0%, $green 100%);
+    overflow: hidden;
 
-		h2 {
-			font-size: 1.5em;
-			font-weight: 300;
-		}
-	}
+    h2 {
+      font-size: 1.5em;
+      font-weight: 300;
+    }
+  }
 
-	.steps {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		margin: 20px 0;
-	}
+  .steps {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+  }
 
-	.step {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		color: $white;
-		margin: 0 20px;
-		font-size: 1.1em;
-		font-weight: 300;
-		.icon {
-			font-size: 30px;
-			color: $green;
-			margin-right: 10px;
-			@include animation(pulsateBrighter 2s ease-out infinite);
-		}
-	}
+  .step {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $white;
+    margin: 0 20px;
+    font-size: 1.1em;
+    font-weight: 300;
+    .icon {
+      font-size: 30px;
+      color: $green;
+      margin-right: 10px;
+      @include animation(pulsateBrighter 2s ease-out infinite);
+    }
+  }
 
-	.intro {
-		text-align: center;
-		font-weight: 300;
-		font-size: 1.5em;
-	}
+  .intro {
+    text-align: center;
+    font-weight: 300;
+    font-size: 1.5em;
+  }
 
-	.button-group {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		margin: 20px 0;
-	}
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+  }
 
-	button.button {
-		margin: 0 !important;
-	}
+  button.button {
+    margin: 0 !important;
+  }
 
-	button.smallText {
-		margin-top: 20px;
-	}
+  button.smallText {
+    margin-top: 20px;
+  }
 
-	.createKindSection {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		margin: 30px 0 0 0;
-		.intro {
-			font-size: 1.3em;
-		}
-	}
+  .createKindSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 30px 0 0 0;
+    .intro {
+      font-size: 1.3em;
+    }
+  }
 
-	.createKindList {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		justify-content: center;
-		flex-wrap: wrap;
-	}
+  .createKindList {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
 
-	.createKindItem {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		margin: 5px;
-		width: 170px;
-		height: 170px;
-		border-radius: 5px;
-		border: 4px solid transparent;
-		cursor: pointer;
-		overflow: hidden;
-		@include transition(border .25s);
+  .createKindItem {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 5px;
+    width: 170px;
+    height: 170px;
+    border-radius: 5px;
+    border: 4px solid transparent;
+    cursor: pointer;
+    overflow: hidden;
+    @include transition(border .25s);
 
-		.createKindItemText {
-			font-size: 1.1em;
-			font-weight: 400;
-			color: $mainColor;
-			margin-top: 15px;
-			text-align: center;
-		}
+    .createKindItemText {
+      font-size: 1.1em;
+      font-weight: 400;
+      color: $mainColor;
+      margin-top: 15px;
+      text-align: center;
+    }
 
-		.createIcon {
-			.icon {
-				color: $mainColor;
-				font-size: 60px;
-			}
-		}
+    .createIcon {
+      .icon {
+        color: $mainColor;
+        font-size: 60px;
+      }
+    }
 
-		img {
-			@include default-transition(.25s);
-		}
+    img {
+      @include default-transition(.25s);
+    }
 
-		.shareIndicator {
-			height: 20px;
-			margin-top: 10px;
-			.icon {
-				font-size: 25px;
-				color: $mainColor;
-				@include animation(pulsateBrighter 2s ease-out infinite);
-			}
-		}
+    .shareIndicator {
+      height: 20px;
+      margin-top: 10px;
+      .icon {
+        font-size: 25px;
+        color: $mainColor;
+        @include animation(pulsateBrighter 2s ease-out infinite);
+      }
+    }
 
-	}
+  }
 
-	.createKindItem:hover {
-		border: 4px solid $green;
+  .createKindItem:hover {
+    border: 4px solid $green;
 
-		.icon,
-		.createKindItemText {
-			color: transparentize($mainColor, .3);
-		}
+    .icon,
+    .createKindItemText {
+      color: transparentize($mainColor, .3);
+    }
 
-		img {
-			transform: scale(1.2);
-		}
-	}
+    img {
+      transform: scale(1.2);
+    }
+  }
 
 }
 
@@ -2600,292 +2664,292 @@
 /*------ React Toggle Track -----*/
 .gbx3 {
 
-	.react-toggle {
-	}
+  .react-toggle {
+  }
 
-	.react-toggle-track {
-		height: 18px;
-		width: 45px;
-		background: linear-gradient(to right, $white 0%, $med-blue-gray 100%);
-	}
+  .react-toggle-track {
+    height: 18px;
+    width: 45px;
+    background: linear-gradient(to right, $white 0%, $med-blue-gray 100%);
+  }
 
-	.react-toggle-thumb {
-		top: -3px;
-		width: 25px;
-		height: 25px;
-		@include box-shadow(0px 1px 2px 0px rgba(0, 0, 0, 0.55));
-		border: 0;
-	}
+  .react-toggle-thumb {
+    top: -3px;
+    width: 25px;
+    height: 25px;
+    @include box-shadow(0px 1px 2px 0px rgba(0, 0, 0, 0.55));
+    border: 0;
+  }
 
-	.react-toggle--checked .react-toggle-track {
-		height: 18px;
-		width: 45px;
-		background: linear-gradient(to right, $mainColor 0%, $green 100%);
-	}
+  .react-toggle--checked .react-toggle-track {
+    height: 18px;
+    width: 45px;
+    background: linear-gradient(to right, $mainColor 0%, $green 100%);
+  }
 
-	.react-toggle--checked .react-toggle-thumb {
-		left: 22px;
-		border-color: transparent;
-		box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55) !important;
-	}
+  .react-toggle--checked .react-toggle-thumb {
+    left: 22px;
+    border-color: transparent;
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55) !important;
+  }
 
-	.react-toggle--focus .react-toggle-thumb {
-		box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55) !important;
-	}
+  .react-toggle--focus .react-toggle-thumb {
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55) !important;
+  }
 
-	.react-toggle--checked:active .react-toggle-thumb {
-		box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55) !important;
-	}
+  .react-toggle--checked:active .react-toggle-thumb {
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55) !important;
+  }
 
-	.react-toggle:active {
-		.react-toggle-thumb {
-			box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55) !important;
-		}
-	}
+  .react-toggle:active {
+    .react-toggle-thumb {
+      box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55) !important;
+    }
+  }
 
 }
 
 .gbx3 {
 
-	.moneyAmount.noValue .symbol {
-		color: $placeholder-gray;
-	}
+  .moneyAmount.noValue .symbol {
+    color: $placeholder-gray;
+  }
 
-	.countdownTimer.completedStyle .text,
-	.countdownTimer.completedStyle .number {
-		color: #EEEEEE;
-	}
+  .countdownTimer.completedStyle .text,
+  .countdownTimer.completedStyle .number {
+    color: #EEEEEE;
+  }
 
-	.countdownTimer {
-		position: relative;
+  .countdownTimer {
+    position: relative;
 
-		.completed {
-			position: absolute;
-			left: 0;
-			width: 100%;
-			text-align: center;
-			z-index: 100000;
-		}
+    .completed {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      z-index: 100000;
+    }
 
-		.completed h2 {
-			margin-top: 30px;
-			color: #D50000;
-			font-size: 16px;
-		}
+    .completed h2 {
+      margin-top: 30px;
+      color: #D50000;
+      font-size: 16px;
+    }
 
-		.timers {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			height: 100px;
-			width: 100%;
-		}
+    .timers {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100px;
+      width: 100%;
+    }
 
-		.timer {
-			text-align: center;
-			vertical-align: middle;
-			padding: 5px;
-			float: left;
-		}
+    .timer {
+      text-align: center;
+      vertical-align: middle;
+      padding: 5px;
+      float: left;
+    }
 
-		.timer .number {
-			font-size: 35px;
-			display: block;
-		}
+    .timer .number {
+      font-size: 35px;
+      display: block;
+    }
 
-		.timer .text {
-			font-size: 10px;
-			display: block;
-			margin-top: -5px;
-		}
+    .timer .text {
+      font-size: 10px;
+      display: block;
+      margin-top: -5px;
+    }
 
-		.timerContainer {
-			position: relative;
-		}
+    .timerContainer {
+      position: relative;
+    }
 
-		.timerContainer .timerInfo {
-			position: absolute;
-			top: 10px;
-			left: 0;
-			text-align: center;
-			width: 80px;
-			height: 80px;
-		}
-	}
+    .timerContainer .timerInfo {
+      position: absolute;
+      top: 10px;
+      left: 0;
+      text-align: center;
+      width: 80px;
+      height: 80px;
+    }
+  }
 
 }
 
 @supports (-webkit-appearance: -apple-pay-button) {
-		.apple-pay-button {
-				display: inline-block;
-				-webkit-appearance: -apple-pay-button;
-		}
-		.apple-pay-button-black {
-				-apple-pay-button-style: black;
-		}
-		.apple-pay-button-white {
-				-apple-pay-button-style: white;
-		}
-		.apple-pay-button-white-with-line {
-				-apple-pay-button-style: white-outline;
-		}
+    .apple-pay-button {
+        display: inline-block;
+        -webkit-appearance: -apple-pay-button;
+    }
+    .apple-pay-button-black {
+        -apple-pay-button-style: black;
+    }
+    .apple-pay-button-white {
+        -apple-pay-button-style: white;
+    }
+    .apple-pay-button-white-with-line {
+        -apple-pay-button-style: white-outline;
+    }
 }
 
 .subTabs {
-	button.panelTab {
-		text-align: center;
-	}
+  button.panelTab {
+    text-align: center;
+  }
 
-	.panelTab {
-		color: $light-med-gray;
-		padding: 10px;
-		background: transparent;
-		text-align: center;
-	}
+  .panelTab {
+    color: $light-med-gray;
+    padding: 10px;
+    background: transparent;
+    text-align: center;
+  }
 
-	.panelTab:hover {
-		color: $green;
-		background: transparent;
-	}
+  .panelTab:hover {
+    color: $green;
+    background: transparent;
+  }
 
-	.panelTab.selected {
-		color: $mainColor;
-		//@include animation(pulsateBrighter 2s ease-out infinite);
-	}
+  .panelTab.selected {
+    color: $mainColor;
+    //@include animation(pulsateBrighter 2s ease-out infinite);
+  }
 
-	.panelTab.disabled {
-		opacity: .4;
-		cursor: not-allowed;
-	}
+  .panelTab.disabled {
+    opacity: .4;
+    cursor: not-allowed;
+  }
 
-	.panelTab.disabled:hover {
-		color: $light-med-gray;
-	}
+  .panelTab.disabled:hover {
+    color: $light-med-gray;
+  }
 
-	.panel {
-		border-bottom: 1px solid transparentize($green, .8);
-	}
+  .panel {
+    border-bottom: 1px solid transparentize($green, .8);
+  }
 
-	.stepLabel {
+  .stepLabel {
 
-		.icon {
-			margin: 0 5px;
-		}
-	}
+    .icon {
+      margin: 0 5px;
+    }
+  }
 }
 
 .gbx3 {
 
-	.checkoutDonation {
-		position: relative;
-		display: flex;
-		justify-content: center;
-		align-items: center;
+  .checkoutDonation {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-		.checkbox-group label.label {
-			font-size: 12px;
-		}
-	}
+    .checkbox-group label.label {
+      font-size: 12px;
+    }
+  }
 
-	.checkoutDonationSelect {
-		ul {
-			margin: 20px;
-			@media (max-width: $breakpoint) {
-				margin: 20px 0;
-			}
-		}
+  .checkoutDonationSelect {
+    ul {
+      margin: 20px;
+      @media (max-width: $breakpoint) {
+        margin: 20px 0;
+      }
+    }
 
-		li {
-			position: relative;
-			display: flex;
-			cursor: pointer;
-			margin: 10px 0;
-			padding: 20px 10px;
-			border-bottom: 1px solid  transparentize($green, .8);
-			@include default-transition(.25s);
-		}
+    li {
+      position: relative;
+      display: flex;
+      cursor: pointer;
+      margin: 10px 0;
+      padding: 20px 10px;
+      border-bottom: 1px solid  transparentize($green, .8);
+      @include default-transition(.25s);
+    }
 
-		li:hover:not(.noRecords) {
-			background: transparentize($green, .4);
-			.selectDonationForm {
-				display: block;
-			}
-			.selected {
-				color: $white;
-			}
-		}
+    li:hover:not(.noRecords) {
+      background: transparentize($green, .4);
+      .selectDonationForm {
+        display: block;
+      }
+      .selected {
+        color: $white;
+      }
+    }
 
-		ul.editable {
-			li:hover {
-				background: transparent;
-			}
-		}
+    ul.editable {
+      li:hover {
+        background: transparent;
+      }
+    }
 
-		.thumbnail {
-			overflow: hidden;
-			margin-right: 10px;
-			img {
-				border-radius: 5px;
-			}
-		}
+    .thumbnail {
+      overflow: hidden;
+      margin-right: 10px;
+      img {
+        border-radius: 5px;
+      }
+    }
 
-		.title {
-			width: 75%;
-			font-size: 1em;
-		}
+    .title {
+      width: 75%;
+      font-size: 1em;
+    }
 
-		.selectDonationForm {
-			display: none;
-			position: absolute;
-			top: 30px;
-			right: 10px;
-			color: $white;
-			@include default-transition(.25s);
-		}
+    .selectDonationForm {
+      display: none;
+      position: absolute;
+      top: 30px;
+      right: 10px;
+      color: $white;
+      @include default-transition(.25s);
+    }
 
-		.selectDonationForm:hover {
-			opacity: .6;
-		}
+    .selectDonationForm:hover {
+      opacity: .6;
+    }
 
-		.selected {
-			color: $green;
-		}
+    .selected {
+      color: $green;
+    }
 
-	}
+  }
 }
 
 .gbx3 {
 
-	.backgroundPanelResizer {
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		z-index: 1;
-		background: transparent;
-	}
+  .backgroundPanelResizer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background: transparent;
+  }
 
 
-	.backgroundPanel {
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-	}
+  .backgroundPanel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
 
-	.editable {
-		.backgroundPanelResizer {
-			cursor: pointer;
-		}
+  .editable {
+    .backgroundPanelResizer {
+      cursor: pointer;
+    }
 
-		.backgroundPanelResizer:hover {
-			background: transparentize($green, .4) !important;
-		}
-	}
+    .backgroundPanelResizer:hover {
+      background: transparentize($green, .4) !important;
+    }
+  }
 }

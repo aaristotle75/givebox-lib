@@ -422,6 +422,7 @@ export function updateCartItem(unitID, item = {}, opts = {}, openCart = true) {
     } = opts;
 
     const gbx3 = util.getValue(getState(), 'gbx3', {});
+    const isPublic = util.getValue(gbx3, 'blocks.article.paymentForm.options.form.isPublic', true);
     const fees = util.getValue(gbx3, 'fees', {});
     const info = util.getValue(gbx3, 'info', {});
     const cart = util.getValue(gbx3, 'cart', {});
@@ -432,6 +433,7 @@ export function updateCartItem(unitID, item = {}, opts = {}, openCart = true) {
     const amount = parseInt(quantity * util.getValue(item, 'priceper', 0));
     const allowMultiItems = util.getValue(item, 'allowMultiItems', true);
 
+    item.isPublic = isPublic;
     item.amount = amount;
     item.fees = fees;
     item.amountFormatted = amount/100;
@@ -1307,6 +1309,14 @@ export function setStyle(options = {}) {
           color: ${textColor2};
         }
 
+        .gbx3 .givebox-paymentform .sendEmailNote .public-DraftEditorPlaceholder-inner {
+          color: ${textColor2};
+        }
+
+        .gbx3 .givebox-paymentform .sendEmailNote .DraftEditor-editorContainer {
+          border-bottom: 1px solid ${textColor2};
+        }
+
         .gbx3 .givebox-paymentform input {
           border-bottom: 1px solid ${textColor2};
         }
@@ -1469,6 +1479,10 @@ export function setStyle(options = {}) {
         }
 
         .checkoutDonation .react-toggle--checked .react-toggle-track {
+          background: linear-gradient(to right, ${color} 0%, ${color4} 100%) !important;
+        }
+
+        .sendEmailNote .react-toggle--checked .react-toggle-track {
           background: linear-gradient(to right, ${color} 0%, ${color4} 100%) !important;
         }
 

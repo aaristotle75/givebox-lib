@@ -231,9 +231,12 @@ export const paymentForm = {
       allowSelection: true,
       allowSharing: true,
       showP2P: true,
+      isPublic: true,
       sendEmail: {
-        enabled: true,
-        linkText: 'Share via Email'
+        enabled: true, // This enables the message
+        allowEmail: false, // This enables the email receipients
+        linkText: 'Email Your Message',
+        messageText: 'Add a Message'
       },
       hasCustomGoal: false,
       goal: 50000,
@@ -565,11 +568,25 @@ const membership = {
   }
 };
 
+const invoice = {
+  ...articleBlocks,
+  paymentForm: {
+    ...paymentForm,
+    options: {
+      ...paymentForm.options,
+      form: {
+        ...paymentForm.options.form,
+        isPublic: false
+      }
+    }
+  }
+};
+
 export const blockTemplates = {
   article: {
     fundraiser,
     event,
-    invoice: fundraiser,
+    invoice,
     membership,
     sweepstake
   },

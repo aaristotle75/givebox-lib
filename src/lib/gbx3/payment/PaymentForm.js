@@ -12,7 +12,7 @@ import {
   Loader
 } from '../../';
 import Moment from 'moment';
-import SendEmail from './SendEmail';
+import Note from './Note';
 import ApplePay from './ApplePay';
 import Echeck from './Echeck';
 import AnimateHeight from 'react-animate-height';
@@ -46,10 +46,12 @@ class PaymentFormClass extends Component {
     this.onCustomerChange = this.onCustomerChange.bind(this);
     this.state = {
       processingPayment: false,
+      showMessage: false,
       sendEmail: {
         recipients: '',
         message: util.getValue(this.props.sendEmail, 'defaultMsg', '')
       },
+      isPublic: this.props.isPublic,
       applepay: false,
       paymethod: 'creditcard',
       amountError: false
@@ -150,7 +152,8 @@ class PaymentFormClass extends Component {
           interval: value.interval || null,
           frequency: value.frequency || null,
           paymentMax: parseInt(value.paymentMax) || null,
-          note: ( lastItem.unitID === value.unitID ) && note ? note : null
+          note: ( lastItem.unitID === value.unitID ) && note ? note : null,
+          isPublic: value.isPublic
         });
       });
 
@@ -238,7 +241,6 @@ class PaymentFormClass extends Component {
         if (confirmationUpdated) this.props.processTransaction(data, this.processCallback);
       }
     }
-
   }
 
   onCreditCardChange(name, value, cardType, field) {
@@ -295,11 +297,32 @@ class PaymentFormClass extends Component {
   }
 
   onCustomerChange(name, value) {
+    const {
+      formState
+    } = this.props;
+
+    const fields = util.getValue(formState, 'fields', {});
+    const nameValue = util.getValue(fields, 'name.value');
+    const emailValue = util.getValue(fields, 'email.value');
+    const zipValue = util.getValue(fields, 'zip.value');
+    const ccexpireValue = util.getValue(fields, 'ccexpire.value');
+    const ccnumberValue = util.getValue(fields, 'ccnumber.value');
+    const cvvValue = util.getValue(fields, 'cvv.value');
     const customer = { ...this.props.cartCustomer, [name]: value };
+
+    if (nameValue && emailValue && ccexpireValue && ccnumberValue && cvvValue) {
+      this.setState({ showMessage: true });
+    }
+
     if (value) this.props.updateCart({ customer });
   }
 
-  sendEmailCallback(recipients, message) {
+  sendEmailCallback(opts = {}) {
+    const {
+      recipients,
+      message
+    } = opts;
+
     this.setState({
       sendEmail: {
         recipients,
@@ -525,9 +548,15 @@ class PaymentFormClass extends Component {
     const linkText = sendEmail.linkText || 'Share via Email';
 
     fields.sendEmail =
-      <div style={{ marginLeft: 8 }}>
-        <ModalLink id='sendEmail' allowCustom={true} customColor={primaryColor} opts={{ sendEmailCallback: this.sendEmailCallback, sendEmail: this.state.sendEmail, headerText: sendEmail.headerText || 'Compose Email' }}>{linkText}</ModalLink>
-      </div>
+      <Note
+        showMessage={this.state.showMessage}
+        primaryColor={primaryColor}
+        sendEmailCallback={this.sendEmailCallback}
+        sendEmail={this.state.sendEmail}
+        allowEmail={sendEmail.allowEmail}
+        linkText={sendEmail.linkText}
+        messageText={sendEmail.messageText}
+      />
     ;
 
     const items = [];
@@ -555,23 +584,11 @@ class PaymentFormClass extends Component {
     } = this.state;
 
     return (
-      <>
-        <ModalRoute
-          className='gbx3 givebox-paymentform'
-          id='sendEmail'
-          modalRootClass='sendEmail gbxModal'
-          component={(props) =>
-            <SendEmail {...props} {...this.props} />
-          }
-          effect='3DFlipVert'
-          style={{ width: '50%' }}
-        />
-        <>
-          { processingPayment ? <Loader msg='Please wait while transaction is processed...' forceText={true} /> : <></> }
-          {this.renderFields()}
-          {this.props.saveButton(this.processForm, { style: { margin: 0, padding: 0, height: 0, width: 0, visibility: 'hidden' } })}
-        </>
-      </>
+      <div>
+        { processingPayment ? <Loader msg='Please wait while transaction is processed...' forceText={true} /> : <></> }
+        {this.renderFields()}
+        {this.props.saveButton(this.processForm, { style: { margin: 0, padding: 0, height: 0, width: 0, visibility: 'hidden' } })}
+      </div>
     )
   }
 }
@@ -616,7 +633,7 @@ class PaymentForm extends Component {
           errorMsg={false}
           successMsg={false}
           formPropCallback={this.formStateCallback}
-          neverSubmitOnEnter={this.props.editable ? true : false}
+          neverSubmitOnEnter={true}
           primaryColor={primaryColor}
         >
           <PaymentFormClass
@@ -650,8 +667,9 @@ PaymentForm.defaultProps = {
   },
   sendEmail: {
     enabled: true,
-    linkText: 'Share via Email',
-    headerText: 'Compose Email',
+    allowEmail: false,
+    linkText: 'Email Your Message',
+    messageText: 'Add a Message',
     defaultMsg: ''
   }
 }
