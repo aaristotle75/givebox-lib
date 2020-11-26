@@ -1,478 +1,484 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-	util,
-	GBLink,
-	Image,
-	MediaLibrary,
-	ModalRoute,
-	Collapse,
-	Tabs,
-	Tab,
-	TextField,
-	Choice,
-	_v,
-	Video
+  util,
+  GBLink,
+  Image,
+  MediaLibrary,
+  ModalRoute,
+  Collapse,
+  Tabs,
+  Tab,
+  TextField,
+  Choice,
+  _v,
+  Video
 } from '../../';
 import AnimateHeight from 'react-animate-height';
 import has from 'has';
 
 class Media extends Component {
 
-	constructor(props) {
-		super(props);
-		this.handleSaveCallback = this.handleSaveCallback.bind(this);
-		this.closeModalAndSave = this.closeModalAndSave.bind(this);
-		this.closeModalAndCancel = this.closeModalAndCancel.bind(this);
-		this.closeEditModal = this.closeEditModal.bind(this);
-		this.handleBorderRadius = this.handleBorderRadius.bind(this);
-		this.updateImage = this.updateImage.bind(this);
-		this.updateVideo = this.updateVideo.bind(this);
-		this.onChangeVideo = this.onChangeVideo.bind(this);
-		this.videoOnReady = this.videoOnReady.bind(this);
-		this.renderVideo = this.renderVideo.bind(this);
-		this.renderImage = this.renderImage.bind(this);
-		this.setRadius = this.setRadius.bind(this);
-		this.blockRef = this.props.blockRef.current;
-		if (this.blockRef) {
-			this.maxWidth = this.blockRef.clientWidth;
-			this.maxHeight = this.blockRef.clientHeight;
-		}
+  constructor(props) {
+    super(props);
+    this.handleSaveCallback = this.handleSaveCallback.bind(this);
+    this.closeModalAndSave = this.closeModalAndSave.bind(this);
+    this.closeModalAndCancel = this.closeModalAndCancel.bind(this);
+    this.closeEditModal = this.closeEditModal.bind(this);
+    this.handleBorderRadius = this.handleBorderRadius.bind(this);
+    this.updateImage = this.updateImage.bind(this);
+    this.updateVideo = this.updateVideo.bind(this);
+    this.onChangeVideo = this.onChangeVideo.bind(this);
+    this.videoOnReady = this.videoOnReady.bind(this);
+    this.renderVideo = this.renderVideo.bind(this);
+    this.renderImage = this.renderImage.bind(this);
+    this.setRadius = this.setRadius.bind(this);
+    this.blockRef = this.props.blockRef.current;
+    if (this.blockRef) {
+      this.maxWidth = this.blockRef.clientWidth;
+      this.maxHeight = this.blockRef.clientHeight;
+    }
 
-		const {
-			options,
-			blockContent
-		} = props;
+    const {
+      options,
+      blockContent
+    } = props;
 
-		const mediaType = util.getValue(options, 'mediaType', 'image');
-		const imageDefault = util.getValue(options, 'image', {});
-		const videoDefault = util.getValue(options, 'video', {});
+    const mediaType = util.getValue(options, 'mediaType', 'image');
+    const imageDefault = util.getValue(options, 'image', {});
+    const videoDefault = util.getValue(options, 'video', {});
 
-		const image = {
-			...imageDefault,
-			...util.getValue(blockContent, 'image', {})
-		};
+    const image = {
+      ...imageDefault,
+      ...util.getValue(blockContent, 'image', {})
+    };
 
-		const video = {
-			...videoDefault,
-			...util.getValue(blockContent, 'video', {})
-		};
+    const video = {
+      ...videoDefault,
+      ...util.getValue(blockContent, 'video', {})
+    };
 
-		if (!has(image, 'URL')) image.URL = props.fieldValue;
+    if (!has(image, 'URL')) image.URL = props.fieldValue;
 
-		this.state = {
-			mediaType,
-			image,
-			video,
-			defaultImage: util.deepClone(image),
-			defaultVideo: util.deepClone(video),
-			defaultMediaType: mediaType,
-			maxWidth: this.maxWidth || null,
-			maxHeight: this.maxHeight || 550,
-			hasBeenUpdated: false,
-			mediaLibraryEditorIsOpen: false
-		};
-	}
+    this.state = {
+      mediaType,
+      image,
+      video,
+      defaultImage: util.deepClone(image),
+      defaultVideo: util.deepClone(video),
+      defaultMediaType: mediaType,
+      maxWidth: this.maxWidth || null,
+      maxHeight: this.maxHeight || 550,
+      hasBeenUpdated: false,
+      mediaLibraryEditorIsOpen: false
+    };
+  }
 
-	componentDidMount() {
-	}
+  componentDidMount() {
+    //console.log('execute componentDidMount Media', this.props);
+  }
 
-	componentWillUnmount() {
-		//console.log('execute componentWillUnmount');
-	}
+  componentDidUpdate(prev) {
+    //console.log('execute componentDidUpdate', prev, this.props);
+  }
 
-	closeModalAndSave() {
+  componentWillUnmount() {
+    //console.log('execute componentWillUnmount Media');
+  }
 
-		const {
-			block
-		} = this.props;
+  closeModalAndSave() {
 
-		const {
-			image,
-			video,
-			mediaType,
-			maxWidth,
-			maxHeight
-		} = this.state;
+    const {
+      block
+    } = this.props;
 
-		let hasBeenUpdated = this.state.hasBeenUpdated;
+    const {
+      image,
+      video,
+      mediaType,
+      maxWidth,
+      maxHeight
+    } = this.state;
 
-		if (mediaType === 'video' && !video.validatedURL) {
-			this.closeModalAndCancel();
-		} else {
-			const data = {};
-			const imageURL = util.getValue(image, 'URL');
-			const videoURL = util.getValue(video, 'validatedURL');
+    let hasBeenUpdated = this.state.hasBeenUpdated;
 
-			if ((imageURL || videoURL) && !hasBeenUpdated) hasBeenUpdated = true;
+    if (mediaType === 'video' && !video.validatedURL) {
+      this.closeModalAndCancel();
+    } else {
+      const data = {};
+      const imageURL = util.getValue(image, 'URL');
+      const videoURL = util.getValue(video, 'validatedURL');
 
-			switch (util.getValue(block, 'updateOptions')) {
-				case 'once': {
-					if (imageURL && !util.checkImage(imageURL)) {
-						data.imageURL =  imageURL.replace(/medium$/i, 'original');
-					}
-					break;
-				}
+      if ((imageURL || videoURL) && !hasBeenUpdated) hasBeenUpdated = true;
 
-				case 'replace': {
-					if (imageURL) data.imageURL = imageURL.replace(/medium$/i, 'original');
-					if (videoURL) data.videoURL = videoURL;
-					break;
-				}
+      switch (util.getValue(block, 'updateOptions')) {
+        case 'once': {
+          if (imageURL && !util.checkImage(imageURL)) {
+            data.imageURL =  imageURL.replace(/medium$/i, 'original');
+          }
+          break;
+        }
 
-				// no default
-			}
-			this.timeout = setTimeout(() => {
-				this.setState({ loading: false, edit: false }, () => {
-					this.props.saveBlock({
-						data,
-						hasBeenUpdated,
-						content: {
-							image,
-							video
-						},
-						options: {
-							mediaType,
-							width: maxWidth,
-							height: maxHeight
-						}
-					});
-				});
-			}, 0);
-		}
-	}
+        case 'replace': {
+          if (imageURL) data.imageURL = imageURL.replace(/medium$/i, 'original');
+          if (videoURL) data.videoURL = videoURL;
+          break;
+        }
 
-	closeModalAndCancel() {
-		const {
-			defaultMediaType,
-			defaultImage,
-			defaultVideo
-		} = this.state;
+        // no default
+      }
+      this.timeout = setTimeout(() => {
+        this.setState({ loading: false, edit: false }, () => {
+          this.props.saveBlock({
+            data,
+            hasBeenUpdated,
+            content: {
+              image,
+              video
+            },
+            options: {
+              mediaType,
+              width: maxWidth,
+              height: maxHeight
+            }
+          });
+        });
+      }, 0);
+    }
+  }
 
-		this.setState({
-			mediaType: defaultMediaType,
-			image: util.deepClone(defaultImage),
-			video: util.deepClone(defaultVideo)
-		}, this.props.closeEditModal);
-	}
+  closeModalAndCancel() {
+    const {
+      defaultMediaType,
+      defaultImage,
+      defaultVideo
+    } = this.state;
 
-	closeEditModal(type = 'save') {
-		this.setState({ loading: true });
-		if (type !== 'cancel') {
-			this.closeModalAndSave();
-		} else {
-			this.closeModalAndCancel();
-		}
-	}
+    this.setState({
+      mediaType: defaultMediaType,
+      image: util.deepClone(defaultImage),
+      video: util.deepClone(defaultVideo)
+    }, this.props.closeEditModal);
+  }
 
-	handleSaveCallback(url) {
-		const image = this.state.image;
-		image.URL = util.imageUrlWithStyle(url, image.size);
-		this.setState({
-			image,
-			mediaType: 'image',
-			loading: true,
-			hasBeenUpdated: true
-		}, () => this.closeEditModal('save'));
-	}
+  closeEditModal(type = 'save') {
+    this.setState({ loading: true });
+    if (type !== 'cancel') {
+      this.closeModalAndSave();
+    } else {
+      this.closeModalAndCancel();
+    }
+  }
 
-	updateImage(key, value) {
-		const image = this.state.image;
-		image[key] = value;
-		this.setState({ image, hasBeenUpdated: true });
-	}
+  handleSaveCallback(url) {
+    const image = this.state.image;
+    image.URL = util.imageUrlWithStyle(url, image.size);
+    this.setState({
+      image,
+      mediaType: 'image',
+      loading: true,
+      hasBeenUpdated: true
+    }, () => this.closeEditModal('save'));
+  }
 
-	updateVideo(key, value) {
-		const video = this.state.video;
-		video[key] = value;
-		this.setState({ video, hasBeenUpdated: true });
-	}
+  updateImage(key, value) {
+    const image = this.state.image;
+    image[key] = value;
+    this.setState({ image, hasBeenUpdated: true });
+  }
 
-	handleBorderRadius(e) {
-		this.updateImage('borderRadius', +e.target.value);
-	}
+  updateVideo(key, value) {
+    const video = this.state.video;
+    video[key] = value;
+    this.setState({ video, hasBeenUpdated: true });
+  }
 
-	setRadius(borderRadius) {
-		this.updateImage('borderRadius', borderRadius);
-	}
+  handleBorderRadius(e) {
+    this.updateImage('borderRadius', +e.target.value);
+  }
 
-	onChangeVideo(e) {
-		const URL = e.currentTarget.value;
-		const video = this.state.video;
-		video.validatedURL = _v.validateURL(URL) ? URL : video.validatedURL;
-		video.URL = URL;
-		if (video.error) video.error = false;
-		this.setState({ video, hasBeenUpdated: true });
-	}
+  setRadius(borderRadius) {
+    this.updateImage('borderRadius', borderRadius);
+  }
 
-	videoOnReady() {
-		//console.log('execute videoOnReady');
-		//this.setState({ content: this.state.video });
-	}
+  onChangeVideo(e) {
+    const URL = e.currentTarget.value;
+    const video = this.state.video;
+    video.validatedURL = _v.validateURL(URL) ? URL : video.validatedURL;
+    video.URL = URL;
+    if (video.error) video.error = false;
+    this.setState({ video, hasBeenUpdated: true });
+  }
 
-	renderVideo(preview = false) {
-		const {
-			video,
-			maxWidth,
-			maxHeight
-		} = this.state;
+  videoOnReady() {
+    //console.log('execute videoOnReady');
+    //this.setState({ content: this.state.video });
+  }
 
-		if (util.getValue(video, 'URL')) {
-			return (
-				<Video
-					playing={this.props.stage !== 'admin' ? util.getValue(video, 'auto', false) : false}
-					url={util.getValue(video, 'validatedURL')}
-					onReady={this.videoOnReady}
-					style={{
-						maxWidth: maxWidth || '100%',
-						maxHeight
-					}}
-					maxHeight={maxHeight}
-					preview={preview}
-				/>
-			)
-		} else {
-			return (
-				<div className='mediaPlaceholder'>
-					<span className='icon icon-video'></span>
-					Add Video
-				</div>
-			)
-		}
-	}
+  renderVideo(preview = false) {
+    const {
+      video,
+      maxWidth,
+      maxHeight
+    } = this.state;
 
-	renderImage() {
-		const {
-			title,
-			block
-		} = this.props;
+    if (util.getValue(video, 'URL')) {
+      return (
+        <Video
+          playing={this.props.stage !== 'admin' ? util.getValue(video, 'auto', false) : false}
+          url={util.getValue(video, 'validatedURL')}
+          onReady={this.videoOnReady}
+          style={{
+            maxWidth: maxWidth || '100%',
+            maxHeight
+          }}
+          maxHeight={maxHeight}
+          preview={preview}
+        />
+      )
+    } else {
+      return (
+        <div className='mediaPlaceholder'>
+          <span className='icon icon-video'></span>
+          Add Video
+        </div>
+      )
+    }
+  }
 
-		const {
-			maxWidth,
-			maxHeight,
-			image
-		} = this.state;
+  renderImage() {
+    const {
+      title,
+      block
+    } = this.props;
 
-		const disallowRadius = util.getValue(block, 'disallowRadius');
-		const url = util.getValue(image, 'URL');
+    const {
+      maxWidth,
+      maxHeight,
+      image
+    } = this.state;
 
-		if (url) {
-			return (
-				<Image imgStyle={{ borderRadius: disallowRadius ? 0 : `${util.getValue(image, 'borderRadius')}%` }} url={url} size={util.getValue(image, 'size')} minHeight={0} maxWidth={maxWidth} maxHeight={maxHeight} alt={title} />
-			)
-		} else {
-			return (
-				<div className='mediaPlaceholder'>
-					<span className='icon icon-instagram'></span>
-					Add Image
-				</div>
-			)
-		}
-	}
+    const disallowRadius = util.getValue(block, 'disallowRadius');
+    const url = util.getValue(image, 'URL');
 
-	render() {
+    if (url) {
+      return (
+        <Image imgStyle={{ borderRadius: disallowRadius ? 0 : `${util.getValue(image, 'borderRadius')}%` }} url={url} size={util.getValue(image, 'size')} minHeight={0} maxWidth={maxWidth} maxHeight={maxHeight} alt={title} />
+      )
+    } else {
+      return (
+        <div className='mediaPlaceholder'>
+          <span className='icon icon-instagram'></span>
+          Add Image
+        </div>
+      )
+    }
+  }
 
-		const {
-			title,
-			orgID,
-			articleID,
-			modalID,
-			maxRadius,
-			minRadius,
-			block,
-			breakpoint,
-			isVolunteer
-		} = this.props;
+  render() {
 
-		const {
-			image,
-			video,
-			mediaType,
-			mediaLibraryEditorIsOpen
-		} = this.state;
+    const {
+      title,
+      orgID,
+      articleID,
+      modalID,
+      maxRadius,
+      minRadius,
+      block,
+      breakpoint,
+      isVolunteer
+    } = this.props;
 
-		const library = {
-			saveMediaType: isVolunteer ? 'article' : 'org',
-			articleID,
-			orgID,
-			type: 'article',
-			borderRadius: 0
-		}
+    const {
+      image,
+      video,
+      mediaType,
+      mediaLibraryEditorIsOpen
+    } = this.state;
 
-		const nonremovable = util.getValue(block, 'nonremovable', false);
-		const disallowRadius = util.getValue(block, 'disallowRadius');
+    const library = {
+      saveMediaType: isVolunteer ? 'article' : 'org',
+      articleID,
+      orgID,
+      type: 'article',
+      borderRadius: 0
+    }
 
-		return (
-			<>
-				<ModalRoute
-					className='gbx3'
-					optsProps={{ closeCallback: this.onCloseUploadEditor, customOverlay: { zIndex: 10000000 } }}
-					id={modalID}
-					effect='3DFlipVert' style={{ width: '60%' }}
-					draggable={true}
-					draggableTitle={`Editing ${title}`}
-					closeCallback={this.closeEditModal}
-					disallowBgClose={true}
-					component={() =>
-						<div className='modalWrapper'>
-							<Tabs
-								default={mediaType}
-								className='statsTab'
-								callbackAfter={(tab) => {
-									this.setState({ mediaType: tab });
-								}}
-							>
-								{!util.isEmpty(image) ?
-								<Tab
-									id='image'
-									label={<span className='stepLabel'>Image</span>}
-								>
-									<Collapse
-										label={'Image'}
-										iconPrimary='image'
-										id={'gbx3-mediaLibrary'}
-									>
-										<div className='formSectionContainer'>
-											<div className='formSection'>
-												<MediaLibrary
-													modalID={modalID}
-													image={mediaType === 'image' ? util.getValue(image, 'URL') : null}
-													preview={mediaType === 'image' ? util.getValue(image, 'URL') : null}
-													handleSaveCallback={this.handleSaveCallback}
-													handleSave={util.handleFile}
-													library={library}
-													closeModalAndCancel={() => this.closeEditModal('cancel')}
-													closeModalAndSave={() => this.closeEditModal('save')}
-													showBtns={'hide'}
-													saveLabel={'close'}
-													imageEditorOpenCallback={(open) => {
-														this.setState({ mediaLibraryEditorIsOpen: open });
-													}}
-													mobile={breakpoint === 'mobile' ? true : false }
-												/>
-											</div>
-										</div>
-									</Collapse>
-									{!mediaLibraryEditorIsOpen && !disallowRadius ?
-									<Collapse
-										label={'Image Options'}
-										iconPrimary='sliders'
-										id={'gbx3-imageProperties'}
-									>
-										<div className='formSectionContainer'>
-											<div className='formSection'>
-												<div className='input-group'>
-													<label className='label'>Image Roundness</label>
-													<div className='scale'>
-														<GBLink onClick={() => this.setRadius(minRadius)}><span className='icon icon-square'></span></GBLink>
-														<input
-															name="borderRadius"
-															type="range"
-															onChange={this.handleBorderRadius}
-															min={minRadius}
-															max={maxRadius}
-															step="0"
-															value={util.getValue(image, 'borderRadius')}
-														/>
-														<GBLink onClick={() => this.setRadius(maxRadius)}><span className='icon icon-circle'></span></GBLink>
-													</div>
-												</div>
-												{util.getValue(image, 'URL') ?
-												<div className='helperText'>
-													<div className='line label'>Preview</div>
-													<div className='line'>
-														{this.renderImage()}
-													</div>
-												</div> : ''}
-											</div>
-										</div>
-									</Collapse> : <></> }
-								</Tab> : <></> }
-								{ !util.isEmpty(video) ?
-								<Tab
-									id='video'
-									label={<span className='stepLabel'>Video</span>}
-								>
-									<Collapse
-										label={'Video'}
-										iconPrimary='video'
-										id={'gbx3-embedvideo'}
-									>
-										<div className='formSectionContainer'>
-											<div className='formSection'>
-												<TextField
-													name='video'
-													label='Embed Video URL'
-													fixedLabel={true}
-													placeholder='Enter Embed Video URL'
-													onChange={this.onChangeVideo}
-													value={util.getValue(video, 'URL')}
-												/>
-												<Choice
-													name='auto'
-													label='Play Video Automatically to Users'
-													checked={util.getValue(video, 'auto', false)}
-													onChange={() => {
-														const video = this.state.video;
-														this.updateVideo('auto', video.auto ? false : true);
-													}}
-													toggle={true}
-												/>
-												{util.getValue(video, 'validatedURL') ?
-												<div className='fieldContext'>
-													<span className='smallText flexStart centerItems'><span style={{ fontWeight: 300 }}>Video will not auto-play in preview.</span></span>
-												</div> : <></>}
-												<AnimateHeight
-													duration={200}
-													height={util.getValue(video, 'validatedURL') ? 'auto' : 0}
-												>
-													<div className='input-group'>
-														<label className='label'>Video Preview</label>
-														<div style={{ marginTop: 10 }} className='flexCenter'>
-															{mediaType === 'video' ? this.renderVideo(true) : <></>}
-														</div>
-													</div>
-												</AnimateHeight>
-											</div>
-										</div>
-									</Collapse>
-								</Tab> : <></> }
-							</Tabs>
-						</div>
-					}
-					buttonGroup={
-						!mediaLibraryEditorIsOpen ?
-						<div className='gbx3'>
-							<div style={{ margin: 0 }} className='button-group center'>
-								{!nonremovable ? <GBLink className='link remove' onClick={this.props.onClickRemove}><span className='icon icon-trash-2'></span> <span className='buttonText'>Remove</span></GBLink> : <></>}
-								<GBLink className='link' onClick={() => this.closeEditModal('cancel')}>Cancel</GBLink>
-								<GBLink className='button' onClick={() => this.closeEditModal('save')}>Save</GBLink>
-							</div>
-						</div> : <></>
-					}
-				/>
-				{ mediaType === 'image' ?
-					this.renderImage()
-				:
-					this.renderVideo()
-				}
-			</>
-		)
-	}
+    const nonremovable = util.getValue(block, 'nonremovable', false);
+    const disallowRadius = util.getValue(block, 'disallowRadius');
+
+    return (
+      <>
+        <ModalRoute
+          className='gbx3'
+          optsProps={{ closeCallback: this.onCloseUploadEditor, customOverlay: { zIndex: 10000000 } }}
+          id={modalID}
+          effect='3DFlipVert' style={{ width: '60%' }}
+          draggable={true}
+          draggableTitle={`Editing ${title}`}
+          closeCallback={this.closeEditModal}
+          disallowBgClose={true}
+          component={() =>
+            <div className='modalWrapper'>
+              <Tabs
+                default={mediaType}
+                className='statsTab'
+                callbackAfter={(tab) => {
+                  this.setState({ mediaType: tab });
+                }}
+              >
+                {!util.isEmpty(image) ?
+                <Tab
+                  id='image'
+                  label={<span className='stepLabel'>Image</span>}
+                >
+                  <Collapse
+                    label={'Image'}
+                    iconPrimary='image'
+                    id={'gbx3-mediaLibrary'}
+                  >
+                    <div className='formSectionContainer'>
+                      <div className='formSection'>
+                        <MediaLibrary
+                          blockType={this.props.blockType}
+                          modalID={modalID}
+                          image={mediaType === 'image' ? util.getValue(image, 'URL') : null}
+                          preview={mediaType === 'image' ? util.getValue(image, 'URL') : null}
+                          handleSaveCallback={this.handleSaveCallback}
+                          handleSave={util.handleFile}
+                          library={library}
+                          closeModalAndCancel={() => this.closeEditModal('cancel')}
+                          closeModalAndSave={() => this.closeEditModal('save')}
+                          showBtns={'hide'}
+                          saveLabel={'close'}
+                          imageEditorOpenCallback={(open) => {
+                            this.setState({ mediaLibraryEditorIsOpen: open });
+                          }}
+                          mobile={breakpoint === 'mobile' ? true : false }
+                        />
+                      </div>
+                    </div>
+                  </Collapse>
+                  {!mediaLibraryEditorIsOpen && !disallowRadius ?
+                  <Collapse
+                    label={'Image Options'}
+                    iconPrimary='sliders'
+                    id={'gbx3-imageProperties'}
+                  >
+                    <div className='formSectionContainer'>
+                      <div className='formSection'>
+                        <div className='input-group'>
+                          <label className='label'>Image Roundness</label>
+                          <div className='scale'>
+                            <GBLink onClick={() => this.setRadius(minRadius)}><span className='icon icon-square'></span></GBLink>
+                            <input
+                              name="borderRadius"
+                              type="range"
+                              onChange={this.handleBorderRadius}
+                              min={minRadius}
+                              max={maxRadius}
+                              step="0"
+                              value={util.getValue(image, 'borderRadius')}
+                            />
+                            <GBLink onClick={() => this.setRadius(maxRadius)}><span className='icon icon-circle'></span></GBLink>
+                          </div>
+                        </div>
+                        {util.getValue(image, 'URL') ?
+                        <div className='helperText'>
+                          <div className='line label'>Preview</div>
+                          <div className='line'>
+                            {this.renderImage()}
+                          </div>
+                        </div> : ''}
+                      </div>
+                    </div>
+                  </Collapse> : <></> }
+                </Tab> : <></> }
+                { !util.isEmpty(video) ?
+                <Tab
+                  id='video'
+                  label={<span className='stepLabel'>Video</span>}
+                >
+                  <Collapse
+                    label={'Video'}
+                    iconPrimary='video'
+                    id={'gbx3-embedvideo'}
+                  >
+                    <div className='formSectionContainer'>
+                      <div className='formSection'>
+                        <TextField
+                          name='video'
+                          label='Embed Video URL'
+                          fixedLabel={true}
+                          placeholder='Enter Embed Video URL'
+                          onChange={this.onChangeVideo}
+                          value={util.getValue(video, 'URL')}
+                        />
+                        <Choice
+                          name='auto'
+                          label='Play Video Automatically to Users'
+                          checked={util.getValue(video, 'auto', false)}
+                          onChange={() => {
+                            const video = this.state.video;
+                            this.updateVideo('auto', video.auto ? false : true);
+                          }}
+                          toggle={true}
+                        />
+                        {util.getValue(video, 'validatedURL') ?
+                        <div className='fieldContext'>
+                          <span className='smallText flexStart centerItems'><span style={{ fontWeight: 300 }}>Video will not auto-play in preview.</span></span>
+                        </div> : <></>}
+                        <AnimateHeight
+                          duration={200}
+                          height={util.getValue(video, 'validatedURL') ? 'auto' : 0}
+                        >
+                          <div className='input-group'>
+                            <label className='label'>Video Preview</label>
+                            <div style={{ marginTop: 10 }} className='flexCenter'>
+                              {mediaType === 'video' ? this.renderVideo(true) : <></>}
+                            </div>
+                          </div>
+                        </AnimateHeight>
+                      </div>
+                    </div>
+                  </Collapse>
+                </Tab> : <></> }
+              </Tabs>
+            </div>
+          }
+          buttonGroup={
+            !mediaLibraryEditorIsOpen ?
+            <div className='gbx3'>
+              <div style={{ margin: 0 }} className='button-group center'>
+                {!nonremovable ? <GBLink className='link remove' onClick={this.props.onClickRemove}><span className='icon icon-trash-2'></span> <span className='buttonText'>Remove</span></GBLink> : <></>}
+                <GBLink className='link' onClick={() => this.closeEditModal('cancel')}>Cancel</GBLink>
+                <GBLink className='button' onClick={() => this.closeEditModal('save')}>Save</GBLink>
+              </div>
+            </div> : <></>
+          }
+        />
+        { mediaType === 'image' ?
+          this.renderImage()
+        :
+          this.renderVideo()
+        }
+      </>
+    )
+  }
 }
 
 Media.defaultProps = {
-	minRadius: 0,
-	maxRadius: 50
+  minRadius: 0,
+  maxRadius: 50
 }
 
 function mapStateToProps(state, props) {
 
-	const editable = util.getValue(state, 'gbx3.admin.editable');
+  const editable = util.getValue(state, 'gbx3.admin.editable');
 
-	return {
-		editable
-	}
+  return {
+    editable
+  }
 }
 
 export default connect(mapStateToProps, {

@@ -3,7 +3,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-	util
+  util
 } from '../../../';
 import Moment from 'moment';
 import ReceiptEmailLayout from './ReceiptEmailLayout';
@@ -16,92 +16,90 @@ const GBX_SHARE = process.env.REACT_APP_GBX_SHARE;
 
 class ReceiptEmailEdit extends React.Component {
 
-	constructor(props) {
-		super(props);
-		this.setPreviewHTML = this.setPreviewHTML.bind(this);
-	}
+  constructor(props) {
+    super(props);
+    this.setPreviewHTML = this.setPreviewHTML.bind(this);
+  }
 
-	componentDidMount() {
-		if (this.props.previewMode) {
-			this.setPreviewHTML();
-		}
-	}
+  componentDidMount() {
+    if (this.props.previewMode) {
+      this.setPreviewHTML();
+    }
+  }
 
-	componentWillUnmount() {
-		if (this.timeout) {
-			clearTimeout(this.timeout);
-			this.timeout = null;
-		}
-	}
+  componentWillUnmount() {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+      this.timeout = null;
+    }
+  }
 
-	setPreviewHTML() {
-		const {
-			receiptHTML,
-			org
-		} = this.props;
+  setPreviewHTML() {
+    const {
+      receiptHTML,
+      org
+    } = this.props;
 
-		const descriptor = util.getValue(org, 'billingDescriptor', 'BillingDescription');
-		const orderConfirmation = util.replaceAll(orderConfirmationTemplate, {
-			'{{descriptor}}' : `GBX*${descriptor}`
-		});
+    const descriptor = util.getValue(org, 'billingDescriptor', 'BillingDescription');
+    const orderConfirmation = util.replaceAll(orderConfirmationTemplate, {
+      '{{descriptor}}' : `GBX*${descriptor}`
+    });
 
-		const content = receiptHTML;
-		const tokens = {
-			'{{content}}': content,
-			'{{orderconfirmation}}': orderConfirmation
-		};
+    const content = receiptHTML;
+    const tokens = {
+      '{{content}}': content,
+      '{{orderconfirmation}}': orderConfirmation
+    };
 
-		const html = util.replaceAll(emailTemplate, tokens);
+    const html = util.replaceAll(emailTemplate, tokens);
 
-		const iframeRef = util.getValue(this.props.iframePreviewRef, 'current', {});
+    const iframeRef = util.getValue(this.props.iframePreviewRef, 'current', {});
 
-		if (iframeRef) {
-			if (iframeRef.contentDocument) iframeRef.contentDocument.write(html);
-		}
-	}
-
-
-	render() {
-
-		const {
-			info,
-			previewMode
-		} = this.props;
+    if (iframeRef) {
+      if (iframeRef.contentDocument) iframeRef.contentDocument.write(html);
+    }
+  }
 
 
-		if (previewMode) {
-			return (
-				<></>
-			);
-		} else {
-			return (
-				<div className='gbx3ReceiptLayout'>
-					<div className='gbx3ReceiptContainer'>
-						<div className='block'>
-							<div className='flexCenter'>
-								<ReceiptEmailLayout />
-							</div>
-						</div>
-					</div>
-				</div>
-			)
-		}
-	}
+  render() {
+
+    const {
+      previewMode
+    } = this.props;
+
+    if (previewMode) {
+      return (
+        <></>
+      );
+    } else {
+      return (
+        <div className='gbx3ReceiptLayout'>
+          <div className='gbx3ReceiptContainer'>
+            <div className='block'>
+              <div className='flexCenter'>
+                <ReceiptEmailLayout />
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+    }
+  }
 }
 
 function mapStateToProps(state, props) {
 
-	const gbx3 = util.getValue(state, 'gbx3', {});
-	const admin = util.getValue(gbx3, 'admin', {});
-	const previewMode = util.getValue(admin, 'previewMode');
-	const receiptHTML = util.getValue(gbx3, 'data.receiptHTML');
-	const org = util.getValue(state, 'resource.org.data', {});
+  const gbx3 = util.getValue(state, 'gbx3', {});
+  const admin = util.getValue(gbx3, 'admin', {});
+  const previewMode = util.getValue(admin, 'previewMode');
+  const receiptHTML = util.getValue(gbx3, 'data.receiptHTML');
+  const org = util.getValue(state, 'resource.org.data', {});
 
-	return {
-		previewMode,
-		receiptHTML,
-		org
-	}
+  return {
+    previewMode,
+    receiptHTML,
+    org
+  }
 }
 
 export default connect(mapStateToProps, {
