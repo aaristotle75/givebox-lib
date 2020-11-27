@@ -1,11 +1,9 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import TicketForm from './TicketForm';
-import {
-  Tab,
-  Tabs,
-  GBLink
-} from '../';
+import GBLink from '../common/GBLink';
+import Tabs, { Tab } from '../common/Tabs';
+
 import Articles from './Articles';
 
 class HelpDesk extends Component {

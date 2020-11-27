@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-  util,
-  GBLink,
-  Image,
-  MediaLibrary,
-  ModalRoute,
-  Collapse,
-  Tabs,
-  Tab,
-  TextField,
-  Choice,
-  _v,
-  Video
+  util
 } from '../../';
+import Collapse from '../../common/Collapse';
+import GBLink from '../../common/GBLink';
+import Image from '../../common/Image';
+import Tabs, { Tab } from '../../common/Tabs';
+import Video from '../../common/Video';
+import ModalRoute from '../../modal/ModalRoute';
+import Choice from '../../form/Choice';
+import TextField from '../../form/TextField';
+import MediaLibrary from '../../form/MediaLibrary';
+import * as _v from '../../form/formValidate';
 import AnimateHeight from 'react-animate-height';
 import has from 'has';
 

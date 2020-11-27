@@ -6,11 +6,11 @@ import AnimateHeight from 'react-animate-height';
 import Breadcrumbs from './Breadcrumbs';
 import has from 'has';
 import {
-  Loader,
-  util,
-  GBLink,
-  Search
+  util
 } from '../';
+import GBLink from '../common/GBLink';
+import Loader from '../common/Loader';
+import Search from '../table/Search';
 
 class Articles extends Component {
 

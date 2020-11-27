@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
+import Image from './Image';
+import ActionsMenu from '../table/ActionsMenu';
+import GBLink from './GBLink';
 import {
-  Image,
-  util,
-  ActionsMenu,
-  GBLink,
+  util
 } from '../';
 import { toggleModal } from '../api/actions';
 

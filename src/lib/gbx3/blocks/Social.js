@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import {
-  util,
-  types
+  util
 } from '../../';
+import * as types from '../../common/types';
 import {
   sendResource,
   getResource

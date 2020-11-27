@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-  util,
-  GBLink,
-  ModalRoute,
-  ModalLink,
-  Collapse,
-  Tabs,
-  Tab,
-  types,
-  Fade,
-  TextField,
-  Choice
+  util
 } from '../../';
+import GBLink from '../../common/GBLink';
+import ModalRoute from '../../modal/ModalRoute';
+import ModalLink from '../../modal/ModalLink';
+import Collapse from '../../common/Collapse';
+import Tabs, { Tab } from '../../common/Tabs';
+import * as types from '../../common/types';
+import Fade from '../../common/Fade';
+import TextField from '../../form/TextField';
+import Choice from '../../form/Choice';
 import { sendResource } from '../../api/helpers';
 import AmountsEdit from './amounts/AmountsEdit';
 import AmountsList from './amounts/AmountsList';

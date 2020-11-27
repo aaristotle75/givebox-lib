@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-  util,
-  types,
-  Image
+  util
 } from '../../../';
+import Image from '../../../common/Image';
+import * as types from '../../../common/types';
 import {
   cloneFundraiser,
   createFundraiser,

@@ -2,15 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
   util,
-  selectOptions,
-  ModalLink,
-  Form,
-  ModalRoute,
-  Tab,
-  Tabs,
-  GBLink,
-  Loader
+  selectOptions
 } from '../../';
+import GBLink from '../../common/GBLink';
+import Loader from '../../common/Loader';
+import Tabs, { Tab } from '../../common/Tabs';
+import ModalLink from '../../modal/ModalLink';
+import ModalRoute from '../../modal/ModalRoute';
+import Form from '../../form/Form';
 import Moment from 'moment';
 import Note from './Note';
 import ApplePay from './ApplePay';

@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-  util,
-  GBLink,
-  ModalRoute,
-  Tabs,
-  Tab,
-  Collapse
+  util
 } from '../../';
+import Collapse from '../../common/Collapse';
+import GBLink from '../../common/GBLink';
+import Tabs, { Tab } from '../../common/Tabs';
+import ModalRoute from '../../modal/ModalRoute';
 import Editor from './Editor';
 import Button from './Button';
 import ButtonEdit from './ButtonEdit';

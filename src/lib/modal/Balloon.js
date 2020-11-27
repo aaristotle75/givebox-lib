@@ -1,42 +1,39 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-  Fade,
-  GBLink,
-  getResource,
-	savePrefs
-} from '../';
+import GBLink from '../common/GBLink';
+import Fade from '../common/Fade';
+import { getResource, savePrefs } from '../api/helpers';
 import '../styles/balloon.scss';
 
 class Balloon extends Component {
 
   constructor(props) {
     super(props);
-		this.buttonClick = this.buttonClick.bind(this);
+    this.buttonClick = this.buttonClick.bind(this);
     this.state = {
       open: false
     };
   }
 
-	componentDidMount() {
-		const prefs = this.props.prefs;
-		console.log('prefs', prefs);
-		const open = this.props.open;
-		this.setState({ open });
-	}
+  componentDidMount() {
+    const prefs = this.props.prefs;
+    console.log('prefs', prefs);
+    const open = this.props.open;
+    this.setState({ open });
+  }
 
-	componentDidUpdate(prev) {
-		if (prev.open !== this.props.open) {
-			this.setState({ open: this.props.open });
-		}
-	}
+  componentDidUpdate(prev) {
+    if (prev.open !== this.props.open) {
+      this.setState({ open: this.props.open });
+    }
+  }
 
-	buttonClick(type) {
-		if (type === 'noshow') {
+  buttonClick(type) {
+    if (type === 'noshow') {
 
-		}
-		if (this.props.buttonCallback) this.props.buttonCallback(type, false);
-	}
+    }
+    if (this.props.buttonCallback) this.props.buttonCallback(type, false);
+  }
 
   render() {
 
@@ -44,31 +41,31 @@ class Balloon extends Component {
       open
     } = this.state;
 
-		const {
-			style,
-			pointer
-		} = this.props;
+    const {
+      style,
+      pointer
+    } = this.props;
 
     return (
-			<>
-				{open ?
-	        <div style={style} className={`balloon ${pointer}`}>
-	          <GBLink className='removeBtn' onClick={() => this.buttonClick('ok')}><span className='icon icon-x'></span></GBLink>
-	          <Fade in={open}>
-	            {this.props.children}
-	          </Fade>
-						<div className='button-group'>
-							<GBLink className='balloonLink' onClick={() => this.buttonClick('noshow')}>Do not show again</GBLink>
-						</div>
-	        </div>
-				: <></>}
-			</>
+      <>
+        {open ?
+          <div style={style} className={`balloon ${pointer}`}>
+            <GBLink className='removeBtn' onClick={() => this.buttonClick('ok')}><span className='icon icon-x'></span></GBLink>
+            <Fade in={open}>
+              {this.props.children}
+            </Fade>
+            <div className='button-group'>
+              <GBLink className='balloonLink' onClick={() => this.buttonClick('noshow')}>Do not show again</GBLink>
+            </div>
+          </div>
+        : <></>}
+      </>
     )
   }
 }
 
 Balloon.defaultProps = {
-	pointer: 'top'
+  pointer: 'top'
 };
 
 function mapStateToProps(state) {

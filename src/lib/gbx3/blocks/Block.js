@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-  GBLink,
   util
 } from '../../';
+import GBLink from '../../common/GBLink';
 import { toggleModal } from '../../api/actions';
 import {
   updateAdmin,

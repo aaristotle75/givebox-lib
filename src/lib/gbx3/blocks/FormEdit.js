@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-  Choice,
-  TextField,
-  Dropdown,
-  Collapse,
-  util,
-  ModalLink
+  util
 } from '../../';
+import Choice from '../../form/Choice';
+import TextField from '../../form/TextField';
+import Dropdown from '../../form/Dropdown';
+import Collapse from '../../common/Collapse';
+import ModalLink from '../../modal/ModalLink';
 import AnimateHeight from 'react-animate-height';
 import CheckoutDonationEdit from './CheckoutDonationEdit';
 

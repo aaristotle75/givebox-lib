@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { toggleModal } from '../api/actions';
-import { GBLink } from '../';
+import GBLink from '../common/GBLink';
 
 class ModalLink extends Component {
 

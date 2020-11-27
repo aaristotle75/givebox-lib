@@ -1,126 +1,128 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import RichTextEditor from './RichTextEditor';
-import { ModalRoute, ModalLink, GBLink } from '../';
+import ModalLink from '../modal/ModalLink';
+import ModalRoute from '../modal/ModalRoute';
+import GBLink from '../common/GBLink';
 
 class ContentField extends Component {
 
-	constructor(props) {
-		super(props);
-		this.onFocus = this.onFocus.bind(this);
-		this.onBlur = this.onBlur.bind(this);
-		this.onMouseEnter = this.onMouseEnter.bind(this);
-		this.onMouseLeave = this.onMouseLeave.bind(this);
-		this.state = {
-			status: 'idle'
-		}
-	}
+  constructor(props) {
+    super(props);
+    this.onFocus = this.onFocus.bind(this);
+    this.onBlur = this.onBlur.bind(this);
+    this.onMouseEnter = this.onMouseEnter.bind(this);
+    this.onMouseLeave = this.onMouseLeave.bind(this);
+    this.state = {
+      status: 'idle'
+    }
+  }
 
-	componentDidMount() {
-		if (this.props.createField) {
-			this.props.createField(this.props.name, this.props.params);
-		}
-	}
+  componentDidMount() {
+    if (this.props.createField) {
+      this.props.createField(this.props.name, this.props.params);
+    }
+  }
 
-	renderEditor(props) {
-		return (
-			<Editor {...props} />
-		);
-	}
+  renderEditor(props) {
+    return (
+      <Editor {...props} />
+    );
+  }
 
-	onFocus(name, content, hasText) {
-		this.setState({status: 'active'});
-		if (this.props.onFocusEditor) this.props.onFocusEditor(name, content, hasText);
-	}
+  onFocus(name, content, hasText) {
+    this.setState({status: 'active'});
+    if (this.props.onFocusEditor) this.props.onFocusEditor(name, content, hasText);
+  }
 
-	onBlur(name, content, hasText) {
-		this.setState({status: 'idle'});
-		if (this.props.onBlurEditor) this.props.onBlurEditor(name, content, hasText);
-	}
+  onBlur(name, content, hasText) {
+    this.setState({status: 'idle'});
+    if (this.props.onBlurEditor) this.props.onBlurEditor(name, content, hasText);
+  }
 
-	onMouseEnter(e) {
-		e.preventDefault();
-		if (!this.props.error) this.setState({status: 'active'});
-	}
+  onMouseEnter(e) {
+    e.preventDefault();
+    if (!this.props.error) this.setState({status: 'active'});
+  }
 
-	onMouseLeave(e) {
-		e.preventDefault();
-		this.setState({status: 'idle'});
-	}
+  onMouseLeave(e) {
+    e.preventDefault();
+    this.setState({status: 'idle'});
+  }
 
-	render() {
+  render() {
 
-		const {
-			id,
-			name,
-			style,
-			label,
-			fixedLabel,
-			className,
-			error,
-			errorType,
-			modal,
-			modalLabel,
-			value,
-			disallowModalBgClose,
-			color
-		} = this.props;
+    const {
+      id,
+      name,
+      style,
+      label,
+      fixedLabel,
+      className,
+      error,
+      errorType,
+      modal,
+      modalLabel,
+      value,
+      disallowModalBgClose,
+      color
+    } = this.props;
 
-		const {
-			status
-		} = this.state;
+    const {
+      status
+    } = this.state;
 
-		const labelStyle = {
-			color: status === 'active' ? color : ''
-		};
-		const inputBottomStyle = {
-			background: status === 'active' ? color : ''
-		};
+    const labelStyle = {
+      color: status === 'active' ? color : ''
+    };
+    const inputBottomStyle = {
+      background: status === 'active' ? color : ''
+    };
 
-		return (
-			<div style={style} className={`input-group ${className || ''} richtext-group ${error ? 'error tooltip' : ''}`}>
-				<div className={`errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`}>{error}</div>
-				{!modal && label && <label style={labelStyle} className={`${this.state.status}`} htmlFor={name}>{label}</label>}
-				<div className={`floating-label ${this.state.status} ${fixedLabel && 'fixed'}`}>
-					{modal ?
-						<div>
-							<ModalRoute id={id} component={(props) => this.renderEditor({ ...this.props, ...props })} />
-							<ModalLink opts={{ disallowBgClose: disallowModalBgClose }} className={`input ${value ? 'hasValue' : ''}`} id={id} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>{modalLabel}</ModalLink>
-						</div>
-					:
-						<div className='richtext-embed'>
-							<Editor
-								{...this.props}
-								onBlur={this.onBlur}
-								onFocus={this.onFocus}
-							/>
-						</div>
-					}
-					{modal && label && <label style={labelStyle} htmlFor={name}>{label}</label>}
-					<div style={inputBottomStyle} className={`input-bottom ${error ? 'error' : this.state.status}`}></div>
-				</div>
-				<div className={`tooltipTop ${errorType !=='tooltip' && 'displayNone'}`}>
-					{error}
-					<i></i>
-				</div>
-			</div>
-		);
-	}
+    return (
+      <div style={style} className={`input-group ${className || ''} richtext-group ${error ? 'error tooltip' : ''}`}>
+        <div className={`errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`}>{error}</div>
+        {!modal && label && <label style={labelStyle} className={`${this.state.status}`} htmlFor={name}>{label}</label>}
+        <div className={`floating-label ${this.state.status} ${fixedLabel && 'fixed'}`}>
+          {modal ?
+            <div>
+              <ModalRoute id={id} component={(props) => this.renderEditor({ ...this.props, ...props })} />
+              <ModalLink opts={{ disallowBgClose: disallowModalBgClose }} className={`input ${value ? 'hasValue' : ''}`} id={id} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>{modalLabel}</ModalLink>
+            </div>
+          :
+            <div className='richtext-embed'>
+              <Editor
+                {...this.props}
+                onBlur={this.onBlur}
+                onFocus={this.onFocus}
+              />
+            </div>
+          }
+          {modal && label && <label style={labelStyle} htmlFor={name}>{label}</label>}
+          <div style={inputBottomStyle} className={`input-bottom ${error ? 'error' : this.state.status}`}></div>
+        </div>
+        <div className={`tooltipTop ${errorType !=='tooltip' && 'displayNone'}`}>
+          {error}
+          <i></i>
+        </div>
+      </div>
+    );
+  }
 }
 
 ContentField.defaultProps = {
-	name: 'defaultContentField',
-	modalLabel: 'Open Editor',
-	autoFocus: true
+  name: 'defaultContentField',
+  modalLabel: 'Open Editor',
+  autoFocus: true
 }
 
 function mapStateToProps(state, props) {
 
-	let id = `${props.modalID || props.name}-richText`;
+  let id = `${props.modalID || props.name}-richText`;
 
-	return {
-		id
-	}
+  return {
+    id
+  }
 }
 
 export default connect(mapStateToProps, {
@@ -128,26 +130,26 @@ export default connect(mapStateToProps, {
 
 const Editor = (props) => {
 
-	return (
-		<div>
-			<RichTextEditor
-				onChange={props.onChange}
-				onBlur={props.onBlur}
-				onFocus={props.onFocus}
-				placeholder={props.placeholder}
-				content={props.value}
-				updateContent={props.updateContent}
-				fieldName={props.name}
-				wysiwyg={props.wysiwyg}
-				allowLink={props.allowLink}
-				color={props.color}
-				autoFocus={props.autoFocus}
-			/>
-			{props.closeModalAndSave && !props.hideCloseModalAndSaveButtons && props.modal ?
-			<div className='center button-group'>
-				<GBLink className='link' onClick={() => props.closeModalAndSave(props.id, false)}>Cancel</GBLink>
-				<GBLink style={{ width: 150 }} className='button' onClick={() => props.closeModalAndSave(props.id)}>Save</GBLink>
-			</div> : ''}
-		</div>
-	)
+  return (
+    <div>
+      <RichTextEditor
+        onChange={props.onChange}
+        onBlur={props.onBlur}
+        onFocus={props.onFocus}
+        placeholder={props.placeholder}
+        content={props.value}
+        updateContent={props.updateContent}
+        fieldName={props.name}
+        wysiwyg={props.wysiwyg}
+        allowLink={props.allowLink}
+        color={props.color}
+        autoFocus={props.autoFocus}
+      />
+      {props.closeModalAndSave && !props.hideCloseModalAndSaveButtons && props.modal ?
+      <div className='center button-group'>
+        <GBLink className='link' onClick={() => props.closeModalAndSave(props.id, false)}>Cancel</GBLink>
+        <GBLink style={{ width: 150 }} className='button' onClick={() => props.closeModalAndSave(props.id)}>Save</GBLink>
+      </div> : ''}
+    </div>
+  )
 }

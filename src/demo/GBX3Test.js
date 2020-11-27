@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import {
   util
 } from '../lib';
-import GBX from '../lib/gbx3/GBX3';
+import GBX3 from '../lib/gbx3/GBX3';
 
 class GBXTest extends Component {
 
@@ -49,7 +49,7 @@ class GBXTest extends Component {
 
     return (
       <div>
-        <GBX
+        <GBX3
           blockType={'article'}
           orgID={orgID}
           articleID={articleID}

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-  HelpDesk,
-  util,
-  Portal,
-  GBLink,
-  Fade
+  util
 } from '../';
+import Portal from '../common/Portal';
+import GBLink from '../common/GBLink';
+import Fade from '../common/Fade';
+import HelpDesk from './HelpDesk';
 import Draggable from 'react-draggable';
 
 class HelpDeskButton extends Component {

@@ -1,6 +1,10 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { util, Loader, GBLink, ModalLink, Alert } from '../';
+import Loader from '../common/Loader';
+import GBLink from '../common/GBLink';
+import { Alert } from '../common/Alert';
+import ModalLink from '../modal/ModalLink';
+import { util } from '../';
 import { toggleModal } from '../api/actions';
 import { getResource } from '../api/helpers';
 import FileSaver from 'file-saver';

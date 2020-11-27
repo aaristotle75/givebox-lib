@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ModalLink } from '../';
+import ModalLink from '../modal/ModalLink';
 
 class ModalField extends Component {
 

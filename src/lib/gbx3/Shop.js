@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-  GBLink,
-  util,
-  Loader,
-  Image,
-  types,
-  ModalLink
+  util
 } from '../';
+import GBLink from '../common/GBLink';
+import Loader from '../common/Loader';
+import Image from '../common/Image';
+import * as types from '../common/types';
+import ModalLink from '../modal/ModalLink';
 import AnimateHeight from 'react-animate-height';
 import {
   getResource,

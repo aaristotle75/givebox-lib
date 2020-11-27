@@ -1,10 +1,9 @@
 import * as types from './gbx3actionTypes';
 import {
-  util,
-  types as types2,
-  getResource,
-  sendResource
+  util
 } from '../../';
+import * as types2 from '../../common/types';
+import { getResource, sendResource } from '../../api/helpers';
 import { toggleModal } from '../../api/actions';
 import { defaultAmountHeight } from '../blocks/amounts/amountsStyle';
 import { blockTemplates, defaultBlocks } from '../blocks/blockTemplates';

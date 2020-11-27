@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-  Tabs,
-  Tab
-} from '../../';
+import Tabs, { Tab } from '../../common/Tabs';
 import ShareWebPop from './ShareWebPop';
 import ShareWebIframe from './ShareWebIframe';
 

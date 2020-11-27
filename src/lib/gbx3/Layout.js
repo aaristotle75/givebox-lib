@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-  util,
-  ModalRoute,
-  ModalLink,
-  GBLink,
-  Icon
+  util
 } from '../';
+import GBLink from '../common/GBLink';
+import Icon from '../common/Icon';
+import ModalRoute from '../modal/ModalRoute';
+import ModalLink from '../modal/ModalLink';
 import Shop from './Shop';
 import Article from './Article';
 import Org from './Org';

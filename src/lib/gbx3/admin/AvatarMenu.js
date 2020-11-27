@@ -1,14 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-	util,
-	GBLink,
-	Icon,
-	ModalLink
+  util
 } from '../../';
+import ModalLink from '../../modal/ModalLink';
+import Icon from '../../common/Icon';
+import GBLink from '../../common/GBLink';
 import { toggleModal } from '../../api/actions';
 import {
-	updateAdmin
+  updateAdmin
 } from '../redux/gbx3actions';
 import { savePrefs } from '../../api/helpers';
 import { AiOutlineNotification, AiOutlineFullscreen } from 'react-icons/ai';
@@ -19,132 +19,132 @@ const WALLET_URL = process.env.REACT_APP_WALLET_URL;
 
 class AvatarMenu extends React.Component {
 
-	constructor(props) {
-		super(props);
-		this.myAccountLink = this.myAccountLink.bind(this);
-		this.directLink = this.directLink.bind(this);
-		this.adminLink = this.adminLink.bind(this);
-		this.state = {
-		};
-	}
+  constructor(props) {
+    super(props);
+    this.myAccountLink = this.myAccountLink.bind(this);
+    this.directLink = this.directLink.bind(this);
+    this.adminLink = this.adminLink.bind(this);
+    this.state = {
+    };
+  }
 
-	myAccountLink() {
-		const {
-			access
-		} = this.props;
+  myAccountLink() {
+    const {
+      access
+    } = this.props;
 
-		this.props.toggleModal('avatarMenu', false);
-		window.location.href = util.getValue(access, 'role') === 'user' ? WALLET_URL : CLOUD_URL;
-	}
+    this.props.toggleModal('avatarMenu', false);
+    window.location.href = util.getValue(access, 'role') === 'user' ? WALLET_URL : CLOUD_URL;
+  }
 
-	directLink(url) {
-		this.props.toggleModal('avatarMenu', false);
-		window.location.href = url;
-	}
+  directLink(url) {
+    this.props.toggleModal('avatarMenu', false);
+    window.location.href = url;
+  }
 
-	adminLink(obj = {}) {
-		this.props.toggleModal('avatarMenu', false);
-		this.props.updateAdmin(obj);
-	}
+  adminLink(obj = {}) {
+    this.props.toggleModal('avatarMenu', false);
+    this.props.updateAdmin(obj);
+  }
 
-	render() {
+  render() {
 
-		const {
-			access,
-			hasAccessToEdit,
-			step,
-			helperPref,
-			stage,
-			display
-		} = this.props;
+    const {
+      access,
+      hasAccessToEdit,
+      step,
+      helperPref,
+      stage,
+      display
+    } = this.props;
 
-		const isWallet = util.getValue(access, 'role') === 'user' ? true : false;
-		const baseURL = isWallet ? WALLET_URL : CLOUD_URL;
-		const myAccountText = isWallet ? 'Go to Your Wallet' : 'Go to Nonprofit Admin';
+    const isWallet = util.getValue(access, 'role') === 'user' ? true : false;
+    const baseURL = isWallet ? WALLET_URL : CLOUD_URL;
+    const myAccountText = isWallet ? 'Go to Your Wallet' : 'Go to Nonprofit Admin';
 
-		const menuList = [];
+    const menuList = [];
 
-		menuList.push(
-			<li key='myAccount' onClick={() => this.directLink(`${baseURL}/settings`)}><span className='icon icon-user'></span> <span className='text'>My Account</span></li>
-		)
-		if (hasAccessToEdit && step !== 'create') {
-			menuList.push(
-				<li key='edit' onClick={() => this.adminLink({ publicView: false })}><span className='icon icon-edit'></span> <span className='text'>Edit {display === 'org' ? 'Page' : 'Form' }</span></li>
-			);
+    menuList.push(
+      <li key='myAccount' onClick={() => this.directLink(`${baseURL}/settings`)}><span className='icon icon-user'></span> <span className='text'>My Account</span></li>
+    )
+    if (hasAccessToEdit && step !== 'create') {
+      menuList.push(
+        <li key='edit' onClick={() => this.adminLink({ publicView: false })}><span className='icon icon-edit'></span> <span className='text'>Edit {display === 'org' ? 'Page' : 'Form' }</span></li>
+      );
 
-			menuList.push(
-				<ModalLink type='li' id={'share'} key={'share'}><Icon><AiOutlineNotification /></Icon> <span className='text'>Share {display === 'org' ? 'Page' : 'Form'}</span></ModalLink>
-			);
+      menuList.push(
+        <ModalLink type='li' id={'share'} key={'share'}><Icon><AiOutlineNotification /></Icon> <span className='text'>Share {display === 'org' ? 'Page' : 'Form'}</span></ModalLink>
+      );
 
-			menuList.push(
-				<li type='li' key={'helperPref'} onClick={() => {
-					this.props.savePrefs({
-						gbx3Helpers: helperPref === 'off' ? 'on' : 'off'
-					});
-				}}
-				>
-					<Icon><GoChecklist /></Icon> <span className='text'>{ helperPref === 'off' ? 'Show' : 'Hide' } Helpers</span>
-				</li>
-			);
+      menuList.push(
+        <li type='li' key={'helperPref'} onClick={() => {
+          this.props.savePrefs({
+            gbx3Helpers: helperPref === 'off' ? 'on' : 'off'
+          });
+        }}
+        >
+          <Icon><GoChecklist /></Icon> <span className='text'>{ helperPref === 'off' ? 'Show' : 'Hide' } Helpers</span>
+        </li>
+      );
 
-			if (stage === 'admin') {
-				menuList.push(
-					<li key={'exitBuilder'} onClick={() => {
-						this.props.exitAdmin();
-						this.props.toggleModal('avatarMenu', false);
-					}}>
-						<Icon><AiOutlineFullscreen /></Icon> <span className='text'>Exit Builder</span>
-					</li>
-				);
-			}
-		}
+      if (stage === 'admin') {
+        menuList.push(
+          <li key={'exitBuilder'} onClick={() => {
+            this.props.exitAdmin();
+            this.props.toggleModal('avatarMenu', false);
+          }}>
+            <Icon><AiOutlineFullscreen /></Icon> <span className='text'>Exit Builder</span>
+          </li>
+        );
+      }
+    }
 
-		return (
-			<div className='modalWrapper'>
-				<div className='avatarMenu'>
-					{access.role === 'admin' ?
-					<div className='logoSection'>
-						<h3 style={{ marginTop: 0, paddingTop: 0 }}>{access.orgName}</h3>
-						{access.orgImage ?
-							<GBLink onClick={() => this.directLink(`${baseURL}/settings`)}>
-								<div className='orgImage'><img src={util.imageUrlWithStyle(access.orgImage, 'original')} alt='Org Logo' /></div>
-							</GBLink>
-						:
-							''
-						}
-					</div> : '' }
-					<div style={{ borderTop: access.role !== 'admin' ? 0 : null }} className='topSection'>
-						<div className='leftSide'>
-							{access.userImage ?
-								<GBLink onClick={() => this.directLink(`${baseURL}/settings`)}>
-									<div className='avatarImage'><img src={util.imageUrlWithStyle(access.userImage, 'medium')} alt='Avatar Medium Circle' /></div>
-								</GBLink>
-							:
-								<div className='defaultAvatar'>
-									<GBLink onClick={() => this.directLink(`${baseURL}/settings`)}>
-										<span className='defaultAvatarImage'><span className='icon'>{access.initial}</span></span>
-										<br />{access.masker ? 'Masquerader' : 'Add Avatar'}
-									</GBLink>
-								</div>
-							}
-						</div>
-						<div className='rightSide'>
-							<span className='line' style={{fontWeight: 300}}>{access.fullName}</span>
-							<span className='line' style={{fontWeight: 300}}>{access.email}</span>
-						</div>
-					</div>
-					<div className='listSection'>
-						<ul>
-							{menuList}
-					</ul>
-					</div>
-					<div className='bottomSection'>
-						<GBLink onClick={() => this.myAccountLink()}>{myAccountText}</GBLink>
-					</div>
-				</div>
-			</div>
-		)
-	}
+    return (
+      <div className='modalWrapper'>
+        <div className='avatarMenu'>
+          {access.role === 'admin' ?
+          <div className='logoSection'>
+            <h3 style={{ marginTop: 0, paddingTop: 0 }}>{access.orgName}</h3>
+            {access.orgImage ?
+              <GBLink onClick={() => this.directLink(`${baseURL}/settings`)}>
+                <div className='orgImage'><img src={util.imageUrlWithStyle(access.orgImage, 'original')} alt='Org Logo' /></div>
+              </GBLink>
+            :
+              ''
+            }
+          </div> : '' }
+          <div style={{ borderTop: access.role !== 'admin' ? 0 : null }} className='topSection'>
+            <div className='leftSide'>
+              {access.userImage ?
+                <GBLink onClick={() => this.directLink(`${baseURL}/settings`)}>
+                  <div className='avatarImage'><img src={util.imageUrlWithStyle(access.userImage, 'medium')} alt='Avatar Medium Circle' /></div>
+                </GBLink>
+              :
+                <div className='defaultAvatar'>
+                  <GBLink onClick={() => this.directLink(`${baseURL}/settings`)}>
+                    <span className='defaultAvatarImage'><span className='icon'>{access.initial}</span></span>
+                    <br />{access.masker ? 'Masquerader' : 'Add Avatar'}
+                  </GBLink>
+                </div>
+              }
+            </div>
+            <div className='rightSide'>
+              <span className='line' style={{fontWeight: 300}}>{access.fullName}</span>
+              <span className='line' style={{fontWeight: 300}}>{access.email}</span>
+            </div>
+          </div>
+          <div className='listSection'>
+            <ul>
+              {menuList}
+          </ul>
+          </div>
+          <div className='bottomSection'>
+            <GBLink onClick={() => this.myAccountLink()}>{myAccountText}</GBLink>
+          </div>
+        </div>
+      </div>
+    )
+  }
 }
 
 AvatarMenu.defaultProps = {
@@ -152,25 +152,25 @@ AvatarMenu.defaultProps = {
 
 function mapStateToProps(state, props) {
 
-	const access = util.getValue(state.resource, 'access');
-	const hasAccessToEdit = util.getValue(state, 'gbx3.admin.hasAccessToEdit');
-	const step = util.getValue(state, 'gbx3.admin.step');
-	const helperPref = util.getValue(state, 'preferences.gbx3Helpers');
-	const stage = util.getValue(state, 'gbx3.info.stage');
-	const display = util.getValue(state, `gbx3.info.display`);
+  const access = util.getValue(state.resource, 'access');
+  const hasAccessToEdit = util.getValue(state, 'gbx3.admin.hasAccessToEdit');
+  const step = util.getValue(state, 'gbx3.admin.step');
+  const helperPref = util.getValue(state, 'preferences.gbx3Helpers');
+  const stage = util.getValue(state, 'gbx3.info.stage');
+  const display = util.getValue(state, `gbx3.info.display`);
 
-	return {
-		access,
-		hasAccessToEdit,
-		step,
-		helperPref,
-		stage,
-		display
-	}
+  return {
+    access,
+    hasAccessToEdit,
+    step,
+    helperPref,
+    stage,
+    display
+  }
 }
 
 export default connect(mapStateToProps, {
-	toggleModal,
-	updateAdmin,
-	savePrefs
+  toggleModal,
+  updateAdmin,
+  savePrefs
 })(AvatarMenu);

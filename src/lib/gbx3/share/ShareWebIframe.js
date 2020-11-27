@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-  util,
-  CodeBlock
+  util
 } from '../../';
+import CodeBlock from '../../block/CodeBlock';
 import GBX from '../../common/GBX';
 import {
   updateInfo

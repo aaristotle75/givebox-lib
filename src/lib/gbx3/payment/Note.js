@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-  TextField,
-  RichTextField,
-  Choice,
-  util,
-  GBLink,
-  Collapse
+  util
 } from '../../';
+import GBLink from '../../common/GBLink';
+import Collapse from '../../common/Collapse';
+import Choice from '../../form/Choice';
+import RichTextField from '../../form/RichTextField';
+import TextField from '../../form/TextField';
 import { toggleModal } from '../../api/actions';
 import AnimateHeight from 'react-animate-height';
 

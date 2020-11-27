@@ -1,14 +1,12 @@
 import React, {Component} from 'react';
-import {
-  selectOptions,
-  GBLink,
-  ModalLink,
-  Collapse,
-  UploadPrivate,
-  util,
-  Image,
-  Choice
-} from '../lib';
+import GBLink from '../lib/common/GBLink';
+import ModalLink from '../lib/modal/ModalLink';
+import Collapse from '../lib/common/Collapse';
+import UploadPrivate from '../lib/form/UploadPrivate';
+import * as util from '../lib/common/utility';
+import Image from '../lib/common/Image';
+import Choice from '../lib/form/Choice';
+import * as selectOptions from '../lib/form/selectOptions';
 import Moment from 'moment';
 import Capture from '../lib/form/Capture';
 

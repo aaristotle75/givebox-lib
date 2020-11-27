@@ -1,15 +1,14 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import {
-  util,
-  GBLink,
-  ModalRoute,
-  ModalLink,
-  Collapse,
-  Tabs,
-  Tab,
-  Choice
+  util
 } from '../../';
+import GBLink from '../../common/GBLink';
+import Collapse from '../../common/Collapse';
+import Tabs, { Tab } from '../../common/Tabs';
+import Choice from '../../form/Choice';
+import ModalRoute from '../../modal/ModalRoute';
+import ModalLink from '../../modal/ModalLink';
 import PaymentForm from '../payment/PaymentForm';
 import FormEdit from './FormEdit';
 import ButtonEdit from './ButtonEdit';

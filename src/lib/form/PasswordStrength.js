@@ -1,16 +1,16 @@
 import React, {Component} from 'react';
-import { LinearBar } from '../';
+import LinearBar from '../common/LinearBar';
 
 class PasswordStrength extends Component{
-	constructor(props){
-		super(props);
+  constructor(props){
+    super(props);
     this.checkStrength = this.checkStrength.bind(this);
     this.state = {
       strength: '',
       progress: 0,
       color: ''
     };
-	}
+  }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.password !== nextProps.password) {
@@ -68,11 +68,11 @@ class PasswordStrength extends Component{
     });
   }
 
-	render() {
+  render() {
 
-		const {
-			error
-		} = this.props;
+    const {
+      error
+    } = this.props;
 
     const {
       strength,
@@ -80,21 +80,21 @@ class PasswordStrength extends Component{
       color
     } = this.state;
 
-		return (
+    return (
       <div className='passwordStrength'>
         <div className='indicator'>
           <LinearBar progress={progress} style={{backgroundColor: 'rgb(189, 189, 189)'}} color={color} />
-				</div>
-				<div>
-	       	<div className={`${error && 'error'} label tooltip`}>Password strength {strength}
-		        <div className='tooltipTop'>Passwords must be at least 8 characters long. The stongest passwords have at least one upper case letter, at least one number and one of these special characters !@#$&*
+        </div>
+        <div>
+           <div className={`${error && 'error'} label tooltip`}>Password strength {strength}
+            <div className='tooltipTop'>Passwords must be at least 8 characters long. The stongest passwords have at least one upper case letter, at least one number and one of these special characters !@#$&*
             <i></i>
-						</div>
-					</div>
-				</div>
+            </div>
+          </div>
+        </div>
       </div>
-		)
-	}
+    )
+  }
 };
 
 

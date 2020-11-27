@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { PhotoshopPicker } from 'react-color-aaristotle';
 import {
-  ModalRoute,
-  ModalLink,
   util
 } from '../';
+import ModalLink from '../modal/ModalLink';
+import ModalRoute from '../modal/ModalRoute';
 import { toggleModal } from '../api/actions';
 
 class ColorPicker extends Component {

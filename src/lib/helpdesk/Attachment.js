@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import {
-  GBLink
-} from '../';
+import GBLink from '../common/GBLink';
 import Dropzone from 'react-dropzone';
 import { mime } from '../common/types';
 import Image from '../common/Image';

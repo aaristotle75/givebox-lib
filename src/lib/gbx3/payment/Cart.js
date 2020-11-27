@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-  util,
-  GBLink,
-  Dropdown,
-  types,
-  Image,
-  ModalLink,
-  Choice
+  util
 } from '../../';
+import GBLink from '../../common/GBLink';
+import Image from '../../common/Image';
+import * as types from '../../common/types';
+import Dropdown from '../../form/Dropdown';
+import Choice from '../../form/Choice';
+import ModalLink from '../../modal/ModalLink';
 import AnimateHeight from 'react-animate-height';
 import {
   updateCart,

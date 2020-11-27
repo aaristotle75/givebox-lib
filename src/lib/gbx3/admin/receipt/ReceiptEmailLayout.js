@@ -1,5 +1,4 @@
 /* eslint-disable */
-
 import React from 'react';
 import { connect } from 'react-redux';
 import Loadable from 'react-loadable';

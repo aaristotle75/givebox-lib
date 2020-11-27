@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import Layout from './Layout';
 import Admin from './admin/Admin';
 import {
-  util,
-  Loader,
-  ModalRoute
+  util
 } from '../';
+import Loader from '../common/Loader';
+import ModalRoute from '../modal/ModalRoute';
 import { getResource, sendResource } from '../api/helpers';
 import { setAccess } from '../api/actions';
 import 'react-grid-layout/css/styles.css';

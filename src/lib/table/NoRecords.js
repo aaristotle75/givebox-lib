@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { GBLink } from '../';
+import GBLink from '../common/GBLink';
 
 export default class NoRecords extends Component {
 

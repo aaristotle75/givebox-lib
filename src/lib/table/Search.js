@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { util, TextField } from '../';
+import { util } from '../';
+import TextField from '../form/TextField';
 import { getAPI } from '../api/actions';
 import has from 'has';
 
@@ -20,17 +21,17 @@ class Search extends Component {
     }
   }
 
-	componentDidMount() {
+  componentDidMount() {
     const searchID = this.props.id || `${this.props.name}Search`;
-		const input = document.getElementById(searchID);
-		input.addEventListener('keyup', this.onEnterKeypress);
-	}
+    const input = document.getElementById(searchID);
+    input.addEventListener('keyup', this.onEnterKeypress);
+  }
 
   onEnterKeypress(e) {
-		e.preventDefault();
-		if (e.keyCode === 13) {
-			this.onSearch(e);
-		}
+    e.preventDefault();
+    if (e.keyCode === 13) {
+      this.onSearch(e);
+    }
   }
 
   getSearch(value) {
@@ -40,7 +41,7 @@ class Search extends Component {
       search.query = value;
       search.page = 1;
       const endpoint = resource.endpoint.split('?')[0] + util.makeAPIQuery(search);
-    	this.props.getAPI(this.props.name, endpoint, search, null, true, this.props.customName || null);
+      this.props.getAPI(this.props.name, endpoint, search, null, true, this.props.customName || null);
     } else {
       console.error('No resource to search');
     }
@@ -125,7 +126,7 @@ class Search extends Component {
 
 Search.defaultProps = {
   id: null,
-	align: 'center',
+  align: 'center',
   iconSearch: <span className='icon icon-search'></span>,
   iconClose: <span className='icon icon-x'></span>
 }
@@ -144,5 +145,5 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
-	getAPI
+  getAPI
 })(Search)

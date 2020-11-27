@@ -2,17 +2,17 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Dropzone from 'react-dropzone';
 import {
-  ModalLink,
-  ModalRoute,
-  GBLink,
-  types,
-  util,
-  Loader,
-  Image,
-  Paginate,
-  MaxRecords,
-  ImageDisplay
+  util
 } from '../';
+import ModalLink from '../modal/ModalLink';
+import ModalRoute from '../modal/ModalRoute';
+import GBLink from '../common/GBLink';
+import * as types from '../common/types';
+import Loader from '../common/Loader';
+import Image from '../common/Image';
+import ImageDisplay from '../common/ImageDisplay';
+import Paginate from '../table/Paginate';
+import MaxRecords from '../table/MaxRecords';
 import { getResource, sendResource } from '../api/helpers';
 import { removeResource, toggleModal } from '../api/actions';
 import UploadEditorResizer from './UploadEditorResizer';
