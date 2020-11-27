@@ -1,8 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {
-  util
-} from '../../../';
+import * as util from '../../../common/utility';
 import GBLink from '../../../common/GBLink';
 import ModalLink from '../../../modal/ModalLink';
 import Icon from '../../../common/Icon';

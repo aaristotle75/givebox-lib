@@ -1,84 +1,82 @@
 /*global google*/
 import React, {Component} from 'react';
-import {
-	util
-} from '../../';
+import * as util from '../../common/utility';
 
 class Map extends Component{
-	constructor(props){
-		super(props);
-		this.drawMap = this.drawMap.bind(this);
-		this.mapRef = React.createRef();
-	}
+  constructor(props){
+    super(props);
+    this.drawMap = this.drawMap.bind(this);
+    this.mapRef = React.createRef();
+  }
 
-	componentDidMount() {
-		this.drawMap();
-	}
+  componentDidMount() {
+    this.drawMap();
+  }
 
-	drawMap() {
+  drawMap() {
 
-		const {
-			where,
-			markerTitle
-		} = this.props;
+    const {
+      where,
+      markerTitle
+    } = this.props;
 
-		const {
-			lat,
-			long: lng
-		} = util.getValue(where, 'coordinates', {});
+    const {
+      lat,
+      long: lng
+    } = util.getValue(where, 'coordinates', {});
 
-		if (lat && lng) {
-			this.timeout = setTimeout(() => {
-				const address = util.makeAddress(where, true, false, 'horizontal', true);
-				const myLatLng = new google.maps.LatLng(lat, lng);
-				const map = new google.maps.Map(this.mapRef.current, {
-					disableDefaultUI: true,
-					zoom: 12,
-					center: myLatLng
-				});
+    if (lat && lng) {
+      this.timeout = setTimeout(() => {
+        const address = util.makeAddress(where, true, false, 'horizontal', true);
+        const myLatLng = new google.maps.LatLng(lat, lng);
+        const map = new google.maps.Map(this.mapRef.current, {
+          disableDefaultUI: true,
+          zoom: 12,
+          center: myLatLng
+        });
 
-				const marker = new google.maps.Marker({
-					position: myLatLng,
-					title: address || markerTitle
-				});
-				marker.setMap(map);
+        const marker = new google.maps.Marker({
+          position: myLatLng,
+          title: address || markerTitle
+        });
+        marker.setMap(map);
 
-				const infoWindow = new google.maps.InfoWindow({
-					content: `
-						<strong>${markerTitle}</strong><br />
-						${address}
-					`
-				});
+        const infoWindow = new google.maps.InfoWindow({
+          content: `
+            <strong>${markerTitle}</strong><br />
+            ${address}
+          `
+        });
 
-				google.maps.event.addListener(marker, 'click', function() {
-					infoWindow.open(map,marker);
-				});
+        google.maps.event.addListener(marker, 'click', function() {
+          infoWindow.open(map,marker);
+        });
 
-				this.setState({ map: true });
-				this.timeout = null;
-			}, 0);
-		}
-	}
+        this.setState({ map: true });
+        this.timeout = null;
+      }, 0);
+    }
+  }
 
-	render() {
+  render() {
 
-		const {
-			where
-		} = this.props;
+    const {
+      where
+    } = this.props;
 
-		return (
-			<div style={{ paddingTop: 10 }} className='modalWrapper'>
-				<div className='whereMap'>
-					{util.makeAddress(where, true, false, 'horizontal')}
-					<div className='theMap' ref={this.mapRef}></div>
-				</div>
-			</div>
-		)
-	}
+    return (
+      <div style={{ paddingTop: 10 }} className='modalWrapper'>
+        <div className='whereMap'>
+          {util.makeAddress(where, true, false, 'horizontal')}
+          <div className='theMap' ref={this.mapRef}></div>
+        </div>
+      </div>
+    )
+  }
 };
 
 Map.defaultProps = {
-	markerTitle: 'Location (Approximate)'
+  markerTitle: 'Location (Approximate)'
 };
 
 export default Map;

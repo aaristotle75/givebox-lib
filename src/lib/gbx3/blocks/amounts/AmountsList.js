@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-  util
-} from '../../../';
+import * as util from '../../../common/utility';
 import * as types from '../../../common/types';
 import GBLink from '../../../common/GBLink';
 import Choice from '../../../form/Choice';

@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  util
-} from '../../';
+import * as util from '../../common/utility';
 import ColorPicker from '../../form/ColorPicker';
 import Collapse from '../../common/Collapse';
 import GBLink from '../../common/GBLink';

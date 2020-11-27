@@ -2,9 +2,7 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import CircularProgress from '../../common/CircularProgress';
 import Moment from 'moment';
-import {
-  util
-} from '../../';
+import * as util from '../../common/utility';
 import GBLink from '../../common/GBLink';
 import ModalRoute from '../../modal/ModalRoute';
 

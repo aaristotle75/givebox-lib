@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-  util
-} from '../../';
+import * as util from '../../common/utility';
 import GBLink from '../../common/GBLink';
 import { Alert } from '../../common/Alert';
 import Loader from '../../common/Loader';

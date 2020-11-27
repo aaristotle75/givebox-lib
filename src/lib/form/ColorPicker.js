@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { PhotoshopPicker } from 'react-color-aaristotle';
-import {
-  util
-} from '../';
+import * as util from '../common/utility';
 import ModalLink from '../modal/ModalLink';
 import ModalRoute from '../modal/ModalRoute';
 import { toggleModal } from '../api/actions';

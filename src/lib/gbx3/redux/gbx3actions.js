@@ -1,7 +1,5 @@
 import * as types from './gbx3actionTypes';
-import {
-  util
-} from '../../';
+import * as util from '../../common/utility';
 import * as types2 from '../../common/types';
 import { getResource, sendResource } from '../../api/helpers';
 import { toggleModal } from '../../api/actions';

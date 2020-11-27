@@ -1,5 +1,5 @@
 import  * as types  from './gbx3actionTypes';
-import { util } from '../../';
+import * as util from '../../common/utility';
 import {
   defaultCart,
   defaultConfirmation,

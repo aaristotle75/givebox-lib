@@ -6,7 +6,7 @@ import Search from './Search';
 import NoRecords from './NoRecords';
 import Export from './Export';
 import Filter from './Filter';
-import { util } from '../';
+import * as util from '../common/utility';
 import { getAPI } from '../api/actions';
 import AnimateHeight from 'react-animate-height';
 import has from 'has';
@@ -35,7 +35,7 @@ class Table extends Component {
       search.order = resource.search.order === 'desc' ? 'asc' : 'desc';
       search.sort = sort;
       const endpoint = resource.endpoint.split('?')[0] + util.makeAPIQuery(search);
-  		this.props.getAPI(this.props.name, endpoint, search, null, true, this.props.customName || null);
+      this.props.getAPI(this.props.name, endpoint, search, null, true, this.props.customName || null);
     }
   }
 

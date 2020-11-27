@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-  util
-} from '../';
+import * as util from '../common/utility';
 import MediaLibrary from '../form/MediaLibrary';
 import Loader from '../common/Loader';
 import { toggleModal } from '../api/actions';

@@ -2,9 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Layout from './Layout';
 import Admin from './admin/Admin';
-import {
-  util
-} from '../';
+import * as util from '../common/utility';
 import Loader from '../common/Loader';
 import ModalRoute from '../modal/ModalRoute';
 import { getResource, sendResource } from '../api/helpers';

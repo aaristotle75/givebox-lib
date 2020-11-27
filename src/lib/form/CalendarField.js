@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import 'flatpickr/dist/themes/light.css';
 import Flatpickr from 'react-flatpickr';
 import Moment from 'moment-timezone';
-import { util } from '../';
+import * as util from '../common/utility';
 import Fade from '../common/Fade';
 import * as _v from './formValidate';
 import Choice from './Choice';

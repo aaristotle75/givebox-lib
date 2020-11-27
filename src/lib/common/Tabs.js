@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { util } from '../';
+import * as util from './utility';
 import GBLink from './GBLink';
 
 class Tabs extends Component {

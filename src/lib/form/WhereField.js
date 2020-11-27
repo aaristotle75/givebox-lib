@@ -2,10 +2,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import GooglePlacesField from './GooglePlacesField';
-import {
-  selectOptions,
-  util
-} from '../';
+import * as selectOptions from '../form/selectOptions';
+import * as util from '../common/utility';
 import ModalLink from '../modal/ModalLink';
 import ModalRoute from '../modal/ModalRoute';
 import GBLink from '../common/GBLink';

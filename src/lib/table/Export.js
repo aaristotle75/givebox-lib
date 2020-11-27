@@ -4,7 +4,7 @@ import Loader from '../common/Loader';
 import GBLink from '../common/GBLink';
 import { Alert } from '../common/Alert';
 import ModalLink from '../modal/ModalLink';
-import { util } from '../';
+import * as util from '../common/utility';
 import { toggleModal } from '../api/actions';
 import { getResource } from '../api/helpers';
 import FileSaver from 'file-saver';

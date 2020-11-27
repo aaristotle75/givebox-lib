@@ -1,8 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {
-  util
-} from '../../';
+import * as util from '../../common/utility';
 import CodeBlock from '../../block/CodeBlock';
 import * as types from '../../common/types';
 import Choice from '../../form/Choice';

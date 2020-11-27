@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { sendResource } from '../api/helpers';
 import { removeResource, toggleModal } from '../api/actions';
 import { Alert } from './Alert';
-import { util } from '../';
+import * as util from './utility';
 import has from 'has';
 
 class Delete extends Component {
@@ -53,7 +53,7 @@ class Delete extends Component {
   }
 
   confirm() {
-		console.log('execute confirm delete');
+    console.log('execute confirm delete');
     if (this.props.showLoader === 'yes') this.setState({loading: true });
     this.props.sendResource(
       this.props.resource, {

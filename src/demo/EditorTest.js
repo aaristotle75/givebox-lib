@@ -1,7 +1,5 @@
 import React, { PureComponent } from 'react';
-import {
-  util
-} from '../lib';
+import * as util from '../lib/common/utility';
 import CustomCKEditor4 from '../lib/editor/CustomCKEditor4';
 
 export default class EditorTest extends PureComponent {

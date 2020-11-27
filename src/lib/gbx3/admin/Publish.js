@@ -1,8 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {
-  util
-} from '../../';
+import * as util from '../../common/utility';
 import * as types from '../../common/types';
 import Dropdown from '../../form/Dropdown';
 import {

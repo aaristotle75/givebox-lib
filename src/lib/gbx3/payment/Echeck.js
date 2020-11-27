@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
-import {
-  util
-} from '../../';
+import * as util from '../../common/utility';
 import Fade from '../../common/Fade';
 import ModalRoute from '../../modal/ModalRoute';
 import ModalLink from '../../modal/ModalLink';

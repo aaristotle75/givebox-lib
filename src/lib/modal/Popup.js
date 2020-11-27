@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import {
-  util
-} from '../';
+import * as util from '../common/utility';
 import GBLink from '../common/GBLink';
 import Fade from '../common/Fade';
 import Portal from '../common/Portal';

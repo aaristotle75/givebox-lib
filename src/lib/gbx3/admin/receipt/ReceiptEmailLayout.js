@@ -2,9 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Loadable from 'react-loadable';
-import {
-  util
-} from '../../../';
+import * as util from '../../../common/utility';
 import Block from '../../blocks/Block';
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import {

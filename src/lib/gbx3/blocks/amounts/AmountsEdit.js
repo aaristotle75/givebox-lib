@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import {
-  util
-} from '../../../';
+import * as util from '../../../common/utility';
 import Collapse from '../../../common/Collapse';
 import Image from '../../../common/Image';
 import * as types from '../../../common/types';

@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
-import {
-  util
-} from '../../';
+import * as util from '../../common/utility';
 import CircularProgress from '../../common/CircularProgress';
 
 class Goal extends Component {

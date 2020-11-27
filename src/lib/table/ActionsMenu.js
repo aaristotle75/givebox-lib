@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { util } from '../';
+import * as util from '../common/utility';
 import AnimateHeight from 'react-animate-height';
 import Fade from '../common/Fade';
 

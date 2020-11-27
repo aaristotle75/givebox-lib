@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-  util
-} from '../../';
+import * as util from '../../common/utility';
 import Collapse from '../../common/Collapse';
 import GBLink from '../../common/GBLink';
 import Tabs, { Tab } from '../../common/Tabs';

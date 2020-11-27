@@ -3,9 +3,7 @@ import { connect } from 'react-redux';
 import Image from './Image';
 import ActionsMenu from '../table/ActionsMenu';
 import GBLink from './GBLink';
-import {
-  util
-} from '../';
+import * as util from './utility';
 import { toggleModal } from '../api/actions';
 
 class ImageDisplay extends Component {

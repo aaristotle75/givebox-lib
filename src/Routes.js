@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
-import {
-  util
-} from './lib';
+import * as util from './lib/common/utility';
 import ModalRoute from './lib/modal/ModalRoute';
 import HelpDeskButton from './lib/helpdesk/HelpDeskButton';
 import Sidebar from './demo/Sidebar';

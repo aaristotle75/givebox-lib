@@ -1,8 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {
-  util
-} from '../../';
+import * as util from '../../common/utility';
 import Fade from '../../common/Fade';
 import Portal from '../../common/Portal';
 import '../../styles/gbx3Helper.scss';

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-  util
-} from '../lib';
+import * as util from '../lib/common/utility';
 import GBX3 from '../lib/gbx3/GBX3';
 
 class GBXTest extends Component {

@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Dropzone from 'react-dropzone';
-import {
-  util
-} from '../';
+import * as util from '../common/utility';
 import ModalLink from '../modal/ModalLink';
 import ModalRoute from '../modal/ModalRoute';
 import GBLink from '../common/GBLink';

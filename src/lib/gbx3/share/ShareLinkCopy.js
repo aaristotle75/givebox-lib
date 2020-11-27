@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-  util
-} from '../../';
+import * as util from '../../common/utility';
 import CodeBlock from '../../block/CodeBlock';
 
 class ShareLinkCopy extends Component {

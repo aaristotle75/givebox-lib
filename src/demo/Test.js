@@ -1,9 +1,6 @@
 /* eslint-disable */
-
 import React, { Component } from 'react';
-import {
-  util
-} from '../lib';
+import * as util from '../lib/common/utility';
 import RichTextField from '../lib/form/RichTextField';
 import GBLink from '../lib/common/GBLink';
 import Popup from '../lib/modal/Popup';

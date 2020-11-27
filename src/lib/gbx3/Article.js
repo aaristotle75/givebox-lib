@@ -2,9 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import Loadable from 'react-loadable';
-import {
-  util
-} from '../';
+import * as util from '../common/utility';
 import Block from './blocks/Block';
 import Form from './blocks/Form';
 import Scroll from 'react-scroll';

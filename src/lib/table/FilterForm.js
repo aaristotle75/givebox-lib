@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { util } from '../';
+import * as util from '../common/utility';
 import { getAPI } from '../api/actions';
 import * as giveboxAPI from '../api/givebox';
 import has from 'has';
@@ -96,7 +96,7 @@ class Filter extends Component {
     search.page = 1;
     if (has(resource, 'endpoint')) {
       const endpoint = resource.endpoint.split('?')[0] + util.makeAPIQuery(search);
-    	this.props.getAPI(this.props.name, endpoint, search, this.ignoreFiltersCallback, true, this.props.customName || null);
+      this.props.getAPI(this.props.name, endpoint, search, this.ignoreFiltersCallback, true, this.props.customName || null);
     }
   }
 
@@ -129,7 +129,7 @@ class Filter extends Component {
     search.page = 1;
     if (has(resource, 'endpoint')) {
       const endpoint = resource.endpoint.split('?')[0] + util.makeAPIQuery(search);
-    	this.props.getAPI(this.props.name, endpoint, search, this.processFormCallback, true, this.props.customName || null);
+      this.props.getAPI(this.props.name, endpoint, search, this.processFormCallback, true, this.props.customName || null);
     }
   }
 

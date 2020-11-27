@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
-import {
-  util
-} from '../../../';
+import * as util from '../../../common/utility';
 import * as types from '../../../common/types';
 import GBLink from '../../../common/GBLink';
 import Dropdown from '../../../form/Dropdown';

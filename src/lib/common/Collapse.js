@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-  util,
-} from '../';
+import * as util from './utility';
 import GBLink from './GBLink';
 import { savePrefs } from '../api/helpers';
 import AnimateHeight from 'react-animate-height';

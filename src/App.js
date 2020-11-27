@@ -3,9 +3,7 @@ import { connect } from 'react-redux';
 import Routes from './Routes';
 import Loadable from 'react-loadable';
 import has from 'has';
-import {
-  util
-} from './lib';
+import * as util from './lib/common/utility';
 import { resourceProp, setAppRef, setModalRef, setPrefs } from './lib/api/actions';
 import { getResource, sendResource, reloadResource } from './lib/api/helpers';
 import Loader from './lib/common/Loader';

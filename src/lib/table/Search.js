@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { util } from '../';
+import * as util from '../common/utility';
 import TextField from '../form/TextField';
 import { getAPI } from '../api/actions';
 import has from 'has';

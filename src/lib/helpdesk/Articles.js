@@ -5,9 +5,7 @@ import { zohoCats } from './zohoCats';
 import AnimateHeight from 'react-animate-height';
 import Breadcrumbs from './Breadcrumbs';
 import has from 'has';
-import {
-  util
-} from '../';
+import * as util from '../common/utility';
 import GBLink from '../common/GBLink';
 import Loader from '../common/Loader';
 import Search from '../table/Search';

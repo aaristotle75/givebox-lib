@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import Moment from 'moment';
-import {
-  util
-} from '../../';
+import * as util from '../../common/utility';
 import GBLink from '../../common/GBLink';
 import Collapse from '../../common/Collapse';
 import Icon from '../../common/Icon';

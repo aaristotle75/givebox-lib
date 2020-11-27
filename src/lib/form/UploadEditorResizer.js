@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { toggleModal } from '../api/actions';
-import {
-  util
-} from '../';
+import * as util from '../common/utility';
 import GBLink from '../common/GBLink';
 import AvatarEditor from 'react-avatar-editor';
 const ResizableBox = require('react-resizable').ResizableBox;

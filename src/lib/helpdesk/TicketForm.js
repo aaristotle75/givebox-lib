@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import {
-  util
-} from '../';
+import * as util from '../common/utility';
 import GBLink from '../common/GBLink';
 import Fade from '../common/Fade';
 import { Alert } from '../common/Alert';

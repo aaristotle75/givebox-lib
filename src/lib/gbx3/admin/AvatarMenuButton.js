@@ -1,8 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {
-  util
-} from '../../';
+import * as util from '../../common/utility';
 import ModalLink from '../../modal/ModalLink';
 import { toggleModal } from '../../api/actions';
 

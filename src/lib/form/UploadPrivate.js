@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Dropzone from 'react-dropzone';
 import { mime } from '../common/types';
 import { sendResource } from '../api/helpers';
-import { util } from '../';
+import * as util from '../common/utility';
 import Fade from '../common/Fade';
 import { Line } from 'rc-progress';
 

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { util } from '../';
+import * as util from '../common/utility';
 import Dropdown from '../form/Dropdown';
 import { getAPI } from '../api/actions';
 import has from 'has';
@@ -24,7 +24,7 @@ class MaxRecords extends Component {
     search.page = resource.search.page > pages ? 1 : resource.search.page;
     search.max = selected;
     const endpoint = resource.endpoint.split('?')[0] + util.makeAPIQuery(search);
-  	this.props.getAPI(this.props.name, endpoint, search, null, true, this.props.customName || null);
+    this.props.getAPI(this.props.name, endpoint, search, null, true, this.props.customName || null);
   }
 
   setOptions() {
@@ -55,7 +55,7 @@ class MaxRecords extends Component {
       error,
       direction
     } = this.props;
-    
+
     if (!count || error) {
       return ( <div></div> );
     }
@@ -77,7 +77,7 @@ class MaxRecords extends Component {
 }
 
 MaxRecords.defaultProps = {
-	align: 'center',
+  align: 'center',
   records: [20, 50, 100, 500],
 }
 
@@ -99,5 +99,5 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
-	getAPI
+  getAPI
 })(MaxRecords)

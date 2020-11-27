@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import {
-  util
-} from '../';
+import * as util from '../common/utility';
 import MediaLibrary from '../form/MediaLibrary';
 import Loader from '../common/Loader';
 

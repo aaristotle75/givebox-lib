@@ -1,9 +1,7 @@
 /* eslint-disable */
 import React from 'react';
 import { connect } from 'react-redux';
-import {
-  util
-} from '../../../';
+import * as util from '../../../common/utility';
 import Moment from 'moment';
 import ReceiptEmailLayout from './ReceiptEmailLayout';
 

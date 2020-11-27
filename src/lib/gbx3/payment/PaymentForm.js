@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-  util,
-  selectOptions
-} from '../../';
+import * as util from '../../common/utility';
+import * as selectOptions from '../../form/selectOptions';
 import GBLink from '../../common/GBLink';
 import Loader from '../../common/Loader';
 import Tabs, { Tab } from '../../common/Tabs';

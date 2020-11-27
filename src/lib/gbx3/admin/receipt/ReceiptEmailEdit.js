@@ -1,9 +1,7 @@
 /* eslint-disable */
 import React from 'react';
 import { connect } from 'react-redux';
-import {
-  util
-} from '../../../';
+import * as util from '../../../common/utility';
 import Image from '../../../common/Image';
 import GBLink from '../../../common/GBLink';
 import CustomCKEditor4 from '../../../editor/CustomCKEditor4';

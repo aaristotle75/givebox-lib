@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import { zohoCats } from './zohoCats';
-import {
-  util
-} from '../';
+import * as util from '../common/utility';
 import GBLink from '../common/GBLink';
 
 export default class Breadcrumbs extends Component {
