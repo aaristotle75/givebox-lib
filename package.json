@@ -118,9 +118,7 @@
     "react-router-dom": "^4.3.1",
     "react-transition-group": "^2.9.0",
     "redux": "^4.0.5",
-    "redux-devtools-extension": "^2.13.8",
     "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.3.0",
-    "sanitize-html": "^2.1.2"
+    "redux-thunk": "^2.3.0"
   }
 }
