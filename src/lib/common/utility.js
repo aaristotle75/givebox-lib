@@ -653,12 +653,6 @@ export function getValue(obj, prop, returnIfEmpty = '', debug) {
   const returnObj = get(obj, prop);
   if (debug) console.log(debug, obj, prop, returnObj);
   return (returnObj || typeof(returnObj) === 'boolean') || returnObj === 0 || returnObj === false ? returnObj : returnIfEmpty;
-  /*
-  if (typeof obj === 'undefined') return returnIfEmpty;
-  if (isEmpty(obj) || !obj) return returnIfEmpty;
-  if (has(obj, prop)) return (obj[prop] || typeof(obj[prop]) === 'boolean') || obj[prop] === 0 || obj[prop] === false ? obj[prop] : returnIfEmpty;
-  return returnIfEmpty;
-  */
 }
 
 export function getIndex(array, index, returnIfEmpty = '') {
