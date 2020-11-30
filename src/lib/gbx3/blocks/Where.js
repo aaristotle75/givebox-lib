@@ -8,7 +8,6 @@ import ModalLink from '../../modal/ModalLink';
 import WhereEdit from './WhereEdit';
 import Map from './Map';
 import { toggleModal } from '../../api/actions';
-import sanitizeHtml from 'sanitize-html';
 
 class Where extends Component {
 
