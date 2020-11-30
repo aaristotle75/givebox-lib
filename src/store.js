@@ -8,7 +8,6 @@ export default function configureStore(preloadedState) {
   const logger = createLogger();
   const middlewares = [thunk, logger];
   const middlewareEnhancer = applyMiddleware(...middlewares);
-  const middlewareEnhancer = applyMiddleware(...middlewares);
   const store = createStore(rootReducer, preloadedState, middlewareEnhancer);
   if (process.env.NODE_ENV !== 'production' && module.hot) {
     module.hot.accept('./lib/api/reducers', () =>
