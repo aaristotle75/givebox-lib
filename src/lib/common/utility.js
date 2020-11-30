@@ -3,7 +3,6 @@ import Moment from 'moment-timezone';
 import has from 'has';
 import animateScrollTo from 'animated-scroll-to';
 import ModalLink from '../modal/ModalLink';
-import sanitizeHtml from 'sanitize-html';
 import get from 'get-value';
 
 const API_URL = process.env.REACT_APP_API_URL;
