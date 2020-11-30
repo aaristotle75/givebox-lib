@@ -1,4 +1,5 @@
 import get from 'get-value';
+import has from 'has';
 
 export function getValue(obj, prop, returnIfEmpty = '', debug) {
   const returnObj = get(obj, prop);

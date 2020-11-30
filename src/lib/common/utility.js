@@ -4,6 +4,7 @@ import has from 'has';
 import animateScrollTo from 'animated-scroll-to';
 import ModalLink from '../modal/ModalLink';
 import get from 'get-value';
+import sanitizeHtml from 'sanitize-html';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
