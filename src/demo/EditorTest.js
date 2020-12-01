@@ -30,7 +30,7 @@ export default class EditorTest extends PureComponent {
       balloonButtons
     } = this.props;
 
-    const contentCss = 'https://givebox.s3-us-west-1.amazonaws.com/public/css/gbx3contents.css';
+    const contentCss = 'https://cdn.givebox.com/common/css/gbx3contents.css';
     let toolbar =	[ 'Bold', 'Italic', '-', 'FontSize', 'TextColor', 'Styles', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight'];
     let height = '150px';
     let removePlugins = 'elementspath';
