@@ -121,7 +121,8 @@ class Text extends Component {
       orgID,
       block,
       breakpoint,
-      primaryColor
+      primaryColor,
+      isVolunteer
     } = this.props;
 
     const {
@@ -168,6 +169,7 @@ class Text extends Component {
                           subType={subType}
                           type={breakpoint === 'mobile' ? 'classic' : 'classic'}
                           acceptedMimes={['image']}
+                          isVolunteer={isVolunteer}
                         />
                       </div>
                     </div>

@@ -116,11 +116,16 @@ class CKEditor4Upload extends Component {
     } = this.state;
 
     const {
-      acceptedMimes
+      acceptedMimes,
+      orgID,
+      isVolunteer
     } = this.props;
 
-    const articleID = util.getValue(this.props.queryParams, 'articleID');
+    const articleID = util.getValue(this.props.queryParams, 'articleID', this.props.articleID || null);
+
     const library = {
+      saveMediaType: isVolunteer ? 'article' : 'org',
+      orgID,
       articleID,
       type: 'article',
       borderRadius: 0

@@ -182,8 +182,8 @@ class Amounts extends Component {
         if (defaultIndex || defaultIndex === 0) this.defaultUpdated(key, value.ID);
         amountsList[key].orderBy = key;
       });
-      data.amountIndexCustom = customIndex;
-      data.amountIndexDefault = defaultIndex;
+      data.amountIndexCustom = customIndex || customIndex === 0 ? customIndex : null;
+      data.amountIndexDefault = defaultIndex || defaultIndex === 0 ? defaultIndex : null;
       data[types.kind(this.props.kind).amountField] = {
         list: amountsList
       };

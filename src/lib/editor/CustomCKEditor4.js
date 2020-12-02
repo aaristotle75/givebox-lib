@@ -172,7 +172,10 @@ class CustomCKEditor4 extends Component {
     } = this.state;
 
     const {
-      acceptedMimes
+      acceptedMimes,
+      orgID,
+      articleID,
+      isVolunteer
     } = this.props;
 
     return (
@@ -185,7 +188,9 @@ class CustomCKEditor4 extends Component {
           id='editorUpload'
           component={() =>
             <CKEditor4Upload
-              articleID={4}
+              orgID={orgID}
+              articleID={articleID || 4}
+              isVolunteer={isVolunteer}
               acceptedMimes={acceptedMimes}
             />
           }

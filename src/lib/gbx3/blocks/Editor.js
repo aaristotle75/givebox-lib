@@ -27,7 +27,8 @@ export default class Editor extends PureComponent {
       loaderClass,
       acceptedMimes,
       widgets,
-      balloonButtons
+      balloonButtons,
+      isVolunteer
     } = this.props;
 
     const contentCss = 'https://cdn.givebox.com/common/css/gbx3contents.css';
@@ -46,6 +47,7 @@ export default class Editor extends PureComponent {
       <CustomCKEditor4
         orgID={orgID}
         articleID={articleID}
+        isVolunteer={isVolunteer}
         content={content}
         onBlur={onBlur}
         onChange={onChange}
