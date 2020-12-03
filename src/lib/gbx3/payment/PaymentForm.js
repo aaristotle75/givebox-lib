@@ -539,11 +539,12 @@ class PaymentFormClass extends Component {
 
     fields.occupation = this.props.textField('occupation', { group: 'customer', required: work.required, label: 'Occupation', fixedLabel: true, placeholder: 'Occupation', onBlur: this.onCustomerChange, value: util.getValue(cartCustomer, 'occupation') });
 
-    fields.custom = this.props.textField('note', { required: custom.required, label: custom.placeholder, fixedLabel: true, hideLabel: true, placeholder: custom.placeholder });
+    fields.custom = this.props.textField('note', { required: custom.required, label: custom.placeholder, fixedLabel: false, hideLabel: true, placeholder: custom.placeholder });
 
 
     const linkText = sendEmail.linkText || 'Share via Email';
 
+    /*
     fields.sendEmail =
       <Note
         showMessage={this.state.showMessage}
@@ -555,6 +556,7 @@ class PaymentFormClass extends Component {
         messageText={sendEmail.messageText}
       />
     ;
+    */
 
     const items = [];
     const fieldLayout = util.sortByField(this.fieldLayout(), 'order', 'ASC');

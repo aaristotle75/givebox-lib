@@ -171,7 +171,7 @@ class FormEdit extends Component {
               />
               <Dropdown
                 name='noteInfo'
-                label={'Collect Custom Info'}
+                label={'Collect Custom Info (Ex. In Memory/Honor of)'}
                 fixedLabel={true}
                 defaultValue={+noteInfo}
                 onChange={(name, value) => {
@@ -182,9 +182,9 @@ class FormEdit extends Component {
               <AnimateHeight height={noteInfo > 0 ? 'auto' : 0}>
                 <TextField
                   name='notePlaceholder'
-                  label='Custom Field Placeholder'
+                  label='Custom Field Label'
                   fixedLabel={true}
-                  placeholder='Ex. On Behalf of Jane Doe'
+                  placeholder='Ex. In Memory/Honor of'
                   value={notePlaceholder}
                   onChange={(e) => {
                     const value = e.currentTarget.value;

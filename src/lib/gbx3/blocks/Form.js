@@ -238,7 +238,7 @@ class Form extends Component {
           phone={{ enabled: phoneInfo.enabled, required: phoneInfo.required }}
           address={{ enabled: addressInfo.enabled, required: addressInfo.required }}
           work={{ enabled: workInfo.enabled, required: workInfo.required }}
-          custom={{ enabled: noteInfo.enabled, required: noteInfo.required, placeholder: util.getValue(form, 'notePlaceholder', 'Enter a Note') }}
+          custom={{ enabled: noteInfo.enabled, required: noteInfo.required, placeholder: util.getValue(form, 'notePlaceholder', 'In Memory/Honor of') }}
           isPublic={util.getValue(form, 'isPublic', true)}
           sendEmail={util.getValue(form, 'sendEmail', {})}
           editable={this.props.editable}

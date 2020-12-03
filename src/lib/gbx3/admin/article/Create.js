@@ -124,7 +124,7 @@ class Create extends React.Component {
         }
       }
     } else {
-      history.push(`${GBX_URL}/${util.getValue(res, 'articleID', 'new')}`);
+      history.push(`${GBX_URL}/${util.getValue(res, 'articleID', 'new')}?admin`);
     }
 
   }

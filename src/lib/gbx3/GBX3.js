@@ -147,14 +147,15 @@ class GBX3 extends React.Component {
       project,
       articleID,
       orgID,
-      originTemplate
+      originTemplate,
+      isVolunteer
     } = this.props;
 
     const display = !articleID || originTemplate === 'org' ? 'org' : this.props.display;
 
-    if (project === 'share') {
+    if (project === 'share' || isVolunteer) {
       const infoUpdated = await this.props.updateInfo({ display, stage: 'public' });
-      if (infoUpdated) this.props.updateAdmin({ publicView: true });
+      if (infoUpdated) this.props.updateAdmin({ project: 'share', publicView: true });
     }
     switch (display) {
       case 'org': {
@@ -184,6 +185,7 @@ class GBX3 extends React.Component {
 
   signupCallback(e) {
     if (e.data === 'signupCallback') {
+      console.log('execute signupCallback');
       this.props.getResource('session', {
         reload: true,
         callback: (res, err) => {
@@ -198,10 +200,22 @@ class GBX3 extends React.Component {
       access
     } = this.props;
 
+    const referer = reactReferer.referer();
+    const entryURL = `${ENTRY_URL}/signup/wallet?modal=true&callback=true`;
+
+    let isRemoteReferer = false;
+    if (!referer || !referer.includes('givebox')) {
+      isRemoteReferer = true;
+    }
+
     if (util.isEmpty(access)) {
       // open signup
       window.addEventListener('message', this.signupCallback, false);
-      GBXEntry.init([{ env: ENV, url: `${ENTRY_URL}/signup/wallet?modal=true&callback=true`, auto: true }]);
+      if (isRemoteReferer) {
+        window.open(entryURL, '_blank');
+      } else {
+        GBXEntry.init([{ env: ENV, url: entryURL, auto: true }]);
+      }
     } else {
       // proceed to create fundraiser
       this.loadCreateNew(true);
@@ -447,6 +461,7 @@ function mapStateToProps(state, props) {
   const admin = util.getValue(gbx3, 'admin', {});
   const hasAccessToEdit = util.getValue(admin, 'hasAccessToEdit');
   const hasAccessToCreate = util.getValue(admin, 'hasAccessToCreate');
+  const isVolunteer = util.getValue(admin, 'isVolunteer');
   const publicView = util.getValue(admin, 'publicView');
 
   return {
@@ -459,6 +474,7 @@ function mapStateToProps(state, props) {
     sourceLocation,
     hasAccessToEdit,
     hasAccessToCreate,
+    isVolunteer,
     publicView,
     access: util.getValue(state.resource, 'access', {})
   }
