@@ -213,6 +213,7 @@ class FormEdit extends Component {
                 value={allowSharing}
                 toggle={true}
               />
+              {/*
               <div>
                 <div className='formSectionHeader'>Message Option</div>
                 <Choice
@@ -243,6 +244,7 @@ class FormEdit extends Component {
                   />
                 </AnimateHeight>
               </div>
+              */}
               {this.props.allowP2P ?
                 <div>
                   <div className='formSectionHeader'>Peer-2-Peer Option</div>

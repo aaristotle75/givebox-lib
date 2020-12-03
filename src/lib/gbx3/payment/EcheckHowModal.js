@@ -10,7 +10,7 @@ class EcheckHowModal extends Component {
     return (
       <div className="modalWrapper">
         <div className="center">
-          <img className="pciImage" src='https://s3-us-west-1.amazonaws.com/givebox/public/images/logo-box.svg' alt="Givebox" height="70px" width="135px" />
+          <img className="pciImage" src='https://cdn.givebox.com/givebox/public/images/logo-box.svg' alt="Givebox" height="70px" width="135px" />
         </div>
         <h3>What is eCheck?</h3>
         <p>
@@ -18,7 +18,7 @@ class EcheckHowModal extends Component {
         </p>
         <h3>Where do I find my bank's routing number and checking account number?</h3>
         <div style={{ marginBottom: 20 }}>
-          <Image className='flexCenter' url='https://givebox.s3-us-west-1.amazonaws.com/public/images/check-example-light.png' maxWidth={'488px'} />
+          <Image className='flexCenter' url='https://cdn.givebox.com/givebox/public/images/echeck-example.png' maxWidth={'488px'} />
         </div>
         <div className="center">
             <span className="smallText">&copy; {Moment().format('YYYY')} Givebox</span>
