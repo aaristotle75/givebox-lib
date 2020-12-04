@@ -476,6 +476,7 @@ class PaymentFormClass extends Component {
   renderFields() {
 
     const {
+      kind,
       phone,
       address,
       work,
@@ -544,19 +545,19 @@ class PaymentFormClass extends Component {
 
     const linkText = sendEmail.linkText || 'Share via Email';
 
-    /*
-    fields.sendEmail =
-      <Note
-        showMessage={this.state.showMessage}
-        primaryColor={primaryColor}
-        sendEmailCallback={this.sendEmailCallback}
-        sendEmail={this.state.sendEmail}
-        allowEmail={sendEmail.allowEmail}
-        linkText={sendEmail.linkText}
-        messageText={sendEmail.messageText}
-      />
-    ;
-    */
+    if (kind === 'fundraiser' && 1===2) {
+      fields.sendEmail =
+        <Note
+          showMessage={this.state.showMessage}
+          primaryColor={primaryColor}
+          sendEmailCallback={this.sendEmailCallback}
+          sendEmail={this.state.sendEmail}
+          allowEmail={sendEmail.allowEmail}
+          linkText={sendEmail.linkText}
+          messageText={sendEmail.messageText}
+        />
+      ;
+    }
 
     const items = [];
     const fieldLayout = util.sortByField(this.fieldLayout(), 'order', 'ASC');

@@ -76,17 +76,17 @@ class Note extends Component {
 
     return (
       <div className='sendEmailNote'>
-        <span className='optionalMessageTitle'>Optional Message</span>
-        <GBLink
-          style={{ display: 'block'}}
-          allowCustom={true}
-          customColor={primaryColor}
-          onClick={() => {
-              this.setState({ showMessage: this.state.showMessage ? false : true })
+        <Choice
+          label={`Give on Behalf of Someone`}
+          value={this.state.showMessage}
+          checked={this.state.showMessage}
+          onChange={() => {
+            this.setState({ showMessage: this.state.showMessage ? false : true })
           }}
-        >
-          {showMessage ? 'Hide' : 'Show' } Optional Message
-        </GBLink>
+          color={primaryColor}
+          errorType={'tooltip'}
+          toggle={true}
+        />
         <AnimateHeight
           height={showMessage ? 'auto' : 0}
         >

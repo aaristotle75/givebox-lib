@@ -243,6 +243,7 @@ class Form extends Component {
           sendEmail={util.getValue(form, 'sendEmail', {})}
           editable={this.props.editable}
           breakpoint={breakpoint}
+          kind={kind}
         />
         <div className='formBottomSection'>
           <Totals

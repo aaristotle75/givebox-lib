@@ -236,7 +236,9 @@ export const paymentForm = {
         enabled: true, // This enables the message
         allowEmail: false, // This enables the email receipients
         linkText: 'Email Your Message',
-        messageText: 'Add a Message'
+        mainLabel: 'Give on Behalf of Someone',
+        messageText: 'Add a Message',
+        emailText: 'Email Your Message'
       },
       hasCustomGoal: false,
       goal: 50000,

@@ -213,13 +213,13 @@ class FormEdit extends Component {
                 value={allowSharing}
                 toggle={true}
               />
-              {/*
+              { kind === 'fundraiser' && 1===2 ?
               <div>
-                <div className='formSectionHeader'>Message Option</div>
+                <div className='formSectionHeader'>On Behalf of Option</div>
                 <Choice
                   type='checkbox'
                   name='sendEmail'
-                  label={'Give Users an Option to Add a Message at Checkout'}
+                  label={'Allow Customers to Give on Behalf of Others'}
                   onChange={(name, value) => {
                     sendEmail.enabled = sendEmail.enabled ? false : true;
                     this.updateForm('sendEmail', sendEmail);
@@ -232,7 +232,7 @@ class FormEdit extends Component {
                   <Choice
                     type='checkbox'
                     name='sendEmailAllowEmail'
-                    label={'Give Users an Option to Email Their Message'}
+                    label={'Give the Customer an Option to Email the Message'}
                     onChange={(name, value) => {
                       sendEmail.allowEmail = sendEmail.allowEmail ? false : true;
                       this.updateForm('sendEmail', sendEmail);
@@ -243,8 +243,7 @@ class FormEdit extends Component {
                     style={{ marginLeft: 10 }}
                   />
                 </AnimateHeight>
-              </div>
-              */}
+              </div> : '' }
               {this.props.allowP2P ?
                 <div>
                   <div className='formSectionHeader'>Peer-2-Peer Option</div>
