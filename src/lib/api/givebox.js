@@ -28,6 +28,80 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
   let endpoint = '';
 
   switch (resource) {
+
+    // CreditLine
+
+    case 'creditlineInfo': {
+      endpoint = `creditline-info`;
+      break;
+    }
+
+    case 'orgCreditlineInfo': {
+      endpoint = `orgs/${getIndex(id, 0, orgID)}/creditline-info`;
+      break;
+    }
+
+    case 'creditlineRatings': {
+      endpoint = `creditline-ratings`;
+      break;
+    }
+
+    case 'orgCreditlineRatings': {
+      endpoint = `orgs/${getIndex(id, 0, orgID)}/creditline-ratings`;
+      break;
+    }
+
+    case 'orgCreditlineRatingLatest': {
+      endpoint = `orgs/${getIndex(id, 0, orgID)}/creditline-ratings/latest`;
+      break;
+    }
+
+    case 'creditlineAsks': {
+      endpoint = `creditline-asks`;
+      break;
+    }
+
+    case 'orgCreditlineAsks': {
+      endpoint = `orgs/${getIndex(id, 0, orgID)}/creditline-asks`;
+      break;
+    }
+
+    case 'orgCreditlineAsk': {
+      endpoint = `orgs/${getIndex(id, 0, orgID)}/creditline-asks/${id[1]}`;
+      break;
+    }
+
+    case 'creditlinePayments': {
+      endpoint = `creditline-paymentsdue`;
+      break;
+    }
+
+    case 'orgCreditlinePayments': {
+      endpoint = `orgs/${getIndex(id, 0, orgID)}/creditline-paymentsdue`;
+      break;
+    }
+
+    case 'orgCreditlinePaymentDue': {
+      endpoint = `orgs/${getIndex(id, 0, orgID)}/creditline-paymentsdue/${id[1]}`;
+      break;
+    }
+
+    case 'creditlineTransactions': {
+      endpoint = `creditline-transactions`;
+      break;
+    }
+
+    case 'orgCreditlineTransactions': {
+      endpoint = `orgs/${getIndex(id, 0, orgID)}/creditline-transactions`;
+      break;
+    }
+
+    case 'orgCreditlineTransaction': {
+      endpoint = `orgs/${getIndex(id, 0, orgID)}/creditline-transactions/${id[1]}`;
+      break;
+    }
+
+
     // SUPER
 
     case 'orgResendVerification': {
