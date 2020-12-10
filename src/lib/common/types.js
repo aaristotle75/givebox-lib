@@ -376,3 +376,41 @@ export const renderRecurringName = (kind, interval, max = null) => {
   obj.text = text;
   return obj;
 }
+
+export function getRatingInfo(rating) {
+  const info = {
+    color: '#dde0e2',
+    text: 'Low',
+    rating,
+    noCredit: rating >= 500 ? false : true
+  };
+
+  if (rating >= 500 && rating < 650) {
+    info.color = '#e83b2e';
+    info.text = 'Fair';
+    info.rating = rating;
+  } else if (rating >= 650 && rating < 750) {
+    info.color = '#ffb156';
+    info.text = 'Good';
+    info.rating = rating;
+  } else if (rating >= 750 && rating <= 799) {
+    info.color = '#29eee6';
+    info.text = 'Very Good';
+    info.rating = rating;
+  } else if (rating >= 800) {
+    info.color = '#29eee6';
+    info.text = 'Excellent';
+    info.rating = rating;
+  }
+
+  return info;
+}
+
+export const factorTypes = [
+  'processingHistory',
+  'processingVolume',
+  'transactionCount',
+  'transactionLast',
+  'balanceRatio',
+  'repaymentHistory'
+];

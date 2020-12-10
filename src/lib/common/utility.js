@@ -1061,3 +1061,76 @@ export function maxRecordOptions() {
   }
   return items;
 }
+
+export function creditStatus(opts = {}) {
+  const options = {
+    score: 0,
+    status: '',
+    hasBankAccount: false,
+    underwritingStatus: '',
+    ...opts
+  };
+
+  const checkScore = options.score >= 650 ? true : false;
+  const checkBank = options.hasBankAccount ? true : false;
+  const underwrtingApproved = options.underwritingStatus === 'approved' ? true : false;
+  const creditStatus = {
+    eligible: false,
+    status: options.status,
+    statusText: '',
+    checkScore,
+    checkBank,
+    underwrtingApproved
+  };
+
+  if (options.score >= 650
+  && options.status === 'eligible'
+  && options.hasBankAccount
+  && options.underwritingStatus === 'approved') {
+      creditStatus.eligible = true;
+  }
+
+  switch (options.status) {
+    case 'eligible': {
+
+      creditStatus.statusText = creditStatus.eligible ?
+        <span>Eligible to Request Credit</span>
+      :
+        <div className='description'>
+          <span className='line'>Does Not Meet Minimum</span>
+          <span className='line date'><span style={{ color: checkScore ? 'green' : 'red' }} className={`icon icon-${checkScore ? 'check' : 'x'}`}></span> Score</span>
+          <span className='line date'><span style={{ color: checkBank ? 'green' : 'red' }} className={`icon icon-${checkBank ? 'check' : 'x'}`}></span> Bank Account</span>
+          <span className='line date'><span style={{ color: underwrtingApproved ? 'green' : 'red' }} className={`icon icon-${underwrtingApproved ? 'check' : 'x'}`}></span> Givebox Approved</span>
+        </div>
+      ;
+      break;
+    }
+
+    case 'requested': {
+      creditStatus.statusText = <span>Requested a Credit Line (Waiting for Review)</span>;
+      break;
+    }
+
+    case 'granted': {
+      creditStatus.statusText = <span>Credit Line Granted</span>;
+      break;
+    }
+
+    case 'on_hold': {
+      creditStatus.statusText = <span>Credit Line put On Hold (Please Review)</span>;
+      break;
+    }
+
+    case 'revoked': {
+      creditStatus.statusText = <span>Credit Line has been Revoked</span>;
+      break;
+    }
+
+    default: {
+      creditStatus.statusText = <span>Insufficient History</span>;
+      break;
+    }
+  }
+
+  return creditStatus;
+}

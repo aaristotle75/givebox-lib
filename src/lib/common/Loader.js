@@ -42,7 +42,7 @@ export default class Loader extends Component {
     const { msg, textColor, forceText, className } = this.props;
 
     if (!this.state.rootEl) return ( <div></div> );
-    const showMsg = !!forceText;
+    const showMsg = process.env.REACT_APP_ENV === 'local' || forceText ? true : false;
 
     return (
       this.state.showLoader ?
