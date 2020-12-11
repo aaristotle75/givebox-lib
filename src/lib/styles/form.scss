@@ -185,6 +185,10 @@ label, .label {
   font-size: $small-text-size;
 }
 
+label.label.format {
+  display: block;
+}
+
 label.idle, .label.idle {
   color: $med-gray !important;
 }

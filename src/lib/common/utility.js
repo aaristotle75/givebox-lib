@@ -1107,7 +1107,7 @@ export function creditStatus(opts = {}) {
     }
 
     case 'requested': {
-      creditStatus.statusText = <span>Requested a Credit Line (Waiting for Review)</span>;
+      creditStatus.statusText = <span>Requested a Credit Line</span>;
       break;
     }
 
@@ -1117,7 +1117,7 @@ export function creditStatus(opts = {}) {
     }
 
     case 'on_hold': {
-      creditStatus.statusText = <span>Credit Line put On Hold (Please Review)</span>;
+      creditStatus.statusText = <span>Credit Line put On Hold</span>;
       break;
     }
 
