@@ -528,12 +528,18 @@ export function calcCart() {
     cart.total = 0;
     if (!util.isEmpty(items)) {
       Object.entries(items).forEach(([key, value]) => {
-        value.passFees = passFees;
+        value.passFees = passFees; // bad hack to assign passFees
+        const amount = value.amount;
+        const fees = value.fees;
+        const CRFTFeePct = util.getValue(fees, 'CRFTFeePct', 0);
+        const CRFTFeePercent = +((CRFTFeePct/10000).toFixed(4)*parseFloat(amount/100));
+        const CRFTFee = CRFTFeePct && passFees ? +((CRFTFeePercent).toFixed(2)) : 0;
         cart.subTotal = cart.subTotal + value.amountFormatted;
-        cart.fee = cart.fee + dispatch(calcFee(value.amount, value.fees));
+        cart.fee = cart.fee + dispatch(calcFee(amount, fees));
+        cart.CRFTFee = CRFTFee;
       });
     }
-    cart.total = (cart.subTotal + cart.fee).toFixed(2);
+    cart.total = (cart.subTotal + cart.fee + cart.CRFTFee).toFixed(2);
     dispatch(saveCart(cart));
   }
 }

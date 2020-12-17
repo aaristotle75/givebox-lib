@@ -23,12 +23,14 @@ class Totals extends Component {
   render() {
 
     const {
+      orgName,
       cardType,
       paymethod,
       raised,
       subTotal,
       giveboxFee,
       fee,
+      CRFTFee,
       total,
       primaryColor,
       passFees,
@@ -65,15 +67,17 @@ class Totals extends Component {
           /> : <></> }
           </div>
           <div className='totalsList'>
-            <div style={{ width: 120 }}>
+            <div style={{ width: 200 }}>
               <span className='line'>Sub Total:</span>
               <span className='line'>Givebox Fee:</span>
+              <span className='line'>Org Fee:</span>
               <span className='line'>{ ( paymethod === 'creditcard' || !paymethod ) ? ( cardType === 'default' || !cardType) ? 'Credit Card' : cardType.toUpperCase() : 'eCheck'} Fee:</span>
               <span className='totalLine'>Total:</span>
             </div>
             <div>
               <span className='line'>{util.money(subTotal)}</span>
               <span className='line'>{util.money(giveboxFee)}</span>
+              <span className='line'>{util.money(CRFTFee)}</span>
               <span className='line'>{util.money(fee)}</span>
               <span className='totalLine'>{util.money(total)}</span>
             </div>
@@ -101,6 +105,7 @@ class Totals extends Component {
 function mapStateToProps(state, props) {
 
   const gbx3 = util.getValue(state, 'gbx3', {});
+  const orgName = util.getValue(gbx3, 'info.orgName');
   const cart = util.getValue(gbx3, 'cart', {});
   const passFees = util.getValue(cart, 'passFees');
   const paymethod = util.getValue(cart, 'paymethod');
@@ -114,6 +119,7 @@ function mapStateToProps(state, props) {
   const subTotal = util.getValue(cart, 'subTotal', 0);
   const giveboxFee = (0).toFixed(2);
   const fee = util.getValue(cart, 'fee', 0);
+  const CRFTFee = util.getValue(cart, 'CRFTFee', 0);
   const total = util.getValue(cart, 'total', 0);
   const globals = util.getValue(gbx3, 'globals', {});
   const gbxStyle = util.getValue(globals, 'gbxStyle', {});
@@ -123,6 +129,7 @@ function mapStateToProps(state, props) {
   const placeholderColor = util.getValue(gbxStyle, 'placeholderColor', textColor2);
 
   return {
+    orgName,
     cardType,
     passFees,
     feeOption,
@@ -133,6 +140,7 @@ function mapStateToProps(state, props) {
     subTotal,
     giveboxFee,
     fee,
+    CRFTFee,
     total,
     placeholderColor
   }
