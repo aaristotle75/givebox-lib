@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import * as util from '../../../common/utility';
 import Image from '../../../common/Image';
 import * as types from '../../../common/types';
+import Loader from '../../../common/Loader';
 import {
   cloneFundraiser,
   createFundraiser,
@@ -29,6 +30,7 @@ class Create extends React.Component {
     this.handleVolunteerAlreadyCreatedFundraiserKind = this.handleVolunteerAlreadyCreatedFundraiserKind.bind(this);
     this.renderKindDisplay = this.renderKindDisplay.bind(this);
     this.state = {
+      loading: true
     };
   }
 
@@ -108,6 +110,7 @@ class Create extends React.Component {
       userFundraisers
     } = this.props;
 
+    this.setState({ loading: false });
     if (err) {
       // If an error check if volunteer fundraiser kind was already created
       if (isVolunteer && volunteerID) {
@@ -173,6 +176,10 @@ class Create extends React.Component {
       return (
         <div className='flexCenter flexColumn centeritems'>You do not have access.</div>
       )
+    }
+
+    if (this.state.loading) {
+      return <Loader msg='Creating...' />
     }
 
     return (

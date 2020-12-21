@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-class CircularProgress extends Component{
+class CircularProgressGradient extends Component{
   constructor(props){
     super(props);
     this.state = {
@@ -19,18 +19,7 @@ class CircularProgress extends Component{
 
   render() {
     const {
-      progress,
-      startDegree,
-      progressWidth,
-      trackWidth,
-      cornersWidth,
-      size,
-      fillColor,
-      trackColor,
-      progressColor,
-      progressColor2,
-      gradient,
-      className
+      progress, startDegree, progressWidth, trackWidth, cornersWidth, size, fillColor, trackColor, progressColor
     } = this.props;
 
     var r = size/2 - trackWidth/2;
@@ -61,58 +50,55 @@ class CircularProgress extends Component{
     };
 
     return (
-      <svg className={className} width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
         <circle
           cx={size/2}
           cy={size/2}
           r={r}
           style={trackStyle}
         />
-        { gradient ?
         <defs>
-          <linearGradient id="gradient" x1="129%" y1="38%" x2="0%" y2="0%">
-            <stop offset="0%" stopColor={progressColor} />
-            <stop offset="100%" stopColor={progressColor2} />
+          <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#00bc9b" />
+            <stop offset="100%" stopColor="#5eaefd" />
           </linearGradient>
-        </defs> : null }
-        { progress > 0 ?
+        </defs>
+        {progress > 0 ?
         <path
           d={progressPath}
-          style={gradient ? {} : progressStyle}
-          stroke={gradient ? "url(#gradient)" : null}
-          strokeWidth={gradient ? progressWidth : null}
+          stroke="url(#gradient)"
+          strokeWidth={progressWidth}
           fill='none'
-        /> : null }
+        /> : null}
 
-        { progress > 0 ?
+        {progress > 0 ?
         <circle
           cx={s.x}
           cy={s.y}
           r={cornersWidth}
-          fill={gradient ? "url(#gradient)" : progressColor}
-        /> : null }
+          fill="url(#gradient)"
+        /> : null}
 
-        { progress > 0 ?
+        {progress > 0 ?
         <circle
           cx={e.x}
           cy={e.y}
           r={cornersWidth}
-          fill={gradient ? "url(#gradient)" : progressColor}
-        /> : null }
+          fill="url(#gradient)"
+        /> : null}
+
       </svg>
     )
   }
 };
 
-CircularProgress.defaultProps = {
+CircularProgressGradient.defaultProps = {
   startDegree: 0,
   progress: 0,
   progressWidth: 5,
   trackWidth: 5,
   cornersWidth: 10,
-  size: 200,
-  gradient: false,
-  className: null
+  size: 200
 }
 
-export default CircularProgress;
+export default CircularProgressGradient;

@@ -380,6 +380,7 @@ export const renderRecurringName = (kind, interval, max = null) => {
 export function getRatingInfo(rating) {
   const info = {
     color: '#dde0e2',
+    color2: '#e83b2e',
     text: 'Low',
     rating,
     noCredit: rating >= 500 ? false : true
@@ -387,18 +388,22 @@ export function getRatingInfo(rating) {
 
   if (rating >= 500 && rating < 650) {
     info.color = '#e83b2e';
+    info.color2 = '#dde0e2';
     info.text = 'Fair';
     info.rating = rating;
   } else if (rating >= 650 && rating < 750) {
     info.color = '#ffb156';
+    info.color2 = '#e83b2e';
     info.text = 'Good';
     info.rating = rating;
   } else if (rating >= 750 && rating <= 799) {
     info.color = '#29eee6';
+    info.color2 = '#698df4';
     info.text = 'Very Good';
     info.rating = rating;
   } else if (rating >= 800) {
     info.color = '#29eee6';
+    info.color2 = '#698df4';
     info.text = 'Excellent';
     info.rating = rating;
   }
