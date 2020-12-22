@@ -69,6 +69,7 @@ class GBX3 extends React.Component {
     } = this.props;
 
     this.props.setLoading(true);
+    window.parent.postMessage('gbx3Initialized', '*');
     if ((editable && hasAccessToEdit) || hasAccessToEdit) {
       this.props.updateAdmin({ editable });
     } else {

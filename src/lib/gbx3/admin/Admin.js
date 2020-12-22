@@ -15,7 +15,7 @@ import {
 } from '../redux/gbx3actions';
 import AvatarMenuButton from './AvatarMenuButton';
 import ArticleList from './article/ArticleList';
-import { AiOutlineFullscreen } from 'react-icons/ai';
+import { GoDashboard } from 'react-icons/go';
 
 class Admin extends React.Component {
 
@@ -64,9 +64,11 @@ class Admin extends React.Component {
               <GBLink key={'goback'} style={{ fontSize: '14px' }} onClick={() => this.goBack(articleID)}><span className='icon icon-chevron-left'></span> Go Back</GBLink>
             )
           } else {
+            /*
             header.push(
               <GBLink key={'create'} style={{ fontSize: '14px' }} className='link' onClick={() => this.props.loadCreateNew()}><span className='icon icon-plus'></span> { isMobile ? 'New' : 'Create New Form' }</GBLink>
             );
+            */
           }
         }
         break;
@@ -75,7 +77,7 @@ class Admin extends React.Component {
 
     if (!util.isEmpty(access)) {
       header.push(
-        <GBLink key={'exit'} style={{ fontSize: '14px' }} className='link' onClick={() => this.props.exitAdmin()}><Icon><AiOutlineFullscreen /></Icon>{ isMobile ? 'Exit' : `Exit ${orgDisplay ? 'Page' : 'Form'} Builder` }</GBLink>
+        <GBLink key={'exit'} style={{ fontSize: '14px' }} className='link' onClick={() => this.props.exitAdmin()}><Icon><GoDashboard /></Icon>{ isMobile ? 'Dashboard' : `Back to Dashboard` }</GBLink>
       )
     }
 

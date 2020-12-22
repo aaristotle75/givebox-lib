@@ -79,7 +79,8 @@
     "react-toggle": "^4.1.1",
     "react-waypoint": "^8.1.0",
     "react-webcam": "^1.1.1",
-    "recharts": "^1.8.5"
+    "recharts": "^1.8.5",
+    "sanitize-html": "^2.3.0"
   },
   "scripts": {
     "prestart": "cp -f ~/ssl/server.pem ./node_modules/webpack-dev-server/ssl || :",
