@@ -352,6 +352,13 @@ export function updateHelperBlocks(blockType, helperBlocks) {
   }
 }
 
+export function updateHelperSteps(helperSteps) {
+  return {
+    type: types.UPDATE_HELPER_STEPS,
+    helperSteps
+  }
+}
+
 export function updateAvailableBlocks(blockType, available) {
   return (dispatch, getState) => {
     const availableBlocks = {

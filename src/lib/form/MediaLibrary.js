@@ -284,11 +284,15 @@ class MediaLibrary extends Component {
       library,
       modalID,
       showBtns,
-      mobile
+      mobile,
+      uploadOnly,
+      topLabel,
+      bottomLabel
     } = this.props;
 
     const {
-      error
+      error,
+      preview
     } = this.state;
 
     const mimes = this.getMimes();
@@ -320,12 +324,12 @@ class MediaLibrary extends Component {
                   accept={mimes.format}
                 >
                   <span className='text'>
-                    {!mobile && <span>Add File</span>}
+                    {!mobile && <span>{topLabel}</span>}
                     <span className='icon icon-file-plus'></span>
-                    {!mobile ? <span>Drag & Drop</span> : <span>Add File</span>}
+                    {!mobile ? <span>{bottomLabel}</span> : <span>Add File</span>}
                   </span>
                 </Dropzone>
-                {this.listSelected()}
+                {this.state.preview ? this.listSelected() : null}
               </div>
               { error ?
                 <div className='errorMsg'>
@@ -333,13 +337,15 @@ class MediaLibrary extends Component {
                   {mimes.readable}
                 </div>
               : <></> }
+              { !uploadOnly ?
               <div className='yourphotos'>
                 <h4>Your Photos</h4>
-              </div>
+              </div> : null }
             </div>
+            { !uploadOnly ?
             <div className='content'>
               {this.listMedia()}
-            </div>
+            </div> : null }
           </div>
           :
             <UploadEditorResizer
@@ -378,7 +384,10 @@ MediaLibrary.defaultProps = {
   saveLabel: 'Update',
   showBtns: 'all',
   mobile: false,
-  acceptedMimes: ['image', 'text', 'applications']
+  acceptedMimes: ['image', 'text', 'applications'],
+  uploadOnly: false,
+  topLabel: 'Add File',
+  bottomLabel: 'Drag & Drop'
 }
 
 function mapStateToProps(state, props) {

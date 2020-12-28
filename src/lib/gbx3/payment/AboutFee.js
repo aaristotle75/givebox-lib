@@ -16,7 +16,8 @@ class AboutFee extends Component {
 
     const {
       primaryColor,
-      fees
+      fees,
+      orgName
     } = this.props;
 
     return (
@@ -33,8 +34,14 @@ class AboutFee extends Component {
           <h4>CREDIT CARD FEES</h4>
           <p>VISA, MasterCard and Discover processing fee is {util.getValue(fees, 'fndPctFee')/100}% the amount plus {util.getValue(fees, 'fndFixFee')} cents per item.</p>
           <p>AMEX processing fee is {util.getValue(fees, 'amexFndPctFee')/100}% the amount plus {util.getValue(fees, 'amexFndFixFee')} cents per item.</p>
+          <h4>DEBIT CARD FEE</h4>
+          <p>VISA Debit, MasterCard Debit processing fee is {util.getValue(fees, 'debitPctFee')/100}% the amount plus {util.getValue(fees, 'debitFixFee')} cents per item.</p>
+          <h4>ORGANIZATION FEE</h4>
+          <p>The Organization can add an optional fee to cover their processing expenses. {orgName} fee is {util.getValue(fees, 'CRFTFeePct')/100}% the amount.</p>
+          {/*
           <h4>ECHECK FEE</h4>
           <p>The Bank fee to make an electronic payment from your checking account is {util.getValue(fees, 'echeckPctFee')/100}% the amount plus {util.getValue(fees, 'echeckFixFee')} cents per item.</p>
+          */}
         </div>
         <div className='bottomContainer2 flexCenter'>
           <div className='button-group'>
@@ -56,9 +63,11 @@ class AboutFee extends Component {
 function mapStateToProps(state, props) {
 
   const fees = util.getValue(state, 'gbx3.fees');
+  const orgName = util.getValue(state, 'gbx3.info.orgName');
 
   return {
-    fees
+    fees,
+    orgName
   }
 }
 

@@ -227,6 +227,14 @@ $stepInputSize: 18px;
     align-items: center;
   }
 
+  .button-group::before {
+    content: "";
+  }
+
+  .button-group::after {
+    content: "";
+  }
+
   .formSection {
     padding: 40px;
 
@@ -238,7 +246,7 @@ $stepInputSize: 18px;
       }
     }
 
-    h4 {
+    .stepsSubText {
       font-size: .9em;
       margin: 20px 0;
     }
@@ -250,5 +258,26 @@ $stepInputSize: 18px;
   }
 
   button.donotShowAgain {
+  }
+
+  .uploadEditorContainer {
+    padding-bottom: 0;
+  }
+
+  .uploadResizerContent {
+    height: 300px;
+  }
+
+  .mediaLibrary {
+    .uploadContainer {
+      padding-bottom: 0;
+      h4 {
+        font-size: .83em;
+      }
+    }
+
+    .uploadEditorContainer {
+      padding-bottom: 0;
+    }
   }
 }

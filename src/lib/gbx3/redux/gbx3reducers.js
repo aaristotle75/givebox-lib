@@ -78,6 +78,10 @@ export function gbx3(state = {
       ]
     },
   },
+  helperSteps: {
+    step: 1,
+    completed: false
+  },
   helperBlocks: {
     article: {},
     org: {},
@@ -216,6 +220,13 @@ export function gbx3(state = {
             ...state.helperBlocks[action.blockType],
             ...action.helperBlocks
           }
+        }
+      });
+    case types.UPDATE_HELPER_STEPS:
+      return Object.assign({}, state, {
+        helperSteps: {
+          ...state.helperSteps,
+          ...action.helperSteps
         }
       });
     case types.UPDATE_DATA:

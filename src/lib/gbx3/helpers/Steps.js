@@ -11,11 +11,16 @@ import {
   GBLink,
   Fade
 } from '../../';
+import {
+  updateHelperSteps
+} from '../redux/gbx3actions';
+import MediaLibrary from '../../form/MediaLibrary';
 
 class StepsForm extends Component {
 
   constructor(props) {
     super(props);
+    this.handleSaveCallback = this.handleSaveCallback.bind(this);
     this.processForm = this.processForm.bind(this);
     this.processCallback = this.processCallback.bind(this);
     this.formSavedCallback = this.formSavedCallback.bind(this);
@@ -23,12 +28,13 @@ class StepsForm extends Component {
     this.donotShowAgain = this.donotShowAgain.bind(this);
     this.previousStep = this.previousStep.bind(this);
     this.nextStep = this.nextStep.bind(this);
-    this.state = {
-      step: 1
-    };
   }
 
   componentDidMount() {
+  }
+
+  handleSaveCallback(url) {
+    console.log('execute handleSaveCallback', url);
   }
 
   formSavedCallback() {
@@ -57,12 +63,16 @@ class StepsForm extends Component {
       }
     });
     console.log('execute processForm', data);
+    this.nextStep();
   }
 
   renderStep() {
     const {
-      step
-    } = this.state;
+      step,
+      breakpoint,
+      articleID,
+      orgID
+    } = this.props;
 
     const item = [];
 
@@ -71,8 +81,8 @@ class StepsForm extends Component {
       case 4: {
         item.push(
           <div key={4} className='step'>
-            <h2><span className='number'>Step 2:</span> Upload a Logo</h2>
-            <h4>Please upload an image of your logo. The best logos fit nicely in a square.</h4>
+            <h2><span className='number'>Step 4:</span> Share It!</h2>
+            <div className='stepsSubText'>Share your fundraiser on social media.</div>
           </div>
         );
         break;
@@ -82,17 +92,37 @@ class StepsForm extends Component {
         item.push(
           <div key={3} className='step'>
             <h2><span className='number'>Step 3:</span> Add an Image</h2>
-            <h4>A very nice image speaks louder than words. Upload an image that let's your audience feel the urgency.</h4>
+            <div className='stepsSubText'>A very nice image speaks louder than words. Upload an image that let's your audience feel the urgency to give.</div>
           </div>
         );
         break;
       }
 
       case 2: {
+        const library = {
+          saveMediaType: 'org',
+          articleID,
+          orgID,
+          type: 'article',
+          borderRadius: 0
+        };
+
         item.push(
           <div key={2} className='step'>
             <h2><span className='number'>Step 2:</span> Upload a Logo</h2>
-            <h4>Please upload an image of your logo. The best logos fit nicely in a square.</h4>
+            <div className='stepsSubText'>Please upload an image of your logo. The best logos fit nicely in a square.</div>
+            <MediaLibrary
+              blockType={'article'}
+              image={null}
+              preview={null}
+              handleSaveCallback={this.handleSaveCallback}
+              handleSave={util.handleFile}
+              library={library}
+              showBtns={'hide'}
+              saveLabel={'close'}
+              mobile={breakpoint === 'mobile' ? true : false }
+              uploadOnly={true}
+            />
           </div>
         );
         break;
@@ -103,7 +133,7 @@ class StepsForm extends Component {
         item.push(
           <div key={1} className='step'>
             <h2><span className='number'>Step 1:</span> What are you raising money for?</h2>
-            <h4>Please enter a captivating title below to let your audience know what you are raising money for.</h4>
+            <div className='stepsSubText'>Please enter a captivating title below to let your audience know what you are raising money for.</div>
             {this.props.textField('title', {
               group: 'title',
               fixedLabel: false,
@@ -126,17 +156,36 @@ class StepsForm extends Component {
   }
 
   previousStep() {
-    console.log('execute previousStep');
+    const {
+      step,
+      steps
+    } = this.props;
+    const prevStep = step > 1 ? step - 1 : step;
+    this.props.updateHelperSteps({ step: prevStep });
   }
 
   nextStep() {
-    console.log('execute nextStep');
+    const {
+      step,
+      steps
+    } = this.props;
+    const nextStep = step < steps ? step + 1 : step;
+    this.props.updateHelperSteps({ step: nextStep });
   }
 
   render() {
 
     const {
+      steps,
+      step
     } = this.props;
+
+    const firstStep = step === 1 ? true : false;
+    const lastStep = step === steps ? true : false;
+    let saveButtonLabel = 'Continue to Next Step';
+    if (lastStep) {
+      saveButtonLabel = 'Continue to Share';
+    }
 
     return (
       <>
@@ -146,9 +195,15 @@ class StepsForm extends Component {
           </div>
         </div>
         <div className='button-group'>
-          <GBLink className='link secondary' onClick={() => this.previousStep()}><span style={{ marginRight: '5px' }} className='icon icon-chevron-left'></span> Previous Step</GBLink>
-          {this.props.saveButton(this.processForm, { label: `Continue to Next Step` })}
-          <GBLink className='donotShowAgain secondary link' onClick={() => this.donotShowAgain()}>{`Don't Show Again`} <span style={{ marginLeft: '5px' }} className='icon icon-x'></span></GBLink>
+          <div className='button-item' style={{ width: 150 }}>
+            { !firstStep ? <GBLink className={`link secondary`} disabled={firstStep} onClick={() => this.previousStep()}><span style={{ marginRight: '5px' }} className='icon icon-chevron-left'></span> Previous Step</GBLink> : <span>&nbsp;</span> }
+          </div>
+          <div className='button-item'>
+            {this.props.saveButton(this.processForm, { label: saveButtonLabel })}
+          </div>
+          <div className='button-item' style={{ width: 150 }}>
+            <GBLink className='donotShowAgain secondary link' onClick={() => this.donotShowAgain()}>{`Don't Show Again`} <span style={{ marginLeft: '5px' }} className='icon icon-x'></span></GBLink>
+          </div>
         </div>
       </>
     )
@@ -187,12 +242,25 @@ class Steps extends Component {
   }
 }
 
+Steps.defaultProps = {
+  steps: 4
+}
+
 function mapStateToProps(state, props) {
+
+  const helperSteps = util.getValue(state, 'gbx3.helperSteps', {});
+
   return {
+    step: util.getValue(helperSteps, 'step', 1),
+    completed: util.getValue(helperSteps, 'completed', false),
+    breakpoint: util.getValue(state, 'gbx3.info.breakpoint'),
+    articleID: util.getValue(state, 'gbx3.info.articleID'),
+    orgID: util.getValue(state, 'gbx3.info.orgID')
   }
 }
 
 export default connect(mapStateToProps, {
   sendResource,
-  toggleModal
+  toggleModal,
+  updateHelperSteps
 })(Steps)
