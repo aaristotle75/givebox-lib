@@ -112,7 +112,7 @@ export function validateCardTypes(value) {
 export function formatCreditCard(value) {
   let obj = {
     value: value.replace(/[^0-9]/g, '').replace(/\s/g, '').replace(/(\d{4})/g, '$1 ').trim(),
-    apiValue: value.split(' ').join('')
+    apiValue: value.split(' ').join('').trim()
   };
   return obj;
 }

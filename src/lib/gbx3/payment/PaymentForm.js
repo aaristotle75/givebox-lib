@@ -93,6 +93,7 @@ class PaymentFormClass extends Component {
 
   async processForm(fields) {
     const {
+      isDebit,
       cardType,
       paymethod,
       cartTotal,
@@ -177,6 +178,7 @@ class PaymentFormClass extends Component {
       }
 
       switch (paymethod) {
+        case 'echeck':
         case 'creditcard': {
           const ccexpire = util.getSplitStr(util.getValue(fields.ccexpire, 'value'), '/', 2, -1);
           const type = cardType ? cardType.toUpperCase() : null;
@@ -199,11 +201,13 @@ class PaymentFormClass extends Component {
             number,
             expMonth,
             expYear,
+            isDebit,
             name: fullName
           };
           break;
         }
 
+        /*
         case 'echeck': {
           data.paymethod.echeck = {
             number: util.getValue(fields.accountNumber, 'value', null),
@@ -215,6 +219,7 @@ class PaymentFormClass extends Component {
           }
           break;
         }
+        */
 
         case 'applepay': {
           break;
@@ -240,7 +245,8 @@ class PaymentFormClass extends Component {
     }
   }
 
-  onCreditCardChange(name, value, cardType, field) {
+  onCreditCardChange(name, value, cardType, field, fields, isDebit) {
+    if (this.props.isDebit !== isDebit) this.props.updateCart({ isDebit });
     if (this.props.cardType !== cardType) this.props.updateCart({ cardType });
   }
 
@@ -255,6 +261,7 @@ class PaymentFormClass extends Component {
   setPaymethod(paymethod) {
 
     switch (paymethod) {
+      /*
       case 'echeck': {
         this.props.fieldProp('accountNumber', { required: true });
         this.props.fieldProp('routingNumber', { required: true });
@@ -263,6 +270,7 @@ class PaymentFormClass extends Component {
         this.props.fieldProp('cvv', { required: false, error: false });
         break;
       }
+      */
 
       case 'applepay': {
         this.props.fieldProp('accountNumber', { required: false, error: false });
@@ -273,6 +281,7 @@ class PaymentFormClass extends Component {
         break;
       }
 
+      case 'echeck':
       case 'creditcard': {
         this.props.fieldProp('ccnumber', { required: true });
         this.props.fieldProp('ccexpire', { required: true });
@@ -338,10 +347,22 @@ class PaymentFormClass extends Component {
 
     const instantFundraising = util.getValue(org, 'instantFundraising');
     const underwritingStatus = util.getValue(org, 'underwritingStatus');
-    const echeck = !util.isEmpty(instantFundraising) && underwritingStatus !== 'approved' ? false : this.props.echeck;
+    //const echeck = !util.isEmpty(instantFundraising) && underwritingStatus !== 'approved' ? false : this.props.echeck;
+    const echeck = this.props.echeck;
 
     const creditCard = this.props.creditCardGroup({
       group: 'paymethod',
+      ccnumberLabel: 'Credit Card Number',
+      required: false,
+      placeholder: 'xxxx xxxx xxxx xxxx',
+      debug: false,
+      cvvModalRootClass: 'gbxModal',
+      onChange: this.onCreditCardChange
+    });
+
+    const debitCard = this.props.creditCardGroup({
+      group: 'paymethod',
+      ccnumberLabel: 'Debit Card Number',
       required: false,
       placeholder: 'xxxx xxxx xxxx xxxx',
       debug: false,
@@ -361,6 +382,15 @@ class PaymentFormClass extends Component {
       </Tab>
     );
 
+
+    if (echeck) {
+      tabs.push(
+        <Tab key={'echeck'} id={'echeck'} label={<span className='tabLabel'>{mobile ? 'Direct Debit' : 'Pay by Direct Debit'}</span>}>
+          {debitCard}
+        </Tab>
+      );
+    }
+    /*
     if (echeck) {
       tabs.push(
         <Tab key={'echeck'} id={'echeck'} label={<span className='tabLabel'>{mobile ? 'eCheck' : 'Pay by eCheck'}</span>}>
@@ -368,6 +398,7 @@ class PaymentFormClass extends Component {
         </Tab>
       );
     }
+    */
 
     if (this.state.applepay) {
       tabs.push(
@@ -691,6 +722,7 @@ function mapStateToProps(state, props) {
   const openCart = util.getValue(cart, 'open');
   const paymethod = util.getValue(cart, 'paymethod');
   const cardType = util.getValue(cart, 'cardType');
+  const isDebit = util.getValue(cart, 'isDebit');
   const amount = util.getValue(cart, 'subTotal', 0);
   const org = util.getValue(state, 'resource.gbx3Org.data', {});
 
@@ -707,6 +739,7 @@ function mapStateToProps(state, props) {
     openCart,
     paymethod,
     cardType,
+    isDebit,
     amount,
     org
   }

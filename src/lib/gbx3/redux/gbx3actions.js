@@ -487,13 +487,10 @@ function calcFee(amount = 0, fees = {}) {
     const passFees = util.getValue(cart, 'passFees');
     const paymethod = util.getValue(cart, 'paymethod', {});
     const cardType = util.getValue(cart, 'cardType');
+    const isDebit = util.getValue(cart, 'isDebit');
+
     let feePrefix = 'fnd';
     switch (paymethod) {
-      case 'echeck': {
-        feePrefix = 'echeck';
-        break;
-      }
-
       case 'creditcard':
       default: {
         switch (cardType) {
@@ -506,6 +503,9 @@ function calcFee(amount = 0, fees = {}) {
         }
         break;
       }
+    }
+    if (isDebit) {
+      feePrefix = 'debit';
     }
 
     const pctFee = util.getValue(fees, `${feePrefix}PctFee`, 290);

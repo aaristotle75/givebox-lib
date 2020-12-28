@@ -400,7 +400,7 @@ class Form extends Component {
     }
   }
 
-  onChangeCreditCard(name, val, cardType) {
+  onChangeCreditCard(name, val, cardType, isDebit) {
     const obj = _v.formatCreditCard(val);
     const field = this.state.fields[name];
     const value = obj.value;
@@ -425,7 +425,7 @@ class Form extends Component {
       this.fieldProp(name, {checked: false});
     }
 
-    if (field.onChange) field.onChange(name, value, cardType, field, this.state.fields);
+    if (field.onChange) field.onChange(name, value, cardType, field, this.state.fields, isDebit);
     if (field.debug) console.log('onChangeCreditCard', name, field);
   }
 

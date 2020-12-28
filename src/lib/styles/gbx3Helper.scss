@@ -196,3 +196,59 @@ $helperColor: $hotPink;
   width: 0;
   overflow: hidden;
 }
+
+$stepInputSize: 18px;
+
+.gbx3Steps {
+  input::-webkit-input-placeholder {
+    font-size: $stepInputSize;
+    color: $med-blue-gray;
+  }
+  input::-moz-placeholder {
+    font-size: $stepInputSize;
+    color: $med-blue-gray;
+  }
+  input::-ms-input-placeholder {
+    font-size: $stepInputSize;
+    color: $med-blue-gray;
+  }
+
+  input {
+    font-size: $stepInputSize;
+  }
+
+  .input-group {
+    margin-left: 0;
+  }
+
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .formSection {
+    padding: 40px;
+
+    h2 {
+      margin-bottom: 20px;
+      .number {
+        color: $med-blue-gray;
+        margin-right: 10px;
+      }
+    }
+
+    h4 {
+      font-size: .9em;
+      margin: 20px 0;
+    }
+  }
+
+  button.link {
+    display: flex;
+    align-items: center;
+  }
+
+  button.donotShowAgain {
+  }
+}

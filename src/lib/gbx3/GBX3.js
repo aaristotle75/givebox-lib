@@ -31,6 +31,7 @@ import {
 import GBXEntry from '../common/GBXEntry';
 import AvatarMenu from './admin/AvatarMenu';
 import Share from './share/Share';
+import Steps from './helpers/Steps';
 
 const RECAPTCHA_KEY = process.env.REACT_APP_RECAPTCHA_KEY;
 const ENV = process.env.REACT_APP_ENV;
@@ -361,7 +362,9 @@ class GBX3 extends React.Component {
       queryParams
     } = this.props;
 
+    console.log('execute loadGBX3', queryParams);
     const share = has(queryParams, 'share') ? true : false;
+    const steps = has(queryParams, 'steps') ? true : false;
     const previewMode = has(queryParams, 'previewMode') ? true : false;
 
     this.props.loadGBX3(articleID, (res, err) => {
@@ -369,6 +372,7 @@ class GBX3 extends React.Component {
         this.props.setStyle();
         this.setRecaptcha();
         this.setTracking();
+        if (steps) this.props.toggleModal('stepsForm', true);
         if (share) this.props.toggleModal('share', true);
         if (previewMode) this.props.updateAdmin({ previewDevice: 'desktop', previewMode: true });
       }
@@ -437,6 +441,14 @@ class GBX3 extends React.Component {
           draggable={false}
           draggableTitle={``}
           component={(props) => <Share />}
+        />
+        <ModalRoute
+          className='gbx3'
+          id='stepsForm'
+          effect='3DFlipVert'
+          style={{ width: '60%' }}
+          disallowBgClose={true}
+          component={(props) => <Steps />}
         />
       </div>
     )
