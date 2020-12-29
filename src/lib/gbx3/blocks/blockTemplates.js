@@ -220,7 +220,7 @@ export const paymentForm = {
       style: {}
     },
     form: {
-      echeck: true,
+      echeck: false,
       feeOption: false,
       passFees: true,
       addressInfo: 0,
