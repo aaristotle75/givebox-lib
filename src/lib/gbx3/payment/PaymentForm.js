@@ -345,6 +345,10 @@ class PaymentFormClass extends Component {
       org
     } = this.props;
 
+    const {
+      paymethod
+    } = this.state;
+
     const instantFundraising = util.getValue(org, 'instantFundraising');
     const underwritingStatus = util.getValue(org, 'underwritingStatus');
     //const echeck = !util.isEmpty(instantFundraising) && underwritingStatus !== 'approved' ? false : this.props.echeck;
@@ -378,7 +382,7 @@ class PaymentFormClass extends Component {
 
     tabs.push(
       <Tab key={'creditcard'} id={'creditcard'} label={showCreditCardTabLabel ? <span className='tabLabel'>{mobile ? 'Credit Card' : 'Pay by Credit Card'}</span> : ''}>
-        {creditCard}
+        {paymethod === 'creditcard' ? creditCard : null}
       </Tab>
     );
 
@@ -386,7 +390,7 @@ class PaymentFormClass extends Component {
     if (echeck) {
       tabs.push(
         <Tab key={'echeck'} id={'echeck'} label={<span className='tabLabel'>{mobile ? 'Direct Debit' : 'Pay by Direct Debit'}</span>}>
-          {debitCard}
+          {paymethod === 'echeck' ? debitCard : null}
         </Tab>
       );
     }

@@ -511,7 +511,7 @@ function calcFee(amount = 0, fees = {}) {
         break;
       }
     }
-    if (isDebit) {
+    if (isDebit && paymethod === 'echeck') {
       feePrefix = 'debit';
     }
 
@@ -536,17 +536,18 @@ export function calcCart() {
     if (!util.isEmpty(items)) {
       Object.entries(items).forEach(([key, value]) => {
         value.passFees = passFees; // bad hack to assign passFees
+        const amountFormatted = value.amountFormatted || 0;
         const amount = value.amount;
         const fees = value.fees;
         const CRFTFeePct = util.getValue(fees, 'CRFTFeePct', 0);
         const CRFTFeePercent = +((CRFTFeePct/10000).toFixed(4)*parseFloat(amount/100));
-        const CRFTFee = CRFTFeePct && passFees ? +((CRFTFeePercent).toFixed(2)) : 0;
-        cart.subTotal = cart.subTotal + value.amountFormatted;
+        const CRFTFee = CRFTFeePct && passFees ? +((CRFTFeePercent).toFixed(2)) : +((0).toFixed(2));
+        cart.subTotal = cart.subTotal + amountFormatted;
         cart.fee = cart.fee + dispatch(calcFee(amount, fees));
-        cart.CRFTFee = CRFTFee;
+        cart.CRFTFee = cart.CRFTFee + CRFTFee;
       });
     }
-    cart.total = (cart.subTotal + cart.fee + cart.CRFTFee).toFixed(2);
+    cart.total = (cart.subTotal + cart.fee).toFixed(2);
     dispatch(saveCart(cart));
   }
 }
@@ -759,7 +760,8 @@ export function processTransaction(data, callback) {
   return (dispatch, getState) => {
     const gbx3 = util.getValue(getState(), 'gbx3', {});
     const articleData = util.getValue(gbx3, 'data', {});
-    const version = `&version=3&primary=${util.getValue(articleData, 'articleID')}`;
+    const hasCustomReceipt = util.getValue(gbx3, 'data.receiptConfig');
+    const version = `&version=${hasCustomReceipt ? 3 : 2}&primary=${util.getValue(articleData, 'articleID')}`;
 
     const grecaptcha = window.grecaptcha;
     grecaptcha.ready(function() {

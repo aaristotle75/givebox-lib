@@ -446,7 +446,7 @@ class GBX3 extends React.Component {
           className='gbx3'
           id='stepsForm'
           effect='3DFlipVert'
-          style={{ width: '60%' }}
+          style={{ width: '70%' }}
           disallowBgClose={true}
           component={(props) => <Steps />}
         />

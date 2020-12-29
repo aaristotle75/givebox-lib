@@ -17,7 +17,8 @@ class Share extends React.Component {
 
     const {
       kind,
-      display
+      display,
+      shareText
     } = this.props;
 
     return (
@@ -28,7 +29,7 @@ class Share extends React.Component {
               shareIconSize={45}
               subText={
                 <div className='subText'>
-                  Select Where You'd Like to Share Your Page
+                  { shareText || `Select Where You'd Like to Share Your Page` }
                 </div>
               }
             />
@@ -37,7 +38,7 @@ class Share extends React.Component {
             shareIconSize={45}
             subText={
               <div className='subText'>
-                Select Where You'd Like to Share Your {types.kind(kind).name}
+                { shareText || `Select Where You'd Like to Share Your ${types.kind(kind).name}` }
               </div>
             }
           />

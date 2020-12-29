@@ -27,7 +27,7 @@ class Share extends React.Component {
     this.renderShareList = this.renderShareList.bind(this);
     this.setShareTypeSelected = this.setShareTypeSelected.bind(this);
     this.state = {
-      shareTypeSelected: 'social'
+      shareTypeSelected: props.defaultSelected || 'social'
     };
   }
 
@@ -52,7 +52,8 @@ class Share extends React.Component {
   renderShareList() {
     const {
       kind,
-      display
+      display,
+      hideList
     } = this.props;
 
     const {
@@ -71,6 +72,7 @@ class Share extends React.Component {
 
     shareTypes.forEach((value, key) => {
       if (orgDisplay && value.org === 'hide') return;
+      else if (hideList.includes(value.type)) return;
       else {
         items.push(
           <div key={key} className='createKindItem' onClick={() => this.setShareTypeSelected(value.type)}>
@@ -171,6 +173,7 @@ class Share extends React.Component {
 }
 
 Share.defaultProps = {
+  hideList: []
 }
 
 function mapStateToProps(state, props) {

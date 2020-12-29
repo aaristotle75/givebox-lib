@@ -12,11 +12,12 @@ import {
   Fade
 } from '../../';
 import {
-  updateHelperSteps
+  updateHelperSteps,
+  checkHelperIfHasDefaultValue
 } from '../redux/gbx3actions';
 import MediaLibrary from '../../form/MediaLibrary';
-import ShareSocial from '../share/ShareSocial';
-import ShareLinkCopy from '../share/ShareLinkCopy';
+import Share from '../share/Share';
+import LinearBar from '../../common/LinearBar';
 
 class StepsForm extends Component {
 
@@ -30,12 +31,20 @@ class StepsForm extends Component {
     this.donotShowAgain = this.donotShowAgain.bind(this);
     this.previousStep = this.previousStep.bind(this);
     this.nextStep = this.nextStep.bind(this);
+    this.gotoStep = this.gotoStep.bind(this);
+    this.renderStepHeader = this.renderStepHeader.bind(this);
+    this.stepCompleted = this.stepCompleted.bind(this);
     const {
       data
     } = props;
+
+    const title = this.props.checkHelperIfHasDefaultValue('article', { field: 'title', defaultCheck: 'text' }) ? '' : util.getValue(data, 'title');
+
     this.state = {
+      title,
       imageURL: util.getValue(data, 'imageURL'),
-      orgImageURL: util.getValue(data, 'orgImageURL')
+      orgImageURL: util.getValue(data, 'orgImageURL'),
+      error: false
     };
   }
 
@@ -85,6 +94,7 @@ class StepsForm extends Component {
     } = this.props;
 
     const {
+      title,
       imageURL,
       orgImageURL
     } = this.state;
@@ -103,9 +113,10 @@ class StepsForm extends Component {
         item.push(
           <div key={4} className='step'>
             <h2><span className='number'>Step 4:</span> Share It!</h2>
-            <div className='stepsSubText'>Share your fundraiser on social media.</div>
-            <ShareLinkCopy />
-            <ShareSocial />
+            <div className='stepsSubText'>Click a social icon below to share your fundraiser to start raising money.</div>
+            <Share
+              hideList={['web']}
+            />
           </div>
         );
         break;
@@ -115,7 +126,7 @@ class StepsForm extends Component {
         item.push(
           <div key={3} className='step'>
             <h2><span className='number'>Step 3:</span> Add an Image</h2>
-            <div className='stepsSubText'>A very nice image speaks louder than words. Upload an image that let's your audience feel the urgency to give.</div>
+            <div className='stepsSubText'>A very nice image speaks louder than words. Upload an image that lets your audience feel the urgency to give.</div>
             <MediaLibrary
               blockType={'article'}
               image={imageURL}
@@ -169,7 +180,7 @@ class StepsForm extends Component {
               maxLength: 128,
               count: true,
               required: true,
-              value: util.getValue(data, 'title')
+              value: title
             })}
           </div>
         );
@@ -181,6 +192,14 @@ class StepsForm extends Component {
 
   donotShowAgain() {
     console.log('execute donotShowAgain');
+  }
+
+  gotoStep(gotoStep) {
+    const {
+      step
+    } = this.props;
+    this.props.updateHelperSteps({ step: gotoStep });
+    this.stepCompleted(step);
   }
 
   previousStep() {
@@ -199,6 +218,44 @@ class StepsForm extends Component {
     } = this.props;
     const nextStep = step < steps ? step + 1 : step;
     this.props.updateHelperSteps({ step: nextStep });
+    this.stepCompleted(step);
+  }
+
+  stepCompleted(step) {
+    const completed = [ ...this.props.completed ];
+    if (!completed.includes(step)) {
+      completed.push(step);
+      this.props.updateHelperSteps({ completed });
+    }
+  }
+
+  renderStepHeader() {
+    const {
+      step,
+      completed
+    } = this.props;
+
+    const steps = ['Enter Title', 'Upload Logo', 'Add Image', 'Share'];
+    const items = [];
+    const percent = +(step * 25);
+    steps.forEach((value, key) => {
+      const stepCount = key + 1;
+      const stepCompleted = completed.includes(stepCount) ? true : false;
+      items.push(
+        <div key={key} onClick={() => this.gotoStep(stepCount)} className={`stepHeaderStep ${stepCompleted ? 'completed' : ''} ${step === stepCount ? 'active' : ''}`}>
+          <span style={{ visibility: stepCount === 1 && !stepCompleted ? 'hidden' : '' }} className={`icon icon-${stepCompleted ? 'check-circle' : 'chevron-right'}`}></span>
+          <div className='stepNumber'><span className='number'>Step {stepCount}:</span><span className='stepTitle'>{value}</span></div>
+        </div>
+      )
+    })
+    return (
+      <div className='stepHeader'>
+        <div className='stepHeaderSteps'>
+          {items}
+        </div>
+        <LinearBar progress={percent} />
+      </div>
+    )
   }
 
   render() {
@@ -212,11 +269,12 @@ class StepsForm extends Component {
     const lastStep = step === steps ? true : false;
     let saveButtonLabel = 'Continue to Next Step';
     if (lastStep) {
-      saveButtonLabel = 'Continue to Share';
+      saveButtonLabel = 'Click Here After Sharing to Finish';
     }
 
     return (
-      <>
+      <div>
+        {this.renderStepHeader()}
         <div className='formSectionContainer'>
           <div className='formSection'>
             {this.renderStep()}
@@ -224,16 +282,16 @@ class StepsForm extends Component {
         </div>
         <div className='button-group'>
           <div className='button-item' style={{ width: 150 }}>
-            { !firstStep ? <GBLink className={`link secondary`} disabled={firstStep} onClick={() => this.previousStep()}><span style={{ marginRight: '5px' }} className='icon icon-chevron-left'></span> Previous Step</GBLink> : <span>&nbsp;</span> }
+            { !firstStep ? <GBLink className={`link`} disabled={firstStep} onClick={() => this.previousStep()}><span style={{ marginRight: '5px' }} className='icon icon-chevron-left'></span> Previous Step</GBLink> : <span>&nbsp;</span> }
           </div>
           <div className='button-item'>
             {this.props.saveButton(this.processForm, { label: saveButtonLabel })}
           </div>
           <div className='button-item' style={{ width: 150 }}>
-            <GBLink className='donotShowAgain secondary link' onClick={() => this.donotShowAgain()}>{`Don't Show Again`} <span style={{ marginLeft: '5px' }} className='icon icon-x'></span></GBLink>
+            <GBLink className='donotShowAgain link' onClick={() => this.donotShowAgain()}>{`Don't Show Again`}</GBLink>
           </div>
         </div>
-      </>
+      </div>
     )
   }
 }
@@ -280,7 +338,7 @@ function mapStateToProps(state, props) {
 
   return {
     step: util.getValue(helperSteps, 'step', 1),
-    completed: util.getValue(helperSteps, 'completed', false),
+    completed: util.getValue(helperSteps, 'completed', []),
     breakpoint: util.getValue(state, 'gbx3.info.breakpoint'),
     articleID: util.getValue(state, 'gbx3.info.articleID'),
     orgID: util.getValue(state, 'gbx3.info.orgID'),
@@ -291,5 +349,6 @@ function mapStateToProps(state, props) {
 export default connect(mapStateToProps, {
   sendResource,
   toggleModal,
-  updateHelperSteps
+  updateHelperSteps,
+  checkHelperIfHasDefaultValue
 })(Steps)

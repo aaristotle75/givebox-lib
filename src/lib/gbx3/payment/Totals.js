@@ -71,14 +71,14 @@ class Totals extends Component {
             <div style={{ width: 200 }}>
               <span className='line'>Sub Total:</span>
               <span className='line'>Givebox Fee:</span>
-              <span className='line'>Org Fee:</span>
+              {/* <span className='line'>Org Fee:</span> */}
               <span className='line'>{( cardType === 'default' || !cardType) ? isDebit ? 'Debit Card' : 'Credit Card' : `${cardType.toUpperCase()} ${isDebit ? 'Debit' : ''}`} Fee:</span>
               <span className='totalLine'>Total:</span>
             </div>
             <div>
               <span className='line'>{util.money(subTotal)}</span>
               <span className='line'>{util.money(giveboxFee)}</span>
-              <span className='line'>{util.money(CRFTFee)}</span>
+              {/* <span className='line'>{util.money(CRFTFee)}</span> */}
               <span className='line'>{util.money(fee)}</span>
               <span className='totalLine'>{util.money(total)}</span>
             </div>

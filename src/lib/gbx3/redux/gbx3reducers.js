@@ -80,7 +80,7 @@ export function gbx3(state = {
   },
   helperSteps: {
     step: 1,
-    completed: false
+    completed: []
   },
   helperBlocks: {
     article: {},
