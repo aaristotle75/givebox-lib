@@ -27,22 +27,18 @@ class Share extends React.Component {
             <SocialOrg
               shareIconSize={45}
               subText={
-                <>
-                  <div className='subText'>
-                    Select Where You'd Like to Share Your {types.kind(kind).name}
-                  </div>
-                </>
+                <div className='subText'>
+                  Select Where You'd Like to Share Your Page
+                </div>
               }
             />
           :
           <Social
             shareIconSize={45}
             subText={
-              <>
-                <div className='subText'>
-                  Select Where You'd Like to Share Your Page
-                </div>
-              </>
+              <div className='subText'>
+                Select Where You'd Like to Share Your {types.kind(kind).name}
+              </div>
             }
           />
           }

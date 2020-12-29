@@ -15,6 +15,8 @@ import {
   updateHelperSteps
 } from '../redux/gbx3actions';
 import MediaLibrary from '../../form/MediaLibrary';
+import ShareSocial from '../share/ShareSocial';
+import ShareLinkCopy from '../share/ShareLinkCopy';
 
 class StepsForm extends Component {
 
@@ -28,13 +30,20 @@ class StepsForm extends Component {
     this.donotShowAgain = this.donotShowAgain.bind(this);
     this.previousStep = this.previousStep.bind(this);
     this.nextStep = this.nextStep.bind(this);
+    const {
+      data
+    } = props;
+    this.state = {
+      imageURL: util.getValue(data, 'imageURL'),
+      orgImageURL: util.getValue(data, 'orgImageURL')
+    };
   }
 
   componentDidMount() {
   }
 
-  handleSaveCallback(url) {
-    console.log('execute handleSaveCallback', url);
+  handleSaveCallback(url, field) {
+    console.log('execute handleSaveCallback', url, field);
   }
 
   formSavedCallback() {
@@ -71,18 +80,32 @@ class StepsForm extends Component {
       step,
       breakpoint,
       articleID,
-      orgID
+      orgID,
+      data
     } = this.props;
 
+    const {
+      imageURL,
+      orgImageURL
+    } = this.state;
+
     const item = [];
+    const library = {
+      saveMediaType: 'org',
+      articleID,
+      orgID,
+      type: 'article',
+      borderRadius: 0
+    };
 
     switch (step) {
-
       case 4: {
         item.push(
           <div key={4} className='step'>
             <h2><span className='number'>Step 4:</span> Share It!</h2>
             <div className='stepsSubText'>Share your fundraiser on social media.</div>
+            <ShareLinkCopy />
+            <ShareSocial />
           </div>
         );
         break;
@@ -93,29 +116,33 @@ class StepsForm extends Component {
           <div key={3} className='step'>
             <h2><span className='number'>Step 3:</span> Add an Image</h2>
             <div className='stepsSubText'>A very nice image speaks louder than words. Upload an image that let's your audience feel the urgency to give.</div>
+            <MediaLibrary
+              blockType={'article'}
+              image={imageURL}
+              preview={imageURL}
+              handleSaveCallback={(url) => this.handleSaveCallback(url, 'imageURL')}
+              handleSave={util.handleFile}
+              library={library}
+              showBtns={'hide'}
+              saveLabel={'close'}
+              mobile={breakpoint === 'mobile' ? true : false }
+              uploadOnly={true}
+            />
           </div>
         );
         break;
       }
 
       case 2: {
-        const library = {
-          saveMediaType: 'org',
-          articleID,
-          orgID,
-          type: 'article',
-          borderRadius: 0
-        };
-
         item.push(
           <div key={2} className='step'>
             <h2><span className='number'>Step 2:</span> Upload a Logo</h2>
             <div className='stepsSubText'>Please upload an image of your logo. The best logos fit nicely in a square.</div>
             <MediaLibrary
               blockType={'article'}
-              image={null}
-              preview={null}
-              handleSaveCallback={this.handleSaveCallback}
+              image={orgImageURL}
+              preview={orgImageURL}
+              handleSaveCallback={(url) => this.handleSaveCallback(url, 'orgImageURL')}
               handleSave={util.handleFile}
               library={library}
               showBtns={'hide'}
@@ -141,7 +168,8 @@ class StepsForm extends Component {
               placeholder: 'Click Here and Enter a Title',
               maxLength: 128,
               count: true,
-              required: true
+              required: true,
+              value: util.getValue(data, 'title')
             })}
           </div>
         );
@@ -255,7 +283,8 @@ function mapStateToProps(state, props) {
     completed: util.getValue(helperSteps, 'completed', false),
     breakpoint: util.getValue(state, 'gbx3.info.breakpoint'),
     articleID: util.getValue(state, 'gbx3.info.articleID'),
-    orgID: util.getValue(state, 'gbx3.info.orgID')
+    orgID: util.getValue(state, 'gbx3.info.orgID'),
+    data: util.getValue(state, 'gbx3.data', {})
   }
 }
 
