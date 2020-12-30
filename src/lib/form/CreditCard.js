@@ -80,7 +80,8 @@ class CreditCard extends Component {
       errorType,
       value,
       hideLabel,
-      color
+      color,
+      paybyDebitCard
     } = this.props;
 
     const {
@@ -100,7 +101,7 @@ class CreditCard extends Component {
     return (
         <div style={style} className={`input-group ${className || ''} creditCard ${error ? 'error tooltip' : ''}`}>
           <Fade in={true}>
-            <div className={`cardsAccepted`}></div>
+            <div className={`cardsAccepted ${paybyDebitCard ? 'debitCardsAccepted' : ''}`}></div>
           </Fade>
           <div className={`floating-label ${fixedLabel && 'fixed'}`}>
             <Fade in={cardType ? true : false}><div className={`cardType ${cardType}`}></div></Fade>
@@ -138,7 +139,8 @@ CreditCard.defaultProps = {
   type: 'text',
   checked: false,
   placeholder: 'xxxx xxxx xxxx xxxx',
-  hideLabel: false
+  hideLabel: false,
+  paybyDebitCard: false
 }
 
 export default CreditCard;

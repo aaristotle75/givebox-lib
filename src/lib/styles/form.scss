@@ -815,7 +815,11 @@ label.active {
     left: -5px;
     background-image: url('https://cdn.givebox.com/givebox/public/images/brands-accepted.png');
     background-repeat: no-repeat;
-    background-size: 130px 21px;
+    background-size: 143px 23px;
+  }
+
+  .debitCardsAccepted {
+    background-image: url('https://cdn.givebox.com/givebox/public/images/brands-accepted-debit.png');
   }
 }
 

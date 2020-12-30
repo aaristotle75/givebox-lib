@@ -371,7 +371,8 @@ class PaymentFormClass extends Component {
       placeholder: 'xxxx xxxx xxxx xxxx',
       debug: false,
       cvvModalRootClass: 'gbxModal',
-      onChange: this.onCreditCardChange
+      onChange: this.onCreditCardChange,
+      paybyDebitCard: true
     });
 
     let showCreditCardTabLabel = false;

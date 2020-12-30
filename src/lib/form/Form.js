@@ -104,7 +104,8 @@ class Form extends Component {
       count: false,
       meta: {},
       disallowModalBgClose: false,
-      color: ''
+      color: '',
+      paybyDebitCard: false
     }
     this.defaults = { ...this.defaultOptions, ...props.options };
     this.saveButtonRef = React.createRef();
@@ -864,6 +865,7 @@ class Form extends Component {
         fieldProp={this.fieldProp}
         params={params}
         color={params.color || this.props.primaryColor}
+        paybyDebitCard={params.paybyDebitCard}
       />
     )
   }
@@ -887,7 +889,7 @@ class Form extends Component {
 
       <div style={params.style} className={`field-group creditCard-group`}>
         <div className='creditCard col'>
-          {this.creditCard('ccnumber', { group: params.group, label: params.ccnumberLabel || 'Credit Card', fixedLabel: params.ccnumberfixedLabel || true, hideLabel: params.hideLabel, placeholder: params.placeholder, readOnly: params.readOnly, required: params.required, onChange: params.onChange, onBlur: params.onBlur, debug: params.debug})}
+          {this.creditCard('ccnumber', { group: params.group, label: params.ccnumberLabel || 'Credit Card', fixedLabel: params.ccnumberfixedLabel || true, hideLabel: params.hideLabel, placeholder: params.placeholder, readOnly: params.readOnly, required: params.required, onChange: params.onChange, onBlur: params.onBlur, paybyDebitCard: params.paybyDebitCard, debug: params.debug})}
         </div>
         <div className='ccexpire col'>
           {this.textField('ccexpire', { group: params.group, label: params.ccxpireLabel || 'Expiration', fixedLabel: params.ccexpirefixedLabel || true, placeholder: 'MM/YY', required: params.required, value: params.ccexpireValue || '', validate: 'ccexpire', maxLength: 5, count: false, debug: params.debug, inputMode: 'numeric', onChange: this.onChangeCCExpire, onBlur: params.onBlurCCExpire })}
