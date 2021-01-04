@@ -68,7 +68,13 @@ class MediaLibrary extends Component {
     }
   }
 
-  componentDidUpdate(prev) {
+  componentDidUpdate(prevProps) {
+    if ((prevProps.image !== this.props.image) || (prevProps.preview !== this.props.preview)) {
+      this.setState({
+        image: this.props.image,
+        preview: this.props.preview
+      })
+    }
   }
 
   componentWillUnmount() {

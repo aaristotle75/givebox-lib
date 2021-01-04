@@ -682,20 +682,24 @@
 
     .leftSide {
       width: 20%;
+      margin-left: 10px;
       white-space: nowrap;
       .icon {
         font-size: 20px;
         margin-right: 10px;
       }
-      .icon.leftPanelClose {
-        color: $white;
-        font-size: 20px;
-        margin-left: 20px;
+      button.link.side {
+        margin-left: 10px;
       }
     }
 
     .middle {
       white-space: nowrap;
+
+      .topMiddleTitle {
+        color: $white;
+      }
+
       .button-group {
         button.link {
           text-align: center;
@@ -730,6 +734,37 @@
   }
 
   // Left Panel
+  .leftPanelOpenButton {
+    position: fixed;
+    top: 130px;
+    left: 20px;
+    z-index: 999999;
+    height: 45px;
+    width: 45px;
+    background: $mainColor;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    @include transition(left .5s, opacity .5s);
+    opacity: 1;
+
+    @media (max-width: $breakpoint) {
+      right: 5px;
+    }
+
+    .icon {
+      font-size: 30px;
+      color: $white;
+    }
+  }
+
+  .leftPanelOpenButton:hover {
+    background: transparentize($mainColor, .4);
+    @include default-transition(.25s);
+  }
+
   .leftPanel {
     position: absolute;
     top: $topOffset;
@@ -764,8 +799,28 @@
       background: $mainColorLight;
     }
 
-    .adminPanelTabs {
+    .leftPanelClose {
+      position: absolute;
+      top: $topOffset;
+      left: 0;
+      z-index: 11;
+      background: $mainColor;
+      border-bottom-right-radius: 5px;
+      padding: 1px !important;
+      @include transition(left .5s);
+      opacity: 0;
 
+      .icon {
+        color: $white;
+        font-size: 12px;
+        @include default-transition(.25s);
+      }
+      .icon:hover {
+        color: $light-gray;
+      }
+    }
+
+    .adminPanelTabs {
       position: relative;
       height: 50px;
       width: $panelWidth;
@@ -938,6 +993,18 @@
   .leftPanel.open {
     width: $panelWidth;
     @include box-shadow(0px 2px 2px 1px rgba(0, 0, 0, 0.45));
+    .leftPanelOpenButton {
+      position: absolute;
+      opacity: 0;
+      left: $panelWidth - 45px;
+      z-index: 900000;
+    }
+
+    .leftPanelClose {
+      position: fixed;
+      left: $panelWidth;
+      opacity: 1;
+    }
   }
 
   .leftPanel.close {
