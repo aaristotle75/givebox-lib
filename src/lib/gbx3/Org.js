@@ -334,7 +334,7 @@ class Org extends React.Component {
               layouts={layouts}
               id='testGrid'
               className="blockGridLayout"
-              breakpoints={{desktop: 768, mobile: 767 }}
+              breakpoints={{desktop: 736, mobile: 735 }}
               cols={{desktop: 12, mobile: 6}}
               rowHeight={10}
               onLayoutChange={this.layoutChange}

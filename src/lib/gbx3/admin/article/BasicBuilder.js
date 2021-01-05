@@ -180,7 +180,8 @@ class BasicBuilder extends React.Component {
       createType,
       previewDevice,
       previewMode,
-      articleID
+      articleID,
+      completed
     } = this.props;
 
     const items = [];
@@ -225,6 +226,7 @@ class BasicBuilder extends React.Component {
           stepCompleted={this.stepCompleted}
           config={this.config}
           steps={this.steps}
+          completed={completed}
         />
       )
     }
@@ -237,7 +239,6 @@ class BasicBuilder extends React.Component {
       step
     } = this.props;
     this.props.updateHelperSteps({ step: +gotoStep });
-    this.stepCompleted(+step);
   }
 
   previousStep() {
@@ -253,16 +254,19 @@ class BasicBuilder extends React.Component {
       step
     } = this.props;
     const nextStep = step < this.steps ? step + 1 : step;
-    this.props.updateHelperSteps({ step: nextStep });
-    this.stepCompleted(step);
+    return nextStep;
   }
 
-  stepCompleted(step) {
+  async stepCompleted(step) {
+    let updated = false;
     const completed = [ ...this.props.completed ];
     if (!completed.includes(step)) {
       completed.push(step);
-      this.props.updateHelperSteps({ completed });
+      updated = await this.props.updateHelperSteps({ completed });
+    } else {
+      updated = true;
     }
+    return updated;
   }
 
   render() {

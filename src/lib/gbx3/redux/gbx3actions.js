@@ -7,6 +7,7 @@ import { defaultAmountHeight } from '../blocks/amounts/amountsStyle';
 import { blockTemplates, defaultBlocks } from '../blocks/blockTemplates';
 import { createData } from '../admin/article/createTemplates';
 import { helperTemplates } from '../helpers/helperTemplates';
+import { builderStepsConfig } from '../admin/article/builderStepsConfig';
 import {
   defaultStyle
 } from './gbx3defaults';
@@ -571,13 +572,15 @@ export function saveGBX3(blockType, options = {}) {
     const globals = util.getValue(gbx3, 'globals', {});
     const backgrounds = util.getValue(gbx3, 'backgrounds', []);
     const helperBlocks = util.getValue(gbx3, 'helperBlocks', {});
+    const helperSteps = util.getValue(gbx3, 'helperSteps', {});
     const giveboxSettings = blockType === 'org' ?
       {
         customTemplate: {
           blocks,
           globals,
           backgrounds,
-          helperBlocks
+          helperBlocks,
+          helperSteps
         }
       }
     :
@@ -588,7 +591,8 @@ export function saveGBX3(blockType, options = {}) {
             blocks,
             globals,
             backgrounds,
-            helperBlocks
+            helperBlocks,
+            helperSteps
           }
         }
       }
@@ -998,6 +1002,13 @@ export function loadGBX3(articleID, callback) {
                     }
                   : helperTemplates[blockType][kind];
 
+                  const helperStepsCustom = util.getValue(customTemplate, `helperSteps`, {});
+                  const helperSteps = !util.isEmpty(helperStepsCustom) ?
+                    {
+                      ...helperStepsCustom
+                    }
+                  : builderStepsConfig[kind];
+
                   if (!util.isEmpty(blocksCustom)) {
                     // Check if not all default blocks are present
                     // If not, add them to the availableBlocks array
@@ -1046,6 +1057,7 @@ export function loadGBX3(articleID, callback) {
                   dispatch(updateBlocks(blockType, blocks));
                   dispatch(updateGlobals(globals));
                   dispatch(updateHelperBlocks(blockType, helperBlocks));
+                  dispatch(updateHelperSteps(helperSteps));
                   dispatch(updateData(res));
                   dispatch(updateAvailableBlocks(blockType, availableBlocks));
                   dispatch(updateAdmin(admin));

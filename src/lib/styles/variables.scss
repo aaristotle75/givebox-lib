@@ -1,5 +1,5 @@
 /*----- Layout -----*/
-$breakpoint: 768px;
+$breakpoint: 736px;
 $layout-top-height: 56px;
 $layout-left-width: 220px;
 $main-max-width: 100%;
@@ -107,53 +107,53 @@ $canvasOverlay: rgba(37, 54, 85, .1);
 $sonarAlertColor: $green;
 
 @mixin box-shadow($shadows...) {
-	-moz-box-: $shadows;
-	-webkit-box-shadow: $shadows;
-	box-shadow: $shadows;
+  -moz-box-: $shadows;
+  -webkit-box-shadow: $shadows;
+  box-shadow: $shadows;
 }
 
 @mixin drop-shadow($shadows...) {
-	-webkit-filter: drop-shadow($shadows);
-	filter: drop-shadow($shadows);
+  -webkit-filter: drop-shadow($shadows);
+  filter: drop-shadow($shadows);
 }
 
 @mixin default-transition($transitions...) {
-	transition-duration: $transitions;
-	-webkit-transition-duration: $transitions;
+  transition-duration: $transitions;
+  -webkit-transition-duration: $transitions;
 }
 
 @mixin transition($transitions...) {
-	transition: $transitions;
-	-webkit-transition: $transitions;
+  transition: $transitions;
+  -webkit-transition: $transitions;
 }
 
 @mixin animation($animations...) {
-	animation: $animations;
-	-webkit-animation: $animations;
+  animation: $animations;
+  -webkit-animation: $animations;
 }
 
 @mixin browser($browsers) {
-	@each $browser in $browsers {
-		html[data-browser*="#{$browser}"] & {
-			@content;
-		}
-	}
+  @each $browser in $browsers {
+    html[data-browser*="#{$browser}"] & {
+      @content;
+    }
+  }
 }
 
 @mixin filter($filter...) {
-	-webkit-filter: $filter;
-	filter: $filter;
+  -webkit-filter: $filter;
+  filter: $filter;
 }
 
 @mixin bgGradient($gradient...) {
-	background: -webkit-linear-gradient($gradient);
-	background: -moz-linear-gradient($gradient);
-	background: linear-gradient($gradient);
+  background: -webkit-linear-gradient($gradient);
+  background: -moz-linear-gradient($gradient);
+  background: linear-gradient($gradient);
 }
 
 .editingText {
-	display: block;
-	font-size: 12px;
-	color: $mainColor;
-	@include animation(pulsateBrighter 2s ease-out infinite);
+  display: block;
+  font-size: 12px;
+  color: $mainColor;
+  @include animation(pulsateBrighter 2s ease-out infinite);
 }

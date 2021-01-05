@@ -233,8 +233,13 @@ $gbx3StepsBreakpoint: 600px;
 
 .gbx3Steps {
 
+  .stepStatus {
+    font-size: .9em;
+    margin-bottom: 20px;
+  }
+
   iframe {
-    width: $breakpoint + 70px;
+    width: 100%;
     height: 1000px;
     overflow: auto;
   }
@@ -271,6 +276,7 @@ $gbx3StepsBreakpoint: 600px;
   }
 
   .button-group {
+    margin-top: 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -285,7 +291,7 @@ $gbx3StepsBreakpoint: 600px;
   }
 
   .step {
-    padding: 40px;
+    padding: 0 20px;
 
     h2 {
       margin-bottom: 20px;

@@ -15,7 +15,8 @@ import {
   updateHelperSteps,
   checkHelperIfHasDefaultValue,
   saveGBX3,
-  updateData
+  updateData,
+  updateGlobals
 } from '../../redux/gbx3actions';
 import MediaLibrary from '../../../form/MediaLibrary';
 import Share from '../../share/Share';
@@ -28,6 +29,7 @@ class BasicBuilderStepsForm extends Component {
 
   constructor(props) {
     super(props);
+    this.saveStep = this.saveStep.bind(this);
     this.gbx3message = this.gbx3message.bind(this);
     this.handleSaveCallback = this.handleSaveCallback.bind(this);
     this.processForm = this.processForm.bind(this);
@@ -35,8 +37,6 @@ class BasicBuilderStepsForm extends Component {
     this.formSavedCallback = this.formSavedCallback.bind(this);
     this.renderStep = this.renderStep.bind(this);
     this.state = {
-      imageURL: null,
-      orgImageURL: null,
       themeColor: util.getValue(props.data, 'giveboxSettings.primaryColor'),
       error: false,
       previewLoaded: false
@@ -48,14 +48,41 @@ class BasicBuilderStepsForm extends Component {
   }
 
   gbx3message(e) {
+    const {
+      step
+    } = this.props;
+
     if (e.data === 'gbx3Initialized') {
-      this.setState({ previewLoaded: true });
+      const stepConfig = util.getValue(this.props.config, step, {});
+      const slug = util.getValue(stepConfig, 'slug');
+      if (slug === 'preview') {
+        this.setState({ previewLoaded: true }, () => this.props.stepCompleted(+step));
+      }
+    }
+  }
+
+  async saveStep(data) {
+    const {
+      step
+    } = this.props;
+    const updated = [];
+    const completedStep = await this.props.stepCompleted(+step);
+    const dataUpdated = await this.props.updateData(data);
+    if (completedStep) updated.push('completedStep');
+    if (dataUpdated) updated.push('dataUpdated');
+    if (updated.length === 2) {
+      this.props.saveGBX3('article', {
+        updateLayout: false,
+        nextStep: this.props.nextStep()
+      });
     }
   }
 
   handleSaveCallback(url, field) {
-    console.log('execute handleSaveCallback', url, field);
-    this.setState({ [field]: url })
+    const {
+      data
+    } = this.props;
+    if (url && url !== util.getValue(data, field)) this.saveStep({ [field]: url });
   }
 
   formSavedCallback() {
@@ -75,33 +102,43 @@ class BasicBuilderStepsForm extends Component {
     return;
   }
 
-  processForm(fields) {
+  async processForm(fields) {
     util.toTop('modalOverlay-stepsForm');
     const {
-      themeColor,
-      imageURL,
-      orgImageURL
+      step,
+      data,
+      gbxStyle,
+      button
+    } = this.props;
+
+    const {
+      themeColor
     } = this.state;
 
-    const data = {
-      imageURL,
-      orgImageURL
-    };
-    const giveboxSettings = {};
-    Object.entries(fields).forEach(([key, value]) => {
-      if (value.autoReturn) {
-        data[key] = value.value;
-      }
-    });
-    if (themeColor) giveboxSettings.primaryColor = themeColor;
+    const stepConfig = util.getValue(this.props.config, step, {});
+    const slug = util.getValue(stepConfig, 'slug');
 
-    if (!util.isEmpty(giveboxSettings)) {
-      data.giveboxSettings = {
-        ...giveboxSettings
+    if (slug === 'themeColor') {
+      if (util.getValue(data, 'giveboxSettings.primaryColor') !== themeColor && themeColor) {
+        const globals = {
+          gbxStyle: {
+            ...gbxStyle,
+            backgroundColor: themeColor,
+            primaryColor: themeColor
+          },
+          button: {
+            ...button,
+            style: {
+              ...button.style,
+              bgColor: themeColor
+            }
+          }
+        };
+        const globalsUpdated = await this.props.updateGlobals(globals);
+        if (globalsUpdated) this.saveStep({ giveboxSettings: { primaryColor: themeColor }});
       }
     }
-    console.log('execute processForm', data);
-    this.props.nextStep();
+    this.props.updateHelperSteps({ step: this.props.nextStep() });
   }
 
   renderStep() {
@@ -124,6 +161,7 @@ class BasicBuilderStepsForm extends Component {
     const stepConfig = util.getValue(this.props.config, step, {});
     const slug = util.getValue(stepConfig, 'slug');
     const stepNumber = `Step ${+step + 1}:`;
+    const completed = this.props.completed.includes(step) ? true : false;
     const item = {
       title: '',
       desc: '',
@@ -156,7 +194,6 @@ class BasicBuilderStepsForm extends Component {
               color={this.state.themeColor}
               onChangeComplete={(color) => {
                 this.setState({ themeColor: color.hex })
-                console.log('execute onChangeComplete', color);
               }}
             />
           </div>
@@ -166,9 +203,9 @@ class BasicBuilderStepsForm extends Component {
 
       case 'preview': {
         item.title = 'Preview your Form';
-        item.desc = `This is how your form will look to your customers. ${!this.state.previewLoaded ? 'Please wait while preview loads...' : ''}`;
+        item.desc = !this.state.previewLoaded ? 'Please wait while the preview loads...' : 'This is how your form will look to your customers.';
         item.component =
-          <div className='stagePreview'>
+          <div className='stagePreview flexCenter'>
             <iframe src={`${GBX3_URL}/${articleID}/?public&preview`} title={`Preview`} />
           </div>
         ;
@@ -190,7 +227,6 @@ class BasicBuilderStepsForm extends Component {
         const imageURL = this.props.checkHelperIfHasDefaultValue('article', { field: 'imageURL', defaultCheck: 'image' }) ? '' : util.getValue(data, 'imageURL');
         item.title = 'Add an Image';
         item.desc = 'A very nice image speaks louder than words. Upload an image that lets your audience feel the urgency to give.';
-        console.log('execute imageURL', imageURL);
         item.component =
           <MediaLibrary
             blockType={'article'}
@@ -212,7 +248,6 @@ class BasicBuilderStepsForm extends Component {
         const orgImageURL = this.props.checkHelperIfHasDefaultValue('article', { field: 'orgImageURL', defaultCheck: 'logo' }) ? '' : util.getValue(data, 'orgImageURL');
         item.title = 'Upload a Logo';
         item.desc = 'Please upload an image of your logo. The best logos fit nicely in a square.';
-        console.log('execute orgImageURL', orgImageURL);
         item.component =
           <MediaLibrary
             blockType={'article'}
@@ -245,7 +280,10 @@ class BasicBuilderStepsForm extends Component {
             maxLength: 128,
             count: true,
             required: false,
-            value: title
+            value: title,
+            onBlur: (name, value) => {
+              if (value && value !== title) this.saveStep({ title: value });
+            }
           })
         ;
         break;
@@ -253,7 +291,8 @@ class BasicBuilderStepsForm extends Component {
     }
     return (
       <div className='step'>
-        <h2><span className='number'>{stepNumber}</span> {item.title}</h2>
+        <div className='stepStatus'>{completed ? <span className='green'><span className='icon icon-check'></span> Completed</span> : <span className='gray'><span className='icon icon-alert-circle'></span> Not Completed</span> }</div>
+        <h2><span className='number'>{stepNumber}</span> {item.title} </h2>
         <div className='stepsSubText'>{item.desc}</div>
         {item.component}
       </div>
@@ -337,7 +376,9 @@ function mapStateToProps(state, props) {
     articleID: util.getValue(state, 'gbx3.info.articleID'),
     orgID: util.getValue(state, 'gbx3.info.orgID'),
     data: util.getValue(state, 'gbx3.data', {}),
-    kind: util.getValue(state, 'gbx3.info.kind', 'fundraiser')
+    kind: util.getValue(state, 'gbx3.info.kind', 'fundraiser'),
+    gbxStyle: util.getValue(state, 'gbx3.globals.gbxStyle', {}),
+    button: util.getValue(state, 'gbx3.globals.button', {})
   }
 }
 
@@ -347,5 +388,6 @@ export default connect(mapStateToProps, {
   updateHelperSteps,
   checkHelperIfHasDefaultValue,
   saveGBX3,
-  updateData
+  updateData,
+  updateGlobals
 })(BasicBuilderSteps)
