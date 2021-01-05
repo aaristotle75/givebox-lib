@@ -108,7 +108,7 @@ class BasicBuilder extends React.Component {
     } else {
       middle.push(
         <div key={'middle'} className='topMiddleTitle'>
-          Welcome to Quick Form Builder
+          Welcome to Form Builder
         </div>
       );
     }
@@ -236,8 +236,8 @@ class BasicBuilder extends React.Component {
     const {
       step
     } = this.props;
-    this.props.updateHelperSteps({ step: gotoStep });
-    this.stepCompleted(step);
+    this.props.updateHelperSteps({ step: +gotoStep });
+    this.stepCompleted(+step);
   }
 
   previousStep() {
@@ -268,7 +268,9 @@ class BasicBuilder extends React.Component {
   render() {
 
     const {
+      step,
       createType,
+      completed,
       openAdmin: open
     } = this.props;
 
@@ -279,7 +281,13 @@ class BasicBuilder extends React.Component {
         </div>
         <div className={`leftPanel ${open ? 'open' : 'close'}`}>
           <div className='leftPanelOpenButton' onClick={this.props.toggleAdminLeftPanel}><span className='icon icon-menu'></span></div>
-          <BasicBuilderMenu />
+          <BasicBuilderMenu
+            config={this.config}
+            steps={this.steps}
+            gotoStep={this.gotoStep}
+            step={step}
+            completed={completed}
+          />
         </div>
         <div
           id='GBX3StageAligner'

@@ -28,22 +28,34 @@ class BasicBuilderStepsForm extends Component {
 
   constructor(props) {
     super(props);
+    this.gbx3message = this.gbx3message.bind(this);
     this.handleSaveCallback = this.handleSaveCallback.bind(this);
     this.processForm = this.processForm.bind(this);
     this.processCallback = this.processCallback.bind(this);
     this.formSavedCallback = this.formSavedCallback.bind(this);
     this.renderStep = this.renderStep.bind(this);
     this.state = {
+      imageURL: null,
+      orgImageURL: null,
       themeColor: util.getValue(props.data, 'giveboxSettings.primaryColor'),
-      error: false
+      error: false,
+      previewLoaded: false
     };
   }
 
   componentDidMount() {
+    window.addEventListener('message', this.gbx3message, false);
+  }
+
+  gbx3message(e) {
+    if (e.data === 'gbx3Initialized') {
+      this.setState({ previewLoaded: true });
+    }
   }
 
   handleSaveCallback(url, field) {
     console.log('execute handleSaveCallback', url, field);
+    this.setState({ [field]: url })
   }
 
   formSavedCallback() {
@@ -65,12 +77,29 @@ class BasicBuilderStepsForm extends Component {
 
   processForm(fields) {
     util.toTop('modalOverlay-stepsForm');
-    const data = {};
+    const {
+      themeColor,
+      imageURL,
+      orgImageURL
+    } = this.state;
+
+    const data = {
+      imageURL,
+      orgImageURL
+    };
+    const giveboxSettings = {};
     Object.entries(fields).forEach(([key, value]) => {
       if (value.autoReturn) {
         data[key] = value.value;
       }
     });
+    if (themeColor) giveboxSettings.primaryColor = themeColor;
+
+    if (!util.isEmpty(giveboxSettings)) {
+      data.giveboxSettings = {
+        ...giveboxSettings
+      }
+    }
     console.log('execute processForm', data);
     this.props.nextStep();
   }
@@ -94,7 +123,7 @@ class BasicBuilderStepsForm extends Component {
 
     const stepConfig = util.getValue(this.props.config, step, {});
     const slug = util.getValue(stepConfig, 'slug');
-    const stepNumber = `Step ${step + 1}:`;
+    const stepNumber = `Step ${+step + 1}:`;
     const item = {
       title: '',
       desc: '',
@@ -120,31 +149,27 @@ class BasicBuilderStepsForm extends Component {
         item.title = 'Choose a Theme Color'
         item.desc = 'Pick a color that matches your brand or messaging.';
         item.component =
-          <PhotoshopPicker
-            styles={style}
-            header={''}
-            color={this.state.themeColor}
-            onChangeComplete={(color) => {
-              this.setState({ themeColor: color })
-              console.log('execute onChangeComplete', color);
-            }}
-            onAccept={() => {
-              console.log('execute onAccept');
-            }}
-            onCancel={() => {
-              console.log('execute onCancel');
-            }}
-          />
+          <div className='flexCenter'>
+            <PhotoshopPicker
+              styles={style}
+              header={''}
+              color={this.state.themeColor}
+              onChangeComplete={(color) => {
+                this.setState({ themeColor: color.hex })
+                console.log('execute onChangeComplete', color);
+              }}
+            />
+          </div>
         ;
         break;
       }
 
       case 'preview': {
         item.title = 'Preview your Form';
-        item.desc = 'This is how your form will look to your customers.';
+        item.desc = `This is how your form will look to your customers. ${!this.state.previewLoaded ? 'Please wait while preview loads...' : ''}`;
         item.component =
           <div className='stagePreview'>
-            <iframe src={`${GBX3_URL}/${articleID}/?public&preview`} title={`Preview`} scrolling={'no'} />
+            <iframe src={`${GBX3_URL}/${articleID}/?public&preview`} title={`Preview`} />
           </div>
         ;
         break;
@@ -219,7 +244,7 @@ class BasicBuilderStepsForm extends Component {
             placeholder: 'Click Here and Enter a Title',
             maxLength: 128,
             count: true,
-            required: true,
+            required: false,
             value: title
           })
         ;

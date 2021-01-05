@@ -26,7 +26,7 @@ class Share extends React.Component {
         <div className='formSection'>
           {display === 'org' ?
             <SocialOrg
-              shareIconSize={45}
+              shareIconSize={40}
               subText={
                 <div className='subText'>
                   { shareText || `Select Where You'd Like to Share Your Page` }
@@ -35,7 +35,7 @@ class Share extends React.Component {
             />
           :
           <Social
-            shareIconSize={45}
+            shareIconSize={40}
             subText={
               <div className='subText'>
                 { shareText || `Select Where You'd Like to Share Your ${types.kind(kind).name}` }

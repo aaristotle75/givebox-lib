@@ -197,18 +197,57 @@ $helperColor: $hotPink;
   overflow: hidden;
 }
 
+.builderMenuSteps {
+
+  li.stepButton.currentStep {
+    background: transparentize($green, .7);
+    @include animation(pulsateBrighter 1s ease-out infinite);
+    .icon {
+      color: $white;
+    }
+  }
+
+  li.stepButton {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .icon {
+      font-size: 20px;
+      color: $med-blue-gray;
+    }
+
+    .stepTitle {
+      display: flex;
+      flex-direction: column;
+      .number {
+        color: $med-blue-gray;
+        font-size: 12px;
+      }
+    }
+  }
+}
+
 $stepInputSize: 18px;
 $gbx3StepsBreakpoint: 600px;
 
 .gbx3Steps {
 
   iframe {
-    width: 100%;
+    width: $breakpoint + 70px;
     height: 1000px;
-    overflow: hidden;
+    overflow: auto;
   }
 
   margin-top: 20px;
+
+  .formSectionContainer {
+    background: transparent;
+  }
+
+  .photoshopButtonGroup {
+    display: none;
+  }
 
   input::-webkit-input-placeholder {
     font-size: $stepInputSize;
@@ -293,80 +332,6 @@ $gbx3StepsBreakpoint: 600px;
 
     .uploadEditorContainer {
       padding-bottom: 0;
-    }
-  }
-
-  .stepHeader {
-
-    position: relative;
-    margin: 20px 10px;
-
-    .stepHeaderSteps {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-
-      @media (max-width: $gbx3StepsBreakpoint) {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-    }
-
-    .stepHeaderStep {
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      padding: 10px;
-      width: 25%;
-      @include default-transition(.25s);
-      @media (max-width: $gbx3StepsBreakpoint) {
-        width: 100%;
-      }
-
-      .icon {
-        font-size: 30px;
-        color: $med-blue-gray;
-        margin-right: 10px;
-      }
-
-      .stepNumber {
-        display: flex;
-        flex-direction: column;
-        font-size: 16px;
-        color: $med-blue-gray;
-        @media (max-width: $gbx3StepsBreakpoint) {
-          flex-direction: row;
-          .number {
-            margin-right: 10px;
-          }
-        }
-      }
-
-      .number {
-        white-space: nowrap;
-      }
-
-      .stepTitle {
-        white-space: nowrap;
-      }
-    }
-    .stepHeaderStep:hover {
-      background: transparentize($green, .7);
-    }
-
-    .stepHeaderStep.active {
-      .icon,
-      .stepNumber {
-        color: $med-blue-dark-gray;
-        @include animation(pulsateBrighter 2s ease-out infinite);
-      }
-    }
-
-    .stepHeaderStep.completed {
-      .icon,
-      .stepNumber {
-        color: $mainColor;
-      }
     }
   }
 

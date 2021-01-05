@@ -17,10 +17,31 @@ class AdminMenu extends React.Component {
   }
 
   renderSteps() {
+    const {
+      config,
+      step,
+      completed
+    } = this.props;
+
     const items = [];
+    Object.entries(config).forEach(([key, value]) => {
+      const currentStep = +key === +step ? true : false;
+      const completedStep = completed.includes(+key) ? true : false;
+      const stepNumber = <span className='number'>Step {+key + 1}</span>;
+      items.push(
+        <li
+          onClick={() => this.props.gotoStep(+key)}
+          key={key}
+          className={`stepButton ${currentStep ? 'currentStep' : ''}`}
+        >
+          <div className='stepTitle'>{stepNumber} {value.name}</div>
+          <span className={`icon icon-${completedStep ? 'check green' : 'chevron-right'}`}></span>
+        </li>
+      );
+    });
 
     return (
-      <ul>
+      <ul className='builderMenuSteps'>
         <li className='listHeader'>Builder Steps</li>
         {items}
       </ul>

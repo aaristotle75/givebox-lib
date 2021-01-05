@@ -64,7 +64,6 @@ const themeColor = {
 };
 
 const defaultSteps = [
-  themeColor,
   title,
   logo,
   image,
