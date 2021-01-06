@@ -72,8 +72,7 @@ class BasicBuilderStepsForm extends Component {
     if (dataUpdated) updated.push('dataUpdated');
     if (updated.length === 2) {
       this.props.saveGBX3('article', {
-        updateLayout: false,
-        nextStep: this.props.nextStep()
+        updateLayout: false
       });
     }
   }
@@ -161,12 +160,13 @@ class BasicBuilderStepsForm extends Component {
 
     const stepConfig = util.getValue(this.props.config, step, {});
     const slug = util.getValue(stepConfig, 'slug');
-    const stepNumber = `Step ${+step + 1}:`;
+    const stepNumber = +step + 1;
     const completed = this.props.completed.includes(step) ? true : false;
     const firstStep = step === 0 ? true : false;
     const lastStep = step === this.props.steps ? true : false;
     const item = {
       title: '',
+      icon: stepConfig.icon,
       desc: '',
       component: null,
       className: '',
@@ -189,7 +189,7 @@ class BasicBuilderStepsForm extends Component {
             },
           }
         };
-        item.title = 'Choose a Theme Color'
+        item.title = 'Choose a Theme Color';
         item.desc = 'Pick a color that matches your brand or messaging.';
         item.component =
           <div className='flexCenter'>
@@ -299,9 +299,15 @@ class BasicBuilderStepsForm extends Component {
     }
     return (
       <div className='stepContainer'>
+        <div className='stepStatus'>{completed ? <span className='green'><span className='icon icon-check'></span> Step {stepNumber} Completed</span> : <span className='gray'><span className='icon icon-alert-circle'></span> Step {stepNumber} Not Completed</span> }</div>
         <div className={`step ${item.className} ${open ? 'open' : ''}`}>
-          <div className='stepStatus'>{completed ? <span className='green'><span className='icon icon-check'></span> Completed</span> : <span className='gray'><span className='icon icon-alert-circle'></span> Not Completed</span> }</div>
-          <h2><span className='number'>{stepNumber}</span> {item.title} </h2>
+          <div className='stepTitleContainer'>
+            <span className={`icon icon-${item.icon}`}></span>
+            <div className='stepTitle'>
+              <span className='number'>Step {stepNumber}</span>
+              {item.title}
+            </div>
+          </div>
           <div className='stepsSubText'>{item.desc}</div>
           <div className={`stepComponent`}>
             {item.component}

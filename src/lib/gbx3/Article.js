@@ -381,7 +381,7 @@ class Article extends React.Component {
             onClickVolunteerFundraiser={this.props.onClickVolunteerFundraiser}
           />
         </div>
-        { stage === 'admin' ?
+        { stage === 'admin' && stage === 'hideHelper' ?
         <Helper
           blockType='article'
           portalBindID='gbx3Layout'

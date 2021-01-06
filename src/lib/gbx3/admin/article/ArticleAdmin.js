@@ -5,7 +5,8 @@ import BasicBuilder from './BasicBuilder';
 import Create from './Create';
 import * as util from '../../../common/utility';
 import {
-  updateHelperSteps
+  updateHelperSteps,
+  saveGBX3
 } from '../../redux/gbx3actions';
 
 class ArticleAdmin extends React.Component {
@@ -20,16 +21,22 @@ class ArticleAdmin extends React.Component {
   componentDidMount() {
   }
 
-  toggleBuilder() {
+  async toggleBuilder() {
     const advancedBuilder = this.props.advancedBuilder ? false : true;
-    this.props.updateHelperSteps({ advancedBuilder });
+    const helperUpdated = await this.props.updateHelperSteps({ advancedBuilder });
+    if (helperUpdated) {
+      this.props.saveGBX3('article', {
+        updateLayout: false
+      });
+    }
   }
 
   render() {
 
     const {
       step,
-      advancedBuilder
+      advancedBuilder,
+      kind
     } = this.props;
 
     switch (step) {
@@ -41,7 +48,7 @@ class ArticleAdmin extends React.Component {
 
       case 'design':
       default: {
-        if (advancedBuilder) {
+        if (advancedBuilder || kind !== 'fundraiser') {
           return (
             <Design
               reloadGBX3={this.props.reloadGBX3}
@@ -70,10 +77,12 @@ function mapStateToProps(state, props) {
   const advancedBuilder = util.getValue(state, 'gbx3.helperSteps.advancedBuilder', false);
 
   return {
-    advancedBuilder
+    advancedBuilder,
+    kind: util.getValue(state, 'gbx3.info.kind', 'fundraiser')
   }
 }
 
 export default connect(mapStateToProps, {
-  updateHelperSteps
+  updateHelperSteps,
+  saveGBX3
 })(ArticleAdmin);

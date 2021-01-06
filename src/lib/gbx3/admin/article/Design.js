@@ -61,6 +61,7 @@ class Design extends React.Component {
       previewMode,
       previewDevice,
       advancedBuilder,
+      kind,
       openAdmin: open
     } = this.props;
 
@@ -69,7 +70,7 @@ class Design extends React.Component {
     const middle = [];
     const rightSide = [];
 
-    if (!previewMode && !mobile) {
+    if (!previewMode && !mobile && kind === 'fundraiser') {
       leftSide.push(
         <div
           className='leftSide'
@@ -311,7 +312,8 @@ function mapStateToProps(state, props) {
     previewMode,
     previewDevice,
     openAdmin,
-    createType
+    createType,
+    kind: util.getValue(state, 'gbx3.info.kind', 'fundraiser')
   }
 }
 

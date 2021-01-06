@@ -79,11 +79,9 @@ class Text extends Component {
       const data = {};
       const updateOptions = util.getValue(block, 'updateOptions');
       const updateMax = util.getValue(block, 'updateMax');
-      console.log('execute updateMax', block.field, updateMax);
       if (updateOptions) data[block.field] = updateOptions === 'string' ? util.remove_non_ascii(util.stripHtml(content)) : content;
       if (updateOptions && updateMax) {
         data[block.field] = data[block.field].replace(/\r?\n|\r/g, '').trim().substring(0, updateMax);
-        console.log('execute', data[block.field])
       }
       this.props.saveBlock({
         data,

@@ -1007,7 +1007,16 @@ export function loadGBX3(articleID, callback) {
                     {
                       ...helperStepsCustom
                     }
-                  : builderStepsConfig[kind];
+                  :
+                    {
+                      step: 0,
+                      completed: [],
+                      advancedBuilder: false
+                    }
+                  ;
+
+                  const builderPref = util.getValue(getState(), 'preferences.builderPref');
+                  helperSteps.advancedBuilder = builderPref === 'advanced' ? true : helperSteps.advancedBuilder;
 
                   if (!util.isEmpty(blocksCustom)) {
                     // Check if not all default blocks are present

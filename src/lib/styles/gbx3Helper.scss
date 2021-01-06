@@ -31,6 +31,15 @@ $helperColor: $hotPink;
 
   position: absolute;
   z-index: 999999;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  margin: 0 auto;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
 
   @media (max-width: $breakpoint) {
     position: fixed;
@@ -217,6 +226,14 @@ $helperColor: $hotPink;
       color: $med-blue-gray;
     }
 
+    .stepTitleContainer {
+      display: flex;
+      align-items: center;
+      .icon {
+        margin-right: 10px;
+      }
+    }
+
     .stepTitle {
       display: flex;
       flex-direction: column;
@@ -234,15 +251,16 @@ $gbx3StepsBreakpoint: 600px;
 .gbx3Steps {
 
   .stepStatus {
-    font-size: .9em;
-    margin-bottom: 20px;
-    margin-left: 60px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    margin-left: 0px;
+    text-align: center;
     @include transition(margin-left .5s);
   }
 
   iframe {
     width: 100%;
-    height: 1000px;
+    height: 100vh;
     overflow: auto;
   }
 
@@ -304,8 +322,23 @@ $gbx3StepsBreakpoint: 600px;
   .step {
     padding: 0 20px;
 
-    h2 {
+    .stepTitleContainer {
+      display: flex;
+      align-items: center;
       margin-bottom: 20px;
+
+      .icon {
+        font-size: 35px;
+        color: $mainColor;
+      }
+    }
+
+    .stepTitle {
+      display: flex;
+      flex-direction: column;
+      font-size: 20px;
+      margin-left: 20px;
+
       .number {
         color: $med-blue-gray;
         margin-right: 10px;
@@ -314,7 +347,17 @@ $gbx3StepsBreakpoint: 600px;
 
     .stepsSubText {
       font-size: .9em;
-      margin: 20px 0;
+      margin: 20px 55px;
+    }
+
+    .stepComponent {
+      position: relative;
+      margin: 20px 55px;
+      label {
+        font-size: 14px;
+        font-weight: 400;
+        color: #253655;
+      }
     }
   }
 

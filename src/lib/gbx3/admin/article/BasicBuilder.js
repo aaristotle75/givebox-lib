@@ -107,7 +107,7 @@ class BasicBuilder extends React.Component {
     } else {
       middle.push(
         <div key={'middle'} className='topMiddleTitle'>
-          Welcome to Form Builder
+          Welcome to Givebox Form Builder
         </div>
       );
     }

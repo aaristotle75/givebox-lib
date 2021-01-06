@@ -738,11 +738,11 @@
   // Left Panel
   .leftPanelOpenButton {
     position: fixed;
-    top: 130px;
-    left: 20px;
+    top: 120px;
+    left: 15px;
     z-index: 999999;
-    height: 45px;
-    width: 45px;
+    height: 40px;
+    width: 40px;
     background: $mainColor;
     border-radius: 50%;
     display: flex;
@@ -757,14 +757,14 @@
     }
 
     .icon {
-      font-size: 30px;
+      font-size: 25px;
       color: $white;
     }
   }
 
   .leftPanelOpenButton:hover {
     background: transparentize($mainColor, .4);
-    @include default-transition(.25s);
+    @include transition(background .25s);
   }
 
   .leftPanel {

@@ -1,26 +1,31 @@
 const title = {
   slug: 'title',
-  name: 'Enter Title'
+  name: 'Enter Title',
+  icon: 'message-circle'
 };
 
 const logo = {
   slug: 'logo',
-  name: 'Upload Logo'
+  name: 'Upload Logo',
+  icon: 'upload-cloud'
 };
 
 const image = {
   slug: 'image',
-  name: 'Add Image'
+  name: 'Add Image',
+  icon: 'camera'
 };
 
 const preview = {
   slug: 'preview',
-  name: 'Preview Form'
+  name: 'Preview Form',
+  icon: 'eye'
 };
 
 const share = {
   slug: 'share',
-  name: 'Share'
+  name: 'Share',
+  icon: 'share'
 };
 
 const amounts = {
@@ -60,7 +65,8 @@ const membershipSubscriptions = {
 
 const themeColor = {
   slug: 'themeColor',
-  name: 'Theme Color'
+  name: 'Theme Color',
+  icon: 'sun'
 };
 
 const defaultSteps = [

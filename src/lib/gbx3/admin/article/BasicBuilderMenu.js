@@ -34,7 +34,10 @@ class AdminMenu extends React.Component {
           key={key}
           className={`stepButton ${currentStep ? 'currentStep' : ''}`}
         >
-          <div className='stepTitle'>{stepNumber} {value.name}</div>
+          <div className='stepTitleContainer'>
+            <span className={`icon icon-${value.icon}`}></span>
+            <div className='stepTitle'>{stepNumber} {value.name}</div>
+          </div>
           <span className={`icon icon-${completedStep ? 'check green' : 'chevron-right'}`}></span>
         </li>
       );

@@ -6,11 +6,12 @@ import Icon from '../../common/Icon';
 import GBLink from '../../common/GBLink';
 import { toggleModal } from '../../api/actions';
 import {
-  updateAdmin
+  updateAdmin,
+  updateHelperSteps
 } from '../redux/gbx3actions';
 import { savePrefs } from '../../api/helpers';
 import { AiOutlineNotification, AiOutlineFullscreen } from 'react-icons/ai';
-import { GoChecklist } from 'react-icons/go';
+import { GoBeaker, GoChecklist } from 'react-icons/go';
 
 const CLOUD_URL = process.env.REACT_APP_CLOUD_URL;
 const WALLET_URL = process.env.REACT_APP_WALLET_URL;
@@ -52,6 +53,7 @@ class AvatarMenu extends React.Component {
       hasAccessToEdit,
       step,
       helperPref,
+      builderPref,
       stage,
       display
     } = this.props;
@@ -74,6 +76,7 @@ class AvatarMenu extends React.Component {
         <ModalLink type='li' id={'share'} key={'share'}><Icon><AiOutlineNotification /></Icon> <span className='text'>Share {display === 'org' ? 'Page' : 'Form'}</span></ModalLink>
       );
 
+      /*
       menuList.push(
         <li type='li' key={'helperPref'} onClick={() => {
           this.props.savePrefs({
@@ -82,6 +85,19 @@ class AvatarMenu extends React.Component {
         }}
         >
           <Icon><GoChecklist /></Icon> <span className='text'>{ helperPref === 'off' ? 'Show' : 'Hide' } Helpers</span>
+        </li>
+      );
+      */
+
+      menuList.push(
+        <li type='li' key={'builderPref'} onClick={() => {
+          this.props.savePrefs({
+            builderPref: builderPref === 'advanced' ? 'basic' : 'advanced'
+          });
+          this.props.updateHelperSteps({ advancedBuilder: builderPref === 'advanced' ? false : true });
+        }}
+        >
+          <Icon><GoBeaker /></Icon> <span className='text'>Default Builder ({ builderPref === 'advanced' ? 'Advanced' : 'Basic' })</span>
         </li>
       );
 
@@ -154,6 +170,7 @@ function mapStateToProps(state, props) {
   const hasAccessToEdit = util.getValue(state, 'gbx3.admin.hasAccessToEdit');
   const step = util.getValue(state, 'gbx3.admin.step');
   const helperPref = util.getValue(state, 'preferences.gbx3Helpers');
+  const builderPref = util.getValue(state, 'preferences.builderPref');
   const stage = util.getValue(state, 'gbx3.info.stage');
   const display = util.getValue(state, `gbx3.info.display`);
 
@@ -162,13 +179,16 @@ function mapStateToProps(state, props) {
     hasAccessToEdit,
     step,
     helperPref,
+    builderPref,
     stage,
-    display
+    display,
+    advancedBuilder: util.getValue(state, 'gbx3.helperSteps.advancedBuilder', false)
   }
 }
 
 export default connect(mapStateToProps, {
   toggleModal,
   updateAdmin,
+  updateHelperSteps,
   savePrefs
 })(AvatarMenu);
