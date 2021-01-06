@@ -48,7 +48,6 @@ export function gbx3(state = {
     editBlock: '',
     editBlockJustAdded: false,
     open: true,
-    advancedBuilder: false,
     step: 'design',
     subStep: '',
     createType: 'layout',
@@ -81,7 +80,8 @@ export function gbx3(state = {
   },
   helperSteps: {
     step: 0,
-    completed: []
+    completed: [],
+    advancedBuilder: false
   },
   helperBlocks: {
     article: {},

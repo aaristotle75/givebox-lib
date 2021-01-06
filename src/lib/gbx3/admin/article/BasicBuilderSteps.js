@@ -147,7 +147,8 @@ class BasicBuilderStepsForm extends Component {
       breakpoint,
       articleID,
       orgID,
-      data
+      data,
+      openAdmin: open
     } = this.props;
 
     const library = {
@@ -162,10 +163,14 @@ class BasicBuilderStepsForm extends Component {
     const slug = util.getValue(stepConfig, 'slug');
     const stepNumber = `Step ${+step + 1}:`;
     const completed = this.props.completed.includes(step) ? true : false;
+    const firstStep = step === 0 ? true : false;
+    const lastStep = step === this.props.steps ? true : false;
     const item = {
       title: '',
       desc: '',
-      component: null
+      component: null,
+      className: '',
+      saveButtonLabel: 'Save & Continue to Next Step'
     };
 
     switch (slug) {
@@ -202,6 +207,8 @@ class BasicBuilderStepsForm extends Component {
       }
 
       case 'preview': {
+        item.saveButtonLabel = 'Looks Good! Continue to Next Step';
+        item.className = 'preview';
         item.title = 'Preview your Form';
         item.desc = !this.state.previewLoaded ? 'Please wait while the preview loads...' : 'This is how your form will look to your customers.';
         item.component =
@@ -213,6 +220,7 @@ class BasicBuilderStepsForm extends Component {
       }
 
       case 'share': {
+        item.saveButtonLabel = 'All Finished! Take Me to My Dashboard';
         item.title = 'Share It!';
         item.desc = 'Click a social icon below to share your fundraiser to start raising money.';
         item.component =
@@ -290,42 +298,35 @@ class BasicBuilderStepsForm extends Component {
       }
     }
     return (
-      <div className='step'>
-        <div className='stepStatus'>{completed ? <span className='green'><span className='icon icon-check'></span> Completed</span> : <span className='gray'><span className='icon icon-alert-circle'></span> Not Completed</span> }</div>
-        <h2><span className='number'>{stepNumber}</span> {item.title} </h2>
-        <div className='stepsSubText'>{item.desc}</div>
-        {item.component}
+      <div className='stepContainer'>
+        <div className={`step ${item.className} ${open ? 'open' : ''}`}>
+          <div className='stepStatus'>{completed ? <span className='green'><span className='icon icon-check'></span> Completed</span> : <span className='gray'><span className='icon icon-alert-circle'></span> Not Completed</span> }</div>
+          <h2><span className='number'>{stepNumber}</span> {item.title} </h2>
+          <div className='stepsSubText'>{item.desc}</div>
+          <div className={`stepComponent`}>
+            {item.component}
+          </div>
+        </div>
+        <div className='button-group'>
+          <div className='button-item' style={{ width: 150 }}>
+            { !firstStep ? <GBLink className={`link`} disabled={firstStep} onClick={() => this.props.previousStep()}><span style={{ marginRight: '5px' }} className='icon icon-chevron-left'></span> Previous Step</GBLink> : <span>&nbsp;</span> }
+          </div>
+          <div className='button-item'>
+            {this.props.saveButton(this.processForm, { label: item.saveButtonLabel })}
+          </div>
+          <div className='button-item' style={{ width: 150 }}>
+            &nbsp;
+          </div>
+        </div>
       </div>
     );
   }
 
   render() {
 
-    const {
-      step
-    } = this.props;
-
-    const firstStep = step === 0 ? true : false;
-    const lastStep = step === this.props.steps ? true : false;
-    let saveButtonLabel = 'Continue to Next Step';
-    if (lastStep) {
-      saveButtonLabel = 'Click Here After Sharing to Finish';
-    }
-
     return (
       <div>
         {this.renderStep()}
-        <div className='button-group'>
-          <div className='button-item' style={{ width: 150 }}>
-            { !firstStep ? <GBLink className={`link`} disabled={firstStep} onClick={() => this.props.previousStep()}><span style={{ marginRight: '5px' }} className='icon icon-chevron-left'></span> Previous Step</GBLink> : <span>&nbsp;</span> }
-          </div>
-          <div className='button-item'>
-            {this.props.saveButton(this.processForm, { label: saveButtonLabel })}
-          </div>
-          <div className='button-item' style={{ width: 150 }}>
-            &nbsp;
-          </div>
-        </div>
       </div>
     )
   }

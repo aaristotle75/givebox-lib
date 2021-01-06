@@ -236,6 +236,8 @@ $gbx3StepsBreakpoint: 600px;
   .stepStatus {
     font-size: .9em;
     margin-bottom: 20px;
+    margin-left: 60px;
+    @include transition(margin-left .5s);
   }
 
   iframe {
@@ -276,7 +278,7 @@ $gbx3StepsBreakpoint: 600px;
   }
 
   .button-group {
-    margin-top: 40px;
+    margin-top: 50px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -288,6 +290,15 @@ $gbx3StepsBreakpoint: 600px;
 
   .button-group::after {
     content: "";
+  }
+
+  .step.open {
+    .stepStatus {
+      margin-left: 0px;
+    }
+  }
+
+  .stepContainer {
   }
 
   .step {
@@ -307,9 +318,25 @@ $gbx3StepsBreakpoint: 600px;
     }
   }
 
+  .step.preview {
+    .stepComponent {
+      margin: 0 -20px;
+    }
+  }
+
   button.link {
     display: flex;
     align-items: center;
+  }
+
+  button.button {
+    background: $mainColor;
+    color: $white;
+    @include default-transition(.25s);
+  }
+
+  button.button:hover {
+    background: transparentize($mainColor, .2);
   }
 
   button.donotShowAgain {

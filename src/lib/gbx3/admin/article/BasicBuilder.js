@@ -31,7 +31,6 @@ class BasicBuilder extends React.Component {
     super(props);
     this.renderDisplay = this.renderDisplay.bind(this);
     this.togglePreview = this.togglePreview.bind(this);
-    this.toggleBuilder = this.toggleBuilder.bind(this);
     this.renderTopPanel = this.renderTopPanel.bind(this);
     this.changePreviewDevice = this.changePreviewDevice.bind(this);
     this.previewReceipt = this.previewReceipt.bind(this);
@@ -72,9 +71,9 @@ class BasicBuilder extends React.Component {
           <Toggle
             icons={false}
             checked={advancedBuilder}
-            onChange={this.toggleBuilder}
+            onChange={this.props.toggleBuilder}
           />
-          <GBLink className='link side' style={{ marginRight: 10 }} onClick={this.toggleBuilder}>{ mobile ? <Icon><GoBeaker /></Icon> : <span>Advanced Builder</span> }</GBLink>
+          <GBLink className='link side' style={{ marginRight: 10 }} onClick={this.props.toggleBuilder}>{ mobile ? <Icon><GoBeaker /></Icon> : <span>Advanced Builder</span> }</GBLink>
         </div>
       );
     }
@@ -124,11 +123,6 @@ class BasicBuilder extends React.Component {
         {rightSide}
       </div>
     )
-  }
-
-  toggleBuilder() {
-    const advancedBuilder = this.props.advancedBuilder ? false : true;
-    this.props.updateAdmin({ advancedBuilder });
   }
 
   togglePreview() {
@@ -181,7 +175,8 @@ class BasicBuilder extends React.Component {
       previewDevice,
       previewMode,
       articleID,
-      completed
+      completed,
+      openAdmin
     } = this.props;
 
     const items = [];
@@ -227,6 +222,7 @@ class BasicBuilder extends React.Component {
           config={this.config}
           steps={this.steps}
           completed={completed}
+          openAdmin={openAdmin}
         />
       )
     }
@@ -317,7 +313,6 @@ function mapStateToProps(state, props) {
   const articleID = util.getValue(gbx3, 'info.articleID');
   const previewMode = util.getValue(admin, 'previewMode');
   const previewDevice = util.getValue(admin, 'previewDevice');
-  const advancedBuilder = util.getValue(admin, 'advancedBuilder', false);
   const openAdmin = util.getValue(admin, 'open');
   const createType = util.getValue(admin, 'createType');
 
@@ -326,7 +321,6 @@ function mapStateToProps(state, props) {
     articleID,
     previewMode,
     previewDevice,
-    advancedBuilder,
     openAdmin,
     createType,
     completed: util.getValue(state, 'gbx3.helperSteps.completed', []),
