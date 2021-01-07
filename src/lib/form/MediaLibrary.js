@@ -368,6 +368,8 @@ class MediaLibrary extends Component {
               orgID={util.getValue(library, 'orgID', null)}
               articleID={util.getValue(library, 'articleID', null)}
               saveMediaType={util.getValue(library, 'saveMediaType')}
+              uploadEditorSaveLabel={this.props.uploadEditorSaveLabel}
+              uploadEditorSaveStyle={this.props.uploadEditorSaveStyle}
             />
           }
         </div>

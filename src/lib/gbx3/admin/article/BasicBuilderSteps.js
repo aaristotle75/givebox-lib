@@ -16,7 +16,8 @@ import {
   checkHelperIfHasDefaultValue,
   saveGBX3,
   updateData,
-  updateGlobals
+  updateGlobals,
+  updateBlock
 } from '../../redux/gbx3actions';
 import MediaLibrary from '../../../form/MediaLibrary';
 import Share from '../../share/Share';
@@ -39,7 +40,8 @@ class BasicBuilderStepsForm extends Component {
     this.state = {
       themeColor: util.getValue(props.data, 'giveboxSettings.primaryColor'),
       error: false,
-      previewLoaded: false
+      previewLoaded: false,
+      editorOpen: false
     };
   }
 
@@ -61,27 +63,42 @@ class BasicBuilderStepsForm extends Component {
     }
   }
 
-  async saveStep(data) {
+  async saveStep(data, block) {
     const {
       step
     } = this.props;
     const updated = [];
     const completedStep = await this.props.stepCompleted(+step);
     const dataUpdated = await this.props.updateData(data);
+    const blockUpdated = await this.props.updateBlock('article', block.name, block);
     if (completedStep) updated.push('completedStep');
     if (dataUpdated) updated.push('dataUpdated');
-    if (updated.length === 2) {
+    if (blockUpdated) updated.push('blockUpdated');
+    if (updated.length === 3) {
       this.props.saveGBX3('article', {
         updateLayout: false
       });
     }
   }
 
-  handleSaveCallback(url, field) {
+  handleSaveCallback(url, field, blockName) {
     const {
-      data
+      data,
+      blocks
     } = this.props;
-    if (url && url !== util.getValue(data, field)) this.saveStep({ [field]: url });
+    if (url && url !== util.getValue(data, field)) {
+      const block = util.getValue(blocks, blockName, {});
+      const options = util.getValue(block, 'options', {});
+      const image = util.getValue(options, 'image', {});
+      image.URL = util.imageUrlWithStyle(url, image.size);
+      const blockObj = {
+        ...block,
+        content: {
+          image
+        }
+      };
+      this.saveStep({ [field]: url }, blockObj);
+    }
   }
 
   formSavedCallback() {
@@ -147,6 +164,7 @@ class BasicBuilderStepsForm extends Component {
       articleID,
       orgID,
       data,
+      blocks,
       openAdmin: open
     } = this.props;
 
@@ -232,7 +250,11 @@ class BasicBuilderStepsForm extends Component {
       }
 
       case 'image': {
-        const imageURL = this.props.checkHelperIfHasDefaultValue('article', { field: 'imageURL', defaultCheck: 'image' }) ? '' : util.getValue(data, 'imageURL');
+        const mediaBlock = util.getValue(blocks, 'media', {});
+        const mediaURL = util.getValue(mediaBlock, 'content.image.URL', '').replace(/medium$/i, 'original');
+        const imageURL = (!util.checkImage(mediaURL) || !mediaURL) ? '' : mediaURL;
+
+        item.saveButtonLabel = 'Continue to Next Step';
         item.title = 'Add an Image';
         item.desc = 'A very nice image speaks louder than words. Upload an image that lets your audience feel the urgency to give.';
         item.component =
@@ -240,20 +262,28 @@ class BasicBuilderStepsForm extends Component {
             blockType={'article'}
             image={imageURL}
             preview={imageURL}
-            handleSaveCallback={(url) => this.handleSaveCallback(url, 'imageURL')}
+            handleSaveCallback={(url) => this.handleSaveCallback(url, 'imageURL', 'media')}
             handleSave={util.handleFile}
             library={library}
             showBtns={'hide'}
             saveLabel={'close'}
             mobile={breakpoint === 'mobile' ? true : false }
             uploadOnly={true}
+            uploadEditorSaveStyle={{ width: 250 }}
+            uploadEditorSaveLabel={'Click Here to Save Image'}
+            imageEditorOpenCallback={(editorOpen) => {
+              this.setState({ editorOpen })
+            }}
           />
         ;
         break;
       }
 
       case 'logo': {
-        const orgImageURL = this.props.checkHelperIfHasDefaultValue('article', { field: 'orgImageURL', defaultCheck: 'logo' }) ? '' : util.getValue(data, 'orgImageURL');
+        const logoBlock = util.getValue(blocks, 'logo', {});
+        const logoURL = util.getValue(logoBlock, 'content.image.URL', '').replace(/small$/i, 'original');
+        const orgImageURL = (!util.checkImage(logoURL) || !logoURL) ? '' : logoURL;
+        item.saveButtonLabel = 'Continue to Next Step';
         item.title = 'Upload a Logo';
         item.desc = 'Please upload an image of your logo. The best logos fit nicely in a square.';
         item.component =
@@ -261,13 +291,18 @@ class BasicBuilderStepsForm extends Component {
             blockType={'article'}
             image={orgImageURL}
             preview={orgImageURL}
-            handleSaveCallback={(url) => this.handleSaveCallback(url, 'orgImageURL')}
+            handleSaveCallback={(url) => this.handleSaveCallback(url, 'orgImageURL', 'logo')}
             handleSave={util.handleFile}
             library={library}
             showBtns={'hide'}
             saveLabel={'close'}
             mobile={breakpoint === 'mobile' ? true : false }
             uploadOnly={true}
+            uploadEditorSaveStyle={{ width: 250 }}
+            uploadEditorSaveLabel={'Click Here to Save Logo'}
+            imageEditorOpenCallback={(editorOpen) => {
+              this.setState({ editorOpen })
+            }}
           />
         ;
         break;
@@ -290,7 +325,18 @@ class BasicBuilderStepsForm extends Component {
             required: false,
             value: title,
             onBlur: (name, value) => {
-              if (value && value !== title) this.saveStep({ title: value });
+              if (value && value !== title) {
+                const block = util.getValue(blocks, 'title', {});
+                const defaultFormat = util.getValue(block, 'options.defaultFormat', '');
+                const saveValue = defaultFormat.replace('{{TOKEN}}', value);
+                const blockObj = {
+                  ...block,
+                  content: {
+                    html: saveValue
+                  }
+                };
+                this.saveStep({ title: value }, blockObj);
+              }
             }
           })
         ;
@@ -313,6 +359,7 @@ class BasicBuilderStepsForm extends Component {
             {item.component}
           </div>
         </div>
+        { !this.state.editorOpen ?
         <div className='button-group'>
           <div className='button-item' style={{ width: 150 }}>
             { !firstStep ? <GBLink className={`link`} disabled={firstStep} onClick={() => this.props.previousStep()}><span style={{ marginRight: '5px' }} className='icon icon-chevron-left'></span> Previous Step</GBLink> : <span>&nbsp;</span> }
@@ -323,7 +370,7 @@ class BasicBuilderStepsForm extends Component {
           <div className='button-item' style={{ width: 150 }}>
             &nbsp;
           </div>
-        </div>
+        </div> : null }
       </div>
     );
   }
@@ -385,7 +432,8 @@ function mapStateToProps(state, props) {
     data: util.getValue(state, 'gbx3.data', {}),
     kind: util.getValue(state, 'gbx3.info.kind', 'fundraiser'),
     gbxStyle: util.getValue(state, 'gbx3.globals.gbxStyle', {}),
-    button: util.getValue(state, 'gbx3.globals.button', {})
+    button: util.getValue(state, 'gbx3.globals.button', {}),
+    blocks: util.getValue(state, 'gbx3.blocks.article', {})
   }
 }
 
@@ -396,5 +444,6 @@ export default connect(mapStateToProps, {
   checkHelperIfHasDefaultValue,
   saveGBX3,
   updateData,
-  updateGlobals
+  updateGlobals,
+  updateBlock
 })(BasicBuilderSteps)
