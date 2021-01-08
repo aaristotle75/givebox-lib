@@ -1048,7 +1048,8 @@
     }
 
     .gbx3ReceiptLayout {
-      overflow-y: auto;
+      overflow-x: visible;
+      overflow-y: visible;
       height: 100%;
       background: $light-gray;
     }
@@ -1058,6 +1059,7 @@
     }
 
     .gbx3ReceiptContainer {
+      margin-top: 20px;
       max-width: 600px;
       width: 550px;
       background: $white;
