@@ -26,6 +26,7 @@ class Totals extends Component {
       orgName,
       cardType,
       isDebit,
+      cardLength,
       paymethod,
       raised,
       subTotal,
@@ -44,6 +45,14 @@ class Totals extends Component {
     const form = util.getValue(options, 'form', {});
     const goal = util.getValue(form, 'goal');
     const hasCustomGoal = util.getValue(form, 'hasCustomGoal');
+    let debitCard = false;
+    if (paymethod === 'echeck' && cardLength < 16) {
+      debitCard = true;
+    } else if (paymethod === 'echeck' && isDebit) {
+      debitCard = true;
+    }
+    console.log('execute debitCard', debitCard, paymethod, cardLength, isDebit);
+
     let payFeeLabel = `Cover the Cost of the Fees`;
     //if (paymethod === 'echeck') payFeeLabel = `Pay eCheck Fee`;
 
@@ -72,7 +81,7 @@ class Totals extends Component {
               <span className='line'>Sub Total:</span>
               <span className='line'>Givebox Fee:</span>
               {/* <span className='line'>Org Fee:</span> */}
-              <span className='line'>{( cardType === 'default' || !cardType) ? isDebit ? 'Debit Card' : 'Credit Card' : `${cardType.toUpperCase()} ${isDebit ? 'Debit' : ''}`} Fee:</span>
+              <span className='line'>{( cardType === 'default' || !cardType) ? debitCard ? 'Debit Card' : 'Credit Card' : `${cardType.toUpperCase()} ${debitCard ? 'Debit' : ''}`} Fee:</span>
               <span className='totalLine'>Total:</span>
             </div>
             <div>
@@ -123,6 +132,7 @@ function mapStateToProps(state, props) {
   const CRFTFee = util.getValue(cart, 'CRFTFee', 0);
   const total = util.getValue(cart, 'total', 0);
   const isDebit = util.getValue(cart, 'isDebit');
+  const cardLength = util.getValue(cart, 'cardLength', 0);
   const globals = util.getValue(gbx3, 'globals', {});
   const gbxStyle = util.getValue(globals, 'gbxStyle', {});
   const textColor = util.getValue(gbxStyle, 'textColor', '#253655');
@@ -133,6 +143,7 @@ function mapStateToProps(state, props) {
   return {
     orgName,
     cardType,
+    cardLength,
     isDebit,
     passFees,
     feeOption,

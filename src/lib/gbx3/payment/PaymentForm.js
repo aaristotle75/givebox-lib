@@ -246,8 +246,10 @@ class PaymentFormClass extends Component {
   }
 
   onCreditCardChange(name, value, cardType, field, fields, isDebit) {
-    if (this.props.isDebit !== isDebit) this.props.updateCart({ isDebit });
-    if (this.props.cardType !== cardType) this.props.updateCart({ cardType });
+    const realCardValue = util.getValue(field, 'apiValue');
+    const cardLength = realCardValue.length;
+    if (this.props.isDebit !== isDebit) this.props.updateCart({ isDebit, cardLength });
+    if (this.props.cardType !== cardType) this.props.updateCart({ cardType, cardLength });
   }
 
   onPaymethodTabBefore(key) {

@@ -496,6 +496,7 @@ function calcFee(amount = 0, fees = {}) {
     const paymethod = util.getValue(cart, 'paymethod', {});
     const cardType = util.getValue(cart, 'cardType');
     const isDebit = util.getValue(cart, 'isDebit');
+    const cardLength = +util.getValue(cart, 'cardLength', 0);
 
     let feePrefix = 'fnd';
     switch (paymethod) {
@@ -512,7 +513,9 @@ function calcFee(amount = 0, fees = {}) {
         break;
       }
     }
-    if (isDebit && paymethod === 'echeck') {
+    if (paymethod === 'echeck' && cardLength < 16) {
+      feePrefix = 'debit';
+    } else if (paymethod === 'echeck' && isDebit) {
       feePrefix = 'debit';
     }
 
