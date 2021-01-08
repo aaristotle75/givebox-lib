@@ -1038,8 +1038,10 @@
 
     .gbx3Layout {
       height: auto;
-      overflow-y: hidden;
+      overflow-x: visible;
+      overflow-y: visible;
       min-width: 800px;
+      margin-top: 25px;
       @media (max-width: $breakpoint) {
         min-width: 100%;
       }
@@ -1052,6 +1054,7 @@
     }
 
     .gbx3Container {
+      overflow: visible;
     }
 
     .gbx3ReceiptContainer {
@@ -1496,6 +1499,12 @@
     button.blockEditButton {
       background: transparentize($mainColorDark, 0);
     }
+
+    .tooltip .tooltipTop {
+      top: -10px;
+      white-space: nowrap;
+    }
+
   }
 
   .blockEdit:hover {

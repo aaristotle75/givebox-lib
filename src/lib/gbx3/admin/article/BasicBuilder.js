@@ -223,6 +223,7 @@ class BasicBuilder extends React.Component {
           steps={this.steps}
           completed={completed}
           openAdmin={openAdmin}
+          toggleBuilder={this.props.toggleBuilder}
         />
       )
     }

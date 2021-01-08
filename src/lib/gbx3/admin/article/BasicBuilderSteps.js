@@ -161,8 +161,7 @@ class BasicBuilderStepsForm extends Component {
         const globalsUpdated = await this.props.updateGlobals(globals);
         if (globalsUpdated) this.saveStep({ giveboxSettings: { primaryColor: themeColor }}, null, true, this.gotoNextStep);
       }
-    }
-    if (this.props.steps === step) {
+    } else if (this.props.steps === step) {
       this.saveStep(null, null, false, () => console.log('execute redirect'));
     } else {
       this.saveStep(null, null, false, this.gotoNextStep);
@@ -244,7 +243,14 @@ class BasicBuilderStepsForm extends Component {
         item.saveButtonLabel = 'Looks Good! Continue to Next Step';
         item.className = 'preview';
         item.title = 'Preview your Form';
-        item.desc = !this.state.previewLoaded ? 'Please wait while the preview loads...' : 'This is how your form will look to your customers.';
+        item.desc = !this.state.previewLoaded ?
+          'Please wait while the preview loads...'
+          :
+          <div>
+            <span>This is how your form will look to your customers.</span>
+            <span style={{ marginTop: 10, display: 'block' }}>If you really want to roll up your sleeves, try our <GBLink style={{ fontSize: 14, display: 'inline' }} onClick={() => this.props.toggleBuilder()}>Advanced Builder</GBLink>, where you can customize pretty much everything!</span>
+          </div>
+        ;
         item.component =
           <div className='stagePreview flexCenter'>
             <iframe src={`${GBX3_URL}/${articleID}/?public&preview`} title={`Preview`} />

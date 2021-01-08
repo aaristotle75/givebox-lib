@@ -47,6 +47,14 @@ class AdminMenuLayout extends React.Component {
         <li
           key={key}
           onClick={() => this.editBlock(value.name)}
+          onMouseEnter={() => {
+            const el = document.getElementById(`blockOption-${value.name}`);
+            el.setAttribute('style', 'display: flex;');
+          }}
+          onMouseLeave={() => {
+            const el = document.getElementById(`blockOption-${value.name}`);
+            el.style.display = null;
+          }}
         >
           {value.title}
         </li>
