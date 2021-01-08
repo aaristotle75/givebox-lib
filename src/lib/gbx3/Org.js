@@ -362,7 +362,7 @@ class Org extends React.Component {
             onClickVolunteerFundraiser={this.props.onClickVolunteerFundraiser}
           />
         </div>
-        { stage === 'admin' ?
+        { stage === 'admin' && stage === 'hideHelper' ?
         <Helper
           blockType='org'
           portalBindID='gbx3Layout'

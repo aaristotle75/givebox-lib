@@ -21,6 +21,7 @@ class Footer extends React.Component {
 
     const {
       stage,
+      preview,
       orgName,
       primaryColor,
       form,
@@ -39,7 +40,7 @@ class Footer extends React.Component {
             {allowSharing ? <Social /> : ''}
             {showP2P && allowP2P ?
             <GBLink
-              onClick={() => this.props.onClickVolunteerFundraiser()}
+              onClick={() => preview ? alert('This feature does not open in PREVIEW MODE. The LIVE version will walk the user through creating a P2P fundraiser.') : this.props.onClickVolunteerFundraiser()}
               className='link p2pLink'
               customColor={primaryColor}
               allowCustom={true}
@@ -64,6 +65,7 @@ function mapStateToProps(state, props) {
   const gbx3 = util.getValue(state, 'gbx3', {});
   const info = util.getValue(gbx3, 'info', {});
   const stage = util.getValue(info, 'stage');
+  const preview = util.getValue(info, 'preview');
   const orgName = util.getValue(info, 'orgName');
   const primaryColor = util.getValue(gbx3, 'globals.gbxStyle.primaryColor');
   const form = util.getValue(gbx3, 'blocks.article.paymentForm.options.form', {});
@@ -71,6 +73,7 @@ function mapStateToProps(state, props) {
 
   return {
     stage,
+    preview,
     orgName,
     primaryColor,
     form,

@@ -496,7 +496,6 @@ function calcFee(amount = 0, fees = {}) {
     const paymethod = util.getValue(cart, 'paymethod', {});
     const cardType = util.getValue(cart, 'cardType');
     const isDebit = util.getValue(cart, 'isDebit');
-    const cardLength = +util.getValue(cart, 'cardLength', 0);
 
     let feePrefix = 'fnd';
     switch (paymethod) {
@@ -513,9 +512,7 @@ function calcFee(amount = 0, fees = {}) {
         break;
       }
     }
-    if (paymethod === 'echeck' && cardLength < 16) {
-      feePrefix = 'debit';
-    } else if (paymethod === 'echeck' && isDebit) {
+    if (isDebit && paymethod === 'echeck') {
       feePrefix = 'debit';
     }
 
@@ -1017,6 +1014,18 @@ export function loadGBX3(articleID, callback) {
                       advancedBuilder: false
                     }
                   ;
+
+                  // Get the minimum not completed step
+                  const stepsArray = [];
+                  const stepConfig = util.getValue(builderStepsConfig, kind, []);
+                  const numOfSteps = stepConfig.length - 1;
+                  stepConfig.forEach((value, key) => {
+                      stepsArray.push(key);
+                  });
+                  const uncompletedSteps = stepsArray.filter(item => !helperSteps.completed.includes(item));
+                  const minStepNotCompleted = !util.isEmpty(uncompletedSteps) ? Math.min(...uncompletedSteps) : numOfSteps;
+
+                  helperSteps.step = minStepNotCompleted;
 
                   const builderPref = util.getValue(getState(), 'preferences.builderPref');
                   helperSteps.advancedBuilder = builderPref === 'advanced' ? true : helperSteps.advancedBuilder;

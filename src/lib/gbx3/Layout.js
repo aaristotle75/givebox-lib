@@ -30,6 +30,7 @@ class Layout extends React.Component {
     this.gaPageTracking = this.gaPageTracking.bind(this);
     this.state = {
     }
+    this.gbx3Container = React.createRef();
   }
 
   componentDidMount() {
@@ -243,6 +244,7 @@ class Layout extends React.Component {
             ...style
           }}
           className={`gbx3Container`}
+          ref={this.gbx3Container}
         >
           {modal ? <GBLink customColor={primaryColor} allowCustom={true} className='closeGBXModalButton' onClick={() => this.closeGBXModal()}><span className='icon icon-x'></span></GBLink> : <></>}
           {this.renderDisplay()}

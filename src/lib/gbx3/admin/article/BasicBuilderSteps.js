@@ -37,6 +37,7 @@ class BasicBuilderStepsForm extends Component {
     this.processCallback = this.processCallback.bind(this);
     this.formSavedCallback = this.formSavedCallback.bind(this);
     this.renderStep = this.renderStep.bind(this);
+    this.gotoNextStep = this.gotoNextStep.bind(this);
     this.state = {
       themeColor: util.getValue(props.data, 'giveboxSettings.primaryColor'),
       error: false,
@@ -54,28 +55,35 @@ class BasicBuilderStepsForm extends Component {
       step
     } = this.props;
 
+    const stepConfig = util.getValue(this.props.config, step, {});
+    const slug = util.getValue(stepConfig, 'slug');
+
     if (e.data === 'gbx3Initialized') {
-      const stepConfig = util.getValue(this.props.config, step, {});
-      const slug = util.getValue(stepConfig, 'slug');
       if (slug === 'preview') {
-        this.setState({ previewLoaded: true }, () => this.props.stepCompleted(+step));
+        this.setState({ previewLoaded: true }, () => this.saveStep());
+      }
+    }
+    if (e.data === 'gbx3Shared') {
+      if (slug === 'share') {
+        this.saveStep();
       }
     }
   }
 
-  async saveStep(data, block) {
+  async saveStep(data, block, completed = true, callback) {
     const {
       step
     } = this.props;
     const updated = [];
-    const completedStep = await this.props.stepCompleted(+step);
-    const dataUpdated = await this.props.updateData(data);
-    const blockUpdated = await this.props.updateBlock('article', block.name, block);
+    const completedStep = completed ? await this.props.stepCompleted(+step) : true;
+    const dataUpdated = data ? await this.props.updateData(data) : true;
+    const blockUpdated = block ? await this.props.updateBlock('article', block.name, block) : true;
     if (completedStep) updated.push('completedStep');
     if (dataUpdated) updated.push('dataUpdated');
     if (blockUpdated) updated.push('blockUpdated');
     if (updated.length === 3) {
       this.props.saveGBX3('article', {
+        callback,
         updateLayout: false
       });
     }
@@ -151,9 +159,17 @@ class BasicBuilderStepsForm extends Component {
           }
         };
         const globalsUpdated = await this.props.updateGlobals(globals);
-        if (globalsUpdated) this.saveStep({ giveboxSettings: { primaryColor: themeColor }});
+        if (globalsUpdated) this.saveStep({ giveboxSettings: { primaryColor: themeColor }}, null, true, this.gotoNextStep);
       }
     }
+    if (this.props.steps === step) {
+      this.saveStep(null, null, false, () => console.log('execute redirect'));
+    } else {
+      this.saveStep(null, null, false, this.gotoNextStep);
+    }
+  }
+
+  gotoNextStep() {
     this.props.updateHelperSteps({ step: this.props.nextStep() });
   }
 
@@ -345,7 +361,18 @@ class BasicBuilderStepsForm extends Component {
     }
     return (
       <div className='stepContainer'>
-        <div className='stepStatus'>{completed ? <span className='green'><span className='icon icon-check'></span> Step {stepNumber} Completed</span> : <span className='gray'><span className='icon icon-alert-circle'></span> Step {stepNumber} Not Completed</span> }</div>
+        <div className='stepStatus'>
+          {completed ?
+            <div className='completed'>
+              <span className='icon icon-check'></span> Step {stepNumber}: Completed
+            </div>
+          :
+            <div className='notCompleted'><span className='icon icon-alert-circle'></span> Step {stepNumber}: Not Completed</div>
+          }
+          <GBLink onClick={() => this.processForm()}>
+            <span style={{ marginLeft: 20 }}>{item.saveButtonLabel} <span className='icon icon-chevron-right'></span></span>
+          </GBLink>
+        </div>
         <div className={`step ${item.className} ${open ? 'open' : ''}`}>
           <div className='stepTitleContainer'>
             <span className={`icon icon-${item.icon}`}></span>

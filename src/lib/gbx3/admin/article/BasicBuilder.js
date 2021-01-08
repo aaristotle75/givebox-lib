@@ -43,7 +43,7 @@ class BasicBuilder extends React.Component {
     };
     this.iframePreviewRef = React.createRef();
     this.config = util.getValue(builderStepsConfig, props.kind, []);
-    this.steps = this.config.length;
+    this.steps = this.config.length - 1;
     const mobile = props.breakpoint === 'mobile' ? true : false;
   }
 
@@ -249,7 +249,7 @@ class BasicBuilder extends React.Component {
     const {
       step
     } = this.props;
-    const nextStep = step < this.steps ? step + 1 : step;
+    const nextStep = step < +this.steps ? step + 1 : step;
     return nextStep;
   }
 

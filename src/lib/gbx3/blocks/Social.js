@@ -73,6 +73,7 @@ class Social extends Component {
       isSending: false
     });
     window.parent.postMessage('gbx3Shared', '*');
+    window.postMessage('gbx3Shared', '*');
   }
 
   render() {

@@ -51,7 +51,6 @@ class Totals extends Component {
     } else if (paymethod === 'echeck' && isDebit) {
       debitCard = true;
     }
-    console.log('execute debitCard', debitCard, paymethod, cardLength, isDebit);
 
     let payFeeLabel = `Cover the Cost of the Fees`;
     //if (paymethod === 'echeck') payFeeLabel = `Pay eCheck Fee`;
