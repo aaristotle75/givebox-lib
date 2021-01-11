@@ -64,6 +64,7 @@ class ArticleAdmin extends React.Component {
               loadGBX3={this.props.loadGBX3}
               toggleBuilder={this.toggleBuilder}
               advancedBuilder={advancedBuilder}
+              exitAdmin={this.props.exitAdmin}
             />
           )
         }

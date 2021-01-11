@@ -142,27 +142,25 @@ class BasicBuilderStepsForm extends Component {
     const stepConfig = util.getValue(this.props.config, step, {});
     const slug = util.getValue(stepConfig, 'slug');
 
-    if (slug === 'themeColor') {
-      if (util.getValue(data, 'giveboxSettings.primaryColor') !== themeColor && themeColor) {
-        const globals = {
-          gbxStyle: {
-            ...gbxStyle,
-            backgroundColor: themeColor,
-            primaryColor: themeColor
-          },
-          button: {
-            ...button,
-            style: {
-              ...button.style,
-              bgColor: themeColor
-            }
+    if (slug === 'themeColor' && themeColor && (util.getValue(data, 'giveboxSettings.primaryColor') !== themeColor)) {
+      const globals = {
+        gbxStyle: {
+          ...gbxStyle,
+          backgroundColor: themeColor,
+          primaryColor: themeColor
+        },
+        button: {
+          ...button,
+          style: {
+            ...button.style,
+            bgColor: themeColor
           }
-        };
-        const globalsUpdated = await this.props.updateGlobals(globals);
-        if (globalsUpdated) this.saveStep({ giveboxSettings: { primaryColor: themeColor }}, null, true, this.gotoNextStep);
-      }
+        }
+      };
+      const globalsUpdated = await this.props.updateGlobals(globals);
+      if (globalsUpdated) this.saveStep({ giveboxSettings: { primaryColor: themeColor }}, null, true, this.gotoNextStep);
     } else if (this.props.steps === step) {
-      this.saveStep(null, null, false, () => console.log('execute redirect'));
+      this.props.exitAdmin();
     } else {
       this.saveStep(null, null, false, this.gotoNextStep);
     }
@@ -368,13 +366,6 @@ class BasicBuilderStepsForm extends Component {
     return (
       <div className='stepContainer'>
         <div className='stepStatus'>
-          {completed ?
-            <div className='completed'>
-              <span className='icon icon-check'></span> Step {stepNumber}: Completed
-            </div>
-          :
-            <div className='notCompleted'><span className='icon icon-alert-circle'></span> Step {stepNumber}: Not Completed</div>
-          }
           <GBLink onClick={() => this.processForm()}>
             <span style={{ marginLeft: 20 }}>{item.saveButtonLabel} <span className='icon icon-chevron-right'></span></span>
           </GBLink>
@@ -383,7 +374,14 @@ class BasicBuilderStepsForm extends Component {
           <div className='stepTitleContainer'>
             <span className={`icon icon-${item.icon}`}></span>
             <div className='stepTitle'>
-              <span className='number'>Step {stepNumber}</span>
+              <div className='numberContainer'>
+                <span className='number'>Step {stepNumber}{ completed ? ':' : null}</span>
+                {completed ?
+                  <div className='completed'>
+                    <span className='icon icon-check'></span>Completed
+                  </div>
+                : null }
+              </div>
               {item.title}
             </div>
           </div>
