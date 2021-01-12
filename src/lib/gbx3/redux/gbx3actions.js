@@ -1015,17 +1015,63 @@ export function loadGBX3(articleID, callback) {
                     }
                   ;
 
+                  // Get Step Values
+                  const title = util.getValue(res, 'title');
+                  const logoBlock = util.getValue(blocks, 'logo', {});
+                  const logoURL = util.getValue(logoBlock, 'content.image.URL', util.getValue(res, 'orgImageURL')).replace(/small$/i, 'original');
+                  const mediaBlock = util.getValue(blocks, 'media', {});
+                  const mediaURL = util.getValue(mediaBlock, 'content.image.URL', '').replace(/medium$/i, 'original');
+
                   // Get the minimum not completed step
                   const stepsArray = [];
                   const stepConfig = util.getValue(builderStepsConfig, kind, []);
                   const numOfSteps = stepConfig.length - 1;
+
                   stepConfig.forEach((value, key) => {
+                      let isDefault = true;
                       stepsArray.push(key);
+
+                      // Check if step values are completed by checking defaultStyle
+                      switch (value.slug) {
+                        case 'title': {
+                          if (title && !title.includes(`New ${types2.kind(kind).name}`)) {
+                            isDefault = false;
+                          }
+                          break;
+                        }
+
+                        case 'logo': {
+                          if (logoURL && util.checkImage(logoURL)) {
+                            isDefault = false;
+                          }
+                          break;
+                        }
+
+                        case 'image': {
+                          if (mediaURL && util.checkImage(mediaURL)) {
+                            isDefault = false;
+                          }
+                          break;
+                        }
+
+                        case 'themeColor': {
+                          if (primaryColor && !primaryColor.includes('#4385f5') && !primaryColor.includes('#4775f8')) {
+                            isDefault = false;
+                          }
+                          break;
+                        }
+
+                        // no default
+                      }
+
+                      if (!helperSteps.completed.includes(key) && !isDefault) {
+                        helperSteps.completed.push(key);
+                      }
                   });
                   const uncompletedSteps = stepsArray.filter(item => !helperSteps.completed.includes(item));
                   const minStepNotCompleted = !util.isEmpty(uncompletedSteps) ? Math.min(...uncompletedSteps) : numOfSteps;
 
-                  helperSteps.step = minStepNotCompleted;
+                  helperSteps.step = minStepNotCompleted < 4 ? minStepNotCompleted : 4;
 
                   const builderPref = util.getValue(getState(), 'preferences.builderPref');
                   helperSteps.advancedBuilder = builderPref === 'advanced' ? true : helperSteps.advancedBuilder;

@@ -301,7 +301,7 @@ class BasicBuilderStepsForm extends Component {
 
       case 'logo': {
         const logoBlock = util.getValue(blocks, 'logo', {});
-        const logoURL = util.getValue(logoBlock, 'content.image.URL', '').replace(/small$/i, 'original');
+        const logoURL = util.getValue(logoBlock, 'content.image.URL', util.getValue(data, 'orgImageURL')).replace(/small$/i, 'original');
         const orgImageURL = (!util.checkImage(logoURL) || !logoURL) ? '' : logoURL;
         item.saveButtonLabel = 'Continue to Next Step';
         item.title = 'Upload a Logo';
