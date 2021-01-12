@@ -31,7 +31,8 @@ class Totals extends Component {
       raised,
       subTotal,
       giveboxFee,
-      fee,
+      totalFee,
+      gbxFee,
       CRFTFee,
       total,
       primaryColor,
@@ -79,15 +80,15 @@ class Totals extends Component {
             <div style={{ width: 200 }}>
               <span className='line'>Sub Total:</span>
               <span className='line'>Givebox Fee:</span>
-              {/* <span className='line'>Org Fee:</span> */}
+              <span className='line'>Organization Fee:</span>
               <span className='line'>{( cardType === 'default' || !cardType) ? debitCard ? 'Debit Card' : 'Credit Card' : `${cardType.toUpperCase()} ${debitCard ? 'Debit' : ''}`} Fee:</span>
               <span className='totalLine'>Total:</span>
             </div>
             <div>
               <span className='line'>{util.money(subTotal)}</span>
               <span className='line'>{util.money(giveboxFee)}</span>
-              {/* <span className='line'>{util.money(CRFTFee)}</span> */}
-              <span className='line'>{util.money(fee)}</span>
+              <span className='line'>{util.money(CRFTFee)}</span>
+              <span className='line'>{util.money(gbxFee)}</span>
               <span className='totalLine'>{util.money(total)}</span>
             </div>
           </div>
@@ -127,7 +128,8 @@ function mapStateToProps(state, props) {
   const goal = util.getValue(data, 'goal', 0);
   const subTotal = util.getValue(cart, 'subTotal', 0);
   const giveboxFee = (0).toFixed(2);
-  const fee = util.getValue(cart, 'fee', 0);
+  const totalFee = util.getValue(cart, 'totalFee', 0);
+  const gbxFee = util.getValue(cart, 'gbxFee', 0);
   const CRFTFee = util.getValue(cart, 'CRFTFee', 0);
   const total = util.getValue(cart, 'total', 0);
   const isDebit = util.getValue(cart, 'isDebit');
@@ -152,7 +154,8 @@ function mapStateToProps(state, props) {
     goal,
     subTotal,
     giveboxFee,
-    fee,
+    totalFee,
+    gbxFee,
     CRFTFee,
     total,
     placeholderColor
