@@ -355,12 +355,13 @@ $gbx3StepsBreakpoint: 600px;
     .stepTitle {
       display: flex;
       flex-direction: column;
-      font-size: 20px;
+      font-size: 22px;
       margin-left: 20px;
 
       .numberContainer {
         display: flex;
         align-items: center;
+        margin-bottom: 0px;
       }
 
       .completed {
@@ -385,7 +386,7 @@ $gbx3StepsBreakpoint: 600px;
 
     .stepsSubText {
       font-size: 14px;
-      margin: 20px 55px;
+      margin: 10px 55px;
     }
 
     .stepComponent {
@@ -402,6 +403,7 @@ $gbx3StepsBreakpoint: 600px;
   .step.preview {
     .stepComponent {
       margin: 0 -20px;
+      margin-top: 30px;
     }
   }
 

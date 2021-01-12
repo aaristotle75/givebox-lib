@@ -142,7 +142,7 @@ class BasicBuilderStepsForm extends Component {
     const stepConfig = util.getValue(this.props.config, step, {});
     const slug = util.getValue(stepConfig, 'slug');
 
-    if (slug === 'themeColor' && themeColor && (util.getValue(data, 'giveboxSettings.primaryColor') !== themeColor)) {
+    if (slug === 'themeColor') {
       const globals = {
         gbxStyle: {
           ...gbxStyle,
@@ -259,8 +259,8 @@ class BasicBuilderStepsForm extends Component {
 
       case 'share': {
         item.saveButtonLabel = 'All Finished! Take Me to My Dashboard';
-        item.title = 'Share It!';
-        item.desc = 'Click a social icon below to share your fundraiser to start raising money.';
+        item.title = 'Share Your Form';
+        item.desc = 'Click a social icon below to share your form to start raising money.';
         item.component =
           <Share
             hideList={['web']}
