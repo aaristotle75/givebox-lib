@@ -534,7 +534,9 @@ export function calcCart() {
     const passFees = util.getValue(cart, 'passFees');
     const items = util.getValue(cart, 'items', []);
     cart.subTotal = 0;
-    cart.fee = 0;
+    cart.totalFee = 0;
+    cart.gbxFee = 0;
+    cart.CRFTFee = 0;
     cart.total = 0;
     if (!util.isEmpty(items)) {
       Object.entries(items).forEach(([key, value]) => {
@@ -544,13 +546,13 @@ export function calcCart() {
         const fees = value.fees;
         const CRFTFeePct = util.getValue(fees, 'CRFTFeePct', 0);
         const CRFTFeePercent = +((CRFTFeePct/10000).toFixed(4)*parseFloat(amount/100));
-        const CRFTFee = CRFTFeePct && passFees ? +((CRFTFeePercent).toFixed(2)) : +((0).toFixed(2));
+        cart.CRFTFee = CRFTFeePct && passFees ? +((CRFTFeePercent).toFixed(2)) : +((0).toFixed(2));
+        cart.gbxFee = dispatch(calcFee(amount, fees));
         cart.subTotal = cart.subTotal + amountFormatted;
-        cart.fee = cart.fee + dispatch(calcFee(amount, fees));
-        cart.CRFTFee = cart.CRFTFee + CRFTFee;
+        cart.totalFee = cart.totalFee + cart.gbxFee + cart.CRFTFee;
       });
     }
-    cart.total = (cart.subTotal + cart.fee).toFixed(2);
+    cart.total = (cart.subTotal + cart.totalFee).toFixed(2);
     dispatch(saveCart(cart));
   }
 }
