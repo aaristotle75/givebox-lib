@@ -210,7 +210,7 @@ $helperColor: $hotPink;
 
   li.stepButton.currentStep {
     background: transparentize($green, .7);
-    @include animation(pulsateBrighter 1s ease-out infinite);
+    @include animation(pulsateSlightlyBrighter 2s ease-out infinite);
     .icon {
       color: $white;
     }
@@ -224,7 +224,6 @@ $helperColor: $hotPink;
     .icon {
       font-size: 20px;
       color: $med-blue-gray;
-      @include animation(pulsateBrighter 2s ease-out infinite);
     }
 
     .stepTitleContainer {
@@ -314,7 +313,7 @@ $gbx3StepsBreakpoint: 600px;
     button.button {
       color: $white;
       border: 1px solid $white;
-      background: linear-gradient(to right, $salmon 30%, $salmon2 100%);
+      @include bgGradient(to right, $salmon 30%, $salmon2 100%);
       white-space: nowrap;
       padding: 15px 25px;
       border-radius: 25px;

@@ -242,7 +242,7 @@
     }
 }
 
-@-webkit-keyframes pulsateOpacity {
+@keyframes pulsateOpacity {
     0% {
       @include filter(opacity(.5));
     }
@@ -254,51 +254,41 @@
     }
 }
 
-@-webkit-keyframes pulsateDimmer {
+@keyframes pulsateDimmer {
     0% {
-      -webkit-filter:brightness(100%);
-      filter: brightness(100);
+      @include filter(brightness(100%));
     }
     50% {
-      -webkit-filter:brightness(70%);
-      filter: brightness(70);
+      @include filter(brightness(70%));
     }
     100% {
-      -webkit-filter:brightness(100%);
-      filter: brightness(100);
+      @include filter(brightness(100%));
     }
 }
 
-@-webkit-keyframes pulsateBrighter {
+@keyframes pulsateBrighter {
     0% {
-      -webkit-filter:brightness(100%);
-      filter: brightness(100);
+      @include filter(brightness(100%));
     }
     50% {
-      -webkit-filter:brightness(140%);
-      filter: brightness(140);
+      @include filter(brightness(140%));
     }
     100% {
-      -webkit-filter:brightness(100%);
-      filter: brightness(100);
+      @include filter(brightness(100%));
     }
 }
 
-@-webkit-keyframes pulsateSlightlyBrighter {
+@keyframes pulsateSlightlyBrighter {
     0% {
-      -webkit-filter:brightness(100%);
-      filter: brightness(100);
+      @include filter(brightness(100%));
     }
     50% {
-      -webkit-filter:brightness(120%);
-      filter: brightness(120);
+      @include filter(brightness(120%));
     }
     100% {
-      -webkit-filter:brightness(100%);
-      filter: brightness(100);
+      @include filter(brightness(100%));
     }
 }
-
 
 /* Sweep To Left */
 .hvr-sweep-to-left {
