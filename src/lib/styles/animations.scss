@@ -242,6 +242,18 @@
     }
 }
 
+@-webkit-keyframes pulsateOpacity {
+    0% {
+      @include filter(opacity(.5));
+    }
+    50% {
+      @include filter(opacity(.1));
+    }
+    100% {
+      @include filter(opacity(.5));
+    }
+}
+
 @keyframes pulsateOpacity {
     0% {
       @include filter(opacity(.5));
@@ -251,6 +263,18 @@
     }
     100% {
       @include filter(opacity(.5));
+    }
+}
+
+@-webkit-keyframes pulsateDimmer {
+    0% {
+      @include filter(brightness(100%));
+    }
+    50% {
+      @include filter(brightness(70%));
+    }
+    100% {
+      @include filter(brightness(100%));
     }
 }
 
@@ -266,12 +290,36 @@
     }
 }
 
+@-webkit-keyframes pulsateBrighter {
+    0% {
+      @include filter(brightness(100%));
+    }
+    50% {
+      @include filter(brightness(140%));
+    }
+    100% {
+      @include filter(brightness(100%));
+    }
+}
+
 @keyframes pulsateBrighter {
     0% {
       @include filter(brightness(100%));
     }
     50% {
       @include filter(brightness(140%));
+    }
+    100% {
+      @include filter(brightness(100%));
+    }
+}
+
+@-webkit-keyframes pulsateSlightlyBrighter {
+    0% {
+      @include filter(brightness(100%));
+    }
+    50% {
+      @include filter(brightness(120%));
     }
     100% {
       @include filter(brightness(100%));
