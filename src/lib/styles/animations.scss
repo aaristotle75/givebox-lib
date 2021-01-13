@@ -24,56 +24,56 @@
 */
 
 .loader {
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	bottom: 0px;
-	right: 0px;
-	height: 100%;
-	width: 100%;
-	text-align: center;
-	background: rgba(38,50,56,.5);
-	opacity: 1;
-	z-index: 10000033;
-	overflow: hidden;
-	margin: 0 auto;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  background: rgba(38,50,56,.5);
+  opacity: 1;
+  z-index: 10000033;
+  overflow: hidden;
+  margin: 0 auto;
 }
 
 .loader.authenticating {
-	background: transparent;
+  background: transparent;
 }
 
 .loaderContent {
-	display: table;
-	position: absolute;
-	left: 50%;
-	top: 0%;
-	transform: translate(-50%, 0);
-	background-color: transparent;
-	z-index: 10000034;
-	min-height: 400px;
-	max-width: 800px;
-	width: 100%;
-	height: 100%;
-	margin: 0 auto;
-	overflow: hidden;
-	text-align: center;
+  display: table;
+  position: absolute;
+  left: 50%;
+  top: 0%;
+  transform: translate(-50%, 0);
+  background-color: transparent;
+  z-index: 10000034;
+  min-height: 400px;
+  max-width: 800px;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+  text-align: center;
 }
 
 .loadingText {
-	display: table-cell;
-	vertical-align: middle;
-	color: #000;
-	font-size: 14px;
-	z-index: 10000035;
+  display: table-cell;
+  vertical-align: middle;
+  color: #000;
+  font-size: 14px;
+  z-index: 10000035;
 }
 
 .loaderSVG  {
-	height: 45px;
-	width: 45px;
-	background: transparent;
-	animation: logoPulsate .5s ease-in-out infinite, spin 1.5s linear infinite;
-	-webkit-animation: logoPulsate .5s ease-in-out infinite, spin 1.5s linear infinite;
+  height: 45px;
+  width: 45px;
+  background: transparent;
+  animation: logoPulsate .5s ease-in-out infinite, spin 1.5s linear infinite;
+  -webkit-animation: logoPulsate .5s ease-in-out infinite, spin 1.5s linear infinite;
 }
 
 .ripple {
@@ -132,7 +132,7 @@
 }
 
 .fade-appear, .fade-appear-active {
-	opacity: 0;
+  opacity: 0;
 }
 
 .fade-enter {
@@ -157,33 +157,33 @@
 
 @-webkit-keyframes logoPulsate {
     0% {
-			filter: brightness(70);
-  		-webkit-filter:brightness(70%);
-		}
+      filter: brightness(70);
+      -webkit-filter:brightness(70%);
+    }
     50% {
-			filter: brightness(150);
-  		-webkit-filter:brightness(150%);
-		}
+      filter: brightness(150);
+      -webkit-filter:brightness(150%);
+    }
     100% {
-			filter: brightness(70);
-  		-webkit-filter:brightness(70%);
-		}
+      filter: brightness(70);
+      -webkit-filter:brightness(70%);
+    }
 }
 
 .fadeIn {
-	-webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
-		 -moz-animation: fadein 1s; /* Firefox < 16 */
-			-ms-animation: fadein 1s; /* Internet Explorer */
-			 -o-animation: fadein 1s; /* Opera < 12.1 */
-					animation: fadein 1s;
+  -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
+     -moz-animation: fadein 1s; /* Firefox < 16 */
+      -ms-animation: fadein 1s; /* Internet Explorer */
+       -o-animation: fadein 1s; /* Opera < 12.1 */
+          animation: fadein 1s;
 }
 
 .fadeOut {
-	-webkit-animation: fadeout 1s; /* Safari, Chrome and Opera > 12.1 */
-		 -moz-animation: fadeout 1s; /* Firefox < 16 */
-			-ms-animation: fadeout 1s; /* Internet Explorer */
-			 -o-animation: fadeout 1s; /* Opera < 12.1 */
-					animation: fadeout 1s;
+  -webkit-animation: fadeout 1s; /* Safari, Chrome and Opera > 12.1 */
+     -moz-animation: fadeout 1s; /* Firefox < 16 */
+      -ms-animation: fadeout 1s; /* Internet Explorer */
+       -o-animation: fadeout 1s; /* Opera < 12.1 */
+          animation: fadeout 1s;
 }
 
 
@@ -193,18 +193,18 @@
 }
 
 @-webkit-keyframes fadein {
-	from { opacity: 0; visibility: hidden;}
-	to   { opacity: 1; visibility: visible;}
+  from { opacity: 0; visibility: hidden;}
+  to   { opacity: 1; visibility: visible;}
 }
 
 @keyframes fadeout {
-	from { opacity: 1; visibility: visible;}
-	to   { opacity: 0; visibility: hidden;}
+  from { opacity: 1; visibility: visible;}
+  to   { opacity: 0; visibility: hidden;}
 }
 
 @-webkit-keyframes fadeout {
-	from { opacity: 1; visibility: visible;}
-	to   { opacity: 0; visibility: hidden;}
+  from { opacity: 1; visibility: visible;}
+  to   { opacity: 0; visibility: hidden;}
 }
 
 @-moz-keyframes spin {
@@ -245,59 +245,58 @@
 @-webkit-keyframes pulsateOpacity {
     0% {
       @include filter(opacity(.5));
-		}
+    }
     50% {
       @include filter(opacity(.1));
-		}
+    }
     100% {
       @include filter(opacity(.5));
-		}
+    }
 }
 
 @-webkit-keyframes pulsateDimmer {
     0% {
-			filter: brightness(100);
-  		-webkit-filter:brightness(100%);
-		}
+      -webkit-filter:brightness(100%);
+      filter: brightness(100);
+    }
     50% {
-			filter: brightness(70);
-  		-webkit-filter:brightness(70%);
-		}
+      -webkit-filter:brightness(70%);
+      filter: brightness(70);
+    }
     100% {
-			filter: brightness(100);
-  		-webkit-filter:brightness(100%);
-		}
+      -webkit-filter:brightness(100%);
+      filter: brightness(100);
+    }
 }
 
 @-webkit-keyframes pulsateBrighter {
     0% {
-			filter: brightness(100);
-  		-webkit-filter:brightness(100%);
-		}
+      -webkit-filter:brightness(100%);
+      filter: brightness(100);
+    }
     50% {
-			filter: brightness(140);
-  		-webkit-filter:brightness(140%);
-		}
+      -webkit-filter:brightness(140%);
+      filter: brightness(140);
+    }
     100% {
-			filter: brightness(100);
-  		-webkit-filter:brightness(100%);
-		}
+      -webkit-filter:brightness(100%);
+      filter: brightness(100);
+    }
 }
-
 
 @-webkit-keyframes pulsateSlightlyBrighter {
     0% {
-			filter: brightness(100);
-  		-webkit-filter:brightness(100%);
-		}
+      -webkit-filter:brightness(100%);
+      filter: brightness(100);
+    }
     50% {
-			filter: brightness(120);
-  		-webkit-filter:brightness(120%);
-		}
+      -webkit-filter:brightness(120%);
+      filter: brightness(120);
+    }
     100% {
-			filter: brightness(100);
-  		-webkit-filter:brightness(100%);
-		}
+      -webkit-filter:brightness(100%);
+      filter: brightness(100);
+    }
 }
 
 

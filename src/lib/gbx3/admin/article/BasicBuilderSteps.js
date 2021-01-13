@@ -221,7 +221,7 @@ class BasicBuilderStepsForm extends Component {
           }
         };
         item.title = 'Choose a Theme Color';
-        item.desc = 'Pick a color that matches your brand or messaging.';
+        item.desc = 'Choose a color that compliments your fundraising form or nonprofit logo.';
         item.component =
           <div className='flexCenter'>
             <PhotoshopPicker
@@ -245,8 +245,8 @@ class BasicBuilderStepsForm extends Component {
           'Please wait while the preview loads...'
           :
           <div>
-            <span>This is how your form will look to your customers.</span>
-            <span style={{ marginTop: 10, display: 'block' }}>If you really want to roll up your sleeves, try our <GBLink style={{ fontSize: 14, display: 'inline' }} onClick={() => this.props.toggleBuilder()}>Advanced Builder</GBLink>, where you can customize pretty much everything!</span>
+            <span>This is how the form will look to your supporters.</span>
+            <span style={{ marginTop: 10, display: 'block' }}>If you really want to roll up your sleeves, try the Givebox <GBLink style={{ fontSize: 14, display: 'inline' }} onClick={() => this.props.toggleBuilder()}>Advanced Builder</GBLink>, where you can customize pretty much everything!</span>
           </div>
         ;
         item.component =
@@ -260,7 +260,7 @@ class BasicBuilderStepsForm extends Component {
       case 'share': {
         item.saveButtonLabel = 'All Finished! Take Me to My Dashboard';
         item.title = 'Share Your Form';
-        item.desc = 'Click a social icon below to share your form to start raising money.';
+        item.desc = 'Copy and paste your custom link into an email, or click a social media icon below to share your fundraising form and start raising money!';
         item.component =
           <Share
             hideList={['web']}
@@ -276,7 +276,7 @@ class BasicBuilderStepsForm extends Component {
 
         item.saveButtonLabel = 'Continue to Next Step';
         item.title = 'Add an Image';
-        item.desc = 'A very nice image speaks louder than words. Upload an image that lets your audience feel the urgency to give.';
+        item.desc = 'A picture speaks a thousand words. Upload an image that inspires people to support your fundraiser.';
         item.component =
           <MediaLibrary
             blockType={'article'}
@@ -305,7 +305,7 @@ class BasicBuilderStepsForm extends Component {
         const orgImageURL = (!util.checkImage(logoURL) || !logoURL) ? '' : logoURL;
         item.saveButtonLabel = 'Continue to Next Step';
         item.title = 'Upload a Logo';
-        item.desc = 'Please upload an image of your logo. The best logos fit nicely in a square.';
+        item.desc = 'Please upload an image of your logo.';
         item.component =
           <MediaLibrary
             blockType={'article'}
@@ -333,7 +333,7 @@ class BasicBuilderStepsForm extends Component {
         const title = this.props.checkHelperIfHasDefaultValue('article', { field: 'title', defaultCheck: 'text' }) ? '' : util.getValue(data, 'title');
 
         item.title = 'What are you raising money for?';
-        item.desc = 'Please enter a captivating title below to let your audience know what you are raising money for.';
+        item.desc = 'Please enter a captivating title below to let your supporters know what you are raising money for.';
         item.component =
           this.props.textField('title', {
             group: 'title',

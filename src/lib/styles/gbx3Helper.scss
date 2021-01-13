@@ -224,6 +224,7 @@ $helperColor: $hotPink;
     .icon {
       font-size: 20px;
       color: $med-blue-gray;
+      @include animation(pulsateBrighter 2s ease-out infinite);
     }
 
     .stepTitleContainer {
@@ -349,6 +350,7 @@ $gbx3StepsBreakpoint: 600px;
       .icon {
         font-size: 35px;
         color: $mainColor;
+        @include animation(pulsateBrighter 2s ease-out infinite);
       }
     }
 
@@ -370,6 +372,7 @@ $gbx3StepsBreakpoint: 600px;
         color: $green;
         font-size: 18px;
         font-weight: 300;
+        @include animation(pulsateBrighter 2s ease-out infinite);
         .icon {
           color: $green;
           font-size: 18px;
