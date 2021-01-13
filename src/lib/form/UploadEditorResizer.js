@@ -303,7 +303,7 @@ class UploadEditorResizer extends Component {
           */}
           <div className='button-group'>
             <GBLink className='link' onClick={() => this.cancel()}>Cancel</GBLink>
-            <GBLink style={{ width: '100px' }} className='button' onClick={() => this.save()}>Save</GBLink>
+            <GBLink style={{ width: '100px', ...this.props.uploadEditorSaveStyle }} className='button' onClick={() => this.save()}>{this.props.uploadEditorSaveLabel}</GBLink>
           </div>
         </div>
       </div>
@@ -323,7 +323,9 @@ UploadEditorResizer.defaultProps = {
   minRadius: 0,
   maxRadius: 50,
   defaultScale: 1,
-  borderRadius: 0
+  borderRadius: 0,
+  uploadEditorSaveLabel: 'Save',
+  uploadEditorSaveStyle: {}
 }
 
 function mapStateToProps(state, props) {

@@ -21,7 +21,11 @@ class Text extends Component {
 
     const options = props.options;
 
-    const defaultContent = options.defaultFormat && props.fieldValue ? options.defaultFormat.replace('{{TOKEN}}', props.fieldValue) : props.fieldValue ? `<p>${props.fieldValue}</p>` : `<p>${options.defaultFormat || `Please add ${props.title}`}</p>`;
+    let defaultContent = options.defaultFormat && props.fieldValue ? options.defaultFormat.replace('{{TOKEN}}', props.fieldValue) : props.fieldValue ? `<p>${props.fieldValue}</p>` : `<p>${options.defaultFormat || `Please add ${props.title}`}</p>`;
+
+    if (props.name === 'description' && !props.fieldValue) {
+      defaultContent = props.mission;
+    }
 
     const button = util.getValue(options, 'button', {});
     const content = util.getValue(props.blockContent, 'html', defaultContent);
@@ -79,11 +83,9 @@ class Text extends Component {
       const data = {};
       const updateOptions = util.getValue(block, 'updateOptions');
       const updateMax = util.getValue(block, 'updateMax');
-      console.log('execute updateMax', block.field, updateMax);
       if (updateOptions) data[block.field] = updateOptions === 'string' ? util.remove_non_ascii(util.stripHtml(content)) : content;
       if (updateOptions && updateMax) {
         data[block.field] = data[block.field].replace(/\r?\n|\r/g, '').trim().substring(0, updateMax);
-        console.log('execute', data[block.field])
       }
       this.props.saveBlock({
         data,
@@ -257,9 +259,11 @@ class Text extends Component {
 function mapStateToProps(state, props) {
 
   const primaryColor = util.getValue(state, 'gbx3.globals.gbxStyle.primaryColor');
+  const mission = util.getValue(state, 'gbx3.orgData.mission');
 
   return {
-    primaryColor
+    primaryColor,
+    mission
   }
 }
 

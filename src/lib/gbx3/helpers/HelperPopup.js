@@ -207,10 +207,6 @@ class HelperPopup extends React.Component {
     return (
       <div
         className='gbx3Helper'
-        style={{
-          ...util.getValue(helper, 'style', {}),
-          ...style
-        }}
       >
         <div
           className='helperContainer'

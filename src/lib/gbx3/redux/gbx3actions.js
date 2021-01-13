@@ -7,6 +7,7 @@ import { defaultAmountHeight } from '../blocks/amounts/amountsStyle';
 import { blockTemplates, defaultBlocks } from '../blocks/blockTemplates';
 import { createData } from '../admin/article/createTemplates';
 import { helperTemplates } from '../helpers/helperTemplates';
+import { builderStepsConfig } from '../admin/article/builderStepsConfig';
 import {
   defaultStyle
 } from './gbx3defaults';
@@ -495,7 +496,6 @@ function calcFee(amount = 0, fees = {}) {
     const paymethod = util.getValue(cart, 'paymethod', {});
     const cardType = util.getValue(cart, 'cardType');
     const isDebit = util.getValue(cart, 'isDebit');
-    const cardLength = +util.getValue(cart, 'cardLength', 0);
 
     let feePrefix = 'fnd';
     switch (paymethod) {
@@ -512,9 +512,7 @@ function calcFee(amount = 0, fees = {}) {
         break;
       }
     }
-    if (paymethod === 'echeck' && cardLength < 16) {
-      feePrefix = 'debit';
-    } else if (paymethod === 'echeck' && isDebit) {
+    if (isDebit && paymethod === 'echeck') {
       feePrefix = 'debit';
     }
 
@@ -576,13 +574,15 @@ export function saveGBX3(blockType, options = {}) {
     const globals = util.getValue(gbx3, 'globals', {});
     const backgrounds = util.getValue(gbx3, 'backgrounds', []);
     const helperBlocks = util.getValue(gbx3, 'helperBlocks', {});
+    const helperSteps = util.getValue(gbx3, 'helperSteps', {});
     const giveboxSettings = blockType === 'org' ?
       {
         customTemplate: {
           blocks,
           globals,
           backgrounds,
-          helperBlocks
+          helperBlocks,
+          helperSteps
         }
       }
     :
@@ -593,7 +593,8 @@ export function saveGBX3(blockType, options = {}) {
             blocks,
             globals,
             backgrounds,
-            helperBlocks
+            helperBlocks,
+            helperSteps
           }
         }
       }
@@ -1003,6 +1004,80 @@ export function loadGBX3(articleID, callback) {
                     }
                   : helperTemplates[blockType][kind];
 
+                  const helperStepsCustom = util.getValue(customTemplate, `helperSteps`, {});
+                  const helperSteps = !util.isEmpty(helperStepsCustom) ?
+                    {
+                      ...helperStepsCustom
+                    }
+                  :
+                    {
+                      step: 0,
+                      completed: [],
+                      advancedBuilder: false
+                    }
+                  ;
+
+                  // Get Step Values
+                  const title = util.getValue(res, 'title');
+                  const logoBlock = util.getValue(blocks, 'logo', {});
+                  const logoURL = util.getValue(logoBlock, 'content.image.URL', util.getValue(res, 'orgImageURL')).replace(/small$/i, 'original');
+                  const mediaBlock = util.getValue(blocks, 'media', {});
+                  const mediaURL = util.getValue(mediaBlock, 'content.image.URL', '').replace(/medium$/i, 'original');
+
+                  // Get the minimum not completed step
+                  const stepsArray = [];
+                  const stepConfig = util.getValue(builderStepsConfig, kind, []);
+                  const numOfSteps = stepConfig.length - 1;
+
+                  stepConfig.forEach((value, key) => {
+                      let isDefault = true;
+                      stepsArray.push(key);
+
+                      // Check if step values are completed by checking defaultStyle
+                      switch (value.slug) {
+                        case 'title': {
+                          if (title && !title.includes(`New ${types2.kind(kind).name}`)) {
+                            isDefault = false;
+                          }
+                          break;
+                        }
+
+                        case 'logo': {
+                          if (logoURL && util.checkImage(logoURL)) {
+                            isDefault = false;
+                          }
+                          break;
+                        }
+
+                        case 'image': {
+                          if (mediaURL && util.checkImage(mediaURL)) {
+                            isDefault = false;
+                          }
+                          break;
+                        }
+
+                        case 'themeColor': {
+                          if (primaryColor && !primaryColor.includes('#4385f5') && !primaryColor.includes('#4775f8')) {
+                            isDefault = false;
+                          }
+                          break;
+                        }
+
+                        // no default
+                      }
+
+                      if (!helperSteps.completed.includes(key) && !isDefault) {
+                        helperSteps.completed.push(key);
+                      }
+                  });
+                  const uncompletedSteps = stepsArray.filter(item => !helperSteps.completed.includes(item));
+                  const minStepNotCompleted = !util.isEmpty(uncompletedSteps) ? Math.min(...uncompletedSteps) : numOfSteps;
+
+                  helperSteps.step = minStepNotCompleted < 4 ? minStepNotCompleted : 4;
+
+                  const builderPref = util.getValue(getState(), 'preferences.builderPref');
+                  helperSteps.advancedBuilder = builderPref === 'advanced' ? true : helperSteps.advancedBuilder;
+
                   if (!util.isEmpty(blocksCustom)) {
                     // Check if not all default blocks are present
                     // If not, add them to the availableBlocks array
@@ -1051,6 +1126,7 @@ export function loadGBX3(articleID, callback) {
                   dispatch(updateBlocks(blockType, blocks));
                   dispatch(updateGlobals(globals));
                   dispatch(updateHelperBlocks(blockType, helperBlocks));
+                  dispatch(updateHelperSteps(helperSteps));
                   dispatch(updateData(res));
                   dispatch(updateAvailableBlocks(blockType, availableBlocks));
                   dispatch(updateAdmin(admin));

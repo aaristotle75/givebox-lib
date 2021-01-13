@@ -353,7 +353,7 @@ class Article extends React.Component {
               layouts={layouts}
               id='testGrid'
               className="blockGridLayout"
-              breakpoints={{desktop: 768, mobile: 767 }}
+              breakpoints={{desktop: 731, mobile: 730 }}
               cols={{desktop: 12, mobile: 6}}
               rowHeight={10}
               onLayoutChange={this.layoutChange}
@@ -381,7 +381,7 @@ class Article extends React.Component {
             onClickVolunteerFundraiser={this.props.onClickVolunteerFundraiser}
           />
         </div>
-        { stage === 'admin' ?
+        { stage === 'admin' && stage === 'hideHelper' ?
         <Helper
           blockType='article'
           portalBindID='gbx3Layout'

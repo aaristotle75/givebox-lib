@@ -68,7 +68,13 @@ class MediaLibrary extends Component {
     }
   }
 
-  componentDidUpdate(prev) {
+  componentDidUpdate(prevProps) {
+    if ((prevProps.image !== this.props.image) || (prevProps.preview !== this.props.preview)) {
+      this.setState({
+        image: this.props.image,
+        preview: this.props.preview
+      })
+    }
   }
 
   componentWillUnmount() {
@@ -362,6 +368,8 @@ class MediaLibrary extends Component {
               orgID={util.getValue(library, 'orgID', null)}
               articleID={util.getValue(library, 'articleID', null)}
               saveMediaType={util.getValue(library, 'saveMediaType')}
+              uploadEditorSaveLabel={this.props.uploadEditorSaveLabel}
+              uploadEditorSaveStyle={this.props.uploadEditorSaveStyle}
             />
           }
         </div>

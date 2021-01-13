@@ -31,6 +31,15 @@ $helperColor: $hotPink;
 
   position: absolute;
   z-index: 999999;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  margin: 0 auto;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
 
   @media (max-width: $breakpoint) {
     position: fixed;
@@ -197,10 +206,78 @@ $helperColor: $hotPink;
   overflow: hidden;
 }
 
+.builderMenuSteps {
+
+  li.stepButton.currentStep {
+    background: transparentize($green, .7);
+    @include animation(pulsateSlightlyBrighter 2s ease-out infinite);
+    .icon {
+      color: $white;
+    }
+  }
+
+  li.stepButton {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .icon {
+      font-size: 20px;
+      color: $med-blue-gray;
+    }
+
+    .stepTitleContainer {
+      display: flex;
+      align-items: center;
+      .icon {
+        margin-right: 10px;
+      }
+    }
+
+    .stepTitle {
+      display: flex;
+      flex-direction: column;
+      .number {
+        color: $med-blue-gray;
+        font-size: 12px;
+      }
+    }
+  }
+}
+
 $stepInputSize: 18px;
 $gbx3StepsBreakpoint: 600px;
 
 .gbx3Steps {
+
+  .stepStatus {
+
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+
+    button.link {
+      font-weight: 300;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+  }
+
+  iframe {
+    width: 100%;
+    height: 1250px;
+    overflow: auto;
+  }
+
+  margin-top: 20px;
+
+  .formSectionContainer {
+    background: transparent;
+  }
+
+  .photoshopButtonGroup {
+    display: none;
+  }
 
   input::-webkit-input-placeholder {
     font-size: $stepInputSize;
@@ -224,9 +301,30 @@ $gbx3StepsBreakpoint: 600px;
   }
 
   .button-group {
+    margin-top: 50px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    button.link {
+      font-size: 14px;
+    }
+
+    button.button {
+      color: $white;
+      border: 1px solid $white;
+      @include bgGradient(to right, $salmon 30%, $salmon2 100%);
+      white-space: nowrap;
+      padding: 15px 25px;
+      border-radius: 25px;
+    }
+
+    button.button:hover {
+      color: $white;
+      border: 1px solid $white;
+      background: linear-gradient(to right, $salmon2 0%, $salmon 100%);
+    }
+
   }
 
   .button-group::before {
@@ -237,32 +335,93 @@ $gbx3StepsBreakpoint: 600px;
     content: "";
   }
 
-  .step {
-    .formSectionContainer {
-      background: transparent;
-    }
+  .stepContainer {
   }
 
-  .formSection {
-    padding: 40px;
+  .step {
+    padding: 0 20px;
 
-    h2 {
+    .stepTitleContainer {
+      display: flex;
+      align-items: center;
       margin-bottom: 20px;
+
+      .icon {
+        font-size: 35px;
+        color: $mainColor;
+        @include animation(pulsateBrighter 2s ease-out infinite);
+      }
+    }
+
+    .stepTitle {
+      display: flex;
+      flex-direction: column;
+      font-size: 22px;
+      margin-left: 20px;
+
+      .numberContainer {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0px;
+      }
+
+      .completed {
+        display: flex;
+        align-items: center;
+        color: $green;
+        font-size: 18px;
+        font-weight: 300;
+        @include animation(pulsateBrighter 2s ease-out infinite);
+        .icon {
+          color: $green;
+          font-size: 18px;
+          margin-right: 10px;
+        }
+      }
+
       .number {
         color: $med-blue-gray;
         margin-right: 10px;
+        font-weight: 300;
       }
     }
 
     .stepsSubText {
-      font-size: .9em;
-      margin: 20px 0;
+      font-size: 14px;
+      margin: 10px 55px;
+    }
+
+    .stepComponent {
+      position: relative;
+      margin: 20px 55px;
+      label {
+        font-size: 14px;
+        font-weight: 400;
+        color: #253655;
+      }
+    }
+  }
+
+  .step.preview {
+    .stepComponent {
+      margin: 0 -20px;
+      margin-top: 30px;
     }
   }
 
   button.link {
     display: flex;
     align-items: center;
+  }
+
+  button.button {
+    background: $mainColor;
+    color: $white;
+    @include default-transition(.25s);
+  }
+
+  button.button:hover {
+    background: transparentize($mainColor, .2);
   }
 
   button.donotShowAgain {
@@ -291,80 +450,6 @@ $gbx3StepsBreakpoint: 600px;
 
     .uploadEditorContainer {
       padding-bottom: 0;
-    }
-  }
-
-  .stepHeader {
-
-    position: relative;
-    margin: 20px 10px;
-
-    .stepHeaderSteps {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-
-      @media (max-width: $gbx3StepsBreakpoint) {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-    }
-
-    .stepHeaderStep {
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      padding: 10px;
-      width: 25%;
-      @include default-transition(.25s);
-      @media (max-width: $gbx3StepsBreakpoint) {
-        width: 100%;
-      }
-
-      .icon {
-        font-size: 30px;
-        color: $med-blue-gray;
-        margin-right: 10px;
-      }
-
-      .stepNumber {
-        display: flex;
-        flex-direction: column;
-        font-size: 16px;
-        color: $med-blue-gray;
-        @media (max-width: $gbx3StepsBreakpoint) {
-          flex-direction: row;
-          .number {
-            margin-right: 10px;
-          }
-        }
-      }
-
-      .number {
-        white-space: nowrap;
-      }
-
-      .stepTitle {
-        white-space: nowrap;
-      }
-    }
-    .stepHeaderStep:hover {
-      background: transparentize($green, .7);
-    }
-
-    .stepHeaderStep.active {
-      .icon,
-      .stepNumber {
-        color: $med-blue-dark-gray;
-        @include animation(pulsateBrighter 2s ease-out infinite);
-      }
-    }
-
-    .stepHeaderStep.completed {
-      .icon,
-      .stepNumber {
-        color: $mainColor;
-      }
     }
   }
 

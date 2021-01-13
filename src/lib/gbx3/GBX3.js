@@ -187,7 +187,6 @@ class GBX3 extends React.Component {
 
   signupCallback(e) {
     if (e.data === 'signupCallback') {
-      console.log('execute signupCallback');
       this.props.getResource('session', {
         reload: true,
         callback: (res, err) => {
@@ -362,7 +361,6 @@ class GBX3 extends React.Component {
       queryParams
     } = this.props;
 
-    console.log('execute loadGBX3', queryParams);
     const share = has(queryParams, 'share') ? true : false;
     const steps = has(queryParams, 'steps') ? true : false;
     const previewMode = has(queryParams, 'previewMode') ? true : false;

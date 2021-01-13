@@ -682,20 +682,26 @@
 
     .leftSide {
       width: 20%;
+      margin-left: 10px;
       white-space: nowrap;
       .icon {
         font-size: 20px;
         margin-right: 10px;
       }
-      .icon.leftPanelClose {
-        color: $white;
-        font-size: 20px;
-        margin-left: 20px;
+      button.link.side {
+        margin-left: 10px;
       }
     }
 
     .middle {
       white-space: nowrap;
+
+      .topMiddleTitle {
+        color: $white;
+        font-weight: 300;
+        font-size: 18px;
+      }
+
       .button-group {
         button.link {
           text-align: center;
@@ -730,6 +736,37 @@
   }
 
   // Left Panel
+  .leftPanelOpenButton {
+    position: fixed;
+    top: 120px;
+    left: 15px;
+    z-index: 999999;
+    height: 40px;
+    width: 40px;
+    background: $mainColor;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    @include transition(left .5s, opacity .5s);
+    opacity: 1;
+
+    @media (max-width: $breakpoint) {
+      right: 5px;
+    }
+
+    .icon {
+      font-size: 25px;
+      color: $white;
+    }
+  }
+
+  .leftPanelOpenButton:hover {
+    background: transparentize($mainColor, .4);
+    @include transition(background .25s);
+  }
+
   .leftPanel {
     position: absolute;
     top: $topOffset;
@@ -764,8 +801,28 @@
       background: $mainColorLight;
     }
 
-    .adminPanelTabs {
+    .leftPanelClose {
+      position: absolute;
+      top: $topOffset;
+      left: 0;
+      z-index: 11;
+      background: $mainColor;
+      border-bottom-right-radius: 5px;
+      padding: 1px !important;
+      @include transition(left .5s);
+      opacity: 0;
 
+      .icon {
+        color: $white;
+        font-size: 12px;
+        @include default-transition(.25s);
+      }
+      .icon:hover {
+        color: $light-gray;
+      }
+    }
+
+    .adminPanelTabs {
       position: relative;
       height: 50px;
       width: $panelWidth;
@@ -938,6 +995,18 @@
   .leftPanel.open {
     width: $panelWidth;
     @include box-shadow(0px 2px 2px 1px rgba(0, 0, 0, 0.45));
+    .leftPanelOpenButton {
+      position: absolute;
+      opacity: 0;
+      left: $panelWidth - 45px;
+      z-index: 900000;
+    }
+
+    .leftPanelClose {
+      position: fixed;
+      left: $panelWidth;
+      opacity: 1;
+    }
   }
 
   .leftPanel.close {
@@ -969,23 +1038,28 @@
 
     .gbx3Layout {
       height: auto;
-      overflow-y: hidden;
-      min-width: 850px;
+      overflow-x: visible;
+      overflow-y: visible;
+      min-width: 800px;
+      margin-top: 25px;
       @media (max-width: $breakpoint) {
         min-width: 100%;
       }
     }
 
     .gbx3ReceiptLayout {
-      overflow-y: auto;
+      overflow-x: visible;
+      overflow-y: visible;
       height: 100%;
       background: $light-gray;
     }
 
     .gbx3Container {
+      overflow: visible;
     }
 
     .gbx3ReceiptContainer {
+      margin-top: 20px;
       max-width: 600px;
       width: 550px;
       background: $white;
@@ -1427,6 +1501,12 @@
     button.blockEditButton {
       background: transparentize($mainColorDark, 0);
     }
+
+    .tooltip .tooltipTop {
+      top: -10px;
+      white-space: nowrap;
+    }
+
   }
 
   .blockEdit:hover {

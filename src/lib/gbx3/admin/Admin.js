@@ -108,6 +108,7 @@ class Admin extends React.Component {
         return (
           <ArticleAdmin
             step={step}
+            exitAdmin={this.props.exitAdmin}
           />
         )
       }

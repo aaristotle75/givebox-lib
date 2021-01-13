@@ -16,7 +16,7 @@ class AdminMenu extends React.Component {
     this.switchPanelType = this.switchPanelType.bind(this);
     this.renderPanel = this.renderPanel.bind(this);
     this.state = {
-      panelType: 'style'
+      panelType: 'layout'
     };
   }
 
@@ -54,15 +54,26 @@ class AdminMenu extends React.Component {
   render() {
 
     const {
-      panelType
+      panelType,
+      breakpoint
     } = this.state;
+
+    const {
+      contentObj,
+      createType
+    } = this.props;
+
+    const mobile = breakpoint === 'mobile' ? true : false;
 
     return (
       <div className='leftPanelContainer'>
         <div className='leftPanelTop'>
+          <GBLink className='leftPanelClose link' onClick={() => this.props.toggleAdminLeftPanel()}>
+            <span className='icon icon-x'></span>
+          </GBLink>
           <div className='middle centerAlign adminPanelTabs'>
-            <GBLink className={`ripple link ${panelType === 'style' ? 'selected' : ''}`} onClick={() => this.switchPanelType('style')}>Style</GBLink>
             <GBLink className={`ripple link ${panelType === 'layout' ? 'selected' : ''}`} onClick={() => this.switchPanelType('layout')}>Elements</GBLink>
+            <GBLink className={`ripple link ${panelType === 'style' ? 'selected' : ''}`} onClick={() => this.switchPanelType('style')}>Style</GBLink>
             <GBLink className={`ripple link ${panelType === 'tools' ? 'selected' : ''}`} onClick={() => this.switchPanelType('tools')}>Settings</GBLink>
           </div>
         </div>
@@ -79,9 +90,13 @@ function mapStateToProps(state, props) {
   const gbx3 = util.getValue(state, 'gbx3', {});
   const admin = util.getValue(gbx3, 'admin', {});
   const openAdmin = util.getValue(admin, 'open');
+  const breakpoint = util.getValue(gbx3, 'info.breakpoint');
+  const createType = util.getValue(admin, 'createType');
 
   return {
-    openAdmin
+    openAdmin,
+    breakpoint,
+    createType
   }
 }
 

@@ -131,6 +131,7 @@ class Block extends React.Component {
       articleID,
       orgID,
       name,
+      title,
       blockType,
       block,
       blockRef,
@@ -156,6 +157,7 @@ class Block extends React.Component {
         articleID,
         orgID,
         name,
+        title,
         blockType,
         block,
         blockRef,
@@ -175,7 +177,6 @@ class Block extends React.Component {
         stage,
         blockContent: this.getBlockContent(),
         saveBlock: this.saveBlock,
-        title: util.getValue(block, 'title', name),
         closeEditModal: this.closeEditModal,
         setDisplayHeight: this.setDisplayHeight,
         onClickRemove: this.onClickRemove
@@ -189,6 +190,7 @@ class Block extends React.Component {
     const {
       editable,
       name,
+      title,
       type,
       style,
       editBlock,
@@ -207,12 +209,20 @@ class Block extends React.Component {
 
     return (
       <div className={`block`}>
-        <div className={`blockOptions ${name}Block ${blockIsBeingEdited || !editable ? 'displayNone' : ''}`}>
+        <div id={`blockOption-${name}`} className={`blockOptions ${name}Block ${blockIsBeingEdited || !editable ? 'displayNone' : ''}`}>
           <div className='dragHandle'></div>
           { !notEditable ?
           <div className='blockEdit'>
-            {!nonremovable ? <GBLink className='blockRemoveButton' onClick={() => this.onClickRemove()}><span className='icon icon-trash-2'></span></GBLink> : <></>}
-            <GBLink className='blockEditButton' onClick={this.onClickEdit}><span className='icon icon-edit'></span></GBLink>
+            {!nonremovable ?
+              <GBLink className='tooltip blockRemoveButton' onClick={() => this.onClickRemove()}>
+                <span className='tooltipTop'><i />Click Icon to REMOVE {title}</span>
+                <span className='icon icon-trash-2'></span>
+              </GBLink>
+            : <></>}
+            <GBLink className='tooltip blockEditButton' onClick={this.onClickEdit}>
+              <span className='tooltipTop'><i />Click Icon to EDIT {title}</span>
+              <span className='icon icon-edit'></span>
+            </GBLink>
           </div> : '' }
         </div>
         <div
@@ -256,6 +266,7 @@ function mapStateToProps(state, props) {
   const layouts = util.getValue(gbx3, `layouts.${blockType}`, {});
   const blocks = util.getValue(gbx3, `blocks.${blockType}`, {});
   const block = util.getValue(blocks, props.name, {});
+  const title = util.getValue(block, 'title', props.name);
   const nonremovable = util.getValue(block, 'nonremovable');
   const dataField = util.getValue(block, 'field');
   const type = util.getValue(block, 'type');
@@ -280,6 +291,7 @@ function mapStateToProps(state, props) {
     layouts,
     blockType,
     block,
+    title,
     type,
     nonremovable,
     options,

@@ -5,53 +5,46 @@ import GBLink from '../../../common/GBLink';
 import ModalLink from '../../../modal/ModalLink';
 import Icon from '../../../common/Icon';
 import Layout from '../../Layout';
-import AdminMenu from '../AdminMenu';
 import ReceiptEmail from '../receipt/ReceiptEmail';
-import ReceiptMenu from '../receipt/ReceiptMenu';
 import {
   updateAdmin,
   updateInfo,
   toggleAdminLeftPanel,
   setLoading,
-  closeHelper
+  closeHelper,
+  updateHelperSteps
 } from '../../redux/gbx3actions';
 import Toggle from 'react-toggle';
 import { FaPalette } from 'react-icons/fa';
 import { GoBeaker } from 'react-icons/go';
 import { FiPenTool } from 'react-icons/fi';
 import { AiOutlineNotification } from 'react-icons/ai';
+import BasicBuilderSteps from './BasicBuilderSteps';
+import BasicBuilderMenu from './BasicBuilderMenu';
+import { builderStepsConfig } from './builderStepsConfig';
 
 const GBX3_URL = process.env.REACT_APP_GBX_URL;
 
-class Design extends React.Component {
+class BasicBuilder extends React.Component {
 
   constructor(props) {
     super(props);
-    this.switchCreateType = this.switchCreateType.bind(this);
     this.renderDisplay = this.renderDisplay.bind(this);
     this.togglePreview = this.togglePreview.bind(this);
     this.renderTopPanel = this.renderTopPanel.bind(this);
     this.changePreviewDevice = this.changePreviewDevice.bind(this);
     this.previewReceipt = this.previewReceipt.bind(this);
     this.previewArticle = this.previewArticle.bind(this);
+    this.previousStep = this.previousStep.bind(this);
+    this.nextStep = this.nextStep.bind(this);
+    this.gotoStep = this.gotoStep.bind(this);
+    this.stepCompleted = this.stepCompleted.bind(this);
     this.state = {
     };
     this.iframePreviewRef = React.createRef();
+    this.config = util.getValue(builderStepsConfig, props.kind, []);
+    this.steps = this.config.length - 1;
     const mobile = props.breakpoint === 'mobile' ? true : false;
-    this.contentObj = {
-      layout: {
-        menuText: !mobile ? 'Design Form' : 'Design',
-        icon: <Icon><FaPalette /></Icon>
-      },
-      receipt: {
-        menuText: !mobile ? 'Customize Receipt' : 'Receipt',
-        icon: <Icon><FiPenTool /></Icon>
-      },
-      share: {
-        menuText: !mobile ? 'Share Form' : 'Share',
-        icon: <Icon><AiOutlineNotification /></Icon>
-      }
-    };
   }
 
   renderTopPanel() {
@@ -61,7 +54,6 @@ class Design extends React.Component {
       previewMode,
       previewDevice,
       advancedBuilder,
-      kind,
       openAdmin: open
     } = this.props;
 
@@ -70,7 +62,7 @@ class Design extends React.Component {
     const middle = [];
     const rightSide = [];
 
-    if (!previewMode && !mobile && kind === 'fundraiser') {
+    if (!previewMode && !mobile) {
       leftSide.push(
         <div
           className='leftSide'
@@ -84,17 +76,6 @@ class Design extends React.Component {
           <GBLink className='link side' style={{ marginRight: 10 }} onClick={this.props.toggleBuilder}>{ mobile ? <Icon><GoBeaker /></Icon> : <span>Advanced Builder</span> }</GBLink>
         </div>
       );
-      {/*
-      if (open) {
-        leftSide.push(
-          <GBLink key={'leftSide'} className='link side' onClick={() => this.props.toggleAdminLeftPanel()}>{!mobile ? contentObj[createType].icon : <span className='icon icon-x'></span>}{!mobile ? <span className='flexCenter centerItems'>{contentObj[createType].menuText} Menu <span className='leftPanelClose icon icon-x'></span></span> : ''}</GBLink>
-        );
-      } else {
-        leftSide.push(
-          <GBLink key={'leftSide'} className='link side' onClick={() => this.props.toggleAdminLeftPanel()}><Icon><GoBeaker /></Icon>{!mobile ? 'Advanced Menu' : ''}</GBLink>
-        );
-      }
-      */}
     }
 
     if (!mobile) {
@@ -125,10 +106,8 @@ class Design extends React.Component {
       );
     } else {
       middle.push(
-        <div key={'middle'} className='button-group'>
-          <GBLink className={`ripple link ${createType === 'layout' ? 'selected' : ''}`} onClick={() => this.switchCreateType('layout')}><span className='centered'>{this.contentObj.layout.icon}<span className='menuText'>{this.contentObj.layout.menuText}</span></span></GBLink>
-          <GBLink className={`ripple link ${createType === 'receipt' ? 'selected' : ''}`} onClick={() => this.switchCreateType('receipt')}><span className='centered'>{this.contentObj.receipt.icon}<span className='menuText'>{this.contentObj.receipt.menuText}</span></span></GBLink>
-          <ModalLink id='share' className={`ripple link ${createType === 'share' ? 'selected' : ''}`}><span className='centered'>{this.contentObj.share.icon}<span id='helper-share' className='menuText'>{this.contentObj.share.menuText}</span></span></ModalLink>
+        <div key={'middle'} className='topMiddleTitle'>
+          Welcome to Givebox Form Builder
         </div>
       );
     }
@@ -190,23 +169,21 @@ class Design extends React.Component {
     }
   }
 
-  async switchCreateType(createType) {
-    this.props.updateAdmin({ createType });
-  }
-
   renderDisplay() {
     const {
       createType,
       previewDevice,
       previewMode,
-      articleID
+      articleID,
+      completed,
+      openAdmin
     } = this.props;
 
     const items = [];
 
-    switch(createType) {
-      case 'receipt': {
-        if (previewMode) {
+    if (previewMode) {
+      switch(createType) {
+        case 'receipt': {
           items.push(
             <div key='receipt' className='gbx3ReceiptLayout'>
               <div className='gbx3ReceiptContainer'>
@@ -217,19 +194,11 @@ class Design extends React.Component {
               </div>
             </div>
           );
-        } else {
-          items.push(
-            <ReceiptEmail
-              key={'receipt'}
-            />
-          );
+          break;
         }
-        break;
-      }
 
-      case 'layout':
-      default: {
-        if (previewMode) {
+        case 'layout':
+        default: {
           items.push(
             <div
               key={'layout'}
@@ -239,25 +208,71 @@ class Design extends React.Component {
               </div>
             </div>
           );
-        } else {
-          items.push(
-            <Layout
-              key={'layout'}
-              loadGBX3={this.props.loadGBX3}
-              reloadGBX3={this.props.reloadGBX3}
-            />
-          );
+          break;
         }
-        break;
       }
+    } else {
+      items.push(
+        <BasicBuilderSteps
+          key={'basicBuilder'}
+          gotoStep={this.gotoStep}
+          nextStep={this.nextStep}
+          previousStep={this.previousStep}
+          stepCompleted={this.stepCompleted}
+          config={this.config}
+          steps={this.steps}
+          completed={completed}
+          openAdmin={openAdmin}
+          exitAdmin={this.props.exitAdmin}
+          toggleBuilder={this.props.toggleBuilder}
+        />
+      )
     }
+
     return items;
+  }
+
+  gotoStep(gotoStep) {
+    const {
+      step
+    } = this.props;
+    this.props.updateHelperSteps({ step: +gotoStep });
+  }
+
+  previousStep() {
+    const {
+      step
+    } = this.props;
+    const prevStep = step > 0 ? step - 1 : step;
+    this.props.updateHelperSteps({ step: prevStep });
+  }
+
+  nextStep() {
+    const {
+      step
+    } = this.props;
+    const nextStep = step < +this.steps ? step + 1 : step;
+    return nextStep;
+  }
+
+  async stepCompleted(step) {
+    let updated = false;
+    const completed = [ ...this.props.completed ];
+    if (!completed.includes(step)) {
+      completed.push(step);
+      updated = await this.props.updateHelperSteps({ completed });
+    } else {
+      updated = true;
+    }
+    return updated;
   }
 
   render() {
 
     const {
+      step,
       createType,
+      completed,
       openAdmin: open
     } = this.props;
 
@@ -268,16 +283,13 @@ class Design extends React.Component {
         </div>
         <div className={`leftPanel ${open ? 'open' : 'close'}`}>
           <div className='leftPanelOpenButton' onClick={this.props.toggleAdminLeftPanel}><span className='icon icon-menu'></span></div>
-          { createType === 'layout' ?
-            <AdminMenu
-              blockType={'article'}
-              contentObj={this.contentObj}
-            />
-          :
-            <ReceiptMenu
-              contentObj={this.contentObj}
-            />
-          }
+          <BasicBuilderMenu
+            config={this.config}
+            steps={this.steps}
+            gotoStep={this.gotoStep}
+            step={step}
+            completed={completed}
+          />
         </div>
         <div
           id='GBX3StageAligner'
@@ -313,6 +325,8 @@ function mapStateToProps(state, props) {
     previewDevice,
     openAdmin,
     createType,
+    completed: util.getValue(state, 'gbx3.helperSteps.completed', []),
+    step: util.getValue(state, 'gbx3.helperSteps.step', 0),
     kind: util.getValue(state, 'gbx3.info.kind', 'fundraiser')
   }
 }
@@ -322,5 +336,6 @@ export default connect(mapStateToProps, {
   updateInfo,
   toggleAdminLeftPanel,
   setLoading,
-  closeHelper
-})(Design);
+  closeHelper,
+  updateHelperSteps
+})(BasicBuilder);

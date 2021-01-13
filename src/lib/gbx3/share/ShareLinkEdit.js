@@ -77,7 +77,7 @@ class ShareLinkEdit extends Component {
               this.timeout = null;
             }, 3000);
           } else {
-            let errorMsg = 'An Error Occurred Saving';
+            let errorMsg = 'The slug cannot be numbers only';
             const errors = util.getValue(err, 'data.errors', []);
             const error = util.getValue(errors, 0, {});
             const code = util.getValue(error, 'code');
