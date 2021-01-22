@@ -412,7 +412,10 @@ export function resetCart() {
 export function updateCart(cart) {
   return async (dispatch, getState) => {
     const cartUpdated = await dispatch(saveCart(cart));
-    if (cartUpdated) dispatch(calcCart());
+    if (cartUpdated) {
+      dispatch(calcCart());
+      return true;
+    }
   }
 }
 

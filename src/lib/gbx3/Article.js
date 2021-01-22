@@ -39,6 +39,13 @@ class Article extends React.Component {
   }
 
   componentDidMount() {
+    const {
+      checkout
+    } = this.props;
+    if (this.props.checkout) {
+      this.props.updateInfo({ checkout: false });
+      this.scrollTo('checkout');
+    }
   }
 
   async saveBlock(args) {
@@ -398,6 +405,7 @@ function mapStateToProps(state, props) {
   const gbx3 = util.getValue(state, 'gbx3', {});
   const admin = util.getValue(gbx3, 'admin', {});
   const info = util.getValue(gbx3, 'info', {});
+  const checkout = util.getValue(info, 'checkout');
   const stage = util.getValue(info, 'stage');
   const blockType = 'article';
   const layouts = util.getValue(gbx3, `layouts.${blockType}`, {});
@@ -411,6 +419,7 @@ function mapStateToProps(state, props) {
 
   return {
     stage,
+    checkout,
     hasAccessToEdit,
     layouts,
     editable,

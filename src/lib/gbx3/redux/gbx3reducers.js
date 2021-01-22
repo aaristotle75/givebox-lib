@@ -17,7 +17,8 @@ export function gbx3(state = {
     breakpoint: 'desktop',
     sourceType: 'embed',
     sourceLocation: null,
-    originTemplate: ''
+    originTemplate: '',
+    checkout: false
   },
   backgrounds: [],
   blocks: {

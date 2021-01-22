@@ -13,6 +13,7 @@ import {
   updateAdmin
 } from './redux/gbx3actions';
 import AvatarMenuButton from './admin/AvatarMenuButton';
+import CartButton from './payment/CartButton';
 import { AiOutlineNotification, AiOutlineTrophy } from 'react-icons/ai';
 import ReactGA from 'react-ga';
 
@@ -183,16 +184,17 @@ class Layout extends React.Component {
             <Icon><AiOutlineNotification /></Icon>
           </div>
         </ModalLink> : ''}
+        <CartButton reloadGBX3={this.props.reloadGBX3} />
       </div>
     ;
 
-    const showAvatarMenu = (stage !== 'admin') && !preview && !util.isEmpty(access) ? true : false;
+    const showAvatarMenu = (stage !== 'admin') && !preview ? true : false;
 
     // This is article display specific
     const noAccess = (!hasAccessToEdit || (hasAccessToEdit && !preview && stage === 'public' )) && (publishStatus === 'private') && (display === 'article') ? true : false;
 
     // This is article sweepstakes specific
-    const done = kind === 'sweepstake' && status === 'done' ? true : false;
+    const done = kind === 'sweepstake' && status === 'done' && display !== 'org' ? true : false;
 
     const publicOnly = (stage !== 'admin') && !preview ? true : false;
 
@@ -228,7 +230,7 @@ class Layout extends React.Component {
         </div>
       : ''}
 
-      { publicOnly && originTemplate === 'org' && display !== 'org' ?
+      { publicOnly && display !== 'org' ?
         <div onClick={() => this.backToOrg()} className='backToOrgPage avatarLink'>
           <div className='editGraphic'>
             <span className='icon icon-chevron-left'></span>

@@ -315,7 +315,7 @@ class GBX3 extends React.Component {
       ebEmail
     } = info;
 
-    if (!preview) {
+    if (!preview && articleID) {
       const data = {
         type: 'details',
         articleID,
@@ -330,11 +330,15 @@ class GBX3 extends React.Component {
     }
   }
 
-  async reloadGBX3(articleID) {
+  async reloadGBX3(articleID, callback) {
     this.props.setLoading(true);
     const gbx3Cleared = await this.props.clearGBX3(true);
-    if (gbx3Cleared) this.loadGBX3(articleID);
-    this.loadGBX3(articleID);
+    let loaded = false;
+    if (gbx3Cleared) {
+      this.loadGBX3(articleID, callback);
+      loaded = true;
+    }
+    if (loaded) return true;
   }
 
   loadOrg(orgID) {
@@ -355,7 +359,7 @@ class GBX3 extends React.Component {
   }
 
 
-  loadGBX3(articleID) {
+  async loadGBX3(articleID, callback) {
 
     const {
       queryParams
@@ -365,6 +369,7 @@ class GBX3 extends React.Component {
     const steps = has(queryParams, 'steps') ? true : false;
     const previewMode = has(queryParams, 'previewMode') ? true : false;
 
+    var loaded = false;
     this.props.loadGBX3(articleID, (res, err) => {
       if (!err && !util.isEmpty(res)) {
         this.props.setStyle();
@@ -373,8 +378,13 @@ class GBX3 extends React.Component {
         if (steps) this.props.toggleModal('stepsForm', true);
         if (share) this.props.toggleModal('share', true);
         if (previewMode) this.props.updateAdmin({ previewDevice: 'desktop', previewMode: true });
+        if (callback) callback();
       }
+      loaded = true;
     });
+    if (loaded) {
+      return true;
+    }
   }
 
   renderStage() {
