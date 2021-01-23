@@ -37,6 +37,7 @@ class Create extends React.Component {
   componentDidMount() {
     const {
       autoCreate,
+      kind,
       clone
     } = this.props;
 

@@ -179,7 +179,9 @@ class GBX3 extends React.Component {
     if (err) {
       window.location.href = ENTRY_URL;
     } else {
-      this.props.setAccess(res, () => {
+      this.props.setAccess(res, async () => {
+        const infoUpdated = await this.props.updateInfo({ autoCreate: 'fundraiser' });
+        if (infoUpdated) this.loadCreateNew(true);
         this.loadCreateNew(true);
       });
     }
@@ -196,12 +198,12 @@ class GBX3 extends React.Component {
     }
   }
 
-  onClickVolunteerFundraiser() {
+  async onClickVolunteerFundraiser() {
     const {
       access
     } = this.props;
 
-    const referer = reactReferer.referer();
+    const referer = reactReferer.referer() || window.location.href;
     const entryURL = `${ENTRY_URL}/signup/wallet?modal=true&callback=true`;
 
     let isRemoteReferer = false;
@@ -219,7 +221,8 @@ class GBX3 extends React.Component {
       }
     } else {
       // proceed to create fundraiser
-      this.loadCreateNew(true);
+      const infoUpdated = await this.props.updateInfo({ autoCreate: 'fundraiser' });
+      if (infoUpdated) this.loadCreateNew(true);
     }
   }
 
