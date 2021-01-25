@@ -17,20 +17,38 @@ class CartButton extends React.Component {
     super(props);
     this.gotoCart = this.gotoCart.bind(this);
     this.loadGBX = this.loadGBX.bind(this);
+    this.scrollTo = this.scrollTo.bind(this);
     this.state = {
     };
   }
 
-  gotoCart() {
+  scrollTo(name) {
+    const scroller = Scroll.scroller;
+    scroller.scrollTo(name, {
+      duration: 500,
+      delay: 0,
+      smooth: true,
+      containerId: 'gbx3Layout'
+    });
+  }
+
+  async gotoCart() {
     const {
-      cart
+      cart,
+      articleID,
+      display
     } = this.props;
 
     const cartItems = util.getValue(cart, 'items', []);
-    const latestItem = util.getValue(cartItems, 0, {});
+    const lastItemIndex = cartItems.length - 1;
+    const latestItem = util.getValue(cartItems, lastItemIndex, {});
     const lastItemArticleID = util.getValue(latestItem, 'articleID', null);
-    if (lastItemArticleID) {
+
+    if ((lastItemArticleID && lastItemArticleID !== articleID) || display === 'org') {
       this.loadGBX(lastItemArticleID);
+    } else {
+      const cartUpdated = await this.props.updateCart({ open: true });
+      if (cartUpdated) this.scrollTo('checkout');
     }
   }
 
@@ -55,8 +73,9 @@ class CartButton extends React.Component {
     if (stage === 'admin' || util.isEmpty(cartItems)) return null;
 
     return (
-      <div onClick={() => this.gotoCart()} className='avatarLink'>
+      <div onClick={() => this.gotoCart()} className='avatarLink gbx3CartButton'>
         <div className='editGraphic'>
+          <div className='gbx3CartNumItems'>{cartItems.length}</div>
           <Icon><FiShoppingCart /></Icon>
         </div>
       </div>
@@ -71,10 +90,14 @@ function mapStateToProps(state, props) {
 
   const stage = util.getValue(state, 'gbx3.info.stage');
   const cart = util.getValue(state, 'gbx3.cart', {});
+  const articleID = util.getValue(state, 'gbx3.info.articleID');
+  const display = util.getValue(state, 'gbx3.info.display');
 
   return {
     stage,
-    cart
+    cart,
+    articleID,
+    display
   }
 }
 

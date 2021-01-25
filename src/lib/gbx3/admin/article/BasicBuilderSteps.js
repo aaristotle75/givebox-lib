@@ -78,6 +78,7 @@ class BasicBuilderStepsForm extends Component {
     const completedStep = completed ? await this.props.stepCompleted(+step) : true;
     const dataUpdated = data ? await this.props.updateData(data) : true;
     const blockUpdated = block ? await this.props.updateBlock('article', block.name, block) : true;
+
     if (completedStep) updated.push('completedStep');
     if (dataUpdated) updated.push('dataUpdated');
     if (blockUpdated) updated.push('blockUpdated');
@@ -355,7 +356,23 @@ class BasicBuilderStepsForm extends Component {
                     html: saveValue
                   }
                 };
-                this.saveStep({ title: value }, blockObj);
+                this.saveStep({ title: value }, blockObj, true, (res, err) => {
+                  if (!util.isEmpty(res) && !err) {
+                    const isVolunteer = util.getValue(res, 'volunteer');
+                    const volunteerID = util.getValue(res, 'volunteerID');
+
+                    if (isVolunteer && volunteerID) {
+                      this.props.sendResource('volunteerNotify', {
+                        orgID,
+                        id: [volunteerID],
+                        method: 'POST',
+                        data: {
+                          articleID
+                        }
+                      })
+                    };
+                  }
+                });
               }
             }
           })
@@ -454,8 +471,12 @@ BasicBuilderSteps.defaultProps = {
 function mapStateToProps(state, props) {
 
   const helperSteps = util.getValue(state, 'gbx3.helperSteps', {});
+  const isVolunteer = util.getValue(state, 'gbx3.admin.isVolunteer');
+  const volunteerID = util.getValue(state, 'gbx3.admin.volunteerID');
 
   return {
+    isVolunteer,
+    volunteerID,
     step: util.getValue(helperSteps, 'step', 0),
     breakpoint: util.getValue(state, 'gbx3.info.breakpoint'),
     articleID: util.getValue(state, 'gbx3.info.articleID'),

@@ -2186,6 +2186,22 @@
 }
 
 /*------- Cart ---------*/
+.gbx3CartButton {
+  .icon {
+    margin-top: 3px;
+    margin-right: 5px;
+  }
+}
+
+.gbx3CartNumItems {
+  position: absolute;
+  top: 2px;
+  right: 10px;
+  color: $white;
+  font-size: 13px;
+  font-weight: 500;
+}
+
 .gbx3Cart {
 
   padding: 20px 0;

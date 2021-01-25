@@ -42,7 +42,7 @@ class Article extends React.Component {
     const {
       checkout
     } = this.props;
-    if (this.props.checkout) {
+    if (checkout) {
       this.props.updateInfo({ checkout: false });
       this.scrollTo('checkout');
     }

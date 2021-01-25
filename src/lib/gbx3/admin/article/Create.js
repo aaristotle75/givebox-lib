@@ -12,7 +12,8 @@ import {
   clearGBX3
 } from '../../redux/gbx3actions';
 import {
-  getResource
+  getResource,
+  sendResource
 } from '../../../api/helpers';
 import history from '../../../common/history';
 
@@ -106,11 +107,13 @@ class Create extends React.Component {
 
   createFundraiserCallback(res, err) {
     const {
+      orgID,
       isVolunteer,
       volunteerID,
       userFundraisers
     } = this.props;
 
+    const articleID = util.getValue(res, 'articleID', 'new');
     this.setState({ loading: false });
     if (err) {
       // If an error check if volunteer fundraiser kind was already created
@@ -128,7 +131,7 @@ class Create extends React.Component {
         }
       }
     } else {
-      history.push(`${GBX_URL}/${util.getValue(res, 'articleID', 'new')}?admin`);
+      //history.push(`${GBX_URL}/${articleID}?admin`);
     }
   }
 
@@ -264,5 +267,6 @@ export default connect(mapStateToProps, {
   loadGBX3,
   updateInfo,
   getResource,
+  sendResource,
   clearGBX3
 })(Create);
