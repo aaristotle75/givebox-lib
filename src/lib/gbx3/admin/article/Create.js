@@ -131,7 +131,7 @@ class Create extends React.Component {
         }
       }
     } else {
-      //history.push(`${GBX_URL}/${articleID}?admin`);
+      history.push(`${GBX_URL}/${articleID}?admin`);
     }
   }
 
