@@ -1299,6 +1299,7 @@ export function loadOrg(orgID, callback) {
           dispatch(updateData(res, 'org'));
           dispatch(updateAvailableBlocks(blockType, availableBlocks));
           dispatch(updateAdmin(admin));
+          dispatch(updateInfo({ publishStatus: 'public' }));
         }
         callback(res, err);
         dispatch(setLoading(false));
