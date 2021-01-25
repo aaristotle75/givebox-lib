@@ -36,7 +36,8 @@ class CartButton extends React.Component {
     const {
       cart,
       articleID,
-      display
+      display,
+      callback
     } = this.props;
 
     const cartItems = util.getValue(cart, 'items', []);
@@ -50,6 +51,7 @@ class CartButton extends React.Component {
       const cartUpdated = await this.props.updateCart({ open: true });
       if (cartUpdated) this.scrollTo('checkout');
     }
+    if (callback) callback();
   }
 
   async loadGBX(ID) {
@@ -65,25 +67,43 @@ class CartButton extends React.Component {
 
     const {
       stage,
-      cart
+      cart,
+      type
     } = this.props;
 
     const cartItems = util.getValue(cart, 'items', []);
 
     if (stage === 'admin' || util.isEmpty(cartItems)) return null;
 
-    return (
-      <div onClick={() => this.gotoCart()} className='avatarLink gbx3CartButton'>
-        <div className='editGraphic'>
-          <div className='gbx3CartNumItems'>{cartItems.length}</div>
-          <Icon><FiShoppingCart /></Icon>
-        </div>
-      </div>
-    )
+    switch (type) {
+      case 'avatarLink': {
+        return (
+          <div onClick={() => this.gotoCart()} className='tooltip avatarLink gbx3CartButton'>
+            <span className='tooltipTop'><i />Your Cart</span>
+            <div className='editGraphic'>
+              <div className='gbx3CartNumItems'>{cartItems.length}</div>
+              <Icon><FiShoppingCart /></Icon>
+            </div>
+          </div>
+        )
+      }
+
+      case 'avatarMenu': {
+        return (
+          <li onClick={() => this.gotoCart()}><Icon><FiShoppingCart /></Icon> <span className='text'>My Cart ({cartItems.length})</span></li>
+        )
+      }
+
+      default: {
+        return null;
+      }
+
+    }
   }
 }
 
 CartButton.defaultProps = {
+  type: 'avatarLink'
 }
 
 function mapStateToProps(state, props) {

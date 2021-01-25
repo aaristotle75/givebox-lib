@@ -21,6 +21,29 @@
   align-items: center;
 }
 
+.avatarLink.tooltip {
+  .tooltipTop {
+    min-width: 80px;
+    left: 0;
+    right: 0;
+    transform: translate(-105%, 0%);
+    background-color: transparentize($med-blue-gray, .7);
+    color: $med-blue-dark-gray;
+    font-size: 12px;
+    padding: 5px;
+    text-align: center;
+
+    i {
+      left: 80%;
+      display: none;
+    }
+
+    i::after {
+      background-color: transparentize($med-blue-gray, .7);
+    }
+  }
+}
+
 .hasAccessToEditPublic {
   position: fixed;
   top: 10px;
@@ -249,7 +272,7 @@
 .gbx3 {
 
   .avatarLink {
-    overflow: hidden;
+    //overflow: hidden;
 
     button.link {
       font-size: 1em;

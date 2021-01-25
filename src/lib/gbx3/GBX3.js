@@ -441,7 +441,7 @@ class GBX3 extends React.Component {
           effect='3DFlipVert'
           style={{ width: '40%' }}
           disallowBgClose={false}
-          component={(props) => <AvatarMenu exitAdmin={this.exitAdmin} />}
+          component={(props) => <AvatarMenu exitAdmin={this.exitAdmin} reloadGBX3={this.reloadGBX3} />}
         />
         <ModalRoute
           className='gbx3'

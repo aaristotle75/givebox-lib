@@ -173,18 +173,20 @@ class Layout extends React.Component {
       <div className='hasAccessToEditPublic'>
         <AvatarMenuButton />
         { hasAccessToEdit ?
-        <div onClick={() => this.props.updateAdmin({ publicView: false })} className='avatarLink hideOnMobile'>
+        <div onClick={() => this.props.updateAdmin({ publicView: false })} className='avatarLink tooltip hideOnMobile'>
+          <span className='tooltipTop'><i />Edit Form</span>
           <div className='editGraphic'>
             <span className='icon icon-edit'></span>
           </div>
         </div> : ''}
         { hasAccessToEdit ?
-        <ModalLink type='div' id={'share'} className='avatarLink hideOnMobile'>
+        <ModalLink type='div' id={'share'} className='avatarLink tooltip hideOnMobile'>
+          <span className='tooltipTop'><i />Share</span>
           <div className='editGraphic'>
             <Icon><AiOutlineNotification /></Icon>
           </div>
         </ModalLink> : ''}
-        <CartButton reloadGBX3={this.props.reloadGBX3} />
+        <CartButton reloadGBX3={this.props.reloadGBX3} type='avatarLink' />
       </div>
     ;
 

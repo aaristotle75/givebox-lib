@@ -12,6 +12,7 @@ import {
 import { savePrefs } from '../../api/helpers';
 import { AiOutlineNotification, AiOutlineFullscreen } from 'react-icons/ai';
 import { GoBeaker, GoChecklist } from 'react-icons/go';
+import CartButton from '../payment/CartButton';
 
 const CLOUD_URL = process.env.REACT_APP_CLOUD_URL;
 const WALLET_URL = process.env.REACT_APP_WALLET_URL;
@@ -33,12 +34,12 @@ class AvatarMenu extends React.Component {
     } = this.props;
 
     this.props.toggleModal('avatarMenu', false);
-    window.location.href = util.getValue(access, 'role') === 'user' ? WALLET_URL : CLOUD_URL;
+    window.open(util.getValue(access, 'role') === 'user' ? WALLET_URL : CLOUD_URL);
   }
 
   directLink(url) {
     this.props.toggleModal('avatarMenu', false);
-    window.location.href = url;
+    window.open(url);
   }
 
   adminLink(obj = {}) {
@@ -66,7 +67,8 @@ class AvatarMenu extends React.Component {
 
     menuList.push(
       <li key='myAccount' onClick={() => this.directLink(`${baseURL}/settings`)}><span className='icon icon-user'></span> <span className='text'>My Account</span></li>
-    )
+    );
+
     if (hasAccessToEdit && step !== 'create') {
       menuList.push(
         <li key='edit' onClick={() => this.adminLink({ publicView: false })}><span className='icon icon-edit'></span> <span className='text'>Edit {display === 'org' ? 'Page' : 'Form' }</span></li>
@@ -76,32 +78,19 @@ class AvatarMenu extends React.Component {
         <ModalLink type='li' id={'share'} key={'share'}><Icon><AiOutlineNotification /></Icon> <span className='text'>Share {display === 'org' ? 'Page' : 'Form'}</span></ModalLink>
       );
 
-      /*
-      menuList.push(
-        <li type='li' key={'helperPref'} onClick={() => {
-          this.props.savePrefs({
-            gbx3Helpers: helperPref === 'off' ? 'on' : 'off'
-          });
-        }}
-        >
-          <Icon><GoChecklist /></Icon> <span className='text'>{ helperPref === 'off' ? 'Show' : 'Hide' } Helpers</span>
-        </li>
-      );
-      */
-
-      menuList.push(
-        <li type='li' key={'builderPref'} onClick={() => {
-          this.props.savePrefs({
-            builderPref: builderPref === 'advanced' ? 'basic' : 'advanced'
-          });
-          this.props.updateHelperSteps({ advancedBuilder: builderPref === 'advanced' ? false : true });
-        }}
-        >
-          <Icon><GoBeaker /></Icon> <span className='text'>Default Builder ({ builderPref === 'advanced' ? 'Advanced' : 'Basic' })</span>
-        </li>
-      );
-
       if (stage === 'admin') {
+        menuList.push(
+          <li type='li' key={'builderPref'} onClick={() => {
+            this.props.savePrefs({
+              builderPref: builderPref === 'advanced' ? 'basic' : 'advanced'
+            });
+            this.props.updateHelperSteps({ advancedBuilder: builderPref === 'advanced' ? false : true });
+          }}
+          >
+            <Icon><GoBeaker /></Icon> <span className='text'>Default Builder ({ builderPref === 'advanced' ? 'Advanced' : 'Basic' })</span>
+          </li>
+        );
+
         menuList.push(
           <li key={'exitBuilder'} onClick={() => {
             this.props.exitAdmin();
@@ -111,6 +100,12 @@ class AvatarMenu extends React.Component {
           </li>
         );
       }
+    }
+
+    if (stage !== 'admin') {
+      menuList.push(
+        <CartButton key='cart' reloadGBX3={this.props.reloadGBX3} type='avatarMenu' callback={() => this.props.toggleModal('avatarMenu', false)} />
+      );
     }
 
     return (
