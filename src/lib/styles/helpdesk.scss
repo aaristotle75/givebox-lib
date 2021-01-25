@@ -1,277 +1,277 @@
 @import 'variables.scss';
 
 .grecaptcha-badge {
-	visibility: collapse !important;
+  visibility: collapse !important;
 }
 
 .helpdesk {
 
-	.helpDeskClose {
-		position: absolute;
-		right: 50px;
-		top: 30px;
-	}
+  .helpDeskClose {
+    position: absolute;
+    right: 50px;
+    top: 30px;
+  }
 
-	.scrollContainer {
-		position: relative;
-		height: 100%;
-		overflow-y: auto;
-		overflow-x: hidden;
-	}
+  .scrollContainer {
+    position: relative;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
 
-	.spacer {
-		padding: 0 10px;
-	}
+  .spacer {
+    padding: 0 10px;
+  }
 
-	.search {
-		margin-bottom: 10px;
-		input {
-			color: $dark-gray;
-		}
-	}
+  .search {
+    margin-bottom: 10px;
+    input {
+      color: $dark-gray;
+    }
+  }
 
-	.imageLoader {
-		font-size: 12px;
-		color: $light-med-gray;
-	}
+  .imageLoader {
+    font-size: 12px;
+    color: $light-med-gray;
+  }
 
-	.articles {
-		width: 100%;
-		padding: 20px;
-	}
+  .articles {
+    width: 100%;
+    padding: 20px;
+  }
 
-	ul.breadcrumbs {
-		font-size: 14px;
-		margin-bottom: 25px;
-		li {
-			display: inline-block;
-			vertical-align: middle;
-			text-align: left;
-		}
-	}
+  ul.breadcrumbs {
+    font-size: 14px;
+    margin-bottom: 25px;
+    li {
+      display: inline-block;
+      vertical-align: middle;
+      text-align: left;
+    }
+  }
 
-	ul.articleList {
+  ul.articleList {
 
-		li {
-			margin: 15px 0;
+    li {
+      margin: 15px 0;
 
-			button.link {
-				display: flex;
-				justify-content: flex-start;
-				align-items: center;
-				text-align: left;
+      button.link {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        text-align: left;
 
-				.icon {
-					margin-right: 5px;
-				}
-			}
+        .icon {
+          margin-right: 5px;
+        }
+      }
 
-			.visitHelpCenterLink {
-				font-size: 14px;
-				margin-top: 40px;
-			}
-		}
+      .visitHelpCenterLink {
+        font-size: 14px;
+        margin-top: 40px;
+      }
+    }
 
-		.noRecords {
-			margin: 10px 0;
-			display: block;
-			font-size: 14px;
-			color: $light-med-gray;
-		}
+    .noRecords {
+      margin: 10px 0;
+      display: block;
+      font-size: 14px;
+      color: $light-med-gray;
+    }
 
-		.details {
-			display: block;
-			padding: 5px 20px;
-		}
-	}
+    .details {
+      display: block;
+      padding: 5px 20px;
+    }
+  }
 
-	.RichEditor-root {
-		font-family: $font-family;
-		padding-top: 0;
-	}
+  .RichEditor-root {
+    font-family: $font-family;
+    padding-top: 0;
+  }
 
-	.RichEditor-editor {
-		margin-top: 0;
+  .RichEditor-editor {
+    margin-top: 0;
 
-		.public-DraftEditorPlaceholder-inner,
-		.public-DraftStyleDefault-ltr {
-			font-size: 1.1em;
-		}
-	}
+    .public-DraftEditorPlaceholder-inner,
+    .public-DraftStyleDefault-ltr {
+      font-size: 1.1em;
+    }
+  }
 
-	.attachment {
-		position: relative;
-		margin-bottom: 40px;
+  .attachment {
+    position: relative;
+    margin-bottom: 40px;
 
-		.loadImage {
-			position: absolute;
-			background: rgba(255, 255, 255, .7);
-		}
-	}
+    .loadImage {
+      position: absolute;
+      background: rgba(255, 255, 255, .7);
+    }
+  }
 
-	.dropzoneImageContainer {
-		width: 100%;
-		min-height: 100%;
-		.dropzone-icon {
-			font-size: 75px;
-		}
-	}
+  .dropzoneImageContainer {
+    width: 100%;
+    min-height: 100%;
+    .dropzone-icon {
+      font-size: 75px;
+    }
+  }
 
-	.dropzone {
-		align-items: flex-start;
-		text-align: left;
-		border: 0px;
-		width: 100%;
-		height: 50px;
+  .dropzone {
+    align-items: flex-start;
+    text-align: left;
+    border: 0px;
+    width: 100%;
+    height: 50px;
 
-		.icon {
-			margin-left: 5px;
-		}
-	}
+    .icon {
+      margin-left: 5px;
+    }
+  }
 
 }
 
 /**-------- Help Desk Customization ----------*/
 .helpdeskContainer {
-	position: fixed;
-	right: 0;
-	top: 20%;
-	width: 0;
-	height: auto;
-	background: $white;
-	overflow-y: auto;
-	overflow-x: hidden;
-	z-index: 1999991;
-	border-radius: 20px;
-	background: $bar1Gradient;
+  position: fixed;
+  right: 0;
+  top: 5%;
+  width: 0;
+  height: auto;
+  background: $white;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 1999991;
+  border-radius: 20px;
+  background: $bar1Gradient;
 
-	@media (max-width: 768px) {
-		position: absolute;
-		top: 0;
-		right: 0;
-		left: 0;
-		bottom: 0;
-	}
+  @media (max-width: 768px) {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+  }
 
-	.handle {
-		cursor: grab;
-		position: absolute;
-		top: 20px;
-		left: 20px;
-		color: $white;
-	}
+  .handle {
+    cursor: grab;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: $white;
+  }
 
-	.handle:hover {
-		color: $mainColorLight;
-		@include default-transition(1s);
-	}
+  .handle:hover {
+    color: $mainColorLight;
+    @include default-transition(1s);
+  }
 }
 
 .helpdeskContainer.closed {
-	width: 0px;
-	height: 400px;
-	@include transition(width .5s);
-	@media (max-width: 768px) {
-		height: auto;
-	}
+  width: 0px;
+  height: 400px;
+  @include transition(width .5s);
+  @media (max-width: 768px) {
+    height: auto;
+  }
 }
 
 .helpdeskContainer.open {
-	width: 500px;
-	@include transition(width .5s);
-	@media (max-width: 768px) {
-		width: 100%;
-	}
+  width: 500px;
+  @include transition(width .5s);
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 }
 
 .helpDeskButton {
-	position: fixed;
-	right: -20px;
-	top: 40%;
-	width: 70px;
-	height: 30px;
-	border-top-left-radius: 10px;
-	border-top-right-radius: 10px;
-	border-bottom-left-radius: 0px;
-	border-bottom-right-radius: 0px;
-	background: $mainColor;
-	color: $white;
-	z-index: 1999991;
-	transform: rotate(-90deg);
-	-webkit-transform: rotate(-90deg);
-	@include animation(pulsateSlightlyBrighter 2s infinite ease-out);
+  position: fixed;
+  right: -20px;
+  top: 40%;
+  width: 70px;
+  height: 30px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  background: $mainColor;
+  color: $white;
+  z-index: 1999991;
+  transform: rotate(-90deg);
+  -webkit-transform: rotate(-90deg);
+  @include animation(pulsateSlightlyBrighter 2s infinite ease-out);
 }
 
 .helpDeskButton:hover {
-	background: $mainColorLight;
-	@include default-transition(.25s);
+  background: $mainColorLight;
+  @include default-transition(.25s);
 }
 
 .helpdesk {
 
-	.helpDeskClose {
-		position: absolute;
-		right: 30px;
-		top: 15px;
+  .helpDeskClose {
+    position: absolute;
+    right: 30px;
+    top: 15px;
 
-		button.link {
-			color: $white;
-		}
+    button.link {
+      color: $white;
+    }
 
-		button.link:hover {
-			color: $mainColorLight;
-		}
-	}
+    button.link:hover {
+      color: $mainColorLight;
+    }
+  }
 
-	.statsTab .panel {
-		display: flex;
-		justify-content: center;
-	}
+  .statsTab .panel {
+    display: flex;
+    justify-content: center;
+  }
 
-	.statsTab button.panelTab {
-		color: $white;
-	}
+  .statsTab button.panelTab {
+    color: $white;
+  }
 
-	.statsTab button.panelTab:hover:not(.selected) {
-		color: $mainColorLight;
-	}
+  .statsTab button.panelTab:hover:not(.selected) {
+    color: $mainColorLight;
+  }
 
-	.statsTab button.panelTab.selected {
-		color: $white;
-		border-bottom: 2px solid $mainColorLight;
-	}
+  .statsTab button.panelTab.selected {
+    color: $white;
+    border-bottom: 2px solid $mainColorLight;
+  }
 
-	.sectionContainer,
-	.formSectionContainer {
-		background: transparent;
-	}
+  .sectionContainer,
+  .formSectionContainer {
+    background: transparent;
+  }
 
-	.formSection {
-		padding-bottom: 0;
-	}
+  .formSection {
+    padding-bottom: 0;
+  }
 
-	.dropzone {
-		border: 1px solid transparent;
-		background: $white;
-	}
+  .dropzone {
+    border: 1px solid transparent;
+    background: $white;
+  }
 
-	.dropzone .icon, {
-			color: $mainColor;
-	}
+  .dropzone .icon, {
+      color: $mainColor;
+  }
 
-	.dropzone .text {
-		color: $mainColor;
-		font-size: 1em;
-	}
+  .dropzone .text {
+    color: $mainColor;
+    font-size: 1em;
+  }
 
-	.dropzone:hover {
-		border: 1px solid $mainColorLight;
-		@include default-transition(.5s);
-		.text,
-		.icon {
-			@include default-transition(.5s);
-			color: $mainColorLight;
-		}
-	}
+  .dropzone:hover {
+    border: 1px solid $mainColorLight;
+    @include default-transition(.5s);
+    .text,
+    .icon {
+      @include default-transition(.5s);
+      color: $mainColorLight;
+    }
+  }
 
 }

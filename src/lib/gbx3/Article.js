@@ -234,6 +234,7 @@ class Article extends React.Component {
                 reloadGBX3={reloadGBX3}
                 blockType={'article'}
                 saveBlock={this.saveBlock}
+                backToOrg={this.props.backToOrg}
               >
                 <BlockComponent />
               </Block>
@@ -286,6 +287,7 @@ class Article extends React.Component {
                 reloadGBX3={reloadGBX3}
                 blockType={'article'}
                 saveBlock={this.saveBlock}
+                backToOrg={this.props.backToOrg}
               >
                 <BlockComponent />
               </Block>
@@ -309,6 +311,7 @@ class Article extends React.Component {
             reloadGBX3={reloadGBX3}
             blockType={'article'}
             saveBlock={this.saveBlock}
+            backToOrg={this.props.backToOrg}
           >
             <Form />
           </Block>

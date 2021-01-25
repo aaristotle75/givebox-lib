@@ -230,7 +230,9 @@ class Form extends Component {
           reloadGBX3={reloadGBX3}
           cartTitle={util.getValue(form, 'cartTitle', null)}
           shopTitle={util.getValue(form, 'shopTitle', null)}
+          shopLinkOpensOrgPage={util.getValue(form, 'shopLinkOpensOrgPage', null)}
           browseItems={browseItems}
+          backToOrg={this.props.backToOrg}
         />
         <PaymentForm
           primaryColor={primaryColor}

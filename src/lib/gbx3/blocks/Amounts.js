@@ -407,6 +407,7 @@ class Amounts extends Component {
     const maxQuantity = util.getValue(extras, 'maxQuantity') || util.getValue(data, 'maxQuantity');
     const showCart = true;
     const shopTitle = util.getValue(form, 'shopTitle', 'Browse More Items');
+    const shopLinkOpensOrgPage = util.getValue(form, 'shopLinkOpensOrgPage');
     const browseItems = util.getValue(form, 'allowSelection', true);
 
     return (
@@ -631,7 +632,20 @@ class Amounts extends Component {
                         </AnimateHeight>
                       </div>
                       <div className='button-group'>
-                        { browseItems ? <ModalLink className='hideOnMobile' id='shop' allowCustom={true} customColor={primaryColor}>{shopTitle}</ModalLink> : '' }
+                        { browseItems ?
+                          shopLinkOpensOrgPage ?
+                            <GBLink
+                              className='hideOnMobile'
+                              onClick={() => {
+                                this.props.backToOrg();
+                              }}
+                              allowCustom={true}
+                              customColor={primaryColor}>
+                              {shopTitle}
+                            </GBLink>
+                          :
+                            <ModalLink className='hideOnMobile' id='shop' allowCustom={true} customColor={primaryColor}>{shopTitle}</ModalLink>
+                        : null }
                         <GBLink
                           className='button'
                           allowCustom={true}

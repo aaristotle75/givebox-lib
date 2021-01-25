@@ -134,6 +134,7 @@ class Layout extends React.Component {
             loadGBX3={this.props.loadGBX3}
             primaryColor={this.props.primaryColor}
             onClickVolunteerFundraiser={this.props.onClickVolunteerFundraiser}
+            backToOrg={this.backToOrg}
           />
         )
         break;

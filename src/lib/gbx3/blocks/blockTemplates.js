@@ -244,6 +244,7 @@ export const paymentForm = {
       goal: 50000,
       cartTitle: 'Your Cart',
       shopTitle: 'Browse More Items',
+      shopLinkOpensOrgPage: false,
       checkoutDonation: false,
       checkoutDonationText: '',
       checkoutDonationAmount: 500,

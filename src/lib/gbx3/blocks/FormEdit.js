@@ -68,6 +68,7 @@ class FormEdit extends Component {
       goal,
       cartTitle,
       shopTitle,
+      shopLinkOpensOrgPage,
       checkoutDonation,
       checkoutDonationText,
       checkoutDonationAmount,
@@ -299,7 +300,7 @@ class FormEdit extends Component {
                   this.updateForm('cartTitle', value);
                 }}
               />
-              <div className='formSectionHeader'>Browse Other Items Option <ModalLink style={{ marginLeft: 10 }} id='shop'>Edit Browse Other Items Overlay</ModalLink></div>
+              <div className='formSectionHeader'>Browse Other Items Option { !shopLinkOpensOrgPage ? <ModalLink style={{ marginLeft: 10 }} id='shop'>Edit Browse Other Items Overlay</ModalLink> : null }</div>
               <Choice
                 type='checkbox'
                 name='allowSelection'
@@ -322,7 +323,23 @@ class FormEdit extends Component {
                     const value = e.currentTarget.value;
                     this.updateForm('shopTitle', value);
                   }}
+                  style={{ paddingBottom: 0 }}
                 />
+                <Choice
+                  type='checkbox'
+                  name='shopLinkOpensOrgPage'
+                  label={'Link Opens Landing Page'}
+                  onChange={(name, value) => {
+                    this.updateForm('shopLinkOpensOrgPage', shopLinkOpensOrgPage ? false : true);
+                  }}
+                  checked={shopLinkOpensOrgPage}
+                  value={shopLinkOpensOrgPage}
+                  toggle={true}
+                />
+                <div style={{ marginBottom: 20 }} className='fieldContext'>
+                  <span style={{ display: 'block' }}>Toggled ON will open the landing page.</span>
+                  <span>Toggled OFF will open the browse more overlay.</span>
+                </div>
               </AnimateHeight>
               {/*
               <Choice
