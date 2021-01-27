@@ -61,24 +61,27 @@ class Campaigns extends Component {
       options
     } = this.state;
 
+    const mainCampaignsGroup = name === 'mainCampaigns' ? true : false;
     const initiated = util.getValue(options, 'initiated');
     const customList = util.getValue(options, 'customList', []);
 
-    if (!initiated || util.isEmpty(customList)) {
-      if (!util.isEmpty(campaignsInit)) {
-        this.setInitCampaigns();
-      } else {
-        this.props.getResource('orgArticles', {
-          customName: `${name}Init`,
-          orgID,
-          callback: (res, err) => {
-            this.setInitCampaigns();
-          },
-          search: {
-            filter: 'givebox:true',
-            max: 1000
-          }
-        });
+    if (mainCampaignsGroup) {
+      if (!initiated || util.isEmpty(customList)) {
+        if (!util.isEmpty(campaignsInit)) {
+          this.setInitCampaigns();
+        } else {
+          this.props.getResource('orgArticles', {
+            customName: `${name}Init`,
+            orgID,
+            callback: (res, err) => {
+              this.setInitCampaigns();
+            },
+            search: {
+              filter: 'givebox:true',
+              max: 1000
+            }
+          });
+        }
       }
     }
 
@@ -175,23 +178,7 @@ class Campaigns extends Component {
   }
 
   setCustomListItem(article) {
-    const {
-      ID,
-      kindID,
-      kind,
-      title,
-      imageURL,
-      publishedStatus
-    } = article;
-
-    return {
-      ID,
-      kindID,
-      kind,
-      title,
-      imageURL,
-      publishedStatus
-    }
+    return article;
   }
 
   setInitCampaigns() {
@@ -288,6 +275,23 @@ class Campaigns extends Component {
 
     if (!util.isEmpty(pageList)) {
       Object.entries(pageList).forEach(([key, value]) => {
+        const kindSpecific = [];
+        let buttonText = 'Learn More';
+
+        switch (value.kind) {
+          case 'event': {
+            buttonText = 'Get Tickets';
+            console.log('execute -> ', value);
+            kindSpecific.push(
+              <div key={`${value.ID}-kindSpecific`} className='articleCardKindSpecific'>
+                When and Where is the event
+              </div>
+            );
+            break;
+          }
+
+          // no default
+        }
 
         const imageURL = util.imageUrlWithStyle(value.imageURL, 'medium');
         const imageStyle = {
@@ -304,7 +308,7 @@ class Campaigns extends Component {
                   <div style={imageStyle} className='imageBg'></div>
                   <div className='image'>
                     <GBLink onClick={() => this.loadGBX(value.ID)}><Image maxSize={'250px'} url={imageURL} size='medium' alt={value.imageURL} /></GBLink>
-                    <div className='imageCover' onClick={() => this.loadGBX(value.ID)}><div className='imageLink'>Learn More</div></div>
+                    <div className='imageCover' onClick={() => this.loadGBX(value.ID)}><div className='imageLink'>{buttonText}</div></div>
                   </div>
                 </div>
                 <div className='kind'>
@@ -312,6 +316,7 @@ class Campaigns extends Component {
                   <span className='kindText'>{value.kind === 'fundraiser' ? 'Fundraiser' : types.kind(value.kind).name}</span>
                 </div>
                 <GBLink className='link title' onClick={() => this.loadGBX(value.ID)}>{value.title}</GBLink>
+                {kindSpecific}
               </div>
             </div>
           </li>

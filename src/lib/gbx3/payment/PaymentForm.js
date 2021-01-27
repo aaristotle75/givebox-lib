@@ -296,7 +296,7 @@ class PaymentFormClass extends Component {
       // no default
     }
     this.setState({ paymethod });
-    if (this.props.paymethod !== paymethod) this.props.updateCart({ paymethod });
+    if (this.props.paymethod !== paymethod) this.props.updateCart({ paymethod, cardType: 'default', cardLength: 0 });
   }
 
   customOnChange(name, value) {

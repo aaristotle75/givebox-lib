@@ -12,6 +12,7 @@ import {
   GBLink
 } from '../lib/'
 import axios from 'axios';
+import ReactPlayer from 'react-player';
 
 class Dashboard extends Component {
 
@@ -28,7 +29,7 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
-    this.getVideo();
+    //this.getVideo();
   }
 
   componentWillUnmount() {
@@ -121,6 +122,11 @@ class Dashboard extends Component {
         <h2>Dashboard</h2>
         <GBLink onClick={() => this.createVoucher()}>Create Voucher</GBLink>
         {/*
+        <ReactPlayer
+          url={'https://cdn.givebox.com/givebox/public/videos/filmfestivals.mp4'}
+          width='100%'
+          controls={true}
+        />
         <MediaLibrary
           blockType={'article'}
           image={null}

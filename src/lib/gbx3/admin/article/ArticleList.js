@@ -78,7 +78,7 @@ class ArticleList extends Component {
       value.publishedStatus.webApp) ? true : false;
       const wasAdded = this.state.selected.includes(value.ID);
       items.push(
-        <div className='articleItem' onClick={() => this.onClickArticle(value)} key={key}>
+        <div className='articleItem' key={key}>
           <div className={`editableRowMenu ${wasAdded ? 'wasAdded' : ''}`}>
             {notPublic && checkPublic ?
                 <span style={{ fontSize: 14 }} className='gray'>{notPublicText}</span>
