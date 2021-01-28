@@ -179,11 +179,12 @@ class BasicBuilderStepsForm extends Component {
       orgID,
       data,
       blocks,
+      isVolunteer,
       openAdmin: open
     } = this.props;
 
     const library = {
-      saveMediaType: 'org',
+      saveMediaType: isVolunteer ? 'article' : 'org',
       articleID,
       orgID,
       type: 'article',

@@ -115,15 +115,16 @@ class Create extends React.Component {
 
     const articleID = util.getValue(res, 'articleID', 'new');
     this.setState({ loading: false });
+
     if (err) {
       // If an error check if volunteer fundraiser kind was already created
       if (isVolunteer && volunteerID) {
-        if (userFundraisers) {
+        if (!util.isEmpty(userFundraisers)) {
           this.handleVolunteerAlreadyCreatedFundraiserKind();
         } else {
           this.props.getResource('userFundraisers', {
-            fullResponse: true,
             user: volunteerID,
+            reload: true,
             callback: (res, err) => {
               this.handleVolunteerAlreadyCreatedFundraiserKind(res);
             }
@@ -138,12 +139,12 @@ class Create extends React.Component {
   handleVolunteerAlreadyCreatedFundraiserKind(res) {
     const {
       kind,
-      userFundraisers,
       orgID
     } = this.props;
 
     let fundraisersCreatedByKind = [];
-    const data = util.getValue(userFundraisers, 'data', []);
+    const data = util.getValue(res, 'data', []);
+
     if (!util.isEmpty(data)) {
       fundraisersCreatedByKind = data.filter(function(item) {
         if (item.orgID === orgID && item.kind === kind) {
@@ -158,7 +159,7 @@ class Create extends React.Component {
 
     if (alreadyCreatedArticleID) {
       this.props.loadGBX3(alreadyCreatedArticleID);
-      window.location.href = `${GBX_URL}/${alreadyCreatedArticleID}`;
+      history.push(`${GBX_URL}/${alreadyCreatedArticleID}?admin`);
     } else {
       window.location.href = WALLET_URL;
     }

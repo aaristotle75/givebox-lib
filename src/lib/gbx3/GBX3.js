@@ -176,9 +176,7 @@ class GBX3 extends React.Component {
   }
 
   authenticateVolunteer(res, err) {
-    if (err) {
-      window.location.href = ENTRY_URL;
-    } else {
+    if (!util.isEmpty(res) && !err) {
       this.props.setAccess(res, async () => {
         const infoUpdated = await this.props.updateInfo({ autoCreate: 'fundraiser' });
         if (infoUpdated) this.loadCreateNew(true);
