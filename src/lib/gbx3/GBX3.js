@@ -427,8 +427,7 @@ class GBX3 extends React.Component {
 
   render() {
 
-    // Test
-    if (this.props.loading) return <Loader msg='Initiating GBX3' />;
+    if (this.props.loading || util.isLoading(this.props.gbx3Org)) return <Loader msg='Initiating GBX3' />;
 
     return (
       <div id='gbx3MainWrapper' className='gbx3'>
@@ -485,6 +484,7 @@ function mapStateToProps(state, props) {
   const hasAccessToCreate = util.getValue(admin, 'hasAccessToCreate');
   const isVolunteer = util.getValue(admin, 'isVolunteer');
   const publicView = util.getValue(admin, 'publicView');
+  const gbx3Org = util.getValue(state, 'resource.gbx3Org', {});
 
   return {
     globals,
@@ -498,6 +498,7 @@ function mapStateToProps(state, props) {
     hasAccessToCreate,
     isVolunteer,
     publicView,
+    gbx3Org,
     access: util.getValue(state.resource, 'access', {})
   }
 }
