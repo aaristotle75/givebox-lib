@@ -3,16 +3,16 @@ import Moment from 'moment';
 export function validateAddress(address) {
   let validate = true;
   const poregex = /(?:P(?:ost(?:al)?)?[\.\-\s]*(?:(?:O(?:ffice)?[\.\-\s]*)?B(?:ox|in|\b|\d)|o(?:ffice|\b)(?:[-\s]*\d)|code)|box[-\s\b]*\d)/i;
-  //const pmbregex = /\b(pmb)\b/i;
+  const pmbregex = /\b(pmb)\b/i;
 
   if (poregex.test(address)) {
     validate = false;
   }
-  /*
+
   if (pmbregex.test(address)) {
     validate = false;
   }
-  */
+
   return validate;
 }
 
