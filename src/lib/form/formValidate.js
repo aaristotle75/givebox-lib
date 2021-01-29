@@ -1,8 +1,27 @@
 import Moment from 'moment';
 
 export function validateAddress(address) {
-  const regex = /(?:P(?:ost(?:al)?)?[\.\-\s]*(?:(?:O(?:ffice)?[\.\-\s]*)?B(?:ox|in|\b|\d)|o(?:ffice|\b)(?:[-\s]*\d)|code)|box[-\s\b]*\d)/i;
-  return regex.test(address) ? false : true;
+  let validate = true;
+  const poregex = /(?:P(?:ost(?:al)?)?[\.\-\s]*(?:(?:O(?:ffice)?[\.\-\s]*)?B(?:ox|in|\b|\d)|o(?:ffice|\b)(?:[-\s]*\d)|code)|box[-\s\b]*\d)/i;
+  //const pmbregex = /\b(pmb)\b/i;
+
+  if (poregex.test(address)) {
+    validate = false;
+  }
+  /*
+  if (pmbregex.test(address)) {
+    validate = false;
+  }
+  */
+  return validate;
+}
+
+export function formatAddress(address) {
+  let formatted = '';
+  const pmbregex = /\b(pmb)\b/i;
+  formatted = address.replace(pmbregex, '');
+  formatted = formatted.replace('#', '');
+  return formatted;
 }
 
 export function validateEmail(email) {
