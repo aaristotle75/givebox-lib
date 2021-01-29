@@ -48,11 +48,11 @@ class Org extends React.Component {
 
     return (
       <div className='gbx3Org'>
-        <Header />
+        <Header {...this.props} />
         <main className='gbx3OrgContent'>
-          <Pages />
+          <Pages {...this.props} />
         </main>
-        <Footer />
+        <Footer {...this.props} />
       </div>
     )
   }

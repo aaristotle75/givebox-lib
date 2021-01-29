@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import * as util from '../../common/utility';
 import GBLink from '../../common/GBLink';
+import HeaderLayout from './HeaderLayout';
 
 class Header extends Component{
   constructor(props){
