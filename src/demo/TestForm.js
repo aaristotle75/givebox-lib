@@ -126,8 +126,9 @@ export default class TestForm extends Component {
       <div>
         <h2>Form Elements</h2>
         <div className='formWrapper'>
-          {this.props.calendarField('testdate', { label: 'Test Date', enableTime: true, enableTimeOption: false, required: true, validate: 'date', validateOpts: { min: now } })}
-          {/*
+            {this.props.textField('address', {label: 'Address', placeholder: 'Enter Address', validate: 'address'})}
+            {/*
+            {this.props.calendarField('testdate', { label: 'Test Date', enableTime: true, enableTimeOption: false, required: true, validate: 'date', validateOpts: { min: now } })}
             {this.props.dropdown('states', {label: 'States', options: selectOptions.states, value: 'CA'})}
             <Choice
               type='checkbox'

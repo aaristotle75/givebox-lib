@@ -120,8 +120,8 @@ class Dashboard extends Component {
     return (
       <div>
         <h2>Dashboard</h2>
-        <GBLink onClick={() => this.createVoucher()}>Create Voucher</GBLink>
         {/*
+        <GBLink onClick={() => this.createVoucher()}>Create Voucher</GBLink>
         <ReactPlayer
           url={'https://cdn.givebox.com/givebox/public/videos/filmfestivals.mp4'}
           width='100%'
@@ -154,6 +154,7 @@ class Dashboard extends Component {
           progressColor2={'#29eee6'}
           gradient={true}
         />
+        */}
         <Form
           name='testForm'
           options={{
@@ -161,7 +162,6 @@ class Dashboard extends Component {
           }}>
           <TestForm {...this.props} />
         </Form>
-        */}
       </div>
     )
   }
