@@ -325,7 +325,7 @@ export const msgs = {
   creditCard: 'Please enter a valid credit card number.',
   password: 'Passwords must be at least 8 characters long.',
   account: 'There was an error creating your account. Please contact support@givebox.com.',
-  address: 'The address cannot be a PO Box.'
+  address: 'The address cannot be a PO Box or PMB.'
 }
 
 export const limits = {
