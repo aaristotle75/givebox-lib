@@ -99,6 +99,7 @@ class Admin extends React.Component {
         return (
           <OrgAdmin
             step={step}
+            exitAdmin={this.props.exitAdmin}
           />
         )
       }

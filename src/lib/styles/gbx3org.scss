@@ -1,28 +1,75 @@
 @import 'variables.scss';
 
+.gbx3Org {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.gbx3OrgContent {
+  position: relative;
+  flex: 1;
+}
+
+.gbx3OrgPages {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.gbx3OrgHeader {
+  background: blue;
+}
+
+.gbx3OrgFooter {
+  background: yellow;
+}
+
+.gbx3 {
+
+  .editable {
+
+    .gbx3OrgHeader:hover,
+    .gbx3OrgFooter:hover,
+    .gbx3OrgContent:hover {
+
+      .blockOptions {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+}
+
 .gbx3Layout.org {
-	padding: 0px;
-	@media (max-width: $breakpoint) {
-		padding: 0;
-	}
+  padding: 0px;
+  @media (max-width: $breakpoint) {
+    padding: 0;
+  }
 
-	.bottomOffset {
-		display: table;
-		height: 0px;
+  .bottomOffset {
+    display: table;
+    height: 0px;
 
-		@media (max-width: $breakpoint) {
-			height: 75px;
-		}
-	}
+    @media (max-width: $breakpoint) {
+      height: 75px;
+    }
+  }
 
-	.gbx3Container {
-		height: 100vh;
-		border-radius: 0px !important;
-		@include box-shadow(none);
-		@media (max-width: $breakpoint) {
-			border-radius: 0px !important;
-		}
-	}
+  .gbx3Container {
+    height: 100vh;
+    border-radius: 0px !important;
+    padding: 0;
+    @include box-shadow(none);
+    @media (max-width: $breakpoint) {
+      border-radius: 0px !important;
+    }
+  }
 
 }
 

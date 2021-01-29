@@ -49,11 +49,11 @@ class AdminMenuLayout extends React.Component {
           onClick={() => this.editBlock(value.name)}
           onMouseEnter={() => {
             const el = document.getElementById(`blockOption-${value.name}`);
-            el.setAttribute('style', 'display: flex;');
+            if (el) el.setAttribute('style', 'display: flex;');
           }}
           onMouseLeave={() => {
             const el = document.getElementById(`blockOption-${value.name}`);
-            el.style.display = null;
+            if (el) el.style.display = null;
           }}
         >
           {value.title}

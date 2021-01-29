@@ -34,23 +34,9 @@ class Design extends React.Component {
     this.state = {
     };
     this.iframePreviewRef = React.createRef();
-  }
 
-  renderTopPanel() {
-    const {
-      createType,
-      breakpoint,
-      previewMode,
-      previewDevice,
-      openAdmin: open
-    } = this.props;
-
-    const mobile = breakpoint === 'mobile' ? true : false;
-    const leftSide = [];
-    const middle = [];
-    const rightSide = [];
-
-    const contentObj = {
+    const mobile = props.breakpoint === 'mobile' ? true : false;
+    this.contentObj = {
       layout: {
         menuText: !mobile ? 'Design Page' : 'Design',
         icon: <Icon><FaPalette /></Icon>
@@ -60,18 +46,40 @@ class Design extends React.Component {
         icon: <Icon><AiOutlineNotification /></Icon>
       }
     };
+  }
 
-    if (!previewMode) {
-      if (open) {
-        leftSide.push(
-          <GBLink key={'leftSide'} className='link side' onClick={() => this.props.toggleAdminLeftPanel()}>{!mobile ? contentObj[createType].icon : <span className='icon icon-x'></span>}{!mobile ? <span className='flexCenter centerItems'>{contentObj[createType].menuText} Menu <span className='leftPanelClose icon icon-x'></span></span> : ''}</GBLink>
-        );
-      } else {
-        leftSide.push(
-          <GBLink key={'leftSide'} className='link side' onClick={() => this.props.toggleAdminLeftPanel()}><Icon><GoBeaker /></Icon>{!mobile ? 'Advanced Menu' : ''}</GBLink>
-        );
-      }
+  renderTopPanel() {
+    const {
+      createType,
+      breakpoint,
+      previewMode,
+      previewDevice,
+      advancedBuilder,
+      openAdmin: open
+    } = this.props;
+
+    const mobile = breakpoint === 'mobile' ? true : false;
+    const leftSide = [];
+    const middle = [];
+    const rightSide = [];
+
+    /*
+    if (!previewMode && !mobile) {
+      leftSide.push(
+        <div
+          className='leftSide'
+          key='leftSide'
+        >
+          <Toggle
+            icons={false}
+            checked={advancedBuilder}
+            onChange={this.props.toggleBuilder}
+          />
+          <GBLink className='link side' style={{ marginRight: 10 }} onClick={this.props.toggleBuilder}>{ mobile ? <Icon><GoBeaker /></Icon> : <span>Advanced Builder</span> }</GBLink>
+        </div>
+      );
     }
+    */
 
     if (!mobile) {
       rightSide.push(
@@ -101,8 +109,8 @@ class Design extends React.Component {
     } else {
       middle.push(
         <div key={'middle'} className='button-group'>
-          <GBLink className={`ripple link ${createType === 'layout' ? 'selected' : ''}`} onClick={() => this.switchCreateType('layout')}><span className='centered'>{contentObj.layout.icon}<span className='menuText'>{contentObj.layout.menuText}</span></span></GBLink>
-          <ModalLink id='share' className={`ripple link ${createType === 'share' ? 'selected' : ''}`}><span className='centered'>{contentObj.share.icon}<span id='helper-share' className='menuText'>{contentObj.share.menuText}</span></span></ModalLink>
+          <GBLink className={`ripple link ${createType === 'layout' ? 'selected' : ''}`} onClick={() => this.switchCreateType('layout')}><span className='centered'>{this.contentObj.layout.icon}<span className='menuText'>{this.contentObj.layout.menuText}</span></span></GBLink>
+          <ModalLink id='share' className={`ripple link ${createType === 'share' ? 'selected' : ''}`}><span className='centered'>{this.contentObj.share.icon}<span id='helper-share' className='menuText'>{this.contentObj.share.menuText}</span></span></ModalLink>
         </div>
       );
     }
@@ -206,6 +214,7 @@ class Design extends React.Component {
           {this.renderTopPanel()}
         </div>
         <div className={`leftPanel ${open ? 'open' : 'close'}`}>
+          <div className='leftPanelOpenButton' onClick={this.props.toggleAdminLeftPanel}><span className='icon icon-menu'></span></div>
           <AdminMenu
             blockType={'org'}
           />

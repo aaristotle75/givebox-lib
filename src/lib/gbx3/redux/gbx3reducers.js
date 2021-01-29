@@ -10,6 +10,7 @@ export function gbx3(state = {
   loading: true,
   saveStatus: 'done',
   info: {
+    page: null,
     project: 'share',
     stage: 'public',
     display: 'article',
@@ -21,6 +22,14 @@ export function gbx3(state = {
     checkout: false
   },
   backgrounds: [],
+  pages: [
+    {
+      title: 'Landing',
+      slug: 'landing',
+      style: {
+      }
+    }
+  ],
   blocks: {
     org: {},
     article: {},
