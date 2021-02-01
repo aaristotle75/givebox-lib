@@ -1253,14 +1253,6 @@ export function loadOrg(orgID, callback) {
             ...util.getValue(customTemplate, 'globals', {})
           };
 
-          const helperBlocksCustom = util.getValue(customTemplate, `helperBlocks.${blockType}`, {});
-          const helperBlocks = !util.isEmpty(helperBlocksCustom) ?
-            {
-              ...helperBlocksCustom,
-              helperStep: 0
-            }
-          : helperTemplates[blockType];
-
           if (!util.isEmpty(blocksCustom)) {
             // Check if not all default blocks are present
             // If not, add them to the availableBlocks array
@@ -1295,7 +1287,6 @@ export function loadOrg(orgID, callback) {
           dispatch(updateBackgrounds(backgrounds));
           dispatch(updateBlocks(blockType, blocks));
           dispatch(updateGlobals(globals));
-          dispatch(updateHelperBlocks(blockType, helperBlocks));
           dispatch(updateData(res, 'org'));
           dispatch(updateAvailableBlocks(blockType, availableBlocks));
           dispatch(updateAdmin(admin));

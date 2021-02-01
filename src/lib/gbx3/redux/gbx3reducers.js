@@ -55,6 +55,8 @@ export function gbx3(state = {
   orgData: {},
   admin: {
     loadingLayout: true,
+    editPage: '',
+    editPageSection: '',
     editBlock: '',
     editBlockJustAdded: false,
     open: true,
