@@ -22,6 +22,7 @@ import {
 import Backgrounds from './backgrounds/Backgrounds';
 import Helper from './helpers/Helper';
 import Footer from './Footer';
+import CampaignTabs from './blocks/CampaignTabs';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 

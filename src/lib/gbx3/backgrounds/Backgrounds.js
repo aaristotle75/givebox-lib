@@ -217,12 +217,15 @@ class Backgrounds extends Component {
             onResizeStop={this.onResizeStop}
             onResizeStart={this.onResizeStart}
             resizeHandles={['sw', 'se']}
+            style={{
+              maxWidth: 1000
+            }}
           >
             <ModalLink id='background1' type='div' linkRef={this.backgroundRef} style={{ width, height }} className='backgroundPanelResizer'></ModalLink>
           </ResizableBox>
         : ''
         }
-        <div style={{ width, height }} className='backgroundPanel'></div>
+        <div style={{ maxWidth: 1000, width, height }} className='backgroundPanel'></div>
       </>
     )
   }

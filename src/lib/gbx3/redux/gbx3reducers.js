@@ -70,8 +70,7 @@ export function gbx3(state = {
       org: [
         'contentBlock',
         'imageBlock',
-        'videoBlock',
-        'campaignsBlock'
+        'videoBlock'
       ],
       receipt: [
         'contentBlock',

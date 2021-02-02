@@ -62,6 +62,7 @@ class Design extends React.Component {
     };
 
     if (!previewMode) {
+      /*
       if (open) {
         leftSide.push(
           <GBLink key={'leftSide'} className='link side' onClick={() => this.props.toggleAdminLeftPanel()}>{!mobile ? contentObj[createType].icon : <span className='icon icon-x'></span>}{!mobile ? <span className='flexCenter centerItems'>{contentObj[createType].menuText} Menu <span className='leftPanelClose icon icon-x'></span></span> : ''}</GBLink>
@@ -71,6 +72,7 @@ class Design extends React.Component {
           <GBLink key={'leftSide'} className='link side' onClick={() => this.props.toggleAdminLeftPanel()}><Icon><GoBeaker /></Icon>{!mobile ? 'Advanced Menu' : ''}</GBLink>
         );
       }
+      */
     }
 
     if (!mobile) {
@@ -206,6 +208,7 @@ class Design extends React.Component {
           {this.renderTopPanel()}
         </div>
         <div className={`leftPanel ${open ? 'open' : 'close'}`}>
+          <div className='leftPanelOpenButton' onClick={this.props.toggleAdminLeftPanel}><span className='icon icon-menu'></span></div>
           <AdminMenu
             blockType={'org'}
           />

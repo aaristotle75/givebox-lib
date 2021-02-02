@@ -3,175 +3,181 @@
 $breakpoint: 768px;
 
 .gbx3.popupWrapper {
-	.popupOverlay {
-		position: absolute;
-		background: transparentize($white, .3);
-		overflow-y: auto;
-	}
+  .popupOverlay {
+    position: absolute;
+    background: transparentize($white, .3);
+    overflow-y: auto;
+  }
 }
 
 .gbx3.modal {
-	.modalOverlay {
-		background: transparentize($very-light-gray, .2);
-	}
+  .modalOverlay {
+    background: transparentize($very-light-gray, .2);
+  }
 }
 
 .modalContent.givebox-paymentform {
-	button.modalToTop {
-		bottom: 100px;
-		right: 0px;
-		@media (max-width: $breakpoint) {
-			bottom: 0px;
-		}
-	}
+  button.modalToTop {
+    bottom: 100px;
+    right: 0px;
+    @media (max-width: $breakpoint) {
+      bottom: 0px;
+    }
+  }
 }
 
 .gbxModal,
 .modalContent.gbx3 {
 
-	.modalContainers.lightGray {
-		background: $very-light-gray;
-	}
+  .modalContainers.lightGray {
+    background: $very-light-gray;
+  }
 
-	.topContainer {
-		position: absolute;
-		height: 80px;
-		padding: 10px;
-		top: 0;
-		left: 0;
-		right: 0;
-		background: $white;
-		border-bottom: 1px solid $light-gray;
-			display: flex;
-			justify-content: center;
-		align-items: center;
-		flex-direction: column;
-	}
+  .topContainer {
+    position: absolute;
+    height: 80px;
+    padding: 10px;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: $white;
+    border-bottom: 1px solid $light-gray;
+      display: flex;
+      justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
 
-	.middleContainer {
-		display: block;
-		width: 100%;
-		height: auto;
-		margin: 80px 0px;
-		padding: 0 10px;
-	}
+  .middleContainer {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 80px 0px;
+    padding: 0 10px;
+  }
 
-	.bottomContainer {
-		position: absolute;
-		height: 80px;
-		padding: 10px;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		background: $white;
-		border-top: 1px solid $light-gray;
-		z-index: 1;
-	}
+  .bottomContainer {
+    position: absolute;
+    height: 80px;
+    padding: 10px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: $white;
+    border-top: 1px solid $light-gray;
+    z-index: 1;
+    .button-group {
+      text-align: right;
+      @media (max-width: $breakpoint) {
+        text-align: center;
+      }
+    }
+  }
 
-	.bottomContainer2 {
-		position: absolute;
-		height: 80px;
-		padding: 10px;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		background: $white;
-		border-top: 1px solid $light-gray;
-		z-index: 1;
-	}
+  .bottomContainer2 {
+    position: absolute;
+    height: 80px;
+    padding: 10px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: $white;
+    border-top: 1px solid $light-gray;
+    z-index: 1;
+  }
 
-	.modalTop,
-	.modalBottom {
-		display: none;
-	}
+  .modalTop,
+  .modalBottom {
+    display: none;
+  }
 
-	.dropdown button.link {
-		font-size: 12px;
-	}
+  .dropdown button.link {
+    font-size: 12px;
+  }
 
-	button.link {
-		font-size: 14px;
-	}
+  button.link {
+    font-size: 14px;
+  }
 
-	h3 {
-		margin: 10px 0;
-		font-size: 22px;
-		font-weight: 300;
-	}
+  h3 {
+    margin: 10px 0;
+    font-size: 22px;
+    font-weight: 300;
+  }
 
-	.cke_top {
-		background: transparent !important;
-		border-bottom: 1px solid $greenLight !important;
-	}
+  .cke_top {
+    background: transparent !important;
+    border-bottom: 1px solid $greenLight !important;
+  }
 
-	.cke_bottom {
-		background: transparent !important;
-		border-top: 1px solid $greenLight !important;
-	}
+  .cke_bottom {
+    background: transparent !important;
+    border-top: 1px solid $greenLight !important;
+  }
 
-	.cke_resizer {
-		 border-color: transparent $greenLight transparent transparent !important;
-	}
+  .cke_resizer {
+     border-color: transparent $greenLight transparent transparent !important;
+  }
 
-	.cke_chrome {
-		border: 0 !important;
-	}
+  .cke_chrome {
+    border: 0 !important;
+  }
 
-	/*------- Responsive ------*/
-	@media (max-width: 768px) {
+  /*------- Responsive ------*/
+  @media (max-width: 768px) {
 
-		.topContainer {
-			display: none;
-		}
+    .topContainer {
+      display: none;
+    }
 
-		.middleContainer {
-			position: relative;
-			width: 100%;
-			height: auto;
-			margin: 60px 0px 0 0;
-			padding: 0 5px;
-		}
+    .middleContainer {
+      position: relative;
+      width: 100%;
+      height: auto;
+      margin: 60px 0px 0 0;
+      padding: 0 5px;
+    }
 
-		.bottomContainer {
-			top: 0;
-			margin: 0 auto;
-			width: 100%;
-			display: flex;
-			justify-content: center;
+    .bottomContainer {
+      top: 0;
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      justify-content: center;
 
-			.hideOnMobile {
-				display: none;
-			}
+      .hideOnMobile {
+        display: none;
+      }
 
-			.button-group {
-				max-width: 150px;
-			}
-		}
-	}
+      .button-group {
+        max-width: 150px;
+      }
+    }
+  }
 }
 
 .gbxModal {
-	.modal .modalWrapper {
-	padding-top: 0px;
-	}
+  .modal .modalWrapper {
+  padding-top: 0px;
+  }
 
-	.modalTop,
-	.modalBottom {
-	display: none;
-	}
+  .modalTop,
+  .modalBottom {
+  display: none;
+  }
 
-	.modalContainer {
-	padding: 20px 10px;
-	}
+  .modalContainer {
+  padding: 20px 10px;
+  }
 
-	.modal .modalContent {
-	border-radius: 20px;
-	padding: 20px;
-	}
+  .modal .modalContent {
+  border-radius: 20px;
+  padding: 20px;
+  }
 
-	.modal .RichEditor-root {
-		padding: 0px;
-		margin-top: 10px;
-	}
+  .modal .RichEditor-root {
+    padding: 0px;
+    margin-top: 10px;
+  }
 
 }

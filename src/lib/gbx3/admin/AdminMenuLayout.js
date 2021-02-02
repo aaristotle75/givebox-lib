@@ -36,29 +36,31 @@ class AdminMenuLayout extends React.Component {
     const orderedBlocks = [];
 
     Object.entries(blocks).forEach(([key, value]) => {
-      if (!util.getValue(value, 'multiple')) {
+      if (!util.getValue(value, 'multiple') && value) {
         orderedBlocks.push(value);
       }
     });
     util.sortByField(orderedBlocks, 'order', 'ASC');
 
     Object.entries(orderedBlocks).forEach(([key, value]) => {
-      items.push(
-        <li
-          key={key}
-          onClick={() => this.editBlock(value.name)}
-          onMouseEnter={() => {
-            const el = document.getElementById(`blockOption-${value.name}`);
-            el.setAttribute('style', 'display: flex;');
-          }}
-          onMouseLeave={() => {
-            const el = document.getElementById(`blockOption-${value.name}`);
-            el.style.display = null;
-          }}
-        >
-          {value.title}
-        </li>
-      );
+      if (value) {
+        items.push(
+          <li
+            key={key}
+            onClick={() => this.editBlock(value.name)}
+            onMouseEnter={() => {
+              const el = document.getElementById(`blockOption-${value.name}`);
+              if (el) el.setAttribute('style', 'display: flex;');
+            }}
+            onMouseLeave={() => {
+              const el = document.getElementById(`blockOption-${value.name}`);
+              if (el) el.style.display = null;
+            }}
+          >
+            {util.getValue(value, 'title', 'Block Title')}
+          </li>
+        );
+      }
     });
 
     return (

@@ -30,8 +30,6 @@ class Text extends Component {
     const button = util.getValue(options, 'button', {});
     const content = util.getValue(props.blockContent, 'html', defaultContent);
 
-    console.log('execute -> ', content, defaultContent);
-
     this.state = {
       content,
       button,
@@ -228,7 +226,7 @@ class Text extends Component {
                   <div style={{ padding: '20px 10px' }} ref={this.displayRef} dangerouslySetInnerHTML={{ __html: cleanHtml }} />
                 </div>
                 <div className='bottomContainer'>
-                  <div className='button-group' style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                  <div className='button-group'>
                     <GBLink
                       className='button'
                       allowCustom={true}

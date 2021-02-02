@@ -386,8 +386,8 @@ export const videoBlock = {
 export const mainCampaigns = {
   order: 8,
   name: 'mainCampaigns',
-  title: 'Main Form List',
-  type: 'Campaigns',
+  title: 'Fundraiser Tabs',
+  type: 'CampaignTabs',
   subType: 'main',
   multiple: false,
   mobileRelativeBlock: 10,
@@ -407,10 +407,9 @@ export const mainCampaigns = {
 };
 
 export const campaignsBlock = {
-  ...mainCampaigns,
   order: 8,
   name: 'campaignsBlock',
-  title: 'Form List',
+  title: 'Fundraiser List',
   type: 'Campaigns',
   multiple: true,
   mobileRelativeBlock: 10,
@@ -418,6 +417,14 @@ export const campaignsBlock = {
     maxRecords: 3,
     initiated: true,
     customList: []
+  },
+  style: {
+    borderRadius: 0,
+    titleFontSize: 18
+  },
+  grid: {
+    desktop: { i: 'campaignsBlock', x: 0, y: 38, w: 12, h: 52, enabled: true },
+    mobile: { i: 'campaignsBlock', x: 0, y: 2, w: 6, h: 24, enabled: false }
   }
 };
 
@@ -694,7 +701,6 @@ export const blockTemplates = {
       }
     },
     mainCampaigns,
-    campaignsBlock,
     contentBlock,
     imageBlock,
     videoBlock
