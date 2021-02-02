@@ -281,7 +281,6 @@ class Campaigns extends Component {
         switch (value.kind) {
           case 'event': {
             buttonText = 'Get Tickets';
-            console.log('execute -> ', value);
             kindSpecific.push(
               <div key={`${value.ID}-kindSpecific`} className='articleCardKindSpecific'>
                 When and Where is the event

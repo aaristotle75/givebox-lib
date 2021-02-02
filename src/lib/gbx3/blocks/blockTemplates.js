@@ -728,7 +728,6 @@ export const defaultBlocks = {
   org: [
     'logo',
     'orgName',
-    'media',
     'description',
     'mainCampaigns'
   ]
