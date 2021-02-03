@@ -5,7 +5,7 @@ import GBLink from '../../../common/GBLink';
 import ModalLink from '../../../modal/ModalLink';
 import Icon from '../../../common/Icon';
 import Layout from '../../Layout';
-import AdminMenu from '../AdminMenu';
+import AdminMenu from './AdminMenu';
 import {
   updateAdmin,
   updateInfo,
