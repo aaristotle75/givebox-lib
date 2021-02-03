@@ -36,7 +36,7 @@ class AdminMenuLayout extends React.Component {
     const orderedBlocks = [];
 
     Object.entries(blocks).forEach(([key, value]) => {
-      if (!util.getValue(value, 'multiple')) {
+      if (!util.getValue(value, 'multiple') && value) {
         orderedBlocks.push(value);
       }
     });
