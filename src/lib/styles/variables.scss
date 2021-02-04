@@ -157,3 +157,7 @@ $sonarAlertColor: $green;
   color: $mainColor;
   @include animation(pulsateBrighter 2s ease-out infinite);
 }
+
+:export {
+  breakpoint: $breakpoint;
+}
