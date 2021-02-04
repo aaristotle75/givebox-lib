@@ -202,77 +202,77 @@ class Layout extends React.Component {
     const publicOnly = (stage !== 'admin') && !preview ? true : false;
 
     return (
-      <>
-      { done ?
-        <div className='noAccessToGBX'>
-          <Icon><AiOutlineTrophy /></Icon>
-          <span className='center'>The Sweepstakes has Ended and the Winner Chosen</span>
-          {!hasAccessToEdit ?
-            <GBLink onClick={() => window.location.href = `${SHARE_URL}/${orgSlug}`}>
-              Click Here to Visit<br /><span style={{ fontWeight: 400 }}>{orgName}</span><br />
-            </GBLink>
-          :
-            ''
-          }
-        </div>
-      : ''}
+      <div className={`gbx3PageWrapper ${display} ${stage}`}>
+        { done ?
+          <div className='noAccessToGBX'>
+            <Icon><AiOutlineTrophy /></Icon>
+            <span className='center'>The Sweepstakes has Ended and the Winner Chosen</span>
+            {!hasAccessToEdit ?
+              <GBLink onClick={() => window.location.href = `${SHARE_URL}/${orgSlug}`}>
+                Click Here to Visit<br /><span style={{ fontWeight: 400 }}>{orgName}</span><br />
+              </GBLink>
+            :
+              ''
+            }
+          </div>
+        : ''}
 
-      { noAccess ?
-        <div className='noAccessToGBX'>
-          <span className='icon icon-lock'></span>
-          <span className='center'>The Page is Set to Private</span>
-          {hasAccessToEdit ?
-            <GBLink onClick={() => this.props.updateAdmin({ publicView: false })}>
-              <span className='icon icon-chevron-left'></span> Go Back to Form Builder
-            </GBLink>
-          :
-            <GBLink onClick={() => window.location.href = `${SHARE_URL}/${orgSlug}`}>
-              Click here to visit<br /><span style={{ fontWeight: 400 }}>{orgName}</span><br />
-            </GBLink>
-          }
-        </div>
-      : ''}
+        { noAccess ?
+          <div className='noAccessToGBX'>
+            <span className='icon icon-lock'></span>
+            <span className='center'>The Page is Set to Private</span>
+            {hasAccessToEdit ?
+              <GBLink onClick={() => this.props.updateAdmin({ publicView: false })}>
+                <span className='icon icon-chevron-left'></span> Go Back to Form Builder
+              </GBLink>
+            :
+              <GBLink onClick={() => window.location.href = `${SHARE_URL}/${orgSlug}`}>
+                Click here to visit<br /><span style={{ fontWeight: 400 }}>{orgName}</span><br />
+              </GBLink>
+            }
+          </div>
+        : ''}
 
-      { publicOnly && display !== 'org' ?
-        <div onClick={() => this.backToOrg()} className='backToOrgPage avatarLink'>
-          <div className='editGraphic'>
-            <span className='icon icon-chevron-left'></span>
+        { publicOnly && display !== 'org' ?
+          <div onClick={() => this.backToOrg()} className='backToOrgPage avatarLink'>
+            <div className='editGraphic'>
+              <span className='icon icon-chevron-left'></span>
+            </div>
+          </div>
+        :'' }
+
+        <div style={{ height: gbx3BackgroundHeight }} className='gbx3LayoutBackground'></div>
+        <div id='gbx3Layout' className={`gbx3Layout ${display} ${stage} ${noAccess ? 'noAccess' : ''}`}>
+          {showAvatarMenu ? avatarMenu : '' }
+          <div
+            style={{
+              ...style
+            }}
+            className={`gbx3Container`}
+            ref={this.gbx3Container}
+          >
+            {modal ? <GBLink customColor={primaryColor} allowCustom={true} className='closeGBXModalButton' onClick={() => this.closeGBXModal()}><span className='icon icon-x'></span></GBLink> : <></>}
+            {this.renderDisplay()}
+            <ModalRoute
+              id='shop'
+              className='gbx3 givebox-paymentform'
+              effect='3DFlipVert'
+              style={{ width: '70%' }}
+              disallowBgClose={false}
+              component={(props) => <Shop {...props} hideGoBack={true} reloadGBX3={this.props.reloadGBX3} />}
+            />
+            <ModalRoute
+              id='paymentConfirmation'
+              effect='scaleUp'
+              style={{ width: '60%' }}
+              className='gbx3'
+              component={() =>
+                <Confirmation primaryColor={this.props.primaryColor} />
+              }
+            />
           </div>
         </div>
-      :'' }
-
-      <div style={{ height: gbx3BackgroundHeight }} className='gbx3LayoutBackground'></div>
-      <div id='gbx3Layout' className={`gbx3Layout ${display} ${noAccess ? 'noAccess' : ''}`}>
-        {showAvatarMenu ? avatarMenu : '' }
-        <div
-          style={{
-            ...style
-          }}
-          className={`gbx3Container`}
-          ref={this.gbx3Container}
-        >
-          {modal ? <GBLink customColor={primaryColor} allowCustom={true} className='closeGBXModalButton' onClick={() => this.closeGBXModal()}><span className='icon icon-x'></span></GBLink> : <></>}
-          {this.renderDisplay()}
-          <ModalRoute
-            id='shop'
-            className='gbx3 givebox-paymentform'
-            effect='3DFlipVert'
-            style={{ width: '70%' }}
-            disallowBgClose={false}
-            component={(props) => <Shop {...props} hideGoBack={true} reloadGBX3={this.props.reloadGBX3} />}
-          />
-          <ModalRoute
-            id='paymentConfirmation'
-            effect='scaleUp'
-            style={{ width: '60%' }}
-            className='gbx3'
-            component={() =>
-              <Confirmation primaryColor={this.props.primaryColor} />
-            }
-          />
-        </div>
       </div>
-      </>
     )
   }
 

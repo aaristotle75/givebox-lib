@@ -1,28 +1,307 @@
 @import 'variables.scss';
+$contentMaxWidth: 950px;
+$contentBackground: #EBEDF0;
+$contentHeaderPadding: 35%;
+
+
+.gbx3PageWrapper.org {
+
+  .gbx3LayoutBackground {
+    display: none;
+  }
+
+  .hasAccessToEditPublic {
+    top: 5px;
+    right: 20px;
+    flex-direction: row-reverse;
+
+    .avatarLink {
+      margin: 0 5px;
+    }
+
+    .avatarLink.hideOnMobile {
+      display: block;
+    }
+    .editGraphic {
+      width: 40px;
+      height: 40px;
+    }
+    .avatarLink .avatarImage {
+      width: 40px;
+      height: 40px;
+      margin: 0;
+    }
+  }
+}
+
+.gbx3Layout.admin {
+
+  .gbx3OrgHeader {
+    display: none;
+  }
+
+  .gbx3OrgContentContainer {
+    margin-top: 0px;
+  }
+
+  .gbx3OrgFooter {
+    display: none;
+  }
+}
+
+.gbx3Org {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.gbx3OrgHeader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  padding: 10px;
+  background: $white;
+  @include box-shadow(1px 1px 2px 1px rgba(0, 0, 0, 0.10));
+  z-index: 10;
+
+  .gbx3OrgLogoContainer {
+    position: absolute;
+    left: 20px;
+    top: 10px;
+  }
+}
+
+.gbx3OrgContentContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin-top: 50px;
+}
+
+.gbx3OrgContentOuterContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.gbx3OrgContentInnerContainer {
+  position: relative;
+  max-width: $contentMaxWidth;
+  width: 100%;
+}
+
+.gbx3OrgContentHeader.gbx3OrgContentOuterContainer {
+  @include bgGradient(to bottom, $mainColor 0%, $white 50%);
+}
+
+.gbx3OrgContentHeader {
+  position: relative;
+
+  .coverPhotoContainer {
+    position: relative;
+    max-height: 350px;
+    height: 30vw;
+    background: blue;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    @include bgGradient(to bottom, $very-light-gray 20%, $light-gray 80%, $light-med-gray 100%);
+    @media (max-width: $contentMaxWidth) {
+      border-bottom-left-radius: 0px;
+      border-bottom-right-radius: 0px;
+    }
+
+    .coverPhotoImage {
+      position: absolute;
+      top: -400px;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      overflow: hidden;
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
+      @media (max-width: $contentMaxWidth) {
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
+      }
+
+      img {
+        max-width: 950px;
+        width: 950px;
+        height: auto;
+      }
+    }
+  }
+
+  .profilePictureContainer {
+    position: absolute;
+    bottom: -30px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    height: 170px;
+    width: 170px;
+    background: $white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+  }
+
+}
+
+.gbx3OrgContent {
+  position: relative;
+  flex: 1;
+  background: $contentBackground;
+
+  .gbx3OrgContentInnerContainer {
+    margin: 20px 0;
+    padding: 20px;
+    background: $white;
+    border-radius: 10px;
+  }
+}
+
+.contentSectionTest {
+  height: 300px;
+}
+
+.gbx3OrgSubHeader {
+  height: 160px;
+  border-bottom: 2px solid $light-gray;
+
+  .nameSection {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+    padding: 20px 0;
+    border-bottom: 1px solid $light-gray;
+
+    .nameText {
+      font-size: 22px;
+    }
+  }
+
+  .navigation {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+
+    button.link {
+      font-size: 16px;
+      font-weight: 400;
+      color: $med-gray;
+      margin: 0 5px;
+      padding: 15px 15px 20px 15px !important;
+      border-radius: 10px;
+    }
+
+    button.link:hover:not(.active) {
+      background: $light-gray;
+    }
+
+    button.link.active {
+      color: $mainColor;
+      border-bottom: 3px solid $mainColor;
+      border-radius: 0px;
+    }
+
+    .dropdown .dropdown-content.top {
+      bottom: 40px;
+    }
+
+    .dropdown .dropdown-content.opened {
+      border: 1px solid $light-gray;
+      @include box-shadow(0px 3px 6px 0px $light-gray);
+    }
+
+    .dropdown .dropdown-item {
+      color: $med-gray;
+    }
+
+    .dropdown .dropdown-item:hover {
+      background: $light-gray;
+      color: $med-gray;
+    }
+
+    .dropdown button {
+      margin: 0 5px;
+      padding: 15px !important;
+      border-radius: 10px;
+      .icon {
+        top: 16px;
+        right: 0px;
+        font-size: 16px;
+        color: $med-gray !important;
+      }
+    }
+
+    .dropdown button:hover:not(.label) {
+      background: $light-gray;
+      border-bottom: 1px solid transparent;
+      .icon {
+        color: $med-gray !important;
+      }
+    }
+
+  }
+}
+
+.gbx3 .gbx3Layout {
+  .navigation {
+    .dropdown button {
+      .label.idle {
+        color: $med-gray !important;
+        font-size: 16px;
+        font-weight: 400;
+      }
+    }
+  }
+}
+
+.gbx3OrgFooter {
+  height: 50px;
+  background: $contentBackground;
+  .gbx3OrgContentInnerContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
 
 .gbx3Layout.org {
-	padding: 0px;
-	@media (max-width: $breakpoint) {
-		padding: 0;
-	}
+  padding: 0px;
+  @media (max-width: $breakpoint) {
+    padding: 0;
+  }
 
-	.bottomOffset {
-		display: table;
-		height: 0px;
+  .bottomOffset {
+    display: table;
+    height: 0px;
 
-		@media (max-width: $breakpoint) {
-			height: 75px;
-		}
-	}
+    @media (max-width: $breakpoint) {
+      height: 75px;
+    }
+  }
 
-	.gbx3Container {
-		height: 100vh;
-		border-radius: 0px !important;
-		@include box-shadow(none);
-		@media (max-width: $breakpoint) {
-			border-radius: 0px !important;
-		}
-	}
+  .gbx3Container {
+    max-width: 100% !important;
+    height: 100vh;
+    border-radius: 0px !important;
+    padding: 0;
+    @include box-shadow(none);
+    @media (max-width: $breakpoint) {
+      border-radius: 0px !important;
+    }
+  }
 
 }
 
