@@ -15,6 +15,20 @@ $contentHeaderPadding: 35%;
     right: 20px;
     flex-direction: row-reverse;
 
+    .avatarLink.tooltip .tooltipTop {
+      top: 50px;
+      left: 50px;
+      margin: 0 auto;
+      background-color: $light-gray;
+      color: $med-gray;
+    }
+
+    .avatarLink .defaultAvatarImage {
+      margin: 0 5px;
+      width: 40px;
+      height: 40px;
+    }
+
     .avatarLink {
       margin: 0 5px;
     }
@@ -148,7 +162,63 @@ $contentHeaderPadding: 35%;
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 10;
+    z-index: 9;
+  }
+
+}
+
+.gbx3OrgPages {
+  h2 {
+    font-size: 18px;
+  }
+
+  .listWrapper {
+    display: flex;
+    justify-content: center;
+  }
+
+  ul {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+
+    li {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex: 1 0 30%;
+      padding: 10px;
+      @media (max-width: 930px) {
+        flex-basis: 50%;
+      }
+      @media (max-width: 650px) {
+        flex-basis: 100%;
+      }
+    }
+  }
+
+  .cardContainer {
+    position: relative;
+    border: 1px solid $contentBackground;
+    min-width: 275px;
+    max-width: 350px;
+    height: 350px;
+    border-radius: 20px;
+    cursor: pointer;
+    overflow: hidden;
+    @include transition(box-shadow .2s ease, transform .2s ease);
+    @media (max-width: 650px) {
+      width: 350px;
+    }
+  }
+
+  .cardContainer:hover {
+    @include box-shadow(0 10px 20px $contentBackground);
+    transform: translateY(-4px);
+  }
+
+  .cardHeader {
+    
   }
 
 }
@@ -160,9 +230,12 @@ $contentHeaderPadding: 35%;
 
   .gbx3OrgContentInnerContainer {
     margin: 20px 0;
-    padding: 20px;
+    padding: 20px 5px;
     background: $white;
     border-radius: 10px;
+    @media (max-width: $breakpoint) {
+      border-radius: 0px;
+    }
   }
 }
 
@@ -196,22 +269,22 @@ $contentHeaderPadding: 35%;
     height: 60px;
 
     button.link {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 400;
       color: $med-gray;
       margin: 0 5px;
-      padding: 15px 15px 20px 15px !important;
-      border-radius: 10px;
+      padding: 10px 15px 15px 15px !important;
+      border-bottom: 3px solid $white;
     }
 
     button.link:hover:not(.active) {
       background: $light-gray;
+      border-radius: 10px;
     }
 
     button.link.active {
       color: $mainColor;
       border-bottom: 3px solid $mainColor;
-      border-radius: 0px;
     }
 
     .dropdown .dropdown-content.top {
@@ -225,11 +298,17 @@ $contentHeaderPadding: 35%;
 
     .dropdown .dropdown-item {
       color: $med-gray;
+      .icon {
+        color: $med-gray;
+      }
     }
 
     .dropdown .dropdown-item:hover {
       background: $light-gray;
       color: $med-gray;
+      .icon {
+        color: $med-gray;
+      }
     }
 
     .dropdown button {

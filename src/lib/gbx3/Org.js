@@ -12,6 +12,7 @@ import {
   setStyle,
   updateAdmin
 } from './redux/gbx3actions';
+import Pages from './pages/Pages';
 import Footer from './Footer';
 import axios from 'axios';
 
@@ -23,6 +24,8 @@ class Org extends React.Component {
     this.gridRef = React.createRef();
     this.resizer = this.resizer.bind(this);
     this.onBreakpointChange = this.onBreakpointChange.bind(this);
+    this.pageOptions = this.pageOptions.bind(this);
+    this.pageLinks = this.pageLinks.bind(this);
   }
 
   componentDidMount() {
@@ -48,6 +51,46 @@ class Org extends React.Component {
     }
   }
 
+  pageOptions() {
+    const {
+      page,
+      pages
+    } = this.props;
+
+    const options = [];
+
+    Object.entries(pages).forEach(([key, value]) => {
+      const rightText = value.slug === page ? <span className='icon icon-check'></span> : null;
+      options.push({ rightText, primaryText: value.name, value: value.slug });
+    });
+
+    return options;
+  }
+
+  pageLinks() {
+    const {
+      page,
+      pages
+    } = this.props;
+
+    const links = [];
+
+    Object.entries(pages).forEach(([key, value]) => {
+      const active = value.slug === page ? true : false;
+      links.push(
+        <GBLink
+          key={key}
+          className={`link ${active ? 'active' : ''}`}
+          onClick={() => active ? console.log('Active Link') : this.props.updateInfo({ page: value.slug })}
+        >
+          {value.name}
+        </GBLink>
+      );
+    });
+
+    return links;
+  }
+
   render() {
 
     const {
@@ -55,6 +98,7 @@ class Org extends React.Component {
       hasAccessToEdit,
       breakpoint,
       stage,
+      page,
       isMobile
     } = this.props;
 
@@ -87,35 +131,25 @@ class Org extends React.Component {
               </div>
               { !isMobile ?
               <div className='navigation'>
-                <GBLink className={`link active`} onClick={() => console.log('click link Featured')}>Featured</GBLink>
-                <GBLink onClick={() => console.log('click link Donation')}>Donation</GBLink>
-                <GBLink onClick={() => console.log('click link Events')}>Events</GBLink>
-                <GBLink onClick={() => console.log('click link Memberships')}>Memberships</GBLink>
-                <GBLink onClick={() => console.log('click link Sweepstakes')}>Sweepstakes</GBLink>
+                {this.pageLinks()}
               </div> :
               <div className='navigation'>
                 <Dropdown
-                  name='more'
+                  name='page'
                   label={''}
                   selectLabel={'More'}
                   fixedLabel={false}
                   onChange={(name, value) => {
-                    console.log('execute name', value);
+                    this.props.updateInfo({ page: value });
                   }}
-                  options={[
-                    { primaryText: 'Featured', value: 'featured'},
-                    { primaryText: 'Donation', value: 'fundraisers'},
-                    { primaryText: 'Events', value: 'events'},
-                    { primaryText: 'Memberships', value: 'memberships'},
-                    { primaryText: 'Sweepstakes', value: 'sweepstake'}
-                  ]}
+                  options={this.pageOptions()}
                 />
               </div> }
             </div>
           </div>
           <main className='gbx3OrgContent gbx3OrgContentOuterContainer'>
             <div className='gbx3OrgContentInnerContainer'>
-              Org Content
+              <Pages />
             </div>
           </main>
           <div className='gbx3OrgFooter gbx3OrgContentOuterContainer'>
@@ -138,6 +172,8 @@ function mapStateToProps(state, props) {
   const admin = util.getValue(gbx3, 'admin', {});
   const info = util.getValue(gbx3, 'info', {});
   const stage = util.getValue(info, 'stage');
+  const page = util.getValue(info, 'page');
+  const pages = util.getValue(gbx3, 'landing.pages', []);
   const hasAccessToEdit = util.getValue(admin, 'hasAccessToEdit');
   const editable = util.getValue(admin, 'editable');
   const breakpoint = util.getValue(info, 'breakpoint');
@@ -146,6 +182,8 @@ function mapStateToProps(state, props) {
   return {
     breakpointWidth,
     stage,
+    page,
+    pages,
     hasAccessToEdit,
     editable,
     breakpoint,
