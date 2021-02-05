@@ -73,7 +73,12 @@ class Pages extends Component{
 
     return (
       <div className='gbx3OrgPages'>
-        <h2>{util.getValue(page, 'name')}</h2>
+        <div className='gbx3OrgPagesTop'>
+          <h2>{util.getValue(page, 'name')}</h2>
+          <div className='gbx3OrgPagesSearch'>
+            Search Input | Filters
+          </div>
+        </div>
         <div className='listWrapper'>
           {this.renderList()}
         </div>
