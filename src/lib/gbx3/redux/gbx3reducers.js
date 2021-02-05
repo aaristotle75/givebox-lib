@@ -3,13 +3,17 @@ import * as util from '../../common/utility';
 import {
   defaultCart,
   defaultConfirmation,
-  defaultStyle
+  defaultStyle,
+  defaultPages,
+  defaultHeader,
+  defaultFooter
 } from './gbx3defaults';
 
 export function gbx3(state = {
   loading: true,
   saveStatus: 'done',
   info: {
+    page: 'featured',
     project: 'share',
     stage: 'public',
     display: 'article',
@@ -19,6 +23,11 @@ export function gbx3(state = {
     sourceLocation: null,
     originTemplate: '',
     checkout: false
+  },
+  landing: {
+    header: defaultHeader,
+    pages: defaultPages,
+    footer: defaultFooter
   },
   backgrounds: [],
   blocks: {
