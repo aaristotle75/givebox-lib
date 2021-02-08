@@ -26,11 +26,17 @@ class Org extends React.Component {
     this.onBreakpointChange = this.onBreakpointChange.bind(this);
     this.pageOptions = this.pageOptions.bind(this);
     this.pageLinks = this.pageLinks.bind(this);
+    this.onClickArticle = this.onClickArticle.bind(this);
   }
 
   componentDidMount() {
     this.onBreakpointChange();
     window.addEventListener('resize', this.resizer);
+  }
+
+  async onClickArticle(ID) {
+    const infoUpdated = await this.props.updateInfo({ originTemplate: 'org' });
+    if (infoUpdated) this.props.reloadGBX3(ID);
   }
 
   resizer(e) {
@@ -149,7 +155,9 @@ class Org extends React.Component {
           </div>
           <main className='gbx3OrgContent gbx3OrgContentOuterContainer'>
             <div className='gbx3OrgContentInnerContainer'>
-              <Pages />
+              <Pages
+                onClickArticle={this.onClickArticle}
+              />
             </div>
           </main>
           <div className='gbx3OrgFooter gbx3OrgContentOuterContainer'>

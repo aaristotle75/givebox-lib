@@ -24,7 +24,7 @@ $contentHeaderPadding: 35%;
     }
 
     .avatarLink .defaultAvatarImage {
-      margin: 0 5px;
+      margin: 0;
       width: 40px;
       height: 40px;
     }
@@ -61,6 +61,10 @@ $contentHeaderPadding: 35%;
   .gbx3OrgFooter {
     display: none;
   }
+}
+
+.gbx3 .gbx3Org .noRecords {
+  font-size: 16px;
 }
 
 .gbx3Org {
@@ -208,6 +212,10 @@ $contentHeaderPadding: 35%;
         flex-basis: 100%;
       }
     }
+
+    li:hover .cardButton {
+      opacity: 1;
+    }
   }
 
   .cardContainer {
@@ -215,7 +223,7 @@ $contentHeaderPadding: 35%;
     border: 1px solid $contentBackground;
     min-width: 275px;
     max-width: 325px;
-    height: 350px;
+    height: 375px;
     border-radius: 20px;
     cursor: pointer;
     overflow: hidden;
@@ -226,7 +234,7 @@ $contentHeaderPadding: 35%;
   }
 
   .cardContainer:hover {
-    @include box-shadow(0 10px 20px $contentBackground);
+    @include box-shadow(0 10px 20px rgba(70, 89, 101, .4));
     transform: translateY(-4px);
   }
 
@@ -265,6 +273,31 @@ $contentHeaderPadding: 35%;
       font-size: 16px;
     }
 
+  }
+
+  .cardButtonContainer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cardButton {
+    display: block;
+    padding: 10px 20px;
+    background: $light-gray;
+    color: $dark;
+    text-align: center;
+    border-radius: 10px;
+    opacity: .7;
+  }
+
+  .cardButton:hover {
+    background: $placeholder-gray;
+    @include transition(background .25s);
   }
 
 }
