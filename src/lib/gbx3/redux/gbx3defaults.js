@@ -17,30 +17,35 @@ export const defaultPages = [
   {
     name: 'Featured',
     slug: 'featured',
+    kind: 'all',
     style: {},
     content: {}
   },
   {
     name: 'Donation',
     slug: 'fundraisers',
+    kind: 'fundraiser',
     style: {},
     content: {}
   },
   {
     name: 'Events',
     slug: 'events',
+    kind: 'event',
     style: {},
     content: {}
   },
   {
     name: 'Memberships',
     slug: 'memberships',
+    kind: 'membership',
     style: {},
     content: {}
   },
   {
     name: 'Sweepstakes',
-    slug: 'sweepstake',
+    slug: 'sweepstakes',
+    kind: 'sweepstake',
     style: {},
     content: {}
   }

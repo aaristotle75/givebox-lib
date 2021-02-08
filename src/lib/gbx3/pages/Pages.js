@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import * as util from '../../common/utility';
+import * as types from '../../common/types';
 import GBLink from '../../common/GBLink';
 import Loader from '../../common/Loader';
-import ListItem from './ListItem';
+import ArticleCard from './ArticleCard';
 import {
   getResource
 } from '../../api/helpers';
@@ -13,45 +14,83 @@ class Pages extends Component{
     super(props);
     this.getActivePage = this.getActivePage.bind(this);
     this.renderList = this.renderList.bind(this);
+    this.getArticles = this.getArticles.bind(this);
     this.state = {
     };
   }
 
   componentDidMount() {
-    this.props.getResource('orgArticles', {
+    this.getArticles();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.page !== this.props.page) {
+      this.getArticles();
+    }
+  }
+
+  getArticles(options = {}) {
+    const opts = {
+      getDefault: false,
+      reload: false,
+      filter: '',
+      query: '',
+      ...options
+    };
+
+    const {
+      page
+    } = this.props;
+
+    const endpoint = `org${util.getValue(types.kind(page), 'api.list')}`;
+    const filter = `${opts.getDefault ? 'givebox:true' : 'landing:true'}${opts.filter ? `%3B${opts.filter}` : ''}`;
+    this.props.getResource(endpoint, {
+      customName: `${page}List`,
+      reload: opts.reload,
       search: {
-        filter: 'givebox:true',
-        sort: 'raised',
-        order: 'desc',
-        max: 100
+        filter,
+        query: opts.query
+      },
+      callback: (res, err) => {
+        if (!util.getValue(res, 'data')) {
+          if (!opts.getDefault) this.getArticles({ getDefault: true, reload: true });
+        }
       }
-    })
+    });
   }
 
   getActivePage() {
     const {
-      page,
       pages
     } = this.props;
 
-    return pages.find(p => p.slug === page);
+    return pages.find(p => p.slug === this.props.page);
   }
 
   renderList() {
     const {
-      orgArticles
+      pageList,
+      page
     } = this.props;
 
-    const data = util.getValue(orgArticles, 'data', []);
+    const data = util.getValue(pageList, 'data', []);
     const list = [];
 
     if (!util.isEmpty(data)) {
       Object.entries(data).forEach(([key, value]) => {
+        const kind = page === 'featured' ? value.kind : page;
+        const ID = page === 'featured' ? value.ID : value.articleID;
         list.push(
-          <ListItem
+          <li
             key={key}
-            item={value}
-          />
+            onClick={() => this.props.onClickArticle(ID)}
+          >
+            <ArticleCard
+              item={value}
+              kind={kind}
+              ID={ID}
+            />
+          </li>
         );
       })
     }
@@ -66,13 +105,15 @@ class Pages extends Component{
   render() {
 
     const {
+      pageList
     } = this.props;
 
-    if (util.isLoading(this.props.orgArticles)) return <Loader msg='Loading List...' />
+    if (util.isLoading(pageList)) return <Loader msg='Loading List...' />
     const page = this.getActivePage();
 
     return (
       <div className='gbx3OrgPages'>
+        {util.isFetching(pageList) ? <Loader msg='Loading List...' /> : null }
         <div className='gbx3OrgPagesTop'>
           <h2>{util.getValue(page, 'name')}</h2>
           <div className='gbx3OrgPagesSearch'>
@@ -102,7 +143,7 @@ function mapStateToProps(state, props) {
   const editable = util.getValue(admin, 'editable');
   const breakpoint = util.getValue(info, 'breakpoint');
   const isMobile = breakpoint === 'mobile' ? true : false;
-  const orgArticles = util.getValue(state, 'resource.orgArticles', {});
+  const pageList = util.getValue(state, `resource.${page}List`, {});
 
   return {
     stage,
@@ -112,7 +153,7 @@ function mapStateToProps(state, props) {
     editable,
     breakpoint,
     isMobile,
-    orgArticles
+    pageList
   }
 }
 
