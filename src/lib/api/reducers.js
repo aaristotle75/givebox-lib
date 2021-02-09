@@ -70,10 +70,10 @@ export function resource(state = {
       });
     case types.NEW_REQUEST_RESOURCE:
       return Object.assign({}, state, {
-        isFetching: true,
+        isFetching: action.showFetching ? true : false,
         [action.resource]: {
           ...state[action.resource],
-          isFetching: true,
+          isFetching: action.showFetching ? true : false,
           error: false,
           data: {},
           meta: {},
@@ -82,10 +82,10 @@ export function resource(state = {
       });
     case types.RELOAD_REQUEST_RESOURCE:
       return Object.assign({}, state, {
-        isFetching: true,
+        isFetching: action.showFetching ? true : false,
         [action.resource]: {
           ...state[action.resource],
-          isFetching: true,
+          isFetching: action.showFetching ? true : false,
           error: false
         }
       });

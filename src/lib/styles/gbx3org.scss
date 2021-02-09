@@ -6,6 +6,11 @@ $contentHeaderPadding: 35%;
 
 .gbx3PageWrapper.org {
 
+  button.toTop:hover {
+    background: $med-blue-gray;
+    opacity: .7;
+  }
+
   .gbx3LayoutBackground {
     display: none;
   }
@@ -194,12 +199,18 @@ $contentHeaderPadding: 35%;
     justify-content: center;
   }
 
-  ul {
+  .listContainer {
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
 
-    li {
+    .loadingMore {
+      margin: 20px 0;
+      font-size: 14px;
+      color: $med-gray;
+    }
+
+    .listItem {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -213,7 +224,7 @@ $contentHeaderPadding: 35%;
       }
     }
 
-    li:hover .cardButton {
+    .listItem:hover .cardButton {
       opacity: 1;
     }
   }
@@ -221,8 +232,7 @@ $contentHeaderPadding: 35%;
   .cardContainer {
     position: relative;
     border: 1px solid $contentBackground;
-    min-width: 275px;
-    max-width: 325px;
+    width: 275px;
     height: 375px;
     border-radius: 20px;
     cursor: pointer;
@@ -267,12 +277,31 @@ $contentHeaderPadding: 35%;
   }
 
   .cardInfoContainer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
 
+  .cardInfo {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    font-size: 12px;
+    color: $med-blue-gray;
+    margin-top: 5px;
+    margin-right: 10px;
+    .icon {
+      color: $med-blue-gray;
+      font-size: 14px;
+      margin-right: 5px;
+    }
+  }
+
+  .cardTitleContainer {
     h2 {
-      margin: 10px;
+      margin: 5px 10px;
       font-size: 16px;
     }
-
   }
 
   .cardButtonContainer {

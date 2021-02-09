@@ -159,10 +159,11 @@ export function setModalRef(ref) {
   }
 }
 
-function requestResource(resource, reload) {
+function requestResource(resource, reload, showFetching) {
   return {
     type: reload ? types.RELOAD_REQUEST_RESOURCE : types.NEW_REQUEST_RESOURCE,
-    resource: resource
+    resource: resource,
+    showFetching
   }
 }
 
@@ -187,12 +188,13 @@ export function getAPI(
   customName,
   resourcesToLoad,
   reloadResource,
-  fullResponse
+  fullResponse,
+  showFetching
 ) {
   return (dispatch, getState) => {
     if (shouldGetAPI(getState(), customName || resource, reload)) {
       const csrf_token = document.getElementById('givebox_csrf_token') ? document.getElementById('givebox_csrf_token').value : '';
-      dispatch(requestResource(customName || resource, reload));
+      dispatch(requestResource(customName || resource, reload, showFetching));
       axios.get(endpoint, {
         headers: {
           'X-CSRF-Token': csrf_token === '{{ .CSRFToken }}' ? 'localhost' : csrf_token
