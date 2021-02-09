@@ -63,6 +63,7 @@
     "react-icons": "^3.10.0",
     "react-iframe-resizer-super": "^0.2.2",
     "react-image": "^4.0.3",
+    "react-infinite-scroll-component": "^6.0.0",
     "react-js-pagination": "^3.0.3",
     "react-oembed-container": "^0.3.0",
     "react-player": "^1.15.3",

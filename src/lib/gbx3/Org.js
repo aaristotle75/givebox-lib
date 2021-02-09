@@ -112,6 +112,7 @@ class Org extends React.Component {
 
     return (
       <div className='gbx3Org'>
+        <GBLink onClick={() => util.toTop('gbx3Layout')} className='toTop'><span className='icon icon-chevrons-up'></span></GBLink>
         <div className='gbx3OrgHeader'>
           <div className={'gbx3OrgLogoContainer'} onClick={() => console.log('logo clicked!')}>
             <Image size='thumb' maxSize={35} url={'https://givebox.s3-us-west-1.amazonaws.com/public/gb-logo5.png'} alt='Givebox' />

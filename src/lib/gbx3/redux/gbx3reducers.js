@@ -24,6 +24,8 @@ export function gbx3(state = {
     originTemplate: '',
     checkout: false
   },
+  pagesState: {
+  },
   landing: {
     header: defaultHeader,
     pages: defaultPages,

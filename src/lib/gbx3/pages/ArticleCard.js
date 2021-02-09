@@ -22,10 +22,13 @@ class ArticleCard extends Component {
 
     const {
       title,
-      imageURL
+      imageURL,
+      stats
     } = this.props.item;
 
-    console.log('execute kind -> ', kind);
+    const views = util.getValue(stats, 'views', 0);
+    const likes = util.getValue(stats, 'likes', 0);
+    const shares = util.getValue(stats, 'shares', 0);
 
     return (
       <div className='cardContainer'>
@@ -35,6 +38,11 @@ class ArticleCard extends Component {
           </div>
         </div>
         <div className='cardInfoContainer'>
+          <div className='cardInfo'>
+            <span className='icon icon-eye'></span> Views ({views})
+          </div>
+        </div>
+        <div className='cardTitleContainer'>
           <h2>{util.truncate(title, 64)}</h2>
         </div>
         <div className='cardButtonContainer'>
