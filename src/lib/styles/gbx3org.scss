@@ -5,6 +5,10 @@ $contentHeaderPadding: 35%;
 
 
 .gbx3PageWrapper.org {
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: $med-blue-gray;
+  }
 
   button.toTop:hover {
     background: $med-blue-gray;
@@ -203,6 +207,7 @@ $contentHeaderPadding: 35%;
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
+    margin-bottom: 40px;
 
     .loadingMore {
       margin: 20px 0;
@@ -226,6 +231,19 @@ $contentHeaderPadding: 35%;
 
     .listItem:hover .cardButton {
       opacity: 1;
+    }
+
+    .endMessage {
+      display: flex;
+      justify-content: center;
+      position: absolute;
+      bottom: 10px;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      width: 100%;
+      font-size: 14px;
+      color: $med-gray;
     }
   }
 
