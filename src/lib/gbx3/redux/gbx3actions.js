@@ -829,10 +829,7 @@ export function cloneFundraiser(kind, kindID, callback) {
           //const oneMonthFromNow = parseInt((d.setMonth(d.getMonth() + 1))/1000);
 
           switch (kind) {
-            case 'membership':
-            case 'event':
             case 'sweepstake': {
-              kindSpecific.when = null;
               kindSpecific.endsAt = null;
               kindSpecific.status = 'open';
               break;
