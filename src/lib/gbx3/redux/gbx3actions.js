@@ -807,9 +807,25 @@ export function cloneFundraiser(kind, kindID, callback) {
       orgID: orgID,
       callback: (res, err) => {
         if (!err && !util.isEmpty(res)) {
+          const giveboxSettings = util.getValue(res, 'giveboxSettings', {});
+          const customTemplate = util.getValue(giveboxSettings, 'customTemplate', {});
+          const blocks = util.getValue(customTemplate, 'blocks', {});
+          const titleBlock = util.getValue(blocks, 'title', {});
+          const titleContent = util.getValue(titleBlock, 'content', {});
+          const form = util.getValue(blocks, 'paymentForm.options.form', {});
           const title = `Clone of ${util.getValue(res, 'title')}`;
           const kindSpecific = {};
           const d = new Date();
+          const passFees = util.getValue(form, 'passFees', true);
+
+          giveboxSettings.addressInfo = util.getValue(form, 'addressInfo', 0);
+          giveboxSettings.phoneInfo = util.getValue(form, 'phoneInfo', 0);
+          giveboxSettings.workInfo = util.getValue(form, 'workInfo', 0);
+          giveboxSettings.noteInfo = util.getValue(form, 'noteInfo', 0);
+          giveboxSettings.notePlaceholder = util.getValue(form, 'notePlaceholder', '');
+          giveboxSettings.allowSelection = util.getValue(form, 'allowSelection', true);
+          giveboxSettings.feeOption = util.getValue(form, 'feeOption', true);
+
           //const oneMonthFromNow = parseInt((d.setMonth(d.getMonth() + 1))/1000);
 
           switch (kind) {
@@ -827,7 +843,24 @@ export function cloneFundraiser(kind, kindID, callback) {
           const data = {
             ...res,
             ...kindSpecific,
-            title
+            title,
+            passFees,
+            giveboxSettings: {
+              ...giveboxSettings,
+              customTemplate: {
+                ...customTemplate,
+                blocks: {
+                  ...blocks,
+                  title: {
+                    ...titleBlock,
+                    content: {
+                      ...titleContent,
+                      html: `<span style="font-size:16px;">${title}</span>`
+                    }
+                  }
+                }
+              }
+            }
           };
           dispatch(createFundraiser(kind, callback, data));
         } else {

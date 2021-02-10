@@ -221,7 +221,7 @@ export const paymentForm = {
     },
     form: {
       echeck: false,
-      feeOption: false,
+      feeOption: true,
       passFees: true,
       addressInfo: 0,
       phoneInfo: 0,
