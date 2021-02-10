@@ -5,10 +5,15 @@ import * as types from '../../common/types';
 import GBLink from '../../common/GBLink';
 import Loader from '../../common/Loader';
 import ArticleCard from './ArticleCard';
+import Search from '../../table/Search';
+import {
+  setPageState
+} from '../redux/gbx3actions';
 import {
   getResource
 } from '../../api/helpers';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import has from 'has';
 
 class Pages extends Component{
   constructor(props){
@@ -16,20 +21,8 @@ class Pages extends Component{
     this.getActivePage = this.getActivePage.bind(this);
     this.renderList = this.renderList.bind(this);
     this.getArticles = this.getArticles.bind(this);
+    this.getArticlesCallback = this.getArticlesCallback.bind(this);
     this.setPageState = this.setPageState.bind(this);
-
-    const pagesState = {};
-    Object.entries(props.pages).forEach(([key, value]) => {
-      pagesState[value.slug] = {
-        total: 0,
-        pageNumber: 1,
-        list: []
-      }
-    })
-
-    this.state = {
-      pagesState
-    };
   }
 
   componentDidMount() {
@@ -42,18 +35,11 @@ class Pages extends Component{
     }
   }
 
-  setPageState(page, newState = {}, callback) {
-    this.setState({
-      pagesState: {
-        ...this.state.pagesState,
-        [page]: {
-          ...this.state.pagesState[page],
-          ...newState
-        }
-      }
-    }, () => {
-      if (callback) callback();
-    })
+  async setPageState(page, newState = {}, callback) {
+    const stateUpdated = await this.props.setPageState(page, newState);
+    if (stateUpdated && callback) {
+      callback();
+    }
   }
 
   getArticles(options = {}) {
@@ -63,6 +49,7 @@ class Pages extends Component{
       reload: false,
       filter: '',
       query: '',
+      search: false,
       showFetching: true,
       ...options
     };
@@ -71,14 +58,17 @@ class Pages extends Component{
       page,
       orgID
     } = this.props;
+
     const pageState = {
-      ...this.state.pagesState[page]
+      ...this.props.pageState[page]
     };
-    const pageNumber = util.getValue(pageState, 'pageNumber', 1);
-    const list = util.getValue(pageState, 'list', []);
-    const endpoint = `org${util.getValue(types.kind(page), 'api.list')}`;
-    const filter = `${opts.getDefault ? 'givebox:true' : 'landing:true'}${opts.filter ? `%3B${opts.filter}` : ''}`;
-    this.props.getResource(endpoint, {
+    const activePage = this.getActivePage();
+    const kind = util.getValue(activePage, 'kind', 'all');
+    const pageNumber = opts.search ? util.getValue(pageState, 'search.pageNumber', 1) : util.getValue(pageState, 'pageNumber', 1);
+    const kindFilter = kind === 'all' ? '' : `%3Bkind:"${kind}"`;
+    const filter = `${opts.getDefault || opts.search ? 'givebox:true' : 'landing:true'}${kindFilter}${opts.filter ? `%3B${opts.filter}` : ''}`;
+
+    this.props.getResource('orgArticles', {
       orgID,
       customName: `${page}List`,
       reload: opts.reload,
@@ -89,17 +79,49 @@ class Pages extends Component{
         page: pageNumber
       },
       callback: (res, err) => {
-        const data = util.getValue(res, 'data', []);
-        if (!util.isEmpty(data)) {
-          pageState.pageNumber = pageNumber + 1;
-          pageState.list = [...list, ...data];
-          pageState.total = +util.getValue(res, 'total', 0);
-          this.setPageState(page, pageState);
-        } else {
-          if (!opts.getDefault) this.getArticles({ getDefault: true, reload: true });
-        }
+        this.getArticlesCallback(res, err, opts.getDefault, opts.search, opts.query);
       }
     });
+  }
+
+  getArticlesCallback(res, err, getDefault, search, query) {
+    const {
+      page
+    } = this.props;
+
+    const pageState = {
+      ...this.props.pageState[page]
+    };
+
+    const data = util.getValue(res, 'data', []);
+
+    if (search) console.log('execute article callback search -> ', search, query, data);
+
+    let pageNumber = util.getValue(pageState, 'pageNumber', 1);
+    let list = util.getValue(pageState, 'list', []);
+
+    if (search) {
+      pageNumber = util.getValue(pageState, 'search.pageNumber', 1);
+      list = util.getValue(pageState, 'search.list', []);
+    }
+
+    if (!util.isEmpty(data)) {
+      if (search) {
+        if (!has(pageState, 'search')) pageState.search = {};
+        pageState.search.pageNumber = pageNumber + 1;
+        pageState.search.list = [...list, ...data];
+        pageState.search.total = +util.getValue(res, 'total', 0);
+      } else {
+        pageState.pageNumber = pageNumber + 1;
+        pageState.list = [...list, ...data];
+        pageState.total = +util.getValue(res, 'total', 0);
+        pageState.search = {};
+      }
+      this.setPageState(page, pageState);
+    } else {
+      if (!getDefault) this.getArticles({ getDefault: true, reload: true });
+      console.log('search but no query and no data -> ', search, query, data);
+    }
   }
 
   getActivePage() {
@@ -115,21 +137,16 @@ class Pages extends Component{
       page
     } = this.props;
 
-    const {
-      pagesState
-    } = this.state;
-
-    const pageState = util.getValue(pagesState, page, {});
-
-    const pageList = util.getValue(pageState, `list`, []);
-    const total = util.getValue(pageState, 'total', 0);
-    const list = [];
+    const pageState = util.getValue(this.props.pageState, page, {});
+    const pageList = util.getValue(pageState, 'search.list', util.getValue(pageState, 'list', []));
+    const total = util.getValue(pageState, 'search.total', util.getValue(pageState, 'total', 0));
+    const items = [];
 
     if (!util.isEmpty(pageList)) {
       Object.entries(pageList).forEach(([key, value]) => {
-        const kind = page === 'featured' ? value.kind : page;
-        const ID = page === 'featured' ? value.ID : value.articleID;
-        list.push(
+        const kind = value.kind;
+        const ID = value.ID ;
+        items.push(
           <div
             className='listItem'
             key={key}
@@ -146,24 +163,28 @@ class Pages extends Component{
     }
 
     return (
-      <InfiniteScroll
-        className='listContainer'
-        scrollableTarget='gbx3Layout'
-        dataLength={list.length}
-        next={() => this.getArticles({ reload: true })}
-        hasMore={list.length < total ? true : false}
-        loader={''}
-        endMessage={''}
-      >
-        { !util.isEmpty(list) ? list : <span className='noRecords'>No Search Results</span> }
-      </InfiniteScroll>
+      !util.isEmpty(items) ?
+        <InfiniteScroll
+          className='listContainer'
+          scrollableTarget='gbx3Layout'
+          dataLength={items.length}
+          next={() => this.getArticles({ reload: true })}
+          hasMore={items.length < total ? true : false}
+          loader={''}
+          endMessage={<div className='endMessage'>Showing All {total} Results</div>}
+        >
+          {items}
+        </InfiniteScroll>
+      :
+        <span className='noRecords'>No Search Results</span>
     )
   }
 
   render() {
 
     const {
-      pageList
+      pageList,
+      resourceName
     } = this.props;
 
     if (util.isLoading(pageList)) return <Loader msg='Loading List...' />
@@ -175,7 +196,19 @@ class Pages extends Component{
         <div className='gbx3OrgPagesTop'>
           <h2>{util.getValue(page, 'name')}</h2>
           <div className='gbx3OrgPagesSearch'>
-            Search Input | Filters
+            <Search
+              placeholder={`Search ${util.getValue(page, 'name')}`}
+              getSearch={(value) => {
+                this.getArticles({
+                  search: true,
+                  query: value,
+                  reload: true
+                });
+              }}
+              resetSearch={() => {
+                console.log('execute reset search');
+              }}
+            />
           </div>
         </div>
         <div className='listWrapper'>
@@ -202,7 +235,9 @@ function mapStateToProps(state, props) {
   const editable = util.getValue(admin, 'editable');
   const breakpoint = util.getValue(info, 'breakpoint');
   const isMobile = breakpoint === 'mobile' ? true : false;
-  const pageList = util.getValue(state, `resource.${page}List`, {});
+  const resourceName = `${page}List`;
+  const pageList = util.getValue(state, `resource.${resourceName}`, {});
+  const pageState = util.getValue(gbx3, 'pageState', {});
 
   return {
     orgID,
@@ -213,10 +248,13 @@ function mapStateToProps(state, props) {
     editable,
     breakpoint,
     isMobile,
-    pageList
+    resourceName,
+    pageList,
+    pageState
   }
 }
 
 export default connect(mapStateToProps, {
-  getResource
+  getResource,
+  setPageState
 })(Pages);

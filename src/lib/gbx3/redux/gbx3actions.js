@@ -36,6 +36,14 @@ export function clearGBX3(keepOrgData) {
   }
 }
 
+export function setPageState(page, newState) {
+  return {
+    type: types.UPDATE_PAGE_STATE,
+    page,
+    newState
+  }
+}
+
 export function updateInfo(info) {
   return {
     type: types.UPDATE_INFO,

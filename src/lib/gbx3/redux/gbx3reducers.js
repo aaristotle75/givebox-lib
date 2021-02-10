@@ -24,8 +24,7 @@ export function gbx3(state = {
     originTemplate: '',
     checkout: false
   },
-  pagesState: {
-  },
+  pageState: {},
   landing: {
     header: defaultHeader,
     pages: defaultPages,
@@ -145,6 +144,16 @@ export function gbx3(state = {
         info: {
           ...state.info,
           ...action.info,
+        }
+      });
+    case types.UPDATE_PAGE_STATE:
+      return Object.assign({}, state, {
+        pageState: {
+          ...state.pageState,
+          [action.page]: {
+            ...state.pageState[action.page],
+            ...action.newState
+          }
         }
       });
     case types.UPDATE_LAYOUTS:
