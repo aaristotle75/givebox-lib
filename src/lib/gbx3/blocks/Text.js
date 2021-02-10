@@ -30,8 +30,6 @@ class Text extends Component {
     const button = util.getValue(options, 'button', {});
     const content = util.getValue(props.blockContent, 'html', defaultContent);
 
-    console.log('execute -> ', content, defaultContent);
-
     this.state = {
       content,
       button,
