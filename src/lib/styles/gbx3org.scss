@@ -5,7 +5,7 @@ $contentHeaderPadding: 35%;
 
 
 .gbx3PageWrapper.org {
-  
+
   ::-webkit-scrollbar-thumb {
     background-color: $med-blue-gray;
   }
@@ -345,6 +345,13 @@ $contentHeaderPadding: 35%;
   .cardButton:hover {
     background: $placeholder-gray;
     @include transition(background .25s);
+  }
+
+  .cardKindSpecificContainer {
+
+    .cardKindSpecific {
+      
+    }
   }
 
 }

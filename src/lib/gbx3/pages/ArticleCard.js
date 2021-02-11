@@ -7,6 +7,7 @@ import * as types from '../../common/types';
 class ArticleCard extends Component {
   constructor(props){
     super(props);
+    this.renderKindSpecific = this.renderKindSpecific.bind(this);
     this.state = {
     };
   }
@@ -14,21 +15,63 @@ class ArticleCard extends Component {
   componentDidMount() {
   }
 
+  renderKindSpecific() {
+    const {
+      kind
+    } = this.props;
+
+    const item = [];
+
+    switch (kind) {
+      case 'event': {
+        const {
+          eventWhen,
+          eventWhenShowTime,
+          eventEndsAt,
+          eventEndsAtShowTime,
+          eventNumAvailableTickets,
+          virtualEvent
+        } = this.props.item;
+
+        item.push(
+          <div key={kind} className='cardKindSpecific'>
+            {eventWhen}
+          </div>
+        )
+        break;
+      }
+
+      // no default
+    }
+
+    if (!util.isEmpty(item)) {
+      return (
+        <div className='cardKindSpecificContainer'>
+          {item}
+        </div>
+      )
+    }
+
+    return null;
+  }
+
   render() {
 
     const {
-      kind
+      kind,
+      item
     } = this.props;
 
     const {
       title,
       imageURL,
       stats
-    } = this.props.item;
+    } = item;
 
-    const views = util.getValue(stats, 'views', 0);
-    const likes = util.getValue(stats, 'likes', 0);
-    const shares = util.getValue(stats, 'shares', 0);
+    const views = +util.getValue(stats, 'views', 0);
+    const viewCount = views > 0 ? views : 1;
+    const likes = +util.getValue(stats, 'likes', 0);
+    const shares = +util.getValue(stats, 'shares', 0);
 
     return (
       <div className='cardContainer'>
@@ -39,12 +82,13 @@ class ArticleCard extends Component {
         </div>
         <div className='cardInfoContainer'>
           <div className='cardInfo'>
-            <span className='icon icon-eye'></span> Views ({views})
+            <span className='icon icon-eye'></span> Views ({viewCount})
           </div>
         </div>
         <div className='cardTitleContainer'>
           <h2>{util.truncate(title, 64)}</h2>
         </div>
+        {this.renderKindSpecific()}
         <div className='cardButtonContainer'>
           <div className='cardButton'>{types.kind(kind).cta}</div>
         </div>

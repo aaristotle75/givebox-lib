@@ -16,6 +16,12 @@ export default class Image extends Component {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.url !== this.props.url) {
+      this.setState({ imageLoading: true });
+    }
+  }
+
   imageOnLoad() {
     this.setState({ imageLoading: false });
     if (this.props.onLoad) this.props.onLoad();
@@ -43,6 +49,10 @@ export default class Image extends Component {
   }
 
   render() {
+
+    const {
+      imageLoading
+    } = this.state;
 
     const {
       imgID,
@@ -89,14 +99,19 @@ export default class Image extends Component {
       // no default
     }
     const maxSize = this.props.maxSize || defaultSize;
-    const mergeStyle = { maxWidth: maxWidth || maxSize, maxHeight: maxHeight || maxSize, ...imgStyle };
+    const mergeStyle = {
+      visibility: imageLoading ? 'hidden' : 'visible',
+      maxWidth: maxWidth || maxSize,
+      maxHeight: maxHeight || maxSize,
+      ...imgStyle
+    };
     const src = size === 'inherit' ? url : imageUrlWithStyle(url, size)
 
     if (debug) console.log('execute render src', src);
 
     return (
       <div onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} style={{ minHeight, width: maxSize, height: 'auto',  ...style, ...this.state.hoverStyle  }} className={`imageComponent ${className || ''}`}>
-        {this.state.imageLoading  &&
+        {imageLoading  &&
           <div className='imageLoader'>
             <img src='https://s3-us-west-1.amazonaws.com/givebox/public/images/squareLoader.gif' alt='Loader' />
           </div>

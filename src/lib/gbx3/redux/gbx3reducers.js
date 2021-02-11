@@ -24,6 +24,7 @@ export function gbx3(state = {
     originTemplate: '',
     checkout: false
   },
+  pageSearch: {},
   pageState: {},
   landing: {
     header: defaultHeader,
@@ -144,6 +145,13 @@ export function gbx3(state = {
         info: {
           ...state.info,
           ...action.info,
+        }
+      });
+    case types.UPDATE_PAGE_SEARCH:
+      return Object.assign({}, state, {
+        pageSearch: {
+          ...state.pageSearch,
+          [action.page]: action.query
         }
       });
     case types.UPDATE_PAGE_STATE:

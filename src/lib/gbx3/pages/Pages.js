@@ -7,7 +7,8 @@ import Loader from '../../common/Loader';
 import ArticleCard from './ArticleCard';
 import Search from '../../table/Search';
 import {
-  setPageState
+  setPageState,
+  setPageSearch
 } from '../redux/gbx3actions';
 import {
   getResource
@@ -15,14 +16,21 @@ import {
 import InfiniteScroll from 'react-infinite-scroll-component';
 import has from 'has';
 
-class Pages extends Component{
-  constructor(props){
+class Pages extends Component {
+
+  constructor(props) {
     super(props);
     this.getActivePage = this.getActivePage.bind(this);
     this.renderList = this.renderList.bind(this);
     this.getArticles = this.getArticles.bind(this);
     this.getArticlesCallback = this.getArticlesCallback.bind(this);
+    this.getArticleSearchCallback = this.getArticleSearchCallback.bind(this);
     this.setPageState = this.setPageState.bind(this);
+    this.setPageSearch = this.setPageSearch.bind(this);
+    this.resetPageSearch = this.resetPageSearch.bind(this);
+    this.state = {
+      pageSearch: {}
+    }
   }
 
   componentDidMount() {
@@ -35,7 +43,28 @@ class Pages extends Component{
     }
   }
 
-  async setPageState(page, newState = {}, callback) {
+  resetPageSearch() {
+    this.setPageState({ search: {} }, () => {
+      this.setPageSearch('');
+    })
+  }
+
+  async setPageSearch(query, callback) {
+    const {
+      page
+    } = this.props;
+
+    const stateUpdated = await this.props.setPageSearch(page, query);
+    if (stateUpdated && callback) {
+      callback();
+    }
+  }
+
+  async setPageState(newState = {}, callback) {
+    const {
+      page
+    } = this.props;
+
     const stateUpdated = await this.props.setPageState(page, newState);
     if (stateUpdated && callback) {
       callback();
@@ -44,13 +73,14 @@ class Pages extends Component{
 
   getArticles(options = {}) {
     const opts = {
-      max: 12,
+      max: 50,
       getDefault: false,
       reload: false,
       filter: '',
       query: '',
       search: false,
       showFetching: true,
+      pageNumber: null,
       ...options
     };
 
@@ -62,9 +92,9 @@ class Pages extends Component{
     const pageState = {
       ...this.props.pageState[page]
     };
+    const pageNumber = opts.pageNumber ? opts.pageNumber : opts.search ? util.getValue(pageState, 'search.pageNumber', 1) : util.getValue(pageState, 'pageNumber', 1);
     const activePage = this.getActivePage();
     const kind = util.getValue(activePage, 'kind', 'all');
-    const pageNumber = opts.search ? util.getValue(pageState, 'search.pageNumber', 1) : util.getValue(pageState, 'pageNumber', 1);
     const kindFilter = kind === 'all' ? '' : `%3Bkind:"${kind}"`;
     const filter = `${opts.getDefault || opts.search ? 'givebox:true' : 'landing:true'}${kindFilter}${opts.filter ? `%3B${opts.filter}` : ''}`;
 
@@ -79,12 +109,42 @@ class Pages extends Component{
         page: pageNumber
       },
       callback: (res, err) => {
-        this.getArticlesCallback(res, err, opts.getDefault, opts.search, opts.query);
+        if (opts.search) {
+          this.getArticleSearchCallback(res, err, opts.query);
+        } else {
+          this.getArticlesCallback(res, err, opts.getDefault);
+        }
       }
     });
   }
 
-  getArticlesCallback(res, err, getDefault, search, query) {
+  getArticleSearchCallback(res, err, query) {
+    const {
+      page
+    } = this.props;
+
+    const pageState = {
+      ...this.props.pageState[page]
+    };
+
+    const pageSearch = util.getValue(this.state.pageSearch, page);
+    const data = util.getValue(res, 'data', []);
+    const pageNumber = util.getValue(pageState, 'search.pageNumber', 1);
+    const list = util.getValue(pageState, 'search.list', []);
+    const total = +util.getValue(res, 'total', 0);
+
+    if (!util.isEmpty(data)) {
+      if (!has(pageState, 'search')) pageState.search = {};
+      pageState.search.pageNumber = total > list.length ? pageNumber + 1 : pageNumber;
+      pageState.search.list = pageSearch === query ? [...list, ...data] : [...data];
+      pageState.search.total = total;
+      this.setPageState(pageState);
+    } else {
+      this.resetPageSearch();
+    }
+  }
+
+  getArticlesCallback(res, err, getDefault) {
     const {
       page
     } = this.props;
@@ -94,33 +154,18 @@ class Pages extends Component{
     };
 
     const data = util.getValue(res, 'data', []);
-
-    if (search) console.log('execute article callback search -> ', search, query, data);
-
-    let pageNumber = util.getValue(pageState, 'pageNumber', 1);
-    let list = util.getValue(pageState, 'list', []);
-
-    if (search) {
-      pageNumber = util.getValue(pageState, 'search.pageNumber', 1);
-      list = util.getValue(pageState, 'search.list', []);
-    }
+    const pageNumber = util.getValue(pageState, 'pageNumber', 1);
+    const list = util.getValue(pageState, 'list', []);
+    const total = +util.getValue(res, 'total', 0);
 
     if (!util.isEmpty(data)) {
-      if (search) {
-        if (!has(pageState, 'search')) pageState.search = {};
-        pageState.search.pageNumber = pageNumber + 1;
-        pageState.search.list = [...list, ...data];
-        pageState.search.total = +util.getValue(res, 'total', 0);
-      } else {
-        pageState.pageNumber = pageNumber + 1;
-        pageState.list = [...list, ...data];
-        pageState.total = +util.getValue(res, 'total', 0);
-        pageState.search = {};
-      }
-      this.setPageState(page, pageState);
+      pageState.pageNumber = total > list.length ? pageNumber + 1 : pageNumber;
+      pageState.list = [...list, ...data];
+      pageState.total = total;
+      pageState.search = {};
+      this.setPageState(pageState);
     } else {
       if (!getDefault) this.getArticles({ getDefault: true, reload: true });
-      console.log('search but no query and no data -> ', search, query, data);
     }
   }
 
@@ -137,6 +182,7 @@ class Pages extends Component{
       page
     } = this.props;
 
+    const search = util.getValue(this.props.pageSearch, page);
     const pageState = util.getValue(this.props.pageState, page, {});
     const pageList = util.getValue(pageState, 'search.list', util.getValue(pageState, 'list', []));
     const total = util.getValue(pageState, 'search.total', util.getValue(pageState, 'total', 0));
@@ -168,10 +214,10 @@ class Pages extends Component{
           className='listContainer'
           scrollableTarget='gbx3Layout'
           dataLength={items.length}
-          next={() => this.getArticles({ reload: true })}
+          next={() => this.getArticles({ reload: true, search, query: search })}
           hasMore={items.length < total ? true : false}
           loader={''}
-          endMessage={<div className='endMessage'>Showing All {total} Results</div>}
+          endMessage={<div className='endMessage'>Showing All {total} Result{total > 1 ? 's' : ''}</div>}
         >
           {items}
         </InfiniteScroll>
@@ -189,6 +235,7 @@ class Pages extends Component{
 
     if (util.isLoading(pageList)) return <Loader msg='Loading List...' />
     const page = this.getActivePage();
+    const search = util.getValue(this.props.pageSearch, this.props.page, '');
 
     return (
       <div className='gbx3OrgPages'>
@@ -197,16 +244,27 @@ class Pages extends Component{
           <h2>{util.getValue(page, 'name')}</h2>
           <div className='gbx3OrgPagesSearch'>
             <Search
+              searchValue={search}
               placeholder={`Search ${util.getValue(page, 'name')}`}
               getSearch={(value) => {
-                this.getArticles({
-                  search: true,
-                  query: value,
-                  reload: true
-                });
+                if (value) {
+                  if (value !== search) {
+                    this.setPageSearch(value, () => {
+                      this.getArticles({
+                        search: true,
+                        query: value,
+                        reload: true,
+                        pageNumber: 1
+                      });
+                    });
+                  }
+                } else {
+                  this.resetPageSearch();
+                }
+
               }}
               resetSearch={() => {
-                console.log('execute reset search');
+                this.resetPageSearch();
               }}
             />
           </div>
@@ -238,6 +296,7 @@ function mapStateToProps(state, props) {
   const resourceName = `${page}List`;
   const pageList = util.getValue(state, `resource.${resourceName}`, {});
   const pageState = util.getValue(gbx3, 'pageState', {});
+  const pageSearch = util.getValue(gbx3, 'pageSearch', {});
 
   return {
     orgID,
@@ -250,11 +309,13 @@ function mapStateToProps(state, props) {
     isMobile,
     resourceName,
     pageList,
-    pageState
+    pageState,
+    pageSearch
   }
 }
 
 export default connect(mapStateToProps, {
   getResource,
-  setPageState
+  setPageState,
+  setPageSearch
 })(Pages);
