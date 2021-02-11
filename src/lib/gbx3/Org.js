@@ -14,8 +14,8 @@ import {
 } from './redux/gbx3actions';
 import Pages from './pages/Pages';
 import Footer from './Footer';
+import Scroll from 'react-scroll';
 import axios from 'axios';
-
 
 class Org extends React.Component {
 
@@ -163,7 +163,7 @@ class Org extends React.Component {
           </main>
           <div className='gbx3OrgFooter gbx3OrgContentOuterContainer'>
             <div className='gbx3OrgContentInnerContainer'>
-              Givebox Footer
+              <Footer />
             </div>
           </div>
         </div>

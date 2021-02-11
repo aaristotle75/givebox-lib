@@ -33,9 +33,15 @@ class ArticleCard extends Component {
           virtualEvent
         } = this.props.item;
 
+        const when = eventWhen ? <div className='cardKindEventDate'>{util.getDate(eventWhen, `MMM Do, YYYY${eventWhenShowTime ? ' h:mmA' : ''}`)}</div> : null;
+
+        const ends = eventEndsAt ? <div className='cardKindEventDate'>{util.getDate(eventEndsAt, `MMM Do, YYYY${eventEndsAtShowTime ? ' h:mmA' : ''}`)}</div> : null;
+
+        const available = eventNumAvailableTickets || null;
+
         item.push(
-          <div key={kind} className='cardKindSpecific'>
-            {eventWhen}
+          <div key={kind} className={`cardKindSpecific ${ends ? 'cardKindEventEndDate' : ''}`}>
+            {when}{ends ? <div className='cardKindEventTo'>to</div> : null}{ends}
           </div>
         )
         break;

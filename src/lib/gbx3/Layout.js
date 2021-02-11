@@ -16,6 +16,7 @@ import AvatarMenuButton from './admin/AvatarMenuButton';
 import CartButton from './payment/CartButton';
 import { AiOutlineNotification, AiOutlineTrophy } from 'react-icons/ai';
 import ReactGA from 'react-ga';
+import Scroll from 'react-scroll';
 
 const SHARE_URL = process.env.REACT_APP_GBX_SHARE;
 const ENV = process.env.REACT_APP_ENV;
@@ -29,6 +30,7 @@ class Layout extends React.Component {
     this.backToOrg = this.backToOrg.bind(this);
     this.gaInitialize = this.gaInitialize.bind(this);
     this.gaPageTracking = this.gaPageTracking.bind(this);
+    this.scrollTo = this.scrollTo.bind(this);
     this.state = {
     }
     this.gbx3Container = React.createRef();
@@ -42,6 +44,16 @@ class Layout extends React.Component {
       this.gaInitialize();
       this.gaPageTracking();
     }
+  }
+
+  scrollTo(name) {
+    const scroller = Scroll.scroller;
+    scroller.scrollTo(name, {
+      duration: 500,
+      delay: 0,
+      smooth: true,
+      containerId: 'gbx3Layout'
+    });
   }
 
   gaInitialize() {
@@ -120,6 +132,7 @@ class Layout extends React.Component {
             loadGBX3={this.props.loadGBX3}
             primaryColor={this.props.primaryColor}
             onClickVolunteerFundraiser={this.props.onClickVolunteerFundraiser}
+            scrollTo={this.scrollTo}
           />
         )
         break;
@@ -135,6 +148,7 @@ class Layout extends React.Component {
             primaryColor={this.props.primaryColor}
             onClickVolunteerFundraiser={this.props.onClickVolunteerFundraiser}
             backToOrg={this.backToOrg}
+            scrollTo={this.scrollTo}
           />
         )
         break;
