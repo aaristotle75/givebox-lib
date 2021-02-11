@@ -22,7 +22,7 @@ export const defaultPages = [
     content: {}
   },
   {
-    name: 'Donation',
+    name: 'Donate',
     slug: 'fundraisers',
     kind: 'fundraiser',
     style: {},
