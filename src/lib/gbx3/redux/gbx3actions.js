@@ -813,7 +813,7 @@ export function cloneFundraiser(kind, kindID, callback) {
           const titleBlock = util.getValue(blocks, 'title', {});
           const titleContent = util.getValue(titleBlock, 'content', {});
           const form = util.getValue(blocks, 'paymentForm.options.form', {});
-          const title = `Clone of ${util.getValue(res, 'title')}`;
+          const title = `DUPLICATE ${util.getValue(res, 'title')}`;
           const kindSpecific = {};
           const d = new Date();
           const passFees = util.getValue(form, 'passFees', true);
