@@ -5,7 +5,7 @@ import Image from '../../common/Image';
 import * as types from '../../common/types';
 
 class ArticleCard extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.renderKindSpecific = this.renderKindSpecific.bind(this);
     this.state = {
@@ -41,7 +41,7 @@ class ArticleCard extends Component {
 
         item.push(
           <div key={kind} className={`cardKindSpecific ${ends ? 'cardKindEventEndDate' : ''}`}>
-            {when}{ends ? <div className='cardKindEventTo'>to</div> : null}{ends}
+            {when}{ends ? <div className='cardKindEventTo'>-</div> : null}{ends}
           </div>
         )
         break;
