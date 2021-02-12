@@ -5,7 +5,6 @@ import GBLink from '../../common/GBLink';
 import { toggleModal } from '../../api/actions';
 import {
   updateAdmin,
-  updateBlock,
   removeBlock,
   saveGBX3,
   updateLayouts
@@ -66,10 +65,11 @@ class Block extends React.Component {
 
   closeEditModal(hasBeenUpdated = false) {
     const {
-      editBlockJustAdded
+      editBlockJustAdded,
+      block
     } = this.props;
 
-    if (editBlockJustAdded && !hasBeenUpdated) {
+    if (editBlockJustAdded && !hasBeenUpdated && util.getValue(block, 'multiple')) {
       this.onClickRemove();
     } else {
       this.props.toggleModal(this.props.modalID, false);
@@ -312,7 +312,6 @@ function mapStateToProps(state, props) {
 export default connect(mapStateToProps, {
   updateAdmin,
   toggleModal,
-  updateBlock,
   removeBlock,
   updateLayouts,
   saveGBX3

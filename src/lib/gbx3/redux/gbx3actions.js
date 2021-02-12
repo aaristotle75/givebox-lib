@@ -153,7 +153,6 @@ export function removeBlock(blockType, name, callback) {
       }
     }
     dispatch(updateAvailableBlocks(blockType, availableBlocks));
-    dispatch(updateAdmin({ editBlock: '' }));
     dispatch(deleteBlock(name, blockType));
   }
 }
