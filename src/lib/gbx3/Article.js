@@ -120,7 +120,7 @@ class Article extends React.Component {
         if (saveGBX3 && hasBeenUpdated) {
           this.props.saveGBX3(blockType, {
             callback: () => {
-              callback(hasBeenUpdated);
+              callback(hasBeenUpdated, content);
               if (helperIndex > -1) {
                 this.props.nextHelperStep(blockType);
               }
@@ -128,10 +128,10 @@ class Article extends React.Component {
             updateLayout: !util.isEmpty(grid) ? true : false
           });
         }
-        else callback(hasBeenUpdated);
+        else callback(hasBeenUpdated, content);
       }
     } else {
-      callback(hasBeenUpdated);
+      callback(hasBeenUpdated, content);
     }
   }
 

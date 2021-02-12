@@ -101,7 +101,7 @@ class Text extends Component {
       this.setState({
         content: defaultContent,
         button: util.deepClone(defaultButton),
-      }, this.props.closeEditModal);
+      }, () => this.props.closeEditModal(false, defaultContent));
     }
   }
 

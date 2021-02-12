@@ -63,7 +63,7 @@ class Block extends React.Component {
     if (this.props.removeCallback) this.props.removeCallback(blockType, this.props.name);
   }
 
-  closeEditModal(hasBeenUpdated = false) {
+  closeEditModal(hasBeenUpdated = false, content) {
     const {
       editBlockJustAdded,
       block
