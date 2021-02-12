@@ -182,6 +182,7 @@ class Pages extends Component {
       page
     } = this.props;
 
+    const activePage = this.getActivePage();
     const search = util.getValue(this.props.pageSearch, page);
     const pageState = util.getValue(this.props.pageState, page, {});
     const pageList = util.getValue(pageState, 'search.list', util.getValue(pageState, 'list', []));
@@ -202,6 +203,7 @@ class Pages extends Component {
               item={value}
               kind={kind}
               ID={ID}
+              activePage={activePage}
             />
           </div>
         );

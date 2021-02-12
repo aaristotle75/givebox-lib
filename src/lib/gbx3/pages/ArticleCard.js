@@ -39,11 +39,27 @@ class ArticleCard extends Component {
 
         const available = eventNumAvailableTickets || null;
 
-        item.push(
-          <div key={kind} className={`cardKindSpecific ${ends ? 'cardKindEventEndDate' : ''}`}>
-            {when}{ends ? <div className='cardKindEventTo'>-</div> : null}{ends}
-          </div>
-        )
+        if (when) {
+          item.push(
+            <div key={`${kind}-when`} className={`cardKindSpecific ${ends ? 'cardKindEventEndDate' : ''}`}>
+              {when}{ends ? <div className='cardKindSpecificSeparator'>-</div> : null}{ends}
+            </div>
+          )
+        }
+
+        const whereObj = util.getValue(this.props.item, 'givebox.customTemplate.blocks.where.content.where', {});
+        const city = util.getValue(whereObj, 'city');
+        const state = util.getValue(whereObj, 'state');
+        const where = city ? <div className='cardKindWhere'>{city}{state ? `, ${state}` : null}</div> : null;
+
+        if (virtualEvent || where || eventNumAvailableTickets) {
+          item.push(
+            <div key={`${kind}-where`} className={`cardKindSpecific cardKindEventWhere`}>
+              {virtualEvent ? 'This is a Virtual Event' : where}
+              {eventNumAvailableTickets > 0 ? <span>Tickets Available</span> : null}
+            </div>
+          )
+        }
         break;
       }
 
@@ -65,7 +81,8 @@ class ArticleCard extends Component {
 
     const {
       kind,
-      item
+      item,
+      activePage
     } = this.props;
 
     const {
@@ -78,6 +95,7 @@ class ArticleCard extends Component {
     const viewCount = views > 0 ? views : 1;
     const likes = +util.getValue(stats, 'likes', 0);
     const shares = +util.getValue(stats, 'shares', 0);
+    const tag = util.getValue(item, 'tag', util.getValue(activePage, 'name'));
 
     return (
       <div className='cardContainer'>
@@ -87,6 +105,9 @@ class ArticleCard extends Component {
           </div>
         </div>
         <div className='cardInfoContainer'>
+          <div className='cardArticleTag'>
+            {tag}
+          </div>
           <div className='cardInfo'>
             <span className='icon icon-eye'></span> Views ({viewCount})
           </div>
@@ -96,7 +117,9 @@ class ArticleCard extends Component {
         </div>
         {this.renderKindSpecific()}
         <div className='cardButtonContainer'>
-          <div className='cardButton'>{types.kind(kind).cta}</div>
+          <div className='cardButton'>
+            {types.kind(kind).cta}
+          </div>
         </div>
       </div>
     )

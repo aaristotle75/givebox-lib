@@ -256,8 +256,8 @@ class Layout extends React.Component {
         :'' }
 
         <div style={{ height: gbx3BackgroundHeight }} className='gbx3LayoutBackground'></div>
+        {showAvatarMenu ? avatarMenu : '' }
         <div id='gbx3Layout' className={`gbx3Layout ${display} ${stage} ${noAccess ? 'noAccess' : ''}`}>
-          {showAvatarMenu ? avatarMenu : '' }
           <div
             style={{
               ...style

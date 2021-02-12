@@ -297,17 +297,20 @@ $contentHeaderPadding: 35%;
 
   .cardInfoContainer {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    margin: 10px;
+    font-size: 12px;
+    color: $med-blue-gray;
+    margin: 5px 10px;
+  }
+
+  .cardArticleTag {
   }
 
   .cardInfo {
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
-    font-size: 12px;
-    color: $med-blue-gray;
     .icon {
       color: $med-blue-gray;
       font-size: 14px;
@@ -327,7 +330,7 @@ $contentHeaderPadding: 35%;
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 15px;
+    bottom: 18px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -359,6 +362,7 @@ $contentHeaderPadding: 35%;
       flex-wrap: nowrap;
       font-size: 12px;
       color: $med-blue-gray;
+      margin-bottom: 5px;
     }
 
     .cardKindEventEndDate {
@@ -368,10 +372,14 @@ $contentHeaderPadding: 35%;
     .cardKindEventDate {
     }
 
-    .cardKindEventTo {
+    .cardKindSpecificSeparator {
       text-align: center;
     }
 
+    .cardKindEventWhere {
+      justify-content: space-around;
+      font-style: italic;
+    }
   }
 
 }
