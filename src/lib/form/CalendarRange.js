@@ -11,11 +11,11 @@ export default class CalendarRange extends Component {
   }
 
   onChangeRange1(ts) {
-    this.props.onChangeRange1(ts);
+    if (this.props.onChangeRange1) this.props.onChangeRange1(ts);
   }
 
   onChangeRange2(ts) {
-    this.props.onChangeRange2(ts);
+    if (this.props.onChangeRange2) this.props.onChangeRange2(ts);
   }
 
   componentWillUnmount() {
@@ -33,7 +33,9 @@ export default class CalendarRange extends Component {
       range1Value,
       range2Value,
       range1Error,
-      range2Error
+      range2Error,
+      placeholder1,
+      placeholder2
     } = this.props;
 
     const dateFormat = enableTime ? 'MM/DD/YYYY H:mm' : 'MM/DD/YYYY';
@@ -48,6 +50,7 @@ export default class CalendarRange extends Component {
             name={nameFrom}
             defaultValue={Moment.unix(range1Value).format(dateFormat)}
             onChangeCalendar={this.onChangeRange1}
+            placeholder={placeholder1}
           />
         </div>
         <div className="col">
@@ -58,6 +61,7 @@ export default class CalendarRange extends Component {
             name={nameTo}
             defaultValue={Moment.unix(range2Value).format(dateFormat)}
             onChangeCalendar={this.onChangeRange2}
+            placeholder={placeholder2}
           />
         </div>
       </div>

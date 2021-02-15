@@ -195,7 +195,16 @@ $contentHeaderPadding: 35%;
   }
 
   .gbx3OrgPagesSearch {
+    display: flex;
+    align-items: center;
 
+    .input-group {
+      padding: 0;
+    }
+
+    .search input {
+      height: 40px;
+    }
   }
 
   .listWrapper {

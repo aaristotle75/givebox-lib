@@ -6,6 +6,8 @@ import GBLink from '../../common/GBLink';
 import Loader from '../../common/Loader';
 import ArticleCard from './ArticleCard';
 import Search from '../../table/Search';
+import Dropdown from '../../form/Dropdown';
+import CalendarField from '../../form/CalendarField';
 import {
   setPageState,
   setPageSearch
@@ -14,6 +16,7 @@ import {
   getResource
 } from '../../api/helpers';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import Moment from 'moment';
 import has from 'has';
 
 class Pages extends Component {
@@ -28,6 +31,7 @@ class Pages extends Component {
     this.setPageState = this.setPageState.bind(this);
     this.setPageSearch = this.setPageSearch.bind(this);
     this.resetPageSearch = this.resetPageSearch.bind(this);
+    this.renderKindSpecificFilters = this.renderKindSpecificFilters.bind(this);
     this.state = {
       pageSearch: {}
     }
@@ -45,16 +49,18 @@ class Pages extends Component {
 
   resetPageSearch() {
     this.setPageState({ search: {} }, () => {
-      this.setPageSearch('');
+      this.setPageSearch({
+        query: ''
+      });
     })
   }
 
-  async setPageSearch(query, callback) {
+  async setPageSearch(search, callback) {
     const {
       page
     } = this.props;
 
-    const stateUpdated = await this.props.setPageSearch(page, query);
+    const stateUpdated = await this.props.setPageSearch(page, search);
     if (stateUpdated && callback) {
       callback();
     }
@@ -177,6 +183,48 @@ class Pages extends Component {
     return pages.find(p => p.slug === this.props.page);
   }
 
+  renderKindSpecificFilters() {
+    const {
+      page
+    } = this.props;
+    const filters = [];
+    const pageSearch = util.getValue(this.props.pageSearch, page, {});
+
+    switch (page) {
+      case 'events': {
+        filters.push(
+          <CalendarField
+            key={'calendarField'}
+            utc={true}
+            defaultValue={util.getValue(pageSearch, 'eventDate')}
+            placeholder='Search By Date'
+            onChangeCalendar={(ts) => {
+              if (ts) {
+                const eventDate = ts/1000;
+                const beginningOfDay = Moment.utc(Moment.unix(eventDate)).startOf('day').valueOf()/1000;
+                const endOfDay = parseInt(Moment.utc(Moment.unix(eventDate)).endOf('day').valueOf()/1000);
+                const filter = `eventWhen:>d${beginningOfDay}%3BeventWhen:<d${endOfDay}`;
+                this.setPageSearch({ filter, eventDate }, () => {
+                  this.getArticles({
+                    filter,
+                    search: true,
+                    reload: true,
+                    pageNumber: 1
+                  });
+                });
+              }
+            }}
+          />
+        );
+        break;
+      }
+
+      // no default
+    }
+
+    return filters;
+  }
+
   renderList() {
     const {
       page
@@ -237,21 +285,23 @@ class Pages extends Component {
 
     if (util.isLoading(pageList)) return <Loader msg='Loading List...' />
     const page = this.getActivePage();
-    const search = util.getValue(this.props.pageSearch, this.props.page, '');
+    const pageSearch = util.getValue(this.props.pageSearch, this.props.page, {});
 
     return (
       <div className='gbx3OrgPages'>
         {util.isFetching(pageList) ? <Loader msg='Loading List...' /> : null }
         <div className='gbx3OrgPagesTop'>
-          <h2>{util.getValue(page, 'name')}</h2>
+          <div className='gbx3OrgPagesTopLeft'>
+            <h2>{util.getValue(page, 'name')}</h2>
+          </div>
           <div className='gbx3OrgPagesSearch'>
             <Search
-              searchValue={search}
+              searchValue={util.getValue(pageSearch, 'query')}
               placeholder={`Search ${util.getValue(page, 'name')}`}
               getSearch={(value) => {
                 if (value) {
-                  if (value !== search) {
-                    this.setPageSearch(value, () => {
+                  if (value !== util.getValue(pageSearch, 'query')) {
+                    this.setPageSearch({ query: value }, () => {
                       this.getArticles({
                         search: true,
                         query: value,
@@ -263,7 +313,6 @@ class Pages extends Component {
                 } else {
                   this.resetPageSearch();
                 }
-
               }}
               resetSearch={() => {
                 this.resetPageSearch();

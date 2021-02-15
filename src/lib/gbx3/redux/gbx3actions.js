@@ -36,14 +36,13 @@ export function clearGBX3(keepOrgData) {
   }
 }
 
-export function setPageSearch(page, query) {
+export function setPageSearch(page, search) {
   return {
     type: types.UPDATE_PAGE_SEARCH,
     page,
-    query
+    search
   }
 }
-
 
 export function setPageState(page, newState) {
   return {

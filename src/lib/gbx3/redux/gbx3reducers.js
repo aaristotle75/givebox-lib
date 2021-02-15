@@ -13,7 +13,7 @@ export function gbx3(state = {
   loading: true,
   saveStatus: 'done',
   info: {
-    page: 'featured',
+    page: 'events',
     project: 'share',
     stage: 'public',
     display: 'article',
@@ -151,7 +151,10 @@ export function gbx3(state = {
       return Object.assign({}, state, {
         pageSearch: {
           ...state.pageSearch,
-          [action.page]: action.query
+          [action.page]: {
+            ...state.pageSearch[action.page],
+            ...action.search
+          }
         }
       });
     case types.UPDATE_PAGE_STATE:
