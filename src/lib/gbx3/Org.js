@@ -26,6 +26,7 @@ class Org extends React.Component {
     this.onBreakpointChange = this.onBreakpointChange.bind(this);
     this.pageOptions = this.pageOptions.bind(this);
     this.pageLinks = this.pageLinks.bind(this);
+    this.onClickPageLink = this.onClickPageLink.bind(this);
     this.onClickArticle = this.onClickArticle.bind(this);
   }
 
@@ -37,6 +38,11 @@ class Org extends React.Component {
   async onClickArticle(ID) {
     const infoUpdated = await this.props.updateInfo({ originTemplate: 'org' });
     if (infoUpdated) this.props.reloadGBX3(ID);
+  }
+
+  async onClickPageLink(page) {
+    const updatedInfo = await this.props.updateInfo({ page });
+    if (updatedInfo) this.props.scrollTo('page');
   }
 
   resizer(e) {
@@ -87,7 +93,7 @@ class Org extends React.Component {
         <GBLink
           key={key}
           className={`link ${active ? 'active' : ''}`}
-          onClick={() => active ? console.log('Active Link') : this.props.updateInfo({ page: value.slug })}
+          onClick={() => active ? console.log('Active Link') : this.onClickPageLink(value.slug)}
         >
           {value.name}
         </GBLink>
@@ -109,6 +115,7 @@ class Org extends React.Component {
     } = this.props;
 
     const isEditable = hasAccessToEdit && editable ? true : false;
+    const Element = Scroll.Element;
 
     return (
       <div className='gbx3Org'>
@@ -147,7 +154,7 @@ class Org extends React.Component {
                   selectLabel={'More'}
                   fixedLabel={false}
                   onChange={(name, value) => {
-                    this.props.updateInfo({ page: value });
+                    this.onClickPageLink(value);
                   }}
                   options={this.pageOptions()}
                 />
@@ -156,9 +163,11 @@ class Org extends React.Component {
           </div>
           <main className='gbx3OrgContent gbx3OrgContentOuterContainer'>
             <div className='gbx3OrgContentInnerContainer'>
-              <Pages
-                onClickArticle={this.onClickArticle}
-              />
+              <Element name='page'>
+                <Pages
+                  onClickArticle={this.onClickArticle}
+                />
+              </Element>
             </div>
           </main>
           <div className='gbx3OrgFooter gbx3OrgContentOuterContainer'>

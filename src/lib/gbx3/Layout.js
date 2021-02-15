@@ -46,13 +46,13 @@ class Layout extends React.Component {
     }
   }
 
-  scrollTo(name) {
+  scrollTo(name, containerId = 'gbx3Layout') {
     const scroller = Scroll.scroller;
     scroller.scrollTo(name, {
+      containerId,
       duration: 500,
       delay: 0,
-      smooth: true,
-      containerId: 'gbx3Layout'
+      smooth: true
     });
   }
 

@@ -1011,6 +1011,7 @@ export function loadGBX3(articleID, callback) {
                       blocksDefault[value] = articleBlocks[value];
                     }
                   });
+
                   const globalsCustom = util.getValue(customTemplate, 'globals', {});
                   const gbxStyleCustom = util.getValue(globalsCustom, 'gbxStyle', {});
                   const embedButtonCustom = util.getValue(globalsCustom, 'embedButton', {});
