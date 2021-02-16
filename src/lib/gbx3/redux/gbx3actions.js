@@ -1127,9 +1127,16 @@ export function loadGBX3(articleID, callback) {
                   const receiptTemplateBlocks = util.getValue(blockTemplates, `receipt`, {});
                   const receiptDefault = {};
                   defaultBlocks.receipt.forEach((value) => {
+                    if (!util.isEmpty(receiptCustom)) {
+                      if (has(receiptCustom, value)) {
+                        receiptDefault[value] = receiptTemplateBlocks[value];
+                      }
+                    } else {
                     receiptDefault[value] = receiptTemplateBlocks[value];
+                    }
                   });
                   const receiptBlocks = merge(receiptDefault, receiptCustom);
+
                   if (!util.isEmpty(receiptCustom)) {
                     Object.keys(receiptTemplateBlocks).forEach((key) => {
                       if (!(key in receiptBlocks) && !receiptAvailableBlocks.includes(key)) {
@@ -1139,8 +1146,9 @@ export function loadGBX3(articleID, callback) {
                   }
 
                   dispatch(updateBlocks('receipt', receiptBlocks));
+                  dispatch(updateAvailableBlocks('receipt', receiptAvailableBlocks));
+                  
                   dispatch(GBX3Loaded());
-
                   callback(res, err)
                 }
                 dispatch(setLoading(false));
