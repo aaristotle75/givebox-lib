@@ -201,7 +201,7 @@ class PaymentFormClass extends Component {
             number,
             expMonth,
             expYear,
-            isDebit,
+            isDebit: paymethod === 'echeck' ? isDebit : false,
             name: fullName
           };
           break;
