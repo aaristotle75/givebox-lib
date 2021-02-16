@@ -717,54 +717,6 @@ export function saveReceipt(options = {}) {
   }
 }
 
-export function resetGBX3(blockType = 'article') {
-  return (dispatch, getState) => {
-    const gbx3 = util.getValue(getState(), 'gbx3', {});
-    const info = util.getValue(gbx3, 'info', {});
-    const isOrg = blockType === 'org' ? true : false;
-    const data = isOrg ?
-      {
-        ...util.getValue(gbx3, 'orgData', {}),
-        customTemplate: {
-          blocks: {},
-          globals: {},
-          backgrounds: [],
-          helperBlocks: {}
-        }
-      }
-    :
-      {
-        ...util.getValue(gbx3, 'data', {}),
-        giveboxSettings: {
-          customTemplate: {
-            blocks: {},
-            globals: {},
-            backgrounds: [],
-            helperBlocks: {}
-          }
-        }
-      }
-    ;
-
-    const orgID = util.getValue(info, 'orgID');
-    const kindID = util.getValue(info, 'kindID');
-
-    dispatch(sendResource(util.getValue(info, 'apiName'), {
-      id: [isOrg ? orgID : kindID],
-      orgID,
-      data,
-      method: 'patch',
-      callback: (res, err) => {
-        dispatch(updateBlocks(blockType, {}));
-        dispatch(updateGlobals({}));
-        dispatch(updateData(res));
-        window.location.reload();
-      },
-      isSending: true
-    }));
-  }
-}
-
 export function processTransaction(data, callback) {
   return (dispatch, getState) => {
     const gbx3 = util.getValue(getState(), 'gbx3', {});
@@ -901,6 +853,12 @@ export function createFundraiser(createKind, callback, cloneData) {
         }
       }
     }));
+  }
+}
+
+function GBX3Loaded() {
+  return {
+    type: types.LOAD_GBX3
   }
 }
 
@@ -1181,6 +1139,7 @@ export function loadGBX3(articleID, callback) {
                   }
 
                   dispatch(updateBlocks('receipt', receiptBlocks));
+                  dispatch(GBX3Loaded());
 
                   callback(res, err)
                 }
@@ -1636,7 +1595,55 @@ export function setStyle(options = {}) {
   }
 }
 
-export function resetGBX3Receipt(callback) {
+export function resetGBX3(blockType = 'article') {
+  return (dispatch, getState) => {
+    const gbx3 = util.getValue(getState(), 'gbx3', {});
+    const info = util.getValue(gbx3, 'info', {});
+    const isOrg = blockType === 'org' ? true : false;
+    const data = isOrg ?
+      {
+        ...util.getValue(gbx3, 'orgData', {}),
+        customTemplate: {
+          blocks: {},
+          globals: {},
+          backgrounds: [],
+          helperBlocks: {}
+        }
+      }
+    :
+      {
+        ...util.getValue(gbx3, 'data', {}),
+        giveboxSettings: {
+          customTemplate: {
+            blocks: {},
+            globals: {},
+            backgrounds: [],
+            helperBlocks: {}
+          }
+        }
+      }
+    ;
+
+    const orgID = util.getValue(info, 'orgID');
+    const kindID = util.getValue(info, 'kindID');
+
+    dispatch(sendResource(util.getValue(info, 'apiName'), {
+      id: [isOrg ? orgID : kindID],
+      orgID,
+      data,
+      method: 'patch',
+      callback: (res, err) => {
+        dispatch(updateBlocks(blockType, {}));
+        dispatch(updateGlobals({}));
+        dispatch(updateData(res));
+        window.location.reload();
+      },
+      isSending: true
+    }));
+  }
+}
+
+export function resetGBX3Receipt() {
   return (dispatch, getState) => {
     const gbx3 = util.getValue(getState(), 'gbx3', {});
     const info = util.getValue(gbx3, 'info', {});
@@ -1652,6 +1659,7 @@ export function resetGBX3Receipt(callback) {
       method: 'patch',
       callback: (res, err) => {
         dispatch(updateBlocks('receipt', {}));
+        dispatch(updateData(res));
         window.location.reload();
       },
       isSending: true

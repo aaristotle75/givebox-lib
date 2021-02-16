@@ -1,3 +1,4 @@
+export const LOAD_GBX3 = 'LOAD_GBX3';
 export const UPDATE_GBX3 = 'UPDATE_GBX3';
 export const CLONE_GBX3 = 'CLONE_GBX3';
 export const SET_LOADING = 'SET_LOADING';

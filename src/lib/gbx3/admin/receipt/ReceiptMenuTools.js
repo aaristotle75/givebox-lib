@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as util from '../../../common/utility';
 import {
   resetGBX3Receipt,
-  saveGBX3,
+  saveReceipt,
 } from '../../redux/gbx3actions';
 import { toggleModal } from '../../../api/actions';
 
@@ -26,7 +26,7 @@ class ReceiptMenuTools extends React.Component {
       <div className='layoutMenu'>
         <ul>
           <li onClick={this.reset}>Reset Receipt</li>
-          <li onClick={() => this.props.saveGBX3('receipt', { isSending: true })}>Save</li>
+          <li onClick={() => this.props.saveReceipt({ isSending: true })}>Save</li>
         </ul>
       </div>
     )
@@ -44,6 +44,6 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
   resetGBX3Receipt,
-  saveGBX3,
+  saveReceipt,
   toggleModal
 })(ReceiptMenuTools);

@@ -152,7 +152,7 @@ export function gbx3(state = {
           ...state.blocks,
           [action.blockType]: {
             ...state.blocks[action.blockType],
-          ...action.blocks
+            ...action.blocks
           }
         }
       });
