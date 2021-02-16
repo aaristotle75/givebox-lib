@@ -2,204 +2,208 @@
 
 $editAmountBreakpoint: 500px;
 
+.gbx3.gbx3amountsEdit .moneyAmount.noValue .symbol {
+    color: $red;
+}
+
 .gbx3amountsEdit {
 
-	.column {
-		display: inline-block;
-		margin: 0 5px;
-		@media (max-width: $editAmountBreakpoint) {
-			width: 100% !important;
-		}
-	}
+  .column {
+    display: inline-block;
+    margin: 0 5px;
+    @media (max-width: $editAmountBreakpoint) {
+      width: 100% !important;
+    }
+  }
 
-	.fieldItems {
-		display: block;
+  .fieldItems {
+    display: block;
 
-		@media (max-width: $editAmountBreakpoint) {
-			display: flex;
-			flex-direction: column;
-			align-items: flex-start;
-		}
-	}
+    @media (max-width: $editAmountBreakpoint) {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
 
-	.longdescRow {
-		margin: 12px 0 0 0;
-		padding: 0;
+  .longdescRow {
+    margin: 12px 0 0 0;
+    padding: 0;
 
-		.column { display: inline-block; }
-	}
+    .column { display: inline-block; }
+  }
 
-	.descField:not(.showDetailsOpen) {
-		opacity: 0;
-	}
+  .descField:not(.showDetailsOpen) {
+    opacity: 0;
+  }
 
-	.showDetails {
-		padding: 10px 10%;
-	}
+  .showDetails {
+    padding: 10px 10%;
+  }
 
-	.tooltipTop:not(.readOnly) {
-		top: -10px;
-	}
+  .tooltipTop:not(.readOnly) {
+    top: -10px;
+  }
 
-	.readOnly.tooltip .tooltipTop {
-			color: $white;
-			background-color: $dark-blue-gray;
-	}
+  .readOnly.tooltip .tooltipTop {
+      color: $white;
+      background-color: $dark-blue-gray;
+  }
 
-	.readOnly.tooltip .tooltipTop i::after {
-		color: $white;
-		background-color: $dark-blue-gray;
-	}
+  .readOnly.tooltip .tooltipTop i::after {
+    color: $white;
+    background-color: $dark-blue-gray;
+  }
 
-	.formSection {
-	}
+  .formSection {
+  }
 
-	.notOnForm {
-		opacity: .5;
-	}
+  .notOnForm {
+    opacity: .5;
+  }
 
-	.sortableListItem.notOnForm {
-		opacity: 1;
-	}
+  .sortableListItem.notOnForm {
+    opacity: 1;
+  }
 
-	.sortableListItem {
-		display: block;
-	}
+  .sortableListItem {
+    display: block;
+  }
 
-	.amountsEditRow.notOnForm:hover {
-		background: transparentize($med-blue-gray, .95);
-	}
+  .amountsEditRow.notOnForm:hover {
+    background: transparentize($med-blue-gray, .95);
+  }
 
-	.amountsEditRow {
-		width: 100%;
-		padding: 15px 5px 15px 0;
-		margin: 15px 0;
-		border-left: 2px solid $mainColor;
-		background: $white;
-		cursor: default;
-		@include default-transition(.25s);
+  .amountsEditRow {
+    width: 100%;
+    padding: 15px 5px 15px 0;
+    margin: 15px 0;
+    border-left: 2px solid $mainColor;
+    background: $white;
+    cursor: default;
+    @include default-transition(.25s);
 
-		.input-group {
-			padding: 0;
-			margin: 0;
-			@media (max-width: $editAmountBreakpoint) {
-				margin: 20px 0;
-			}
-		}
+    .input-group {
+      padding: 0;
+      margin: 0;
+      @media (max-width: $editAmountBreakpoint) {
+        margin: 20px 0;
+      }
+    }
 
-		input {
-			border-bottom: 1px solid $med-blue-gray;
-		}
+    input {
+      border-bottom: 1px solid $med-blue-gray;
+    }
 
-		.input-bottom.idle {
-			background: $med-blue-gray;
-		}
+    .input-bottom.idle {
+      background: $med-blue-gray;
+    }
 
-		.defaultAmount {
-			color: $dark-blue-gray;
-		}
+    .defaultAmount {
+      color: $dark-blue-gray;
+    }
 
-	}
+  }
 
-	.amountsEditRow:hover {
-		//border-left: 2px solid $mainColorLight;
-		background: transparentize($mainColorLight, .9);
+  .amountsEditRow:hover {
+    //border-left: 2px solid $mainColorLight;
+    background: transparentize($mainColorLight, .9);
 
-		.amountsRightSideButtonGroup {
-			button.link {
-				opacity: 1;
-			}
-		}
+    .amountsRightSideButtonGroup {
+      button.link {
+        opacity: 1;
+      }
+    }
 
-		.descField {
-			opacity: 1;
-		}
-	}
+    .descField {
+      opacity: 1;
+    }
+  }
 
-	.amountsEditRow.notOnForm {
-		border-left: 2px solid $med-blue-gray;
-	}
+  .amountsEditRow.notOnForm {
+    border-left: 2px solid $med-blue-gray;
+  }
 
-	.enableField {
-		.icon {
-			font-size: 1.5em;
-		}
-	}
+  .enableField {
+    .icon {
+      font-size: 1.5em;
+    }
+  }
 
-	.amountsRightSideButtonGroup {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
+  .amountsRightSideButtonGroup {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-		button.link {
-			opacity: 0;
-			@include transition(opacity .5s);
-		}
-	}
+    button.link {
+      opacity: 0;
+      @include transition(opacity .5s);
+    }
+  }
 
-	.customField {
-		input::-webkit-input-placeholder {
-			color: $dark-blue-gray;
-			font-weight: 400;
-		}
-		input::-moz-placeholder {
-			color: $dark-blue-gray;
-			font-weight: 400;
-		}
-		input::-ms-input-placeholder {
-			color: $dark-blue-gray;
-			font-weight: 400;
-		}
-	}
+  .customField {
+    input::-webkit-input-placeholder {
+      color: $dark-blue-gray;
+      font-weight: 400;
+    }
+    input::-moz-placeholder {
+      color: $dark-blue-gray;
+      font-weight: 400;
+    }
+    input::-ms-input-placeholder {
+      color: $dark-blue-gray;
+      font-weight: 400;
+    }
+  }
 
 }
 
 .gbx3amountsEdit.sortableHelper {
-	.amountsEditRow {
-		border-left: 2px solid $mainColorLight;
-		background: transparentize($mainColorLight, .9);
-	}
+  .amountsEditRow {
+    border-left: 2px solid $mainColorLight;
+    background: transparentize($mainColorLight, .9);
+  }
 }
 
 .gbx3amountsEdit {
 
-	.thumbnailField {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
+  .thumbnailField {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-	.amountThumb {
-		.mediaPlaceholder {
-			width: 60px;
-			height: 60px;
-			font-size: 12px;
-			font-weight: 300;
-			color: $mainColor;
-			border: 1px solid $mainColor;
-			background: $white;
-		}
-		.icon {
-			font-size: 20px;
-			color: $mainColor;
-		}
-	}
+  .amountThumb {
+    .mediaPlaceholder {
+      width: 60px;
+      height: 60px;
+      font-size: 12px;
+      font-weight: 300;
+      color: $mainColor;
+      border: 1px solid $mainColor;
+      background: $white;
+    }
+    .icon {
+      font-size: 20px;
+      color: $mainColor;
+    }
+  }
 
-	.amountThumb:hover {
-		.mediaPlaceholder {
-			color: $mainColorLight;
-			border: 1px solid $mainColorLight;
-			background: $white;
-		}
-		.icon {
-			font-size: 20px;
-			color: $mainColorLight;
-		}
-	}
+  .amountThumb:hover {
+    .mediaPlaceholder {
+      color: $mainColorLight;
+      border: 1px solid $mainColorLight;
+      background: $white;
+    }
+    .icon {
+      font-size: 20px;
+      color: $mainColorLight;
+    }
+  }
 }
 
 
 /*------- CKEditor 4 ----------*/
 .gbx3amountsEdit.ckeditor4.loader {
-	display: none;
+  display: none;
 }

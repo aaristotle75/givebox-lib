@@ -549,7 +549,7 @@ export default class AmountsEdit extends Component {
     const addAmount =
       <div style={{ marginTop: '20px' }} className='flexCenter'>
         <GBLink style={{ fontSize: '1em', verticalAlign: 'middle' }} onClick={() => this.addAmount()}>
-          <span className='icon icon-plus-square'></span> Click Here to Add a New {types.kind(this.props.kind).amountDesc}
+          <span className='icon icon-plus-square'></span> Click Here to Add a New {util.getValue(config, 'addNewDesc', types.kind(this.props.kind).amountDesc)}
         </GBLink>
       </div>
     ;

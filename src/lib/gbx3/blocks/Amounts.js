@@ -503,7 +503,7 @@ class Amounts extends Component {
                           <Choice
                             type='checkbox'
                             name='enabled'
-                            label={'Each Ticket in the Sweepstakes has a Winner'}
+                            label={'Each Ticket | Prize Field has a Prize'}
                             onChange={(name, value) => {
                               const extras = this.state.extras;
                               const allowPerTicketWinner = extras.allowPerTicketWinner ? false : true;
@@ -521,7 +521,8 @@ class Amounts extends Component {
                             toggle={true}
                           />
                           <div className='fieldContext'>
-                            If this is toggled off, only one winner will be selected for the sweepstakes.
+                            If toggled on, each Ticket | Prize field will have a winner.<br />
+                            If toggled off, only one winner will be selected per Sweepstakes form.
                           </div>
                         </div>
                         : ''}
