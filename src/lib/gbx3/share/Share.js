@@ -64,7 +64,7 @@ class Share extends React.Component {
       { type: 'copy', name: 'Copy Your Link', icon: <Icon><FiCopy /></Icon>, imageURL: '' },
       { type: 'edit', name: 'Edit Your Link', icon: <Icon><FiPenTool /></Icon>, imageURL: '', restricted: true },
       { type: 'social', name: 'Share to Social Media', icon: <Icon><TiSocialFacebook /></Icon>, imageURL: '' },
-      { type: 'web', name: 'Add to Your Website', icon: <Icon><MdWeb /></Icon>, imageURL: '', org: 'show' }
+      { type: 'web', name: 'Add to Your Website', icon: <Icon><MdWeb /></Icon>, imageURL: '', org: 'hide' }
     ];
 
     const items = [];
