@@ -21,7 +21,6 @@ class Admin extends React.Component {
 
   constructor(props) {
     super(props);
-    this.renderAdminDisplay = this.renderAdminDisplay.bind(this);
     this.renderHeaderMiddle = this.renderHeaderMiddle.bind(this);
     this.state = {
       referrerStep: ''
@@ -88,36 +87,10 @@ class Admin extends React.Component {
     )
   }
 
-  renderAdminDisplay() {
-    const {
-      display,
-      step
-    } = this.props;
-
-    switch (display) {
-      case 'org': {
-        return (
-          <OrgAdmin
-            step={step}
-          />
-        )
-      }
-
-      case 'article':
-      default: {
-        return (
-          <ArticleAdmin
-            step={step}
-            exitAdmin={this.props.exitAdmin}
-          />
-        )
-      }
-    }
-  }
-
   render() {
 
     const {
+      display,
       step,
       previewMode,
       saveStatus,
@@ -135,7 +108,7 @@ class Admin extends React.Component {
     }
 
     return (
-      <div className={`gbx3AdminLayout ${step}Step ${editable ? 'editable' : ''} ${previewMode ? 'previewMode' : ''}`}>
+      <div className={`gbx3AdminLayout ${display}Display ${step}Step ${editable ? 'editable' : ''} ${previewMode ? 'previewMode' : ''}`}>
         <ModalRoute
           className='gbx3'
           id='articleList'
@@ -147,22 +120,33 @@ class Admin extends React.Component {
         <AnimateHeight height={saveStatus === 'saving' ? 'auto' : 0 } duration={500}>
           <div className='autoSaved'>Saving...</div>
         </AnimateHeight>
-        <div className={`gbx3TopHeader`}>
-          <header className={`navbar`}>
-            <div className='container'>
-              <div className='headerLeftSide'>
-                <Logo theme={theme} className='logo' />
-              </div>
-              {this.renderHeaderMiddle()}
-              <div className='headerRightSide'>
-                <AvatarMenuButton />
-              </div>
+        { display === 'org' ?
+          <OrgAdmin
+            step={step}
+          />
+        :
+          <div className='articleDisplayContainer'>
+            <div className={`gbx3TopHeader`}>
+              <header className={`navbar`}>
+                <div className='container'>
+                  <div className='headerLeftSide'>
+                    <Logo theme={theme} className='logo' />
+                  </div>
+                  {this.renderHeaderMiddle()}
+                  <div className='headerRightSide'>
+                    <AvatarMenuButton />
+                  </div>
+                </div>
+                <div className='headerMiddle'>
+                </div>
+              </header>
             </div>
-            <div className='headerMiddle'>
-            </div>
-          </header>
-        </div>
-        {this.renderAdminDisplay()}
+            <ArticleAdmin
+              step={step}
+              exitAdmin={this.props.exitAdmin}
+            />
+          </div>
+        }
       </div>
     )
   }

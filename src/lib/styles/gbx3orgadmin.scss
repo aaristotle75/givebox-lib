@@ -1,0 +1,20 @@
+@import 'variables.scss';
+
+.gbx3AdminLayout.orgDisplay {
+
+  .stageContainer.open {
+    left: 100px;
+  }
+
+}
+
+.gbx3Layout.admin {
+
+  .gbx3OrgContentContainer {
+    margin-top: 0px;
+  }
+
+  .gbx3OrgFooter {
+    display: none;
+  }
+}
