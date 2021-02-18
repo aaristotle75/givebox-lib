@@ -1,11 +1,91 @@
 @import 'variables.scss';
 
+
 .gbx3AdminLayout.orgDisplay {
+
+  .gbx3OrgContentHeader {
+    .coverPhotoImageEditButton {
+      display: flex;
+    }
+  }
+
+  .orgAdminEdit {
+    display: flex;
+    z-index: 10;
+    background: transparentize($green, .4);
+    opacity: 0;
+    cursor: pointer;
+    @include transition(opacity .25s, background .25s);
+
+    button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      color: $white;
+      height: 35px;
+      width: 35px;
+      margin: 0 5px;
+      border-radius: 50%;
+      .icon {
+        font-size: 20px;
+      }
+      @media (max-width: $breakpoint) {
+        margin: 0 10px;
+      }
+    }
+
+    button:hover {
+      opacity: .8;
+    }
+
+    button.blockRemoveButton {
+      background: transparentize($red, .2);
+    }
+
+    button.blockEditButton {
+      background: transparentize($mainColorDark, 0);
+    }
+
+    .tooltip .tooltipTop {
+      top: -10px;
+      white-space: nowrap;
+    }
+  }
+
+  .orgAdminEdit:hover {
+    opacity: 1;
+  }
+
+  .topPanel {
+    display: none;
+  }
+
+  .leftPanel {
+    top: 50px;
+  }
+
+  .leftPanelOpenButton {
+    top: 60px;
+    left: 17px;
+  }
+
+  .leftPanelClose {
+    top: 50px;
+  }
 
   .stageContainer.open {
     left: 100px;
   }
 
+  .stageContainer {
+
+    top: 50px;
+
+    .gbx3Layout {
+      margin-top: 0;
+    }
+  }
 }
 
 .gbx3Layout.admin {

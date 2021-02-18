@@ -12,6 +12,7 @@ import {
   setStyle,
   updateAdmin
 } from './redux/gbx3actions';
+import Header from './pages/Header';
 import Pages from './pages/Pages';
 import Footer from './Footer';
 import Scroll from 'react-scroll';
@@ -126,39 +127,44 @@ class Org extends React.Component {
           </div>
         </div>
         <div className='gbx3OrgContentContainer'>
-          <div className='gbx3OrgContentHeader gbx3OrgContentOuterContainer'>
-            <div className='gbx3OrgContentInnerContainer'>
-              <div id='coverPhoto' className='coverPhotoContainer'>
-                <div className='coverPhotoImage'>
-                  <Image imgID='coverPhoto' url='https://scontent.fbts5-1.fna.fbcdn.net/v/t1.0-9/146458272_1594146030775580_1681237268117440186_n.jpg?_nc_cat=107&ccb=2&_nc_sid=e3f864&_nc_ohc=RiyM11oq7s4AX_Ogn0b&_nc_ht=scontent.fbts5-1.fna&oh=8523127a27556559d511cabd31f142ff&oe=604298EB' maxSize='950px' alt='Cover Photo' />
-                </div>
-                <div className='profilePictureContainer'>
-                  <Image url='https://scontent.fbts5-1.fna.fbcdn.net/v/t1.0-1/p200x200/60898531_1092468567609998_4827187149260455936_o.jpg?_nc_cat=111&ccb=2&_nc_sid=7206a8&_nc_ohc=3p90oFEZeOEAX84huL6&_nc_ht=scontent.fbts5-1.fna&tp=6&oh=bebd0f2bacec213fe8165a8799e1f4c7&oe=6040E930' maxSize='160px' alt='Profile Picture' imgStyle={{ borderRadius: '50%' }}/>
-                </div>
-              </div>
-            </div>
-          </div>
+          <Header />
           <div className='gbx3OrgSubHeader gbx3OrgContentOuterContainer'>
             <div className='gbx3OrgContentInnerContainer'>
               <div className='nameSection'>
-                <div className='nameText'>Service Dogs of America</div>
+                <div className='nameSectionContainer orgAdminEdit'>
+                  <GBLink className='tooltip blockEditButton' onClick={() => console.log('execute -> edit name')}>
+                    <span className='tooltipTop'><i />Click Icon to EDIT Title</span>
+                    <span className='icon icon-edit'></span>
+                  </GBLink>
+                </div>
+                <div className='nameSectionContainer'>
+                  <div className='nameText'>Service Dogs of America</div>
+                </div>
               </div>
-              { !isMobile ?
               <div className='navigation'>
-                {this.pageLinks()}
-              </div> :
-              <div className='navigation'>
-                <Dropdown
-                  name='page'
-                  label={''}
-                  selectLabel={'More'}
-                  fixedLabel={false}
-                  onChange={(name, value) => {
-                    this.onClickPageLink(value);
-                  }}
-                  options={this.pageOptions()}
-                />
-              </div> }
+                <div className='navigationContainer orgAdminEdit'>
+                  <GBLink className='tooltip blockEditButton' onClick={() => console.log('execute -> edit navigation')}>
+                    <span className='tooltipTop'><i />Click Icon to EDIT Navigation Menu</span>
+                    <span className='icon icon-edit'></span>
+                  </GBLink>
+                </div>
+                <div className='navigationContainer'>
+                { !isMobile ?
+                  this.pageLinks()
+                :
+                  <Dropdown
+                    name='page'
+                    label={''}
+                    selectLabel={'More'}
+                    fixedLabel={false}
+                    onChange={(name, value) => {
+                      this.onClickPageLink(value);
+                    }}
+                    options={this.pageOptions()}
+                  />
+                }
+                </div>
+              </div>
             </div>
           </div>
           <main className='gbx3OrgContent gbx3OrgContentOuterContainer'>

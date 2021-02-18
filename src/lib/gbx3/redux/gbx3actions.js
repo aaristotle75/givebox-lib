@@ -1335,7 +1335,8 @@ export function loadOrg(orgID, callback) {
           const admin = {
             hasAccessToEdit,
             editable: hasAccessToEdit ? true : false,
-            step: 'design'
+            step: 'design',
+            open: false
           };
 
           dispatch(updateLayouts(blockType, layouts));
