@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-class EditTitle extends React.Component {
+class EditMenu extends React.Component {
 
   constructor(props) {
     super(props);
@@ -19,7 +19,7 @@ class EditTitle extends React.Component {
 
     return (
       <div className='modalWrapper'>
-        Edit Title....
+        Edit Menu....
       </div>
     )
   }
@@ -32,4 +32,4 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
-})(EditTitle);
+})(EditMenu);

@@ -150,10 +150,10 @@ class Org extends React.Component {
               </div>
               <div className='navigation'>
                 <div className='navigationContainer orgAdminEdit'>
-                  <GBLink className='tooltip blockEditButton' onClick={() => console.log('execute -> edit navigation')}>
+                  <ModalLink className='tooltip blockEditButton' id='orgEditMenu'>
                     <span className='tooltipTop'><i />Click Icon to EDIT Navigation Menu</span>
                     <span className='icon icon-edit'></span>
-                  </GBLink>
+                  </ModalLink>
                 </div>
                 <div className='navigationContainer'>
                 { !isMobile ?

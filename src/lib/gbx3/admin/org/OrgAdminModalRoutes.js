@@ -1,8 +1,18 @@
 import React, { Component } from 'react';
 import ModalRoute from '../../../modal/ModalRoute';
-import EditTitle from './EditTitle';
+import Loadable from 'react-loadable';
 
 export default class OrgAdminModalRoutes extends Component {
+
+  loadComponent(path, props) {
+    const ModalComponent = Loadable({
+      loader: () => import(`${path}`),
+      loading: () => <></>
+    });
+    return (
+      <ModalComponent {...props} />
+    )
+  }
 
   render() {
 
@@ -15,9 +25,25 @@ export default class OrgAdminModalRoutes extends Component {
           draggable={true}
           draggableTitle={`Editing Title`}
           disallowBgClose={true}
-          component={(props) =>
-            <EditTitle {...props} />
-          }
+          component={(props) => this.loadComponent('./EditTitle', props)}
+        />
+        <ModalRoute
+          className='gbx3'
+          id={'orgEditProfilePic'}
+          effect='3DFlipVert' style={{ width: '60%' }}
+          draggable={true}
+          draggableTitle={`Editing Profile Picture`}
+          disallowBgClose={true}
+          component={(props) => this.loadComponent('./EditProfilePic', props)}
+        />
+        <ModalRoute
+          className='gbx3'
+          id={'orgEditMenu'}
+          effect='3DFlipVert' style={{ width: '60%' }}
+          draggable={true}
+          draggableTitle={`Editing Navigation Menu`}
+          disallowBgClose={true}
+          component={(props) => this.loadComponent('./EditMenu', props)}
         />
       </div>
     )

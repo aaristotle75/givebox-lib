@@ -128,28 +128,90 @@ $contentHeaderPadding: 35%;
       border-bottom-right-radius: 0px;
     }
 
-    .coverPhotoImageEditButton {
+    .coverPhotoImageDropdown {
       position: absolute;
-      bottom: 20px;
+      bottom: 0px;
       right: 2%;
-      padding: 10px 20px;
-      background: $light-gray;
-      color: $dark;
-      font-size: 14px;
-      z-index: 10;
-      border-radius: 10px;
+      z-index: 11;
       display: none;
       align-items: center;
-      cursor: pointer;
-      @include default-transition(.25s);
 
-      .icon {
-        margin-right: 5px;
+      .dropdown .dropdown-content.top {
+        right: 0;
+        bottom: 40px;
       }
-    }
 
-    .coverPhotoImageEditButton:hover {
-      opacity: .9;
+      .dropdown .dropdown-content {
+        width: 300px;
+        right: 0;
+      }
+
+      .dropdown .dropdown-content.opened {
+        border: 1px solid $light-gray;
+        @include box-shadow(0px 3px 6px 0px $light-gray);
+      }
+
+      .dropdown .dropdown-item {
+        color: $med-gray;
+        .icon {
+          color: $med-gray;
+          margin-right: 10px;
+          font-size: 16px;
+        }
+        .labelIcon {
+          font-size: 14px;
+        }
+      }
+
+      .dropdown .dropdown-item:hover {
+        background: $light-gray;
+        color: $med-gray;
+        .icon {
+          color: $med-gray;
+        }
+      }
+
+      .dropdown button {
+        margin: 0;
+        padding: 10px 20px;
+        background: $light-gray;
+        color: $dark;
+        font-size: 14px;
+        border-radius: 10px;
+        .icon:not(.icon-camera) {
+          display: none;
+        }
+
+        .icon.icon-camera {
+          position: relative;
+          top: 0;
+          right: 0;
+          font-size: 16px;
+          color: $dark;
+          margin-right: 5px;
+        }
+      }
+
+      .dropdown button:hover:not(.label) {
+        background: $light-gray;
+        border-bottom: 1px solid transparent;
+        .icon {
+          color: $dark !important;
+        }
+      }
+
+      .dropdown button:hover {
+        opacity: .9;
+      }
+
+      .dropdown button {
+        .label.idle {
+          color: $dark !important;
+          font-size: 14px;
+          font-weight: 400;
+        }
+      }
+
     }
 
     .coverPhotoImage {
