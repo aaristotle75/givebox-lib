@@ -34,7 +34,6 @@ class Publish extends React.Component {
           publishStatus.webApp = true;
           publishStatus.mobileApp = true;
           publishStatus.swipeApp = true;
-          publishStatus.givebox = true;
         } else {
           publishStatus.webApp = false;
           publishStatus.mobileApp = false;
@@ -50,7 +49,6 @@ class Publish extends React.Component {
           publishStatus.webApp = false;
           publishStatus.mobileApp = true;
           publishStatus.swipeApp = true;
-          publishStatus.givebox = true;
         } else {
           publishStatus.webApp = true;
           publishStatus.mobileApp = false;

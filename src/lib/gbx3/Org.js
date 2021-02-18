@@ -5,6 +5,7 @@ import * as util from '../common/utility';
 import Image from '../common/Image';
 import GBLink from '../common/GBLink';
 import Dropdown from '../form/Dropdown';
+import ModalLink from '../modal/ModalLink';
 import has from 'has';
 import {
   updateData,
@@ -132,10 +133,16 @@ class Org extends React.Component {
             <div className='gbx3OrgContentInnerContainer'>
               <div className='nameSection'>
                 <div className='nameSectionContainer orgAdminEdit'>
-                  <GBLink className='tooltip blockEditButton' onClick={() => console.log('execute -> edit name')}>
+                  <ModalLink
+                    id='orgEditTitle'
+                    className='tooltip blockEditButton'
+                    opts={{
+                      closeCallback: () => console.log('execute closeCallback -> orgEditTitle')
+                    }}
+                  >
                     <span className='tooltipTop'><i />Click Icon to EDIT Title</span>
                     <span className='icon icon-edit'></span>
-                  </GBLink>
+                  </ModalLink>
                 </div>
                 <div className='nameSectionContainer'>
                   <div className='nameText'>Service Dogs of America</div>
