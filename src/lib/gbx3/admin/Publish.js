@@ -95,6 +95,8 @@ class Publish extends React.Component {
       landingPageOpen
     } = this.state;
 
+    const webAppStatus = util.getPublishStatus(kind, webApp);
+
     return (
       <ul>
         <li className='listHeader'>Status & Visibility</li>
@@ -116,7 +118,7 @@ class Publish extends React.Component {
             label={''}
             className='leftPanelDropdown'
             fixedLabel={true}
-            defaultValue={util.getPublishStatus(kind, webApp)}
+            defaultValue={webAppStatus}
             onChange={(name, value) => {
               this.updatePublishStatus(name, value);
             }}
@@ -126,6 +128,7 @@ class Publish extends React.Component {
             ]}
           />
         </li>
+        { webAppStatus === 'public' ?
         <li
           onClick={() => {
             const landingPageOpen = this.state.landingPageOpen ? false : true;
@@ -153,7 +156,7 @@ class Publish extends React.Component {
               { primaryText: 'No', secondaryText: 'Not Listed on Landing Page.', value: 'no' }
             ]}
           />
-        </li>
+        </li> : null }
       </ul>
     )
   }
