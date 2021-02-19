@@ -1,3 +1,56 @@
+export const defaultHeader = {
+  coverPhoto: {
+    url: null,
+    style: {}
+  },
+  profilePicture: {
+    url: null,
+    style: {}
+  }
+};
+
+export const defaultFooter = {
+  content: null
+}
+
+export const defaultPages = [
+  {
+    name: 'Featured',
+    slug: 'featured',
+    kind: 'all',
+    style: {},
+    content: {}
+  },
+  {
+    name: 'Donate',
+    slug: 'fundraisers',
+    kind: 'fundraiser',
+    style: {},
+    content: {}
+  },
+  {
+    name: 'Events',
+    slug: 'events',
+    kind: 'event',
+    style: {},
+    content: {}
+  },
+  {
+    name: 'Memberships',
+    slug: 'memberships',
+    kind: 'membership',
+    style: {},
+    content: {}
+  },
+  {
+    name: 'Sweepstakes',
+    slug: 'sweepstakes',
+    kind: 'sweepstake',
+    style: {},
+    content: {}
+  }
+]
+
 
 export const defaultCart = {
   processing: false,

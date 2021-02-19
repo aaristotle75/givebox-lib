@@ -410,6 +410,12 @@ label.active {
   }
 }
 
+.labelIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .dropdown-cover {
   position: fixed;
   top: 0;

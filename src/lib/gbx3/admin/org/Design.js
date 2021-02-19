@@ -5,7 +5,7 @@ import GBLink from '../../../common/GBLink';
 import ModalLink from '../../../modal/ModalLink';
 import Icon from '../../../common/Icon';
 import Layout from '../../Layout';
-import AdminMenu from '../AdminMenu';
+import AdminMenu from './AdminMenu';
 import {
   updateAdmin,
   updateInfo,
@@ -61,6 +61,7 @@ class Design extends React.Component {
       }
     };
 
+    /*
     if (!previewMode) {
       if (open) {
         leftSide.push(
@@ -72,6 +73,7 @@ class Design extends React.Component {
         );
       }
     }
+    */
 
     if (!mobile) {
       rightSide.push(
@@ -206,6 +208,7 @@ class Design extends React.Component {
           {this.renderTopPanel()}
         </div>
         <div className={`leftPanel ${open ? 'open' : 'close'}`}>
+          <div className='leftPanelOpenButton' onClick={this.props.toggleAdminLeftPanel}><span className='icon icon-menu'></span></div>
           <AdminMenu
             blockType={'org'}
           />

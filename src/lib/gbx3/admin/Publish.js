@@ -37,20 +37,23 @@ class Publish extends React.Component {
         } else {
           publishStatus.webApp = false;
           publishStatus.mobileApp = false;
-          publishStatus.swipeApp = true;
+          publishStatus.swipeApp = false;
+          publishStatus.givebox = false;
         }
         break;
       }
 
       default: {
+        // all kinds except fundraiser have webApp reversed, so false is actually public and true is private
         if (value === 'public') {
           publishStatus.webApp = false;
-          publishStatus.mobileApp = false;
+          publishStatus.mobileApp = true;
           publishStatus.swipeApp = true;
         } else {
           publishStatus.webApp = true;
-          publishStatus.mobileApp = true;
-          publishStatus.swipeApp = true;
+          publishStatus.mobileApp = false;
+          publishStatus.swipeApp = false;
+          publishStatus.givebox = false;
         }
         break;
       }

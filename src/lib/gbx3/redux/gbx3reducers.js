@@ -3,13 +3,17 @@ import * as util from '../../common/utility';
 import {
   defaultCart,
   defaultConfirmation,
-  defaultStyle
+  defaultStyle,
+  defaultPages,
+  defaultHeader,
+  defaultFooter
 } from './gbx3defaults';
 
 export function gbx3(state = {
   loading: true,
   saveStatus: 'done',
   info: {
+    page: 'events',
     project: 'share',
     stage: 'public',
     display: 'article',
@@ -19,6 +23,13 @@ export function gbx3(state = {
     sourceLocation: null,
     originTemplate: '',
     checkout: false
+  },
+  pageSearch: {},
+  pageState: {},
+  landing: {
+    header: defaultHeader,
+    pages: defaultPages,
+    footer: defaultFooter
   },
   backgrounds: [],
   blocks: {
@@ -134,6 +145,26 @@ export function gbx3(state = {
         info: {
           ...state.info,
           ...action.info,
+        }
+      });
+    case types.UPDATE_PAGE_SEARCH:
+      return Object.assign({}, state, {
+        pageSearch: {
+          ...state.pageSearch,
+          [action.page]: {
+            ...state.pageSearch[action.page],
+            ...action.search
+          }
+        }
+      });
+    case types.UPDATE_PAGE_STATE:
+      return Object.assign({}, state, {
+        pageState: {
+          ...state.pageState,
+          [action.page]: {
+            ...state.pageState[action.page],
+            ...action.newState
+          }
         }
       });
     case types.UPDATE_LAYOUTS:

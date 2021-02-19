@@ -16,8 +16,8 @@ class Search extends Component {
     this.getSearch = this.getSearch.bind(this);
     this.onEnterKeypress = this.onEnterKeypress.bind(this);
     this.state = {
-      searchValue: props.query || '',
-      resetSearch: false
+      searchValue: props.searchValue || '',
+      resetSearch: props.searchValue ? true : false
     }
   }
 
@@ -25,6 +25,12 @@ class Search extends Component {
     const searchID = this.props.id || `${this.props.name}Search`;
     const input = document.getElementById(searchID);
     input.addEventListener('keyup', this.onEnterKeypress);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.searchValue !== this.props.searchValue) {
+      this.setState({ searchValue: this.props.searchValue, resetSearch: true });
+    }
   }
 
   onEnterKeypress(e) {

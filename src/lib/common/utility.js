@@ -108,8 +108,12 @@ export function getSplitStr(str, delimiter, num, index) {
   }
 }
 
-export function truncate(str, n){
-  return (str.length > n) ? str.substr(0, n-1) + '...' : str;
+export function truncate(str, n, useWordBoundary = true) {
+  if (str.length <= n) { return str; }
+  const subString = str.substr(0, n-1); // the original check
+  return (useWordBoundary
+    ? subString.substr(0, subString.lastIndexOf(" "))
+    : subString) + "...";
 };
 
 export function toFixed(n,precision) {

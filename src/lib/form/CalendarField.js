@@ -40,6 +40,14 @@ class CalendarField extends Component {
     if (this.props.createField) this.props.createField(this.props.name, this.props.params);
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.defaultValue !== this.props.defaultValue) {
+      const dateFormat = this.props.enableTime ? 'MM/DD/YYYY H:mm' : 'MM/DD/YYYY';
+      const dateStr =  util.getDate(this.props.defaultValue, dateFormat, { tz: false } );
+      this.setState({ value: dateStr, date: dateStr });
+    }
+  }
+
   componentWillUnmount() {
     if (this.timeout) {
       clearTimeout(this.timeout);
@@ -175,7 +183,7 @@ class CalendarField extends Component {
                 name={name}
                 style={style}
                 type='text'
-                placeholder={placeholder || enableTime ? 'mm/dd/yyyy h:mmA' : 'mm/dd/yyyy'}
+                placeholder={placeholder ? placeholder : enableTime ? 'mm/dd/yyyy h:mmA' : 'mm/dd/yyyy'}
                 data-input
                 onBlur={this.onBlur}
                 onFocus={this.onFocus}
@@ -186,7 +194,7 @@ class CalendarField extends Component {
                 ref={this.inputRef}
               />
               :
-              <input type="text" placeholder={placeholder || enableTime ? 'mm/dd/yyyy h:mmA' : 'mm/dd/yyyy'} data-input />
+              <input type="text" placeholder={placeholder ? placeholder : enableTime ? 'mm/dd/yyyy h:mmA' : 'mm/dd/yyyy'} data-input />
               }
               <label htmlFor={name} style={labelStyle} >{label}</label>
               <div className={`input-bottom ${error ? 'error' : this.state.status}`}></div>

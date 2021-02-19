@@ -36,6 +36,22 @@ export function clearGBX3(keepOrgData) {
   }
 }
 
+export function setPageSearch(page, search) {
+  return {
+    type: types.UPDATE_PAGE_SEARCH,
+    page,
+    search
+  }
+}
+
+export function setPageState(page, newState) {
+  return {
+    type: types.UPDATE_PAGE_STATE,
+    page,
+    newState
+  }
+}
+
 export function updateInfo(info) {
   return {
     type: types.UPDATE_INFO,
@@ -952,6 +968,7 @@ export function loadGBX3(articleID, callback) {
                       blocksDefault[value] = articleBlocks[value];
                     }
                   });
+
                   const globalsCustom = util.getValue(customTemplate, 'globals', {});
                   const gbxStyleCustom = util.getValue(globalsCustom, 'gbxStyle', {});
                   const embedButtonCustom = util.getValue(globalsCustom, 'embedButton', {});
@@ -1284,7 +1301,8 @@ export function loadOrg(orgID, callback) {
           const admin = {
             hasAccessToEdit,
             editable: hasAccessToEdit ? true : false,
-            step: 'design'
+            step: 'design',
+            open: false
           };
 
           dispatch(updateLayouts(blockType, layouts));

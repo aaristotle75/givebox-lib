@@ -197,7 +197,7 @@
 
   .noAccessToGBX {
     position: fixed;
-    z-index: 99999;
+    z-index: 99989;
     top: 0; left: 0; right: 0; bottom: 0;
     display: flex;
     justify-content: center;
@@ -218,6 +218,10 @@
       font-size: 14px;
       color: $white;
       text-align: center;
+      .icon {
+        font-size: 16px;
+        margin: 0;
+      }
     }
 
     button.link:hover {

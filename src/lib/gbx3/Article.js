@@ -44,7 +44,7 @@ class Article extends React.Component {
     } = this.props;
     if (checkout) {
       this.props.updateInfo({ checkout: false });
-      this.scrollTo('checkout');
+      this.props.scrollTo('checkout');
     }
   }
 
@@ -191,16 +191,6 @@ class Article extends React.Component {
     }
   }
 
-  scrollTo(name) {
-    const scroller = Scroll.scroller;
-    scroller.scrollTo(name, {
-      duration: 500,
-      delay: 0,
-      smooth: true,
-      containerId: 'gbx3Layout'
-    });
-  }
-
   renderGridBlocks() {
     const {
       breakpoint,
@@ -230,7 +220,7 @@ class Article extends React.Component {
               <Block
                 name={value.name}
                 blockRef={ref}
-                scrollTo={this.scrollTo}
+                scrollTo={this.props.scrollTo}
                 reloadGBX3={reloadGBX3}
                 blockType={'article'}
                 saveBlock={this.saveBlock}
@@ -282,7 +272,7 @@ class Article extends React.Component {
               <Block
                 name={value.name}
                 blockRef={React.createRef()}
-                scrollTo={this.scrollTo}
+                scrollTo={this.props.scrollTo}
                 style={{ position: 'relative' }}
                 reloadGBX3={reloadGBX3}
                 blockType={'article'}

@@ -11,6 +11,7 @@ import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import '../styles/gbx3.scss';
 import '../styles/gbx3org.scss';
+import '../styles/gbx3orgadmin.scss';
 import '../styles/gbx3modal.scss';
 import reactReferer from 'react-referer';
 import { loadReCaptcha } from 'react-recaptcha-v3';

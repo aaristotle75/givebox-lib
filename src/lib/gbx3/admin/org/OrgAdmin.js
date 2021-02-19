@@ -1,36 +1,40 @@
 import React from 'react';
 import Design from './Design';
+import OrgAdminModalRoutes from './OrgAdminModalRoutes';
 
 class OrgAdmin extends React.Component {
 
-	constructor(props) {
-		super(props);
-		this.state = {
-		};
-	}
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
+  }
 
-	componentDidMount() {
-	}
+  componentDidMount() {
+  }
 
-	render() {
+  render() {
 
-		const {
-			step
-		} = this.props;
+    const {
+      step
+    } = this.props;
 
-		switch (step) {
+    switch (step) {
 
-			case 'design':
-			default: {
-				return (
-					<Design
-						reloadGBX3={this.props.reloadGBX3}
-						loadGBX3={this.props.loadGBX3}
-					/>
-				)
-			}
-		}
-	}
+      case 'design':
+      default: {
+        return (
+          <div>
+            <OrgAdminModalRoutes />
+            <Design
+              reloadGBX3={this.props.reloadGBX3}
+              loadGBX3={this.props.loadGBX3}
+            />
+          </div>
+        )
+      }
+    }
+  }
 }
 
 export default OrgAdmin;
