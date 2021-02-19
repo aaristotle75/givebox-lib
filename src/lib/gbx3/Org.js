@@ -28,6 +28,7 @@ class Org extends React.Component {
     this.onBreakpointChange = this.onBreakpointChange.bind(this);
     this.pageOptions = this.pageOptions.bind(this);
     this.pageLinks = this.pageLinks.bind(this);
+    this.pageDropdown = this.pageDropdown.bind(this);
     this.onClickPageLink = this.onClickPageLink.bind(this);
     this.onClickArticle = this.onClickArticle.bind(this);
   }
@@ -38,8 +39,18 @@ class Org extends React.Component {
   }
 
   async onClickArticle(ID) {
+    const {
+      stage,
+      preview
+    } = this.props;
     const infoUpdated = await this.props.updateInfo({ originTemplate: 'org' });
-    if (infoUpdated) this.props.reloadGBX3(ID);
+    if (infoUpdated) {
+      if (stage === 'admin' && !preview) {
+        console.log('execute onClickArticle do admin stuff -> ', ID);
+      } else {
+        this.props.reloadGBX3(ID);
+      }
+    }
   }
 
   async onClickPageLink(page) {
@@ -105,6 +116,21 @@ class Org extends React.Component {
     return links;
   }
 
+  pageDropdown(label = 'More') {
+    return (
+      <Dropdown
+        name='page'
+        label={''}
+        selectLabel={label}
+        fixedLabel={false}
+        onChange={(name, value) => {
+          this.onClickPageLink(value);
+        }}
+        options={this.pageOptions()}
+      />
+    )
+  }
+
   render() {
 
     const {
@@ -149,26 +175,23 @@ class Org extends React.Component {
                 </div>
               </div>
               <div className='navigation'>
-                <div className='navigationContainer orgAdminEdit'>
-                  <ModalLink className='tooltip blockEditButton' id='orgEditMenu'>
+                <ModalLink
+                  id='orgEditMenu'
+                  type='div'
+                  className='navigationContainer orgAdminEdit'
+                >
+                  <button className='tooltip blockEditButton' id='orgEditMenu'>
                     <span className='tooltipTop'><i />Click Icon to EDIT Navigation Menu</span>
                     <span className='icon icon-edit'></span>
-                  </ModalLink>
-                </div>
+                  </button>
+                </ModalLink>
                 <div className='navigationContainer'>
                 { !isMobile ?
                   this.pageLinks()
                 :
-                  <Dropdown
-                    name='page'
-                    label={''}
-                    selectLabel={'More'}
-                    fixedLabel={false}
-                    onChange={(name, value) => {
-                      this.onClickPageLink(value);
-                    }}
-                    options={this.pageOptions()}
-                  />
+                  <div className='navigationDropdown'>
+                    {this.pageDropdown()}
+                  </div>
                 }
                 </div>
               </div>
@@ -179,6 +202,7 @@ class Org extends React.Component {
               <Element name='page'>
                 <Pages
                   onClickArticle={this.onClickArticle}
+                  pageDropdown={this.pageDropdown}
                 />
               </Element>
             </div>
@@ -203,6 +227,7 @@ function mapStateToProps(state, props) {
   const admin = util.getValue(gbx3, 'admin', {});
   const info = util.getValue(gbx3, 'info', {});
   const stage = util.getValue(info, 'stage');
+  const preview = util.getValue(info, 'preview');
   const page = util.getValue(info, 'page');
   const pages = util.getValue(gbx3, 'landing.pages', []);
   const hasAccessToEdit = util.getValue(admin, 'hasAccessToEdit');

@@ -16,11 +16,12 @@ class Publish extends React.Component {
     super(props);
     this.updatePublishStatus = this.updatePublishStatus.bind(this);
     this.state = {
-      publishOpen: false
+      publishOpen: false,
+      landingPageOpen: false
     };
   }
 
-  async updatePublishStatus(value) {
+  async updatePublishStatus(name, value) {
     const {
       kind,
       kindID,
@@ -28,36 +29,44 @@ class Publish extends React.Component {
     } = this.props;
 
     const publishStatus = util.deepClone(this.props.publishStatus);
-    switch (kind) {
-      case 'fundraiser': {
-        if (value === 'public') {
-          publishStatus.webApp = true;
-          publishStatus.mobileApp = true;
-          publishStatus.swipeApp = true;
-        } else {
-          publishStatus.webApp = false;
-          publishStatus.mobileApp = false;
-          publishStatus.swipeApp = false;
-          publishStatus.givebox = false;
-        }
-        break;
-      }
 
-      default: {
-        // all kinds except fundraiser have webApp reversed, so false is actually public and true is private
-        if (value === 'public') {
-          publishStatus.webApp = false;
-          publishStatus.mobileApp = true;
-          publishStatus.swipeApp = true;
-        } else {
-          publishStatus.webApp = true;
-          publishStatus.mobileApp = false;
-          publishStatus.swipeApp = false;
-          publishStatus.givebox = false;
+    if (name === 'webApp') {
+      switch (kind) {
+        case 'fundraiser': {
+          if (value === 'public') {
+            publishStatus.webApp = true;
+            publishStatus.mobileApp = true;
+            publishStatus.swipeApp = true;
+          } else {
+            publishStatus.webApp = false;
+            publishStatus.mobileApp = false;
+            publishStatus.swipeApp = false;
+            publishStatus.givebox = false;
+          }
+          break;
         }
-        break;
+
+        default: {
+          // all kinds except fundraiser have webApp reversed, so false is actually public and true is private
+          if (value === 'public') {
+            publishStatus.webApp = false;
+            publishStatus.mobileApp = true;
+            publishStatus.swipeApp = true;
+          } else {
+            publishStatus.webApp = true;
+            publishStatus.mobileApp = false;
+            publishStatus.swipeApp = false;
+            publishStatus.givebox = false;
+          }
+          break;
+        }
       }
     }
+
+    if (name === 'landingPage') {
+      publishStatus.givebox = value === 'yes' ? true : false;
+    }
+
     const dataUpdated = await this.props.updateData({
       publishedStatus: publishStatus
     });
@@ -76,11 +85,14 @@ class Publish extends React.Component {
 
     const {
       kind,
-      webApp
+      webApp,
+      givebox,
+      publishStatus
     } = this.props;
 
     const {
-      publishOpen
+      publishOpen,
+      landingPageOpen
     } = this.state;
 
     return (
@@ -99,18 +111,46 @@ class Publish extends React.Component {
             portalClass={'gbx3'}
             portalID={`leftPanel-publishStatus`}
             portal={true}
-            name='publishStatus'
+            name='webApp'
             contentWidth={175}
             label={''}
             className='leftPanelDropdown'
             fixedLabel={true}
             defaultValue={util.getPublishStatus(kind, webApp)}
             onChange={(name, value) => {
-              this.updatePublishStatus(value);
+              this.updatePublishStatus(name, value);
             }}
             options={[
               { primaryText: 'Public', secondaryText: 'Visible to Everyone.', value: 'public' },
               { primaryText: 'Private', secondaryText: 'Only visible to site admins.', value: 'private' }
+            ]}
+          />
+        </li>
+        <li
+          onClick={() => {
+            const landingPageOpen = this.state.landingPageOpen ? false : true;
+            this.setState({ landingPageOpen });
+          }}
+          className='stylePanel'
+        >
+          Listed
+          <Dropdown
+            open={landingPageOpen}
+            portalClass={'gbx3'}
+            portalID={`leftPanel-publishStatus`}
+            portal={true}
+            name='landingPage'
+            contentWidth={175}
+            label={''}
+            className='leftPanelDropdown'
+            fixedLabel={true}
+            defaultValue={givebox ? 'yes' : 'no'}
+            onChange={(name, value) => {
+              this.updatePublishStatus(name, value);
+            }}
+            options={[
+              { primaryText: 'Yes', secondaryText: 'Listed on Landing Page.', value: 'yes' },
+              { primaryText: 'No', secondaryText: 'Not Listed on Landing Page.', value: 'no' }
             ]}
           />
         </li>
@@ -124,6 +164,7 @@ function mapStateToProps(state, props) {
   const gbx3 = util.getValue(state, 'gbx3', {});
   const publishStatus = util.getValue(gbx3, 'data.publishedStatus', {});
   const webApp = util.getValue(publishStatus, 'webApp');
+  const givebox = util.getValue(publishStatus, 'givebox');
   const kind = util.getValue(gbx3, 'info.kind');
   const kindID = util.getValue(gbx3, 'info.kindID');
   const orgID = util.getValue(gbx3, 'info.orgID');
@@ -131,6 +172,7 @@ function mapStateToProps(state, props) {
   return {
     publishStatus,
     webApp,
+    givebox,
     kind,
     kindID,
     orgID

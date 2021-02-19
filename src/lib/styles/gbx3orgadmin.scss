@@ -13,6 +13,10 @@
     align-items: center;
   }
 
+  .orgAdminOnly {
+    display: flex;
+  }
+
   .orgAdminEdit {
     display: flex;
     z-index: 10;
@@ -100,5 +104,103 @@
 
   .gbx3OrgFooter {
     display: none;
+  }
+}
+
+.orgAdminDropdown.managePageDropdown {
+
+  margin-left: 10px;
+
+  .dropdown button {
+    padding: 10px 30px 10px 15px;
+  }
+
+  .dropdown .dropdown-content.top {
+    right: 0;
+    bottom: 40px;
+  }
+
+  .dropdown .dropdown-content {
+    width: 300px;
+    left: 0;
+  }
+
+  .dropdown .dropdown-item {
+    font-size: 14px;
+  }
+
+  .dropdown .dropdown-item:hover {
+    background: $light-gray;
+  }
+
+}
+
+.orgAdminDropdown {
+
+  .dropdown .dropdown-content.opened {
+    border: 1px solid $light-gray;
+    @include box-shadow(0px 3px 6px 0px $light-gray);
+  }
+
+  .dropdown .dropdown-item {
+    color: $med-gray;
+    .icon {
+      color: $med-gray;
+      margin-right: 10px;
+      font-size: 16px;
+    }
+    .labelIcon {
+      font-size: 14px;
+    }
+    .activePage {
+      color: $dark;
+    }
+  }
+
+  .dropdown .dropdown-item:hover {
+    background: $light-gray;
+    color: $med-gray;
+    .icon {
+      color: $med-gray;
+    }
+  }
+
+  .dropdown button {
+    margin: 0;
+    padding: 10px 20px;
+    background: $light-gray;
+    color: $dark;
+    font-size: 14px;
+    border-radius: 10px;
+  }
+
+  .dropdown button:hover:not(.label) {
+    background: $light-gray;
+    border-bottom: 1px solid transparent;
+    .icon {
+      color: $dark !important;
+    }
+  }
+
+  .dropdown button:hover {
+    opacity: .9;
+  }
+}
+
+.gbx3 .gbx3Layout {
+  .orgAdminDropdown {
+    .dropdown button {
+      .label.idle {
+        color: $dark !important;
+        font-size: 14px;
+        font-weight: 400;
+      }
+      .icon {
+        font-size: 16px;
+        color: $dark;
+        right: 5px;
+        top: 10px;
+      }
+    }
   }
 }

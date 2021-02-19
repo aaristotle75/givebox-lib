@@ -45,6 +45,30 @@ export default class OrgAdminModalRoutes extends Component {
           disallowBgClose={true}
           component={(props) => this.loadComponent('./EditMenu', props)}
         />
+        <ModalRoute
+          className='gbx3'
+          id={'orgEditCoverPhoto'}
+          effect='3DFlipVert' style={{ width: '60%' }}
+          draggable={true}
+          draggableTitle={`Editing Cover Photo`}
+          disallowBgClose={true}
+          component={(props) => this.loadComponent('./EditCoverPhoto', props)}
+        />
+        <ModalRoute
+          className='gbx3'
+          id={'orgEditCard'}
+          effect='3DFlipVert' style={{ width: '60%' }}
+          draggable={true}
+          draggableTitle={`Editing Card`}
+          disallowBgClose={true}
+          component={(props) => this.loadComponent('./EditArticleCard', props)}
+        />
+        <ModalRoute
+          className='gbx3'
+          id={'orgRemove'}
+          effect='3DFlipVert' style={{ width: '60%' }}
+          component={(props) => this.loadComponent('./Remove', props)}
+        />
       </div>
     )
   }

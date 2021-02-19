@@ -11,6 +11,9 @@ import {
   setStyle,
   updateAdmin
 } from '../redux/gbx3actions';
+import {
+  toggleModal
+} from '../../api/actions';
 
 class Header extends React.Component {
 
@@ -38,14 +41,19 @@ class Header extends React.Component {
       <div className='gbx3OrgContentHeader gbx3OrgContentOuterContainer'>
         <div className='gbx3OrgContentInnerContainer'>
           <div id='coverPhoto' className='coverPhotoContainer'>
-            <div className='coverPhotoImageDropdown'>
+            <div className='coverPhotoImageDropdown orgAdminDropdown'>
               <Dropdown
                 name='coverPhoto'
                 label={''}
                 selectLabel={<span className='labelIcon'><span className='icon icon-camera'></span> Edit Cover Photo</span>}
                 fixedLabel={false}
                 onChange={(name, value) => {
-                  console.log('execute -> ', value)
+                  if (value === 'upload') {
+                    this.props.toggleModal('orgEditCoverPhoto', true);
+                  }
+                  if (value === 'remove') {
+                    this.props.toggleModal('orgRemove', true, { desc: 'Remove Cover Photo', subDesc: 'Are you sure you want to remove your cover photo?'})
+                  }
                 }}
                 options={[
                   { primaryText: <span className='labelIcon'><span className='icon icon-upload-cloud'></span> Upload Photo</span>, value: 'upload' },
@@ -84,5 +92,6 @@ export default connect(mapStateToProps, {
   updateData,
   updateInfo,
   setStyle,
-  updateAdmin
+  updateAdmin,
+  toggleModal
 })(Header);

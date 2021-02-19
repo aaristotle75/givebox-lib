@@ -3,166 +3,178 @@
 /*----------- MODAL --------------*/
 .modal {
 
-	.modalOverlay {
-		position: fixed;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		perspective: 1300;
-		background: transparentize($very-light-gray, .2);
-		z-index: 999990;
-		overflow-x: hidden !important;
-		overflow-y: auto;
-		-webkit-overflow-scrolling:touch;
-		height: 100%;
-	}
+  .modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    perspective: 1300;
+    background: transparentize($very-light-gray, .2);
+    z-index: 999990;
+    overflow-x: hidden !important;
+    overflow-y: auto;
+    -webkit-overflow-scrolling:touch;
+    height: 100%;
+  }
 
-	.modalContent {
-		position: relative;
-		box-sizing: border-box;
-		width: 60%;
-		height: auto;
-		margin: 5% auto;
-		background: #fff;
-		border-radius: 5px;
-		border: 1px solid $light-gray;
-		box-shadow: 0 3px 5px $light-med-gray;
-		z-index: 999991;
-		overflow-x: hidden !important;
-		@media (max-width: $breakpoint) {
-			padding-top: 20px;
-		}
-	}
+  .modalContent {
+    position: relative;
+    box-sizing: border-box;
+    width: 60%;
+    height: auto;
+    margin: 5% auto;
+    background: #fff;
+    border-radius: 5px;
+    border: 1px solid $light-gray;
+    box-shadow: 0 3px 5px $light-med-gray;
+    z-index: 999991;
+    overflow-x: hidden !important;
+    @media (max-width: $breakpoint) {
+      padding-top: 20px;
+    }
+  }
 
-	.modalButtonGroup {
-		position: relative;
-		width: 100%;
-		height: auto;
-		padding: 10px 0;
+  .modalButtonGroup {
+    position: relative;
+    width: 100%;
+    height: auto;
+    padding: 10px 0;
 
-		.button-group { margin: 0; }
+    .button-group { margin: 0; }
 
-		@media (max-width: $breakpoint) {
-			position: fixed;
-			top: 0;
-			z-index: 999999;
-			background: $white;
-			border-bottom: 1px solid $light-gray;
-			.modalCloseBtn {
-				top: 20px !important;
-				right: 10px !important;
-				.icon { font-size: 18px; }
-			}
-		}
-	}
+    @media (max-width: $breakpoint) {
+      position: fixed;
+      top: 0;
+      z-index: 999999;
+      background: $white;
+      border-bottom: 1px solid $light-gray;
+      .modalCloseBtn {
+        top: 20px !important;
+        right: 10px !important;
+        .icon { font-size: 18px; }
+      }
+    }
+  }
 
-	.modalWrapper {
-		padding: 10px;
-	}
+  .modalWrapper {
+    padding: 10px;
+  }
 
-	.modalCloseBtn {
-		position: absolute;
-		top: 10px;
-		right: 10px;
-		cursor: pointer;
-		z-index: 999991;
-		color: $light-med-gray;
-	}
+  .removeModalWrapper {
+    padding: 10px 20px 20px 20px;
 
-	.modalCloseBtn .icon {
-		color: $light-med-gray;
-		font-size: 14px;
-	}
+    h2 {
+      margin: 10px 0;
+    }
 
-	.modalCloseBtn:hover .icon {
-		color: $med-gray;
-	}
+    p {
+      padding: 20px 0;
+    }
+  }
 
-	.actionBtnsContainer {
-		display: block;
-		position: relative;
-		height: 50px;
-		width: auto;
-	}
+  .modalCloseBtn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    z-index: 999991;
+    color: $light-med-gray;
+  }
 
-	.actionBtns {
-		position: absolute;
-		bottom: 10px;
-		right: 20px;
-		margin: 0 auto;
-		width: 100%;
-		height: auto;
-		text-align: right;
-	}
+  .modalCloseBtn .icon {
+    color: $light-med-gray;
+    font-size: 14px;
+  }
 
-	.actionBtns button {
-		padding: 10px 15px 10px 15px;
-		margin: 0 5px 0 5px;
-	}
+  .modalCloseBtn:hover .icon {
+    color: $med-gray;
+  }
 
-	.actionBtns .primary button {
-	}
+  .actionBtnsContainer {
+    display: block;
+    position: relative;
+    height: 50px;
+    width: auto;
+  }
+
+  .actionBtns {
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+    margin: 0 auto;
+    width: 100%;
+    height: auto;
+    text-align: right;
+  }
+
+  .actionBtns button {
+    padding: 10px 15px 10px 15px;
+    margin: 0 5px 0 5px;
+  }
+
+  .actionBtns .primary button {
+  }
 
 }
 
 .modal.draggable {
 
-	/*
-	.mediaLibrary .uploadLibraryContainer .menu	{
-		padding-top: 40px;
-	}
+  /*
+  .mediaLibrary .uploadLibraryContainer .menu	{
+    padding-top: 40px;
+  }
 
-	.mediaLibrary .uploadLibraryContainer {
-		padding-top: 200px;
-	}
+  .mediaLibrary .uploadLibraryContainer {
+    padding-top: 200px;
+  }
 
-	.mediaLibrary .uploadEditorContainer {
-		padding-top: 30px;
-	}
-	*/
+  .mediaLibrary .uploadEditorContainer {
+    padding-top: 30px;
+  }
+  */
 
-	.modalCloseBtn {
-		top: 5px;
-		right: 5px;
-	}
+  .modalCloseBtn {
+    top: 5px;
+    right: 5px;
+  }
 
-	.modalBottom:after,
-	.modalTop:after {
-		background: transparent;
-	}
+  .modalBottom:after,
+  .modalTop:after {
+    background: transparent;
+  }
 
-	.handle {
-		cursor: move;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		position: absolute;
-		top: 0px;
-		left: 0px;
-		right: 0px;
-		height: 30px;
-		background: transparent;
-		z-index: 9999999;
-		@media (max-width: $breakpoint) {
-		}
+  .handle {
+    cursor: move;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    height: 30px;
+    background: transparent;
+    z-index: 9999999;
+    @media (max-width: $breakpoint) {
+    }
 
-		.icon {
-			position: absolute;
-			top: 8px;
-			left: 10px;
-			font-size: 14px;
-		}
+    .icon {
+      position: absolute;
+      top: 8px;
+      left: 10px;
+      font-size: 14px;
+    }
 
-		.icon:hover {
-			color: $mainColorLight;
-		}
+    .icon:hover {
+      color: $mainColorLight;
+    }
 
-		.draggableTitle {
-			margin-top: 10px;
-			vertical-align: top;
-			white-space: nowrap;
-			display: block;
-		}
-	}
+    .draggableTitle {
+      margin-top: 10px;
+      vertical-align: top;
+      white-space: nowrap;
+      display: block;
+    }
+  }
 }

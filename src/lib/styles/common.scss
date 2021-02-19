@@ -50,6 +50,13 @@ p { margin: 10px 0; font-size: $normal-text-size; font-weight: $font-weight; }
   }
 }
 
+.hr {
+  position: relative;
+  width: 100%;
+  height: 1px;
+  background: $light-gray;
+}
+
 .visible {
   visibility: visible !important;
 }

@@ -3,6 +3,7 @@ import * as util from '../../common/utility';
 import GBLink from '../../common/GBLink';
 import Image from '../../common/Image';
 import * as types from '../../common/types';
+import ModalLink from '../../modal/ModalLink';
 
 class ArticleCard extends Component {
   constructor(props) {
@@ -98,27 +99,45 @@ class ArticleCard extends Component {
     const tag = util.getValue(item, 'tag', util.getValue(activePage, 'name'));
 
     return (
-      <div className='cardContainer'>
-        <div className='cardPhotoContainer'>
-          <div className='cardPhotoImage'>
-            <Image imgID='cardPhoto' url={imageURL} maxWidth='325px' size='medium' alt='Card Photo' />
+      <div className='articleCard'>
+        <ModalLink
+          id='orgEditCard'
+          type='div'
+          className='articleCardEdit orgAdminEdit'
+          opts={{
+            item,
+            closeCallback: () => console.log('execute closeCallback -> articleCard')
+          }}
+        >
+          <button
+            className='tooltip blockEditButton'
+          >
+            <span className='tooltipTop'><i />Click Icon to EDIT Card</span>
+            <span className='icon icon-edit'></span>
+          </button>
+        </ModalLink>
+        <div className='articleCardContainer'>
+          <div className='cardPhotoContainer'>
+            <div className='cardPhotoImage'>
+              <Image imgID='cardPhoto' url={imageURL} maxWidth='325px' size='medium' alt='Card Photo' />
+            </div>
           </div>
-        </div>
-        <div className='cardInfoContainer'>
-          <div className='cardArticleTag'>
-            {tag}
+          <div className='cardInfoContainer'>
+            <div className='cardArticleTag'>
+              {tag}
+            </div>
+            <div className='cardInfo'>
+              <span className='icon icon-eye'></span> Views ({viewCount})
+            </div>
           </div>
-          <div className='cardInfo'>
-            <span className='icon icon-eye'></span> Views ({viewCount})
+          <div className='cardTitleContainer'>
+            <h2>{util.truncate(title, 64)}</h2>
           </div>
-        </div>
-        <div className='cardTitleContainer'>
-          <h2>{util.truncate(title, 64)}</h2>
-        </div>
-        {this.renderKindSpecific()}
-        <div className='cardButtonContainer'>
-          <div className='cardButton'>
-            {types.kind(kind).cta}
+          {this.renderKindSpecific()}
+          <div className='cardButtonContainer'>
+            <div className='cardButton'>
+              {types.kind(kind).cta}
+            </div>
           </div>
         </div>
       </div>

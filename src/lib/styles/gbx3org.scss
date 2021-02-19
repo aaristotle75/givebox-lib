@@ -6,6 +6,10 @@ $contentHeaderPadding: 35%;
 
 .gbx3PageWrapper.org {
 
+  .orgAdminOnly {
+    display: none;
+  }
+
   .orgAdminEdit {
     display: none;
   }
@@ -146,38 +150,7 @@ $contentHeaderPadding: 35%;
         right: 0;
       }
 
-      .dropdown .dropdown-content.opened {
-        border: 1px solid $light-gray;
-        @include box-shadow(0px 3px 6px 0px $light-gray);
-      }
-
-      .dropdown .dropdown-item {
-        color: $med-gray;
-        .icon {
-          color: $med-gray;
-          margin-right: 10px;
-          font-size: 16px;
-        }
-        .labelIcon {
-          font-size: 14px;
-        }
-      }
-
-      .dropdown .dropdown-item:hover {
-        background: $light-gray;
-        color: $med-gray;
-        .icon {
-          color: $med-gray;
-        }
-      }
-
       .dropdown button {
-        margin: 0;
-        padding: 10px 20px;
-        background: $light-gray;
-        color: $dark;
-        font-size: 14px;
-        border-radius: 10px;
         .icon:not(.icon-camera) {
           display: none;
         }
@@ -191,27 +164,6 @@ $contentHeaderPadding: 35%;
           margin-right: 5px;
         }
       }
-
-      .dropdown button:hover:not(.label) {
-        background: $light-gray;
-        border-bottom: 1px solid transparent;
-        .icon {
-          color: $dark !important;
-        }
-      }
-
-      .dropdown button:hover {
-        opacity: .9;
-      }
-
-      .dropdown button {
-        .label.idle {
-          color: $dark !important;
-          font-size: 14px;
-          font-weight: 400;
-        }
-      }
-
     }
 
     .coverPhotoImage {
@@ -267,6 +219,25 @@ $contentHeaderPadding: 35%;
 
     h2 {
       font-size: 18px;
+    }
+  }
+
+  .gbx3OrgPagesTopLeft {
+    display: flex;
+    align-items: center;
+
+    .navigationDropdown {
+      .dropdown button {
+        background: $light-gray;
+        border-radius: 10px;
+        padding: 10px 15px !important;
+        .icon {
+          top: 10px;
+        }
+      }
+      .dropdown button:hover {
+        opacity: .8;
+      }
     }
   }
 
@@ -333,7 +304,23 @@ $contentHeaderPadding: 35%;
     }
   }
 
-  .cardContainer {
+  .articleCard {
+    position: relative;
+  }
+
+  .articleCardEdit {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+  }
+
+  .articleCardContainer {
     position: relative;
     border: 1px solid $contentBackground;
     width: 300px;
@@ -347,7 +334,7 @@ $contentHeaderPadding: 35%;
     }
   }
 
-  .cardContainer:hover {
+  .articleCardContainer:hover {
     @include box-shadow(0 10px 20px rgba(70, 89, 101, .4));
     transform: translateY(-4px);
   }
@@ -554,56 +541,57 @@ $contentHeaderPadding: 35%;
       border-bottom: 3px solid $mainColor;
       @include animation(pulsateBrighter 2s ease-out infinite);
     }
+  }
+}
 
-    .dropdown .dropdown-content.top {
-      bottom: 40px;
-    }
+.navigationDropdown {
+  .dropdown .dropdown-content.top {
+    bottom: 40px;
+  }
 
-    .dropdown .dropdown-content.opened {
-      border: 1px solid $light-gray;
-      @include box-shadow(0px 3px 6px 0px $light-gray);
-    }
+  .dropdown .dropdown-content.opened {
+    border: 1px solid $light-gray;
+    @include box-shadow(0px 3px 6px 0px $light-gray);
+  }
 
-    .dropdown .dropdown-item {
+  .dropdown .dropdown-item {
+    color: $med-gray;
+    .icon {
       color: $med-gray;
-      .icon {
-        color: $med-gray;
-      }
     }
+  }
 
-    .dropdown .dropdown-item:hover {
-      background: $light-gray;
+  .dropdown .dropdown-item:hover {
+    background: $light-gray;
+    color: $med-gray;
+    .icon {
       color: $med-gray;
-      .icon {
-        color: $med-gray;
-      }
     }
+  }
 
-    .dropdown button {
-      margin: 0 5px;
-      padding: 15px !important;
-      border-radius: 10px;
-      .icon {
-        top: 16px;
-        right: 0px;
-        font-size: 16px;
-        color: $med-gray !important;
-      }
+  .dropdown button {
+    margin: 0 5px;
+    padding: 15px !important;
+    border-radius: 10px;
+    .icon {
+      top: 16px;
+      right: 0px;
+      font-size: 16px;
+      color: $med-gray !important;
     }
+  }
 
-    .dropdown button:hover:not(.label) {
-      background: $light-gray;
-      border-bottom: 1px solid transparent;
-      .icon {
-        color: $med-gray !important;
-      }
+  .dropdown button:hover:not(.label) {
+    background: $light-gray;
+    border-bottom: 1px solid transparent;
+    .icon {
+      color: $med-gray !important;
     }
-
   }
 }
 
 .gbx3 .gbx3Layout {
-  .navigation {
+  .navigationDropdown {
     .dropdown button {
       .label.idle {
         color: $med-gray !important;

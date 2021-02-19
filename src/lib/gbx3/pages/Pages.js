@@ -80,7 +80,6 @@ class Pages extends Component {
   getArticles(options = {}) {
     const opts = {
       max: 50,
-      getDefault: false,
       reload: false,
       filter: '',
       query: '',
@@ -102,7 +101,7 @@ class Pages extends Component {
     const activePage = this.getActivePage();
     const kind = util.getValue(activePage, 'kind', 'all');
     const kindFilter = kind === 'all' ? '' : `%3Bkind:"${kind}"`;
-    const filter = `${opts.getDefault || opts.search ? 'givebox:true' : 'landing:true'}${kindFilter}${opts.filter ? `%3B${opts.filter}` : ''}`;
+    const filter = `givebox:true${kindFilter}${opts.filter ? `%3B${opts.filter}` : ''}`;
 
     this.props.getResource('orgArticles', {
       orgID,
@@ -118,7 +117,7 @@ class Pages extends Component {
         if (opts.search) {
           this.getArticleSearchCallback(res, err, opts.query);
         } else {
-          this.getArticlesCallback(res, err, opts.getDefault);
+          this.getArticlesCallback(res, err);
         }
       }
     });
@@ -150,7 +149,7 @@ class Pages extends Component {
     }
   }
 
-  getArticlesCallback(res, err, getDefault) {
+  getArticlesCallback(res, err) {
     const {
       page
     } = this.props;
@@ -170,8 +169,6 @@ class Pages extends Component {
       pageState.total = total;
       pageState.search = {};
       this.setPageState(pageState);
-    } else {
-      if (!getDefault) this.getArticles({ getDefault: true, reload: true });
     }
   }
 
@@ -280,19 +277,24 @@ class Pages extends Component {
 
     const {
       pageList,
-      resourceName
+      resourceName,
+      pages
     } = this.props;
 
     if (util.isLoading(pageList)) return <Loader msg='Loading List...' />
     const page = this.getActivePage();
     const pageSearch = util.getValue(this.props.pageSearch, this.props.page, {});
+    const pageName = util.getValue(page, 'name');
 
     return (
       <div className='gbx3OrgPages'>
         {util.isFetching(pageList) ? <Loader msg='Loading List...' /> : null }
         <div className='gbx3OrgPagesTop'>
           <div className='gbx3OrgPagesTopLeft'>
-            <h2>{util.getValue(page, 'name')}</h2>
+            <h2>{pageName}</h2>
+            <div className='orgAdminDropdown managePageDropdown orgAdminOnly'>
+              {pages.length > 1 ? this.props.pageDropdown('Manage Pages') : null}
+            </div>
           </div>
           <div className='gbx3OrgPagesSearch'>
             <Search
