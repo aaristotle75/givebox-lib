@@ -73,7 +73,9 @@ class FormEdit extends Component {
       checkoutDonationText,
       checkoutDonationAmount,
       checkoutDonationFormID,
-      checkoutDonationFormTitle
+      checkoutDonationFormTitle,
+      virtualEvent,
+      tag
     } = this.props.form;
 
     const {
@@ -202,6 +204,20 @@ class FormEdit extends Component {
         >
           <div className='formSectionContainer'>
             <div className='formSection'>
+              <div className='formSectionHeader'>Category / Tag</div>
+              <TextField
+                name='tag'
+                label='Category / Tag Name'
+                fixedLabel={true}
+                placeholder='Enter a Category or Tag Name'
+                value={tag}
+                count={true}
+                maxLength={64}
+                onChange={(e) => {
+                  const value = e.currentTarget.value;
+                  this.updateForm('tag', value);
+                }}
+              />
               <div className='formSectionHeader'>Share Option</div>
               <Choice
                 type='checkbox'
@@ -382,6 +398,61 @@ class FormEdit extends Component {
                 />
               </div>
               : '' }
+              <div className='formSectionHeader'>Virtual Event</div>
+              <Choice
+                type='checkbox'
+                name='virtualEvent'
+                label={'Enable Virtual Event'}
+                onChange={(name, value) => {
+                  virtualEvent.isEnabled = virtualEvent.isEnabled ? false : true;
+                  this.updateForm('virtualEvent', virtualEvent);
+                }}
+                checked={util.getValue(virtualEvent, 'isEnabled')}
+                value={util.getValue(virtualEvent, 'isEnabled')}
+                toggle={true}
+              />
+              <AnimateHeight height={util.getValue(virtualEvent, 'isEnabled') ? 'auto' : 0}>
+                <TextField
+                  name='virtualEventProviderName'
+                  label='Virtual Event Provider'
+                  fixedLabel={true}
+                  placeholder='Select Virtual Event Provider'
+                  value={util.getValue(virtualEvent, 'providerName')}
+                  onChange={(e) => {
+                    const value = e.currentTarget.value;
+                    console.log('execute virtualEvent Provider -> ', util.getValue(virtualEvent, 'providerName'));
+                  }}
+                  style={{ paddingBottom: 0 }}
+                  readOnly={true}
+                  readOnlyText={'Cinesend is currenlty the only provider available.'}
+                />
+                <TextField
+                  name='virtualEventAPIKey'
+                  label='Virtual Event Provider API Key'
+                  fixedLabel={true}
+                  placeholder='Enter Your API Key (You get this from your Virtual EVent Provider)'
+                  value={util.getValue(virtualEvent, 'APIKey')}
+                  onChange={(e) => {
+                    const value = e.currentTarget.value;
+                    virtualEvent.APIKey = value;
+                    this.updateForm('virtualEvent', virtualEvent);
+                  }}
+                  style={{ paddingBottom: 0 }}
+                />
+                <TextField
+                  name='virtualEventVideoID'
+                  label='Virtual Event Provider Video ID'
+                  fixedLabel={true}
+                  placeholder='Enter Your Virtual Event Video ID (You get this from your Virtual EVent Provider)'
+                  value={util.getValue(virtualEvent, 'videoID')}
+                  onChange={(e) => {
+                    const value = e.currentTarget.value;
+                    virtualEvent.videoID = value;
+                    this.updateForm('virtualEvent', virtualEvent);
+                  }}
+                  style={{ paddingBottom: 0 }}
+                />
+              </AnimateHeight>
             </div>
           </div>
         </Collapse>

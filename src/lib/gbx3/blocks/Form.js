@@ -54,6 +54,10 @@ class Form extends Component {
   closeEditModal(type = 'save') {
 
     const {
+      data
+    } = this.props;
+
+    const {
       button,
       defaultButton,
       form,
@@ -71,8 +75,13 @@ class Form extends Component {
       notePlaceholder,
       allowSelection,
       hasCustomGoal,
-      goal
+      goal,
+      tag
     } = form;
+
+    const virtualEventExists = util.getValue(data, 'virtualEvent') ? true : false;
+    const formVirtualEvent = util.getValue(form, 'virtualEvent');
+    const virtualEvent = virtualEventExists ? formVirtualEvent : util.getValue(formVirtualEvent, 'isEnabled') ? formVirtualEvent : null;
 
     if (type !== 'cancel') {
       // Check if cart should be updated
@@ -87,6 +96,8 @@ class Form extends Component {
         defaultForm: util.deepClone(form)
       }, () => {
         const data = {
+          tag,
+          virtualEvent,
           passFees,
           hasCustomGoal: !goal ? false : hasCustomGoal,
           goal,

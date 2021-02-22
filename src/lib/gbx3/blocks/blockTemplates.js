@@ -220,6 +220,7 @@ export const paymentForm = {
       style: {}
     },
     form: {
+      tag: '',
       echeck: false,
       feeOption: true,
       passFees: true,
@@ -440,6 +441,23 @@ const fundraiser = {
 
 const event = {
   ...articleBlocks,
+  paymentForm: {
+    ...paymentForm,
+    ...{
+      options: {
+        ...paymentForm.options,
+        form: {
+          ...paymentForm.options.form,
+          virtualEvent: {
+            isEnabled: false,
+            APIKey: null,
+            videoID: null,
+            providerName: 'cinesend'
+          }
+        }
+      }
+    }
+  },
   amounts: {
     ...amounts,
     ...{
