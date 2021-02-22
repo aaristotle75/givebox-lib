@@ -337,6 +337,10 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       endpoint = `users/${getIndex(id, 0, userID)}`;
       break;
     }
+    case 'userVirtualEvents': {
+      endpoint = `users/${getIndex(id, 0, userID)}/virtual-events`;
+      break;
+    }
     case 'session': {
       endpoint = `session`;
       break;
@@ -533,6 +537,11 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
     // ORGANIZATION
     case 'orgs': {
       endpoint = `orgs`;
+      break;
+    }
+
+    case 'orgVirtualEvents': {
+      endpoint = `orgs/${getIndex(id, 0, orgID)}/virtual-events`;
       break;
     }
 
