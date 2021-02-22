@@ -9,7 +9,10 @@ import { createData } from '../admin/article/createTemplates';
 import { helperTemplates } from '../helpers/helperTemplates';
 import { builderStepsConfig } from '../admin/article/builderStepsConfig';
 import {
-  defaultStyle
+  defaultStyle,
+  defaultOrgHeaders,
+  defaultOrgFooter,
+  defaultOrgPages
 } from './gbx3defaults';
 import has from 'has';
 const merge = require('deepmerge');
@@ -49,6 +52,43 @@ export function setPageState(page, newState) {
     type: types.UPDATE_PAGE_STATE,
     page,
     newState
+  }
+}
+
+export function updateOrgPages(orgPages = {}) {
+  return {
+    type: types.UPDATE_ORG_PAGES,
+    orgPages
+  }
+}
+
+export function updateOrgPage(slug, page) {
+  return {
+    type: types.UPDATE_ORG_PAGE,
+    slug,
+    page
+  }
+}
+
+export function updateOrgHeaders(orgHeaders = {}) {
+  return {
+    type: types.UPDATE_ORG_HEADERS,
+    orgHeaders
+  }
+}
+
+export function updateOrgHeader(name, header = {}) {
+  return {
+    type: types.UPDATE_ORG_HEADER,
+    name,
+    header
+  }
+}
+
+export function updateOrgFooter(orgFooter = {}) {
+  return {
+    type: types.UPDATE_ORG_FOOTER,
+    orgFooter
   }
 }
 
@@ -571,6 +611,57 @@ export function calcCart() {
     }
     cart.total = (cart.subTotal + cart.fee).toFixed(2);
     dispatch(saveCart(cart));
+  }
+}
+
+export function saveOrg(options = {}) {
+
+  const opts = {
+    data: {},
+    isSending: false,
+    callback: null,
+    ...options
+  };
+
+  return (dispatch, getState) => {
+    const gbx3 = util.getValue(getState(), 'gbx3', {});
+    const orgData = util.getValue(gbx3, 'orgData', {});
+    const customTemplate = util.getValue(orgData, 'customTemplate', {});
+    const orgPages = util.getValue(gbx3, 'orgPages', {});
+    const orgHeaders = util.getValue(gbx3, 'orgHeaders', {});
+    const orgFooter = util.getValue(gbx3, 'orgFooter', {});
+    const info = util.getValue(gbx3, 'info', {});
+
+    const dataObj = {
+      ...orgData,
+      customTemplate: {
+        ...customTemplate,
+        orgPages: {
+          ...util.getValue(customTemplate, 'orgPages', {}),
+          ...orgPages
+        },
+        orgHeaders: {
+          ...util.getValue(customTemplate, 'orgHeaders', {}),
+          ...orgHeaders
+        },
+        orgFooter: {
+          ...util.getValue(customTemplate, 'orgFooter', {}),
+          ...orgFooter
+        }
+      },
+      ...opts.data
+    };
+    dispatch(updateGBX3('saveStatus', 'saving'));
+    dispatch(sendResource(util.getValue(info, 'apiName'), {
+      id: util.getValue(info, 'orgID'),
+      data: dataObj,
+      method: 'patch',
+      callback: (res, err) => {
+        dispatch(updateGBX3('saveStatus', 'done'));
+        if (opts.callback) opts.callback(res, err);
+      },
+      isSending: opts.isSending
+    }));
   }
 }
 
@@ -1164,7 +1255,7 @@ export function loadGBX3(articleID, callback) {
 
                   dispatch(updateBlocks('receipt', receiptBlocks));
                   dispatch(updateAvailableBlocks('receipt', receiptAvailableBlocks));
-                  
+
                   dispatch(GBX3Loaded());
                   callback(res, err)
                 }
@@ -1215,8 +1306,12 @@ export function loadOrg(orgID, callback) {
             orgImage: util.getValue(res, 'imageURL'),
             apiName: 'org'
           }));
+
+          const orgPages = util.getValue(customTemplate, 'orgPages', defaultOrgPages);
+          const orgHeaders = util.getValue(customTemplate, 'orgHeader', defaultOrgHeaders);
+          const orgFooter = util.getValue(customTemplate, 'orgHeader', defaultOrgFooter);
+
           const blocksCustom = util.getValue(customTemplate, 'blocks', {});
-          const backgrounds = util.getValue(customTemplate, 'backgrounds', []);
           const orgBlocks = util.getValue(blockTemplates, `org`, {});
           const blocksDefault = {};
 
@@ -1229,6 +1324,8 @@ export function loadOrg(orgID, callback) {
               blocksDefault[value] = orgBlocks[value];
             }
           });
+
+          const backgrounds = util.getValue(customTemplate, 'backgrounds', []);
           const globalsCustom = util.getValue(customTemplate, 'globals', {});
           const gbxStyleCustom = util.getValue(globalsCustom, 'gbxStyle', {});
           const embedButtonCustom = util.getValue(globalsCustom, 'embedButton', {});
@@ -1305,6 +1402,9 @@ export function loadOrg(orgID, callback) {
             open: false
           };
 
+          dispatch(updateOrgPages(orgPages));
+          dispatch(updateOrgHeaders(orgHeaders));
+          dispatch(updateOrgFooter(orgFooter));
           dispatch(updateLayouts(blockType, layouts));
           dispatch(updateBackgrounds(backgrounds));
           dispatch(updateBlocks(blockType, blocks));

@@ -166,6 +166,7 @@ $contentHeaderPadding: 35%;
       }
     }
 
+    .defaultCoverPhoto,
     .coverPhotoImage {
       position: absolute;
       top: -400px;
@@ -204,6 +205,20 @@ $contentHeaderPadding: 35%;
     justify-content: center;
     align-items: center;
     z-index: 9;
+  }
+
+  .defaultProfilePicture {
+    height: 160px;
+    width: 160px;
+    background: $light-gray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    .icon {
+      font-size: 80px;
+      color: $white;
+    }
   }
 
 }

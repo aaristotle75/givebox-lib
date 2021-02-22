@@ -11,7 +11,8 @@ import {
   updateData,
   updateInfo,
   setStyle,
-  updateAdmin
+  updateAdmin,
+  saveOrg
 } from './redux/gbx3actions';
 import Header from './pages/Header';
 import Pages from './pages/Pages';
@@ -53,8 +54,8 @@ class Org extends React.Component {
     }
   }
 
-  async onClickPageLink(page) {
-    const updatedInfo = await this.props.updateInfo({ page });
+  async onClickPageLink(activePageSlug) {
+    const updatedInfo = await this.props.updateInfo({ activePageSlug });
     if (updatedInfo) this.props.scrollTo('page');
   }
 
@@ -78,14 +79,14 @@ class Org extends React.Component {
 
   pageOptions() {
     const {
-      page,
+      pageSlug,
       pages
     } = this.props;
 
     const options = [];
 
     Object.entries(pages).forEach(([key, value]) => {
-      const rightText = value.slug === page ? <span className='icon icon-check'></span> : null;
+      const rightText = value.slug === pageSlug ? <span className='icon icon-check'></span> : null;
       options.push({ rightText, primaryText: value.name, value: value.slug });
     });
 
@@ -94,14 +95,14 @@ class Org extends React.Component {
 
   pageLinks() {
     const {
-      page,
+      pageSlug,
       pages
     } = this.props;
 
     const links = [];
 
     Object.entries(pages).forEach(([key, value]) => {
-      const active = value.slug === page ? true : false;
+      const active = value.slug === pageSlug ? true : false;
       links.push(
         <GBLink
           key={key}
@@ -138,7 +139,7 @@ class Org extends React.Component {
       hasAccessToEdit,
       breakpoint,
       stage,
-      page,
+      pageSlug,
       isMobile
     } = this.props;
 
@@ -228,8 +229,8 @@ function mapStateToProps(state, props) {
   const info = util.getValue(gbx3, 'info', {});
   const stage = util.getValue(info, 'stage');
   const preview = util.getValue(info, 'preview');
-  const page = util.getValue(info, 'page');
-  const pages = util.getValue(gbx3, 'landing.pages', []);
+  const pageSlug = util.getValue(info, 'activePageSlug');
+  const pages = util.getValue(gbx3, 'orgPages', {});
   const hasAccessToEdit = util.getValue(admin, 'hasAccessToEdit');
   const editable = util.getValue(admin, 'editable');
   const breakpoint = util.getValue(info, 'breakpoint');
@@ -238,7 +239,7 @@ function mapStateToProps(state, props) {
   return {
     breakpointWidth,
     stage,
-    page,
+    pageSlug,
     pages,
     hasAccessToEdit,
     editable,
@@ -251,5 +252,6 @@ export default connect(mapStateToProps, {
   updateData,
   updateInfo,
   setStyle,
-  updateAdmin
+  updateAdmin,
+  saveOrg
 })(Org);

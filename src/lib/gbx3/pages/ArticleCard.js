@@ -52,11 +52,12 @@ class ArticleCard extends Component {
         const city = util.getValue(whereObj, 'city');
         const state = util.getValue(whereObj, 'state');
         const where = city ? <div className='cardKindWhere'>{city}{state ? `, ${state}` : null}</div> : null;
+        const virtualEnabled = util.getValue(virtualEvent, 'isEnabled', false);
 
-        if (virtualEvent || where || eventNumAvailableTickets) {
+        if (virtualEnabled || where || eventNumAvailableTickets) {
           item.push(
             <div key={`${kind}-where`} className={`cardKindSpecific cardKindEventWhere`}>
-              {virtualEvent ? 'This is a Virtual Event' : where}
+              {virtualEnabled ? 'This is a Virtual Event' : where}
               {eventNumAvailableTickets > 0 ? <span>Tickets Available</span> : null}
             </div>
           )

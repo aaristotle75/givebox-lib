@@ -23,7 +23,6 @@ class Pages extends Component {
 
   constructor(props) {
     super(props);
-    this.getActivePage = this.getActivePage.bind(this);
     this.renderList = this.renderList.bind(this);
     this.getArticles = this.getArticles.bind(this);
     this.getArticlesCallback = this.getArticlesCallback.bind(this);
@@ -42,7 +41,7 @@ class Pages extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.page !== this.props.page) {
+    if (prevProps.pageSlug !== this.props.pageSlug) {
       this.getArticles();
     }
   }
@@ -57,10 +56,10 @@ class Pages extends Component {
 
   async setPageSearch(search, callback) {
     const {
-      page
+      pageSlug
     } = this.props;
 
-    const stateUpdated = await this.props.setPageSearch(page, search);
+    const stateUpdated = await this.props.setPageSearch(pageSlug, search);
     if (stateUpdated && callback) {
       callback();
     }
@@ -68,10 +67,10 @@ class Pages extends Component {
 
   async setPageState(newState = {}, callback) {
     const {
-      page
+      pageSlug
     } = this.props;
 
-    const stateUpdated = await this.props.setPageState(page, newState);
+    const stateUpdated = await this.props.setPageState(pageSlug, newState);
     if (stateUpdated && callback) {
       callback();
     }
@@ -90,22 +89,23 @@ class Pages extends Component {
     };
 
     const {
-      page,
+      pages,
+      pageSlug,
       orgID
     } = this.props;
 
     const pageState = {
-      ...this.props.pageState[page]
+      ...this.props.pageState[pageSlug]
     };
     const pageNumber = opts.pageNumber ? opts.pageNumber : opts.search ? util.getValue(pageState, 'search.pageNumber', 1) : util.getValue(pageState, 'pageNumber', 1);
-    const activePage = this.getActivePage();
+    const activePage = pages[pageSlug];
     const kind = util.getValue(activePage, 'kind', 'all');
     const kindFilter = kind === 'all' ? '' : `%3Bkind:"${kind}"`;
     const filter = `givebox:true${kindFilter}${opts.filter ? `%3B${opts.filter}` : ''}`;
 
     this.props.getResource('orgArticles', {
       orgID,
-      customName: `${page}List`,
+      customName: `${pageSlug}List`,
       reload: opts.reload,
       search: {
         filter,
@@ -125,14 +125,14 @@ class Pages extends Component {
 
   getArticleSearchCallback(res, err, query) {
     const {
-      page
+      pageSlug
     } = this.props;
 
     const pageState = {
-      ...this.props.pageState[page]
+      ...this.props.pageState[pageSlug]
     };
 
-    const pageSearch = util.getValue(this.state.pageSearch, page);
+    const pageSearch = util.getValue(this.state.pageSearch, pageSlug);
     const data = util.getValue(res, 'data', []);
     const pageNumber = util.getValue(pageState, 'search.pageNumber', 1);
     const list = util.getValue(pageState, 'search.list', []);
@@ -151,11 +151,11 @@ class Pages extends Component {
 
   getArticlesCallback(res, err) {
     const {
-      page
+      pageSlug
     } = this.props;
 
     const pageState = {
-      ...this.props.pageState[page]
+      ...this.props.pageState[pageSlug]
     };
 
     const data = util.getValue(res, 'data', []);
@@ -172,22 +172,14 @@ class Pages extends Component {
     }
   }
 
-  getActivePage() {
-    const {
-      pages
-    } = this.props;
-
-    return pages.find(p => p.slug === this.props.page);
-  }
-
   renderKindSpecificFilters() {
     const {
-      page
+      pageSlug
     } = this.props;
     const filters = [];
-    const pageSearch = util.getValue(this.props.pageSearch, page, {});
+    const pageSearch = util.getValue(this.props.pageSearch, pageSlug, {});
 
-    switch (page) {
+    switch (pageSlug) {
       case 'events': {
         filters.push(
           <CalendarField
@@ -224,12 +216,13 @@ class Pages extends Component {
 
   renderList() {
     const {
-      page
+      pages,
+      pageSlug
     } = this.props;
 
-    const activePage = this.getActivePage();
-    const search = util.getValue(this.props.pageSearch, page);
-    const pageState = util.getValue(this.props.pageState, page, {});
+    const activePage = pages[pageSlug];
+    const search = util.getValue(this.props.pageSearch, pageSlug);
+    const pageState = util.getValue(this.props.pageState, pageSlug, {});
     const pageList = util.getValue(pageState, 'search.list', util.getValue(pageState, 'list', []));
     const total = util.getValue(pageState, 'search.total', util.getValue(pageState, 'total', 0));
     const items = [];
@@ -278,12 +271,13 @@ class Pages extends Component {
     const {
       pageList,
       resourceName,
-      pages
+      pages,
+      pageSlug
     } = this.props;
 
     if (util.isLoading(pageList)) return <Loader msg='Loading List...' />
-    const page = this.getActivePage();
-    const pageSearch = util.getValue(this.props.pageSearch, this.props.page, {});
+    const page = pages[pageSlug];
+    const pageSearch = util.getValue(this.props.pageSearch, pageSlug, {});
     const pageName = util.getValue(page, 'name');
 
     return (
@@ -291,10 +285,10 @@ class Pages extends Component {
         {util.isFetching(pageList) ? <Loader msg='Loading List...' /> : null }
         <div className='gbx3OrgPagesTop'>
           <div className='gbx3OrgPagesTopLeft'>
-            <h2>{pageName}</h2>
             <div className='orgAdminDropdown managePageDropdown orgAdminOnly'>
-              {pages.length > 1 ? this.props.pageDropdown('Manage Pages') : null}
+              {Object.keys(pages).length > 1 ? this.props.pageDropdown('Manage Pages') : null}
             </div>
+            <h2>{pageName}</h2>
           </div>
           <div className='gbx3OrgPagesSearch'>
             <Search
@@ -340,13 +334,13 @@ function mapStateToProps(state, props) {
   const info = util.getValue(gbx3, 'info', {});
   const orgID = util.getValue(info, 'orgID');
   const stage = util.getValue(info, 'stage');
-  const page = util.getValue(info, 'page');
-  const pages = util.getValue(gbx3, 'landing.pages', []);
+  const pageSlug = util.getValue(info, 'activePageSlug');
+  const pages = util.getValue(gbx3, 'orgPages', {});
   const hasAccessToEdit = util.getValue(admin, 'hasAccessToEdit');
   const editable = util.getValue(admin, 'editable');
   const breakpoint = util.getValue(info, 'breakpoint');
   const isMobile = breakpoint === 'mobile' ? true : false;
-  const resourceName = `${page}List`;
+  const resourceName = `${pageSlug}List`;
   const pageList = util.getValue(state, `resource.${resourceName}`, {});
   const pageState = util.getValue(gbx3, 'pageState', {});
   const pageSearch = util.getValue(gbx3, 'pageSearch', {});
@@ -354,7 +348,7 @@ function mapStateToProps(state, props) {
   return {
     orgID,
     stage,
-    page,
+    pageSlug,
     pages,
     hasAccessToEdit,
     editable,

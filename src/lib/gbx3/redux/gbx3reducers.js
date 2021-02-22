@@ -3,17 +3,14 @@ import * as util from '../../common/utility';
 import {
   defaultCart,
   defaultConfirmation,
-  defaultStyle,
-  defaultPages,
-  defaultHeader,
-  defaultFooter
+  defaultStyle
 } from './gbx3defaults';
 
 export function gbx3(state = {
   loading: true,
   saveStatus: 'done',
   info: {
-    page: 'events',
+    activePageSlug: 'events',
     project: 'share',
     stage: 'public',
     display: 'article',
@@ -26,11 +23,9 @@ export function gbx3(state = {
   },
   pageSearch: {},
   pageState: {},
-  landing: {
-    header: defaultHeader,
-    pages: defaultPages,
-    footer: defaultFooter
-  },
+  orgHeaders: {},
+  orgPages: [],
+  orgFooter: {},
   backgrounds: [],
   blocks: {
     org: {},
@@ -165,6 +160,47 @@ export function gbx3(state = {
             ...state.pageState[action.page],
             ...action.newState
           }
+        }
+      });
+    case types.UPDATE_ORG_PAGES:
+      return Object.assign({}, state, {
+        orgPages: {
+          ...state.orgPages,
+          ...action.orgPages
+        }
+      });
+    case types.UPDATE_ORG_PAGE:
+      return Object.assign({}, state, {
+        orgPages: {
+          ...state.orgPages,
+          [action.slug]: {
+            ...state.orgPages[action.slug],
+            ...action.page
+          }
+        }
+      });
+    case types.UPDATE_ORG_HEADERS:
+      return Object.assign({}, state, {
+        orgHeaders: {
+          ...state.orgHeaders,
+          ...action.orgHeaders
+        }
+      });
+    case types.UPDATE_ORG_HEADER:
+      return Object.assign({}, state, {
+        orgHeaders: {
+          ...state.orgHeaders,
+          [action.name]: {
+            ...state.orgHeaders[action.name],
+            ...action.header
+          }
+        }
+      });
+    case types.UPDATE_ORG_FOOTER:
+      return Object.assign({}, state, {
+        orgHeaders: {
+          ...state.orgFooter,
+          ...action.orgFooter
         }
       });
     case types.UPDATE_LAYOUTS:

@@ -9,7 +9,9 @@ import {
   updateData,
   updateInfo,
   setStyle,
-  updateAdmin
+  updateAdmin,
+  saveOrg,
+  updateOrgHeader
 } from '../redux/gbx3actions';
 import {
   toggleModal
@@ -20,12 +22,24 @@ class Header extends React.Component {
   constructor(props) {
     super(props);
     this.onClickEditProfilePicture = this.onClickEditProfilePicture.bind(this);
+    this.saveHeader = this.saveHeader.bind(this);
     this.state = {
 
     };
   }
 
   componentDidMount() {
+  }
+
+  async saveHeader(name, header = {}) {
+    const headerUpdated = await this.props.updateOrgHeader(name, header);
+    if (headerUpdated) {
+      this.props.saveOrg({
+        callback: (res, err) => {
+          console.log('execute org saved -> ', res, err);
+        }
+      })
+    }
   }
 
   onClickEditProfilePicture() {
@@ -35,7 +49,14 @@ class Header extends React.Component {
   render() {
 
     const {
+      coverPhoto,
+      profilePicture,
+      stage
     } = this.props;
+
+    const isPublic = stage === 'public' ? true : false;
+    const coverPhotoUrl = util.getValue(coverPhoto, 'url');
+    const profilePictureUrl = util.getValue(profilePicture, 'url');
 
     return (
       <div className='gbx3OrgContentHeader gbx3OrgContentOuterContainer'>
@@ -63,7 +84,9 @@ class Header extends React.Component {
               />
             </div>
             <div className='coverPhotoImage'>
-              <Image imgID='coverPhoto' url='https://scontent.fbts5-1.fna.fbcdn.net/v/t1.0-9/146458272_1594146030775580_1681237268117440186_n.jpg?_nc_cat=107&ccb=2&_nc_sid=e3f864&_nc_ohc=RiyM11oq7s4AX_Ogn0b&_nc_ht=scontent.fbts5-1.fna&oh=8523127a27556559d511cabd31f142ff&oe=604298EB' maxSize='950px' alt='Cover Photo' />
+              { coverPhotoUrl ?
+                <Image imgID='coverPhoto' size='large' url={coverPhotoUrl} maxSize='950px' alt='Cover Photo' />
+              : null }
             </div>
             <ModalLink id='orgEditProfilePic' type='div' className='profilePictureContainer orgAdminEdit'>
               <button className='tooltip blockEditButton'>
@@ -72,7 +95,11 @@ class Header extends React.Component {
               </button>
             </ModalLink>
             <div className='profilePictureContainer'>
-              <Image url='https://scontent.fbts5-1.fna.fbcdn.net/v/t1.0-1/p200x200/60898531_1092468567609998_4827187149260455936_o.jpg?_nc_cat=111&ccb=2&_nc_sid=7206a8&_nc_ohc=3p90oFEZeOEAX84huL6&_nc_ht=scontent.fbts5-1.fna&tp=6&oh=bebd0f2bacec213fe8165a8799e1f4c7&oe=6040E930' maxSize='160px' alt='Profile Picture' imgStyle={{ borderRadius: '50%' }}/>
+              { profilePictureUrl ?
+                <Image url={profilePictureUrl} size='medium' maxSize='160px' alt='Profile Picture' imgStyle={{ borderRadius: '50%' }}/>
+              :
+                <div className='defaultProfilePicture'><span className={`icon icon-${isPublic ? 'shield' : 'camera'}`}></span></div>
+              }
             </div>
           </div>
         </div>
@@ -84,7 +111,12 @@ class Header extends React.Component {
 
 function mapStateToProps(state, props) {
 
+  const headers = util.getValue(state, 'gbx3.orgHeaders', {});
+
   return {
+    coverPhoto: util.getValue(headers, 'coverPhoto', {}),
+    profilePicture: util.getValue(headers, 'profilePicture', {}),
+    stage: util.getValue(state, 'gbx3.info.stage'),
   }
 }
 
@@ -93,5 +125,7 @@ export default connect(mapStateToProps, {
   updateInfo,
   setStyle,
   updateAdmin,
-  toggleModal
+  toggleModal,
+  saveOrg,
+  updateOrgHeader
 })(Header);

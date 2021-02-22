@@ -1,4 +1,4 @@
-export const defaultHeader = {
+export const defaultOrgHeaders = {
   coverPhoto: {
     url: null,
     style: {}
@@ -9,47 +9,47 @@ export const defaultHeader = {
   }
 };
 
-export const defaultFooter = {
+export const defaultOrgFooter = {
   content: null
 }
 
-export const defaultPages = [
-  {
+export const defaultOrgPages = {
+  featured: {
     name: 'Featured',
     slug: 'featured',
     kind: 'all',
     style: {},
     content: {}
   },
-  {
+  fundraisers: {
     name: 'Donate',
     slug: 'fundraisers',
     kind: 'fundraiser',
     style: {},
     content: {}
   },
-  {
+  events: {
     name: 'Events',
     slug: 'events',
     kind: 'event',
     style: {},
     content: {}
   },
-  {
+  memberships: {
     name: 'Memberships',
     slug: 'memberships',
     kind: 'membership',
     style: {},
     content: {}
   },
-  {
+  sweepstakes: {
     name: 'Sweepstakes',
     slug: 'sweepstakes',
     kind: 'sweepstake',
     style: {},
     content: {}
   }
-]
+};
 
 
 export const defaultCart = {
