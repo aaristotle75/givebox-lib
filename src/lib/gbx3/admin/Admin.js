@@ -123,6 +123,7 @@ class Admin extends React.Component {
         { display === 'org' ?
           <OrgAdmin
             step={step}
+            exitAdmin={this.props.exitAdmin}
           />
         :
           <div className='articleDisplayContainer'>

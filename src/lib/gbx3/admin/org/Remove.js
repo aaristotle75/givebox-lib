@@ -1,5 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import {
+  toggleModal
+} from '../../../api/actions';
+import GBLink from '../../../common/GBLink';
 
 class Remove extends React.Component {
 
@@ -26,6 +30,14 @@ class Remove extends React.Component {
         <p>
           {subDesc}
         </p>
+        <div className='button-group flexEnd'>
+          <GBLink className='link secondary' onClick={() => this.props.toggleModal('orgRemove', false)}>Cancel</GBLink>
+          <GBLink className='button' onClick={() => {
+            if (this.props.callback) this.props.callback();
+          }}>
+            Confirm
+          </GBLink>
+        </div>
       </div>
     )
   }
@@ -38,4 +50,5 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
+  toggleModal
 })(Remove);

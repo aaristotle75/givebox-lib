@@ -79,17 +79,19 @@ class AvatarMenu extends React.Component {
       );
 
       if (stage === 'admin') {
-        menuList.push(
-          <li type='li' key={'builderPref'} onClick={() => {
-            this.props.savePrefs({
-              builderPref: builderPref === 'advanced' ? 'basic' : 'advanced'
-            });
-            this.props.updateHelperSteps({ advancedBuilder: builderPref === 'advanced' ? false : true });
-          }}
-          >
-            <Icon><GoBeaker /></Icon> <span className='text'>Default Builder ({ builderPref === 'advanced' ? 'Advanced' : 'Basic' })</span>
-          </li>
-        );
+        if (display !== 'org') {
+          menuList.push(
+            <li type='li' key={'builderPref'} onClick={() => {
+              this.props.savePrefs({
+                builderPref: builderPref === 'advanced' ? 'basic' : 'advanced'
+              });
+              this.props.updateHelperSteps({ advancedBuilder: builderPref === 'advanced' ? false : true });
+            }}
+            >
+              <Icon><GoBeaker /></Icon> <span className='text'>Default Builder ({ builderPref === 'advanced' ? 'Advanced' : 'Basic' })</span>
+            </li>
+          );
+        }
 
         menuList.push(
           <li key={'exitBuilder'} onClick={() => {

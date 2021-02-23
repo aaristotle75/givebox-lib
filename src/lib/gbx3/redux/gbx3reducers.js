@@ -10,7 +10,7 @@ export function gbx3(state = {
   loading: true,
   saveStatus: 'done',
   info: {
-    activePageSlug: 'events',
+    activePageSlug: '',
     project: 'share',
     stage: 'public',
     display: 'article',
@@ -23,9 +23,8 @@ export function gbx3(state = {
   },
   pageSearch: {},
   pageState: {},
-  orgHeaders: {},
+  orgGlobals: {},
   orgPages: [],
-  orgFooter: {},
   backgrounds: [],
   blocks: {
     org: {},
@@ -162,6 +161,9 @@ export function gbx3(state = {
           }
         }
       });
+    case types.RESET_ORG:
+      return Object.assign({}, state, {
+      });
     case types.UPDATE_ORG_PAGES:
       return Object.assign({}, state, {
         orgPages: {
@@ -179,28 +181,21 @@ export function gbx3(state = {
           }
         }
       });
-    case types.UPDATE_ORG_HEADERS:
+    case types.UPDATE_ORG_GLOBALS:
       return Object.assign({}, state, {
-        orgHeaders: {
-          ...state.orgHeaders,
-          ...action.orgHeaders
+        orgGlobals: {
+          ...state.orgGlobals,
+          ...action.orgGlobals
         }
       });
-    case types.UPDATE_ORG_HEADER:
+    case types.UPDATE_ORG_GLOBAL:
       return Object.assign({}, state, {
-        orgHeaders: {
-          ...state.orgHeaders,
+        orgGlobals: {
+          ...state.orgGlobals,
           [action.name]: {
-            ...state.orgHeaders[action.name],
-            ...action.header
+            ...state.orgGlobals[action.name],
+            ...action.orgGlobal
           }
-        }
-      });
-    case types.UPDATE_ORG_FOOTER:
-      return Object.assign({}, state, {
-        orgFooter: {
-          ...state.orgFooter,
-          ...action.orgFooter
         }
       });
     case types.UPDATE_LAYOUTS:

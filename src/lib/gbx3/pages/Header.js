@@ -9,9 +9,7 @@ import {
   updateData,
   updateInfo,
   setStyle,
-  updateAdmin,
-  saveOrg,
-  updateOrgHeader
+  updateAdmin
 } from '../redux/gbx3actions';
 import {
   toggleModal
@@ -22,7 +20,7 @@ class Header extends React.Component {
   constructor(props) {
     super(props);
     this.onClickEditProfilePicture = this.onClickEditProfilePicture.bind(this);
-    this.saveHeader = this.saveHeader.bind(this);
+    this.coverPhotoOptions = this.coverPhotoOptions.bind(this);
     this.state = {
 
     };
@@ -31,19 +29,25 @@ class Header extends React.Component {
   componentDidMount() {
   }
 
-  async saveHeader(name, header = {}) {
-    const headerUpdated = await this.props.updateOrgHeader(name, header);
-    if (headerUpdated) {
-      this.props.saveOrg({
-        callback: (res, err) => {
-          console.log('execute org saved -> ', res, err);
-        }
-      })
-    }
-  }
-
   onClickEditProfilePicture() {
     console.log('execute onClickEditProfilePicture');
+  }
+
+  coverPhotoOptions() {
+    const options = [];
+    options.push({
+      primaryText: <span className='labelIcon'><span className='icon icon-upload-cloud'></span> Upload Photo</span>, value: 'upload'
+    });
+
+    options.push({
+      primaryText: <span className='labelIcon'><span className='icon icon-move'></span> Reposition</span>, value: 'move'
+    });
+
+    options.push({
+      primaryText: <span className='labelIcon'><span className='icon icon-trash-2'></span> Remove</span>, value: 'remove'
+    });
+
+    return options;
   }
 
   render() {
@@ -63,40 +67,57 @@ class Header extends React.Component {
         <div className='gbx3OrgContentInnerContainer'>
           <div id='coverPhoto' className='coverPhotoContainer'>
             <div className='coverPhotoImageDropdown orgAdminDropdown'>
-              <Dropdown
-                name='coverPhoto'
-                label={''}
-                selectLabel={<span className='labelIcon'><span className='icon icon-camera'></span> Edit Cover Photo</span>}
-                fixedLabel={false}
-                onChange={(name, value) => {
-                  if (value === 'upload') {
-                    this.props.toggleModal('orgEditCoverPhoto', true);
-                  }
-                  if (value === 'remove') {
-                    this.props.toggleModal('orgRemove', true, { desc: 'Remove Cover Photo', subDesc: 'Are you sure you want to remove your cover photo?'})
-                  }
-                }}
-                options={[
-                  { primaryText: <span className='labelIcon'><span className='icon icon-upload-cloud'></span> Upload Photo</span>, value: 'upload' },
-                  { primaryText: <span className='labelIcon'><span className='icon icon-move'></span> Reposition</span>, value: 'move' },
-                  { primaryText: <span className='labelIcon'><span className='icon icon-trash-2'></span> Remove</span>, value: 'remove' },
-                ]}
-              />
+              { coverPhotoUrl ?
+                <Dropdown
+                  name='coverPhoto'
+                  label={''}
+                  selectLabel={<span className='labelIcon'><span className='icon icon-camera'></span> Edit Cover Photo</span>}
+                  fixedLabel={false}
+                  onChange={(name, value) => {
+                    if (value === 'upload') {
+                      this.props.toggleModal('orgEditCoverPhoto', true, {
+                        saveGlobal: this.props.saveGlobal
+                      });
+                    }
+                    if (value === 'remove') {
+                      this.props.toggleModal('orgRemove', true, {
+                        desc: 'Remove Cover Photo',
+                        subDesc: 'Are you sure you want to remove your cover photo?',
+                        callback: () => {
+                          this.props.saveGlobal('coverPhoto', { url: '' }, () => this.props.toggleModal('orgRemove', false));
+                        }
+                      })
+                    }
+                  }}
+                  options={this.coverPhotoOptions()}
+                />
+              :
+                <ModalLink className='button addCoverPhoto' id='orgEditCoverPhoto' opts={{ saveGlobal: this.props.saveGlobal }}>
+                  <span className='labelIcon'><span className='icon icon-camera'></span> Add Cover Photo</span>
+                </ModalLink>
+              }
             </div>
             <div className='coverPhotoImage'>
               { coverPhotoUrl ?
                 <Image imgID='coverPhoto' size='large' url={coverPhotoUrl} maxSize='950px' alt='Cover Photo' />
               : null }
             </div>
-            <ModalLink id='orgEditProfilePic' type='div' className='profilePictureContainer orgAdminEdit'>
+            <ModalLink
+              id='orgEditProfilePic'
+              type='div'
+              className='profilePictureContainer orgAdminEdit'
+              opts={{
+                saveGlobal: this.props.saveGlobal
+              }}
+            >
               <button className='tooltip blockEditButton'>
-                <span className='tooltipTop'><i />Click Icon to EDIT Profile Picture</span>
+                <span className='tooltipTop'><i />Click Icon to { profilePictureUrl ? 'EDIT' : 'ADD' } Profile Picture</span>
                 <span className='icon icon-camera'></span>
               </button>
             </ModalLink>
             <div className='profilePictureContainer'>
               { profilePictureUrl ?
-                <Image url={profilePictureUrl} size='medium' maxSize='160px' alt='Profile Picture' imgStyle={{ borderRadius: '50%' }}/>
+                <Image url={profilePictureUrl} size='medium' maxSize='160px' alt='Profile Picture' imgStyle={{ minWidth: 160, borderRadius: '50%' }}/>
               :
                 <div className='defaultProfilePicture'><span className={`icon icon-${isPublic ? 'shield' : 'camera'}`}></span></div>
               }
@@ -111,11 +132,11 @@ class Header extends React.Component {
 
 function mapStateToProps(state, props) {
 
-  const headers = util.getValue(state, 'gbx3.orgHeaders', {});
+  const globals = util.getValue(state, 'gbx3.orgGlobals', {});
 
   return {
-    coverPhoto: util.getValue(headers, 'coverPhoto', {}),
-    profilePicture: util.getValue(headers, 'profilePicture', {}),
+    coverPhoto: util.getValue(globals, 'coverPhoto', {}),
+    profilePicture: util.getValue(globals, 'profilePicture', {}),
     stage: util.getValue(state, 'gbx3.info.stage'),
   }
 }
@@ -125,7 +146,5 @@ export default connect(mapStateToProps, {
   updateInfo,
   setStyle,
   updateAdmin,
-  toggleModal,
-  saveOrg,
-  updateOrgHeader
+  toggleModal
 })(Header);

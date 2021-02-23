@@ -29,6 +29,7 @@ class OrgAdmin extends React.Component {
             <Design
               reloadGBX3={this.props.reloadGBX3}
               loadGBX3={this.props.loadGBX3}
+              exitAdmin={this.props.exitAdmin}
             />
           </div>
         )

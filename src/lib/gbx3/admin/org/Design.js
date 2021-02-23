@@ -187,6 +187,7 @@ class Design extends React.Component {
               key={'layout'}
               loadGBX3={this.props.loadGBX3}
               reloadGBX3={this.props.reloadGBX3}
+              exitAdmin={this.props.exitAdmin}
             />
           );
         }

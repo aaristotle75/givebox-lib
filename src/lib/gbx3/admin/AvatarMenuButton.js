@@ -24,7 +24,8 @@ class AvatarMenuButton extends React.Component {
 
     const {
       access,
-      stage
+      stage,
+      display
     } = this.props;
 
     if (util.isEmpty(access)) return <></>;
@@ -32,7 +33,7 @@ class AvatarMenuButton extends React.Component {
     return (
       <div className='avatarLink'>
         <ModalLink id='avatarMenu' className='link'>
-          {stage === 'admin' && access.role === 'admin' ? <span className='orgName'>{util.getValue(access, 'orgName')}</span> : ''}
+          {stage === 'admin' && access.role === 'admin' && display !== 'org' ? <span className='orgName'>{util.getValue(access, 'orgName')}</span> : null}
           {access.userImage ? <div className='avatarImage'><img src={util.imageUrlWithStyle(access.userImage, 'small')} alt='Avatar Small Circle' /></div> :
             <div className='defaultAvatarImage'>{access.initial}</div>
           }
@@ -49,10 +50,12 @@ function mapStateToProps(state, props) {
 
   const access = util.getValue(state.resource, 'access');
   const stage = util.getValue(state, 'gbx3.info.stage');
+  const display = util.getValue(state, `gbx3.info.display`);
 
   return {
     access,
-    stage
+    stage,
+    display
   }
 }
 

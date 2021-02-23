@@ -1,4 +1,16 @@
-export const defaultOrgHeaders = {
+const primaryColor = '#698df4';
+
+export const defaultOrgGlobals = {
+  globalStyles: {
+    backgroundColor: primaryColor,
+    primaryColor: primaryColor,
+    textColor: '#000000'
+  },
+  pagesEnabled: [
+    'featured',
+    'fundraisers',
+    'events'
+  ],
   coverPhoto: {
     url: null,
     style: {}
@@ -6,12 +18,14 @@ export const defaultOrgHeaders = {
   profilePicture: {
     url: null,
     style: {}
+  },
+  title: {
+    content: null
+  },
+  footer: {
+    content: null
   }
 };
-
-export const defaultOrgFooter = {
-  content: null
-}
 
 export const defaultOrgPages = {
   featured: {

@@ -10,8 +10,7 @@ import { helperTemplates } from '../helpers/helperTemplates';
 import { builderStepsConfig } from '../admin/article/builderStepsConfig';
 import {
   defaultStyle,
-  defaultOrgHeaders,
-  defaultOrgFooter,
+  defaultOrgGlobals,
   defaultOrgPages
 } from './gbx3defaults';
 import has from 'has';
@@ -70,25 +69,18 @@ export function updateOrgPage(slug, page) {
   }
 }
 
-export function updateOrgHeaders(orgHeaders = {}) {
+export function updateOrgGlobals(orgGlobals = {}) {
   return {
-    type: types.UPDATE_ORG_HEADERS,
-    orgHeaders
+    type: types.UPDATE_ORG_GLOBALS,
+    orgGlobals
   }
 }
 
-export function updateOrgHeader(name, header = {}) {
+export function updateOrgGlobal(name, orgGlobal = {}) {
   return {
-    type: types.UPDATE_ORG_HEADER,
+    type: types.UPDATE_ORG_GLOBAL,
     name,
-    header
-  }
-}
-
-export function updateOrgFooter(orgFooter = {}) {
-  return {
-    type: types.UPDATE_ORG_FOOTER,
-    orgFooter
+    orgGlobal
   }
 }
 
@@ -628,8 +620,7 @@ export function saveOrg(options = {}) {
     const orgData = util.getValue(gbx3, 'orgData', {});
     const customTemplate = util.getValue(orgData, 'customTemplate', {});
     const orgPages = util.getValue(gbx3, 'orgPages', {});
-    const orgHeaders = util.getValue(gbx3, 'orgHeaders', {});
-    const orgFooter = util.getValue(gbx3, 'orgFooter', {});
+    const orgGlobals = util.getValue(gbx3, 'orgGlobals', {});
     const info = util.getValue(gbx3, 'info', {});
 
     const dataObj = {
@@ -640,13 +631,9 @@ export function saveOrg(options = {}) {
           ...util.getValue(customTemplate, 'orgPages', {}),
           ...orgPages
         },
-        orgHeaders: {
-          ...util.getValue(customTemplate, 'orgHeaders', {}),
-          ...orgHeaders
-        },
-        orgFooter: {
-          ...util.getValue(customTemplate, 'orgFooter', {}),
-          ...orgFooter
+        orgGlobals: {
+          ...util.getValue(customTemplate, 'orgGlobals', {}),
+          ...orgGlobals
         }
       },
       ...opts.data
@@ -1296,20 +1283,39 @@ export function loadOrg(orgID, callback) {
         if (!util.isEmpty(res) && !err) {
           const orgID = util.getValue(res, 'ID');
           const orgName = util.getValue(res, 'name');
+          const orgImage = util.getValue(res, 'imageURL');
           const customTemplate = util.getValue(res, 'customTemplate', {});
           const hasAccessToEdit = util.getAuthorizedAccess(access, orgID, null);
+          const orgPages = util.getValue(customTemplate, 'orgPages', defaultOrgPages);
+
+          const orgGlobalsDefault = {
+            ...defaultOrgGlobals,
+            profilePicture: {
+              ...defaultOrgGlobals.profilePicture,
+              url: orgImage
+            },
+            title: {
+              content: `<p style="text-align:center"><span style="font-weight:400;font-size:22px">${orgName}</span></p>`
+            }
+          };
+
+          const orgGlobals = {
+            ...orgGlobalsDefault,
+            ...util.getValue(customTemplate, 'orgGlobals', {})
+          };
+
+          const pagesEnabled = util.getValue(orgGlobals, 'pagesEnabled', []);
+          const activePageSlug = util.getValue(pagesEnabled, 0, 'featured');
+
           dispatch(updateInfo({
             orgID,
             orgName,
             originTemplate,
+            activePageSlug,
             display: 'org',
             orgImage: util.getValue(res, 'imageURL'),
             apiName: 'org'
           }));
-
-          const orgPages = util.getValue(customTemplate, 'orgPages', defaultOrgPages);
-          const orgHeaders = util.getValue(customTemplate, 'orgHeaders', defaultOrgHeaders);
-          const orgFooter = util.getValue(customTemplate, 'orgFooter', defaultOrgFooter);
 
           const blocksCustom = util.getValue(customTemplate, 'blocks', {});
           const orgBlocks = util.getValue(blockTemplates, `org`, {});
@@ -1403,8 +1409,7 @@ export function loadOrg(orgID, callback) {
           };
 
           dispatch(updateOrgPages(orgPages));
-          dispatch(updateOrgHeaders(orgHeaders));
-          dispatch(updateOrgFooter(orgFooter));
+          dispatch(updateOrgGlobals(orgGlobals));
           dispatch(updateLayouts(blockType, layouts));
           dispatch(updateBackgrounds(backgrounds));
           dispatch(updateBlocks(blockType, blocks));
@@ -1436,6 +1441,59 @@ export function resetStyle(styleType) {
 export function setStyles(style) {
   return {
     type: types.SET_STYLES
+  }
+}
+
+export function setOrgStyle(options = {}) {
+
+  const opts = {
+    primaryColor: null,
+    textColor: null,
+    backgroundColor: null,
+    ...options
+  };
+
+  return (dispatch, getState) => {
+    const globalStyles = util.getValue(getState(), 'gbx3.orgGlobals.globalStyles', {});
+    const backgroundColor = opts.backgroundColor || util.getValue(globalStyles, 'backgroundColor');
+    const primaryColor = opts.primaryColor || util.getValue(globalStyles, 'primaryColor');
+
+    let styleInnerHTML = '';
+    let backgroundColorInnerHTML = '';
+    let primaryColorInnerHTML = '';
+
+    backgroundColorInnerHTML = `
+      .gbx3OrgContentHeader.gbx3OrgContentOuterContainer {
+        background: linear-gradient(to bottom, ${backgroundColor} 0%, #ffffff 70%) !important;
+      }
+    `;
+
+    primaryColorInnerHTML = `
+      .gbx3OrgSubHeader .navigationContainer button.link.active {
+        color: ${primaryColor} !important;
+        border-bottom: 3px solid ${primaryColor} !important;
+      }
+    `;
+
+    if (backgroundColorInnerHTML) {
+      styleInnerHTML = styleInnerHTML + backgroundColorInnerHTML;
+    }
+
+    if (primaryColorInnerHTML) {
+      styleInnerHTML = styleInnerHTML + primaryColorInnerHTML;
+    }
+
+    if (styleInnerHTML) {
+      const el = document.getElementById('customGBX3Style');
+      if (el) {
+        el.innerHTML = styleInnerHTML;
+      } else {
+        const styleEl = document.head.appendChild(document.createElement('style'));
+        styleEl.setAttribute('id', 'customGBX3Style');
+        styleEl.innerHTML = styleInnerHTML;
+      }
+    }
+    dispatch(setStyles(styleInnerHTML));
   }
 }
 
@@ -1718,6 +1776,45 @@ export function setStyle(options = {}) {
       }
     }
     dispatch(setStyles(styleInnerHTML));
+  }
+}
+
+export function setResetOrg() {
+  return {
+    type: types.RESET_ORG
+  }
+}
+
+export function resetOrg(callback) {
+  return (dispatch, getState) => {
+    const gbx3 = util.getValue(getState(), 'gbx3', {});
+    const info = util.getValue(gbx3, 'info', {});
+    const data = {
+      ...util.getValue(gbx3, 'orgData', {}),
+      customTemplate: {
+        orgPages: null,
+        orgGlobals: null,
+        blocks: {},
+        globals: {},
+        backgrounds: [],
+        helperBlocks: {}
+      }
+    };
+
+    const orgID = util.getValue(info, 'orgID');
+
+    dispatch(setResetOrg());
+    dispatch(sendResource(util.getValue(info, 'apiName'), {
+      id: [orgID],
+      orgID,
+      data,
+      method: 'patch',
+      callback: (res, err) => {
+        if (callback) callback();
+        window.location.reload();
+      },
+      isSending: true
+    }));
   }
 }
 

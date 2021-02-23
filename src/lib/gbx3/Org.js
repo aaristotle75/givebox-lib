@@ -8,6 +8,7 @@ import Dropdown from '../form/Dropdown';
 import ModalLink from '../modal/ModalLink';
 import has from 'has';
 import {
+  updateOrgGlobal,
   updateData,
   updateInfo,
   setStyle,
@@ -32,11 +33,26 @@ class Org extends React.Component {
     this.pageDropdown = this.pageDropdown.bind(this);
     this.onClickPageLink = this.onClickPageLink.bind(this);
     this.onClickArticle = this.onClickArticle.bind(this);
+    this.saveGlobal = this.saveGlobal.bind(this);
+    this.state = {
+      defaultTitle: props.title
+    };
   }
 
   componentDidMount() {
     this.onBreakpointChange();
     window.addEventListener('resize', this.resizer);
+  }
+
+  async saveGlobal(name, obj = {}, callback) {
+    const globalUpdated = await this.props.updateOrgGlobal(name, obj);
+    if (globalUpdated) {
+      this.props.saveOrg({
+        callback: (res, err) => {
+          if (callback) callback();
+        }
+      })
+    }
   }
 
   async onClickArticle(ID) {
@@ -79,15 +95,19 @@ class Org extends React.Component {
 
   pageOptions() {
     const {
+      pagesEnabled,
       pageSlug,
-      pages
+      pages,
+      stage
     } = this.props;
 
+    const isAdmin = stage === 'admin' ? true : false;
     const options = [];
 
-    Object.entries(pages).forEach(([key, value]) => {
+    pagesEnabled.forEach((key) => {
+      const value = util.getValue(pages, key, {});
       const rightText = value.slug === pageSlug ? <span className='icon icon-check'></span> : null;
-      options.push({ rightText, primaryText: value.name, value: value.slug });
+      options.push({ key, rightText, primaryText: value.name, value: value.slug });
     });
 
     return options;
@@ -95,13 +115,17 @@ class Org extends React.Component {
 
   pageLinks() {
     const {
+      pagesEnabled,
       pageSlug,
-      pages
+      pages,
+      stage
     } = this.props;
 
     const links = [];
+    const isAdmin = stage === 'admin' ? true : false;
 
-    Object.entries(pages).forEach(([key, value]) => {
+    pagesEnabled.forEach((key) => {
+      const value = util.getValue(pages, key, {});
       const active = value.slug === pageSlug ? true : false;
       links.push(
         <GBLink
@@ -139,12 +163,16 @@ class Org extends React.Component {
       hasAccessToEdit,
       breakpoint,
       stage,
+      pages,
       pageSlug,
-      isMobile
+      isMobile,
+      title
     } = this.props;
 
     const isEditable = hasAccessToEdit && editable ? true : false;
     const Element = Scroll.Element;
+    const isAdmin = stage === 'admin' ? true : false;
+    const pageOptions = this.pageOptions();
 
     return (
       <div className='gbx3Org'>
@@ -155,7 +183,9 @@ class Org extends React.Component {
           </div>
         </div>
         <div className='gbx3OrgContentContainer'>
-          <Header />
+          <Header
+            saveGlobal={this.saveGlobal}
+          />
           <div className='gbx3OrgSubHeader gbx3OrgContentOuterContainer'>
             <div className='gbx3OrgContentInnerContainer'>
               <div className='nameSection'>
@@ -164,7 +194,22 @@ class Org extends React.Component {
                     id='orgEditTitle'
                     className='tooltip blockEditButton'
                     opts={{
-                      closeCallback: () => console.log('execute closeCallback -> orgEditTitle')
+                      closeCallback: (type) => {
+                        if (type === 'cancel') {
+                          this.saveGlobal('title', {
+                            content: this.state.defaultTitle
+                          })
+                        } else {
+                          this.props.saveOrg({
+                            callback: (res, err) => {
+                              if (!util.isEmpty(res)) {
+                                const defaultTitle = util.getValue(res, 'customTemplate.orgGlobals.title.content', title);
+                                this.setState({ defaultTitle });
+                              }
+                            }
+                          });
+                        }
+                      }
                     }}
                   >
                     <span className='tooltipTop'><i />Click Icon to EDIT Title</span>
@@ -172,30 +217,34 @@ class Org extends React.Component {
                   </ModalLink>
                 </div>
                 <div className='nameSectionContainer'>
-                  <div className='nameText'>Service Dogs of America</div>
-                </div>
-              </div>
-              <div className='navigation'>
-                <ModalLink
-                  id='orgEditMenu'
-                  type='div'
-                  className='navigationContainer orgAdminEdit'
-                >
-                  <button className='tooltip blockEditButton' id='orgEditMenu'>
-                    <span className='tooltipTop'><i />Click Icon to EDIT Navigation Menu</span>
-                    <span className='icon icon-edit'></span>
-                  </button>
-                </ModalLink>
-                <div className='navigationContainer'>
-                { !isMobile ?
-                  this.pageLinks()
-                :
-                  <div className='navigationDropdown'>
-                    {this.pageDropdown()}
+                  <div className='nameText'>
+                    <div dangerouslySetInnerHTML={{ __html: util.cleanHtml(title) }} />
                   </div>
-                }
                 </div>
               </div>
+              { pageOptions.length > 1 ?
+                <div className='navigation'>
+                  <ModalLink
+                    id='orgEditMenu'
+                    type='div'
+                    className='navigationContainer orgAdminEdit'
+                  >
+                    <button className='tooltip blockEditButton' id='orgEditMenu'>
+                      <span className='tooltipTop'><i />Click Icon to EDIT Navigation Menu</span>
+                      <span className='icon icon-edit'></span>
+                    </button>
+                  </ModalLink>
+                  <div className='navigationContainer'>
+                  { !isMobile ?
+                    this.pageLinks()
+                  :
+                    <div className='navigationDropdown'>
+                      {this.pageDropdown()}
+                    </div>
+                  }
+                  </div>
+                </div>
+              : null }
             </div>
           </div>
           <main className='gbx3OrgContent gbx3OrgContentOuterContainer'>
@@ -229,26 +278,31 @@ function mapStateToProps(state, props) {
   const info = util.getValue(gbx3, 'info', {});
   const stage = util.getValue(info, 'stage');
   const preview = util.getValue(info, 'preview');
-  const pageSlug = util.getValue(info, 'activePageSlug');
   const pages = util.getValue(gbx3, 'orgPages', {});
+  const pagesEnabled = util.getValue(gbx3, 'orgGlobals.pagesEnabled', []);
   const hasAccessToEdit = util.getValue(admin, 'hasAccessToEdit');
   const editable = util.getValue(admin, 'editable');
   const breakpoint = util.getValue(info, 'breakpoint');
   const isMobile = breakpoint === 'mobile' ? true : false;
+  const pageSlug = util.getValue(info, 'activePageSlug');
+  const title = util.getValue(gbx3, 'orgGlobals.title.content');
 
   return {
     breakpointWidth,
     stage,
     pageSlug,
     pages,
+    pagesEnabled,
     hasAccessToEdit,
     editable,
     breakpoint,
-    isMobile
+    isMobile,
+    title
   }
 }
 
 export default connect(mapStateToProps, {
+  updateOrgGlobal,
   updateData,
   updateInfo,
   setStyle,

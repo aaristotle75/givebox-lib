@@ -10,7 +10,8 @@ import Article from './Article';
 import Org from './Org';
 import Confirmation from './payment/Confirmation';
 import {
-  updateAdmin
+  updateAdmin,
+  updateInfo
 } from './redux/gbx3actions';
 import AvatarMenuButton from './admin/AvatarMenuButton';
 import CartButton from './payment/CartButton';
@@ -188,24 +189,37 @@ class Layout extends React.Component {
       <div className='hasAccessToEditPublic'>
         <AvatarMenuButton />
         { hasAccessToEdit ?
-        <div onClick={() => this.props.updateAdmin({ publicView: false })} className='avatarLink tooltip hideOnMobile'>
-          <span className='tooltipTop'><i />Edit Form</span>
-          <div className='editGraphic'>
-            <span className='icon icon-edit'></span>
-          </div>
-        </div> : ''}
-        { hasAccessToEdit ?
         <ModalLink type='div' id={'share'} className='avatarLink tooltip hideOnMobile'>
           <span className='tooltipTop'><i />Share</span>
           <div className='editGraphic'>
             <Icon><AiOutlineNotification /></Icon>
           </div>
-        </ModalLink> : ''}
+        </ModalLink> : null}
+        { hasAccessToEdit && stage !== 'admin' ?
+        <div onClick={() => this.props.updateAdmin({ publicView: false })} className='avatarLink tooltip hideOnMobile'>
+          <span className='tooltipTop'><i />Edit Form</span>
+          <div className='editGraphic'>
+            <span className='icon icon-edit'></span>
+          </div>
+        </div> : null}
+        { hasAccessToEdit && stage === 'admin' && display === 'org' ?
+        <div
+          className='avatarLink tooltip hideOnMobile'
+          onClick={() => {
+            this.props.updateAdmin({ publicView: true });
+            this.props.updateInfo({ stage: 'public' });
+          }}
+        >
+          <span className='tooltipTop'><i />Public View</span>
+          <div className='editGraphic'>
+            <span className='icon icon-eye'></span>
+          </div>
+        </div> : null}
         <CartButton reloadGBX3={this.props.reloadGBX3} type='avatarLink' />
       </div>
     ;
 
-    const showAvatarMenu = (stage !== 'admin') && !preview ? true : false;
+    const showAvatarMenu = (stage !== 'admin' || (stage === 'admin' && display === 'org')) && !preview ? true : false;
 
     // This is article display specific
     const noAccess = (!hasAccessToEdit || (hasAccessToEdit && !preview && stage === 'public' )) && (publishStatus === 'private') && (display === 'article') ? true : false;
@@ -331,5 +345,6 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
+  updateInfo,
   updateAdmin
 })(Layout);

@@ -23,7 +23,8 @@ import {
   updateAdmin,
   loadGBX3,
   loadOrg,
-  setStyle
+  setStyle,
+  setOrgStyle
 } from './redux/gbx3actions';
 import {
   setCustomProp,
@@ -353,7 +354,7 @@ class GBX3 extends React.Component {
 
     this.props.loadOrg(orgID, (res, err) => {
       if (!err && !util.isEmpty(res)) {
-        this.props.setStyle();
+        this.props.setOrgStyle();
         if (share) this.props.toggleModal('share', true);
         if (previewMode) this.props.updateAdmin({ previewDevice: 'desktop', previewMode: true });
       }
@@ -419,6 +420,7 @@ class GBX3 extends React.Component {
           primaryColor={this.props.primaryColor}
           onClickVolunteerFundraiser={this.onClickVolunteerFundraiser}
           backToOrgCallback={this.props.backToOrgCallback}
+          exitAdmin={this.exitAdmin}
         />
       )
     }
@@ -518,5 +520,6 @@ export default connect(mapStateToProps, {
   clearGBX3,
   updateInfo,
   updateAdmin,
-  toggleModal
+  toggleModal,
+  setOrgStyle
 })(GBX3);

@@ -279,14 +279,14 @@ class Pages extends Component {
     const page = pages[pageSlug];
     const pageSearch = util.getValue(this.props.pageSearch, pageSlug, {});
     const pageName = util.getValue(page, 'name');
-
+    
     return (
       <div className='gbx3OrgPages'>
         {util.isFetching(pageList) ? <Loader msg='Loading List...' /> : null }
         <div className='gbx3OrgPagesTop'>
           <div className='gbx3OrgPagesTopLeft'>
             <div className='orgAdminDropdown managePageDropdown orgAdminOnly'>
-              {Object.keys(pages).length > 1 ? this.props.pageDropdown('Manage Pages') : null}
+              {this.props.pageDropdown('Manage Pages')}
             </div>
             <h2>{pageName}</h2>
           </div>
