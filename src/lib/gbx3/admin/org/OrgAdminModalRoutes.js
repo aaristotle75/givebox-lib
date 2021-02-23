@@ -33,7 +33,7 @@ export default class OrgAdminModalRoutes extends Component {
           effect='3DFlipVert' style={{ width: '60%' }}
           draggable={true}
           draggableTitle={`Editing Profile Picture`}
-          disallowBgClose={true}
+          disallowBgClose={false}
           component={(props) => this.loadComponent('./EditProfilePic', props)}
         />
         <ModalRoute
@@ -42,7 +42,7 @@ export default class OrgAdminModalRoutes extends Component {
           effect='3DFlipVert' style={{ width: '60%' }}
           draggable={true}
           draggableTitle={`Editing Navigation Menu`}
-          disallowBgClose={true}
+          disallowBgClose={false}
           component={(props) => this.loadComponent('./EditMenu', props)}
         />
         <ModalRoute
@@ -51,7 +51,7 @@ export default class OrgAdminModalRoutes extends Component {
           effect='3DFlipVert' style={{ width: '60%' }}
           draggable={true}
           draggableTitle={`Editing Cover Photo`}
-          disallowBgClose={true}
+          disallowBgClose={false}
           component={(props) => this.loadComponent('./EditCoverPhoto', props)}
         />
         <ModalRoute
@@ -60,7 +60,7 @@ export default class OrgAdminModalRoutes extends Component {
           effect='3DFlipVert' style={{ width: '60%' }}
           draggable={true}
           draggableTitle={`Editing Card`}
-          disallowBgClose={true}
+          disallowBgClose={false}
           component={(props) => this.loadComponent('./EditArticleCard', props)}
         />
         <ModalRoute

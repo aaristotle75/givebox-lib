@@ -97,7 +97,7 @@ class ArticleCard extends Component {
     const viewCount = views > 0 ? views : 1;
     const likes = +util.getValue(stats, 'likes', 0);
     const shares = +util.getValue(stats, 'shares', 0);
-    const tag = util.getValue(item, 'tag', util.getValue(activePage, 'name'));
+    const tag = util.getValue(item, 'tag', types.kind(kind).defaultTag);
 
     return (
       <div className='articleCard'>

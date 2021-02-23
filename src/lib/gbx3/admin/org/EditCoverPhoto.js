@@ -17,18 +17,21 @@ class EditCoverPhoto extends React.Component {
   render() {
 
     const {
-      orgID
+      orgID,
+      coverPhoto,
+      breakpoint
     } = this.props;
 
     const library = {
-      saveMediaType: 'org',
       orgID,
+      saveMediaType: 'org',
       borderRadius: 0
     };
 
+    const imageURL = util.getValue(coverPhoto, 'url');
+
     return (
       <div className='modalWrapper'>
-        {/*
         <MediaLibrary
           image={imageURL}
           preview={imageURL}
@@ -44,7 +47,6 @@ class EditCoverPhoto extends React.Component {
             this.setState({ editorOpen })
           }}
         />
-        */}
       </div>
     )
   }
@@ -54,7 +56,8 @@ function mapStateToProps(state, props) {
 
   return {
     orgID: util.getValue(state, 'gbx3.info.orgID'),
-    breakpoint: util.getValue(state, 'gbx3.info.breakpoint')
+    breakpoint: util.getValue(state, 'gbx3.info.breakpoint'),
+    coverPhoto: util.getValue(state, 'gbx3.orgHeaders.coverPhoto', {})
   }
 }
 

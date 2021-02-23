@@ -198,7 +198,7 @@ export function gbx3(state = {
       });
     case types.UPDATE_ORG_FOOTER:
       return Object.assign({}, state, {
-        orgHeaders: {
+        orgFooter: {
           ...state.orgFooter,
           ...action.orgFooter
         }

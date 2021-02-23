@@ -93,6 +93,7 @@ export function kind(kind) {
       obj.kind = 'event';
       obj.kindPlural = 'events';
       obj.header = 'Events';
+      obj.defaultTag = 'Event';
       obj.amountField = 'tickets';
       obj.amountDesc = 'Ticket';
       obj.api = {
@@ -118,6 +119,7 @@ export function kind(kind) {
       obj.kind = 'fundraiser';
       obj.kindPlural = 'fundraisers';
       obj.header = 'Donation Forms';
+      obj.defaultTag = 'Donate';
       obj.amountField = 'amounts';
       obj.amountDesc = 'Amount';
       obj.api = {
@@ -143,6 +145,7 @@ export function kind(kind) {
       obj.kind = 'invoice';
       obj.kindPlural = 'invoices';
       obj.header = 'Invoices';
+      obj.defaultTag = 'Invoice';
       obj.amountField = 'amounts';
       obj.amountDesc = 'Amount';
       obj.api = {
@@ -168,6 +171,7 @@ export function kind(kind) {
       obj.kind = 'membership';
       obj.kindPlural = 'memberships';
       obj.header = 'Memberships';
+      obj.defaultTag = 'Membership';
       obj.amountField = 'subscriptions';
       obj.amountDesc = 'Subscription';
       obj.api = {
@@ -193,6 +197,7 @@ export function kind(kind) {
       obj.kind = 'sweepstake';
       obj.kindPlural = 'sweepstakes';
       obj.header = 'Sweepstakes';
+      obj.defaultTag = 'Sweepstakes';
       obj.amountField = 'tickets';
       obj.amountDesc = 'Ticket';
       obj.api = {
@@ -214,6 +219,7 @@ export function kind(kind) {
       obj.kind = '';
       obj.kindPlural = 'all';
       obj.header = 'Money Sources';
+      obj.defaultTag = 'Featured';
       obj.api = {
         item: 'Article',
         list: 'Articles'

@@ -1308,8 +1308,8 @@ export function loadOrg(orgID, callback) {
           }));
 
           const orgPages = util.getValue(customTemplate, 'orgPages', defaultOrgPages);
-          const orgHeaders = util.getValue(customTemplate, 'orgHeader', defaultOrgHeaders);
-          const orgFooter = util.getValue(customTemplate, 'orgHeader', defaultOrgFooter);
+          const orgHeaders = util.getValue(customTemplate, 'orgHeaders', defaultOrgHeaders);
+          const orgFooter = util.getValue(customTemplate, 'orgFooter', defaultOrgFooter);
 
           const blocksCustom = util.getValue(customTemplate, 'blocks', {});
           const orgBlocks = util.getValue(blockTemplates, `org`, {});
