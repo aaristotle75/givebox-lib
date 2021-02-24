@@ -23,6 +23,7 @@ export function gbx3(state = {
   },
   pageSearch: {},
   pageState: {},
+  orgUpdated: false,
   orgGlobals: {},
   orgPages: [],
   backgrounds: [],
@@ -166,6 +167,7 @@ export function gbx3(state = {
       });
     case types.UPDATE_ORG_PAGES:
       return Object.assign({}, state, {
+        orgUpdated: action.orgUpdated,
         orgPages: {
           ...state.orgPages,
           ...action.orgPages
@@ -173,6 +175,7 @@ export function gbx3(state = {
       });
     case types.UPDATE_ORG_PAGE:
       return Object.assign({}, state, {
+        orgUpdated: true,
         orgPages: {
           ...state.orgPages,
           [action.slug]: {
@@ -183,6 +186,7 @@ export function gbx3(state = {
       });
     case types.UPDATE_ORG_GLOBALS:
       return Object.assign({}, state, {
+        orgUpdated: action.orgUpdated,
         orgGlobals: {
           ...state.orgGlobals,
           ...action.orgGlobals
@@ -190,12 +194,23 @@ export function gbx3(state = {
       });
     case types.UPDATE_ORG_GLOBAL:
       return Object.assign({}, state, {
+        orgUpdated: true,
         orgGlobals: {
           ...state.orgGlobals,
           [action.name]: {
             ...state.orgGlobals[action.name],
             ...action.orgGlobal
           }
+        }
+      });
+    case types.UPDATE_PAGES_ENABLED:
+      return Object.assign({}, state, {
+        orgUpdated: true,
+        orgGlobals: {
+          ...state.orgGlobals,
+          pagesEnabled: [
+            ...action.pagesEnabled
+          ]
         }
       });
     case types.UPDATE_LAYOUTS:

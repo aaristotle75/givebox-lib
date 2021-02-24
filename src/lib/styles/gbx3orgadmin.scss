@@ -1,6 +1,23 @@
 @import 'variables.scss';
 
 
+.gbx3OrgAdmin {
+
+  .editableRowMenu {
+    top: 20px;
+    display: flex;
+
+    .icon {
+      font-size: 20px;
+    }
+
+    .tooltip .tooltipTop {
+      top: -10px;
+      min-width: 100px;
+    }
+  }
+}
+
 .gbx3AdminLayout.orgDisplay {
 
   .gbx3OrgContentHeader {

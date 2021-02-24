@@ -37,13 +37,31 @@ export default class OrgAdminModalRoutes extends Component {
           component={(props) => this.loadComponent('./EditProfilePic', props)}
         />
         <ModalRoute
-          className='gbx3'
+          className='gbx3 gbx3OrgAdmin'
           id={'orgEditMenu'}
           effect='3DFlipVert' style={{ width: '60%' }}
           draggable={true}
           draggableTitle={`Editing Navigation Menu`}
           disallowBgClose={false}
           component={(props) => this.loadComponent('./EditMenu', props)}
+        />
+        <ModalRoute
+          className='gbx3 gbx3OrgAdmin'
+          id={'orgEditPage'}
+          effect='3DFlipVert' style={{ width: '60%' }}
+          draggable={true}
+          draggableTitle={`Editing Page`}
+          disallowBgClose={false}
+          component={(props) => this.loadComponent('./EditPage', props)}
+        />
+        <ModalRoute
+          className='gbx3 gbx3OrgAdmin'
+          id={'orgEditCustomPage'}
+          effect='3DFlipVert' style={{ width: '60%' }}
+          draggable={true}
+          draggableTitle={`Editing Custom Page`}
+          disallowBgClose={false}
+          component={(props) => this.loadComponent('./EditCustomPage', props)}
         />
         <ModalRoute
           className='gbx3'

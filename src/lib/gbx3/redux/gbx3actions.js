@@ -54,10 +54,11 @@ export function setPageState(page, newState) {
   }
 }
 
-export function updateOrgPages(orgPages = {}) {
+export function updateOrgPages(orgPages = {}, orgUpdated = true) {
   return {
     type: types.UPDATE_ORG_PAGES,
-    orgPages
+    orgPages,
+    orgUpdated
   }
 }
 
@@ -69,10 +70,18 @@ export function updateOrgPage(slug, page) {
   }
 }
 
-export function updateOrgGlobals(orgGlobals = {}) {
+export function updateOrgGlobals(orgGlobals = {}, orgUpdated = true) {
   return {
     type: types.UPDATE_ORG_GLOBALS,
-    orgGlobals
+    orgGlobals,
+    orgUpdated
+  }
+}
+
+export function updatePagesEnabled(pagesEnabled = []) {
+  return {
+    type: types.UPDATE_PAGES_ENABLED,
+    pagesEnabled
   }
 }
 
@@ -617,6 +626,7 @@ export function saveOrg(options = {}) {
 
   return (dispatch, getState) => {
     const gbx3 = util.getValue(getState(), 'gbx3', {});
+    const orgUpdated = util.getValue(gbx3, 'orgUpdated', false);
     const orgData = util.getValue(gbx3, 'orgData', {});
     const customTemplate = util.getValue(orgData, 'customTemplate', {});
     const orgPages = util.getValue(gbx3, 'orgPages', {});
@@ -638,17 +648,20 @@ export function saveOrg(options = {}) {
       },
       ...opts.data
     };
-    dispatch(updateGBX3('saveStatus', 'saving'));
-    dispatch(sendResource(util.getValue(info, 'apiName'), {
-      id: util.getValue(info, 'orgID'),
-      data: dataObj,
-      method: 'patch',
-      callback: (res, err) => {
-        dispatch(updateGBX3('saveStatus', 'done'));
-        if (opts.callback) opts.callback(res, err);
-      },
-      isSending: opts.isSending
-    }));
+    if (orgUpdated) {
+      dispatch(updateGBX3('saveStatus', 'saving'));
+      dispatch(sendResource(util.getValue(info, 'apiName'), {
+        id: util.getValue(info, 'orgID'),
+        data: dataObj,
+        method: 'patch',
+        callback: (res, err) => {
+          dispatch(updateGBX3('saveStatus', 'done'));
+          dispatch(updateGBX3('orgUpdated', false));
+          if (opts.callback) opts.callback(res, err);
+        },
+        isSending: opts.isSending
+      }));
+    }
   }
 }
 
@@ -1408,8 +1421,10 @@ export function loadOrg(orgID, callback) {
             open: false
           };
 
-          dispatch(updateOrgPages(orgPages));
-          dispatch(updateOrgGlobals(orgGlobals));
+          dispatch(updateOrgPages(orgPages, false));
+          dispatch(updateOrgGlobals(orgGlobals, false));
+
+          // legacy block system for org page
           dispatch(updateLayouts(blockType, layouts));
           dispatch(updateBackgrounds(backgrounds));
           dispatch(updateBlocks(blockType, blocks));
@@ -1417,6 +1432,8 @@ export function loadOrg(orgID, callback) {
           dispatch(updateHelperBlocks(blockType, helperBlocks));
           dispatch(updateData(res, 'org'));
           dispatch(updateAvailableBlocks(blockType, availableBlocks));
+          // end legacy block system for org page
+
           dispatch(updateAdmin(admin));
           dispatch(updateInfo({ publishStatus: 'public' }));
         }

@@ -23,6 +23,7 @@ class Pages extends Component {
 
   constructor(props) {
     super(props);
+    this.pageOptions = this.pageOptions.bind(this);
     this.renderList = this.renderList.bind(this);
     this.getArticles = this.getArticles.bind(this);
     this.getArticlesCallback = this.getArticlesCallback.bind(this);
@@ -266,6 +267,29 @@ class Pages extends Component {
     )
   }
 
+  pageOptions() {
+    const {
+      pagesEnabled,
+      pageSlug,
+      pages,
+      stage
+    } = this.props;
+
+    const isAdmin = stage === 'admin' ? true : false;
+    const options = [];
+
+    Object.entries(pages).forEach(([key, value]) => {
+      const enabled = pagesEnabled.includes(key) ? true : false;
+      if (enabled || isAdmin) {
+        const secondaryText = !enabled ? <span className='gray'>Disabled</span> : null;
+        const rightText = value.slug === pageSlug ? <span className='icon icon-check'></span> : null;
+        options.push({ key, rightText, secondaryText, primaryText: value.name, value: value.slug });
+      }
+    });
+
+    return options;
+  }
+
   render() {
 
     const {
@@ -279,16 +303,17 @@ class Pages extends Component {
     const page = pages[pageSlug];
     const pageSearch = util.getValue(this.props.pageSearch, pageSlug, {});
     const pageName = util.getValue(page, 'name');
-    
+    const pageTitle = util.getValue(page, 'pageTitle', pageName);
+
     return (
       <div className='gbx3OrgPages'>
         {util.isFetching(pageList) ? <Loader msg='Loading List...' /> : null }
         <div className='gbx3OrgPagesTop'>
           <div className='gbx3OrgPagesTopLeft'>
             <div className='orgAdminDropdown managePageDropdown orgAdminOnly'>
-              {this.props.pageDropdown('Manage Pages')}
+              {this.props.pageDropdown(this.pageOptions(), 'Manage Page')}
             </div>
-            <h2>{pageName}</h2>
+            <h2>{pageTitle}</h2>
           </div>
           <div className='gbx3OrgPagesSearch'>
             <Search
@@ -336,6 +361,7 @@ function mapStateToProps(state, props) {
   const stage = util.getValue(info, 'stage');
   const pageSlug = util.getValue(info, 'activePageSlug');
   const pages = util.getValue(gbx3, 'orgPages', {});
+  const pagesEnabled = util.getValue(gbx3, 'orgGlobals.pagesEnabled', []);
   const hasAccessToEdit = util.getValue(admin, 'hasAccessToEdit');
   const editable = util.getValue(admin, 'editable');
   const breakpoint = util.getValue(info, 'breakpoint');
@@ -350,6 +376,7 @@ function mapStateToProps(state, props) {
     stage,
     pageSlug,
     pages,
+    pagesEnabled,
     hasAccessToEdit,
     editable,
     breakpoint,

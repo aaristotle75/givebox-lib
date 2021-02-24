@@ -153,6 +153,7 @@ $contentHeaderPadding: 35%;
       }
 
       .dropdown button {
+        border-bottom: 1px solid transparent;
         .icon:not(.icon-camera) {
           display: none;
         }

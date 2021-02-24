@@ -8,6 +8,7 @@ import Dropdown from '../form/Dropdown';
 import ModalLink from '../modal/ModalLink';
 import has from 'has';
 import {
+  updateOrgPage,
   updateOrgGlobal,
   updateData,
   updateInfo,
@@ -28,12 +29,13 @@ class Org extends React.Component {
     this.gridRef = React.createRef();
     this.resizer = this.resizer.bind(this);
     this.onBreakpointChange = this.onBreakpointChange.bind(this);
-    this.pageOptions = this.pageOptions.bind(this);
     this.pageLinks = this.pageLinks.bind(this);
+    this.pageOptions = this.pageOptions.bind(this);
     this.pageDropdown = this.pageDropdown.bind(this);
     this.onClickPageLink = this.onClickPageLink.bind(this);
     this.onClickArticle = this.onClickArticle.bind(this);
     this.saveGlobal = this.saveGlobal.bind(this);
+    this.savePage = this.savePage.bind(this);
     this.state = {
       defaultTitle: props.title
     };
@@ -47,6 +49,17 @@ class Org extends React.Component {
   async saveGlobal(name, obj = {}, callback) {
     const globalUpdated = await this.props.updateOrgGlobal(name, obj);
     if (globalUpdated) {
+      this.props.saveOrg({
+        callback: (res, err) => {
+          if (callback) callback();
+        }
+      })
+    }
+  }
+
+  async savePage(name, obj = {}, callback) {
+    const pageUpdated = await this.props.updateOrgPage(name, obj);
+    if (pageUpdated) {
       this.props.saveOrg({
         callback: (res, err) => {
           if (callback) callback();
@@ -93,26 +106,6 @@ class Org extends React.Component {
     }
   }
 
-  pageOptions() {
-    const {
-      pagesEnabled,
-      pageSlug,
-      pages,
-      stage
-    } = this.props;
-
-    const isAdmin = stage === 'admin' ? true : false;
-    const options = [];
-
-    pagesEnabled.forEach((key) => {
-      const value = util.getValue(pages, key, {});
-      const rightText = value.slug === pageSlug ? <span className='icon icon-check'></span> : null;
-      options.push({ key, rightText, primaryText: value.name, value: value.slug });
-    });
-
-    return options;
-  }
-
   pageLinks() {
     const {
       pagesEnabled,
@@ -141,7 +134,27 @@ class Org extends React.Component {
     return links;
   }
 
-  pageDropdown(label = 'More') {
+  pageOptions() {
+    const {
+      pagesEnabled,
+      pageSlug,
+      pages
+    } = this.props;
+
+    const options = [];
+
+    pagesEnabled.forEach((val, key) => {
+      const value = util.getValue(pages, val, {});
+      const primaryText = util.getValue(value, 'navText', value.name);
+      console.log('execute -> ', primaryText);
+      const rightText = value.slug === pageSlug ? <span className='icon icon-check'></span> : null;
+      options.push({ key, rightText, primaryText, value: value.slug });
+    });
+
+    return options;
+  }
+
+  pageDropdown(options = [], label = 'More') {
     return (
       <Dropdown
         name='page'
@@ -151,7 +164,7 @@ class Org extends React.Component {
         onChange={(name, value) => {
           this.onClickPageLink(value);
         }}
-        options={this.pageOptions()}
+        options={options}
       />
     )
   }
@@ -222,27 +235,37 @@ class Org extends React.Component {
                   </div>
                 </div>
               </div>
-              { pageOptions.length > 1 ?
+              { pageOptions.length > 1 || isAdmin ?
                 <div className='navigation'>
                   <ModalLink
                     id='orgEditMenu'
                     type='div'
                     className='navigationContainer orgAdminEdit'
+                    opts={{
+                      saveGlobal: this.saveGlobal,
+                      closeCallback: () => this.props.saveOrg()
+                    }}
                   >
                     <button className='tooltip blockEditButton' id='orgEditMenu'>
                       <span className='tooltipTop'><i />Click Icon to EDIT Navigation Menu</span>
                       <span className='icon icon-edit'></span>
                     </button>
                   </ModalLink>
-                  <div className='navigationContainer'>
-                  { !isMobile ?
-                    this.pageLinks()
+                  { pageOptions.length > 0 ?
+                    <div className='navigationContainer'>
+                    { !isMobile ?
+                      this.pageLinks()
+                    :
+                      <div className='navigationDropdown'>
+                        {this.pageDropdown(this.pageOptions())}
+                      </div>
+                    }
+                    </div>
                   :
-                    <div className='navigationDropdown'>
-                      {this.pageDropdown()}
+                    <div className='navigationContainer'>
+                      Manage Navigation Menu
                     </div>
                   }
-                  </div>
                 </div>
               : null }
             </div>

@@ -2436,12 +2436,26 @@
       }
     }
 
+    .articleLeftDrag {
+      width: 28px;
+      height: 20px;
+      margin-right: 10px;
+      .icon {
+        font-size: 20px;
+      }
+
+      .tooltip .tooltipTop {
+        top: -10px;
+        min-width: 150px;
+      }
+    }
+
     .articleText {
       position: relative;
       margin-top: 5px;
       margin-left: 10px;
       font-size: .9em;
-      width: 70%;
+      width: auto;
     }
   }
 
@@ -2457,10 +2471,15 @@
   }
 }
 
+.gbx3OrgAdmin,
 .gbx3Shop.editable {
 
   .sortableListItem {
     background: transparent;
+  }
+
+  .articleItem.disabled {
+    opacity: .6;
   }
 
   .articleItem {
