@@ -621,12 +621,14 @@ export function saveOrg(options = {}) {
     data: {},
     isSending: false,
     callback: null,
+    orgUpdated: false,
+    showSaving: true,
     ...options
   };
 
   return (dispatch, getState) => {
     const gbx3 = util.getValue(getState(), 'gbx3', {});
-    const orgUpdated = util.getValue(gbx3, 'orgUpdated', false);
+    const orgUpdated = opts.orgUpdated || util.getValue(gbx3, 'orgUpdated', false);
     const orgData = util.getValue(gbx3, 'orgData', {});
     const customTemplate = util.getValue(orgData, 'customTemplate', {});
     const orgPages = util.getValue(gbx3, 'orgPages', {});
@@ -649,13 +651,13 @@ export function saveOrg(options = {}) {
       ...opts.data
     };
     if (orgUpdated) {
-      dispatch(updateGBX3('saveStatus', 'saving'));
+      if (opts.showSaving) dispatch(updateGBX3('saveStatus', 'saving'));
       dispatch(sendResource(util.getValue(info, 'apiName'), {
         id: util.getValue(info, 'orgID'),
         data: dataObj,
         method: 'patch',
         callback: (res, err) => {
-          dispatch(updateGBX3('saveStatus', 'done'));
+          if (opts.showSaving) dispatch(updateGBX3('saveStatus', 'done'));
           dispatch(updateGBX3('orgUpdated', false));
           if (opts.callback) opts.callback(res, err);
         },

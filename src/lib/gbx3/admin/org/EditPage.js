@@ -4,21 +4,64 @@ import * as util from '../../../common/utility';
 import TextField from '../../../form/TextField';
 import GBLink from '../../../common/GBLink';
 import {
-  updateOrgPages
+  updateOrgPage,
+  saveOrg
 } from '../../redux/gbx3actions';
 import {
   toggleModal
 } from '../../../api/actions';
+import Form from '../../../form/Form';
 
-class EditPage extends React.Component {
+class EditPageForm extends React.Component {
 
   constructor(props) {
     super(props);
+    this.processForm = this.processForm.bind(this);
+    this.formSavedCallback = this.formSavedCallback.bind(this);
     this.state = {
     };
   }
 
   componentDidMount() {
+  }
+
+  formSavedCallback() {
+    if (this.props.callback) {
+      this.props.callback(arguments[0]);
+    }
+  }
+
+  processCallback(res, err) {
+    if (!err) {
+      this.props.formSaved(this.formSavedCallback);
+    } else {
+      if (!this.props.getErrors(err)) this.props.formProp({error: this.props.savingErrorMsg});
+    }
+    return;
+  }
+
+  async processForm(fields) {
+    const {
+      page,
+      pages,
+      pageSlug
+    } = this.props;
+
+    util.toTop('modalOverlay-orgEditPage');
+    const data = {};
+    Object.entries(fields).forEach(([key, value]) => {
+      if (value.autoReturn) data[key] = value.value;
+    });
+
+    const pageUpdated = await this.props.updateOrgPage(pageSlug, data);
+    if (pageUpdated) {
+      this.props.saveOrg({
+        isSending: true,
+        orgUpdated: true,
+        showSaving: false,
+        callback: this.processCallback.bind(this)
+      });
+    }
   }
 
   render() {
@@ -28,51 +71,54 @@ class EditPage extends React.Component {
       page
     } = this.props;
 
-    const navText = util.getValue(page, 'navText', page.name);
-    const pageTitle = util.getValue(page, 'pageTitle', page.name);
+    const pageName = util.getValue(page, 'name');
+    const navText = util.getValue(page, 'navText', pageName);
+    const pageTitle = util.getValue(page, 'pageTitle', pageName);
+
+    return (
+      <div className='editPageWrapper'>
+        <h2 className='flexCenter'>Edit {util.getValue(page, 'name')}</h2>
+        {this.props.textField('name', {  fixedLabel: true, label: 'Page Label', placeholder: 'Enter Page Label', value: pageName })}
+        {this.props.textField('navText', {  fixedLabel: true, label: 'Navigation Text', placeholder: 'Enter Navigation Text', value: navText })}
+        {this.props.textField('pageTitle', {  fixedLabel: true, label: 'Page Title', placeholder: 'Enter Page Title', value: pageTitle })}
+        <div className='button-group flexCenter'>
+          <GBLink className='link secondary' onClick={() => this.props.toggleModal('orgEditPage', false)}>Cancel</GBLink>
+          {this.props.saveButton(this.processForm, { style: { width: 150 } })}
+        </div>
+      </div>
+    )
+  }
+}
+
+class EditPage extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      error: false
+    };
+  }
+
+  componentDidMount() {
+  }
+
+  render() {
 
     return (
       <div className='modalWrapper'>
         <div className='formSectionContainer'>
           <div className='formSection'>
-            <h2 className='flexCenter'>Edit {util.getValue(page, 'name')}</h2>
-            <TextField
-              name='navText'
-              label='Navigation Text'
-              fixedLabel={true}
-              placeholder='Enter Navigation Text'
-              value={navText}
-              onChange={(e) => {
-                const value = e.currentTarget.value;
-                this.props.updateOrgPages(pageSlug, {
-                  navText: value
-                });
+            <Form
+              name='orgEditPage'
+              id='orgEditPage'
+              options={{
+                required: true
               }}
-            />
-            <TextField
-              name='pageText'
-              label='Page Title'
-              fixedLabel={true}
-              placeholder='Enter Page Title'
-              value={pageTitle}
-              onChange={(e) => {
-                const value = e.currentTarget.value;
-                this.props.updateOrgPages(pageSlug, {
-                  pageTitle: value
-                });
-              }}
-            />
-            <div className='button-group flexCenter'>
-              <GBLink
-                onClick={() => {
-                  this.props.closeCallback();
-                  this.props.toggleModal('orgEditPage', false);
-                }}
-                className='button'
-              >
-                Save
-              </GBLink>
-            </div>
+            >
+              <EditPageForm
+                {...this.props}
+              />
+            </Form>
           </div>
         </div>
       </div>
@@ -86,11 +132,13 @@ function mapStateToProps(state, props) {
   const page = util.getValue(pages, props.pageSlug, {});
 
   return {
+    pages,
     page
   }
 }
 
 export default connect(mapStateToProps, {
-  updateOrgPages,
-  toggleModal
+  updateOrgPage,
+  toggleModal,
+  saveOrg
 })(EditPage);

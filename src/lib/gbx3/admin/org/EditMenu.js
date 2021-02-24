@@ -6,8 +6,6 @@ import GBLink from '../../../common/GBLink';
 import ModalLink from '../../../modal/ModalLink';
 import Choice from '../../../form/Choice';
 import {
-  updateOrgPage,
-  updateOrgGlobal,
   updatePagesEnabled,
   saveOrg
 } from '../../redux/gbx3actions';
@@ -76,7 +74,7 @@ class EditMenu extends React.Component {
   };
 
   editPageCloseCallback() {
-    this.props.saveOrg();
+    //this.props.saveOrg();
   }
 
   editLink(page) {
@@ -236,8 +234,6 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
-  updateOrgPage,
-  updateOrgGlobal,
   updatePagesEnabled,
   toggleModal,
   saveOrg

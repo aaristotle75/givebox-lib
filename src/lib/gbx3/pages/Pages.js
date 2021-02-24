@@ -281,9 +281,10 @@ class Pages extends Component {
     Object.entries(pages).forEach(([key, value]) => {
       const enabled = pagesEnabled.includes(key) ? true : false;
       if (enabled || isAdmin) {
+        const primaryText = util.getValue(value, 'navText', value.name);
         const secondaryText = !enabled ? <span className='gray'>Disabled</span> : null;
         const rightText = value.slug === pageSlug ? <span className='icon icon-check'></span> : null;
-        options.push({ key, rightText, secondaryText, primaryText: value.name, value: value.slug });
+        options.push({ key, rightText, secondaryText, primaryText, value: value.slug });
       }
     });
 

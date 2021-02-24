@@ -119,6 +119,7 @@ class Org extends React.Component {
 
     pagesEnabled.forEach((key) => {
       const value = util.getValue(pages, key, {});
+      const primaryText = util.getValue(value, 'navText', value.name);
       const active = value.slug === pageSlug ? true : false;
       links.push(
         <GBLink
@@ -126,7 +127,7 @@ class Org extends React.Component {
           className={`link ${active ? 'active' : ''}`}
           onClick={() => active ? console.log('Active Link') : this.onClickPageLink(value.slug)}
         >
-          {value.name}
+          {primaryText}
         </GBLink>
       );
     });
@@ -146,9 +147,8 @@ class Org extends React.Component {
     pagesEnabled.forEach((val, key) => {
       const value = util.getValue(pages, val, {});
       const primaryText = util.getValue(value, 'navText', value.name);
-      console.log('execute -> ', primaryText);
       const rightText = value.slug === pageSlug ? <span className='icon icon-check'></span> : null;
-      options.push({ key, rightText, primaryText, value: value.slug });
+      options.push({ key: val, rightText, primaryText, value: value.slug });
     });
 
     return options;
