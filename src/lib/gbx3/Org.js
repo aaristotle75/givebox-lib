@@ -207,22 +207,7 @@ class Org extends React.Component {
                     id='orgEditTitle'
                     className='tooltip blockEditButton'
                     opts={{
-                      closeCallback: (type) => {
-                        if (type === 'cancel') {
-                          this.saveGlobal('title', {
-                            content: this.state.defaultTitle
-                          })
-                        } else {
-                          this.props.saveOrg({
-                            callback: (res, err) => {
-                              if (!util.isEmpty(res)) {
-                                const defaultTitle = util.getValue(res, 'customTemplate.orgGlobals.title.content', title);
-                                this.setState({ defaultTitle });
-                              }
-                            }
-                          });
-                        }
-                      }
+                      saveGlobal: this.saveGlobal
                     }}
                   >
                     <span className='tooltipTop'><i />Click Icon to EDIT Title</span>

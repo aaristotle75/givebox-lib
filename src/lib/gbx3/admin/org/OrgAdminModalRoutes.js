@@ -48,7 +48,7 @@ export default class OrgAdminModalRoutes extends Component {
         <ModalRoute
           className='gbx3 gbx3OrgAdmin'
           id={'orgEditPage'}
-          effect='3DFlipVert' style={{ width: '60%' }}
+          effect='3DFlipVert' style={{ width: '70%' }}
           draggable={true}
           draggableTitle={`Editing Page`}
           disallowBgClose={false}

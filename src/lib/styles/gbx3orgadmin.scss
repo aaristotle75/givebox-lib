@@ -3,6 +3,12 @@
 
 .gbx3OrgAdmin {
 
+  .articleGroupList.campaignsEdit {
+    @media (min-width: $breakpoint ) {
+      max-height: 100%;
+    }
+  }
+
   .editableRowMenu {
     top: 20px;
     display: flex;
