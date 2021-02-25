@@ -221,6 +221,7 @@ class Design extends React.Component {
           <div
             key={'form'}
             className={`stageContainer ${open ? 'open' : 'close'}`}
+            id='stageContainer'
           >
             {this.renderDisplay()}
           </div>

@@ -19,8 +19,8 @@ $contentHeaderPadding: 35%;
   }
 
   button.toTop:hover {
-    background: $med-blue-gray;
-    opacity: .7;
+    color: $med-gray;
+    background: transparentize($white, 0);
   }
 
   .gbx3LayoutBackground {
@@ -271,7 +271,26 @@ $contentHeaderPadding: 35%;
     }
   }
 
-  .listWrapper {
+  .pageContentWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .pageContentSection {
+    position: relative;
+  }
+
+  .pageContentSection.top {
+    margin-bottom: 20px;
+  }
+
+  .pageContentSection.bottom {
+    margin-top: 20px;
+  }
+
+  .pageListWrapper {
+    position: relative;
     display: flex;
     justify-content: center;
   }

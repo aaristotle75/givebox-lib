@@ -4,6 +4,7 @@ import Loadable from 'react-loadable';
 import * as util from '../common/utility';
 import Image from '../common/Image';
 import GBLink from '../common/GBLink';
+import ScrollTo from '../common/ScrollTo';
 import Dropdown from '../form/Dropdown';
 import ModalLink from '../modal/ModalLink';
 import has from 'has';
@@ -20,7 +21,6 @@ import Header from './pages/Header';
 import Pages from './pages/Pages';
 import Footer from './Footer';
 import Scroll from 'react-scroll';
-import axios from 'axios';
 
 class Org extends React.Component {
 
@@ -189,7 +189,7 @@ class Org extends React.Component {
 
     return (
       <div className='gbx3Org'>
-        <GBLink onClick={() => util.toTop('gbx3Layout')} className='toTop'><span className='icon icon-chevrons-up'></span></GBLink>
+        <ScrollTo elementID={isAdmin ? 'stageContainer' : 'gbx3Layout'} />
         <div className='gbx3OrgHeader'>
           <div className={'gbx3OrgLogoContainer'} onClick={() => console.log('logo clicked!')}>
             <Image size='thumb' maxSize={35} url={'https://givebox.s3-us-west-1.amazonaws.com/public/gb-logo5.png'} alt='Givebox' />

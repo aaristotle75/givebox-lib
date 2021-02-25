@@ -8,6 +8,7 @@ import ArticleCard from './ArticleCard';
 import Search from '../../table/Search';
 import Dropdown from '../../form/Dropdown';
 import CalendarField from '../../form/CalendarField';
+import PageContentSection from './PageContentSection';
 import {
   setPageState,
   setPageSearch
@@ -342,8 +343,12 @@ class Pages extends Component {
             />
           </div>
         </div>
-        <div className='listWrapper'>
-          {this.renderList()}
+        <div className='pageContentWrapper'>
+          <PageContentSection section='top' />
+          <div className='pageListWrapper'>
+            {this.renderList()}
+          </div>
+          <PageContentSection section='bottom' />
         </div>
       </div>
     )

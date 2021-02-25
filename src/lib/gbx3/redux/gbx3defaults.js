@@ -31,37 +31,27 @@ export const defaultOrgPages = {
   featured: {
     name: 'Featured',
     slug: 'featured',
-    kind: 'all',
-    style: {},
-    content: {}
+    kind: 'all'
   },
   fundraisers: {
     name: 'Donate',
     slug: 'fundraisers',
-    kind: 'fundraiser',
-    style: {},
-    content: {}
+    kind: 'fundraiser'
   },
   events: {
     name: 'Events',
     slug: 'events',
-    kind: 'event',
-    style: {},
-    content: {}
+    kind: 'event'
   },
   memberships: {
     name: 'Memberships',
     slug: 'memberships',
-    kind: 'membership',
-    style: {},
-    content: {}
+    kind: 'membership'
   },
   sweepstakes: {
     name: 'Sweepstakes',
     slug: 'sweepstakes',
-    kind: 'sweepstake',
-    style: {},
-    content: {}
+    kind: 'sweepstake'
   }
 };
 
