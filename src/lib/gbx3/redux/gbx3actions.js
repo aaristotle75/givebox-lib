@@ -70,11 +70,11 @@ export function updateOrgPage(slug, page) {
   }
 }
 
-export function updateOrgPageSlug(oldSlug, newSlug) {
+export function updateOrgPageSlug(slug, customSlug) {
   return {
     type: types.UPDATE_ORG_PAGE_SLUG,
-    oldSlug,
-    newSlug
+    slug,
+    customSlug
   }
 }
 
@@ -1328,7 +1328,14 @@ export function loadOrg(orgID, callback) {
           };
 
           const pagesEnabled = util.getValue(orgGlobals, 'pagesEnabled', []);
-          const activePageSlug = util.getValue(info, 'queryParams.page', util.getValue(pagesEnabled, 0, 'featured'));
+          const queryPageSlug = util.getValue(info, 'queryParams.page');
+
+          let activePageSlug = util.getValue(pagesEnabled, 0, 'featured');
+          if (queryPageSlug) {
+            const customSlugs = util.getValue(orgGlobals, 'customSlugs', []);
+            const customSlugObj = customSlugs.find(s => s.customSlug === queryPageSlug);
+            activePageSlug = util.getValue(customSlugObj, 'slug', activePageSlug);
+          }
 
           dispatch(updateInfo({
             orgID,

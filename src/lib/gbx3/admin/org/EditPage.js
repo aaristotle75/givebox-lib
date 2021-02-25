@@ -62,7 +62,9 @@ class EditPageForm extends React.Component {
   async processForm(fields) {
     const {
       page,
-      pages
+      pages,
+      pageSlug,
+      customSlug
     } = this.props;
 
     const {
@@ -82,14 +84,19 @@ class EditPageForm extends React.Component {
       if (value.autoReturn) data[key] = value.value;
     });
 
-    const pageSlug = data.slug;
-
     const itemsUpdated = [];
     let itemsToWait = 1;
     if (saveTopAsGlobal && saveBottomAsGlobal) {
       itemsToWait = 3;
     } else if (saveTopAsGlobal || saveBottomAsGlobal) {
       itemsToWait = 2;
+    }
+
+    if (customSlug !== data.customSlug) {
+      itemsToWait = itemsToWait + 1;
+      if (await this.props.updateOrgPageSlug(pageSlug, data.customSlug)) {
+        itemsUpdated.push('customSlug');
+      }
     }
 
     if (saveTopAsGlobal) {
@@ -122,6 +129,7 @@ class EditPageForm extends React.Component {
 
     const {
       pageSlug,
+      customSlug,
       page,
       orgID,
       autoFocus
@@ -135,7 +143,6 @@ class EditPageForm extends React.Component {
     } = this.state;
 
     const pageName = util.getValue(page, 'name');
-    const slug = util.getValue(page, 'slug');
     const navText = util.getValue(page, 'navText', pageName);
     const pageTitle = util.getValue(page, 'pageTitle', pageName);
 
@@ -150,8 +157,8 @@ class EditPageForm extends React.Component {
         >
           <div className='formSectionContainer'>
             <div className='formSection'>
-              {this.props.textField('slug', { fixedLabel: true, label: 'URL Value', placeholder: 'Enter URL Value', value: slug, style: { paddingBottom: 5 }, onBlur: (name, value) => this.props.updateOrgPageSlug(slug, value) })}
-              <div style={{ marginBottom: 20 }} className='fieldContext'>The URL value is used as a query parameter to directly access a page. Example: Add ?page={slug} to the end of the url.</div>
+              {this.props.textField('customSlug', { fixedLabel: true, label: 'URL Value', placeholder: 'Enter URL Value', value: customSlug, style: { paddingBottom: 5 } })}
+              <div style={{ marginBottom: 20 }} className='fieldContext'>The URL value is used as a query parameter to directly access a page. Example: Add ?page={customSlug} to the end of the url.</div>
               {this.props.textField('name', {  fixedLabel: true, label: 'Page Label', placeholder: 'Enter Page Label', value: pageName, style: { paddingBottom: 5 } })}
               <div className='fieldContext'>This label is used soley as an Administrator reference.</div>
             </div>
@@ -280,6 +287,9 @@ function mapStateToProps(state, props) {
   const pages = util.getValue(state, 'gbx3.orgPages', {});
   const page = util.getValue(pages, props.pageSlug, {});
   const globalPageContent = util.getValue(state, 'gbx3.orgGlobals.pageContent', {});
+  const customSlugs = util.getValue(state, 'gbx3.orgGlobals.customSlugs', []);
+  const customSlugObj = customSlugs.find(s => s.slug === pageSlug);
+  const customSlug = util.getValue(customSlugObj, 'customSlug', pageSlug);
   const saveTopAsGlobal = util.getValue(globalPageContent, 'top') === pageSlug ? true : false;
   const saveBottomAsGlobal = util.getValue(globalPageContent, 'bottom') === pageSlug ? true : false;
 
@@ -287,6 +297,7 @@ function mapStateToProps(state, props) {
     pages,
     page,
     globalPageContent,
+    customSlug,
     saveTopAsGlobal,
     saveBottomAsGlobal,
     orgID: util.getValue(state, 'gbx3.info.orgID')

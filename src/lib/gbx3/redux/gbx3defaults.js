@@ -25,7 +25,14 @@ export const defaultOrgGlobals = {
   pageContent: {
     top: null,
     bottom: null
-  }
+  },
+  customSlugs: [
+    { slug: 'featured', customSlug: 'featured' },
+    { slug: 'fundraisers', customSlug: 'fundraisers' },
+    { slug: 'events', customSlug: 'events' },
+    { slug: 'memberships', customSlug: 'memberships' },
+    { slug: 'sweepstakes', customSlug: 'sweepstakes' }
+  ]
 };
 
 export const defaultOrgPages = {

@@ -185,26 +185,15 @@ export function gbx3(state = {
         }
       });
     case types.UPDATE_ORG_PAGE_SLUG:
-      const orgPages = { ...state.orgPages };
-      orgPages[action.newSlug] = orgPages[action.oldSlug];
-      delete orgPages[action.oldSlug];
       const orgGlobals = { ...state.orgGlobals };
-      const pagesEnabled = util.getValue(orgGlobals, 'pagesEnabled', []);
-      const pagesEnabledIndex = pagesEnabled.findIndex(e => e === action.oldSlug);
-      if (util.getValue(pagesEnabled, pagesEnabledIndex)) pagesEnabled[pagesEnabledIndex] = action.newSlug;
-      const info = { ...state.info };
-      if (info.activePageSlug === action.oldSlug) info.activePageSlug = action.newSlug;
-
-      console.log('execute', orgPages, orgGlobals, info);
+      const customSlugs = util.getValue(orgGlobals, 'customSlugs', []);
+      const customSlugObj = customSlugs.find(s => s.slug === action.slug);
+      if (util.getValue(customSlugObj, 'customSlug')) {
+        customSlugObj.customSlug = action.customSlug;
+      }
       return Object.assign({}, state, {
-        orgPages: {
-          ...orgPages
-        },
         orgGlobals: {
           ...orgGlobals
-        },
-        info: {
-          ...info
         }
       });
     case types.UPDATE_ORG_GLOBALS:
