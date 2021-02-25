@@ -226,12 +226,11 @@ $contentHeaderPadding: 35%;
 }
 
 .gbx3OrgPages {
+  position: relative;
 
   .gbx3OrgPagesTop {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
+    position: relative;
+    height: 50px;
     margin-bottom: 10px;
 
     h2 {
@@ -239,23 +238,27 @@ $contentHeaderPadding: 35%;
     }
   }
 
+  .gbx3orgPagesTopContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 9;
+  }
+
   .gbx3OrgPagesTopLeft {
     display: flex;
     align-items: center;
+  }
 
-    .navigationDropdown {
-      .dropdown button {
-        background: $light-gray;
-        border-radius: 10px;
-        padding: 10px 15px !important;
-        .icon {
-          top: 10px;
-        }
-      }
-      .dropdown button:hover {
-        opacity: .8;
-      }
-    }
+  .gbx3OrgPageTitle {
+    position: relative;
+    white-space: nowrap;
   }
 
   .gbx3OrgPagesSearch {
@@ -272,13 +275,12 @@ $contentHeaderPadding: 35%;
   }
 
   .pageContentWrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    position: relative;
   }
 
   .pageContentSection {
     position: relative;
+    padding: 0 10px;
   }
 
   .pageContentSection.top {
@@ -287,6 +289,18 @@ $contentHeaderPadding: 35%;
 
   .pageContentSection.bottom {
     margin-top: 20px;
+    margin-bottom: 40px;
+  }
+
+  .pageContentContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9;
+    padding: 0 10px;
+    margin: 0 auto;
   }
 
   .pageListWrapper {

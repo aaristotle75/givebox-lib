@@ -4,6 +4,7 @@ import * as util from '../../common/utility';
 import * as types from '../../common/types';
 import GBLink from '../../common/GBLink';
 import Loader from '../../common/Loader';
+import ModalLink from '../../modal/ModalLink';
 import ArticleCard from './ArticleCard';
 import Search from '../../table/Search';
 import Dropdown from '../../form/Dropdown';
@@ -18,6 +19,7 @@ import {
 } from '../../api/helpers';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Moment from 'moment';
+import Scroll from 'react-scroll';
 import has from 'has';
 
 class Pages extends Component {
@@ -103,7 +105,8 @@ class Pages extends Component {
     const activePage = pages[pageSlug];
     const kind = util.getValue(activePage, 'kind', 'all');
     const kindFilter = kind === 'all' ? '' : `%3Bkind:"${kind}"`;
-    const filter = `givebox:true${kindFilter}${opts.filter ? `%3B${opts.filter}` : ''}`;
+    const customListFilter = util.getValue(activePage, 'customList.filter', 'givebox:true');
+    const filter = `${customListFilter}${kindFilter}${opts.filter ? `%3B${opts.filter}` : ''}`;
 
     this.props.getResource('orgArticles', {
       orgID,
@@ -298,7 +301,8 @@ class Pages extends Component {
       pageList,
       resourceName,
       pages,
-      pageSlug
+      pageSlug,
+      isAdmin
     } = this.props;
 
     if (util.isLoading(pageList)) return <Loader msg='Loading List...' />
@@ -306,48 +310,66 @@ class Pages extends Component {
     const pageSearch = util.getValue(this.props.pageSearch, pageSlug, {});
     const pageName = util.getValue(page, 'name');
     const pageTitle = util.getValue(page, 'pageTitle', pageName);
+    const isCustom = util.getValue(page, 'isCustom', false);
+    const Element = Scroll.Element;
 
     return (
       <div className='gbx3OrgPages'>
         {util.isFetching(pageList) ? <Loader msg='Loading List...' /> : null }
-        <div className='gbx3OrgPagesTop'>
-          <div className='gbx3OrgPagesTopLeft'>
-            <div className='orgAdminDropdown managePageDropdown orgAdminOnly'>
-              {this.props.pageDropdown(this.pageOptions(), 'Manage Page')}
+        <div className='orgAdminDropdown managePageDropdown orgAdminOnly'>
+          {this.props.pageDropdown(this.pageOptions(), 'Manage Page')}
+        </div>
+        <div style={{ marginTop: isAdmin ? 15 : 0 }} className='gbx3OrgPagesTop'>
+          <ModalLink
+            id='orgEditPage'
+            type='div'
+            className='gbx3orgPagesTopContainer orgAdminEdit'
+            opts={{
+              isCustom,
+              pageSlug
+            }}
+          >
+            <button className='tooltip blockEditButton' id='orgEditPage'>
+              <span className='tooltipTop'><i />Click Icon to EDIT Page</span>
+              <span className='icon icon-edit'></span>
+            </button>
+          </ModalLink>
+          <div className='gbx3orgPagesTopContainer'>
+            <div className='gbx3OrgPagesTopLeft'>
+              <h2>{pageTitle}</h2>
             </div>
-            <h2>{pageTitle}</h2>
-          </div>
-          <div className='gbx3OrgPagesSearch'>
-            <Search
-              searchValue={util.getValue(pageSearch, 'query')}
-              placeholder={`Search ${util.getValue(page, 'name')}`}
-              getSearch={(value) => {
-                if (value) {
-                  if (value !== util.getValue(pageSearch, 'query')) {
-                    this.setPageSearch({ query: value }, () => {
-                      this.getArticles({
-                        search: true,
-                        query: value,
-                        reload: true,
-                        pageNumber: 1
+            <div className='gbx3OrgPagesSearch'>
+              <Search
+                searchValue={util.getValue(pageSearch, 'query')}
+                placeholder={`Search ${util.getValue(page, 'name')}`}
+                getSearch={(value) => {
+                  if (value) {
+                    if (value !== util.getValue(pageSearch, 'query')) {
+                      this.setPageSearch({ query: value }, () => {
+                        this.getArticles({
+                          search: true,
+                          query: value,
+                          reload: true,
+                          pageNumber: 1
+                        });
                       });
-                    });
+                    }
+                  } else {
+                    this.resetPageSearch();
                   }
-                } else {
+                }}
+                resetSearch={() => {
                   this.resetPageSearch();
-                }
-              }}
-              resetSearch={() => {
-                this.resetPageSearch();
-              }}
-            />
+                }}
+              />
+            </div>
           </div>
         </div>
         <div className='pageContentWrapper'>
           <PageContentSection section='top' />
-          <div className='pageListWrapper'>
+          <Element name='gbx3OrgPages'  className='pageListWrapper'>
             {this.renderList()}
-          </div>
+          </Element>
           <PageContentSection section='bottom' />
         </div>
       </div>

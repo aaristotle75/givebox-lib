@@ -4,8 +4,11 @@ import * as util from '../../../common/utility';
 import TextField from '../../../form/TextField';
 import GBLink from '../../../common/GBLink';
 import Collapse from '../../../common/Collapse';
+import Choice from '../../../form/Choice';
 import {
+  updateOrgGlobal,
   updateOrgPage,
+  updateOrgPageSlug,
   saveOrg
 } from '../../redux/gbx3actions';
 import {
@@ -23,21 +26,22 @@ class EditPageForm extends React.Component {
     this.onBlur = this.onBlur.bind(this);
     this.onChange = this.onChange.bind(this);
     this.state = {
-      content: util.getValue(props.title, 'content')
+      top: util.getValue(props.page, 'top'),
+      bottom: util.getValue(props.page, 'bottom'),
+      saveTopAsGlobal: props.saveTopAsGlobal,
+      saveBottomAsGlobal: props.saveBottomAsGlobal
     };
   }
 
   componentDidMount() {
   }
 
-  onBlur(content) {
-    this.setState({ content });
-    if (this.props.onBlur) this.props.onBlur(this.props.name, content);
+  onBlur(content, section) {
+    this.setState({ [section]: content });
   }
 
-  onChange(content) {
-    this.setState({ content, hasBeenUpdated: true });
-    if (this.props.onChange) this.props.onChange(this.props.name, content);
+  onChange(content, section) {
+    this.setState({ [section]: content, hasBeenUpdated: true });
   }
 
   formSavedCallback() {
@@ -58,18 +62,53 @@ class EditPageForm extends React.Component {
   async processForm(fields) {
     const {
       page,
-      pages,
-      pageSlug
+      pages
     } = this.props;
 
+    const {
+      top,
+      bottom,
+      saveTopAsGlobal,
+      saveBottomAsGlobal
+    } = this.state;
+
     util.toTop('modalOverlay-orgEditPage');
-    const data = {};
+    const data = {
+      top,
+      bottom
+    };
+
     Object.entries(fields).forEach(([key, value]) => {
       if (value.autoReturn) data[key] = value.value;
     });
 
-    const pageUpdated = await this.props.updateOrgPage(pageSlug, data);
-    if (pageUpdated) {
+    const pageSlug = data.slug;
+
+    const itemsUpdated = [];
+    let itemsToWait = 1;
+    if (saveTopAsGlobal && saveBottomAsGlobal) {
+      itemsToWait = 3;
+    } else if (saveTopAsGlobal || saveBottomAsGlobal) {
+      itemsToWait = 2;
+    }
+
+    if (saveTopAsGlobal) {
+      if (await this.props.updateOrgGlobal('pageContent', { top: pageSlug })) {
+        itemsUpdated.push('topGlobal');
+      }
+    }
+
+    if (saveBottomAsGlobal) {
+      if (await this.props.updateOrgGlobal('pageContent', { bottom: pageSlug })) {
+        itemsUpdated.push('bottomGlobal');
+      }
+    }
+
+    if (await this.props.updateOrgPage(pageSlug, data)) {
+      itemsUpdated.push('pageUpdated');
+    }
+
+    if (itemsUpdated.length === itemsToWait) {
       this.props.saveOrg({
         isSending: true,
         orgUpdated: true,
@@ -84,25 +123,47 @@ class EditPageForm extends React.Component {
     const {
       pageSlug,
       page,
-      orgID
+      orgID,
+      autoFocus
     } = this.props;
 
+    const {
+      top,
+      bottom,
+      saveTopAsGlobal,
+      saveBottomAsGlobal
+    } = this.state;
+
     const pageName = util.getValue(page, 'name');
+    const slug = util.getValue(page, 'slug');
     const navText = util.getValue(page, 'navText', pageName);
     const pageTitle = util.getValue(page, 'pageTitle', pageName);
-    const content = this.state.content;
 
     return (
       <div className='editPageWrapper'>
         <h2 className='flexCenter'>Edit {util.getValue(page, 'name')}</h2>
         <Collapse
           iconPrimary={'edit'}
-          label={'General'}
+          label={'Administrative'}
+          id='editPageSystem'
+          default='closed'
+        >
+          <div className='formSectionContainer'>
+            <div className='formSection'>
+              {this.props.textField('slug', { fixedLabel: true, label: 'URL Value', placeholder: 'Enter URL Value', value: slug, style: { paddingBottom: 5 }, onBlur: (name, value) => this.props.updateOrgPageSlug(slug, value) })}
+              <div style={{ marginBottom: 20 }} className='fieldContext'>The URL value is used as a query parameter to directly access a page. Example: Add ?page={slug} to the end of the url.</div>
+              {this.props.textField('name', {  fixedLabel: true, label: 'Page Label', placeholder: 'Enter Page Label', value: pageName, style: { paddingBottom: 5 } })}
+              <div className='fieldContext'>This label is used soley as an Administrator reference.</div>
+            </div>
+          </div>
+        </Collapse>
+        <Collapse
+          iconPrimary={'edit'}
+          label={'Display'}
           id='editPageGeneral'
         >
           <div className='formSectionContainer'>
             <div className='formSection'>
-              {this.props.textField('name', {  fixedLabel: true, label: 'Page Label', placeholder: 'Enter Page Label', value: pageName })}
               {this.props.textField('navText', {  fixedLabel: true, label: 'Navigation Text', placeholder: 'Enter Navigation Text', value: navText })}
               {this.props.textField('pageTitle', {  fixedLabel: true, label: 'Page Title', placeholder: 'Enter Page Title', value: pageTitle })}
             </div>
@@ -110,20 +171,64 @@ class EditPageForm extends React.Component {
         </Collapse>
         <Collapse
           iconPrimary={'edit'}
-          label={'Top Content (Above List)'}
-          id='editPageEditor'
+          label={'Page Header'}
+          id='editPageTopEditor'
         >
           <div className='formSectionContainer'>
             <div className='formSection'>
               <Editor
                 orgID={orgID}
                 articleID={null}
-                content={content}
-                onBlur={this.onBlur}
-                onChange={this.onChange}
+                content={top}
+                onBlur={(content) => this.onBlur(content, 'top')}
+                onChange={(content) => this.onChange(content, 'top')}
                 type={'classic'}
                 subType={'content'}
                 acceptedMimes={['image']}
+                autoFocus={autoFocus === 'top' ? true : false}
+              />
+              <Choice
+                type='checkbox'
+                name='saveTopAsGlobal'
+                label={'Make this the Global Page Header'}
+                onChange={(name, value) => {
+                  this.setState({ saveTopAsGlobal: saveTopAsGlobal ? false : true });
+                }}
+                checked={saveTopAsGlobal}
+                value={saveTopAsGlobal}
+                toggle={true}
+              />
+            </div>
+          </div>
+        </Collapse>
+        <Collapse
+          iconPrimary={'edit'}
+          label={'Page Footer'}
+          id='editPageBottomEditor'
+        >
+          <div className='formSectionContainer'>
+            <div className='formSection'>
+              <Editor
+                orgID={orgID}
+                articleID={null}
+                content={bottom}
+                onBlur={(content) => this.onBlur(content, 'bottom')}
+                onChange={(content) => this.onChange(content, 'bottom')}
+                type={'classic'}
+                subType={'content'}
+                acceptedMimes={['image']}
+                autoFocus={autoFocus === 'bottom' ? true : false}
+              />
+              <Choice
+                type='checkbox'
+                name='saveBottomAsGlobal'
+                label={'Make this the Global Page Footer'}
+                onChange={(name, value) => {
+                  this.setState({ saveBottomAsGlobal: saveBottomAsGlobal ? false : true });
+                }}
+                checked={saveBottomAsGlobal}
+                value={saveBottomAsGlobal}
+                toggle={true}
               />
             </div>
           </div>
@@ -171,18 +276,27 @@ class EditPage extends React.Component {
 
 function mapStateToProps(state, props) {
 
+  const pageSlug = props.pageSlug;
   const pages = util.getValue(state, 'gbx3.orgPages', {});
   const page = util.getValue(pages, props.pageSlug, {});
+  const globalPageContent = util.getValue(state, 'gbx3.orgGlobals.pageContent', {});
+  const saveTopAsGlobal = util.getValue(globalPageContent, 'top') === pageSlug ? true : false;
+  const saveBottomAsGlobal = util.getValue(globalPageContent, 'bottom') === pageSlug ? true : false;
 
   return {
     pages,
     page,
+    globalPageContent,
+    saveTopAsGlobal,
+    saveBottomAsGlobal,
     orgID: util.getValue(state, 'gbx3.info.orgID')
   }
 }
 
 export default connect(mapStateToProps, {
+  updateOrgGlobal,
   updateOrgPage,
+  updateOrgPageSlug,
   toggleModal,
   saveOrg
 })(EditPage);

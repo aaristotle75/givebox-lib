@@ -22,8 +22,9 @@ export const defaultOrgGlobals = {
   title: {
     content: null
   },
-  footer: {
-    content: null
+  pageContent: {
+    top: null,
+    bottom: null
   }
 };
 

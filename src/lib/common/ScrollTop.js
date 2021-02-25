@@ -3,7 +3,7 @@ import * as util from './utility';
 import GBLink from './GBLink';
 import Fade from './Fade';
 
-export default class ScrollTo extends React.Component {
+export default class ScrollTop extends React.Component {
 
   constructor(props) {
     super(props);

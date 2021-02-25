@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import * as util from '../../common/utility';
+import ModalLink from '../../modal/ModalLink';
 
 class PageContentSection extends React.Component {
 
@@ -17,14 +18,33 @@ class PageContentSection extends React.Component {
 
     const {
       section,
-      page
+      page,
+      globalPageContent
     } = this.props;
 
-    const content = util.getValue(page, section);
+    const content = util.getValue(page, section, globalPageContent);
+    const isCustom = util.getValue(page, 'isCustom', false);
+    const pageSlug = util.getValue(page, 'slug');
+
     if (!content) return null;
 
     return (
       <div className={`pageContentSection ${section}`}>
+        <ModalLink
+          id='orgEditPage'
+          type='div'
+          className='pageContentContainer orgAdminEdit'
+          opts={{
+            isCustom,
+            pageSlug,
+            autoFocus: section
+          }}
+        >
+          <button className='tooltip blockEditButton' id='orgEditPage'>
+            <span className='tooltipTop'><i />Click Icon to EDIT Page</span>
+            <span className='icon icon-edit'></span>
+          </button>
+        </ModalLink>
         <div dangerouslySetInnerHTML={{ __html: util.cleanHtml(content) }} />
       </div>
     )
@@ -37,14 +57,18 @@ PageContentSection.defaultProps = {
 
 function mapStateToProps(state, props) {
 
+  const section = props.section;
   const pageSlug = util.getValue(state, 'gbx3.info.activePageSlug');
   const pages = util.getValue(state, 'gbx3.orgPages', {});
   const page = util.getValue(pages, pageSlug, {});
+  const globalPageContentSlug = util.getValue(state, `gbx3.orgGlobals.pageContent.${section}`);
+  const globalPageContent = util.getValue(pages, `${globalPageContentSlug}.${section}`);
 
   return {
     pageSlug,
     pages,
-    page
+    page,
+    globalPageContent
   }
 }
 

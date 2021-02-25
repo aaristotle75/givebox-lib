@@ -28,7 +28,8 @@ export default class Editor extends PureComponent {
       acceptedMimes,
       widgets,
       balloonButtons,
-      isVolunteer
+      isVolunteer,
+      autoFocus
     } = this.props;
 
     const contentCss = 'https://cdn.givebox.com/common/css/gbx3contents.css';
@@ -63,7 +64,7 @@ export default class Editor extends PureComponent {
         acceptedMimes={acceptedMimes}
         widgets={widgets}
         initCallback={(editor) => {
-          editor.focus();
+          if (autoFocus) editor.focus();
           const CKEDITOR = window.CKEDITOR;
           const selection = editor.getSelection();
           const getRanges = selection ? selection.getRanges() : [];
@@ -83,5 +84,6 @@ export default class Editor extends PureComponent {
 Editor.defaultProps = {
   type: 'classic',
   width: '100%',
-  balloonButtons: 'Image'
+  balloonButtons: 'Image',
+  autoFocus: true
 }

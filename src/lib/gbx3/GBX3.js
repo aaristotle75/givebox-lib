@@ -260,6 +260,7 @@ class GBX3 extends React.Component {
       modal
     } = this.props;
 
+    info.queryParams = queryParams;
     info.template = template;
     info.articleID = articleID;
     info.orgID = orgID;

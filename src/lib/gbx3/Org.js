@@ -4,7 +4,7 @@ import Loadable from 'react-loadable';
 import * as util from '../common/utility';
 import Image from '../common/Image';
 import GBLink from '../common/GBLink';
-import ScrollTo from '../common/ScrollTo';
+import ScrollTop from '../common/ScrollTop';
 import Dropdown from '../form/Dropdown';
 import ModalLink from '../modal/ModalLink';
 import has from 'has';
@@ -20,7 +20,6 @@ import {
 import Header from './pages/Header';
 import Pages from './pages/Pages';
 import Footer from './Footer';
-import Scroll from 'react-scroll';
 
 class Org extends React.Component {
 
@@ -85,7 +84,9 @@ class Org extends React.Component {
 
   async onClickPageLink(activePageSlug) {
     const updatedInfo = await this.props.updateInfo({ activePageSlug });
-    if (updatedInfo) this.props.scrollTo('page');
+    if (updatedInfo) {
+      this.props.scrollTo('gbx3OrgPages');
+    }
   }
 
   resizer(e) {
@@ -183,13 +184,12 @@ class Org extends React.Component {
     } = this.props;
 
     const isEditable = hasAccessToEdit && editable ? true : false;
-    const Element = Scroll.Element;
     const isAdmin = stage === 'admin' ? true : false;
     const pageOptions = this.pageOptions();
 
     return (
       <div className='gbx3Org'>
-        <ScrollTo elementID={isAdmin ? 'stageContainer' : 'gbx3Layout'} />
+        <ScrollTop elementID={isAdmin ? 'stageContainer' : 'gbx3Layout'} />
         <div className='gbx3OrgHeader'>
           <div className={'gbx3OrgLogoContainer'} onClick={() => console.log('logo clicked!')}>
             <Image size='thumb' maxSize={35} url={'https://givebox.s3-us-west-1.amazonaws.com/public/gb-logo5.png'} alt='Givebox' />
@@ -202,18 +202,19 @@ class Org extends React.Component {
           <div className='gbx3OrgSubHeader gbx3OrgContentOuterContainer'>
             <div className='gbx3OrgContentInnerContainer'>
               <div className='nameSection'>
-                <div className='nameSectionContainer orgAdminEdit'>
-                  <ModalLink
-                    id='orgEditTitle'
-                    className='tooltip blockEditButton'
-                    opts={{
-                      saveGlobal: this.saveGlobal
-                    }}
-                  >
+                <ModalLink
+                  id='orgEditTitle'
+                  type='div'
+                  className='nameSectionContainer orgAdminEdit'
+                  opts={{
+                    saveGlobal: this.saveGlobal
+                  }}
+                >
+                  <button className='tooltip blockEditButton' id='orgEditTitle'>
                     <span className='tooltipTop'><i />Click Icon to EDIT Title</span>
                     <span className='icon icon-edit'></span>
-                  </ModalLink>
-                </div>
+                  </button>
+                </ModalLink>
                 <div className='nameSectionContainer'>
                   <div className='nameText'>
                     <div dangerouslySetInnerHTML={{ __html: util.cleanHtml(title) }} />
@@ -257,12 +258,11 @@ class Org extends React.Component {
           </div>
           <main className='gbx3OrgContent gbx3OrgContentOuterContainer'>
             <div className='gbx3OrgContentInnerContainer'>
-              <Element name='page'>
                 <Pages
+                  isAdmin={isAdmin}
                   onClickArticle={this.onClickArticle}
                   pageDropdown={this.pageDropdown}
                 />
-              </Element>
             </div>
           </main>
           <div className='gbx3OrgFooter gbx3OrgContentOuterContainer'>

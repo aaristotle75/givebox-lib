@@ -718,6 +718,7 @@ class Form extends Component {
         customLabel={params.customLabel}
         fixedLabel={params.fixedLabel}
         style={params.style}
+        inputStyle={params.inputStyle}
         placeholder={field ? field.placeholder : params.placeholder}
         type={field ? field.type : params.type}
         required={field ? field.required : params.required}

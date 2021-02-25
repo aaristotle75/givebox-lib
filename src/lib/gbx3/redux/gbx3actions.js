@@ -70,6 +70,14 @@ export function updateOrgPage(slug, page) {
   }
 }
 
+export function updateOrgPageSlug(oldSlug, newSlug) {
+  return {
+    type: types.UPDATE_ORG_PAGE_SLUG,
+    oldSlug,
+    newSlug
+  }
+}
+
 export function updateOrgGlobals(orgGlobals = {}, orgUpdated = true) {
   return {
     type: types.UPDATE_ORG_GLOBALS,
@@ -1320,7 +1328,7 @@ export function loadOrg(orgID, callback) {
           };
 
           const pagesEnabled = util.getValue(orgGlobals, 'pagesEnabled', []);
-          const activePageSlug = util.getValue(pagesEnabled, 0, 'featured');
+          const activePageSlug = util.getValue(info, 'queryParams.page', util.getValue(pagesEnabled, 0, 'featured'));
 
           dispatch(updateInfo({
             orgID,
@@ -1491,6 +1499,10 @@ export function setOrgStyle(options = {}) {
       .gbx3OrgSubHeader .navigationContainer button.link.active {
         color: ${primaryColor} !important;
         border-bottom: 3px solid ${primaryColor} !important;
+      }
+
+      .gbx3OrgPages .gbx3OrgPagesSearch .input-bottom.active {
+        background: ${primaryColor} !important;
       }
     `;
 

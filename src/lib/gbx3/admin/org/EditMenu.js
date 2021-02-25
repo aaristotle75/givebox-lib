@@ -51,7 +51,6 @@ class EditMenu extends React.Component {
     this.onSortEnd = this.onSortEnd.bind(this);
     this.renderPageList = this.renderPageList.bind(this);
     this.editLink = this.editLink.bind(this);
-    this.editPageCloseCallback = this.editPageCloseCallback.bind(this);
     this.state = {
     };
   }
@@ -73,10 +72,6 @@ class EditMenu extends React.Component {
     this.props.updatePagesEnabled(pagesEnabled);
   };
 
-  editPageCloseCallback() {
-    //this.props.saveOrg();
-  }
-
   editLink(page) {
 
     const isCustom = util.getValue(page, 'isCustom', false);
@@ -87,8 +82,7 @@ class EditMenu extends React.Component {
         className='link tooltip'
         opts={{
           isCustom,
-          pageSlug: util.getValue(page, 'slug'),
-          closeCallback: this.editPageCloseCallback
+          pageSlug: util.getValue(page, 'slug')
         }}
       >
         <span className='tooltipTop'><i />Click Icon to EDIT Page</span>
