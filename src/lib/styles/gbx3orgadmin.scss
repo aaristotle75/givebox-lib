@@ -7,6 +7,13 @@
     margin-top: 20px;
     padding: 20px 0;
 
+    .filterWrapper {
+      button.link {
+        float: right;
+        font-size: 12px;
+      }
+    }
+
     .articleItem {
       cursor: pointer;
       @include transition(background .25s);

@@ -66,6 +66,7 @@ class EditPageForm extends React.Component {
 
   async processForm(fields) {
     const {
+      orgID,
       page,
       pages,
       pageSlug,
@@ -124,6 +125,7 @@ class EditPageForm extends React.Component {
 
     if (itemsUpdated.length === itemsToWait) {
       this.props.saveOrg({
+        orgID,
         isSending: true,
         orgUpdated: true,
         showSaving: false,
@@ -247,7 +249,27 @@ class EditPageForm extends React.Component {
             >
               <div className='formSectionContainer'>
                 <div className='formSection'>
-                  {this.props.textField('customSlug', { fixedLabel: true, label: 'URL Value', placeholder: 'Enter URL Value', value: customSlug, style: { paddingBottom: 5 } })}
+                  {this.props.textField('customSlug', {
+                    fixedLabel: true,
+                    label: 'URL Name (Slug)',
+                    placeholder: 'Enter URL Name (Slug)',
+                    value: customSlug,
+                    style: { paddingBottom: 5 },
+                    validate: 'custom',
+                    validateOpts: {
+                      custom: (key, value, parent) => {
+                        let validate = true;
+                        const match = /^[a-zA-Z0-9!@#%*_+-]*$/
+                        if (!match.exec(value)) validate = false;
+                        const existingSlug = this.props.customSlugs.find(s => s.customSlug === value);
+                        if (util.getValue(existingSlug, 'slug') && (util.getValue(existingSlug, 'slug') !== pageSlug)) {
+                          validate = false;
+                        }
+                        return validate;
+                      },
+                      errorMsg: 'URL name can only contain alphanumeric and !@#%*_+- characters AND/OR a duplicate slug already exists.'
+                    }
+                  })}
                   <div style={{ marginBottom: 20 }} className='fieldContext'>The URL value is used as a query parameter to directly access a page. Example: Add ?page={customSlug} to the end of the url.</div>
                 </div>
               </div>
@@ -354,6 +376,7 @@ function mapStateToProps(state, props) {
     pages,
     page,
     globalPageContent,
+    customSlugs,
     customSlug,
     saveTopAsGlobal,
     saveBottomAsGlobal,

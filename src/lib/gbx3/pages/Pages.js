@@ -348,7 +348,7 @@ class Pages extends Component {
             opts={{
               hasCustomList,
               pageSlug,
-              tabToDisplay: 'editList'
+              tabToDisplay: 'editPage'
             }}
           >
             <button className='tooltip blockEditButton' id='orgEditPage'>

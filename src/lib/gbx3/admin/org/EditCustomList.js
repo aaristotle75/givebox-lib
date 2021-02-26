@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import * as util from '../../../common/utility';
 import * as types from '../../../common/types';
 import Image from '../../../common/Image';
+import GBLink from '../../../common/GBLink';
+import Dropdown from '../../../form/Dropdown';
 import Choice from '../../../form/Choice';
 import Search from '../../../table/Search';
 import Paginate from '../../../table/Paginate';
@@ -11,6 +13,10 @@ import Filter from '../../../table/Filter';
 import {
   getResource
 } from '../../../api/helpers';
+import {
+  updateOrgPage
+} from '../../redux/gbx3actions';
+import AnimateHeight from 'react-animate-height';
 
 class EditCustomList extends React.Component {
 
@@ -19,7 +25,10 @@ class EditCustomList extends React.Component {
     this.getArticles = this.getArticles.bind(this);
     this.renderList = this.renderList.bind(this);
     this.selectArticle = this.selectArticle.bind(this);
+    this.onChangeEnabledFilter = this.onChangeEnabledFilter.bind(this);
     this.state = {
+      showFilter: false,
+      enabledFilter: ''
     };
   }
 
@@ -28,7 +37,16 @@ class EditCustomList extends React.Component {
   }
 
   selectArticle(ID) {
-    console.log('execute selectArticle -> ', ID);
+    const {
+      page,
+      pageSlug
+    } = this.props;
+
+    const customList = [ ...util.getValue(page, 'customList', []) ];
+    if (customList.includes(ID)) customList.splice(customList.findIndex(l => l === ID), 1);
+    else customList.push(ID);
+
+    this.props.updateOrgPage(pageSlug, { customList });
   }
 
   getArticles(options= {}) {
@@ -49,7 +67,11 @@ class EditCustomList extends React.Component {
       kindFilter
     } = this.props;
 
-    const filter = `${kindFilter}${opts.filter ? `%3B${opts.filter}` : ''}`;
+    const {
+      enabledFilter
+    } = this.state;
+
+    const filter = `${kindFilter}${opts.filter ? `%3B${opts.filter}` : ''}${enabledFilter ? `%3B${enabledFilter}` : ''}`;
 
     this.props.getResource('orgArticles', {
       orgID,
@@ -68,10 +90,16 @@ class EditCustomList extends React.Component {
 
   renderList() {
 
+    const {
+      page
+    } = this.props;
+
+    const customList = util.getValue(page, 'customList', []);
     const articles = util.getValue(this.props.articles, 'data', []);
     const items = [];
 
     Object.entries(articles).forEach(([key, value]) => {
+      const enabled = customList.includes(value.ID);
       items.push(
         <div
           className='articleItem sortableListItem'
@@ -84,11 +112,10 @@ class EditCustomList extends React.Component {
               name='enable'
               label={''}
               onChange={(name, value) => {
-                console.log('execute onChange -> ', name, value);
                 this.selectArticle(value.ID);
               }}
-              checked={false}
-              value={false}
+              checked={enabled}
+              value={enabled}
               toggle={true}
             />
           </div>
@@ -114,16 +141,57 @@ class EditCustomList extends React.Component {
     )
   }
 
+  customListFilter(filterDisabled) {
+    const {
+      page
+    } = this.props;
+
+    const disabled = filterDisabled ? '!' : '';
+    const customList = util.getValue(page, 'customList', []);
+    let filter = '';
+    if (!util.isEmpty(customList)) {
+      customList.forEach((value, key) => {
+        if (key === 0) filter = `ID:${disabled}${value}`;
+        else filter = filter + `%2CID:${disabled}${value}`;
+      });
+    }
+    return filter;
+  }
+
+  onChangeEnabledFilter(name, value) {
+    let enabledFilter = '';
+    switch (value) {
+      case 'enabled': {
+        enabledFilter = this.customListFilter();
+        break;
+      }
+
+      case 'disabled': {
+        enabledFilter = this.customListFilter(true);
+        break;
+      }
+
+      // no default
+    }
+    this.setState({ enabledFilter }, () => {
+      this.getArticles({ reload: true });
+    });
+  }
+
   render() {
 
     const {
+      page,
       customName,
       kind
     } = this.props;
 
     const {
-      searchQuery
+      searchQuery,
+      showFilter
     } = this.state;
+
+    const customList = util.getValue(page, 'customList', []);
 
     return (
       <div className='orgPageCustomList gbx3Shop'>
@@ -152,10 +220,39 @@ class EditCustomList extends React.Component {
               />
             </div>
           </div>
-          <Filter
-            customName={customName}
-            options={[]}
-          />
+          { !util.isEmpty(customList) ?
+            <div className='filterWrapper'>
+              <GBLink
+                className='link'
+                onClick={() => this.setState({ showFilter: showFilter ? false : true })}
+              >
+                Advanced Search <span className={`icon icon-${showFilter ? 'minus' : 'plus'}`}></span>
+              </GBLink>
+              <AnimateHeight height={showFilter ? 'auto' : 0}>
+                <div className={`filter-content flexCenter`}>
+                  <Dropdown
+                    name='filterEnabled'
+                    label=''
+                    defaultValue='all'
+                    onChange={this.onChangeEnabledFilter}
+                    style={{ width: 300 }}
+                    options={[
+                      { primaryText: 'All', value: 'all' },
+                      { primaryText: 'Enabled', value: 'enabled' },
+                      { primaryText: 'Disabled', value: 'disabled' }
+                    ]}
+                  />
+                  {/*
+                  <div className='clear'></div>
+                  <div className='button-group'>
+                    <GBLink className='button' onClick={this.ignoreFilters}>Ignore Filters</GBLink>
+                    <GBLink className='button' onClick={this.applyFilters}>Apply Filters</GBLink>
+                  </div>
+                  */}
+                </div>
+              </AnimateHeight>
+            </div>
+          : null }
         </div>
         {this.renderList()}
         <Paginate
@@ -192,5 +289,6 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
-  getResource
+  getResource,
+  updateOrgPage
 })(EditCustomList);

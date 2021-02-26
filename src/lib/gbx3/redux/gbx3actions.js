@@ -661,7 +661,7 @@ export function saveOrg(options = {}) {
     if (orgUpdated) {
       if (opts.showSaving) dispatch(updateGBX3('saveStatus', 'saving'));
       dispatch(sendResource(util.getValue(info, 'apiName'), {
-        id: util.getValue(info, 'orgID'),
+        orgID: util.getValue(info, 'orgID'),
         data: dataObj,
         method: 'patch',
         callback: (res, err) => {
