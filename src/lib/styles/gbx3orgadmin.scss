@@ -3,13 +3,18 @@
 
 .gbx3OrgAdmin {
 
+  .orgPageCustomList,
   .orgPageCustomList.gbx3Shop {
     margin-top: 20px;
     padding: 20px 0;
 
     .filterWrapper {
+      margin-top: 20px;
+
       button.link {
-        float: right;
+        position: absolute;
+        right: 10px;
+        top: -20px;
         font-size: 12px;
       }
     }
@@ -45,6 +50,10 @@
   .articleGroupList.campaignsEdit {
     @media (min-width: $breakpoint ) {
       max-height: 100%;
+    }
+
+    .noRecords {
+      font-size: 14px;
     }
   }
 

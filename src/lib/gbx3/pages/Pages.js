@@ -58,6 +58,15 @@ class Pages extends Component {
         total: 0
       }, () => this.getArticles({ reload: true, pageNumber: 1 }))
     }
+
+    if (((prevProps.customList !== this.props.customList) && this.props.useCustomList) || (prevProps.useCustomList !== this.props.useCustomList)) {
+      this.setPageState({
+        list: [],
+        search: {},
+        pageNumber: 1,
+        total: 0
+      }, () => this.getArticles({ reload: true, pageNumber: 1 }))
+    }
   }
 
   resetPageSearch() {
@@ -116,6 +125,8 @@ class Pages extends Component {
     const {
       pages,
       activePage,
+      customList,
+      useCustomList,
       kind,
       pageSlug,
       orgID
@@ -126,10 +137,8 @@ class Pages extends Component {
     };
     const pageNumber = opts.pageNumber ? opts.pageNumber : opts.search ? util.getValue(pageState, 'search.pageNumber', 1) : util.getValue(pageState, 'pageNumber', 1);
     const kindFilter = kind === 'all' ? '' : `%3Bkind:"${kind}"`;
-    const customList = util.getValue(activePage, 'customList', []);
-    const hasCustomList = util.getValue(activePage, 'hasCustomList', false);
     const customFilter = !util.isEmpty(customList) ? util.customListFilter(customList) : null;
-    const baseFilter = customFilter && hasCustomList ? customFilter : `givebox:true${kindFilter}`;
+    const baseFilter = customFilter && useCustomList ? customFilter : `givebox:true${kindFilter}`;
     const filter = `${baseFilter}${opts.filter ? `%3B${opts.filter}` : ''}`;
 
     this.props.getResource('orgArticles', {
@@ -334,7 +343,7 @@ class Pages extends Component {
     const pageSearch = util.getValue(this.props.pageSearch, pageSlug, {});
     const pageName = util.getValue(page, 'name');
     const pageTitle = util.getValue(page, 'pageTitle', pageName);
-    const hasCustomList = util.getValue(page, 'hasCustomList', false);
+    const useCustomList = util.getValue(page, 'useCustomList', false);
     const Element = Scroll.Element;
 
     return (
@@ -349,9 +358,9 @@ class Pages extends Component {
             type='div'
             className='gbx3orgPagesTopContainer orgAdminEdit'
             opts={{
-              hasCustomList,
+              useCustomList,
               pageSlug,
-              tabToDisplay: 'editPage'
+              tabToDisplay: 'editList'
             }}
           >
             <button className='tooltip blockEditButton' id='orgEditPage'>
@@ -415,6 +424,8 @@ function mapStateToProps(state, props) {
   const pageSlug = util.getValue(info, 'activePageSlug');
   const pages = util.getValue(gbx3, 'orgPages', {});
   const activePage = util.getValue(pages, pageSlug, {});
+  const customList = util.getValue(activePage, 'customList', []);
+  const useCustomList = util.getValue(activePage, 'useCustomList', false);
   const kind = util.getValue(activePage, 'kind');
   const pagesEnabled = util.getValue(gbx3, 'orgGlobals.pagesEnabled', []);
   const hasAccessToEdit = util.getValue(admin, 'hasAccessToEdit');
@@ -432,6 +443,8 @@ function mapStateToProps(state, props) {
     pageSlug,
     pages,
     activePage,
+    customList,
+    useCustomList,
     kind,
     pagesEnabled,
     hasAccessToEdit,

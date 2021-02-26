@@ -25,6 +25,7 @@ class EditCustomList extends React.Component {
     this.getArticles = this.getArticles.bind(this);
     this.renderList = this.renderList.bind(this);
     this.onChangeEnabledFilter = this.onChangeEnabledFilter.bind(this);
+    this.onChangeKindFilter = this.onChangeKindFilter.bind(this);
     this.state = {
       showFilter: false,
       enabledFilter: '',
@@ -57,7 +58,8 @@ class EditCustomList extends React.Component {
       kindFilter
     } = this.state;
 
-    const filter = `${kindFilter}${opts.filter ? `%3B${opts.filter}` : ''}${enabledFilter ? `%3B${enabledFilter}` : ''}`;
+    const baseFilter = `givebox:true`;
+    const filter = `${baseFilter}${kindFilter ? `%3B${kindFilter}` : ''}${opts.filter ? `%3B${opts.filter}` : ''}${enabledFilter ? `%3B${enabledFilter}` : ''}`;
 
     this.props.getResource('orgArticles', {
       orgID,
@@ -120,7 +122,7 @@ class EditCustomList extends React.Component {
     return (
       <div className='articleGroupList campaignsEdit'>
         <div className='articleGroup'>
-          {items}
+          {!util.isEmpty(items) ? items : <span className='noRecords flexCenter'>No Results Found</span>}
         </div>
       </div>
     )
@@ -146,6 +148,13 @@ class EditCustomList extends React.Component {
       // no default
     }
     this.setState({ enabledFilter }, () => {
+      this.getArticles({ reload: true });
+    });
+  }
+
+  onChangeKindFilter(name, value) {
+    const kindFilter = value === 'all' ? '' : `kind:"${value}"`;
+    this.setState({ kindFilter }, () => {
       this.getArticles({ reload: true });
     });
   }
@@ -190,39 +199,47 @@ class EditCustomList extends React.Component {
               />
             </div>
           </div>
-          { !util.isEmpty(customList) ?
-            <div className='filterWrapper'>
-              <GBLink
-                className='link'
-                onClick={() => this.setState({ showFilter: showFilter ? false : true })}
-              >
-                Advanced Search <span className={`icon icon-${showFilter ? 'minus' : 'plus'}`}></span>
-              </GBLink>
-              <AnimateHeight height={showFilter ? 'auto' : 0}>
-                <div className={`filter-content flexCenter`}>
-                  <Dropdown
-                    name='filterEnabled'
-                    label=''
-                    defaultValue='all'
-                    onChange={this.onChangeEnabledFilter}
-                    style={{ width: 300 }}
-                    options={[
-                      { primaryText: 'All', value: 'all' },
-                      { primaryText: 'Enabled', value: 'enabled' },
-                      { primaryText: 'Disabled', value: 'disabled' }
-                    ]}
-                  />
-                  {/*
-                  <div className='clear'></div>
-                  <div className='button-group'>
-                    <GBLink className='button' onClick={this.ignoreFilters}>Ignore Filters</GBLink>
-                    <GBLink className='button' onClick={this.applyFilters}>Apply Filters</GBLink>
-                  </div>
-                  */}
+          <div className='filterWrapper'>
+            <GBLink
+              className='link'
+              onClick={() => this.setState({ showFilter: showFilter ? false : true })}
+            >
+              Advanced Search <span className={`icon icon-${showFilter ? 'minus' : 'plus'}`}></span>
+            </GBLink>
+            <AnimateHeight height={showFilter ? 'auto' : 0}>
+              <div className={`filter-content flexCenter`}>
+                <Dropdown
+                  name='filterEnabled'
+                  label=''
+                  defaultValue='all'
+                  onChange={this.onChangeEnabledFilter}
+                  className='column50'
+                  direction='top'
+                  options={[
+                    { primaryText: 'Enabled and Disabled', value: 'all' },
+                    { primaryText: 'Enabled Only', value: 'enabled' },
+                    { primaryText: 'Disabled Only', value: 'disabled' }
+                  ]}
+                />
+                <Dropdown
+                  name='filterKind'
+                  label=''
+                  defaultValue='all'
+                  onChange={this.onChangeKindFilter}
+                  className='column50'
+                  direction='top'
+                  options={types.kindOptions(true, 'All Types')}
+                />
+                {/*
+                <div className='clear'></div>
+                <div className='button-group'>
+                  <GBLink className='button' onClick={this.ignoreFilters}>Ignore Filters</GBLink>
+                  <GBLink className='button' onClick={this.applyFilters}>Apply Filters</GBLink>
                 </div>
-              </AnimateHeight>
-            </div>
-          : null }
+                */}
+              </div>
+            </AnimateHeight>
+          </div>
         </div>
         {this.renderList()}
         <Paginate

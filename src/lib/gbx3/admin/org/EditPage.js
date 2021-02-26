@@ -35,7 +35,7 @@ class EditPageForm extends React.Component {
       bottom: util.getValue(props.page, 'bottom'),
       saveTopAsGlobal: props.saveTopAsGlobal,
       saveBottomAsGlobal: props.saveBottomAsGlobal,
-      hasCustomList: util.getValue(props.page, 'hasCustomList', false),
+      useCustomList: util.getValue(props.page, 'useCustomList', false),
       customList: [ ...util.getValue(props.page, 'customList', []) ]
     };
   }
@@ -89,7 +89,7 @@ class EditPageForm extends React.Component {
       bottom,
       saveTopAsGlobal,
       saveBottomAsGlobal,
-      hasCustomList,
+      useCustomList,
       customList
     } = this.state;
 
@@ -97,7 +97,7 @@ class EditPageForm extends React.Component {
     const data = {
       top,
       bottom,
-      hasCustomList,
+      useCustomList,
       customList
     };
 
@@ -163,7 +163,7 @@ class EditPageForm extends React.Component {
       bottom,
       saveTopAsGlobal,
       saveBottomAsGlobal,
-      hasCustomList
+      useCustomList
     } = this.state;
 
     const pageName = util.getValue(page, 'name');
@@ -295,28 +295,31 @@ class EditPageForm extends React.Component {
               id='editPageList'
             >
               <div className='formSectionContainer'>
-                <div className='formSection' style={{ paddingBottom: hasCustomList ? 20 : 150 }}>
+                <div className='formSection' style={{ paddingBottom: useCustomList ? 20 : 150 }}>
                   <Choice
                     type='checkbox'
-                    name='hasCustomList'
+                    name='useCustomList'
                     label={'Use a Custom List'}
                     onChange={(name, value) => {
-                      this.setState({ hasCustomList: hasCustomList ? false : true });
+                      this.setState({ useCustomList: useCustomList ? false : true });
                     }}
-                    checked={hasCustomList}
-                    value={hasCustomList}
+                    checked={useCustomList}
+                    value={useCustomList}
                     toggle={true}
                   />
-                  <div className='fieldContext'>The Custom List will replace the List Type ( {types.kind(kind).kindPlural} ) selected below.</div>
-                  <AnimateHeight height={hasCustomList ? 'auto' : 0}>
+                  <div className='fieldContext'>The Custom List will replace the List Type ( {types.kind(kind, 'All Types').namePlural} ) selected below.</div>
+                  <AnimateHeight height={useCustomList ? 'auto' : 0}>
                     <EditCustomList
                       updateCustomList={this.updateCustomList}
                       customList={this.state.customList}
                       pageSlug={pageSlug}
                     />
                   </AnimateHeight>
-                  <AnimateHeight height={!hasCustomList ? 'auto' : 0}>
-                    {this.props.dropdown('kind', {label: 'List Type', options: types.kindOptions(true, 'All Types'), value: kind })}
+                  <AnimateHeight height={!useCustomList ? 'auto' : 0}>
+                    <div className='orgPageCustomList'>
+                      <div className='articleGroupTitle'>Page List Type</div>
+                      {this.props.dropdown('kind', {label: 'List Type', options: types.kindOptions(true, 'All Types'), value: kind, style: { paddingTop: 40 } })}
+                    </div>
                   </AnimateHeight>
                 </div>
               </div>
