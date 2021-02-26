@@ -1138,3 +1138,21 @@ export function creditStatus(opts = {}) {
 
   return creditStatus;
 }
+
+export function customListFilter(customList, options = {}) {
+  const opts = {
+    noInclude: false,
+    operator: '%2C',
+    field: 'ID',
+    ...options
+  };
+  const noInclude = opts.noInclude ? '!' : '';
+  let filter = '';
+  if (!isEmpty(customList)) {
+    customList.forEach((value, key) => {
+      if (key === 0) filter = `${opts.field}:${noInclude}${value}`;
+      else filter = filter + `${opts.operator}${opts.field}:${noInclude}${value}`;
+    });
+  }
+  return filter;
+}

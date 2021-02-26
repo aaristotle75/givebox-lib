@@ -24,29 +24,16 @@ class EditCustomList extends React.Component {
     super(props);
     this.getArticles = this.getArticles.bind(this);
     this.renderList = this.renderList.bind(this);
-    this.selectArticle = this.selectArticle.bind(this);
     this.onChangeEnabledFilter = this.onChangeEnabledFilter.bind(this);
     this.state = {
       showFilter: false,
-      enabledFilter: ''
+      enabledFilter: '',
+      kindFilter: ''
     };
   }
 
   componentDidMount() {
     this.getArticles();
-  }
-
-  selectArticle(ID) {
-    const {
-      page,
-      pageSlug
-    } = this.props;
-
-    const customList = [ ...util.getValue(page, 'customList', []) ];
-    if (customList.includes(ID)) customList.splice(customList.findIndex(l => l === ID), 1);
-    else customList.push(ID);
-
-    this.props.updateOrgPage(pageSlug, { customList });
   }
 
   getArticles(options= {}) {
@@ -62,13 +49,12 @@ class EditCustomList extends React.Component {
       orgID,
       pageSlug,
       page,
-      kind,
-      customName,
-      kindFilter
+      customName
     } = this.props;
 
     const {
-      enabledFilter
+      enabledFilter,
+      kindFilter
     } = this.state;
 
     const filter = `${kindFilter}${opts.filter ? `%3B${opts.filter}` : ''}${enabledFilter ? `%3B${enabledFilter}` : ''}`;
@@ -91,10 +77,9 @@ class EditCustomList extends React.Component {
   renderList() {
 
     const {
-      page
+      customList
     } = this.props;
 
-    const customList = util.getValue(page, 'customList', []);
     const articles = util.getValue(this.props.articles, 'data', []);
     const items = [];
 
@@ -104,7 +89,7 @@ class EditCustomList extends React.Component {
         <div
           className='articleItem sortableListItem'
           key={key}
-          onClick={() => this.selectArticle(value.ID)}
+          onClick={() => this.props.updateCustomList(value.ID)}
         >
           <div className='editableRowMenu'>
             <Choice
@@ -112,7 +97,7 @@ class EditCustomList extends React.Component {
               name='enable'
               label={''}
               onChange={(name, value) => {
-                this.selectArticle(value.ID);
+                this.props.updateCustomList(value.ID);
               }}
               checked={enabled}
               value={enabled}
@@ -141,33 +126,20 @@ class EditCustomList extends React.Component {
     )
   }
 
-  customListFilter(filterDisabled) {
+  onChangeEnabledFilter(name, value) {
     const {
-      page
+      customList
     } = this.props;
 
-    const disabled = filterDisabled ? '!' : '';
-    const customList = util.getValue(page, 'customList', []);
-    let filter = '';
-    if (!util.isEmpty(customList)) {
-      customList.forEach((value, key) => {
-        if (key === 0) filter = `ID:${disabled}${value}`;
-        else filter = filter + `%2CID:${disabled}${value}`;
-      });
-    }
-    return filter;
-  }
-
-  onChangeEnabledFilter(name, value) {
     let enabledFilter = '';
     switch (value) {
       case 'enabled': {
-        enabledFilter = this.customListFilter();
+        enabledFilter = util.customListFilter(customList);
         break;
       }
 
       case 'disabled': {
-        enabledFilter = this.customListFilter(true);
+        enabledFilter = util.customListFilter(customList, { noInclude: true });
         break;
       }
 
@@ -183,7 +155,7 @@ class EditCustomList extends React.Component {
     const {
       page,
       customName,
-      kind
+      customList
     } = this.props;
 
     const {
@@ -191,13 +163,11 @@ class EditCustomList extends React.Component {
       showFilter
     } = this.state;
 
-    const customList = util.getValue(page, 'customList', []);
-
     return (
       <div className='orgPageCustomList gbx3Shop'>
         <div className='articleGroupTopContainer'>
           <div className='articleGroupTop'>
-            <div className='articleGroupTitle'>Selected Custom List ( {types.kind(kind, 'All Types').namePlural} )</div>
+            <div className='articleGroupTitle'>Select Custom List</div>
             <div className='gbx3OrgPagesSearch'>
               <Search
                 searchValue={searchQuery}
@@ -273,18 +243,14 @@ function mapStateToProps(state, props) {
   const orgID = util.getValue(state, 'gbx3.info.orgID');
   const pages = util.getValue(state, 'gbx3.orgPages', {});
   const page = util.getValue(pages, pageSlug);
-  const kind = util.getValue(page, 'kind');
-  const customName = `${kind}CustomPool`;
+  const customName = `articleCustomPool`;
   const articles = util.getValue(state, `resource.${customName}`, {});
-  const kindFilter = kind === 'all' ? '' : `%3Bkind:"${kind}"`;
 
   return {
     orgID,
     page,
-    kind,
     customName,
-    articles,
-    kindFilter
+    articles
   }
 }
 

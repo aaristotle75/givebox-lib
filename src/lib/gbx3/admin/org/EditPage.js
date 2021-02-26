@@ -29,16 +29,27 @@ class EditPageForm extends React.Component {
     this.formSavedCallback = this.formSavedCallback.bind(this);
     this.onBlur = this.onBlur.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.updateCustomList = this.updateCustomList.bind(this);
     this.state = {
       top: util.getValue(props.page, 'top'),
       bottom: util.getValue(props.page, 'bottom'),
       saveTopAsGlobal: props.saveTopAsGlobal,
       saveBottomAsGlobal: props.saveBottomAsGlobal,
-      hasCustomList: util.getValue(props.page, 'hasCustomList', false)
+      hasCustomList: util.getValue(props.page, 'hasCustomList', false),
+      customList: [ ...util.getValue(props.page, 'customList', []) ]
     };
   }
 
   componentDidMount() {
+  }
+
+  updateCustomList(ID) {
+    const customList = [ ...this.state.customList ];
+    if (customList.includes(ID)) customList.splice(customList.findIndex(l => l === ID), 1);
+    else customList.push(ID);
+
+    this.setState({ customList });
+    //this.props.updateOrgPage(pageSlug, { customList });
   }
 
   onBlur(content, section) {
@@ -78,14 +89,16 @@ class EditPageForm extends React.Component {
       bottom,
       saveTopAsGlobal,
       saveBottomAsGlobal,
-      hasCustomList
+      hasCustomList,
+      customList
     } = this.state;
 
     util.toTop('modalOverlay-orgEditPage');
     const data = {
       top,
       bottom,
-      hasCustomList
+      hasCustomList,
+      customList
     };
 
     Object.entries(fields).forEach(([key, value]) => {
@@ -283,7 +296,6 @@ class EditPageForm extends React.Component {
             >
               <div className='formSectionContainer'>
                 <div className='formSection' style={{ paddingBottom: hasCustomList ? 20 : 150 }}>
-                  {this.props.dropdown('kind', {label: 'List Type', options: types.kindOptions(true, 'All Types'), value: kind })}
                   <Choice
                     type='checkbox'
                     name='hasCustomList'
@@ -295,11 +307,16 @@ class EditPageForm extends React.Component {
                     value={hasCustomList}
                     toggle={true}
                   />
-                  <div className='fieldContext'>The Custom List will replace the default {types.kind(kind).kindPlural} list.</div>
+                  <div className='fieldContext'>The Custom List will replace the List Type ( {types.kind(kind).kindPlural} ) selected below.</div>
                   <AnimateHeight height={hasCustomList ? 'auto' : 0}>
                     <EditCustomList
+                      updateCustomList={this.updateCustomList}
+                      customList={this.state.customList}
                       pageSlug={pageSlug}
                     />
+                  </AnimateHeight>
+                  <AnimateHeight height={!hasCustomList ? 'auto' : 0}>
+                    {this.props.dropdown('kind', {label: 'List Type', options: types.kindOptions(true, 'All Types'), value: kind })}
                   </AnimateHeight>
                 </div>
               </div>

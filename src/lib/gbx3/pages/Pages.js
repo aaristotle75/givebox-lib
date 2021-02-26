@@ -126,8 +126,11 @@ class Pages extends Component {
     };
     const pageNumber = opts.pageNumber ? opts.pageNumber : opts.search ? util.getValue(pageState, 'search.pageNumber', 1) : util.getValue(pageState, 'pageNumber', 1);
     const kindFilter = kind === 'all' ? '' : `%3Bkind:"${kind}"`;
-    const customListFilter = util.getValue(activePage, 'customList.filter', 'givebox:true');
-    const filter = `${customListFilter}${kindFilter}${opts.filter ? `%3B${opts.filter}` : ''}`;
+    const customList = util.getValue(activePage, 'customList', []);
+    const hasCustomList = util.getValue(activePage, 'hasCustomList', false);
+    const customFilter = !util.isEmpty(customList) ? util.customListFilter(customList) : null;
+    const baseFilter = customFilter && hasCustomList ? customFilter : `givebox:true${kindFilter}`;
+    const filter = `${baseFilter}${opts.filter ? `%3B${opts.filter}` : ''}`;
 
     this.props.getResource('orgArticles', {
       orgID,
