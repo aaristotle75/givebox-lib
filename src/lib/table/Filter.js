@@ -48,6 +48,7 @@ class Filter extends Component {
       label,
       options,
       name,
+      id,
       customName,
       allowDisabled,
       alwaysFilter,
@@ -68,16 +69,20 @@ class Filter extends Component {
             duration={500}
             height={this.state.open ? 'auto' : 0}
           >
-            <Form name={name} >
+            <Form
+              name={name || customName}
+              id={id || name || customName}
+              noFormTag={true}
+            >
               <FilterForm
-              allowDisabled={allowDisabled}
-              closeMenu={this.closeMenu}
-              name={name}
-              customName={customName}
-              options={options}
-              alwaysFilter={alwaysFilter}
-              callback={callback}
-            />
+                allowDisabled={allowDisabled}
+                closeMenu={this.closeMenu}
+                name={name || customName}
+                customName={customName}
+                options={options}
+                alwaysFilter={alwaysFilter}
+                callback={callback}
+              />
             </Form>
           </AnimateHeight>
         </div>
@@ -93,6 +98,7 @@ Filter.defaultProps = {
 }
 
 function mapStateToProps(state, props) {
+
   return {
     filterOpen: state.app.filterOpen
   }

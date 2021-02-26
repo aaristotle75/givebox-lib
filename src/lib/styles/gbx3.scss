@@ -2176,6 +2176,20 @@
     }
   }
 
+  .maxRecords {
+    .dropdown {
+
+      button.link,
+      .label {
+        font-size: 11px !important;
+      }
+
+      button:hover:not(.label) {
+        border-bottom: 0;
+      }
+    }
+  }
+
 }
 /*--------- End GBX3 ---------*/
 

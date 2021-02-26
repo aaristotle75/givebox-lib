@@ -2,304 +2,304 @@
 
 /*------- AVATAR --------*/
 button.link:hover .avatarImage {
-	//border: 1px solid $secondColor;
+  //border: 1px solid $secondColor;
 }
 
 .avatarLink {
-	position: relative;
+  position: relative;
 
-	button.link {
-		display: flex;
-		align-items: center;
-		color: $mainColor;
-		font-size: $large-text-size;
-		font-weight: 400;
+  button.link {
+    display: flex;
+    align-items: center;
+    color: $mainColor;
+    font-size: $large-text-size;
+    font-weight: 400;
 
-		.orgName {
-			vertical-align: middle;
-		}
-	}
+    .orgName {
+      vertical-align: middle;
+    }
+  }
 
-	button.link:hover {
-		color: $secondColor;
-		@include default-transition(.25s);
+  button.link:hover {
+    color: $secondColor;
+    @include default-transition(.25s);
 
-		.avatarImage {
-			//border: 1px solid $secondColor;
-			@include default-transition(.25s);
-		}
+    .avatarImage {
+      //border: 1px solid $secondColor;
+      @include default-transition(.25s);
+    }
 
-		.defaultAvatarImage {
-			color: $mainColor;
-			border: 1px solid $mainColor;
-			.icon {
-				font-size: $normal-text-size;
-				color: $mainColor;
-			}
-		}
-	}
+    .defaultAvatarImage {
+      color: $mainColor;
+      border: 1px solid $mainColor;
+      .icon {
+        font-size: $normal-text-size;
+        color: $mainColor;
+      }
+    }
+  }
 
-	.icon {
-		font-size: $small-text-size;
-		font-weight: 500;
-	}
+  .icon {
+    font-size: $small-text-size;
+    font-weight: 500;
+  }
 
-	.link {
-		font-size: $large-text-size;
-		font-weight: 300;
-	}
+  .link {
+    font-size: $large-text-size;
+    font-weight: 300;
+  }
 
-	.avatarImage {
-		position: relative;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		border-radius: 50%;
-		width: 45px;
-		height: 45px;
-		text-align: center;
-		overflow: hidden;
-		margin: 0 10px;
-		border: 1px solid $light-gray;
+  .avatarImage {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    text-align: center;
+    overflow: hidden;
+    margin: 0 10px;
+    border: 1px solid $light-gray;
 
-		img {
-			display: inline;
-			margin: 0 auto;
-			height: 100%;
-			width: auto;
-		}
-	}
+    img {
+      display: inline;
+      margin: 0 auto;
+      height: 100%;
+      width: auto;
+    }
+  }
 }
 
 .avatarLink .defaultAvatarImage {
-	position: relative;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin: 0 10px;
-	height: 45px;
-	width: 45px;
-	border-radius: 50%;
-	color: $white;
-	background: $light-gray;
-	vertical-align: middle;
-	text-align: center;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 10px;
+  height: 45px;
+  width: 45px;
+  border-radius: 50%;
+  color: $white;
+  background: $light-gray;
+  vertical-align: middle;
+  text-align: center;
 
-	.icon {
-		font-size: $normal-text-size;
-	}
+  .icon {
+    font-size: $normal-text-size;
+  }
 }
 
 .avatarMenu {
 
-	padding: 0 20px;
+  padding: 0 20px;
 
-	.validate button.link {
-		color: $orange;
-		font-size: $normal-text-size;
-	}
+  .validate button.link {
+    color: $orange;
+    font-size: $normal-text-size;
+  }
 
-	.validate button.link:hover {
-		color: $yellow;
-		text-decoration: underline;
-	}
+  .validate button.link:hover {
+    color: $yellow;
+    text-decoration: none;
+  }
 
-	h4 { margin-bottom: 0px; }
+  h4 { margin-bottom: 0px; }
 
-	.avatarImage {
-		position: relative;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		border-radius: 50%;
-		width: 80px;
-		height: 80px;
-		text-align: center;
-		overflow: hidden;
-		border: 1px solid $light-gray;
+  .avatarImage {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    text-align: center;
+    overflow: hidden;
+    border: 1px solid $light-gray;
 
-		img {
-			display: inline;
-			margin: 0 auto;
-			height: 100%;
-			width: auto;
-		}
-	}
+    img {
+      display: inline;
+      margin: 0 auto;
+      height: 100%;
+      width: auto;
+    }
+  }
 
-	.defaultAvatar {
+  .defaultAvatar {
 
-		button.link {
-			height: 80px;
-			width: 80px;
-			color: $white;
-			font-size: $tiny-text-size;
-			border-radius: 50%;
-			background: $light-gray;
-		}
+    button.link {
+      height: 80px;
+      width: 80px;
+      color: $white;
+      font-size: $tiny-text-size;
+      border-radius: 50%;
+      background: $light-gray;
+    }
 
-		button.link:hover {
-			color: $mainColor;
-			border: 1px solid $mainColor;
-			@include default-transition(.2s);
+    button.link:hover {
+      color: $mainColor;
+      border: 1px solid $mainColor;
+      @include default-transition(.2s);
 
-			.defaultAvatarImage {
-				.icon {
-					color: $mainColor;
-				}
-			}
-		}
+      .defaultAvatarImage {
+        .icon {
+          color: $mainColor;
+        }
+      }
+    }
 
-		.defaultAvatarImage {
-			.icon {
-				top: 17px;
-				font-size: 3em;
-				color: $white;
-			}
-		}
-	}
+    .defaultAvatarImage {
+      .icon {
+        top: 17px;
+        font-size: 3em;
+        color: $white;
+      }
+    }
+  }
 
-	.orgImage {
-		position: relative;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		width: 175px;
-		height: 175px;
-		text-align: center;
-		overflow: hidden;
+  .orgImage {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 175px;
+    height: 175px;
+    text-align: center;
+    overflow: hidden;
 
-		img {
-			display: inline;
-			margin: 0 auto;
-			height: 100%;
-			width: auto;
-		}
-	}
+    img {
+      display: inline;
+      margin: 0 auto;
+      height: 100%;
+      width: auto;
+    }
+  }
 
-	.defaultOrg {
+  .defaultOrg {
 
-		button.link {
-			height: 160px;
-			width: 160px;
-			color: $white;
-			font-weight: 400;
-			font-size: $normal-text-size;
-			border-radius: 20px;
-			background: $light-gray;
-		}
+    button.link {
+      height: 160px;
+      width: 160px;
+      color: $white;
+      font-weight: 400;
+      font-size: $normal-text-size;
+      border-radius: 20px;
+      background: $light-gray;
+    }
 
-		button.link:hover {
-			color: $mainColor;
-			border: 1px solid $mainColor;
-			@include default-transition(.2s);
+    button.link:hover {
+      color: $mainColor;
+      border: 1px solid $mainColor;
+      @include default-transition(.2s);
 
-			.defaultOrgImage {
-				.icon {
-					color: $mainColor;
-				}
-			}
-		}
+      .defaultOrgImage {
+        .icon {
+          color: $mainColor;
+        }
+      }
+    }
 
-		.defaultOrgImage {
-			.icon {
-				top: 17px;
-				font-size: 5em;
-				color: $white;
-			}
-		}
-	}
+    .defaultOrgImage {
+      .icon {
+        top: 17px;
+        font-size: 5em;
+        color: $white;
+      }
+    }
+  }
 
-	.logoSection {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		flex-direction: column;
-	}
+  .logoSection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
 
 
-	.topSection {
-		display: flex;
-		justify-content: flex-start;
-		align-items: center;
-		border-top: 1px solid $light-gray;
-		padding: 10px 0 0 0;
-		margin-top: 20px;
+  .topSection {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    border-top: 1px solid $light-gray;
+    padding: 10px 0 0 0;
+    margin-top: 20px;
 
-		h3 { margin: 0; margin-top: 0px; margin-bottom: 0px; }
+    h3 { margin: 0; margin-top: 0px; margin-bottom: 0px; }
 
-		.line {
-			display: block;
-			padding: 4px 0;
-		}
+    .line {
+      display: block;
+      padding: 4px 0;
+    }
 
-		.leftSide {
-			margin-right: 20px;
-		}
+    .leftSide {
+      margin-right: 20px;
+    }
 
-		.rightSide {
-		}
+    .rightSide {
+    }
 
-	}
+  }
 
-	.listSection {
-		padding: 10px 0;
-		border-bottom: 1px solid $light-gray;
+  .listSection {
+    padding: 10px 0;
+    border-bottom: 1px solid $light-gray;
 
-		.icon {
-			display: inline-block;
-			width: 20px;
-			margin-right: 10px;
-			color: $mainColor;
-			font-weight: 700;
-			text-align: center;
-			vertical-align: middle;
-		}
+    .icon {
+      display: inline-block;
+      width: 20px;
+      margin-right: 10px;
+      color: $mainColor;
+      font-weight: 700;
+      text-align: center;
+      vertical-align: middle;
+    }
 
-		.text {
-			display: inline-block;
-			text-align: left;
-			vertical-align: middle;
-		}
-	}
+    .text {
+      display: inline-block;
+      text-align: left;
+      vertical-align: middle;
+    }
+  }
 
-	.bottomSection {
-		margin-left: 5px;
-		padding: 20px 0;
-	}
+  .bottomSection {
+    margin-left: 5px;
+    padding: 20px 0;
+  }
 
-	.link { font-weight: 400; }
+  .link { font-weight: 400; }
 
-	li:not(:first-child) {
-		border-top: 1px solid $light-med-gray;
-	}
+  li:not(:first-child) {
+    border-top: 1px solid $light-med-gray;
+  }
 
-	li {
-		text-align: left;
-		padding: 15px 5px;
-		color: $med-gray;
-		cursor: pointer;
-		border: none !important;
-		border-radius: 20px;
-	}
+  li {
+    text-align: left;
+    padding: 15px 5px;
+    color: $med-gray;
+    cursor: pointer;
+    border: none !important;
+    border-radius: 20px;
+  }
 
-	li:hover {
-		background: $mainColor;
-		color: $white;
-		@include default-transition(.25s);
-		.icon { color: $white; }
-	}
+  li:hover {
+    background: $mainColor;
+    color: $white;
+    @include default-transition(.25s);
+    .icon { color: $white; }
+  }
 
-	.close {
-		position: absolute;
-		top: 5px;
-		right: 5px;
-		font-size: $normal-text-size;
-		color: $med-gray;
-	}
+  .close {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: $normal-text-size;
+    color: $med-gray;
+  }
 
-	.close:hover {
-		color: $mainColor;
-	}
+  .close:hover {
+    color: $mainColor;
+  }
 
 }
 

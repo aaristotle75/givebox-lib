@@ -3,6 +3,38 @@
 
 .gbx3OrgAdmin {
 
+  .orgPageCustomList.gbx3Shop {
+    margin-top: 20px;
+    padding: 20px 0;
+
+    .articleItem {
+      cursor: pointer;
+      @include transition(background .25s);
+    }
+
+    .articleItem:hover {
+      background: transparentize($green, .7);
+    }
+
+    .articleGroupTopContainer {
+      position: relative;
+    }
+
+    .articleGroupTop {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .articleGroupTitle {
+      font-size: 16px;
+    }
+
+    .articleGroup {
+      padding: 0;
+    }
+  }
+
   .articleGroupList.campaignsEdit {
     @media (min-width: $breakpoint ) {
       max-height: 100%;

@@ -16,11 +16,11 @@ const API_URL = process.env.REACT_APP_API_URL;
 * @param {string} resource Name of resource
 * @param {object} opt
 *
-* // Options //
-* @param {array} id Each ID should be entered in the order of the endpoint
-* @param {object} search Search options, max, page, sort, order, filter, query, queryOnly
-* @param {function} callback
-* @param {bool} reload If the resource should be reloaded
+* // opt props //
+* @prop {array} id Each ID should be entered in the order of the endpoint
+* @prop {object} search Search options, max, page, sort, order, filter, query, queryOnly
+* @prop {function} callback
+* @prop {bool} reload If the resource should be reloaded
 */
 export function getResource(resource, opts = {}) {
   const defaults = {

@@ -77,7 +77,7 @@ export function kindOptions(all = true, allName = 'All Payment Forms') {
 }
 
 
-export function kind(kind) {
+export function kind(kind, allName = 'All Money Sources') {
   const obj = {};
   switch (kind) {
     case 'events':
@@ -211,8 +211,8 @@ export function kind(kind) {
     }
 
     default:
-      obj.name = 'All Money Sources';
-      obj.namePlural = 'All Money Sources';
+      obj.name = allName;
+      obj.namePlural = allName;
       obj.btnName = obj.name;
       obj.cta = 'Purchase';
       obj.txName = 'Purchase';

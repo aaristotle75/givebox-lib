@@ -50,6 +50,14 @@ class Pages extends Component {
     if (prevProps.pageSlug !== this.props.pageSlug) {
       this.getArticles();
     }
+    if ((prevProps.pageSlug === this.props.pageSlug) && (prevProps.kind !== this.props.kind)) {
+      this.setPageState({
+        list: [],
+        search: {},
+        pageNumber: 1,
+        total: 0
+      }, () => this.getArticles({ reload: true, pageNumber: 1 }))
+    }
   }
 
   resetPageSearch() {
@@ -71,6 +79,17 @@ class Pages extends Component {
     }
   }
 
+  /**
+  * Page State Properties
+  *
+  * @param {object} newState Following props are available
+  *
+  * // newState props //
+  * @prop {array} list List of article items
+  * @prop {int} pageNumber
+  * @prop {object} search
+  * @prop {int} total Total number of article items
+  */
   async setPageState(newState = {}, callback) {
     const {
       pageSlug
@@ -328,7 +347,8 @@ class Pages extends Component {
             className='gbx3orgPagesTopContainer orgAdminEdit'
             opts={{
               hasCustomList,
-              pageSlug
+              pageSlug,
+              tabToDisplay: 'editList'
             }}
           >
             <button className='tooltip blockEditButton' id='orgEditPage'>

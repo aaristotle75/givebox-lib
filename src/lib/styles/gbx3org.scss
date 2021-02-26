@@ -225,6 +225,19 @@ $contentHeaderPadding: 35%;
 
 }
 
+.gbx3OrgPagesSearch {
+  display: flex;
+  align-items: center;
+
+  .input-group {
+    padding: 0;
+  }
+
+  .search input {
+    height: 40px;
+  }
+}
+
 .gbx3OrgPages {
   position: relative;
 
@@ -259,19 +272,6 @@ $contentHeaderPadding: 35%;
   .gbx3OrgPageTitle {
     position: relative;
     white-space: nowrap;
-  }
-
-  .gbx3OrgPagesSearch {
-    display: flex;
-    align-items: center;
-
-    .input-group {
-      padding: 0;
-    }
-
-    .search input {
-      height: 40px;
-    }
   }
 
   .pageContentWrapper {

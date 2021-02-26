@@ -1271,11 +1271,14 @@ class Form extends Component {
       name,
       className,
       errorMsg,
-      successMsg
+      successMsg,
+      noFormTag
     } = this.props;
 
+    const FormTag = noFormTag ? 'div' : 'form';
+
     return (
-      <form
+      <FormTag
         autoComplete='nope'
         name={name}
         id={id}
@@ -1288,7 +1291,7 @@ class Form extends Component {
         {errorMsg && this.errorAlert()}
         {successMsg && this.successAlert()}
         {this.renderChildren()}
-      </form>
+      </FormTag>
     );
   }
 }
@@ -1299,7 +1302,8 @@ Form.defaultProps = {
   hideVantivErrors: false,
   showLoader: 'display',
   alwaysSubmitOnEnter: false,
-  neverSubmitOnEnter: false
+  neverSubmitOnEnter: false,
+  noFormTag: false
 }
 
 function mapStateToProps(state, props) {

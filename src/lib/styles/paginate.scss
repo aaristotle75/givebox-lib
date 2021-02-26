@@ -16,207 +16,207 @@ $active-bg: $white;
 
 /*--------- Pagination ---------*/
 .paginate {
-	padding: 0;
-	margin: 0;
+  padding: 0;
+  margin: 0;
 }
 
 .pagination {
-	padding: 0;
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
+  padding: 0;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .pagination a:focus {
-	background: none;
-	outline: 0;
-	border: none;
+  background: none;
+  outline: 0;
+  border: none;
 }
 
 .pagination ul {
-	display: flex;
-	justify-content: center;
-	align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .pagination li {
-	padding: 5px 2px;
-	display: inline-block;
-	text-decoration: none;
-	font-size: $small-text-size;
-	font-weight: 500;
-	text-align: center;
-	//-moz-box-shadow: $box-shadow;
-	//-webkit-box-shadow: $box-shadow;
-	//box-shadow: $box-shadow;
-	width: 5%;
-	cursor: pointer;
+  padding: 5px 2px;
+  display: inline-block;
+  text-decoration: none;
+  font-size: $small-text-size;
+  font-weight: 500;
+  text-align: center;
+  //-moz-box-shadow: $box-shadow;
+  //-webkit-box-shadow: $box-shadow;
+  //box-shadow: $box-shadow;
+  width: 5%;
+  cursor: pointer;
 }
 
 .pagination .break {
-	width: 20px;
-	color: $page-text;
-	background: $page-bg;
-	cursor: pointer;
+  width: 20px;
+  color: $page-text;
+  background: $page-bg;
+  cursor: pointer;
 }
 
 .pagination .break:hover {
-	color: $hover-text;
-	background: $hover-bg;
-	transition-duration: .5s;
-	-webkit-transition-duration: .5s;
+  color: $hover-text;
+  background: $hover-bg;
+  transition-duration: .5s;
+  -webkit-transition-duration: .5s;
 }
 
 .pagination .page {
-	color: $page-text;
-	background: $page-bg;
+  color: $page-text;
+  background: $page-bg;
 }
 
 .pagination .page:hover {
-	color: $hover-text;
-	background: $hover-bg;
-	transition-duration: .5s;
-	-webkit-transition-duration: .5s;
+  color: $hover-text;
+  background: $hover-bg;
+  transition-duration: .5s;
+  -webkit-transition-duration: .5s;
 }
 
 .pagination .next {
-	color: $page-text;
-	background: $page-bg;
-	border-top-right-radius: $border-radius;
-	border-bottom-right-radius: $border-radius;
+  color: $page-text;
+  background: $page-bg;
+  border-top-right-radius: $border-radius;
+  border-bottom-right-radius: $border-radius;
 }
 
 .pagination .next:hover {
-	color: $hover-text;
-	background: $hover-bg;
+  color: $hover-text;
+  background: $hover-bg;
 }
 
 
 .pagination .previous {
-	border-top-left-radius: $border-radius;
-	border-bottom-left-radius: $border-radius;
+  border-top-left-radius: $border-radius;
+  border-bottom-left-radius: $border-radius;
 }
 
 .pagination .previous:hover {
-	color: $hover-text;
-	background: $hover-bg;
+  color: $hover-text;
+  background: $hover-bg;
 }
 
 .pagination .active {
-	color: $active-text;
-	background: $active-bg;
-	cursor: not-allowed;
+  color: $active-text;
+  background: $active-bg;
+  cursor: not-allowed;
 }
 
 .pagination .active:hover {
-	color: $active-text;
-	background: $active-bg;
-	cursor: not-allowed;
+  color: $active-text;
+  background: $active-bg;
+  cursor: not-allowed;
 }
 
 .pagination .disabled {
-	color: $disabled-text;
-	background: $disabled-bg;
-	cursor: not-allowed;
+  color: $disabled-text;
+  background: $disabled-bg;
+  cursor: not-allowed;
 }
 
 .pagination .disabled:hover {
-	color: $disabled-text;
-	background: $disabled-bg;
-	cursor: not-allowed;
+  color: $disabled-text;
+  background: $disabled-bg;
+  cursor: not-allowed;
 }
 
 @media only screen and (max-width: 1000px) {
-	.pagination li {
-		width: 7%;
-	}
+  .pagination li {
+    width: 7%;
+  }
 }
 
 @media only screen and (max-width: 600px) {
-	.pagination li {
-		width: 10%;
-	}
+  .pagination li {
+    width: 10%;
+  }
 }
 
 
 /*----------- Pagination Themed ------------*/
 .paginate {
-	padding-top: 40px;
+  padding-top: 40px;
 }
 
 .pagination .icon {
-	font-size: $large-text-size;
+  font-size: $large-text-size;
 }
 
 .pagination li {
-	border-radius: 50%;
-	padding: 13px;
-	margin: 0 5px;
-	width: 40px;
-	height: 40px;
+  border-radius: 50%;
+  padding: 13px;
+  margin: 0 5px;
+  width: 40px;
+  height: 40px;
 }
 
 .pagination .page {
-	color: $med-gray;
+  color: $med-gray;
 }
 
 .pagination .page:hover {
-	color: $mainColor;
-	background: transparent;
+  color: $mainColor;
+  background: transparent;
 }
 
 .pagination .active {
-	color: $light-med-gray;
-	text-decoration: underline;
+  color: $light-med-gray;
+  text-decoration: none;
 }
 
 .pagination .active:hover {
-	color: $med-gray;
-	background: #FFFFFF;
+  color: $med-gray;
+  background: #FFFFFF;
 }
 
 .pagination .previous {
-	border-top-left-radius: none;
-	border-bottom-left-radius: none;
-	border-radius: 50%;
+  border-top-left-radius: none;
+  border-bottom-left-radius: none;
+  border-radius: 50%;
 }
 
 .pagination .previous:hover {
-	color: $mainColor;
-	background: transparent;
+  color: $mainColor;
+  background: transparent;
 }
 
 .pagination .next {
-	border-top-right-radius: none;
-	border-bottom-right-radius: none;
-	border-radius: 50%;
+  border-top-right-radius: none;
+  border-bottom-right-radius: none;
+  border-radius: 50%;
 }
 
 .pagination .next:hover {
-	color: $mainColor;
-	background: transparent;
+  color: $mainColor;
+  background: transparent;
 }
 
 .pagination .break {
-	width: 5%;
-	color: $med-gray;
-	margin: 0px;
+  width: 5%;
+  color: $med-gray;
+  margin: 0px;
 }
 
 .pagination .break:hover {
-	color: $med-gray;
-	background: transparent;
+  color: $med-gray;
+  background: transparent;
 }
 
 .pagination .disabled {
-	color: $light-med-gray;
-	background: transparent;
+  color: $light-med-gray;
+  background: transparent;
 }
 
 .pagination .disabled:hover {
-	color: $light-med-gray;
-	background: transparent;
+  color: $light-med-gray;
+  background: transparent;
 }

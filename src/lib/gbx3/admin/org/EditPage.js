@@ -153,7 +153,7 @@ class EditPageForm extends React.Component {
 
     const pageName = util.getValue(page, 'name');
     const pageTitle = util.getValue(page, 'pageTitle', pageName);
-    const pageKind = util.getValue(page, 'kind');
+    const kind = util.getValue(page, 'kind');
 
     return (
       <div className='editPageWrapper'>
@@ -260,8 +260,8 @@ class EditPageForm extends React.Component {
               id='editPageList'
             >
               <div className='formSectionContainer'>
-                <div className='formSection' style={{ paddingBottom: 150 }}>
-                  {this.props.dropdown('kind', {label: 'List Type', options: types.kindOptions(), value: pageKind })}
+                <div className='formSection' style={{ paddingBottom: hasCustomList ? 20 : 150 }}>
+                  {this.props.dropdown('kind', {label: 'List Type', options: types.kindOptions(true, 'All Types'), value: kind })}
                   <Choice
                     type='checkbox'
                     name='hasCustomList'
@@ -273,9 +273,10 @@ class EditPageForm extends React.Component {
                     value={hasCustomList}
                     toggle={true}
                   />
+                  <div className='fieldContext'>The Custom List will replace the default {types.kind(kind).kindPlural} list.</div>
                   <AnimateHeight height={hasCustomList ? 'auto' : 0}>
                     <EditCustomList
-
+                      pageSlug={pageSlug}
                     />
                   </AnimateHeight>
                 </div>
@@ -317,6 +318,7 @@ class EditPage extends React.Component {
         <Form
           name='orgEditPage'
           id='orgEditPage'
+          neverSubmitOnEnter={true}
           options={{
             required: true
           }}

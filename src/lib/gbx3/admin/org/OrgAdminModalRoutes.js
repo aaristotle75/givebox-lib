@@ -30,7 +30,7 @@ export default class OrgAdminModalRoutes extends Component {
         <ModalRoute
           className='gbx3'
           id={'orgEditProfilePic'}
-          effect='3DFlipVert' style={{ width: '60%' }}
+          effect='3DFlipVert' style={{ width: '80%' }}
           draggable={true}
           draggableTitle={`Editing Profile Picture`}
           disallowBgClose={false}
@@ -39,7 +39,7 @@ export default class OrgAdminModalRoutes extends Component {
         <ModalRoute
           className='gbx3 gbx3OrgAdmin'
           id={'orgEditMenu'}
-          effect='3DFlipVert' style={{ width: '60%' }}
+          effect='3DFlipVert' style={{ width: '70%' }}
           draggable={true}
           draggableTitle={`Editing Navigation Menu`}
           disallowBgClose={false}
@@ -48,7 +48,7 @@ export default class OrgAdminModalRoutes extends Component {
         <ModalRoute
           className='gbx3 gbx3OrgAdmin'
           id={'orgEditPage'}
-          effect='3DFlipVert' style={{ width: '70%' }}
+          effect='3DFlipVert' style={{ width: '80%' }}
           draggable={true}
           draggableTitle={`Editing Page`}
           disallowBgClose={false}
@@ -75,7 +75,7 @@ export default class OrgAdminModalRoutes extends Component {
         <ModalRoute
           className='gbx3'
           id={'orgEditCoverPhoto'}
-          effect='3DFlipVert' style={{ width: '60%' }}
+          effect='3DFlipVert' style={{ width: '70%' }}
           draggable={true}
           draggableTitle={`Editing Cover Photo`}
           disallowBgClose={false}
