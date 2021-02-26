@@ -28,7 +28,7 @@ class EditCustomList extends React.Component {
     this.props.getResource('', {
       orgID,
       customName: ``
-    })
+    });
   }
 
   render() {
@@ -37,8 +37,8 @@ class EditCustomList extends React.Component {
     } = this.props;
 
     return (
-      <div className='modalWrapper'>
-        Edit Custom List....
+      <div className='orgPageList'>
+        Edit Page List....
       </div>
     )
   }

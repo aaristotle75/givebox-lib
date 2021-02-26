@@ -45,6 +45,8 @@ class Pages extends Component {
   }
 
   componentDidUpdate(prevProps) {
+
+    // Check for page switch and load articles - does not reload
     if (prevProps.pageSlug !== this.props.pageSlug) {
       this.getArticles();
     }
@@ -94,6 +96,8 @@ class Pages extends Component {
 
     const {
       pages,
+      activePage,
+      kind,
       pageSlug,
       orgID
     } = this.props;
@@ -102,8 +106,6 @@ class Pages extends Component {
       ...this.props.pageState[pageSlug]
     };
     const pageNumber = opts.pageNumber ? opts.pageNumber : opts.search ? util.getValue(pageState, 'search.pageNumber', 1) : util.getValue(pageState, 'pageNumber', 1);
-    const activePage = pages[pageSlug];
-    const kind = util.getValue(activePage, 'kind', 'all');
     const kindFilter = kind === 'all' ? '' : `%3Bkind:"${kind}"`;
     const customListFilter = util.getValue(activePage, 'customList.filter', 'givebox:true');
     const filter = `${customListFilter}${kindFilter}${opts.filter ? `%3B${opts.filter}` : ''}`;
@@ -222,10 +224,10 @@ class Pages extends Component {
   renderList() {
     const {
       pages,
-      pageSlug
+      pageSlug,
+      activePage
     } = this.props;
 
-    const activePage = pages[pageSlug];
     const search = util.getValue(this.props.pageSearch, pageSlug);
     const pageState = util.getValue(this.props.pageState, pageSlug, {});
     const pageList = util.getValue(pageState, 'search.list', util.getValue(pageState, 'list', []));
@@ -285,7 +287,7 @@ class Pages extends Component {
     Object.entries(pages).forEach(([key, value]) => {
       const enabled = pagesEnabled.includes(key) ? true : false;
       if (enabled || isAdmin) {
-        const primaryText = util.getValue(value, 'navText', value.name);
+        const primaryText = util.getValue(value, 'name', key);
         const secondaryText = !enabled ? <span className='gray'>Disabled</span> : null;
         const rightText = value.slug === pageSlug ? <span className='icon icon-check'></span> : null;
         options.push({ key, rightText, secondaryText, primaryText, value: value.slug });
@@ -310,7 +312,7 @@ class Pages extends Component {
     const pageSearch = util.getValue(this.props.pageSearch, pageSlug, {});
     const pageName = util.getValue(page, 'name');
     const pageTitle = util.getValue(page, 'pageTitle', pageName);
-    const isCustom = util.getValue(page, 'isCustom', false);
+    const hasCustomList = util.getValue(page, 'hasCustomList', false);
     const Element = Scroll.Element;
 
     return (
@@ -325,7 +327,7 @@ class Pages extends Component {
             type='div'
             className='gbx3orgPagesTopContainer orgAdminEdit'
             opts={{
-              isCustom,
+              hasCustomList,
               pageSlug
             }}
           >
@@ -389,6 +391,8 @@ function mapStateToProps(state, props) {
   const stage = util.getValue(info, 'stage');
   const pageSlug = util.getValue(info, 'activePageSlug');
   const pages = util.getValue(gbx3, 'orgPages', {});
+  const activePage = util.getValue(pages, pageSlug, {});
+  const kind = util.getValue(activePage, 'kind');
   const pagesEnabled = util.getValue(gbx3, 'orgGlobals.pagesEnabled', []);
   const hasAccessToEdit = util.getValue(admin, 'hasAccessToEdit');
   const editable = util.getValue(admin, 'editable');
@@ -404,6 +408,8 @@ function mapStateToProps(state, props) {
     stage,
     pageSlug,
     pages,
+    activePage,
+    kind,
     pagesEnabled,
     hasAccessToEdit,
     editable,

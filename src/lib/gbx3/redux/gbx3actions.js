@@ -1330,10 +1330,11 @@ export function loadOrg(orgID, callback) {
           const pagesEnabled = util.getValue(orgGlobals, 'pagesEnabled', []);
           const queryPageSlug = util.getValue(info, 'queryParams.page');
 
-          let activePageSlug = util.getValue(pagesEnabled, 0, 'featured');
+          let activePageSlug = util.getValue(info, 'activePageSlug', util.getValue(pagesEnabled, 0, 'featured'));
           if (queryPageSlug) {
             const customSlugs = util.getValue(orgGlobals, 'customSlugs', []);
-            const customSlugObj = customSlugs.find(s => s.customSlug === queryPageSlug);
+            let customSlugObj = customSlugs.find(s => s.customSlug === queryPageSlug);
+            if (!customSlugObj) customSlugObj = customSlugs.find(s => s.slug === queryPageSlug);
             activePageSlug = util.getValue(customSlugObj, 'slug', activePageSlug);
           }
 

@@ -572,7 +572,7 @@ $contentHeaderPadding: 35%;
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9;
+    z-index: 10;
 
     button.link.disabled {
       color: $light-gray;
@@ -601,6 +601,12 @@ $contentHeaderPadding: 35%;
 }
 
 .navigationDropdown {
+
+  .dropdown .dropdown-content {
+    width: 300px;
+    z-index: 9999999;
+  }
+
   .dropdown .dropdown-content.top {
     bottom: 40px;
   }

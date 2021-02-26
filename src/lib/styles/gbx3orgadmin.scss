@@ -26,6 +26,10 @@
 
 .gbx3AdminLayout.orgDisplay {
 
+  .navigationContainer.orgAdminEdit {
+    z-index: 11;
+  }
+
   .gbx3OrgPages {
 
     .pageContentContainer.orgAdminEdit {

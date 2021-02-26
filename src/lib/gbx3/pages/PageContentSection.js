@@ -23,7 +23,7 @@ class PageContentSection extends React.Component {
     } = this.props;
 
     const content = util.getValue(page, section, globalPageContent);
-    const isCustom = util.getValue(page, 'isCustom', false);
+    const hasCustomList = util.getValue(page, 'hasCustomList', false);
     const pageSlug = util.getValue(page, 'slug');
 
     if (!content) return null;
@@ -35,7 +35,7 @@ class PageContentSection extends React.Component {
           type='div'
           className='pageContentContainer orgAdminEdit'
           opts={{
-            isCustom,
+            hasCustomList,
             pageSlug,
             autoFocus: section
           }}

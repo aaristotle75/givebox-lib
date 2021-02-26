@@ -67,7 +67,7 @@ class Org extends React.Component {
     }
   }
 
-  async onClickArticle(ID) {
+  async onClickArticle(ID, pageSlug) {
     const {
       stage,
       preview
@@ -120,7 +120,7 @@ class Org extends React.Component {
 
     pagesEnabled.forEach((key) => {
       const value = util.getValue(pages, key, {});
-      const primaryText = util.getValue(value, 'navText', value.name);
+      const primaryText = util.getValue(value, 'name', key);
       const active = value.slug === pageSlug ? true : false;
       links.push(
         <GBLink
@@ -147,7 +147,7 @@ class Org extends React.Component {
 
     pagesEnabled.forEach((val, key) => {
       const value = util.getValue(pages, val, {});
-      const primaryText = util.getValue(value, 'navText', value.name);
+      const primaryText = util.getValue(value, 'name', val);
       const rightText = value.slug === pageSlug ? <span className='icon icon-check'></span> : null;
       options.push({ key: val, rightText, primaryText, value: value.slug });
     });

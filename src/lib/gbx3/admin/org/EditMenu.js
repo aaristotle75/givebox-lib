@@ -74,14 +74,14 @@ class EditMenu extends React.Component {
 
   editLink(page) {
 
-    const isCustom = util.getValue(page, 'isCustom', false);
+    const hasCustomList = util.getValue(page, 'hasCustomList', false);
 
     return (
       <ModalLink
         id={'orgEditPage'}
         className='link tooltip'
         opts={{
-          isCustom,
+          hasCustomList,
           pageSlug: util.getValue(page, 'slug')
         }}
       >
