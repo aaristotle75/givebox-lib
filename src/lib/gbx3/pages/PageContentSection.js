@@ -39,7 +39,7 @@ class PageContentSection extends React.Component {
           }}
         >
           <button className='tooltip blockEditButton' id='orgEditPage'>
-            <span className='tooltipTop'><i />Click Icon to EDIT Page</span>
+            <span className='tooltipTop'><i />Click to EDIT Content</span>
             <span className='icon icon-edit'></span>
           </button>
         </ModalLink>

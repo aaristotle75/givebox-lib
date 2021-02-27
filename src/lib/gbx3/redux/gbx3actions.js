@@ -54,6 +54,20 @@ export function setPageState(page, newState) {
   }
 }
 
+export function orgAddPage(duplicate = {}) {
+  return {
+    type: types.ADD_ORG_PAGE,
+    duplicate
+  }
+}
+
+export function orgDeletePage(slug) {
+  return {
+    type: types.DELETE_ORG_PAGE,
+    slug
+  }
+}
+
 export function updateOrgPages(orgPages = {}, orgUpdated = true) {
   return {
     type: types.UPDATE_ORG_PAGES,

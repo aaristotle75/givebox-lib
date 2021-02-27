@@ -4,10 +4,29 @@ import Loadable from 'react-loadable';
 
 export default class OrgAdminModalRoutes extends Component {
 
+  constructor(props) {
+    super(props);
+    this.loading = this.loading.bind(this);
+  }
+
+  loading(props) {
+    if (props.error) {
+      console.error('loading error -> ', props.error);
+      return (
+        <div className='modalWrapper'>
+          <h2>Oops, an error</h2>
+          {props.error}
+        </div>
+      )
+    } else {
+      return <></>;
+    }
+  }
+
   loadComponent(path, props) {
     const ModalComponent = Loadable({
       loader: () => import(`${path}`),
-      loading: () => <></>
+      loading: this.loading
     });
     return (
       <ModalComponent {...props} />
@@ -41,7 +60,7 @@ export default class OrgAdminModalRoutes extends Component {
           id={'orgEditMenu'}
           effect='3DFlipVert' style={{ width: '70%' }}
           draggable={true}
-          draggableTitle={`Editing Navigation Menu`}
+          draggableTitle={`Managing Pages / Navigation Menu`}
           disallowBgClose={false}
           component={(props) => this.loadComponent('./EditMenu', props)}
         />

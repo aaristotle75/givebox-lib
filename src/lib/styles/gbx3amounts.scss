@@ -4,204 +4,204 @@ $breakpoint: 768px;
 
 .gbx3 {
 
-	/*----- Amount Form elements -----*/
-	.radio-group label.label {
-		 margin-left: 10px;
-		width: 100%;
-	}
+  /*----- Amount Form elements -----*/
+  .radio-group label.label {
+     margin-left: 10px;
+    width: 100%;
+  }
 
-	.amountsBlock {
-		.embed {
-		}
+  .amountsBlock {
+    .embed {
+    }
 
-		button.button {
-			margin: 10px 0;
-		}
-	}
+    button.button {
+      margin: 10px 0;
+    }
+  }
 
-	.amountsSection {
-		position: relative;
-		height: auto;
-	}
+  .amountsSection {
+    position: relative;
+    height: auto;
+  }
 
-	/*
-	.amountsSection:hover {
-		overflow-x: hidden;
-		overflow-y: auto;
-	}
-	*/
+  /*
+  .amountsSection:hover {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  */
 
-	.amountsList {
-		position: relative;
-		height: auto;
-		width: 100%;
-		margin-top: 10px;
-		overflow: hidden;
-	}
+  .amountsList {
+    position: relative;
+    height: auto;
+    width: 100%;
+    margin-top: 10px;
+    overflow: hidden;
+  }
 
-	.amountsList:hover {
-		overflow-y: scroll;
-	}
+  .amountsList:hover {
+    overflow-y: scroll;
+  }
 
-	.amountDesc {
-		width: 100%;
-	}
-	.amountRow {
-		padding: 0;
-		margin: 0;
-		border-left: 0;
-	}
+  .amountDesc {
+    width: 100%;
+  }
+  .amountRow {
+    padding: 0;
+    margin: 0;
+    border-left: 0;
+  }
 
-	/*-------- Amount Entered -------*/
-	.amountInput {
-		position: relative;
+  /*-------- Amount Entered -------*/
+  .amountInput {
+    position: relative;
 
-		.input-group {
-			padding: 0 0 10px 0;
-		}
+    .input-group {
+      padding: 0 0 10px 0;
+    }
 
-		.moneyAmount {
-			position: absolute;
-			top: 25px;
-			left: 0;
-			font-size: 40px;
-			font-weight: 300;
-		}
+    .moneyAmount {
+      position: absolute;
+      top: 25px;
+      left: 0;
+      font-size: 40px;
+      font-weight: 300;
+    }
 
-		input {
-			line-height: 1em;
-			padding-left: 30px;
-			height: auto;
-			font-weight: 300;
-			@media screen and (max-width: 800px) {
-				font-size: inherit;
-			}
-		}
-	}
+    input {
+      line-height: 1em;
+      padding-left: 30px;
+      height: auto;
+      font-weight: 300;
+      @media screen and (max-width: 800px) {
+        font-size: inherit;
+      }
+    }
+  }
 
-	/*-------- Amount Radios -----*/
-	.amountRadioPrice {
-		font-size: 14px;
-		font-weight: 500;
-	}
+  /*-------- Amount Radios -----*/
+  .amountRadioPrice {
+    font-size: 14px;
+    font-weight: 500;
+  }
 
 }
 
 /*----- Recurring ------*/
 .recurringOption {
-	.modalTop,
-	.modalBottom {
-		display: none;
-	}
+  .modalTop,
+  .modalBottom {
+    display: none;
+  }
 
-	.input-group.dropdown-button .dropdown button {
-		 border: 1px solid transparent;
-	}
+  .input-group.dropdown-button .dropdown button {
+     border: 1px solid transparent;
+  }
 
-	.input-group.dropdown-button .dropdown .label {
-		color: $dark;
-		font-weight: 400;
-		font-size: 20px !important;
-	}
+  .input-group.dropdown-button .dropdown .label {
+    color: $dark;
+    font-weight: 400;
+    font-size: 20px !important;
+  }
 
-	.input-group.dropdown-button .dropdown .icon {
-		color: $dark;
-		font-size: 20px;
-	}
+  .input-group.dropdown-button .dropdown .icon {
+    color: $dark;
+    font-size: 20px;
+  }
 
 }
 
 .recurringLink {
-	font-size: 14px;
-	margin-left: 0px;
-	height: 35px;
+  font-size: 14px;
+  margin-left: 0px;
+  height: 35px;
 }
 
 .recurring {
-	margin-top: 0px;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	height: 450px;
-	font-size: 14px;
+  margin-top: 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 450px;
+  font-size: 14px;
 
-	input {
-		font-size: 22px;
-		width: 100%;
-	}
+  input {
+    font-size: 22px;
+    width: 100%;
+  }
 
-	input::-webkit-input-placeholder {
-		font-size: 22px;
-		font-family: $font-family;
-		color: $med-blue-gray;
-	}
-	input::-moz-placeholder {
-		font-size: 22px;
-		color: $med-blue-gray;
-	}
-	input::-ms-input-placeholder {
-		font-size: 22px;
-		color: $med-blue-gray;
-	}
+  input::-webkit-input-placeholder {
+    font-size: 22px;
+    font-family: $font-family;
+    color: $med-blue-gray;
+  }
+  input::-moz-placeholder {
+    font-size: 22px;
+    color: $med-blue-gray;
+  }
+  input::-ms-input-placeholder {
+    font-size: 22px;
+    color: $med-blue-gray;
+  }
 
-	.dropdown button {
-		font-size: 16px;
-		justify-content: center;
-	}
+  .dropdown button {
+    font-size: 16px;
+    justify-content: center;
+  }
 
-	.dropdown button:hover {
-		border-bottom: 1px solid transparent !important;
-	}
+  .dropdown button:hover {
+    border-bottom: 1px solid transparent !important;
+  }
 
-	.amount {
-		margin: 0 0 20px 0;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
+  .amount {
+    margin: 0 0 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 
-		.moneyAmount {
-			position: relative;
-			width: 100%;
-			font-weight: 300;
-			font-size: 50px;
+    .moneyAmount {
+      position: relative;
+      width: 100%;
+      font-weight: 300;
+      font-size: 50px;
 
-			.symbol {
-				position: absolute;
-				top: 10px;
-				left: -25px;
-				font-size: 50%;
-			}
-		}
-	}
+      .symbol {
+        position: absolute;
+        top: 10px;
+        left: -25px;
+        font-size: 50%;
+      }
+    }
+  }
 
-	a.link {
-		font-size: 16px;
-	}
+  a.link {
+    font-size: 16px;
+  }
 
-	.maxRecurring {
-		margin: 20px 0;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-	}
+  .maxRecurring {
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
-	.endsAt,
-	.forever {
-		margin: 5px 0 0 0;
-		color: #465965;
-		font-weight: 300;
-		font-size: 14px;
-	}
+  .endsAt,
+  .forever {
+    margin: 5px 0 0 0;
+    color: #465965;
+    font-weight: 300;
+    font-size: 14px;
+  }
 
-	.recurringBottom {
-		position: absolute;
-		bottom: 5px;
+  .recurringBottom {
+    position: absolute;
+    bottom: 5px;
 
-		button {
-			font-size: 16px;
-		}
-	}
+    button {
+      font-size: 16px;
+    }
+  }
 }
 
 /*------ END GBX3 ------*/
@@ -209,209 +209,210 @@ $breakpoint: 768px;
 
 /*------- Modal Specific ------*/
 .modalContent.gbx3 {
-	.amountInput {
-		padding-top: 20px;
-	}
+  .amountInput {
+    padding-top: 20px;
+  }
 
-	.amountsList {
-		position: relative;
-		height: auto;
-		width: 100%;
-		margin-top: 10px;
-		overflow: hidden;
-	}
+  .amountsList {
+    position: relative;
+    height: auto;
+    width: 100%;
+    margin-top: 10px;
+    overflow: hidden;
+  }
 
-	.amountRow {
-		width: 100%;
-		padding: 0px 0 0px 2%;
-		margin: 15px 0;
-		border-left: 4px solid $mainColor;
-		background: $white;
-		@include default-transition(.25s);
-	}
+  .amountRow {
+    width: 100%;
+    padding: 0px 0 0px 2%;
+    margin: 15px 0;
+    border-left: 4px solid $mainColor;
+    background: $white;
+    @include default-transition(.25s);
+  }
 
-	.amountRow:hover {
-		background: transparentize($mainColor, .95);
-	}
+  .amountRow:hover {
+    background: transparentize($mainColor, .95);
+  }
 
-	.amountDescRow {
-		display: flex;
-		justify-content: flex-start;
-	}
+  .amountDescRow {
+    display: flex;
+    justify-content: flex-start;
+  }
 
-	.amountDesc {
-		display: inline-block;
-		width: 85%;
+  .amountDesc {
+    display: inline-block;
+    width: 85%;
 
-		.amountDescText {
-			font-size: 16px;
-			line-height: 1.3em;
-			font-weight: 400;
-			margin-left: 10px;
-		}
+    .amountDescText {
+      font-size: 16px;
+      line-height: 1.3em;
+      font-weight: 400;
+      margin-left: 10px;
+    }
 
-		.amountDescAmount {
-			display: block;
-			color: $med-gray;
-			font-weight: 300;
-		}
-	}
+    .amountDescAmount {
+      display: block;
+      color: $med-gray;
+      font-weight: 300;
+    }
+  }
 
-	.amountDescMore {
-		display: inline-block;
-		margin-top: 30px;
-	}
+  .amountDescMore {
+    display: inline-block;
+    margin-top: 30px;
+  }
 
 
-	.amountShowDetailsLink {
-		display: block;
-	}
+  .amountShowDetailsLink {
+    display: block;
+  }
 
-	.amountDetails {
-		display: block;
-		//@include box-shadow(1px 4px 5px 0px transparentize($med-blue-gray, .8));
-	}
+  .amountDetails {
+    display: block;
+    //@include box-shadow(1px 4px 5px 0px transparentize($med-blue-gray, .8));
+  }
 
-	.amountDetailsContainer {
-		padding: 10px;
-	}
+  .amountDetailsContainer {
+    padding: 10px;
+  }
 
-	.radio-group label.label {
-		padding: 20px 0;
-	}
+  .radio-group label.label {
+    padding: 20px 0;
+  }
 
-	.recurringLink {
-		height: 45px;
-	}
+  .recurringLink {
+    height: 45px;
+  }
 
-	/*-------- Ticket Amount Specific----------*/
-	.ticketsList {
-		position: relative;
-		height: auto;
-		width: 100%;
-		overflow: hidden;
-	}
+  /*-------- Ticket Amount Specific----------*/
+  .ticketsList {
+    position: relative;
+    height: auto;
+    width: 100%;
+    overflow: hidden;
+  }
 
-	.ticketAmountRow {
-		width: 100%;
-		padding: 10px 0;
-		margin: 15px 0;
-		border-left: 4px solid $mainColor;
-		background: $white;
-		overflow: hidden;
+  .ticketAmountRow {
+    width: 100%;
+    padding: 10px 0;
+    margin: 15px 0;
+    border-left: 4px solid $mainColor;
+    background: $white;
+    overflow: hidden;
 
-		.ticketDescRow {
-			display: flex;
-			justify-content: flex-start;
-			align-items: center;
-		}
+    .ticketDescRow {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+    }
 
-		.ticketDescThumb {
-			position: relative;
-			padding: 10px;
-			@media (max-width: $breakpoint) {
-				display: none;
-			}
-		}
+    .ticketDescThumb {
+      position: relative;
+      padding: 10px;
+      margin-right: 10px;
+      @media (max-width: $breakpoint) {
+        display: none;
+      }
+    }
 
-		.ticketDesc {
-			padding: 10px;
-			font-size: 16px;
-			line-height: 1.3em;
+    .ticketDesc {
+      padding: 10px;
+      font-size: 16px;
+      line-height: 1.3em;
 
-			.ticketDescAmount {
-				display: block;
-				color: $med-gray;
-				font-weight: 300;
-			}
-			.ticketDescInStock {
-				font-size: 12px;
-				display: block;
-				color: $med-gray;
-				font-weight: 300;
-			}
-		}
+      .ticketDescAmount {
+        display: block;
+        color: $med-gray;
+        font-weight: 300;
+      }
+      .ticketDescInStock {
+        font-size: 12px;
+        display: block;
+        color: $med-gray;
+        font-weight: 300;
+      }
+    }
 
-		.ticketQty {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			flex-direction: column;
-		}
+    .ticketQty {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
 
-		.ticketShowDetailsLink {
-			display: block;
-			font-size: 14px;
-		}
+    .ticketShowDetailsLink {
+      display: block;
+      font-size: 14px;
+    }
 
-		.ticketDetails {
-			display: block;
-			//@include box-shadow(1px 4px 5px 0px transparentize($med-blue-gray, .8));
-		}
+    .ticketDetails {
+      display: block;
+      //@include box-shadow(1px 4px 5px 0px transparentize($med-blue-gray, .8));
+    }
 
-		.ticketDetailsContainer {
-			padding: 10px;
-		}
+    .ticketDetailsContainer {
+      padding: 10px;
+    }
 
-		.input-group {
-			margin: 0;
-			padding: 10px 0;
-		}
+    .input-group {
+      margin: 0;
+      padding: 10px 0;
+    }
 
-		.input-group.dropdown-recurring,
-		.input-group.dropdown-quantity {
-			padding: 0;
-		}
+    .input-group.dropdown-recurring,
+    .input-group.dropdown-quantity {
+      padding: 0;
+    }
 
-		.input-group.dropdown-recurring {
-			.dropdown button .label {
-				font-size: 14px;
-				font-weight: 300;
-			}
-			.dropdown button {
-				border-bottom: 1px solid transparent !important;
-			}
-			.dropdown button:hover {
-				border-bottom: 1px solid transparent !important;
-			}
-			.dropdown .icon { display: none; }
-		}
+    .input-group.dropdown-recurring {
+      .dropdown button .label {
+        font-size: 14px;
+        font-weight: 300;
+      }
+      .dropdown button {
+        border-bottom: 1px solid transparent !important;
+      }
+      .dropdown button:hover {
+        border-bottom: 1px solid transparent !important;
+      }
+      .dropdown .icon { display: none; }
+    }
 
-		.input-group.dropdown-quantity .dropdown {
-		}
+    .input-group.dropdown-quantity .dropdown {
+    }
 
-		.input-group.dropdown-quantity .dropdown button {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			width: 70px;
-			height: 50px;
-			border: 1px solid $light-gray;
-		}
+    .input-group.dropdown-quantity .dropdown button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 70px;
+      height: 50px;
+      border: 1px solid $light-gray;
+    }
 
-		.input-group.dropdown-quantity .dropdown button:hover {
-			border-bottom: 1px solid $light-gray !important;
-		}
+    .input-group.dropdown-quantity .dropdown button:hover {
+      border-bottom: 1px solid $light-gray !important;
+    }
 
-		.input-group.dropdown-quantity .dropdown .label {
-			color: $dark;
-			font-size: 16px;
-			font-weight: 400;
-		}
+    .input-group.dropdown-quantity .dropdown .label {
+      color: $dark;
+      font-size: 16px;
+      font-weight: 400;
+    }
 
-		.input-group.dropdown-quantity .label.idle {
-			color: $dark !important;
-		}
+    .input-group.dropdown-quantity .label.idle {
+      color: $dark !important;
+    }
 
-		.input-group.dropdown-quantity .dropdown .icon {
-			position: relative;
-			top: 0;
-			right: 0;
-			font-size: 20px;
-			margin-left: 10px;
-		}
+    .input-group.dropdown-quantity .dropdown .icon {
+      position: relative;
+      top: 0;
+      right: 0;
+      font-size: 20px;
+      margin-left: 10px;
+    }
 
-	}
+  }
 
 
 }

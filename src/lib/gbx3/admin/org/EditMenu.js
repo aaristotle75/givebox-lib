@@ -7,7 +7,9 @@ import ModalLink from '../../../modal/ModalLink';
 import Choice from '../../../form/Choice';
 import {
   updatePagesEnabled,
-  saveOrg
+  saveOrg,
+  orgAddPage,
+  orgDeletePage
 } from '../../redux/gbx3actions';
 import {
   toggleModal
@@ -51,11 +53,29 @@ class EditMenu extends React.Component {
     this.onSortEnd = this.onSortEnd.bind(this);
     this.renderPageList = this.renderPageList.bind(this);
     this.editLink = this.editLink.bind(this);
+    this.addPage = this.addPage.bind(this);
+    this.deletePage = this.deletePage.bind(this);
+    this.clonePageLink = this.clonePageLink.bind(this);
+    this.deletePageLink = this.deletePageLink.bind(this);
     this.state = {
     };
   }
 
   componentDidMount() {
+  }
+
+  async addPage(duplicate = {}) {
+    const pageAdded = await this.props.orgAddPage(duplicate);
+    if (pageAdded) {
+      console.log('execute addPage -> Added');
+    }
+  }
+
+  async deletePage(slug) {
+    const pageDeleted = await this.props.orgDeletePage(slug);
+    if (pageDeleted) {
+      console.log('execute pageDeleted -> Deleted');
+    }
   }
 
   onSortStart(e) {
@@ -77,7 +97,7 @@ class EditMenu extends React.Component {
     return (
       <ModalLink
         id={'orgEditPage'}
-        className='link tooltip'
+        className='link tooltip rightSide'
         opts={{
           pageSlug: util.getValue(page, 'slug')
         }}
@@ -86,7 +106,30 @@ class EditMenu extends React.Component {
         <span className='icon icon-edit'></span>
       </ModalLink>
     )
+  }
 
+  clonePageLink(page) {
+    return (
+      <GBLink
+        className='link tooltip rightSide'
+        onClick={() => this.addPage(page)}
+      >
+        <span className='tooltipTop'><i />Click Icon to DUPLICATE Page</span>
+        <span className='icon icon-copy'></span>
+      </GBLink>
+    )
+  }
+
+  deletePageLink(pageSlug) {
+    return (
+      <GBLink
+        className='link tooltip rightSide'
+        onClick={() => this.deletePage(pageSlug)}
+      >
+        <span className='tooltipTop'><i />Click Icon to DELETE Page</span>
+        <span className='icon icon-trash-2'></span>
+      </GBLink>
+    )
   }
 
   renderPageList() {
@@ -101,13 +144,13 @@ class EditMenu extends React.Component {
 
     pagesEnabled.forEach((val, key) => {
       const value = util.getValue(pages, val, {});
+      const onlyOneLeft = pagesEnabled.length === 1 ? true : false;
       enabledItems.push(
         <div
           className='articleItem sortableListItem'
           key={val}
         >
           <div className='editableRowMenu'>
-            {this.editLink(value)}
             <Choice
               type='checkbox'
               name='disable'
@@ -120,7 +163,14 @@ class EditMenu extends React.Component {
               checked={true}
               value={true}
               toggle={true}
-            />
+              error={'Error'}
+              className={'tooltip rightSide'}
+            >
+              <span className='tooltipTop'><i />Click to DISABLE Page</span>
+            </Choice>
+            {this.editLink(value)}
+            {this.clonePageLink(value)}
+            {this.deletePageLink(value.slug)}
           </div>
           <div className='articleLeftDrag'>
             <DragHandle />
@@ -147,7 +197,6 @@ class EditMenu extends React.Component {
             key={key}
           >
             <div className='editableRowMenu'>
-              {this.editLink(value)}
               <Choice
                 type='checkbox'
                 name='enable'
@@ -160,7 +209,13 @@ class EditMenu extends React.Component {
                 checked={false}
                 value={false}
                 toggle={true}
-              />
+                className='tooltip rightSide'
+              >
+                <span className='tooltipTop'><i />Click to ENABLE Page</span>
+              </Choice>
+              {this.editLink(value)}
+              {this.clonePageLink(value)}
+              {this.deletePageLink(value.slug)}
             </div>
             <div className='articleLeftDrag'></div>
             <div className='articleText'>
@@ -177,6 +232,9 @@ class EditMenu extends React.Component {
     return (
       <div className='articleGroupList campaignsEdit'>
         <div className='articleGroup'>
+          <div className='flexCenter'>
+            <GBLink className='link topLink' onClick={this.addPage}><span className='icon icon-plus'></span> Add Page</GBLink>
+          </div>
           {rows}
           { disabledItems.length > 0 ?
           <div style={{ marginTop: 30 }}>
@@ -227,5 +285,7 @@ function mapStateToProps(state, props) {
 export default connect(mapStateToProps, {
   updatePagesEnabled,
   toggleModal,
-  saveOrg
+  saveOrg,
+  orgAddPage,
+  orgDeletePage
 })(EditMenu);

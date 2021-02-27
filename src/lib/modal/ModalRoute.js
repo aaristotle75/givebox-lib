@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Modal from './Modal';
 import Portal from '../common/Portal';
+import ErrorBoundary from '../common/ErrorBoundary';
 import Loader from '../common/Loader';
 import { toggleModal } from '../api/actions';
 import * as util from '../common/utility';
@@ -86,7 +87,11 @@ class ModalRoute extends Component {
               modalOpenCallback={this.modalOpenCallback}
               buttonGroup={buttonGroup}
             >
-              { this.state.opened ? component(optsProps) : <></> }
+              { this.state.opened ?
+                <ErrorBoundary>
+                  {component(optsProps)}
+                </ErrorBoundary>
+              : null }
             </Modal>
           </Portal>
         }

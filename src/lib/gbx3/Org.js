@@ -211,7 +211,7 @@ class Org extends React.Component {
                   }}
                 >
                   <button className='tooltip blockEditButton' id='orgEditTitle'>
-                    <span className='tooltipTop'><i />Click Icon to EDIT Title</span>
+                    <span className='tooltipTop'><i />Click to EDIT Title</span>
                     <span className='icon icon-edit'></span>
                   </button>
                 </ModalLink>
@@ -233,7 +233,7 @@ class Org extends React.Component {
                     }}
                   >
                     <button className='tooltip blockEditButton' id='orgEditMenu'>
-                      <span className='tooltipTop'><i />Click Icon to EDIT Navigation Menu</span>
+                      <span className='tooltipTop'><i />Click to Manage Pages / Navigation Menu</span>
                       <span className='icon icon-edit'></span>
                     </button>
                   </ModalLink>

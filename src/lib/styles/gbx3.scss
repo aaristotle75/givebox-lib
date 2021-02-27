@@ -2401,7 +2401,7 @@
       padding: 2% 0;
     }
 
-    button.link {
+    button.link:not(.topLink) {
       text-align: left;
       font-size: 18px;
       margin-left: 10px;

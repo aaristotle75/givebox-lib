@@ -173,6 +173,44 @@ export function gbx3(state = {
           ...action.orgPages
         }
       });
+    case types.ADD_ORG_PAGE:
+      const duplicate = action.duplicate;
+      let orgPages = { ...state.orgPages };
+      const newPageNumber = Object.keys(orgPages).length + 1;
+      const hash = util.uniqueHash(1);
+      const name = !util.isEmpty(duplicate) ? `Duplicate ${duplicate.name}` : `Page ${newPageNumber}`;
+      const slug = !util.isEmpty(duplicate) ? `${duplicate.slug}-duplicate-${hash}` : `page-${newPageNumber}-${hash}`;
+      const newPage = {
+        kind: 'all',
+        ...duplicate,
+        name,
+        slug
+      };
+      return Object.assign({}, state, {
+        orgUpdated: action.orgUpdated,
+        orgPages: {
+          ...orgPages,
+          [slug]: {
+            ...newPage
+          }
+        }
+      });
+    case types.DELETE_ORG_PAGE:
+      orgPages = { ...state.orgPages };
+      delete orgPages[action.slug];
+      const pagesEnabled = [ ...util.getValue(state, 'orgGlobals.pagesEnabled', []) ];
+      if (pagesEnabled.includes(action.slug)) pagesEnabled.splice(pagesEnabled.indexOf(action.slug), 1);
+      return Object.assign({}, state, {
+        orgPages: {
+          ...orgPages
+        },
+        orgGlobals: {
+          ...state.orgGlobals,
+          pagesEnabled: [
+            ...pagesEnabled
+          ]
+        }
+      });
     case types.UPDATE_ORG_PAGE:
       return Object.assign({}, state, {
         orgUpdated: true,

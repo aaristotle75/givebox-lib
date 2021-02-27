@@ -350,7 +350,7 @@ class Pages extends Component {
       <div className='gbx3OrgPages'>
         {util.isFetching(pageList) ? <Loader msg='Loading List...' /> : null }
         <div className='orgAdminDropdown managePageDropdown orgAdminOnly'>
-          {this.props.pageDropdown(this.pageOptions(), 'Manage Page')}
+          {this.props.pageDropdown(this.pageOptions(), 'Change Page')}
         </div>
         <div style={{ marginTop: isAdmin ? 15 : 0 }} className='gbx3OrgPagesTop'>
           <ModalLink
@@ -364,7 +364,7 @@ class Pages extends Component {
             }}
           >
             <button className='tooltip blockEditButton' id='orgEditPage'>
-              <span className='tooltipTop'><i />Click Icon to EDIT Page</span>
+              <span className='tooltipTop'><i />Click to Edit Page</span>
               <span className='icon icon-edit'></span>
             </button>
           </ModalLink>
