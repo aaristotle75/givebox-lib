@@ -3,6 +3,9 @@ import { connect } from 'react-redux';
 import * as util from '../../common/utility';
 import GBLink from '../../common/GBLink';
 import ModalLink from '../../modal/ModalLink';
+import {
+  toggleModal
+} from '../../api/actions';
 
 class Button extends PureComponent {
 
@@ -13,6 +16,18 @@ class Button extends PureComponent {
   }
 
   componentDidMount() {
+    const {
+      button,
+      allowAutopop,
+      modalID,
+      opts
+    } = this.props;
+
+    const {
+      autopop
+    } = button;
+
+    if (allowAutopop && autopop) this.props.toggleModal(modalID, true, opts);
   }
 
   render() {
@@ -74,4 +89,5 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
+  toggleModal
 })(Button);

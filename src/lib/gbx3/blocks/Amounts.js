@@ -5,6 +5,7 @@ import GBLink from '../../common/GBLink';
 import ModalRoute from '../../modal/ModalRoute';
 import ModalLink from '../../modal/ModalLink';
 import Collapse from '../../common/Collapse';
+import Image from '../../common/Image';
 import Tabs, { Tab } from '../../common/Tabs';
 import * as types from '../../common/types';
 import Fade from '../../common/Fade';
@@ -385,7 +386,9 @@ class Amounts extends Component {
       form,
       breakpoint,
       isVolunteer,
-      articleID
+      articleID,
+      orgLogo,
+      orgName
     } = this.props;
 
     const {
@@ -483,6 +486,7 @@ class Amounts extends Component {
                           label={'Use a Button Instead of Showing Amounts on the Form'}
                           button={button}
                           optionsUpdated={this.optionsUpdated}
+                          allowAutopop={true}
                           modalID={'amountsList'}
                         />
                       </div>
@@ -608,8 +612,9 @@ class Amounts extends Component {
                 component={() =>
                   <div className='modalContainers lightGray'>
                     <div className='topContainer'>
-                      <h3 style={{ padding: 0, margin: 0 }}>{util.getValue(button, 'text', 'Select Amount')}</h3>
-                      <span style={{ fontWeight: 300 }} className='center'>{util.getValue(data, 'title')}</span>
+                      <span style={{ fontWeight: 500, padding: 0, margin: 0 }}>{util.getValue(button, 'text', 'Select Amount')}</span>
+                      <span style={{ fontWeight: 300 }} className='center'>{util.truncate(util.getValue(data, 'title'), 128)}</span>
+                      { orgName ? <span style={{ fontWeight: 300, fontSize: 12 }}>{orgName}</span> : null }
                     </div>
                     <div className='middleContainer'>
                       {this.renderAmountsList()}
@@ -667,6 +672,7 @@ class Amounts extends Component {
               <Button
                 modalID={`amountsList`}
                 button={button}
+                allowAutopop={true}
               />
             </>
           :
@@ -687,12 +693,16 @@ function mapStateToProps(state, props) {
   const subTotal = util.getValue(cart, 'subTotal', 0);
   const form = util.getValue(gbx3, 'blocks.article.paymentForm.options.form', {});
   const numCartItems = cartItems.length;
+  const orgLogo = util.getValue(gbx3, 'orgData.imageURL');
+  const orgName = util.getValue(gbx3, 'orgData.name');
 
   return {
     data,
     form,
     numCartItems,
-    subTotal
+    subTotal,
+    orgLogo,
+    orgName
   }
 }
 

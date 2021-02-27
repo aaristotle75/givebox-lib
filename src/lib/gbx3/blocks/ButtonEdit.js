@@ -52,6 +52,7 @@ class ButtonEdit extends Component {
     } = this.props;
 
     const enabled = util.getValue(button, 'enabled', false);
+    const autopop = util.getValue(button, 'autopop', false);
     const textValue = util.getValue(button, 'text');
 
     const buttonStyle = { ...globalButtonStyle, ...util.getValue(button, 'style', {}) };
@@ -79,23 +80,36 @@ class ButtonEdit extends Component {
 
     return (
       <>
-        {util.getValue(button, 'embedAllowed', false) && !globalOption ?
-        <Choice
-          type='checkbox'
-          name='enabled'
-          label={label}
-          onChange={(name, value) => {
-            const enabled = this.props.button.enabled ? false : true;
-            this.updateButton('enabled', enabled);
-          }}
-          checked={enabled}
-          value={enabled}
-          toggle={true}
-        /> : <></>}
+        { util.getValue(button, 'embedAllowed', false) && !globalOption ?
+          <Choice
+            type='checkbox'
+            name='enabled'
+            label={label}
+            onChange={(name, value) => {
+              const enabled = this.props.button.enabled ? false : true;
+              this.updateButton('enabled', enabled);
+            }}
+            checked={enabled}
+            value={enabled}
+            toggle={true}
+          />
+        : null }
         <AnimateHeight
           duration={500}
           height={enabled || globalOption ? 'auto' : 0}
         >
+          <Choice
+            type='checkbox'
+            name='autopop'
+            label={'Auto Pop Overlay'}
+            onChange={(name, value) => {
+              const autopop = util.getValue(this.props.button, 'autopop') ? false : true;
+              this.updateButton('autopop', autopop);
+            }}
+            checked={autopop}
+            value={autopop}
+            toggle={true}
+          />
           <TextField
             name='text'
             label='Button Text'
@@ -220,7 +234,8 @@ class ButtonEdit extends Component {
 ButtonEdit.defaultProps = {
   minRadius: 0,
   maxRadius: 30,
-  label: 'Enabled Button'
+  label: 'Enabled Button',
+  allowAutopop: false
 }
 
 function mapStateToProps(state, props) {
