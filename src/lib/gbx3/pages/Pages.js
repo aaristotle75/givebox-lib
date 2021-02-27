@@ -28,6 +28,7 @@ class Pages extends Component {
     super(props);
     this.pageOptions = this.pageOptions.bind(this);
     this.renderList = this.renderList.bind(this);
+    this.reloadGetArticles = this.reloadGetArticles.bind(this);
     this.getArticles = this.getArticles.bind(this);
     this.getArticlesCallback = this.getArticlesCallback.bind(this);
     this.getArticleSearchCallback = this.getArticleSearchCallback.bind(this);
@@ -51,22 +52,25 @@ class Pages extends Component {
       this.getArticles();
     }
     if ((prevProps.pageSlug === this.props.pageSlug) && (prevProps.kind !== this.props.kind)) {
-      this.setPageState({
-        list: [],
-        search: {},
-        pageNumber: 1,
-        total: 0
-      }, () => this.getArticles({ reload: true, pageNumber: 1 }))
+      this.reloadGetArticles();
     }
 
     if (((prevProps.customList !== this.props.customList) && this.props.useCustomList) || (prevProps.useCustomList !== this.props.useCustomList)) {
-      this.setPageState({
-        list: [],
-        search: {},
-        pageNumber: 1,
-        total: 0
-      }, () => this.getArticles({ reload: true, pageNumber: 1 }))
+      this.reloadGetArticles();
     }
+
+    if (Object.keys(prevProps.pages).length !== Object.keys(this.props.pages).length) {
+      this.reloadGetArticles();
+    }
+  }
+
+  reloadGetArticles() {
+    this.setPageState({
+      list: [],
+      search: {},
+      pageNumber: 1,
+      total: 0
+    }, () => this.getArticles({ reload: true, pageNumber: 1 }))
   }
 
   resetPageSearch() {

@@ -157,20 +157,21 @@ class EditMenu extends React.Component {
               label={''}
               onChange={(name, value) => {
                 const pagesEnabled = [ ...this.props.pagesEnabled ];
-                pagesEnabled.splice(key, 1);
-                this.props.updatePagesEnabled(pagesEnabled);
+                if (!onlyOneLeft) {
+                  pagesEnabled.splice(key, 1);
+                  this.props.updatePagesEnabled(pagesEnabled);
+                }
               }}
               checked={true}
               value={true}
               toggle={true}
-              error={'Error'}
               className={'tooltip rightSide'}
             >
-              <span className='tooltipTop'><i />Click to DISABLE Page</span>
+              <span className='tooltipTop'><i />{ onlyOneLeft ? 'You must have at least 1 page enabled.' : 'Click to DISABLE Page' }</span>
             </Choice>
             {this.editLink(value)}
             {this.clonePageLink(value)}
-            {this.deletePageLink(value.slug)}
+            { !onlyOneLeft ? this.deletePageLink(value.slug) : null }
           </div>
           <div className='articleLeftDrag'>
             <DragHandle />

@@ -95,7 +95,7 @@ class Choice extends Component {
           this.onChange(name, value);
           if (this.props.labelClick) this.props.labelClick();
         }}>{label}</label>}
-        {this.props.children}
+        {!error ? this.props.children : null}
         {error ?
         <div className={`tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`}>
           {this.props.error}
