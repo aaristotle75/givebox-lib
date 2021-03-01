@@ -35,12 +35,17 @@ class EditPageForm extends React.Component {
       bottom: util.getValue(props.page, 'bottom'),
       saveTopAsGlobal: props.saveTopAsGlobal,
       saveBottomAsGlobal: props.saveBottomAsGlobal,
+      hideList: util.getValue(props.page, 'hideList', false),
       useCustomList: util.getValue(props.page, 'useCustomList', false),
       customList: [ ...util.getValue(props.page, 'customList', []) ]
     };
   }
 
   componentDidMount() {
+  }
+
+  componentWillUnmount() {
+
   }
 
   updateCustomList(ID) {
@@ -89,6 +94,7 @@ class EditPageForm extends React.Component {
       bottom,
       saveTopAsGlobal,
       saveBottomAsGlobal,
+      hideList,
       useCustomList,
       customList
     } = this.state;
@@ -97,6 +103,7 @@ class EditPageForm extends React.Component {
     const data = {
       top,
       bottom,
+      hideList,
       useCustomList,
       customList
     };
@@ -163,16 +170,25 @@ class EditPageForm extends React.Component {
       bottom,
       saveTopAsGlobal,
       saveBottomAsGlobal,
-      useCustomList
+      useCustomList,
+      hideList
     } = this.state;
 
     const pageName = util.getValue(page, 'name');
     const pageTitle = util.getValue(page, 'pageTitle', pageName);
     const kind = util.getValue(page, 'kind');
+    
+    const buttonGroup =
+      <div className='button-group flexCenter'>
+        <GBLink className='link secondary' onClick={() => this.props.toggleModal('orgEditPage', false)}>Cancel</GBLink>
+        {this.props.saveButton(this.processForm, { style: { width: 150 } })}
+      </div>
+    ;
 
     return (
       <div className='editPageWrapper'>
         <h2 className='flexCenter'>Edit {util.getValue(page, 'name')}</h2>
+        {buttonGroup}
         <Tabs
           default={tabToDisplay}
           className='statsTab'
@@ -185,8 +201,8 @@ class EditPageForm extends React.Component {
             >
               <div className='formSectionContainer'>
                 <div className='formSection'>
-                  {this.props.textField('name', {  fixedLabel: true, label: 'Page Name (Used as Navigation Text)', placeholder: 'Enter Page Name', value: pageName })}
-                  {this.props.textField('pageTitle', {  fixedLabel: true, label: 'Page Title', placeholder: 'Enter Page Title', value: pageTitle })}
+                  {this.props.textField('name', { fixedLabel: true, label: 'Page Name (Used as Navigation Text)', placeholder: 'Enter Page Name', value: pageName })}
+                  {this.props.textField('pageTitle', { fixedLabel: true, label: 'Page Title', placeholder: 'Enter Page Title', value: pageTitle })}
                 </div>
               </div>
             </Collapse>
@@ -298,38 +314,48 @@ class EditPageForm extends React.Component {
                 <div className='formSection' style={{ paddingBottom: useCustomList ? 20 : 150 }}>
                   <Choice
                     type='checkbox'
-                    name='useCustomList'
-                    label={'Use a Custom List'}
+                    name='hideList'
+                    label={'Hide Page List from Displaying'}
                     onChange={(name, value) => {
-                      this.setState({ useCustomList: useCustomList ? false : true });
+                      this.setState({ hideList: hideList ? false : true });
                     }}
-                    checked={useCustomList}
-                    value={useCustomList}
+                    checked={hideList}
+                    value={hideList}
                     toggle={true}
                   />
-                  <div className='fieldContext'>The Custom List will replace the List Type ( {types.kind(kind, 'All Types').namePlural} ) selected below.</div>
-                  <AnimateHeight height={useCustomList ? 'auto' : 0}>
-                    <EditCustomList
-                      updateCustomList={this.updateCustomList}
-                      customList={this.state.customList}
-                      pageSlug={pageSlug}
+                  <AnimateHeight height={!hideList ? 'auto' : 0}>
+                    <Choice
+                      type='checkbox'
+                      name='useCustomList'
+                      label={'Use a Custom List'}
+                      onChange={(name, value) => {
+                        this.setState({ useCustomList: useCustomList ? false : true });
+                      }}
+                      checked={useCustomList}
+                      value={useCustomList}
+                      toggle={true}
                     />
-                  </AnimateHeight>
-                  <AnimateHeight height={!useCustomList ? 'auto' : 0}>
-                    <div className='orgPageCustomList'>
-                      <div className='articleGroupTitle'>Page List Type</div>
-                      {this.props.dropdown('kind', {label: 'List Type', options: types.kindOptions(true, 'All Types'), value: kind, style: { paddingTop: 40 } })}
-                    </div>
+                    <div className='fieldContext'>The Custom List will replace the List Type ( {types.kind(kind, 'All Types').namePlural} ) selected below.</div>
+                    <AnimateHeight height={useCustomList ? 'auto' : 0}>
+                      <EditCustomList
+                        updateCustomList={this.updateCustomList}
+                        customList={this.state.customList}
+                        pageSlug={pageSlug}
+                      />
+                    </AnimateHeight>
+                    <AnimateHeight height={!useCustomList ? 'auto' : 0}>
+                      <div className='orgPageCustomList'>
+                        <div className='articleGroupTitle'>Page List Type</div>
+                        {this.props.dropdown('kind', {label: 'List Type', options: types.kindOptions(true, 'All Types'), value: kind, style: { paddingTop: 40 } })}
+                      </div>
+                    </AnimateHeight>
                   </AnimateHeight>
                 </div>
               </div>
             </Collapse>
           </Tab>
         </Tabs>
-        <div className='button-group flexCenter'>
-          <GBLink className='link secondary' onClick={() => this.props.toggleModal('orgEditPage', false)}>Cancel</GBLink>
-          {this.props.saveButton(this.processForm, { style: { width: 150 } })}
-        </div>
+        {buttonGroup}
       </div>
     )
   }

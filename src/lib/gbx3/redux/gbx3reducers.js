@@ -26,8 +26,10 @@ export function gbx3(state = {
   orgUpdated: false,
   orgGlobals: {},
   orgPages: [],
+  articleCard: {},
   backgrounds: [],
   blocks: {
+    card: {},
     org: {},
     article: {},
     receipt: {}
@@ -271,6 +273,13 @@ export function gbx3(state = {
             ...state.layouts[action.blockType],
             ...action.layouts,
           }
+        }
+      });
+    case types.UPDATE_ARTICLE_CARD:
+      return Object.assign({}, state, {
+        articleCard: {
+          ...state.articleCard,
+          ...action.card
         }
       });
     case types.UPDATE_BLOCKS:

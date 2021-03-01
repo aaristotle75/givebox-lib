@@ -35,6 +35,18 @@ export const defaultOrgGlobals = {
   ]
 };
 
+/**
+* @prop {string} name
+* @prop {string} slug  // immutable identifier
+* @prop {string} kind // article kind
+* @prop {html} top // top content html block
+* @prop {html} bottom // bottom content html block
+* @prop {array} customList // Array of IDs to list
+* @prop {bool} useCustomList // true if to use custom list
+* @prop {bool} hideList // true to hide the page list from display
+*
+*/
+
 export const defaultOrgPages = {
   featured: {
     name: 'Featured',

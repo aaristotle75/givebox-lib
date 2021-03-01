@@ -84,12 +84,12 @@ class ArticleCard extends Component {
     const {
       kind,
       item,
-      activePage
+      activePage,
+      pageSlug,
+      resourcesToLoad
     } = this.props;
 
     const {
-      title,
-      imageURL,
       stats
     } = item;
 
@@ -98,6 +98,9 @@ class ArticleCard extends Component {
     const likes = +util.getValue(stats, 'likes', 0);
     const shares = +util.getValue(stats, 'shares', 0);
     const tag = util.getValue(item, 'tag', types.kind(kind).defaultTag);
+    const articleCard = util.getValue(item, 'givebox.customTemplate.articleCard', {});
+    const title = util.getValue(articleCard, 'title', item.title);
+    const imageURL = util.getValue(articleCard, 'imageURL', item.imageURL);
 
     return (
       <div className='articleCard'>
@@ -107,6 +110,10 @@ class ArticleCard extends Component {
           className='articleCardEdit orgAdminEdit'
           opts={{
             item,
+            pageSlug,
+            page: activePage,
+            resourcesToLoad,
+            reloadGetArticles: this.props.reloadGetArticles,
             closeCallback: () => console.log('execute closeCallback -> articleCard')
           }}
         >
@@ -147,7 +154,8 @@ class ArticleCard extends Component {
 };
 
 ArticleCard.defaultProps = {
-  item: {}
+  item: {},
+  resourcesToLoad: []
 };
 
 

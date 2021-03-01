@@ -141,7 +141,7 @@ class EditCustomList extends React.Component {
       }
 
       case 'disabled': {
-        enabledFilter = util.customListFilter(customList, { noInclude: true });
+        enabledFilter = util.customListFilter(customList, { noInclude: true, operator: '%3B' });
         break;
       }
 

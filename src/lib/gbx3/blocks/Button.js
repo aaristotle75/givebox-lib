@@ -20,14 +20,15 @@ class Button extends PureComponent {
       button,
       allowAutopop,
       modalID,
-      opts
+      opts,
+      stage
     } = this.props;
 
     const {
       autopop
     } = button;
 
-    if (allowAutopop && autopop) this.props.toggleModal(modalID, true, opts);
+    if (allowAutopop && autopop && stage !== 'admin') this.props.toggleModal(modalID, true, opts);
   }
 
   render() {
@@ -74,6 +75,7 @@ Button.defaultProps = {
 function mapStateToProps(state, props) {
 
   const gbx3 = util.getValue(state, 'gbx3', {});
+  const stage = util.getValue(gbx3, 'info.stage');
   const globals = util.getValue(gbx3, 'globals', {});
   const gbxStyle = util.getValue(globals, 'gbxStyle', {});
   const gbxPrimaryColor = util.getValue(gbxStyle, 'primaryColor');
@@ -82,6 +84,7 @@ function mapStateToProps(state, props) {
   const primaryColor = util.getValue(globalButton, 'bgColor', gbxPrimaryColor);
 
   return {
+    stage,
     primaryColor,
     globalButton,
     globalButtonStyle

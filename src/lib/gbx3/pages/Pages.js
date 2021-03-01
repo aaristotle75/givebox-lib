@@ -142,7 +142,7 @@ class Pages extends Component {
     const pageNumber = opts.pageNumber ? opts.pageNumber : opts.search ? util.getValue(pageState, 'search.pageNumber', 1) : util.getValue(pageState, 'pageNumber', 1);
     const kindFilter = kind === 'all' ? '' : `%3Bkind:"${kind}"`;
     const customFilter = !util.isEmpty(customList) ? util.customListFilter(customList) : null;
-    const baseFilter = customFilter && useCustomList ? customFilter : `givebox:true${kindFilter}`;
+    const baseFilter = customFilter && useCustomList ? customFilter : `landing:true${kindFilter}`;
     const filter = `${baseFilter}${opts.filter ? `%3B${opts.filter}` : ''}`;
 
     this.props.getResource('orgArticles', {
@@ -260,7 +260,8 @@ class Pages extends Component {
     const {
       pages,
       pageSlug,
-      activePage
+      activePage,
+      resourceName
     } = this.props;
 
     const search = util.getValue(this.props.pageSearch, pageSlug);
@@ -284,6 +285,9 @@ class Pages extends Component {
               kind={kind}
               ID={ID}
               activePage={activePage}
+              pageSlug={pageSlug}
+              resourcesToLoad={[resourceName]}
+              reloadGetArticles={this.reloadGetArticles}
             />
           </div>
         );
@@ -348,6 +352,7 @@ class Pages extends Component {
     const pageName = util.getValue(page, 'name');
     const pageTitle = util.getValue(page, 'pageTitle', pageName);
     const useCustomList = util.getValue(page, 'useCustomList', false);
+    const hideList = util.getValue(page, 'hideList', false);
     const Element = Scroll.Element;
 
     return (
@@ -379,7 +384,7 @@ class Pages extends Component {
             <div className='gbx3OrgPagesSearch'>
               <Search
                 searchValue={util.getValue(pageSearch, 'query')}
-                placeholder={`Search ${util.getValue(page, 'name')}`}
+                placeholder={`Search ${!hideList ? util.getValue(page, 'name') : ''}`}
                 getSearch={(value) => {
                   if (value) {
                     if (value !== util.getValue(pageSearch, 'query')) {
@@ -406,7 +411,7 @@ class Pages extends Component {
         <div className='pageContentWrapper'>
           <PageContentSection section='top' />
           <Element name='gbx3OrgPages'  className='pageListWrapper'>
-            {this.renderList()}
+            { !hideList || !util.isEmpty(pageSearch) ? this.renderList() : null }
           </Element>
           <PageContentSection section='bottom' />
         </div>

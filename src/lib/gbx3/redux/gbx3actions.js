@@ -689,9 +689,55 @@ export function saveOrg(options = {}) {
   }
 }
 
+export function saveCustomTemplate(resourceName, options = {}) {
+
+  const opts = {
+    ID: null,
+    orgID: null,
+    data: {},
+    isSending: false,
+    showSaving: true,
+    callback: null,
+    resourcesToLoad: [],
+    ...options
+  };
+
+  return (dispatch, getState) => {
+    const customTemplate = util.getValue(getState(), `resource.${resourceName}.data.giveboxSettings.customTemplate`, {});
+
+    const dataObj = {
+      giveboxSettings: {
+        customTemplate: {
+          ...customTemplate,
+          ...opts.data
+        }
+      }
+    };
+
+    if (!resourceName || util.isEmpty(customTemplate) || !opts.orgID || !opts.ID) {
+      console.error('Cannot save, missing resourceName, customTemplate, orgID or ID');
+    } else {
+      if (opts.showSaving) dispatch(updateGBX3('saveStatus', 'saving'));
+      dispatch(sendResource(resourceName, {
+        orgID: opts.orgID,
+        id: [opts.ID],
+        data: dataObj,
+        method: 'patch',
+        callback: (res, err) => {
+          if (opts.showSaving) dispatch(updateGBX3('saveStatus', 'done'));
+          if (opts.callback) opts.callback(res, err);
+        },
+        isSending: opts.isSending,
+        resourcesToLoad: opts.resourcesToLoad
+      }));
+    }
+  }
+}
+
 export function saveGBX3(blockType, options = {}) {
 
   const opts = {
+    kindID: null,
     data: {},
     isSending: false,
     callback: null,
@@ -703,6 +749,7 @@ export function saveGBX3(blockType, options = {}) {
     const gbx3 = util.getValue(getState(), 'gbx3', {});
     const gbxData = util.getValue(gbx3, blockType === 'org' ? 'orgData' : 'data', {});
     const settings = util.getValue(gbxData, 'giveboxSettings', {});
+    const customTemplate = util.getValue(settings, 'customTemplate', {});
     const info = util.getValue(gbx3, 'info', {});
     const blocks = util.getValue(gbx3, `blocks.${blockType}`, {});
     const globals = util.getValue(gbx3, 'globals', {});
@@ -712,6 +759,7 @@ export function saveGBX3(blockType, options = {}) {
     const giveboxSettings = blockType === 'org' ?
       {
         customTemplate: {
+          ...customTemplate,
           blocks,
           globals,
           backgrounds,
@@ -724,6 +772,7 @@ export function saveGBX3(blockType, options = {}) {
         giveboxSettings: {
           ...settings,
           customTemplate: {
+            ...customTemplate,
             blocks,
             globals,
             backgrounds,
