@@ -39,9 +39,11 @@ class Header extends React.Component {
       primaryText: <span className='labelIcon'><span className='icon icon-upload-cloud'></span> Upload Photo</span>, value: 'upload'
     });
 
+    /*
     options.push({
       primaryText: <span className='labelIcon'><span className='icon icon-move'></span> Reposition</span>, value: 'move'
     });
+    */
 
     options.push({
       primaryText: <span className='labelIcon'><span className='icon icon-trash-2'></span> Remove</span>, value: 'remove'
