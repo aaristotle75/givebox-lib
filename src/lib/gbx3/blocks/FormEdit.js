@@ -424,13 +424,13 @@ class FormEdit extends Component {
                   }}
                   style={{ paddingBottom: 0 }}
                   readOnly={true}
-                  readOnlyText={'Cinesend is currenlty the only provider available.'}
+                  readOnlyText={'Cinesend is currently the only provider available.'}
                 />
                 <TextField
                   name='virtualEventAPIKey'
                   label='Virtual Event Provider API Key'
                   fixedLabel={true}
-                  placeholder='Enter Your API Key (You get this from your Virtual EVent Provider)'
+                  placeholder='Enter Your API Key (You get this from your Virtual Event Provider)'
                   value={util.getValue(virtualEvent, 'APIKey')}
                   onChange={(e) => {
                     const value = e.currentTarget.value;
@@ -443,7 +443,7 @@ class FormEdit extends Component {
                   name='virtualEventVideoID'
                   label='Virtual Event Provider Video ID'
                   fixedLabel={true}
-                  placeholder='Enter Your Virtual Event Video ID (You get this from your Virtual EVent Provider)'
+                  placeholder='Enter Your Virtual Event Video ID (You get this from your Virtual Event Provider)'
                   value={util.getValue(virtualEvent, 'videoID')}
                   onChange={(e) => {
                     const value = e.currentTarget.value;

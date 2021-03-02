@@ -59,7 +59,7 @@ class ArticleCard extends Component {
           item.push(
             <div key={`${kind}-where`} className={`cardKindSpecific cardKindEventWhere`}>
               {virtualEnabled ? 'This is a Virtual Event' : where}
-              {eventNumAvailableTickets > 0 ? <span>Tickets Available</span> : null}
+              {eventNumAvailableTickets > 0 ? <span>Tickets Available</span> : <span>Sold Out</span>}
             </div>
           )
         }
@@ -140,7 +140,7 @@ class ArticleCard extends Component {
           <button
             className='tooltip blockEditButton'
           >
-            <span className='tooltipTop'><i />Click Icon to EDIT Card</span>
+            <span className='tooltipTop'><i />Click to EDIT Card</span>
             <span className='icon icon-edit'></span>
           </button>
         </ModalLink>

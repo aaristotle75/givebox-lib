@@ -186,7 +186,7 @@ class TicketsList extends Component {
           priceDesc = `per ${entries} ${entries > 1 ? 'Entries' : 'Entry'}`
         }
         const inStock = util.getValue(value, 'max', 0) - util.getValue(value, 'sold', 0);
-        if (value.enabled && ( inStock > 0 || !hasMax )) {
+        if (value.enabled && ( inStock > 0 || !hasMax || showInStock )) {
           const options = inStock < maxQuantity && hasMax ? this.quantityOptions(inStock) : defaultOptions;
           const selected = cartItems.find(x => x.unitID === value.ID);
           const qty = util.getValue(selected, 'quantity', 0);
@@ -202,7 +202,7 @@ class TicketsList extends Component {
                 <div style={{ width: thumbnailURL && breakpoint !== 'mobile' ? '75%' : '85%' }} className='ticketDesc'>
                   {name}
                   <span className='ticketDescAmount'>{price} {priceDesc}</span>
-                  {showInStock ? <span className='ticketDescInStock'>{inStock} Available</span> : <></> }
+                  {showInStock ? <span className='ticketDescInStock'>{inStock ? `${inStock} Available` : `Sold Out`}</span> : <></> }
                   {value.description ? <GBLink allowCustom={true} customColor={color} className='link ticketShowDetailsLink' onClick={() => this.toggleShowDetails(value.ID)}>{showDetails.includes(value.ID) ? 'Hide Info' : 'More Info'}</GBLink> : <></>}
                 </div>
                 <div className='ticketQty'>
