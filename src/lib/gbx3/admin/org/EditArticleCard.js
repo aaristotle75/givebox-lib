@@ -6,6 +6,7 @@ import Collapse from '../../../common/Collapse';
 import Loader from '../../../common/Loader';
 import GBLink from '../../../common/GBLink';
 import Tabs, { Tab } from '../../../common/Tabs';
+import Video from '../../../common/Video';
 import Form from '../../../form/Form';
 import MediaLibrary from '../../../form/MediaLibrary';
 import {
@@ -23,6 +24,7 @@ class EditArticleCardForm extends React.Component {
     this.processForm = this.processForm.bind(this);
     this.formSavedCallback = this.formSavedCallback.bind(this);
     this.handleSaveCallback = this.handleSaveCallback.bind(this);
+    this.callbackAfter = this.callbackAfter.bind(this);
     const article = util.getValue(props.article, 'data', {});
     const page = props.page;
     const articleCard = util.getValue(article, 'giveboxSettings.customTemplate.articleCard', {});
@@ -34,6 +36,7 @@ class EditArticleCardForm extends React.Component {
 
     this.state = {
       imageURL: util.getValue(articleCard, 'imageURL', util.checkImage(imageURL)),
+      mediaType: util.getValue(articleCard, 'mediaType', 'image'),
       videoURL: util.getValue(articleCard, 'videoURL', videoURL)
     };
   }
@@ -103,6 +106,10 @@ class EditArticleCardForm extends React.Component {
     });
   }
 
+  callbackAfter(tab) {
+    this.setState({ mediaType: tab });
+  }
+
   render() {
 
     const {
@@ -163,8 +170,9 @@ class EditArticleCardForm extends React.Component {
               <Tabs
                 default={tabToDisplay}
                 className='statsTab'
+                callbackAfter={this.callbackAfter}
               >
-                <Tab id='cardImage' label={<span className='stepLabel'><span className='icon icon-image'></span> Image</span>}>
+                <Tab id='image' label={<span className='stepLabel'><span className='icon icon-image'></span> Image</span>}>
                   <MediaLibrary
                     blockType={'article'}
                     image={imageURL}
@@ -183,7 +191,7 @@ class EditArticleCardForm extends React.Component {
                     }}
                   />
                 </Tab>
-                <Tab id='cardVideo' label={<span className='stepLabel'><span className='icon icon-video'></span>Video</span>}>
+                <Tab id='video' label={<span className='stepLabel'><span className='icon icon-video'></span>Video</span>}>
                   Manage Video
                 </Tab>
               </Tabs>
@@ -254,7 +262,7 @@ class EditArticleCard extends React.Component {
 }
 
 EditArticleCard.defaultProps = {
-  tabToDisplay: 'cardImage'
+  tabToDisplay: 'image'
 };
 
 function mapStateToProps(state, props) {
