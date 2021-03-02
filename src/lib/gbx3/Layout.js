@@ -197,7 +197,7 @@ class Layout extends React.Component {
         </ModalLink> : null}
         { hasAccessToEdit && stage !== 'admin' ?
         <div onClick={() => this.props.updateAdmin({ publicView: false })} className='avatarLink tooltip hideOnMobile'>
-          <span className='tooltipTop'><i />Edit Form</span>
+          <span className='tooltipTop'><i />{ display === 'org' ? 'Edit Page' : 'Edit Form' }</span>
           <div className='editGraphic'>
             <span className='icon icon-edit'></span>
           </div>
