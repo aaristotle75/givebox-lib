@@ -40,7 +40,13 @@ export default class Video extends Component {
       minHeight,
       maxSize,
       playing,
-      preview
+      preview,
+      light,
+      ID,
+      muted,
+      loop,
+      controls,
+      videoRef
     } = this.props;
 
     const mergeStyle = { maxWidth: maxWidth || maxSize, maxHeight: maxHeight || maxSize, ...style };
@@ -58,13 +64,17 @@ export default class Video extends Component {
           </div>
         :
           <ReactPlayer
-            playing={!preview && playing ? true : false}
+            playing={playing}
             url={url}
             onReady={this.onReady}
             onError={this.onError}
             style={mergeStyle}
             width='100%'
-            light={!preview && !playing ? true : false }
+            light={light}
+            muted={muted}
+            loop={loop}
+            controls={controls}
+            ref={videoRef}
           />
         }
       </div>
@@ -78,5 +88,10 @@ Video.defaultProps = {
   minHeight: '100px',
   maxWidth: null,
   playing: false,
-  preview: false
+  preview: false,
+  light: false,
+  muted: false,
+  loop: false,
+  controls: true,
+  videoRef: null
 }

@@ -222,7 +222,7 @@ class Media extends Component {
     if (util.getValue(video, 'URL')) {
       return (
         <Video
-          playing={this.props.stage !== 'admin' ? util.getValue(video, 'auto', false) : false}
+          playing={this.props.stage !== 'admin' && !preview ? util.getValue(video, 'auto', false) : false}
           url={util.getValue(video, 'validatedURL')}
           onReady={this.videoOnReady}
           style={{
@@ -231,6 +231,7 @@ class Media extends Component {
           }}
           maxHeight={maxHeight}
           preview={preview}
+          light={preview ? false : true}
         />
       )
     } else {

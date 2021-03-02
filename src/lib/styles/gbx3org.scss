@@ -394,7 +394,6 @@ $contentHeaderPadding: 35%;
     height: 225px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    @include bgGradient(to bottom, $very-light-gray 20%, $light-gray 80%, $light-med-gray 100%);
     overflow: hidden;
 
     .cardPhotoImage {
@@ -407,6 +406,9 @@ $contentHeaderPadding: 35%;
       overflow: hidden;
       border-top-left-radius: 10px;
       border-top-right-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
       img {
         max-width: 325px;
@@ -704,5 +706,26 @@ $contentHeaderPadding: 35%;
 }
 
 .gbx3 {
+
+  form .tabs .panel {
+    display: block !important;
+  }
+
+  .videoContainer {
+    position: relative;
+    width: 100%;
+  }
+
+  .imageLoader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
 }

@@ -36,8 +36,11 @@ class Pages extends Component {
     this.setPageSearch = this.setPageSearch.bind(this);
     this.resetPageSearch = this.resetPageSearch.bind(this);
     this.renderKindSpecificFilters = this.renderKindSpecificFilters.bind(this);
+    this.onMouseOverArticle = this.onMouseOverArticle.bind(this);
+    this.onMouseLeaveArticle = this.onMouseLeaveArticle.bind(this);
     this.state = {
-      pageSearch: {}
+      pageSearch: {},
+      playPreview: null
     }
   }
 
@@ -61,6 +64,32 @@ class Pages extends Component {
 
     if (Object.keys(prevProps.pages).length !== Object.keys(this.props.pages).length) {
       this.reloadGetArticles();
+    }
+  }
+
+  onMouseOverArticle(ID) {
+    const {
+      stage,
+      preview
+    } = this.props;
+
+    if (stage === 'admin' && !preview) {
+      console.log('execute onClickArticle do admin stuff -> ', ID);
+    } else {
+      this.setState({ playPreview: ID });
+    }
+  }
+
+  onMouseLeaveArticle(ID) {
+    const {
+      stage,
+      preview
+    } = this.props;
+
+    if (stage === 'admin' && !preview) {
+      console.log('execute onClickArticle do admin stuff -> ', ID);
+    } else {
+      this.setState({ playPreview: null });
     }
   }
 
@@ -279,6 +308,8 @@ class Pages extends Component {
             className='listItem'
             key={key}
             onClick={() => this.props.onClickArticle(ID)}
+            onMouseEnter={() => this.onMouseOverArticle(ID)}
+            onMouseLeave={() => this.onMouseLeaveArticle(ID)}
           >
             <ArticleCard
               item={value}
@@ -288,6 +319,7 @@ class Pages extends Component {
               pageSlug={pageSlug}
               resourcesToLoad={[resourceName]}
               reloadGetArticles={this.reloadGetArticles}
+              playPreview={this.state.playPreview === ID ? true : false}
             />
           </div>
         );

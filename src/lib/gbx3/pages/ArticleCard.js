@@ -4,6 +4,7 @@ import GBLink from '../../common/GBLink';
 import Image from '../../common/Image';
 import * as types from '../../common/types';
 import ModalLink from '../../modal/ModalLink';
+import Video from '../../common/Video';
 
 class ArticleCard extends Component {
   constructor(props) {
@@ -86,11 +87,13 @@ class ArticleCard extends Component {
       item,
       activePage,
       pageSlug,
-      resourcesToLoad
+      resourcesToLoad,
+      playPreview
     } = this.props;
 
     const {
-      stats
+      stats,
+      ID
     } = item;
 
     const views = +util.getValue(stats, 'views', 0);
@@ -101,6 +104,23 @@ class ArticleCard extends Component {
     const articleCard = util.getValue(item, 'givebox.customTemplate.articleCard', {});
     const title = util.getValue(articleCard, 'title', item.title);
     const imageURL = util.getValue(articleCard, 'imageURL', item.imageURL);
+    const videoURL = util.getValue(articleCard, 'videoURL', item.videoURL);
+    const mediaType = util.getValue(articleCard, 'mediaType', 'image');
+
+    const media = videoURL && !util.checkImage(imageURL) ?
+      <Video
+        playing={false}
+        url={videoURL}
+        style={{
+          maxWidth: '100%',
+          maxHeight: 'auto'
+        }}
+        maxHeight={'auto'}
+        light={true}
+      />
+    :
+      <Image imgID='cardPhoto' url={imageURL} maxWidth='325px' size='medium' alt='Card Photo' />
+    ;
 
     return (
       <div className='articleCard'>
@@ -127,7 +147,23 @@ class ArticleCard extends Component {
         <div className='articleCardContainer'>
           <div className='cardPhotoContainer'>
             <div className='cardPhotoImage'>
-              <Image imgID='cardPhoto' url={imageURL} maxWidth='325px' size='medium' alt='Card Photo' />
+              { !playPreview || !videoURL ? media : null }
+              { videoURL && playPreview ?
+                <Video
+                  ID={ID}
+                  playing={playPreview}
+                  url={videoURL}
+                  style={{
+                    maxWidth: '100%',
+                    maxHeight: 'auto'
+                  }}
+                  maxHeight={'auto'}
+                  light={false}
+                  muted={true}
+                  loop={true}
+                  controls={false}
+                />
+              : null }
             </div>
           </div>
           <div className='cardInfoContainer'>

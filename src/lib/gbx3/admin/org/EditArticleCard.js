@@ -8,7 +8,9 @@ import GBLink from '../../../common/GBLink';
 import Tabs, { Tab } from '../../../common/Tabs';
 import Video from '../../../common/Video';
 import Form from '../../../form/Form';
+import TextField from '../../../form/TextField';
 import MediaLibrary from '../../../form/MediaLibrary';
+import * as _v from '../../../form/formValidate';
 import {
   getResource,
   sendResource
@@ -16,6 +18,7 @@ import {
 import {
   saveCustomTemplate
 } from '../../redux/gbx3actions';
+import AnimateHeight from 'react-animate-height';
 
 class EditArticleCardForm extends React.Component {
 
@@ -25,23 +28,38 @@ class EditArticleCardForm extends React.Component {
     this.formSavedCallback = this.formSavedCallback.bind(this);
     this.handleSaveCallback = this.handleSaveCallback.bind(this);
     this.callbackAfter = this.callbackAfter.bind(this);
+    this.onChangeVideo = this.onChangeVideo.bind(this);
+    this.renderVideo = this.renderVideo.bind(this);
+    this.videoOnReady = this.videoOnReady.bind(this);
     const article = util.getValue(props.article, 'data', {});
     const page = props.page;
     const articleCard = util.getValue(article, 'giveboxSettings.customTemplate.articleCard', {});
 
-    const {
-      imageURL,
-      videoURL
-    } = article;
+    const imageURL = util.getValue(articleCard, 'imageURL', util.checkImage(util.getValue(article, 'imageURL')));
+    const videoURL = util.getValue(articleCard, 'videoURL', util.getValue(article, 'videoURL'));
 
     this.state = {
-      imageURL: util.getValue(articleCard, 'imageURL', util.checkImage(imageURL)),
+      imageURL,
+      videoURL,
+      videoURLFieldValue: videoURL,
       mediaType: util.getValue(articleCard, 'mediaType', 'image'),
-      videoURL: util.getValue(articleCard, 'videoURL', videoURL)
+      videoLoading: false,
+      video: {
+        validated: _v.validateURL(videoURL) ? true : false,
+        error: false
+      },
+      updateMainTitle: false
     };
   }
 
   componentDidMount() {
+    this.videoLoading();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.videoURL !== this.state.videoURL && this.state.video.validated && this.state.mediaType === 'video') {
+      this.videoLoading();
+    }
   }
 
   handleSaveCallback(url) {
@@ -78,14 +96,16 @@ class EditArticleCardForm extends React.Component {
 
     const {
       imageURL,
-      videoURL
+      videoURL,
+      mediaType
     } = this.state;
 
     util.toTop('modalOverlay-orgEditCard');
 
     const data = {
       imageURL,
-      videoURL
+      videoURL,
+      mediaType
     };
 
     Object.entries(fields).forEach(([key, value]) => {
@@ -95,7 +115,7 @@ class EditArticleCardForm extends React.Component {
     this.props.saveCustomTemplate(resourceName, {
       ID,
       orgID,
-      data: {
+      customTemplate: {
         articleCard: {
           ...data
         }
@@ -108,6 +128,70 @@ class EditArticleCardForm extends React.Component {
 
   callbackAfter(tab) {
     this.setState({ mediaType: tab });
+    this.videoLoading();
+  }
+
+  videoOnReady() {
+    this.setState({ videoLoading: false });
+  }
+
+  videoLoading() {
+    const {
+      video,
+      videoURL,
+      mediaType
+    } = this.state;
+
+    if (mediaType === 'video' && videoURL && video.validated) {
+      this.setState({ videoLoading: true });
+    }
+  }
+
+  onChangeVideo(e) {
+    const URL = e.currentTarget.value;
+    const videoURLFieldValue = URL;
+    const video = this.state.video;
+    video.validated = _v.validateURL(URL) ? true : false;
+    const videoURL = video.validated ? URL : '';
+    if (video.error) video.error = false;
+    this.setState({ video, videoURL, videoURLFieldValue });
+  }
+
+  renderVideo(preview = false) {
+    const {
+      video,
+      videoURL,
+      videoLoading
+    } = this.state;
+
+    if (video.validated) {
+      return (
+        <div className='videoContainer'>
+          { videoLoading ?
+          <div className='imageLoader'>
+            <img src='https://s3-us-west-1.amazonaws.com/givebox/public/images/squareLoader.gif' alt='Loader' />
+          </div> : null }
+          <Video
+            playing={false}
+            url={videoURL}
+            onReady={this.videoOnReady}
+            style={{
+              maxWidth: '100%',
+              maxHeight: 'auto'
+            }}
+            maxHeight={'auto'}
+            preview={true}
+          />
+        </div>
+      )
+    } else {
+      return (
+        <div className='mediaPlaceholder'>
+          <span className='icon icon-video'></span>
+          No Preview Available
+        </div>
+      )
+    }
   }
 
   render() {
@@ -121,15 +205,16 @@ class EditArticleCardForm extends React.Component {
 
     const {
       imageURL,
-      videoURL
+      videoURL,
+      videoURLFieldValue,
+      video,
+      mediaType
     } = this.state;
 
     const article = util.getValue(this.props.article, 'data', {});
     const articleID = util.getValue(article, 'articleID');
     const articleCard = util.getValue(article, 'giveboxSettings.customTemplate.articleCard', {});
-    const title = util.getValue(articleCard, 'title', util.getValue(article, 'title'));
-
-    console.log('execute -> ', title);
+    const title = util.getValue(articleCard, 'title', article.title);
 
     const library = {
       saveMediaType: 'org',
@@ -168,11 +253,11 @@ class EditArticleCardForm extends React.Component {
           <div className='formSectionContainer'>
             <div className='formSection'>
               <Tabs
-                default={tabToDisplay}
+                default={mediaType}
                 className='statsTab'
                 callbackAfter={this.callbackAfter}
               >
-                <Tab id='image' label={<span className='stepLabel'><span className='icon icon-image'></span> Image</span>}>
+                <Tab id='image' className='showOnMobile' label={<span className='stepLabel'><span className='icon icon-image'></span> Image</span>}>
                   <MediaLibrary
                     blockType={'article'}
                     image={imageURL}
@@ -191,8 +276,29 @@ class EditArticleCardForm extends React.Component {
                     }}
                   />
                 </Tab>
-                <Tab id='video' label={<span className='stepLabel'><span className='icon icon-video'></span>Video</span>}>
-                  Manage Video
+                <Tab id='video' className='showOnMobile' label={<span className='stepLabel'><span className='icon icon-video'></span>Video Preview</span>}>
+                  <TextField
+                    name='video'
+                    label='Embed Video URL'
+                    fixedLabel={true}
+                    placeholder='Enter Embed Video URL'
+                    onChange={this.onChangeVideo}
+                    value={videoURLFieldValue}
+                  />
+                  <div className='fieldContext'>
+                    We recommend embedding a video that is no longer than 10 seconds. The video will autoplay when the user hovers the card.
+                  </div>
+                  <AnimateHeight
+                    duration={200}
+                    height={video.validated && videoURL ? 'auto' : 0}
+                  >
+                    <div className='input-group'>
+                      <label className='label'>Video Preview</label>
+                      <div style={{ marginTop: 10 }} className='flexCenter'>
+                        {mediaType === 'video' ? this.renderVideo() : <></>}
+                      </div>
+                    </div>
+                  </AnimateHeight>
                 </Tab>
               </Tabs>
             </div>
@@ -208,18 +314,13 @@ class EditArticleCard extends React.Component {
 
   constructor(props) {
     super(props);
-    this.changeTab = this.changeTab.bind(this);
     this.state = {
-      tabToDisplay: props.tabToDisplay
+
     };
   }
 
   componentDidMount() {
     this.getArticle();
-  }
-
-  changeTab(tabToDisplay) {
-    this.setState({ tabToDisplay });
   }
 
   getArticle() {
@@ -252,18 +353,12 @@ class EditArticleCard extends React.Component {
         >
           <EditArticleCardForm
             {...this.props}
-            changeTab={this.changeTab}
-            tabToDisplay={this.state.tabToDisplay}
           />
         </Form>
       </div>
     )
   }
 }
-
-EditArticleCard.defaultProps = {
-  tabToDisplay: 'image'
-};
 
 function mapStateToProps(state, props) {
 

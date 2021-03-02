@@ -261,6 +261,7 @@ class Org extends React.Component {
                 <Pages
                   isAdmin={isAdmin}
                   onClickArticle={this.onClickArticle}
+                  onMouseOverArticle={this.onMouseOverArticle}
                   pageDropdown={this.pageDropdown}
                 />
             </div>

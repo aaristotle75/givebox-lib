@@ -695,6 +695,7 @@ export function saveCustomTemplate(resourceName, options = {}) {
     ID: null,
     orgID: null,
     data: {},
+    customTemplate: {},
     isSending: false,
     showSaving: true,
     callback: null,
@@ -706,10 +707,11 @@ export function saveCustomTemplate(resourceName, options = {}) {
     const customTemplate = util.getValue(getState(), `resource.${resourceName}.data.giveboxSettings.customTemplate`, {});
 
     const dataObj = {
+      ...opts.data,
       giveboxSettings: {
         customTemplate: {
           ...customTemplate,
-          ...opts.data
+          ...opts.customTemplate
         }
       }
     };
