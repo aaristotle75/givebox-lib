@@ -326,7 +326,7 @@ class FormEdit extends Component {
                   this.updateForm('cartTitle', value);
                 }}
               />
-              <div className='formSectionHeader'>Browse Items Overlay Options { !shopLinkOpensOrgPage ? <ModalLink style={{ marginLeft: 10 }} id='shop'>Edit Browse Items Overlay</ModalLink> : null }</div>
+              <div className='formSectionHeader'>Browse Items Options { !shopLinkOpensOrgPage ? <ModalLink style={{ marginLeft: 10 }} id='shop'>Edit Browse Items</ModalLink> : null }</div>
               <Choice
                 type='checkbox'
                 name='allowSelection'
@@ -354,6 +354,7 @@ class FormEdit extends Component {
                   }}
                   style={{ paddingBottom: 0 }}
                 />
+                {/*
                 <Choice
                   type='checkbox'
                   name='shopLinkOpensOrgPage'
@@ -365,6 +366,7 @@ class FormEdit extends Component {
                   value={shopLinkOpensOrgPage}
                   toggle={true}
                 />
+                */}
               </AnimateHeight>
               {/*
               <Choice

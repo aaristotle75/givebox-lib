@@ -178,7 +178,9 @@ class TicketsList extends Component {
 
         let name = value.name;
         let priceDesc = '';
+        let soldOut = 'Sold Out';
         if (kind === 'sweepstake') {
+          soldOut = '';
           const entries = +value.entries || 1;
           if (!value.name) {
             name = <span>{entries} {entries > 1 ? 'Entries' : 'Entry'} for {price}</span>;
@@ -202,7 +204,7 @@ class TicketsList extends Component {
                 <div style={{ width: thumbnailURL && breakpoint !== 'mobile' ? '75%' : '85%' }} className='ticketDesc'>
                   {name}
                   <span className='ticketDescAmount'>{price} {priceDesc}</span>
-                  {showInStock ? <span className='ticketDescInStock'>{inStock ? `${inStock} Available` : `Sold Out`}</span> : <></> }
+                  {showInStock ? <span className='ticketDescInStock'>{inStock ? `${inStock} Available` : soldOut}</span> : <></> }
                   {value.description ? <GBLink allowCustom={true} customColor={color} className='link ticketShowDetailsLink' onClick={() => this.toggleShowDetails(value.ID)}>{showDetails.includes(value.ID) ? 'Hide Info' : 'More Info'}</GBLink> : <></>}
                 </div>
                 <div className='ticketQty'>

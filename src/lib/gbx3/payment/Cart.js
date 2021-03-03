@@ -175,7 +175,7 @@ class Cart extends Component {
             <div className='paymentFormHeaderTitle'>
               {cartTitle || 'Your Cart'}
               {browseItems ?
-                shopLinkOpensOrgPage ?
+                shopLinkOpensOrgPage || 1 === 1 ?
                 <GBLink
                   style={{ right: '60px' }}
                   className='link closeCart'

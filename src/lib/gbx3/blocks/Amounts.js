@@ -639,7 +639,7 @@ class Amounts extends Component {
                       </div>
                       <div className='button-group'>
                         { browseItems ?
-                          shopLinkOpensOrgPage ?
+                          shopLinkOpensOrgPage || 1 === 1 ?
                             <GBLink
                               className='hideOnMobile'
                               onClick={() => {
