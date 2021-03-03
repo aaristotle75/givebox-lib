@@ -193,7 +193,7 @@ class Form extends Component {
           id={modalID}
           effect='3DFlipVert' style={{ width: '70%' }}
           draggable={true}
-          draggableTitle={`Editing ${title}`}
+          draggableTitle={`Editing ${title} Details`}
           closeCallback={this.closeEditModal}
           disallowBgClose={true}
           component={() =>
@@ -202,7 +202,7 @@ class Form extends Component {
                 default={'edit'}
                 className='statsTab'
               >
-                <Tab id='edit' label={<span className='stepLabel'>Edit Form Options</span>}>
+                <Tab id='edit' label={<span className='stepLabel'>Form Options</span>}>
                   <FormEdit
                     kind={kind}
                     orgID={orgID}

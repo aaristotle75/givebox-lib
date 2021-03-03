@@ -209,7 +209,7 @@ export const where = {
 export const paymentForm = {
   order: 7,
   name: 'paymentForm',
-  title: 'Payment Form',
+  title: 'Payment Form Details',
   type: 'Form',
   nonremovable: true,
   noGrid: true,
@@ -245,7 +245,7 @@ export const paymentForm = {
       goal: 50000,
       cartTitle: 'Your Cart',
       shopTitle: 'Browse More Items',
-      shopLinkOpensOrgPage: false,
+      shopLinkOpensOrgPage: true,
       checkoutDonation: false,
       checkoutDonationText: '',
       checkoutDonationAmount: 500,

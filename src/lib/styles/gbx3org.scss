@@ -705,28 +705,3 @@ $contentHeaderPadding: 35%;
   }
 
 }
-
-.gbx3 {
-
-  form .tabs .panel {
-    display: block !important;
-  }
-
-  .videoContainer {
-    position: relative;
-    width: 100%;
-  }
-
-  .imageLoader {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: 0 auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-}

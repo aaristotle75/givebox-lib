@@ -401,17 +401,17 @@ class Pages extends Component {
             opts={{
               useCustomList,
               pageSlug,
-              tabToDisplay: 'editList'
+              tabToDisplay: 'editPage'
             }}
           >
             <button className='tooltip blockEditButton' id='orgEditPage'>
-              <span className='tooltipTop'><i />Click to Edit Page</span>
+              <span className='tooltipTop'><i />Click to Edit Page Details</span>
               <span className='icon icon-edit'></span>
             </button>
           </ModalLink>
           <div className='gbx3orgPagesTopContainer'>
             <div className='gbx3OrgPagesTopLeft'>
-              <h2>{pageTitle}</h2>
+              <h2>{pageName}</h2>
             </div>
             <div className='gbx3OrgPagesSearch'>
               <Search

@@ -93,17 +93,6 @@ class FormEdit extends Component {
             <div className='formSection'>
               <Choice
                 type='checkbox'
-                name='passFees'
-                label={'Customer Pays the Credit Card Fee'}
-                onChange={(name, value) => {
-                  this.updateForm('passFees', passFees ? false : true);
-                }}
-                checked={passFees}
-                value={passFees}
-                toggle={true}
-              />
-              <Choice
-                type='checkbox'
                 name='feeOption'
                 label={'Customer Has Option to Pay Credit Card Fee'}
                 onChange={(name, value) => {
@@ -113,6 +102,23 @@ class FormEdit extends Component {
                 value={feeOption}
                 toggle={true}
               />
+              <div style={{ marginBottom: 20 }} className='fieldContext'>
+                The customer can choose to cover the cost of the credit card fee. If they opt out the Nonprofit pays the credit card fee.
+              </div>
+              <Choice
+                type='checkbox'
+                name='passFees'
+                label={'Customer Pays the Credit Card Fee'}
+                onChange={(name, value) => {
+                  this.updateForm('passFees', passFees ? false : true);
+                }}
+                checked={passFees}
+                value={passFees}
+                toggle={true}
+              />
+              <div className='fieldContext'>
+                The customer covers the cost of the credit card fee unless the option for them choose is provided. If this is toggled off the Nonprofit pays the credit card fee.
+              </div>
             </div>
           </div>
         </Collapse>
@@ -133,6 +139,9 @@ class FormEdit extends Component {
                 value={echeck}
                 toggle={true}
               />
+              <div className='fieldContext'>
+                Enabling Direct Debit allows customers with qualifying debit cards to pay lower fees.
+              </div>
             </div>
           </div>
         </Collapse>
@@ -204,12 +213,12 @@ class FormEdit extends Component {
         >
           <div className='formSectionContainer'>
             <div className='formSection'>
-              <div className='formSectionHeader'>Category / Tag</div>
+              <div className='formSectionHeader'>Keywords</div>
               <TextField
                 name='tag'
-                label='Category / Tag Name'
-                fixedLabel={true}
-                placeholder='Enter a Category or Tag Name'
+                label=''
+                fixedLabel={false}
+                placeholder='Add Keywords, Category, Tags, etc.'
                 value={tag}
                 count={true}
                 maxLength={64}
@@ -217,6 +226,7 @@ class FormEdit extends Component {
                   const value = e.currentTarget.value;
                   this.updateForm('tag', value);
                 }}
+                style={{ paddingTop: 0 }}
               />
               <div className='formSectionHeader'>Share Option</div>
               <Choice
@@ -277,7 +287,7 @@ class FormEdit extends Component {
                   />
                 </div>
               : ''}
-              <div className='formSectionHeader'>Goal Option</div>
+              <div className='formSectionHeader'>Enable Fundraising Thermometer</div>
               <Choice
                 type='checkbox'
                 name='hasCustomGoal'
@@ -316,11 +326,11 @@ class FormEdit extends Component {
                   this.updateForm('cartTitle', value);
                 }}
               />
-              <div className='formSectionHeader'>Browse Other Items Option { !shopLinkOpensOrgPage ? <ModalLink style={{ marginLeft: 10 }} id='shop'>Edit Browse Other Items Overlay</ModalLink> : null }</div>
+              <div className='formSectionHeader'>Browse Items Overlay Options { !shopLinkOpensOrgPage ? <ModalLink style={{ marginLeft: 10 }} id='shop'>Edit Browse Items Overlay</ModalLink> : null }</div>
               <Choice
                 type='checkbox'
                 name='allowSelection'
-                label={'Allow Browsing Other Items'}
+                label={'Connect Your Other Givebox Forms'}
                 onChange={(name, value) => {
                   this.updateForm('allowSelection', allowSelection ? false : true);
                 }}
@@ -328,12 +338,15 @@ class FormEdit extends Component {
                 value={allowSelection}
                 toggle={true}
               />
+              <div style={{ marginBottom: 20 }} className='fieldContext'>
+                Connecting your other Givebox Forms will allow your visitors to browse more items.
+              </div>
               <AnimateHeight height={allowSelection ? 'auto' : 0}>
                 <TextField
                   name='shopTitle'
-                  label='Browse More Items Title'
+                  label='Browse Items Title'
                   fixedLabel={true}
-                  placeholder='Browse More Items Title"'
+                  placeholder='Browse Items Title"'
                   value={shopTitle}
                   onChange={(e) => {
                     const value = e.currentTarget.value;
@@ -344,7 +357,7 @@ class FormEdit extends Component {
                 <Choice
                   type='checkbox'
                   name='shopLinkOpensOrgPage'
-                  label={'Link Opens Landing Page'}
+                  label={'Use Landing Page for Visitors to Browse Items'}
                   onChange={(name, value) => {
                     this.updateForm('shopLinkOpensOrgPage', shopLinkOpensOrgPage ? false : true);
                   }}
@@ -352,10 +365,6 @@ class FormEdit extends Component {
                   value={shopLinkOpensOrgPage}
                   toggle={true}
                 />
-                <div style={{ marginBottom: 20 }} className='fieldContext'>
-                  <span style={{ display: 'block' }}>Toggled ON will open the landing page.</span>
-                  <span>Toggled OFF will open the browse more overlay.</span>
-                </div>
               </AnimateHeight>
               {/*
               <Choice
@@ -424,7 +433,7 @@ class FormEdit extends Component {
                   }}
                   style={{ paddingBottom: 0 }}
                   readOnly={true}
-                  readOnlyText={'Cinesend is currently the only provider available.'}
+                  readOnlyText={'Must have a Cinesend Account'}
                 />
                 <TextField
                   name='virtualEventAPIKey'

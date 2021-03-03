@@ -70,7 +70,7 @@ export default class OrgAdminModalRoutes extends Component {
           id={'orgEditPage'}
           effect='3DFlipVert' style={{ width: '80%' }}
           draggable={true}
-          draggableTitle={`Editing Page`}
+          draggableTitle={`Editing Page Details`}
           disallowBgClose={false}
           component={(props) => this.loadComponent('./EditPage', props)}
         />

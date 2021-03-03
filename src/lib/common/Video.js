@@ -52,11 +52,11 @@ export default class Video extends Component {
     const mergeStyle = { maxWidth: maxWidth || maxSize, maxHeight: maxHeight || maxSize, ...style };
 
     return (
-      <div style={{ minHeight, width: maxSize, height: 'auto',  ...style }} className={`imageComponent ${className || ''}`}>
-        {this.state.loading  &&
+      <div style={{ minHeight, width: maxSize, height: 'auto',  ...style }} className={`videoComponent imageComponent ${className || ''}`}>
+        { this.state.loading ?
         <div className='imageLoader'>
           <img src='https://s3-us-west-1.amazonaws.com/givebox/public/images/squareLoader.gif' alt='Loader' />
-        </div>}
+        </div> : null }
         {this.state.error ?
           <div className='errorMsg'>
             Sorry, an error occurred trying to play the video.<br />

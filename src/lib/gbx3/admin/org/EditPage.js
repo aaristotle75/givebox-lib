@@ -177,7 +177,7 @@ class EditPageForm extends React.Component {
     const pageName = util.getValue(page, 'name');
     const pageTitle = util.getValue(page, 'pageTitle', pageName);
     const kind = util.getValue(page, 'kind');
-    
+
     const buttonGroup =
       <div className='button-group flexCenter'>
         <GBLink className='link secondary' onClick={() => this.props.toggleModal('orgEditPage', false)}>Cancel</GBLink>
@@ -193,22 +193,23 @@ class EditPageForm extends React.Component {
           default={tabToDisplay}
           className='statsTab'
         >
-          <Tab id='editPage' label={<span className='stepLabel'>Page Display</span>}>
+          <Tab id='editPage' label={<span className='stepLabel'>Page Content</span>}>
             <Collapse
               iconPrimary={'edit'}
-              label={'Display'}
+              label={'Page Name'}
               id='editPageGeneral'
             >
               <div className='formSectionContainer'>
                 <div className='formSection'>
-                  {this.props.textField('name', { fixedLabel: true, label: 'Page Name (Used as Navigation Text)', placeholder: 'Enter Page Name', value: pageName })}
-                  {this.props.textField('pageTitle', { fixedLabel: true, label: 'Page Title', placeholder: 'Enter Page Title', value: pageTitle })}
+                  {this.props.textField('name', { fixedLabel: false, label: '', placeholder: 'Add Page Name', value: pageName })}
+
+                  {/* this.props.textField('pageTitle', { fixedLabel: true, label: 'Page Title', placeholder: 'Enter Page Title', value: pageTitle }) */}
                 </div>
               </div>
             </Collapse>
             <Collapse
               iconPrimary={'edit'}
-              label={'Page Header'}
+              label={'Add Header'}
               id='editPageTopEditor'
             >
               <div className='formSectionContainer'>
@@ -240,7 +241,7 @@ class EditPageForm extends React.Component {
             </Collapse>
             <Collapse
               iconPrimary={'edit'}
-              label={'Page Footer'}
+              label={'Add Footer'}
               id='editPageBottomEditor'
             >
               <div className='formSectionContainer'>
@@ -280,8 +281,8 @@ class EditPageForm extends React.Component {
                 <div className='formSection'>
                   {this.props.textField('customSlug', {
                     fixedLabel: true,
-                    label: 'URL Name (Slug)',
-                    placeholder: 'Enter URL Name (Slug)',
+                    label: 'Customize Page URL',
+                    placeholder: 'Add Custom URL Name',
                     value: customSlug,
                     style: { paddingBottom: 5 },
                     validate: 'custom',
@@ -299,12 +300,14 @@ class EditPageForm extends React.Component {
                       errorMsg: 'URL name can only contain alphanumeric and !@#%*_+- characters AND/OR a duplicate slug already exists.'
                     }
                   })}
+                  {/*
                   <div style={{ marginBottom: 20 }} className='fieldContext'>The URL value is used as a query parameter to directly access a page. Example: Add ?page={customSlug} to the end of the url.</div>
+                  */}
                 </div>
               </div>
             </Collapse>
           </Tab>
-          <Tab id='editList' label={<span className='stepLabel'>Page List</span>}>
+          <Tab id='editList' label={<span className='stepLabel'>Page Form List</span>}>
             <Collapse
               iconPrimary={'list'}
               label={'Page List'}
