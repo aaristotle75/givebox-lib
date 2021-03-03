@@ -37,11 +37,13 @@ class Publish extends React.Component {
             publishStatus.webApp = true;
             publishStatus.mobileApp = true;
             publishStatus.swipeApp = true;
+            publishStatus.givebox = true;
           } else {
             publishStatus.webApp = false;
             publishStatus.mobileApp = false;
             publishStatus.swipeApp = false;
             publishStatus.givebox = false;
+            publishStatus.landing = false;
           }
           break;
         }
@@ -52,11 +54,13 @@ class Publish extends React.Component {
             publishStatus.webApp = false;
             publishStatus.mobileApp = true;
             publishStatus.swipeApp = true;
+            publishStatus.givebox = true;
           } else {
             publishStatus.webApp = true;
             publishStatus.mobileApp = false;
             publishStatus.swipeApp = false;
             publishStatus.givebox = false;
+            publishStatus.landing = false;
           }
           break;
         }
@@ -64,7 +68,7 @@ class Publish extends React.Component {
     }
 
     if (name === 'landingPage') {
-      publishStatus.givebox = value === 'yes' ? true : false;
+      publishStatus.landing = value === 'yes' ? true : false;
     }
 
     const dataUpdated = await this.props.updateData({
@@ -87,6 +91,7 @@ class Publish extends React.Component {
       kind,
       webApp,
       givebox,
+      landing,
       publishStatus
     } = this.props;
 
@@ -147,7 +152,7 @@ class Publish extends React.Component {
             label={''}
             className='leftPanelDropdown'
             fixedLabel={true}
-            defaultValue={givebox ? 'yes' : 'no'}
+            defaultValue={landing ? 'yes' : 'no'}
             onChange={(name, value) => {
               this.updatePublishStatus(name, value);
             }}
@@ -168,6 +173,7 @@ function mapStateToProps(state, props) {
   const publishStatus = util.getValue(gbx3, 'data.publishedStatus', {});
   const webApp = util.getValue(publishStatus, 'webApp');
   const givebox = util.getValue(publishStatus, 'givebox');
+  const landing = util.getValue(publishStatus, 'landing');
   const kind = util.getValue(gbx3, 'info.kind');
   const kindID = util.getValue(gbx3, 'info.kindID');
   const orgID = util.getValue(gbx3, 'info.orgID');
@@ -176,6 +182,7 @@ function mapStateToProps(state, props) {
     publishStatus,
     webApp,
     givebox,
+    landing,
     kind,
     kindID,
     orgID
