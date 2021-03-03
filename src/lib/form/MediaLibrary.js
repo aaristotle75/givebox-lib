@@ -55,15 +55,25 @@ class MediaLibrary extends Component {
       articleID,
       orgID,
       saveMediaType,
-      blockType
+      blockType,
+      recordsPerPage
     } = this.props;
 
     if (saveMediaType === 'article' && articleID) {
-      this.props.getResource('articleMediaItems', { id: [articleID], reload: true });
+      this.props.getResource('articleMediaItems', {
+        id: [articleID],
+        reload: true,
+        search: {
+          max: recordsPerPage
+        }
+      });
     } else {
       this.props.getResource(this.props.resourceName, {
         id: orgID ? [orgID] : null,
-        reload: true
+        reload: true,
+        search: {
+          max: recordsPerPage
+        }
       });
     }
   }
@@ -212,6 +222,7 @@ class MediaLibrary extends Component {
 
     const items = [];
     let paginate = false;
+    let maxRecords = false;
     if (!util.isEmpty(this.props.items)) {
       Object.entries(this.props.items).forEach(([key, value]) => {
         const actions = [];
@@ -239,6 +250,7 @@ class MediaLibrary extends Component {
         );
       });
       paginate = true;
+      maxRecords = true;
     }
     return (
       <div className='photoSection PhotoList'>
@@ -251,7 +263,15 @@ class MediaLibrary extends Component {
                 name={this.props.resourceName}
               />
             </div>
-          : ''}
+          : null}
+          {maxRecords ?
+            <div className='flexCenter flexColumn'>
+              <MaxRecords
+                name={this.props.resourceName}
+                direction={'top'}
+              />
+            </div>
+          : null}
         </div>
         : <div className='noRecords flexCenter'>No Photos Uploaded</div>}
       </div>
@@ -395,7 +415,8 @@ MediaLibrary.defaultProps = {
   acceptedMimes: ['image', 'text', 'applications'],
   uploadOnly: false,
   topLabel: 'Add File',
-  bottomLabel: 'Drag & Drop'
+  bottomLabel: 'Drag & Drop',
+  recordsPerPage: 20
 }
 
 function mapStateToProps(state, props) {

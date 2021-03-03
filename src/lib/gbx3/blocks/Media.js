@@ -67,7 +67,9 @@ class Media extends Component {
       maxWidth: this.maxWidth || null,
       maxHeight: this.maxHeight || 550,
       hasBeenUpdated: false,
-      mediaLibraryEditorIsOpen: false
+      mediaLibraryEditorIsOpen: false,
+      imageLinkError: false,
+      imageLink: util.getValue(image, 'link')
     };
   }
 
@@ -284,7 +286,8 @@ class Media extends Component {
       minRadius,
       block,
       breakpoint,
-      isVolunteer
+      isVolunteer,
+      blockType
     } = this.props;
 
     const {
@@ -338,7 +341,7 @@ class Media extends Component {
                     <div className='formSectionContainer'>
                       <div className='formSection'>
                         <MediaLibrary
-                          blockType={this.props.blockType}
+                          blockType={blockType}
                           modalID={modalID}
                           image={mediaType === 'image' ? util.getValue(image, 'URL') : null}
                           preview={mediaType === 'image' ? util.getValue(image, 'URL') : null}
@@ -353,10 +356,42 @@ class Media extends Component {
                             this.setState({ mediaLibraryEditorIsOpen: open });
                           }}
                           mobile={breakpoint === 'mobile' ? true : false }
+                          recordsPerPage={12}
                         />
                       </div>
                     </div>
                   </Collapse>
+                  { blockType === 'receipt' ?
+                  <Collapse
+                    label={'Link Image'}
+                    iconPrimary='link'
+                    id={'gbx3-imageLink'}
+                  >
+                    <div className='formSectionContainer'>
+                      <div className='formSection'>
+                        <TextField
+                          name='imageLink'
+                          label='Image Link'
+                          fixedLabel={true}
+                          placeholder='Add a Link to Image'
+                          onBlur={(e) => {
+                            const value = e.currentTarget.value;
+                            if (_v.validateURL(value) || !value) {
+                              this.updateImage('link', value);
+                            } else {
+                              this.setState({ imageLinkError: true })
+                            }
+                          }}
+                          onChange={(e) => {
+                            const value = e.currentTarget.value;
+                            this.setState({ imageLinkError: false, imageLink: value });
+                          }}
+                          value={this.state.imageLink}
+                          error={this.state.imageLinkError ? 'Link must be a valid URL' : false}
+                        />
+                      </div>
+                    </div>
+                  </Collapse> : null }
                   {!mediaLibraryEditorIsOpen && !disallowRadius ?
                   <Collapse
                     label={'Image Options'}
@@ -390,7 +425,7 @@ class Media extends Component {
                         </div> : ''}
                       </div>
                     </div>
-                  </Collapse> : <></> }
+                  </Collapse> : null }
                 </Tab> : <></> }
                 { !util.isEmpty(video) ?
                 <Tab

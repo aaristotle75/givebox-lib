@@ -124,7 +124,8 @@ class Text extends Component {
       block,
       breakpoint,
       primaryColor,
-      isVolunteer
+      isVolunteer,
+      blockType
     } = this.props;
 
     const {
@@ -172,6 +173,7 @@ class Text extends Component {
                           type={breakpoint === 'mobile' ? 'classic' : 'classic'}
                           acceptedMimes={['image']}
                           isVolunteer={isVolunteer}
+                          allowLinking={blockType === 'receipt' ? true : false}
                         />
                       </div>
                     </div>

@@ -29,20 +29,23 @@ export default class Editor extends PureComponent {
       widgets,
       balloonButtons,
       isVolunteer,
-      autoFocus
+      autoFocus,
+      allowLinking
     } = this.props;
 
     const contentCss = 'https://cdn.givebox.com/common/css/gbx3contents.css';
     let toolbar =	[ 'Bold', 'Italic', '-', 'FontSize', 'TextColor', 'Styles', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight'];
     let height = '150px';
     let removePlugins = 'elementspath';
-    let removeButtons = 'Link,Unlink';
+    let removeButtons = !allowLinking ? 'Link,Unlink' : '';
 
     if (subType === 'content') {
       toolbar =	[ 'Bold', 'Italic', '-', 'FontSize', 'TextColor', 'Styles', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', '-', 'Image'];
       height = '300px';
       removePlugins = 'image,elementspath';
     }
+
+    if (allowLinking) toolbar.push('-', 'Link', 'Unlink');
 
     return (
       <CustomCKEditor4
@@ -85,5 +88,6 @@ Editor.defaultProps = {
   type: 'classic',
   width: '100%',
   balloonButtons: 'Image',
-  autoFocus: true
+  autoFocus: true,
+  allowLinking: false
 }

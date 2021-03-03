@@ -13,6 +13,7 @@ import {
 } from '../lib/'
 import axios from 'axios';
 import ReactPlayer from 'react-player';
+import Editor from '../lib/gbx3/blocks/Editor';
 
 class Dashboard extends Component {
 
@@ -154,7 +155,6 @@ class Dashboard extends Component {
           progressColor2={'#29eee6'}
           gradient={true}
         />
-        */}
         <Form
           name='testForm'
           options={{
@@ -162,6 +162,22 @@ class Dashboard extends Component {
           }}>
           <TestForm {...this.props} />
         </Form>
+        */}
+
+        <Editor
+          orgID={185}
+          articleID={null}
+          content={this.state.content}
+          onBlur={(content) => console.log('onBlur -> ', content)}
+          onChange={(content) => {
+            this.setState({ content });
+          }}
+          type={'classic'}
+          subType={'content'}
+          acceptedMimes={['image']}
+          autoFocus={false}
+          allowLinking={false}
+        />
       </div>
     )
   }

@@ -857,8 +857,9 @@ export function saveReceipt(options = {}) {
     Object.entries(orderedBlocks).forEach(([key, value]) => {
       switch (value.type) {
         case 'Media': {
+          const imageLink = util.getValue(value, 'content.image.link');
           const imageURL = util.getValue(value, 'content.image.URL', util.getValue(articleData, `${util.getValue(value, 'field')}`));
-          if (imageURL) receiptHTML = receiptHTML + `<p style="text-align:center"><img style="max-width:500px;" src="${util.imageUrlWithStyle(imageURL, util.getValue(value, 'content.image.size', util.getValue(value, 'options.image.size', 'medium')))}" alt="Media" /></p>`;
+          if (imageURL) receiptHTML = receiptHTML + `${imageLink ? `<a href="${imageLink}">` : ''}<p style="text-align:center"><img style="max-width:500px;" src="${util.imageUrlWithStyle(imageURL, util.getValue(value, 'content.image.size', util.getValue(value, 'options.image.size', 'medium')))}" alt="Media" /></p>${imageLink ? '</a>' : ''}`;
           break;
         }
 
