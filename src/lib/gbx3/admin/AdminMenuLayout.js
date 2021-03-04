@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import * as util from '../../common/utility';
+import * as types from '../../common/types';
 import { blockTemplates } from '../blocks/blockTemplates';
 import {
   updateAdmin,
@@ -30,7 +31,8 @@ class AdminMenuLayout extends React.Component {
 
   renderActiveBlocks() {
     const {
-      blocks
+      blocks,
+      kind
     } = this.props;
     const items = [];
     const orderedBlocks = [];
@@ -44,7 +46,7 @@ class AdminMenuLayout extends React.Component {
 
     Object.entries(orderedBlocks).forEach(([key, value]) => {
       const name = util.getValue(value, 'name');
-      const title = util.getValue(value, 'title');
+      const title = name === 'paymentForm' ? types.translatePaymentForm(kind) : util.getValue(value, 'title');
       if (name && title) {
         items.push(
           <li

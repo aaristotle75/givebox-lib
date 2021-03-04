@@ -48,7 +48,8 @@ class ButtonEdit extends Component {
       gbxStyle,
       button,
       globalButtonStyle,
-      globalOption
+      globalOption,
+      allowAutopop
     } = this.props;
 
     const enabled = util.getValue(button, 'enabled', false);
@@ -98,6 +99,7 @@ class ButtonEdit extends Component {
           duration={500}
           height={enabled || globalOption ? 'auto' : 0}
         >
+          { allowAutopop ?
           <Choice
             type='checkbox'
             name='autopop'
@@ -109,7 +111,7 @@ class ButtonEdit extends Component {
             checked={autopop}
             value={autopop}
             toggle={true}
-          />
+          /> : null }
           <TextField
             name='text'
             label='Button Text'

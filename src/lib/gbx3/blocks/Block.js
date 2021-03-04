@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import * as util from '../../common/utility';
+import * as types from '../../common/types';
 import GBLink from '../../common/GBLink';
 import { toggleModal } from '../../api/actions';
 import {
@@ -192,7 +193,7 @@ class Block extends React.Component {
     const {
       editable,
       name,
-      title,
+      kind,
       type,
       style,
       editBlock,
@@ -208,6 +209,7 @@ class Block extends React.Component {
     const scrollableBlock = util.getValue(block, 'scrollable');
     const blockIsBeingEdited = editBlock === `${blockType}-${name}` ? true : false;
     const notEditable = util.getValue(block, 'volunteerNoEdit') && isVolunteer ? true : false;
+    const title = name === 'paymentForm' ? types.translatePaymentForm(kind) : this.props.title;
 
     return (
       <div className={`block`}>

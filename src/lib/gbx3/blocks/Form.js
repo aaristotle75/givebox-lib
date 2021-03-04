@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import * as util from '../../common/utility';
+import * as types from '../../common/types';
 import GBLink from '../../common/GBLink';
 import Collapse from '../../common/Collapse';
 import Tabs, { Tab } from '../../common/Tabs';
@@ -193,7 +194,7 @@ class Form extends Component {
           id={modalID}
           effect='3DFlipVert' style={{ width: '70%' }}
           draggable={true}
-          draggableTitle={`Editing ${title} Details`}
+          draggableTitle={`Editing ${types.translatePaymentForm(kind)}`}
           closeCallback={this.closeEditModal}
           disallowBgClose={true}
           component={() =>

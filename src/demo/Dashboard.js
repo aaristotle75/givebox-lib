@@ -121,6 +121,7 @@ class Dashboard extends Component {
     return (
       <div>
         <h2>Dashboard</h2>
+        <GBLink onClick={() => this.getVideo()}>Get Video</GBLink>
         {/*
         <GBLink onClick={() => this.createVoucher()}>Create Voucher</GBLink>
         <ReactPlayer
@@ -162,7 +163,6 @@ class Dashboard extends Component {
           }}>
           <TestForm {...this.props} />
         </Form>
-        */}
 
         <Editor
           orgID={185}
@@ -178,6 +178,7 @@ class Dashboard extends Component {
           autoFocus={false}
           allowLinking={false}
         />
+        */}
       </div>
     )
   }

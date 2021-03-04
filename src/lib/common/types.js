@@ -425,3 +425,8 @@ export const factorTypes = [
   'balanceRatio',
   'repaymentHistory'
 ];
+
+export function translatePaymentForm(formKind) {
+  const kindName = kind(formKind).name;
+  return `${kindName} Form Details`;
+}
