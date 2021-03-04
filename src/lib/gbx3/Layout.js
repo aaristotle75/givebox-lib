@@ -90,15 +90,15 @@ class Layout extends React.Component {
     }
   }
 
-  backToOrg() {
+  backToOrg(page) {
 
     const {
       orgID
     } = this.props;
 
-    if (this.props.backToOrgCallback) this.props.backToOrgCallback('org');
+    if (this.props.backToOrgCallback) this.props.backToOrgCallback('org', page);
     else {
-      this.props.loadOrg(orgID);
+      this.props.loadOrg(orgID, page);
     }
   }
 

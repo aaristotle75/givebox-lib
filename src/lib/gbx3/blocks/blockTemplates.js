@@ -246,6 +246,7 @@ export const paymentForm = {
       cartTitle: 'Your Cart',
       shopTitle: 'Browse More Items',
       shopLinkOpensOrgPage: true,
+      browsePage: '',
       checkoutDonation: false,
       checkoutDonationText: '',
       checkoutDonationAmount: 500,

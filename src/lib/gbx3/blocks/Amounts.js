@@ -410,6 +410,7 @@ class Amounts extends Component {
     const maxQuantity = util.getValue(extras, 'maxQuantity') || util.getValue(data, 'maxQuantity');
     const showCart = true;
     const shopTitle = util.getValue(form, 'shopTitle', 'Browse More Items');
+    const browsePage = util.getValue(form, 'browsePage');
     const shopLinkOpensOrgPage = util.getValue(form, 'shopLinkOpensOrgPage');
     const browseItems = util.getValue(form, 'allowSelection', true);
 
@@ -643,7 +644,7 @@ class Amounts extends Component {
                             <GBLink
                               className='hideOnMobile'
                               onClick={() => {
-                                this.props.backToOrg();
+                                this.props.backToOrg(browsePage);
                               }}
                               allowCustom={true}
                               customColor={primaryColor}>

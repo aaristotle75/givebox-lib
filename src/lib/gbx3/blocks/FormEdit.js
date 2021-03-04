@@ -16,6 +16,7 @@ class FormEdit extends Component {
     this.updateForm = this.updateForm.bind(this);
     this.updateMulti = this.updateMulti.bind(this);
     this.infoOptions = this.infoOptions.bind(this);
+    this.pageOptions = this.pageOptions.bind(this);
     this.state = {
       goalError: ''
     };
@@ -49,6 +50,26 @@ class FormEdit extends Component {
     ];
   }
 
+  pageOptions() {
+    const {
+      orgName,
+      orgPages,
+      orgSlug
+    } = this.props;
+    const options = [
+      { primaryText: orgName, value: `000landing000`, secondaryText: `https://givebox.com/${orgSlug}`}
+    ];
+    if (!util.isEmpty(orgPages)) {
+      Object.entries(orgPages).forEach(([key, value]) => {
+        const url = `https://givebox.com/${orgSlug}?page=${value.slug}`;
+        options.push(
+          { primaryText: value.name, value: value.slug, secondaryText: url }
+        )
+      });
+    }
+    return options;
+  }
+
   render() {
 
     const {
@@ -69,6 +90,7 @@ class FormEdit extends Component {
       cartTitle,
       shopTitle,
       shopLinkOpensOrgPage,
+      browsePage,
       checkoutDonation,
       checkoutDonationText,
       checkoutDonationAmount,
@@ -80,7 +102,8 @@ class FormEdit extends Component {
 
     const {
       kind,
-      orgID
+      orgID,
+      orgSlug
     } = this.props;
 
     return (
@@ -354,6 +377,17 @@ class FormEdit extends Component {
                   }}
                   style={{ paddingBottom: 0 }}
                 />
+                { !util.isEmpty(this.pageOptions()) ?
+                <Dropdown
+                  name='browsePage'
+                  label={'Browse Page'}
+                  fixedLabel={true}
+                  defaultValue={browsePage || `000landing000`}
+                  onChange={(name, value) => {
+                    this.updateForm('browsePage', value === `000landing000` ? '' : value);
+                  }}
+                  options={this.pageOptions()}
+                /> : null }
                 {/*
                 <Choice
                   type='checkbox'
@@ -477,10 +511,16 @@ FormEdit.defaultProps = {
 
 function mapStateToProps(state, props) {
 
-  const allowP2P = util.getValue(state, 'resource.org.data.allowVolunteers', true);
+  const allowP2P = util.getValue(state, 'gbx3.orgData.allowVolunteers', true);
+  const orgName = util.getValue(state, 'gbx3.orgData.name');
+  const orgSlug = util.getValue(state, 'gbx3.orgData.slug');
+  const orgPages = util.getValue(state, 'gbx3.orgData.customTemplate.orgPages', {});
 
   return {
-    allowP2P
+    allowP2P,
+    orgName,
+    orgSlug,
+    orgPages
   }
 }
 

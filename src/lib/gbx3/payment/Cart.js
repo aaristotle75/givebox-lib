@@ -166,6 +166,7 @@ class Cart extends Component {
       shopTitle,
       shopLinkOpensOrgPage,
       browseItems,
+      browsePage,
       primaryColor
     } = this.props;
 
@@ -180,7 +181,7 @@ class Cart extends Component {
                   style={{ right: '60px' }}
                   className='link closeCart'
                   onClick={() => {
-                    this.props.backToOrg();
+                    this.props.backToOrg(browsePage);
                   }}
                   allowCustom={true}
                   customColor={primaryColor}>

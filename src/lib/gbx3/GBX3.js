@@ -345,21 +345,24 @@ class GBX3 extends React.Component {
     if (loaded) return true;
   }
 
-  loadOrg(orgID) {
+  async loadOrg(orgID, page) {
     const {
       queryParams
     } = this.props;
 
     const share = has(queryParams, 'share') ? true : false;
     const previewMode = has(queryParams, 'previewMode') ? true : false;
+    const activePageUpdated = page ? await this.props.updateInfo({ 'activePageSlug': page }) : true;
 
-    this.props.loadOrg(orgID, (res, err) => {
-      if (!err && !util.isEmpty(res)) {
-        this.props.setOrgStyle();
-        if (share) this.props.toggleModal('share', true);
-        if (previewMode) this.props.updateAdmin({ previewDevice: 'desktop', previewMode: true });
-      }
-    });
+    if (activePageUpdated) {
+      this.props.loadOrg(orgID, (res, err) => {
+        if (!err && !util.isEmpty(res)) {
+          this.props.setOrgStyle();
+          if (share) this.props.toggleModal('share', true);
+          if (previewMode) this.props.updateAdmin({ previewDevice: 'desktop', previewMode: true });
+        }
+      });
+    }
   }
 
 
