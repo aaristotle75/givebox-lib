@@ -85,7 +85,7 @@ class Org extends React.Component {
   async onClickPageLink(activePageSlug) {
     const updatedInfo = await this.props.updateInfo({ activePageSlug });
     if (updatedInfo) {
-      this.props.scrollTo('gbx3OrgPages');
+      //this.props.scrollTo('infinite-scroll');
     }
   }
 
