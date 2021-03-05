@@ -709,7 +709,28 @@ $contentHeaderPadding: 35%;
     @include bgGradient(to bottom, $mainColor 0%, $white 50%);
   }
 
+  .gbx3OrgPages .cardTitleContainer {
+    height: 60px;
+  }
+
+  .gbx3OrgPages .articleCardContainer {
+    height: 420px;
+  }
+
   .mediaWrapper {
     position: relative;
+  }
+
+  .nameSection {
+    button.button {
+      background: $green;
+      color: $white;
+      border: 1px solid transparent;
+    }
+
+    button.button:hover {
+      background: transparentize($green, .4);
+      border: 1px solid transparent;
+    }
   }
 }

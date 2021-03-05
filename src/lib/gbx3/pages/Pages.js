@@ -65,6 +65,9 @@ class Pages extends Component {
     if (Object.keys(prevProps.pages).length !== Object.keys(this.props.pages).length) {
       this.reloadGetArticles();
     }
+    if (prevProps.display !== this.props.display) {
+      this.reloadGetArticles();
+    }
   }
 
   onMouseOverArticle(ID) {
@@ -169,7 +172,7 @@ class Pages extends Component {
       ...this.props.pageState[pageSlug]
     };
     const pageNumber = opts.pageNumber ? opts.pageNumber : opts.search ? util.getValue(pageState, 'search.pageNumber', 1) : util.getValue(pageState, 'pageNumber', 1);
-    const kindFilter = kind === 'all' ? '' : `%3Bkind:"${kind}"`;
+    const kindFilter = kind === 'all' || !kind ? '' : `%3Bkind:"${kind}"`;
     const customFilter = !util.isEmpty(customList) ? util.customListFilter(customList) : null;
     const baseFilter = customFilter && useCustomList ? customFilter : `landing:true%3Bvolunteer:false${kindFilter}`;
     const filter = `${baseFilter}${opts.filter ? `%3B${opts.filter}` : ''}`;
@@ -462,6 +465,7 @@ function mapStateToProps(state, props) {
   const gbx3 = util.getValue(state, 'gbx3', {});
   const admin = util.getValue(gbx3, 'admin', {});
   const info = util.getValue(gbx3, 'info', {});
+  const display = util.getValue(info, 'display');
   const orgID = util.getValue(info, 'orgID');
   const stage = util.getValue(info, 'stage');
   const pageSlug = util.getValue(info, 'activePageSlug');
@@ -481,6 +485,7 @@ function mapStateToProps(state, props) {
   const pageSearch = util.getValue(gbx3, 'pageSearch', {});
 
   return {
+    display,
     orgID,
     stage,
     pageSlug,

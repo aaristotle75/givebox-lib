@@ -433,6 +433,7 @@ class GBX3 extends React.Component {
           loadOrg={this.loadOrg}
           loadGBX3={this.loadGBX3}
           reloadGBX3={this.reloadGBX3}
+          loadBrowse={this.loadBrowse}
           primaryColor={this.props.primaryColor}
           onClickVolunteerFundraiser={this.onClickVolunteerFundraiser}
           backToOrgCallback={this.props.backToOrgCallback}

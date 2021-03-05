@@ -55,7 +55,11 @@ class CartButton extends React.Component {
   }
 
   async loadGBX(ID) {
-    const infoUpdated = await this.props.updateInfo({ originTemplate: 'org', checkout: true });
+    const {
+      originTemplate
+    } = this.props;
+
+    const infoUpdated = await this.props.updateInfo({ originTemplate, checkout: true });
     if (infoUpdated) {
       this.props.reloadGBX3(ID, async () => {
         this.props.updateCart({ open: true });
@@ -117,7 +121,8 @@ function mapStateToProps(state, props) {
     stage,
     cart,
     articleID,
-    display
+    display,
+    originTemplate: util.getValue(state, 'gbx3.info.originTemplate', 'org')
   }
 }
 

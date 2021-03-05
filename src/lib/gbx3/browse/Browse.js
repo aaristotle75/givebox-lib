@@ -99,7 +99,7 @@ class Browse extends React.Component {
           <div className='gbx3OrgSubHeader gbx3OrgContentOuterContainer'>
             <div className='gbx3OrgContentInnerContainer'>
               <div className='nameSection flexCenter centeritems'>
-                <GBLink className='button' onClick={() => console.log('execute signup -> ')}>
+                <GBLink style={{ width: 200 }} className='button' onClick={() => console.log('execute signup -> ')}>
                   Start a Fundraiser
                 </GBLink>
               </div>
