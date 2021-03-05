@@ -8,6 +8,7 @@ import ModalLink from '../modal/ModalLink';
 import Shop from './Shop';
 import Article from './Article';
 import Org from './Org';
+import Browse from './browse/Browse';
 import Confirmation from './payment/Confirmation';
 import {
   updateAdmin,
@@ -91,7 +92,6 @@ class Layout extends React.Component {
   }
 
   backToOrg(page) {
-
     const {
       orgID
     } = this.props;
@@ -109,52 +109,65 @@ class Layout extends React.Component {
 
   renderDisplay() {
     const {
-      display
+      display,
+      browse
     } = this.props;
 
     const items = [];
 
-    switch (display) {
-      case 'shop': {
-        items.push(
-          <Shop
-            key={'shop'}
-            reloadGBX3={this.props.reloadGBX3}
-          />
-        )
-        break;
-      }
+    if (browse) {
+      items.push(
+        <Browse
+          key={'browse'}
+          reloadGBX3={this.props.reloadGBX3}
+          loadGBX3={this.props.loadGBX3}
+          loadOrg={this.props.loadOrg}
+        />
+      );
+    } else {
+      switch (display) {
+        case 'shop': {
+          items.push(
+            <Shop
+              key={'shop'}
+              reloadGBX3={this.props.reloadGBX3}
+            />
+          )
+          break;
+        }
 
-      case 'org': {
-        items.push(
-          <Org
-            key={'org'}
-            reloadGBX3={this.props.reloadGBX3}
-            loadGBX3={this.props.loadGBX3}
-            primaryColor={this.props.primaryColor}
-            onClickVolunteerFundraiser={this.props.onClickVolunteerFundraiser}
-            scrollTo={this.scrollTo}
-          />
-        )
-        break;
-      }
+        case 'org': {
+          items.push(
+            <Org
+              key={'org'}
+              reloadGBX3={this.props.reloadGBX3}
+              loadGBX3={this.props.loadGBX3}
+              primaryColor={this.props.primaryColor}
+              onClickVolunteerFundraiser={this.props.onClickVolunteerFundraiser}
+              scrollTo={this.scrollTo}
+            />
+          )
+          break;
+        }
 
-      case 'article':
-      default: {
-        items.push(
-          <Article
-            key={'article'}
-            reloadGBX3={this.props.reloadGBX3}
-            loadGBX3={this.props.loadGBX3}
-            primaryColor={this.props.primaryColor}
-            onClickVolunteerFundraiser={this.props.onClickVolunteerFundraiser}
-            backToOrg={this.backToOrg}
-            scrollTo={this.scrollTo}
-          />
-        )
-        break;
+        case 'article':
+        default: {
+          items.push(
+            <Article
+              key={'article'}
+              reloadGBX3={this.props.reloadGBX3}
+              loadGBX3={this.props.loadGBX3}
+              primaryColor={this.props.primaryColor}
+              onClickVolunteerFundraiser={this.props.onClickVolunteerFundraiser}
+              backToOrg={this.backToOrg}
+              scrollTo={this.scrollTo}
+            />
+          )
+          break;
+        }
       }
     }
+
     return items;
   }
 
@@ -312,6 +325,7 @@ function mapStateToProps(state, props) {
   const orgSlug = util.getValue(state, 'resource.article.data.orgSlug');
   const orgID = util.getValue(state, 'resource.article.data.orgID');
   const gbx3 = util.getValue(state, 'gbx3', {});
+  const browse = util.getValue(gbx3, 'browse');
   const info = util.getValue(gbx3, 'info', {});
   const originTemplate = util.getValue(info, 'originTemplate');
   const kind = util.getValue(info, 'kind');
@@ -326,6 +340,7 @@ function mapStateToProps(state, props) {
   const orgData = util.getValue(gbx3, 'orgData', {});
 
   return {
+    browse,
     orgData,
     orgSlug,
     orgID,

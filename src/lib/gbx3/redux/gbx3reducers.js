@@ -7,6 +7,7 @@ import {
 } from './gbx3defaults';
 
 export function gbx3(state = {
+  browse: false,
   loading: true,
   saveStatus: 'done',
   info: {

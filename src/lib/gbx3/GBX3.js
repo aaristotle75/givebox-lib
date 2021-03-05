@@ -18,6 +18,7 @@ import { loadReCaptcha } from 'react-recaptcha-v3';
 import has from 'has';
 import {
   setLoading,
+  updateGBX3,
   clearGBX3,
   updateInfo,
   updateAdmin,
@@ -45,6 +46,7 @@ class GBX3 extends React.Component {
     super(props);
     this.setInfo = this.setInfo.bind(this);
     this.loadCreateNew = this.loadCreateNew.bind(this);
+    this.loadBrowse = this.loadBrowse.bind(this);
     this.loadOrg = this.loadOrg.bind(this);
     this.loadGBX3 = this.loadGBX3.bind(this);
     this.reloadGBX3 = this.reloadGBX3.bind(this);
@@ -68,7 +70,8 @@ class GBX3 extends React.Component {
       orgID,
       orgName,
       blockType,
-      step
+      step,
+      browse
     } = this.props;
 
     this.props.setLoading(true);
@@ -82,41 +85,45 @@ class GBX3 extends React.Component {
     const setInfo = await this.setInfo();
 
     if (setInfo) {
-      switch (blockType) {
-        case 'org': {
-          if (!orgID) console.error('Org ID is not defined');
-          else if (step === 'create') this.loadCreateNew();
-          else this.loadOrg(orgID);
-          break;
-        }
-
-        case 'article':
-        default: {
-          switch (step) {
-            case 'create': {
-              this.loadCreateNew();
-              break;
-            }
-
-            case 'design':
-            default: {
-              if (isVolunteer) {
-                const infoUpdated = await this.props.updateInfo({
-                  orgID: orgID || ENV === 'production' ? 585 : 185,
-                  orgName: orgName || ENV === 'production' ? 'Givebox' : 'Service Dogs of America'
-                });
-                if (infoUpdated) this.onClickVolunteerFundraiser();
-              } else {
-                if (articleID) this.loadGBX3(articleID);
-                else {
-                  // autocreate
-                  this.loadCreateNew();
-                }
-              }
-              break;
-            }
+      if (browse) {
+        this.loadBrowse();
+      } else {
+        switch (blockType) {
+          case 'org': {
+            if (!orgID) console.error('Org ID is not defined');
+            else if (step === 'create') this.loadCreateNew();
+            else this.loadOrg(orgID);
+            break;
           }
-          break;
+
+          case 'article':
+          default: {
+            switch (step) {
+              case 'create': {
+                this.loadCreateNew();
+                break;
+              }
+
+              case 'design':
+              default: {
+                if (isVolunteer) {
+                  const infoUpdated = await this.props.updateInfo({
+                    orgID: orgID || ENV === 'production' ? 585 : 185,
+                    orgName: orgName || ENV === 'production' ? 'Givebox' : 'Service Dogs of America'
+                  });
+                  if (infoUpdated) this.onClickVolunteerFundraiser();
+                } else {
+                  if (articleID) this.loadGBX3(articleID);
+                  else {
+                    // autocreate
+                    this.loadCreateNew();
+                  }
+                }
+                break;
+              }
+            }
+            break;
+          }
         }
       }
     }
@@ -144,6 +151,11 @@ class GBX3 extends React.Component {
         this.loadGBX3(articleID);
       }
     }
+  }
+
+  loadBrowse() {
+    this.props.updateGBX3('browse', true);
+    this.props.updateInfo({ display: 'org', originTemplate: 'browse' });
   }
 
   async exitAdmin() {
@@ -434,7 +446,11 @@ class GBX3 extends React.Component {
 
   render() {
 
-    if (this.props.loading || (util.isLoading(this.props.gbx3Org) && this.props.step !== 'create')) return <Loader msg='Initiating GBX3' />;
+    const {
+      browse
+    } = this.props;
+
+    if (!browse && (this.props.loading || (util.isLoading(this.props.gbx3Org) && this.props.step !== 'create'))) return <Loader msg='Initiating GBX3' />;
 
     return (
       <div id='gbx3MainWrapper' className='gbx3'>
@@ -521,6 +537,7 @@ export default connect(mapStateToProps, {
   sendResource,
   setCustomProp,
   setLoading,
+  updateGBX3,
   clearGBX3,
   updateInfo,
   updateAdmin,
