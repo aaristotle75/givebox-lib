@@ -6,6 +6,7 @@ import Image from '../../common/Image';
 import GBLink from '../../common/GBLink';
 import ScrollTop from '../../common/ScrollTop';
 import Loader from '../../common/Loader';
+import GBXEntry from '../../common/GBXEntry';
 import has from 'has';
 import {
   updateInfo,
@@ -16,6 +17,8 @@ import {
 import Header from './Header';
 import Pages from './Pages';
 import Footer from '../Footer';
+
+const ENV = process.env.REACT_APP_ENV;
 
 class Browse extends React.Component {
 
@@ -31,6 +34,7 @@ class Browse extends React.Component {
     this.props.setLoading(false);
     this.onBreakpointChange();
     window.addEventListener('resize', this.resizer);
+    GBXEntry.init([{ env: ENV }]);
   }
 
   async onClickArticle(ID, pageSlug) {
@@ -97,9 +101,15 @@ class Browse extends React.Component {
           />
 
           <div className='gbx3OrgSubHeader gbx3OrgContentOuterContainer'>
-            <div className='gbx3OrgContentInnerContainer'>
-              <div className='nameSection flexCenter centeritems'>
-                <GBLink style={{ width: 200 }} className='button' onClick={() => console.log('execute signup -> ')}>
+            <div style={{ padding: '15px 0' }} className='gbx3OrgContentInnerContainer'>
+              <div className='nameSection flexColumn flexCenter centeritems'>
+                <span style={{ marginBottom: 15, fontSize: 16 }}>Have a Nonprofit or Charity, start a fundraiser today.</span>
+                <GBLink
+                  style={{ width: 200 }}
+                  className='button'
+                  onClick={() => {
+                    GBXEntry.load({ env: ENV });
+                  }}>
                   Start a Fundraiser
                 </GBLink>
               </div>

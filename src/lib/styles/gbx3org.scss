@@ -705,6 +705,15 @@ $contentHeaderPadding: 35%;
 }
 
 .gbx3Org.gbx3Browse {
+
+  .coverPhotoInfoContainer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    color: $white;
+    z-index: 10;
+  }
+
   .gbx3OrgContentHeader.gbx3OrgContentOuterContainer {
     @include bgGradient(to bottom, $mainColor 0%, $white 50%);
   }
@@ -722,6 +731,7 @@ $contentHeaderPadding: 35%;
   }
 
   .nameSection {
+
     button.button {
       background: $green;
       color: $white;

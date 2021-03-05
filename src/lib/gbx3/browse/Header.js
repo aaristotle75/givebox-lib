@@ -47,6 +47,9 @@ class Header extends React.Component {
       <div className='gbx3OrgContentHeader gbx3OrgContentOuterContainer'>
         <div className='gbx3OrgContentInnerContainer'>
           <div id='coverPhoto' className='coverPhotoContainer'>
+            <div className='coverPhotoInfoContainer'>
+              Hello World
+            </div>
             <div className='coverPhotoImage'>
               { coverPhotoUrl ?
                 <Image imgID='coverPhoto' size='large' url={coverPhotoUrl} maxSize='950px' alt='Cover Photo' />
