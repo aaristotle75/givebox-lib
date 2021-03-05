@@ -640,18 +640,15 @@ class Amounts extends Component {
                       </div>
                       <div className='button-group'>
                         { browseItems ?
-                          shopLinkOpensOrgPage || 1 === 1 ?
-                            <GBLink
-                              className='hideOnMobile'
-                              onClick={() => {
-                                this.props.backToOrg(browsePage);
-                              }}
-                              allowCustom={true}
-                              customColor={primaryColor}>
-                              {shopTitle}
-                            </GBLink>
-                          :
-                            <ModalLink className='hideOnMobile' id='shop' allowCustom={true} customColor={primaryColor}>{shopTitle}</ModalLink>
+                          <GBLink
+                            className='hideOnMobile'
+                            onClick={() => {
+                              this.props.backToOrg(browsePage);
+                            }}
+                            allowCustom={true}
+                            customColor={primaryColor}>
+                            {shopTitle}
+                          </GBLink>
                         : null }
                         <GBLink
                           className='button'

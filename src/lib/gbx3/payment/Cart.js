@@ -165,6 +165,7 @@ class Cart extends Component {
       cartTitle,
       shopTitle,
       shopLinkOpensOrgPage,
+      shopLinkAsButton,
       browseItems,
       browsePage,
       primaryColor
@@ -176,10 +177,9 @@ class Cart extends Component {
             <div className='paymentFormHeaderTitle'>
               {cartTitle || 'Your Cart'}
               {browseItems ?
-                shopLinkOpensOrgPage || 1 === 1 ?
                 <GBLink
                   style={{ right: '60px' }}
-                  className='link closeCart'
+                  className={`${shopLinkAsButton ? 'button' : 'link'} closeCart`}
                   onClick={() => {
                     this.props.backToOrg(browsePage);
                   }}
@@ -187,13 +187,6 @@ class Cart extends Component {
                   customColor={primaryColor}>
                   {shopTitle}
                 </GBLink>
-                :
-                <ModalLink
-                  style={{ right: '60px' }}
-                  className='link closeCart'
-                  id='shop'>
-                  {shopTitle || 'Shop More Items'}
-                </ModalLink>
               : null}
               <GBLink className='link closeCart' onClick={() => this.props.updateCart({ open: false })}><span className='icon icon-x'></span></GBLink>
             </div>

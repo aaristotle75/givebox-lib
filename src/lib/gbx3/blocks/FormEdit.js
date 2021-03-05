@@ -90,6 +90,7 @@ class FormEdit extends Component {
       cartTitle,
       shopTitle,
       shopLinkOpensOrgPage,
+      shopLinkAsButton,
       browsePage,
       checkoutDonation,
       checkoutDonationText,
@@ -376,6 +377,17 @@ class FormEdit extends Component {
                     this.updateForm('shopTitle', value);
                   }}
                   style={{ paddingBottom: 0 }}
+                />
+                <Choice
+                  type='checkbox'
+                  name='shopLinkAsButton'
+                  label={'Show Browse Items Link as a Button'}
+                  onChange={(name, value) => {
+                    this.updateForm('shopLinkAsButton', shopLinkAsButton ? false : true);
+                  }}
+                  checked={shopLinkAsButton}
+                  value={shopLinkAsButton}
+                  toggle={true}
                 />
                 { !util.isEmpty(this.pageOptions()) ?
                 <Dropdown

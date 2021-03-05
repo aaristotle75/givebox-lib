@@ -187,6 +187,7 @@ class Form extends Component {
     const noteInfo = this.getInfo('noteInfo');
     const browseItems = util.getValue(form, 'allowSelection', true);
     const browsePage = util.getValue(form, 'browsePage');
+    const shopLinkAsButton = util.getValue(form, 'shopLinkAsButton');
 
     return (
       <div className='formBlock'>
@@ -244,6 +245,7 @@ class Form extends Component {
           cartTitle={util.getValue(form, 'cartTitle', null)}
           shopTitle={util.getValue(form, 'shopTitle', null)}
           shopLinkOpensOrgPage={util.getValue(form, 'shopLinkOpensOrgPage', null)}
+          shopLinkAsButton={shopLinkAsButton}
           browseItems={browseItems}
           browsePage={browsePage}
           backToOrg={this.props.backToOrg}

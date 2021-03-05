@@ -42,14 +42,14 @@ class GBXTest extends Component {
     } = this.props;
 
     // 383102 // 1130 // 383064; // 13; // 739; // 4; //651; //735; //383071;
-    const articleID = null; //+util.getValue(routeParams, 'articleID', null);
+    const articleID = +util.getValue(routeParams, 'articleID', null);
     const orgID = 185;
 
     return (
       <div>
         <GBX3
           browse={true}
-          blockType={'org'}
+          blockType={'article'}
           orgID={orgID}
           articleID={articleID}
           saveCallback={this.saveCallback}
