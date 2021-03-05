@@ -78,9 +78,12 @@ class PaymentFormClass extends Component {
   }
 
   formSavedCallback() {
-    this.props.toggleModal('paymentConfirmation', true);
-    this.props.updateInfo({ display: 'shop' });
-    this.props.resetCart();
+    this.props.toggleModal('paymentConfirmation', true, { closeCallback: async () => {
+      const cartReset = await this.props.resetCart();
+      if (cartReset) {
+        this.props.backToOrg();
+      }
+    }});
   }
 
   processCallback(res, err) {

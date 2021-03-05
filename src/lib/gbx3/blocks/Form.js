@@ -251,6 +251,7 @@ class Form extends Component {
           backToOrg={this.props.backToOrg}
         />
         <PaymentForm
+          backToOrg={this.props.backToOrg}
           primaryColor={primaryColor}
           echeck={util.getValue(form, 'echeck', true)}
           phone={{ enabled: phoneInfo.enabled, required: phoneInfo.required }}
