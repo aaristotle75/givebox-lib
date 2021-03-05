@@ -20,6 +20,7 @@ class Footer extends React.Component {
   render() {
 
     const {
+      browse,
       stage,
       preview,
       orgName,
@@ -35,7 +36,7 @@ class Footer extends React.Component {
     return (
       <div className='gbx3Footer'>
         <div className='footerContainer flexCenter flexColumn'>
-          { publicOnly ?
+          { publicOnly && !browse ?
           <div style={{ marginBottom: 20 }} className='publicActionBar'>
             {allowSharing ? <Social /> : ''}
             {showP2P && allowP2P ?
@@ -63,6 +64,7 @@ class Footer extends React.Component {
 function mapStateToProps(state, props) {
 
   const gbx3 = util.getValue(state, 'gbx3', {});
+  const browse = util.getValue(gbx3, 'browse');
   const info = util.getValue(gbx3, 'info', {});
   const stage = util.getValue(info, 'stage');
   const preview = util.getValue(info, 'preview');
@@ -72,6 +74,7 @@ function mapStateToProps(state, props) {
   const allowP2P = util.getValue(state, 'resource.org.data.allowVolunteers', true);
 
   return {
+    browse,
     stage,
     preview,
     orgName,

@@ -93,13 +93,22 @@ class Layout extends React.Component {
 
   backToOrg(page) {
     const {
-      orgID
+      orgID,
+      originTemplate
     } = this.props;
 
-    if (this.props.backToOrgCallback) this.props.backToOrgCallback('org', page);
-    else {
-      this.props.loadOrg(orgID, page);
+    console.log('execute originTemplate -> ', originTemplate);
+
+    /*
+    if (page === 'browse') {
+      this.props.loadBrowse();
+    } else {
+      if (this.props.backToOrgCallback) this.props.backToOrgCallback('org', page);
+      else {
+        this.props.loadOrg(orgID, page);
+      }
     }
+    */
   }
 
   closeGBXModal() {

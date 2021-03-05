@@ -3,7 +3,6 @@ $contentMaxWidth: 950px;
 $contentBackground: #EBEDF0;
 $contentHeaderPadding: 35%;
 
-
 .gbx3PageWrapper.org {
 
   .orgAdminOnly {
@@ -111,12 +110,6 @@ $contentHeaderPadding: 35%;
   max-width: $contentMaxWidth;
   width: 100%;
 }
-
-/*
-.gbx3OrgContentHeader.gbx3OrgContentOuterContainer {
-  @include bgGradient(to bottom, $mainColor 0%, $white 50%);
-}
-*/
 
 .gbx3OrgContentHeader {
   position: relative;
@@ -449,6 +442,11 @@ $contentHeaderPadding: 35%;
       margin: 5px 10px;
       font-size: 16px;
     }
+
+    h3 {
+      font-size: 12px;
+      margin: 0 10px;
+    }
   }
 
   .cardButtonContainer {
@@ -704,4 +702,14 @@ $contentHeaderPadding: 35%;
     }
   }
 
+}
+
+.gbx3Org.gbx3Browse {
+  .gbx3OrgContentHeader.gbx3OrgContentOuterContainer {
+    @include bgGradient(to bottom, $mainColor 0%, $white 50%);
+  }
+
+  .mediaWrapper {
+    position: relative;
+  }
 }

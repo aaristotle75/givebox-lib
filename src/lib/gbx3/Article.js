@@ -45,6 +45,8 @@ class Article extends React.Component {
     if (checkout) {
       this.props.updateInfo({ checkout: false });
       this.props.scrollTo('checkout');
+    } else {
+      util.toTop('gbx3Layout');
     }
   }
 

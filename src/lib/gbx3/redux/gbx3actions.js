@@ -1305,6 +1305,7 @@ export function loadGBX3(articleID, callback) {
                   dispatch(updateData(res));
                   dispatch(updateAvailableBlocks(blockType, availableBlocks));
                   dispatch(updateAdmin(admin));
+                  dispatch(updateGBX3('browse', false));
 
                   // Get and Set Thank You Email Receipt
                   const receiptCustom = util.getValue(res, 'receiptConfig.blocks', {});

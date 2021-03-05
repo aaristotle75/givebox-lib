@@ -52,13 +52,6 @@ class Header extends React.Component {
                 <Image imgID='coverPhoto' size='large' url={coverPhotoUrl} maxSize='950px' alt='Cover Photo' />
               : null }
             </div>
-            <div className='profilePictureContainer'>
-              { profilePictureUrl ?
-                <Image url={profilePictureUrl} size='medium' maxSize='160px' alt='Profile Picture' imgStyle={{ minWidth: 160, borderRadius: '50%' }}/>
-              :
-                <div className='defaultProfilePicture'><span className={`icon icon-${isPublic ? 'shield' : 'camera'}`}></span></div>
-              }
-            </div>
           </div>
         </div>
       </div>
