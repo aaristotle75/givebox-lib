@@ -233,7 +233,6 @@ class Media extends Component {
           }}
           maxHeight={maxHeight}
           preview={preview}
-          light={preview ? false : true}
         />
       )
     } else {

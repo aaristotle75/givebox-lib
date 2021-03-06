@@ -64,13 +64,13 @@ export default class Video extends Component {
           </div>
         :
           <ReactPlayer
-            playing={playing}
+            playing={!preview && playing ? true : false}
             url={url}
             onReady={this.onReady}
             onError={this.onError}
             style={mergeStyle}
             width='100%'
-            light={light}
+            light={!preview && !playing ? true : light}
             muted={muted}
             loop={loop}
             controls={controls}
