@@ -41,7 +41,6 @@ export default class Video extends Component {
       maxSize,
       playing,
       preview,
-      light,
       ID,
       muted,
       loop,
@@ -50,10 +49,11 @@ export default class Video extends Component {
     } = this.props;
 
     const mergeStyle = { maxWidth: maxWidth || maxSize, maxHeight: maxHeight || maxSize, ...style };
+    const light = !preview && !playing ? true : this.props.light;
 
     return (
       <div style={{ minHeight, width: maxSize, height: 'auto',  ...style }} className={`videoComponent imageComponent ${className || ''}`}>
-        { this.state.loading ?
+        { this.state.loading && !light ?
         <div className='imageLoader'>
           <img src='https://s3-us-west-1.amazonaws.com/givebox/public/images/squareLoader.gif' alt='Loader' />
         </div> : null }
@@ -64,13 +64,13 @@ export default class Video extends Component {
           </div>
         :
           <ReactPlayer
-            playing={!preview && playing ? true : false}
+            playing={!preview && playing ? true : playing}
             url={url}
             onReady={this.onReady}
             onError={this.onError}
             style={mergeStyle}
             width='100%'
-            light={!preview && !playing ? true : light}
+            light={playing ? false : light}
             muted={muted}
             loop={loop}
             controls={controls}
@@ -89,7 +89,7 @@ Video.defaultProps = {
   maxWidth: null,
   playing: false,
   preview: false,
-  light: false,
+  light: true,
   muted: false,
   loop: false,
   controls: true,
