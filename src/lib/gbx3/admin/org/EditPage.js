@@ -12,13 +12,15 @@ import {
   updateOrgGlobal,
   updateOrgPage,
   updateOrgPageSlug,
-  saveOrg
+  saveOrg,
+  setPageState
 } from '../../redux/gbx3actions';
 import {
   toggleModal
 } from '../../../api/actions';
 import {
-  sendResource
+  sendResource,
+  reloadResource
 } from '../../../api/helpers';
 import Form from '../../../form/Form';
 import Editor from '../../blocks/Editor';
@@ -75,7 +77,8 @@ class EditPageForm extends React.Component {
   updateOrderby() {
     const {
       orgID,
-      resourceName
+      resourceName,
+      pageSlug
     } = this.props;
 
     const {
@@ -93,7 +96,9 @@ class EditPageForm extends React.Component {
       orgID,
       data,
       method: 'patch',
-      resourcesToLoad: [resourceName]
+      callback: async (res, err) => {
+        this.props.reloadGetArticles();
+      }
     })
   }
 
@@ -111,6 +116,7 @@ class EditPageForm extends React.Component {
 
     if (!err) {
       if (wasSorted) this.updateOrderby();
+      else this.props.reloadGetArticles();
       this.props.formSaved(this.formSavedCallback);
     } else {
       if (!this.props.getErrors(err)) this.props.formProp({error: this.props.savingErrorMsg});
@@ -479,5 +485,7 @@ export default connect(mapStateToProps, {
   updateOrgPageSlug,
   toggleModal,
   saveOrg,
-  sendResource
+  sendResource,
+  reloadResource,
+  setPageState
 })(EditPage);
