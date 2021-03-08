@@ -58,8 +58,6 @@ class Cinesend extends React.Component {
     const videoID = util.getValue(virtualEvent, 'videoID');
     const APIKey = util.getValue(virtualEvent, 'APIKey');
 
-    console.log('execute -> ', videoID, APIKey);
-
     if (videoID && APIKey) {
       const obj = {
         apiKey: APIKey
@@ -155,7 +153,7 @@ class Cinesend extends React.Component {
             }}
             style={{ paddingBottom: 0 }}
           />
-          { videoID && APIKey ?
+          { videoID && APIKey && 1 === 2 ?
             <div style={{ marginLeft: 5 }}>
               <GBLink onClick={() => this.getVideo()}>Click Here to Validate Video</GBLink>
               <div className={`${validated ? 'green' : 'gray'}`} style={{ display: 'block' }}>
