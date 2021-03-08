@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import * as util from '../../../common/utility';
 import Image from '../../../common/Image';
 import GBLink from '../../../common/GBLink';
+import Loader from '../../../common/Loader';
 import Choice from '../../../form/Choice';
 import TextField from '../../../form/TextField';
 import AnimateHeight from 'react-animate-height';
@@ -16,7 +17,11 @@ class Cinesend extends React.Component {
   constructor(props) {
     super(props);
     this.getVideo = this.getVideo.bind(this);
+    this.renderValidated = this.renderValidated.bind(this);
+    this.setValidated = this.setValidated.bind(this);
     this.state = {
+      validating: false,
+      validated: ''
     };
   }
 
@@ -33,28 +38,18 @@ class Cinesend extends React.Component {
     */
   }
 
-  setValidated(validated = false) {
-    const {
-      virtualEvent
-    } = this.props.form;
-
-    this.setState({ validated }, () => {
-      virtualEvent.validated = validated;
-      this.props.updateForm('virtualEvent', virtualEvent);
-    })
-  }
-
   makeQueryStr(obj) {
     const queryString = Object.keys(obj).map(key => key + '=' + obj[key]).join('&');
     return queryString;
   }
 
-  getVideo() {
+  getVideo(callback) {
 
     const {
       virtualEvent
     } = this.props.form;
 
+    this.setState({ validating: true });
     const videoID = util.getValue(virtualEvent, 'videoID');
     const APIKey = util.getValue(virtualEvent, 'APIKey');
 
@@ -72,18 +67,61 @@ class Cinesend extends React.Component {
       .then(function (response) {
         switch (response.status) {
           case 200:
-            console.log('execute status 200', response, response.data);
-            this.props.updateForm()
+            callback('validated');
             break;
           default:
-            console.log(response);
+            callback('error');
             break;
         }
       })
       .catch(function (error) {
-        console.log('catch error');
+        callback('error');
       })
     }
+  }
+
+  setValidated(validated) {
+    this.setState({ validated, validating: false });
+  }
+
+  renderValidated() {
+    const {
+      validated
+    } = this.state;
+
+    const item = '';
+
+    const obj = {};
+
+    switch (validated) {
+      case 'validated': {
+        obj.icon = 'check';
+        obj.color = 'green';
+        obj.text = 'Video Validated';
+        break;
+      }
+
+      case 'error': {
+        obj.color = 'red';
+        obj.icon = 'alert-triangle';
+        obj.text = 'Error: Video Not Validated - Please Check Video ID and API Key are Correct';
+        break;
+      }
+
+      // no default
+
+    }
+
+    return (
+      <div style={{ marginLeft: 5 }}>
+        <GBLink onClick={() => this.getVideo(this.setValidated)}>Click Here to Validate Video</GBLink>
+        <AnimateHeight height={ !util.isEmpty(obj) ? 'auto' : 0 }>
+          <div className={`${obj.color}`} style={{ fontSize: '12px', display: 'block', marginTop: 5 }}>
+            <span className={`icon icon-${obj.icon}`}></span> {obj.text}
+          </div>
+        </AnimateHeight>
+      </div>
+    );
   }
 
   render() {
@@ -100,6 +138,7 @@ class Cinesend extends React.Component {
 
     return (
       <>
+        { this.state.validating ? <Loader msg='Validating...' /> : null }
         <div className='formSectionHeader'>Virtual Event</div>
         <Choice
           type='checkbox'
@@ -153,14 +192,7 @@ class Cinesend extends React.Component {
             }}
             style={{ paddingBottom: 0 }}
           />
-          { videoID && APIKey && 1 === 2 ?
-            <div style={{ marginLeft: 5 }}>
-              <GBLink onClick={() => this.getVideo()}>Click Here to Validate Video</GBLink>
-              <div className={`${validated ? 'green' : 'gray'}`} style={{ display: 'block' }}>
-                <span className={`icon icon-${validated ? 'check' : 'alert-triangle'}`}></span> {validated ? 'Video Validated' : 'Video has not been Validated'}
-              </div>
-            </div>
-          : null }
+          { videoID && APIKey ? this.renderValidated() : null }
         </AnimateHeight>
       </>
     )
