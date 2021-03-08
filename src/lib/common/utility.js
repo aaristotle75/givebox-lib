@@ -1154,5 +1154,5 @@ export function customListFilter(customList, options = {}) {
       else filter = filter + `${opts.operator}${opts.field}:${noInclude}${value}`;
     });
   }
-  return filter;
+  return `(${filter})`;
 }

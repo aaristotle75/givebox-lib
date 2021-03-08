@@ -185,7 +185,9 @@ class Pages extends Component {
         filter,
         query: opts.query,
         max: opts.max,
-        page: pageNumber
+        page: pageNumber,
+        sort: 'orderBy',
+        order: 'asc'
       },
       callback: (res, err) => {
         if (opts.search) {
@@ -406,6 +408,7 @@ class Pages extends Component {
             opts={{
               useCustomList,
               pageSlug,
+              resourceName,
               tabToDisplay: 'editPage'
             }}
           >
