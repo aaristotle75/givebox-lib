@@ -99,7 +99,9 @@ class EditMenu extends React.Component {
         id={'orgEditPage'}
         className='link tooltip rightSide'
         opts={{
-          pageSlug: util.getValue(page, 'slug')
+          pageSlug: util.getValue(page, 'slug'),
+          resourceName: `${util.getValue(page, 'slug')}List`,
+          reloadGetArticles: this.props.reloadGetArticles
         }}
       >
         <span className='tooltipTop'><i />Click Icon to EDIT Page</span>

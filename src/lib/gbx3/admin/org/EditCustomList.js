@@ -10,6 +10,8 @@ import Search from '../../../table/Search';
 import Paginate from '../../../table/Paginate';
 import MaxRecords from '../../../table/MaxRecords';
 import Filter from '../../../table/Filter';
+import Tabs, { Tab } from '../../../common/Tabs';
+import SortCustomList from './SortCustomList';
 import {
   getResource
 } from '../../../api/helpers';
@@ -68,7 +70,9 @@ class EditCustomList extends React.Component {
       search: {
         filter,
         query: opts.query,
-        max: opts.max
+        max: opts.max,
+        sort: 'orderBy',
+        order: 'desc'
       },
       callback: (res, err) => {
 
@@ -174,81 +178,93 @@ class EditCustomList extends React.Component {
 
     return (
       <div className='orgPageCustomList gbx3Shop'>
-        <div className='articleGroupTopContainer'>
-          <div className='articleGroupTop'>
-            <div className='articleGroupTitle'>Select Custom List</div>
-            <div className='gbx3OrgPagesSearch'>
-              <Search
-                searchValue={searchQuery}
-                placeholder={`Search`}
-                getSearch={(value) => {
-                  if (value && (value !== searchQuery)) {
-                    this.setState({ searchQuery: value }, () => {
+        <Tabs
+          default={'selectCustomList'}
+          className='statsTab'
+        >
+          <Tab id='selectCustomList' label={<span className='stepLabel'>Select Custom List</span>}>
+            <div className='articleGroupTopContainer'>
+              <div className='articleGroupTop'>
+                <div className='articleGroupTitle'>&nbsp;</div>
+                <div className='gbx3OrgPagesSearch'>
+                  <Search
+                    searchValue={searchQuery}
+                    placeholder={`Search`}
+                    getSearch={(value) => {
+                      if (value && (value !== searchQuery)) {
+                        this.setState({ searchQuery: value }, () => {
+                          this.getArticles({
+                            query: value,
+                            reload: true
+                          });
+                        });
+                      }
+                    }}
+                    resetSearch={() => {
                       this.getArticles({
-                        query: value,
                         reload: true
                       });
-                    });
-                  }
-                }}
-                resetSearch={() => {
-                  this.getArticles({
-                    reload: true
-                  });
-                }}
-              />
-            </div>
-          </div>
-          <div className='filterWrapper'>
-            <GBLink
-              className='link'
-              onClick={() => this.setState({ showFilter: showFilter ? false : true })}
-            >
-              Advanced Search <span className={`icon icon-${showFilter ? 'minus' : 'plus'}`}></span>
-            </GBLink>
-            <AnimateHeight height={showFilter ? 'auto' : 0}>
-              <div className={`filter-content flexCenter`}>
-                <Dropdown
-                  name='filterEnabled'
-                  label=''
-                  defaultValue='all'
-                  onChange={this.onChangeEnabledFilter}
-                  className='column50'
-                  direction='top'
-                  options={[
-                    { primaryText: 'Enabled and Disabled', value: 'all' },
-                    { primaryText: 'Enabled Only', value: 'enabled' },
-                    { primaryText: 'Disabled Only', value: 'disabled' }
-                  ]}
-                />
-                <Dropdown
-                  name='filterKind'
-                  label=''
-                  defaultValue='all'
-                  onChange={this.onChangeKindFilter}
-                  className='column50'
-                  direction='top'
-                  options={types.kindOptions(true, 'All Types')}
-                />
-                {/*
-                <div className='clear'></div>
-                <div className='button-group'>
-                  <GBLink className='button' onClick={this.ignoreFilters}>Ignore Filters</GBLink>
-                  <GBLink className='button' onClick={this.applyFilters}>Apply Filters</GBLink>
+                    }}
+                  />
                 </div>
-                */}
               </div>
-            </AnimateHeight>
-          </div>
-        </div>
-        {this.renderList()}
-        <Paginate
-          customName={customName}
-        />
-        <MaxRecords
-          customName={customName}
-          records={[10, 20, 50, 100]}
-        />
+              <div className='filterWrapper'>
+                <GBLink
+                  className='link'
+                  onClick={() => this.setState({ showFilter: showFilter ? false : true })}
+                >
+                  Advanced Search <span className={`icon icon-${showFilter ? 'minus' : 'plus'}`}></span>
+                </GBLink>
+                <AnimateHeight height={showFilter ? 'auto' : 0}>
+                  <div className={`filter-content flexCenter`}>
+                    <Dropdown
+                      name='filterEnabled'
+                      label=''
+                      defaultValue='all'
+                      onChange={this.onChangeEnabledFilter}
+                      className='column50'
+                      direction='top'
+                      options={[
+                        { primaryText: 'Enabled and Disabled', value: 'all' },
+                        { primaryText: 'Enabled Only', value: 'enabled' },
+                        { primaryText: 'Disabled Only', value: 'disabled' }
+                      ]}
+                    />
+                    <Dropdown
+                      name='filterKind'
+                      label=''
+                      defaultValue='all'
+                      onChange={this.onChangeKindFilter}
+                      className='column50'
+                      direction='top'
+                      options={types.kindOptions(true, 'All Types')}
+                    />
+                    {/*
+                    <div className='clear'></div>
+                    <div className='button-group'>
+                      <GBLink className='button' onClick={this.ignoreFilters}>Ignore Filters</GBLink>
+                      <GBLink className='button' onClick={this.applyFilters}>Apply Filters</GBLink>
+                    </div>
+                    */}
+                  </div>
+                </AnimateHeight>
+              </div>
+            </div>
+            {this.renderList()}
+            <Paginate
+              customName={customName}
+            />
+            <MaxRecords
+              customName={customName}
+              records={[10, 20, 50, 100]}
+            />
+          </Tab>
+          <Tab id='sortCustomList' label={<span className='stepLabel'>Sort Custom List</span>}>
+            <SortCustomList
+              {...this.props}
+            />
+          </Tab>
+        </Tabs>
       </div>
     )
   }

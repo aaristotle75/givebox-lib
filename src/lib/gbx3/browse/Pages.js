@@ -33,7 +33,6 @@ class Pages extends Component {
     this.setPageState = this.setPageState.bind(this);
     this.setPageSearch = this.setPageSearch.bind(this);
     this.resetPageSearch = this.resetPageSearch.bind(this);
-    this.renderKindSpecificFilters = this.renderKindSpecificFilters.bind(this);
     this.onMouseOverArticle = this.onMouseOverArticle.bind(this);
     this.onMouseLeaveArticle = this.onMouseLeaveArticle.bind(this);
     this.state = {
@@ -154,7 +153,7 @@ class Pages extends Component {
       ...this.props.pageState[pageSlug]
     };
     const pageNumber = opts.pageNumber ? opts.pageNumber : opts.search ? util.getValue(pageState, 'search.pageNumber', 1) : util.getValue(pageState, 'pageNumber', 1);
-    const baseFilter = `givebox:true`;
+    const baseFilter = `landing:true%3Bvolunteer:false`;
     const filter = `${baseFilter}${opts.filter ? `%3B${opts.filter}` : ''}`;
 
     this.props.getResource('articles', {
@@ -223,48 +222,6 @@ class Pages extends Component {
       pageState.search = {};
       this.setPageState(pageState);
     }
-  }
-
-  renderKindSpecificFilters() {
-    const {
-      pageSlug
-    } = this.props;
-    const filters = [];
-    const pageSearch = util.getValue(this.props.pageSearch, pageSlug, {});
-
-    switch (pageSlug) {
-      case 'events': {
-        filters.push(
-          <CalendarField
-            key={'calendarField'}
-            utc={true}
-            defaultValue={util.getValue(pageSearch, 'eventDate')}
-            placeholder='Search By Date'
-            onChangeCalendar={(ts) => {
-              if (ts) {
-                const eventDate = ts/1000;
-                const beginningOfDay = Moment.utc(Moment.unix(eventDate)).startOf('day').valueOf()/1000;
-                const endOfDay = parseInt(Moment.utc(Moment.unix(eventDate)).endOf('day').valueOf()/1000);
-                const filter = `eventWhen:>d${beginningOfDay}%3BeventWhen:<d${endOfDay}`;
-                this.setPageSearch({ filter, eventDate }, () => {
-                  this.getArticles({
-                    filter,
-                    search: true,
-                    reload: true,
-                    pageNumber: 1
-                  });
-                });
-              }
-            }}
-          />
-        );
-        break;
-      }
-
-      // no default
-    }
-
-    return filters;
   }
 
   renderList() {
@@ -377,7 +334,7 @@ class Pages extends Component {
         </div>
         <div className='pageContentWrapper'>
           <Element name='gbx3OrgPages'  className='pageListWrapper'>
-            { !util.isEmpty(pageSearch) ? this.renderList() : null }
+            {this.renderList()}
           </Element>
         </div>
       </div>

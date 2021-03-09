@@ -105,20 +105,25 @@ class ArticleCard extends Component {
     const imageURL = util.getValue(articleCard, 'imageURL', item.imageURL);
     const videoURL = util.getValue(articleCard, 'videoURL', item.videoURL);
     const mediaType = util.getValue(articleCard, 'mediaType', 'image');
+    const orgName = util.getValue(item, 'orgName');
 
-    const media = videoURL && !util.checkImage(imageURL) ?
-      <Video
-        playing={false}
-        url={videoURL}
-        style={{
-          maxWidth: '100%',
-          maxHeight: 'auto'
-        }}
-        maxHeight={'auto'}
-        light={true}
-      />
-    :
-      <Image imgID='cardPhoto' url={imageURL} maxWidth='325px' size='medium' alt='Card Photo' />
+    const media =
+      <div className='mediaWrapper'>
+        { videoURL && !util.checkImage(imageURL) ?
+          <Video
+            playing={false}
+            url={videoURL}
+            style={{
+              maxWidth: '100%',
+              maxHeight: 'auto'
+            }}
+            maxHeight={'auto'}
+            light={true}
+          />
+        :
+          <Image imgID='cardPhoto' url={imageURL} maxWidth='325px' size='medium' alt='Card Photo' />
+        }
+      </div>
     ;
 
     return (
@@ -154,7 +159,8 @@ class ArticleCard extends Component {
             </div>
           </div>
           <div className='cardTitleContainer'>
-            <h2>{util.truncate(title, 64)}</h2>
+            <h2>{util.truncate(title, 80)}</h2>
+            <h3>{util.truncate(orgName, 64)}</h3>
           </div>
           {this.renderKindSpecific()}
           <div className='cardButtonContainer'>

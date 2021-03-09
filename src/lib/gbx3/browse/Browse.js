@@ -5,14 +5,20 @@ import * as util from '../../common/utility';
 import Image from '../../common/Image';
 import GBLink from '../../common/GBLink';
 import ScrollTop from '../../common/ScrollTop';
+import Loader from '../../common/Loader';
+import GBXEntry from '../../common/GBXEntry';
 import has from 'has';
 import {
   updateInfo,
-  updateAdmin
+  updateAdmin,
+  updateGBX3,
+  setLoading
 } from '../redux/gbx3actions';
 import Header from './Header';
 import Pages from './Pages';
 import Footer from '../Footer';
+
+const ENV = process.env.REACT_APP_ENV;
 
 class Browse extends React.Component {
 
@@ -22,13 +28,13 @@ class Browse extends React.Component {
     this.resizer = this.resizer.bind(this);
     this.onBreakpointChange = this.onBreakpointChange.bind(this);
     this.onClickArticle = this.onClickArticle.bind(this);
-    this.state = {
-    };
   }
 
   componentDidMount() {
+    this.props.setLoading(false);
     this.onBreakpointChange();
     window.addEventListener('resize', this.resizer);
+    GBXEntry.init([{ env: ENV }]);
   }
 
   async onClickArticle(ID, pageSlug) {
@@ -36,7 +42,8 @@ class Browse extends React.Component {
       stage,
       preview
     } = this.props;
-    const infoUpdated = await this.props.updateInfo({ originTemplate: 'org' });
+
+    const infoUpdated = await this.props.updateInfo({ originTemplate: 'browse' });
     if (infoUpdated) {
       if (stage === 'admin' && !preview) {
         console.log('execute onClickArticle do admin stuff -> ', ID);
@@ -73,14 +80,16 @@ class Browse extends React.Component {
       stage,
       pages,
       pageSlug,
-      isMobile
+      isMobile,
+      loading
     } = this.props;
 
     const isEditable = hasAccessToEdit && editable ? true : false;
     const isAdmin = stage === 'admin' ? true : false;
 
     return (
-      <div className='gbx3Org'>
+      <div className='gbx3Org gbx3Browse'>
+        { loading ? <Loader msg='Loading Browse...' /> : null }
         <ScrollTop elementID={isAdmin ? 'stageContainer' : 'gbx3Layout'} />
         <div className='gbx3OrgHeader'>
           <div className={'gbx3OrgLogoContainer'} onClick={() => console.log('logo clicked!')}>
@@ -90,14 +99,19 @@ class Browse extends React.Component {
         <div className='gbx3OrgContentContainer'>
           <Header
           />
+
           <div className='gbx3OrgSubHeader gbx3OrgContentOuterContainer'>
-            <div className='gbx3OrgContentInnerContainer'>
-              <div className='nameSection'>
-                <div className='nameSectionContainer'>
-                  <div className='nameText'>
-                    Browse Nonprofit Fundraisers
-                  </div>
-                </div>
+            <div style={{ padding: '15px 0' }} className='gbx3OrgContentInnerContainer'>
+              <div className='nameSection flexColumn flexCenter centeritems'>
+                <span style={{ marginBottom: 15, fontSize: 16 }}>Have a Nonprofit or Charity, start a fundraiser today.</span>
+                <GBLink
+                  style={{ width: 200 }}
+                  className='button'
+                  onClick={() => {
+                    GBXEntry.load({ env: ENV });
+                  }}>
+                  Start a Fundraiser
+                </GBLink>
               </div>
             </div>
           </div>
@@ -127,6 +141,7 @@ function mapStateToProps(state, props) {
 
   const breakpointWidth = 736;
   const gbx3 = util.getValue(state, 'gbx3', {});
+  const loading = util.getValue(gbx3, 'loading');
   const admin = util.getValue(gbx3, 'admin', {});
   const info = util.getValue(gbx3, 'info', {});
   const stage = util.getValue(info, 'stage');
@@ -138,6 +153,7 @@ function mapStateToProps(state, props) {
   const pageSlug = 'browse'
 
   return {
+    loading,
     breakpointWidth,
     stage,
     pageSlug,
@@ -150,5 +166,7 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
   updateInfo,
-  updateAdmin
+  updateAdmin,
+  updateGBX3,
+  setLoading
 })(Browse);

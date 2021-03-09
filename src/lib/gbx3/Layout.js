@@ -93,12 +93,17 @@ class Layout extends React.Component {
 
   backToOrg(page) {
     const {
-      orgID
+      orgID,
+      originTemplate
     } = this.props;
 
-    if (this.props.backToOrgCallback) this.props.backToOrgCallback('org', page);
-    else {
-      this.props.loadOrg(orgID, page);
+    if (originTemplate === 'browse') {
+      this.props.loadBrowse();
+    } else {
+      if (this.props.backToOrgCallback) this.props.backToOrgCallback('org', page);
+      else {
+        this.props.loadOrg(orgID, page);
+      }
     }
   }
 
@@ -186,7 +191,8 @@ class Layout extends React.Component {
       modal,
       kind,
       status,
-      originTemplate
+      originTemplate,
+      browse
     } = this.props;
 
     const style = { maxWidth: display === 'org' ? '1000px' : '850px' };
@@ -201,21 +207,21 @@ class Layout extends React.Component {
     const avatarMenu =
       <div className='hasAccessToEditPublic'>
         <AvatarMenuButton />
-        { hasAccessToEdit ?
+        { hasAccessToEdit && !browse ?
         <ModalLink type='div' id={'share'} className='avatarLink tooltip hideOnMobile'>
           <span className='tooltipTop'><i />Share</span>
           <div className='editGraphic'>
             <Icon><AiOutlineNotification /></Icon>
           </div>
         </ModalLink> : null}
-        { hasAccessToEdit && stage !== 'admin' ?
+        { hasAccessToEdit && stage !== 'admin' && !browse ?
         <div onClick={() => this.props.updateAdmin({ publicView: false })} className='avatarLink tooltip hideOnMobile'>
           <span className='tooltipTop'><i />{ display === 'org' ? 'Edit Page' : 'Edit Form' }</span>
           <div className='editGraphic'>
             <span className='icon icon-edit'></span>
           </div>
         </div> : null}
-        { hasAccessToEdit && stage === 'admin' && display === 'org' ?
+        { hasAccessToEdit && stage === 'admin' && display === 'org' && !browse ?
         <div
           className='avatarLink tooltip hideOnMobile'
           onClick={() => {

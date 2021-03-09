@@ -12,11 +12,16 @@ import {
   updateOrgGlobal,
   updateOrgPage,
   updateOrgPageSlug,
-  saveOrg
+  saveOrg,
+  setPageState
 } from '../../redux/gbx3actions';
 import {
   toggleModal
 } from '../../../api/actions';
+import {
+  sendResource,
+  reloadResource
+} from '../../../api/helpers';
 import Form from '../../../form/Form';
 import Editor from '../../blocks/Editor';
 import AnimateHeight from 'react-animate-height';
@@ -26,10 +31,12 @@ class EditPageForm extends React.Component {
   constructor(props) {
     super(props);
     this.processForm = this.processForm.bind(this);
+    this.processCallback = this.processCallback.bind(this);
     this.formSavedCallback = this.formSavedCallback.bind(this);
     this.onBlur = this.onBlur.bind(this);
     this.onChange = this.onChange.bind(this);
     this.updateCustomList = this.updateCustomList.bind(this);
+    this.updateOrderby = this.updateOrderby.bind(this);
     this.state = {
       top: util.getValue(props.page, 'top'),
       bottom: util.getValue(props.page, 'bottom'),
@@ -37,7 +44,8 @@ class EditPageForm extends React.Component {
       saveBottomAsGlobal: props.saveBottomAsGlobal,
       hideList: util.getValue(props.page, 'hideList', false),
       useCustomList: util.getValue(props.page, 'useCustomList', false),
-      customList: [ ...util.getValue(props.page, 'customList', []) ]
+      customList: [ ...util.getValue(props.page, 'customList', []) ],
+      wasSorted: false
     };
   }
 
@@ -48,12 +56,13 @@ class EditPageForm extends React.Component {
 
   }
 
-  updateCustomList(ID) {
-    const customList = [ ...this.state.customList ];
-    if (customList.includes(ID)) customList.splice(customList.findIndex(l => l === ID), 1);
-    else customList.push(ID);
-
-    this.setState({ customList });
+  updateCustomList(ID, list = [], wasSorted = false) {
+    const customList = !util.isEmpty(list) ? [ ...list ] : [ ...this.state.customList ];
+    if (ID) {
+      if (customList.includes(ID)) customList.splice(customList.findIndex(l => l === ID), 1);
+      else customList.unshift(ID);
+    }
+    this.setState({ customList, wasSorted });
     //this.props.updateOrgPage(pageSlug, { customList });
   }
 
@@ -65,6 +74,34 @@ class EditPageForm extends React.Component {
     this.setState({ [section]: content, hasBeenUpdated: true });
   }
 
+  updateOrderby() {
+    const {
+      orgID,
+      resourceName,
+      pageSlug
+    } = this.props;
+
+    const {
+      customList
+    } = this.state;
+
+    const data = [];
+    customList.forEach((articleID, orderBy) => {
+      data.push(
+        { articleID, orderBy }
+      );
+    });
+
+    this.props.sendResource('orgArticlesOrder', {
+      orgID,
+      data,
+      method: 'patch',
+      callback: async (res, err) => {
+        this.props.reloadGetArticles();
+      }
+    })
+  }
+
   formSavedCallback() {
     if (this.props.callback) {
       this.props.callback(arguments[0]);
@@ -72,7 +109,14 @@ class EditPageForm extends React.Component {
   }
 
   processCallback(res, err) {
+
+    const {
+      wasSorted
+    } = this.state;
+
     if (!err) {
+      if (wasSorted) this.updateOrderby();
+      else this.props.reloadGetArticles();
       this.props.formSaved(this.formSavedCallback);
     } else {
       if (!this.props.getErrors(err)) this.props.formProp({error: this.props.savingErrorMsg});
@@ -149,7 +193,9 @@ class EditPageForm extends React.Component {
         isSending: true,
         orgUpdated: true,
         showSaving: false,
-        callback: this.processCallback.bind(this)
+        callback: (res, err) => {
+          this.processCallback(res, err);
+        }
       });
     }
   }
@@ -438,5 +484,8 @@ export default connect(mapStateToProps, {
   updateOrgPage,
   updateOrgPageSlug,
   toggleModal,
-  saveOrg
+  saveOrg,
+  sendResource,
+  reloadResource,
+  setPageState
 })(EditPage);
