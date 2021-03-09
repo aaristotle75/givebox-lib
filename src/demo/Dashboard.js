@@ -27,6 +27,8 @@ class Dashboard extends Component {
       apiKey: '14388ca1-65a3-4a32-8dbc-dd001087dbcf'
     };
     this.assetID = '5ec82229fdce270f8f3fb2c4';
+    this.playlistID = '5ea9c986d1dd2016535f1a02';
+    // 5ea9c986d1dd2016535f1a02
   }
 
   componentDidMount() {
@@ -52,10 +54,9 @@ class Dashboard extends Component {
     }
   }
 
-  createVoucher() {
+  createVoucher(assetID) {
     const obj = this.makeCineObj({
-      orderID: '1234',
-      contentID: this.assetID
+      assetID
     });
     const endpoint = `https://staging-api.cinesend.com/api/integrators/vouchers?${this.makeQueryStr(this.makeCineObj(obj))}`;
 
@@ -104,6 +105,30 @@ class Dashboard extends Component {
     })
   }
 
+  getPlaylists() {
+
+    const endpoint = `https://staging-api.cinesend.com/api/integrators/playlists/?${this.makeQueryStr(this.makeCineObj())}`;
+
+    axios.get(endpoint, {
+      transformResponse: (data) => {
+        return JSON.parse(data);
+      }
+    })
+    .then(function (response) {
+      switch (response.status) {
+        case 200:
+          console.log('execute status 200', response, response.data);
+          break;
+        default:
+          console.log(response);
+          break;
+      }
+    })
+    .catch(function (error) {
+      console.log('catch error');
+    })
+  }
+
   handleSaveCallback(url) {
     console.log('execute handleSaveCallback', url);
   }
@@ -121,7 +146,11 @@ class Dashboard extends Component {
     return (
       <div>
         <h2>Dashboard</h2>
+        <GBLink onClick={() => this.createVoucher(this.playlistID)}>Create Voucher</GBLink>
+        <br /><br />
         <GBLink onClick={() => this.getVideo()}>Get Video</GBLink>
+        <br /><br />
+        <GBLink onClick={() => this.getPlaylists()}>Get Playlists</GBLink>
         {/*
         <GBLink onClick={() => this.createVoucher()}>Create Voucher</GBLink>
         <ReactPlayer

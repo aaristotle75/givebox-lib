@@ -48,7 +48,7 @@ class GBXTest extends Component {
     return (
       <div>
         <GBX3
-          browse={true}
+          browse={false}
           blockType={'article'}
           orgID={orgID}
           articleID={articleID}

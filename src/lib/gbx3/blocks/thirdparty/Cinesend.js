@@ -16,13 +16,17 @@ class Cinesend extends React.Component {
 
   constructor(props) {
     super(props);
-    this.getVideo = this.getVideo.bind(this);
+    this.createVoucher = this.createVoucher.bind(this);
     this.renderValidated = this.renderValidated.bind(this);
     this.setValidated = this.setValidated.bind(this);
     this.state = {
       validating: false,
-      validated: ''
+      validated: '',
+      voucher: {}
     };
+    // Test assetID
+    // playlistID 5ea9c986d1dd2016535f1a02
+    // videoID 5ec82229fdce270f8f3fb2c4
   }
 
   componentDidMount() {
@@ -43,7 +47,7 @@ class Cinesend extends React.Component {
     return queryString;
   }
 
-  getVideo(callback) {
+  createVoucher(callback) {
 
     const {
       virtualEvent
@@ -55,19 +59,20 @@ class Cinesend extends React.Component {
 
     if (videoID && APIKey) {
       const obj = {
-        apiKey: APIKey
+        assetID: videoID,
+        apiKey: APIKey,
+        orderID: videoID
       };
-      const endpoint = `${API_URL}/integrators/videos/${videoID}?${this.makeQueryStr(obj)}`;
+      const endpoint = `${API_URL}/integrators/vouchers?${this.makeQueryStr(obj)}`;
 
-      axios.get(endpoint, {
-        transformResponse: (data) => {
-          return JSON.parse(data);
-        }
+      axios({
+        method: 'POST',
+        url: endpoint
       })
       .then(function (response) {
         switch (response.status) {
           case 200:
-            callback('validated');
+            callback('validated', util.getValue(response, 'data', {}));
             break;
           default:
             callback('error');
@@ -80,17 +85,22 @@ class Cinesend extends React.Component {
     }
   }
 
-  setValidated(validated) {
-    this.setState({ validated, validating: false });
+  setValidated(validated, res) {
+    const voucher = {};
+    if (!util.isEmpty(res)) {
+      voucher.url = util.getValue(res, 'voucher_url');
+      voucher.code = util.getValue(res, 'voucher_code');
+    }
+    this.setState({ validated, voucher, validating: false });
   }
 
   renderValidated() {
     const {
-      validated
+      validated,
+      voucher
     } = this.state;
 
     const item = '';
-
     const obj = {};
 
     switch (validated) {
@@ -114,11 +124,20 @@ class Cinesend extends React.Component {
 
     return (
       <div style={{ marginLeft: 5 }}>
-        <GBLink onClick={() => this.getVideo(this.setValidated)}>Click Here to Validate Video</GBLink>
+        <GBLink onClick={() => this.createVoucher(this.setValidated)}>Click Here to Validate Video</GBLink>
         <AnimateHeight height={ !util.isEmpty(obj) ? 'auto' : 0 }>
           <div className={`${obj.color}`} style={{ fontSize: '12px', display: 'block', marginTop: 5 }}>
             <span className={`icon icon-${obj.icon}`}></span> {obj.text}
           </div>
+          { !util.isEmpty(voucher) ?
+          <div style={{ marginTop: 10 }}>
+            <div style={{ display: 'block' }}>
+              <span className='label'>Voucher URL (For Testing Only):</span> <GBLink onClick={() => window.open(voucher.url)}>{voucher.url}</GBLink>
+            </div>
+            <div style={{ marginTop: 5, display: 'block' }}>
+              <span className='label'>Voucher Code (For Testing Only):</span> <span style={{ fontSize: 13 }}>{voucher.code}</span>
+            </div>
+          </div> : null }
         </AnimateHeight>
       </div>
     );
