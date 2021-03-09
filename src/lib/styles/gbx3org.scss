@@ -118,13 +118,25 @@ $contentHeaderPadding: 35%;
     position: relative;
     max-height: 350px;
     height: 30vw;
-    background: blue;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
     @include bgGradient(to bottom, $very-light-gray 20%, $light-gray 80%, $light-med-gray 100%);
     @media (max-width: $contentMaxWidth) {
       border-bottom-left-radius: 0px;
       border-bottom-right-radius: 0px;
+    }
+
+    // awesome slider overrides
+    .awssld__content {
+      align-items: flex-start;
+      background-color: transparent;
+    }
+
+    .awssld__controls__arrow-right:before,
+    .awssld__controls__arrow-right:after,
+    .awssld__controls__arrow-left:before,
+    .awssld__controls__arrow-left:after {
+      background-color: $mainColor;
     }
 
     .coverPhotoImageDropdown {
@@ -158,6 +170,45 @@ $contentHeaderPadding: 35%;
           font-size: 16px;
           color: $dark;
           margin-right: 5px;
+        }
+      }
+    }
+
+    .coverPhotoImageContainer {
+    }
+
+    .coverPhotoInfoContainer {
+      position: absolute;
+      top: 20vw;
+      left: 40px;
+      color: $dark;
+      z-index: 11;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      .coverPhotoTitle {
+        color: $white;
+        font-size: 22px;
+        font-weight: 300;
+      }
+
+      .coverPhotoOrgName {
+        color: $white;
+        font-size: 12px;
+        font-weight: 400;
+      }
+
+      button.link {
+        margin-top: 5px;
+        display: flex;
+        align-items: center;
+        font-size: 16px;
+        font-weight: 400;
+
+        .icon {
+          font-size: 20px;
+          margin-left: 5px;
         }
       }
     }
@@ -705,14 +756,6 @@ $contentHeaderPadding: 35%;
 }
 
 .gbx3Org.gbx3Browse {
-
-  .coverPhotoInfoContainer {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    color: $white;
-    z-index: 10;
-  }
 
   .gbx3OrgContentHeader.gbx3OrgContentOuterContainer {
     @include bgGradient(to bottom, $mainColor 0%, $white 50%);
