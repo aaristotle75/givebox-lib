@@ -132,10 +132,10 @@ class Cinesend extends React.Component {
           { !util.isEmpty(voucher) ?
           <div style={{ marginTop: 10 }}>
             <div style={{ display: 'block' }}>
-              <span className='label'>Voucher URL (For Testing Only):</span> <GBLink onClick={() => window.open(voucher.url)}>{voucher.url}</GBLink>
+              <span className='label'>Validated URL:</span> <GBLink onClick={() => window.open(voucher.url)}>{voucher.url}</GBLink>
             </div>
             <div style={{ marginTop: 5, display: 'block' }}>
-              <span className='label'>Voucher Code (For Testing Only):</span> <span style={{ fontSize: 13 }}>{voucher.code}</span>
+              <span className='label'>Validated Code:</span> <span style={{ fontSize: 13 }}>{voucher.code}</span>
             </div>
           </div> : null }
         </AnimateHeight>
