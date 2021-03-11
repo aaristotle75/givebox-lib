@@ -45,11 +45,7 @@ class Browse extends React.Component {
 
     const infoUpdated = await this.props.updateInfo({ originTemplate: 'browse' });
     if (infoUpdated) {
-      if (stage === 'admin' && !preview) {
-        console.log('execute onClickArticle do admin stuff -> ', ID);
-      } else {
-        this.props.reloadGBX3(ID);
-      }
+      this.props.reloadGBX3(ID);
     }
   }
 
@@ -98,6 +94,7 @@ class Browse extends React.Component {
         </div>
         <div className='gbx3OrgContentContainer'>
           <Header
+            onClickArticle={this.onClickArticle}
           />
           <div className='gbx3OrgSubHeader gbx3OrgContentOuterContainer'>
             <div style={{ padding: '15px 0' }} className='gbx3OrgContentInnerContainer'>

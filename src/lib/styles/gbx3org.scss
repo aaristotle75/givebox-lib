@@ -136,7 +136,17 @@ $contentHeaderPadding: 35%;
     .awssld__controls__arrow-right:after,
     .awssld__controls__arrow-left:before,
     .awssld__controls__arrow-left:after {
-      background-color: $mainColor;
+      background-color: $light-gray;
+      opacity: .2;
+    }
+
+    .awssld__controls button:hover {
+      .awssld__controls__arrow-right,
+      .awssld__controls__arrow-right,
+      .awssld__controls__arrow-left,
+      .awssld__controls__arrow-left {
+        opacity: .4;
+      }
     }
 
     .coverPhotoImageDropdown {
@@ -175,22 +185,38 @@ $contentHeaderPadding: 35%;
     }
 
     .coverPhotoImageContainer {
+      position: relative;
+      max-height: 350px;
+      height: 30vw;
+      overflow: hidden;
     }
 
+    $infoBreakpoint: 800px;
     .coverPhotoInfoContainer {
       position: absolute;
-      top: 20vw;
-      left: 40px;
+      bottom: 20px;
+      left: 30px;
       color: $dark;
       z-index: 11;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
+      cursor: pointer;
+
+      @media (max-width: $infoBreakpoint) {
+        align-items: center;
+        left: 0;
+        right: 0;
+        width: 100%;
+      }
 
       .coverPhotoTitle {
         color: $white;
-        font-size: 22px;
+        font-size: 1.3em;
         font-weight: 300;
+        @media (max-width: $infoBreakpoint) {
+          text-align: center;
+        }
       }
 
       .coverPhotoOrgName {
@@ -199,18 +225,31 @@ $contentHeaderPadding: 35%;
         font-weight: 400;
       }
 
-      button.link {
-        margin-top: 5px;
+      button.coverPhotoButton {
+        margin-top: 10px;
+        margin-left: -5px;
         display: flex;
         align-items: center;
-        font-size: 16px;
+        font-size: 14px;
         font-weight: 400;
+        background: $light-gray;
+        color: $dark;
+        text-align: center;
+        border-radius: 10px;
+        opacity: .5;
+        padding: 5px 10px !important;
 
         .icon {
-          font-size: 20px;
+          font-size: 18px;
           margin-left: 5px;
         }
       }
+
+      button.coverPhotoButton:hover {
+        background: $placeholder-gray;
+        @include transition(background .25s);
+      }
+
     }
 
     .coverPhotoImage {

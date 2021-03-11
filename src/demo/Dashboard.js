@@ -6,6 +6,7 @@ import MediaLibrary from '../lib/form/MediaLibrary';
 import { setCustomProp } from '../lib/api/actions';
 import { getResource } from '../lib/api/helpers';
 import CircularProgress from '../lib/common/CircularProgress';
+import Plaid from './Plaid';
 import has from 'has';
 import {
   util,
@@ -146,12 +147,13 @@ class Dashboard extends Component {
     return (
       <div>
         <h2>Dashboard</h2>
+        <Plaid />
+        {/*
         <GBLink onClick={() => this.createVoucher(this.playlistID)}>Create Voucher</GBLink>
         <br /><br />
         <GBLink onClick={() => this.getVideo()}>Get Video</GBLink>
         <br /><br />
         <GBLink onClick={() => this.getPlaylists()}>Get Playlists</GBLink>
-        {/*
         <GBLink onClick={() => this.createVoucher()}>Create Voucher</GBLink>
         <ReactPlayer
           url={'https://cdn.givebox.com/givebox/public/videos/filmfestivals.mp4'}

@@ -18,6 +18,9 @@ import AwesomeSlider from 'react-awesome-slider';
 import withAutoplay from 'react-awesome-slider/dist/autoplay';
 import 'react-awesome-slider/dist/styles.css';
 import 'react-awesome-slider/dist/custom-animations/cube-animation.css';
+import 'react-awesome-slider/dist/custom-animations/open-animation.css';
+import 'react-awesome-slider/dist/custom-animations/fold-out-animation.css';
+import 'react-awesome-slider/dist/custom-animations/fall-animation.css';
 import CoreStyles from 'react-awesome-slider/src/core/styles.scss';
 import AnimationStyles from 'react-awesome-slider/src/styled/fold-out-animation/fold-out-animation.scss';
 
@@ -29,11 +32,16 @@ class Header extends React.Component {
     super(props);
     this.onClickEditProfilePicture = this.onClickEditProfilePicture.bind(this);
     this.renderSlider = this.renderSlider.bind(this);
+    this.onClickCoverPhoto = this.onClickCoverPhoto.bind(this);
     this.state = {
     };
   }
 
   componentDidMount() {
+  }
+
+  onClickCoverPhoto(ID) {
+    this.props.onClickArticle(ID);
   }
 
   onClickEditProfilePicture() {
@@ -65,11 +73,11 @@ class Header extends React.Component {
     Object.entries(images).forEach(([key, value]) => {
       items.push(
         <div key={key} className='coverPhotoImageContainer'>
-          <Image imgID='coverPhoto' size='large' url={value.url} maxWidth='950px' maxHeight='350px' alt='Cover Photo' />
-          <div className='coverPhotoInfoContainer'>
-            <span className='coverPhotoTitle'>{value.title}</span>
+          <Image imgID='coverPhoto' size='large' url={value.url} maxSize='950px' alt='Cover Photo' />
+          <div onClick={() => this.onClickCoverPhoto(value.articleID)} className='coverPhotoInfoContainer'>
+            <span className='coverPhotoTitle'>{util.truncate(value.title, 90)}</span>
             <span className='coverPhotoOrgName'>{value.orgName}</span>
-            <GBLink className='link' onClick={() => console.log('onclick button -> ', value.articleID)}>
+            <GBLink className='coverPhotoButton' onClick={() => console.log(value.articleID)}>
               {value.buttonText} <span className='icon icon-chevron-right'></span>
             </GBLink>
           </div>
@@ -96,11 +104,11 @@ class Header extends React.Component {
         <div className='gbx3OrgContentInnerContainer'>
           <div id='coverPhoto' className='coverPhotoContainer'>
             <AutoplaySlider
-              play={true}
+              play={false}
               cancelOnInteraction={false}
-              interval={2000}
+              interval={6000}
               className='coverPhotoImage'
-              animation="foldOutAnimation"
+              animation="cubeAnimation"
               cssModule={[CoreStyles, AnimationStyles]}
               bullets={false}
             >

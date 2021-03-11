@@ -540,6 +540,26 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
 
+    case 'plaidLink': {
+      endpoint = `plaid/link-token`;
+      break;
+    }
+
+    case 'plaidAccess': {
+      endpoint = `plaid/access-token`;
+      break;
+    }
+
+    case 'plaidAuth': {
+      endpoint = `plaid/auth`;
+      break;
+    }
+
+    case 'plaidIdentity': {
+      endpoint = `plaid/identity`;
+      break;
+    }
+
     case 'orgVirtualEvents': {
       endpoint = `orgs/${getIndex(id, 0, orgID)}/virtual-events`;
       break;
