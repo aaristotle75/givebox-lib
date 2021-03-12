@@ -13,6 +13,7 @@ import {
   defaultOrgGlobals,
   defaultOrgPages
 } from './gbx3defaults';
+import LZString from 'lz-string';
 import has from 'has';
 const merge = require('deepmerge');
 
@@ -497,6 +498,25 @@ export function updateCart(cart) {
   }
 }
 
+export function setCartOnLoad(cartObj = {}) {
+  return async (dispatch, getState) => {
+    const cartFromCookie = LZString.decompressFromUTF16(localStorage.getItem('cart'));
+    const cookieJSON = cartFromCookie ? JSON.parse(cartFromCookie) : {};
+    console.log('execute cartFromCookie -> ', cookieJSON);
+    const cartState = util.getValue(getState(), 'gbx3.cart', {});
+    const cart = {
+      ...cartState,
+      ...cookieJSON,
+      ...cartObj
+    };
+    const cartUpdated = await dispatch(saveCart(cart));
+    if (cartUpdated) {
+      dispatch(calcCart());
+      return true;
+    }
+  }
+}
+
 export function updateCartItem(unitID, item = {}, opts = {}, openCart = true) {
   return async (dispatch, getState) => {
 
@@ -662,11 +682,9 @@ export function saveOrg(options = {}) {
       customTemplate: {
         ...customTemplate,
         orgPages: {
-          ...util.getValue(customTemplate, 'orgPages', {}),
           ...orgPages
         },
         orgGlobals: {
-          ...util.getValue(customTemplate, 'orgGlobals', {}),
           ...orgGlobals
         }
       },
@@ -1110,7 +1128,7 @@ export function loadGBX3(articleID, callback) {
                   const volunteerID = util.getValue(res, 'volunteerID');
                   const hasAccessToEdit = util.getAuthorizedAccess(access, orgID,  util.getValue(res, 'volunteer') ? volunteerID : null);
 
-                  dispatch(updateCart({ passFees }));
+                  dispatch(setCartOnLoad({ passFees }));
                   dispatch(updateInfo({
                     orgID,
                     orgName,
@@ -1358,12 +1376,10 @@ export function loadOrg(orgID, callback) {
     const gbx3 = util.getValue(getState(), 'gbx3', {});
     const resource = util.getValue(getState(), 'resource', {});
     const access = util.getValue(resource, 'access', {});
-    const globalsState = util.getValue(gbx3, 'globals', {});
     const admin = util.getValue(gbx3, 'admin', {});
     const info = util.getValue(gbx3, 'info', {});
     const originTemplate = !util.getValue(info, 'originTemplate') ? 'org' : null;
     const blockType = 'org';
-    const availableBlocks = util.deepClone(util.getValue(admin, `availableBlocks.org`, []));
 
     dispatch(getResource('org', {
       id: [orgID],
@@ -1415,89 +1431,6 @@ export function loadOrg(orgID, callback) {
             apiName: 'org'
           }));
 
-          const blocksCustom = util.getValue(customTemplate, 'blocks', {});
-          const orgBlocks = util.getValue(blockTemplates, `org`, {});
-          const blocksDefault = {};
-
-          defaultBlocks.org.forEach((value) => {
-            if (!util.isEmpty(blocksCustom)) {
-              if (has(blocksCustom, value)) {
-                blocksDefault[value] = orgBlocks[value];
-              }
-            } else {
-              blocksDefault[value] = orgBlocks[value];
-            }
-          });
-
-          const backgrounds = util.getValue(customTemplate, 'backgrounds', []);
-          const globalsCustom = util.getValue(customTemplate, 'globals', {});
-          const gbxStyleCustom = util.getValue(globalsCustom, 'gbxStyle', {});
-          const embedButtonCustom = util.getValue(globalsCustom, 'embedButton', {});
-
-          //const blocks = !util.isEmpty(blocksCustom) ? blocksCustom : blocksDefault;
-          const blocks = {
-            ...blocksDefault,
-            ...blocksCustom
-          };
-
-          //merge(blocksDefault, blocksCustom);
-
-          const globals = {
-            ...globalsState,
-            ...{
-              gbxStyle: {
-                ...defaultStyle.gbxStyle,
-                ...util.getValue(globalsState, 'gbxStyle', {}),
-                ...gbxStyleCustom
-              },
-              button: {
-                ...defaultStyle.button,
-                ...util.getValue(globalsState, 'button', {}),
-                style: {
-                  ...defaultStyle.button.style,
-                  ...util.getValue(util.getValue(globalsState, 'button', {}), 'style', {}),
-                }
-              },
-              embedButton: {
-                ...defaultStyle.embedButton,
-                ...util.getValue(globalsState, 'embedButton', {}),
-                ...embedButtonCustom
-              }
-            },
-            ...util.getValue(customTemplate, 'globals', {})
-          };
-
-          const helperBlocksCustom = util.getValue(customTemplate, `helperBlocks.${blockType}`, {});
-          const helperBlocks = !util.isEmpty(helperBlocksCustom) ?
-            {
-              ...helperBlocksCustom,
-              helperStep: 0
-            }
-          : helperTemplates[blockType];
-
-          if (!util.isEmpty(blocksCustom)) {
-            // Check if not all default blocks are present
-            // If not, add them to the availableBlocks array
-            // which are blocks available but not used
-            Object.keys(orgBlocks).forEach((key) => {
-              if (!(key in blocks) && !availableBlocks.includes(key)) {
-                availableBlocks.push(key);
-              }
-            })
-          }
-
-          const layouts = {
-            desktop: [],
-            mobile: []
-          };
-
-          Object.entries(blocks).forEach(([key, value]) => {
-            const grid = util.getValue(value, 'grid', {});
-            if (!util.isEmpty(grid)) {
-              if (!util.isEmpty(util.getValue(grid, 'desktop'))) layouts.desktop.push(value.grid.desktop);
-              if (!util.isEmpty(util.getValue(grid, 'mobile'))) layouts.mobile.push(value.grid.mobile);
-            }
-          });
 
           const admin = {
             hasAccessToEdit,
@@ -1506,19 +1439,10 @@ export function loadOrg(orgID, callback) {
             open: false
           };
 
+          dispatch(setCartOnLoad());
           dispatch(updateOrgPages(orgPages, false));
           dispatch(updateOrgGlobals(orgGlobals, false));
-
-          // legacy block system for org page
-          dispatch(updateLayouts(blockType, layouts));
-          dispatch(updateBackgrounds(backgrounds));
-          dispatch(updateBlocks(blockType, blocks));
-          dispatch(updateGlobals(globals));
-          dispatch(updateHelperBlocks(blockType, helperBlocks));
           dispatch(updateData(res, 'org'));
-          dispatch(updateAvailableBlocks(blockType, availableBlocks));
-          // end legacy block system for org page
-
           dispatch(updateAdmin(admin));
           dispatch(updateInfo({ publishStatus: 'public' }));
         }

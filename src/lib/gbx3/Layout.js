@@ -94,7 +94,8 @@ class Layout extends React.Component {
   backToOrg(page) {
     const {
       orgID,
-      originTemplate
+      originTemplate,
+      cart
     } = this.props;
 
     if (originTemplate === 'browse') {
@@ -361,7 +362,8 @@ function mapStateToProps(state, props) {
     hasAccessToEdit,
     publishStatus,
     orgName,
-    globals: util.getValue(gbx3, 'globals', {})
+    globals: util.getValue(gbx3, 'globals', {}),
+    cart: util.getValue(gbx3, 'cart', {})
   }
 }
 

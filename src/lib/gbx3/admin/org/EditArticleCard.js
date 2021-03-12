@@ -12,6 +12,9 @@ import TextField from '../../../form/TextField';
 import MediaLibrary from '../../../form/MediaLibrary';
 import * as _v from '../../../form/formValidate';
 import {
+  toggleModal
+} from '../../../api/actions';
+import {
   getResource,
   sendResource
 } from '../../../api/helpers';
@@ -225,7 +228,7 @@ class EditArticleCardForm extends React.Component {
 
     const buttonGroup =
       <div className='button-group flexCenter'>
-        <GBLink className='link secondary' onClick={() => this.props.toggleModal('orgEditArticleCard', false)}>Cancel</GBLink>
+        <GBLink className='link secondary' onClick={() => this.props.toggleModal('orgEditCard', false)}>Cancel</GBLink>
         {this.props.saveButton(this.processForm, { style: { width: 150 } })}
       </div>
     ;
@@ -384,5 +387,6 @@ function mapStateToProps(state, props) {
 export default connect(mapStateToProps, {
   getResource,
   sendResource,
-  saveCustomTemplate
+  saveCustomTemplate,
+  toggleModal
 })(EditArticleCard);

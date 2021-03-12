@@ -7,6 +7,7 @@ import { setCustomProp } from '../lib/api/actions';
 import { getResource } from '../lib/api/helpers';
 import CircularProgress from '../lib/common/CircularProgress';
 import Plaid from './Plaid';
+import Compress from './Compress';
 import has from 'has';
 import {
   util,
@@ -149,6 +150,7 @@ class Dashboard extends Component {
         <h2>Dashboard</h2>
         <Plaid />
         {/*
+        <Compress />
         <GBLink onClick={() => this.createVoucher(this.playlistID)}>Create Voucher</GBLink>
         <br /><br />
         <GBLink onClick={() => this.getVideo()}>Get Video</GBLink>

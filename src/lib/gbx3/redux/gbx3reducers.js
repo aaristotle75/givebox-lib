@@ -5,6 +5,7 @@ import {
   defaultConfirmation,
   defaultStyle
 } from './gbx3defaults';
+import LZString from 'lz-string';
 
 export function gbx3(state = {
   browse: false,
@@ -176,9 +177,9 @@ export function gbx3(state = {
           ...action.orgPages
         }
       });
-    case types.ADD_ORG_PAGE:
+    case types.ADD_ORG_PAGE: {
       const duplicate = action.duplicate;
-      let orgPages = { ...state.orgPages };
+      const orgPages = { ...state.orgPages };
       const newPageNumber = Object.keys(orgPages).length + 1;
       const hash = util.uniqueHash(1);
       const name = !util.isEmpty(duplicate) ? `Duplicate ${duplicate.name}` : `Page ${newPageNumber}`;
@@ -189,8 +190,19 @@ export function gbx3(state = {
         name,
         slug
       };
+      const customSlugs = [ ...util.getValue(state.orgGlobals, 'customSlugs', []) ];
+      const customSlugIndex = customSlugs.findIndex(s => s.slug === slug);
+      if (customSlugIndex === -1) {
+        customSlugs.push(
+          { slug, customSlug: slug }
+        );
+      };
       return Object.assign({}, state, {
         orgUpdated: action.orgUpdated,
+        orgGlobals: {
+          ...state.orgGlobals,
+          customSlugs: [ ...customSlugs ]
+        },
         orgPages: {
           ...orgPages,
           [slug]: {
@@ -198,22 +210,27 @@ export function gbx3(state = {
           }
         }
       });
-    case types.DELETE_ORG_PAGE:
-      orgPages = { ...state.orgPages };
+    }
+    case types.DELETE_ORG_PAGE: {
+      const orgPages = { ...state.orgPages };
       delete orgPages[action.slug];
       const pagesEnabled = [ ...util.getValue(state, 'orgGlobals.pagesEnabled', []) ];
       if (pagesEnabled.includes(action.slug)) pagesEnabled.splice(pagesEnabled.indexOf(action.slug), 1);
+      const customSlugs = [ ...util.getValue(state.orgGlobals, 'customSlugs', []) ];
+      const customSlugIndex = customSlugs.findIndex(s => s.slug === action.slug);
+      if (customSlugIndex !== -1) customSlugs.splice(customSlugIndex, 1);
       return Object.assign({}, state, {
+        orgUpdated: true,
         orgPages: {
           ...orgPages
         },
         orgGlobals: {
           ...state.orgGlobals,
-          pagesEnabled: [
-            ...pagesEnabled
-          ]
+          pagesEnabled: [ ...pagesEnabled ],
+          customSlugs: [ ...customSlugs ]
         }
       });
+    }
     case types.UPDATE_ORG_PAGE:
       return Object.assign({}, state, {
         orgUpdated: true,
@@ -225,18 +242,24 @@ export function gbx3(state = {
           }
         }
       });
-    case types.UPDATE_ORG_PAGE_SLUG:
+    case types.UPDATE_ORG_PAGE_SLUG: {
       const orgGlobals = { ...state.orgGlobals };
-      const customSlugs = util.getValue(orgGlobals, 'customSlugs', []);
+      const customSlugs = [ ...util.getValue(orgGlobals, 'customSlugs', []) ];
       const customSlugObj = customSlugs.find(s => s.slug === action.slug);
       if (util.getValue(customSlugObj, 'customSlug')) {
         customSlugObj.customSlug = action.customSlug;
+      } else {
+        customSlugs.push(
+          { slug: action.slug, customSlug: action.customSlug }
+        );
       }
       return Object.assign({}, state, {
+        orgUpdated: true,
         orgGlobals: {
           ...orgGlobals
         }
       });
+    }
     case types.UPDATE_ORG_GLOBALS:
       return Object.assign({}, state, {
         orgUpdated: action.orgUpdated,
@@ -306,7 +329,7 @@ export function gbx3(state = {
           }
         }
       });
-    case types.REMOVE_BLOCK:
+    case types.REMOVE_BLOCK: {
       const blocks = util.getValue(state, `blocks.${action.blockType}`, {});
       delete blocks[action.name];
       return Object.assign({}, state, {
@@ -317,6 +340,7 @@ export function gbx3(state = {
           }
         }
       });
+    }
     case types.UPDATE_BACKGROUNDS:
       return Object.assign({}, state, {
         backgrounds: {
@@ -396,13 +420,20 @@ export function gbx3(state = {
           ...action.admin,
         }
       });
-    case types.UPDATE_CART:
+    case types.UPDATE_CART: {
+      const cart = {
+        ...state.cart,
+        ...action.cart
+      };
+      /*
+      const compressed = LZString.compressToUTF16(JSON.stringify(cart));
+      util.setCookie('gbx3org', compressed, 30);
+      */
+      localStorage.setItem('cart', LZString.compressToUTF16(JSON.stringify(cart)));
       return Object.assign({}, state, {
-        cart: {
-          ...state.cart,
-          ...action.cart
-        }
+        cart
       });
+    }
     case types.RESET_CART:
       return Object.assign({}, state, {
         cart: {

@@ -25,6 +25,9 @@ import {
 import Header from './pages/Header';
 import Pages from './pages/Pages';
 import Footer from './Footer';
+import history from '../common/history';
+
+const GBX_URL = process.env.REACT_APP_GBX_URL;
 
 class Org extends React.Component {
 
@@ -90,6 +93,7 @@ class Org extends React.Component {
       if (stage === 'admin' && !preview) {
         console.log('execute onClickArticle do admin stuff -> ', ID);
       } else {
+        history.push(`${GBX_URL}/${ID}`);
         this.props.reloadGBX3(ID);
       }
     }
