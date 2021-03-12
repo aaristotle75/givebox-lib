@@ -8,8 +8,10 @@ import {
 } from '../redux/gbx3actions';
 import { FiShoppingCart } from 'react-icons/fi';
 import Scroll from 'react-scroll';
+import history from '../../common/history';
 
 const CLOUD_URL = process.env.REACT_APP_CLOUD_URL;
+const GBX_URL = process.env.REACT_APP_GBX_URL;
 
 class CartButton extends React.Component {
 
@@ -46,6 +48,7 @@ class CartButton extends React.Component {
     const lastItemArticleID = util.getValue(latestItem, 'articleID', null);
 
     if ((lastItemArticleID && lastItemArticleID !== articleID) || display === 'org') {
+      history.push(`${GBX_URL}/${lastItemArticleID}`);
       this.loadGBX(lastItemArticleID);
     } else {
       const cartUpdated = await this.props.updateCart({ open: true });

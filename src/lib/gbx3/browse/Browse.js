@@ -17,8 +17,10 @@ import {
 import Header from './Header';
 import Pages from './Pages';
 import Footer from '../Footer';
+import history from '../../common/history';
 
 const ENV = process.env.REACT_APP_ENV;
+const GBX_URL = process.env.REACT_APP_GBX_URL;
 
 class Browse extends React.Component {
 
@@ -45,6 +47,7 @@ class Browse extends React.Component {
 
     const infoUpdated = await this.props.updateInfo({ originTemplate: 'browse' });
     if (infoUpdated) {
+      history.push(`${GBX_URL}/${ID}`);
       this.props.reloadGBX3(ID);
     }
   }
