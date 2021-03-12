@@ -449,10 +449,12 @@ export function gbx3(state = {
           ...action.confirmation
         }
       });
-    case types.RESET_CONFIRMATION:
+    case types.RESET_CONFIRMATION: {
+      localStorage.removeItem('cart');
       return Object.assign({}, state, {
         confirmation: defaultConfirmation
       });
+    }
     case types.UPDATE_DEFAULTS:
       return Object.assign({}, state, {
         defaults: {
