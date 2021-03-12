@@ -61,7 +61,8 @@ class Cinesend extends React.Component {
       const obj = {
         assetID: videoID,
         apiKey: APIKey,
-        orderID: videoID
+        orderID: videoID,
+        landingPage: true
       };
       const endpoint = `${API_URL}/integrators/vouchers?${this.makeQueryStr(obj)}`;
 

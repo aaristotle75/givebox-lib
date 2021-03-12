@@ -19,7 +19,9 @@ import CartButton from './payment/CartButton';
 import { AiOutlineNotification, AiOutlineTrophy } from 'react-icons/ai';
 import ReactGA from 'react-ga';
 import Scroll from 'react-scroll';
+import history from '../common/history';
 
+const GBX_URL = process.env.REACT_APP_GBX_URL;
 const SHARE_URL = process.env.REACT_APP_GBX_SHARE;
 const ENV = process.env.REACT_APP_ENV;
 
@@ -94,15 +96,18 @@ class Layout extends React.Component {
   backToOrg(page) {
     const {
       orgID,
+      orgSlug,
       originTemplate,
       cart
     } = this.props;
 
     if (originTemplate === 'browse') {
       this.props.loadBrowse();
+        history.push(`${GBX_URL}/browse`);
     } else {
       if (this.props.backToOrgCallback) this.props.backToOrgCallback('org', page);
       else {
+        history.push(`${GBX_URL}/${orgSlug}`);
         this.props.loadOrg(orgID, page);
       }
     }
