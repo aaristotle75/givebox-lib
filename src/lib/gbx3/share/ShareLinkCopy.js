@@ -52,7 +52,7 @@ class ShareLinkCopy extends Component {
           <div className='subText'>
             {shareUrl}
           </div>
-          <CodeBlock copyCallback={this.copyCallback} style={{ marginTop: 10, fontSize: '1em' }} className='flexCenter flexColumn' type='javascript' regularText={''} text={shareUrl} name={<div className='copyButton'>Click Here to Copy Your Share Link</div>} nameIcon={false} nameStyle={{}} />
+          <CodeBlock copyCallback={this.copyCallback} style={{ marginTop: 10, fontSize: '1em' }} className='flexCenter flexColumn' type='javascript' regularText={''} text={shareUrl} name={<div className='copyButton'>Click Here to Copy Share Link</div>} nameIcon={false} nameStyle={{}} />
           <div className={`codeCopied ${copied ? 'copied' : ''}`}>
             <span className='icon icon-check-circle'></span>
             <span className='copiedText'>Copied</span>

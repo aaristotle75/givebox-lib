@@ -106,6 +106,7 @@ class ArticleCard extends Component {
     const imageURL = util.getValue(articleCard, 'imageURL', item.imageURL);
     const videoURL = util.getValue(articleCard, 'videoURL', item.videoURL);
     const mediaType = util.getValue(articleCard, 'mediaType', 'image');
+    const hideViewCount = util.getValue(articleCard, 'hideViewCount', false);
 
     const media = videoURL && !util.checkImage(imageURL) ?
       <Video
@@ -171,7 +172,9 @@ class ArticleCard extends Component {
               {tag}
             </div>
             <div className='cardInfo'>
-              <span className='icon icon-eye'></span> Views ({viewCount})
+              { !hideViewCount ?
+                <><span className='icon icon-eye'></span> Views ({viewCount})</>
+              : null }
             </div>
           </div>
           <div className='cardTitleContainer'>

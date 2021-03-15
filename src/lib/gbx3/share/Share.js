@@ -53,7 +53,8 @@ class Share extends React.Component {
     const {
       kind,
       display,
-      hideList
+      hideList,
+      hasAccessToEdit
     } = this.props;
 
     const {
@@ -61,8 +62,8 @@ class Share extends React.Component {
     } = this.state;
 
     const shareTypes = [
-      { type: 'copy', name: 'Copy Your Link', icon: <Icon><FiCopy /></Icon>, imageURL: '' },
-      { type: 'edit', name: 'Edit Your Link', icon: <Icon><FiPenTool /></Icon>, imageURL: '', restricted: true },
+      { type: 'copy', name: 'Copy Share Link', icon: <Icon><FiCopy /></Icon>, imageURL: '' },
+      { type: 'edit', name: 'Edit Share Link', icon: <Icon><FiPenTool /></Icon>, imageURL: '', restricted: true },
       { type: 'social', name: 'Share to Social Media', icon: <Icon><TiSocialFacebook /></Icon>, imageURL: '' },
       { type: 'web', name: 'Add to Your Website', icon: <Icon><MdWeb /></Icon>, imageURL: '', org: 'hide' }
     ];
@@ -71,6 +72,7 @@ class Share extends React.Component {
     const orgDisplay = display === 'org' ? true : false;
 
     shareTypes.forEach((value, key) => {
+      if (!hasAccessToEdit && value.restricted) return;
       if (orgDisplay && value.org === 'hide') return;
       else if (hideList.includes(value.type)) return;
       else {
@@ -88,7 +90,7 @@ class Share extends React.Component {
 
     return (
       <div className='createKindSection'>
-        <span className='intro'>Share Your {orgDisplay ? 'Page' : types.kind(kind).name}</span>
+        <span className='intro'>Share {orgDisplay ? 'Page' : types.kind(kind).name}</span>
         <div className='createKindList'>
           {items}
         </div>
@@ -141,9 +143,7 @@ class Share extends React.Component {
         );
         break;
       }
-
     }
-
 
     return (
       <div>
@@ -164,7 +164,7 @@ class Share extends React.Component {
     return (
       <div className='createStep'>
         <div style={{ paddingTop: 0 }} className={`modalWrapper`}>
-          <Alert style={{ marginTop: 20 }} alert='error' display={util.getPublishStatus(kind, webApp) === 'private' && display !== 'org' ? true : false} msg={`Your ${types.kind(kind).name} is Set to Private`} />
+          <Alert style={{ marginTop: 20 }} alert='error' display={util.getPublishStatus(kind, webApp) === 'private' && display !== 'org' ? true : false} msg={`This ${types.kind(kind).name} is Set to Private`} />
           {this.renderShareList()}
           {this.renderShareType()}
         </div>
@@ -188,6 +188,7 @@ function mapStateToProps(state, props) {
   const admin = util.getValue(gbx3, 'admin', {});
   const subStep = util.getValue(admin, 'subStep');
   const webApp = util.getValue(gbx3, 'data.publishedStatus.webApp');
+  const hasAccessToEdit = util.getValue(gbx3, 'admin.hasAccessToEdit');
 
   return {
     display,
@@ -195,7 +196,8 @@ function mapStateToProps(state, props) {
     articleID,
     globals,
     subStep,
-    webApp
+    webApp,
+    hasAccessToEdit
   }
 }
 

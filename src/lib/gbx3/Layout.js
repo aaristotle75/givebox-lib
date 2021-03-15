@@ -213,11 +213,11 @@ class Layout extends React.Component {
     const avatarMenu =
       <div className='hasAccessToEditPublic'>
         <AvatarMenuButton />
-        { hasAccessToEdit && !browse ?
+        { !browse ?
         <ModalLink type='div' id={'share'} className='avatarLink tooltip hideOnMobile'>
           <span className='tooltipTop'><i />Share</span>
           <div className='editGraphic'>
-            <Icon><AiOutlineNotification /></Icon>
+            <span className='icon icon-share'></span>
           </div>
         </ModalLink> : null}
         { hasAccessToEdit && stage !== 'admin' && !browse ?

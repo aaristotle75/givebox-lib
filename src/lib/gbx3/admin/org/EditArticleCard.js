@@ -9,10 +9,12 @@ import Tabs, { Tab } from '../../../common/Tabs';
 import Video from '../../../common/Video';
 import Form from '../../../form/Form';
 import TextField from '../../../form/TextField';
+import Choice from '../../../form/Choice';
 import MediaLibrary from '../../../form/MediaLibrary';
 import * as _v from '../../../form/formValidate';
 import {
-  toggleModal
+  toggleModal,
+  removeResource
 } from '../../../api/actions';
 import {
   getResource,
@@ -40,8 +42,10 @@ class EditArticleCardForm extends React.Component {
 
     const imageURL = util.getValue(articleCard, 'imageURL', util.checkImage(util.getValue(article, 'imageURL')));
     const videoURL = util.getValue(articleCard, 'videoURL', util.getValue(article, 'videoURL'));
+    const hideViewCount = util.getValue(articleCard, 'hideViewCount', false);
 
     this.state = {
+      hideViewCount,
       imageURL,
       videoURL,
       videoURLFieldValue: videoURL,
@@ -100,7 +104,8 @@ class EditArticleCardForm extends React.Component {
     const {
       imageURL,
       videoURL,
-      mediaType
+      mediaType,
+      hideViewCount
     } = this.state;
 
     util.toTop('modalOverlay-orgEditCard');
@@ -108,7 +113,8 @@ class EditArticleCardForm extends React.Component {
     const data = {
       imageURL,
       videoURL,
-      mediaType
+      mediaType,
+      hideViewCount
     };
 
     Object.entries(fields).forEach(([key, value]) => {
@@ -211,7 +217,8 @@ class EditArticleCardForm extends React.Component {
       videoURL,
       videoURLFieldValue,
       video,
-      mediaType
+      mediaType,
+      hideViewCount
     } = this.state;
 
     const article = util.getValue(this.props.article, 'data', {});
@@ -245,6 +252,17 @@ class EditArticleCardForm extends React.Component {
           <div className='formSectionContainer'>
             <div className='formSection'>
               {this.props.textField('title', { fixedLabel: true, label: 'Card Title', placeholder: 'Enter Card Title', value: title })}
+              <Choice
+                type='checkbox'
+                name='hideViewCount'
+                label={'Hide View Count'}
+                onChange={(name, value) => {
+                  this.setState({ hideViewCount: hideViewCount ? false : true });
+                }}
+                checked={hideViewCount}
+                value={hideViewCount}
+                toggle={true}
+              />
             </div>
           </div>
         </Collapse>
@@ -326,6 +344,13 @@ class EditArticleCard extends React.Component {
     this.getArticle();
   }
 
+  componentWillUnmount() {
+    const {
+      resourceName
+    } = this.props;
+    this.props.removeResource(resourceName);
+  }
+
   getArticle() {
     const {
       orgID,
@@ -388,5 +413,6 @@ export default connect(mapStateToProps, {
   getResource,
   sendResource,
   saveCustomTemplate,
-  toggleModal
+  toggleModal,
+  removeResource
 })(EditArticleCard);

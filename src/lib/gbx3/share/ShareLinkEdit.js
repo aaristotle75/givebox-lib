@@ -29,7 +29,7 @@ class ShareLinkEdit extends Component {
       errorMsg: 'Invalid characters in the share link name',
       errorUpdating: false,
       success: false,
-      successMsg: 'Your Share Link has been updated successfully'
+      successMsg: 'Share Link has been updated successfully'
     };
     this.mounted = false;
   }
@@ -119,7 +119,7 @@ class ShareLinkEdit extends Component {
               <Alert alert='error' display={errorUpdating} msg={`Unable to update: ${errorMsg}.`} />
               <Alert alert='success' display={success} msg={`${successMsg}.`} />
               <div className='subText'>
-                Customize How Customers See Your Link
+                Customize How Customers See the Share Link
               </div>
               <TextField
                 name='slug'
