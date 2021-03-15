@@ -494,6 +494,7 @@ GBX3.defaultProps = {
 
 function mapStateToProps(state, props) {
 
+  const queryParams = util.getValue(props, 'queryParams', {});
   const gbx3 = util.getValue(state, 'gbx3', {});
   const loading = util.getValue(gbx3, 'loading');
   const globals = util.getValue(gbx3, 'globals', {});
@@ -510,6 +511,7 @@ function mapStateToProps(state, props) {
   const isVolunteer = util.getValue(admin, 'isVolunteer');
   const publicView = util.getValue(admin, 'publicView');
   const gbx3Org = util.getValue(state, 'resource.gbx3Org', {});
+  const browse = has(queryParams, 'browse') ? true : props.browse;
 
   return {
     globals,
@@ -525,6 +527,7 @@ function mapStateToProps(state, props) {
     publicView,
     gbx3Org,
     step,
+    browse,
     access: util.getValue(state.resource, 'access', {})
   }
 }

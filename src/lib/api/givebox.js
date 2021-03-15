@@ -560,6 +560,11 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
 
+    case 'plaidAccounts': {
+      endpoint = `plaid/accounts`;
+      break;
+    }
+
     case 'orgVirtualEvents': {
       endpoint = `orgs/${getIndex(id, 0, orgID)}/virtual-events`;
       break;

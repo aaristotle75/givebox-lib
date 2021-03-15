@@ -17,6 +17,7 @@ class Plaid extends React.Component {
     this.auth = this.auth.bind(this);
     this.identity = this.identity.bind(this);
     this.delete = this.delete.bind(this);
+    this.accounts = this.accounts.bind(this);
     this.state = {
       linkToken: null
     };
@@ -67,6 +68,15 @@ class Plaid extends React.Component {
     })
   }
 
+  accounts() {
+    this.props.getResource('plaidAccounts', {
+      method: 'GET',
+      callback: (res, err) => {
+        console.log('execute plaidAccounts -> ', res, err);
+      }
+    })
+  }
+
   delete() {
     this.props.sendResource('plaidAccess', {
       method: 'DELETE',
@@ -103,6 +113,8 @@ class Plaid extends React.Component {
         <GBLink onClick={() => this.auth()}>Get AUTH</GBLink>
         <br /><br />
         <GBLink onClick={() => this.identity()}>Get Identity</GBLink>
+        <br /><br />
+        <GBLink onClick={() => this.accounts()}>Get Accounts</GBLink>
         <br /><br />
         <GBLink onClick={() => this.delete()}>Delete Token</GBLink>
       </div>
