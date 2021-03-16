@@ -502,7 +502,6 @@ export function setCartOnLoad(cartObj = {}) {
   return async (dispatch, getState) => {
     const cartFromCookie = LZString.decompressFromUTF16(localStorage.getItem('cart'));
     const cookieJSON = cartFromCookie ? JSON.parse(cartFromCookie) : {};
-    console.log('execute cartFromCookie -> ', cookieJSON);
     const cartState = util.getValue(getState(), 'gbx3.cart', {});
     const cart = {
       ...cartState,
