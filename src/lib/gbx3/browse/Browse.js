@@ -92,7 +92,9 @@ class Browse extends React.Component {
         <ScrollTop elementID={isAdmin ? 'stageContainer' : 'gbx3Layout'} />
         <div className='gbx3OrgHeader'>
           <div className={'gbx3OrgLogoContainer'} onClick={() => console.log('logo clicked!')}>
-            <Image size='thumb' maxSize={35} url={'https://givebox.s3-us-west-1.amazonaws.com/public/gb-logo5.png'} alt='Givebox' />
+            <GBLink onClick={() => window.open('https://givebox.com')}>
+              <Image size='small' maxHeight={29} url={'https://givebox-marketing.s3.us-west-1.amazonaws.com/images/2020/06/19054759/givebox_logo2020-grey-text.png'} alt='Givebox' />
+            </GBLink>
           </div>
         </div>
         <div className='gbx3OrgContentContainer'>
