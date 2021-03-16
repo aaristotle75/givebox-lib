@@ -153,7 +153,7 @@ class Pages extends Component {
       ...this.props.pageState[pageSlug]
     };
     const pageNumber = opts.pageNumber ? opts.pageNumber : opts.search ? util.getValue(pageState, 'search.pageNumber', 1) : util.getValue(pageState, 'pageNumber', 1);
-    const baseFilter = `landing:true%3Bvolunteer:false`;
+    const baseFilter = `landing:true%3Bvolunteer:false%3Bviews:>1`;
     const filter = `${baseFilter}${opts.filter ? `%3B${opts.filter}` : ''}`;
 
     this.props.getResource('articles', {
@@ -163,7 +163,9 @@ class Pages extends Component {
         filter,
         query: opts.query,
         max: opts.max,
-        page: pageNumber
+        page: pageNumber,
+        sort: 'views',
+        order: 'desc'
       },
       callback: (res, err) => {
         if (opts.search) {
