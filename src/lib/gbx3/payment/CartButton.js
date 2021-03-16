@@ -80,6 +80,7 @@ class CartButton extends React.Component {
 
     const cartItems = util.getValue(cart, 'items', []);
 
+    console.log('execute -> ', stage, cartItems);
     if (stage === 'admin' || util.isEmpty(cartItems)) return null;
 
     switch (type) {

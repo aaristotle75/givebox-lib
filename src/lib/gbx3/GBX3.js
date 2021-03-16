@@ -25,7 +25,8 @@ import {
   loadGBX3,
   loadOrg,
   setStyle,
-  setOrgStyle
+  setOrgStyle,
+  setCartOnLoad
 } from './redux/gbx3actions';
 import {
   setCustomProp,
@@ -154,6 +155,7 @@ class GBX3 extends React.Component {
   }
 
   loadBrowse() {
+    this.props.setCartOnLoad();
     this.props.updateGBX3('browse', true);
     this.props.updateInfo({ display: 'org', originTemplate: 'browse' });
   }
@@ -546,5 +548,6 @@ export default connect(mapStateToProps, {
   updateInfo,
   updateAdmin,
   toggleModal,
-  setOrgStyle
+  setOrgStyle,
+  setCartOnLoad
 })(GBX3);
