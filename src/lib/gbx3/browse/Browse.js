@@ -103,16 +103,18 @@ class Browse extends React.Component {
           />
           <div className='gbx3OrgSubHeader gbx3OrgContentOuterContainer'>
             <div style={{ padding: '15px 0' }} className='gbx3OrgContentInnerContainer'>
-              <div className='nameSection flexColumn flexCenter centeritems'>
-                <span style={{ marginBottom: 15, fontSize: 22, fontWeight: 300 }}>Have a Nonprofit or Charity, start a fundraiser today.</span>
-                <GBLink
-                  style={{ width: 200 }}
-                  className='button'
-                  onClick={() => {
-                    GBXEntry.load({ env: ENV });
-                  }}>
-                  Start a Fundraiser
-                </GBLink>
+              <div className='nameSection'>
+                <div className='flexColumn flexCenter centerItems'>
+                  <span style={{ marginBottom: 15, fontSize: 22, fontWeight: 300 }}>Have a Nonprofit or Charity, start a fundraiser today.</span>
+                  <GBLink
+                    style={{ width: 200 }}
+                    className='button'
+                    onClick={() => {
+                      GBXEntry.load({ env: ENV });
+                    }}>
+                    Start a Fundraiser
+                  </GBLink>
+                </div>
               </div>
             </div>
           </div>
