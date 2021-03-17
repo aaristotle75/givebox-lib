@@ -19,7 +19,8 @@ class Plaid extends React.Component {
     this.delete = this.delete.bind(this);
     this.accounts = this.accounts.bind(this);
     this.state = {
-      linkToken: null
+      linkToken: null,
+      account_id: null
     };
   }
 
@@ -38,7 +39,15 @@ class Plaid extends React.Component {
     })
   }
 
-  accessToken(publicToken) {
+  accessToken(publicToken, metaData) {
+    console.log('execute -> ', metaData);
+    const account_id = util.getValue(metaData, 'account_id');
+    if (localStorage.getItem('account_id')) {
+      localStorage.removeItem('account_id');
+    }
+    if (account_id) localStorage.setItem('account_id', account_id);
+    this.setState({ account_id });
+
     this.props.sendResource('plaidAccess', {
       data: {
         publicToken

@@ -622,6 +622,16 @@ $contentHeaderPadding: 35%;
   background: $white;
   border-bottom: 2px solid $light-gray;
 
+  .navigationButtonGroup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    button.button {
+      width: 200px;
+    }
+  }
+
   .nameSection {
     position: relative;
     width: 100%;

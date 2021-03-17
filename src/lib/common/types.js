@@ -430,3 +430,13 @@ export function translatePaymentForm(formKind) {
   const kindName = kind(formKind).name;
   return `${kindName} ${formKind !== 'fundraiser' ? 'Form' : ''} Details`;
 }
+
+export const defaultArticleImageURL = 'https://s3-us-west-1.amazonaws.com/givebox/assets/img/fundraiser-cover/original';
+
+export const defaultArticleTitles = {
+  fundraiser: 'New Donation Form',
+  event: 'New Event',
+  invoice: 'New Invoice',
+  membership: 'New Membership',
+  sweepstake: 'New Sweepstakes'
+};

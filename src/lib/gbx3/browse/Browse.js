@@ -30,6 +30,9 @@ class Browse extends React.Component {
     this.resizer = this.resizer.bind(this);
     this.onBreakpointChange = this.onBreakpointChange.bind(this);
     this.onClickArticle = this.onClickArticle.bind(this);
+    this.state = {
+      scrollNav: false
+    }
   }
 
   componentDidMount() {
@@ -37,6 +40,19 @@ class Browse extends React.Component {
     this.onBreakpointChange();
     window.addEventListener('resize', this.resizer);
     GBXEntry.init([{ env: ENV }]);
+
+    const scrollEl = document.getElementById('gbx3Layout');
+    if (scrollEl) {
+      scrollEl.addEventListener('scroll',() => {
+        if (scrollEl.scrollTop > 499) {
+          if (!this.state.scrollNav) this.setState({ scrollNav: true })
+        } else {
+          if (this.state.scrollNav) this.setState({ scrollNav: false });
+        }
+      },
+      { passive: true }
+      );
+    }
   }
 
   async onClickArticle(ID, pageSlug) {
@@ -83,8 +99,14 @@ class Browse extends React.Component {
       loading
     } = this.props;
 
+    const {
+      scrollNav
+    } = this.state;
+
     const isEditable = hasAccessToEdit && editable ? true : false;
     const isAdmin = stage === 'admin' ? true : false;
+
+    console.log('execute -> ', scrollNav);
 
     return (
       <div className='gbx3Org gbx3Browse'>
@@ -106,14 +128,24 @@ class Browse extends React.Component {
               <div className='nameSection'>
                 <div className='flexColumn flexCenter centerItems'>
                   <span style={{ marginBottom: 15, fontSize: 22, fontWeight: 300 }}>Have a Nonprofit or Charity, start a fundraiser today.</span>
-                  <GBLink
-                    style={{ width: 200 }}
-                    className='button'
-                    onClick={() => {
-                      GBXEntry.load({ env: ENV });
-                    }}>
-                    Start a Fundraiser
-                  </GBLink>
+                  <div className='navigationButtonGroup'>
+                    <GBLink
+                      style={{ marginRight: 5 }}
+                      className='button'
+                      onClick={() => {
+                        GBXEntry.load({ env: ENV });
+                      }}>
+                      Start a Fundraiser
+                    </GBLink>
+                    <GBLink
+                      style={{ marginLeft: 5 }}
+                      className='button'
+                      onClick={() => {
+                        GBXEntry.load({ env: ENV, signupPath: 'book_demo' });
+                      }}>
+                      Book a Demo
+                    </GBLink>
+                  </div>
                 </div>
               </div>
             </div>

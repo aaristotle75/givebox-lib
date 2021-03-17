@@ -141,7 +141,8 @@ class TicketsList extends Component {
       color,
       showInStock,
       kind,
-      breakpoint
+      breakpoint,
+      numAvailableTickets
     } = this.props;
 
     const {
@@ -169,6 +170,8 @@ class TicketsList extends Component {
     const cartItems = this.getCartItems();
     const items = [];
     const defaultOptions = this.quantityOptions(maxQuantity);
+    const canbeSoldout = kind === 'sweepstake' ? false : true;
+    const soldout = numAvailableTickets > 0 || !canbeSoldout ? false : true;
 
     if (!util.isEmpty(amountsList)) {
       Object.entries(amountsList).forEach(([key, value]) => {
@@ -178,9 +181,7 @@ class TicketsList extends Component {
 
         let name = value.name;
         let priceDesc = '';
-        let soldOut = 'Sold Out';
         if (kind === 'sweepstake') {
-          soldOut = '';
           const entries = +value.entries || 1;
           if (!value.name) {
             name = <span>{entries} {entries > 1 ? 'Entries' : 'Entry'} for {price}</span>;
@@ -188,7 +189,7 @@ class TicketsList extends Component {
           priceDesc = `per ${entries} ${entries > 1 ? 'Entries' : 'Entry'}`
         }
         const inStock = util.getValue(value, 'max', 0) - util.getValue(value, 'sold', 0);
-        if (value.enabled && ( inStock > 0 || !hasMax || showInStock )) {
+        if (value.price > 0 && value.enabled && ( inStock > 0 || !hasMax || showInStock )) {
           const options = inStock < maxQuantity && hasMax ? this.quantityOptions(inStock) : defaultOptions;
           const selected = cartItems.find(x => x.unitID === value.ID);
           const qty = util.getValue(selected, 'quantity', 0);
@@ -204,55 +205,61 @@ class TicketsList extends Component {
                 <div style={{ width: thumbnailURL && breakpoint !== 'mobile' ? '75%' : '85%' }} className='ticketDesc'>
                   {name}
                   <span className='ticketDescAmount'>{price} {priceDesc}</span>
-                  {showInStock ? <span className='ticketDescInStock'>{inStock ? `${inStock} Available` : soldOut}</span> : <></> }
+                  {showInStock ? <span className='ticketDescInStock'>{inStock ? `${inStock} Available` : ''}</span> : <></> }
                   {value.description ? <GBLink allowCustom={true} customColor={color} className='link ticketShowDetailsLink' onClick={() => this.toggleShowDetails(value.ID)}>{showDetails.includes(value.ID) ? 'Hide Info' : 'More Info'}</GBLink> : <></>}
                 </div>
-                <div className='ticketQty'>
-                  <Dropdown
-                    portalID={`amountQty-dropdown-portal-${value.ID}`}
-                    portal={true}
-                    portalClass={'gbx3 dropdown-portal'}
-                    className='dropdown-quantity'
-                    contentWidth={100}
-                    name='unitQty'
-                    defaultValue={qty}
-                    color={this.props.color}
-                    onChange={(name, val) => {
-                      this.updateCart(value, +val, {
-                        interval: !util.isEmpty(recurringIntervals) ? recurringIntervalValue : null,
-                        paymentMax: '',
-                        frequency: 1
-                      });
-                    }}
-                    options={options}
-                    selectLabel={0}
-                    value={qty}
-                  />
-                  <AnimateHeight
-                    duration={200}
-                    height={!util.isEmpty(recurringIntervals) && qty ? 'auto' : 0}
-                  >
+                { inStock < 1 && canbeSoldout ?
+                  <div className='ticketQty'>
+                    <span style={{ fontSize: 14 }} className='gray'>SOLD OUT</span>
+                  </div>
+                :
+                  <div className='ticketQty'>
                     <Dropdown
-                      portalID={`amountRecurring-dropdown-portal-${value.ID}`}
+                      portalID={`amountQty-dropdown-portal-${value.ID}`}
                       portal={true}
                       portalClass={'gbx3 dropdown-portal'}
-                      className='dropdown-recurring'
-                      contentWidth={200}
-                      name='recurringInterval'
-                      defaultValue={recurringIntervalValue}
+                      className='dropdown-quantity'
+                      contentWidth={100}
+                      name='unitQty'
+                      defaultValue={qty}
                       color={this.props.color}
                       onChange={(name, val) => {
-                        this.updateCart(value, +qty, {
-                          interval: val,
+                        this.updateCart(value, +val, {
+                          interval: !util.isEmpty(recurringIntervals) ? recurringIntervalValue : null,
                           paymentMax: '',
                           frequency: 1
                         });
                       }}
-                      options={recurringOptions}
-                      value={recurringIntervalValue}
+                      options={options}
+                      selectLabel={0}
+                      value={qty}
                     />
-                  </AnimateHeight>
-                </div>
+                    <AnimateHeight
+                      duration={200}
+                      height={!util.isEmpty(recurringIntervals) && qty ? 'auto' : 0}
+                    >
+                      <Dropdown
+                        portalID={`amountRecurring-dropdown-portal-${value.ID}`}
+                        portal={true}
+                        portalClass={'gbx3 dropdown-portal'}
+                        className='dropdown-recurring'
+                        contentWidth={200}
+                        name='recurringInterval'
+                        defaultValue={recurringIntervalValue}
+                        color={this.props.color}
+                        onChange={(name, val) => {
+                          this.updateCart(value, +qty, {
+                            interval: val,
+                            paymentMax: '',
+                            frequency: 1
+                          });
+                        }}
+                        options={recurringOptions}
+                        value={recurringIntervalValue}
+                      />
+                    </AnimateHeight>
+                  </div>
+                }
               </div>
               <AnimateHeight
                 duration={200}
@@ -270,7 +277,14 @@ class TicketsList extends Component {
 
     return (
       <div className='ticketsList'>
-        {items}
+        { (!showInStock && soldout && canbeSoldout) ?
+          <div style={{ margin: '20px 0' }} className='gray flexCenter centerItems'>SOLD OUT</div>
+        :
+          !util.isEmpty(items) ?
+            items
+          :
+            <div style={{ margin: '20px 0' }} className='gray flexCenter centerItems'>None Available</div>
+        }
       </div>
     )
   }
@@ -304,13 +318,15 @@ function mapStateToProps(state, props) {
   const noFocus = util.getValue(info, 'noFocus');
   const admin = util.getValue(gbx3, 'admin', {});
   const editable = util.getValue(admin, 'editable');
+  const numAvailableTickets = util.getValue(gbx3, 'data.numAvailableTickets', 0);
 
   return {
     noFocus,
     cart,
     cartItems,
     numCartItems,
-    editable
+    editable,
+    numAvailableTickets
   }
 }
 

@@ -132,6 +132,16 @@ class Pages extends Component {
     }
   }
 
+  makeBaseFilter() {
+    let defaultTitlesFilter = ``;
+    Object.entries(types.defaultArticleTitles).forEach(([key, value]) => {
+      defaultTitlesFilter = defaultTitlesFilter + `%3Btitle:!"${value}"`;
+    });
+    const kindFilter = `%3Bkind:!"invoice"%3Bkind:!"membership"`;
+    const defaultImageFilter = `%3BimageURL:!"${types.defaultArticleImageURL}"`;
+    return `landing:true%3Bvolunteer:false%3Bviews:>1${kindFilter}${defaultTitlesFilter}${defaultImageFilter}`;
+  }
+
   getArticles(options = {}) {
     const opts = {
       max: 50,
@@ -153,7 +163,7 @@ class Pages extends Component {
       ...this.props.pageState[pageSlug]
     };
     const pageNumber = opts.pageNumber ? opts.pageNumber : opts.search ? util.getValue(pageState, 'search.pageNumber', 1) : util.getValue(pageState, 'pageNumber', 1);
-    const baseFilter = `landing:true%3Bvolunteer:false%3Bviews:>1`;
+    const baseFilter = this.makeBaseFilter();
     const filter = `${baseFilter}${opts.filter ? `%3B${opts.filter}` : ''}`;
 
     this.props.getResource('articles', {
