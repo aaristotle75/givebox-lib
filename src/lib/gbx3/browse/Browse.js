@@ -7,6 +7,7 @@ import GBLink from '../../common/GBLink';
 import ScrollTop from '../../common/ScrollTop';
 import Loader from '../../common/Loader';
 import GBXEntry from '../../common/GBXEntry';
+import Fade from '../../common/Fade';
 import has from 'has';
 import {
   updateInfo,
@@ -45,9 +46,13 @@ class Browse extends React.Component {
     if (scrollEl) {
       scrollEl.addEventListener('scroll',() => {
         if (scrollEl.scrollTop > 499) {
-          if (!this.state.scrollNav) this.setState({ scrollNav: true })
+          if (!this.state.scrollNav) {
+            this.setState({ scrollNav: true });
+          }
         } else {
-          if (this.state.scrollNav) this.setState({ scrollNav: false });
+          if (this.state.scrollNav) {
+            this.setState({ scrollNav: false });
+          }
         }
       },
       { passive: true }
@@ -127,10 +132,10 @@ class Browse extends React.Component {
             <div style={{ padding: '15px 0' }} className='gbx3OrgContentInnerContainer'>
               <div className='nameSection'>
                 <div className='flexColumn flexCenter centerItems'>
-                  <span style={{ marginBottom: 15, fontSize: 22, fontWeight: 300 }}>Have a Nonprofit or Charity, start a fundraiser today.</span>
-                  <div className='navigationButtonGroup'>
+                  <span style={{ marginBottom: 15, fontSize: 22, fontWeight: 400 }}>Have a Nonprofit or Charity, start a fundraiser today.</span>
+                  <div className={`navigationButtonGroup ${scrollNav ? 'lockNav' : ''}`}>
                     <GBLink
-                      style={{ marginRight: 5 }}
+                      style={{ marginRight: 10 }}
                       className='button'
                       onClick={() => {
                         GBXEntry.load({ env: ENV });
@@ -138,8 +143,8 @@ class Browse extends React.Component {
                       Start a Fundraiser
                     </GBLink>
                     <GBLink
-                      style={{ marginLeft: 5 }}
-                      className='button'
+                      style={{ marginLeft: 10 }}
+                      className='button hideMobile'
                       onClick={() => {
                         GBXEntry.load({ env: ENV, signupPath: 'book_demo' });
                       }}>

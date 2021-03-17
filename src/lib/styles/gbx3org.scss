@@ -642,6 +642,30 @@ $contentHeaderPadding: 35%;
       position: relative;
       width: 100%;
     }
+
+    .navigationButtonGroup.lockNav {
+      position: fixed;
+      top: 10px;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      z-index: 13;
+      opacity: 1;
+
+      button.button {
+        background: transparent;
+        color: $green;
+        border: 1px solid $green;
+        @include transition(background .25s);
+        padding: 7px 15px;
+        white-space: nowrap;
+      }
+
+      button.button:hover {
+        background: $green;
+        color: $white;
+      }
+    }
   }
 
   .nameSectionContainer {
