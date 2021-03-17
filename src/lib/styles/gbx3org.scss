@@ -350,6 +350,9 @@ $contentHeaderPadding: 35%;
   .gbx3OrgPagesTopLeft {
     display: flex;
     align-items: center;
+    h2 {
+      color: $med-blue-dark-gray;
+    }
   }
 
   .gbx3OrgPageTitle {
