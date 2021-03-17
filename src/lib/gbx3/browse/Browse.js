@@ -120,7 +120,7 @@ class Browse extends React.Component {
         <div className='gbx3OrgHeader'>
           <div className={'gbx3OrgLogoContainer'} onClick={() => console.log('logo clicked!')}>
             <GBLink onClick={() => window.open('https://givebox.com')}>
-              <Image size='small' maxHeight={29} url={'https://givebox-marketing.s3.us-west-1.amazonaws.com/images/2020/06/19054759/givebox_logo2020-grey-text.png'} alt='Givebox' />
+              <Image size='small' maxHeight={29} maxWidth={113} url={'https://givebox-marketing.s3.us-west-1.amazonaws.com/images/2020/06/19054759/givebox_logo2020-grey-text.png'} alt='Givebox' />
             </GBLink>
           </div>
         </div>
@@ -132,7 +132,7 @@ class Browse extends React.Component {
             <div style={{ padding: '15px 0' }} className='gbx3OrgContentInnerContainer'>
               <div className='nameSection'>
                 <div className='flexColumn flexCenter centerItems'>
-                  <span style={{ color: '#465965', marginBottom: 15, fontSize: '1.3em', fontWeight: 400 }}>Have a Nonprofit or Charity, start a fundraiser today.</span>
+                  <span className='nameSectionHeader'>Have a Nonprofit or Charity, start a fundraiser today.</span>
                   <div className={`navigationButtonGroup ${scrollNav ? 'lockNav' : ''}`}>
                     <GBLink
                       style={{ marginRight: 10 }}

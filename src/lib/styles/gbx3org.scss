@@ -236,7 +236,7 @@ $contentHeaderPadding: 35%;
         color: $dark;
         text-align: center;
         border-radius: 10px;
-        opacity: .5;
+        opacity: .7;
         padding: 5px 10px !important;
 
         .icon {
@@ -832,6 +832,49 @@ $contentHeaderPadding: 35%;
 }
 
 .gbx3Org.gbx3Browse {
+
+  .gbx3OrgSubHeader {
+    .nameSection {
+      height: auto;
+    }
+
+    .nameSectionHeader {
+      color: $med-blue-dark-gray;
+      margin-bottom: 15px;
+      font-size: 1.3em;
+      font-weight: 400;
+      white-space: nowrap;
+    }
+  }
+
+  .coverPhotoContainer {
+    position: relative;
+    max-height: 350px;
+    height: 350px;
+  }
+
+  .coverPhotoImageContainer {
+    max-height: 350px;
+    height: 350px;
+  }
+
+  .coverPhotoInfoContainer {
+    padding: 10px;
+    background: transparentize($dark, .8);
+  }
+
+  .gbx3OrgContentHeader .coverPhotoContainer .coverPhotoInfoContainer {
+
+    .coverPhotoTitle {
+      font-weight: 400;
+    }
+
+    button.coverPhotoButton {
+      background: $white;
+      padding: 10px 20px !important;
+      border-radius: 20px;
+    }
+  }
 
   .gbx3OrgContentHeader.gbx3OrgContentOuterContainer {
     @include bgGradient(to bottom, $mainColor 0%, $white 50%);

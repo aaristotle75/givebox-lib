@@ -18,9 +18,6 @@ import AwesomeSlider from 'react-awesome-slider';
 import withAutoplay from 'react-awesome-slider/dist/autoplay';
 import 'react-awesome-slider/dist/styles.css';
 import 'react-awesome-slider/dist/custom-animations/cube-animation.css';
-import 'react-awesome-slider/dist/custom-animations/open-animation.css';
-import 'react-awesome-slider/dist/custom-animations/fold-out-animation.css';
-import 'react-awesome-slider/dist/custom-animations/fall-animation.css';
 import CoreStyles from 'react-awesome-slider/src/core/styles.scss';
 import AnimationStyles from 'react-awesome-slider/src/styled/fold-out-animation/fold-out-animation.scss';
 
@@ -54,18 +51,46 @@ class Header extends React.Component {
 
     const images = [
       {
-        url: coverPhotoUrl,
-        title: 'Hello World 1',
-        orgName: 'Organization 1',
-        articleID: 4,
-        buttonText: 'Learn More'
+        url: 'https://cdn.givebox.com/givebox/public/images/browse/SBIFF.jpg',
+        title: '36th SBIFF Passes & Event Tickets',
+        orgName: 'Santa Barbara International Film Festival',
+        articleID: 520854,
+        buttonText: 'Select Passes & Tickets'
       },
       {
-        url: coverPhotoUrl,
-        title: 'Hello World 2',
-        orgName: 'Organization 2',
-        articleID: 651,
-        buttonText: 'Buy Tickets'
+        url: 'https://cdn.givebox.com/givebox/public/images/browse/Heal-The-Ocean.jpg',
+        title: 'You can directly help reduce ocean pollution',
+        orgName: 'Heal The Ocean',
+        articleID: 685,
+        buttonText: 'Reduce Ocean Pollution'
+      },
+      {
+        url: 'https://cdn.givebox.com/givebox/public/images/browse/Infinite.jpg',
+        title: 'YOUR DONATION MATTERS',
+        orgName: 'Infinite Hero Foundation',
+        articleID: 519963,
+        buttonText: 'Make a Donation'
+      },
+      {
+        url: 'https://cdn.givebox.com/givebox/public/images/browse/Jimmy-Miller.jpg',
+        title: 'Help Fund the 2021 Ocean Therapy Sessions',
+        orgName: 'JIMMY MILLER MEMORIAL FOUNDATION',
+        articleID: 104595,
+        buttonText: 'Click Here to Help Now'
+      },
+      {
+        url: 'https://cdn.givebox.com/givebox/public/images/browse/Blake-Griffin.jpg',
+        title: 'Help Invest In Positive Futures',
+        orgName: 'Team Griffin Foundation',
+        articleID: 1527,
+        buttonText: 'Invest Now'
+      },
+      {
+        url: 'https://cdn.givebox.com/givebox/public/images/browse/Juglife.jpg',
+        title: 'DRINK WATER, GIVE WATER, SAVE WATER. WATER IS LIFE',
+        orgName: 'JUGLIFE',
+        articleID: 614,
+        buttonText: 'Give the Gift of Water Now'
       }
     ];
     const items = [];
@@ -73,7 +98,7 @@ class Header extends React.Component {
     Object.entries(images).forEach(([key, value]) => {
       items.push(
         <div key={key} className='coverPhotoImageContainer'>
-          <Image imgID='coverPhoto' size='large' url={value.url} maxSize='950px' alt='Cover Photo' />
+          <Image imgID='coverPhoto' size='large' url={value.url} maxheight='350px' maxWidth='950px' alt='Cover Photo' />
           <div onClick={() => this.onClickCoverPhoto(value.articleID)} className='coverPhotoInfoContainer'>
             <span className='coverPhotoTitle'>{util.truncate(value.title, 90)}</span>
             <span className='coverPhotoOrgName'>{value.orgName}</span>

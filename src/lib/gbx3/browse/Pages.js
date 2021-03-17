@@ -314,7 +314,7 @@ class Pages extends Component {
         {util.isFetching(pageList) ? <Loader msg='Loading List...' /> : null }
         <div style={{ marginTop: isAdmin ? 15 : 0 }} className='gbx3OrgPagesTop'>
           <div className='gbx3orgPagesTopContainer'>
-            <div className='gbx3OrgPagesTopLeft'>
+            <div className='gbx3OrgPagesTopLeft hideMobile'>
               <h2>Browse Fundraisers</h2>
             </div>
             <div className='gbx3OrgPagesSearch'>
