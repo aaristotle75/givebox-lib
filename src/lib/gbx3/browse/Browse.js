@@ -18,6 +18,7 @@ import {
 import Header from './Header';
 import Pages from './Pages';
 import Footer from '../Footer';
+import Logo from '../Logo';
 import history from '../../common/history';
 
 const ENV = process.env.REACT_APP_ENV;
@@ -111,17 +112,19 @@ class Browse extends React.Component {
     const isEditable = hasAccessToEdit && editable ? true : false;
     const isAdmin = stage === 'admin' ? true : false;
 
-    console.log('execute -> ', scrollNav);
-
     return (
       <div className='gbx3Org gbx3Browse'>
         { loading ? <Loader msg='Loading Browse...' /> : null }
         <ScrollTop elementID={isAdmin ? 'stageContainer' : 'gbx3Layout'} />
         <div className='gbx3OrgHeader'>
-          <div className={'gbx3OrgLogoContainer'} onClick={() => console.log('logo clicked!')}>
-            <GBLink onClick={() => window.open('https://givebox.com')}>
-              <Image size='small' maxHeight={29} maxWidth={113} url={'https://givebox-marketing.s3.us-west-1.amazonaws.com/images/2020/06/19054759/givebox_logo2020-grey-text.png'} alt='Givebox' />
-            </GBLink>
+          <div className={'gbx3OrgLogoContainer'}>
+            <Logo
+              maxHeight={29}
+              maxWidth={isMobile ? 29 : 'auto'}
+              onClick={() => window.open('https://givebox.com')}
+              breakpoint={breakpoint}
+              className='logo'
+            />
           </div>
         </div>
         <div className='gbx3OrgContentContainer'>
@@ -132,7 +135,7 @@ class Browse extends React.Component {
             <div style={{ padding: '15px 0' }} className='gbx3OrgContentInnerContainer'>
               <div className='nameSection'>
                 <div className='flexColumn flexCenter centerItems'>
-                  <span className='nameSectionHeader'>Have a Nonprofit or Charity, start a fundraiser today.</span>
+                  <span className='nameSectionHeader hideMobile'>Have a Nonprofit or Charity, start a fundraiser today.</span>
                   <div className={`navigationButtonGroup ${scrollNav ? 'lockNav' : ''}`}>
                     <GBLink
                       style={{ marginRight: 10 }}
@@ -170,7 +173,7 @@ class Browse extends React.Component {
             </div>
           </div>
         </div>
-        {breakpoint === 'mobile' ? <div className='bottomOffset'>&nbsp;</div> : <></>}
+        {isMobile ? <div className='bottomOffset'>&nbsp;</div> : <></>}
       </div>
     )
   }

@@ -48,8 +48,8 @@ Logo.defaultProps = {
       light: 'https://givebox-marketing.s3.us-west-1.amazonaws.com/images/2020/01/19210256/givebox_logo2020_white-text.svg'
     },
     mobile: {
-      dark: 'https://givebox.s3-us-west-1.amazonaws.com/public/gb-logo5.png',
-      light: 'https://givebox.s3-us-west-1.amazonaws.com/public/gb-logo5.png'
+      dark: 'https://cdn.givebox.com/givebox/public/gb-logo5.png',
+      light: 'https://cdn.givebox.com/givebox/public/gb-logo5.png'
     }
   }
 }
