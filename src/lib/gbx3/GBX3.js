@@ -524,7 +524,7 @@ function mapStateToProps(state, props) {
   const isVolunteer = util.getValue(admin, 'isVolunteer');
   const publicView = util.getValue(admin, 'publicView');
   const gbx3Org = util.getValue(state, 'resource.gbx3Org', {});
-  const orgSlug = util.getValue(gbx3Org, 'slug');
+  const orgSlug = util.getValue(gbx3Org, 'data.slug');
   const browse = has(queryParams, 'browse') ? true : props.browse;
 
   return {
