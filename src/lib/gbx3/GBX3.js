@@ -36,10 +36,12 @@ import GBXEntry from '../common/GBXEntry';
 import AvatarMenu from './admin/AvatarMenu';
 import Share from './share/Share';
 import Steps from './helpers/Steps';
+import history from '../common/history';
 
 const RECAPTCHA_KEY = process.env.REACT_APP_RECAPTCHA_KEY;
 const ENV = process.env.REACT_APP_ENV;
 const ENTRY_URL = process.env.REACT_APP_ENTRY_URL;
+const GBX_URL = process.env.REACT_APP_GBX_URL;
 
 class GBX3 extends React.Component {
 
@@ -165,6 +167,7 @@ class GBX3 extends React.Component {
       project,
       articleID,
       orgID,
+      orgSlug,
       originTemplate,
       isVolunteer
     } = this.props;
@@ -175,16 +178,24 @@ class GBX3 extends React.Component {
       const infoUpdated = await this.props.updateInfo({ display, stage: 'public' });
       if (infoUpdated) this.props.updateAdmin({ project: 'share', publicView: true });
     }
-    switch (display) {
-      case 'org': {
-        this.loadOrg(orgID);
-        break;
-      }
 
-      case 'article':
-      default: {
-        this.loadGBX3(articleID);
-        break;
+    if (originTemplate === 'browse') {
+      history.push(`${GBX_URL}/browse`);
+      this.loadBrowse();
+    } else {
+      switch (display) {
+        case 'org': {
+          history.push(`${GBX_URL}/${orgSlug}`);
+          this.loadOrg(orgID);
+          break;
+        }
+
+        case 'article':
+        default: {
+          history.push(`${GBX_URL}/${articleID}`);
+          this.loadGBX3(articleID);
+          break;
+        }
       }
     }
 
@@ -513,6 +524,7 @@ function mapStateToProps(state, props) {
   const isVolunteer = util.getValue(admin, 'isVolunteer');
   const publicView = util.getValue(admin, 'publicView');
   const gbx3Org = util.getValue(state, 'resource.gbx3Org', {});
+  const orgSlug = util.getValue(gbx3Org, 'slug');
   const browse = has(queryParams, 'browse') ? true : props.browse;
 
   return {
@@ -528,6 +540,7 @@ function mapStateToProps(state, props) {
     isVolunteer,
     publicView,
     gbx3Org,
+    orgSlug,
     step,
     browse,
     access: util.getValue(state.resource, 'access', {})
