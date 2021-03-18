@@ -22,6 +22,7 @@ import CoreStyles from 'react-awesome-slider/src/core/styles.scss';
 import AnimationStyles from 'react-awesome-slider/src/styled/fold-out-animation/fold-out-animation.scss';
 
 const AutoplaySlider = withAutoplay(AwesomeSlider);
+const ENV = process.env.REACT_APP_ENV;
 
 class Header extends React.Component {
 
@@ -69,7 +70,7 @@ class Header extends React.Component {
         title: 'YOUR DONATION MATTERS',
         orgName: 'Infinite Hero Foundation',
         articleID: 519963,
-        buttonText: 'Make a Donation'
+        buttonText: 'Support Veterans'
       },
       {
         url: 'https://cdn.givebox.com/givebox/public/images/browse/Jimmy-Miller.jpg',
@@ -129,9 +130,9 @@ class Header extends React.Component {
         <div className='gbx3OrgContentInnerContainer'>
           <div id='coverPhoto' className='coverPhotoContainer'>
             <AutoplaySlider
-              play={false}
-              cancelOnInteraction={false}
-              interval={6000}
+              play={ENV !== 'local' ? true : true}
+              cancelOnInteraction={true}
+              interval={5000}
               className='coverPhotoImage'
               animation="cubeAnimation"
               cssModule={[CoreStyles, AnimationStyles]}

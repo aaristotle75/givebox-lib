@@ -135,7 +135,7 @@ class Browse extends React.Component {
             <div style={{ padding: '15px 0' }} className='gbx3OrgContentInnerContainer'>
               <div className='nameSection'>
                 <div className='flexColumn flexCenter centerItems'>
-                  <span className='nameSectionHeader hideMobile'>Have a Nonprofit or Charity, start a fundraiser today.</span>
+                  <span className='nameSectionHeader hideMobile'>Start a Nonprofit Fundraiser in Minutes</span>
                   <div className={`navigationButtonGroup ${scrollNav ? 'lockNav' : ''}`}>
                     <GBLink
                       style={{ marginRight: 10 }}

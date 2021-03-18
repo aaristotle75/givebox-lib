@@ -315,7 +315,7 @@ class Pages extends Component {
         <div style={{ marginTop: isAdmin ? 15 : 0 }} className='gbx3OrgPagesTop'>
           <div className='gbx3orgPagesTopContainer'>
             <div className='gbx3OrgPagesTopLeft hideMobile'>
-              <h2>Browse Fundraisers</h2>
+              <h2>Discover Thousands of Fundraisers</h2>
             </div>
             <div className='gbx3OrgPagesSearch'>
               <Search

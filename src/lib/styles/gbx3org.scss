@@ -251,9 +251,8 @@ $contentHeaderPadding: 35%;
 
       button.coverPhotoButton:hover {
         background: $placeholder-gray;
-        @include transition(background .25s);
+        @include transition(background .25s, opacity .25s);
       }
-
     }
 
     .coverPhotoImage {
@@ -661,15 +660,15 @@ $contentHeaderPadding: 35%;
 
       button.button {
         background: transparent;
-        color: $green;
-        border: 1px solid $green;
+        color: $mainColor;
+        border: 1px solid $mainColor;
         @include transition(background .25s);
         padding: 7px 15px;
         white-space: nowrap;
       }
 
       button.button:hover {
-        background: $green;
+        background: $mainColor;
         color: $white;
       }
     }
@@ -876,6 +875,11 @@ $contentHeaderPadding: 35%;
       background: $white;
       padding: 10px 20px !important;
       border-radius: 20px;
+    }
+
+    button.coverPhotoButton:hover {
+      @include transition(opacity .25s);
+      opacity: .6;
     }
   }
 
