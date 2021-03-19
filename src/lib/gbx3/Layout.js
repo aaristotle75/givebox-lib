@@ -103,7 +103,7 @@ class Layout extends React.Component {
 
     if (originTemplate === 'browse' && allowBackToBrowse) {
       this.props.loadBrowse(false);
-        history.push(`${GBX_URL}/browse`);
+        history.push(`${GBX_URL}/discover`);
     } else {
       if (this.props.backToOrgCallback) this.props.backToOrgCallback('org', page);
       else {

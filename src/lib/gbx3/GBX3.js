@@ -180,7 +180,7 @@ class GBX3 extends React.Component {
     }
 
     if (originTemplate === 'browse') {
-      history.push(`${GBX_URL}/browse`);
+      history.push(`${GBX_URL}/discover`);
       this.loadBrowse();
     } else {
       switch (display) {
