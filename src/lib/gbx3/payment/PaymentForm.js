@@ -81,7 +81,7 @@ class PaymentFormClass extends Component {
     this.props.toggleModal('paymentConfirmation', true, { closeCallback: async () => {
       const cartReset = await this.props.resetCart();
       if (cartReset) {
-        this.props.backToOrg();
+        this.props.backToOrg(null, true);
       }
     }});
   }
