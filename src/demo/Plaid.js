@@ -18,6 +18,7 @@ class Plaid extends React.Component {
     this.identity = this.identity.bind(this);
     this.delete = this.delete.bind(this);
     this.accounts = this.accounts.bind(this);
+    this.extractInfo = this.extractInfo.bind(this);
     this.state = {
       linkToken: null,
       account_id: null
@@ -40,12 +41,12 @@ class Plaid extends React.Component {
   }
 
   accessToken(publicToken, metaData) {
-    console.log('execute -> ', metaData);
     const account_id = util.getValue(metaData, 'account_id');
     if (localStorage.getItem('account_id')) {
       localStorage.removeItem('account_id');
     }
     if (account_id) localStorage.setItem('account_id', account_id);
+
     this.setState({ account_id });
 
     this.props.sendResource('plaidAccess', {
@@ -63,7 +64,7 @@ class Plaid extends React.Component {
     this.props.getResource('plaidAuth', {
       method: 'GET',
       callback: (res, err) => {
-        console.log('execute plaidAuth -> ', res, err);
+        this.extractInfo(res, { type: 'account' });
       }
     })
   }
@@ -72,7 +73,7 @@ class Plaid extends React.Component {
     this.props.getResource('plaidIdentity', {
       method: 'GET',
       callback: (res, err) => {
-        console.log('execute plaidIdentity -> ', res, err);
+        this.extractInfo(res, { type: 'identity' });
       }
     })
   }
@@ -81,7 +82,7 @@ class Plaid extends React.Component {
     this.props.getResource('plaidAccounts', {
       method: 'GET',
       callback: (res, err) => {
-        console.log('execute plaidAccounts -> ', res, err);
+        this.extractInfo(res, { type: 'account' });
       }
     })
   }
@@ -93,6 +94,64 @@ class Plaid extends React.Component {
         console.log('execute plaidAccess DELETE -> ', res, err);
       }
     })
+  }
+
+  extractInfo(res, options = {}) {
+    const opts = {
+      type: 'account', // account, identity
+      ...options
+    };
+
+    const account_id = localStorage.getItem('account_id');
+    const data = util.getValue(res, 'data', {});
+
+    switch (opts.type) {
+      case 'account': {
+        return this.extractAccountInfo(account_id, data);
+      }
+
+      case 'identity': {
+        return this.extractIdentityInfo(account_id, data);
+      }
+
+      // no default
+    }
+
+    console.error('Error no account_id, data or type defined');
+    console.error('account_id: ', account_id);
+    console.error('data: ', data);
+    console.error('type: ', opts.type);
+    return false;
+  }
+
+  extractAccountInfo(account_id, data) {
+    console.log('execute extractAccountInfo -> ', account_id, data);
+    const accounts = util.getValue(data, 'accounts', []);
+    const ach = util.getValue(data, 'numbers.ach', []);
+    const account = accounts.find(a => a.account_id === account_id);
+    const bankInfo = ach.find(a => a.account_id === account_id);
+
+    console.log('execute account -> ', account, bankInfo);
+    const info = {};
+    return info;
+  }
+
+  extractIdentityInfo(account_id, data) {
+    console.log('execute extractIdentityInfo -> ', account_id, data);
+    const accounts = util.getValue(data, 'accounts', []);
+    const account = accounts.find(a => a.account_id === account_id);
+    const owners = util.getValue(account, 'owners', []);
+    const owner = util.getValue(owners, 0, {});
+    const addresses = util.getValue(owner, 'addresses', []);
+    const address = util.getValue(addresses, 0, {});
+    const names = util.getValue(owner, 'names', []);
+    const name = util.getValue(names, 0);
+    const emails = util.getValue(owner, 'emails', []);
+    const phone_numbers = util.getValue(owner, 'phone_numbers', []);
+
+    console.log('execute owner -> ', owner, address, name, emails, phone_numbers);
+    const info = {};
+    return info;
   }
 
   render() {
