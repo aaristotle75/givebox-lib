@@ -1,5 +1,18 @@
 @import 'variables.scss';
 
+.gbx3OrgBackToDashboard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  button.link {
+    display: flex;
+    align-items: center;
+    .icon {
+      margin-right: 5px;
+    }
+  }
+}
 
 .gbx3OrgAdmin {
 

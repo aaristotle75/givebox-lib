@@ -26,6 +26,8 @@ import Header from './pages/Header';
 import Pages from './pages/Pages';
 import Footer from './Footer';
 import history from '../common/history';
+import Icon from '../common/Icon';
+import { GoDashboard } from 'react-icons/go';
 
 const GBX_URL = process.env.REACT_APP_GBX_URL;
 
@@ -357,7 +359,8 @@ class Org extends React.Component {
       pages,
       pageSlug,
       isMobile,
-      title
+      title,
+      cameFromNonprofitAdmin
     } = this.props;
 
     const isEditable = hasAccessToEdit && editable ? true : false;
@@ -371,6 +374,11 @@ class Org extends React.Component {
           <div className={'gbx3OrgLogoContainer'} onClick={() => console.log('logo clicked!')}>
             <Image size='thumb' maxSize={35} url={'https://givebox.s3-us-west-1.amazonaws.com/public/gb-logo5.png'} alt='Givebox' />
           </div>
+          { cameFromNonprofitAdmin ?
+            <div className='gbx3OrgBackToDashboard orgAdminOnly'>
+              <GBLink key={'exit'} style={{ fontSize: '14px' }} className='link' onClick={() => this.props.exitAdmin()}><Icon><GoDashboard /></Icon>{ isMobile ? 'Dashboard' : `Back to Dashboard` }</GBLink>
+            </div>
+          : null }
         </div>
         <div className='gbx3OrgContentContainer'>
           <Header
@@ -487,6 +495,7 @@ function mapStateToProps(state, props) {
   const pageList = util.getValue(state, `resource.${resourceName}`, {});
   const pageState = util.getValue(gbx3, 'pageState', {});
   const pageSearch = util.getValue(gbx3, 'pageSearch', {});
+  const cameFromNonprofitAdmin = util.getValue(info, 'cameFromNonprofitAdmin', false);
 
   return {
     orgID,
@@ -508,7 +517,8 @@ function mapStateToProps(state, props) {
     resourceName,
     pageList,
     pageState,
-    pageSearch
+    pageSearch,
+    cameFromNonprofitAdmin
   }
 }
 

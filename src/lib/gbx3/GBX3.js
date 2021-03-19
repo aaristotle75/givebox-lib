@@ -301,6 +301,7 @@ class GBX3 extends React.Component {
     info.ebEmail = util.getValue(queryParams, 'm', null);
     info.autoCreate = util.getValue(queryParams, 'autoCreate');
     info.clone = util.getValue(queryParams, 'clone');
+    info.cameFromNonprofitAdmin = has(queryParams, 'nonprofitAdmin') ? true : false;
 
     const loc = util.getValue(queryParams, 'loc', reactReferer.referer());
     const sourceLocation = loc || window.location.href;

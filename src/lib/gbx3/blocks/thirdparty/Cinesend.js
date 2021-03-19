@@ -49,9 +49,7 @@ class Cinesend extends React.Component {
 
   createVoucher(callback) {
 
-    const {
-      virtualEvent
-    } = this.props.form;
+    const virtualEvent = util.getValue(this.props.form, 'virtualEvent', {});
 
     this.setState({ validating: true });
     const videoID = util.getValue(virtualEvent, 'videoID');
@@ -146,9 +144,7 @@ class Cinesend extends React.Component {
 
   render() {
 
-    const {
-      virtualEvent
-    } = this.props.form;
+    const virtualEvent = util.getValue(this.props.form, 'virtualEvent', {});
 
     const {
       APIKey,

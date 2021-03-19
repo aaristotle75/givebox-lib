@@ -156,6 +156,7 @@ class Layout extends React.Component {
               primaryColor={this.props.primaryColor}
               onClickVolunteerFundraiser={this.props.onClickVolunteerFundraiser}
               scrollTo={this.scrollTo}
+              exitAdmin={this.props.exitAdmin}
             />
           )
           break;
