@@ -156,8 +156,8 @@ class GBX3 extends React.Component {
     }
   }
 
-  loadBrowse() {
-    this.props.setCartOnLoad();
+  loadBrowse(setCart = true) {
+    if (setCart) this.props.setCartOnLoad();
     this.props.updateGBX3('browse', true);
     this.props.updateInfo({ display: 'org', originTemplate: 'browse' });
   }

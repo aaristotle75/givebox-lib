@@ -93,7 +93,7 @@ class Layout extends React.Component {
     }
   }
 
-  backToOrg(page) {
+  backToOrg(page, allowBackToBrowse = false) {
     const {
       orgID,
       orgSlug,
@@ -101,8 +101,8 @@ class Layout extends React.Component {
       cart
     } = this.props;
 
-    if (originTemplate === 'browse') {
-      this.props.loadBrowse();
+    if (originTemplate === 'browse' && allowBackToBrowse) {
+      this.props.loadBrowse(false);
         history.push(`${GBX_URL}/browse`);
     } else {
       if (this.props.backToOrgCallback) this.props.backToOrgCallback('org', page);
@@ -287,7 +287,7 @@ class Layout extends React.Component {
         : ''}
 
         { publicOnly && display !== 'org' ?
-          <div onClick={() => this.backToOrg()} className='backToOrgPage avatarLink'>
+          <div onClick={() => this.backToOrg(null, true)} className='backToOrgPage avatarLink'>
             <div className='editGraphic'>
               <span className='icon icon-chevron-left'></span>
             </div>
