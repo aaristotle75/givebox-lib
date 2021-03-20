@@ -170,7 +170,7 @@ class TicketsList extends Component {
     const cartItems = this.getCartItems();
     const items = [];
     const defaultOptions = this.quantityOptions(maxQuantity);
-    const canbeSoldout = kind === 'sweepstake' || kind === 'membership' ? false : true;
+    const canbeSoldout = kind === 'sweepstake' ? false : true;
     const soldout = numAvailableTickets > 0 || !canbeSoldout ? false : true;
 
     if (!util.isEmpty(amountsList)) {
@@ -310,6 +310,7 @@ class TicketsList extends Component {
 
 function mapStateToProps(state, props) {
 
+  const kind = props.kind;
   const gbx3 = util.getValue(state, 'gbx3', {});
   const cart = util.getValue(gbx3, 'cart', []);
   const cartItems = util.getValue(cart, 'items', []);
@@ -318,7 +319,22 @@ function mapStateToProps(state, props) {
   const noFocus = util.getValue(info, 'noFocus');
   const admin = util.getValue(gbx3, 'admin', {});
   const editable = util.getValue(admin, 'editable');
-  const numAvailableTickets = util.getValue(gbx3, 'data.numAvailableTickets', 0);
+  let numAvailableTickets = 0;
+  switch (kind) {
+    case 'event': {
+      numAvailableTickets = util.getValue(gbx3, 'data.numAvailableTickets', 0);
+      break;
+    }
+
+    case 'membership': {
+      const maxSubscriptions = util.getValue(gbx3, 'data.maxSubscriptions', 0);
+      const soldSubscriptions = util.getValue(gbx3, 'data.soldSubscriptions', 0);
+      numAvailableTickets = maxSubscriptions - soldSubscriptions;
+      break;
+    }
+
+    // no default
+  }
 
   return {
     noFocus,
