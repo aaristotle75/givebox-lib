@@ -170,7 +170,7 @@ class TicketsList extends Component {
     const cartItems = this.getCartItems();
     const items = [];
     const defaultOptions = this.quantityOptions(maxQuantity);
-    const canbeSoldout = kind === 'sweepstake' ? false : true;
+    const canbeSoldout = kind === 'sweepstake' || kind === 'membership' ? false : true;
     const soldout = numAvailableTickets > 0 || !canbeSoldout ? false : true;
 
     if (!util.isEmpty(amountsList)) {

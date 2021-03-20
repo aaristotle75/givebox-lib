@@ -23,6 +23,14 @@ class Plaid extends React.Component {
       linkToken: null,
       account_id: null
     };
+    this.bankAccount = {
+      kind: 'deposit',
+      metaData: {
+        plaid: null
+      }
+    };
+    this.principal = {};
+    this.legalEntity = {};
   }
 
   componentDidMount() {
@@ -131,9 +139,13 @@ class Plaid extends React.Component {
     const account = accounts.find(a => a.account_id === account_id);
     const bankInfo = ach.find(a => a.account_id === account_id);
 
-    console.log('execute account -> ', account, bankInfo);
-    const info = {};
-    return info;
+    this.bankAccount.name = util.getValue(account, 'name');
+    this.bankAccount.number = util.getValue(bankInfo, 'account');
+    this.bankAccount.routingNumber = util.getValue(bankInfo, 'routing');
+    this.bankAccount.accountType = util.getValue(account, 'subtype');
+    this.bankAccount.metaData.plaid = data;
+
+    console.log('execute this.bankAccount => ', this.bankAccount);
   }
 
   extractIdentityInfo(account_id, data) {
