@@ -9,6 +9,7 @@ import Shop from './Shop';
 import Article from './Article';
 import Org from './Org';
 import Browse from './browse/Browse';
+import Signup from './signup/Signup';
 import Confirmation from './payment/Confirmation';
 import {
   updateAdmin,
@@ -162,6 +163,19 @@ class Layout extends React.Component {
           break;
         }
 
+        case 'signup': {
+          items.push(
+            <Signup
+              key='signup'
+              scrollTo={this.scrollTo}
+              reloadGBX3={this.props.reloadGBX3}
+              loadGBX3={this.props.loadGBX3}
+              loadOrg={this.props.loadOrg}
+            />
+          )
+          break;
+        }
+
         case 'article':
         default: {
           items.push(
@@ -254,9 +268,18 @@ class Layout extends React.Component {
     const done = kind === 'sweepstake' && status === 'done' && display !== 'org' ? true : false;
 
     const publicOnly = (stage !== 'admin') && !preview ? true : false;
+    let displayClass = display;
+    switch (display) {
+      case 'signup': {
+        displayClass = 'org';
+      }
+
+      // no default
+    }
+
 
     return (
-      <div className={`gbx3PageWrapper ${display} ${stage}`}>
+      <div className={`gbx3PageWrapper ${displayClass} ${stage}`}>
         { done ?
           <div className='noAccessToGBX'>
             <Icon><AiOutlineTrophy /></Icon>
@@ -297,7 +320,7 @@ class Layout extends React.Component {
 
         <div style={{ height: gbx3BackgroundHeight }} className='gbx3LayoutBackground'></div>
         {showAvatarMenu ? avatarMenu : '' }
-        <div id='gbx3Layout' className={`gbx3Layout ${display} ${stage} ${noAccess ? 'noAccess' : ''}`}>
+        <div id='gbx3Layout' className={`gbx3Layout ${displayClass} ${stage} ${noAccess ? 'noAccess' : ''}`}>
           <div
             style={{
               ...style

@@ -51,6 +51,7 @@ class GBX3 extends React.Component {
     this.loadCreateNew = this.loadCreateNew.bind(this);
     this.loadBrowse = this.loadBrowse.bind(this);
     this.loadOrg = this.loadOrg.bind(this);
+    this.loadSignup = this.loadSignup.bind(this);
     this.loadGBX3 = this.loadGBX3.bind(this);
     this.reloadGBX3 = this.reloadGBX3.bind(this);
     this.setTracking = this.setTracking.bind(this);
@@ -93,9 +94,14 @@ class GBX3 extends React.Component {
       } else {
         switch (blockType) {
           case 'org': {
-            if (!orgID) console.error('Org ID is not defined');
-            else if (step === 'create') this.loadCreateNew();
-            else this.loadOrg(orgID);
+            if (!orgID) {
+              this.loadSignup();
+              console.error('Org ID is not defined');
+            } else if (step === 'create') {
+              this.loadCreateNew();
+            } else {
+              this.loadOrg(orgID);
+            }
             break;
           }
 
@@ -154,6 +160,11 @@ class GBX3 extends React.Component {
         this.loadGBX3(articleID);
       }
     }
+  }
+
+  loadSignup() {
+    this.props.setLoading(false);
+    this.props.updateInfo({ display: 'signup', originTemplate: 'signup' });
   }
 
   loadBrowse(setCart = true) {
@@ -462,10 +473,14 @@ class GBX3 extends React.Component {
   render() {
 
     const {
-      browse
+      browse,
+      orgID
     } = this.props;
 
-    if (!browse && (this.props.loading || (util.isLoading(this.props.gbx3Org) && this.props.step !== 'create'))) return <Loader msg='Initiating GBX3' />;
+    if (this.props.loading
+      || (util.isLoading(this.props.gbx3Org) && orgID)
+      && this.props.step !== 'create'
+      && !browse) return <Loader msg='Initiating GBX3' />;
 
     return (
       <div id='gbx3MainWrapper' className='gbx3'>
