@@ -32,6 +32,14 @@ export function setLoading(loading) {
   }
 }
 
+export function updateSignup(name, signup) {
+  return {
+    type: types.UPDATE_SIGNUP,
+    name,
+    signup
+  }
+}
+
 export function clearGBX3(keepOrgData) {
   return {
     type: types.CLEAR_GBX3,

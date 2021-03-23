@@ -3,7 +3,9 @@ import * as util from '../../common/utility';
 import {
   defaultCart,
   defaultConfirmation,
-  defaultStyle
+  defaultStyle,
+  defaultOrgSignupElements,
+  defaultGBX3SignupElements
 } from './gbx3defaults';
 import LZString from 'lz-string';
 
@@ -25,6 +27,10 @@ export function gbx3(state = {
   },
   pageSearch: {},
   pageState: {},
+  orgSignup: {
+    org: defaultOrgSignupElements,
+    gbx3: defaultGBX3SignupElements
+  },
   orgUpdated: false,
   orgGlobals: {},
   orgPages: [],
@@ -112,6 +118,16 @@ export function gbx3(state = {
     case types.SET_LOADING:
       return Object.assign({}, state, {
         loading: action.loading
+      });
+    case types.UPDATE_SIGNUP:
+      return Object.assign({}, state, {
+        signup: {
+          ...state.signup,
+          [action.name]: {
+            ...state.signup[action.name],
+            ...action.signup
+          }
+        }
       });
     case types.RESET_STYLE:
       return Object.assign({}, state, {
