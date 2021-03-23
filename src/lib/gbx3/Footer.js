@@ -31,7 +31,7 @@ class Footer extends React.Component {
 
     const publicOnly = stage === 'public' ? true : false;
     const allowSharing = util.getValue(form, 'allowSharing', true);
-    const showP2P = util.getValue(form, 'showP2P', true);
+    const showP2P = this.props.showP2P || util.getValue(form, 'showP2P', true);
 
     return (
       <div className='gbx3Footer'>

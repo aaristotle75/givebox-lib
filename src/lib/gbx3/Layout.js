@@ -228,7 +228,7 @@ class Layout extends React.Component {
     const avatarMenu =
       <div className='hasAccessToEditPublic'>
         <AvatarMenuButton />
-        { !browse ?
+        { !browse && display !== 'signup' ?
         <ModalLink type='div' id={'share'} className='avatarLink tooltip hideOnMobile'>
           <span className='tooltipTop'><i />Share</span>
           <div className='editGraphic'>
@@ -265,7 +265,7 @@ class Layout extends React.Component {
     const noAccess = (!hasAccessToEdit || (hasAccessToEdit && !preview && stage === 'public' )) && (publishStatus === 'private') && (display === 'article') ? true : false;
 
     // This is article sweepstakes specific
-    const done = kind === 'sweepstake' && status === 'done' && display !== 'org' ? true : false;
+    const done = kind === 'sweepstake' && status === 'done' && display !== 'org' && display !== 'signup' ? true : false;
 
     const publicOnly = (stage !== 'admin') && !preview ? true : false;
     let displayClass = display;
@@ -310,7 +310,7 @@ class Layout extends React.Component {
           </div>
         : ''}
 
-        { publicOnly && display !== 'org' ?
+        { publicOnly && display !== 'org' && display !== 'signup' ?
           <div onClick={() => this.backToOrg(null, true)} className='backToOrgPage avatarLink'>
             <div className='editGraphic'>
               <span className='icon icon-chevron-left'></span>
