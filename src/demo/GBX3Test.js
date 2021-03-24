@@ -42,8 +42,8 @@ class GBXTest extends Component {
     } = this.props;
 
     // 383102 // 1130 // 383064; // 13; // 739; // 4; //651; //735; //383071;
-    const articleID = null; //+util.getValue(routeParams, 'articleID', null);
-    const orgID = null; //185;
+    const articleID = +util.getValue(routeParams, 'articleID', null);
+    const orgID = 185;
 
     return (
       <div>

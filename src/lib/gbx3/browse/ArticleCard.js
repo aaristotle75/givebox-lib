@@ -159,7 +159,7 @@ class ArticleCard extends Component {
             </div>
           </div>
           <div className='cardTitleContainer'>
-            <h2>{util.truncate(title, 80)}</h2>
+            <h2>{util.truncate(title, 64)}</h2>
             <h3>{util.truncate(orgName, 64)}</h3>
           </div>
           {this.renderKindSpecific()}
