@@ -559,16 +559,20 @@ $contentHeaderPadding: 35%;
   .cardButton {
     display: block;
     padding: 10px 20px;
-    background: $light-gray;
-    color: $dark;
     text-align: center;
     border-radius: 10px;
-    opacity: .7;
+    opacity: .8;
+    color: $dark;
+    border: 1px solid $white;
+    background: linear-gradient(to right, $light-gray 0%, $placeholder-gray 100%);
+    white-space: nowrap;
   }
 
   .cardButton:hover {
-    background: $placeholder-gray;
-    @include transition(background .25s);
+    color: $dark;
+    border: 1px solid $white;
+    background: linear-gradient(to right, $placeholder-gray 0%, $light-gray 100%);
+    @include default-transition(.25s);
   }
 
   .cardKindSpecificContainer {
@@ -903,14 +907,18 @@ $contentHeaderPadding: 35%;
   .nameSection {
 
     button.button {
-      background: $green;
       color: $white;
-      border: 1px solid transparent;
+      border: 1px solid $white;
+      background: linear-gradient(to right, $mainColor 0%, $green 100%);
+      white-space: nowrap;
+      @include animation(pulsateSlightlyBrighter 2s infinite ease-out);
     }
 
     button.button:hover {
-      background: transparentize($green, .4);
-      border: 1px solid transparent;
+      color: $white;
+      border: 1px solid $white;
+      background: linear-gradient(to right, $green 0%, $mainColor 100%);
+      @include default-transition(.25s);
     }
   }
 }
