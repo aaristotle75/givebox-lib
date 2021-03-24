@@ -15,6 +15,12 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import Moment from 'moment';
 import Scroll from 'react-scroll';
 import has from 'has';
+import {
+  toggleModal
+} from '../../api/actions';
+import {
+  sendResource
+} from '../../api/helpers';
 
 class Pages extends Component {
 
@@ -86,6 +92,7 @@ class Pages extends Component {
 
   renderList() {
     const {
+      orgID,
       stage,
       pages,
       pageSlug,
@@ -142,7 +149,20 @@ class Pages extends Component {
           </InfiniteScroll>
         </div>
       :
-        <DefaultArticleCard hideCard={true} kind={this.props.kind} />
+        <DefaultArticleCard
+          hideCard={true}
+          kind={this.props.kind}
+          createCallback={(res, err) => {
+            const customList = [ ...util.getValue(activePage, 'customList', []) ];
+            if (!util.isEmpty(res) && !err) {
+              const articleID = util.getValue(res, 'articleID');
+              if (articleID) {
+                customList.unshift(articleID);
+              }
+            }
+            console.log('execute createCallback -> ', orgID, customList);
+          }}
+        />
     )
   }
 
@@ -305,4 +325,6 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
+  sendResource,
+  toggleModal
 })(Pages);

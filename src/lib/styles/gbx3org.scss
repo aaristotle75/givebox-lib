@@ -820,8 +820,9 @@ $contentHeaderPadding: 35%;
   }
 }
 
-.defaultArticleCard.dropdown button {
-  display: none;
+/*
+.defaultArticleCard .dropdown button:not(.label) {
+  display: none !important;
 }
 
 .defaultArticleCard.dropdown button:hover:not(.label) {
@@ -831,6 +832,7 @@ $contentHeaderPadding: 35%;
     color: $med-gray !important;
   }
 }
+*/
 
 .gbx3 .gbx3Layout {
   .navigationDropdown {

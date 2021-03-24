@@ -1054,7 +1054,7 @@
 
     .leftPanelClose {
       position: fixed;
-      left: $panelWidth;
+      left: 208px;
       opacity: 1;
     }
   }
@@ -1071,7 +1071,7 @@
 
   // Stage Container
   .stageContainer {
-    position: fixed;
+    position: absolute;
     top: $topOffset;
     left: 0;
     right: 0;

@@ -31,7 +31,8 @@ class DefaultArticleCard extends React.Component {
 
   onClick() {
     const {
-      orgID
+      orgID,
+      kind
     } = this.props;
 
     const {
@@ -41,7 +42,9 @@ class DefaultArticleCard extends React.Component {
     if (!orgID) {
       if (this.props.noOrgIDCallback) this.props.noOrgIDCallback();
     } else {
-      console.log('execute orgID -> ', orgID, createKind);
+      if (kind !== 'all') {
+        console.log('execute orgID -> ', orgID, createKind);
+      }
     }
     if (!this.state.dropdownOpen) this.setState({ dropdownOpen: true });
   }
@@ -55,13 +58,8 @@ class DefaultArticleCard extends React.Component {
   }
 
   createFundraiserCallback(res, err) {
-
     this.setState({ loading: false });
-
-    if (!util.isEmpty(res) && !err) {
-      const articleID = util.getValue(res, 'articleID', 'new');
-      history.push(`${GBX_URL}/${articleID}?admin`);
-    }
+    if (this.props.createCallback) this.props.createCallback(res, err);
   }
 
   selectKindOptions() {
@@ -140,10 +138,12 @@ class DefaultArticleCard extends React.Component {
                       onChange={(name, value) => {
                         this.setState({ createKind: value, dropdownOpen: false }, () => {
                           console.log('create fundraiser -> ', this.state.createKind);
+                          this.props.createCallback();
                         });
                       }}
                       options={this.selectKindOptions()}
                       hideIcons={true}
+                      hideButton={true}
                     >
                       <div className='cardButton'>
                         Create a Fundraiser

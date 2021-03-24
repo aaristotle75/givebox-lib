@@ -54,7 +54,6 @@ class Dropdown extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log('execute -> ', prevProps.open, this.props.open);
     if (prevProps.open !== this.props.open) {
       if (this.props.open) {
         this.openMenu();
@@ -244,6 +243,7 @@ class Dropdown extends Component {
       iconOpened,
       iconClosed,
       hideIcons,
+      hideButton,
       overlay,
       overlayDuration,
       fixedLabel,
@@ -293,7 +293,11 @@ class Dropdown extends Component {
         </Fade>
         <div className={`dropdown ${this.props.color ? 'customColor' : ''} ${floatingLabel && 'floating-label'} ${status} ${fixedLabel ? 'fixed' : ''}`} style={dropdownStyle}>
           {label && !floatingLabel && <label><GBLink onClick={open || readOnly ? this.closeMenu : this.openMenu}>{label}</GBLink></label>}
-          <button ref={this.buttonRef} style={buttonStyle} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} type='button' onClick={open || readOnly ? this.closeMenu : this.openMenu}><span ref={this.selectedRef} className={`label ${selected ? 'selected' : ''} ${idleLabel && 'idle'}`}>{selectedValue}</span>{!hideIcons ? <span ref={this.iconRef} className={`icon icon-${open ? multi ? iconMultiClose : iconOpened : iconClosed}`}></span> : null }</button>
+          {!hideButton ?
+            <button ref={this.buttonRef} style={buttonStyle} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} type='button' onClick={open || readOnly ? this.closeMenu : this.openMenu}><span ref={this.selectedRef} className={`label ${selected ? 'selected' : ''} ${idleLabel && 'idle'}`}>{selectedValue}</span>{!hideIcons ? <span ref={this.iconRef} className={`icon icon-${open ? multi ? iconMultiClose : iconOpened : iconClosed}`}></span> : null }</button>
+          :
+            <button ref={this.buttonRef} style={{ visibility: 'hidden' }}></button>
+          }
           {portalID ? dropdownPortal : dropdownContent}
           {label && floatingLabel && <label><GBLink className='link label' onClick={open || readOnly ? this.closeMenu : this.openMenu}><span ref={this.labelRef}>{label}</span></GBLink></label>}
           {this.props.children}
@@ -325,6 +329,7 @@ Dropdown.defaultProps = {
   iconClosed: 'chevron-right',
   iconOpened: 'chevron-down',
   hideIcons: false,
+  hideButton: false,
   overlayDuration: 200,
   overlay: true,
   direction: '',
