@@ -30,8 +30,9 @@ class Footer extends React.Component {
     } = this.props;
 
     const publicOnly = stage === 'public' ? true : false;
-    const allowSharing = util.getValue(form, 'allowSharing', true);
-    const showP2P = this.props.showP2P || util.getValue(form, 'showP2P', true);
+    const allowSharing = util.getValue(form, 'allowSharing', this.props.allowSharing);
+
+    let showP2P = util.getValue(form, 'showP2P', this.props.showP2P);
 
     return (
       <div className='gbx3Footer'>
@@ -58,7 +59,6 @@ class Footer extends React.Component {
       </div>
     )
   }
-
 }
 
 function mapStateToProps(state, props) {

@@ -459,7 +459,10 @@ class Org extends React.Component {
           </main>
           <div className='gbx3OrgFooter gbx3OrgContentOuterContainer'>
             <div className='gbx3OrgContentInnerContainer'>
-              <Footer />
+              <Footer
+                showP2P={true}
+                onClickVolunteerFundraiser={this.props.onClickVolunteerFundraiser}
+              />
             </div>
           </div>
         </div>
