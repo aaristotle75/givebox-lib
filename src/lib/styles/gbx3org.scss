@@ -558,7 +558,8 @@ $contentHeaderPadding: 35%;
 
   .cardButton {
     display: block;
-    padding: 10px 20px;
+    font-size: 15px;
+    padding: 8px 18px;
     text-align: center;
     border-radius: 10px;
     opacity: .8;
@@ -788,6 +789,49 @@ $contentHeaderPadding: 35%;
   }
 }
 
+.defaultArticleCard.dropdown .dropdown-content {
+  width: 300px;
+  z-index: 9999999;
+}
+
+.defaultArticleCard.dropdown .dropdown-content.top {
+  bottom: 40px;
+}
+
+.defaultArticleCard.dropdown .dropdown-content.opened {
+  border: 1px solid $light-gray;
+  @include box-shadow(0px 3px 6px 0px $light-gray);
+}
+
+.defaultArticleCard.dropdown .dropdown-item {
+  font-size: 14px;
+  color: $med-gray;
+  .icon {
+    color: $med-gray;
+    margin-right: 10px;
+  }
+}
+
+.defaultArticleCard.dropdown .dropdown-item:hover {
+  background: $light-gray;
+  color: $med-gray;
+  .icon {
+    color: $med-gray;
+  }
+}
+
+.defaultArticleCard.dropdown button {
+  display: none;
+}
+
+.defaultArticleCard.dropdown button:hover:not(.label) {
+  background: $light-gray;
+  border-bottom: 1px solid transparent;
+  .icon {
+    color: $med-gray !important;
+  }
+}
+
 .gbx3 .gbx3Layout {
   .navigationDropdown {
     .dropdown button {
@@ -898,6 +942,24 @@ $contentHeaderPadding: 35%;
 
   .gbx3OrgPages .articleCardContainer {
     height: 420px;
+  }
+
+  .gbx3OrgPages {
+    .cardButton {
+      opacity: .8;
+      color: $white;
+      border: 1px solid $green;
+      //background: linear-gradient(to right, $green 0%, $green 100%);
+      background: $green;
+      white-space: nowrap;
+    }
+
+    .cardButton:hover {
+      color: $white;
+      border: 1px solid $green;
+      opacity: .6;
+      @include default-transition(.25s);
+    }
   }
 
   .mediaWrapper {

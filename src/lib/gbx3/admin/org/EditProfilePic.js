@@ -31,7 +31,7 @@ class EditProfilePic extends React.Component {
       borderRadius: 0
     };
 
-    const imageURL = util.getValue(profilePicture, 'url');
+    const imageURL = util.checkImage(util.getValue(profilePicture, 'url'));
 
     return (
       <div className='modalWrapper'>

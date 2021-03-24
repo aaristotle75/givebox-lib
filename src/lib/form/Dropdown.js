@@ -54,7 +54,7 @@ class Dropdown extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-
+    console.log('execute -> ', prevProps.open, this.props.open);
     if (prevProps.open !== this.props.open) {
       if (this.props.open) {
         this.openMenu();
@@ -141,6 +141,7 @@ class Dropdown extends Component {
 
   closeMenu() {
     if (this.props.multiCloseCallback) this.props.multiCloseCallback();
+    if (this.props.closeCallback) this.props.closeCallback();
     this.setState({open: false });
     document.removeEventListener('click', this.closeMenu);
     this.timeout = setTimeout(() => {
@@ -242,6 +243,7 @@ class Dropdown extends Component {
       iconMultiClose,
       iconOpened,
       iconClosed,
+      hideIcons,
       overlay,
       overlayDuration,
       fixedLabel,
@@ -291,9 +293,10 @@ class Dropdown extends Component {
         </Fade>
         <div className={`dropdown ${this.props.color ? 'customColor' : ''} ${floatingLabel && 'floating-label'} ${status} ${fixedLabel ? 'fixed' : ''}`} style={dropdownStyle}>
           {label && !floatingLabel && <label><GBLink onClick={open || readOnly ? this.closeMenu : this.openMenu}>{label}</GBLink></label>}
-          <button ref={this.buttonRef} style={buttonStyle} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} type='button' onClick={open || readOnly ? this.closeMenu : this.openMenu}><span ref={this.selectedRef} className={`label ${selected ? 'selected' : ''} ${idleLabel && 'idle'}`}>{selectedValue}</span><span ref={this.iconRef} className={`icon icon-${open ? multi ? iconMultiClose : iconOpened : iconClosed}`}></span></button>
+          <button ref={this.buttonRef} style={buttonStyle} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} type='button' onClick={open || readOnly ? this.closeMenu : this.openMenu}><span ref={this.selectedRef} className={`label ${selected ? 'selected' : ''} ${idleLabel && 'idle'}`}>{selectedValue}</span>{!hideIcons ? <span ref={this.iconRef} className={`icon icon-${open ? multi ? iconMultiClose : iconOpened : iconClosed}`}></span> : null }</button>
           {portalID ? dropdownPortal : dropdownContent}
           {label && floatingLabel && <label><GBLink className='link label' onClick={open || readOnly ? this.closeMenu : this.openMenu}><span ref={this.labelRef}>{label}</span></GBLink></label>}
+          {this.props.children}
         </div>
         <div className={`tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`}>
           {this.props.error}{readOnly ? readOnlyText : ''}
@@ -321,6 +324,7 @@ Dropdown.defaultProps = {
   iconMultiClose: 'chevron-down',
   iconClosed: 'chevron-right',
   iconOpened: 'chevron-down',
+  hideIcons: false,
   overlayDuration: 200,
   overlay: true,
   direction: '',

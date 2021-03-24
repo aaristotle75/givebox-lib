@@ -6,6 +6,7 @@ import Image from '../../common/Image';
 import GBLink from '../../common/GBLink';
 import Dropdown from '../../form/Dropdown';
 import ModalLink from '../../modal/ModalLink';
+import DefaultArticleCard from '../pages/DefaultArticleCard';
 import {
   setOrgStyle,
   updateSignup
@@ -109,37 +110,12 @@ class Signup extends React.Component {
                     */}
                   </div>
                   <div className='pageListWrapper'>
-                    <div className='listContainer'>
-                      <div className='articleCard'>
-                        <div className='articleCardContainer'>
-                          <div className='cardPhotoContainer'>
-                            <div className='cardPhotoImage'>
-                              <Image imgID='cardPhoto' url={'https://cdn.givebox.com/givebox/public/images/backgrounds/raise-fundraiser-lg.png'} maxWidth='325px' size='medium' alt='Card Photo' />
-                            </div>
-                          </div>
-                          <div className='cardInfoContainer'>
-                            <div className='cardArticleTag'>
-                              How do I raise money?
-                            </div>
-                            <div className='cardInfo'>
-                            </div>
-                          </div>
-                          <div className='cardTitleContainer'>
-                            <h2>Create Your First Fundraiser <span className='icon icon-chevron-right'></span></h2>
-                          </div>
-                          <div className='cardKindSpecificContainer'>
-                            <div className={`cardKindSpecific cardKindEventWhere`}>
-                              Get your first donation today!
-                            </div>
-                          </div>
-                          <div className='cardButtonContainer'>
-                            <div className='cardButton'>
-                              Click Here to Create Fundraiser
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    <DefaultArticleCard
+                      signup={true}
+                      noOrgIDCallback={() => {
+                        console.log('execute -> no org id callback');
+                      }}
+                    />
                   </div>
                 </div>
               </div>

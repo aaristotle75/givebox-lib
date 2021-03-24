@@ -62,7 +62,7 @@ class Header extends React.Component {
 
     const isPublic = stage === 'public' ? true : false;
     const coverPhotoUrl = util.getValue(coverPhoto, 'url');
-    const profilePictureUrl = util.getValue(profilePicture, 'url');
+    const profilePictureUrl = util.checkImage(util.getValue(profilePicture, 'url'));
 
     return (
       <div className='gbx3OrgContentHeader gbx3OrgContentOuterContainer'>

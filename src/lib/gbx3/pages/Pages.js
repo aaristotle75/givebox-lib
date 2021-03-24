@@ -6,6 +6,7 @@ import GBLink from '../../common/GBLink';
 import Loader from '../../common/Loader';
 import ModalLink from '../../modal/ModalLink';
 import ArticleCard from './ArticleCard';
+import DefaultArticleCard from './DefaultArticleCard';
 import Search from '../../table/Search';
 import Dropdown from '../../form/Dropdown';
 import CalendarField from '../../form/CalendarField';
@@ -85,6 +86,7 @@ class Pages extends Component {
 
   renderList() {
     const {
+      stage,
       pages,
       pageSlug,
       activePage,
@@ -140,7 +142,7 @@ class Pages extends Component {
           </InfiniteScroll>
         </div>
       :
-        <span className='noRecords'>No Search Results</span>
+        <DefaultArticleCard hideCard={true} kind={this.props.kind} />
     )
   }
 
