@@ -125,7 +125,7 @@ class CreateArticleCard extends React.Component {
                     name='createKind'
                     portalID={`createKind-dropdown-portal-${kind}`}
                     portal={true}
-                    portalClass={'gbx3 dropdown-portal createArticleCard'}
+                    portalClass={'gbx3 dropdown-portal articleCard'}
                     className='createArticleCard'
                     contentWidth={300}
                     label={''}
