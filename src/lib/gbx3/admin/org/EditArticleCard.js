@@ -206,7 +206,6 @@ class EditArticleCardForm extends React.Component {
   render() {
 
     const {
-      articleID,
       page,
       tabToDisplay,
       orgID,

@@ -103,7 +103,6 @@ class Pages extends Component {
         }
       }
     }
-    console.log('execute createCallback -> ', orgID, customList);
   }
 
   onMouseOverArticle(ID) {

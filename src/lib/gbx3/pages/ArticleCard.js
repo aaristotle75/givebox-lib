@@ -134,6 +134,7 @@ class ArticleCard extends Component {
             pageSlug,
             page: activePage,
             resourcesToLoad,
+            onClickArticle: this.props.onClickArticle,
             reloadGetArticles: this.props.reloadGetArticles,
             closeCallback: () => console.log('execute closeCallback -> articleCard')
           }}

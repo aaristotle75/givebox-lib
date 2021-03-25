@@ -124,6 +124,7 @@ class Admin extends React.Component {
           <OrgAdmin
             step={step}
             exitAdmin={this.props.exitAdmin}
+            reloadGBX3={this.props.reloadGBX3}
           />
         :
           <div className='articleDisplayContainer'>

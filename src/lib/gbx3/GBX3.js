@@ -178,21 +178,28 @@ class GBX3 extends React.Component {
     this.props.updateInfo({ display: 'org', originTemplate: 'browse' });
   }
 
-  async exitAdmin() {
+  async exitAdmin(backToAdmin = false) {
     const {
       project,
       articleID,
       orgID,
       orgSlug,
       originTemplate,
-      isVolunteer
+      isVolunteer,
+      stage
     } = this.props;
 
     const display = !articleID || originTemplate === 'org' ? 'org' : this.props.display;
+    let backToOrgAdmin = false;
+    if (originTemplate === 'org' && stage === 'admin') {
+      backToOrgAdmin = true;
+    }
 
-    if (project === 'share' || isVolunteer) {
+    if ((project === 'share' || isVolunteer) && !backToOrgAdmin) {
       const infoUpdated = await this.props.updateInfo({ display, stage: 'public' });
       if (infoUpdated) this.props.updateAdmin({ project: 'share', publicView: true });
+    } else {
+      const infoUpdated = await this.props.updateInfo({ display });
     }
 
     if (originTemplate === 'browse') {
@@ -389,7 +396,8 @@ class GBX3 extends React.Component {
 
   async loadOrg(orgID, page) {
     const {
-      queryParams
+      queryParams,
+      stage
     } = this.props;
 
     const share = has(queryParams, 'share') ? true : false;
@@ -400,6 +408,7 @@ class GBX3 extends React.Component {
       this.props.loadOrg(orgID, (res, err) => {
         if (!err && !util.isEmpty(res)) {
           this.props.setOrgStyle();
+          if (stage === 'admin') this.props.updateInfo({ stage });
           if (share) this.props.toggleModal('share', true);
           if (previewMode) this.props.updateAdmin({ previewDevice: 'desktop', previewMode: true });
         }
@@ -534,6 +543,7 @@ function mapStateToProps(state, props) {
   const loading = util.getValue(gbx3, 'loading');
   const globals = util.getValue(gbx3, 'globals', {});
   const info = util.getValue(gbx3, 'info', {});
+  const stage = util.getValue(info, 'stage');
   const originTemplate = util.getValue(info, 'originTemplate');
   const display = util.getValue(info, 'display');
   const sourceLocation = util.getValue(info, 'sourceLocation');
@@ -554,6 +564,7 @@ function mapStateToProps(state, props) {
     globals,
     loading,
     info,
+    stage,
     originTemplate,
     display,
     primaryColor,
