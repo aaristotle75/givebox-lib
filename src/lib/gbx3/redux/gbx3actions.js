@@ -1028,7 +1028,12 @@ export function cloneFundraiser(kind, kindID, callback) {
   }
 }
 
-export function createFundraiser(createKind, callback, cloneData) {
+export function createFundraiser(createKind, callback, cloneData, options = {}) {
+
+  const opts = {
+    showNewArticle: true,
+    ...options
+  };
 
   return (dispatch, getState) => {
     dispatch(setLoading(true));
@@ -1047,15 +1052,19 @@ export function createFundraiser(createKind, callback, cloneData) {
       data,
       callback: (res, err) => {
         if (!err && !util.isEmpty(res)) {
-          dispatch(loadGBX3(res.articleID, async () => {
-            dispatch(updateInfo({ display: 'article', kind }));
-            dispatch(updateAdmin({ step: 'design', editable: true }));
-            if (!cloneData) {
-              const styleReset = await dispatch(resetStyle('gbxStyle'));
-              if (styleReset) dispatch(setStyle());
-            }
+          if (opts.showNewArticle) {
+            dispatch(loadGBX3(res.articleID, async () => {
+              dispatch(updateInfo({ display: 'article', kind }));
+              dispatch(updateAdmin({ step: 'design', editable: true }));
+              if (!cloneData) {
+                const styleReset = await dispatch(resetStyle('gbxStyle'));
+                if (styleReset) dispatch(setStyle());
+              }
+              if (callback) callback(res, err);
+            }));
+          } else {
             if (callback) callback(res, err);
-          }));
+          }
         } else {
           if (callback) callback(res, err);
         }

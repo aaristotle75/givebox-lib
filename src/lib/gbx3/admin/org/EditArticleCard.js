@@ -206,6 +206,7 @@ class EditArticleCardForm extends React.Component {
   render() {
 
     const {
+      articleID,
       page,
       tabToDisplay,
       orgID,
@@ -242,7 +243,12 @@ class EditArticleCardForm extends React.Component {
 
     return (
       <div className='editPageWrapper'>
-        <h2 className='flexCenter'>Edit {title}</h2>
+        <h2 className='flexCenter'>
+          {title}
+        </h2>
+        <div className='flexCenter'>
+          <GBLink style={{ marginTop: 10, fontSize: 16 }} className='link' onClick={() => this.props.onClickArticle(articleID, true)}>Click Here to Edit Full Payment Form <span className='icon icon-chevron-right'></span></GBLink>
+        </div>
         {buttonGroup}
         <Collapse
           iconPrimary={'edit'}
@@ -396,10 +402,13 @@ function mapStateToProps(state, props) {
   } = props;
 
   const kind = util.getValue(item, 'kind');
+  const articleID = util.getValue(item, 'articleID');
   const resourceName = `org${types.kind(kind).api.item}`;
   const article = util.getValue(state, `resource.${resourceName}`, {});
 
   return {
+    articleID,
+    kind,
     page,
     resourceName,
     article,

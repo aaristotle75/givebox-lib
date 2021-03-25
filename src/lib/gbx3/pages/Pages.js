@@ -19,8 +19,9 @@ import {
   toggleModal
 } from '../../api/actions';
 import {
-  sendResource
-} from '../../api/helpers';
+  updateOrgPage,
+  saveOrg
+} from '../redux/gbx3actions';
 
 class Pages extends Component {
 
@@ -65,18 +66,41 @@ class Pages extends Component {
     }
   }
 
-  createCallback(res, err) {
+  async createCallback(res, err) {
     const {
+      pageSlug,
       activePage,
       orgID
     } = this.props;
 
     const customList = [ ...util.getValue(activePage, 'customList', []) ];
+    const useCustomList = util.getValue(activePage, 'useCustomList', false);
 
     if (!util.isEmpty(res) && !err) {
       const articleID = util.getValue(res, 'articleID');
       if (articleID) {
-        customList.unshift(articleID);
+        if (useCustomList) {
+          if (!customList.includes(articleID)) {
+            customList.unshift(articleID);
+            const data = {
+              customList
+            };
+            const pageUpdated = await this.props.updateOrgPage(pageSlug, data);
+            if (pageUpdated) {
+              this.props.saveOrg({
+                orgID,
+                isSending: false,
+                orgUpdated: true,
+                showSaving: false,
+                callback: (res, err) => {
+                  this.props.reloadGetArticles();
+                }
+              });
+            }
+          }
+        } else {
+          this.props.reloadGetArticles();
+        }
       }
     }
     console.log('execute createCallback -> ', orgID, customList);
@@ -143,6 +167,7 @@ class Pages extends Component {
               activePage={activePage}
               pageSlug={pageSlug}
               resourcesToLoad={[resourceName]}
+              onClickArticle={this.props.onClickArticle}
               reloadGetArticles={this.props.reloadGetArticles}
               playPreview={this.state.playPreview === ID ? true : false}
             />
@@ -175,7 +200,6 @@ class Pages extends Component {
       :
         <CreateArticleCard
           hideCard={false}
-          hideNoResults={true}
           kind={this.props.kind}
           createCallback={this.createCallback}
         />
@@ -341,6 +365,7 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
-  sendResource,
+  updateOrgPage,
+  saveOrg,
   toggleModal
 })(Pages);

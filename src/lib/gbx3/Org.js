@@ -85,14 +85,14 @@ class Org extends React.Component {
     }
   }
 
-  async onClickArticle(ID, pageSlug) {
+  async onClickArticle(ID, adminLink = false) {
     const {
       stage,
       preview
     } = this.props;
     const infoUpdated = await this.props.updateInfo({ originTemplate: 'org' });
     if (infoUpdated) {
-      if (stage === 'admin' && !preview) {
+      if (stage === 'admin' && !preview && !adminLink) {
         console.log('execute onClickArticle do admin stuff -> ', ID);
       } else {
         history.push(`${GBX_URL}/${ID}`);
@@ -283,8 +283,8 @@ class Org extends React.Component {
         query: opts.query,
         max: opts.max,
         page: pageNumber,
-        sort: 'orderBy',
-        order: 'asc'
+        sort: useCustomList ? 'orderBy,createdAt' : 'createdAt,orderBy',
+        order: useCustomList ? 'asc' : 'desc'
       },
       callback: (res, err) => {
         if (opts.search) {

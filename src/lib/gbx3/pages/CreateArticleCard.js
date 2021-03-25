@@ -5,6 +5,7 @@ import GBLink from '../../common/GBLink';
 import * as util from '../../common/utility';
 import * as types from '../../common/types';
 import {
+  clearGBX3,
   createFundraiser
 } from '../redux/gbx3actions';
 import history from '../../common/history';
@@ -43,22 +44,18 @@ class CreateArticleCard extends React.Component {
       if (this.props.noOrgIDCallback) this.props.noOrgIDCallback();
     } else {
       if (kind !== 'all') {
-        console.log('execute orgID -> ', orgID, createKind);
+        this.createFundraiser(createKind);
       }
     }
     if (!this.state.dropdownOpen) this.setState({ dropdownOpen: true });
   }
 
   async createFundraiser(kind) {
-    const cleared = await this.props.clearGBX3(true);
-    if (cleared) {
-      this.props.createFundraiser(kind, this.createFundraiserCallback);
-    }
-    window.parent.postMessage('gbx3Created', '*');
+    this.props.createFundraiser(kind, this.createFundraiserCallback, null, { showNewArticle: false });
+    //window.parent.postMessage('gbx3Created', '*');
   }
 
   createFundraiserCallback(res, err) {
-    this.setState({ loading: false });
     if (this.props.createCallback) this.props.createCallback(res, err);
   }
 
@@ -129,14 +126,14 @@ class CreateArticleCard extends React.Component {
                     portalID={`createKind-dropdown-portal-${kind}`}
                     portal={true}
                     portalClass={'gbx3 dropdown-portal createArticleCard'}
+                    className='createArticleCard'
                     contentWidth={300}
                     label={''}
                     selectLabel={''}
                     fixedLabel={false}
                     onChange={(name, value) => {
                       this.setState({ createKind: value, dropdownOpen: false }, () => {
-                        console.log('create fundraiser -> ', this.state.createKind);
-                        this.props.createCallback();
+                        this.createFundraiser(value);
                       });
                     }}
                     options={this.selectKindOptions()}
@@ -190,5 +187,6 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
+  clearGBX3,
   createFundraiser
 })(CreateArticleCard);
