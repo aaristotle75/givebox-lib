@@ -6,7 +6,7 @@ import GBLink from '../../common/GBLink';
 import Loader from '../../common/Loader';
 import ModalLink from '../../modal/ModalLink';
 import ArticleCard from './ArticleCard';
-import DefaultArticleCard from './DefaultArticleCard';
+import CreateArticleCard from './CreateArticleCard';
 import Search from '../../table/Search';
 import Dropdown from '../../form/Dropdown';
 import CalendarField from '../../form/CalendarField';
@@ -26,6 +26,7 @@ class Pages extends Component {
 
   constructor(props) {
     super(props);
+    this.createCallback = this.createCallback.bind(this);
     this.pageOptions = this.pageOptions.bind(this);
     this.renderList = this.renderList.bind(this);
     this.onMouseOverArticle = this.onMouseOverArticle.bind(this);
@@ -64,6 +65,23 @@ class Pages extends Component {
     }
   }
 
+  createCallback(res, err) {
+    const {
+      activePage,
+      orgID
+    } = this.props;
+
+    const customList = [ ...util.getValue(activePage, 'customList', []) ];
+
+    if (!util.isEmpty(res) && !err) {
+      const articleID = util.getValue(res, 'articleID');
+      if (articleID) {
+        customList.unshift(articleID);
+      }
+    }
+    console.log('execute createCallback -> ', orgID, customList);
+  }
+
   onMouseOverArticle(ID) {
     const {
       stage,
@@ -71,7 +89,7 @@ class Pages extends Component {
     } = this.props;
 
     if (stage === 'admin' && !preview) {
-      console.log('execute onClickArticle do admin stuff -> ', ID);
+      //console.log('execute onClickArticle do admin stuff -> ', ID);
     } else {
       this.setState({ playPreview: ID });
     }
@@ -84,7 +102,7 @@ class Pages extends Component {
     } = this.props;
 
     if (stage === 'admin' && !preview) {
-      console.log('execute onClickArticle do admin stuff -> ', ID);
+      //console.log('execute onClickArticle do admin stuff -> ', ID);
     } else {
       this.setState({ playPreview: null });
     }
@@ -145,23 +163,21 @@ class Pages extends Component {
             loader={''}
             endMessage={<div className='endMessage'>Showing All {total} Result{total > 1 ? 's' : ''}</div>}
           >
+            <CreateArticleCard
+              hideCard={false}
+              hideNoResults={true}
+              kind={this.props.kind}
+              createCallback={this.createCallback}
+            />
             {items}
           </InfiniteScroll>
         </div>
       :
-        <DefaultArticleCard
-          hideCard={true}
+        <CreateArticleCard
+          hideCard={false}
+          hideNoResults={true}
           kind={this.props.kind}
-          createCallback={(res, err) => {
-            const customList = [ ...util.getValue(activePage, 'customList', []) ];
-            if (!util.isEmpty(res) && !err) {
-              const articleID = util.getValue(res, 'articleID');
-              if (articleID) {
-                customList.unshift(articleID);
-              }
-            }
-            console.log('execute createCallback -> ', orgID, customList);
-          }}
+          createCallback={this.createCallback}
         />
     )
   }

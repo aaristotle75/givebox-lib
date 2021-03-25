@@ -6,7 +6,7 @@ import Image from '../../common/Image';
 import GBLink from '../../common/GBLink';
 import Dropdown from '../../form/Dropdown';
 import ModalLink from '../../modal/ModalLink';
-import DefaultArticleCard from '../pages/DefaultArticleCard';
+import CreateArticleCard from '../pages/CreateArticleCard';
 import {
   setOrgStyle,
   updateSignup
@@ -110,7 +110,7 @@ class Signup extends React.Component {
                     */}
                   </div>
                   <div className='pageListWrapper'>
-                    <DefaultArticleCard
+                    <CreateArticleCard
                       signup={true}
                       noOrgIDCallback={() => {
                         console.log('execute -> no org id callback');
