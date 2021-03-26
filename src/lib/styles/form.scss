@@ -436,6 +436,16 @@ label.active {
   width: 100%;
   clear: both;
 
+  .dropdownCloseBtn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    .icon {
+      color: $med-blue-gray;
+    }
+  }
+
   .icon {
     position: absolute;
     top: 8px;
@@ -479,8 +489,12 @@ label.active {
     font-size: $normal-text-size;
   }
 
-  .dropdown-content {
+  .dropdown-content.opened {
     display: block;
+  }
+
+  .dropdown-content {
+    display: none;
     position: absolute;
     background-color: $off-white;
     min-width: 200px;

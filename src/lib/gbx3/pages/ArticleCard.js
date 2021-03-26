@@ -5,6 +5,7 @@ import Image from '../../common/Image';
 import * as types from '../../common/types';
 import ModalLink from '../../modal/ModalLink';
 import Video from '../../common/Video';
+import Dropdown from '../../form/Dropdown';
 
 class ArticleCard extends Component {
   constructor(props) {

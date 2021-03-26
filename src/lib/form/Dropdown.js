@@ -55,9 +55,9 @@ class Dropdown extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.open !== this.props.open) {
-      if (this.props.open) {
+      if (this.props.open && !this.state.open && !this.state.display) {
         this.openMenu();
-      } else {
+      } else if (this.state.open && this.state.display) {
         this.closeMenu();
       }
     }
@@ -250,7 +250,8 @@ class Dropdown extends Component {
       readOnly,
       portalID,
       portalRootEl,
-      portalClass
+      portalClass,
+      showCloseBtn
     } = this.props;
 
     const {
@@ -269,6 +270,9 @@ class Dropdown extends Component {
 
     const dropdownContent =
       <div ref={this.dropdownRef} style={{ ...contentStyle, boxShadow: this.props.color ? `none`: '', border: this.props.color && open ? `1px solid ${this.props.color}` : ''}} className={`${open ? 'opened' : ''} dropdown-content ${this.props.direction || direction} ${this.props.color ? 'customColor' : ''}`}>
+        {showCloseBtn ?
+          <div className='dropdownCloseBtn'><span className='icon icon-x'></span></div>
+        : null}
         <AnimateHeight
           duration={200}
           height={open ? 'auto' : 0}
@@ -313,6 +317,7 @@ class Dropdown extends Component {
 }
 
 Dropdown.defaultProps = {
+  showCloseBtn: false,
   rectXY: true,
   portalLeftOffset: 1.75,
   portalClass: 'dropdown-portal',

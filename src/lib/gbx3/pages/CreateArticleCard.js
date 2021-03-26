@@ -124,9 +124,10 @@ class CreateArticleCard extends React.Component {
                     }}
                     name='createKind'
                     portalID={`createKind-dropdown-portal-${kind}`}
-                    portal={true}
-                    portalClass={'gbx3 dropdown-portal articleCard'}
-                    className='createArticleCard'
+                    portal={false}
+                    portalClass={'gbx3 articleCardDropdown'}
+                    portalLeftOffset={5}
+                    className='articleCard'
                     contentWidth={300}
                     label={''}
                     selectLabel={''}
@@ -139,6 +140,7 @@ class CreateArticleCard extends React.Component {
                     options={this.selectKindOptions()}
                     hideIcons={true}
                     hideButton={true}
+                    showCloseBtn={true}
                   >
                     <div className='cardButton'>
                       Create a Fundraiser
