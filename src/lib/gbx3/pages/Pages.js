@@ -16,6 +16,9 @@ import Moment from 'moment';
 import Scroll from 'react-scroll';
 import has from 'has';
 import {
+  sendResource
+} from '../../api/helpers';
+import {
   toggleModal
 } from '../../api/actions';
 import {
@@ -28,6 +31,7 @@ class Pages extends Component {
   constructor(props) {
     super(props);
     this.createCallback = this.createCallback.bind(this);
+    this.removeCard = this.removeCard.bind(this);
     this.pageOptions = this.pageOptions.bind(this);
     this.renderList = this.renderList.bind(this);
     this.onMouseOverArticle = this.onMouseOverArticle.bind(this);
@@ -105,6 +109,52 @@ class Pages extends Component {
     }
   }
 
+  async removeCard(articleID, kind, kindID) {
+    const {
+      pageSlug,
+      activePage,
+      orgID
+    } = this.props;
+
+    const customList = [ ...util.getValue(activePage, 'customList', []) ];
+    const useCustomList = util.getValue(activePage, 'useCustomList', false);
+
+    if (articleID) {
+      if (useCustomList) {
+        if (customList.includes(articleID)) {
+          customList.splice(customList.findIndex(l => l === articleID), 1);
+          const data = {
+            customList
+          };
+          const pageUpdated = await this.props.updateOrgPage(pageSlug, data);
+          if (pageUpdated) {
+            this.props.saveOrg({
+              orgID,
+              isSending: true,
+              orgUpdated: true,
+              callback: (res, err) => {
+                this.props.reloadGetArticles();
+              }
+            });
+          }
+        }
+      } else {
+        this.props.sendResource(types.kind(kind).api.publish, {
+          orgID,
+          id: [kindID],
+          method: 'patch',
+          isSending: true,
+          data: {
+            landing: false
+          },
+          callback: (res, err) => {
+            this.props.reloadGetArticles();
+          }
+        });
+      }
+    }
+  }
+
   onMouseOverArticle(ID) {
     const {
       stage,
@@ -166,9 +216,11 @@ class Pages extends Component {
               activePage={activePage}
               pageSlug={pageSlug}
               resourcesToLoad={[resourceName]}
+              removeCard={this.removeCard}
               onClickArticle={this.props.onClickArticle}
               reloadGetArticles={this.props.reloadGetArticles}
               playPreview={this.state.playPreview === ID ? true : false}
+              toggleModal={this.props.toggleModal}
             />
           </div>
         );
@@ -366,5 +418,6 @@ function mapStateToProps(state, props) {
 export default connect(mapStateToProps, {
   updateOrgPage,
   saveOrg,
-  toggleModal
+  toggleModal,
+  sendResource
 })(Pages);

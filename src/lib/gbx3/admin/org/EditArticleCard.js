@@ -253,9 +253,6 @@ class EditArticleCardForm extends React.Component {
         >
           <div className='formSectionContainer'>
             <div className='formSection'>
-              <div className='flexCenter'>
-                <GBLink style={{ marginBottom: 10, fontSize: 16 }} className='link' onClick={() => this.props.onClickArticle(articleID, true)}>Click Here to Edit Full Payment Form <span className='icon icon-chevron-right'></span></GBLink>
-              </div>
               {this.props.textField('title', { fixedLabel: true, label: 'Card Title', placeholder: 'Enter Card Title', value: title })}
               <Choice
                 type='checkbox'

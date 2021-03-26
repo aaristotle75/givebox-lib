@@ -11,11 +11,55 @@ class ArticleCard extends Component {
   constructor(props) {
     super(props);
     this.renderKindSpecific = this.renderKindSpecific.bind(this);
+    this.onClickAdmin = this.onClickAdmin.bind(this);
+    this.onClickDropdownItem = this.onClickDropdownItem.bind(this);
     this.state = {
+      dropdownOpen: false
     };
   }
 
   componentDidMount() {
+  }
+
+  onClickAdmin() {
+    if (!this.state.dropdownOpen) this.setState({ dropdownOpen: true });
+  }
+
+  onClickDropdownItem(value) {
+    const {
+      item,
+      activePage,
+      pageSlug,
+      resourcesToLoad
+    } = this.props;
+
+    const articleID = util.getValue(item, 'ID');
+    const kindID = util.getValue(item, 'kindID');
+    const kind = util.getValue(item, 'kind');
+
+    switch (value) {
+      case 'editCard': {
+        return this.props.toggleModal('orgEditCard', true, {
+          item,
+          pageSlug,
+          page: activePage,
+          resourcesToLoad,
+          onClickArticle: this.props.onClickArticle,
+          reloadGetArticles: this.props.reloadGetArticles,
+          closeCallback: () => console.log('execute closeCallback -> articleCard')
+        });
+      }
+
+      case 'editForm': {
+        return this.props.onClickArticle(articleID, true);
+      }
+
+      case 'removeCard': {
+        return this.props.removeCard(articleID, kind, kindID);
+      }
+
+      // no default
+    };
   }
 
   renderKindSpecific() {
@@ -126,27 +170,42 @@ class ArticleCard extends Component {
 
     return (
       <div className='articleCard'>
-        <ModalLink
-          id='orgEditCard'
-          type='div'
-          className='articleCardEdit orgAdminEdit'
-          opts={{
-            item,
-            pageSlug,
-            page: activePage,
-            resourcesToLoad,
-            onClickArticle: this.props.onClickArticle,
-            reloadGetArticles: this.props.reloadGetArticles,
-            closeCallback: () => console.log('execute closeCallback -> articleCard')
-          }}
-        >
-          <button
-            className='tooltip blockEditButton'
+        <div onClick={this.onClickAdmin} className='articleCardEdit orgAdminEdit'>
+          <Dropdown
+            open={this.state.dropdownOpen}
+            closeCallback={() => {
+              this.setState({ dropdownOpen: false });
+            }}
+            name='createKind'
+            portalID={`createKind-dropdown-portal-${kind}`}
+            portal={false}
+            portalClass={'gbx3 articleCardDropdown articleCardSelect'}
+            portalLeftOffset={5}
+            className='articleCard'
+            contentWidth={300}
+            label={''}
+            selectLabel={''}
+            fixedLabel={false}
+            onChange={(name, value) => {
+              this.setState({ dropdownOpen: false }, () => {
+                this.onClickDropdownItem(value);
+              });
+            }}
+            options={[
+              { primaryText: <span className='labelIcon'><span className={'icon icon-edit'}></span>Edit Card</span>, value: 'editCard' },
+              { primaryText: <span className='labelIcon'><span className={'icon icon-layout'}></span>Edit {kind === 'fundraiser' ? 'Donation' : types.kind(kind).name} Form</span>, value: 'editForm' },
+              { primaryText: <span className='labelIcon'><span className={'icon icon-x'}></span>Remove Card From List</span>, value: 'removeCard' }
+            ]}
+            hideIcons={true}
+            hideButton={true}
+            showCloseBtn={true}
           >
-            <span className='tooltipTop'><i />Click to EDIT Card</span>
-            <span className='icon icon-edit'></span>
-          </button>
-        </ModalLink>
+            <button className='tooltip blockEditButton'>
+              <span className='tooltipTop'><i />Click to EDIT Card</span>
+              <span className='icon icon-edit'></span>
+            </button>
+          </Dropdown>
+        </div>
         <div className='articleCardContainer'>
           <div className='cardPhotoContainer'>
             <div className='cardPhotoImage'>

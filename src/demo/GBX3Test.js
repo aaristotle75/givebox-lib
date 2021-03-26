@@ -42,25 +42,40 @@ class GBXTest extends Component {
     } = this.props;
 
     // 383102 // 1130 // 383064; // 13; // 739; // 4; //651; //735; //383071;
-    const articleID = +util.getValue(routeParams, 'articleID', null);
+    let articleID = +util.getValue(routeParams, 'articleID', null);
+    if (isNaN(articleID)) articleID = 4;
     const orgID = 185; //391217; //185;
+    const blockType = 'org';
+    const browse = true;
 
-    return (
-      <div>
-        <GBX3
-          browse={false}
-          blockType={'org'}
-          orgID={orgID}
-          articleID={articleID}
-          saveCallback={this.saveCallback}
-          queryParams={queryParams}
-          public={false}
-          project={'share'}
-          exitCallback={() => console.log('exit callback')}
-          isVolunteer={false}
-        />
-      </div>
-    )
+    console.log('execute blockType -> ', blockType);
+    console.log('execute orgID -> ', orgID);
+    console.log('execute articleID -> ', articleID, isNaN(articleID), !isNaN(articleID));
+    console.log('execute browse -> ', browse);
+
+    if ( (orgID && blockType === 'org' && !isNaN(articleID)) || (articleID && blockType === 'article' && !isNaN(articleID)) || (browse && !isNaN(articleID)) ) {
+      return (
+        <div>
+          <GBX3
+            browse={false}
+            blockType={'org'}
+            orgID={orgID}
+            articleID={articleID}
+            saveCallback={this.saveCallback}
+            queryParams={queryParams}
+            public={false}
+            project={'share'}
+            exitCallback={() => console.log('exit callback')}
+            isVolunteer={false}
+          />
+        </div>
+      )
+    } else {
+      return (
+        <div>Error loading...</div>
+      )
+    }
+
   }
 }
 

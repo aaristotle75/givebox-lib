@@ -76,7 +76,7 @@ class Admin extends React.Component {
 
     if (!util.isEmpty(access)) {
       header.push(
-        <GBLink key={'exit'} style={{ fontSize: '14px' }} className='link' onClick={() => this.props.exitAdmin()}><Icon><GoDashboard /></Icon>{ isMobile ? 'Dashboard' : `Back to Dashboard` }</GBLink>
+        <GBLink key={'exit'} style={{ fontSize: '14px' }} className='link' onClick={() => this.props.exitAdmin()}><Icon><GoDashboard /></Icon>{ isMobile ? 'Profile' : `Back to Profile` }</GBLink>
       )
     }
 
