@@ -4,6 +4,7 @@ import { sendResource } from '../api/helpers';
 import { removeResource, toggleModal } from '../api/actions';
 import { Alert } from './Alert';
 import GBLink from './GBLink';
+import Loader from './Loader';
 import * as util from './utility';
 import has from 'has';
 
@@ -86,6 +87,7 @@ class Delete extends Component {
 
     return (
       <div className='removeModalWrapper'>
+        { this.state.loading ? <Loader msg='Deleting...' /> : null }
         <Alert alert='success' display={this.state.success} msg={this.state.success} />
         <Alert alert='error' display={this.state.error} msg={this.state.error} />
         <h2>{desc}</h2>

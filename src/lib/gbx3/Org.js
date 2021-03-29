@@ -37,6 +37,7 @@ class Org extends React.Component {
     super(props);
     this.gridRef = React.createRef();
     this.resizer = this.resizer.bind(this);
+    this.getMessage = this.getMessage.bind(this);
     this.onBreakpointChange = this.onBreakpointChange.bind(this);
     this.pageLinks = this.pageLinks.bind(this);
     this.pageOptions = this.pageOptions.bind(this);
@@ -61,6 +62,13 @@ class Org extends React.Component {
   componentDidMount() {
     this.onBreakpointChange();
     window.addEventListener('resize', this.resizer);
+    window.addEventListener('message', this.getMessage, false);
+  }
+
+  getMessage(e) {
+    if (e.data === 'gbx3ExitCallback') {
+      this.reloadGetArticles('gbx3ExitCallback');
+    }
   }
 
   async saveGlobal(name, obj = {}, callback) {
@@ -193,13 +201,13 @@ class Org extends React.Component {
   *
   * Get Articles, reload Articles, search
   */
-  reloadGetArticles() {
+  async reloadGetArticles(debug = 'unknown') {
     this.setPageState({
       list: [],
       search: {},
       pageNumber: 1,
       total: 0
-    }, () => this.getArticles({ reload: true, pageNumber: 1 }))
+    }, () => this.getArticles({ reset: true, reload: true, pageNumber: 1 }))
   }
 
   resetPageSearch() {
@@ -245,6 +253,7 @@ class Org extends React.Component {
 
   getArticles(options = {}) {
     const opts = {
+      reset: false,
       max: 50,
       reload: false,
       filter: '',
@@ -265,9 +274,10 @@ class Org extends React.Component {
       orgID
     } = this.props;
 
-    const pageState = {
+    const pageState = opts.reset ? {} : {
       ...this.props.pageState[pageSlug]
     };
+
     const pageNumber = opts.pageNumber ? opts.pageNumber : opts.search ? util.getValue(pageState, 'search.pageNumber', 1) : util.getValue(pageState, 'pageNumber', 1);
     const kindFilter = kind === 'all' || !kind ? '' : `%3Bkind:"${kind}"`;
     const customFilter = !util.isEmpty(customList) ? util.customListFilter(customList) : null;
@@ -290,7 +300,7 @@ class Org extends React.Component {
         if (opts.search) {
           this.getArticleSearchCallback(res, err, opts.query);
         } else {
-          this.getArticlesCallback(res, err);
+          this.getArticlesCallback(res, err, opts.reset);
         }
       }
     });
@@ -322,12 +332,12 @@ class Org extends React.Component {
     }
   }
 
-  getArticlesCallback(res, err) {
+  getArticlesCallback(res, err, reset) {
     const {
       pageSlug
     } = this.props;
 
-    const pageState = {
+    const pageState = reset ? {} : {
       ...this.props.pageState[pageSlug]
     };
 

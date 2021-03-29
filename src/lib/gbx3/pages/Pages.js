@@ -49,6 +49,7 @@ class Pages extends Component {
 
     // Check for page switch and load articles - does not reload
     if (prevProps.pageSlug !== this.props.pageSlug) {
+      console.log('execute pageSlug', prevProps.pageSlug, this.props.pageSlug);
       this.props.getArticles();
     }
 
@@ -63,10 +64,10 @@ class Pages extends Component {
     */
 
     if (Object.keys(prevProps.pages).length !== Object.keys(this.props.pages).length) {
-      this.props.reloadGetArticles();
+      this.props.reloadGetArticles('Pages length', Object.keys(this.props.pages).length);
     }
     if (prevProps.display !== this.props.display) {
-      this.props.reloadGetArticles();
+      this.props.reloadGetArticles('Pages display', prevProps.display, this.props.display);
     }
   }
 
@@ -93,17 +94,14 @@ class Pages extends Component {
             if (pageUpdated) {
               this.props.saveOrg({
                 orgID,
-                isSending: false,
+                isSending: true,
                 orgUpdated: true,
-                showSaving: false,
+                showSaving: true,
                 callback: (res, err) => {
-                  this.props.reloadGetArticles();
                 }
               });
             }
           }
-        } else {
-          this.props.reloadGetArticles();
         }
       }
     }

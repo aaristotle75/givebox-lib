@@ -2,11 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Image from '../../common/Image';
 import GBLink from '../../common/GBLink';
+import Loader from '../../common/Loader';
 import * as util from '../../common/utility';
 import * as types from '../../common/types';
 import {
   clearGBX3,
-  createFundraiser
+  createFundraiser,
+  setLoading
 } from '../redux/gbx3actions';
 import history from '../../common/history';
 import Dropdown from '../../form/Dropdown';
@@ -72,6 +74,7 @@ class CreateArticleCard extends React.Component {
   render() {
 
     const {
+      loading,
       stage,
       editable,
       hasAccessToEdit,
@@ -94,6 +97,7 @@ class CreateArticleCard extends React.Component {
           onClick={this.onClick}
         >
           <div className='articleCard'>
+            { loading ? <Loader msg='Creating...' /> : null }
             <div className='articleCardContainer'>
               <div className='cardPhotoContainer'>
                 <div className='cardPhotoImage'>
@@ -171,6 +175,7 @@ CreateArticleCard.defaultProps = {
 function mapStateToProps(state, props) {
 
   const gbx3 = util.getValue(state, 'gbx3', {});
+  const loading = util.getValue(gbx3, 'loading', false);
   const stage = util.getValue(gbx3, 'info.stage');
   const orgID = util.getValue(gbx3, 'info.orgID');
   const admin = util.getValue(gbx3, 'admin', {});
@@ -179,6 +184,7 @@ function mapStateToProps(state, props) {
   const defaultKind = props.kind === 'all' || !props.kind ? 'fundraiser' : props.kind;
 
   return {
+    loading,
     stage,
     orgID,
     admin,
@@ -190,5 +196,6 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
   clearGBX3,
-  createFundraiser
+  createFundraiser,
+  setLoading
 })(CreateArticleCard);
