@@ -61,14 +61,18 @@ class ArticleCard extends Component {
       }
 
       case 'deleteForm': {
-        this.props.toggleModal('orgRemove', true, {
+        const resource = `org${types.kind(kind).api.item}`;
+        this.props.toggleModal('deleteArticle', true, {
+          resource,
+          orgID,
+          resourcesToLoad,
+          id: kindID,
           desc: `${title}`,
+          activityDesc: `DELETED ${title}`,
           subDesc: `Please confirm you want to delete ${types.kind(kind).name.toLowerCase()}?`,
           confirmText: 'Confirm Delete',
-          callback: () => {
-            const resourceName = `org${types.kind(kind).api.item}`;
-            console.log('execute deleteForm -> ', resourceName, articleID, kind, kindID, orgID);
-          }
+          modalID: 'deleteArticle',
+          callback: this.props.reloadGetArticles
         });
         break;
       }

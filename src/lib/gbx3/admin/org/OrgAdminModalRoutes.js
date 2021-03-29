@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ModalRoute from '../../../modal/ModalRoute';
 import Loadable from 'react-loadable';
+import Delete from '../../../common/Delete';
 
 export default class OrgAdminModalRoutes extends Component {
 
@@ -97,6 +98,12 @@ export default class OrgAdminModalRoutes extends Component {
           id={'orgRemove'}
           effect='3DFlipVert' style={{ width: '60%' }}
           component={(props) => this.loadComponent('./Remove', props)}
+        />
+        <ModalRoute
+          className='gbx3'
+          id={'deleteArticle'}
+          effect='3DFlipVert' style={{ width: '60%' }}
+          component={(props) => <Delete {...props} /> }
         />
       </div>
     )

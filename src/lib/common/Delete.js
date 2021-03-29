@@ -54,13 +54,21 @@ class Delete extends Component {
   }
 
   confirm() {
+    const {
+      orgID,
+      id,
+      activityDesc,
+      desc
+    } = this.props;
+
     if (this.props.showLoader === 'yes') this.setState({loading: true });
     this.props.sendResource(
       this.props.resource, {
-        id: [this.props.id],
+        orgID,
+        id: [id],
         method: 'delete',
         data: {
-          activityDesc: this.props.desc
+          activityDesc: activityDesc || desc
         },
         sendData: false,
         callback: this.confirmCallback,
@@ -71,18 +79,23 @@ class Delete extends Component {
   render() {
 
     const {
-      desc
+      desc,
+      subDesc,
+      confirmText
     } = this.props;
 
     return (
-      <div className='center'>
-        {this.state.loading && this.props.loader('Deleting...')}
+      <div className='removeModalWrapper'>
         <Alert alert='success' display={this.state.success} msg={this.state.success} />
         <Alert alert='error' display={this.state.error} msg={this.state.error} />
-        <h3>You are about to delete<br /> {desc}</h3>
-        <div className='button-group'>
-          <GBLink className='link' onClick={() => this.props.toggleModal(this.props.modalID || 'delete', false)}>Cancel</GBLink>
-          <GBLink className="button" onClick={this.confirm}>Confirm Delete</GBLink>
+        <h2>{desc}</h2>
+        <div className='hr'></div>
+        <p>
+          {subDesc}
+        </p>
+        <div className='button-group flexEnd'>
+          <GBLink className='link secondary' onClick={() => this.props.toggleModal(this.props.modalID || 'delete', false)}>Cancel</GBLink>
+          <GBLink className="button" onClick={this.confirm}>{confirmText}</GBLink>
         </div>
       </div>
     )
@@ -90,7 +103,10 @@ class Delete extends Component {
 }
 
 Delete.defaultProps = {
-  showLoader: 'yes'
+  showLoader: 'yes',
+  desc: 'Delete',
+  subDesc: 'Please confirm you want to delete?',
+  confirmText: 'Confirm Delete'
 }
 
 function mapStateToProps(state, props) {
