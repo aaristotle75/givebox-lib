@@ -7,8 +7,7 @@ import * as util from '../../common/utility';
 import * as types from '../../common/types';
 import {
   clearGBX3,
-  createFundraiser,
-  setLoading
+  createFundraiser
 } from '../redux/gbx3actions';
 import history from '../../common/history';
 import Dropdown from '../../form/Dropdown';
@@ -24,6 +23,7 @@ class CreateArticleCard extends React.Component {
     this.createFundraiserCallback = this.createFundraiserCallback.bind(this);
     this.selectKindOptions = this.selectKindOptions.bind(this);
     this.state = {
+      loading: false,
       createKind: props.defaultKind,
       dropdownOpen: false
     };
@@ -53,12 +53,15 @@ class CreateArticleCard extends React.Component {
   }
 
   async createFundraiser(kind) {
-    this.props.createFundraiser(kind, this.createFundraiserCallback, null, { showNewArticle: true });
-    window.parent.postMessage('gbx3Created', '*');
+    this.setState({ loading: true }, () => {
+      this.props.createFundraiser(kind, this.createFundraiserCallback, null, { showNewArticle: true });
+    });
   }
 
   createFundraiserCallback(res, err) {
-    if (this.props.createCallback) this.props.createCallback(res, err);
+    if (this.props.createCallback) this.props.createCallback(res, err, () => {
+      this.setState({ loading: false });
+    });
   }
 
   selectKindOptions() {
@@ -74,7 +77,6 @@ class CreateArticleCard extends React.Component {
   render() {
 
     const {
-      loading,
       stage,
       editable,
       hasAccessToEdit,
@@ -88,16 +90,55 @@ class CreateArticleCard extends React.Component {
     const tag = signup ? 'How do I raise money?' : `Admin Only`;
     const title = signup ? 'Create Your First Fundraiser' : kind === 'all' ? `Click this Card to Create a New Fundraiser` : `Click this Card to Create a New ${types.kind(kind).name}`;
 
-    const buttonText = signup ? 'Start Fundraiser' : `New ${types.kind(defaultKind).name}`;
+    const buttonText = signup ? 'Start Fundraiser' : kind === 'all' ? 'Create a Fundraiser' : `Create ${types.kind(defaultKind).name}`;
+
+    const editButton =
+      <button className='tooltip blockEditButton'>
+        <span className='tooltipTop'><i />Click to {buttonText}</span>
+        <span className='icon icon-plus'></span>
+      </button>
+    ;
 
     if (!hideCard && stage === 'admin' && editable && !util.isEmpty(hasAccessToEdit)) {
       return (
         <div
           className='listItem createArticleCard'
-          onClick={this.onClick}
         >
           <div className='articleCard'>
-            { loading ? <Loader msg='Creating...' /> : null }
+            { this.state.loading ? <Loader msg='Creating...' /> : null }
+            <div onClick={this.onClick} className='articleCardEdit orgAdminEdit'>
+            {kind === 'all' ?
+              <Dropdown
+                open={this.state.dropdownOpen}
+                closeCallback={() => {
+                  this.setState({ dropdownOpen: false });
+                }}
+                name='createKind'
+                portalID={`createKind-dropdown-portal-${kind}`}
+                portal={false}
+                portalClass={'gbx3 articleCardDropdown createArticleCard'}
+                portalLeftOffset={5}
+                className='articleCard'
+                contentWidth={300}
+                label={''}
+                selectLabel={''}
+                fixedLabel={false}
+                onChange={(name, value) => {
+                  this.setState({ createKind: value, dropdownOpen: false }, () => {
+                    this.createFundraiser(value);
+                  });
+                }}
+                options={this.selectKindOptions()}
+                hideIcons={true}
+                hideButton={true}
+                showCloseBtn={true}
+              >
+                {editButton}
+              </Dropdown>
+            :
+              editButton
+            }
+            </div>
             <div className='articleCardContainer'>
               <div className='cardPhotoContainer'>
                 <div className='cardPhotoImage'>
@@ -120,41 +161,9 @@ class CreateArticleCard extends React.Component {
                 </div>
               </div>
               <div className='cardButtonContainer'>
-                {kind === 'all' ?
-                  <Dropdown
-                    open={this.state.dropdownOpen}
-                    closeCallback={() => {
-                      this.setState({ dropdownOpen: false });
-                    }}
-                    name='createKind'
-                    portalID={`createKind-dropdown-portal-${kind}`}
-                    portal={false}
-                    portalClass={'gbx3 articleCardDropdown createArticleCard'}
-                    portalLeftOffset={5}
-                    className='articleCard'
-                    contentWidth={300}
-                    label={''}
-                    selectLabel={''}
-                    fixedLabel={false}
-                    onChange={(name, value) => {
-                      this.setState({ createKind: value, dropdownOpen: false }, () => {
-                        this.createFundraiser(value);
-                      });
-                    }}
-                    options={this.selectKindOptions()}
-                    hideIcons={true}
-                    hideButton={true}
-                    showCloseBtn={true}
-                  >
-                    <div className='cardButton'>
-                      Create a Fundraiser
-                    </div>
-                  </Dropdown>
-                :
-                  <div className='cardButton'>
-                    {buttonText}
-                  </div>
-                }
+                <div className='cardButton'>
+                  {buttonText}
+                </div>
               </div>
             </div>
           </div>
@@ -175,7 +184,6 @@ CreateArticleCard.defaultProps = {
 function mapStateToProps(state, props) {
 
   const gbx3 = util.getValue(state, 'gbx3', {});
-  const loading = util.getValue(gbx3, 'loading', false);
   const stage = util.getValue(gbx3, 'info.stage');
   const orgID = util.getValue(gbx3, 'info.orgID');
   const admin = util.getValue(gbx3, 'admin', {});
@@ -184,7 +192,6 @@ function mapStateToProps(state, props) {
   const defaultKind = props.kind === 'all' || !props.kind ? 'fundraiser' : props.kind;
 
   return {
-    loading,
     stage,
     orgID,
     admin,
@@ -196,6 +203,5 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
   clearGBX3,
-  createFundraiser,
-  setLoading
+  createFundraiser
 })(CreateArticleCard);

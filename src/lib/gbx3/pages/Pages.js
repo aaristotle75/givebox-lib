@@ -71,7 +71,7 @@ class Pages extends Component {
     }
   }
 
-  async createCallback(res, err) {
+  async createCallback(res, err, callback) {
     const {
       pageSlug,
       activePage,
@@ -98,12 +98,17 @@ class Pages extends Component {
                 orgUpdated: true,
                 showSaving: true,
                 callback: (res, err) => {
+                  if (callback) callback();
                 }
               });
             }
           }
         }
+      } else {
+        if (callback) callback();
       }
+    } else {
+      if (callback) callback();
     }
   }
 
