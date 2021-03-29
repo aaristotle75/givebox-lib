@@ -182,7 +182,7 @@ class EditCustomList extends React.Component {
           default={'selectCustomList'}
           className='statsTab'
         >
-          <Tab id='selectCustomList' label={<span className='stepLabel'>Select Custom List</span>}>
+          <Tab id='selectCustomList' label={<span className='stepLabel'>Custom List</span>}>
             <div className='articleGroupTopContainer'>
               <div className='articleGroupTop'>
                 <div className='articleGroupTitle'>&nbsp;</div>
@@ -259,7 +259,7 @@ class EditCustomList extends React.Component {
               records={[10, 20, 50, 100]}
             />
           </Tab>
-          <Tab id='sortCustomList' label={<span className='stepLabel'>Sort Custom List</span>}>
+          <Tab id='sortCustomList' label={<span className='stepLabel'>Sort List</span>}>
             <SortCustomList
               {...this.props}
             />

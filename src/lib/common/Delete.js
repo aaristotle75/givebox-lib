@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { sendResource } from '../api/helpers';
 import { removeResource, toggleModal } from '../api/actions';
 import { Alert } from './Alert';
+import GBLink from './GBLink';
 import * as util from './utility';
 import has from 'has';
 
@@ -53,7 +54,6 @@ class Delete extends Component {
   }
 
   confirm() {
-    console.log('execute confirm delete');
     if (this.props.showLoader === 'yes') this.setState({loading: true });
     this.props.sendResource(
       this.props.resource, {
@@ -81,7 +81,8 @@ class Delete extends Component {
         <Alert alert='error' display={this.state.error} msg={this.state.error} />
         <h3>You are about to delete<br /> {desc}</h3>
         <div className='button-group'>
-          <button className="button" type="button" onClick={this.confirm}>Confirm Delete</button>
+          <GBLink className='link' onClick={() => this.props.toggleModal(this.props.modalID || 'delete', false)}>Cancel</GBLink>
+          <GBLink className="button" onClick={this.confirm}>Confirm Delete</GBLink>
         </div>
       </div>
     )
@@ -91,7 +92,6 @@ class Delete extends Component {
 Delete.defaultProps = {
   showLoader: 'yes'
 }
-
 
 function mapStateToProps(state, props) {
   return {

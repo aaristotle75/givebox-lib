@@ -216,6 +216,7 @@ class Pages extends Component {
               activePage={activePage}
               pageSlug={pageSlug}
               resourcesToLoad={[resourceName]}
+              sendResource={this.props.sendResource}
               removeCard={this.removeCard}
               onClickArticle={this.props.onClickArticle}
               reloadGetArticles={this.props.reloadGetArticles}

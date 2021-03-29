@@ -20,7 +20,8 @@ class Remove extends React.Component {
 
     const {
       desc,
-      subDesc
+      subDesc,
+      confirmText
     } = this.props;
 
     return (
@@ -35,13 +36,17 @@ class Remove extends React.Component {
           <GBLink className='button' onClick={() => {
             if (this.props.callback) this.props.callback();
           }}>
-            Confirm
+            {confirmText}
           </GBLink>
         </div>
       </div>
     )
   }
 }
+
+Remove.defaultProps = {
+  confirmText: 'Confirm'
+};
 
 function mapStateToProps(state, props) {
 

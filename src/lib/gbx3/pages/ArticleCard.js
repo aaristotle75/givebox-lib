@@ -33,6 +33,8 @@ class ArticleCard extends Component {
       resourcesToLoad
     } = this.props;
 
+    const orgID = util.getValue(item, 'orgID');
+    const title = util.getValue(item, 'title');
     const articleID = util.getValue(item, 'ID');
     const kindID = util.getValue(item, 'kindID');
     const kind = util.getValue(item, 'kind');
@@ -56,6 +58,19 @@ class ArticleCard extends Component {
 
       case 'removeCard': {
         return this.props.removeCard(articleID, kind, kindID);
+      }
+
+      case 'deleteForm': {
+        this.props.toggleModal('orgRemove', true, {
+          desc: `${title}`,
+          subDesc: `Please confirm you want to delete ${types.kind(kind).name.toLowerCase()}?`,
+          confirmText: 'Confirm Delete',
+          callback: () => {
+            const resourceName = `org${types.kind(kind).api.item}`;
+            console.log('execute deleteForm -> ', resourceName, articleID, kind, kindID, orgID);
+          }
+        });
+        break;
       }
 
       // no default
@@ -194,7 +209,8 @@ class ArticleCard extends Component {
             options={[
               { primaryText: <span className='labelIcon'><span className={'icon icon-edit'}></span>Edit Card</span>, value: 'editCard' },
               { primaryText: <span className='labelIcon'><span className={'icon icon-layout'}></span>Edit {kind === 'fundraiser' ? 'Donation' : types.kind(kind).name} Form</span>, value: 'editForm' },
-              { primaryText: <span className='labelIcon'><span className={'icon icon-x'}></span>Remove Card From List</span>, value: 'removeCard' }
+              { primaryText: <span className='labelIcon'><span className={'icon icon-x'}></span>Remove Card From List</span>, value: 'removeCard' },
+              { primaryText: <span className='labelIcon'><span className={'icon icon-trash-2'}></span>Delete {kind === 'fundraiser' ? 'Donation' : types.kind(kind).name} Form</span>, value: 'deleteForm' }
             ]}
             hideIcons={true}
             hideButton={true}

@@ -51,8 +51,8 @@ class CreateArticleCard extends React.Component {
   }
 
   async createFundraiser(kind) {
-    this.props.createFundraiser(kind, this.createFundraiserCallback, null, { showNewArticle: false });
-    //window.parent.postMessage('gbx3Created', '*');
+    this.props.createFundraiser(kind, this.createFundraiserCallback, null, { showNewArticle: true });
+    window.parent.postMessage('gbx3Created', '*');
   }
 
   createFundraiserCallback(res, err) {

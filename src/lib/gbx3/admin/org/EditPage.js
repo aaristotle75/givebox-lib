@@ -394,8 +394,7 @@ class EditPageForm extends React.Component {
                     </AnimateHeight>
                     <AnimateHeight height={!useCustomList ? 'auto' : 0}>
                       <div className='orgPageCustomList'>
-                        <div className='articleGroupTitle'>Page List Type</div>
-                        {this.props.dropdown('kind', {label: 'List Type', options: types.kindOptions(true, 'All Types'), value: kind, style: { paddingTop: 40 } })}
+                        {this.props.dropdown('kind', {label: 'Page List Type', options: types.kindOptions(true, 'All Types'), value: kind, style: { paddingTop: 40 } })}
                       </div>
                     </AnimateHeight>
                   </AnimateHeight>
