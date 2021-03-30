@@ -98,13 +98,15 @@ class UploadEditorResizer extends Component {
 
   saveMediaItem(url) {
     const {
-      saveMediaType
+      saveMediaType,
+      articleID,
+      orgID
     } = this.props;
 
 
-    if (saveMediaType === 'article') {
+    if (articleID && saveMediaType === 'article') {
       this.props.sendResource('articleMediaItems', {
-        id: [this.props.articleID],
+        id: [articleID],
         data: {
           URL: url
         },
@@ -113,9 +115,9 @@ class UploadEditorResizer extends Component {
         callback: this.saveMediaItemCallback,
         isSending: false
       });
-    } else {
+    } else if (orgID && saveMediaType === 'org') {
       this.props.sendResource(this.props.super ? 'superOrgMediaItems' : 'orgMediaItems', {
-        id: this.props.orgID ? [this.props.orgID] : null,
+        id: [orgID],
         data: {
           URL: url
         },
@@ -124,8 +126,11 @@ class UploadEditorResizer extends Component {
         callback: this.saveMediaItemCallback,
         isSending: false
       });
+    } else {
+      this.props.setSelected(url, null, null, true);
+      this.props.toggleEditor(false);
+      this.props.setLoading(false);
     }
-
   }
 
   saveMediaItemCallback(res, err) {

@@ -21,13 +21,14 @@ class EditProfilePic extends React.Component {
 
     const {
       orgID,
+      saveMediaType,
       profilePicture,
       breakpoint
     } = this.props;
 
     const library = {
       orgID,
-      saveMediaType: 'org',
+      saveMediaType,
       borderRadius: 0
     };
 
@@ -45,11 +46,12 @@ class EditProfilePic extends React.Component {
                   url
                 }, () => this.props.toggleModal('orgEditProfilePic', false))
               }}
-              handleSave={util.handleFile}
+              handleSave={this.props.handleSave}
               library={library}
               showBtns={'hide'}
               saveLabel={'close'}
               mobile={breakpoint === 'mobile' ? true : false }
+              uploadOnly={true}
               uploadEditorSaveStyle={{ width: 250 }}
               uploadEditorSaveLabel={'Click Here to Save Image'}
               imageEditorOpenCallback={(editorOpen) => {
@@ -62,6 +64,11 @@ class EditProfilePic extends React.Component {
     )
   }
 }
+
+EditProfilePic.defaultProps = {
+  saveMediaType: 'org',
+  handleSave: util.handleFile
+};
 
 function mapStateToProps(state, props) {
 

@@ -99,11 +99,9 @@ class CreateArticleCard extends React.Component {
       </button>
     ;
 
-    if (!hideCard && stage === 'admin' && editable && !util.isEmpty(hasAccessToEdit)) {
+    if ( signup || (!hideCard && stage === 'admin' && editable && !util.isEmpty(hasAccessToEdit))) {
       return (
-        <div
-          className='listItem createArticleCard'
-        >
+        <div className={`listItem createArticleCard`}>
           <div className='articleCard'>
             { this.state.loading ? <Loader msg='Creating...' /> : null }
             <div onClick={this.onClick} className='articleCardEdit orgAdminEdit'>

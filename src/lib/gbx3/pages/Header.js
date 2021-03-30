@@ -22,7 +22,6 @@ class Header extends React.Component {
     this.onClickEditProfilePicture = this.onClickEditProfilePicture.bind(this);
     this.coverPhotoOptions = this.coverPhotoOptions.bind(this);
     this.state = {
-
     };
   }
 

@@ -5,6 +5,7 @@ import ScrollTop from '../../common/ScrollTop';
 import Image from '../../common/Image';
 import GBLink from '../../common/GBLink';
 import Dropdown from '../../form/Dropdown';
+import MediaLibrary from '../../form/MediaLibrary';
 import ModalLink from '../../modal/ModalLink';
 import CreateArticleCard from '../pages/CreateArticleCard';
 import {
@@ -15,11 +16,13 @@ import {
   toggleModal
 } from '../../api/actions';
 import Footer from '../Footer';
+import OrgAdminModalRoutes from '../admin/org/OrgAdminModalRoutes';
 
 class Signup extends React.Component {
 
   constructor(props) {
     super(props);
+    this.saveSignup = this.saveSignup.bind(this);
     this.state = {
     };
   }
@@ -38,6 +41,16 @@ class Signup extends React.Component {
         backgroundColor: '#000000'
       });
     }
+
+    window.onbeforeunload = function(e) {
+      const dialogText = 'Dialog text here';
+      e.returnValue = dialogText;
+      return dialogText;
+    };
+  }
+
+  saveSignup(obj = {}) {
+    console.log('execute -> ', obj);
   }
 
   render() {
@@ -52,8 +65,14 @@ class Signup extends React.Component {
     const coverPhotoUrl = util.getValue(org, 'coverPhoto');
     const profilePictureUrl = util.getValue(org, 'orgLogo');
 
+    const library = {
+      saveMediaType: 'signup',
+      borderRadius: 0
+    };
+
     return (
-      <div className='gbx3Org gbx3Signup'>
+      <div className='gbx3Org gbx3Signup gbx3AdminLayout orgDisplay'>
+        <OrgAdminModalRoutes />
         <ScrollTop elementID={'gbx3Layout'} />
         <div className='gbx3OrgHeader'>
           <div className={'gbx3OrgLogoContainer'} onClick={() => console.log('logo clicked!')}>
@@ -73,7 +92,23 @@ class Signup extends React.Component {
                     <Image imgID='coverPhoto' size='large' url={coverPhotoUrl} maxSize='950px' alt='Cover Photo' />
                   : null }
                 </div>
-                {/* Edit Profile Pic Stuff */}
+                <ModalLink
+                  id='orgEditProfilePic'
+                  type='div'
+                  className='profilePictureContainer orgAdminEdit'
+                  opts={{
+                    saveGlobal: (name, url) => {
+                      console.log('execute saveCallback -> ', url);
+                      this.saveSignup({ url });
+                    },
+                    saveMediaType: 'signup'
+                  }}
+                >
+                  <button className='tooltip blockEditButton'>
+                    <span className='tooltipTop'><i />Click to { profilePictureUrl ? 'EDIT' : 'ADD' } Profile Picture</span>
+                    <span className='icon icon-camera'></span>
+                  </button>
+                </ModalLink>
                 <div className='profilePictureContainer'>
                   { profilePictureUrl ?
                     <Image url={profilePictureUrl} size='medium' maxSize='160px' alt='Profile Picture' imgStyle={{ minWidth: 160, borderRadius: '50%' }}/>

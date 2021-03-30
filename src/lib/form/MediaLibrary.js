@@ -67,7 +67,7 @@ class MediaLibrary extends Component {
           max: recordsPerPage
         }
       });
-    } else {
+    } else if (saveMediaType === 'org' && orgID) {
       this.props.getResource(this.props.resourceName, {
         id: orgID ? [orgID] : null,
         reload: true,
@@ -313,7 +313,8 @@ class MediaLibrary extends Component {
       mobile,
       uploadOnly,
       topLabel,
-      bottomLabel
+      bottomLabel,
+      className
     } = this.props;
 
     const {
@@ -324,7 +325,7 @@ class MediaLibrary extends Component {
     const mimes = this.getMimes();
 
     return (
-      <div className='mediaLibrary'>
+      <div className={`mediaLibrary ${className}`}>
         <ModalRoute optsProps={{ customOverlay: { zIndex: 10000001 } }} id='imageDisplay' component={(props) =>
           <ImageDisplay {...props} size='large' />
         } className='flexWrapper centerItems' effect='3DFlipVert' style={{ width: '60%' }} />
@@ -355,6 +356,7 @@ class MediaLibrary extends Component {
                     {!mobile ? <span>{bottomLabel}</span> : <span>Add File</span>}
                   </span>
                 </Dropzone>
+                {this.props.children}
                 {this.state.preview ? this.listSelected() : null}
               </div>
               { error ?
@@ -405,6 +407,7 @@ class MediaLibrary extends Component {
 }
 
 MediaLibrary.defaultProps = {
+  className: '',
   selectedLabel: 'Selected Photo',
   modalID: 'uploadLibrary',
   showButtons: 'all',
