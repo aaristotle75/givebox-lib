@@ -43,7 +43,7 @@ class Signup extends React.Component {
     }
 
     window.onbeforeunload = function(e) {
-      const dialogText = 'Dialog text here';
+      const dialogText = 'Changes that you made may not be saved.';
       e.returnValue = dialogText;
       return dialogText;
     };
