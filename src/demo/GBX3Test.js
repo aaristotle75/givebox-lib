@@ -44,7 +44,7 @@ class GBXTest extends Component {
     // 383102 // 1130 // 383064; // 13; // 739; // 4; //651; //735; //383071;
     let articleID = +util.getValue(routeParams, 'articleID', null);
     if (isNaN(articleID)) articleID = 4;
-    const orgID = 185; //391217; //185;
+    const orgID = null; //185; //391217; //185;
     const blockType = 'org';
     const browse = true;
 
