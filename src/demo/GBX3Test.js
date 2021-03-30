@@ -46,18 +46,18 @@ class GBXTest extends Component {
     if (isNaN(articleID)) articleID = 4;
     const orgID = null; //185; //391217; //185;
     const blockType = 'org';
-    const browse = true;
+    const browse = false;
 
     console.log('execute blockType -> ', blockType);
     console.log('execute orgID -> ', orgID);
     console.log('execute articleID -> ', articleID, isNaN(articleID), !isNaN(articleID));
     console.log('execute browse -> ', browse);
 
-    if ( (orgID && blockType === 'org' && !isNaN(articleID)) || (articleID && blockType === 'article' && !isNaN(articleID)) || (browse && !isNaN(articleID)) ) {
+    if ( (blockType === 'org' && !isNaN(articleID)) || (articleID && blockType === 'article' && !isNaN(articleID)) || (browse && !isNaN(articleID)) ) {
       return (
         <div>
           <GBX3
-            browse={false}
+            browse={browse}
             blockType={'org'}
             orgID={orgID}
             articleID={articleID}
