@@ -119,7 +119,7 @@ export function gbx3(state = {
       return Object.assign({}, state, {
         loading: action.loading
       });
-    case types.UPDATE_SIGNUP:
+    case types.UPDATE_ORG_SIGNUP:
       return Object.assign({}, state, {
         signup: {
           ...state.signup,

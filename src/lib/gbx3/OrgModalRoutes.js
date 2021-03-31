@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import ModalRoute from '../../../modal/ModalRoute';
+import ModalRoute from '../modal/ModalRoute';
 import Loadable from 'react-loadable';
-import Delete from '../../../common/Delete';
+import Delete from '../common/Delete';
 
-export default class OrgAdminModalRoutes extends Component {
+export default class OrgModalRoutes extends Component {
 
   constructor(props) {
     super(props);
@@ -46,7 +46,7 @@ export default class OrgAdminModalRoutes extends Component {
           draggable={true}
           draggableTitle={`Editing Title`}
           disallowBgClose={true}
-          component={(props) => this.loadComponent('./EditTitle', props)}
+          component={(props) => this.loadComponent('./admin/org/EditTitle', props)}
         />
         <ModalRoute
           className='gbx3'
@@ -55,7 +55,7 @@ export default class OrgAdminModalRoutes extends Component {
           draggable={true}
           draggableTitle={`Editing Profile Picture`}
           disallowBgClose={false}
-          component={(props) => this.loadComponent('./EditProfilePic', props)}
+          component={(props) => this.loadComponent('./admin/org/EditProfilePic', props)}
         />
         <ModalRoute
           className='gbx3 gbx3OrgAdmin'
@@ -64,7 +64,7 @@ export default class OrgAdminModalRoutes extends Component {
           draggable={true}
           draggableTitle={`Managing Pages / Navigation Menu`}
           disallowBgClose={false}
-          component={(props) => this.loadComponent('./EditMenu', props)}
+          component={(props) => this.loadComponent('./admin/org/EditMenu', props)}
         />
         <ModalRoute
           className='gbx3 gbx3OrgAdmin'
@@ -73,7 +73,7 @@ export default class OrgAdminModalRoutes extends Component {
           draggable={true}
           draggableTitle={`Editing Page Details`}
           disallowBgClose={true}
-          component={(props) => this.loadComponent('./EditPage', props)}
+          component={(props) => this.loadComponent('./admin/org/EditPage', props)}
         />
         <ModalRoute
           className='gbx3'
@@ -82,7 +82,7 @@ export default class OrgAdminModalRoutes extends Component {
           draggable={true}
           draggableTitle={`Editing Cover Photo`}
           disallowBgClose={false}
-          component={(props) => this.loadComponent('./EditCoverPhoto', props)}
+          component={(props) => this.loadComponent('./admin/org/EditCoverPhoto', props)}
         />
         <ModalRoute
           className='gbx3'
@@ -91,13 +91,13 @@ export default class OrgAdminModalRoutes extends Component {
           draggable={true}
           draggableTitle={`Editing Card`}
           disallowBgClose={false}
-          component={(props) => this.loadComponent('./EditArticleCard', props)}
+          component={(props) => this.loadComponent('./admin/org/EditArticleCard', props)}
         />
         <ModalRoute
           className='gbx3'
           id={'orgRemove'}
           effect='3DFlipVert' style={{ width: '60%' }}
-          component={(props) => this.loadComponent('./Remove', props)}
+          component={(props) => this.loadComponent('./admin/org/Remove', props)}
         />
         <ModalRoute
           className='gbx3'
@@ -108,8 +108,8 @@ export default class OrgAdminModalRoutes extends Component {
         <ModalRoute
           className='gbx3'
           id={'orgSignupSteps'}
-          effect='3DFlipVert' style={{ width: '80%' }}
-          component={(props) => this.loadComponent('./SignupSteps', props)}
+          effect='3DFlipVert' style={{ width: '70%' }}
+          component={(props) => this.loadComponent('./signup/SignupSteps', props)}
         />
       </div>
     )

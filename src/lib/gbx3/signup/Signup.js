@@ -10,13 +10,13 @@ import ModalLink from '../../modal/ModalLink';
 import CreateArticleCard from '../pages/CreateArticleCard';
 import {
   setOrgStyle,
-  updateSignup
+  updateOrgSignup
 } from '../redux/gbx3actions';
 import {
   toggleModal
 } from '../../api/actions';
 import Footer from '../Footer';
-import OrgAdminModalRoutes from '../admin/org/OrgAdminModalRoutes';
+import OrgModalRoutes from '../OrgModalRoutes';
 
 class Signup extends React.Component {
 
@@ -42,11 +42,13 @@ class Signup extends React.Component {
       });
     }
 
+    /*
     window.onbeforeunload = function(e) {
       const dialogText = 'Changes that you made may not be saved.';
       e.returnValue = dialogText;
       return dialogText;
     };
+    */
   }
 
   saveSignup(obj = {}) {
@@ -72,7 +74,7 @@ class Signup extends React.Component {
 
     return (
       <div className='gbx3Org gbx3Signup gbx3AdminLayout orgDisplay'>
-        <OrgAdminModalRoutes />
+        <OrgModalRoutes />
         <ScrollTop elementID={'gbx3Layout'} />
         <div className='gbx3OrgHeader'>
           <div className={'gbx3OrgLogoContainer'} onClick={() => console.log('logo clicked!')}>
@@ -93,7 +95,7 @@ class Signup extends React.Component {
                   : null }
                 </div>
                 <ModalLink
-                  id='orgEditProfilePic'
+                  id='orgSignupSteps'
                   type='div'
                   className='profilePictureContainer orgAdminEdit'
                   opts={{
@@ -188,6 +190,6 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
   setOrgStyle,
-  updateSignup,
+  updateOrgSignup,
   toggleModal
 })(Signup);

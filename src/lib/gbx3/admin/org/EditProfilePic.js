@@ -51,7 +51,6 @@ class EditProfilePic extends React.Component {
               showBtns={'hide'}
               saveLabel={'close'}
               mobile={breakpoint === 'mobile' ? true : false }
-              uploadOnly={true}
               uploadEditorSaveStyle={{ width: 250 }}
               uploadEditorSaveLabel={'Click Here to Save Image'}
               imageEditorOpenCallback={(editorOpen) => {

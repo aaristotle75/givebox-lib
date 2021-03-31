@@ -1,6 +1,6 @@
 import React from 'react';
 import Design from './Design';
-import OrgAdminModalRoutes from './OrgAdminModalRoutes';
+import OrgModalRoutes from '../../OrgModalRoutes';
 
 class OrgAdmin extends React.Component {
 
@@ -25,7 +25,7 @@ class OrgAdmin extends React.Component {
       default: {
         return (
           <div>
-            <OrgAdminModalRoutes />
+            <OrgModalRoutes />
             <Design
               reloadGBX3={this.props.reloadGBX3}
               loadGBX3={this.props.loadGBX3}
