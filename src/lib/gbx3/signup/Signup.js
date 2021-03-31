@@ -99,7 +99,8 @@ class Signup extends React.Component {
                   type='div'
                   className='profilePictureContainer orgAdminEdit'
                   opts={{
-                    saveGlobal: (name, url) => {
+                    stepName: 'orgLogo',
+                    saveCallback: (name, url) => {
                       console.log('execute saveCallback -> ', url);
                       this.saveSignup({ url });
                     },
@@ -125,6 +126,23 @@ class Signup extends React.Component {
           <div className='gbx3OrgSubHeader gbx3OrgContentOuterContainer'>
             <div className='gbx3OrgContentInnerContainer'>
               <div className='nameSection'>
+                <ModalLink
+                  id='orgSignupSteps'
+                  type='div'
+                  className='nameSectionContainer orgAdminEdit'
+                  opts={{
+                    stepName: 'orgName',
+                    saveCallback: (name, orgName) => {
+                      console.log('execute saveCallback -> ', orgName);
+                      this.saveSignup({ orgName });
+                    }
+                  }}
+                >
+                  <button className='tooltip blockEditButton' id='orgEditTitle'>
+                    <span className='tooltipTop'><i />Click to EDIT Name</span>
+                    <span className='icon icon-edit'></span>
+                  </button>
+                </ModalLink>
                 <div className='nameSectionContainer'>
                   <div className='nameText flexCenter'>
                     {orgName}

@@ -15,11 +15,12 @@ class SignupSteps extends React.Component {
   render() {
 
     const {
+      stepName
     } = this.props;
 
     return (
       <div className='modalWrapper'>
-        SignupSteps
+        SignupSteps {stepName}
       </div>
     )
   }
