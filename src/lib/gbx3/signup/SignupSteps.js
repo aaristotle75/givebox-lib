@@ -4,6 +4,7 @@ import * as config from './signupConfig';
 import Form from '../../form/Form';
 import Dropdown from '../../form/Dropdown';
 import * as util from '../../common/utility';
+import Loader from '../../common/Loader';
 import * as _v from '../../form/formValidate';
 import GBLink from '../../common/GBLink';
 import {
@@ -24,6 +25,7 @@ class SignupStepsForm extends React.Component {
       editorOpen: false,
       error: false
     };
+    this.allowNextStep = true;
   }
 
   componentDidMount() {
@@ -63,36 +65,38 @@ class SignupStepsForm extends React.Component {
     const stepConfig = util.getValue(config.signupSteps, step, {});
     const slug = util.getValue(stepConfig, 'slug');
 
-    let allowNextStep = false;
-
-    Object.entries(fields).forEach(async ([key, value]) => {
-      console.log('execute fields -> ', key, value);
+    Object.entries(fields).forEach(([key, value]) => {
       switch (value.group) {
         case 'orgName': {
           if (key === 'taxID') {
-            const validatedTaxID = await this.validateTaxID(value.value);
+            //const validatedTaxID = await this.validateTaxID(value.value);
           }
           break;
         }
+
+        // no default
       }
     });
 
     if (slug === 'themeColor') {
     }
 
-    if (allowNextStep) this.gotoNextStep();
+    if (this.allowNextStep) this.gotoNextStep();
     else {
       this.props.formProp({ error: true, errorMessage: 'Please fix errors below to continue.' })
     }
   }
 
   gotoNextStep() {
-    this.props.updateOrgSignup('step', this.props.nextStep());
+    const {
+      step
+    } = this.props;
+    this.props.updateOrgSignup('step', this.props.nextStep(step));
   }
 
   validateTaxID(taxID) {
     console.log('execute validateTaxID -> ', taxID);
-    return false;
+    return true;
   }
 
   renderStep() {
@@ -163,6 +167,11 @@ class SignupStepsForm extends React.Component {
               count: true,
               required: false,
               value: orgName,
+              onBlur: (name, value) => {
+                if (value && value !== orgName) {
+                  this.props.updateOrgSignupField('org', { name: value })
+                }
+              }
             })}
             {this.props.textField('taxID', {
               group: slug,
@@ -171,7 +180,12 @@ class SignupStepsForm extends React.Component {
               placeholder: `Click Here and Enter Your U.S. Federal Tax ID`,
               required: false,
               value: taxID,
-              validate: 'taxID'
+              validate: 'taxID',
+              onBlur: (name, value) => {
+                if (value && value !== taxID) {
+                  this.props.updateOrgSignupField('org', { taxID: value })
+                }
+              }
             })}
           </div>
         break;
@@ -259,7 +273,7 @@ class SignupStepsForm extends React.Component {
         { !this.state.editorOpen ?
         <div className='button-group'>
           <div className='button-item' style={{ width: 150 }}>
-            { !firstStep ? <GBLink className={`link`} disabled={firstStep} onClick={() => this.props.previousStep()}><span style={{ marginRight: '5px' }} className='icon icon-chevron-left'></span> Previous Step</GBLink> : <span>&nbsp;</span> }
+            { !firstStep ? <GBLink className={`link`} disabled={firstStep} onClick={() => this.props.previousStep(step)}><span style={{ marginRight: '5px' }} className='icon icon-chevron-left'></span> Previous Step</GBLink> : <span>&nbsp;</span> }
           </div>
           <div className='button-item'>
             {this.props.saveButton(this.processForm, { group: slug, label: item.saveButtonLabel })}
