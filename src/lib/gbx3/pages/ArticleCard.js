@@ -197,7 +197,6 @@ class ArticleCard extends Component {
             }}
             name='createKind'
             portalID={`createKind-dropdown-portal-${kind}`}
-            portal={false}
             portalClass={'gbx3 articleCardDropdown articleCardSelect'}
             portalLeftOffset={5}
             className='articleCard'

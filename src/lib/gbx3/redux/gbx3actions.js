@@ -32,11 +32,19 @@ export function setLoading(loading) {
   }
 }
 
-export function updateOrgSignup(name, signup) {
+export function updateOrgSignup(name, value) {
   return {
     type: types.UPDATE_ORG_SIGNUP,
     name,
-    signup
+    value
+  }
+}
+
+export function updateOrgSignupField(name, fields) {
+  return {
+    type: types.UPDATE_ORG_SIGNUP_FIELD,
+    name,
+    fields
   }
 }
 

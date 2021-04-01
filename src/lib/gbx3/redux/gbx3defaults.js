@@ -75,25 +75,6 @@ export const defaultOrgPages = {
   }
 };
 
-
-export const defaultOrgSignupElements = {
-  orgName: null,
-  orgLogo: null,
-  coverPhoto: null,
-  themeColor: null,
-  email: null,
-  fullName: null,
-  taxID: null,
-  categoryID: null
-};
-
-export const defaultGBX3SignupElements = {
-  title: null,
-  imageURL: null,
-  videoURL: null,
-  mediaType: 'image'
-};
-
 export const defaultCart = {
   processing: false,
   open: false,

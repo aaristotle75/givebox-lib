@@ -3,10 +3,9 @@ import * as util from '../../common/utility';
 import {
   defaultCart,
   defaultConfirmation,
-  defaultStyle,
-  defaultOrgSignupElements,
-  defaultGBX3SignupElements
+  defaultStyle
 } from './gbx3defaults';
+import { orgSignupFields } from '../signup/signupConfig';
 import LZString from 'lz-string';
 
 export function gbx3(state = {
@@ -28,8 +27,11 @@ export function gbx3(state = {
   pageSearch: {},
   pageState: {},
   orgSignup: {
-    org: defaultOrgSignupElements,
-    gbx3: defaultGBX3SignupElements
+    step: 0,
+    completed: [],
+    fields: orgSignupFields,
+    validTaxID: false,
+    claimedOrg: false
   },
   orgUpdated: false,
   orgGlobals: {},
@@ -121,14 +123,24 @@ export function gbx3(state = {
       });
     case types.UPDATE_ORG_SIGNUP:
       return Object.assign({}, state, {
-        signup: {
-          ...state.signup,
-          [action.name]: {
-            ...state.signup[action.name],
-            ...action.signup
-          }
+        orgSignup: {
+          ...state.orgSignup,
+          [action.name]: action.value
         }
       });
+    case types.UPDATE_ORG_SIGNUP_FIELD:
+      return Object.assign({}, state, {
+        orgSignup: {
+          ...state.orgSignup,
+          fields: {
+            ...state.orgSignup.fields,
+            [action.name]: {
+              ...state.orgSignup.fields[action.name],
+              ...action.fields
+            }
+          }
+        }
+      })
     case types.RESET_STYLE:
       return Object.assign({}, state, {
         globals: {

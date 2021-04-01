@@ -808,14 +808,18 @@ $contentHeaderPadding: 35%;
   padding: 10px 0;
 }
 
-.articleCardDropdown.createArticleCard.ropdown .dropdown-content {
+.articleCardDropdown.createArticleCard.dropdown .dropdown-content {
   min-height: 300px;
   overflow: visible;
 }
 
-.articleCardDropdown.articleCardSelect.ropdown .dropdown-content {
+.articleCardDropdown.articleCardSelect.dropdown .dropdown-content {
   min-height: 150px;
   overflow: visible;
+}
+
+.articleCardDropdown.selectCategory.dropdown .dropdown-content {
+  min-height: 200px;
 }
 
 .articleCardDropdown.dropdown .dropdown-content.top {
@@ -1007,6 +1011,23 @@ $contentHeaderPadding: 35%;
       border: 1px solid $white;
       background: linear-gradient(to right, $green 0%, $mainColor 100%);
       @include default-transition(.25s);
+    }
+  }
+}
+
+.gbx3OrgSignup {
+
+  .gbx3Layout.admin {
+    .gbx3OrgFooter {
+      display: flex;
+    }
+  }
+}
+
+.gbx3 {
+  .gbx3OrgSignup {
+    .stageContainer .gbx3Footer .footerContainer {
+      display: flex;
     }
   }
 }

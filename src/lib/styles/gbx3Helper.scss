@@ -250,6 +250,22 @@ $gbx3StepsBreakpoint: 600px;
 
 .gbx3Steps {
 
+  input {
+    border-bottom: 1px solid $light-gray;
+  }
+
+  .dropdown button {
+    border-bottom: 1px solid $light-gray;
+
+    .label {
+      font-size: 18px;
+    }
+    .icon {
+      font-size: 18px;
+      color: $med-blue-gray;
+    }
+  }
+
   .stepStatus {
 
     display: flex;

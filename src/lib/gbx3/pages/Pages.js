@@ -8,7 +8,6 @@ import ModalLink from '../../modal/ModalLink';
 import ArticleCard from './ArticleCard';
 import CreateArticleCard from './CreateArticleCard';
 import Search from '../../table/Search';
-import Dropdown from '../../form/Dropdown';
 import CalendarField from '../../form/CalendarField';
 import PageContentSection from './PageContentSection';
 import InfiniteScroll from 'react-infinite-scroll-component';
