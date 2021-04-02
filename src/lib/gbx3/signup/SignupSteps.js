@@ -7,6 +7,8 @@ import * as util from '../../common/utility';
 import Loader from '../../common/Loader';
 import * as _v from '../../form/formValidate';
 import GBLink from '../../common/GBLink';
+import Icon from '../../common/Icon';
+import { FiSmile } from 'react-icons/fi';
 import {
   updateOrgSignup,
   updateOrgSignupField
@@ -28,6 +30,7 @@ class SignupStepsForm extends React.Component {
       themeColor: '',
       editorOpen: false,
       error: false,
+      categoryIDError: false,
       saving: false
     };
     this.allowNextStep = false;
@@ -97,6 +100,17 @@ class SignupStepsForm extends React.Component {
       case 'orgName': {
         if (!validTaxID || validTaxID !== org.taxID) return this.validateTaxID(org.taxID, group);
         else return this.saveStep(group);
+      }
+
+      case 'mission': {
+        if (!org.mission || !org.categoryID) {
+          if (!org.mission) this.props.fieldProp('mission', { error: 'About Your Organization is Required' });
+          if (!org.categoryID) this.setState({ categoryIDError: 'Organization Category is Required' });
+          this.props.formProp({ error: true, errorMsg: 'Please fix the errors below in red.' });
+          return this.setState({ saving: false });
+        } else {
+          return this.saveStep(group);
+        }
       }
 
       default: {
@@ -210,6 +224,21 @@ class SignupStepsForm extends React.Component {
     };
 
     switch (slug) {
+      case 'welcome': {
+        item.saveButtonLabel = 'Continue to Next Step'
+        item.desc =
+          <div>
+            <p>You have chosen wisely. You are well on your way to accepting payments and donations through Givebox.</p>
+            <p>Simply follow the steps, and in a matter of minutes you will be ready to share your fundraiser with the world!</p>
+            <HelpfulTip
+              text={`As you go through the steps, remember that almost everything can be changed later, so don't over think it!`}
+              style={{ marginTop: 30 }}
+            />
+          </div>
+        ;
+        break;
+      }
+
       case 'orgName': {
         item.component =
           <div className='fieldGroup'>
@@ -224,7 +253,7 @@ class SignupStepsForm extends React.Component {
               value: orgName,
               onBlur: (name, value) => {
                 if (value && value !== orgName) {
-                  this.props.updateOrgSignupField('org', { name: value })
+                  this.props.updateOrgSignupField('org', { name: value });
                 }
               }
             })}
@@ -239,10 +268,16 @@ class SignupStepsForm extends React.Component {
               onBlur: (name, value) => {
                 console.log('execute taxID -> ', value, taxID);
                 if (value) {
-                  this.props.updateOrgSignupField('org', { taxID: value })
+                  this.props.updateOrgSignupField('org', { taxID: value });
                 }
               }
             })}
+            <HelpfulTip
+              headerIcon={<span className='icon icon-alert-circle'></span>}
+              headerText='Important'
+              text={`You must have a valid U.S. Federal Tax ID to use Givebox.`}
+              style={{ marginTop: 15 }}
+            />
           </div>
         break;
       }
@@ -256,7 +291,7 @@ class SignupStepsForm extends React.Component {
               style: { paddingTop: 0 },
               placeholder:
               <div>
-                Click Here to Enter About Your Organization, Mission or Purpose<br /><br />
+                Click Here to Write About Your Organization, Mission or Purpose<br /><br />
                 For example: "Nonprofit helps communities raise money for food in the United States, Canada and Mexico."
               </div>,
               fixedLabel: false,
@@ -266,7 +301,9 @@ class SignupStepsForm extends React.Component {
               value: mission,
               required: true,
               onBlur: (name, content, hasText) => {
-                console.log('execute onBlur -> ', name, content, hasText);
+                if (hasText) {
+                  this.props.updateOrgSignupField('org', { mission: content });
+                }
               }
             })}
             <div className='input-group'>
@@ -281,11 +318,15 @@ class SignupStepsForm extends React.Component {
                 label={''}
                 selectLabel='Click Here to Select an Organization Category'
                 fixedLabel={true}
+                required={true}
                 onChange={(name, value) => {
-                  console.log('execute categoryID -> ', value);
+                  this.setState({ categoryIDError: false });
+                  this.props.updateOrgSignupField('org', { categoryID: +value });
                 }}
                 options={this.categories()}
                 showCloseBtn={true}
+                error={this.state.categoryIDError}
+                value={categoryID}
               />
             </div>
           </div>
@@ -352,7 +393,10 @@ class SignupStepsForm extends React.Component {
         { !this.state.editorOpen ?
         <div className='button-group'>
           <div className='button-item' style={{ width: 150 }}>
-            { !firstStep ? <GBLink className={`link`} disabled={firstStep} onClick={() => this.props.previousStep(step)}><span style={{ marginRight: '5px' }} className='icon icon-chevron-left'></span> Previous Step</GBLink> : <span>&nbsp;</span> }
+            { !firstStep ? <GBLink className={`link`} disabled={firstStep} onClick={() => {
+              this.props.formProp({ error: false });
+              this.props.previousStep(step);
+            }}><span style={{ marginRight: '5px' }} className='icon icon-chevron-left'></span> Previous Step</GBLink> : <span>&nbsp;</span> }
           </div>
           <div className='button-item'>
             {this.props.saveButton(this.processForm, { group: slug, label: item.saveButtonLabel })}
@@ -434,3 +478,18 @@ export default connect(mapStateToProps, {
   updateOrgSignupField,
   getResource
 })(SignupSteps);
+
+const HelpfulTip = (props) => {
+
+  const headerText = props.headerText || 'Friendly Tip';
+  const headerIcon = props.headerIcon || <Icon><FiSmile /></Icon>;
+  const text = props.text || 'Helpful Tip Text';
+  const style = props.style || {};
+
+  return (
+    <div className='helpfulTip' style={style}>
+      <span className='helpfulTipHeader'>{headerIcon} {headerText}</span>
+      {text}
+    </div>
+  )
+};

@@ -338,7 +338,8 @@ Dropdown.defaultProps = {
   overlayDuration: 200,
   overlay: true,
   direction: '',
-  defaultColor: '#4775f8'
+  defaultColor: '#4775f8',
+  errorType: 'tooltip'
 }
 
 export default Dropdown;

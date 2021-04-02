@@ -250,18 +250,69 @@ $gbx3StepsBreakpoint: 600px;
 
 .gbx3Steps {
 
+  p {
+    margin: 15px 0;
+  }
+
+  .helpfulTip {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    background: $very-light-gray;
+    border: 1px solid $light-gray;
+    font-style: italic;
+    font-size: 12px;
+
+    .helpfulTipHeader {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      font-weight: 500;
+      font-size: 12px;
+      margin-bottom: 5px;
+      font-style: normal;
+      color: $med-blue-gray;
+
+      .icon {
+        margin-right: 5px;
+        font-size: 14px;
+      }
+    }
+  }
+
   .step.missionStep {
     .stepComponent {
       margin-top: 10px;
     }
+
     .RichEditor-root {
       min-height: 125px;
+    }
+
+    .input-group {
+      padding: 10px 0;
     }
   }
 
   .RichEditor-root {
     font-size: $stepInputSize;
     border-bottom: 1px solid $light-gray;
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      outline: 0;
+      border-radius: 20px;
+      background-color: $light-gray;
+    }
   }
 
   .RichEditor-editor .public-DraftEditorPlaceholder-inner {

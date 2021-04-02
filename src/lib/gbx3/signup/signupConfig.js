@@ -1,10 +1,19 @@
+const welcome = {
+  type: 'org',
+  slug: 'welcome',
+  name: 'Welcome',
+  title: 'Welcome to Givebox!',
+  icon: 'heart',
+  desc: ''
+};
+
 const orgName = {
   type: 'org',
   slug: 'orgName',
   name: 'Organization Name',
   title: 'What is the Name and Tax ID of Your Organization',
   icon: 'star',
-  desc: 'You must have a valid U.S. Federal Tax ID to use Givebox.'
+  desc: ''
 };
 
 const mission = {
@@ -58,7 +67,7 @@ const account = {
   name: 'Create Account',
   icon: 'user',
   title: 'Create Your Account',
-  desc: `Please create a Givebox account to secure your Organization's profile.`
+  desc: `Please create a Givebox account to secure your Organization's profile and accept payments.`
 }
 
 const save = {
@@ -71,6 +80,7 @@ const save = {
 }
 
 export const signupSteps = [
+  welcome,
   orgName,
   mission,
   logo,
