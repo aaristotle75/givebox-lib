@@ -773,6 +773,7 @@ class Form extends Component {
         group={field ? field.group : params.group}
         autoFocus={field ? field.autoFocus : params.autoFocus}
         onChange={this.onChangeRichText}
+        onBlurEditor={params.onBlur}
         value={field ? field.value : params.value}
         updateContent={field ? field.updateContent || null : null}
         error={field ? field.error : params.error }

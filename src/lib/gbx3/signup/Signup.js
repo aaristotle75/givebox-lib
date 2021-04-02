@@ -70,7 +70,7 @@ class Signup extends React.Component {
   }
 
   openStep(step) {
-    this.props.updateOrgSignup('step', step);
+    this.props.updateOrgSignup({ step });
     this.openSignupSteps();
   }
 
@@ -89,7 +89,7 @@ class Signup extends React.Component {
 
   previousStep(step) {
     const prevStep = step > 0 ? step - 1 : step;
-    this.props.updateOrgSignup('step', prevStep);
+    this.props.updateOrgSignup({ step: prevStep });
   }
 
   nextStep(step) {
@@ -122,13 +122,17 @@ class Signup extends React.Component {
                 <ScrollTop elementID={'gbx3Layout'} />
                 <div className='gbx3OrgHeader'>
                   <div className={'gbx3OrgLogoContainer'} onClick={() => console.log('logo clicked!')}>
-                    <Image size='thumb' maxSize={35} url={'https://givebox.s3-us-west-1.amazonaws.com/public/gb-logo5.png'} alt='Givebox' />
+                    { isMobile ?
+                      <Image size='thumb' maxSize={35} url={'https://cdn.givebox.com/givebox/public/gb-logo5.png'} alt='Givebox' />
+                    :
+                      <Image maxHeight={35} url={'https://cdn.givebox.com/givebox/public/givebox_logo2020-grey-text.png'} alt='Givebox' />
+                    }
                   </div>
                 </div>
                 <SignupPage
 
                 />
-                {breakpoint === 'mobile' ? <div className='bottomOffset'>&nbsp;</div> : <></>}
+                {isMobile ? <div className='bottomOffset'>&nbsp;</div> : <></>}
               </div>
             </div>
           </div>

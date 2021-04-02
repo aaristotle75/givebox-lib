@@ -11,6 +11,9 @@ import {
   updateOrgSignup,
   updateOrgSignupField
 } from '../redux/gbx3actions';
+import {
+  getResource
+} from '../../api/helpers';
 
 class SignupStepsForm extends React.Component {
 
@@ -18,14 +21,16 @@ class SignupStepsForm extends React.Component {
     super(props);
     this.renderStep = this.renderStep.bind(this);
     this.processForm = this.processForm.bind(this);
+    this.saveStep = this.saveStep.bind(this);
     this.gotoNextStep = this.gotoNextStep.bind(this);
     this.validateTaxID = this.validateTaxID.bind(this);
     this.state = {
       themeColor: '',
       editorOpen: false,
-      error: false
+      error: false,
+      saving: false
     };
-    this.allowNextStep = true;
+    this.allowNextStep = false;
   }
 
   componentDidMount() {
@@ -44,12 +49,35 @@ class SignupStepsForm extends React.Component {
     return items;
   }
 
-  processForm(fields) {
+  async saveStep(group, error = false) {
+    const {
+      step
+    } = this.props;
+
+    if (error) {
+      this.setState({ saving: false });
+      return false;
+    }
+    const completedStep = await this.stepCompleted(step);
+    if (completedStep) {
+      this.setState({ saving: false }, () => {
+        setTimeout(() => {
+          this.gotoNextStep();
+        }, 1500)
+      });
+    } else {
+      this.setState({ saving: false }, this.gotoNextStep);
+    }
+  }
+
+  processForm(fields, callback, group) {
     util.toTop('modalOverlay-stepsForm');
+    this.setState({ saving: true });
     const {
       step,
       gbxStyle,
-      button
+      button,
+      validTaxID
     } = this.props;
 
     const {
@@ -65,38 +93,65 @@ class SignupStepsForm extends React.Component {
     const stepConfig = util.getValue(config.signupSteps, step, {});
     const slug = util.getValue(stepConfig, 'slug');
 
-    Object.entries(fields).forEach(([key, value]) => {
-      switch (value.group) {
-        case 'orgName': {
-          if (key === 'taxID') {
-            //const validatedTaxID = await this.validateTaxID(value.value);
-          }
-          break;
-        }
+    switch (group) {
+      case 'orgName': {
+        if (!validTaxID || validTaxID !== org.taxID) return this.validateTaxID(org.taxID, group);
+        else return this.saveStep(group);
+      }
 
-        // no default
+      default: {
+        return this.saveStep(group);
+      }
+    }
+  }
+
+  async validateTaxID(taxID, group) {
+    this.validation = false;
+    this.props.getResource('orgs', {
+      search: {
+        filter: `taxID:"${taxID}"`
+      },
+      reload: true,
+      callback: (res, err) => {
+        const data = util.getValue(res, 'data', []);
+        if (!util.isEmpty(data)) {
+          const existingOrg = util.getValue(data, 0, {});
+          const isOwned = util.getValue(existingOrg, 'isOwned', false);
+          const isAutoCreated = util.getValue(existingOrg, 'isAutoCreated', false);
+          if (!isOwned && isAutoCreated) {
+            this.props.updateOrgSignup({
+              claimOrgID: existingOrg.ID,
+              validTaxID: taxID
+            });
+            return this.saveStep(group);
+          } else {
+            this.props.formProp({ error: true, errorMsg: <div>The Tax ID you entered is taken by another user.<span style={{ marginTop: 5, display: 'block', fontSize: 12, fontStyle: 'italic' }}>To dispute this claim:<br/>Contact support@givebox.com with your Organization Name, Tax ID and explain your dispute.</span></div> });
+            this.props.fieldProp('taxID', { error: 'This Tax ID is taken by another user.' });
+            return this.saveStep(group, true);
+          }
+        } else {
+          this.props.updateOrgSignup({ validTaxID: taxID });
+          return this.saveStep(group);
+        }
       }
     });
-
-    if (slug === 'themeColor') {
-    }
-
-    if (this.allowNextStep) this.gotoNextStep();
-    else {
-      this.props.formProp({ error: true, errorMessage: 'Please fix errors below to continue.' })
-    }
   }
 
   gotoNextStep() {
     const {
       step
     } = this.props;
-    this.props.updateOrgSignup('step', this.props.nextStep(step));
+    this.props.updateOrgSignup({ step: this.props.nextStep(step) });
   }
 
-  validateTaxID(taxID) {
-    console.log('execute validateTaxID -> ', taxID);
-    return true;
+  async stepCompleted(step) {
+    let updated = false;
+    const completed = [ ...this.props.completed ];
+    if (!completed.includes(step)) {
+      completed.push(step);
+      updated = await this.props.updateOrgSignup({ completed });
+    }
+    return updated;
   }
 
   renderStep() {
@@ -165,7 +220,7 @@ class SignupStepsForm extends React.Component {
               placeholder: `Click Here and Enter your Organization's Name`,
               maxLength: 128,
               count: true,
-              required: false,
+              required: true,
               value: orgName,
               onBlur: (name, value) => {
                 if (value && value !== orgName) {
@@ -178,11 +233,12 @@ class SignupStepsForm extends React.Component {
               fixedLabel: true,
               label: 'U.S. Federal Tax ID',
               placeholder: `Click Here and Enter Your U.S. Federal Tax ID`,
-              required: false,
+              required: true,
               value: taxID,
               validate: 'taxID',
               onBlur: (name, value) => {
-                if (value && value !== taxID) {
+                console.log('execute taxID -> ', value, taxID);
+                if (value) {
                   this.props.updateOrgSignupField('org', { taxID: value })
                 }
               }
@@ -192,24 +248,46 @@ class SignupStepsForm extends React.Component {
       }
 
       case 'mission': {
+        item.className = 'missionStep';
         item.component =
           <div className='fieldGroup'>
-            <Dropdown
-              name='categoryID'
-              portalID={`category-dropdown-portal-${slug}`}
-              portalClass={'gbx3 articleCardDropdown selectCategory'}
-              portalLeftOffset={10}
-              className='articleCard'
-              contentWidth={400}
-              label={''}
-              selectLabel='Click Here to Select an Organization Category'
-              fixedLabel={false}
-              onChange={(name, value) => {
-                console.log('execute categoryID -> ', value);
-              }}
-              options={this.categories()}
-              showCloseBtn={true}
-            />
+            {this.props.richText('mission', {
+              group: item.name,
+              style: { paddingTop: 0 },
+              placeholder:
+              <div>
+                Click Here to Enter About Your Organization, Mission or Purpose<br /><br />
+                For example: "Nonprofit helps communities raise money for food in the United States, Canada and Mexico."
+              </div>,
+              fixedLabel: false,
+              label: '',
+              wysiwyg: false,
+              autoFocus: false,
+              value: mission,
+              required: true,
+              onBlur: (name, content, hasText) => {
+                console.log('execute onBlur -> ', name, content, hasText);
+              }
+            })}
+            <div className='input-group'>
+              <label className='label'>Organization Category</label>
+              <Dropdown
+                name='categoryID'
+                portalID={`category-dropdown-portal-${slug}`}
+                portalClass={'gbx3 articleCardDropdown selectCategory'}
+                portalLeftOffset={10}
+                className='articleCard'
+                contentWidth={400}
+                label={''}
+                selectLabel='Click Here to Select an Organization Category'
+                fixedLabel={true}
+                onChange={(name, value) => {
+                  console.log('execute categoryID -> ', value);
+                }}
+                options={this.categories()}
+                showCloseBtn={true}
+              />
+            </div>
           </div>
         ;
         break;
@@ -245,6 +323,7 @@ class SignupStepsForm extends React.Component {
 
     return (
       <div className='stepContainer'>
+        { this.state.saving ? <Loader msg='Saving...' /> : null }
         <div className='stepStatus'>
           <GBLink onClick={(e) => this.props.validateForm(e, this.processForm, slug)}>
             <span style={{ marginLeft: 20 }}>{item.saveButtonLabel} <span className='icon icon-chevron-right'></span></span>
@@ -335,12 +414,16 @@ function mapStateToProps(state, props) {
 
   const open = util.getValue(state, 'gbx3.admin.open');
   const step = util.getValue(state, 'gbx3.orgSignup.step', 0);
+  const claimOrgID = util.getValue(state, 'gbx3.orgSignup.claimOrgID', null);
+  const validTaxID = util.getValue(state, 'gbx3.orgSignup.validTaxID', null);
   const completed = util.getValue(state, 'gbx3.orgSignup.completed', []);
   const fields = util.getValue(state, 'gbx3.orgSignup.fields', {});
 
   return {
     open,
     step,
+    claimOrgID,
+    validTaxID,
     completed,
     fields
   }
@@ -348,5 +431,6 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
   updateOrgSignup,
-  updateOrgSignupField
+  updateOrgSignupField,
+  getResource
 })(SignupSteps);

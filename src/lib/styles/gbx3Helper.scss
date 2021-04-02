@@ -250,6 +250,25 @@ $gbx3StepsBreakpoint: 600px;
 
 .gbx3Steps {
 
+  .step.missionStep {
+    .stepComponent {
+      margin-top: 10px;
+    }
+    .RichEditor-root {
+      min-height: 125px;
+    }
+  }
+
+  .RichEditor-root {
+    font-size: $stepInputSize;
+    border-bottom: 1px solid $light-gray;
+  }
+
+  .RichEditor-editor .public-DraftEditorPlaceholder-inner {
+    font-weight: 300;
+    font-size: 18px;
+  }
+
   input {
     border-bottom: 1px solid $light-gray;
   }
@@ -385,12 +404,12 @@ $gbx3StepsBreakpoint: 600px;
         display: flex;
         align-items: center;
         color: $green;
-        font-size: 18px;
+        font-size: 22px;
         font-weight: 300;
         @include animation(pulsateBrighter 2s ease-out infinite);
         .icon {
           color: $green;
-          font-size: 18px;
+          font-size: 22px;
           margin-right: 10px;
         }
       }

@@ -52,13 +52,22 @@ const image = {
   desc: 'A picture speaks a thousand words. Upload an image that inspires people to support your fundraiser.'
 }
 
+const account = {
+  type: 'account',
+  slug: 'account',
+  name: 'Create Account',
+  icon: 'user',
+  title: 'Create Your Account',
+  desc: `Please create a Givebox account to secure your Organization's profile.`
+}
+
 const save = {
   type: 'save',
   slug: 'save',
-  name: 'Save Profile',
+  name: 'Finish',
   icon: 'save',
-  title: 'Save Your Profile',
-  desc: 'Make sure to save your profile!'
+  title: 'Finish Your Profile',
+  desc: 'You are almost done! Just click "Complete Profile" below.'
 }
 
 export const signupSteps = [
@@ -68,6 +77,7 @@ export const signupSteps = [
   themeColor,
   title,
   image,
+  account,
   save
 ];
 

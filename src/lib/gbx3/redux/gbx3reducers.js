@@ -27,11 +27,11 @@ export function gbx3(state = {
   pageSearch: {},
   pageState: {},
   orgSignup: {
-    step: 0,
+    step: 1,
     completed: [],
     fields: orgSignupFields,
-    validTaxID: false,
-    claimedOrg: false
+    validTaxID: null,
+    claimOrgID: null
   },
   orgUpdated: false,
   orgGlobals: {},
@@ -125,7 +125,7 @@ export function gbx3(state = {
       return Object.assign({}, state, {
         orgSignup: {
           ...state.orgSignup,
-          [action.name]: action.value
+          ...action.orgSignup
         }
       });
     case types.UPDATE_ORG_SIGNUP_FIELD:

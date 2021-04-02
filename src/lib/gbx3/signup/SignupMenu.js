@@ -45,7 +45,7 @@ class SignupMenu extends React.Component {
 
     return (
       <ul className='builderMenuSteps'>
-        <li className='listHeader'>Complete Profile</li>
+        <li className='listHeader'>Create Profile Steps</li>
         {items}
       </ul>
     )

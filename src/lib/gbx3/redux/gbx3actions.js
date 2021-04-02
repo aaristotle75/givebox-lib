@@ -32,11 +32,10 @@ export function setLoading(loading) {
   }
 }
 
-export function updateOrgSignup(name, value) {
+export function updateOrgSignup(orgSignup = {}) {
   return {
     type: types.UPDATE_ORG_SIGNUP,
-    name,
-    value
+    orgSignup
   }
 }
 
