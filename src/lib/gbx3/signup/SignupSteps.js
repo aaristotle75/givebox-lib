@@ -7,6 +7,7 @@ import * as util from '../../common/utility';
 import Loader from '../../common/Loader';
 import * as _v from '../../form/formValidate';
 import GBLink from '../../common/GBLink';
+import Image from '../../common/Image';
 import Icon from '../../common/Icon';
 import { FiSmile } from 'react-icons/fi';
 import {
@@ -23,8 +24,11 @@ class SignupStepsForm extends React.Component {
     super(props);
     this.renderStep = this.renderStep.bind(this);
     this.processForm = this.processForm.bind(this);
+    this.saveSignup = this.saveSignup.bind(this);
     this.saveStep = this.saveStep.bind(this);
     this.gotoNextStep = this.gotoNextStep.bind(this);
+    this.previousStep = this.previousStep.bind(this);
+    this.nextStep = this.nextStep.bind(this);
     this.validateTaxID = this.validateTaxID.bind(this);
     this.state = {
       themeColor: '',
@@ -34,6 +38,7 @@ class SignupStepsForm extends React.Component {
       saving: false
     };
     this.allowNextStep = false;
+    this.totalSignupSteps = +(config.signupSteps.length - 1);
   }
 
   componentDidMount() {
@@ -50,6 +55,10 @@ class SignupStepsForm extends React.Component {
       });
     });
     return items;
+  }
+
+  saveSignup(obj = {}) {
+    console.log('execute -> ', obj);
   }
 
   async saveStep(group, error = false) {
@@ -155,7 +164,17 @@ class SignupStepsForm extends React.Component {
     const {
       step
     } = this.props;
-    this.props.updateOrgSignup({ step: this.props.nextStep(step) });
+    this.props.updateOrgSignup({ step: this.nextStep(step) });
+  }
+
+  previousStep(step) {
+    const prevStep = step > 0 ? step - 1 : step;
+    this.props.updateOrgSignup({ step: prevStep });
+  }
+
+  nextStep(step) {
+    const nextStep = step < +this.totalSignupSteps ? step + 1 : step;
+    return nextStep;
   }
 
   async stepCompleted(step) {
@@ -395,7 +414,7 @@ class SignupStepsForm extends React.Component {
           <div className='button-item' style={{ width: 150 }}>
             { !firstStep ? <GBLink className={`link`} disabled={firstStep} onClick={() => {
               this.props.formProp({ error: false });
-              this.props.previousStep(step);
+              this.previousStep(step);
             }}><span style={{ marginRight: '5px' }} className='icon icon-chevron-left'></span> Previous Step</GBLink> : <span>&nbsp;</span> }
           </div>
           <div className='button-item'>
@@ -431,6 +450,15 @@ class SignupSteps extends React.Component {
   }
 
   componentDidMount() {
+    this.props.getResource('categories', {
+      search: {
+        sort: 'name',
+        order: 'asc',
+        filter: `kind:!"individual"%3Bname:!"Auto"`
+      },
+      callback: (res, err) => {
+      }
+    });
   }
 
   componentWillUnmount() {
@@ -442,8 +470,15 @@ class SignupSteps extends React.Component {
 
   render() {
 
+    if (util.isLoading(this.props.categories)) {
+      return <Loader msg='Loading Categories...' />
+    }
+
     return (
       <div className='gbx3Steps modalWrapper'>
+        <div className='flexCenter' style={{ marginBottom: 10 }}>
+          <Image size='thumb' maxSize={40} url={'https://cdn.givebox.com/givebox/public/gb-logo5.png'} alt='Givebox' />
+        </div>
         <Form id={`stepsForm`} name={`stepsForm`}>
           <SignupStepsForm
             {...this.props}
@@ -462,6 +497,9 @@ function mapStateToProps(state, props) {
   const validTaxID = util.getValue(state, 'gbx3.orgSignup.validTaxID', null);
   const completed = util.getValue(state, 'gbx3.orgSignup.completed', []);
   const fields = util.getValue(state, 'gbx3.orgSignup.fields', {});
+  const categories = util.getValue(state, 'resource.categories', {});
+  const breakpoint = util.getValue(state, 'gbx3.info.breakpoint');
+  const isMobile = breakpoint === 'mobile' ? true : false;
 
   return {
     open,
@@ -469,7 +507,9 @@ function mapStateToProps(state, props) {
     claimOrgID,
     validTaxID,
     completed,
-    fields
+    fields,
+    categories,
+    isMobile
   }
 }
 

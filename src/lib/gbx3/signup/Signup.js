@@ -12,26 +12,18 @@ import {
 import {
   toggleModal
 } from '../../api/actions';
-import {
-  getResource
-} from '../../api/helpers';
 import OrgModalRoutes from '../OrgModalRoutes';
 import SignupMenu from './SignupMenu';
 import SignupPage from './SignupPage';
-import * as config from './signupConfig';
 
 class Signup extends React.Component {
 
   constructor(props) {
     super(props);
-    this.saveSignup = this.saveSignup.bind(this);
     this.openStep = this.openStep.bind(this);
     this.openSignupSteps = this.openSignupSteps.bind(this);
-    this.previousStep = this.previousStep.bind(this);
-    this.nextStep = this.nextStep.bind(this);
     this.state = {
     };
-    this.totalSignupSteps = +(config.signupSteps.length - 1);
   }
 
   componentDidMount() {
@@ -49,16 +41,7 @@ class Signup extends React.Component {
       });
     }
 
-    this.props.getResource('categories', {
-      search: {
-        sort: 'name',
-        order: 'asc',
-        filter: `kind:!"individual"%3Bname:!"Auto"`
-      },
-      callback: (res, err) => {
-        this.openSignupSteps();
-      }
-    });
+    this.openSignupSteps();
 
     /*
     window.onbeforeunload = function(e) {
@@ -75,26 +58,7 @@ class Signup extends React.Component {
   }
 
   openSignupSteps() {
-    this.props.toggleModal('orgSignupSteps', true, {
-      nextStep: this.nextStep,
-      previousStep: this.previousStep,
-      saveSignup: this.saveSignup,
-      categories: this.props.categories
-    });
-  }
-
-  saveSignup(obj = {}) {
-    console.log('execute -> ', obj);
-  }
-
-  previousStep(step) {
-    const prevStep = step > 0 ? step - 1 : step;
-    this.props.updateOrgSignup({ step: prevStep });
-  }
-
-  nextStep(step) {
-    const nextStep = step < +this.totalSignupSteps ? step + 1 : step;
-    return nextStep;
+    this.props.toggleModal('orgSignupSteps', true);
   }
 
   render() {
@@ -104,10 +68,6 @@ class Signup extends React.Component {
       isMobile,
       open
     } = this.props;
-
-    if (util.isLoading(this.props.categories)) {
-      return <Loader msg='Loading Categories...' />
-    }
 
     return (
       <div className='gbx3AdminLayout orgDisplay editable gbx3OrgSignup'>
@@ -147,19 +107,16 @@ function mapStateToProps(state, props) {
   const breakpoint = util.getValue(state, 'gbx3.info.breakpoint');
   const isMobile = breakpoint === 'mobile' ? true : false;
   const open = util.getValue(state, 'gbx3.admin.open', true);
-  const categories = util.getValue(state, 'resource.categories', {});
 
   return {
     breakpoint,
     isMobile,
-    open,
-    categories
+    open
   }
 }
 
 export default connect(mapStateToProps, {
   setOrgStyle,
   updateOrgSignup,
-  toggleModal,
-  getResource
+  toggleModal
 })(Signup);
