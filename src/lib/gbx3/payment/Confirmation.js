@@ -29,6 +29,8 @@ class Confirmation extends Component {
       receipt
     } = this.props;
 
+    localStorage.removeItem('cart');
+
     if (ENV === 'production' && !preview && !receipt) {
       ReactGA.modalview('/confirmation', ['orgTracker']);
       ReactGA.event({
