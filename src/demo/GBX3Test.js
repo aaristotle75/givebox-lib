@@ -44,21 +44,21 @@ class GBXTest extends Component {
     // 383102 // 1130 // 383064; // 13; // 739; // 4; //651; //735; //383071;
     let articleID = +util.getValue(routeParams, 'articleID', null);
     if (isNaN(articleID)) articleID = 4;
-    const orgID = null; //185; //391217; //185;
+    const orgID = 185; //185; //391217; //185;
     const blockType = 'org';
-    const browse = false;
+    const browse = true;
 
     console.log('execute blockType -> ', blockType);
     console.log('execute orgID -> ', orgID);
     console.log('execute articleID -> ', articleID, isNaN(articleID), !isNaN(articleID));
     console.log('execute browse -> ', browse);
 
-    if ( (blockType === 'org' && !isNaN(articleID)) || (articleID && blockType === 'article' && !isNaN(articleID)) || (browse && !isNaN(articleID)) ) {
+    if ( (orgID && blockType === 'org' && !isNaN(articleID)) || (articleID && blockType === 'article' && !isNaN(articleID)) || (browse && !isNaN(articleID)) ) {
       return (
         <div>
           <GBX3
-            browse={browse}
-            blockType={'org'}
+            browse={false}
+            blockType={'article'}
             orgID={orgID}
             articleID={articleID}
             saveCallback={this.saveCallback}
