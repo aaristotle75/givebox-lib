@@ -3,20 +3,22 @@ import { connect } from 'react-redux';
 import * as config from './signupConfig';
 import Form from '../../form/Form';
 import Dropdown from '../../form/Dropdown';
+import MediaLibrary from '../../form/MediaLibrary';
 import * as util from '../../common/utility';
 import Loader from '../../common/Loader';
 import * as _v from '../../form/formValidate';
 import GBLink from '../../common/GBLink';
 import Image from '../../common/Image';
-import Icon from '../../common/Icon';
-import { FiSmile } from 'react-icons/fi';
+import HelpfulTip from '../../common/HelpfulTip';
 import {
   updateOrgSignup,
-  updateOrgSignupField
+  updateOrgSignupField,
+  setOrgStyle
 } from '../redux/gbx3actions';
 import {
   getResource
 } from '../../api/helpers';
+import { PhotoshopPicker } from 'react-color-aaristotle';
 
 class SignupStepsForm extends React.Component {
 
@@ -30,8 +32,9 @@ class SignupStepsForm extends React.Component {
     this.previousStep = this.previousStep.bind(this);
     this.nextStep = this.nextStep.bind(this);
     this.validateTaxID = this.validateTaxID.bind(this);
+    this.handleImageSaveCallback = this.handleImageSaveCallback.bind(this);
     this.state = {
-      themeColor: '',
+      themeColor: util.getValue(props.fields, 'org.themeColor', '#698df4'),
       editorOpen: false,
       error: false,
       categoryIDError: false,
@@ -61,28 +64,31 @@ class SignupStepsForm extends React.Component {
     console.log('execute -> ', obj);
   }
 
-  async saveStep(group, error = false) {
+  async saveStep(group, error = false, delay = 1000) {
     const {
-      step
+      step,
+      orgSignup
     } = this.props;
 
     if (error) {
       this.setState({ saving: false });
       return false;
+    } else {
+      // save to cookie
     }
     const completedStep = await this.stepCompleted(step);
     if (completedStep) {
       this.setState({ saving: false }, () => {
         setTimeout(() => {
           this.gotoNextStep();
-        }, 1500)
+        }, delay)
       });
     } else {
       this.setState({ saving: false }, this.gotoNextStep);
     }
   }
 
-  processForm(fields, callback, group) {
+  async processForm(fields, callback, group) {
     util.toTop('modalOverlay-stepsForm');
     this.setState({ saving: true });
     const {
@@ -119,6 +125,36 @@ class SignupStepsForm extends React.Component {
           return this.setState({ saving: false });
         } else {
           return this.saveStep(group);
+        }
+      }
+
+      case 'logo': {
+        if (!org.imageURL) {
+          this.props.formProp({ error: true, errorMsg: 'Please upload a logo or profile picture to continue.'});
+          return this.setState({ saving: false });
+        } else {
+          return this.saveStep('logo');
+        }
+      }
+
+      case 'image': {
+        if (!gbx3.imageURL) {
+          this.props.formProp({ error: true, errorMsg: 'Please upload an image to continue.'});
+          return this.setState({ saving: false });
+        } else {
+          return this.saveStep('image');
+        }
+      }
+
+      case 'themeColor': {
+        if (themeColor) {
+          const updated = await this.props.updateOrgSignupField('org', { themeColor });
+          if (updated) {
+            this.props.setOrgStyle({
+              backgroundColor: themeColor
+            });
+            return this.saveStep('themeColor');
+          }
         }
       }
 
@@ -160,6 +196,12 @@ class SignupStepsForm extends React.Component {
     });
   }
 
+  async handleImageSaveCallback(url, name, field) {
+    this.props.formProp({ error: false });
+    const updated = await this.props.updateOrgSignupField(name, { [field]: url });
+    //if (updated) this.saveStep('logo', false, 3000);
+  }
+
   gotoNextStep() {
     const {
       step
@@ -190,7 +232,8 @@ class SignupStepsForm extends React.Component {
   renderStep() {
     const {
       step,
-      open
+      open,
+      isMobile
     } = this.props;
 
     const {
@@ -239,16 +282,16 @@ class SignupStepsForm extends React.Component {
       desc: stepConfig.desc,
       component: <div></div>,
       className: '',
-      saveButtonLabel: 'Save & Continue to Next Step'
+      saveButtonLabel: <span className='buttonAlignText'>Save & Continue to Next Step <span className='icon icon-chevron-right'></span></span>
     };
 
     switch (slug) {
       case 'welcome': {
-        item.saveButtonLabel = 'Continue to Next Step'
+        item.saveButtonLabel = <span className='buttonAlignText'>Continue to Next Step <span className='icon icon-chevron-right'></span></span>
         item.desc =
           <div>
             <p>You have chosen wisely. You are well on your way to accepting payments and donations through Givebox.</p>
-            <p>Simply follow the steps, and in a matter of minutes you will be ready to share your fundraiser with the world!</p>
+            <p>Simply follow the steps, and in a matter of minutes you will be ready to start raising money immediately!</p>
             <HelpfulTip
               text={`As you go through the steps, remember that almost everything can be changed later, so don't over think it!`}
               style={{ marginTop: 30 }}
@@ -285,7 +328,6 @@ class SignupStepsForm extends React.Component {
               value: taxID,
               validate: 'taxID',
               onBlur: (name, value) => {
-                console.log('execute taxID -> ', value, taxID);
                 if (value) {
                   this.props.updateOrgSignupField('org', { taxID: value });
                 }
@@ -306,12 +348,11 @@ class SignupStepsForm extends React.Component {
         item.component =
           <div className='fieldGroup'>
             {this.props.richText('mission', {
-              group: item.name,
+              group: slug,
               style: { paddingTop: 0 },
               placeholder:
               <div>
-                Click Here to Write About Your Organization, Mission or Purpose<br /><br />
-                For example: "Nonprofit helps communities raise money for food in the United States, Canada and Mexico."
+                Click Here to Write About Your Organization, Mission or Purpose
               </div>,
               fixedLabel: false,
               label: '',
@@ -325,6 +366,16 @@ class SignupStepsForm extends React.Component {
                 }
               }
             })}
+            <HelpfulTip
+              headerIcon={<span className='icon icon-edit-2'></span>}
+              headerText={`Example Mission Statement`}
+              style={{ marginTop: 20, marginBottom: 20 }}
+              text={
+                <span>
+                  "Nonprofit helps communities raise money for food in the United States, Canada and Mexico."
+                </span>
+              }
+            />
             <div className='input-group'>
               <label className='label'>Organization Category</label>
               <Dropdown
@@ -353,18 +404,119 @@ class SignupStepsForm extends React.Component {
         break;
       }
 
+      case 'image':
       case 'logo': {
-
+        const type = slug === 'logo' ? 'org' : 'gbx3';
+        const imageValue = slug === 'logo' ? orgLogo : imageURL;
+        if (slug === 'image') {
+          item.desc =
+            <div>
+              <p>{item.desc}</p>
+              <p>
+                <HelpfulTip
+                  headerIcon={<span className='icon icon-video'></span>}
+                  headerText={`An Image is Great, but with a Video it's Better`}
+                  style={{ marginTop: 20, marginBottom: 20 }}
+                  text={
+                    <span>
+                      If you have a video link handy we suggest you use it. An image is great, but a video brings your story to life.
+                    </span>
+                  }
+                />
+              </p>
+              <p><GBLink className='' onClick={() => console.log('video upload')}><span className='buttonAlignText'>Click Here to Add a Video <span className='icon icon-chevron-right'></span></span></GBLink></p>
+            </div>
+          ;
+        }
+        item.component =
+          <div className='fieldGroup'>
+            <MediaLibrary
+              image={orgLogo}
+              preview={orgLogo}
+              handleSaveCallback={(url) => this.handleImageSaveCallback(url, type, 'imageURL')}
+              handleSave={util.handleFile}
+              library={library}
+              showBtns={'hide'}
+              saveLabel={'close'}
+              mobile={isMobile ? true : false }
+              uploadOnly={true}
+              uploadEditorSaveStyle={{ width: 250 }}
+              uploadEditorSaveLabel={'Click Here to Save Image'}
+              imageEditorOpenCallback={(editorOpen) => {
+                this.setState({ editorOpen })
+              }}
+              topLabel={'Click to Add Image'}
+              bottomLabel={'Drag & Drop Image'}
+              labelIcon={<span className='icon icon-instagram'></span>}
+            />
+          </div>
+        ;
         break;
       }
 
       case 'themeColor': {
-
+        const style = {
+          default: {
+            head: {
+              background: '#fff',
+              backgroundImage: 'none',
+              fontSize: '1.5em',
+              fontWeight: 300,
+              border: 0,
+              marginBottom: 0,
+              boxShadow: 'none',
+              color: '#465965',
+              height: 0,
+              lineHeight: 0
+            },
+          }
+        };
+        item.component =
+          <div className='flexCenter'>
+            <PhotoshopPicker
+              styles={style}
+              header={''}
+              color={this.state.themeColor}
+              onChangeComplete={(color) => {
+                this.setState({ themeColor: color.hex })
+              }}
+            />
+          </div>
+        ;
         break;
       }
 
       case 'title': {
-
+        item.component =
+          <div className='fieldGroup'>
+            <HelpfulTip
+              headerIcon={<span className='icon icon-trending-up'></span>}
+              headerText='Pro Tip to Increase Conversions'
+              style={{ marginTop: 25, marginBottom: 20 }}
+              text={
+                <span>
+                  A good title should not be dull or too general. It should elicit an emotional reponse to get peoples attention.<br /><br />
+                  A dull title: "Please Donate to Save the Whales"<br /><br />
+                  A better title: "If you Love Whales Here is How You Can Save Them"
+                </span>
+              }
+            />
+            {this.props.textField('title', {
+              group: slug,
+              label: 'Fundraiser Title',
+              placeholder: 'Click Here to Enter a Title',
+              maxLength: 128,
+              count: true,
+              required: true,
+              value: title,
+              onBlur: (name, value) => {
+                if (value) {
+                  this.props.updateOrgSignupField('gbx3', { title: value });
+                }
+              }
+            })}
+          </div>
+        ;
         break;
       }
 
@@ -386,7 +538,7 @@ class SignupStepsForm extends React.Component {
         { this.state.saving ? <Loader msg='Saving...' /> : null }
         <div className='stepStatus'>
           <GBLink onClick={(e) => this.props.validateForm(e, this.processForm, slug)}>
-            <span style={{ marginLeft: 20 }}>{item.saveButtonLabel} <span className='icon icon-chevron-right'></span></span>
+            <span style={{ marginLeft: 20 }}>{item.saveButtonLabel}</span>
           </GBLink>
         </div>
         <div className={`step ${item.className} ${open ? 'open' : ''}`}>
@@ -415,7 +567,7 @@ class SignupStepsForm extends React.Component {
             { !firstStep ? <GBLink className={`link`} disabled={firstStep} onClick={() => {
               this.props.formProp({ error: false });
               this.previousStep(step);
-            }}><span style={{ marginRight: '5px' }} className='icon icon-chevron-left'></span> Previous Step</GBLink> : <span>&nbsp;</span> }
+            }}><span style={{ marginRight: '5px' }} className='icon icon-chevron-left'></span> {isMobile ? 'Back' : 'Previous Step' }</GBLink> : <span>&nbsp;</span> }
           </div>
           <div className='button-item'>
             {this.props.saveButton(this.processForm, { group: slug, label: item.saveButtonLabel })}
@@ -492,17 +644,19 @@ class SignupSteps extends React.Component {
 function mapStateToProps(state, props) {
 
   const open = util.getValue(state, 'gbx3.admin.open');
-  const step = util.getValue(state, 'gbx3.orgSignup.step', 0);
-  const claimOrgID = util.getValue(state, 'gbx3.orgSignup.claimOrgID', null);
-  const validTaxID = util.getValue(state, 'gbx3.orgSignup.validTaxID', null);
-  const completed = util.getValue(state, 'gbx3.orgSignup.completed', []);
-  const fields = util.getValue(state, 'gbx3.orgSignup.fields', {});
+  const orgSignup = util.getValue(state, 'gbx3.orgSignup', {});
+  const step = util.getValue(orgSignup, 'step', 0);
+  const claimOrgID = util.getValue(orgSignup, 'claimOrgID', null);
+  const validTaxID = util.getValue(orgSignup, 'validTaxID', null);
+  const completed = util.getValue(orgSignup, 'completed', []);
+  const fields = util.getValue(orgSignup, 'fields', {});
   const categories = util.getValue(state, 'resource.categories', {});
   const breakpoint = util.getValue(state, 'gbx3.info.breakpoint');
   const isMobile = breakpoint === 'mobile' ? true : false;
 
   return {
     open,
+    orgSignup,
     step,
     claimOrgID,
     validTaxID,
@@ -516,20 +670,6 @@ function mapStateToProps(state, props) {
 export default connect(mapStateToProps, {
   updateOrgSignup,
   updateOrgSignupField,
-  getResource
+  getResource,
+  setOrgStyle
 })(SignupSteps);
-
-const HelpfulTip = (props) => {
-
-  const headerText = props.headerText || 'Friendly Tip';
-  const headerIcon = props.headerIcon || <Icon><FiSmile /></Icon>;
-  const text = props.text || 'Helpful Tip Text';
-  const style = props.style || {};
-
-  return (
-    <div className='helpfulTip' style={style}>
-      <span className='helpfulTipHeader'>{headerIcon} {headerText}</span>
-      {text}
-    </div>
-  )
-};

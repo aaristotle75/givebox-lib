@@ -256,13 +256,28 @@ $gbx3StepsBreakpoint: 600px;
 
   .helpfulTip {
     position: relative;
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-    background: $very-light-gray;
-    border: 1px solid $light-gray;
-    font-style: italic;
-    font-size: 14px;
+    background: $white;
+    //border: 1px solid $light-gray;
+    @include box-shadow(1px 1px 3px 2px $light-gray);
+
+    .helpfulTipBar {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      @include bgGradient(to bottom, $mainColor 20%, $green 100%);
+      @include animation(pulsateSlightlyBrighter 4s ease-out infinite);
+    }
+
+    .helpfulTipContent {
+      display: flex;
+      flex-direction: column;
+      padding: 10px 15px 10px 20px;
+      font-style: italic;
+      font-size: 14px;
+    }
 
     .helpfulTipHeader {
       display: flex;
@@ -270,8 +285,8 @@ $gbx3StepsBreakpoint: 600px;
       align-items: center;
       font-weight: 400;
       font-size: 14px;
-      margin-bottom: 5px;
-      font-style: normal;
+      margin-bottom: 10px;
+      font-style: italic;
       color: $med-blue-gray;
 
       .icon {
@@ -412,6 +427,11 @@ $gbx3StepsBreakpoint: 600px;
       background: linear-gradient(to right, $salmon2 0%, $salmon 100%);
     }
 
+    button.button .icon {
+      font-size: 22px;
+      margin-left: 5px;
+    }
+
   }
 
   .button-group::before {
@@ -528,11 +548,34 @@ $gbx3StepsBreakpoint: 600px;
       h4 {
         font-size: .83em;
       }
+
+      .dropzone {
+        height: 170px;
+        width: 170px;
+        border-radius: 10px;
+        border: 2px dashed $light-gray;
+
+        .text {
+          font-size: $stepInputSize;
+          color: $med-blue-gray;
+        }
+
+        .icon {
+          font-size: 40px;
+        }
+      }
+
+      .dropzone:hover {
+        background-color: $very-light-gray;
+        border: 2px dashed $mainColor;
+        @include transition(border .5s);
+      }
+
     }
 
     .uploadLibraryContainer {
       padding-top: 0px;
-      height: 150px;
+      height: 180px;
     }
 
     .uploadEditorContainer {

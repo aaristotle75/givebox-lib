@@ -198,31 +198,30 @@ button.imageCover {
   text-align: center;
   width: 175px;
   height: 175px;
-  border-radius: 20px;
-  border: 1px solid $mainColor;
+  border-radius: 10px;
+  border: 2px dashed $light-gray;
   background-color: $white;
   cursor: pointer;
 }
 
 .dropzone:hover {
-  background-color: $mainColor;
-  border: 1px solid $white;
-  @include default-transition(.25s);
+  background-color: $very-light-gray;
+  border: 2px dashed $mainColor;
+  @include transition(border .5s);
 
   .dropzone-icon {
     color: $white;
   }
-
 }
 
 .dropzone .text {
   font-size: $normal-text-size;
   font-weight: 300;
-  color: $mainColor;
+  color: $med-blue-gray;
 }
 
 .dropzone:hover .text {
-  color: #fff;
+  color: $med-blue-gray;
 }
 
 .dropzoneImageContainer {

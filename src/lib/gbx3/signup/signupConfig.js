@@ -31,12 +31,12 @@ const themeColor = {
   name: 'Theme Color',
   icon: 'sun',
   title: 'Pick a Theme Color for Your Profile',
-  desc: 'Choose a color that compliments your nonprofit logo and/or branding.'
+  desc: 'Choose a color that compliments your Organization logo and/or branding.'
 };
 
 const logo = {
   type: 'org',
-  slug: 'orgLogo',
+  slug: 'logo',
   name: 'Profile Pic',
   icon: 'upload-cloud',
   title: 'Upload an Image of Your Logo or a Profile Picture',
@@ -55,9 +55,9 @@ const title = {
 const image = {
   type: 'gbx3',
   slug: 'image',
-  name: 'Add Image',
+  name: 'Add Image/Video',
   icon: 'camera',
-  title: 'Add an Image for Your Fundraiser',
+  title: 'Add an Image or Video for Your Fundraiser',
   desc: 'A picture speaks a thousand words. Upload an image that inspires people to support your fundraiser.'
 }
 

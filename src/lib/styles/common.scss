@@ -232,6 +232,11 @@ button.button.secondary:hover {
   @include default-transition(.25s);
 }
 
+.buttonAlignText {
+  display: flex;
+  align-items: center;
+}
+
 button.modalToTop {
   position: fixed;
   bottom: 20px;

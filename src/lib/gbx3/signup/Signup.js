@@ -30,16 +30,8 @@ class Signup extends React.Component {
 
     const {
       breakpoint,
-      isMobile,
-      org
+      isMobile
     } = this.props;
-
-    const themeColor = util.getValue(org, 'themeColor');
-    if (!themeColor) {
-      this.props.setOrgStyle({
-        backgroundColor: '#000000'
-      });
-    }
 
     this.openSignupSteps();
 

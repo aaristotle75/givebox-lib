@@ -204,7 +204,7 @@ class MediaLibrary extends Component {
       );
     } else {
       items.push(
-        <li key={'noPhoto'} className={`noPhoto ${!this.state.preview ? 'center' : ''}`}>Please upload {!util.isEmpty(this.props.items) ? 'or select' : ''} a photo.</li>
+        <li key={'noPhoto'} className={`noPhoto ${!this.state.preview ? 'center' : ''}`}>Please upload {!util.isEmpty(this.props.items) ? 'or select' : ''} an image.</li>
       );
     }
 
@@ -313,6 +313,7 @@ class MediaLibrary extends Component {
       mobile,
       uploadOnly,
       topLabel,
+      labelIcon,
       bottomLabel,
       className
     } = this.props;
@@ -351,8 +352,8 @@ class MediaLibrary extends Component {
                   accept={mimes.format}
                 >
                   <span className='text'>
-                    {!mobile && <span>{topLabel}</span>}
-                    <span className='icon icon-file-plus'></span>
+                    {!mobile ? <span>{topLabel}</span> : null}
+                    {labelIcon}
                     {!mobile ? <span>{bottomLabel}</span> : <span>Add File</span>}
                   </span>
                 </Dropzone>
@@ -408,7 +409,7 @@ class MediaLibrary extends Component {
 
 MediaLibrary.defaultProps = {
   className: '',
-  selectedLabel: 'Selected Photo',
+  selectedLabel: 'Selected Image',
   modalID: 'uploadLibrary',
   showButtons: 'all',
   cancelLabel: 'Cancel',
@@ -418,6 +419,7 @@ MediaLibrary.defaultProps = {
   acceptedMimes: ['image', 'text', 'applications'],
   uploadOnly: false,
   topLabel: 'Add File',
+  labelIcon: <span className='icon icon-instagram'></span>,
   bottomLabel: 'Drag & Drop',
   recordsPerPage: 20
 }

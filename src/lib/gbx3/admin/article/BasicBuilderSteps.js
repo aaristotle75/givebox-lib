@@ -32,7 +32,7 @@ class BasicBuilderStepsForm extends Component {
     super(props);
     this.saveStep = this.saveStep.bind(this);
     this.gbx3message = this.gbx3message.bind(this);
-    this.handleSaveCallback = this.handleSaveCallback.bind(this);
+    this.handleImageSaveCallback = this.handleImageSaveCallback.bind(this);
     this.processForm = this.processForm.bind(this);
     this.processCallback = this.processCallback.bind(this);
     this.formSavedCallback = this.formSavedCallback.bind(this);
@@ -90,7 +90,7 @@ class BasicBuilderStepsForm extends Component {
     }
   }
 
-  handleSaveCallback(url, field, blockName) {
+  handleImageSaveCallback(url, field, blockName) {
     const {
       data,
       blocks
@@ -180,6 +180,7 @@ class BasicBuilderStepsForm extends Component {
       data,
       blocks,
       isVolunteer,
+      isMobile,
       openAdmin: open
     } = this.props;
 
@@ -203,7 +204,7 @@ class BasicBuilderStepsForm extends Component {
       desc: '',
       component: null,
       className: '',
-      saveButtonLabel: 'Save & Continue to Next Step'
+      saveButtonLabel: <span className='buttonAlignText'>Save & Continue to Next Step <span className='icon icon-chevron-right'></span></span>
     };
 
     switch (slug) {
@@ -240,7 +241,7 @@ class BasicBuilderStepsForm extends Component {
       }
 
       case 'preview': {
-        item.saveButtonLabel = 'Looks Good! Continue to Next Step';
+        item.saveButtonLabel = <span className='buttonAlignText'>Looks Good! Continue to Next Step <span className='icon icon-chevron-right'></span></span>;
         item.className = 'preview';
         item.title = 'Preview your Form';
         item.desc = !this.state.previewLoaded ?
@@ -260,7 +261,7 @@ class BasicBuilderStepsForm extends Component {
       }
 
       case 'share': {
-        item.saveButtonLabel = 'All Finished! Take Me to My Dashboard';
+        item.saveButtonLabel = <span className='buttonAlignText'>All Finished! Take Me to My Profile <span className='icon icon-chevron-right'></span></span>;
         item.title = 'Share Your Form';
         item.desc = 'Copy and paste your custom link into an email, or click a social media icon below to share your fundraising form and start raising money!';
         item.component =
@@ -275,8 +276,6 @@ class BasicBuilderStepsForm extends Component {
         const mediaBlock = util.getValue(blocks, 'media', {});
         const mediaURL = util.getValue(mediaBlock, 'content.image.URL', '').replace(/medium$/i, 'original');
         const imageURL = (!util.checkImage(mediaURL) || !mediaURL) ? '' : mediaURL;
-
-        item.saveButtonLabel = 'Continue to Next Step';
         item.title = 'Add an Image';
         item.desc = 'A picture speaks a thousand words. Upload an image that inspires people to support your fundraiser.';
         item.component =
@@ -284,7 +283,7 @@ class BasicBuilderStepsForm extends Component {
             blockType={'article'}
             image={imageURL}
             preview={imageURL}
-            handleSaveCallback={(url) => this.handleSaveCallback(url, 'imageURL', 'media')}
+            handleSaveCallback={(url) => this.handleImageSaveCallback(url, 'imageURL', 'media')}
             handleSave={util.handleFile}
             library={library}
             showBtns={'hide'}
@@ -305,7 +304,6 @@ class BasicBuilderStepsForm extends Component {
         const logoBlock = util.getValue(blocks, 'logo', {});
         const logoURL = util.getValue(logoBlock, 'content.image.URL', util.getValue(data, 'orgImageURL')).replace(/small$/i, 'original');
         const orgImageURL = (!util.checkImage(logoURL) || !logoURL) ? '' : logoURL;
-        item.saveButtonLabel = 'Continue to Next Step';
         item.title = 'Upload a Logo';
         item.desc = 'Please upload an image of your logo.';
         item.component =
@@ -313,7 +311,7 @@ class BasicBuilderStepsForm extends Component {
             blockType={'article'}
             image={orgImageURL}
             preview={orgImageURL}
-            handleSaveCallback={(url) => this.handleSaveCallback(url, 'orgImageURL', 'logo')}
+            handleSaveCallback={(url) => this.handleImageSaveCallback(url, 'orgImageURL', 'logo')}
             handleSave={util.handleFile}
             library={library}
             showBtns={'hide'}
@@ -385,7 +383,7 @@ class BasicBuilderStepsForm extends Component {
       <div className='stepContainer'>
         <div className='stepStatus'>
           <GBLink onClick={() => this.processForm()}>
-            <span style={{ marginLeft: 20 }}>{item.saveButtonLabel} <span className='icon icon-chevron-right'></span></span>
+            <span style={{ marginLeft: 20 }}>{item.saveButtonLabel}</span>
           </GBLink>
         </div>
         <div className={`step ${item.className} ${open ? 'open' : ''}`}>
@@ -411,7 +409,7 @@ class BasicBuilderStepsForm extends Component {
         { !this.state.editorOpen ?
         <div className='button-group'>
           <div className='button-item' style={{ width: 150 }}>
-            { !firstStep ? <GBLink className={`link`} disabled={firstStep} onClick={() => this.props.previousStep()}><span style={{ marginRight: '5px' }} className='icon icon-chevron-left'></span> Previous Step</GBLink> : <span>&nbsp;</span> }
+            { !firstStep ? <GBLink className={`link`} disabled={firstStep} onClick={() => this.props.previousStep()}><span style={{ marginRight: '5px' }} className='icon icon-chevron-left'></span> {isMobile ? 'Back' : 'Previous Step'}</GBLink> : <span>&nbsp;</span> }
           </div>
           <div className='button-item'>
             {this.props.saveButton(this.processForm, { label: item.saveButtonLabel })}
@@ -474,6 +472,8 @@ function mapStateToProps(state, props) {
   const helperSteps = util.getValue(state, 'gbx3.helperSteps', {});
   const isVolunteer = util.getValue(state, 'gbx3.admin.isVolunteer');
   const volunteerID = util.getValue(state, 'gbx3.admin.volunteerID');
+  const breakpoint = util.getValue(state, 'gbx3.info.breakpoint');
+  const isMobile = breakpoint === 'mobile' ? true : false;
 
   return {
     isVolunteer,
@@ -486,7 +486,8 @@ function mapStateToProps(state, props) {
     kind: util.getValue(state, 'gbx3.info.kind', 'fundraiser'),
     gbxStyle: util.getValue(state, 'gbx3.globals.gbxStyle', {}),
     button: util.getValue(state, 'gbx3.globals.button', {}),
-    blocks: util.getValue(state, 'gbx3.blocks.article', {})
+    blocks: util.getValue(state, 'gbx3.blocks.article', {}),
+    isMobile
   }
 }
 
