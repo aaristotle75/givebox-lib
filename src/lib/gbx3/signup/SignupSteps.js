@@ -76,6 +76,7 @@ class SignupStepsForm extends React.Component {
     } else {
       // save to cookie
     }
+
     const completedStep = await this.stepCompleted(step);
     if (completedStep) {
       this.setState({ saving: false }, () => {
@@ -348,6 +349,7 @@ class SignupStepsForm extends React.Component {
         item.component =
           <div className='fieldGroup'>
             {this.props.richText('mission', {
+              name: 'mission',
               group: slug,
               style: { paddingTop: 0 },
               placeholder:
@@ -412,18 +414,16 @@ class SignupStepsForm extends React.Component {
           item.desc =
             <div>
               <p>{item.desc}</p>
-              <p>
-                <HelpfulTip
-                  headerIcon={<span className='icon icon-video'></span>}
-                  headerText={`An Image is Great, but with a Video it's Better`}
-                  style={{ marginTop: 20, marginBottom: 20 }}
-                  text={
-                    <span>
-                      If you have a video link handy we suggest you use it. An image is great, but a video brings your story to life.
-                    </span>
-                  }
-                />
-              </p>
+              <HelpfulTip
+                headerIcon={<span className='icon icon-video'></span>}
+                headerText={`An Image is Great, but with a Video it's Better`}
+                style={{ marginTop: 20, marginBottom: 20 }}
+                text={
+                  <span>
+                    If you have a video link handy we suggest you use it. An image is great, but a video brings your story to life.
+                  </span>
+                }
+              />
               <p><GBLink className='' onClick={() => console.log('video upload')}><span className='buttonAlignText'>Click Here to Add a Video <span className='icon icon-chevron-right'></span></span></GBLink></p>
             </div>
           ;
@@ -431,8 +431,8 @@ class SignupStepsForm extends React.Component {
         item.component =
           <div className='fieldGroup'>
             <MediaLibrary
-              image={orgLogo}
-              preview={orgLogo}
+              image={imageValue}
+              preview={imageValue}
               handleSaveCallback={(url) => this.handleImageSaveCallback(url, type, 'imageURL')}
               handleSave={util.handleFile}
               library={library}

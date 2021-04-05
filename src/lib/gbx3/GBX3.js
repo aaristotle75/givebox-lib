@@ -26,7 +26,8 @@ import {
   loadOrg,
   setStyle,
   setOrgStyle,
-  setCartOnLoad
+  setCartOnLoad,
+  loadOrgSignup
 } from './redux/gbx3actions';
 import {
   setCustomProp,
@@ -167,8 +168,7 @@ class GBX3 extends React.Component {
   }
 
   loadSignup() {
-    this.props.setLoading(false);
-    this.props.updateInfo({ display: 'signup', originTemplate: 'signup' });
+    this.props.loadOrgSignup();
   }
 
   loadBrowse(setCart = true) {
@@ -597,5 +597,6 @@ export default connect(mapStateToProps, {
   updateAdmin,
   toggleModal,
   setOrgStyle,
-  setCartOnLoad
+  setCartOnLoad,
+  loadOrgSignup
 })(GBX3);

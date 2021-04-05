@@ -27,7 +27,7 @@ export function gbx3(state = {
   pageSearch: {},
   pageState: {},
   orgSignup: {
-    step: 2,
+    step: 0,
     completed: [],
     fields: orgSignupFields,
     validTaxID: null,
@@ -121,26 +121,38 @@ export function gbx3(state = {
       return Object.assign({}, state, {
         loading: action.loading
       });
-    case types.UPDATE_ORG_SIGNUP:
+    case types.UPDATE_ORG_SIGNUP: {
+      const orgSignup = {
+        ...state.orgSignup,
+        ...action.orgSignup
+      };
+
+      // Set signup cookie
+      localStorage.setItem('signup', LZString.compressToUTF16(JSON.stringify(orgSignup)));
+
       return Object.assign({}, state, {
-        orgSignup: {
-          ...state.orgSignup,
-          ...action.orgSignup
-        }
+        orgSignup
       });
-    case types.UPDATE_ORG_SIGNUP_FIELD:
-      return Object.assign({}, state, {
-        orgSignup: {
-          ...state.orgSignup,
-          fields: {
-            ...state.orgSignup.fields,
-            [action.name]: {
-              ...state.orgSignup.fields[action.name],
-              ...action.fields
-            }
+    }
+    case types.UPDATE_ORG_SIGNUP_FIELD: {
+      const orgSignup = {
+        ...state.orgSignup,
+        fields: {
+          ...state.orgSignup.fields,
+          [action.name]: {
+            ...state.orgSignup.fields[action.name],
+            ...action.fields
           }
         }
+      };
+
+      // Set signup cookie
+      localStorage.setItem('signup', LZString.compressToUTF16(JSON.stringify(orgSignup)));
+
+      return Object.assign({}, state, {
+        orgSignup
       })
+    }
     case types.RESET_STYLE:
       return Object.assign({}, state, {
         globals: {

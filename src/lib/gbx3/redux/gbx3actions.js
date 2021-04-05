@@ -8,6 +8,7 @@ import { blockTemplates, defaultBlocks } from '../blocks/blockTemplates';
 import { createData } from '../admin/article/createTemplates';
 import { helperTemplates } from '../helpers/helperTemplates';
 import { builderStepsConfig } from '../admin/article/builderStepsConfig';
+import { signupSteps } from '../signup/signupConfig';
 import {
   defaultStyle,
   defaultOrgGlobals,
@@ -44,6 +45,35 @@ export function updateOrgSignupField(name, fields) {
     type: types.UPDATE_ORG_SIGNUP_FIELD,
     name,
     fields
+  }
+}
+
+export function loadOrgSignup() {
+  return async (dispatch, getState) => {
+    const signupFromCookie = LZString.decompressFromUTF16(localStorage.getItem('signup'));
+    const signupJSON = signupFromCookie ? JSON.parse(signupFromCookie) : {};
+    const orgSignup = {
+      ...util.getValue(getState(), 'gbx3.orgSignup', {}),
+      ...signupJSON
+    };
+
+    // Get the minimum not completed step
+    const stepsArray = [];
+    const numOfSteps = signupSteps.length - 1;
+
+    signupSteps.forEach((value, key) => {
+      stepsArray.push(key);
+    });
+    const uncompletedSteps = stepsArray.filter(item => !orgSignup.completed.includes(item));
+    const minStepNotCompleted = !util.isEmpty(uncompletedSteps) ? Math.min(...uncompletedSteps) : numOfSteps;
+
+    orgSignup.step = minStepNotCompleted;
+
+    const updated = await dispatch(updateOrgSignup(orgSignup));
+    if (updated) {
+      dispatch(setLoading(false));
+      dispatch(updateInfo({ display: 'signup', originTemplate: 'signup' }));
+    }
   }
 }
 
