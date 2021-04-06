@@ -30,17 +30,17 @@ const themeColor = {
   slug: 'themeColor',
   name: 'Theme Color',
   icon: 'sun',
-  title: 'Pick a Theme Color for Your Profile',
+  title: 'Pick a Theme Color',
   desc: 'Choose a color that compliments your Organization logo and/or branding.'
 };
 
 const logo = {
   type: 'org',
   slug: 'logo',
-  name: 'Profile Pic',
+  name: 'Upload Logo',
   icon: 'upload-cloud',
-  title: 'Upload an Image of Your Logo or a Profile Picture',
-  desc: 'A nice logo or profile picture makes you easily identifiable to your supporters.'
+  title: 'Upload an Image of Your Logo',
+  desc: 'A nice logo makes you easily identifiable to your supporters.'
 };
 
 const title = {
@@ -70,13 +70,22 @@ const account = {
   desc: `Please create a Givebox account to secure your Organization's profile and accept payments.`
 }
 
-const save = {
-  type: 'save',
-  slug: 'save',
-  name: 'Finish',
-  icon: 'save',
-  title: 'Finish Your Profile',
-  desc: 'You are almost done! Just click "Complete Profile" below.'
+const preview = {
+  type: 'preview',
+  slug: 'preview',
+  name: 'Preview',
+  icon: 'eye',
+  title: 'Preview Fundraiser',
+  desc: 'You are almost done! Just click "Share Your Fundraiser" below.'
+}
+
+const share = {
+  type: 'share',
+  slug: 'share',
+  name: 'Ready to Share',
+  icon: 'share',
+  title: 'Ready to Share!',
+  desc: 'You are almost done! Just click "Share Your Fundraiser" below.'
 }
 
 export const signupSteps = [
@@ -88,7 +97,8 @@ export const signupSteps = [
   title,
   image,
   account,
-  save
+  preview,
+  share
 ];
 
 export const orgSignupFields = {

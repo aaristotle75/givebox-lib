@@ -65,6 +65,7 @@ export default class Image extends Component {
       maxWidth,
       maxHeight,
       minHeight,
+      minWidth,
       draggable,
       debug
     } = this.props;
@@ -110,7 +111,7 @@ export default class Image extends Component {
     if (debug) console.log('execute render src', src);
 
     return (
-      <div onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} style={{ minHeight, width: maxSize, height: 'auto',  ...style, ...this.state.hoverStyle  }} className={`imageComponent ${className || ''}`}>
+      <div onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} style={{ minWidth, minHeight, width: maxSize, height: 'auto',  ...style, ...this.state.hoverStyle  }} className={`imageComponent ${className || ''}`}>
         {imageLoading  &&
           <div className='imageLoader'>
             <img src='https://s3-us-west-1.amazonaws.com/givebox/public/images/squareLoader.gif' alt='Loader' />
@@ -124,6 +125,7 @@ export default class Image extends Component {
 
 Image.defaultProps = {
   size: 'original',
+  minWidth: 10,
   minHeight: 10,
   maxSize: '100%',
   maxHeight: null,

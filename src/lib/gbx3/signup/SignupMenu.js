@@ -26,7 +26,7 @@ class SignupMenu extends React.Component {
     const items = [];
     Object.entries(config.signupSteps).forEach(([key, value]) => {
       const currentStep = +key === +step ? true : false;
-      const completedStep = completed.includes(+key) ? true : false;
+      const completedStep = completed.includes(value.slug) ? true : false;
       const stepNumber = <span className='number'>Step {+key + 1}</span>;
       items.push(
         <li
@@ -45,7 +45,7 @@ class SignupMenu extends React.Component {
 
     return (
       <ul className='builderMenuSteps'>
-        <li className='listHeader'>Create Profile Steps</li>
+        <li className='listHeader'>Create Fundraiser Steps</li>
         {items}
       </ul>
     )

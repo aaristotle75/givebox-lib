@@ -15,6 +15,7 @@ import {
 import OrgModalRoutes from '../OrgModalRoutes';
 import SignupMenu from './SignupMenu';
 import SignupPage from './SignupPage';
+import { signupSteps } from './signupConfig';
 
 class Signup extends React.Component {
 
@@ -44,7 +45,8 @@ class Signup extends React.Component {
     */
   }
 
-  openStep(step) {
+  openStep(value) {
+    const step = isNaN(value) ? signupSteps.findIndex(s => s.slug === value) : value;
     this.props.updateOrgSignup({ step });
     this.openSignupSteps();
   }
@@ -82,7 +84,7 @@ class Signup extends React.Component {
                   </div>
                 </div>
                 <SignupPage
-
+                  openStep={this.openStep}
                 />
                 {isMobile ? <div className='bottomOffset'>&nbsp;</div> : <></>}
               </div>

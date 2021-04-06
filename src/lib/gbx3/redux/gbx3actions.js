@@ -48,7 +48,7 @@ export function updateOrgSignupField(name, fields) {
   }
 }
 
-export function loadOrgSignup() {
+export function loadOrgSignup(forceStep = null) {
   return async (dispatch, getState) => {
     const signupFromCookie = LZString.decompressFromUTF16(localStorage.getItem('signup'));
     const signupJSON = signupFromCookie ? JSON.parse(signupFromCookie) : {};
@@ -58,16 +58,17 @@ export function loadOrgSignup() {
     };
 
     // Get the minimum not completed step
-    const stepsArray = [];
     const numOfSteps = signupSteps.length - 1;
+    const uncompletedSteps = [];
 
     signupSteps.forEach((value, key) => {
-      stepsArray.push(key);
+      if (!orgSignup.completed.includes(value.slug)) {
+        uncompletedSteps.push(key);
+      }
     });
-    const uncompletedSteps = stepsArray.filter(item => !orgSignup.completed.includes(item));
     const minStepNotCompleted = !util.isEmpty(uncompletedSteps) ? Math.min(...uncompletedSteps) : numOfSteps;
 
-    orgSignup.step = minStepNotCompleted;
+    orgSignup.step = forceStep || minStepNotCompleted;
 
     const updated = await dispatch(updateOrgSignup(orgSignup));
     if (updated) {

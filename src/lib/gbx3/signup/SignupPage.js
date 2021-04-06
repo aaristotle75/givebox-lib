@@ -20,17 +20,27 @@ class SignupPage extends React.Component {
   render() {
 
     const {
-      org
+      org,
+      gbx3,
+      completed
     } = this.props;
 
-    const orgName = util.getValue(org, 'orgName', 'Your Organization Name');
+    const orgName = util.getValue(org, 'name', 'Your Organization Name');
     const coverPhotoUrl = util.getValue(org, 'coverPhoto');
-    const profilePictureUrl = util.getValue(org, 'orgLogo');
+    const profilePictureUrl = util.getValue(org, 'imageURL');
 
     const library = {
       saveMediaType: 'signup',
       borderRadius: 0
     };
+
+    const title = util.getValue(gbx3, 'title');
+    let titleText = title || 'Create Your First Fundraiser';
+
+    const tag = title ? 'Donate' : `How do I raise money?`;
+    const imageURL = util.getValue(gbx3, 'imageURL', 'https://cdn.givebox.com/givebox/public/images/backgrounds/raise-fundraiser-lg.png');
+    const buttonText = title && imageURL ? 'Edit' : completed.includes('title') ? 'Add an Image/Video' : 'Add a Fundraiser Title';
+    const ctaButtonText = title ? 'Donate Now' : 'Click to Edit';
 
     return (
       <div className='gbx3OrgContentContainer'>
@@ -46,26 +56,20 @@ class SignupPage extends React.Component {
                   <Image imgID='coverPhoto' size='large' url={coverPhotoUrl} maxSize='950px' alt='Cover Photo' />
                 : null }
               </div>
-              <ModalLink
-                id='orgSignupSteps'
-                type='div'
+              <div
                 className='profilePictureContainer orgAdminEdit'
-                opts={{
-                  stepName: 'orgLogo',
-                  saveCallback: (name, url) => {
-                    console.log('execute saveCallback -> ', url);
-                  },
-                  saveMediaType: 'signup'
+                onClick={() => {
+                  this.props.openStep('logo');
                 }}
               >
                 <button className='tooltip blockEditButton'>
                   <span className='tooltipTop'><i />Click to { profilePictureUrl ? 'EDIT' : 'ADD' } Profile Picture</span>
                   <span className='icon icon-camera'></span>
                 </button>
-              </ModalLink>
+              </div>
               <div className='profilePictureContainer'>
                 { profilePictureUrl ?
-                  <Image url={profilePictureUrl} size='medium' maxSize='160px' alt='Profile Picture' imgStyle={{ minWidth: 160, borderRadius: '50%' }}/>
+                  <Image url={profilePictureUrl} size='medium' maxSize='160px' alt='Profile Picture' imgStyle={{ minWidth: 160, minHeight: 160, borderRadius: '50%' }}/>
                 :
                   <div className='defaultProfilePicture'><span className={`icon icon-camera`}></span></div>
                 }
@@ -106,21 +110,52 @@ class SignupPage extends React.Component {
             <div className='gbx3OrgPages'>
               <div className='pageContentWrapper'>
                 <div className={`pageContentSection top`}>
-                  {/*
-                  <div className='flexCenter flexColumn'>
-                    <h2>Welcome to your Givebox Profile.</h2>
-                    <span>Complete your profile, start a fundraiser, and share it.</span>
-                    <span>You could receive your first donation today if you follow our simple steps!</span>
-                  </div>
-                  */}
+                  {/* Top Page Content */}
                 </div>
                 <div className='pageListWrapper'>
-                  <CreateArticleCard
-                    signup={true}
-                    noOrgIDCallback={() => {
-                      console.log('execute -> no org id callback');
-                    }}
-                  />
+                  <div className={`listItem createArticleCard`}>
+                    <div className='articleCard'>
+                      <div
+                        onClick={() => {
+                          if (!completed.includes('title')) this.props.openStep('title');
+                          else this.props.openStep('image');
+                        }}
+                        className='articleCardEdit orgAdminEdit'
+                      >
+                        <button className='tooltip blockEditButton'>
+                          <span className='tooltipTop'><i />Click to {buttonText}</span>
+                          <span className='icon icon-plus'></span>
+                        </button>
+                      </div>
+                      <div className='articleCardContainer'>
+                        <div className='cardPhotoContainer'>
+                          <div className='cardPhotoImage'>
+                            <Image imgID='cardPhoto' url={imageURL} maxWidth='325px' size='medium' alt='Card Photo' />
+                          </div>
+                        </div>
+                        <div className='cardInfoContainer'>
+                          <div className='cardArticleTag'>
+                            {tag}
+                          </div>
+                          <div className='cardInfo'>
+                          </div>
+                        </div>
+                        <div className='cardTitleContainer'>
+                          <h2>{titleText}</h2>
+                        </div>
+                        <div className='cardKindSpecificContainer'>
+                          <div className={`cardKindSpecific cardKindEventWhere`}>
+                            {/* extra context */}
+                          </div>
+                        </div>
+                        <div className='cardButtonContainer'>
+                          <div className='cardButton'>
+                            {ctaButtonText}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -140,10 +175,15 @@ class SignupPage extends React.Component {
 
 function mapStateToProps(state, props) {
 
-  const org = util.getValue(state, 'gbx3.orgSignup.org', {});
+  const orgSignup = util.getValue(state, 'gbx3.orgSignup', {});
+  const org = util.getValue(orgSignup, 'fields.org', {});
+  const gbx3 = util.getValue(orgSignup, 'fields.gbx3', {});
+  const completed = util.getValue(orgSignup, 'completed', []);
 
   return {
-    org
+    org,
+    gbx3,
+    completed
   }
 }
 

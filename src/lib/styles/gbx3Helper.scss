@@ -250,6 +250,10 @@ $gbx3StepsBreakpoint: 600px;
 
 .gbx3Steps {
 
+  .statsTab button.panelTab.selected {
+    @include animation(pulsateSlightlyBrighter 2s ease-out infinite);
+  }
+
   p {
     margin: 15px 0;
   }

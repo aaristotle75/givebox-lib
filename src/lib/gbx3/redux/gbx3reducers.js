@@ -27,7 +27,7 @@ export function gbx3(state = {
   pageSearch: {},
   pageState: {},
   orgSignup: {
-    step: 0,
+    step: 6,
     completed: [],
     fields: orgSignupFields,
     validTaxID: null,

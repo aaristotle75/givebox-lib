@@ -3,8 +3,11 @@ import { connect } from 'react-redux';
 import * as config from './signupConfig';
 import Form from '../../form/Form';
 import Dropdown from '../../form/Dropdown';
+import TextField from '../../form/TextField';
 import MediaLibrary from '../../form/MediaLibrary';
+import Video from '../../common/Video';
 import * as util from '../../common/utility';
+import Tabs, { Tab } from '../../common/Tabs';
 import Loader from '../../common/Loader';
 import * as _v from '../../form/formValidate';
 import GBLink from '../../common/GBLink';
@@ -19,6 +22,7 @@ import {
   getResource
 } from '../../api/helpers';
 import { PhotoshopPicker } from 'react-color-aaristotle';
+import AnimateHeight from 'react-animate-height';
 
 class SignupStepsForm extends React.Component {
 
@@ -33,18 +37,71 @@ class SignupStepsForm extends React.Component {
     this.nextStep = this.nextStep.bind(this);
     this.validateTaxID = this.validateTaxID.bind(this);
     this.handleImageSaveCallback = this.handleImageSaveCallback.bind(this);
+    this.onChangeVideo = this.onChangeVideo.bind(this);
+    this.renderVideo = this.renderVideo.bind(this);
+    this.videoOnReady = this.videoOnReady.bind(this);
+    this.callbackAfter = this.callbackAfter.bind(this);
+
+    const videoURL = util.getValue(props.fields, 'gbx3.videoURL');
+
     this.state = {
+      videoURL,
       themeColor: util.getValue(props.fields, 'org.themeColor', '#698df4'),
       editorOpen: false,
       error: false,
       categoryIDError: false,
-      saving: false
+      saving: false,
+      mediaType: util.getValue(props.fields, 'gbx3.mediaType', 'image'),
+      videoURLFieldValue: videoURL,
+      video: {
+        validated: _v.validateURL(videoURL) ? true : false,
+        error: false
+      },
+      videoLoading: false
     };
     this.allowNextStep = false;
     this.totalSignupSteps = +(config.signupSteps.length - 1);
   }
 
   componentDidMount() {
+    this.videoLoading();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.videoURL !== this.state.videoURL && this.state.video.validated && this.state.mediaType === 'video') {
+      this.videoLoading();
+    }
+  }
+
+  videoOnReady() {
+    this.setState({ videoLoading: false });
+  }
+
+  videoLoading() {
+    const {
+      video,
+      videoURL,
+      mediaType
+    } = this.state;
+
+    if (mediaType === 'video' && videoURL && video.validated) {
+      this.setState({ videoLoading: true });
+    }
+  }
+
+  onChangeVideo(e) {
+    const URL = e.currentTarget.value;
+    const videoURLFieldValue = URL;
+    const video = this.state.video;
+    video.validated = _v.validateURL(URL) ? true : false;
+    const videoURL = video.validated ? URL : '';
+    if (video.error) video.error = false;
+    this.setState({ video, videoURL, videoURLFieldValue });
+  }
+
+  callbackAfter(tab) {
+    this.setState({ mediaType: tab });
+    this.videoLoading();
   }
 
   categories() {
@@ -64,9 +121,8 @@ class SignupStepsForm extends React.Component {
     console.log('execute -> ', obj);
   }
 
-  async saveStep(group, error = false, delay = 1000) {
+  async saveStep(step, error = false, delay = 1000) {
     const {
-      step,
       orgSignup
     } = this.props;
 
@@ -232,6 +288,13 @@ class SignupStepsForm extends React.Component {
 
   renderStep() {
     const {
+      mediaType,
+      videoURLFieldValue,
+      video,
+      videoURL
+    } = this.state;
+
+    const {
       step,
       open,
       isMobile
@@ -261,19 +324,13 @@ class SignupStepsForm extends React.Component {
 
     const {
       title,
-      imageURL,
-      videoURL,
-      mediaType
+      imageURL
     } = gbx3;
 
-    const library = {
-      saveMediaType: 'signup',
-      borderRadius: 0
-    };
     const stepConfig = util.getValue(config.signupSteps, step, {});
     const slug = util.getValue(stepConfig, 'slug');
     const stepNumber = +step + 1;
-    const completed = this.props.completed.includes(step) ? true : false;
+    const completed = this.props.completed.includes(slug) ? true : false;
     const firstStep = step === 0 ? true : false;
     const lastStep = step === this.props.steps ? true : false;
 
@@ -284,6 +341,11 @@ class SignupStepsForm extends React.Component {
       component: <div></div>,
       className: '',
       saveButtonLabel: <span className='buttonAlignText'>Save & Continue to Next Step <span className='icon icon-chevron-right'></span></span>
+    };
+
+    const library = {
+      saveMediaType: 'signup',
+      borderRadius: 0
     };
 
     switch (slug) {
@@ -406,34 +468,13 @@ class SignupStepsForm extends React.Component {
         break;
       }
 
-      case 'image':
       case 'logo': {
-        const type = slug === 'logo' ? 'org' : 'gbx3';
-        const imageValue = slug === 'logo' ? orgLogo : imageURL;
-        if (slug === 'image') {
-          item.desc =
-            <div>
-              <p>{item.desc}</p>
-              <HelpfulTip
-                headerIcon={<span className='icon icon-video'></span>}
-                headerText={`An Image is Great, but with a Video it's Better`}
-                style={{ marginTop: 20, marginBottom: 20 }}
-                text={
-                  <span>
-                    If you have a video link handy we suggest you use it. An image is great, but a video brings your story to life.
-                  </span>
-                }
-              />
-              <p><GBLink className='' onClick={() => console.log('video upload')}><span className='buttonAlignText'>Click Here to Add a Video <span className='icon icon-chevron-right'></span></span></GBLink></p>
-            </div>
-          ;
-        }
         item.component =
           <div className='fieldGroup'>
             <MediaLibrary
-              image={imageValue}
-              preview={imageValue}
-              handleSaveCallback={(url) => this.handleImageSaveCallback(url, type, 'imageURL')}
+              image={orgLogo}
+              preview={orgLogo}
+              handleSaveCallback={(url) => this.handleImageSaveCallback(url, 'org', 'imageURL')}
               handleSave={util.handleFile}
               library={library}
               showBtns={'hide'}
@@ -449,6 +490,81 @@ class SignupStepsForm extends React.Component {
               bottomLabel={'Drag & Drop Image'}
               labelIcon={<span className='icon icon-instagram'></span>}
             />
+          </div>
+        ;
+        break;
+      }
+
+      case 'image': {
+        item.desc =
+          <div>
+            <p>{item.desc}</p>
+            <HelpfulTip
+              headerIcon={<span className='icon icon-video'></span>}
+              headerText={`An Image is Great, but with a Video Your Fundraiser Excels`}
+              style={{ marginTop: 20, marginBottom: 20 }}
+              text={
+                <span>
+                  If you have a video link handy we suggest you use it. An image is great, but a video brings your story to life.
+                </span>
+              }
+            />
+          </div>
+        ;
+        item.component =
+          <div className='fieldGroup'>
+            <Tabs
+              default={mediaType}
+              className='statsTab'
+              callbackAfter={this.callbackAfter}
+            >
+              <Tab id='image' className='showOnMobile' label={<span className='stepLabel buttonAlignText'>Use an Image <span className='icon icon-instagram'></span></span>}>
+                <MediaLibrary
+                  image={imageURL}
+                  preview={imageURL}
+                  handleSaveCallback={(url) => this.handleImageSaveCallback(url, 'gbx3', 'imageURL')}
+                  handleSave={util.handleFile}
+                  library={library}
+                  showBtns={'hide'}
+                  saveLabel={'close'}
+                  mobile={isMobile ? true : false }
+                  uploadOnly={true}
+                  uploadEditorSaveStyle={{ width: 250 }}
+                  uploadEditorSaveLabel={'Click Here to Save Image'}
+                  imageEditorOpenCallback={(editorOpen) => {
+                    this.setState({ editorOpen })
+                  }}
+                  topLabel={'Click to Add Image'}
+                  bottomLabel={'Drag & Drop Image'}
+                  labelIcon={<span className='icon icon-instagram'></span>}
+                />
+              </Tab>
+              <Tab id='video' className='showOnMobile' label={<span className='stepLabel buttonAlignText'>Use a Video <span className='icon icon-video'></span></span>}>
+                <TextField
+                  name='video'
+                  label='Embed Video URL'
+                  fixedLabel={false}
+                  placeholder='Click Here to Enter a Video URL'
+                  onChange={this.onChangeVideo}
+                  value={videoURLFieldValue}
+                />
+                <div className='fieldContext'>
+                  Please enter a YouTube, Vimeo, Facebook Video URL.
+                </div>
+                <AnimateHeight
+                  duration={200}
+                  height={video.validated && videoURL ? 'auto' : 0}
+                >
+                  <div className='input-group'>
+                    <label className='label'>Video Preview</label>
+                    <div style={{ marginTop: 10 }} className='flexCenter'>
+                      {/* Test video: https://vimeo.com/176050010  https://youtu.be/pAj-chxg610 */}
+                      {mediaType === 'video' ? this.renderVideo() : <></>}
+                    </div>
+                  </div>
+                </AnimateHeight>
+              </Tab>
+            </Tabs>
           </div>
         ;
         break;
@@ -520,13 +636,27 @@ class SignupStepsForm extends React.Component {
         break;
       }
 
-      case 'image': {
-
+      case 'preview': {
+        item.saveButtonLabel = <span className='buttonAlignText'>Looks Good! Continue to Next Step <span className='icon icon-chevron-right'></span></span>;
+        item.className = 'preview';
+        item.desc = !this.state.previewLoaded ?
+          'Please wait while the preview loads...'
+          :
+          <div>
+            <span>This is how the form will look to your supporters.</span>
+            <span style={{ marginTop: 10, display: 'block' }}><GBLink style={{ fontSize: 14, display: 'inline' }} onClick={() => console.log('execute edit')}>Edit Form</GBLink></span>
+          </div>
+        ;
+        item.component =
+          <div className='stagePreview flexCenter'>
+            Show Preview
+          </div>
+        ;
         break;
       }
 
-      case 'save': {
-
+      case 'share': {
+        item.saveButtonLabel = <span className='buttonAlignText'>Share Your Fundraiser <span className='icon icon-chevron-right'></span></span>
         break;
       }
 
@@ -578,6 +708,43 @@ class SignupStepsForm extends React.Component {
         </div> : null }
       </div>
     );
+  }
+
+  renderVideo(preview = false) {
+    const {
+      video,
+      videoURL,
+      videoLoading
+    } = this.state;
+
+    if (video.validated) {
+      return (
+        <div className='videoContainer'>
+          { videoLoading ?
+          <div className='imageLoader'>
+            <img src='https://s3-us-west-1.amazonaws.com/givebox/public/images/squareLoader.gif' alt='Loader' />
+          </div> : null }
+          <Video
+            playing={false}
+            url={videoURL}
+            onReady={this.videoOnReady}
+            style={{
+              maxWidth: '100%',
+              maxHeight: 'auto'
+            }}
+            maxHeight={'auto'}
+            preview={true}
+          />
+        </div>
+      )
+    } else {
+      return (
+        <div className='mediaPlaceholder'>
+          <span className='icon icon-video'></span>
+          No Preview Available
+        </div>
+      )
+    }
   }
 
   render() {
