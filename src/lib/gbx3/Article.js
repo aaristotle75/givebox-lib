@@ -36,6 +36,9 @@ class Article extends React.Component {
     this.widthChange = this.widthChange.bind(this);
     this.layoutChange = this.layoutChange.bind(this);
     this.gridRef = React.createRef();
+    this.state = {
+      allowLayoutSave: false
+    };
   }
 
   componentDidMount() {
@@ -154,6 +157,7 @@ class Article extends React.Component {
     const {
       breakpoint,
       editable,
+      allowLayoutSave,
       blockType
     } = this.props;
 
@@ -176,17 +180,20 @@ class Article extends React.Component {
           }
         }
       });
-      if (editable) {
+      if (editable && allowLayoutSave) {
         const updated = [];
         const layoutsUpdated = await this.props.updateLayouts(blockType, layouts);
         const blocksUpdated = await this.props.updateBlocks(blockType, blocks);
         if (layoutsUpdated) updated.push('layoutsUpdated');
         if (blocksUpdated) updated.push('blocksUpdated');
-        if (updated.length === 2) this.props.saveGBX3(blockType, {
-          callback: () => {
-            //this.props.setStyle();
-          }
-        });
+        if (updated.length === 2) {
+          this.props.saveGBX3(blockType, {
+            callback: () => {
+              //this.props.setStyle();
+            }
+          });
+        }
+        this.props.updateAdmin({ allowLayoutSave: false });
       } else {
         this.props.updateLayouts(blockType, layouts);
       }
@@ -359,6 +366,12 @@ class Article extends React.Component {
               cols={{desktop: 12, mobile: 6}}
               rowHeight={10}
               onLayoutChange={this.layoutChange}
+              onDragStart={() => {
+                this.props.updateAdmin({ allowLayoutSave: true });
+              }}
+              onResizeStart={() => {
+                this.props.updateAdmin({ allowLayoutSave: true });
+              }}
               onBreakpointChange={this.onBreakpointChange}
               onWidthChange={this.widthChange}
               isDraggable={editable}
@@ -407,6 +420,7 @@ function mapStateToProps(state, props) {
   const blocks = util.getValue(gbx3, `blocks.${blockType}`, {});
   const hasAccessToEdit = util.getValue(admin, 'hasAccessToEdit');
   const editable = util.getValue(admin, 'editable');
+  const allowLayoutSave = util.getValue(admin, 'allowLayoutSave');
   const preventCollision = util.getValue(admin, 'preventCollision');
   const verticalCompact = util.getValue(admin, 'verticalCompact');
   const outline = util.getValue(admin, 'outline');
@@ -418,6 +432,7 @@ function mapStateToProps(state, props) {
     hasAccessToEdit,
     layouts,
     editable,
+    allowLayoutSave,
     preventCollision,
     verticalCompact,
     outline,

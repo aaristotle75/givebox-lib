@@ -160,7 +160,9 @@ class Backgrounds extends Component {
       const backgroundUpdated = await this.props.updateBackground(0, {
         height: rect.height
       });
-      if (backgroundUpdated) this.props.saveGBX3(blockType);
+      if (backgroundUpdated) {
+        this.props.saveGBX3(blockType);
+      }
     }
   }
 

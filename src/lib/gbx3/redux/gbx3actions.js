@@ -220,7 +220,7 @@ export function addBlock(blockType, type, w = 0, h = 0, ref, callback) {
       dispatch(updateAvailableBlocks(blockType, availableBlocks));
       const blockUpdated = await dispatch(updateBlock(blockType, blockName, newBlock));
       if (blockUpdated) {
-        dispatch(updateAdmin({ editBlock: `${blockType}-${blockName}`, editBlockJustAdded: true }));
+        dispatch(updateAdmin({ allowLayoutSave: true, editBlock: `${blockType}-${blockName}`, editBlockJustAdded: true }));
         dispatch(toggleModal(`modalBlock-${blockType}-${blockName}`, true));
         if (callback) callback();
       }
@@ -240,6 +240,7 @@ export function removeBlock(blockType, name, callback) {
         availableBlocks.push(name);
       }
     }
+    dispatch(updateAdmin({ allowLayoutSave: true }));
     dispatch(updateAvailableBlocks(blockType, availableBlocks));
     dispatch(deleteBlock(name, blockType));
   }
