@@ -58,7 +58,7 @@ class GBXTest extends Component {
         <div>
           <GBX3
             browse={false}
-            blockType={'article'}
+            blockType={'org'}
             orgID={orgID}
             articleID={articleID}
             saveCallback={this.saveCallback}
