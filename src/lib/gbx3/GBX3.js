@@ -167,7 +167,7 @@ class GBX3 extends React.Component {
   }
 
   loadSignup() {
-    this.props.loadOrgSignup();
+    this.props.loadOrgSignup(6);
   }
 
   loadBrowse(setCart = true) {

@@ -315,7 +315,8 @@ class MediaLibrary extends Component {
       topLabel,
       labelIcon,
       bottomLabel,
-      className
+      className,
+      formError
     } = this.props;
 
     const {
@@ -345,7 +346,7 @@ class MediaLibrary extends Component {
             <div className='menu'>
               <div className='menu-group'>
                 <Dropzone
-                  className={`dropzone ${error ? 'error' : ''}`}
+                  className={`dropzone ${error || formError ? 'error' : ''}`}
                   onDrop={this.handleDrop}
                   onDropAccepted={this.handleDropAccepted}
                   onDropRejected={this.handleDropRejected}

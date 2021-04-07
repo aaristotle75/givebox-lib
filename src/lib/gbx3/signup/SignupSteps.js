@@ -6,6 +6,7 @@ import Dropdown from '../../form/Dropdown';
 import TextField from '../../form/TextField';
 import MediaLibrary from '../../form/MediaLibrary';
 import Video from '../../common/Video';
+import EditVideo from '../admin/common/EditVideo';
 import * as util from '../../common/utility';
 import Tabs, { Tab } from '../../common/Tabs';
 import Loader from '../../common/Loader';
@@ -36,72 +37,26 @@ class SignupStepsForm extends React.Component {
     this.previousStep = this.previousStep.bind(this);
     this.nextStep = this.nextStep.bind(this);
     this.validateTaxID = this.validateTaxID.bind(this);
-    this.handleImageSaveCallback = this.handleImageSaveCallback.bind(this);
-    this.onChangeVideo = this.onChangeVideo.bind(this);
-    this.renderVideo = this.renderVideo.bind(this);
-    this.videoOnReady = this.videoOnReady.bind(this);
+    this.handleMediaSaveCallback = this.handleMediaSaveCallback.bind(this);
     this.callbackAfter = this.callbackAfter.bind(this);
 
-    const videoURL = util.getValue(props.fields, 'gbx3.videoURL');
-
     this.state = {
-      videoURL,
       themeColor: util.getValue(props.fields, 'org.themeColor', '#698df4'),
       editorOpen: false,
       error: false,
       categoryIDError: false,
       saving: false,
       mediaType: util.getValue(props.fields, 'gbx3.mediaType', 'image'),
-      videoURLFieldValue: videoURL,
-      video: {
-        validated: _v.validateURL(videoURL) ? true : false,
-        error: false
-      },
-      videoLoading: false
+      mediaTypeError: null
     };
     this.allowNextStep = false;
     this.totalSignupSteps = +(config.signupSteps.length - 1);
   }
 
-  componentDidMount() {
-    this.videoLoading();
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.videoURL !== this.state.videoURL && this.state.video.validated && this.state.mediaType === 'video') {
-      this.videoLoading();
-    }
-  }
-
-  videoOnReady() {
-    this.setState({ videoLoading: false });
-  }
-
-  videoLoading() {
-    const {
-      video,
-      videoURL,
-      mediaType
-    } = this.state;
-
-    if (mediaType === 'video' && videoURL && video.validated) {
-      this.setState({ videoLoading: true });
-    }
-  }
-
-  onChangeVideo(e) {
-    const URL = e.currentTarget.value;
-    const videoURLFieldValue = URL;
-    const video = this.state.video;
-    video.validated = _v.validateURL(URL) ? true : false;
-    const videoURL = video.validated ? URL : '';
-    if (video.error) video.error = false;
-    this.setState({ video, videoURL, videoURLFieldValue });
-  }
-
   callbackAfter(tab) {
-    this.setState({ mediaType: tab });
-    this.videoLoading();
+    this.props.formProp({ error: false });
+    this.setState({ mediaType: tab, mediaTypeError: null });
+    this.props.updateOrgSignupField('gbx3', { mediaType: tab });
   }
 
   categories() {
@@ -156,7 +111,8 @@ class SignupStepsForm extends React.Component {
     } = this.props;
 
     const {
-      themeColor
+      themeColor,
+      mediaType
     } = this.state;
 
     const {
@@ -195,11 +151,25 @@ class SignupStepsForm extends React.Component {
       }
 
       case 'image': {
-        if (!gbx3.imageURL) {
-          this.props.formProp({ error: true, errorMsg: 'Please upload an image to continue.'});
-          return this.setState({ saving: false });
-        } else {
-          return this.saveStep('image');
+        switch (mediaType) {
+          case 'video': {
+            if (!gbx3.videoURL) {
+              this.props.formProp({ error: true, errorMsg: 'Please enter a video url to continue.'});
+              return this.setState({ saving: false, mediaTypeError: 'video' });
+            } else {
+              return this.saveStep('image');
+            }
+          }
+
+          case 'image':
+          default: {
+            if (!gbx3.imageURL) {
+              this.props.formProp({ error: true, errorMsg: 'Please upload an image to continue.'});
+              return this.setState({ saving: false, mediaTypeError: 'image' });
+            } else {
+              return this.saveStep('image');
+            }
+          }
         }
       }
 
@@ -253,10 +223,9 @@ class SignupStepsForm extends React.Component {
     });
   }
 
-  async handleImageSaveCallback(url, name, field) {
+  handleMediaSaveCallback(url, name, field) {
     this.props.formProp({ error: false });
-    const updated = await this.props.updateOrgSignupField(name, { [field]: url });
-    //if (updated) this.saveStep('logo', false, 3000);
+    this.props.updateOrgSignupField(name, { [field]: url });
   }
 
   gotoNextStep() {
@@ -289,9 +258,7 @@ class SignupStepsForm extends React.Component {
   renderStep() {
     const {
       mediaType,
-      videoURLFieldValue,
-      video,
-      videoURL
+      mediaTypeError
     } = this.state;
 
     const {
@@ -324,7 +291,8 @@ class SignupStepsForm extends React.Component {
 
     const {
       title,
-      imageURL
+      imageURL,
+      videoURL
     } = gbx3;
 
     const stepConfig = util.getValue(config.signupSteps, step, {});
@@ -474,7 +442,7 @@ class SignupStepsForm extends React.Component {
             <MediaLibrary
               image={orgLogo}
               preview={orgLogo}
-              handleSaveCallback={(url) => this.handleImageSaveCallback(url, 'org', 'imageURL')}
+              handleSaveCallback={(url) => this.handleMediaSaveCallback(url, 'org', 'imageURL')}
               handleSave={util.handleFile}
               library={library}
               showBtns={'hide'}
@@ -522,7 +490,10 @@ class SignupStepsForm extends React.Component {
                 <MediaLibrary
                   image={imageURL}
                   preview={imageURL}
-                  handleSaveCallback={(url) => this.handleImageSaveCallback(url, 'gbx3', 'imageURL')}
+                  handleSaveCallback={(url) => {
+                    this.setState({ mediaTypeError: null });
+                    this.handleMediaSaveCallback(url, 'gbx3', 'imageURL');
+                  }}
                   handleSave={util.handleFile}
                   library={library}
                   showBtns={'hide'}
@@ -537,32 +508,22 @@ class SignupStepsForm extends React.Component {
                   topLabel={'Click to Add Image'}
                   bottomLabel={'Drag & Drop Image'}
                   labelIcon={<span className='icon icon-instagram'></span>}
+                  formError={mediaTypeError === 'image' ? true : false}
                 />
               </Tab>
               <Tab id='video' className='showOnMobile' label={<span className='stepLabel buttonAlignText'>Use a Video <span className='icon icon-video'></span></span>}>
-                <TextField
-                  name='video'
-                  label='Embed Video URL'
-                  fixedLabel={false}
-                  placeholder='Click Here to Enter a Video URL'
-                  onChange={this.onChangeVideo}
-                  value={videoURLFieldValue}
+                <EditVideo
+                  videoURL={videoURL}
+                  onChange={() => {
+                    this.setState({ mediaTypeError: null });
+                  }}
+                  onBlur={(url, validated) => {
+                    if (url && validated) {
+                      this.handleMediaSaveCallback(url, 'gbx3', 'videoURL');
+                    }
+                  }}
+                  error={mediaTypeError === 'video' ? true : false}
                 />
-                <div className='fieldContext'>
-                  Please enter a YouTube, Vimeo, Facebook Video URL.
-                </div>
-                <AnimateHeight
-                  duration={200}
-                  height={video.validated && videoURL ? 'auto' : 0}
-                >
-                  <div className='input-group'>
-                    <label className='label'>Video Preview</label>
-                    <div style={{ marginTop: 10 }} className='flexCenter'>
-                      {/* Test video: https://vimeo.com/176050010  https://youtu.be/pAj-chxg610 */}
-                      {mediaType === 'video' ? this.renderVideo() : <></>}
-                    </div>
-                  </div>
-                </AnimateHeight>
               </Tab>
             </Tabs>
           </div>
@@ -708,43 +669,6 @@ class SignupStepsForm extends React.Component {
         </div> : null }
       </div>
     );
-  }
-
-  renderVideo(preview = false) {
-    const {
-      video,
-      videoURL,
-      videoLoading
-    } = this.state;
-
-    if (video.validated) {
-      return (
-        <div className='videoContainer'>
-          { videoLoading ?
-          <div className='imageLoader'>
-            <img src='https://s3-us-west-1.amazonaws.com/givebox/public/images/squareLoader.gif' alt='Loader' />
-          </div> : null }
-          <Video
-            playing={false}
-            url={videoURL}
-            onReady={this.videoOnReady}
-            style={{
-              maxWidth: '100%',
-              maxHeight: 'auto'
-            }}
-            maxHeight={'auto'}
-            preview={true}
-          />
-        </div>
-      )
-    } else {
-      return (
-        <div className='mediaPlaceholder'>
-          <span className='icon icon-video'></span>
-          No Preview Available
-        </div>
-      )
-    }
   }
 
   render() {

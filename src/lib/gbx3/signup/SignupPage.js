@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as util from '../../common/utility';
 import Image from '../../common/Image';
-import CreateArticleCard from '../pages/CreateArticleCard';
+import Video from '../../common/Video';
 import ModalLink from '../../modal/ModalLink';
 import Footer from '../Footer';
 
@@ -39,8 +39,25 @@ class SignupPage extends React.Component {
 
     const tag = title ? 'Donate' : `How do I raise money?`;
     const imageURL = util.getValue(gbx3, 'imageURL', 'https://cdn.givebox.com/givebox/public/images/backgrounds/raise-fundraiser-lg.png');
+    const videoURL = util.getValue(gbx3, 'videoURL');
+    const mediaType = util.getValue(gbx3, 'mediaType', 'image');
     const buttonText = title && imageURL ? 'Edit' : completed.includes('title') ? 'Add an Image/Video' : 'Add a Fundraiser Title';
     const ctaButtonText = title ? 'Donate Now' : 'Click to Edit';
+
+    const media = videoURL && mediaType === 'video' ?
+      <Video
+        playing={false}
+        url={videoURL}
+        style={{
+          maxWidth: '100%',
+          maxHeight: 'auto'
+        }}
+        maxHeight={'auto'}
+        light={true}
+      />
+    :
+      <Image imgID='cardPhoto' url={imageURL} maxWidth='325px' size='medium' alt='Card Photo' />
+    ;
 
     return (
       <div className='gbx3OrgContentContainer'>
@@ -130,7 +147,7 @@ class SignupPage extends React.Component {
                       <div className='articleCardContainer'>
                         <div className='cardPhotoContainer'>
                           <div className='cardPhotoImage'>
-                            <Image imgID='cardPhoto' url={imageURL} maxWidth='325px' size='medium' alt='Card Photo' />
+                            {media}
                           </div>
                         </div>
                         <div className='cardInfoContainer'>

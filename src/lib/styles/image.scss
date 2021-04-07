@@ -224,6 +224,18 @@ button.imageCover {
   color: $med-blue-gray;
 }
 
+.dropzone.error {
+  border: 2px dashed $red !important;
+
+  .text {
+    color: $red !important;
+  }
+
+  .icon {
+    color: $red !important;
+  }
+}
+
 .dropzoneImageContainer {
   display: flex;
   flex-direction: column;
