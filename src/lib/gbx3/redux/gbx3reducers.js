@@ -63,6 +63,7 @@ export function gbx3(state = {
   data: {},
   orgData: {},
   admin: {
+    allowLayoutSave: false,
     loadingLayout: true,
     editBlock: '',
     editBlockJustAdded: false,
