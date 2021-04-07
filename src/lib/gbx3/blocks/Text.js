@@ -9,6 +9,7 @@ import Editor from './Editor';
 import Button from './Button';
 import ButtonEdit from './ButtonEdit';
 import { toggleModal } from '../../api/actions';
+import { blockTemplates } from './blockTemplates';
 
 class Text extends Component {
 
@@ -69,7 +70,10 @@ class Text extends Component {
 
   closeEditModal(type = 'save') {
     const {
-      block
+      name,
+      block,
+      blockType,
+      kind
     } = this.props;
 
     const {
@@ -80,9 +84,12 @@ class Text extends Component {
       hasBeenUpdated
     } = this.state;
     if (type !== 'cancel') {
+      const blockTemplateConfig = util.getValue(blockTemplates, `${blockType}.${kind}.${name}`, {});
+      const blockTemplate = !util.isEmpty(blockTemplateConfig) ? blockTemplateConfig : block;
+
       const data = {};
-      const updateOptions = util.getValue(block, 'updateOptions');
-      const updateMax = util.getValue(block, 'updateMax');
+      const updateOptions = util.getValue(blockTemplate, 'updateOptions');
+      const updateMax = util.getValue(blockTemplate, 'updateMax');
       if (updateOptions) data[block.field] = updateOptions === 'string' ? util.remove_non_ascii(util.stripHtml(content)) : content;
       if (updateOptions && updateMax) {
         data[block.field] = data[block.field].replace(/\r?\n|\r/g, '').trim().substring(0, updateMax);
