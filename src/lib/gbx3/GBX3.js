@@ -36,7 +36,6 @@ import {
 import GBXEntry from '../common/GBXEntry';
 import AvatarMenu from './admin/AvatarMenu';
 import Share from './share/Share';
-import Steps from './helpers/Steps';
 import history from '../common/history';
 
 const RECAPTCHA_KEY = process.env.REACT_APP_RECAPTCHA_KEY;
@@ -517,14 +516,6 @@ class GBX3 extends React.Component {
           draggable={false}
           draggableTitle={``}
           component={(props) => <Share />}
-        />
-        <ModalRoute
-          className='gbx3'
-          id='stepsForm'
-          effect='3DFlipVert'
-          style={{ width: '70%' }}
-          disallowBgClose={true}
-          component={(props) => <Steps />}
         />
       </div>
     )
