@@ -52,7 +52,6 @@ class TextField extends Component {
       type,
       placeholder,
       autoFocus,
-      required,
       readOnly,
       style,
       inputStyle,
@@ -70,7 +69,8 @@ class TextField extends Component {
       inputRef,
       inputMode,
       moneyStyle,
-      autoComplete
+      autoComplete,
+      required
     } = this.props;
 
     const {

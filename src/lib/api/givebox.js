@@ -333,6 +333,12 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       endpoint = `users`;
       break;
     }
+
+    case 'userEmailCheck': {
+      endpoint = `users/email-check`;
+      break;
+    }
+
     case 'singleUser': {
       endpoint = `users/${getIndex(id, 0, userID)}`;
       break;

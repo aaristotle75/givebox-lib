@@ -31,7 +31,9 @@ export function gbx3(state = {
     completed: [],
     fields: orgSignupFields,
     validTaxID: null,
-    claimOrgID: null
+    claimOrgID: null,
+    acceptedTerms: true,
+    emailConfirmed: false
   },
   orgUpdated: false,
   orgGlobals: {},

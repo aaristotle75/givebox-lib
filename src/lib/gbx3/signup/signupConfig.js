@@ -96,9 +96,15 @@ export const signupSteps = [
   themeColor,
   title,
   image,
-  account,
-  preview,
-  share
+  account
+];
+
+export const requiredStepsToCreateAccount = [
+  orgName,
+  mission,
+  logo,
+  title,
+  image
 ];
 
 export const orgSignupFields = {
@@ -113,8 +119,7 @@ export const orgSignupFields = {
   owner: {
     email: '',
     firstName: '',
-    lastName: '',
-    password: ''
+    lastName: ''
   },
   gbx3: {
     title: '',

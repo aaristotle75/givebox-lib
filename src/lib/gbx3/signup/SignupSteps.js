@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import * as config from './signupConfig';
+import CreateAccount from './CreateAccount';
 import Form from '../../form/Form';
 import Dropdown from '../../form/Dropdown';
 import TextField from '../../form/TextField';
@@ -20,7 +21,8 @@ import {
   setOrgStyle
 } from '../redux/gbx3actions';
 import {
-  getResource
+  getResource,
+  sendResource
 } from '../../api/helpers';
 import { PhotoshopPicker } from 'react-color-aaristotle';
 import AnimateHeight from 'react-animate-height';
@@ -31,11 +33,14 @@ class SignupStepsForm extends React.Component {
     super(props);
     this.renderStep = this.renderStep.bind(this);
     this.processForm = this.processForm.bind(this);
+    this.createNewOrg = this.createNewOrg.bind(this);
     this.saveSignup = this.saveSignup.bind(this);
     this.saveStep = this.saveStep.bind(this);
     this.gotoNextStep = this.gotoNextStep.bind(this);
     this.previousStep = this.previousStep.bind(this);
     this.nextStep = this.nextStep.bind(this);
+    this.checkExistingUser = this.checkExistingUser.bind(this);
+    this.setRequirePassword = this.setRequirePassword.bind(this);
     this.validateTaxID = this.validateTaxID.bind(this);
     this.handleMediaSaveCallback = this.handleMediaSaveCallback.bind(this);
     this.callbackAfter = this.callbackAfter.bind(this);
@@ -47,10 +52,20 @@ class SignupStepsForm extends React.Component {
       categoryIDError: false,
       saving: false,
       mediaType: util.getValue(props.fields, 'gbx3.mediaType', 'image'),
-      mediaTypeError: null
+      mediaTypeError: null,
+      requirePassword: false
     };
     this.allowNextStep = false;
     this.totalSignupSteps = +(config.signupSteps.length - 1);
+  }
+
+  setRequirePassword(requirePassword) {
+    if (requirePassword) {
+      this.props.fieldProp('password', { required: true  });
+    } else {
+      this.props.fieldProp('password', { required: false, error: '', value: '' });
+    }
+    this.setState({ requirePassword });
   }
 
   callbackAfter(tab) {
@@ -72,8 +87,70 @@ class SignupStepsForm extends React.Component {
     return items;
   }
 
-  saveSignup(obj = {}) {
-    console.log('execute -> ', obj);
+  createNewOrg() {
+    const {
+      claimOrgID,
+      fields
+    } = this.props;
+
+    const {
+      org,
+      gbx3,
+      owner
+    } = fields;
+
+    const password = util.getValue(this.props.formState, 'fields.password.value', util.randomPassword(8));
+
+    console.log('execute createNewOrg -> ', claimOrgID, fields, password);
+    this.setState({ saving: false });
+  }
+
+  saveSignup() {
+
+    const {
+      fields,
+      completed
+    } = this.props;
+
+    const {
+      org,
+      gbx3,
+      owner
+    } = fields;
+
+    const stepsRequiredButNotComplete = [];
+
+    // Check if required steps are completed
+    config.requiredStepsToCreateAccount.forEach((value, key) => {
+      if (!completed.includes(value.slug)) {
+        const step = config.signupSteps.findIndex(s => s.slug === value.slug);
+        const stepNumber = +step + 1;
+        stepsRequiredButNotComplete.push(
+          <GBLink
+            key={key}
+            onClick={() => {
+              this.props.formProp({ error: false });
+              this.props.updateOrgSignup({ step });
+            }}
+          >
+            Click Here for Step {stepNumber}: {value.name}
+          </GBLink>
+        )
+      }
+    });
+
+    if (!util.isEmpty(stepsRequiredButNotComplete)) {
+      this.props.formProp({ error: true, errorMsg:
+        <div className='stepsNotCompletedButRequired'>
+          <span>You must complete the following steps to continue:</span>
+          {stepsRequiredButNotComplete}
+        </div>
+      });
+    } else {
+      const password = util.randomPassword(8);
+      console.log('execute saveSignup -> ', org, gbx3, owner);
+    }
+    this.setState({ saving: false });
   }
 
   async saveStep(step, error = false, delay = 1000) {
@@ -107,7 +184,8 @@ class SignupStepsForm extends React.Component {
       step,
       gbxStyle,
       button,
-      validTaxID
+      validTaxID,
+      acceptedTerms
     } = this.props;
 
     const {
@@ -150,6 +228,18 @@ class SignupStepsForm extends React.Component {
         }
       }
 
+      case 'themeColor': {
+        if (themeColor) {
+          const updated = await this.props.updateOrgSignupField('org', { themeColor });
+          if (updated) {
+            this.props.setOrgStyle({
+              backgroundColor: themeColor
+            });
+            return this.saveStep('themeColor');
+          }
+        }
+      }
+
       case 'image': {
         switch (mediaType) {
           case 'video': {
@@ -173,15 +263,15 @@ class SignupStepsForm extends React.Component {
         }
       }
 
-      case 'themeColor': {
-        if (themeColor) {
-          const updated = await this.props.updateOrgSignupField('org', { themeColor });
-          if (updated) {
-            this.props.setOrgStyle({
-              backgroundColor: themeColor
-            });
-            return this.saveStep('themeColor');
-          }
+      case 'account': {
+        const password = util.getValue(fields, 'password.value');
+        if (!acceptedTerms) {
+          this.props.formProp({ error: true, errorMsg: 'You must agree to Givebox Terms of Service to continue.'});
+          return this.setState({ saving: false });
+        } else if (!password) {
+          return this.checkExistingUser(owner.email);
+        } else {
+          return this.createNewOrg();
         }
       }
 
@@ -189,6 +279,36 @@ class SignupStepsForm extends React.Component {
         return this.saveStep(group);
       }
     }
+  }
+
+  checkExistingUser(email) {
+    this.props.sendResource('userEmailCheck', {
+      data: {
+        email,
+        scope: 'cloud'
+      },
+      reload: true,
+      callback: (res, err) => {
+        const hasPassword = util.getValue(res, 'hasPassword');
+        const emailExists = util.getValue(res, 'emailExists');
+        if (hasPassword && emailExists) {
+          this.props.formProp({
+            error: true,
+            errorMsg:
+              <div>
+                The email you entered is already associated with a Givebox account.<br />
+                Please enter your current password below.<br />
+                Or use a different email to create a new account.
+              </div>
+          })
+          this.setRequirePassword(true);
+        } else {
+          this.setRequirePassword(false);
+          this.createNewOrg();
+        }
+      }
+    })
+    this.setState({ saving: false });
   }
 
   async validateTaxID(taxID, group) {
@@ -258,13 +378,15 @@ class SignupStepsForm extends React.Component {
   renderStep() {
     const {
       mediaType,
-      mediaTypeError
+      mediaTypeError,
+      requirePassword
     } = this.state;
 
     const {
       step,
       open,
-      isMobile
+      isMobile,
+      acceptedTerms
     } = this.props;
 
     const {
@@ -281,13 +403,6 @@ class SignupStepsForm extends React.Component {
       imageURL: orgLogo,
       themeColor
     } = org;
-
-    const {
-      email,
-      firstName,
-      lastName,
-      password
-    } = owner;
 
     const {
       title,
@@ -345,7 +460,7 @@ class SignupStepsForm extends React.Component {
               required: true,
               value: orgName,
               onBlur: (name, value) => {
-                if (value && value !== orgName) {
+                if (value) {
                   this.props.updateOrgSignupField('org', { name: value });
                 }
               }
@@ -463,6 +578,72 @@ class SignupStepsForm extends React.Component {
         break;
       }
 
+      case 'themeColor': {
+        const style = {
+          default: {
+            head: {
+              background: '#fff',
+              backgroundImage: 'none',
+              fontSize: '1.5em',
+              fontWeight: 300,
+              border: 0,
+              marginBottom: 0,
+              boxShadow: 'none',
+              color: '#465965',
+              height: 0,
+              lineHeight: 0
+            },
+          }
+        };
+        item.component =
+          <div className='flexCenter'>
+            <PhotoshopPicker
+              styles={style}
+              header={''}
+              color={this.state.themeColor}
+              onChangeComplete={(color) => {
+                this.setState({ themeColor: color.hex })
+              }}
+            />
+          </div>
+        ;
+        break;
+      }
+
+      case 'title': {
+        item.component =
+          <div className='fieldGroup'>
+            <HelpfulTip
+              headerIcon={<span className='icon icon-trending-up'></span>}
+              headerText='Pro Tip to Increase Conversions'
+              style={{ marginTop: 25, marginBottom: 20 }}
+              text={
+                <span>
+                  A good title should not be dull or too general. It should elicit an emotional reponse to get peoples attention.<br /><br />
+                  A dull title: "Please Donate to Save the Whales"<br /><br />
+                  A better title: "If you Love Whales Here is How You Can Save Them"
+                </span>
+              }
+            />
+            {this.props.textField('title', {
+              group: slug,
+              label: 'Fundraiser Title',
+              placeholder: 'Click Here to Enter a Title',
+              maxLength: 128,
+              count: true,
+              required: true,
+              value: title,
+              onBlur: (name, value) => {
+                if (value) {
+                  this.props.updateOrgSignupField('gbx3', { title: value });
+                }
+              }
+            })}
+          </div>
+        ;
+        break;
+      }
+
       case 'image': {
         item.desc =
           <div>
@@ -531,68 +712,19 @@ class SignupStepsForm extends React.Component {
         break;
       }
 
-      case 'themeColor': {
-        const style = {
-          default: {
-            head: {
-              background: '#fff',
-              backgroundImage: 'none',
-              fontSize: '1.5em',
-              fontWeight: 300,
-              border: 0,
-              marginBottom: 0,
-              boxShadow: 'none',
-              color: '#465965',
-              height: 0,
-              lineHeight: 0
-            },
-          }
-        };
+      case 'account': {
+        item.saveButtonLabel = <span className='buttonAlignText'>Save Your Account <span className='icon icon-chevron-right'></span></span>;
         item.component =
-          <div className='flexCenter'>
-            <PhotoshopPicker
-              styles={style}
-              header={''}
-              color={this.state.themeColor}
-              onChangeComplete={(color) => {
-                this.setState({ themeColor: color.hex })
-              }}
-            />
-          </div>
-        ;
-        break;
-      }
-
-      case 'title': {
-        item.component =
-          <div className='fieldGroup'>
-            <HelpfulTip
-              headerIcon={<span className='icon icon-trending-up'></span>}
-              headerText='Pro Tip to Increase Conversions'
-              style={{ marginTop: 25, marginBottom: 20 }}
-              text={
-                <span>
-                  A good title should not be dull or too general. It should elicit an emotional reponse to get peoples attention.<br /><br />
-                  A dull title: "Please Donate to Save the Whales"<br /><br />
-                  A better title: "If you Love Whales Here is How You Can Save Them"
-                </span>
-              }
-            />
-            {this.props.textField('title', {
-              group: slug,
-              label: 'Fundraiser Title',
-              placeholder: 'Click Here to Enter a Title',
-              maxLength: 128,
-              count: true,
-              required: true,
-              value: title,
-              onBlur: (name, value) => {
-                if (value) {
-                  this.props.updateOrgSignupField('gbx3', { title: value });
-                }
-              }
-            })}
-          </div>
+          <CreateAccount
+            {...this.props}
+            group={slug}
+            owner={owner}
+            setRequirePassword={this.setRequirePassword}
+            requirePassword={requirePassword}
+            acceptedTerms={acceptedTerms}
+            updateOrgSignupField={this.props.updateOrgSignupField}
+            updateOrgSignup={this.props.updateOrgSignup}
+          />
         ;
         break;
       }
@@ -737,6 +869,7 @@ function mapStateToProps(state, props) {
   const open = util.getValue(state, 'gbx3.admin.open');
   const orgSignup = util.getValue(state, 'gbx3.orgSignup', {});
   const step = util.getValue(orgSignup, 'step', 0);
+  const acceptedTerms = util.getValue(orgSignup, 'acceptedTerms');
   const claimOrgID = util.getValue(orgSignup, 'claimOrgID', null);
   const validTaxID = util.getValue(orgSignup, 'validTaxID', null);
   const completed = util.getValue(orgSignup, 'completed', []);
@@ -749,6 +882,7 @@ function mapStateToProps(state, props) {
     open,
     orgSignup,
     step,
+    acceptedTerms,
     claimOrgID,
     validTaxID,
     completed,
@@ -762,5 +896,6 @@ export default connect(mapStateToProps, {
   updateOrgSignup,
   updateOrgSignupField,
   getResource,
+  sendResource,
   setOrgStyle
 })(SignupSteps);

@@ -248,7 +248,25 @@ $helperColor: $hotPink;
 $stepInputSize: 18px;
 $gbx3StepsBreakpoint: 600px;
 
+
 .gbx3Steps {
+
+  .stepsNotCompletedButRequired {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    slign-items: center;
+
+    button.link {
+      justify-content: center;
+      margin-top: 5px;
+      color: $red;
+      font-size: 16px !important;
+    }
+    button.link:hover {
+      color: transparentize($red, .4);
+    }
+  }
 
   .statsTab button.panelTab.selected {
     @include animation(pulsateSlightlyBrighter 2s ease-out infinite);
@@ -509,6 +527,11 @@ $gbx3StepsBreakpoint: 600px;
         font-size: 14px;
         font-weight: 400;
         color: #253655;
+      }
+      .error {
+        label {
+          color: $red;
+        }
       }
     }
   }
