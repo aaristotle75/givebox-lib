@@ -34,6 +34,11 @@ import {
 } from '../../api/helpers';
 import { PhotoshopPicker } from 'react-color-aaristotle';
 import AnimateHeight from 'react-animate-height';
+import {
+  primaryColor as defaultPrimaryColor,
+  defaultOrgGlobals
+} from '../redux/gbx3defaults';
+import { blockTemplates, defaultBlocks } from '../blocks/blockTemplates';
 
 class SignupStepsForm extends React.Component {
 
@@ -57,7 +62,7 @@ class SignupStepsForm extends React.Component {
     this.callbackAfter = this.callbackAfter.bind(this);
 
     this.state = {
-      themeColor: util.getValue(props.fields, 'org.themeColor', '#698df4'),
+      themeColor: util.getValue(props.fields, 'org.themeColor', defaultPrimaryColor),
       editorOpen: false,
       error: false,
       categoryIDError: false,
@@ -132,16 +137,52 @@ class SignupStepsForm extends React.Component {
     } = fields;
 
     const gbx3Data = {
+      ...createData.fundraiser,
       ...gbx3,
-      giveboxSettings: {}
     };
 
-    if (org.themeColor) gbx3Data.giveboxSettings.primaryColor = org.themeColor;
+    const articleBlocks = blockTemplates.article.fundraiser;
+    const blocksDefault = {};
+    defaultBlocks.article.fundraiser.forEach((value) => {
+      blocksDefault[value] = articleBlocks[value];
+    });
+
+    const customTemplate = {
+      blocks: {
+        ...blocksDefault,
+        media: {
+          ...blocksDefault.media,
+          content: {
+            image: {
+              size: 'medium',
+              borderRadius: 5,
+              URL: gbx3.imageURL
+            },
+            video: {
+              URL: gbx3.videoURL,
+              auto: false,
+              validatedURL: gbx3.videoURL
+            }
+          },
+          options: {
+            ...blocksDefault.media.options,
+            mediaType: gbx3.mediaType
+          }
+        }
+      }
+    }
+
+    gbx3Data.giveboxSettings.customTemplate = {
+      ...customTemplate
+    };
+
+    const primaryColor = org.themeColor || defaultPrimaryColor
+
+    if (org.themeColor) {
+      gbx3Data.giveboxSettings.primaryColor = org.themeColor;
+    };
 
     if (!err) {
-
-      // Remove the signup localStorage
-      localStorage.removeItem('signup');
 
       // Authenticate and open Org profile page with next Steps Preview, Share
       // This also sets session access, loads the org, and creates the fundraiser...
@@ -156,24 +197,27 @@ class SignupStepsForm extends React.Component {
               const {
                 orgID
               } = access;
-              this.props.loadOrg(orgID, async (res, err) => {
-                if (!err && !util.isEmpty(res)) {
-                  this.props.updateOrgSignup({ orgCreated: true });
-                  this.props.setOrgStyle();
-                  this.props.createFundraiser('fundraiser', null, null, {
-                    showNewArticle: false,
-                    data: gbx3Data
-                  });
-                  const globalUpdated = await this.props.updateOrgGlobal('globalStyles', {
-                    background: org.themeColor || null
-                  }});
-                  if (globalUpdated) {
-                    this.props.saveOrg();
+
+              this.props.createFundraiser('fundraiser', (res, err, orgID) => {
+                this.props.loadOrg(orgID, async (res, err) => {
+                  if (!err && !util.isEmpty(res)) {
+                    this.props.updateOrgSignup({ orgCreated: true });
+                    this.props.saveOrg({
+                      callback: (res, err) => {
+                        this.props.setOrgStyle();
+                      }
+                    });
+                  } else {
+                    console.error('something went wrong after loading org in the callback', err)
+                    this.setState({ saving: false });
                   }
-                } else {
-                  console.error('something went wrong after loading org in the callback', err)
-                  this.setState({ saving: false });
-                }
+
+                  // Remove the signup localStorage
+                  localStorage.removeItem('signup');
+                });
+              }, null, {
+                showNewArticle: false,
+                data: gbx3Data
               });
             })
           }
@@ -205,6 +249,28 @@ class SignupStepsForm extends React.Component {
       orgTaxID: validTaxID
     };
 
+    const primaryColor = org.themeColor || defaultPrimaryColor;
+
+    const customTemplate = {
+      orgGlobals: {
+        ...defaultOrgGlobals,
+        globalStyles: {
+          ...defaultOrgGlobals.globalStyles,
+          backgroundColor: primaryColor,
+          primaryColor: primaryColor
+        },
+        pagesEnabled: [
+          'featured'
+        ],
+        profilePicture: {
+          url: org.imageURL
+        },
+        title: {
+          content: org.name
+        }
+      }
+    }
+
     const data = {
       ...org,
       owner,
@@ -217,7 +283,8 @@ class SignupStepsForm extends React.Component {
       scope: 'cloud',
       inapp: {
         packageLabel: 'unlimited-legacy'
-      }
+      },
+      customTemplate
     };
 
     // If has claimOrgID then claim org, otherwise create a new org

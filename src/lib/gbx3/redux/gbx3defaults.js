@@ -1,4 +1,4 @@
-const primaryColor = '#698df4';
+export const primaryColor = '#698df4';
 
 export const defaultOrgGlobals = {
   globalStyles: {
