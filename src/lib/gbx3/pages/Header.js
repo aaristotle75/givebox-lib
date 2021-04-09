@@ -118,7 +118,7 @@ class Header extends React.Component {
             </ModalLink>
             <div className='profilePictureContainer'>
               { profilePictureUrl ?
-                <Image url={profilePictureUrl} size='medium' maxSize='160px' alt='Profile Picture' imgStyle={{ minWidth: 160, borderRadius: '50%' }}/>
+                <Image url={profilePictureUrl} size='medium' maxSize='160px' alt='Profile Picture' imgStyle={{ minWidth: 160, minHeight: 160, borderRadius: '50%' }}/>
               :
                 <div className='defaultProfilePicture'><span className={`icon icon-${isPublic ? 'shield' : 'camera'}`}></span></div>
               }

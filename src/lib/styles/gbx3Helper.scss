@@ -255,7 +255,17 @@ $gbx3StepsBreakpoint: 600px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    slign-items: center;
+    align-items: center;
+
+    .stepsNotCompletedList {
+      margin-top: 10px;
+      display: inline-block;
+      width: 50%;
+      text-align: left;
+      @media (max-width: $breakpoint) {
+        width: 100%;
+      }
+    }
 
     button.link {
       justify-content: center;

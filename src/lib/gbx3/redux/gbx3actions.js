@@ -719,6 +719,7 @@ export function saveOrg(options = {}) {
     const orgUpdated = opts.orgUpdated || util.getValue(gbx3, 'orgUpdated', false);
     const orgData = util.getValue(gbx3, 'orgData', {});
     const customTemplate = util.getValue(orgData, 'customTemplate', {});
+    const orgSignup = util.getValue(gbx3, 'orgSignup', {});
     const orgPages = util.getValue(gbx3, 'orgPages', {});
     const orgGlobals = util.getValue(gbx3, 'orgGlobals', {});
     const info = util.getValue(gbx3, 'info', {});
@@ -727,6 +728,9 @@ export function saveOrg(options = {}) {
       ...orgData,
       customTemplate: {
         ...customTemplate,
+        orgSignup: {
+          ...orgSignup
+        },
         orgPages: {
           ...orgPages
         },
@@ -1067,10 +1071,11 @@ export function cloneFundraiser(kind, kindID, callback) {
   }
 }
 
-export function createFundraiser(createKind, callback, cloneData, options = {}) {
+export function createFundraiser(createKind, callback, cloneData = {}, options = {}) {
 
   const opts = {
     showNewArticle: true,
+    data: {},
     ...options
   };
 
@@ -1082,7 +1087,11 @@ export function createFundraiser(createKind, callback, cloneData, options = {}) 
     const kind = createKind || util.getValue(info, 'kind', 'fundraiser');
     const orgID = util.getValue(info, 'orgID');
     const resourceName = `org${types2.kind(kind).api.list}`;
-    const data = cloneData || createData[kind];
+    const templateData = cloneData || createData[kind];
+    const data = {
+      ...templateData,
+      ...opts.data
+    };
     data.volunteer = util.getValue(admin, 'isVolunteer', null);
     data.volunteerID = util.getValue(admin, 'volunteerID', null);
     dispatch(setLoading(false));

@@ -99,6 +99,18 @@ export const signupSteps = [
   account
 ];
 
+export const postSignupSteps = [
+  welcome,
+  orgName,
+  mission,
+  logo,
+  themeColor,
+  title,
+  image,
+  preview,
+  share
+];
+
 export const requiredStepsToCreateAccount = [
   orgName,
   mission,

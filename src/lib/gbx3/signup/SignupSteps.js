@@ -8,6 +8,7 @@ import TextField from '../../form/TextField';
 import MediaLibrary from '../../form/MediaLibrary';
 import Video from '../../common/Video';
 import EditVideo from '../admin/common/EditVideo';
+import { createData } from '../admin/article/createTemplates';
 import * as util from '../../common/utility';
 import Tabs, { Tab } from '../../common/Tabs';
 import Loader from '../../common/Loader';
@@ -18,8 +19,15 @@ import HelpfulTip from '../../common/HelpfulTip';
 import {
   updateOrgSignup,
   updateOrgSignupField,
-  setOrgStyle
+  setOrgStyle,
+  updateOrgGlobal,
+  loadOrg,
+  createFundraiser,
+  saveOrg
 } from '../redux/gbx3actions';
+import {
+  setAccess
+} from '../../api/actions';
 import {
   getResource,
   sendResource
@@ -33,8 +41,11 @@ class SignupStepsForm extends React.Component {
     super(props);
     this.renderStep = this.renderStep.bind(this);
     this.processForm = this.processForm.bind(this);
-    this.createNewOrg = this.createNewOrg.bind(this);
-    this.saveSignup = this.saveSignup.bind(this);
+    this.createOrg = this.createOrg.bind(this);
+    this.createOrgCallback = this.createOrgCallback.bind(this);
+    this.saveLead = this.saveLead.bind(this);
+    this.determineCreateAccount = this.determineCreateAccount.bind(this);
+    this.checkRequiredCompleted = this.checkRequiredCompleted.bind(this);
     this.saveStep = this.saveStep.bind(this);
     this.gotoNextStep = this.gotoNextStep.bind(this);
     this.previousStep = this.previousStep.bind(this);
@@ -87,26 +98,148 @@ class SignupStepsForm extends React.Component {
     return items;
   }
 
-  createNewOrg() {
+  /*
+  * If required steps are not completed save the user as a lead
+  */
+  saveLead() {
     const {
+      owner
+    } = this.props.fields;
+
+    const data = {
+      ...owner,
+      password: null,
+      scope: 'cloud',
+      role: 'admin'
+    };
+
+    this.props.sendResource('users', {
+      data,
+      method: 'post',
+      isSending: false
+    });
+    this.setState({ saving: false });
+  }
+
+  createOrgCallback(res, err) {
+    const {
+      fields
+    } = this.props;
+
+    const {
+      org,
+      gbx3
+    } = fields;
+
+    const gbx3Data = {
+      ...gbx3,
+      giveboxSettings: {}
+    };
+
+    if (org.themeColor) gbx3Data.giveboxSettings.primaryColor = org.themeColor;
+
+    if (!err) {
+
+      // Remove the signup localStorage
+      localStorage.removeItem('signup');
+
+      // Authenticate and open Org profile page with next Steps Preview, Share
+      // This also sets session access, loads the org, and creates the fundraiser...
+      this.props.getResource('session', {
+        reload: true,
+        callback: (res, err) => {
+          if (err) {
+            console.error('No session created');
+            this.setState({ saving: false });
+          } else {
+            this.props.setAccess(res, (access) => {
+              const {
+                orgID
+              } = access;
+              this.props.loadOrg(orgID, async (res, err) => {
+                if (!err && !util.isEmpty(res)) {
+                  this.props.updateOrgSignup({ orgCreated: true });
+                  this.props.setOrgStyle();
+                  this.props.createFundraiser('fundraiser', null, null, {
+                    showNewArticle: false,
+                    data: gbx3Data
+                  });
+                  const globalUpdated = await this.props.updateOrgGlobal('globalStyles', {
+                    background: org.themeColor || null
+                  }});
+                  if (globalUpdated) {
+                    this.props.saveOrg();
+                  }
+                } else {
+                  console.error('something went wrong after loading org in the callback', err)
+                  this.setState({ saving: false });
+                }
+              });
+            })
+          }
+        }
+      });
+    } else {
+      if (!this.props.getErrors(err)) this.props.formProp({error: this.props.savingErrorMsg});
+      this.setState({ saving: false });
+    }
+  }
+
+  createOrg() {
+    const {
+      validTaxID,
       claimOrgID,
       fields
     } = this.props;
 
     const {
       org,
-      gbx3,
-      owner
+      gbx3
     } = fields;
 
     const password = util.getValue(this.props.formState, 'fields.password.value', util.randomPassword(8));
 
-    console.log('execute createNewOrg -> ', claimOrgID, fields, password);
-    this.setState({ saving: false });
+    const owner = {
+      ...fields.owner,
+      password,
+      orgTaxID: validTaxID
+    };
+
+    const data = {
+      ...org,
+      owner,
+      kind: '501c3',
+      mission: org.mission,
+      description: org.mission,
+      isVerified: true,
+      sendVerification: false,
+      notifyOwner: true,
+      scope: 'cloud',
+      inapp: {
+        packageLabel: 'unlimited-legacy'
+      }
+    };
+
+    // If has claimOrgID then claim org, otherwise create a new org
+    if (claimOrgID) {
+      this.props.sendResource('claimOrg', {
+        id: [claimOrgID],
+        method: 'post',
+        data: {
+          ...owner
+        },
+        callback: this.createOrgCallback
+      });
+    } else {
+      this.props.sendResource('orgs', {
+        method: 'post',
+        data,
+        callback: this.createOrgCallback
+      });
+    }
   }
 
-  saveSignup() {
-
+  checkRequiredCompleted() {
     const {
       fields,
       completed
@@ -142,15 +275,28 @@ class SignupStepsForm extends React.Component {
     if (!util.isEmpty(stepsRequiredButNotComplete)) {
       this.props.formProp({ error: true, errorMsg:
         <div className='stepsNotCompletedButRequired'>
-          <span>You must complete the following steps to continue:</span>
-          {stepsRequiredButNotComplete}
+          <span>Please complete the following steps to create your account:</span>
+          <div className='stepsNotCompletedList'>
+            {stepsRequiredButNotComplete}
+          </div>
         </div>
       });
-    } else {
-      const password = util.randomPassword(8);
-      console.log('execute saveSignup -> ', org, gbx3, owner);
+      return false;
     }
-    this.setState({ saving: false });
+    return true;
+  }
+
+  determineCreateAccount(email, password) {
+
+    if (this.checkRequiredCompleted()) {
+      if (!password) {
+        this.checkExistingUser(email);
+      } else {
+        this.createOrg();
+      }
+    } else {
+      this.saveLead();
+    }
   }
 
   async saveStep(step, error = false, delay = 1000) {
@@ -161,8 +307,6 @@ class SignupStepsForm extends React.Component {
     if (error) {
       this.setState({ saving: false });
       return false;
-    } else {
-      // save to cookie
     }
 
     const completedStep = await this.stepCompleted(step);
@@ -268,10 +412,8 @@ class SignupStepsForm extends React.Component {
         if (!acceptedTerms) {
           this.props.formProp({ error: true, errorMsg: 'You must agree to Givebox Terms of Service to continue.'});
           return this.setState({ saving: false });
-        } else if (!password) {
-          return this.checkExistingUser(owner.email);
         } else {
-          return this.createNewOrg();
+          return this.determineCreateAccount(owner.email, password);
         }
       }
 
@@ -304,7 +446,7 @@ class SignupStepsForm extends React.Component {
           this.setRequirePassword(true);
         } else {
           this.setRequirePassword(false);
-          this.createNewOrg();
+          this.createOrg();
         }
       }
     })
@@ -796,7 +938,18 @@ class SignupStepsForm extends React.Component {
             {this.props.saveButton(this.processForm, { group: slug, label: item.saveButtonLabel })}
           </div>
           <div className='button-item' style={{ width: 150 }}>
-            &nbsp;
+            { slug !== 'account' ?
+              <GBLink
+                className='link'
+                onClick={() => {
+                  const step = config.signupSteps.findIndex(s => s.slug === 'account');
+                  this.props.updateOrgSignup({ step });
+                  this.props.formProp({ error: false });
+                }}
+              >
+                <span className='buttonAlignText'>Skip to Create Account <span className='icon icon-chevron-right'></span></span>
+              </GBLink>
+            : null }
           </div>
         </div> : null }
       </div>
@@ -871,6 +1024,7 @@ function mapStateToProps(state, props) {
   const step = util.getValue(orgSignup, 'step', 0);
   const acceptedTerms = util.getValue(orgSignup, 'acceptedTerms');
   const claimOrgID = util.getValue(orgSignup, 'claimOrgID', null);
+  const leadUserID = util.getValue(orgSignup, 'leadUserID', null);
   const validTaxID = util.getValue(orgSignup, 'validTaxID', null);
   const completed = util.getValue(orgSignup, 'completed', []);
   const fields = util.getValue(orgSignup, 'fields', {});
@@ -884,6 +1038,7 @@ function mapStateToProps(state, props) {
     step,
     acceptedTerms,
     claimOrgID,
+    leadUserID,
     validTaxID,
     completed,
     fields,
@@ -897,5 +1052,10 @@ export default connect(mapStateToProps, {
   updateOrgSignupField,
   getResource,
   sendResource,
-  setOrgStyle
+  setOrgStyle,
+  setAccess,
+  loadOrg,
+  updateOrgGlobal,
+  createFundraiser,
+  saveOrg
 })(SignupSteps);

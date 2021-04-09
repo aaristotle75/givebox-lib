@@ -21,7 +21,6 @@ class CreateAccount extends React.Component {
       requirePassword
     } = this.props;
 
-    console.log('execute onChange -> ', requirePassword);
     if (requirePassword) {
       this.props.setRequirePassword(false);
     }

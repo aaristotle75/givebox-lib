@@ -110,6 +110,12 @@ export function setAccess(res, callback) {
       access.permissions = util.getValue(res.member, 'permissions');
     }
     dispatch(resourceProp('access', access));
+
+    // Set preferences
+    if (has(user, 'preferences')) {
+      dispatch(setPrefs(util.getValue(user.preferences, 'cloudUI', {})));
+    }
+
     if (callback) callback(access);
   }
 }
