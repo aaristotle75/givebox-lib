@@ -11,6 +11,7 @@ import LZString from 'lz-string';
 export function gbx3(state = {
   browse: false,
   loading: true,
+  savingSignup: false,
   saveStatus: 'done',
   info: {
     activePageSlug: '',
@@ -33,8 +34,10 @@ export function gbx3(state = {
     validTaxID: null,
     claimOrgID: null,
     acceptedTerms: true,
-    orgCreated: false,
-    signupCompleted: false
+    createdArticleID: null,
+    signupCompleted: false,
+    postsignupCompleted: false,
+    saveCookie: true
   },
   orgUpdated: false,
   orgGlobals: {},
@@ -125,6 +128,10 @@ export function gbx3(state = {
       return Object.assign({}, state, {
         loading: action.loading
       });
+    case types.SAVING_SIGNUP:
+      return Object.assign({}, state, {
+        savingSignup: action.saving
+      });
     case types.UPDATE_ORG_SIGNUP: {
       const orgSignup = {
         ...state.orgSignup,
@@ -132,7 +139,7 @@ export function gbx3(state = {
       };
 
       // Set signup cookie
-      localStorage.setItem('signup', LZString.compressToUTF16(JSON.stringify(orgSignup)));
+      if (orgSignup.saveCookie) localStorage.setItem('signup', LZString.compressToUTF16(JSON.stringify(orgSignup)));
 
       return Object.assign({}, state, {
         orgSignup
@@ -151,7 +158,7 @@ export function gbx3(state = {
       };
 
       // Set signup cookie
-      localStorage.setItem('signup', LZString.compressToUTF16(JSON.stringify(orgSignup)));
+      if (orgSignup.saveCookie) localStorage.setItem('signup', LZString.compressToUTF16(JSON.stringify(orgSignup)));
 
       return Object.assign({}, state, {
         orgSignup

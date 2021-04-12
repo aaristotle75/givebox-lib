@@ -7,7 +7,8 @@ import Image from '../../common/Image';
 import GBLink from '../../common/GBLink';
 import {
   setOrgStyle,
-  updateOrgSignup
+  updateOrgSignup,
+  setSignupStep
 } from '../redux/gbx3actions';
 import {
   toggleModal
@@ -22,7 +23,6 @@ class Signup extends React.Component {
   constructor(props) {
     super(props);
     this.openStep = this.openStep.bind(this);
-    this.openSignupSteps = this.openSignupSteps.bind(this);
     this.state = {
     };
   }
@@ -34,7 +34,7 @@ class Signup extends React.Component {
       isMobile
     } = this.props;
 
-    this.openSignupSteps();
+    this.props.toggleModal('orgSignupSteps', true);
 
     /*
     window.onbeforeunload = function(e) {
@@ -46,13 +46,9 @@ class Signup extends React.Component {
   }
 
   openStep(value) {
-    const step = isNaN(value) ? signupSteps.findIndex(s => s.slug === value) : value;
-    this.props.updateOrgSignup({ step });
-    this.openSignupSteps();
-  }
-
-  openSignupSteps() {
-    this.props.toggleModal('orgSignupSteps', true);
+    this.props.setSignupStep(value, () => {
+      this.props.toggleModal('orgSignupSteps', true);
+    });
   }
 
   render() {
@@ -112,5 +108,6 @@ function mapStateToProps(state, props) {
 export default connect(mapStateToProps, {
   setOrgStyle,
   updateOrgSignup,
+  setSignupStep,
   toggleModal
 })(Signup);

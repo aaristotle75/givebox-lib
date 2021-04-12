@@ -11,8 +11,12 @@ import {
   updateInfo,
   toggleAdminLeftPanel,
   setLoading,
-  closeHelper
+  closeHelper,
+  setSignupStep
 } from '../../redux/gbx3actions';
+import {
+  toggleModal
+} from '../../../api/actions';
 import Toggle from 'react-toggle';
 import { FaPalette } from 'react-icons/fa';
 import { GoBeaker } from 'react-icons/go';
@@ -34,6 +38,19 @@ class Design extends React.Component {
     this.state = {
     };
     this.iframePreviewRef = React.createRef();
+  }
+
+  componentDidMount() {
+    const {
+      postsignupCompleted
+    } = this.props;
+
+    if (!postsignupCompleted) {
+      this.props.setSignupStep('preview', () => {
+        this.props.toggleModal('orgSignupSteps', true);
+      });
+    }
+
   }
 
   renderTopPanel() {
@@ -243,6 +260,7 @@ function mapStateToProps(state, props) {
   const createType = util.getValue(admin, 'createType');
   const orgSlug = util.getValue(gbx3, 'orgData.slug');
   const orgID = util.getValue(gbx3, 'orgData.ID');
+  const postsignupCompleted = util.getValue(gbx3, 'orgSignup.postsignupCompleted');
 
   return {
     breakpoint,
@@ -252,7 +270,8 @@ function mapStateToProps(state, props) {
     openAdmin,
     createType,
     orgSlug,
-    orgID
+    orgID,
+    postsignupCompleted
   }
 }
 
@@ -261,5 +280,7 @@ export default connect(mapStateToProps, {
   updateInfo,
   toggleAdminLeftPanel,
   setLoading,
-  closeHelper
+  closeHelper,
+  setSignupStep,
+  toggleModal
 })(Design);

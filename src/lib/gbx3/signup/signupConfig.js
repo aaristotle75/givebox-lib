@@ -70,6 +70,16 @@ const account = {
   desc: `Please create a Givebox account to secure your Organization's profile and accept payments.`
 }
 
+const createSuccess = {
+  type: 'org',
+  slug: 'createSuccess',
+  name: 'Success',
+  title: 'Your Account was Created Successfully!',
+  icon: 'heart',
+  desc: ''
+};
+
+
 const preview = {
   type: 'preview',
   slug: 'preview',
@@ -100,23 +110,16 @@ export const signupSteps = [
 ];
 
 export const postSignupSteps = [
-  welcome,
-  orgName,
-  mission,
-  logo,
-  themeColor,
-  title,
-  image,
   preview,
   share
 ];
 
 export const requiredStepsToCreateAccount = [
   orgName,
-  mission,
-  logo,
+  //mission,
+  //logo,
   title,
-  image
+  //image
 ];
 
 export const orgSignupFields = {

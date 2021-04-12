@@ -184,7 +184,7 @@ class ArticleCard extends Component {
         light={true}
       />
     :
-      <Image imgID='cardPhoto' url={imageURL} maxWidth='325px' size='medium' alt='Card Photo' />
+      <Image imgID='cardPhoto' url={imageURL || 'https://s3-us-west-1.amazonaws.com/givebox/assets/img/fundraiser-cover/original'} maxWidth='325px' size='medium' alt='Card Photo' />
     ;
 
     return (

@@ -8,8 +8,9 @@ import { blockTemplates, defaultBlocks } from '../blocks/blockTemplates';
 import { createData } from '../admin/article/createTemplates';
 import { helperTemplates } from '../helpers/helperTemplates';
 import { builderStepsConfig } from '../admin/article/builderStepsConfig';
-import { signupSteps } from '../signup/signupConfig';
+import { signupSteps, postSignupSteps } from '../signup/signupConfig';
 import {
+  primaryColor as defaultPrimaryColor,
   defaultStyle,
   defaultOrgGlobals,
   defaultOrgPages
@@ -30,6 +31,86 @@ export function setLoading(loading) {
   return {
     type: types.SET_LOADING,
     loading
+  }
+}
+
+export function savingSignup(saving) {
+  return {
+    type: types.SAVING_SIGNUP,
+    saving
+  }
+}
+
+export function signupGBX3Data() {
+  return (dispath, getState) => {
+    const orgSignup = util.getValue(getState(), 'gbx3.orgSignup', {});
+    const fields = util.getValue(orgSignup, 'fields', {});
+    const {
+      org,
+      gbx3
+    } = fields;
+
+    const gbx3Data = {
+      ...createData.fundraiser,
+      ...gbx3,
+    };
+
+    const gbx3Blocks = blockTemplates.article.fundraiser;
+    const blocksDefault = {};
+    defaultBlocks.article.fundraiser.forEach((value) => {
+      blocksDefault[value] = gbx3Blocks[value];
+    });
+
+    const gbx3Template = {
+      blocks: {
+        ...blocksDefault,
+        media: {
+          ...blocksDefault.media,
+          content: {
+            image: {
+              size: 'medium',
+              borderRadius: 5,
+              URL: gbx3.imageURL
+            },
+            video: {
+              URL: gbx3.videoURL,
+              auto: false,
+              validatedURL: gbx3.videoURL
+            }
+          },
+          options: {
+            ...blocksDefault.media.options,
+            mediaType: gbx3.mediaType
+          }
+        }
+      }
+    }
+
+    gbx3Data.giveboxSettings.customTemplate = {
+      ...gbx3Template
+    };
+
+    const primaryColor = org.themeColor || defaultPrimaryColor
+
+    if (org.themeColor) {
+      gbx3Data.giveboxSettings.primaryColor = org.themeColor;
+    };
+
+    return gbx3Data;
+  }
+}
+
+export function setSignupStep(value, callback) {
+  return (dispatch, getState) => {
+    const orgSignup = util.getValue(getState(), 'gbx3.orgSignup', {});
+    const {
+      signupCompleted
+    } = orgSignup;
+
+    const configSteps = signupCompleted ? postSignupSteps : signupSteps;
+    const step = isNaN(value) ? configSteps.findIndex(s => s.slug === value) : value;
+    dispatch(updateOrgSignup({ step }));
+    if (callback) callback(step);
   }
 }
 
@@ -707,6 +788,7 @@ export function saveOrg(options = {}) {
 
   const opts = {
     data: {},
+    orgID: null,
     isSending: false,
     callback: null,
     orgUpdated: false,
@@ -723,6 +805,7 @@ export function saveOrg(options = {}) {
     const orgPages = util.getValue(gbx3, 'orgPages', {});
     const orgGlobals = util.getValue(gbx3, 'orgGlobals', {});
     const info = util.getValue(gbx3, 'info', {});
+    const orgID = opts.orgID || util.getValue(info, 'orgID');
 
     const dataObj = {
       ...orgData,
@@ -740,10 +823,11 @@ export function saveOrg(options = {}) {
       },
       ...opts.data
     };
+
     if (orgUpdated) {
       if (opts.showSaving) dispatch(updateGBX3('saveStatus', 'saving'));
-      dispatch(sendResource(util.getValue(info, 'apiName'), {
-        orgID: util.getValue(info, 'orgID'),
+      dispatch(sendResource('org', {
+        orgID,
         data: dataObj,
         method: 'patch',
         callback: (res, err) => {
@@ -1456,7 +1540,11 @@ export function loadOrg(orgID, callback) {
           const orgImage = util.getValue(res, 'imageURL');
           const customTemplate = util.getValue(res, 'customTemplate', {});
           const hasAccessToEdit = util.getAuthorizedAccess(access, orgID, null);
-          const orgPages = util.getValue(customTemplate, 'orgPages', defaultOrgPages);
+          const orgPages = {
+            ...defaultOrgPages,
+            ...util.getValue(customTemplate, 'orgPages', {})
+          };
+          const orgSignup = util.getValue(customTemplate, 'orgSignup', {});
 
           const orgGlobalsDefault = {
             ...defaultOrgGlobals,
@@ -1506,6 +1594,7 @@ export function loadOrg(orgID, callback) {
           dispatch(setCartOnLoad());
           dispatch(updateOrgPages(orgPages, false));
           dispatch(updateOrgGlobals(orgGlobals, false));
+          dispatch(updateOrgSignup(orgSignup));
           dispatch(updateData(res, 'org'));
           dispatch(updateAdmin(admin));
           dispatch(updateInfo({ publishStatus: 'public' }));

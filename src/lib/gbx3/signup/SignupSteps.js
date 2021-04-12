@@ -20,13 +20,16 @@ import {
   updateOrgSignup,
   updateOrgSignupField,
   setOrgStyle,
-  updateOrgGlobal,
   loadOrg,
   createFundraiser,
-  saveOrg
+  saveOrg,
+  updateOrgGlobals,
+  savingSignup,
+  signupGBX3Data
 } from '../redux/gbx3actions';
 import {
-  setAccess
+  setAccess,
+  toggleModal
 } from '../../api/actions';
 import {
   getResource,
@@ -71,8 +74,10 @@ class SignupStepsForm extends React.Component {
       mediaTypeError: null,
       requirePassword: false
     };
+
+    this.configSteps = props.createdOrgID ? config.postSignupSteps : config.signupSteps;
     this.allowNextStep = false;
-    this.totalSignupSteps = +(config.signupSteps.length - 1);
+    this.totalSignupSteps = +(this.configSteps.length - 1);
   }
 
   setRequirePassword(requirePassword) {
@@ -126,61 +131,10 @@ class SignupStepsForm extends React.Component {
     this.setState({ saving: false });
   }
 
-  createOrgCallback(res, err) {
-    const {
-      fields
-    } = this.props;
+  createOrgCallback(res, err, orgData = {}) {
+    this.props.savingSignup(true);
 
-    const {
-      org,
-      gbx3
-    } = fields;
-
-    const gbx3Data = {
-      ...createData.fundraiser,
-      ...gbx3,
-    };
-
-    const articleBlocks = blockTemplates.article.fundraiser;
-    const blocksDefault = {};
-    defaultBlocks.article.fundraiser.forEach((value) => {
-      blocksDefault[value] = articleBlocks[value];
-    });
-
-    const customTemplate = {
-      blocks: {
-        ...blocksDefault,
-        media: {
-          ...blocksDefault.media,
-          content: {
-            image: {
-              size: 'medium',
-              borderRadius: 5,
-              URL: gbx3.imageURL
-            },
-            video: {
-              URL: gbx3.videoURL,
-              auto: false,
-              validatedURL: gbx3.videoURL
-            }
-          },
-          options: {
-            ...blocksDefault.media.options,
-            mediaType: gbx3.mediaType
-          }
-        }
-      }
-    }
-
-    gbx3Data.giveboxSettings.customTemplate = {
-      ...customTemplate
-    };
-
-    const primaryColor = org.themeColor || defaultPrimaryColor
-
-    if (org.themeColor) {
-      gbx3Data.giveboxSettings.primaryColor = org.themeColor;
-    };
+    const gbx3Data = this.props.signupGBX3Data();
 
     if (!err) {
 
@@ -193,28 +147,29 @@ class SignupStepsForm extends React.Component {
             console.error('No session created');
             this.setState({ saving: false });
           } else {
-            this.props.setAccess(res, (access) => {
+            this.props.setAccess(res, async (access) => {
               const {
                 orgID
               } = access;
 
-              this.props.createFundraiser('fundraiser', (res, err, orgID) => {
-                this.props.loadOrg(orgID, async (res, err) => {
-                  if (!err && !util.isEmpty(res)) {
-                    this.props.updateOrgSignup({ orgCreated: true });
-                    this.props.saveOrg({
-                      callback: (res, err) => {
+              this.props.createFundraiser('fundraiser', async (res, err) => {
+                const createdArticleID = util.getValue(res, 'articleID');
+                const orgID = util.getValue(res, 'orgID');
+                const updated = await this.props.updateOrgSignup({ createdArticleID, saveCookie: false, signupCompleted: true });
+                if (updated) {
+                  this.props.saveOrg({
+                    orgID,
+                    data: orgData,
+                    orgUpdated: true,
+                    callback: async (res, err) => {
+                      localStorage.removeItem('signup');
+                      this.props.loadOrg(orgID, (res, err) => {
                         this.props.setOrgStyle();
-                      }
-                    });
-                  } else {
-                    console.error('something went wrong after loading org in the callback', err)
-                    this.setState({ saving: false });
-                  }
-
-                  // Remove the signup localStorage
-                  localStorage.removeItem('signup');
-                });
+                        this.props.savingSignup(false);
+                      });
+                    }
+                  });
+                }
               }, null, {
                 showNewArticle: false,
                 data: gbx3Data
@@ -229,7 +184,7 @@ class SignupStepsForm extends React.Component {
     }
   }
 
-  createOrg() {
+  async createOrg() {
     const {
       validTaxID,
       claimOrgID,
@@ -251,58 +206,68 @@ class SignupStepsForm extends React.Component {
 
     const primaryColor = org.themeColor || defaultPrimaryColor;
 
-    const customTemplate = {
-      orgGlobals: {
-        ...defaultOrgGlobals,
-        globalStyles: {
-          ...defaultOrgGlobals.globalStyles,
-          backgroundColor: primaryColor,
-          primaryColor: primaryColor
-        },
-        pagesEnabled: [
-          'featured'
-        ],
-        profilePicture: {
-          url: org.imageURL
-        },
-        title: {
-          content: org.name
-        }
-      }
-    }
-
-    const data = {
-      ...org,
-      owner,
-      kind: '501c3',
-      mission: org.mission,
-      description: org.mission,
-      isVerified: true,
-      sendVerification: false,
-      notifyOwner: true,
-      scope: 'cloud',
-      inapp: {
-        packageLabel: 'unlimited-legacy'
+    const orgGlobals = {
+      ...defaultOrgGlobals,
+      globalStyles: {
+        ...defaultOrgGlobals.globalStyles,
+        backgroundColor: primaryColor,
+        primaryColor: primaryColor
       },
-      customTemplate
+      pagesEnabled: [
+        'featured'
+      ],
+      profilePicture: {
+        url: org.imageURL
+      },
+      title: {
+        content: `
+          <p style="text-align:center;">
+            <span style="font-weight:400;font-size:22px;">
+              ${org.name}
+            </span>
+          </p>
+        `
+      }
     };
 
-    // If has claimOrgID then claim org, otherwise create a new org
-    if (claimOrgID) {
-      this.props.sendResource('claimOrg', {
-        id: [claimOrgID],
-        method: 'post',
-        data: {
-          ...owner
-        },
-        callback: this.createOrgCallback
-      });
-    } else {
-      this.props.sendResource('orgs', {
-        method: 'post',
-        data,
-        callback: this.createOrgCallback
-      });
+    const globalsUpdated = await this.props.updateOrgGlobals(orgGlobals);
+
+    if (globalsUpdated) {
+      const orgData = {
+        ...org,
+        owner,
+        kind: '501c3',
+        mission: org.mission,
+        description: org.mission,
+        isVerified: true,
+        sendVerification: false,
+        notifyOwner: true,
+        scope: 'cloud',
+        inapp: {
+          packageLabel: 'unlimited-legacy'
+        }
+      };
+
+      // If has claimOrgID then claim org, otherwise create a new org
+      if (claimOrgID) {
+        orgData.owner.password = null;
+        this.props.sendResource('claimOrg', {
+          id: [claimOrgID],
+          method: 'post',
+          data: {
+            ...owner
+          },
+          callback: (res, err) => {
+            this.createOrgCallback(res, err, orgData);
+          }
+        });
+      } else {
+        this.props.sendResource('orgs', {
+          method: 'post',
+          data: orgData,
+          callback: this.createOrgCallback
+        });
+      }
     }
   }
 
@@ -323,7 +288,7 @@ class SignupStepsForm extends React.Component {
     // Check if required steps are completed
     config.requiredStepsToCreateAccount.forEach((value, key) => {
       if (!completed.includes(value.slug)) {
-        const step = config.signupSteps.findIndex(s => s.slug === value.slug);
+        const step = this.configSteps.findIndex(s => s.slug === value.slug);
         const stepNumber = +step + 1;
         stepsRequiredButNotComplete.push(
           <GBLink
@@ -410,7 +375,7 @@ class SignupStepsForm extends React.Component {
       gbx3
     } = this.props.fields;
 
-    const stepConfig = util.getValue(config.signupSteps, step, {});
+    const stepConfig = util.getValue(this.configSteps, step, {});
     const slug = util.getValue(stepConfig, 'slug');
 
     switch (group) {
@@ -619,7 +584,7 @@ class SignupStepsForm extends React.Component {
       videoURL
     } = gbx3;
 
-    const stepConfig = util.getValue(config.signupSteps, step, {});
+    const stepConfig = util.getValue(this.configSteps, step, {});
     const slug = util.getValue(stepConfig, 'slug');
     const stepNumber = +step + 1;
     const completed = this.props.completed.includes(slug) ? true : false;
@@ -1009,7 +974,7 @@ class SignupStepsForm extends React.Component {
               <GBLink
                 className='link'
                 onClick={() => {
-                  const step = config.signupSteps.findIndex(s => s.slug === 'account');
+                  const step = this.configSteps.findIndex(s => s.slug === 'account');
                   this.props.updateOrgSignup({ step });
                   this.props.formProp({ error: false });
                 }}
@@ -1091,7 +1056,6 @@ function mapStateToProps(state, props) {
   const step = util.getValue(orgSignup, 'step', 0);
   const acceptedTerms = util.getValue(orgSignup, 'acceptedTerms');
   const claimOrgID = util.getValue(orgSignup, 'claimOrgID', null);
-  const leadUserID = util.getValue(orgSignup, 'leadUserID', null);
   const validTaxID = util.getValue(orgSignup, 'validTaxID', null);
   const completed = util.getValue(orgSignup, 'completed', []);
   const fields = util.getValue(orgSignup, 'fields', {});
@@ -1105,7 +1069,6 @@ function mapStateToProps(state, props) {
     step,
     acceptedTerms,
     claimOrgID,
-    leadUserID,
     validTaxID,
     completed,
     fields,
@@ -1122,7 +1085,10 @@ export default connect(mapStateToProps, {
   setOrgStyle,
   setAccess,
   loadOrg,
-  updateOrgGlobal,
+  updateOrgGlobals,
   createFundraiser,
-  saveOrg
+  saveOrg,
+  toggleModal,
+  savingSignup,
+  signupGBX3Data
 })(SignupSteps);

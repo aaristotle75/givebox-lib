@@ -493,7 +493,8 @@ class GBX3 extends React.Component {
       orgID
     } = this.props;
 
-    if (this.props.loading
+    if (this.props.savingSignup
+      || this.props.loading
       || (util.isLoading(this.props.gbx3Org) && orgID)
       && this.props.step !== 'create'
       && !browse) return <Loader msg='Initiating GBX3' />;
@@ -534,6 +535,7 @@ function mapStateToProps(state, props) {
   const queryParams = util.getValue(props, 'queryParams', {});
   const gbx3 = util.getValue(state, 'gbx3', {});
   const loading = util.getValue(gbx3, 'loading');
+  const savingSignup = util.getValue(gbx3, 'savingSignup');
   const globals = util.getValue(gbx3, 'globals', {});
   const info = util.getValue(gbx3, 'info', {});
   const stage = util.getValue(info, 'stage');
@@ -556,6 +558,7 @@ function mapStateToProps(state, props) {
   return {
     globals,
     loading,
+    savingSignup,
     info,
     stage,
     originTemplate,
