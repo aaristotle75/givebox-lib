@@ -74,8 +74,8 @@ const createSuccess = {
   type: 'org',
   slug: 'createSuccess',
   name: 'Success',
-  title: 'Your Account was Created Successfully!',
-  icon: 'heart',
+  title: 'Your Account was Successfully Created!',
+  icon: 'award',
   desc: ''
 };
 
@@ -110,6 +110,7 @@ export const signupSteps = [
 ];
 
 export const postSignupSteps = [
+  createSuccess,
   preview,
   share
 ];

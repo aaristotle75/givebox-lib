@@ -46,8 +46,9 @@ class Design extends React.Component {
     } = this.props;
 
     if (!postsignupCompleted) {
-      this.props.setSignupStep('preview', () => {
-        this.props.toggleModal('orgSignupSteps', true);
+      this.props.updateAdmin({ open: true });
+      this.props.setSignupStep('createSuccess', () => {
+        this.props.toggleModal('orgPostSignupSteps', true);
       });
     }
 

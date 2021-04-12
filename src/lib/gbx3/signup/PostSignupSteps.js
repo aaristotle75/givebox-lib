@@ -140,13 +140,14 @@ class PostSignupSteps extends React.Component {
 
     switch (slug) {
       case 'createSuccess': {
-        item.saveButtonLabel = <span className='buttonAlignText'>Continue to Next Step <span className='icon icon-chevron-right'></span></span>
+        item.saveButtonLabel = <span className='buttonAlignText'>Continue to Preview Your Fundraiser <span className='icon icon-chevron-right'></span></span>
         item.desc =
           <div>
             <p>You can now start taking donations.</p>
             <p>You just need to preview your fundraiser and share it. Simple as that.</p>
             <HelpfulTip
-              text={`Don't quit now it's all easy sailing from here! Just preview and share to make your first donation with Givebox!`}
+              headerText={`Don't quit now!`}
+              text={`It's all easy sailing from here! Just preview and share to make your first donation with Givebox!`}
               style={{ marginTop: 30 }}
             />
           </div>
@@ -155,7 +156,7 @@ class PostSignupSteps extends React.Component {
       }
 
       case 'preview': {
-        item.saveButtonLabel = <span className='buttonAlignText'>Looks Good! Continue to Next Step <span className='icon icon-chevron-right'></span></span>;
+        item.saveButtonLabel = <span className='buttonAlignText'>Looks Good! I'm Ready to Share <span className='icon icon-chevron-right'></span></span>;
         item.className = 'preview';
         item.desc = !this.state.previewLoaded ?
           'Please wait while the preview loads...'
@@ -185,7 +186,7 @@ class PostSignupSteps extends React.Component {
       <div className='stepContainer'>
         { this.state.saving ? <Loader msg='Saving...' /> : null }
         <div className='stepStatus'>
-          <GBLink onClick={(e) => this.props.validateForm(e, this.processForm, slug)}>
+          <GBLink onClick={() => this.saveStep(slug)}>
             <span style={{ marginLeft: 20 }}>{item.saveButtonLabel}</span>
           </GBLink>
         </div>
@@ -194,7 +195,7 @@ class PostSignupSteps extends React.Component {
             <span className={`icon icon-${item.icon}`}></span>
             <div className='stepTitle'>
               <div className='numberContainer'>
-                <span className='number'>Step {stepNumber}{ completed ? ':' : null}</span>
+                <span className='number'>{/* Step {stepNumber}{ completed ? ':' : null} */}</span>
                 {completed ?
                   <div className='completed'>
                     <span className='icon icon-check'></span>Completed
@@ -213,24 +214,24 @@ class PostSignupSteps extends React.Component {
         <div className='button-group'>
           <div className='button-item' style={{ width: 150 }}>
             { !firstStep ? <GBLink className={`link`} disabled={firstStep} onClick={() => {
-              this.props.formProp({ error: false });
               this.previousStep(step);
-            }}><span style={{ marginRight: '5px' }} className='icon icon-chevron-left'></span> {isMobile ? 'Back' : 'Previous Step' }</GBLink> : <span>&nbsp;</span> }
+            }}><span style={{ marginRight: '5px' }} className='icon icon-chevron-left'></span> Back</GBLink> : <span>&nbsp;</span> }
           </div>
           <div className='button-item'>
-            {this.props.saveButton(this.processForm, { group: slug, label: item.saveButtonLabel })}
+            <GBLink className='button' onClick={() => this.saveStep(slug)}>
+              {item.saveButtonLabel}
+            </GBLink>
           </div>
           <div className='button-item' style={{ width: 150 }}>
-            { slug !== 'account' ?
+            { slug !== 'preview' && slug !== 'share' ?
               <GBLink
                 className='link'
                 onClick={() => {
-                  const step = this.configSteps.findIndex(s => s.slug === 'account');
+                  const step = this.configSteps.findIndex(s => s.slug === 'share');
                   this.props.updateOrgSignup({ step });
-                  this.props.formProp({ error: false });
                 }}
               >
-                <span className='buttonAlignText'>Skip to Create Account <span className='icon icon-chevron-right'></span></span>
+                <span className='buttonAlignText'>Skip to Share <span className='icon icon-chevron-right'></span></span>
               </GBLink>
             : null }
           </div>
@@ -245,8 +246,13 @@ class PostSignupSteps extends React.Component {
     } = this.props;
 
     return (
-      <div className='stepsWrapper'>
-        {this.renderStep()}
+      <div className='gbx3Steps modalWrapper'>
+        <div className='flexCenter' style={{ marginBottom: 10 }}>
+          <Image size='thumb' maxSize={40} url={'https://cdn.givebox.com/givebox/public/gb-logo5.png'} alt='Givebox' />
+        </div>
+        <div className='stepsWrapper'>
+          {this.renderStep()}
+        </div>
       </div>
     )
   }
