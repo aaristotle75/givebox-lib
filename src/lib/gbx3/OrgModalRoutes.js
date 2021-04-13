@@ -115,7 +115,7 @@ export default class OrgModalRoutes extends Component {
         <ModalRoute
           className='gbx3'
           id={'orgPostSignupSteps'}
-          effect='3DFlipVert' style={{ width: '70%' }}
+          effect='3DFlipVert' style={{ width: '85%' }}
           disallowBgClose={true}
           component={(props) => this.loadComponent('./signup/PostSignupSteps', props)}
         />

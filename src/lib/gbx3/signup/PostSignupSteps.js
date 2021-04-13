@@ -1,16 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import * as config from './signupConfig';
-import CreateAccount from './CreateAccount';
 import Form from '../../form/Form';
 import Dropdown from '../../form/Dropdown';
 import TextField from '../../form/TextField';
-import MediaLibrary from '../../form/MediaLibrary';
-import Video from '../../common/Video';
-import EditVideo from '../admin/common/EditVideo';
-import { createData } from '../admin/article/createTemplates';
 import * as util from '../../common/utility';
-import Tabs, { Tab } from '../../common/Tabs';
 import Loader from '../../common/Loader';
 import * as _v from '../../form/formValidate';
 import GBLink from '../../common/GBLink';
@@ -19,29 +13,15 @@ import HelpfulTip from '../../common/HelpfulTip';
 import {
   updateOrgSignup,
   updateOrgSignupField,
-  setOrgStyle,
-  loadOrg,
-  createFundraiser,
-  saveOrg,
-  updateOrgGlobals,
-  savingSignup,
-  signupGBX3Data
+  saveOrg
 } from '../redux/gbx3actions';
-import {
-  setAccess,
-  toggleModal
-} from '../../api/actions';
 import {
   getResource,
   sendResource
 } from '../../api/helpers';
-import { PhotoshopPicker } from 'react-color-aaristotle';
 import AnimateHeight from 'react-animate-height';
-import {
-  primaryColor as defaultPrimaryColor,
-  defaultOrgGlobals
-} from '../redux/gbx3defaults';
-import { blockTemplates, defaultBlocks } from '../blocks/blockTemplates';
+
+const GBX3_URL = process.env.REACT_APP_ENV === 'local' ? process.env.REACT_APP_GBX_SHARE : process.env.REACT_APP_GBX_URL;
 
 class PostSignupSteps extends React.Component {
 
@@ -52,15 +32,40 @@ class PostSignupSteps extends React.Component {
     this.gotoNextStep = this.gotoNextStep.bind(this);
     this.previousStep = this.previousStep.bind(this);
     this.nextStep = this.nextStep.bind(this);
-
+    this.gbx3message = this.gbx3message.bind(this);
     this.state = {
       error: false,
-      saving: false
+      saving: false,
+      previewLoaded: false
     };
 
     this.configSteps = config.postSignupSteps;
     this.allowNextStep = false;
     this.totalSignupSteps = +(this.configSteps.length - 1);
+  }
+
+  componentDidMount() {
+    window.addEventListener('message', this.gbx3message, false);
+  }
+
+  gbx3message(e) {
+    const {
+      step
+    } = this.props;
+
+    const stepConfig = util.getValue(this.configSteps, step, {});
+    const slug = util.getValue(stepConfig, 'slug');
+
+    if (e.data === 'gbx3Initialized') {
+      if (slug === 'preview') {
+        this.setState({ previewLoaded: true });
+      }
+    }
+    if (e.data === 'gbx3Shared') {
+      if (slug === 'share') {
+        this.saveStep('share');
+      }
+    }
   }
 
   async saveStep(step, error = false, delay = 1000) {
@@ -119,7 +124,8 @@ class PostSignupSteps extends React.Component {
     const {
       step,
       open,
-      isMobile
+      isMobile,
+      createdArticleID
     } = this.props;
 
     const stepConfig = util.getValue(this.configSteps, step, {});
@@ -168,7 +174,7 @@ class PostSignupSteps extends React.Component {
         ;
         item.component =
           <div className='stagePreview flexCenter'>
-            Show Preview
+            <iframe src={`${GBX3_URL}/${createdArticleID}/?admin`} title={`Preview`} />
           </div>
         ;
         break;
@@ -283,13 +289,5 @@ export default connect(mapStateToProps, {
   updateOrgSignupField,
   getResource,
   sendResource,
-  setOrgStyle,
-  setAccess,
-  loadOrg,
-  updateOrgGlobals,
-  createFundraiser,
-  saveOrg,
-  toggleModal,
-  savingSignup,
-  signupGBX3Data
+  saveOrg
 })(PostSignupSteps);

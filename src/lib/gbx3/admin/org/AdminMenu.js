@@ -5,6 +5,7 @@ import GBLink from '../../../common/GBLink';
 import AdminMenuLayout from './AdminMenuLayout';
 import AdminMenuStyle from './AdminMenuStyle';
 import AdminMenuTools from './AdminMenuTools';
+import HelperMenuPanel from './HelperMenuPanel';
 import {
   toggleAdminLeftPanel
 } from '../../redux/gbx3actions';
@@ -16,8 +17,12 @@ class AdminMenu extends React.Component {
     this.switchPanelType = this.switchPanelType.bind(this);
     this.renderPanel = this.renderPanel.bind(this);
     this.state = {
-      panelType: 'style'
+      panelType: 'helperMenu'
     };
+  }
+
+  componentDidMount() {
+
   }
 
   switchPanelType(panelType) {
@@ -42,10 +47,16 @@ class AdminMenu extends React.Component {
         )
       }
 
-      case 'layout':
-      default: {
+      case 'layout': {
         return (
           <AdminMenuLayout blockType={blockType} />
+        )
+      }
+
+      case 'helperMenu':
+      default: {
+        return (
+          <HelperMenuPanel blockType={blockType} />
         )
       }
     }
@@ -75,6 +86,7 @@ class AdminMenu extends React.Component {
             {/*
             <GBLink className={`ripple link ${panelType === 'layout' ? 'selected' : ''}`} onClick={() => this.switchPanelType('layout')}>Elements</GBLink>
             */}
+            <GBLink className={`ripple link ${panelType === 'helperMenu' ? 'selected' : ''}`} onClick={() => this.switchPanelType('helperMenu')}>Helper</GBLink>
             <GBLink className={`ripple link ${panelType === 'style' ? 'selected' : ''}`} onClick={() => this.switchPanelType('style')}>Style</GBLink>
             <GBLink className={`ripple link ${panelType === 'tools' ? 'selected' : ''}`} onClick={() => this.switchPanelType('tools')}>Settings</GBLink>
           </div>

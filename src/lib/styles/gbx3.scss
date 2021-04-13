@@ -3136,3 +3136,33 @@
     }
   }
 }
+
+/** EditFormOnly **/
+.gbx3 {
+  .editFormOnly {
+
+    .gbx3TopHeader,
+    .topPanel {
+      display: none;
+    }
+
+    .stageContainer {
+      top: 0;
+      .gbx3Layout {
+        margin-top: 10px;
+      }
+    }
+
+    .leftPanel {
+      top: 0;
+
+      .leftPanelClose {
+        top: 0;
+      }
+    }
+
+    .leftPanelOpenButton {
+      top: 20px;
+    }
+  }
+}

@@ -12,11 +12,8 @@ import {
   toggleAdminLeftPanel,
   setLoading,
   closeHelper,
-  setSignupStep
+  loadPostSignup
 } from '../../redux/gbx3actions';
-import {
-  toggleModal
-} from '../../../api/actions';
 import Toggle from 'react-toggle';
 import { FaPalette } from 'react-icons/fa';
 import { GoBeaker } from 'react-icons/go';
@@ -46,10 +43,7 @@ class Design extends React.Component {
     } = this.props;
 
     if (!postsignupCompleted) {
-      this.props.updateAdmin({ open: true });
-      this.props.setSignupStep('createSuccess', () => {
-        this.props.toggleModal('orgPostSignupSteps', true);
-      });
+      this.props.loadPostSignup(1);
     }
 
   }
@@ -262,6 +256,7 @@ function mapStateToProps(state, props) {
   const orgSlug = util.getValue(gbx3, 'orgData.slug');
   const orgID = util.getValue(gbx3, 'orgData.ID');
   const postsignupCompleted = util.getValue(gbx3, 'orgSignup.postsignupCompleted');
+  const editFormOnly = util.getValue(admin, 'editFormOnly');
 
   return {
     breakpoint,
@@ -272,7 +267,8 @@ function mapStateToProps(state, props) {
     createType,
     orgSlug,
     orgID,
-    postsignupCompleted
+    postsignupCompleted,
+    editFormOnly
   }
 }
 
@@ -282,6 +278,5 @@ export default connect(mapStateToProps, {
   toggleAdminLeftPanel,
   setLoading,
   closeHelper,
-  setSignupStep,
-  toggleModal
+  loadPostSignup
 })(Design);

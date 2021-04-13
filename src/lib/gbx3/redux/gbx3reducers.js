@@ -81,6 +81,7 @@ export function gbx3(state = {
     previewMode: false,
     publicView: false,
     editable: false,
+    editFormOnly: false,
     hasAccessToCreate: false,
     hasAccessToEdit: false,
     preventCollision: true,

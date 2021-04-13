@@ -159,6 +159,32 @@ export function loadOrgSignup(forceStep = null) {
   }
 }
 
+export function loadPostSignup(forceStep = null) {
+  return async (dispatch, getState) => {
+
+    const orgSignup = util.getValue(getState(), 'gbx3.orgSignup', {});
+
+    // Get the minimum not completed step
+    const numOfSteps = postSignupSteps.length - 1;
+    const uncompletedSteps = [];
+
+    postSignupSteps.forEach((value, key) => {
+      if (!orgSignup.completed.includes(value.slug)) {
+        uncompletedSteps.push(key);
+      }
+    });
+    const minStepNotCompleted = !util.isEmpty(uncompletedSteps) ? Math.min(...uncompletedSteps) : numOfSteps;
+
+    orgSignup.step = forceStep || minStepNotCompleted;
+
+    const updated = await dispatch(updateOrgSignup(orgSignup));
+    if (updated) {
+      dispatch(updateAdmin({ open: true }));
+      dispatch(toggleModal('orgPostSignupSteps', true));
+    }
+  }
+}
+
 export function clearGBX3(keepOrgData) {
   return {
     type: types.CLEAR_GBX3,
@@ -1222,6 +1248,7 @@ export function loadGBX3(articleID, callback) {
     const globalsState = util.getValue(gbx3, 'globals', {});
     const orgData = util.getValue(gbx3, 'orgData', {});
     const admin = util.getValue(gbx3, 'admin', {});
+    const editFormOnly = util.getValue(admin, 'editFormOnly');
     const blockType = 'article';
     const availableBlocks = util.deepClone(util.getValue(admin, `availableBlocks.article`, []));
     const receiptAvailableBlocks = util.deepClone(util.getValue(admin, `availableBlocks.receipt`, []));
@@ -1358,6 +1385,8 @@ export function loadGBX3(articleID, callback) {
                     }
                   ;
 
+                  if (editFormOnly) helperSteps.advancedBuilder = true;
+                  
                   // Get Step Values
                   const title = util.getValue(res, 'title');
                   const logoBlock = util.getValue(blocks, 'logo', {});

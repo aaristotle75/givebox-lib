@@ -73,7 +73,7 @@ const account = {
 const createSuccess = {
   type: 'org',
   slug: 'createSuccess',
-  name: 'Success',
+  name: 'Account Created',
   title: 'Your Account was Successfully Created!',
   icon: 'award',
   desc: ''
@@ -83,7 +83,7 @@ const createSuccess = {
 const preview = {
   type: 'preview',
   slug: 'preview',
-  name: 'Preview',
+  name: 'Preview Fundraiser',
   icon: 'eye',
   title: 'Preview Fundraiser',
   desc: 'You are almost done! Just click "Share Your Fundraiser" below.'

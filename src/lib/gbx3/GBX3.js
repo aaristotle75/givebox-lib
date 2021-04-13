@@ -339,6 +339,10 @@ class GBX3 extends React.Component {
       this.props.updateAdmin({ publicView: true });
     }
 
+    if (has(queryParams, 'editFormOnly')) {
+      this.props.updateAdmin({ editFormOnly: true });
+    }
+
     const infoUpdated = await this.props.updateInfo(info);
     if (infoUpdated) return true;
   }

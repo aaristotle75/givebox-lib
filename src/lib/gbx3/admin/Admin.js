@@ -95,6 +95,7 @@ class Admin extends React.Component {
       previewMode,
       saveStatus,
       editable,
+      editFormOnly,
       hasAccessToEdit,
       hasAccessToCreate,
       orgID
@@ -108,7 +109,7 @@ class Admin extends React.Component {
     }
 
     return (
-      <div className={`gbx3AdminLayout ${display}Display ${step}Step ${editable ? 'editable' : ''} ${previewMode ? 'previewMode' : ''}`}>
+      <div className={`gbx3AdminLayout ${display}Display ${step}Step ${editable ? 'editable' : ''} ${previewMode ? 'previewMode' : ''} ${editFormOnly ? 'editFormOnly' : ''}`}>
         <ModalRoute
           className='gbx3'
           id='articleList'
@@ -176,6 +177,7 @@ function mapStateToProps(state, props) {
   const hasAccessToEdit = util.getValue(admin, 'hasAccessToEdit');
   const hasAccessToCreate = util.getValue(admin, 'hasAccessToCreate');
   const editable = util.getValue(admin, 'editable');
+  const editFormOnly = util.getValue(admin, 'editFormOnly');
 
   return {
     project,
@@ -192,7 +194,8 @@ function mapStateToProps(state, props) {
     hasAccessToEdit,
     hasAccessToCreate,
     admin,
-    editable
+    editable,
+    editFormOnly
   }
 }
 
