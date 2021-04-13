@@ -64,10 +64,10 @@ const image = {
 const account = {
   type: 'account',
   slug: 'account',
-  name: 'Create Account',
+  name: 'Save Account',
   icon: 'user',
-  title: 'Create Your Account',
-  desc: `Please create a Givebox account to secure your Organization's profile and accept payments.`
+  title: 'Save Your Account',
+  desc: `Please save your Givebox account to secure your Organization's profile and accept payments.`
 }
 
 const createSuccess = {

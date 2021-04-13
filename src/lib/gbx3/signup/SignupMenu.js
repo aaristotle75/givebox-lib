@@ -7,6 +7,9 @@ import {
   updateOrgSignup,
   setSignupStep
 } from '../redux/gbx3actions';
+import {
+  toggleModal
+} from '../../api/actions';
 import * as config from './signupConfig';
 
 class SignupMenu extends React.Component {
@@ -32,7 +35,11 @@ class SignupMenu extends React.Component {
       const stepNumber = <span className='number'>Step {+key + 1}</span>;
       items.push(
         <li
-          onClick={() => this.props.setSignupStep(+key)}
+          onClick={() => {
+            this.props.setSignupStep(+key, () => {
+              this.props.toggleModal('orgSignupSteps', true);
+            });
+          }}
           key={key}
           className={`stepButton ${currentStep ? 'currentStep' : ''}`}
         >
@@ -95,5 +102,6 @@ function mapStateToProps(state, props) {
 export default connect(mapStateToProps, {
   toggleAdminLeftPanel,
   updateOrgSignup,
-  setSignupStep
+  setSignupStep,
+  toggleModal
 })(SignupMenu);

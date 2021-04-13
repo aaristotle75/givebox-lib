@@ -251,6 +251,10 @@ $gbx3StepsBreakpoint: 600px;
 
 .gbx3Steps {
 
+  .alertMsg .msgText {
+    font-size: 14px;
+  }
+
   .stepsNotCompletedButRequired {
     display: flex;
     flex-direction: column;
@@ -620,9 +624,26 @@ $gbx3StepsBreakpoint: 600px;
     }
   }
 
+  .progressWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 20px;
+    margin-bottom: 10px;
+
+    .progressStatusText {
+      margin-top: 5px;
+      font-size: 14px;
+      font-weight: 300;
+      color: $med-blue-gray;
+    }
+  }
+
   .linearProgress {
-    margin-top: 10px;
+    margin-top: 0px;
     height: 6px;
+    background: $light-gray;
   }
 
   .linearProgressBar {

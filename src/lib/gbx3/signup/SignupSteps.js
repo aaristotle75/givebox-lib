@@ -16,6 +16,7 @@ import * as _v from '../../form/formValidate';
 import GBLink from '../../common/GBLink';
 import Image from '../../common/Image';
 import HelpfulTip from '../../common/HelpfulTip';
+import LinearBar from '../../common/LinearBar';
 import {
   updateOrgSignup,
   updateOrgSignupField,
@@ -56,6 +57,7 @@ class SignupStepsForm extends React.Component {
     this.checkRequiredCompleted = this.checkRequiredCompleted.bind(this);
     this.saveStep = this.saveStep.bind(this);
     this.gotoNextStep = this.gotoNextStep.bind(this);
+    this.getNextStep = this.getNextStep.bind(this);
     this.previousStep = this.previousStep.bind(this);
     this.nextStep = this.nextStep.bind(this);
     this.checkExistingUser = this.checkExistingUser.bind(this);
@@ -74,10 +76,8 @@ class SignupStepsForm extends React.Component {
       mediaTypeError: null,
       requirePassword: false
     };
-
-    this.configSteps = props.createdOrgID ? config.postSignupSteps : config.signupSteps;
     this.allowNextStep = false;
-    this.totalSignupSteps = +(this.configSteps.length - 1);
+    this.totalSignupSteps = +(config.signupSteps.length - 1);
   }
 
   setRequirePassword(requirePassword) {
@@ -288,7 +288,7 @@ class SignupStepsForm extends React.Component {
     // Check if required steps are completed
     config.requiredStepsToCreateAccount.forEach((value, key) => {
       if (!completed.includes(value.slug)) {
-        const step = this.configSteps.findIndex(s => s.slug === value.slug);
+        const step = config.signupSteps.findIndex(s => s.slug === value.slug);
         const stepNumber = +step + 1;
         stepsRequiredButNotComplete.push(
           <GBLink
@@ -375,7 +375,7 @@ class SignupStepsForm extends React.Component {
       gbx3
     } = this.props.fields;
 
-    const stepConfig = util.getValue(this.configSteps, step, {});
+    const stepConfig = util.getValue(config.signupSteps, step, {});
     const slug = util.getValue(stepConfig, 'slug');
 
     switch (group) {
@@ -517,9 +517,12 @@ class SignupStepsForm extends React.Component {
     });
   }
 
-  handleMediaSaveCallback(url, name, field) {
+  async handleMediaSaveCallback(url, name, field, slug) {
     this.props.formProp({ error: false });
-    this.props.updateOrgSignupField(name, { [field]: url });
+    const updated = await this.props.updateOrgSignupField(name, { [field]: url });
+    if (updated) {
+      this.saveStep(slug, false, 3000);
+    }
   }
 
   gotoNextStep() {
@@ -527,6 +530,15 @@ class SignupStepsForm extends React.Component {
       step
     } = this.props;
     this.props.updateOrgSignup({ step: this.nextStep(step) });
+  }
+
+  getNextStep() {
+    const {
+      step
+    } = this.props;
+
+    const nextStep = this.nextStep(step);
+    return util.getValue(config.signupSteps[nextStep], 'name');
   }
 
   previousStep(step) {
@@ -584,12 +596,14 @@ class SignupStepsForm extends React.Component {
       videoURL
     } = gbx3;
 
-    const stepConfig = util.getValue(this.configSteps, step, {});
+    const stepConfig = util.getValue(config.signupSteps, step, {});
     const slug = util.getValue(stepConfig, 'slug');
     const stepNumber = +step + 1;
     const completed = this.props.completed.includes(slug) ? true : false;
     const firstStep = step === 0 ? true : false;
     const lastStep = step === this.props.steps ? true : false;
+    const nextStepName = this.getNextStep();
+    const nextStepNumber = this.nextStep(step) + 1;
 
     const item = {
       title: stepConfig.title,
@@ -597,6 +611,7 @@ class SignupStepsForm extends React.Component {
       desc: stepConfig.desc,
       component: <div></div>,
       className: '',
+      saveButtonLabelTop: <span className='buttonAlignText'>Save & Continue to Step {nextStepNumber}: {nextStepName} <span className='icon icon-chevron-right'></span></span>,
       saveButtonLabel: <span className='buttonAlignText'>Save & Continue to Next Step <span className='icon icon-chevron-right'></span></span>
     };
 
@@ -731,7 +746,7 @@ class SignupStepsForm extends React.Component {
             <MediaLibrary
               image={orgLogo}
               preview={orgLogo}
-              handleSaveCallback={(url) => this.handleMediaSaveCallback(url, 'org', 'imageURL')}
+              handleSaveCallback={(url) => this.handleMediaSaveCallback(url, 'org', 'imageURL', slug)}
               handleSave={util.handleFile}
               library={library}
               showBtns={'hide'}
@@ -847,7 +862,7 @@ class SignupStepsForm extends React.Component {
                   preview={imageURL}
                   handleSaveCallback={(url) => {
                     this.setState({ mediaTypeError: null });
-                    this.handleMediaSaveCallback(url, 'gbx3', 'imageURL');
+                    this.handleMediaSaveCallback(url, 'gbx3', 'imageURL', slug);
                   }}
                   handleSave={util.handleFile}
                   library={library}
@@ -874,7 +889,7 @@ class SignupStepsForm extends React.Component {
                   }}
                   onBlur={(url, validated) => {
                     if (url && validated) {
-                      this.handleMediaSaveCallback(url, 'gbx3', 'videoURL');
+                      this.handleMediaSaveCallback(url, 'gbx3', 'videoURL', slug);
                     }
                   }}
                   error={mediaTypeError === 'video' ? true : false}
@@ -888,6 +903,7 @@ class SignupStepsForm extends React.Component {
 
       case 'account': {
         item.saveButtonLabel = <span className='buttonAlignText'>Save Your Account <span className='icon icon-chevron-right'></span></span>;
+        item.saveButtonLabelTop = item.saveButtonLabel;
         item.component =
           <CreateAccount
             {...this.props}
@@ -903,30 +919,6 @@ class SignupStepsForm extends React.Component {
         break;
       }
 
-      case 'preview': {
-        item.saveButtonLabel = <span className='buttonAlignText'>Looks Good! Continue to Next Step <span className='icon icon-chevron-right'></span></span>;
-        item.className = 'preview';
-        item.desc = !this.state.previewLoaded ?
-          'Please wait while the preview loads...'
-          :
-          <div>
-            <span>This is how the form will look to your supporters.</span>
-            <span style={{ marginTop: 10, display: 'block' }}><GBLink style={{ fontSize: 14, display: 'inline' }} onClick={() => console.log('execute edit')}>Edit Form</GBLink></span>
-          </div>
-        ;
-        item.component =
-          <div className='stagePreview flexCenter'>
-            Show Preview
-          </div>
-        ;
-        break;
-      }
-
-      case 'share': {
-        item.saveButtonLabel = <span className='buttonAlignText'>Share Your Fundraiser <span className='icon icon-chevron-right'></span></span>
-        break;
-      }
-
       // no default
     }
 
@@ -935,7 +927,7 @@ class SignupStepsForm extends React.Component {
         { this.state.saving ? <Loader msg='Saving...' /> : null }
         <div className='stepStatus'>
           <GBLink onClick={(e) => this.props.validateForm(e, this.processForm, slug)}>
-            <span style={{ marginLeft: 20 }}>{item.saveButtonLabel}</span>
+            <span style={{ marginLeft: 20 }}>{item.saveButtonLabelTop}</span>
           </GBLink>
         </div>
         <div className={`step ${item.className} ${open ? 'open' : ''}`}>
@@ -974,12 +966,12 @@ class SignupStepsForm extends React.Component {
               <GBLink
                 className='link'
                 onClick={() => {
-                  const step = this.configSteps.findIndex(s => s.slug === 'account');
+                  const step = config.signupSteps.findIndex(s => s.slug === 'account');
                   this.props.updateOrgSignup({ step });
                   this.props.formProp({ error: false });
                 }}
               >
-                <span className='buttonAlignText'>Skip to Create Account <span className='icon icon-chevron-right'></span></span>
+                <span className='buttonAlignText'>Skip to Save Account <span className='icon icon-chevron-right'></span></span>
               </GBLink>
             : null }
           </div>
@@ -989,9 +981,6 @@ class SignupStepsForm extends React.Component {
   }
 
   render() {
-
-    const {
-    } = this.props;
 
     return (
       <div className='stepsWrapper'>
@@ -1030,14 +1019,30 @@ class SignupSteps extends React.Component {
 
   render() {
 
+    const {
+      completed
+    } = this.props;
+
     if (util.isLoading(this.props.categories)) {
       return <Loader msg='Loading Categories...' />
     }
+
+    const numSteps = +config.signupSteps.length;
+    const numCompletedSteps = +completed.length;
+    const stepProgress = parseInt((numCompletedSteps / numSteps) * 100);
 
     return (
       <div className='gbx3Steps modalWrapper'>
         <div className='flexCenter' style={{ marginBottom: 10 }}>
           <Image size='thumb' maxSize={40} url={'https://cdn.givebox.com/givebox/public/gb-logo5.png'} alt='Givebox' />
+        </div>
+        <div className='progressWrapper'>
+          <LinearBar
+            progress={stepProgress}
+          />
+          <div className='progressStatusText'>
+            {stepProgress}% Completed
+          </div>
         </div>
         <Form id={`stepsForm`} name={`stepsForm`}>
           <SignupStepsForm

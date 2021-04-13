@@ -196,7 +196,7 @@ class MediaLibrary extends Component {
 
       items.push(
         <li key={0} className='ripple'>
-          <ModalLink id='imageDisplay' opts={{ url: this.state.preview, actions: actions }}><Image url={this.state.preview} size='small' maxWidth='100px' maxHeight='auto' alt='Media Item' /></ModalLink>
+          <ModalLink id='imageDisplay' opts={{ url: this.state.preview, actions: actions }}><Image onLoad={this.props.previewOnLoad} url={this.state.preview} size='small' maxWidth='170px' maxHeight='auto' alt='Media Item' /></ModalLink>
           <div className='buttons'>
             <GBLink className='select' onClick={() => this.selectEditor(this.state.preview)}>Edit</GBLink>
           </div>

@@ -42,7 +42,7 @@ class SignupPage extends React.Component {
     const videoURL = util.getValue(gbx3, 'videoURL');
     const mediaType = util.getValue(gbx3, 'mediaType', 'image');
     const buttonText = title && imageURL ? 'Edit' : completed.includes('title') ? 'Add an Image/Video' : 'Add a Fundraiser Title';
-    const ctaButtonText = title ? 'Donate Now' : 'Click to Edit';
+    const ctaButtonText = title ? 'Donate Now' : 'Click to Edit Fundraiser';
 
     const media = videoURL && mediaType === 'video' ?
       <Video
@@ -80,7 +80,7 @@ class SignupPage extends React.Component {
                 }}
               >
                 <button className='tooltip blockEditButton'>
-                  <span className='tooltipTop'><i />Click to { profilePictureUrl ? 'EDIT' : 'ADD' } Profile Picture</span>
+                  <span className='tooltipTop'><i />Click to { profilePictureUrl ? 'EDIT' : 'ADD' } Logo</span>
                   <span className='icon icon-camera'></span>
                 </button>
               </div>
@@ -98,25 +98,29 @@ class SignupPage extends React.Component {
         <div className='gbx3OrgSubHeader gbx3OrgContentOuterContainer'>
           <div className='gbx3OrgContentInnerContainer'>
             <div className='nameSection'>
-              <ModalLink
-                id='orgSignupSteps'
-                type='div'
+              <div
                 className='nameSectionContainer orgAdminEdit'
-                opts={{
-                  stepName: 'orgName',
-                  saveCallback: (name, orgName) => {
-                    console.log('execute saveCallback -> ', orgName);
-                  }
+                onClick={() => {
+                  this.props.openStep('orgName');
                 }}
               >
                 <button className='tooltip blockEditButton' id='orgEditTitle'>
-                  <span className='tooltipTop'><i />Click to EDIT Name</span>
+                  <span className='tooltipTop'><i />Click to EDIT Organization Name</span>
                   <span className='icon icon-edit'></span>
                 </button>
-              </ModalLink>
+              </div>
               <div className='nameSectionContainer'>
-                <div className='nameText flexCenter'>
-                  {orgName}
+                <div className='nameText'>
+                  <p style={{
+                    textAlign: 'center'
+                  }}>
+                    <span style={{
+                      fontWeight: 400,
+                      fontSize: '22px'
+                    }}>
+                      {orgName}
+                    </span>
+                  </p>
                 </div>
               </div>
             </div>
