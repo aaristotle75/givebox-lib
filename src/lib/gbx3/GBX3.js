@@ -66,6 +66,9 @@ class GBX3 extends React.Component {
   }
 
   async componentDidMount() {
+
+    document.domain = "givebox.com";
+
     const {
       articleID,
       editable,

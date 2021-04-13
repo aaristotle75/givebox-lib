@@ -39,9 +39,13 @@ class Layout extends React.Component {
     this.state = {
     }
     this.gbx3Container = React.createRef();
+    this.gbx3LayoutRef = React.createRef();
   }
 
   componentDidMount() {
+    if (this.gbx3Container.current) {
+      window.parent.postMessage(`gbx3Height-${this.gbx3Container.current.clientHeight}`, '*');
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -320,7 +324,7 @@ class Layout extends React.Component {
 
         <div style={{ height: gbx3BackgroundHeight }} className='gbx3LayoutBackground'></div>
         {showAvatarMenu ? avatarMenu : '' }
-        <div id='gbx3Layout' className={`gbx3Layout ${displayClass} ${stage} ${noAccess ? 'noAccess' : ''}`}>
+        <div ref={this.gbx3LayoutRef} id='gbx3Layout' className={`gbx3Layout ${displayClass} ${stage} ${noAccess ? 'noAccess' : ''}`}>
           <div
             style={{
               ...style

@@ -16,10 +16,14 @@ import {
   saveOrg
 } from '../redux/gbx3actions';
 import {
+  toggleModal
+} from '../../api/actions';
+import {
   getResource,
   sendResource
 } from '../../api/helpers';
 import AnimateHeight from 'react-animate-height';
+import SignupShare from './SignupShare';
 
 const GBX3_URL = process.env.REACT_APP_ENV === 'local' ? process.env.REACT_APP_GBX_SHARE : process.env.REACT_APP_GBX_URL;
 
@@ -36,12 +40,15 @@ class PostSignupSteps extends React.Component {
     this.state = {
       error: false,
       saving: false,
-      previewLoaded: false
+      previewLoaded: false,
+      editPreview: false,
+      iframeHeight: 0
     };
 
     this.configSteps = config.postSignupSteps;
     this.allowNextStep = false;
     this.totalSignupSteps = +(this.configSteps.length - 1);
+    this.iframeRef = React.createRef();
   }
 
   componentDidMount() {
@@ -61,14 +68,24 @@ class PostSignupSteps extends React.Component {
         this.setState({ previewLoaded: true });
       }
     }
+
     if (e.data === 'gbx3Shared') {
       if (slug === 'share') {
-        this.saveStep('share');
+        this.saveStep('share', false, 1000, false);
+      }
+    }
+
+    const str = e.data.toString();
+    const strArr = str.split('-');
+    if (strArr[0] === 'gbx3Height') {
+      if (strArr[1]) {
+        const iframeHeight = +strArr[1] + 50;
+        this.setState({ iframeHeight });
       }
     }
   }
 
-  async saveStep(step, error = false, delay = 1000) {
+  async saveStep(step, error = false, delay = 1000, closeWhenAllStepsCompleted = true) {
     const {
       orgSignup
     } = this.props;
@@ -80,10 +97,23 @@ class PostSignupSteps extends React.Component {
 
     const completedStep = await this.stepCompleted(step);
     if (completedStep) {
-      this.setState({ saving: false }, () => {
-        setTimeout(() => {
-          this.gotoNextStep();
-        }, delay)
+      this.setState({ saving: false }, async () => {
+        if (step === 'share' && closeWhenAllStepsCompleted) {
+          const updated = await this.props.updateOrgSignup({ postsignupCompleted: true });
+          if (updated) {
+            this.props.saveOrg({
+              orgUpdated: true,
+              isSending: true,
+              callback: () => {
+                this.props.toggleModal('orgPostSignupSteps', false);
+              }
+            })
+          }
+        } else {
+          setTimeout(() => {
+            this.gotoNextStep();
+          }, delay);
+        }
       });
     } else {
       this.setState({ saving: false }, this.gotoNextStep);
@@ -119,6 +149,9 @@ class PostSignupSteps extends React.Component {
 
   renderStep() {
     const {
+      editPreview,
+      previewLoaded,
+      iframeHeight
     } = this.state;
 
     const {
@@ -164,24 +197,44 @@ class PostSignupSteps extends React.Component {
       case 'preview': {
         item.saveButtonLabel = <span className='buttonAlignText'>Looks Good! I'm Ready to Share <span className='icon icon-chevron-right'></span></span>;
         item.className = 'preview';
-        item.desc = !this.state.previewLoaded ?
-          'Please wait while the preview loads...'
+        item.desc = !previewLoaded ?
+          `Please wait while the ${editPreview ? 'editable fundraiser' : 'public preview'} loads...`
           :
           <div>
-            <span>This is how the form will look to your supporters.</span>
-            <span style={{ marginTop: 10, display: 'block' }}><GBLink style={{ fontSize: 14, display: 'inline' }} onClick={() => console.log('execute edit')}>Edit Form</GBLink></span>
+            <GBLink
+              style={{ fontSize: 14, display: 'inline' }}
+              onClick={() => {
+                this.setState({ editPreview: editPreview ? false : true, previewLoaded: false, iframeHeight: 0 })
+              }}
+            >
+              <span className='buttonAlignText'>{editPreview ? 'Click Here for Public Preview' : 'Click Here to Edit Your Fundraiser'} <span className='icon icon-chevron-right'></span></span>
+            </GBLink>
+            <HelpfulTip
+              headerIcon={<span className={`icon icon-${editPreview ? 'edit' : 'eye'}`}></span>}
+              headerText={editPreview ? 'Edit Fundraiser' : 'Public Preview'}
+              text={editPreview ? 'You can hover over any page element and change it by clicking the edit icon.' : 'This is how your fundraiser will look to your supporters.'}
+              style={{ marginTop: 30 }}
+            />
           </div>
         ;
         item.component =
-          <div className='stagePreview flexCenter'>
-            <iframe src={`${GBX3_URL}/${createdArticleID}/?admin`} title={`Preview`} />
+          <div className='stagePreview flexCenter flexColumn'>
+            { !previewLoaded ?
+              <div className='imageLoader'>
+                <img src='https://cdn.givebox.com/givebox/public/images/squareLoader.gif' alt='Loader' />
+              </div>
+            : null }
+            <iframe style={{ height: iframeHeight }} ref={this.iframeRef} id='previewIframe' src={`${GBX3_URL}/${createdArticleID}${this.state.editPreview ? '?admin&editFormOnly' : '?public&preview'}`} title={`Preview`} />
           </div>
         ;
         break;
       }
 
       case 'share': {
-        item.saveButtonLabel = <span className='buttonAlignText'>Share Your Fundraiser <span className='icon icon-chevron-right'></span></span>
+        item.saveButtonLabel = <span className='buttonAlignText'>All Finished! Take Me to My Profile <span className='icon icon-chevron-right'></span></span>;
+        item.component =
+          <SignupShare />
+        ;
         break;
       }
 
@@ -289,5 +342,6 @@ export default connect(mapStateToProps, {
   updateOrgSignupField,
   getResource,
   sendResource,
-  saveOrg
+  saveOrg,
+  toggleModal
 })(PostSignupSteps);

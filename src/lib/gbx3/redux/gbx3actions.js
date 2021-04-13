@@ -1386,7 +1386,7 @@ export function loadGBX3(articleID, callback) {
                   ;
 
                   if (editFormOnly) helperSteps.advancedBuilder = true;
-                  
+
                   // Get Step Values
                   const title = util.getValue(res, 'title');
                   const logoBlock = util.getValue(blocks, 'logo', {});
@@ -1484,7 +1484,8 @@ export function loadGBX3(articleID, callback) {
                   const admin = {
                     hasAccessToEdit,
                     editable: hasAccessToEdit ? true : false,
-                    step: 'design'
+                    step: 'design',
+                    open: editFormOnly ? false : true
                   };
 
                   if (util.getValue(hasAccessToEdit, 'isVolunteer')) {

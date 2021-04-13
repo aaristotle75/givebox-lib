@@ -201,7 +201,8 @@ class Block extends React.Component {
       block,
       options,
       blockType,
-      isVolunteer
+      isVolunteer,
+      editFormOnly
     } = this.props;
 
     const buttonEnabled = util.getValue(options, 'button.enabled', false);
@@ -217,7 +218,7 @@ class Block extends React.Component {
           <div className='dragHandle'></div>
           { !notEditable ?
           <div className='blockEdit'>
-            {!nonremovable ?
+            {!nonremovable && !editFormOnly ?
               <GBLink className='tooltip blockRemoveButton' onClick={() => this.onClickRemove()}>
                 <span className='tooltipTop'><i />Click Icon to REMOVE {title}</span>
                 <span className='icon icon-trash-2'></span>
@@ -280,6 +281,7 @@ function mapStateToProps(state, props) {
   const modalID = `modalBlock-${blockType}-${props.name}`;
   const helperBlocks = util.getValue(gbx3, `helperBlocks.${blockType}`, {});
   const previewMode = util.getValue(admin, 'previewMode');
+  const editFormOnly = util.getValue(admin, 'editFormOnly');
   const stage = util.getValue(info, 'stage');
 
   return {
@@ -306,7 +308,9 @@ function mapStateToProps(state, props) {
     primaryColor,
     helperBlocks,
     previewMode,
+    editFormOnly,
     stage,
+
     breakpoint: util.getValue(info, 'breakpoint')
   }
 }

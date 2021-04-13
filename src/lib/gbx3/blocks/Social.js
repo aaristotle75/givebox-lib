@@ -21,6 +21,7 @@ class Social extends Component {
   constructor(props) {
     super(props);
     this.linkClicked = this.linkClicked.bind(this);
+    this.checkShare = this.checkShare.bind(this);
     this.state = {
     };
   }
@@ -37,10 +38,8 @@ class Social extends Component {
 
   checkShare(service) {
     const {
-      data: article,
+      articleID
     } = this.props;
-
-    const articleID = util.getValue(article, 'articleID');
 
     const checkTime = parseInt(Moment().subtract(1, 'minute').format('x')/1000);
     this.props.getResource('articleShares', {
@@ -60,10 +59,8 @@ class Social extends Component {
 
   saveShare(service) {
     const {
-      data: article,
+      articleID
     } = this.props;
-
-    const articleID = util.getValue(article, 'articleID');
 
     this.props.sendResource('articleShares', {
       id: [articleID],
@@ -79,12 +76,15 @@ class Social extends Component {
   render() {
 
     const {
+      articleID,
       data: article,
       subText,
       shareIconSize
     } = this.props;
 
-    const shareLink = `${GBX_SHARE}/${util.getValue(article, 'articleID')}`;
+    const slug = util.getValue(article, 'slug');
+    const hasCustomSlug = util.getValue(article, 'hasCustomSlug');
+    const shareLink = `${GBX_SHARE}/${hasCustomSlug && slug ? slug : articleID}`;
     const title = util.getValue(article, 'title');
     const image = util.imageUrlWithStyle(article.imageURL, 'medium');
     const description = util.getValue(article, 'summary');
@@ -140,14 +140,17 @@ class Social extends Component {
 };
 
 Social.defaultProps = {
-  shareIconSize: 35
+  shareIconSize: 35,
+  subText: ''
 }
 
 function mapStateToProps(state, props) {
-  const data = util.getValue(state, 'gbx3.data', {});
+  const data = props.data || util.getValue(state, 'gbx3.data', {});
+  const articleID = props.articleID || util.getValue(data, 'articleID');
 
   return {
-    data
+    data,
+    articleID
   }
 }
 

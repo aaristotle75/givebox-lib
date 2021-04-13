@@ -43,9 +43,8 @@ class Design extends React.Component {
     } = this.props;
 
     if (!postsignupCompleted) {
-      this.props.loadPostSignup(1);
+      this.props.loadPostSignup();
     }
-
   }
 
   renderTopPanel() {

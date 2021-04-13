@@ -85,7 +85,7 @@ const preview = {
   slug: 'preview',
   name: 'Preview Fundraiser',
   icon: 'eye',
-  title: 'Preview Fundraiser',
+  title: 'Preview Your Fundraiser',
   desc: 'You are almost done! Just click "Share Your Fundraiser" below.'
 }
 
@@ -94,8 +94,8 @@ const share = {
   slug: 'share',
   name: 'Ready to Share',
   icon: 'share',
-  title: 'Ready to Share!',
-  desc: 'You are almost done! Just click "Share Your Fundraiser" below.'
+  title: 'Share Your Fundraiser!',
+  desc: 'Customize your share link, copy and paste into an email, and/or click a social media icon below to share your fundraising form and start raising money!'
 }
 
 export const signupSteps = [

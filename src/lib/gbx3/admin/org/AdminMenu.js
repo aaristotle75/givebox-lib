@@ -86,7 +86,7 @@ class AdminMenu extends React.Component {
             {/*
             <GBLink className={`ripple link ${panelType === 'layout' ? 'selected' : ''}`} onClick={() => this.switchPanelType('layout')}>Elements</GBLink>
             */}
-            <GBLink className={`ripple link ${panelType === 'helperMenu' ? 'selected' : ''}`} onClick={() => this.switchPanelType('helperMenu')}>Helper</GBLink>
+            <GBLink className={`ripple link ${panelType === 'helperMenu' ? 'selected' : ''}`} onClick={() => this.switchPanelType('helperMenu')}>Menu</GBLink>
             <GBLink className={`ripple link ${panelType === 'style' ? 'selected' : ''}`} onClick={() => this.switchPanelType('style')}>Style</GBLink>
             <GBLink className={`ripple link ${panelType === 'tools' ? 'selected' : ''}`} onClick={() => this.switchPanelType('tools')}>Settings</GBLink>
           </div>

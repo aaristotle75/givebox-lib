@@ -90,7 +90,7 @@ class Share extends React.Component {
 
     return (
       <div className='createKindSection'>
-        <span className='intro'>Share {orgDisplay ? 'Page' : types.kind(kind).name}</span>
+        <span className='intro'>Share {orgDisplay ? 'Profile' : types.kind(kind).name}</span>
         <div className='createKindList'>
           {items}
         </div>
@@ -124,14 +124,20 @@ class Share extends React.Component {
 
       case 'edit': {
         item.push(
-          <ShareLinkEdit key='shareLinkEdit' />
+          <ShareLinkEdit
+            key='shareLinkEdit'
+            orgDisplay={orgDisplay}
+          />
         );
         break;
       }
 
       case 'copy': {
         item.push(
-          <ShareLinkCopy key='shareLinkCopy' />
+          <ShareLinkCopy
+            key='shareLinkCopy'
+            orgDisplay={orgDisplay}
+          />
         );
         break;
       }
@@ -139,7 +145,10 @@ class Share extends React.Component {
       case 'social':
       default: {
         item.push(
-          <ShareSocial key='shareSocial' />
+          <ShareSocial
+            key='shareSocial'
+            orgDisplay={orgDisplay}
+          />
         );
         break;
       }
@@ -181,7 +190,7 @@ function mapStateToProps(state, props) {
 
   const gbx3 = util.getValue(state, 'gbx3', {});
   const info = util.getValue(gbx3, 'info', {});
-  const display = util.getValue(info, 'display');
+  const display = props.forceDisplay || util.getValue(info, 'display');
   const kind = util.getValue(info, 'kind');
   const articleID = util.getValue(info, 'articleID');
   const globals = util.getValue(gbx3, 'globals', {});

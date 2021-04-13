@@ -2181,7 +2181,7 @@
 
   .subText {
     font-size: 18px;
-    font-weight: 300;
+    font-weight: 400;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -2586,7 +2586,7 @@
 
   .shareLinkPrefix {
     position: absolute;
-    top: 9px;
+    top: 8px;
     left: 0;
     font-size: 18px;
     font-weight: 300;
@@ -3148,9 +3148,13 @@
 
     .stageContainer {
       top: 0;
+
       .gbx3Layout {
-        margin-top: 10px;
+        margin-top: 25px;
       }
+    }
+    .stageContainer.open {
+      left: 0;
     }
 
     .leftPanel {
