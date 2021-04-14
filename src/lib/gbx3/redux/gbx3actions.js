@@ -8,7 +8,7 @@ import { blockTemplates, defaultBlocks } from '../blocks/blockTemplates';
 import { createData } from '../admin/article/createTemplates';
 import { helperTemplates } from '../helpers/helperTemplates';
 import { builderStepsConfig } from '../admin/article/builderStepsConfig';
-import { signupSteps, postSignupSteps } from '../signup/signupConfig';
+import { signupPhase as signupPhaseConfig } from '../signup/signupConfig';
 import {
   primaryColor as defaultPrimaryColor,
   defaultStyle,
@@ -104,20 +104,21 @@ export function setSignupStep(value, callback) {
   return (dispatch, getState) => {
     const orgSignup = util.getValue(getState(), 'gbx3.orgSignup', {});
     const {
-      signupCompleted
+      signupPhase
     } = orgSignup;
 
-    const configSteps = signupCompleted ? postSignupSteps : signupSteps;
-    const step = isNaN(value) ? configSteps.findIndex(s => s.slug === value) : value;
+    const stepsTodo = signupPhaseConfig[signupPhase].stepsTodo;
+    const step = isNaN(value) ? stepsTodo.findIndex(s => s.slug === value) : value;
     dispatch(updateOrgSignup({ step }));
     if (callback) callback(step);
   }
 }
 
-export function updateOrgSignup(orgSignup = {}) {
+export function updateOrgSignup(orgSignup = {}, phaseCompleted = null) {
   return {
     type: types.UPDATE_ORG_SIGNUP,
-    orgSignup
+    orgSignup,
+    phaseCompleted
   }
 }
 
@@ -129,58 +130,55 @@ export function updateOrgSignupField(name, fields) {
   }
 }
 
+function getMinStepNotCompleted(array, haystack) {
+  // Get the minimum not completed step
+  const numOfSteps = array.length - 1;
+  const uncompletedSteps = [];
+  array.forEach((value, key) => {
+    if (!haystack.completed.includes(value.slug)) {
+      uncompletedSteps.push(key);
+    }
+  });
+  const minStepNotCompleted = !util.isEmpty(uncompletedSteps) ? Math.min(...uncompletedSteps) : numOfSteps;
+  return minStepNotCompleted;
+}
+
 export function loadOrgSignup(forceStep = null) {
   return async (dispatch, getState) => {
     const signupFromCookie = LZString.decompressFromUTF16(localStorage.getItem('signup'));
     const signupJSON = signupFromCookie ? JSON.parse(signupFromCookie) : {};
     const orgSignup = {
       ...util.getValue(getState(), 'gbx3.orgSignup', {}),
-      ...signupJSON
+      ...signupJSON,
+      signupPhase: 'signup'
     };
+    orgSignup.step = forceStep || getMinStepNotCompleted(signupPhaseConfig.signup.stepsTodo, orgSignup);
 
-    // Get the minimum not completed step
-    const numOfSteps = signupSteps.length - 1;
-    const uncompletedSteps = [];
-
-    signupSteps.forEach((value, key) => {
-      if (!orgSignup.completed.includes(value.slug)) {
-        uncompletedSteps.push(key);
-      }
-    });
-    const minStepNotCompleted = !util.isEmpty(uncompletedSteps) ? Math.min(...uncompletedSteps) : numOfSteps;
-
-    orgSignup.step = forceStep || minStepNotCompleted;
+    if (!orgSignup.completed.includes('welcome')) orgSignup.completed.push('welcome');
 
     const updated = await dispatch(updateOrgSignup(orgSignup));
     if (updated) {
+      dispatch(setOrgStyle({
+        backgroundColor: util.getValue(orgSignup, 'fields.org.themeColor')
+      }));
       dispatch(setLoading(false));
       dispatch(updateInfo({ display: 'signup', originTemplate: 'signup' }));
     }
   }
 }
 
-export function loadPostSignup(forceStep = null) {
+export function loadPostSignup(forceStep = null, openModal = true) {
   return async (dispatch, getState) => {
 
     const orgSignup = util.getValue(getState(), 'gbx3.orgSignup', {});
+    orgSignup.step = forceStep || getMinStepNotCompleted(signupPhaseConfig.postSignup.stepsTodo, orgSignup);
 
-    // Get the minimum not completed step
-    const numOfSteps = postSignupSteps.length - 1;
-    const uncompletedSteps = [];
-
-    postSignupSteps.forEach((value, key) => {
-      if (!orgSignup.completed.includes(value.slug)) {
-        uncompletedSteps.push(key);
-      }
-    });
-    const minStepNotCompleted = !util.isEmpty(uncompletedSteps) ? Math.min(...uncompletedSteps) : numOfSteps;
-
-    orgSignup.step = forceStep || minStepNotCompleted;
+    if (!orgSignup.completed.includes('createSuccess')) orgSignup.completed.push('createSuccess');
 
     const updated = await dispatch(updateOrgSignup(orgSignup));
     if (updated) {
       dispatch(updateAdmin({ open: true }));
-      dispatch(toggleModal('orgPostSignupSteps', true));
+      if (openModal) dispatch(toggleModal('orgPostSignupSteps', true));
     }
   }
 }
@@ -2007,6 +2005,9 @@ export function resetOrg(callback) {
       customTemplate: {
         orgPages: null,
         orgGlobals: null,
+        orgSignup: {
+          ...util.getValue(gbx3, 'orgSignup', {})
+        },
         blocks: {},
         globals: {},
         backgrounds: [],

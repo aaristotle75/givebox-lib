@@ -39,11 +39,16 @@ class Design extends React.Component {
 
   componentDidMount() {
     const {
-      postsignupCompleted
+      signupPhase
     } = this.props;
 
-    if (!postsignupCompleted) {
-      this.props.loadPostSignup();
+    switch (signupPhase) {
+      case 'postSignup': {
+        this.props.loadPostSignup(false, true);
+        break;
+      }
+
+      // no default
     }
   }
 
@@ -254,7 +259,7 @@ function mapStateToProps(state, props) {
   const createType = util.getValue(admin, 'createType');
   const orgSlug = util.getValue(gbx3, 'orgData.slug');
   const orgID = util.getValue(gbx3, 'orgData.ID');
-  const postsignupCompleted = util.getValue(gbx3, 'orgSignup.postsignupCompleted');
+  const signupPhase = util.getValue(gbx3, 'orgSignup.signupPhase');
   const editFormOnly = util.getValue(admin, 'editFormOnly');
 
   return {
@@ -266,7 +271,7 @@ function mapStateToProps(state, props) {
     createType,
     orgSlug,
     orgID,
-    postsignupCompleted,
+    signupPhase,
     editFormOnly
   }
 }

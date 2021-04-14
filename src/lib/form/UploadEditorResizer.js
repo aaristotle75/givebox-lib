@@ -220,7 +220,7 @@ class UploadEditorResizer extends Component {
 
   logCallback(e) {
     // eslint-disable-next-line
-    console.log('callback', e)
+    //console.log('callback', e)
   }
 
   setEditorRef = editor => {

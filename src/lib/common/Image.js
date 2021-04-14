@@ -114,7 +114,7 @@ export default class Image extends Component {
       <div onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} style={{ minWidth, minHeight, width: maxSize, height: 'auto',  ...style, ...this.state.hoverStyle  }} className={`imageComponent ${className || ''}`}>
         {imageLoading  &&
           <div className='imageLoader'>
-            <img src='https://s3-us-west-1.amazonaws.com/givebox/public/images/squareLoader.gif' alt='Loader' />
+            <img src='https://cdn.givebox.com/givebox/public/images/spinner-loader.svg' alt='Loader' />
           </div>
         }
         <img id={imgID} style={mergeStyle} src={src} alt={alt || url} onLoad={this.imageOnLoad} onError={this.onError} draggable={draggable} />

@@ -28,16 +28,17 @@ export function gbx3(state = {
   pageSearch: {},
   pageState: {},
   orgSignup: {
-    step: 6,
+    step: 0,
     completed: [],
     fields: orgSignupFields,
     validTaxID: null,
     claimOrgID: null,
     acceptedTerms: true,
     createdArticleID: null,
-    signupCompleted: false,
-    postsignupCompleted: false,
-    saveCookie: true
+    completedPhases: [],
+    signupPhase: null, // Phases: signup, postSignup, connectBank, transferMoney
+    saveCookie: true,
+    hideStepMenu: false
   },
   orgUpdated: false,
   orgGlobals: {},
@@ -134,9 +135,16 @@ export function gbx3(state = {
         savingSignup: action.saving
       });
     case types.UPDATE_ORG_SIGNUP: {
+
+      const completedPhases = util.getValue(state, 'orgSignup.completedPhases', []);
+      if (action.phaseCompleted && !completedPhases.includes(action.phaseCompleted)) {
+        completedPhases.push(action.phaseCompleted);
+      };
+
       const orgSignup = {
         ...state.orgSignup,
-        ...action.orgSignup
+        ...action.orgSignup,
+        completedPhases
       };
 
       // Set signup cookie

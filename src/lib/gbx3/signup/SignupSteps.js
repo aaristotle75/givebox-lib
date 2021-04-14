@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import * as config from './signupConfig';
 import CreateAccount from './CreateAccount';
 import Form from '../../form/Form';
 import Dropdown from '../../form/Dropdown';
@@ -16,33 +15,22 @@ import * as _v from '../../form/formValidate';
 import GBLink from '../../common/GBLink';
 import Image from '../../common/Image';
 import HelpfulTip from '../../common/HelpfulTip';
-import LinearBar from '../../common/LinearBar';
 import {
-  updateOrgSignup,
-  updateOrgSignupField,
   setOrgStyle,
   loadOrg,
   createFundraiser,
-  saveOrg,
   updateOrgGlobals,
   savingSignup,
   signupGBX3Data
 } from '../redux/gbx3actions';
 import {
-  setAccess,
-  toggleModal
+  setAccess
 } from '../../api/actions';
-import {
-  getResource,
-  sendResource
-} from '../../api/helpers';
 import { PhotoshopPicker } from 'react-color-aaristotle';
-import AnimateHeight from 'react-animate-height';
 import {
   primaryColor as defaultPrimaryColor,
   defaultOrgGlobals
 } from '../redux/gbx3defaults';
-import { blockTemplates, defaultBlocks } from '../blocks/blockTemplates';
 
 class SignupStepsForm extends React.Component {
 
@@ -56,10 +44,6 @@ class SignupStepsForm extends React.Component {
     this.determineCreateAccount = this.determineCreateAccount.bind(this);
     this.checkRequiredCompleted = this.checkRequiredCompleted.bind(this);
     this.saveStep = this.saveStep.bind(this);
-    this.gotoNextStep = this.gotoNextStep.bind(this);
-    this.getNextStep = this.getNextStep.bind(this);
-    this.previousStep = this.previousStep.bind(this);
-    this.nextStep = this.nextStep.bind(this);
     this.checkExistingUser = this.checkExistingUser.bind(this);
     this.setRequirePassword = this.setRequirePassword.bind(this);
     this.validateTaxID = this.validateTaxID.bind(this);
@@ -76,8 +60,6 @@ class SignupStepsForm extends React.Component {
       mediaTypeError: null,
       requirePassword: false
     };
-    this.allowNextStep = false;
-    this.totalSignupSteps = +(config.signupSteps.length - 1);
   }
 
   setRequirePassword(requirePassword) {
@@ -155,7 +137,7 @@ class SignupStepsForm extends React.Component {
               this.props.createFundraiser('fundraiser', async (res, err) => {
                 const createdArticleID = util.getValue(res, 'articleID');
                 const orgID = util.getValue(res, 'orgID');
-                const updated = await this.props.updateOrgSignup({ createdArticleID, saveCookie: false, signupCompleted: true });
+                const updated = await this.props.updateOrgSignup({ createdArticleID, saveCookie: false, signupPhase: 'postSignup' }, 'signup');
                 if (updated) {
                   this.props.saveOrg({
                     orgID,
@@ -219,6 +201,9 @@ class SignupStepsForm extends React.Component {
       profilePicture: {
         url: org.imageURL
       },
+      coverPhoto: {
+        url: org.coverPhotoURL
+      },
       title: {
         content: `
           <p style="text-align:center;">
@@ -274,7 +259,9 @@ class SignupStepsForm extends React.Component {
   checkRequiredCompleted() {
     const {
       fields,
-      completed
+      completed,
+      stepsTodo,
+      requiredSteps
     } = this.props;
 
     const {
@@ -286,9 +273,9 @@ class SignupStepsForm extends React.Component {
     const stepsRequiredButNotComplete = [];
 
     // Check if required steps are completed
-    config.requiredStepsToCreateAccount.forEach((value, key) => {
+    requiredSteps.forEach((value, key) => {
       if (!completed.includes(value.slug)) {
-        const step = config.signupSteps.findIndex(s => s.slug === value.slug);
+        const step = stepsTodo.findIndex(s => s.slug === value.slug);
         const stepNumber = +step + 1;
         stepsRequiredButNotComplete.push(
           <GBLink
@@ -331,25 +318,22 @@ class SignupStepsForm extends React.Component {
     }
   }
 
-  async saveStep(step, error = false, delay = 1000) {
-    const {
-      orgSignup
-    } = this.props;
+  async saveStep(slug, error = false, delay = 1000) {
 
     if (error) {
       this.setState({ saving: false });
       return false;
     }
 
-    const completedStep = await this.stepCompleted(step);
+    const completedStep = await this.props.stepCompleted(slug);
     if (completedStep) {
       this.setState({ saving: false }, () => {
         setTimeout(() => {
-          this.gotoNextStep();
+          this.props.gotoNextStep();
         }, delay)
       });
     } else {
-      this.setState({ saving: false }, this.gotoNextStep);
+      this.setState({ saving: false }, this.props.gotoNextStep);
     }
   }
 
@@ -361,7 +345,8 @@ class SignupStepsForm extends React.Component {
       gbxStyle,
       button,
       validTaxID,
-      acceptedTerms
+      acceptedTerms,
+      stepsTodo
     } = this.props;
 
     const {
@@ -375,7 +360,7 @@ class SignupStepsForm extends React.Component {
       gbx3
     } = this.props.fields;
 
-    const stepConfig = util.getValue(config.signupSteps, step, {});
+    const stepConfig = util.getValue(stepsTodo, step, {});
     const slug = util.getValue(stepConfig, 'slug');
 
     switch (group) {
@@ -525,42 +510,6 @@ class SignupStepsForm extends React.Component {
     }
   }
 
-  gotoNextStep() {
-    const {
-      step
-    } = this.props;
-    this.props.updateOrgSignup({ step: this.nextStep(step) });
-  }
-
-  getNextStep() {
-    const {
-      step
-    } = this.props;
-
-    const nextStep = this.nextStep(step);
-    return util.getValue(config.signupSteps[nextStep], 'name');
-  }
-
-  previousStep(step) {
-    const prevStep = step > 0 ? step - 1 : step;
-    this.props.updateOrgSignup({ step: prevStep });
-  }
-
-  nextStep(step) {
-    const nextStep = step < +this.totalSignupSteps ? step + 1 : step;
-    return nextStep;
-  }
-
-  async stepCompleted(step) {
-    let updated = false;
-    const completed = [ ...this.props.completed ];
-    if (!completed.includes(step)) {
-      completed.push(step);
-      updated = await this.props.updateOrgSignup({ completed });
-    }
-    return updated;
-  }
-
   renderStep() {
     const {
       mediaType,
@@ -572,7 +521,8 @@ class SignupStepsForm extends React.Component {
       step,
       open,
       isMobile,
-      acceptedTerms
+      acceptedTerms,
+      stepsTodo
     } = this.props;
 
     const {
@@ -596,14 +546,14 @@ class SignupStepsForm extends React.Component {
       videoURL
     } = gbx3;
 
-    const stepConfig = util.getValue(config.signupSteps, step, {});
+    const stepConfig = util.getValue(stepsTodo, step, {});
     const slug = util.getValue(stepConfig, 'slug');
     const stepNumber = +step + 1;
     const completed = this.props.completed.includes(slug) ? true : false;
     const firstStep = step === 0 ? true : false;
     const lastStep = step === this.props.steps ? true : false;
-    const nextStepName = this.getNextStep();
-    const nextStepNumber = this.nextStep(step) + 1;
+    const nextStepName = this.props.getNextStep();
+    const nextStepNumber = this.props.nextStep(step) + 1;
 
     const item = {
       title: stepConfig.title,
@@ -622,6 +572,7 @@ class SignupStepsForm extends React.Component {
 
     switch (slug) {
       case 'welcome': {
+        item.saveButtonLabelTop = <span className='buttonAlignText'>Continue to Step {nextStepNumber}: {nextStepName} <span className='icon icon-chevron-right'></span></span>;
         item.saveButtonLabel = <span className='buttonAlignText'>Continue to Next Step <span className='icon icon-chevron-right'></span></span>
         item.desc =
           <div>
@@ -955,7 +906,7 @@ class SignupStepsForm extends React.Component {
           <div className='button-item' style={{ width: 150 }}>
             { !firstStep ? <GBLink className={`link`} disabled={firstStep} onClick={() => {
               this.props.formProp({ error: false });
-              this.previousStep(step);
+              this.props.previousStep(step);
             }}><span style={{ marginRight: '5px' }} className='icon icon-chevron-left'></span> {isMobile ? 'Back' : 'Previous Step' }</GBLink> : <span>&nbsp;</span> }
           </div>
           <div className='button-item'>
@@ -966,7 +917,7 @@ class SignupStepsForm extends React.Component {
               <GBLink
                 className='link'
                 onClick={() => {
-                  const step = config.signupSteps.findIndex(s => s.slug === 'account');
+                  const step = stepsTodo.findIndex(s => s.slug === 'account');
                   this.props.updateOrgSignup({ step });
                   this.props.formProp({ error: false });
                 }}
@@ -1019,81 +970,35 @@ class SignupSteps extends React.Component {
 
   render() {
 
-    const {
-      completed
-    } = this.props;
-
     if (util.isLoading(this.props.categories)) {
       return <Loader msg='Loading Categories...' />
     }
 
-    const numSteps = +config.signupSteps.length;
-    const numCompletedSteps = +completed.length;
-    const stepProgress = parseInt((numCompletedSteps / numSteps) * 100);
-
     return (
-      <div className='gbx3Steps modalWrapper'>
-        <div className='flexCenter' style={{ marginBottom: 10 }}>
-          <Image size='thumb' maxSize={40} url={'https://cdn.givebox.com/givebox/public/gb-logo5.png'} alt='Givebox' />
-        </div>
-        <div className='progressWrapper'>
-          <LinearBar
-            progress={stepProgress}
-          />
-          <div className='progressStatusText'>
-            {stepProgress}% Completed
-          </div>
-        </div>
-        <Form id={`stepsForm`} name={`stepsForm`}>
-          <SignupStepsForm
-            {...this.props}
-          />
-        </Form>
-      </div>
+      <Form id={`stepsForm`} name={`stepsForm`}>
+        <SignupStepsForm
+          {...this.props}
+        />
+      </Form>
     )
   }
 }
 
 function mapStateToProps(state, props) {
 
-  const open = util.getValue(state, 'gbx3.admin.open');
-  const orgSignup = util.getValue(state, 'gbx3.orgSignup', {});
-  const step = util.getValue(orgSignup, 'step', 0);
-  const acceptedTerms = util.getValue(orgSignup, 'acceptedTerms');
-  const claimOrgID = util.getValue(orgSignup, 'claimOrgID', null);
-  const validTaxID = util.getValue(orgSignup, 'validTaxID', null);
-  const completed = util.getValue(orgSignup, 'completed', []);
-  const fields = util.getValue(orgSignup, 'fields', {});
   const categories = util.getValue(state, 'resource.categories', {});
-  const breakpoint = util.getValue(state, 'gbx3.info.breakpoint');
-  const isMobile = breakpoint === 'mobile' ? true : false;
 
   return {
-    open,
-    orgSignup,
-    step,
-    acceptedTerms,
-    claimOrgID,
-    validTaxID,
-    completed,
-    fields,
-    categories,
-    isMobile
+    categories
   }
 }
 
 export default connect(mapStateToProps, {
-  updateOrgSignup,
-  updateOrgSignupField,
-  getResource,
-  sendResource,
   setOrgStyle,
   setAccess,
   loadOrg,
   updateOrgGlobals,
   createFundraiser,
-  saveOrg,
-  toggleModal,
   savingSignup,
   signupGBX3Data
 })(SignupSteps);

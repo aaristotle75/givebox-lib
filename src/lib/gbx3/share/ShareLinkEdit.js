@@ -55,43 +55,56 @@ class ShareLinkEdit extends Component {
       kindID,
       orgID,
       apiName,
-      orgDisplay
+      orgDisplay,
+      articleID,
+      hasCustomSlug,
+      slug
     } = this.props;
 
     this.setState({ errorUpdating: false, saving: true });
 
-    if (!error) {
-      this.props.sendResource(apiName, {
-        orgID,
-        id: [orgDisplay ? orgID : kindID],
-        method: 'patch',
-        data: {
-          slug: newSlug
-        },
-        callback: (res, err) => {
-          if (!util.isEmpty(res) && !err) {
-            this.props.updateData(res, orgDisplay ? 'org' : null);
-            if (this.props.callback) this.props.callback();
-            this.setState({ success: true });
-            this.timeout = setTimeout(() => {
-              this.setState({ success: false });
-              this.timeout = null;
-            }, 3000);
-          } else {
-            let errorMsg = 'The slug cannot be numbers only';
-            const errors = util.getValue(err, 'data.errors', []);
-            const error = util.getValue(errors, 0, {});
-            const code = util.getValue(error, 'code');
-            if (code === 'duplicate') {
-              errorMsg = 'Custom Share Name is Not Available. Please Choose Another Name'
-            }
-            this.setState({ errorMsg, errorUpdating: true });
-          }
-          this.setState({ saving: false });
-        }
-      });
+    if (!hasCustomSlug && newSlug === articleID || (hasCustomSlug && newSlug === slug)) {
+      this.setState({ success: true, saving: false });
+      this.timeout = setTimeout(() => {
+        this.setState({ success: false });
+        this.timeout = null;
+      }, 3000);
+    } else if (!newSlug) {
+      this.setState({ errorMsg: 'Please enter a custom url below.', errorUpdating: true, saving: false });
     } else {
-      this.setState({ errorUpdating: true, saving: false });
+      if (!error) {
+        this.props.sendResource(apiName, {
+          orgID,
+          id: [orgDisplay ? orgID : kindID],
+          method: 'patch',
+          data: {
+            slug: newSlug
+          },
+          callback: (res, err) => {
+            if (!util.isEmpty(res) && !err) {
+              this.props.updateData(res, orgDisplay ? 'org' : null);
+              if (this.props.callback) this.props.callback();
+              this.setState({ success: true });
+              this.timeout = setTimeout(() => {
+                this.setState({ success: false });
+                this.timeout = null;
+              }, 3000);
+            } else {
+              let errorMsg = 'The custom url cannot be numbers only';
+              const errors = util.getValue(err, 'data.errors', []);
+              const error = util.getValue(errors, 0, {});
+              const code = util.getValue(error, 'code');
+              if (code === 'duplicate') {
+                errorMsg = 'The custom url is not available. Please enter another one.'
+              }
+              this.setState({ errorMsg, errorUpdating: true });
+            }
+            this.setState({ saving: false });
+          }
+        });
+      } else {
+        this.setState({ errorUpdating: true, saving: false });
+      }
     }
   }
 

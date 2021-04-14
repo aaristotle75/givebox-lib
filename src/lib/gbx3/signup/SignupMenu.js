@@ -19,7 +19,11 @@ class SignupMenu extends React.Component {
     this.renderSteps = this.renderSteps.bind(this);
     this.state = {
     };
-    this.configSteps = props.signupCompleted ? config.postSignupSteps : config.signupSteps;
+    const configStep = config.signupPhase[props.signupPhase];
+    this.stepsTodo = configStep.stepsTodo;
+    this.showStepNumber = configStep.showStepNumber;
+    this.menuHeader = configStep.menuHeader;
+    this.modalName = configStep.modalName;
   }
 
   renderSteps() {
@@ -29,7 +33,7 @@ class SignupMenu extends React.Component {
     } = this.props;
 
     const items = [];
-    Object.entries(this.configSteps).forEach(([key, value]) => {
+    Object.entries(this.stepsTodo).forEach(([key, value]) => {
       const currentStep = +key === +step ? true : false;
       const completedStep = completed.includes(value.slug) ? true : false;
       const stepNumber = <span className='number'>Step {+key + 1}</span>;
@@ -37,7 +41,7 @@ class SignupMenu extends React.Component {
         <li
           onClick={() => {
             this.props.setSignupStep(+key, () => {
-              this.props.toggleModal('orgSignupSteps', true);
+              this.props.toggleModal(this.modalName, true);
             });
           }}
           key={key}
@@ -45,7 +49,7 @@ class SignupMenu extends React.Component {
         >
           <div className='stepTitleContainer'>
             <span className={`icon icon-${value.icon}`}></span>
-            <div className='stepTitle'>{stepNumber} {value.name}</div>
+            <div className='stepTitle'>{this.showStepNumber ? stepNumber : null}{value.name}</div>
           </div>
           <span className={`icon icon-${completedStep ? 'check green' : 'chevron-right'}`}></span>
         </li>
@@ -54,7 +58,7 @@ class SignupMenu extends React.Component {
 
     return (
       <ul className='builderMenuSteps'>
-        <li className='listHeader'>Create Fundraiser Steps</li>
+        <li className='listHeader'>{this.menuHeader}</li>
         {items}
       </ul>
     )
@@ -63,8 +67,11 @@ class SignupMenu extends React.Component {
   render() {
 
     const {
-      open
+      open,
+      stepsOnly
     } = this.props;
+
+    if (stepsOnly) return this.renderSteps();
 
     return (
       <div className={`leftPanel ${open ? 'open' : 'close'}`}>
@@ -82,20 +89,24 @@ class SignupMenu extends React.Component {
   }
 }
 
+SignupMenu.defaultProps = {
+  stepsOnly: false
+};
+
 function mapStateToProps(state, props) {
 
   const gbx3 = util.getValue(state, 'gbx3', {});
   const admin = util.getValue(gbx3, 'admin', {});
   const open = util.getValue(admin, 'open');
   const step = util.getValue(gbx3, 'orgSignup.step', 0);
-  const signupCompleted = util.getValue(gbx3, 'orgSignup.signupCompleted');
   const completed = util.getValue(gbx3, 'orgSignup.completed', []);
+  const signupPhase = util.getValue(gbx3, 'orgSignup.signupPhase');
 
   return {
     open,
     step,
-    signupCompleted,
-    completed
+    completed,
+    signupPhase
   }
 }
 

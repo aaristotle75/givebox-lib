@@ -3,13 +3,21 @@ import { connect } from 'react-redux';
 import * as util from '../../common/utility';
 import Image from '../../common/Image';
 import Video from '../../common/Video';
+import Dropdown from '../../form/Dropdown';
 import ModalLink from '../../modal/ModalLink';
+import {
+  updateOrgSignupField
+} from '../redux/gbx3actions';
+import {
+  toggleModal
+} from '../../api/actions';
 import Footer from '../Footer';
 
 class SignupPage extends React.Component {
 
   constructor(props) {
     super(props);
+    this.coverPhotoOptions = this.coverPhotoOptions.bind(this);
     this.state = {
     };
   }
@@ -17,17 +25,30 @@ class SignupPage extends React.Component {
   componentDidMount() {
   }
 
+  coverPhotoOptions() {
+    const options = [];
+    options.push({
+      primaryText: <span className='labelIcon'><span className='icon icon-upload-cloud'></span> Upload Photo</span>, value: 'upload'
+    });
+
+    options.push({
+      primaryText: <span className='labelIcon'><span className='icon icon-trash-2'></span> Remove</span>, value: 'remove'
+    });
+
+    return options;
+  }
+
   render() {
 
     const {
       org,
       gbx3,
-      completed
+      completed,
     } = this.props;
 
     const orgName = util.getValue(org, 'name', 'Your Organization Name');
-    const coverPhotoUrl = util.getValue(org, 'coverPhoto');
     const profilePictureUrl = util.getValue(org, 'imageURL');
+    const coverPhotoURL = util.getValue(org, 'coverPhotoURL');
 
     const library = {
       saveMediaType: 'signup',
@@ -56,7 +77,7 @@ class SignupPage extends React.Component {
         light={true}
       />
     :
-      <Image imgID='cardPhoto' url={imageURL} maxWidth='325px' size='medium' alt='Card Photo' />
+      <Image imgID='cardPhoto' url={imageURL} maxWidth='325px' alt='Card Photo' />
     ;
 
     return (
@@ -66,11 +87,54 @@ class SignupPage extends React.Component {
           <div className='gbx3OrgContentInnerContainer'>
             <div id='coverPhoto' className='coverPhotoContainer'>
               <div className='coverPhotoImageDropdown orgAdminDropdown'>
-                {/* Edit Cover Photo Stuff */}
+                { coverPhotoURL ?
+                  <Dropdown
+                    name='coverPhoto'
+                    label={''}
+                    selectLabel={<span className='labelIcon'><span className='icon icon-camera'></span> Edit Cover Photo</span>}
+                    fixedLabel={false}
+                    onChange={(name, value) => {
+                      if (value === 'upload') {
+                        this.props.toggleModal('orgEditCoverPhoto', true, {
+                          uploadOnly: true,
+                          saveGlobal: (name, obj) => {
+                            const url = util.getValue(obj, 'url');
+                            if (url) this.props.updateOrgSignupField('org', { coverPhotoURL: url });
+                          }
+                        });
+                      }
+                      if (value === 'remove') {
+                        this.props.toggleModal('orgRemove', true, {
+                          desc: 'Remove Cover Photo',
+                          subDesc: 'Are you sure you want to remove your cover photo?',
+                          callback: async () => {
+                            const updated = await this.props.updateOrgSignupField('org', { coverPhotoURL: '' });
+                            if (updated) this.props.toggleModal('orgRemove', false);
+                          }
+                        })
+                      }
+                    }}
+                    options={this.coverPhotoOptions()}
+                  />
+                :
+                  <ModalLink
+                    className='button addCoverPhoto'
+                    id='orgEditCoverPhoto'
+                    opts={{
+                      uploadOnly: true,
+                      saveGlobal: (name, obj) => {
+                        const url = util.getValue(obj, 'url');
+                        if (url) this.props.updateOrgSignupField('org', { coverPhotoURL: url });
+                      }
+                    }}
+                  >
+                    <span className='labelIcon'><span className='icon icon-camera'></span> Add Cover Photo</span>
+                  </ModalLink>
+                }
               </div>
               <div className='coverPhotoImage'>
-                { coverPhotoUrl ?
-                  <Image imgID='coverPhoto' size='large' url={coverPhotoUrl} maxSize='950px' alt='Cover Photo' />
+                { coverPhotoURL ?
+                  <Image imgID='coverPhoto' url={coverPhotoURL} maxSize='950px' alt='Cover Photo' />
                 : null }
               </div>
               <div
@@ -86,7 +150,7 @@ class SignupPage extends React.Component {
               </div>
               <div className='profilePictureContainer'>
                 { profilePictureUrl ?
-                  <Image url={profilePictureUrl} size='medium' maxSize='160px' alt='Profile Picture' imgStyle={{ minWidth: 160, minHeight: 160, borderRadius: '50%' }}/>
+                  <Image url={profilePictureUrl} maxSize='160px' alt='Profile Picture' imgStyle={{ minWidth: 160, minHeight: 160, borderRadius: '50%' }}/>
                 :
                   <div className='defaultProfilePicture'><span className={`icon icon-camera`}></span></div>
                 }
@@ -209,4 +273,6 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
+  updateOrgSignupField,
+  toggleModal
 })(SignupPage);

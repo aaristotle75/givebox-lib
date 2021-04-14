@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import * as config from './signupConfig';
 import Form from '../../form/Form';
 import Dropdown from '../../form/Dropdown';
 import TextField from '../../form/TextField';
@@ -10,19 +9,6 @@ import * as _v from '../../form/formValidate';
 import GBLink from '../../common/GBLink';
 import Image from '../../common/Image';
 import HelpfulTip from '../../common/HelpfulTip';
-import {
-  updateOrgSignup,
-  updateOrgSignupField,
-  saveOrg
-} from '../redux/gbx3actions';
-import {
-  toggleModal
-} from '../../api/actions';
-import {
-  getResource,
-  sendResource
-} from '../../api/helpers';
-import AnimateHeight from 'react-animate-height';
 import SignupShare from './SignupShare';
 
 const GBX3_URL = process.env.REACT_APP_ENV === 'local' ? process.env.REACT_APP_GBX_SHARE : process.env.REACT_APP_GBX_URL;
@@ -33,9 +19,6 @@ class PostSignupSteps extends React.Component {
     super(props);
     this.renderStep = this.renderStep.bind(this);
     this.saveStep = this.saveStep.bind(this);
-    this.gotoNextStep = this.gotoNextStep.bind(this);
-    this.previousStep = this.previousStep.bind(this);
-    this.nextStep = this.nextStep.bind(this);
     this.gbx3message = this.gbx3message.bind(this);
     this.state = {
       error: false,
@@ -44,10 +27,6 @@ class PostSignupSteps extends React.Component {
       editPreview: false,
       iframeHeight: 0
     };
-
-    this.configSteps = config.postSignupSteps;
-    this.allowNextStep = false;
-    this.totalSignupSteps = +(this.configSteps.length - 1);
     this.iframeRef = React.createRef();
   }
 
@@ -60,18 +39,20 @@ class PostSignupSteps extends React.Component {
       step
     } = this.props;
 
-    const stepConfig = util.getValue(this.configSteps, step, {});
+    const stepConfig = util.getValue(this.props.stepsTodo, step, {});
     const slug = util.getValue(stepConfig, 'slug');
 
     if (e.data === 'gbx3Initialized') {
       if (slug === 'preview') {
-        this.setState({ previewLoaded: true });
+        this.setState({ previewLoaded: true }, () => {
+          this.props.stepCompleted(slug);
+        });
       }
     }
 
     if (e.data === 'gbx3Shared') {
       if (slug === 'share') {
-        this.saveStep('share', false, 1000, false);
+        this.props.stepCompleted(slug);
       }
     }
 
@@ -85,66 +66,40 @@ class PostSignupSteps extends React.Component {
     }
   }
 
-  async saveStep(step, error = false, delay = 1000, closeWhenAllStepsCompleted = true) {
-    const {
-      orgSignup
-    } = this.props;
+  async saveStep(slug, error = false, delay = 1000, closeWhenAllStepsCompleted = true) {
 
     if (error) {
       this.setState({ saving: false });
       return false;
     }
 
-    const completedStep = await this.stepCompleted(step);
+    const completedStep = await this.props.stepCompleted(slug);
     if (completedStep) {
       this.setState({ saving: false }, async () => {
-        if (step === 'share' && closeWhenAllStepsCompleted) {
-          const updated = await this.props.updateOrgSignup({ postsignupCompleted: true });
+        if (slug === 'share' && closeWhenAllStepsCompleted) {
+          const updated = await this.props.updateOrgSignup({}, 'postSignup');
           if (updated) {
             this.props.saveOrg({
               orgUpdated: true,
               isSending: true,
               callback: () => {
+                this.props.updateAdmin({ open: false });
                 this.props.toggleModal('orgPostSignupSteps', false);
               }
             })
           }
         } else {
           setTimeout(() => {
-            this.gotoNextStep();
+            this.props.gotoNextStep();
           }, delay);
         }
       });
     } else {
-      this.setState({ saving: false }, this.gotoNextStep);
+      this.setState({ saving: false }, this.props.gotoNextStep);
+      if (slug === 'share') {
+        this.props.toggleModal('orgPostSignupSteps', false);
+      }
     }
-  }
-
-  gotoNextStep() {
-    const {
-      step
-    } = this.props;
-    this.props.updateOrgSignup({ step: this.nextStep(step) });
-  }
-
-  previousStep(step) {
-    const prevStep = step > 0 ? step - 1 : step;
-    this.props.updateOrgSignup({ step: prevStep });
-  }
-
-  nextStep(step) {
-    const nextStep = step < +this.totalSignupSteps ? step + 1 : step;
-    return nextStep;
-  }
-
-  async stepCompleted(step) {
-    let updated = false;
-    const completed = [ ...this.props.completed ];
-    if (!completed.includes(step)) {
-      completed.push(step);
-      updated = await this.props.updateOrgSignup({ completed });
-    }
-    return updated;
   }
 
   renderStep() {
@@ -161,12 +116,14 @@ class PostSignupSteps extends React.Component {
       createdArticleID
     } = this.props;
 
-    const stepConfig = util.getValue(this.configSteps, step, {});
+    const stepConfig = util.getValue(this.props.stepsTodo, step, {});
     const slug = util.getValue(stepConfig, 'slug');
     const stepNumber = +step + 1;
     const completed = this.props.completed.includes(slug) ? true : false;
     const firstStep = step === 0 ? true : false;
     const lastStep = step === this.props.steps ? true : false;
+    const nextStepName = this.props.getNextStep();
+    const nextStepNumber = this.props.nextStep(step) + 1;
 
     const item = {
       title: stepConfig.title,
@@ -174,11 +131,13 @@ class PostSignupSteps extends React.Component {
       desc: stepConfig.desc,
       component: <div></div>,
       className: '',
+      saveButtonLabelTop: <span className='buttonAlignText'>Save & Continue to Step {nextStepNumber}: {nextStepName} <span className='icon icon-chevron-right'></span></span>,
       saveButtonLabel: <span className='buttonAlignText'>Save & Continue to Next Step <span className='icon icon-chevron-right'></span></span>
     };
 
     switch (slug) {
       case 'createSuccess': {
+        item.saveButtonLabelTop = <span className='buttonAlignText'>Continue to Step {nextStepNumber}: Preview Your Fundraiser <span className='icon icon-chevron-right'></span></span>;
         item.saveButtonLabel = <span className='buttonAlignText'>Continue to Preview Your Fundraiser <span className='icon icon-chevron-right'></span></span>
         item.desc =
           <div>
@@ -195,10 +154,11 @@ class PostSignupSteps extends React.Component {
       }
 
       case 'preview': {
+        item.saveButtonLabelTop = <span className='buttonAlignText'>Continue to Step {nextStepNumber}: {nextStepName} <span className='icon icon-chevron-right'></span></span>;
         item.saveButtonLabel = <span className='buttonAlignText'>Looks Good! I'm Ready to Share <span className='icon icon-chevron-right'></span></span>;
         item.className = 'preview';
         item.desc = !previewLoaded ?
-          `Please wait while the ${editPreview ? 'editable fundraiser' : 'public preview'} loads...`
+          `${editPreview ? 'Loading editable fundraiser,' : 'Generating preview,'} we appreciate your patience while it loads...`
           :
           <div>
             <GBLink
@@ -221,7 +181,7 @@ class PostSignupSteps extends React.Component {
           <div className='stagePreview flexCenter flexColumn'>
             { !previewLoaded ?
               <div className='imageLoader'>
-                <img src='https://cdn.givebox.com/givebox/public/images/squareLoader.gif' alt='Loader' />
+                <img src='https://cdn.givebox.com/givebox/public/images/block-loader.svg' alt='Loader' />
               </div>
             : null }
             <iframe style={{ height: iframeHeight }} ref={this.iframeRef} id='previewIframe' src={`${GBX3_URL}/${createdArticleID}${this.state.editPreview ? '?admin&editFormOnly' : '?public&preview'}`} title={`Preview`} />
@@ -232,6 +192,7 @@ class PostSignupSteps extends React.Component {
 
       case 'share': {
         item.saveButtonLabel = <span className='buttonAlignText'>All Finished! Take Me to My Profile <span className='icon icon-chevron-right'></span></span>;
+        item.saveButtonLabelTop = item.saveButtonLabel;
         item.component =
           <SignupShare />
         ;
@@ -246,7 +207,7 @@ class PostSignupSteps extends React.Component {
         { this.state.saving ? <Loader msg='Saving...' /> : null }
         <div className='stepStatus'>
           <GBLink onClick={() => this.saveStep(slug)}>
-            <span style={{ marginLeft: 20 }}>{item.saveButtonLabel}</span>
+            <span style={{ marginLeft: 20 }}>{item.saveButtonLabelTop}</span>
           </GBLink>
         </div>
         <div className={`step ${item.className} ${open ? 'open' : ''}`}>
@@ -254,7 +215,7 @@ class PostSignupSteps extends React.Component {
             <span className={`icon icon-${item.icon}`}></span>
             <div className='stepTitle'>
               <div className='numberContainer'>
-                <span className='number'>{/* Step {stepNumber}{ completed ? ':' : null} */}</span>
+                <span className='number'>Step {stepNumber}{ completed ? ':' : null}</span>
                 {completed ?
                   <div className='completed'>
                     <span className='icon icon-check'></span>Completed
@@ -273,7 +234,7 @@ class PostSignupSteps extends React.Component {
         <div className='button-group'>
           <div className='button-item' style={{ width: 150 }}>
             { !firstStep ? <GBLink className={`link`} disabled={firstStep} onClick={() => {
-              this.previousStep(step);
+              this.props.previousStep(step);
             }}><span style={{ marginRight: '5px' }} className='icon icon-chevron-left'></span> Back</GBLink> : <span>&nbsp;</span> }
           </div>
           <div className='button-item'>
@@ -286,7 +247,7 @@ class PostSignupSteps extends React.Component {
               <GBLink
                 className='link'
                 onClick={() => {
-                  const step = this.configSteps.findIndex(s => s.slug === 'share');
+                  const step = this.props.stepsTodo.findIndex(s => s.slug === 'share');
                   this.props.updateOrgSignup({ step });
                 }}
               >
@@ -305,13 +266,8 @@ class PostSignupSteps extends React.Component {
     } = this.props;
 
     return (
-      <div className='gbx3Steps modalWrapper'>
-        <div className='flexCenter' style={{ marginBottom: 10 }}>
-          <Image size='thumb' maxSize={40} url={'https://cdn.givebox.com/givebox/public/gb-logo5.png'} alt='Givebox' />
-        </div>
-        <div className='stepsWrapper'>
-          {this.renderStep()}
-        </div>
+      <div className='stepsWrapper'>
+        {this.renderStep()}
       </div>
     )
   }
@@ -319,29 +275,9 @@ class PostSignupSteps extends React.Component {
 
 function mapStateToProps(state, props) {
 
-  const open = util.getValue(state, 'gbx3.admin.open');
-  const orgSignup = util.getValue(state, 'gbx3.orgSignup', {});
-  const step = util.getValue(orgSignup, 'step', 0);
-  const completed = util.getValue(orgSignup, 'completed', []);
-  const createdArticleID = util.getValue(orgSignup, 'createdArticleID');
-  const breakpoint = util.getValue(state, 'gbx3.info.breakpoint');
-  const isMobile = breakpoint === 'mobile' ? true : false;
-
   return {
-    open,
-    orgSignup,
-    step,
-    createdArticleID,
-    completed,
-    isMobile
   }
 }
 
 export default connect(mapStateToProps, {
-  updateOrgSignup,
-  updateOrgSignupField,
-  getResource,
-  sendResource,
-  saveOrg,
-  toggleModal
 })(PostSignupSteps);

@@ -91,7 +91,7 @@ class Articles extends Component {
                   <div dangerouslySetInnerHTML={{ __html: util.getValue(article, 'answer', value.summary) }} />
                 :
                   <div className='imageLoader'>
-                    Loading article <img src='https://s3-us-west-1.amazonaws.com/givebox/public/images/squareLoader.gif' alt='Loader' />
+                    Loading article <img src='https://cdn.givebox.com/givebox/public/images/spinner-loader.svg' alt='Loader' />
                   </div>
                 }
               </div>

@@ -98,31 +98,6 @@ const share = {
   desc: 'Customize your share link, copy and paste into an email, and/or click a social media icon below to share your fundraising form and start raising money!'
 }
 
-export const signupSteps = [
-  welcome,
-  orgName,
-  mission,
-  logo,
-  themeColor,
-  title,
-  image,
-  account
-];
-
-export const postSignupSteps = [
-  createSuccess,
-  preview,
-  share
-];
-
-export const requiredStepsToCreateAccount = [
-  orgName,
-  //mission,
-  //logo,
-  title,
-  //image
-];
-
 export const orgSignupFields = {
   org: {
     name: '',
@@ -131,6 +106,7 @@ export const orgSignupFields = {
     mission: '',
     imageURL: null,
     themeColor: '',
+    coverPhotoURL: null
   },
   owner: {
     email: '',
@@ -144,3 +120,57 @@ export const orgSignupFields = {
     mediaType: 'image'
   }
 };
+
+/** Signup Phases Goals */
+// signup - Created an Account / Fundraiser
+// postSignup - Previewed and Shared first fundraiser
+// connectBank - Has merchantIdentiString (MID) assigned
+// transferMoney - Underwriting Approved
+
+export const signupPhase = {
+  signup: {
+    menuHeader: 'Create Fundraiser Steps',
+    modalName: 'orgSignupSteps',
+    showStepNumber: true,
+    stepsTodo: [
+     welcome,
+     orgName,
+     mission,
+     logo,
+     themeColor,
+     title,
+     image,
+     account
+   ],
+   requiredSteps: [
+     orgName,
+     mission,
+     logo,
+     title,
+     image
+   ]
+  },
+  postSignup: {
+    menuHeader: 'Raise Money Steps',
+    modalName: 'orgPostSignupSteps',
+    showStepNumber: true,
+    stepsTodo: [
+      createSuccess,
+      preview,
+      share
+   ],
+  },
+  connectBank: {
+    menuHeader: 'Connect Bank Steps'
+  },
+  transferMoney: {
+    menuHeader: 'Transfer Money Steps'
+  }
+};
+
+export const phases = [
+  'signup',
+  'postSignup',
+  'connectBank',
+  'transferMoney'
+];

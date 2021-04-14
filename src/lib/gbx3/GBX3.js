@@ -13,6 +13,7 @@ import '../styles/gbx3.scss';
 import '../styles/gbx3org.scss';
 import '../styles/gbx3orgadmin.scss';
 import '../styles/gbx3modal.scss';
+import '../styles/gbx3Steps.scss';
 import reactReferer from 'react-referer';
 import { loadReCaptcha } from 'react-recaptcha-v3';
 import has from 'has';

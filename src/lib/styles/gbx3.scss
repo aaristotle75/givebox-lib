@@ -856,7 +856,7 @@
       top: $topOffset;
       left: 0;
       z-index: 11;
-      background: $mainColor;
+      background: transparent;
       border-bottom-right-radius: 5px;
       padding: 1px !important;
       @include transition(left .5s);

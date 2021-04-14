@@ -82,7 +82,7 @@ class EditVideo extends React.Component {
         <div className='videoContainer'>
           { videoLoading ?
           <div className='imageLoader'>
-            <img src='https://s3-us-west-1.amazonaws.com/givebox/public/images/squareLoader.gif' alt='Loader' />
+            <img src='https://cdn.givebox.com/givebox/public/images/spinner-loader.svg' alt='Loader' />
           </div> : null }
           <Video
             playing={false}

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import ModalRoute from '../modal/ModalRoute';
 import Loadable from 'react-loadable';
 import Delete from '../common/Delete';
+import Steps from './signup/Steps';
 
 export default class OrgModalRoutes extends Component {
 
@@ -110,14 +111,26 @@ export default class OrgModalRoutes extends Component {
           id={'orgSignupSteps'}
           effect='3DFlipVert' style={{ width: '70%' }}
           disallowBgClose={true}
-          component={(props) => this.loadComponent('./signup/SignupSteps', props)}
+          component={(props) => {
+            return (
+              <Steps>
+                {this.loadComponent('./signup/SignupSteps', props)}
+              </Steps>
+            )
+          }}
         />
         <ModalRoute
           className='gbx3'
           id={'orgPostSignupSteps'}
           effect='3DFlipVert' style={{ width: '85%' }}
           disallowBgClose={true}
-          component={(props) => this.loadComponent('./signup/PostSignupSteps', props)}
+          component={(props) => {
+            return (
+              <Steps>
+                {this.loadComponent('./signup/PostSignupSteps', props)}
+              </Steps>
+            )
+          }}
         />
       </div>
     )

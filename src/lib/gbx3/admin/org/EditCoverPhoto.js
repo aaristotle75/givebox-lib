@@ -22,7 +22,8 @@ class EditCoverPhoto extends React.Component {
     const {
       orgID,
       coverPhoto,
-      breakpoint
+      breakpoint,
+      uploadOnly
     } = this.props;
 
     const library = {
@@ -52,6 +53,7 @@ class EditCoverPhoto extends React.Component {
               mobile={breakpoint === 'mobile' ? true : false }
               uploadEditorSaveStyle={{ width: 250 }}
               uploadEditorSaveLabel={'Click Here to Save Image'}
+              uploadOnly={uploadOnly}
               imageEditorOpenCallback={(editorOpen) => {
                 this.setState({ editorOpen })
               }}
@@ -63,12 +65,19 @@ class EditCoverPhoto extends React.Component {
   }
 }
 
+EditCoverPhoto.defaultProps = {
+  uploadOnly: false
+}
+
 function mapStateToProps(state, props) {
 
+  const coverPhotoURL = util.getValue(state, 'gbx3.orgGlobals.coverPhoto.url', {});
+  const imageURL = props.imageURL || coverPhotoURL;
+
   return {
+    imageURL,
     orgID: util.getValue(state, 'gbx3.info.orgID'),
-    breakpoint: util.getValue(state, 'gbx3.info.breakpoint'),
-    coverPhoto: util.getValue(state, 'gbx3.orgGlobals.coverPhoto', {})
+    breakpoint: util.getValue(state, 'gbx3.info.breakpoint')
   }
 }
 

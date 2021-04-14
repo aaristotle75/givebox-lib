@@ -55,7 +55,7 @@ export default class Video extends Component {
       <div style={{ minHeight, width: maxSize, height: 'auto',  ...style }} className={`videoComponent imageComponent ${className || ''}`}>
         { this.state.loading && !light ?
         <div className='imageLoader'>
-          <img src='https://s3-us-west-1.amazonaws.com/givebox/public/images/squareLoader.gif' alt='Loader' />
+          <img src='https://cdn.givebox.com/givebox/public/images/spinner-loader.svg' alt='Loader' />
         </div> : null }
         {this.state.error ?
           <div className='errorMsg'>

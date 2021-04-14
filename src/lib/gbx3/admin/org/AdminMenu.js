@@ -5,10 +5,11 @@ import GBLink from '../../../common/GBLink';
 import AdminMenuLayout from './AdminMenuLayout';
 import AdminMenuStyle from './AdminMenuStyle';
 import AdminMenuTools from './AdminMenuTools';
-import HelperMenuPanel from './HelperMenuPanel';
+import SignupMenu from '../../signup/SignupMenu';
 import {
   toggleAdminLeftPanel
 } from '../../redux/gbx3actions';
+import { phases } from '../../signup/signupConfig';
 
 class AdminMenu extends React.Component {
 
@@ -17,12 +18,8 @@ class AdminMenu extends React.Component {
     this.switchPanelType = this.switchPanelType.bind(this);
     this.renderPanel = this.renderPanel.bind(this);
     this.state = {
-      panelType: 'helperMenu'
+      panelType: 'layout'
     };
-  }
-
-  componentDidMount() {
-
   }
 
   switchPanelType(panelType) {
@@ -31,7 +28,9 @@ class AdminMenu extends React.Component {
 
   renderPanel() {
     const {
-      blockType
+      blockType,
+      completedPhases,
+      signupPhase
     } = this.props;
 
     switch (this.state.panelType) {
@@ -47,16 +46,13 @@ class AdminMenu extends React.Component {
         )
       }
 
-      case 'layout': {
-        return (
-          <AdminMenuLayout blockType={blockType} />
-        )
-      }
-
-      case 'helperMenu':
+      case 'layout':
       default: {
         return (
-          <HelperMenuPanel blockType={blockType} />
+          <>
+            { (signupPhase && completedPhases.length < phases.length) ? <SignupMenu stepsOnly={true} /> : null }
+            <AdminMenuLayout blockType={blockType} />
+          </>
         )
       }
     }
@@ -83,10 +79,7 @@ class AdminMenu extends React.Component {
             <span className='icon icon-x'></span>
           </GBLink>
           <div className='middle centerAlign adminPanelTabs'>
-            {/*
-            <GBLink className={`ripple link ${panelType === 'layout' ? 'selected' : ''}`} onClick={() => this.switchPanelType('layout')}>Elements</GBLink>
-            */}
-            <GBLink className={`ripple link ${panelType === 'helperMenu' ? 'selected' : ''}`} onClick={() => this.switchPanelType('helperMenu')}>Menu</GBLink>
+            <GBLink className={`ripple link ${panelType === 'layout' ? 'selected' : ''}`} onClick={() => this.switchPanelType('layout')}>Menu</GBLink>
             <GBLink className={`ripple link ${panelType === 'style' ? 'selected' : ''}`} onClick={() => this.switchPanelType('style')}>Style</GBLink>
             <GBLink className={`ripple link ${panelType === 'tools' ? 'selected' : ''}`} onClick={() => this.switchPanelType('tools')}>Settings</GBLink>
           </div>
@@ -106,11 +99,15 @@ function mapStateToProps(state, props) {
   const openAdmin = util.getValue(admin, 'open');
   const breakpoint = util.getValue(gbx3, 'info.breakpoint');
   const createType = util.getValue(admin, 'createType');
+  const signupPhase = util.getValue(gbx3, 'orgSignup.signupPhase');
+  const completedPhases = util.getValue(gbx3, 'orgSignup.completedPhases', []);
 
   return {
     openAdmin,
     breakpoint,
-    createType
+    createType,
+    signupPhase,
+    completedPhases
   }
 }
 
