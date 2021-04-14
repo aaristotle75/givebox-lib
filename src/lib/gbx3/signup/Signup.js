@@ -17,6 +17,7 @@ import OrgModalRoutes from '../OrgModalRoutes';
 import SignupMenu from './SignupMenu';
 import SignupPage from './SignupPage';
 import { signupSteps } from './signupConfig';
+import HelpfulTip from '../../common/HelpfulTip';
 
 class Signup extends React.Component {
 
@@ -33,8 +34,6 @@ class Signup extends React.Component {
       breakpoint,
       isMobile
     } = this.props;
-
-    this.props.toggleModal('orgSignupSteps', true);
 
     /*
     window.onbeforeunload = function(e) {
@@ -75,6 +74,32 @@ class Signup extends React.Component {
                     :
                       <Image maxHeight={35} url={'https://cdn.givebox.com/givebox/public/givebox_logo2020-grey-text.png'} alt='Givebox' />
                     }
+                  </div>
+                  <div className='moneyRaisedContainer'>
+                    <GBLink className='button' onClick={() => this.openStep('account')}>
+                      <span className='buttonAlignText'>Save Account <span className='icon icon-save'></span></span>
+                    </GBLink>
+                    <div className='tooltip moneyRaised'>
+                      <div className='tooltipTop'>
+                        <HelpfulTip
+                          headerIcon={<span className='icon icon-trending-up'></span>}
+                          headerText={'How do I Raise Money?'}
+                          text={
+                            <div>
+                              Complete the quick and easy create fundraiser steps, and then preview and share your fundraiser.
+                              <span style={{ marginTop: 10, display: 'block' }}>
+                                After you get your first transaction you can connect a bank account to transfer your money.
+                              </span>
+                            </div>
+                          }
+                          style={{ marginTop: 0 }}
+                        />
+                      </div>
+                      <span className='moneyRaisedLabel'>Money Raised</span>
+                      <span className='moneyRaisedText moneyAmount'>
+                        <span className='symbol'>$</span>0.00
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <SignupPage

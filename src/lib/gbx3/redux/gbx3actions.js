@@ -143,7 +143,7 @@ function getMinStepNotCompleted(array, haystack) {
   return minStepNotCompleted;
 }
 
-export function loadOrgSignup(forceStep = null) {
+export function loadOrgSignup(forceStep = null, openModal = true) {
   return async (dispatch, getState) => {
     const signupFromCookie = LZString.decompressFromUTF16(localStorage.getItem('signup'));
     const signupJSON = signupFromCookie ? JSON.parse(signupFromCookie) : {};
@@ -163,6 +163,7 @@ export function loadOrgSignup(forceStep = null) {
       }));
       dispatch(setLoading(false));
       dispatch(updateInfo({ display: 'signup', originTemplate: 'signup' }));
+      if (openModal) dispatch(toggleModal('orgSignupSteps', true));
     }
   }
 }

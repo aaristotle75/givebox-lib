@@ -127,7 +127,7 @@ class SignupShare extends React.Component {
               slug={slug}
               hasCustomSlug={hasCustomSlug}
               apiName={apiName}
-              buttonText={'Click Here to Save Your Share Link'}
+              buttonText={'Click Here to Save Your Custom Share Link'}
               buttonGroupStyle={{
                 marginTop: 15
               }}

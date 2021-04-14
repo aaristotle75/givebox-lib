@@ -28,6 +28,7 @@ import Footer from './Footer';
 import history from '../common/history';
 import Icon from '../common/Icon';
 import { GoDashboard } from 'react-icons/go';
+import HelpfulTip from '../common/HelpfulTip';
 
 const GBX_URL = process.env.REACT_APP_GBX_URL;
 
@@ -382,7 +383,30 @@ class Org extends React.Component {
         <ScrollTop elementID={isAdmin ? 'stageContainer' : 'gbx3Layout'} />
         <div className='gbx3OrgHeader'>
           <div className={'gbx3OrgLogoContainer'} onClick={() => console.log('logo clicked!')}>
-            <Image size='thumb' maxSize={35} url={'https://givebox.s3-us-west-1.amazonaws.com/public/gb-logo5.png'} alt='Givebox' />
+            <Image size='thumb' maxSize={35} url={'https://cdn.givebox.com/givebox/public/gb-logo5.png'} alt='Givebox' />
+          </div>
+          <div className='moneyRaisedContainer orgAdminOnly'>
+            <div className='tooltip moneyRaised'>
+              <div className='tooltipTop'>
+                <HelpfulTip
+                  headerIcon={<span className='icon icon-trending-up'></span>}
+                  headerText={'How do I Raise Money?'}
+                  text={
+                    <div>
+                      Complete the quick and easy create fundraiser steps, and then preview and share your fundraiser.
+                      <span style={{ marginTop: 10, display: 'block' }}>
+                        After you get your first transaction you can connect a bank account to transfer your money.
+                      </span>
+                    </div>
+                  }
+                  style={{ marginTop: 0 }}
+                />
+              </div>
+              <span className='moneyRaisedLabel'>Money Raised</span>
+              <span className='moneyRaisedText moneyAmount'>
+                <span className='symbol'>$</span>0.00
+              </span>
+            </div>
           </div>
           { cameFromNonprofitAdmin ?
             <div className='gbx3OrgBackToDashboard orgAdminOnly'>

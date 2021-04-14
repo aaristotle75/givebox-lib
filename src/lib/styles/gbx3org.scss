@@ -1015,7 +1015,86 @@ $contentHeaderPadding: 35%;
   }
 }
 
+.moneyRaisedContainer {
+  position: absolute;
+  left: 100px;
+  top: 7px;
+  display: flex;
+
+  button.button {
+    color: $white;
+    border: 1px solid $white;
+    //@include bgGradient(to right, $salmon 30%, $salmon2 100%);
+    @include bgGradient(to right, $mainColor 50%, $green 100%);
+    white-space: nowrap;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    margin-right: 30px;
+  }
+
+  button.button:hover {
+    color: $white;
+    border: 1px solid $white;
+    //background: linear-gradient(to right, $salmon2 0%, $salmon 100%);
+    @include bgGradient(to right, $green 50%, $mainColor 100%);
+  }
+
+  button.button .icon {
+    font-size: 20px;
+    margin-left: 5px;
+    margin-bottom: 2px;
+  }
+
+}
+
+.moneyRaised.tooltip {
+  .tooltipTop {
+    top: 140px;
+    left: 155px;
+    min-width: 300px;
+    height: 100px;
+    background-color: transparent;
+    color: inherit;
+    box-shadow: none;
+  }
+}
+
+.moneyRaised {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  .moneyRaisedLabel {
+    font-size: 12px;
+    color: $med-blue-gray;
+  }
+
+  .moneyRaisedText {
+    color: $green;
+    font-size: 22px;
+    font-weight: 300;
+  }
+}
+
 .gbx3OrgSignup {
+
+  .moneyRaisedContainer {
+    right: 20px;
+  }
+
+  .moneyRaised {
+    align-items: flex-end;
+  }
+
+  .moneyRaised.tooltip {
+    .tooltipTop {
+      top: 140px;
+      left: -155px;
+      min-width: 300px;
+      height: 100px;
+    }
+  }
 
   .gbx3Layout.admin {
     .gbx3OrgFooter {
