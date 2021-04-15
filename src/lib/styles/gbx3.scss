@@ -2640,6 +2640,10 @@
 /*--------- CREATE NEW -------*/
 .createStep {
 
+  .formSectionContainer {
+    background: transparent;
+  }
+
   .stageContainer.open {
     left: 0;
   }

@@ -23,7 +23,8 @@ class EditCoverPhoto extends React.Component {
       orgID,
       coverPhoto,
       breakpoint,
-      uploadOnly
+      uploadOnly,
+      imageURL
     } = this.props;
 
     const library = {
@@ -31,8 +32,6 @@ class EditCoverPhoto extends React.Component {
       saveMediaType: 'org',
       borderRadius: 0
     };
-
-    const imageURL = util.getValue(coverPhoto, 'url');
 
     return (
       <div className='modalWrapper'>

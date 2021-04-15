@@ -2,8 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as util from '../../common/utility';
 import * as types from '../../common/types';
+import HelpfulTip from '../../common/HelpfulTip';
+import Icon from '../../common/Icon';
 import Social from '../blocks/Social';
 import SocialOrg from '../blocks/SocialOrg';
+import { VscMegaphone } from 'react-icons/vsc';
 
 class Share extends React.Component {
 
@@ -18,7 +21,9 @@ class Share extends React.Component {
     const {
       kind,
       display,
-      shareText
+      shareText,
+      data,
+      articleID
     } = this.props;
 
     return (
@@ -28,20 +33,28 @@ class Share extends React.Component {
             <SocialOrg
               shareIconSize={40}
               subText={
-                <div className='subText'>
-                  { shareText || `Select Where You'd Like to Share Page` }
-                </div>
+                <HelpfulTip
+                  headerIcon={<Icon><VscMegaphone /></Icon>}
+                  headerText={`Don't be shy!`}
+                  text={`Share your profile page with your supporters, they will appreciate it! Click a social media icon below.`}
+                  style={{ marginTop: 0, marginBottom: 30 }}
+                />
               }
             />
           :
-          <Social
-            shareIconSize={40}
-            subText={
-              <div className='subText'>
-                { shareText || `Select Where You'd Like to Share ${types.kind(kind).name}` }
-              </div>
-            }
-          />
+            <Social
+              data={data}
+              articleID={articleID}
+              shareIconSize={40}
+              subText={
+                <HelpfulTip
+                  headerIcon={<Icon><VscMegaphone /></Icon>}
+                  headerText={`Don't be shy!`}
+                  text={`The quickest way to start raising money is to share your fundraiser on the social media sites. Click a social media icon below.`}
+                  style={{ marginTop: 0, marginBottom: 30 }}
+                />
+              }
+            />
           }
         </div>
       </div>
@@ -56,8 +69,8 @@ function mapStateToProps(state, props) {
 
   const gbx3 = util.getValue(state, 'gbx3', {});
   const info = util.getValue(gbx3, 'info', {});
-  const display = util.getValue(info, 'display');
-  const kind = util.getValue(info, 'kind');
+  const display = props.display || util.getValue(info, 'display');
+  const kind = props.kind || util.getValue(info, 'kind');
 
   return {
     kind,

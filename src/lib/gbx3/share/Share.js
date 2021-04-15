@@ -4,12 +4,10 @@ import * as util from '../../common/utility';
 import * as types from '../../common/types';
 import { Alert } from '../../common/Alert';
 import Icon from '../../common/Icon';
+import HelpfulTip from '../../common/HelpfulTip';
 import {
   sendResource
 } from '../../api/helpers';
-import {
-  updateInfo
-} from '../redux/gbx3actions';
 import ShareSocial from './ShareSocial';
 import { FiCopy } from 'react-icons/fi';
 import { TiSocialFacebook } from 'react-icons/ti';
@@ -104,10 +102,21 @@ class Share extends React.Component {
     } = this.state;
 
     const {
-      display
+      display,
+      article,
+      articleID,
+      kind,
+      kindID,
+      orgID,
+      slug,
+      hasCustomSlug,
+      apiName,
+      shareLinkEditCallback,
+      share
     } = this.props;
 
     const item = [];
+    const data = util.getValue(article, 'data', null);
     const orgDisplay = display === 'org' ? true : false;
 
     switch (shareTypeSelected) {
@@ -124,20 +133,56 @@ class Share extends React.Component {
 
       case 'edit': {
         item.push(
-          <ShareLinkEdit
-            key='shareLinkEdit'
-            orgDisplay={orgDisplay}
-          />
+          <div key='editLink'>
+            <ShareLinkEdit
+              display={display}
+              kind={kind}
+              kindID={kindID}
+              articleID={articleID}
+              callback={shareLinkEditCallback}
+              data={data}
+              slug={slug}
+              hasCustomSlug={hasCustomSlug}
+              apiName={apiName}
+              buttonText={'Click Here to Save Your Custom Share Link'}
+              buttonGroupStyle={{
+                marginTop: 15
+              }}
+              buttonGroupClassName='flexCenter'
+              subText={
+                <HelpfulTip
+                  headerIcon={<span className='icon icon-link-2'></span>}
+                  headerText={`Custom Link`}
+                  text={`Enter a custom link below which makes your ${orgDisplay ? 'profile page' : 'fundraiser'} more identifiable to your supporters.`}
+                  style={{ marginTop: 0, marginBottom: 10 }}
+                />
+              }
+            />
+          </div>
         );
         break;
       }
 
       case 'copy': {
         item.push(
-          <ShareLinkCopy
-            key='shareLinkCopy'
-            orgDisplay={orgDisplay}
-          />
+          <div key='copyLink'>
+            <ShareLinkCopy
+              display={display}
+              kind={kind}
+              kindID={kindID}
+              articleID={articleID}
+              slug={slug}
+              hasCustomSlug={hasCustomSlug}
+              subText={
+                <HelpfulTip
+                  headerIcon={<span className='icon icon-copy'></span>}
+                  headerText={`Share Link`}
+                  text={`Copy and Paste this link anywhere you want to share your ${orgDisplay ? 'profile page' : 'fundraiser'}.`}
+                  style={{ marginTop: 0, marginBottom: 30 }}
+                />
+              }
+            />
+          </div>
         );
         break;
       }
@@ -147,7 +192,11 @@ class Share extends React.Component {
         item.push(
           <ShareSocial
             key='shareSocial'
+            display={display}
+            kind={kind}
             orgDisplay={orgDisplay}
+            articleID={articleID}
+            data={data}
           />
         );
         break;
@@ -189,28 +238,25 @@ Share.defaultProps = {
 function mapStateToProps(state, props) {
 
   const gbx3 = util.getValue(state, 'gbx3', {});
-  const info = util.getValue(gbx3, 'info', {});
-  const display = props.forceDisplay || util.getValue(info, 'display');
-  const kind = util.getValue(info, 'kind');
-  const articleID = util.getValue(info, 'articleID');
-  const globals = util.getValue(gbx3, 'globals', {});
-  const admin = util.getValue(gbx3, 'admin', {});
-  const subStep = util.getValue(admin, 'subStep');
-  const webApp = util.getValue(gbx3, 'data.publishedStatus.webApp');
   const hasAccessToEdit = util.getValue(gbx3, 'admin.hasAccessToEdit');
+  const info = util.getValue(gbx3, 'info', {});
+  const admin = util.getValue(gbx3, 'admin', {});
+  const display = props.forceDisplay || util.getValue(info, 'display');
+  const kind = props.kind || util.getValue(info, 'kind');
+  const articleID = props.articleID || util.getValue(info, 'articleID');
+  const webApp = props.webApp || util.getValue(gbx3, 'data.publishedStatus.webApp');
+  const hasCustomSlug = display === 'org' ? true : props.hasCustomSlug;
 
   return {
     display,
     kind,
     articleID,
-    globals,
-    subStep,
     webApp,
-    hasAccessToEdit
+    hasAccessToEdit,
+    hasCustomSlug
   }
 }
 
 export default connect(mapStateToProps, {
-  sendResource,
-  updateInfo
+  sendResource
 })(Share);

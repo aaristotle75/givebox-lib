@@ -325,6 +325,7 @@ class MediaLibrary extends Component {
     } = this.state;
 
     const mimes = this.getMimes();
+    const hasPhotos = !util.isEmpty(this.props.items) ? true : false;
 
     return (
       <div className={`mediaLibrary ${className}`}>
@@ -367,12 +368,12 @@ class MediaLibrary extends Component {
                   {mimes.readable}
                 </div>
               : <></> }
-              { !uploadOnly ?
+              { !uploadOnly && hasPhotos ?
               <div className='yourphotos'>
                 <h4>Your Photos</h4>
               </div> : null }
             </div>
-            { !uploadOnly ?
+            { !uploadOnly && hasPhotos ?
             <div className='content'>
               {this.listMedia()}
             </div> : null }

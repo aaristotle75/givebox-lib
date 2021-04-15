@@ -1,34 +1,32 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Loadable from 'react-loadable';
 import * as util from '../common/utility';
+import * as types from '../common/types';
 import Image from '../common/Image';
 import GBLink from '../common/GBLink';
-import ScrollTop from '../common/ScrollTop';
+import history from '../common/history';
 import Dropdown from '../form/Dropdown';
+import Loader from '../common/Loader';
 import ModalLink from '../modal/ModalLink';
 import has from 'has';
 import {
-  getResource
+  getResource,
+  sendResource
 } from '../api/helpers';
 import {
   updateOrgPage,
-  updateOrgGlobal,
-  updateData,
   updateInfo,
-  setStyle,
-  updateAdmin,
   saveOrg,
   setPageState,
-  setPageSearch
+  setPageSearch,
+  createFundraiser,
+  clearGBX3,
+  loadPostSignup
 } from './redux/gbx3actions';
-import Header from './pages/Header';
-import Pages from './pages/Pages';
-import Footer from './Footer';
-import history from '../common/history';
-import Icon from '../common/Icon';
-import { GoDashboard } from 'react-icons/go';
-import HelpfulTip from '../common/HelpfulTip';
+import {
+  saveGlobal
+} from './redux/orgActions';
+import OrgPage from './pages/OrgPage';
 
 const GBX_URL = process.env.REACT_APP_GBX_URL;
 
@@ -41,12 +39,11 @@ class Org extends React.Component {
     this.getMessage = this.getMessage.bind(this);
     this.onBreakpointChange = this.onBreakpointChange.bind(this);
     this.pageLinks = this.pageLinks.bind(this);
-    this.pageOptions = this.pageOptions.bind(this);
+    this.morePageOptions = this.morePageOptions.bind(this);
+    this.adminPageOptions = this.adminPageOptions.bind(this);
     this.pageDropdown = this.pageDropdown.bind(this);
     this.onClickPageLink = this.onClickPageLink.bind(this);
     this.onClickArticle = this.onClickArticle.bind(this);
-    this.saveGlobal = this.saveGlobal.bind(this);
-    this.savePage = this.savePage.bind(this);
     this.reloadGetArticles = this.reloadGetArticles.bind(this);
     this.getArticles = this.getArticles.bind(this);
     this.getArticlesCallback = this.getArticlesCallback.bind(this);
@@ -54,9 +51,15 @@ class Org extends React.Component {
     this.setPageState = this.setPageState.bind(this);
     this.setPageSearch = this.setPageSearch.bind(this);
     this.resetPageSearch = this.resetPageSearch.bind(this);
+    this.createFundraiser = this.createFundraiser.bind(this);
+    this.createFundraiserCallback = this.createFundraiserCallback.bind(this);
+    this.createCallback = this.createCallback.bind(this);
+    this.removeCard = this.removeCard.bind(this);
+    this.renderOrgPage = this.renderOrgPage.bind(this);
     this.state = {
       defaultTitle: props.title,
-      pageSearch: {}
+      pageSearch: {},
+      loading: false
     };
   }
 
@@ -69,28 +72,6 @@ class Org extends React.Component {
   getMessage(e) {
     if (e.data === 'gbx3ExitCallback') {
       this.reloadGetArticles('gbx3ExitCallback');
-    }
-  }
-
-  async saveGlobal(name, obj = {}, callback) {
-    const globalUpdated = await this.props.updateOrgGlobal(name, obj);
-    if (globalUpdated) {
-      this.props.saveOrg({
-        callback: (res, err) => {
-          if (callback) callback();
-        }
-      })
-    }
-  }
-
-  async savePage(name, obj = {}, callback) {
-    const pageUpdated = await this.props.updateOrgPage(name, obj);
-    if (pageUpdated) {
-      this.props.saveOrg({
-        callback: (res, err) => {
-          if (callback) callback();
-        }
-      })
     }
   }
 
@@ -164,7 +145,7 @@ class Org extends React.Component {
     return links;
   }
 
-  pageOptions() {
+  morePageOptions() {
     const {
       pagesEnabled,
       pageSlug,
@@ -178,6 +159,30 @@ class Org extends React.Component {
       const primaryText = util.getValue(value, 'name', val);
       const rightText = value.slug === pageSlug ? <span className='icon icon-check'></span> : null;
       options.push({ key: val, rightText, primaryText, value: value.slug });
+    });
+
+    return options;
+  }
+
+  adminPageOptions() {
+    const {
+      pagesEnabled,
+      pageSlug,
+      pages,
+      stage
+    } = this.props;
+
+    const isAdmin = stage === 'admin' ? true : false;
+    const options = [];
+
+    Object.entries(pages).forEach(([key, value]) => {
+      const enabled = pagesEnabled.includes(key) ? true : false;
+      if (enabled || isAdmin) {
+        const primaryText = util.getValue(value, 'name', key);
+        const secondaryText = !enabled ? <span className='gray'>Disabled</span> : null;
+        const rightText = value.slug === pageSlug ? <span className='icon icon-check'></span> : null;
+        options.push({ key, rightText, secondaryText, primaryText, value: value.slug });
+      }
     });
 
     return options;
@@ -360,8 +365,121 @@ class Org extends React.Component {
   * End Get Articles
   */
 
-  render() {
+  async removeCard(articleID, kind, kindID, callback) {
+    const {
+      pageSlug,
+      activePage,
+      orgID
+    } = this.props;
 
+    const customList = [ ...util.getValue(activePage, 'customList', []) ];
+    const useCustomList = util.getValue(activePage, 'useCustomList', false);
+
+    if (articleID) {
+      if (useCustomList) {
+        if (customList.includes(articleID)) {
+          customList.splice(customList.findIndex(l => l === articleID), 1);
+          const data = {
+            customList
+          };
+          const pageUpdated = await this.props.updateOrgPage(pageSlug, data);
+          if (pageUpdated) {
+            this.props.saveOrg({
+              orgID,
+              isSending: true,
+              orgUpdated: true,
+              callback: (res, err) => {
+                if (callback) callback();
+                this.reloadGetArticles();
+              }
+            });
+          }
+        }
+      } else {
+        this.props.sendResource(types.kind(kind).api.publish, {
+          orgID,
+          id: [kindID],
+          method: 'patch',
+          isSending: true,
+          data: {
+            landing: false
+          },
+          callback: (res, err) => {
+            this.reloadGetArticles();
+          }
+        });
+      }
+    }
+  }
+
+
+  /**
+  *  Create Article
+  */
+  async createFundraiser(kind) {
+    this.setState({ loading: true }, () => {
+      this.props.createFundraiser(kind, this.createFundraiserCallback, null, { showNewArticle: true });
+    });
+  }
+
+  createFundraiserCallback(res, err) {
+    if (this.createCallback) this.createCallback(res, err, () => {
+      this.setState({ loading: false });
+    });
+  }
+
+  async createCallback(res, err, callback) {
+    const {
+      pageSlug,
+      activePage,
+      orgID
+    } = this.props;
+
+    const customList = [ ...util.getValue(activePage, 'customList', []) ];
+    const useCustomList = util.getValue(activePage, 'useCustomList', false);
+
+    if (!util.isEmpty(res) && !err) {
+      const articleID = util.getValue(res, 'articleID');
+      if (articleID) {
+        if (useCustomList) {
+          if (!customList.includes(articleID)) {
+            customList.unshift(articleID);
+            const data = {
+              customList
+            };
+            const pageUpdated = await this.props.updateOrgPage(pageSlug, data);
+            if (pageUpdated) {
+              this.props.saveOrg({
+                orgID,
+                isSending: true,
+                orgUpdated: true,
+                showSaving: true,
+                callback: (res, err) => {
+                  if (callback) callback();
+                }
+              });
+            }
+          }
+        }
+      } else {
+        if (callback) callback();
+      }
+    } else {
+      if (callback) callback();
+    }
+  }
+
+  selectKindOptions() {
+    const options = [];
+    types.kinds().forEach((value) => {
+      options.push(
+        { primaryText: <span className='labelIcon'><span className={`icon icon-${types.kind(value).icon}`}></span> Create {types.kind(value).name}</span>, value }
+      );
+    });
+    return options;
+  }
+
+  renderOrgPage() {
     const {
       editable,
       hasAccessToEdit,
@@ -376,132 +494,40 @@ class Org extends React.Component {
 
     const isEditable = hasAccessToEdit && editable ? true : false;
     const isAdmin = stage === 'admin' ? true : false;
-    const pageOptions = this.pageOptions();
+
+    const morePageOptions = this.morePageOptions();
+    const adminPageOptions = this.adminPageOptions();
+    const selectKindOptions = this.selectKindOptions();
 
     return (
-      <div className='gbx3Org'>
-        <ScrollTop elementID={isAdmin ? 'stageContainer' : 'gbx3Layout'} />
-        <div className='gbx3OrgHeader'>
-          <div className={'gbx3OrgLogoContainer'} onClick={() => console.log('logo clicked!')}>
-            <Image size='thumb' maxSize={35} url={'https://cdn.givebox.com/givebox/public/gb-logo5.png'} alt='Givebox' />
-          </div>
-          <div className='moneyRaisedContainer orgAdminOnly'>
-            <div className='tooltip moneyRaised'>
-              <div className='tooltipTop'>
-                <HelpfulTip
-                  headerIcon={<span className='icon icon-trending-up'></span>}
-                  headerText={'How do I Raise Money?'}
-                  text={
-                    <div>
-                      Complete the quick and easy create fundraiser steps, and then preview and share your fundraiser.
-                      <span style={{ marginTop: 10, display: 'block' }}>
-                        After you get your first transaction you can connect a bank account to transfer your money.
-                      </span>
-                    </div>
-                  }
-                  style={{ marginTop: 0 }}
-                />
-              </div>
-              <span className='moneyRaisedLabel'>Money Raised</span>
-              <span className='moneyRaisedText moneyAmount'>
-                <span className='symbol'>$</span>0.00
-              </span>
-            </div>
-          </div>
-          { cameFromNonprofitAdmin ?
-            <div className='gbx3OrgBackToDashboard orgAdminOnly'>
-              <GBLink key={'exit'} style={{ fontSize: '14px' }} className='link' onClick={() => this.props.exitAdmin()}><Icon><GoDashboard /></Icon>{ isMobile ? 'Dashboard' : `Back to Dashboard` }</GBLink>
-            </div>
-          : null }
-        </div>
-        <div className='gbx3OrgContentContainer'>
-          <Header
-            saveGlobal={this.saveGlobal}
-          />
-          <div className='gbx3OrgSubHeader gbx3OrgContentOuterContainer'>
-            <div className='gbx3OrgContentInnerContainer'>
-              <div className='nameSection'>
-                <ModalLink
-                  id='orgEditTitle'
-                  type='div'
-                  className='nameSectionContainer orgAdminEdit'
-                  opts={{
-                    saveGlobal: this.saveGlobal
-                  }}
-                >
-                  <button className='tooltip blockEditButton' id='orgEditTitle'>
-                    <span className='tooltipTop'><i />Click to EDIT Title</span>
-                    <span className='icon icon-edit'></span>
-                  </button>
-                </ModalLink>
-                <div className='nameSectionContainer'>
-                  <div className='nameText'>
-                    <div dangerouslySetInnerHTML={{ __html: util.cleanHtml(title) }} />
-                  </div>
-                </div>
-              </div>
-              { pageOptions.length > 1 || isAdmin ?
-                <div className='navigation'>
-                  <ModalLink
-                    id='orgEditMenu'
-                    type='div'
-                    className='navigationContainer orgAdminEdit'
-                    opts={{
-                      saveGlobal: this.saveGlobal,
-                      closeCallback: () => this.props.saveOrg(),
-                      reloadGetArticles: this.reloadGetArticles,
-                      getArticles: this.getArticles
-                    }}
-                  >
-                    <button className='tooltip blockEditButton' id='orgEditMenu'>
-                      <span className='tooltipTop'><i />Click to Manage Pages / Navigation Menu</span>
-                      <span className='icon icon-edit'></span>
-                    </button>
-                  </ModalLink>
-                  { pageOptions.length > 0 ?
-                    <div className='navigationContainer'>
-                    { !isMobile ?
-                      this.pageLinks()
-                    :
-                      <div className='navigationDropdown'>
-                        {this.pageDropdown(this.pageOptions())}
-                      </div>
-                    }
-                    </div>
-                  :
-                    <div className='navigationContainer'>
-                      Manage Navigation Menu
-                    </div>
-                  }
-                </div>
-              : null }
-            </div>
-          </div>
-          <main className='gbx3OrgContent gbx3OrgContentOuterContainer'>
-            <div className='gbx3OrgContentInnerContainer'>
-                <Pages
-                  isAdmin={isAdmin}
-                  onClickArticle={this.onClickArticle}
-                  onMouseOverArticle={this.onMouseOverArticle}
-                  pageDropdown={this.pageDropdown}
-                  reloadGetArticles={this.reloadGetArticles}
-                  getArticles={this.getArticles}
-                  setPageSearch={this.setPageSearch}
-                  resetPageSearch={this.resetPageSearch}
-                />
-            </div>
-          </main>
-          <div className='gbx3OrgFooter gbx3OrgContentOuterContainer'>
-            <div className='gbx3OrgContentInnerContainer'>
-              <Footer
-                showP2P={true}
-                onClickVolunteerFundraiser={this.props.onClickVolunteerFundraiser}
-              />
-            </div>
-          </div>
-        </div>
-        {breakpoint === 'mobile' ? <div className='bottomOffset'>&nbsp;</div> : <></>}
-      </div>
+      <OrgPage
+        {...this.props}
+        isEditable={isEditable}
+        isAdmin={isAdmin}
+        morePageOptions={morePageOptions}
+        adminPageOptions={adminPageOptions}
+        saveGlobal={this.props.saveGlobal}
+        pageLinks={this.pageLinks}
+        pageDropdown={this.pageDropdown}
+        onClickArticle={this.onClickArticle}
+        reloadGetArticles={this.reloadGetArticles}
+        getArticles={this.getArticles}
+        setPageSearch={this.setPageSearch}
+        resetPageSearch={this.resetPageSearch}
+        removeCard={this.removeCard}
+        createFundraiser={this.createFundraiser}
+        selectKindOptions={selectKindOptions}
+      />
+    )
+  }
+
+  render() {
+
+    return (
+      <>
+        {this.state.loading ? <Loader msg='Creating...' /> : null }
+        {this.renderOrgPage()}
+      </>
     )
   }
 
@@ -529,7 +555,6 @@ function mapStateToProps(state, props) {
   const useCustomList = util.getValue(activePage, 'useCustomList', false);
   const kind = util.getValue(activePage, 'kind');
   const resourceName = `${pageSlug}List`;
-  const pageList = util.getValue(state, `resource.${resourceName}`, {});
   const pageState = util.getValue(gbx3, 'pageState', {});
   const pageSearch = util.getValue(gbx3, 'pageSearch', {});
   const cameFromNonprofitAdmin = util.getValue(info, 'cameFromNonprofitAdmin', false);
@@ -551,8 +576,6 @@ function mapStateToProps(state, props) {
     breakpoint,
     isMobile,
     title,
-    resourceName,
-    pageList,
     pageState,
     pageSearch,
     cameFromNonprofitAdmin
@@ -560,13 +583,14 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
-  updateOrgGlobal,
-  updateData,
   updateInfo,
-  setStyle,
-  updateAdmin,
   saveOrg,
   getResource,
+  sendResource,
   setPageState,
-  setPageSearch
+  setPageSearch,
+  saveGlobal,
+  createFundraiser,
+  clearGBX3,
+  updateOrgPage
 })(Org);

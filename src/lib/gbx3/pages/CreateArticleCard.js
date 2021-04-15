@@ -2,13 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Image from '../../common/Image';
 import GBLink from '../../common/GBLink';
-import Loader from '../../common/Loader';
 import * as util from '../../common/utility';
 import * as types from '../../common/types';
-import {
-  clearGBX3,
-  createFundraiser
-} from '../redux/gbx3actions';
 import history from '../../common/history';
 import Dropdown from '../../form/Dropdown';
 
@@ -19,11 +14,7 @@ class CreateArticleCard extends React.Component {
   constructor(props) {
     super(props);
     this.onClick = this.onClick.bind(this);
-    this.createFundraiser = this.createFundraiser.bind(this);
-    this.createFundraiserCallback = this.createFundraiserCallback.bind(this);
-    this.selectKindOptions = this.selectKindOptions.bind(this);
     this.state = {
-      loading: false,
       createKind: props.defaultKind,
       dropdownOpen: false
     };
@@ -46,32 +37,10 @@ class CreateArticleCard extends React.Component {
       if (this.props.noOrgIDCallback) this.props.noOrgIDCallback();
     } else {
       if (kind !== 'all') {
-        this.createFundraiser(createKind);
+        this.props.createFundraiser(createKind);
       }
     }
     if (!this.state.dropdownOpen) this.setState({ dropdownOpen: true });
-  }
-
-  async createFundraiser(kind) {
-    this.setState({ loading: true }, () => {
-      this.props.createFundraiser(kind, this.createFundraiserCallback, null, { showNewArticle: true });
-    });
-  }
-
-  createFundraiserCallback(res, err) {
-    if (this.props.createCallback) this.props.createCallback(res, err, () => {
-      this.setState({ loading: false });
-    });
-  }
-
-  selectKindOptions() {
-    const options = [];
-    types.kinds().forEach((value) => {
-      options.push(
-        { primaryText: <span className='labelIcon'><span className={`icon icon-${types.kind(value).icon}`}></span> Create {types.kind(value).name}</span>, value }
-      );
-    });
-    return options;
   }
 
   render() {
@@ -103,7 +72,6 @@ class CreateArticleCard extends React.Component {
       return (
         <div className={`listItem createArticleCard`}>
           <div className='articleCard'>
-            { this.state.loading ? <Loader msg='Creating...' /> : null }
             <div onClick={this.onClick} className='articleCardEdit orgAdminEdit'>
             {kind === 'all' ?
               <Dropdown
@@ -123,10 +91,10 @@ class CreateArticleCard extends React.Component {
                 fixedLabel={false}
                 onChange={(name, value) => {
                   this.setState({ createKind: value, dropdownOpen: false }, () => {
-                    this.createFundraiser(value);
+                    this.props.createFundraiser(value);
                   });
                 }}
-                options={this.selectKindOptions()}
+                options={this.props.selectKindOptions}
                 hideIcons={true}
                 hideButton={true}
                 showCloseBtn={true}
@@ -200,6 +168,4 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
-  clearGBX3,
-  createFundraiser
 })(CreateArticleCard);

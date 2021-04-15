@@ -56,8 +56,25 @@ class ArticleCard extends Component {
         return this.props.onClickArticle(articleID, true);
       }
 
+      case 'shareForm': {
+        console.log('handle share Form');
+        break;
+      }
+
       case 'removeCard': {
-        return this.props.removeCard(articleID, kind, kindID);
+        this.props.toggleModal('orgRemove', true, {
+          desc: {`Remove ${title} From List`,
+          subDesc: 'Are you sure you want to remove this card from the list?',
+          callback: () => {
+            this.props.removeCard(articleID, kind, kindID, () => this.props.toggleModal('orgRemove', false));
+          }
+        });
+        break;
+      }
+
+      case 'makePrivate': {
+        console.log('handle make private');
+        break;
       }
 
       case 'deleteForm': {
@@ -212,7 +229,9 @@ class ArticleCard extends Component {
             options={[
               { primaryText: <span className='labelIcon'><span className={'icon icon-edit'}></span>Edit Card</span>, value: 'editCard' },
               { primaryText: <span className='labelIcon'><span className={'icon icon-layout'}></span>Edit {kind === 'fundraiser' ? 'Donation' : types.kind(kind).name} Form</span>, value: 'editForm' },
+              { primaryText: <span className='labelIcon'><span className={'icon icon-share'}></span>Share {kind === 'fundraiser' ? 'Donation' : types.kind(kind).name} Form</span>, value: 'shareForm' },
               { primaryText: <span className='labelIcon'><span className={'icon icon-x'}></span>Remove Card From List</span>, value: 'removeCard' },
+              { primaryText: <span className='labelIcon'><span className={'icon icon-eye-off'}></span>Make Private (Remove from List and Hide From Public View)</span>, value: 'makePrivate' },
               { primaryText: <span className='labelIcon'><span className={'icon icon-trash-2'}></span>Delete {kind === 'fundraiser' ? 'Donation' : types.kind(kind).name} Form</span>, value: 'deleteForm' }
             ]}
             hideIcons={true}
@@ -220,7 +239,7 @@ class ArticleCard extends Component {
             showCloseBtn={true}
           >
             <button className='tooltip blockEditButton'>
-              <span className='tooltipTop'><i />Click to EDIT Card</span>
+              <span className='tooltipTop'><i />Click for Edit Options</span>
               <span className='icon icon-edit'></span>
             </button>
           </Dropdown>

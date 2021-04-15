@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import * as util from '../../common/utility';
-import * as types from '../../common/types';
 import GBLink from '../../common/GBLink';
 import Loader from '../../common/Loader';
 import ModalLink from '../../modal/ModalLink';
@@ -29,9 +28,6 @@ class Pages extends Component {
 
   constructor(props) {
     super(props);
-    this.createCallback = this.createCallback.bind(this);
-    this.removeCard = this.removeCard.bind(this);
-    this.pageOptions = this.pageOptions.bind(this);
     this.renderList = this.renderList.bind(this);
     this.onMouseOverArticle = this.onMouseOverArticle.bind(this);
     this.onMouseLeaveArticle = this.onMouseLeaveArticle.bind(this);
@@ -48,112 +44,14 @@ class Pages extends Component {
 
     // Check for page switch and load articles - does not reload
     if (prevProps.pageSlug !== this.props.pageSlug) {
-      console.log('execute pageSlug', prevProps.pageSlug, this.props.pageSlug);
       this.props.getArticles();
     }
-
-    /*
-    if ((prevProps.pageSlug === this.props.pageSlug) && (prevProps.kind !== this.props.kind)) {
-      this.props.reloadGetArticles();
-    }
-
-    if (((prevProps.customList !== this.props.customList) && this.props.useCustomList) || (prevProps.useCustomList !== this.props.useCustomList)) {
-      this.props.reloadGetArticles();
-    }
-    */
 
     if (Object.keys(prevProps.pages).length !== Object.keys(this.props.pages).length) {
       this.props.reloadGetArticles('Pages length', Object.keys(this.props.pages).length);
     }
     if (prevProps.display !== this.props.display) {
       this.props.reloadGetArticles('Pages display', prevProps.display, this.props.display);
-    }
-  }
-
-  async createCallback(res, err, callback) {
-    const {
-      pageSlug,
-      activePage,
-      orgID
-    } = this.props;
-
-    const customList = [ ...util.getValue(activePage, 'customList', []) ];
-    const useCustomList = util.getValue(activePage, 'useCustomList', false);
-
-    if (!util.isEmpty(res) && !err) {
-      const articleID = util.getValue(res, 'articleID');
-      if (articleID) {
-        if (useCustomList) {
-          if (!customList.includes(articleID)) {
-            customList.unshift(articleID);
-            const data = {
-              customList
-            };
-            const pageUpdated = await this.props.updateOrgPage(pageSlug, data);
-            if (pageUpdated) {
-              this.props.saveOrg({
-                orgID,
-                isSending: true,
-                orgUpdated: true,
-                showSaving: true,
-                callback: (res, err) => {
-                  if (callback) callback();
-                }
-              });
-            }
-          }
-        }
-      } else {
-        if (callback) callback();
-      }
-    } else {
-      if (callback) callback();
-    }
-  }
-
-  async removeCard(articleID, kind, kindID) {
-    const {
-      pageSlug,
-      activePage,
-      orgID
-    } = this.props;
-
-    const customList = [ ...util.getValue(activePage, 'customList', []) ];
-    const useCustomList = util.getValue(activePage, 'useCustomList', false);
-
-    if (articleID) {
-      if (useCustomList) {
-        if (customList.includes(articleID)) {
-          customList.splice(customList.findIndex(l => l === articleID), 1);
-          const data = {
-            customList
-          };
-          const pageUpdated = await this.props.updateOrgPage(pageSlug, data);
-          if (pageUpdated) {
-            this.props.saveOrg({
-              orgID,
-              isSending: true,
-              orgUpdated: true,
-              callback: (res, err) => {
-                this.props.reloadGetArticles();
-              }
-            });
-          }
-        }
-      } else {
-        this.props.sendResource(types.kind(kind).api.publish, {
-          orgID,
-          id: [kindID],
-          method: 'patch',
-          isSending: true,
-          data: {
-            landing: false
-          },
-          callback: (res, err) => {
-            this.props.reloadGetArticles();
-          }
-        });
-      }
     }
   }
 
@@ -219,7 +117,7 @@ class Pages extends Component {
               pageSlug={pageSlug}
               resourcesToLoad={[resourceName]}
               sendResource={this.props.sendResource}
-              removeCard={this.removeCard}
+              removeCard={this.props.removeCard}
               onClickArticle={this.props.onClickArticle}
               reloadGetArticles={this.props.reloadGetArticles}
               playPreview={this.state.playPreview === ID ? true : false}
@@ -246,7 +144,8 @@ class Pages extends Component {
               hideCard={false}
               hideNoResults={true}
               kind={this.props.kind}
-              createCallback={this.createCallback}
+              createFundraiser={this.props.createFundraiser}
+              selectKindOptions={this.props.selectKindOptions}
             />
             {items}
           </InfiniteScroll>
@@ -256,32 +155,9 @@ class Pages extends Component {
           hideCard={false}
           kind={this.props.kind}
           createCallback={this.createCallback}
+          selectKindOptions={this.props.selectKindOptions}
         />
     )
-  }
-
-  pageOptions() {
-    const {
-      pagesEnabled,
-      pageSlug,
-      pages,
-      stage
-    } = this.props;
-
-    const isAdmin = stage === 'admin' ? true : false;
-    const options = [];
-
-    Object.entries(pages).forEach(([key, value]) => {
-      const enabled = pagesEnabled.includes(key) ? true : false;
-      if (enabled || isAdmin) {
-        const primaryText = util.getValue(value, 'name', key);
-        const secondaryText = !enabled ? <span className='gray'>Disabled</span> : null;
-        const rightText = value.slug === pageSlug ? <span className='icon icon-check'></span> : null;
-        options.push({ key, rightText, secondaryText, primaryText, value: value.slug });
-      }
-    });
-
-    return options;
   }
 
   render() {
@@ -291,7 +167,8 @@ class Pages extends Component {
       resourceName,
       pages,
       pageSlug,
-      isAdmin
+      isAdmin,
+      adminPageOptions
     } = this.props;
 
     if (util.isLoading(pageList)) return <Loader msg='Loading List...' />
@@ -307,7 +184,7 @@ class Pages extends Component {
       <div className='gbx3OrgPages'>
         {util.isFetching(pageList) ? <Loader msg='Loading List...' /> : null }
         <div className='orgAdminDropdown managePageDropdown orgAdminOnly'>
-          {this.props.pageDropdown(this.pageOptions(), 'Change Page')}
+          {this.props.pageDropdown(adminPageOptions, 'Change Page')}
         </div>
         <div style={{ marginTop: isAdmin ? 15 : 0 }} className='gbx3OrgPagesTop'>
           <ModalLink
