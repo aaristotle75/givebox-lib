@@ -54,6 +54,7 @@ class GBXTest extends Component {
     console.log('execute browse -> ', browse);
 
     if ( (orgID && blockType === 'org' && !isNaN(articleID)) || (articleID && blockType === 'article' && !isNaN(articleID)) || (browse && !isNaN(articleID)) ) {
+      
       return (
         <div>
           <GBX3

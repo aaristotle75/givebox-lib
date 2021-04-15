@@ -27,7 +27,6 @@ class PostSignupSteps extends React.Component {
       editPreview: false,
       iframeHeight: 0
     };
-    this.iframeRef = React.createRef();
   }
 
   componentDidMount() {
@@ -184,7 +183,7 @@ class PostSignupSteps extends React.Component {
                 <img src='https://cdn.givebox.com/givebox/public/images/block-loader.svg' alt='Loader' />
               </div>
             : null }
-            <iframe style={{ height: iframeHeight }} ref={this.iframeRef} id='previewIframe' src={`${GBX3_URL}/${createdArticleID}${this.state.editPreview ? '?admin&editFormOnly' : '?public&preview'}`} title={`Preview`} />
+            <iframe style={{ height: iframeHeight }} id='previewIframe' src={`${GBX3_URL}/${createdArticleID}${this.state.editPreview ? '?admin&editFormOnly' : '?public&preview'}`} title={`Preview`} />
           </div>
         ;
         break;

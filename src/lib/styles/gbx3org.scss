@@ -1026,6 +1026,7 @@ $contentHeaderPadding: 35%;
     border: 1px solid $white;
     //@include bgGradient(to right, $salmon 30%, $salmon2 100%);
     @include bgGradient(to right, $mainColor 50%, $green 100%);
+    @include animation(pulsateSlightlyBrighter 2s ease-out infinite);
     white-space: nowrap;
     padding: 6px 12px;
     border-radius: 20px;
@@ -1080,6 +1081,7 @@ $contentHeaderPadding: 35%;
 
   .moneyRaisedContainer {
     right: 20px;
+    left: auto;
   }
 
   .moneyRaised {

@@ -23,7 +23,7 @@ class Design extends React.Component {
 
     switch (signupPhase) {
       case 'postSignup': {
-        this.props.loadPostSignup(false, false);
+        this.props.loadPostSignup(false, true);
         break;
       }
 

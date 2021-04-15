@@ -70,7 +70,7 @@ EditCoverPhoto.defaultProps = {
 
 function mapStateToProps(state, props) {
 
-  const coverPhotoURL = util.getValue(state, 'gbx3.orgGlobals.coverPhoto.url', {});
+  const coverPhotoURL = util.getValue(state, 'gbx3.orgGlobals.coverPhoto.url', '');
   const imageURL = props.imageURL || coverPhotoURL;
 
   return {

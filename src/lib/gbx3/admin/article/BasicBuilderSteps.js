@@ -42,7 +42,8 @@ class BasicBuilderStepsForm extends Component {
       themeColor: util.getValue(props.data, 'giveboxSettings.primaryColor'),
       error: false,
       previewLoaded: false,
-      editorOpen: false
+      editorOpen: false,
+      iframeHeight: 0
     };
   }
 
@@ -66,6 +67,15 @@ class BasicBuilderStepsForm extends Component {
     if (e.data === 'gbx3Shared') {
       if (slug === 'share') {
         this.saveStep();
+      }
+    }
+
+    const str = e.data.toString();
+    const strArr = str.split('-');
+    if (strArr[0] === 'gbx3Height') {
+      if (strArr[1]) {
+        const iframeHeight = +strArr[1] + 50;
+        this.setState({ iframeHeight });
       }
     }
   }
@@ -172,6 +182,12 @@ class BasicBuilderStepsForm extends Component {
   }
 
   renderStep() {
+
+    const {
+      previewLoaded,
+      iframeHeight
+    } = this.state;
+
     const {
       step,
       breakpoint,
@@ -244,7 +260,7 @@ class BasicBuilderStepsForm extends Component {
         item.saveButtonLabel = <span className='buttonAlignText'>Looks Good! Continue to Next Step <span className='icon icon-chevron-right'></span></span>;
         item.className = 'preview';
         item.title = 'Preview your Form';
-        item.desc = !this.state.previewLoaded ?
+        item.desc = !previewLoaded ?
           'Please wait while the preview loads...'
           :
           <div>
@@ -253,8 +269,13 @@ class BasicBuilderStepsForm extends Component {
           </div>
         ;
         item.component =
-          <div className='stagePreview flexCenter'>
-            <iframe src={`${GBX3_URL}/${articleID}/?public&preview`} title={`Preview`} />
+          <div className='stagePreview flexCenter flexColumn'>
+            { !previewLoaded ?
+              <div className='imageLoader'>
+                <img src='https://cdn.givebox.com/givebox/public/images/block-loader.svg' alt='Loader' />
+              </div>
+            : null }
+            <iframe style={{ height: iframeHeight }} id='previewIframe' src={`${GBX3_URL}/${articleID}/?public&preview`} title={`Preview`} />
           </div>
         ;
         break;
