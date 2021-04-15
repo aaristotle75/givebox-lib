@@ -57,14 +57,21 @@ class ArticleCard extends Component {
       }
 
       case 'shareForm': {
-        console.log('handle share Form');
+        const hasCustomSlug = util.getValue(item, 'hasCustomSlug');
+        const slug = util.getValue(item, 'slug');
+        const webApp = util.getValue(item, 'publishedStatus.webApp');
+        this.props.toggleModal('share', true, {
+          getArticleID: articleID,
+          forceDisplay: 'article'
+        });
         break;
       }
 
       case 'removeCard': {
         this.props.toggleModal('orgRemove', true, {
-          desc: {`Remove ${title} From List`,
-          subDesc: 'Are you sure you want to remove this card from the list?',
+          desc: `REMOVE ${title} From List`,
+          subDesc: 'Please confirm you want to remove this card from the list.',
+          confirmText: 'Yes, Remove Card',
           callback: () => {
             this.props.removeCard(articleID, kind, kindID, () => this.props.toggleModal('orgRemove', false));
           }
@@ -84,10 +91,10 @@ class ArticleCard extends Component {
           orgID,
           resourcesToLoad,
           id: kindID,
-          desc: `${title}`,
+          desc: `DELETE ${title}`,
           activityDesc: `DELETED ${title}`,
           subDesc: `Please confirm you want to delete ${types.kind(kind).name.toLowerCase()}?`,
-          confirmText: 'Confirm Delete',
+          confirmText: 'Yes, Delete',
           modalID: 'deleteArticle',
           callback: this.props.reloadGetArticles
         });

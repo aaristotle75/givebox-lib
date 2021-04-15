@@ -3,11 +3,16 @@ import { connect } from 'react-redux';
 import * as util from '../../common/utility';
 import * as types from '../../common/types';
 import { Alert } from '../../common/Alert';
+import Loader from '../../common/Loader';
 import Icon from '../../common/Icon';
 import HelpfulTip from '../../common/HelpfulTip';
 import {
+  getResource,
   sendResource
 } from '../../api/helpers';
+import {
+  removeResource
+} from '../../api/actions';
 import ShareSocial from './ShareSocial';
 import { FiCopy } from 'react-icons/fi';
 import { TiSocialFacebook } from 'react-icons/ti';
@@ -21,6 +26,7 @@ class Share extends React.Component {
 
   constructor(props) {
     super(props);
+    this.getShareArticle = this.getShareArticle.bind(this);
     this.renderShareType = this.renderShareType.bind(this);
     this.renderShareList = this.renderShareList.bind(this);
     this.setShareTypeSelected = this.setShareTypeSelected.bind(this);
@@ -30,6 +36,7 @@ class Share extends React.Component {
   }
 
   componentDidMount() {
+    this.getShareArticle();
     /*
     this.props.sendResource('gbxPreview', {
       id: [this.props.articleID],
@@ -43,6 +50,20 @@ class Share extends React.Component {
     */
   }
 
+  componentWillUnmount() {
+    this.props.removeResource('shareArticle');
+  }
+
+  getShareArticle() {
+    if (this.props.getArticleID) {
+      this.props.getResource('article', {
+        id: [this.props.getArticleID],
+        customName: 'shareArticle',
+        reload: true
+      });
+    };
+  }
+
   setShareTypeSelected(shareTypeSelected) {
     this.setState({ shareTypeSelected });
   }
@@ -52,7 +73,8 @@ class Share extends React.Component {
       kind,
       display,
       hideList,
-      hasAccessToEdit
+      hasAccessToEdit,
+      title
     } = this.props;
 
     const {
@@ -88,7 +110,12 @@ class Share extends React.Component {
 
     return (
       <div className='createKindSection'>
-        <span className='intro'>Share {orgDisplay ? 'Profile' : types.kind(kind).name}</span>
+        <div className='intro' style={{ marginBottom: 20 }}>
+          <span className='smallText'>
+            Share {orgDisplay ? 'Profile Page' : types.kind(kind).name}
+          </span>
+          {title}
+        </div>
         <div className='createKindList'>
           {items}
         </div>
@@ -103,21 +130,20 @@ class Share extends React.Component {
 
     const {
       display,
-      article,
       articleID,
       kind,
-      kindID,
       orgID,
-      slug,
       hasCustomSlug,
       apiName,
-      shareLinkEditCallback,
-      share
+      shareArticle,
+      shareLinkEditCallback
     } = this.props;
 
     const item = [];
-    const data = util.getValue(article, 'data', null);
     const orgDisplay = display === 'org' ? true : false;
+    const data = util.getValue(shareArticle, 'data', null);
+    const slug = util.getValue(shareArticle, 'data.slug');
+    const kindID = util.getValue(shareArticle, 'data.kindID');
 
     switch (shareTypeSelected) {
 
@@ -139,7 +165,12 @@ class Share extends React.Component {
               kind={kind}
               kindID={kindID}
               articleID={articleID}
-              callback={shareLinkEditCallback}
+              callback={() => {
+                if (this.props.getArticleID) {
+                  this.getShareArticle();
+                }
+                if (this.props.shareLinkEditCallback) this.props.shareLinkEditCallback();
+              }}
               data={data}
               slug={slug}
               hasCustomSlug={hasCustomSlug}
@@ -218,6 +249,7 @@ class Share extends React.Component {
       display
     } = this.props;
 
+    if (this.props.getArticleID && util.isLoading(this.props.shareArticle)) return <Loader msg='Loading Share Article...' />
 
     return (
       <div className='createStep'>
@@ -242,21 +274,42 @@ function mapStateToProps(state, props) {
   const info = util.getValue(gbx3, 'info', {});
   const admin = util.getValue(gbx3, 'admin', {});
   const display = props.forceDisplay || util.getValue(info, 'display');
-  const kind = props.kind || util.getValue(info, 'kind');
-  const articleID = props.articleID || util.getValue(info, 'articleID');
-  const webApp = props.webApp || util.getValue(gbx3, 'data.publishedStatus.webApp');
-  const hasCustomSlug = display === 'org' ? true : props.hasCustomSlug;
+  const articleID = props.getArticleID || util.getValue(info, 'articleID');
+  const shareArticle = util.getValue(state, 'resource.shareArticle', {});
+
+  let kind = util.getValue(info, 'kind');
+  let kindID = util.getValue(info, 'kindID');
+  let title = util.getValue(gbx3, display === 'org' ? 'orgData.name' : 'data.title');
+  let webApp = util.getValue(gbx3, 'data.publishedStatus.webApp');
+  let hasCustomSlug = display === 'org' ? true : util.getValue(gbx3, 'data.hasCustomSlug');
+  let apiName = null;
+
+  // if getArticleID is passed use values from the get article info
+  if (props.getArticleID) {
+    kind = util.getValue(shareArticle, 'data.kind');
+    kindID = util.getValue(shareArticle, 'data.kindID');
+    title = util.getValue(shareArticle, 'data.title');
+    webApp = util.getValue(shareArticle, 'data.publishedStatus.webApp');
+    hasCustomSlug = util.getValue(shareArticle, 'data.hasCustomSlug');
+    apiName = `org${types.kind(kind).api.item}`;
+  }
 
   return {
+    hasAccessToEdit,
     display,
+    shareArticle,
     kind,
+    kindID,
+    title,
     articleID,
     webApp,
-    hasAccessToEdit,
-    hasCustomSlug
+    hasCustomSlug,
+    apiName
   }
 }
 
 export default connect(mapStateToProps, {
+  removeResource,
+  getResource,
   sendResource
 })(Share);

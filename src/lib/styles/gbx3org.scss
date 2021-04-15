@@ -810,12 +810,12 @@ $contentHeaderPadding: 35%;
 
 .articleCardDropdown.createArticleCard.dropdown .dropdown-content {
   min-height: 300px;
-  overflow: visible;
+  overflow: auto;
 }
 
 .articleCardDropdown.articleCardSelect.dropdown .dropdown-content {
-  min-height: 150px;
-  overflow: visible;
+  min-height: 350px;
+  overflow: auto;
 }
 
 .articleCardDropdown.selectCategory.dropdown .dropdown-content {
@@ -1017,7 +1017,7 @@ $contentHeaderPadding: 35%;
 
 .moneyRaisedContainer {
   position: absolute;
-  left: 100px;
+  left: 75px;
   top: 7px;
   display: flex;
 

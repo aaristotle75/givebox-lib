@@ -15,6 +15,7 @@ class App extends Component {
 
   constructor(props) {
     super(props);
+    this.loading = this.loading.bind(this);
     this.loadComponent = this.loadComponent.bind(this);
     this.authenticate = this.authenticate.bind(this);
     this.initResources = this.initResources.bind(this);
@@ -84,6 +85,20 @@ class App extends Component {
     */
   }
 
+  loading(props) {
+    if (props.error) {
+      console.error('loading error -> ', props.error);
+      return (
+        <div id={`content-root`}>
+          <h2>Oops, an error</h2>
+          {props.error}
+        </div>
+      )
+    } else {
+      return <></>;
+    }
+  }
+
   loader(msg, className = '') {
     return (
       <Loader className={className} msg={msg} forceText={process.env.NODE_ENV !== 'production' && true} />
@@ -121,7 +136,7 @@ class App extends Component {
 
     const Component = Loadable({
       loader: () => import(`/${moduleToLoad}`),
-      loading: () => modal ? '' : this.loader(`Trying to load component ${moduleToLoad}`)
+      loading: this.loading
     });
 
     const routeProps = options.routeProps;

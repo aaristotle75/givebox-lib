@@ -526,7 +526,7 @@ class GBX3 extends React.Component {
           disallowBgClose={false}
           draggable={false}
           draggableTitle={``}
-          component={(props) => <Share />}
+          component={(props) => <Share {...props} />}
         />
       </div>
     )
