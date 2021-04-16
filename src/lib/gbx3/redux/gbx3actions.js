@@ -207,6 +207,47 @@ export function setPageState(page, newState) {
   }
 }
 
+/**
+* Page State Properties
+*
+* @param {object} newState Following props are available
+*
+* // newState props //
+* @prop {array} list List of article items
+* @prop {int} pageNumber
+* @prop {object} search
+* @prop {int} total Total number of article items
+*/
+export function updatePageState(newState = {}, callback) {
+  return async (dispatch, getState) => {
+    const pageSlug = util.getValue(getState(), 'gbx3.info.activePageSlug');
+    const stateUpdated = await dispatch(setPageState(pageSlug, newState));
+    if (stateUpdated && callback) {
+      callback();
+    }
+  }
+}
+
+export function resetPageSearch() {
+  return (dispatch) => {
+    dispatch(updatePageState({ search: {} }, () => {
+      dispatch(updatePageSearch({
+        query: ''
+      }));
+    }));
+  }
+}
+
+export function updatePageSearch(search, callback) {
+  return async (dispatch, getState) => {
+    const pageSlug = util.getValue(getState(), 'gbx3.info.activePageSlug');
+    const stateUpdated = await dispatch(setPageSearch(pageSlug, search));
+    if (stateUpdated && callback) {
+      callback();
+    }
+  }
+}
+
 export function orgAddPage(duplicate = {}) {
   return {
     type: types.ADD_ORG_PAGE,

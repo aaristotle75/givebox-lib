@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import * as util from '../../common/utility';
 import GBLink from '../../common/GBLink';
 import Loader from '../../common/Loader';
-import ModalLink from '../../modal/ModalLink';
 import ArticleCard from './ArticleCard';
 import CreateArticleCard from './CreateArticleCard';
 import Search from '../../table/Search';
@@ -187,22 +186,21 @@ class Pages extends Component {
           {this.props.pageDropdown(adminPageOptions, 'Change Page')}
         </div>
         <div style={{ marginTop: isAdmin ? 15 : 0 }} className='gbx3OrgPagesTop'>
-          <ModalLink
+          <div
             id='orgEditPage'
-            type='div'
             className='gbx3orgPagesTopContainer orgAdminEdit'
-            opts={{
-              pageSlug,
-              resourceName,
-              reloadGetArticles: this.props.reloadGetArticles,
-              tabToDisplay: 'editPage'
+            onClick={() => {
+              this.props.openOrgAdminMenu('orgEditPage', null, {
+                pageSlug,
+                tabToDisplay: 'editPage'
+              })
             }}
           >
             <button className='tooltip blockEditButton' id='orgEditPage'>
               <span className='tooltipTop'><i />Click to Edit Page Details</span>
               <span className='icon icon-edit'></span>
             </button>
-          </ModalLink>
+          </div>
           <div className='gbx3orgPagesTopContainer'>
             <div className='gbx3OrgPagesTopLeft'>
               <h2>{pageName}</h2>

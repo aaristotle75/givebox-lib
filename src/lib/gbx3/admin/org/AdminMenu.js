@@ -65,11 +65,6 @@ class AdminMenu extends React.Component {
       breakpoint
     } = this.state;
 
-    const {
-      contentObj,
-      createType
-    } = this.props;
-
     const mobile = breakpoint === 'mobile' ? true : false;
 
     return (
@@ -98,14 +93,12 @@ function mapStateToProps(state, props) {
   const admin = util.getValue(gbx3, 'admin', {});
   const openAdmin = util.getValue(admin, 'open');
   const breakpoint = util.getValue(gbx3, 'info.breakpoint');
-  const createType = util.getValue(admin, 'createType');
   const signupPhase = util.getValue(gbx3, 'orgSignup.signupPhase');
   const completedPhases = util.getValue(gbx3, 'orgSignup.completedPhases', []);
 
   return {
     openAdmin,
     breakpoint,
-    createType,
     signupPhase,
     completedPhases
   }

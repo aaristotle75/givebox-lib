@@ -9,7 +9,6 @@ import Footer from '../Footer';
 import Icon from '../../common/Icon';
 import { GoDashboard } from 'react-icons/go';
 import HelpfulTip from '../../common/HelpfulTip';
-import ModalLink from '../../modal/ModalLink';
 
 export default class OrgDisplay extends React.Component {
 
@@ -64,23 +63,23 @@ export default class OrgDisplay extends React.Component {
         <div className='gbx3OrgContentContainer'>
           <Header
             saveGlobal={this.props.saveGlobal}
+            openOrgAdminMenu={this.props.openOrgAdminMenu}
           />
           <div className='gbx3OrgSubHeader gbx3OrgContentOuterContainer'>
             <div className='gbx3OrgContentInnerContainer'>
               <div className='nameSection'>
-                <ModalLink
+                <div
                   id='orgEditTitle'
-                  type='div'
                   className='nameSectionContainer orgAdminEdit'
-                  opts={{
-                    saveGlobal: this.props.saveGlobal
+                  onClick={() => {
+                    this.props.openOrgAdminMenu('orgEditTitle');
                   }}
                 >
-                  <button className='tooltip blockEditButton' id='orgEditTitle'>
+                  <button className='tooltip blockEditButton'>
                     <span className='tooltipTop'><i />Click to EDIT Title</span>
                     <span className='icon icon-edit'></span>
                   </button>
-                </ModalLink>
+                </div>
                 <div className='nameSectionContainer'>
                   <div className='nameText'>
                     <div dangerouslySetInnerHTML={{ __html: util.cleanHtml(title) }} />
@@ -89,23 +88,21 @@ export default class OrgDisplay extends React.Component {
               </div>
               { morePageOptions.length > 1 || isAdmin ?
                 <div className='navigation'>
-                  <ModalLink
+                  <div
                     id='orgEditMenu'
-                    type='div'
                     className='navigationContainer orgAdminEdit'
-                    opts={{
-                      saveGlobal: this.props.saveGlobal,
-                      closeCallback: () => this.props.saveOrg(),
-                      reloadGetArticles: this.props.reloadGetArticles,
-                      getArticles: this.props.getArticles
+                    onClick={() => {
+                      this.props.openOrgAdminMenu('orgEditMenu', () => {
+                        this.props.saveOrg();
+                      });
                     }}
                   >
-                    <button className='tooltip blockEditButton' id='orgEditMenu'>
+                    <button className='tooltip blockEditButton'>
                       <span className='tooltipTop'><i />Click to Manage Pages / Navigation Menu</span>
                       <span className='icon icon-edit'></span>
                     </button>
-                  </ModalLink>
-                  { morePageOptions.length > 0  && !isAdmin ?
+                  </div>
+                  { morePageOptions.length > 0  ?
                     <div className='navigationContainer'>
                     { !isMobile ?
                       this.props.pageLinks()
@@ -127,6 +124,7 @@ export default class OrgDisplay extends React.Component {
           <main className='gbx3OrgContent gbx3OrgContentOuterContainer'>
             <div className='gbx3OrgContentInnerContainer'>
                 <Pages
+                  openOrgAdminMenu={this.props.openOrgAdminMenu}
                   pageDropdown={this.props.pageDropdown}
                   isAdmin={isAdmin}
                   adminPageOptions={this.props.adminPageOptions}

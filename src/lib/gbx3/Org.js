@@ -17,14 +17,18 @@ import {
   updateOrgPage,
   updateInfo,
   saveOrg,
-  setPageState,
-  setPageSearch,
+  updatePageState,
+  resetPageSearch,
+  updatePageSearch,
   createFundraiser,
   clearGBX3,
   loadPostSignup
 } from './redux/gbx3actions';
 import {
-  saveGlobal
+  saveGlobal,
+  getArticles,
+  reloadGetArticles,
+  openOrgAdminMenu
 } from './redux/orgActions';
 import OrgPage from './pages/OrgPage';
 
@@ -44,13 +48,6 @@ class Org extends React.Component {
     this.pageDropdown = this.pageDropdown.bind(this);
     this.onClickPageLink = this.onClickPageLink.bind(this);
     this.onClickArticle = this.onClickArticle.bind(this);
-    this.reloadGetArticles = this.reloadGetArticles.bind(this);
-    this.getArticles = this.getArticles.bind(this);
-    this.getArticlesCallback = this.getArticlesCallback.bind(this);
-    this.getArticleSearchCallback = this.getArticleSearchCallback.bind(this);
-    this.setPageState = this.setPageState.bind(this);
-    this.setPageSearch = this.setPageSearch.bind(this);
-    this.resetPageSearch = this.resetPageSearch.bind(this);
     this.createFundraiser = this.createFundraiser.bind(this);
     this.createFundraiserCallback = this.createFundraiserCallback.bind(this);
     this.createCallback = this.createCallback.bind(this);
@@ -58,7 +55,6 @@ class Org extends React.Component {
     this.renderOrgPage = this.renderOrgPage.bind(this);
     this.state = {
       defaultTitle: props.title,
-      pageSearch: {},
       loading: false
     };
   }
@@ -71,7 +67,7 @@ class Org extends React.Component {
 
   getMessage(e) {
     if (e.data === 'gbx3ExitCallback') {
-      this.reloadGetArticles('gbx3ExitCallback');
+      this.props.reloadGetArticles('gbx3ExitCallback');
     }
   }
 
@@ -203,168 +199,6 @@ class Org extends React.Component {
     )
   }
 
-  /**
-  *
-  * Get Articles, reload Articles, search
-  */
-  async reloadGetArticles(debug = 'unknown') {
-    this.setPageState({
-      list: [],
-      search: {},
-      pageNumber: 1,
-      total: 0
-    }, () => this.getArticles({ reset: true, reload: true, pageNumber: 1 }))
-  }
-
-  resetPageSearch() {
-    this.setPageState({ search: {} }, () => {
-      this.setPageSearch({
-        query: ''
-      });
-    })
-  }
-
-  async setPageSearch(search, callback) {
-    const {
-      pageSlug
-    } = this.props;
-
-    const stateUpdated = await this.props.setPageSearch(pageSlug, search);
-    if (stateUpdated && callback) {
-      callback();
-    }
-  }
-
-  /**
-  * Page State Properties
-  *
-  * @param {object} newState Following props are available
-  *
-  * // newState props //
-  * @prop {array} list List of article items
-  * @prop {int} pageNumber
-  * @prop {object} search
-  * @prop {int} total Total number of article items
-  */
-  async setPageState(newState = {}, callback) {
-    const {
-      pageSlug
-    } = this.props;
-
-    const stateUpdated = await this.props.setPageState(pageSlug, newState);
-    if (stateUpdated && callback) {
-      callback();
-    }
-  }
-
-  getArticles(options = {}) {
-    const opts = {
-      reset: false,
-      max: 50,
-      reload: false,
-      filter: '',
-      query: '',
-      search: false,
-      showFetching: true,
-      pageNumber: null,
-      ...options
-    };
-
-    const {
-      pages,
-      activePage,
-      customList,
-      useCustomList,
-      kind,
-      pageSlug,
-      orgID
-    } = this.props;
-
-    const pageState = opts.reset ? {} : {
-      ...this.props.pageState[pageSlug]
-    };
-
-    const pageNumber = opts.pageNumber ? opts.pageNumber : opts.search ? util.getValue(pageState, 'search.pageNumber', 1) : util.getValue(pageState, 'pageNumber', 1);
-    const kindFilter = kind === 'all' || !kind ? '' : `%3Bkind:"${kind}"`;
-    const customFilter = !util.isEmpty(customList) ? util.customListFilter(customList) : null;
-    const baseFilter = customFilter && useCustomList ? customFilter : `landing:true%3Bvolunteer:false${kindFilter}`;
-    const filter = `${baseFilter}${opts.filter ? `%3B${opts.filter}` : ''}`;
-
-    this.props.getResource('orgArticles', {
-      orgID,
-      customName: `${pageSlug}List`,
-      reload: opts.reload,
-      search: {
-        filter,
-        query: opts.query,
-        max: opts.max,
-        page: pageNumber,
-        sort: useCustomList ? 'orderBy,createdAt' : 'createdAt,orderBy',
-        order: useCustomList ? 'asc' : 'desc'
-      },
-      callback: (res, err) => {
-        if (opts.search) {
-          this.getArticleSearchCallback(res, err, opts.query);
-        } else {
-          this.getArticlesCallback(res, err, opts.reset);
-        }
-      }
-    });
-  }
-
-  getArticleSearchCallback(res, err, query) {
-    const {
-      pageSlug
-    } = this.props;
-
-    const pageState = {
-      ...this.props.pageState[pageSlug]
-    };
-
-    const pageSearch = util.getValue(this.state.pageSearch, pageSlug);
-    const data = util.getValue(res, 'data', []);
-    const pageNumber = util.getValue(pageState, 'search.pageNumber', 1);
-    const list = util.getValue(pageState, 'search.list', []);
-    const total = +util.getValue(res, 'total', 0);
-
-    if (!util.isEmpty(data)) {
-      if (!has(pageState, 'search')) pageState.search = {};
-      pageState.search.pageNumber = total > list.length ? pageNumber + 1 : pageNumber;
-      pageState.search.list = pageSearch === query ? [...list, ...data] : [...data];
-      pageState.search.total = total;
-      this.setPageState(pageState);
-    } else {
-      this.resetPageSearch();
-    }
-  }
-
-  getArticlesCallback(res, err, reset) {
-    const {
-      pageSlug
-    } = this.props;
-
-    const pageState = reset ? {} : {
-      ...this.props.pageState[pageSlug]
-    };
-
-    const data = util.getValue(res, 'data', []);
-    const pageNumber = util.getValue(pageState, 'pageNumber', 1);
-    const list = util.getValue(pageState, 'list', []);
-    const total = +util.getValue(res, 'total', 0);
-
-    if (!util.isEmpty(data)) {
-      pageState.pageNumber = total > list.length ? pageNumber + 1 : pageNumber;
-      pageState.list = [...list, ...data];
-      pageState.total = total;
-      pageState.search = {};
-      this.setPageState(pageState);
-    }
-  }
-
-  /**
-  * End Get Articles
-  */
-
   async removeCard(articleID, kind, kindID, callback) {
     const {
       pageSlug,
@@ -390,7 +224,7 @@ class Org extends React.Component {
               orgUpdated: true,
               callback: (res, err) => {
                 if (callback) callback();
-                this.reloadGetArticles();
+                this.props.reloadGetArticles();
               }
             });
           }
@@ -405,7 +239,7 @@ class Org extends React.Component {
             landing: false
           },
           callback: (res, err) => {
-            this.reloadGetArticles();
+            this.props.reloadGetArticles();
           }
         });
       }
@@ -510,10 +344,11 @@ class Org extends React.Component {
         pageLinks={this.pageLinks}
         pageDropdown={this.pageDropdown}
         onClickArticle={this.onClickArticle}
-        reloadGetArticles={this.reloadGetArticles}
-        getArticles={this.getArticles}
-        setPageSearch={this.setPageSearch}
-        resetPageSearch={this.resetPageSearch}
+        reloadGetArticles={this.props.reloadGetArticles}
+        openOrgAdminMenu={this.props.openOrgAdminMenu}
+        getArticles={this.props.getArticles}
+        setPageSearch={this.props.updatePageSearch}
+        resetPageSearch={this.props.resetPageSearch}
         removeCard={this.removeCard}
         createFundraiser={this.createFundraiser}
         selectKindOptions={selectKindOptions}
@@ -587,8 +422,12 @@ export default connect(mapStateToProps, {
   saveOrg,
   getResource,
   sendResource,
-  setPageState,
-  setPageSearch,
+  getArticles,
+  reloadGetArticles,
+  openOrgAdminMenu,
+  updatePageState,
+  resetPageSearch,
+  updatePageSearch,
   saveGlobal,
   createFundraiser,
   clearGBX3,

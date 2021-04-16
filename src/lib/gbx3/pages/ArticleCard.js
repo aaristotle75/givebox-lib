@@ -80,7 +80,29 @@ class ArticleCard extends Component {
       }
 
       case 'makePrivate': {
-        console.log('handle make private');
+        this.props.toggleModal('orgRemove', true, {
+          desc: `MAKE PRIVATE ${title}`,
+          subDesc: `Please confirm you want to make this ${types.kind(kind).name.toLowerCase()} private. Making private will hide it from public view and remove it from this list.`,
+          confirmText: 'Yes, Make Private',
+          callback: () => {
+            this.props.sendResource(types.kind(kind).api.publish, {
+              orgID,
+              id: [kindID],
+              method: 'patch',
+              isSending: false,
+              data: {
+                webApp: kind === 'fundraiser' ? false : true,
+                givebox: false,
+                landing: false
+              },
+              callback: (res, err) => {
+                this.props.removeCard(articleID, kind, kindID, () => {
+                  this.props.toggleModal('orgRemove', false);
+                });
+              }
+            });
+          }
+        });
         break;
       }
 
@@ -89,14 +111,15 @@ class ArticleCard extends Component {
         this.props.toggleModal('deleteArticle', true, {
           resource,
           orgID,
-          resourcesToLoad,
           id: kindID,
           desc: `DELETE ${title}`,
           activityDesc: `DELETED ${title}`,
           subDesc: `Please confirm you want to delete ${types.kind(kind).name.toLowerCase()}?`,
           confirmText: 'Yes, Delete',
           modalID: 'deleteArticle',
-          callback: this.props.reloadGetArticles
+          callback: () => {
+            this.props.removeCard(articleID, kind, kindID);
+          }
         });
         break;
       }

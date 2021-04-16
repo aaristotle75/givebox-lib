@@ -71,10 +71,10 @@ class EditMenu extends React.Component {
     }
   }
 
-  async deletePage(slug) {
+  async deletePage(slug, callback) {
     const pageDeleted = await this.props.orgDeletePage(slug);
     if (pageDeleted) {
-      console.log('execute pageDeleted -> Deleted');
+      if (callback) callback();
     }
   }
 
@@ -122,11 +122,27 @@ class EditMenu extends React.Component {
     )
   }
 
-  deletePageLink(pageSlug) {
+  deletePageLink(value) {
+    const {
+      slug,
+      name
+    } = value;
+
     return (
       <GBLink
         className='link tooltip rightSide'
-        onClick={() => this.deletePage(pageSlug)}
+        onClick={() => {
+          this.props.toggleModal('orgRemove', true, {
+            desc: `DELETE ${name} Page`,
+            subDesc: 'Please confirm you want to delete this page.',
+            confirmText: 'Yes, Delete Page',
+            callback: () => {
+              this.deletePage(slug, () => {
+                this.props.toggleModal('orgRemove', false);
+              });
+            }
+          });
+        }}
       >
         <span className='tooltipTop'><i />Click Icon to DELETE Page</span>
         <span className='icon icon-trash-2'></span>
@@ -173,7 +189,7 @@ class EditMenu extends React.Component {
             </Choice>
             {this.editLink(value)}
             {this.clonePageLink(value)}
-            { !onlyOneLeft ? this.deletePageLink(value.slug) : null }
+            { !onlyOneLeft ? this.deletePageLink(value) : null }
           </div>
           <div className='articleLeftDrag'>
             <DragHandle />
@@ -218,7 +234,7 @@ class EditMenu extends React.Component {
               </Choice>
               {this.editLink(value)}
               {this.clonePageLink(value)}
-              {this.deletePageLink(value.slug)}
+              {this.deletePageLink(value)}
             </div>
             <div className='articleLeftDrag'></div>
             <div className='articleText'>

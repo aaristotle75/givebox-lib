@@ -11,8 +11,7 @@ const arrayMove = require('array-move');
 
 const DragHandle = SortableHandle(() => {
   return (
-    <GBLink ripple={false} className='tooltip sortable right'>
-      <span className='tooltipTop'><i />Drag & drop to change the order.</span>
+    <GBLink ripple={false} className='sortable right'>
       <span className='icon icon-move'></span>
     </GBLink>
   )
@@ -127,10 +126,12 @@ class SortCustomList extends React.Component {
       if (value) {
         items.push(
           <div
-            className='articleItem sortableListItem'
+            className='articleItem sortableListItem tooltip'
             key={key}
           >
+            <span className='tooltipTop'><i />Click and Drag & drop to change the order.</span>
             <div className='editableRowMenu'>
+              {/*
               <Choice
                 type='checkbox'
                 name='enable'
@@ -142,6 +143,7 @@ class SortCustomList extends React.Component {
                 value={true}
                 toggle={true}
               />
+              */}
             </div>
             <div className='articleImage'>
               <DragHandle />
@@ -165,7 +167,7 @@ class SortCustomList extends React.Component {
     return (
       <div className='articleGroupList campaignsEdit'>
         <div className='articleGroup'>
-          {!util.isEmpty(items) ? rows : <span className='noRecords flexCenter'>None Enabled</span>}
+          {!util.isEmpty(items) ? rows : <span className='noRecords flexCenter'>You Have No Fundraisers Enabled for Display</span>}
         </div>
       </div>
     )

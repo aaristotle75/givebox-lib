@@ -4,7 +4,6 @@ import * as util from '../../common/utility';
 import Image from '../../common/Image';
 import GBLink from '../../common/GBLink';
 import Dropdown from '../../form/Dropdown';
-import ModalLink from '../../modal/ModalLink';
 import {
   updateData,
   updateInfo,
@@ -76,9 +75,7 @@ class Header extends React.Component {
                   fixedLabel={false}
                   onChange={(name, value) => {
                     if (value === 'upload') {
-                      this.props.toggleModal('orgEditCoverPhoto', true, {
-                        saveGlobal: this.props.saveGlobal
-                      });
+                      this.props.openOrgAdminMenu('orgEditCoverPhoto');
                     }
                     if (value === 'remove') {
                       this.props.toggleModal('orgRemove', true, {
@@ -93,9 +90,12 @@ class Header extends React.Component {
                   options={this.coverPhotoOptions()}
                 />
               :
-                <ModalLink className='button addCoverPhoto' id='orgEditCoverPhoto' opts={{ saveGlobal: this.props.saveGlobal }}>
+                <div
+                  className='button addCoverPhoto'
+                  onClick={() => this.props.openOrgAdminMenu('orgEditCoverPhoto')}
+                >
                   <span className='labelIcon'><span className='icon icon-camera'></span> Add Cover Photo</span>
-                </ModalLink>
+                </div>
               }
             </div>
             <div className='coverPhotoImage'>
@@ -103,19 +103,16 @@ class Header extends React.Component {
                 <Image imgID='coverPhoto' size='large' url={coverPhotoUrl} maxSize='950px' alt='Cover Photo' />
               : null }
             </div>
-            <ModalLink
+            <div
               id='orgEditProfilePic'
-              type='div'
               className='profilePictureContainer orgAdminEdit'
-              opts={{
-                saveGlobal: this.props.saveGlobal
-              }}
+              onClick={() => this.props.openOrgAdminMenu('orgEditProfilePic')}
             >
               <button className='tooltip blockEditButton'>
-                <span className='tooltipTop'><i />Click Icon to { profilePictureUrl ? 'EDIT' : 'ADD' } Profile Picture</span>
+                <span className='tooltipTop'><i />Click Icon to { profilePictureUrl ? 'EDIT' : 'ADD' } Logo</span>
                 <span className='icon icon-camera'></span>
               </button>
-            </ModalLink>
+            </div>
             <div className='profilePictureContainer'>
               { profilePictureUrl ?
                 <Image url={profilePictureUrl} size='medium' maxSize='160px' alt='Profile Picture' imgStyle={{ minWidth: 160, minHeight: 160, borderRadius: '50%' }}/>

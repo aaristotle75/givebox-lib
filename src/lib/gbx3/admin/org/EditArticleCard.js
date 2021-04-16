@@ -124,6 +124,9 @@ class EditArticleCardForm extends React.Component {
     this.props.saveCustomTemplate(resourceName, {
       ID,
       orgID,
+      data: {
+        title: util.getValue(data, 'title', null)
+      },
       customTemplate: {
         articleCard: {
           ...data
@@ -253,7 +256,12 @@ class EditArticleCardForm extends React.Component {
         >
           <div className='formSectionContainer'>
             <div className='formSection'>
-              {this.props.textField('title', { fixedLabel: true, label: 'Card Title', placeholder: 'Enter Card Title', value: title })}
+              {this.props.textField('title', {
+                fixedLabel: true,
+                label: 'Card Title',
+                placeholder: 'Enter Card Title',
+                value: title
+              })}
               <Choice
                 type='checkbox'
                 name='hideViewCount'
