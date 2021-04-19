@@ -202,7 +202,8 @@ class Block extends React.Component {
       options,
       blockType,
       isVolunteer,
-      editFormOnly
+      editFormOnly,
+      showRemovable
     } = this.props;
 
     const buttonEnabled = util.getValue(options, 'button.enabled', false);
@@ -218,7 +219,7 @@ class Block extends React.Component {
           <div className='dragHandle'></div>
           { !notEditable ?
           <div className='blockEdit'>
-            {!nonremovable && !editFormOnly ?
+            {!nonremovable && !editFormOnly && showRemovable ?
               <GBLink className='tooltip blockRemoveButton' onClick={() => this.onClickRemove()}>
                 <span className='tooltipTop'><i />Click Icon to REMOVE {title}</span>
                 <span className='icon icon-trash-2'></span>
@@ -246,7 +247,8 @@ class Block extends React.Component {
 }
 
 Block.defaultProps = {
-  style: {}
+  style: {},
+  showRemovable: false
 }
 
 function mapStateToProps(state, props) {
