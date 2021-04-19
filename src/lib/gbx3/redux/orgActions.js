@@ -161,7 +161,3 @@ export function openOrgAdminMenu(modalName, closeCallback, options = {}) {
     }));
   }
 }
-
-/**
-* End Get Articles
-*/

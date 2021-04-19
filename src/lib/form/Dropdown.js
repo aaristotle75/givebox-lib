@@ -54,10 +54,19 @@ class Dropdown extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    /*
     if (prevProps.open !== this.props.open) {
       if (this.props.open && !this.state.open && !this.state.display) {
         this.openMenu();
       } else if (this.state.open && this.state.display) {
+        this.closeMenu();
+      }
+    }
+    */
+    if (this.props.open !== prevProps.open) {
+      if (this.props.open && !this.state.display) {
+        this.openMenu();
+      } else if (!this.props.open && this.state.display) {
         this.closeMenu();
       }
     }

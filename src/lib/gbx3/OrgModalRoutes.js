@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import ModalRoute from '../modal/ModalRoute';
 import Loadable from 'react-loadable';
 import Delete from '../common/Delete';
-import Steps from './signup/Steps';
+import StepsWrapper from './signup/StepsWrapper';
 
 export default class OrgModalRoutes extends Component {
 
@@ -113,9 +113,9 @@ export default class OrgModalRoutes extends Component {
           disallowBgClose={true}
           component={(props) => {
             return (
-              <Steps>
+              <StepsWrapper>
                 {this.loadComponent('./signup/SignupSteps', props)}
-              </Steps>
+              </StepsWrapper>
             )
           }}
         />
@@ -126,9 +126,22 @@ export default class OrgModalRoutes extends Component {
           disallowBgClose={true}
           component={(props) => {
             return (
-              <Steps>
+              <StepsWrapper>
                 {this.loadComponent('./signup/PostSignupSteps', props)}
-              </Steps>
+              </StepsWrapper>
+            )
+          }}
+        />
+        <ModalRoute
+          className='gbx3'
+          id={'orgConnectBankSteps'}
+          effect='3DFlipVert' style={{ width: '85%' }}
+          disallowBgClose={true}
+          component={(props) => {
+            return (
+              <StepsWrapper>
+                {this.loadComponent('./signup/ConnectBankSteps', props)}
+              </StepsWrapper>
             )
           }}
         />

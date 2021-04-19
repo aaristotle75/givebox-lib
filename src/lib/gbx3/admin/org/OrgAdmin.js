@@ -7,6 +7,9 @@ import {
   toggleAdminLeftPanel,
   loadPostSignup
 } from '../../redux/gbx3actions';
+import {
+  getMerchantStatus
+} from '../../../api/merchantActions';
 import OrgModalRoutes from '../../OrgModalRoutes';
 
 class OrgAdmin extends React.Component {
@@ -19,12 +22,15 @@ class OrgAdmin extends React.Component {
 
   componentDidMount() {
     const {
-      signupPhase
+      signupPhase,
+      orgID
     } = this.props;
+
+    this.props.getMerchantStatus();
 
     switch (signupPhase) {
       case 'postSignup': {
-        this.props.loadPostSignup(false, true);
+        this.props.loadPostSignup(false, false);
         break;
       }
 
@@ -72,11 +78,13 @@ class OrgAdmin extends React.Component {
 function mapStateToProps(state, props) {
 
   const gbx3 = util.getValue(state, 'gbx3', {});
+  const orgID = util.getValue(gbx3, 'info.orgID');
   const admin = util.getValue(gbx3, 'admin', {});
   const openAdmin = util.getValue(admin, 'open');
   const signupPhase = util.getValue(gbx3, 'orgSignup.signupPhase');
 
   return {
+    orgID,
     openAdmin,
     signupPhase
   }
@@ -84,5 +92,6 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
   toggleAdminLeftPanel,
-  loadPostSignup
+  loadPostSignup,
+  getMerchantStatus
 })(OrgAdmin);

@@ -90,12 +90,12 @@ class Header extends React.Component {
                   options={this.coverPhotoOptions()}
                 />
               :
-                <div
+                <GBLink
                   className='button addCoverPhoto'
                   onClick={() => this.props.openOrgAdminMenu('orgEditCoverPhoto')}
                 >
                   <span className='labelIcon'><span className='icon icon-camera'></span> Add Cover Photo</span>
-                </div>
+                </GBLink>
               }
             </div>
             <div className='coverPhotoImage'>

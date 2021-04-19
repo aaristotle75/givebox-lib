@@ -136,7 +136,13 @@ export function gbx3(state = {
       });
     case types.UPDATE_ORG_SIGNUP: {
 
-      const completedPhases = util.getValue(state, 'orgSignup.completedPhases', []);
+      const completedPhases = [
+        ...new Set([
+          ...util.getValue(state, 'orgSignup.completedPhases', []),
+          ...util.getValue(action.orgSignup, 'completedPhases', [])
+        ])
+      ];
+
       if (action.phaseCompleted && !completedPhases.includes(action.phaseCompleted)) {
         completedPhases.push(action.phaseCompleted);
       };

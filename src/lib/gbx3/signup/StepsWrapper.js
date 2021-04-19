@@ -22,7 +22,7 @@ import LinearBar from '../../common/LinearBar';
 
 const GBX3_URL = process.env.REACT_APP_ENV === 'local' ? process.env.REACT_APP_GBX_SHARE : process.env.REACT_APP_GBX_URL;
 
-class Steps extends React.Component {
+class StepsWrapper extends React.Component {
 
   constructor(props) {
     super(props);
@@ -83,6 +83,8 @@ class Steps extends React.Component {
     if (!completed.includes(step)) {
       completed.push(step);
       updated = await this.props.updateOrgSignup({ completed });
+    } else {
+      updated = true;
     }
     return updated;
   }
@@ -225,4 +227,4 @@ export default connect(mapStateToProps, {
   saveOrg,
   toggleModal,
   updateAdmin
-})(Steps);
+})(StepsWrapper);

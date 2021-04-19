@@ -137,7 +137,13 @@ class SignupStepsForm extends React.Component {
               this.props.createFundraiser('fundraiser', async (res, err) => {
                 const createdArticleID = util.getValue(res, 'articleID');
                 const orgID = util.getValue(res, 'orgID');
-                const updated = await this.props.updateOrgSignup({ createdArticleID, saveCookie: false, signupPhase: 'postSignup' }, 'signup');
+                const updated = await this.props.updateOrgSignup({
+                    createdArticleID,
+                    saveCookie: false,
+                    signupPhase: 'postSignup'
+                  },
+                  'signup'
+                );
                 if (updated) {
                   this.props.saveOrg({
                     orgID,

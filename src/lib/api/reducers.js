@@ -189,6 +189,19 @@ export function modal(state = {
   }
 }
 
+export function merchant(state = {
+  primaryColor: ''
+}, action) {
+  switch (action.type) {
+    case types.SET_MERCHANT_STATUS:
+      return Object.assign({}, state, {
+        ...state,
+        [action.key]: action.value
+      });
+    default:
+      return state
+  }
+}
 
 const appReducer = combineReducers({
   preferences,
@@ -197,7 +210,8 @@ const appReducer = combineReducers({
   modal,
   send,
   custom,
-  gbx3
+  gbx3,
+  merchant
 })
 
 const rootReducers = (state, action) => {
