@@ -55,7 +55,7 @@ export function getMerchantVitals(orgData) {
 
 function setMerchantVitals(vitals = {}) {
   return {
-    vitals,,
+    vitals,
     type: types.SET_MERCHANT_VITALS
   }
 }

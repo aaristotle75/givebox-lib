@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { toggleModal } from '../api/actions';
 import * as util from '../common/utility';
 import GBLink from '../common/GBLink';
-import AvatarEditor from 'react-avatar-editor'
+import AvatarEditor from 'react-avatar-editor-aaristotle'
 
 class UploadEditor extends Component {
 
@@ -165,6 +165,7 @@ class UploadEditor extends Component {
             className="editor-canvas"
             color={[37, 54, 85, .4]}
             border={[200, 40]}
+            canvasBackgroundColor={[255, 255, 255, 0]}
           />
         </div>
         <div className='menu'>

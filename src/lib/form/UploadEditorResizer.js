@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { toggleModal } from '../api/actions';
 import * as util from '../common/utility';
 import GBLink from '../common/GBLink';
-import AvatarEditor from 'react-avatar-editor';
+import AvatarEditor from 'react-avatar-editor-aaristotle';
 const ResizableBox = require('react-resizable').ResizableBox;
 
 class UploadEditorResizer extends Component {
@@ -87,8 +87,8 @@ class UploadEditorResizer extends Component {
     this.props.setLoading('Processing Image...');
     const fileName = util.getValue(this.props.file, 'name', 'image.png');
     const fileType = util.getValue(this.props.file, 'type');
-    //const data = this.editor.getImage().toDataURL(fileType);
-    const data = this.editor.getImageScaledToCanvas().toDataURL(fileType);
+    const data = this.editor.getImage().toDataURL(fileType);
+    //const data = this.editor.getImageScaledToCanvas().toDataURL(fileType);
     const file = util.dataURLtoFile(data, fileName);
     this.props.handleSave(file, this.saveCallback, this.props.encodeProgress);
   }
