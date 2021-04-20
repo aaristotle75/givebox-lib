@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import * as util from '../lib/common/utility';
 import MediaLibrary from '../lib/form/MediaLibrary';
+import 'react-resizable/css/styles.css';
 
 export default class UploadEditorTest extends Component {
 
@@ -36,7 +37,7 @@ export default class UploadEditorTest extends Component {
     }
 
     return (
-      <div className='block'>
+      <div className='gbx3 editable fieldGroup'>
         <MediaLibrary
           image={url}
           preview={url}

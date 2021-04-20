@@ -75,11 +75,6 @@ import {
 } from './api/actions';
 
 import {
-  getMerchantStatus
-} from './api/merchantActions'
-
-
-import {
   loadGBX3,
   createFundraiser,
   updateGBX3,
@@ -129,7 +124,7 @@ import {
   modal,
   preferences,
   custom,
-  merchant
+  merchantVitals
 } from './api/reducers';
 
 import {
@@ -225,9 +220,6 @@ export {
   resetStyle,
   processTransaction,
 
-  // Merchant Actions
-  getMerchantStatus,
-
   // API
   giveboxAPI,
   getResource,
@@ -242,7 +234,7 @@ export {
   modal,
   preferences,
   custom,
-  merchant,
+  merchantVitals,
 
   // Modal
   ModalLink,

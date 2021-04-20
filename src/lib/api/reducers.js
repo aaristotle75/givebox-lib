@@ -189,14 +189,26 @@ export function modal(state = {
   }
 }
 
-export function merchant(state = {
-  primaryColor: ''
+/**
+* See merchantActions.js for details
+*/
+export function merchantVitals(state = {
+  isActive: true,
+  isInstantEnabled: true,
+  hasMerchantInfo: false,
+  hasLegalEntity: false,
+  hasMID: false,
+  hasBankInfo: false,
+  hasReceivedFirstTx: false,
+  isUnderwritingApproved: false,
+  canProcess: false,
+  canTransfer: false
 }, action) {
   switch (action.type) {
-    case types.SET_MERCHANT_STATUS:
+    case types.SET_MERCHANT_VITALS:
       return Object.assign({}, state, {
         ...state,
-        [action.key]: action.value
+        ...action.vitals
       });
     default:
       return state
@@ -211,7 +223,7 @@ const appReducer = combineReducers({
   send,
   custom,
   gbx3,
-  merchant
+  merchantVitals
 })
 
 const rootReducers = (state, action) => {

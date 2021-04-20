@@ -87,7 +87,8 @@ class UploadEditorResizer extends Component {
     this.props.setLoading('Processing Image...');
     const fileName = util.getValue(this.props.file, 'name', 'image.png');
     const fileType = util.getValue(this.props.file, 'type');
-    const data = this.editor.getImage().toDataURL(fileType);
+    //const data = this.editor.getImage().toDataURL(fileType);
+    const data = this.editor.getImageScaledToCanvas().toDataURL(fileType);
     const file = util.dataURLtoFile(data, fileName);
     this.props.handleSave(file, this.saveCallback, this.props.encodeProgress);
   }
@@ -270,6 +271,7 @@ class UploadEditorResizer extends Component {
               color={[37, 54, 85, 0]}
               border={[0, 0]}
               disableBoundaryChecks={true}
+              canvasBackgroundColor={[255, 255, 255, 0]}
             />
           </ResizableBox>
         </div>

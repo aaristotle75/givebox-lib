@@ -26,6 +26,5 @@ export const SET_PREFERENCES = 'SET_PREFERENCES';
 // Custom Actions
 export const SET_CUSTOM_PROP = 'SET_CUSTOM_PROP';
 
-// Merchant Status actions
-export const GET_MERCHANT_STATUS = 'GET_MERCHANT_STATUS';
-export const SET_MERCHANT_STATUS = 'SET_MERCHANT_STATUS';
+// Merchant actions
+export const SET_MERCHANT_VITALS = 'SET_MERCHANT_VITALS';
