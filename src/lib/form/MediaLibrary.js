@@ -391,6 +391,25 @@ class MediaLibrary extends Component {
             </div> : null }
           </div>
           :
+            /*
+            <UploadCropper
+              {...this.props}
+              image={this.state.image}
+              file={this.state.file}
+              toggleEditor={this.toggleEditor}
+              encodeProgress={this.encodeProgress}
+              setLoading={this.setLoading}
+              setPreview={this.setPreview}
+              setSelected={this.setSelected}
+              borderRadius={util.getValue(library, 'borderRadius')}
+              super={util.getValue(library, 'super', false)}
+              orgID={util.getValue(library, 'orgID', null)}
+              articleID={util.getValue(library, 'articleID', null)}
+              saveMediaType={util.getValue(library, 'saveMediaType')}
+              uploadEditorSaveLabel={this.props.uploadEditorSaveLabel}
+              uploadEditorSaveStyle={this.props.uploadEditorSaveStyle}
+            />
+            */
             <UploadEditorResizer
               {...this.props}
               image={this.state.image}

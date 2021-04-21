@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { toggleModal } from '../api/actions';
 import * as util from '../common/utility';
 import GBLink from '../common/GBLink';
-import AvatarEditor from 'react-avatar-editor-aaristotle';
+import AvatarEditor from 'react-avatar-editor';
 const ResizableBox = require('react-resizable').ResizableBox;
 
 class UploadEditorResizer extends Component {
@@ -85,11 +85,19 @@ class UploadEditorResizer extends Component {
 
   save() {
     this.props.setLoading('Processing Image...');
-    const fileName = util.getValue(this.props.file, 'name', 'image.png');
+    const canvas = this.editor.getImage();
+    const w = canvas.width;
+    const h = canvas.height;
+
+    const ctx = canvas.getContext('2d');
+    ctx.globalCompositeOperation = 'destination-over';
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, w, h);
+
     const fileType = util.getValue(this.props.file, 'type');
-    const data = this.editor.getImage().toDataURL(fileType);
-    //const data = this.editor.getImageScaledToCanvas().toDataURL(fileType);
-    const file = util.dataURLtoFile(data, fileName);
+    const imageData = canvas.toDataURL(fileType);
+    const fileName = util.getValue(this.props.file, 'name', 'image.png');
+    const file = util.dataURLtoFile(imageData, fileName);
     this.props.handleSave(file, this.saveCallback, this.props.encodeProgress);
   }
 
@@ -271,7 +279,6 @@ class UploadEditorResizer extends Component {
               color={[37, 54, 85, 0]}
               border={[0, 0]}
               disableBoundaryChecks={true}
-              canvasBackgroundColor={[255, 255, 255, 0]}
             />
           </ResizableBox>
         </div>

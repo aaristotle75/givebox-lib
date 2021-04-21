@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { toggleModal } from '../api/actions';
 import * as util from '../common/utility';
 import GBLink from '../common/GBLink';
-import AvatarEditor from 'react-avatar-editor-aaristotle'
+import AvatarEditor from 'react-avatar-editor'
 
 class UploadEditor extends Component {
 
