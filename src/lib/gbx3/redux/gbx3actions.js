@@ -184,6 +184,22 @@ export function loadPostSignup(forceStep = null, openModal = true) {
   }
 }
 
+export function loadConnectBank(forceStep = null, openModal = true) {
+  return async (dispatch, getState) => {
+
+    const orgSignup = util.getValue(getState(), 'gbx3.orgSignup', {});
+    orgSignup.step = forceStep || getMinStepNotCompleted(signupPhaseConfig.postSignup.stepsTodo, orgSignup);
+
+    if (!orgSignup.completed.includes('createSuccess')) orgSignup.completed.push('createSuccess');
+
+    const updated = await dispatch(updateOrgSignup(orgSignup));
+    if (updated) {
+      dispatch(updateAdmin({ open: true }));
+      if (openModal) dispatch(toggleModal('orgPostSignupSteps', true));
+    }
+  }
+}
+
 export function clearGBX3(keepOrgData) {
   return {
     type: types.CLEAR_GBX3,
@@ -1305,10 +1321,9 @@ export function loadGBX3(articleID, callback) {
 
           // If orgData orgID doesn't equal orgID get the orgData
           if (orgID !== util.getValue(orgData, 'ID')) {
-            dispatch(getResource('org', {
+            dispatch(getResource('gbx3Org', {
               id: [orgID],
               reload: true,
-              customName: 'gbx3Org',
               callback: (res, err) => {
                 if (!util.isEmpty(res) && !err) {
                   dispatch(updateData(res, 'org'));
@@ -1599,10 +1614,9 @@ export function loadOrg(orgID, callback) {
     const originTemplate = !util.getValue(info, 'originTemplate') ? 'org' : null;
     const blockType = 'org';
 
-    dispatch(getResource('org', {
+    dispatch(getResource('gbx3Org', {
       id: [orgID],
       reload: true,
-      customName: 'gbx3Org',
       callback: (res, err) => {
         if (!util.isEmpty(res) && !err) {
           const orgID = util.getValue(res, 'ID');

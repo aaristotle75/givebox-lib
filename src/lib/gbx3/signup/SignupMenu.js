@@ -48,7 +48,7 @@ class SignupMenu extends React.Component {
           className={`stepButton ${currentStep ? 'currentStep' : ''}`}
         >
           <div className='stepTitleContainer'>
-            <span className={`icon icon-${value.icon}`}></span>
+            { value.icon ? <span className={`icon icon-${value.icon}`}></span> : value.customIcon }
             <div className='stepTitle'>{this.showStepNumber ? stepNumber : null}{value.name}</div>
           </div>
           <span className={`icon icon-${completedStep ? 'check green' : 'chevron-right'}`}></span>

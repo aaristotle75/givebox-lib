@@ -5,6 +5,7 @@ import Loadable from 'react-loadable';
 import has from 'has';
 import * as util from './lib/common/utility';
 import { resourceProp, setAppRef, setModalRef, setPrefs, setAccess } from './lib/api/actions';
+import { getMerchantVitals } from './lib/api/merchantActions';
 import { getResource, sendResource, reloadResource } from './lib/api/helpers';
 import Loader from './lib/common/Loader';
 import queryString from 'query-string';
@@ -73,10 +74,13 @@ class App extends Component {
 
   initResources(access) {
     const {
-      orgID
+      orgID,
+      role
     } = access;
 
-    console.log('execute initResources -> ', orgID, access);
+    if (orgID && (role === 'super' || role === 'admin')) {
+      this.props.getMerchantVitals();
+    }
     // Get the org
     /*
     this.props.getResource('org', {
@@ -202,5 +206,6 @@ export default connect(mapStateToProps, {
   setModalRef,
   setPrefs,
   sendResource,
-  setAccess
+  setAccess,
+  getMerchantVitals
 })(App);

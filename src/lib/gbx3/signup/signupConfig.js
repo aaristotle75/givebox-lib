@@ -1,3 +1,9 @@
+import React from 'react';
+import Icon from '../../common/Icon';
+import { AiOutlineBank } from 'react-icons/ai';
+import { TiBusinessCard } from 'react-icons/ti';
+import { MdBusiness } from 'react-icons/md';
+
 const welcome = {
   type: 'org',
   slug: 'welcome',
@@ -98,6 +104,42 @@ const share = {
   desc: 'Customize your share link, copy and paste into an email, and/or click a social media icon below to share your fundraising form and start raising money!'
 }
 
+const addBank = {
+  type: 'merchant',
+  slug: 'addBank',
+  name: 'Add a Bank Account',
+  title: 'Add a Bank Account',
+  customIcon: <Icon><AiOutlineBank /></Icon>,
+  desc: ''
+};
+
+const principal = {
+  type: 'merchant',
+  slug: 'principal',
+  name: 'Account Holder',
+  title: `Primary Account Holder's Information`,
+  icon: 'user-check',
+  desc: ''
+};
+
+const legalEntity = {
+  type: 'merchant',
+  slug: 'legalEntity',
+  name: 'Business Info',
+  title: `Business Information About Your Organization`,
+  customIcon: <Icon><TiBusinessCard /></Icon>,
+  desc: ''
+};
+
+const address = {
+  type: 'merchant',
+  slug: 'address',
+  name: 'Address',
+  title: `Business Address`,
+  customIcon: <Icon><MdBusiness /></Icon>,
+  desc: ''
+};
+
 export const orgSignupFields = {
   org: {
     name: '',
@@ -161,7 +203,15 @@ export const signupPhase = {
    ],
   },
   connectBank: {
-    menuHeader: 'Connect Bank Steps'
+    menuHeader: 'Connect Bank Steps',
+    modalName: 'orgConnectBankSteps',
+    showStepNumber: true,
+    stepsTodo: [
+      addBank,
+      principal,
+      legalEntity,
+      address
+    ]
   },
   transferMoney: {
     menuHeader: 'Transfer Money Steps'

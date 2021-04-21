@@ -564,6 +564,7 @@ class SignupStepsForm extends React.Component {
     const item = {
       title: stepConfig.title,
       icon: stepConfig.icon,
+      customIcon: stepConfig.customIcon,
       desc: stepConfig.desc,
       component: <div></div>,
       className: '',
@@ -889,7 +890,7 @@ class SignupStepsForm extends React.Component {
         </div>
         <div className={`step ${item.className} ${open ? 'open' : ''}`}>
           <div className='stepTitleContainer'>
-            <span className={`icon icon-${item.icon}`}></span>
+            { item.icon ? <span className={`icon icon-${item.icon}`}></span> : item.customIcon }
             <div className='stepTitle'>
               <div className='numberContainer'>
                 <span className='number'>Step {stepNumber}{ completed ? ':' : null}</span>

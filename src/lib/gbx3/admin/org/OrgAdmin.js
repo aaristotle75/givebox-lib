@@ -5,7 +5,8 @@ import Layout from '../../Layout';
 import AdminMenu from './AdminMenu';
 import {
   toggleAdminLeftPanel,
-  loadPostSignup
+  loadPostSignup,
+  loadConnectBank
 } from '../../redux/gbx3actions';
 import OrgModalRoutes from '../../OrgModalRoutes';
 
@@ -30,6 +31,10 @@ class OrgAdmin extends React.Component {
       case 'postSignup': {
         this.props.loadPostSignup(false, false);
         break;
+      }
+
+      case 'connectBank': {
+        this.props.loadConnectBank(false, false);
       }
 
       // no default
@@ -92,5 +97,6 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
   toggleAdminLeftPanel,
-  loadPostSignup
+  loadPostSignup,
+  loadConnectBank
 })(OrgAdmin);

@@ -546,6 +546,21 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
 
+    case 'orgsPublic': {
+      endpoint = `orgs/public`;
+      break;
+    }
+
+    case 'gbx3Org': {
+      endpoint = `orgs/${getIndex(id, 0, orgID)}/public`;
+      break;
+    }
+
+    case 'org': {
+      endpoint = `orgs/${getIndex(id, 0, orgID)}`;
+      break;
+    }
+
     case 'plaidLink': {
       endpoint = `plaid/link-token`;
       break;
@@ -581,20 +596,11 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
 
-    case 'gbx3Org': {
-      endpoint = `orgs/${getIndex(id, 0, orgID)}`;
-      break;
-    }
-
     case 'gbxPreview': {
       endpoint = `articles/${id[0]}/gbx-preview`;
       break;
     }
 
-    case 'org': {
-      endpoint = `orgs/${getIndex(id, 0, orgID)}`;
-      break;
-    }
     case 'orgOwner': {
       endpoint = `orgs/${getIndex(id, 0, orgID)}/owner`;
       break;

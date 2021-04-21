@@ -31,7 +31,7 @@ This field indicates whether the merchant app was submitted to WP and if the leg
 @param {bool} hasBankInfo
 if user has a bank account and it is approved
 
-@param {bool} hasReceivedFirstTx
+@param {bool} hasReceivedTransaction
 if a first transaction has been received
 
 @param {bool} isUnderwritingApproved
@@ -45,11 +45,54 @@ Wehter the merchant can transfer money or not
 **/
 
 
-export function getMerchantVitals(orgData) {
-  if (!orgData) return console.log('No org data - cannot get merchant vitals');
+export function getMerchantVitals(options = {}) {
+  const opts = {
+    orgID: null,
+    ...options
+  };
   return (dispatch, getState) => {
-      const vitals = util.getValue(getState(), 'vitals', {});
-      console.log('execute -> ', vitals);
+    const state = getState();
+    const orgID = opts.orgID || util.getValue(state, 'resource.access.orgID', null);
+    if (!orgID) return console.error('No orgID - cannot get merchant vitals!');
+
+    dispatch(getResource('org', {
+      orgID,
+      reload: true,
+      callback: (res, err) => {
+        if (!util.isEmpty(res) && !err) {
+          const isActive = util.getValue(res, 'status') === 'active' ? true : false;
+          const isInstantEnabled = util.getValue(res, 'instantFundraising.status') === 'enabled' ? true : false;
+          const instantPhase = util.getValue(res, 'instantFundraising.phase');
+          const instantPhaseEndsAt = util.getValue(res, 'instantFundraising.phaseEndsAt', null);
+          const hasMerchantInfo = util.getValue(res, 'vantiv.isVantivReady');
+          const legalEntityID = util.getValue(res, 'vantiv.legalEntityID');
+          const legalEntityStatus = util.getValue(res, 'vantiv.legalEntityStatus');
+          const legalEntityNotes = util.getValue(res, 'vantiv.legalEntityNotes');
+          const hasLegalEntity = util.getValue(res, 'vantiv.legalEntityID') ? true : false;
+          const hasMID = util.getValue(res, 'vantiv.merchantIdentString') ? true : false;
+          const hasReceivedTransaction = util.getValue(res, 'hasReceivedTransaction');
+          const isUnderwritingApproved = util.getValue(res, 'underwritingStatus') === 'approved' ? true : false;
+          const canTransfer = util.getValue(res, 'canTransferMoney');
+          const canProcess = util.getValue(res, 'canProcessMoney');
+
+          dispatch(setMerchantVitals({
+            isActive,
+            isInstantEnabled,
+            instantPhase,
+            instantPhaseEndsAt,
+            hasMerchantInfo,
+            legalEntityID,
+            legalEntityStatus,
+            legalEntityNotes,
+            hasMID,
+            hasReceivedTransaction,
+            isUnderwritingApproved,
+            canTransfer,
+            canProcess
+          }))
+        }
+      }
+    }));
   }
 }
 
