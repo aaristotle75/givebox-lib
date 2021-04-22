@@ -52,7 +52,7 @@ class CreateAccount extends React.Component {
             placeholder: 'Click Here to Enter First Name',
             value: firstName,
             onBlur: (name, value) => {
-              if (value && value !== firstName) {
+              if (value) {
                 this.props.updateOrgSignupField('owner', { firstName: value });
               }
             }
@@ -67,7 +67,7 @@ class CreateAccount extends React.Component {
             placeholder: 'Click Here to Enter Last Name',
             value: lastName,
             onBlur: (name, value) => {
-              if (value && value !== lastName) {
+              if (value) {
                 this.props.updateOrgSignupField('owner', { lastName: value });
               }
             }

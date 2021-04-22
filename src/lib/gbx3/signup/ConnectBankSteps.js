@@ -11,9 +11,11 @@ import GBLink from '../../common/GBLink';
 import Image from '../../common/Image';
 import HelpfulTip from '../../common/HelpfulTip';
 import {
-} from '../redux/gbx3actions';
-import {
-} from '../../api/actions';
+  savePrincipal,
+  saveLegalEntity
+} from '../redux/merchantActions';
+import Principal from './connectBank/Principal';
+import LegalEntity from './connectBank/LegalEntity';
 
 class ConnectBankStepsForm extends React.Component {
 
@@ -102,7 +104,6 @@ class ConnectBankStepsForm extends React.Component {
     this.setState({ saving: true });
     const {
       step,
-      acceptedTerms,
       stepsTodo
     } = this.props;
 
@@ -120,6 +121,32 @@ class ConnectBankStepsForm extends React.Component {
         return this.saveStep(group);
       }
 
+      case 'principal': {
+        return this.props.savePrincipal({
+          callback: (res, err) => {
+            if (!err) {
+              this.saveStep(group);
+            } else {
+              if (!this.props.getErrors(err)) this.props.formProp({error: this.props.savingErrorMsg});
+              this.setState({ saving: false });
+            }
+          }
+        })
+      }
+
+      case 'legalEntity': {
+        return this.props.saveLegalEntity({
+          callback: (res, err) => {
+            if (!err) {
+              this.saveStep(group);
+            } else {
+              if (!this.props.getErrors(err)) this.props.formProp({error: this.props.savingErrorMsg});
+              this.setState({ saving: false });
+            }
+          }
+        })
+      }
+
       default: {
         return this.saveStep(group);
       }
@@ -134,7 +161,6 @@ class ConnectBankStepsForm extends React.Component {
       step,
       open,
       isMobile,
-      acceptedTerms,
       stepsTodo
     } = this.props;
 
@@ -187,18 +213,23 @@ class ConnectBankStepsForm extends React.Component {
       }
 
       case 'principal': {
-        item.saveButtonLabelTop = <span className='buttonAlignText'>Continue to Step {nextStepNumber}: {nextStepName} <span className='icon icon-chevron-right'></span></span>;
-        item.saveButtonLabel = <span className='buttonAlignText'>Continue to Next Step <span className='icon icon-chevron-right'></span></span>
         item.desc =
           <div>
             <p>The primary account holder is usually a person on the bank account or someone with authority to manage the Organization and handle the money.</p>
+            {/*
             <HelpfulTip
               headerIcon={<span className='icon icon-alert-circle'></span>}
               headerText={`Tax Identification Number`}
               text={`If you don't have the account holders Social Security Number (SSN) use the Organization's U.S. Federal Tax ID instead.`}
               style={{ marginTop: 30 }}
             />
+            */}
           </div>
+        ;
+        item.component =
+          <Principal
+            {...this.props}
+          />
         ;
         break;
       }
@@ -210,6 +241,11 @@ class ConnectBankStepsForm extends React.Component {
           <div>
             <p>This information is required to process and accept payments.</p>
           </div>
+        ;
+        item.component =
+          <LegalEntity
+            {...this.props}
+          />
         ;
         break;
       }
@@ -339,4 +375,6 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
+  savePrincipal,
+  saveLegalEntity
 })(ConnectBankSteps);

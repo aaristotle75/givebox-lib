@@ -25,8 +25,6 @@ class OrgAdmin extends React.Component {
       merchantVitals
     } = this.props;
 
-    console.log('execute merchantVitals -> ', merchantVitals);
-
     switch (signupPhase) {
       case 'postSignup': {
         this.props.loadPostSignup(false, false);
@@ -34,7 +32,7 @@ class OrgAdmin extends React.Component {
       }
 
       case 'connectBank': {
-        this.props.loadConnectBank(false, false);
+        this.props.loadConnectBank(2, true);
       }
 
       // no default

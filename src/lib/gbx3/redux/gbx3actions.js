@@ -188,14 +188,14 @@ export function loadConnectBank(forceStep = null, openModal = true) {
   return async (dispatch, getState) => {
 
     const orgSignup = util.getValue(getState(), 'gbx3.orgSignup', {});
-    orgSignup.step = forceStep || getMinStepNotCompleted(signupPhaseConfig.postSignup.stepsTodo, orgSignup);
+    orgSignup.step = forceStep || getMinStepNotCompleted(signupPhaseConfig.connectBank.stepsTodo, orgSignup);
 
     if (!orgSignup.completed.includes('createSuccess')) orgSignup.completed.push('createSuccess');
 
     const updated = await dispatch(updateOrgSignup(orgSignup));
     if (updated) {
       dispatch(updateAdmin({ open: true }));
-      if (openModal) dispatch(toggleModal('orgPostSignupSteps', true));
+      if (openModal) dispatch(toggleModal('orgConnectBankSteps', true));
     }
   }
 }

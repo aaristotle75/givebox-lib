@@ -147,6 +147,10 @@ $gbx3StepsBreakpoint: 600px;
     font-size: $stepInputSize;
   }
 
+  .flatpickr input {
+    font-size: $stepInputSize;
+  }
+
   .input-group {
     margin-left: 0;
   }
@@ -246,11 +250,18 @@ $gbx3StepsBreakpoint: 600px;
     .stepsSubText {
       font-size: 14px;
       margin: 10px 55px;
+      @media (max-width: $breakpoint) {
+        margin: 10px 10px;
+      }
     }
 
     .stepComponent {
       position: relative;
       margin: 20px 55px;
+      @media (max-width: $breakpoint) {
+        margin: 10px 10px;
+      }
+
       label {
         font-size: 14px;
         font-weight: 400;

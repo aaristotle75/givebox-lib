@@ -115,6 +115,10 @@ import {
   gbx3 as gbx3reducer
 } from './gbx3/redux/gbx3reducers';
 
+import {
+  merchantVitals
+} from './gbx3/redux/merchantReducers';
+
 import GBX3 from './gbx3/GBX3';
 
 import {
@@ -123,8 +127,7 @@ import {
   send,
   modal,
   preferences,
-  custom,
-  merchantVitals
+  custom
 } from './api/reducers';
 
 import {

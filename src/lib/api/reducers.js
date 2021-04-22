@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import  * as types  from './actionTypes';
 import { gbx3 } from '../gbx3/redux/gbx3reducers';
+import { merchantApp, merchantVitals } from '../gbx3/redux/merchantReducers';
 import has from 'has';
 
 export function preferences(state = {
@@ -189,35 +190,6 @@ export function modal(state = {
   }
 }
 
-/**
-* See merchantActions.js for details
-*/
-export function merchantVitals(state = {
-  isActive: true,
-  isInstantEnabled: true,
-  hasMerchantInfo: false,
-  legalEntityID: null,
-  legalEntityStatus: null,
-  legalEntityNotes: '',
-  requireSSN: false,
-  hasMID: false,
-  hasBankInfo: false,
-  hasReceivedTransaction: false,
-  isUnderwritingApproved: false,
-  canProcess: false,
-  canTransfer: false
-}, action) {
-  switch (action.type) {
-    case types.SET_MERCHANT_VITALS:
-      return Object.assign({}, state, {
-        ...state,
-        ...action.vitals
-      });
-    default:
-      return state
-  }
-}
-
 const appReducer = combineReducers({
   preferences,
   app,
@@ -226,7 +198,8 @@ const appReducer = combineReducers({
   send,
   custom,
   gbx3,
-  merchantVitals
+  merchantVitals,
+  merchantApp
 })
 
 const rootReducers = (state, action) => {

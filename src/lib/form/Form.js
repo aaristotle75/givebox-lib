@@ -1166,7 +1166,7 @@ class Form extends Component {
         : min && !max ? `Please enter a date after ${min}.`
         : !min && max ? `Please enter a date before ${max}.`
         : `default error`;
-        if (value) if (!_v.validateDate(value, { min: min, max: max, format: format })) this.fieldProp(key, {error: opts.errorMsg || errorMsg});
+        if (value) if (!_v.validateDate(value, { min, max, format })) this.fieldProp(key, {error: opts.errorMsg || errorMsg});
         break;
       case 'emailList':
         const optional = opts.optional || false;

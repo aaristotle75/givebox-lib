@@ -1,9 +1,9 @@
-import * as types from './actionTypes';
-import * as util from '../common/utility';
+import * as types from './merchantActionTypes';
+import * as util from '../../common/utility';
 import {
-  getResource
-} from './helpers';
-
+  getResource,
+  sendResource
+} from '../../api/helpers';
 
 /**
 Merchant Properties
@@ -100,5 +100,123 @@ function setMerchantVitals(vitals = {}) {
   return {
     vitals,
     type: types.SET_MERCHANT_VITALS
+  }
+}
+
+export function updateMerchantApp(name, obj) {
+  return {
+    name,
+    obj,
+    type: types.UPDATE_MERCHANT_APP
+  }
+}
+
+export function getPrincipal(options = {}) {
+  const opts = {
+    orgID: null,
+    callback: null,
+    ...options
+  };
+  return (dispatch, getState) => {
+    const state = getState();
+    const orgID = opts.orgID || util.getValue(state, 'gbx3.info.orgID');
+    dispatch(getResource('orgPrincipals', {
+      orgID,
+      reload: true,
+      callback: (res, err) => {
+        if (!util.isEmpty(res) && !err) {
+          console.log('execute getPrincipal -> ', res);
+        }
+        if (opts.callback) opts.callback(res, err);
+      }
+    }));
+  }
+}
+
+export function savePrincipal(options = {}) {
+  const opts = {
+    data: {},
+    mergeMerchantAppData: true,
+    orgID: null,
+    callback: null,
+    ...options
+  };
+  return (dispatch, getState) => {
+    const state = getState();
+    const orgID = opts.orgID || util.getValue(state, 'gbx3.info.orgID');
+    const mergeData = opts.mergeMerchantAppData ? util.getValue(state, 'merchantApp.principal', {}) : {};
+    const data = {
+      ...mergeData,
+      ...opts.data
+    };
+
+    dispatch(sendResource(data.ID ? 'orgPrincipal' : 'orgPrincipals', {
+      id: data.ID ? [data.ID] : null,
+      orgID,
+      data,
+      callback: (res, err) => {
+        if (opts.callback) opts.callback(res, err);
+      }
+    }));
+  }
+}
+
+export function getLegalEntity(options = {}) {
+  const opts = {
+    orgID: null,
+    callback: null,
+    ...options
+  };
+  return (dispatch, getState) => {
+    const state = getState();
+    const orgID = opts.orgID || util.getValue(state, 'gbx3.info.orgID');
+    dispatch(getResource('orgLegalEntity', {
+      orgID,
+      reload: true,
+      callback: (res, err) => {
+        if (!util.isEmpty(res) && !err) {
+          console.log('execute getLegalEntity -> ', res);
+        }
+        if (opts.callback) opts.callback(res, err);
+      }
+    }));
+  }
+}
+
+export function saveLegalEntity(options = {}) {
+  const opts = {
+    data: {},
+    mergeMerchantAppData: true,
+    orgID: null,
+    callback: null,
+    ...options
+  };
+  return (dispatch, getState) => {
+    const state = getState();
+    const orgID = opts.orgID || util.getValue(state, 'gbx3.info.orgID');
+    const mergeData = opts.mergeMerchantAppData ? util.getValue(state, 'merchantApp.legalEntity', {}) : {};
+    const data = {
+      ...mergeData,
+      ...opts.data
+    };
+
+    if (data.websiteURL) {
+      this.props.sendResource('org', {
+        orgID,
+        method: 'patch',
+        data: {
+          websiteURL: data.websiteURL
+        },
+      });
+    }
+
+    dispatch(sendResource('orgLegalEntity', {
+      orgID,
+      data,
+      method: data.created ? 'patch' : 'post',
+      callback: (res, err) => {
+        if (opts.callback) opts.callback(res, err);
+      }
+    }));
   }
 }

@@ -5,7 +5,7 @@ import Loadable from 'react-loadable';
 import has from 'has';
 import * as util from './lib/common/utility';
 import { resourceProp, setAppRef, setModalRef, setPrefs, setAccess } from './lib/api/actions';
-import { getMerchantVitals } from './lib/api/merchantActions';
+import { getMerchantVitals } from './lib/gbx3/redux/merchantActions';
 import { getResource, sendResource, reloadResource } from './lib/api/helpers';
 import Loader from './lib/common/Loader';
 import queryString from 'query-string';
