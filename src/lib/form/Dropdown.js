@@ -54,7 +54,7 @@ class Dropdown extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    
+
     if (this.props.open !== prevProps.open) {
       if (this.props.open && !this.state.display) {
         this.openMenu();
@@ -230,6 +230,7 @@ class Dropdown extends Component {
       label,
       className,
       style,
+      dropdownClass,
       dropdownStyle,
       selectLabel,
       error,
@@ -296,7 +297,7 @@ class Dropdown extends Component {
         <Fade in={open && overlay} duration={overlayDuration}>
           <div onClick={this.closeMenu} className={`dropdown-cover ${display ? '' : 'displayNone'}`}></div>
         </Fade>
-        <div className={`dropdown ${this.props.color ? 'customColor' : ''} ${floatingLabel && 'floating-label'} ${status} ${fixedLabel ? 'fixed' : ''}`} style={dropdownStyle}>
+        <div className={`dropdown ${dropdownClass} ${this.props.color ? 'customColor' : ''} ${floatingLabel && 'floating-label'} ${status} ${fixedLabel ? 'fixed' : ''}`} style={dropdownStyle}>
           {label && !floatingLabel && <label><GBLink onClick={open || readOnly ? this.closeMenu : this.openMenu}>{label}</GBLink></label>}
           {!hideButton ?
             <button ref={this.buttonRef} style={buttonStyle} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} type='button' onClick={open || readOnly ? this.closeMenu : this.openMenu}><span ref={this.selectedRef} className={`label ${selected ? 'selected' : ''} ${idleLabel && 'idle'}`}>{selectedValue}</span>{!hideIcons ? <span ref={this.iconRef} className={`icon icon-${open ? multi ? iconMultiClose : iconOpened : iconClosed}`}></span> : null }</button>
@@ -340,7 +341,8 @@ Dropdown.defaultProps = {
   overlay: true,
   direction: '',
   defaultColor: '#4775f8',
-  errorType: 'tooltip'
+  errorType: 'tooltip',
+  dropdownClass: ''
 }
 
 export default Dropdown;

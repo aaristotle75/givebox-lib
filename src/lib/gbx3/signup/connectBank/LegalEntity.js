@@ -1,7 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import * as util from '../../../common/utility';
+import HelpfulTip from '../../../common/HelpfulTip';
 import * as _v from '../../../form/formValidate';
+import * as selectOptions from '../../../form/selectOptions';
 import AnimateHeight from 'react-animate-height';
 import {
   getLegalEntity,
@@ -30,7 +32,8 @@ class LegalEntity extends React.Component {
 
     const {
       group,
-      legalEntity
+      legalEntity,
+      address
     } = this.props;
 
     const {
@@ -39,6 +42,15 @@ class LegalEntity extends React.Component {
       yearsInBusiness,
       contactPhone
     } = legalEntity;
+
+    const {
+      line1,
+      line2,
+      city,
+      state,
+      zip,
+      country
+    } = address;
 
     return (
       <div className='fieldGroup'>
@@ -53,7 +65,7 @@ class LegalEntity extends React.Component {
           required: true
         })}
         {this.props.textField('annualCreditCardSalesVolume', {
-          group: 'legal',
+          group,
           fixedLabel: true,
           label: 'Estimated Annual Online Donations or Sales',
           placeholder: 'Click Here to Enter a Number',
@@ -106,9 +118,11 @@ LegalEntity.defaultProps = {
 function mapStateToProps(state, props) {
 
   const legalEntity = util.getValue(state, 'merchantApp.legalEntity', {});
+  const address = util.getValue(state, 'merchantApp.address', {});
 
   return {
-    legalEntity
+    legalEntity,
+    address
   }
 }
 

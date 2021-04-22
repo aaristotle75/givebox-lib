@@ -465,3 +465,13 @@ $gbx3StepsBreakpoint: 600px;
     }
   }
 }
+
+.modalContent.gbx3 {
+  .gbx3Steps {
+    .dropdown button.link {
+      font-size: 14px;
+      font-weight: 400;
+      border-bottom: 0;
+    }
+  }
+}

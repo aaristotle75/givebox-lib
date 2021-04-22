@@ -14,13 +14,16 @@ import {
   savePrincipal,
   saveLegalEntity
 } from '../redux/merchantActions';
+import BankAccount from './connectBank/BankAccount';
 import Principal from './connectBank/Principal';
 import LegalEntity from './connectBank/LegalEntity';
+import Address from './connectBank/Address';
 
 class ConnectBankStepsForm extends React.Component {
 
   constructor(props) {
     super(props);
+    this.connectBankPlaid = this.connectBankPlaid.bind(this);
     this.renderStep = this.renderStep.bind(this);
     this.processForm = this.processForm.bind(this);
     this.checkRequiredCompleted = this.checkRequiredCompleted.bind(this);
@@ -32,6 +35,11 @@ class ConnectBankStepsForm extends React.Component {
       error: false,
       saving: false
     };
+  }
+
+  connectBankPlaid() {
+    console.log('execute connectBankPlaid -> ');
+    this.setState({ saving: false });
   }
 
   callbackAfter(tab) {
@@ -117,6 +125,10 @@ class ConnectBankStepsForm extends React.Component {
     const slug = util.getValue(stepConfig, 'slug');
 
     switch (group) {
+      case 'connectBank': {
+        return this.connectBankPlaid();
+      }
+
       case 'bankAccount': {
         return this.saveStep(group);
       }
@@ -193,21 +205,44 @@ class ConnectBankStepsForm extends React.Component {
     };
 
     switch (slug) {
-      case 'addBank': {
-        item.saveButtonLabelTop = <span className='buttonAlignText'>Continue to Step {nextStepNumber}: {nextStepName} <span className='icon icon-chevron-right'></span></span>;
-        item.saveButtonLabel = <span className='buttonAlignText'>Continue to Next Step <span className='icon icon-chevron-right'></span></span>
+      case 'connectBank': {
+        item.saveButtonLabelTop = <span className='buttonAlignText'>Click Here to Connect Your Bank Account<span className='icon icon-chevron-right'></span></span>;
+        item.saveButtonLabel = <span className='buttonAlignText'>Connect Your Bank Account <span className='icon icon-chevron-right'></span></span>;
         item.desc =
           <div>
             <p>Congratulations, you have received your first transactions with Givebox!</p>
             <p></p>
             <p>Simply connect your bank, and in a matter of minutes you will have a bank account connected and can continue to accept payments and donations.</p>
             <HelpfulTip
-              headerIcon={<span className='icon icon-meh'></span>}
-              headerText={`Manually Entering Bank Account`}
-              text={`Manually entering your bank account will require many additional steps and documentation that you must submit for review and can take up to 7 days to approve.`}
+              headerIcon={<span className='icon icon-external-link'></span>}
+              headerText={`Connect Your Bank Account with Plaid`}
+              text={`When you click Connect Bank Account below it will open an overlay that will ask you to choose your bank and prompt you to login to your account. This is the easiest and quickest way to connect a bank account.`}
               style={{ marginTop: 30 }}
             />
           </div>
+        ;
+        item.component = <div></div>;
+        break;
+      }
+
+      case 'addBank': {
+        item.saveButtonLabelTop = <span className='buttonAlignText'>Continue to Step {nextStepNumber}: {nextStepName} <span className='icon icon-chevron-right'></span></span>;
+        item.saveButtonLabel = <span className='buttonAlignText'>Continue to Next Step <span className='icon icon-chevron-right'></span></span>
+        item.desc =
+          <div>
+            <p></p>
+            <HelpfulTip
+              headerIcon={<span className='icon icon-alert-triangle'></span>}
+              headerText={`Manually Entering a Bank Account`}
+              text={`Manually entering your bank account will require you to complete extra steps and additional documentation that you must submit for review, and can take up to 7 days to approve.`}
+              style={{ marginTop: 30 }}
+            />
+          </div>
+        ;
+        item.component =
+          <BankAccount
+            {...this.props}
+          />
         ;
         break;
       }
@@ -235,8 +270,6 @@ class ConnectBankStepsForm extends React.Component {
       }
 
       case 'legalEntity': {
-        item.saveButtonLabelTop = <span className='buttonAlignText'>Continue to Step {nextStepNumber}: {nextStepName} <span className='icon icon-chevron-right'></span></span>;
-        item.saveButtonLabel = <span className='buttonAlignText'>Continue to Next Step <span className='icon icon-chevron-right'></span></span>
         item.desc =
           <div>
             <p>This information is required to process and accept payments.</p>
@@ -251,15 +284,36 @@ class ConnectBankStepsForm extends React.Component {
       }
 
       case 'address': {
-        item.saveButtonLabelTop = <span className='buttonAlignText'>Continue to Step {nextStepNumber}: {nextStepName} <span className='icon icon-chevron-right'></span></span>;
-        item.saveButtonLabel = <span className='buttonAlignText'>Continue to Next Step <span className='icon icon-chevron-right'></span></span>
         item.desc =
           <div>
-            <p>This can be your Organization's physical address or an address of the primary account holder.</p>
+            <p>This can be your organization's physical address or an address of the primary account holder.</p>
             <HelpfulTip
               headerIcon={<span className='icon icon-alert-circle'></span>}
               headerText={`Important`}
               text={`P.O. Boxes and PMB's CANNOT be used.`}
+              style={{ marginTop: 30 }}
+            />
+          </div>
+        ;
+
+        item.component =
+          <Address
+            {...this.props}
+          />
+        ;
+        break;
+      }
+
+      case 'connectStatus': {
+        item.saveButtonLabel = <span className='buttonAlignText'>Check Status <span className='icon icon-chevron-right'></span></span>
+        item.saveButtonLabelTop = item.saveButtonLabel;
+        item.desc =
+          <div>
+            <p>Your connections status.</p>
+            <HelpfulTip
+              headerIcon={<span className='icon icon-alert-circle'></span>}
+              headerText={`Important`}
+              text={`You will be notified if any additional information is required to complete the connection to your bank account.`}
               style={{ marginTop: 30 }}
             />
           </div>
@@ -310,16 +364,24 @@ class ConnectBankStepsForm extends React.Component {
             {this.props.saveButton(this.processForm, { group: slug, label: item.saveButtonLabel })}
           </div>
           <div className='button-item' style={{ width: 150 }}>
-            { slug !== 'account' ?
+            { slug === 'connectBank' ?
               <GBLink
                 className='link'
                 onClick={() => {
-                  const step = stepsTodo.findIndex(s => s.slug === 'account');
-                  this.props.updateOrgSignup({ step });
+                  this.props.toggleModal('orgConnectBankManualConfirm', true, {
+                    manualCallback: () => {
+                      this.props.toggleModal('orgConnectBankManualConfirm', false);
+                      this.setState({ saving: false }, this.props.gotoNextStep);
+                    },
+                    plaidCallback: () => {
+                      this.props.toggleModal('orgConnectBankManualConfirm', false);
+                      this.connectBankPlaid();
+                    }
+                  });
                   this.props.formProp({ error: false });
                 }}
               >
-                <span className='buttonAlignText'>Skip to Save Account <span className='icon icon-chevron-right'></span></span>
+                <span className='buttonAlignText'>Manually Connect a Bank Account <span className='icon icon-chevron-right'></span></span>
               </GBLink>
             : null }
           </div>

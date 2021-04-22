@@ -145,6 +145,12 @@ export default class OrgModalRoutes extends Component {
             )
           }}
         />
+        <ModalRoute
+          className='gbx3'
+          id={'orgConnectBankManualConfirm'}
+          effect='3DFlipVert' style={{ width: '60%' }}
+          component={(props) => this.loadComponent('./signup/connectBank/ConnectBankManualConfirm', props)}
+        />
       </div>
     )
   }

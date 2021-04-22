@@ -1,8 +1,9 @@
 import React from 'react';
 import Icon from '../../common/Icon';
 import { AiOutlineBank } from 'react-icons/ai';
-import { TiBusinessCard } from 'react-icons/ti';
 import { MdBusiness } from 'react-icons/md';
+import { FaConnectdevelop, FaMoneyCheck } from 'react-icons/fa';
+import { TiBusinessCard } from 'react-icons/ti';
 
 const welcome = {
   type: 'org',
@@ -104,12 +105,22 @@ const share = {
   desc: 'Customize your share link, copy and paste into an email, and/or click a social media icon below to share your fundraising form and start raising money!'
 }
 
+const connectBank = {
+  type: 'merchant',
+  slug: 'connectBank',
+  name: 'Connect Bank',
+  title: 'Connect a Bank Account',
+  customIcon: <Icon><AiOutlineBank /></Icon>,
+  desc: ''
+};
+
+
 const addBank = {
   type: 'merchant',
   slug: 'addBank',
   name: 'Add a Bank Account',
   title: 'Add a Bank Account',
-  customIcon: <Icon><AiOutlineBank /></Icon>,
+  customIcon: <Icon><FaMoneyCheck /></Icon>,
   desc: ''
 };
 
@@ -126,8 +137,8 @@ const legalEntity = {
   type: 'merchant',
   slug: 'legalEntity',
   name: 'Business Info',
-  title: `Business Information About Your Organization`,
-  customIcon: <Icon><TiBusinessCard /></Icon>,
+  title: `Information About Your Nonprofit/Business`,
+  customIcon: <Icon><MdBusiness /></Icon>,
   desc: ''
 };
 
@@ -135,8 +146,17 @@ const address = {
   type: 'merchant',
   slug: 'address',
   name: 'Address',
-  title: `Business Address`,
-  customIcon: <Icon><MdBusiness /></Icon>,
+  title: `Nonprofit/Business Address`,
+  customIcon: <Icon><TiBusinessCard /></Icon>,
+  desc: ''
+};
+
+const connectStatus = {
+  type: 'merchant',
+  slug: 'connectStatus',
+  name: 'Connect Status',
+  title: `Your Bank Account Connect Status`,
+  customIcon: <Icon><FaConnectdevelop /></Icon>,
   desc: ''
 };
 
@@ -207,10 +227,12 @@ export const signupPhase = {
     modalName: 'orgConnectBankSteps',
     showStepNumber: true,
     stepsTodo: [
+      connectBank,
       addBank,
       principal,
       legalEntity,
-      address
+      address,
+      connectStatus
     ]
   },
   transferMoney: {

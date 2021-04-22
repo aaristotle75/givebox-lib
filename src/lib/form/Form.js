@@ -612,6 +612,7 @@ class Form extends Component {
         style={params.style}
         contentStyle={params.contentStyle}
         className={params.className}
+        dropdownClass={params.dropdownClass}
         error={field ? field.error : params.error}
         errorType={params.errorType}
         createField={this.createField}

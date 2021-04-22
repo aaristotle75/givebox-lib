@@ -32,7 +32,7 @@ class OrgAdmin extends React.Component {
       }
 
       case 'connectBank': {
-        this.props.loadConnectBank(2, true);
+        this.props.loadConnectBank(false, true);
       }
 
       // no default
