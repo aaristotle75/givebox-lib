@@ -226,8 +226,6 @@ class ConnectBankStepsForm extends React.Component {
       }
 
       case 'addBank': {
-        item.saveButtonLabelTop = <span className='buttonAlignText'>Continue to Step {nextStepNumber}: {nextStepName} <span className='icon icon-chevron-right'></span></span>;
-        item.saveButtonLabel = <span className='buttonAlignText'>Continue to Next Step <span className='icon icon-chevron-right'></span></span>
         item.desc =
           <div>
             <p></p>

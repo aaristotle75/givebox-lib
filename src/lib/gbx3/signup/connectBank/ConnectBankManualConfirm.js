@@ -26,7 +26,7 @@ class ConnectBankManualConfirm extends React.Component {
 
     return (
       <div className='removeModalWrapper'>
-        <h2>Manually Connect Your Bank Account</h2>
+        <h2>Manually Connect a Bank Account</h2>
         <div className='hr'></div>
         <p>
           You have clicked to manually connect your bank account. This will require extra steps and additional documentation to be submitted for review, and can take up to 7 days to get connected.
