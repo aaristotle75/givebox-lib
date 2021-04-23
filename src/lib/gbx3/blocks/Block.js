@@ -82,8 +82,7 @@ class Block extends React.Component {
     const {
       name,
       block,
-      blockType,
-      helperBlocks
+      blockType
     } = this.props;
 
     const opts = {
@@ -109,7 +108,6 @@ class Block extends React.Component {
         name,
         block,
         blockType,
-        helperBlocks,
         grid,
         opts
       });
@@ -281,7 +279,6 @@ function mapStateToProps(state, props) {
   const data = util.getValue(gbx3, blockType === 'org' ? 'orgData' : 'data', {});
   const fieldValue = util.getValue(data, dataField);
   const modalID = `modalBlock-${blockType}-${props.name}`;
-  const helperBlocks = util.getValue(gbx3, `helperBlocks.${blockType}`, {});
   const previewMode = util.getValue(admin, 'previewMode');
   const editFormOnly = util.getValue(admin, 'editFormOnly');
   const stage = util.getValue(info, 'stage');
@@ -308,7 +305,6 @@ function mapStateToProps(state, props) {
     globalButtonStyle,
     globalButton,
     primaryColor,
-    helperBlocks,
     previewMode,
     editFormOnly,
     stage,

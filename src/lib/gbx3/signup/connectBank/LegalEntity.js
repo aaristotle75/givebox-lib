@@ -20,12 +20,8 @@ class LegalEntity extends React.Component {
     };
   }
 
-  componentDidMount() {
-    this.props.getLegalEntity();
-  }
-
   updateField(field, value) {
-    this.props.updateMerchantApp('legalEntity', { [field]: value });
+    this.props.updateMerchantApp('legalEntity', { [field]: value, hasBeenUpdated: true });
   }
 
   render() {
@@ -75,7 +71,7 @@ class LegalEntity extends React.Component {
             max: 99999999999
           },
           maxLength: 11,
-          value: annualCreditCardSalesVolume,
+          value: annualCreditCardSalesVolume || '',
           required: true
         })}
         {this.props.textField('yearsInBusiness', {
@@ -89,14 +85,19 @@ class LegalEntity extends React.Component {
             min: 1,
             max: 500
           },
-          value: yearsInBusiness,
-          required: true
+          value: yearsInBusiness || '',
+          required: true,
+          onBlur: (name, value) => {
+            if (value) {
+              this.updateField(name, util.prunePhone(value));
+            }
+          }
         })}
         {this.props.textField('contactPhone', {
           group,
-          placeholder: `Add a Contact Phone Number`,
+          placeholder: `Enter Phone Number`,
           fixedLabel: true,
-          label: 'Contact Phone',
+          label: 'Business Contact Phone',
           validate: 'phone',
           required: true,
           value: contactPhone ? _v.formatPhone(contactPhone) : '',

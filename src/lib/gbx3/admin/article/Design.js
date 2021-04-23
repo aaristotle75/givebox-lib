@@ -12,8 +12,7 @@ import {
   updateAdmin,
   updateInfo,
   toggleAdminLeftPanel,
-  setLoading,
-  closeHelper
+  setLoading
 } from '../../redux/gbx3actions';
 import Toggle from 'react-toggle';
 import { FaPalette } from 'react-icons/fa';
@@ -164,7 +163,6 @@ class Design extends React.Component {
         }
       }
     }
-    this.props.closeHelper();
     this.props.updateAdmin({ previewDevice, previewMode, editable: previewMode ? false : true });
   }
 
@@ -321,6 +319,5 @@ export default connect(mapStateToProps, {
   updateAdmin,
   updateInfo,
   toggleAdminLeftPanel,
-  setLoading,
-  closeHelper
+  setLoading
 })(Design);

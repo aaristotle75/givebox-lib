@@ -447,6 +447,7 @@ class ConnectBankSteps extends React.Component {
 
   componentDidMount() {
     this.props.getLegalEntity({
+      reload: false,
       callback: () => {
         this.setState({ loading: false });
       }

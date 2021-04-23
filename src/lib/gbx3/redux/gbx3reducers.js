@@ -111,11 +111,6 @@ export function gbx3(state = {
     completed: [],
     advancedBuilder: false
   },
-  helperBlocks: {
-    article: {},
-    org: {},
-    receipt: {}
-  },
   fees: {},
   cart: defaultCart,
   confirmation: defaultConfirmation,
@@ -438,16 +433,6 @@ export function gbx3(state = {
           [action.name]: {
             ...state.globals[action.name],
             ...action.global
-          }
-        }
-      });
-    case types.UPDATE_HELPERS:
-      return Object.assign({}, state, {
-        helperBlocks: {
-          ...state.helperBlocks,
-          [action.blockType]: {
-            ...state.helperBlocks[action.blockType],
-            ...action.helperBlocks
           }
         }
       });

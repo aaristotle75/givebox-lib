@@ -22,6 +22,7 @@ class Principal extends React.Component {
 
   componentDidMount() {
     this.props.getPrincipal({
+      reload: false,
       callback: () => {
         this.setState({ loading: false });
       }

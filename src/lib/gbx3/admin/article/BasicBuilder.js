@@ -11,7 +11,6 @@ import {
   updateInfo,
   toggleAdminLeftPanel,
   setLoading,
-  closeHelper,
   updateHelperSteps
 } from '../../redux/gbx3actions';
 import Toggle from 'react-toggle';
@@ -336,6 +335,5 @@ export default connect(mapStateToProps, {
   updateInfo,
   toggleAdminLeftPanel,
   setLoading,
-  closeHelper,
   updateHelperSteps
 })(BasicBuilder);

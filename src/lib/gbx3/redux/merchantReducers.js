@@ -5,20 +5,21 @@ import * as util from '../../common/utility';
 * See merchantActions.js for details
 */
 export function merchantApp(state = {
+  loading: false,
   org: {
     hasBeenUpdated: false,
     websiteURL: ''
   },
   legalEntity: {
     hasBeenUpdated: false,
-    created: false,
+    ID: null,
     name: '',
     type: 'tax_exempt_organization',
     ownershipType: 'public',
     taxID: '',
-    annualCreditCardSalesVolume: '',
+    annualCreditCardSalesVolume: null,
     hasAcceptedCreditCards: true,
-    yearsInBusiness: '',
+    yearsInBusiness: null,
     contactPhone: ''
   },
   principal: {
@@ -75,6 +76,11 @@ export function merchantApp(state = {
           ...state[action.name],
           ...action.obj
         }
+      });
+    case types.SET_MERCHANT_APP_LOADING:
+      return Object.assign({}, state, {
+        ...state,
+        loading: action.loading
       });
     default:
       return state

@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as util from '../../../common/utility';
 import HelpfulTip from '../../../common/HelpfulTip';
+import Loader from '../../../common/Loader';
 import * as _v from '../../../form/formValidate';
 import * as selectOptions from '../../../form/selectOptions';
 import AnimateHeight from 'react-animate-height';
@@ -17,11 +18,17 @@ class Address extends React.Component {
     super(props);
     this.updateField = this.updateField.bind(this);
     this.state = {
+      loading: true
     };
   }
 
   componentDidMount() {
-    this.props.getAddress();
+    this.props.getAddress({
+      reload: false,
+      callback: () => {
+        this.setState({ loading: false });
+      }
+    });
   }
 
   updateField(field, value) {
@@ -43,6 +50,8 @@ class Address extends React.Component {
       zip,
       country
     } = address;
+
+    if (this.state.loading) return <Loader msg='Loading Address...' />
 
     return (
       <div className='fieldGroup'>

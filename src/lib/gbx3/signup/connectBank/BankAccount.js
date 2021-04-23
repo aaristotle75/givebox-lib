@@ -19,15 +19,13 @@ class BankAccount extends React.Component {
     this.updateField = this.updateField.bind(this);
     this.getBankName = this.getBankName.bind(this);
     this.state = {
-      loading: true
+      loading: false
     };
   }
 
   componentDidMount() {
     this.props.getBankAccount({
-      callback: () => {
-        this.setState({ loading: false });
-      }
+      reload: false,
     });
   }
 

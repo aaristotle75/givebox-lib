@@ -103,6 +103,13 @@ function setMerchantVitals(vitals = {}) {
   }
 }
 
+export function setMerchantAppLoading(loading) {
+  return {
+    loading,
+    type: types.SET_MERCHANT_APP_LOADING
+  }
+}
+
 export function updateMerchantApp(name, obj) {
   return {
     name,
@@ -113,6 +120,7 @@ export function updateMerchantApp(name, obj) {
 
 export function getBankAccount(options = {}) {
   const opts = {
+    reload: true,
     orgID: null,
     callback: null,
     ...options
@@ -121,12 +129,12 @@ export function getBankAccount(options = {}) {
     const state = getState();
     const orgID = opts.orgID || util.getValue(state, 'gbx3.info.orgID');
     dispatch(getResource('orgBankAccounts', {
+      reload: opts.reload,
       orgID,
       search: {
         sort: 'createdAt',
         order: 'desc'
       },
-      reload: true,
       callback: async (res, err) => {
         if (!util.isEmpty(res) && !err) {
           const data = util.getValue(res, 'data', []);
@@ -146,10 +154,8 @@ export function getBankAccount(options = {}) {
               notes: util.getValue(account, 'notes'),
               metaData: util.getValue(account, 'metaData', null)
             }));
-            if (appUpdated && opts.callback) return opts.callback(res, err);
           }
         }
-        if (opts.callback) opts.callback(res, err);
       }
     }));
   }
@@ -196,6 +202,7 @@ export function saveBankAccount(options = {}) {
 
 export function getPrincipal(options = {}) {
   const opts = {
+    reload: true,
     orgID: null,
     callback: null,
     ...options
@@ -209,7 +216,7 @@ export function getPrincipal(options = {}) {
         sort: 'createdAt',
         order: 'desc'
       },
-      reload: true,
+      reload: opts.reload,
       callback: async (res, err) => {
         if (!util.isEmpty(res) && !err) {
           const data = util.getValue(res, 'data', []);
@@ -274,6 +281,7 @@ export function savePrincipal(options = {}) {
 
 export function getLegalEntity(options = {}) {
   const opts = {
+    reload: true,
     orgID: null,
     callback: null,
     ...options
@@ -281,16 +289,37 @@ export function getLegalEntity(options = {}) {
   return (dispatch, getState) => {
     const state = getState();
     const orgID = opts.orgID || util.getValue(state, 'gbx3.info.orgID');
+    const org = util.getValue(state, 'resource.org.data', {});
+    const legalEntityID = util.getValue(state, 'merchantApp.legalEntity.ID');
     dispatch(getResource('orgLegalEntity', {
       orgID,
-      reload: true,
-      callback: (res, err) => {
+      reload: opts.reload,
+      callback: async (res, err) => {
         if (!util.isEmpty(res) && !err) {
-          console.log('execute getLegalEntity -> ', res);
-        } else {
-          dispatch(saveLegalEntity({
-            callback: opts.callback
+          const appUpdated = await dispatch(updateMerchantApp('legalEntity', {
+            ID: util.getValue(res, 'ID'),
+            name: util.getValue(res, 'name'),
+            type: 'tax_exempt_organization',
+            ownershipType: 'public',
+            taxID: util.getValue(res, 'taxID'),
+            annualCreditCardSalesVolume: util.getValue(res, 'annualCreditCardSalesVolume', null),
+            hasAcceptedCreditCards: true,
+            yearsInBusiness: util.getValue(res, 'yearsInBusiness', null),
+            contactPhone: util.getValue(res, 'contactPhone')
           }));
+          if (appUpdated && opts.callback) opts.callback(res, err);
+        } else {
+          if (!legalEntityID) {
+            dispatch(saveLegalEntity({
+              hasBeenUpdated: true,
+              callback: opts.callback,
+              data: {
+                name: util.getValue(org, 'name'),
+                taxID: util.getValue(org, 'taxID')
+              }
+            }));
+          }
+          if (opts.callback) opts.callback(res, err);
         }
       }
     }));
@@ -331,9 +360,15 @@ export function saveLegalEntity(options = {}) {
       dispatch(sendResource('orgLegalEntity', {
         orgID,
         data,
-        method: data.created ? 'patch' : 'post',
-        callback: (res, err) => {
-          if (opts.callback) opts.callback(res, err);
+        method: data.ID ? 'patch' : 'post',
+        callback: async (res, err) => {
+          if (!data.ID) {
+            dispatch(getLegalEntity({
+              callback: opts.callback
+            }))
+          } else {
+            if (opts.callback) opts.callback(res, err);
+          }
         }
       }));
     } else {
@@ -344,6 +379,7 @@ export function saveLegalEntity(options = {}) {
 
 export function getAddress(options = {}) {
   const opts = {
+    reload: true,
     orgID: null,
     callback: null,
     ...options
@@ -353,7 +389,7 @@ export function getAddress(options = {}) {
     const orgID = opts.orgID || util.getValue(state, 'gbx3.info.orgID');
     dispatch(getResource('orgAddresses', {
       orgID,
-      reload: true,
+      reload: opts.reload,
       callback: (res, err) => {
         if (!util.isEmpty(res) && !err) {
           console.log('execute getAddress -> ', res);

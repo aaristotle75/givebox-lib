@@ -9,6 +9,8 @@ import {
 } from '../../redux/gbx3actions';
 import OrgModalRoutes from '../../OrgModalRoutes';
 
+const ENV = process.env.REACT_APP_ENV;
+
 class OrgAdmin extends React.Component {
 
   constructor(props) {
@@ -19,7 +21,7 @@ class OrgAdmin extends React.Component {
 
   componentDidMount() {
     this.props.checkSignupPhase({
-      forceStep: 2
+      forceStep: ENV !== 'production' ? null : null
     });
   }
 
