@@ -111,6 +111,89 @@ export function updateMerchantApp(name, obj) {
   }
 }
 
+export function getBankAccount(options = {}) {
+  const opts = {
+    orgID: null,
+    callback: null,
+    ...options
+  };
+  return (dispatch, getState) => {
+    const state = getState();
+    const orgID = opts.orgID || util.getValue(state, 'gbx3.info.orgID');
+    dispatch(getResource('orgBankAccounts', {
+      orgID,
+      search: {
+        sort: 'createdAt',
+        order: 'desc'
+      },
+      reload: true,
+      callback: async (res, err) => {
+        if (!util.isEmpty(res) && !err) {
+          const data = util.getValue(res, 'data', []);
+          const account = util.getValue(data, 0, {});
+          if (!util.isEmpty(account)) {
+            const appUpdated = await dispatch(updateMerchantApp('bankAccount', {
+              ID: util.getValue(account, 'ID'),
+              name: util.getValue(account, 'name'),
+              number: null,
+              last4: util.getValue(account, 'last4'),
+              routingNumber: util.getValue(account, 'routingNumber'),
+              kind: 'deposit',
+              accountType: util.getValue(account, 'accountType'),
+              bankName: util.getValue(account, 'bankName'),
+              status: util.getValue(account, 'status'),
+              voidCheck: util.getValue(account, 'voidCheck'),
+              notes: util.getValue(account, 'notes'),
+              metaData: util.getValue(account, 'metaData', null)
+            }));
+            if (appUpdated && opts.callback) return opts.callback(res, err);
+          }
+        }
+        if (opts.callback) opts.callback(res, err);
+      }
+    }));
+  }
+}
+
+export function saveBankAccount(options = {}) {
+  const opts = {
+    hasBeenUpdated: false,
+    data: {},
+    mergeMerchantAppData: true,
+    orgID: null,
+    callback: null,
+    ...options
+  };
+  return (dispatch, getState) => {
+    const state = getState();
+    const orgID = opts.orgID || util.getValue(state, 'gbx3.info.orgID');
+    const mergeData = opts.mergeMerchantAppData ? util.getValue(state, 'merchantApp.bankAccount', {}) : {};
+    const data = {
+      ...mergeData,
+      ...opts.data
+    };
+
+    const hasBeenUpdated = opts.hasBeenUpdated || data.hasBeenUpdated;
+
+    if (hasBeenUpdated) {
+      dispatch(sendResource(data.ID ? 'orgBankAccount' : 'orgBankAccounts', {
+        id: data.ID ? [data.ID] : null,
+        orgID,
+        data,
+        method: data.ID ? 'patch' : 'post',
+        callback: (res, err) => {
+          if (opts.callback) opts.callback(res, err);
+          this.saveOrg({
+            orgUpdated: true
+          });
+        }
+      }));
+    } else {
+      if (opts.callback) opts.callback();
+    }
+  }
+}
+
 export function getPrincipal(options = {}) {
   const opts = {
     orgID: null,
@@ -122,10 +205,31 @@ export function getPrincipal(options = {}) {
     const orgID = opts.orgID || util.getValue(state, 'gbx3.info.orgID');
     dispatch(getResource('orgPrincipals', {
       orgID,
+      search: {
+        sort: 'createdAt',
+        order: 'desc'
+      },
       reload: true,
-      callback: (res, err) => {
+      callback: async (res, err) => {
         if (!util.isEmpty(res) && !err) {
-          console.log('execute getPrincipal -> ', res);
+          const data = util.getValue(res, 'data', []);
+          const principal = util.getValue(data, 0, {});
+          if (!util.isEmpty(principal)) {
+            const appUpdated = await dispatch(updateMerchantApp('principal', {
+              ID: util.getValue(principal, 'ID'),
+              title: util.getValue(principal, 'title'),
+              firstName: util.getValue(principal, 'firstName'),
+              lastName: util.getValue(principal, 'lastName'),
+              emailAddress: util.getValue(principal, 'emailAddress'),
+              SSN: null,
+              contactPhone: util.getValue(principal, 'contactPhone'),
+              dateOfBirth: util.getValue(principal, 'dateOfBirth', null),
+              driversLicenseUploaded: util.getValue(principal, ''),
+              stakePercent: util.getValue(principal, 'stakePercent'),
+              metaData: util.getValue(principal, 'metaData', null)
+            }));
+            if (appUpdated && opts.callback) return opts.callback(res, err);
+          }
         }
         if (opts.callback) opts.callback(res, err);
       }
@@ -135,6 +239,7 @@ export function getPrincipal(options = {}) {
 
 export function savePrincipal(options = {}) {
   const opts = {
+    hasBeenUpdated: false,
     data: {},
     mergeMerchantAppData: true,
     orgID: null,
@@ -150,14 +255,20 @@ export function savePrincipal(options = {}) {
       ...opts.data
     };
 
-    dispatch(sendResource(data.ID ? 'orgPrincipal' : 'orgPrincipals', {
-      id: data.ID ? [data.ID] : null,
-      orgID,
-      data,
-      callback: (res, err) => {
-        if (opts.callback) opts.callback(res, err);
-      }
-    }));
+    const hasBeenUpdated = opts.hasBeenUpdated || data.hasBeenUpdated;
+
+    if (hasBeenUpdated) {
+      dispatch(sendResource(data.ID ? 'orgPrincipal' : 'orgPrincipals', {
+        id: data.ID ? [data.ID] : null,
+        orgID,
+        data,
+        callback: (res, err) => {
+          if (opts.callback) opts.callback(res, err);
+        }
+      }));
+    } else {
+      if (opts.callback) opts.callback();
+    }
   }
 }
 
@@ -176,8 +287,11 @@ export function getLegalEntity(options = {}) {
       callback: (res, err) => {
         if (!util.isEmpty(res) && !err) {
           console.log('execute getLegalEntity -> ', res);
+        } else {
+          dispatch(saveLegalEntity({
+            callback: opts.callback
+          }));
         }
-        if (opts.callback) opts.callback(res, err);
       }
     }));
   }
@@ -185,6 +299,7 @@ export function getLegalEntity(options = {}) {
 
 export function saveLegalEntity(options = {}) {
   const opts = {
+    hasBeenUpdated: false,
     data: {},
     mergeMerchantAppData: true,
     orgID: null,
@@ -200,6 +315,8 @@ export function saveLegalEntity(options = {}) {
       ...opts.data
     };
 
+    const hasBeenUpdated = opts.hasBeenUpdated || data.hasBeenUpdated;
+
     if (data.websiteURL) {
       this.props.sendResource('org', {
         orgID,
@@ -210,14 +327,18 @@ export function saveLegalEntity(options = {}) {
       });
     }
 
-    dispatch(sendResource('orgLegalEntity', {
-      orgID,
-      data,
-      method: data.created ? 'patch' : 'post',
-      callback: (res, err) => {
-        if (opts.callback) opts.callback(res, err);
-      }
-    }));
+    if (hasBeenUpdated) {
+      dispatch(sendResource('orgLegalEntity', {
+        orgID,
+        data,
+        method: data.created ? 'patch' : 'post',
+        callback: (res, err) => {
+          if (opts.callback) opts.callback(res, err);
+        }
+      }));
+    } else {
+      if (opts.callback) opts.callback();
+    }
   }
 }
 
@@ -261,56 +382,6 @@ export function saveAddress(options = {}) {
     };
 
     dispatch(sendResource(data.ID ? 'orgAddress' : 'orgAddresses', {
-      id: data.ID ? [data.ID] : null,
-      orgID,
-      data,
-      callback: (res, err) => {
-        if (opts.callback) opts.callback(res, err);
-      }
-    }));
-  }
-}
-
-export function getBankAccount(options = {}) {
-  const opts = {
-    orgID: null,
-    callback: null,
-    ...options
-  };
-  return (dispatch, getState) => {
-    const state = getState();
-    const orgID = opts.orgID || util.getValue(state, 'gbx3.info.orgID');
-    dispatch(getResource('orgBankAccounts', {
-      orgID,
-      reload: true,
-      callback: (res, err) => {
-        if (!util.isEmpty(res) && !err) {
-          console.log('execute getBankAccount -> ', res);
-        }
-        if (opts.callback) opts.callback(res, err);
-      }
-    }));
-  }
-}
-
-export function saveBankAccount(options = {}) {
-  const opts = {
-    data: {},
-    mergeMerchantAppData: true,
-    orgID: null,
-    callback: null,
-    ...options
-  };
-  return (dispatch, getState) => {
-    const state = getState();
-    const orgID = opts.orgID || util.getValue(state, 'gbx3.info.orgID');
-    const mergeData = opts.mergeMerchantAppData ? util.getValue(state, 'merchantApp.bankAccount', {}) : {};
-    const data = {
-      ...mergeData,
-      ...opts.data
-    };
-
-    dispatch(sendResource(data.ID ? 'orgBankAccount' : 'orgBankAccounts', {
       id: data.ID ? [data.ID] : null,
       orgID,
       data,

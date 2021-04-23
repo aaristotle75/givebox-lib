@@ -11,8 +11,14 @@ import GBLink from '../../common/GBLink';
 import Image from '../../common/Image';
 import HelpfulTip from '../../common/HelpfulTip';
 import {
+  setSignupStep
+} from '../redux/gbx3actions';
+import {
+  getLegalEntity,
   savePrincipal,
-  saveLegalEntity
+  saveLegalEntity,
+  saveAddress,
+  saveBankAccount
 } from '../redux/merchantActions';
 import BankAccount from './connectBank/BankAccount';
 import Principal from './connectBank/Principal';
@@ -33,7 +39,8 @@ class ConnectBankStepsForm extends React.Component {
     this.state = {
       editorOpen: false,
       error: false,
-      saving: false
+      saving: false,
+      loading: true
     };
   }
 
@@ -129,8 +136,17 @@ class ConnectBankStepsForm extends React.Component {
         return this.connectBankPlaid();
       }
 
-      case 'bankAccount': {
-        return this.saveStep(group);
+      case 'addBank': {
+        return this.props.saveBankAccount({
+          callback: (res, err) => {
+            if (!err) {
+              this.saveStep(group);
+            } else {
+              if (!this.props.getErrors(err)) this.props.formProp({error: this.props.savingErrorMsg});
+              this.setState({ saving: false });
+            }
+          }
+        })
       }
 
       case 'principal': {
@@ -159,6 +175,19 @@ class ConnectBankStepsForm extends React.Component {
         })
       }
 
+      case 'address': {
+        return this.props.saveAddress({
+          callback: (res, err) => {
+            if (!err) {
+              this.saveStep(group);
+            } else {
+              if (!this.props.getErrors(err)) this.props.formProp({error: this.props.savingErrorMsg});
+              this.setState({ saving: false });
+            }
+          }
+        })
+      }
+
       default: {
         return this.saveStep(group);
       }
@@ -173,11 +202,9 @@ class ConnectBankStepsForm extends React.Component {
       step,
       open,
       isMobile,
-      stepsTodo
+      stepsTodo,
+      plaidAccountID
     } = this.props;
-
-    const {
-    } = this.props.fields;
 
     const stepConfig = util.getValue(stepsTodo, step, {});
     const slug = util.getValue(stepConfig, 'slug');
@@ -363,24 +390,35 @@ class ConnectBankStepsForm extends React.Component {
           </div>
           <div className='button-item' style={{ width: 150 }}>
             { slug === 'connectBank' ?
-              <GBLink
-                className='link'
-                onClick={() => {
-                  this.props.toggleModal('orgConnectBankManualConfirm', true, {
-                    manualCallback: () => {
-                      this.props.toggleModal('orgConnectBankManualConfirm', false);
-                      this.setState({ saving: false }, this.props.gotoNextStep);
-                    },
-                    plaidCallback: () => {
-                      this.props.toggleModal('orgConnectBankManualConfirm', false);
-                      this.connectBankPlaid();
-                    }
-                  });
-                  this.props.formProp({ error: false });
-                }}
-              >
-                <span className='buttonAlignText'>Manually Connect a Bank Account <span className='icon icon-chevron-right'></span></span>
-              </GBLink>
+              plaidAccountID ?
+                <GBLink
+                  className='link'
+                  onClick={() => {
+                    this.props.setSignupStep('connectStatus');
+                    this.props.formProp({ error: false });
+                  }}
+                >
+                  <span className='buttonAlignText'>Check Status <span className='icon icon-chevron-right'></span></span>
+                </GBLink>
+              :
+                <GBLink
+                  className='link'
+                  onClick={() => {
+                    this.props.toggleModal('orgConnectBankManualConfirm', true, {
+                      manualCallback: () => {
+                        this.props.toggleModal('orgConnectBankManualConfirm', false);
+                        this.setState({ saving: false }, this.props.gotoNextStep);
+                      },
+                      plaidCallback: () => {
+                        this.props.toggleModal('orgConnectBankManualConfirm', false);
+                        this.connectBankPlaid();
+                      }
+                    });
+                    this.props.formProp({ error: false });
+                  }}
+                >
+                  <span className='buttonAlignText'>Manually Connect a Bank Account <span className='icon icon-chevron-right'></span></span>
+                </GBLink>
             : null }
           </div>
         </div> : null }
@@ -403,10 +441,16 @@ class ConnectBankSteps extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: true
     };
   }
 
   componentDidMount() {
+    this.props.getLegalEntity({
+      callback: () => {
+        this.setState({ loading: false });
+      }
+    });
   }
 
   componentWillUnmount() {
@@ -417,6 +461,8 @@ class ConnectBankSteps extends React.Component {
   }
 
   render() {
+
+    if (this.state.loading) return <Loader msg='Loading Connect Bank Steps...' />;
 
     return (
       <Form id={`stepsForm`} name={`stepsForm`}>
@@ -430,11 +476,19 @@ class ConnectBankSteps extends React.Component {
 
 function mapStateToProps(state, props) {
 
+  const merchantApp = util.getValue(state, 'merchantApp', {});
+  const plaidAccountID = util.getValue(merchantApp, 'plaid.accountID', null);
+
   return {
+    plaidAccountID
   }
 }
 
 export default connect(mapStateToProps, {
+  getLegalEntity,
+  setSignupStep,
   savePrincipal,
-  saveLegalEntity
+  saveLegalEntity,
+  saveAddress,
+  saveBankAccount
 })(ConnectBankSteps);

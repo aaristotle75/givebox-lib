@@ -6,9 +6,11 @@ import * as util from '../../common/utility';
 */
 export function merchantApp(state = {
   org: {
+    hasBeenUpdated: false,
     websiteURL: ''
   },
   legalEntity: {
+    hasBeenUpdated: false,
     created: false,
     name: '',
     type: 'tax_exempt_organization',
@@ -20,6 +22,7 @@ export function merchantApp(state = {
     contactPhone: ''
   },
   principal: {
+    hasBeenUpdated: false,
     ID: null,
     title: 'Manager',
     firstName: '',
@@ -33,6 +36,7 @@ export function merchantApp(state = {
     metaData: null
   },
   address: {
+    hasBeenUpdated: false,
     ID: null,
     line1: '',
     line2: '',
@@ -42,17 +46,26 @@ export function merchantApp(state = {
     country: 'US'
   },
   bankAccount: {
+    hasBeenUpdated: false,
+    ID: null,
     name: '',
-    number: '',
+    number: null,
+    last4: '',
     routingNumber: '',
     kind: 'deposit',
     accountType: 'checking',
     bankName: '',
+    status: '',
     voidCheck: null,
     notes: '',
     metaData: null
   },
-  plaid: null
+  plaid: {
+    hasBeenUpdated: false,
+    accountID: null,
+    authMeta: null,
+    identityMeta: null
+  }
 }, action) {
   switch (action.type) {
     case types.UPDATE_MERCHANT_APP:

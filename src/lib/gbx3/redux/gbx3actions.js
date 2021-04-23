@@ -168,34 +168,61 @@ export function loadOrgSignup(forceStep = null, openModal = true) {
   }
 }
 
-export function loadPostSignup(forceStep = null, openModal = true) {
-  return async (dispatch, getState) => {
+export function checkSignupPhase(options = {}) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const signupPhase = util.getValue(state, 'gbx3.orgSignup.signupPhase');
+    const hasReceivedTransaction = util.getValue(state, 'merchantVitals.hasReceivedTransaction');
 
-    const orgSignup = util.getValue(getState(), 'gbx3.orgSignup', {});
-    orgSignup.step = forceStep || getMinStepNotCompleted(signupPhaseConfig.postSignup.stepsTodo, orgSignup);
+    switch (signupPhase) {
+      case 'postSignup': {
+        dispatch(loadSignupPhase({
+          phase: 'postSignup',
+          modalName: 'orgPostSignupSteps',
+          ...options
+        }));
+        break;
+      }
 
-    if (!orgSignup.completed.includes('createSuccess')) orgSignup.completed.push('createSuccess');
+      case 'connectBank': {
+        dispatch(loadSignupPhase({
+          phase: 'connectBank',
+          modalName: 'orgConnectBankSteps',
+          openAdmin: hasReceivedTransaction ? true : false,
+          openModal: hasReceivedTransaction ? true : false,
+          ...options
+        }));
+        break;
+      }
 
-    const updated = await dispatch(updateOrgSignup(orgSignup));
-    if (updated) {
-      dispatch(updateAdmin({ open: true }));
-      if (openModal) dispatch(toggleModal('orgPostSignupSteps', true));
+      // no default
     }
   }
 }
 
-export function loadConnectBank(forceStep = null, openModal = true) {
+export function loadSignupPhase(options = {}) {
+  const opts = {
+    phase: null,
+    modalName: null,
+    forceStep: null,
+    openModal: true,
+    openAdmin: true,
+    ...options
+  }
+
+  if (!opts.phase || !opts.modalName) return console.error('No signup phase');
+
   return async (dispatch, getState) => {
 
     const orgSignup = util.getValue(getState(), 'gbx3.orgSignup', {});
-    orgSignup.step = forceStep || getMinStepNotCompleted(signupPhaseConfig.connectBank.stepsTodo, orgSignup);
+    orgSignup.step = opts.forceStep || getMinStepNotCompleted(signupPhaseConfig[opts.phase].stepsTodo, orgSignup);
 
     if (!orgSignup.completed.includes('createSuccess')) orgSignup.completed.push('createSuccess');
 
     const updated = await dispatch(updateOrgSignup(orgSignup));
     if (updated) {
-      dispatch(updateAdmin({ open: true }));
-      if (openModal) dispatch(toggleModal('orgConnectBankSteps', true));
+      if (opts.openAdmin) dispatch(updateAdmin({ open: true }));
+      if (opts.openModal) dispatch(toggleModal(opts.modalName, true));
     }
   }
 }

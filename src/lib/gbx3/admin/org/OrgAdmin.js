@@ -5,8 +5,7 @@ import Layout from '../../Layout';
 import AdminMenu from './AdminMenu';
 import {
   toggleAdminLeftPanel,
-  loadPostSignup,
-  loadConnectBank
+  checkSignupPhase
 } from '../../redux/gbx3actions';
 import OrgModalRoutes from '../../OrgModalRoutes';
 
@@ -19,24 +18,9 @@ class OrgAdmin extends React.Component {
   }
 
   componentDidMount() {
-    const {
-      signupPhase,
-      orgID,
-      merchantVitals
-    } = this.props;
-
-    switch (signupPhase) {
-      case 'postSignup': {
-        this.props.loadPostSignup(false, false);
-        break;
-      }
-
-      case 'connectBank': {
-        this.props.loadConnectBank(false, true);
-      }
-
-      // no default
-    }
+    this.props.checkSignupPhase({
+      forceStep: 2
+    });
   }
 
   render() {
@@ -82,19 +66,14 @@ function mapStateToProps(state, props) {
   const orgID = util.getValue(gbx3, 'info.orgID');
   const admin = util.getValue(gbx3, 'admin', {});
   const openAdmin = util.getValue(admin, 'open');
-  const signupPhase = util.getValue(gbx3, 'orgSignup.signupPhase');
-  const merchantVitals = util.getValue(state, 'merchantVitals', {});
 
   return {
     orgID,
-    openAdmin,
-    signupPhase,
-    merchantVitals
+    openAdmin
   }
 }
 
 export default connect(mapStateToProps, {
   toggleAdminLeftPanel,
-  loadPostSignup,
-  loadConnectBank
+  checkSignupPhase
 })(OrgAdmin);

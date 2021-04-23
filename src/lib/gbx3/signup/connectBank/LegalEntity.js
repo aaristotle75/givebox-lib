@@ -68,7 +68,7 @@ class LegalEntity extends React.Component {
           group,
           fixedLabel: true,
           label: 'Estimated Annual Online Donations or Sales',
-          placeholder: 'Click Here to Enter a Number',
+          placeholder: 'Enter a Number',
           validate: 'money',
           validateOpts: {
             decimal: false,
@@ -80,7 +80,7 @@ class LegalEntity extends React.Component {
         })}
         {this.props.textField('yearsInBusiness', {
           group,
-          placeholder: 'Click Here to Enter a Number',
+          placeholder: 'Enter a Number',
           fixedLabel: true,
           label: 'Age of Nonprofit/Business (In Years, Round Up)',
           maxLength: 3,
@@ -94,7 +94,7 @@ class LegalEntity extends React.Component {
         })}
         {this.props.textField('contactPhone', {
           group,
-          placeholder: `Click Here to Add a Contact Phone Number`,
+          placeholder: `Add a Contact Phone Number`,
           fixedLabel: true,
           label: 'Contact Phone',
           validate: 'phone',

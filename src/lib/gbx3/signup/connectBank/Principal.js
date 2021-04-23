@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as util from '../../../common/utility';
 import * as _v from '../../../form/formValidate';
+import Loader from '../../../common/Loader';
 import AnimateHeight from 'react-animate-height';
 import {
   getPrincipal,
@@ -15,15 +16,20 @@ class Principal extends React.Component {
     super(props);
     this.updateField = this.updateField.bind(this);
     this.state = {
+      loading: true
     };
   }
 
   componentDidMount() {
-    this.props.getPrincipal();
+    this.props.getPrincipal({
+      callback: () => {
+        this.setState({ loading: false });
+      }
+    });
   }
 
   updateField(field, value) {
-    this.props.updateMerchantApp('principal', { [field]: value });
+    this.props.updateMerchantApp('principal', { [field]: value, hasBeenUpdated: true });
   }
 
   render() {
@@ -41,6 +47,8 @@ class Principal extends React.Component {
       title,
       contactPhone
     } = principal;
+
+    if (this.state.loading) return <Loader msg='Loading Principal...' />
 
     const minDate = Moment().subtract(18, 'years');
     const minDateFormat = minDate.format('MM/DD/YYYY');
@@ -60,7 +68,7 @@ class Principal extends React.Component {
             required: true,
             fixedLabel: true,
             label: 'First Name',
-            placeholder: 'Click Here to Enter First Name',
+            placeholder: 'Enter First Name',
             value: firstName,
             onBlur: (name, value) => {
               if (value) {
@@ -75,7 +83,7 @@ class Principal extends React.Component {
             required: true,
             fixedLabel: true,
             label: 'Last Name',
-            placeholder: 'Click Here to Enter Last Name',
+            placeholder: 'Enter Last Name',
             value: lastName,
             onBlur: (name, value) => {
               if (value) {
@@ -90,7 +98,7 @@ class Principal extends React.Component {
           fixedLabel: true,
           validate: 'email',
           label: 'Email',
-          placeholder: 'Click Here to Enter Email',
+          placeholder: 'Enter Email',
           value: emailAddress,
           onBlur: (name, value, fieldOpts) => {
             if (_v.validateEmail(value)) {
@@ -116,7 +124,7 @@ class Principal extends React.Component {
         }) */}
         {this.props.textField('title', {
           group,
-          placeholder: `Click Here to Enter Title (e.g. Executive Director)`,
+          placeholder: `Enter Title (e.g. Executive Director)`,
           fixedLabel: true,
           label: 'Title',
           value: title,
@@ -128,7 +136,7 @@ class Principal extends React.Component {
         })}
         {this.props.textField('contactPhone', {
           group,
-          placeholder: `Click Here to Add a Contact Phone Number`,
+          placeholder: `Add a Contact Phone Number`,
           fixedLabel: true,
           label: 'Contact Phone',
           validate: 'phone',
