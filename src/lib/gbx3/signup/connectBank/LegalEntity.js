@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as util from '../../../common/utility';
 import HelpfulTip from '../../../common/HelpfulTip';
+import Loader from '../../../common/Loader';
 import * as _v from '../../../form/formValidate';
 import * as selectOptions from '../../../form/selectOptions';
 import AnimateHeight from 'react-animate-height';
@@ -28,16 +29,18 @@ class LegalEntity extends React.Component {
       websiteURL
     } = this.props;
 
-    if (_v.validateWebsiteURL(value) && value !== websiteURL) {
-      this.props.sendResource('org', {
-        method: 'patch',
-        data: {
-          websiteURL: value
-        },
-        isSending: false
-      });
-    } else {
-      this.props.fieldProp('websiteURL', { error: _v.msgs.url });
+    if (value !== websiteURL && value) {
+      if (_v.validateWebsiteURL(value) && value !== websiteURL) {
+        this.props.sendResource('org', {
+          method: 'patch',
+          data: {
+            websiteURL: value
+          },
+          isSending: false
+        });
+      } else {
+        this.props.fieldProp('websiteURL', { error: _v.msgs.url });
+      }
     }
   }
 
@@ -46,16 +49,25 @@ class LegalEntity extends React.Component {
     const {
       group,
       legalEntity,
-      websiteURL
+      websiteURL,
+      loading
     } = this.props;
 
+    if (loading) return <Loader msg='Loading Legal Entity...' />
 
+    const ID = util.getValue(legalEntity, 'ID');
     const annualCreditCardSalesVolume = util.getValue(legalEntity, 'annualCreditCardSalesVolume');
     const yearsInBusiness = util.getValue(legalEntity, 'yearsInBusiness');
     const contactPhone = util.getValue(legalEntity, 'contactPhone');
 
     return (
       <div className='fieldGroup'>
+        {this.props.textField('ID', {
+          group,
+          type: 'hidden',
+          value: ID,
+          required: false
+        })}
         {this.props.textField('websiteURL', {
           group,
           fixedLabel: true,

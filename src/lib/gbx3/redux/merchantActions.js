@@ -170,6 +170,10 @@ export function saveLegalEntity(options = {}) {
     };
 
     if (data.contactPhone) data.contactPhone = util.prunePhone(data.contactPhone);
+    data.annualCreditCardSalesVolume = +data.annualCreditCardSalesVolume;
+    data.yearsInBusiness = +data.yearsInBusiness;
+
+    console.log('execute data -> ', data);
 
     if (opts.hasBeenUpdated) {
       dispatch(sendResource('orgLegalEntity', {

@@ -14,6 +14,7 @@ import {
   setSignupStep
 } from '../redux/gbx3actions';
 import {
+  setMerchantApp,
   getLegalEntity,
   savePrincipal,
   saveLegalEntity,
@@ -465,7 +466,13 @@ class ConnectBankSteps extends React.Component {
 
   componentDidMount() {
     if (util.isEmpty(this.props.legalEntity)) {
-      this.props.getLegalEntity({ reload: false });
+      this.props.setMerchantApp('loading', true);
+      this.props.getLegalEntity({
+        reload: false,
+        callback: () => {
+          this.props.setMerchantApp('loading', false);
+        }
+      });
     }
   }
 
@@ -507,6 +514,7 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
+  setMerchantApp,
   getLegalEntity,
   setSignupStep,
   savePrincipal,
