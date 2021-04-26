@@ -119,17 +119,19 @@ class ConnectBankStepsForm extends React.Component {
     this.setState({ saving: true });
     const {
       step,
-      stepsTodo
+      stepsTodo,
+      formState
     } = this.props;
-
-    const {
-    } = this.state;
-
-    const {
-    } = this.props.fields;
 
     const stepConfig = util.getValue(stepsTodo, step, {});
     const slug = util.getValue(stepConfig, 'slug');
+    const hasBeenUpdated = util.getValue(formState, 'updated');
+    const data = {};
+    Object.entries(fields).forEach(([key, value]) => {
+      if (value.autoReturn) {
+          data[key] = value.value;
+      }
+    });
 
     switch (group) {
       case 'connectBank': {
@@ -137,7 +139,10 @@ class ConnectBankStepsForm extends React.Component {
       }
 
       case 'addBank': {
-        return this.props.saveBankAccount({
+        if (!data.number) data.number = null;
+        this.props.saveBankAccount({
+          hasBeenUpdated,
+          data,
           callback: (res, err) => {
             if (!err) {
               this.saveStep(group);
@@ -147,10 +152,13 @@ class ConnectBankStepsForm extends React.Component {
             }
           }
         })
+        break;
       }
 
       case 'principal': {
-        return this.props.savePrincipal({
+        if (data.contactPhone) data.contactPhone = util.prunePhone(data.contactPhone);
+        this.props.savePrincipal({
+          data,
           callback: (res, err) => {
             if (!err) {
               this.saveStep(group);
@@ -159,11 +167,13 @@ class ConnectBankStepsForm extends React.Component {
               this.setState({ saving: false });
             }
           }
-        })
+        });
+        break;
       }
 
       case 'legalEntity': {
-        return this.props.saveLegalEntity({
+        this.props.saveLegalEntity({
+          data,
           callback: (res, err) => {
             if (!err) {
               this.saveStep(group);
@@ -172,11 +182,13 @@ class ConnectBankStepsForm extends React.Component {
               this.setState({ saving: false });
             }
           }
-        })
+        });
+        break;
       }
 
       case 'address': {
-        return this.props.saveAddress({
+        this.props.saveAddress({
+          data,
           callback: (res, err) => {
             if (!err) {
               this.saveStep(group);
@@ -185,17 +197,22 @@ class ConnectBankStepsForm extends React.Component {
               this.setState({ saving: false });
             }
           }
-        })
+        });
+        break;
       }
 
+      /*
       default: {
         return this.saveStep(group);
       }
+      */
+      // no default
     }
   }
 
   renderStep() {
     const {
+      loading
     } = this.state;
 
     const {
@@ -441,17 +458,14 @@ class ConnectBankSteps extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: true
+      loading: false
     };
   }
 
   componentDidMount() {
-    this.props.getLegalEntity({
-      reload: false,
-      callback: () => {
-        this.setState({ loading: false });
-      }
-    });
+    if (util.isEmpty(this.props.legalEntity)) {
+      this.props.getLegalEntity({ reload: false });
+    }
   }
 
   componentWillUnmount() {
@@ -463,7 +477,11 @@ class ConnectBankSteps extends React.Component {
 
   render() {
 
-    if (this.state.loading) return <Loader msg='Loading Connect Bank Steps...' />;
+    const {
+      legalEntity
+    } = this.props;
+
+    if (util.isLoading(legalEntity) || this.state.loading) return <Loader msg='Loading Legal Entity...' />;
 
     return (
       <Form id={`stepsForm`} name={`stepsForm`}>
@@ -479,9 +497,11 @@ function mapStateToProps(state, props) {
 
   const merchantApp = util.getValue(state, 'merchantApp', {});
   const plaidAccountID = util.getValue(merchantApp, 'plaid.accountID', null);
+  const legalEntity = util.getValue(state, 'resource.orgLegalEntity', {});
 
   return {
-    plaidAccountID
+    plaidAccountID,
+    legalEntity
   }
 }
 

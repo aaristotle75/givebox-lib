@@ -47,9 +47,6 @@ class StepsWrapper extends React.Component {
     this.menuHeader = configStep.menuHeader;
   }
 
-  componentDidMount() {
-  }
-
   gotoNextStep() {
     const {
       step

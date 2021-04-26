@@ -230,8 +230,6 @@ export function getAPI(
         dispatch(receiveResource(customName || resource, endpoint, {}, null, search));
         if (callback) callback(null, error);
       })
-    } else {
-      if (callback) callback(null, null);
     }
   }
 }

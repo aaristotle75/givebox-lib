@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import * as util from '../../../common/utility';
 import Layout from '../../Layout';
 import AdminMenu from './AdminMenu';
+import Loader from '../../../common/Loader';
 import {
   toggleAdminLeftPanel,
   checkSignupPhase
@@ -21,7 +22,7 @@ class OrgAdmin extends React.Component {
 
   componentDidMount() {
     this.props.checkSignupPhase({
-      forceStep: ENV !== 'production' ? null : null
+      forceStep: ENV !== 'production' ? 1 : null
     });
   }
 

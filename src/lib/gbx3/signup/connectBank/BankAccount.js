@@ -7,30 +7,38 @@ import * as _v from '../../../form/formValidate';
 import * as selectOptions from '../../../form/selectOptions';
 import AnimateHeight from 'react-animate-height';
 import {
-  getBankAccount,
-  updateMerchantApp
+  setMerchantApp
 } from '../../redux/merchantActions';
+import {
+  getResource
+} from '../../../api/helpers';
 import Moment from 'moment';
 
 class BankAccount extends React.Component {
 
   constructor(props) {
     super(props);
-    this.updateField = this.updateField.bind(this);
     this.getBankName = this.getBankName.bind(this);
     this.state = {
-      loading: false
     };
   }
 
-  componentDidMount() {
-    this.props.getBankAccount({
-      reload: false,
-    });
-  }
-
-  updateField(field, value) {
-    this.props.updateMerchantApp('bankAccount', { [field]: value, hasBeenUpdated: true });
+  async componentDidMount() {
+    if (util.isEmpty(this.props.bankAccount)) {
+      const initLoading = await this.props.setMerchantApp('loading', true);
+      if (initLoading) {
+        this.props.getResource('orgBankAccounts', {
+          reload: false,
+          search: {
+            sort: 'createdAt',
+            order: 'desc'
+          },
+          callback: (res, err) => {
+            this.props.setMerchantApp('loading', false);
+          }
+        });
+      }
+    }
   }
 
   getBankName(name, value) {
@@ -43,15 +51,15 @@ class BankAccount extends React.Component {
       x.onload = function() {
         if (!util.isEmpty(this.response)) {
           const json = JSON.parse(this.response);
-          bindthis.updateField('bankName', util.getValue(json, 'name'));
+          bindthis.props.fieldProp('bankName', { value: util.getValue(json, 'name')});
         }
       };
       x.open('GET', url);
       x.send();
     } else if (newRoutingNumber.length === 9 && (newRoutingNumber === currentRoutingNumber)) {
-      this.updateField('bankName', currentRoutingNumber);
+      this.props.fieldProp('bankName', { value: this.props.bankName });
     } else {
-      this.updateField('bankName', '');
+      this.props.fieldProp('bankName', { value: '' });
     }
   }
 
@@ -59,27 +67,45 @@ class BankAccount extends React.Component {
 
     const {
       group,
+      formState,
       bankAccount,
-      orgBankAccounts
+      loading
     } = this.props;
 
-    const {
-      name,
-      number,
-      last4,
-      routingNumber,
-      accountType,
-      bankName,
-      notes,
-      status
-    } = bankAccount;
+    if (loading) return <Loader msg='Loading Bank Account...' />
 
-    if (this.state.loading) return <Loader msg='Loading Bank Account...' />
-
+    const ID = util.getValue(bankAccount, 'ID');
+    const kind = util.getValue(bankAccount, 'kind', 'deposit');
+    const name = util.getValue(bankAccount, 'name');
+    const bankName = util.getValue(formState, 'fields.bankName.value', util.getValue(bankAccount, 'bankName'));
+    const number = util.getValue(bankAccount, 'number');
+    const last4 = util.getValue(bankAccount, 'last4');
+    const routingNumber = util.getValue(bankAccount, 'routingNumber');
+    const accountType = util.getValue(bankAccount, 'accountType');
+    const notes = util.getValue(bankAccount, 'notes');
+    const status = util.getValue(bankAccount, 'status');
     const readOnly = status === 'approved' ? true : false;
 
     return (
       <div className='fieldGroup'>
+        {this.props.textField('ID', {
+          group,
+          type: 'hidden',
+          value: ID,
+          required: false
+        })}
+        {this.props.textField('kind', {
+          group,
+          type: 'hidden',
+          value: kind,
+          required: false
+        })}
+        {this.props.textField('bankName', {
+          group,
+          type: 'hidden',
+          value: bankName,
+          required: false
+        })}
         {this.props.textField('name', {
           group,
           readOnly,
@@ -103,14 +129,12 @@ class BankAccount extends React.Component {
           label: `Account Type`,
           selectLabel: `Select Account Type`,
           value: accountType,
+          defaultValue: 'checking',
           options: [
             { primaryText: 'Checking', value: 'checking' },
             { primaryText: 'Savings', value: 'savings' }
           ],
-          direction: 'top',
-          onChange: (name, value) => {
-            this.updateField(name, value);
-          }
+          direction: 'top'
         })}
         {this.props.textField('number', {
           group,
@@ -120,12 +144,7 @@ class BankAccount extends React.Component {
           placeholder: last4 ? `********${last4}` : 'Enter Account Number',
           required: last4 ? false : true,
           meta: { last4 },
-          maxLength: 32,
-          onBlur: (name, value) => {
-            if (value) {
-              this.updateField(name, value);
-            }
-          }
+          maxLength: 32
         })}
         {bankName ? <span className='green date'>{bankName}</span> : null}
         {this.props.textField('routingNumber', {
@@ -137,12 +156,7 @@ class BankAccount extends React.Component {
           value: routingNumber,
           maxLength: 9,
           onChange: this.getBankName,
-          readOnly: false,
-          onBlur: (name, value) => {
-            if (value) {
-              this.updateField(name, value);
-            }
-          }
+          readOnly: false
         })}
       </div>
     )
@@ -155,14 +169,20 @@ BankAccount.defaultProps = {
 
 function mapStateToProps(state, props) {
 
-  const bankAccount = util.getValue(state, 'merchantApp.bankAccount', {});
+  const orgBankAccounts = util.getValue(state, 'resource.orgBankAccounts', {});
+  const orgBankAccountsData = util.getValue(orgBankAccounts, 'data');
+  const bankAccount = util.getValue(orgBankAccountsData, 0, {});
+  const bankName = util.getValue(bankAccount, 'bankName');
+  const loading = util.getValue(state, 'merchantApp.loading', false);
 
   return {
-    bankAccount
+    bankAccount,
+    bankName,
+    loading
   }
 }
 
 export default connect(mapStateToProps, {
-  getBankAccount,
-  updateMerchantApp
+  getResource,
+  setMerchantApp
 })(BankAccount);

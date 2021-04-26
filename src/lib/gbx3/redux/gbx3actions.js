@@ -100,7 +100,7 @@ export function signupGBX3Data() {
 }
 
 export function setSignupStep(value, callback) {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     const orgSignup = util.getValue(getState(), 'gbx3.orgSignup', {});
     const {
       signupPhase
@@ -108,8 +108,8 @@ export function setSignupStep(value, callback) {
 
     const stepsTodo = signupPhaseConfig[signupPhase].stepsTodo;
     const step = isNaN(value) ? stepsTodo.findIndex(s => s.slug === value) : value;
-    dispatch(updateOrgSignup({ step }));
-    if (callback) callback(step);
+    const updated = await dispatch(updateOrgSignup({ step }));
+    if (callback && updated) callback(step);
   }
 }
 

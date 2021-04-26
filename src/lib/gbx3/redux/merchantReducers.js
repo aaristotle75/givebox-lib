@@ -6,6 +6,7 @@ import * as util from '../../common/utility';
 */
 export function merchantApp(state = {
   loading: false,
+  fetching: false,
   org: {
     hasBeenUpdated: false,
     websiteURL: ''
@@ -77,10 +78,10 @@ export function merchantApp(state = {
           ...action.obj
         }
       });
-    case types.SET_MERCHANT_APP_LOADING:
+    case types.SET_MERCHANT_APP:
       return Object.assign({}, state, {
         ...state,
-        loading: action.loading
+        [action.key]: action.value
       });
     default:
       return state

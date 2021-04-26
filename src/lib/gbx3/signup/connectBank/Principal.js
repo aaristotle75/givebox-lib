@@ -5,52 +5,58 @@ import * as _v from '../../../form/formValidate';
 import Loader from '../../../common/Loader';
 import AnimateHeight from 'react-animate-height';
 import {
-  getPrincipal,
-  updateMerchantApp
+  setMerchantApp
 } from '../../redux/merchantActions';
+import {
+  getResource
+} from '../../../api/helpers';
 import Moment from 'moment';
 
 class Principal extends React.Component {
 
   constructor(props) {
     super(props);
-    this.updateField = this.updateField.bind(this);
     this.state = {
-      loading: true
     };
   }
 
-  componentDidMount() {
-    this.props.getPrincipal({
-      reload: false,
-      callback: () => {
-        this.setState({ loading: false });
+  async componentDidMount() {
+    if (util.isEmpty(this.props.bankAccount)) {
+      const initLoading = await this.props.setMerchantApp('loading', true);
+      if (initLoading) {
+        this.props.getResource('orgPrincipals', {
+          reload: false,
+          search: {
+            sort: 'createdAt',
+            order: 'desc'
+          },
+          callback: (res, err) => {
+            this.props.setMerchantApp('loading', false);
+          }
+        });
       }
-    });
-  }
-
-  updateField(field, value) {
-    this.props.updateMerchantApp('principal', { [field]: value, hasBeenUpdated: true });
+    }
   }
 
   render() {
 
     const {
       group,
-      principal
+      formState,
+      principal,
+      loading
     } = this.props;
 
-    const {
-      emailAddress,
-      firstName,
-      lastName,
-      dateOfBirth,
-      title,
-      contactPhone
-    } = principal;
+    if (loading) return <Loader msg='Loading Principal...' />
 
-    if (this.state.loading) return <Loader msg='Loading Principal...' />
+    const emailAddress = util.getValue(principal, 'emailAddress');
+    const firstName = util.getValue(principal, 'firstName');
+    const lastName = util.getValue(principal, 'lastName');
+    const dataOfBirth = util.getValue(principal, 'dateOfBirth');
+    const title = util.getValue(principal, 'title');
+    const contactPhone = util.getValue(principal, 'contactPhone');
 
+    /* Auto set birthday
     const minDate = Moment().subtract(18, 'years');
     const minDateFormat = minDate.format('MM/DD/YYYY');
     const minDateTS = parseInt(minDate.valueOf()/1000);
@@ -60,9 +66,16 @@ class Principal extends React.Component {
     const maxDateTS = parseInt(maxDate.valueOf()/1000);
 
     const randomTS = util.getRand(minDateTS, maxDateTS);
+    */
 
     return (
       <div className='fieldGroup'>
+        {this.props.textField('ID', {
+          group,
+          type: 'hidden',
+          value: ID,
+          required: false
+        })}
         <div className='column50'>
           {this.props.textField('firstName', {
             group,
@@ -70,12 +83,7 @@ class Principal extends React.Component {
             fixedLabel: true,
             label: 'First Name',
             placeholder: 'Enter First Name',
-            value: firstName,
-            onBlur: (name, value) => {
-              if (value) {
-                this.updateField(name, value);
-              }
-            }
+            value: firstName
           })}
         </div>
         <div className='column50'>
@@ -85,12 +93,7 @@ class Principal extends React.Component {
             fixedLabel: true,
             label: 'Last Name',
             placeholder: 'Enter Last Name',
-            value: lastName,
-            onBlur: (name, value) => {
-              if (value) {
-                this.updateField(name, value);
-              }
-            }
+            value: lastName
           })}
         </div>
         {this.props.textField('emailAddress', {
@@ -100,12 +103,7 @@ class Principal extends React.Component {
           validate: 'email',
           label: 'Email',
           placeholder: 'Enter Email',
-          value: emailAddress,
-          onBlur: (name, value, fieldOpts) => {
-            if (_v.validateEmail(value)) {
-              this.updateField(name, value);
-            }
-          }
+          value: emailAddress
         })}
         {/* this.props.calendarField('dateOfBirth', {
           group,
@@ -128,12 +126,7 @@ class Principal extends React.Component {
           placeholder: `Enter Title (e.g. Executive Director)`,
           fixedLabel: true,
           label: 'Title',
-          value: title,
-          onBlur: (name, value) => {
-            if (value) {
-              this.updateField(name, value);
-            }
-          }
+          value: title
         })}
         {this.props.textField('contactPhone', {
           group,
@@ -142,12 +135,7 @@ class Principal extends React.Component {
           label: 'Contact Phone',
           validate: 'phone',
           required: true,
-          value: contactPhone ? _v.formatPhone(contactPhone) : '',
-          onBlur: (name, value) => {
-            if (value) {
-              this.updateField(name, util.prunePhone(value));
-            }
-          }
+          value: contactPhone ? _v.formatPhone(contactPhone) : ''
         })}
       </div>
     )
@@ -160,14 +148,18 @@ Principal.defaultProps = {
 
 function mapStateToProps(state, props) {
 
-  const principal = util.getValue(state, 'merchantApp.principal', {});
+  const orgPrincipals = util.getValue(state, 'resource.orgPrincipals', {});
+  const orgPrincipalsData = util.getValue(orgPrincipals, 'data');
+  const principal = util.getValue(orgPrincipalsData, 0, {});
+  const loading = util.getValue(state, 'merchantApp.loading', false);
 
   return {
-    principal
+    principal,
+    loading
   }
 }
 
 export default connect(mapStateToProps, {
-  getPrincipal,
-  updateMerchantApp
+  getResource,
+  setMerchantApp
 })(Principal);
