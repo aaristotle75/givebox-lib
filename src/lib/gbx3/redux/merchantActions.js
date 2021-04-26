@@ -1,9 +1,11 @@
 import * as types from './merchantActionTypes';
 import * as util from '../../common/utility';
+import * as _v from '../../form/formValidate';
 import {
   getResource,
   sendResource
 } from '../../api/helpers';
+import Moment from 'moment';
 
 /**
 Merchant Properties
@@ -167,19 +169,9 @@ export function saveLegalEntity(options = {}) {
       ...opts.data
     };
 
-    const hasBeenUpdated = opts.hasBeenUpdated || data.hasBeenUpdated;
+    if (data.contactPhone) data.contactPhone = util.prunePhone(data.contactPhone);
 
-    if (data.websiteURL) {
-      this.props.sendResource('org', {
-        orgID,
-        method: 'patch',
-        data: {
-          websiteURL: data.websiteURL
-        },
-      });
-    }
-
-    if (hasBeenUpdated) {
+    if (opts.hasBeenUpdated) {
       dispatch(sendResource('orgLegalEntity', {
         orgID,
         data,
@@ -215,6 +207,8 @@ export function saveBankAccount(options = {}) {
       ...opts.data
     };
 
+    if (!data.number) data.number = null;
+
     if (opts.hasBeenUpdated) {
       dispatch(sendResource(data.ID ? 'orgBankAccount' : 'orgBankAccounts', {
         id: data.ID ? [data.ID] : null,
@@ -232,30 +226,6 @@ export function saveBankAccount(options = {}) {
   }
 }
 
-export function getPrincipal(options = {}) {
-  const opts = {
-    reload: true,
-    orgID: null,
-    callback: null,
-    ...options
-  };
-  return (dispatch, getState) => {
-    const state = getState();
-    const orgID = opts.orgID || util.getValue(state, 'gbx3.info.orgID');
-    dispatch(getResource('orgPrincipals', {
-      orgID,
-      search: {
-        sort: 'createdAt',
-        order: 'desc'
-      },
-      reload: opts.reload,
-      callback: async (res, err) => {
-        if (opts.callback) opts.callback(res, err);
-      }
-    }));
-  }
-}
-
 export function savePrincipal(options = {}) {
   const opts = {
     hasBeenUpdated: false,
@@ -267,20 +237,34 @@ export function savePrincipal(options = {}) {
   return (dispatch, getState) => {
     const state = getState();
     const orgID = opts.orgID || util.getValue(state, 'gbx3.info.orgID');
+    const taxID = util.getValue(state, 'resource.org.data.taxID');
     const data = {
       ...opts.data
     };
 
-    const hasBeenUpdated = opts.hasBeenUpdated || data.hasBeenUpdated;
+    if (data.contactPhone) data.contactPhone = util.prunePhone(data.contactPhone);
+    if (!data.SSN) data.SSN = _v.formatTaxID(taxID);
+    if (!data.dateOfBirth) {
+      const minDate = Moment().subtract(18, 'years');
+      const minDateFormat = minDate.format('MM/DD/YYYY');
+      const minDateTS = parseInt(minDate.valueOf()/1000);
+      const maxDate = Moment().subtract(60, 'years');
+      const maxDateFormat = maxDate.format('MM/DD/YYYY');
+      const maxDateTS = parseInt(maxDate.valueOf()/1000);
+      const randomTS = util.getRand(minDateTS, maxDateTS);
+      data.dateOfBirth = randomTS;
+    }
 
-    if (hasBeenUpdated) {
+    if (opts.hasBeenUpdated) {
       dispatch(sendResource(data.ID ? 'orgPrincipal' : 'orgPrincipals', {
         id: data.ID ? [data.ID] : null,
         orgID,
         data,
+        method: data.ID ? 'patch' : 'post',
         callback: (res, err) => {
           if (opts.callback) opts.callback(res, err);
-        }
+        },
+        resourcesToLoad: ['orgPrincipals']
       }));
     } else {
       if (opts.callback) opts.callback();

@@ -22,7 +22,7 @@ class OrgAdmin extends React.Component {
 
   componentDidMount() {
     this.props.checkSignupPhase({
-      forceStep: ENV !== 'production' ? 1 : null
+      forceStep: ENV !== 'production' ? 3 : null
     });
   }
 

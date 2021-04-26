@@ -21,7 +21,7 @@ class Principal extends React.Component {
   }
 
   async componentDidMount() {
-    if (util.isEmpty(this.props.bankAccount)) {
+    if (util.isEmpty(this.props.principal)) {
       const initLoading = await this.props.setMerchantApp('loading', true);
       if (initLoading) {
         this.props.getResource('orgPrincipals', {
@@ -49,6 +49,7 @@ class Principal extends React.Component {
 
     if (loading) return <Loader msg='Loading Principal...' />
 
+    const ID = util.getValue(principal, 'ID');
     const emailAddress = util.getValue(principal, 'emailAddress');
     const firstName = util.getValue(principal, 'firstName');
     const lastName = util.getValue(principal, 'lastName');

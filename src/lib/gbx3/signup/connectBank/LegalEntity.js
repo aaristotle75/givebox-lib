@@ -6,22 +6,39 @@ import * as _v from '../../../form/formValidate';
 import * as selectOptions from '../../../form/selectOptions';
 import AnimateHeight from 'react-animate-height';
 import {
-  getLegalEntity,
-  updateMerchantApp
+  setMerchantApp
 } from '../../redux/merchantActions';
+import {
+  getResource,
+  sendResource
+} from '../../../api/helpers';
 import Moment from 'moment';
 
 class LegalEntity extends React.Component {
 
   constructor(props) {
     super(props);
-    this.updateField = this.updateField.bind(this);
+    this.onBlurWebsiteURL = this.onBlurWebsiteURL.bind(this);
     this.state = {
     };
   }
 
-  updateField(field, value) {
-    this.props.updateMerchantApp('legalEntity', { [field]: value, hasBeenUpdated: true });
+  onBlurWebsiteURL(name, value) {
+    const {
+      websiteURL
+    } = this.props;
+
+    if (_v.validateWebsiteURL(value) && value !== websiteURL) {
+      this.props.sendResource('org', {
+        method: 'patch',
+        data: {
+          websiteURL: value
+        },
+        isSending: false
+      });
+    } else {
+      this.props.fieldProp('websiteURL', { error: _v.msgs.url });
+    }
   }
 
   render() {
@@ -29,24 +46,13 @@ class LegalEntity extends React.Component {
     const {
       group,
       legalEntity,
-      address
+      websiteURL
     } = this.props;
 
-    const {
-      websiteURL,
-      annualCreditCardSalesVolume,
-      yearsInBusiness,
-      contactPhone
-    } = legalEntity;
 
-    const {
-      line1,
-      line2,
-      city,
-      state,
-      zip,
-      country
-    } = address;
+    const annualCreditCardSalesVolume = util.getValue(legalEntity, 'annualCreditCardSalesVolume');
+    const yearsInBusiness = util.getValue(legalEntity, 'yearsInBusiness');
+    const contactPhone = util.getValue(legalEntity, 'contactPhone');
 
     return (
       <div className='fieldGroup'>
@@ -58,7 +64,8 @@ class LegalEntity extends React.Component {
           alidate: 'url',
           maxLength: 128,
           value: websiteURL,
-          required: true
+          required: true,
+          onBlur: this.onBlurWebsiteURL
         })}
         {this.props.textField('annualCreditCardSalesVolume', {
           group,
@@ -86,12 +93,7 @@ class LegalEntity extends React.Component {
             max: 500
           },
           value: yearsInBusiness || '',
-          required: true,
-          onBlur: (name, value) => {
-            if (value) {
-              this.updateField(name, util.prunePhone(value));
-            }
-          }
+          required: true
         })}
         {this.props.textField('contactPhone', {
           group,
@@ -100,12 +102,7 @@ class LegalEntity extends React.Component {
           label: 'Business Contact Phone',
           validate: 'phone',
           required: true,
-          value: contactPhone ? _v.formatPhone(contactPhone) : '',
-          onBlur: (name, value) => {
-            if (value) {
-              this.updateField(name, util.prunePhone(value));
-            }
-          }
+          value: contactPhone ? _v.formatPhone(contactPhone) : ''
         })}
       </div>
     )
@@ -118,16 +115,19 @@ LegalEntity.defaultProps = {
 
 function mapStateToProps(state, props) {
 
-  const legalEntity = util.getValue(state, 'merchantApp.legalEntity', {});
-  const address = util.getValue(state, 'merchantApp.address', {});
+  const websiteURL = util.getValue(state, 'resource.org.data.websiteURL');
+  const legalEntity = util.getValue(state, 'resource.orgLegalEntity.data', {});
+  const loading = util.getValue(state, 'merchantApp.loading', false);
 
   return {
+    websiteURL,
     legalEntity,
-    address
+    loading
   }
 }
 
 export default connect(mapStateToProps, {
-  getLegalEntity,
-  updateMerchantApp
+  getResource,
+  sendResource,
+  setMerchantApp
 })(LegalEntity);

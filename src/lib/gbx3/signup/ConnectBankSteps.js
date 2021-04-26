@@ -139,7 +139,6 @@ class ConnectBankStepsForm extends React.Component {
       }
 
       case 'addBank': {
-        if (!data.number) data.number = null;
         this.props.saveBankAccount({
           hasBeenUpdated,
           data,
@@ -156,8 +155,8 @@ class ConnectBankStepsForm extends React.Component {
       }
 
       case 'principal': {
-        if (data.contactPhone) data.contactPhone = util.prunePhone(data.contactPhone);
         this.props.savePrincipal({
+          hasBeenUpdated,
           data,
           callback: (res, err) => {
             if (!err) {
@@ -173,6 +172,7 @@ class ConnectBankStepsForm extends React.Component {
 
       case 'legalEntity': {
         this.props.saveLegalEntity({
+          hasBeenUpdated,
           data,
           callback: (res, err) => {
             if (!err) {
@@ -188,6 +188,7 @@ class ConnectBankStepsForm extends React.Component {
 
       case 'address': {
         this.props.saveAddress({
+          hasBeenUpdated,
           data,
           callback: (res, err) => {
             if (!err) {
