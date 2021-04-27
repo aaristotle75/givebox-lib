@@ -19,11 +19,24 @@ class SignupMenu extends React.Component {
     this.renderSteps = this.renderSteps.bind(this);
     this.state = {
     };
-    const configStep = config.signupPhase[props.signupPhase];
-    this.stepsTodo = configStep.stepsTodo;
-    this.showStepNumber = configStep.showStepNumber;
-    this.menuHeader = configStep.menuHeader;
-    this.modalName = configStep.modalName;
+    this.configStep = config.signupPhase[this.props.signupPhase];
+    this.stepsTodo = this.configStep.stepsTodo;
+    this.showStepNumber = this.configStep.showStepNumber;
+    this.menuHeader = this.configStep.menuHeader;
+    this.modalName = this.configStep.modalName;
+  }
+
+  componentDidMount() {
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.signupPhase !== this.props.signupPhase) {
+      this.configStep = config.signupPhase[this.props.signupPhase];
+      this.stepsTodo = this.configStep.stepsTodo;
+      this.showStepNumber = this.configStep.showStepNumber;
+      this.menuHeader = this.configStep.menuHeader;
+      this.modalName = this.configStep.modalName;
+    }
   }
 
   renderSteps() {

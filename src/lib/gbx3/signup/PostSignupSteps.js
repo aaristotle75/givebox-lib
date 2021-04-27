@@ -74,7 +74,7 @@ class PostSignupSteps extends React.Component {
     if (completedStep) {
       setTimeout(async () => {
         if (slug === 'share' && closeWhenAllStepsCompleted) {
-          const updated = await this.props.updateOrgSignup({ step: 0, signupPhase: 'connectBank' }, 'postSignup');
+          const updated = await this.props.updateOrgSignup({ signupPhase: 'connectBank' }, 'postSignup');
           if (updated) {
             this.props.saveOrg({
               orgUpdated: true,

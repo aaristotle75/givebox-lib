@@ -331,7 +331,7 @@ class SignupStepsForm extends React.Component {
       return false;
     }
 
-    const completedStep = await this.props.stepCompleted(slug);
+    const completedStep = await this.props.stepCompleted(slug, false);
     if (completedStep) {
       setTimeout(() => {
         this.setState({ saving: false }, this.props.gotoNextStep);
@@ -369,8 +369,9 @@ class SignupStepsForm extends React.Component {
 
     switch (group) {
       case 'orgName': {
-        if (!validTaxID || validTaxID !== org.taxID) return this.validateTaxID(org.taxID, group);
-        else return this.saveStep(group);
+        if (!validTaxID || validTaxID !== org.taxID) this.validateTaxID(org.taxID, group);
+        else this.saveStep(group);
+        break;
       }
 
       case 'mission': {
@@ -378,19 +379,21 @@ class SignupStepsForm extends React.Component {
           if (!org.mission) this.props.fieldProp('mission', { error: 'About Your Organization is Required' });
           if (!org.categoryID) this.setState({ categoryIDError: 'Organization Category is Required' });
           this.props.formProp({ error: true, errorMsg: 'Please fix the errors below in red.' });
-          return this.setState({ saving: false });
+          this.setState({ saving: false });
         } else {
-          return this.saveStep(group);
+          this.saveStep(group);
         }
+        break;
       }
 
       case 'logo': {
         if (!org.imageURL) {
           this.props.formProp({ error: true, errorMsg: 'Please upload a logo or profile picture to continue.'});
-          return this.setState({ saving: false });
+          this.setState({ saving: false });
         } else {
-          return this.saveStep('logo');
+          this.saveStep('logo');
         }
+        break;
       }
 
       case 'themeColor': {
@@ -400,9 +403,10 @@ class SignupStepsForm extends React.Component {
             this.props.setOrgStyle({
               backgroundColor: themeColor
             });
-            return this.saveStep('themeColor');
+            this.saveStep('themeColor');
           }
         }
+        break;
       }
 
       case 'image': {
@@ -410,36 +414,41 @@ class SignupStepsForm extends React.Component {
           case 'video': {
             if (!gbx3.videoURL) {
               this.props.formProp({ error: true, errorMsg: 'Please enter a video url to continue.'});
-              return this.setState({ saving: false, mediaTypeError: 'video' });
+              this.setState({ saving: false, mediaTypeError: 'video' });
             } else {
-              return this.saveStep('image');
+              this.saveStep('image');
             }
+            break;
           }
 
           case 'image':
           default: {
             if (!gbx3.imageURL) {
               this.props.formProp({ error: true, errorMsg: 'Please upload an image to continue.'});
-              return this.setState({ saving: false, mediaTypeError: 'image' });
+              this.setState({ saving: false, mediaTypeError: 'image' });
             } else {
-              return this.saveStep('image');
+              this.saveStep('image');
             }
+            break;
           }
         }
+        break;
       }
 
       case 'account': {
         const password = util.getValue(fields, 'password.value');
         if (!acceptedTerms) {
           this.props.formProp({ error: true, errorMsg: 'You must agree to Givebox Terms of Service to continue.'});
-          return this.setState({ saving: false });
+          this.setState({ saving: false });
         } else {
-          return this.determineCreateAccount(owner.email, password);
+          this.determineCreateAccount(owner.email, password);
         }
+        break;
       }
 
       default: {
-        return this.saveStep(group);
+        this.saveStep(group);
+        break;
       }
     }
   }
