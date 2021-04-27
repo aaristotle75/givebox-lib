@@ -35,6 +35,7 @@ class ConnectBankStepsForm extends React.Component {
     this.processForm = this.processForm.bind(this);
     this.checkRequiredCompleted = this.checkRequiredCompleted.bind(this);
     this.saveStep = this.saveStep.bind(this);
+    this.saveCallback = this.saveCallback.bind(this);
     this.callbackAfter = this.callbackAfter.bind(this);
 
     this.state = {
@@ -96,7 +97,7 @@ class ConnectBankStepsForm extends React.Component {
     return true;
   }
 
-  async saveStep(slug, error = false, delay = 1000) {
+  async saveStep(slug, delay = 1000, error = false) {
 
     if (error) {
       this.setState({ saving: false });
@@ -105,18 +106,31 @@ class ConnectBankStepsForm extends React.Component {
 
     const completedStep = await this.props.stepCompleted(slug);
     if (completedStep) {
-      this.setState({ saving: false }, () => {
-        setTimeout(() => {
-          this.props.gotoNextStep();
-        }, delay)
-      });
+      setTimeout(() => {
+        this.setState({ saving: false }, this.props.gotoNextStep);
+      }, delay);
     } else {
       this.setState({ saving: false }, this.props.gotoNextStep);
     }
   }
 
+  saveCallback(res, err, group) {
+    const {
+      formState
+    } = this.props;
+
+    const hasBeenUpdated = util.getValue(formState, 'updated');
+
+    if (!err) {
+      this.saveStep(group, hasBeenUpdated ? 1000 : 0);
+    } else {
+      if (!this.props.getErrors(err)) this.props.formProp({error: this.props.savingErrorMsg});
+      this.setState({ saving: false });
+    }
+  }
+
   async processForm(fields, callback, group) {
-    util.toTop('modalOverlay-stepsForm');
+    util.toTop('modalOverlay-orgConnectBankSteps');
     this.setState({ saving: true });
     const {
       step,
@@ -143,14 +157,7 @@ class ConnectBankStepsForm extends React.Component {
         this.props.saveBankAccount({
           hasBeenUpdated,
           data,
-          callback: (res, err) => {
-            if (!err) {
-              this.saveStep(group);
-            } else {
-              if (!this.props.getErrors(err)) this.props.formProp({error: this.props.savingErrorMsg});
-              this.setState({ saving: false });
-            }
-          }
+          callback: (res, err) => this.saveCallback(res, err, group)
         })
         break;
       }
@@ -159,14 +166,7 @@ class ConnectBankStepsForm extends React.Component {
         this.props.savePrincipal({
           hasBeenUpdated,
           data,
-          callback: (res, err) => {
-            if (!err) {
-              this.saveStep(group);
-            } else {
-              if (!this.props.getErrors(err)) this.props.formProp({error: this.props.savingErrorMsg});
-              this.setState({ saving: false });
-            }
-          }
+          callback: (res, err) => this.saveCallback(res, err, group)
         });
         break;
       }
@@ -175,14 +175,7 @@ class ConnectBankStepsForm extends React.Component {
         this.props.saveLegalEntity({
           hasBeenUpdated,
           data,
-          callback: (res, err) => {
-            if (!err) {
-              this.saveStep(group);
-            } else {
-              if (!this.props.getErrors(err)) this.props.formProp({error: this.props.savingErrorMsg});
-              this.setState({ saving: false });
-            }
-          }
+          callback: (res, err) => this.saveCallback(res, err, group)
         });
         break;
       }
@@ -191,19 +184,12 @@ class ConnectBankStepsForm extends React.Component {
         this.props.saveAddress({
           hasBeenUpdated,
           data,
-          callback: (res, err) => {
-            if (!err) {
-              this.saveStep(group);
-            } else {
-              if (!this.props.getErrors(err)) this.props.formProp({error: this.props.savingErrorMsg});
-              this.setState({ saving: false });
-            }
-          }
+          callback: (res, err) => this.saveCallback(res, err, group)
         });
         break;
       }
 
-      case 'checkStatus': {
+      case 'connectStatus': {
         this.setState({ saving: false });
         break;
       }

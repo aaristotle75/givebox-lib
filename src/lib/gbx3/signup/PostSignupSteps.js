@@ -10,6 +10,9 @@ import GBLink from '../../common/GBLink';
 import Image from '../../common/Image';
 import HelpfulTip from '../../common/HelpfulTip';
 import SignupShare from './SignupShare';
+import {
+  checkSignupPhase
+} from '../redux/gbx3actions';
 
 const GBX3_URL = process.env.REACT_APP_ENV === 'local' ? process.env.REACT_APP_GBX_SHARE : process.env.REACT_APP_GBX_URL;
 
@@ -65,16 +68,11 @@ class PostSignupSteps extends React.Component {
     }
   }
 
-  async saveStep(slug, error = false, delay = 1000, closeWhenAllStepsCompleted = true) {
-
-    if (error) {
-      this.setState({ saving: false });
-      return false;
-    }
-
+  async saveStep(slug, delay = 1000, closeWhenAllStepsCompleted = true) {
+    this.setState({ saving: true });
     const completedStep = await this.props.stepCompleted(slug);
     if (completedStep) {
-      this.setState({ saving: false }, async () => {
+      setTimeout(async () => {
         if (slug === 'share' && closeWhenAllStepsCompleted) {
           const updated = await this.props.updateOrgSignup({ step: 0, signupPhase: 'connectBank' }, 'postSignup');
           if (updated) {
@@ -84,20 +82,14 @@ class PostSignupSteps extends React.Component {
               callback: () => {
                 this.props.updateAdmin({ open: false });
                 this.props.toggleModal('orgPostSignupSteps', false);
+                this.props.checkSignupPhase();
               }
             })
           }
         } else {
-          setTimeout(() => {
-            this.props.gotoNextStep();
-          }, delay);
+          this.setState({ saving: false }, this.props.gotoNextStep);
         }
-      });
-    } else {
-      this.setState({ saving: false }, this.props.gotoNextStep);
-      if (slug === 'share') {
-        this.props.toggleModal('orgPostSignupSteps', false);
-      }
+      }, delay);
     }
   }
 
@@ -274,10 +266,10 @@ class PostSignupSteps extends React.Component {
 }
 
 function mapStateToProps(state, props) {
-
   return {
   }
 }
 
 export default connect(mapStateToProps, {
+  checkSignupPhase
 })(PostSignupSteps);

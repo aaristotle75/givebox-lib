@@ -324,7 +324,7 @@ class SignupStepsForm extends React.Component {
     }
   }
 
-  async saveStep(slug, error = false, delay = 1000) {
+  async saveStep(slug, delay = 1000, error = false) {
 
     if (error) {
       this.setState({ saving: false });
@@ -333,18 +333,16 @@ class SignupStepsForm extends React.Component {
 
     const completedStep = await this.props.stepCompleted(slug);
     if (completedStep) {
-      this.setState({ saving: false }, () => {
-        setTimeout(() => {
-          this.props.gotoNextStep();
-        }, delay)
-      });
+      setTimeout(() => {
+        this.setState({ saving: false }, this.props.gotoNextStep);
+      }, delay);
     } else {
       this.setState({ saving: false }, this.props.gotoNextStep);
     }
   }
 
   async processForm(fields, callback, group) {
-    util.toTop('modalOverlay-stepsForm');
+    util.toTop('modalOverlay-orgSignupSteps');
     this.setState({ saving: true });
     const {
       step,
@@ -498,7 +496,7 @@ class SignupStepsForm extends React.Component {
           } else {
             this.props.formProp({ error: true, errorMsg: <div>The Tax ID you entered is taken by another user.<span style={{ marginTop: 5, display: 'block', fontSize: 12, fontStyle: 'italic' }}>To dispute this claim:<br/>Contact support@givebox.com with your Organization Name, Tax ID and explain your dispute.</span></div> });
             this.props.fieldProp('taxID', { error: 'This Tax ID is taken by another user.' });
-            return this.saveStep(group, true);
+            return this.saveStep(group, 0, true);
           }
         } else {
           this.props.updateOrgSignup({ validTaxID: taxID });
@@ -512,7 +510,7 @@ class SignupStepsForm extends React.Component {
     this.props.formProp({ error: false });
     const updated = await this.props.updateOrgSignupField(name, { [field]: url });
     if (updated) {
-      this.saveStep(slug, false, 3000);
+      this.saveStep(slug, 3000);
     }
   }
 

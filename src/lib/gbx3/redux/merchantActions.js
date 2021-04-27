@@ -301,6 +301,8 @@ export function saveAddress(options = {}) {
           if (opts.callback) opts.callback(res, err);
         }
       }));
+    } else {
+      if (opts.callback) opts.callback();
     }
   }
 }
