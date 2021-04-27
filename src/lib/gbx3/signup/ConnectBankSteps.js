@@ -203,6 +203,11 @@ class ConnectBankStepsForm extends React.Component {
         break;
       }
 
+      case 'checkStatus': {
+        this.setState({ saving: false });
+        break;
+      }
+
       /*
       default: {
         return this.saveStep(group);

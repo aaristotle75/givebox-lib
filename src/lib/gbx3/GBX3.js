@@ -171,7 +171,16 @@ class GBX3 extends React.Component {
   }
 
   loadSignup() {
-    this.props.loadOrgSignup();
+    const {
+      access
+    } = this.props;
+
+    const role = util.getValue(access, 'role');
+    if (role === 'super') {
+      history.push(`${ENTRY_URL}`);
+    } else {
+      this.props.loadOrgSignup();
+    }
   }
 
   loadBrowse(setCart = true) {

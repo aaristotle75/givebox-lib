@@ -276,28 +276,9 @@ export function savePrincipal(options = {}) {
   }
 }
 
-export function getAddress(options = {}) {
-  const opts = {
-    reload: true,
-    orgID: null,
-    callback: null,
-    ...options
-  };
-  return (dispatch, getState) => {
-    const state = getState();
-    const orgID = opts.orgID || util.getValue(state, 'gbx3.info.orgID');
-    dispatch(getResource('orgAddresses', {
-      orgID,
-      reload: opts.reload,
-      callback: (res, err) => {
-        if (opts.callback) opts.callback(res, err);
-      }
-    }));
-  }
-}
-
 export function saveAddress(options = {}) {
   const opts = {
+    hasBeenUpdated: false,
     data: {},
     orgID: null,
     callback: null,
@@ -310,13 +291,16 @@ export function saveAddress(options = {}) {
       ...opts.data
     };
 
-    dispatch(sendResource(data.ID ? 'orgAddress' : 'orgAddresses', {
-      id: data.ID ? [data.ID] : null,
-      orgID,
-      data,
-      callback: (res, err) => {
-        if (opts.callback) opts.callback(res, err);
-      }
-    }));
+    if (opts.hasBeenUpdated) {
+      dispatch(sendResource(data.ID ? 'orgAddress' : 'orgAddresses', {
+        id: data.ID ? [data.ID] : null,
+        orgID,
+        data,
+        method: data.ID ? 'patch' : 'post',
+        callback: (res, err) => {
+          if (opts.callback) opts.callback(res, err);
+        }
+      }));
+    }
   }
 }

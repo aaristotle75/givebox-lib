@@ -7,55 +7,65 @@ import * as _v from '../../../form/formValidate';
 import * as selectOptions from '../../../form/selectOptions';
 import AnimateHeight from 'react-animate-height';
 import {
-  getAddress,
-  updateMerchantApp
+  setMerchantApp
 } from '../../redux/merchantActions';
+import {
+  getResource
+} from '../../../api/helpers';
 import Moment from 'moment';
 
 class Address extends React.Component {
 
   constructor(props) {
     super(props);
-    this.updateField = this.updateField.bind(this);
     this.state = {
-      loading: true
     };
   }
 
-  componentDidMount() {
-    this.props.getAddress({
-      reload: false,
-      callback: () => {
-        this.setState({ loading: false });
+  async componentDidMount() {
+    if (util.isEmpty(this.props.address)) {
+      const initLoading = await this.props.setMerchantApp('loading', true);
+      if (initLoading) {
+        this.props.getResource('orgAddresses', {
+          reload: false,
+          search: {
+            sort: 'createdAt',
+            order: 'desc'
+          },
+          callback: (res, err) => {
+            this.props.setMerchantApp('loading', false);
+          }
+        });
       }
-    });
-  }
-
-  updateField(field, value) {
-    this.props.updateMerchantApp('address', { [field]: value });
+    }
   }
 
   render() {
 
     const {
       group,
-      address
+      address,
+      loading
     } = this.props;
 
-    const {
-      line1,
-      line2,
-      city,
-      state,
-      zip,
-      country
-    } = address;
+    if (loading) return <Loader msg='Loading Address...' />
 
-    if (this.state.loading) return <Loader msg='Loading Address...' />
+    const ID = util.getValue(address, 'ID');
+    const line1 = util.getValue(address, 'line1');
+    const line2 = util.getValue(address, 'line2');
+    const city = util.getValue(address, 'city');
+    const state = util.getValue(address, 'state');
+    const zip = util.getValue(address, 'zip');
 
     return (
       <div className='fieldGroup'>
         <div className='where-group'>
+          {this.props.textField('ID', {
+            group,
+            type: 'hidden',
+            value: ID,
+            required: false
+          })}
           {this.props.textField('line1', {
             group,
             fixedLabel: true,
@@ -114,14 +124,18 @@ Address.defaultProps = {
 
 function mapStateToProps(state, props) {
 
-  const address = util.getValue(state, 'merchantApp.address', {});
+  const orgAddresses = util.getValue(state, 'resource.orgAddresses', {});
+  const orgAddressesData = util.getValue(orgAddresses, 'data');
+  const address = util.getValue(orgAddressesData, 0, {});
+  const loading = util.getValue(state, 'merchantApp.loading', false);
 
   return {
-    address
+    address,
+    loading
   }
 }
 
 export default connect(mapStateToProps, {
-  getAddress,
-  updateMerchantApp
+  getResource,
+  setMerchantApp
 })(Address);
