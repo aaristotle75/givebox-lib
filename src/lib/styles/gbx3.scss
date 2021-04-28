@@ -817,6 +817,13 @@
     @include transition(background .25s);
   }
 
+  .leftPanelOpenButton.open {
+    position: absolute;
+    opacity: 0;
+    left: $panelWidth - 45px;
+    z-index: 900000;
+  }
+
   .leftPanel {
     position: absolute;
     top: $topOffset;
@@ -1045,12 +1052,6 @@
   .leftPanel.open {
     width: $panelWidth;
     @include box-shadow(0px 2px 2px 1px rgba(0, 0, 0, 0.45));
-    .leftPanelOpenButton {
-      position: absolute;
-      opacity: 0;
-      left: $panelWidth - 45px;
-      z-index: 900000;
-    }
 
     .leftPanelClose {
       position: fixed;
