@@ -829,17 +829,17 @@ label.active {
 
   .cardsAccepted {
     position: absolute;
-    height: 50px;
-    width: 160px;
+    height: 30px;
+    width: 175px;
     top: -20px;
     left: -5px;
-    background-image: url('https://cdn.givebox.com/givebox/public/images/brands-accepted.png');
+    background-image: url('https://cdn.givebox.com/givebox/public/images/cards/cards-accepted.png');
     background-repeat: no-repeat;
-    background-size: 143px 23px;
+    background-size: 175px 30px;
   }
 
   .debitCardsAccepted {
-    background-image: url('https://cdn.givebox.com/givebox/public/images/brands-accepted-debit.png');
+    background-image: url('https://cdn.givebox.com/givebox/public/images/cards/cards-accepted-debit.png');
   }
 }
 
@@ -889,7 +889,7 @@ label.active {
 }
 
 .cardsAcceptedNoAmex {
-  background-image: url('https://cdn.givebox.com/givebox/public/images/brands-accepted-noamex');
+  background-image: url('https://cdn.givebox.com/givebox/public/images/cards/cards-accepted-noamex');
 }
 
 .default {
@@ -898,19 +898,19 @@ label.active {
 }
 
 .visa {
-  background-image: url('https://cdn.givebox.com/givebox/public/images/brand-visa-1.png');
+  background-image: url('https://cdn.givebox.com/givebox/public/images/cards/visa.png');
 }
 
 .mastercard {
-  background-image: url('https://cdn.givebox.com/givebox/public/images/brand-mastercard-1.png');
+  background-image: url('https://cdn.givebox.com/givebox/public/images/cards/mastercard.png');
 }
 
 .amex {
-  background-image: url('https://cdn.givebox.com/givebox/public/images/brand-amex-1.png');
+  background-image: url('https://cdn.givebox.com/givebox/public/images/cards/amex.png');
 }
 
 .discover {
-  background-image: url('https://cdn.givebox.com/givebox/public/images/brand-discover-1.png');
+  background-image: url('https://cdn.givebox.com/givebox/public/images/cards/discover.png');
 }
 
 /*---------- PASSWORD STRENGTH -----*/

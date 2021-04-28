@@ -280,8 +280,8 @@ class BasicBuilder extends React.Component {
         <div className={`topPanel`}>
           {this.renderTopPanel()}
         </div>
+        <div className={`leftPanelOpenButton ${open ? 'open' : 'close'}`} onClick={this.props.toggleAdminLeftPanel}><span className='icon icon-menu'></span></div>
         <div className={`leftPanel ${open ? 'open' : 'close'}`}>
-          <div className='leftPanelOpenButton' onClick={this.props.toggleAdminLeftPanel}><span className='icon icon-menu'></span></div>
           <BasicBuilderMenu
             config={this.config}
             steps={this.steps}
