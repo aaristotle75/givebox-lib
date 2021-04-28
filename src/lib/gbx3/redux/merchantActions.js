@@ -306,3 +306,42 @@ export function saveAddress(options = {}) {
     }
   }
 }
+
+/****
+* Plaid Actions
+*/
+export function getLinkToken() {
+  return (dispatch) => {
+    dispatch(sendResource('plaidLink', {
+      method: 'POST',
+      callback: (res, err) => {
+        if (!util.isEmpty(res) && !err) {
+          const linkToken = util.getValue(res, 'linkToken');
+          dispatch(updateMerchantApp('plaid', { linkToken }));
+        }
+      }
+    }));
+  }
+}
+
+export function accessToken(publicToken, metaData) {
+  return (dispatch) => {
+    const account_id = util.getValue(metaData, 'account_id');
+    dispatch(updateMerchantApp('plaid', { account_id }));
+
+    this.props.sendResource('plaidAccess', {
+      data: {
+        publicToken
+      },
+      method: 'POST',
+      callback: (res, err) => {
+        console.log('execute plaidAccess -> ', res, err);
+      }
+    })
+  }
+}
+
+
+/**
+* End Plaid Actions
+*/

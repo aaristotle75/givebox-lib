@@ -87,17 +87,19 @@ class SignupMenu extends React.Component {
     if (stepsOnly) return this.renderSteps();
 
     return (
-      <div className={`leftPanel ${open ? 'open' : 'close'}`}>
-        <div className='leftPanelOpenButton' onClick={this.props.toggleAdminLeftPanel}><span className='icon icon-menu'></span></div>
-        <div className='leftPanelContainer'>
-          <div className={`leftPanelScroller`} style={{ marginTop: 0 }}>
-            <GBLink className='leftPanelClose link' onClick={() => this.props.toggleAdminLeftPanel()}>
-              <span className='icon icon-x'></span>
-            </GBLink>
-            {this.renderSteps()}
+      <>
+        <div className={`leftPanelOpenButton ${open ? 'open' : 'close'}`} onClick={this.props.toggleAdminLeftPanel}><span className='icon icon-menu'></span></div>
+        <div className={`leftPanel ${open ? 'open' : 'close'}`}>
+          <div className='leftPanelContainer'>
+            <div className={`leftPanelScroller`} style={{ marginTop: 0 }}>
+              <GBLink className='leftPanelClose link' onClick={() => this.props.toggleAdminLeftPanel()}>
+                <span className='icon icon-x'></span>
+              </GBLink>
+              {this.renderSteps()}
+            </div>
           </div>
         </div>
-      </div>
+      </>
     )
   }
 }

@@ -25,6 +25,7 @@ import BankAccount from './connectBank/BankAccount';
 import Principal from './connectBank/Principal';
 import LegalEntity from './connectBank/LegalEntity';
 import Address from './connectBank/Address';
+import PlaidConnect from './connectBank/PlaidConnect';
 
 class ConnectBankStepsForm extends React.Component {
 
@@ -396,10 +397,16 @@ class ConnectBankStepsForm extends React.Component {
             }}><span style={{ marginRight: '5px' }} className='icon icon-chevron-left'></span> {isMobile ? 'Back' : 'Previous Step' }</GBLink> : <span>&nbsp;</span> }
           </div>
           <div className='button-item'>
-            {this.props.saveButton(this.processForm, { group: slug, label: item.saveButtonLabel })}
+            { slug === 'connectBank' ?
+              <PlaidConnect
+
+              />
+            :
+              this.props.saveButton(this.processForm, { group: slug, label: item.saveButtonLabel })
+            }
           </div>
           <div className='button-item' style={{ width: 150 }}>
-            { slug === 'connectBank' ?
+            {/* slug === 'connectBank' ?
               plaidAccountID ?
                 <GBLink
                   className='link'
@@ -429,7 +436,7 @@ class ConnectBankStepsForm extends React.Component {
                 >
                   <span className='buttonAlignText'>Manually Connect a Bank Account <span className='icon icon-chevron-right'></span></span>
                 </GBLink>
-            : null }
+            : null */}
           </div>
         </div> : null }
       </div>

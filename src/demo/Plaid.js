@@ -69,6 +69,7 @@ class Plaid extends React.Component {
   }
 
   auth() {
+    console.log('execute auth -> ');
     this.props.getResource('plaidAuth', {
       method: 'GET',
       callback: (res, err) => {
@@ -185,6 +186,9 @@ class Plaid extends React.Component {
             <PlaidLink
               token={linkToken}
               onSuccess={this.accessToken}
+              onExit={(a, b) => {
+                console.log('execute onExit', a, b);
+              }}
             >
               Connect a bank account
             </PlaidLink>
@@ -194,7 +198,7 @@ class Plaid extends React.Component {
         <br /><br />
         <GBLink onClick={() => this.identity()}>Get Identity</GBLink>
         <br /><br />
-        <GBLink onClick={() => this.accounts()}>Get Accounts</GBLink>
+        <GBLink onClick={() => this.accounts()}>Get Accounts (Use Auth instead because it returns number and routing)</GBLink>
         <br /><br />
         <GBLink onClick={() => this.delete()}>Delete Token</GBLink>
       </div>

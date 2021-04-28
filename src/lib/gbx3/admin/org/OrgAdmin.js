@@ -22,7 +22,9 @@ class OrgAdmin extends React.Component {
 
   componentDidMount() {
     this.props.checkSignupPhase({
-      forceStep: ENV !== 'production' ? null : null
+      forceStep: ENV !== 'production' ? null : null,
+      openModal: true,
+      openAdmin: true
     });
   }
 
@@ -35,8 +37,8 @@ class OrgAdmin extends React.Component {
     return (
       <>
         <OrgModalRoutes />
+        <div className={`leftPanelOpenButton ${open ? 'open' : 'close'}`} onClick={this.props.toggleAdminLeftPanel}><span className='icon icon-menu'></span></div>
         <div className={`leftPanel ${open ? 'open' : 'close'}`}>
-          <div className='leftPanelOpenButton' onClick={this.props.toggleAdminLeftPanel}><span className='icon icon-menu'></span></div>
           <AdminMenu
             blockType={'org'}
           />

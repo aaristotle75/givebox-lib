@@ -307,6 +307,12 @@
     }
   }
 
+  .avatarMenu {
+    .orgImage {
+      border-radius: 50%;
+    }
+  }
+
   .avatarMenu li:hover {
     background: linear-gradient(to right, $mainColor 0%, $green 100%);
   }

@@ -64,6 +64,7 @@ export function merchantApp(state = {
   },
   plaid: {
     hasBeenUpdated: false,
+    linkToken: null,
     accountID: null,
     authMeta: null,
     identityMeta: null

@@ -228,6 +228,15 @@ export const signupPhase = {
     showStepNumber: true,
     stepsTodo: [
       connectBank,
+      connectStatus
+    ],
+    manual: false
+  },
+  manualConnect: {
+    menuHeader: 'Add Bank Steps',
+    modalName: 'orgConnectBankSteps',
+    showStepNumber: true,
+    stepsTodo: [
       addBank,
       principal,
       legalEntity,
