@@ -8,6 +8,9 @@ import {
   toggleAdminLeftPanel,
   checkSignupPhase
 } from '../../redux/gbx3actions';
+import {
+  getMerchantVitals
+} from '../../redux/merchantActions';
 import OrgModalRoutes from '../../OrgModalRoutes';
 
 const ENV = process.env.REACT_APP_ENV;
@@ -21,11 +24,16 @@ class OrgAdmin extends React.Component {
   }
 
   componentDidMount() {
-    this.props.checkSignupPhase({
-      forceStep: ENV !== 'production' ? null : null,
+    const testConfig = {
+      forceStep: null,
       openModal: true,
       openAdmin: true
-    });
+    };
+
+    this.props.checkSignupPhase(ENV !== 'production' ? testConfig : {});
+    if (util.isEmpty(this.props.merchantVitals)) {
+      this.props.getMerchantVitals();
+    }
   }
 
   render() {
@@ -33,6 +41,8 @@ class OrgAdmin extends React.Component {
     const {
       openAdmin: open
     } = this.props;
+
+    if (util.isEmpty(this.props.merchantVitals)) return <Loader msg='Org Admin Loading Merchant Vitals...' />;
 
     return (
       <>
@@ -71,14 +81,17 @@ function mapStateToProps(state, props) {
   const orgID = util.getValue(gbx3, 'info.orgID');
   const admin = util.getValue(gbx3, 'admin', {});
   const openAdmin = util.getValue(admin, 'open');
+  const merchantVitals = util.getValue(state, 'merchantVitals', {});
 
   return {
     orgID,
-    openAdmin
+    openAdmin,
+    merchantVitals
   }
 }
 
 export default connect(mapStateToProps, {
   toggleAdminLeftPanel,
-  checkSignupPhase
+  checkSignupPhase,
+  getMerchantVitals
 })(OrgAdmin);

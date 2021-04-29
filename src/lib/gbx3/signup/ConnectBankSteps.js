@@ -19,7 +19,8 @@ import {
   savePrincipal,
   saveLegalEntity,
   saveAddress,
-  saveBankAccount
+  saveBankAccount,
+  checkSubmitMerchantApp
 } from '../redux/merchantActions';
 import BankAccount from './connectBank/BankAccount';
 import Principal from './connectBank/Principal';
@@ -113,6 +114,8 @@ class ConnectBankStepsForm extends React.Component {
     } else {
       this.setState({ saving: false }, this.props.gotoNextStep);
     }
+
+    this.props.checkSubmitMerchantApp();
   }
 
   saveCallback(res, err, group) {
@@ -128,6 +131,7 @@ class ConnectBankStepsForm extends React.Component {
       if (!this.props.getErrors(err)) this.props.formProp({error: this.props.savingErrorMsg});
       this.setState({ saving: false });
     }
+    this.props.formProp({ updated: false });
   }
 
   async processForm(fields, callback, group) {
@@ -191,7 +195,7 @@ class ConnectBankStepsForm extends React.Component {
       }
 
       case 'connectStatus': {
-        this.setState({ saving: false });
+        this.saveStep(group);
         break;
       }
 
@@ -399,7 +403,7 @@ class ConnectBankStepsForm extends React.Component {
           <div className='button-item'>
             { slug === 'connectBank' ?
               <PlaidConnect
-
+                {...this.props}
               />
             :
               this.props.saveButton(this.processForm, { group: slug, label: item.saveButtonLabel })
@@ -518,5 +522,6 @@ export default connect(mapStateToProps, {
   savePrincipal,
   saveLegalEntity,
   saveAddress,
-  saveBankAccount
+  saveBankAccount,
+  checkSubmitMerchantApp
 })(ConnectBankSteps);

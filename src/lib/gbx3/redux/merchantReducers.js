@@ -90,21 +90,6 @@ export function merchantApp(state = {
 }
 
 export function merchantVitals(state = {
-  isActive: true,
-  isInstantEnabled: true,
-  instantPhase: null,
-  instantPhaseEndsAt: null,
-  hasMerchantInfo: false,
-  legalEntityID: null,
-  legalEntityStatus: null,
-  legalEntityNotes: '',
-  requireSSN: false,
-  hasMID: false,
-  hasBankInfo: false,
-  hasReceivedTransaction: false,
-  isUnderwritingApproved: false,
-  canProcess: false,
-  canTransfer: false
 }, action) {
   switch (action.type) {
     case types.SET_MERCHANT_VITALS:

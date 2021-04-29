@@ -7,11 +7,16 @@ import {
   getLinkToken,
   accessToken
 } from '../../redux/merchantActions';
+import {
+  checkSignupPhase,
+  saveOrg
+} from '../../redux/gbx3actions';
 
 class PlaidConnect extends React.Component {
 
   constructor(props) {
     super(props);
+    this.exitPlaid = this.exitPlaid.bind(this);
     this.state = {
     };
   }
@@ -19,6 +24,22 @@ class PlaidConnect extends React.Component {
   componentDidMount() {
     if (!this.props.hasPlaidToken) {
       this.props.getLinkToken();
+    }
+  }
+
+  async exitPlaid(token, metaData) {
+    const status = util.getValue(metaData, 'status');
+    if (status === 'institution_not_found') {
+      console.log('execute -> institution_not_found - do manual connect bank');
+      const updated = await this.props.updateOrgSignup({ signupPhase: 'manualConnect' });
+      if (updated) {
+        this.props.saveOrg({ orgUpdated: true });
+        this.props.checkSignupPhase({
+          forceStep: 0,
+          openAdmin: true,
+          openModal: true
+        });
+      }
     }
   }
 
@@ -44,12 +65,7 @@ class PlaidConnect extends React.Component {
           }}
           token={linkToken}
           onSuccess={this.props.accessToken}
-          onExit={(token, metaData) => {
-            const status = util.getValue(metaData, 'status');
-            if (status === 'institution_not_found') {
-              console.log('execute -> institution_not_found - do manual connect bank');
-            }
-          }}
+          onExit={this.exitPlaid}
         >
           <span className='buttonAlignText'>Connect a Bank Account <span className='icon icon-chevron-right'></span></span>
         </PlaidLink>
@@ -71,5 +87,7 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
   getLinkToken,
-  accessToken
+  accessToken,
+  checkSignupPhase,
+  saveOrg
 })(PlaidConnect);

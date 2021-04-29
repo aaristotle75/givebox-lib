@@ -113,12 +113,7 @@ class BankAccount extends React.Component {
           label: 'Name on Account',
           placeholder: 'Enter Name on Account',
           required: true,
-          value: name,
-          onBlur: (name, value) => {
-            if (value) {
-              this.updateField(name, value);
-            }
-          }
+          value: name
         })}
         {this.props.dropdown('accountType', {
           group,

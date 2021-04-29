@@ -38,13 +38,25 @@ class StepsWrapper extends React.Component {
       saving: false
     };
 
-    const configStep = config.signupPhase[props.signupPhase];
-    this.stepsTodo = configStep.stepsTodo;
+    this.configStep = config.signupPhase[props.signupPhase];
+    this.stepsTodo = this.configStep.stepsTodo;
     this.numStepsTodo = this.stepsTodo.length;
-    this.requiredSteps = configStep.requiredSteps;
-    this.stepModalName = configStep.modalName;
-    this.showStepNumber = configStep.showStepNumber;
-    this.menuHeader = configStep.menuHeader;
+    this.requiredSteps = this.configStep.requiredSteps;
+    this.stepModalName = this.configStep.modalName;
+    this.showStepNumber = this.configStep.showStepNumber;
+    this.menuHeader = this.configStep.menuHeader;
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.signupPhase !== this.props.signupPhase) {
+      this.configStep = config.signupPhase[this.props.signupPhase];
+      this.stepsTodo = this.configStep.stepsTodo;
+      this.numStepsTodo = this.stepsTodo.length;
+      this.requiredSteps = this.configStep.requiredSteps;
+      this.stepModalName = this.configStep.modalName;
+      this.showStepNumber = this.configStep.showStepNumber;
+      this.menuHeader = this.configStep.menuHeader;
+    }
   }
 
   gotoNextStep() {

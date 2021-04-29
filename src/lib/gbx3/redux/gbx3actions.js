@@ -183,9 +183,10 @@ export function checkSignupPhase(options = {}) {
         break;
       }
 
+      case 'manualConnect':
       case 'connectBank': {
         dispatch(loadSignupPhase({
-          phase: 'connectBank',
+          phase: signupPhase,
           modalName: 'orgConnectBankSteps',
           openAdmin: hasReceivedTransaction ? true : false,
           openModal: hasReceivedTransaction ? true : false,

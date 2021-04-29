@@ -173,8 +173,6 @@ export function saveLegalEntity(options = {}) {
     data.annualCreditCardSalesVolume = +data.annualCreditCardSalesVolume;
     data.yearsInBusiness = +data.yearsInBusiness;
 
-    console.log('execute data -> ', data);
-
     if (opts.hasBeenUpdated) {
       dispatch(sendResource('orgLegalEntity', {
         orgID,
@@ -247,6 +245,7 @@ export function savePrincipal(options = {}) {
     };
 
     if (data.contactPhone) data.contactPhone = util.prunePhone(data.contactPhone);
+    //if (!data.SSN) data.SSN = _v.formatSSN(taxID);
     if (!data.SSN) data.SSN = _v.formatTaxID(taxID);
     if (!data.dateOfBirth) {
       const minDate = Moment().subtract(18, 'years');
@@ -303,6 +302,46 @@ export function saveAddress(options = {}) {
       }));
     } else {
       if (opts.callback) opts.callback();
+    }
+  }
+}
+
+export function checkSubmitMerchantApp(options = {}) {
+  const opts = {
+    callback: null,
+    isSending: false,
+    sendData: false,
+    ...options
+  }
+
+  return (dispatch, getState) => {
+    const state = getState();
+    const vitals = util.getValue(state, 'merchantVitals', {});
+    const hasMID = util.getValue(vitals, 'hasMID');
+    const legalEntityID = util.getValue(vitals, 'legalEntityID');
+    const legalEntityStatus = util.getValue(vitals, 'legalEntityStatus');
+    const hasMerchantInfo = util.getValue(vitals, 'hasMerchantInfo');
+
+    let submitToVantiv = false;
+    let query = null;
+
+    if (hasMerchantInfo && !legalEntityID) {
+      submitToVantiv = 'submitted_to_vantiv';
+    } else if (legalEntityStatus === 'approved' && !hasMID) {
+      submitToVantiv = 'submerchant_only';
+      query = 'submerchant_only=true';
+    }
+
+    if (submitToVantiv) {
+      dispatch(sendResource('orgSubmitToVantiv', {
+        query,
+        isSending: opts.isSending,
+        sendData: opts.sendData,
+        callback: (res, err) => {
+          dispatch(getMerchantVitals());
+          if (opts.callback) opts.callback(res, err, submitToVantiv);
+        }
+      }));
     }
   }
 }
