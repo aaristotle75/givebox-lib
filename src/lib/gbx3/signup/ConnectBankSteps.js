@@ -27,6 +27,7 @@ import Principal from './connectBank/Principal';
 import LegalEntity from './connectBank/LegalEntity';
 import Address from './connectBank/Address';
 import PlaidConnect from './connectBank/PlaidConnect';
+import ConnectStatus from './connectBank/ConnectStatus';
 
 class ConnectBankStepsForm extends React.Component {
 
@@ -140,7 +141,10 @@ class ConnectBankStepsForm extends React.Component {
     const {
       step,
       stepsTodo,
-      formState
+      formState,
+      merchantIdentString,
+      legalEntityID,
+      legalEntityStatus
     } = this.props;
 
     const stepConfig = util.getValue(stepsTodo, step, {});
@@ -195,7 +199,10 @@ class ConnectBankStepsForm extends React.Component {
       }
 
       case 'connectStatus': {
-        this.saveStep(group);
+        this.props.checkSubmitMerchantApp({
+          callback: () => this.setState({ saving: false })
+        });
+        //this.saveStep(group);
         break;
       }
 
@@ -218,7 +225,8 @@ class ConnectBankStepsForm extends React.Component {
       open,
       isMobile,
       stepsTodo,
-      plaidAccountID
+      plaidAccountID,
+      isVantivReady
     } = this.props;
 
     const stepConfig = util.getValue(stepsTodo, step, {});
@@ -238,7 +246,8 @@ class ConnectBankStepsForm extends React.Component {
       component: <div></div>,
       className: '',
       saveButtonLabelTop: <span className='buttonAlignText'>Save & Continue to Step {nextStepNumber}: {nextStepName} <span className='icon icon-chevron-right'></span></span>,
-      saveButtonLabel: <span className='buttonAlignText'>Save & Continue to Next Step <span className='icon icon-chevron-right'></span></span>
+      saveButtonLabel: <span className='buttonAlignText'>Save & Continue to Next Step <span className='icon icon-chevron-right'></span></span>,
+      saveButtonDisabled: false
     };
 
     const library = {
@@ -349,7 +358,6 @@ class ConnectBankStepsForm extends React.Component {
         item.saveButtonLabelTop = item.saveButtonLabel;
         item.desc =
           <div>
-            <p>Your connections status.</p>
             <HelpfulTip
               headerIcon={<span className='icon icon-alert-circle'></span>}
               headerText={`Important`}
@@ -358,6 +366,12 @@ class ConnectBankStepsForm extends React.Component {
             />
           </div>
         ;
+        item.component =
+          <ConnectStatus
+            {...this.props}
+          />
+        ;
+        item.saveButtonDisabled = !isVantivReady ? true : false;
         break;
       }
 
@@ -368,9 +382,11 @@ class ConnectBankStepsForm extends React.Component {
       <div className='stepContainer'>
         { this.state.saving ? <Loader msg='Saving...' /> : null }
         <div className='stepStatus'>
+          { !item.saveButtonDisabled ?
           <GBLink onClick={(e) => this.props.validateForm(e, this.processForm, slug)}>
             <span style={{ marginLeft: 20 }}>{item.saveButtonLabelTop}</span>
           </GBLink>
+          : null }
         </div>
         <div className={`step ${item.className} ${open ? 'open' : ''}`}>
           <div className='stepTitleContainer'>
@@ -406,41 +422,10 @@ class ConnectBankStepsForm extends React.Component {
                 {...this.props}
               />
             :
-              this.props.saveButton(this.processForm, { group: slug, label: item.saveButtonLabel })
+              this.props.saveButton(this.processForm, { group: slug, label: item.saveButtonLabel, disabled: item.saveButtonDisabled })
             }
           </div>
           <div className='button-item' style={{ width: 150 }}>
-            {/* slug === 'connectBank' ?
-              plaidAccountID ?
-                <GBLink
-                  className='link'
-                  onClick={() => {
-                    this.props.setSignupStep('connectStatus');
-                    this.props.formProp({ error: false });
-                  }}
-                >
-                  <span className='buttonAlignText'>Check Status <span className='icon icon-chevron-right'></span></span>
-                </GBLink>
-              :
-                <GBLink
-                  className='link'
-                  onClick={() => {
-                    this.props.toggleModal('orgConnectBankManualConfirm', true, {
-                      manualCallback: () => {
-                        this.props.toggleModal('orgConnectBankManualConfirm', false);
-                        this.setState({ saving: false }, this.props.gotoNextStep);
-                      },
-                      plaidCallback: () => {
-                        this.props.toggleModal('orgConnectBankManualConfirm', false);
-                        this.connectBankPlaid();
-                      }
-                    });
-                    this.props.formProp({ error: false });
-                  }}
-                >
-                  <span className='buttonAlignText'>Manually Connect a Bank Account <span className='icon icon-chevron-right'></span></span>
-                </GBLink>
-            : null */}
           </div>
         </div> : null }
       </div>
@@ -470,7 +455,7 @@ class ConnectBankSteps extends React.Component {
     if (util.isEmpty(this.props.legalEntity)) {
       this.props.setMerchantApp('loading', true);
       this.props.getLegalEntity({
-        reload: false,
+        reload: true,
         callback: () => {
           this.props.setMerchantApp('loading', false);
         }
@@ -508,6 +493,10 @@ function mapStateToProps(state, props) {
   const merchantApp = util.getValue(state, 'merchantApp', {});
   const plaidAccountID = util.getValue(merchantApp, 'plaid.accountID', null);
   const legalEntity = util.getValue(state, 'resource.orgLegalEntity', {});
+  const isVantivReady = util.getValue(state, 'resource.gbx3Org.data.vantiv.isVantivReady');
+  const merchantIdentString = util.getValue(state, 'resource.gbx3Org.data.vantiv.merchantIdentString');
+  const legalEntityID = util.getValue(state, 'resource.gbx3Org.data.vantiv.legalEntityID');
+  const legalEntityStatus = util.getValue(state, 'resource.gbx3Org.data.vantiv.legalEntityStatus');
 
   return {
     plaidAccountID,

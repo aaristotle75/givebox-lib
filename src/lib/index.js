@@ -111,10 +111,6 @@ import {
   gbx3 as gbx3reducer
 } from './gbx3/redux/gbx3reducers';
 
-import {
-  merchantVitals
-} from './gbx3/redux/merchantReducers';
-
 import GBX3 from './gbx3/GBX3';
 
 import {
@@ -229,7 +225,6 @@ export {
   modal,
   preferences,
   custom,
-  merchantVitals,
 
   // Modal
   ModalLink,

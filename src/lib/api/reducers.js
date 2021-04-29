@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import  * as types  from './actionTypes';
 import { gbx3 } from '../gbx3/redux/gbx3reducers';
-import { merchantApp, merchantVitals } from '../gbx3/redux/merchantReducers';
+import { merchantApp } from '../gbx3/redux/merchantReducers';
 import has from 'has';
 
 export function preferences(state = {
@@ -198,7 +198,6 @@ const appReducer = combineReducers({
   send,
   custom,
   gbx3,
-  merchantVitals,
   merchantApp
 })
 

@@ -86,11 +86,11 @@ class StepsWrapper extends React.Component {
     return nextStep;
   }
 
-  async stepCompleted(step, saveOrg = true) {
+  async stepCompleted(slug, saveOrg = true) {
     let updated = false;
     const completed = [ ...this.props.completed ];
-    if (!completed.includes(step)) {
-      completed.push(step);
+    if (!completed.includes(slug)) {
+      completed.push(slug);
       updated = await this.props.updateOrgSignup({ completed });
       if (updated && saveOrg) this.props.saveOrg({ orgUpdated: true });
     } else {

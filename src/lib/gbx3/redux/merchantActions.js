@@ -7,104 +7,6 @@ import {
 } from '../../api/helpers';
 import Moment from 'moment';
 
-/**
-Merchant Properties
-
-@param {bool} isActive
-if org.status equals active then true otherwise false
-
-@param {bool} isInstantEnabled
-if instant fundraising status equals enabled than true otherwise false
-if isInstantEnabled equals true than the merchant can process without a MID
-
-@param {bool} hasMerchantInfo
-if all the required info for Worldpay has been collected. This includes legal entity, principal and address info.
-Uses the org.isVantivReady flag
-
-@param {bool} hasLegalEntityID
-if has a legalEntityID and legalEntityStatus equal approved than true otherwise false
-This field indicates whether the merchant app was submitted to WP and if the legal entity was successfully created and approved
-
-@param {bool} hasMID
- if has a merchantIdentString than true otherwise false.
- This field indincates whether worldpay has granted ths merchant a MID and a subMerchant was successfully created and approved
- If hasMID true than can process as normal
-
-@param {bool} hasBankInfo
-if user has a bank account and it is approved
-
-@param {bool} hasReceivedTransaction
-if a first transaction has been received
-
-@param {bool} isUnderwritingApproved
-If org.underwritingStatus equal approved than true otherwise false
-
-@param {bool} canProcess
-Whether the merchant can process or not
-
-@param {bool} canTransfer
-Wehter the merchant can transfer money or not
-**/
-
-
-export function getMerchantVitals(options = {}) {
-  const opts = {
-    orgID: null,
-    ...options
-  };
-  return (dispatch, getState) => {
-    const state = getState();
-    const orgID = opts.orgID || util.getValue(state, 'resource.access.orgID', null);
-    if (!orgID) return console.error('No orgID - cannot get merchant vitals!');
-
-    dispatch(getResource('org', {
-      orgID,
-      reload: true,
-      callback: (res, err) => {
-        if (!util.isEmpty(res) && !err) {
-          const isActive = util.getValue(res, 'status') === 'active' ? true : false;
-          const isInstantEnabled = util.getValue(res, 'instantFundraising.status') === 'enabled' ? true : false;
-          const instantPhase = util.getValue(res, 'instantFundraising.phase');
-          const instantPhaseEndsAt = util.getValue(res, 'instantFundraising.phaseEndsAt', null);
-          const hasMerchantInfo = util.getValue(res, 'vantiv.isVantivReady');
-          const legalEntityID = util.getValue(res, 'vantiv.legalEntityID');
-          const legalEntityStatus = util.getValue(res, 'vantiv.legalEntityStatus');
-          const legalEntityNotes = util.getValue(res, 'vantiv.legalEntityNotes');
-          const hasLegalEntity = util.getValue(res, 'vantiv.legalEntityID') ? true : false;
-          const hasMID = util.getValue(res, 'vantiv.merchantIdentString') ? true : false;
-          const hasReceivedTransaction = util.getValue(res, 'hasReceivedTransaction');
-          const isUnderwritingApproved = util.getValue(res, 'underwritingStatus') === 'approved' ? true : false;
-          const canTransfer = util.getValue(res, 'canTransferMoney');
-          const canProcess = util.getValue(res, 'canProcessMoney');
-
-          dispatch(setMerchantVitals({
-            isActive,
-            isInstantEnabled,
-            instantPhase,
-            instantPhaseEndsAt,
-            hasMerchantInfo,
-            legalEntityID,
-            legalEntityStatus,
-            legalEntityNotes,
-            hasMID,
-            hasReceivedTransaction,
-            isUnderwritingApproved,
-            canTransfer,
-            canProcess
-          }))
-        }
-      }
-    }));
-  }
-}
-
-function setMerchantVitals(vitals = {}) {
-  return {
-    vitals,
-    type: types.SET_MERCHANT_VITALS
-  }
-}
-
 export function setMerchantApp(key, value) {
   return {
     key,
@@ -315,33 +217,48 @@ export function checkSubmitMerchantApp(options = {}) {
   }
 
   return (dispatch, getState) => {
+
     const state = getState();
-    const vitals = util.getValue(state, 'merchantVitals', {});
-    const hasMID = util.getValue(vitals, 'hasMID');
-    const legalEntityID = util.getValue(vitals, 'legalEntityID');
-    const legalEntityStatus = util.getValue(vitals, 'legalEntityStatus');
-    const hasMerchantInfo = util.getValue(vitals, 'hasMerchantInfo');
+    const vantiv = util.getValue(state, 'resource.gbx3Org.data.vantiv', {});
+    const merchantIdentString = util.getValue(vantiv, 'merchantIdentString');
+    const isVantivReady = util.getValue(vantiv, 'isVantivReady');
 
-    let submitToVantiv = false;
-    let query = null;
-
-    if (hasMerchantInfo && !legalEntityID) {
-      submitToVantiv = 'submitted_to_vantiv';
-    } else if (legalEntityStatus === 'approved' && !hasMID) {
-      submitToVantiv = 'submerchant_only';
-      query = 'submerchant_only=true';
-    }
-
-    if (submitToVantiv) {
-      dispatch(sendResource('orgSubmitToVantiv', {
-        query,
-        isSending: opts.isSending,
-        sendData: opts.sendData,
+    if (isVantivReady && !merchantIdentString) {
+      dispatch(getResource('org', {
+        customName: 'gbx3Org',
+        reload: true,
+        isSending: false,
         callback: (res, err) => {
-          dispatch(getMerchantVitals());
-          if (opts.callback) opts.callback(res, err, submitToVantiv);
+          const vantiv = util.getValue(res, 'vantiv', {});
+          const merchantIdentString = util.getValue(vantiv, 'merchantIdentString');
+          const isVantivReady = util.getValue(vantiv, 'isVantivReady');
+          const legalEntityID = util.getValue(vantiv, 'legalEntityID');
+          const legalEntityStatus = util.getValue(vantiv, 'legalEntityStatus');
+
+          let submitToVantiv = false;
+          let query = null;
+
+          if (isVantivReady && !legalEntityID) {
+            submitToVantiv = 'submitted_to_vantiv';
+          } else if (legalEntityStatus === 'approved' && !merchantIdentString) {
+            submitToVantiv = 'submerchant_only';
+            query = 'submerchant_only=true';
+          }
+
+          if (submitToVantiv) {
+            dispatch(sendResource('orgSubmitToVantiv', {
+              query,
+              isSending: opts.isSending,
+              sendData: opts.sendData,
+              callback: (res, err) => {
+                if (opts.callback) opts.callback(res, err, submitToVantiv);
+              }
+            }));
+          }
         }
-      }));
+      }))
+    } else {
+      if (opts.callback) opts.callback();
     }
   }
 }

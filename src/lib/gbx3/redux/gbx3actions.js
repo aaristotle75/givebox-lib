@@ -171,7 +171,7 @@ export function checkSignupPhase(options = {}) {
   return (dispatch, getState) => {
     const state = getState();
     const signupPhase = util.getValue(state, 'gbx3.orgSignup.signupPhase');
-    const hasReceivedTransaction = util.getValue(state, 'merchantVitals.hasReceivedTransaction');
+    const hasReceivedTransaction = util.getValue(state, 'resource.gbx3Org.data.hasReceivedTransaction');
 
     switch (signupPhase) {
       case 'postSignup': {
@@ -1240,7 +1240,7 @@ export function loadGBX3(articleID, callback) {
 
           // If orgData orgID doesn't equal orgID get the orgData
           if (orgID !== util.getValue(orgData, 'ID')) {
-            dispatch(getResource('gbx3Org', {
+            dispatch(getResource('orgPublic', {
               id: [orgID],
               reload: true,
               callback: (res, err) => {
@@ -1523,8 +1523,11 @@ export function loadOrg(orgID, callback) {
     const info = util.getValue(gbx3, 'info', {});
     const originTemplate = !util.getValue(info, 'originTemplate') ? 'org' : null;
     const blockType = 'org';
+    const hasAccessToEdit = util.getAuthorizedAccess(access, orgID, null);
+    const endpoint = hasAccessToEdit ? 'org' : 'orgPublic';
 
-    dispatch(getResource('gbx3Org', {
+    dispatch(getResource(endpoint, {
+      customName: 'gbx3Org',
       id: [orgID],
       reload: true,
       callback: (res, err) => {
@@ -1533,7 +1536,6 @@ export function loadOrg(orgID, callback) {
           const orgName = util.getValue(res, 'name');
           const orgImage = util.getValue(res, 'imageURL');
           const customTemplate = util.getValue(res, 'customTemplate', {});
-          const hasAccessToEdit = util.getAuthorizedAccess(access, orgID, null);
           const orgPages = {
             ...defaultOrgPages,
             ...util.getValue(customTemplate, 'orgPages', {})

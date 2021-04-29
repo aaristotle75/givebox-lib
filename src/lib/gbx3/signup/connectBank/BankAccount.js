@@ -28,7 +28,7 @@ class BankAccount extends React.Component {
       const initLoading = await this.props.setMerchantApp('loading', true);
       if (initLoading) {
         this.props.getResource('orgBankAccounts', {
-          reload: false,
+          reload: true,
           search: {
             sort: 'createdAt',
             order: 'desc'

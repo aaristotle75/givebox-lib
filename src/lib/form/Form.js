@@ -1092,7 +1092,7 @@ class Form extends Component {
     const options = { ...defaults, ...opts };
     const id = `${this.props.id}-saveButton`;
     return (
-      <button ref={this.saveButtonRef} id={id} className={`button ${options.className}`} style={options.style} type='button' disabled={!this.state.updated && options.allowDisabled ? true : false} onClick={(e) => this.validateForm(e, callback, options.group)}>{options.label}</button>
+      <button ref={this.saveButtonRef} id={id} className={`button ${options.className}`} style={options.style} type='button' disabled={options.disabled || (!this.state.updated && options.allowDisabled) ? true : false} onClick={(e) => this.validateForm(e, callback, options.group)}>{options.label}</button>
     )
   }
 

@@ -25,7 +25,7 @@ class Principal extends React.Component {
       const initLoading = await this.props.setMerchantApp('loading', true);
       if (initLoading) {
         this.props.getResource('orgPrincipals', {
-          reload: false,
+          reload: true,
           search: {
             sort: 'createdAt',
             order: 'desc'

@@ -181,6 +181,10 @@ $gbx3StepsBreakpoint: 600px;
       background: linear-gradient(to right, $salmon2 0%, $salmon 100%);
     }
 
+    button.button:disabled {
+      background: $light-gray;
+    }
+
     button.button .icon {
       font-size: 22px;
       margin-left: 5px;
