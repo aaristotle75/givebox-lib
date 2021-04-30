@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import * as util from '../../../common/utility';
 
 class ConnectStatus extends React.Component {
 
@@ -14,20 +15,35 @@ class ConnectStatus extends React.Component {
   }
 
   getStatus() {
+    const {
+      merchantIdentString,
+      legalEntityStatus,
+      legalEntityID,
+      isVantivReady
+    } = this.props;
+
+    let message = 'You must complete the previous steps to connect a bank account';
+    if (merchantIdentString) {
+      message = 'Congratulations, your bank account is connected to Givebox.'
+    }
 
     return (
-      <span style={{ display: 'block' }}>You must complete the previous steps to connect a bank account.</span>
+      <span style={{ display: 'block' }}>{message}.</span>
     )
   }
 
   render() {
 
     const {
+      merchantIdentString,
+      legalEntityStatus,
+      legalEntityID,
+      isVantivReady
     } = this.props;
 
     return (
       <div>
-        <span style={{ display: 'block', fontStyle: 'italic', fontSize: 13 }}>Your Connection Status:</span>
+        <span style={{ display: 'block', fontStyle: 'italic', fontSize: 13, marginTop: 30 }}>Your Connection Status:</span>
         {this.getStatus()}
       </div>
     )
@@ -35,7 +51,17 @@ class ConnectStatus extends React.Component {
 }
 
 function mapStateToProps(state, props) {
+
+  const isVantivReady = util.getValue(state, 'resource.gbx3Org.data.vantiv.isVantivReady');
+  const merchantIdentString = util.getValue(state, 'resource.gbx3Org.data.vantiv.merchantIdentString');
+  const legalEntityID = util.getValue(state, 'resource.gbx3Org.data.vantiv.legalEntityID');
+  const legalEntityStatus = util.getValue(state, 'resource.gbx3Org.data.vantiv.legalEntityStatus');
+
   return {
+    merchantIdentString,
+    legalEntityID,
+    legalEntityStatus,
+    isVantivReady
   }
 }
 

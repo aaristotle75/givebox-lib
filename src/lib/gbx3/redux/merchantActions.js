@@ -3,7 +3,8 @@ import * as util from '../../common/utility';
 import * as _v from '../../form/formValidate';
 import {
   getResource,
-  sendResource
+  sendResource,
+  reloadResource
 } from '../../api/helpers';
 import Moment from 'moment';
 
@@ -33,7 +34,7 @@ export function getLegalEntity(options = {}) {
   return (dispatch, getState) => {
     const state = getState();
     const orgID = opts.orgID || util.getValue(state, 'gbx3.info.orgID');
-    const org = util.getValue(state, 'resource.org.data', {});
+    const org = util.getValue(state, 'resource.gbx3Org.data', {});
     dispatch(getResource('orgLegalEntity', {
       orgID,
       reload: opts.reload,
@@ -141,7 +142,7 @@ export function savePrincipal(options = {}) {
   return (dispatch, getState) => {
     const state = getState();
     const orgID = opts.orgID || util.getValue(state, 'gbx3.info.orgID');
-    const taxID = util.getValue(state, 'resource.org.data.taxID');
+    const taxID = util.getValue(state, 'resource.gbx3Org.data.taxID');
     const data = {
       ...opts.data
     };
@@ -218,17 +219,16 @@ export function checkSubmitMerchantApp(options = {}) {
 
   return (dispatch, getState) => {
 
-    const state = getState();
-    const vantiv = util.getValue(state, 'resource.gbx3Org.data.vantiv', {});
-    const merchantIdentString = util.getValue(vantiv, 'merchantIdentString');
-    const isVantivReady = util.getValue(vantiv, 'isVantivReady');
+    const merchantIdentString = util.getValue(getState(), 'resource.gbx3Org.data.vantiv.merchantIdentString');
 
-    if (isVantivReady && !merchantIdentString) {
+    if (!merchantIdentString) {
+
       dispatch(getResource('org', {
         customName: 'gbx3Org',
         reload: true,
         isSending: false,
         callback: (res, err) => {
+
           const vantiv = util.getValue(res, 'vantiv', {});
           const merchantIdentString = util.getValue(vantiv, 'merchantIdentString');
           const isVantivReady = util.getValue(vantiv, 'isVantivReady');
@@ -236,13 +236,18 @@ export function checkSubmitMerchantApp(options = {}) {
           const legalEntityStatus = util.getValue(vantiv, 'legalEntityStatus');
 
           let submitToVantiv = false;
+          let message = '';
           let query = null;
 
           if (isVantivReady && !legalEntityID) {
-            submitToVantiv = 'submitted_to_vantiv';
+            submitToVantiv = true;
+            message = 'submitted_to_vantiv';
           } else if (legalEntityStatus === 'approved' && !merchantIdentString) {
-            submitToVantiv = 'submerchant_only';
+            submitToVantiv = true;
+            message = 'submerchant_only';
             query = 'submerchant_only=true';
+          } else if (merchantIdentString && legalEntityStatus === 'approved') {
+            message = 'submerchant_created';
           }
 
           if (submitToVantiv) {
@@ -250,13 +255,16 @@ export function checkSubmitMerchantApp(options = {}) {
               query,
               isSending: opts.isSending,
               sendData: opts.sendData,
+              resourcesToLoad: ['gbx3Org'],
               callback: (res, err) => {
-                if (opts.callback) opts.callback(res, err, submitToVantiv);
+                if (opts.callback) opts.callback(message);
               }
             }));
+          } else {
+            if (opts.callback) opts.callback(message);
           }
         }
-      }))
+      }));
     } else {
       if (opts.callback) opts.callback();
     }

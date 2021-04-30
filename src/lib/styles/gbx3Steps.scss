@@ -385,6 +385,7 @@ $gbx3StepsBreakpoint: 600px;
   .linearProgressBarAnimation {
     height: 6px;
     background: transparent;
+    z-index: 1;
   }
 
   .createStep {

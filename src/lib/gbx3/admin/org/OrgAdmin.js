@@ -22,7 +22,7 @@ class OrgAdmin extends React.Component {
 
   componentDidMount() {
     const testConfig = {
-      forceStep: 4,
+      forceStep: null,
       openModal: true,
       openAdmin: true
     };

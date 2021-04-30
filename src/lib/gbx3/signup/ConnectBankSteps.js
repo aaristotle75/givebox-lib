@@ -200,9 +200,18 @@ class ConnectBankStepsForm extends React.Component {
 
       case 'connectStatus': {
         this.props.checkSubmitMerchantApp({
-          callback: () => this.setState({ saving: false })
+          callback: async (message) => {
+            if (message === 'submerchant_created') {
+              const completed = await this.props.stepCompleted(group);
+              if (completed) {
+                // do stuff after submerchant was created
+                this.setState({ saving: false });
+              }
+            } else {
+              this.setState({ saving: false });
+            }
+          }
         });
-        //this.saveStep(group);
         break;
       }
 
@@ -226,7 +235,8 @@ class ConnectBankStepsForm extends React.Component {
       isMobile,
       stepsTodo,
       plaidAccountID,
-      isVantivReady
+      isVantivReady,
+      merchantIdentString
     } = this.props;
 
     const stepConfig = util.getValue(stepsTodo, step, {});
@@ -354,7 +364,7 @@ class ConnectBankStepsForm extends React.Component {
       }
 
       case 'connectStatus': {
-        item.saveButtonLabel = <span className='buttonAlignText'>Check Status <span className='icon icon-chevron-right'></span></span>
+        item.saveButtonLabel = <span className='buttonAlignText'>{merchantIdentString ? 'All Finished! Take Me to My Profile' : 'Check Status'} <span className='icon icon-chevron-right'></span></span>
         item.saveButtonLabelTop = item.saveButtonLabel;
         item.desc =
           <div>
@@ -495,12 +505,12 @@ function mapStateToProps(state, props) {
   const legalEntity = util.getValue(state, 'resource.orgLegalEntity', {});
   const isVantivReady = util.getValue(state, 'resource.gbx3Org.data.vantiv.isVantivReady');
   const merchantIdentString = util.getValue(state, 'resource.gbx3Org.data.vantiv.merchantIdentString');
-  const legalEntityID = util.getValue(state, 'resource.gbx3Org.data.vantiv.legalEntityID');
-  const legalEntityStatus = util.getValue(state, 'resource.gbx3Org.data.vantiv.legalEntityStatus');
 
   return {
     plaidAccountID,
-    legalEntity
+    legalEntity,
+    isVantivReady,
+    merchantIdentString
   }
 }
 
