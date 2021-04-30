@@ -191,7 +191,7 @@ function mapStateToProps(state, props) {
   const articleID = props.articleID || util.getValue(state, 'gbx3.info.articleID');
   const display = props.display || util.getValue(state, 'gbx3.info.display');
   const orgDisplay = display === 'org' ? true : false;
-  const data = props.data || util.getValue(state, `gbx3.${orgDisplay ? 'orgData' : 'data'}`);
+  const data = props.data || orgDisplay ? util.getValue(state, 'resource.gbx3Org.data', {}) : util.getValue(state, 'gbx3.data', {});
   const orgID = props.orgID || util.getValue(data, `${orgDisplay ? 'ID' : 'orgID'}`);
   const slug = props.slug || util.getValue(data, 'slug');
   const hasCustomSlug = props.hasCustomSlug ? props.hasCustomSlug : orgDisplay ? true : util.getValue(data, 'hasCustomSlug');

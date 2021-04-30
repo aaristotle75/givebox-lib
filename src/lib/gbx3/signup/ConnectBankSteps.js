@@ -11,7 +11,8 @@ import GBLink from '../../common/GBLink';
 import Image from '../../common/Image';
 import HelpfulTip from '../../common/HelpfulTip';
 import {
-  setSignupStep
+  setSignupStep,
+  checkSignupPhase
 } from '../redux/gbx3actions';
 import {
   setMerchantApp,
@@ -40,6 +41,8 @@ class ConnectBankStepsForm extends React.Component {
     this.saveStep = this.saveStep.bind(this);
     this.saveCallback = this.saveCallback.bind(this);
     this.callbackAfter = this.callbackAfter.bind(this);
+    this.submerchantCreated = this.submerchantCreated.bind(this);
+    this.checkConnectStatus = this.checkConnectStatus.bind(this);
 
     this.state = {
       editorOpen: false,
@@ -100,6 +103,52 @@ class ConnectBankStepsForm extends React.Component {
     return true;
   }
 
+  checkConnectStatus() {
+    const {
+      step,
+      stepsTodo,
+      isVantivReady
+    } = this.props;
+
+    const stepConfig = util.getValue(stepsTodo, step, {});
+    const slug = util.getValue(stepConfig, 'slug');
+    if (isVantivReady && slug !== 'connectStatus') {
+      this.props.setSignupStep('connectStatus');
+    }
+
+    this.props.checkSubmitMerchantApp({
+      callback: (message, err) => {
+        if (message === 'submerchant_created') {
+          this.submerchantCreated();
+        } else if (err) {
+          if (!this.props.getErrors(err)) this.props.formProp({error: this.props.savingErrorMsg});
+        }
+        if (this.state.saving) this.setState({ saving: false });
+      }
+    });
+  }
+
+  async submerchantCreated() {
+    const completed = await this.props.stepCompleted('connectStatus', false);
+    if (completed) {
+      this.setState({ saving: false });
+      const updated = await this.props.updateOrgSignup({ signupPhase: 'transferMoney' }, this.props.signupPhase);
+      if (updated) {
+        this.props.saveOrg({
+          orgUpdated: true,
+          isSending: true,
+          callback: () => {
+            setTimeout(() => {
+              this.props.updateAdmin({ open: false });
+              this.props.toggleModal('orgTransferSteps', false);
+              this.props.checkSignupPhase();
+            }, 5000);
+          }
+        })
+      }
+    }
+  }
+
   async saveStep(slug, delay = 1000, error = false) {
 
     if (error) {
@@ -116,7 +165,7 @@ class ConnectBankStepsForm extends React.Component {
       this.setState({ saving: false }, this.props.gotoNextStep);
     }
 
-    this.props.checkSubmitMerchantApp();
+    this.checkConnectStatus();
   }
 
   saveCallback(res, err, group) {
@@ -142,9 +191,7 @@ class ConnectBankStepsForm extends React.Component {
       step,
       stepsTodo,
       formState,
-      merchantIdentString,
-      legalEntityID,
-      legalEntityStatus
+      merchantIdentString
     } = this.props;
 
     const stepConfig = util.getValue(stepsTodo, step, {});
@@ -199,19 +246,15 @@ class ConnectBankStepsForm extends React.Component {
       }
 
       case 'connectStatus': {
-        this.props.checkSubmitMerchantApp({
-          callback: async (message) => {
-            if (message === 'submerchant_created') {
-              const completed = await this.props.stepCompleted(group);
-              if (completed) {
-                // do stuff after submerchant was created
-                this.setState({ saving: false });
-              }
-            } else {
-              this.setState({ saving: false });
-            }
+        if (merchantIdentString) {
+          if (!this.props.completed.includes(group)) {
+            this.submerchantCreated();
+          } else {
+            this.props.toggleModal('orgConnectBankSteps', false);
           }
-        });
+        } else {
+          this.checkConnectStatus();
+        }
         break;
       }
 
@@ -515,9 +558,10 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
+  setSignupStep,
+  checkSignupPhase,
   setMerchantApp,
   getLegalEntity,
-  setSignupStep,
   savePrincipal,
   saveLegalEntity,
   saveAddress,

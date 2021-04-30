@@ -276,7 +276,7 @@ function mapStateToProps(state, props) {
   const dataField = util.getValue(block, 'field');
   const type = util.getValue(block, 'type');
   const options = util.getValue(block, 'options', {});
-  const data = util.getValue(gbx3, blockType === 'org' ? 'orgData' : 'data', {});
+  const data = blockType === 'org' ? util.getValue(state, 'resource.gbx3Org.data', {}) : util.getValue(gbx3, 'data', {});
   const fieldValue = util.getValue(data, dataField);
   const modalID = `modalBlock-${blockType}-${props.name}`;
   const previewMode = util.getValue(admin, 'previewMode');

@@ -229,8 +229,7 @@ export const signupPhase = {
     stepsTodo: [
       connectBank,
       connectStatus
-    ],
-    manual: false
+    ]
   },
   manualConnect: {
     menuHeader: 'Add Bank Steps',
@@ -245,7 +244,11 @@ export const signupPhase = {
     ]
   },
   transferMoney: {
-    menuHeader: 'Transfer Money Steps'
+    menuHeader: 'Transfer Money Steps',
+    modalName: 'orgTransferSteps',
+    showStepNumber: true,
+    stepsTodo: [
+    ]
   }
 };
 

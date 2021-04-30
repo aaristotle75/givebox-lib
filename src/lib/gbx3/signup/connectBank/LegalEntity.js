@@ -127,7 +127,7 @@ LegalEntity.defaultProps = {
 
 function mapStateToProps(state, props) {
 
-  const websiteURL = util.getValue(state, 'resource.org.data.websiteURL');
+  const websiteURL = util.getValue(state, 'resource.gbx3Org.data.websiteURL');
   const legalEntity = util.getValue(state, 'resource.orgLegalEntity.data', {});
   const loading = util.getValue(state, 'merchantApp.loading', false);
 

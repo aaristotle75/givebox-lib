@@ -195,6 +195,17 @@ export function checkSignupPhase(options = {}) {
         break;
       }
 
+      case 'transferMoney': {
+        dispatch(loadSignupPhase({
+          phase: signupPhase,
+          modalName: 'orgTransferSteps',
+          openAdmin: false,
+          openModal: false,
+          ...options
+        }));
+        break;
+      }
+
       // no default
     }
   }
@@ -499,7 +510,7 @@ export function updateGlobal(name, global) {
 
 export function updateData(data, blockType) {
   return {
-    type: blockType === 'org' ? types.UPDATE_ORG : types.UPDATE_DATA,
+    type: types.UPDATE_DATA,
     data
   }
 }
@@ -803,7 +814,7 @@ export function saveOrg(options = {}) {
   return (dispatch, getState) => {
     const gbx3 = util.getValue(getState(), 'gbx3', {});
     const orgUpdated = opts.orgUpdated || util.getValue(gbx3, 'orgUpdated', false);
-    const orgData = util.getValue(gbx3, 'orgData', {});
+    const orgData = util.getValue(getState(), 'resource.gbx3Org.data', {});
     const customTemplate = util.getValue(orgData, 'customTemplate', {});
     const orgSignup = util.getValue(gbx3, 'orgSignup', {});
     const orgPages = util.getValue(gbx3, 'orgPages', {});
@@ -905,7 +916,7 @@ export function saveGBX3(blockType, options = {}) {
 
   return (dispatch, getState) => {
     const gbx3 = util.getValue(getState(), 'gbx3', {});
-    const gbxData = util.getValue(gbx3, blockType === 'org' ? 'orgData' : 'data', {});
+    const gbxData = util.getValue(gbx3, 'data', {});
     const settings = util.getValue(gbxData, 'giveboxSettings', {});
     const customTemplate = util.getValue(settings, 'customTemplate', {});
     const info = util.getValue(gbx3, 'info', {});
@@ -1221,7 +1232,7 @@ export function loadGBX3(articleID, callback) {
     const resource = util.getValue(getState(), 'resource', {});
     const access = util.getValue(resource, 'access', {});
     const globalsState = util.getValue(gbx3, 'globals', {});
-    const orgData = util.getValue(gbx3, 'orgData', {});
+    const orgData = util.getValue(getState(), 'resource.gbx3Org.data', {});
     const admin = util.getValue(gbx3, 'admin', {});
     const editFormOnly = util.getValue(admin, 'editFormOnly');
     const blockType = 'article';
@@ -1245,7 +1256,6 @@ export function loadGBX3(articleID, callback) {
               reload: true,
               callback: (res, err) => {
                 if (!util.isEmpty(res) && !err) {
-                  dispatch(updateData(res, 'org'));
                 }
               }
             }));
@@ -1591,7 +1601,6 @@ export function loadOrg(orgID, callback) {
           dispatch(updateOrgPages(orgPages, false));
           dispatch(updateOrgGlobals(orgGlobals, false));
           dispatch(updateOrgSignup(orgSignup));
-          dispatch(updateData(res, 'org'));
           dispatch(updateAdmin(admin));
           dispatch(updateInfo({ publishStatus: 'public' }));
         }
@@ -1969,7 +1978,7 @@ export function resetOrg(callback) {
     const gbx3 = util.getValue(getState(), 'gbx3', {});
     const info = util.getValue(gbx3, 'info', {});
     const data = {
-      ...util.getValue(gbx3, 'orgData', {}),
+      ...util.getValue(getState(), 'resource.gbx3Org.data', {}),
       customTemplate: {
         orgPages: null,
         orgGlobals: null,
@@ -2003,34 +2012,22 @@ export function resetGBX3(blockType = 'article') {
   return (dispatch, getState) => {
     const gbx3 = util.getValue(getState(), 'gbx3', {});
     const info = util.getValue(gbx3, 'info', {});
-    const isOrg = blockType === 'org' ? true : false;
-    const data = isOrg ?
-      {
-        ...util.getValue(gbx3, 'orgData', {}),
+    const data = {
+      ...util.getValue(gbx3, 'data', {}),
+      giveboxSettings: {
         customTemplate: {
           blocks: {},
           globals: {},
           backgrounds: []
         }
       }
-    :
-      {
-        ...util.getValue(gbx3, 'data', {}),
-        giveboxSettings: {
-          customTemplate: {
-            blocks: {},
-            globals: {},
-            backgrounds: []
-          }
-        }
-      }
-    ;
+    };
 
     const orgID = util.getValue(info, 'orgID');
     const kindID = util.getValue(info, 'kindID');
 
     dispatch(sendResource(util.getValue(info, 'apiName'), {
-      id: [isOrg ? orgID : kindID],
+      id: [kindID],
       orgID,
       data,
       method: 'patch',

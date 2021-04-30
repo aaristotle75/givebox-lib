@@ -147,6 +147,19 @@ export default class OrgModalRoutes extends Component {
         />
         <ModalRoute
           className='gbx3'
+          id={'orgTransferSteps'}
+          effect='3DFlipVert' style={{ width: '85%' }}
+          disallowBgClose={true}
+          component={(props) => {
+            return (
+              <StepsWrapper>
+                {this.loadComponent('./signup/TransferMoneySteps', props)}
+              </StepsWrapper>
+            )
+          }}
+        />
+        <ModalRoute
+          className='gbx3'
           id={'orgConnectBankManualConfirm'}
           effect='3DFlipVert' style={{ width: '60%' }}
           component={(props) => this.loadComponent('./signup/connectBank/ConnectBankManualConfirm', props)}

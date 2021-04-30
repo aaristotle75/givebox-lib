@@ -472,10 +472,11 @@ FormEdit.defaultProps = {
 
 function mapStateToProps(state, props) {
 
-  const allowP2P = util.getValue(state, 'gbx3.orgData.allowVolunteers', true);
-  const orgName = util.getValue(state, 'gbx3.orgData.name');
-  const orgSlug = util.getValue(state, 'gbx3.orgData.slug');
-  const orgPages = util.getValue(state, 'gbx3.orgData.customTemplate.orgPages', {});
+  const orgData = util.getValue(state, 'resource.gbx3Org.data', {});
+  const allowP2P = util.getValue(orgData, 'allowVolunteers', true);
+  const orgName = util.getValue(orgData, 'name');
+  const orgSlug = util.getValue(orgData, 'slug');
+  const orgPages = util.getValue(orgData, 'customTemplate.orgPages', {});
 
   return {
     allowP2P,

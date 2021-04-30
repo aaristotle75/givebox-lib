@@ -691,8 +691,9 @@ function mapStateToProps(state, props) {
   const subTotal = util.getValue(cart, 'subTotal', 0);
   const form = util.getValue(gbx3, 'blocks.article.paymentForm.options.form', {});
   const numCartItems = cartItems.length;
-  const orgLogo = util.getValue(gbx3, 'orgData.imageURL');
-  const orgName = util.getValue(gbx3, 'orgData.name');
+  const orgData = util.getValue(state, 'resource.gbx3Org.data', {});
+  const orgLogo = util.getValue(orgData, 'imageURL');
+  const orgName = util.getValue(orgData, 'name');
 
   return {
     data,

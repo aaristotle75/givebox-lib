@@ -29,7 +29,6 @@ export const UPDATE_BACKGROUNDS = 'UPDATE_BACKGROUNDS';
 export const UPDATE_GLOBALS = 'UPDATE_GLOBALS';
 export const UPDATE_GLOBAL = 'UPDATE_GLOBAL';
 export const UPDATE_DATA = 'UPDATE_DATA';
-export const UPDATE_ORG = 'UPDATE_ORG';
 export const UPDATE_FEES = 'UPDATE_FEES';
 export const UPDATE_ADMIN = 'UPDATE_ADMIN';
 export const UPDATE_CART = 'UPDATE_CART';

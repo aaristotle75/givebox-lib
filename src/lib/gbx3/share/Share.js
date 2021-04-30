@@ -279,7 +279,7 @@ function mapStateToProps(state, props) {
 
   let kind = util.getValue(info, 'kind');
   let kindID = util.getValue(info, 'kindID');
-  let title = util.getValue(gbx3, display === 'org' ? 'orgData.name' : 'data.title');
+  let title = display === 'org' ? util.getValue(state, 'resource.gbx3Org.data.name') : util.getValue(gbx3, 'data.title');
   let webApp = util.getValue(gbx3, 'data.publishedStatus.webApp');
   let hasCustomSlug = display === 'org' ? true : util.getValue(gbx3, 'data.hasCustomSlug');
   let apiName = null;

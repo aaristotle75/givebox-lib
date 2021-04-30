@@ -377,7 +377,7 @@ function mapStateToProps(state, props) {
   const hasAccessToEdit = util.getValue(gbx3, 'admin.hasAccessToEdit');
   const publishStatus = util.getValue(info, 'publishStatus');
   const orgName = util.getValue(info, 'orgName');
-  const orgData = util.getValue(gbx3, 'orgData', {});
+  const orgData = util.getValue(state, 'resource.gbx3Org.data', {});
 
   return {
     browse,

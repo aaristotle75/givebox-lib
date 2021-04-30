@@ -99,7 +99,7 @@ SocialOrg.defaultProps = {
 }
 
 function mapStateToProps(state, props) {
-  const data = util.getValue(state, 'gbx3.orgData', {});
+  const data = util.getValue(state, 'resource.gbx3Org.data', {});
 
   return {
     data

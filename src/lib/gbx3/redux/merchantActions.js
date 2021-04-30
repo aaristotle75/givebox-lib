@@ -255,9 +255,26 @@ export function checkSubmitMerchantApp(options = {}) {
               query,
               isSending: opts.isSending,
               sendData: opts.sendData,
-              resourcesToLoad: ['gbx3Org'],
               callback: (res, err) => {
-                if (opts.callback) opts.callback(message);
+                if (!err) {
+                  dispatch(reloadResource('gbx3Org', {
+                    callback: (res, err) => {
+                      if (!util.isEmpty(res) && !err) {
+                        const vantiv = util.getValue(res, 'vantiv', {});
+                        const merchantIdentString = util.getValue(vantiv, 'merchantIdentString');
+                        let message = '';
+                        if (merchantIdentString && legalEntityStatus === 'approved') {
+                          message = 'submerchant_created';
+                        }
+                        if (opts.callback) opts.callback(message);
+                      } else {
+                        if (opts.callback) opts.callback();
+                      }
+                    }
+                  }));
+                } else {
+                  if (opts.callback) opts.callback(null, err);
+                }
               }
             }));
           } else {

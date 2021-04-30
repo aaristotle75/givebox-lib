@@ -69,7 +69,6 @@ export function gbx3(state = {
     }
   },
   data: {},
-  orgData: {},
   admin: {
     allowLayoutSave: false,
     loadingLayout: true,
@@ -448,13 +447,6 @@ export function gbx3(state = {
       return Object.assign({}, state, {
         data: {
           ...state.data,
-          ...action.data,
-        }
-      });
-    case types.UPDATE_ORG:
-      return Object.assign({}, state, {
-        orgData: {
-          ...state.orgData,
           ...action.data,
         }
       });
