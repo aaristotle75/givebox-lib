@@ -160,6 +160,33 @@ const connectStatus = {
   desc: ''
 };
 
+const identity = {
+  type: 'merchant',
+  slug: 'identity',
+  name: 'Verify Identity',
+  title: 'Verify Your Identity',
+  icon: 'shield',
+  desc: 'To protect your account we need to verify you identity.'
+}
+
+const protect = {
+  type: 'merchant',
+  slug: 'protect',
+  name: 'Protect Account',
+  title: 'Protect Your Account',
+  icon: 'lock',
+  desc: 'Two Factor Authentication.'
+}
+
+const transferStatus = {
+  type: 'merchant',
+  slug: 'transferStatus',
+  name: 'Check Status',
+  title: 'Check Status',
+  customIcon: <Icon><FaConnectdevelop /></Icon>,
+  desc: 'Check status.'
+}
+
 export const orgSignupFields = {
   org: {
     name: '',
@@ -248,6 +275,9 @@ export const signupPhase = {
     modalName: 'orgTransferSteps',
     showStepNumber: true,
     stepsTodo: [
+      identity,
+      protect,
+      transferStatus
     ]
   }
 };

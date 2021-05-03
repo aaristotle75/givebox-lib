@@ -1252,6 +1252,7 @@ export function loadGBX3(articleID, callback) {
           // If orgData orgID doesn't equal orgID get the orgData
           if (orgID !== util.getValue(orgData, 'ID')) {
             dispatch(getResource('orgPublic', {
+              customName: 'gbx3Org',
               id: [orgID],
               reload: true,
               callback: (res, err) => {

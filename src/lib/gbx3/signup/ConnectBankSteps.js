@@ -48,6 +48,7 @@ class ConnectBankStepsForm extends React.Component {
       editorOpen: false,
       error: false,
       saving: false,
+      checkingStatus: false,
       loading: true
     };
   }
@@ -110,42 +111,50 @@ class ConnectBankStepsForm extends React.Component {
       isVantivReady
     } = this.props;
 
-    const stepConfig = util.getValue(stepsTodo, step, {});
-    const slug = util.getValue(stepConfig, 'slug');
-    if (isVantivReady && slug !== 'connectStatus') {
-      this.props.setSignupStep('connectStatus');
-    }
+    this.setState({ checkingStatus: true }, () => {
+      const stepConfig = util.getValue(stepsTodo, step, {});
+      const slug = util.getValue(stepConfig, 'slug');
 
-    this.props.checkSubmitMerchantApp({
-      callback: (message, err) => {
-        if (message === 'submerchant_created') {
-          this.submerchantCreated();
-        } else if (err) {
-          if (!this.props.getErrors(err)) this.props.formProp({error: this.props.savingErrorMsg});
-        }
-        if (this.state.saving) this.setState({ saving: false });
+      if (isVantivReady && slug !== 'connectStatus') {
+        this.props.setSignupStep('connectStatus');
       }
+
+      this.props.checkSubmitMerchantApp({
+        callback: (message, err) => {
+          if (message === 'submerchant_created') {
+            this.submerchantCreated();
+          } else if (err) {
+            this.props.formProp({ error: 'We are unable to connect your bank account. Please try checking your status again in a few minutes.' });
+            this.setState({ checkingStatus: false });
+          } else {
+            this.setState({ checkingStatus: false });
+          }
+        }
+      });
     });
   }
 
-  async submerchantCreated() {
+  async submerchantCreated(delay = 5000) {
     const completed = await this.props.stepCompleted('connectStatus', false);
     if (completed) {
-      this.setState({ saving: false });
-      const updated = await this.props.updateOrgSignup({ signupPhase: 'transferMoney' }, this.props.signupPhase);
-      if (updated) {
-        this.props.saveOrg({
-          orgUpdated: true,
-          isSending: true,
-          callback: () => {
-            setTimeout(() => {
+      this.setState({ checkingStatus: false });
+      setTimeout(async () => {
+        const updated = await this.props.updateOrgSignup({ signupPhase: 'transferMoney' }, this.props.signupPhase);
+        if (updated) {
+          this.props.saveOrg({
+            orgUpdated: true,
+            isSending: true,
+            callback: () => {
               this.props.updateAdmin({ open: false });
-              this.props.toggleModal('orgTransferSteps', false);
-              this.props.checkSignupPhase();
-            }, 5000);
-          }
-        })
-      }
+              this.props.toggleModal('orgConnectBankSteps', false);
+              this.props.checkSignupPhase({
+                openModal: false,
+                openAdmin: false
+              });
+            }
+          });
+        }
+      }, delay);
     }
   }
 
@@ -248,7 +257,7 @@ class ConnectBankStepsForm extends React.Component {
       case 'connectStatus': {
         if (merchantIdentString) {
           if (!this.props.completed.includes(group)) {
-            this.submerchantCreated();
+            this.submerchantCreated(1000);
           } else {
             this.props.toggleModal('orgConnectBankSteps', false);
           }
@@ -433,7 +442,7 @@ class ConnectBankStepsForm extends React.Component {
 
     return (
       <div className='stepContainer'>
-        { this.state.saving ? <Loader msg='Saving...' /> : null }
+        { this.state.saving || this.state.checkingStatus ? <Loader msg='Saving...' /> : null }
         <div className='stepStatus'>
           { !item.saveButtonDisabled ?
           <GBLink onClick={(e) => this.props.validateForm(e, this.processForm, slug)}>

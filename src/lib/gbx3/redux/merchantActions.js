@@ -257,11 +257,15 @@ export function checkSubmitMerchantApp(options = {}) {
               sendData: opts.sendData,
               callback: (res, err) => {
                 if (!err) {
-                  dispatch(reloadResource('gbx3Org', {
+                  dispatch(getResource('org', {
+                    customName: 'gbx3Org',
+                    reload: true,
+                    isSending: false,
                     callback: (res, err) => {
                       if (!util.isEmpty(res) && !err) {
                         const vantiv = util.getValue(res, 'vantiv', {});
                         const merchantIdentString = util.getValue(vantiv, 'merchantIdentString');
+                        const legalEntityStatus = util.getValue(vantiv, 'legalEntityStatus');
                         let message = '';
                         if (merchantIdentString && legalEntityStatus === 'approved') {
                           message = 'submerchant_created';

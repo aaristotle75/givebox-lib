@@ -23,8 +23,8 @@ class OrgAdmin extends React.Component {
   componentDidMount() {
     const testConfig = {
       forceStep: null,
-      openModal: true,
-      openAdmin: true
+      openModal: false,
+      openAdmin: false
     };
 
     this.props.checkSignupPhase(ENV !== 'production' ? testConfig : {});
