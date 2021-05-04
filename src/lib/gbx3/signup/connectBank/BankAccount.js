@@ -21,6 +21,7 @@ class BankAccount extends React.Component {
     this.getBankName = this.getBankName.bind(this);
     this.state = {
     };
+    this.hasTriedToGetBankNameFromPlaidRoutingNumber = false;
   }
 
   async componentDidMount() {
@@ -38,6 +39,15 @@ class BankAccount extends React.Component {
           }
         });
       }
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const routingNumber = util.getValue(this.props, 'bankAccountPlaid.routingNumber');
+
+    if (routingNumber && !this.props.bankName && !this.hasTriedToGetBankNameFromPlaidRoutingNumber) {
+      this.getBankName('routingNumber', routingNumber);
+      this.hasTriedToGetBankNameFromPlaidRoutingNumber = true;
     }
   }
 
@@ -69,6 +79,7 @@ class BankAccount extends React.Component {
       group,
       formState,
       bankAccount,
+      bankAccountPlaid,
       loading
     } = this.props;
 
@@ -76,12 +87,12 @@ class BankAccount extends React.Component {
 
     const ID = util.getValue(bankAccount, 'ID');
     const kind = util.getValue(bankAccount, 'kind', 'deposit');
-    const name = util.getValue(bankAccount, 'name');
+    const name = util.getValue(bankAccount, 'name', util.getValue(bankAccountPlaid, 'name'));
     const bankName = util.getValue(formState, 'fields.bankName.value', util.getValue(bankAccount, 'bankName'));
-    const number = util.getValue(bankAccount, 'number');
+    const number = util.getValue(bankAccount, 'number', util.getValue(bankAccountPlaid, 'number'));
     const last4 = util.getValue(bankAccount, 'last4');
-    const routingNumber = util.getValue(bankAccount, 'routingNumber');
-    const accountType = util.getValue(bankAccount, 'accountType');
+    const routingNumber = util.getValue(bankAccount, 'routingNumber', util.getValue(bankAccountPlaid, 'routingNumber'));
+    const accountType = util.getValue(bankAccount, 'accountType', util.getValue(bankAccountPlaid, 'accountType'));
     const notes = util.getValue(bankAccount, 'notes');
     const status = util.getValue(bankAccount, 'status');
     const readOnly = status === 'approved' ? true : false;
@@ -139,7 +150,8 @@ class BankAccount extends React.Component {
           placeholder: last4 ? `********${last4}` : 'Enter Account Number',
           required: last4 ? false : true,
           meta: { last4 },
-          maxLength: 32
+          maxLength: 32,
+          value: !last4 && number ? number : ''
         })}
         {bankName ? <span className='green date'>{bankName}</span> : null}
         {this.props.textField('routingNumber', {
@@ -169,11 +181,14 @@ function mapStateToProps(state, props) {
   const bankAccount = util.getValue(orgBankAccountsData, 0, {});
   const bankName = util.getValue(bankAccount, 'bankName');
   const loading = util.getValue(state, 'merchantApp.loading', false);
+  const extractAuth = util.getValue(state, 'merchantApp.extractAuth', {});
+  const bankAccountPlaid = util.getValue(extractAuth, 'bankAccount', {});
 
   return {
     bankAccount,
     bankName,
-    loading
+    loading,
+    bankAccountPlaid
   }
 }
 

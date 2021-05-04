@@ -6,14 +6,15 @@ import * as util from '../../common/utility';
 */
 export function merchantApp(state = {
   loading: false,
-  fetching: false,
+  gettingInfoFromPlaid: false,
+  errorSavingPlaidInfo: false,
   plaid: {
     hasBeenUpdated: false,
     linkToken: null,
-    accountID: null,
-    authMeta: null,
-    identityMeta: null
-  }
+    accountID: null
+  },
+  extractAuth: {},
+  extractIdentity: {}
 }, action) {
   switch (action.type) {
     case types.UPDATE_MERCHANT_APP:

@@ -44,10 +44,13 @@ class Principal extends React.Component {
       group,
       formState,
       principal,
-      loading
+      loading,
+      principalPlaid
     } = this.props;
 
     if (loading) return <Loader msg='Loading Principal...' />
+
+    console.log('execute principalPlaid -> ', principalPlaid);
 
     const ID = util.getValue(principal, 'ID');
     const emailAddress = util.getValue(principal, 'emailAddress');
@@ -56,18 +59,6 @@ class Principal extends React.Component {
     const dataOfBirth = util.getValue(principal, 'dateOfBirth');
     const title = util.getValue(principal, 'title');
     const contactPhone = util.getValue(principal, 'contactPhone');
-
-    /* Auto set birthday
-    const minDate = Moment().subtract(18, 'years');
-    const minDateFormat = minDate.format('MM/DD/YYYY');
-    const minDateTS = parseInt(minDate.valueOf()/1000);
-
-    const maxDate = Moment().subtract(60, 'years');
-    const maxDateFormat = maxDate.format('MM/DD/YYYY');
-    const maxDateTS = parseInt(maxDate.valueOf()/1000);
-
-    const randomTS = util.getRand(minDateTS, maxDateTS);
-    */
 
     return (
       <div className='fieldGroup'>
@@ -153,10 +144,15 @@ function mapStateToProps(state, props) {
   const orgPrincipalsData = util.getValue(orgPrincipals, 'data');
   const principal = util.getValue(orgPrincipalsData, 0, {});
   const loading = util.getValue(state, 'merchantApp.loading', false);
+  const extractIdentity = util.getValue(state, 'merchantApp.extractIdentity', {});
+  const principalPlaid = util.getValue(extractIdentity, 'principal', {});
+
+  console.log('execute extractIdentity -> ', extractIdentity);
 
   return {
     principal,
-    loading
+    loading,
+    principalPlaid
   }
 }
 

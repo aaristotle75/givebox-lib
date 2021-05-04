@@ -99,6 +99,19 @@ export function signupGBX3Data() {
   }
 }
 
+export function getSignupStep(value, phase = null) {
+  return (dispatch, getState) => {
+    const orgSignup = util.getValue(getState(), 'gbx3.orgSignup', {});
+    const {
+      signupPhase
+    } = orgSignup;
+
+    const stepsTodo = signupPhaseConfig[phase || signupPhase].stepsTodo;
+    const step = isNaN(value) ? stepsTodo.findIndex(s => s.slug === value) : value;
+    return step;
+  }
+}
+
 export function setSignupStep(value, callback) {
   return async (dispatch, getState) => {
     const orgSignup = util.getValue(getState(), 'gbx3.orgSignup', {});

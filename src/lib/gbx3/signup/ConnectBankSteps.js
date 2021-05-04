@@ -124,7 +124,7 @@ class ConnectBankStepsForm extends React.Component {
           if (message === 'submerchant_created') {
             this.submerchantCreated();
           } else if (err) {
-            this.props.formProp({ error: 'We are unable to connect your bank account. Please try checking your status again in a few minutes.' });
+            this.props.formProp({ error: true, errorMsg: 'We are unable to connect your bank account. Please try checking your status again in a few minutes.' });
             this.setState({ checkingStatus: false });
           } else {
             this.setState({ checkingStatus: false });

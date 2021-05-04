@@ -309,20 +309,165 @@ export function getLinkToken() {
   }
 }
 
-export function accessToken(publicToken, metaData) {
-  return (dispatch) => {
-    const account_id = util.getValue(metaData, 'account_id');
-    dispatch(updateMerchantApp('plaid', { account_id }));
+export function accessToken(publicToken, metaData, options = {}) {
 
-    this.props.sendResource('plaidAccess', {
-      data: {
-        publicToken
-      },
-      method: 'POST',
-      callback: (res, err) => {
-        console.log('execute plaidAccess -> ', res, err);
+  const opts = {
+    callback: null,
+    ...options
+  };
+
+  return async (dispatch) => {
+    dispatch(setMerchantApp('gettingInfoFromPlaid', true));
+    const account_id = util.getValue(metaData, 'account_id');
+    if (localStorage.getItem('account_id')) {
+      localStorage.removeItem('account_id');
+    }
+    if (account_id) {
+      localStorage.setItem('account_id', account_id);
+      const updated = await dispatch(updateMerchantApp('plaid', { account_id }));
+
+      if (updated) {
+        dispatch(sendResource('plaidAccess', {
+          data: {
+            publicToken
+          },
+          method: 'POST',
+          callback: (res, err) => {
+            dispatch(getPlaidInfo(opts.callback));
+          }
+        }));
       }
-    })
+    } else {
+      // Throw error stop checking
+      dispatch(setMerchantApp('gettingInfoFromPlaid', false));
+    }
+  }
+}
+
+export function getPlaidInfo(callback) {
+  return (dispatch, getState) => {
+    const gettingInfoFromPlaid = util.getValue(getState(), 'merchantApp.gettingInfoFromPlaid');
+    if (!gettingInfoFromPlaid) dispatch(setMerchantApp('gettingInfoFromPlaid', true));
+
+    const account_id = util.getValue(getState(), 'merchantApp.plaid.account_id', localStorage.getItem('account_id'));
+    if (account_id) {
+      dispatch(getResource('plaidAuth', {
+        method: 'GET',
+        callback: (res, err) => {
+          if (!util.isEmpty(res)) {
+            const data = util.getValue(res, 'data', {});
+            dispatch(extractFromPlaidAuth(account_id, data));
+            dispatch(getResource('plaidIdentity', {
+              method: 'GET',
+              callback: (res, err) => {
+                if (!util.isEmpty(res)) {
+                  const data = util.getValue(res, 'data', {});
+                  dispatch(extractFromPlaidIdentity(account_id, data, callback));
+                  dispatch(setMerchantApp('gettingInfoFromPlaid', false));
+                } else {
+                  if (callback) callback('error');
+                }
+              }
+            }));
+          } else {
+            if (callback) callback('error');
+          }
+        }
+      }));
+    } else {
+      // Throw error stop checking
+      dispatch(setMerchantApp('gettingInfoFromPlaid', false));
+      if (callback) callback('error');
+    }
+  }
+}
+
+
+function extractFromPlaidAuth(account_id, data) {
+
+  return (dispatch, getState) => {
+    const accounts = util.getValue(data, 'accounts', []);
+    const ach = util.getValue(data, 'numbers.ach', []);
+    const account = accounts.find(a => a.account_id === account_id);
+    const bankInfo = ach.find(a => a.account_id === account_id);
+
+    const bankAccount = {
+      kind: 'deposit',
+      name: util.getValue(account, 'name'),
+      number: util.getValue(bankInfo, 'account'),
+      routingNumber: util.getValue(bankInfo, 'routing'),
+      accountType: util.getValue(account, 'subtype'),
+      metaData: {
+        plaid: data
+      }
+    };
+
+    dispatch(updateMerchantApp('extractAuth', {
+      bankAccount,
+      data
+    }));
+  }
+}
+
+function extractFromPlaidIdentity(account_id, data, callback) {
+
+  return async (dispatch, getState) => {
+    const accounts = util.getValue(data, 'accounts', []);
+    const account = accounts.find(a => a.account_id === account_id);
+    const owners = util.getValue(account, 'owners', []);
+    const owner = util.getValue(owners, 0, {});
+    const addresses = util.getValue(owner, 'addresses', []);
+    const addressObj = util.getValue(addresses, 0, {});
+    const addressData = util.getValue(addressObj, 'data', {});
+    const city = util.getValue(addressData, 'city');
+    const zipUnformatted = util.getValue(addressData, 'zip');
+    const zip = zipUnformatted ? zipUnformatted.substring(0, 5) : '';
+    const state = util.getValue(addressData, 'region');
+    const line1 = util.getValue(addressData, 'street');
+    const address = {
+      line1,
+      city,
+      state,
+      zip
+    };
+
+    const names = util.getValue(owner, 'names', []);
+    const name = util.getValue(names, 0);
+    const splitName = util.splitName(name);
+    const firstName = splitName.first;
+    const lastName = splitName.last;
+    const emails = util.getValue(owner, 'emails', []);
+    const emailAddressObj = util.getValue(emails, 0);
+    const emailAddress = util.getValue(emailAddressObj, 'data');
+    const phone_numbers = util.getValue(owner, 'phone_numbers', []);
+    const contactPhoneObj = util.getValue(phone_numbers, 0);
+    const contactPhoneUnformatted = util.getValue(contactPhoneObj, 'data');
+    const contactPhone = contactPhoneUnformatted ? contactPhoneUnformatted.slice(-10) : '';
+
+    const principal = {
+      firstName,
+      lastName,
+      emailAddress,
+      contactPhone
+    };
+
+    const updated = await dispatch(updateMerchantApp('extractIdentity', {
+      principal,
+      address,
+      data
+    }));
+
+    if (updated) {
+      dispatch(savePlaidInfo(callback));
+    }
+  }
+}
+
+function savePlaidInfo(callback) {
+  return (dispatch, getState) => {
+    // Chain the saves: bankAccount, principal, legalEntity, address
+    if (callback) callback('error', 'principal');
+    dispatch(setMerchantApp('gettingInfoFromPlaid', false));
   }
 }
 

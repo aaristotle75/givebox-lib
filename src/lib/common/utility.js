@@ -179,9 +179,12 @@ function propCompare(prop, direction) {
 
 export function splitName(string) {
   let arr = [];
-  const value = {};
+  const value = {
+    first: '',
+    last: ''
+  };
   const str = string.trim();
-  if (!str) return false;
+  if (!str) return value;
   arr = str.split(' ');
   if (arr.length > 1) {
     value.last = arr.pop();
