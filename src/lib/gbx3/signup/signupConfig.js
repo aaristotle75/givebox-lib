@@ -17,7 +17,7 @@ const welcome = {
 const orgName = {
   type: 'org',
   slug: 'orgName',
-  name: 'Organization Name',
+  name: 'Your Organization',
   title: 'What is the Name and Tax ID of Your Organization',
   icon: 'star',
   desc: ''
@@ -147,7 +147,8 @@ const address = {
   slug: 'address',
   name: 'Address',
   title: `Nonprofit/Business Address`,
-  customIcon: <Icon><TiBusinessCard /></Icon>,
+  customIcon: <Icon><MdBusiness /></Icon>,
+  //customIcon: <Icon><TiBusinessCard /></Icon>,
   desc: ''
 };
 
@@ -265,7 +266,6 @@ export const signupPhase = {
     stepsTodo: [
       addBank,
       principal,
-      legalEntity,
       address,
       connectStatus
     ]

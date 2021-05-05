@@ -17,13 +17,14 @@ class SignupMenu extends React.Component {
   constructor(props) {
     super(props);
     this.renderSteps = this.renderSteps.bind(this);
+    const configStep = config.signupPhase[props.signupPhase];
     this.state = {
+      configStep,
+      stepsTodo: configStep.stepsTodo,
+      showStepNumber: configStep.showStepNumber,
+      menuHeader: configStep.menuHeader,
+      modalName: configStep.modalName
     };
-    this.configStep = config.signupPhase[this.props.signupPhase];
-    this.stepsTodo = this.configStep.stepsTodo;
-    this.showStepNumber = this.configStep.showStepNumber;
-    this.menuHeader = this.configStep.menuHeader;
-    this.modalName = this.configStep.modalName;
   }
 
   componentDidMount() {
@@ -31,11 +32,14 @@ class SignupMenu extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.signupPhase !== this.props.signupPhase) {
-      this.configStep = config.signupPhase[this.props.signupPhase];
-      this.stepsTodo = this.configStep.stepsTodo;
-      this.showStepNumber = this.configStep.showStepNumber;
-      this.menuHeader = this.configStep.menuHeader;
-      this.modalName = this.configStep.modalName;
+      const configStep = config.signupPhase[this.props.signupPhase];
+      this.setState({
+        configStep,
+        stepsTodo: configStep.stepsTodo,
+        showStepNumber: configStep.showStepNumber,
+        menuHeader: configStep.menuHeader,
+        modalName: configStep.modalName
+      });
     }
   }
 
@@ -45,8 +49,15 @@ class SignupMenu extends React.Component {
       completed
     } = this.props;
 
+    const {
+      stepsTodo,
+      modalName,
+      showStepNumber,
+      menuHeader
+    } = this.state;
+
     const items = [];
-    Object.entries(this.stepsTodo).forEach(([key, value]) => {
+    Object.entries(stepsTodo).forEach(([key, value]) => {
       const currentStep = +key === +step ? true : false;
       const completedStep = completed.includes(value.slug) ? true : false;
       const stepNumber = <span className='number'>Step {+key + 1}</span>;
@@ -54,7 +65,7 @@ class SignupMenu extends React.Component {
         <li
           onClick={() => {
             this.props.setSignupStep(+key, () => {
-              this.props.toggleModal(this.modalName, true);
+              this.props.toggleModal(modalName, true);
             });
           }}
           key={key}
@@ -62,7 +73,7 @@ class SignupMenu extends React.Component {
         >
           <div className='stepTitleContainer'>
             { value.icon ? <span className={`icon icon-${value.icon}`}></span> : value.customIcon }
-            <div className='stepTitle'>{this.showStepNumber ? stepNumber : null}{value.name}</div>
+            <div className='stepTitle'>{showStepNumber ? stepNumber : null}{value.name}</div>
           </div>
           <span className={`icon icon-${completedStep ? 'check green' : 'chevron-right'}`}></span>
         </li>
@@ -71,7 +82,7 @@ class SignupMenu extends React.Component {
 
     return (
       <ul className='builderMenuSteps'>
-        <li className='listHeader'>{this.menuHeader}</li>
+        <li className='listHeader'>{menuHeader}</li>
         {items}
       </ul>
     )

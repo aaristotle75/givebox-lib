@@ -40,8 +40,6 @@ class PlaidConnect extends React.Component {
       extractIdentity
     } = this.props;
 
-    console.log('execute savePlaidInfoCallback -> ', extractAuth, extractIdentity);
-
     const forceStep = this.props.getSignupStep(slug, 'manualConnect');
 
     switch (message) {
@@ -59,13 +57,14 @@ class PlaidConnect extends React.Component {
         break;
       }
 
-      default: {
-        // handle success
-        console.log('execute -> savePlaidInfo -> Success');
+      case 'success': {
+        this.props.checkConnectStatus();
         break;
       }
+
+      // no default
     }
-    this.props.setMerchantApp('gettingInfoFromPlaid', false);
+    this.props.setMerchantApp('savingInfoFromPlaid', false);
   }
 
   alreadyHasPlaidToken() {
@@ -73,12 +72,12 @@ class PlaidConnect extends React.Component {
     this.props.getPlaidInfo(this.savePlaidInfoCallback);
   }
 
-  async exitPlaid(token, metaData) {
+  async exitPlaid(token, metaData, test = false) {
     const status = util.getValue(metaData, 'status');
-    if (status === 'institution_not_found') {
+    if (status === 'institution_not_found' || test) {
       const updated = await this.props.updateOrgSignup({ signupPhase: 'manualConnect' });
       if (updated) {
-        //this.props.saveOrg({ orgUpdated: true });
+        this.props.saveOrg({ orgUpdated: true });
         this.props.checkSignupPhase({
           forceStep: 0,
           openAdmin: true,
@@ -93,14 +92,16 @@ class PlaidConnect extends React.Component {
     const {
       linkToken,
       hasPlaidToken,
-      gettingInfoFromPlaid
+      gettingInfoFromPlaid,
+      savingInfoFromPlaid
     } = this.props;
 
     if (!linkToken && !hasPlaidToken) return <Loader msg='Getting Plaid Token...' />;
 
     return (
       <div>
-        { gettingInfoFromPlaid ? <Loader msg='Getting info from Plaid' /> : null }
+        {/* <GBLink onClick={() => this.exitPlaid(null, null, true)}>Test Manual</GBLink> */}
+        { gettingInfoFromPlaid || savingInfoFromPlaid ? <Loader msg={`${savingInfoFromPlaid ? 'Saving' : 'Getting'} info from Plaid`} /> : null }
         { hasPlaidToken ?
           <GBLink
             onClick={this.alreadyHasPlaidToken}
@@ -137,6 +138,7 @@ function mapStateToProps(state, props) {
   const hasPlaidToken = util.getValue(state, 'resource.gbx3Org.data.hasPlaidToken');
   const linkToken = util.getValue(state, 'merchantApp.plaid.linkToken', null);
   const gettingInfoFromPlaid = util.getValue(state, 'merchantApp.gettingInfoFromPlaid', false);
+  const savingInfoFromPlaid = util.getValue(state, 'merchantApp.savingInfoFromPlaid', false);
   const merchantApp = util.getValue(state, 'merchantApp', {});
   const extractAuth = util.getValue(merchantApp, 'extractAuth', {});
   const extractIdentity = util.getValue(merchantApp, 'extractIdentity', {});
@@ -145,6 +147,7 @@ function mapStateToProps(state, props) {
     hasPlaidToken,
     linkToken,
     gettingInfoFromPlaid,
+    savingInfoFromPlaid,
     extractAuth,
     extractIdentity
   }

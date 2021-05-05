@@ -24,7 +24,7 @@ class Address extends React.Component {
 
   async componentDidMount() {
     if (util.isEmpty(this.props.address)) {
-      const initLoading = await this.props.setMerchantApp('loading', true);
+      const initLoading = await this.props.setMerchantApp('addressLoading', true);
       if (initLoading) {
         this.props.getResource('orgAddresses', {
           reload: true,
@@ -33,7 +33,7 @@ class Address extends React.Component {
             order: 'desc'
           },
           callback: (res, err) => {
-            this.props.setMerchantApp('loading', false);
+            this.props.setMerchantApp('addressLoading', false);
           }
         });
       }
@@ -45,17 +45,18 @@ class Address extends React.Component {
     const {
       group,
       address,
-      loading
+      loading,
+      addressPlaid
     } = this.props;
 
     if (loading) return <Loader msg='Loading Address...' />
 
     const ID = util.getValue(address, 'ID');
-    const line1 = util.getValue(address, 'line1');
+    const line1 = util.getValue(address, 'line1', util.getValue(addressPlaid, 'line1'));
     const line2 = util.getValue(address, 'line2');
-    const city = util.getValue(address, 'city');
-    const state = util.getValue(address, 'state');
-    const zip = util.getValue(address, 'zip');
+    const city = util.getValue(address, 'city', util.getValue(addressPlaid, 'city'));
+    const state = util.getValue(address, 'state', util.getValue(addressPlaid, 'state'));
+    const zip = util.getValue(address, 'zip', util.getValue(addressPlaid, 'zip'));
 
     return (
       <div className='fieldGroup'>
@@ -127,11 +128,14 @@ function mapStateToProps(state, props) {
   const orgAddresses = util.getValue(state, 'resource.orgAddresses', {});
   const orgAddressesData = util.getValue(orgAddresses, 'data');
   const address = util.getValue(orgAddressesData, 0, {});
-  const loading = util.getValue(state, 'merchantApp.loading', false);
+  const loading = util.getValue(state, 'merchantApp.addressLoading', false);
+  const extractIdentity = util.getValue(state, 'merchantApp.extractIdentity', {});
+  const addressPlaid = util.getValue(extractIdentity, 'address', {});
 
   return {
     address,
-    loading
+    loading,
+    addressPlaid
   }
 }
 

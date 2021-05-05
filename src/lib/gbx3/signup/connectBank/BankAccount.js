@@ -26,7 +26,7 @@ class BankAccount extends React.Component {
 
   async componentDidMount() {
     if (util.isEmpty(this.props.bankAccount)) {
-      const initLoading = await this.props.setMerchantApp('loading', true);
+      const initLoading = await this.props.setMerchantApp('bankLoading', true);
       if (initLoading) {
         this.props.getResource('orgBankAccounts', {
           reload: true,
@@ -35,7 +35,7 @@ class BankAccount extends React.Component {
             order: 'desc'
           },
           callback: (res, err) => {
-            this.props.setMerchantApp('loading', false);
+            this.props.setMerchantApp('bankLoading', false);
           }
         });
       }
@@ -180,7 +180,7 @@ function mapStateToProps(state, props) {
   const orgBankAccountsData = util.getValue(orgBankAccounts, 'data');
   const bankAccount = util.getValue(orgBankAccountsData, 0, {});
   const bankName = util.getValue(bankAccount, 'bankName');
-  const loading = util.getValue(state, 'merchantApp.loading', false);
+  const loading = util.getValue(state, 'merchantApp.bankLoading', false);
   const extractAuth = util.getValue(state, 'merchantApp.extractAuth', {});
   const bankAccountPlaid = util.getValue(extractAuth, 'bankAccount', {});
 

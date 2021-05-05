@@ -6,7 +6,11 @@ import * as util from '../../common/utility';
 */
 export function merchantApp(state = {
   loading: false,
+  bankLoading: false,
+  principalLoading: false,
+  addressLoading: false,
   gettingInfoFromPlaid: false,
+  savingInfoFromPlaid: false,
   errorSavingPlaidInfo: false,
   plaid: {
     hasBeenUpdated: false,

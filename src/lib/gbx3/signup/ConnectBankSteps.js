@@ -43,6 +43,7 @@ class ConnectBankStepsForm extends React.Component {
     this.callbackAfter = this.callbackAfter.bind(this);
     this.submerchantCreated = this.submerchantCreated.bind(this);
     this.checkConnectStatus = this.checkConnectStatus.bind(this);
+    this.switchToConnectBank = this.switchToConnectBank.bind(this);
 
     this.state = {
       editorOpen: false,
@@ -53,6 +54,9 @@ class ConnectBankStepsForm extends React.Component {
     };
   }
 
+  componentDidMount() {
+  }
+
   connectBankPlaid() {
     console.log('execute connectBankPlaid -> ');
     this.setState({ saving: false });
@@ -60,6 +64,18 @@ class ConnectBankStepsForm extends React.Component {
 
   callbackAfter(tab) {
     this.props.formProp({ error: false });
+  }
+
+  async switchToConnectBank() {
+    const updated = await this.props.updateOrgSignup({ signupPhase: 'connectBank' });
+    if (updated) {
+      this.props.saveOrg({ orgUpdated: true });
+      this.props.checkSignupPhase({
+        forceStep: 0,
+        openAdmin: true,
+        openModal: true
+      });
+    }
   }
 
   checkRequiredCompleted() {
@@ -288,7 +304,8 @@ class ConnectBankStepsForm extends React.Component {
       stepsTodo,
       plaidAccountID,
       isVantivReady,
-      merchantIdentString
+      merchantIdentString,
+      signupPhase
     } = this.props;
 
     const stepConfig = util.getValue(stepsTodo, step, {});
@@ -482,12 +499,18 @@ class ConnectBankStepsForm extends React.Component {
             { slug === 'connectBank' ?
               <PlaidConnect
                 {...this.props}
+                checkConnectStatus={this.checkConnectStatus}
               />
             :
               this.props.saveButton(this.processForm, { group: slug, label: item.saveButtonLabel, disabled: item.saveButtonDisabled })
             }
           </div>
           <div className='button-item' style={{ width: 150 }}>
+            { signupPhase === 'manualConnect' ?
+              <GBLink onClick={this.switchToConnectBank}>
+                <span className='buttonAlignText'>Connect a Bank Account<span className='icon icon-chevron-right'></span></span>
+              </GBLink>
+            : null }
           </div>
         </div> : null }
       </div>
@@ -557,12 +580,14 @@ function mapStateToProps(state, props) {
   const legalEntity = util.getValue(state, 'resource.orgLegalEntity', {});
   const isVantivReady = util.getValue(state, 'resource.gbx3Org.data.vantiv.isVantivReady');
   const merchantIdentString = util.getValue(state, 'resource.gbx3Org.data.vantiv.merchantIdentString');
+  const signupPhase = util.getValue(state, 'gbx3.orgSignup.signupPhase');
 
   return {
     plaidAccountID,
     legalEntity,
     isVantivReady,
-    merchantIdentString
+    merchantIdentString,
+    signupPhase
   }
 }
 

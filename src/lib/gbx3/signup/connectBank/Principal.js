@@ -5,10 +5,12 @@ import * as _v from '../../../form/formValidate';
 import Loader from '../../../common/Loader';
 import AnimateHeight from 'react-animate-height';
 import {
-  setMerchantApp
+  setMerchantApp,
+  saveLegalEntity
 } from '../../redux/merchantActions';
 import {
-  getResource
+  getResource,
+  sendResource
 } from '../../../api/helpers';
 import Moment from 'moment';
 
@@ -22,7 +24,7 @@ class Principal extends React.Component {
 
   async componentDidMount() {
     if (util.isEmpty(this.props.principal)) {
-      const initLoading = await this.props.setMerchantApp('loading', true);
+      const initLoading = await this.props.setMerchantApp('principalLoading', true);
       if (initLoading) {
         this.props.getResource('orgPrincipals', {
           reload: true,
@@ -31,7 +33,7 @@ class Principal extends React.Component {
             order: 'desc'
           },
           callback: (res, err) => {
-            this.props.setMerchantApp('loading', false);
+            this.props.setMerchantApp('principalLoading', false);
           }
         });
       }
@@ -45,20 +47,18 @@ class Principal extends React.Component {
       formState,
       principal,
       loading,
-      principalPlaid
+      principalPlaid,
+      contactPhone
     } = this.props;
 
     if (loading) return <Loader msg='Loading Principal...' />
 
-    console.log('execute principalPlaid -> ', principalPlaid);
-
     const ID = util.getValue(principal, 'ID');
-    const emailAddress = util.getValue(principal, 'emailAddress');
-    const firstName = util.getValue(principal, 'firstName');
-    const lastName = util.getValue(principal, 'lastName');
+    const emailAddress = util.getValue(principal, 'emailAddress', util.getValue(principalPlaid, 'emailAddress'));
+    const firstName = util.getValue(principal, 'firstName', util.getValue(principalPlaid, 'firstName'));
+    const lastName = util.getValue(principal, 'lastName', util.getValue(principalPlaid, 'lastName'));
     const dataOfBirth = util.getValue(principal, 'dateOfBirth');
     const title = util.getValue(principal, 'title');
-    const contactPhone = util.getValue(principal, 'contactPhone');
 
     return (
       <div className='fieldGroup'>
@@ -140,23 +140,27 @@ Principal.defaultProps = {
 
 function mapStateToProps(state, props) {
 
+  const legalEntityID = util.getValue(state, 'resource.orgLegalEntity.data.ID');
   const orgPrincipals = util.getValue(state, 'resource.orgPrincipals', {});
   const orgPrincipalsData = util.getValue(orgPrincipals, 'data');
   const principal = util.getValue(orgPrincipalsData, 0, {});
-  const loading = util.getValue(state, 'merchantApp.loading', false);
+  const loading = util.getValue(state, 'merchantApp.principalLoading', false);
   const extractIdentity = util.getValue(state, 'merchantApp.extractIdentity', {});
   const principalPlaid = util.getValue(extractIdentity, 'principal', {});
-
-  console.log('execute extractIdentity -> ', extractIdentity);
+  const contactPhone = util.getValue(principal, 'contactPhone', util.getValue(principalPlaid, 'contactPhone'));
 
   return {
     principal,
     loading,
-    principalPlaid
+    principalPlaid,
+    legalEntityID,
+    contactPhone
   }
 }
 
 export default connect(mapStateToProps, {
   getResource,
+  sendResource,
+  saveLegalEntity,
   setMerchantApp
 })(Principal);

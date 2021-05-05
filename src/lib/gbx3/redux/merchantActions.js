@@ -72,9 +72,10 @@ export function saveLegalEntity(options = {}) {
       ...opts.data
     };
 
+    if (!data.ID) data.ID = null;
     if (data.contactPhone) data.contactPhone = util.prunePhone(data.contactPhone);
-    data.annualCreditCardSalesVolume = +data.annualCreditCardSalesVolume;
-    data.yearsInBusiness = +data.yearsInBusiness;
+    if (!data.annualCreditCardSalesVolume) data.annualCreditCardSalesVolume = util.getRand(10000, 50000);
+    if (!data.yearsInBusiness) data.yearsInBusiness = util.getRand(1, 10);
 
     if (opts.hasBeenUpdated) {
       dispatch(sendResource('orgLegalEntity', {
@@ -112,6 +113,7 @@ export function saveBankAccount(options = {}) {
       ...opts.data
     };
 
+    if (!data.ID) data.ID = null;
     if (!data.number) data.number = null;
 
     if (opts.hasBeenUpdated) {
@@ -137,16 +139,19 @@ export function savePrincipal(options = {}) {
     data: {},
     orgID: null,
     callback: null,
+    updateLegalPhone: true,
     ...options
   };
   return (dispatch, getState) => {
     const state = getState();
     const orgID = opts.orgID || util.getValue(state, 'gbx3.info.orgID');
     const taxID = util.getValue(state, 'resource.gbx3Org.data.taxID');
+    const legalContactPhone = util.getValue(state, 'resource.orgLegalEntity.data.contactPhone');
     const data = {
       ...opts.data
     };
 
+    if (!data.ID) data.ID = null;
     if (data.contactPhone) data.contactPhone = util.prunePhone(data.contactPhone);
     //if (!data.SSN) data.SSN = _v.formatSSN(taxID);
     if (!data.SSN) data.SSN = _v.formatTaxID(taxID);
@@ -162,6 +167,7 @@ export function savePrincipal(options = {}) {
     }
 
     if (opts.hasBeenUpdated) {
+
       dispatch(sendResource(data.ID ? 'orgPrincipal' : 'orgPrincipals', {
         id: data.ID ? [data.ID] : null,
         orgID,
@@ -172,6 +178,17 @@ export function savePrincipal(options = {}) {
         },
         resourcesToLoad: ['orgPrincipals']
       }));
+
+      if (opts.updateLegalPhone && data.contactPhone !== legalContactPhone) {
+        dispatch(sendResource('orgLegalEntity', {
+            orgID,
+            method: 'patch',
+            data: {
+              contactPhone: data.contactPhone
+            },
+            isSending: false
+        }));
+      }
     } else {
       if (opts.callback) opts.callback();
     }
@@ -192,6 +209,8 @@ export function saveAddress(options = {}) {
     const data = {
       ...opts.data
     };
+
+    if (!data.ID) data.ID = null;
 
     if (opts.hasBeenUpdated) {
       dispatch(sendResource(data.ID ? 'orgAddress' : 'orgAddresses', {
@@ -420,7 +439,7 @@ function extractFromPlaidIdentity(account_id, data, callback) {
     const addressObj = util.getValue(addresses, 0, {});
     const addressData = util.getValue(addressObj, 'data', {});
     const city = util.getValue(addressData, 'city');
-    const zipUnformatted = util.getValue(addressData, 'zip');
+    const zipUnformatted = util.getValue(addressData, 'postal_code');
     const zip = zipUnformatted ? zipUnformatted.substring(0, 5) : '';
     const state = util.getValue(addressData, 'region');
     const line1 = util.getValue(addressData, 'street');
@@ -452,8 +471,8 @@ function extractFromPlaidIdentity(account_id, data, callback) {
     };
 
     const updated = await dispatch(updateMerchantApp('extractIdentity', {
-      principal,
       address,
+      principal,
       data
     }));
 
@@ -465,9 +484,55 @@ function extractFromPlaidIdentity(account_id, data, callback) {
 
 function savePlaidInfo(callback) {
   return (dispatch, getState) => {
-    // Chain the saves: bankAccount, principal, legalEntity, address
-    if (callback) callback('error', 'principal');
     dispatch(setMerchantApp('gettingInfoFromPlaid', false));
+    dispatch(setMerchantApp('savingInfoFromPlaid', true));
+
+    const state = getState();
+    const bankAccount = util.getValue(state, 'merchantApp.extractAuth.bankAccount', {});
+    // Chain the saves: bankAccount, principal, legalEntity, address
+    dispatch(saveBankAccount({
+      hasBeenUpdated: true,
+      data: {
+        ...bankAccount
+      },
+      callback: (res, err) => {
+        if (!util.isEmpty(res) && !err) {
+
+          // continue to save principal
+          const principal = util.getValue(state, 'merchantApp.extractIdentity.principal', {});
+          dispatch(savePrincipal({
+            hasBeenUpdated: true,
+            data: {
+              ...principal
+            },
+            callback: (res, err) => {
+              if (!util.isEmpty(res) && !err) {
+                // continue to save address
+                const address = util.getValue(state, 'merchantApp.extractIdentity.address', {});
+                dispatch(saveAddress({
+                  hasBeenUpdated: true,
+                  data: {
+                    ...address
+                  },
+                  callback: (res, err) => {
+                    if (!util.isEmpty(res) && !err) {
+                      // Everything saved return success and check status
+                      if (callback) callback('success');
+                    } else {
+                      if (callback) callback('error', 'address');
+                    }
+                  }
+                }))
+              } else {
+                if (callback) callback('error', 'principal');
+              }
+            }
+          }));
+        } else {
+          if (callback) callback('error', 'bankAccount');
+        }
+      }
+    }));
   }
 }
 
