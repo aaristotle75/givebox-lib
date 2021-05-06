@@ -662,6 +662,7 @@ class PaymentForm extends Component {
 
     return (
       <div ref={this.formRef} className='givebox-paymentform'>
+        {/*
         <div className='offline'>
           <div className='offlineText'>
             <span className='icon icon-alert-circle'></span>
@@ -669,6 +670,7 @@ class PaymentForm extends Component {
             Please check back in 1-2 hours. We appreciate your patience!
           </div>
         </div>
+        */}
         <AnimateHeight
           height={util.getValue(formState, 'error', false) ? 'auto' : 0}
         >
