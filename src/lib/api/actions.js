@@ -110,6 +110,12 @@ export function setAccess(res, callback) {
       access.permissions = util.getValue(res.member, 'permissions');
     }
     dispatch(resourceProp('access', access));
+
+    // Set preferences
+    if (has(user, 'preferences')) {
+      dispatch(setPrefs(util.getValue(user.preferences, 'cloudUI', {})));
+    }
+
     if (callback) callback(access);
   }
 }
@@ -329,7 +335,7 @@ export function sendAPI(
           dispatch(sendResponse(resource, {}, customMsg ? errorMsg : error ));
           if (callback) callback(null, customMsg ? errorMsg : error.response);
         } else {
-          errorMsg.data.message = 'Javascript error occurred.';
+          errorMsg.data.message = 'There was an issue with your connection, please try again in a few minutes.';
           dispatch(sendResponse(resource, {}, error));
           if (callback) callback(null, errorMsg);
         }
