@@ -1727,6 +1727,36 @@
   }
 
   .givebox-paymentform {
+    position: relative;
+
+    .offline {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 400px;
+      width: 100%;
+      background: transparentize($red, .3);
+      z-index: 99999999;
+    }
+
+    .offlineText {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-size: 18px;
+      color: $white;
+      height: 100%;
+      text-align: center;
+      padding: 20px;
+
+      .icon {
+        font-size: 40px;
+        margin-bottom: 10px;
+      }
+    }
 
     .sendEmailNote {
       margin: 20px 0;

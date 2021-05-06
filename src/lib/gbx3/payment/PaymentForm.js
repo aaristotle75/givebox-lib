@@ -662,6 +662,13 @@ class PaymentForm extends Component {
 
     return (
       <div ref={this.formRef} className='givebox-paymentform'>
+        <div className='offline'>
+          <div className='offlineText'>
+            <span className='icon icon-alert-circle'></span>
+            We are experiencing a major network outage with Amazon, Digital Ocean and other Service providers, and are unable to route the payment requests.<br /><br />
+            Please check back in 1-2 hours. We appreciate your patience!
+          </div>
+        </div>
         <AnimateHeight
           height={util.getValue(formState, 'error', false) ? 'auto' : 0}
         >
