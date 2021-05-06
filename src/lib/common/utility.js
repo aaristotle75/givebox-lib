@@ -177,7 +177,7 @@ function propCompare(prop, direction) {
   }
 }
 
-export function splitName(string) {
+export function splitName(string, middle = true) {
   let arr = [];
   const value = {
     first: '',
@@ -188,7 +188,7 @@ export function splitName(string) {
   arr = str.split(' ');
   if (arr.length > 1) {
     value.last = arr.pop();
-    value.first = arr.length > 1 ? arr.join(' ') : arr[0];
+    value.first = arr.length && middle > 1 ? arr.join(' ') : arr[0];
   } else {
     value.last = '';
     value.first = arr[0];

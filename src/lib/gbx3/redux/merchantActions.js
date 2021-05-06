@@ -74,7 +74,7 @@ export function saveLegalEntity(options = {}) {
 
     if (!data.ID) data.ID = null;
     if (data.contactPhone) data.contactPhone = util.prunePhone(data.contactPhone);
-    if (!data.annualCreditCardSalesVolume) data.annualCreditCardSalesVolume = util.getRand(10000, 50000);
+    if (!data.annualCreditCardSalesVolume) data.annualCreditCardSalesVolume = 10000;
     if (!data.yearsInBusiness) data.yearsInBusiness = util.getRand(1, 10);
 
     if (opts.hasBeenUpdated) {
@@ -108,12 +108,15 @@ export function saveBankAccount(options = {}) {
   };
   return (dispatch, getState) => {
     const state = getState();
+    const orgBankAccounts = util.getValue(state, 'resource.orgBankAccounts', {});
+    const orgBankAccountsData = util.getValue(orgBankAccounts, 'data');
+    const bankAccount = util.getValue(orgBankAccountsData, 0, {});
     const orgID = opts.orgID || util.getValue(state, 'gbx3.info.orgID');
     const data = {
       ...opts.data
     };
 
-    if (!data.ID) data.ID = null;
+    if (!data.ID) data.ID = util.getValue(bankAccount, 'ID', null);
     if (!data.number) data.number = null;
 
     if (opts.hasBeenUpdated) {
@@ -144,6 +147,9 @@ export function savePrincipal(options = {}) {
   };
   return (dispatch, getState) => {
     const state = getState();
+    const orgPrincipals = util.getValue(state, 'resource.orgPrincipals', {});
+    const orgPrincipalsData = util.getValue(orgPrincipals, 'data');
+    const principal = util.getValue(orgPrincipalsData, 0, {});
     const orgID = opts.orgID || util.getValue(state, 'gbx3.info.orgID');
     const taxID = util.getValue(state, 'resource.gbx3Org.data.taxID');
     const legalContactPhone = util.getValue(state, 'resource.orgLegalEntity.data.contactPhone');
@@ -151,10 +157,11 @@ export function savePrincipal(options = {}) {
       ...opts.data
     };
 
-    if (!data.ID) data.ID = null;
+    if (!data.ID) data.ID = util.getValue(principal, 'ID', null);
     if (data.contactPhone) data.contactPhone = util.prunePhone(data.contactPhone);
     //if (!data.SSN) data.SSN = _v.formatSSN(taxID);
     if (!data.SSN) data.SSN = _v.formatTaxID(taxID);
+    if (!data.title) data.title = 'Director';
     if (!data.dateOfBirth) {
       const minDate = Moment().subtract(18, 'years');
       const minDateFormat = minDate.format('MM/DD/YYYY');
@@ -205,12 +212,15 @@ export function saveAddress(options = {}) {
   };
   return (dispatch, getState) => {
     const state = getState();
+    const orgAddresses = util.getValue(state, 'resource.orgAddresses', {});
+    const orgAddressesData = util.getValue(orgAddresses, 'data');
+    const address = util.getValue(orgAddressesData, 0, {});
     const orgID = opts.orgID || util.getValue(state, 'gbx3.info.orgID');
     const data = {
       ...opts.data
     };
 
-    if (!data.ID) data.ID = null;
+    if (!data.ID) data.ID = util.getValue(address, 'ID', null);
 
     if (opts.hasBeenUpdated) {
       dispatch(sendResource(data.ID ? 'orgAddress' : 'orgAddresses', {
@@ -452,7 +462,7 @@ function extractFromPlaidIdentity(account_id, data, callback) {
 
     const names = util.getValue(owner, 'names', []);
     const name = util.getValue(names, 0);
-    const splitName = util.splitName(name);
+    const splitName = util.splitName(name, false);
     const firstName = splitName.first;
     const lastName = splitName.last;
     const emails = util.getValue(owner, 'emails', []);

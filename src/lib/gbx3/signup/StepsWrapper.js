@@ -33,29 +33,32 @@ class StepsWrapper extends React.Component {
     this.nextStep = this.nextStep.bind(this);
     this.stepCompleted = this.stepCompleted.bind(this);
     this.getNumStepsCompleted = this.getNumStepsCompleted.bind(this);
+
+    const configStep = config.signupPhase[props.signupPhase];
+
     this.state = {
       error: false,
-      saving: false
+      saving: false,
+      stepsTodo: configStep.stepsTodo,
+      numStepsTodo: configStep.stepsTodo.length,
+      requiredSteps: configStep.requiredSteps,
+      stepModalName: configStep.modalName,
+      showStepNumber: configStep.showStepNumber,
+      menuHeader: configStep.menuHeader
     };
-
-    this.configStep = config.signupPhase[props.signupPhase];
-    this.stepsTodo = this.configStep.stepsTodo;
-    this.numStepsTodo = this.stepsTodo.length;
-    this.requiredSteps = this.configStep.requiredSteps;
-    this.stepModalName = this.configStep.modalName;
-    this.showStepNumber = this.configStep.showStepNumber;
-    this.menuHeader = this.configStep.menuHeader;
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.signupPhase !== this.props.signupPhase) {
-      this.configStep = config.signupPhase[this.props.signupPhase];
-      this.stepsTodo = this.configStep.stepsTodo;
-      this.numStepsTodo = this.stepsTodo.length;
-      this.requiredSteps = this.configStep.requiredSteps;
-      this.stepModalName = this.configStep.modalName;
-      this.showStepNumber = this.configStep.showStepNumber;
-      this.menuHeader = this.configStep.menuHeader;
+      const configStep = config.signupPhase[this.props.signupPhase];
+      this.setState({
+        stepsTodo: configStep.stepsTodo,
+        numStepsTodo: configStep.stepsTodo.length,
+        requiredSteps: configStep.requiredSteps,
+        stepModalName: configStep.modalName,
+        showStepNumber: configStep.showStepNumber,
+        menuHeader: configStep.menuHeader
+      });
     }
   }
 
@@ -72,7 +75,7 @@ class StepsWrapper extends React.Component {
     } = this.props;
 
     const nextStep = this.nextStep(step);
-    return util.getValue(this.stepsTodo[nextStep], 'name');
+    return util.getValue(this.state.stepsTodo[nextStep], 'name');
   }
 
   previousStep(step) {
@@ -81,7 +84,7 @@ class StepsWrapper extends React.Component {
   }
 
   nextStep(step) {
-    const numSteps = +(this.numStepsTodo - 1);
+    const numSteps = +(this.state.numStepsTodo - 1);
     const nextStep = step < numSteps ? step + 1 : step;
     return nextStep;
   }
@@ -115,15 +118,24 @@ class StepsWrapper extends React.Component {
       completedPhases
     } = this.props;
 
+    const {
+      stepsTodo,
+      numStepsTodo,
+      requiredSteps,
+      stepModalName,
+      showStepNumber,
+      menuHeader
+    } = this.state;
+
     const childrenWithProps = React.Children.map(this.props.children,
       (child) => React.cloneElement(child, {
         // Step Config
-        stepsTodo: this.stepsTodo,
-        numStepsTodo: this.numStepsTodo,
-        requiredSteps: this.requiredSteps,
-        stepModalName: this.stepModalName,
-        showStepNumber: this.showStepNumber,
-        menuHeader: this.menuHeader,
+        stepsTodo,
+        numStepsTodo,
+        requiredSteps,
+        stepModalName,
+        showStepNumber,
+        menuHeader,
 
         // Functions
         gotoNextStep: this.gotoNextStep,
@@ -165,7 +177,7 @@ class StepsWrapper extends React.Component {
     } = this.props;
 
     let num = 0;
-    Object.entries(this.stepsTodo).forEach(([key, value]) => {
+    Object.entries(this.state.stepsTodo).forEach(([key, value]) => {
       if (completed.includes(value.slug)) {
         num = num + 1;
       }
@@ -175,8 +187,13 @@ class StepsWrapper extends React.Component {
 
   render() {
 
+    const {
+      numStepsTodo,
+      menuHeader
+    } = this.state;
+
     const numCompleted = this.getNumStepsCompleted();
-    const stepProgress = parseInt((numCompleted / this.numStepsTodo) * 100);
+    const stepProgress = parseInt((numCompleted / numStepsTodo) * 100);
 
     return (
       <div className='gbx3Steps modalWrapper'>
@@ -188,7 +205,7 @@ class StepsWrapper extends React.Component {
             progress={stepProgress}
           />
           <div className='progressStatusText'>
-            {this.menuHeader} - {numCompleted} of {this.numStepsTodo} Completed
+            {menuHeader} {numCompleted} of {numStepsTodo} Completed
           </div>
         </div>
         {this.renderChildren()}

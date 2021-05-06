@@ -40,10 +40,9 @@ class PlaidConnect extends React.Component {
       extractIdentity
     } = this.props;
 
-    const forceStep = this.props.getSignupStep(slug, 'manualConnect');
-
     switch (message) {
       case 'error': {
+        const forceStep = this.props.getSignupStep(slug, 'manualConnect');
         const updated = await this.props.updateOrgSignup({ signupPhase: 'manualConnect' });
         if (updated) {
           //this.props.saveOrg({ orgUpdated: true });
@@ -64,6 +63,7 @@ class PlaidConnect extends React.Component {
 
       // no default
     }
+    this.props.setMerchantApp('gettingInfoFromPlaid', false);
     this.props.setMerchantApp('savingInfoFromPlaid', false);
   }
 
@@ -100,7 +100,7 @@ class PlaidConnect extends React.Component {
 
     return (
       <div>
-        {/* <GBLink onClick={() => this.exitPlaid(null, null, true)}>Test Manual</GBLink> */}
+        <GBLink onClick={() => this.exitPlaid(null, null, true)}>Test Manual</GBLink>
         { gettingInfoFromPlaid || savingInfoFromPlaid ? <Loader msg={`${savingInfoFromPlaid ? 'Saving' : 'Getting'} info from Plaid`} /> : null }
         { hasPlaidToken ?
           <GBLink
