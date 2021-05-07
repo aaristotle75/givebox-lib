@@ -134,21 +134,9 @@ class ConnectBankStepsForm extends React.Component {
     return true;
   }
 
-  async checkConnectStatus() {
-    const {
-      step,
-      stepsTodo,
-      isVantivReady
-    } = this.props;
+  checkConnectStatus() {
 
     this.setState({ checkingStatus: true }, () => {
-      const stepConfig = util.getValue(stepsTodo, step, {});
-      const slug = util.getValue(stepConfig, 'slug');
-
-      console.log('execute -> ', isVantivReady, slug);
-      if (isVantivReady && slug !== 'connectStatus') {
-        this.props.setSignupStep('connectStatus');
-      }
 
       this.props.checkSubmitMerchantApp({
         callback: (message, err) => {
@@ -173,16 +161,16 @@ class ConnectBankStepsForm extends React.Component {
       setTimeout(async () => {
         const updated = await this.props.updateOrgSignup({ signupPhase: 'transferMoney' }, this.props.signupPhase);
         if (updated) {
+          this.props.updateAdmin({ open: false });
+          this.props.toggleModal('orgConnectBankSteps', false);
+          this.props.checkSignupPhase({
+            openModal: false,
+            openAdmin: false
+          });
           this.props.saveOrg({
             orgUpdated: true,
             isSending: true,
             callback: () => {
-              this.props.updateAdmin({ open: false });
-              this.props.toggleModal('orgConnectBankSteps', false);
-              this.props.checkSignupPhase({
-                openModal: false,
-                openAdmin: false
-              });
             }
           });
         }

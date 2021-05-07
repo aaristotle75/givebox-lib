@@ -27,6 +27,10 @@ class SavingSignup extends React.Component {
   componentDidUpdate(prevProps) {
   }
 
+  componentWillUnmount() {
+    this.props.savingSignup(false);
+  }
+
   setProgress() {
     const progress = this.state.progress + 1;
     if (progress < 100) {
@@ -112,9 +116,11 @@ class SavingSignup extends React.Component {
 
 function mapStateToProps(state, props) {
 
+  const savingSignupValue = util.getValue(state, 'gbx3.savingSignup');
   const savingSignupCallback = util.getValue(state, 'gbx3.savingSignupCallback');
 
   return {
+    savingSignupValue,
     savingSignupCallback
   }
 }

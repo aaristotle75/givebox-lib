@@ -89,6 +89,12 @@ $gbx3StepsBreakpoint: 600px;
     border-bottom: 1px solid $light-gray;
   }
 
+  .scale {
+    input {
+      border-bottom: 0;
+    }
+  }
+
   .dropdown button {
     border-bottom: 1px solid $light-gray;
 

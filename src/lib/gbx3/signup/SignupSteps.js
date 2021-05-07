@@ -151,9 +151,9 @@ class SignupStepsForm extends React.Component {
                       callback: async (res, err) => {
                         localStorage.removeItem('signup');
                         this.props.loadOrg(orgID, (res, err) => {
+                          //this.props.savingSignup(false);
                           this.props.setOrgStyle();
-                          this.props.savingSignup(false);
-                        });
+                        }, true);
                       }
                     });
                   }

@@ -6,6 +6,9 @@ import {
   sendResource,
   reloadResource
 } from '../../api/helpers';
+import {
+  setSignupStep
+} from './gbx3actions';
 import Moment from 'moment';
 
 export function setMerchantApp(key, value) {
@@ -267,6 +270,10 @@ export function checkSubmitMerchantApp(options = {}) {
           let submitToVantiv = false;
           let message = '';
           let query = null;
+
+          if (isVantivReady) {
+            dispatch(setSignupStep('connectStatus'));
+          }
 
           if (isVantivReady && !legalEntityID) {
             submitToVantiv = true;

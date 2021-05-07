@@ -1536,11 +1536,11 @@ export function loadGBX3(articleID, callback) {
   }
 }
 
-export function loadOrg(orgID, callback) {
+export function loadOrg(orgID, callback, hideLoading = false) {
 
   return async (dispatch, getState) => {
 
-    dispatch(setLoading(true));
+    if (!hideLoading) dispatch(setLoading(true));
     const gbx3 = util.getValue(getState(), 'gbx3', {});
     const resource = util.getValue(getState(), 'resource', {});
     const access = util.getValue(resource, 'access', {});
@@ -1620,7 +1620,7 @@ export function loadOrg(orgID, callback) {
           dispatch(updateInfo({ publishStatus: 'public' }));
         }
         callback(res, err);
-        dispatch(setLoading(false));
+        if (!hideLoading) dispatch(setLoading(false));
       }
     }));
   }

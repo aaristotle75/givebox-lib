@@ -76,13 +76,13 @@ class PostSignupSteps extends React.Component {
         if (slug === 'share' && closeWhenAllStepsCompleted) {
           const updated = await this.props.updateOrgSignup({ signupPhase: 'connectBank' }, 'postSignup');
           if (updated) {
+            this.props.updateAdmin({ open: false });
+            this.props.toggleModal('orgPostSignupSteps', false);
+            this.props.checkSignupPhase();
             this.props.saveOrg({
               orgUpdated: true,
               isSending: true,
               callback: () => {
-                this.props.updateAdmin({ open: false });
-                this.props.toggleModal('orgPostSignupSteps', false);
-                this.props.checkSignupPhase();
               }
             })
           }
