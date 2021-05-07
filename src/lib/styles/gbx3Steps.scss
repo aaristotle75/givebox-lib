@@ -480,3 +480,54 @@ $gbx3StepsBreakpoint: 600px;
     }
   }
 }
+
+.savingSignup.gbx3Steps {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10000034;
+  margin-top: 0;
+  background-color: $mainColor;
+  background: url('https://s3-us-west-1.amazonaws.com/givebox-marketing/images/2020/03/27060531/11-Blake-Griffin.jpg') no-repeat center center fixed;
+  background-size: cover;
+
+  .progressWrapper {
+    margin-top: 20px;
+  }
+
+  .linearProgress {
+    margin-top: 0px;
+    height: 10px;
+    background: transparentize($light-gray, .8);
+  }
+
+  .linearProgressBar {
+    height: 10px;
+    background: $med-gray;
+    @include bgGradient(to right, $mainColor 0%, $green 100%);
+    @include animation(pulsateBrighter 2s ease-out infinite);
+  }
+
+  .linearProgressBarAnimation {
+    height: 10px;
+    background: transparent;
+    z-index: 1;
+  }
+}
+
+.savingQuotes {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  font-size: 16px;
+  color: $white;
+  width: 100%;
+  text-align: center;
+  z-index: 10000034;
+  padding: 20px 10px;
+  background: transparentize($dark, .7);
+}

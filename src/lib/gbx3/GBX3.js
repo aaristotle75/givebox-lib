@@ -38,6 +38,7 @@ import GBXEntry from '../common/GBXEntry';
 import AvatarMenu from './admin/AvatarMenu';
 import Share from './share/Share';
 import history from '../common/history';
+import SavingSignup from './signup/SavingSignup';
 
 const RECAPTCHA_KEY = process.env.REACT_APP_RECAPTCHA_KEY;
 const ENV = process.env.REACT_APP_ENV;
@@ -510,11 +511,16 @@ class GBX3 extends React.Component {
       orgID
     } = this.props;
 
-    if (this.props.savingSignup
-      || this.props.loading
+    if (this.props.loading
       || (util.isLoading(this.props.gbx3Org) && orgID)
       && this.props.step !== 'create'
       && !browse) return <Loader msg='Initiating GBX3' />;
+
+    if (this.props.savingSignup) {
+      return (
+        <SavingSignup />
+      )
+    }
 
     return (
       <div id='gbx3MainWrapper' className='gbx3'>

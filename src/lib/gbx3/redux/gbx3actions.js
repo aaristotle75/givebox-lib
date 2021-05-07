@@ -33,10 +33,11 @@ export function setLoading(loading) {
   }
 }
 
-export function savingSignup(saving) {
+export function savingSignup(saving, savingSignupCallback) {
   return {
     type: types.SAVING_SIGNUP,
-    saving
+    saving,
+    savingSignupCallback
   }
 }
 

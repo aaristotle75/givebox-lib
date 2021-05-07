@@ -12,6 +12,7 @@ export function gbx3(state = {
   browse: false,
   loading: true,
   savingSignup: false,
+  savingSignupCallback: null,
   saveStatus: 'done',
   info: {
     activePageSlug: '',
@@ -127,7 +128,8 @@ export function gbx3(state = {
       });
     case types.SAVING_SIGNUP:
       return Object.assign({}, state, {
-        savingSignup: action.saving
+        savingSignup: action.saving,
+        savingSignupCallback: action.savingSignupCallback
       });
     case types.UPDATE_ORG_SIGNUP: {
 

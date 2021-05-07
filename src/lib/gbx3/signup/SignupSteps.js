@@ -114,62 +114,62 @@ class SignupStepsForm extends React.Component {
   }
 
   createOrgCallback(res, err, orgData = {}) {
-    this.props.savingSignup(true);
+    this.props.savingSignup(true, () => {
+      const gbx3Data = this.props.signupGBX3Data();
 
-    const gbx3Data = this.props.signupGBX3Data();
+      if (!err) {
 
-    if (!err) {
+        // Authenticate and open Org profile page with next Steps Preview, Share
+        // This also sets session access, loads the org, and creates the fundraiser...
+        this.props.getResource('session', {
+          reload: true,
+          callback: (res, err) => {
+            if (err) {
+              console.error('No session created');
+              this.setState({ saving: false });
+            } else {
+              this.props.setAccess(res, async (access) => {
+                const {
+                  orgID
+                } = access;
 
-      // Authenticate and open Org profile page with next Steps Preview, Share
-      // This also sets session access, loads the org, and creates the fundraiser...
-      this.props.getResource('session', {
-        reload: true,
-        callback: (res, err) => {
-          if (err) {
-            console.error('No session created');
-            this.setState({ saving: false });
-          } else {
-            this.props.setAccess(res, async (access) => {
-              const {
-                orgID
-              } = access;
-
-              this.props.createFundraiser('fundraiser', async (res, err) => {
-                const createdArticleID = util.getValue(res, 'articleID');
-                const orgID = util.getValue(res, 'orgID');
-                const updated = await this.props.updateOrgSignup({
-                    createdArticleID,
-                    saveCookie: false,
-                    signupPhase: 'postSignup'
-                  },
-                  'signup'
-                );
-                if (updated) {
-                  this.props.saveOrg({
-                    orgID,
-                    data: orgData,
-                    orgUpdated: true,
-                    callback: async (res, err) => {
-                      localStorage.removeItem('signup');
-                      this.props.loadOrg(orgID, (res, err) => {
-                        this.props.setOrgStyle();
-                        this.props.savingSignup(false);
-                      });
-                    }
-                  });
-                }
-              }, null, {
-                showNewArticle: false,
-                data: gbx3Data
-              });
-            })
+                this.props.createFundraiser('fundraiser', async (res, err) => {
+                  const createdArticleID = util.getValue(res, 'articleID');
+                  const orgID = util.getValue(res, 'orgID');
+                  const updated = await this.props.updateOrgSignup({
+                      createdArticleID,
+                      saveCookie: false,
+                      signupPhase: 'postSignup'
+                    },
+                    'signup'
+                  );
+                  if (updated) {
+                    this.props.saveOrg({
+                      orgID,
+                      data: orgData,
+                      orgUpdated: true,
+                      callback: async (res, err) => {
+                        localStorage.removeItem('signup');
+                        this.props.loadOrg(orgID, (res, err) => {
+                          this.props.setOrgStyle();
+                          this.props.savingSignup(false);
+                        });
+                      }
+                    });
+                  }
+                }, null, {
+                  showNewArticle: false,
+                  data: gbx3Data
+                });
+              })
+            }
           }
-        }
-      });
-    } else {
-      if (!this.props.getErrors(err)) this.props.formProp({error: this.props.savingErrorMsg});
-      this.setState({ saving: false });
-    }
+        });
+      } else {
+        if (!this.props.getErrors(err)) this.props.formProp({error: this.props.savingErrorMsg});
+        this.setState({ saving: false });
+      }
+    });
   }
 
   async createOrg() {

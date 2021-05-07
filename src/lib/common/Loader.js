@@ -27,9 +27,11 @@ export default class Loader extends Component {
   }
 
   stopLoader() {
-    this.timeout = setTimeout(() => {
-      this.setState({ showLoader: false });
-    }, 30000);
+    if (!this.props.infinite) {
+      this.timeout = setTimeout(() => {
+        this.setState({ showLoader: false });
+      }, 30000);
+    }
   }
 
   createSVG() {
@@ -48,6 +50,7 @@ export default class Loader extends Component {
       this.state.showLoader ?
       <Portal id='loadingPortal' rootEl={this.state.rootEl}>
         <div>
+          {this.props.children}
           <div className={`loader ${className}`} />
           <div className='loaderContent'>
             <div className='loadingText'>
@@ -57,7 +60,11 @@ export default class Loader extends Component {
           </div>
         </div>
       </Portal>
-      : <div></div>
+      : null
     )
   }
 }
+
+Loader.defaultProps = {
+  infinite: false
+};
