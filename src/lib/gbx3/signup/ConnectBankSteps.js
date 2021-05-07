@@ -44,6 +44,7 @@ class ConnectBankStepsForm extends React.Component {
     this.submerchantCreated = this.submerchantCreated.bind(this);
     this.checkConnectStatus = this.checkConnectStatus.bind(this);
     this.switchToConnectBank = this.switchToConnectBank.bind(this);
+    this.switchToManualBank = this.switchToManualBank.bind(this);
 
     this.state = {
       editorOpen: false,
@@ -65,6 +66,19 @@ class ConnectBankStepsForm extends React.Component {
   callbackAfter(tab) {
     this.props.formProp({ error: false });
   }
+
+  async switchToManualBank() {
+    const updated = await this.props.updateOrgSignup({ signupPhase: 'manualConnect' });
+    if (updated) {
+      this.props.saveOrg({ orgUpdated: true });
+      this.props.checkSignupPhase({
+        forceStep: 0,
+        openAdmin: true,
+        openModal: true
+      });
+    }
+  }
+
 
   async switchToConnectBank() {
     const updated = await this.props.updateOrgSignup({ signupPhase: 'connectBank' });
@@ -120,7 +134,7 @@ class ConnectBankStepsForm extends React.Component {
     return true;
   }
 
-  checkConnectStatus() {
+  async checkConnectStatus() {
     const {
       step,
       stepsTodo,
@@ -131,6 +145,7 @@ class ConnectBankStepsForm extends React.Component {
       const stepConfig = util.getValue(stepsTodo, step, {});
       const slug = util.getValue(stepConfig, 'slug');
 
+      console.log('execute -> ', isVantivReady, slug);
       if (isVantivReady && slug !== 'connectStatus') {
         this.props.setSignupStep('connectStatus');
       }
@@ -140,7 +155,8 @@ class ConnectBankStepsForm extends React.Component {
           if (message === 'submerchant_created') {
             this.submerchantCreated();
           } else if (err) {
-            this.props.formProp({ error: true, errorMsg: 'We are unable to connect your bank account. Please try checking your status again in a few minutes.' });
+            this.switchToManualBank();
+            this.props.formProp({ error: true, errorMsg: 'We are unable to connect your bank account. Please check that all your information is correct and try again in a few minutes.' });
             this.setState({ checkingStatus: false });
           } else {
             this.setState({ checkingStatus: false });

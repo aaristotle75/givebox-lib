@@ -42,9 +42,9 @@ class PlaidConnect extends React.Component {
 
     switch (message) {
       case 'error': {
-        const forceStep = this.props.getSignupStep(slug, 'manualConnect');
         const updated = await this.props.updateOrgSignup({ signupPhase: 'manualConnect' });
         if (updated) {
+          const forceStep = this.props.getSignupStep(slug, 'manualConnect');
           //this.props.saveOrg({ orgUpdated: true });
           this.props.checkSignupPhase({
             forceStep,
@@ -68,7 +68,6 @@ class PlaidConnect extends React.Component {
   }
 
   alreadyHasPlaidToken() {
-    console.log('execute alreadyHasPlaidToken');
     this.props.getPlaidInfo(this.savePlaidInfoCallback);
   }
 
@@ -100,7 +99,7 @@ class PlaidConnect extends React.Component {
 
     return (
       <div>
-        <GBLink onClick={() => this.exitPlaid(null, null, true)}>Test Manual</GBLink>
+        {/* <GBLink onClick={() => this.exitPlaid(null, null, true)}>Test Manual</GBLink> */}
         { gettingInfoFromPlaid || savingInfoFromPlaid ? <Loader msg={`${savingInfoFromPlaid ? 'Saving' : 'Getting'} info from Plaid`} /> : null }
         { hasPlaidToken ?
           <GBLink

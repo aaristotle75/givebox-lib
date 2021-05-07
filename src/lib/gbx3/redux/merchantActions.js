@@ -256,7 +256,7 @@ export function checkSubmitMerchantApp(options = {}) {
         customName: 'gbx3Org',
         reload: true,
         isSending: false,
-        callback: (res, err) => {
+        callback: async (res, err) => {
 
           const vantiv = util.getValue(res, 'vantiv', {});
           const merchantIdentString = util.getValue(vantiv, 'merchantIdentString');
@@ -499,53 +499,140 @@ function savePlaidInfo(callback) {
 
     const state = getState();
     const bankAccount = util.getValue(state, 'merchantApp.extractAuth.bankAccount', {});
-    // Chain the saves: bankAccount, principal, legalEntity, address
-    dispatch(saveBankAccount({
-      hasBeenUpdated: true,
-      data: {
-        ...bankAccount
-      },
-      callback: (res, err) => {
-        if (!util.isEmpty(res) && !err) {
+    const principal = util.getValue(state, 'merchantApp.extractIdentity.principal', {});
+    const address = util.getValue(state, 'merchantApp.extractIdentity.address', {});
 
-          // continue to save principal
-          const principal = util.getValue(state, 'merchantApp.extractIdentity.principal', {});
-          dispatch(savePrincipal({
-            hasBeenUpdated: true,
-            data: {
-              ...principal
-            },
-            callback: (res, err) => {
-              if (!util.isEmpty(res) && !err) {
-                // continue to save address
-                const address = util.getValue(state, 'merchantApp.extractIdentity.address', {});
-                dispatch(saveAddress({
-                  hasBeenUpdated: true,
-                  data: {
-                    ...address
-                  },
-                  callback: (res, err) => {
-                    if (!util.isEmpty(res) && !err) {
-                      // Everything saved return success and check status
-                      if (callback) callback('success');
-                    } else {
-                      if (callback) callback('error', 'address');
-                    }
+    // Chain the check and saves: bankAccount, principal, legalEntity, address
+    dispatch(checkBankAccount((ID) => {
+      if (ID) bankAccount.ID = ID;
+      dispatch(saveBankAccount({
+        hasBeenUpdated: true,
+        data: {
+          ...bankAccount
+        },
+        callback: (res, err) => {
+          if (!util.isEmpty(res) && !err) {
+            // continue to check and save principal
+            dispatch(checkPrincipal((ID) => {
+              if (ID) principal.ID = ID;
+              dispatch(savePrincipal({
+                hasBeenUpdated: true,
+                data: {
+                  ...principal
+                },
+                callback: (res, err) => {
+                  if (!util.isEmpty(res) && !err) {
+                    // continue to check and save address
+                    dispatch(checkAddress((ID) => {
+                      if (ID) address.ID = ID;
+                      dispatch(saveAddress({
+                        hasBeenUpdated: true,
+                        data: {
+                          ...address
+                        },
+                        callback: (res, err) => {
+                          if (!util.isEmpty(res) && !err) {
+                            // Everything saved return success and check status
+                            if (callback) callback('success');
+                          } else {
+                            if (callback) callback('error', 'address');
+                          }
+                        }
+                      }));
+                    }));
+                  } else {
+                    if (callback) callback('error', 'principal');
                   }
-                }))
-              } else {
-                if (callback) callback('error', 'principal');
-              }
-            }
-          }));
-        } else {
-          if (callback) callback('error', 'bankAccount');
+                }
+              }));
+            }));
+          } else {
+            if (callback) callback('error', 'bankAccount');
+          }
         }
-      }
+      }));
     }));
   }
 }
 
+function checkBankAccount(callback) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const orgBankAccounts = util.getValue(state, 'resource.orgBankAccounts', {});
+    const orgBankAccountsData = util.getValue(orgBankAccounts, 'data');
+    const bankAccount = util.getValue(orgBankAccountsData, 0, {});
+    if (util.isEmpty(bankAccount)) {
+      dispatch(getResource('orgBankAccounts', {
+        reload: true,
+        search: {
+          sort: 'createdAt',
+          order: 'desc'
+        },
+        callback: (res, err) => {
+          console.log('execute orgBankAccounts res -> ', res, res.data);
+          const orgBankAccountsData = util.getValue(res, 'data', []);
+          const bankAccount = util.getValue(orgBankAccountsData, 0, {});
+          const ID = util.getValue(bankAccount, 'ID');
+          callback(ID);
+        }
+      }));
+    } else {
+      callback();
+    }
+  }
+}
+
+function checkPrincipal(callback) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const orgPrincipals = util.getValue(state, 'resource.orgPrincipals', {});
+    const orgPrincipalsData = util.getValue(orgPrincipals, 'data');
+    const principal = util.getValue(orgPrincipalsData, 0, {});
+    if (util.isEmpty(principal)) {
+      dispatch(getResource('orgPrincipals', {
+        reload: true,
+        search: {
+          sort: 'createdAt',
+          order: 'desc'
+        },
+        callback: (res, err) => {
+          const orgPrincipalsData = util.getValue(res, 'data', []);
+          const principal = util.getValue(orgPrincipalsData, 0, {});
+          const ID = util.getValue(principal, 'ID');
+          callback(ID);
+        }
+      }));
+    } else {
+      callback();
+    }
+  }
+}
+
+function checkAddress(callback) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const orgAddresses = util.getValue(state, 'resource.orgAddresses', {});
+    const orgAddressesData = util.getValue(orgAddresses, 'data');
+    const address = util.getValue(orgAddressesData, 0, {});
+    if (util.isEmpty(address)) {
+      dispatch(getResource('orgAddresses', {
+        reload: true,
+        search: {
+          sort: 'createdAt',
+          order: 'desc'
+        },
+        callback: (res, err) => {
+          const orgAddressesData = util.getValue(res, 'data', []);
+          const address = util.getValue(orgAddressesData, 0, {});
+          const ID = util.getValue(address, 'ID');
+          callback(ID);
+        }
+      }));
+    } else {
+      callback();
+    }
+  }
+}
 
 /**
 * End Plaid Actions
