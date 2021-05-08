@@ -265,7 +265,9 @@ class BasicBuilderStepsForm extends Component {
           :
           <div>
             <span>This is how the form will look to your supporters.</span>
+            {/*
             <span style={{ marginTop: 10, display: 'block' }}>If you really want to roll up your sleeves, try the Givebox <GBLink style={{ fontSize: 14, display: 'inline' }} onClick={() => this.props.toggleBuilder()}>Advanced Builder</GBLink>, where you can customize pretty much everything!</span>
+            */}
           </div>
         ;
         item.component =

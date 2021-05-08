@@ -8,7 +8,6 @@ import {
   toggleAdminLeftPanel,
   checkSignupPhase
 } from '../../redux/gbx3actions';
-import GBX3ModalRoutes from '../../GBX3ModalRoutes';
 
 const ENV = process.env.REACT_APP_ENV;
 
@@ -38,7 +37,6 @@ class OrgAdmin extends React.Component {
 
     return (
       <>
-        <GBX3ModalRoutes />
         <div className={`leftPanelOpenButton ${open ? 'open' : 'close'}`} onClick={this.props.toggleAdminLeftPanel}><span className='icon icon-menu'></span></div>
         <div className={`leftPanel ${open ? 'open' : 'close'}`}>
           <AdminMenu

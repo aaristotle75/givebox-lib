@@ -77,10 +77,10 @@ class Design extends React.Component {
         >
           <Toggle
             icons={false}
-            checked={advancedBuilder}
+            checked={!advancedBuilder ? true : false}
             onChange={this.props.toggleBuilder}
           />
-          <GBLink className='link side' style={{ marginRight: 10 }} onClick={this.props.toggleBuilder}>{ mobile ? <Icon><GoBeaker /></Icon> : <span>Advanced Builder</span> }</GBLink>
+          <GBLink className='link side' style={{ marginRight: 10 }} onClick={this.props.toggleBuilder}>{ mobile ? <Icon><GoBeaker /></Icon> : <span>Show Steps</span> }</GBLink>
         </div>
       );
       {/*
