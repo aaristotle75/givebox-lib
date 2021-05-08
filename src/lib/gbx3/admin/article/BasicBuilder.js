@@ -18,6 +18,7 @@ class BasicBuilder extends React.Component {
     super(props);
     this.previousStep = this.previousStep.bind(this);
     this.nextStep = this.nextStep.bind(this);
+    this.getNextStep = this.getNextStep.bind(this);
     this.stepCompleted = this.stepCompleted.bind(this);
     this.state = {
     };
@@ -42,6 +43,15 @@ class BasicBuilder extends React.Component {
     return nextStep;
   }
 
+  getNextStep() {
+    const {
+      step
+    } = this.props;
+
+    const nextStep = this.nextStep(step);
+    return util.getValue(this.config[nextStep], 'name');
+  }
+
   async stepCompleted(step) {
     let updated = false;
     const completed = [ ...this.props.completed ];
@@ -62,7 +72,11 @@ class BasicBuilder extends React.Component {
       openAdmin
     } = this.props;
 
-    const stepProgress = 20; //parseInt((numCompleted / numStepsTodo) * 100);
+    const numCompleted = completed.length;
+    const numStepsTodo = this.steps + 1;
+    const stepProgress = parseInt((numCompleted / numStepsTodo) * 100);
+    const stepConfig = util.getValue(this.config, step, {});
+    const stepName = util.getValue(stepConfig, 'name');
 
     return (
       <div className='gbx3Steps modalWrapper'>
@@ -74,11 +88,12 @@ class BasicBuilder extends React.Component {
             progress={stepProgress}
           />
           <div className='progressStatusText'>
-            Step Name 1 of 5 Completed
+            {stepName} {numCompleted} of {numStepsTodo} Completed
           </div>
         </div>
         <BasicBuilderSteps
           key={'basicBuilder'}
+          getNextStep={this.getNextStep}
           nextStep={this.nextStep}
           previousStep={this.previousStep}
           stepCompleted={this.stepCompleted}

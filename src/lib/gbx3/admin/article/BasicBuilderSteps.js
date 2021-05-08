@@ -171,7 +171,9 @@ class BasicBuilderStepsForm extends Component {
       const globalsUpdated = await this.props.updateGlobals(globals);
       if (globalsUpdated) this.saveStep({ giveboxSettings: { primaryColor: themeColor }}, null, true, this.gotoNextStep);
     } else if (this.props.steps === step) {
-      this.props.exitAdmin();
+      this.saveStep(null, null, false, () => {
+        this.props.toggleModal('gbx3Builder', false);
+      });
     } else {
       this.saveStep(null, null, false, this.gotoNextStep);
     }
@@ -214,16 +216,127 @@ class BasicBuilderStepsForm extends Component {
     const completed = this.props.completed.includes(step) ? true : false;
     const firstStep = step === 0 ? true : false;
     const lastStep = step === this.props.steps ? true : false;
+    const nextStepName = this.props.getNextStep();
+    const nextStepNumber = this.props.nextStep(step) + 1;
+
     const item = {
       title: '',
       icon: stepConfig.icon,
       desc: '',
       component: null,
       className: '',
+      saveButtonLabelTop: <span className='buttonAlignText'>Save & Continue to Step {nextStepNumber}: {nextStepName} <span className='icon icon-chevron-right'></span></span>,
       saveButtonLabel: <span className='buttonAlignText'>Save & Continue to Next Step <span className='icon icon-chevron-right'></span></span>
     };
 
     switch (slug) {
+
+      case 'title': {
+        const title = this.props.checkHelperIfHasDefaultValue('article', { field: 'title', defaultCheck: 'text' }) ? '' : util.getValue(data, 'title');
+
+        item.title = 'What are you raising money for?';
+        item.desc = 'Please enter a captivating title below to let your supporters know what you are raising money for.';
+        item.component =
+          this.props.textField('title', {
+            group: 'title',
+            fixedLabel: false,
+            label: 'Title',
+            placeholder: 'Click Here and Enter a Title',
+            maxLength: 128,
+            count: true,
+            required: false,
+            value: title,
+            onBlur: (name, value) => {
+              if (value && value !== title) {
+                const block = util.getValue(blocks, 'title', {});
+                const defaultFormat = util.getValue(block, 'options.defaultFormat', '');
+                const saveValue = defaultFormat.replace('{{TOKEN}}', value);
+                const blockObj = {
+                  ...block,
+                  content: {
+                    html: saveValue
+                  }
+                };
+                this.saveStep({ title: value }, blockObj, true, (res, err) => {
+                  if (!util.isEmpty(res) && !err) {
+                    const isVolunteer = util.getValue(res, 'volunteer');
+                    const volunteerID = util.getValue(res, 'volunteerID');
+
+                    if (isVolunteer && volunteerID) {
+                      this.props.sendResource('volunteerNotify', {
+                        orgID,
+                        id: [volunteerID],
+                        method: 'POST',
+                        data: {
+                          articleID
+                        }
+                      })
+                    };
+                  }
+                });
+              }
+            }
+          })
+        ;
+        break;
+      }
+
+      case 'logo': {
+        const logoBlock = util.getValue(blocks, 'logo', {});
+        const logoURL = util.getValue(logoBlock, 'content.image.URL', util.getValue(data, 'orgImageURL')).replace(/small$/i, 'original');
+        const orgImageURL = (!util.checkImage(logoURL) || !logoURL) ? '' : logoURL;
+        item.title = 'Upload a Logo';
+        item.desc = 'Please upload an image of your logo.';
+        item.component =
+          <MediaLibrary
+            blockType={'article'}
+            image={orgImageURL}
+            preview={orgImageURL}
+            handleSaveCallback={(url) => this.handleImageSaveCallback(url, 'orgImageURL', 'logo')}
+            handleSave={util.handleFile}
+            library={library}
+            showBtns={'hide'}
+            saveLabel={'close'}
+            mobile={breakpoint === 'mobile' ? true : false }
+            uploadOnly={true}
+            uploadEditorSaveStyle={{ width: 250 }}
+            uploadEditorSaveLabel={'Click Here to Save Logo'}
+            imageEditorOpenCallback={(editorOpen) => {
+              this.setState({ editorOpen })
+            }}
+          />
+        ;
+        break;
+      }
+
+      case 'image': {
+        const mediaBlock = util.getValue(blocks, 'media', {});
+        const mediaURL = util.getValue(mediaBlock, 'content.image.URL', '').replace(/medium$/i, 'original');
+        const imageURL = (!util.checkImage(mediaURL) || !mediaURL) ? '' : mediaURL;
+        item.title = 'Add an Image';
+        item.desc = 'A picture speaks a thousand words. Upload an image that inspires people to support your fundraiser.';
+        item.component =
+          <MediaLibrary
+            blockType={'article'}
+            image={imageURL}
+            preview={imageURL}
+            handleSaveCallback={(url) => this.handleImageSaveCallback(url, 'imageURL', 'media')}
+            handleSave={util.handleFile}
+            library={library}
+            showBtns={'hide'}
+            saveLabel={'close'}
+            mobile={breakpoint === 'mobile' ? true : false }
+            uploadOnly={true}
+            uploadEditorSaveStyle={{ width: 250 }}
+            uploadEditorSaveLabel={'Click Here to Save Image'}
+            imageEditorOpenCallback={(editorOpen) => {
+              this.setState({ editorOpen })
+            }}
+          />
+        ;
+        break;
+      }
+
       case 'themeColor': {
         const style = {
           default: {
@@ -284,7 +397,8 @@ class BasicBuilderStepsForm extends Component {
       }
 
       case 'share': {
-        item.saveButtonLabel = <span className='buttonAlignText'>All Finished! Take Me to My Profile <span className='icon icon-chevron-right'></span></span>;
+        item.saveButtonLabel = <span className='buttonAlignText'>All Finished! <span className='icon icon-chevron-right'></span></span>;
+        item.saveButtonLabelTop = item.saveButtonLabel;
         item.title = 'Share Your Form';
         item.desc = 'Copy and paste your custom link into an email, or click a social media icon below to share your fundraising form and start raising money!';
         item.component =
@@ -295,118 +409,13 @@ class BasicBuilderStepsForm extends Component {
         break;
       }
 
-      case 'image': {
-        const mediaBlock = util.getValue(blocks, 'media', {});
-        const mediaURL = util.getValue(mediaBlock, 'content.image.URL', '').replace(/medium$/i, 'original');
-        const imageURL = (!util.checkImage(mediaURL) || !mediaURL) ? '' : mediaURL;
-        item.title = 'Add an Image';
-        item.desc = 'A picture speaks a thousand words. Upload an image that inspires people to support your fundraiser.';
-        item.component =
-          <MediaLibrary
-            blockType={'article'}
-            image={imageURL}
-            preview={imageURL}
-            handleSaveCallback={(url) => this.handleImageSaveCallback(url, 'imageURL', 'media')}
-            handleSave={util.handleFile}
-            library={library}
-            showBtns={'hide'}
-            saveLabel={'close'}
-            mobile={breakpoint === 'mobile' ? true : false }
-            uploadOnly={true}
-            uploadEditorSaveStyle={{ width: 250 }}
-            uploadEditorSaveLabel={'Click Here to Save Image'}
-            imageEditorOpenCallback={(editorOpen) => {
-              this.setState({ editorOpen })
-            }}
-          />
-        ;
-        break;
-      }
-
-      case 'logo': {
-        const logoBlock = util.getValue(blocks, 'logo', {});
-        const logoURL = util.getValue(logoBlock, 'content.image.URL', util.getValue(data, 'orgImageURL')).replace(/small$/i, 'original');
-        const orgImageURL = (!util.checkImage(logoURL) || !logoURL) ? '' : logoURL;
-        item.title = 'Upload a Logo';
-        item.desc = 'Please upload an image of your logo.';
-        item.component =
-          <MediaLibrary
-            blockType={'article'}
-            image={orgImageURL}
-            preview={orgImageURL}
-            handleSaveCallback={(url) => this.handleImageSaveCallback(url, 'orgImageURL', 'logo')}
-            handleSave={util.handleFile}
-            library={library}
-            showBtns={'hide'}
-            saveLabel={'close'}
-            mobile={breakpoint === 'mobile' ? true : false }
-            uploadOnly={true}
-            uploadEditorSaveStyle={{ width: 250 }}
-            uploadEditorSaveLabel={'Click Here to Save Logo'}
-            imageEditorOpenCallback={(editorOpen) => {
-              this.setState({ editorOpen })
-            }}
-          />
-        ;
-        break;
-      }
-
-      case 'title':
-      default: {
-        const title = this.props.checkHelperIfHasDefaultValue('article', { field: 'title', defaultCheck: 'text' }) ? '' : util.getValue(data, 'title');
-
-        item.title = 'What are you raising money for?';
-        item.desc = 'Please enter a captivating title below to let your supporters know what you are raising money for.';
-        item.component =
-          this.props.textField('title', {
-            group: 'title',
-            fixedLabel: false,
-            label: 'Title',
-            placeholder: 'Click Here and Enter a Title',
-            maxLength: 128,
-            count: true,
-            required: false,
-            value: title,
-            onBlur: (name, value) => {
-              if (value && value !== title) {
-                const block = util.getValue(blocks, 'title', {});
-                const defaultFormat = util.getValue(block, 'options.defaultFormat', '');
-                const saveValue = defaultFormat.replace('{{TOKEN}}', value);
-                const blockObj = {
-                  ...block,
-                  content: {
-                    html: saveValue
-                  }
-                };
-                this.saveStep({ title: value }, blockObj, true, (res, err) => {
-                  if (!util.isEmpty(res) && !err) {
-                    const isVolunteer = util.getValue(res, 'volunteer');
-                    const volunteerID = util.getValue(res, 'volunteerID');
-
-                    if (isVolunteer && volunteerID) {
-                      this.props.sendResource('volunteerNotify', {
-                        orgID,
-                        id: [volunteerID],
-                        method: 'POST',
-                        data: {
-                          articleID
-                        }
-                      })
-                    };
-                  }
-                });
-              }
-            }
-          })
-        ;
-        break;
-      }
+      // no default
     }
     return (
       <div className='stepContainer'>
         <div className='stepStatus'>
           <GBLink onClick={() => this.processForm()}>
-            <span style={{ marginLeft: 20 }}>{item.saveButtonLabel}</span>
+            <span style={{ marginLeft: 20 }}>{item.saveButtonLabelTop}</span>
           </GBLink>
         </div>
         <div className={`step ${item.className} ${open ? 'open' : ''}`}>
