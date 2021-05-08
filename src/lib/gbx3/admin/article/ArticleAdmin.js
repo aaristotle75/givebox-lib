@@ -8,6 +8,7 @@ import {
   updateHelperSteps,
   saveGBX3
 } from '../../redux/gbx3actions';
+import GBX3ModalRoutes from '../../GBX3ModalRoutes';
 
 class ArticleAdmin extends React.Component {
 

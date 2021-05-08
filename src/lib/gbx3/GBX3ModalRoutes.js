@@ -5,7 +5,7 @@ import Loadable from 'react-loadable';
 import Delete from '../common/Delete';
 import StepsWrapper from './signup/StepsWrapper';
 
-export default class OrgModalRoutes extends Component {
+export default class GBX3ModalRoutes extends Component {
 
   constructor(props) {
     super(props);
@@ -163,6 +163,13 @@ export default class OrgModalRoutes extends Component {
           id={'orgConnectBankManualConfirm'}
           effect='3DFlipVert' style={{ width: '60%' }}
           component={(props) => this.loadComponent('./signup/connectBank/ConnectBankManualConfirm', props)}
+        />
+        <ModalRoute
+          className='gbx3'
+          id={'gbx3Builder'}
+          effect='3DFlipVert' style={{ width: '70%' }}
+          disallowBgClose={true}
+          component={(props) => this.loadComponent('./admin/article/BasicBuilderSteps', props)}
         />
       </div>
     )

@@ -13,7 +13,7 @@ import {
 import {
   toggleModal
 } from '../../api/actions';
-import OrgModalRoutes from '../OrgModalRoutes';
+import GBX3ModalRoutes from '../GBX3ModalRoutes';
 import SignupMenu from './SignupMenu';
 import SignupPage from './SignupPage';
 import { signupSteps } from './signupConfig';
@@ -61,7 +61,7 @@ class Signup extends React.Component {
     return (
       <div className='gbx3AdminLayout orgDisplay editable gbx3OrgSignup'>
         <SignupMenu />
-        <OrgModalRoutes />
+        <GBX3ModalRoutes />
         <div id='GBX3StageAligner' className='stageAligner'>
           <div id='stageContainer' className={`stageContainer ${open ? 'open' : ''}`}>
             <div className='gbx3PageWrapper org admin'>

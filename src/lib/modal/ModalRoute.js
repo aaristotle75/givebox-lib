@@ -68,34 +68,32 @@ class ModalRoute extends Component {
     }
 
     return (
-      <div>
-        { open &&
-          <Portal id={id} rootEl={modalRoot} className={`${modalRootClass}`}>
-            <Modal
-              className={className}
-              identifier={id}
-              effect={effect}
-              open={open}
-              closeBtnShow={closeBtnShow}
-              customStyle={style}
-              closeCallback={util.getValue(optsProps, 'closeCallback', closeCallback)}
-              disallowBgClose={disallowBgClose || util.getValue(optsProps, 'disallowBgClose', false)}
-              customOverlay={util.getValue(optsProps, 'customOverlay', customOverlay)}
-              appRef={appRef}
-              draggable={draggable}
-              draggableTitle={util.getValue(optsProps, 'draggableTitle', draggableTitle)}
-              modalOpenCallback={this.modalOpenCallback}
-              buttonGroup={buttonGroup}
-            >
-              { this.state.opened ?
-                <ErrorBoundary>
-                  {component(optsProps)}
-                </ErrorBoundary>
-              : null }
-            </Modal>
-          </Portal>
-        }
-      </div>
+      open ?
+        <Portal id={id} rootEl={modalRoot} className={`${modalRootClass}`}>
+          <Modal
+            className={className}
+            identifier={id}
+            effect={effect}
+            open={open}
+            closeBtnShow={closeBtnShow}
+            customStyle={style}
+            closeCallback={util.getValue(optsProps, 'closeCallback', closeCallback)}
+            disallowBgClose={disallowBgClose || util.getValue(optsProps, 'disallowBgClose', false)}
+            customOverlay={util.getValue(optsProps, 'customOverlay', customOverlay)}
+            appRef={appRef}
+            draggable={draggable}
+            draggableTitle={util.getValue(optsProps, 'draggableTitle', draggableTitle)}
+            modalOpenCallback={this.modalOpenCallback}
+            buttonGroup={buttonGroup}
+          >
+            { this.state.opened ?
+              <ErrorBoundary>
+                {component(optsProps)}
+              </ErrorBoundary>
+            : null }
+          </Modal>
+        </Portal>
+      : null
     )
   }
 }
