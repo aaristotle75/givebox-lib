@@ -205,7 +205,7 @@ class StepsWrapper extends React.Component {
             progress={stepProgress}
           />
           <div className='progressStatusText'>
-            {menuHeader} {numCompleted} of {numStepsTodo} Completed
+            {numCompleted} of {numStepsTodo} Completed
           </div>
         </div>
         {this.renderChildren()}

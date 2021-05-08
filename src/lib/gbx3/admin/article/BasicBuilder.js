@@ -88,7 +88,7 @@ class BasicBuilder extends React.Component {
             progress={stepProgress}
           />
           <div className='progressStatusText'>
-            {stepName} {numCompleted} of {numStepsTodo} Completed
+            {numCompleted} of {numStepsTodo} Completed
           </div>
         </div>
         <BasicBuilderSteps
