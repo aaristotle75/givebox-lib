@@ -157,7 +157,7 @@ function mapStateToProps(state, props) {
   const admin = util.getValue(gbx3, 'admin', {});
   const kind = util.getValue(gbx3, 'info.kind');
   const availableBlocks = util.getValue(admin, `availableBlocks.${blockType}`, []);
-  const advancedBuilder = util.getValue(state, 'gbx3.helperSteps.advancedBuilder', false);
+  const advancedBuilder = kind === 'fundraiser' ? util.getValue(state, 'gbx3.helperSteps.advancedBuilder', false) : true;
 
   return {
     blockType,

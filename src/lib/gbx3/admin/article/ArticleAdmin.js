@@ -109,11 +109,12 @@ class ArticleAdmin extends React.Component {
 
 function mapStateToProps(state, props) {
 
-  const advancedBuilder = util.getValue(state, 'gbx3.helperSteps.advancedBuilder', false);
+  const kind = util.getValue(state, 'gbx3.info.kind', 'fundraiser');
+  const advancedBuilder = kind === 'fundraiser' ? util.getValue(state, 'gbx3.helperSteps.advancedBuilder', false) : true;
 
   return {
-    advancedBuilder,
-    kind: util.getValue(state, 'gbx3.info.kind', 'fundraiser')
+    kind,
+    advancedBuilder
   }
 }
 
