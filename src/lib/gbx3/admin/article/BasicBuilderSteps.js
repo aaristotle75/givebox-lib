@@ -170,8 +170,8 @@ class BasicBuilderStepsForm extends Component {
       };
       const globalsUpdated = await this.props.updateGlobals(globals);
       if (globalsUpdated) this.saveStep({ giveboxSettings: { primaryColor: themeColor }}, null, true, this.gotoNextStep);
-    } else if (this.props.steps === step) {
-      this.saveStep(null, null, false, () => {
+    } else if (slug === 'share') {
+      this.saveStep(null, null, true, () => {
         this.props.toggleModal('gbx3Builder', false);
       });
     } else {

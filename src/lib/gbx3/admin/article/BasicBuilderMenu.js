@@ -3,7 +3,11 @@ import { connect } from 'react-redux';
 import * as util from '../../../common/utility';
 import GBLink from '../../../common/GBLink';
 import {
-  toggleAdminLeftPanel
+  toggleModal
+} from '../../../api/actions';
+import {
+  toggleAdminLeftPanel,
+  updateHelperSteps
 } from '../../redux/gbx3actions';
 import { builderStepsConfig } from './builderStepsConfig';
 
@@ -88,5 +92,7 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
-  toggleAdminLeftPanel
+  toggleAdminLeftPanel,
+  updateHelperSteps,
+  toggleModal
 })(AdminMenu);
