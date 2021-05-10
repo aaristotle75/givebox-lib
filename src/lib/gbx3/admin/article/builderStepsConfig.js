@@ -12,19 +12,19 @@ const logo = {
 
 const image = {
   slug: 'image',
-  name: 'Add Image',
+  name: 'Add Image/Video',
   icon: 'camera'
 };
 
 const preview = {
   slug: 'preview',
-  name: 'Preview Form',
+  name: 'Preview',
   icon: 'eye'
 };
 
 const share = {
   slug: 'share',
-  name: 'Share',
+  name: 'Ready to Share',
   icon: 'share'
 };
 

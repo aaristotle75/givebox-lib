@@ -22,6 +22,10 @@ import {
 import MediaLibrary from '../../../form/MediaLibrary';
 import Share from '../../share/Share';
 import LinearBar from '../../../common/LinearBar';
+import Tabs, { Tab } from '../../../common/Tabs';
+import Video from '../../../common/Video';
+import HelpfulTip from '../../../common/HelpfulTip';
+import EditVideo from '../../admin/common/EditVideo';
 import { PhotoshopPicker } from 'react-color-aaristotle';
 
 const GBX3_URL = process.env.REACT_APP_GBX_URL;
@@ -33,12 +37,20 @@ class BasicBuilderStepsForm extends Component {
     this.saveStep = this.saveStep.bind(this);
     this.gbx3message = this.gbx3message.bind(this);
     this.handleImageSaveCallback = this.handleImageSaveCallback.bind(this);
+    this.handleVideoSaveCallback = this.handleVideoSaveCallback.bind(this);
     this.processForm = this.processForm.bind(this);
     this.processCallback = this.processCallback.bind(this);
     this.formSavedCallback = this.formSavedCallback.bind(this);
     this.renderStep = this.renderStep.bind(this);
     this.gotoNextStep = this.gotoNextStep.bind(this);
+    this.callbackAfter = this.callbackAfter.bind(this);
+
+    const mediaBlock = util.getValue(props.blocks, 'media', {});
+    const mediaType = util.getValue(mediaBlock, 'options.mediaType', 'image');
+
     this.state = {
+      mediaType,
+      mediaTypeError: null,
       themeColor: util.getValue(props.data, 'giveboxSettings.primaryColor'),
       error: false,
       previewLoaded: false,
@@ -48,7 +60,13 @@ class BasicBuilderStepsForm extends Component {
   }
 
   componentDidMount() {
+    //this.props.updateHelperSteps({ step: 2 });
     window.addEventListener('message', this.gbx3message, false);
+  }
+
+  callbackAfter(tab) {
+    this.props.formProp({ error: false });
+    this.setState({ mediaType: tab, mediaTypeError: null });
   }
 
   gbx3message(e) {
@@ -107,13 +125,47 @@ class BasicBuilderStepsForm extends Component {
     } = this.props;
     if (url && url !== util.getValue(data, field)) {
       const block = util.getValue(blocks, blockName, {});
+      const content = util.getValue(block, 'content', {});
       const options = util.getValue(block, 'options', {});
       const image = util.getValue(options, 'image', {});
       image.URL = util.imageUrlWithStyle(url, image.size);
       const blockObj = {
         ...block,
+        options: {
+          ...options,
+          mediaType: this.state.mediaType
+        },
         content: {
+          ...content,
           image
+        }
+      };
+      this.saveStep({ [field]: url }, blockObj);
+    }
+  }
+
+  handleVideoSaveCallback(url, field, blockName) {
+    const {
+      data,
+      blocks
+    } = this.props;
+    if (url && url !== util.getValue(data, field)) {
+      const block = util.getValue(blocks, blockName, {});
+      const content = util.getValue(block, 'content', {});
+      const options = util.getValue(block, 'options', {});
+      const blockObj = {
+        ...block,
+        options: {
+          ...options,
+          mediaType: this.state.mediaType
+        },
+        content: {
+          ...content,
+          video: {
+            URL: url,
+            auto: false,
+            validatedURL: url
+          }
         }
       };
       this.saveStep({ [field]: url }, blockObj);
@@ -143,7 +195,8 @@ class BasicBuilderStepsForm extends Component {
       step,
       data,
       gbxStyle,
-      button
+      button,
+      blocks
     } = this.props;
 
     const {
@@ -174,6 +227,17 @@ class BasicBuilderStepsForm extends Component {
       this.saveStep(null, null, true, () => {
         this.props.toggleModal('gbx3Builder', false);
       });
+    } else if (slug === 'image') {
+      const block = util.getValue(blocks, 'media', {});
+      const options = util.getValue(block, 'options', {});
+      const blockObj = {
+        ...block,
+        options: {
+          ...options,
+          mediaType: this.state.mediaType
+        }
+      };
+      this.saveStep(null, blockObj, false, this.gotoNextStep);
     } else {
       this.saveStep(null, null, false, this.gotoNextStep);
     }
@@ -187,7 +251,9 @@ class BasicBuilderStepsForm extends Component {
 
     const {
       previewLoaded,
-      iframeHeight
+      iframeHeight,
+      mediaType,
+      mediaTypeError
     } = this.state;
 
     const {
@@ -234,49 +300,63 @@ class BasicBuilderStepsForm extends Component {
       case 'title': {
         const title = this.props.checkHelperIfHasDefaultValue('article', { field: 'title', defaultCheck: 'text' }) ? '' : util.getValue(data, 'title');
 
-        item.title = 'What are you raising money for?';
+        item.title = 'Title of Your Fundraiser';
         item.desc = 'Please enter a captivating title below to let your supporters know what you are raising money for.';
         item.component =
-          this.props.textField('title', {
-            group: 'title',
-            fixedLabel: false,
-            label: 'Title',
-            placeholder: 'Click Here and Enter a Title',
-            maxLength: 128,
-            count: true,
-            required: false,
-            value: title,
-            onBlur: (name, value) => {
-              if (value && value !== title) {
-                const block = util.getValue(blocks, 'title', {});
-                const defaultFormat = util.getValue(block, 'options.defaultFormat', '');
-                const saveValue = defaultFormat.replace('{{TOKEN}}', value);
-                const blockObj = {
-                  ...block,
-                  content: {
-                    html: saveValue
-                  }
-                };
-                this.saveStep({ title: value }, blockObj, true, (res, err) => {
-                  if (!util.isEmpty(res) && !err) {
-                    const isVolunteer = util.getValue(res, 'volunteer');
-                    const volunteerID = util.getValue(res, 'volunteerID');
-
-                    if (isVolunteer && volunteerID) {
-                      this.props.sendResource('volunteerNotify', {
-                        orgID,
-                        id: [volunteerID],
-                        method: 'POST',
-                        data: {
-                          articleID
-                        }
-                      })
-                    };
-                  }
-                });
-              }
+        <div className='fieldGroup'>
+          <HelpfulTip
+            headerIcon={<span className='icon icon-trending-up'></span>}
+            headerText='Pro Tip to Increase Conversions'
+            style={{ marginTop: 25, marginBottom: 20 }}
+            text={
+              <span>
+                A good title should not be dull or too general. It should elicit an emotional reponse to get peoples attention.<br /><br />
+                A dull title: "Please Donate to Save the Whales"<br /><br />
+                A better title: "If you Love Whales Here is How You Can Save Them"
+              </span>
             }
-          })
+          />
+            {this.props.textField('title', {
+              group: 'title',
+              fixedLabel: false,
+              label: 'Title',
+              placeholder: 'Click Here and Enter a Title',
+              maxLength: 128,
+              count: true,
+              required: false,
+              value: title,
+              onBlur: (name, value) => {
+                if (value && value !== title) {
+                  const block = util.getValue(blocks, 'title', {});
+                  const defaultFormat = util.getValue(block, 'options.defaultFormat', '');
+                  const saveValue = defaultFormat.replace('{{TOKEN}}', value);
+                  const blockObj = {
+                    ...block,
+                    content: {
+                      html: saveValue
+                    }
+                  };
+                  this.saveStep({ title: value }, blockObj, true, (res, err) => {
+                    if (!util.isEmpty(res) && !err) {
+                      const isVolunteer = util.getValue(res, 'volunteer');
+                      const volunteerID = util.getValue(res, 'volunteerID');
+
+                      if (isVolunteer && volunteerID) {
+                        this.props.sendResource('volunteerNotify', {
+                          orgID,
+                          id: [volunteerID],
+                          method: 'POST',
+                          data: {
+                            articleID
+                          }
+                        })
+                      };
+                    }
+                  });
+                }
+              }
+            })}
+          </div>
         ;
         break;
       }
@@ -286,7 +366,7 @@ class BasicBuilderStepsForm extends Component {
         const logoURL = util.getValue(logoBlock, 'content.image.URL', util.getValue(data, 'orgImageURL')).replace(/small$/i, 'original');
         const orgImageURL = (!util.checkImage(logoURL) || !logoURL) ? '' : logoURL;
         item.title = 'Upload a Logo';
-        item.desc = 'Please upload an image of your logo.';
+        item.desc = 'A nice logo makes you easily identifiable to your supporters.';
         item.component =
           <MediaLibrary
             blockType={'article'}
@@ -313,26 +393,72 @@ class BasicBuilderStepsForm extends Component {
         const mediaBlock = util.getValue(blocks, 'media', {});
         const mediaURL = util.getValue(mediaBlock, 'content.image.URL', '').replace(/medium$/i, 'original');
         const imageURL = (!util.checkImage(mediaURL) || !mediaURL) ? '' : mediaURL;
-        item.title = 'Add an Image';
-        item.desc = 'A picture speaks a thousand words. Upload an image that inspires people to support your fundraiser.';
+        const videoURL = util.getValue(mediaBlock, 'content.video.URL');
+
+        item.title = 'Add an Image or Video for Your Fundraiser';
+        item.desc =
+          <div>
+            <p>A picture speaks a thousand words. Upload an image that inspires people to support your fundraiser.</p>
+            <HelpfulTip
+              headerIcon={<span className='icon icon-video'></span>}
+              headerText={`An Image is Great, but with a Video Your Fundraiser Excels`}
+              style={{ marginTop: 20, marginBottom: 20 }}
+              text={
+                <span>
+                  If you have a video link handy we suggest you use it. An image is great, but a video brings your story to life.
+                </span>
+              }
+            />
+          </div>
+        ;
         item.component =
-          <MediaLibrary
-            blockType={'article'}
-            image={imageURL}
-            preview={imageURL}
-            handleSaveCallback={(url) => this.handleImageSaveCallback(url, 'imageURL', 'media')}
-            handleSave={util.handleFile}
-            library={library}
-            showBtns={'hide'}
-            saveLabel={'close'}
-            mobile={breakpoint === 'mobile' ? true : false }
-            uploadOnly={true}
-            uploadEditorSaveStyle={{ width: 250 }}
-            uploadEditorSaveLabel={'Click Here to Save Image'}
-            imageEditorOpenCallback={(editorOpen) => {
-              this.setState({ editorOpen })
-            }}
-          />
+        <div className='fieldGroup'>
+          <Tabs
+            default={mediaType}
+            className='statsTab'
+            callbackAfter={this.callbackAfter}
+          >
+            <Tab id='image' className='showOnMobile' label={<span className='stepLabel buttonAlignText'>Use an Image <span className='icon icon-instagram'></span></span>}>
+              <MediaLibrary
+                image={imageURL}
+                preview={imageURL}
+                handleSaveCallback={(url) => {
+                  this.setState({ mediaTypeError: null });
+                  this.handleImageSaveCallback(url, 'imageURL', 'media');
+                }}
+                handleSave={util.handleFile}
+                library={library}
+                showBtns={'hide'}
+                saveLabel={'close'}
+                mobile={isMobile ? true : false }
+                uploadOnly={true}
+                uploadEditorSaveStyle={{ width: 250 }}
+                uploadEditorSaveLabel={'Click Here to Save Image'}
+                imageEditorOpenCallback={(editorOpen) => {
+                  this.setState({ editorOpen })
+                }}
+                topLabel={'Click to Add Image'}
+                bottomLabel={'Drag & Drop Image'}
+                labelIcon={<span className='icon icon-instagram'></span>}
+                formError={mediaTypeError === 'image' ? true : false}
+              />
+            </Tab>
+            <Tab id='video' className='showOnMobile' label={<span className='stepLabel buttonAlignText'>Use a Video <span className='icon icon-video'></span></span>}>
+              <EditVideo
+                videoURL={videoURL}
+                onChange={() => {
+                  this.setState({ mediaTypeError: null });
+                }}
+                onBlur={(url, validated) => {
+                  if (url && validated) {
+                    this.handleVideoSaveCallback(url, 'videoURL', 'media');
+                  }
+                }}
+                error={mediaTypeError === 'video' ? true : false}
+              />
+            </Tab>
+          </Tabs>
+        </div>
         ;
         break;
       }
@@ -352,8 +478,8 @@ class BasicBuilderStepsForm extends Component {
             },
           }
         };
-        item.title = 'Choose a Theme Color';
-        item.desc = 'Choose a color that compliments your fundraising form or nonprofit logo.';
+        item.title = 'Pick a Theme Color';
+        item.desc = 'Choose a color that compliments your Organization logo and/or branding.';
         item.component =
           <div className='flexCenter'>
             <PhotoshopPicker
@@ -370,14 +496,15 @@ class BasicBuilderStepsForm extends Component {
       }
 
       case 'preview': {
-        item.saveButtonLabel = <span className='buttonAlignText'>Looks Good! Continue to Next Step <span className='icon icon-chevron-right'></span></span>;
+        item.saveButtonLabelTop = <span className='buttonAlignText'>Continue to Step {nextStepNumber}: {nextStepName} <span className='icon icon-chevron-right'></span></span>;
+        item.saveButtonLabel = <span className='buttonAlignText'>Looks Good! I'm Ready to Share <span className='icon icon-chevron-right'></span></span>;
         item.className = 'preview';
         item.title = 'Preview your Form';
         item.desc = !previewLoaded ?
           'Please wait while the preview loads...'
           :
           <div>
-            <span>This is how the form will look to your supporters.</span>
+            <span>This is how your fundraiser will look to your supporters.</span>
             {/*
             <span style={{ marginTop: 10, display: 'block' }}>If you really want to roll up your sleeves, try the Givebox <GBLink style={{ fontSize: 14, display: 'inline' }} onClick={() => this.props.toggleBuilder()}>Advanced Builder</GBLink>, where you can customize pretty much everything!</span>
             */}
@@ -399,8 +526,8 @@ class BasicBuilderStepsForm extends Component {
       case 'share': {
         item.saveButtonLabel = <span className='buttonAlignText'>All Finished! <span className='icon icon-chevron-right'></span></span>;
         item.saveButtonLabelTop = item.saveButtonLabel;
-        item.title = 'Share Your Form';
-        item.desc = 'Copy and paste your custom link into an email, or click a social media icon below to share your fundraising form and start raising money!';
+        item.title = 'Share Your Fundraiser!';
+        item.desc = 'Customize your share link, copy and paste into an email, and/or click a social media icon below to share your fundraising form and start raising money!';
         item.component =
           <Share
             hideList={['web']}
