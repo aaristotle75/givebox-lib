@@ -124,7 +124,7 @@ export const defaultStyle = {
     pageRadius: 10,
     pageOpacity: .6,
     backgroundColor: '#4385f5',
-    backgroundOpacity: .6,
+    backgroundOpacity: .4,
     backgroundBlur: 20,
     placeholderColor: '#627280'
   },
@@ -139,7 +139,7 @@ export const defaultStyle = {
     backgroundColor: '#4385f5',
     backgroundOpacity: .6,
     backgroundBlur: 10,
-    placeholderColor: '#B0BEC5'
+    placeholderColor: '#A4BACA'
   },
   button: {
     embedAllowed: false,
