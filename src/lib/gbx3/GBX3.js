@@ -39,7 +39,6 @@ import AvatarMenu from './admin/AvatarMenu';
 import Share from './share/Share';
 import history from '../common/history';
 import SavingSignup from './signup/SavingSignup';
-import GBX3ModalRoutes from './GBX3ModalRoutes';
 
 const RECAPTCHA_KEY = process.env.REACT_APP_RECAPTCHA_KEY;
 const ENV = process.env.REACT_APP_ENV;
@@ -526,7 +525,6 @@ class GBX3 extends React.Component {
     return (
       <div id='gbx3MainWrapper' className='gbx3'>
         {this.renderStage()}
-        <GBX3ModalRoutes />
         <ModalRoute
           className='gbx3'
           id='avatarMenu'

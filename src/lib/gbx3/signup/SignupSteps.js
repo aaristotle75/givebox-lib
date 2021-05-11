@@ -62,6 +62,9 @@ class SignupStepsForm extends React.Component {
     };
   }
 
+  componentDidMount() {
+  }
+
   setRequirePassword(requirePassword) {
     if (requirePassword) {
       this.props.fieldProp('password', { required: true  });
@@ -486,6 +489,7 @@ class SignupStepsForm extends React.Component {
   async validateTaxID(taxID, group) {
     this.validation = false;
     this.props.getResource('orgs', {
+      customName: 'existingOrgs',
       search: {
         filter: `taxID:"${taxID}"`
       },
@@ -550,6 +554,7 @@ class SignupStepsForm extends React.Component {
       categoryID,
       mission,
       imageURL: orgLogo,
+      defaultTheme,
       themeColor
     } = org;
 
@@ -750,14 +755,38 @@ class SignupStepsForm extends React.Component {
           }
         };
         item.component =
-          <div className='flexCenter'>
-            <PhotoshopPicker
-              styles={style}
-              header={''}
-              color={this.state.themeColor}
-              onChangeComplete={(color) => {
-                this.setState({ themeColor: color.hex })
+          <div className='fieldGroup'>
+            <div className='flexCenter'>
+              <PhotoshopPicker
+                styles={style}
+                header={''}
+                color={this.state.themeColor}
+                onChangeComplete={(color) => {
+                  this.setState({ themeColor: color.hex })
+                }}
+              />
+            </div>
+            <Dropdown
+              name='defaultTheme'
+              portalID={`category-dropdown-portal-${slug}`}
+              portalClass={'gbx3 articleCardDropdown'}
+              portalLeftOffset={10}
+              className='articleCard'
+              contentWidth={400}
+              label={'Select a Theme'}
+              selectLabel='Select a Theme'
+              fixedLabel={true}
+              required={true}
+              onChange={(name, value) => {
+                this.props.updateOrgSignupField('org', { defaultTheme: value });
               }}
+              options={[
+                { primaryText: 'Light', value: 'light' },
+                { primaryText: 'Dark', value: 'dark' }
+              ]}
+              showCloseBtn={true}
+              value={defaultTheme || 'light'}
+              style={{ paddingTop: 40 }}
             />
           </div>
         ;

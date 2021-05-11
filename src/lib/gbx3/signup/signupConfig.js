@@ -37,7 +37,7 @@ const themeColor = {
   slug: 'themeColor',
   name: 'Theme Color',
   icon: 'sun',
-  title: 'Pick a Theme Color',
+  title: 'Pick a Theme',
   desc: 'Choose a color that compliments your Organization logo and/or branding.'
 };
 
@@ -195,6 +195,7 @@ export const orgSignupFields = {
     categoryID: null,
     mission: '',
     imageURL: null,
+    defaultTheme: 'light',
     themeColor: '',
     coverPhotoURL: null
   },
