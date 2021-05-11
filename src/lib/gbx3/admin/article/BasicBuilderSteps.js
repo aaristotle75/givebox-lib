@@ -24,6 +24,7 @@ import Share from '../../share/Share';
 import LinearBar from '../../../common/LinearBar';
 import Tabs, { Tab } from '../../../common/Tabs';
 import Video from '../../../common/Video';
+import Dropdown from '../../../form/Dropdown';
 import HelpfulTip from '../../../common/HelpfulTip';
 import EditVideo from '../../admin/common/EditVideo';
 import { PhotoshopPicker } from 'react-color-aaristotle';
@@ -49,6 +50,7 @@ class BasicBuilderStepsForm extends Component {
     const mediaType = util.getValue(mediaBlock, 'options.mediaType', 'image');
 
     this.state = {
+      defaultTheme: 'dark',
       mediaType,
       mediaTypeError: null,
       themeColor: util.getValue(props.data, 'giveboxSettings.primaryColor'),
@@ -253,7 +255,8 @@ class BasicBuilderStepsForm extends Component {
       previewLoaded,
       iframeHeight,
       mediaType,
-      mediaTypeError
+      mediaTypeError,
+      defaultTheme
     } = this.state;
 
     const {
@@ -478,17 +481,41 @@ class BasicBuilderStepsForm extends Component {
             },
           }
         };
-        item.title = 'Pick a Theme Color';
+        item.title = 'Pick a Theme';
         item.desc = 'Choose a color that compliments your Organization logo and/or branding.';
         item.component =
-          <div className='flexCenter'>
-            <PhotoshopPicker
-              styles={style}
-              header={''}
-              color={this.state.themeColor}
-              onChangeComplete={(color) => {
-                this.setState({ themeColor: color.hex })
+          <div className='fieldGroup'>
+            <div className='flexCenter'>
+              <PhotoshopPicker
+                styles={style}
+                header={''}
+                color={this.state.themeColor}
+                onChangeComplete={(color) => {
+                  this.setState({ themeColor: color.hex })
+                }}
+              />
+            </div>
+            <Dropdown
+              name='defaultTheme'
+              portalID={`category-dropdown-portal-${slug}`}
+              portalClass={'gbx3 articleCardDropdown'}
+              portalLeftOffset={10}
+              className='articleCard'
+              contentWidth={400}
+              label={'Select a Theme'}
+              selectLabel='Select a Theme'
+              fixedLabel={true}
+              required={true}
+              onChange={(name, value) => {
+                console.log('execute -> ', value);
               }}
+              options={[
+                { primaryText: 'Light', value: 'light' },
+                { primaryText: 'Dark', value: 'dark' }
+              ]}
+              showCloseBtn={true}
+              value={defaultTheme || 'dark'}
+              style={{ paddingTop: 40 }}
             />
           </div>
         ;
