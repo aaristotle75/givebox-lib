@@ -67,6 +67,7 @@ export function signupGBX3Data() {
 
     const gbx3Template = {
       globals: {
+        theme,
         gbxStyle: {
           ...defaultStyle[theme],
           backgroundColor: primaryColor,

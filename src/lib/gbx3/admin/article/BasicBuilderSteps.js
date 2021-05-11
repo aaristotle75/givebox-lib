@@ -17,8 +17,12 @@ import {
   saveGBX3,
   updateData,
   updateGlobals,
-  updateBlock
+  updateBlock,
+  setStyle
 } from '../../redux/gbx3actions';
+import {
+  defaultStyle
+} from '../../redux/gbx3defaults';
 import MediaLibrary from '../../../form/MediaLibrary';
 import Share from '../../share/Share';
 import LinearBar from '../../../common/LinearBar';
@@ -45,12 +49,13 @@ class BasicBuilderStepsForm extends Component {
     this.renderStep = this.renderStep.bind(this);
     this.gotoNextStep = this.gotoNextStep.bind(this);
     this.callbackAfter = this.callbackAfter.bind(this);
+    this.updateTheme = this.updateTheme.bind(this);
 
     const mediaBlock = util.getValue(props.blocks, 'media', {});
     const mediaType = util.getValue(mediaBlock, 'options.mediaType', 'image');
 
     this.state = {
-      defaultTheme: 'dark',
+      defaultTheme: util.getValue(props.globals, 'theme'),
       mediaType,
       mediaTypeError: null,
       themeColor: util.getValue(props.data, 'giveboxSettings.primaryColor'),
@@ -97,6 +102,34 @@ class BasicBuilderStepsForm extends Component {
         const iframeHeight = +strArr[1] + 50;
         this.setState({ iframeHeight });
       }
+    }
+  }
+
+  async updateTheme(theme) {
+    const {
+      themeColor
+    } = this.state;
+
+    const imageURL = util.getValue(this.props.blocks, 'media.content.image.URL');
+    const globals = {
+      ...this.props.globals,
+      theme,
+      gbxStyle: {
+        ...defaultStyle[theme],
+        backgroundImage: imageURL,
+        backgroundColor: themeColor,
+        primaryColor: themeColor
+      }
+    };
+
+    const updated = await this.props.updateGlobals(globals);
+    if (updated) {
+      this.props.saveGBX3('article', {
+        callback: (res, err) => {
+          this.props.setStyle();
+        },
+        updateLayout: false
+      });
     }
   }
 
@@ -507,7 +540,7 @@ class BasicBuilderStepsForm extends Component {
               fixedLabel={true}
               required={true}
               onChange={(name, value) => {
-                console.log('execute -> ', value);
+                this.updateTheme(value);
               }}
               options={[
                 { primaryText: 'Light', value: 'light' },
@@ -670,6 +703,7 @@ function mapStateToProps(state, props) {
     orgID: util.getValue(state, 'gbx3.info.orgID'),
     data: util.getValue(state, 'gbx3.data', {}),
     kind: util.getValue(state, 'gbx3.info.kind', 'fundraiser'),
+    globals: util.getValue(state, 'gbx3.globals', {}),
     gbxStyle: util.getValue(state, 'gbx3.globals.gbxStyle', {}),
     button: util.getValue(state, 'gbx3.globals.button', {}),
     blocks: util.getValue(state, 'gbx3.blocks.article', {}),
@@ -685,5 +719,6 @@ export default connect(mapStateToProps, {
   saveGBX3,
   updateData,
   updateGlobals,
-  updateBlock
+  updateBlock,
+  setStyle
 })(BasicBuilderSteps)

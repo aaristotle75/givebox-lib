@@ -126,7 +126,7 @@ export const defaultStyle = {
     backgroundColor: '#4385f5',
     backgroundOpacity: .6,
     backgroundBlur: 20,
-    placeholderColor: '#465965'
+    placeholderColor: '#627280'
   },
   light: {
     maxWidth: 850,
