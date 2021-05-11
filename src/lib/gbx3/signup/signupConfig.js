@@ -195,7 +195,7 @@ export const orgSignupFields = {
     categoryID: null,
     mission: '',
     imageURL: null,
-    defaultTheme: 'light',
+    defaultTheme: 'dark',
     themeColor: '',
     coverPhotoURL: null
   },

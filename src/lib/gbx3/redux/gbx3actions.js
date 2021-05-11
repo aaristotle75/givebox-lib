@@ -43,18 +43,22 @@ export function savingSignup(saving, savingSignupCallback) {
 
 export function signupGBX3Data() {
   return (dispath, getState) => {
-    const orgSignup = util.getValue(getState(), 'gbx3.orgSignup', {});
+    const state = getState();
+    const orgSignup = util.getValue(state, 'gbx3.orgSignup', {});
     const fields = util.getValue(orgSignup, 'fields', {});
     const {
       org,
       gbx3
     } = fields;
 
+    const theme = util.getValue(org, 'defaultTheme', 'dark');
+
     const gbx3Data = {
       ...createData.fundraiser,
       ...gbx3,
     };
 
+    const primaryColor = org.themeColor || defaultPrimaryColor;
     const gbx3Blocks = blockTemplates.article.fundraiser;
     const blocksDefault = {};
     defaultBlocks.article.fundraiser.forEach((value) => {
@@ -62,6 +66,14 @@ export function signupGBX3Data() {
     });
 
     const gbx3Template = {
+      globals: {
+        gbxStyle: {
+          ...defaultStyle[theme],
+          backgroundColor: primaryColor,
+          backgroundImage: gbx3.imageURL,
+          primaryColor
+        }
+      },
       blocks: {
         ...blocksDefault,
         media: {
@@ -89,8 +101,6 @@ export function signupGBX3Data() {
     gbx3Data.giveboxSettings.customTemplate = {
       ...gbx3Template
     };
-
-    const primaryColor = org.themeColor || defaultPrimaryColor
 
     if (org.themeColor) {
       gbx3Data.giveboxSettings.primaryColor = org.themeColor;
@@ -1434,7 +1444,7 @@ export function loadGBX3(articleID, callback) {
                   const uncompletedSteps = stepsArray.filter(item => !helperSteps.completed.includes(item));
                   const minStepNotCompleted = !util.isEmpty(uncompletedSteps) ? Math.min(...uncompletedSteps) : numOfSteps;
 
-                  helperSteps.step = minStepNotCompleted < 4 ? minStepNotCompleted : 4;
+                  helperSteps.step = minStepNotCompleted < 4 ? minStepNotCompleted : 5;
 
                   const builderPref = util.getValue(getState(), 'preferences.builderPref');
                   helperSteps.advancedBuilder = builderPref === 'advanced' ? true : helperSteps.advancedBuilder;

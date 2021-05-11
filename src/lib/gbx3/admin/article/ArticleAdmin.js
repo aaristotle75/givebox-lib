@@ -80,28 +80,6 @@ class ArticleAdmin extends React.Component {
             />
           </>
         )
-        /*
-        if (advancedBuilder || kind !== 'fundraiser') {
-          return (
-            <Design
-              reloadGBX3={this.props.reloadGBX3}
-              loadGBX3={this.props.loadGBX3}
-              toggleBuilder={this.toggleBuilder}
-              advancedBuilder={advancedBuilder}
-            />
-          )
-        } else {
-          return (
-            <BasicBuilder
-              reloadGBX3={this.props.reloadGBX3}
-              loadGBX3={this.props.loadGBX3}
-              toggleBuilder={this.toggleBuilder}
-              advancedBuilder={advancedBuilder}
-              exitAdmin={this.props.exitAdmin}
-            />
-          )
-        }
-        */
       }
     }
   }

@@ -112,7 +112,34 @@ export const defaultStyle = {
     pageOpacity: 1,
     backgroundColor: '#4385f5',
     backgroundOpacity: .6,
-    placeholderColor: ''
+    placeholderColor: 'B0BEC5',
+    backgroundBlur: 0
+  },
+  dark: {
+    maxWidth: 850,
+    primaryColor: '#4385f5',
+    bgColor: '',
+    textColor: '#E8EBED',
+    pageColor: '#000000',
+    pageRadius: 10,
+    pageOpacity: .6,
+    backgroundColor: '#4385f5',
+    backgroundOpacity: .6,
+    backgroundBlur: 20,
+    placeholderColor: '#465965'
+  },
+  light: {
+    maxWidth: 850,
+    primaryColor: '#4385f5',
+    bgColor: '',
+    textColor: '#253655',
+    pageColor: '#ffffff',
+    pageRadius: 10,
+    pageOpacity: .75,
+    backgroundColor: '#4385f5',
+    backgroundOpacity: .6,
+    backgroundBlur: 10,
+    placeholderColor: '#B0BEC5'
   },
   button: {
     embedAllowed: false,

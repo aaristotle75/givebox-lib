@@ -785,7 +785,7 @@ class SignupStepsForm extends React.Component {
                 { primaryText: 'Dark', value: 'dark' }
               ]}
               showCloseBtn={true}
-              value={defaultTheme || 'light'}
+              value={defaultTheme || 'dark'}
               style={{ paddingTop: 40 }}
             />
           </div>
