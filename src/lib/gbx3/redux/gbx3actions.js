@@ -70,7 +70,7 @@ export function signupGBX3Data() {
         theme,
         gbxStyle: {
           ...defaultStyle[theme],
-          backgroundColor: primaryColor,
+          //backgroundColor: primaryColor,
           backgroundImage: gbx3.imageURL,
           primaryColor
         }

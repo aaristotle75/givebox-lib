@@ -117,7 +117,7 @@ class BasicBuilderStepsForm extends Component {
       gbxStyle: {
         ...defaultStyle[theme],
         backgroundImage: imageURL,
-        backgroundColor: themeColor,
+        //backgroundColor: themeColor,
         primaryColor: themeColor
       }
     };

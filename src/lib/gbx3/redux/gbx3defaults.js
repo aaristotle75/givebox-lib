@@ -123,7 +123,7 @@ export const defaultStyle = {
     pageColor: '#000000',
     pageRadius: 10,
     pageOpacity: .6,
-    backgroundColor: '#4385f5',
+    backgroundColor: '#000000',
     backgroundOpacity: .4,
     backgroundBlur: 20,
     placeholderColor: '#627280'
@@ -136,7 +136,7 @@ export const defaultStyle = {
     pageColor: '#ffffff',
     pageRadius: 10,
     pageOpacity: .75,
-    backgroundColor: '#4385f5',
+    backgroundColor: '#ffffff',
     backgroundOpacity: .6,
     backgroundBlur: 10,
     placeholderColor: '#A4BACA'

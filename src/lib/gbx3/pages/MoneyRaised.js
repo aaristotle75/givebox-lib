@@ -54,10 +54,6 @@ class MoneyRaised extends React.Component {
     };
 
     switch (signupPhase) {
-      case 'transferMoney': {
-        break;
-      }
-
       case 'connectBank': {
         content.headerIcon = <Icon><AiOutlineBank /></Icon>;
         content.headerText = 'Connect Your Bank';
@@ -70,6 +66,25 @@ class MoneyRaised extends React.Component {
             <div className='button-group flexCenter'>
               <GBLink className='button' onClick={() => this.openStep('connectBank', 'orgConnectBankSteps')}>
                 Connect Bank
+              </GBLink>
+            </div>
+          </div>
+        ;
+        break;
+      }
+
+      case 'transferMoney': {
+        content.headerIcon = <Icon><AiOutlineBank /></Icon>;
+        content.headerText = 'Transfer Money Steps';
+        content.text =
+          <div className='moneyRaisedTooltipContent'>
+            To transfer money we must verify identity and banking information.
+            <span style={{ marginTop: 10, display: 'block' }}>
+              After you verify your identity and banking information you will not have to do this again unless you add a new bank account.
+            </span>
+            <div className='button-group flexCenter'>
+              <GBLink className='button' onClick={() => this.openStep('identity', 'orgTransferSteps')}>
+                Transfer Money Steps
               </GBLink>
             </div>
           </div>
