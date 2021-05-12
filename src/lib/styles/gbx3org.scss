@@ -1060,6 +1060,12 @@ $contentHeaderPadding: 35%;
   }
 }
 
+.moneyRaisedTooltipContent {
+  button.button {
+    padding: 10px 20px;
+  }
+}
+
 .moneyRaised {
   display: flex;
   flex-direction: column;

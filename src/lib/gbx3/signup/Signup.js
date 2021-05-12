@@ -84,11 +84,16 @@ class Signup extends React.Component {
                           headerIcon={<span className='icon icon-trending-up'></span>}
                           headerText={'How do I Raise Money?'}
                           text={
-                            <div>
+                            <div className='moneyRaisedTooltipContent'>
                               Complete the quick and easy create fundraiser steps, and then preview and share your fundraiser.
                               <span style={{ marginTop: 10, display: 'block' }}>
                                 After you get your first transaction you can connect a bank account to transfer your money.
                               </span>
+                              <div className='flexCenter button-group'>
+                                <GBLink className='button' onClick={() => this.openStep('orgName')}>
+                                  Create Fundraiser Steps
+                                </GBLink>
+                              </div>
                             </div>
                           }
                           style={{ marginTop: 0 }}

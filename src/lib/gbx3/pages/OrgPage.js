@@ -6,6 +6,7 @@ import ScrollTop from '../../common/ScrollTop';
 import Header from './Header';
 import Pages from './Pages';
 import Footer from '../Footer';
+import MoneyRaised from './MoneyRaised';
 import Icon from '../../common/Icon';
 import { GoDashboard } from 'react-icons/go';
 import HelpfulTip from '../../common/HelpfulTip';
@@ -31,29 +32,7 @@ export default class OrgDisplay extends React.Component {
           <div className={'gbx3OrgLogoContainer'} onClick={() => console.log('logo clicked!')}>
             <Image size='thumb' maxSize={35} url={'https://cdn.givebox.com/givebox/public/gb-logo5.png'} alt='Givebox' />
           </div>
-          <div className='moneyRaisedContainer orgAdminOnly'>
-            <div className='tooltip moneyRaised'>
-              <div className='tooltipTop'>
-                <HelpfulTip
-                  headerIcon={<span className='icon icon-trending-up'></span>}
-                  headerText={'How do I Raise Money?'}
-                  text={
-                    <div>
-                      Simply share your fundraiser on social media or send an email to all your supporters with your share link.
-                      <span style={{ marginTop: 10, display: 'block' }}>
-                        Make sure you have a nice image or video in your fundraiser form. Your supporters are more likely to give if they know what you are raising money for.
-                      </span>
-                    </div>
-                  }
-                  style={{ marginTop: 0 }}
-                />
-              </div>
-              <span className='moneyRaisedLabel'>Money Raised</span>
-              <span className='moneyRaisedText moneyAmount'>
-                <span className='symbol'>$</span>0.00
-              </span>
-            </div>
-          </div>
+          <MoneyRaised />
           { cameFromNonprofitAdmin ?
             <div className='gbx3OrgBackToDashboard orgAdminOnly'>
               <GBLink key={'exit'} style={{ fontSize: '14px' }} className='link' onClick={() => this.props.exitAdmin()}><Icon><GoDashboard /></Icon>{ isMobile ? 'Dashboard' : `Back to Dashboard` }</GBLink>

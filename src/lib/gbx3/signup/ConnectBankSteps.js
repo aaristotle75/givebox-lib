@@ -584,6 +584,7 @@ function mapStateToProps(state, props) {
   const legalEntity = util.getValue(state, 'resource.orgLegalEntity', {});
   const isVantivReady = util.getValue(state, 'resource.gbx3Org.data.vantiv.isVantivReady');
   const merchantIdentString = util.getValue(state, 'resource.gbx3Org.data.vantiv.merchantIdentString');
+  const hasReceivedTransaction = util.getValue(state, 'resource.gbx3Org.data.hasReceivedTransaction');
   const signupPhase = util.getValue(state, 'gbx3.orgSignup.signupPhase');
 
   return {
@@ -591,7 +592,8 @@ function mapStateToProps(state, props) {
     legalEntity,
     isVantivReady,
     merchantIdentString,
-    signupPhase
+    signupPhase,
+    hasReceivedTransaction
   }
 }
 
