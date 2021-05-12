@@ -4,8 +4,10 @@ import Dropzone from 'react-dropzone';
 import { mime } from '../common/types';
 import { sendResource } from '../api/helpers';
 import * as util from '../common/utility';
+import * as types from '../common/types';
 import Fade from '../common/Fade';
 import { Line } from 'rc-progress';
+import FileViewer from 'react-file-viewer';
 
 class UploadPrivate extends Component {
 
@@ -25,11 +27,13 @@ class UploadPrivate extends Component {
       success: this.props.success || false,
       percent: 0,
       document: '',
-      confirmation: []
+      confirmation: [],
+      previewURL: props.previewURL
     }
   }
 
   componentDidMount() {
+    //console.log('execute -> ', this.props.previewURL);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -38,6 +42,9 @@ class UploadPrivate extends Component {
     }
     if (prevState.success !== this.props.success && prevProps.success !== this.props.success) {
       this.setState({ success: this.props.success });
+    }
+    if (prevProps.previewURL !== this.props.previewURL) {
+      this.setState({ previewURL: this.props.previewURL });
     }
   }
 
@@ -165,16 +172,19 @@ class UploadPrivate extends Component {
       label,
       labelClass,
       className,
-      style
+      style,
+      showPreview
     } = this.props;
-
 
     const {
       error,
-      success
+      success,
+      previewURL
     } = this.state;
 
     const mimes = `${mime.image},${mime.text},${mime.applications},${mime.video}`;
+    const info = util.getFileInfo(previewURL);
+    const type = info.type;
 
     return (
       <div style={style} className={`dropzone-group input-group ${className || ''} textfield-group ${error ? 'error tooltip' : ''}`}>
@@ -200,6 +210,21 @@ class UploadPrivate extends Component {
               <span className={`icon dropzone-icon icon-${this.props.icon}`}></span>
               <span className='text'>{uploadLabel}</span>
             </Dropzone>
+            { showPreview && previewURL ?
+            <div className='previewURLContainer'>
+              { !types.imageTypes.includes(type) ?
+                <FileViewer
+                  key={`fileviewer-${type}`}
+                  fileType={type}
+                  filePath={previewURL}
+                  errorComponent={Error}
+                  onError={(e) => console.error('error in file-viewer')}
+                />
+              :
+                <img key={`preview-${type}`} src={previewURL} alt={previewURL} style={{ maxWidth: '150px', height: 'auto', maxHeight: '150px' }} />
+              }
+            </div>
+            : null }
           </div>
         </div>
         <Fade in={error ? true : false}><div className={`errorMsg`}>{error}</div></Fade>
@@ -216,7 +241,8 @@ UploadPrivate.defaultProps = {
   uploadLabel: 'Add Document(s)',
   icon: 'file-plus',
   maxSize: '175px',
-  alt: false
+  alt: false,
+  showPreview: false
 }
 
 function mapStateToProps(state, props) {

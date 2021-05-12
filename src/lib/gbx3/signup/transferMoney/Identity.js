@@ -12,16 +12,20 @@ import {
   sendResource
 } from '../../../api/helpers';
 
+
 class Identity extends React.Component {
 
   constructor(props) {
     super(props);
     this.fileUploadSuccess = this.fileUploadSuccess.bind(this);
+    this.getDocument = this.getDocument.bind(this);
     this.state = {
     };
   }
 
   async componentDidMount() {
+    this.getDocument();
+
     if (util.isEmpty(this.props.principal)) {
       const initLoading = await this.props.setMerchantApp('principalLoading', true);
       if (initLoading) {
@@ -39,11 +43,29 @@ class Identity extends React.Component {
     }
   }
 
-  fileUploadSuccess(res) {
-    util.toTop('modalOverlay-merchantForm');
-    const principals = util.getValue(this.props.orgPrincipals, 'data', {});
-    const principal = util.getValue(principals, 0, {});
-    const principalID = util.getValue(principal, 'ID', null);
+  async getDocument(showLoading = true) {
+    const initLoading = showLoading ? await this.props.setMerchantApp('underwritingDocsLoading', true) : true;
+    if (initLoading) {
+      this.props.getResource('underwritingDocs', {
+        id: [this.props.orgID],
+        reload: true,
+        search: {
+          filter: `tag:"proof_of_id"`,
+          sort: 'createdAt',
+          order: 'desc'
+        },
+        callback: (res, err) => {
+          const data = util.getValue(res, 'data', []);
+          const item = util.getValue(data, 0, {});
+          this.props.setMerchantApp('underwritingDocsLoading', false);
+        }
+      });
+    }
+  }
+
+  fileUploadSuccess(fileName, ID) {
+    //util.toTop('modalOverlay-stepsForm');
+    const principalID = util.getValue(this.props.principal, 'ID', null);
     this.props.sendResource('orgPrincipal', {
       id: [principalID],
       method: 'patch',
@@ -52,7 +74,9 @@ class Identity extends React.Component {
       },
       callback: (res, err) => {
         if (err) this.props.formProp({error: 'Error updating principal.'});
-        else this.props.setFileUploaded(true);
+        else {
+          this.getDocument(false);
+        }
       },
       reload: true,
       resourcesToLoad: ['orgPrincipals']
@@ -64,13 +88,17 @@ class Identity extends React.Component {
     const {
       principal,
       loading,
-      orgID
+      orgID,
+      underwritingDocsLoading,
+      doc
     } = this.props;
 
-    if (loading) return <Loader msg='Loading Principal...' />
+    if (loading || underwritingDocsLoading) return <Loader msg='Loading Principal...' />
 
     const firstName = util.getValue(principal, 'firstName');
     const lastName = util.getValue(principal, 'lastName');
+
+    console.log('execute doc -> ', doc);
 
     return (
       <div className='fieldGroup'>
@@ -90,6 +118,8 @@ class Identity extends React.Component {
             resourceType={'principal'}
             resourceID={util.getValue(principal, 'ID', null)}
             tag={'proof_of_id'}
+            previewURL={util.getValue(doc, 'URL')}
+            showPreview={true}
           />
         </div>
       </div>
@@ -104,11 +134,18 @@ function mapStateToProps(state, props) {
   const principal = util.getValue(orgPrincipalsData, 0, {});
   const loading = util.getValue(state, 'merchantApp.principalLoading', false);
   const orgID = util.getValue(state, 'gbx3.info.orgID');
+  const underwritingDocs = util.getValue(state, 'resource.underwritingDocs', {});
+  const underwritingDocsData = util.getValue(underwritingDocs, 'data');
+  const doc = util.getValue(underwritingDocsData, 0, {});
+  const underwritingDocsLoading = util.getValue(state, 'merchantApp.underwritingDocsLoading', false);
+
 
   return {
     principal,
     loading,
-    orgID
+    orgID,
+    doc,
+    underwritingDocsLoading
   }
 }
 

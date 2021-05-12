@@ -9,6 +9,7 @@ export function merchantApp(state = {
   bankLoading: false,
   principalLoading: false,
   addressLoading: false,
+  underwritingDocsLoading: false,
   gettingInfoFromPlaid: false,
   savingInfoFromPlaid: false,
   errorSavingPlaidInfo: false,

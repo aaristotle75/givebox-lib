@@ -1165,3 +1165,15 @@ export function customListFilter(customList, options = {}) {
   }
   return `(${filter})`;
 }
+
+export function getFileInfo(url) {
+  const partsUrl = url.split('/');
+  const partsFile = !isEmpty(partsUrl) ? partsUrl[partsUrl.length - 1] : [];
+  const name = !isEmpty(partsFile) ? partsFile.split('?')[0] : '';
+  const fileParts = !isEmpty(name) ? name.split('.') : [];
+  const type = !isEmpty(fileParts) ? fileParts[fileParts.length -1].toLowerCase() : 'png';
+  return {
+    type,
+    name
+  };
+}

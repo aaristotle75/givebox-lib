@@ -320,6 +320,18 @@ $gbx3StepsBreakpoint: 600px;
 
   .privateUpload {
 
+    .previewURLContainer {
+      margin-left: 20px;
+      text-align: center;
+      max-width: 150px;
+      max-height: 150px;
+    }
+
+    .dropzoneImageContainer {
+      width: 100%;
+      flex-direction: row;
+    }
+
     .uploadContainer {
       padding-bottom: 0;
         h4 {

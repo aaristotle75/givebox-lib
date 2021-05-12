@@ -15,7 +15,6 @@ import VerifyBank from './transferMoney/VerifyBank';
 import Protect from './transferMoney/Protect';
 import TransferStatus from './transferMoney/TransferStatus';
 
-
 class TransferMoneyStepsForm extends React.Component {
 
   constructor(props) {
