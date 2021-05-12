@@ -318,6 +318,40 @@ $gbx3StepsBreakpoint: 600px;
     height: 300px;
   }
 
+  .privateUpload {
+
+    .uploadContainer {
+      padding-bottom: 0;
+        h4 {
+          font-size: .83em;
+        }
+      }
+
+    .dropzone {
+      height: 170px;
+      width: 170px;
+      border-radius: 10px;
+      border: 2px dashed $light-gray;
+
+      .text {
+        font-size: $stepInputSize;
+        color: $med-blue-gray;
+      }
+
+      .icon {
+        font-size: 40px;
+        color: $med-blue-gray;
+        margin-bottom: 10px;
+      }
+    }
+
+    .dropzone:hover {
+      background-color: $very-light-gray;
+      border: 2px dashed $mainColor;
+      @include transition(border .5s);
+    }
+  }
+
   .mediaLibrary {
     .uploadContainer {
       padding-bottom: 0;

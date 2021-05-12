@@ -165,9 +165,18 @@ const identity = {
   type: 'merchant',
   slug: 'identity',
   name: 'Verify Identity',
-  title: 'Verify Your Identity',
-  icon: 'shield',
-  desc: 'To protect your account we need to verify you identity.'
+  title: 'Verify Account Holder Identity',
+  customIcon: <Icon><TiBusinessCard /></Icon>,
+  desc: ''
+}
+
+const verifyBank = {
+  type: 'merchant',
+  slug: 'verifyBank',
+  name: 'Verify Bank',
+  title: 'Verify Your Bank Account',
+  customIcon: <Icon><AiOutlineBank /></Icon>,
+  desc: 'We need to verify your bank account.'
 }
 
 const protect = {
@@ -277,6 +286,7 @@ export const signupPhase = {
     showStepNumber: true,
     stepsTodo: [
       identity,
+      verifyBank,
       protect,
       transferStatus
     ]

@@ -10,6 +10,12 @@ import * as _v from '../../form/formValidate';
 import GBLink from '../../common/GBLink';
 import Image from '../../common/Image';
 import HelpfulTip from '../../common/HelpfulTip';
+import Identity from './transferMoney/Identity';
+import VerifyBank from './transferMoney/VerifyBank';
+import Protect from './transferMoney/Protect';
+import TransferStatus from './transferMoney/TransferStatus';
+
+
 class TransferMoneyStepsForm extends React.Component {
 
   constructor(props) {
@@ -93,6 +99,7 @@ class TransferMoneyStepsForm extends React.Component {
   }
 
   saveCallback(res, err, group) {
+
     const {
       formState
     } = this.props;
@@ -173,6 +180,32 @@ class TransferMoneyStepsForm extends React.Component {
     };
 
     switch (slug) {
+      case 'identity': {
+        item.desc =
+          <div>
+            <p>Please upload a photo ID of the account holder. The ID can be either a Driver's License or U.S. Passport and must clearly display the persons full name, ID number and information.</p>
+          </div>
+        ;
+        item.component =
+          <Identity
+            {...this.props}
+          />
+        ;
+        break;
+      }
+
+      case 'verifyBank': {
+        break;
+      }
+
+      case 'protect': {
+        break;
+      }
+
+      case 'transferStatus': {
+        break;
+      }
+
       // no default
     }
 

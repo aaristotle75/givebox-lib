@@ -6,7 +6,7 @@ const HelpfulTip = (props) => {
 
   const headerText = props.headerText || 'Friendly Tip';
   const headerIcon = props.headerIcon || <Icon><FiSmile /></Icon>;
-  const text = props.text || 'Helpful Tip Text';
+  const text = props.text;
   const style = props.style || {};
 
   return (

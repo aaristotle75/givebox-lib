@@ -309,7 +309,8 @@ class ConnectBankStepsForm extends React.Component {
       plaidAccountID,
       isVantivReady,
       merchantIdentString,
-      signupPhase
+      signupPhase,
+      hasReceivedTransaction
     } = this.props;
 
     const stepConfig = util.getValue(stepsTodo, step, {});
@@ -344,7 +345,7 @@ class ConnectBankStepsForm extends React.Component {
         item.saveButtonLabel = <span className='buttonAlignText'>Connect Your Bank Account <span className='icon icon-chevron-right'></span></span>;
         item.desc =
           <div>
-            <p>Congratulations, you have received your first transactions with Givebox!</p>
+            { hasReceivedTransaction ? <p>Congratulations, you have received your first transactions with Givebox!</p> : null }
             <p></p>
             <p>Simply connect your bank, and in a matter of minutes you will have a bank account connected and can continue to accept payments and donations.</p>
             <HelpfulTip
