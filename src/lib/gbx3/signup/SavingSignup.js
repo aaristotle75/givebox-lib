@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import * as util from '../../common/utility';
 import Loader from '../../common/Loader';
 import Slider from 'react-slick';
-import '../../../../node_modules/slick-carousel/slick/slick.css';
-import '../../../../node_modules/slick-carousel/slick/slick-theme.css';
+import '../../styles//slick.css';
+import '../../styles/slick-theme.css';
 import LinearBar from '../../common/LinearBar';
 import {
   savingSignup
