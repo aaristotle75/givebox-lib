@@ -105,7 +105,7 @@ class Identity extends React.Component {
 
     return (
       <div className='fieldGroup'>
-        <div className='stepsSubText' style={{ marginLeft: 0, marginRight: 0 }}>You Will Only Have to Verify Account Holder Identity Once.</div>
+        <div className='stepsSubText' style={{ marginLeft: 0, marginRight: 0, marginBottom: 20 }}>You Will Only Have to Verify Account Holder Identity Once.</div>
         <div className='stepsSubText' style={{ marginLeft: 0, marginRight: 0 }}>Account Holder: {firstName} {lastName}</div>
         <HelpfulTip
           headerIcon={<span className='icon icon-shield'></span>}
