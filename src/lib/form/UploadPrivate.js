@@ -8,6 +8,9 @@ import * as types from '../common/types';
 import Fade from '../common/Fade';
 import { Line } from 'rc-progress';
 import FileViewer from 'react-file-viewer';
+import ModalRoute from '../modal/ModalRoute';
+import ModalLink from '../modal/ModalLink';
+import UploadPrivateViewer from './UploadPrivateViewer';
 
 class UploadPrivate extends Component {
 
@@ -28,7 +31,8 @@ class UploadPrivate extends Component {
       percent: 0,
       document: '',
       confirmation: [],
-      previewURL: props.previewURL
+      previewURL: props.previewURL,
+      docID: props.docID
     }
   }
 
@@ -45,6 +49,9 @@ class UploadPrivate extends Component {
     }
     if (prevProps.previewURL !== this.props.previewURL) {
       this.setState({ previewURL: this.props.previewURL });
+    }
+    if (prevProps.docID !== this.props.docID) {
+      this.setState({ docID: this.props.docID });
     }
   }
 
@@ -173,21 +180,34 @@ class UploadPrivate extends Component {
       labelClass,
       className,
       style,
-      showPreview
+      showPreview,
+      orgID
     } = this.props;
 
     const {
       error,
       success,
-      previewURL
+      previewURL,
+      docID
     } = this.state;
 
-    const mimes = `${mime.image},${mime.text},${mime.applications},${mime.video}`;
+    const mimes = `${mime.image},application/pdf`;
     const info = util.getFileInfo(previewURL);
     const type = info.type;
 
     return (
       <div style={style} className={`dropzone-group input-group ${className || ''} textfield-group ${error ? 'error tooltip' : ''}`}>
+        <ModalRoute
+          className='gbx3'
+          id='uploadPrivateViewer'
+          component={() =>
+            <UploadPrivateViewer
+              type={type}
+              docID={docID}
+              orgID={orgID}
+            />
+          }
+        />
         {label && <label className={labelClass}>{label}</label>}
         <div className={`privateUpload ${this.props.alt ? 'alt' : ''}`}>
           <div className='dropzoneImageContainer'>
@@ -211,7 +231,7 @@ class UploadPrivate extends Component {
               <span className='text'>{uploadLabel}</span>
             </Dropzone>
             { showPreview && previewURL ?
-            <div className='previewURLContainer'>
+            <ModalLink id='uploadPrivateViewer' type='div' className='previewURLContainer'>
               { !types.imageTypes.includes(type) ?
                 <FileViewer
                   key={`fileviewer-${type}`}
@@ -223,7 +243,7 @@ class UploadPrivate extends Component {
               :
                 <img key={`preview-${type}`} src={previewURL} alt={previewURL} style={{ maxWidth: '150px', height: 'auto', maxHeight: '150px' }} />
               }
-            </div>
+            </ModalLink>
             : null }
           </div>
         </div>

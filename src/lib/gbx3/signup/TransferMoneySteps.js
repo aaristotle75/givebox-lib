@@ -25,17 +25,25 @@ class TransferMoneyStepsForm extends React.Component {
     this.saveStep = this.saveStep.bind(this);
     this.saveCallback = this.saveCallback.bind(this);
     this.callbackAfter = this.callbackAfter.bind(this);
+    this.confirmIdentityUpload = this.confirmIdentityUpload.bind(this);
 
     this.state = {
       editorOpen: false,
       error: false,
       saving: false,
-      loading: true
+      loading: true,
+      identityUploaded: false
     };
   }
 
   callbackAfter(tab) {
     this.props.formProp({ error: false });
+  }
+
+  confirmIdentityUpload(identityUploaded) {
+    this.setState({ identityUploaded }, () => {
+      if (identityUploaded) this.props.stepCompleted('identity');
+    });
   }
 
   checkRequiredCompleted() {
@@ -142,7 +150,8 @@ class TransferMoneyStepsForm extends React.Component {
 
   renderStep() {
     const {
-      loading
+      loading,
+      identityUploaded
     } = this.state;
 
     const {
@@ -180,6 +189,7 @@ class TransferMoneyStepsForm extends React.Component {
 
     switch (slug) {
       case 'identity': {
+        item.saveButtonDisabled = !identityUploaded ? true : false;
         item.desc =
           <div>
             <p>Please upload a photo ID of the account holder. The ID can be either a Driver's License or U.S. Passport and must clearly display the persons full name, ID number and information.</p>
@@ -188,6 +198,7 @@ class TransferMoneyStepsForm extends React.Component {
         item.component =
           <Identity
             {...this.props}
+            confirmIdentityUpload={this.confirmIdentityUpload}
           />
         ;
         break;

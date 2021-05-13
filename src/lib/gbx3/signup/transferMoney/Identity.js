@@ -57,6 +57,11 @@ class Identity extends React.Component {
         callback: (res, err) => {
           const data = util.getValue(res, 'data', []);
           const item = util.getValue(data, 0, {});
+          if (!util.isEmpty(item) && !err) {
+            if (this.props.confirmIdentityUpload) this.props.confirmIdentityUpload(true);
+          } else {
+            if (this.props.confirmIdentityUpload) this.props.confirmIdentityUpload(false);
+          }
           this.props.setMerchantApp('underwritingDocsLoading', false);
         }
       });
@@ -98,15 +103,14 @@ class Identity extends React.Component {
     const firstName = util.getValue(principal, 'firstName');
     const lastName = util.getValue(principal, 'lastName');
 
-    console.log('execute doc -> ', doc);
-
     return (
       <div className='fieldGroup'>
+        <div className='stepsSubText' style={{ marginLeft: 0, marginRight: 0 }}>You Will Only Have to Verify Account Holder Identity Once.</div>
         <div className='stepsSubText' style={{ marginLeft: 0, marginRight: 0 }}>Account Holder: {firstName} {lastName}</div>
         <HelpfulTip
-          headerIcon={<span className='icon icon-alert-circle'></span>}
-          headerText={`You Will Only Have to Verify Account Holder Identity Once`}
-          text={null}
+          headerIcon={<span className='icon icon-shield'></span>}
+          headerText={`Secure and Private File Upload`}
+          text={'We keep your documents on an encrypted PCI compliant server. We value your privacy and your documents are never shared with third party marketing or social media companies.'}
           style={{ marginTop: 30 }}
         />
         <div className='flexCenter'>
@@ -119,7 +123,9 @@ class Identity extends React.Component {
             resourceID={util.getValue(principal, 'ID', null)}
             tag={'proof_of_id'}
             previewURL={util.getValue(doc, 'URL')}
+            docID={util.getValue(doc, 'ID')}
             showPreview={true}
+            orgID={orgID}
           />
         </div>
       </div>
@@ -138,7 +144,6 @@ function mapStateToProps(state, props) {
   const underwritingDocsData = util.getValue(underwritingDocs, 'data');
   const doc = util.getValue(underwritingDocsData, 0, {});
   const underwritingDocsLoading = util.getValue(state, 'merchantApp.underwritingDocsLoading', false);
-
 
   return {
     principal,
