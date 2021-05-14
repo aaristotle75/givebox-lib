@@ -4,27 +4,18 @@ import * as util from '../../../common/utility';
 import Loader from '../../../common/Loader';
 import HelpfulTip from '../../../common/HelpfulTip';
 import UploadPrivate from '../../../form/UploadPrivate';
-import {
-  setMerchantApp
-} from '../../redux/merchantActions';
-import {
-  getResource,
-  sendResource
-} from '../../../api/helpers';
-
 
 class Identity extends React.Component {
 
   constructor(props) {
     super(props);
     this.fileUploadSuccess = this.fileUploadSuccess.bind(this);
-    this.getDocument = this.getDocument.bind(this);
     this.state = {
     };
   }
 
   async componentDidMount() {
-    this.getDocument();
+    this.props.getDocument('identity');
 
     if (util.isEmpty(this.props.principal)) {
       const initLoading = await this.props.setMerchantApp('principalLoading', true);
@@ -43,29 +34,8 @@ class Identity extends React.Component {
     }
   }
 
-  async getDocument(showLoading = true) {
-    const initLoading = showLoading ? await this.props.setMerchantApp('underwritingDocsLoading', true) : true;
-    if (initLoading) {
-      this.props.getResource('underwritingDocs', {
-        id: [this.props.orgID],
-        reload: true,
-        search: {
-          filter: `tag:"proof_of_id"`,
-          sort: 'createdAt',
-          order: 'desc'
-        },
-        callback: (res, err) => {
-          const data = util.getValue(res, 'data', []);
-          const item = util.getValue(data, 0, {});
-          if (!util.isEmpty(item) && !err) {
-            if (this.props.confirmIdentityUpload) this.props.confirmIdentityUpload(true);
-          } else {
-            if (this.props.confirmIdentityUpload) this.props.confirmIdentityUpload(false);
-          }
-          this.props.setMerchantApp('underwritingDocsLoading', false);
-        }
-      });
-    }
+  componentWillUnmount() {
+    this.props.removeResource('underwritingDocs');
   }
 
   fileUploadSuccess(fileName, ID) {
@@ -78,9 +48,9 @@ class Identity extends React.Component {
         driversLicenseUploaded: true
       },
       callback: (res, err) => {
-        if (err) this.props.formProp({error: 'Error updating principal.'});
+        if (err) this.props.formProp({error: 'Error updating account holder.'});
         else {
-          this.getDocument(false);
+          this.props.getDocument('identity', false);
         }
       },
       reload: true,
@@ -139,7 +109,6 @@ function mapStateToProps(state, props) {
   const orgPrincipalsData = util.getValue(orgPrincipals, 'data');
   const principal = util.getValue(orgPrincipalsData, 0, {});
   const loading = util.getValue(state, 'merchantApp.principalLoading', false);
-  const orgID = util.getValue(state, 'gbx3.info.orgID');
   const underwritingDocs = util.getValue(state, 'resource.underwritingDocs', {});
   const underwritingDocsData = util.getValue(underwritingDocs, 'data');
   const doc = util.getValue(underwritingDocsData, 0, {});
@@ -148,14 +117,10 @@ function mapStateToProps(state, props) {
   return {
     principal,
     loading,
-    orgID,
     doc,
     underwritingDocsLoading
   }
 }
 
 export default connect(mapStateToProps, {
-  setMerchantApp,
-  getResource,
-  sendResource
 })(Identity);

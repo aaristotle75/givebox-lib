@@ -164,6 +164,12 @@ export default class GBX3ModalRoutes extends Component {
           effect='3DFlipVert' style={{ width: '60%' }}
           component={(props) => this.loadComponent('./signup/connectBank/ConnectBankManualConfirm', props)}
         />
+        <ModalRoute
+          className='gbx3'
+          id={'voidCheckExample'}
+          effect='3DFlipVert' style={{ width: '60%' }}
+          component={(props) => this.loadComponent('./signup/transferMoney/VoidCheck', props)}
+        />
       </div>
     )
   }

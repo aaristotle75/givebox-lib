@@ -12,8 +12,20 @@ import Image from '../../common/Image';
 import HelpfulTip from '../../common/HelpfulTip';
 import Identity from './transferMoney/Identity';
 import VerifyBank from './transferMoney/VerifyBank';
+import VerifyBusiness from './transferMoney/VerifyBusiness';
 import Protect from './transferMoney/Protect';
+import TwoFA from '../../common/TwoFA';
 import TransferStatus from './transferMoney/TransferStatus';
+import {
+  setMerchantApp
+} from '../redux/merchantActions';
+import {
+  getResource,
+  sendResource
+} from '../../api/helpers';
+import {
+  removeResource
+} from '../../api/actions';
 
 class TransferMoneyStepsForm extends React.Component {
 
@@ -25,14 +37,19 @@ class TransferMoneyStepsForm extends React.Component {
     this.saveStep = this.saveStep.bind(this);
     this.saveCallback = this.saveCallback.bind(this);
     this.callbackAfter = this.callbackAfter.bind(this);
-    this.confirmIdentityUpload = this.confirmIdentityUpload.bind(this);
+    this.getDocument = this.getDocument.bind(this);
+    this.getDcoumentCallback = this.getDcoumentCallback.bind(this);
+    this.set2FAVerified = this.set2FAVerified.bind(this);
 
     this.state = {
       editorOpen: false,
       error: false,
       saving: false,
       loading: true,
-      identityUploaded: false
+      identityUploaded: false,
+      verifyBankUploaded: false,
+      verifyBusinessUploaded: false,
+      is2FAVerified: false
     };
   }
 
@@ -40,10 +57,79 @@ class TransferMoneyStepsForm extends React.Component {
     this.props.formProp({ error: false });
   }
 
-  confirmIdentityUpload(identityUploaded) {
-    this.setState({ identityUploaded }, () => {
-      if (identityUploaded) this.props.stepCompleted('identity');
+  set2FAVerified(is2FAVerified) {
+    this.setState({ is2FAVerified }, () => {
+      if (is2FAVerified) this.props.stepCompleted('protect');
     });
+  }
+
+  getDcoumentCallback(slug, value) {
+    switch (slug) {
+      case 'identity': {
+        this.setState({ identityUploaded: value }, () => {
+          if (value) this.props.stepCompleted('identity');
+        });
+        break;
+      }
+
+      case 'verifyBank': {
+        this.setState({ verifyBankUploaded: value }, () => {
+          if (value) this.props.stepCompleted('verifyBank');
+        });
+        break;
+      }
+
+      case 'verifyBusiness': {
+        this.setState({ verifyBusinessUploaded: value }, () => {
+          if (value) this.props.stepCompleted('verifyBusiness');
+        });
+        break;
+      }
+
+      // no default
+    }
+  }
+
+  async getDocument(slug, showLoading = true) {
+    let filter = '';
+    switch (slug) {
+      case 'identity': {
+        filter = 'tag:"proof_of_id"';
+        break;
+      }
+
+      case 'verifyBank': {
+        filter = 'tag:"bank_account"';
+        break;
+      }
+
+      case 'verifyBusiness': {
+        filter = 'tag:"proof_of_taxID"'
+        break;
+      }
+    }
+    const initLoading = showLoading ? await this.props.setMerchantApp('underwritingDocsLoading', true) : true;
+    if (initLoading) {
+      this.props.getResource('underwritingDocs', {
+        id: [this.props.orgID],
+        reload: true,
+        search: {
+          filter,
+          sort: 'createdAt',
+          order: 'desc'
+        },
+        callback: (res, err) => {
+          const data = util.getValue(res, 'data', []);
+          const item = util.getValue(data, 0, {});
+          if (!util.isEmpty(item) && !err) {
+            if (this.getDcoumentCallback) this.getDcoumentCallback(slug, true);
+          } else {
+            if (this.getDcoumentCallback) this.getDcoumentCallback(slug, false);
+          }
+          this.props.setMerchantApp('underwritingDocsLoading', false);
+        }
+      });
+    }
   }
 
   checkRequiredCompleted() {
@@ -151,7 +237,9 @@ class TransferMoneyStepsForm extends React.Component {
   renderStep() {
     const {
       loading,
-      identityUploaded
+      identityUploaded,
+      verifyBankUploaded,
+      verifyBusinessUploaded
     } = this.state;
 
     const {
@@ -198,17 +286,56 @@ class TransferMoneyStepsForm extends React.Component {
         item.component =
           <Identity
             {...this.props}
-            confirmIdentityUpload={this.confirmIdentityUpload}
+            getDocument={this.getDocument}
           />
         ;
         break;
       }
 
       case 'verifyBank': {
+        item.saveButtonDisabled = !verifyBankUploaded ? true : false;
+        item.desc =
+          <div>
+            <p>Please upload a bank statement or voided check for your bank account. The name on the account, account number and address must be clearly displayed.</p>
+          </div>
+        ;
+        item.component =
+          <VerifyBank
+            {...this.props}
+            getDocument={this.getDocument}
+          />
+        ;
+        break;
+      }
+
+      case 'verifyBusiness': {
+        item.saveButtonDisabled = !verifyBusinessUploaded ? true : false;
+        item.desc =
+          <div>
+            <p>Please upload a copy of the IRS Letter issuing your Employer Identification Number (EIN/TaxID) or an IRS Tax Document showing your Business Name and EIN/Tax ID.</p>
+          </div>
+        ;
+        item.component =
+          <VerifyBusiness
+            {...this.props}
+            getDocument={this.getDocument}
+          />
+        ;
         break;
       }
 
       case 'protect': {
+        item.saveButtonDisabled = !verifyBusinessUploaded ? true : false;
+        item.desc =
+          <div>
+            <p>To protect your account we use two-factor authentication. Please enter a mobile number below and a verify code will be sent by text message.</p>
+          </div>
+        ;
+        item.component =
+          <TwoFA
+            set2FAVerified={this.set2FAVerified}
+          />
+        ;
         break;
       }
 
@@ -314,9 +441,17 @@ class TransferMoneySteps extends React.Component {
 }
 
 function mapStateToProps(state, props) {
+
+  const orgID = util.getValue(state, 'gbx3.info.orgID');
+
   return {
+    orgID
   }
 }
 
 export default connect(mapStateToProps, {
+  setMerchantApp,
+  getResource,
+  sendResource,
+  removeResource
 })(TransferMoneySteps);

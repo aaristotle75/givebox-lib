@@ -92,6 +92,7 @@ export function setAccess(res, callback) {
       lastName: user.lastName,
       fullName: user.firstName + ' ' + user.lastName,
       email: user.email,
+      phone: user.phone,
       userImage: user.imageURL,
       masker: has(res, 'masker') ? true : false,
       theme: user.preferences ? user.preferences.cloudTheme : 'light',

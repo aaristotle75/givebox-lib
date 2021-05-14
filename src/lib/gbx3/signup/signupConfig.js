@@ -179,6 +179,15 @@ const verifyBank = {
   desc: 'We need to verify your bank account.'
 }
 
+const verifyBusiness = {
+  type: 'merchant',
+  slug: 'verifyBusiness',
+  name: 'Verify Business',
+  title: 'Verify Your Business',
+  customIcon: <Icon><MdBusiness /></Icon>,
+  desc: 'We need to verify your Business.'
+}
+
 const protect = {
   type: 'merchant',
   slug: 'protect',
@@ -287,6 +296,7 @@ export const signupPhase = {
     stepsTodo: [
       identity,
       verifyBank,
+      verifyBusiness,
       protect,
       transferStatus
     ]
