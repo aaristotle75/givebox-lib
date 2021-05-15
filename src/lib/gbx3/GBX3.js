@@ -293,7 +293,6 @@ class GBX3 extends React.Component {
   loadCreateNew(isVolunteer) {
     const {
       access,
-      kind,
       autoCreate
     } = this.props;
 
@@ -312,7 +311,7 @@ class GBX3 extends React.Component {
     }
 
     this.props.updateAdmin(obj);
-    this.props.updateInfo({ kind, stage: 'admin', display: 'article' });
+    this.props.updateInfo({ stage: 'admin', display: 'article' });
     this.props.setLoading(false);
   }
 
@@ -552,7 +551,6 @@ class GBX3 extends React.Component {
 }
 
 GBX3.defaultProps = {
-  kind: 'fundraiser',
   sourceLocation: null
 }
 

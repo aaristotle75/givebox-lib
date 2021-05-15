@@ -415,7 +415,9 @@ class Countdown extends Component {
       modalID,
       primaryColor,
       title,
-      block
+      block,
+      stage,
+      editable
     } = this.props;
 
     const {
@@ -434,6 +436,7 @@ class Countdown extends Component {
     var size = 80;
     var corners = 2;
 
+    console.log('execute countdown -> ', stage, editable);
     const nonremovable = util.getValue(block, 'nonremovable', false);
 
     return (
@@ -465,11 +468,11 @@ class Countdown extends Component {
             </div>
           }
         />
-        {completed &&
+        {completed && stage !== 'admin' ?
         <div className="completed">
           <h2>The Sweepstakes has ended.</h2>
         </div>
-        }
+        : null }
         <div className='timers'>
           <div className="timer">
             <div className="timerContainer">

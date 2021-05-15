@@ -147,7 +147,8 @@ class Block extends React.Component {
       isVolunteer,
       previewMode,
       stage,
-      backToOrg
+      backToOrg,
+      editable
     } = this.props;
 
     const childrenWithProps = React.Children.map(this.props.children,
@@ -176,6 +177,7 @@ class Block extends React.Component {
         previewMode,
         stage,
         backToOrg,
+        editable,
         blockContent: this.getBlockContent(),
         saveBlock: this.saveBlock,
         closeEditModal: this.closeEditModal,

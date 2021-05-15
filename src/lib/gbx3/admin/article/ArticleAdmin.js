@@ -23,7 +23,13 @@ class ArticleAdmin extends React.Component {
   }
 
   componentDidMount() {
-    if (!this.props.advancedBuilder) this.props.toggleModal('gbx3Builder', true);
+    if (!this.props.advancedBuilder && this.props.step !== 'create') this.props.toggleModal('gbx3Builder', true);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!this.props.advancedBuilder && prevProps.step !== this.props.step) {
+      this.props.toggleModal('gbx3Builder', true);
+    }
   }
 
   async toggleBuilder() {
@@ -87,11 +93,12 @@ class ArticleAdmin extends React.Component {
 
 function mapStateToProps(state, props) {
 
+  const step = util.getValue(state, 'gbx3.admin.step');
   const kind = util.getValue(state, 'gbx3.info.kind', 'fundraiser');
   const advancedBuilder = kind === 'fundraiser' ? util.getValue(state, 'gbx3.helperSteps.advancedBuilder', false) : true;
 
-  console.log('execute -> ', kind, advancedBuilder);
   return {
+    step,
     kind,
     advancedBuilder
   }
