@@ -901,7 +901,6 @@ export function getAuthorizedAccess(access, orgID, volunteerID) {
     hasAccess = true;
     obj.isVolunteer = true;
   }
-
   return hasAccess ? obj : false;
 }
 

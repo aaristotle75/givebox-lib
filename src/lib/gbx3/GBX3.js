@@ -78,10 +78,10 @@ class GBX3 extends React.Component {
       hasAccessToEdit,
       isVolunteer,
       orgName,
-      blockType,
       step,
       browse,
-      signup
+      signup,
+      template
     } = this.props;
 
     this.props.setLoading(true);
@@ -92,6 +92,7 @@ class GBX3 extends React.Component {
       this.props.updateAdmin({ editable: false });
     }
 
+    const blockType = template || this.props.blockType;
     const orgID = this.props.orgID || util.getValue(access, 'orgID');
     const setInfo = await this.setInfo();
 
@@ -293,8 +294,10 @@ class GBX3 extends React.Component {
     const {
       access,
       kind,
-      orgID
+      autoCreate
     } = this.props;
+
+    const orgID = +this.props.orgID;
 
     const obj = {
       step: 'create',
@@ -568,7 +571,7 @@ function mapStateToProps(state, props) {
   const gbxStyle = util.getValue(globals, 'gbxStyle', {});
   const primaryColor = util.getValue(gbxStyle, 'primaryColor');
   const admin = util.getValue(gbx3, 'admin', {});
-  const step = util.getValue(admin, 'step');
+  const step = util.getValue(queryParams, 'step', util.getValue(admin, 'step'));
   const hasAccessToEdit = util.getValue(admin, 'hasAccessToEdit');
   const hasAccessToCreate = util.getValue(admin, 'hasAccessToCreate');
   const isVolunteer = util.getValue(admin, 'isVolunteer');

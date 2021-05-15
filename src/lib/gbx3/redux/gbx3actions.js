@@ -1208,7 +1208,7 @@ export function createFundraiser(createKind, callback, cloneData = {}, options =
     const kind = createKind || util.getValue(info, 'kind', 'fundraiser');
     const orgID = util.getValue(info, 'orgID');
     const resourceName = `org${types2.kind(kind).api.list}`;
-    const templateData = cloneData || createData[kind];
+    const templateData = !util.isEmpty(cloneData) ? cloneData : createData[kind];
     const data = {
       ...templateData,
       ...opts.data

@@ -90,6 +90,7 @@ function mapStateToProps(state, props) {
   const kind = util.getValue(state, 'gbx3.info.kind', 'fundraiser');
   const advancedBuilder = kind === 'fundraiser' ? util.getValue(state, 'gbx3.helperSteps.advancedBuilder', false) : true;
 
+  console.log('execute -> ', kind, advancedBuilder);
   return {
     kind,
     advancedBuilder
