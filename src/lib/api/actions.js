@@ -85,7 +85,7 @@ export function setAccess(res, callback) {
       role: util.getValue(user, 'role'),
       permissions: [],
       type: 'organization',
-      is2FAVerified: true,
+      is2FAVerified: util.getValue(user, 'is2FAVerified'),
       userID: user.ID,
       initial: user.firstName.charAt(0).toUpperCase() + user.lastName.charAt(0).toUpperCase(),
       firstName: user.firstName,
