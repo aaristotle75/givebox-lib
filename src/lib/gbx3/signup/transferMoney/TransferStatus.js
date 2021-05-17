@@ -34,35 +34,29 @@ class TransferStatus extends React.Component {
 
     const {
       contactRequestDate,
-      completed
+      isCompleted
     } = this.props;
-
-    const check = [
-      'identity',
-      'verifyBank',
-      'verifyBusiness',
-      'protect'
-    ];
-    const isCompleted = check.every((val) => completed.includes(val));
 
     return (
       <div className='fieldGroup'>
         { this.state.saving ? <Loader msg='Saving' /> : null }
-        <div style={{ marginLeft: 0, marginRight: 0 }} className='stepsSubText'>
-          { contactRequestDate ?
-            <div>
-              Your contact request has been received and you will receive an email from a Customer Service Representative in 1-2 business days.
-            </div>
-          :
-            <div>
-              If you have questions about your approval status, click the link below to have a Givebox Customer Support representative contact you by email.
-              <br /><br />
-              <GBLink onClick={this.contactRequest}>
-                Click Here to Have a Representative Contact You
-              </GBLink>
-            </div>
-          }
-        </div>
+        { isCompleted ?
+          <div style={{ marginLeft: 0, marginRight: 0 }} className='stepsSubText'>
+            { contactRequestDate ?
+              <div>
+                Your contact request has been received and you will receive an email from a Customer Service Representative in 1-2 business days.
+              </div>
+            :
+              <div>
+                If you have questions about your approval status, click the link below to have a Givebox Customer Support representative contact you by email.
+                <br /><br />
+                <GBLink onClick={this.contactRequest}>
+                  Click Here to Have a Representative Contact You
+                </GBLink>
+              </div>
+            }
+          </div>
+        : null }
       </div>
     )
   }
@@ -71,11 +65,9 @@ class TransferStatus extends React.Component {
 function mapStateToProps(state, props) {
 
   const contactRequestDate = util.getValue(state, 'resource.gbx3Org.data.contactRequestDate', null);
-  const completed = util.getValue(state, 'gbx3.orgSignup.completed', []);
 
   return {
-    contactRequestDate,
-    completed
+    contactRequestDate
   }
 }
 

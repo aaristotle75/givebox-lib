@@ -57,7 +57,6 @@ class TransferMoneyStepsForm extends React.Component {
   }
 
   set2FAVerified(is2FAVerified) {
-    console.log('execute is2FAVerified -> ', is2FAVerified);
     this.setState({ is2FAVerified }, () => {
       if (is2FAVerified) this.props.stepCompleted('protect');
     });
@@ -163,7 +162,7 @@ class TransferMoneyStepsForm extends React.Component {
     if (!util.isEmpty(stepsRequiredButNotComplete)) {
       this.props.formProp({ error: true, errorMsg:
         <div className='stepsNotCompletedButRequired'>
-          <span>Please complete the following steps to create your account:</span>
+          <span>Please complete the following steps to get approved for transfers:</span>
           <div className='stepsNotCompletedList'>
             {stepsRequiredButNotComplete}
           </div>
@@ -334,6 +333,8 @@ class TransferMoneyStepsForm extends React.Component {
 
       case 'protect': {
         item.saveButtonDisabled = !is2FAVerified ? true : false;
+        item.saveButtonLabelTop = <span className='buttonAlignText'>Continue to Step 5: Approval Status<span className='icon icon-chevron-right'></span></span>;
+        item.saveButtonLabel = <span className='buttonAlignText'>Continue to Next Step <span className='icon icon-chevron-right'></span></span>;
         item.desc =
           <div>
             <p>To protect your account we use two-factor authentication. Please enter a mobile number below and a verify code will be sent by text message.</p>
@@ -351,16 +352,32 @@ class TransferMoneyStepsForm extends React.Component {
       }
 
       case 'transferStatus': {
+        const check = [
+          'identity',
+          'verifyBank',
+          'verifyBusiness',
+          'protect'
+        ];
+        const isCompleted = check.every((val) => this.props.completed.includes(val));
+        //if (!isCompleted) this.checkRequiredCompleted();
+
+        item.saveButtonDisabled = isCompleted ? false : true;
         item.saveButtonLabelTop = <span className='buttonAlignText'>Click Here to Check Status<span className='icon icon-chevron-right'></span></span>;
         item.saveButtonLabel = <span className='buttonAlignText'>Check Status <span className='icon icon-chevron-right'></span></span>;
         item.desc =
+          isCompleted ?
           <div>
             We are reviewing your account. You should have approval status in the next 3-5 business days.
+          </div>
+          :
+          <div>
+            You must complete all the previous steps to get approved to transfer money.
           </div>
         ;
         item.component =
           <TransferStatus
             {...this.props}
+            isCompleted={isCompleted}
           />
         ;
         break;
