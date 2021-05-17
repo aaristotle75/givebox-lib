@@ -13,7 +13,6 @@ import HelpfulTip from '../../common/HelpfulTip';
 import Identity from './transferMoney/Identity';
 import VerifyBank from './transferMoney/VerifyBank';
 import VerifyBusiness from './transferMoney/VerifyBusiness';
-import Protect from './transferMoney/Protect';
 import TwoFA from '../../common/TwoFA';
 import TransferStatus from './transferMoney/TransferStatus';
 import {
@@ -58,6 +57,7 @@ class TransferMoneyStepsForm extends React.Component {
   }
 
   set2FAVerified(is2FAVerified) {
+    console.log('execute is2FAVerified -> ', is2FAVerified);
     this.setState({ is2FAVerified }, () => {
       if (is2FAVerified) this.props.stepCompleted('protect');
     });
@@ -228,6 +228,13 @@ class TransferMoneyStepsForm extends React.Component {
     });
 
     switch (group) {
+
+      case 'transferStatus': {
+        console.log('%ccheck status', 'color:green;font-size:18px;');
+        this.setState({ saving: false });
+        break;
+      }
+
       default: {
         return this.saveStep(group);
       }
@@ -239,7 +246,8 @@ class TransferMoneyStepsForm extends React.Component {
       loading,
       identityUploaded,
       verifyBankUploaded,
-      verifyBusinessUploaded
+      verifyBusinessUploaded,
+      is2FAVerified
     } = this.state;
 
     const {
@@ -325,7 +333,7 @@ class TransferMoneyStepsForm extends React.Component {
       }
 
       case 'protect': {
-        item.saveButtonDisabled = !verifyBusinessUploaded ? true : false;
+        item.saveButtonDisabled = !is2FAVerified ? true : false;
         item.desc =
           <div>
             <p>To protect your account we use two-factor authentication. Please enter a mobile number below and a verify code will be sent by text message.</p>
@@ -334,12 +342,27 @@ class TransferMoneyStepsForm extends React.Component {
         item.component =
           <TwoFA
             set2FAVerified={this.set2FAVerified}
+            successCallback={() => {
+              this.saveStep('protect', 3000);
+            }}
           />
         ;
         break;
       }
 
       case 'transferStatus': {
+        item.saveButtonLabelTop = <span className='buttonAlignText'>Click Here to Check Status<span className='icon icon-chevron-right'></span></span>;
+        item.saveButtonLabel = <span className='buttonAlignText'>Check Status <span className='icon icon-chevron-right'></span></span>;
+        item.desc =
+          <div>
+            We are reviewing your account. You should have approval status in the next 3-5 business days.
+          </div>
+        ;
+        item.component =
+          <TransferStatus
+            {...this.props}
+          />
+        ;
         break;
       }
 

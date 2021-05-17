@@ -36,10 +36,28 @@ class MoneyRaised extends React.Component {
       signupPhase
     } = this.props;
 
-    const content = {
-      headerIcon: <span className='icon icon-trending-up'></span>,
-      headerText: 'How do I Raise Money?',
-      text:
+    const content = {};
+
+    if (!signupPhase) {
+      content.headerIcon = <Icon><AiOutlineBank /></Icon>;
+      content.headerText = 'Manage Money';
+      content.text =
+        <div className='moneyRaisedTooltipContent'>
+          Click the button below to manage your money raised.
+          <span style={{ marginTop: 10, display: 'block' }}>
+            If you have an approved bank account you can transfer money.
+          </span>
+          <div className='button-group flexCenter'>
+            <GBLink className='button' onClick={() => console.log('execute click manage money')}>
+              Manage Money
+            </GBLink>
+          </div>
+        </div>
+      ;
+    } else {
+      content.headerIcon = <span className='icon icon-trending-up'></span>;
+      content.headerText = 'How do I Raise Money?';
+      content.text =
         <div className='moneyRaisedTooltipContent'>
           Simply share your fundraiser on social media or send an email to all your supporters with your share link.
           <span style={{ marginTop: 10, display: 'block' }}>
@@ -51,48 +69,49 @@ class MoneyRaised extends React.Component {
             </GBLink>
           </div>
         </div>
-    };
+      ;
 
-    switch (signupPhase) {
-      case 'connectBank': {
-        content.headerIcon = <Icon><AiOutlineBank /></Icon>;
-        content.headerText = 'Connect Your Bank';
-        content.text =
-          <div className='moneyRaisedTooltipContent'>
-            You must connect a bank account to be able to access any money you receive.
-            <span style={{ marginTop: 10, display: 'block' }}>
-              Givebox uses Plaid to connect to your bank account. Simply select your bank and login using your bank account credentials. You will then be able to choose the account to associate to Givebox.
-            </span>
-            <div className='button-group flexCenter'>
-              <GBLink className='button' onClick={() => this.openStep('connectBank', 'orgConnectBankSteps')}>
-                Connect Bank
-              </GBLink>
+      switch (signupPhase) {
+        case 'connectBank': {
+          content.headerIcon = <Icon><AiOutlineBank /></Icon>;
+          content.headerText = 'Connect Your Bank';
+          content.text =
+            <div className='moneyRaisedTooltipContent'>
+              You must connect a bank account to be able to access any money you receive.
+              <span style={{ marginTop: 10, display: 'block' }}>
+                Givebox uses Plaid to connect to your bank account. Simply select your bank and login using your bank account credentials. You will then be able to choose the account to associate to Givebox.
+              </span>
+              <div className='button-group flexCenter'>
+                <GBLink className='button' onClick={() => this.openStep('connectBank', 'orgConnectBankSteps')}>
+                  Connect Bank
+                </GBLink>
+              </div>
             </div>
-          </div>
-        ;
-        break;
-      }
+          ;
+          break;
+        }
 
-      case 'transferMoney': {
-        content.headerIcon = <Icon><AiOutlineBank /></Icon>;
-        content.headerText = 'Transfer Money Steps';
-        content.text =
-          <div className='moneyRaisedTooltipContent'>
-            To transfer money we must verify identity and banking information.
-            <span style={{ marginTop: 10, display: 'block' }}>
-              After you verify your identity and banking information you will not have to do this again unless you add a new bank account.
-            </span>
-            <div className='button-group flexCenter'>
-              <GBLink className='button' onClick={() => this.openStep('identity', 'orgTransferSteps')}>
-                Transfer Money Steps
-              </GBLink>
+        case 'transferMoney': {
+          content.headerIcon = <Icon><AiOutlineBank /></Icon>;
+          content.headerText = 'Transfer Money Steps';
+          content.text =
+            <div className='moneyRaisedTooltipContent'>
+              To transfer money we must verify identity and banking information.
+              <span style={{ marginTop: 10, display: 'block' }}>
+                After you verify your identity and banking information you will not have to do this again unless you add a new bank account.
+              </span>
+              <div className='button-group flexCenter'>
+                <GBLink className='button' onClick={() => this.openStep('identity', 'orgTransferSteps')}>
+                  Transfer Money Steps
+                </GBLink>
+              </div>
             </div>
-          </div>
-        ;
-        break;
-      }
+          ;
+          break;
+        }
 
-      // no default
+        // no default
+      }
     }
 
     return (

@@ -28,6 +28,9 @@ class TwoFAClass extends Component {
     this.cancel = this.cancel.bind(this);
   }
 
+  componentDidMount() {
+  }
+
   componentWillUnmount() {
     if (this.timeout) {
       clearTimeout(this.timeout);
@@ -39,7 +42,7 @@ class TwoFAClass extends Component {
     this.props.getResource('session', {
       reload: true,
       callback: () => {
-        this.props.toggleModal('transferMoney', true);
+        if (this.props.successCallback) this.props.successCallback();
       }
     });
     this.props.toggleModal('transferMoney', false);
@@ -78,16 +81,24 @@ class TwoFAClass extends Component {
   cancel() {
     this.props.toggleModal('twoFA', false);
     this.props.toggleModal('transferMoney', false);
+    if (this.props.cancel2FA) this.props.cancel2FA();
   }
 
   render() {
 
+    const {
+      showCancel
+    } = this.props;
+
     return (
-      <div className='column center'>
-        {this.props.textField('code', { required: true, maxLength: 6, placeholder: 'Enter Code', fixedLabel: true, label: 'Verification Code' })}
-        <div className='column center button-group'>
-          <GBLink onClick={() => this.cancel()}>Cancel</GBLink>
+      <div className='column'>
+        {this.props.textField('code', { required: true, maxLength: 6, placeholder: 'Click Here to Enter Verification Code', label: '', style: { paddingTop: 0, paddingBottom: 0 } })}
+        <div className='fieldContext' style={{ marginTop: 5 }}>
+          Verification code is valid for up to 60 minutes.
+        </div>
+        <div className='flexColumn flexCenter'>
           {this.props.saveButton(this.processForm, { style: { width: 150 }, label: 'Verify' })}
+          <GBLink style={{ marginTop: 20 }} onClick={() => this.props.toggleVerify(false)}>Click here to request a new verification code.</GBLink>
         </div>
       </div>
     )
@@ -113,6 +124,11 @@ class TwoFA extends Component {
   }
 
   componentDidMount() {
+    const {
+      access
+    } = this.props;
+
+    if (this.props.set2FAVerified) this.props.set2FAVerified(util.getValue(access, 'is2FAVerified'));
   }
 
   setMode(mode) {
@@ -147,7 +163,7 @@ class TwoFA extends Component {
             if (!err) {
               this.sendCode();
             } else {
-              this.setState({ error: 'Unable to update mobile number. Please send code via email.' });
+              this.setState({ error: 'Unable to update mobile number.' });
             }
           }
         });
@@ -219,23 +235,19 @@ class TwoFA extends Component {
         {this.state.sending && this.props.loader('Sending Code...')}
         {this.state.codeSent ?
           <div>
-            <h2 className='center'>Please Enter Verification Code</h2>
-            <h4>
-              Verification code was sent to: <span className='strong'>{mode === 'email' ? obfuscateEmail : obfuscatePhone }</span>
-            </h4>
-            <h4>
-              {mode === 'email' ?
-                <span>Please search your email for the subject "Givebox Verification Code". Copy and paste the verification code from the email and enter into the input field below.</span>
-              :
-                <span>Please check your phone for a text message with the Givebox verification code. Enter the verification code from the text message into the input field below.</span>
-              }
-            </h4>
-            <h4>Verification code is valid for up to 60 minutes. <GBLink onClick={() => this.toggleVerify(false)}>Click here to request a new verification code.</GBLink></h4>
+            <div className='stepsSubText' style={{ marginLeft: 0, marginRight: 0 }}>
+              <span style={{ display: 'block' }}>
+                Verification code was sent to: <span className='strong'>{mode === 'email' ? obfuscateEmail : obfuscatePhone }</span>
+              </span>
+            </div>
             <Form
               noFormTag={true}
               name={'twoFA'}
             >
-              <TwoFAClass {...this.props} />
+              <TwoFAClass
+                {...this.props}
+                toggleVerify={this.toggleVerify}
+              />
             </Form>
           </div>
           :
@@ -280,7 +292,7 @@ class TwoFA extends Component {
             </div>
             <div className='flexColumn flexCenter'>
               <GBLink className='button' onClick={this.onClickSendCode}>Get Verification Code</GBLink>
-              <GBLink style={{ marginTop: 20 }} onClick={() => this.toggleVerify(true)}>Already have a code, click here.</GBLink>
+              {hasPhone ? <GBLink style={{ marginTop: 20 }} onClick={() => this.toggleVerify(true)}>Already have a code, click here.</GBLink> : null }
             </div>
           </div>
         }
@@ -291,7 +303,8 @@ class TwoFA extends Component {
 }
 
 TwoFA.defaultProps = {
-  allowEmail: false
+  allowEmail: false,
+  showCancel: false
 }
 
 function mapStateToProps(state, props) {

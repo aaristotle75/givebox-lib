@@ -200,10 +200,10 @@ const protect = {
 const transferStatus = {
   type: 'merchant',
   slug: 'transferStatus',
-  name: 'Check Status',
-  title: 'Check Status',
+  name: 'Approval Status',
+  title: 'Approval Status',
   customIcon: <Icon><FaConnectdevelop /></Icon>,
-  desc: 'Check status.'
+  desc: ''
 }
 
 export const orgSignupFields = {
