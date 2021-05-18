@@ -4,7 +4,6 @@ import {
   sendResource,
   getResource
 } from '../api/helpers';
-
 import {
   resourceProp,
   removeResource,
@@ -141,9 +140,7 @@ class TwoFA extends Component {
       phone
     } = this.state;
 
-    const {
-      access
-    } = this.props;
+    const access = this.props.access;
 
     let error = false;
     let sendCode = true;
@@ -161,6 +158,8 @@ class TwoFA extends Component {
           method: 'patch',
           callback: (res, err) => {
             if (!err) {
+              access.phone = util.prunePhone(phone);
+              this.props.resourceProp('access', access);
               this.sendCode();
             } else {
               this.setState({ error: 'Unable to update mobile number.' });

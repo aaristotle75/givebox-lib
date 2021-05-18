@@ -59,7 +59,6 @@ class ConnectBankStepsForm extends React.Component {
   }
 
   connectBankPlaid() {
-    console.log('execute connectBankPlaid -> ');
     this.setState({ saving: false });
   }
 

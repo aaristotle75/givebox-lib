@@ -299,12 +299,6 @@ export const signupPhase = {
       verifyBusiness,
       protect,
       transferStatus
-    ],
-    requiredSteps: [
-      identity,
-      verifyBank,
-      verifyBusiness,
-      protect
     ]
   }
 };

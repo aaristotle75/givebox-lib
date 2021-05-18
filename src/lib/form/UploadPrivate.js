@@ -192,7 +192,7 @@ class UploadPrivate extends Component {
     } = this.state;
 
     const mimes = `${mime.image},application/pdf`;
-    const info = util.getFileInfo(previewURL);
+    const info = previewURL ? util.getFileInfo(previewURL) : {};
     const type = info.type;
 
     return (

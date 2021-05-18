@@ -16,6 +16,9 @@ import VerifyBusiness from './transferMoney/VerifyBusiness';
 import TwoFA from '../../common/TwoFA';
 import TransferStatus from './transferMoney/TransferStatus';
 import {
+  updateOrgSignup
+} from '../redux/gbx3actions';
+import {
   setMerchantApp
 } from '../redux/merchantActions';
 import {
@@ -32,13 +35,13 @@ class TransferMoneyStepsForm extends React.Component {
     super(props);
     this.renderStep = this.renderStep.bind(this);
     this.processForm = this.processForm.bind(this);
-    this.checkRequiredCompleted = this.checkRequiredCompleted.bind(this);
     this.saveStep = this.saveStep.bind(this);
     this.saveCallback = this.saveCallback.bind(this);
     this.callbackAfter = this.callbackAfter.bind(this);
     this.getDocument = this.getDocument.bind(this);
     this.getDcoumentCallback = this.getDcoumentCallback.bind(this);
     this.set2FAVerified = this.set2FAVerified.bind(this);
+    this.checkApprovalStatus = this.checkApprovalStatus.bind(this);
 
     this.state = {
       editorOpen: false,
@@ -48,7 +51,8 @@ class TransferMoneyStepsForm extends React.Component {
       identityUploaded: false,
       verifyBankUploaded: false,
       verifyBusinessUploaded: false,
-      is2FAVerified: false
+      is2FAVerified: false,
+      checkingStatusDisableButton: false
     };
   }
 
@@ -131,46 +135,29 @@ class TransferMoneyStepsForm extends React.Component {
     }
   }
 
-  checkRequiredCompleted() {
-    const {
-      completed,
-      stepsTodo,
-      requiredSteps
-    } = this.props;
-
-    const stepsRequiredButNotComplete = [];
-
-    // Check if required steps are completed
-    requiredSteps.forEach((value, key) => {
-      if (!completed.includes(value.slug)) {
-        const step = stepsTodo.findIndex(s => s.slug === value.slug);
-        const stepNumber = +step + 1;
-        stepsRequiredButNotComplete.push(
-          <GBLink
-            key={key}
-            onClick={() => {
+  checkApprovalStatus() {
+    this.setState({ checkingStatusDisableButton: true }, () => {
+      this.props.getResource('org', {
+        customName: 'gbx3Org',
+        reload: true,
+        callback: async (res, err) => {
+          const underwritingStatus = util.getValue(res, 'underwritingStatus');
+          const hasBankInfo = util.getValue(res, 'hasBankInfo');
+          if (underwritingStatus === 'approved' && hasBankInfo) {
+            const updated = await this.props.updateOrgSignup({}, 'transferMoney');
+            this.setState({ checkingStatusDisableButton: false });
+            if (updated) this.saveStep('transferStatus');
+          } else {
+            this.props.formProp({ error: true, errorMsg: 'Approval Status is under review. Please check back in the next 1-3 business days.' });
+            setTimeout(() => {
               this.props.formProp({ error: false });
-              this.props.updateOrgSignup({ step });
-            }}
-          >
-            Click Here for Step {stepNumber}: {value.name}
-          </GBLink>
-        )
-      }
-    });
-
-    if (!util.isEmpty(stepsRequiredButNotComplete)) {
-      this.props.formProp({ error: true, errorMsg:
-        <div className='stepsNotCompletedButRequired'>
-          <span>Please complete the following steps to get approved for transfers:</span>
-          <div className='stepsNotCompletedList'>
-            {stepsRequiredButNotComplete}
-          </div>
-        </div>
+              this.setState({ checkingStatusDisableButton: false });
+            }, 10000)
+            this.setState({ saving: false });
+          }
+        }
       });
-      return false;
-    }
-    return true;
+    });
   }
 
   async saveStep(slug, delay = 1000, error = false) {
@@ -213,7 +200,8 @@ class TransferMoneyStepsForm extends React.Component {
     const {
       step,
       stepsTodo,
-      formState
+      formState,
+      approvedForTransfers
     } = this.props;
 
     const stepConfig = util.getValue(stepsTodo, step, {});
@@ -229,8 +217,13 @@ class TransferMoneyStepsForm extends React.Component {
     switch (group) {
 
       case 'transferStatus': {
-        console.log('%ccheck status', 'color:green;font-size:18px;');
-        this.setState({ saving: false });
+        if (approvedForTransfers) {
+          this.setState({ saving: false }, () => {
+            console.log('%c execute open Manage Money', 'font-size: 18px;color:green;');
+          });
+        } else {
+          this.checkApprovalStatus();
+        }
         break;
       }
 
@@ -246,14 +239,17 @@ class TransferMoneyStepsForm extends React.Component {
       identityUploaded,
       verifyBankUploaded,
       verifyBusinessUploaded,
-      is2FAVerified
+      is2FAVerified,
+      checkingStatusDisableButton
     } = this.state;
 
     const {
       step,
       open,
       isMobile,
-      stepsTodo
+      stepsTodo,
+      approvedForTransfers,
+      completedPhases
     } = this.props;
 
     const stepConfig = util.getValue(stepsTodo, step, {});
@@ -359,25 +355,39 @@ class TransferMoneyStepsForm extends React.Component {
           'protect'
         ];
         const isCompleted = check.every((val) => this.props.completed.includes(val));
-        //if (!isCompleted) this.checkRequiredCompleted();
 
         item.saveButtonDisabled = isCompleted ? false : true;
-        item.saveButtonLabelTop = <span className='buttonAlignText'>Click Here to Check Status<span className='icon icon-chevron-right'></span></span>;
-        item.saveButtonLabel = <span className='buttonAlignText'>Check Status <span className='icon icon-chevron-right'></span></span>;
-        item.desc =
-          isCompleted ?
-          <div>
-            We are reviewing your account. You should have approval status in the next 3-5 business days.
-          </div>
-          :
-          <div>
-            You must complete all the previous steps to get approved to transfer money.
-          </div>
-        ;
+        item.saveButtonDisabled = checkingStatusDisableButton ? true : item.saveButtonDisabled;
+        item.saveButtonLabelTop = <span className='buttonAlignText'>Click Here to {approvedForTransfers ? 'Manage Money' : 'Check Status' }<span className='icon icon-chevron-right'></span></span>;
+        item.saveButtonLabel = <span className='buttonAlignText'>{approvedForTransfers ? 'Manage Money' : 'Check Status'} <span className='icon icon-chevron-right'></span></span>;
+
+        if (approvedForTransfers) {
+          item.desc =
+            <div>
+              <span style={{ fontWeight: 400, color: '#29eee6' }}>Congratulations, you are approved to transfer money!</span><br /><br />
+              Click the Manage Money button below to view your available balance and transfer money.
+            </div>
+          ;
+        } else if (isCompleted) {
+          item.desc =
+            <div>
+              We are reviewing your account. You should have approval status in the next 3-5 business days.
+            </div>
+          ;
+        } else {
+          item.desc =
+            <div>
+              You must complete all the previous steps to get approved to transfer money.
+            </div>
+          ;
+        }
+
         item.component =
           <TransferStatus
             {...this.props}
             isCompleted={isCompleted}
+            approvedForTransfers={approvedForTransfers}
+            completedPhases={completedPhases}
           />
         ;
         break;
@@ -483,13 +493,20 @@ class TransferMoneySteps extends React.Component {
 function mapStateToProps(state, props) {
 
   const orgID = util.getValue(state, 'gbx3.info.orgID');
+  const underwritingStatus = util.getValue(state, 'resource.gbx3Org.data.underwritingStatus');
+  const hasBankInfo = util.getValue(state, 'resource.gbx3Org.data.hasBankInfo');
+  const approvedForTransfers = underwritingStatus === 'approved' && hasBankInfo ? true : false;
+  const completedPhases = util.getValue(state, 'gbx3.orgSignup.completedPhases', []);
 
   return {
-    orgID
+    orgID,
+    approvedForTransfers,
+    completedPhases
   }
 }
 
 export default connect(mapStateToProps, {
+  updateOrgSignup,
   setMerchantApp,
   getResource,
   sendResource,

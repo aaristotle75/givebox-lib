@@ -196,6 +196,7 @@ export function checkSignupPhase(options = {}) {
   return (dispatch, getState) => {
     const state = getState();
     const signupPhase = util.getValue(state, 'gbx3.orgSignup.signupPhase');
+    const completedPhases = util.getValue(state, 'gbx3.orgSignup.completedPhases', []);
     const hasReceivedTransaction = util.getValue(state, 'resource.gbx3Org.data.hasReceivedTransaction');
 
     switch (signupPhase) {
@@ -221,13 +222,15 @@ export function checkSignupPhase(options = {}) {
       }
 
       case 'transferMoney': {
-        dispatch(loadSignupPhase({
-          phase: signupPhase,
-          modalName: 'orgTransferSteps',
-          openAdmin: false,
-          openModal: false,
-          ...options
-        }));
+        if (!completedPhases.includes('transferMoney')) {
+          dispatch(loadSignupPhase({
+            phase: signupPhase,
+            modalName: 'orgTransferSteps',
+            openAdmin: false,
+            openModal: false,
+            ...options
+          }));
+        }
         break;
       }
 
