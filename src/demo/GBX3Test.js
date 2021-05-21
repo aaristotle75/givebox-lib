@@ -76,7 +76,6 @@ class GBXTest extends Component {
         <div>Error loading...</div>
       )
     }
-
   }
 }
 

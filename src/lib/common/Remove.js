@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
   toggleModal
-} from '../../../api/actions';
-import GBLink from '../../../common/GBLink';
+} from '../api/actions';
+import GBLink from './GBLink';
 
 class Remove extends React.Component {
 
@@ -22,7 +22,10 @@ class Remove extends React.Component {
       desc,
       subDesc,
       confirmText,
-      modalName
+      modalName,
+      cancelText,
+      hideCancelButton,
+      saveButtonStyle
     } = this.props;
 
     return (
@@ -33,8 +36,10 @@ class Remove extends React.Component {
           {subDesc}
         </p>
         <div className='button-group flexEnd'>
-          <GBLink className='link secondary' onClick={() => this.props.toggleModal(modalName, false)}>Cancel</GBLink>
-          <GBLink className='button' onClick={() => {
+          { !hideCancelButton ?
+            <GBLink className='link secondary' onClick={() => this.props.toggleModal(modalName, false)}>{cancelText}</GBLink>
+          : null }
+          <GBLink style={saveButtonStyle} className='button' onClick={() => {
             if (this.props.callback) this.props.callback();
           }}>
             {confirmText}
@@ -46,12 +51,16 @@ class Remove extends React.Component {
 }
 
 Remove.defaultProps = {
+  desc: 'Delete',
+  subDesc: 'Please confirm you want to delete?',
+  cancelText: 'cancel',
+  hideCancelButton: false,
   modalName: 'orgRemove',
-  confirmText: 'Confirm'
+  confirmText: 'Confirm',
+  saveButtonStyle: null
 };
 
 function mapStateToProps(state, props) {
-
   return {
   }
 }

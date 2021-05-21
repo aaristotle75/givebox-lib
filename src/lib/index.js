@@ -52,6 +52,7 @@ import LinearBar from './common/LinearBar';
 import Loader from './common/Loader';
 import Portal from './common/Portal';
 import Redirect from './common/Redirect';
+import Remove from './common/Remove';
 import Tabs, { Tab } from './common/Tabs';
 import * as types from './common/types';
 import * as util from './common/utility';
@@ -268,6 +269,7 @@ export {
   Balloon,
   Portal,
   Redirect,
+  Remove,
   Tabs,
   Tab,
   types,

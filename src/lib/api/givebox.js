@@ -325,8 +325,14 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       endpoint = `orgs/${id[0]}/principals/${id[1]}`;
       break;
     }
-
-
+    case 'orgUnderwritingComments': {
+      endpoint = `orgs/${orgID}/underwriting-comments`;
+      break;
+    }
+    case 'orgUnderwritingComment': {
+      endpoint = `orgs/${orgID}/underwriting-comments/${id[0]}`;
+      break;
+    }
 
     // USER
     case 'users': {

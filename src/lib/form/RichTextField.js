@@ -14,13 +14,20 @@ class ContentField extends Component {
     this.onMouseEnter = this.onMouseEnter.bind(this);
     this.onMouseLeave = this.onMouseLeave.bind(this);
     this.state = {
-      status: 'idle'
+      status: 'idle',
+      value: props.value
     }
   }
 
   componentDidMount() {
     if (this.props.createField) {
       this.props.createField(this.props.name, this.props.params);
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.value !== this.props.value) {
+      this.setState({ value: this.props.value });
     }
   }
 
@@ -63,13 +70,13 @@ class ContentField extends Component {
       errorType,
       modal,
       modalLabel,
-      value,
       disallowModalBgClose,
       color
     } = this.props;
 
     const {
-      status
+      status,
+      value
     } = this.state;
 
     const labelStyle = {
