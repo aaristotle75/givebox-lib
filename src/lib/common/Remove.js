@@ -53,7 +53,7 @@ class Remove extends React.Component {
 Remove.defaultProps = {
   desc: 'Delete',
   subDesc: 'Please confirm you want to delete?',
-  cancelText: 'cancel',
+  cancelText: 'Cancel',
   hideCancelButton: false,
   modalName: 'orgRemove',
   confirmText: 'Confirm',
