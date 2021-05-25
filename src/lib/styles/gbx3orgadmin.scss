@@ -175,6 +175,7 @@
   .leftPanelOpenButton {
     top: 60px;
     left: 17px;
+    z-index: 999990;
   }
 
   .leftPanelClose {
@@ -371,4 +372,42 @@
       }
     }
   }
+}
+
+.launchpadButton {
+  position: fixed;
+  top: 60px;
+  right: 23px;
+  z-index: 999990;
+  height: 40px;
+  width: 40px;
+  background: $mainColor;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  @include transition(right .5s, opacity .5s);
+  opacity: 1;
+
+  @media (max-width: $breakpoint) {
+    //right: 5px;
+  }
+
+  .icon {
+    font-size: 25px;
+    color: $white;
+  }
+}
+
+.launchpadButton:hover {
+  background: transparentize($mainColor, .4);
+  @include transition(background .25s);
+}
+
+.launchpadButton.open {
+  position: absolute;
+  opacity: 0;
+  right: 0;
+  z-index: 900000;
 }

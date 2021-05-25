@@ -30,6 +30,10 @@ function setModal(identifier, open, topModal, opts = {}) {
 }
 
 export function toggleModal(identifier, open, opts = {}) {
+
+  const blurClass = util.getValue(opts, 'blurClass', 'blur');
+
+  console.log('execute blurClass -> ', blurClass, opts);
   return (dispatch, getState) => {
     const modals = util.getValue(getState(), 'modal', {});
     let openModals = [];
@@ -51,9 +55,19 @@ export function toggleModal(identifier, open, opts = {}) {
       }
     }
     let topModal = null;
+
     if (!util.isEmpty(openModals)) {
       topModal = openModals[openModals.length - 1]
     }
+    const appRoot = document.getElementById('app-root');
+    if (appRoot) {
+      if (open) {
+        if (!appRoot.classList.contains(blurClass)) appRoot.classList.add(blurClass);
+      } else {
+        if (appRoot.classList.contains(blurClass) && util.isEmpty(openModals)) appRoot.classList.remove(blurClass);
+      }
+    }
+
     if (allowSetModal) dispatch(setModal(identifier, open, topModal, opts));
   }
 }

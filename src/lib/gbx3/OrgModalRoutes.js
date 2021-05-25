@@ -170,6 +170,14 @@ export default class GBX3ModalRoutes extends Component {
           effect='3DFlipVert' style={{ width: '60%' }}
           component={(props) => this.loadComponent('./signup/transferMoney/VoidCheck', props)}
         />
+        <ModalRoute
+          modalRootClass='launchpad'
+          className='gbx3'
+          id={'launchpad'}
+          effect='scaleUp' style={{ width: '100%' }}
+          blurClass='blurMore'
+          component={(props) => this.loadComponent('./Launchpad', props)}
+        />
       </div>
     )
   }

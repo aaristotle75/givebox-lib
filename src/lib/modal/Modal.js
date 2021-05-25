@@ -213,7 +213,8 @@ class Modal extends Component {
       draggable,
       draggableTitle,
       draggableTitleClass,
-      buttonGroup
+      buttonGroup,
+      modalContentAlt
     } = this.props;
 
     let transition = effect.transition;

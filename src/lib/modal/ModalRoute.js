@@ -26,7 +26,7 @@ class ModalRoute extends Component {
   receiveMessage(e) {
     if (e.data === this.props.id) {
       if (this.props.open) {
-        this.props.toggleModal(e.data, false);
+        this.props.toggleModal(e.data, false, this.props.opts);
       }
     }
   }
@@ -114,8 +114,8 @@ function mapStateToProps(state, props) {
   }
 
   return {
-    open: open,
-    opts: opts
+    open,
+    opts
   }
 }
 

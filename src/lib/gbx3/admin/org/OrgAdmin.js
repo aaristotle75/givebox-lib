@@ -4,11 +4,14 @@ import * as util from '../../../common/utility';
 import Layout from '../../Layout';
 import AdminMenu from './AdminMenu';
 import Loader from '../../../common/Loader';
+import Icon from '../../../common/Icon';
 import {
   toggleAdminLeftPanel,
   checkSignupPhase
 } from '../../redux/gbx3actions';
+import ModalLink from '../../../modal/ModalLink';
 import OrgModalRoutes from '../../OrgModalRoutes';
+import { SiLaunchpad } from 'react-icons/si';
 
 const ENV = process.env.REACT_APP_ENV;
 
@@ -33,13 +36,25 @@ class OrgAdmin extends React.Component {
   render() {
 
     const {
-      openAdmin: open
+      openAdmin: open,
+      launchpad
     } = this.props;
 
     return (
       <>
         <OrgModalRoutes />
         <div className={`leftPanelOpenButton ${open ? 'open' : 'close'}`} onClick={this.props.toggleAdminLeftPanel}><span className='icon icon-menu'></span></div>
+        <ModalLink
+          id='launchpad'
+          type='div'
+          className={`avatarLink tooltip launchpadButton ${launchpad ? 'open' : 'closed'}`}
+          opts={{
+            blurClass: 'blurMore'
+          }}
+        >
+          <span className='tooltipTop'><i />Launchpad</span>
+          <Icon><SiLaunchpad /></Icon>
+        </ModalLink>
         <div className={`leftPanel ${open ? 'open' : 'close'}`}>
           <AdminMenu
             blockType={'org'}
@@ -73,10 +88,12 @@ function mapStateToProps(state, props) {
   const orgID = util.getValue(gbx3, 'info.orgID');
   const admin = util.getValue(gbx3, 'admin', {});
   const openAdmin = util.getValue(admin, 'open');
+  const launchpad = util.getValue(admin, 'launchpad');
 
   return {
     orgID,
-    openAdmin
+    openAdmin,
+    launchpad
   }
 }
 

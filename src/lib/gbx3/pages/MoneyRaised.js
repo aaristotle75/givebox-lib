@@ -3,12 +3,16 @@ import { connect } from 'react-redux';
 import * as util from '../../common/utility';
 import HelpfulTip from '../../common/HelpfulTip';
 import GBLink from '../../common/GBLink';
+import Loader from '../../common/Loader';
 import {
   setSignupStep
 } from '../redux/gbx3actions';
 import {
   toggleModal
 } from '../../api/actions';
+import {
+  getResource
+} from '../../api/helpers';
 import Icon from '../../common/Icon';
 import { AiOutlineBank } from 'react-icons/ai';
 
@@ -17,11 +21,32 @@ class MoneyRaised extends React.Component {
   constructor(props) {
     super(props);
     this.openStep = this.openStep.bind(this);
+    this.getTransactions = this.getTransactions.bind(this);
     this.state = {
     };
   }
 
   componentDidMount() {
+    this.getTransactions();
+  }
+
+  getTransactions() {
+    this.props.getResource('orgFinanceStats', {
+      reload: true,
+      isSending: false
+    });
+    this.props.getResource('orgStats', { reload: true, isSending: false });
+    this.props.getResource('orgTransactions', {
+      customName: 'latestTransactions',
+      search: {
+        sort: 'updatedAt',
+        order: 'desc',
+        filter: '(state:"approved"%2Cstate:"if_batch")%3BtxType:"credit"',
+        max: 10
+      },
+      reload: true,
+      isSending: false
+    });
   }
 
   openStep(value, modalName) {
@@ -35,6 +60,11 @@ class MoneyRaised extends React.Component {
     const {
       signupPhase
     } = this.props;
+
+    if (util.isLoading(this.props.orgStats) || util.isLoading(this.props.latestTransactions)) return <Loader msg='Loading latest transacitons and stats...' />
+
+    const orgStats = util.getValue(this.props.orgStats, 'data', {});
+    const netTotal = util.numberWithCommas(parseFloat(util.getValue(orgStats, 'netTotal', 0)/100).toFixed(2));
 
     const content = {};
 
@@ -127,7 +157,7 @@ class MoneyRaised extends React.Component {
           </div>
           <span className='moneyRaisedLabel'>Money Raised</span>
           <span className='moneyRaisedText moneyAmount'>
-            <span className='symbol'>$</span>0.00
+            <span className='symbol'>$</span>{netTotal}
           </span>
         </div>
       </div>
@@ -138,13 +168,18 @@ class MoneyRaised extends React.Component {
 function mapStateToProps(state, props) {
 
   const signupPhase = util.getValue(state, 'gbx3.orgSignup.signupPhase');
+  const orgStats = util.getValue(state, 'resource.orgStats');
+  const latestTransactions = util.getValue(state, 'resource.latestTransactions');
 
   return {
-    signupPhase
+    signupPhase,
+    orgStats,
+    latestTransactions
   }
 }
 
 export default connect(mapStateToProps, {
   setSignupStep,
-  toggleModal
+  toggleModal,
+  getResource
 })(MoneyRaised);
