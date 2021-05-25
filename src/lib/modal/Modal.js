@@ -30,7 +30,6 @@ class Modal extends Component {
     this.onEnter = this.onEnter.bind(this);
     this.onExit = this.onExit.bind(this);
     this.toTop = this.toTop.bind(this);
-    this.searchForOpenModals = this.searchForOpenModals.bind(this);
     let effect;
     if (props.mobile) effect = '3DFlipVert';
     else effect = props.effect;
@@ -63,8 +62,15 @@ class Modal extends Component {
 
   componentDidMount() {
     //window.addEventListener('resize', this.handleResize.bind(this));
-    setTimeout(() => this.setState({open: this.props.open}, this.props.modalOpenCallback),0);
-    this.onClose();
+    if (this.props.open) {
+      setTimeout(() => this.setState({open: true}) ,0);
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!this.props.open && this.state.open && this.props.opened) {
+      this.closeModal();
+    }
   }
 
   componentWillUnmount() {
@@ -144,38 +150,10 @@ class Modal extends Component {
     return effect.transition.duration || defaultTransition.duration;
   }
 
-  searchForOpenModals(ignore) {
-    let modalIsOpen = false;
-    let allModalsClosed = true;
-    if (this.props.modals) {
-      Object.entries(this.props.modals).forEach(([key, value]) => {
-        if (ignore !== key && value.open) modalIsOpen = true;
-        if (value.open) allModalsClosed = false;
-      });
-      if (modalIsOpen) {
-        return true;
-      } else if (allModalsClosed) {
-        return false;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
-    }
-  }
-
   closeModal(callback, type = 'ok', allowClose = true) {
     const bindthis = this;
     const transitionTimeMS = this.getTransitionDuration();
-    const current = util.getValue(this.props.appRef, 'current', {});
     if (allowClose) {
-      if (this.props.appRef && !this.searchForOpenModals(this.props.identifier)) {
-        if (!util.isEmpty(current)) {
-          if (this.props.appRef.current.classList.contains('blur')) {
-            this.props.appRef.current.classList.remove('blur');
-          }
-        }
-      }
       this.setState({open: false});
       this.closeTimer = setTimeout(function() {
         window.postMessage(bindthis.props.identifier, '*');
@@ -252,20 +230,6 @@ class Modal extends Component {
     }
 
     const openEffect = open ? effect.end : effect.begin;
-
-    if (appRef) {
-      if (open) {
-        if (appRef.current) appRef.current.classList.add('blur');
-      } else {
-        if (appRef && !this.searchForOpenModals(identifier)) {
-          if (appRef.current) {
-            if (appRef.current.classList.contains('blur')) {
-              appRef.current.classList.remove('blur');
-            }
-          }
-        }
-      }
-    }
 
     const modalContent =
       <div

@@ -29,6 +29,13 @@ function setModal(identifier, open, topModal, opts = {}) {
   }
 }
 
+export function modalClosed(identifier) {
+  return {
+    type: types.MODAL_CLOSED,
+    identifier: identifier
+  }
+}
+
 export function toggleModal(identifier, open, opts = {}) {
 
   const blurClass = util.getValue(opts, 'blurClass', 'blur');

@@ -13,6 +13,7 @@ export const SEND_RESPONSE = 'SEND_RESPONSE';
 
 // Modal Actions
 export const TOGGLE_MODAL = 'TOGGLE_MODAL';
+export const MODAL_CLOSED = 'MODAL_CLOSED';
 
 // App Actions
 export const IS_FILTER_OPEN = 'IS_FILTER_OPEN';

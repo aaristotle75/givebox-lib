@@ -181,7 +181,7 @@
 
 /********** Launchpad ***************/
 .launchpadBlur {
-  @include filter(blur(30px));
+  @include filter(blur(20px));
   @include default-transition(.25s);
 }
 

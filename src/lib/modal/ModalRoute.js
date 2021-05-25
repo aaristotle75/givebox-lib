@@ -4,7 +4,7 @@ import Modal from './Modal';
 import Portal from '../common/Portal';
 import ErrorBoundary from '../common/ErrorBoundary';
 import Loader from '../common/Loader';
-import { toggleModal } from '../api/actions';
+import { modalClosed, toggleModal } from '../api/actions';
 import * as util from '../common/utility';
 import has from 'has';
 
@@ -13,7 +13,6 @@ class ModalRoute extends Component {
   constructor(props) {
     super(props);
     this.receiveMessage = this.receiveMessage.bind(this);
-    this.modalOpenCallback = this.modalOpenCallback.bind(this);
     this.state = {
       opened: false
     };
@@ -23,22 +22,13 @@ class ModalRoute extends Component {
     window.addEventListener('message', this.receiveMessage, false);
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.open !== this.props.open && !this.props.open) {
-      //console.log('execute componentDidUpdate should handle close modal-> ', this.props.open);
-    }
-  }
-
-  receiveMessage(e) {
+  async receiveMessage(e) {
     if (e.data === this.props.id) {
-      if (this.props.open) {
+      if (this.props.opened) {
         this.props.toggleModal(e.data, false, this.props.opts);
+        this.props.modalClosed(e.data);
       }
     }
-  }
-
-  modalOpenCallback(open) {
-    this.setState({ opened: true });
   }
 
   render() {
@@ -48,6 +38,7 @@ class ModalRoute extends Component {
       closeBtnShow,
       style,
       open,
+      opened,
       component,
       id,
       opts,
@@ -74,13 +65,14 @@ class ModalRoute extends Component {
     }
 
     return (
-      open ?
+      opened ?
         <Portal id={id} rootEl={modalRoot} className={`${modalRootClass}`}>
           <Modal
             className={className}
             identifier={id}
             effect={effect}
             open={open}
+            opened={opened}
             closeBtnShow={closeBtnShow}
             customStyle={style}
             closeCallback={util.getValue(optsProps, 'closeCallback', closeCallback)}
@@ -89,10 +81,9 @@ class ModalRoute extends Component {
             appRef={appRef}
             draggable={draggable}
             draggableTitle={util.getValue(optsProps, 'draggableTitle', draggableTitle)}
-            modalOpenCallback={this.modalOpenCallback}
             buttonGroup={buttonGroup}
           >
-            { this.state.opened ?
+            { opened ?
               <ErrorBoundary>
                 {component(optsProps)}
               </ErrorBoundary>
@@ -112,14 +103,18 @@ ModalRoute.defaultProps = {
 
 function mapStateToProps(state, props) {
 
+  let opened = false;
   let open = false;
   let opts = {};
+
   if (has(state.modal, props.id)) {
+    opened = state.modal[props.id].opened;
     open = state.modal[props.id].open;
     opts = state.modal[props.id].opts;
   }
 
   return {
+    opened,
     open,
     opts
   }
@@ -127,5 +122,6 @@ function mapStateToProps(state, props) {
 
 
 export default connect(mapStateToProps, {
+  modalClosed,
   toggleModal
 })(ModalRoute)

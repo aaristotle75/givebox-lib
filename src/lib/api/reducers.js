@@ -177,10 +177,18 @@ export function modal(state = {
   topModal: null
 }, action) {
   switch (action.type) {
+    case types.MODAL_CLOSED: {
+      return Object.assign({}, state, {
+        [action.identifier] : {
+          opened: false
+        }
+      });
+    }
     case types.TOGGLE_MODAL:
       return Object.assign({}, state, {
         topModal: action.topModal,
         [action.identifier] : {
+          opened: true,
           open: action.open,
           opts: action.opts
         }
