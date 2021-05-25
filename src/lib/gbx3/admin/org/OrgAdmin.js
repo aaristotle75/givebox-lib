@@ -49,7 +49,7 @@ class OrgAdmin extends React.Component {
           type='div'
           className={`avatarLink tooltip launchpadButton ${launchpad ? 'open' : 'closed'}`}
           opts={{
-            blurClass: 'blurMore'
+            blurClass: 'launchpadBlur'
           }}
         >
           <span className='tooltipTop'><i />Launchpad</span>

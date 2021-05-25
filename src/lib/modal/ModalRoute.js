@@ -23,6 +23,12 @@ class ModalRoute extends Component {
     window.addEventListener('message', this.receiveMessage, false);
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.open !== this.props.open && !this.props.open) {
+      //console.log('execute componentDidUpdate should handle close modal-> ', this.props.open);
+    }
+  }
+
   receiveMessage(e) {
     if (e.data === this.props.id) {
       if (this.props.open) {

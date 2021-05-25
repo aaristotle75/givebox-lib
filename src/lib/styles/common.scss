@@ -91,11 +91,6 @@ p { margin: 10px 0; font-size: $normal-text-size; font-weight: $font-weight; }
   @include default-transition(.5s);
 }
 
-.blurMore {
-  @include filter(blur(10px));
-  @include default-transition(.5s);
-}
-
 .spaceBetween {
   display: flex;
   justify-content: space-between;

@@ -33,7 +33,6 @@ export function toggleModal(identifier, open, opts = {}) {
 
   const blurClass = util.getValue(opts, 'blurClass', 'blur');
 
-  console.log('execute blurClass -> ', blurClass, opts);
   return (dispatch, getState) => {
     const modals = util.getValue(getState(), 'modal', {});
     let openModals = [];

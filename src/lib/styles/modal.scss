@@ -180,6 +180,10 @@
 }
 
 /********** Launchpad ***************/
+.launchpadBlur {
+  @include filter(blur(30px));
+  @include default-transition(.25s);
+}
 
 .launchpad {
 
@@ -219,26 +223,6 @@
       @media (max-width: 992px) {
         width: 100% !important;
       }
-    }
-
-    .launchpadScreen {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(to bottom, $mainColor 15%, $green 100%) !important;
-      opacity: .6 !important;
-      z-index: 1;
-    }
-
-    .launchpadContent {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 2;
     }
 
   }

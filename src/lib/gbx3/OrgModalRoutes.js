@@ -175,7 +175,6 @@ export default class GBX3ModalRoutes extends Component {
           className='gbx3'
           id={'launchpad'}
           effect='scaleUp' style={{ width: '100%' }}
-          blurClass='blurMore'
           component={(props) => this.loadComponent('./Launchpad', props)}
         />
       </div>
