@@ -18,8 +18,9 @@ export function preferences(state = {
 }
 
 export function app(state = {
+  openApp: null,
   openAppURL: null,
-  appLoaded: false,
+  appLoading: false,
   appRef: null,
   modalRef: null,
   filterOpen: false,

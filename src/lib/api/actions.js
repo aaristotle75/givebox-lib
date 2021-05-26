@@ -16,7 +16,12 @@ export function openLaunchpad(opts = {}) {
     dispatch(toggleModal('launchpad', true, {
       blurClass: 'launchpadBlur',
       closeCallback: () => {
+        const modalEl = document.getElementById('modalOverlay-launchpad');
+        if (modalEl) {
+          if (modalEl.classList.contains('appLoaded')) modalEl.classList.remove('appLoaded');
+        }
         dispatch(setAppProps({
+          openApp: null,
           openAppURL: null,
           appLoading: false
         }));

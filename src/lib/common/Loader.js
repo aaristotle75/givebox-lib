@@ -15,7 +15,7 @@ export default class Loader extends Component {
   }
 
   componentDidMount() {
-    this.setState({rootEl: document.getElementById('app-root')}, this.stopLoader);
+    this.setState({rootEl: document.getElementById('root')}, this.stopLoader);
   }
 
   componentWillUnmount() {

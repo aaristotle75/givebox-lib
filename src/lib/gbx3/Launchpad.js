@@ -4,9 +4,11 @@ import * as util from '../common/utility';
 import Loader from '../common/Loader';
 import { launchpadConfig } from './admin/launchpad/launchpadConfig';
 import Image from '../common/Image';
+import GBLink from '../common/GBLink';
 import {
   toggleModal,
   setProp,
+  setAppProps,
   startMasquerade,
   endMasquerade
 } from '../api/actions';
@@ -30,7 +32,7 @@ class Launchpad extends React.Component {
       const app = launchpadConfig.find(a => a.slug === this.props.openApp);
       console.log('execute auto openapp -> ', app);
     }
-    document.addEventListener('message', this.appLoadedMessage, false);
+    window.addEventListener('message', this.appLoadedMessage, false);
   }
 
   appLoadedMessage(e) {
@@ -39,7 +41,7 @@ class Launchpad extends React.Component {
     }
   }
 
-  onClickApp(path) {
+  onClickApp(path, slug) {
     const {
       accessOrgID,
       masker,
@@ -50,24 +52,37 @@ class Launchpad extends React.Component {
     if (path === 'backgroundClick') {
       this.props.toggleModal('launchpad', false);
     } else {
+      const modalEl = document.getElementById('modalOverlay-launchpad');
+      if (modalEl) {
+        if (!modalEl.classList.contains('appLoaded')) modalEl.classList.add('appLoaded');
+      }
       this.props.setProp('appLoading', true);
-      const appURL = `${APP_URL}${path}`;
+      const openAppURL = `${APP_URL}${path}`;
       if (isSuper && !masker) {
         this.props.startMasquerade({
           callback: () => {
-            this.props.setProp('openAppURL', appURL);
+            this.props.setAppProps({
+              openAppURL,
+              openApp: slug
+            });
           }
         });
       } else if (isSuper && masker && accessOrgID && (accessOrgID !== currentOrgID)) {
         this.props.endMasquerade(() => {
           this.props.startMasquerade({
             callback: () => {
-              this.props.setProp('openAppURL', appURL);
+              this.props.setAppProps({
+                openAppURL,
+                openApp: slug
+              });
             }
           });
         })
       } else {
-        this.props.setProp('openAppURL', appURL);
+        this.props.setAppProps({
+          openAppURL,
+          openApp: slug
+        });
       }
     }
   }
@@ -80,7 +95,7 @@ class Launchpad extends React.Component {
           key={key}
           className='launchpadItem'
           onClick={() => {
-            this.onClickApp(value.path);
+            this.onClickApp(value.path, value.slug);
           }}
         >
         <Image maxSize={'140px'} url={`https://cdn.givebox.com/givebox/public/images/backgrounds/${value.image}.png`} size='inherit' alt={value.name} />
@@ -104,12 +119,22 @@ class Launchpad extends React.Component {
 
   renderAppDisplay() {
     const {
-      openAppURL
+      openAppURL,
+      appLoading
     } = this.props;
+
+    const app = launchpadConfig.find(a => a.slug === this.props.openApp);
 
     return (
       <>
         <div className='launchpadScreen'></div>
+        { !appLoading ?
+        <div className='launchpadActions'>
+          <GBLink className='button' onClick={() => this.props.toggleModal('launchpad', false)}>
+            Exit {util.getValue(app, 'name')}
+          </GBLink>
+        </div>
+        : null }
         <iframe src={openAppURL} />
       </>
     );
@@ -122,9 +147,10 @@ class Launchpad extends React.Component {
       appLoading
     } = this.props;
 
+    console.log('execute render appLoading-> ', appLoading);
     return (
       <>
-        { !appLoading ? <Loader msg='Loading app...' /> : null }
+        { appLoading ? <Loader infinite={true} msg='Loading app...' /> : null }
         { openAppURL ?
           this.renderAppDisplay()
         :
@@ -141,6 +167,7 @@ function mapStateToProps(state, props) {
   const accessOrgID = util.getValue(access, 'orgID');
   const masker = util.getValue(access, 'masker');
   const isSuper = util.getValue(access, 'role') === 'super' ? true : false;
+  const openApp = util.getValue(state, 'app.openApp');
   const openAppURL = util.getValue(state, 'app.openAppURL', null);
   const appLoading = util.getValue(state, 'app.appLoading');
   const currentOrgID = util.getValue(state, 'gbx3.info.orgID');
@@ -149,6 +176,7 @@ function mapStateToProps(state, props) {
     accessOrgID,
     masker,
     isSuper,
+    openApp,
     openAppURL,
     appLoading,
     currentOrgID
@@ -158,6 +186,7 @@ function mapStateToProps(state, props) {
 export default connect(mapStateToProps, {
   toggleModal,
   setProp,
+  setAppProps,
   startMasquerade,
   endMasquerade
 })(Launchpad);
