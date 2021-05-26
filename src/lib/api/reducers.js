@@ -18,6 +18,8 @@ export function preferences(state = {
 }
 
 export function app(state = {
+  openAppURL: null,
+  appLoaded: false,
   appRef: null,
   modalRef: null,
   filterOpen: false,
@@ -40,6 +42,11 @@ export function app(state = {
       return Object.assign({}, state, {
         ...state,
         [action.key]: action.value
+      });
+    case types.SET_APP_PROPS:
+      return Object.assign({}, state, {
+        ...state,
+        ...action.obj
       });
     default:
       return state
@@ -210,12 +217,12 @@ const appReducer = combineReducers({
 })
 
 const rootReducers = (state, action) => {
-  /*
+
   if (action.type === 'USER_LOGOUT') {
     const { routing } = state;
     state = { routing };
   }
-  */
+
   return appReducer(state, action);
 }
 

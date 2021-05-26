@@ -3,6 +3,88 @@ import * as types from './actionTypes';
 import * as util from '../common/utility';
 import has from 'has';
 import { trackActivity } from './activity';
+import { sendResource } from './helpers';
+
+const ENTRY_URL = process.env.REACT_APP_ENTRY_URL;
+const CLOUD_URL = process.env.REACT_APP_CLOUD_URL;
+const SUPER_URL = process.env.REACT_APP_SUPER_URL;
+const ENV = process.env.REACT_APP_ENV;
+
+export function openLaunchpad(opts = {}) {
+  return (dispatch, getState) => {
+    const state = getState();
+    dispatch(toggleModal('launchpad', true, {
+      blurClass: 'launchpadBlur',
+      closeCallback: () => {
+        dispatch(setAppProps({
+          openAppURL: null,
+          appLoading: false
+        }));
+      }
+    }));
+  }
+}
+
+export function startMasquerade(opts = {}) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const orgID = util.getValue(opts, 'orgID', util.getValue(state, 'gbx3.info.orgID', null));
+    const access = util.getValue(state, 'resource.access', {});
+    const role = util.getValue(access, 'role');
+    const userID = util.getValue(access, 'userID');
+    if (role === 'super' && orgID && userID) {
+      dispatch(sendResource('masquerade', {
+        data: {
+          staffType: 'organization',
+          staffTypeID: orgID
+        },
+        callback: (res, err) => {
+          if (opts.callback) opts.callback();
+        }
+      }));
+    }
+  }
+}
+
+export function endMasquerade(callback) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const access = util.getValue(state, 'resource.access', {});
+    const role = util.getValue(access, 'role');
+    if (role === 'super') {
+      dispatch(sendResource('masquerade', {
+          method: 'delete',
+          callback: () => {
+            if (callback) callback();
+          }
+      }));
+    }
+  }
+}
+
+function setUserLogout() {
+  return {
+    type: types.USER_LOGOUT
+  }
+}
+
+export function userLogout() {
+  return (dispatch, getState) => {
+    const state = getState();
+    const access = util.getValue(state, 'resource.access', {});
+    const role = util.getValue(access, 'role');
+
+    dispatch(sendResource('session', {
+      method: 'delete',
+      callback: (res, err) => {
+        const path = role === 'user' ? '/login/wallet' : util.getValue(access, 'redirect');
+        const redirect = `${ENTRY_URL}${path}`;
+        dispatch(setUserLogout());
+        window.location.replace(redirect);
+      }
+    }));
+  }
+}
 
 export function updatePrefs(prefs) {
   return {
@@ -36,12 +118,16 @@ export function modalClosed(identifier) {
   }
 }
 
-export function toggleModal(identifier, open, opts = {}) {
-
-  const blurClass = util.getValue(opts, 'blurClass', 'blur');
+export function toggleModal(identifier, open, options = {}) {
 
   return (dispatch, getState) => {
     const modals = util.getValue(getState(), 'modal', {});
+    const opts = {
+      ...util.getValue(modals, `${identifier}.opts`, {}),
+      ...options
+    };
+    const blurClass = util.getValue(opts, 'blurClass', 'blur');
+
     let openModals = [];
     let allowSetModal = false;
     if (!util.isEmpty(modals)) {
@@ -154,6 +240,13 @@ export function setProp(key, value) {
     type: types.SET_PROP,
     key: key,
     value: value
+  }
+}
+
+export function setAppProps(obj = {}) {
+  return {
+    type: types.SET_APP_PROPS,
+    obj
   }
 }
 

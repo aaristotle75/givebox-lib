@@ -9,6 +9,9 @@ import {
   toggleAdminLeftPanel,
   checkSignupPhase
 } from '../../redux/gbx3actions';
+import {
+  openLaunchpad
+} from '../../../api/actions';
 import ModalLink from '../../../modal/ModalLink';
 import OrgModalRoutes from '../../OrgModalRoutes';
 import { SiLaunchpad } from 'react-icons/si';
@@ -44,17 +47,13 @@ class OrgAdmin extends React.Component {
       <>
         <OrgModalRoutes />
         <div className={`leftPanelOpenButton ${open ? 'open' : 'close'}`} onClick={this.props.toggleAdminLeftPanel}><span className='icon icon-menu'></span></div>
-        <ModalLink
-          id='launchpad'
-          type='div'
+        <div
+          onClick={this.props.openLaunchpad}
           className={`avatarLink tooltip launchpadButton ${launchpad ? 'open' : 'closed'}`}
-          opts={{
-            blurClass: 'launchpadBlur'
-          }}
         >
           <span className='tooltipTop'><i />Launchpad</span>
           <Icon><SiLaunchpad /></Icon>
-        </ModalLink>
+        </div>
         <div className={`leftPanel ${open ? 'open' : 'close'}`}>
           <AdminMenu
             blockType={'org'}
@@ -99,5 +98,6 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
   toggleAdminLeftPanel,
-  checkSignupPhase
+  checkSignupPhase,
+  openLaunchpad
 })(OrgAdmin);

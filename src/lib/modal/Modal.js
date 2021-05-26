@@ -79,7 +79,7 @@ class Modal extends Component {
       clearTimeout(this.timeout);
       this.timeout = null;
     }
-    this.closeModal(null, 'unmounted');
+    this.closeModal('unmounted');
   }
 
   onEnter(pos) {
@@ -150,14 +150,14 @@ class Modal extends Component {
     return effect.transition.duration || defaultTransition.duration;
   }
 
-  closeModal(callback, type = 'ok', allowClose = true) {
+  closeModal(type = 'ok', allowClose = true) {
     const bindthis = this;
     const transitionTimeMS = this.getTransitionDuration();
     if (allowClose) {
       this.setState({open: false});
       this.closeTimer = setTimeout(function() {
         window.postMessage(bindthis.props.identifier, '*');
-        if (callback) callback(type);
+        if (bindthis.props.closeCallback) bindthis.props.closeCallback(type);
       }, transitionTimeMS);
     }
   }
@@ -180,7 +180,6 @@ class Modal extends Component {
     } = this.state;
 
     const {
-      closeCallback,
       closeBtnShow,
       customStyle,
       customOverlay,
@@ -244,7 +243,7 @@ class Modal extends Component {
           onLeave={this.onExit}
           bottomOffset={'100px'}
         />
-        {(closeBtn) && <button style={closeBtnStyle} className='modalCloseBtn' onClick={() => this.closeModal(closeCallback, 'ok')}>{iconClose}</button>}
+        {(closeBtn) && <button style={closeBtnStyle} className='modalCloseBtn' onClick={() => this.closeModal('ok')}>{iconClose}</button>}
         <div className='modalTop'></div>
         {draggable ?
           <div className='handle'>
@@ -276,14 +275,14 @@ class Modal extends Component {
       <div className={`modal ${className} ${draggable ? 'draggable' : ''}`}>
         <div
           ref={this.modalRef}
-          onClick={() => this.closeModal(closeCallback, 'ok', this.props.disallowBgClose ? false : true)}
+          onClick={() => this.closeModal('ok', this.props.disallowBgClose ? false : true)}
           id={`modalOverlay-${identifier}`}
           className={`modalOverlay`} style={prefix({ ...overlayStyle, ...modalOverlayStyle})}
         >
           {mobile && buttonGroup ?
             <div className='modalButtonGroup'>
               {buttonGroup}
-              {(closeBtn) && <button style={closeBtnStyle} className='modalCloseBtn' onClick={() => this.closeModal(closeCallback, 'ok')}>{iconClose}</button>}
+              {(closeBtn) && <button style={closeBtnStyle} className='modalCloseBtn' onClick={() => this.closeModal('ok')}>{iconClose}</button>}
             </div>
           : <></> }
           {draggable && !mobile ?

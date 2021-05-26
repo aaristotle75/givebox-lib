@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import * as util from '../../common/utility';
+import GBLink from '../../common/GBLink';
 import ModalLink from '../../modal/ModalLink';
 import { toggleModal } from '../../api/actions';
 

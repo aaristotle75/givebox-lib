@@ -4,7 +4,10 @@ import * as util from '../../common/utility';
 import ModalLink from '../../modal/ModalLink';
 import Icon from '../../common/Icon';
 import GBLink from '../../common/GBLink';
-import { toggleModal } from '../../api/actions';
+import {
+  toggleModal,
+  userLogout
+} from '../../api/actions';
 import {
   updateAdmin,
   updateHelperSteps
@@ -60,13 +63,14 @@ class AvatarMenu extends React.Component {
     } = this.props;
 
     const isWallet = util.getValue(access, 'role') === 'user' ? true : false;
+    const masquerade = util.getValue(access, 'masker', null) ? true : false;
     const baseURL = isWallet ? WALLET_URL : CLOUD_URL;
     const myAccountText = isWallet ? 'Go to Your Wallet' : 'Go to Nonprofit Admin';
 
     const menuList = [];
 
     menuList.push(
-      <li key='myAccount' onClick={() => this.directLink(`${baseURL}/settings`)}><span className='icon icon-user'></span> <span className='text'>My Account</span></li>
+      <li key='myAccount' onClick={() => this.directLink(`${baseURL}/settings/myaccount`)}><span className='icon icon-user'></span> <span className='text'>My Account</span></li>
     );
 
     if (hasAccessToEdit && step !== 'create') {
@@ -78,7 +82,7 @@ class AvatarMenu extends React.Component {
         <ModalLink type='li' id={'share'} key={'share'}><Icon><AiOutlineNotification /></Icon> <span className='text'>Share {display === 'org' ? 'Page' : 'Form'}</span></ModalLink>
       );
 
-      if (stage === 'admin') {
+      if (stage === 'admin' && display === 'article') {
         menuList.push(
           <li key={'exitBuilder'} onClick={() => {
             this.props.exitAdmin();
@@ -126,6 +130,7 @@ class AvatarMenu extends React.Component {
               }
             </div>
             <div className='rightSide'>
+              { masquerade ? <span className='line'>Super User</span> : null }
               <span className='line' style={{fontWeight: 300}}>{access.fullName}</span>
               <span className='line' style={{fontWeight: 300}}>{access.email}</span>
             </div>
@@ -136,7 +141,7 @@ class AvatarMenu extends React.Component {
           </ul>
           </div>
           <div className='bottomSection'>
-            <GBLink onClick={() => this.myAccountLink()}>{myAccountText}</GBLink>
+            <GBLink onClick={() => this.props.userLogout()}>{masquerade ? 'End Masquerade' : 'Logout' }</GBLink>
           </div>
         </div>
       </div>
@@ -173,5 +178,6 @@ export default connect(mapStateToProps, {
   toggleModal,
   updateAdmin,
   updateHelperSteps,
-  savePrefs
+  savePrefs,
+  userLogout
 })(AvatarMenu);
