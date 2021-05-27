@@ -117,7 +117,7 @@ class HelpDeskButton extends Component {
             </Fade>
           </div>
         </Draggable>
-        <GBLink onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} style={btnColor ? this.state.buttonStyle[this.state.buttonState] : {}} onClick={this.toggleDisplay} className='helpDeskButton'>
+        <GBLink onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} style={btnColor ? this.state.buttonStyle[this.state.buttonState] : {}} onClick={this.toggleDisplay} className='helpDeskButton helpDeskButtonStyle'>
           {open ? 'Close' : 'Help' }
         </GBLink>
       </Portal>

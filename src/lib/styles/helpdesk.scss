@@ -194,16 +194,22 @@
   border-top-right-radius: 10px;
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
-  background: $mainColor;
-  color: $white;
   z-index: 1999991;
   transform: rotate(-90deg);
   -webkit-transform: rotate(-90deg);
   @include animation(pulsateSlightlyBrighter 2s infinite ease-out);
 }
 
-.helpDeskButton:hover {
-  background: $mainColorLight;
+.helpDeskButtonStyle {
+  background: $mainColor !important;
+  color: $white !important;
+  @include animation(pulsateSlightlyBrighter 2s infinite ease-out);
+  @include default-transition(.25s);
+}
+
+.helpDeskButtonStyle:hover {
+  background: $mainColorLight !important;
+  color: $white !important;
   @include default-transition(.25s);
 }
 

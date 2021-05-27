@@ -21,7 +21,8 @@ export function openLaunchpad(opts = {}) {
           if (modalEl.classList.contains('appLoaded')) modalEl.classList.remove('appLoaded');
         }
         dispatch(setAppProps({
-          openApp: null,
+          openApp: false,
+          openAppSlug: null,
           openAppURL: null,
           appLoading: false
         }));

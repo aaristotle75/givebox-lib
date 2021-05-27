@@ -23,13 +23,14 @@ class Launchpad extends React.Component {
     this.renderAppDisplay = this.renderAppDisplay.bind(this);
     this.onClickApp = this.onClickApp.bind(this);
     this.appLoadedMessage = this.appLoadedMessage.bind(this);
+    this.launchpadActions = this.launchpadActions.bind(this);
     this.state = {
     };
   }
 
   componentDidMount() {
     if (this.props.openApp) {
-      const app = launchpadConfig.find(a => a.slug === this.props.openApp);
+      const app = launchpadConfig.find(a => a.slug === this.props.openAppSlug);
       console.log('execute auto openapp -> ', app);
     }
     window.addEventListener('message', this.appLoadedMessage, false);
@@ -46,7 +47,8 @@ class Launchpad extends React.Component {
       accessOrgID,
       masker,
       isSuper,
-      currentOrgID
+      currentOrgID,
+      openAppSlug
     } = this.props;
 
     if (path === 'backgroundClick') {
@@ -63,7 +65,8 @@ class Launchpad extends React.Component {
           callback: () => {
             this.props.setAppProps({
               openAppURL,
-              openApp: slug
+              openAppSlug: slug,
+              openApp: true
             });
           }
         });
@@ -73,7 +76,8 @@ class Launchpad extends React.Component {
             callback: () => {
               this.props.setAppProps({
                 openAppURL,
-                openApp: slug
+                openAppSlug: slug,
+                openApp: true
               });
             }
           });
@@ -81,7 +85,8 @@ class Launchpad extends React.Component {
       } else {
         this.props.setAppProps({
           openAppURL,
-          openApp: slug
+          openAppSlug: slug,
+          openApp: true
         });
       }
     }
@@ -117,23 +122,38 @@ class Launchpad extends React.Component {
     );
   }
 
+  launchpadActions() {
+
+    const app = launchpadConfig.find(a => a.slug === this.props.openAppSlug);
+
+    return (
+      <div className='launchpadActions'>
+        <GBLink className='launchpadActionsButton helpDeskButtonStyle' onClick={() => this.props.toggleModal('launchpad', false)}>
+          Exit {util.getValue(app, 'name', 'App')}
+        </GBLink>
+        <GBLink
+          className='launchpadActionsButton helpDeskButtonStyle'
+          onClick={() => this.props.setAppProps({
+            openApp: false
+          })}
+        >
+          Launchpad
+        </GBLink>
+      </div>
+    )
+  }
+
   renderAppDisplay() {
     const {
       openAppURL,
       appLoading
     } = this.props;
 
-    const app = launchpadConfig.find(a => a.slug === this.props.openApp);
-
     return (
       <>
         <div className='launchpadScreen'></div>
         { !appLoading ?
-        <div className='launchpadActions'>
-          <GBLink className='button' onClick={() => this.props.toggleModal('launchpad', false)}>
-            Exit {util.getValue(app, 'name')}
-          </GBLink>
-        </div>
+          this.launchpadActions()
         : null }
         <iframe src={openAppURL} />
       </>
@@ -143,14 +163,14 @@ class Launchpad extends React.Component {
   render() {
 
     const {
-      openAppURL,
+      openApp,
       appLoading
     } = this.props;
 
     return (
       <>
         { appLoading ? <Loader infinite={true} msg='Loading app...' /> : null }
-        { openAppURL ?
+        { openApp ?
           this.renderAppDisplay()
         :
           this.renderAppList()
@@ -167,6 +187,7 @@ function mapStateToProps(state, props) {
   const masker = util.getValue(access, 'masker');
   const isSuper = util.getValue(access, 'role') === 'super' ? true : false;
   const openApp = util.getValue(state, 'app.openApp');
+  const openAppSlug = util.getValue(state, 'app.openAppSlug');
   const openAppURL = util.getValue(state, 'app.openAppURL', null);
   const appLoading = util.getValue(state, 'app.appLoading');
   const currentOrgID = util.getValue(state, 'gbx3.info.orgID');
@@ -176,6 +197,7 @@ function mapStateToProps(state, props) {
     masker,
     isSuper,
     openApp,
+    openAppSlug,
     openAppURL,
     appLoading,
     currentOrgID

@@ -307,7 +307,7 @@ class TableBody extends Component {
       Object.entries(rows).forEach(([key, value]) => {
         const td = [];
         const details = [];
-        const length = value.length;
+        const length = value.length + 1;
         const passkey = key;
         let options = {};
         let ref, id;
