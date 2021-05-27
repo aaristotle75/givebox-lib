@@ -13,9 +13,11 @@ import {
   openLaunchpad
 } from '../../../api/actions';
 import ModalLink from '../../../modal/ModalLink';
+import HelpDeskButton from '../../../helpdesk/HelpDeskButton';
 import OrgModalRoutes from '../../OrgModalRoutes';
 import { SiLaunchpad } from 'react-icons/si';
 
+const helpDesk = process.env.REACT_APP_HELP_DESK;
 const ENV = process.env.REACT_APP_ENV;
 
 class OrgAdmin extends React.Component {
@@ -45,6 +47,9 @@ class OrgAdmin extends React.Component {
 
     return (
       <>
+        <HelpDeskButton
+          showKB={false}
+        />
         <OrgModalRoutes />
         <div className={`leftPanelOpenButton ${open ? 'open' : 'close'}`} onClick={this.props.toggleAdminLeftPanel}><span className='icon icon-menu'></span></div>
         <div

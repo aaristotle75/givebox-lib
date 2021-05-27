@@ -4,6 +4,7 @@ import * as util from '../common/utility';
 import Portal from '../common/Portal';
 import GBLink from '../common/GBLink';
 import Fade from '../common/Fade';
+import Loader from '../common/Loader';
 import HelpDesk from './HelpDesk';
 import Draggable from 'react-draggable';
 
@@ -37,13 +38,15 @@ class HelpDeskButton extends Component {
   }
 
   componentDidMount() {
-    this.setCategory(util.getValue(this.props.location, 'pathname'));
-
+    if (this.props.location) this.setCategory(util.getValue(this.props.location, 'pathname'));
+    else this.setState({ loading: false });
   }
 
   componentDidUpdate(prev) {
-    if (util.getValue(prev.location, 'pathname') !== util.getValue(this.props.location, 'pathname')) {
-      this.setCategory(util.getValue(this.props.location, 'pathname'), util.getValue(prev.location, 'pathname'));
+    if (this.props.location) {
+      if (util.getValue(prev.location, 'pathname') !== util.getValue(this.props.location, 'pathname')) {
+        this.setCategory(util.getValue(this.props.location, 'pathname'), util.getValue(prev.location, 'pathname'));
+      }
     }
   }
 
@@ -78,7 +81,7 @@ class HelpDeskButton extends Component {
       open
     } = this.state;
 
-    if (this.state.loading) return this.props.loader('Loading help center...');
+    if (this.state.loading) return <Loader msg={'Loading help center...'} />;
 
     const email = util.getValue(access, 'email'); //'buddyteal333@gmail.com';
     const orgName = util.getValue(access, 'orgName');
@@ -126,7 +129,8 @@ HelpDeskButton.defaultProps = {
   channel: 'Nonprofit Admin',
   kb: 'faq',
   departmentId: '458931000000006907',
-  teamId: '458931000000192161'
+  teamId: '458931000000192161',
+  location: null
 }
 
 function mapStateToProps(state, props) {
