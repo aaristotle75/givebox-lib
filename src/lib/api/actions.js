@@ -131,7 +131,6 @@ export function toggleModal(identifier, open, options = {}) {
       ...util.getValue(modals, `${identifier}.opts`, {}),
       ...options
     };
-    const blurClass = util.getValue(opts, 'blurClass', 'blur');
 
     let openModals = [];
     let allowSetModal = false;
@@ -139,6 +138,7 @@ export function toggleModal(identifier, open, options = {}) {
       const filtered = util.filterObj(modals, 'open', true);
       openModals = Object.keys(filtered);
     }
+
     if (open) {
       if (!openModals.includes(identifier)) {
         openModals.push(identifier);
@@ -155,14 +155,6 @@ export function toggleModal(identifier, open, options = {}) {
 
     if (!util.isEmpty(openModals)) {
       topModal = openModals[openModals.length - 1]
-    }
-    const appRoot = document.getElementById('app-root');
-    if (appRoot) {
-      if (open) {
-        if (!appRoot.classList.contains(blurClass)) appRoot.classList.add(blurClass);
-      } else {
-        if (appRoot.classList.contains(blurClass) && util.isEmpty(openModals)) appRoot.classList.remove(blurClass);
-      }
     }
 
     if (allowSetModal) dispatch(setModal(identifier, open, topModal, opts));

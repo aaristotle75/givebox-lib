@@ -147,7 +147,6 @@ class Launchpad extends React.Component {
       appLoading
     } = this.props;
 
-    console.log('execute render appLoading-> ', appLoading);
     return (
       <>
         { appLoading ? <Loader infinite={true} msg='Loading app...' /> : null }

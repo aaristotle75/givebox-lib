@@ -26,7 +26,6 @@ class Modal extends Component {
     super(props);
     this.closeModal = this.closeModal.bind(this);
     this.renderActions = this.renderActions.bind(this);
-    this.onClose = this.onClose.bind(this);
     this.onEnter = this.onEnter.bind(this);
     this.onExit = this.onExit.bind(this);
     this.toTop = this.toTop.bind(this);
@@ -63,6 +62,9 @@ class Modal extends Component {
   componentDidMount() {
     //window.addEventListener('resize', this.handleResize.bind(this));
     if (this.props.open) {
+      const appRoot = document.getElementById('app-root');
+      const blurClass = this.props.blurClass;
+      if (!appRoot.classList.contains(blurClass)) appRoot.classList.add(blurClass);
       setTimeout(() => this.setState({open: true}) ,0);
     }
   }
@@ -97,13 +99,6 @@ class Modal extends Component {
     //const el = document.getElementById('layout-main');
     animateScrollTo(0, { element: this.modalRef.current });
     animateScrollTo(0, { element: this.modalContentRef.current });
-  }
-
-  onClose(callback) {
-    const transitionTimeMS = this.getTransitionDuration();
-    this.setState({open: false}, () => {
-       this.closeTimer = setTimeout(callback, transitionTimeMS);
-    });
   }
 
   /* Set width and height of screen */
@@ -151,11 +146,31 @@ class Modal extends Component {
   }
 
   closeModal(type = 'ok', allowClose = true) {
+    const {
+      modals,
+      identifier
+    } = this.props;
     const bindthis = this;
     const transitionTimeMS = this.getTransitionDuration();
+
+    const appRoot = document.getElementById('app-root');
+    const blurClass = bindthis.props.blurClass;
+    let openModals = [];
+    if (!util.isEmpty(modals)) {
+      const filtered = util.filterObj(modals, 'open', true);
+      openModals = Object.keys(filtered);
+      const index = openModals.indexOf(identifier);
+      if (index !== -1) {
+        openModals.splice(index, 1);
+      }
+    }
+    if (appRoot.classList.contains(blurClass) && util.isEmpty(openModals)) {
+      const classRemoved = appRoot.classList.remove(blurClass);
+    }
+
     if (allowClose) {
       this.setState({open: false});
-      this.closeTimer = setTimeout(function() {
+      this.closeTimer = setTimeout(() => {
         window.postMessage(bindthis.props.identifier, '*');
         if (bindthis.props.closeCallback) bindthis.props.closeCallback(type);
       }, transitionTimeMS);
@@ -317,7 +332,8 @@ Modal.defaultProps = {
   iconClose: <span className='icon icon-x'></span>,
   draggable: false,
   draggableTitle: '',
-  draggableTitleClass: ''
+  draggableTitleClass: '',
+  blurClass: 'blur'
 };
 
 function mapStateToProps(state, props) {

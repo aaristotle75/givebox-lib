@@ -82,6 +82,7 @@ class ModalRoute extends Component {
             draggable={draggable}
             draggableTitle={util.getValue(optsProps, 'draggableTitle', draggableTitle)}
             buttonGroup={buttonGroup}
+            blurClass={util.getValue(optsProps, 'blurClass', 'blur')}
           >
             { opened ?
               <ErrorBoundary>
