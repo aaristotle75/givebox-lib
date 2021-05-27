@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as util from '../common/utility';
 import Loader from '../common/Loader';
-import { launchpadConfig } from './admin/launchpad/launchpadConfig';
+import * as launchpadConfig from './admin/launchpad/launchpadConfig';
 import Image from '../common/Image';
 import GBLink from '../common/GBLink';
 import {
@@ -30,7 +30,7 @@ class Launchpad extends React.Component {
 
   componentDidMount() {
     if (this.props.openApp) {
-      const app = launchpadConfig.find(a => a.slug === this.props.openAppSlug);
+      const app = launchpadConfig.appList.find(a => a.slug === this.props.openAppSlug);
       console.log('execute auto openapp -> ', app);
     }
     window.addEventListener('message', this.appLoadedMessage, false);
@@ -39,6 +39,9 @@ class Launchpad extends React.Component {
   appLoadedMessage(e) {
     if (e.data === 'givebox-appLoaded') {
       this.props.setProp('appLoading', false);
+    }
+    if (e.data === 'exitLaunchpad') {
+      this.props.toggleModal('launchpad', false);
     }
   }
 
@@ -94,7 +97,7 @@ class Launchpad extends React.Component {
 
   renderAppList() {
     const items = [];
-    Object.entries(launchpadConfig).forEach(([key, value]) => {
+    Object.entries(launchpadConfig.appList).forEach(([key, value]) => {
       items.push(
         <div
           key={key}
@@ -124,7 +127,7 @@ class Launchpad extends React.Component {
 
   launchpadActions() {
 
-    const app = launchpadConfig.find(a => a.slug === this.props.openAppSlug);
+    const app = launchpadConfig.appList.find(a => a.slug === this.props.openAppSlug);
 
     return (
       <div className='launchpadActions'>
@@ -152,9 +155,6 @@ class Launchpad extends React.Component {
     return (
       <>
         <div className='launchpadScreen'></div>
-        { !appLoading ?
-          this.launchpadActions()
-        : null }
         <iframe src={openAppURL} />
       </>
     );

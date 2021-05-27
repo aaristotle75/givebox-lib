@@ -197,12 +197,11 @@
   z-index: 1999991;
   transform: rotate(-90deg);
   -webkit-transform: rotate(-90deg);
-  @include animation(pulsateSlightlyBrighter 2s infinite ease-out);
 }
 
 .helpDeskButtonStyle {
-  background: $mainColor !important;
-  color: $white !important;
+  background: transparentize($med-blue-dark-gray, .9) !important;
+  color: $dark !important;
   @include animation(pulsateSlightlyBrighter 2s infinite ease-out);
   @include default-transition(.25s);
 }
@@ -210,7 +209,6 @@
 .helpDeskButtonStyle:hover {
   background: $mainColorLight !important;
   color: $white !important;
-  @include default-transition(.25s);
 }
 
 .helpdesk {

@@ -114,6 +114,8 @@ import {
 
 import GBX3 from './gbx3/GBX3';
 
+import * as launchpadConfig from './gbx3/admin/launchpad/launchpadConfig';
+
 import {
   app,
   resource,
@@ -179,6 +181,7 @@ export {
 // gbx3
   GBX3,
   gbx3reducer,
+  launchpadConfig,
 
 // gbx3 actions
   loadGBX3,

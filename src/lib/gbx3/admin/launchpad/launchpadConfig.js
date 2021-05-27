@@ -1,6 +1,6 @@
-const raiseExt = '-lg';
+export const raiseExt = '-lg';
 
-export const launchpadConfig = [
+export const appList = [
   {
     name: 'Analytics',
     slug: 'analytics',
