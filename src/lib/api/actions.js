@@ -11,9 +11,11 @@ const SUPER_URL = process.env.REACT_APP_SUPER_URL;
 const ENV = process.env.REACT_APP_ENV;
 
 export function openLaunchpad(opts = {}) {
+  const autoOpenSlug = util.getValue(opts, 'autoOpenSlug', null);
   return (dispatch, getState) => {
     const state = getState();
     dispatch(toggleModal('launchpad', true, {
+      autoOpenSlug,
       blurClass: 'launchpadBlur',
       closeCallback: () => {
         const modalEl = document.getElementById('modalOverlay-launchpad');

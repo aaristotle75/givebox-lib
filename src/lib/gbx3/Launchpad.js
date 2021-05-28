@@ -29,9 +29,16 @@ class Launchpad extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.openApp) {
-      const app = launchpadConfig.appList.find(a => a.slug === this.props.openAppSlug);
-      console.log('execute auto openapp -> ', app);
+    const {
+      autoOpenSlug
+    } = this.props;
+
+    if (autoOpenSlug) {
+      const app = launchpadConfig.appList.find(a => a.slug === autoOpenSlug);
+      if (app) {
+        const path = util.getValue(app, 'path');
+        this.onClickApp(path, autoOpenSlug);
+      }
     }
     window.addEventListener('message', this.appLoadedMessage, false);
   }

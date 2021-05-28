@@ -253,6 +253,7 @@ class TransferMoneyStepsForm extends React.Component {
     } = this.props;
 
     const stepConfig = util.getValue(stepsTodo, step, {});
+    const stepsForApprovalCompleted = this.props.completed.length >= stepsTodo.length - 1 ? true : false;
     const slug = util.getValue(stepConfig, 'slug');
     const stepNumber = +step + 1;
     const completed = this.props.completed.includes(slug) ? true : false;
@@ -438,6 +439,18 @@ class TransferMoneyStepsForm extends React.Component {
             {this.props.saveButton(this.processForm, { group: slug, label: item.saveButtonLabel, disabled: item.saveButtonDisabled })}
           </div>
           <div className='button-item' style={{ width: 150 }}>
+            { slug !== 'transferStatus' && stepsForApprovalCompleted ?
+              <GBLink
+                className='link'
+                onClick={() => {
+                  const step = stepsTodo.findIndex(s => s.slug === 'transferStatus');
+                  this.props.updateOrgSignup({ step });
+                  this.props.formProp({ error: false });
+                }}
+              >
+                <span className='buttonAlignText'>Skip to Approval Status <span className='icon icon-chevron-right'></span></span>
+              </GBLink>
+            : null }
           </div>
         </div> : null }
       </div>

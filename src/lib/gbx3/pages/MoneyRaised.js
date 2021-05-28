@@ -8,13 +8,15 @@ import {
   setSignupStep
 } from '../redux/gbx3actions';
 import {
-  toggleModal
+  toggleModal,
+  openLaunchpad
 } from '../../api/actions';
 import {
   getResource
 } from '../../api/helpers';
 import Icon from '../../common/Icon';
 import { AiOutlineBank } from 'react-icons/ai';
+import { phases } from '../signup/signupConfig';
 
 class MoneyRaised extends React.Component {
 
@@ -58,7 +60,8 @@ class MoneyRaised extends React.Component {
   render() {
 
     const {
-      signupPhase
+      signupPhase,
+      completedPhases
     } = this.props;
 
     if (util.isLoading(this.props.orgStats) || util.isLoading(this.props.latestTransactions)) return <Loader msg='Loading latest transacitons and stats...' />
@@ -68,7 +71,7 @@ class MoneyRaised extends React.Component {
 
     const content = {};
 
-    if (!signupPhase) {
+    if (!signupPhase || completedPhases.length === phases.length) {
       content.headerIcon = <Icon><AiOutlineBank /></Icon>;
       content.headerText = 'Manage Money';
       content.text =
@@ -78,7 +81,7 @@ class MoneyRaised extends React.Component {
             If you have an approved bank account you can transfer money.
           </span>
           <div className='button-group flexCenter'>
-            <GBLink className='button' onClick={() => console.log('execute click manage money')}>
+            <GBLink className='button' onClick={() => this.props.openLaunchpad({ autoOpenSlug: 'money' })}>
               Manage Money
             </GBLink>
           </div>
@@ -168,11 +171,13 @@ class MoneyRaised extends React.Component {
 function mapStateToProps(state, props) {
 
   const signupPhase = util.getValue(state, 'gbx3.orgSignup.signupPhase');
+  const completedPhases = util.getValue(state, 'gbx3.orgSignup.completedPhases', []);
   const orgStats = util.getValue(state, 'resource.orgStats');
   const latestTransactions = util.getValue(state, 'resource.latestTransactions');
 
   return {
     signupPhase,
+    completedPhases,
     orgStats,
     latestTransactions
   }
@@ -181,5 +186,6 @@ function mapStateToProps(state, props) {
 export default connect(mapStateToProps, {
   setSignupStep,
   toggleModal,
-  getResource
+  getResource,
+  openLaunchpad
 })(MoneyRaised);
