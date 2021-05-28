@@ -27,6 +27,9 @@ class BasicBuilder extends React.Component {
     const mobile = props.breakpoint === 'mobile' ? true : false;
   }
 
+  componentDidMount() {
+  }
+
   previousStep() {
     const {
       step

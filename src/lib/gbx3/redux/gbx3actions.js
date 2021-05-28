@@ -214,8 +214,8 @@ export function checkSignupPhase(options = {}) {
         dispatch(loadSignupPhase({
           phase: signupPhase,
           modalName: 'orgConnectBankSteps',
-          openAdmin: hasReceivedTransaction ? true : false,
-          openModal: hasReceivedTransaction ? true : false,
+          openAdmin: true,
+          openModal: true,
           ...options
         }));
         break;
@@ -226,8 +226,8 @@ export function checkSignupPhase(options = {}) {
           dispatch(loadSignupPhase({
             phase: signupPhase,
             modalName: 'orgTransferSteps',
-            openAdmin: false,
-            openModal: false,
+            openAdmin: hasReceivedTransaction ? true : false,
+            openModal: hasReceivedTransaction ? true : false,
             ...options
           }));
         }

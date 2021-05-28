@@ -438,6 +438,10 @@ function extractFromPlaidAuth(account_id, data) {
       }
     };
 
+    dispatch(updateMerchantApp('allPlaidInfo', {
+      plaidAuth: data
+    }));
+
     dispatch(updateMerchantApp('extractAuth', {
       bankAccount,
       data
@@ -493,7 +497,11 @@ function extractFromPlaidIdentity(account_id, data, callback) {
       data
     }));
 
-    if (updated) {
+    const updated2 = await dispatch(updateMerchantApp('allPlaidInfo', {
+      plaidIdentity: data
+    }));
+
+    if (updated && updated2) {
       dispatch(savePlaidInfo(callback));
     }
   }
@@ -508,6 +516,7 @@ function savePlaidInfo(callback) {
     const bankAccount = util.getValue(state, 'merchantApp.extractAuth.bankAccount', {});
     const principal = util.getValue(state, 'merchantApp.extractIdentity.principal', {});
     const address = util.getValue(state, 'merchantApp.extractIdentity.address', {});
+    const allPlaidInfo = util.getValue(state, 'merchantApp.allPlaidInfo', {});
 
     // Chain the check and saves: bankAccount, principal, legalEntity, address
     dispatch(checkBankAccount((ID) => {
@@ -515,7 +524,10 @@ function savePlaidInfo(callback) {
       dispatch(saveBankAccount({
         hasBeenUpdated: true,
         data: {
-          ...bankAccount
+          ...bankAccount,
+          metaData: {
+            ...allPlaidInfo
+          }
         },
         callback: (res, err) => {
           if (!util.isEmpty(res) && !err) {
@@ -525,7 +537,10 @@ function savePlaidInfo(callback) {
               dispatch(savePrincipal({
                 hasBeenUpdated: true,
                 data: {
-                  ...principal
+                  ...principal,
+                  metaData: {
+                    ...allPlaidInfo
+                  }
                 },
                 callback: (res, err) => {
                   if (!util.isEmpty(res) && !err) {
@@ -576,7 +591,6 @@ function checkBankAccount(callback) {
           order: 'desc'
         },
         callback: (res, err) => {
-          console.log('execute orgBankAccounts res -> ', res, res.data);
           const orgBankAccountsData = util.getValue(res, 'data', []);
           const bankAccount = util.getValue(orgBankAccountsData, 0, {});
           const ID = util.getValue(bankAccount, 'ID');

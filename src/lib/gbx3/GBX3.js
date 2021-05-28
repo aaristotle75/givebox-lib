@@ -563,6 +563,7 @@ function mapStateToProps(state, props) {
   const savingSignup = util.getValue(gbx3, 'savingSignup');
   const globals = util.getValue(gbx3, 'globals', {});
   const info = util.getValue(gbx3, 'info', {});
+  const orgID = util.getValue(info, 'orgID', props.orgID);
   const stage = util.getValue(info, 'stage');
   const originTemplate = util.getValue(info, 'originTemplate');
   const display = util.getValue(info, 'display');
@@ -585,6 +586,7 @@ function mapStateToProps(state, props) {
     loading,
     savingSignup,
     info,
+    orgID,
     stage,
     originTemplate,
     display,

@@ -23,7 +23,16 @@ class ArticleAdmin extends React.Component {
   }
 
   componentDidMount() {
-    if (!this.props.advancedBuilder && this.props.step !== 'create') this.props.toggleModal('gbx3Builder', true);
+    const {
+      completed
+    } = this.props;
+
+    const checkIfTheseAreCompleted = [0, 1, 2];
+    const mainStepsCompleted = checkIfTheseAreCompleted.every(c => completed.includes(c));
+
+    if (!this.props.advancedBuilder && this.props.step !== 'create' && !mainStepsCompleted) {
+      this.props.toggleModal('gbx3Builder', true);
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -100,7 +109,8 @@ function mapStateToProps(state, props) {
   return {
     step,
     kind,
-    advancedBuilder
+    advancedBuilder,
+    completed: util.getValue(state, 'gbx3.helperSteps.completed', [])
   }
 }
 

@@ -18,6 +18,7 @@ export function merchantApp(state = {
     linkToken: null,
     accountID: null
   },
+  allPlaidInfo: {},
   extractAuth: {},
   extractIdentity: {}
 }, action) {
