@@ -61,7 +61,8 @@ class MoneyRaised extends React.Component {
 
     const {
       signupPhase,
-      completedPhases
+      completedPhases,
+      completed
     } = this.props;
 
     if (util.isLoading(this.props.orgStats) || util.isLoading(this.props.latestTransactions)) return <Loader msg='Loading latest transacitons and stats...' />
@@ -125,6 +126,9 @@ class MoneyRaised extends React.Component {
         }
 
         case 'transferMoney': {
+          const requiredToCheckApproval = ['identity', 'verifyBank', 'verifyBusiness', 'protect'];
+          const readyToCheckApproval = requiredToCheckApproval.every(c => completed.includes(c));
+          const stepToOpen = readyToCheckApproval ? 'transferStatus' : 'identity';
           content.headerIcon = <Icon><AiOutlineBank /></Icon>;
           content.headerText = 'Transfer Money Steps';
           content.text =
@@ -134,7 +138,9 @@ class MoneyRaised extends React.Component {
                 After you verify your identity and banking information you will not have to do this again unless you add a new bank account.
               </span>
               <div className='button-group flexCenter'>
-                <GBLink className='button' onClick={() => this.openStep('identity', 'orgTransferSteps')}>
+                <GBLink className='button' onClick={() => {
+                  this.openStep(stepToOpen, 'orgTransferSteps');
+                }}>
                   Transfer Money Steps
                 </GBLink>
               </div>
@@ -172,12 +178,14 @@ function mapStateToProps(state, props) {
 
   const signupPhase = util.getValue(state, 'gbx3.orgSignup.signupPhase');
   const completedPhases = util.getValue(state, 'gbx3.orgSignup.completedPhases', []);
+  const completed = util.getValue(state, 'gbx3.orgSignup.completed', []);
   const orgStats = util.getValue(state, 'resource.orgStats');
   const latestTransactions = util.getValue(state, 'resource.latestTransactions');
 
   return {
     signupPhase,
     completedPhases,
+    completed,
     orgStats,
     latestTransactions
   }

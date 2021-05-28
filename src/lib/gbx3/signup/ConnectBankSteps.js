@@ -101,7 +101,7 @@ class ConnectBankStepsForm extends React.Component {
             this.submerchantCreated();
           } else if (message === 'has_mid') {
             this.submerchantCreated(0);
-          } else if (err) {
+          } else if (err || message === 'cannot_submit_to_vantiv' || message === 'mid_notcreated') {
             this.switchToManualBank();
             this.props.formProp({ error: true, errorMsg: 'We are unable to connect your bank account. Please check that all your information is correct and try again in a few minutes.' });
             this.setState({ checkingStatus: false });

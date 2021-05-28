@@ -284,6 +284,8 @@ export function checkSubmitMerchantApp(options = {}) {
             query = 'submerchant_only=true';
           } else if (merchantIdentString && legalEntityStatus === 'approved') {
             message = 'submerchant_created';
+          } else {
+            message = 'cannot_submit_to_vantiv';
           }
 
           if (submitToVantiv) {
@@ -302,13 +304,13 @@ export function checkSubmitMerchantApp(options = {}) {
                         const vantiv = util.getValue(res, 'vantiv', {});
                         const merchantIdentString = util.getValue(vantiv, 'merchantIdentString');
                         const legalEntityStatus = util.getValue(vantiv, 'legalEntityStatus');
-                        let message = '';
+                        let message = 'mid_notcreated';
                         if (merchantIdentString && legalEntityStatus === 'approved') {
                           message = 'submerchant_created';
                         }
                         if (opts.callback) opts.callback(message);
                       } else {
-                        if (opts.callback) opts.callback();
+                        if (opts.callback) opts.callback(null, err);
                       }
                     }
                   }));
