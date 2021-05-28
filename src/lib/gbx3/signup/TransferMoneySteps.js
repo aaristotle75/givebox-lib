@@ -26,6 +26,7 @@ import {
   sendResource
 } from '../../api/helpers';
 import {
+  openLaunchpad,
   removeResource
 } from '../../api/actions';
 
@@ -54,6 +55,18 @@ class TransferMoneyStepsForm extends React.Component {
       is2FAVerified: false,
       checkingStatusDisableButton: false
     };
+  }
+
+  componentDidMount() {
+    const {
+      completed
+    } = this.props;
+
+    const requiredToCheckApproval = ['identity', 'verifyBank', 'verifyBusiness', 'protect'];
+    const readyToCheckApproval = requiredToCheckApproval.every(c => completed.includes(c));
+    if (readyToCheckApproval) {
+      this.checkApprovalStatus();
+    }
   }
 
   callbackAfter(tab) {
@@ -219,7 +232,7 @@ class TransferMoneyStepsForm extends React.Component {
       case 'transferStatus': {
         if (approvedForTransfers) {
           this.setState({ saving: false }, () => {
-            console.log('%c execute open Manage Money', 'font-size: 18px;color:green;');
+            this.props.openLaunchpad({ autoOpenSlug: 'money' });
           });
         } else {
           this.checkApprovalStatus();
@@ -510,11 +523,13 @@ function mapStateToProps(state, props) {
   const hasBankInfo = util.getValue(state, 'resource.gbx3Org.data.hasBankInfo');
   const approvedForTransfers = underwritingStatus === 'approved' && hasBankInfo ? true : false;
   const completedPhases = util.getValue(state, 'gbx3.orgSignup.completedPhases', []);
+  const completed = util.getValue(state, 'gbx3.orgSignup.completed', []);
 
   return {
     orgID,
     approvedForTransfers,
-    completedPhases
+    completedPhases,
+    completed
   }
 }
 
@@ -523,5 +538,6 @@ export default connect(mapStateToProps, {
   setMerchantApp,
   getResource,
   sendResource,
+  openLaunchpad,
   removeResource
 })(TransferMoneySteps);

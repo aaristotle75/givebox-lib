@@ -37,7 +37,6 @@ class ConnectBankStepsForm extends React.Component {
     this.connectBankPlaid = this.connectBankPlaid.bind(this);
     this.renderStep = this.renderStep.bind(this);
     this.processForm = this.processForm.bind(this);
-    this.checkRequiredCompleted = this.checkRequiredCompleted.bind(this);
     this.saveStep = this.saveStep.bind(this);
     this.saveCallback = this.saveCallback.bind(this);
     this.callbackAfter = this.callbackAfter.bind(this);
@@ -56,6 +55,7 @@ class ConnectBankStepsForm extends React.Component {
   }
 
   componentDidMount() {
+    this.checkConnectStatus();
   }
 
   connectBankPlaid() {
@@ -91,48 +91,6 @@ class ConnectBankStepsForm extends React.Component {
     }
   }
 
-  checkRequiredCompleted() {
-    const {
-      completed,
-      stepsTodo,
-      requiredSteps
-    } = this.props;
-
-    const stepsRequiredButNotComplete = [];
-
-    // Check if required steps are completed
-    requiredSteps.forEach((value, key) => {
-      if (!completed.includes(value.slug)) {
-        const step = stepsTodo.findIndex(s => s.slug === value.slug);
-        const stepNumber = +step + 1;
-        stepsRequiredButNotComplete.push(
-          <GBLink
-            key={key}
-            onClick={() => {
-              this.props.formProp({ error: false });
-              this.props.updateOrgSignup({ step });
-            }}
-          >
-            Click Here for Step {stepNumber}: {value.name}
-          </GBLink>
-        )
-      }
-    });
-
-    if (!util.isEmpty(stepsRequiredButNotComplete)) {
-      this.props.formProp({ error: true, errorMsg:
-        <div className='stepsNotCompletedButRequired'>
-          <span>Please complete the following steps to create your account:</span>
-          <div className='stepsNotCompletedList'>
-            {stepsRequiredButNotComplete}
-          </div>
-        </div>
-      });
-      return false;
-    }
-    return true;
-  }
-
   checkConnectStatus() {
 
     this.setState({ checkingStatus: true }, () => {
@@ -141,6 +99,8 @@ class ConnectBankStepsForm extends React.Component {
         callback: (message, err) => {
           if (message === 'submerchant_created') {
             this.submerchantCreated();
+          } else if (message === 'has_mid') {
+            this.submerchantCreated(0);
           } else if (err) {
             this.switchToManualBank();
             this.props.formProp({ error: true, errorMsg: 'We are unable to connect your bank account. Please check that all your information is correct and try again in a few minutes.' });
@@ -158,7 +118,7 @@ class ConnectBankStepsForm extends React.Component {
     if (completed) {
       this.setState({ checkingStatus: false });
       setTimeout(async () => {
-        const updated = await this.props.updateOrgSignup({ signupPhase: 'transferMoney' }, this.props.signupPhase);
+        const updated = await this.props.updateOrgSignup({ signupPhase: 'transferMoney' }, 'connectBank');
         if (updated) {
           this.props.updateAdmin({ open: false });
           this.props.toggleModal('orgConnectBankSteps', false);

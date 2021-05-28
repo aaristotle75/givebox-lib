@@ -323,7 +323,7 @@ export function checkSubmitMerchantApp(options = {}) {
         }
       }));
     } else {
-      if (opts.callback) opts.callback();
+      if (opts.callback) opts.callback('has_mid');
     }
   }
 }
