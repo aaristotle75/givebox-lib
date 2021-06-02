@@ -733,7 +733,7 @@ $contentHeaderPadding: 35%;
     button.link.active {
       color: $mainColor;
       border-bottom: 3px solid $mainColor;
-      @include animation(pulsateBrighter 2s ease-out infinite);
+      //@include animation(pulsateBrighter 2s ease-out infinite);
     }
   }
 }

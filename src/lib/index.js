@@ -112,6 +112,17 @@ import {
   gbx3 as gbx3reducer
 } from './gbx3/redux/gbx3reducers';
 
+import {
+  getLinkToken,
+  accessToken,
+  getPlaidInfo,
+  setMerchantApp
+} from './gbx3/redux/merchantActions';
+
+import {
+  merchantApp as merchantAppReducer
+} from './gbx3/redux/merchantReducers';
+
 import GBX3 from './gbx3/GBX3';
 
 import * as launchpadConfig from './gbx3/admin/launchpad/launchpadConfig';
@@ -214,6 +225,15 @@ export {
   setStyle,
   resetStyle,
   processTransaction,
+
+  // Merchant Actions
+  getLinkToken,
+  accessToken,
+  getPlaidInfo,
+  setMerchantApp,
+
+  // Merchant Reducers
+  merchantAppReducer,
 
   // API
   giveboxAPI,

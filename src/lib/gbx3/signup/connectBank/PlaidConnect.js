@@ -96,6 +96,10 @@ class PlaidConnect extends React.Component {
     } = this.props;
 
     if (!linkToken && !hasPlaidToken) return <Loader msg='Getting Plaid Token...' />;
+    
+    const plaidButtonText =
+      <span className='buttonAlignText'>Connect a Bank Account <span className='icon icon-chevron-right'></span></span>
+    ;
 
     return (
       <div>
@@ -106,7 +110,7 @@ class PlaidConnect extends React.Component {
             onClick={this.alreadyHasPlaidToken}
             className='button'
           >
-            <span className='buttonAlignText'>Connect a Bank Account <span className='icon icon-chevron-right'></span></span>
+            {plaidButtonText}
           </GBLink>
         :
           <PlaidLink
@@ -124,7 +128,7 @@ class PlaidConnect extends React.Component {
             })}
             onExit={this.exitPlaid}
           >
-            <span className='buttonAlignText'>Connect a Bank Account <span className='icon icon-chevron-right'></span></span>
+            {plaidButtonText}
           </PlaidLink>
         }
       </div>

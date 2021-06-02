@@ -55,7 +55,7 @@ class ConnectBankStepsForm extends React.Component {
   }
 
   componentDidMount() {
-    this.checkConnectStatus();
+    if (this.props.step !== 0) this.checkConnectStatus();
   }
 
   connectBankPlaid() {

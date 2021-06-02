@@ -91,7 +91,7 @@ class Cart extends Component {
           <div key={key} className='cartItemRow'>
             <div style={{ width: '10%', verticalAlign: 'middle', paddingRight: 10, whiteSpace: 'nowrap'  }} className='col'>
               <GBLink onClick={() => reloadGBX3(value.articleID)}>
-                <Image url={value.thumbnailURL || value.articleImageURL} maxSize={50} size='thumb' minHeight={50} />
+                <Image url={value.thumbnailURL || value.articleImageURL} maxSize={50} size='small' minHeight={50} />
               </GBLink>
             </div>
             <div style={{ width: '60%' }} className='col'>

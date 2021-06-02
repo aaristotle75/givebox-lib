@@ -351,6 +351,7 @@ export function accessToken(publicToken, metaData, options = {}) {
 
   const opts = {
     callback: null,
+    bankAccountOnly: false,
     ...options
   };
 
@@ -371,7 +372,7 @@ export function accessToken(publicToken, metaData, options = {}) {
           },
           method: 'POST',
           callback: (res, err) => {
-            dispatch(getPlaidInfo(opts.callback));
+            dispatch(getPlaidInfo(opts.callback, opts.bankAccountOnly));
           }
         }));
       }
@@ -382,7 +383,7 @@ export function accessToken(publicToken, metaData, options = {}) {
   }
 }
 
-export function getPlaidInfo(callback) {
+export function getPlaidInfo(callback, bankAccountOnly = false) {
   return (dispatch, getState) => {
     const gettingInfoFromPlaid = util.getValue(getState(), 'merchantApp.gettingInfoFromPlaid');
     if (!gettingInfoFromPlaid) dispatch(setMerchantApp('gettingInfoFromPlaid', true));
@@ -400,7 +401,7 @@ export function getPlaidInfo(callback) {
               callback: (res, err) => {
                 if (!util.isEmpty(res)) {
                   const data = util.getValue(res, 'data', {});
-                  dispatch(extractFromPlaidIdentity(account_id, data, callback));
+                  dispatch(extractFromPlaidIdentity(account_id, data, callback, bankAccountOnly));
                   dispatch(setMerchantApp('gettingInfoFromPlaid', false));
                 } else {
                   if (callback) callback('error');
@@ -451,7 +452,7 @@ function extractFromPlaidAuth(account_id, data) {
   }
 }
 
-function extractFromPlaidIdentity(account_id, data, callback) {
+function extractFromPlaidIdentity(account_id, data, callback, bankAccountOnly) {
 
   return async (dispatch, getState) => {
     const accounts = util.getValue(data, 'accounts', []);
@@ -504,12 +505,12 @@ function extractFromPlaidIdentity(account_id, data, callback) {
     }));
 
     if (updated && updated2) {
-      dispatch(savePlaidInfo(callback));
+      dispatch(savePlaidInfo(callback, bankAccountOnly));
     }
   }
 }
 
-function savePlaidInfo(callback) {
+function savePlaidInfo(callback, bankAccountOnly) {
   return (dispatch, getState) => {
     dispatch(setMerchantApp('gettingInfoFromPlaid', false));
     dispatch(setMerchantApp('savingInfoFromPlaid', true));
@@ -521,7 +522,7 @@ function savePlaidInfo(callback) {
     const allPlaidInfo = util.getValue(state, 'merchantApp.allPlaidInfo', {});
 
     // Chain the check and saves: bankAccount, principal, legalEntity, address
-    dispatch(checkBankAccount((ID) => {
+    dispatch(checkBankAccount(bankAccountOnly, (ID) => {
       if (ID) bankAccount.ID = ID;
       dispatch(saveBankAccount({
         hasBeenUpdated: true,
@@ -533,43 +534,47 @@ function savePlaidInfo(callback) {
         },
         callback: (res, err) => {
           if (!util.isEmpty(res) && !err) {
-            // continue to check and save principal
-            dispatch(checkPrincipal((ID) => {
-              if (ID) principal.ID = ID;
-              dispatch(savePrincipal({
-                hasBeenUpdated: true,
-                data: {
-                  ...principal,
-                  metaData: {
-                    ...allPlaidInfo
-                  }
-                },
-                callback: (res, err) => {
-                  if (!util.isEmpty(res) && !err) {
-                    // continue to check and save address
-                    dispatch(checkAddress((ID) => {
-                      if (ID) address.ID = ID;
-                      dispatch(saveAddress({
-                        hasBeenUpdated: true,
-                        data: {
-                          ...address
-                        },
-                        callback: (res, err) => {
-                          if (!util.isEmpty(res) && !err) {
-                            // Everything saved return success and check status
-                            if (callback) callback('success');
-                          } else {
-                            if (callback) callback('error', 'address');
+            if (bankAccountOnly) {
+              if (callback) callback('success');
+            } else {
+              // continue to check and save principal
+              dispatch(checkPrincipal((ID) => {
+                if (ID) principal.ID = ID;
+                dispatch(savePrincipal({
+                  hasBeenUpdated: true,
+                  data: {
+                    ...principal,
+                    metaData: {
+                      ...allPlaidInfo
+                    }
+                  },
+                  callback: (res, err) => {
+                    if (!util.isEmpty(res) && !err) {
+                      // continue to check and save address
+                      dispatch(checkAddress((ID) => {
+                        if (ID) address.ID = ID;
+                        dispatch(saveAddress({
+                          hasBeenUpdated: true,
+                          data: {
+                            ...address
+                          },
+                          callback: (res, err) => {
+                            if (!util.isEmpty(res) && !err) {
+                              // Everything saved return success and check status
+                              if (callback) callback('success');
+                            } else {
+                              if (callback) callback('error', 'address');
+                            }
                           }
-                        }
+                        }));
                       }));
-                    }));
-                  } else {
-                    if (callback) callback('error', 'principal');
+                    } else {
+                      if (callback) callback('error', 'principal');
+                    }
                   }
-                }
+                }));
               }));
-            }));
+            }
           } else {
             if (callback) callback('error', 'bankAccount');
           }
@@ -579,13 +584,13 @@ function savePlaidInfo(callback) {
   }
 }
 
-function checkBankAccount(callback) {
+function checkBankAccount(autoCreateNew = false, callback) {
   return (dispatch, getState) => {
     const state = getState();
     const orgBankAccounts = util.getValue(state, 'resource.orgBankAccounts', {});
     const orgBankAccountsData = util.getValue(orgBankAccounts, 'data');
     const bankAccount = util.getValue(orgBankAccountsData, 0, {});
-    if (util.isEmpty(bankAccount)) {
+    if (util.isEmpty(bankAccount) && !autoCreateNew) {
       dispatch(getResource('orgBankAccounts', {
         reload: true,
         search: {
