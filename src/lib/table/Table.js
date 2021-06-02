@@ -349,7 +349,7 @@ class TableBody extends Component {
       });
     } else {
       items.push(
-        <tr key={0}><td className='noRecordsRow' colSpan={length || 1} align='center'><NoRecords text={this.props.noRecordsText}/></td></tr>
+        <tr key={0}><td className='noRecordsRow' colSpan={+length + 1} align='center'><NoRecords text={this.props.noRecordsText}/></td></tr>
       );
     }
 
