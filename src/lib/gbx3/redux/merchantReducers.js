@@ -16,7 +16,8 @@ export function merchantApp(state = {
   plaid: {
     hasBeenUpdated: false,
     linkToken: null,
-    accountID: null
+    accountID: null,
+    bankName: null
   },
   allPlaidInfo: {},
   extractAuth: {},

@@ -103,6 +103,7 @@ export function saveLegalEntity(options = {}) {
 
 export function saveBankAccount(options = {}) {
   const opts = {
+    createNew: false,
     hasBeenUpdated: false,
     data: {},
     orgID: null,
@@ -119,7 +120,7 @@ export function saveBankAccount(options = {}) {
       ...opts.data
     };
 
-    if (!data.ID) data.ID = util.getValue(bankAccount, 'ID', null);
+    if (!data.ID && !opts.createNew) data.ID = util.getValue(bankAccount, 'ID', null);
     if (!data.number) data.number = null;
 
     if (opts.hasBeenUpdated) {
@@ -350,6 +351,7 @@ export function getLinkToken() {
 export function accessToken(publicToken, metaData, options = {}) {
 
   const opts = {
+    hasPlaidToken: false,
     callback: null,
     bankAccountOnly: false,
     ...options
@@ -358,23 +360,41 @@ export function accessToken(publicToken, metaData, options = {}) {
   return async (dispatch) => {
     dispatch(setMerchantApp('gettingInfoFromPlaid', true));
     const account_id = util.getValue(metaData, 'account_id');
+    const bankName = util.getValue(metaData, 'institution.name');
     if (localStorage.getItem('account_id')) {
       localStorage.removeItem('account_id');
     }
     if (account_id) {
       localStorage.setItem('account_id', account_id);
-      const updated = await dispatch(updateMerchantApp('plaid', { account_id }));
+      const updated = await dispatch(updateMerchantApp('plaid', { account_id, bankName }));
 
       if (updated) {
-        dispatch(sendResource('plaidAccess', {
-          data: {
-            publicToken
-          },
-          method: 'POST',
-          callback: (res, err) => {
-            dispatch(getPlaidInfo(opts.callback, opts.bankAccountOnly));
-          }
-        }));
+        if (opts.hasPlaidToken) {
+          dispatch(sendResource('plaidAccess', {
+            method: 'delete',
+            callback: (res, err) => {
+              dispatch(sendResource('plaidAccess', {
+                data: {
+                  publicToken
+                },
+                method: 'POST',
+                callback: (res, err) => {
+                  dispatch(getPlaidInfo(opts.callback, opts.bankAccountOnly));
+                }
+              }));
+            }
+          }));
+        } else {
+          dispatch(sendResource('plaidAccess', {
+            data: {
+              publicToken
+            },
+            method: 'POST',
+            callback: (res, err) => {
+              dispatch(getPlaidInfo(opts.callback, opts.bankAccountOnly));
+            }
+          }));
+        }
       }
     } else {
       // Throw error stop checking
@@ -421,16 +441,18 @@ export function getPlaidInfo(callback, bankAccountOnly = false) {
   }
 }
 
-
 function extractFromPlaidAuth(account_id, data) {
 
   return (dispatch, getState) => {
+    const state = getState();
+    const bankName = util.getValue(state, 'merchantApp.plaid.bankName', null);
     const accounts = util.getValue(data, 'accounts', []);
     const ach = util.getValue(data, 'numbers.ach', []);
     const account = accounts.find(a => a.account_id === account_id);
     const bankInfo = ach.find(a => a.account_id === account_id);
 
     const bankAccount = {
+      bankName,
       kind: 'deposit',
       name: util.getValue(account, 'name'),
       number: util.getValue(bankInfo, 'account'),
@@ -525,6 +547,7 @@ function savePlaidInfo(callback, bankAccountOnly) {
     dispatch(checkBankAccount(bankAccountOnly, (ID) => {
       if (ID) bankAccount.ID = ID;
       dispatch(saveBankAccount({
+        createNew: bankAccountOnly,
         hasBeenUpdated: true,
         data: {
           ...bankAccount,
@@ -535,7 +558,8 @@ function savePlaidInfo(callback, bankAccountOnly) {
         callback: (res, err) => {
           if (!util.isEmpty(res) && !err) {
             if (bankAccountOnly) {
-              if (callback) callback('success');
+              const bankAccountID = util.getValue(res, 'ID');
+              if (callback && bankAccountID) callback('success', bankAccountID);
             } else {
               // continue to check and save principal
               dispatch(checkPrincipal((ID) => {
