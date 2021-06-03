@@ -58,7 +58,7 @@ class OrgAdmin extends React.Component {
           onClick={this.props.openLaunchpad}
           className={`tooltip launchpadButton ${launchpad ? 'open' : 'closed'}`}
         >
-          <span className='tooltipTop'><i />Launchpad</span>
+          <span className='tooltipTop'><i />Dashboard</span>
           <Icon><SiLaunchpad /></Icon>
         </div>
         <div className={`leftPanel ${open ? 'open' : 'close'}`}>

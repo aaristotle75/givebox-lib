@@ -124,8 +124,11 @@
 
     .description:hover {
       background: transparentize($green, .6);
-      color: $dark;
+      color: $med-blue-dark-gray;
       @include default-transition(.25s);
+      .date {
+        color: $med-blue-dark-gray;
+      }
     }
 
     .ticker {

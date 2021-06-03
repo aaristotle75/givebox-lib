@@ -13,7 +13,7 @@ import {
   endMasquerade
 } from '../api/actions';
 
-const APP_URL = process.env.REACT_APP_CLOUD_URL;
+const APP_URL = process.env.REACT_APP_LAUNCHPAD_URL;
 
 class Launchpad extends React.Component {
 
