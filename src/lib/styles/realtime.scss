@@ -1,0 +1,137 @@
+@import 'variables.scss';
+
+.realTime {
+  position: relative;
+  width: 100%;
+  //background: $dark-blue-gray; #1818c8
+  //background: linear-gradient(to bottom, $med-blue-dark-gray 0%, $dark-blue-gray 100%);
+  background: linear-gradient(to right, $mainColorDark 20%, $dark-blue-gray 100%);
+  color: $white;
+  font-size: $small-text-size;
+
+  .realTimeFlex {
+    display: flex;
+  }
+
+  .realTimeTotal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 270px;
+    overflow: hidden;
+    white-space: wrap;
+    .moneyAmount {
+      font-size: 1.7em;
+    }
+
+    .centAmount {
+      font-size: 75%;
+    }
+
+    .date {
+      color: $med-blue-gray;
+    }
+
+    .change {
+      .moneyAmount {
+        font-size: 1.2em;
+      }
+
+      display: block;
+      font-size: $small-text-size;
+      color: $green;
+    }
+  }
+
+  button.close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    color: $white;
+  }
+
+  .realTimeLoader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 75px;
+    width: 100%;
+    margin-right: 40px;
+  }
+
+  .ticker {
+    height: 75px;
+    width: 100%;
+    padding: 0 10px;
+    margin-right: 40px;
+  }
+
+  .description:hover {
+    background: transparentize($mainColor, .6);
+    @include default-transition(.5s);
+  }
+
+  .description {
+    min-width: 150px;
+    max-width: 200px;
+    overflow: hidden;
+    white-space: wrap;
+    display: inline-block;
+    padding: 10px;
+    cursor: pointer;
+
+    .line {
+      display: block;
+    }
+    .amount {
+      color: $green;
+      font-size: 1em;
+    }
+    .smallText {
+      font-size: .5em;
+    }
+    .date {
+      color: $med-blue-gray;
+    }
+  }
+
+  .ticker_element {
+  }
+}
+
+.gbx3 {
+  .realTime {
+    display: none;
+  }
+
+  .org.admin {
+    .realTime {
+      display: block;
+    }
+  }
+
+  .realTimeWrapper {
+  }
+
+  .realTime {
+    color: $med-blue-gray;
+    background: transparent;
+
+    .description {
+      padding: 5px 10px;
+    }
+
+    .description:hover {
+      background: transparentize($green, .6);
+      color: $dark;
+      @include default-transition(.25s);
+    }
+
+    .ticker {
+      margin-left: 205px;
+      margin-right: 160px;
+    }
+  }
+
+}

@@ -10,6 +10,7 @@ import MoneyRaised from './MoneyRaised';
 import Icon from '../../common/Icon';
 import { GoDashboard } from 'react-icons/go';
 import HelpfulTip from '../../common/HelpfulTip';
+import RealTime from './RealTime';
 
 export default class OrgDisplay extends React.Component {
 
@@ -32,7 +33,7 @@ export default class OrgDisplay extends React.Component {
           <div className={'gbx3OrgLogoContainer'} onClick={() => console.log('logo clicked!')}>
             <Image size='thumb' maxSize={35} url={'https://cdn.givebox.com/givebox/public/gb-logo5.png'} alt='Givebox' />
           </div>
-          <MoneyRaised />
+          <RealTime />
           { cameFromNonprofitAdmin ?
             <div className='gbx3OrgBackToDashboard orgAdminOnly'>
               <GBLink key={'exit'} style={{ fontSize: '14px' }} className='link' onClick={() => this.props.exitAdmin()}><Icon><GoDashboard /></Icon>{ isMobile ? 'Dashboard' : `Back to Dashboard` }</GBLink>

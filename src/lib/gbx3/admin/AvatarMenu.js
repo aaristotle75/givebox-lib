@@ -100,6 +100,18 @@ class AvatarMenu extends React.Component {
       );
     }
 
+    if (stage === 'admin' && display === 'org') {
+      menuList.push(
+        <li
+          onClick={() => {
+            this.props.savePrefs({ ticker: { open: this.props.tickerDisplay ? false : true } });
+          }}
+        >
+          <span className='icon icon-activity'></span> <span className='text'>{this.props.tickerDisplay ? 'Hide Ticker' : 'Show Ticker'}</span>
+        </li>
+      )
+    }
+
     return (
       <div className='modalWrapper'>
         <div className='avatarMenu'>
@@ -159,8 +171,11 @@ function mapStateToProps(state, props) {
   const step = util.getValue(state, 'gbx3.admin.step');
   const helperPref = util.getValue(state, 'preferences.gbx3Helpers');
   const builderPref = util.getValue(state, 'preferences.builderPref');
+  const tickerPref = util.getValue(state, 'preferences.ticker', {});
+  const tickerDisplay = util.getValue(tickerPref, 'open', true);
   const stage = util.getValue(state, 'gbx3.info.stage');
   const display = util.getValue(state, `gbx3.info.display`);
+
 
   return {
     access,
@@ -168,6 +183,7 @@ function mapStateToProps(state, props) {
     step,
     helperPref,
     builderPref,
+    tickerDisplay,
     stage,
     display,
     advancedBuilder: util.getValue(state, 'gbx3.helperSteps.advancedBuilder', false)

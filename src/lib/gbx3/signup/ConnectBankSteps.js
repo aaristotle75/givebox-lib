@@ -29,6 +29,7 @@ import LegalEntity from './connectBank/LegalEntity';
 import Address from './connectBank/Address';
 import PlaidConnect from './connectBank/PlaidConnect';
 import ConnectStatus from './connectBank/ConnectStatus';
+import Moment from 'moment';
 
 class ConnectBankStepsForm extends React.Component {
 
@@ -269,7 +270,9 @@ class ConnectBankStepsForm extends React.Component {
       isVantivReady,
       merchantIdentString,
       signupPhase,
-      hasReceivedTransaction
+      hasReceivedTransaction,
+      instantStatus,
+      phaseEndsAt
     } = this.props;
 
     const stepConfig = util.getValue(stepsTodo, step, {});
@@ -300,12 +303,21 @@ class ConnectBankStepsForm extends React.Component {
 
     switch (slug) {
       case 'connectBank': {
+        const phaseEnds = phaseEndsAt; // 1622719816
+        //const now = Math.floor(Date.now() /1000);
+        const endsAt = Moment.unix(phaseEnds).utc();
+        const now = Moment.utc();
+        const diff = endsAt.diff(now, 'days');
+        const lastDay = diff === 0 ? true : false;
+        const diffDisplay = lastDay ? 'This is the Last Day' : `You Have ${diff} Day${diff > 1 ? 's' : ''}`;
+        const daysLeftDisplay = `${diffDisplay} to Connect a Bank Account or the Money You Received will be Refunded.`;
+
         item.saveButtonLabelTop = <span className='buttonAlignText'>Click Here to Connect Your Bank Account<span className='icon icon-chevron-right'></span></span>;
         item.saveButtonLabel = <span className='buttonAlignText'>Connect Your Bank Account <span className='icon icon-chevron-right'></span></span>;
         item.desc =
           <div>
             { hasReceivedTransaction ? <p>Congratulations, you have received your first transactions with Givebox!</p> : null }
-            <p></p>
+            { hasReceivedTransaction && phaseEndsAt ? <p style={{ fontWeight: 500, color: lastDay ? 'red' : null }}>{daysLeftDisplay}</p> : null }
             <p>Simply connect your bank, and in a matter of minutes you will have a bank account connected and can continue to accept payments and donations.</p>
             <HelpfulTip
               headerIcon={<span className='icon icon-external-link'></span>}
@@ -546,6 +558,10 @@ function mapStateToProps(state, props) {
   const merchantIdentString = util.getValue(state, 'resource.gbx3Org.data.vantiv.merchantIdentString');
   const hasReceivedTransaction = util.getValue(state, 'resource.gbx3Org.data.hasReceivedTransaction');
   const signupPhase = util.getValue(state, 'gbx3.orgSignup.signupPhase');
+  const instant = util.getValue(state, 'resource.gbx3Org.data.instantFundraising', {});
+  const instantPhase = util.getValue(instant, 'phase');
+  const instantStatus = instantPhase === 1 ? util.getValue(instant, 'status', null) : null;
+  const phaseEndsAt = instantPhase == 1 && instantStatus === 'enabled' ? util.getValue(instant, 'phaseEndsAt', null) : null;
 
   return {
     plaidAccountID,
@@ -553,7 +569,9 @@ function mapStateToProps(state, props) {
     isVantivReady,
     merchantIdentString,
     signupPhase,
-    hasReceivedTransaction
+    hasReceivedTransaction,
+    instantStatus,
+    phaseEndsAt
   }
 }
 

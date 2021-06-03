@@ -11,9 +11,6 @@ import {
   toggleModal,
   openLaunchpad
 } from '../../api/actions';
-import {
-  getResource
-} from '../../api/helpers';
 import Icon from '../../common/Icon';
 import { AiOutlineBank } from 'react-icons/ai';
 import { phases } from '../signup/signupConfig';
@@ -23,32 +20,11 @@ class MoneyRaised extends React.Component {
   constructor(props) {
     super(props);
     this.openStep = this.openStep.bind(this);
-    this.getTransactions = this.getTransactions.bind(this);
     this.state = {
     };
   }
 
   componentDidMount() {
-    this.getTransactions();
-  }
-
-  getTransactions() {
-    this.props.getResource('orgFinanceStats', {
-      reload: true,
-      isSending: false
-    });
-    this.props.getResource('orgStats', { reload: true, isSending: false });
-    this.props.getResource('orgTransactions', {
-      customName: 'latestTransactions',
-      search: {
-        sort: 'updatedAt',
-        order: 'desc',
-        filter: '(state:"approved"%2Cstate:"if_batch")%3BtxType:"credit"',
-        max: 10
-      },
-      reload: true,
-      isSending: false
-    });
   }
 
   openStep(value, modalName) {
@@ -62,13 +38,9 @@ class MoneyRaised extends React.Component {
     const {
       signupPhase,
       completedPhases,
-      completed
+      completed,
+      balance
     } = this.props;
-
-    if (util.isLoading(this.props.orgStats) || util.isLoading(this.props.latestTransactions)) return <Loader msg='Loading latest transacitons and stats...' />
-
-    const orgStats = util.getValue(this.props.orgStats, 'data', {});
-    const netTotal = util.numberWithCommas(parseFloat(util.getValue(orgStats, 'netTotal', 0)/100).toFixed(2));
 
     const content = {};
 
@@ -153,8 +125,21 @@ class MoneyRaised extends React.Component {
       }
     }
 
+    let dollarAmount = <span className='dollarAmount'>{balance[0]}</span>;
+    let centAmount = `.${balance[1]}`;
+
+    if (balance[0].includes(',')) {
+      let dollarArr = balance[0].split(',');
+      dollarAmount =
+        <span className='dollarAmount'>
+          {dollarArr[0]}
+          <span><span className='dollarComma'>,</span>{dollarArr[1]}</span>
+          {dollarArr[2] && <span><span className='dollarComma'>,</span>{dollarArr[2]}</span>}
+        </span>
+    }
+
     return (
-      <div className='moneyRaisedContainer orgAdminOnly'>
+      <div className='moneyRaisedContainer'>
         <div className='tooltip moneyRaised'>
           <div className='tooltipTop'>
             <HelpfulTip
@@ -166,7 +151,7 @@ class MoneyRaised extends React.Component {
           </div>
           <span className='moneyRaisedLabel'>Money Raised</span>
           <span className='moneyRaisedText moneyAmount'>
-            <span className='symbol'>$</span>{netTotal}
+            <span className='symbol'>$</span>{dollarAmount}<span className='centAmount'><span className='centSymbol'></span>{centAmount}</span>
           </span>
         </div>
       </div>
@@ -179,21 +164,16 @@ function mapStateToProps(state, props) {
   const signupPhase = util.getValue(state, 'gbx3.orgSignup.signupPhase');
   const completedPhases = util.getValue(state, 'gbx3.orgSignup.completedPhases', []);
   const completed = util.getValue(state, 'gbx3.orgSignup.completed', []);
-  const orgStats = util.getValue(state, 'resource.orgStats');
-  const latestTransactions = util.getValue(state, 'resource.latestTransactions');
 
   return {
     signupPhase,
     completedPhases,
-    completed,
-    orgStats,
-    latestTransactions
+    completed
   }
 }
 
 export default connect(mapStateToProps, {
   setSignupStep,
   toggleModal,
-  getResource,
   openLaunchpad
 })(MoneyRaised);
