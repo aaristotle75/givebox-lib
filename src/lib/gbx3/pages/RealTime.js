@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as util from '../../common/utility';
 import GBLink from '../../common/GBLink';
+import Image from '../../common/Image';
 import {
   toggleModal
 } from '../../api/actions';
@@ -152,7 +153,7 @@ class RealTime extends Component {
               <GBLink className='close link' onClick={this.props.toggleDisplay}><span className='icon icon-x'></span></GBLink>
               { display && util.isFetching(this.props.transactions) ?
                 <div className={`realTimeLoader`}>
-                  <span className='loadingText'>Loading real-time data... <img src='https://s3-us-west-1.amazonaws.com/givebox/public/images/squareLoader.gif' alt='Loader' /></span>
+                  <Image url='https://cdn.givebox.com/givebox/public/images/spinner-loader.svg' alt='Loader' />
                 </div>
               :
                 <RealTimeClass {...this.props} display={display} />
