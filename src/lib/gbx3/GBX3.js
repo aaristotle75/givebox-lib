@@ -175,14 +175,17 @@ class GBX3 extends React.Component {
 
   loadSignup() {
     const {
-      access
+      access,
+      bookDemo
     } = this.props;
 
     const role = util.getValue(access, 'role');
     if (role === 'super') {
       history.push(`${ENTRY_URL}`);
     } else {
-      this.props.loadOrgSignup();
+      this.props.loadOrgSignup({
+        bookDemo
+      });
     }
   }
 
@@ -333,6 +336,7 @@ class GBX3 extends React.Component {
     info.modal = has(queryParams, 'modal') || modal ? true : false;
     info.preview = has(queryParams, 'preview') ? true : false;
     info.signup = has(queryParams, 'signup') ? true : false;
+    info.bookDemo = has(queryParams, 'bookDemo') ? true : false;
     info.locked = has(queryParams, 'locked') ? true : false;
     info.noFocus = has(queryParams, 'noFocus') ? true : false;
     info.receipt = has(queryParams, 'receipt') ? true : false;
@@ -580,6 +584,7 @@ function mapStateToProps(state, props) {
   const orgSlug = util.getValue(gbx3Org, 'data.slug');
   const browse = has(queryParams, 'browse') ? true : props.browse;
   const signup = has(queryParams, 'signup') ? true : props.signup;
+  const bookDemo = has(queryParams, 'bookDemo') ? true : props.bookDemo;
 
   return {
     globals,
@@ -601,6 +606,7 @@ function mapStateToProps(state, props) {
     step,
     browse,
     signup,
+    bookDemo,
     access: util.getValue(state.resource, 'access', {})
   }
 }

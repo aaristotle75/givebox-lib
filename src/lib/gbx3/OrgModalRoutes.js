@@ -121,6 +121,13 @@ export default class GBX3ModalRoutes extends Component {
         />
         <ModalRoute
           className='gbx3'
+          id={'bookDemo'}
+          effect='3DFlipVert' style={{ width: '70%' }}
+          disallowBgClose={false}
+          component={(props) => this.loadComponent('./signup/BookDemo', props)}
+        />
+        <ModalRoute
+          className='gbx3'
           id={'orgPostSignupSteps'}
           effect='3DFlipVert' style={{ width: '85%' }}
           disallowBgClose={true}

@@ -6,6 +6,7 @@ import ScrollTop from '../../common/ScrollTop';
 import Image from '../../common/Image';
 import GBLink from '../../common/GBLink';
 import {
+  loadOrgSignup,
   setOrgStyle,
   updateOrgSignup,
   setSignupStep
@@ -24,23 +25,21 @@ class Signup extends React.Component {
   constructor(props) {
     super(props);
     this.openStep = this.openStep.bind(this);
+    this.resizer = this.resizer.bind(this);
     this.state = {
     };
   }
 
   componentDidMount() {
-    const {
-      breakpoint,
-      isMobile
-    } = this.props;
+    window.addEventListener('resize', this.resizer);
+  }
 
-    /*
-    window.onbeforeunload = function(e) {
-      const dialogText = 'Changes that you made may not be saved.';
-      e.returnValue = dialogText;
-      return dialogText;
-    };
-    */
+  resizer(e) {
+    if (window.innerWidth <= 736) {
+      this.setState({ isMobile: true });
+    } else if (this.state.isMobile) {
+      this.setState({ isMobile: false})
+    }
   }
 
   openStep(value) {
@@ -52,10 +51,14 @@ class Signup extends React.Component {
   render() {
 
     const {
-      breakpoint,
-      isMobile,
       open
     } = this.props;
+
+    const {
+      isMobile
+    } = this.state;
+
+    console.log('execute isMobile -> ', isMobile);
 
     return (
       <div className='gbx3AdminLayout orgDisplay editable gbx3OrgSignup'>
@@ -75,6 +78,9 @@ class Signup extends React.Component {
                     }
                   </div>
                   <div className='moneyRaisedContainer'>
+                    <GBLink style={{ marginRight: 10 }} className='button' onClick={() => this.props.loadOrgSignup({ bookDemo: true })}>
+                      <span className='buttonAlignText'>Book Demo <span className='icon icon-book-open'></span></span>
+                    </GBLink>
                     <GBLink className='button' onClick={() => this.openStep('account')}>
                       <span className='buttonAlignText'>Save Account <span className='icon icon-save'></span></span>
                     </GBLink>
@@ -121,18 +127,15 @@ class Signup extends React.Component {
 
 function mapStateToProps(state, props) {
 
-  const breakpoint = util.getValue(state, 'gbx3.info.breakpoint');
-  const isMobile = breakpoint === 'mobile' ? true : false;
   const open = util.getValue(state, 'gbx3.admin.open', true);
 
   return {
-    breakpoint,
-    isMobile,
     open
   }
 }
 
 export default connect(mapStateToProps, {
+  loadOrgSignup,
   setOrgStyle,
   updateOrgSignup,
   setSignupStep,
