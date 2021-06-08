@@ -108,7 +108,7 @@ class PlaidConnect extends React.Component {
         { hasPlaidToken ?
           <GBLink
             onClick={this.alreadyHasPlaidToken}
-            className='button'
+            className={this.props.className}
           >
             {plaidButtonText}
           </GBLink>
@@ -135,6 +135,10 @@ class PlaidConnect extends React.Component {
     )
   }
 }
+
+PlaidConnect.defaultProps = {
+  className: 'button'
+};
 
 function mapStateToProps(state, props) {
 

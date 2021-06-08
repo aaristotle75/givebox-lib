@@ -438,9 +438,16 @@ class ConnectBankStepsForm extends React.Component {
         { this.state.saving || this.state.checkingStatus ? <Loader msg='Saving...' /> : null }
         <div className='stepStatus'>
           { !item.saveButtonDisabled ?
-          <GBLink onClick={(e) => this.props.validateForm(e, this.processForm, slug)}>
-            <span style={{ marginLeft: 20 }}>{item.saveButtonLabelTop}</span>
-          </GBLink>
+            slug === 'connectBank' ?
+              <PlaidConnect
+                {...this.props}
+                className='link'
+                checkConnectStatus={this.checkConnectStatus}
+              />
+            :
+              <GBLink onClick={(e) => this.props.validateForm(e, this.processForm, slug)}>
+                <span style={{ marginLeft: 20 }}>{item.saveButtonLabelTop}</span>
+              </GBLink>
           : null }
         </div>
         <div className={`step ${item.className} ${open ? 'open' : ''}`}>
