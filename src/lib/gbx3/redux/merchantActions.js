@@ -361,11 +361,11 @@ export function accessToken(publicToken, metaData, options = {}) {
     dispatch(setMerchantApp('gettingInfoFromPlaid', true));
     const account_id = util.getValue(metaData, 'account_id');
     const bankName = util.getValue(metaData, 'institution.name');
-    if (localStorage.getItem('account_id')) {
-      localStorage.removeItem('account_id');
+    if (util.getCookie('account_id')) {
+      util.deleteCookie('account_id');
     }
     if (account_id) {
-      localStorage.setItem('account_id', account_id);
+      util.setCookie('account_id', account_id, 30);
       const updated = await dispatch(updateMerchantApp('plaid', { account_id, bankName }));
 
       if (updated) {
@@ -408,7 +408,7 @@ export function getPlaidInfo(callback, bankAccountOnly = false) {
     const gettingInfoFromPlaid = util.getValue(getState(), 'merchantApp.gettingInfoFromPlaid');
     if (!gettingInfoFromPlaid) dispatch(setMerchantApp('gettingInfoFromPlaid', true));
 
-    const account_id = util.getValue(getState(), 'merchantApp.plaid.account_id', localStorage.getItem('account_id'));
+    const account_id = util.getValue(getState(), 'merchantApp.plaid.account_id', util.getCookie('account_id'));
     if (account_id) {
       dispatch(getResource('plaidAuth', {
         method: 'GET',

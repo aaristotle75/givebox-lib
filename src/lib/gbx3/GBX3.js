@@ -100,8 +100,9 @@ class GBX3 extends React.Component {
     if (setInfo) {
       if (browse) {
         this.loadBrowse();
-      } else if (signup && !orgID) {
-        this.loadSignup();
+      } else if (signup) {
+        if (!orgID) this.loadSignup();
+        else this.loadOrg(orgID);
       } else {
         switch (blockType) {
           case 'org': {
