@@ -210,6 +210,7 @@ class TransferMoneyStepsForm extends React.Component {
   async processForm(fields, callback, group) {
     util.toTop('modalOverlay-orgTransferSteps');
     this.setState({ saving: true });
+
     const {
       step,
       stepsTodo,
