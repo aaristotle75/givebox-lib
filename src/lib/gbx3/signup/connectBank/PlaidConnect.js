@@ -96,7 +96,7 @@ class PlaidConnect extends React.Component {
     } = this.props;
 
     if (!linkToken && !hasPlaidToken) return <Loader msg='Getting Plaid Token...' />;
-    
+
     const plaidButtonText =
       <span className='buttonAlignText'>Connect a Bank Account <span className='icon icon-chevron-right'></span></span>
     ;
