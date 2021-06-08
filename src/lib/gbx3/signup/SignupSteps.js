@@ -919,11 +919,13 @@ class SignupStepsForm extends React.Component {
     return (
       <div className='stepContainer'>
         { this.state.saving ? <Loader msg='Saving...' /> : null }
+        {!this.state.editorOpen ?
         <div className='stepStatus'>
           <GBLink onClick={(e) => this.props.validateForm(e, this.processForm, slug)}>
             <span style={{ marginLeft: 20 }}>{item.saveButtonLabelTop}</span>
           </GBLink>
         </div>
+        : null }
         <div className={`step ${item.className} ${open ? 'open' : ''}`}>
           <div className='stepTitleContainer'>
             { item.icon ? <span className={`icon icon-${item.icon}`}></span> : item.customIcon }
