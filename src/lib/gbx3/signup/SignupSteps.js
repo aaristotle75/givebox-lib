@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import { connect } from 'react-redux';
 import CreateAccount from './CreateAccount';
@@ -24,6 +25,9 @@ import {
   signupGBX3Data
 } from '../redux/gbx3actions';
 import {
+  saveLegalEntity
+} from '../redux/merchantActions';
+import {
   setAccess
 } from '../../api/actions';
 import { PhotoshopPicker } from 'react-color-aaristotle';
@@ -31,6 +35,9 @@ import {
   primaryColor as defaultPrimaryColor,
   defaultOrgGlobals
 } from '../redux/gbx3defaults';
+
+const defaultReceiptTemplate = require('html-loader!../admin/receipt/receiptEmailDefaultContent.html');
+const GBX_URL = process.env.REACT_APP_GBX_URL;
 
 class SignupStepsForm extends React.Component {
 
@@ -137,8 +144,40 @@ class SignupStepsForm extends React.Component {
                 } = access;
 
                 this.props.createFundraiser('fundraiser', async (res, err) => {
+                  const fundraiserID = util.getValue(res, 'ID');
                   const createdArticleID = util.getValue(res, 'articleID');
                   const orgID = util.getValue(res, 'orgID');
+
+                  const {
+                    fields
+                  } = this.props;
+
+                  const {
+                    org,
+                    gbx3
+                  } = fields;
+
+                  const tokens = {
+                    '<<color>>': util.getValue(org, 'themeColor'),
+                    '{{link}}': `${GBX_URL}/${createdArticleID}`,
+                    '{{orgname}}': util.getValue(org, 'name'),
+                    '{{orgimage}}': util.getValue(org, 'imageURL'),
+                    '{{articletitle}}': util.getValue(gbx3, 'title'),
+                    '{{articleimage}}': util.getValue(gbx3, 'imageURL'),
+                    '{{message}}': ''
+                  };
+
+                  const receiptHTML = util.replaceAll(defaultReceiptTemplate, tokens);
+                  this.props.sendResource(`orgFundraiser`, {
+                    orgID,
+                    id: [fundraiserID],
+                    isSending: false,
+                    method: 'patch',
+                    data: {
+                      receiptHTML
+                    }
+                  });
+
                   const updated = await this.props.updateOrgSignup({
                       createdArticleID,
                       saveCookie: false,
@@ -153,8 +192,17 @@ class SignupStepsForm extends React.Component {
                       orgUpdated: true,
                       callback: async (res, err) => {
                         localStorage.removeItem('signup');
+                        util.deleteCookie('promo');
                         this.props.loadOrg(orgID, (res, err) => {
                           //this.props.savingSignup(false);
+                          this.props.saveLegalEntity({
+                            isSending: false,
+                            hasBeenUpdated: true,
+                            data: {
+                              name: util.getValue(res, 'name', null),
+                              taxID: util.getValue(res, 'taxID', null)
+                            }
+                          });
                           this.props.setOrgStyle();
                         }, true);
                       }
@@ -178,6 +226,7 @@ class SignupStepsForm extends React.Component {
   async createOrg() {
     const {
       validTaxID,
+      affiliateID,
       claimOrgID,
       fields
     } = this.props;
@@ -229,6 +278,7 @@ class SignupStepsForm extends React.Component {
     if (globalsUpdated) {
       const orgData = {
         ...org,
+        affiliateID,
         owner,
         kind: '501c3',
         mission: org.mission,
@@ -523,7 +573,7 @@ class SignupStepsForm extends React.Component {
     this.props.formProp({ error: false });
     const updated = await this.props.updateOrgSignupField(name, { [field]: url });
     if (updated) {
-      this.saveStep(slug, 3000);
+      this.saveStep(slug, 2000);
     }
   }
 
@@ -1045,5 +1095,6 @@ export default connect(mapStateToProps, {
   updateOrgGlobals,
   createFundraiser,
   savingSignup,
-  signupGBX3Data
+  signupGBX3Data,
+  saveLegalEntity
 })(SignupSteps);

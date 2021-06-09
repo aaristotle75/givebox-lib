@@ -66,6 +66,7 @@ export function saveLegalEntity(options = {}) {
     data: {},
     orgID: null,
     callback: null,
+    isSending: true,
     ...options
   };
   return (dispatch, getState) => {
@@ -84,6 +85,7 @@ export function saveLegalEntity(options = {}) {
       dispatch(sendResource('orgLegalEntity', {
         orgID,
         data,
+        isSending: opts.isSending,
         method: data.ID ? 'patch' : 'post',
         callback: async (res, err) => {
           if (!data.ID) {

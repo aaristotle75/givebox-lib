@@ -36,7 +36,7 @@ class ReceiptEmailEdit extends React.Component {
     const articleImageURL = util.getValue(data, 'imageURL');
 
     const tokens = {
-      '{{color}}': util.getValue(style, 'primaryColor', props.primaryColor),
+      '<<color>>': util.getValue(style, 'primaryColor', props.primaryColor),
       '{{link}}': link,
       '{{orgimage}}': util.imageUrlWithStyle(orgImage, 'small'),
       '{{orgname}}': orgName,

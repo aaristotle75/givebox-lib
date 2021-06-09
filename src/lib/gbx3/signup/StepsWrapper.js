@@ -111,6 +111,7 @@ class StepsWrapper extends React.Component {
       acceptedTerms,
       claimOrgID,
       validTaxID,
+      affiliateID,
       completed,
       fields,
       createdArticleID,
@@ -161,6 +162,7 @@ class StepsWrapper extends React.Component {
         acceptedTerms,
         claimOrgID,
         validTaxID,
+        affiliateID,
         completed,
         fields,
         createdArticleID,
@@ -224,6 +226,7 @@ function mapStateToProps(state, props) {
   const acceptedTerms = util.getValue(orgSignup, 'acceptedTerms');
   const claimOrgID = util.getValue(orgSignup, 'claimOrgID', null);
   const validTaxID = util.getValue(orgSignup, 'validTaxID', null);
+  const affiliateID = util.getValue(orgSignup, 'affiliateID', null);
   const completed = util.getValue(orgSignup, 'completed', []);
   const fields = util.getValue(orgSignup, 'fields', {});
   const createdArticleID = util.getValue(orgSignup, 'createdArticleID');
@@ -238,6 +241,7 @@ function mapStateToProps(state, props) {
     acceptedTerms,
     claimOrgID,
     validTaxID,
+    affiliateID,
     completed,
     fields,
     createdArticleID,

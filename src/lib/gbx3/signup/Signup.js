@@ -27,6 +27,7 @@ class Signup extends React.Component {
     this.openStep = this.openStep.bind(this);
     this.resizer = this.resizer.bind(this);
     this.state = {
+      isMobile: window.innerWidth <= 736 ? true : false
     };
   }
 
@@ -57,8 +58,6 @@ class Signup extends React.Component {
     const {
       isMobile
     } = this.state;
-
-    console.log('execute isMobile -> ', isMobile);
 
     return (
       <div className='gbx3AdminLayout orgDisplay editable gbx3OrgSignup'>

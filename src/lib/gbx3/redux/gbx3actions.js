@@ -172,6 +172,9 @@ export function loadOrgSignup(options = {}) {
   const forceStep = options.forceStep || null;
   const openModal = options.openModal || true;
   const bookDemo = options.bookDemo || false;
+  const affiliateID = +util.getCookie('promo', null);
+
+  console.log('execute affiliateID -> ', affiliateID);
 
   return async (dispatch, getState) => {
     const signupFromCookie = LZString.decompressFromUTF16(localStorage.getItem('signup'));
@@ -179,6 +182,7 @@ export function loadOrgSignup(options = {}) {
     const orgSignup = {
       ...util.getValue(getState(), 'gbx3.orgSignup', {}),
       ...signupJSON,
+      affiliateID,
       signupPhase: 'signup'
     };
     orgSignup.step = forceStep || getMinStepNotCompleted(signupPhaseConfig.signup.stepsTodo, orgSignup);
@@ -199,7 +203,7 @@ export function loadOrgSignup(options = {}) {
 }
 
 export function checkSignupPhase(options = {}) {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     const state = getState();
     const signupPhase = util.getValue(state, 'gbx3.orgSignup.signupPhase');
     const completedPhases = util.getValue(state, 'gbx3.orgSignup.completedPhases', []);
@@ -207,11 +211,26 @@ export function checkSignupPhase(options = {}) {
 
     switch (signupPhase) {
       case 'postSignup': {
-        dispatch(loadSignupPhase({
-          phase: 'postSignup',
-          modalName: 'orgPostSignupSteps',
-          ...options
-        }));
+        if (hasReceivedTransaction) {
+          const updated = await dispatch(updateOrgSignup({
+            step: 0,
+            signupPhase: 'connectBank'
+          }, 'postSignup'));
+          if (updated) {
+            dispatch(loadSignupPhase({
+              phase:  'connectBank',
+              modalName: 'orgConnectBankSteps',
+              openAdmin: true,
+              openModal: true
+            }));
+          }
+        } else {
+          dispatch(loadSignupPhase({
+            phase:  'postSignup',
+            modalName: 'orgPostSignupSteps',
+            ...options
+          }));
+        }
         break;
       }
 
