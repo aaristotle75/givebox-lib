@@ -4,7 +4,7 @@ export const appList = [
   {
     name: 'Analytics',
     slug: 'analytics',
-    image: `raise-fundraiser${raiseExt}`,
+    image: `analytics-400`,
     path: '/analytics'
   },
   {
