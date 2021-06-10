@@ -22,6 +22,7 @@ import ReactGA from 'react-ga';
 import Scroll from 'react-scroll';
 import history from '../common/history';
 
+const ENTRY_URL = process.env.REACT_APP_ENTRY_URL;
 const GBX_URL = process.env.REACT_APP_GBX_URL;
 const SHARE_URL = process.env.REACT_APP_GBX_SHARE;
 const ENV = process.env.REACT_APP_ENV;
@@ -229,6 +230,8 @@ class Layout extends React.Component {
       gbx3BackgroundHeight = `${height}px`;
     }
 
+    const startFundraiserLink = ENV === 'local' ? `${SHARE_URL}/4?template=signup&orgID=null` : `${GBX_URL}/signup`;
+
     const avatarMenu =
       <div className='hasAccessToEditPublic'>
         <AvatarMenuButton />
@@ -260,6 +263,12 @@ class Layout extends React.Component {
           </div>
         </div> : null}
         <CartButton reloadGBX3={this.props.reloadGBX3} type='avatarLink' />
+        { (display === 'org' || display === 'browse') && stage !== 'admin' && !preview && !hasAccessToEdit ?
+        <div className='avatarLoginActions'>
+          <GBLink onClick={() => window.location.replace(startFundraiserLink)}>Start a Fundraiser</GBLink>
+          <GBLink onClick={() => window.location.replace(ENTRY_URL)}>Login</GBLink>
+        </div>
+        : null }
       </div>
     ;
 

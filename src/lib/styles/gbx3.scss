@@ -54,6 +54,14 @@
   justify-content: center;
   align-items: center;
 
+  .avatarLoginActions {
+    margin-right: 20px;
+    button.link {
+      font-weight: 400;
+      margin: 0 10px;
+    }
+  }
+
   .avatarLink {
     cursor: pointer;
     @include transition(opacity .25s);
