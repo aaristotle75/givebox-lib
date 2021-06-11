@@ -479,6 +479,7 @@ function extractFromPlaidAuth(account_id, data) {
 function extractFromPlaidIdentity(account_id, data, callback, bankAccountOnly) {
 
   return async (dispatch, getState) => {
+    const state = getState();
     const accounts = util.getValue(data, 'accounts', []);
     const account = accounts.find(a => a.account_id === account_id);
     const owners = util.getValue(account, 'owners', []);
@@ -489,36 +490,44 @@ function extractFromPlaidIdentity(account_id, data, callback, bankAccountOnly) {
     const city = util.getValue(addressData, 'city');
     const zipUnformatted = util.getValue(addressData, 'postal_code');
     const zip = zipUnformatted ? zipUnformatted.substring(0, 5) : '';
-    const state = util.getValue(addressData, 'region');
+    const region = util.getValue(addressData, 'region');
     const line1 = util.getValue(addressData, 'street');
     const address = {
       line1,
       city,
-      state,
+      state: region,
       zip
     };
 
+    // search through identity object
     const names = util.getValue(owner, 'names', []);
-    const name = util.getValue(names, 0);
-    const splitName = util.splitName(name, false);
-    const firstName = splitName.first;
-    const lastName = splitName.last;
+    const nickname = util.getValue(names, 0);
     const emails = util.getValue(owner, 'emails', []);
-    const emailAddressObj = util.getValue(emails, 0);
-    const emailAddress = util.getValue(emailAddressObj, 'data');
     const phone_numbers = util.getValue(owner, 'phone_numbers', []);
     const contactPhoneObj = util.getValue(phone_numbers, 0);
     const contactPhoneUnformatted = util.getValue(contactPhoneObj, 'data');
     const contactPhone = contactPhoneUnformatted ? contactPhoneUnformatted.slice(-10) : '';
 
+    // get owner info from signup
+    const signupOwner = util.getValue(state, 'gbx3.orgSignup.fields.owner', {});
+    const firstName = util.getValue(signupOwner, 'firstName');
+    const lastName = util.getValue(signupOwner, 'lastName');
+    const emailAddress = util.getValue(signupOwner, 'email');
+
     const principal = {
       firstName,
       lastName,
       emailAddress,
-      contactPhone
+      contactPhone,
+      metaData: {
+        names,
+        emails,
+        phone_numbers
+      }
     };
 
     const updated = await dispatch(updateMerchantApp('extractIdentity', {
+      nickname,
       address,
       principal,
       data
@@ -541,6 +550,8 @@ function savePlaidInfo(callback, bankAccountOnly) {
 
     const state = getState();
     const bankAccount = util.getValue(state, 'merchantApp.extractAuth.bankAccount', {});
+    const nickname = util.getValue(state, 'merchantApp.extractIdentity.nickname');
+    bankAccount.nickname = nickname;
     const principal = util.getValue(state, 'merchantApp.extractIdentity.principal', {});
     const address = util.getValue(state, 'merchantApp.extractIdentity.address', {});
     const allPlaidInfo = util.getValue(state, 'merchantApp.allPlaidInfo', {});
@@ -571,6 +582,7 @@ function savePlaidInfo(callback, bankAccountOnly) {
                   data: {
                     ...principal,
                     metaData: {
+                      ...util.getValue(principal, 'metaData', {}),
                       ...allPlaidInfo
                     }
                   },
