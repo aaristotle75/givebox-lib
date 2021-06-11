@@ -522,7 +522,8 @@ function extractFromPlaidIdentity(account_id, data, callback, bankAccountOnly) {
       metaData: {
         names,
         emails,
-        phone_numbers
+        phone_numbers,
+        addresses
       }
     };
 
@@ -534,6 +535,10 @@ function extractFromPlaidIdentity(account_id, data, callback, bankAccountOnly) {
     }));
 
     const updated2 = await dispatch(updateMerchantApp('allPlaidInfo', {
+      names,
+      emails,
+      phone_numbers,
+      addresses,
       plaidIdentity: data
     }));
 
