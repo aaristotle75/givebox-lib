@@ -204,7 +204,8 @@ function mapStateToProps(state, props) {
   const gbx3 = util.getValue(state, 'gbx3', {});
   const info = util.getValue(gbx3, 'info', {});
   const stage = util.getValue(info, 'stage', {});
-  const cart = stage !== 'admin' ? util.getValue(gbx3, 'cart', {}) : {};
+  const preview = util.getValue(info, 'preview', {});
+  const cart = stage !== 'admin' && !preview ? util.getValue(gbx3, 'cart', {}) : {};
   const cartItems = util.getValue(cart, 'items', []);
   const cartHasItems = !util.isEmpty(cartItems) ? true : false;
   const total = util.getValue(cart, 'total');
