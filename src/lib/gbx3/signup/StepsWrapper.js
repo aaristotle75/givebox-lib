@@ -16,7 +16,8 @@ import {
 } from '../../api/actions';
 import {
   getResource,
-  sendResource
+  sendResource,
+  reloadResource
 } from '../../api/helpers';
 import LinearBar from '../../common/LinearBar';
 
@@ -255,6 +256,7 @@ export default connect(mapStateToProps, {
   updateOrgSignupField,
   getResource,
   sendResource,
+  reloadResource,
   saveOrg,
   toggleModal,
   updateAdmin

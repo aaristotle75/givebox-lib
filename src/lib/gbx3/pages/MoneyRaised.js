@@ -13,7 +13,7 @@ import {
 } from '../../api/actions';
 import Icon from '../../common/Icon';
 import { AiOutlineBank } from 'react-icons/ai';
-import { phases } from '../signup/signupConfig';
+import { phases, signupPhase as signupPhases } from '../signup/signupConfig';
 
 class MoneyRaised extends React.Component {
 
@@ -98,8 +98,8 @@ class MoneyRaised extends React.Component {
         }
 
         case 'transferMoney': {
-          const requiredToCheckApproval = ['identity', 'verifyBank', 'verifyBusiness', 'protect'];
-          const readyToCheckApproval = requiredToCheckApproval.every(c => completed.includes(c));
+          const requiredSteps = signupPhases.transferMoney.requiredSteps;
+          const readyToCheckApproval = requiredSteps.every(c => completed.includes(c));
           const stepToOpen = readyToCheckApproval ? 'transferStatus' : 'identity';
           content.headerIcon = <Icon><AiOutlineBank /></Icon>;
           content.headerText = 'Transfer Money Steps';

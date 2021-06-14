@@ -188,6 +188,24 @@ const verifyBusiness = {
   desc: 'We need to verify your Business.'
 }
 
+const verifyWeb = {
+  type: 'merchant',
+  slug: 'verifyWeb',
+  name: 'Website Address',
+  icon: 'map-pin',
+  title: 'Business/Nonprofit Website Address',
+  desc: ''
+};
+
+const missionCountries = {
+  type: 'merchant',
+  slug: 'missionCountries',
+  name: 'Countries Serviced',
+  icon: 'map-pin',
+  title: 'Countries Funds will be Used',
+  desc: ''
+};
+
 const protect = {
   type: 'merchant',
   slug: 'protect',
@@ -297,8 +315,18 @@ export const signupPhase = {
       identity,
       verifyBank,
       verifyBusiness,
+      verifyWeb,
+      missionCountries,
       protect,
       transferStatus
+    ],
+    requiredSteps: [
+      'identity',
+      'verifyBank',
+      'verifyBusiness',
+      'verifyWeb',
+      'missionCountries',
+      'protect'
     ]
   }
 };

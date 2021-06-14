@@ -29,6 +29,7 @@ import {
   openLaunchpad,
   removeResource
 } from '../../api/actions';
+import AnimateHeight from 'react-animate-height';
 
 class TransferMoneyStepsForm extends React.Component {
 
@@ -53,7 +54,8 @@ class TransferMoneyStepsForm extends React.Component {
       verifyBankUploaded: false,
       verifyBusinessUploaded: false,
       is2FAVerified: false,
-      checkingStatusDisableButton: false
+      checkingStatusDisableButton: false,
+      missionCountriesShow: props.missionCountries ? 2 : 1
     };
   }
 
@@ -62,8 +64,7 @@ class TransferMoneyStepsForm extends React.Component {
       completed
     } = this.props;
 
-    const requiredToCheckApproval = ['identity', 'verifyBank', 'verifyBusiness', 'protect'];
-    const readyToCheckApproval = requiredToCheckApproval.every(c => completed.includes(c));
+    const readyToCheckApproval = this.props.requiredSteps.every(c => completed.includes(c));
     if (readyToCheckApproval) {
       this.checkApprovalStatus();
     }
@@ -173,12 +174,7 @@ class TransferMoneyStepsForm extends React.Component {
     });
   }
 
-  async saveStep(slug, delay = 1000, error = false) {
-
-    if (error) {
-      this.setState({ saving: false });
-      return false;
-    }
+  async saveStep(slug, delay = 1000) {
 
     const completedStep = await this.props.stepCompleted(slug);
     if (completedStep) {
@@ -190,7 +186,7 @@ class TransferMoneyStepsForm extends React.Component {
     }
   }
 
-  saveCallback(res, err, group) {
+  saveCallback(res, err, group, continueCallback) {
 
     const {
       formState
@@ -199,7 +195,8 @@ class TransferMoneyStepsForm extends React.Component {
     const hasBeenUpdated = util.getValue(formState, 'updated');
 
     if (!err) {
-      this.saveStep(group, hasBeenUpdated ? 1000 : 0);
+      if (continueCallback) continueCallback();
+      else this.saveStep(group, hasBeenUpdated ? 1000 : 0);
     } else {
       if (!this.props.getErrors(err)) this.props.formProp({error: this.props.savingErrorMsg});
       this.setState({ saving: false });
@@ -215,7 +212,8 @@ class TransferMoneyStepsForm extends React.Component {
       step,
       stepsTodo,
       formState,
-      approvedForTransfers
+      approvedForTransfers,
+      orgID
     } = this.props;
 
     const stepConfig = util.getValue(stepsTodo, step, {});
@@ -241,6 +239,45 @@ class TransferMoneyStepsForm extends React.Component {
         break;
       }
 
+      case 'verifyWeb': {
+        this.props.sendResource('org', {
+          data,
+          method: 'patch',
+          isSending: false,
+          callback: (res, err) => this.saveCallback(res, err, group, () => {
+            this.props.getResource('org', {
+              orgID,
+              reload: true,
+              customName: 'gbx3Org',
+              callback: (res, err) => this.saveCallback(res, err, group)
+            });
+          }),
+        });
+        break;
+      }
+
+      case 'missionCountries': {
+        if (this.state.missionCountriesShow === 2) {
+          this.props.sendResource('org', {
+            data,
+            method: 'patch',
+            isSending: false,
+            callback: (res, err) => this.saveCallback(res, err, group, () => {
+              this.props.getResource('org', {
+                orgID,
+                reload: true,
+                customName: 'gbx3Org',
+                callback: (res, err) => this.saveCallback(res, err, group)
+              });
+            }),
+          });
+        } else {
+          this.saveStep(group);
+        }
+
+        break;
+      }
+
       default: {
         return this.saveStep(group);
       }
@@ -254,7 +291,8 @@ class TransferMoneyStepsForm extends React.Component {
       verifyBankUploaded,
       verifyBusinessUploaded,
       is2FAVerified,
-      checkingStatusDisableButton
+      checkingStatusDisableButton,
+      missionCountriesShow
     } = this.state;
 
     const {
@@ -263,7 +301,9 @@ class TransferMoneyStepsForm extends React.Component {
       isMobile,
       stepsTodo,
       approvedForTransfers,
-      completedPhases
+      completedPhases,
+      websiteURL,
+      missionCountries
     } = this.props;
 
     const stepConfig = util.getValue(stepsTodo, step, {});
@@ -342,6 +382,68 @@ class TransferMoneyStepsForm extends React.Component {
         break;
       }
 
+      case 'verifyWeb': {
+        item.component =
+          <div className='fieldGroup'>
+            <HelpfulTip
+              headerIcon={<span className='icon icon-alert-circle'></span>}
+              headerText={`I Don't Have a Website`}
+              style={{ marginTop: 20, marginBottom: 20 }}
+              text={
+                <span>
+                  If you don't have a website, use your facebook or other social media address instead.
+                </span>
+              }
+            />
+            {this.props.textField('websiteURL', {
+              group: 'verifyWeb',
+              label: 'Website URL',
+              placeholder: 'Click Here to Enter a Website or Social Media URL',
+              validate: 'url',
+              maxLength: 128,
+              value: websiteURL || '',
+              required: true
+            })}
+          </div>
+        ;
+        break;
+      }
+
+      case 'missionCountries': {
+        item.component =
+          <div className='fieldGroup'>
+            <Dropdown
+              name='missionCountriesShow'
+              label={'Does your Business/Nonprofit service countries outside of the USA/Canada?'}
+              fixedLabel={true}
+              defaultValue={missionCountriesShow}
+              onChange={(name, value) => {
+                const missionCountriesShow = parseInt(value);
+                if (missionCountriesShow === 2) this.props.fieldProp('missionCountries', { required: true, error: false });
+                else this.props.fieldProp('missionCountries', { required: false, error: false });
+                this.setState({ missionCountriesShow });
+              }}
+              options={[
+                { primaryText: 'No', value: 1 },
+                { primaryText: 'Yes', value: 2 }
+              ]}
+            />
+            <AnimateHeight height={missionCountriesShow === 2 || missionCountries ? 'auto' : 0}>
+              {this.props.richText('missionCountries', {
+                group: 'missionCountries',
+                required: missionCountriesShow === 2 ? true : false,
+                label: 'Countries Serviced Outside USA/Canada',
+                placeholder: 'Click here to enter the countries your Business/Nonprofit services that are outside the USA/Canada.',
+                wysiwyg: false,
+                autoFocus: false,
+                value: missionCountries
+              })}
+            </AnimateHeight>
+          </div>
+        ;
+        break;
+      }
+
       case 'protect': {
         item.saveButtonDisabled = !is2FAVerified ? true : false;
         item.saveButtonLabelTop = <span className='buttonAlignText'>Continue to Step 5: Approval Status<span className='icon icon-chevron-right'></span></span>;
@@ -355,7 +457,7 @@ class TransferMoneyStepsForm extends React.Component {
           <TwoFA
             set2FAVerified={this.set2FAVerified}
             successCallback={() => {
-              this.saveStep('protect', 3000);
+              this.saveStep('protect', 1000);
             }}
           />
         ;
@@ -520,6 +622,8 @@ class TransferMoneySteps extends React.Component {
 function mapStateToProps(state, props) {
 
   const orgID = util.getValue(state, 'gbx3.info.orgID');
+  const websiteURL = util.getValue(state, 'resource.gbx3Org.data.websiteURL');
+  const missionCountries = util.getValue(state, 'resource.gbx3Org.data.missionCountries');
   const underwritingStatus = util.getValue(state, 'resource.gbx3Org.data.underwritingStatus');
   const hasBankInfo = util.getValue(state, 'resource.gbx3Org.data.hasBankInfo');
   const approvedForTransfers = underwritingStatus === 'approved' && hasBankInfo ? true : false;
@@ -528,6 +632,8 @@ function mapStateToProps(state, props) {
 
   return {
     orgID,
+    websiteURL,
+    missionCountries,
     approvedForTransfers,
     completedPhases,
     completed
