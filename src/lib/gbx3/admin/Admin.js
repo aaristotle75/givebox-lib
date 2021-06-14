@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as util from '../../common/utility';
 import GBLink from '../../common/GBLink';
+import Loader from '../../common/Loader';
 import ModalRoute from '../../modal/ModalRoute';
 import Icon from '../../common/Icon';
 import ArticleAdmin from './article/ArticleAdmin';
@@ -90,6 +91,7 @@ class Admin extends React.Component {
   render() {
 
     const {
+      stage,
       display,
       step,
       previewMode,
@@ -100,6 +102,8 @@ class Admin extends React.Component {
       hasAccessToCreate,
       orgID
     } = this.props;
+
+    if (stage !== 'admin') return <Loader msg='Loading Admin...' />
 
     if (!hasAccessToEdit && !hasAccessToCreate) return  <div className='flexCenter flexColumn centeritems'>You do not have access.</div>;
 
@@ -163,6 +167,7 @@ function mapStateToProps(state, props) {
   const gbx3 = util.getValue(state, 'gbx3', {});
   const saveStatus = util.getValue(gbx3, 'saveStatus');
   const info = util.getValue(gbx3, 'info', {});
+  const stage = util.getValue(info, 'stage', {});
   const breakpoint = util.getValue(info, 'breakpoint');
   const display = util.getValue(info, 'display');
   const articleID = util.getValue(info, 'articleID');
@@ -180,6 +185,7 @@ function mapStateToProps(state, props) {
   const editFormOnly = util.getValue(admin, 'editFormOnly');
 
   return {
+    stage,
     project,
     breakpoint,
     display,

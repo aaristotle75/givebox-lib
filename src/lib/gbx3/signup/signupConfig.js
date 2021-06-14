@@ -192,7 +192,7 @@ const verifyWeb = {
   type: 'merchant',
   slug: 'verifyWeb',
   name: 'Website Address',
-  icon: 'map-pin',
+  icon: 'at-sign',
   title: 'Business/Nonprofit Website Address',
   desc: ''
 };

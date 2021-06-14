@@ -696,6 +696,7 @@ export function updateCart(cart) {
 
 export function setCartOnLoad(cartObj = {}) {
   return async (dispatch, getState) => {
+    const state = getState();
     const cartFromCookie = LZString.decompressFromUTF16(localStorage.getItem('cart'));
     const cookieJSON = cartFromCookie ? JSON.parse(cartFromCookie) : {};
     const cartState = util.getValue(getState(), 'gbx3.cart', {});
@@ -1760,7 +1761,6 @@ export function setStyle(options = {}) {
     const globals = util.getValue(gbx3, 'globals', {});
     const gbxStyle = util.getValue(globals, 'gbxStyle', {});
     const info = util.getValue(gbx3, 'info', {});
-    const stage = util.getValue(info, 'stage');
     const breakpoint = util.getValue(info, 'breakpoint');
     const color = opts.primaryColor || util.getValue(gbxStyle, 'primaryColor');
     const textColor = opts.textColor || util.getValue(gbxStyle, 'textColor', '#253655');
