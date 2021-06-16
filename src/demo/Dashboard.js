@@ -4,7 +4,7 @@ import TestForm from './TestForm';
 import Form from '../lib/form/Form';
 import MediaLibrary from '../lib/form/MediaLibrary';
 import { setCustomProp } from '../lib/api/actions';
-import { getResource } from '../lib/api/helpers';
+import { getResource, sendResource } from '../lib/api/helpers';
 import CircularProgress from '../lib/common/CircularProgress';
 import Plaid from './Plaid';
 import Compress from './Compress';
@@ -148,7 +148,7 @@ class Dashboard extends Component {
     return (
       <div>
         <h2>Dashboard</h2>
-        <Plaid />
+        {/* <Plaid /> */}
         {/*
         <Compress />
         <GBLink onClick={() => this.createVoucher(this.playlistID)}>Create Voucher</GBLink>
@@ -226,5 +226,6 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
   setCustomProp,
-  getResource
+  getResource,
+  sendResource
 })(Dashboard)
