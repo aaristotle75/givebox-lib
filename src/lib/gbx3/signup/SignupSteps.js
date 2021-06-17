@@ -631,7 +631,7 @@ class SignupStepsForm extends React.Component {
       component: <div></div>,
       className: '',
       saveButtonLabelTop: <span className='buttonAlignText'>Save & Continue to Step {nextStepNumber}: {nextStepName} <span className='icon icon-chevron-right'></span></span>,
-      saveButtonLabel: <span className='buttonAlignText'>Save & Continue <span className='icon icon-chevron-right'></span></span>
+      saveButtonLabel: <span className='buttonAlignText'>Save & Continue</span>
     };
 
     const library = {
@@ -661,9 +661,9 @@ class SignupStepsForm extends React.Component {
           <div className='fieldGroup'>
             {this.props.textField('orgName', {
               group: slug,
-              fixedLabel: true,
+              fixedLabel: false,
               label: 'Organization Name',
-              placeholder: `Click Here and Enter your Organization's Name`,
+              placeholder: `Type Organization Name`,
               maxLength: 128,
               count: true,
               required: true,
@@ -676,9 +676,9 @@ class SignupStepsForm extends React.Component {
             })}
             {this.props.textField('taxID', {
               group: slug,
-              fixedLabel: true,
+              fixedLabel: false,
               label: 'U.S. Federal Tax ID',
-              placeholder: `Click Here and Enter Your U.S. Federal Tax ID`,
+              placeholder: `Type Tax ID`,
               required: true,
               value: taxID,
               validate: 'taxID',
@@ -688,11 +688,27 @@ class SignupStepsForm extends React.Component {
                 }
               }
             })}
-            <HelpfulTip
-              headerIcon={<span className='icon icon-alert-circle'></span>}
-              headerText='Important'
-              text={`You must have a valid U.S. Federal Tax ID to use Givebox.`}
-              style={{ marginTop: 15 }}
+            <Dropdown
+              name='categoryID'
+              portalID={`category-dropdown-portal-${slug}`}
+              portalClass={'gbx3 articleCardDropdown selectCategory'}
+              portalLeftOffset={10}
+              className='articleCard'
+              contentWidth={400}
+              label={'Organization Category'}
+              selectLabel='Choose an Organization Category'
+              fixedLabel={false}
+              fixedLabelHasValue={true}
+              required={true}
+              onChange={(name, value) => {
+                this.setState({ categoryIDError: false });
+                this.props.updateOrgSignupField('org', { categoryID: +value });
+              }}
+              options={this.categories()}
+              showCloseBtn={true}
+              error={this.state.categoryIDError}
+              value={categoryID}
+              leftBar={true}
             />
           </div>
         break;
@@ -732,29 +748,6 @@ class SignupStepsForm extends React.Component {
                 </span>
               }
             />
-            <div className='input-group'>
-              <label className='label'>Organization Category</label>
-              <Dropdown
-                name='categoryID'
-                portalID={`category-dropdown-portal-${slug}`}
-                portalClass={'gbx3 articleCardDropdown selectCategory'}
-                portalLeftOffset={10}
-                className='articleCard'
-                contentWidth={400}
-                label={''}
-                selectLabel='Click Here to Select an Organization Category'
-                fixedLabel={true}
-                required={true}
-                onChange={(name, value) => {
-                  this.setState({ categoryIDError: false });
-                  this.props.updateOrgSignupField('org', { categoryID: +value });
-                }}
-                options={this.categories()}
-                showCloseBtn={true}
-                error={this.state.categoryIDError}
-                value={categoryID}
-              />
-            </div>
           </div>
         ;
         break;

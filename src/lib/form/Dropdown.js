@@ -253,7 +253,8 @@ class Dropdown extends Component {
       portalID,
       portalRootEl,
       portalClass,
-      showCloseBtn
+      showCloseBtn,
+      leftBar
     } = this.props;
 
     const {
@@ -292,12 +293,17 @@ class Dropdown extends Component {
       </Portal>
     ;
 
+    const fixedLabelHasValue = this.props.fixedLabelHasValue && selectedValue !== selectLabel ? true : false;
+
     return (
       <div ref={this.inputRef} style={style} className={`input-group ${className || ''} ${readOnly ? 'readOnly tooltip' : ''} ${error ? 'error tooltip' : ''}`}>
         <Fade in={open && overlay} duration={overlayDuration}>
           <div onClick={this.closeMenu} className={`dropdown-cover ${display ? '' : 'displayNone'}`}></div>
         </Fade>
-        <div className={`dropdown ${dropdownClass} ${this.props.color ? 'customColor' : ''} ${floatingLabel && 'floating-label'} ${status} ${fixedLabel ? 'fixed' : ''}`} style={dropdownStyle}>
+        <div className={`dropdown ${dropdownClass} ${this.props.color ? 'customColor' : ''} ${floatingLabel && 'floating-label'} ${status} ${fixedLabel || (fixedLabelHasValue && selectedValue ) ? 'fixed' : ''}`} style={dropdownStyle}>
+          {leftBar ?
+            <div className='inputLeftBar'></div>
+          : null}
           {label && !floatingLabel && <label><GBLink onClick={open || readOnly ? this.closeMenu : this.openMenu}>{label}</GBLink></label>}
           {!hideButton ?
             <button ref={this.buttonRef} style={buttonStyle} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} type='button' onClick={open || readOnly ? this.closeMenu : this.openMenu}><span ref={this.selectedRef} className={`label ${selected ? 'selected' : ''} ${idleLabel && 'idle'}`}>{selectedValue}</span>{!hideIcons ? <span ref={this.iconRef} className={`icon icon-${open ? multi ? iconMultiClose : iconOpened : iconClosed}`}></span> : null }</button>
@@ -330,6 +336,7 @@ Dropdown.defaultProps = {
   multiCloseLabel: 'Close Menu',
   selectLabel: 'Please select',
   floatingLabel: true,
+  fixedLabelHasValue: false,
   contentStyle: {},
   iconMultiChecked: 'check',
   iconMultiClose: 'chevron-down',

@@ -629,6 +629,7 @@ class Form extends Component {
         formProp={this.formProp}
         inputRef={params.ref}
         color={params.color || this.props.primaryColor}
+        leftBar={params.leftBar}
       />
     )
   }

@@ -6,6 +6,9 @@ $gbx3StepsBreakpoint: 600px;
 
 .gbx3Steps.modalWrapper {
   padding-top: 20px;
+  //@include bgGradient(160deg, $white 60%, rgba($puppa_blue, 1) 70%, rgba($puppa_green, 1) 85%, rgba($puppa_salmon, 1) 100%);
+  background: radial-gradient(circle farthest-corner at 16% -39%, $white 75%, rgba($puppa_blue, 1) 85%, rgba($puppa_green, 1) 93%, rgba($puppa_salmon, 1) 100%);
+  //background: radial-gradient(ellipse farthest-corner at 0 140%, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%);
 }
 
 .gbx3Steps {
@@ -445,18 +448,78 @@ $gbx3StepsBreakpoint: 600px;
     }
   }
 
+  $progressBarReflectorHeight: 4px;
+  $progressBarHeight: 25px;
+
   .progressWrapper {
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    margin-top: 20px;
-    margin-bottom: 10px;
+    margin-top: 0px;
+    margin-bottom: 20px;
+    height: 40px;
+
+    .progressBarArchetype {
+      position: absolute;
+      bottom: 0px;
+      left: 0;
+      right: 0;
+      z-index: 3;
+    }
+
+    .progressBarReflector {
+      position: absolute;
+      bottom: -6px;
+      left: 5-9px;
+      right: 5px;
+      z-index: 1;
+      opacity: .3;
+
+      .linearProgress {
+        margin-top: 0px;
+        height: $progressBarReflectorHeight;
+        background: transparent;
+        @include blueToSalmon(.3);
+        border-top-left-radius: 50px;
+        border-top-right-radius: 50px;
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
+      }
+
+      .linearProgressBar {
+        height: $progressBarReflectorHeight;
+        background: $med-gray;
+        border-top-left-radius: 50px;
+        border-top-right-radius: 50px;
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
+        @include greenToBlue(1);
+        @include animation(pulsateBrighter 2s ease-out infinite);
+        @include box-shadow(0px 1px 3px 2px rgba($med-blue-dark-gray, .2));
+      }
+
+      .linearProgressBarAnimation {
+        height: $progressBarReflectorHeight;
+        background: transparent;
+        z-index: 1;
+      }
+    }
+
+    .reflectorCover {
+      position: absolute;
+      background: $white;
+      bottom: -21px;
+      left: 0;
+      right: 0;
+      z-index: 2;
+      height: 14px;
+    }
 
     .progressStatusText {
       position: absolute;
-      top: 3px;
+      top: 18px;
       left: 0;
       font-size: 16px;
       font-weight: 400;
@@ -465,8 +528,6 @@ $gbx3StepsBreakpoint: 600px;
       margin-left: 20px;
     }
   }
-
-  $progressBarHeight: 25px;
 
   .linearProgress {
     margin-top: 0px;

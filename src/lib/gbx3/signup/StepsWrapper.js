@@ -236,11 +236,18 @@ class StepsWrapper extends React.Component {
           <GBLink className='stepsTopClose link' onClick={() => this.props.toggleModal(stepModalName, false)}>{isMobile ? 'Close' : 'Close and Save for Later'}</GBLink>
         </div>
         <div className='progressWrapper'>
-          <LinearBar
-            progress={stepProgress}
-          />
-        <div style={{ left: `${leftPercent}%` }} className='progressStatusText'>
-          {!isMobile ? 'Step ' : null }{stepNumber} of {numStepsTodo}
+          <div className='progressBarArchetype'>
+            <LinearBar
+              progress={stepProgress}
+            />
+          </div>
+          <div className='progressBarReflector'>
+            <LinearBar
+              progress={stepProgress}
+            />
+          </div>
+          <div style={{ left: `${leftPercent}%` }} className='progressStatusText'>
+            {!isMobile ? 'Step ' : null }{stepNumber} of {numStepsTodo}
           </div>
         </div>
         {this.renderChildren()}
