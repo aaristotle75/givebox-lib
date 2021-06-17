@@ -169,6 +169,7 @@ $puppa_blue: #1d63ef;
 $puppa_green: #01eee7;
 $puppa_salmon: #ed8f90;
 $puppa_deep_purple: #0e0526; //#0e043b; //#1c157f;
+$puppa_med_purple: #1d01ac;
 $mainColor: $puppa_blue;
 $green: $puppa_green;
 
@@ -186,6 +187,7 @@ $green: $puppa_green;
 
 @mixin primaryButton($background: $puppa_deep_purple) {
   background: $background;
+  @include bgGradient(140deg, rgba($puppa_deep_purple, 1) 50%, rgba($puppa_med_purple, 1) 100%);
   color: $white;
   font-size: 16px;
   white-space: nowrap;
@@ -193,6 +195,7 @@ $green: $puppa_green;
   border-radius: 25px;
   border: 0;
   @include default-transition(.25s);
+  //@include animation(pulsateBrighter 2s ease-out infinite);
   &:hover {
     opacity: .9;
   }

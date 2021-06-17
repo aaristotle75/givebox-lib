@@ -229,7 +229,7 @@ $gbx3StepsBreakpoint: 600px;
     }
 
     button.button {
-      @include primaryButton
+      @include primaryButton;
     }
 
     button.button:disabled {
