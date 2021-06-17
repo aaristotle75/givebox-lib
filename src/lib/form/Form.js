@@ -105,7 +105,8 @@ class Form extends Component {
       meta: {},
       disallowModalBgClose: false,
       color: '',
-      paybyDebitCard: false
+      paybyDebitCard: false,
+      leftBar: false
     }
     this.defaults = { ...this.defaultOptions, ...props.options };
     this.saveButtonRef = React.createRef();
@@ -745,6 +746,7 @@ class Form extends Component {
         customLink={params.customLink}
         inputMode={params.inputMode}
         color={params.color || this.props.primaryColor}
+        leftBar={params.leftBar}
       />
     )
   }

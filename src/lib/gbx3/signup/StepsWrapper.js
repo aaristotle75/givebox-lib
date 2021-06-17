@@ -34,6 +34,7 @@ class StepsWrapper extends React.Component {
     this.nextStep = this.nextStep.bind(this);
     this.stepCompleted = this.stepCompleted.bind(this);
     this.getNumStepsCompleted = this.getNumStepsCompleted.bind(this);
+    this.resizer = this.resizer.bind(this);
 
     const configStep = config.signupPhase[props.signupPhase];
 
@@ -45,7 +46,8 @@ class StepsWrapper extends React.Component {
       requiredSteps: configStep.requiredSteps,
       stepModalName: configStep.modalName,
       showStepNumber: configStep.showStepNumber,
-      menuHeader: configStep.menuHeader
+      menuHeader: configStep.menuHeader,
+      isMobile: window.innerWidth <= props.breakpoint ? true : false
     };
   }
 
@@ -60,6 +62,19 @@ class StepsWrapper extends React.Component {
         showStepNumber: configStep.showStepNumber,
         menuHeader: configStep.menuHeader
       });
+    }
+    window.addEventListener('resize', this.resizer);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.resizer);
+  }
+
+  resizer(e) {
+    if (window.innerWidth <= this.props.breakpoint) {
+      this.setState({ isMobile: true });
+    } else if (this.state.isMobile) {
+      this.setState({ isMobile: false})
     }
   }
 
@@ -107,7 +122,6 @@ class StepsWrapper extends React.Component {
     const {
       open,
       breakpoint,
-      isMobile,
       step,
       acceptedTerms,
       claimOrgID,
@@ -126,7 +140,8 @@ class StepsWrapper extends React.Component {
       requiredSteps,
       stepModalName,
       showStepNumber,
-      menuHeader
+      menuHeader,
+      isMobile
     } = this.state;
 
     const childrenWithProps = React.Children.map(this.props.children,
@@ -191,24 +206,41 @@ class StepsWrapper extends React.Component {
   render() {
 
     const {
+      step
+    } = this.props;
+
+    const {
+      stepsTodo,
       numStepsTodo,
-      menuHeader
+      menuHeader,
+      isMobile,
+      stepModalName
     } = this.state;
 
     const numCompleted = this.getNumStepsCompleted();
-    const stepProgress = parseInt((numCompleted / numStepsTodo) * 100);
+    const stepNumber = +step + 1;
+    const stepProgress = parseInt((stepNumber / numStepsTodo) * 100);
+    const oneStep = parseInt(100 / numStepsTodo);
+    const leftPercent = parseInt(stepProgress - oneStep);
+    const stepConfig = util.getValue(stepsTodo, step, {});
 
     return (
       <div className='gbx3Steps modalWrapper'>
-        <div className='flexCenter' style={{ marginBottom: 10 }}>
-          <Image size='thumb' maxSize={40} url={'https://cdn.givebox.com/givebox/public/gb-logo5.png'} alt='Givebox' />
+        <div className='stepsWrapperTop' style={{ marginBottom: 10 }}>
+          <div className='stepsTopLogo'>
+            <Image size='thumb' maxSize={30} url={'https://cdn.givebox.com/givebox/public/gb-logo5.png'} alt='Givebox' />
+          </div>
+          <div className='stepsTopTitle'>
+            { stepConfig.icon ? <span className={`icon icon-${stepConfig.icon}`}></span> : stepConfig.customIcon } {stepConfig.title}
+          </div>
+          <GBLink className='stepsTopClose link' onClick={() => this.props.toggleModal(stepModalName, false)}>{isMobile ? 'Close' : 'Close and Save for Later'}</GBLink>
         </div>
         <div className='progressWrapper'>
           <LinearBar
             progress={stepProgress}
           />
-          <div className='progressStatusText'>
-            {numCompleted} of {numStepsTodo} Completed
+        <div style={{ left: `${leftPercent}%` }} className='progressStatusText'>
+          {!isMobile ? 'Step ' : null }{stepNumber} of {numStepsTodo}
           </div>
         </div>
         {this.renderChildren()}
@@ -217,11 +249,13 @@ class StepsWrapper extends React.Component {
   }
 }
 
+StepsWrapper.defaultProps = {
+  breakpoint: 736
+};
+
 function mapStateToProps(state, props) {
 
   const open = util.getValue(state, 'gbx3.admin.open');
-  const breakpoint = util.getValue(state, 'gbx3.info.breakpoint');
-  const isMobile = breakpoint === 'mobile' ? true : false;
   const orgSignup = util.getValue(state, 'gbx3.orgSignup', {});
   const step = util.getValue(orgSignup, 'step', 0);
   const acceptedTerms = util.getValue(orgSignup, 'acceptedTerms');
@@ -236,8 +270,6 @@ function mapStateToProps(state, props) {
 
   return {
     open,
-    breakpoint,
-    isMobile,
     step,
     acceptedTerms,
     claimOrgID,

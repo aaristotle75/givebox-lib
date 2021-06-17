@@ -70,7 +70,8 @@ class TextField extends Component {
       inputMode,
       moneyStyle,
       autoComplete,
-      required
+      required,
+      leftBar
     } = this.props;
 
     const {
@@ -92,6 +93,9 @@ class TextField extends Component {
         <div style={style} className={`input-group ${type === 'hidden' ? 'input-hidden' : ''} ${className || ''} textfield-group ${readOnly ? 'readOnly tooltip' : ''} ${error ? 'error tooltip' : ''} ${type === 'hidden' && 'hidden'} ${money ? 'money-group' : ''}`}>
           <div className={`floating-label ${this.state.status} ${fixedLabel && 'fixed'}`}>
             {money && <div style={moneyStyle} className={`moneyAmount ${value ? 'active' : 'noValue'}`}><span className='symbol'>{symbol}</span></div>}
+            {leftBar ?
+              <div className='inputLeftBar'></div>
+            : null}
             <input
               autoFocus={autoFocus}
               id={id || name}

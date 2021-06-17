@@ -35,6 +35,10 @@ class Signup extends React.Component {
     window.addEventListener('resize', this.resizer);
   }
 
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.resizer);
+  }
+
   resizer(e) {
     if (window.innerWidth <= 736) {
       this.setState({ isMobile: true });

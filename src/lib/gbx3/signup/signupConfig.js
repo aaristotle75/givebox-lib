@@ -17,10 +17,10 @@ const welcome = {
 const orgName = {
   type: 'org',
   slug: 'orgName',
-  name: 'Your Organization',
-  title: 'What is the Name and Tax ID of Your Organization',
+  name: 'Organization Details',
+  title: 'Organization Details',
   icon: 'star',
-  desc: ''
+  desc: 'Welcome to Givebox! Raise money in a few short steps.'
 };
 
 const mission = {
@@ -260,7 +260,6 @@ export const signupPhase = {
     modalName: 'orgSignupSteps',
     showStepNumber: true,
     stepsTodo: [
-     welcome,
      orgName,
      mission,
      logo,

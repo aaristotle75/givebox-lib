@@ -174,8 +174,6 @@ export function loadOrgSignup(options = {}) {
   const bookDemo = options.bookDemo || false;
   const affiliateID = +util.getCookie('promo', null);
 
-  console.log('execute affiliateID -> ', affiliateID);
-
   return async (dispatch, getState) => {
     const signupFromCookie = LZString.decompressFromUTF16(localStorage.getItem('signup'));
     const signupJSON = signupFromCookie ? JSON.parse(signupFromCookie) : {};

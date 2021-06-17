@@ -4,8 +4,49 @@
 $stepInputSize: 18px;
 $gbx3StepsBreakpoint: 600px;
 
+.gbx3Steps.modalWrapper {
+  padding-top: 20px;
+}
 
 .gbx3Steps {
+
+  .stepsWrapperTop {
+    position: relative;
+  }
+
+  .stepsTopTitle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 22px;
+    font-weight: 400;
+    color: $med-blue-gray;
+
+    .icon {
+      margin-right: 10px;
+      font-size: 30px;
+    }
+  }
+
+  .stepsTopLogo {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .stepsTopClose {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+  }
+
+  button.stepsTopClose.link {
+    font-size: 12px;
+    font-weight: 500;
+    .icon {
+      font-size: 20px;
+    }
+  }
 
   .bookDemo {
     iframe {
@@ -185,18 +226,7 @@ $gbx3StepsBreakpoint: 600px;
     }
 
     button.button {
-      color: $white;
-      border: 1px solid $white;
-      @include bgGradient(to right, $salmon 30%, $salmon2 100%);
-      white-space: nowrap;
-      padding: 15px 25px;
-      border-radius: 25px;
-    }
-
-    button.button:hover {
-      color: $white;
-      border: 1px solid $white;
-      background: linear-gradient(to right, $salmon2 0%, $salmon 100%);
+      @include primaryButton
     }
 
     button.button:disabled {
@@ -226,6 +256,7 @@ $gbx3StepsBreakpoint: 600px;
 
     .stepTitleContainer {
       display: flex;
+      justify-content: center;
       align-items: center;
       margin-bottom: 20px;
 
@@ -310,13 +341,7 @@ $gbx3StepsBreakpoint: 600px;
   }
 
   button.button {
-    background: $mainColor;
-    color: $white;
-    @include default-transition(.25s);
-  }
-
-  button.button:hover {
-    background: transparentize($mainColor, .2);
+    @include primaryButton;
   }
 
   button.donotShowAgain {
@@ -421,6 +446,7 @@ $gbx3StepsBreakpoint: 600px;
   }
 
   .progressWrapper {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -429,28 +455,37 @@ $gbx3StepsBreakpoint: 600px;
     margin-bottom: 10px;
 
     .progressStatusText {
-      margin-top: 5px;
-      font-size: 14px;
-      font-weight: 300;
-      color: $med-blue-gray;
+      position: absolute;
+      top: 3px;
+      left: 0;
+      font-size: 16px;
+      font-weight: 400;
+      color: $white;
+      z-index: 10;
+      margin-left: 20px;
     }
   }
 
+  $progressBarHeight: 25px;
+
   .linearProgress {
     margin-top: 0px;
-    height: 6px;
-    background: $light-gray;
+    height: $progressBarHeight;
+    background: transparent;
+    @include blueToSalmon(.3);
+    border-radius: 20px;
   }
 
   .linearProgressBar {
-    height: 6px;
+    height: $progressBarHeight;
     background: $med-gray;
-    @include bgGradient(to right, $mainColor 0%, $green 100%);
+    border-radius: 20px;
+    @include greenToBlue(1);
     @include animation(pulsateBrighter 2s ease-out infinite);
   }
 
   .linearProgressBarAnimation {
-    height: 6px;
+    height: $progressBarHeight;
     background: transparent;
     z-index: 1;
   }

@@ -94,7 +94,7 @@ $bar4Color: #db6427;
 $bar4Color2: #fdd38f;
 $bar4Gradient: linear-gradient(to bottom, $bar4Color 0%,$bar4Color2 100%);
 
-// $green: #29eee6; 
+// $green: #29eee6;
 $mainColor: #698df4; // #4775f8; // #2f94ec; // old baby blue #49c9ff  darker blue #3fbcf1;
 $mainColorMedium: #4f7af4;
 $mainColorDark: #3d6df4; //#0943a7;
@@ -161,4 +161,39 @@ $sonarAlertColor: $green;
 
 :export {
   breakpoint: $breakpoint;
+}
+
+/*----- 2021 Theme --------*/
+
+$puppa_blue: #1d63ef;
+$puppa_green: #01eee7;
+$puppa_salmon: #ed8f90;
+$puppa_deep_purple: #1c157f;
+$mainColor: $puppa_blue;
+$green: $puppa_green;
+
+@mixin greenToBlue($opacity, $direction: 90deg) {
+  @include bgGradient($direction, rgba($puppa_green, $opacity) 0%, rgba($puppa_blue, $opacity) 100%);
+}
+
+@mixin blueToGreen($opacity, $direction: 90deg) {
+  @include bgGradient($direction, rgba($puppa_blue, $opacity) 0%, rgba($puppa_green, $opacity) 100%);
+}
+
+@mixin blueToSalmon($opacity, $direction: 90deg) {
+  @include bgGradient($direction, rgba($puppa_blue, $opacity) 0%, rgba($puppa_green, $opacity) 50%, rgba($puppa_salmon, $opacity) 100%);
+}
+
+@mixin primaryButton($background: $puppa_deep_purple) {
+  background: $background;
+  color: $white;
+  font-size: 16px;
+  white-space: nowrap;
+  padding: 15px 25px;
+  border-radius: 25px;
+  border: 0;
+  @include default-transition(.25s);
+  &:hover {
+    opacity: .8;
+  }
 }

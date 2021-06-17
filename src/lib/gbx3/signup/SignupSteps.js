@@ -631,7 +631,7 @@ class SignupStepsForm extends React.Component {
       component: <div></div>,
       className: '',
       saveButtonLabelTop: <span className='buttonAlignText'>Save & Continue to Step {nextStepNumber}: {nextStepName} <span className='icon icon-chevron-right'></span></span>,
-      saveButtonLabel: <span className='buttonAlignText'>Save & Continue to Next Step <span className='icon icon-chevron-right'></span></span>
+      saveButtonLabel: <span className='buttonAlignText'>Save & Continue <span className='icon icon-chevron-right'></span></span>
     };
 
     const library = {
@@ -969,29 +969,18 @@ class SignupStepsForm extends React.Component {
     return (
       <div className='stepContainer'>
         { this.state.saving ? <Loader msg='Saving...' /> : null }
-        {!this.state.editorOpen ?
-        <div className='stepStatus'>
-          <GBLink onClick={(e) => this.props.validateForm(e, this.processForm, slug)}>
-            <span style={{ marginLeft: 20 }}>{item.saveButtonLabelTop}</span>
-          </GBLink>
-        </div>
-        : null }
         <div className={`step ${item.className} ${open ? 'open' : ''}`}>
           <div className='stepTitleContainer'>
-            { item.icon ? <span className={`icon icon-${item.icon}`}></span> : item.customIcon }
             <div className='stepTitle'>
-              <div className='numberContainer'>
-                <span className='number'>Step {stepNumber}{ completed ? ':' : null}</span>
-                {completed ?
-                  <div className='completed'>
-                    <span className='icon icon-check'></span>Completed
-                  </div>
-                : null }
-              </div>
-              {item.title}
+              {completed ?
+                <div className='completed'>
+                  <span className='icon icon-check'></span>Completed
+                </div>
+              :
+                item.desc
+              }
             </div>
           </div>
-          <div className='stepsSubText'>{item.desc}</div>
           <div className={`stepComponent`}>
             {item.component}
           </div>
@@ -1008,18 +997,6 @@ class SignupStepsForm extends React.Component {
             {this.props.saveButton(this.processForm, { group: slug, label: item.saveButtonLabel })}
           </div>
           <div className='button-item' style={{ width: 150 }}>
-            { slug !== 'account' ?
-              <GBLink
-                className='link'
-                onClick={() => {
-                  const step = stepsTodo.findIndex(s => s.slug === 'account');
-                  this.props.updateOrgSignup({ step });
-                  this.props.formProp({ error: false });
-                }}
-              >
-                <span className='buttonAlignText'>Skip to Save Account <span className='icon icon-chevron-right'></span></span>
-              </GBLink>
-            : null }
           </div>
         </div> : null }
       </div>
@@ -1070,7 +1047,7 @@ class SignupSteps extends React.Component {
     }
 
     return (
-      <Form id={`stepsForm`} name={`stepsForm`}>
+      <Form id={`stepsForm`} name={`stepsForm`} options={{ leftBar: true }} >
         <SignupStepsForm
           {...this.props}
         />
