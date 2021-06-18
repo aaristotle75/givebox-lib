@@ -146,7 +146,7 @@ class StepsWrapper extends React.Component {
 
     const childrenWithProps = React.Children.map(this.props.children,
       (child) => React.cloneElement(child, {
-        // Step Config
+        // state
         stepsTodo,
         numStepsTodo,
         requiredSteps,
@@ -155,6 +155,7 @@ class StepsWrapper extends React.Component {
         menuHeader,
 
         // Functions
+        removeImage: this.removeImage,
         gotoNextStep: this.gotoNextStep,
         getNextStep: this.getNextStep,
         previousStep: this.previousStep,
@@ -233,7 +234,7 @@ class StepsWrapper extends React.Component {
           <div className='stepsTopTitle'>
             { stepConfig.icon ? <span className={`icon icon-${stepConfig.icon}`}></span> : stepConfig.customIcon } {stepConfig.title}
           </div>
-          <GBLink className='stepsTopClose link' onClick={() => this.props.toggleModal(stepModalName, false)}>{isMobile ? 'Close' : 'Close and Save for Later'}</GBLink>
+          <GBLink className='stepsTopClose link buttonAlignText' onClick={() => this.props.toggleModal(stepModalName, false)}>{isMobile ? 'Close' : 'Close and Do Later'} <span className='icon icon-x'></span></GBLink>
         </div>
         <div className='progressWrapper'>
           <div className='progressBarArchetype'>

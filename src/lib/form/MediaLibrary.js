@@ -8,6 +8,7 @@ import GBLink from '../common/GBLink';
 import * as types from '../common/types';
 import Loader from '../common/Loader';
 import Image from '../common/Image';
+import Icon from '../common/Icon';
 import ImageDisplay from '../common/ImageDisplay';
 import Paginate from '../table/Paginate';
 import MaxRecords from '../table/MaxRecords';
@@ -16,6 +17,7 @@ import { removeResource, toggleModal } from '../api/actions';
 import UploadEditorResizer from './UploadEditorResizer';
 import { Line } from 'rc-progress';
 import has from 'has';
+import { ImCamera } from 'react-icons/im';
 
 class MediaLibrary extends Component {
 
@@ -38,6 +40,7 @@ class MediaLibrary extends Component {
     this.setLoading = this.setLoading.bind(this);
     this.setPreview = this.setPreview.bind(this);
     this.closeModalAndCancel = this.closeModalAndCancel.bind(this);
+    this.removeImage = this.removeImage.bind(this);
     this.state = {
       image: this.props.image || '',
       preview: this.props.preview || '',
@@ -93,6 +96,11 @@ class MediaLibrary extends Component {
       this.timeout = null;
     }
     //this.props.removeResource(this.props.resourceName);
+  }
+
+  removeImage() {
+    this.setState({ preview: '' });
+    if (this.props.removePreview) this.props.removePreview();
   }
 
   toggleEditor(bool) {
@@ -328,7 +336,9 @@ class MediaLibrary extends Component {
       labelIcon,
       bottomLabel,
       className,
-      formError
+      formError,
+      singlePreview,
+      previewMaxSize
     } = this.props;
 
     const {
@@ -358,6 +368,8 @@ class MediaLibrary extends Component {
             {isFetching && <Loader className='uploadLoader' msg={'Loading...'} />}
             <div className='menu'>
               <div className='menu-group'>
+                { singlePreview && this.state.preview ?
+                null :
                 <Dropzone
                   className={`dropzone ${error || formError ? 'error' : ''}`}
                   onDrop={this.handleDrop}
@@ -370,9 +382,20 @@ class MediaLibrary extends Component {
                     {labelIcon}
                     {!mobile ? <span>{bottomLabel}</span> : <span>Add File</span>}
                   </span>
-                </Dropzone>
+                </Dropzone> }
                 {this.props.children}
-                {this.state.preview ? this.listSelected() : null}
+                {this.state.preview ?
+                  singlePreview ?
+                  <div style={{ width: previewMaxSize, height: previewMaxSize }} className='singleImagePreview'>
+                    <div className='preview-buttons'>
+                      <GBLink onClick={() => this.removeImage()}>New Image</GBLink>
+                      <GBLink onClick={() => this.selectEditor(this.state.preview)}>Edit Image</GBLink>
+                    </div>
+                    <Image url={this.state.preview} maxSize={previewMaxSize} alt={'Editor Preview'} />
+                  </div>
+                  :
+                  this.listSelected()
+                : null}
               </div>
               { error ?
                 <div className='errorMsg'>
@@ -451,10 +474,16 @@ MediaLibrary.defaultProps = {
   mobile: false,
   acceptedMimes: ['image', 'text', 'applications'],
   uploadOnly: false,
-  topLabel: 'Add File',
-  labelIcon: <span className='icon icon-instagram'></span>,
-  bottomLabel: 'Drag & Drop',
-  recordsPerPage: 20
+  topLabel: 'Drag Image Here',
+  labelIcon:
+    <div className='labelIcon'>
+      <div className='orText'>or</div>
+      <Icon><ImCamera /></Icon>
+    </div>
+  ,
+  bottomLabel: 'Click to Add Image',
+  recordsPerPage: 20,
+  previewMaxSize: 170
 }
 
 function mapStateToProps(state, props) {

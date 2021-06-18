@@ -71,7 +71,8 @@ class ContentField extends Component {
       modal,
       modalLabel,
       disallowModalBgClose,
-      color
+      color,
+      leftBar
     } = this.props;
 
     const {
@@ -91,6 +92,9 @@ class ContentField extends Component {
         <div className={`errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`}>{error}</div>
         {!modal && label && <label style={labelStyle} className={`${this.state.status}`} htmlFor={name}>{label}</label>}
         <div className={`floating-label ${this.state.status} ${fixedLabel && 'fixed'}`}>
+          {leftBar && !modal ?
+            <div className='inputLeftBar'></div>
+          : null}
           {modal ?
             <div>
               <ModalRoute id={id} component={(props) => this.renderEditor({ ...this.props, ...props })} />

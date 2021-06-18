@@ -111,7 +111,8 @@ class EditVideo extends React.Component {
 
     const {
       fieldContext,
-      error
+      error,
+      leftBar
     } = this.props;
 
     const {
@@ -131,6 +132,7 @@ class EditVideo extends React.Component {
           onBlur={this.onBlur}
           value={videoURLFieldValue}
           error={error ? 'Video URL is required' : ''}
+          leftBar={leftBar}
         />
         { fieldContext ?
           <div className='fieldContext'>

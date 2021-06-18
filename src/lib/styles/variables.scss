@@ -189,7 +189,7 @@ $green: $puppa_green;
   background: $background;
   @include bgGradient(140deg, rgba($puppa_deep_purple, 1) 50%, rgba($puppa_med_purple, 1) 100%);
   color: $white;
-  font-size: 16px;
+  font-size: 18px;
   white-space: nowrap;
   padding: 15px 30px;
   border-radius: 25px;
@@ -199,4 +199,20 @@ $green: $puppa_green;
   &:hover {
     opacity: .9;
   }
+}
+
+@mixin darkGradientText($background: $puppa_deep_purple) {
+  background: $background no-repeat;
+  @include bgGradient(90deg, rgba($puppa_deep_purple, 1) 30%, rgba($puppa_med_purple, 1) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+@mixin primaryGradientText($background: $mainColor) {
+  background: $background no-repeat;
+  @include bgGradient(90deg, rgba($mainColor, 1) 30%, rgba($green, 1) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
 }

@@ -6,12 +6,24 @@ $gbx3StepsBreakpoint: 600px;
 
 .gbx3Steps.modalWrapper {
   padding-top: 20px;
-  //@include bgGradient(160deg, $white 60%, rgba($puppa_blue, 1) 70%, rgba($puppa_green, 1) 85%, rgba($puppa_salmon, 1) 100%);
   background: radial-gradient(circle farthest-corner at 16% -39%, $white 75%, rgba($puppa_blue, 1) 85%, rgba($puppa_green, 1) 93%, rgba($puppa_salmon, 1) 100%);
-  //background: radial-gradient(ellipse farthest-corner at 0 140%, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%);
+
+  @media (max-width: 732px) {
+    height: 100vh;
+    border-radius: 0px;
+  }
 }
 
 .gbx3Steps {
+
+  .photoshop-picker {
+    width: 100% !important;
+    @media (max-width: 600px) {
+      width: 100% !important;
+    }
+    background: transparent !important;
+    box-shadow: none !important;
+  }
 
   .stepsWrapperTop {
     position: relative;
@@ -39,15 +51,15 @@ $gbx3StepsBreakpoint: 600px;
 
   .stepsTopClose {
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: 10px;
+    right: 10px;
   }
 
   button.stepsTopClose.link {
     font-size: 12px;
     font-weight: 500;
     .icon {
-      font-size: 20px;
+      margin-left: 5px;
     }
   }
 
@@ -153,6 +165,7 @@ $gbx3StepsBreakpoint: 600px;
 
   .dropdown button {
     border-bottom: 1px solid $light-gray;
+    height: 40px;
 
     .label {
       font-size: 18px;
@@ -224,8 +237,8 @@ $gbx3StepsBreakpoint: 600px;
     align-items: center;
 
     button.link {
-      font-size: 14px;
-      font-weight: 400;
+      font-size: 12px;
+      font-weight: 500;
     }
 
     button.button {
@@ -270,30 +283,36 @@ $gbx3StepsBreakpoint: 600px;
       }
     }
 
+    .completed {
+      display: flex;
+      align-items: center;
+
+      .completedText {
+        @include primaryGradientText();
+        font-size: 22px;
+        font-weight: 400;
+      }
+
+      .icon {
+        color: $green;
+        font-size: 32px;
+        margin-right: 10px;
+        @include animation(pulsateBrighter 2s ease-out infinite);
+      }
+    }
+
     .stepTitle {
       display: flex;
       flex-direction: column;
       font-size: 22px;
       margin-left: 20px;
+      font-weight: 400;
+      @include primaryGradientText();
 
       .numberContainer {
         display: flex;
         align-items: center;
         margin-bottom: 0px;
-      }
-
-      .completed {
-        display: flex;
-        align-items: center;
-        color: $green;
-        font-size: 22px;
-        font-weight: 300;
-        @include animation(pulsateBrighter 2s ease-out infinite);
-        .icon {
-          color: $green;
-          font-size: 22px;
-          margin-right: 10px;
-        }
       }
 
       .number {
@@ -319,10 +338,16 @@ $gbx3StepsBreakpoint: 600px;
       }
 
       label {
-        font-size: 14px;
+        font-size: 12px;
         font-weight: 400;
-        color: #253655;
+        color: $med-blue-gray;
       }
+
+      label.idle,
+      .label.idle {
+        color: $med-blue-gray !important;
+      }
+
       .error {
         label {
           color: $red;
@@ -408,6 +433,7 @@ $gbx3StepsBreakpoint: 600px;
   }
 
   .mediaLibrary {
+
     .uploadContainer {
       padding-bottom: 0;
       h4 {
@@ -417,23 +443,26 @@ $gbx3StepsBreakpoint: 600px;
       .dropzone {
         height: 170px;
         width: 170px;
-        border-radius: 10px;
-        border: 2px dashed $light-gray;
+        @include primaryButton();
+        border: 0;
+        border-radius: 20px;
+        padding: 0;
+        //border: 2px dashed $light-gray;
 
         .text {
           font-size: $stepInputSize;
-          color: $med-blue-gray;
+          //color: $med-blue-gray;
+          color: $white;
         }
 
-        .icon {
-          font-size: 40px;
-        }
       }
 
       .dropzone:hover {
-        background-color: $very-light-gray;
-        border: 2px dashed $mainColor;
-        @include transition(border .5s);
+        //background-color: $very-light-gray;
+        opacity: .9;
+        border: 0;
+        //border: 2px dashed $mainColor;
+        @include transition(opacity .25s);
       }
 
     }
@@ -637,9 +666,10 @@ $gbx3StepsBreakpoint: 600px;
 .modalContent.gbx3 {
   .gbx3Steps {
     .dropdown button.link {
-      font-size: 14px;
+      font-size: 12px;
       font-weight: 400;
       border-bottom: 0;
+      color: $med-blue-gray;
     }
   }
 }

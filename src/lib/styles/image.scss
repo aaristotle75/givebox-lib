@@ -11,6 +11,7 @@
 }
 
 .rotate {
+  margin-top: 10px;
   .icon {
     margin: 0 5px;
   }
@@ -478,6 +479,7 @@ button.imageCover {
   height: 100%;
   overflow: hidden;
   padding-bottom: 50px;
+  border-radius: 20px;
 
   .menu {
     position: absolute;
@@ -663,11 +665,18 @@ button.imageCover {
     font-size: 12px;
   }
 
+  .uploadEditorResizer {
+    position: relative;
+  }
+
   .uploadEditorContainer {
     position: relative;
     height: auto;
     overflow: hidden;
+    padding-top: 20px;
     padding-bottom: 50px;
+    background: $white;
+    z-index: 12;
 
     .menu {
       position: relative;
@@ -714,6 +723,28 @@ button.imageCover {
       height: 100%;
     }
 
+    .icon {
+      color: $white;
+      font-size: 80px;
+      opacity: .9;
+    }
+
+    .labelIcon {
+      position: relative;
+
+      .orText {
+        position: absolute;
+        top: 38px;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        color: $puppa_deep_purple;
+        font-weight: 400;
+        font-size: 16px;
+        z-index: 2;
+      }
+    }
+
     .dropzone {
       width: 135px;
       height: 135px;
@@ -721,11 +752,9 @@ button.imageCover {
         height: 125px;
       }
 
-      .icon {
-        font-size: 32px;
-      }
-
      .text {
+        font-size: 16px;
+        color: $white;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -751,6 +780,43 @@ button.imageCover {
       position: absolute;
       height: 180px;
       padding-top: 10px;
+      border: 0;
+      background: transparent;
+
+      .singleImagePreview:hover {
+        .preview-buttons {
+          opacity: 1;
+        }
+      }
+
+      .singleImagePreview {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .preview-buttons {
+          opacity: 0;
+          position: absolute;
+          bottom: 5px;
+          left: 0;
+          right: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 5px;
+          @include primaryButton();
+          @include transition(opacity .25s);
+          white-space: nowrap;
+
+          button.link {
+            margin: 0 10px;
+            font-size: 12px;
+            font-weight: 500;
+            color: $white;
+          }
+        }
+      }
 
       .menu-group {
         display: flex;
@@ -774,7 +840,16 @@ button.imageCover {
     align-items: center;
     background: #ffffff;
   }
+}
 
+.uploadEditorBackground {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: transparentize($dark, .3);
+  z-index: 11;
 }
 
 .uploadResizerContent {

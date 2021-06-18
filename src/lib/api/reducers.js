@@ -24,7 +24,8 @@ export function app(state = {
   appRef: null,
   modalRef: null,
   filterOpen: false,
-  primaryColor: ''
+  primaryColor: '',
+  openEditor: []
 }, action) {
   switch (action.type) {
     case types.SET_APP_REF:

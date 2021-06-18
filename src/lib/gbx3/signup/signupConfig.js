@@ -5,14 +5,6 @@ import { MdBusiness } from 'react-icons/md';
 import { FaConnectdevelop, FaMoneyCheck } from 'react-icons/fa';
 import { TiBusinessCard } from 'react-icons/ti';
 
-const welcome = {
-  type: 'org',
-  slug: 'welcome',
-  name: 'Welcome',
-  title: 'Welcome to Givebox!',
-  icon: 'heart',
-  desc: ''
-};
 
 const orgName = {
   type: 'org',
@@ -26,47 +18,29 @@ const orgName = {
 const mission = {
   type: 'org',
   slug: 'mission',
-  name: 'Your Mission',
+  name: 'About Organization',
   icon: 'globe',
-  title: 'Tell Us About Your Organization',
-  desc: 'Add a short description of what your organization does and/or your mission to the world.'
-};
-
-const themeColor = {
-  type: 'org',
-  slug: 'themeColor',
-  name: 'Theme Color',
-  icon: 'sun',
-  title: 'Pick a Theme',
-  desc: 'Choose a color that compliments your Organization logo and/or branding.'
-};
-
-const logo = {
-  type: 'org',
-  slug: 'logo',
-  name: 'Upload Logo',
-  icon: 'upload-cloud',
-  title: 'Upload an Image of Your Logo',
-  desc: 'A nice logo makes you easily identifiable to your supporters.'
+  title: 'About Organization',
+  desc: 'Upload a logo and tell us about your organization.'
 };
 
 const title = {
   type: 'gbx3',
   slug: 'title',
-  name: 'Fundraiser Title',
-  icon: 'message-circle',
-  title: 'Title of Your First Givebox Fundraiser',
-  desc: 'Please enter a captivating title below to let your supporters know what you are raising money for.'
+  name: 'Fundraiser Details',
+  icon: 'heart',
+  title: 'Fundraiser Details',
+  desc: 'Upload an image and write a title that will make your fundraiser shine!'
 };
 
-const image = {
-  type: 'gbx3',
-  slug: 'image',
-  name: 'Add Image/Video',
-  icon: 'camera',
-  title: 'Add an Image or Video for Your Fundraiser',
-  desc: 'A picture speaks a thousand words. Upload an image that inspires people to support your fundraiser.'
-}
+const themeColor = {
+  type: 'org',
+  slug: 'themeColor',
+  name: 'Fundraiser Boosters',
+  icon: 'sun',
+  title: 'Fundraiser Boosters',
+  desc: 'These are optional, but they really help increase donations!'
+};
 
 const account = {
   type: 'account',
@@ -262,18 +236,15 @@ export const signupPhase = {
     stepsTodo: [
      orgName,
      mission,
-     logo,
-     themeColor,
      title,
-     image,
+     themeColor,
      account
    ],
    requiredSteps: [
      orgName,
      mission,
-     logo,
      title,
-     image
+     themeColor
    ]
   },
   postSignup: {

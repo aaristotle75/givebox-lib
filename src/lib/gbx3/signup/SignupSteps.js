@@ -15,6 +15,7 @@ import Loader from '../../common/Loader';
 import * as _v from '../../form/formValidate';
 import GBLink from '../../common/GBLink';
 import Image from '../../common/Image';
+import Icon from '../../common/Icon';
 import HelpfulTip from '../../common/HelpfulTip';
 import {
   setOrgStyle,
@@ -35,6 +36,7 @@ import {
   primaryColor as defaultPrimaryColor,
   defaultOrgGlobals
 } from '../redux/gbx3defaults';
+import { MdCheckCircle } from 'react-icons/md';
 
 const defaultReceiptTemplate = require('html-loader!../admin/receipt/receiptEmailDefaultContent.html');
 const GBX_URL = process.env.REACT_APP_GBX_URL;
@@ -422,29 +424,18 @@ class SignupStepsForm extends React.Component {
 
     switch (group) {
       case 'orgName': {
-        if (!validTaxID || validTaxID !== org.taxID) this.validateTaxID(org.taxID, group);
-        else this.saveStep(group);
-        break;
+        if (!validTaxID || validTaxID !== org.taxID) return this.validateTaxID(org.taxID, group);
+        if (!org.categoryID) return this.setState({ categoryIDError: 'Organization Category is Required' });
+        return this.saveStep(group);
       }
 
       case 'mission': {
-        if (!org.mission || !org.categoryID) {
+        if (!org.mission) {
           if (!org.mission) this.props.fieldProp('mission', { error: 'About Your Organization is Required' });
-          if (!org.categoryID) this.setState({ categoryIDError: 'Organization Category is Required' });
           this.props.formProp({ error: true, errorMsg: 'Please fix the errors below in red.' });
           this.setState({ saving: false });
         } else {
           this.saveStep(group);
-        }
-        break;
-      }
-
-      case 'logo': {
-        if (!org.imageURL) {
-          this.props.formProp({ error: true, errorMsg: 'Please upload a logo or profile picture to continue.'});
-          this.setState({ saving: false });
-        } else {
-          this.saveStep('logo');
         }
         break;
       }
@@ -573,7 +564,7 @@ class SignupStepsForm extends React.Component {
     this.props.formProp({ error: false });
     const updated = await this.props.updateOrgSignupField(name, { [field]: url });
     if (updated) {
-      this.saveStep(slug, 2000);
+      //this.saveStep(slug, 2000);
     }
   }
 
@@ -640,21 +631,6 @@ class SignupStepsForm extends React.Component {
     };
 
     switch (slug) {
-      case 'welcome': {
-        item.saveButtonLabelTop = <span className='buttonAlignText'>Continue to Step {nextStepNumber}: {nextStepName} <span className='icon icon-chevron-right'></span></span>;
-        item.saveButtonLabel = <span className='buttonAlignText'>Continue to Next Step <span className='icon icon-chevron-right'></span></span>
-        item.desc =
-          <div>
-            <p>You have chosen wisely. You are well on your way to accepting payments and donations through Givebox.</p>
-            <p>Simply follow the steps, and in a matter of minutes you will be ready to start raising money immediately!</p>
-            <HelpfulTip
-              text={`As you go through the steps, remember that almost everything can be changed later, so don't over think it!`}
-              style={{ marginTop: 30 }}
-            />
-          </div>
-        ;
-        break;
-      }
 
       case 'orgName': {
         item.component =
@@ -718,13 +694,34 @@ class SignupStepsForm extends React.Component {
         item.className = 'missionStep';
         item.component =
           <div className='fieldGroup'>
+            <MediaLibrary
+              image={orgLogo}
+              preview={orgLogo}
+              quickUpload={true}
+              singlePreview={true}
+              removePreview={() => {
+                console.log('execute removePreview');
+              }}
+              handleSaveCallback={(url) => this.handleMediaSaveCallback(url, 'org', 'imageURL', slug)}
+              handleSave={util.handleFile}
+              library={library}
+              showBtns={'hide'}
+              saveLabel={'close'}
+              mobile={isMobile ? true : false }
+              uploadOnly={true}
+              uploadEditorSaveStyle={{ width: 250 }}
+              uploadEditorSaveLabel={'Click Here to Use Image'}
+              imageEditorOpenCallback={(editorOpen) => {
+                this.setState({ editorOpen })
+              }}
+            />
             {this.props.richText('mission', {
               name: 'mission',
               group: slug,
-              style: { paddingTop: 0 },
+              style: { paddingTop: 20 },
               placeholder:
               <div>
-                Click Here to Write About Your Organization, Mission or Purpose
+                Type About Your Organization, Mission or Purpose
               </div>,
               fixedLabel: false,
               label: '',
@@ -738,28 +735,23 @@ class SignupStepsForm extends React.Component {
                 }
               }
             })}
-            <HelpfulTip
-              headerIcon={<span className='icon icon-edit-2'></span>}
-              headerText={`Example Mission Statement`}
-              style={{ marginTop: 20, marginBottom: 20 }}
-              text={
-                <span>
-                  "Nonprofit helps communities raise money for food in the United States, Canada and Mexico."
-                </span>
-              }
-            />
           </div>
         ;
         break;
       }
 
-      case 'logo': {
+      case 'title': {
         item.component =
           <div className='fieldGroup'>
             <MediaLibrary
-              image={orgLogo}
-              preview={orgLogo}
-              handleSaveCallback={(url) => this.handleMediaSaveCallback(url, 'org', 'imageURL', slug)}
+              image={imageURL}
+              preview={imageURL}
+              quickUpload={true}
+              singlePreview={true}
+              handleSaveCallback={(url) => {
+                this.setState({ mediaTypeError: null });
+                this.handleMediaSaveCallback(url, 'gbx3', 'imageURL', slug);
+              }}
               handleSave={util.handleFile}
               library={library}
               showBtns={'hide'}
@@ -767,14 +759,27 @@ class SignupStepsForm extends React.Component {
               mobile={isMobile ? true : false }
               uploadOnly={true}
               uploadEditorSaveStyle={{ width: 250 }}
-              uploadEditorSaveLabel={'Click Here to Save Image'}
+              uploadEditorSaveLabel={'Click Here to Use Image'}
               imageEditorOpenCallback={(editorOpen) => {
                 this.setState({ editorOpen })
               }}
-              topLabel={'Click to Add Image'}
-              bottomLabel={'Drag & Drop Image'}
-              labelIcon={<span className='icon icon-instagram'></span>}
+              formError={mediaTypeError === 'image' ? true : false}
             />
+            {this.props.textField('title', {
+              group: slug,
+              style: { paddingTop: 20 },
+              label: 'Fundraiser Title',
+              placeholder: 'Type Fundraiser Title',
+              maxLength: 128,
+              count: true,
+              required: true,
+              value: title,
+              onBlur: (name, value) => {
+                if (value) {
+                  this.props.updateOrgSignupField('gbx3', { title: value });
+                }
+              }
+            })}
           </div>
         ;
         break;
@@ -799,72 +804,56 @@ class SignupStepsForm extends React.Component {
         };
         item.component =
           <div className='fieldGroup'>
-            <div className='flexCenter'>
-              <PhotoshopPicker
-                styles={style}
-                header={''}
-                color={this.state.themeColor}
-                onChangeComplete={(color) => {
-                  this.setState({ themeColor: color.hex })
+            <div className='column50'>
+              <Dropdown
+                name='defaultTheme'
+                portalID={`category-dropdown-portal-${slug}`}
+                portalClass={'gbx3 articleCardDropdown'}
+                portalLeftOffset={10}
+                className='articleCard'
+                contentWidth={400}
+                label={'Theme Style'}
+                selectLabel='Choose Theme'
+                fixedLabel={false}
+                required={true}
+                onChange={(name, value) => {
+                  this.props.updateOrgSignupField('org', { defaultTheme: value });
                 }}
+                options={[
+                  { primaryText: 'Light', value: 'light' },
+                  { primaryText: 'Dark', value: 'dark' }
+                ]}
+                showCloseBtn={true}
+                value={defaultTheme || ''}
+                style={{ paddingBottom: 20 }}
+                leftBar={true}
+              />
+              <div className='flexCenter'>
+                <PhotoshopPicker
+                  styles={style}
+                  header={''}
+                  color={this.state.themeColor}
+                  onChangeComplete={(color) => {
+                    this.setState({ themeColor: color.hex })
+                  }}
+                />
+              </div>
+            </div>
+            <div className='column50'>
+              <EditVideo
+                videoURL={videoURL}
+                onChange={() => {
+                  this.setState({ mediaTypeError: null });
+                }}
+                onBlur={(url, validated) => {
+                  if (url && validated) {
+                    this.handleMediaSaveCallback(url, 'gbx3', 'videoURL', slug);
+                  }
+                }}
+                error={mediaTypeError === 'video' ? true : false}
+                leftBar={true}
               />
             </div>
-            <Dropdown
-              name='defaultTheme'
-              portalID={`category-dropdown-portal-${slug}`}
-              portalClass={'gbx3 articleCardDropdown'}
-              portalLeftOffset={10}
-              className='articleCard'
-              contentWidth={400}
-              label={'Select a Theme'}
-              selectLabel='Select a Theme'
-              fixedLabel={true}
-              required={true}
-              onChange={(name, value) => {
-                this.props.updateOrgSignupField('org', { defaultTheme: value });
-              }}
-              options={[
-                { primaryText: 'Light', value: 'light' },
-                { primaryText: 'Dark', value: 'dark' }
-              ]}
-              showCloseBtn={true}
-              value={defaultTheme || 'dark'}
-              style={{ paddingTop: 40 }}
-            />
-          </div>
-        ;
-        break;
-      }
-
-      case 'title': {
-        item.component =
-          <div className='fieldGroup'>
-            <HelpfulTip
-              headerIcon={<span className='icon icon-trending-up'></span>}
-              headerText='Pro Tip to Increase Conversions'
-              style={{ marginTop: 25, marginBottom: 20 }}
-              text={
-                <span>
-                  A good title should not be dull or too general. It should elicit an emotional reponse to get peoples attention.<br /><br />
-                  A dull title: "Please Donate to Save the Whales"<br /><br />
-                  A better title: "If you Love Whales Here is How You Can Save Them"
-                </span>
-              }
-            />
-            {this.props.textField('title', {
-              group: slug,
-              label: 'Fundraiser Title',
-              placeholder: 'Click Here to Enter a Title',
-              maxLength: 128,
-              count: true,
-              required: true,
-              value: title,
-              onBlur: (name, value) => {
-                if (value) {
-                  this.props.updateOrgSignupField('gbx3', { title: value });
-                }
-              }
-            })}
           </div>
         ;
         break;
@@ -964,15 +953,15 @@ class SignupStepsForm extends React.Component {
         { this.state.saving ? <Loader msg='Saving...' /> : null }
         <div className={`step ${item.className} ${open ? 'open' : ''}`}>
           <div className='stepTitleContainer'>
+            {completed ?
+              <div className='completed'>
+                <Icon><MdCheckCircle /></Icon> <span className='completedText'>Step {stepNumber} Completed</span>
+              </div>
+            :
             <div className='stepTitle'>
-              {completed ?
-                <div className='completed'>
-                  <span className='icon icon-check'></span>Completed
-                </div>
-              :
-                item.desc
-              }
+              {item.desc}
             </div>
+            }
           </div>
           <div className={`stepComponent`}>
             {item.component}
