@@ -25,6 +25,41 @@ $gbx3StepsBreakpoint: 600px;
     box-shadow: none !important;
   }
 
+  .photoshop-picker-colorpicker {
+    border-radius: 20px;
+    border: 0 !important;
+    max-height: 170px;
+    max-width: 170px;
+  }
+
+  .photoshop-picker-verticalpicker {
+    border: 0 !important;
+    max-height: 170px;
+    .hue-vertical {
+      border-radius: 20px;
+    }
+  }
+
+  .photoshop-picker-preview-group {
+    border: 0 !important;
+  }
+
+  .photoshop-picker-preview-button {
+    box-shadow: none !important;
+    border-radius: 20px;
+    width: 80px;
+    height: 50px;
+    margin-top: 10px;
+  }
+
+  .photoshop-picker-preview-label {
+    font-size: 12px !important;
+    white-space: nowrap;
+    color: $med-blue-gray !important;
+    font-weight: 500;
+    margin-top: 3px;
+  }
+
   .stepsWrapperTop {
     position: relative;
   }
