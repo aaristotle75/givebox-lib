@@ -25,6 +25,10 @@ $gbx3StepsBreakpoint: 600px;
 
 .gbx3Steps {
 
+  .column50 {
+    padding: 0 10px;
+  }
+
   .fieldContext {
     font-size: 12px;
     font-weight: 400;
@@ -396,6 +400,15 @@ $gbx3StepsBreakpoint: 600px;
         font-size: 12px;
         font-weight: 400;
         color: $med-blue-gray;
+      }
+
+      .error .dropdown button {
+        border-bottom: 2px solid $red;
+      }
+
+      .error label.idle,
+      .error .label.idle {
+          color: $red !important;
       }
 
       label.idle,

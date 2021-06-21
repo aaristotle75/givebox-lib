@@ -424,8 +424,11 @@ class SignupStepsForm extends React.Component {
 
     switch (group) {
       case 'orgName': {
-        if (!validTaxID || validTaxID !== org.taxID) return this.validateTaxID(org.taxID, group);
-        if (!org.categoryID) return this.setState({ categoryIDError: 'Organization Category is Required' });
+        if ((!validTaxID || validTaxID !== org.taxID) && org.categoryID) return this.validateTaxID(org.taxID, group);
+        if (!org.categoryID) {
+          this.props.formProp({ error: true, errorMsg: 'Please fix the errors below in red.' });
+          return this.setState({ saving: false, categoryIDError: 'Organization Category is Required' });
+        }
         return this.saveStep(group);
       }
 
@@ -479,7 +482,6 @@ class SignupStepsForm extends React.Component {
       },
       reload: true,
       callback: (res, err) => {
-        console.log('execute -> ', res, err);
         const hasPassword = util.getValue(res, 'hasPassword');
         const emailExists = util.getValue(res, 'emailExists');
         if (hasPassword && emailExists) {
@@ -613,57 +615,63 @@ class SignupStepsForm extends React.Component {
       case 'orgName': {
         item.component =
           <div className='fieldGroup'>
-            {this.props.textField('orgName', {
-              group: slug,
-              fixedLabel: false,
-              label: 'Organization Name',
-              placeholder: `Type Organization Name`,
-              maxLength: 128,
-              count: true,
-              required: true,
-              value: orgName,
-              onBlur: (name, value) => {
-                if (value) {
-                  this.props.updateOrgSignupField('org', { name: value });
+            <div className='column50'>
+              {this.props.textField('orgName', {
+                group: slug,
+                fixedLabel: false,
+                label: 'Organization Name',
+                placeholder: `Type Organization Name`,
+                maxLength: 128,
+                count: true,
+                required: true,
+                value: orgName,
+                onBlur: (name, value) => {
+                  if (value) {
+                    this.props.updateOrgSignupField('org', { name: value });
+                  }
                 }
-              }
-            })}
-            {this.props.textField('taxID', {
-              group: slug,
-              fixedLabel: false,
-              label: 'U.S. Federal Tax ID',
-              placeholder: `Type Tax ID`,
-              required: true,
-              value: taxID,
-              validate: 'taxID',
-              onBlur: (name, value) => {
-                if (value) {
-                  this.props.updateOrgSignupField('org', { taxID: value });
+              })}
+            </div>
+            <div className='column50'>
+              {this.props.textField('taxID', {
+                group: slug,
+                fixedLabel: false,
+                label: 'U.S. Federal Tax ID',
+                placeholder: `Type Tax ID`,
+                required: true,
+                value: taxID,
+                validate: 'taxID',
+                onBlur: (name, value) => {
+                  if (value) {
+                    this.props.updateOrgSignupField('org', { taxID: value });
+                  }
                 }
-              }
-            })}
-            <Dropdown
-              name='categoryID'
-              portalID={`category-dropdown-portal-${slug}`}
-              portalClass={'gbx3 articleCardDropdown selectCategory gbx3Steps'}
-              portalLeftOffset={10}
-              className='articleCard'
-              contentWidth={400}
-              label={'Organization Category'}
-              selectLabel='Choose an Organization Category'
-              fixedLabel={false}
-              fixedLabelHasValue={true}
-              required={true}
-              onChange={(name, value) => {
-                this.setState({ categoryIDError: false });
-                this.props.updateOrgSignupField('org', { categoryID: +value });
-              }}
-              options={this.categories()}
-              showCloseBtn={true}
-              error={this.state.categoryIDError}
-              value={categoryID}
-              leftBar={true}
-            />
+              })}
+            </div>
+            <div className='column50'>
+              <Dropdown
+                name='categoryID'
+                portalID={`category-dropdown-portal-${slug}`}
+                portalClass={'gbx3 articleCardDropdown selectCategory gbx3Steps'}
+                portalLeftOffset={10}
+                className='articleCard'
+                contentWidth={400}
+                label={'Organization Category'}
+                selectLabel='Choose an Organization Category'
+                fixedLabel={false}
+                fixedLabelHasValue={true}
+                required={true}
+                onChange={(name, value) => {
+                  this.setState({ categoryIDError: false });
+                  this.props.updateOrgSignupField('org', { categoryID: +value });
+                }}
+                options={this.categories()}
+                showCloseBtn={true}
+                error={this.state.categoryIDError}
+                value={categoryID}
+                leftBar={true}
+              />
+            </div>
           </div>
         break;
       }
