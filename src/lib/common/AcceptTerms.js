@@ -48,17 +48,28 @@ class AcceptTerms extends React.Component {
 
     return (
       <>
-        <ModalRoute id='readTerms' component={(props) => <Terms {...props} />  } effect='3DFlipVert' style={{ width: '60%'}} />
-        <div style={{ marginTop: 20 }} className='flexBetween'>
+        <ModalRoute
+          id='readTerms'
+          component={(props) =>
+            <Terms
+              {...props}
+            />
+          }
+          effect='3DFlipVert'
+          style={{ width: '60%'}}
+        />
+      <div style={{ marginTop: 20 }} className='flexCenter'>
           <Choice
             name={'acceptTerms'}
-            label='I Agree to Givebox Terms of Service'
+            label='I Agree to Givebox Terms of Service (Click Here to Read Terms)'
             checked={checked}
             value={value}
             onChange={this.onChangeAcceptTerms}
             error={error ? errorMsg : false}
+            labelClick={() => {
+              this.props.toggleModal('readTerms', true, { closeCallback: this.acceptTerms });
+            }}
           />
-          <ModalLink id='readTerms' className='link terms' opts={{ closeCallback: this.acceptTerms }}>Read Agreement <span className='icon icon-chevron-right'></span></ModalLink>
         </div>
       </>
     )

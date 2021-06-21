@@ -14,7 +14,23 @@ $gbx3StepsBreakpoint: 600px;
   }
 }
 
+.gbx3Steps.articleCardDropdown.dropdown .dropdown-item {
+  font-size: 18px;
+
+  .secondaryText {
+    color: $med-blue-gray;
+    font-size: 12px;
+  }
+}
+
 .gbx3Steps {
+
+  .fieldContext {
+    font-size: 12px;
+    font-weight: 400;
+    color: $med-blue-gray;
+    padding: 0;
+  }
 
   .photoshop-picker {
     width: 100% !important;
@@ -29,12 +45,13 @@ $gbx3StepsBreakpoint: 600px;
     border-radius: 20px;
     border: 0 !important;
     max-height: 170px;
-    max-width: 170px;
+    cursor: pointer;
   }
 
   .photoshop-picker-verticalpicker {
     border: 0 !important;
     max-height: 170px;
+    cursor: pointer;
     .hue-vertical {
       border-radius: 20px;
     }
@@ -56,7 +73,7 @@ $gbx3StepsBreakpoint: 600px;
     font-size: 12px !important;
     white-space: nowrap;
     color: $med-blue-gray !important;
-    font-weight: 500;
+    font-weight: 400;
     margin-top: 3px;
   }
 
@@ -196,6 +213,10 @@ $gbx3StepsBreakpoint: 600px;
     input {
       border-bottom: 0;
     }
+  }
+
+  .dropdown label button.link {
+    height: auto;
   }
 
   .dropdown button {

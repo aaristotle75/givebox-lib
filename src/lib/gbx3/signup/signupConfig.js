@@ -45,10 +45,10 @@ const themeColor = {
 const account = {
   type: 'account',
   slug: 'account',
-  name: 'Save Account',
-  icon: 'user',
-  title: 'Save Your Account',
-  desc: `Please save your Givebox account to secure your Organization's profile and accept payments.`
+  name: 'Save Progress',
+  icon: 'save',
+  title: 'Save Progress',
+  desc: `Create a FREE Givebox account to save your progress.`
 }
 
 const createSuccess = {
@@ -205,7 +205,7 @@ export const orgSignupFields = {
     categoryID: null,
     mission: '',
     imageURL: null,
-    defaultTheme: 'dark',
+    defaultTheme: '',
     themeColor: '',
     coverPhotoURL: null
   },

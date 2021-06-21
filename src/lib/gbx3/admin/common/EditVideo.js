@@ -112,7 +112,10 @@ class EditVideo extends React.Component {
     const {
       fieldContext,
       error,
-      leftBar
+      leftBar,
+      placeholder,
+      label,
+      style
     } = this.props;
 
     const {
@@ -125,14 +128,15 @@ class EditVideo extends React.Component {
       <div className='editVideoWrapper'>
         <TextField
           name='video'
-          label='Embed Video URL'
+          label={label}
           fixedLabel={false}
-          placeholder='Click Here to Enter a Video URL'
+          placeholder={placeholder}
           onChange={this.onChangeVideo}
           onBlur={this.onBlur}
           value={videoURLFieldValue}
-          error={error ? 'Video URL is required' : ''}
+          error={error ? 'Video Link is Required' : ''}
           leftBar={leftBar}
+          style={style}
         />
         { fieldContext ?
           <div className='fieldContext'>
@@ -157,7 +161,12 @@ class EditVideo extends React.Component {
 }
 
 EditVideo.defaultProps = {
-  fieldContext: 'Please enter a YouTube, Vimeo, Facebook Video URL.'
+  label: 'Video Link',
+  fieldContext: 'Copy and past link from YouTube, Vimeo or Facebook.',
+  placeholder: 'Add Video Link',
+  style: {
+    paddingBottom: 5
+  }
 };
 
 function mapStateToProps(state, props) {

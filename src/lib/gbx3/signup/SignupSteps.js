@@ -453,32 +453,6 @@ class SignupStepsForm extends React.Component {
         break;
       }
 
-      case 'image': {
-        switch (mediaType) {
-          case 'video': {
-            if (!gbx3.videoURL) {
-              this.props.formProp({ error: true, errorMsg: 'Please enter a video url to continue.'});
-              this.setState({ saving: false, mediaTypeError: 'video' });
-            } else {
-              this.saveStep('image');
-            }
-            break;
-          }
-
-          case 'image':
-          default: {
-            if (!gbx3.imageURL) {
-              this.props.formProp({ error: true, errorMsg: 'Please upload an image to continue.'});
-              this.setState({ saving: false, mediaTypeError: 'image' });
-            } else {
-              this.saveStep('image');
-            }
-            break;
-          }
-        }
-        break;
-      }
-
       case 'account': {
         const password = util.getValue(fields, 'password.value');
         if (!acceptedTerms) {
@@ -667,7 +641,7 @@ class SignupStepsForm extends React.Component {
             <Dropdown
               name='categoryID'
               portalID={`category-dropdown-portal-${slug}`}
-              portalClass={'gbx3 articleCardDropdown selectCategory'}
+              portalClass={'gbx3 articleCardDropdown selectCategory gbx3Steps'}
               portalLeftOffset={10}
               className='articleCard'
               contentWidth={400}
@@ -808,13 +782,14 @@ class SignupStepsForm extends React.Component {
               <Dropdown
                 name='defaultTheme'
                 portalID={`category-dropdown-portal-${slug}`}
-                portalClass={'gbx3 articleCardDropdown'}
+                portalClass={'gbx3 articleCardDropdown gbx3Steps'}
                 portalLeftOffset={10}
                 className='articleCard'
                 contentWidth={400}
                 label={'Theme Style'}
                 selectLabel='Choose Theme'
                 fixedLabel={false}
+                fixedLabelHasValue={true}
                 required={true}
                 onChange={(name, value) => {
                   this.props.updateOrgSignupField('org', { defaultTheme: value });
@@ -827,7 +802,16 @@ class SignupStepsForm extends React.Component {
                 value={defaultTheme || ''}
                 style={{ paddingBottom: 20 }}
                 leftBar={true}
+                hideIcons={true}
               />
+            <div className='input-group'>
+              <div className='fieldFauxInput'>
+                <div className='inputLeftBar'></div>
+                <div className='placeholder'>Choose Accent Color</div>
+                <div className='fieldContext'>
+                  Button and link color.
+                </div>
+              </div>
               <div className='flexCenter'>
                 <PhotoshopPicker
                   styles={style}
@@ -838,6 +822,7 @@ class SignupStepsForm extends React.Component {
                   }}
                 />
               </div>
+            </div>
             </div>
             <div className='column50'>
               <EditVideo
@@ -859,76 +844,8 @@ class SignupStepsForm extends React.Component {
         break;
       }
 
-      case 'image': {
-        item.desc =
-          <div>
-            <p>{item.desc}</p>
-            <HelpfulTip
-              headerIcon={<span className='icon icon-video'></span>}
-              headerText={`An Image is Great, but with a Video Your Fundraiser Excels`}
-              style={{ marginTop: 20, marginBottom: 20 }}
-              text={
-                <span>
-                  If you have a video link handy we suggest you use it. An image is great, but a video brings your story to life.
-                </span>
-              }
-            />
-          </div>
-        ;
-        item.component =
-          <div className='fieldGroup'>
-            <Tabs
-              default={mediaType}
-              className='statsTab'
-              callbackAfter={this.callbackAfter}
-            >
-              <Tab id='image' className='showOnMobile' label={<span className='stepLabel buttonAlignText'>Use an Image <span className='icon icon-instagram'></span></span>}>
-                <MediaLibrary
-                  image={imageURL}
-                  preview={imageURL}
-                  handleSaveCallback={(url) => {
-                    this.setState({ mediaTypeError: null });
-                    this.handleMediaSaveCallback(url, 'gbx3', 'imageURL', slug);
-                  }}
-                  handleSave={util.handleFile}
-                  library={library}
-                  showBtns={'hide'}
-                  saveLabel={'close'}
-                  mobile={isMobile ? true : false }
-                  uploadOnly={true}
-                  uploadEditorSaveStyle={{ width: 250 }}
-                  uploadEditorSaveLabel={'Click Here to Save Image'}
-                  imageEditorOpenCallback={(editorOpen) => {
-                    this.setState({ editorOpen })
-                  }}
-                  topLabel={'Click to Add Image'}
-                  bottomLabel={'Drag & Drop Image'}
-                  labelIcon={<span className='icon icon-instagram'></span>}
-                  formError={mediaTypeError === 'image' ? true : false}
-                />
-              </Tab>
-              <Tab id='video' className='showOnMobile' label={<span className='stepLabel buttonAlignText'>Use a Video <span className='icon icon-video'></span></span>}>
-                <EditVideo
-                  videoURL={videoURL}
-                  onChange={() => {
-                    this.setState({ mediaTypeError: null });
-                  }}
-                  onBlur={(url, validated) => {
-                    if (url && validated) {
-                      this.handleMediaSaveCallback(url, 'gbx3', 'videoURL', slug);
-                    }
-                  }}
-                  error={mediaTypeError === 'video' ? true : false}
-                />
-              </Tab>
-            </Tabs>
-          </div>
-        ;
-        break;
-      }
-
       case 'account': {
-        item.saveButtonLabel = <span className='buttonAlignText'>Save Your Account <span className='icon icon-chevron-right'></span></span>;
+        item.saveButtonLabel = <span className='buttonAlignText'>Create Account & Continue <span className='icon icon-chevron-right'></span></span>;
         item.saveButtonLabelTop = item.saveButtonLabel;
         item.component =
           <CreateAccount

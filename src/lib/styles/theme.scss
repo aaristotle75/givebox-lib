@@ -217,24 +217,40 @@ label, .label {
   vertical-align: top;
   display: inline-block;
   width: 50%;
+  @media (max-width: 768px) {
+    width: 100%;
+    clear: both;
+  }
 }
 
 .column66 {
   vertical-align: top;
   display: inline-block;
   width: 66%;
+  @media (max-width: 768px) {
+    width: 100%;
+    clear: both;
+  }
 }
 
 .column33 {
   vertical-align: top;
   display: inline-block;
   width: 33%;
+  @media (max-width: 768px) {
+    width: 100%;
+    clear: both;
+  }
 }
 
 .column25 {
   vertical-align: top;
   display: inline-block;
   width: 25%;
+  @media (max-width: 768px) {
+    width: 50%;
+    clear: both;
+  }
 }
 
 .blur {
