@@ -1022,27 +1022,14 @@ $contentHeaderPadding: 35%;
   display: flex;
 
   button.button {
-    color: $white;
-    border: 1px solid $white;
-    //@include bgGradient(to right, $salmon 30%, $salmon2 100%);
-    @include bgGradient(to right, $mainColor 50%, $green 100%);
-    @include animation(pulsateSlightlyBrighter 2s ease-out infinite);
-    white-space: nowrap;
-    padding: 6px 12px;
-    border-radius: 20px;
+    @include primaryButton;
     font-size: 14px;
-    margin-right: 30px;
-  }
-
-  button.button:hover {
-    color: $white;
-    border: 1px solid $white;
-    //background: linear-gradient(to right, $salmon2 0%, $salmon 100%);
-    @include bgGradient(to right, $green 50%, $mainColor 100%);
+    padding: 5px 10px;
+    border-radius: 20px;
   }
 
   button.button .icon {
-    font-size: 20px;
+    font-size: 18px;
     margin-left: 5px;
     margin-bottom: 2px;
   }

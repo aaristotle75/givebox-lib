@@ -851,8 +851,8 @@
     white-space: nowrap;
     overflow-x: hidden;
     overflow-y: hidden;
-    background: $mainColorMedium;
-    background-image: url(https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/layout-left-bg-new.png), linear-gradient(to bottom, $mainColorMedium 30%, $green 100%);
+    background: $puppa_deep_purple;
+    background-image: url(https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/layout-left-bg-new.png), linear-gradient(to bottom, $puppa_deep_purple 30%, $puppa_med_purple 100%);
     background-position: center bottom;
     background-repeat: no-repeat;
     background-size: $layout-left-width auto;
@@ -948,7 +948,7 @@
       }
 
       li:hover:not(.listHeader) {
-        background: transparentize($green, .4);
+        background: transparentize($mainColor, .4);
       }
 
       li.draggableBlock {

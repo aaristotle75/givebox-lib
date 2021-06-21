@@ -209,9 +209,9 @@ $green: $puppa_green;
   color: transparent;
 }
 
-@mixin primaryGradientText($background: $mainColor) {
+@mixin primaryGradientText($background: $mainColor, $deg: 90deg) {
   background: $background no-repeat;
-  @include bgGradient(90deg, rgba($mainColor, 1) 30%, rgba($green, 1) 100%);
+  @include bgGradient($deg, rgba($mainColor, 1) 30%, rgba($green, 1) 100%);
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;

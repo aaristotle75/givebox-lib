@@ -140,7 +140,7 @@ class SignupPage extends React.Component {
               <div
                 className='profilePictureContainer orgAdminEdit'
                 onClick={() => {
-                  this.props.openStep('logo');
+                  this.props.openStep('mission');
                 }}
               >
                 <button className='tooltip blockEditButton'>
@@ -203,7 +203,7 @@ class SignupPage extends React.Component {
                       <div
                         onClick={() => {
                           if (!completed.includes('title')) this.props.openStep('title');
-                          else this.props.openStep('image');
+                          else this.props.openStep('mission');
                         }}
                         className='articleCardEdit orgAdminEdit'
                       >
