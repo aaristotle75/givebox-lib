@@ -355,7 +355,7 @@ class SignupStepsForm extends React.Component {
     if (!util.isEmpty(stepsRequiredButNotComplete)) {
       this.props.formProp({ error: true, errorMsg:
         <div className='stepsNotCompletedButRequired'>
-          <span>Please complete the following steps to create your account:</span>
+          <span>Please complete the following steps to continue:</span>
           <div className='stepsNotCompletedList'>
             {stepsRequiredButNotComplete}
           </div>
@@ -479,6 +479,7 @@ class SignupStepsForm extends React.Component {
       },
       reload: true,
       callback: (res, err) => {
+        console.log('execute -> ', res, err);
         const hasPassword = util.getValue(res, 'hasPassword');
         const emailExists = util.getValue(res, 'emailExists');
         if (hasPassword && emailExists) {
@@ -539,6 +540,9 @@ class SignupStepsForm extends React.Component {
     const updated = await this.props.updateOrgSignupField(name, { [field]: url });
     if (updated) {
       //this.saveStep(slug, 2000);
+      if (name === 'gbx3' && field === 'videoURL') {
+        this.props.updateOrgSignupField('gbx3', { mediaType: url ? 'video' : 'image' });
+      }
     }
   }
 
@@ -833,6 +837,8 @@ class SignupStepsForm extends React.Component {
                 onBlur={(url, validated) => {
                   if (url && validated) {
                     this.handleMediaSaveCallback(url, 'gbx3', 'videoURL', slug);
+                  } else if (!url) {
+                    this.handleMediaSaveCallback('', 'gbx3', 'videoURL', slug);
                   }
                 }}
                 error={mediaTypeError === 'video' ? true : false}

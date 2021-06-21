@@ -186,7 +186,7 @@ class GBX3 extends React.Component {
     } else {
       this.props.loadOrgSignup({
         bookDemo,
-        forceStep: 4
+        //forceStep: 3
       });
     }
   }
