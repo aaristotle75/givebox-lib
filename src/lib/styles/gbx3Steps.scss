@@ -133,6 +133,13 @@ $gbx3StepsBreakpoint: 600px;
 
   .alertMsg .msgText {
     font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .icon {
+      margin-right: 5px;
+    }
   }
 
   .stepsNotCompletedButRequired {
