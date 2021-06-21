@@ -485,17 +485,13 @@ $gbx3StepsBreakpoint: 600px;
     .dropzone {
       height: 170px;
       width: 170px;
-      border-radius: 10px;
-      border: 2px dashed $light-gray;
 
       .text {
         font-size: $stepInputSize;
-        color: $med-blue-gray;
       }
 
       .icon {
         font-size: 40px;
-        color: $med-blue-gray;
         margin-bottom: 10px;
       }
     }
@@ -702,7 +698,7 @@ $gbx3StepsBreakpoint: 600px;
 .builderMenuSteps {
 
   li.stepButton.currentStep {
-    background: transparentize($green, .7);
+    background: transparentize($green, .8);
     @include animation(pulsateSlightlyBrighter 2s ease-out infinite);
     .icon {
       color: $white;

@@ -141,12 +141,12 @@ h1, h2, h3, h4, h5 {
   }
 }
 
-a, button.link, button.button {
+a, button.link {
   font-weight: 300;
   color: $mainColor;
 }
 
-a:hover, button.link:hover, button.button:hover {
+a:hover, button.link:hover {
   color: $secondColor;
 }
 
@@ -930,30 +930,6 @@ button:hover {
 
 .buttonAnimation {
   @include animation(pulsateSlightlyBrighter 2s infinite ease-out);
-}
-
-button.button {
-  font-size: $normal-text-size;
-  letter-spacing: 0px;
-  font-family: $font-family;
-  color: $mainColor;
-  display: inline-block;
-  padding: 10px 20px 10px 20px;
-  line-height: 17px;
-  text-transform: none;
-  background-color: transparent;
-  cursor: pointer;
-  font-weight: 300;
-  @include box-shadow(none);
-  border: 1px solid $mainColor;
-  border-radius: 20px;
-}
-
-button.button:hover {
-  color: $white;
-  background-color: $mainColor;
-  //background: linear-gradient(to bottom, $mainColor2 0%,$mainColor 100%);
-  @include default-transition(.25s);
 }
 
 button.button:disabled {

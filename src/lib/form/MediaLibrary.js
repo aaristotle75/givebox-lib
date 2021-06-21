@@ -203,22 +203,24 @@ class MediaLibrary extends Component {
       );
 
       items.push(
-        <li key={0} className='ripple'>
-          <ModalLink
-            id='imageDisplay'
-            opts={{ url: this.state.preview, actions: actions
-          }}>
-            <Image
-              onLoad={this.props.previewOnLoad}
-              url={this.state.preview}
-              size='small'
-              maxWidth='170px'
-              maxHeight='auto'
-              alt='Media Item'
-            />
-          </ModalLink>
-          <div className='buttons'>
-            <GBLink className='select' onClick={() => this.selectEditor(this.state.preview)}>Edit</GBLink>
+        <li key={'selectedImage'}>
+          <div style={{ width: 120, height: 120 }} className='singleImagePreview'>
+            <div className='preview-buttons'>
+              <GBLink onClick={() => this.selectEditor(this.state.preview, () => this.props.toggleModal('imageDisplay', false))}>Edit</GBLink>
+            </div>
+            <ModalLink
+              id='imageDisplay'
+              opts={{ url: this.state.preview, actions: actions
+            }}>
+              <Image
+                onLoad={this.props.previewOnLoad}
+                url={this.state.preview}
+                size='small'
+                maxWidth='120px'
+                maxHeight='auto'
+                alt='Media Item'
+              />
+            </ModalLink>
           </div>
         </li>
       );
@@ -260,11 +262,14 @@ class MediaLibrary extends Component {
         );
 
         items.push(
-          <li className='ripple' key={key}>
-            <ModalLink id='imageDisplay' opts={{ url: value.URL, id: value.ID, toggleModal: this.props.toggleModal, setSelected: this.setSelected, actions: actions }}><Image url={value.URL} size={this.state.preview === value.URL ? 'small' : 'small'} maxWidth='100px' maxHeight='auto' alt='Media Item' /></ModalLink>
-            <div className='buttons'>
-              <GBLink className='select' onClick={() => this.selectEditor(value.URL)}><span className='icon icon-edit'></span></GBLink>
-              <GBLink className='select' onClick={() => this.setSelected(value.URL, value.ID)}>Select</GBLink>
+          <li key={key}>
+            <div style={{ width: 120, height: 120 }} className='singleImagePreview'>
+              <div className='preview-buttons'>
+                <GBLink onClick={() => this.selectEditor(value.URL)}>Edit</GBLink>
+                <GBLink onClick={() => this.setSelected(value.URL, value.ID)}>Select</GBLink>
+              </div>
+              <ModalLink id='imageDisplay' opts={{ url: value.URL, id: value.ID, toggleModal: this.props.toggleModal, setSelected: this.setSelected, actions: actions }}>
+              <Image url={value.URL} size={this.state.preview === value.URL ? 'small' : 'small'} maxWidth='120px' maxHeight='auto' alt='Media Item' /></ModalLink>
             </div>
           </li>
         );

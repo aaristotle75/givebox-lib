@@ -170,7 +170,7 @@ function getMinStepNotCompleted(array, haystack) {
 export function loadOrgSignup(options = {}) {
 
   const forceStep = options.forceStep || null;
-  const openModal = options.openModal || true;
+  const openModal = options.openModal || false;
   const bookDemo = options.bookDemo || false;
   const affiliateID = +util.getCookie('promo', null);
 

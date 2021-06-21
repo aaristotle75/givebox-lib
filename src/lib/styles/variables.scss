@@ -201,6 +201,11 @@ $green: $puppa_green;
   }
 }
 
+@mixin darkGradientBackground($deg: 90deg, $opacity: 1, $background: $puppa_deep_purple) {
+  background: $background no-repeat;
+  @include bgGradient($deg, rgba($puppa_deep_purple, $opacity) 50%, rgba($puppa_med_purple, $opacity) 100%);
+}
+
 @mixin darkGradientText($background: $puppa_deep_purple) {
   background: $background no-repeat;
   @include bgGradient(90deg, rgba($puppa_deep_purple, 1) 30%, rgba($puppa_med_purple, 1) 100%);

@@ -807,13 +807,13 @@
     z-index: 999999;
     height: 40px;
     width: 40px;
-    background: $mainColor;
+    @include darkGradientBackground;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    @include transition(left .5s, opacity .5s);
+    @include transition(left .5s, opacity .25s);
     opacity: 1;
 
     @media (max-width: $breakpoint) {
@@ -827,8 +827,9 @@
   }
 
   .leftPanelOpenButton:hover {
-    background: transparentize($mainColor, .4);
-    @include transition(background .25s);
+    //background: transparentize($mainColor, .4);
+    opacity: .9;
+    @include transition(opacity .25s);
   }
 
   .leftPanelOpenButton.open {
@@ -851,8 +852,8 @@
     white-space: nowrap;
     overflow-x: hidden;
     overflow-y: hidden;
-    background: $puppa_deep_purple;
-    background-image: url(https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/layout-left-bg-new.png), linear-gradient(to bottom, $puppa_deep_purple 30%, $puppa_med_purple 100%);
+    background: $mainColor;
+    background-image: url(https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/layout-left-bg-new.png), linear-gradient(200deg, $mainColor 50%, $green 90%, $puppa_salmon 100%);
     background-position: center bottom;
     background-repeat: no-repeat;
     background-size: $layout-left-width auto;
@@ -943,12 +944,14 @@
         cursor: pointer;
         color: $white;
         font-size: 14px;
-        background: transparentize($mainColor, .7);
+        //@include bgGradient(140deg, rgba($puppa_deep_purple, .1) 50%, rgba($puppa_med_purple, .1) 100%);
+        //background: transparentize($mainColor, .7);
+        @include darkGradientBackground(90deg, .1);
         @include default-transition(.5s);
       }
 
       li:hover:not(.listHeader) {
-        background: transparentize($mainColor, .4);
+        background: transparentize($green, .7);
       }
 
       li.draggableBlock {
@@ -990,7 +993,7 @@
         cursor: default;
         padding: 10px;
         color: $light-gray;
-        background: transparentize($mainColorDark, .4);
+        background: transparentize($mainColor, .2);
         text-transform: uppercase;
       }
     }

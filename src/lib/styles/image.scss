@@ -365,12 +365,19 @@ button.imageCover {
 }
 
 .photoSection.PhotoList {
+  position: relative;
 
   .imageComponent img {
     //border-radius: 0px;
   }
 
-  position: relative;
+  .preview-buttons {
+    padding: 5px 10px;
+
+    button.link {
+      font-size: 12px;
+    }
+  }
 
   ul:not(.pagination) {
     display: flex;
@@ -400,8 +407,8 @@ button.imageCover {
       justify-content: center;
       background: none;
       border: 0;
-      width: 100px;
-      height: 100px;
+      width: 120px;
+      height: 120px;
       padding: 0;
       margin: 5px;
     }
@@ -421,7 +428,7 @@ button.imageCover {
         @include default-transition(.25s);
       }
       img {
-        @include filter(blur(2px));
+        @include filter(blur(1px));
         border: 4px solid $mainColor;
         @include default-transition(.25s);
       }
@@ -746,8 +753,12 @@ button.imageCover {
     }
 
     .dropzone {
-      width: 135px;
-      height: 135px;
+      @include primaryButton();
+      height: 140px;
+      width: 140px;
+      border: 0;
+      border-radius: 20px;
+      padding: 0;
       @media (max-width: $breakpoint) {
         height: 125px;
       }
@@ -783,41 +794,6 @@ button.imageCover {
       border: 0;
       background: transparent;
 
-      .singleImagePreview:hover {
-        .preview-buttons {
-          opacity: 1;
-        }
-      }
-
-      .singleImagePreview {
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        .preview-buttons {
-          opacity: 0;
-          position: absolute;
-          bottom: 5px;
-          left: 0;
-          right: 0;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          padding: 5px;
-          @include primaryButton();
-          @include transition(opacity .25s);
-          white-space: nowrap;
-
-          button.link {
-            margin: 0 10px;
-            font-size: 12px;
-            font-weight: 500;
-            color: $white;
-          }
-        }
-      }
-
       .menu-group {
         display: flex;
         justify-content: center;
@@ -842,13 +818,50 @@ button.imageCover {
   }
 }
 
+.singleImagePreview:hover {
+  .preview-buttons {
+    opacity: 1;
+  }
+}
+
+.singleImagePreview {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .preview-buttons {
+    opacity: 0;
+    position: absolute;
+    bottom: 5px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    @include primaryButton();
+    @include transition(opacity .25s);
+    white-space: nowrap;
+    z-index: 2;
+
+    button.link {
+      margin: 0 10px;
+      font-size: 12px;
+      font-weight: 500;
+      color: $white;
+    }
+  }
+}
+
 .uploadEditorBackground {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: transparentize($dark, .3);
+  @include blueToSalmon(.9, 170deg);
+  //background: transparentize($puppa_deep_purple, .2);
   z-index: 11;
 }
 

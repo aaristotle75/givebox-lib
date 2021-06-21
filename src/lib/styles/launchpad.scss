@@ -8,8 +8,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(145deg, $mainColor 20%, $mainColorLight 40%, $green 80%, $salmon 100%) !important;
-  opacity: .7 !important;
+  @include bgGradient(140deg, rgba($puppa_blue, 1) 30%, rgba($puppa_green, 1) 60%, rgba($puppa_salmon, 1) 100%);
+  opacity: .9 !important;
   z-index: 1;
 }
 
@@ -153,7 +153,7 @@
   z-index: 999990;
   height: 40px;
   width: 40px;
-  background: $mainColor;
+  @include darkGradientBackground;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -175,8 +175,8 @@
 }
 
 .launchpadButton:hover {
-  background: transparentize($mainColor, .4);
-  @include transition(background .25s);
+  opacity: .9;
+  @include transition(opacity .25s);
 }
 
 .launchpadButton.open {
