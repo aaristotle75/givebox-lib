@@ -60,6 +60,14 @@ const createSuccess = {
   desc: ''
 };
 
+const previewShare = {
+  type: 'previewShare',
+  slug: 'previewShare',
+  name: 'Preview & Share',
+  icon: 'eye',
+  title: 'Preview & Share',
+  desc: ''
+}
 
 const preview = {
   type: 'preview',
@@ -238,7 +246,8 @@ export const signupPhase = {
      mission,
      title,
      themeColor,
-     account
+     account,
+     previewShare
    ],
    requiredSteps: [
      orgName,
@@ -252,9 +261,12 @@ export const signupPhase = {
     modalName: 'orgPostSignupSteps',
     showStepNumber: true,
     stepsTodo: [
-      createSuccess,
-      preview,
-      share
+      orgName,
+      mission,
+      title,
+      themeColor,
+      account,
+      previewShare
    ],
   },
   connectBank: {

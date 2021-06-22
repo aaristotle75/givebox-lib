@@ -522,7 +522,7 @@ button.imageCover {
   left: 0;
   right: 0;
   bottom: 0;
-  background: transparentize($dark-blue-gray, .05);
+  @include darkGradientBackground(.9, 170deg);
   //color: $white;
   z-index: 1;
 
@@ -542,9 +542,31 @@ button.imageCover {
 
   .loadingBar {
     width: 100%;
-    height: 10px;
+    height: 10px !important;
     background: transparent;
     border-radius: 20px;
+  }
+
+  .linearProgress {
+    margin-top: 0px;
+    height: 10px !important;
+    background: transparent;
+    @include blueToSalmon(.3);
+    border-radius: 20px;
+  }
+
+  .linearProgressBar {
+    height: 10px !important;
+    background: $med-gray;
+    border-radius: 20px;
+    @include greenToBlue(1);
+    @include animation(pulsateBrighter 2s ease-out infinite);
+  }
+
+  .linearProgressBarAnimation {
+    height: 10px;
+    background: transparent;
+    z-index: 1;
   }
 }
 
@@ -655,7 +677,6 @@ button.imageCover {
       font-size: 20px;
       color: $white;
     }
-
   }
 
 }
@@ -847,8 +868,8 @@ button.imageCover {
 
     button.link {
       margin: 0 10px;
-      font-size: 12px;
-      font-weight: 500;
+      font-size: 12px !important;
+      font-weight: 400;
       color: $white;
     }
   }
@@ -860,7 +881,7 @@ button.imageCover {
   left: 0;
   right: 0;
   bottom: 0;
-  @include blueToSalmon(.9, 170deg);
+  @include darkGradientBackground(.9, 170deg);
   //background: transparentize($puppa_deep_purple, .2);
   z-index: 11;
 }

@@ -946,7 +946,7 @@
         font-size: 14px;
         //@include bgGradient(140deg, rgba($puppa_deep_purple, .1) 50%, rgba($puppa_med_purple, .1) 100%);
         //background: transparentize($mainColor, .7);
-        @include darkGradientBackground(90deg, .1);
+        @include darkGradientBackground(.1);
         @include default-transition(.5s);
       }
 
@@ -1567,7 +1567,7 @@
     }
 
     button.blockEditButton {
-      background: transparentize($mainColorDark, 0);
+      @include darkGradientBackground;
     }
 
     .tooltip .tooltipTop {

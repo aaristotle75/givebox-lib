@@ -16,6 +16,7 @@ import { getResource, sendResource } from '../api/helpers';
 import { removeResource, toggleModal } from '../api/actions';
 import UploadEditorResizer from './UploadEditorResizer';
 import { Line } from 'rc-progress';
+import LinearBar from '../common/LinearBar';
 import has from 'has';
 import { ImCamera } from 'react-icons/im';
 
@@ -363,7 +364,12 @@ class MediaLibrary extends Component {
         <div className='loadImage'>
           <div className='loadingBarWrap'>
             <span className='loadingText'>{this.state.loading}</span>
+            <LinearBar
+              progress={this.state.percent}
+            />
+            {/*
             <Line className='loadingBar' percent={this.state.percent} strokeWidth='5' strokeColor='#32dbec' trailWidth='5' trailColor='#253655' strokeLinecap='square' />
+            */}
           </div>
         </div>
         }

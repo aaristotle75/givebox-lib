@@ -39,7 +39,7 @@ import {
 import { MdCheckCircle } from 'react-icons/md';
 
 const defaultReceiptTemplate = require('html-loader!../admin/receipt/receiptEmailDefaultContent.html');
-const GBX_URL = process.env.REACT_APP_GBX_URL;
+const GBX3_URL = process.env.REACT_APP_ENV === 'local' ? process.env.REACT_APP_GBX_SHARE : process.env.REACT_APP_GBX_URL;
 
 class SignupStepsForm extends React.Component {
 
@@ -57,7 +57,8 @@ class SignupStepsForm extends React.Component {
     this.setRequirePassword = this.setRequirePassword.bind(this);
     this.validateTaxID = this.validateTaxID.bind(this);
     this.handleMediaSaveCallback = this.handleMediaSaveCallback.bind(this);
-    this.callbackAfter = this.callbackAfter.bind(this);
+    this.gbx3message = this.gbx3message.bind(this);
+    this.finishedSteps = this.finishedSteps.bind(this);
 
     this.state = {
       themeColor: util.getValue(props.fields, 'org.themeColor', defaultPrimaryColor),
@@ -67,11 +68,47 @@ class SignupStepsForm extends React.Component {
       saving: false,
       mediaType: util.getValue(props.fields, 'gbx3.mediaType', 'image'),
       mediaTypeError: null,
-      requirePassword: false
+      requirePassword: false,
+      previewLoaded: false,
+      editPreview: false,
+      iframeHeight: 0
     };
   }
 
   componentDidMount() {
+    window.addEventListener('message', this.gbx3message, false);
+  }
+
+  gbx3message(e) {
+    const {
+      step
+    } = this.props;
+
+    const stepConfig = util.getValue(this.props.stepsTodo, step, {});
+    const slug = util.getValue(stepConfig, 'slug');
+
+    if (e.data === 'gbx3Initialized') {
+      if (slug === 'previewShare') {
+        this.setState({ previewLoaded: true });
+      }
+    }
+
+    /*
+    if (e.data === 'gbx3Shared') {
+      if (slug === 'preview') {
+        this.props.stepCompleted(slug);
+      }
+    }
+    */
+
+    const str = e.data.toString();
+    const strArr = str.split('-');
+    if (strArr[0] === 'gbx3Height') {
+      if (strArr[1]) {
+        const iframeHeight = +strArr[1] + 50;
+        this.setState({ iframeHeight });
+      }
+    }
   }
 
   setRequirePassword(requirePassword) {
@@ -81,12 +118,6 @@ class SignupStepsForm extends React.Component {
       this.props.fieldProp('password', { required: false, error: '', value: '' });
     }
     this.setState({ requirePassword });
-  }
-
-  callbackAfter(tab) {
-    this.props.formProp({ error: false });
-    this.setState({ mediaType: tab, mediaTypeError: null });
-    this.props.updateOrgSignupField('gbx3', { mediaType: tab });
   }
 
   categories() {
@@ -125,104 +156,118 @@ class SignupStepsForm extends React.Component {
     this.setState({ saving: false });
   }
 
-  createOrgCallback(res, err, orgData = {}) {
-    this.props.savingSignup(true, () => {
-      const gbx3Data = this.props.signupGBX3Data();
+  async createOrgCallback(res, err, orgData = {}) {
+    if (!err) {
+      // Authenticate and open Org profile page with next Steps Preview, Share
+      // This also sets session access, loads the org, and creates the fundraiser...
+      this.props.getResource('session', {
+        reload: true,
+        callback: (res, err) => {
+          if (err) {
+            console.error('No session created');
+            this.setState({ saving: false });
+          } else {
+            this.props.setAccess(res, async (access) => {
+              const {
+                orgID
+              } = access;
 
-      if (!err) {
+              const completedStep = await this.props.stepCompleted('account', false);
+              const stepUpdated = await this.props.updateOrgSignup({
+                  saveCookie: false,
+                  signupPhase: 'postSignup'
+                },
+                'signup'
+              );
+              if (stepUpdated && completedStep) {
 
-        // Authenticate and open Org profile page with next Steps Preview, Share
-        // This also sets session access, loads the org, and creates the fundraiser...
-        this.props.getResource('session', {
-          reload: true,
-          callback: (res, err) => {
-            if (err) {
-              console.error('No session created');
-              this.setState({ saving: false });
-            } else {
-              this.props.setAccess(res, async (access) => {
-                const {
-                  orgID
-                } = access;
+                this.props.saveOrg({
+                  orgID,
+                  orgUpdated: true,
+                  callback: (res, err) => {
+                    this.props.savingSignup(true, () => {
 
-                this.props.createFundraiser('fundraiser', async (res, err) => {
-                  const fundraiserID = util.getValue(res, 'ID');
-                  const createdArticleID = util.getValue(res, 'articleID');
-                  const orgID = util.getValue(res, 'orgID');
+                      const gbx3Data = this.props.signupGBX3Data();
 
-                  const {
-                    fields
-                  } = this.props;
+                      this.props.createFundraiser('fundraiser', async (res, err) => {
+                        const fundraiserID = util.getValue(res, 'ID');
+                        const createdArticleID = util.getValue(res, 'articleID');
+                        const orgID = util.getValue(res, 'orgID');
 
-                  const {
-                    org,
-                    gbx3
-                  } = fields;
+                        const {
+                          fields
+                        } = this.props;
 
-                  const tokens = {
-                    '<<color>>': util.getValue(org, 'themeColor'),
-                    '{{link}}': `${GBX_URL}/${createdArticleID}`,
-                    '{{orgname}}': util.getValue(org, 'name'),
-                    '{{orgimage}}': util.getValue(org, 'imageURL'),
-                    '{{articletitle}}': util.getValue(gbx3, 'title'),
-                    '{{articleimage}}': util.getValue(gbx3, 'imageURL'),
-                    '{{message}}': ''
-                  };
+                        const {
+                          org,
+                          gbx3
+                        } = fields;
 
-                  const receiptHTML = util.replaceAll(defaultReceiptTemplate, tokens);
-                  this.props.sendResource(`orgFundraiser`, {
-                    orgID,
-                    id: [fundraiserID],
-                    isSending: false,
-                    method: 'patch',
-                    data: {
-                      receiptHTML
-                    }
-                  });
+                        const tokens = {
+                          '<<color>>': util.getValue(org, 'themeColor'),
+                          '{{link}}': `${GBX3_URL}/${createdArticleID}`,
+                          '{{orgname}}': util.getValue(org, 'name'),
+                          '{{orgimage}}': util.getValue(org, 'imageURL'),
+                          '{{articletitle}}': util.getValue(gbx3, 'title'),
+                          '{{articleimage}}': util.getValue(gbx3, 'imageURL'),
+                          '{{message}}': ''
+                        };
 
-                  const updated = await this.props.updateOrgSignup({
-                      createdArticleID,
-                      saveCookie: false,
-                      signupPhase: 'postSignup'
-                    },
-                    'signup'
-                  );
-                  if (updated) {
-                    this.props.saveOrg({
-                      orgID,
-                      data: orgData,
-                      orgUpdated: true,
-                      callback: async (res, err) => {
-                        localStorage.removeItem('signup');
-                        util.deleteCookie('promo');
-                        this.props.loadOrg(orgID, (res, err) => {
-                          //this.props.savingSignup(false);
-                          this.props.saveLegalEntity({
-                            isSending: false,
-                            hasBeenUpdated: true,
-                            data: {
-                              name: util.getValue(res, 'name', null),
-                              taxID: util.getValue(res, 'taxID', null)
+                        const receiptHTML = util.replaceAll(defaultReceiptTemplate, tokens);
+                        this.props.sendResource(`orgFundraiser`, {
+                          orgID,
+                          id: [fundraiserID],
+                          isSending: false,
+                          method: 'patch',
+                          data: {
+                            receiptHTML
+                          }
+                        });
+
+                        const updated = await this.props.updateOrgSignup({
+                          createdArticleID,
+                          step: 5
+                        });
+                        if (updated) {
+                          this.props.saveOrg({
+                            orgID,
+                            data: orgData,
+                            orgUpdated: true,
+                            callback: async (res, err) => {
+                              localStorage.removeItem('signup');
+                              util.deleteCookie('promo');
+                              this.props.loadOrg(orgID, (res, err) => {
+                                //this.props.savingSignup(false);
+                                this.props.saveLegalEntity({
+                                  isSending: false,
+                                  hasBeenUpdated: true,
+                                  data: {
+                                    name: util.getValue(res, 'name', null),
+                                    taxID: util.getValue(res, 'taxID', null)
+                                  }
+                                });
+                                this.props.setOrgStyle();
+                                this.props.savingSignup(false);
+                              }, true);
                             }
                           });
-                          this.props.setOrgStyle();
-                        }, true);
-                      }
+                        }
+                      }, null, {
+                        showNewArticle: false,
+                        data: gbx3Data
+                      });
                     });
                   }
-                }, null, {
-                  showNewArticle: false,
-                  data: gbx3Data
                 });
-              })
-            }
+              }
+            })
           }
-        });
-      } else {
-        if (!this.props.getErrors(err)) this.props.formProp({error: this.props.savingErrorMsg});
-        this.setState({ saving: false });
-      }
-    });
+        }
+      });
+    } else {
+      if (!this.props.getErrors(err)) this.props.formProp({error: this.props.savingErrorMsg});
+      this.setState({ saving: false });
+    }
   }
 
   async createOrg() {
@@ -379,6 +424,31 @@ class SignupStepsForm extends React.Component {
     }
   }
 
+  async finishedSteps() {
+    this.setState({ saving: true });
+    const completedStep = await this.props.stepCompleted('previewShare');
+    if (completedStep) {
+      setTimeout(async () => {
+        const updated = await this.props.updateOrgSignup({ signupPhase: 'connectBank' }, 'postSignup');
+        if (updated) {
+          this.props.updateAdmin({ open: false });
+          this.props.saveOrg({
+            orgUpdated: true,
+            isSending: false,
+            callback: () => {
+              this.setState({ saving: false }, () => {
+                this.props.toggleModal('orgPostSignupSteps', false);
+                this.props.checkSignupPhase();
+              });
+            }
+          });
+        }
+      }, 1000);
+    } else {
+      this.setState({ saving: false });
+    }
+  }
+
   async saveStep(slug, delay = 1000, error = false) {
 
     if (error) {
@@ -405,7 +475,8 @@ class SignupStepsForm extends React.Component {
       button,
       validTaxID,
       acceptedTerms,
-      stepsTodo
+      stepsTodo,
+      signupPhase
     } = this.props;
 
     const {
@@ -457,14 +528,28 @@ class SignupStepsForm extends React.Component {
       }
 
       case 'account': {
-        const password = util.getValue(fields, 'password.value');
-        if (!acceptedTerms) {
-          this.props.formProp({ error: true, errorMsg: 'You must agree to Givebox Terms of Service to continue.'});
-          this.setState({ saving: false });
+        if (signupPhase === 'postSignup') {
+          this.props.gotoNextStep();
+          return this.setState({ saving: false });
         } else {
-          this.determineCreateAccount(owner.email, password);
+          const password = util.getValue(fields, 'password.value');
+          if (!acceptedTerms) {
+            this.props.formProp({ error: true, errorMsg: 'You must agree to Givebox Terms of Service to continue.'});
+            this.setState({ saving: false });
+          } else {
+            this.determineCreateAccount(owner.email, password);
+          }
         }
         break;
+      }
+
+      case 'previewShare': {
+        if (signupPhase === 'signup') {
+          this.props.previousStep(step);
+          return this.setState({ saving: false });
+        } else {
+          return this.finishedSteps();
+        }
       }
 
       default: {
@@ -552,7 +637,10 @@ class SignupStepsForm extends React.Component {
     const {
       mediaType,
       mediaTypeError,
-      requirePassword
+      requirePassword,
+      editPreview,
+      previewLoaded,
+      iframeHeight
     } = this.state;
 
     const {
@@ -560,7 +648,9 @@ class SignupStepsForm extends React.Component {
       open,
       isMobile,
       acceptedTerms,
-      stepsTodo
+      stepsTodo,
+      createdArticleID,
+      signupPhase
     } = this.props;
 
     const {
@@ -859,20 +949,65 @@ class SignupStepsForm extends React.Component {
       }
 
       case 'account': {
-        item.saveButtonLabel = <span className='buttonAlignText'>Create Account & Continue <span className='icon icon-chevron-right'></span></span>;
-        item.saveButtonLabelTop = item.saveButtonLabel;
-        item.component =
-          <CreateAccount
-            {...this.props}
-            group={slug}
-            owner={owner}
-            setRequirePassword={this.setRequirePassword}
-            requirePassword={requirePassword}
-            acceptedTerms={acceptedTerms}
-            updateOrgSignupField={this.props.updateOrgSignupField}
-            updateOrgSignup={this.props.updateOrgSignup}
-          />
-        ;
+        if (signupPhase === 'signup') {
+          item.saveButtonLabel = <span className='buttonAlignText'>Create Account & Continue <span className='icon icon-chevron-right'></span></span>;
+          item.saveButtonLabelTop = item.saveButtonLabel;
+          item.component =
+            <CreateAccount
+              {...this.props}
+              group={slug}
+              owner={owner}
+              setRequirePassword={this.setRequirePassword}
+              requirePassword={requirePassword}
+              acceptedTerms={acceptedTerms}
+              updateOrgSignupField={this.props.updateOrgSignupField}
+              updateOrgSignup={this.props.updateOrgSignup}
+            />
+          ;
+        } else {
+          item.saveButtonLabel = <span className='buttonAlignText'>Continue to Preview & Share</span>;
+          item.desc = 'Congratulations, you have created a FREE Givebox Account!';
+          item.component = null;
+        }
+        break;
+      }
+
+      case 'previewShare': {
+
+        if (signupPhase === 'signup') {
+          item.saveButtonLabel = <span className='buttonAlignText'>Complete Previous Steps</span>;
+          item.desc = 'You must complete the previous steps to generate a preview of your fundraiser.';
+          item.component = null;
+        } else {
+          item.saveButtonLabel = <span className='buttonAlignText'>All Finished! Take Me to My Profie</span>;
+          item.className = 'preview';
+          item.desc = !previewLoaded ?
+            `${editPreview ? 'Loading editable fundraiser,' : 'Generating preview,'} we appreciate your patience while it loads...`
+            :
+            <div>
+              <GBLink
+                className='stepTitleLink'
+                style={{ display: 'inline' }}
+                onClick={() => {
+                  this.setState({ editPreview: editPreview ? false : true, previewLoaded: false, iframeHeight: 0 })
+                }}
+              >
+                <span className='buttonAlignText'>{editPreview ? 'Click Here for Public Preview' : 'Click Here to Edit Your Fundraiser'} <span className='icon icon-chevron-right'></span></span>
+              </GBLink>
+            </div>
+          ;
+
+          item.component =
+            <div className='stagePreview flexCenter flexColumn'>
+              { !previewLoaded ?
+                <div className='imageLoader'>
+                  <img src='https://cdn.givebox.com/givebox/public/images/block-loader.svg' alt='Loader' />
+                </div>
+              : null }
+              <iframe style={{ height: iframeHeight }} id='previewIframe' src={`${GBX3_URL}/${createdArticleID}${this.state.editPreview ? '?admin&editFormOnly' : '?public&preview'}`} title={`Preview`} />
+            </div>
+          ;
+        }
         break;
       }
 

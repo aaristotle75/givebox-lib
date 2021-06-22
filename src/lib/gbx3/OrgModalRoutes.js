@@ -132,10 +132,11 @@ export default class GBX3ModalRoutes extends Component {
           id={'orgPostSignupSteps'}
           effect='3DFlipVert' style={{ width: '85%' }}
           disallowBgClose={true}
+          closeBtnShow={false}
           component={(props) => {
             return (
               <StepsWrapper>
-                {this.loadComponent('./signup/PostSignupSteps', props)}
+                {this.loadComponent('./signup/SignupSteps', props)}
               </StepsWrapper>
             )
           }}

@@ -151,7 +151,7 @@
     }
 
     button.blockEditButton {
-      background: transparentize($mainColorDark, 0);
+      @include darkGradientBackground;
     }
 
     .tooltip .tooltipTop {

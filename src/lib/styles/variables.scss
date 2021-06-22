@@ -173,15 +173,15 @@ $puppa_med_purple: #1d01ac;
 $mainColor: $puppa_blue;
 $green: $puppa_green;
 
-@mixin greenToBlue($opacity, $direction: 90deg) {
+@mixin greenToBlue($opacity: 1, $direction: 90deg) {
   @include bgGradient($direction, rgba($puppa_green, $opacity) 0%, rgba($puppa_blue, $opacity) 100%);
 }
 
-@mixin blueToGreen($opacity, $direction: 90deg) {
+@mixin blueToGreen($opacity: 1, $direction: 90deg) {
   @include bgGradient($direction, rgba($puppa_blue, $opacity) 0%, rgba($puppa_green, $opacity) 100%);
 }
 
-@mixin blueToSalmon($opacity, $direction: 90deg) {
+@mixin blueToSalmon($opacity: 1, $direction: 90deg) {
   @include bgGradient($direction, rgba($puppa_blue, $opacity) 0%, rgba($puppa_green, $opacity) 50%, rgba($puppa_salmon, $opacity) 100%);
 }
 
@@ -201,7 +201,7 @@ $green: $puppa_green;
   }
 }
 
-@mixin darkGradientBackground($deg: 90deg, $opacity: 1, $background: $puppa_deep_purple) {
+@mixin darkGradientBackground($opacity: 1, $deg: 90deg, $background: $puppa_deep_purple) {
   background: $background no-repeat;
   @include bgGradient($deg, rgba($puppa_deep_purple, $opacity) 50%, rgba($puppa_med_purple, $opacity) 100%);
 }
