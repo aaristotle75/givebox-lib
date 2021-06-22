@@ -362,6 +362,9 @@ $gbx3StepsBreakpoint: 600px;
     .stepTitleLink {
       font-size: 22px;
       @include primaryGradientText;
+      .icon {
+        font-size: 30px !important;
+      }
     }
 
     .stepTitleContainer {
