@@ -979,7 +979,7 @@ class SignupStepsForm extends React.Component {
           item.desc = 'You must complete the previous steps to generate a preview of your fundraiser.';
           item.component = null;
         } else {
-          item.saveButtonLabel = <span className='buttonAlignText'>All Finished! Take Me to My Profie</span>;
+          item.saveButtonLabel = <span className='buttonAlignText'>All Finished! Take Me to My Profile</span>;
           item.className = 'preview';
           item.desc = !previewLoaded ?
             `${editPreview ? 'Loading editable fundraiser,' : 'Generating preview,'} we appreciate your patience while it loads...`
