@@ -453,7 +453,6 @@ class SignupStepsForm extends React.Component {
 
   async handlePostSignupSave(slug) {
     const {
-      orgGlobals,
       validTaxID,
       createdArticle,
       hasCreatedArticle
@@ -474,6 +473,19 @@ class SignupStepsForm extends React.Component {
 
     switch (slug) {
       case 'orgName': {
+        const orgGlobals = {
+          ...orgGlobals,
+          title: {
+            content: `
+              <p style="text-align:center;">
+                <span style="font-weight:400;font-size:22px;">
+                  ${org.name}
+                </span>
+              </p>
+            `
+          }
+        }
+        const globalsUpdated = await this.props.updateOrgGlobals(orgGlobals);
         console.log('save orgName -> ', orgGlobals);
         break;
       }
