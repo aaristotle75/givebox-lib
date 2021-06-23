@@ -486,6 +486,9 @@ class SignupStepsForm extends React.Component {
           }
         }
         const globalsUpdated = await this.props.updateOrgGlobals(orgGlobals);
+        if (globalsUpdated) {
+          this.props.saveOrg()
+        }
         console.log('save orgName -> ', orgGlobals);
         break;
       }
