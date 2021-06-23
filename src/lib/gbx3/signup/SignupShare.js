@@ -83,7 +83,7 @@ class SignupShare extends React.Component {
     });
 
     return (
-      <div className='createKindSection'>
+      <div className='createKindSection' style={{ marginTop: 0 }}>
         <span className='intro'>Share {types.kind(kind).name}</span>
         <div className='createKindList'>
           {items}
@@ -105,7 +105,8 @@ class SignupShare extends React.Component {
       orgID,
       slug,
       hasCustomSlug,
-      apiName
+      apiName,
+      showHelper
     } = this.props;
 
     const data = util.getValue(article, 'data', {});
@@ -127,18 +128,20 @@ class SignupShare extends React.Component {
               slug={slug}
               hasCustomSlug={hasCustomSlug}
               apiName={apiName}
-              buttonText={'Click Here to Save Your Custom Share Link'}
+              buttonText={'Click Here to Update Your Custom Share Link'}
               buttonGroupStyle={{
                 marginTop: 15
               }}
               buttonGroupClassName='flexCenter'
               subText={
-                <HelpfulTip
-                  headerIcon={<span className='icon icon-link-2'></span>}
-                  headerText={`Custom Link`}
-                  text={`Enter a custom link below which makes your fundraiser more identifiable to your supporters.`}
-                  style={{ marginTop: 0, marginBottom: 10 }}
-                />
+                showHelper ?
+                  <HelpfulTip
+                    headerIcon={<span className='icon icon-link-2'></span>}
+                    headerText={`Custom Link`}
+                    text={`Enter a custom link below which makes your fundraiser more identifiable to your supporters.`}
+                    style={{ marginTop: 0, marginBottom: 10 }}
+                  />
+                : null
               }
             />
           </div>
@@ -157,12 +160,14 @@ class SignupShare extends React.Component {
               slug={slug}
               hasCustomSlug={hasCustomSlug}
               subText={
-                <HelpfulTip
-                  headerIcon={<span className='icon icon-copy'></span>}
-                  headerText={`Share Link`}
-                  text={`Copy and Paste this link anywhere you want to share your fundraiser.`}
-                  style={{ marginTop: 0, marginBottom: 30 }}
-                />
+                showHelper ?
+                  <HelpfulTip
+                    headerIcon={<span className='icon icon-copy'></span>}
+                    headerText={`Share Link`}
+                    text={`Copy and Paste this link anywhere you want to share your fundraiser.`}
+                    style={{ marginTop: 0, marginBottom: 30 }}
+                  />
+                : null
               }
             />
           </div>
@@ -179,12 +184,14 @@ class SignupShare extends React.Component {
               articleID={articleID}
               shareIconSize={40}
               subText={
-                <HelpfulTip
-                  headerIcon={<Icon><VscMegaphone /></Icon>}
-                  headerText={`Don't be shy!`}
-                  text={`The quickest way to start raising money is to share your fundraiser on the social media sites. Click a social media icon below.`}
-                  style={{ marginTop: 0, marginBottom: 30 }}
-                />
+                showHelper ?
+                  <HelpfulTip
+                    headerIcon={<Icon><VscMegaphone /></Icon>}
+                    headerText={`Don't be shy!`}
+                    text={`The quickest way to start raising money is to share your fundraiser on the social media sites. Click a social media icon below.`}
+                    style={{ marginTop: 0, marginBottom: 30 }}
+                  />
+                : null
               }
             />
           </div>
@@ -216,7 +223,8 @@ class SignupShare extends React.Component {
 }
 
 SignupShare.defaultProps = {
-  hideList: []
+  hideList: [],
+  showHelper: true
 }
 
 function mapStateToProps(state, props) {

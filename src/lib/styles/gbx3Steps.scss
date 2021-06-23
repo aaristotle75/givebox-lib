@@ -359,6 +359,21 @@ $gbx3StepsBreakpoint: 600px;
   .step {
     padding: 0 20px;
 
+    .previewTitleContainer {
+      margin: 20px 0;
+
+      .previewTitleText {
+        font-size: 12px;
+        font-weight: 500;
+        @include primaryGradientText;
+      }
+
+      button.link {
+        font-size: 12px;
+        font-weight: 500;
+      }
+    }
+
     .stepTitleLink {
       font-size: 22px;
       @include primaryGradientText;
@@ -463,9 +478,18 @@ $gbx3StepsBreakpoint: 600px;
   }
 
   .step.preview {
+
+    .stepTitleContainer {
+      margin-bottom: 0;
+    }
+
+    .stepTitle {
+      margin-bottom: 0;
+    }
+
     .stepComponent {
       margin: 0 -20px;
-      margin-top: 30px;
+      margin-top: 0;
     }
   }
 
@@ -713,8 +737,12 @@ $gbx3StepsBreakpoint: 600px;
       justify-content: flex-start;
       width: 150px;
       height: 120px;
+      white-space: nowrap;
+
       .createKindItemText {
-        font-size: 14px !important;
+        font-size: 12px !important;
+        font-weight: 500;
+        @include primaryGradientText;
       }
 
       .createIcon {

@@ -151,6 +151,7 @@ class ShareLinkEdit extends Component {
                 value={newSlug}
                 error={error ? 'Share link name can only contain alphanumeric and !@#%*_+- characters.' : false}
                 errorType={'tooltip'}
+                leftBar={true}
                 onChange={(e) => {
                   let error = false;
                   const newSlug = e.currentTarget.value;

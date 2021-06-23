@@ -37,6 +37,7 @@ import {
   defaultOrgGlobals
 } from '../redux/gbx3defaults';
 import { MdCheckCircle } from 'react-icons/md';
+import SignupShare from './SignupShare';
 
 const defaultReceiptTemplate = require('html-loader!../admin/receipt/receiptEmailDefaultContent.html');
 const GBX3_URL = process.env.REACT_APP_ENV === 'local' ? process.env.REACT_APP_GBX_SHARE : process.env.REACT_APP_GBX_URL;
@@ -53,6 +54,7 @@ class SignupStepsForm extends React.Component {
     this.determineCreateAccount = this.determineCreateAccount.bind(this);
     this.checkRequiredCompleted = this.checkRequiredCompleted.bind(this);
     this.saveStep = this.saveStep.bind(this);
+    this.handlePostSignupSave = this.handlePostSignupSave.bind(this);
     this.checkExistingUser = this.checkExistingUser.bind(this);
     this.setRequirePassword = this.setRequirePassword.bind(this);
     this.validateTaxID = this.validateTaxID.bind(this);
@@ -449,20 +451,73 @@ class SignupStepsForm extends React.Component {
     }
   }
 
+  async handlePostSignupSave(slug) {
+    const {
+      orgGlobals,
+      validTaxID,
+      createdArticle,
+      hasCreatedArticle
+    } = this.props;
+
+    const {
+      themeColor,
+      mediaType
+    } = this.state;
+
+    const {
+      org,
+      owner,
+      gbx3
+    } = this.props.fields;
+
+    const customTemplate = util.getValue(createdArticle, 'givebox.customTemplate', {});
+
+    switch (slug) {
+      case 'orgName': {
+        console.log('save orgName -> ', orgGlobals);
+        break;
+      }
+
+      case 'mission': {
+        break;
+      }
+
+      case 'title': {
+        break;
+      }
+
+      case 'themeColor': {
+        break;
+      }
+
+      // no default
+    }
+    this.setState({ saving: false }, this.props.gotoNextStep);
+  }
+
   async saveStep(slug, delay = 1000, error = false) {
+
+    const {
+      signupPhase
+    } = this.props;
 
     if (error) {
       this.setState({ saving: false });
       return false;
     }
 
-    const completedStep = await this.props.stepCompleted(slug, false);
-    if (completedStep) {
-      setTimeout(() => {
-        this.setState({ saving: false }, this.props.gotoNextStep);
-      }, delay);
+    if (signupPhase === 'postSignup') {
+      this.handlePostSignupSave(slug);
     } else {
-      this.setState({ saving: false }, this.props.gotoNextStep);
+      const completedStep = await this.props.stepCompleted(slug, false);
+
+      if (completedStep) {
+        setTimeout(() => {
+          this.setState({ saving: false }, this.props.gotoNextStep);
+        }, delay);
+      } else {
+        this.setState({ saving: false }, this.props.gotoNextStep);
+      }
     }
   }
 
@@ -471,8 +526,6 @@ class SignupStepsForm extends React.Component {
     this.setState({ saving: true });
     const {
       step,
-      gbxStyle,
-      button,
       validTaxID,
       acceptedTerms,
       stepsTodo,
@@ -973,7 +1026,6 @@ class SignupStepsForm extends React.Component {
       }
 
       case 'previewShare': {
-
         if (signupPhase === 'signup') {
           item.saveButtonLabel = <span className='buttonAlignText'>Complete Previous Steps</span>;
           item.desc = 'You must complete the previous steps to generate a preview of your fundraiser.';
@@ -981,24 +1033,28 @@ class SignupStepsForm extends React.Component {
         } else {
           item.saveButtonLabel = <span className='buttonAlignText'>All Finished! Take Me to My Profile</span>;
           item.className = 'preview';
-          item.desc = !previewLoaded ?
-            `${editPreview ? 'Loading editable fundraiser,' : 'Generating preview,'} we appreciate your patience while it loads...`
-            :
-            <div>
-              <GBLink
-                className='stepTitleLink'
-                style={{ display: 'inline' }}
-                onClick={() => {
-                  this.setState({ editPreview: editPreview ? false : true, previewLoaded: false, iframeHeight: 0 })
-                }}
-              >
-                <span className='buttonAlignText'>{editPreview ? 'Click Here for Public Preview' : 'Click Here to Edit Your Fundraiser'} <span className='icon icon-chevron-right'></span></span>
-              </GBLink>
-            </div>
-          ;
+          item.desc = '';
 
           item.component =
             <div className='stagePreview flexCenter flexColumn'>
+              <SignupShare showHelper={false} />
+              <div className='previewTitleContainer'>
+                { !previewLoaded ?
+                  <div className='previewTitleText'>
+                    {`${editPreview ? 'Loading editable fundraiser,' : 'Generating preview,'} we appreciate your patience while it loads...`}
+                  </div>
+                :
+                <div>
+                  <GBLink
+                    style={{ display: 'inline' }}
+                    onClick={() => {
+                      this.setState({ editPreview: editPreview ? false : true, previewLoaded: false, iframeHeight: 0 })
+                    }}
+                  >
+                    <span className='buttonAlignText'>{editPreview ? 'Click Here for Public Preview' : 'Click Here to Edit Your Fundraiser'} <span className='icon icon-chevron-right'></span></span>
+                  </GBLink>
+                </div> }
+              </div>
               { !previewLoaded ?
                 <div className='imageLoader'>
                   <img src='https://cdn.givebox.com/givebox/public/images/block-loader.svg' alt='Loader' />
@@ -1070,6 +1126,17 @@ class SignupSteps extends React.Component {
   }
 
   componentDidMount() {
+    const {
+      createdArticleID
+    } = this.props;
+
+    if (createdArticleID) {
+      this.props.getResource('article', {
+        customName: 'createdArticle',
+        id: [createdArticleID]
+      });
+    }
+
     this.props.getResource('categories', {
       search: {
         sort: 'name',
@@ -1090,7 +1157,8 @@ class SignupSteps extends React.Component {
 
   render() {
 
-    if (util.isLoading(this.props.categories)) {
+    if (util.isLoading(this.props.categories)
+    || util.isEmpty(util.getValue(this.props.categories, 'data', {}))) {
       return <Loader msg='Loading Categories...' />
     }
 
@@ -1106,10 +1174,16 @@ class SignupSteps extends React.Component {
 
 function mapStateToProps(state, props) {
 
+  const orgGlobals = util.getValue(state, 'resource.gbx3Org.data.customTemplate.orgGlobals', {});
   const categories = util.getValue(state, 'resource.categories', {});
+  const createdArticle = util.getValue(state, 'resource.createdArticle.data', {});
+  const hasCreatedArticle = !util.isEmpty(createdArticle) ? true : false;
 
   return {
-    categories
+    orgGlobals,
+    categories,
+    createdArticle,
+    hasCreatedArticle
   }
 }
 

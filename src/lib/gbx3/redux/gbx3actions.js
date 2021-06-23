@@ -277,7 +277,7 @@ export function loadSignupPhase(options = {}) {
   return async (dispatch, getState) => {
 
     const orgSignup = util.getValue(getState(), 'gbx3.orgSignup', {});
-    orgSignup.step = opts.forceStep || getMinStepNotCompleted(signupPhaseConfig[opts.phase].stepsTodo, orgSignup);
+    orgSignup.step = (opts.forceStep || opts.forceStep === 0) ? opts.forceStep : getMinStepNotCompleted(signupPhaseConfig[opts.phase].stepsTodo, orgSignup);
 
     if (!orgSignup.completed.includes('createSuccess')) orgSignup.completed.push('createSuccess');
 
