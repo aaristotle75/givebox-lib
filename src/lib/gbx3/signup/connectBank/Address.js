@@ -78,6 +78,9 @@ class Address extends React.Component {
             count: true,
             required: true
           })}
+          <div className='fieldContext'>
+            P.O. Boxes and PMB's CANNOT be Used
+          </div>
           <div className='cityStateZip'>
             <div className='part city'>
               {this.props.textField('city', {

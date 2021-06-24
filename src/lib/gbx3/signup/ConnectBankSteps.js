@@ -361,15 +361,8 @@ class ConnectBankStepsForm extends React.Component {
 
       case 'address': {
         item.desc = `This can be your organization's physical address or an address of the primary account holder.`;
-
         item.component =
           <div className='fieldGroup'>
-            <HelpfulTip
-              headerIcon={<span className='icon icon-alert-circle'></span>}
-              headerText={`Important`}
-              text={`P.O. Boxes and PMB's CANNOT be used.`}
-              style={{ marginTop: 30 }}
-            />
             <Address
               {...this.props}
             />
