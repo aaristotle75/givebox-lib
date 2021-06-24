@@ -103,6 +103,7 @@ class AvatarMenu extends React.Component {
     if (stage === 'admin' && display === 'org') {
       menuList.push(
         <li
+          key={'ticker'}
           onClick={() => {
             this.props.savePrefs({ ticker: { open: this.props.tickerDisplay ? false : true } });
           }}

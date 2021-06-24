@@ -29,14 +29,12 @@ class ConnectStatus extends React.Component {
       isVantivReady
     } = this.props;
 
-    let message = 'Please complete all the steps to connect a bank account. After completing steps please check status to confirm your bank account is connected.';
+    let message = 'Please complete the previous steps to connect a bank account.';
     if (merchantIdentString) {
-      message = <span className='green'>Congratulations, your bank account is connected to Givebox.</span>;
+      message = 'Congratulations, your bank account is connected to Givebox.';
     }
 
-    return (
-      <span style={{ display: 'block' }}>{message}</span>
-    )
+    return message;
   }
 
   render() {
@@ -49,8 +47,7 @@ class ConnectStatus extends React.Component {
     } = this.props;
 
     return (
-      <div>
-        <span style={{ display: 'block', fontStyle: 'italic', fontSize: 13, marginTop: 30 }}>Your Connection Status:</span>
+      <div className='stepTitle'>
         {this.getStatus()}
       </div>
     )

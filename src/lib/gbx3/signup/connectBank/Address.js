@@ -69,9 +69,9 @@ class Address extends React.Component {
           })}
           {this.props.textField('line1', {
             group,
-            fixedLabel: true,
+            fixedLabel: false,
             label: 'Street Address',
-            placeholder: 'Enter Street Address',
+            placeholder: 'Type Street Address',
             value: line1,
             validate: 'address',
             maxLength: 50,
@@ -82,9 +82,9 @@ class Address extends React.Component {
             <div className='part city'>
               {this.props.textField('city', {
                 group,
-                fixedLabel: true,
+                fixedLabel: false,
                 label: 'City',
-                placeholder: 'Enter City',
+                placeholder: 'Type City',
                 value: city,
                 required: true
               })}
@@ -94,19 +94,24 @@ class Address extends React.Component {
                 group,
                 dropdownClass: 'articleCardDropdown selectCategory',
                 direction: 'top',
-                fixedLabel: true,
+                fixedLabelHasValue: true,
+                fixedLabel: false,
                 label: 'State',
+                selectLabel: 'Choose State',
                 options: selectOptions.states,
                 value: state,
-                required: true
+                required: true,
+                hideIcons: true,
+                showCloseBtn: true,
+                style: { paddingBottom: 10 }
               })}
             </div>
             <div className='part zip'>
               {this.props.textField('zip', {
                 group,
-                fixedLabel: true,
+                fixedLabel: false,
                 label: 'Zip',
-                placeholder: 'Enter Zip',
+                placeholder: 'Type Zip',
                 maxLength: 5,
                 value: zip ? zip.substring(0, 5) : '',
                 required: true

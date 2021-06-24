@@ -23,7 +23,9 @@ import {
   createFundraiser,
   updateOrgGlobals,
   savingSignup,
-  signupGBX3Data
+  signupGBX3Data,
+  getGBX3SaveData,
+  checkSignupPhase
 } from '../redux/gbx3actions';
 import {
   saveLegalEntity
@@ -431,19 +433,21 @@ class SignupStepsForm extends React.Component {
     const completedStep = await this.props.stepCompleted('previewShare');
     if (completedStep) {
       setTimeout(async () => {
-        const updated = await this.props.updateOrgSignup({ signupPhase: 'connectBank' }, 'postSignup');
+        const updated = await this.props.updateOrgSignup({
+          signupPhase: 'connectBank',
+          step: 0
+        }, 'postSignup');
         if (updated) {
-          this.props.updateAdmin({ open: false });
+          this.props.checkSignupPhase();
           this.props.saveOrg({
             orgUpdated: true,
             isSending: false,
             callback: () => {
               this.setState({ saving: false }, () => {
-                this.props.toggleModal('orgPostSignupSteps', false);
-                this.props.checkSignupPhase();
               });
             }
           });
+          this.props.toggleModal('orgPostSignupSteps', false);
         }
       }, 1000);
     } else {
@@ -455,6 +459,7 @@ class SignupStepsForm extends React.Component {
     const {
       validTaxID,
       createdArticle,
+      createdArticleID,
       hasCreatedArticle
     } = this.props;
 
@@ -470,11 +475,21 @@ class SignupStepsForm extends React.Component {
     } = this.props.fields;
 
     const customTemplate = util.getValue(createdArticle, 'givebox.customTemplate', {});
+    const tokens = {
+      '<<color>>': util.getValue(org, 'themeColor'),
+      '{{link}}': `${GBX3_URL}/${createdArticleID}`,
+      '{{orgname}}': util.getValue(org, 'name'),
+      '{{orgimage}}': util.getValue(org, 'imageURL'),
+      '{{articletitle}}': util.getValue(gbx3, 'title'),
+      '{{articleimage}}': util.getValue(gbx3, 'imageURL'),
+      '{{message}}': ''
+    };
+    const receiptHTML = util.replaceAll(defaultReceiptTemplate, tokens);
 
     switch (slug) {
       case 'orgName': {
         const orgGlobals = {
-          ...orgGlobals,
+          ...this.props.orgGlobals,
           title: {
             content: `
               <p style="text-align:center;">
@@ -487,21 +502,63 @@ class SignupStepsForm extends React.Component {
         }
         const globalsUpdated = await this.props.updateOrgGlobals(orgGlobals);
         if (globalsUpdated) {
-          this.props.saveOrg()
+          this.props.saveOrg({
+            data: {
+              name: org.name || null,
+              categoryID: org.categoryID || null,
+              taxID: validTaxID || null
+            }
+          });
         }
-        console.log('save orgName -> ', orgGlobals);
         break;
       }
 
       case 'mission': {
+        const orgGlobals = {
+          ...this.props.orgGlobals,
+          profilePicture: {
+            url: org.imageURL
+          }
+        }
+        const globalsUpdated = await this.props.updateOrgGlobals(orgGlobals);
+        if (globalsUpdated) {
+          this.props.saveOrg({
+            orgUpdated: true,
+            data: {
+              mission: org.mission || null,
+              imageURL: org.imageURL || null
+            }
+          });
+        }
         break;
       }
 
-      case 'title': {
-        break;
-      }
-
+      case 'title':
       case 'themeColor': {
+        const orgGlobals = {
+          ...this.props.orgGlobals,
+          globalStyles: {
+            ...util.getValue(this.props.orgGlobals, 'globalStyles', {}),
+            backgroundColor: org.themeColor,
+            primaryColor: org.themeColor
+          }
+        };
+        const globalsUpdated = await this.props.updateOrgGlobals(orgGlobals);
+        if (globalsUpdated) {
+          this.props.saveOrg({
+            orgUpdated: true
+          });
+        }
+        const data = this.props.getGBX3SaveData({
+          customTemplate
+        });
+        this.props.sendResource(`orgFundraiser`, {
+          orgID: util.getValue(createdArticle, 'orgID'),
+          id: [util.getValue(createdArticle, 'kindID')],
+          isSending: false,
+          method: 'patch',
+          data
+        });
         break;
       }
 
@@ -537,7 +594,6 @@ class SignupStepsForm extends React.Component {
   }
 
   async processForm(fields, callback, group) {
-    util.toTop('modalOverlay-orgSignupSteps');
     this.setState({ saving: true });
     const {
       step,
@@ -546,6 +602,7 @@ class SignupStepsForm extends React.Component {
       stepsTodo,
       signupPhase
     } = this.props;
+    util.toTop(`modalOverlay-${signupPhase === 'postSignup' ? 'orgPostSignupSteps' : 'orgSignupSteps'}`);
 
     const {
       themeColor,
@@ -759,7 +816,6 @@ class SignupStepsForm extends React.Component {
       desc: stepConfig.desc,
       component: <div></div>,
       className: '',
-      saveButtonLabelTop: <span className='buttonAlignText'>Save & Continue to Step {nextStepNumber}: {nextStepName} <span className='icon icon-chevron-right'></span></span>,
       saveButtonLabel: <span className='buttonAlignText'>Save & Continue</span>
     };
 
@@ -1210,5 +1266,7 @@ export default connect(mapStateToProps, {
   createFundraiser,
   savingSignup,
   signupGBX3Data,
+  getGBX3SaveData,
+  checkSignupPhase,
   saveLegalEntity
 })(SignupSteps);

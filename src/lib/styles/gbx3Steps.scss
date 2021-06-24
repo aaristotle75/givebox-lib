@@ -325,6 +325,16 @@ $gbx3StepsBreakpoint: 600px;
     justify-content: space-between;
     align-items: center;
 
+    .rightSide {
+      button.link {
+        color: $white;
+        @include transition(opacity .25s);
+      }
+      button.link:hover {
+        opacity: .8;
+      }
+    }
+
     button.link {
       font-size: 12px;
       font-weight: 500;

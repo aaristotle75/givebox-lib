@@ -100,7 +100,7 @@ const connectBank = {
 const addBank = {
   type: 'merchant',
   slug: 'addBank',
-  name: 'Add a Bank Account',
+  name: 'Add Bank Account',
   title: 'Add a Bank Account',
   customIcon: <Icon><FaMoneyCheck /></Icon>,
   desc: ''
@@ -110,7 +110,7 @@ const principal = {
   type: 'merchant',
   slug: 'principal',
   name: 'Account Holder',
-  title: `Primary Account Holder's Information`,
+  title: `Account Holder's Information`,
   icon: 'user-check',
   desc: ''
 };
@@ -119,7 +119,7 @@ const legalEntity = {
   type: 'merchant',
   slug: 'legalEntity',
   name: 'Business Info',
-  title: `Information About Your Nonprofit/Business`,
+  title: `Nonprofit/Business Information`,
   customIcon: <Icon><MdBusiness /></Icon>,
   desc: ''
 };
@@ -137,8 +137,8 @@ const address = {
 const connectStatus = {
   type: 'merchant',
   slug: 'connectStatus',
-  name: 'Connect Status',
-  title: `Your Bank Account Connect Status`,
+  name: 'Bank Status',
+  title: `Bank Account Connect Status`,
   customIcon: <Icon><FaConnectdevelop /></Icon>,
   desc: ''
 };
@@ -147,7 +147,7 @@ const identity = {
   type: 'merchant',
   slug: 'identity',
   name: 'Verify Identity',
-  title: 'Verify Account Holder Identity',
+  title: 'Account Holder Identity',
   customIcon: <Icon><TiBusinessCard /></Icon>,
   desc: ''
 }
@@ -156,7 +156,7 @@ const verifyBank = {
   type: 'merchant',
   slug: 'verifyBank',
   name: 'Verify Bank',
-  title: 'Verify Your Bank Account',
+  title: 'Verify Bank Account',
   customIcon: <Icon><AiOutlineBank /></Icon>,
   desc: 'We need to verify your bank account.'
 }

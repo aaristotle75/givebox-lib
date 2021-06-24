@@ -41,6 +41,84 @@ export function savingSignup(saving, savingSignupCallback) {
   }
 }
 
+export function getGBX3SaveData(options = {}) {
+  const opts = {
+    customTemplate: {},
+    data: {},
+    ...options
+  };
+  const customTemplate = opts.customTemplate;
+  const data = opts.data;
+
+  return (dispath, getState) => {
+    const state = getState();
+    const orgSignup = util.getValue(state, 'gbx3.orgSignup', {});
+    const fields = util.getValue(orgSignup, 'fields', {});
+    const {
+      org,
+      gbx3
+    } = fields;
+
+    const theme = util.getValue(org, 'defaultTheme', 'dark');
+    const gbx3Data = {
+      giveboxSettings: {},
+      ...gbx3,
+      ...data
+    };
+
+    const primaryColor = org.themeColor || defaultPrimaryColor;
+    const gbx3Blocks = util.getValue(customTemplate, 'blocks', {});
+    const gbxStyle = util.getValue(customTemplate, 'gbxStyle', {});
+    const globals = util.getValue(customTemplate, 'globals', {});
+
+    const gbx3Template = {
+      globals: {
+        ...globals,
+        theme,
+        gbxStyle: {
+          ...defaultStyle[theme],
+          ...gbxStyle,
+          //backgroundColor: primaryColor,
+          backgroundImage: gbx3.imageURL,
+          primaryColor
+        }
+      },
+      blocks: {
+        ...gbx3Blocks,
+        media: {
+          ...gbx3Blocks.media,
+          content: {
+            image: {
+              size: 'medium',
+              borderRadius: 5,
+              URL: gbx3.imageURL
+            },
+            video: {
+              URL: gbx3.videoURL,
+              auto: false,
+              validatedURL: gbx3.videoURL
+            }
+          },
+          options: {
+            ...util.getValue(gbx3Blocks, 'media.options', {}),
+            mediaType: gbx3.mediaType
+          }
+        }
+      }
+    }
+
+    gbx3Data.giveboxSettings.customTemplate = {
+      ...gbx3Template
+    };
+
+    if (org.themeColor) {
+      gbx3Data.giveboxSettings.primaryColor = org.themeColor;
+    };
+
+    return gbx3Data;
+  }
+}
+
 export function signupGBX3Data() {
   return (dispath, getState) => {
     const state = getState();

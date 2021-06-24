@@ -77,7 +77,7 @@ class Signup extends React.Component {
                     { isMobile ?
                       <Image size='thumb' maxSize={35} url={'https://cdn.givebox.com/givebox/public/gb-logo5.png'} alt='Givebox' />
                     :
-                      <Image maxHeight={35} url={'https://cdn.givebox.com/givebox/public/givebox_logo2020-grey-text.png'} alt='Givebox' />
+                      <Image maxHeight={35} url={'https://cdn.givebox.com/givebox/public/givebox-logo_dark-grey.png'} alt='Givebox' />
                     }
                   </div>
                   <div className='moneyRaisedContainer'>

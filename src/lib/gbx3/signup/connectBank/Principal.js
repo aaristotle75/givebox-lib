@@ -72,9 +72,9 @@ class Principal extends React.Component {
           {this.props.textField('firstName', {
             group,
             required: true,
-            fixedLabel: true,
+            fixedLabel: false,
             label: 'First Name',
-            placeholder: 'Enter First Name',
+            placeholder: 'Type First Name',
             value: firstName
           })}
         </div>
@@ -82,21 +82,44 @@ class Principal extends React.Component {
           {this.props.textField('lastName', {
             group,
             required: true,
-            fixedLabel: true,
+            fixedLabel: false,
             label: 'Last Name',
-            placeholder: 'Enter Last Name',
+            placeholder: 'Type Last Name',
             value: lastName
           })}
         </div>
-        {this.props.textField('emailAddress', {
-          group,
-          required: true,
-          fixedLabel: true,
-          validate: 'email',
-          label: 'Email',
-          placeholder: 'Enter Email',
-          value: emailAddress
-        })}
+        <div className='column50'>
+          {this.props.textField('emailAddress', {
+            group,
+            required: true,
+            fixedLabel: false,
+            validate: 'email',
+            label: 'Email',
+            placeholder: 'Type Email',
+            value: emailAddress
+          })}
+        </div>
+        <div className='column50'>
+          {this.props.textField('contactPhone', {
+            group,
+            placeholder: `Type Contact Phone Number`,
+            fixedLabel: false,
+            label: 'Contact Phone',
+            validate: 'phone',
+            required: true,
+            value: contactPhone ? _v.formatPhone(contactPhone) : ''
+          })}
+        </div>
+        <div className='column50'>
+          {this.props.textField('title', {
+            group,
+            placeholder: `Type Title (e.g. Executive Director)`,
+            fixedLabel: false,
+            label: 'Title',
+            value: title
+          })}
+        </div>
+
         {/* this.props.calendarField('dateOfBirth', {
           group,
           label: 'Date of Birth',
@@ -113,22 +136,7 @@ class Principal extends React.Component {
             }
           }
         }) */}
-        {this.props.textField('title', {
-          group,
-          placeholder: `Enter Title (e.g. Executive Director)`,
-          fixedLabel: true,
-          label: 'Title',
-          value: title
-        })}
-        {this.props.textField('contactPhone', {
-          group,
-          placeholder: `Add a Contact Phone Number`,
-          fixedLabel: true,
-          label: 'Contact Phone',
-          validate: 'phone',
-          required: true,
-          value: contactPhone ? _v.formatPhone(contactPhone) : ''
-        })}
+
       </div>
     )
   }

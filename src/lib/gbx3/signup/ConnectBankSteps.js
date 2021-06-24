@@ -9,6 +9,7 @@ import Loader from '../../common/Loader';
 import * as _v from '../../form/formValidate';
 import GBLink from '../../common/GBLink';
 import Image from '../../common/Image';
+import Icon from '../../common/Icon';
 import HelpfulTip from '../../common/HelpfulTip';
 import {
   setSignupStep,
@@ -30,6 +31,7 @@ import Address from './connectBank/Address';
 import PlaidConnect from './connectBank/PlaidConnect';
 import ConnectStatus from './connectBank/ConnectStatus';
 import Moment from 'moment';
+import { MdCheckCircle } from 'react-icons/md';
 
 class ConnectBankStepsForm extends React.Component {
 
@@ -56,7 +58,7 @@ class ConnectBankStepsForm extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.signupPhase === 'manualConnect') this.checkConnectStatus();
+    if (this.props.signupPhase === 'manualConnect' && this.props.isVantivReady) this.checkConnectStatus();
   }
 
   connectBankPlaid() {
@@ -180,7 +182,8 @@ class ConnectBankStepsForm extends React.Component {
       step,
       stepsTodo,
       formState,
-      merchantIdentString
+      merchantIdentString,
+      isVantivReady
     } = this.props;
 
     const stepConfig = util.getValue(stepsTodo, step, {});
@@ -235,14 +238,19 @@ class ConnectBankStepsForm extends React.Component {
       }
 
       case 'connectStatus': {
-        if (merchantIdentString) {
-          if (!this.props.completed.includes(group)) {
-            this.submerchantCreated(1000);
-          } else {
-            this.props.toggleModal('orgConnectBankSteps', false);
-          }
+        if (!isVantivReady) {
+          this.props.previousStep(step);
+          return this.setState({ saving: false });
         } else {
-          this.checkConnectStatus();
+          if (merchantIdentString) {
+            if (!this.props.completed.includes(group)) {
+              this.submerchantCreated(1000);
+            } else {
+              this.props.toggleModal('orgConnectBankSteps', false);
+            }
+          } else {
+            this.checkConnectStatus();
+          }
         }
         break;
       }
@@ -291,80 +299,48 @@ class ConnectBankStepsForm extends React.Component {
       desc: stepConfig.desc,
       component: <div></div>,
       className: '',
-      saveButtonLabelTop: <span className='buttonAlignText'>Save & Continue to Step {nextStepNumber}: {nextStepName} <span className='icon icon-chevron-right'></span></span>,
-      saveButtonLabel: <span className='buttonAlignText'>Save & Continue to Next Step <span className='icon icon-chevron-right'></span></span>,
+      saveButtonLabel: <span className='buttonAlignText'>Save & Continue</span>,
       saveButtonDisabled: false
     };
 
-    const library = {
-      saveMediaType: 'org',
-      borderRadius: 0
-    };
+    const phaseEnds = phaseEndsAt; // 1622719816
+    //const now = Math.floor(Date.now() /1000);
+    const endsAt = Moment.unix(phaseEnds).utc();
+    const now = Moment.utc();
+    const diff = endsAt.diff(now, 'days');
+    const lastDay = diff === 0 ? true : false;
+    const diffDisplay = lastDay ? 'This is the Last Day' : `You Have ${diff} Day${diff > 1 ? 's' : ''}`;
+    const daysLeftDisplay = `${diffDisplay} to Connect a Bank Account or the Money You Received will be Refunded.`;
 
     switch (slug) {
       case 'connectBank': {
-        const phaseEnds = phaseEndsAt; // 1622719816
-        //const now = Math.floor(Date.now() /1000);
-        const endsAt = Moment.unix(phaseEnds).utc();
-        const now = Moment.utc();
-        const diff = endsAt.diff(now, 'days');
-        const lastDay = diff === 0 ? true : false;
-        const diffDisplay = lastDay ? 'This is the Last Day' : `You Have ${diff} Day${diff > 1 ? 's' : ''}`;
-        const daysLeftDisplay = `${diffDisplay} to Connect a Bank Account or the Money You Received will be Refunded.`;
-
-        item.saveButtonLabelTop = <span className='buttonAlignText'>Click Here to Connect Your Bank Account<span className='icon icon-chevron-right'></span></span>;
-        item.saveButtonLabel = <span className='buttonAlignText'>Connect Your Bank Account <span className='icon icon-chevron-right'></span></span>;
-        item.desc =
-          <div>
+        item.saveButtonLabel = <span className='buttonAlignText'>Connect Bank Account</span>;
+        item.desc = 'Connect your bank account to continue to process and transfer money.';
+        item.component =
+          <div className='fieldGroup'>
             { hasReceivedTransaction ? <p>Congratulations, you have received your first transactions with Givebox!</p> : null }
             { hasReceivedTransaction && phaseEndsAt ? <p style={{ fontWeight: 500, color: lastDay ? 'red' : null }}>{daysLeftDisplay}</p> : null }
-            <p>Simply connect your bank, and in a matter of minutes you will have a bank account connected and can continue to accept payments and donations.</p>
-            <HelpfulTip
-              headerIcon={<span className='icon icon-external-link'></span>}
-              headerText={`Connect Your Bank Account with Plaid`}
-              text={`When you click Connect Bank Account below it will open an overlay that will ask you to choose your bank and prompt you to login to your account. This is the easiest and quickest way to connect a bank account.`}
-              style={{ marginTop: 30 }}
-            />
           </div>
         ;
-        item.component = <div></div>;
         break;
       }
 
       case 'addBank': {
-        item.desc =
-          <div>
-            <p></p>
-            <HelpfulTip
-              headerIcon={<span className='icon icon-alert-triangle'></span>}
-              headerText={`Manually Entering a Bank Account`}
-              text={`Manually entering your bank account will require you to complete extra steps and additional documentation that you must submit for review, and can take up to 7 days to approve.`}
-              style={{ marginTop: 30 }}
+        item.desc = 'Manually connect a bank account to continue to process and transfer money.';
+        item.component =
+          <div className='fieldGroup'>
+            { hasReceivedTransaction ? <p>Congratulations, you have received your first transactions with Givebox!</p> : null }
+            { hasReceivedTransaction && phaseEndsAt ? <p style={{ fontWeight: 500, color: lastDay ? 'red' : null }}>{daysLeftDisplay}</p> : null }
+            <BankAccount
+              {...this.props}
             />
           </div>
-        ;
-        item.component =
-          <BankAccount
-            {...this.props}
-          />
         ;
         break;
       }
 
       case 'principal': {
-        item.desc =
-          <div>
-            <p>The primary account holder is usually a person on the bank account or someone with authority to manage the Organization and handle the money.</p>
-            {/*
-            <HelpfulTip
-              headerIcon={<span className='icon icon-alert-circle'></span>}
-              headerText={`Tax Identification Number`}
-              text={`If you don't have the account holders Social Security Number (SSN) use the Organization's U.S. Federal Tax ID instead.`}
-              style={{ marginTop: 30 }}
-            />
-            */}
-          </div>
-        ;
+        item.desc = 'The primary account holder is a person on the bank account or someone with authority to manage the organization and handle the money.';
         item.component =
           <Principal
             {...this.props}
@@ -374,11 +350,7 @@ class ConnectBankStepsForm extends React.Component {
       }
 
       case 'legalEntity': {
-        item.desc =
-          <div>
-            <p>This information is required to process and accept payments.</p>
-          </div>
-        ;
+        item.desc = 'This information is required to process and accept payments.';
         item.component =
           <LegalEntity
             {...this.props}
@@ -388,45 +360,34 @@ class ConnectBankStepsForm extends React.Component {
       }
 
       case 'address': {
-        item.desc =
-          <div>
-            <p>This can be your organization's physical address or an address of the primary account holder.</p>
+        item.desc = `This can be your organization's physical address or an address of the primary account holder.`;
+
+        item.component =
+          <div className='fieldGroup'>
             <HelpfulTip
               headerIcon={<span className='icon icon-alert-circle'></span>}
               headerText={`Important`}
               text={`P.O. Boxes and PMB's CANNOT be used.`}
               style={{ marginTop: 30 }}
             />
+            <Address
+              {...this.props}
+            />
           </div>
-        ;
-
-        item.component =
-          <Address
-            {...this.props}
-          />
         ;
         break;
       }
 
       case 'connectStatus': {
-        item.saveButtonLabel = <span className='buttonAlignText'>{merchantIdentString ? 'All Finished! Take Me to My Profile' : 'Check Status'} <span className='icon icon-chevron-right'></span></span>
-        item.saveButtonLabelTop = item.saveButtonLabel;
-        item.desc =
-          <div>
-            <HelpfulTip
-              headerIcon={<span className='icon icon-alert-circle'></span>}
-              headerText={`Important`}
-              text={`You will be notified if any additional information is required to complete the connection to your bank account.`}
-              style={{ marginTop: 30 }}
+        item.saveButtonLabel = <span className='buttonAlignText'>{merchantIdentString ? 'All Finished! Take Me to My Profile' : isVantivReady ? 'Check Status' : 'Complete Previous Steps' }</span>;
+        item.desc = '';
+        item.component =
+          <div className='fieldGroup'>
+            <ConnectStatus
+              {...this.props}
             />
           </div>
         ;
-        item.component =
-          <ConnectStatus
-            {...this.props}
-          />
-        ;
-        item.saveButtonDisabled = !isVantivReady ? true : false;
         break;
       }
 
@@ -436,29 +397,18 @@ class ConnectBankStepsForm extends React.Component {
     return (
       <div className='stepContainer'>
         { this.state.saving || this.state.checkingStatus ? <Loader msg='Saving...' /> : null }
-        <div className='stepStatus'>
-          { !item.saveButtonDisabled && slug !== 'connectBank' ?
-            <GBLink onClick={(e) => this.props.validateForm(e, this.processForm, slug)}>
-              <span style={{ marginLeft: 20 }}>{item.saveButtonLabelTop}</span>
-            </GBLink>
-          : null }
-        </div>
         <div className={`step ${item.className} ${open ? 'open' : ''}`}>
           <div className='stepTitleContainer'>
-            { item.icon ? <span className={`icon icon-${item.icon}`}></span> : item.customIcon }
-            <div className='stepTitle'>
-              <div className='numberContainer'>
-                <span className='number'>Step {stepNumber}{ completed ? ':' : null}</span>
-                {completed ?
-                  <div className='completed'>
-                    <span className='icon icon-check'></span>Completed
-                  </div>
-                : null }
+            {completed ?
+              <div className='completed'>
+                <Icon><MdCheckCircle /></Icon> <span className='completedText'>Step {stepNumber} Completed</span>
               </div>
-              {item.title}
+            :
+            <div className='stepTitle'>
+              {item.desc}
             </div>
+            }
           </div>
-          <div className='stepsSubText'>{item.desc}</div>
           <div className={`stepComponent`}>
             {item.component}
           </div>
@@ -481,7 +431,7 @@ class ConnectBankStepsForm extends React.Component {
               this.props.saveButton(this.processForm, { group: slug, label: item.saveButtonLabel, disabled: item.saveButtonDisabled })
             }
           </div>
-          <div className='button-item' style={{ width: 150 }}>
+          <div className='button-item rightSide' style={{ width: 150 }}>
             { signupPhase === 'manualConnect' ?
               <GBLink onClick={this.switchToConnectBank}>
                 <span className='buttonAlignText'>Connect a Bank Account<span className='icon icon-chevron-right'></span></span>
@@ -540,7 +490,7 @@ class ConnectBankSteps extends React.Component {
     if (util.isLoading(legalEntity) || this.state.loading) return <Loader msg='Loading Legal Entity...' />;
 
     return (
-      <Form id={`stepsForm`} name={`stepsForm`}>
+      <Form id={`stepsForm`} name={`stepsForm`} options={{ leftBar: true }}>
         <ConnectBankStepsForm
           {...this.props}
         />

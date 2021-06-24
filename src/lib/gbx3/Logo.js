@@ -44,8 +44,8 @@ Logo.defaultProps = {
   theme: 'dark',
   logoURL: {
     desktop: {
-      dark: 'https://s3-us-west-1.amazonaws.com/givebox-marketing/images/2020/06/19054759/givebox_logo2020-grey-text.png',
-      light: 'https://givebox-marketing.s3.us-west-1.amazonaws.com/images/2020/01/19210256/givebox_logo2020_white-text.svg'
+      dark: 'https://cdn.givebox.com/givebox/public/givebox-logo_dark-grey.png',
+      light: 'https://cdn.givebox.com/givebox/public/givebox-logo_white.png'
     },
     mobile: {
       dark: 'https://cdn.givebox.com/givebox/public/gb-logo5.png',

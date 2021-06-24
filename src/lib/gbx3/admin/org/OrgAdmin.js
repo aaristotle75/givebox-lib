@@ -30,8 +30,8 @@ class OrgAdmin extends React.Component {
 
   componentDidMount() {
     const testConfig = {
+      forceStep: 2,
       /*
-      forceStep: 0,
       openModal: null,
       openAdmin: null
       */

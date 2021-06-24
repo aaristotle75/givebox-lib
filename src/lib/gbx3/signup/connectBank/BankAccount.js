@@ -117,54 +117,62 @@ class BankAccount extends React.Component {
           value: bankName,
           required: false
         })}
-        {this.props.textField('name', {
-          group,
-          readOnly,
-          fixedLabel: true,
-          label: 'Name on Account',
-          placeholder: 'Enter Name on Account',
-          required: true,
-          value: name
-        })}
-        {this.props.dropdown('accountType', {
-          group,
-          readOnly,
-          required: true,
-          dropdownClass: 'articleCardDropdown',
-          fixedLabel: true,
-          label: `Account Type`,
-          selectLabel: `Select Account Type`,
-          value: accountType,
-          defaultValue: 'checking',
-          options: [
-            { primaryText: 'Checking', value: 'checking' },
-            { primaryText: 'Savings', value: 'savings' }
-          ],
-          direction: 'top'
-        })}
-        {this.props.textField('number', {
-          group,
-          readOnly,
-          fixedLabel: true,
-          label: 'Account Number',
-          placeholder: last4 ? `********${last4}` : 'Enter Account Number',
-          required: last4 ? false : true,
-          meta: { last4 },
-          maxLength: 32,
-          value: !last4 && number ? number : ''
-        })}
-        {bankName ? <span className='green date'>{bankName}</span> : null}
-        {this.props.textField('routingNumber', {
-          group,
-          fixedLabel: true,
-          label: 'Routing Number',
-          placeholder: 'Enter Routing Number',
-          required: true,
-          value: routingNumber,
-          maxLength: 9,
-          onChange: this.getBankName,
-          readOnly: false
-        })}
+        <div className='column50'>
+          {this.props.textField('name', {
+            group,
+            readOnly,
+            fixedLabel: false,
+            label: 'Name on Account',
+            placeholder: 'Type Name on Account',
+            required: true,
+            value: name
+          })}
+        </div>
+        <div className='column50'>
+          {this.props.dropdown('accountType', {
+            group,
+            readOnly,
+            required: true,
+            dropdownClass: 'articleCardDropdown',
+            fixedLabel: false,
+            label: `Account Type`,
+            selectLabel: `Choose Account Type`,
+            value: accountType,
+            defaultValue: 'checking',
+            options: [
+              { primaryText: 'Checking', value: 'checking' },
+              { primaryText: 'Savings', value: 'savings' }
+            ],
+            direction: 'top'
+          })}
+        </div>
+        <div className='column50'>
+          {this.props.textField('number', {
+            group,
+            readOnly,
+            fixedLabel: false,
+            label: 'Account Number',
+            placeholder: last4 ? `********${last4}` : 'Type Account Number',
+            required: last4 ? false : true,
+            meta: { last4 },
+            maxLength: 32,
+            value: !last4 && number ? number : ''
+          })}
+        </div>
+        <div className='column50'>
+          {bankName ? <span className='green date'>{bankName}</span> : null}
+          {this.props.textField('routingNumber', {
+            group,
+            fixedLabel: false,
+            label: 'Routing Number',
+            placeholder: 'Type Routing Number',
+            required: true,
+            value: routingNumber,
+            maxLength: 9,
+            onChange: this.getBankName,
+            readOnly: false
+          })}
+        </div>
       </div>
     )
   }

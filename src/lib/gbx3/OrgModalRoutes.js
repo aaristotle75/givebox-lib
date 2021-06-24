@@ -146,6 +146,7 @@ export default class GBX3ModalRoutes extends Component {
           id={'orgConnectBankSteps'}
           effect='3DFlipVert' style={{ width: '85%' }}
           disallowBgClose={true}
+          closeBtnShow={false}
           component={(props) => {
             return (
               <StepsWrapper>
@@ -159,6 +160,7 @@ export default class GBX3ModalRoutes extends Component {
           id={'orgTransferSteps'}
           effect='3DFlipVert' style={{ width: '85%' }}
           disallowBgClose={true}
+          closeBtnShow={false}
           component={(props) => {
             return (
               <StepsWrapper>
