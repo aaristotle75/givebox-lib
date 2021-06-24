@@ -113,7 +113,7 @@ class Launchpad extends React.Component {
             this.onClickApp(value.path, value.slug);
           }}
         >
-        <Image maxSize={'140px'} url={`https://cdn.givebox.com/givebox/public/images/backgrounds/${value.image}.png`} size='inherit' alt={value.name} />
+        <Image style={{ height: 140, width: 140 }} maxSize={'140px'} url={`https://cdn.givebox.com/givebox/public/images/backgrounds/${value.image}.png`} size='inherit' alt={value.name} />
           <span className='appName'>{value.name}</span>
         </div>
       )

@@ -1061,7 +1061,7 @@ $contentHeaderPadding: 35%;
 
   .moneyRaisedLabel {
     font-size: 11px;
-    color: $med-blue-gray;
+    @include primaryGradientText;
   }
 
   .moneyRaisedText {

@@ -221,7 +221,7 @@ class Text extends Component {
         {buttonEnabled ?
         <div ref={this.displayRef}>
           <ModalRoute
-            className='gbx3'
+            className='gbx3 orgCustomElements'
             id={`${name}-overlay`}
             effect='3DFlipVert' style={{ width: '60%' }}
             draggable={false}

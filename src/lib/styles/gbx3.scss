@@ -28,7 +28,7 @@
     right: 0;
     transform: translate(-105%, 0%);
     background-color: transparentize($med-blue-gray, .7);
-    color: $med-blue-dark-gray;
+    color: $dark;
     font-size: 12px;
     padding: 5px;
     text-align: center;
@@ -1745,6 +1745,10 @@
 
   .givebox-paymentform {
 
+    button.button {
+      background: transparent;
+    }
+
     .sendEmailNote {
       margin: 20px 0;
 
@@ -1959,7 +1963,7 @@
     border-radius: 20px;
     font-size: 16px;
     font-weight: 400;
-    background: transparent;
+    //background: transparent;
     //color: $mainColor;
     //background-color: $white;
     @include default-transition(.5s);
@@ -3200,5 +3204,11 @@
     .leftPanelOpenButton {
       top: 20px;
     }
+  }
+}
+
+.orgCustomElements {
+  button.button {
+    background: transparent;
   }
 }
