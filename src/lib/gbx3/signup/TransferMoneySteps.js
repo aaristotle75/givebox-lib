@@ -9,6 +9,7 @@ import Loader from '../../common/Loader';
 import * as _v from '../../form/formValidate';
 import GBLink from '../../common/GBLink';
 import Image from '../../common/Image';
+import Icon from '../../common/Icon';
 import HelpfulTip from '../../common/HelpfulTip';
 import Identity from './transferMoney/Identity';
 import VerifyBank from './transferMoney/VerifyBank';
@@ -30,6 +31,7 @@ import {
   removeResource
 } from '../../api/actions';
 import AnimateHeight from 'react-animate-height';
+import { MdCheckCircle } from 'react-icons/md';
 
 class TransferMoneyStepsForm extends React.Component {
 
@@ -323,8 +325,7 @@ class TransferMoneyStepsForm extends React.Component {
       desc: stepConfig.desc,
       component: <div></div>,
       className: '',
-      saveButtonLabelTop: <span className='buttonAlignText'>Save & Continue to Step {nextStepNumber}: {nextStepName} <span className='icon icon-chevron-right'></span></span>,
-      saveButtonLabel: <span className='buttonAlignText'>Save & Continue to Next Step <span className='icon icon-chevron-right'></span></span>,
+      saveButtonLabel: <span className='buttonAlignText'>Save & Continue</span>,
       saveButtonDisabled: false
     };
 
@@ -336,11 +337,8 @@ class TransferMoneyStepsForm extends React.Component {
     switch (slug) {
       case 'identity': {
         item.saveButtonDisabled = !identityUploaded ? true : false;
-        item.desc =
-          <div>
-            <p>Please upload a photo ID of the account holder. The ID can be either a Driver's License or U.S. Passport and must clearly display the persons full name, ID number and information.</p>
-          </div>
-        ;
+        item.desc = `Please upload a photo ID of the account holder. The ID can be either a Driver's License or U.S. Passport and must clearly display the persons full name, ID number and information.`;
+
         item.component =
           <Identity
             {...this.props}
@@ -352,11 +350,7 @@ class TransferMoneyStepsForm extends React.Component {
 
       case 'verifyBank': {
         item.saveButtonDisabled = !verifyBankUploaded ? true : false;
-        item.desc =
-          <div>
-            <p>Please upload a bank statement or voided check for your bank account. The name on the account, account number and address must be clearly displayed.</p>
-          </div>
-        ;
+        item.desc = 'Please upload a bank statement or voided check for your bank account. The name on the account, account number and address must be clearly displayed.';
         item.component =
           <VerifyBank
             {...this.props}
@@ -368,11 +362,7 @@ class TransferMoneyStepsForm extends React.Component {
 
       case 'verifyBusiness': {
         item.saveButtonDisabled = !verifyBusinessUploaded ? true : false;
-        item.desc =
-          <div>
-            <p>Please upload a copy of the IRS Letter issuing your Employer Identification Number (EIN/TaxID) or an IRS Tax Document showing your Business Name and EIN/Tax ID.</p>
-          </div>
-        ;
+        item.desc = 'Please upload a copy of the IRS Letter issuing your Employer Identification Number (EIN/TaxID) or an IRS Tax Document showing your Business Name and EIN/Tax ID.';
         item.component =
           <VerifyBusiness
             {...this.props}
@@ -385,24 +375,15 @@ class TransferMoneyStepsForm extends React.Component {
       case 'verifyWeb': {
         item.component =
           <div className='fieldGroup'>
-            <HelpfulTip
-              headerIcon={<span className='icon icon-alert-circle'></span>}
-              headerText={`I Don't Have a Website`}
-              style={{ marginTop: 20, marginBottom: 20 }}
-              text={
-                <span>
-                  If you don't have a website, use your facebook or other social media address instead.
-                </span>
-              }
-            />
             {this.props.textField('websiteURL', {
               group: 'verifyWeb',
               label: 'Website URL',
-              placeholder: 'Click Here to Enter a Website or Social Media URL',
+              placeholder: 'Type Website or Social Media URL',
               validate: 'url',
               maxLength: 128,
               value: websiteURL || '',
-              required: true
+              required: true,
+              leftBar: true
             })}
           </div>
         ;
@@ -410,12 +391,17 @@ class TransferMoneyStepsForm extends React.Component {
       }
 
       case 'missionCountries': {
+
+        item.desc = 'Does your Business/Nonprofit service countries outside of the USA/Canada.';
+
         item.component =
           <div className='fieldGroup'>
             <Dropdown
               name='missionCountriesShow'
-              label={'Does your Business/Nonprofit service countries outside of the USA/Canada?'}
-              fixedLabel={true}
+              className='articleCard'
+              label={'Service countries outside the USA/Canada'}
+              fixedLabel={false}
+              fixedLabelHasValue={true}
               defaultValue={missionCountriesShow}
               onChange={(name, value) => {
                 const missionCountriesShow = parseInt(value);
@@ -427,13 +413,16 @@ class TransferMoneyStepsForm extends React.Component {
                 { primaryText: 'No', value: 1 },
                 { primaryText: 'Yes', value: 2 }
               ]}
+              showCloseBtn={false}
+              leftBar={true}
             />
             <AnimateHeight height={missionCountriesShow === 2 || missionCountries ? 'auto' : 0}>
               {this.props.richText('missionCountries', {
                 group: 'missionCountries',
                 required: missionCountriesShow === 2 ? true : false,
+                fixedLabel: false,
                 label: 'Countries Serviced Outside USA/Canada',
-                placeholder: 'Click here to enter the countries your Business/Nonprofit services that are outside the USA/Canada.',
+                placeholder: 'Type the countries your Business/Nonprofit services that are outside the USA/Canada.',
                 wysiwyg: false,
                 autoFocus: false,
                 value: missionCountries
@@ -446,15 +435,12 @@ class TransferMoneyStepsForm extends React.Component {
 
       case 'protect': {
         item.saveButtonDisabled = !is2FAVerified ? true : false;
-        item.saveButtonLabelTop = <span className='buttonAlignText'>Continue to Step 5: Approval Status<span className='icon icon-chevron-right'></span></span>;
-        item.saveButtonLabel = <span className='buttonAlignText'>Continue to Next Step <span className='icon icon-chevron-right'></span></span>;
-        item.desc =
-          <div>
-            <p>To protect your account we use two-factor authentication. Please enter a mobile number below and a verify code will be sent by text message.</p>
-          </div>
-        ;
+        item.saveButtonLabel = <span className='buttonAlignText'>Continue to Next Step</span>;
+        item.desc = 'To protect your account we use two-factor authentication. Please enter a mobile number below and a verify code will be sent by text message.';
+
         item.component =
           <TwoFA
+            hideRadio={true}
             set2FAVerified={this.set2FAVerified}
             successCallback={() => {
               this.saveStep('protect', 1000);
@@ -475,8 +461,7 @@ class TransferMoneyStepsForm extends React.Component {
 
         item.saveButtonDisabled = isCompleted ? false : true;
         item.saveButtonDisabled = checkingStatusDisableButton ? true : item.saveButtonDisabled;
-        item.saveButtonLabelTop = <span className='buttonAlignText'>Click Here to {approvedForTransfers ? 'Manage Money' : 'Check Status' }<span className='icon icon-chevron-right'></span></span>;
-        item.saveButtonLabel = <span className='buttonAlignText'>{approvedForTransfers ? 'Manage Money' : 'Check Status'} <span className='icon icon-chevron-right'></span></span>;
+        item.saveButtonLabel = <span className='buttonAlignText'>{approvedForTransfers ? 'Manage Money' : 'Check Status'}</span>;
 
         if (approvedForTransfers) {
           item.desc =
@@ -516,29 +501,18 @@ class TransferMoneyStepsForm extends React.Component {
     return (
       <div className='stepContainer'>
         { this.state.saving ? <Loader msg='Saving...' /> : null }
-        <div className='stepStatus'>
-          { !item.saveButtonDisabled ?
-          <GBLink onClick={(e) => this.props.validateForm(e, this.processForm, slug)}>
-            <span style={{ marginLeft: 20 }}>{item.saveButtonLabelTop}</span>
-          </GBLink>
-          : null }
-        </div>
         <div className={`step ${item.className} ${open ? 'open' : ''}`}>
           <div className='stepTitleContainer'>
-            { item.icon ? <span className={`icon icon-${item.icon}`}></span> : item.customIcon }
-            <div className='stepTitle'>
-              <div className='numberContainer'>
-                <span className='number'>Step {stepNumber}{ completed ? ':' : null}</span>
-                {completed ?
-                  <div className='completed'>
-                    <span className='icon icon-check'></span>Completed
-                  </div>
-                : null }
+            {completed ?
+              <div className='completed'>
+                <Icon><MdCheckCircle /></Icon> <span className='completedText'>Step {stepNumber} Completed</span>
               </div>
-              {item.title}
+            :
+            <div className='stepTitle'>
+              {item.desc}
             </div>
+            }
           </div>
-          <div className='stepsSubText'>{item.desc}</div>
           <div className={`stepComponent`}>
             {item.component}
           </div>
@@ -554,7 +528,7 @@ class TransferMoneyStepsForm extends React.Component {
           <div className='button-item'>
             {this.props.saveButton(this.processForm, { group: slug, label: item.saveButtonLabel, disabled: item.saveButtonDisabled })}
           </div>
-          <div className='button-item' style={{ width: 150 }}>
+          <div className='button-item rightSide' style={{ width: 150 }}>
             { slug !== 'transferStatus' && stepsForApprovalCompleted ?
               <GBLink
                 className='link'
@@ -610,7 +584,7 @@ class TransferMoneySteps extends React.Component {
     if (this.state.loading) return <Loader msg='Loading Transfer Money Steps...' />;
 
     return (
-      <Form id={`stepsForm`} name={`stepsForm`}>
+      <Form id={`stepsForm`} name={`stepsForm`} options={{ leftBar: true }}>
         <TransferMoneyStepsForm
           {...this.props}
         />

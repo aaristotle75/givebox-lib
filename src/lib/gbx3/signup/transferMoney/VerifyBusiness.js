@@ -43,13 +43,7 @@ class VerifyBusiness extends React.Component {
 
     return (
       <div className='fieldGroup'>
-        <div className='stepsSubText' style={{ marginTop: 20, marginLeft: 0, marginRight: 0 }}>Business/Nonprofit: {name} {taxID}</div>
-        <HelpfulTip
-          headerIcon={<span className='icon icon-shield'></span>}
-          headerText={`Secure and Private File Upload`}
-          text={'We keep your documents on an encrypted PCI compliant server. We value your privacy and your documents are never shared with third party marketing or social media companies.'}
-          style={{ marginTop: 30 }}
-        />
+        <div className='stepsSubText flexCenter' style={{ marginLeft: 0, marginRight: 0 }}><span className=''><span className='label'>Business/Nonprofit:</span> {name} {taxID}</span></div>
         <div className='flexCenter'>
           <UploadPrivate
             id={orgID}

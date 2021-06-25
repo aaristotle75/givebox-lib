@@ -87,11 +87,16 @@ class ContentField extends Component {
       background: status === 'active' ? color : ''
     };
 
+    const fixedLabelHasValue = this.props.fixedLabelHasValue && value ? true : false;
+
+    console.log('execute this.props.fixedLabelHasValue -> ', this.props.fixedLabelHasValue);
+    console.log('execute value -> ', fixedLabel, value, fixedLabelHasValue);
+
+
     return (
       <div style={style} className={`input-group ${className || ''} richtext-group ${error ? 'error tooltip' : ''}`}>
         <div className={`errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`}>{error}</div>
-        {!modal && label && <label style={labelStyle} className={`${this.state.status}`} htmlFor={name}>{label}</label>}
-        <div className={`floating-label ${this.state.status} ${fixedLabel && 'fixed'}`}>
+        <div className={`floating-label ${this.state.status} ${fixedLabel || fixedLabelHasValue ? 'fixed' : ''}`}>
           {leftBar && !modal ?
             <div className='inputLeftBar'></div>
           : null}
@@ -109,7 +114,7 @@ class ContentField extends Component {
               />
             </div>
           }
-          {modal && label && <label style={labelStyle} htmlFor={name}>{label}</label>}
+          <label style={labelStyle} htmlFor={name}>{label}</label>
           <div style={inputBottomStyle} className={`input-bottom ${error ? 'error' : this.state.status}`}></div>
         </div>
         <div className={`tooltipTop ${errorType !=='tooltip' && 'displayNone'}`}>
@@ -124,7 +129,8 @@ class ContentField extends Component {
 ContentField.defaultProps = {
   name: 'defaultContentField',
   modalLabel: 'Open Editor',
-  autoFocus: true
+  autoFocus: true,
+  fixedLabelHasValue: true
 }
 
 function mapStateToProps(state, props) {

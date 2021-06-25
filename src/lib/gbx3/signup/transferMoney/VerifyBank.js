@@ -78,14 +78,10 @@ class VerifyBank extends React.Component {
 
     return (
       <div className='fieldGroup'>
-        <ModalLink style={{ marginLeft: 0, marginRight: 0 }} className='link stepsSubText' id='voidCheckExample'>Click Here to See an Example of a Voided Check.</ModalLink>
-        <div className='stepsSubText' style={{ marginTop: 20, marginLeft: 0, marginRight: 0 }}>Bank Account: {name} xxxxxx{last4}</div>
-        <HelpfulTip
-          headerIcon={<span className='icon icon-shield'></span>}
-          headerText={`Secure and Private File Upload`}
-          text={'We keep your documents on an encrypted PCI compliant server. We value your privacy and your documents are never shared with third party marketing or social media companies.'}
-          style={{ marginTop: 30 }}
-        />
+        <div className='stepsSubText flexCenter flexColumn' style={{ marginLeft: 0, marginRight: 0 }}>
+          <span><span className='label'>Bank Account:</span> {name} xxxxxx{last4}</span>
+          <ModalLink style={{ marginLeft: 0, marginRight: 0, marginTop: 5 }} className='link' id='voidCheckExample'>Click Here to See an Example of a Voided Check.</ModalLink>
+        </div>
         <div className='flexCenter'>
           <UploadPrivate
             id={orgID}

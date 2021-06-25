@@ -4,7 +4,8 @@ import { AiOutlineBank } from 'react-icons/ai';
 import { MdBusiness } from 'react-icons/md';
 import { FaConnectdevelop, FaMoneyCheck } from 'react-icons/fa';
 import { TiBusinessCard } from 'react-icons/ti';
-
+import { GoLocation } from 'react-icons/go'
+import { RiExchangeFundsLine } from 'react-icons/ri';
 
 const orgName = {
   type: 'org',
@@ -129,7 +130,7 @@ const address = {
   slug: 'address',
   name: 'Address',
   title: `Nonprofit/Business Address`,
-  customIcon: <Icon><MdBusiness /></Icon>,
+  customIcon: <Icon><GoLocation /></Icon>,
   //customIcon: <Icon><TiBusinessCard /></Icon>,
   desc: ''
 };
@@ -176,14 +177,14 @@ const verifyWeb = {
   name: 'Website Address',
   icon: 'at-sign',
   title: 'Business/Nonprofit Website Address',
-  desc: ''
+  desc: 'Add Your Website, Facebook, or Social Media Address'
 };
 
 const missionCountries = {
   type: 'merchant',
   slug: 'missionCountries',
   name: 'Countries Serviced',
-  icon: 'map-pin',
+  customIcon: <Icon><RiExchangeFundsLine /></Icon>,
   title: 'Countries Funds will be Used',
   desc: ''
 };
@@ -285,6 +286,7 @@ export const signupPhase = {
     stepsTodo: [
       addBank,
       principal,
+      legalEntity,
       address,
       connectStatus
     ]

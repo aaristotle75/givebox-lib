@@ -63,12 +63,6 @@ class TransferStatus extends React.Component {
               <GBLink onClick={this.contactRequest}>
                 Click Here to Have a Representative Contact You.
               </GBLink>
-              <HelpfulTip
-                headerIcon={<span className='icon icon-share'></span>}
-                headerText={`Continue to Raise Money by Sharing Your Fundraiser`}
-                text={`While we review your account you can continue to raise money by sharing your fundraiser or creating a new one. Also check out all the customisation options available to your profile and fundraiser.`}
-                style={{ marginTop: 30 }}
-              />
             </div>
           }
         </div>

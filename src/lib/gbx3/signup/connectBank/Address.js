@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import * as util from '../../../common/utility';
-import HelpfulTip from '../../../common/HelpfulTip';
 import Loader from '../../../common/Loader';
 import * as _v from '../../../form/formValidate';
 import * as selectOptions from '../../../form/selectOptions';
@@ -75,7 +74,7 @@ class Address extends React.Component {
             value: line1,
             validate: 'address',
             maxLength: 50,
-            count: true,
+            count: false,
             required: true
           })}
           <div className='fieldContext'>

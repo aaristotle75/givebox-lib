@@ -16,7 +16,6 @@ import * as _v from '../../form/formValidate';
 import GBLink from '../../common/GBLink';
 import Image from '../../common/Image';
 import Icon from '../../common/Icon';
-import HelpfulTip from '../../common/HelpfulTip';
 import {
   setOrgStyle,
   loadOrg,

@@ -1,16 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Form from '../../form/Form';
-import Dropdown from '../../form/Dropdown';
-import TextField from '../../form/TextField';
 import * as util from '../../common/utility';
-import Tabs, { Tab } from '../../common/Tabs';
 import Loader from '../../common/Loader';
 import * as _v from '../../form/formValidate';
 import GBLink from '../../common/GBLink';
 import Image from '../../common/Image';
 import Icon from '../../common/Icon';
-import HelpfulTip from '../../common/HelpfulTip';
 import {
   setSignupStep,
   checkSignupPhase
@@ -350,7 +346,7 @@ class ConnectBankStepsForm extends React.Component {
       }
 
       case 'legalEntity': {
-        item.desc = 'This information is required to process and accept payments.';
+        item.desc = 'Please enter the following details about your Nonprofit/Business.';
         item.component =
           <LegalEntity
             {...this.props}

@@ -610,6 +610,31 @@ button.imageCover {
     min-height: 200px;
   }
 
+  .dropzone {
+    @include primaryButton();
+    height: 140px;
+    width: 140px;
+    border: 0;
+    border-radius: 20px;
+    padding: 0;
+    white-space: normal;
+    @media (max-width: $breakpoint) {
+      height: 125px;
+    }
+
+    .dropzone-icon {
+      font-size: 30px;
+      color: $white;
+    }
+
+   .text {
+      font-size: 16px;
+      color: $white;
+      padding: 5px;
+
+      span { margin: 5px 0 }
+    }
+  }
 }
 
 .privateUpload.alt {

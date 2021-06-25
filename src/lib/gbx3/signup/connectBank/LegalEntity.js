@@ -29,18 +29,16 @@ class LegalEntity extends React.Component {
       websiteURL
     } = this.props;
 
-    if (value !== websiteURL && value) {
-      if (_v.validateWebsiteURL(value) && value !== websiteURL) {
-        this.props.sendResource('org', {
-          method: 'patch',
-          data: {
-            websiteURL: value
-          },
-          isSending: false
-        });
-      } else {
-        this.props.fieldProp('websiteURL', { error: _v.msgs.url });
-      }
+    if (_v.validateWebsiteURL(value)) {
+      this.props.sendResource('org', {
+        method: 'patch',
+        data: {
+          websiteURL: value
+        },
+        isSending: false
+      });
+    } else {
+      this.props.fieldProp('websiteURL', { error: _v.msgs.url });
     }
   }
 
@@ -70,9 +68,9 @@ class LegalEntity extends React.Component {
         })}
         {this.props.textField('websiteURL', {
           group,
-          fixedLabel: true,
+          fixedLabel: false,
           label: 'Website URL',
-          placeholder: 'Enter Website or Social Media URL',
+          placeholder: 'Type Website or Social Media URL',
           alidate: 'url',
           maxLength: 128,
           value: websiteURL,
@@ -81,9 +79,9 @@ class LegalEntity extends React.Component {
         })}
         {this.props.textField('annualCreditCardSalesVolume', {
           group,
-          fixedLabel: true,
+          fixedLabel: false,
           label: 'Estimated Annual Online Donations or Sales',
-          placeholder: 'Enter a Number',
+          placeholder: 'Type a Number',
           validate: 'money',
           validateOpts: {
             decimal: false,
@@ -95,8 +93,8 @@ class LegalEntity extends React.Component {
         })}
         {this.props.textField('yearsInBusiness', {
           group,
-          placeholder: 'Enter a Number',
-          fixedLabel: true,
+          placeholder: 'Type a Number',
+          fixedLabel: false,
           label: 'Age of Nonprofit/Business (In Years, Round Up)',
           maxLength: 3,
           validate: 'number',
@@ -109,8 +107,8 @@ class LegalEntity extends React.Component {
         })}
         {this.props.textField('contactPhone', {
           group,
-          placeholder: `Enter Phone Number`,
-          fixedLabel: true,
+          placeholder: `Type Phone Number`,
+          fixedLabel: false,
           label: 'Business Contact Phone',
           validate: 'phone',
           required: true,

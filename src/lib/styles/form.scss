@@ -264,6 +264,12 @@ label.active {
 
 /*------------- Rich Text ----------*/
 
+.richtext-group {
+  .floating-label label {
+    top: calc(50% - 50px);
+  }
+}
+
 .richtext-embed {
 
   .RichEditor-editor {

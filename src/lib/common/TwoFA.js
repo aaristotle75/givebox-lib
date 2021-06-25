@@ -86,18 +86,19 @@ class TwoFAClass extends Component {
   render() {
 
     const {
-      showCancel
+      showCancel,
+      linkStyle
     } = this.props;
 
     return (
       <div className='column'>
-        {this.props.textField('code', { required: true, maxLength: 6, placeholder: 'Click Here to Enter Verification Code', label: '', style: { paddingTop: 0, paddingBottom: 0 } })}
+        {this.props.textField('code', { required: true, maxLength: 6, placeholder: 'Type Verification Code', label: '', style: { paddingTop: 0, paddingBottom: 0 } })}
         <div className='fieldContext' style={{ marginTop: 5 }}>
           Verification code is valid for up to 60 minutes.
         </div>
         <div className='flexColumn flexCenter'>
           {this.props.saveButton(this.processForm, { style: { width: 150 }, label: 'Verify' })}
-          <GBLink style={{ marginTop: 20 }} onClick={() => this.props.toggleVerify(false)}>Click here to request a new verification code.</GBLink>
+          <GBLink style={linkStyle} onClick={() => this.props.toggleVerify(false)}>Click here to request a new verification code.</GBLink>
         </div>
       </div>
     )
@@ -222,7 +223,9 @@ class TwoFA extends Component {
 
     const {
       access,
-      allowEmail
+      allowEmail,
+      hideRadio,
+      linkStyle
     } = this.props;
 
     const hasPhone = util.getValue(access, 'phone');
@@ -252,46 +255,51 @@ class TwoFA extends Component {
           :
           <div>
             <div className='modeSelection flexColumn'>
-              {allowEmail ?
-                <Choice
-                  type='radio'
-                  name='email'
-                  label={<span style={{fontSize: 14}}>Send Code via Email to <span style={{ fontWeight: 500 }}>{obfuscateEmail}</span></span>}
-                  onChange={(name, value) => {
-                    this.setMode(value);
-                  }}
-                  checked={mode}
-                  value={'email'}
-                />
+              { !hideRadio ?
+                <div className='2fa-radio-group'>
+                  { allowEmail ?
+                    <Choice
+                      type='radio'
+                      name='email'
+                      label={<span style={{fontSize: 14}}>Send Code via Email to <span style={{ fontWeight: 500 }}>{obfuscateEmail}</span></span>}
+                      onChange={(name, value) => {
+                        this.setMode(value);
+                      }}
+                      checked={mode}
+                      value={'email'}
+                    />
+                  : null }
+                  <Choice
+                    type='radio'
+                    name='sms'
+                    label={<span style={{fontSize: 14}}>Send Code via Text Message to {hasPhone ? <span style={{ fontWeight: 500 }}>{obfuscatePhone}</span> : 'a Mobile Number' }</span>}
+                    onChange={(name, value) => {
+                      this.setMode(value);
+                    }}
+                    checked={mode}
+                    value={'sms'}
+                  />
+                </div>
               : null }
-              <Choice
-                type='radio'
-                name='sms'
-                label={<span style={{fontSize: 14}}>Send Code via Text Message to {hasPhone ? <span style={{ fontWeight: 500 }}>{obfuscatePhone}</span> : 'a Mobile Number' }</span>}
-                onChange={(name, value) => {
-                  this.setMode(value);
-                }}
-                checked={mode}
-                value={'sms'}
-              />
               <AnimateHeight height={!hasPhone && mode === 'sms' ? 'auto' : 0}>
                 <TextField
                   name='phone'
                   label='Mobile Number'
-                  fixedLabel={true}
-                  placeholder='(000) 000-0000'
+                  fixedLabel={false}
+                  placeholder='Type Mobile Number'
                   value={phone}
                   onChange={(e) => {
                     const phone = _v.formatPhone(e.currentTarget.value);
                     this.setState({ phone, error: false })
                   }}
                   error={error}
+                  leftBar={true}
                 />
               </AnimateHeight>
             </div>
             <div className='flexColumn flexCenter'>
               <GBLink className='button' onClick={this.onClickSendCode}>Get Verification Code</GBLink>
-              {hasPhone ? <GBLink style={{ marginTop: 20 }} onClick={() => this.toggleVerify(true)}>Already have a code, click here.</GBLink> : null }
+              {hasPhone ? <GBLink style={linkStyle} onClick={() => this.toggleVerify(true)}>Already have a code, click here.</GBLink> : null }
             </div>
           </div>
         }
@@ -303,7 +311,13 @@ class TwoFA extends Component {
 
 TwoFA.defaultProps = {
   allowEmail: false,
-  showCancel: false
+  showCancel: false,
+  hideRadio: false,
+  linkStyle: {
+    marginTop: 20,
+    fontWeight: 500,
+    fontSize: 12
+  }
 }
 
 function mapStateToProps(state, props) {

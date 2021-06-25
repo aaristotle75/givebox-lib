@@ -11,6 +11,7 @@ import FileViewer from 'react-file-viewer';
 import ModalRoute from '../modal/ModalRoute';
 import ModalLink from '../modal/ModalLink';
 import UploadPrivateViewer from './UploadPrivateViewer';
+import LinearBar from '../common/LinearBar';
 
 class UploadPrivate extends Component {
 
@@ -211,11 +212,16 @@ class UploadPrivate extends Component {
         {label && <label className={labelClass}>{label}</label>}
         <div className={`privateUpload ${this.props.alt ? 'alt' : ''}`}>
           <div className='dropzoneImageContainer'>
-            {this.state.loading &&
+            { this.state.loading &&
             <div className='loadImage'>
               <div className='loadingBarWrap'>
                 <span className='loadingText'>{this.state.loading}</span>
+                <LinearBar
+                  progress={this.state.percent}
+                />
+                {/*
                 <Line className='loadingBar' percent={this.state.percent} strokeWidth='5' strokeColor='#32dbec' trailWidth='5' trailColor='#253655' strokeLinecap='square' />
+                */}
               </div>
             </div>
             }

@@ -793,6 +793,7 @@ class Form extends Component {
         disallowModalBgClose={params.disallowModalBgClose}
         color={params.color || this.props.primaryColor}
         leftBar={params.leftBar}
+        fixedLabelHasValue={params.fixedLabelHasValue}
       />
     )
   }

@@ -1,12 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Loader from '../common/Loader';
+import Image from '../common/Image';
+import GBLink from '../common/GBLink';
 import * as util from '../common/utility';
 import FileViewer from 'react-file-viewer';
 import * as types from '../common/types';
 import {
   getResource
 } from '../api/helpers';
+import {
+  toggleModal
+} from '../api/actions';
 
 class UploadPrivateViewer extends React.Component {
 
@@ -46,21 +51,26 @@ class UploadPrivateViewer extends React.Component {
 
     return (
       <div className='modalWrapper'>
-        { !types.imageTypes.includes(type) ?
-          <FileViewer
-            key={`fileviewer-${type}`}
-            fileType={type}
-            filePath={url}
-            errorComponent={
-              <div>
-                Error
-              </div>
-            }
-            onError={(e) => console.error('error in file-viewer')}
-          />
-        :
-          <img key={`preview-${type}`} src={url} alt={url} style={{ maxWidth: 'auto', height: 'auto', maxHeight: 'auto' }} />
-        }
+        <div className='flexCenter'>
+          { !types.imageTypes.includes(type) ?
+            <FileViewer
+              key={`fileviewer-${type}`}
+              fileType={type}
+              filePath={url}
+              errorComponent={
+                <div>
+                  Error
+                </div>
+              }
+              onError={(e) => console.error('error in file-viewer')}
+            />
+          :
+            <Image key={`preview-${type}`} url={url} alt={url} maxSize={1000} style={{ maxWidth: 'auto', height: 'auto', maxHeight: 'auto' }} />
+          }
+        </div>
+        <div className='button-group flexCenter'>
+          <GBLink className='button' onClick={() => this.props.toggleModal('uploadPrivateViewer', false)}>Close</GBLink>
+        </div>
       </div>
     )
   }
@@ -76,5 +86,6 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
-  getResource
+  getResource,
+  toggleModal
 })(UploadPrivateViewer);
