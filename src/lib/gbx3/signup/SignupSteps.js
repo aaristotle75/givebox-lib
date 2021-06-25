@@ -923,7 +923,7 @@ class SignupStepsForm extends React.Component {
                 Type About Your Organization, Mission or Purpose
               </div>,
               fixedLabel: false,
-              label: '',
+              label: 'About Your Organization, Mission or Purpose',
               wysiwyg: false,
               autoFocus: false,
               value: mission,
