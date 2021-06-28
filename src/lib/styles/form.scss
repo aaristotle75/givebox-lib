@@ -117,7 +117,7 @@ input {
   height: 40px;
   background: transparent;
   border: none;
-  border-bottom: 1px solid $light;
+  border-bottom: 1px solid $light-gray;
   box-sizing: border-box;
   transition: all .3s linear;
   @media screen and (max-width: $mobile-width) {
@@ -152,7 +152,7 @@ input:focus {
 }
 
 .input-bottom.idle {
-  background: $light;
+  background: $light-gray;
   transform: scaleX(0);
   -webkit-transform: scaleX(0);
   @include default-transition(.25s);

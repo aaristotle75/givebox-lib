@@ -1,7 +1,6 @@
 @import 'variables.scss';
 @import 'animations.scss';
 
-$stepInputSize: 18px;
 $gbx3StepsBreakpoint: 600px;
 
 .gbx3Steps.modalWrapper {
@@ -23,6 +22,10 @@ $gbx3StepsBreakpoint: 600px;
   }
 }
 
+.stepLoader.imageComponent {
+  margin-top: 50px;
+}
+
 .gbx3Steps {
 
   .goalContainer {
@@ -37,13 +40,12 @@ $gbx3StepsBreakpoint: 600px;
     top: 0;
     right: 0;
     left: 0;
-    bottom: 0;
     display: flex;
     justify-content: center;
     align-items: center;
 
     .goalPercentText {
-      font-size: 50px;
+      font-size: 40px;
       @include primaryGradientText;
     }
   }

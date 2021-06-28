@@ -101,6 +101,13 @@ class SavingSignup extends React.Component {
                         <div className="goalContainerText">
                           <span className="goalPercentText moneyAmount">{(progress && progress > 0 ? progress : 0)}<span className="symbol">%</span></span>
                         </div>
+                        <Image
+                          url={'https://cdn.givebox.com/givebox/public/images/step-loader.png'}
+                          maxSize={250}
+                          alt='Saving Progress'
+                          className='stepLoader'
+                        />
+                        {/*
                         <CircularProgress
                           progress={progress}
                           startDegree={0}
@@ -114,6 +121,7 @@ class SavingSignup extends React.Component {
                           progressColor2={'#1d01ac'}
                           gradient={true}
                         />
+                        */}
                       </div>
                     </div>
                   </div>
