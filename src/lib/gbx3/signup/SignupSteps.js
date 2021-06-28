@@ -1127,7 +1127,7 @@ class SignupStepsForm extends React.Component {
               </div>
               { !previewLoaded ?
                 <div className='imageLoader'>
-                  <img src='https://cdn.givebox.com/givebox/public/images/block-loader.svg' alt='Loader' />
+                  <img src='https://cdn.givebox.com/givebox/public/universal.png' alt='Loading Preview' />
                 </div>
               : null }
               <iframe style={{ height: iframeHeight }} id='previewIframe' src={`${GBX3_URL}/${createdArticleID}${this.state.editPreview ? '?admin&editFormOnly' : '?public&preview'}`} title={`Preview`} />
