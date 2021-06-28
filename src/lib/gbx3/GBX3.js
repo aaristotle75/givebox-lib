@@ -523,7 +523,8 @@ class GBX3 extends React.Component {
     if (this.props.loading
       || (util.isLoading(this.props.gbx3Org) && orgID)
       && this.props.step !== 'create'
-      && !browse) return <Loader msg='Initiating GBX3' />;
+      && !browse
+      ) return <Loader msg='Initiating GBX3' />;
 
     if (this.props.savingSignup) {
       return (

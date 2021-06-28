@@ -138,17 +138,10 @@ class BookDemoForm extends React.Component {
             <div className='stepTitleContainer'>
               <span className={`icon icon-book-open`}></span>
               <div className='stepTitle'>
-                Book a Demo
+                To book a demo, please enter the information below.
               </div>
             </div>
-            <div className='stepsSubText'>Please enter the information below to book a demo.</div>
             <div className={`stepComponent`}>
-              <HelpfulTip
-                headerIcon={<span className='icon icon-alert-circle'></span>}
-                headerText='We Keep Your Data Private'
-                text={`We promise you'll never receive unsolicited calls or spam email.`}
-                style={{ marginTop: 15, marginBottom: 20 }}
-              />
               <CreateAccount
                 {...this.props}
                 group={'bookDemo'}
@@ -156,6 +149,7 @@ class BookDemoForm extends React.Component {
                 acceptedTerms={acceptedTerms}
                 updateOrgSignupField={this.props.updateOrgSignupField}
                 updateOrgSignup={this.props.updateOrgSignup}
+                hideSelectAccount={true}
               />
             </div>
           </div>
@@ -249,7 +243,7 @@ class BookDemo extends React.Component {
         <div className='flexCenter' style={{ marginBottom: 10 }}>
           <Image size='thumb' maxSize={40} url={'https://cdn.givebox.com/givebox/public/gb-logo5.png'} alt='Givebox' />
         </div>
-        <Form id={`bookDemoForm`} name={`bookDemoForm`}>
+        <Form id={`bookDemoForm`} name={`bookDemoForm`} options={{ leftBar: true }}>
           <BookDemoForm
             {...this.props}
           />

@@ -34,7 +34,8 @@ class CreateAccount extends React.Component {
       group,
       owner,
       acceptedTerms,
-      requirePassword
+      requirePassword,
+      hideSelectAccount
     } = this.props;
 
     const {
@@ -115,35 +116,37 @@ class CreateAccount extends React.Component {
             })}
           </AnimateHeight>
         </div>
-        <div className='column50'>
-          <Dropdown
-            name='giveboxAccount'
-            portalID={`category-dropdown-portal-givebox-account`}
-            portalClass={'gbx3 articleCardDropdown gbx3Steps'}
-            portalLeftOffset={10}
-            className='articleCard'
-            contentWidth={400}
-            label={'Givebox'}
-            selectLabel='Select Free Account'
-            fixedLabel={false}
-            fixedLabelHasValue={true}
-            required={false}
-            onChange={(name, value) => {
-              this.setState({ giveboxAccount: value });
-            }}
-            options={[
-              { secondaryText, primaryText: 'Free Account', value: 'free1' },
-              { secondaryText, primaryText: 'Totally Free Account', value: 'free2' },
-              { secondaryText, primaryText: 'Absolutely Free Account', value: 'free3' },
-              { secondaryText, primaryText: `Seriously, it's a Free Account`, value: 'free4' },
-              { bottom }
-            ]}
-            showCloseBtn={true}
-            value={this.state.giveboxAccount}
-            style={{ paddingBottom: 20 }}
-            leftBar={true}
-          />
-        </div>
+        { !hideSelectAccount ?
+          <div className='column50'>
+            <Dropdown
+              name='giveboxAccount'
+              portalID={`category-dropdown-portal-givebox-account`}
+              portalClass={'gbx3 articleCardDropdown gbx3Steps'}
+              portalLeftOffset={10}
+              className='articleCard'
+              contentWidth={400}
+              label={'Givebox'}
+              selectLabel='Select Free Account'
+              fixedLabel={false}
+              fixedLabelHasValue={true}
+              required={false}
+              onChange={(name, value) => {
+                this.setState({ giveboxAccount: value });
+              }}
+              options={[
+                { secondaryText, primaryText: 'Free Account', value: 'free1' },
+                { secondaryText, primaryText: 'Totally Free Account', value: 'free2' },
+                { secondaryText, primaryText: 'Absolutely Free Account', value: 'free3' },
+                { secondaryText, primaryText: `Seriously, it's a Free Account`, value: 'free4' },
+                { bottom }
+              ]}
+              showCloseBtn={true}
+              value={this.state.giveboxAccount}
+              style={{ paddingBottom: 20 }}
+              leftBar={true}
+            />
+          </div>
+        : null }
         <AcceptTerms
           checked={acceptedTerms}
           error={!acceptedTerms ? true : false}
@@ -156,6 +159,10 @@ class CreateAccount extends React.Component {
     )
   }
 }
+
+CreateAccount.defaultProps = {
+  hideSelectAccount: false
+};
 
 function mapStateToProps(state, props) {
   return {
