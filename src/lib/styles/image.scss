@@ -364,6 +364,15 @@ button.imageCover {
   }
 }
 
+.photoSection.PhotoList,
+.yourphotos {
+  h4 {
+    font-size: 12px !important;
+    font-weight: 400 !important;
+    color: $med-blue-gray !important;
+  }
+}
+
 .photoSection.PhotoList {
   position: relative;
 

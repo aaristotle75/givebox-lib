@@ -61,33 +61,13 @@ $gbx3StepsBreakpoint: 600px;
     padding: 0;
   }
 
-  .photoshop-picker {
-    width: 100% !important;
-    @media (max-width: 600px) {
-      width: 100% !important;
-    }
-    background: transparent !important;
-    box-shadow: none !important;
-  }
 
   .photoshop-picker-colorpicker {
-    border-radius: 20px;
-    border: 0 !important;
     max-height: 170px;
-    cursor: pointer;
   }
 
   .photoshop-picker-verticalpicker {
-    border: 0 !important;
     max-height: 170px;
-    cursor: pointer;
-    .hue-vertical {
-      border-radius: 20px;
-    }
-  }
-
-  .photoshop-picker-preview-group {
-    border: 0 !important;
   }
 
   .photoshop-picker-preview-button {
@@ -96,14 +76,6 @@ $gbx3StepsBreakpoint: 600px;
     width: 80px;
     height: 50px;
     margin-top: 10px;
-  }
-
-  .photoshop-picker-preview-label {
-    font-size: 12px !important;
-    white-space: nowrap;
-    color: $med-blue-gray !important;
-    font-weight: 400;
-    margin-top: 3px;
   }
 
   .stepsWrapperTop {

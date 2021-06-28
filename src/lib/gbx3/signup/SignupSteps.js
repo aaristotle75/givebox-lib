@@ -80,6 +80,7 @@ class SignupStepsForm extends React.Component {
 
   componentDidMount() {
     window.addEventListener('message', this.gbx3message, false);
+    new Image().src = 'https://cdn.givebox.com/givebox/public/images/step-loader.png';
   }
 
   gbx3message(e) {

@@ -89,6 +89,10 @@ $contentHeaderPadding: 35%;
     position: absolute;
     left: 20px;
     top: 10px;
+
+    img {
+      @include animation(pulsateSlightlyBrighter 2s ease-out infinite);
+    }
   }
 }
 

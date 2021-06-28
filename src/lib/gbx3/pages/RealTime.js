@@ -153,7 +153,7 @@ class RealTime extends Component {
               <GBLink className='close link' onClick={this.props.toggleDisplay}><span className='icon icon-x'></span></GBLink>
               { display && util.isFetching(this.props.transactions) ?
                 <div className={`realTimeLoader`}>
-                  <Image url='https://cdn.givebox.com/givebox/public/images/spinner-loader.svg' alt='Loader' />
+                  <Image url='https://cdn.givebox.com/givebox/public/images/tiny-loader.png' alt='Loader' />
                 </div>
               :
                 <RealTimeClass {...this.props} display={display} />

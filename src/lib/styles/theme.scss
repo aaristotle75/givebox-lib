@@ -1930,6 +1930,7 @@ button.supportLink {
   z-index: 999999;
 }
 
+/*
 .modalTop::after {
   content: "";
   background: url('https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/modal-top-bg5.png') repeat-x;
@@ -1944,6 +1945,7 @@ button.supportLink {
   border-top-right-radius: 20px;
   border-top-left-radius: 20px;
 }
+*/
 
 .modalBottom {
   clear: both;
@@ -1951,16 +1953,17 @@ button.supportLink {
   display: block;
   bottom: 0px;
   height: 28px;
-  width: auto;
+  width: 100%;
   overflow: hidden;
   border-bottom-right-radius: 20px;
   border-bottom-left-radius: 20px;
   z-index: 999999;
 }
 
+/*
 .modalBottom::after {
   content: "";
-  background: url('https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/modal-bottom-bg5.png') repeat-x bottom;
+  background: radial-gradient(circle farthest-corner at 0% 110%, $white 0%, rgba($puppa_blue, 1) 55%, rgba($puppa_green, 1) 93%, rgba($puppa_salmon, 1) 100%);
   background-size: 1000px 28px;
   left: 0;
   right: 0;
@@ -1971,6 +1974,7 @@ button.supportLink {
   border-bottom-right-radius: 20px;
   border-bottom-left-radius: 20px;
 }
+*/
 
 /*------- Flatpickr Calendar -------*/
 .flatpickr-calendar {

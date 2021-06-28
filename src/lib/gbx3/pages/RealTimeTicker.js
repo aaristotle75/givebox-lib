@@ -34,7 +34,7 @@ class RealTimeTickerClass extends Component {
             }}
           >
             <span className='line amount'>{util.money(util.calcAmount(credit.amount, credit.fee, credit.passFees))}</span>
-            <span className='line date'>{nameOnCard}</span>
+            <span className='line name'>{nameOnCard}</span>
             <span className='line date'>{Moment.unix(credit.updatedAt).fromNow()}</span>
           </div>
         );

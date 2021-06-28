@@ -457,3 +457,63 @@ ul.selectable {
     }
   }
 }
+
+/*------- Photoshop Picker ------*/
+.photoshop-picker {
+  width: 100% !important;
+  @media (max-width: 600px) {
+    width: 100% !important;
+  }
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.photoshop-picker-colorpicker {
+  border-radius: 20px;
+  border: 0 !important;
+  max-height: 300px;
+  cursor: pointer;
+}
+
+.photoshop-picker-verticalpicker {
+  border: 0 !important;
+  max-height: 300px;
+  cursor: pointer;
+  .hue-vertical {
+    border-radius: 20px;
+  }
+}
+
+.photoshop-picker-preview-group {
+  border: 0 !important;
+}
+
+.photoshop-picker-preview-button {
+  box-shadow: none !important;
+  border-radius: 20px;
+  width: 80px;
+  height: 50px;
+  margin-top: 10px;
+}
+
+.photoshop-picker-preview-label {
+  font-size: 12px !important;
+  white-space: nowrap;
+  color: $med-blue-gray !important;
+  font-weight: 400;
+  margin-top: 3px;
+}
+
+.photoshopButtonGroup {
+  margin-left: 50px !important;
+}
+
+.photoshop-picker-controlbutton {
+  @include primaryButton;
+  background: linear-gradient(140deg, #0e0526 50%, #1d01ac 100%) !important;
+  border: 0 !important;
+  border-radius: 25px !important;
+  line-height: 0 !important;
+  height: 0 !important;
+  color: $white !important;
+}
