@@ -70,7 +70,7 @@ class MoneyRaised extends React.Component {
             Make sure you have a nice image or video in your fundraiser form. Your supporters are more likely to give if they know what you are raising money for.
           </span>
           <div className='button-group flexCenter'>
-            <GBLink className='button' onClick={() => this.openStep('share', 'orgPostSignupSteps')}>
+            <GBLink className='button' onClick={() => this.openStep('previewShare', 'orgPostSignupSteps')}>
               Share Fundraiser
             </GBLink>
           </div>
