@@ -136,7 +136,6 @@ class BookDemoForm extends React.Component {
           { this.state.saving ? <Loader msg='Saving...' /> : null }
           <div className={`step`}>
             <div className='stepTitleContainer'>
-              <span className={`icon icon-book-open`}></span>
               <div className='stepTitle'>
                 To book a demo, please enter the information below.
               </div>
