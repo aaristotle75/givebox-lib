@@ -1162,7 +1162,7 @@ class SignupStepsForm extends React.Component {
         </div>
         { !this.state.editorOpen ?
         <div className='button-group'>
-          <div className='button-item' style={{ width: 150 }}>
+          <div className='leftSide' style={{ width: 150 }}>
             { !firstStep ? <GBLink className={`link`} disabled={firstStep} onClick={() => {
               this.props.formProp({ error: false });
               this.props.previousStep(step);
@@ -1171,7 +1171,8 @@ class SignupStepsForm extends React.Component {
           <div className='button-item'>
             {this.props.saveButton(this.processForm, { group: slug, label: item.saveButtonLabel })}
           </div>
-          <div className='button-item' style={{ width: 150 }}>
+          <div className='rightSide'>
+            <Image className='pulsate' url={isMobile ? 'https://cdn.givebox.com/givebox/public/gb-logo5.png' : 'https://cdn.givebox.com/givebox/public/givebox-logo_white.png'} alt='Givebox Logo' maxHeight={30} />
           </div>
         </div> : null }
       </div>

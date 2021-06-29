@@ -228,9 +228,11 @@ class StepsWrapper extends React.Component {
     return (
       <div className='gbx3Steps modalWrapper'>
         <div className='stepsWrapperTop' style={{ marginBottom: 10 }}>
+          {/*
           <div className='stepsTopLogo'>
             <Image size='thumb' maxSize={30} url={'https://cdn.givebox.com/givebox/public/gb-logo5.png'} alt='Givebox' />
           </div>
+          */}
           <div className='stepsTopTitle'>
             { stepConfig.icon ? <span className={`icon icon-${stepConfig.icon}`}></span> : stepConfig.customIcon } {stepConfig.title}
           </div>
@@ -247,7 +249,7 @@ class StepsWrapper extends React.Component {
               progress={stepProgress}
             />
           </div>
-          <div style={{ left: `${leftPercent}%` }} className='progressStatusText'>
+          <div style={{ left: '5px' }} className='progressStatusText'>
             {!isMobile ? 'Step ' : null }{stepNumber} of {numStepsTodo}
           </div>
         </div>

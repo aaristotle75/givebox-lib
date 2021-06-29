@@ -85,7 +85,7 @@ class SavingSignup extends React.Component {
                       progress={stepProgress}
                     />
                   </div>
-                  <div style={{ left: `${leftPercent}%` }} className='progressStatusText'>
+                  <div style={{ left: '5px' }} className='progressStatusText'>
                     Step {stepNumber} of {stepsTodo}
                   </div>
                 </div>

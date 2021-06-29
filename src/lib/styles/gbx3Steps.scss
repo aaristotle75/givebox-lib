@@ -5,7 +5,7 @@ $gbx3StepsBreakpoint: 600px;
 
 .gbx3Steps.modalWrapper {
   padding-top: 20px;
-  background: radial-gradient(circle farthest-corner at 16% -39%, $white 75%, rgba($puppa_blue, 1) 85%, rgba($puppa_green, 1) 93%, rgba($puppa_salmon, 1) 100%);
+  background: radial-gradient(circle farthest-corner at 16% -39%, $white 75%, rgba($puppa_purple, .3) 83%, rgba($puppa_blue, .5) 85%, rgba($puppa_green, .5) 93%, rgba($puppa_salmon, .8) 100%);
 
   @media (max-width: 732px) {
     height: 100vh;
@@ -59,6 +59,10 @@ $gbx3StepsBreakpoint: 600px;
     font-weight: 400;
     color: $med-blue-gray;
     padding: 0;
+  }
+
+  .photoshop-picker {
+    width: 350px !important;
   }
 
 
@@ -294,12 +298,23 @@ $gbx3StepsBreakpoint: 600px;
   }
 
   .button-group {
+    position: relative;
     margin-top: 50px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
 
+    .leftSide {
+      position: absolute;
+      left: 10px;
+      bottom: 10px;
+    }
+
     .rightSide {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+
       button.link {
         color: $white;
         @include transition(opacity .25s);
@@ -557,7 +572,7 @@ $gbx3StepsBreakpoint: 600px;
       .dropzone {
         height: 170px;
         width: 170px;
-        @include primaryButton();
+        @include dropzoneButton();
         border: 0;
         border-radius: 20px;
         padding: 0;
@@ -638,7 +653,7 @@ $gbx3StepsBreakpoint: 600px;
         border-top-right-radius: 20px;
         border-bottom-left-radius: 0px;
         border-bottom-right-radius: 0px;
-        @include greenToBlue(1);
+        @include blueToGreen(1);
         @include animation(pulsateBrighter 2s ease-out infinite);
         @include box-shadow(0px 1px 3px 2px rgba($med-blue-dark-gray, .2));
       }
@@ -684,7 +699,7 @@ $gbx3StepsBreakpoint: 600px;
     height: $progressBarHeight;
     background: $med-gray;
     border-radius: 20px;
-    @include greenToBlue(1);
+    @include blueToGreen(1);
     @include animation(pulsateBrighter 2s ease-out infinite);
   }
 

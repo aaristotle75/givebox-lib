@@ -620,7 +620,7 @@ button.imageCover {
   }
 
   .dropzone {
-    @include primaryButton();
+    @include dropzoneButton();
     height: 140px;
     width: 140px;
     border: 0;
@@ -808,7 +808,7 @@ button.imageCover {
     }
 
     .dropzone {
-      @include primaryButton();
+      @include dropzoneButton();
       height: 140px;
       width: 140px;
       border: 0;

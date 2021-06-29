@@ -8,7 +8,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  @include bgGradient(140deg, rgba($puppa_blue, 1) 30%, rgba($puppa_green, 1) 60%, rgba($puppa_salmon, 1) 100%);
+  @include bgGradient(140deg, rgba($puppa_purple, 1) 0%, rgba($puppa_blue, 1) 30%, rgba($puppa_green, 1) 60%, rgba($puppa_salmon, 1) 100%);
   opacity: .9 !important;
   z-index: 1;
 }

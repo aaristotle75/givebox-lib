@@ -123,13 +123,13 @@ p { margin: 10px 0; font-size: $normal-text-size; font-weight: $font-weight; }
 /*-------- Links ------------*/
 
 a {
-  color: $primary;
+  color: $primaryLinkColor;
   cursor: pointer;
   text-decoration: none;
 }
 
 a:hover {
-  color: transparentize($primary, .3);
+  color: transparentize($primaryLinkColor, .3);
   @include default-transition(.25s);
 }
 
@@ -144,14 +144,14 @@ a.button {
   padding: 10px 20px 10px 20px;
   line-height: 17px;
   text-transform: none;
-  background-color: $primary;
+  background-color: $primaryLinkColor;
   cursor: pointer;
   font-weight: 500;
   @include box-shadow(0px 1px 2px 0px rgba(0,0,0,0.55));
 }
 
 a.button:hover {
-  background-color: $secondary;
+  background-color: transparentize($primaryLinkColor, .3);
   @include default-transition(.25s);
 }
 
@@ -182,7 +182,7 @@ button:focus {
 
 button.link {
   background: none;
-  color: $primary;
+  color: $primaryLinkColor;
   border: none;
   padding: 0 !important;
   margin: 0;
@@ -191,7 +191,7 @@ button.link {
 }
 
 button.link:hover {
-  color: transparentize($primary, .3);
+  color: transparentize($primaryLinkColor, .3);
   @include default-transition(.25s);
 }
 
@@ -254,6 +254,10 @@ button.modalToTop {
 button.modalToTop:hover {
   color: $white;
   background: $mainColor;
+}
+
+.pulsate {
+  @include animation(pulsateSlightlyBrighter 2s ease-out infinite);
 }
 
 /*------- Lists ----------*/
