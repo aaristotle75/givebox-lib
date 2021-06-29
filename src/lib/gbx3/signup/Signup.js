@@ -82,10 +82,10 @@ class Signup extends React.Component {
                   </div>
                   <div className='moneyRaisedContainer'>
                     <GBLink style={{ marginRight: 10 }} className='button' onClick={() => this.props.loadOrgSignup({ bookDemo: true })}>
-                      <span className='buttonAlignText'>Book Demo <span className='icon icon-book-open'></span></span>
+                      <span className='buttonAlignText'>Book Demo</span>
                     </GBLink>
                     <GBLink className='button' onClick={() => this.openStep('account')} style={{ marginRight: 10 }}>
-                      <span className='buttonAlignText'>Save Progress <span className='icon icon-save'></span></span>
+                      <span className='buttonAlignText'>Save Progress</span>
                     </GBLink>
                     <div className='tooltip moneyRaised'>
                       <div className='tooltipTop'>
