@@ -141,6 +141,19 @@ h1, h2, h3, h4, h5 {
   }
 }
 
+a, button.link {
+  font-weight: 300;
+  color: $mainColor;
+}
+
+a:hover, button.link:hover {
+  color: $secondColor;
+}
+
+button.secondary {
+  color: transparentize($mainColor, .4);
+}
+
 .date {
   font-size: $small-text-size;
   color: $med-gray;
@@ -917,19 +930,6 @@ button:hover {
 
 .buttonAnimation {
   @include animation(pulsateSlightlyBrighter 2s infinite ease-out);
-}
-
-button.button:disabled {
-  cursor: not-allowed;
-  color: $light-med-gray;
-  border: 1px solid $light-med-gray;
-  background-color: $white;
-}
-
-button.button:hover:disabled {
-  color: $light-med-gray;
-  border: 1px solid $light-med-gray;
-  background-color: $white;
 }
 
 button.button.secondary {

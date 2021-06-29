@@ -216,21 +216,11 @@ button.button:hover {
 
 button.button:disabled {
   cursor: not-allowed;
-  background-color: transparentize($primary, .5);
+  background: $light-gray;
 }
 
 button.button:hover:disabled {
-  background-color: transparentize($primary, .5);
-}
-
-button.button.secondary {
-  background-color: $off-white;
-  color: $light-med-gray;
-}
-
-button.button.secondary:hover {
-  background-color: transparentize($light-gray, .5);
-  @include default-transition(.25s);
+  background: $light-gray;
 }
 
 .buttonAlignText {
