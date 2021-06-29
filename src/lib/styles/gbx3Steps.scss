@@ -434,12 +434,14 @@ $gbx3StepsBreakpoint: 600px;
     }
 
     .stepsSubText {
-      font-size: 14px;
+      font-size: 18px;
+      font-weight: 400;
       margin: 10px 55px;
+      @include primaryGradientText;
 
       .label {
-        font-size: 14px;
-        font-weight: 400;
+        font-size: 18px;
+        font-weight: 300;
         color: $med-blue-gray;
       }
       button.link {

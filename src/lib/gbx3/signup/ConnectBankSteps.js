@@ -404,7 +404,7 @@ class ConnectBankStepsForm extends React.Component {
         </div>
         { !this.state.editorOpen ?
         <div className='button-group'>
-          <div className='button-item' style={{ width: 150 }}>
+          <div className='leftSide' style={{ width: 150 }}>
             { !firstStep ? <GBLink className={`link`} disabled={firstStep} onClick={() => {
               this.props.formProp({ error: false });
               this.props.previousStep(step);
@@ -420,7 +420,7 @@ class ConnectBankStepsForm extends React.Component {
               this.props.saveButton(this.processForm, { group: slug, label: item.saveButtonLabel, disabled: item.saveButtonDisabled })
             }
           </div>
-          <div className='button-item rightSide' style={{ width: 150 }}>
+          <div className='rightSide' style={{ width: 150 }}>
             { signupPhase === 'manualConnect' ?
               <GBLink onClick={this.switchToConnectBank}>
                 <span className='buttonAlignText'>Connect a Bank Account<span className='icon icon-chevron-right'></span></span>
