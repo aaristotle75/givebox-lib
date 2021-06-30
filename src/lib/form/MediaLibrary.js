@@ -475,12 +475,17 @@ class MediaLibrary extends Component {
 }
 
 MediaLibrary.defaultProps = {
+  editorResizerStyle: {},
   className: '',
   selectedLabel: 'Selected Image',
   modalID: 'uploadLibrary',
   showButtons: 'all',
   cancelLabel: 'Cancel',
   saveLabel: 'Update',
+  uploadEditorSaveLabel: 'Click Here to Use Image',
+  uploadEditorSaveStyle: {
+    width: 250
+  },
   showBtns: 'all',
   mobile: false,
   acceptedMimes: ['image', 'text', 'applications'],

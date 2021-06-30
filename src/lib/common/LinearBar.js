@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 class LinearBar extends Component{
-	constructor(props) {
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -13,11 +13,11 @@ class LinearBar extends Component{
     this.timer = setTimeout(() => this.progress(this.props.progress), 100);
   }
 
-	componentWillReceiveProps(nextProps) {
-		if (this.props.progress !== nextProps.progress) {
-    	this.timer = setTimeout(() => this.progress(nextProps.progress), 100);
-		}
-	}
+  componentWillReceiveProps(nextProps) {
+    if (this.props.progress !== nextProps.progress) {
+      this.timer = setTimeout(() => this.progress(nextProps.progress), 100);
+    }
+  }
 
   componentWillUnmount() {
     clearTimeout(this.timer);
@@ -32,22 +32,24 @@ class LinearBar extends Component{
   }
 
   render() {
-		const {
-			color,
-			style
-		} = this.props;
+    const {
+      color,
+      style
+    } = this.props;
 
-		const finalstyle = {
-			style,
-			width: this.props.progress + '%'
-		};
+    const progress = this.props.progress <= 100 ? this.props.progress : 100;
+
+    const finalstyle = {
+      style,
+      width: progress + '%'
+    };
 
     return (
-			<div className="linearProgress">
-				<div style={finalstyle} className={`linearProgressBarAnimation ${color}`}></div>
-				<div style={finalstyle} className={`linearProgressBar ${color}`}></div>
-			</div>
-		);
+      <div className="linearProgress">
+        <div style={finalstyle} className={`linearProgressBarAnimation ${color}`}></div>
+        <div style={finalstyle} className={`linearProgressBar ${color}`}></div>
+      </div>
+    );
   }
 };
 

@@ -76,6 +76,7 @@ class ArticleAdmin extends React.Component {
               id={'gbx3Builder'}
               effect='3DFlipVert' style={{ width: '85%' }}
               disallowBgClose={true}
+              closeBtnShow={false}
               component={(props) =>
                 <BasicBuilder
                   {...props}

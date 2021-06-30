@@ -9,7 +9,9 @@ import Form from '../../../form/Form';
 import {
   util,
   GBLink,
-  Fade
+  Fade,
+  Icon,
+  Image
 } from '../../../';
 import {
   updateHelperSteps,
@@ -32,6 +34,7 @@ import Dropdown from '../../../form/Dropdown';
 import HelpfulTip from '../../../common/HelpfulTip';
 import EditVideo from '../../admin/common/EditVideo';
 import { PhotoshopPicker } from 'react-color-aaristotle';
+import { MdCheckCircle } from 'react-icons/md';
 
 const GBX3_URL = process.env.REACT_APP_GBX_URL;
 
@@ -225,7 +228,7 @@ class BasicBuilderStepsForm extends Component {
   }
 
   async processForm(fields) {
-    util.toTop('modalOverlay-stepsForm');
+    util.toTop('modalOverlay-gbx3Builder');
     const {
       step,
       data,
@@ -327,33 +330,46 @@ class BasicBuilderStepsForm extends Component {
       desc: '',
       component: null,
       className: '',
-      saveButtonLabelTop: <span className='buttonAlignText'>Save & Continue to Step {nextStepNumber}: {nextStepName} <span className='icon icon-chevron-right'></span></span>,
-      saveButtonLabel: <span className='buttonAlignText'>Save & Continue to Next Step <span className='icon icon-chevron-right'></span></span>
+      saveButtonLabel: <span className='buttonAlignText'>Save & Continue</span>
     };
+
+    const mediaBlock = util.getValue(blocks, 'media', {});
+    const mediaURL = util.getValue(mediaBlock, 'content.image.URL', util.getValue(data, 'imageURL', '')).replace(/medium$/i, 'original');
+    const imageURL = (!util.checkImage(mediaURL) || !mediaURL) ? '' : mediaURL;
+    const videoURL = util.getValue(mediaBlock, 'content.video.URL', util.getValue(data, 'videoURL', ''));
 
     switch (slug) {
 
       case 'title': {
         const title = this.props.checkHelperIfHasDefaultValue('article', { field: 'title', defaultCheck: 'text' }) ? '' : util.getValue(data, 'title');
 
-        item.title = 'Title of Your Fundraiser';
-        item.desc = 'Please enter a captivating title below to let your supporters know what you are raising money for.';
+        item.desc = 'Upload an image and write a title that will make your fundraiser shine.';
         item.component =
-        <div className='fieldGroup'>
-          <HelpfulTip
-            headerIcon={<span className='icon icon-trending-up'></span>}
-            headerText='Pro Tip to Increase Conversions'
-            style={{ marginTop: 25, marginBottom: 20 }}
-            text={
-              <span>
-                A good title should not be dull or too general. It should elicit an emotional reponse to get peoples attention.<br /><br />
-                A dull title: "Please Donate to Save the Whales"<br /><br />
-                A better title: "If you Love Whales Here is How You Can Save Them"
-              </span>
-            }
-          />
+          <div className='fieldGroup'>
+            <MediaLibrary
+              image={imageURL}
+              preview={imageURL}
+              quickUpload={true}
+              singlePreview={true}
+              handleSaveCallback={(url) => {
+                this.setState({ mediaTypeError: null });
+                this.handleImageSaveCallback(url, 'imageURL', 'media');
+              }}
+              handleSave={util.handleFile}
+              library={library}
+              showBtns={'hide'}
+              saveLabel={'close'}
+              mobile={isMobile ? true : false }
+              uploadOnly={true}
+              imageEditorOpenCallback={(editorOpen) => {
+                this.setState({ editorOpen });
+              }}
+              editorResizerStyle={{ marginTop: -150 }}
+              formError={mediaTypeError === 'image' ? true : false}
+            />
             {this.props.textField('title', {
               group: 'title',
+              style: { paddingTop: 20 },
               fixedLabel: false,
               label: 'Title',
               placeholder: 'Click Here and Enter a Title',
@@ -376,7 +392,6 @@ class BasicBuilderStepsForm extends Component {
                     if (!util.isEmpty(res) && !err) {
                       const isVolunteer = util.getValue(res, 'volunteer');
                       const volunteerID = util.getValue(res, 'volunteerID');
-
                       if (isVolunteer && volunteerID) {
                         this.props.sendResource('volunteerNotify', {
                           orgID,
@@ -397,40 +412,7 @@ class BasicBuilderStepsForm extends Component {
         break;
       }
 
-      case 'logo': {
-        const logoBlock = util.getValue(blocks, 'logo', {});
-        const logoURL = util.getValue(logoBlock, 'content.image.URL', util.getValue(data, 'orgImageURL')).replace(/small$/i, 'original');
-        const orgImageURL = (!util.checkImage(logoURL) || !logoURL) ? '' : logoURL;
-        item.title = 'Upload a Logo';
-        item.desc = 'A nice logo makes you easily identifiable to your supporters.';
-        item.component =
-          <MediaLibrary
-            blockType={'article'}
-            image={orgImageURL}
-            preview={orgImageURL}
-            handleSaveCallback={(url) => this.handleImageSaveCallback(url, 'orgImageURL', 'logo')}
-            handleSave={util.handleFile}
-            library={library}
-            showBtns={'hide'}
-            saveLabel={'close'}
-            mobile={breakpoint === 'mobile' ? true : false }
-            uploadOnly={true}
-            uploadEditorSaveStyle={{ width: 250 }}
-            uploadEditorSaveLabel={'Click Here to Save Logo'}
-            imageEditorOpenCallback={(editorOpen) => {
-              this.setState({ editorOpen })
-            }}
-          />
-        ;
-        break;
-      }
-
       case 'image': {
-        const mediaBlock = util.getValue(blocks, 'media', {});
-        const mediaURL = util.getValue(mediaBlock, 'content.image.URL', '').replace(/medium$/i, 'original');
-        const imageURL = (!util.checkImage(mediaURL) || !mediaURL) ? '' : mediaURL;
-        const videoURL = util.getValue(mediaBlock, 'content.video.URL');
-
         item.title = 'Add an Image or Video for Your Fundraiser';
         item.desc =
           <div>
@@ -458,6 +440,8 @@ class BasicBuilderStepsForm extends Component {
               <MediaLibrary
                 image={imageURL}
                 preview={imageURL}
+                quickUpload={true}
+                singlePreview={true}
                 handleSaveCallback={(url) => {
                   this.setState({ mediaTypeError: null });
                   this.handleImageSaveCallback(url, 'imageURL', 'media');
@@ -473,9 +457,6 @@ class BasicBuilderStepsForm extends Component {
                 imageEditorOpenCallback={(editorOpen) => {
                   this.setState({ editorOpen })
                 }}
-                topLabel={'Click to Add Image'}
-                bottomLabel={'Drag & Drop Image'}
-                labelIcon={<span className='icon icon-instagram'></span>}
                 formError={mediaTypeError === 'image' ? true : false}
               />
             </Tab>
@@ -600,41 +581,32 @@ class BasicBuilderStepsForm extends Component {
     }
     return (
       <div className='stepContainer'>
-        <div className='stepStatus'>
-          <GBLink onClick={() => this.processForm()}>
-            <span style={{ marginLeft: 20 }}>{item.saveButtonLabelTop}</span>
-          </GBLink>
-        </div>
         <div className={`step ${item.className} ${open ? 'open' : ''}`}>
           <div className='stepTitleContainer'>
-            <span className={`icon icon-${item.icon}`}></span>
-            <div className='stepTitle'>
-              <div className='numberContainer'>
-                <span className='number'>Step {stepNumber}{ completed ? ':' : null}</span>
-                {completed ?
-                  <div className='completed'>
-                    <span className='icon icon-check'></span>Completed
-                  </div>
-                : null }
+            {completed ?
+              <div className='completed'>
+                <Icon><MdCheckCircle /></Icon> <span className='completedText'>Step {stepNumber} Completed</span>
               </div>
-              {item.title}
+            :
+            <div className='stepTitle'>
+              {item.desc}
             </div>
+            }
           </div>
-          <div className='stepsSubText'>{item.desc}</div>
           <div className={`stepComponent`}>
             {item.component}
           </div>
         </div>
         { !this.state.editorOpen ?
         <div className='button-group'>
-          <div className='button-item' style={{ width: 150 }}>
+          <div className='leftSide' style={{ width: 150 }}>
             { !firstStep ? <GBLink className={`link`} disabled={firstStep} onClick={() => this.props.previousStep()}><span style={{ marginRight: '5px' }} className='icon icon-chevron-left'></span> {isMobile ? 'Back' : 'Previous Step'}</GBLink> : <span>&nbsp;</span> }
           </div>
           <div className='button-item'>
             {this.props.saveButton(this.processForm, { label: item.saveButtonLabel })}
           </div>
-          <div className='button-item' style={{ width: 150 }}>
-            &nbsp;
+          <div className='rightSide' style={{ width: 150 }}>
+            <Image className='pulsate' url={isMobile ? 'https://cdn.givebox.com/givebox/public/gb-logo5.png' : 'https://cdn.givebox.com/givebox/public/givebox-logo_white.png'} alt='Givebox Logo' maxHeight={30} />
           </div>
         </div> : null }
       </div>
@@ -672,13 +644,11 @@ class BasicBuilderSteps extends Component {
   render() {
 
     return (
-      <div className='gbx3Steps'>
-        <Form id={`stepsForm`} name={`stepsForm`}>
-          <BasicBuilderStepsForm
-            {...this.props}
-          />
-        </Form>
-      </div>
+      <Form id={`stepsForm`} name={`stepsForm`}>
+        <BasicBuilderStepsForm
+          {...this.props}
+        />
+      </Form>
     )
   }
 }

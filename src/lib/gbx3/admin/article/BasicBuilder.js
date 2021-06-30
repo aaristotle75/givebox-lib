@@ -3,6 +3,10 @@ import { connect } from 'react-redux';
 import * as util from '../../../common/utility';
 import Image from '../../../common/Image';
 import LinearBar from '../../../common/LinearBar';
+import GBLink from '../../../common/GBLink';
+import {
+  toggleModal
+} from '../../../api/actions';
 import {
   updateHelperSteps
 } from '../../redux/gbx3actions';
@@ -72,26 +76,42 @@ class BasicBuilder extends React.Component {
     const {
       step,
       completed,
-      openAdmin
+      openAdmin,
+      isMobile
     } = this.props;
 
     const numCompleted = completed.length;
     const numStepsTodo = this.steps + 1;
+    const stepNumber = +step + 1;
     const stepProgress = parseInt((numCompleted / numStepsTodo) * 100);
     const stepConfig = util.getValue(this.config, step, {});
-    const stepName = util.getValue(stepConfig, 'name');
 
     return (
       <div className='gbx3Steps modalWrapper'>
-        <div className='flexCenter' style={{ marginBottom: 10 }}>
-          <Image size='thumb' maxSize={40} url={'https://cdn.givebox.com/givebox/public/gb-logo5.png'} alt='Givebox' />
+        <div className='stepsWrapperTop' style={{ marginBottom: 10 }}>
+          {/*
+          <div className='stepsTopLogo'>
+            <Image size='thumb' maxSize={30} url={'https://cdn.givebox.com/givebox/public/gb-logo5.png'} alt='Givebox' />
+          </div>
+          */}
+          <div className='stepsTopTitle'>
+            { stepConfig.icon ? <span className={`icon icon-${stepConfig.icon}`}></span> : stepConfig.customIcon } {stepConfig.name}
+          </div>
+          <GBLink className='stepsTopClose link buttonAlignText' onClick={() => this.props.toggleModal('gbx3Builder', false)}>{isMobile ? 'Close' : 'Close and Do Later'} <span className='icon icon-x'></span></GBLink>
         </div>
         <div className='progressWrapper'>
-          <LinearBar
-            progress={stepProgress}
-          />
-          <div className='progressStatusText'>
-            {numCompleted} of {numStepsTodo} Completed
+          <div className='progressBarArchetype'>
+            <LinearBar
+              progress={stepProgress}
+            />
+          </div>
+          <div className='progressBarReflector'>
+            <LinearBar
+              progress={stepProgress}
+            />
+          </div>
+          <div style={{ left: '5px' }} className='progressStatusText'>
+            {!isMobile ? 'Step ' : null }{stepNumber} of {numStepsTodo}
           </div>
         </div>
         <BasicBuilderSteps
@@ -122,6 +142,7 @@ function mapStateToProps(state, props) {
   const previewDevice = util.getValue(admin, 'previewDevice');
   const openAdmin = util.getValue(admin, 'open');
   const createType = util.getValue(admin, 'createType');
+  const isMobile = breakpoint === 'mobile' ? true : false;
 
   return {
     breakpoint,
@@ -130,6 +151,7 @@ function mapStateToProps(state, props) {
     previewDevice,
     openAdmin,
     createType,
+    isMobile,
     completed: util.getValue(state, 'gbx3.helperSteps.completed', []),
     step: util.getValue(state, 'gbx3.helperSteps.step', 0),
     kind: util.getValue(state, 'gbx3.info.kind', 'fundraiser')
@@ -137,5 +159,6 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
-  updateHelperSteps
+  updateHelperSteps,
+  toggleModal
 })(BasicBuilder);

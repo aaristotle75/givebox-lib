@@ -252,7 +252,7 @@ class UploadEditorResizer extends Component {
     } = this.state;
 
     return (
-      <div className='uploadEditorResizer'>
+      <div style={this.props.editorResizerStyle} className='uploadEditorResizer'>
         <div className='uploadEditorBackground'></div>
         <div className='uploadEditorContainer'>
           <div className='uploadResizerContent'>

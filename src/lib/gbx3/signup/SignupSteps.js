@@ -958,8 +958,6 @@ class SignupStepsForm extends React.Component {
               saveLabel={'close'}
               mobile={isMobile ? true : false }
               uploadOnly={true}
-              uploadEditorSaveStyle={{ width: 250 }}
-              uploadEditorSaveLabel={'Click Here to Use Image'}
               imageEditorOpenCallback={(editorOpen) => {
                 this.setState({ editorOpen })
               }}

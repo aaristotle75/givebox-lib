@@ -842,9 +842,9 @@ export const equals = function(array, array2) {
   return true;
 }
 
-  export function toTop(id, ref = null) {
+  export function toTop(id, ref = null, scrollTo = 0) {
     const el = ref || document.getElementById(id);
-    if (el) animateScrollTo(0, { element: el });
+    if (el) animateScrollTo(scrollTo, { element: el });
   }
 
   export function filterObj(obj, key, value) {

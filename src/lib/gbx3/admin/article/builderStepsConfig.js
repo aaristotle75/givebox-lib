@@ -1,7 +1,7 @@
 const title = {
   slug: 'title',
-  name: 'Enter Title',
-  icon: 'message-circle'
+  name: 'Fundraiser Details',
+  icon: 'heart'
 };
 
 const logo = {
@@ -71,7 +71,6 @@ const themeColor = {
 
 const defaultSteps = [
   title,
-  logo,
   image,
   themeColor,
   preview,
