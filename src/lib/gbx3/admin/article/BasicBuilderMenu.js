@@ -37,7 +37,7 @@ class AdminMenu extends React.Component {
     const items = [];
     Object.entries(this.config).forEach(([key, value]) => {
       const currentStep = +key === +step ? true : false;
-      const completedStep = completed.includes(+key) ? true : false;
+      const completedStep = completed.includes(value.slug) ? true : false;
       const stepNumber = <span className='number'>Step {+key + 1}</span>;
       items.push(
         <li
@@ -56,7 +56,7 @@ class AdminMenu extends React.Component {
 
     return (
       <ul className='builderMenuSteps'>
-        <li className='listHeader'>Fundraiser Steps</li>
+        <li className='listHeader'>Builder Steps</li>
         {items}
       </ul>
     )

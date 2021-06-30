@@ -59,11 +59,11 @@ class BasicBuilder extends React.Component {
     return util.getValue(this.config[nextStep], 'name');
   }
 
-  async stepCompleted(step) {
+  async stepCompleted(slug) {
     let updated = false;
     const completed = [ ...this.props.completed ];
-    if (!completed.includes(step)) {
-      completed.push(step);
+    if (!completed.includes(slug)) {
+      completed.push(slug);
       updated = await this.props.updateHelperSteps({ completed });
     } else {
       updated = true;

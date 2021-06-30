@@ -1100,7 +1100,7 @@ class SignupStepsForm extends React.Component {
           item.desc = 'You must complete the previous steps to generate a preview of your fundraiser.';
           item.component = null;
         } else {
-          item.saveButtonLabel = <span className='buttonAlignText'>All Finished! Take Me to My Profile</span>;
+          item.saveButtonLabel = <span className='buttonAlignText'>All Finished! Take Me to My Page</span>;
           item.className = 'preview';
           item.desc = '';
 

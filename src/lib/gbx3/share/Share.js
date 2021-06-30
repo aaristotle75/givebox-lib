@@ -136,7 +136,8 @@ class Share extends React.Component {
       hasCustomSlug,
       apiName,
       shareArticle,
-      shareLinkEditCallback
+      shareLinkEditCallback,
+      showHelper
     } = this.props;
 
     const item = [];
@@ -181,12 +182,14 @@ class Share extends React.Component {
               }}
               buttonGroupClassName='flexCenter'
               subText={
-                <HelpfulTip
-                  headerIcon={<span className='icon icon-link-2'></span>}
-                  headerText={`Custom Link`}
-                  text={`Enter a custom link below which makes your ${orgDisplay ? 'profile page' : 'fundraiser'} more identifiable to your supporters.`}
-                  style={{ marginTop: 0, marginBottom: 10 }}
-                />
+                showHelper ?
+                  <HelpfulTip
+                    headerIcon={<span className='icon icon-link-2'></span>}
+                    headerText={`Custom Link`}
+                    text={`Enter a custom link below which makes your ${orgDisplay ? 'profile page' : 'fundraiser'} more identifiable to your supporters.`}
+                    style={{ marginTop: 0, marginBottom: 10 }}
+                  />
+                : null
               }
             />
           </div>
@@ -205,12 +208,14 @@ class Share extends React.Component {
               slug={slug}
               hasCustomSlug={hasCustomSlug}
               subText={
-                <HelpfulTip
-                  headerIcon={<span className='icon icon-copy'></span>}
-                  headerText={`Share Link`}
-                  text={`Copy and Paste this link anywhere you want to share your ${orgDisplay ? 'profile page' : 'fundraiser'}.`}
-                  style={{ marginTop: 0, marginBottom: 30 }}
-                />
+                showHelper ?
+                  <HelpfulTip
+                    headerIcon={<span className='icon icon-copy'></span>}
+                    headerText={`Share Link`}
+                    text={`Copy and Paste this link anywhere you want to share your ${orgDisplay ? 'profile page' : 'fundraiser'}.`}
+                    style={{ marginTop: 0, marginBottom: 30 }}
+                  />
+                : null
               }
             />
           </div>
@@ -228,6 +233,7 @@ class Share extends React.Component {
             orgDisplay={orgDisplay}
             articleID={articleID}
             data={data}
+            showHelper={false}
           />
         );
         break;
@@ -264,7 +270,8 @@ class Share extends React.Component {
 }
 
 Share.defaultProps = {
-  hideList: []
+  hideList: [],
+  showHelper: true
 }
 
 function mapStateToProps(state, props) {

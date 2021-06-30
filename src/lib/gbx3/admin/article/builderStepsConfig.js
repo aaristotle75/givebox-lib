@@ -22,6 +22,12 @@ const preview = {
   icon: 'eye'
 };
 
+const previewShare = {
+  slug: 'previewShare',
+  name: 'Preview & Share',
+  icon: 'eye'
+};
+
 const share = {
   slug: 'share',
   name: 'Ready to Share',
@@ -65,16 +71,14 @@ const membershipSubscriptions = {
 
 const themeColor = {
   slug: 'themeColor',
-  name: 'Theme Color',
+  name: 'Fundraiser Boosters',
   icon: 'sun'
 };
 
 const defaultSteps = [
   title,
-  image,
   themeColor,
-  preview,
-  share
+  previewShare
 ];
 
 const fundraiser = [

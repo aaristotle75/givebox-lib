@@ -681,7 +681,8 @@
     right: 0;
     height: $topPanelHeight;
     width: 100%;
-    background: linear-gradient(to right, $mainColorMedium 15%, $green 100%);;
+    //background: linear-gradient(to right, $mainColorMedium 15%, $green 100%);;
+    @include blueToSalmon;
     @include transition(top .25s);
     @include box-shadow(1px 1px 5px 3px rgba(0, 0, 0, 0.25));
     z-index: 3;

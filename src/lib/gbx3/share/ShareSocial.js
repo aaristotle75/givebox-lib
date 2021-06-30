@@ -23,7 +23,8 @@ class Share extends React.Component {
       display,
       shareText,
       data,
-      articleID
+      articleID,
+      showHelper
     } = this.props;
 
     return (
@@ -33,12 +34,14 @@ class Share extends React.Component {
             <SocialOrg
               shareIconSize={40}
               subText={
-                <HelpfulTip
-                  headerIcon={<Icon><VscMegaphone /></Icon>}
-                  headerText={`Don't be shy!`}
-                  text={`Share your profile page with your supporters, they will appreciate it! Click a social media icon below.`}
-                  style={{ marginTop: 0, marginBottom: 30 }}
-                />
+                showHelper ?
+                  <HelpfulTip
+                    headerIcon={<Icon><VscMegaphone /></Icon>}
+                    headerText={`Don't be shy!`}
+                    text={`Share your profile page with your supporters, they will appreciate it! Click a social media icon below.`}
+                    style={{ marginTop: 0, marginBottom: 30 }}
+                  />
+                : null
               }
             />
           :
@@ -47,12 +50,14 @@ class Share extends React.Component {
               articleID={articleID}
               shareIconSize={40}
               subText={
-                <HelpfulTip
-                  headerIcon={<Icon><VscMegaphone /></Icon>}
-                  headerText={`Don't be shy!`}
-                  text={`The quickest way to start raising money is to share your fundraiser on the social media sites. Click a social media icon below.`}
-                  style={{ marginTop: 0, marginBottom: 30 }}
-                />
+                showHelper ?
+                  <HelpfulTip
+                    headerIcon={<Icon><VscMegaphone /></Icon>}
+                    headerText={`Don't be shy!`}
+                    text={`The quickest way to start raising money is to share your fundraiser on the social media sites. Click a social media icon below.`}
+                    style={{ marginTop: 0, marginBottom: 30 }}
+                  />
+                : null
               }
             />
           }
@@ -63,6 +68,7 @@ class Share extends React.Component {
 }
 
 Share.defaultProps = {
+  showHelper: true
 }
 
 function mapStateToProps(state, props) {

@@ -88,8 +88,8 @@ class BasicBuilderStepsForm extends Component {
     const slug = util.getValue(stepConfig, 'slug');
 
     if (e.data === 'gbx3Initialized') {
-      if (slug === 'preview') {
-        this.setState({ previewLoaded: true }, () => this.saveStep());
+      if (slug === 'previewShare') {
+        this.setState({ previewLoaded: true });
       }
     }
     if (e.data === 'gbx3Shared') {
@@ -141,7 +141,9 @@ class BasicBuilderStepsForm extends Component {
       step
     } = this.props;
     const updated = [];
-    const completedStep = completed ? await this.props.stepCompleted(+step) : true;
+    const stepConfig = util.getValue(this.props.config, step, {});
+    const slug = util.getValue(stepConfig, 'slug');
+    const completedStep = completed ? await this.props.stepCompleted(slug) : true;
     const dataUpdated = data ? await this.props.updateData(data) : true;
     const blockUpdated = block ? await this.props.updateBlock('article', block.name, block) : true;
 
@@ -187,7 +189,7 @@ class BasicBuilderStepsForm extends Component {
       data,
       blocks
     } = this.props;
-    if (url && url !== util.getValue(data, field)) {
+    if (url !== util.getValue(data, field)) {
       const block = util.getValue(blocks, blockName, {});
       const content = util.getValue(block, 'content', {});
       const options = util.getValue(block, 'options', {});
@@ -261,7 +263,7 @@ class BasicBuilderStepsForm extends Component {
       };
       const globalsUpdated = await this.props.updateGlobals(globals);
       if (globalsUpdated) this.saveStep({ giveboxSettings: { primaryColor: themeColor }}, null, true, this.gotoNextStep);
-    } else if (slug === 'share') {
+    } else if (slug === 'previewShare') {
       this.saveStep(null, null, true, () => {
         this.props.toggleModal('gbx3Builder', false);
       });
@@ -318,7 +320,7 @@ class BasicBuilderStepsForm extends Component {
     const stepConfig = util.getValue(this.props.config, step, {});
     const slug = util.getValue(stepConfig, 'slug');
     const stepNumber = +step + 1;
-    const completed = this.props.completed.includes(step) ? true : false;
+    const completed = this.props.completed.includes(slug) ? true : false;
     const firstStep = step === 0 ? true : false;
     const lastStep = step === this.props.steps ? true : false;
     const nextStepName = this.props.getNextStep();
@@ -412,74 +414,6 @@ class BasicBuilderStepsForm extends Component {
         break;
       }
 
-      case 'image': {
-        item.title = 'Add an Image or Video for Your Fundraiser';
-        item.desc =
-          <div>
-            <p>A picture speaks a thousand words. Upload an image that inspires people to support your fundraiser.</p>
-            <HelpfulTip
-              headerIcon={<span className='icon icon-video'></span>}
-              headerText={`An Image is Great, but with a Video Your Fundraiser Excels`}
-              style={{ marginTop: 20, marginBottom: 20 }}
-              text={
-                <span>
-                  If you have a video link handy we suggest you use it. An image is great, but a video brings your story to life.
-                </span>
-              }
-            />
-          </div>
-        ;
-        item.component =
-        <div className='fieldGroup'>
-          <Tabs
-            default={mediaType}
-            className='statsTab'
-            callbackAfter={this.callbackAfter}
-          >
-            <Tab id='image' className='showOnMobile' label={<span className='stepLabel buttonAlignText'>Use an Image <span className='icon icon-instagram'></span></span>}>
-              <MediaLibrary
-                image={imageURL}
-                preview={imageURL}
-                quickUpload={true}
-                singlePreview={true}
-                handleSaveCallback={(url) => {
-                  this.setState({ mediaTypeError: null });
-                  this.handleImageSaveCallback(url, 'imageURL', 'media');
-                }}
-                handleSave={util.handleFile}
-                library={library}
-                showBtns={'hide'}
-                saveLabel={'close'}
-                mobile={isMobile ? true : false }
-                uploadOnly={true}
-                uploadEditorSaveStyle={{ width: 250 }}
-                uploadEditorSaveLabel={'Click Here to Save Image'}
-                imageEditorOpenCallback={(editorOpen) => {
-                  this.setState({ editorOpen })
-                }}
-                formError={mediaTypeError === 'image' ? true : false}
-              />
-            </Tab>
-            <Tab id='video' className='showOnMobile' label={<span className='stepLabel buttonAlignText'>Use a Video <span className='icon icon-video'></span></span>}>
-              <EditVideo
-                videoURL={videoURL}
-                onChange={() => {
-                  this.setState({ mediaTypeError: null });
-                }}
-                onBlur={(url, validated) => {
-                  if (url && validated) {
-                    this.handleVideoSaveCallback(url, 'videoURL', 'media');
-                  }
-                }}
-                error={mediaTypeError === 'video' ? true : false}
-              />
-            </Tab>
-          </Tabs>
-        </div>
-        ;
-        break;
-      }
-
       case 'themeColor': {
         const style = {
           default: {
@@ -495,84 +429,103 @@ class BasicBuilderStepsForm extends Component {
             },
           }
         };
-        item.title = 'Pick a Theme';
-        item.desc = 'Choose a color that compliments your Organization logo and/or branding.';
+        item.desc = 'These are optional, but they really help increase donations.';
         item.component =
           <div className='fieldGroup'>
-            <div className='flexCenter'>
-              <PhotoshopPicker
-                styles={style}
-                header={''}
-                color={this.state.themeColor}
-                onChangeComplete={(color) => {
-                  this.setState({ themeColor: color.hex })
+            <div className='column50'>
+              <Dropdown
+                name='defaultTheme'
+                portalID={`category-dropdown-portal-${slug}`}
+                portalClass={'gbx3 articleCardDropdown gbx3Steps'}
+                portalLeftOffset={10}
+                className='articleCard'
+                contentWidth={400}
+                label={'Theme Style'}
+                selectLabel='Choose Theme'
+                fixedLabel={false}
+                required={true}
+                onChange={(name, value) => {
+                  this.updateTheme(value);
                 }}
+                options={[
+                  { primaryText: 'Light', value: 'light' },
+                  { primaryText: 'Dark', value: 'dark' }
+                ]}
+                showCloseBtn={true}
+                value={defaultTheme || 'dark'}
+                style={{ paddingBottom: 20 }}
+                leftBar={true}
+                hideIcons={true}
+              />
+              <div className='input-group'>
+                <div className='fieldFauxInput'>
+                  <div className='inputLeftBar'></div>
+                  <div className='placeholder'>Choose Accent Color</div>
+                  <div className='fieldContext'>
+                    Button and link color.
+                  </div>
+                </div>
+                <div className='flexCenter'>
+                  <PhotoshopPicker
+                    styles={style}
+                    header={''}
+                    color={this.state.themeColor}
+                    onChangeComplete={(color) => {
+                      this.setState({ themeColor: color.hex })
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className='column50'>
+              <EditVideo
+                videoURL={videoURL}
+                onChange={() => {
+                  this.setState({ mediaTypeError: null });
+                }}
+                onBlur={(url, validated) => {
+                  if (url && validated) {
+                    this.setState({ mediaType: 'video'}, () => {
+                      this.handleVideoSaveCallback(url, 'videoURL', 'media');
+                    });
+                  } else if (!url) {
+                    this.setState({ mediaType: 'image'}, () => {
+                      this.handleVideoSaveCallback('', 'videoURL', 'media');
+                    });
+                  }
+                }}
+                error={mediaTypeError === 'video' ? true : false}
+                leftBar={true}
               />
             </div>
-            <Dropdown
-              name='defaultTheme'
-              portalID={`category-dropdown-portal-${slug}`}
-              portalClass={'gbx3 articleCardDropdown'}
-              portalLeftOffset={10}
-              className='articleCard'
-              contentWidth={400}
-              label={'Select a Theme'}
-              selectLabel='Select a Theme'
-              fixedLabel={true}
-              required={true}
-              onChange={(name, value) => {
-                this.updateTheme(value);
-              }}
-              options={[
-                { primaryText: 'Light', value: 'light' },
-                { primaryText: 'Dark', value: 'dark' }
-              ]}
-              showCloseBtn={true}
-              value={defaultTheme || 'dark'}
-              style={{ paddingTop: 40 }}
-            />
           </div>
         ;
         break;
       }
 
-      case 'preview': {
-        item.saveButtonLabelTop = <span className='buttonAlignText'>Continue to Step {nextStepNumber}: {nextStepName} <span className='icon icon-chevron-right'></span></span>;
-        item.saveButtonLabel = <span className='buttonAlignText'>Looks Good! I'm Ready to Share <span className='icon icon-chevron-right'></span></span>;
+      case 'previewShare': {
+        item.saveButtonLabel = <span className='buttonAlignText'>Finished! Take Me to My Page</span>;
         item.className = 'preview';
-        item.title = 'Preview your Form';
-        item.desc = !previewLoaded ?
-          'Please wait while the preview loads...'
-          :
-          <div>
-            <span>This is how your fundraiser will look to your supporters.</span>
-            {/*
-            <span style={{ marginTop: 10, display: 'block' }}>If you really want to roll up your sleeves, try the Givebox <GBLink style={{ fontSize: 14, display: 'inline' }} onClick={() => this.props.toggleBuilder()}>Advanced Builder</GBLink>, where you can customize pretty much everything!</span>
-            */}
-          </div>
-        ;
         item.component =
           <div className='stagePreview flexCenter flexColumn'>
+            <Share
+              hideList={['web']}
+              showHelper={false}
+            />
+            { !previewLoaded ?
+            <div className='previewTitleContainer'>
+              <div className='previewTitleText'>
+                Generating preview we appreciate your patience while it loads...
+              </div>
+            </div>
+            : null }
             { !previewLoaded ?
               <div className='imageLoader'>
-                <img src='https://cdn.givebox.com/givebox/public/images/block-loader.svg' alt='Loader' />
+                <img src='https://cdn.givebox.com/givebox/public/universal.png' alt='Loading Preview' />
               </div>
             : null }
             <iframe style={{ height: iframeHeight }} id='previewIframe' src={`${GBX3_URL}/${articleID}/?public&preview`} title={`Preview`} />
           </div>
-        ;
-        break;
-      }
-
-      case 'share': {
-        item.saveButtonLabel = <span className='buttonAlignText'>All Finished! <span className='icon icon-chevron-right'></span></span>;
-        item.saveButtonLabelTop = item.saveButtonLabel;
-        item.title = 'Share Your Fundraiser!';
-        item.desc = 'Customize your share link, copy and paste into an email, and/or click a social media icon below to share your fundraising form and start raising money!';
-        item.component =
-          <Share
-            hideList={['web']}
-          />
         ;
         break;
       }
