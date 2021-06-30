@@ -107,20 +107,21 @@
     padding: 10px;
     margin: 25px 35px;
     cursor: pointer;
-    font-size: 13px;
-    @include darkGradientText;
-    @include default-transition(.25s);
     z-index: 4;
     width: 150px;
     height: 150px;
 
     .appName {
       margin-top: 15px;
+      font-size: 13px;
+      font-weight: 500;
+      color: $white;
+      @include default-transition(.25s);
     }
   }
 
-  .launchpadItem:hover {
-    color: $light-gray;
+  .launchpadItem:hover .appName {
+    @include darkGradientText;
   }
 }
 
