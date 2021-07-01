@@ -43,7 +43,9 @@ class VerifyBusiness extends React.Component {
 
     return (
       <div className='fieldGroup'>
-        <div className='stepsSubText flexCenter' style={{ marginLeft: 0, marginRight: 0 }}><span className=''><span className='label'>Business/Nonprofit:</span> {name} {taxID}</span></div>
+        <div className='flexCenter'>
+          <div className='stepsSubText' style={{ marginLeft: 0, marginRight: 0 }}><span className=''><span className='label'>Business/Nonprofit:</span> {name} {taxID}</span></div>
+        </div>
         <div className='flexCenter'>
           <UploadPrivate
             id={orgID}

@@ -914,6 +914,7 @@ class SignupStepsForm extends React.Component {
               imageEditorOpenCallback={(editorOpen) => {
                 this.setState({ editorOpen })
               }}
+              editorResizerStyle={{ marginTop: -150 }}
             />
             {this.props.richText('mission', {
               name: 'mission',
@@ -962,6 +963,7 @@ class SignupStepsForm extends React.Component {
                 this.setState({ editorOpen })
               }}
               formError={mediaTypeError === 'image' ? true : false}
+              editorResizerStyle={{ marginTop: -150 }}
             />
             {this.props.textField('title', {
               group: slug,

@@ -75,7 +75,9 @@ class Identity extends React.Component {
 
     return (
       <div className='fieldGroup'>
-        <div className='stepsSubText flexCenter' style={{ marginLeft: 0, marginRight: 0 }}><span className=''><span className='label'>Account Holder:</span> {firstName} {lastName}</span></div>
+        <div className='flexCenter'>
+          <div className='stepsSubText' style={{ marginLeft: 0, marginRight: 0 }}><span className=''><span className='label'>Account Holder:</span> {firstName} {lastName}</span></div>
+        </div>
         <div className='flexCenter'>
           <UploadPrivate
             id={orgID}

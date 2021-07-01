@@ -78,9 +78,11 @@ class VerifyBank extends React.Component {
 
     return (
       <div className='fieldGroup'>
-        <div className='stepsSubText flexCenter flexColumn' style={{ marginLeft: 0, marginRight: 0 }}>
-          <span><span className='label'>Bank Account:</span> {name} xxxxxx{last4}</span>
-          <ModalLink style={{ marginLeft: 0, marginRight: 0, marginTop: 5 }} className='link' id='voidCheckExample'>Click Here to See an Example of a Voided Check.</ModalLink>
+        <div className='flexCenter'>
+          <div className='stepsSubText' style={{ marginLeft: 0, marginRight: 0 }}>
+            <span><span className='label'>Bank Account:</span> {name} xxxxxx{last4}</span>
+            <ModalLink style={{ marginLeft: 0, marginRight: 0, marginTop: 5 }} className='link' id='voidCheckExample'>Click Here to See an Example of a Voided Check.</ModalLink>
+          </div>
         </div>
         <div className='flexCenter'>
           <UploadPrivate

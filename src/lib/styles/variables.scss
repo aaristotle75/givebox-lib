@@ -232,7 +232,7 @@ $green: $puppa_green;
 }
 
 @mixin darkGradientText($background: $puppa_deep_purple) {
-  display: inline-block;
+  display: block;
   background: $background no-repeat;
   @include bgGradient(90deg, rgba($puppa_deep_purple, 1) 30%, rgba($puppa_med_purple, 1) 100%);
   background-clip: text;
@@ -241,7 +241,7 @@ $green: $puppa_green;
 }
 
 @mixin primaryGradientText($background: $puppa_blue, $deg: 90deg) {
-  display: inline-block;
+  display: block;
   background: $background no-repeat;
   @include bgGradient($deg, rgba($puppa_blue, 1) 30%, rgba($green, 1) 100%);
   background-clip: text;

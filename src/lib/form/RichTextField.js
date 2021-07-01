@@ -89,10 +89,6 @@ class ContentField extends Component {
 
     const fixedLabelHasValue = this.props.fixedLabelHasValue && value ? true : false;
 
-    console.log('execute this.props.fixedLabelHasValue -> ', this.props.fixedLabelHasValue);
-    console.log('execute value -> ', fixedLabel, value, fixedLabelHasValue);
-
-
     return (
       <div style={style} className={`input-group ${className || ''} richtext-group ${error ? 'error tooltip' : ''}`}>
         <div className={`errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`}>{error}</div>

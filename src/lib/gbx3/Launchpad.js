@@ -12,6 +12,10 @@ import {
   startMasquerade,
   endMasquerade
 } from '../api/actions';
+import {
+  setSignupStep
+} from './redux/gbx3actions';
+import { phases, signupPhase as signupPhases } from './signup/signupConfig';
 
 const APP_URL = process.env.REACT_APP_LAUNCHPAD_URL;
 
@@ -24,6 +28,7 @@ class Launchpad extends React.Component {
     this.onClickApp = this.onClickApp.bind(this);
     this.appLoadedMessage = this.appLoadedMessage.bind(this);
     this.launchpadActions = this.launchpadActions.bind(this);
+    this.openStep = this.openStep.bind(this);
     this.state = {
     };
   }
@@ -43,11 +48,36 @@ class Launchpad extends React.Component {
     window.addEventListener('message', this.appLoadedMessage, false);
   }
 
+  openStep(value, modalName) {
+    this.props.setSignupStep(value, () => {
+      this.props.toggleModal(modalName, true);
+    });
+  }
+
   appLoadedMessage(e) {
+
+    const {
+      completed
+    } = this.props;
+
     if (e.data === 'givebox-appLoaded') {
       this.props.setProp('appLoading', false);
     }
+
     if (e.data === 'exitLaunchpad') {
+      this.props.toggleModal('launchpad', false);
+    }
+
+    if (e.data === 'connectBankSteps') {
+      this.openStep('connectBank', 'orgConnectBankSteps');
+      this.props.toggleModal('launchpad', false);
+    }
+
+    if (e.data === 'transferMoneySteps') {
+      const requiredSteps = signupPhases.transferMoney.requiredSteps;
+      const readyToCheckApproval = requiredSteps.every(c => completed.includes(c));
+      const stepToOpen = readyToCheckApproval ? 'transferStatus' : 'identity';
+      this.openStep(stepToOpen, 'orgTransferSteps');
       this.props.toggleModal('launchpad', false);
     }
   }
@@ -198,6 +228,7 @@ function mapStateToProps(state, props) {
   const openAppURL = util.getValue(state, 'app.openAppURL', null);
   const appLoading = util.getValue(state, 'app.appLoading');
   const currentOrgID = util.getValue(state, 'gbx3.info.orgID');
+  const completed = util.getValue(state, 'gbx3.orgSignup.completed', []);
 
   return {
     accessOrgID,
@@ -207,7 +238,8 @@ function mapStateToProps(state, props) {
     openAppSlug,
     openAppURL,
     appLoading,
-    currentOrgID
+    currentOrgID,
+    completed
   }
 }
 
@@ -216,5 +248,6 @@ export default connect(mapStateToProps, {
   setProp,
   setAppProps,
   startMasquerade,
-  endMasquerade
+  endMasquerade,
+  setSignupStep
 })(Launchpad);
