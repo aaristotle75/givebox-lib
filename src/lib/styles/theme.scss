@@ -141,19 +141,6 @@ h1, h2, h3, h4, h5 {
   }
 }
 
-a, button.link {
-  font-weight: 300;
-  color: $mainColor;
-}
-
-a:hover, button.link:hover {
-  color: $secondColor;
-}
-
-button.secondary {
-  color: transparentize($mainColor, .4);
-}
-
 .date {
   font-size: $small-text-size;
   color: $med-gray;
@@ -412,14 +399,16 @@ header.navbar {
     .actionsMenu {
       flex: 0;
       display: inline;
+      margin-right: 10px;
     }
 
     .actionsMenu button.menuLabel {
       margin-top: 5px;
-      margin-right: 20px;
-      width: 155px;
-      padding: 12px;
       text-align: center;
+      @include primaryButton;
+      font-size: 14px;
+      font-weight: 400;
+      padding: 12px 20px;
     }
 
     .searchBlock {
@@ -499,7 +488,7 @@ header.subNav {
   .filterWrapper {
     button.link {
       position: absolute;
-      top: -15px;
+      top: -10px;
       right: 0px;
       font-size: $small-text-size;
       color: $mainColor;
@@ -909,6 +898,11 @@ ul.selectable {
   }
 }
 
+button.button {
+  font-size: 14px;
+  padding: 12px 20px;
+}
+
 button {
   font-family: $font-family;
   font-size: $normal-text-size;
@@ -924,25 +918,8 @@ button.gray:hover {
   @include default-transition(.25s);
 }
 
-button:hover {
-  @include default-transition(.25s);
-}
-
 .buttonAnimation {
   @include animation(pulsateSlightlyBrighter 2s infinite ease-out);
-}
-
-button.button.secondary {
-  background-color: $white;
-  color: $mainColor;
-  border: 1px solid $mainColor;
-  font-weight: 300;
-}
-
-button.button.secondary:hover {
-  background-color: $mainColor;
-  color: $white;
-  @include default-transition(.25s);
 }
 
 .actionsMenu.normalButton button.menuLabel {
@@ -1057,6 +1034,8 @@ button.button.secondary:hover {
       border: 0;
       border-bottom: 1px solid $light;
       border-radius: 0px;
+      font-size: 14px;
+      box-shadow: none;
     }
 
     button:hover {
@@ -1185,6 +1164,12 @@ button.supportLink {
     border-top: none;
   }
 
+  tr.detailsOpen.detailsRow {
+    td {
+      @include purpleToSalmon(.1, 90deg);
+    }
+  }
+
   tbody tr .detailsIcon {
     text-align: center;
     .icon {
@@ -1205,11 +1190,8 @@ button.supportLink {
   }
 
   .details {
-    background: $light;
-    background: -moz-linear-gradient(left,  $light 50%, $greenLight 100%);
-    background: -webkit-linear-gradient(left,  $light 50%, $greenLight 100%);
-    background: linear-gradient(to right,  $light 50%, $greenLight 100%);
     padding: 0;
+    background: transparent;
 
     .description {
       .line {
@@ -1231,13 +1213,10 @@ button.supportLink {
     padding-bottom: 30px;
   }
 
-  tbody tr.detailsOpen {
+  tbody tr.detailsOpen:not(.detailsOpen.detailsRow) {
     @include default-transition(.25s);
-    background: $light;
-    background: -moz-linear-gradient(left,  $light 50%, $greenLight 100%);
-    background: -webkit-linear-gradient(left,  $light 50%, $greenLight 100%);
-    background: linear-gradient(to right,  $light 50%, $greenLight 100%);
-    background-attachment: fixed;
+    @include purpleToSalmon(.1, 90deg);
+    //background-attachment: fixed;
 
     .detailsIcon .icon {
       color: $light-med-gray;
@@ -1395,6 +1374,7 @@ button.supportLink {
     font-weight: 400;
     color: $med-gray;
   }
+
   button.link:hover {
     color: $mainColor;
   }
