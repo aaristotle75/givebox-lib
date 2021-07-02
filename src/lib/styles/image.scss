@@ -39,6 +39,10 @@
 }
 
 .imagePlaceholder {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
   @include dropzoneButton();
   height: 140px;
   width: 140px;
@@ -75,20 +79,16 @@ button.imageCover {
 }
 
 .imageLink {
+  @include primaryButton;
+  font-size: 14px;
+  font-weight: 400;
   position: absolute;
   bottom: 5px;
   right: 10px;
   cursor: pointer;
-  color: $white;
-  font-weight: 300;
   opacity: 0;
   @include transition(opacity .5s ease-out);
   padding: 5px 15px;
-  border-radius: 15px;
-}
-
-.imageLink:hover {
-  color: $secondColor;
 }
 
 .image:hover {
@@ -208,7 +208,7 @@ button.imageCover {
   }
 
  .text {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 400;
     color: $white;
     padding: 5px;
@@ -818,8 +818,6 @@ button.imageCover {
       }
 
      .text {
-        font-size: 16px;
-        color: $white;
         display: flex;
         flex-direction: column;
         justify-content: center;

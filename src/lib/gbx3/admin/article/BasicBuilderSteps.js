@@ -379,6 +379,7 @@ class BasicBuilderStepsForm extends Component {
               count: true,
               required: false,
               value: title,
+              leftBar: true,
               onBlur: (name, value) => {
                 if (value && value !== title) {
                   const block = util.getValue(blocks, 'title', {});

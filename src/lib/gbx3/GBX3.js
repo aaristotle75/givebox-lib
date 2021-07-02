@@ -338,6 +338,7 @@ class GBX3 extends React.Component {
     info.modal = has(queryParams, 'modal') || modal ? true : false;
     info.preview = has(queryParams, 'preview') ? true : false;
     info.signup = has(queryParams, 'signup') ? true : false;
+    info.share = has(queryParams, 'share') ? true : false;
     info.bookDemo = has(queryParams, 'bookDemo') ? true : false;
     info.locked = has(queryParams, 'locked') ? true : false;
     info.noFocus = has(queryParams, 'noFocus') ? true : false;

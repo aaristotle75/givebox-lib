@@ -83,7 +83,7 @@ class BasicBuilder extends React.Component {
     const numCompleted = completed.length;
     const numStepsTodo = this.steps + 1;
     const stepNumber = +step + 1;
-    const stepProgress = parseInt((numCompleted / numStepsTodo) * 100);
+    const stepProgress = parseInt((stepNumber / numStepsTodo) * 100);
     const stepConfig = util.getValue(this.config, step, {});
 
     return (
