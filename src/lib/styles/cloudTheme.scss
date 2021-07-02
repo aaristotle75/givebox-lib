@@ -1198,6 +1198,10 @@ $image-max: 338px;
 
 
 /*------- GLOSSARY --------*/
+button.glossary.link {
+  font-weight: 300;
+}
+
 .glossary {
 
   padding: 20px;
@@ -1224,127 +1228,6 @@ $image-max: 338px;
 }
 /*------- END GLOSSARY --------*/
 
-
-/*------ IMAGE ---------*/
-
-$imageSize: 210px;
-
-/*----------- Image ----------*/
-.image {
-  position: relative;
-  width: 100%;
-  img {
-    width: 100%;
-    height: auto;
-  }
-}
-
-.imagePlaceholder {
-  position: relative;
-  display: inline-block;
-  height: $imageSize;
-  width: $imageSize;
-  border-radius: 20px;
-  color: $white;
-  background: $light-gray;
-  vertical-align: middle;
-  text-align: center;
-
-  .icon {
-    position: absolute;
-    left:0; right:0;
-    top:45px; bottom:0;
-    margin: auto;
-    font-size: 120px;
-    font-weight: 200;
-    max-width:100%;
-    max-height:100%;
-  }
-}
-
-.imageCover {
-  position: absolute;
-  width: 100%;
-  max-width: $imageSize;
-  height: auto;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  cursor: pointer;
-  opacity: 0;
-  @include transition(opacity .5s ease-out);
-}
-
-button.imageCover {
-  margin: 0;
-}
-
-.imageLink {
-  position: absolute;
-  bottom: 5px;
-  right: 10px;
-  cursor: pointer;
-  color: $white;
-  font-weight: 300;
-  opacity: 0;
-  @include transition(opacity .5s ease-out);
-  background: $overlayColor;
-  padding: 5px 15px;
-  border-radius: 15px;
-}
-
-.imageLink:hover {
-  color: $secondColor;
-}
-
-.image:hover {
-  .imageLink {
-    opacity: 1;
-  }
-
-  .imageCover {
-    opacity: 1;
-    background: $overlayColor;
-  }
-}
-
-
-.modalImage {
-  margin-bottom: 20px;
-  .image {
-    display: inline-block;
-    max-width: $imageSize;
-    img {
-      max-width: $imageSize;
-    }
-  }
-  .imagePlaceholder {
-    height: $imageSize;
-    width: $imageSize;
-  }
-  .imageCover {
-    max-width: $imageSize;
-  }
-}
-
-.description {
-  .image {
-    max-width: $imageSize;
-    img {
-      max-width: $imageSize;
-      border-radius: 20px;
-    }
-  }
-  .imagePlaceholder {
-    height: $imageSize;
-    width: $imageSize;
-  }
-  .imageCover {
-    max-width: $imageSize;
-    border-radius: 20px;
-  }
-}
 
 /*------- LAUNCH ---------*/
 .mobileApp {

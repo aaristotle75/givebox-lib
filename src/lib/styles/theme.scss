@@ -464,17 +464,11 @@ header.subNav {
     text-align: center;
     background: none;
     color: $mainColor;
-    border: 1px solid $mainColor;
+    border: 0;
 
     .icon {
       display: none;
     }
-  }
-
-  .actionsMenu button.menuLabel:hover {
-    color: $white;
-    background-color: $mainColor;
-    @include default-transition(.25s);
   }
 
   button.button {
@@ -923,26 +917,20 @@ button.gray:hover {
 }
 
 .actionsMenu.normalButton button.menuLabel {
-  font-size: $normal-text-size;
-  letter-spacing: 0px;
-  font-family: $font-family;
-  color: $mainColor;
-  display: inline-block;
-  padding: 10px 20px 10px 20px;
-  line-height: 17px;
-  text-transform: none;
-  background-color: transparent;
-  cursor: pointer;
-  font-weight: 300;
-  @include box-shadow(none);
-  border: 1px solid $mainColor;
-  border-radius: 20px;
+  @include primaryButton;
+  font-size: 14px;
+  font-weight: 400;
+  padding: 12px 20px;
 
   .icon {
     color: $mainColor;
     vertical-align: middle;
     margin-bottom: 2px;
   }
+}
+
+.actionsMenu.normalButton button.menuLabel:hover {
+  color: $white;
 }
 
 
@@ -995,7 +983,7 @@ button.gray:hover {
 
   .actionsMenu-content.opened {
     border: 1px solid $mainColor;
-    @include box-shadow(0px 3px 6px 0px transparentize($mainColor2, .4));
+    @include box-shadow(0px 3px 6px 0px transparentize($mainColor, .4));
   }
 
   white-space: nowrap;
