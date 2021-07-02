@@ -195,13 +195,37 @@ class TicketFormClass extends Component {
           <div>
             {this.props.textField('channel', { type: 'hidden', value: this.props.channel })}
             <div className='column50'>
-              {this.props.textField('name', { placeholder: 'Enter your name', label: 'Your Name', fixedLabel: true, value: name })}
+              {this.props.textField('name', {
+                placeholder: 'Type Name',
+                label: 'Your Name',
+                fixedLabel: true,
+                value: name
+              })}
             </div>
             <div className='column50'>
-              {this.props.textField('email', { placeholder: 'Enter your email', label: 'Your Email', fixedLabel: true, validate: 'email', value: this.props.email })}
+              {this.props.textField('email', {
+                placeholder: 'Type Email',
+                label: 'Email Address',
+                fixedLabel: true,
+                validate: 'email',
+                value: this.props.email
+              })}
             </div>
-            {this.props.textField('subject', { placeholder: 'A short description of your question or issue', label: 'Subject', fixedLabel: true, required: true })}
-            {this.props.richText('description', { placeholder: 'Please describe the reason for contacting Givebox Help Desk...', label: 'Description', wysiwyg: false, hideCloseModalAndSaveButtons: true, required: true })}
+            <div style={{ padding: '0px 10px' }}>
+              {this.props.textField('subject', {
+                placeholder: 'Type Short Description of Your Question or Issue',
+                label: 'Subject',
+                fixedLabel: true,
+                required: true
+              })}
+              {this.props.richText('description', {
+                placeholder: 'Type Your Reason for Contacting Givebox Help Desk...',
+                label: 'Description',
+                wysiwyg: false,
+                hideCloseModalAndSaveButtons: true,
+                required: true
+              })}
+            </div>
             <Attachment
               callback={this.attachmentCallback}
             />
@@ -241,7 +265,7 @@ export default class TicketForm extends Component {
       <div className='formSectionContainer'>
         <div className=' formSection'>
           <div style={{ height: this.props.scrollHeight + 100 }} className='scrollContainer'>
-            <Form neverSubmitOnEnter={true} id='ticketForm' name='ticketForm' options={{ required: true }}>
+            <Form neverSubmitOnEnter={true} id='ticketForm' name='ticketForm' options={{ leftBar: true, required: true }}>
               <TicketFormConnect
                 {...this.props}
               />

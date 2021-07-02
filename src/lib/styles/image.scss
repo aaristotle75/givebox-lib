@@ -240,9 +240,9 @@ button.imageCover {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 200px;
+  width: 170px;
   height: auto;
-  min-height: 200px;
+  min-height: 170px;
 
   .imageLoader {
     display: flex;
@@ -261,8 +261,7 @@ button.imageCover {
   }
 
   .dropzone-icon {
-    font-size: 100px;
-    color: $mainColor;
+    font-size: 80px;
   }
 
   button.link {
