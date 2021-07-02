@@ -126,9 +126,9 @@ class Paginate extends Component{
   }
 
   setRecordCount(props) {
-    const count = props.count;
-    const max = props.max;
-    const page = props.activePage;
+    const count = +props.count;
+    const max = +props.max;
+    const page = +props.activePage;
     let range2 = 1;
     let range1 = 1;
     if (max < count) {
