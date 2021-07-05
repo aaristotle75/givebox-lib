@@ -225,7 +225,7 @@ export function hexToRgb(hex) {
   }
 }
 
-export rgba(hex, opacity = 1) {
+export function rgba(hex, opacity = 1) {
   const color = hexToRgb(hex);
   return `rgba(${color.r}, ${color.g}, ${color.b}, ${opacity})`;
 }
