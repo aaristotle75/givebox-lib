@@ -28,7 +28,7 @@ class ArticleAdmin extends React.Component {
       share
     } = this.props;
 
-    const checkIfTheseAreCompleted = [0, 1, 2];
+    const checkIfTheseAreCompleted = ['title', 'themeColor', 'previewShare'];
     const mainStepsCompleted = checkIfTheseAreCompleted.every(c => completed.includes(c));
 
     if (!this.props.advancedBuilder && this.props.step !== 'create' && !mainStepsCompleted && !share) {

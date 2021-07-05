@@ -43,22 +43,22 @@ img[src="https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/ma
 }
 
 .bar1Gradient {
-  background: $bar1Gradient !important;
-  @include animation(pulsateBrighter 2s ease-out infinite);
-}
-
-.bar2Gradient {
-  background: $bar2Gradient !important;
+  @include bgGradient(to bottom, rgba($puppa_purple, 1) 50%, rgba($puppa_purple, .3) 100%);
   @include animation(pulsateBrighter 2s ease-out infinite);
 }
 
 .bar3Gradient {
-  background: $bar3Gradient !important;
+  @include bgGradient(to bottom, rgba($puppa_blue, 1) 50%, rgba($puppa_blue, .3) 100%);
+  @include animation(pulsateBrighter 2s ease-out infinite);
+}
+
+.bar2Gradient {
+  @include bgGradient(to bottom, rgba($puppa_green, 1) 50%, rgba($puppa_green, .3) 100%);
   @include animation(pulsateBrighter 2s ease-out infinite);
 }
 
 .bar4Gradient {
-  background: $bar4Gradient !important;
+  @include bgGradient(to bottom, rgba($puppa_salmon, 1) 50%, rgba($puppa_salmon, .3) 100%);
   @include animation(pulsateBrighter 2s ease-out infinite);
 }
 
@@ -119,6 +119,7 @@ img[src="https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/ma
   .totalStats {
     width: 20%;
     height: 300px;
+    cursor: default;
 
     .menu {
       justify-content: flex-end;
@@ -166,7 +167,6 @@ img[src="https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/ma
         margin-left: 10px;
         height: 25px;
         width: 4px;
-        background: $mainColorDark;
       }
 
       .number {
@@ -229,7 +229,6 @@ img[src="https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/ma
     .bar {
       width: 4px;
       height: 40px;
-      background: blue;
       margin-right: 10px;
       z-index: 100;
     }
