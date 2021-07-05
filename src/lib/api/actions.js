@@ -16,7 +16,6 @@ export function openLaunchpad(opts = {}) {
     const state = getState();
     dispatch(toggleModal('launchpad', true, {
       autoOpenSlug,
-      blurClass: 'launchpadBlur',
       closeCallback: () => {
         const modalEl = document.getElementById('modalOverlay-launchpad');
         if (modalEl) {

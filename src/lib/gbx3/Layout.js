@@ -265,8 +265,8 @@ class Layout extends React.Component {
         <CartButton reloadGBX3={this.props.reloadGBX3} type='avatarLink' />
         { (display === 'org' || display === 'browse') && stage !== 'admin' && !preview && !hasAccessToEdit ?
         <div className='avatarLoginActions'>
-          <GBLink onClick={() => window.location.replace(startFundraiserLink)}>Start a Fundraiser</GBLink>
-          <GBLink onClick={() => window.location.replace(ENTRY_URL)}>Login</GBLink>
+          <GBLink className='button' onClick={() => window.location.replace(startFundraiserLink)}>Start a Fundraiser</GBLink>
+          <GBLink className='button' onClick={() => window.location.replace(ENTRY_URL)}>Login</GBLink>
         </div>
         : null }
       </div>

@@ -214,6 +214,11 @@ button.link:hover .avatarImage {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+
+    h3 {
+      @include primaryGradientText;
+      font-weight: 400 !important;
+    }
   }
 
 

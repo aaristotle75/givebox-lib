@@ -6,7 +6,8 @@ import Icon from '../../common/Icon';
 import GBLink from '../../common/GBLink';
 import {
   toggleModal,
-  userLogout
+  userLogout,
+  openLaunchpad
 } from '../../api/actions';
 import {
   updateAdmin,
@@ -14,7 +15,7 @@ import {
 } from '../redux/gbx3actions';
 import { savePrefs } from '../../api/helpers';
 import { AiOutlineNotification, AiOutlineFullscreen } from 'react-icons/ai';
-import { GoBeaker, GoChecklist } from 'react-icons/go';
+import { GoDashboard, GoBeaker, GoChecklist } from 'react-icons/go';
 import CartButton from '../payment/CartButton';
 
 const CLOUD_URL = process.env.REACT_APP_CLOUD_URL;
@@ -70,7 +71,13 @@ class AvatarMenu extends React.Component {
     const menuList = [];
 
     menuList.push(
-      <li key='myAccount' onClick={() => this.directLink(`${baseURL}/settings/myaccount`)}><span className='icon icon-user'></span> <span className='text'>My Account</span></li>
+      <li key='dashboard' onClick={async () => {
+        this.props.toggleModal('avatarMenu', false);
+        this.props.openLaunchpad();
+      }}>
+        <Icon><GoDashboard /></Icon>
+        <span className='text'>Dashboard</span>
+      </li>
     );
 
     if (hasAccessToEdit && step !== 'create') {
@@ -144,7 +151,7 @@ class AvatarMenu extends React.Component {
             </div>
             <div className='rightSide'>
               { masquerade ? <span className='line'>Super User</span> : null }
-              <span className='line' style={{fontWeight: 300}}>{access.fullName}</span>
+              <span className='line' style={{fontWeight: 400}}>{access.fullName}</span>
               <span className='line' style={{fontWeight: 300}}>{access.email}</span>
             </div>
           </div>
@@ -196,5 +203,6 @@ export default connect(mapStateToProps, {
   updateAdmin,
   updateHelperSteps,
   savePrefs,
-  userLogout
+  userLogout,
+  openLaunchpad
 })(AvatarMenu);
