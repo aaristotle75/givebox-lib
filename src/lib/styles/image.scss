@@ -692,6 +692,7 @@ button.imageCover {
 
     .text {
       white-space: nowrap;
+      font-size: 1em;
     }
 
     .dropzone-icon {
@@ -701,9 +702,7 @@ button.imageCover {
   }
 
   .dropzone:hover {
-    background-color: $mainColor;
-    border: 1px solid $white;
-    @include default-transition(.25s);
+    border: 0;
 
     .dropzone-icon {
       font-size: 20px;

@@ -2430,6 +2430,7 @@ button.productLink:hover {
 
 
 /*---- Risk ----------*/
+.underwriting,
 .bankAccountStatus,
 .riskFormSection {
 
@@ -2461,16 +2462,45 @@ button.productLink:hover {
 }
 
 /*----- Assigned --------*/
+.merchantStatus,
 .assignedWrapper {
 
   .input-group.dropdown-button .dropdown button {
     justify-content: flex-end;
     padding: 0;
+    font-size: 1em;
   }
 
+  button.link,
   .input-group.dropdown-button .dropdown .label {
-    font-size: 14px !important;
+    font-size: 1em !important;
     font-weight: 400;
   }
 
+}
+
+
+/*------ From Super Custom -------*/
+.sectionExtended {
+  width: 100%;
+
+  .sectionHeader {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    padding: 0 20px;
+  }
+
+  .sectionContent {
+  }
+}
+
+.actionsRow {
+  button.link {
+    font-size: $med-text-size;
+  }
+
+  .button-group {
+    text-align: center;
+  }
 }
