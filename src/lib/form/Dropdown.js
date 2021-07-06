@@ -156,6 +156,7 @@ class Dropdown extends Component {
       const value = e.currentTarget.getAttribute('data-value');
       const selected = e.currentTarget.getAttribute('data-selected');
       const open = this.props.multi ? true : false;
+
       this.setState({
         open,
         value,
@@ -294,8 +295,6 @@ class Dropdown extends Component {
     ;
 
     const fixedLabelHasValue = this.props.fixedLabelHasValue && selectedValue !== selectLabel ? true : false;
-
-    console.log('execute dropdown -> ', selected, value, selectedValue, selectLabel, fixedLabelHasValue);
 
     return (
       <div ref={this.inputRef} style={style} className={`input-group ${className || ''} ${readOnly ? 'readOnly tooltip' : ''} ${error ? 'error tooltip' : ''}`}>
