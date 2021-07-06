@@ -2427,3 +2427,50 @@ button.productLink:hover {
   padding: 0 10px;
 }
 /*----- END SETTINGS --------*/
+
+
+/*---- Risk ----------*/
+.bankAccountStatus,
+.riskFormSection {
+
+  h3 {
+    @include primaryGradientText;
+    font-weight: 400;
+    .gray {
+      font-weight: 300;
+      font-size: 14px;
+    }
+  }
+
+  li {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    .label {
+      margin-right: 10px;
+    }
+  }
+
+  .assignedWrapper {
+    .input-group.dropdown-button .dropdown button {
+      justify-content: flex-start;
+    }
+  }
+}
+
+/*----- Assigned --------*/
+.assignedWrapper {
+
+  .input-group.dropdown-button .dropdown button {
+    justify-content: flex-end;
+    padding: 0;
+  }
+
+  .input-group.dropdown-button .dropdown .label {
+    font-size: 14px !important;
+    font-weight: 400;
+  }
+
+}

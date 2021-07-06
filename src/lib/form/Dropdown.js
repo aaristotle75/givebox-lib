@@ -295,6 +295,8 @@ class Dropdown extends Component {
 
     const fixedLabelHasValue = this.props.fixedLabelHasValue && selectedValue !== selectLabel ? true : false;
 
+    console.log('execute dropdown -> ', selected, value, selectedValue, selectLabel, fixedLabelHasValue);
+
     return (
       <div ref={this.inputRef} style={style} className={`input-group ${className || ''} ${readOnly ? 'readOnly tooltip' : ''} ${error ? 'error tooltip' : ''}`}>
         <Fade in={open && overlay} duration={overlayDuration}>
