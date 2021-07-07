@@ -1204,7 +1204,7 @@ button.supportLink {
   tbody tr.detailsOpen:not(.detailsOpen.detailsRow) {
     @include default-transition(.25s);
     @include purpleToSalmon(.1, 90deg);
-    //background-attachment: fixed;
+    background-attachment: fixed;
 
     .detailsIcon .icon {
       color: $light-med-gray;

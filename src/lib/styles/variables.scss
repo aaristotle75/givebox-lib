@@ -235,3 +235,7 @@ $green: $puppa_green;
   -webkit-background-clip: text;
   color: transparent;
 }
+
+.primaryGradientText {
+  @include primaryGradientText;
+}
