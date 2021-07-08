@@ -5,7 +5,8 @@
   width: 100%;
   //background: $dark-blue-gray; #1818c8
   //background: linear-gradient(to bottom, $med-blue-dark-gray 0%, $dark-blue-gray 100%);
-  background: linear-gradient(to right, $mainColorDark 20%, $dark-blue-gray 100%);
+  //background: linear-gradient(to right, $mainColorDark 20%, $dark-blue-gray 100%);
+  @include purpleToSalmon;
   color: $white;
   font-size: $small-text-size;
 
@@ -95,6 +96,7 @@
       font-size: 12px;
       font-weight: 500;
     }
+
     .smallText {
       font-size: 10px;
     }
