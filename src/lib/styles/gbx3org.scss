@@ -80,7 +80,7 @@ $contentHeaderPadding: 35%;
   top: 0;
   left: 0;
   right: 0;
-  height: 50px;
+  height: 55px;
   background: $white;
   @include box-shadow(1px 1px 2px 1px rgba(0, 0, 0, 0.10));
   z-index: 900002;
@@ -88,7 +88,7 @@ $contentHeaderPadding: 35%;
   .gbx3OrgLogoContainer {
     position: absolute;
     left: 20px;
-    top: 10px;
+    top: 12px;
 
     img {
       @include animation(pulsateSlightlyBrighter 2s ease-out infinite);
@@ -1022,7 +1022,7 @@ $contentHeaderPadding: 35%;
 .moneyRaisedContainer {
   position: absolute;
   left: 75px;
-  top: 7px;
+  top: 10px;
   display: flex;
 
   button.button {
