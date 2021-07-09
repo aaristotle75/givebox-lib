@@ -49,7 +49,8 @@ class ModalRoute extends Component {
       modalRootClass,
       closeCallback,
       draggableTitle,
-      buttonGroup
+      buttonGroup,
+      forceShowModalGraphic
     } = this.props;
 
     const modalRoot = document.getElementById('modal-root');
@@ -83,6 +84,7 @@ class ModalRoute extends Component {
             draggableTitle={util.getValue(optsProps, 'draggableTitle', draggableTitle)}
             buttonGroup={buttonGroup}
             blurClass={util.getValue(optsProps, 'blurClass', 'blur')}
+            forceShowModalGraphic={util.getValue(optsProps, 'forceShowModalGraphic', forceShowModalGraphic)}
           >
             { opened ?
               <ErrorBoundary>

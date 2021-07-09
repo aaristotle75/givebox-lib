@@ -543,6 +543,7 @@ class GBX3 extends React.Component {
           style={{ width: '40%' }}
           disallowBgClose={false}
           component={(props) => <AvatarMenu exitAdmin={this.exitAdmin} reloadGBX3={this.reloadGBX3} />}
+          forceShowModalGraphic={true}
         />
         <ModalRoute
           className='gbx3'

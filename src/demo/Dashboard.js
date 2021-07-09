@@ -16,6 +16,8 @@ import {
 import axios from 'axios';
 import ReactPlayer from 'react-player';
 import Editor from '../lib/gbx3/blocks/Editor';
+import { toggleModal } from '../lib/api/actions';
+import ModalRoute from '../lib/modal/ModalRoute';
 
 class Dashboard extends Component {
 
@@ -35,6 +37,7 @@ class Dashboard extends Component {
 
   componentDidMount() {
     //this.getVideo();
+    this.props.toggleModal('testModal2', true);
   }
 
   componentWillUnmount() {
@@ -148,6 +151,19 @@ class Dashboard extends Component {
     return (
       <div>
         <h2>Dashboard</h2>
+        <ModalRoute
+          id='testModal2'
+          component={() => {
+            return (
+              <div className='modalWrapper'>
+                <h2>Test Modal Route</h2>
+                <div style={{ height: '500px' }}>
+                  Content
+                </div>
+              </div>
+            )
+          }}
+        />
         {/* <Plaid /> */}
         {/*
         <Compress />
@@ -227,5 +243,6 @@ function mapStateToProps(state, props) {
 export default connect(mapStateToProps, {
   setCustomProp,
   getResource,
-  sendResource
+  sendResource,
+  toggleModal
 })(Dashboard)

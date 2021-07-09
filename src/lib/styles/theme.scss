@@ -1829,18 +1829,21 @@ button.supportLink {
   }
 
   .modalCloseBtn {
-    top: 0px;
-    right: 0;
+    top: 2px;
+    right: 2px;
     z-index: 999999999;
 
     .icon {
-      color: $med-gray;
-      font-size: $normal-text-size;
+      color: $white;
+      font-size: 14px;
     }
   }
 
   button.modalCloseBtn:hover {
-    .icon { color: $mainColor; }
+    .icon {
+      color: $white;
+      opacity: .7;
+    }
   }
 
   button.modalToTop:hover {
@@ -1877,59 +1880,28 @@ button.supportLink {
 .modalTop {
   position: fixed;
   top: -1px;
-  height: 30px;
+  height: 50px;
   width: 100%;
   overflow: hidden;
   border-top-right-radius: 20px;
   border-top-left-radius: 20px;
   z-index: 999999;
-}
-
-/*
-.modalTop::after {
-  content: "";
-  background: url('https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/modal-top-bg5.png') repeat-x;
-  background-size: 1000px 30px;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  position: absolute;
   opacity: 1;
-  height: 30px;
-  border-top-right-radius: 20px;
-  border-top-left-radius: 20px;
 }
-*/
 
 .modalBottom {
   clear: both;
   position: relative;
   display: block;
-  bottom: 0px;
-  height: 28px;
+  bottom: -1px;
+  height: 50px;
   width: 100%;
   overflow: hidden;
   border-bottom-right-radius: 20px;
   border-bottom-left-radius: 20px;
   z-index: 999999;
-}
-
-/*
-.modalBottom::after {
-  content: "";
-  background: radial-gradient(circle farthest-corner at 0% 110%, $white 0%, rgba($puppa_blue, 1) 55%, rgba($puppa_green, 1) 93%, rgba($puppa_salmon, 1) 100%);
-  background-size: 1000px 28px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  position: absolute;
   opacity: 1;
-  height: 28px;
-  border-bottom-right-radius: 20px;
-  border-bottom-left-radius: 20px;
 }
-*/
 
 /*------- Flatpickr Calendar -------*/
 .flatpickr-calendar {

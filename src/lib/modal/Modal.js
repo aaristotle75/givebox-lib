@@ -206,7 +206,8 @@ class Modal extends Component {
       draggableTitle,
       draggableTitleClass,
       buttonGroup,
-      modalContentAlt
+      modalContentAlt,
+      forceShowModalGraphic
     } = this.props;
 
     let transition = effect.transition;
@@ -259,7 +260,31 @@ class Modal extends Component {
           bottomOffset={'100px'}
         />
         {(closeBtn) && <button style={closeBtnStyle} className='modalCloseBtn' onClick={() => this.closeModal('ok')}>{iconClose}</button>}
-        <div className='modalTop'></div>
+        <div className='modalTop'>
+          <svg
+            height="100%"
+            width="100%"
+            id="svg"
+            viewBox="0 0 1440 400"
+            xmlns="http://www.w3.org/2000/svg"
+            class="transition duration-300 ease-in-out delay-150"
+            preserveAspectRatio="none"
+          >
+            <defs>
+              <linearGradient
+                id="gradient"
+                gradientTransform="rotate(5)"
+              >
+                <stop offset="5%" stop-color="#5d45d8" stop-opacity="1"></stop>
+                <stop offset="35%" stop-color="#1d63ef" stop-opacity=".8"></stop>
+                <stop offset="85%" stop-color="#01eee7" stop-opacity=".4"></stop>
+                <stop offset="100%" stop-color="#ed8f90" stop-opacity=".2"></stop>
+              </linearGradient>
+            </defs>
+            <path d="M 0,400 C 0,400 0,200 0,200 C 91.39712918660285,171.08133971291866 182.7942583732057,142.16267942583733 272,130 C 361.2057416267943,117.83732057416269 448.22009569377997,122.43062200956939 544,156 C 639.77990430622,189.5693779904306 744.3253588516748,252.11483253588517 851,273 C 957.6746411483252,293.88516746411483 1066.4784688995214,273.11004784689 1165,254 C 1263.5215311004786,234.88995215311002 1351.7607655502393,217.444976076555 1440,200 C 1440,200 1440,400 1440,400 Z" stroke="none" stroke-width="0" fill="url(#gradient)" class="transition-all duration-300 ease-in-out delay-150" transform="rotate(-180 720 200)">
+            </path>
+          </svg>
+        </div>
         {draggable ?
           <div className='handle'>
             {!mobile ? <span className='icon icon-move'></span> : <></>}
@@ -283,12 +308,35 @@ class Modal extends Component {
           <GBLink onClick={this.toTop} className={`modalToTop ${this.state.scrolled ? '' : 'displayNone'}`}><span className='icon icon-chevrons-up'></span></GBLink>
         </Fade>
         <div className='modalBottom'>
+          <svg
+            height="100%"
+            width="100%"
+            id="svg"
+            viewBox="0 0 1440 400"
+            xmlns="http://www.w3.org/2000/svg"
+            class="transition duration-300 ease-in-out delay-150"
+            preserveAspectRatio="none"
+          >
+            <defs>
+              <linearGradient
+                id="gradient"
+                gradientTransform="rotate(5)"
+              >
+                <stop offset="5%" stop-color="#5d45d8" stop-opacity="1"></stop>
+                <stop offset="35%" stop-color="#1d63ef" stop-opacity=".8"></stop>
+                <stop offset="85%" stop-color="#01eee7" stop-opacity=".4"></stop>
+                <stop offset="100%" stop-color="#ed8f90" stop-opacity=".2"></stop>
+              </linearGradient>
+            </defs>
+            <path d="M 0,400 C 0,400 0,200 0,200 C 91.39712918660285,171.08133971291866 182.7942583732057,142.16267942583733 272,130 C 361.2057416267943,117.83732057416269 448.22009569377997,122.43062200956939 544,156 C 639.77990430622,189.5693779904306 744.3253588516748,252.11483253588517 851,273 C 957.6746411483252,293.88516746411483 1066.4784688995214,273.11004784689 1165,254 C 1263.5215311004786,234.88995215311002 1351.7607655502393,217.444976076555 1440,200 C 1440,200 1440,400 1440,400 Z" stroke="none" stroke-width="0" fill="url(#gradient)" class="transition-all duration-300 ease-in-out delay-150">
+            </path>
+          </svg>
         </div>
       </div>
     ;
 
     return (
-      <div className={`modal ${className} ${draggable ? 'draggable' : ''}`}>
+      <div className={`modal ${className} ${draggable ? 'draggable' : ''} ${forceShowModalGraphic ? 'forceShowModalGraphic' : ''}`}>
         <div
           ref={this.modalRef}
           onClick={() => this.closeModal('ok', this.props.disallowBgClose ? false : true)}
@@ -334,7 +382,8 @@ Modal.defaultProps = {
   draggable: false,
   draggableTitle: '',
   draggableTitleClass: '',
-  blurClass: 'blur'
+  blurClass: 'blur',
+  forceShowModalGraphic: false
 };
 
 function mapStateToProps(state, props) {
