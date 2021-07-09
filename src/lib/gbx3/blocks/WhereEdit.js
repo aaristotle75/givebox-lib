@@ -79,6 +79,9 @@ class WhereEditForm extends Component {
 
     return (
       <div className='modalWrapper'>
+        <div style={{ margin: '20px 0' }} className='flexCenter'>
+          <h2>Edit {title}</h2>
+        </div>
         <Collapse
           label={`Edit ${title}`}
           iconPrimary='edit'
@@ -96,35 +99,40 @@ class WhereEditForm extends Component {
                 checked={mapLink}
                 value={mapLink}
               />
-              <AnimateHeight height={address || city || state || zip || country  ? 'auto' : 0 } duration={500}>
-                <>
-                  <div style={{ marginTop: 10 }} className='helperText'>
-                    <div className='line label'>Style Editor</div>
-                    <Editor
-                      orgID={orgID}
-                      articleID={articleID}
-                      content={htmlEditable}
-                      onBlur={this.onBlurHTML}
-                      onChange={this.onChangeHTML}
-                      type={'classic'}
-                      acceptedMimes={['image']}
-                    />
-                  </div>
-                  <div style={{ marginTop: 10 }} className='helperText'>
-                    <div className='line label'>Tokens</div>
-                    { address ? <div className='line'>{`{{streetaddress}}`} = {address}</div> : '' }
-                    { city ? <div className='line'>{`{{city}}`} = {city}</div> : '' }
-                    { state ? <div className='line'>{`{{state}}`} = {state}</div> : '' }
-                    { zip ? <div className='line'>{`{{zip}}`} = {zip}</div> : '' }
-                    { country ? <div className='line'>{`{{country}}`} = {country}</div> : '' }
-                    <div className='line'>Do not change the token value directly in the editor. If you want to change the Location use the input field.</div>
-                  </div>
-                  <div className='helperText'>
-                    <div style={{ marginBottom: 5 }} className='line label'>Preview</div>
-                    <div ref={this.displayRef} dangerouslySetInnerHTML={{ __html: html }} />
-                  </div>
-                </>
-              </AnimateHeight>
+            </div>
+          </div>
+        </Collapse>
+        <Collapse
+          label={`Style Editor`}
+          iconPrimary='styleEditor'
+        >
+          <div className='formSectionContainer'>
+            <div className='formSection'>
+                <div style={{ marginTop: 10 }} className='helperText'>
+                  <div className='line label'>Style Editor</div>
+                  <Editor
+                    orgID={orgID}
+                    articleID={articleID}
+                    content={htmlEditable}
+                    onBlur={this.onBlurHTML}
+                    onChange={this.onChangeHTML}
+                    type={'classic'}
+                    acceptedMimes={['image']}
+                  />
+                </div>
+                <div style={{ marginTop: 10 }} className='helperText'>
+                  <div className='line label'>Tokens</div>
+                  { address ? <div className='line'>{`{{streetaddress}}`} = {address}</div> : '' }
+                  { city ? <div className='line'>{`{{city}}`} = {city}</div> : '' }
+                  { state ? <div className='line'>{`{{state}}`} = {state}</div> : '' }
+                  { zip ? <div className='line'>{`{{zip}}`} = {zip}</div> : '' }
+                  { country ? <div className='line'>{`{{country}}`} = {country}</div> : '' }
+                  <div className='line'>Do not change the token value directly in the editor. If you want to change the Location use the input field.</div>
+                </div>
+                <div className='helperText'>
+                  <div style={{ marginBottom: 5 }} className='line label'>Preview</div>
+                  <div ref={this.displayRef} dangerouslySetInnerHTML={{ __html: html }} />
+                </div>
             </div>
           </div>
         </Collapse>

@@ -188,3 +188,37 @@ $breakpoint: 768px;
   }
 
 }
+
+.modal.gbx3.draggable {
+  .modalTop,
+  .modalBottom {
+    display: block !important;
+  }
+
+  button.modalCloseBtn {
+    .icon {
+      color: $white !important;
+    }
+  }
+
+  button.modalCloseBtn:hover {
+    .icon {
+      color: $white !important;
+      opacity: .7;
+    }
+  }
+
+  .statsTab button.panelTab.selected {
+    @include primaryGradientText;
+    border: 0;
+  }
+
+  .statsTab button.panelTab {
+    color: $med-blue-gray;
+    @include default-transition(.25s);
+  }
+
+  .statsTab button.panelTab:hover {
+    color: $mainColor;
+  }
+}

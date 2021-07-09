@@ -554,6 +554,7 @@ class GBX3 extends React.Component {
           draggable={false}
           draggableTitle={``}
           component={(props) => <Share {...props} />}
+          forceShowModalGraphic={true}
         />
       </div>
     )

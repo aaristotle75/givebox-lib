@@ -34,7 +34,7 @@ class Header extends React.Component {
   coverPhotoOptions() {
     const options = [];
     options.push({
-      primaryText: <span className='labelIcon'><span className='icon icon-upload-cloud'></span> Upload Photo</span>, value: 'upload'
+      primaryText: <span className='labelIcon'><span className='icon icon-upload-cloud'></span> Change Photo</span>, value: 'upload'
     });
 
     /*

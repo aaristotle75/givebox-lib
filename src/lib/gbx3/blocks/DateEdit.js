@@ -109,7 +109,8 @@ class DateForm extends Component {
       html,
       htmlEditable,
       articleID,
-      orgID
+      orgID,
+      title
     } = this.props;
 
     const {
@@ -132,41 +133,51 @@ class DateForm extends Component {
 
     return (
       <div className='modalWrapper'>
-      <Collapse
-        label={`Set Date & Time`}
-        iconPrimary='edit'
-      >
-        <div className='formSectionContainer'>
-          <div className='formSection'>
-            { hasRange ?
-              this.props.calendarRange('event range', {
-                rangeRequired: false,
-                enableTimeOption,
-                enableTimeOptionLabel: 'Show Time',
-                range1Name: 'range1',
-                range1Label,
-                range1EnableTime: range1Time,
-                range1Value: range1,
-                range1OnChange: this.onChange,
-                range2Label,
-                range2Name: 'range2',
-                range2EnableTime: range2Time,
-                range2Value: range2,
-                range2OnChange: this.onChange,
-              })
-            :
-              this.props.calendarField('range1', {
-                label: util.getValue(options, 'range1Label'),
-                fixedLabel: true,
-                enableTime: range1Time,
-                enableTimeOption,
-                enableTimeOptionLabel: 'Show Time',
-                onChange: this.onChange,
-                value: range1
-              })
-            }
-            <AnimateHeight height={range1 || range2  ? 'auto' : 0 } duration={500}>
-              <>
+        <div style={{ margin: '20px 0' }} className='flexCenter'>
+          <h2>Edit {title}</h2>
+        </div>
+        <Collapse
+          label={`Set Date & Time`}
+          iconPrimary='edit'
+        >
+          <div className='formSectionContainer'>
+            <div className='formSection'>
+              { hasRange ?
+                this.props.calendarRange('event range', {
+                  rangeRequired: false,
+                  enableTimeOption,
+                  enableTimeOptionLabel: 'Show Time',
+                  range1Name: 'range1',
+                  range1Label,
+                  range1EnableTime: range1Time,
+                  range1Value: range1,
+                  range1OnChange: this.onChange,
+                  range2Label,
+                  range2Name: 'range2',
+                  range2EnableTime: range2Time,
+                  range2Value: range2,
+                  range2OnChange: this.onChange,
+                })
+              :
+                this.props.calendarField('range1', {
+                  label: util.getValue(options, 'range1Label'),
+                  fixedLabel: true,
+                  enableTime: range1Time,
+                  enableTimeOption,
+                  enableTimeOptionLabel: 'Show Time',
+                  onChange: this.onChange,
+                  value: range1
+                })
+              }
+            </div>
+          </div>
+        </Collapse>
+        <Collapse
+          label={`Style Editor`}
+          iconPrimary='styleEditor'
+        >
+          <div className='formSectionContainer'>
+            <div className='formSection'>
               <div style={{ marginTop: 10 }} className='helperText'>
                 <div className='line label'>Style Editor</div>
                 <Editor
@@ -205,11 +216,9 @@ class DateForm extends Component {
                 <div style={{ marginBottom: 5 }} className='line label'>Preview</div>
                 <div ref={this.displayRef} dangerouslySetInnerHTML={{ __html: html }} />
               </div>
-              </>
-            </AnimateHeight>
+            </div>
           </div>
-        </div>
-      </Collapse>
+        </Collapse>
       </div>
     )
   }

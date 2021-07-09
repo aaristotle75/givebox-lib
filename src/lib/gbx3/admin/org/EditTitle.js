@@ -41,6 +41,9 @@ class EditTitle extends React.Component {
 
     return (
       <div className='modalWrapper'>
+        <div style={{ margin: '20px 0' }} className='flexCenter'>
+          <h2>Edit Name</h2>
+        </div>
         <div className='formSectionContainer'>
           <div className='formSection'>
             <Editor
@@ -52,20 +55,20 @@ class EditTitle extends React.Component {
               type={'classic'}
               acceptedMimes={['image']}
             />
-            <div style={{ marginBottom: 0 }} className='button-group center'>
-              <GBLink className='link' onClick={() => {
-                this.props.toggleModal('orgEditTitle', false);
-              }}>
-                Cancel
-              </GBLink>
-              <GBLink className='button' onClick={() => {
-                this.props.toggleModal('orgEditTitle', false);
-                this.props.saveGlobal('title', { content });
-              }}>
-                Save
-              </GBLink>
-            </div>
           </div>
+        </div>
+        <div style={{ marginBottom: 0 }} className='button-group center'>
+          <GBLink className='link' onClick={() => {
+            this.props.toggleModal('orgEditTitle', false);
+          }}>
+            Cancel
+          </GBLink>
+          <GBLink className='button' onClick={() => {
+            this.props.toggleModal('orgEditTitle', false);
+            this.props.saveGlobal('title', { content });
+          }}>
+            Save
+          </GBLink>
         </div>
       </div>
     )

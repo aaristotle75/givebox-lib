@@ -388,7 +388,8 @@ class Amounts extends Component {
       isVolunteer,
       articleID,
       orgLogo,
-      orgName
+      orgName,
+      title
     } = this.props;
 
     const {
@@ -427,6 +428,9 @@ class Amounts extends Component {
           disallowBgClose={true}
           component={() =>
             <div className='modalWrapper'>
+              <div style={{ margin: '20px 0' }} className='flexCenter'>
+                <h2>Edit {title}</h2>
+              </div>
               <Tabs
                 default={tab}
                 className='statsTab'

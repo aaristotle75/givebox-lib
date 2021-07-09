@@ -231,7 +231,9 @@ class EditPageForm extends React.Component {
 
     return (
       <div className='editPageWrapper'>
-        <h2 className='flexCenter'>Edit {util.getValue(page, 'name')}</h2>
+        <div style={{ margin: '10px 0 30px 0' }} className='flexCenter'>
+          <h2>Edit {util.getValue(page, 'name')}</h2>
+        </div>
         {buttonGroup}
         <Tabs
           default={tabToDisplay}

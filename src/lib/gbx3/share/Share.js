@@ -259,7 +259,7 @@ class Share extends React.Component {
 
     return (
       <div className='createStep'>
-        <div style={{ paddingTop: 0 }} className={`modalWrapper`}>
+        <div style={{ paddingTop: 20, paddingBottom: 0 }} className={`modalWrapper`}>
           <Alert style={{ marginTop: 20 }} alert='error' display={util.getPublishStatus(kind, webApp) === 'private' && display !== 'org' ? true : false} msg={`This ${types.kind(kind).name} is Set to Private`} />
           {this.renderShareList()}
           {this.renderShareType()}

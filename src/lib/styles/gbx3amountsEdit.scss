@@ -178,26 +178,23 @@ $editAmountBreakpoint: 500px;
       width: 60px;
       height: 60px;
       font-size: 12px;
-      font-weight: 300;
-      color: $mainColor;
-      border: 1px solid $mainColor;
-      background: $white;
+      font-weight: 400;
+      color: $white;
+      @include purpleToSalmon(1, 140deg);
     }
     .icon {
       font-size: 20px;
-      color: $mainColor;
+      color: $white;
     }
   }
 
   .amountThumb:hover {
     .mediaPlaceholder {
-      color: $mainColorLight;
-      border: 1px solid $mainColorLight;
-      background: $white;
+      opacity: .9;
     }
     .icon {
       font-size: 20px;
-      color: $mainColorLight;
+      color: $white;
     }
   }
 }

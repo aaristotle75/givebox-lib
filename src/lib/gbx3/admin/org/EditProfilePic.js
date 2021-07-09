@@ -36,6 +36,9 @@ class EditProfilePic extends React.Component {
 
     return (
       <div className='modalWrapper'>
+        <div style={{ margin: '20px 0' }} className='flexCenter'>
+          <h2>Edit Logo</h2>
+        </div>
         <div className='formSectionContainer'>
           <div className='formSection'>
             <MediaLibrary

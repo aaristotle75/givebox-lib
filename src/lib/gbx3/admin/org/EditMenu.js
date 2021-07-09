@@ -272,6 +272,9 @@ class EditMenu extends React.Component {
 
     return (
       <div className='modalWrapper gbx3Shop editable'>
+        <div style={{ margin: '20px 0' }} className='flexCenter'>
+          <h2>Edit Page Menu</h2>
+        </div>
         <div className='formSectionContainer'>
           <div className='formSection'>
             {this.renderPageList()}
