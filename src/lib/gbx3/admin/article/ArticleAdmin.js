@@ -22,7 +22,7 @@ class ArticleAdmin extends React.Component {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const {
       completed,
       share
@@ -32,7 +32,8 @@ class ArticleAdmin extends React.Component {
     const mainStepsCompleted = checkIfTheseAreCompleted.every(c => completed.includes(c));
 
     if (!this.props.advancedBuilder && this.props.step !== 'create' && !mainStepsCompleted && !share) {
-      this.props.toggleModal('gbx3Builder', true);
+      const updated = this.props.updateHelperSteps({ step: !completed.includes('title') ? 0 : 2 });
+      if (updated) this.props.toggleModal('gbx3Builder', true);
     }
   }
 
