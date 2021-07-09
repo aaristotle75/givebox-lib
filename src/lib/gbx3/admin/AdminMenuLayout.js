@@ -71,7 +71,7 @@ class AdminMenuLayout extends React.Component {
 
     return (
       <ul>
-        {!advancedBuilder ? <li className='listHeader'>Edit Page Elements</li> : null}
+        {!advancedBuilder ? <li className='listHeader'>Edit Form Elements</li> : null}
         {items}
       </ul>
     );
@@ -127,7 +127,7 @@ class AdminMenuLayout extends React.Component {
 
     return (
       <ul>
-        <li className='listHeader'>Add Page Elements</li>
+        <li className='listHeader'>Add Form Elements</li>
         {items}
       </ul>
     )

@@ -56,7 +56,7 @@ class AdminMenu extends React.Component {
 
     return (
       <ul className='builderMenuSteps'>
-        <li className='listHeader'>Builder Steps</li>
+        <li className='listHeader'>Form Builder Steps</li>
         {items}
       </ul>
     )
