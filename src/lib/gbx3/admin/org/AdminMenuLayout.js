@@ -42,7 +42,7 @@ class AdminMenuLayout extends React.Component {
     return (
       <div className='layoutMenu'>
         <ul>
-          <li className='listHeader'>Actions</li>
+          <li className='listHeader'>Nonprofit Page</li>
           <li
             onClick={() => this.props.openOrgAdminMenu('orgEditTitle')}
             onMouseEnter={() => this.onMouseEnter('orgEditTitle')}

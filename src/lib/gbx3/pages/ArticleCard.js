@@ -69,8 +69,8 @@ class ArticleCard extends Component {
 
       case 'removeCard': {
         this.props.toggleModal('orgRemove', true, {
-          desc: `REMOVE ${title} From List`,
-          subDesc: 'Please confirm you want to remove this card from the list.',
+          desc: `REMOVE ${title} From Page`,
+          subDesc: 'Please confirm you want to remove this card from the page.',
           confirmText: 'Yes, Remove Card',
           callback: () => {
             this.props.removeCard(articleID, kind, kindID, () => this.props.toggleModal('orgRemove', false));
@@ -82,7 +82,7 @@ class ArticleCard extends Component {
       case 'makePrivate': {
         this.props.toggleModal('orgRemove', true, {
           desc: `MAKE PRIVATE ${title}`,
-          subDesc: `Please confirm you want to make this ${types.kind(kind).name.toLowerCase()} private. Making private will hide it from public view and remove it from this list.`,
+          subDesc: `Please confirm you want to make this ${types.kind(kind).name.toLowerCase()} private. Making private will hide it from public view and remove it from this page.`,
           confirmText: 'Yes, Make Private',
           callback: () => {
             this.props.sendResource(types.kind(kind).api.publish, {
@@ -234,6 +234,8 @@ class ArticleCard extends Component {
       <Image imgID='cardPhoto' url={imageURL || 'https://s3-us-west-1.amazonaws.com/givebox/assets/img/fundraiser-cover/original'} maxWidth='325px' size='medium' alt='Card Photo' />
     ;
 
+    const formName = `${kind === 'fundraiser' ? 'Donation' : types.kind(kind).name} Form`;
+
     return (
       <div className='articleCard'>
         <div onClick={this.onClickAdmin} className='articleCardEdit orgAdminEdit'>
@@ -257,12 +259,11 @@ class ArticleCard extends Component {
               });
             }}
             options={[
-              { primaryText: <span className='labelIcon'><span className={'icon icon-edit'}></span>Edit Card</span>, value: 'editCard' },
-              { primaryText: <span className='labelIcon'><span className={'icon icon-layout'}></span>Edit {kind === 'fundraiser' ? 'Donation' : types.kind(kind).name} Form</span>, value: 'editForm' },
-              { primaryText: <span className='labelIcon'><span className={'icon icon-share'}></span>Share {kind === 'fundraiser' ? 'Donation' : types.kind(kind).name} Form</span>, value: 'shareForm' },
-              { primaryText: <span className='labelIcon'><span className={'icon icon-x'}></span>Remove Card From List</span>, value: 'removeCard' },
-              { primaryText: <span className='labelIcon'><span className={'icon icon-eye-off'}></span>Make Private (Remove from List and Hide From Public View)</span>, value: 'makePrivate' },
-              { primaryText: <span className='labelIcon'><span className={'icon icon-trash-2'}></span>Delete {kind === 'fundraiser' ? 'Donation' : types.kind(kind).name} Form</span>, value: 'deleteForm' }
+              { primaryText: <span className='labelIcon'><span className={'icon icon-layout'}></span>Edit {formName}</span>, value: 'editForm' },
+              { primaryText: <span className='labelIcon'><span className={'icon icon-share'}></span>Share {formName}</span>, value: 'shareForm' },
+              { primaryText: <span className='labelIcon'><span className={'icon icon-x'}></span>Remove From Page</span>, value: 'removeCard' },
+              { primaryText: <span className='labelIcon'><span className={'icon icon-eye-off'}></span>Make Private (Remove from Page and Hide From Public View)</span>, value: 'makePrivate' },
+              { primaryText: <span className='labelIcon'><span className={'icon icon-trash-2'}></span>Delete {formName}</span>, value: 'deleteForm' }
             ]}
             hideIcons={true}
             hideButton={true}

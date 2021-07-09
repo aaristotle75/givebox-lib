@@ -15,9 +15,11 @@ import {
 } from '../redux/gbx3actions';
 import { savePrefs } from '../../api/helpers';
 import { AiOutlineNotification, AiOutlineFullscreen } from 'react-icons/ai';
-import { GoDashboard, GoBeaker, GoChecklist } from 'react-icons/go';
+import { GoBeaker, GoChecklist } from 'react-icons/go';
+import { CgMenuGridO } from 'react-icons/cg';
 import CartButton from '../payment/CartButton';
 
+const SUPER_URL = process.env.REACT_APP_SUPER_URL;
 const CLOUD_URL = process.env.REACT_APP_CLOUD_URL;
 const WALLET_URL = process.env.REACT_APP_WALLET_URL;
 
@@ -64,6 +66,7 @@ class AvatarMenu extends React.Component {
     } = this.props;
 
     const isWallet = util.getValue(access, 'role') === 'user' ? true : false;
+    const isSuper = util.getValue(access, 'role') === 'super' ? true : false;
     const masquerade = util.getValue(access, 'masker', null) ? true : false;
     const baseURL = isWallet ? WALLET_URL : CLOUD_URL;
     const myAccountText = isWallet ? 'Go to Your Wallet' : 'Go to Nonprofit Admin';
@@ -75,18 +78,18 @@ class AvatarMenu extends React.Component {
         this.props.toggleModal('avatarMenu', false);
         this.props.openLaunchpad();
       }}>
-        <Icon><GoDashboard /></Icon>
+        <Icon><CgMenuGridO /></Icon>
         <span className='text'>Dashboard</span>
       </li>
     );
 
     if (hasAccessToEdit && step !== 'create') {
       menuList.push(
-        <li key='edit' onClick={() => this.adminLink({ publicView: false })}><span className='icon icon-edit'></span> <span className='text'>Edit {display === 'org' ? 'Page' : 'Form' }</span></li>
+        <li key='edit' onClick={() => this.adminLink({ publicView: false })}><span className='icon icon-edit'></span> <span className='text'>Edit {display === 'org' ? 'Nonprofit Page' : 'Form' }</span></li>
       );
 
       menuList.push(
-        <ModalLink type='li' id={'share'} key={'share'}><Icon><AiOutlineNotification /></Icon> <span className='text'>Share {display === 'org' ? 'Page' : 'Form'}</span></ModalLink>
+        <ModalLink type='li' id={'share'} key={'share'}><Icon><AiOutlineNotification /></Icon> <span className='text'>Share {display === 'org' ? 'Nonprofit Page' : 'Form'}</span></ModalLink>
       );
 
       if (stage === 'admin' && display === 'article') {
@@ -95,7 +98,7 @@ class AvatarMenu extends React.Component {
             this.props.exitAdmin();
             this.props.toggleModal('avatarMenu', false);
           }}>
-            <Icon><AiOutlineFullscreen /></Icon> <span className='text'>Exit Editor</span>
+            <Icon><AiOutlineFullscreen /></Icon> <span className='text'>Exit Form Builder</span>
           </li>
         );
       }
@@ -161,7 +164,10 @@ class AvatarMenu extends React.Component {
           </ul>
           </div>
           <div className='bottomSection'>
-            <GBLink onClick={() => this.props.userLogout()}>{masquerade ? 'End Masquerade' : 'Logout' }</GBLink>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              { isSuper && !masquerade ? <GBLink onClick={() => window.location.href = SUPER_URL}>Back to Super Admin</GBLink> : null }
+              <GBLink onClick={() => this.props.userLogout()}>{masquerade ? 'End Masquerade' : 'Logout' }</GBLink>
+            </div>
           </div>
         </div>
       </div>

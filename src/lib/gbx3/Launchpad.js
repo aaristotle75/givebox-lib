@@ -134,6 +134,18 @@ class Launchpad extends React.Component {
 
   renderAppList() {
     const items = [];
+    items.push(
+      <div
+        key={'nonprofit-page'}
+        className='launchpadItem'
+        onClick={() => {
+          this.props.toggleModal('launchpad', false);
+        }}
+      >
+        <Image style={{ height: 140, width: 140 }} maxSize={'140px'} url={`https://cdn.givebox.com/givebox/public/images/backgrounds/nonprofit-page.png`} size='inherit' alt={'Nonprofit Page'} />
+        <span className='appName'>Nonprofit Page</span>
+      </div>
+    );
     Object.entries(launchpadConfig.appList).forEach(([key, value]) => {
       items.push(
         <div
@@ -143,7 +155,7 @@ class Launchpad extends React.Component {
             this.onClickApp(value.path, value.slug);
           }}
         >
-        <Image style={{ height: 140, width: 140 }} maxSize={'140px'} url={`https://cdn.givebox.com/givebox/public/images/backgrounds/${value.image}.png`} size='inherit' alt={value.name} />
+          <Image style={{ height: 140, width: 140 }} maxSize={'140px'} url={`https://cdn.givebox.com/givebox/public/images/backgrounds/${value.image}.png`} size='inherit' alt={value.name} />
           <span className='appName'>{value.name}</span>
         </div>
       )

@@ -15,7 +15,8 @@ import {
 import ModalLink from '../../../modal/ModalLink';
 import HelpDeskButton from '../../../helpdesk/HelpDeskButton';
 import OrgModalRoutes from '../../OrgModalRoutes';
-import { GoDashboard } from 'react-icons/go';
+import { BsGrid3X3Gap } from 'react-icons/bs';
+import { CgMenuGridO } from 'react-icons/cg';
 
 const helpDesk = process.env.REACT_APP_HELP_DESK;
 const ENV = process.env.REACT_APP_ENV;
@@ -59,7 +60,7 @@ class OrgAdmin extends React.Component {
           className={`tooltip launchpadButton ${launchpad ? 'open' : 'closed'}`}
         >
           <span className='tooltipTop'><i />Dashboard</span>
-          <Icon><GoDashboard /></Icon>
+          <Icon><CgMenuGridO /></Icon>
         </div>
         <div className={`leftPanel ${open ? 'open' : 'close'}`}>
           <AdminMenu

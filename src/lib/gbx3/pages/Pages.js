@@ -170,7 +170,7 @@ class Pages extends Component {
       adminPageOptions
     } = this.props;
 
-    if (util.isLoading(pageList)) return <Loader msg='Loading List...' />
+    if (util.isLoading(pageList)) return <Loader msg='Loading Page...' />
     const page = pages[pageSlug];
     const pageSearch = util.getValue(this.props.pageSearch, pageSlug, {});
     const pageName = util.getValue(page, 'name');
@@ -181,7 +181,7 @@ class Pages extends Component {
 
     return (
       <div className='gbx3OrgPages'>
-        {util.isFetching(pageList) ? <Loader msg='Loading List...' /> : null }
+        {util.isFetching(pageList) ? <Loader msg='Loading Page...' /> : null }
         <div className='orgAdminDropdown managePageDropdown orgAdminOnly'>
           {this.props.pageDropdown(adminPageOptions, 'Change Page')}
         </div>

@@ -8,7 +8,6 @@ import Pages from './Pages';
 import Footer from '../Footer';
 import MoneyRaised from './MoneyRaised';
 import Icon from '../../common/Icon';
-import { GoDashboard } from 'react-icons/go';
 import HelpfulTip from '../../common/HelpfulTip';
 import RealTime from './RealTime';
 
@@ -36,7 +35,7 @@ export default class OrgDisplay extends React.Component {
           <RealTime />
           { cameFromNonprofitAdmin ?
             <div className='gbx3OrgBackToDashboard orgAdminOnly'>
-              <GBLink key={'exit'} style={{ fontSize: '14px' }} className='link' onClick={() => this.props.exitAdmin()}><Icon><GoDashboard /></Icon>{ isMobile ? 'Dashboard' : `Back to Dashboard` }</GBLink>
+              <GBLink key={'exit'} style={{ fontSize: '14px' }} className='link' onClick={() => this.props.exitAdmin()}>{ isMobile ? 'Dashboard' : `Back to Dashboard` }</GBLink>
             </div>
           : null }
         </div>

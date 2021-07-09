@@ -80,14 +80,16 @@ export function userLogout() {
     const state = getState();
     const access = util.getValue(state, 'resource.access', {});
     const role = util.getValue(access, 'role');
+    const masker = util.getValue(access, 'masker', false);
+    const endpoint = masker ? 'masquerade' : 'session';
 
-    dispatch(sendResource('session', {
+    dispatch(sendResource(endpoint, {
       method: 'delete',
       callback: (res, err) => {
+        const redirect = masker ? SUPER_URL : ENTRY_URL;
         const path = role === 'user' ? '/login/wallet' : util.getValue(access, 'redirect');
-        const redirect = `${ENTRY_URL}${path}`;
         dispatch(setUserLogout());
-        window.location.replace(redirect);
+        window.location.replace(`${redirect}${path}`);
       }
     }));
   }

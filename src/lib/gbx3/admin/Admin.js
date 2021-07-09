@@ -16,7 +16,6 @@ import {
 } from '../redux/gbx3actions';
 import AvatarMenuButton from './AvatarMenuButton';
 import ArticleList from './article/ArticleList';
-import { GoDashboard } from 'react-icons/go';
 
 class Admin extends React.Component {
 
@@ -77,7 +76,7 @@ class Admin extends React.Component {
 
     if (!util.isEmpty(access)) {
       header.push(
-        <GBLink key={'exit'} style={{ fontSize: '14px' }} className='link' onClick={() => this.props.exitAdmin()}><Icon><GoDashboard /></Icon>{ isMobile ? 'Exit' : `Exit Builder` }</GBLink>
+        <GBLink key={'exit'} style={{ fontSize: '14px' }} className='link' onClick={() => this.props.exitAdmin()}>{ isMobile ? 'Exit' : `Exit Form Builder` }</GBLink>
       )
     }
 
