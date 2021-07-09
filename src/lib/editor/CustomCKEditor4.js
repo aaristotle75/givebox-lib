@@ -6,7 +6,7 @@ import ModalRoute from '../modal/ModalRoute';
 import Loader from '../common/Loader';
 import { toggleModal } from '../api/actions';
 import CKEditor4Upload from './CKEditor4UploadModal';
-import has from 'has';
+import * as util from '../common/utility';
 
 CKEditor.editorUrl = 'https://cdn.ckeditor.com/4.14.0/full-all/ckeditor.js';
 
@@ -163,12 +163,10 @@ class CustomCKEditor4 extends Component {
   onCloseUploadEditor() {
     const CKEDITOR = window.CKEDITOR;
     if (CKEDITOR) {
-      if (has(CKEDITOR, 'dialog')) {
-        if (CKEDITOR.dialog.getCurrent) {
-          if (CKEDITOR.dialog.getCurrent().hide) {
-            CKEDITOR.dialog.getCurrent().hide();
-          }
-        }
+      const dialog = util.getValue(CKEDITOR, 'dialog', {});
+      const current = dialog.getCurrent();
+      if (current) {
+        current.hide();
       }
     }
   }
