@@ -354,7 +354,9 @@ export function loadSignupPhase(options = {}) {
 
   return async (dispatch, getState) => {
 
-    const orgSignup = util.getValue(getState(), 'gbx3.orgSignup', {});
+    const state = getState();
+    const isSuper = util.getValue(state, 'resource.access.role') === 'super' ? true : false;
+    const orgSignup = util.getValue(state, 'gbx3.orgSignup', {});
     orgSignup.step = (opts.forceStep || opts.forceStep === 0) ? opts.forceStep : getMinStepNotCompleted(signupPhaseConfig[opts.phase].stepsTodo, orgSignup);
 
     if (!orgSignup.completed.includes('createSuccess')) orgSignup.completed.push('createSuccess');
@@ -362,7 +364,7 @@ export function loadSignupPhase(options = {}) {
     const updated = await dispatch(updateOrgSignup(orgSignup));
     if (updated) {
       if (opts.openAdmin) dispatch(updateAdmin({ open: true }));
-      if (opts.openModal) dispatch(toggleModal(opts.modalName, true));
+      if (opts.openModal && !isSuper) dispatch(toggleModal(opts.modalName, true));
     }
   }
 }

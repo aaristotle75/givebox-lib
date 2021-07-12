@@ -61,8 +61,8 @@ export function endMasquerade(callback) {
     if (role === 'super') {
       dispatch(sendResource('masquerade', {
           method: 'delete',
-          callback: () => {
-            if (callback) callback();
+          callback: (res, err) => {
+            if (callback) callback(res);
           }
       }));
     }

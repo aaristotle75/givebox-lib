@@ -73,7 +73,9 @@ import {
   setProp,
   setPrefs,
   setCustomProp,
-  sendResponse
+  sendResponse,
+  startMasquerade,
+  endMasquerade
 } from './api/actions';
 
 import {
@@ -190,6 +192,8 @@ export {
   setPrefs,
   setCustomProp,
   sendResponse,
+  startMasquerade,
+  endMasquerade,
 
 // gbx3
   GBX3,
