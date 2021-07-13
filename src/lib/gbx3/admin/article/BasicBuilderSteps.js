@@ -505,7 +505,7 @@ class BasicBuilderStepsForm extends Component {
       }
 
       case 'previewShare': {
-        item.saveButtonLabel = <span className='buttonAlignText'>Finished! Take Me to My Page</span>;
+        item.saveButtonLabel = <span className='buttonAlignText'>Finished! Take Me to My Form</span>;
         item.className = 'preview';
         item.component =
           <div className='stagePreview flexCenter flexColumn'>

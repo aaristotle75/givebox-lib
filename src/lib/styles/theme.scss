@@ -256,6 +256,7 @@ label, .label {
   overflow-x: hidden;
   width: 100%;
   background: $white;
+  @include transition(margin-left .5s);
 }
 
 .layout-main-wrapper {
@@ -343,18 +344,9 @@ header.navbar {
 
   .left-menu-open {
     position: absolute;
-    left: 0px;
+    left: 10px;
+    top: 2px;
     z-index: 1100;
-
-    button:hover .icon {
-      color: $mainColor2;
-      @include default-transition(.25s);
-    }
-
-    .icon {
-      font-size: 1.8em;
-      color: $mainColor;
-    }
   }
 
   .container {
@@ -453,6 +445,13 @@ header.subNav {
 }
 
 .subNavContent {
+
+  .leftSide {
+    .dropdown .label:not(button) {
+      font-size: 16px;
+      font-weight: 400;
+    }
+  }
 
   .imageComponent {
     margin-right: 20px;
@@ -801,6 +800,61 @@ button.glossary:hover {
     font-size: $small-text-size;
     padding-left: 25px;
     //background: transparentize($mainColor2, .8);
+  }
+
+}
+
+/*--------- Left Side ---------*/
+
+.layout-left {
+  width: 0px;
+  @include transition(width .5s);
+
+  ul.nav {
+    opacity: 0;
+    @include transition(opacity .5s);
+  }
+}
+
+.layout-left-content {
+  width: 0px;
+  @include transition(width .5s);
+}
+
+.layout-left.expand {
+
+  .layout-cover {
+    display: block;
+    opacity: .7;
+  }
+
+  .layout-left-content {
+    z-index: 3002;
+    width: $layout-left-width;
+    @include transition(width .5s);
+  }
+
+  ul.nav {
+    opacity: 1;
+    @include transition(opacity 4s);
+  }
+
+  .left-menu-close {
+    position: absolute;
+    left: $layout-left-width - 25px;
+    top: 13px;
+    z-index: 3003;
+
+    button:hover .icon {
+      opacity: .8;
+      @include default-transition(.25s);
+    }
+
+    .icon {
+      font-size: 18px;
+      font-weight: 600;
+      color: $white;
+    }
   }
 
 }

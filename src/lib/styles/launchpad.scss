@@ -161,7 +161,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  @include transition(right .5s, opacity .5s);
+  @include transition(right .25s, opacity .25s);
   opacity: 1;
 
   @media (max-width: $breakpoint) {
@@ -169,7 +169,7 @@
   }
 
   .icon {
-    font-size: 30px;
+    font-size: 30px !important;
     color: $white;
   }
 }

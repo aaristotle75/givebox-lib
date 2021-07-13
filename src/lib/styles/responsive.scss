@@ -19,7 +19,12 @@
 
   }
 
-  header.navbar .left-menu-open {
+  .layout-left.expand + .layout-main {
+    margin-left: $layout-left-width;
+  }
+
+  .layout-left.expand .layout-cover,
+  .layout-cover {
     display: none;
   }
 
@@ -53,23 +58,6 @@
     .titleIcon {
       display: none;
     }
-    .noLink {
-      color: $light;
-      .icon {
-        color: $light;
-      }
-    }
-    button.link {
-      color: $secondColor;
-      .icon { color: $secondColor; }
-    }
-    button.link:hover {
-      color: $secondColor2;
-      .icon { color: $secondColor2; }
-    }
-    .childLink {
-      color: $light;
-    }
   }
 
 
@@ -83,22 +71,8 @@
     line-height: 17px;
   }
 
-  button.button.secondary {
-    background-color: transparent;
-    color: $secondColor;
-    border: 1px solid $secondColor;
-  }
-
-  button.button.secondary:hover {
-    background-color: $secondColor;
-    color: $white;
-    @include default-transition(.25s);
-  }
-
   /*-------- Header --------*/
   .layout-top {
-    background: $mainColor2;
-    background: linear-gradient(to bottom, $mainColorLight 0%,$mainColor2 100%);
   }
 
   header.navbar {
@@ -109,17 +83,7 @@
     border-bottom: none;
     min-height: 40px;
 
-    h2 { color: $light-gray; }
-
     .container { padding: 0 10px; }
-
-    .left-menu-open .icon {
-      color: $secondColor;
-    }
-
-    .left-menu-open:hover .icon {
-      color: $secondColor2;
-    }
   }
 
   .fixed header.navbar {
@@ -130,9 +94,7 @@
 
   /*-------- Sub Header --------*/
   .fixed header.subNavFixed {
-    background: $mainColor2;
-    background: linear-gradient(to bottom, $mainColor 0%,$mainColor2 100%);
-    @include box-shadow(none);
+    //@include box-shadow(none);
     left: 0;
     right: 0;
 
@@ -154,7 +116,6 @@
       .actionsMenu:not(.normalButton) { display: none; }
 
       .actionsMenu button.menuLabel {
-        font-size: $normal-text-size;
         margin-top: 0px;
         margin-left: 10px;
       }
@@ -193,11 +154,6 @@
     .filterWrapper {
       button.link {
         top: -15px;
-        color: $light-gray;
-      }
-
-      button.link:hover {
-        color: $secondColor;
       }
     }
 
@@ -206,32 +162,13 @@
       input::-webkit-input-placeholder {
         font-size: $normal-text-size;
         font-family: $font-family;
-        color: $light-med-gray;
       }
       input::-moz-placeholder {
         font-size: $normal-text-size;
-        color: $light-med-gray;
       }
       input::-ms-input-placeholder {
         font-size: $normal-text-size;
-        color: $light-med-gray;
       }
-
-      label,
-      .icon,
-      .dropdown .label,
-      .dropdown .icon, {
-        color: $light-med-gray;
-      }
-    }
-
-    button.glossary,
-    .date {
-      color: $light-gray;
-    }
-
-    button.glossary:hover {
-      color: $secondColor;
     }
 
     .container {
@@ -239,39 +176,21 @@
       padding-bottom: 15px;
     }
 
-    h2 { color: $light-gray; }
-
     .actionsMenu button.menuLabel .icon { display: none; }
 
     .actionsMenu button.menuLabel {
-      font-size: $normal-text-size;
-      padding: 10px 15px 10px 15px;
-      line-height: 17px;
-      text-align: center;
-      border: 1px solid $secondColor;
-      color: $secondColor;
-      background: transparent;
-    }
-
-    .actionsMenu button.menuLabel:hover {
-      background: $secondColor2;
-      color: $white;
+      @include primaryButton;
+      font-size: 16px;
+      padding: 10px 15px;
+      font-weight: 400;
     }
 
     .actionsMenu-item {
       padding: 0;
 
       button.button {
-        background: $white;
-        color: $mainColor;
         text-align: left;
         border: 0;
-        border-bottom: 1px solid $light;
-      }
-
-      button.button:hover {
-        background: $mainColor;
-        color: $white;
       }
     }
     .actionsMenu-item:last-child {
@@ -280,63 +199,14 @@
       }
     }
 
-    .floating-label.active label {
-      color: $secondColor;
-    }
-
-    .input-bottom.active {
-      background: $secondColor;
-    }
-
-    button.button {
-      background: transparent;
-      border: 1px solid $secondColor;
-      color: $secondColor;
-    }
-
-    button.button:hover {
-      background: $secondColor;
-      color: $white;
-    }
-
     .balance {
       h1 {
         height: 75px;
-        color: $light-gray;
       }
-      .dropdown button,
-      .label {
-        border-color: $light-med-gray;
-      }
-
-    }
-  }
-
-  /*------ Avatar ---------*/
-  .avatarLink {
-    .avatarImage {
-      border: 1px solid $light-med-gray;
-    }
-    button.link {
-      color: $light-gray;
-    }
-  }
-
-  .avatarLink button.link:hover {
-    color: $secondColor;
-
-    .avatarImage {
-      border: 1px solid $secondColor;
     }
   }
 
   /*--------- Left Side ---------*/
-
-  .left-menu-open {
-    display: flex;
-    align-self: center;
-    @include transition(display .25s);
-  }
 
   .layout-left {
     width: 0px;
@@ -376,17 +246,6 @@
       left: $layout-left-width + 20px;
       top: 15px;
       z-index: 3002;
-
-      button:hover .icon {
-        color: $med-gray;
-        @include default-transition(.25s);
-      }
-
-      .icon {
-        font-size: $large-text-size;
-        font-weight: 600;
-        color: $secondColor;
-      }
     }
 
   }
@@ -398,31 +257,15 @@
   }
 
   .search {
-    input {
-      color: $light-med-gray;
-      border-bottom: 1px solid $light-med-gray;
-    }
-
-    .input-bottom.idle {
-      background: $light-med-gray;
-    }
-
-    .icon {
-      color: $light-med-gray;
-    }
-
     input::-webkit-input-placeholder {
       font-size: $normal-text-size;
       font-family: $font-family;
-      color: $light-med-gray;
     }
     input::-moz-placeholder {
       font-size: $normal-text-size;
-      color: $light-med-gray;
     }
     input::-ms-input-placeholder {
       font-size: $normal-text-size;
-      color: $light-med-gray;
     }
 
   }
@@ -434,37 +277,15 @@
   /*---------- Filter -----------*/
   .filter {
 
-    input {
-      color: $light-gray;
-    }
-
     .filter-content {
       box-shadow: none;
       padding-bottom: 0px;
       margin-bottom: 0px;
-      background: transparent;
     }
 
     .error .icon {
       color: $red;
     }
-
-    button.button:disabled {
-      cursor: not-allowed;
-      color: transparentize($mainColor, .2);
-      border: 1px solid transparentize($mainColor, .2);
-      background-color: transparent;
-    }
-
-    button.button:hover:disabled {
-      color: transparentize($mainColor, .2);
-      background-color: transparent;
-    }
-
-    button.input-button:hover .icon {
-      color: $secondColor;
-    }
-
   }
 
   /*-------- Merchant Status ------*/
@@ -482,7 +303,6 @@
     margin-left: 10px;
 
     h1 {
-      color: $mainColor;
       margin-top: 0px;
     }
   }
@@ -566,14 +386,6 @@
       display: none;
     }
   }
-
-  .avatarMenu {
-
-    .close {
-      color: $med-gray;
-    }
-  }
-
 
   .balance {
     h1 {
@@ -662,7 +474,10 @@
     padding: 8px 0px;
 
     .left-menu-open {
-      left: 0;
+    }
+
+    .navbarContainer .headerRightSide {
+      right: 0px;
     }
 
     .container {
@@ -781,15 +596,7 @@
         padding: 0;
 
         button {
-          background: $white;
-          color: $mainColor;
           text-align: left;
-          border-bottom: 1px solid $light;
-        }
-
-        button:hover {
-          background: $mainColor;
-          color: $white;
         }
       }
       .actionsMenu-item:last-child {

@@ -239,3 +239,26 @@ $green: $puppa_green;
 .primaryGradientText {
   @include primaryGradientText;
 }
+
+.primaryCircleButton {
+  height: 40px;
+  width: 40px;
+  @include darkGradientBackground;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  @include transition(opacity .25s);
+  opacity: 1;
+
+  .icon {
+    font-size: 25px;
+    color: $white;
+  }
+}
+
+.primaryCircleButton:hover {
+  opacity: .9;
+  @include transition(opacity .25s);
+}

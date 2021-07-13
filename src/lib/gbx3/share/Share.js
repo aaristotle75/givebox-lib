@@ -112,7 +112,7 @@ class Share extends React.Component {
       <div className='createKindSection'>
         <div className='intro' style={{ marginBottom: 20 }}>
           <span className='smallText'>
-            Share {orgDisplay ? 'Profile Page' : types.kind(kind).name}
+            Share {orgDisplay ? 'Nonprofit Page' : types.kind(kind).name}
           </span>
           {title}
         </div>
