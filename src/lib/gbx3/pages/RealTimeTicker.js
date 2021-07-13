@@ -30,7 +30,7 @@ class RealTimeTickerClass extends Component {
             key={index}
             opts={{ id: credit.cusID }}
             onClick={() => {
-              console.log('onClick item in ticker -> ', credit);
+              //console.log('onClick item in ticker -> ', credit);
             }}
           >
             <span className='line amount'>{util.money(util.calcAmount(credit.amount, credit.fee, credit.passFees))}</span>

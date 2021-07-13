@@ -99,7 +99,7 @@ class Launchpad extends React.Component {
         if (!modalEl.classList.contains('appLoaded')) modalEl.classList.add('appLoaded');
       }
       this.props.setProp('appLoading', true);
-      const openAppURL = `${APP_URL}${path}`;
+      const openAppURL = `${APP_URL}${path}?hasParentOverlay=true`;
       if (isSuper && !masker) {
         this.props.startMasquerade({
           callback: () => {
