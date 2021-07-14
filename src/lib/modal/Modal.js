@@ -305,7 +305,7 @@ class Modal extends Component {
           duration={500}
           in={this.state.scrolled}
         >
-          <GBLink onClick={this.toTop} className={`modalToTop ${this.state.scrolled ? '' : 'displayNone'}`}><span className='icon icon-chevrons-up'></span></GBLink>
+          <GBLink onClick={this.toTop} className={`modalToTop ${this.state.scrolled ? '' : 'displayNone'}`}><span className='icon icon-chevron-up'></span></GBLink>
         </Fade>
         <div className='modalBottom'>
           <svg

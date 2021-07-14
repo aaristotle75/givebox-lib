@@ -59,7 +59,7 @@ export default class ScrollTop extends React.Component {
         duration={500}
         in={this.state.display}
       >
-        <GBLink onClick={() => util.toTop(elementID)} className='toTop'><span className='icon icon-chevrons-up'></span></GBLink>
+        <GBLink onClick={() => util.toTop(elementID)} className='toTop'><span className='icon icon-chevron-up'></span></GBLink>
       </Fade>
     )
   }

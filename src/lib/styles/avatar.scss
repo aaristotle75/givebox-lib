@@ -310,4 +310,18 @@ button.link:hover .avatarImage {
 
 }
 
+.defaultProfilePicture {
+  height: 175px;
+  width: 175px;
+  background: $light-gray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  .icon {
+    font-size: 80px;
+    color: $white;
+  }
+}
+
 /*------ END AVATAR ------*/

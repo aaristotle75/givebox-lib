@@ -123,29 +123,35 @@ class AvatarMenu extends React.Component {
       )
     }
 
+    const orgImage = util.checkImage(access.orgImage) ? access.orgImage : null;
+
     return (
       <div className='modalWrapper'>
         <div className='avatarMenu'>
           {access.role === 'admin' ?
           <div className='logoSection'>
             <h3 style={{ marginTop: 0, paddingTop: 0 }}>{access.orgName}</h3>
-            {access.orgImage ?
-              <GBLink onClick={() => this.directLink(`${baseURL}/settings`)}>
-                <div className='orgImage'><img src={util.imageUrlWithStyle(access.orgImage, 'original')} alt='Org Logo' /></div>
-              </GBLink>
-            :
-              ''
-            }
+            <GBLink onClick={() => this.directLink(`${baseURL}/settings/details`)}>
+              {orgImage ?
+                <div className='orgImage'>
+                  <img src={util.imageUrlWithStyle(orgImage, 'original')} alt='Org Logo' />
+                </div>
+              :
+                <div className='defaultProfilePicture'>
+                  <span className='icon icon-camera'></span>
+                </div>
+              }
+            </GBLink>
           </div> : '' }
           <div style={{ borderTop: access.role !== 'admin' ? 0 : null }} className='topSection'>
             <div className='leftSide'>
               {access.userImage ?
-                <GBLink onClick={() => this.directLink(`${baseURL}/settings`)}>
+                <GBLink onClick={() => this.directLink(`${baseURL}/settings/myaccount`)}>
                   <div className='avatarImage'><img src={util.imageUrlWithStyle(access.userImage, 'medium')} alt='Avatar Medium Circle' /></div>
                 </GBLink>
               :
                 <div className='defaultAvatar'>
-                  <GBLink onClick={() => this.directLink(`${baseURL}/settings`)}>
+                  <GBLink onClick={() => this.directLink(`${baseURL}/settings/myaccount`)}>
                     <span className='defaultAvatarImage'><span className='icon'>{access.initial}</span></span>
                     <br />{access.masker ? 'Masquerader' : 'Add Avatar'}
                   </GBLink>
@@ -189,7 +195,6 @@ function mapStateToProps(state, props) {
   const tickerDisplay = util.getValue(tickerPref, 'open', true);
   const stage = util.getValue(state, 'gbx3.info.stage');
   const display = util.getValue(state, `gbx3.info.display`);
-
 
   return {
     access,

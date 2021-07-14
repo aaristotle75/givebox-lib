@@ -53,6 +53,7 @@ import Loader from './common/Loader';
 import Portal from './common/Portal';
 import Redirect from './common/Redirect';
 import Remove from './common/Remove';
+import ScrollTop from './common/ScrollTop';
 import Tabs, { Tab } from './common/Tabs';
 import * as types from './common/types';
 import * as util from './common/utility';
@@ -301,6 +302,7 @@ export {
   Portal,
   Redirect,
   Remove,
+  ScrollTop,
   Tabs,
   Tab,
   types,

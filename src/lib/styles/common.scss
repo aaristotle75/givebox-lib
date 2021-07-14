@@ -228,22 +228,52 @@ button.button:hover:disabled {
   align-items: center;
 }
 
+button.toTop {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  height: 45px;
+  width: 45px;
+  border: 1px solid $light-gray;
+  border-radius: 50%;
+  color: $med-gray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparentize($white, .3);
+  z-index: 1000;
+  @include transition(color .25s);
+
+  .icon {
+    font-size: 25px;
+  }
+}
+
+button.toTop:hover {
+  color: $mainColor;
+}
+
 button.modalToTop {
   position: fixed;
   bottom: 20px;
   right: 20px;
+  height: 45px;
+  width: 45px;
   padding: 15px;
   border: 1px solid $light-gray;
+  border-radius: 50%;
   color: $med-gray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: transparentize($white, .3);
   z-index: 9999999;
 
-  .icon { font-size: $large-text-size; }
+  .icon { font-size: 25px; }
 }
 
 button.modalToTop:hover {
-  color: $white;
-  background: $mainColor;
+  color: $mainColor;
 }
 
 .pulsate {

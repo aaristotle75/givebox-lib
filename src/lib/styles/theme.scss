@@ -1105,25 +1105,6 @@ button.input-button:hover .icon {
   color: $mainColor;
 }
 
-button.toTop {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  padding: 15px;
-  border: 1px solid $light-gray;
-  color: $med-gray;
-  background: transparentize($white, .3);
-  z-index: 1000;
-  max-width: $main-max-width;
-
-  .icon { font-size: $large-text-size; }
-}
-
-button.toTop:hover {
-  color: $white;
-  background: $mainColor;
-}
-
 button.input {
   font-weight: 300;
   font-size: $normal-text-size;
@@ -1903,11 +1884,6 @@ button.supportLink {
       opacity: .7;
     }
   }
-
-  button.modalToTop:hover {
-    color: $white;
-  }
-
 }
 
 .modalFormContainer {
