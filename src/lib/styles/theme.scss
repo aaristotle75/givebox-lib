@@ -347,6 +347,8 @@ header.navbar {
     left: 10px;
     top: 2px;
     z-index: 1100;
+    opacity: 1;
+    @include transition(opacity .25s);
   }
 
   .container {
@@ -429,6 +431,7 @@ header.subNavFixed {
   padding-right: 5px;
   z-index: 1000;
   background: $white;
+  @include transition(left .25s);
 }
 
 header.subNav {

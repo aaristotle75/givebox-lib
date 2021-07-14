@@ -25,7 +25,8 @@ export function app(state = {
   modalRef: null,
   filterOpen: false,
   primaryColor: '',
-  openEditor: []
+  openEditor: [],
+  openLeftMenu: false
 }, action) {
   switch (action.type) {
     case types.SET_APP_REF:
@@ -49,6 +50,16 @@ export function app(state = {
       return Object.assign({}, state, {
         ...state,
         ...action.obj
+      });
+    case types.OPEN_LEFT_MENU:
+      return Object.assign({}, state, {
+        ...state,
+        openLeftMenu: true
+      });
+    case types.CLOSE_LEFT_MENU:
+      return Object.assign({}, state, {
+        ...state,
+        openLeftMenu: false
       });
     default:
       return state

@@ -21,6 +21,24 @@
 
   .layout-left.expand + .layout-main {
     margin-left: $layout-left-width;
+
+    header.subNavFixed {
+      left: $layout-left-width !important;
+    }
+
+    header.navbar {
+
+      .navbarContainer {
+
+        .headerLeftSide {
+          left: 10px;
+        }
+
+        .left-menu-open {
+          opacity: 0;
+        }
+      }
+    }
   }
 
   .layout-left.expand .layout-cover,

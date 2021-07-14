@@ -61,6 +61,7 @@ import Video from './common/Video';
 import FeesGlossary from './glossary/Fees';
 
 import {
+  toggleLeftMenu,
   openLaunchpad,
   toggleModal,
   removeResource,
@@ -179,6 +180,7 @@ export {
   MediaLibrary,
 
   // actions
+  toggleLeftMenu,
   openLaunchpad,
   toggleModal,
   removeResource,

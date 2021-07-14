@@ -3,12 +3,27 @@ import * as types from './actionTypes';
 import * as util from '../common/utility';
 import has from 'has';
 import { trackActivity } from './activity';
-import { sendResource } from './helpers';
+import { sendResource, savePrefs } from './helpers';
 
 const ENTRY_URL = process.env.REACT_APP_ENTRY_URL;
 const CLOUD_URL = process.env.REACT_APP_CLOUD_URL;
 const SUPER_URL = process.env.REACT_APP_SUPER_URL;
 const ENV = process.env.REACT_APP_ENV;
+
+export function toggleLeftMenu(open) {
+  return (dispatch, getState) => {
+    dispatch(savePrefs({
+      leftMenuOpen: open
+    }));
+    dispatch(setLeftMenuOpenState(open));
+  }
+}
+
+export function setLeftMenuOpenState(open) {
+  return {
+    type: open ? types.OPEN_LEFT_MENU : types.CLOSE_LEFT_MENU
+  }
+}
 
 export function openLaunchpad(opts = {}) {
   const autoOpenSlug = util.getValue(opts, 'autoOpenSlug', null);
