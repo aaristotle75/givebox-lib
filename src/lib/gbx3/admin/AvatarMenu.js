@@ -45,7 +45,7 @@ class AvatarMenu extends React.Component {
 
   directLink(url) {
     this.props.toggleModal('avatarMenu', false);
-    window.open(url);
+    window.location.href = url;
   }
 
   adminLink(obj = {}) {
@@ -131,7 +131,7 @@ class AvatarMenu extends React.Component {
           {access.role === 'admin' ?
           <div className='logoSection'>
             <h3 style={{ marginTop: 0, paddingTop: 0 }}>{access.orgName}</h3>
-            <GBLink onClick={() => this.directLink(`${baseURL}/settings/details`)}>
+            <GBLink className='tooltip' onClick={() => this.directLink(`${baseURL}/settings/details`)}>
               {orgImage ?
                 <div className='orgImage'>
                   <img src={util.imageUrlWithStyle(orgImage, 'original')} alt='Org Logo' />
@@ -141,22 +141,25 @@ class AvatarMenu extends React.Component {
                   <span className='icon icon-camera'></span>
                 </div>
               }
+              <span className='tooltipTop'><i />Click Icon to {orgImage ? 'Edit' : 'Add'} Logo</span>
             </GBLink>
           </div> : '' }
           <div style={{ borderTop: access.role !== 'admin' ? 0 : null }} className='topSection'>
             <div className='leftSide'>
-              {access.userImage ?
-                <GBLink onClick={() => this.directLink(`${baseURL}/settings/myaccount`)}>
-                  <div className='avatarImage'><img src={util.imageUrlWithStyle(access.userImage, 'medium')} alt='Avatar Medium Circle' /></div>
-                </GBLink>
-              :
-                <div className='defaultAvatar'>
-                  <GBLink onClick={() => this.directLink(`${baseURL}/settings/myaccount`)}>
-                    <span className='defaultAvatarImage'><span className='icon'>{access.initial}</span></span>
-                    <br />{access.masker ? 'Masquerader' : 'Add Avatar'}
-                  </GBLink>
-                </div>
-              }
+              <GBLink className='tooltip' onClick={() => this.directLink(`${baseURL}/settings/myaccount`)}>
+                { access.userImage ?
+                  <div className='avatarImage'>
+                    <img src={util.imageUrlWithStyle(access.userImage, 'medium')} alt='Avatar Medium Circle' />
+                  </div>
+                :
+                  <div className='defaultAvatar'>
+                    <div className='defaultAvatarImage'>
+                      <span className='icon'>{access.initial}</span>
+                    </div>
+                  </div>
+                }
+                <span className='tooltipTop'><i />Click Icon to {access.userImage ? 'Edit' : 'Add'} Avatar Image</span>
+              </GBLink>
             </div>
             <div className='rightSide'>
               { masquerade ? <span className='line'>Super User</span> : null }

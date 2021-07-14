@@ -55,12 +55,11 @@ button.link:hover .avatarImage {
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
     text-align: center;
     overflow: hidden;
     margin: 0 10px;
-    border: 1px solid $light-gray;
 
     img {
       display: inline;
@@ -116,7 +115,6 @@ button.link:hover .avatarImage {
     height: 80px;
     text-align: center;
     overflow: hidden;
-    border: 1px solid $light-gray;
 
     img {
       display: inline;
@@ -127,6 +125,28 @@ button.link:hover .avatarImage {
   }
 
   .defaultAvatar {
+
+    .defaultAvatarImage {
+      height: 70px;
+      width: 70px;
+      color: $white;
+      font-size: 12px !important;
+      border-radius: 50%;
+      background: $light-gray;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      @include transition(opacity .25s);
+
+      .icon {
+        font-size: 35px;
+        color: $white;
+      }
+    }
+
+    .defaultAvatarImage:hover {
+      opacity: .8;
+    }
 
     button.link {
       height: 80px;
@@ -141,20 +161,6 @@ button.link:hover .avatarImage {
       color: $mainColor;
       border: 1px solid $mainColor;
       @include default-transition(.2s);
-
-      .defaultAvatarImage {
-        .icon {
-          color: $mainColor;
-        }
-      }
-    }
-
-    .defaultAvatarImage {
-      .icon {
-        top: 17px;
-        font-size: 3em;
-        color: $white;
-      }
     }
   }
 
@@ -322,6 +328,10 @@ button.link:hover .avatarImage {
     font-size: 80px;
     color: $white;
   }
+}
+
+.defaultProfilePicture:hover {
+  opacity: .8;
 }
 
 /*------ END AVATAR ------*/
