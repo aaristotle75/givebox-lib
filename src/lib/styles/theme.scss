@@ -824,6 +824,15 @@ button.glossary:hover {
   @include transition(width .5s);
 }
 
+.left-menu-close {
+  position: absolute;
+  left: 0;
+  top: 13px;
+  z-index: 3003;
+  opacity: 0;
+  @include transition(left .25s, opacity 1s);
+}
+
 .layout-left.expand {
 
   .layout-cover {
@@ -843,10 +852,8 @@ button.glossary:hover {
   }
 
   .left-menu-close {
-    position: absolute;
     left: $layout-left-width - 25px;
-    top: 13px;
-    z-index: 3003;
+    opacity: 1;
 
     button:hover .icon {
       opacity: .8;

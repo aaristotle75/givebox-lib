@@ -332,20 +332,6 @@
     background: linear-gradient(to right, $mainColor 0%, $green 100%);
   }
 
-  .avatarLink button.link .defaultAvatarImage {
-    background: transparentize($light-med-gray, .5);
-    color: $white;
-    border: 1px solid transparent;
-    @include default-transition(.5s);
-  }
-
-  .avatarLink button.link:hover .defaultAvatarImage {
-    background: transparentize($light-med-gray, .5);
-    color: $white;
-    border: 1px solid transparent;
-    opacity: .7;
-  }
-
   .avatarLink .editGraphic {
     background: transparentize($light-med-gray, .5);
     color: $white;

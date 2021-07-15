@@ -234,7 +234,7 @@ class Layout extends React.Component {
 
     const avatarMenu =
       <div className='hasAccessToEditPublic'>
-        <AvatarMenuButton />
+        { display !== 'signup' ? <AvatarMenuButton /> : null }
         { !browse && display !== 'signup' ?
         <ModalLink type='div' id={'share'} className='avatarLink tooltip hideOnMobile'>
           <span className='tooltipTop'><i />Share</span>
