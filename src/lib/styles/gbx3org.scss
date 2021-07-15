@@ -39,12 +39,6 @@ $contentHeaderPadding: 35%;
       color: $dark;
     }
 
-    .avatarLink .defaultAvatarImage {
-      margin: 0;
-      width: 40px;
-      height: 40px;
-    }
-
     .avatarLink {
       margin: 0 5px;
     }
@@ -56,9 +50,12 @@ $contentHeaderPadding: 35%;
       width: 40px;
       height: 40px;
     }
+
+    .avatarLink .defaultAvatarImage {
+      margin: 0;
+    }
+
     .avatarLink .avatarImage {
-      width: 40px;
-      height: 40px;
       margin: 0;
     }
   }
