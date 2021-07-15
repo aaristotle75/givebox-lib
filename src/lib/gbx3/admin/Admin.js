@@ -75,8 +75,13 @@ class Admin extends React.Component {
     }
 
     if (!util.isEmpty(access)) {
+      const style = {};
+      if (util.getValue(access, 'masker')) {
+        style.marginTop = 25;
+        style.marginRight = 10;
+      }
       header.push(
-        <GBLink key={'exit'} style={{ fontSize: '14px' }} className='link' onClick={() => this.props.exitAdmin()}>{ isMobile ? 'Exit' : `Exit Form Builder` }</GBLink>
+        <GBLink key={'exit'} style={{ fontSize: '14px', ...style }} className='link' onClick={() => this.props.exitAdmin()}>{ isMobile ? 'Exit Form Builder' : `Exit Form Builder` }</GBLink>
       )
     }
 
