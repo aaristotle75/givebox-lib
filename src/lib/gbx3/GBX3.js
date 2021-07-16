@@ -534,7 +534,7 @@ class GBX3 extends React.Component {
     }
 
     return (
-      <div id='gbx3MainWrapper' className='gbx3'>
+      <div id='gbx3MainWrapper' className={`gbx3 ${browse ? 'isBrowsePage' : ''}`}>
         {this.renderStage()}
         <ModalRoute
           className='gbx3'
