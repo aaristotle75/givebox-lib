@@ -32,7 +32,8 @@ class ArticleAdmin extends React.Component {
     const mainStepsCompleted = checkIfTheseAreCompleted.every(c => completed.includes(c));
 
     if (!this.props.advancedBuilder && this.props.step !== 'create' && !mainStepsCompleted && !share) {
-      const updated = this.props.updateHelperSteps({ step: !completed.includes('title') ? 0 : 2 });
+      //const updated = await this.props.updateHelperSteps({ step: !completed.includes('title') ? 0 : 2 });
+      const updated = await this.props.updateHelperSteps({ step: 1 });
       if (updated) this.props.toggleModal('gbx3Builder', true);
     }
   }
@@ -108,7 +109,8 @@ function mapStateToProps(state, props) {
   const step = util.getValue(state, 'gbx3.admin.step');
   const share = util.getValue(state, 'gbx3.info.share');
   const kind = util.getValue(state, 'gbx3.info.kind', 'fundraiser');
-  const advancedBuilder = kind === 'fundraiser' ? util.getValue(state, 'gbx3.helperSteps.advancedBuilder', false) : true;
+  //const advancedBuilder = kind === 'fundraiser' ? util.getValue(state, 'gbx3.helperSteps.advancedBuilder', false) : true;
+  const advancedBuilder = util.getValue(state, 'gbx3.helperSteps.advancedBuilder', false);
 
   return {
     step,

@@ -1,7 +1,12 @@
+import React from 'react';
+import Icon from '../../../common/Icon';
+import { HiOutlineTicket } from 'react-icons/hi';
+
 const title = {
   slug: 'title',
   name: 'Fundraiser Details',
-  icon: 'heart'
+  icon: 'heart',
+  desc: 'Upload an image and write a title that will make your fundraiser shine.'
 };
 
 const logo = {
@@ -36,22 +41,29 @@ const share = {
 
 const amounts = {
   slug: 'amounts',
-  name: 'Add Amounts'
+  name: 'Add Amounts',
+  icon: 'list'
 };
 
 const eventTickets = {
   slug: 'eventTickets',
-  name: 'Add Event Tickets'
+  name: 'Event Tickets',
+  customIcon: <Icon><HiOutlineTicket /></Icon>,
+  desc: 'Add event ticket amounts and the number available for sale.'
 };
 
 const where = {
   slug: 'where',
-  name: 'Where is Event'
+  name: 'Where is Event',
+  icon: 'map-pin',
+  desc: 'This is optional, add the location of the event.'
 };
 
 const when = {
   slug: 'when',
-  name: 'When is Event'
+  name: 'When is Event',
+  icon: 'calendar',
+  desc: 'This is optional, add a date and time for the event.'
 };
 
 const sweepstakesTickets = {
@@ -72,7 +84,8 @@ const membershipSubscriptions = {
 const themeColor = {
   slug: 'themeColor',
   name: 'Fundraiser Boosters',
-  icon: 'sun'
+  icon: 'sun',
+  desc: 'These are optional, but they really help increase donations.'
 };
 
 const defaultSteps = [
@@ -90,15 +103,20 @@ const invoice = [
 ];
 
 const event = [
-  title,
-  logo,
-  image,
-  themeColor,
+  {
+    ...title,
+    name: 'Event Details',
+    desc: 'Upload an image and write a title that will make your event shine.'
+  },
   eventTickets,
   when,
   where,
-  preview,
-  share
+  {
+    ...themeColor,
+    name: 'Event Boosters',
+    desc: 'These are optional, but they really help increase ticket sales.'
+  },
+  previewShare
 ];
 
 const sweepstakes = [

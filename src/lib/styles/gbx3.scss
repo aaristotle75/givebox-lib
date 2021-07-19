@@ -2933,6 +2933,10 @@
 
 .gbx3 {
 
+  .error .moneyAmount .symbol {
+    color: $red !important;
+  }
+
   .moneyAmount.noValue .symbol {
     color: $placeholder-gray;
   }

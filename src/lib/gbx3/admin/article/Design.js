@@ -69,7 +69,7 @@ class Design extends React.Component {
     const middle = [];
     const rightSide = [];
 
-    if (!previewMode && !mobile && kind === 'fundraiser') {
+    if (!previewMode && !mobile) {
       leftSide.push(
         <div
           className='leftSide'

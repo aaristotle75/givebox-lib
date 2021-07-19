@@ -488,6 +488,11 @@ $gbx3StepsBreakpoint: 600px;
     }
   }
 
+  .step.stepAmounts {
+    margin: 0;
+    padding: 0;
+  }
+
   .step.preview {
 
     .stepTitleContainer {
@@ -784,6 +789,30 @@ $gbx3StepsBreakpoint: 600px;
       font-weight: 400;
       border-bottom: 0;
       color: $med-blue-gray;
+    }
+  }
+}
+
+/*-------- Amounts Tickets ---------*/
+.gbx3Steps {
+
+  .floating-label.active label {
+    color: $mainColor;
+  }
+
+  .gbx3amountsEdit {
+
+    .inputLeftBar {
+      left: -5px;
+      top: 2px;
+    }
+
+    .amountsEditRow {
+      border-radius: 10px;
+      padding: 20px 5px 20px 20px;
+      margin: 20px 0;
+      border-left: 0;
+      background: transparent;
     }
   }
 }

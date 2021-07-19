@@ -9,11 +9,13 @@ class TextField extends Component {
     super(props);
     this.onFocus = this.onFocus.bind(this);
     this.onBlur = this.onBlur.bind(this);
+    this.onChange = this.onChange.bind(this);
     this.inputRef = React.createRef();
     this.state = {
       status: 'idle',
       color: props.color,
-      maxLength: props.maxLength
+      maxLength: props.maxLength,
+      value: props.value || ''
     }
   }
 
@@ -30,6 +32,9 @@ class TextField extends Component {
     if (prevProps.maxLength !== this.props.maxLength) {
       this.setState({ maxLength: this.props.maxLength });
     }
+    if (prevProps.value !== this.props.value) {
+      this.setState({ value: this.props.value });
+    }
   }
 
   onFocus(e) {
@@ -40,8 +45,17 @@ class TextField extends Component {
 
   onBlur(e) {
     e.preventDefault();
+    const value = e.target.value;
     this.setState({status: 'idle'});
     if (this.props.onBlur) this.props.onBlur(e);
+  }
+
+  onChange(e) {
+    e.preventDefault();
+    const value = e.target.value;
+    if (this.state.status !== 'active') this.setState({status: 'active'});
+    this.setState({ value });
+    if (this.props.onChange) this.props.onChange(e);
   }
 
   render() {
@@ -61,7 +75,6 @@ class TextField extends Component {
       className,
       error,
       errorType,
-      value,
       strength,
       count,
       symbol,
@@ -77,7 +90,8 @@ class TextField extends Component {
     const {
       status,
       color,
-      maxLength
+      maxLength,
+      value
     } = this.state;
 
     const labelStyle = {
@@ -105,7 +119,7 @@ class TextField extends Component {
               placeholder={placeholder}
               required={type === 'hidden' ? false : required}
               readOnly={readOnly}
-              onChange={this.props.onChange}
+              onChange={this.onChange}
               onBlur={this.onBlur}
               onFocus={this.onFocus}
               autoComplete={autoComplete}

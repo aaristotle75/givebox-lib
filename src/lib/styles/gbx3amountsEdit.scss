@@ -18,6 +18,7 @@ $editAmountBreakpoint: 500px;
 
   .fieldItems {
     display: block;
+    white-space: nowrap;
 
     @media (max-width: $editAmountBreakpoint) {
       display: flex;
@@ -75,6 +76,7 @@ $editAmountBreakpoint: 500px;
   }
 
   .amountsEditRow {
+    position: relative;
     width: 100%;
     padding: 15px 5px 15px 0;
     margin: 15px 0;
@@ -110,6 +112,8 @@ $editAmountBreakpoint: 500px;
     background: transparentize($mainColorLight, .9);
 
     .amountsRightSideButtonGroup {
+
+      button.button,
       button.link {
         opacity: 1;
       }
@@ -134,7 +138,16 @@ $editAmountBreakpoint: 500px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    white-space: nowrap;
 
+    button.button {
+      padding: 10px 15px;
+      font-size: 14px;
+      margin-top: 0;
+      margin-right: 10px;
+    }
+
+    button.button,
     button.link {
       opacity: 0;
       @include transition(opacity .5s);

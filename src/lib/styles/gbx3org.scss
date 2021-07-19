@@ -917,6 +917,10 @@ $contentHeaderPadding: 35%;
 /*-------- GBX3BROWSE - Browse  -------*/
 .gbx3.isBrowsePage {
 
+  ::-webkit-scrollbar-thumb {
+    background: $mainColor;
+  }
+
   .search {
     input {
       color: $white;

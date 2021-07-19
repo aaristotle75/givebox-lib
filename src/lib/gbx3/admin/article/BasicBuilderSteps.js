@@ -35,6 +35,9 @@ import HelpfulTip from '../../../common/HelpfulTip';
 import EditVideo from '../../admin/common/EditVideo';
 import { PhotoshopPicker } from 'react-color-aaristotle';
 import { MdCheckCircle } from 'react-icons/md';
+import Tickets from './builderSteps/Tickets';
+import Where from './builderSteps/Where';
+import When from './builderSteps/When';
 
 const GBX3_URL = process.env.REACT_APP_GBX_URL;
 
@@ -329,9 +332,11 @@ class BasicBuilderStepsForm extends Component {
     const item = {
       title: '',
       icon: stepConfig.icon,
-      desc: '',
+      customIcon: stepConfig.customIcon,
+      desc: stepConfig.desc,
       component: null,
       className: '',
+      defaultButtonGroup: true,
       saveButtonLabel: <span className='buttonAlignText'>Save & Continue</span>
     };
 
@@ -340,12 +345,55 @@ class BasicBuilderStepsForm extends Component {
     const imageURL = (!util.checkImage(mediaURL) || !mediaURL) ? '' : mediaURL;
     const videoURL = util.getValue(mediaBlock, 'content.video.URL', util.getValue(data, 'videoURL', ''));
 
+    const leftSide =
+      <div className='leftSide' style={{ width: 150 }}>
+        { !firstStep ? <GBLink className={`link`} disabled={firstStep} onClick={() => this.props.previousStep()}><span style={{ marginRight: '5px' }} className='icon icon-chevron-left'></span> {isMobile ? 'Back' : 'Previous Step'}</GBLink> : <span>&nbsp;</span> }
+      </div>
+    ;
+
+    const rightSide =
+      <div className='rightSide' style={{ width: 150 }}>
+        <Image className='pulsate' url={isMobile ? 'https://cdn.givebox.com/givebox/public/gb-logo5.png' : 'https://cdn.givebox.com/givebox/public/givebox-logo_white.png'} alt='Givebox Logo' maxHeight={30} />
+      </div>
+    ;
+
     switch (slug) {
+
+      case 'eventTickets': {
+        item.className = 'stepAmounts';
+        item.defaultButtonGroup = false;
+        item.component =
+          <Tickets
+            {...this.props}
+            leftSide={leftSide}
+            rightSide={rightSide}
+            processForm={this.processForm}
+          />
+        ;
+        break;
+      }
+
+      case 'where': {
+        item.component =
+          <Where
+            {...this.props}
+          />
+        ;
+        break;
+      }
+
+      case 'when': {
+        item.component =
+          <When
+            {...this.props}
+          />
+        ;
+        break;
+      }
 
       case 'title': {
         const title = this.props.checkHelperIfHasDefaultValue('article', { field: 'title', defaultCheck: 'text' }) ? '' : util.getValue(data, 'title');
 
-        item.desc = 'Upload an image and write a title that will make your fundraiser shine.';
         item.component =
           <div className='fieldGroup'>
             <MediaLibrary
@@ -430,7 +478,7 @@ class BasicBuilderStepsForm extends Component {
             },
           }
         };
-        item.desc = 'These are optional, but they really help increase donations.';
+
         item.component =
           <div className='fieldGroup'>
             <div className='column50'>
@@ -551,17 +599,13 @@ class BasicBuilderStepsForm extends Component {
             {item.component}
           </div>
         </div>
-        { !this.state.editorOpen ?
+        { !this.state.editorOpen  && item.defaultButtonGroup ?
         <div className='button-group'>
-          <div className='leftSide' style={{ width: 150 }}>
-            { !firstStep ? <GBLink className={`link`} disabled={firstStep} onClick={() => this.props.previousStep()}><span style={{ marginRight: '5px' }} className='icon icon-chevron-left'></span> {isMobile ? 'Back' : 'Previous Step'}</GBLink> : <span>&nbsp;</span> }
-          </div>
+          {leftSide}
           <div className='button-item'>
             {this.props.saveButton(this.processForm, { label: item.saveButtonLabel })}
           </div>
-          <div className='rightSide' style={{ width: 150 }}>
-            <Image className='pulsate' url={isMobile ? 'https://cdn.givebox.com/givebox/public/gb-logo5.png' : 'https://cdn.givebox.com/givebox/public/givebox-logo_white.png'} alt='Givebox Logo' maxHeight={30} />
-          </div>
+          {rightSide}
         </div> : null }
       </div>
     );
