@@ -42,18 +42,12 @@ $editAmountBreakpoint: 500px;
     padding: 10px 10%;
   }
 
+  .tooltipTop {
+    white-space: pre-wrap;
+  }
+
   .tooltipTop:not(.readOnly) {
     top: -10px;
-  }
-
-  .readOnly.tooltip .tooltipTop {
-      color: $white;
-      background-color: $dark-blue-gray;
-  }
-
-  .readOnly.tooltip .tooltipTop i::after {
-    color: $white;
-    background-color: $dark-blue-gray;
   }
 
   .formSection {

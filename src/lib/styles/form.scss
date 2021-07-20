@@ -964,17 +964,11 @@ label.active {
 
   .tooltip .tooltipTop {
     top: -40px;
-    color: $white;
-    background-color: $mainColor;
   }
 
   .tooltip .tooltipTop i {
     left: 10%;
     margin-left: -12px;
-  }
-
-  .tooltip .tooltipTop i::after {
-    background-color: $mainColor;
   }
 
   .error {
@@ -1360,7 +1354,6 @@ form {
 /*------ Tooltip Sortable-------*/
 .tooltip.sortable {
   .tooltipTop {
-    background: #253655;
   }
 }
 

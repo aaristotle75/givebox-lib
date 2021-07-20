@@ -817,10 +817,6 @@ $gbx3StepsBreakpoint: 600px;
       .amountsRightSideButtonGroup {
         justify-content: center;
 
-        .tooltipTop {
-          white-space: pre-wrap;
-        }
-
         button.link {
           margin: 0 10px;
 
@@ -832,7 +828,7 @@ $gbx3StepsBreakpoint: 600px;
 
         button.link:hover {
           .icon {
-            color: transparentize($mainColor, .8);
+            color: transparentize($mainColor, .2);
           }
         }
       }

@@ -87,7 +87,6 @@ export default class AmountsEdit extends Component {
     this.props.amountsListUpdated(arrayMove(amountsList, oldIndex, newIndex), true);
   };
 
-
   getAmount(ID) {
     const amountsList = this.props.amountsList;
     const index = amountsList.findIndex(x => x.ID === ID);
@@ -111,6 +110,7 @@ export default class AmountsEdit extends Component {
     const {
       orgID
     } = this.props;
+
     const amountsList = [ ...this.props.amountsList ];
     const index = amountsList.findIndex(x => x.ID === ID);
     const amount = amountsList[index];
@@ -171,11 +171,13 @@ export default class AmountsEdit extends Component {
     const {
       customID
     } = this.props;
+
     const config = util.getValue(amountFieldsConfig, this.props.kind, {});
     const amount = this.getAmount(ID);
     const customField = config.hasCustomField && customID === ID ? true : false;
     const displayValue = priceDisplay || ( amount.priceDisplay || (amount.price && amount.price !== 0 ? amount.price/100 : '') );
     let error = false;
+
     if (enabled && !customField && !_v.validateNumber(displayValue, _v.limits.txMin, _v.limits.txMax) && !util.getValue(amount, 'freeSingleEntry')) {
       error = `Enabled amounts must be between $${_v.limits.txMin} and $${util.numberWithCommas(_v.limits.txMax)}.`;
     } else if (!enabled && !_v.validateNumber(displayValue, 0, _v.limits.txMax)) {
