@@ -72,6 +72,7 @@ const event = {
       long: null
     }
   },
+  /*
   tickets: {
     list: [{
       enabled: true,
@@ -79,6 +80,7 @@ const event = {
       orderBy: 0
     }]
   }
+  */
 };
 
 const membership = {
@@ -92,6 +94,7 @@ const membership = {
     'annually'
   ],
   recurringDefaultInterval: 'once',
+  /*
   subscriptions: {
     list: [{
       enabled: true,
@@ -99,6 +102,7 @@ const membership = {
       orderBy: 0
     }]
   }
+  */
 };
 
 const sweepstake = {
@@ -109,6 +113,7 @@ const sweepstake = {
   endsAt: null,
   goal: null,
   allowPerTicketWinner: true,
+  /*
   tickets: {
     list: [{
       enabled: true,
@@ -116,6 +121,7 @@ const sweepstake = {
       orderBy: 0
     }]
   }
+  */
 };
 
 export const createData = {

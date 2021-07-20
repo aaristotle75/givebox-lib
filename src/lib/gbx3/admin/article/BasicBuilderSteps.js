@@ -223,9 +223,9 @@ class BasicBuilderStepsForm extends Component {
     }
   }
 
-  processCallback(res, err) {
+  processCallback(res, err, callback = this.formSavedCallback) {
     if (!err) {
-      this.props.formSaved(() => this.formSavedCallback());
+      this.props.formSaved(() => { if (callback) callback(); });
     } else {
       if (!this.props.getErrors(err)) this.props.formProp({error: this.props.savingErrorMsg});
     }
@@ -281,6 +281,8 @@ class BasicBuilderStepsForm extends Component {
         }
       };
       this.saveStep(null, blockObj, false, this.gotoNextStep);
+    } else if (slug === 'tickets') {
+      this.saveStep(null, null, true, this.gotoNextStep);
     } else {
       this.saveStep(null, null, false, this.gotoNextStep);
     }
@@ -359,7 +361,7 @@ class BasicBuilderStepsForm extends Component {
 
     switch (slug) {
 
-      case 'eventTickets': {
+      case 'tickets': {
         item.className = 'stepAmounts';
         item.defaultButtonGroup = false;
         item.component =
@@ -367,7 +369,11 @@ class BasicBuilderStepsForm extends Component {
             {...this.props}
             leftSide={leftSide}
             rightSide={rightSide}
+            saveStep={this.saveStep}
+            gotoNextStep={this.gotoNextStep}
+            updateData={this.props.updateData}
             processForm={this.processForm}
+            processCallback={this.processCallback}
           />
         ;
         break;

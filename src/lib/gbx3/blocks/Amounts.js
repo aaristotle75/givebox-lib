@@ -405,7 +405,7 @@ class Amounts extends Component {
       tab
     } = this.state;
 
-    if (util.isEmpty(amountsList)) return <></>;
+    //if (util.isEmpty(amountsList)) return <></>;
 
     const allowPerTicketWinner = util.getValue(extras, 'allowPerTicketWinner') || util.getValue(data, 'allowPerTicketWinner');
     const maxQuantity = util.getValue(extras, 'maxQuantity') || util.getValue(data, 'maxQuantity');

@@ -813,6 +813,29 @@ $gbx3StepsBreakpoint: 600px;
       margin: 20px 0;
       border-left: 0;
       background: transparent;
+
+      .amountsRightSideButtonGroup {
+        justify-content: center;
+
+        .tooltipTop {
+          white-space: pre-wrap;
+        }
+
+        button.link {
+          margin: 0 10px;
+
+          .icon {
+            font-size: 18px;
+            color: $mainColor;
+          }
+        }
+
+        button.link:hover {
+          .icon {
+            color: transparentize($mainColor, .8);
+          }
+        }
+      }
     }
   }
 }

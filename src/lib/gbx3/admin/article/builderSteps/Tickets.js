@@ -10,6 +10,36 @@ import TextField from '../../../../form/TextField';
 import {
   sendResource
 } from '../../../../api/helpers';
+import {SortableContainer, SortableElement, SortableHandle} from 'react-sortable-hoc';
+
+const arrayMove = require('array-move');
+
+const DragHandle = SortableHandle(() => {
+  return (
+    <GBLink ripple={false} className='tooltip sortable link right'>
+      <span className='tooltipTop'><i />Drag & Drop to Change Order</span>
+      <span className='icon icon-move'></span>
+    </GBLink>
+  )
+});
+
+const SortableItem = SortableElement(({value}) => {
+  return (
+    <div className='gbx3amountsEdit sortableElement' >
+      {value}
+    </div>
+  )
+});
+
+const SortableList = SortableContainer(({items}) => {
+  return (
+    <div>
+      {items.map((value, index) => (
+        <SortableItem key={`item-${index}`} index={index} value={value} />
+      ))}
+    </div>
+  );
+});
 
 class Tickets extends React.Component {
 
@@ -22,11 +52,13 @@ class Tickets extends React.Component {
     this.deleteTicket = this.deleteTicket.bind(this);
     this.priceField = this.priceField.bind(this);
     this.nameField = this.nameField.bind(this);
-    this.inStockField = this.inStockField.bind(this);
+    this.maxField = this.maxField.bind(this);
     this.addNewTicketValue = this.addNewTicketValue.bind(this);
+    this.saveTickets = this.saveTickets.bind(this);
     this.config = util.getValue(amountFieldsConfig, this.props.kind, {});
     this.state = {
       ticketList: props.ticketList,
+      ticketListUpdated: false,
       priceError: [],
       nameError: [],
       inStockError: [],
@@ -47,11 +79,91 @@ class Tickets extends React.Component {
   }
 
   componentDidMount() {
-    console.log('execute ticket config -> ', this.config);
+  }
+
+  onSortStart(e) {
+    util.noSelection();
+  }
+
+  onSortMove(e) {
+    util.noSelection();
+  }
+
+  onSortEnd = ({oldIndex, newIndex, collection}) => {
+    const ticketList = arrayMove(this.state.ticketList, oldIndex, newIndex);
+    Object.entries(ticketList).forEach(([key, value]) => {
+      ticketList[key].orderBy = +key;
+    });
+    this.setState({
+      ticketList,
+      ticketListUpdated: true
+    });
+  };
+
+  async saveTickets() {
+
+    const {
+      ID,
+      orgID,
+      kind
+    } = this.props;
+
+    const {
+      ticketList,
+      ticketListUpdated
+    } = this.state;
+
+    util.toTop('modalOverlay-gbx3Builder');
+
+    if (!util.isEmpty(ticketList)) {
+      if (ticketListUpdated) {
+        const data = {
+          [types.kind(kind).amountField]: {
+            list: [
+              ...ticketList
+            ],
+          }
+        };
+
+        const dataUpdated = await this.props.updateData(data);
+        if (dataUpdated) {
+          this.props.sendResource(`org${types.kind(kind).api.item}`, {
+            data,
+            orgID,
+            id: [ID],
+            method: 'patch',
+            callback: (res, err) => {
+              this.setState({ ticketListUpdated: false });
+              this.props.processCallback(res, err, () => {
+                this.props.processForm();
+              });
+            }
+          });
+        }
+      } else {
+        this.props.processForm();
+      }
+    } else {
+      this.props.formProp({ error: true, errorMsg: 'You must add at least 1 ticket to Save & Continue.' });
+      setTimeout(() => {
+        this.props.formProp({ error: false });
+      }, 3000);
+    }
   }
 
   updateTicket(ID, data = {}) {
+    const {
+      ticketList
+    } = this.state;
 
+    const ticketToUpdateIndex = ticketList.findIndex(t => t.ID === ID);
+
+    ticketList[ticketToUpdateIndex] = {
+      ...ticketList[ticketToUpdateIndex],
+      ...data
+    };
+
+    this.setState({ ticketList, ticketListUpdated: true });
   }
 
   deleteTicket(ticketID) {
@@ -133,7 +245,7 @@ class Tickets extends React.Component {
         callback: (res, err) => {
           if (!err && !util.isEmpty(res)) {
             ticketList.push(res);
-            this.setState({ newTicketSuccess: true, newTicketValues: { price: '', name: '', max: '' } }, () => {
+            this.setState({ ticketListUpdated: true, newTicketSuccess: true, newTicketValues: { price: '', name: '', max: '' } }, () => {
               setTimeout(() => {
                 this.setState({ newTicketSuccess: false });
               }, 3000)
@@ -155,7 +267,7 @@ class Tickets extends React.Component {
     })
   }
 
-  priceField(value = {}) {
+  priceField(value = {}, width = '10%') {
 
     const {
       priceError
@@ -164,7 +276,7 @@ class Tickets extends React.Component {
     const priceDisplay = value.price && value.price !== 0 ? value.price/100 : '';
 
     return (
-      <div className='column' style={{ width: '10%' }}>
+      <div className='column' style={{ width }}>
         <TextField
           name='price'
           fixedLabel={true}
@@ -187,7 +299,7 @@ class Tickets extends React.Component {
               }
             } else {
               if (value.ID === 'new') this.addNewTicketValue('price', price);
-              console.log('execute update price -> ', value.ID, price);
+              else this.updateTicket(value.ID, { price });
             }
           }}
           onChange={(e) => {
@@ -201,14 +313,14 @@ class Tickets extends React.Component {
     )
   }
 
-  nameField(value = {}) {
+  nameField(value = {}, width = '60%') {
 
     const {
       nameError
     } = this.state;
 
     return (
-      <div className='column' style={{ width: '65%' }}>
+      <div className='column' style={{ width }}>
         <TextField
           name={'name'}
           label={'Ticket Name'}
@@ -225,7 +337,8 @@ class Tickets extends React.Component {
               }
             } else {
               if (value.ID === 'new') this.addNewTicketValue('name', name);
-              console.log('execute update name -> ', value.ID, name);
+              else this.updateTicket(value.ID, { name });
+
             }
           }}
           onChange={(e) => {
@@ -244,7 +357,7 @@ class Tickets extends React.Component {
     )
   }
 
-  inStockField(value = {}) {
+  maxField(value = {}, width = '10%') {
 
     const {
       inStockError
@@ -255,7 +368,7 @@ class Tickets extends React.Component {
     const inStock = max - sold;
 
     return (
-      <div className='column' style={{ width: '10%' }}>
+      <div className='column' style={{ width }}>
         <TextField
           name={'max'}
           label={'In Stock'}
@@ -278,12 +391,12 @@ class Tickets extends React.Component {
                 this.addNewTicketValue('max', max);
               }
             } else {
-              console.log('execute instock (aka max) -> ', max);
+              this.updateTicket(value.ID, { max });
             }
           }}
           maxLength={7}
           value={inStock || ''}
-          error={inStockError.includes(value.ID) ? `You must have a least 1 ticket in stock.` : ''}
+          error={inStockError.includes(value.ID) ? `You must have a least 1 ticket available for purchase.` : ''}
           errorType={'tooltip'}
         />
       </div>
@@ -308,9 +421,9 @@ class Tickets extends React.Component {
           <div className='inputLeftBar'></div>
           <div className='fieldItems'>
             {this.priceField({ ID: 'new', price: newTicketValues.price })}
-            {this.nameField({ ID: 'new', name: newTicketValues.name })}
-            {this.inStockField({ ID: 'new', max: newTicketValues.max })}
-            <div className='column' style={{ width: '15%' }}>
+            {this.nameField({ ID: 'new', name: newTicketValues.name }, '60%')}
+            {this.maxField({ ID: 'new', max: newTicketValues.max })}
+            <div className='column' style={{ width: '20%' }}>
               <div className='amountsRightSideButtonGroup flexCenter'>
                 <GBLink style={{ opacity: 1 }} className='button' onClick={() => this.addTicket()}>Add Ticket</GBLink>
               </div>
@@ -333,18 +446,22 @@ class Tickets extends React.Component {
       if (value.enabled) {
 
         items.push(
-          <div className='amountsEditRow' key={key}>
+          <div className='amountsEditRow sortableListItem' key={key}>
             <div className='inputLeftBar'></div>
             <div className='fieldItems'>
               {this.priceField(value)}
               {this.nameField(value)}
-              {this.inStockField(value)}
-              <div className='column' style={{ width: '15%' }}>
+              {this.maxField(value)}
+              <div className='column' style={{ width: '20%' }}>
                 <div className='amountsRightSideButtonGroup flexCenter'>
                   {/*
                   <GBLink className='button' onClick={() => console.log('execute update -> ', value.ID)}>Update</GBLink>
                   */}
-                  <GBLink onClick={() => this.deleteTicket(value.ID)}>Delete</GBLink>
+                  <DragHandle />
+                  <GBLink className='tooltip link right' onClick={() => this.deleteTicket(value.ID)}>
+                    <span className='tooltipTop'><i />Delete Ticket</span>
+                    <span className='icon icon-x'></span>
+                  </GBLink>
                 </div>
               </div>
             </div>
@@ -352,6 +469,8 @@ class Tickets extends React.Component {
         );
       }
     });
+
+    const rows = <SortableList onSortStart={this.onSortStart} onSortMove={this.onSortMove} helperClass='sortableHelper' hideSortableGhost={true} useDragHandle={true} items={items} onSortEnd={this.onSortEnd} />;
 
     return (
       <div className='amountsEditList'>
@@ -362,7 +481,7 @@ class Tickets extends React.Component {
                Current Ticket List
               </div>
             </div>
-            {items}
+            {rows}
           </>
         : null }
       </div>
@@ -376,6 +495,10 @@ class Tickets extends React.Component {
       rightSide
     } = this.props;
 
+    const {
+      ticketList
+    } = this.state;
+
     return (
       <div className='fieldGroup gbx3amountsEdit'>
         {this.renderAddTicket()}
@@ -383,7 +506,7 @@ class Tickets extends React.Component {
         <div className='button-group'>
           {leftSide}
           <div className='button-itme'>
-            <GBLink className='button' onClick={() => console.log('execute save tickets')}>
+            <GBLink className='button' onClick={() => this.saveTickets()}>
               Save & Continue
             </GBLink>
           </div>

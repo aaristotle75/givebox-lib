@@ -61,6 +61,21 @@
     .info {
       margin-left: 20px;
     }
+
+    .subNavContent {
+      .balance {
+        h1 {
+          color: $green;
+        }
+
+        .dropdown {
+          .icon,
+          .label {
+            color: $mainColor;
+          }
+        }
+      }
+    }
   }
 
   /*-------- Layout ---------*/

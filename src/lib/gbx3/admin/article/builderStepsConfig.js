@@ -45,8 +45,8 @@ const amounts = {
   icon: 'list'
 };
 
-const eventTickets = {
-  slug: 'eventTickets',
+const tickets = {
+  slug: 'tickets',
   name: 'Event Tickets',
   customIcon: <Icon><HiOutlineTicket /></Icon>,
   desc: 'Add event ticket amounts and the number available for sale.'
@@ -108,7 +108,7 @@ const event = [
     name: 'Event Details',
     desc: 'Upload an image and write a title that will make your event shine.'
   },
-  eventTickets,
+  tickets,
   when,
   where,
   {
