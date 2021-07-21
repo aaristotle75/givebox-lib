@@ -33,7 +33,7 @@ const SortableItem = SortableElement(({value}) => {
 
 const SortableList = SortableContainer(({items}) => {
   return (
-    <div>
+    <div style={{ width: '100%' }}>
       {items.map((value, index) => (
         <SortableItem key={`item-${index}`} index={index} value={value} />
       ))}
@@ -53,15 +53,18 @@ class Tickets extends React.Component {
     this.priceField = this.priceField.bind(this);
     this.nameField = this.nameField.bind(this);
     this.maxField = this.maxField.bind(this);
+    this.entriesField = this.entriesField.bind(this);
     this.addNewTicketValue = this.addNewTicketValue.bind(this);
     this.saveTickets = this.saveTickets.bind(this);
     this.config = util.getValue(amountFieldsConfig, this.props.kind, {});
+    this.thirdColumnFieldName = props.kind === 'sweepstake' ? 'entries' : 'max';
+    this.ticketLabel = props.kind === 'membership' ? 'subscription' : 'ticket';
     this.state = {
-      ticketList: props.ticketList,
+      ticketList: [],
       ticketListUpdated: false,
       priceError: [],
       nameError: [],
-      inStockError: [],
+      thirdColumnFieldError: [],
       showAddTicket: true,
       addTicketError: false,
       addTicketErrorMsg: '',
@@ -72,13 +75,26 @@ class Tickets extends React.Component {
       newTicketValues: {
         price: '',
         name: '',
-        max: ''
+        [this.thirdColumnFieldName]: ''
       },
       newTicketSuccess: false
     };
   }
 
   componentDidMount() {
+    this.setTickets();
+  }
+
+  setTickets() {
+    const ticketList = this.state.ticketList;
+    if (!util.isEmpty(this.props.ticketList)) {
+      Object.entries(this.props.ticketList).forEach(([key, value]) => {
+        if (value.enabled && !value.freeSingleEntry && !value.isDeleted) {
+          ticketList.push(value);
+        }
+      });
+    }
+    this.setState({ ticketList });
   }
 
   onSortStart(e) {
@@ -201,7 +217,7 @@ class Tickets extends React.Component {
       ticketList,
       priceError,
       nameError,
-      inStockError,
+      thirdColumnFieldError,
       newTicketValues
     } = this.state;
 
@@ -209,21 +225,21 @@ class Tickets extends React.Component {
 
     if (priceError.includes('new')
       || nameError.includes('new')
-      || inStockError.includes('new')
+      || thirdColumnFieldError.includes('new')
       || !newTicketValues.price
       || !newTicketValues.name
-      || !newTicketValues.max
+      || !newTicketValues[this.thirdColumnFieldName]
     ) {
       if (!priceError.includes('new') && !newTicketValues.price) priceError.push('new');
       if (!nameError.includes('new') && !newTicketValues.name) nameError.push('new');
-      if (!inStockError.includes('new') && !newTicketValues.max) inStockError.push('new');
+      if (!thirdColumnFieldError.includes('new') && !newTicketValues[this.thirdColumnFieldName]) thirdColumnFieldError.push('new');
 
       this.setState({
         priceError,
         nameError,
-        inStockError,
+        thirdColumnFieldError,
         addTicketError: true,
-        addTicketErrorMsg: 'Please fix errors below to add a ticket.' }, () => {
+        addTicketErrorMsg: `Please fix errors below to add a ${this.ticketLabel}.` }, () => {
         setTimeout(() => {
           this.setState({ addTicketError: false });
         }, 3000);
@@ -245,13 +261,13 @@ class Tickets extends React.Component {
         callback: (res, err) => {
           if (!err && !util.isEmpty(res)) {
             ticketList.push(res);
-            this.setState({ ticketListUpdated: true, newTicketSuccess: true, newTicketValues: { price: '', name: '', max: '' } }, () => {
+            this.setState({ ticketListUpdated: true, newTicketSuccess: true, newTicketValues: { price: '', name: '', [this.thirdColumnFieldName]: '' } }, () => {
               setTimeout(() => {
                 this.setState({ newTicketSuccess: false });
               }, 3000)
             });
           } else {
-            this.setState({ addTicketError: true, addTicketErrorMsg: 'Sorry, an error occurred adding ticket. Please refresh browser and try again.' });
+            this.setState({ addTicketError: true, addTicketErrorMsg: `Sorry, an error occurred adding ${this.ticketLabel}. Please refresh browser and try again.` });
           }
         }
       });
@@ -323,9 +339,9 @@ class Tickets extends React.Component {
       <div className='column' style={{ width }}>
         <TextField
           name={'name'}
-          label={'Ticket Name'}
+          label={`${util.toTitleCase(this.ticketLabel)} Name`}
           fixedLabel={true}
-          placeholder={'Type a Ticket Short Description'}
+          placeholder={`Type a ${util.toTitleCase(this.ticketLabel)} Short Description`}
           onChange={(e) => {
           }}
           onBlur={(e) => {
@@ -350,7 +366,7 @@ class Tickets extends React.Component {
           value={value.name}
           count={true}
           maxLength={60}
-          error={nameError.includes(value.ID) ? `A ticket name is required.` : ''}
+          error={nameError.includes(value.ID) ? `A ${this.ticketLabel} name is required.` : ''}
           errorType={'tooltip'}
         />
       </div>
@@ -360,7 +376,7 @@ class Tickets extends React.Component {
   maxField(value = {}, width = '10%') {
 
     const {
-      inStockError
+      thirdColumnFieldError
     } = this.state;
 
     const sold = +util.getValue(value, 'sold', 0);
@@ -375,18 +391,18 @@ class Tickets extends React.Component {
           fixedLabel={true}
           placeholder={'0'}
           onChange={(e) => {
-            if (inStockError.includes(value.ID)) {
-              inStockError.splice(inStockError.indexOf(value.ID, 1));
-              this.setState({ inStockError });
+            if (thirdColumnFieldError.includes(value.ID)) {
+              thirdColumnFieldError.splice(thirdColumnFieldError.indexOf(value.ID, 1));
+              this.setState({ thirdColumnFieldError });
             }
           }}
           onBlur={(e) => {
             const inStock = +e.currentTarget.value;
             const max = +(inStock + sold);
             if (value.ID === 'new') {
-              if (!inStock && !inStockError.includes('new')) {
-                inStockError.push('new');
-                this.setState({ inStockError });
+              if (!inStock && !thirdColumnFieldError.includes('new')) {
+                thirdColumnFieldError.push('new');
+                this.setState({ thirdColumnFieldError });
               } else {
                 this.addNewTicketValue('max', max);
               }
@@ -395,8 +411,51 @@ class Tickets extends React.Component {
             }
           }}
           maxLength={7}
-          value={inStock || ''}
-          error={inStockError.includes(value.ID) ? `You must have a least 1 ticket available for purchase.` : ''}
+          value={inStock || 100}
+          error={thirdColumnFieldError.includes(value.ID) ? `You must have a least 1 ticket available for purchase.` : ''}
+          errorType={'tooltip'}
+        />
+      </div>
+    )
+  }
+
+  entriesField(value = {}, width = '10%') {
+
+    const {
+      thirdColumnFieldError
+    } = this.state;
+
+    const entries = +util.getValue(value, 'entries', 0);
+
+    return (
+      <div className='column' style={{ width }}>
+        <TextField
+          name={'entries'}
+          label={'Entries Per Ticket'}
+          fixedLabel={true}
+          placeholder={'0'}
+          onChange={(e) => {
+            if (thirdColumnFieldError.includes(value.ID)) {
+              thirdColumnFieldError.splice(thirdColumnFieldError.indexOf(value.ID, 1));
+              this.setState({ thirdColumnFieldError });
+            }
+          }}
+          onBlur={(e) => {
+            const entries = +e.currentTarget.value;
+            if (value.ID === 'new') {
+              if (!entries && !thirdColumnFieldError.includes('new')) {
+                thirdColumnFieldError.push('new');
+                this.setState({ thirdColumnFieldError });
+              } else {
+                this.addNewTicketValue('entries', entries);
+              }
+            } else {
+              this.updateTicket(value.ID, { entries });
+            }
+          }}
+          maxLength={7}
+          value={entries || 1}
+          error={thirdColumnFieldError.includes(value.ID) ? `You must have a least 1 entry per ticket.` : ''}
           errorType={'tooltip'}
         />
       </div>
@@ -404,6 +463,10 @@ class Tickets extends React.Component {
   }
 
   renderAddTicket() {
+
+    const {
+      kind
+    } = this.props;
 
     const {
       showAddTicket,
@@ -416,16 +479,16 @@ class Tickets extends React.Component {
     return (
       <div style={{ marginBottom: '30px' }} className='amountsEditList'>
         <Alert alert='error' display={addTicketError} msg={addTicketErrorMsg} />
-        <Alert alert='success' display={newTicketSuccess} msg={'Ticket Added! You can edit it below.'} />
+        <Alert alert='success' display={newTicketSuccess} msg={`${util.toTitleCase(this.ticketLabel)} Added! You can edit it below.`} />
         <div className='amountsEditRow'>
           <div className='inputLeftBar'></div>
           <div className='fieldItems'>
             {this.priceField({ ID: 'new', price: newTicketValues.price })}
             {this.nameField({ ID: 'new', name: newTicketValues.name }, '60%')}
-            {this.maxField({ ID: 'new', max: newTicketValues.max })}
+            { kind === 'sweepstake' ? this.entriesField({ ID: 'new', entries: newTicketValues.entries }) : this.maxField({ ID: 'new', max: newTicketValues.max }) }
             <div className='column' style={{ width: '20%' }}>
               <div className='amountsRightSideButtonGroup flexCenter'>
-                <GBLink style={{ opacity: 1 }} className='button' onClick={() => this.addTicket()}>Add Ticket</GBLink>
+                <GBLink style={{ opacity: 1 }} className='button' onClick={() => this.addTicket()}>Add {util.toTitleCase(this.ticketLabel)}</GBLink>
               </div>
             </div>
           </div>
@@ -435,6 +498,11 @@ class Tickets extends React.Component {
   }
 
   renderList() {
+
+    const {
+      kind
+    } = this.props;
+
     const {
       ticketList
     } = this.state;
@@ -447,11 +515,10 @@ class Tickets extends React.Component {
 
         items.push(
           <div className='amountsEditRow sortableListItem' key={key}>
-            <div className='inputLeftBar'></div>
             <div className='fieldItems'>
               {this.priceField(value)}
               {this.nameField(value)}
-              {this.maxField(value)}
+              { kind === 'sweepstake' ? this.entriesField(value) : this.maxField(value) }
               <div className='column' style={{ width: '20%' }}>
                 <div className='amountsRightSideButtonGroup flexCenter'>
                   {/*
@@ -459,7 +526,7 @@ class Tickets extends React.Component {
                   */}
                   <DragHandle />
                   <GBLink className='tooltip link right' onClick={() => this.deleteTicket(value.ID)}>
-                    <span className='tooltipTop'><i />Delete Ticket</span>
+                    <span className='tooltipTop'><i />Delete {util.toTitleCase(this.ticketLabel)}</span>
                     <span className='icon icon-x'></span>
                   </GBLink>
                 </div>
@@ -474,15 +541,19 @@ class Tickets extends React.Component {
 
     return (
       <div className='amountsEditList'>
-        {!util.isEmpty(items) ?
-          <>
+        { !util.isEmpty(items) ?
+          <div>
             <div className='previewTitleContainer flexCenter'>
               <div className='previewTitleText'>
-               Current Ticket List
+                Current {util.toTitleCase(this.ticketLabel)} List
               </div>
             </div>
-            {rows}
-          </>
+            <div className='sectionContainer'>
+              <div className='section'>
+                {rows}
+              </div>
+            </div>
+          </div>
         : null }
       </div>
     )

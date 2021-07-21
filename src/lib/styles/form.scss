@@ -88,6 +88,10 @@ input:-webkit-autofill:active {
   @include animation(pulsateSlightlyBrighter 2s ease-out infinite);
 }
 
+.inputLeftBar.alt {
+  @include darkToPurple(1, 180deg);
+}
+
 button.input {
   font-size: $normal-text-size;
   font-family: $font-family;
@@ -740,24 +744,6 @@ label.active {
   }
 }
 
-.error.tooltip .tooltipTop {
-  color: $white;
-  background-color: $red;
-}
-
-.error.tooltip .tooltipTop i::after {
-  background-color: $red;
-}
-
-.readOnly.tooltip .tooltipTop {
-  color: $dark;
-  background-color: $light-gray;
-}
-
-.readOnly.tooltip .tooltipTop i::after {
-  background-color: $light-gray;
-}
-
 /*-------- Alert Messages ---------*/
 .alertMsg {
 
@@ -976,14 +962,6 @@ label.active {
     .label {
       text-align: left;
       color: $red;
-    }
-
-    .tooltipTop {
-      background-color: $red;
-    }
-
-    .tooltipTop i::after {
-      background-color: $red;
     }
   }
 }
@@ -1352,10 +1330,6 @@ form {
 
 
 /*------ Tooltip Sortable-------*/
-.tooltip.sortable {
-  .tooltipTop {
-  }
-}
 
 button.tooltip.sortable {
   .icon {

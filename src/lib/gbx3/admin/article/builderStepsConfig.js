@@ -99,7 +99,17 @@ const fundraiser = [
 ];
 
 const invoice = [
-  ...defaultSteps
+  {
+    ...title,
+    name: 'Invoice Details',
+    desc: 'Upload an image and write a title that will make your invoice shine.'
+  },
+  {
+    ...themeColor,
+    name: 'Invoice Boosters',
+    desc: 'These are optional, but they really help increase invoice conversions.'
+  },
+  previewShare
 ];
 
 const event = [
@@ -119,31 +129,45 @@ const event = [
   previewShare
 ];
 
-const sweepstakes = [
-  title,
-  logo,
-  image,
-  themeColor,
-  sweepstakesTickets,
+const sweepstake = [
+  {
+    ...title,
+    name: 'Sweepstakes Details',
+    desc: 'Upload an image and write a title that will make your sweepstakes shine.'
+  },
+  {
+    ...tickets,
+    name: 'Sweepstakes Tickets',
+    desc: 'Add sweepstakes ticket amounts and the number of entries per ticket.'
+  },
   sweepstakesEnds,
-  preview,
-  share
+  {
+    ...themeColor,
+    name: 'Sweepstakes Boosters',
+    desc: 'These are optional, but they really help increase ticket sales.'
+  },
+  previewShare
 ];
 
 const membership = [
-  title,
-  logo,
-  image,
-  themeColor,
-  membershipSubscriptions,
-  preview,
-  share
+  {
+    ...title,
+    name: 'Membership Details',
+    desc: 'Upload an image and write a title that will make your membership shine.'
+  },
+  tickets,
+  {
+    ...themeColor,
+    name: 'Membership Boosters',
+    desc: 'These are optional, but they really help increase subscription sales.'
+  },
+  previewShare
 ];
 
 export const builderStepsConfig = {
   fundraiser,
   invoice,
   event,
-  sweepstakes,
+  sweepstake,
   membership
 };

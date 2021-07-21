@@ -61,3 +61,23 @@
   background: $mainColor;
   box-shadow: 0 1px 3px rgba(0,0,0,0.5);
 }
+
+.error .tooltipTop,
+.error.tooltip .tooltipTop {
+  color: $white;
+  @include redToSalmon;
+}
+
+.error .tooltipTop i::after,
+.error.tooltip .tooltipTop i::after {
+  background: $red;
+}
+
+.readOnly.tooltip .tooltipTop {
+  color: $dark;
+  background: $light-gray;
+}
+
+.readOnly.tooltip .tooltipTop i::after {
+  background: $light-gray;
+}

@@ -8,6 +8,7 @@ import {
 import Form from '../../../form/Form';
 import {
   util,
+  types,
   GBLink,
   Fade,
   Icon,
@@ -84,7 +85,8 @@ class BasicBuilderStepsForm extends Component {
 
   gbx3message(e) {
     const {
-      step
+      step,
+      kind
     } = this.props;
 
     const stepConfig = util.getValue(this.props.config, step, {});
@@ -96,8 +98,11 @@ class BasicBuilderStepsForm extends Component {
       }
     }
     if (e.data === 'gbx3Shared') {
-      if (slug === 'share') {
-        this.saveStep();
+      if (slug === 'previewShare') {
+        this.props.formSaved(() => {
+          // Do something here...
+        }, `Congratulations, your ${types.kind(kind).name} has been SHARED!`, 4000);
+        //this.saveStep();
       }
     }
 

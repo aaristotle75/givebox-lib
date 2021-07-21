@@ -184,6 +184,14 @@ $green: $puppa_green;
   @include bgGradient($direction, rgba($puppa_purple, $opacity) 50%, rgba($puppa_blue, $opacity) 100%);
 }
 
+@mixin redToSalmon($opacity: 1, $direction: 90deg) {
+  @include bgGradient($direction, rgba($red, $opacity) 50%, rgba($puppa_salmon, $opacity) 100%);
+}
+
+@mixin darkToPurple($opacity: 1, $direction: 90deg) {
+  @include bgGradient($direction, rgba($puppa_deep_purple, $opacity) 50%, rgba($puppa_med_purple, $opacity) 100%);
+}
+
 @mixin primaryButton($deg: 140deg, $background: $puppa_deep_purple) {
   background: $background;
   @include bgGradient($deg, rgba($puppa_deep_purple, 1) 50%, rgba($puppa_med_purple, 1) 100%);

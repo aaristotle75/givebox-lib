@@ -103,7 +103,7 @@ $editAmountBreakpoint: 500px;
 
   .amountsEditRow:hover {
     //border-left: 2px solid $mainColorLight;
-    background: transparentize($mainColorLight, .9);
+    background: transparentize($green, .9);
 
     .amountsRightSideButtonGroup {
 
@@ -167,8 +167,8 @@ $editAmountBreakpoint: 500px;
 
 .gbx3amountsEdit.sortableHelper {
   .amountsEditRow {
-    border-left: 2px solid $mainColorLight;
-    background: transparentize($mainColorLight, .9);
+    border-left: 2px solid $mainColor;
+    background: transparentize($green, .7);
   }
 }
 
