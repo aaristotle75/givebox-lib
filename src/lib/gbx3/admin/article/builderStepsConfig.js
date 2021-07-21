@@ -1,6 +1,7 @@
 import React from 'react';
 import Icon from '../../../common/Icon';
 import { HiOutlineTicket } from 'react-icons/hi';
+import { MdCardMembership } from 'react-icons/md';
 
 const title = {
   slug: 'title',
@@ -155,7 +156,12 @@ const membership = [
     name: 'Membership Details',
     desc: 'Upload an image and write a title that will make your membership shine.'
   },
-  tickets,
+  {
+    ...tickets,
+    name: 'Membership Subscriptions',
+    desc: 'Add membership subscription amounts and the number of subscriptions for sale.',
+    customIcon: <Icon><MdCardMembership /></Icon>
+  },
   {
     ...themeColor,
     name: 'Membership Boosters',

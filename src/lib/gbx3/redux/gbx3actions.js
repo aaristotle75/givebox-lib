@@ -2010,6 +2010,14 @@ export function setStyle(options = {}) {
       const color4 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .4)`;
       colorStyleStr = `
 
+        .gbx3 .dropdown-recurring .dropdown.customColor button .label {
+          color: ${color} !important;
+        }
+
+        .gbx3 .dropdown-recurring .dropdown.customColor button:hover .label {
+          color: ${color4} !important;
+        }
+
         .gbx3Layout .radio:checked + label:after {
           border: 1px solid ${color} !important;
           background: ${color};

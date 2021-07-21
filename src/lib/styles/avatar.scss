@@ -337,4 +337,27 @@ button.link:hover .avatarImage {
   opacity: .8;
 }
 
+.avatarLink.tooltip {
+  .tooltipTop {
+    min-width: 80px;
+    left: 0;
+    right: 0;
+    transform: translate(-105%, 0%);
+    font-size: 12px;
+    padding: 5px;
+    text-align: center;
+    background: transparentize($white, .5);
+    color: $dark;
+
+    i {
+      left: 80%;
+      display: none;
+    }
+
+    i::after {
+      background: transparentize($med-blue-gray, .7);
+    }
+  }
+}
+
 /*------ END AVATAR ------*/

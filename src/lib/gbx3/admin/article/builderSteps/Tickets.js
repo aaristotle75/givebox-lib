@@ -58,6 +58,7 @@ class Tickets extends React.Component {
     this.saveTickets = this.saveTickets.bind(this);
     this.config = util.getValue(amountFieldsConfig, this.props.kind, {});
     this.thirdColumnFieldName = props.kind === 'sweepstake' ? 'entries' : 'max';
+    this.thirdColumnDefaultValue = props.kind === 'sweepstake' ? 1 : 100;
     this.ticketLabel = props.kind === 'membership' ? 'subscription' : 'ticket';
     this.state = {
       ticketList: [],
@@ -75,7 +76,7 @@ class Tickets extends React.Component {
       newTicketValues: {
         price: '',
         name: '',
-        [this.thirdColumnFieldName]: ''
+        [this.thirdColumnFieldName]: this.thirdColumnDefaultValue
       },
       newTicketSuccess: false
     };

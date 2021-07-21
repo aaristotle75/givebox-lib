@@ -131,7 +131,7 @@
     left: 0;
     right: 0;
     transform: translate(-105%, 0%);
-    background-color: transparentize($white, .5);
+    background: transparentize($white, .5);
     color: $dark;
     font-size: 12px;
     padding: 5px;
