@@ -188,6 +188,10 @@ $green: $puppa_green;
   @include bgGradient($direction, rgba($red, $opacity) 50%, rgba($puppa_salmon, $opacity) 100%);
 }
 
+@mixin purpleToSalmon($opacity: 1, $direction: 90deg) {
+  @include bgGradient($direction, rgba($puppa_purple, $opacity) 50%, rgba($puppa_salmon, $opacity) 100%);
+}
+
 @mixin darkToPurple($opacity: 1, $direction: 90deg) {
   @include bgGradient($direction, rgba($puppa_deep_purple, $opacity) 50%, rgba($puppa_med_purple, $opacity) 100%);
 }

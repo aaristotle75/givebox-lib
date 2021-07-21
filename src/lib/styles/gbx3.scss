@@ -2550,19 +2550,19 @@
 
 .copyButton {
   padding: 10px 20px;
-  background: $white;
-  color: $mainColor;
-  border: 1px solid $mainColor;
+  @include purpleToSalmon;
+  color: $white;
+  //border: 1px solid $mainColor;
+  border: 0;
   border-radius: 20px;
-  @include default-transition(.5s);
-  font-size: 16px;
+  @include transition(opacity .25s);
+  font-size: 14px;
   font-weight: 400;
   margin: 10px 0;
 }
 
 .copyButton:hover {
-  background: $mainColor;
-  color: $white;
+  opacity: .8;
 }
 
 /*------- SHARE LINK ------*/
@@ -2647,6 +2647,8 @@
 
 /*--------- CREATE NEW -------*/
 .createStep {
+
+  margin-bottom: 20px;
 
   .formSectionContainer {
     background: transparent;

@@ -161,7 +161,7 @@ class Tickets extends React.Component {
         this.props.processForm();
       }
     } else {
-      this.props.formProp({ error: true, errorMsg: 'You must add at least 1 ticket to Save & Continue.' });
+      this.props.formProp({ error: true, errorMsg: 'You must add 1 ticket to Save & Continue.' });
       setTimeout(() => {
         this.props.formProp({ error: false });
       }, 3000);
@@ -413,7 +413,7 @@ class Tickets extends React.Component {
           }}
           maxLength={7}
           value={inStock || 100}
-          error={thirdColumnFieldError.includes(value.ID) ? `You must have a least 1 ticket available for purchase.` : ''}
+          error={thirdColumnFieldError.includes(value.ID) ? `You must have 1 ticket available for purchase.` : ''}
           errorType={'tooltip'}
         />
       </div>
