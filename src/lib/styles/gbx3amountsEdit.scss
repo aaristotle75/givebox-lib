@@ -10,6 +10,13 @@ $editAmountBreakpoint: 500px;
 
 .gbx3amountsEdit {
 
+  .amountsAdd {
+    padding: 0 20px;
+    @media (max-width: $editAmountBreakpoint) {
+      padding: 0 5px;
+    }
+  }
+
   .column {
     display: inline-block;
     margin: 0 5px;

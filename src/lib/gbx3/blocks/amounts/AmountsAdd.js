@@ -17,6 +17,7 @@ class AmountsAdd extends React.Component {
     super(props);
     this.addAmount = this.addAmount.bind(this);
     this.addNewAmountValue = this.addNewAmountValue.bind(this);
+    this.hasThirdColumnField = ( props.kind !== 'invoice' && props.kind !== 'fundraiser' ) ? true : false;
     this.thirdColumnFieldName = props.kind === 'sweepstake' ? 'entries' : 'max';
     this.thirdColumnDefaultValue = props.kind === 'sweepstake' ? 1 : 100;
     this.amountLabel = amountFieldsConfig[props.kind].label;
@@ -143,7 +144,7 @@ class AmountsAdd extends React.Component {
     const entries = +util.getValue(newAmountValues, 'entries', 0);
 
     return (
-      <div style={{ marginBottom: '30px' }} className='amountsEditList'>
+      <div style={{ marginBottom: '30px' }} className='amountsEditList amountsAdd'>
         <Alert alert='error' display={addAmountError} msg={addAmountErrorMsg} />
         <Alert alert='success' display={addAmountSuccess} msg={`${util.toTitleCase(this.amountLabel)} Added! You can edit it below.`} />
         <div className='amountsEditRow'>
@@ -210,10 +211,11 @@ class AmountsAdd extends React.Component {
                 value={newAmountValues.name}
                 count={true}
                 maxLength={60}
-                error={nameError.includes('new') ? `A ${this.amountLabel} name is required.` : ''}
+                error={nameError.includes('new') ? `A ${this.amountLabel.toLowerCase()} name is required.` : ''}
                 errorType={'tooltip'}
               />
             </div>
+            { this.hasThirdColumnField ?
             <div className='column' style={{ width: '10%' }}>
               { kind === 'sweepstake' ?
                 <TextField
@@ -270,6 +272,7 @@ class AmountsAdd extends React.Component {
                 />
               }
             </div>
+            : null }
             <div className='column' style={{ width: '20%' }}>
               <div className='amountsRightSideButtonGroup flexCenter'>
                 <GBLink style={{ opacity: 1 }} className='button' onClick={() => this.addAmount()}>Add {util.toTitleCase(this.amountLabel)}</GBLink>

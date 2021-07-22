@@ -510,16 +510,19 @@ export default class AmountsEdit extends Component {
         : <></> ;
 
         const defaultField = config.hasDefaultField ?
-          value.ID === this.props.defaultID ?
-            <span className='defaultAmount tooltip sortable right' style={{ fontSize: 12 }}>
-              Default
-              <span className='tooltipTop'><i />This is the default amount selected for the user.</span>
-            </span>
-          :
-            <GBLink className={`link ${!value.enabled ? 'sortable tooltip right' : ''}`} style={{ fontSize: 12 }} onClick={() => value.enabled ? this.props.defaultUpdated(key, value.ID) : console.error('Cannot set a disabled amount as the default')}>
-              Set Default
-              {!value.enabled ? <span className='tooltipTop'><i />Must be enabled to set as the default.</span> : <></>}
-            </GBLink>
+          <div style={{ margin: '0 10px'}}>
+            { value.ID === this.props.defaultID ?
+              <span className='defaultAmount tooltip sortable right' style={{ fontSize: 12 }}>
+                Default
+                <span className='tooltipTop'><i />This is the default amount selected for the user.</span>
+              </span>
+            :
+              <GBLink className={`link ${!value.enabled ? 'sortable tooltip right' : ''}`} style={{ fontSize: 12 }} onClick={() => value.enabled ? this.props.defaultUpdated(key, value.ID) : console.error('Cannot set a disabled amount as the default')}>
+                Set Default
+                {!value.enabled ? <span className='tooltipTop'><i />Must be enabled to set as the default.</span> : <></>}
+              </GBLink>
+            }
+          </div>
         : <></> ;
 
         const deleteField = amountsList.length > 1 ?
