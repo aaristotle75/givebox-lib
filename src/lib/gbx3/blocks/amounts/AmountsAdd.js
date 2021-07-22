@@ -90,6 +90,8 @@ class AmountsAdd extends React.Component {
         orderBy: length
       };
 
+      // this.props.addAmount();
+      /*
       this.props.sendResource(`${types.kind(this.props.kind).api.amount}s`, {
         data,
         orgID,
@@ -109,6 +111,7 @@ class AmountsAdd extends React.Component {
           }
         }
       });
+      */
     }
   }
 

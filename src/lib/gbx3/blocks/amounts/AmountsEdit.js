@@ -591,6 +591,7 @@ export default class AmountsEdit extends Component {
           {...this.props}
           kind={this.props.kind}
           amountsList={this.props.amountsList}
+          addAmount={this.addAmount}
         />
         {this.renderAmountsList()}
       </div>

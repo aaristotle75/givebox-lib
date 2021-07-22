@@ -1534,7 +1534,7 @@
       }
     }
 
-    button:hover:not(.tooltipTop) {
+    button:hover:not(.tooltip) {
       opacity: .8;
     }
 
@@ -2547,7 +2547,7 @@
 
 .copyButton {
   padding: 10px 20px;
-  @include purpleToSalmon;
+  @include purpleToSalmonOnly;
   color: $white;
   //border: 1px solid $mainColor;
   border: 0;

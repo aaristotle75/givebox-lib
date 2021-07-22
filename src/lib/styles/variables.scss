@@ -220,6 +220,22 @@ $green: $puppa_green;
   }
 }
 
+@mixin purpleSalmonButton($deg: 140deg, $background: $puppa_purple) {
+  background: $background;
+  @include bgGradient($deg, rgba($puppa_purple, 1) 50%, rgba($puppa_salmon, 1) 100%);
+  color: $white;
+  font-size: 18px;
+  white-space: nowrap;
+  padding: 15px 30px;
+  border-radius: 25px;
+  border: 0;
+  @include default-transition(.25s);
+  //@include animation(pulsateBrighter 2s ease-out infinite);
+  &:hover {
+    opacity: .9;
+  }
+}
+
 @mixin dropzoneButton($background: $puppa_purple) {
   background: $background;
   @include purpleToSalmonOnly(1, 140deg);
