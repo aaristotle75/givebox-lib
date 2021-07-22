@@ -419,7 +419,7 @@ class Amounts extends Component {
       <div className={`block ${util.getValue(button, 'enabled', false) ? util.getValue(button, 'style.align', 'flexCenter') : ''}`}>
         <ModalRoute
           id={modalID}
-          className='gbx3 gbx3amountsEdit'
+          className='gbx3'
           optsProps={{ closeCallback: this.closeModalAmountsEdit }}
           effect='3DFlipVert' style={{ width: '80%' }}
           draggable={true}
@@ -437,7 +437,7 @@ class Amounts extends Component {
                 callbackBefore={this.callbackBeforeStep}
               >
                 <Tab id='edit' label={<span className='stepLabel'>Edit Amounts</span>}>
-                  <>
+                  <div className='gbx3Steps'>
                     <AnimateHeight
                       duration={200}
                       height={!util.isEmpty(formError) ? 'auto' : 0}
@@ -446,63 +446,47 @@ class Amounts extends Component {
                       <div className={`flexCenter error`}>You must fix the issues below in red before you can save or switch tabs.</div>
                     </Fade>
                     </AnimateHeight>
-                    <Collapse
-                      label={'Edit Amounts'}
-                      iconPrimary='edit'
-                      id={'gbx3-amounts-edit'}
-                    >
-                      <div className='formSectionContainer'>
-                        <div className='formSection'>
-                          <AmountsEdit
-                            article={data}
-                            amountsList={amountsList}
-                            kind={kind}
-                            modalID={modalID}
-                            amountsListUpdated={this.amountsListUpdated}
-                            customIndex={customIndex}
-                            customID={customID}
-                            customUpdated={this.customUpdated}
-                            defaultIndex={defaultIndex}
-                            defaultID={defaultID}
-                            defaultUpdated={this.defaultUpdated}
-                            sendResource={this.props.sendResource}
-                            validateAmountsBeforeSave={this.validateAmountsBeforeSave}
-                            formError={this.state.formError}
-                            orgID={util.getValue(data, 'orgID')}
-                            breakpoint={breakpoint}
-                            isVolunteer={isVolunteer}
-                            articleID={articleID}
-                            toggleModal={this.props.toggleModal}
-                          />
-                        </div>
-                      </div>
-                    </Collapse>
-                  </>
+                    <AmountsEdit
+                      article={data}
+                      amountsList={amountsList}
+                      kind={kind}
+                      modalID={modalID}
+                      amountsListUpdated={this.amountsListUpdated}
+                      customIndex={customIndex}
+                      customID={customID}
+                      customUpdated={this.customUpdated}
+                      defaultIndex={defaultIndex}
+                      defaultID={defaultID}
+                      defaultUpdated={this.defaultUpdated}
+                      sendResource={this.props.sendResource}
+                      validateAmountsBeforeSave={this.validateAmountsBeforeSave}
+                      formError={this.state.formError}
+                      orgID={util.getValue(data, 'orgID')}
+                      breakpoint={breakpoint}
+                      isVolunteer={isVolunteer}
+                      articleID={articleID}
+                      toggleModal={this.props.toggleModal}
+                    />
+                  </div>
                 </Tab>
                 <Tab id='buttonOption' label={<span className='stepLabel'>Customize Button</span>}>
-                  <Collapse
-                    label={'Customize Button'}
-                    iconPrimary='link-2'
-                    id={'gbx3-amounts-button'}
-                  >
-                    <div className='formSectionContainer'>
-                      <div className='formSection'>
-                        <ButtonEdit
-                          label={'Use a Button Instead of Showing Amounts on the Form'}
-                          button={button}
-                          optionsUpdated={this.optionsUpdated}
-                          allowAutopop={true}
-                          modalID={'amountsList'}
-                        />
-                      </div>
+                  <div className='formSectionContainer'>
+                    <div className='formSection'>
+                      <ButtonEdit
+                        label={'Use a Button Instead of Showing Amounts on the Form'}
+                        button={button}
+                        optionsUpdated={this.optionsUpdated}
+                        allowAutopop={true}
+                        modalID={'amountsList'}
+                      />
                     </div>
-                  </Collapse>
+                  </div>
                 </Tab>
                 <Tab id='amountOptions' label={<span className='stepLabel'>Options</span>}>
                   {!util.isEmpty(extras) ?
                   <Collapse
                     label={`${types.kind(kind).amountDesc} Options`}
-                    iconPrimary='chevrons-up'
+                    iconPrimary='sliders'
                     id={'gbx3-amounts-ticketOptions'}
                   >
                     <div className='formSectionContainer'>

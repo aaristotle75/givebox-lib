@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import * as util from '../../../common/utility';
+import { Alert } from '../../../common/Alert';
 import Collapse from '../../../common/Collapse';
 import Image from '../../../common/Image';
 import * as types from '../../../common/types';
@@ -12,12 +13,12 @@ import * as _v from '../../../form/formValidate';
 import ModalRoute from '../../../modal/ModalRoute';
 import ModalLink from '../../../modal/ModalLink';
 import Paginate from '../../../table/Paginate';
-
 import {SortableContainer, SortableElement, SortableHandle} from 'react-sortable-hoc';
 import '../../../styles/gbx3amountsEdit.scss';
 import { amountFieldsConfig } from './amountFieldsConfig';
 import AnimateHeight from 'react-animate-height';
 import Editor from '../Editor';
+import AmountsAdd from './AmountsAdd';
 
 const arrayMove = require('array-move');
 
@@ -40,7 +41,7 @@ const SortableItem = SortableElement(({value}) => {
 
 const SortableList = SortableContainer(({items}) => {
   return (
-    <div>
+    <div style={{ width: '100%' }}>
       {items.map((value, index) => (
         <SortableItem key={`item-${index}`} index={index} value={value} />
       ))}
@@ -66,6 +67,8 @@ export default class AmountsEdit extends Component {
     this.validateEnabledAmount = this.validateEnabledAmount.bind(this);
     this.handleThumbnailSaveCallback = this.handleThumbnailSaveCallback.bind(this);
     this.thumbnailField = this.thumbnailField.bind(this);
+    this.amountLabel = amountFieldsConfig[props.kind].label;
+
     this.state = {
       deleteError: []
     };
@@ -90,7 +93,7 @@ export default class AmountsEdit extends Component {
   getAmount(ID) {
     const amountsList = this.props.amountsList;
     const index = amountsList.findIndex(x => x.ID === ID);
-    return amountsList[index];
+    return index >= 0 ? amountsList[index] : this.state.newAmountValues;
   }
 
   updateAmounts(ID, obj = {}, customData = {}) {
@@ -216,7 +219,7 @@ export default class AmountsEdit extends Component {
     )
   }
 
-  priceField(ID, fieldProps, config) {
+  priceField(ID, fieldProps, config = {}) {
     const {
       customID
     } = this.props;
@@ -227,13 +230,14 @@ export default class AmountsEdit extends Component {
     const customField = config.hasCustomField && customID === ID ? true : false;
     const error = this.validateEnabledAmount(ID, amount.enabled);
 
+    console.log('execute getAmount -> ', ID, amount);
     return (
       <TextField
         className={`${customField ? 'customField' : ''} ${amount.enabled ? '' : 'notOnForm'}`}
         name={fieldName}
         label={util.getValue(fieldProps, 'label')}
         fixedLabel={true}
-        placeholder={customField ? 'Any Amount' : util.getValue(fieldProps, 'placeholder', '0.00')}
+        placeholder={customField ? 'ANY' : util.getValue(fieldProps, 'placeholder', '0.00')}
         onBlur={(e) => {
           this.props.validateAmountsBeforeSave(ID, this.validateEnabledAmount(ID, amount.enabled));
         }}
@@ -255,7 +259,7 @@ export default class AmountsEdit extends Component {
     )
   }
 
-  nameField(ID, fieldProps, config) {
+  nameField(ID, fieldProps, config = {}) {
     const {
       customID
     } = this.props;
@@ -558,8 +562,20 @@ export default class AmountsEdit extends Component {
 
     return (
       <div className='amountsEditList'>
-        {rows}
-        {numEnabled >= amountsList.length && !formError ? addAmount : <></>}
+        { !util.isEmpty(items) ?
+          <div>
+            <div className='previewTitleContainer flexCenter'>
+              <div className='previewTitleText'>
+                Current {util.toTitleCase(this.amountLabel)} List
+              </div>
+            </div>
+            <div className='sectionContainer'>
+              <div className='section'>
+                {rows}
+              </div>
+            </div>
+          </div>
+        : null }
       </div>
     )
   }
@@ -567,7 +583,12 @@ export default class AmountsEdit extends Component {
   render() {
 
     return (
-      <div className='amountsEdit'>
+      <div className='gbx3amountsEdit'>
+        <AmountsAdd
+          {...this.props}
+          kind={this.props.kind}
+          amountsList={this.props.amountsList}
+        />
         {this.renderAmountsList()}
       </div>
     )

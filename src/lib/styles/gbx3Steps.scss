@@ -358,21 +358,6 @@ $gbx3StepsBreakpoint: 600px;
   .step {
     padding: 0 20px;
 
-    .previewTitleContainer {
-      margin: 20px 0;
-
-      .previewTitleText {
-        font-size: 12px;
-        font-weight: 500;
-        @include primaryGradientText;
-      }
-
-      button.link {
-        font-size: 12px;
-        font-weight: 500;
-      }
-    }
-
     .stepTitleLink {
       font-size: 22px;
       @include primaryGradientText;
@@ -491,6 +476,21 @@ $gbx3StepsBreakpoint: 600px;
   .step.stepAmounts {
     margin: 0;
     padding: 0;
+  }
+
+  .previewTitleContainer {
+    margin: 20px 0;
+
+    .previewTitleText {
+      font-size: 12px;
+      font-weight: 500;
+      @include primaryGradientText;
+    }
+
+    button.link {
+      font-size: 12px;
+      font-weight: 500;
+    }
   }
 
   .step.preview {
@@ -801,6 +801,11 @@ $gbx3StepsBreakpoint: 600px;
   }
 
   .gbx3amountsEdit {
+
+
+    .formSectionContainer {
+      @include purpleToSalmon(.2, 140deg);
+    }
 
     .inputLeftBar {
       left: -5px;

@@ -655,7 +655,7 @@
     height: $topPanelHeight;
     width: 100%;
     //background: linear-gradient(to right, $mainColorMedium 15%, $green 100%);;
-    @include blueToSalmon;
+    @include purpleBlueSalmon;
     @include transition(top .25s);
     @include box-shadow(1px 1px 5px 3px rgba(0, 0, 0, 0.25));
     z-index: 3;
@@ -876,7 +876,7 @@
       white-space: nowrap;
       display: flex;
       justify-content: space-between;
-      background: $puppa_blue;
+      @include purpleToBlue;
 
       button.link {
         color: $white;
@@ -968,7 +968,7 @@
         padding: 10px;
         color: $light-gray;
         //background: transparentize($puppa_blue, .2);
-        @include blueToGreen(.7);
+        @include purpleToBlue(.7);
         text-transform: uppercase;
       }
     }

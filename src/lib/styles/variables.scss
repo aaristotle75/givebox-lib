@@ -222,7 +222,7 @@ $green: $puppa_green;
 
 @mixin dropzoneButton($background: $puppa_purple) {
   background: $background;
-  @include purpleToSalmon(1, 140deg);
+  @include purpleToSalmonOnly(1, 140deg);
   color: $white;
   font-size: 18px;
   white-space: nowrap;
