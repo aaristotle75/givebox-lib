@@ -12,6 +12,7 @@ import {
   updateHelperSteps,
   saveGBX3
 } from '../../redux/gbx3actions';
+import { builderStepsConfig } from './builderStepsConfig';
 
 class ArticleAdmin extends React.Component {
 
@@ -25,15 +26,13 @@ class ArticleAdmin extends React.Component {
   async componentDidMount() {
     const {
       completed,
-      share
+      share,
+      kind
     } = this.props;
 
-    const checkIfTheseAreCompleted = ['title', 'themeColor', 'previewShare'];
-    const mainStepsCompleted = checkIfTheseAreCompleted.every(c => completed.includes(c));
-
-    if (!this.props.advancedBuilder && this.props.step !== 'create' && !mainStepsCompleted && !share) {
-      //const updated = await this.props.updateHelperSteps({ step: !completed.includes('title') ? 0 : 2 });
-      const updated = await this.props.updateHelperSteps({ step: 1 });
+    const minStepNotCompleted = this.getMinStepNotCompleted();
+    if (!this.props.advancedBuilder && this.props.step !== 'create' && (minStepNotCompleted || minStepNotCompleted === 0) && !share) {
+      const updated = await this.props.updateHelperSteps({ step: minStepNotCompleted });
       if (updated) this.props.toggleModal('gbx3Builder', true);
     }
   }
@@ -42,6 +41,23 @@ class ArticleAdmin extends React.Component {
     if (!this.props.advancedBuilder && prevProps.step !== this.props.step) {
       this.props.toggleModal('gbx3Builder', true);
     }
+  }
+
+  getMinStepNotCompleted(forceStep = null) {
+    const {
+      kind,
+      completed
+    } = this.props;
+
+    if (forceStep) return forceStep;
+    const config = util.getValue(builderStepsConfig, kind, []);
+    const notCompleted = [];
+    Object.entries(config).forEach(([key, value]) => {
+      if (!completed.includes(value.slug)) {
+        notCompleted.push(+key);
+      }
+    });
+    return !util.isEmpty(notCompleted) ? Math.min(...notCompleted) : null;
   }
 
   async toggleBuilder() {

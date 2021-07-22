@@ -18,6 +18,8 @@ import ReactPlayer from 'react-player';
 import Editor from '../lib/gbx3/blocks/Editor';
 import { toggleModal } from '../lib/api/actions';
 import ModalRoute from '../lib/modal/ModalRoute';
+import Lottie from 'lottie-react';
+import * as coverPlaceholder from '../lib/gbx3/pages/coverPlaceholder.json';
 
 class Dashboard extends Component {
 
@@ -36,8 +38,9 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
+    console.log('execute coverPlaceholder -> ', coverPlaceholder);
     //this.getVideo();
-    this.props.toggleModal('testModal2', true);
+    //this.props.toggleModal('testModal2', true);
   }
 
   componentWillUnmount() {
@@ -163,6 +166,9 @@ class Dashboard extends Component {
               </div>
             )
           }}
+        />
+        <Lottie
+          animationData={coverPlaceholder.default}
         />
         {/* <Plaid /> */}
         {/*

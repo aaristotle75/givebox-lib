@@ -13,6 +13,8 @@ import {
 import {
   toggleModal
 } from '../../api/actions';
+import Lottie from 'lottie-react';
+import * as coverPlaceholder from './coverPlaceholder.json';
 
 class Header extends React.Component {
 
@@ -101,7 +103,11 @@ class Header extends React.Component {
             <div className='coverPhotoImage'>
               { coverPhotoUrl ?
                 <Image imgID='coverPhoto' size='large' url={coverPhotoUrl} maxSize='950px' alt='Cover Photo' />
-              : null }
+              :
+                <Lottie
+                  animationData={coverPlaceholder.default}
+                />
+              }
             </div>
             <div
               id='orgEditProfilePic'

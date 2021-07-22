@@ -180,6 +180,14 @@ $green: $puppa_green;
   @include bgGradient($direction, rgba($puppa_purple, $opacity) 0%, rgba($puppa_blue, $opacity) 50%, rgba($puppa_green, $opacity) 80%, rgba($puppa_salmon, $opacity) 100%);
 }
 
+@mixin purpleBlueSalmon($opacity: 1, $direction: 90deg) {
+  @include bgGradient($direction, rgba($puppa_purple, $opacity) 0%, rgba($puppa_blue, $opacity) 80%, rgba($puppa_salmon, $opacity) 100%);
+}
+
+@mixin purpleBlueGreen($opacity: 1, $direction: 90deg) {
+  @include bgGradient($direction, rgba($puppa_purple, $opacity) 0%, rgba($puppa_blue, $opacity) 80%, rgba($puppa_green, $opacity) 100%);
+}
+
 @mixin purpleToBlue($opacity: 1, $direction: 90deg) {
   @include bgGradient($direction, rgba($puppa_purple, $opacity) 50%, rgba($puppa_blue, $opacity) 100%);
 }
@@ -188,7 +196,7 @@ $green: $puppa_green;
   @include bgGradient($direction, rgba($red, $opacity) 50%, rgba($puppa_salmon, $opacity) 100%);
 }
 
-@mixin purpleToSalmon($opacity: 1, $direction: 90deg) {
+@mixin purpleToSalmonOnly($opacity: 1, $direction: 90deg) {
   @include bgGradient($direction, rgba($puppa_purple, $opacity) 50%, rgba($puppa_salmon, $opacity) 100%);
 }
 

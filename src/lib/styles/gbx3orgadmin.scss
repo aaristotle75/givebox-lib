@@ -142,7 +142,7 @@
       }
     }
 
-    button:hover {
+    button:hover:not(.tooltip) {
       opacity: .8;
     }
 
@@ -260,11 +260,6 @@
   .dropdown .dropdown-item {
     font-size: 14px;
   }
-
-  .dropdown .dropdown-item:hover {
-    background: $light-gray;
-  }
-
 }
 
 .orgAdminDropdown {
@@ -302,9 +297,7 @@
   }
 
   .dropdown .dropdown-item {
-    color: $med-gray;
     .icon {
-      color: $med-gray;
       margin-right: 10px;
       font-size: 16px;
     }
@@ -313,14 +306,6 @@
     }
     .activePage {
       color: $dark;
-    }
-  }
-
-  .dropdown .dropdown-item:hover {
-    background: $light-gray;
-    color: $med-gray;
-    .icon {
-      color: $med-gray;
     }
   }
 

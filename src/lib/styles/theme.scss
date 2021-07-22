@@ -1077,6 +1077,7 @@ button.gray:hover {
   .actionsMenu-item {
     white-space: pre-wrap;
     word-break: break-word;
+
     button {
       padding: 15px 25px;
       text-align: right;
@@ -1514,10 +1515,6 @@ button.supportLink {
   }
 }
 
-.dropdown .dropdown-item.selected {
-  color: $mainColor;
-}
-
 .dropdown .dropdown-item {
   padding: 15px 25px;
   border-bottom: 1px solid $light;
@@ -1533,9 +1530,7 @@ button.supportLink {
 }
 
 .dropdown .dropdown-item:hover {
-  background: $mainColor;
-  color: $white;
-  .icon { color: $white; }
+
   .dropdown-item-actions button.link {
     color: $white;
     border: 0;
@@ -1606,18 +1601,12 @@ button.supportLink {
       }
     }
 
-    .dropdown .dropdown-item:hover {
-      .icon {
-        color: $white;
-      }
-    }
-
     .dropdown .icon {
       position: initial;
-      color: $mainColor;
       font-size: $normal-text-size;
       margin-left: 5px;
     }
+    
     .dropdown .label {
       color: $mainColor;
       font-weight: 300;

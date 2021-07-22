@@ -305,10 +305,6 @@
     }
   }
 
-  .avatarMenu li:hover {
-    background: linear-gradient(to right, $mainColor 0%, $green 100%);
-  }
-
   .avatarLink .editGraphic {
     background: transparentize($light-med-gray, .5);
     color: $white;
@@ -1514,6 +1510,7 @@
     font-size: 14px;
     font-weight: 400;
     z-index: 5;
+
     .icon {
       display: inline-block;
       font-size: 20px;

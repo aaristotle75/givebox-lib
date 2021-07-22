@@ -12,6 +12,8 @@ import {
   toggleModal
 } from '../../api/actions';
 import Footer from '../Footer';
+import Lottie from 'lottie-react';
+import * as coverPlaceholder from '../pages/coverPlaceholder.json';
 
 class SignupPage extends React.Component {
 
@@ -135,7 +137,11 @@ class SignupPage extends React.Component {
               <div className='coverPhotoImage'>
                 { coverPhotoURL ?
                   <Image imgID='coverPhoto' url={coverPhotoURL} maxSize='950px' alt='Cover Photo' />
-                : null }
+                :
+                  <Lottie
+                    animationData={coverPlaceholder.default}
+                  />
+                }
               </div>
               <div
                 className='profilePictureContainer orgAdminEdit'

@@ -754,25 +754,11 @@ $contentHeaderPadding: 35%;
     @include box-shadow(0px 3px 6px 0px $light-gray);
   }
 
-  .dropdown .dropdown-item {
-    color: $med-gray;
-    .icon {
-      color: $med-gray;
-    }
-  }
-
-  .dropdown .dropdown-item:hover {
-    background: $light-gray;
-    color: $med-gray;
-    .icon {
-      color: $med-gray;
-    }
-  }
-
   .dropdown button {
     margin: 0 5px;
     padding: 15px !important;
     border-radius: 10px;
+
     .icon {
       top: 16px;
       right: 0px;
@@ -834,20 +820,11 @@ $contentHeaderPadding: 35%;
 
 .articleCardDropdown.dropdown .dropdown-item {
   font-size: 14px;
-  color: $med-gray;
   .icon {
-    color: $med-gray;
     margin-right: 10px;
   }
 }
 
-.articleCardDropdown.dropdown .dropdown-item:hover {
-  background: $light-gray;
-  color: $med-gray;
-  .icon {
-    color: $med-gray;
-  }
-}
 
 /*
 .articleCardDropdown .dropdown button:not(.label) {
@@ -1107,9 +1084,19 @@ $contentHeaderPadding: 35%;
     left: 55px;
     min-width: 300px;
     height: 100px;
-    background-color: transparent;
+    background: transparent;
     color: inherit;
     box-shadow: none;
+  }
+
+  .helpfulTip {
+    box-shadow: none;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 10px;
+
+    .helpfulTipBar {
+      bottom: 3px;
+    }
   }
 }
 

@@ -92,6 +92,11 @@ button.link:hover .avatarImage {
   opacity: .7;
 }
 
+ul.selectable li:hover,
+.avatarMenu li:hover {
+  @include purpleToSalmonOnly;
+}
+
 .avatarMenu {
 
   padding: 0 20px;
@@ -290,15 +295,15 @@ button.link:hover .avatarImage {
 
   li {
     text-align: left;
-    padding: 15px 5px;
+    padding: 15px 10px;
     color: $med-gray;
     cursor: pointer;
     border: none !important;
-    border-radius: 20px;
+    border-radius: 15px;
   }
 
   li:hover {
-    background: $mainColor;
+    @include purpleToSalmonOnly;
     color: $white;
     @include default-transition(.25s);
     svg,

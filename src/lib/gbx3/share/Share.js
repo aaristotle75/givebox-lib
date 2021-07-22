@@ -252,14 +252,15 @@ class Share extends React.Component {
     const {
       kind,
       webApp,
-      display
+      display,
+      modalWrapperStyle
     } = this.props;
 
     if (this.props.getArticleID && util.isLoading(this.props.shareArticle)) return <Loader msg='Loading Share Article...' />
 
     return (
       <div className='createStep'>
-        <div style={{ paddingTop: 20, paddingBottom: 0 }} className={`modalWrapper`}>
+        <div style={modalWrapperStyle} className={`modalWrapper`}>
           <Alert style={{ marginTop: 20 }} alert='error' display={util.getPublishStatus(kind, webApp) === 'private' && display !== 'org' ? true : false} msg={`This ${types.kind(kind).name} is Set to Private`} />
           {this.renderShareList()}
           {this.renderShareType()}
@@ -271,7 +272,11 @@ class Share extends React.Component {
 
 Share.defaultProps = {
   hideList: [],
-  showHelper: true
+  showHelper: false,
+  modalWrapperStyle: {
+    paddingTop: 60,
+    paddingBottom: 0
+  }
 }
 
 function mapStateToProps(state, props) {

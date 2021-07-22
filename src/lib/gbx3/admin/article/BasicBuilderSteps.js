@@ -84,6 +84,7 @@ class BasicBuilderStepsForm extends Component {
   }
 
   gbx3message(e) {
+
     const {
       step,
       kind
@@ -97,6 +98,7 @@ class BasicBuilderStepsForm extends Component {
         this.setState({ previewLoaded: true });
       }
     }
+
     if (e.data === 'gbx3Shared') {
       if (slug === 'previewShare') {
         this.props.formSaved(() => {
@@ -571,6 +573,10 @@ class BasicBuilderStepsForm extends Component {
             <Share
               hideList={['web']}
               showHelper={false}
+              modalWrapperStyle={{
+                paddingTop: 0,
+                paddingBottom: 0
+              }}
             />
             { !previewLoaded ?
             <div className='previewTitleContainer'>

@@ -43,6 +43,7 @@
     "iframe-resizer": "^4.2.11",
     "js-cookie": "^2.2.1",
     "jszip": "^3.5.0",
+    "lottie-react": "^2.1.0",
     "moment": "^2.27.0",
     "moment-timezone": "^0.5.31",
     "query-string": "^6.13.1",

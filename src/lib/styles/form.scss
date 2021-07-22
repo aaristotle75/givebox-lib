@@ -576,6 +576,7 @@ label.active {
     width: auto;
     color: $dark-gray;
     text-align: left;
+    @include transition(background .25s);
 
     .dropdown-container {
       display: flex;
@@ -598,7 +599,7 @@ label.active {
       right: 0;
       margin-left: 0;
       margin-right: 5px;
-      color: $primary;
+      color: $dark-gray;
       font-size: $normal-text-size;
     }
 
@@ -608,11 +609,14 @@ label.active {
   }
 
   .dropdown-item:hover {
-    background: $primary;
     color: $white;
+    @include purpleToSalmonOnly;
+    .icon {
+      color: $white;
+    }
   }
 
-  .dropdown-item.selected { color: $primary; }
+  .dropdown-item.selected { color: $mainColor; }
   .dropdown-item.selected:hover { color: $white; }
 
   .dropdown-item.bottom {
