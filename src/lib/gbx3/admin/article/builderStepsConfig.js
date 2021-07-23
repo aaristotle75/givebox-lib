@@ -7,50 +7,23 @@ const title = {
   slug: 'title',
   name: 'Fundraiser Details',
   icon: 'heart',
-  desc: 'Upload an image and write a title that will make your fundraiser shine.'
-};
-
-const logo = {
-  slug: 'logo',
-  name: 'Upload Logo',
-  icon: 'upload-cloud'
-};
-
-const image = {
-  slug: 'image',
-  name: 'Add Image/Video',
-  icon: 'camera'
-};
-
-const preview = {
-  slug: 'preview',
-  name: 'Preview',
-  icon: 'eye'
+  desc: 'Upload an image and write a title that will make your fundraiser shine.',
+  required: true
 };
 
 const previewShare = {
   slug: 'previewShare',
   name: 'Preview & Share',
-  icon: 'eye'
-};
-
-const share = {
-  slug: 'share',
-  name: 'Ready to Share',
-  icon: 'share'
-};
-
-const amounts = {
-  slug: 'amounts',
-  name: 'Add Amounts',
-  icon: 'list'
+  icon: 'eye',
+  required: true
 };
 
 const tickets = {
   slug: 'tickets',
   name: 'Event Tickets',
   customIcon: <Icon><HiOutlineTicket /></Icon>,
-  desc: 'Add event ticket amounts and the number available for sale.'
+  desc: 'Add event ticket amounts and the number available for sale.',
+  required: true
 };
 
 const where = {
@@ -67,19 +40,10 @@ const when = {
   desc: 'This is optional, add a date and time for the event.'
 };
 
-const sweepstakesTickets = {
-  slug: 'sweepstakesTickets',
-  name: 'Add Sweepstakes Tickets'
-};
-
 const sweepstakesEnds = {
   slug: 'sweepstakesEnds',
-  name: 'Sweepstakes Ends At'
-};
-
-const membershipSubscriptions = {
-  slug: 'membershipSubscriptions',
-  name: 'Add Subscriptions'
+  name: 'Sweepstakes Ends At',
+  required: true
 };
 
 const themeColor = {
