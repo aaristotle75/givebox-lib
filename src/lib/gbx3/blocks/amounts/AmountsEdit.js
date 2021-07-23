@@ -130,35 +130,25 @@ export default class AmountsEdit extends Component {
     });
   }
 
-  addAmount() {
+  addAmount(data = {}, callback) {
+
     const {
       orgID,
-      kind
+      kind,
+      kindID
     } = this.props;
+
     const amountsList = [ ...this.props.amountsList ];
     const length = amountsList.length;
-    const amount = amountsList[length - 1];
 
-    let entries = null;
-    let max = null;
-    if (kind === 'sweepstake') {
-      entries = 1;
-    }
-    if (kind === 'membership' || kind === 'event') {
-      max = 100;
-    }
     this.props.sendResource(`${types.kind(this.props.kind).api.amount}s`, {
       orgID,
-      id: [amount[`${this.props.kind}ID`]],
+      id: [kindID],
       method: 'post',
       data: {
-        price: 1000,
-        name: '',
-        description: '',
         enabled: true,
         orderBy: length,
-        max,
-        entries
+        ...data
       },
       reload: false,
       callback: (res, err) => {
@@ -166,6 +156,7 @@ export default class AmountsEdit extends Component {
           amountsList.push(res);
           this.props.amountsListUpdated(amountsList, true, true);
         }
+        if (callback) callback(res, err);
       }
     });
   }
@@ -230,7 +221,6 @@ export default class AmountsEdit extends Component {
     const customField = config.hasCustomField && customID === ID ? true : false;
     const error = this.validateEnabledAmount(ID, amount.enabled);
 
-    console.log('execute getAmount -> ', ID, amount);
     return (
       <TextField
         className={`${customField ? 'customField' : ''} ${amount.enabled ? '' : 'notOnForm'}`}
@@ -590,7 +580,6 @@ export default class AmountsEdit extends Component {
         <AmountsAdd
           {...this.props}
           kind={this.props.kind}
-          amountsList={this.props.amountsList}
           addAmount={this.addAmount}
         />
         {this.renderAmountsList()}

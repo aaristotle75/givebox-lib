@@ -6,6 +6,7 @@ import ModalRoute from '../../modal/ModalRoute';
 import ModalLink from '../../modal/ModalLink';
 import Collapse from '../../common/Collapse';
 import Image from '../../common/Image';
+import Loader from '../../common/Loader';
 import Tabs, { Tab } from '../../common/Tabs';
 import * as types from '../../common/types';
 import Fade from '../../common/Fade';
@@ -67,7 +68,8 @@ class Amounts extends Component {
       defaultIndex: 6,
       formError: [],
       tab: 'edit',
-      hasBeenUpdated: false
+      hasBeenUpdated: false,
+      gettingAmounts: true
     };
     this.blockRef = null;
     this.width = null;
@@ -285,6 +287,8 @@ class Amounts extends Component {
       customIDDefault: customID,
       defaultIndexDefault: defaultIndex,
       defaultIDDefault: defaultID
+    }, () => {
+      this.setState({ gettingAmounts: false });
     });
   }
 
@@ -380,6 +384,7 @@ class Amounts extends Component {
       modalID,
       data,
       kind,
+      kindID,
       primaryColor,
       numCartItems,
       subTotal,
@@ -402,10 +407,13 @@ class Amounts extends Component {
       defaultIndex,
       defaultID,
       formError,
-      tab
+      tab,
+      gettingAmounts
     } = this.state;
 
     //if (util.isEmpty(amountsList)) return <></>;
+
+    if (gettingAmounts) return <Loader msg='Getting Amounts...' />
 
     const allowPerTicketWinner = util.getValue(extras, 'allowPerTicketWinner') || util.getValue(data, 'allowPerTicketWinner');
     const maxQuantity = util.getValue(extras, 'maxQuantity') || util.getValue(data, 'maxQuantity');
@@ -447,9 +455,11 @@ class Amounts extends Component {
                     </Fade>
                     </AnimateHeight>
                     <AmountsEdit
+                      buttonEnabled={util.getValue(button, 'enabled', false)}
                       article={data}
                       amountsList={amountsList}
                       kind={kind}
+                      kindID={kindID}
                       modalID={modalID}
                       amountsListUpdated={this.amountsListUpdated}
                       customIndex={customIndex}
@@ -674,7 +684,12 @@ function mapStateToProps(state, props) {
 
   const gbx3 = util.getValue(state, 'gbx3', {});
   const data = util.getValue(gbx3, 'data', {});
-  const cart = util.getValue(gbx3, 'cart', {});
+  const kindID = util.getValue(data, 'ID');
+
+  const info = util.getValue(gbx3, 'info', {});
+  const stage = util.getValue(info, 'stage', {});
+  const preview = util.getValue(info, 'preview', {});
+  const cart = stage !== 'admin' && !preview ? util.getValue(gbx3, 'cart', {}) : {};
   const cartItems = util.getValue(cart, 'items', []);
   const subTotal = util.getValue(cart, 'subTotal', 0);
   const form = util.getValue(gbx3, 'blocks.article.paymentForm.options.form', {});
@@ -685,6 +700,7 @@ function mapStateToProps(state, props) {
 
   return {
     data,
+    kindID,
     form,
     numCartItems,
     subTotal,

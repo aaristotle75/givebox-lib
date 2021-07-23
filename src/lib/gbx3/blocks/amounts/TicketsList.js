@@ -312,10 +312,12 @@ function mapStateToProps(state, props) {
 
   const kind = props.kind;
   const gbx3 = util.getValue(state, 'gbx3', {});
-  const cart = util.getValue(gbx3, 'cart', []);
+  const info = util.getValue(gbx3, 'info', {});
+  const stage = util.getValue(info, 'stage', {});
+  const preview = util.getValue(info, 'preview', {});
+  const cart = stage !== 'admin' && !preview ? util.getValue(gbx3, 'cart', {}) : {};
   const cartItems = util.getValue(cart, 'items', []);
   const numCartItems = cartItems.length;
-  const info = util.getValue(gbx3, 'info', {});
   const noFocus = util.getValue(info, 'noFocus');
   const admin = util.getValue(gbx3, 'admin', {});
   const editable = util.getValue(admin, 'editable');

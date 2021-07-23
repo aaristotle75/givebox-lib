@@ -35,7 +35,6 @@ class AmountsAdd extends React.Component {
         entries: 1,
         enabled: true,
         description: '',
-        orderBy: this.props.amountsList.length
       }
     };
   }
@@ -46,20 +45,11 @@ class AmountsAdd extends React.Component {
   addAmount() {
 
     const {
-      kind,
-      orgID,
-      ID,
-      amountsList
-    } = this.props;
-
-    const {
       priceError,
       nameError,
       thirdColumnFieldError,
       newAmountValues
     } = this.state;
-
-    const length = amountsList.length;
 
     if (priceError.includes('new')
       || nameError.includes('new')
@@ -84,34 +74,21 @@ class AmountsAdd extends React.Component {
       });
     } else {
       const data = {
-        ...newAmountValues,
-        description: '',
-        enabled: true,
-        orderBy: length
+        ...newAmountValues
       };
 
-      // this.props.addAmount();
-      /*
-      this.props.sendResource(`${types.kind(this.props.kind).api.amount}s`, {
-        data,
-        orgID,
-        id: [ID],
-        method: 'post',
-        reload: false,
-        callback: (res, err) => {
-          if (!err && !util.isEmpty(res)) {
-            amountsList.push(res);
-            this.setState({ amountListUpdated: true, addAmountSuccess: true, newAmountValues: { price: '', name: '', [this.thirdColumnFieldName]: '' } }, () => {
-              setTimeout(() => {
-                this.setState({ addAmountSuccess: false });
-              }, 3000)
-            });
-          } else {
-            this.setState({ addAmountError: true, addAmountErrorMsg: `Sorry, an error occurred adding ${this.amountLabel}. Please refresh browser and try again.` });
-          }
+      this.props.addAmount(data, (res, err) => {
+        console.log('execute -> addAmount', res, err);
+        if (!err && !util.isEmpty(res)) {
+          this.setState({ addAmountSuccess: true, newAmountValues: { price: '', name: '', [this.thirdColumnFieldName]: '' } }, () => {
+            setTimeout(() => {
+              this.setState({ addAmountSuccess: false });
+            }, 3000)
+          });
+        } else {
+          this.setState({ addAmountError: true, addAmountErrorMsg: `Sorry, an error occurred adding ${this.amountLabel}. Please refresh browser and try again.` });
         }
       });
-      */
     }
   }
 

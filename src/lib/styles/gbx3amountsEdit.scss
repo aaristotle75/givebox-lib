@@ -26,7 +26,8 @@ $editAmountBreakpoint: 500px;
   }
 
   .fieldItems {
-    display: block;
+    display: flex;
+    align-items: center;
     white-space: nowrap;
 
     @media (max-width: $editAmountBreakpoint) {
@@ -88,7 +89,7 @@ $editAmountBreakpoint: 500px;
     width: 100%;
     padding: 15px 5px 15px 0;
     margin: 15px 0;
-    border-left: 2px solid $mainColor;
+    border-left: 0;
     background: transparent;
     cursor: default;
     @include default-transition(.25s);
@@ -201,7 +202,8 @@ $editAmountBreakpoint: 500px;
       font-size: 12px;
       font-weight: 400;
       color: $white;
-      @include purpleToSalmon(1, 140deg);
+      border-radius: 10px;
+      @include purpleToSalmonOnly(1, 140deg);
     }
     .icon {
       font-size: 20px;

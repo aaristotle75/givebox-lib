@@ -668,6 +668,7 @@
     height: $topPanelHeight;
 
     .adminPanelTabs {
+
       button.link {
         color: $white;
         margin: 0;
@@ -876,7 +877,7 @@
       white-space: nowrap;
       display: flex;
       justify-content: space-between;
-      @include purpleToBlue;
+      @include purpleToBlue(.6);
 
       button.link {
         color: $white;
@@ -963,12 +964,13 @@
 
       li.listHeader {
         font-size: 12px;
+        font-weight: 400;
         text-align: center;
         cursor: default;
         padding: 10px;
         color: $light-gray;
         //background: transparentize($puppa_blue, .2);
-        @include purpleToBlue(.7);
+        @include purpleToBlue(.4);
         text-transform: uppercase;
       }
     }
@@ -2860,54 +2862,6 @@
 
 /*-------- END CREATE NEW -----*/
 
-
-/*------ React Toggle Track -----*/
-.gbx3 {
-
-  .react-toggle {
-  }
-
-  .react-toggle-track {
-    height: 18px;
-    width: 45px;
-    background: linear-gradient(to right, $white 0%, $med-blue-gray 100%);
-  }
-
-  .react-toggle-thumb {
-    top: -3px;
-    width: 25px;
-    height: 25px;
-    @include box-shadow(0px 1px 2px 0px rgba(0, 0, 0, 0.55));
-    border: 0;
-  }
-
-  .react-toggle--checked .react-toggle-track {
-    height: 18px;
-    width: 45px;
-    background: linear-gradient(to right, $mainColor 0%, $green 100%);
-  }
-
-  .react-toggle--checked .react-toggle-thumb {
-    left: 22px;
-    border-color: transparent;
-    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55) !important;
-  }
-
-  .react-toggle--focus .react-toggle-thumb {
-    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55) !important;
-  }
-
-  .react-toggle--checked:active .react-toggle-thumb {
-    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55) !important;
-  }
-
-  .react-toggle:active {
-    .react-toggle-thumb {
-      box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55) !important;
-    }
-  }
-
-}
 
 .gbx3 {
 
