@@ -2547,23 +2547,6 @@
 
 /*------ END SHOP ------*/
 
-.copyButton {
-  padding: 10px 20px;
-  @include purpleToSalmonOnly;
-  color: $white;
-  //border: 1px solid $mainColor;
-  border: 0;
-  border-radius: 20px;
-  @include transition(opacity .25s);
-  font-size: 14px;
-  font-weight: 400;
-  margin: 10px 0;
-}
-
-.copyButton:hover {
-  opacity: .8;
-}
-
 /*------- SHARE LINK ------*/
 .shareLink {
 
@@ -3149,5 +3132,51 @@
 .orgCustomElements {
   button.button {
     background: transparent;
+  }
+}
+
+  /* ---------- Toggle ----------------*/
+.gbx3 {
+  .react-toggle {
+  }
+
+  .react-toggle-track {
+    height: 18px;
+    width: 45px;
+    background: linear-gradient(to right, $white 0%, $med-blue-gray 100%);
+  }
+
+  .react-toggle-thumb {
+    top: -3px;
+    width: 25px;
+    height: 25px;
+    @include box-shadow(0px 1px 2px 0px rgba(0, 0, 0, 0.55));
+    border: 0;
+  }
+
+  .react-toggle--checked .react-toggle-track {
+    height: 18px;
+    width: 45px;
+    background: linear-gradient(to right, $mainColor 0%, $green 100%);
+  }
+
+  .react-toggle--checked .react-toggle-thumb {
+    left: 22px;
+    border-color: transparent;
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55);
+  }
+
+  .react-toggle--focus .react-toggle-thumb {
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55);
+  }
+
+  .react-toggle--checked:active .react-toggle-thumb {
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55);
+  }
+
+  .react-toggle:active {
+    .react-toggle-thumb {
+      box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55);
+    }
   }
 }

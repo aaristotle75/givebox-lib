@@ -92,12 +92,13 @@ class WhereEditForm extends Component {
               <Choice
                 type='checkbox'
                 name='mapLink'
-                label={'Show a Link to View Map'}
+                label={'Show User a Link to View Map'}
                 onChange={(name, value) => {
                   this.props.optionsUpdated({ mapLink: mapLink ? false : true });
                 }}
                 checked={mapLink}
                 value={mapLink}
+                toggle={true}
               />
             </div>
           </div>

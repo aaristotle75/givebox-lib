@@ -21,7 +21,8 @@ import {
   updateData,
   updateGlobals,
   updateBlock,
-  setStyle
+  setStyle,
+  resetBlock
 } from '../../redux/gbx3actions';
 import {
   defaultStyle
@@ -290,6 +291,30 @@ class BasicBuilderStepsForm extends Component {
       this.saveStep(null, blockObj, false, this.gotoNextStep);
     } else if (slug === 'tickets') {
       this.saveStep(null, null, true, this.gotoNextStep);
+    } else if (slug === 'when') {
+      const blockReset = await this.props.resetBlock('article', 'when');
+      if (blockReset) {
+        const data = {
+          when: util.getValue(fields, 'when.value'),
+          whenShowTime: util.getValue(fields, 'when.enableTime', false),
+          endsAt: null
+        };
+        this.saveStep(data, null, true, this.gotoNextStep);
+      }
+    } else if (slug === 'where') {
+      const where = util.getValue(fields, 'where.where', {});
+      const data = {
+        where
+      };
+      const block = util.getValue(blocks, 'where', {});
+      const blockObj = {
+        ...block,
+        content: {
+          where,
+          htmlTemplate: ''
+        }
+      };
+      this.saveStep(data, blockObj, true, this.gotoNextStep);
     } else {
       this.saveStep(null, null, false, this.gotoNextStep);
     }
@@ -705,5 +730,6 @@ export default connect(mapStateToProps, {
   updateData,
   updateGlobals,
   updateBlock,
-  setStyle
+  setStyle,
+  resetBlock
 })(BasicBuilderSteps)

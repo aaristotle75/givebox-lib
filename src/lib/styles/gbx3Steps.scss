@@ -840,3 +840,42 @@ $gbx3StepsBreakpoint: 600px;
     }
   }
 }
+
+/*---------- WHERE -----------*/
+.gbx3Steps {
+
+  .modalFormContainer.where-group {
+    padding: 0 !important;
+  }
+
+  .where-group {
+    h2 {
+      @include primaryGradientText;
+      font-size: 12px;
+      font-weight: 400;
+    }
+
+    button.link.manualLink {
+      font-size: 12px;
+    }
+  }
+
+  .where-manual-container {
+
+    button.button {
+      padding: 10px 20px;
+      @include purpleToSalmonOnly;
+      color: $white;
+      //border: 1px solid $mainColor;
+      border: 0;
+      border-radius: 20px;
+      @include transition(opacity .25s);
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    button.button:hover {
+      opacity: .8;
+    }
+  }
+}

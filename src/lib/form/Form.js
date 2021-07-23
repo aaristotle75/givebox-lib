@@ -988,6 +988,7 @@ class Form extends Component {
         textField={this.textField}
         closeModalAndSave={this.closeModalAndSave}
         disallowModalBgClose={params.disallowModalBgClose}
+        embed={params.embed}
       />
     )
   }

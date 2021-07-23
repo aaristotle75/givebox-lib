@@ -393,6 +393,17 @@ export function gbx3(state = {
           }
         }
       });
+    case types.RESET_BLOCK: {
+      return Object.assign({}, state, {
+        blocks: {
+          ...state.blocks,
+          [action.blockType]: {
+            ...state.blocks[action.blockType],
+            [action.name]: {}
+          }
+        }
+      });
+    }
     case types.REMOVE_BLOCK: {
       const blocks = util.getValue(state, `blocks.${action.blockType}`, {});
       delete blocks[action.name];

@@ -133,17 +133,17 @@ class WhereFieldForm extends Component {
           </AnimateHeight>
           <GooglePlacesField {...this.props } toggleManual={this.toggleManual} drawMap={this.drawMap} id={'autocomplete'} manual={this.state.manual} />
           <div style={{ marginTop: 20 }}>
-            <GBLink className='link manualLink' onClick={() => this.toggleManual(this.state.manual ? false : true)}>Manually enter address <span className={`icon icon-${this.state.manual ? 'chevron-down' : 'chevron-right'}`}></span></GBLink>
+            <GBLink className='link manualLink' onClick={() => this.toggleManual(this.state.manual ? false : true)}>Manually Enter Address <span className={`icon icon-${this.state.manual ? 'chevron-down' : 'chevron-right'}`}></span></GBLink>
             <AnimateHeight
               duration={500}
               height={this.state.manual ? 'auto' : 0}
             >
               <div className='where-manual-container'>
-                {this.props.textField('address', { parent: 'where', label: 'Address', placeholder: 'Enter Address', value: util.getValue(where, 'address') })}
+                {this.props.textField('address', { parent: 'where', label: 'Address', placeholder: 'Type Address', value: util.getValue(where, 'address') })}
                 <div className='cityStateZip'>
-                  <div className='part city'>{this.props.textField('city', { parent: 'where', label: 'City', placeholder: 'Enter City', value: util.getValue(where, 'city')})}</div>
+                  <div className='part city'>{this.props.textField('city', { parent: 'where', label: 'City', placeholder: 'Type City', value: util.getValue(where, 'city')})}</div>
                   <div className='part state'>{this.props.dropdown('state', { parent: 'where', direction: 'top', label: 'State', options: selectOptions.states, value: util.getValue(where, 'state') })}</div>
-                  <div className='part zip'>{this.props.textField('zip', { parent: 'where', label: 'Zip', placeholder: 'Enter Zip', maxLength: 10, value: util.getValue(where, 'zip') })}</div>
+                  <div className='part zip'>{this.props.textField('zip', { parent: 'where', label: 'Zip', placeholder: 'Type Zip', maxLength: 10, value: util.getValue(where, 'zip') })}</div>
                 </div>
                 <div className='center button-group'>
                   <GBLink style={{ marginTop: 20 }} className='button' onClick={() => this.setWhereManualFields(true)}>{this.props.manualLabel}</GBLink>
@@ -201,9 +201,12 @@ class WhereField extends Component {
   }
 
   renderForm() {
-    const where = this.props.field ? util.getValue(this.props.field, 'where', {}) : {};
+    const where = util.getValue(this.props.field, 'where', {});
     return (
-      <WhereFieldForm {...this.props } where={where} />
+      <WhereFieldForm
+        {...this.props }
+        where={where}
+      />
     )
   }
 
@@ -241,6 +244,7 @@ class WhereField extends Component {
       embed
     } = this.props;
 
+    if (!this.props.field) return <div></div>;
 
     if (embed) {
       return (

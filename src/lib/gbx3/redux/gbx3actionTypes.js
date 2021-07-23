@@ -11,6 +11,7 @@ export const RESET_LAYOUTS = 'RESET_LAYOUTS';
 export const UPDATE_BLOCKS = 'UPDATE_BLOCKS';
 export const REMOVE_BLOCK = 'REMOVE_BLOCK';
 export const RESET_BLOCKS = 'RESET_BLOCKS';
+export const RESET_BLOCK = 'RESET_BLOCK';
 export const UPDATE_BLOCK = 'UPDATE_BLOCK';
 export const UPDATE_ARTICLE_CARD = 'UPDATE_ARTICLE_CARD';
 export const RESET_ORG = 'RESET_ORG';

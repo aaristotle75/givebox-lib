@@ -553,6 +553,14 @@ export function updateBlock(blockType, name, block) {
   }
 }
 
+export function resetBlock(blockType, name) {
+  return {
+    type: types.RESET_BLOCK,
+    name,
+    blockType
+  }
+}
+
 export function addBlock(blockType, type, w = 0, h = 0, ref, callback) {
   return async (dispatch, getState) => {
     const gbx3 = util.getValue(getState(), 'gbx3', {});

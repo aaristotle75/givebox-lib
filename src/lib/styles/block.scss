@@ -1,119 +1,136 @@
 @import 'variables.scss';
 
+.copyButton {
+  padding: 10px 20px;
+  @include purpleToSalmonOnly;
+  color: $white;
+  //border: 1px solid $mainColor;
+  border: 0;
+  border-radius: 20px;
+  @include transition(opacity .25s);
+  font-size: 14px;
+  font-weight: 400;
+  margin: 10px 0;
+}
+
+.copyButton:hover {
+  opacity: .8;
+}
+
 .codeCopied.copied {
-	opacity: 1;
-	height: 100%;
-	width: 100%;
-	background: transparentize($white, .2);
-	.icon {
-		opacity: 1;
-	}
-	.copiedText {
-		opacity: 1;
-	}
+  opacity: 1;
+  height: 100%;
+  width: 100%;
+  background: transparentize($white, .2);
+  .icon {
+    opacity: 1;
+  }
+  .copiedText {
+    opacity: 1;
+  }
 }
 
 .codeCopied {
-	display: flex;
-	opacity: 0;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-	position: fixed;
-	height: 0px;
-	width: 0px;
-	top: 0;
-	right: 0;
-	left: 0;
-	bottom: 0;
-	color: $green;
-	font-size: 1.1em;
-	@include transition(background .5s);
-	background: transparent;
-	.icon {
-		opacity: 0;
-		font-size: 70px;
-		color: $green;
-	}
-	.copiedText {
-		opacity: 0;
-	}
+  display: flex;
+  opacity: 0;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: fixed;
+  height: 0px;
+  width: 0px;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  color: $green;
+  font-size: 1.1em;
+  @include transition(background .5s);
+  background: transparent;
+  .icon {
+    opacity: 0;
+    font-size: 70px;
+    color: $green;
+  }
+  .copiedText {
+    opacity: 0;
+  }
 }
 
 /*------- Action Bar --------*/
 ul.actionBar {
-	vertical-align: top;
-	text-align: left;
-	padding: 5px;
-	width: 100%;
-	height: 100px;
+  vertical-align: top;
+  text-align: left;
+  padding: 5px;
+  width: 100%;
+  height: 100px;
 
-	li {
-		display: inline-block;
-		padding: 10px;
-		vertical-align: top;
-		text-align: center;
-		cursor: pointer;
-		color: $primary;
-	}
+  li {
+    display: inline-block;
+    padding: 10px;
+    vertical-align: top;
+    text-align: center;
+    cursor: pointer;
+    color: $primary;
+  }
 
-	li:hover {
-		cursor: pointer;
-		color: transparentize($primary, .3);
-		-webkit-transition-duration: .5s;
-		transition-duration: .5s;
-	}
+  li:hover {
+    cursor: pointer;
+    color: transparentize($primary, .3);
+    -webkit-transition-duration: .5s;
+    transition-duration: .5s;
+  }
 
-	.icon {
-		vertical-align: top;
-		display: block;
-		font-size: $huge-text-size;
-		margin: 5px;
-	}
+  .icon {
+    vertical-align: top;
+    display: block;
+    font-size: $huge-text-size;
+    margin: 5px;
+  }
 
-	.text {
-		vertical-align: top;
-		display: block;
-		font-size: $tiny-text-size;
-	}
+  .text {
+    vertical-align: top;
+    display: block;
+    font-size: $tiny-text-size;
+  }
 
 }
 
 /*-------- Stat Block --------*/
 .statBlock {
-	vertical-align: top;
-	padding: 5px;
-	width: 100%;
-	height: 100px;
+  vertical-align: top;
+  padding: 5px;
+  width: 100%;
+  height: 100px;
 
-	h4 {
-		text-align: left;
-		margin: 5px 0;
-	}
+  h4 {
+    text-align: left;
+    margin: 5px 0;
+  }
 
-	li {
-		background: $off-white;
-		margin: 5px 0;
-		padding: 5px 0; // overwirde padding in component style
-	}
+  li {
+    background: $off-white;
+    margin: 5px 0;
+    padding: 5px 0; // overwirde padding in component style
+  }
 
-	li:nth-child(even) {
-		background: $light;
-	}
+  li:nth-child(even) {
+    background: $light;
+  }
 
-	.label {
-		display: inline-block;
-		vertical-align: top;
-		text-align: left;
-		width: 70%;
-	}
+  .label {
+    display: inline-block;
+    vertical-align: top;
+    text-align: left;
+    width: 70%;
+  }
 
-	.value {
-		display: inline-block;
-		vertical-align: top;
-		text-align: right;
-		width: 25%;
-	}
+  .value {
+    display: inline-block;
+    vertical-align: top;
+    text-align: right;
+    width: 25%;
+  }
 
 }
 
@@ -124,40 +141,40 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
 */
 
 .codeBlock {
-	overflow: hidden;
+  overflow: hidden;
 }
 
 .codeBlock .highlight {
-	background: transparentize($primary, .8);
+  background: transparentize($primary, .8);
 }
 
 .copy .text {
-	color: $med-gray;
+  color: $med-gray;
 }
 
 .hljs {
-	font-family: $font-family;
-	display: block;
-	overflow: wrap;
-	color: $med-gray;
-	background: $light;
-	white-space: nowrap;
-	font-size: $med-text-size;
-	font-weight: 300;
-	white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
-	white-space: -pre-wrap;      /* Opera 4-6 */
-	white-space: -o-pre-wrap;    /* Opera 7 */
-	white-space: pre-wrap;       /* css-3 */
-	word-wrap: break-word;       /* Internet Explorer 5.5+ */
-	white-space: -webkit-pre-wrap; /* Newer versions of Chrome/Safari*/
-	word-break: break-all;
-	white-space: normal;
-	padding: 20px;
+  font-family: $font-family;
+  display: block;
+  overflow: wrap;
+  color: $med-gray;
+  background: $light;
+  white-space: nowrap;
+  font-size: $med-text-size;
+  font-weight: 300;
+  white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;      /* Opera 4-6 */
+  white-space: -o-pre-wrap;    /* Opera 7 */
+  white-space: pre-wrap;       /* css-3 */
+  word-wrap: break-word;       /* Internet Explorer 5.5+ */
+  white-space: -webkit-pre-wrap; /* Newer versions of Chrome/Safari*/
+  word-break: break-all;
+  white-space: normal;
+  padding: 20px;
 }
 
 .hljs-quote {
-	color: $mainColor2;
-	font-style: italic;
+  color: $mainColor2;
+  font-style: italic;
 }
 
 .hljs-comment,
@@ -191,45 +208,45 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
 .hljs-meta,
 .hljs-selector-id,
 .hljs-title {
-	font-style: normal;
-	color: $med-gray;
+  font-style: normal;
+  color: $med-gray;
 }
 
 .hljs-emphasis {
-	font-style: italic;
+  font-style: italic;
 }
 
 .hljs-strong {
-	font-weight: bold;
+  font-weight: bold;
 }
 
 .hljs-link {
-	text-decoration: underline;
+  text-decoration: underline;
 }
 
 .jsonObj .line {
-	display: block;
+  display: block;
 }
 
 .jsonObj {
-	padding: 20px;
-	background: #1e1e1e;
-	font-size: 14px;
-	color: #fff;
+  padding: 20px;
+  background: #1e1e1e;
+  font-size: 14px;
+  color: #fff;
 }
 
 .jsonObj .indent5 {
-	padding-left: 10px;
+  padding-left: 10px;
 }
 
 .jsonObj .indent10 {
-	padding-left: 20px;
+  padding-left: 20px;
 }
 
 .jsonObj .indent20 {
-	padding-left: 30px;
+  padding-left: 30px;
 }
 
 .jsonObj .attr {
-	color: $mainColor2;
+  color: $mainColor2;
 }
