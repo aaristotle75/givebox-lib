@@ -685,7 +685,6 @@ function mapStateToProps(state, props) {
   const gbx3 = util.getValue(state, 'gbx3', {});
   const data = util.getValue(gbx3, 'data', {});
   const kindID = util.getValue(data, 'ID');
-
   const info = util.getValue(gbx3, 'info', {});
   const stage = util.getValue(info, 'stage', {});
   const preview = util.getValue(info, 'preview', {});

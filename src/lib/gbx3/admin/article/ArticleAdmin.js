@@ -30,7 +30,7 @@ class ArticleAdmin extends React.Component {
       kind
     } = this.props;
 
-    const minStepNotCompleted = null; //this.getMinStepNotCompleted();
+    const minStepNotCompleted = this.getMinStepNotCompleted();
     if (!this.props.advancedBuilder && this.props.step !== 'create' && (minStepNotCompleted || minStepNotCompleted === 0) && !share) {
       const updated = await this.props.updateHelperSteps({ step: minStepNotCompleted });
       if (updated) this.props.toggleModal('gbx3Builder', true);

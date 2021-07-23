@@ -78,7 +78,6 @@ class AmountsAdd extends React.Component {
       };
 
       this.props.addAmount(data, (res, err) => {
-        console.log('execute -> addAmount', res, err);
         if (!err && !util.isEmpty(res)) {
           this.setState({ addAmountSuccess: true, newAmountValues: { price: '', name: '', [this.thirdColumnFieldName]: '' } }, () => {
             setTimeout(() => {
