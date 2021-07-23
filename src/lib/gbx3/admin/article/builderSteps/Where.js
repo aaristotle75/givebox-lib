@@ -74,25 +74,29 @@ class Where extends React.Component {
           fixedLabel: true,
           label: 'Current Event Location',
           embed: true,
-          whereCallback: this.whereCallback
+          whereCallback: this.whereCallback,
+          mapOption: () => {
+            return (
+              <Choice
+                type='checkbox'
+                name='mapLink'
+                label={'Show User a Link to View Map'}
+                onChange={(name, value) => {
+                  this.props.updateBlock('article', 'where', {
+                    ...whereBlock,
+                    options: {
+                      ...options,
+                      mapLink: mapLink ? false : true
+                    }
+                  });
+                }}
+                checked={mapLink}
+                value={mapLink}
+                toggle={true}
+              />
+            )
+          }
         })}
-        <Choice
-          type='checkbox'
-          name='mapLink'
-          label={'Show User a Link to View Map'}
-          onChange={(name, value) => {
-            this.props.updateBlock('article', 'where', {
-              ...whereBlock,
-              options: {
-                ...options,
-                mapLink: mapLink ? false : true
-              }
-            });
-          }}
-          checked={mapLink}
-          value={mapLink}
-          toggle={true}
-        />
       </div>
     )
   }

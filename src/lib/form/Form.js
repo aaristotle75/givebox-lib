@@ -989,6 +989,8 @@ class Form extends Component {
         closeModalAndSave={this.closeModalAndSave}
         disallowModalBgClose={params.disallowModalBgClose}
         embed={params.embed}
+        mapOption={params.mapOption}
+        mapOptionStyle={params.mapOptionStyle}
       />
     )
   }

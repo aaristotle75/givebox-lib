@@ -116,7 +116,9 @@ class WhereFieldForm extends Component {
 
     const {
       where,
-      embed
+      embed,
+      mapOption,
+      mapOptionStyle
     } = this.props;
 
     return (
@@ -127,8 +129,9 @@ class WhereFieldForm extends Component {
             duration={500}
             height={this.state.map ? 'auto' : 0}
           >
-            <div className='flexCenter'>
+            <div className='flexColumn flexCenter'>
               <div style={{ width: 300, height: 300 }} ref={this.mapRef}></div>
+              { mapOption ? <div style={mapOptionStyle}>{mapOption()}</div> : null }
             </div>
           </AnimateHeight>
           <GooglePlacesField {...this.props } toggleManual={this.toggleManual} drawMap={this.drawMap} id={'autocomplete'} manual={this.state.manual} />
@@ -279,7 +282,11 @@ WhereField.defaultProps = {
   name: 'defaultWhereField',
   embed: false,
   modalLabel: 'Open Where Modal',
-  manualLabel: 'Update Map'
+  manualLabel: 'Update Map',
+  mapOption: null,
+  mapOptionStyle: {
+    marginTop: 20
+  }
 }
 
 function mapStateToProps(state, props) {
