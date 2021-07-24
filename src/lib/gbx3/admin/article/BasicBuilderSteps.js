@@ -563,7 +563,7 @@ class BasicBuilderStepsForm extends Component {
                   { primaryText: 'Dark', value: 'dark' }
                 ]}
                 showCloseBtn={true}
-                value={defaultTheme || 'dark'}
+                value={defaultTheme || 'light'}
                 style={{ paddingBottom: 20 }}
                 leftBar={true}
                 hideIcons={true}

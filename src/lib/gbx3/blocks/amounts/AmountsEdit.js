@@ -75,6 +75,7 @@ export default class AmountsEdit extends Component {
   }
 
   componentDidMount() {
+    //console.log('execute Amounts Edit -> ', this.props.kind, this.props.buttonEnabled);
   }
 
   onSortStart(e) {
@@ -473,7 +474,8 @@ export default class AmountsEdit extends Component {
     const items = [];
     const {
       amountsList,
-      customID
+      customID,
+      buttonEnabled
     } = this.props;
 
     const formError = !util.isEmpty(this.props.formError);
@@ -535,9 +537,11 @@ export default class AmountsEdit extends Component {
         items.push(
           <div key={key} className={`amountsEditRow sortableListItem ${value.enabled ? '' : 'notOnForm'}`} disabled={util.getValue(config, 'disableSort', false)}>
             <div className='fieldItems'>{fieldItems}</div>
+            { buttonEnabled ?
             <div className='fieldItems'>
               <div className='column' style={{ width: '100%' }}>{this.descField(value.ID)}</div>
             </div>
+            : null }
           </div>
         );
       });
