@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as util from '../../../../common/utility';
 
-class When extends React.Component {
+class SweepstakesEnds extends React.Component {
 
   constructor(props) {
     super(props);
@@ -21,16 +21,17 @@ class When extends React.Component {
 
     return (
       <div className='fieldGroup'>
-        { this.props.calendarField('when', {
-          group: 'when',
-          label: 'When is the Event',
+        { this.props.calendarField('endsAt', {
+          group: 'endsAt',
+          label: 'When Does the Sweepstakes End',
           fixedLabel: true,
-          enableTime: true,
-          enableTimeOption: true,
+          enableTime: false,
+          enableTimeOption: false,
           enableTimeOptionLabel: 'Show Time',
-          value: util.getValue(data, 'when'),
+          value: util.getValue(data, 'endsAt'),
           hideIcon: true,
-          leftBar: true
+          leftBar: true,
+          required: true
         })}
       </div>
     )
@@ -44,4 +45,4 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
-})(When);
+})(SweepstakesEnds);

@@ -495,6 +495,9 @@ class Form extends Component {
         utc={params.utc}
         allowInput={params.allowInput}
         placeholder={params.placeholder}
+        icon={params.icon}
+        hideIcon={params.hideIcon}
+        leftBar={params.leftBar}
       />
     )
   }

@@ -42,7 +42,9 @@ const when = {
 
 const sweepstakesEnds = {
   slug: 'sweepstakesEnds',
-  name: 'Sweepstakes Ends At',
+  name: 'Sweepstakes Ends',
+  icon: 'calendar',
+  desc: 'Add a date for when the sweepstakes will end.',
   required: true
 };
 

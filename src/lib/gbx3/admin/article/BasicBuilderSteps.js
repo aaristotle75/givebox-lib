@@ -40,6 +40,7 @@ import { MdCheckCircle } from 'react-icons/md';
 import Tickets from './builderSteps/Tickets';
 import Where from './builderSteps/Where';
 import When from './builderSteps/When';
+import SweepstakesEnds from './builderSteps/SweepstakesEnds';
 
 const GBX3_URL = process.env.REACT_APP_GBX_URL;
 
@@ -315,6 +316,20 @@ class BasicBuilderStepsForm extends Component {
         }
       };
       this.saveStep(data, blockObj, true, this.gotoNextStep);
+    } else if (slug === 'sweepstakesEnds') {
+      const endsAt = util.getValue(fields, 'endsAt.value', null);
+      const data = {
+        endsAt: endsAt
+      };
+      const block = util.getValue(blocks, 'countdown', {});
+      const blockObj = {
+        ...block,
+        content: {
+          endsAt,
+          endsAtTime: false
+        }
+      };
+      this.saveStep(data, blockObj, true, this.gotoNextStep);
     } else {
       this.saveStep(null, null, false, this.gotoNextStep);
     }
@@ -423,6 +438,15 @@ class BasicBuilderStepsForm extends Component {
       case 'when': {
         item.component =
           <When
+            {...this.props}
+          />
+        ;
+        break;
+      }
+
+      case 'sweepstakesEnds': {
+        item.component =
+          <SweepstakesEnds
             {...this.props}
           />
         ;
