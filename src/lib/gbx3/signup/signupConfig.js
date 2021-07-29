@@ -70,24 +70,6 @@ const previewShare = {
   desc: ''
 }
 
-const preview = {
-  type: 'preview',
-  slug: 'preview',
-  name: 'Preview Fundraiser',
-  icon: 'eye',
-  title: 'Preview Your Fundraiser',
-  desc: 'You are almost done! Just click "Share Your Fundraiser" below.'
-}
-
-const share = {
-  type: 'share',
-  slug: 'share',
-  name: 'Ready to Share',
-  icon: 'share',
-  title: 'Share Your Fundraiser!',
-  desc: 'Customize your share link, copy and paste into an email, and/or click a social media icon below to share your fundraising form and start raising money!'
-}
-
 const connectBank = {
   type: 'merchant',
   slug: 'connectBank',

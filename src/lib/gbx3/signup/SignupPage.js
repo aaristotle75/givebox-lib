@@ -208,8 +208,7 @@ class SignupPage extends React.Component {
                     <div className='articleCard'>
                       <div
                         onClick={() => {
-                          if (!completed.includes('title')) this.props.openStep('title');
-                          else this.props.openStep('mission');
+                          this.props.openStep('title');
                         }}
                         className='articleCardEdit orgAdminEdit'
                       >
