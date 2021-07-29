@@ -55,7 +55,7 @@ export default class Loader extends Component {
           <div className='loaderContent'>
             <div className='loadingText'>
                <div>
-                <img src='https://cdn.givebox.com/givebox/public/universal.png' alt='Loading' />
+                <img src='https://cdn.givebox.com/givebox/public/universal-loader-60fps.png' alt='Loading' />
                </div>
               <span className={`${showMsg ? '' : 'displayNone'}`} style={{color: `${textColor ? textColor : '#fff'}` }}>{msg}</span>
             </div>

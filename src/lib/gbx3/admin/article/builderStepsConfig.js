@@ -124,7 +124,7 @@ const membership = [
   },
   {
     ...tickets,
-    name: 'Membership Subscriptions',
+    name: 'Subscriptions',
     desc: 'Add membership subscription amounts and the number of subscriptions for sale.',
     customIcon: <Icon><MdCardMembership /></Icon>
   },
