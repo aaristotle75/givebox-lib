@@ -199,7 +199,7 @@ class CalendarField extends Component {
                 ref={this.inputRef}
               />
               :
-              <input type="text" placeholder={placeholder ? placeholder : enableTime ? 'mm/dd/yyyy h:mmA' : 'mm/dd/yyyy'} data-input />
+              <input type="text" placeholder={placeholder ? placeholder : enableTime ? 'Choose Date/Time' : 'Choose Date'} data-input />
               }
               <label htmlFor={name} style={labelStyle} >{label}</label>
               <div className={`input-bottom ${error ? 'error' : this.state.status}`}></div>

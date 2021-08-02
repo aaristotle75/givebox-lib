@@ -402,13 +402,13 @@
   }
 
   input::-webkit-input-placeholder {
-    color: $placeholder-gray;
+    color: $med-blue-gray;
   }
   input::-moz-placeholder {
-    color: $placeholder-gray;
+    color: $med-blue-gray;
   }
   input::-ms-input-placeholder {
-    color: $placeholder-gray;
+    color: $med-blue-gray;
   }
 
   /*------ Layout ------*/
@@ -1752,7 +1752,7 @@
       }
 
       .public-DraftEditorPlaceholder-inner {
-        color: $placeholder-gray;
+        color: $med-blue-gray;
         font-weight: 300;
         font-size: 1.1em;
         margin-left: 0px;

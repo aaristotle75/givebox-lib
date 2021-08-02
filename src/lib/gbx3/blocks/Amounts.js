@@ -563,6 +563,8 @@ class Amounts extends Component {
                               this.props.updateData(data);
                             });
                           }}
+                          leftBar={true}
+                          style={{ margin: '0 15px'}}
                         />
                       </div>
                     </div>
