@@ -1393,6 +1393,21 @@ button.tooltip.sortable:hover {
   border-radius: 20px;
 }
 
+.formSectionHeader {
+  @include primaryGradientText;
+  font-size: 12px;
+  font-weight: 400;
+  padding: 5px 5px 10px 5px;
+  //border-bottom: 1px solid $light-gray;
+}
+
+.formSubSection {
+  margin: 20px 0;
+  padding: 5px 10px 10px 10px;
+  border: 2px solid $very-light-gray;
+  border-radius: 10px;
+}
+
 .modalContent.campaignForm {
   .modalFormContainer {
     padding: 0 20px;

@@ -63,12 +63,13 @@ class CheckoutDonationEdit extends Component{
           }
         />
         <AnimateHeight height={checkoutDonation ? 'auto' : 0}>
-          <div className='input-group'>
+          <div className='input-group' style={{ margin: '10px 15px', padding: 0 }}>
+            <div className='inputLeftBar'></div>
             <div className='label'>Donation Form</div>
             <ModalLink id='checkoutDonationSelect' opts={{ checkoutDonationFormID }}>
               {checkoutDonationFormID ? 'Change Donation Form' : 'Select a Donation Form' }
             </ModalLink>
-            <div style={{ padding: '5px 0' }} className='fieldContext'>{ checkoutDonationFormTitle ? checkoutDonationFormTitle : 'You must select a donation form for this feature to display to the user.' }</div>
+            <div style={{ padding: '5px 0' }} className='fieldContext'>{ checkoutDonationFormTitle ? <span className='green'><span style={{ fontStyle: 'italic' }}>Current:</span> {checkoutDonationFormTitle}</span> : 'You must select a donation form for this feature to display to the user.' }</div>
           </div>
           <TextField
             name='checkoutDonationText'
@@ -81,6 +82,8 @@ class CheckoutDonationEdit extends Component{
               const value = e.currentTarget.value;
               this.props.updateForm('checkoutDonationText', value);
             }}
+            leftBar={true}
+            style={{ margin: '0 15px' }}
           />
           <TextField
             name='checkoutDonationAmount'
@@ -94,6 +97,8 @@ class CheckoutDonationEdit extends Component{
               const value = +(e.currentTarget.value * 100);
               this.props.updateForm('checkoutDonationAmount', value);
             }}
+            leftBar={true}
+            style={{ margin: '0 15px' }}
           />
         </AnimateHeight>
       </>

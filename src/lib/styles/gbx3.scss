@@ -366,13 +366,6 @@
 
   }
 
-  .formSectionHeader {
-    font-size: 1em;
-    font-weight: 300;
-    padding: 20px 5px 5px 5px;
-    border-bottom: 1px solid $light-gray;
-  }
-
   .helperText {
     padding: 10px 5px;
     font-size: 12px;
@@ -2981,6 +2974,13 @@
 
 .gbx3 {
 
+  #modalContent-checkoutDonationSelect {
+    .modalBottom,
+    .modalTop {
+      display: block;
+    }
+  }
+
   .checkoutDonation {
     position: relative;
     display: flex;
@@ -3006,14 +3006,17 @@
       cursor: pointer;
       margin: 10px 0;
       padding: 20px 10px;
-      border-bottom: 1px solid  transparentize($green, .8);
-      @include default-transition(.25s);
+      border-radius: 20px;
+      @include transition(background .25s);
     }
 
     li:hover:not(.noRecords) {
-      background: transparentize($green, .4);
+      @include purpleToSalmonOnly;
+      color: $white;
+
       .selectDonationForm {
         display: block;
+        margin-right: 10px;
       }
       .selected {
         color: $white;
