@@ -24,6 +24,7 @@ class When extends React.Component {
         { this.props.calendarField('when', {
           group: 'when',
           label: 'When is the Event',
+          placeholder: 'Choose Date',
           fixedLabel: true,
           enableTime: true,
           enableTimeOption: true,

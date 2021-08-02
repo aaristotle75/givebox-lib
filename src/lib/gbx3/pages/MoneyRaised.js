@@ -65,9 +65,11 @@ class MoneyRaised extends React.Component {
       content.headerText = 'How do I Raise Money?';
       content.text =
         <div className='moneyRaisedTooltipContent'>
-          Simply share your fundraiser on social media or send an email to all your supporters with your share link.
+          Step 1) Click Share Fundraiser below.<br />
+          Step 2) Click a social media icon.<br />
+          Step 3) Share your form.<br />
           <span style={{ marginTop: 10, display: 'block' }}>
-            Make sure you have a nice image or video in your fundraiser form. Your supporters are more likely to give if they know what you are raising money for.
+            Bonus Step) Add a video to your form. Donors LOVE videos.
           </span>
           <div className='button-group flexCenter'>
             <GBLink className='button' onClick={() => this.openStep('previewShare', 'orgPostSignupSteps')}>
