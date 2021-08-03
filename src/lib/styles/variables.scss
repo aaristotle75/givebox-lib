@@ -302,3 +302,20 @@ $green: $puppa_green;
   opacity: .9;
   @include transition(opacity .25s);
 }
+
+.secondaryButton {
+  padding: 10px 20px;
+  @include purpleToSalmonOnly;
+  color: $white;
+  //border: 1px solid $mainColor;
+  border: 0;
+  border-radius: 20px;
+  @include transition(opacity .25s);
+  font-size: 14px;
+  font-weight: 400;
+  margin: 10px 0;
+}
+
+.secondaryButton:hover {
+  opacity: .8;
+}

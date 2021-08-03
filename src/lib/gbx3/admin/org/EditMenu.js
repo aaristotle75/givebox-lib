@@ -251,10 +251,13 @@ class EditMenu extends React.Component {
     return (
       <div className='articleGroupList campaignsEdit'>
         <div className='articleGroup'>
-          <div className='flexCenter'>
-            <GBLink className='link topLink' onClick={this.addPage}><span className='icon icon-plus'></span> Add Page</GBLink>
-          </div>
           {rows}
+          <div className='flexCenter'>
+            <GBLink className='secondaryButton topLink tooltip' onClick={this.addPage}>
+              <span className='tooltipTop' style={{ width: 275, top: '-10px' }}><i />The new page will be disabled until you enable it.</span>
+              Add Page
+            </GBLink>
+          </div>
           { disabledItems.length > 0 ?
           <div style={{ marginTop: 30 }}>
             <div style={{ marginLeft: 65 }} className='itemsSubHeader'>Disabled Pages</div>

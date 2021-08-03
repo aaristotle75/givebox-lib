@@ -246,7 +246,7 @@ export function gbx3(state = {
       const orgPages = { ...state.orgPages };
       const newPageNumber = Object.keys(orgPages).length + 1;
       const hash = util.uniqueHash(1);
-      const name = !util.isEmpty(duplicate) ? `Duplicate ${duplicate.name}` : `Page ${newPageNumber}`;
+      const name = !util.isEmpty(duplicate) ? `DUPLICATE ${duplicate.name}` : `NEW Page ${newPageNumber}`;
       const slug = !util.isEmpty(duplicate) ? `${duplicate.slug}-duplicate-${hash}` : `page-${newPageNumber}-${hash}`;
       const newPage = {
         kind: 'all',
