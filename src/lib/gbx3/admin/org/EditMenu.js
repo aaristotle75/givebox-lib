@@ -185,7 +185,7 @@ class EditMenu extends React.Component {
               toggle={true}
               className={'tooltip rightSide'}
             >
-              <span className='tooltipTop'><i />{ onlyOneLeft ? 'You must have at least 1 page enabled.' : 'Click to DISABLE Page' }</span>
+              <span className='tooltipTop' style={{ width: 150, top: 0 }}><i />{ onlyOneLeft ? 'You must have at least 1 page enabled.' : 'Click to DISABLE Page' }</span>
             </Choice>
             {this.editLink(value)}
             {this.clonePageLink(value)}
@@ -230,7 +230,7 @@ class EditMenu extends React.Component {
                 toggle={true}
                 className='tooltip rightSide'
               >
-                <span className='tooltipTop'><i />Click to ENABLE Page</span>
+                <span className='tooltipTop' style={{ width: 150, top: 0 }}><i />Click to ENABLE Page</span>
               </Choice>
               {this.editLink(value)}
               {this.clonePageLink(value)}
