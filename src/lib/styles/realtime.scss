@@ -97,17 +97,16 @@
       font-weight: 400;
     }
 
-    .name {
-      color: $white;
-      font-weight: 400;
-    }
-
     .smallText {
       font-size: 12px;
     }
+
     .name {
       @include primaryGradientText;
       font-size: 12px;
+      font-weight: 400;
+      white-space: nowrap;
+      overflow: hidden;
     }
 
     .date {
