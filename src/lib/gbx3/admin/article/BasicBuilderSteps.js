@@ -41,6 +41,7 @@ import Tickets from './builderSteps/Tickets';
 import Where from './builderSteps/Where';
 import When from './builderSteps/When';
 import SweepstakesEnds from './builderSteps/SweepstakesEnds';
+import { blockTemplates } from '../../blocks/blockTemplates';
 
 const GBX3_URL = process.env.REACT_APP_GBX_URL;
 
@@ -295,12 +296,24 @@ class BasicBuilderStepsForm extends Component {
     } else if (slug === 'when') {
       const blockReset = await this.props.resetBlock('article', 'when');
       if (blockReset) {
+        const whenValue = util.getValue(fields, 'when.value');
+        const whenShowTime = util.getValue(fields, 'when.enableTime', false);
         const data = {
-          when: util.getValue(fields, 'when.value'),
-          whenShowTime: util.getValue(fields, 'when.enableTime', false),
+          whenShowTime,
+          when: whenValue,
           endsAt: null
         };
-        this.saveStep(data, null, true, this.gotoNextStep);
+
+        const whenBlock = util.getValue(blockTemplates, 'article.event.when', {});
+        const blockObj = {
+          ...whenBlock,
+          content: {
+            ...util.getValue(whenBlock, 'content', {}),
+            range1: whenValue,
+            range1Time: whenShowTime
+          }
+        };
+        this.saveStep(data, blockObj, true, this.gotoNextStep);
       }
     } else if (slug === 'where') {
       const where = util.getValue(fields, 'where.where', {});
