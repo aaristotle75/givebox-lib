@@ -16,8 +16,10 @@ form button {
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
-input:-webkit-autofill:active  {
+input:-webkit-autofill:active {
     -webkit-box-shadow: 0 0 0 30px white inset !important;
+    -webkit-transition-delay: 9999s;
+    transition-delay: 9999s;
 }
 
 .fieldContext {
@@ -59,6 +61,37 @@ input:-webkit-autofill:active  {
   }
 }
 
+.fieldFauxInput {
+  position: relative;
+  padding: 0;
+  margin: 0;
+  margin-top: 10px;
+  padding-bottom: 5px;
+
+  .placeholder {
+    font-size: 18px;
+    font-weight: 300;
+    color: $med-blue-gray;
+    padding-bottom: 5px;
+  }
+}
+
+.inputLeftBar {
+  position: absolute;
+  top: 0;
+  bottom: 5px;
+  left: -15px;
+  width: 6px;
+  height: auto;
+  border-radius: 5px;
+  @include blueToSalmon(1, 180deg);
+  @include animation(pulsateSlightlyBrighter 2s ease-out infinite);
+}
+
+.inputLeftBar.alt {
+  @include darkToPurple(1, 180deg);
+}
+
 button.input {
   font-size: $normal-text-size;
   font-family: $font-family;
@@ -88,7 +121,7 @@ input {
   height: 40px;
   background: transparent;
   border: none;
-  border-bottom: 1px solid $light;
+  border-bottom: 1px solid $light-gray;
   box-sizing: border-box;
   transition: all .3s linear;
   @media screen and (max-width: $mobile-width) {
@@ -123,7 +156,7 @@ input:focus {
 }
 
 .input-bottom.idle {
-  background: $light;
+  background: $light-gray;
   transform: scaleX(0);
   -webkit-transform: scaleX(0);
   @include default-transition(.25s);
@@ -234,6 +267,12 @@ label.active {
 
 
 /*------------- Rich Text ----------*/
+
+.richtext-group {
+  .floating-label label {
+    top: 0;
+  }
+}
 
 .richtext-embed {
 
@@ -499,6 +538,7 @@ label.active {
     background-color: $off-white;
     min-width: 200px;
     width: 100%;
+    min-height: 50px;
     max-height: 300px;
     @include box-shadow(0px 4px 8px 0px rgba(0,0,0,0.2));
     z-index: 1000000;
@@ -507,7 +547,6 @@ label.active {
   }
 
   .dropdown-content.top {
-    display: block;
     position: absolute;
     background-color: $off-white;
     bottom: 25px;
@@ -537,6 +576,7 @@ label.active {
     width: auto;
     color: $dark-gray;
     text-align: left;
+    @include transition(background .25s);
 
     .dropdown-container {
       display: flex;
@@ -559,7 +599,7 @@ label.active {
       right: 0;
       margin-left: 0;
       margin-right: 5px;
-      color: $primary;
+      color: $dark-gray;
       font-size: $normal-text-size;
     }
 
@@ -569,11 +609,14 @@ label.active {
   }
 
   .dropdown-item:hover {
-    background: $primary;
     color: $white;
+    @include purpleToSalmonOnly;
+    .icon {
+      color: $white;
+    }
   }
 
-  .dropdown-item.selected { color: $primary; }
+  .dropdown-item.selected { color: $mainColor; }
   .dropdown-item.selected:hover { color: $white; }
 
   .dropdown-item.bottom {
@@ -703,24 +746,6 @@ label.active {
       color: $red !important;
     }
   }
-}
-
-.error.tooltip .tooltipTop {
-  color: $white;
-  background-color: $red;
-}
-
-.error.tooltip .tooltipTop i::after {
-  background-color: $red;
-}
-
-.readOnly.tooltip .tooltipTop {
-  color: $dark;
-  background-color: $light-gray;
-}
-
-.readOnly.tooltip .tooltipTop i::after {
-  background-color: $light-gray;
 }
 
 /*-------- Alert Messages ---------*/
@@ -929,8 +954,6 @@ label.active {
 
   .tooltip .tooltipTop {
     top: -40px;
-    color: $white;
-    background-color: $mainColor;
   }
 
   .tooltip .tooltipTop i {
@@ -938,23 +961,11 @@ label.active {
     margin-left: -12px;
   }
 
-  .tooltip .tooltipTop i::after {
-    background-color: $mainColor;
-  }
-
   .error {
 
     .label {
       text-align: left;
       color: $red;
-    }
-
-    .tooltipTop {
-      background-color: $red;
-    }
-
-    .tooltipTop i::after {
-      background-color: $red;
     }
   }
 }
@@ -1087,6 +1098,22 @@ label.active {
     @media (max-width: 600px) {
       padding: 10px 0;
     }
+
+    button.button {
+      padding: 10px 20px;
+      @include purpleToSalmonOnly;
+      color: $white;
+      //border: 1px solid $mainColor;
+      border: 0;
+      border-radius: 20px;
+      @include transition(opacity .25s);
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    button.button:hover {
+      opacity: .8;
+    }
   }
 
   .cityStateZip {
@@ -1097,7 +1124,7 @@ label.active {
     .state {
       width: 40%;
       .dropdown button {
-        margin-top: 5px;
+        margin-top: 0px;
         padding-top: 5px;
         padding-bottom: 5px;
       }
@@ -1323,11 +1350,6 @@ form {
 
 
 /*------ Tooltip Sortable-------*/
-.tooltip.sortable {
-  .tooltipTop {
-    background: #253655;
-  }
-}
 
 button.tooltip.sortable {
   .icon {
@@ -1359,12 +1381,9 @@ button.tooltip.sortable:hover {
 }
 
 .formSectionContainer {
+  @include purpleToSalmon(.2, 140deg);
   padding: 3px 5px;
   border-radius: 20px;
-  background: $light;
-  background: -moz-linear-gradient(left,  $light 0%, $greenLight 100%);
-  background: -webkit-linear-gradient(left,  $light 0%, $greenLight 100%);
-  background: linear-gradient(to right,  $light 0%, $greenLight 100%);
 }
 
 .formSection {
@@ -1372,6 +1391,21 @@ button.tooltip.sortable:hover {
   margin: 2px 0;
   background: $white;
   border-radius: 20px;
+}
+
+.formSectionHeader {
+  @include primaryGradientText;
+  font-size: 12px;
+  font-weight: 400;
+  padding: 5px 5px 10px 5px;
+  //border-bottom: 1px solid $light-gray;
+}
+
+.formSubSection {
+  margin: 20px 0;
+  padding: 5px 10px 10px 10px;
+  border: 2px solid $very-light-gray;
+  border-radius: 10px;
 }
 
 .modalContent.campaignForm {
@@ -1606,5 +1640,48 @@ $ie-bottom-track-color: darken($track-color, $contrast) !default;
     &::-ms-fill-upper {
       @include disabled;
     }
+  }
+}
+
+.react-toggle {
+}
+
+.react-toggle-track {
+  height: 18px;
+  width: 45px;
+  background: linear-gradient(to right, $white 0%, $med-blue-gray 100%);
+}
+
+.react-toggle-thumb {
+  top: -3px;
+  width: 25px;
+  height: 25px;
+  @include box-shadow(0px 1px 2px 0px rgba(0, 0, 0, 0.55));
+  border: 0;
+}
+
+.react-toggle--checked .react-toggle-track {
+  height: 18px;
+  width: 45px;
+  background: linear-gradient(to right, $mainColor 0%, $green 100%);
+}
+
+.react-toggle--checked .react-toggle-thumb {
+  left: 22px;
+  border-color: transparent;
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55);
+}
+
+.react-toggle--focus .react-toggle-thumb {
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55);
+}
+
+.react-toggle--checked:active .react-toggle-thumb {
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55);
+}
+
+.react-toggle:active {
+  .react-toggle-thumb {
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55);
   }
 }

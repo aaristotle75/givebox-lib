@@ -105,7 +105,8 @@ class Form extends Component {
       meta: {},
       disallowModalBgClose: false,
       color: '',
-      paybyDebitCard: false
+      paybyDebitCard: false,
+      leftBar: false
     }
     this.defaults = { ...this.defaultOptions, ...props.options };
     this.saveButtonRef = React.createRef();
@@ -494,6 +495,9 @@ class Form extends Component {
         utc={params.utc}
         allowInput={params.allowInput}
         placeholder={params.placeholder}
+        icon={params.icon}
+        hideIcon={params.hideIcon}
+        leftBar={params.leftBar}
       />
     )
   }
@@ -612,6 +616,7 @@ class Form extends Component {
         style={params.style}
         contentStyle={params.contentStyle}
         className={params.className}
+        dropdownClass={params.dropdownClass}
         error={field ? field.error : params.error}
         errorType={params.errorType}
         createField={this.createField}
@@ -627,6 +632,9 @@ class Form extends Component {
         formProp={this.formProp}
         inputRef={params.ref}
         color={params.color || this.props.primaryColor}
+        leftBar={params.leftBar}
+        hideIcons={params.hideIcons}
+        fixedLabelHasValue={params.fixedLabelHasValue}
       />
     )
   }
@@ -744,6 +752,7 @@ class Form extends Component {
         customLink={params.customLink}
         inputMode={params.inputMode}
         color={params.color || this.props.primaryColor}
+        leftBar={params.leftBar}
       />
     )
   }
@@ -773,6 +782,7 @@ class Form extends Component {
         group={field ? field.group : params.group}
         autoFocus={field ? field.autoFocus : params.autoFocus}
         onChange={this.onChangeRichText}
+        onBlurEditor={params.onBlur}
         value={field ? field.value : params.value}
         updateContent={field ? field.updateContent || null : null}
         error={field ? field.error : params.error }
@@ -785,6 +795,8 @@ class Form extends Component {
         hideCloseModalAndSaveButtons={params.hideCloseModalAndSaveButtons}
         disallowModalBgClose={params.disallowModalBgClose}
         color={params.color || this.props.primaryColor}
+        leftBar={params.leftBar}
+        fixedLabelHasValue={params.fixedLabelHasValue}
       />
     )
   }
@@ -979,6 +991,9 @@ class Form extends Component {
         textField={this.textField}
         closeModalAndSave={this.closeModalAndSave}
         disallowModalBgClose={params.disallowModalBgClose}
+        embed={params.embed}
+        mapOption={params.mapOption}
+        mapOptionStyle={params.mapOptionStyle}
       />
     )
   }
@@ -1090,7 +1105,7 @@ class Form extends Component {
     const options = { ...defaults, ...opts };
     const id = `${this.props.id}-saveButton`;
     return (
-      <button ref={this.saveButtonRef} id={id} className={`button ${options.className}`} style={options.style} type='button' disabled={!this.state.updated && options.allowDisabled ? true : false} onClick={(e) => this.validateForm(e, callback, options.group)}>{options.label}</button>
+      <button ref={this.saveButtonRef} id={id} className={`button ${options.className}`} style={options.style} type='button' disabled={options.disabled || (!this.state.updated && options.allowDisabled) ? true : false} onClick={(e) => this.validateForm(e, callback, options.group)}>{options.label}</button>
     )
   }
 
@@ -1165,7 +1180,7 @@ class Form extends Component {
         : min && !max ? `Please enter a date after ${min}.`
         : !min && max ? `Please enter a date before ${max}.`
         : `default error`;
-        if (value) if (!_v.validateDate(value, { min: min, max: max, format: format })) this.fieldProp(key, {error: opts.errorMsg || errorMsg});
+        if (value) if (!_v.validateDate(value, { min, max, format })) this.fieldProp(key, {error: opts.errorMsg || errorMsg});
         break;
       case 'emailList':
         const optional = opts.optional || false;

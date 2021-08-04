@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as util from '../../common/utility';
 import GBLink from '../../common/GBLink';
+import Loader from '../../common/Loader';
 import ModalRoute from '../../modal/ModalRoute';
 import Icon from '../../common/Icon';
 import ArticleAdmin from './article/ArticleAdmin';
@@ -15,7 +16,6 @@ import {
 } from '../redux/gbx3actions';
 import AvatarMenuButton from './AvatarMenuButton';
 import ArticleList from './article/ArticleList';
-import { GoDashboard } from 'react-icons/go';
 
 class Admin extends React.Component {
 
@@ -75,8 +75,13 @@ class Admin extends React.Component {
     }
 
     if (!util.isEmpty(access)) {
+      const style = {};
+      if (util.getValue(access, 'masker')) {
+        style.marginTop = 25;
+        style.marginRight = 10;
+      }
       header.push(
-        <GBLink key={'exit'} style={{ fontSize: '14px' }} className='link' onClick={() => this.props.exitAdmin()}><Icon><GoDashboard /></Icon>{ isMobile ? 'Profile' : `Back to Profile` }</GBLink>
+        <GBLink key={'exit'} style={{ fontSize: '14px', ...style }} className='link' onClick={() => this.props.exitAdmin()}>{ isMobile ? 'Exit Form Builder' : `Exit Form Builder` }</GBLink>
       )
     }
 
@@ -90,15 +95,19 @@ class Admin extends React.Component {
   render() {
 
     const {
+      stage,
       display,
       step,
       previewMode,
       saveStatus,
       editable,
+      editFormOnly,
       hasAccessToEdit,
       hasAccessToCreate,
       orgID
     } = this.props;
+
+    if (stage !== 'admin') return <Loader msg='Loading Admin...' />
 
     if (!hasAccessToEdit && !hasAccessToCreate) return  <div className='flexCenter flexColumn centeritems'>You do not have access.</div>;
 
@@ -108,7 +117,7 @@ class Admin extends React.Component {
     }
 
     return (
-      <div className={`gbx3AdminLayout ${display}Display ${step}Step ${editable ? 'editable' : ''} ${previewMode ? 'previewMode' : ''}`}>
+      <div className={`gbx3AdminLayout ${display}Display ${step}Step ${editable ? 'editable' : ''} ${previewMode ? 'previewMode' : ''} ${editFormOnly ? 'editFormOnly' : ''}`}>
         <ModalRoute
           className='gbx3'
           id='articleList'
@@ -162,6 +171,7 @@ function mapStateToProps(state, props) {
   const gbx3 = util.getValue(state, 'gbx3', {});
   const saveStatus = util.getValue(gbx3, 'saveStatus');
   const info = util.getValue(gbx3, 'info', {});
+  const stage = util.getValue(info, 'stage', {});
   const breakpoint = util.getValue(info, 'breakpoint');
   const display = util.getValue(info, 'display');
   const articleID = util.getValue(info, 'articleID');
@@ -176,8 +186,10 @@ function mapStateToProps(state, props) {
   const hasAccessToEdit = util.getValue(admin, 'hasAccessToEdit');
   const hasAccessToCreate = util.getValue(admin, 'hasAccessToCreate');
   const editable = util.getValue(admin, 'editable');
+  const editFormOnly = util.getValue(admin, 'editFormOnly');
 
   return {
+    stage,
     project,
     breakpoint,
     display,
@@ -192,7 +204,8 @@ function mapStateToProps(state, props) {
     hasAccessToEdit,
     hasAccessToCreate,
     admin,
-    editable
+    editable,
+    editFormOnly
   }
 }
 

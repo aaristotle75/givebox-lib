@@ -1,4 +1,4 @@
-const primaryColor = '#698df4';
+export const primaryColor = '#698df4';
 
 export const defaultOrgGlobals = {
   globalStyles: {
@@ -75,25 +75,6 @@ export const defaultOrgPages = {
   }
 };
 
-
-export const defaultOrgSignupElements = {
-  orgName: null,
-  orgLogo: null,
-  coverPhoto: null,
-  themeColor: null,
-  email: null,
-  fullName: null,
-  taxID: null,
-  categoryID: null
-};
-
-export const defaultGBX3SignupElements = {
-  title: null,
-  imageURL: null,
-  videoURL: null,
-  mediaType: 'image'
-};
-
 export const defaultCart = {
   processing: false,
   open: false,
@@ -131,7 +112,34 @@ export const defaultStyle = {
     pageOpacity: 1,
     backgroundColor: '#4385f5',
     backgroundOpacity: .6,
-    placeholderColor: ''
+    placeholderColor: 'B0BEC5',
+    backgroundBlur: 0
+  },
+  dark: {
+    maxWidth: 850,
+    primaryColor: '#4385f5',
+    bgColor: '',
+    textColor: '#E8EBED',
+    pageColor: '#000000',
+    pageRadius: 10,
+    pageOpacity: .6,
+    backgroundColor: '#000000',
+    backgroundOpacity: .4,
+    backgroundBlur: 20,
+    placeholderColor: '#627280'
+  },
+  light: {
+    maxWidth: 850,
+    primaryColor: '#4385f5',
+    bgColor: '',
+    textColor: '#253655',
+    pageColor: '#ffffff',
+    pageRadius: 10,
+    pageOpacity: .75,
+    backgroundColor: '#ffffff',
+    backgroundOpacity: .6,
+    backgroundBlur: 10,
+    placeholderColor: '#A4BACA'
   },
   button: {
     embedAllowed: false,

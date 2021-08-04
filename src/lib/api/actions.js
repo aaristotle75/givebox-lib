@@ -3,6 +3,112 @@ import * as types from './actionTypes';
 import * as util from '../common/utility';
 import has from 'has';
 import { trackActivity } from './activity';
+import { sendResource, savePrefs } from './helpers';
+
+const ENTRY_URL = process.env.REACT_APP_ENTRY_URL;
+const CLOUD_URL = process.env.REACT_APP_CLOUD_URL;
+const SUPER_URL = process.env.REACT_APP_SUPER_URL;
+const ENV = process.env.REACT_APP_ENV;
+
+export function toggleLeftMenu(open) {
+  return (dispatch, getState) => {
+    dispatch(savePrefs({
+      leftMenuOpen: open
+    }));
+    dispatch(setLeftMenuOpenState(open));
+  }
+}
+
+export function setLeftMenuOpenState(open) {
+  return {
+    type: open ? types.OPEN_LEFT_MENU : types.CLOSE_LEFT_MENU
+  }
+}
+
+export function openLaunchpad(opts = {}) {
+  const autoOpenSlug = util.getValue(opts, 'autoOpenSlug', null);
+  return (dispatch, getState) => {
+    const state = getState();
+    dispatch(toggleModal('launchpad', true, {
+      autoOpenSlug,
+      closeCallback: () => {
+        const modalEl = document.getElementById('modalOverlay-launchpad');
+        if (modalEl) {
+          if (modalEl.classList.contains('appLoaded')) modalEl.classList.remove('appLoaded');
+        }
+        dispatch(setAppProps({
+          openApp: false,
+          openAppSlug: null,
+          openAppURL: null,
+          appLoading: false
+        }));
+      }
+    }));
+  }
+}
+
+export function startMasquerade(opts = {}) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const orgID = util.getValue(opts, 'orgID', util.getValue(state, 'gbx3.info.orgID', null));
+    const access = util.getValue(state, 'resource.access', {});
+    const role = util.getValue(access, 'role');
+    const userID = util.getValue(access, 'userID');
+    if (role === 'super' && orgID && userID) {
+      dispatch(sendResource('masquerade', {
+        data: {
+          staffType: 'organization',
+          staffTypeID: orgID
+        },
+        callback: (res, err) => {
+          if (opts.callback) opts.callback();
+        }
+      }));
+    }
+  }
+}
+
+export function endMasquerade(callback) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const access = util.getValue(state, 'resource.access', {});
+    const role = util.getValue(access, 'role');
+    if (role === 'super') {
+      dispatch(sendResource('masquerade', {
+          method: 'delete',
+          callback: (res, err) => {
+            if (callback) callback(res);
+          }
+      }));
+    }
+  }
+}
+
+function setUserLogout() {
+  return {
+    type: types.USER_LOGOUT
+  }
+}
+
+export function userLogout() {
+  return (dispatch, getState) => {
+    const state = getState();
+    const access = util.getValue(state, 'resource.access', {});
+    const role = util.getValue(access, 'role');
+    const masker = util.getValue(access, 'masker', false);
+    const endpoint = masker ? 'masquerade' : 'session';
+
+    dispatch(sendResource(endpoint, {
+      method: 'delete',
+      callback: (res, err) => {
+        const redirect = masker ? SUPER_URL : ENTRY_URL;
+        const path = role === 'user' ? '/login/wallet' : util.getValue(access, 'redirect');
+        dispatch(setUserLogout());
+        window.location.replace(`${redirect}${path}`);
+      }
+    }));
+  }
+}
 
 export function updatePrefs(prefs) {
   return {
@@ -29,15 +135,29 @@ function setModal(identifier, open, topModal, opts = {}) {
   }
 }
 
-export function toggleModal(identifier, open, opts = {}) {
+export function modalClosed(identifier) {
+  return {
+    type: types.MODAL_CLOSED,
+    identifier: identifier
+  }
+}
+
+export function toggleModal(identifier, open, options = {}) {
+
   return (dispatch, getState) => {
     const modals = util.getValue(getState(), 'modal', {});
+    const opts = {
+      ...util.getValue(modals, `${identifier}.opts`, {}),
+      ...options
+    };
+
     let openModals = [];
     let allowSetModal = false;
     if (!util.isEmpty(modals)) {
       const filtered = util.filterObj(modals, 'open', true);
       openModals = Object.keys(filtered);
     }
+
     if (open) {
       if (!openModals.includes(identifier)) {
         openModals.push(identifier);
@@ -51,9 +171,11 @@ export function toggleModal(identifier, open, opts = {}) {
       }
     }
     let topModal = null;
+
     if (!util.isEmpty(openModals)) {
       topModal = openModals[openModals.length - 1]
     }
+
     if (allowSetModal) dispatch(setModal(identifier, open, topModal, opts));
   }
 }
@@ -85,13 +207,14 @@ export function setAccess(res, callback) {
       role: util.getValue(user, 'role'),
       permissions: [],
       type: 'organization',
-      is2FAVerified: true,
+      is2FAVerified: util.getValue(user, 'is2FAVerified'),
       userID: user.ID,
       initial: user.firstName.charAt(0).toUpperCase() + user.lastName.charAt(0).toUpperCase(),
       firstName: user.firstName,
       lastName: user.lastName,
       fullName: user.firstName + ' ' + user.lastName,
       email: user.email,
+      phone: user.phone,
       userImage: user.imageURL,
       masker: has(res, 'masker') ? true : false,
       theme: user.preferences ? user.preferences.cloudTheme : 'light',
@@ -133,6 +256,13 @@ export function setProp(key, value) {
     type: types.SET_PROP,
     key: key,
     value: value
+  }
+}
+
+export function setAppProps(obj = {}) {
+  return {
+    type: types.SET_APP_PROPS,
+    obj
   }
 }
 

@@ -3,13 +3,16 @@ import { connect } from 'react-redux';
 import * as util from '../../common/utility';
 import * as types from '../../common/types';
 import { Alert } from '../../common/Alert';
+import Loader from '../../common/Loader';
 import Icon from '../../common/Icon';
+import HelpfulTip from '../../common/HelpfulTip';
 import {
+  getResource,
   sendResource
 } from '../../api/helpers';
 import {
-  updateInfo
-} from '../redux/gbx3actions';
+  removeResource
+} from '../../api/actions';
 import ShareSocial from './ShareSocial';
 import { FiCopy } from 'react-icons/fi';
 import { TiSocialFacebook } from 'react-icons/ti';
@@ -23,6 +26,7 @@ class Share extends React.Component {
 
   constructor(props) {
     super(props);
+    this.getShareArticle = this.getShareArticle.bind(this);
     this.renderShareType = this.renderShareType.bind(this);
     this.renderShareList = this.renderShareList.bind(this);
     this.setShareTypeSelected = this.setShareTypeSelected.bind(this);
@@ -32,6 +36,7 @@ class Share extends React.Component {
   }
 
   componentDidMount() {
+    this.getShareArticle();
     /*
     this.props.sendResource('gbxPreview', {
       id: [this.props.articleID],
@@ -45,6 +50,20 @@ class Share extends React.Component {
     */
   }
 
+  componentWillUnmount() {
+    this.props.removeResource('shareArticle');
+  }
+
+  getShareArticle() {
+    if (this.props.getArticleID) {
+      this.props.getResource('article', {
+        id: [this.props.getArticleID],
+        customName: 'shareArticle',
+        reload: true
+      });
+    };
+  }
+
   setShareTypeSelected(shareTypeSelected) {
     this.setState({ shareTypeSelected });
   }
@@ -54,7 +73,8 @@ class Share extends React.Component {
       kind,
       display,
       hideList,
-      hasAccessToEdit
+      hasAccessToEdit,
+      title
     } = this.props;
 
     const {
@@ -90,7 +110,12 @@ class Share extends React.Component {
 
     return (
       <div className='createKindSection'>
-        <span className='intro'>Share {orgDisplay ? 'Page' : types.kind(kind).name}</span>
+        <div className='intro' style={{ marginBottom: 20 }}>
+          <span className='smallText'>
+            Share {orgDisplay ? 'Nonprofit Page' : types.kind(kind).name}
+          </span>
+          {title}
+        </div>
         <div className='createKindList'>
           {items}
         </div>
@@ -104,11 +129,22 @@ class Share extends React.Component {
     } = this.state;
 
     const {
-      display
+      display,
+      articleID,
+      kind,
+      orgID,
+      hasCustomSlug,
+      apiName,
+      shareArticle,
+      shareLinkEditCallback,
+      showHelper
     } = this.props;
 
     const item = [];
     const orgDisplay = display === 'org' ? true : false;
+    const data = util.getValue(shareArticle, 'data', null);
+    const slug = util.getValue(shareArticle, 'data.slug');
+    const kindID = util.getValue(shareArticle, 'data.kindID');
 
     switch (shareTypeSelected) {
 
@@ -124,14 +160,65 @@ class Share extends React.Component {
 
       case 'edit': {
         item.push(
-          <ShareLinkEdit key='shareLinkEdit' />
+          <div key='editLink'>
+            <ShareLinkEdit
+              display={display}
+              kind={kind}
+              kindID={kindID}
+              articleID={articleID}
+              callback={() => {
+                if (this.props.getArticleID) {
+                  this.getShareArticle();
+                }
+                if (this.props.shareLinkEditCallback) this.props.shareLinkEditCallback();
+              }}
+              data={data}
+              slug={slug}
+              hasCustomSlug={hasCustomSlug}
+              apiName={apiName}
+              buttonText={'Click Here to Save Your Custom Share Link'}
+              buttonGroupStyle={{
+                marginTop: 15
+              }}
+              buttonGroupClassName='flexCenter'
+              subText={
+                showHelper ?
+                  <HelpfulTip
+                    headerIcon={<span className='icon icon-link-2'></span>}
+                    headerText={`Custom Link`}
+                    text={`Enter a custom link below which makes your ${orgDisplay ? 'profile page' : 'fundraiser'} more identifiable to your supporters.`}
+                    style={{ marginTop: 0, marginBottom: 10 }}
+                  />
+                : null
+              }
+            />
+          </div>
         );
         break;
       }
 
       case 'copy': {
         item.push(
-          <ShareLinkCopy key='shareLinkCopy' />
+          <div key='copyLink'>
+            <ShareLinkCopy
+              display={display}
+              kind={kind}
+              kindID={kindID}
+              articleID={articleID}
+              slug={slug}
+              hasCustomSlug={hasCustomSlug}
+              subText={
+                showHelper ?
+                  <HelpfulTip
+                    headerIcon={<span className='icon icon-copy'></span>}
+                    headerText={`Share Link`}
+                    text={`Copy and Paste this link anywhere you want to share your ${orgDisplay ? 'profile page' : 'fundraiser'}.`}
+                    style={{ marginTop: 0, marginBottom: 30 }}
+                  />
+                : null
+              }
+            />
+          </div>
         );
         break;
       }
@@ -139,7 +226,15 @@ class Share extends React.Component {
       case 'social':
       default: {
         item.push(
-          <ShareSocial key='shareSocial' />
+          <ShareSocial
+            key='shareSocial'
+            display={display}
+            kind={kind}
+            orgDisplay={orgDisplay}
+            articleID={articleID}
+            data={data}
+            showHelper={false}
+          />
         );
         break;
       }
@@ -157,13 +252,15 @@ class Share extends React.Component {
     const {
       kind,
       webApp,
-      display
+      display,
+      modalWrapperStyle
     } = this.props;
 
+    if (this.props.getArticleID && util.isLoading(this.props.shareArticle)) return <Loader msg='Loading Share Article...' />
 
     return (
       <div className='createStep'>
-        <div style={{ paddingTop: 0 }} className={`modalWrapper`}>
+        <div style={modalWrapperStyle} className={`modalWrapper`}>
           <Alert style={{ marginTop: 20 }} alert='error' display={util.getPublishStatus(kind, webApp) === 'private' && display !== 'org' ? true : false} msg={`This ${types.kind(kind).name} is Set to Private`} />
           {this.renderShareList()}
           {this.renderShareType()}
@@ -174,34 +271,57 @@ class Share extends React.Component {
 }
 
 Share.defaultProps = {
-  hideList: []
+  hideList: [],
+  showHelper: false,
+  modalWrapperStyle: {
+    paddingTop: 60,
+    paddingBottom: 0
+  }
 }
 
 function mapStateToProps(state, props) {
 
   const gbx3 = util.getValue(state, 'gbx3', {});
-  const info = util.getValue(gbx3, 'info', {});
-  const display = util.getValue(info, 'display');
-  const kind = util.getValue(info, 'kind');
-  const articleID = util.getValue(info, 'articleID');
-  const globals = util.getValue(gbx3, 'globals', {});
-  const admin = util.getValue(gbx3, 'admin', {});
-  const subStep = util.getValue(admin, 'subStep');
-  const webApp = util.getValue(gbx3, 'data.publishedStatus.webApp');
   const hasAccessToEdit = util.getValue(gbx3, 'admin.hasAccessToEdit');
+  const info = util.getValue(gbx3, 'info', {});
+  const admin = util.getValue(gbx3, 'admin', {});
+  const display = props.forceDisplay || util.getValue(info, 'display');
+  const articleID = props.getArticleID || util.getValue(info, 'articleID');
+  const shareArticle = util.getValue(state, 'resource.shareArticle', {});
+
+  let kind = util.getValue(info, 'kind');
+  let kindID = util.getValue(info, 'kindID');
+  let title = display === 'org' ? util.getValue(state, 'resource.gbx3Org.data.name') : util.getValue(gbx3, 'data.title');
+  let webApp = util.getValue(gbx3, 'data.publishedStatus.webApp');
+  let hasCustomSlug = display === 'org' ? true : util.getValue(gbx3, 'data.hasCustomSlug');
+  let apiName = null;
+
+  // if getArticleID is passed use values from the get article info
+  if (props.getArticleID) {
+    kind = util.getValue(shareArticle, 'data.kind');
+    kindID = util.getValue(shareArticle, 'data.kindID');
+    title = util.getValue(shareArticle, 'data.title');
+    webApp = util.getValue(shareArticle, 'data.publishedStatus.webApp');
+    hasCustomSlug = util.getValue(shareArticle, 'data.hasCustomSlug');
+    apiName = `org${types.kind(kind).api.item}`;
+  }
 
   return {
+    hasAccessToEdit,
     display,
+    shareArticle,
     kind,
+    kindID,
+    title,
     articleID,
-    globals,
-    subStep,
     webApp,
-    hasAccessToEdit
+    hasCustomSlug,
+    apiName
   }
 }
 
 export default connect(mapStateToProps, {
-  sendResource,
-  updateInfo
+  removeResource,
+  getResource,
+  sendResource
 })(Share);

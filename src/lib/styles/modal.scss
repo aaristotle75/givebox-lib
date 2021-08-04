@@ -1,7 +1,36 @@
 @import 'variables.scss';
 
 /*----------- MODAL --------------*/
+.forceShowModalGraphic {
+  .modalTop,
+  .modalBottom {
+    display: block !important;
+  }
+
+  button.modalCloseBtn {
+    .icon {
+      color: $white !important;
+    }
+  }
+
+  button.modalCloseBtn:hover {
+    .icon {
+      color: $white !important;
+      opacity: .7;
+    }
+  }
+}
+
 .modal {
+
+  .bottomContainer2,
+  .bottomContainer {
+    .button-group {
+      button.button {
+        padding: 10px 20px;
+      }
+    }
+  }
 
   .modalOverlay {
     position: fixed;
@@ -41,7 +70,9 @@
     height: auto;
     padding: 10px 0;
 
-    .button-group { margin: 0; }
+    .button-group { margin: 0;
+
+    }
 
     @media (max-width: $breakpoint) {
       position: fixed;
@@ -82,13 +113,17 @@
     color: $light-med-gray;
   }
 
-  .modalCloseBtn .icon {
-    color: $light-med-gray;
-    font-size: 14px;
+  button.modalCloseBtn {
+    .icon {
+      color: $light-med-gray;
+    }
   }
 
-  .modalCloseBtn:hover .icon {
-    color: $med-gray;
+  button.modalCloseBtn:hover {
+    .icon {
+      color: $light-med-gray;
+      opacity: .7;
+    }
   }
 
   .actionBtnsContainer {
@@ -171,10 +206,10 @@
     }
 
     .draggableTitle {
+      display: none;
       margin-top: 10px;
       vertical-align: top;
       white-space: nowrap;
-      display: block;
     }
   }
 }

@@ -21,29 +21,6 @@
   align-items: center;
 }
 
-.avatarLink.tooltip {
-  .tooltipTop {
-    min-width: 80px;
-    left: 0;
-    right: 0;
-    transform: translate(-105%, 0%);
-    background-color: transparentize($med-blue-gray, .7);
-    color: $med-blue-dark-gray;
-    font-size: 12px;
-    padding: 5px;
-    text-align: center;
-
-    i {
-      left: 80%;
-      display: none;
-    }
-
-    i::after {
-      background-color: transparentize($med-blue-gray, .7);
-    }
-  }
-}
-
 .hasAccessToEditPublic {
   position: fixed;
   top: 10px;
@@ -53,6 +30,21 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  .avatarLoginActions {
+    margin-right: 10px;
+
+    button.link {
+      font-weight: 400;
+      margin: 0 10px;
+    }
+
+    button.button {
+      padding: 10px 15px;
+      font-size: 14px;
+      margin: 0 5px;
+    }
+  }
 
   .avatarLink {
     cursor: pointer;
@@ -184,7 +176,7 @@
     }
   }
 
-  .theMap{
+  .theMap {
     width: 100%;
     min-height: 400px;
     height: auto;
@@ -307,22 +299,10 @@
     }
   }
 
-  .avatarMenu li:hover {
-    background: linear-gradient(to right, $mainColor 0%, $green 100%);
-  }
-
-  .avatarLink button.link .defaultAvatarImage {
-    background: transparentize($light-med-gray, .5);
-    color: $white;
-    border: 1px solid transparent;
-    @include default-transition(.5s);
-  }
-
-  .avatarLink button.link:hover .defaultAvatarImage {
-    background: transparentize($light-med-gray, .5);
-    color: $white;
-    border: 1px solid transparent;
-    opacity: .7;
+  .avatarMenu {
+    .orgImage {
+      border-radius: 50%;
+    }
   }
 
   .avatarLink .editGraphic {
@@ -339,7 +319,6 @@
   .hasAccessToEditPublic {
 
     button.link {
-      letter-spacing: 1px;
     }
   }
 
@@ -387,13 +366,6 @@
 
   }
 
-  .formSectionHeader {
-    font-size: 1em;
-    font-weight: 300;
-    padding: 20px 5px 5px 5px;
-    border-bottom: 1px solid $light-gray;
-  }
-
   .helperText {
     padding: 10px 5px;
     font-size: 12px;
@@ -430,13 +402,13 @@
   }
 
   input::-webkit-input-placeholder {
-    color: $placeholder-gray;
+    color: $med-blue-gray;
   }
   input::-moz-placeholder {
-    color: $placeholder-gray;
+    color: $med-blue-gray;
   }
   input::-ms-input-placeholder {
-    color: $placeholder-gray;
+    color: $med-blue-gray;
   }
 
   /*------ Layout ------*/
@@ -476,12 +448,17 @@
       border-radius: 0px !important;
     }
 
-    .closeGBXModalButton {
+    button.closeGBXModalButton {
       position: absolute;
-      top: 0;
-      right: 0;
+      top: 3px;
+      right: 8px;
       width: 20px;
       height: 20px;
+      z-index: 2;
+      .icon {
+        font-size: 18px;
+        font-weight: 500;
+      }
     }
   }
 
@@ -610,13 +587,16 @@
     z-index: 4;
 
     .avatarLink button.link {
-      color: $mainColor;
+      @include primaryGradientText;
+      display: flex;
       font-size: 1.1em;
       font-weight: 400;
+      @include transition(opacity .25s);
     }
 
     .avatarLink button.link:hover {
-      color: $mainColorLight;
+      //color: $mainColorLight;
+      opacity: .9;
     }
   }
 
@@ -667,7 +647,8 @@
     right: 0;
     height: $topPanelHeight;
     width: 100%;
-    background: linear-gradient(to right, $mainColorMedium 15%, $green 100%);;
+    //background: linear-gradient(to right, $mainColorMedium 15%, $green 100%);;
+    @include purpleBlueSalmon;
     @include transition(top .25s);
     @include box-shadow(1px 1px 5px 3px rgba(0, 0, 0, 0.25));
     z-index: 3;
@@ -680,6 +661,7 @@
     height: $topPanelHeight;
 
     .adminPanelTabs {
+
       button.link {
         color: $white;
         margin: 0;
@@ -793,13 +775,13 @@
     z-index: 999999;
     height: 40px;
     width: 40px;
-    background: $mainColor;
+    @include darkGradientBackground;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    @include transition(left .5s, opacity .5s);
+    @include transition(left .5s, opacity .25s);
     opacity: 1;
 
     @media (max-width: $breakpoint) {
@@ -813,8 +795,9 @@
   }
 
   .leftPanelOpenButton:hover {
-    background: transparentize($mainColor, .4);
-    @include transition(background .25s);
+    //background: transparentize($mainColor, .4);
+    opacity: .9;
+    @include transition(opacity .25s);
   }
 
   .leftPanelOpenButton.open {
@@ -837,8 +820,8 @@
     white-space: nowrap;
     overflow-x: hidden;
     overflow-y: hidden;
-    background: $mainColorMedium;
-    background-image: url(https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/layout-left-bg-new.png), linear-gradient(to bottom, $mainColorMedium 30%, $green 100%);
+    background: $puppa_blue;
+    background-image: url(https://cdn.givebox.com/givebox/public/images/backgrounds/layout-left-bg-new.png), linear-gradient(200deg, $puppa_purple 0%, $puppa_blue 50%, $green 80%, $puppa_salmon 100%);
     background-position: center bottom;
     background-repeat: no-repeat;
     background-size: $layout-left-width auto;
@@ -863,7 +846,7 @@
       top: $topOffset;
       left: 0;
       z-index: 11;
-      background: $mainColor;
+      background: transparent;
       border-bottom-right-radius: 5px;
       padding: 1px !important;
       @include transition(left .5s);
@@ -887,7 +870,7 @@
       white-space: nowrap;
       display: flex;
       justify-content: space-between;
-      background: $mainColor;
+      @include purpleToBlue(.6);
 
       button.link {
         color: $white;
@@ -929,12 +912,14 @@
         cursor: pointer;
         color: $white;
         font-size: 14px;
-        background: transparentize($mainColor, .7);
+        //@include bgGradient(140deg, rgba($puppa_deep_purple, .1) 50%, rgba($puppa_med_purple, .1) 100%);
+        //background: transparentize($mainColor, .7);
+        @include darkGradientBackground(.1);
         @include default-transition(.5s);
       }
 
       li:hover:not(.listHeader) {
-        background: transparentize($green, .4);
+        background: transparentize($green, .7);
       }
 
       li.draggableBlock {
@@ -972,11 +957,13 @@
 
       li.listHeader {
         font-size: 12px;
+        font-weight: 400;
         text-align: center;
         cursor: default;
         padding: 10px;
         color: $light-gray;
-        background: transparentize($mainColorDark, .4);
+        //background: transparentize($puppa_blue, .2);
+        @include purpleToBlue(.4);
         text-transform: uppercase;
       }
     }
@@ -1518,6 +1505,7 @@
     font-size: 14px;
     font-weight: 400;
     z-index: 5;
+
     .icon {
       display: inline-block;
       font-size: 20px;
@@ -1541,7 +1529,7 @@
       }
     }
 
-    button:hover {
+    button:hover:not(.tooltip) {
       opacity: .8;
     }
 
@@ -1550,7 +1538,7 @@
     }
 
     button.blockEditButton {
-      background: transparentize($mainColorDark, 0);
+      @include darkGradientBackground;
     }
 
     .tooltip .tooltipTop {
@@ -1600,6 +1588,8 @@
     border: 1px solid $med-blue-gray;
     color: $med-blue-gray;
     font-size: 14px;
+    white-space: pre-wrap;
+
     .icon {
       font-size: 40px;
       color: $med-blue-gray;
@@ -1758,6 +1748,10 @@
       }
     }
 
+    button.button {
+      background: transparent;
+    }
+
     .sendEmailNote {
       margin: 20px 0;
 
@@ -1788,7 +1782,7 @@
       }
 
       .public-DraftEditorPlaceholder-inner {
-        color: $placeholder-gray;
+        color: $med-blue-gray;
         font-weight: 300;
         font-size: 1.1em;
         margin-left: 0px;
@@ -1972,6 +1966,7 @@
     border-radius: 20px;
     font-size: 16px;
     font-weight: 400;
+    //background: transparent;
     //color: $mainColor;
     //background-color: $white;
     @include default-transition(.5s);
@@ -2212,7 +2207,7 @@
 
   .subText {
     font-size: 18px;
-    font-weight: 300;
+    font-weight: 400;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -2227,6 +2222,10 @@
 
     ul {
       padding: 20px 0;
+    }
+
+    button.react-share__ShareButton {
+      margin-top: 0;
     }
   }
 
@@ -2571,23 +2570,6 @@
 
 /*------ END SHOP ------*/
 
-.copyButton {
-  padding: 10px 20px;
-  background: $white;
-  color: $mainColor;
-  border: 1px solid $mainColor;
-  border-radius: 20px;
-  @include default-transition(.5s);
-  font-size: 16px;
-  font-weight: 400;
-  margin: 10px 0;
-}
-
-.copyButton:hover {
-  background: $mainColor;
-  color: $white;
-}
-
 /*------- SHARE LINK ------*/
 .shareLink {
 
@@ -2617,7 +2599,7 @@
 
   .shareLinkPrefix {
     position: absolute;
-    top: 9px;
+    top: 8px;
     left: 0;
     font-size: 18px;
     font-weight: 300;
@@ -2670,6 +2652,12 @@
 
 /*--------- CREATE NEW -------*/
 .createStep {
+
+  margin-bottom: 20px;
+
+  .formSectionContainer {
+    background: transparent;
+  }
 
   .stageContainer.open {
     left: 0;
@@ -2797,9 +2785,15 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin: 30px 0 0 0;
+    margin: 0px 0 0 0;
     .intro {
-      font-size: 1.3em;
+      @include primaryGradientText;
+      font-size: 18px;
+      font-weight: 400;
+    }
+    .smallText {
+      font-size: 12px;
+      color: $med-blue-gray;
     }
   }
 
@@ -2826,9 +2820,9 @@
     @include transition(border .25s);
 
     .createKindItemText {
+      @include primaryGradientText;
       font-size: 1.1em;
       font-weight: 400;
-      color: $mainColor;
       margin-top: 15px;
       text-align: center;
     }
@@ -2875,55 +2869,11 @@
 /*-------- END CREATE NEW -----*/
 
 
-/*------ React Toggle Track -----*/
 .gbx3 {
 
-  .react-toggle {
+  .error .moneyAmount .symbol {
+    color: $red !important;
   }
-
-  .react-toggle-track {
-    height: 18px;
-    width: 45px;
-    background: linear-gradient(to right, $white 0%, $med-blue-gray 100%);
-  }
-
-  .react-toggle-thumb {
-    top: -3px;
-    width: 25px;
-    height: 25px;
-    @include box-shadow(0px 1px 2px 0px rgba(0, 0, 0, 0.55));
-    border: 0;
-  }
-
-  .react-toggle--checked .react-toggle-track {
-    height: 18px;
-    width: 45px;
-    background: linear-gradient(to right, $mainColor 0%, $green 100%);
-  }
-
-  .react-toggle--checked .react-toggle-thumb {
-    left: 22px;
-    border-color: transparent;
-    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55) !important;
-  }
-
-  .react-toggle--focus .react-toggle-thumb {
-    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55) !important;
-  }
-
-  .react-toggle--checked:active .react-toggle-thumb {
-    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55) !important;
-  }
-
-  .react-toggle:active {
-    .react-toggle-thumb {
-      box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55) !important;
-    }
-  }
-
-}
-
-.gbx3 {
 
   .moneyAmount.noValue .symbol {
     color: $placeholder-gray;
@@ -3054,6 +3004,13 @@
 
 .gbx3 {
 
+  #modalContent-checkoutDonationSelect {
+    .modalBottom,
+    .modalTop {
+      display: block;
+    }
+  }
+
   .checkoutDonation {
     position: relative;
     display: flex;
@@ -3079,14 +3036,17 @@
       cursor: pointer;
       margin: 10px 0;
       padding: 20px 10px;
-      border-bottom: 1px solid  transparentize($green, .8);
-      @include default-transition(.25s);
+      border-radius: 20px;
+      @include transition(background .25s);
     }
 
     li:hover:not(.noRecords) {
-      background: transparentize($green, .4);
+      @include purpleToSalmonOnly;
+      color: $white;
+
       .selectDonationForm {
         display: block;
+        margin-right: 10px;
       }
       .selected {
         color: $white;
@@ -3164,6 +3124,92 @@
 
     .backgroundPanelResizer:hover {
       background: transparentize($green, .4) !important;
+    }
+  }
+}
+
+/** EditFormOnly **/
+.gbx3 {
+  .editFormOnly {
+
+    .gbx3TopHeader,
+    .topPanel {
+      display: none;
+    }
+
+    .stageContainer {
+      top: 0;
+
+      .gbx3Layout {
+        margin-top: 25px;
+      }
+    }
+    .stageContainer.open {
+      left: 0;
+    }
+
+    .leftPanel {
+      top: 0;
+
+      .leftPanelClose {
+        top: 0;
+      }
+    }
+
+    .leftPanelOpenButton {
+      top: 20px;
+    }
+  }
+}
+
+.orgCustomElements {
+  button.button {
+    background: transparent;
+  }
+}
+
+  /* ---------- Toggle ----------------*/
+.gbx3 {
+  .react-toggle {
+  }
+
+  .react-toggle-track {
+    height: 18px;
+    width: 45px;
+    background: linear-gradient(to right, $white 0%, $med-blue-gray 100%);
+  }
+
+  .react-toggle-thumb {
+    top: -3px;
+    width: 25px;
+    height: 25px;
+    @include box-shadow(0px 1px 2px 0px rgba(0, 0, 0, 0.55));
+    border: 0;
+  }
+
+  .react-toggle--checked .react-toggle-track {
+    height: 18px;
+    width: 45px;
+    background: linear-gradient(to right, $mainColor 0%, $green 100%);
+  }
+
+  .react-toggle--checked .react-toggle-thumb {
+    left: 22px;
+    border-color: transparent;
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55);
+  }
+
+  .react-toggle--focus .react-toggle-thumb {
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55);
+  }
+
+  .react-toggle--checked:active .react-toggle-thumb {
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55);
+  }
+
+  .react-toggle:active {
+    .react-toggle-thumb {
+      box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.55);
     }
   }
 }

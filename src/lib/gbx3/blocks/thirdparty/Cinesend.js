@@ -178,9 +178,10 @@ class Cinesend extends React.Component {
             onChange={(e) => {
               const value = e.currentTarget.value;
             }}
-            style={{ paddingBottom: 0 }}
+            style={{ paddingBottom: 0, margin: '0 15px' }}
             readOnly={true}
             readOnlyText={'Must have a Cinesend Account'}
+            leftBar={true}
           />
           <TextField
             name='virtualEventAPIKey'
@@ -193,7 +194,8 @@ class Cinesend extends React.Component {
               virtualEvent.APIKey = value;
               this.props.updateForm('virtualEvent', virtualEvent);
             }}
-            style={{ paddingBottom: 0 }}
+            style={{ paddingBottom: 0, margin: '0 15px' }}
+            leftBar={true}
           />
           <TextField
             name='virtualEventVideoID'
@@ -206,7 +208,8 @@ class Cinesend extends React.Component {
               virtualEvent.videoID = value;
               this.props.updateForm('virtualEvent', virtualEvent);
             }}
-            style={{ paddingBottom: 0 }}
+            style={{ paddingBottom: 0, margin: '0 15px' }}
+            leftBar={true}
           />
           { videoID && APIKey ? this.renderValidated() : null }
         </AnimateHeight>

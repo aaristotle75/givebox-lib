@@ -26,11 +26,9 @@ class Modal extends Component {
     super(props);
     this.closeModal = this.closeModal.bind(this);
     this.renderActions = this.renderActions.bind(this);
-    this.onClose = this.onClose.bind(this);
     this.onEnter = this.onEnter.bind(this);
     this.onExit = this.onExit.bind(this);
     this.toTop = this.toTop.bind(this);
-    this.searchForOpenModals = this.searchForOpenModals.bind(this);
     let effect;
     if (props.mobile) effect = '3DFlipVert';
     else effect = props.effect;
@@ -63,8 +61,18 @@ class Modal extends Component {
 
   componentDidMount() {
     //window.addEventListener('resize', this.handleResize.bind(this));
-    setTimeout(() => this.setState({open: this.props.open}, this.props.modalOpenCallback),0);
-    this.onClose();
+    if (this.props.open) {
+      const appRoot = document.getElementById('app-root');
+      const blurClass = this.props.blurClass;
+      if (!appRoot.classList.contains(blurClass)) appRoot.classList.add(blurClass);
+      setTimeout(() => this.setState({open: true}) ,0);
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!this.props.open && this.state.open && this.props.opened) {
+      this.closeModal();
+    }
   }
 
   componentWillUnmount() {
@@ -73,7 +81,7 @@ class Modal extends Component {
       clearTimeout(this.timeout);
       this.timeout = null;
     }
-    this.closeModal(null, 'unmounted');
+    this.closeModal('unmounted');
   }
 
   onEnter(pos) {
@@ -91,13 +99,6 @@ class Modal extends Component {
     //const el = document.getElementById('layout-main');
     animateScrollTo(0, { element: this.modalRef.current });
     animateScrollTo(0, { element: this.modalContentRef.current });
-  }
-
-  onClose(callback) {
-    const transitionTimeMS = this.getTransitionDuration();
-    this.setState({open: false}, () => {
-       this.closeTimer = setTimeout(callback, transitionTimeMS);
-    });
   }
 
   /* Set width and height of screen */
@@ -144,42 +145,34 @@ class Modal extends Component {
     return effect.transition.duration || defaultTransition.duration;
   }
 
-  searchForOpenModals(ignore) {
-    let modalIsOpen = false;
-    let allModalsClosed = true;
-    if (this.props.modals) {
-      Object.entries(this.props.modals).forEach(([key, value]) => {
-        if (ignore !== key && value.open) modalIsOpen = true;
-        if (value.open) allModalsClosed = false;
-      });
-      if (modalIsOpen) {
-        return true;
-      } else if (allModalsClosed) {
-        return false;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
-    }
-  }
-
-  closeModal(callback, type = 'ok', allowClose = true) {
+  closeModal(type = 'ok', allowClose = true) {
+    const {
+      modals,
+      identifier
+    } = this.props;
     const bindthis = this;
     const transitionTimeMS = this.getTransitionDuration();
-    const current = util.getValue(this.props.appRef, 'current', {});
-    if (allowClose) {
-      if (this.props.appRef && !this.searchForOpenModals(this.props.identifier)) {
-        if (!util.isEmpty(current)) {
-          if (this.props.appRef.current.classList.contains('blur')) {
-            this.props.appRef.current.classList.remove('blur');
-          }
-        }
+
+    const appRoot = document.getElementById('app-root');
+    const blurClass = bindthis.props.blurClass;
+    let openModals = [];
+    if (!util.isEmpty(modals)) {
+      const filtered = util.filterObj(modals, 'open', true);
+      openModals = Object.keys(filtered);
+      const index = openModals.indexOf(identifier);
+      if (index !== -1) {
+        openModals.splice(index, 1);
       }
+    }
+    if (appRoot.classList.contains(blurClass) && util.isEmpty(openModals)) {
+      const classRemoved = appRoot.classList.remove(blurClass);
+    }
+
+    if (allowClose) {
       this.setState({open: false});
-      this.closeTimer = setTimeout(function() {
+      this.closeTimer = setTimeout(() => {
         window.postMessage(bindthis.props.identifier, '*');
-        if (callback) callback(type);
+        if (bindthis.props.closeCallback) bindthis.props.closeCallback(type);
       }, transitionTimeMS);
     }
   }
@@ -202,7 +195,6 @@ class Modal extends Component {
     } = this.state;
 
     const {
-      closeCallback,
       closeBtnShow,
       customStyle,
       customOverlay,
@@ -213,7 +205,9 @@ class Modal extends Component {
       draggable,
       draggableTitle,
       draggableTitleClass,
-      buttonGroup
+      buttonGroup,
+      modalContentAlt,
+      forceShowModalGraphic
     } = this.props;
 
     let transition = effect.transition;
@@ -252,20 +246,6 @@ class Modal extends Component {
 
     const openEffect = open ? effect.end : effect.begin;
 
-    if (appRef) {
-      if (open) {
-        if (appRef.current) appRef.current.classList.add('blur');
-      } else {
-        if (appRef && !this.searchForOpenModals(identifier)) {
-          if (appRef.current) {
-            if (appRef.current.classList.contains('blur')) {
-              appRef.current.classList.remove('blur');
-            }
-          }
-        }
-      }
-    }
-
     const modalContent =
       <div
         id={`modalContent-${identifier}`}
@@ -279,8 +259,32 @@ class Modal extends Component {
           onLeave={this.onExit}
           bottomOffset={'100px'}
         />
-        {(closeBtn) && <button style={closeBtnStyle} className='modalCloseBtn' onClick={() => this.closeModal(closeCallback, 'ok')}>{iconClose}</button>}
-        <div className='modalTop'></div>
+        {(closeBtn) && <button style={closeBtnStyle} className='modalCloseBtn' onClick={() => this.closeModal('ok')}>{iconClose}</button>}
+        <div className='modalTop'>
+          <svg
+            height="100%"
+            width="100%"
+            id="svg"
+            viewBox="0 0 1440 400"
+            xmlns="http://www.w3.org/2000/svg"
+            className="transition duration-300 ease-in-out delay-150"
+            preserveAspectRatio="none"
+          >
+            <defs>
+              <linearGradient
+                id="gradient"
+                gradientTransform="rotate(5)"
+              >
+                <stop offset="5%" stopColor="#5d45d8" stopOpacity="1"></stop>
+                <stop offset="35%" stopColor="#1d63ef" stopOpacity=".8"></stop>
+                <stop offset="85%" stopColor="#01eee7" stopOpacity=".4"></stop>
+                <stop offset="100%" stopColor="#ed8f90" stopOpacity=".2"></stop>
+              </linearGradient>
+            </defs>
+            <path d="M 0,400 C 0,400 0,200 0,200 C 91.39712918660285,171.08133971291866 182.7942583732057,142.16267942583733 272,130 C 361.2057416267943,117.83732057416269 448.22009569377997,122.43062200956939 544,156 C 639.77990430622,189.5693779904306 744.3253588516748,252.11483253588517 851,273 C 957.6746411483252,293.88516746411483 1066.4784688995214,273.11004784689 1165,254 C 1263.5215311004786,234.88995215311002 1351.7607655502393,217.444976076555 1440,200 C 1440,200 1440,400 1440,400 Z" stroke="none" strokeWidth="0" fill="url(#gradient)" className="transition-all duration-300 ease-in-out delay-150" transform="rotate(-180 720 200)">
+            </path>
+          </svg>
+        </div>
         {draggable ?
           <div className='handle'>
             {!mobile ? <span className='icon icon-move'></span> : <></>}
@@ -301,24 +305,48 @@ class Modal extends Component {
           duration={500}
           in={this.state.scrolled}
         >
-          <GBLink onClick={this.toTop} className={`modalToTop ${this.state.scrolled ? '' : 'displayNone'}`}><span className='icon icon-chevrons-up'></span></GBLink>
+          <GBLink onClick={this.toTop} className={`modalToTop ${this.state.scrolled ? '' : 'displayNone'}`}><span className='icon icon-chevron-up'></span></GBLink>
         </Fade>
-        <div className='modalBottom'></div>
+        <div className='modalBottom'>
+          <svg
+            height="100%"
+            width="100%"
+            id="svg"
+            viewBox="0 0 1440 400"
+            xmlns="http://www.w3.org/2000/svg"
+            className="transition duration-300 ease-in-out delay-150"
+            preserveAspectRatio="none"
+          >
+            <defs>
+              <linearGradient
+                id="gradient"
+                gradientTransform="rotate(5)"
+              >
+                <stop offset="5%" stopColor="#5d45d8" stopOpacity="1"></stop>
+                <stop offset="35%" stopColor="#1d63ef" stopOpacity=".8"></stop>
+                <stop offset="85%" stopColor="#01eee7" stopOpacity=".4"></stop>
+                <stop offset="100%" stopColor="#ed8f90" stopOpacity=".2"></stop>
+              </linearGradient>
+            </defs>
+            <path d="M 0,400 C 0,400 0,200 0,200 C 91.39712918660285,171.08133971291866 182.7942583732057,142.16267942583733 272,130 C 361.2057416267943,117.83732057416269 448.22009569377997,122.43062200956939 544,156 C 639.77990430622,189.5693779904306 744.3253588516748,252.11483253588517 851,273 C 957.6746411483252,293.88516746411483 1066.4784688995214,273.11004784689 1165,254 C 1263.5215311004786,234.88995215311002 1351.7607655502393,217.444976076555 1440,200 C 1440,200 1440,400 1440,400 Z" stroke="none" strokeWidth="0" fill="url(#gradient)" className="transition-all duration-300 ease-in-out delay-150">
+            </path>
+          </svg>
+        </div>
       </div>
     ;
 
     return (
-      <div className={`modal ${className} ${draggable ? 'draggable' : ''}`}>
+      <div className={`modal ${className} ${draggable ? 'draggable' : ''} ${forceShowModalGraphic ? 'forceShowModalGraphic' : ''}`}>
         <div
           ref={this.modalRef}
-          onClick={() => this.closeModal(closeCallback, 'ok', this.props.disallowBgClose ? false : true)}
+          onClick={() => this.closeModal('ok', this.props.disallowBgClose ? false : true)}
           id={`modalOverlay-${identifier}`}
           className={`modalOverlay`} style={prefix({ ...overlayStyle, ...modalOverlayStyle})}
         >
           {mobile && buttonGroup ?
             <div className='modalButtonGroup'>
               {buttonGroup}
-              {(closeBtn) && <button style={closeBtnStyle} className='modalCloseBtn' onClick={() => this.closeModal(closeCallback, 'ok')}>{iconClose}</button>}
+              {(closeBtn) && <button style={closeBtnStyle} className='modalCloseBtn' onClick={() => this.closeModal('ok')}>{iconClose}</button>}
             </div>
           : <></> }
           {draggable && !mobile ?
@@ -353,7 +381,9 @@ Modal.defaultProps = {
   iconClose: <span className='icon icon-x'></span>,
   draggable: false,
   draggableTitle: '',
-  draggableTitleClass: ''
+  draggableTitleClass: '',
+  blurClass: 'blur',
+  forceShowModalGraphic: false
 };
 
 function mapStateToProps(state, props) {

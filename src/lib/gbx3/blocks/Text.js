@@ -221,7 +221,7 @@ class Text extends Component {
         {buttonEnabled ?
         <div ref={this.displayRef}>
           <ModalRoute
-            className='gbx3'
+            className='gbx3 orgCustomElements'
             id={`${name}-overlay`}
             effect='3DFlipVert' style={{ width: '60%' }}
             draggable={false}
@@ -268,7 +268,7 @@ class Text extends Component {
 function mapStateToProps(state, props) {
 
   const primaryColor = util.getValue(state, 'gbx3.globals.gbxStyle.primaryColor');
-  const mission = util.getValue(state, 'gbx3.orgData.mission');
+  const mission = util.getValue(state, 'resource.gbx3Org.data.mission');
 
   return {
     primaryColor,

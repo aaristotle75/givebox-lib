@@ -82,8 +82,7 @@ class Block extends React.Component {
     const {
       name,
       block,
-      blockType,
-      helperBlocks
+      blockType
     } = this.props;
 
     const opts = {
@@ -109,7 +108,6 @@ class Block extends React.Component {
         name,
         block,
         blockType,
-        helperBlocks,
         grid,
         opts
       });
@@ -149,7 +147,8 @@ class Block extends React.Component {
       isVolunteer,
       previewMode,
       stage,
-      backToOrg
+      backToOrg,
+      editable
     } = this.props;
 
     const childrenWithProps = React.Children.map(this.props.children,
@@ -178,6 +177,7 @@ class Block extends React.Component {
         previewMode,
         stage,
         backToOrg,
+        editable,
         blockContent: this.getBlockContent(),
         saveBlock: this.saveBlock,
         closeEditModal: this.closeEditModal,
@@ -201,7 +201,9 @@ class Block extends React.Component {
       block,
       options,
       blockType,
-      isVolunteer
+      isVolunteer,
+      editFormOnly,
+      showRemovable
     } = this.props;
 
     const buttonEnabled = util.getValue(options, 'button.enabled', false);
@@ -217,7 +219,7 @@ class Block extends React.Component {
           <div className='dragHandle'></div>
           { !notEditable ?
           <div className='blockEdit'>
-            {!nonremovable ?
+            {!nonremovable && !editFormOnly && showRemovable ?
               <GBLink className='tooltip blockRemoveButton' onClick={() => this.onClickRemove()}>
                 <span className='tooltipTop'><i />Click Icon to REMOVE {title}</span>
                 <span className='icon icon-trash-2'></span>
@@ -245,7 +247,8 @@ class Block extends React.Component {
 }
 
 Block.defaultProps = {
-  style: {}
+  style: {},
+  showRemovable: false
 }
 
 function mapStateToProps(state, props) {
@@ -275,11 +278,11 @@ function mapStateToProps(state, props) {
   const dataField = util.getValue(block, 'field');
   const type = util.getValue(block, 'type');
   const options = util.getValue(block, 'options', {});
-  const data = util.getValue(gbx3, blockType === 'org' ? 'orgData' : 'data', {});
+  const data = blockType === 'org' ? util.getValue(state, 'resource.gbx3Org.data', {}) : util.getValue(gbx3, 'data', {});
   const fieldValue = util.getValue(data, dataField);
   const modalID = `modalBlock-${blockType}-${props.name}`;
-  const helperBlocks = util.getValue(gbx3, `helperBlocks.${blockType}`, {});
   const previewMode = util.getValue(admin, 'previewMode');
+  const editFormOnly = util.getValue(admin, 'editFormOnly');
   const stage = util.getValue(info, 'stage');
 
   return {
@@ -304,9 +307,10 @@ function mapStateToProps(state, props) {
     globalButtonStyle,
     globalButton,
     primaryColor,
-    helperBlocks,
     previewMode,
+    editFormOnly,
     stage,
+
     breakpoint: util.getValue(info, 'breakpoint')
   }
 }

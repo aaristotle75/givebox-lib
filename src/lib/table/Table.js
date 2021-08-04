@@ -307,7 +307,7 @@ class TableBody extends Component {
       Object.entries(rows).forEach(([key, value]) => {
         const td = [];
         const details = [];
-        const length = value.length;
+        const length = value.length + 1;
         const passkey = key;
         let options = {};
         let ref, id;
@@ -349,7 +349,7 @@ class TableBody extends Component {
       });
     } else {
       items.push(
-        <tr key={0}><td className='noRecordsRow' colSpan={length || 1} align='center'><NoRecords text={this.props.noRecordsText}/></td></tr>
+        <tr key={0}><td className='noRecordsRow' colSpan={+length + 1} align='center'><NoRecords text={this.props.noRecordsText}/></td></tr>
       );
     }
 

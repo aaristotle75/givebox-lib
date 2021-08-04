@@ -122,6 +122,8 @@ class ButtonEdit extends Component {
               const value = e.currentTarget.value;
               this.updateButton('text', value);
             }}
+            leftBar={true}
+            style={{ margin: '0 15px'}}
           />
           <ColorPicker
             name='bgColor'
@@ -168,6 +170,8 @@ class ButtonEdit extends Component {
             placeholder='Enter Button Width (Leave Blank to Auto Fit)'
             inputMode='numeric'
             maxLength={3}
+            leftBar={true}
+            style={{ margin: '0 15px'}}
           />
           <Dropdown
             label='Button Font Size'
@@ -183,6 +187,8 @@ class ButtonEdit extends Component {
             contentWidth={400}
             portalLeftOffset={1}
             rectXY={false}
+            leftBar={true}
+            style={{ margin: '0 15px'}}
           />
           <Dropdown
             label='Button Alignment'
@@ -198,6 +204,8 @@ class ButtonEdit extends Component {
             contentWidth={400}
             portalLeftOffset={1}
             rectXY={false}
+            leftBar={true}
+            style={{ margin: '0 15px'}}
           />
           <div className='input-group'>
             <label className='label'>Button Roundness</label>

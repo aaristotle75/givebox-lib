@@ -1,33 +1,36 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Loadable from 'react-loadable';
 import * as util from '../common/utility';
+import * as types from '../common/types';
 import Image from '../common/Image';
 import GBLink from '../common/GBLink';
-import ScrollTop from '../common/ScrollTop';
+import history from '../common/history';
 import Dropdown from '../form/Dropdown';
+import Loader from '../common/Loader';
 import ModalLink from '../modal/ModalLink';
 import has from 'has';
 import {
-  getResource
+  getResource,
+  sendResource
 } from '../api/helpers';
 import {
   updateOrgPage,
-  updateOrgGlobal,
-  updateData,
   updateInfo,
-  setStyle,
-  updateAdmin,
   saveOrg,
-  setPageState,
-  setPageSearch
+  updatePageState,
+  resetPageSearch,
+  updatePageSearch,
+  createFundraiser,
+  clearGBX3,
+  loadPostSignup
 } from './redux/gbx3actions';
-import Header from './pages/Header';
-import Pages from './pages/Pages';
-import Footer from './Footer';
-import history from '../common/history';
-import Icon from '../common/Icon';
-import { GoDashboard } from 'react-icons/go';
+import {
+  saveGlobal,
+  getArticles,
+  reloadGetArticles,
+  openOrgAdminMenu
+} from './redux/orgActions';
+import OrgPage from './pages/OrgPage';
 
 const GBX_URL = process.env.REACT_APP_GBX_URL;
 
@@ -40,22 +43,19 @@ class Org extends React.Component {
     this.getMessage = this.getMessage.bind(this);
     this.onBreakpointChange = this.onBreakpointChange.bind(this);
     this.pageLinks = this.pageLinks.bind(this);
-    this.pageOptions = this.pageOptions.bind(this);
+    this.morePageOptions = this.morePageOptions.bind(this);
+    this.adminPageOptions = this.adminPageOptions.bind(this);
     this.pageDropdown = this.pageDropdown.bind(this);
     this.onClickPageLink = this.onClickPageLink.bind(this);
     this.onClickArticle = this.onClickArticle.bind(this);
-    this.saveGlobal = this.saveGlobal.bind(this);
-    this.savePage = this.savePage.bind(this);
-    this.reloadGetArticles = this.reloadGetArticles.bind(this);
-    this.getArticles = this.getArticles.bind(this);
-    this.getArticlesCallback = this.getArticlesCallback.bind(this);
-    this.getArticleSearchCallback = this.getArticleSearchCallback.bind(this);
-    this.setPageState = this.setPageState.bind(this);
-    this.setPageSearch = this.setPageSearch.bind(this);
-    this.resetPageSearch = this.resetPageSearch.bind(this);
+    this.createFundraiser = this.createFundraiser.bind(this);
+    this.createFundraiserCallback = this.createFundraiserCallback.bind(this);
+    this.createCallback = this.createCallback.bind(this);
+    this.removeCard = this.removeCard.bind(this);
+    this.renderOrgPage = this.renderOrgPage.bind(this);
     this.state = {
       defaultTitle: props.title,
-      pageSearch: {}
+      loading: false
     };
   }
 
@@ -67,29 +67,7 @@ class Org extends React.Component {
 
   getMessage(e) {
     if (e.data === 'gbx3ExitCallback') {
-      this.reloadGetArticles('gbx3ExitCallback');
-    }
-  }
-
-  async saveGlobal(name, obj = {}, callback) {
-    const globalUpdated = await this.props.updateOrgGlobal(name, obj);
-    if (globalUpdated) {
-      this.props.saveOrg({
-        callback: (res, err) => {
-          if (callback) callback();
-        }
-      })
-    }
-  }
-
-  async savePage(name, obj = {}, callback) {
-    const pageUpdated = await this.props.updateOrgPage(name, obj);
-    if (pageUpdated) {
-      this.props.saveOrg({
-        callback: (res, err) => {
-          if (callback) callback();
-        }
-      })
+      this.props.reloadGetArticles('gbx3ExitCallback');
     }
   }
 
@@ -163,7 +141,7 @@ class Org extends React.Component {
     return links;
   }
 
-  pageOptions() {
+  morePageOptions() {
     const {
       pagesEnabled,
       pageSlug,
@@ -177,6 +155,30 @@ class Org extends React.Component {
       const primaryText = util.getValue(value, 'name', val);
       const rightText = value.slug === pageSlug ? <span className='icon icon-check'></span> : null;
       options.push({ key: val, rightText, primaryText, value: value.slug });
+    });
+
+    return options;
+  }
+
+  adminPageOptions() {
+    const {
+      pagesEnabled,
+      pageSlug,
+      pages,
+      stage
+    } = this.props;
+
+    const isAdmin = stage === 'admin' ? true : false;
+    const options = [];
+
+    Object.entries(pages).forEach(([key, value]) => {
+      const enabled = pagesEnabled.includes(key) ? true : false;
+      if (enabled || isAdmin) {
+        const primaryText = util.getValue(value, 'name', key);
+        const secondaryText = !enabled ? <span className='gray'>Disabled</span> : null;
+        const rightText = value.slug === pageSlug ? <span className='icon icon-check'></span> : null;
+        options.push({ key, rightText, secondaryText, primaryText, value: value.slug });
+      }
     });
 
     return options;
@@ -197,170 +199,121 @@ class Org extends React.Component {
     )
   }
 
-  /**
-  *
-  * Get Articles, reload Articles, search
-  */
-  async reloadGetArticles(debug = 'unknown') {
-    this.setPageState({
-      list: [],
-      search: {},
-      pageNumber: 1,
-      total: 0
-    }, () => this.getArticles({ reset: true, reload: true, pageNumber: 1 }))
-  }
-
-  resetPageSearch() {
-    this.setPageState({ search: {} }, () => {
-      this.setPageSearch({
-        query: ''
-      });
-    })
-  }
-
-  async setPageSearch(search, callback) {
+  async removeCard(articleID, kind, kindID, callback) {
     const {
-      pageSlug
-    } = this.props;
-
-    const stateUpdated = await this.props.setPageSearch(pageSlug, search);
-    if (stateUpdated && callback) {
-      callback();
-    }
-  }
-
-  /**
-  * Page State Properties
-  *
-  * @param {object} newState Following props are available
-  *
-  * // newState props //
-  * @prop {array} list List of article items
-  * @prop {int} pageNumber
-  * @prop {object} search
-  * @prop {int} total Total number of article items
-  */
-  async setPageState(newState = {}, callback) {
-    const {
-      pageSlug
-    } = this.props;
-
-    const stateUpdated = await this.props.setPageState(pageSlug, newState);
-    if (stateUpdated && callback) {
-      callback();
-    }
-  }
-
-  getArticles(options = {}) {
-    const opts = {
-      reset: false,
-      max: 50,
-      reload: false,
-      filter: '',
-      query: '',
-      search: false,
-      showFetching: true,
-      pageNumber: null,
-      ...options
-    };
-
-    const {
-      pages,
-      activePage,
-      customList,
-      useCustomList,
-      kind,
       pageSlug,
+      activePage,
       orgID
     } = this.props;
 
-    const pageState = opts.reset ? {} : {
-      ...this.props.pageState[pageSlug]
-    };
+    const customList = [ ...util.getValue(activePage, 'customList', []) ];
+    const useCustomList = util.getValue(activePage, 'useCustomList', false);
 
-    const pageNumber = opts.pageNumber ? opts.pageNumber : opts.search ? util.getValue(pageState, 'search.pageNumber', 1) : util.getValue(pageState, 'pageNumber', 1);
-    const kindFilter = kind === 'all' || !kind ? '' : `%3Bkind:"${kind}"`;
-    const customFilter = !util.isEmpty(customList) ? util.customListFilter(customList) : null;
-    const baseFilter = customFilter && useCustomList ? customFilter : `landing:true%3Bvolunteer:false${kindFilter}`;
-    const filter = `${baseFilter}${opts.filter ? `%3B${opts.filter}` : ''}`;
-
-    this.props.getResource('orgArticles', {
-      orgID,
-      customName: `${pageSlug}List`,
-      reload: opts.reload,
-      search: {
-        filter,
-        query: opts.query,
-        max: opts.max,
-        page: pageNumber,
-        sort: useCustomList ? 'orderBy,createdAt' : 'createdAt,orderBy',
-        order: useCustomList ? 'asc' : 'desc'
-      },
-      callback: (res, err) => {
-        if (opts.search) {
-          this.getArticleSearchCallback(res, err, opts.query);
-        } else {
-          this.getArticlesCallback(res, err, opts.reset);
+    if (articleID) {
+      if (useCustomList) {
+        if (customList.includes(articleID)) {
+          customList.splice(customList.findIndex(l => l === articleID), 1);
+          const data = {
+            customList
+          };
+          const pageUpdated = await this.props.updateOrgPage(pageSlug, data);
+          if (pageUpdated) {
+            this.props.saveOrg({
+              orgID,
+              isSending: true,
+              orgUpdated: true,
+              callback: (res, err) => {
+                if (callback) callback();
+                this.props.reloadGetArticles();
+              }
+            });
+          }
         }
+      } else {
+        this.props.sendResource(types.kind(kind).api.publish, {
+          orgID,
+          id: [kindID],
+          method: 'patch',
+          isSending: true,
+          data: {
+            landing: false
+          },
+          callback: (res, err) => {
+            this.props.reloadGetArticles();
+          }
+        });
       }
+    }
+  }
+
+
+  /**
+  *  Create Article
+  */
+  async createFundraiser(kind) {
+    this.setState({ loading: true }, () => {
+      this.props.createFundraiser(kind, this.createFundraiserCallback, null, { showNewArticle: true });
     });
   }
 
-  getArticleSearchCallback(res, err, query) {
+  createFundraiserCallback(res, err) {
+    if (this.createCallback) this.createCallback(res, err, () => {
+      this.setState({ loading: false });
+    });
+  }
+
+  async createCallback(res, err, callback) {
     const {
-      pageSlug
+      pageSlug,
+      activePage,
+      orgID
     } = this.props;
 
-    const pageState = {
-      ...this.props.pageState[pageSlug]
-    };
+    const customList = [ ...util.getValue(activePage, 'customList', []) ];
+    const useCustomList = util.getValue(activePage, 'useCustomList', false);
 
-    const pageSearch = util.getValue(this.state.pageSearch, pageSlug);
-    const data = util.getValue(res, 'data', []);
-    const pageNumber = util.getValue(pageState, 'search.pageNumber', 1);
-    const list = util.getValue(pageState, 'search.list', []);
-    const total = +util.getValue(res, 'total', 0);
-
-    if (!util.isEmpty(data)) {
-      if (!has(pageState, 'search')) pageState.search = {};
-      pageState.search.pageNumber = total > list.length ? pageNumber + 1 : pageNumber;
-      pageState.search.list = pageSearch === query ? [...list, ...data] : [...data];
-      pageState.search.total = total;
-      this.setPageState(pageState);
+    if (!util.isEmpty(res) && !err) {
+      const articleID = util.getValue(res, 'articleID');
+      if (articleID) {
+        if (useCustomList) {
+          if (!customList.includes(articleID)) {
+            customList.unshift(articleID);
+            const data = {
+              customList
+            };
+            const pageUpdated = await this.props.updateOrgPage(pageSlug, data);
+            if (pageUpdated) {
+              this.props.saveOrg({
+                orgID,
+                isSending: true,
+                orgUpdated: true,
+                showSaving: true,
+                callback: (res, err) => {
+                  if (callback) callback();
+                }
+              });
+            }
+          }
+        }
+      } else {
+        if (callback) callback();
+      }
     } else {
-      this.resetPageSearch();
+      if (callback) callback();
     }
   }
 
-  getArticlesCallback(res, err, reset) {
-    const {
-      pageSlug
-    } = this.props;
-
-    const pageState = reset ? {} : {
-      ...this.props.pageState[pageSlug]
-    };
-
-    const data = util.getValue(res, 'data', []);
-    const pageNumber = util.getValue(pageState, 'pageNumber', 1);
-    const list = util.getValue(pageState, 'list', []);
-    const total = +util.getValue(res, 'total', 0);
-
-    if (!util.isEmpty(data)) {
-      pageState.pageNumber = total > list.length ? pageNumber + 1 : pageNumber;
-      pageState.list = [...list, ...data];
-      pageState.total = total;
-      pageState.search = {};
-      this.setPageState(pageState);
-    }
+  selectKindOptions() {
+    const options = [];
+    types.kinds().forEach((value) => {
+      options.push(
+        { primaryText: <span className='labelIcon'><span className={`icon icon-${types.kind(value).icon}`}></span> Create {types.kind(value).name}</span>, value }
+      );
+    });
+    return options;
   }
 
-  /**
-  * End Get Articles
-  */
-
-  render() {
-
+  renderOrgPage() {
     const {
       editable,
       hasAccessToEdit,
@@ -375,109 +328,41 @@ class Org extends React.Component {
 
     const isEditable = hasAccessToEdit && editable ? true : false;
     const isAdmin = stage === 'admin' ? true : false;
-    const pageOptions = this.pageOptions();
+
+    const morePageOptions = this.morePageOptions();
+    const adminPageOptions = this.adminPageOptions();
+    const selectKindOptions = this.selectKindOptions();
 
     return (
-      <div className='gbx3Org'>
-        <ScrollTop elementID={isAdmin ? 'stageContainer' : 'gbx3Layout'} />
-        <div className='gbx3OrgHeader'>
-          <div className={'gbx3OrgLogoContainer'} onClick={() => console.log('logo clicked!')}>
-            <Image size='thumb' maxSize={35} url={'https://givebox.s3-us-west-1.amazonaws.com/public/gb-logo5.png'} alt='Givebox' />
-          </div>
-          { cameFromNonprofitAdmin ?
-            <div className='gbx3OrgBackToDashboard orgAdminOnly'>
-              <GBLink key={'exit'} style={{ fontSize: '14px' }} className='link' onClick={() => this.props.exitAdmin()}><Icon><GoDashboard /></Icon>{ isMobile ? 'Dashboard' : `Back to Dashboard` }</GBLink>
-            </div>
-          : null }
-        </div>
-        <div className='gbx3OrgContentContainer'>
-          <Header
-            saveGlobal={this.saveGlobal}
-          />
-          <div className='gbx3OrgSubHeader gbx3OrgContentOuterContainer'>
-            <div className='gbx3OrgContentInnerContainer'>
-              <div className='nameSection'>
-                <ModalLink
-                  id='orgEditTitle'
-                  type='div'
-                  className='nameSectionContainer orgAdminEdit'
-                  opts={{
-                    saveGlobal: this.saveGlobal
-                  }}
-                >
-                  <button className='tooltip blockEditButton' id='orgEditTitle'>
-                    <span className='tooltipTop'><i />Click to EDIT Title</span>
-                    <span className='icon icon-edit'></span>
-                  </button>
-                </ModalLink>
-                <div className='nameSectionContainer'>
-                  <div className='nameText'>
-                    <div dangerouslySetInnerHTML={{ __html: util.cleanHtml(title) }} />
-                  </div>
-                </div>
-              </div>
-              { pageOptions.length > 1 || isAdmin ?
-                <div className='navigation'>
-                  <ModalLink
-                    id='orgEditMenu'
-                    type='div'
-                    className='navigationContainer orgAdminEdit'
-                    opts={{
-                      saveGlobal: this.saveGlobal,
-                      closeCallback: () => this.props.saveOrg(),
-                      reloadGetArticles: this.reloadGetArticles,
-                      getArticles: this.getArticles
-                    }}
-                  >
-                    <button className='tooltip blockEditButton' id='orgEditMenu'>
-                      <span className='tooltipTop'><i />Click to Manage Pages / Navigation Menu</span>
-                      <span className='icon icon-edit'></span>
-                    </button>
-                  </ModalLink>
-                  { pageOptions.length > 0 ?
-                    <div className='navigationContainer'>
-                    { !isMobile ?
-                      this.pageLinks()
-                    :
-                      <div className='navigationDropdown'>
-                        {this.pageDropdown(this.pageOptions())}
-                      </div>
-                    }
-                    </div>
-                  :
-                    <div className='navigationContainer'>
-                      Manage Navigation Menu
-                    </div>
-                  }
-                </div>
-              : null }
-            </div>
-          </div>
-          <main className='gbx3OrgContent gbx3OrgContentOuterContainer'>
-            <div className='gbx3OrgContentInnerContainer'>
-                <Pages
-                  isAdmin={isAdmin}
-                  onClickArticle={this.onClickArticle}
-                  onMouseOverArticle={this.onMouseOverArticle}
-                  pageDropdown={this.pageDropdown}
-                  reloadGetArticles={this.reloadGetArticles}
-                  getArticles={this.getArticles}
-                  setPageSearch={this.setPageSearch}
-                  resetPageSearch={this.resetPageSearch}
-                />
-            </div>
-          </main>
-          <div className='gbx3OrgFooter gbx3OrgContentOuterContainer'>
-            <div className='gbx3OrgContentInnerContainer'>
-              <Footer
-                showP2P={true}
-                onClickVolunteerFundraiser={this.props.onClickVolunteerFundraiser}
-              />
-            </div>
-          </div>
-        </div>
-        {breakpoint === 'mobile' ? <div className='bottomOffset'>&nbsp;</div> : <></>}
-      </div>
+      <OrgPage
+        {...this.props}
+        isEditable={isEditable}
+        isAdmin={isAdmin}
+        morePageOptions={morePageOptions}
+        adminPageOptions={adminPageOptions}
+        saveGlobal={this.props.saveGlobal}
+        pageLinks={this.pageLinks}
+        pageDropdown={this.pageDropdown}
+        onClickArticle={this.onClickArticle}
+        reloadGetArticles={this.props.reloadGetArticles}
+        openOrgAdminMenu={this.props.openOrgAdminMenu}
+        getArticles={this.props.getArticles}
+        setPageSearch={this.props.updatePageSearch}
+        resetPageSearch={this.props.resetPageSearch}
+        removeCard={this.removeCard}
+        createFundraiser={this.createFundraiser}
+        selectKindOptions={selectKindOptions}
+      />
+    )
+  }
+
+  render() {
+
+    return (
+      <>
+        {this.state.loading ? <Loader msg='Creating...' /> : null }
+        {this.renderOrgPage()}
+      </>
     )
   }
 
@@ -505,7 +390,6 @@ function mapStateToProps(state, props) {
   const useCustomList = util.getValue(activePage, 'useCustomList', false);
   const kind = util.getValue(activePage, 'kind');
   const resourceName = `${pageSlug}List`;
-  const pageList = util.getValue(state, `resource.${resourceName}`, {});
   const pageState = util.getValue(gbx3, 'pageState', {});
   const pageSearch = util.getValue(gbx3, 'pageSearch', {});
   const cameFromNonprofitAdmin = util.getValue(info, 'cameFromNonprofitAdmin', false);
@@ -527,8 +411,6 @@ function mapStateToProps(state, props) {
     breakpoint,
     isMobile,
     title,
-    resourceName,
-    pageList,
     pageState,
     pageSearch,
     cameFromNonprofitAdmin
@@ -536,13 +418,18 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
-  updateOrgGlobal,
-  updateData,
   updateInfo,
-  setStyle,
-  updateAdmin,
   saveOrg,
   getResource,
-  setPageState,
-  setPageSearch
+  sendResource,
+  getArticles,
+  reloadGetArticles,
+  openOrgAdminMenu,
+  updatePageState,
+  resetPageSearch,
+  updatePageSearch,
+  saveGlobal,
+  createFundraiser,
+  clearGBX3,
+  updateOrgPage
 })(Org);

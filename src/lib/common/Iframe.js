@@ -30,7 +30,7 @@ export default class Iframe extends Component {
       <div className={`iframeWrapper ${className || ''}`}>
         {this.state.iframeLoading &&
         <div className='iframeLoader'>
-          <img src='https://s3-us-west-1.amazonaws.com/givebox/public/images/squareLoader.gif' alt='Loader' />
+          <img src='https://cdn.givebox.com/givebox/public/images/spinner-loader.svg' alt='Loader' />
         </div>}
         <iframe
           id={id}

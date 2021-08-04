@@ -6,9 +6,10 @@ import { toggleModal } from '../../api/actions';
 import { defaultAmountHeight } from '../blocks/amounts/amountsStyle';
 import { blockTemplates, defaultBlocks } from '../blocks/blockTemplates';
 import { createData } from '../admin/article/createTemplates';
-import { helperTemplates } from '../helpers/helperTemplates';
 import { builderStepsConfig } from '../admin/article/builderStepsConfig';
+import { signupPhase as signupPhaseConfig } from '../signup/signupConfig';
 import {
+  primaryColor as defaultPrimaryColor,
   defaultStyle,
   defaultOrgGlobals,
   defaultOrgPages
@@ -32,11 +33,339 @@ export function setLoading(loading) {
   }
 }
 
-export function updateSignup(name, signup) {
+export function savingSignup(saving, savingSignupCallback) {
   return {
-    type: types.UPDATE_SIGNUP,
+    type: types.SAVING_SIGNUP,
+    saving,
+    savingSignupCallback
+  }
+}
+
+export function getGBX3SaveData(options = {}) {
+  const opts = {
+    customTemplate: {},
+    data: {},
+    ...options
+  };
+  const customTemplate = opts.customTemplate;
+  const data = opts.data;
+
+  return (dispath, getState) => {
+    const state = getState();
+    const orgSignup = util.getValue(state, 'gbx3.orgSignup', {});
+    const fields = util.getValue(orgSignup, 'fields', {});
+    const {
+      org,
+      gbx3
+    } = fields;
+
+    const theme = util.getValue(org, 'defaultTheme', 'dark');
+    const gbx3Data = {
+      giveboxSettings: {},
+      ...gbx3,
+      ...data
+    };
+
+    const primaryColor = org.themeColor || defaultPrimaryColor;
+    const gbx3Blocks = util.getValue(customTemplate, 'blocks', {});
+    const gbxStyle = util.getValue(customTemplate, 'gbxStyle', {});
+    const globals = util.getValue(customTemplate, 'globals', {});
+
+    const gbx3Template = {
+      globals: {
+        ...globals,
+        theme,
+        gbxStyle: {
+          ...defaultStyle[theme],
+          ...gbxStyle,
+          //backgroundColor: primaryColor,
+          backgroundImage: gbx3.imageURL,
+          primaryColor
+        }
+      },
+      blocks: {
+        ...gbx3Blocks,
+        media: {
+          ...gbx3Blocks.media,
+          content: {
+            image: {
+              size: 'medium',
+              borderRadius: 5,
+              URL: gbx3.imageURL
+            },
+            video: {
+              URL: gbx3.videoURL,
+              auto: false,
+              validatedURL: gbx3.videoURL
+            }
+          },
+          options: {
+            ...util.getValue(gbx3Blocks, 'media.options', {}),
+            mediaType: gbx3.mediaType
+          }
+        }
+      }
+    }
+
+    gbx3Data.giveboxSettings.customTemplate = {
+      ...gbx3Template
+    };
+
+    if (org.themeColor) {
+      gbx3Data.giveboxSettings.primaryColor = org.themeColor;
+    };
+
+    return gbx3Data;
+  }
+}
+
+export function signupGBX3Data() {
+  return (dispath, getState) => {
+    const state = getState();
+    const orgSignup = util.getValue(state, 'gbx3.orgSignup', {});
+    const fields = util.getValue(orgSignup, 'fields', {});
+    const {
+      org,
+      gbx3
+    } = fields;
+
+    const theme = util.getValue(org, 'defaultTheme', 'dark');
+
+    const gbx3Data = {
+      ...createData.fundraiser,
+      ...gbx3,
+    };
+
+    const primaryColor = org.themeColor || defaultPrimaryColor;
+    const gbx3Blocks = blockTemplates.article.fundraiser;
+    const blocksDefault = {};
+    defaultBlocks.article.fundraiser.forEach((value) => {
+      blocksDefault[value] = gbx3Blocks[value];
+    });
+
+    const gbx3Template = {
+      globals: {
+        theme,
+        gbxStyle: {
+          ...defaultStyle[theme],
+          //backgroundColor: primaryColor,
+          backgroundImage: gbx3.imageURL,
+          primaryColor
+        }
+      },
+      blocks: {
+        ...blocksDefault,
+        media: {
+          ...blocksDefault.media,
+          content: {
+            image: {
+              size: 'medium',
+              borderRadius: 5,
+              URL: gbx3.imageURL
+            },
+            video: {
+              URL: gbx3.videoURL,
+              auto: false,
+              validatedURL: gbx3.videoURL
+            }
+          },
+          options: {
+            ...blocksDefault.media.options,
+            mediaType: gbx3.mediaType
+          }
+        }
+      }
+    }
+
+    gbx3Data.giveboxSettings.customTemplate = {
+      ...gbx3Template
+    };
+
+    if (org.themeColor) {
+      gbx3Data.giveboxSettings.primaryColor = org.themeColor;
+    };
+
+    return gbx3Data;
+  }
+}
+
+export function getSignupStep(value, phase = null) {
+  return (dispatch, getState) => {
+    const orgSignup = util.getValue(getState(), 'gbx3.orgSignup', {});
+    const {
+      signupPhase
+    } = orgSignup;
+
+    const stepsTodo = signupPhaseConfig[phase || signupPhase].stepsTodo;
+    const step = isNaN(value) ? stepsTodo.findIndex(s => s.slug === value) : value;
+    return step;
+  }
+}
+
+export function setSignupStep(value, callback) {
+  return async (dispatch, getState) => {
+    const orgSignup = util.getValue(getState(), 'gbx3.orgSignup', {});
+    const {
+      signupPhase
+    } = orgSignup;
+
+    const stepsTodo = signupPhaseConfig[signupPhase].stepsTodo;
+    const step = isNaN(value) ? stepsTodo.findIndex(s => s.slug === value) : value;
+    const updated = await dispatch(updateOrgSignup({ step }));
+    if (callback && updated) callback(step);
+  }
+}
+
+export function updateOrgSignup(orgSignup = {}, phaseCompleted = null) {
+  return {
+    type: types.UPDATE_ORG_SIGNUP,
+    orgSignup,
+    phaseCompleted
+  }
+}
+
+export function updateOrgSignupField(name, fields) {
+  return {
+    type: types.UPDATE_ORG_SIGNUP_FIELD,
     name,
-    signup
+    fields
+  }
+}
+
+function getMinStepNotCompleted(array, haystack) {
+  // Get the minimum not completed step
+  const numOfSteps = array.length - 1;
+  const uncompletedSteps = [];
+  array.forEach((value, key) => {
+    if (!haystack.completed.includes(value.slug)) {
+      uncompletedSteps.push(key);
+    }
+  });
+  const minStepNotCompleted = !util.isEmpty(uncompletedSteps) ? Math.min(...uncompletedSteps) : numOfSteps;
+  return minStepNotCompleted;
+}
+
+export function loadOrgSignup(options = {}) {
+
+  const forceStep = options.forceStep || null;
+  const openModal = options.openModal || true;
+  const bookDemo = options.bookDemo || false;
+  const affiliateID = +util.getCookie('promo', null);
+
+  return async (dispatch, getState) => {
+    const signupFromCookie = LZString.decompressFromUTF16(localStorage.getItem('signup'));
+    const signupJSON = signupFromCookie ? JSON.parse(signupFromCookie) : {};
+    const orgSignup = {
+      ...util.getValue(getState(), 'gbx3.orgSignup', {}),
+      ...signupJSON,
+      affiliateID,
+      signupPhase: 'signup'
+    };
+    orgSignup.step = forceStep || getMinStepNotCompleted(signupPhaseConfig.signup.stepsTodo, orgSignup);
+
+    if (!orgSignup.completed.includes('welcome') && !bookDemo) orgSignup.completed.push('welcome');
+
+    const updated = await dispatch(updateOrgSignup(orgSignup));
+    if (updated) {
+      dispatch(setOrgStyle({
+        backgroundColor: util.getValue(orgSignup, 'fields.org.themeColor')
+      }));
+      dispatch(setLoading(false));
+      dispatch(updateInfo({ display: 'signup', originTemplate: 'signup' }));
+      if (openModal && !bookDemo) dispatch(toggleModal('orgSignupSteps', true));
+      if (bookDemo) dispatch(toggleModal('bookDemo', true));
+    }
+  }
+}
+
+export function checkSignupPhase(options = {}) {
+  return async (dispatch, getState) => {
+    const state = getState();
+    const signupPhase = util.getValue(state, 'gbx3.orgSignup.signupPhase');
+    const completedPhases = util.getValue(state, 'gbx3.orgSignup.completedPhases', []);
+    const hasReceivedTransaction = util.getValue(state, 'resource.gbx3Org.data.hasReceivedTransaction');
+
+    switch (signupPhase) {
+      case 'postSignup': {
+        if (hasReceivedTransaction) {
+          const updated = await dispatch(updateOrgSignup({
+            step: 0,
+            signupPhase: 'connectBank'
+          }, 'postSignup'));
+          if (updated) {
+            dispatch(loadSignupPhase({
+              phase:  'connectBank',
+              modalName: 'orgConnectBankSteps',
+              openAdmin: true,
+              openModal: true
+            }));
+          }
+        } else {
+          dispatch(loadSignupPhase({
+            phase:  'postSignup',
+            modalName: 'orgPostSignupSteps',
+            ...options
+          }));
+        }
+        break;
+      }
+
+      case 'manualConnect':
+      case 'connectBank': {
+        dispatch(loadSignupPhase({
+          phase: signupPhase,
+          modalName: 'orgConnectBankSteps',
+          openAdmin: true,
+          openModal: true,
+          ...options
+        }));
+        break;
+      }
+
+      case 'transferMoney': {
+        if (!completedPhases.includes('transferMoney')) {
+          dispatch(loadSignupPhase({
+            phase: signupPhase,
+            modalName: 'orgTransferSteps',
+            openAdmin: hasReceivedTransaction ? true : false,
+            openModal: hasReceivedTransaction ? true : false,
+            ...options
+          }));
+        }
+        break;
+      }
+
+      // no default
+    }
+  }
+}
+
+export function loadSignupPhase(options = {}) {
+  const opts = {
+    phase: null,
+    modalName: null,
+    forceStep: null,
+    openModal: true,
+    openAdmin: true,
+    ...options
+  }
+
+  if (!opts.phase || !opts.modalName) return console.error('No signup phase');
+
+  return async (dispatch, getState) => {
+
+    const state = getState();
+    const isSuper = util.getValue(state, 'resource.access.role') === 'super' ? true : false;
+    const orgSignup = util.getValue(state, 'gbx3.orgSignup', {});
+    orgSignup.step = (opts.forceStep || opts.forceStep === 0) ? opts.forceStep : getMinStepNotCompleted(signupPhaseConfig[opts.phase].stepsTodo, orgSignup);
+
+    if (!orgSignup.completed.includes('createSuccess')) orgSignup.completed.push('createSuccess');
+
+    const updated = await dispatch(updateOrgSignup(orgSignup));
+    if (updated) {
+      if (opts.openAdmin) dispatch(updateAdmin({ open: true }));
+      if (opts.openModal && !isSuper) dispatch(toggleModal(opts.modalName, true));
+    }
   }
 }
 
@@ -60,6 +389,47 @@ export function setPageState(page, newState) {
     type: types.UPDATE_PAGE_STATE,
     page,
     newState
+  }
+}
+
+/**
+* Page State Properties
+*
+* @param {object} newState Following props are available
+*
+* // newState props //
+* @prop {array} list List of article items
+* @prop {int} pageNumber
+* @prop {object} search
+* @prop {int} total Total number of article items
+*/
+export function updatePageState(newState = {}, callback) {
+  return async (dispatch, getState) => {
+    const pageSlug = util.getValue(getState(), 'gbx3.info.activePageSlug');
+    const stateUpdated = await dispatch(setPageState(pageSlug, newState));
+    if (stateUpdated && callback) {
+      callback();
+    }
+  }
+}
+
+export function resetPageSearch() {
+  return (dispatch) => {
+    dispatch(updatePageState({ search: {} }, () => {
+      dispatch(updatePageSearch({
+        query: ''
+      }));
+    }));
+  }
+}
+
+export function updatePageSearch(search, callback) {
+  return async (dispatch, getState) => {
+    const pageSlug = util.getValue(getState(), 'gbx3.info.activePageSlug');
+    const stateUpdated = await dispatch(setPageSearch(pageSlug, search));
+    if (stateUpdated && callback) {
+      callback();
+    }
   }
 }
 
@@ -183,6 +553,14 @@ export function updateBlock(blockType, name, block) {
   }
 }
 
+export function resetBlock(blockType, name) {
+  return {
+    type: types.RESET_BLOCK,
+    name,
+    blockType
+  }
+}
+
 export function addBlock(blockType, type, w = 0, h = 0, ref, callback) {
   return async (dispatch, getState) => {
     const gbx3 = util.getValue(getState(), 'gbx3', {});
@@ -271,7 +649,7 @@ export function updateGlobal(name, global) {
 
 export function updateData(data, blockType) {
   return {
-    type: blockType === 'org' ? types.UPDATE_ORG : types.UPDATE_DATA,
+    type: types.UPDATE_DATA,
     data
   }
 }
@@ -287,15 +665,6 @@ export function updateAdmin(admin) {
   return {
     type: types.UPDATE_ADMIN,
     admin
-  }
-}
-
-export function closeHelper(blockType) {
-  return (dispatch, getState) => {
-    dispatch(updateHelperBlocks(blockType, {
-      helperOpen: false,
-      helperSidebarShow: true
-    }));
   }
 }
 
@@ -342,102 +711,6 @@ export function checkHelperIfHasDefaultValue(blockType, helper) {
     }
 
     return isDefault;
-  }
-}
-
-export function nextHelperStep(blockType, checkStep, returnNextStepOnly = false) {
-  return (dispatch, getState) => {
-    const gbx3 = util.getValue(getState(), 'gbx3', {});
-    const helperBlocks = util.getValue(gbx3, `helperBlocks.${blockType}`, {});
-    const helperCompleted = util.getValue(helperBlocks, 'completed', []);
-    const helperStep = checkStep || checkStep === 0 ? checkStep : util.getValue(helperBlocks, 'helperStep', 0);
-    const helpersAvailable = util.getValue(helperBlocks, 'helpersAvailable', []);
-
-    let nextStep = null;
-    Object.entries(helpersAvailable).forEach(([key, value]) => {
-      if ( (!nextStep && nextStep !== 0) && !helperCompleted.includes(value.blockName) && ( key > helperStep )) {
-        nextStep = key;
-      }
-    });
-    if (!nextStep) {
-      Object.entries(helpersAvailable).forEach(([key, value]) => {
-        if ( (!nextStep && nextStep !== 0) && !helperCompleted.includes(value.blockName)) {
-          nextStep = +key;
-        }
-      });
-    }
-    if (returnNextStepOnly) {
-      return nextStep || 0;
-    } else {
-      if (nextStep || nextStep === 0) dispatch(checkForHelper(blockType, nextStep));
-      else {
-        dispatch(updateHelperBlocks(blockType, {
-          helperStep: 0,
-          helperOpen: false,
-          helperSidebarShow: true
-        }));
-      }
-    }
-  }
-}
-
-export function checkForHelper(blockType, nextStep) {
-  return (dispatch, getState) => {
-    const gbx3 = util.getValue(getState(), 'gbx3', {});
-    const availableBlocks = util.getValue(gbx3, `admin.availableBlocks.${blockType}`, []);
-    const helpersTurnedOff = util.getValue(getState(), `preferences.gbx3Helpers`) === 'off' ? true : false;
-    const helperBlocks = util.getValue(gbx3, `helperBlocks.${blockType}`, {});
-    const helperCompleted = util.getValue(helperBlocks, 'completed', []);
-    const helperStep = ( nextStep || nextStep === 0 ) ? nextStep : util.getValue(helperBlocks, 'helperStep');
-    const helpersAvailable = util.getValue(helperBlocks, 'helpersAvailable', []);
-    const lastStep = helpersAvailable.length - 1;
-    const helper = util.getValue(helpersAvailable, helperStep, {});
-    const isVolunteer = util.getValue(gbx3, 'admin.isVolunteer');
-
-    if (!helpersTurnedOff) {
-      // If isVolunteer and the helper is volunteerRestricted go to next step
-      if ((isVolunteer && util.getValue(helper, 'volunteerRestricted')) || (helperCompleted.includes(helper.blockName))) {
-        dispatch(nextHelperStep(blockType));
-      } else {
-        // If a helperStep is not null and helper exists, open the helper and hide the sidebar
-        if ( ( helperStep || helperStep === 0 ) &&  !util.isEmpty(helper)) {
-          const isDefault = dispatch(checkHelperIfHasDefaultValue(blockType, helper));
-          if (isDefault && !availableBlocks.includes(helper.blockName)) {
-            dispatch(updateHelperBlocks(blockType, {
-              helperStep,
-              helperOpen: true,
-              helperSidebarShow: false
-            }));
-          } else {
-            const nextStep = dispatch(nextHelperStep(blockType, helperStep, true));
-            if (nextStep === lastStep) {
-              dispatch(updateHelperBlocks(blockType, {
-                helperOpen: true,
-                helperStep: nextStep,
-                helperSidebarShow: false
-              }));
-            } else {
-              dispatch(checkForHelper(blockType, nextStep));
-            }
-          }
-        } else {
-          // Close the helper, set the step to 1 and hide the sidebar
-          dispatch(updateHelperBlocks(blockType, {
-            helperOpen: false,
-            helperStep: 1,
-            helperSidebarShow: true
-          }));
-        }
-      }
-    }
-  }
-}
-
-export function updateHelperBlocks(blockType, helperBlocks) {
-  return {
-    type: types.UPDATE_HELPERS,
-    blockType,
-    helperBlocks
   }
 }
 
@@ -509,6 +782,7 @@ export function updateCart(cart) {
 
 export function setCartOnLoad(cartObj = {}) {
   return async (dispatch, getState) => {
+    const state = getState();
     const cartFromCookie = LZString.decompressFromUTF16(localStorage.getItem('cart'));
     const cookieJSON = cartFromCookie ? JSON.parse(cartFromCookie) : {};
     const cartState = util.getValue(getState(), 'gbx3.cart', {});
@@ -669,6 +943,7 @@ export function saveOrg(options = {}) {
 
   const opts = {
     data: {},
+    orgID: null,
     isSending: false,
     callback: null,
     orgUpdated: false,
@@ -679,16 +954,21 @@ export function saveOrg(options = {}) {
   return (dispatch, getState) => {
     const gbx3 = util.getValue(getState(), 'gbx3', {});
     const orgUpdated = opts.orgUpdated || util.getValue(gbx3, 'orgUpdated', false);
-    const orgData = util.getValue(gbx3, 'orgData', {});
+    const orgData = util.getValue(getState(), 'resource.gbx3Org.data', {});
     const customTemplate = util.getValue(orgData, 'customTemplate', {});
+    const orgSignup = util.getValue(gbx3, 'orgSignup', {});
     const orgPages = util.getValue(gbx3, 'orgPages', {});
     const orgGlobals = util.getValue(gbx3, 'orgGlobals', {});
     const info = util.getValue(gbx3, 'info', {});
+    const orgID = opts.orgID || util.getValue(info, 'orgID');
 
     const dataObj = {
       ...orgData,
       customTemplate: {
         ...customTemplate,
+        orgSignup: {
+          ...orgSignup
+        },
         orgPages: {
           ...orgPages
         },
@@ -698,10 +978,11 @@ export function saveOrg(options = {}) {
       },
       ...opts.data
     };
+
     if (orgUpdated) {
       if (opts.showSaving) dispatch(updateGBX3('saveStatus', 'saving'));
-      dispatch(sendResource(util.getValue(info, 'apiName'), {
-        orgID: util.getValue(info, 'orgID'),
+      dispatch(sendResource('org', {
+        orgID,
         data: dataObj,
         method: 'patch',
         callback: (res, err) => {
@@ -775,14 +1056,13 @@ export function saveGBX3(blockType, options = {}) {
 
   return (dispatch, getState) => {
     const gbx3 = util.getValue(getState(), 'gbx3', {});
-    const gbxData = util.getValue(gbx3, blockType === 'org' ? 'orgData' : 'data', {});
+    const gbxData = util.getValue(gbx3, 'data', {});
     const settings = util.getValue(gbxData, 'giveboxSettings', {});
     const customTemplate = util.getValue(settings, 'customTemplate', {});
     const info = util.getValue(gbx3, 'info', {});
     const blocks = util.getValue(gbx3, `blocks.${blockType}`, {});
     const globals = util.getValue(gbx3, 'globals', {});
     const backgrounds = util.getValue(gbx3, 'backgrounds', []);
-    const helperBlocks = util.getValue(gbx3, 'helperBlocks', {});
     const helperSteps = util.getValue(gbx3, 'helperSteps', {});
     const giveboxSettings = blockType === 'org' ?
       {
@@ -791,7 +1071,6 @@ export function saveGBX3(blockType, options = {}) {
           blocks,
           globals,
           backgrounds,
-          helperBlocks,
           helperSteps
         }
       }
@@ -804,7 +1083,6 @@ export function saveGBX3(blockType, options = {}) {
             blocks,
             globals,
             backgrounds,
-            helperBlocks,
             helperSteps
           }
         }
@@ -1029,10 +1307,11 @@ export function cloneFundraiser(kind, kindID, callback) {
   }
 }
 
-export function createFundraiser(createKind, callback, cloneData, options = {}) {
+export function createFundraiser(createKind, callback, cloneData = {}, options = {}) {
 
   const opts = {
     showNewArticle: true,
+    data: {},
     ...options
   };
 
@@ -1044,7 +1323,11 @@ export function createFundraiser(createKind, callback, cloneData, options = {}) 
     const kind = createKind || util.getValue(info, 'kind', 'fundraiser');
     const orgID = util.getValue(info, 'orgID');
     const resourceName = `org${types2.kind(kind).api.list}`;
-    const data = cloneData || createData[kind];
+    const templateData = !util.isEmpty(cloneData) ? cloneData : createData[kind];
+    const data = {
+      ...templateData,
+      ...opts.data
+    };
     data.volunteer = util.getValue(admin, 'isVolunteer', null);
     data.volunteerID = util.getValue(admin, 'volunteerID', null);
     dispatch(setLoading(false));
@@ -1089,8 +1372,9 @@ export function loadGBX3(articleID, callback) {
     const resource = util.getValue(getState(), 'resource', {});
     const access = util.getValue(resource, 'access', {});
     const globalsState = util.getValue(gbx3, 'globals', {});
-    const orgData = util.getValue(gbx3, 'orgData', {});
+    const orgData = util.getValue(getState(), 'resource.gbx3Org.data', {});
     const admin = util.getValue(gbx3, 'admin', {});
+    const editFormOnly = util.getValue(admin, 'editFormOnly');
     const blockType = 'article';
     const availableBlocks = util.deepClone(util.getValue(admin, `availableBlocks.article`, []));
     const receiptAvailableBlocks = util.deepClone(util.getValue(admin, `availableBlocks.receipt`, []));
@@ -1107,13 +1391,12 @@ export function loadGBX3(articleID, callback) {
 
           // If orgData orgID doesn't equal orgID get the orgData
           if (orgID !== util.getValue(orgData, 'ID')) {
-            dispatch(getResource('org', {
+            dispatch(getResource('orgPublic', {
+              customName: 'gbx3Org',
               id: [orgID],
               reload: true,
-              customName: 'gbx3Org',
               callback: (res, err) => {
                 if (!util.isEmpty(res) && !err) {
-                  dispatch(updateData(res, 'org'));
                 }
               }
             }));
@@ -1206,14 +1489,6 @@ export function loadGBX3(articleID, callback) {
                     ...util.getValue(customTemplate, 'globals', {})
                   };
 
-                  const helperBlocksCustom = util.getValue(customTemplate, `helperBlocks.${blockType}`, {});
-                  const helperBlocks = !util.isEmpty(helperBlocksCustom) ?
-                    {
-                      ...helperBlocksCustom,
-                      helperStep: 0
-                    }
-                  : helperTemplates[blockType][kind];
-
                   const helperStepsCustom = util.getValue(customTemplate, `helperSteps`, {});
                   const helperSteps = !util.isEmpty(helperStepsCustom) ?
                     {
@@ -1226,6 +1501,8 @@ export function loadGBX3(articleID, callback) {
                       advancedBuilder: false
                     }
                   ;
+
+                  if (editFormOnly) helperSteps.advancedBuilder = true;
 
                   // Get Step Values
                   const title = util.getValue(res, 'title');
@@ -1283,7 +1560,7 @@ export function loadGBX3(articleID, callback) {
                   const uncompletedSteps = stepsArray.filter(item => !helperSteps.completed.includes(item));
                   const minStepNotCompleted = !util.isEmpty(uncompletedSteps) ? Math.min(...uncompletedSteps) : numOfSteps;
 
-                  helperSteps.step = minStepNotCompleted < 4 ? minStepNotCompleted : 4;
+                  helperSteps.step = minStepNotCompleted < 4 ? minStepNotCompleted : 5;
 
                   const builderPref = util.getValue(getState(), 'preferences.builderPref');
                   helperSteps.advancedBuilder = builderPref === 'advanced' ? true : helperSteps.advancedBuilder;
@@ -1324,7 +1601,8 @@ export function loadGBX3(articleID, callback) {
                   const admin = {
                     hasAccessToEdit,
                     editable: hasAccessToEdit ? true : false,
-                    step: 'design'
+                    step: 'design',
+                    open: editFormOnly ? false : true
                   };
 
                   if (util.getValue(hasAccessToEdit, 'isVolunteer')) {
@@ -1335,7 +1613,6 @@ export function loadGBX3(articleID, callback) {
                   dispatch(updateLayouts(blockType, layouts));
                   dispatch(updateBlocks(blockType, blocks));
                   dispatch(updateGlobals(globals));
-                  dispatch(updateHelperBlocks(blockType, helperBlocks));
                   dispatch(updateHelperSteps(helperSteps));
                   dispatch(updateData(res));
                   dispatch(updateAvailableBlocks(blockType, availableBlocks));
@@ -1385,11 +1662,11 @@ export function loadGBX3(articleID, callback) {
   }
 }
 
-export function loadOrg(orgID, callback) {
+export function loadOrg(orgID, callback, hideLoading = false) {
 
   return async (dispatch, getState) => {
 
-    dispatch(setLoading(true));
+    if (!hideLoading) dispatch(setLoading(true));
     const gbx3 = util.getValue(getState(), 'gbx3', {});
     const resource = util.getValue(getState(), 'resource', {});
     const access = util.getValue(resource, 'access', {});
@@ -1397,19 +1674,24 @@ export function loadOrg(orgID, callback) {
     const info = util.getValue(gbx3, 'info', {});
     const originTemplate = !util.getValue(info, 'originTemplate') ? 'org' : null;
     const blockType = 'org';
+    const hasAccessToEdit = util.getAuthorizedAccess(access, orgID, null);
+    const endpoint = hasAccessToEdit ? 'org' : 'orgPublic';
 
-    dispatch(getResource('org', {
+    dispatch(getResource(endpoint, {
+      customName: 'gbx3Org',
       id: [orgID],
       reload: true,
-      customName: 'gbx3Org',
       callback: (res, err) => {
         if (!util.isEmpty(res) && !err) {
           const orgID = util.getValue(res, 'ID');
           const orgName = util.getValue(res, 'name');
           const orgImage = util.getValue(res, 'imageURL');
           const customTemplate = util.getValue(res, 'customTemplate', {});
-          const hasAccessToEdit = util.getAuthorizedAccess(access, orgID, null);
-          const orgPages = util.getValue(customTemplate, 'orgPages', defaultOrgPages);
+          const orgPages = {
+            ...defaultOrgPages,
+            ...util.getValue(customTemplate, 'orgPages', {})
+          };
+          const orgSignup = util.getValue(customTemplate, 'orgSignup', {});
 
           const orgGlobalsDefault = {
             ...defaultOrgGlobals,
@@ -1459,12 +1741,12 @@ export function loadOrg(orgID, callback) {
           dispatch(setCartOnLoad());
           dispatch(updateOrgPages(orgPages, false));
           dispatch(updateOrgGlobals(orgGlobals, false));
-          dispatch(updateData(res, 'org'));
+          dispatch(updateOrgSignup(orgSignup));
           dispatch(updateAdmin(admin));
           dispatch(updateInfo({ publishStatus: 'public' }));
         }
         callback(res, err);
-        dispatch(setLoading(false));
+        if (!hideLoading) dispatch(setLoading(false));
       }
     }));
   }
@@ -1565,7 +1847,6 @@ export function setStyle(options = {}) {
     const globals = util.getValue(gbx3, 'globals', {});
     const gbxStyle = util.getValue(globals, 'gbxStyle', {});
     const info = util.getValue(gbx3, 'info', {});
-    const stage = util.getValue(info, 'stage');
     const breakpoint = util.getValue(info, 'breakpoint');
     const color = opts.primaryColor || util.getValue(gbxStyle, 'primaryColor');
     const textColor = opts.textColor || util.getValue(gbxStyle, 'textColor', '#253655');
@@ -1737,6 +2018,14 @@ export function setStyle(options = {}) {
       const color4 = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, .4)`;
       colorStyleStr = `
 
+        .gbx3 .dropdown-recurring .dropdown.customColor button .label {
+          color: ${color} !important;
+        }
+
+        .gbx3 .dropdown-recurring .dropdown.customColor button:hover .label {
+          color: ${color4} !important;
+        }
+
         .gbx3Layout .radio:checked + label:after {
           border: 1px solid ${color} !important;
           background: ${color};
@@ -1837,14 +2126,16 @@ export function resetOrg(callback) {
     const gbx3 = util.getValue(getState(), 'gbx3', {});
     const info = util.getValue(gbx3, 'info', {});
     const data = {
-      ...util.getValue(gbx3, 'orgData', {}),
+      ...util.getValue(getState(), 'resource.gbx3Org.data', {}),
       customTemplate: {
         orgPages: null,
         orgGlobals: null,
+        orgSignup: {
+          ...util.getValue(gbx3, 'orgSignup', {})
+        },
         blocks: {},
         globals: {},
-        backgrounds: [],
-        helperBlocks: {}
+        backgrounds: []
       }
     };
 
@@ -1869,36 +2160,22 @@ export function resetGBX3(blockType = 'article') {
   return (dispatch, getState) => {
     const gbx3 = util.getValue(getState(), 'gbx3', {});
     const info = util.getValue(gbx3, 'info', {});
-    const isOrg = blockType === 'org' ? true : false;
-    const data = isOrg ?
-      {
-        ...util.getValue(gbx3, 'orgData', {}),
+    const data = {
+      ...util.getValue(gbx3, 'data', {}),
+      giveboxSettings: {
         customTemplate: {
           blocks: {},
           globals: {},
-          backgrounds: [],
-          helperBlocks: {}
+          backgrounds: []
         }
       }
-    :
-      {
-        ...util.getValue(gbx3, 'data', {}),
-        giveboxSettings: {
-          customTemplate: {
-            blocks: {},
-            globals: {},
-            backgrounds: [],
-            helperBlocks: {}
-          }
-        }
-      }
-    ;
+    };
 
     const orgID = util.getValue(info, 'orgID');
     const kindID = util.getValue(info, 'kindID');
 
     dispatch(sendResource(util.getValue(info, 'apiName'), {
-      id: [isOrg ? orgID : kindID],
+      id: [kindID],
       orgID,
       data,
       method: 'patch',

@@ -46,7 +46,9 @@ class Routes extends Component {
                 />
                 <div id='contentContainer' className=''>
                   <Switch location={location}>
+                    <Route path='/upload' render={(props) => loadComponent('demo/UploadEditorTest')} />
                     <Route path='/dashboard' render={(props) => loadComponent('demo/Dashboard')}  />
+                    <Route path='/permissions' render={(props) => loadComponent('demo/Permissions')}  />
                     <Route exact path='/gbx3' render={(props) => loadComponent('demo/GBX3Test', { routeProps: props })}  />
                     <Route exact path='/gbx3/:articleID' render={(props) => loadComponent('demo/GBX3Test', { routeProps: props })}  />
                     <Route render={() => <div>Error</div>} />

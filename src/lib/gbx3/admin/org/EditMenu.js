@@ -71,10 +71,10 @@ class EditMenu extends React.Component {
     }
   }
 
-  async deletePage(slug) {
+  async deletePage(slug, callback) {
     const pageDeleted = await this.props.orgDeletePage(slug);
     if (pageDeleted) {
-      console.log('execute pageDeleted -> Deleted');
+      if (callback) callback();
     }
   }
 
@@ -122,11 +122,27 @@ class EditMenu extends React.Component {
     )
   }
 
-  deletePageLink(pageSlug) {
+  deletePageLink(value) {
+    const {
+      slug,
+      name
+    } = value;
+
     return (
       <GBLink
         className='link tooltip rightSide'
-        onClick={() => this.deletePage(pageSlug)}
+        onClick={() => {
+          this.props.toggleModal('orgRemove', true, {
+            desc: `DELETE ${name} Page`,
+            subDesc: 'Please confirm you want to delete this page.',
+            confirmText: 'Yes, Delete Page',
+            callback: () => {
+              this.deletePage(slug, () => {
+                this.props.toggleModal('orgRemove', false);
+              });
+            }
+          });
+        }}
       >
         <span className='tooltipTop'><i />Click Icon to DELETE Page</span>
         <span className='icon icon-trash-2'></span>
@@ -169,11 +185,11 @@ class EditMenu extends React.Component {
               toggle={true}
               className={'tooltip rightSide'}
             >
-              <span className='tooltipTop'><i />{ onlyOneLeft ? 'You must have at least 1 page enabled.' : 'Click to DISABLE Page' }</span>
+              <span className='tooltipTop' style={{ width: 150, top: 0 }}><i />{ onlyOneLeft ? 'You must have at least 1 page enabled.' : 'Click to DISABLE Page' }</span>
             </Choice>
             {this.editLink(value)}
             {this.clonePageLink(value)}
-            { !onlyOneLeft ? this.deletePageLink(value.slug) : null }
+            { !onlyOneLeft ? this.deletePageLink(value) : null }
           </div>
           <div className='articleLeftDrag'>
             <DragHandle />
@@ -214,11 +230,11 @@ class EditMenu extends React.Component {
                 toggle={true}
                 className='tooltip rightSide'
               >
-                <span className='tooltipTop'><i />Click to ENABLE Page</span>
+                <span className='tooltipTop' style={{ width: 150, top: 0 }}><i />Click to ENABLE Page</span>
               </Choice>
               {this.editLink(value)}
               {this.clonePageLink(value)}
-              {this.deletePageLink(value.slug)}
+              {this.deletePageLink(value)}
             </div>
             <div className='articleLeftDrag'></div>
             <div className='articleText'>
@@ -235,10 +251,13 @@ class EditMenu extends React.Component {
     return (
       <div className='articleGroupList campaignsEdit'>
         <div className='articleGroup'>
-          <div className='flexCenter'>
-            <GBLink className='link topLink' onClick={this.addPage}><span className='icon icon-plus'></span> Add Page</GBLink>
-          </div>
           {rows}
+          <div className='flexCenter'>
+            <GBLink className='secondaryButton topLink tooltip' onClick={this.addPage}>
+              <span className='tooltipTop' style={{ width: 275, top: '-10px' }}><i />The new page will be disabled until you enable it.</span>
+              Add Page
+            </GBLink>
+          </div>
           { disabledItems.length > 0 ?
           <div style={{ marginTop: 30 }}>
             <div style={{ marginLeft: 65 }} className='itemsSubHeader'>Disabled Pages</div>
@@ -256,6 +275,9 @@ class EditMenu extends React.Component {
 
     return (
       <div className='modalWrapper gbx3Shop editable'>
+        <div style={{ margin: '20px 0' }} className='flexCenter'>
+          <h2>Edit Page Menu</h2>
+        </div>
         <div className='formSectionContainer'>
           <div className='formSection'>
             {this.renderPageList()}

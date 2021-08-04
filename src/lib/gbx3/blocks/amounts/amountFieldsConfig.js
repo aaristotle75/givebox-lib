@@ -10,7 +10,8 @@ const fundraiser = {
   },
   buttonGroup: { width: 20 },
   hasDefaultField: true,
-  hasCustomField: true
+  hasCustomField: true,
+  label: 'Amount'
 };
 
 const invoice = {
@@ -28,7 +29,8 @@ const event = {
   buttonGroup: { width: 10 },
   hasDefaultField: false,
   hasCustomField: false,
-  hasStock: true
+  hasStock: true,
+  label: 'Ticket'
 };
 
 const membership = {
@@ -42,7 +44,8 @@ const membership = {
   buttonGroup: { width: 10 },
   hasDefaultField: false,
   hasCustomField: false,
-  hasStock: true
+  hasStock: true,
+  label: 'Subscription'
 };
 
 const sweepstake = {
@@ -57,7 +60,8 @@ const sweepstake = {
   hasDefaultField: false,
   hasCustomField: false,
   skipFreeEntry: true,
-  addNewDesc: 'Ticket | Prize Field'
+  addNewDesc: 'Ticket | Prize Field',
+  label: 'Ticket'
 };
 
 export const amountFieldsConfig = {

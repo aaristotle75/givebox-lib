@@ -56,8 +56,54 @@ class ArticleCard extends Component {
         return this.props.onClickArticle(articleID, true);
       }
 
+      case 'shareForm': {
+        const hasCustomSlug = util.getValue(item, 'hasCustomSlug');
+        const slug = util.getValue(item, 'slug');
+        const webApp = util.getValue(item, 'publishedStatus.webApp');
+        this.props.toggleModal('share', true, {
+          getArticleID: articleID,
+          forceDisplay: 'article'
+        });
+        break;
+      }
+
       case 'removeCard': {
-        return this.props.removeCard(articleID, kind, kindID);
+        this.props.toggleModal('orgRemove', true, {
+          desc: `REMOVE ${title} From Page`,
+          subDesc: 'Please confirm you want to remove this card from the page.',
+          confirmText: 'Yes, Remove Card',
+          callback: () => {
+            this.props.removeCard(articleID, kind, kindID, () => this.props.toggleModal('orgRemove', false));
+          }
+        });
+        break;
+      }
+
+      case 'makePrivate': {
+        this.props.toggleModal('orgRemove', true, {
+          desc: `MAKE PRIVATE ${title}`,
+          subDesc: `Please confirm you want to make this ${types.kind(kind).name.toLowerCase()} private. Making private will hide it from public view and remove it from this page.`,
+          confirmText: 'Yes, Make Private',
+          callback: () => {
+            this.props.sendResource(types.kind(kind).api.publish, {
+              orgID,
+              id: [kindID],
+              method: 'patch',
+              isSending: false,
+              data: {
+                webApp: kind === 'fundraiser' ? false : true,
+                givebox: false,
+                landing: false
+              },
+              callback: (res, err) => {
+                this.props.removeCard(articleID, kind, kindID, () => {
+                  this.props.toggleModal('orgRemove', false);
+                });
+              }
+            });
+          }
+        });
+        break;
       }
 
       case 'deleteForm': {
@@ -65,14 +111,15 @@ class ArticleCard extends Component {
         this.props.toggleModal('deleteArticle', true, {
           resource,
           orgID,
-          resourcesToLoad,
           id: kindID,
-          desc: `${title}`,
+          desc: `DELETE ${title}`,
           activityDesc: `DELETED ${title}`,
           subDesc: `Please confirm you want to delete ${types.kind(kind).name.toLowerCase()}?`,
-          confirmText: 'Confirm Delete',
+          confirmText: 'Yes, Delete',
           modalID: 'deleteArticle',
-          callback: this.props.reloadGetArticles
+          callback: () => {
+            this.props.removeCard(articleID, kind, kindID);
+          }
         });
         break;
       }
@@ -184,8 +231,10 @@ class ArticleCard extends Component {
         light={true}
       />
     :
-      <Image imgID='cardPhoto' url={imageURL} maxWidth='325px' size='medium' alt='Card Photo' />
+      <Image imgID='cardPhoto' url={imageURL || 'https://s3-us-west-1.amazonaws.com/givebox/assets/img/fundraiser-cover/original'} maxWidth='325px' size='medium' alt='Card Photo' />
     ;
+
+    const formName = `${kind === 'fundraiser' ? 'Donation' : types.kind(kind).name} Form`;
 
     return (
       <div className='articleCard'>
@@ -197,7 +246,6 @@ class ArticleCard extends Component {
             }}
             name='createKind'
             portalID={`createKind-dropdown-portal-${kind}`}
-            portal={false}
             portalClass={'gbx3 articleCardDropdown articleCardSelect'}
             portalLeftOffset={5}
             className='articleCard'
@@ -211,17 +259,18 @@ class ArticleCard extends Component {
               });
             }}
             options={[
-              { primaryText: <span className='labelIcon'><span className={'icon icon-edit'}></span>Edit Card</span>, value: 'editCard' },
-              { primaryText: <span className='labelIcon'><span className={'icon icon-layout'}></span>Edit {kind === 'fundraiser' ? 'Donation' : types.kind(kind).name} Form</span>, value: 'editForm' },
-              { primaryText: <span className='labelIcon'><span className={'icon icon-x'}></span>Remove Card From List</span>, value: 'removeCard' },
-              { primaryText: <span className='labelIcon'><span className={'icon icon-trash-2'}></span>Delete {kind === 'fundraiser' ? 'Donation' : types.kind(kind).name} Form</span>, value: 'deleteForm' }
+              { primaryText: <span className='labelIcon'><span className={'icon icon-layout'}></span>Edit {formName}</span>, value: 'editForm' },
+              { primaryText: <span className='labelIcon'><span className={'icon icon-share'}></span>Share {formName}</span>, value: 'shareForm' },
+              { primaryText: <span className='labelIcon'><span className={'icon icon-x'}></span>Remove From Page</span>, value: 'removeCard' },
+              { primaryText: <span className='labelIcon'><span className={'icon icon-eye-off'}></span>Make Private (Remove from Page and Hide From Public View)</span>, value: 'makePrivate' },
+              { primaryText: <span className='labelIcon'><span className={'icon icon-trash-2'}></span>Delete {formName}</span>, value: 'deleteForm' }
             ]}
             hideIcons={true}
             hideButton={true}
             showCloseBtn={true}
           >
             <button className='tooltip blockEditButton'>
-              <span className='tooltipTop'><i />Click to EDIT Card</span>
+              <span className='tooltipTop'><i />Click for Edit Options</span>
               <span className='icon icon-edit'></span>
             </button>
           </Dropdown>

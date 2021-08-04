@@ -55,42 +55,56 @@ class ShareLinkEdit extends Component {
       kindID,
       orgID,
       apiName,
-      orgDisplay
+      orgDisplay,
+      articleID,
+      hasCustomSlug,
+      slug
     } = this.props;
 
     this.setState({ errorUpdating: false, saving: true });
 
-    if (!error) {
-      this.props.sendResource(apiName, {
-        orgID,
-        id: [orgDisplay ? orgID : kindID],
-        method: 'patch',
-        data: {
-          slug: newSlug
-        },
-        callback: (res, err) => {
-          if (!util.isEmpty(res) && !err) {
-            this.props.updateData(res, orgDisplay ? 'org' : null);
-            this.setState({ success: true });
-            this.timeout = setTimeout(() => {
-              this.setState({ success: false });
-              this.timeout = null;
-            }, 3000);
-          } else {
-            let errorMsg = 'The slug cannot be numbers only';
-            const errors = util.getValue(err, 'data.errors', []);
-            const error = util.getValue(errors, 0, {});
-            const code = util.getValue(error, 'code');
-            if (code === 'duplicate') {
-              errorMsg = 'Custom Share Name is Not Available. Please Choose Another Name'
-            }
-            this.setState({ errorMsg, errorUpdating: true });
-          }
-          this.setState({ saving: false });
-        }
-      });
+    if (!hasCustomSlug && newSlug === articleID || (hasCustomSlug && newSlug === slug)) {
+      this.setState({ success: true, saving: false });
+      this.timeout = setTimeout(() => {
+        this.setState({ success: false });
+        this.timeout = null;
+      }, 3000);
+    } else if (!newSlug) {
+      this.setState({ errorMsg: 'Please enter a custom url below.', errorUpdating: true, saving: false });
     } else {
-      this.setState({ errorUpdating: true, saving: false });
+      if (!error) {
+        this.props.sendResource(apiName, {
+          orgID,
+          id: [orgDisplay ? orgID : kindID],
+          method: 'patch',
+          data: {
+            slug: newSlug
+          },
+          callback: (res, err) => {
+            if (!util.isEmpty(res) && !err) {
+              this.props.updateData(res, orgDisplay ? 'org' : null);
+              if (this.props.callback) this.props.callback();
+              this.setState({ success: true });
+              this.timeout = setTimeout(() => {
+                this.setState({ success: false });
+                this.timeout = null;
+              }, 3000);
+            } else {
+              let errorMsg = 'The custom url cannot be numbers only';
+              const errors = util.getValue(err, 'data.errors', []);
+              const error = util.getValue(errors, 0, {});
+              const code = util.getValue(error, 'code');
+              if (code === 'duplicate') {
+                errorMsg = 'The custom url is not available. Please enter another one.'
+              }
+              this.setState({ errorMsg, errorUpdating: true });
+            }
+            this.setState({ saving: false });
+          }
+        });
+      } else {
+        this.setState({ errorUpdating: true, saving: false });
+      }
     }
   }
 
@@ -110,6 +124,13 @@ class ShareLinkEdit extends Component {
       saving
     } = this.state;
 
+    const {
+      buttonText,
+      subText,
+      buttonGroupClassName,
+      buttonGroupStyle
+    } = this.props;
+
     return (
       <div className='shareLink formSectionContainer'>
         <div className='formSection'>
@@ -119,7 +140,7 @@ class ShareLinkEdit extends Component {
               <Alert alert='error' display={errorUpdating} msg={`Unable to update: ${errorMsg}.`} />
               <Alert alert='success' display={success} msg={`${successMsg}.`} />
               <div className='subText'>
-                Customize How Customers See the Share Link
+                {subText}
               </div>
               <TextField
                 name='slug'
@@ -130,6 +151,7 @@ class ShareLinkEdit extends Component {
                 value={newSlug}
                 error={error ? 'Share link name can only contain alphanumeric and !@#%*_+- characters.' : false}
                 errorType={'tooltip'}
+                leftBar={true}
                 onChange={(e) => {
                   let error = false;
                   const newSlug = e.currentTarget.value;
@@ -146,8 +168,8 @@ class ShareLinkEdit extends Component {
                 <div className='shareLinkPrefix'>https://givebox.com/</div>
               </TextField>
             </div>
-            <div className='button-group center'>
-              <GBLink className='button' onClick={this.updateSlug}>Check Availability / Update Share Link</GBLink>
+            <div style={buttonGroupStyle} className={buttonGroupClassName}>
+              <GBLink className='copyButton' onClick={this.updateSlug}>{buttonText}</GBLink>
             </div>
           </div>
         </div>
@@ -156,19 +178,25 @@ class ShareLinkEdit extends Component {
   }
 }
 
+ShareLinkEdit.defaultProps = {
+  buttonText: 'Check Availability / Update Share Link',
+  subText: 'Customize How Customers See the Share Link',
+  buttonGroupClassName: 'button-group center',
+  buttonGroupStyle: {}
+}
+
 function mapStateToProps(state, props) {
 
-  const kind = util.getValue(state, 'gbx3.info.kind');
-  const kindID = util.getValue(state, 'gbx3.info.kindID');
-  const articleID = util.getValue(state, 'gbx3.info.articleID');
-  const display = util.getValue(state, 'gbx3.info.display');
+  const kind = props.kind || util.getValue(state, 'gbx3.info.kind');
+  const kindID = props.kindID || util.getValue(state, 'gbx3.info.kindID');
+  const articleID = props.articleID || util.getValue(state, 'gbx3.info.articleID');
+  const display = props.display || util.getValue(state, 'gbx3.info.display');
   const orgDisplay = display === 'org' ? true : false;
-  const data = util.getValue(state, `gbx3.${orgDisplay ? 'orgData' : 'data'}`);
-  const orgID = util.getValue(data, `${orgDisplay ? 'ID' : 'orgID'}`);
-  const slug = util.getValue(data, 'slug');
-  const hasCustomSlug = orgDisplay ? true : util.getValue(data, 'hasCustomSlug');
-  const apiName = orgDisplay ? 'org' : `org${types.kind(kind).api.item}`;
-
+  const data = props.data || orgDisplay ? util.getValue(state, 'resource.gbx3Org.data', {}) : util.getValue(state, 'gbx3.data', {});
+  const orgID = props.orgID || util.getValue(data, `${orgDisplay ? 'ID' : 'orgID'}`);
+  const slug = props.slug || util.getValue(data, 'slug');
+  const hasCustomSlug = props.hasCustomSlug ? props.hasCustomSlug : orgDisplay ? true : util.getValue(data, 'hasCustomSlug');
+  const apiName = props.apiName ? props.apiName : orgDisplay ? 'org' : `org${types.kind(kind).api.item}`;
 
   return {
     kind,

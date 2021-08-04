@@ -163,6 +163,16 @@ export function validateURL(url) {
   return validate;
 }
 
+export function validateWebsiteURL(str) {
+  const pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+    '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+    '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+    '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+  return !!pattern.test(str);
+}
+
 export function validateTaxID(value) {
   const regex = /^(?:\d{3}-\d{2}-\d{4}|\d{2}-\d{7})$/;
   return regex.test(value);

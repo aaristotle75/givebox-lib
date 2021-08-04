@@ -165,6 +165,7 @@ class UploadEditor extends Component {
             className="editor-canvas"
             color={[37, 54, 85, .4]}
             border={[200, 40]}
+            canvasBackgroundColor={[255, 255, 255, 0]}
           />
         </div>
         <div className='menu'>

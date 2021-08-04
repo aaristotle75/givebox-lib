@@ -22,7 +22,9 @@ class EditCoverPhoto extends React.Component {
     const {
       orgID,
       coverPhoto,
-      breakpoint
+      breakpoint,
+      uploadOnly,
+      imageURL
     } = this.props;
 
     const library = {
@@ -31,10 +33,11 @@ class EditCoverPhoto extends React.Component {
       borderRadius: 0
     };
 
-    const imageURL = util.getValue(coverPhoto, 'url');
-
     return (
       <div className='modalWrapper'>
+        <div style={{ margin: '20px 0' }} className='flexCenter'>
+          <h2>Edit Cover Photo</h2>
+        </div>
         <div className='formSectionContainer'>
           <div className='formSection'>
             <MediaLibrary
@@ -52,6 +55,7 @@ class EditCoverPhoto extends React.Component {
               mobile={breakpoint === 'mobile' ? true : false }
               uploadEditorSaveStyle={{ width: 250 }}
               uploadEditorSaveLabel={'Click Here to Save Image'}
+              uploadOnly={uploadOnly}
               imageEditorOpenCallback={(editorOpen) => {
                 this.setState({ editorOpen })
               }}
@@ -63,12 +67,19 @@ class EditCoverPhoto extends React.Component {
   }
 }
 
+EditCoverPhoto.defaultProps = {
+  uploadOnly: false
+}
+
 function mapStateToProps(state, props) {
 
+  const coverPhotoURL = util.getValue(state, 'gbx3.orgGlobals.coverPhoto.url', '');
+  const imageURL = props.imageURL || coverPhotoURL;
+
   return {
+    imageURL,
     orgID: util.getValue(state, 'gbx3.info.orgID'),
-    breakpoint: util.getValue(state, 'gbx3.info.breakpoint'),
-    coverPhoto: util.getValue(state, 'gbx3.orgGlobals.coverPhoto', {})
+    breakpoint: util.getValue(state, 'gbx3.info.breakpoint')
   }
 }
 

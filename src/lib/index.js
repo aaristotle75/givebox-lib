@@ -52,6 +52,8 @@ import LinearBar from './common/LinearBar';
 import Loader from './common/Loader';
 import Portal from './common/Portal';
 import Redirect from './common/Redirect';
+import Remove from './common/Remove';
+import ScrollTop from './common/ScrollTop';
 import Tabs, { Tab } from './common/Tabs';
 import * as types from './common/types';
 import * as util from './common/utility';
@@ -60,6 +62,8 @@ import Video from './common/Video';
 import FeesGlossary from './glossary/Fees';
 
 import {
+  toggleLeftMenu,
+  openLaunchpad,
   toggleModal,
   removeResource,
   setAccess,
@@ -71,7 +75,9 @@ import {
   setProp,
   setPrefs,
   setCustomProp,
-  sendResponse
+  sendResponse,
+  startMasquerade,
+  endMasquerade
 } from './api/actions';
 
 import {
@@ -90,10 +96,6 @@ import {
   updateData,
   updateFees,
   updateAdmin,
-  closeHelper,
-  nextHelperStep,
-  checkForHelper,
-  updateHelperBlocks,
   updateAvailableBlocks,
   toggleAdminLeftPanel,
   updateCart,
@@ -115,7 +117,20 @@ import {
   gbx3 as gbx3reducer
 } from './gbx3/redux/gbx3reducers';
 
+import {
+  getLinkToken,
+  accessToken,
+  getPlaidInfo,
+  setMerchantApp
+} from './gbx3/redux/merchantActions';
+
+import {
+  merchantApp as merchantAppReducer
+} from './gbx3/redux/merchantReducers';
+
 import GBX3 from './gbx3/GBX3';
+
+import * as launchpadConfig from './gbx3/admin/launchpad/launchpadConfig';
 
 import {
   app,
@@ -166,6 +181,8 @@ export {
   MediaLibrary,
 
   // actions
+  toggleLeftMenu,
+  openLaunchpad,
   toggleModal,
   removeResource,
   setAccess,
@@ -178,10 +195,13 @@ export {
   setPrefs,
   setCustomProp,
   sendResponse,
+  startMasquerade,
+  endMasquerade,
 
 // gbx3
   GBX3,
   gbx3reducer,
+  launchpadConfig,
 
 // gbx3 actions
   loadGBX3,
@@ -199,10 +219,6 @@ export {
   updateData,
   updateFees,
   updateAdmin,
-  closeHelper,
-  nextHelperStep,
-  checkForHelper,
-  updateHelperBlocks,
   updateAvailableBlocks,
   toggleAdminLeftPanel,
   updateCart,
@@ -218,6 +234,15 @@ export {
   setStyle,
   resetStyle,
   processTransaction,
+
+  // Merchant Actions
+  getLinkToken,
+  accessToken,
+  getPlaidInfo,
+  setMerchantApp,
+
+  // Merchant Reducers
+  merchantAppReducer,
 
   // API
   giveboxAPI,
@@ -276,6 +301,8 @@ export {
   Balloon,
   Portal,
   Redirect,
+  Remove,
+  ScrollTop,
   Tabs,
   Tab,
   types,

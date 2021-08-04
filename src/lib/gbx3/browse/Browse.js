@@ -6,6 +6,7 @@ import Image from '../../common/Image';
 import GBLink from '../../common/GBLink';
 import ScrollTop from '../../common/ScrollTop';
 import Loader from '../../common/Loader';
+import GBX from '../../common/GBX';
 import GBXEntry from '../../common/GBXEntry';
 import Fade from '../../common/Fade';
 import has from 'has';
@@ -22,7 +23,7 @@ import Logo from '../Logo';
 import history from '../../common/history';
 
 const ENV = process.env.REACT_APP_ENV;
-const GBX_URL = process.env.REACT_APP_GBX_URL;
+const GBX_URL = process.env.REACT_APP_GBX_SHARE;
 
 class Browse extends React.Component {
 
@@ -67,11 +68,15 @@ class Browse extends React.Component {
       preview
     } = this.props;
 
+    const url = `${GBX_URL}/${ID}?public=true&modal=true`;
+    GBX.load(url);
+    /*
     const infoUpdated = await this.props.updateInfo({ originTemplate: 'browse' });
     if (infoUpdated) {
       history.push(`${GBX_URL}/${ID}`);
       this.props.reloadGBX3(ID);
     }
+    */
   }
 
   resizer(e) {
@@ -116,6 +121,8 @@ class Browse extends React.Component {
       <div className='gbx3Org gbx3Browse'>
         { loading ? <Loader msg='Loading Browse...' /> : null }
         <ScrollTop elementID={isAdmin ? 'stageContainer' : 'gbx3Layout'} />
+
+        {/*
         <div className='gbx3OrgHeader'>
           <div className={'gbx3OrgLogoContainer'}>
             <Logo
@@ -127,7 +134,9 @@ class Browse extends React.Component {
             />
           </div>
         </div>
+        */}
         <div className='gbx3OrgContentContainer'>
+          {/*
           <Header
             onClickArticle={this.onClickArticle}
           />
@@ -158,6 +167,7 @@ class Browse extends React.Component {
               </div>
             </div>
           </div>
+          */}
           <main className='gbx3OrgContent gbx3OrgContentOuterContainer'>
             <div className='gbx3OrgContentInnerContainer'>
                 <Pages
@@ -167,6 +177,7 @@ class Browse extends React.Component {
                 />
             </div>
           </main>
+          {/*
           <div className='gbx3OrgFooter gbx3OrgContentOuterContainer'>
             <div className='gbx3OrgContentInnerContainer'>
               <Footer
@@ -174,6 +185,7 @@ class Browse extends React.Component {
               />
             </div>
           </div>
+          */}
         </div>
         {isMobile ? <div className='bottomOffset'>&nbsp;</div> : <></>}
       </div>

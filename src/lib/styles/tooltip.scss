@@ -22,8 +22,8 @@
   left: 20%;
   transform: translate(-20%, -100%);
   padding: 10px;
+  @include purpleToBlue;
   color: $white;
-  background-color: #253655;
   font-weight: normal;
   font-size: 13px;
   border-radius: 8px;
@@ -58,6 +58,48 @@
   height: 12px;
   left: 50%;
   transform: translate(-50%,-50%) rotate(45deg);
-  background-color: #253655;
+  background: $mainColor;
   box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+
+.transparent.tooltip {
+
+  .tooltipTop {
+    min-width: 80px;
+    transform: translate(-105%, 0%);
+    background: transparentize($white, .5);
+    color: $dark;
+    font-size: 12px;
+    padding: 5px;
+    text-align: center;
+
+    i {
+      left: 80%;
+      display: none;
+    }
+
+    i::after {
+      background: transparentize($white, .5);
+    }
+  }
+}
+
+.error .tooltipTop,
+.error.tooltip .tooltipTop {
+  color: $white;
+  @include redToSalmon;
+}
+
+.error .tooltipTop i::after,
+.error.tooltip .tooltipTop i::after {
+  background: $red;
+}
+
+.readOnly.tooltip .tooltipTop {
+  color: $dark;
+  background: $light-gray;
+}
+
+.readOnly.tooltip .tooltipTop i::after {
+  background: $light-gray;
 }

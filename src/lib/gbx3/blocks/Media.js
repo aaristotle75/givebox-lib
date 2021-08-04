@@ -248,7 +248,8 @@ class Media extends Component {
   renderImage() {
     const {
       title,
-      block
+      block,
+      stage
     } = this.props;
 
     const {
@@ -259,10 +260,11 @@ class Media extends Component {
 
     const disallowRadius = util.getValue(block, 'disallowRadius');
     const url = util.getValue(image, 'URL');
+    const defaultURL = 'https://s3-us-west-1.amazonaws.com/givebox/assets/img/fundraiser-cover/original';
 
-    if (url) {
+    if (url || stage === 'public') {
       return (
-        <Image imgStyle={{ borderRadius: disallowRadius ? 0 : `${util.getValue(image, 'borderRadius')}%` }} url={url} size={util.getValue(image, 'size')} minHeight={0} maxWidth={maxWidth} maxHeight={maxHeight} alt={title} />
+        <Image imgStyle={{ borderRadius: disallowRadius ? 0 : `${util.getValue(image, 'borderRadius')}%` }} url={url || defaultURL} size={util.getValue(image, 'size')} minHeight={0} maxWidth={maxWidth} maxHeight={maxHeight} alt={title} />
       )
     } else {
       return (
@@ -320,6 +322,9 @@ class Media extends Component {
           disallowBgClose={true}
           component={() =>
             <div className='modalWrapper'>
+              <div style={{ margin: '20px 0' }} className='flexCenter'>
+                <h2>Edit {title}</h2>
+              </div>
               <Tabs
                 default={mediaType}
                 className='statsTab'

@@ -87,7 +87,7 @@ class CheckoutDonationSelect extends Component {
             {value.title}
             {checkoutDonationFormID && checkoutDonationFormID === value.ID ? <span className='selected' style={{ fontSize: 14, display: 'block' }}>Selected Donation Form</span> : '' }
           </div>
-          <div className='selectDonationForm'>SELECT</div>
+          <div className='selectDonationForm'>Select</div>
         </li>
       );
     })

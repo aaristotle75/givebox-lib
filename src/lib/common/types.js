@@ -10,14 +10,14 @@ export function bankStatus(status, voidCheck) {
     }
 
     case 'declined': {
-      obj.name = voidCheck ? 'Declined' : 'Please upload another void check or bank statement';
+      obj.name = voidCheck ? 'Declined' : 'Please Upload Another Void Check or Bank Statement';
       obj.color = voidCheck ? 'red' : 'orange';
       break;
     }
 
     case 'pending':
     default: {
-      obj.name = voidCheck ? 'Bank account under review' : 'Upload void check or bank statement';
+      obj.name = voidCheck ? 'Bank Account Under Review' : 'Upload Void Check or Bank Statement';
       obj.color = voidCheck ? 'green' : 'orange';
       break;
     }

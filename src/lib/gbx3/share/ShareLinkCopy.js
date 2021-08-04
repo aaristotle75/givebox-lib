@@ -37,7 +37,8 @@ class ShareLinkCopy extends Component {
     const {
       slug,
       hasCustomSlug,
-      articleID
+      articleID,
+      subText
     } = this.props;
 
     const {
@@ -50,6 +51,7 @@ class ShareLinkCopy extends Component {
       <div className='shareLink formSectionContainer'>
         <div className='formSection'>
           <div className='subText'>
+            {subText}
             {shareUrl}
           </div>
           <CodeBlock copyCallback={this.copyCallback} style={{ marginTop: 10, fontSize: '1em' }} className='flexCenter flexColumn' type='javascript' regularText={''} text={shareUrl} name={<div className='copyButton'>Click Here to Copy Share Link</div>} nameIcon={false} nameStyle={{}} />
@@ -63,15 +65,19 @@ class ShareLinkCopy extends Component {
   }
 }
 
+ShareLinkCopy.defaultProps = {
+  subText: ''
+};
+
 function mapStateToProps(state, props) {
 
-  const kind = util.getValue(state, 'gbx3.info.kind');
-  const kindID = util.getValue(state, 'gbx3.info.kindID');
-  const articleID = util.getValue(state, 'gbx3.info.articleID');
-  const display = util.getValue(state, 'gbx3.info.display');
+  const kind = props.kind || util.getValue(state, 'gbx3.info.kind');
+  const kindID = props.kindID || util.getValue(state, 'gbx3.info.kindID');
+  const articleID = props.articleID || util.getValue(state, 'gbx3.info.articleID');
+  const display = props.display || util.getValue(state, 'gbx3.info.display');
   const orgDisplay = display === 'org' ? true : false;
-  const slug = util.getValue(state, `gbx3.${orgDisplay ? 'orgData' : 'data'}.slug`);
-  const hasCustomSlug = orgDisplay ? true : util.getValue(state, 'gbx3.data.hasCustomSlug');
+  const slug = props.slug || orgDisplay === 'org' ? util.getValue(state, 'resource.gbx3Org.data.slug') : util.getValue(state, 'gbx3.data.slug');
+  const hasCustomSlug = props.hasCustomSlug ? props.hasCustomSlug : orgDisplay ? true : util.getValue(state, 'gbx3.data.hasCustomSlug');
 
   return {
     kind,

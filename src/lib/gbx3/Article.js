@@ -12,15 +12,12 @@ import {
   setStyle,
   updateAdmin,
   updateLayouts,
-  updateHelperBlocks,
-  nextHelperStep,
   updateBlocks,
   updateBlock,
   updateData,
   updateInfo,
   saveGBX3
 } from './redux/gbx3actions';
-import Helper from './helpers/Helper';
 import Footer from './Footer';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
@@ -63,7 +60,6 @@ class Article extends React.Component {
       name,
       blockType,
       block,
-      helperBlocks,
       grid,
       opts
     } = args;
@@ -108,27 +104,11 @@ class Article extends React.Component {
         if (dataUpdated) updated.push('dataUpdated');
       }
 
-      const helpersAvailable = util.getValue(helperBlocks, 'helpersAvailable', []);
-      const helpersCompleted = util.getValue(helperBlocks, 'completed', []);
-      const helperIndex = helpersAvailable.findIndex(h => h.blockName === name);
-
-      /*
-      if (helperIndex > -1 && !helpersCompleted.includes(name)) {
-        checkForUpdatesCount = checkForUpdatesCount + 1;
-        helpersCompleted.push(name);
-        const helperBlocksUpdated = await this.props.updateHelperBlocks(blockType, { completed: helpersCompleted });
-        if (helperBlocksUpdated) updated.push('helpersUpdated');
-      }
-      */
-
       if (updated.length === checkForUpdatesCount) {
         if (saveGBX3 && hasBeenUpdated) {
           this.props.saveGBX3(blockType, {
             callback: () => {
               callback(hasBeenUpdated, content);
-              if (helperIndex > -1) {
-                this.props.nextHelperStep(blockType);
-              }
             },
             updateLayout: !util.isEmpty(grid) ? true : false
           });
@@ -396,11 +376,6 @@ class Article extends React.Component {
             onClickVolunteerFundraiser={this.props.onClickVolunteerFundraiser}
           />
         </div>
-        { stage === 'admin' && stage === 'hideHelper' ?
-        <Helper
-          blockType='article'
-          portalBindID='gbx3Layout'
-        /> : '' }
         {breakpoint === 'mobile' ? <div className='bottomOffset'>&nbsp;</div> : <></>}
       </div>
     )
@@ -445,8 +420,6 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
   updateLayouts,
-  updateHelperBlocks,
-  nextHelperStep,
   updateBlocks,
   updateBlock,
   updateData,

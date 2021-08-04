@@ -21,13 +21,14 @@ class EditProfilePic extends React.Component {
 
     const {
       orgID,
+      saveMediaType,
       profilePicture,
       breakpoint
     } = this.props;
 
     const library = {
       orgID,
-      saveMediaType: 'org',
+      saveMediaType,
       borderRadius: 0
     };
 
@@ -35,6 +36,9 @@ class EditProfilePic extends React.Component {
 
     return (
       <div className='modalWrapper'>
+        <div style={{ margin: '20px 0' }} className='flexCenter'>
+          <h2>Edit Logo</h2>
+        </div>
         <div className='formSectionContainer'>
           <div className='formSection'>
             <MediaLibrary
@@ -45,7 +49,7 @@ class EditProfilePic extends React.Component {
                   url
                 }, () => this.props.toggleModal('orgEditProfilePic', false))
               }}
-              handleSave={util.handleFile}
+              handleSave={this.props.handleSave}
               library={library}
               showBtns={'hide'}
               saveLabel={'close'}
@@ -62,6 +66,11 @@ class EditProfilePic extends React.Component {
     )
   }
 }
+
+EditProfilePic.defaultProps = {
+  saveMediaType: 'org',
+  handleSave: util.handleFile
+};
 
 function mapStateToProps(state, props) {
 

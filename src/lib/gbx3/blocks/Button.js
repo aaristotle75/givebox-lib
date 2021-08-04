@@ -53,7 +53,7 @@ class Button extends PureComponent {
     style.minWidth = 150;
 
     return (
-      <>
+      <div className='orgCustomElements'>
       {modalID ?
         <ModalLink opts={this.props.opts} style={style} customColor={util.getValue(style, 'bgColor', null)} solidColor={type === 'button' ? true : false} allowCustom={true} solidTextColor={util.getValue(style, 'textColor', null)} className={`${type}`} id={modalID}>
           {util.getValue(button, 'text', 'Button Text')}
@@ -63,7 +63,7 @@ class Button extends PureComponent {
           {util.getValue(button, 'text', 'Button Text')}
         </GBLink>
       }
-      </>
+      </div>
     )
   }
 }

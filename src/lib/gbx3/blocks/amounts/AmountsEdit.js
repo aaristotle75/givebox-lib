@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import * as util from '../../../common/utility';
+import { Alert } from '../../../common/Alert';
 import Collapse from '../../../common/Collapse';
 import Image from '../../../common/Image';
 import * as types from '../../../common/types';
@@ -12,12 +13,12 @@ import * as _v from '../../../form/formValidate';
 import ModalRoute from '../../../modal/ModalRoute';
 import ModalLink from '../../../modal/ModalLink';
 import Paginate from '../../../table/Paginate';
-
 import {SortableContainer, SortableElement, SortableHandle} from 'react-sortable-hoc';
 import '../../../styles/gbx3amountsEdit.scss';
 import { amountFieldsConfig } from './amountFieldsConfig';
 import AnimateHeight from 'react-animate-height';
 import Editor from '../Editor';
+import AmountsAdd from './AmountsAdd';
 
 const arrayMove = require('array-move');
 
@@ -40,7 +41,7 @@ const SortableItem = SortableElement(({value}) => {
 
 const SortableList = SortableContainer(({items}) => {
   return (
-    <div>
+    <div style={{ width: '100%' }}>
       {items.map((value, index) => (
         <SortableItem key={`item-${index}`} index={index} value={value} />
       ))}
@@ -66,12 +67,15 @@ export default class AmountsEdit extends Component {
     this.validateEnabledAmount = this.validateEnabledAmount.bind(this);
     this.handleThumbnailSaveCallback = this.handleThumbnailSaveCallback.bind(this);
     this.thumbnailField = this.thumbnailField.bind(this);
+    this.amountLabel = amountFieldsConfig[props.kind].label;
+
     this.state = {
       deleteError: []
     };
   }
 
   componentDidMount() {
+    //console.log('execute Amounts Edit -> ', this.props.kind, this.props.buttonEnabled);
   }
 
   onSortStart(e) {
@@ -87,11 +91,10 @@ export default class AmountsEdit extends Component {
     this.props.amountsListUpdated(arrayMove(amountsList, oldIndex, newIndex), true);
   };
 
-
   getAmount(ID) {
     const amountsList = this.props.amountsList;
     const index = amountsList.findIndex(x => x.ID === ID);
-    return amountsList[index];
+    return index >= 0 ? amountsList[index] : this.state.newAmountValues;
   }
 
   updateAmounts(ID, obj = {}, customData = {}) {
@@ -111,6 +114,7 @@ export default class AmountsEdit extends Component {
     const {
       orgID
     } = this.props;
+
     const amountsList = [ ...this.props.amountsList ];
     const index = amountsList.findIndex(x => x.ID === ID);
     const amount = amountsList[index];
@@ -127,35 +131,25 @@ export default class AmountsEdit extends Component {
     });
   }
 
-  addAmount() {
+  addAmount(data = {}, callback) {
+
     const {
       orgID,
-      kind
+      kind,
+      kindID
     } = this.props;
+
     const amountsList = [ ...this.props.amountsList ];
     const length = amountsList.length;
-    const amount = amountsList[length - 1];
 
-    let entries = null;
-    let max = null;
-    if (kind === 'sweepstake') {
-      entries = 1;
-    }
-    if (kind === 'membership' || kind === 'event') {
-      max = 100;
-    }
     this.props.sendResource(`${types.kind(this.props.kind).api.amount}s`, {
       orgID,
-      id: [amount[`${this.props.kind}ID`]],
+      id: [kindID],
       method: 'post',
       data: {
-        price: 1000,
-        name: '',
-        description: '',
         enabled: true,
         orderBy: length,
-        max,
-        entries
+        ...data
       },
       reload: false,
       callback: (res, err) => {
@@ -163,6 +157,7 @@ export default class AmountsEdit extends Component {
           amountsList.push(res);
           this.props.amountsListUpdated(amountsList, true, true);
         }
+        if (callback) callback(res, err);
       }
     });
   }
@@ -171,11 +166,13 @@ export default class AmountsEdit extends Component {
     const {
       customID
     } = this.props;
+
     const config = util.getValue(amountFieldsConfig, this.props.kind, {});
     const amount = this.getAmount(ID);
     const customField = config.hasCustomField && customID === ID ? true : false;
     const displayValue = priceDisplay || ( amount.priceDisplay || (amount.price && amount.price !== 0 ? amount.price/100 : '') );
     let error = false;
+
     if (enabled && !customField && !_v.validateNumber(displayValue, _v.limits.txMin, _v.limits.txMax) && !util.getValue(amount, 'freeSingleEntry')) {
       error = `Enabled amounts must be between $${_v.limits.txMin} and $${util.numberWithCommas(_v.limits.txMax)}.`;
     } else if (!enabled && !_v.validateNumber(displayValue, 0, _v.limits.txMax)) {
@@ -214,7 +211,7 @@ export default class AmountsEdit extends Component {
     )
   }
 
-  priceField(ID, fieldProps, config) {
+  priceField(ID, fieldProps, config = {}) {
     const {
       customID
     } = this.props;
@@ -231,7 +228,7 @@ export default class AmountsEdit extends Component {
         name={fieldName}
         label={util.getValue(fieldProps, 'label')}
         fixedLabel={true}
-        placeholder={customField ? 'Any Amount' : util.getValue(fieldProps, 'placeholder', '0.00')}
+        placeholder={customField ? 'ANY' : util.getValue(fieldProps, 'placeholder', '0.00')}
         onBlur={(e) => {
           this.props.validateAmountsBeforeSave(ID, this.validateEnabledAmount(ID, amount.enabled));
         }}
@@ -253,7 +250,7 @@ export default class AmountsEdit extends Component {
     )
   }
 
-  nameField(ID, fieldProps, config) {
+  nameField(ID, fieldProps, config = {}) {
     const {
       customID
     } = this.props;
@@ -477,7 +474,8 @@ export default class AmountsEdit extends Component {
     const items = [];
     const {
       amountsList,
-      customID
+      customID,
+      buttonEnabled
     } = this.props;
 
     const formError = !util.isEmpty(this.props.formError);
@@ -504,16 +502,19 @@ export default class AmountsEdit extends Component {
         : <></> ;
 
         const defaultField = config.hasDefaultField ?
-          value.ID === this.props.defaultID ?
-            <span className='defaultAmount tooltip sortable right' style={{ fontSize: 12 }}>
-              Default
-              <span className='tooltipTop'><i />This is the default amount selected for the user.</span>
-            </span>
-          :
-            <GBLink className={`link ${!value.enabled ? 'sortable tooltip right' : ''}`} style={{ fontSize: 12 }} onClick={() => value.enabled ? this.props.defaultUpdated(key, value.ID) : console.error('Cannot set a disabled amount as the default')}>
-              Set Default
-              {!value.enabled ? <span className='tooltipTop'><i />Must be enabled to set as the default.</span> : <></>}
-            </GBLink>
+          <div style={{ margin: '0 10px'}}>
+            { value.ID === this.props.defaultID ?
+              <span className='defaultAmount tooltip sortable right' style={{ fontSize: 12 }}>
+                Default
+                <span className='tooltipTop'><i />This is the default amount selected for the user.</span>
+              </span>
+            :
+              <GBLink className={`link ${!value.enabled ? 'sortable tooltip right' : ''}`} style={{ fontSize: 12 }} onClick={() => value.enabled ? this.props.defaultUpdated(key, value.ID) : console.error('Cannot set a disabled amount as the default')}>
+                Set Default
+                {!value.enabled ? <span className='tooltipTop'><i />Must be enabled to set as the default.</span> : <></>}
+              </GBLink>
+            }
+          </div>
         : <></> ;
 
         const deleteField = amountsList.length > 1 ?
@@ -536,9 +537,11 @@ export default class AmountsEdit extends Component {
         items.push(
           <div key={key} className={`amountsEditRow sortableListItem ${value.enabled ? '' : 'notOnForm'}`} disabled={util.getValue(config, 'disableSort', false)}>
             <div className='fieldItems'>{fieldItems}</div>
+            { buttonEnabled ?
             <div className='fieldItems'>
               <div className='column' style={{ width: '100%' }}>{this.descField(value.ID)}</div>
             </div>
+            : null }
           </div>
         );
       });
@@ -556,8 +559,20 @@ export default class AmountsEdit extends Component {
 
     return (
       <div className='amountsEditList'>
-        {rows}
-        {numEnabled >= amountsList.length && !formError ? addAmount : <></>}
+        { !util.isEmpty(items) ?
+          <div>
+            <div className='previewTitleContainer flexCenter'>
+              <div className='previewTitleText'>
+                Current {util.toTitleCase(this.amountLabel)} List
+              </div>
+            </div>
+            <div className='sectionContainer'>
+              <div className='section'>
+                {rows}
+              </div>
+            </div>
+          </div>
+        : null }
       </div>
     )
   }
@@ -565,7 +580,12 @@ export default class AmountsEdit extends Component {
   render() {
 
     return (
-      <div className='amountsEdit'>
+      <div className='gbx3amountsEdit'>
+        <AmountsAdd
+          {...this.props}
+          kind={this.props.kind}
+          addAmount={this.addAmount}
+        />
         {this.renderAmountsList()}
       </div>
     )

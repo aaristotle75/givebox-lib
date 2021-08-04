@@ -8,6 +8,7 @@ import {
   addBlock
 } from '../redux/gbx3actions';
 import { toggleModal } from '../../api/actions';
+import BasicBuilderMenu from './article/BasicBuilderMenu';
 
 class AdminMenuLayout extends React.Component {
 
@@ -32,7 +33,8 @@ class AdminMenuLayout extends React.Component {
   renderActiveBlocks() {
     const {
       blocks,
-      kind
+      kind,
+      advancedBuilder
     } = this.props;
     const items = [];
     const orderedBlocks = [];
@@ -69,6 +71,7 @@ class AdminMenuLayout extends React.Component {
 
     return (
       <ul>
+        {!advancedBuilder ? <li className='listHeader'>Edit Form Elements</li> : null}
         {items}
       </ul>
     );
@@ -124,7 +127,7 @@ class AdminMenuLayout extends React.Component {
 
     return (
       <ul>
-        <li className='listHeader'>Add Page Elements</li>
+        <li className='listHeader'>Add Form Elements</li>
         {items}
       </ul>
     )
@@ -132,8 +135,13 @@ class AdminMenuLayout extends React.Component {
 
   render() {
 
+    const {
+      advancedBuilder
+    } = this.props;
+
     return (
       <div className='layoutMenu'>
+        {!advancedBuilder ? <BasicBuilderMenu /> : null}
         {this.renderActiveBlocks()}
         {this.renderAvailableBlocks()}
       </div>
@@ -149,12 +157,15 @@ function mapStateToProps(state, props) {
   const admin = util.getValue(gbx3, 'admin', {});
   const kind = util.getValue(gbx3, 'info.kind');
   const availableBlocks = util.getValue(admin, `availableBlocks.${blockType}`, []);
+  //const advancedBuilder = kind === 'fundraiser' ? util.getValue(state, 'gbx3.helperSteps.advancedBuilder', false) : true;
+  const advancedBuilder = util.getValue(state, 'gbx3.helperSteps.advancedBuilder', false);
 
   return {
     blockType,
     blocks,
     kind,
-    availableBlocks
+    availableBlocks,
+    advancedBuilder
   }
 }
 

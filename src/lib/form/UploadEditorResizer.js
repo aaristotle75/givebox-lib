@@ -85,10 +85,19 @@ class UploadEditorResizer extends Component {
 
   save() {
     this.props.setLoading('Processing Image...');
-    const fileName = util.getValue(this.props.file, 'name', 'image.png');
+    const canvas = this.editor.getImage();
+    const w = canvas.width;
+    const h = canvas.height;
+
+    const ctx = canvas.getContext('2d');
+    ctx.globalCompositeOperation = 'destination-over';
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, w, h);
+
     const fileType = util.getValue(this.props.file, 'type');
-    const data = this.editor.getImage().toDataURL(fileType);
-    const file = util.dataURLtoFile(data, fileName);
+    const imageData = canvas.toDataURL(fileType);
+    const fileName = util.getValue(this.props.file, 'name', 'image.png');
+    const file = util.dataURLtoFile(imageData, fileName);
     this.props.handleSave(file, this.saveCallback, this.props.encodeProgress);
   }
 
@@ -98,13 +107,15 @@ class UploadEditorResizer extends Component {
 
   saveMediaItem(url) {
     const {
-      saveMediaType
+      saveMediaType,
+      articleID,
+      orgID
     } = this.props;
 
 
-    if (saveMediaType === 'article') {
+    if (articleID && saveMediaType === 'article') {
       this.props.sendResource('articleMediaItems', {
-        id: [this.props.articleID],
+        id: [articleID],
         data: {
           URL: url
         },
@@ -113,9 +124,9 @@ class UploadEditorResizer extends Component {
         callback: this.saveMediaItemCallback,
         isSending: false
       });
-    } else {
+    } else if (orgID && saveMediaType === 'org') {
       this.props.sendResource(this.props.super ? 'superOrgMediaItems' : 'orgMediaItems', {
-        id: this.props.orgID ? [this.props.orgID] : null,
+        id: [orgID],
         data: {
           URL: url
         },
@@ -124,8 +135,11 @@ class UploadEditorResizer extends Component {
         callback: this.saveMediaItemCallback,
         isSending: false
       });
+    } else {
+      this.props.setSelected(url, null, null, true);
+      this.props.toggleEditor(false);
+      this.props.setLoading(false);
     }
-
   }
 
   saveMediaItemCallback(res, err) {
@@ -215,7 +229,7 @@ class UploadEditorResizer extends Component {
 
   logCallback(e) {
     // eslint-disable-next-line
-    console.log('callback', e)
+    //console.log('callback', e)
   }
 
   setEditorRef = editor => {
@@ -238,72 +252,75 @@ class UploadEditorResizer extends Component {
     } = this.state;
 
     return (
-      <div className='uploadEditorContainer'>
-        <div className='uploadResizerContent'>
-          <ResizableBox
-            width={width}
-            height={height}
-            minConstraints={[this.props.minWidth, this.props.minHeight]}
-            maxConstraints={[this.props.maxWidth, this.props.maxHeight]}
-            onResize={this.onResize}
-            resizeHandles={['s', 'w', 'n', 'e', 'sw', 'nw', 'se', 'ne']}
-          >
-            <AvatarEditor
-              ref={this.setEditorRef}
-              scale={parseFloat(this.state.scale)}
-              width={width || this.props.minWidth}
-              height={height || this.props.minHeight}
-              position={this.state.position}
-              onPositionChange={this.handlePositionChange}
-              rotate={parseFloat(this.state.rotate)}
-              borderRadius={this.state.width / (100 / this.state.borderRadius)}
-              onLoadFailure={this.logCallback.bind(this, 'onLoadFailed')}
-              onLoadSuccess={this.logCallback.bind(this, 'onLoadSuccess')}
-              onImageReady={this.logCallback.bind(this, 'onImageReady')}
-              image={this.state.image}
-              className="editor-canvas"
-              color={[37, 54, 85, 0]}
-              border={[0, 0]}
-              disableBoundaryChecks={true}
-            />
-          </ResizableBox>
-        </div>
-        <div className='menu'>
-          <div className='rotate'>
-            <GBLink onClick={this.rotateLeft}><span className='icon icon-rotate-ccw'></span></GBLink>
-            <GBLink onClick={this.rotateRight}><span className='icon icon-rotate-cw'></span></GBLink>
+      <div style={this.props.editorResizerStyle} className='uploadEditorResizer'>
+        <div className='uploadEditorBackground'></div>
+        <div className='uploadEditorContainer'>
+          <div className='uploadResizerContent'>
+            <ResizableBox
+              width={width}
+              height={height}
+              minConstraints={[this.props.minWidth, this.props.minHeight]}
+              maxConstraints={[this.props.maxWidth, this.props.maxHeight]}
+              onResize={this.onResize}
+              resizeHandles={['s', 'w', 'n', 'e', 'sw', 'nw', 'se', 'ne']}
+            >
+              <AvatarEditor
+                ref={this.setEditorRef}
+                scale={parseFloat(this.state.scale)}
+                width={width || this.props.minWidth}
+                height={height || this.props.minHeight}
+                position={this.state.position}
+                onPositionChange={this.handlePositionChange}
+                rotate={parseFloat(this.state.rotate)}
+                borderRadius={this.state.width / (100 / this.state.borderRadius)}
+                onLoadFailure={this.logCallback.bind(this, 'onLoadFailed')}
+                onLoadSuccess={this.logCallback.bind(this, 'onLoadSuccess')}
+                onImageReady={this.logCallback.bind(this, 'onImageReady')}
+                image={this.state.image}
+                className="editor-canvas"
+                color={[37, 54, 85, 0]}
+                border={[0, 0]}
+                disableBoundaryChecks={true}
+              />
+            </ResizableBox>
           </div>
-          <div className='scale'>
-            <GBLink onClick={() => this.setScale(this.props.minScale)}><span className='icon small icon-image'></span></GBLink>
-            <input
-              name="scale"
-              type="range"
-              onChange={this.handleScale}
-              min={this.props.minScale}
-              max={this.props.maxScale}
-              step="0.01"
-              value={this.state.scale}
-            />
-            <GBLink onClick={() => this.setScale(this.props.maxScale)}><span className='icon icon-image'></span></GBLink>
-          </div>
-          {/*
-          <div className='scale'>
-            <GBLink onClick={() => this.setScale(this.props.minScale)}><span className='icon small icon-image'></span></GBLink>
-            <input
-              name="borderRadius"
-              type="range"
-              onChange={this.handleBorderRadius}
-              min={this.props.minRadius}
-              max={this.props.maxRadius}
-              step="0"
-              value={this.state.borderRadius}
-            />
-            <GBLink onClick={() => this.setScale(this.props.maxScale)}><span className='icon icon-image'></span></GBLink>
-          </div>
-          */}
-          <div className='button-group'>
-            <GBLink className='link' onClick={() => this.cancel()}>Cancel</GBLink>
-            <GBLink style={{ width: '100px', ...this.props.uploadEditorSaveStyle }} className='button' onClick={() => this.save()}>{this.props.uploadEditorSaveLabel}</GBLink>
+          <div className='menu'>
+            <div className='rotate'>
+              <GBLink onClick={this.rotateLeft}><span className='icon icon-rotate-ccw'></span></GBLink>
+              <GBLink onClick={this.rotateRight}><span className='icon icon-rotate-cw'></span></GBLink>
+            </div>
+            <div className='scale'>
+              <GBLink onClick={() => this.setScale(this.props.minScale)}><span className='icon small icon-image'></span></GBLink>
+              <input
+                name="scale"
+                type="range"
+                onChange={this.handleScale}
+                min={this.props.minScale}
+                max={this.props.maxScale}
+                step="0.01"
+                value={this.state.scale}
+              />
+              <GBLink onClick={() => this.setScale(this.props.maxScale)}><span className='icon icon-image'></span></GBLink>
+            </div>
+            {/*
+            <div className='scale'>
+              <GBLink onClick={() => this.setScale(this.props.minScale)}><span className='icon small icon-image'></span></GBLink>
+              <input
+                name="borderRadius"
+                type="range"
+                onChange={this.handleBorderRadius}
+                min={this.props.minRadius}
+                max={this.props.maxRadius}
+                step="0"
+                value={this.state.borderRadius}
+              />
+              <GBLink onClick={() => this.setScale(this.props.maxScale)}><span className='icon icon-image'></span></GBLink>
+            </div>
+            */}
+            <div className='button-group'>
+              <GBLink className='link' onClick={() => this.cancel()}>Cancel</GBLink>
+              <GBLink style={{ width: '100px', ...this.props.uploadEditorSaveStyle }} className='button' onClick={() => this.save()}>{this.props.uploadEditorSaveLabel}</GBLink>
+            </div>
           </div>
         </div>
       </div>

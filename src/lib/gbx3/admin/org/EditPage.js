@@ -12,8 +12,7 @@ import {
   updateOrgGlobal,
   updateOrgPage,
   updateOrgPageSlug,
-  saveOrg,
-  setPageState
+  saveOrg
 } from '../../redux/gbx3actions';
 import {
   toggleModal
@@ -77,7 +76,6 @@ class EditPageForm extends React.Component {
   updateOrderby() {
     const {
       orgID,
-      resourceName,
       pageSlug
     } = this.props;
 
@@ -233,7 +231,9 @@ class EditPageForm extends React.Component {
 
     return (
       <div className='editPageWrapper'>
-        <h2 className='flexCenter'>Edit {util.getValue(page, 'name')}</h2>
+        <div style={{ margin: '10px 0 30px 0' }} className='flexCenter'>
+          <h2>Edit {util.getValue(page, 'name')}</h2>
+        </div>
         {buttonGroup}
         <Tabs
           default={tabToDisplay}
@@ -255,7 +255,7 @@ class EditPageForm extends React.Component {
             </Collapse>
             <Collapse
               iconPrimary={'edit'}
-              label={'Add Header'}
+              label={'Add a Header to the Top of the Page'}
               id='editPageTopEditor'
             >
               <div className='formSectionContainer'>
@@ -287,7 +287,7 @@ class EditPageForm extends React.Component {
             </Collapse>
             <Collapse
               iconPrimary={'edit'}
-              label={'Add Footer'}
+              label={'Add a Footer to the Bottom of the Page'}
               id='editPageBottomEditor'
             >
               <div className='formSectionContainer'>
@@ -353,54 +353,49 @@ class EditPageForm extends React.Component {
               </div>
             </Collapse>
           </Tab>
-          <Tab id='editList' label={<span className='stepLabel'>Page Form List</span>}>
-            <Collapse
-              iconPrimary={'list'}
-              label={'Page List'}
-              id='editPageList'
-            >
-              <div className='formSectionContainer'>
-                <div className='formSection' style={{ paddingBottom: useCustomList ? 20 : 150 }}>
-                  <Choice
-                    type='checkbox'
-                    name='hideList'
-                    label={'Hide Page List from Displaying'}
-                    onChange={(name, value) => {
-                      this.setState({ hideList: hideList ? false : true });
-                    }}
-                    checked={hideList}
-                    value={hideList}
-                    toggle={true}
+          <Tab id='editList' label={<span className='stepLabel'>List of Items on Page</span>}>
+          <div className='formSectionContainer'>
+            <div className='formSection' style={{ paddingBottom: useCustomList ? 20 : 150 }}>
+              <Choice
+                type='checkbox'
+                name='hideList'
+                label={'Hide Page List from Displaying'}
+                onChange={(name, value) => {
+                  this.setState({ hideList: hideList ? false : true });
+                }}
+                checked={hideList}
+                value={hideList}
+                toggle={true}
+              />
+              <AnimateHeight height={!hideList ? 'auto' : 0}>
+                <Choice
+                  type='checkbox'
+                  name='useCustomList'
+                  label={'I Want to Make a Custom List'}
+                  onChange={(name, value) => {
+                    this.setState({ useCustomList: useCustomList ? false : true });
+                  }}
+                  checked={useCustomList}
+                  value={useCustomList}
+                  toggle={true}
+                />
+                {/*
+                <div className='fieldContext'>The Custom List will replace the List Type ( {types.kind(kind, 'All Types').namePlural} ) selected below.</div>*/}
+                <AnimateHeight height={!useCustomList ? 'auto' : 0}>
+                  <div className='orgPageCustomList'>
+                    {this.props.dropdown('kind', {label: 'What Kind of Fundraisers to List on the Page', options: types.kindOptions(true, 'All Kinds'), value: kind, style: { paddingTop: 40 } })}
+                  </div>
+                </AnimateHeight>
+                <AnimateHeight height={useCustomList ? 'auto' : 0}>
+                  <EditCustomList
+                    updateCustomList={this.updateCustomList}
+                    customList={this.state.customList}
+                    pageSlug={pageSlug}
                   />
-                  <AnimateHeight height={!hideList ? 'auto' : 0}>
-                    <Choice
-                      type='checkbox'
-                      name='useCustomList'
-                      label={'Use a Custom List'}
-                      onChange={(name, value) => {
-                        this.setState({ useCustomList: useCustomList ? false : true });
-                      }}
-                      checked={useCustomList}
-                      value={useCustomList}
-                      toggle={true}
-                    />
-                    <div className='fieldContext'>The Custom List will replace the List Type ( {types.kind(kind, 'All Types').namePlural} ) selected below.</div>
-                    <AnimateHeight height={useCustomList ? 'auto' : 0}>
-                      <EditCustomList
-                        updateCustomList={this.updateCustomList}
-                        customList={this.state.customList}
-                        pageSlug={pageSlug}
-                      />
-                    </AnimateHeight>
-                    <AnimateHeight height={!useCustomList ? 'auto' : 0}>
-                      <div className='orgPageCustomList'>
-                        {this.props.dropdown('kind', {label: 'Page List Type', options: types.kindOptions(true, 'All Types'), value: kind, style: { paddingTop: 40 } })}
-                      </div>
-                    </AnimateHeight>
-                  </AnimateHeight>
-                </div>
-              </div>
-            </Collapse>
+                </AnimateHeight>
+              </AnimateHeight>
+            </div>
+          </div>
           </Tab>
         </Tabs>
         {buttonGroup}
@@ -485,6 +480,5 @@ export default connect(mapStateToProps, {
   toggleModal,
   saveOrg,
   sendResource,
-  reloadResource,
-  setPageState
+  reloadResource
 })(EditPage);

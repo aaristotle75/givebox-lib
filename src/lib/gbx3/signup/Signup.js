@@ -1,135 +1,128 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import Loader from '../../common/Loader';
 import * as util from '../../common/utility';
 import ScrollTop from '../../common/ScrollTop';
 import Image from '../../common/Image';
 import GBLink from '../../common/GBLink';
-import Dropdown from '../../form/Dropdown';
-import ModalLink from '../../modal/ModalLink';
-import CreateArticleCard from '../pages/CreateArticleCard';
 import {
+  loadOrgSignup,
   setOrgStyle,
-  updateSignup
+  updateOrgSignup,
+  setSignupStep
 } from '../redux/gbx3actions';
 import {
   toggleModal
 } from '../../api/actions';
-import Footer from '../Footer';
+import SignupMenu from './SignupMenu';
+import SignupPage from './SignupPage';
+import { signupSteps } from './signupConfig';
+import HelpfulTip from '../../common/HelpfulTip';
+import OrgModalRoutes from '../OrgModalRoutes';
 
 class Signup extends React.Component {
 
   constructor(props) {
     super(props);
+    this.openStep = this.openStep.bind(this);
+    this.resizer = this.resizer.bind(this);
     this.state = {
+      isMobile: window.innerWidth <= 736 ? true : false
     };
   }
 
   componentDidMount() {
+    window.addEventListener('resize', this.resizer);
+  }
 
-    const {
-      breakpoint,
-      isMobile,
-      org
-    } = this.props;
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.resizer);
+  }
 
-    const themeColor = util.getValue(org, 'themeColor');
-    if (themeColor) {
-      this.props.setOrgStyle({
-        backgroundColor: '#000000'
-      });
+  resizer(e) {
+    if (window.innerWidth <= 736) {
+      this.setState({ isMobile: true });
+    } else if (this.state.isMobile) {
+      this.setState({ isMobile: false})
     }
+  }
+
+  openStep(value) {
+    this.props.setSignupStep(value, () => {
+      this.props.toggleModal('orgSignupSteps', true);
+    });
   }
 
   render() {
 
     const {
-      breakpoint,
-      isMobile,
-      org
+      open
     } = this.props;
 
-    const orgName = util.getValue(org, 'orgName', 'Your Organization Name');
-    const coverPhotoUrl = util.getValue(org, 'coverPhoto');
-    const profilePictureUrl = util.getValue(org, 'orgLogo');
+    const {
+      isMobile
+    } = this.state;
 
     return (
-      <div className='gbx3Org gbx3Signup'>
-        <ScrollTop elementID={'gbx3Layout'} />
-        <div className='gbx3OrgHeader'>
-          <div className={'gbx3OrgLogoContainer'} onClick={() => console.log('logo clicked!')}>
-            <Image size='thumb' maxSize={35} url={'https://givebox.s3-us-west-1.amazonaws.com/public/gb-logo5.png'} alt='Givebox' />
-          </div>
-        </div>
-        <div className='gbx3OrgContentContainer'>
-          {/* Header */}
-          <div className='gbx3OrgContentHeader gbx3OrgContentOuterContainer'>
-            <div className='gbx3OrgContentInnerContainer'>
-              <div id='coverPhoto' className='coverPhotoContainer'>
-                <div className='coverPhotoImageDropdown orgAdminDropdown'>
-                  {/* Edit Cover Photo Stuff */}
-                </div>
-                <div className='coverPhotoImage'>
-                  { coverPhotoUrl ?
-                    <Image imgID='coverPhoto' size='large' url={coverPhotoUrl} maxSize='950px' alt='Cover Photo' />
-                  : null }
-                </div>
-                {/* Edit Profile Pic Stuff */}
-                <div className='profilePictureContainer'>
-                  { profilePictureUrl ?
-                    <Image url={profilePictureUrl} size='medium' maxSize='160px' alt='Profile Picture' imgStyle={{ minWidth: 160, borderRadius: '50%' }}/>
-                  :
-                    <div className='defaultProfilePicture'><span className={`icon icon-camera`}></span></div>
-                  }
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* END Header */}
-          <div className='gbx3OrgSubHeader gbx3OrgContentOuterContainer'>
-            <div className='gbx3OrgContentInnerContainer'>
-              <div className='nameSection'>
-                <div className='nameSectionContainer'>
-                  <div className='nameText flexCenter'>
-                    {orgName}
+      <div className='gbx3AdminLayout orgDisplay editable gbx3OrgSignup'>
+        <OrgModalRoutes />
+        <SignupMenu />
+        <div id='GBX3StageAligner' className='stageAligner'>
+          <div id='stageContainer' className={`stageContainer ${open ? 'open' : ''}`}>
+            <div className='gbx3PageWrapper org admin'>
+              <div id='gbx3Layout' className='gbx3Layout org admin'>
+                <ScrollTop elementID={'gbx3Layout'} />
+                <div className='gbx3OrgHeader'>
+                  <div className={'gbx3OrgLogoContainer'} onClick={() => console.log('logo clicked!')}>
+                    { isMobile ?
+                      <Image size='thumb' maxSize={35} url={'https://cdn.givebox.com/givebox/public/gb-logo5.png'} alt='Givebox' />
+                    :
+                      <Image maxHeight={35} url={'https://cdn.givebox.com/givebox/public/givebox-logo_dark-grey.png'} alt='Givebox' />
+                    }
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <main className='gbx3OrgContent gbx3OrgContentOuterContainer'>
-            <div className='gbx3OrgContentInnerContainer'>
-              <div className='gbx3OrgPages'>
-                <div className='pageContentWrapper'>
-                  <div className={`pageContentSection top`}>
-                    {/*
-                    <div className='flexCenter flexColumn'>
-                      <h2>Welcome to your Givebox Profile.</h2>
-                      <span>Complete your profile, start a fundraiser, and share it.</span>
-                      <span>You could receive your first donation today if you follow our simple steps!</span>
+                  <div className='moneyRaisedContainer'>
+                    <GBLink style={{ marginRight: 10 }} className='button' onClick={() => this.props.loadOrgSignup({ bookDemo: true })}>
+                      <span className='buttonAlignText'>Book Demo</span>
+                    </GBLink>
+                    <GBLink className='button' onClick={() => this.openStep('account')} style={{ marginRight: 10 }}>
+                      <span className='buttonAlignText'>Save Progress</span>
+                    </GBLink>
+                    <div className='tooltip moneyRaised'>
+                      <div className='tooltipTop'>
+                        <HelpfulTip
+                          headerIcon={<span className='icon icon-trending-up'></span>}
+                          headerText={'How do I Raise Money?'}
+                          text={
+                            <div className='moneyRaisedTooltipContent'>
+                              Complete the quick and easy create fundraiser steps, and then preview and share your fundraiser.
+                              <span style={{ marginTop: 10, display: 'block' }}>
+                                After you get your first transaction you can connect a bank account to transfer your money.
+                              </span>
+                              <div className='flexCenter button-group'>
+                                <GBLink className='button' onClick={() => this.openStep('orgName')}>
+                                  Create Fundraiser Steps
+                                </GBLink>
+                              </div>
+                            </div>
+                          }
+                          style={{ marginTop: 0 }}
+                        />
+                      </div>
+                      <span className='moneyRaisedLabel'>Money Raised</span>
+                      <span className='moneyRaisedText moneyAmount'>
+                        <span className='symbol'>$</span>0.00
+                      </span>
                     </div>
-                    */}
-                  </div>
-                  <div className='pageListWrapper'>
-                    <CreateArticleCard
-                      signup={true}
-                      noOrgIDCallback={() => {
-                        console.log('execute -> no org id callback');
-                      }}
-                    />
                   </div>
                 </div>
+                <SignupPage
+                  openStep={this.openStep}
+                />
+                {isMobile ? <div className='bottomOffset'>&nbsp;</div> : <></>}
               </div>
-            </div>
-          </main>
-          <div className='gbx3OrgFooter gbx3OrgContentOuterContainer'>
-            <div className='gbx3OrgContentInnerContainer'>
-              <Footer
-                showP2P={false}
-              />
             </div>
           </div>
         </div>
-        {breakpoint === 'mobile' ? <div className='bottomOffset'>&nbsp;</div> : <></>}
       </div>
     )
   }
@@ -137,22 +130,17 @@ class Signup extends React.Component {
 
 function mapStateToProps(state, props) {
 
-  const breakpoint = util.getValue(state, 'gbx3.info.breakpoint');
-  const isMobile = breakpoint === 'mobile' ? true : false;
-  const orgSignup = util.getValue(state, 'gbx3.orgSignup', {});
-  const org = util.getValue(orgSignup, 'org', {});
-  const gbx3 = util.getValue(orgSignup, 'gbx3', {});
+  const open = util.getValue(state, 'gbx3.admin.open', true);
 
   return {
-    breakpoint,
-    isMobile,
-    org,
-    gbx3
+    open
   }
 }
 
 export default connect(mapStateToProps, {
+  loadOrgSignup,
   setOrgStyle,
-  updateSignup,
+  updateOrgSignup,
+  setSignupStep,
   toggleModal
 })(Signup);

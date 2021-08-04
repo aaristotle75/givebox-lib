@@ -8,6 +8,7 @@ import GBLink from '../common/GBLink';
 import * as types from '../common/types';
 import Loader from '../common/Loader';
 import Image from '../common/Image';
+import Icon from '../common/Icon';
 import ImageDisplay from '../common/ImageDisplay';
 import Paginate from '../table/Paginate';
 import MaxRecords from '../table/MaxRecords';
@@ -15,7 +16,9 @@ import { getResource, sendResource } from '../api/helpers';
 import { removeResource, toggleModal } from '../api/actions';
 import UploadEditorResizer from './UploadEditorResizer';
 import { Line } from 'rc-progress';
+import LinearBar from '../common/LinearBar';
 import has from 'has';
+import { ImCamera } from 'react-icons/im';
 
 class MediaLibrary extends Component {
 
@@ -38,6 +41,7 @@ class MediaLibrary extends Component {
     this.setLoading = this.setLoading.bind(this);
     this.setPreview = this.setPreview.bind(this);
     this.closeModalAndCancel = this.closeModalAndCancel.bind(this);
+    this.removeImage = this.removeImage.bind(this);
     this.state = {
       image: this.props.image || '',
       preview: this.props.preview || '',
@@ -67,7 +71,7 @@ class MediaLibrary extends Component {
           max: recordsPerPage
         }
       });
-    } else {
+    } else if (saveMediaType === 'org' && orgID) {
       this.props.getResource(this.props.resourceName, {
         id: orgID ? [orgID] : null,
         reload: true,
@@ -93,6 +97,11 @@ class MediaLibrary extends Component {
       this.timeout = null;
     }
     //this.props.removeResource(this.props.resourceName);
+  }
+
+  removeImage() {
+    this.setState({ preview: '' });
+    if (this.props.removePreview) this.props.removePreview();
   }
 
   toggleEditor(bool) {
@@ -195,16 +204,30 @@ class MediaLibrary extends Component {
       );
 
       items.push(
-        <li key={0} className='ripple'>
-          <ModalLink id='imageDisplay' opts={{ url: this.state.preview, actions: actions }}><Image url={this.state.preview} size='small' maxWidth='100px' maxHeight='auto' alt='Media Item' /></ModalLink>
-          <div className='buttons'>
-            <GBLink className='select' onClick={() => this.selectEditor(this.state.preview)}>Edit</GBLink>
+        <li key={'selectedImage'}>
+          <div style={{ width: 120, height: 120 }} className='singleImagePreview'>
+            <div className='preview-buttons'>
+              <GBLink onClick={() => this.selectEditor(this.state.preview, () => this.props.toggleModal('imageDisplay', false))}>Edit</GBLink>
+            </div>
+            <ModalLink
+              id='imageDisplay'
+              opts={{ url: this.state.preview, actions: actions
+            }}>
+              <Image
+                onLoad={this.props.previewOnLoad}
+                url={this.state.preview}
+                size='small'
+                maxWidth='120px'
+                maxHeight='auto'
+                alt='Media Item'
+              />
+            </ModalLink>
           </div>
         </li>
       );
     } else {
       items.push(
-        <li key={'noPhoto'} className={`noPhoto ${!this.state.preview ? 'center' : ''}`}>Please upload {!util.isEmpty(this.props.items) ? 'or select' : ''} a photo.</li>
+        <li key={'noPhoto'} className={`noPhoto ${!this.state.preview ? 'center' : ''}`}>Please upload {!util.isEmpty(this.props.items) ? 'or select' : ''} an image.</li>
       );
     }
 
@@ -240,11 +263,14 @@ class MediaLibrary extends Component {
         );
 
         items.push(
-          <li className='ripple' key={key}>
-            <ModalLink id='imageDisplay' opts={{ url: value.URL, id: value.ID, toggleModal: this.props.toggleModal, setSelected: this.setSelected, actions: actions }}><Image url={value.URL} size={this.state.preview === value.URL ? 'small' : 'small'} maxWidth='100px' maxHeight='auto' alt='Media Item' /></ModalLink>
-            <div className='buttons'>
-              <GBLink className='select' onClick={() => this.selectEditor(value.URL)}><span className='icon icon-edit'></span></GBLink>
-              <GBLink className='select' onClick={() => this.setSelected(value.URL, value.ID)}>Select</GBLink>
+          <li key={key}>
+            <div style={{ width: 120, height: 120 }} className='singleImagePreview'>
+              <div className='preview-buttons'>
+                <GBLink onClick={() => this.selectEditor(value.URL)}>Edit</GBLink>
+                <GBLink onClick={() => this.setSelected(value.URL, value.ID)}>Select</GBLink>
+              </div>
+              <ModalLink id='imageDisplay' opts={{ url: value.URL, id: value.ID, toggleModal: this.props.toggleModal, setSelected: this.setSelected, actions: actions }}>
+              <Image url={value.URL} size={this.state.preview === value.URL ? 'small' : 'small'} maxWidth='120px' maxHeight='auto' alt='Media Item' /></ModalLink>
             </div>
           </li>
         );
@@ -313,7 +339,12 @@ class MediaLibrary extends Component {
       mobile,
       uploadOnly,
       topLabel,
-      bottomLabel
+      labelIcon,
+      bottomLabel,
+      className,
+      formError,
+      singlePreview,
+      previewMaxSize
     } = this.props;
 
     const {
@@ -322,9 +353,10 @@ class MediaLibrary extends Component {
     } = this.state;
 
     const mimes = this.getMimes();
+    const hasPhotos = !util.isEmpty(this.props.items) ? true : false;
 
     return (
-      <div className='mediaLibrary'>
+      <div className={`mediaLibrary ${className}`}>
         <ModalRoute optsProps={{ customOverlay: { zIndex: 10000001 } }} id='imageDisplay' component={(props) =>
           <ImageDisplay {...props} size='large' />
         } className='flexWrapper centerItems' effect='3DFlipVert' style={{ width: '60%' }} />
@@ -332,7 +364,12 @@ class MediaLibrary extends Component {
         <div className='loadImage'>
           <div className='loadingBarWrap'>
             <span className='loadingText'>{this.state.loading}</span>
+            <LinearBar
+              progress={this.state.percent}
+            />
+            {/*
             <Line className='loadingBar' percent={this.state.percent} strokeWidth='5' strokeColor='#32dbec' trailWidth='5' trailColor='#253655' strokeLinecap='square' />
+            */}
           </div>
         </div>
         }
@@ -342,20 +379,34 @@ class MediaLibrary extends Component {
             {isFetching && <Loader className='uploadLoader' msg={'Loading...'} />}
             <div className='menu'>
               <div className='menu-group'>
+                { singlePreview && this.state.preview ?
+                null :
                 <Dropzone
-                  className={`dropzone ${error ? 'error' : ''}`}
+                  className={`dropzone ${error || formError ? 'error' : ''}`}
                   onDrop={this.handleDrop}
                   onDropAccepted={this.handleDropAccepted}
                   onDropRejected={this.handleDropRejected}
                   accept={mimes.format}
                 >
                   <span className='text'>
-                    {!mobile && <span>{topLabel}</span>}
-                    <span className='icon icon-file-plus'></span>
+                    {!mobile ? <span>{topLabel}</span> : null}
+                    {labelIcon}
                     {!mobile ? <span>{bottomLabel}</span> : <span>Add File</span>}
                   </span>
-                </Dropzone>
-                {this.state.preview ? this.listSelected() : null}
+                </Dropzone> }
+                {this.props.children}
+                {this.state.preview ?
+                  singlePreview ?
+                  <div style={{ width: previewMaxSize, height: previewMaxSize }} className='singleImagePreview'>
+                    <div className='preview-buttons'>
+                      <GBLink onClick={() => this.removeImage()}>New Image</GBLink>
+                      <GBLink onClick={() => this.selectEditor(this.state.preview)}>Edit Image</GBLink>
+                    </div>
+                    <Image url={this.state.preview} maxSize={previewMaxSize} alt={'Editor Preview'} />
+                  </div>
+                  :
+                  this.listSelected()
+                : null}
               </div>
               { error ?
                 <div className='errorMsg'>
@@ -363,17 +414,36 @@ class MediaLibrary extends Component {
                   {mimes.readable}
                 </div>
               : <></> }
-              { !uploadOnly ?
+              { !uploadOnly && hasPhotos ?
               <div className='yourphotos'>
                 <h4>Your Photos</h4>
               </div> : null }
             </div>
-            { !uploadOnly ?
+            { !uploadOnly && hasPhotos ?
             <div className='content'>
               {this.listMedia()}
             </div> : null }
           </div>
           :
+            /*
+            <UploadCropper
+              {...this.props}
+              image={this.state.image}
+              file={this.state.file}
+              toggleEditor={this.toggleEditor}
+              encodeProgress={this.encodeProgress}
+              setLoading={this.setLoading}
+              setPreview={this.setPreview}
+              setSelected={this.setSelected}
+              borderRadius={util.getValue(library, 'borderRadius')}
+              super={util.getValue(library, 'super', false)}
+              orgID={util.getValue(library, 'orgID', null)}
+              articleID={util.getValue(library, 'articleID', null)}
+              saveMediaType={util.getValue(library, 'saveMediaType')}
+              uploadEditorSaveLabel={this.props.uploadEditorSaveLabel}
+              uploadEditorSaveStyle={this.props.uploadEditorSaveStyle}
+            />
+            */
             <UploadEditorResizer
               {...this.props}
               image={this.state.image}
@@ -405,18 +475,31 @@ class MediaLibrary extends Component {
 }
 
 MediaLibrary.defaultProps = {
-  selectedLabel: 'Selected Photo',
+  editorResizerStyle: {},
+  className: '',
+  selectedLabel: 'Selected Image',
   modalID: 'uploadLibrary',
   showButtons: 'all',
   cancelLabel: 'Cancel',
   saveLabel: 'Update',
+  uploadEditorSaveLabel: 'Click Here to Use Image',
+  uploadEditorSaveStyle: {
+    width: 250
+  },
   showBtns: 'all',
   mobile: false,
   acceptedMimes: ['image', 'text', 'applications'],
   uploadOnly: false,
-  topLabel: 'Add File',
-  bottomLabel: 'Drag & Drop',
-  recordsPerPage: 20
+  topLabel: 'Drag Image Here',
+  labelIcon:
+    <div className='labelIcon'>
+      <div className='orText'>or</div>
+      <Icon><ImCamera /></Icon>
+    </div>
+  ,
+  bottomLabel: 'Click to Add Image',
+  recordsPerPage: 20,
+  previewMaxSize: 170
 }
 
 function mapStateToProps(state, props) {

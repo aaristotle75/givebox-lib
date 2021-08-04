@@ -53,7 +53,7 @@ class Terms extends Component {
     } = this.props;
 
     return (
-      <div className='modalWrapper'>
+      <div className='modalWrapper orgCustomElements'>
         <div className='center'>
           <img className='pciImage' src='https://s3-us-west-1.amazonaws.com/givebox/public/images/logo-box.svg' alt='Givebox' height='70px' width='135px' />
         </div>

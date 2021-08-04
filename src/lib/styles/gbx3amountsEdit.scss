@@ -2,11 +2,20 @@
 
 $editAmountBreakpoint: 500px;
 
+/*
 .gbx3.gbx3amountsEdit .moneyAmount.noValue .symbol {
   color: $red;
 }
+*/
 
 .gbx3amountsEdit {
+
+  .amountsAdd {
+    padding: 0 20px;
+    @media (max-width: $editAmountBreakpoint) {
+      padding: 0 5px;
+    }
+  }
 
   .column {
     display: inline-block;
@@ -17,7 +26,9 @@ $editAmountBreakpoint: 500px;
   }
 
   .fieldItems {
-    display: block;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
 
     @media (max-width: $editAmountBreakpoint) {
       display: flex;
@@ -41,18 +52,12 @@ $editAmountBreakpoint: 500px;
     padding: 10px 10%;
   }
 
+  .tooltipTop {
+    white-space: pre-wrap;
+  }
+
   .tooltipTop:not(.readOnly) {
     top: -10px;
-  }
-
-  .readOnly.tooltip .tooltipTop {
-      color: $white;
-      background-color: $dark-blue-gray;
-  }
-
-  .readOnly.tooltip .tooltipTop i::after {
-    color: $white;
-    background-color: $dark-blue-gray;
   }
 
   .formSection {
@@ -74,12 +79,18 @@ $editAmountBreakpoint: 500px;
     background: transparentize($med-blue-gray, .95);
   }
 
+  .inputLeftBar {
+    left: -5px;
+    top: 2px;
+  }
+
   .amountsEditRow {
+    position: relative;
     width: 100%;
     padding: 15px 5px 15px 0;
     margin: 15px 0;
-    border-left: 2px solid $mainColor;
-    background: $white;
+    border-left: 0;
+    background: transparent;
     cursor: default;
     @include default-transition(.25s);
 
@@ -107,9 +118,11 @@ $editAmountBreakpoint: 500px;
 
   .amountsEditRow:hover {
     //border-left: 2px solid $mainColorLight;
-    background: transparentize($mainColorLight, .9);
+    background: transparentize($green, .9);
 
     .amountsRightSideButtonGroup {
+
+      button.button,
       button.link {
         opacity: 1;
       }
@@ -134,7 +147,16 @@ $editAmountBreakpoint: 500px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    white-space: nowrap;
 
+    button.button {
+      padding: 10px 15px;
+      font-size: 14px;
+      margin-top: 0;
+      margin-right: 10px;
+    }
+
+    button.button,
     button.link {
       opacity: 0;
       @include transition(opacity .5s);
@@ -160,8 +182,8 @@ $editAmountBreakpoint: 500px;
 
 .gbx3amountsEdit.sortableHelper {
   .amountsEditRow {
-    border-left: 2px solid $mainColorLight;
-    background: transparentize($mainColorLight, .9);
+    border-left: 2px solid $mainColor;
+    background: transparentize($green, .7);
   }
 }
 
@@ -178,26 +200,24 @@ $editAmountBreakpoint: 500px;
       width: 60px;
       height: 60px;
       font-size: 12px;
-      font-weight: 300;
-      color: $mainColor;
-      border: 1px solid $mainColor;
-      background: $white;
+      font-weight: 400;
+      color: $white;
+      border-radius: 10px;
+      @include purpleToSalmonOnly(1, 140deg);
     }
     .icon {
       font-size: 20px;
-      color: $mainColor;
+      color: $white;
     }
   }
 
   .amountThumb:hover {
     .mediaPlaceholder {
-      color: $mainColorLight;
-      border: 1px solid $mainColorLight;
-      background: $white;
+      opacity: .9;
     }
     .icon {
       font-size: 20px;
-      color: $mainColorLight;
+      color: $white;
     }
   }
 }

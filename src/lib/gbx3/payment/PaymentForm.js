@@ -728,11 +728,13 @@ function mapStateToProps(state, props) {
 
   const gbx3 = util.getValue(state, 'gbx3', {});
   const info = util.getValue(gbx3, 'info', {});
+  const stage = util.getValue(info, 'stage', {});
+  const preview = util.getValue(info, 'preview', {});
   const sourceLocation = util.getValue(info, 'sourceLocation');
   const sourceType = util.getValue(info, 'sourceType');
   const emailBlastToken = util.getValue(info, 'ebToken', null);
   const emailBlastEmail = util.getValue(info, 'ebEmail', null);
-  const cart = util.getValue(gbx3, 'cart', {});
+  const cart = stage !== 'admin' && !preview ? util.getValue(gbx3, 'cart', {}) : {};
   const cartTotal = util.getValue(cart, 'total', 0);
   const zeroAmountAllowed = util.getValue(cart, 'zeroAmountAllowed', false);
   const cartCustomer = util.getValue(cart, 'customer', {});

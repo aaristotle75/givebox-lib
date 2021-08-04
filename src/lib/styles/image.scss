@@ -11,6 +11,7 @@
 }
 
 .rotate {
+  margin-top: 10px;
   .icon {
     margin: 0 5px;
   }
@@ -38,25 +39,24 @@
 }
 
 .imagePlaceholder {
-  position: relative;
-  display: inline-block;
-  height: 175px;
-  width: 175px;
-  border-radius: 20px;
-  color: $white;
-  background: $light-gray;
-  vertical-align: middle;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
   text-align: center;
+  @include dropzoneButton();
+  height: 140px;
+  width: 140px;
+  border: 0;
+  border-radius: 20px;
+  padding: 0;
+  white-space: normal;
+  @media (max-width: $breakpoint) {
+    height: 125px;
+  }
 
   .icon {
-    position: absolute;
-    left:0; right:0;
-    top:40px; bottom:0;
-    margin: auto;
     font-size: 100px;
-    font-weight: 200;
-    max-width:100%;
-    max-height:100%;
+    color: $white;
   }
 }
 
@@ -79,21 +79,16 @@ button.imageCover {
 }
 
 .imageLink {
+  @include primaryButton;
+  font-size: 14px;
+  font-weight: 400;
   position: absolute;
   bottom: 5px;
   right: 10px;
   cursor: pointer;
-  color: $white;
-  font-weight: 300;
   opacity: 0;
   @include transition(opacity .5s ease-out);
-  background: $overlayColor;
   padding: 5px 15px;
-  border-radius: 15px;
-}
-
-.imageLink:hover {
-  color: $secondColor;
 }
 
 .image:hover {
@@ -196,33 +191,48 @@ button.imageCover {
   justify-content: center;
   flex-direction: column;
   text-align: center;
-  width: 175px;
-  height: 175px;
+  @include dropzoneButton();
+  height: 140px;
+  width: 140px;
+  border: 0;
   border-radius: 20px;
-  border: 1px solid $mainColor;
-  background-color: $white;
-  cursor: pointer;
-}
-
-.dropzone:hover {
-  background-color: $mainColor;
-  border: 1px solid $white;
-  @include default-transition(.25s);
+  padding: 0;
+  white-space: normal;
+  @media (max-width: $breakpoint) {
+    height: 125px;
+  }
 
   .dropzone-icon {
+    font-size: 30px;
     color: $white;
   }
 
+ .text {
+    font-size: 14px;
+    font-weight: 400;
+    color: $white;
+    padding: 5px;
+
+    span { margin: 5px 0 }
+  }
 }
 
-.dropzone .text {
-  font-size: $normal-text-size;
-  font-weight: 300;
-  color: $mainColor;
+.dropzone:hover {
+  opacity: .9;
+  border: 0;
+  @include transition(opacity .25s);
 }
 
-.dropzone:hover .text {
-  color: #fff;
+.dropzone.error {
+  border: 2px dashed $red !important;
+
+  .text {
+    color: $red !important;
+  }
+
+  .icon {
+    color: $red !important;
+  }
 }
 
 .dropzoneImageContainer {
@@ -230,9 +240,9 @@ button.imageCover {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 200px;
+  width: 170px;
   height: auto;
-  min-height: 200px;
+  min-height: 170px;
 
   .imageLoader {
     display: flex;
@@ -251,8 +261,7 @@ button.imageCover {
   }
 
   .dropzone-icon {
-    font-size: 100px;
-    color: $mainColor;
+    font-size: 80px;
   }
 
   button.link {
@@ -352,13 +361,29 @@ button.imageCover {
   }
 }
 
+.photoSection.PhotoList,
+.yourphotos {
+  h4 {
+    font-size: 12px !important;
+    font-weight: 400 !important;
+    color: $med-blue-gray !important;
+  }
+}
+
 .photoSection.PhotoList {
+  position: relative;
 
   .imageComponent img {
     //border-radius: 0px;
   }
 
-  position: relative;
+  .preview-buttons {
+    padding: 5px 10px;
+
+    button.link {
+      font-size: 12px;
+    }
+  }
 
   ul:not(.pagination) {
     display: flex;
@@ -388,8 +413,8 @@ button.imageCover {
       justify-content: center;
       background: none;
       border: 0;
-      width: 100px;
-      height: 100px;
+      width: 120px;
+      height: 120px;
       padding: 0;
       margin: 5px;
     }
@@ -398,7 +423,7 @@ button.imageCover {
       vertical-align: middle;
       height: auto;
       width: auto;
-      border: 4px solid transparent;
+      border: 2px solid transparent;
     }
 
     li:hover {
@@ -409,8 +434,8 @@ button.imageCover {
         @include default-transition(.25s);
       }
       img {
-        @include filter(blur(2px));
-        border: 4px solid $mainColor;
+        //@include filter(blur(1px));
+        border: 2px solid $mainColor;
         @include default-transition(.25s);
       }
     }
@@ -467,6 +492,7 @@ button.imageCover {
   height: 100%;
   overflow: hidden;
   padding-bottom: 50px;
+  border-radius: 20px;
 
   .menu {
     position: absolute;
@@ -502,7 +528,7 @@ button.imageCover {
   left: 0;
   right: 0;
   bottom: 0;
-  background: transparentize($dark-blue-gray, .05);
+  @include darkGradientBackground(.9, 170deg);
   //color: $white;
   z-index: 1;
 
@@ -522,9 +548,31 @@ button.imageCover {
 
   .loadingBar {
     width: 100%;
-    height: 10px;
+    height: 10px !important;
     background: transparent;
     border-radius: 20px;
+  }
+
+  .linearProgress {
+    margin-top: 0px;
+    height: 10px !important;
+    background: transparent;
+    @include blueToSalmon(.3);
+    border-radius: 20px;
+  }
+
+  .linearProgressBar {
+    height: 10px !important;
+    background: $med-gray;
+    border-radius: 20px;
+    @include greenToBlue(1);
+    @include animation(pulsateBrighter 2s ease-out infinite);
+  }
+
+  .linearProgressBarAnimation {
+    height: 10px;
+    background: transparent;
+    z-index: 1;
   }
 }
 
@@ -568,6 +616,31 @@ button.imageCover {
     min-height: 200px;
   }
 
+  .dropzone {
+    @include dropzoneButton();
+    height: 140px;
+    width: 140px;
+    border: 0;
+    border-radius: 20px;
+    padding: 0;
+    white-space: normal;
+    @media (max-width: $breakpoint) {
+      height: 125px;
+    }
+
+    .dropzone-icon {
+      font-size: 30px;
+      color: $white;
+    }
+
+   .text {
+      font-size: 16px;
+      color: $white;
+      padding: 5px;
+
+      span { margin: 5px 0 }
+    }
+  }
 }
 
 .privateUpload.alt {
@@ -605,6 +678,7 @@ button.imageCover {
     height: auto;
     min-height: 40px;
   }
+
   .dropzone {
     display: flex;
     flex-direction: row;
@@ -618,6 +692,7 @@ button.imageCover {
 
     .text {
       white-space: nowrap;
+      font-size: 1em;
     }
 
     .dropzone-icon {
@@ -627,15 +702,12 @@ button.imageCover {
   }
 
   .dropzone:hover {
-    background-color: $mainColor;
-    border: 1px solid $white;
-    @include default-transition(.25s);
+    border: 0;
 
     .dropzone-icon {
       font-size: 20px;
       color: $white;
     }
-
   }
 
 }
@@ -652,11 +724,18 @@ button.imageCover {
     font-size: 12px;
   }
 
+  .uploadEditorResizer {
+    position: relative;
+  }
+
   .uploadEditorContainer {
     position: relative;
     height: auto;
     overflow: hidden;
+    padding-top: 20px;
     padding-bottom: 50px;
+    background: $white;
+    z-index: 12;
 
     .menu {
       position: relative;
@@ -703,15 +782,37 @@ button.imageCover {
       height: 100%;
     }
 
+    .icon {
+      color: $white;
+      font-size: 80px;
+      opacity: .9;
+    }
+
+    .labelIcon {
+      position: relative;
+
+      .orText {
+        position: absolute;
+        top: 38px;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        color: $puppa_deep_purple;
+        font-weight: 400;
+        font-size: 16px;
+        z-index: 2;
+      }
+    }
+
     .dropzone {
-      width: 135px;
-      height: 135px;
+      @include dropzoneButton();
+      height: 140px;
+      width: 140px;
+      border: 0;
+      border-radius: 20px;
+      padding: 0;
       @media (max-width: $breakpoint) {
         height: 125px;
-      }
-
-      .icon {
-        font-size: 32px;
       }
 
      .text {
@@ -740,6 +841,8 @@ button.imageCover {
       position: absolute;
       height: 180px;
       padding-top: 10px;
+      border: 0;
+      background: transparent;
 
       .menu-group {
         display: flex;
@@ -763,7 +866,58 @@ button.imageCover {
     align-items: center;
     background: #ffffff;
   }
+}
 
+.singleImagePreview:hover {
+  .preview-buttons {
+    opacity: 1;
+  }
+}
+
+.singleImagePreview {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+
+  .preview-buttons {
+    opacity: 0;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    @include purpleSalmonButton();
+    @include transition(opacity .25s);
+    white-space: nowrap;
+    z-index: 2;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+
+    button.link {
+      margin: 0 10px;
+      font-size: 12px !important;
+      font-weight: 400;
+      color: $white;
+    }
+  }
+}
+
+.uploadEditorBackground {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  @include darkGradientBackground(.9, 170deg);
+  //background: transparentize($puppa_deep_purple, .2);
+  z-index: 11;
 }
 
 .uploadResizerContent {

@@ -11,7 +11,7 @@ import {
 
 const GBX_SHARE = process.env.REACT_APP_GBX_SHARE;
 
-class Social extends Component {
+class SocialOrg extends Component {
 
   constructor(props) {
     super(props);
@@ -93,12 +93,13 @@ class Social extends Component {
   }
 };
 
-Social.defaultProps = {
-  shareIconSize: 35
+SocialOrg.defaultProps = {
+  shareIconSize: 35,
+  subText: ''
 }
 
 function mapStateToProps(state, props) {
-  const data = util.getValue(state, 'gbx3.orgData', {});
+  const data = util.getValue(state, 'resource.gbx3Org.data', {});
 
   return {
     data
@@ -106,4 +107,4 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
-})(Social);
+})(SocialOrg);

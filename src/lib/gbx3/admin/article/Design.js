@@ -12,8 +12,7 @@ import {
   updateAdmin,
   updateInfo,
   toggleAdminLeftPanel,
-  setLoading,
-  closeHelper
+  setLoading
 } from '../../redux/gbx3actions';
 import Toggle from 'react-toggle';
 import { FaPalette } from 'react-icons/fa';
@@ -70,7 +69,7 @@ class Design extends React.Component {
     const middle = [];
     const rightSide = [];
 
-    if (!previewMode && !mobile && kind === 'fundraiser') {
+    if (!previewMode && !mobile) {
       leftSide.push(
         <div
           className='leftSide'
@@ -78,10 +77,10 @@ class Design extends React.Component {
         >
           <Toggle
             icons={false}
-            checked={advancedBuilder}
+            checked={!advancedBuilder ? true : false}
             onChange={this.props.toggleBuilder}
           />
-          <GBLink className='link side' style={{ marginRight: 10 }} onClick={this.props.toggleBuilder}>{ mobile ? <Icon><GoBeaker /></Icon> : <span>Advanced Builder</span> }</GBLink>
+          <GBLink className='link side' style={{ marginRight: 10 }} onClick={this.props.toggleBuilder}>{ mobile ? <Icon><GoBeaker /></Icon> : <span>Builder Steps</span> }</GBLink>
         </div>
       );
       {/*
@@ -164,7 +163,6 @@ class Design extends React.Component {
         }
       }
     }
-    this.props.closeHelper();
     this.props.updateAdmin({ previewDevice, previewMode, editable: previewMode ? false : true });
   }
 
@@ -321,6 +319,5 @@ export default connect(mapStateToProps, {
   updateAdmin,
   updateInfo,
   toggleAdminLeftPanel,
-  setLoading,
-  closeHelper
+  setLoading
 })(Design);

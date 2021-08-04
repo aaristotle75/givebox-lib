@@ -4,8 +4,14 @@ import Dropzone from 'react-dropzone';
 import { mime } from '../common/types';
 import { sendResource } from '../api/helpers';
 import * as util from '../common/utility';
+import * as types from '../common/types';
 import Fade from '../common/Fade';
 import { Line } from 'rc-progress';
+import FileViewer from 'react-file-viewer';
+import ModalRoute from '../modal/ModalRoute';
+import ModalLink from '../modal/ModalLink';
+import UploadPrivateViewer from './UploadPrivateViewer';
+import LinearBar from '../common/LinearBar';
 
 class UploadPrivate extends Component {
 
@@ -25,11 +31,14 @@ class UploadPrivate extends Component {
       success: this.props.success || false,
       percent: 0,
       document: '',
-      confirmation: []
+      confirmation: [],
+      previewURL: props.previewURL,
+      docID: props.docID
     }
   }
 
   componentDidMount() {
+    //console.log('execute -> ', this.props.previewURL);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -38,6 +47,12 @@ class UploadPrivate extends Component {
     }
     if (prevState.success !== this.props.success && prevProps.success !== this.props.success) {
       this.setState({ success: this.props.success });
+    }
+    if (prevProps.previewURL !== this.props.previewURL) {
+      this.setState({ previewURL: this.props.previewURL });
+    }
+    if (prevProps.docID !== this.props.docID) {
+      this.setState({ docID: this.props.docID });
     }
   }
 
@@ -165,27 +180,48 @@ class UploadPrivate extends Component {
       label,
       labelClass,
       className,
-      style
+      style,
+      showPreview,
+      orgID
     } = this.props;
-
 
     const {
       error,
-      success
+      success,
+      previewURL,
+      docID
     } = this.state;
 
-    const mimes = `${mime.image},${mime.text},${mime.applications},${mime.video}`;
+    const mimes = `${mime.image},application/pdf`;
+    const info = previewURL ? util.getFileInfo(previewURL) : {};
+    const type = info.type;
 
     return (
       <div style={style} className={`dropzone-group input-group ${className || ''} textfield-group ${error ? 'error tooltip' : ''}`}>
+        <ModalRoute
+          className='gbx3'
+          id='uploadPrivateViewer'
+          component={() =>
+            <UploadPrivateViewer
+              type={type}
+              docID={docID}
+              orgID={orgID}
+            />
+          }
+        />
         {label && <label className={labelClass}>{label}</label>}
         <div className={`privateUpload ${this.props.alt ? 'alt' : ''}`}>
           <div className='dropzoneImageContainer'>
-            {this.state.loading &&
+            { this.state.loading &&
             <div className='loadImage'>
               <div className='loadingBarWrap'>
                 <span className='loadingText'>{this.state.loading}</span>
+                <LinearBar
+                  progress={this.state.percent}
+                />
+                {/*
                 <Line className='loadingBar' percent={this.state.percent} strokeWidth='5' strokeColor='#32dbec' trailWidth='5' trailColor='#253655' strokeLinecap='square' />
+                */}
               </div>
             </div>
             }
@@ -200,6 +236,21 @@ class UploadPrivate extends Component {
               <span className={`icon dropzone-icon icon-${this.props.icon}`}></span>
               <span className='text'>{uploadLabel}</span>
             </Dropzone>
+            { showPreview && previewURL ?
+            <ModalLink id='uploadPrivateViewer' type='div' className='previewURLContainer'>
+              { !types.imageTypes.includes(type) ?
+                <FileViewer
+                  key={`fileviewer-${type}`}
+                  fileType={type}
+                  filePath={previewURL}
+                  errorComponent={Error}
+                  onError={(e) => console.error('error in file-viewer')}
+                />
+              :
+                <img key={`preview-${type}`} src={previewURL} alt={previewURL} style={{ maxWidth: '150px', height: 'auto', maxHeight: '150px' }} />
+              }
+            </ModalLink>
+            : null }
           </div>
         </div>
         <Fade in={error ? true : false}><div className={`errorMsg`}>{error}</div></Fade>
@@ -216,7 +267,8 @@ UploadPrivate.defaultProps = {
   uploadLabel: 'Add Document(s)',
   icon: 'file-plus',
   maxSize: '175px',
-  alt: false
+  alt: false,
+  showPreview: false
 }
 
 function mapStateToProps(state, props) {

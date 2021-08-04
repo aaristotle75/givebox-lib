@@ -91,7 +91,7 @@ class Cart extends Component {
           <div key={key} className='cartItemRow'>
             <div style={{ width: '10%', verticalAlign: 'middle', paddingRight: 10, whiteSpace: 'nowrap'  }} className='col'>
               <GBLink onClick={() => reloadGBX3(value.articleID)}>
-                <Image url={value.thumbnailURL || value.articleImageURL} maxSize={50} size='thumb' minHeight={50} />
+                <Image url={value.thumbnailURL || value.articleImageURL} maxSize={50} size='small' minHeight={50} />
               </GBLink>
             </div>
             <div style={{ width: '60%' }} className='col'>
@@ -202,7 +202,10 @@ Cart.defaultProps = {
 
 function mapStateToProps(state, props) {
   const gbx3 = util.getValue(state, 'gbx3', {});
-  const cart = util.getValue(gbx3, 'cart', {});
+  const info = util.getValue(gbx3, 'info', {});
+  const stage = util.getValue(info, 'stage', {});
+  const preview = util.getValue(info, 'preview', {});
+  const cart = stage !== 'admin' && !preview ? util.getValue(gbx3, 'cart', {}) : {};
   const cartItems = util.getValue(cart, 'items', []);
   const cartHasItems = !util.isEmpty(cartItems) ? true : false;
   const total = util.getValue(cart, 'total');

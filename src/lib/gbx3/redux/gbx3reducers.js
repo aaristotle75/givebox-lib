@@ -3,15 +3,16 @@ import * as util from '../../common/utility';
 import {
   defaultCart,
   defaultConfirmation,
-  defaultStyle,
-  defaultOrgSignupElements,
-  defaultGBX3SignupElements
+  defaultStyle
 } from './gbx3defaults';
+import { orgSignupFields } from '../signup/signupConfig';
 import LZString from 'lz-string';
 
 export function gbx3(state = {
   browse: false,
   loading: true,
+  savingSignup: false,
+  savingSignupCallback: null,
   saveStatus: 'done',
   info: {
     activePageSlug: '',
@@ -28,8 +29,19 @@ export function gbx3(state = {
   pageSearch: {},
   pageState: {},
   orgSignup: {
-    org: defaultOrgSignupElements,
-    gbx3: defaultGBX3SignupElements
+    step: 0,
+    completed: [],
+    fields: orgSignupFields,
+    validTaxID: null,
+    claimOrgID: null,
+    acceptedTerms: true,
+    createdArticleID: null,
+    completedPhases: [],
+    signupPhase: null, // Phases: signup, postSignup, connectBank, transferMoney,
+    signupPhaseOptions: {},
+    saveCookie: true,
+    hideStepMenu: false,
+    affiliateID: null
   },
   orgUpdated: false,
   orgGlobals: {},
@@ -59,7 +71,6 @@ export function gbx3(state = {
     }
   },
   data: {},
-  orgData: {},
   admin: {
     allowLayoutSave: false,
     loadingLayout: true,
@@ -73,6 +84,7 @@ export function gbx3(state = {
     previewMode: false,
     publicView: false,
     editable: false,
+    editFormOnly: false,
     hasAccessToCreate: false,
     hasAccessToEdit: false,
     preventCollision: true,
@@ -101,11 +113,6 @@ export function gbx3(state = {
     completed: [],
     advancedBuilder: false
   },
-  helperBlocks: {
-    article: {},
-    org: {},
-    receipt: {}
-  },
   fees: {},
   cart: defaultCart,
   confirmation: defaultConfirmation,
@@ -120,16 +127,56 @@ export function gbx3(state = {
       return Object.assign({}, state, {
         loading: action.loading
       });
-    case types.UPDATE_SIGNUP:
+    case types.SAVING_SIGNUP:
       return Object.assign({}, state, {
-        signup: {
-          ...state.signup,
+        savingSignup: action.saving,
+        savingSignupCallback: action.savingSignupCallback
+      });
+    case types.UPDATE_ORG_SIGNUP: {
+
+      const completedPhases = [
+        ...new Set([
+          ...util.getValue(state, 'orgSignup.completedPhases', []),
+          ...util.getValue(action.orgSignup, 'completedPhases', [])
+        ])
+      ];
+
+      if (action.phaseCompleted && !completedPhases.includes(action.phaseCompleted)) {
+        completedPhases.push(action.phaseCompleted);
+      };
+
+      const orgSignup = {
+        ...state.orgSignup,
+        ...action.orgSignup,
+        completedPhases
+      };
+
+      // Set signup cookie
+      if (orgSignup.saveCookie) localStorage.setItem('signup', LZString.compressToUTF16(JSON.stringify(orgSignup)));
+
+      return Object.assign({}, state, {
+        orgSignup
+      });
+    }
+    case types.UPDATE_ORG_SIGNUP_FIELD: {
+      const orgSignup = {
+        ...state.orgSignup,
+        fields: {
+          ...state.orgSignup.fields,
           [action.name]: {
-            ...state.signup[action.name],
-            ...action.signup
+            ...state.orgSignup.fields[action.name],
+            ...action.fields
           }
         }
-      });
+      };
+
+      // Set signup cookie
+      if (orgSignup.saveCookie) localStorage.setItem('signup', LZString.compressToUTF16(JSON.stringify(orgSignup)));
+
+      return Object.assign({}, state, {
+        orgSignup
+      })
+    }
     case types.RESET_STYLE:
       return Object.assign({}, state, {
         globals: {
@@ -199,7 +246,7 @@ export function gbx3(state = {
       const orgPages = { ...state.orgPages };
       const newPageNumber = Object.keys(orgPages).length + 1;
       const hash = util.uniqueHash(1);
-      const name = !util.isEmpty(duplicate) ? `Duplicate ${duplicate.name}` : `Page ${newPageNumber}`;
+      const name = !util.isEmpty(duplicate) ? `DUPLICATE ${duplicate.name}` : `NEW Page ${newPageNumber}`;
       const slug = !util.isEmpty(duplicate) ? `${duplicate.slug}-duplicate-${hash}` : `page-${newPageNumber}-${hash}`;
       const newPage = {
         kind: 'all',
@@ -346,6 +393,17 @@ export function gbx3(state = {
           }
         }
       });
+    case types.RESET_BLOCK: {
+      return Object.assign({}, state, {
+        blocks: {
+          ...state.blocks,
+          [action.blockType]: {
+            ...state.blocks[action.blockType],
+            [action.name]: {}
+          }
+        }
+      });
+    }
     case types.REMOVE_BLOCK: {
       const blocks = util.getValue(state, `blocks.${action.blockType}`, {});
       delete blocks[action.name];
@@ -392,16 +450,6 @@ export function gbx3(state = {
           }
         }
       });
-    case types.UPDATE_HELPERS:
-      return Object.assign({}, state, {
-        helperBlocks: {
-          ...state.helperBlocks,
-          [action.blockType]: {
-            ...state.helperBlocks[action.blockType],
-            ...action.helperBlocks
-          }
-        }
-      });
     case types.UPDATE_HELPER_STEPS:
       return Object.assign({}, state, {
         helperSteps: {
@@ -413,13 +461,6 @@ export function gbx3(state = {
       return Object.assign({}, state, {
         data: {
           ...state.data,
-          ...action.data,
-        }
-      });
-    case types.UPDATE_ORG:
-      return Object.assign({}, state, {
-        orgData: {
-          ...state.orgData,
           ...action.data,
         }
       });

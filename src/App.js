@@ -4,7 +4,7 @@ import Routes from './Routes';
 import Loadable from 'react-loadable';
 import has from 'has';
 import * as util from './lib/common/utility';
-import { resourceProp, setAppRef, setModalRef, setPrefs } from './lib/api/actions';
+import { resourceProp, setAppRef, setModalRef, setPrefs, setAccess } from './lib/api/actions';
 import { getResource, sendResource, reloadResource } from './lib/api/helpers';
 import Loader from './lib/common/Loader';
 import queryString from 'query-string';
@@ -15,6 +15,7 @@ class App extends Component {
 
   constructor(props) {
     super(props);
+    this.loading = this.loading.bind(this);
     this.loadComponent = this.loadComponent.bind(this);
     this.authenticate = this.authenticate.bind(this);
     this.initResources = this.initResources.bind(this);
@@ -64,88 +65,40 @@ class App extends Component {
       // If no session is found redirect the user to sign in
       console.log('Err No session found', err);
     } else {
-
-      const org = util.getValue(res, 'organization', {});
-      const orgID = util.getValue(org, 'ID', null);
-      const orgName = util.getValue(org, 'name');
-      const orgImage = util.getValue(org, 'imageURL');
-      const orgSlug = util.getValue(org, 'slug');
-      const underwritingStatus = util.getValue(org, 'underwritingStatus');
-      const status = util.getValue(org, 'status');
-
-      // Set the selected org
-      this.props.resourceProp('orgID', orgID);
-      this.setIndexState('org', { name: orgName });
-
-      // Check if this is a masquerade
-      let user;
-      if (has(res, 'masker')) user = res.masker;
-      else user = res.user;
-
-      this.props.resourceProp('userID', user.ID);
-
-      // set access
-      const access = {
-        isOwner: false,
-        role: util.getValue(user, 'role'),
-        permissions: [],
-        type: 'organization',
-        is2FAVerified: true,
-        userID: user.ID,
-        initial: user.firstName.charAt(0).toUpperCase() + user.lastName.charAt(0).toUpperCase(),
-        firstName: user.firstName,
-        lastName: user.lastName,
-        fullName: user.firstName + ' ' + user.lastName,
-        email: user.email,
-        userImage: user.imageURL,
-        masker: has(res, 'masker') ? true : false,
-        theme: user.preferences ? user.preferences.cloudTheme : 'light',
-        animations: user.preferences ? user.preferences.animations : false,
-        orgName,
-        orgImage,
-        orgID,
-        orgSlug,
-        underwritingStatus,
-        status
-      };
-
-      // Check member for access
-      if (has(res, 'member')) {
-        access.isOwner = util.getValue(res.member, 'isOwner');
-        access.permissions = util.getValue(res.member, 'permissions');
-      }
-      this.props.resourceProp('access', access);
-
-      // Set user info
-      this.setIndexState('user', {
-        userID: user.ID,
-        fullName: user.firstName + ' ' + user.lastName,
-        email: user.email,
-        role: user.role,
-        masker: has(res, 'masker') ? true : false,
-        theme: user.preferences ? user.preferences.cloudTheme : 'light',
-        animations: user.preferences ? user.preferences.animations : false
-      });
-
-      // Set preferences
-      if (has(user, 'preferences')) {
-        this.props.setPrefs(util.getValue(user.preferences, 'cloudUI', {}));
-      }
-
-      // Get init collection of resources
-      this.initResources(orgID);
+      this.props.setAccess(res, this.initResources);
     }
     // Authenticate
     this.setState({authenticated: true});
   }
 
-  initResources(orgID) {
+  initResources(access) {
+    const {
+      orgID,
+      role
+    } = access;
+
+    if (orgID && (role === 'super' || role === 'admin')) {
+    }
     // Get the org
     /*
     this.props.getResource('org', {
       orgID: orgID || 185
     });
     */
+  }
+
+  loading(props) {
+    if (props.error) {
+      console.error('loading error -> ', props.error);
+      return (
+        <div id={`content-root`}>
+          <h2>Oops, an error</h2>
+          {props.error}
+        </div>
+      )
+    } else {
+      return <></>;
+    }
   }
 
   loader(msg, className = '') {
@@ -185,7 +138,7 @@ class App extends Component {
 
     const Component = Loadable({
       loader: () => import(`/${moduleToLoad}`),
-      loading: () => modal ? '' : this.loader(`Trying to load component ${moduleToLoad}`)
+      loading: this.loading
     });
 
     const routeProps = options.routeProps;
@@ -250,5 +203,6 @@ export default connect(mapStateToProps, {
   setAppRef,
   setModalRef,
   setPrefs,
-  sendResource
+  sendResource,
+  setAccess
 })(App);

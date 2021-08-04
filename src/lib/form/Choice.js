@@ -108,6 +108,7 @@ class Choice extends Component {
 }
 
 Choice.defaultProps = {
+  errorType: 'tooltip',
   type: 'checkbox',
   useIcon: true,
   toggle: false

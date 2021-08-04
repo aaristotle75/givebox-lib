@@ -4,7 +4,7 @@ import TestForm from './TestForm';
 import Form from '../lib/form/Form';
 import MediaLibrary from '../lib/form/MediaLibrary';
 import { setCustomProp } from '../lib/api/actions';
-import { getResource } from '../lib/api/helpers';
+import { getResource, sendResource } from '../lib/api/helpers';
 import CircularProgress from '../lib/common/CircularProgress';
 import Plaid from './Plaid';
 import Compress from './Compress';
@@ -16,6 +16,10 @@ import {
 import axios from 'axios';
 import ReactPlayer from 'react-player';
 import Editor from '../lib/gbx3/blocks/Editor';
+import { toggleModal } from '../lib/api/actions';
+import ModalRoute from '../lib/modal/ModalRoute';
+import Lottie from 'lottie-react';
+import * as coverPlaceholder from '../lib/gbx3/pages/coverPlaceholder.json';
 
 class Dashboard extends Component {
 
@@ -34,7 +38,9 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
+    console.log('execute coverPlaceholder -> ', coverPlaceholder);
     //this.getVideo();
+    //this.props.toggleModal('testModal2', true);
   }
 
   componentWillUnmount() {
@@ -148,7 +154,23 @@ class Dashboard extends Component {
     return (
       <div>
         <h2>Dashboard</h2>
-        <Plaid />
+        <ModalRoute
+          id='testModal2'
+          component={() => {
+            return (
+              <div className='modalWrapper'>
+                <h2>Test Modal Route</h2>
+                <div style={{ height: '500px' }}>
+                  Content
+                </div>
+              </div>
+            )
+          }}
+        />
+        <Lottie
+          animationData={coverPlaceholder.default}
+        />
+        {/* <Plaid /> */}
         {/*
         <Compress />
         <GBLink onClick={() => this.createVoucher(this.playlistID)}>Create Voucher</GBLink>
@@ -226,5 +248,7 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
   setCustomProp,
-  getResource
+  getResource,
+  sendResource,
+  toggleModal
 })(Dashboard)

@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import  * as types  from './actionTypes';
 import { gbx3 } from '../gbx3/redux/gbx3reducers';
+import { merchantApp } from '../gbx3/redux/merchantReducers';
 import has from 'has';
 
 export function preferences(state = {
@@ -17,10 +18,15 @@ export function preferences(state = {
 }
 
 export function app(state = {
+  openApp: null,
+  openAppURL: null,
+  appLoading: false,
   appRef: null,
   modalRef: null,
   filterOpen: false,
-  primaryColor: ''
+  primaryColor: '',
+  openEditor: [],
+  openLeftMenu: null
 }, action) {
   switch (action.type) {
     case types.SET_APP_REF:
@@ -39,6 +45,21 @@ export function app(state = {
       return Object.assign({}, state, {
         ...state,
         [action.key]: action.value
+      });
+    case types.SET_APP_PROPS:
+      return Object.assign({}, state, {
+        ...state,
+        ...action.obj
+      });
+    case types.OPEN_LEFT_MENU:
+      return Object.assign({}, state, {
+        ...state,
+        openLeftMenu: true
+      });
+    case types.CLOSE_LEFT_MENU:
+      return Object.assign({}, state, {
+        ...state,
+        openLeftMenu: false
       });
     default:
       return state
@@ -176,10 +197,18 @@ export function modal(state = {
   topModal: null
 }, action) {
   switch (action.type) {
+    case types.MODAL_CLOSED: {
+      return Object.assign({}, state, {
+        [action.identifier] : {
+          opened: false
+        }
+      });
+    }
     case types.TOGGLE_MODAL:
       return Object.assign({}, state, {
         topModal: action.topModal,
         [action.identifier] : {
+          opened: true,
           open: action.open,
           opts: action.opts
         }
@@ -189,7 +218,6 @@ export function modal(state = {
   }
 }
 
-
 const appReducer = combineReducers({
   preferences,
   app,
@@ -197,16 +225,17 @@ const appReducer = combineReducers({
   modal,
   send,
   custom,
-  gbx3
+  gbx3,
+  merchantApp
 })
 
 const rootReducers = (state, action) => {
-  /*
+
   if (action.type === 'USER_LOGOUT') {
     const { routing } = state;
     state = { routing };
   }
-  */
+
   return appReducer(state, action);
 }
 

@@ -133,10 +133,12 @@ class CalendarField extends Component {
       error,
       errorType,
       icon,
+      hideIcon,
       overlay,
       overlayDuration,
       utc,
-      placeholder
+      placeholder,
+      leftBar
     } = this.props;
 
     const {
@@ -178,6 +180,9 @@ class CalendarField extends Component {
           <Fade in={open && overlay} duration={overlayDuration}><div onClick={this.closeCalendar} className={`dropdown-cover ${display ? '' : 'displayNone'}`}></div></Fade>
           <div className={`input-group ${error && 'error tooltip'}`}>
             <div className={`floating-label ${this.state.status} ${fixedLabel && 'fixed'}`}>
+              {leftBar ?
+                <div className='inputLeftBar'></div>
+              : null}
               {allowInput ?
               <input
                 name={name}
@@ -194,14 +199,16 @@ class CalendarField extends Component {
                 ref={this.inputRef}
               />
               :
-              <input type="text" placeholder={placeholder ? placeholder : enableTime ? 'mm/dd/yyyy h:mmA' : 'mm/dd/yyyy'} data-input />
+              <input type="text" placeholder={placeholder ? placeholder : enableTime ? 'Choose Date/Time' : 'Choose Date'} data-input />
               }
               <label htmlFor={name} style={labelStyle} >{label}</label>
               <div className={`input-bottom ${error ? 'error' : this.state.status}`}></div>
             </div>
-            <button type='button' className='input-button' title='toggle' data-toggle>
-                {icon}
-            </button>
+            { !hideIcon ?
+              <button type='button' className='input-button' title='toggle' data-toggle>
+                  {icon}
+              </button>
+            : null }
             <div className={`tooltipTop ${errorType !== 'tooltip' && 'displayNone'}`}>
               {this.props.error}
               <i></i>
@@ -233,6 +240,7 @@ CalendarField.defaultProps = {
   minDate: null,
   staticOption: false,
   icon: <span className='icon icon-calendar' />,
+  hideIcon: false,
   overlayDuration: 200,
   overlay: true,
   utc: false

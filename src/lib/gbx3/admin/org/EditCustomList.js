@@ -101,14 +101,17 @@ class EditCustomList extends React.Component {
             <Choice
               type='checkbox'
               name='enable'
-              label={''}
+              label={enabled ? 'Displayed' : <span className='gray'>Hidden</span>}
               onChange={(name, value) => {
                 this.props.updateCustomList(value.ID);
               }}
               checked={enabled}
               value={enabled}
               toggle={true}
-            />
+              className='tooltip rightSide'
+            >
+              <span className='tooltipTop'>Click to Toggle Display</span>
+            </Choice>
           </div>
           <div className='articleImage'>
             <Image url={value.imageURL} maxSize={50} size={'thumb'} alt={value.title} />
@@ -182,7 +185,7 @@ class EditCustomList extends React.Component {
           default={'selectCustomList'}
           className='statsTab'
         >
-          <Tab id='selectCustomList' label={<span className='stepLabel'>Custom List</span>}>
+          <Tab id='selectCustomList' label={<span className='stepLabel'>Edit Custom List</span>}>
             <div className='articleGroupTopContainer'>
               <div className='articleGroupTop'>
                 <div className='articleGroupTitle'>&nbsp;</div>
@@ -237,7 +240,7 @@ class EditCustomList extends React.Component {
                       onChange={this.onChangeKindFilter}
                       className='column50'
                       direction='top'
-                      options={types.kindOptions(true, 'All Types')}
+                      options={types.kindOptions(true, 'All Kinds')}
                     />
                     {/*
                     <div className='clear'></div>
@@ -259,7 +262,7 @@ class EditCustomList extends React.Component {
               records={[10, 20, 50, 100]}
             />
           </Tab>
-          <Tab id='sortCustomList' label={<span className='stepLabel'>Sort List</span>}>
+          <Tab id='sortCustomList' label={<span className='stepLabel'>Sort Custom List</span>}>
             <SortCustomList
               {...this.props}
             />

@@ -1,81 +1,64 @@
+import React from 'react';
+import Icon from '../../../common/Icon';
+import { HiOutlineTicket } from 'react-icons/hi';
+import { MdCardMembership } from 'react-icons/md';
+
 const title = {
   slug: 'title',
-  name: 'Enter Title',
-  icon: 'message-circle'
+  name: 'Fundraiser Details',
+  icon: 'heart',
+  desc: 'Upload an image and write a title that will make your fundraiser shine.',
+  required: true
 };
 
-const logo = {
-  slug: 'logo',
-  name: 'Upload Logo',
-  icon: 'upload-cloud'
+const previewShare = {
+  slug: 'previewShare',
+  name: 'Preview & Share',
+  icon: 'eye',
+  required: true
 };
 
-const image = {
-  slug: 'image',
-  name: 'Add Image',
-  icon: 'camera'
-};
-
-const preview = {
-  slug: 'preview',
-  name: 'Preview Form',
-  icon: 'eye'
-};
-
-const share = {
-  slug: 'share',
-  name: 'Share',
-  icon: 'share'
-};
-
-const amounts = {
-  slug: 'amounts',
-  name: 'Add Amounts'
-};
-
-const eventTickets = {
-  slug: 'eventTickets',
-  name: 'Add Event Tickets'
+const tickets = {
+  slug: 'tickets',
+  name: 'Event Tickets',
+  customIcon: <Icon><HiOutlineTicket /></Icon>,
+  desc: 'Add event ticket amounts and the number available for sale.',
+  required: true
 };
 
 const where = {
   slug: 'where',
-  name: 'Where is Event'
+  name: 'Where is Event',
+  icon: 'map-pin',
+  desc: 'This is optional, add the location of the event.'
 };
 
 const when = {
   slug: 'when',
-  name: 'When is Event'
-};
-
-const sweepstakesTickets = {
-  slug: 'sweepstakesTickets',
-  name: 'Add Sweepstakes Tickets'
+  name: 'When is Event',
+  icon: 'calendar',
+  desc: 'This is optional, add a date and time for the event.'
 };
 
 const sweepstakesEnds = {
   slug: 'sweepstakesEnds',
-  name: 'Sweepstakes Ends At'
-};
-
-const membershipSubscriptions = {
-  slug: 'membershipSubscriptions',
-  name: 'Add Subscriptions'
+  name: 'Sweepstakes Ends',
+  icon: 'calendar',
+  desc: 'Add a date for when the sweepstakes will end.',
+  required: true
 };
 
 const themeColor = {
   slug: 'themeColor',
-  name: 'Theme Color',
-  icon: 'sun'
+  name: 'Fundraiser Boosters',
+  icon: 'sun',
+  desc: 'These are optional, but they really help increase donations.'
 };
 
 const defaultSteps = [
   title,
-  logo,
-  image,
   themeColor,
-  preview,
-  share
+  previewShare
 ];
 
 const fundraiser = [
@@ -83,46 +66,80 @@ const fundraiser = [
 ];
 
 const invoice = [
-  ...defaultSteps
+  {
+    ...title,
+    name: 'Invoice Details',
+    desc: 'Upload an image and write a title that will make your invoice shine.'
+  },
+  {
+    ...themeColor,
+    name: 'Invoice Boosters',
+    desc: 'These are optional, but they really help increase invoice conversions.'
+  },
+  previewShare
 ];
 
 const event = [
-  title,
-  logo,
-  image,
-  themeColor,
-  eventTickets,
+  {
+    ...title,
+    name: 'Event Details',
+    desc: 'Upload an image and write a title that will make your event shine.'
+  },
+  tickets,
   when,
   where,
-  preview,
-  share
+  {
+    ...themeColor,
+    name: 'Event Boosters',
+    desc: 'These are optional, but they really help increase ticket sales.'
+  },
+  previewShare
 ];
 
-const sweepstakes = [
-  title,
-  logo,
-  image,
-  themeColor,
-  sweepstakesTickets,
+const sweepstake = [
+  {
+    ...title,
+    name: 'Sweepstakes Details',
+    desc: 'Upload an image and write a title that will make your sweepstakes shine.'
+  },
+  {
+    ...tickets,
+    name: 'Sweepstakes Tickets',
+    desc: 'Add sweepstakes ticket amounts and the number of entries per ticket.'
+  },
   sweepstakesEnds,
-  preview,
-  share
+  {
+    ...themeColor,
+    name: 'Sweepstakes Boosters',
+    desc: 'These are optional, but they really help increase ticket sales.'
+  },
+  previewShare
 ];
 
 const membership = [
-  title,
-  logo,
-  image,
-  themeColor,
-  membershipSubscriptions,
-  preview,
-  share
+  {
+    ...title,
+    name: 'Membership Details',
+    desc: 'Upload an image and write a title that will make your membership shine.'
+  },
+  {
+    ...tickets,
+    name: 'Subscriptions',
+    desc: 'Add membership subscription amounts and the number of subscriptions for sale.',
+    customIcon: <Icon><MdCardMembership /></Icon>
+  },
+  {
+    ...themeColor,
+    name: 'Membership Boosters',
+    desc: 'These are optional, but they really help increase subscription sales.'
+  },
+  previewShare
 ];
 
 export const builderStepsConfig = {
   fundraiser,
   invoice,
   event,
-  sweepstakes,
+  sweepstake,
   membership
 };

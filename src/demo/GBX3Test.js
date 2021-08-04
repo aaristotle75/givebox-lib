@@ -58,8 +58,9 @@ class GBXTest extends Component {
       return (
         <div>
           <GBX3
+            signup={false}
             browse={false}
-            blockType={'article'}
+            blockType={'org'}
             orgID={orgID}
             articleID={articleID}
             saveCallback={this.saveCallback}
@@ -76,7 +77,6 @@ class GBXTest extends Component {
         <div>Error loading...</div>
       )
     }
-
   }
 }
 

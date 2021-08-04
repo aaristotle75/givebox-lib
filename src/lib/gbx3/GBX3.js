@@ -13,6 +13,8 @@ import '../styles/gbx3.scss';
 import '../styles/gbx3org.scss';
 import '../styles/gbx3orgadmin.scss';
 import '../styles/gbx3modal.scss';
+import '../styles/gbx3Steps.scss';
+import '../styles/launchpad.scss';
 import reactReferer from 'react-referer';
 import { loadReCaptcha } from 'react-recaptcha-v3';
 import has from 'has';
@@ -26,7 +28,8 @@ import {
   loadOrg,
   setStyle,
   setOrgStyle,
-  setCartOnLoad
+  setCartOnLoad,
+  loadOrgSignup
 } from './redux/gbx3actions';
 import {
   setCustomProp,
@@ -35,8 +38,8 @@ import {
 import GBXEntry from '../common/GBXEntry';
 import AvatarMenu from './admin/AvatarMenu';
 import Share from './share/Share';
-import Steps from './helpers/Steps';
 import history from '../common/history';
+import SavingSignup from './signup/SavingSignup';
 
 const RECAPTCHA_KEY = process.env.REACT_APP_RECAPTCHA_KEY;
 const ENV = process.env.REACT_APP_ENV;
@@ -66,6 +69,9 @@ class GBX3 extends React.Component {
   }
 
   async componentDidMount() {
+
+    document.domain = "givebox.com";
+
     const {
       articleID,
       editable,
@@ -73,10 +79,10 @@ class GBX3 extends React.Component {
       hasAccessToEdit,
       isVolunteer,
       orgName,
-      blockType,
       step,
       browse,
-      signup
+      signup,
+      template
     } = this.props;
 
     this.props.setLoading(true);
@@ -87,14 +93,16 @@ class GBX3 extends React.Component {
       this.props.updateAdmin({ editable: false });
     }
 
+    const blockType = template || this.props.blockType;
     const orgID = this.props.orgID || util.getValue(access, 'orgID');
     const setInfo = await this.setInfo();
 
     if (setInfo) {
       if (browse) {
         this.loadBrowse();
-      } else if (signup && !orgID) {
-        this.loadSignup();
+      } else if (signup) {
+        if (!orgID) this.loadSignup();
+        else this.loadOrg(orgID);
       } else {
         switch (blockType) {
           case 'org': {
@@ -167,8 +175,20 @@ class GBX3 extends React.Component {
   }
 
   loadSignup() {
-    this.props.setLoading(false);
-    this.props.updateInfo({ display: 'signup', originTemplate: 'signup' });
+    const {
+      access,
+      bookDemo
+    } = this.props;
+
+    const role = util.getValue(access, 'role');
+    if (role === 'super') {
+      history.push(`${ENTRY_URL}`);
+    } else {
+      this.props.loadOrgSignup({
+        bookDemo,
+        //forceStep: 3
+      });
+    }
   }
 
   loadBrowse(setCart = true) {
@@ -279,9 +299,10 @@ class GBX3 extends React.Component {
   loadCreateNew(isVolunteer) {
     const {
       access,
-      kind,
-      orgID
+      autoCreate
     } = this.props;
+
+    const orgID = +this.props.orgID;
 
     const obj = {
       step: 'create',
@@ -296,7 +317,7 @@ class GBX3 extends React.Component {
     }
 
     this.props.updateAdmin(obj);
-    this.props.updateInfo({ kind, stage: 'admin', display: 'article' });
+    this.props.updateInfo({ stage: 'admin', display: 'article' });
     this.props.setLoading(false);
   }
 
@@ -317,6 +338,8 @@ class GBX3 extends React.Component {
     info.modal = has(queryParams, 'modal') || modal ? true : false;
     info.preview = has(queryParams, 'preview') ? true : false;
     info.signup = has(queryParams, 'signup') ? true : false;
+    info.share = has(queryParams, 'share') ? true : false;
+    info.bookDemo = has(queryParams, 'bookDemo') ? true : false;
     info.locked = has(queryParams, 'locked') ? true : false;
     info.noFocus = has(queryParams, 'noFocus') ? true : false;
     info.receipt = has(queryParams, 'receipt') ? true : false;
@@ -338,6 +361,10 @@ class GBX3 extends React.Component {
 
     if (has(queryParams, 'public') || this.props.public) {
       this.props.updateAdmin({ publicView: true });
+    }
+
+    if (has(queryParams, 'editFormOnly')) {
+      this.props.updateAdmin({ editFormOnly: true });
     }
 
     const infoUpdated = await this.props.updateInfo(info);
@@ -497,10 +524,17 @@ class GBX3 extends React.Component {
     if (this.props.loading
       || (util.isLoading(this.props.gbx3Org) && orgID)
       && this.props.step !== 'create'
-      && !browse) return <Loader msg='Initiating GBX3' />;
+      && !browse
+      ) return <Loader msg='Initiating GBX3' />;
+
+    if (this.props.savingSignup) {
+      return (
+        <SavingSignup />
+      )
+    }
 
     return (
-      <div id='gbx3MainWrapper' className='gbx3'>
+      <div id='gbx3MainWrapper' className={`gbx3 ${browse ? 'isBrowsePage' : ''}`}>
         {this.renderStage()}
         <ModalRoute
           className='gbx3'
@@ -509,6 +543,7 @@ class GBX3 extends React.Component {
           style={{ width: '40%' }}
           disallowBgClose={false}
           component={(props) => <AvatarMenu exitAdmin={this.exitAdmin} reloadGBX3={this.reloadGBX3} />}
+          forceShowModalGraphic={true}
         />
         <ModalRoute
           className='gbx3'
@@ -518,15 +553,8 @@ class GBX3 extends React.Component {
           disallowBgClose={false}
           draggable={false}
           draggableTitle={``}
-          component={(props) => <Share />}
-        />
-        <ModalRoute
-          className='gbx3'
-          id='stepsForm'
-          effect='3DFlipVert'
-          style={{ width: '70%' }}
-          disallowBgClose={true}
-          component={(props) => <Steps />}
+          component={(props) => <Share {...props} />}
+          forceShowModalGraphic={true}
         />
       </div>
     )
@@ -534,7 +562,6 @@ class GBX3 extends React.Component {
 }
 
 GBX3.defaultProps = {
-  kind: 'fundraiser',
   sourceLocation: null
 }
 
@@ -543,8 +570,10 @@ function mapStateToProps(state, props) {
   const queryParams = util.getValue(props, 'queryParams', {});
   const gbx3 = util.getValue(state, 'gbx3', {});
   const loading = util.getValue(gbx3, 'loading');
+  const savingSignup = util.getValue(gbx3, 'savingSignup');
   const globals = util.getValue(gbx3, 'globals', {});
   const info = util.getValue(gbx3, 'info', {});
+  const orgID = util.getValue(info, 'orgID', props.orgID);
   const stage = util.getValue(info, 'stage');
   const originTemplate = util.getValue(info, 'originTemplate');
   const display = util.getValue(info, 'display');
@@ -552,7 +581,7 @@ function mapStateToProps(state, props) {
   const gbxStyle = util.getValue(globals, 'gbxStyle', {});
   const primaryColor = util.getValue(gbxStyle, 'primaryColor');
   const admin = util.getValue(gbx3, 'admin', {});
-  const step = util.getValue(admin, 'step');
+  const step = util.getValue(queryParams, 'step', util.getValue(admin, 'step'));
   const hasAccessToEdit = util.getValue(admin, 'hasAccessToEdit');
   const hasAccessToCreate = util.getValue(admin, 'hasAccessToCreate');
   const isVolunteer = util.getValue(admin, 'isVolunteer');
@@ -561,11 +590,14 @@ function mapStateToProps(state, props) {
   const orgSlug = util.getValue(gbx3Org, 'data.slug');
   const browse = has(queryParams, 'browse') ? true : props.browse;
   const signup = has(queryParams, 'signup') ? true : props.signup;
+  const bookDemo = has(queryParams, 'bookDemo') ? true : props.bookDemo;
 
   return {
     globals,
     loading,
+    savingSignup,
     info,
+    orgID,
     stage,
     originTemplate,
     display,
@@ -580,6 +612,7 @@ function mapStateToProps(state, props) {
     step,
     browse,
     signup,
+    bookDemo,
     access: util.getValue(state.resource, 'access', {})
   }
 }
@@ -599,5 +632,6 @@ export default connect(mapStateToProps, {
   updateAdmin,
   toggleModal,
   setOrgStyle,
-  setCartOnLoad
+  setCartOnLoad,
+  loadOrgSignup
 })(GBX3);

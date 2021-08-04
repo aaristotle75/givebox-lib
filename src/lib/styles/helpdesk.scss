@@ -6,6 +6,10 @@
 
 .helpdesk {
 
+  .column50 {
+    padding: 0 10px;
+  }
+
   .helpDeskClose {
     position: absolute;
     right: 50px;
@@ -143,7 +147,7 @@
   overflow-x: hidden;
   z-index: 1999991;
   border-radius: 20px;
-  background: $bar1Gradient;
+  @include purpleToSalmon(1, 140deg);
 
   @media (max-width: 768px) {
     position: absolute;
@@ -185,26 +189,21 @@
 }
 
 .helpDeskButton {
+  @include primaryButton;
+  padding: 0;
+  font-size: 14px;
   position: fixed;
   right: -20px;
   top: 40%;
-  width: 70px;
+  width: 60px;
   height: 30px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
-  background: $mainColor;
-  color: $white;
   z-index: 1999991;
   transform: rotate(-90deg);
   -webkit-transform: rotate(-90deg);
-  @include animation(pulsateSlightlyBrighter 2s infinite ease-out);
-}
-
-.helpDeskButton:hover {
-  background: $mainColorLight;
-  @include default-transition(.25s);
 }
 
 .helpdesk {

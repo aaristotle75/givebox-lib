@@ -124,6 +124,9 @@ class EditArticleCardForm extends React.Component {
     this.props.saveCustomTemplate(resourceName, {
       ID,
       orgID,
+      data: {
+        title: util.getValue(data, 'title', null)
+      },
       customTemplate: {
         articleCard: {
           ...data
@@ -178,7 +181,7 @@ class EditArticleCardForm extends React.Component {
         <div className='videoContainer'>
           { videoLoading ?
           <div className='imageLoader'>
-            <img src='https://s3-us-west-1.amazonaws.com/givebox/public/images/squareLoader.gif' alt='Loader' />
+            <img src='https://cdn.givebox.com/givebox/public/images/spinner-loader.svg' alt='Loader' />
           </div> : null }
           <Video
             playing={false}
@@ -253,7 +256,12 @@ class EditArticleCardForm extends React.Component {
         >
           <div className='formSectionContainer'>
             <div className='formSection'>
-              {this.props.textField('title', { fixedLabel: true, label: 'Card Title', placeholder: 'Enter Card Title', value: title })}
+              {this.props.textField('title', {
+                fixedLabel: true,
+                label: 'Card Title',
+                placeholder: 'Enter Card Title',
+                value: title
+              })}
               <Choice
                 type='checkbox'
                 name='hideViewCount'

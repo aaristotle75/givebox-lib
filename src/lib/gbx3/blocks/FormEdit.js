@@ -184,6 +184,8 @@ class FormEdit extends Component {
                   this.updateForm('phoneInfo', +value);
                 }}
                 options={this.infoOptions()}
+                leftBar={true}
+                style={{ margin: '0 15px' }}
               />
               <Dropdown
                 name='addressInfo'
@@ -194,6 +196,8 @@ class FormEdit extends Component {
                   this.updateForm('addressInfo', +value);
                 }}
                 options={this.infoOptions()}
+                leftBar={true}
+                style={{ margin: '0 15px' }}
               />
               <Dropdown
                 name='workInfo'
@@ -204,6 +208,8 @@ class FormEdit extends Component {
                   this.updateForm('workInfo', +value);
                 }}
                 options={this.infoOptions()}
+                leftBar={true}
+                style={{ margin: '0 15px' }}
               />
               <Dropdown
                 name='noteInfo'
@@ -214,6 +220,8 @@ class FormEdit extends Component {
                   this.updateForm('noteInfo', +value);
                 }}
                 options={this.infoOptions()}
+                leftBar={true}
+                style={{ margin: '0 15px' }}
               />
               <AnimateHeight height={noteInfo > 0 ? 'auto' : 0}>
                 <TextField
@@ -226,6 +234,8 @@ class FormEdit extends Component {
                     const value = e.currentTarget.value;
                     this.updateForm('notePlaceholder', value);
                   }}
+                  leftBar={true}
+                  style={{ margin: '0 15px' }}
                 />
               </AnimateHeight>
             </div>
@@ -236,36 +246,41 @@ class FormEdit extends Component {
           iconPrimary='edit'
         >
           <div className='formSectionContainer'>
-            <div className='formSection'>
-              <div className='formSectionHeader'>Keywords</div>
-              <TextField
-                name='tag'
-                label=''
-                fixedLabel={false}
-                placeholder='Add Keywords, Category, Tags, etc.'
-                value={tag}
-                count={true}
-                maxLength={64}
-                onChange={(e) => {
-                  const value = e.currentTarget.value;
-                  this.updateForm('tag', value);
-                }}
-                style={{ paddingTop: 0 }}
-              />
-              <div className='formSectionHeader'>Share Option</div>
-              <Choice
-                type='checkbox'
-                name='allowSharing'
-                label={'Allow Visitors to Share Form'}
-                onChange={(name, value) => {
-                  this.updateForm('allowSharing', allowSharing ? false : true);
-                }}
-                checked={allowSharing}
-                value={allowSharing}
-                toggle={true}
-              />
+            <div className='formSection' style={{ padding: '10px'}} >
+              <div className='formSubSection' style={{ marginTop: 0 }}>
+                <div className='formSectionHeader'>Keywords</div>
+                <TextField
+                  name='tag'
+                  label=''
+                  fixedLabel={false}
+                  placeholder='Add Keywords, Category, Tags, etc.'
+                  value={tag}
+                  count={true}
+                  maxLength={64}
+                  onChange={(e) => {
+                    const value = e.currentTarget.value;
+                    this.updateForm('tag', value);
+                  }}
+                  style={{ padding: 0, margin: '0 15px' }}
+                  leftBar={true}
+                />
+              </div>
+              <div className='formSubSection'>
+                <div className='formSectionHeader'>Share Option</div>
+                <Choice
+                  type='checkbox'
+                  name='allowSharing'
+                  label={'Allow Visitors to Share Form'}
+                  onChange={(name, value) => {
+                    this.updateForm('allowSharing', allowSharing ? false : true);
+                  }}
+                  checked={allowSharing}
+                  value={allowSharing}
+                  toggle={true}
+                />
+              </div>
               { kind === 'fundraiser' && 1===2 ?
-              <div>
+              <div className='formSubSection'>
                 <div className='formSectionHeader'>On Behalf of Option</div>
                 <Choice
                   type='checkbox'
@@ -294,9 +309,10 @@ class FormEdit extends Component {
                     style={{ marginLeft: 10 }}
                   />
                 </AnimateHeight>
-              </div> : '' }
+              </div>
+              : '' }
               {this.props.allowP2P ?
-                <div>
+                <div className='formSubSection'>
                   <div className='formSectionHeader'>Peer-2-Peer Option</div>
                   <Choice
                     type='checkbox'
@@ -311,137 +327,153 @@ class FormEdit extends Component {
                   />
                 </div>
               : ''}
-              <div className='formSectionHeader'>Enable Fundraising Thermometer</div>
-              <Choice
-                type='checkbox'
-                name='hasCustomGoal'
-                label={'Set Fundraising Goal'}
-                onChange={(name, value) => {
-                  this.updateForm('hasCustomGoal', hasCustomGoal ? false : true);
-                }}
-                checked={hasCustomGoal}
-                value={hasCustomGoal}
-                toggle={true}
-              />
-              <AnimateHeight height={hasCustomGoal ? 'auto' : 0}>
-                <TextField
-                  name='goal'
-                  label='Goal Amount'
-                  fixedLabel={true}
-                  placeholder='Enter the Goal Amount'
-                  money={true}
-                  value={goal ? goal/100 : ''}
-                  maxLength={7}
-                  onChange={(e) => {
-                    const value = +(e.currentTarget.value * 100);
-                    this.updateForm('goal', value);
-                  }}
-                />
-              </AnimateHeight>
-              <div className='formSectionHeader'>Cart Option</div>
-              <TextField
-                name='cartTitle'
-                label='Cart Title'
-                fixedLabel={true}
-                placeholder='Enter the title for "Your Cart"'
-                value={cartTitle}
-                onChange={(e) => {
-                  const value = e.currentTarget.value;
-                  this.updateForm('cartTitle', value);
-                }}
-              />
-              <div className='formSectionHeader'>Browse Items Options { !shopLinkOpensOrgPage ? <ModalLink style={{ marginLeft: 10 }} id='shop'>Edit Browse Items</ModalLink> : null }</div>
-              <Choice
-                type='checkbox'
-                name='allowSelection'
-                label={'Connect Your Other Givebox Forms'}
-                onChange={(name, value) => {
-                  this.updateForm('allowSelection', allowSelection ? false : true);
-                }}
-                checked={allowSelection}
-                value={allowSelection}
-                toggle={true}
-              />
-              <div style={{ marginBottom: 20 }} className='fieldContext'>
-                Connecting your other Givebox Forms will allow your visitors to browse more items.
-              </div>
-              <AnimateHeight height={allowSelection ? 'auto' : 0}>
-                <TextField
-                  name='shopTitle'
-                  label='Browse Items Title'
-                  fixedLabel={true}
-                  placeholder='Browse Items Title"'
-                  value={shopTitle}
-                  onChange={(e) => {
-                    const value = e.currentTarget.value;
-                    this.updateForm('shopTitle', value);
-                  }}
-                  style={{ paddingBottom: 0 }}
-                />
+              <div className='formSubSection'>
+                <div className='formSectionHeader'>Enable Fundraising Thermometer</div>
                 <Choice
                   type='checkbox'
-                  name='shopLinkAsButton'
-                  label={'Show Browse Items Link as a Button'}
+                  name='hasCustomGoal'
+                  label={'Set Fundraising Goal'}
                   onChange={(name, value) => {
-                    this.updateForm('shopLinkAsButton', shopLinkAsButton ? false : true);
+                    this.updateForm('hasCustomGoal', hasCustomGoal ? false : true);
                   }}
-                  checked={shopLinkAsButton}
-                  value={shopLinkAsButton}
+                  checked={hasCustomGoal}
+                  value={hasCustomGoal}
                   toggle={true}
                 />
-                { !util.isEmpty(this.pageOptions()) ?
-                <Dropdown
-                  name='browsePage'
-                  label={'Browse Page'}
+                <AnimateHeight height={hasCustomGoal ? 'auto' : 0}>
+                  <TextField
+                    name='goal'
+                    label='Goal Amount'
+                    fixedLabel={true}
+                    placeholder='Enter the Goal Amount'
+                    money={true}
+                    value={goal ? goal/100 : ''}
+                    maxLength={7}
+                    onChange={(e) => {
+                      const value = +(e.currentTarget.value * 100);
+                      this.updateForm('goal', value);
+                    }}
+                    leftBar={true}
+                    style={{ margin: '0 15px' }}
+                  />
+                </AnimateHeight>
+              </div>
+              <div className='formSubSection'>
+                <div className='formSectionHeader'>Cart Option</div>
+                <TextField
+                  name='cartTitle'
+                  label='Cart Title'
                   fixedLabel={true}
-                  defaultValue={browsePage || `000landing000`}
-                  onChange={(name, value) => {
-                    this.updateForm('browsePage', value === `000landing000` ? '' : value);
+                  placeholder='Enter the title for "Your Cart"'
+                  value={cartTitle}
+                  onChange={(e) => {
+                    const value = e.currentTarget.value;
+                    this.updateForm('cartTitle', value);
                   }}
-                  options={this.pageOptions()}
-                /> : null }
+                  leftBar={true}
+                  style={{ margin: '0 15px' }}
+                />
+              </div>
+              <div className='formSubSection'>
+                <div className='formSectionHeader'>Browse Items Options { !shopLinkOpensOrgPage ? <ModalLink style={{ marginLeft: 10 }} id='shop'>Edit Browse Items</ModalLink> : null }</div>
+                <Choice
+                  type='checkbox'
+                  name='allowSelection'
+                  label={'Connect Your Other Givebox Forms'}
+                  onChange={(name, value) => {
+                    this.updateForm('allowSelection', allowSelection ? false : true);
+                  }}
+                  checked={allowSelection}
+                  value={allowSelection}
+                  toggle={true}
+                />
+                <div style={{ marginBottom: 20 }} className='fieldContext'>
+                  Connecting your other Givebox Forms will allow your visitors to browse more items.
+                </div>
+                <AnimateHeight height={allowSelection ? 'auto' : 0}>
+                  <TextField
+                    name='shopTitle'
+                    label='Browse Items Title'
+                    fixedLabel={true}
+                    placeholder='Browse Items Title"'
+                    value={shopTitle}
+                    onChange={(e) => {
+                      const value = e.currentTarget.value;
+                      this.updateForm('shopTitle', value);
+                    }}
+                    style={{ paddingBottom: 0, margin: '0 15px' }}
+                    leftBar={true}
+                  />
+                  <Choice
+                    type='checkbox'
+                    name='shopLinkAsButton'
+                    label={'Show Browse Items Link as a Button'}
+                    onChange={(name, value) => {
+                      this.updateForm('shopLinkAsButton', shopLinkAsButton ? false : true);
+                    }}
+                    checked={shopLinkAsButton}
+                    value={shopLinkAsButton}
+                    toggle={true}
+                  />
+                  { !util.isEmpty(this.pageOptions()) ?
+                  <Dropdown
+                    name='browsePage'
+                    label={'Browse Page'}
+                    fixedLabel={true}
+                    defaultValue={browsePage || `000landing000`}
+                    onChange={(name, value) => {
+                      this.updateForm('browsePage', value === `000landing000` ? '' : value);
+                    }}
+                    options={this.pageOptions()}
+                    style={{
+                      paddingBottom: 0,
+                      margin: '0 15px'
+                    }}
+                    leftBar={true}
+                  /> : null }
+                  {/*
+                  <Choice
+                    type='checkbox'
+                    name='shopLinkOpensOrgPage'
+                    label={'Use Landing Page for Visitors to Browse Items'}
+                    onChange={(name, value) => {
+                      this.updateForm('shopLinkOpensOrgPage', shopLinkOpensOrgPage ? false : true);
+                    }}
+                    checked={shopLinkOpensOrgPage}
+                    value={shopLinkOpensOrgPage}
+                    toggle={true}
+                  />
+                  */}
+                </AnimateHeight>
                 {/*
                 <Choice
                   type='checkbox'
-                  name='shopLinkOpensOrgPage'
-                  label={'Use Landing Page for Visitors to Browse Items'}
+                  name='sendEmail'
+                  label={'Give Users an Option to Send an Email Message'}
                   onChange={(name, value) => {
-                    this.updateForm('shopLinkOpensOrgPage', shopLinkOpensOrgPage ? false : true);
-                  }}
-                  checked={shopLinkOpensOrgPage}
-                  value={shopLinkOpensOrgPage}
-                  toggle={true}
-                />
-                */}
-              </AnimateHeight>
-              {/*
-              <Choice
-                type='checkbox'
-                name='sendEmail'
-                label={'Give Users an Option to Send an Email Message'}
-                onChange={(name, value) => {
-                  sendEmail.enabled = sendEmail.enabled ? false : true;
-                  this.updateForm('sendEmail', sendEmail);
-                }}
-                checked={sendEmail.enabled}
-                value={sendEmail.enabled}
-              />
-              <AnimateHeight height={sendEmail.enabled ? 'auto' : 0}>
-                <TextField
-                  label='Send Email Link Text'
-                  fixedLabel={true}
-                  placeholder='Enter the Link Text for Users to Send an Email Message'
-                  value={sendEmail.linkText}
-                  onChange={(e) => {
-                    const value = e.currentTarget.value;
-                    sendEmail.linkText = value;
+                    sendEmail.enabled = sendEmail.enabled ? false : true;
                     this.updateForm('sendEmail', sendEmail);
                   }}
+                  checked={sendEmail.enabled}
+                  value={sendEmail.enabled}
                 />
-              </AnimateHeight>
-              */}
+                <AnimateHeight height={sendEmail.enabled ? 'auto' : 0}>
+                  <TextField
+                    label='Send Email Link Text'
+                    fixedLabel={true}
+                    placeholder='Enter the Link Text for Users to Send an Email Message'
+                    value={sendEmail.linkText}
+                    onChange={(e) => {
+                      const value = e.currentTarget.value;
+                      sendEmail.linkText = value;
+                      this.updateForm('sendEmail', sendEmail);
+                    }}
+                  />
+                </AnimateHeight>
+                */}
+              </div>
               { kind !== 'fundraiser' ?
-              <div>
+              <div className='formSubSection'>
                 <div className='formSectionHeader'>Donation at Checkout Option</div>
                 <CheckoutDonationEdit
                   orgID={orgID}
@@ -453,12 +485,13 @@ class FormEdit extends Component {
                   checkoutDonationFormID={checkoutDonationFormID}
                   checkoutDonationFormTitle={checkoutDonationFormTitle}
                 />
+              </div>: '' }
+              <div className='formSubSection'>
+                <Cinesend
+                  form={this.props.form}
+                  updateForm={this.updateForm}
+                />
               </div>
-              : '' }
-              <Cinesend
-                form={this.props.form}
-                updateForm={this.updateForm}
-              />
             </div>
           </div>
         </Collapse>
@@ -472,10 +505,11 @@ FormEdit.defaultProps = {
 
 function mapStateToProps(state, props) {
 
-  const allowP2P = util.getValue(state, 'gbx3.orgData.allowVolunteers', true);
-  const orgName = util.getValue(state, 'gbx3.orgData.name');
-  const orgSlug = util.getValue(state, 'gbx3.orgData.slug');
-  const orgPages = util.getValue(state, 'gbx3.orgData.customTemplate.orgPages', {});
+  const orgData = util.getValue(state, 'resource.gbx3Org.data', {});
+  const allowP2P = util.getValue(orgData, 'allowVolunteers', true);
+  const orgName = util.getValue(orgData, 'name');
+  const orgSlug = util.getValue(orgData, 'slug');
+  const orgPages = util.getValue(orgData, 'customTemplate.orgPages', {});
 
   return {
     allowP2P,

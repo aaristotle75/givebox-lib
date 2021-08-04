@@ -14,13 +14,20 @@ class ContentField extends Component {
     this.onMouseEnter = this.onMouseEnter.bind(this);
     this.onMouseLeave = this.onMouseLeave.bind(this);
     this.state = {
-      status: 'idle'
+      status: 'idle',
+      value: props.value
     }
   }
 
   componentDidMount() {
     if (this.props.createField) {
       this.props.createField(this.props.name, this.props.params);
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.value !== this.props.value) {
+      this.setState({ value: this.props.value });
     }
   }
 
@@ -63,13 +70,14 @@ class ContentField extends Component {
       errorType,
       modal,
       modalLabel,
-      value,
       disallowModalBgClose,
-      color
+      color,
+      leftBar
     } = this.props;
 
     const {
-      status
+      status,
+      value
     } = this.state;
 
     const labelStyle = {
@@ -79,11 +87,15 @@ class ContentField extends Component {
       background: status === 'active' ? color : ''
     };
 
+    const fixedLabelHasValue = this.props.fixedLabelHasValue && value ? true : false;
+
     return (
       <div style={style} className={`input-group ${className || ''} richtext-group ${error ? 'error tooltip' : ''}`}>
         <div className={`errorMsg ${(!error || errorType !== 'normal') && 'displayNone'}`}>{error}</div>
-        {!modal && label && <label style={labelStyle} className={`${this.state.status}`} htmlFor={name}>{label}</label>}
-        <div className={`floating-label ${this.state.status} ${fixedLabel && 'fixed'}`}>
+        <div className={`floating-label ${this.state.status} ${fixedLabel || fixedLabelHasValue ? 'fixed' : ''}`}>
+          {leftBar && !modal ?
+            <div className='inputLeftBar'></div>
+          : null}
           {modal ?
             <div>
               <ModalRoute id={id} component={(props) => this.renderEditor({ ...this.props, ...props })} />
@@ -98,7 +110,7 @@ class ContentField extends Component {
               />
             </div>
           }
-          {modal && label && <label style={labelStyle} htmlFor={name}>{label}</label>}
+          <label style={labelStyle} htmlFor={name}>{label}</label>
           <div style={inputBottomStyle} className={`input-bottom ${error ? 'error' : this.state.status}`}></div>
         </div>
         <div className={`tooltipTop ${errorType !=='tooltip' && 'displayNone'}`}>
@@ -113,7 +125,8 @@ class ContentField extends Component {
 ContentField.defaultProps = {
   name: 'defaultContentField',
   modalLabel: 'Open Editor',
-  autoFocus: true
+  autoFocus: true,
+  fixedLabelHasValue: true
 }
 
 function mapStateToProps(state, props) {

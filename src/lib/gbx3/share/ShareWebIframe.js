@@ -73,7 +73,7 @@ function mapStateToProps(state, props) {
   const kind = util.getValue(info, 'kind');
   const articleID = util.getValue(info, 'articleID');
   const primaryColor = util.getValue(state, 'gbx3.globals.gbxStyle.primaryColor');
-  const orgData = util.getValue(gbx3, 'orgData', {});
+  const orgData = util.getValue(state, 'resource.gbx3Org.data', {});
 
   return {
     kind,

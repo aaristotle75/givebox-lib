@@ -6,6 +6,7 @@ import ModalRoute from '../../modal/ModalRoute';
 import ModalLink from '../../modal/ModalLink';
 import Collapse from '../../common/Collapse';
 import Image from '../../common/Image';
+import Loader from '../../common/Loader';
 import Tabs, { Tab } from '../../common/Tabs';
 import * as types from '../../common/types';
 import Fade from '../../common/Fade';
@@ -67,7 +68,8 @@ class Amounts extends Component {
       defaultIndex: 6,
       formError: [],
       tab: 'edit',
-      hasBeenUpdated: false
+      hasBeenUpdated: false,
+      gettingAmounts: true
     };
     this.blockRef = null;
     this.width = null;
@@ -285,6 +287,8 @@ class Amounts extends Component {
       customIDDefault: customID,
       defaultIndexDefault: defaultIndex,
       defaultIDDefault: defaultID
+    }, () => {
+      this.setState({ gettingAmounts: false });
     });
   }
 
@@ -380,6 +384,7 @@ class Amounts extends Component {
       modalID,
       data,
       kind,
+      kindID,
       primaryColor,
       numCartItems,
       subTotal,
@@ -388,7 +393,8 @@ class Amounts extends Component {
       isVolunteer,
       articleID,
       orgLogo,
-      orgName
+      orgName,
+      title
     } = this.props;
 
     const {
@@ -401,10 +407,13 @@ class Amounts extends Component {
       defaultIndex,
       defaultID,
       formError,
-      tab
+      tab,
+      gettingAmounts
     } = this.state;
 
-    if (util.isEmpty(amountsList)) return <></>;
+    //if (util.isEmpty(amountsList)) return <></>;
+
+    if (gettingAmounts) return <Loader msg='Getting Amounts...' />
 
     const allowPerTicketWinner = util.getValue(extras, 'allowPerTicketWinner') || util.getValue(data, 'allowPerTicketWinner');
     const maxQuantity = util.getValue(extras, 'maxQuantity') || util.getValue(data, 'maxQuantity');
@@ -418,7 +427,7 @@ class Amounts extends Component {
       <div className={`block ${util.getValue(button, 'enabled', false) ? util.getValue(button, 'style.align', 'flexCenter') : ''}`}>
         <ModalRoute
           id={modalID}
-          className='gbx3 gbx3amountsEdit'
+          className='gbx3'
           optsProps={{ closeCallback: this.closeModalAmountsEdit }}
           effect='3DFlipVert' style={{ width: '80%' }}
           draggable={true}
@@ -427,13 +436,16 @@ class Amounts extends Component {
           disallowBgClose={true}
           component={() =>
             <div className='modalWrapper'>
+              <div style={{ margin: '20px 0' }} className='flexCenter'>
+                <h2>Edit {title}</h2>
+              </div>
               <Tabs
                 default={tab}
                 className='statsTab'
                 callbackBefore={this.callbackBeforeStep}
               >
                 <Tab id='edit' label={<span className='stepLabel'>Edit Amounts</span>}>
-                  <>
+                  <div className='gbx3Steps'>
                     <AnimateHeight
                       duration={200}
                       height={!util.isEmpty(formError) ? 'auto' : 0}
@@ -442,63 +454,49 @@ class Amounts extends Component {
                       <div className={`flexCenter error`}>You must fix the issues below in red before you can save or switch tabs.</div>
                     </Fade>
                     </AnimateHeight>
-                    <Collapse
-                      label={'Edit Amounts'}
-                      iconPrimary='edit'
-                      id={'gbx3-amounts-edit'}
-                    >
-                      <div className='formSectionContainer'>
-                        <div className='formSection'>
-                          <AmountsEdit
-                            article={data}
-                            amountsList={amountsList}
-                            kind={kind}
-                            modalID={modalID}
-                            amountsListUpdated={this.amountsListUpdated}
-                            customIndex={customIndex}
-                            customID={customID}
-                            customUpdated={this.customUpdated}
-                            defaultIndex={defaultIndex}
-                            defaultID={defaultID}
-                            defaultUpdated={this.defaultUpdated}
-                            sendResource={this.props.sendResource}
-                            validateAmountsBeforeSave={this.validateAmountsBeforeSave}
-                            formError={this.state.formError}
-                            orgID={util.getValue(data, 'orgID')}
-                            breakpoint={breakpoint}
-                            isVolunteer={isVolunteer}
-                            articleID={articleID}
-                            toggleModal={this.props.toggleModal}
-                          />
-                        </div>
-                      </div>
-                    </Collapse>
-                  </>
+                    <AmountsEdit
+                      buttonEnabled={util.getValue(button, 'enabled', false)}
+                      article={data}
+                      amountsList={amountsList}
+                      kind={kind}
+                      kindID={kindID}
+                      modalID={modalID}
+                      amountsListUpdated={this.amountsListUpdated}
+                      customIndex={customIndex}
+                      customID={customID}
+                      customUpdated={this.customUpdated}
+                      defaultIndex={defaultIndex}
+                      defaultID={defaultID}
+                      defaultUpdated={this.defaultUpdated}
+                      sendResource={this.props.sendResource}
+                      validateAmountsBeforeSave={this.validateAmountsBeforeSave}
+                      formError={this.state.formError}
+                      orgID={util.getValue(data, 'orgID')}
+                      breakpoint={breakpoint}
+                      isVolunteer={isVolunteer}
+                      articleID={articleID}
+                      toggleModal={this.props.toggleModal}
+                    />
+                  </div>
                 </Tab>
                 <Tab id='buttonOption' label={<span className='stepLabel'>Customize Button</span>}>
-                  <Collapse
-                    label={'Customize Button'}
-                    iconPrimary='link-2'
-                    id={'gbx3-amounts-button'}
-                  >
-                    <div className='formSectionContainer'>
-                      <div className='formSection'>
-                        <ButtonEdit
-                          label={'Use a Button Instead of Showing Amounts on the Form'}
-                          button={button}
-                          optionsUpdated={this.optionsUpdated}
-                          allowAutopop={true}
-                          modalID={'amountsList'}
-                        />
-                      </div>
+                  <div className='formSectionContainer'>
+                    <div className='formSection'>
+                      <ButtonEdit
+                        label={'Use a Button Instead of Showing Amounts on the Form'}
+                        button={button}
+                        optionsUpdated={this.optionsUpdated}
+                        allowAutopop={true}
+                        modalID={'amountsList'}
+                      />
                     </div>
-                  </Collapse>
+                  </div>
                 </Tab>
                 <Tab id='amountOptions' label={<span className='stepLabel'>Options</span>}>
                   {!util.isEmpty(extras) ?
                   <Collapse
                     label={`${types.kind(kind).amountDesc} Options`}
-                    iconPrimary='chevrons-up'
+                    iconPrimary='sliders'
                     id={'gbx3-amounts-ticketOptions'}
                   >
                     <div className='formSectionContainer'>
@@ -565,6 +563,8 @@ class Amounts extends Component {
                               this.props.updateData(data);
                             });
                           }}
+                          leftBar={true}
+                          style={{ margin: '0 15px'}}
                         />
                       </div>
                     </div>
@@ -686,16 +686,22 @@ function mapStateToProps(state, props) {
 
   const gbx3 = util.getValue(state, 'gbx3', {});
   const data = util.getValue(gbx3, 'data', {});
-  const cart = util.getValue(gbx3, 'cart', {});
+  const kindID = util.getValue(data, 'ID');
+  const info = util.getValue(gbx3, 'info', {});
+  const stage = util.getValue(info, 'stage', {});
+  const preview = util.getValue(info, 'preview', {});
+  const cart = stage !== 'admin' && !preview ? util.getValue(gbx3, 'cart', {}) : {};
   const cartItems = util.getValue(cart, 'items', []);
   const subTotal = util.getValue(cart, 'subTotal', 0);
   const form = util.getValue(gbx3, 'blocks.article.paymentForm.options.form', {});
   const numCartItems = cartItems.length;
-  const orgLogo = util.getValue(gbx3, 'orgData.imageURL');
-  const orgName = util.getValue(gbx3, 'orgData.name');
+  const orgData = util.getValue(state, 'resource.gbx3Org.data', {});
+  const orgLogo = util.getValue(orgData, 'imageURL');
+  const orgName = util.getValue(orgData, 'name');
 
   return {
     data,
+    kindID,
     form,
     numCartItems,
     subTotal,

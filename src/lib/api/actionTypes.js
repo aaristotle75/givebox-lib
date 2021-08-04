@@ -13,15 +13,22 @@ export const SEND_RESPONSE = 'SEND_RESPONSE';
 
 // Modal Actions
 export const TOGGLE_MODAL = 'TOGGLE_MODAL';
+export const MODAL_CLOSED = 'MODAL_CLOSED';
 
 // App Actions
 export const IS_FILTER_OPEN = 'IS_FILTER_OPEN';
 export const SET_APP_REF = 'SET_APP_REF';
 export const SET_MODAL_REF = 'SET_MODAL_REF';
 export const SET_PROP = 'SET_PROP';
+export const SET_APP_PROPS = 'SET_APP_PROPS';
+export const OPEN_LEFT_MENU = 'OPEN_LEFT_MENU';
+export const CLOSE_LEFT_MENU = 'CLOSE_LEFT_MENU';
 
 // Preferences
 export const SET_PREFERENCES = 'SET_PREFERENCES';
 
 // Custom Actions
 export const SET_CUSTOM_PROP = 'SET_CUSTOM_PROP';
+
+// User actions
+export const USER_LOGOUT = 'USER_LOGOUT';

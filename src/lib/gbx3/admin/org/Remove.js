@@ -21,7 +21,8 @@ class Remove extends React.Component {
     const {
       desc,
       subDesc,
-      confirmText
+      confirmText,
+      modalName
     } = this.props;
 
     return (
@@ -32,7 +33,7 @@ class Remove extends React.Component {
           {subDesc}
         </p>
         <div className='button-group flexEnd'>
-          <GBLink className='link secondary' onClick={() => this.props.toggleModal('orgRemove', false)}>Cancel</GBLink>
+          <GBLink className='link secondary' onClick={() => this.props.toggleModal(modalName, false)}>Cancel</GBLink>
           <GBLink className='button' onClick={() => {
             if (this.props.callback) this.props.callback();
           }}>
@@ -45,6 +46,7 @@ class Remove extends React.Component {
 }
 
 Remove.defaultProps = {
+  modalName: 'orgRemove',
   confirmText: 'Confirm'
 };
 

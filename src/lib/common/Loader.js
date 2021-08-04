@@ -15,7 +15,7 @@ export default class Loader extends Component {
   }
 
   componentDidMount() {
-    this.setState({rootEl: document.getElementById('app-root')}, this.stopLoader);
+    this.setState({rootEl: document.getElementById('root')}, this.stopLoader);
   }
 
   componentWillUnmount() {
@@ -27,9 +27,11 @@ export default class Loader extends Component {
   }
 
   stopLoader() {
-    this.timeout = setTimeout(() => {
-      this.setState({ showLoader: false });
-    }, 30000);
+    if (!this.props.infinite) {
+      this.timeout = setTimeout(() => {
+        this.setState({ showLoader: false });
+      }, 30000);
+    }
   }
 
   createSVG() {
@@ -48,16 +50,23 @@ export default class Loader extends Component {
       this.state.showLoader ?
       <Portal id='loadingPortal' rootEl={this.state.rootEl}>
         <div>
+          {this.props.children}
           <div className={`loader ${className}`} />
           <div className='loaderContent'>
             <div className='loadingText'>
-               <div>{this.createSVG()}</div>
+               <div>
+                <img src='https://cdn.givebox.com/givebox/public/universal-loader-60fps.png' alt='Loading' />
+               </div>
               <span className={`${showMsg ? '' : 'displayNone'}`} style={{color: `${textColor ? textColor : '#fff'}` }}>{msg}</span>
             </div>
           </div>
         </div>
       </Portal>
-      : <div></div>
+      : null
     )
   }
 }
+
+Loader.defaultProps = {
+  infinite: false
+};

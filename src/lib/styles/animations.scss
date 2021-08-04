@@ -66,6 +66,11 @@
   color: #000;
   font-size: 14px;
   z-index: 10000035;
+  img {
+    height: 45px;
+    width: 45px;
+    background: transparent;
+  }
 }
 
 .loaderSVG  {
@@ -79,6 +84,10 @@
 .ripple {
   position:relative;
   overflow:hidden
+}
+
+.ripple button {
+  z-index: 2;
 }
 
 .ripple:after {

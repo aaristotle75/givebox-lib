@@ -22,6 +22,7 @@ import ReactGA from 'react-ga';
 import Scroll from 'react-scroll';
 import history from '../common/history';
 
+const ENTRY_URL = process.env.REACT_APP_ENTRY_URL;
 const GBX_URL = process.env.REACT_APP_GBX_URL;
 const SHARE_URL = process.env.REACT_APP_GBX_SHARE;
 const ENV = process.env.REACT_APP_ENV;
@@ -39,9 +40,13 @@ class Layout extends React.Component {
     this.state = {
     }
     this.gbx3Container = React.createRef();
+    this.gbx3LayoutRef = React.createRef();
   }
 
   componentDidMount() {
+    if (this.gbx3Container.current) {
+      window.parent.postMessage(`gbx3Height-${this.gbx3Container.current.clientHeight}`, '*');
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -225,9 +230,11 @@ class Layout extends React.Component {
       gbx3BackgroundHeight = `${height}px`;
     }
 
+    const startFundraiserLink = ENV === 'local' ? `${SHARE_URL}/4?template=signup&orgID=null` : `${GBX_URL}/signup`;
+
     const avatarMenu =
       <div className='hasAccessToEditPublic'>
-        <AvatarMenuButton />
+        { display !== 'signup' ? <AvatarMenuButton /> : null }
         { !browse && display !== 'signup' ?
         <ModalLink type='div' id={'share'} className='avatarLink tooltip hideOnMobile'>
           <span className='tooltipTop'><i />Share</span>
@@ -256,6 +263,12 @@ class Layout extends React.Component {
           </div>
         </div> : null}
         <CartButton reloadGBX3={this.props.reloadGBX3} type='avatarLink' />
+        { (display === 'org' || display === 'browse') && stage !== 'admin' && !preview && !hasAccessToEdit ?
+        <div className='avatarLoginActions'>
+          <GBLink className='button' onClick={() => window.location.replace(startFundraiserLink)}>Start a Fundraiser</GBLink>
+          <GBLink className='button' onClick={() => window.location.replace(ENTRY_URL)}>Login</GBLink>
+        </div>
+        : null }
       </div>
     ;
 
@@ -320,7 +333,7 @@ class Layout extends React.Component {
 
         <div style={{ height: gbx3BackgroundHeight }} className='gbx3LayoutBackground'></div>
         {showAvatarMenu ? avatarMenu : '' }
-        <div id='gbx3Layout' className={`gbx3Layout ${displayClass} ${stage} ${noAccess ? 'noAccess' : ''}`}>
+        <div ref={this.gbx3LayoutRef} id='gbx3Layout' className={`gbx3Layout ${displayClass} ${stage} ${noAccess ? 'noAccess' : ''}`}>
           <div
             style={{
               ...style
@@ -373,7 +386,7 @@ function mapStateToProps(state, props) {
   const hasAccessToEdit = util.getValue(gbx3, 'admin.hasAccessToEdit');
   const publishStatus = util.getValue(info, 'publishStatus');
   const orgName = util.getValue(info, 'orgName');
-  const orgData = util.getValue(gbx3, 'orgData', {});
+  const orgData = util.getValue(state, 'resource.gbx3Org.data', {});
 
   return {
     browse,

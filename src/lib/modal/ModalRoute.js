@@ -4,7 +4,7 @@ import Modal from './Modal';
 import Portal from '../common/Portal';
 import ErrorBoundary from '../common/ErrorBoundary';
 import Loader from '../common/Loader';
-import { toggleModal } from '../api/actions';
+import { modalClosed, toggleModal } from '../api/actions';
 import * as util from '../common/utility';
 import has from 'has';
 
@@ -13,7 +13,6 @@ class ModalRoute extends Component {
   constructor(props) {
     super(props);
     this.receiveMessage = this.receiveMessage.bind(this);
-    this.modalOpenCallback = this.modalOpenCallback.bind(this);
     this.state = {
       opened: false
     };
@@ -23,16 +22,13 @@ class ModalRoute extends Component {
     window.addEventListener('message', this.receiveMessage, false);
   }
 
-  receiveMessage(e) {
+  async receiveMessage(e) {
     if (e.data === this.props.id) {
-      if (this.props.open) {
-        this.props.toggleModal(e.data, false);
+      if (this.props.opened) {
+        this.props.toggleModal(e.data, false, this.props.opts);
+        this.props.modalClosed(e.data);
       }
     }
-  }
-
-  modalOpenCallback(open) {
-    this.setState({ opened: true });
   }
 
   render() {
@@ -42,6 +38,7 @@ class ModalRoute extends Component {
       closeBtnShow,
       style,
       open,
+      opened,
       component,
       id,
       opts,
@@ -52,7 +49,8 @@ class ModalRoute extends Component {
       modalRootClass,
       closeCallback,
       draggableTitle,
-      buttonGroup
+      buttonGroup,
+      forceShowModalGraphic
     } = this.props;
 
     const modalRoot = document.getElementById('modal-root');
@@ -68,34 +66,34 @@ class ModalRoute extends Component {
     }
 
     return (
-      <div>
-        { open &&
-          <Portal id={id} rootEl={modalRoot} className={`${modalRootClass}`}>
-            <Modal
-              className={className}
-              identifier={id}
-              effect={effect}
-              open={open}
-              closeBtnShow={closeBtnShow}
-              customStyle={style}
-              closeCallback={util.getValue(optsProps, 'closeCallback', closeCallback)}
-              disallowBgClose={disallowBgClose || util.getValue(optsProps, 'disallowBgClose', false)}
-              customOverlay={util.getValue(optsProps, 'customOverlay', customOverlay)}
-              appRef={appRef}
-              draggable={draggable}
-              draggableTitle={util.getValue(optsProps, 'draggableTitle', draggableTitle)}
-              modalOpenCallback={this.modalOpenCallback}
-              buttonGroup={buttonGroup}
-            >
-              { this.state.opened ?
-                <ErrorBoundary>
-                  {component(optsProps)}
-                </ErrorBoundary>
-              : null }
-            </Modal>
-          </Portal>
-        }
-      </div>
+      opened ?
+        <Portal id={id} rootEl={modalRoot} className={`${modalRootClass}`}>
+          <Modal
+            className={className}
+            identifier={id}
+            effect={effect}
+            open={open}
+            opened={opened}
+            closeBtnShow={closeBtnShow}
+            customStyle={style}
+            closeCallback={util.getValue(optsProps, 'closeCallback', closeCallback)}
+            disallowBgClose={disallowBgClose || util.getValue(optsProps, 'disallowBgClose', false)}
+            customOverlay={util.getValue(optsProps, 'customOverlay', customOverlay)}
+            appRef={appRef}
+            draggable={draggable}
+            draggableTitle={util.getValue(optsProps, 'draggableTitle', draggableTitle)}
+            buttonGroup={buttonGroup}
+            blurClass={util.getValue(optsProps, 'blurClass', 'blur')}
+            forceShowModalGraphic={util.getValue(optsProps, 'forceShowModalGraphic', forceShowModalGraphic)}
+          >
+            { opened ?
+              <ErrorBoundary>
+                {component(optsProps)}
+              </ErrorBoundary>
+            : null }
+          </Modal>
+        </Portal>
+      : null
     )
   }
 }
@@ -108,20 +106,25 @@ ModalRoute.defaultProps = {
 
 function mapStateToProps(state, props) {
 
+  let opened = false;
   let open = false;
   let opts = {};
+
   if (has(state.modal, props.id)) {
+    opened = state.modal[props.id].opened;
     open = state.modal[props.id].open;
     opts = state.modal[props.id].opts;
   }
 
   return {
-    open: open,
-    opts: opts
+    opened,
+    open,
+    opts
   }
 }
 
 
 export default connect(mapStateToProps, {
+  modalClosed,
   toggleModal
 })(ModalRoute)

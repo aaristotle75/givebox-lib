@@ -3,7 +3,11 @@ import { connect } from 'react-redux';
 import * as util from '../../../common/utility';
 import GBLink from '../../../common/GBLink';
 import {
-  toggleAdminLeftPanel
+  toggleModal
+} from '../../../api/actions';
+import {
+  toggleAdminLeftPanel,
+  updateHelperSteps
 } from '../../redux/gbx3actions';
 import { builderStepsConfig } from './builderStepsConfig';
 
@@ -12,30 +16,37 @@ class AdminMenu extends React.Component {
   constructor(props) {
     super(props);
     this.renderSteps = this.renderSteps.bind(this);
+    this.openStep = this.openStep.bind(this);
     this.state = {
     };
+    this.config = util.getValue(builderStepsConfig, props.kind, []);
+    this.steps = this.config.length - 1;
+  }
+
+  async openStep(step) {
+    const updated = await this.props.updateHelperSteps({ step: +step });
+    if (updated) this.props.toggleModal('gbx3Builder', true);
   }
 
   renderSteps() {
     const {
-      config,
       step,
       completed
     } = this.props;
 
     const items = [];
-    Object.entries(config).forEach(([key, value]) => {
+    Object.entries(this.config).forEach(([key, value]) => {
       const currentStep = +key === +step ? true : false;
-      const completedStep = completed.includes(+key) ? true : false;
+      const completedStep = completed.includes(value.slug) ? true : false;
       const stepNumber = <span className='number'>Step {+key + 1}</span>;
       items.push(
         <li
-          onClick={() => this.props.gotoStep(+key)}
+          onClick={() => this.openStep(+key)}
           key={key}
           className={`stepButton ${currentStep ? 'currentStep' : ''}`}
         >
           <div className='stepTitleContainer'>
-            <span className={`icon icon-${value.icon}`}></span>
+            { value.customIcon || <span className={`icon icon-${value.icon}`}></span> }
             <div className='stepTitle'>{stepNumber} {value.name}</div>
           </div>
           <span className={`icon icon-${completedStep ? 'check green' : 'chevron-right'}`}></span>
@@ -45,7 +56,7 @@ class AdminMenu extends React.Component {
 
     return (
       <ul className='builderMenuSteps'>
-        <li className='listHeader'>Builder Steps</li>
+        <li className='listHeader'>Form Builder Steps</li>
         {items}
       </ul>
     )
@@ -73,10 +84,15 @@ function mapStateToProps(state, props) {
   const openAdmin = util.getValue(admin, 'open');
 
   return {
-    openAdmin
+    openAdmin,
+    completed: util.getValue(state, 'gbx3.helperSteps.completed', []),
+    step: util.getValue(state, 'gbx3.helperSteps.step', 0),
+    kind: util.getValue(state, 'gbx3.info.kind', 'fundraiser')
   }
 }
 
 export default connect(mapStateToProps, {
-  toggleAdminLeftPanel
+  toggleAdminLeftPanel,
+  updateHelperSteps,
+  toggleModal
 })(AdminMenu);

@@ -1,5 +1,9 @@
 @import 'variables.scss';
 
+#orgEditPage.orgAdminEdit {
+  width: 50%;
+}
+
 .gbx3OrgBackToDashboard {
   display: flex;
   align-items: center;
@@ -138,7 +142,7 @@
       }
     }
 
-    button:hover {
+    button:hover:not(.tooltip) {
       opacity: .8;
     }
 
@@ -147,7 +151,7 @@
     }
 
     button.blockEditButton {
-      background: transparentize($mainColorDark, 0);
+      @include darkGradientBackground;
     }
 
     .tooltip .tooltipTop {
@@ -171,10 +175,11 @@
   .leftPanelOpenButton {
     top: 60px;
     left: 17px;
+    z-index: 99999;
   }
 
   .leftPanelClose {
-    top: 50px;
+    top: 55px;
   }
 
   .stageContainer.open {
@@ -187,6 +192,14 @@
 
     .gbx3Layout {
       margin-top: 0;
+    }
+  }
+}
+
+.gbx3 {
+  .gbx3Layout.admin {
+    .dropdown button .icon {
+      color: $white;
     }
   }
 }
@@ -247,11 +260,6 @@
   .dropdown .dropdown-item {
     font-size: 14px;
   }
-
-  .dropdown .dropdown-item:hover {
-    background: $light-gray;
-  }
-
 }
 
 .orgAdminDropdown {
@@ -279,6 +287,8 @@
 
   button.button:hover {
     opacity: .7;
+    background-color: transparent;
+    background: $light-gray;
   }
 
   .dropdown .dropdown-content.opened {
@@ -287,9 +297,7 @@
   }
 
   .dropdown .dropdown-item {
-    color: $med-gray;
     .icon {
-      color: $med-gray;
       margin-right: 10px;
       font-size: 16px;
     }
@@ -298,14 +306,6 @@
     }
     .activePage {
       color: $dark;
-    }
-  }
-
-  .dropdown .dropdown-item:hover {
-    background: $light-gray;
-    color: $med-gray;
-    .icon {
-      color: $med-gray;
     }
   }
 

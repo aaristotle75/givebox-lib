@@ -177,15 +177,18 @@ function propCompare(prop, direction) {
   }
 }
 
-export function splitName(string) {
+export function splitName(string, middle = true) {
   let arr = [];
-  const value = {};
+  const value = {
+    first: '',
+    last: ''
+  };
   const str = string.trim();
-  if (!str) return false;
+  if (!str) return value;
   arr = str.split(' ');
   if (arr.length > 1) {
     value.last = arr.pop();
-    value.first = arr.length > 1 ? arr.join(' ') : arr[0];
+    value.first = arr.length && middle > 1 ? arr.join(' ') : arr[0];
   } else {
     value.last = '';
     value.first = arr[0];
@@ -211,14 +214,20 @@ export function hexToRgb(hex) {
         return r + r + g + g + b + b;
     });
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+
     return result ? {
         r: parseInt(result[1], 16),
         g: parseInt(result[2], 16),
         b: parseInt(result[3], 16)
-    } : null;
+    } : {};
   } else {
     return {};
   }
+}
+
+export function rgba(hex, opacity = 1) {
+  const color = hexToRgb(hex);
+  return `rgba(${color.r}, ${color.g}, ${color.b}, ${opacity})`;
 }
 
 export function removeFromArr(array, element) {
@@ -839,9 +848,9 @@ export const equals = function(array, array2) {
   return true;
 }
 
-  export function toTop(id, ref = null) {
+  export function toTop(id, ref = null, scrollTo = 0) {
     const el = ref || document.getElementById(id);
-    if (el) animateScrollTo(0, { element: el });
+    if (el) animateScrollTo(scrollTo, { element: el });
   }
 
   export function filterObj(obj, key, value) {
@@ -898,7 +907,6 @@ export function getAuthorizedAccess(access, orgID, volunteerID) {
     hasAccess = true;
     obj.isVolunteer = true;
   }
-
   return hasAccess ? obj : false;
 }
 
@@ -1161,4 +1169,16 @@ export function customListFilter(customList, options = {}) {
     });
   }
   return `(${filter})`;
+}
+
+export function getFileInfo(url) {
+  const partsUrl = url.split('/');
+  const partsFile = !isEmpty(partsUrl) ? partsUrl[partsUrl.length - 1] : [];
+  const name = !isEmpty(partsFile) ? partsFile.split('?')[0] : '';
+  const fileParts = !isEmpty(name) ? name.split('.') : [];
+  const type = !isEmpty(fileParts) ? fileParts[fileParts.length -1].toLowerCase() : 'png';
+  return {
+    type,
+    name
+  };
 }

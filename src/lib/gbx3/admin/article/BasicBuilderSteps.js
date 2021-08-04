@@ -8,8 +8,11 @@ import {
 import Form from '../../../form/Form';
 import {
   util,
+  types,
   GBLink,
-  Fade
+  Fade,
+  Icon,
+  Image
 } from '../../../';
 import {
   updateHelperSteps,
@@ -17,12 +20,27 @@ import {
   saveGBX3,
   updateData,
   updateGlobals,
-  updateBlock
+  updateBlock,
+  setStyle,
+  resetBlock
 } from '../../redux/gbx3actions';
+import {
+  defaultStyle
+} from '../../redux/gbx3defaults';
 import MediaLibrary from '../../../form/MediaLibrary';
 import Share from '../../share/Share';
 import LinearBar from '../../../common/LinearBar';
+import Tabs, { Tab } from '../../../common/Tabs';
+import Video from '../../../common/Video';
+import Dropdown from '../../../form/Dropdown';
+import HelpfulTip from '../../../common/HelpfulTip';
+import EditVideo from '../../admin/common/EditVideo';
 import { PhotoshopPicker } from 'react-color-aaristotle';
+import { MdCheckCircle } from 'react-icons/md';
+import Tickets from './builderSteps/Tickets';
+import Where from './builderSteps/Where';
+import When from './builderSteps/When';
+import SweepstakesEnds from './builderSteps/SweepstakesEnds';
 
 const GBX3_URL = process.env.REACT_APP_GBX_URL;
 
@@ -32,41 +50,101 @@ class BasicBuilderStepsForm extends Component {
     super(props);
     this.saveStep = this.saveStep.bind(this);
     this.gbx3message = this.gbx3message.bind(this);
-    this.handleSaveCallback = this.handleSaveCallback.bind(this);
+    this.handleImageSaveCallback = this.handleImageSaveCallback.bind(this);
+    this.handleVideoSaveCallback = this.handleVideoSaveCallback.bind(this);
     this.processForm = this.processForm.bind(this);
     this.processCallback = this.processCallback.bind(this);
     this.formSavedCallback = this.formSavedCallback.bind(this);
     this.renderStep = this.renderStep.bind(this);
     this.gotoNextStep = this.gotoNextStep.bind(this);
+    this.callbackAfter = this.callbackAfter.bind(this);
+    this.updateTheme = this.updateTheme.bind(this);
+
+    const mediaBlock = util.getValue(props.blocks, 'media', {});
+    const mediaType = util.getValue(mediaBlock, 'options.mediaType', 'image');
+
     this.state = {
+      defaultTheme: util.getValue(props.globals, 'theme'),
+      mediaType,
+      mediaTypeError: null,
       themeColor: util.getValue(props.data, 'giveboxSettings.primaryColor'),
       error: false,
       previewLoaded: false,
-      editorOpen: false
+      editorOpen: false,
+      iframeHeight: 0
     };
   }
 
   componentDidMount() {
+    //this.props.updateHelperSteps({ step: 2 });
     window.addEventListener('message', this.gbx3message, false);
   }
 
+  callbackAfter(tab) {
+    this.props.formProp({ error: false });
+    this.setState({ mediaType: tab, mediaTypeError: null });
+  }
+
   gbx3message(e) {
+
     const {
-      step
+      step,
+      kind
     } = this.props;
 
     const stepConfig = util.getValue(this.props.config, step, {});
     const slug = util.getValue(stepConfig, 'slug');
 
     if (e.data === 'gbx3Initialized') {
-      if (slug === 'preview') {
-        this.setState({ previewLoaded: true }, () => this.saveStep());
+      if (slug === 'previewShare') {
+        this.setState({ previewLoaded: true });
       }
     }
+
     if (e.data === 'gbx3Shared') {
-      if (slug === 'share') {
-        this.saveStep();
+      if (slug === 'previewShare') {
+        this.props.formSaved(() => {
+          // Do something here...
+        }, `Congratulations, your ${types.kind(kind).name} has been SHARED!`, 4000);
+        //this.saveStep();
       }
+    }
+
+    const str = e.data.toString();
+    const strArr = str.split('-');
+    if (strArr[0] === 'gbx3Height') {
+      if (strArr[1]) {
+        const iframeHeight = +strArr[1] + 50;
+        this.setState({ iframeHeight });
+      }
+    }
+  }
+
+  async updateTheme(theme) {
+    const {
+      themeColor
+    } = this.state;
+
+    const imageURL = util.getValue(this.props.blocks, 'media.content.image.URL');
+    const globals = {
+      ...this.props.globals,
+      theme,
+      gbxStyle: {
+        ...defaultStyle[theme],
+        backgroundImage: imageURL,
+        //backgroundColor: themeColor,
+        primaryColor: themeColor
+      }
+    };
+
+    const updated = await this.props.updateGlobals(globals);
+    if (updated) {
+      this.props.saveGBX3('article', {
+        callback: (res, err) => {
+          this.props.setStyle();
+        },
+        updateLayout: false
+      });
     }
   }
 
@@ -75,7 +153,9 @@ class BasicBuilderStepsForm extends Component {
       step
     } = this.props;
     const updated = [];
-    const completedStep = completed ? await this.props.stepCompleted(+step) : true;
+    const stepConfig = util.getValue(this.props.config, step, {});
+    const slug = util.getValue(stepConfig, 'slug');
+    const completedStep = completed ? await this.props.stepCompleted(slug) : true;
     const dataUpdated = data ? await this.props.updateData(data) : true;
     const blockUpdated = block ? await this.props.updateBlock('article', block.name, block) : true;
 
@@ -90,20 +170,54 @@ class BasicBuilderStepsForm extends Component {
     }
   }
 
-  handleSaveCallback(url, field, blockName) {
+  handleImageSaveCallback(url, field, blockName) {
     const {
       data,
       blocks
     } = this.props;
     if (url && url !== util.getValue(data, field)) {
       const block = util.getValue(blocks, blockName, {});
+      const content = util.getValue(block, 'content', {});
       const options = util.getValue(block, 'options', {});
       const image = util.getValue(options, 'image', {});
       image.URL = util.imageUrlWithStyle(url, image.size);
       const blockObj = {
         ...block,
+        options: {
+          ...options,
+          mediaType: this.state.mediaType
+        },
         content: {
+          ...content,
           image
+        }
+      };
+      this.saveStep({ [field]: url }, blockObj);
+    }
+  }
+
+  handleVideoSaveCallback(url, field, blockName) {
+    const {
+      data,
+      blocks
+    } = this.props;
+    if (url !== util.getValue(data, field)) {
+      const block = util.getValue(blocks, blockName, {});
+      const content = util.getValue(block, 'content', {});
+      const options = util.getValue(block, 'options', {});
+      const blockObj = {
+        ...block,
+        options: {
+          ...options,
+          mediaType: this.state.mediaType
+        },
+        content: {
+          ...content,
+          video: {
+            URL: url,
+            auto: false,
+            validatedURL: url
+          }
         }
       };
       this.saveStep({ [field]: url }, blockObj);
@@ -118,9 +232,9 @@ class BasicBuilderStepsForm extends Component {
     }
   }
 
-  processCallback(res, err) {
+  processCallback(res, err, callback = this.formSavedCallback) {
     if (!err) {
-      this.props.formSaved(() => this.formSavedCallback());
+      this.props.formSaved(() => { if (callback) callback(); });
     } else {
       if (!this.props.getErrors(err)) this.props.formProp({error: this.props.savingErrorMsg});
     }
@@ -128,12 +242,13 @@ class BasicBuilderStepsForm extends Component {
   }
 
   async processForm(fields) {
-    util.toTop('modalOverlay-stepsForm');
+    util.toTop('modalOverlay-gbx3Builder');
     const {
       step,
       data,
       gbxStyle,
-      button
+      button,
+      blocks
     } = this.props;
 
     const {
@@ -160,8 +275,61 @@ class BasicBuilderStepsForm extends Component {
       };
       const globalsUpdated = await this.props.updateGlobals(globals);
       if (globalsUpdated) this.saveStep({ giveboxSettings: { primaryColor: themeColor }}, null, true, this.gotoNextStep);
-    } else if (this.props.steps === step) {
-      this.props.exitAdmin();
+    } else if (slug === 'previewShare') {
+      this.saveStep(null, null, true, () => {
+        this.props.toggleModal('gbx3Builder', false);
+      });
+    } else if (slug === 'image') {
+      const block = util.getValue(blocks, 'media', {});
+      const options = util.getValue(block, 'options', {});
+      const blockObj = {
+        ...block,
+        options: {
+          ...options,
+          mediaType: this.state.mediaType
+        }
+      };
+      this.saveStep(null, blockObj, false, this.gotoNextStep);
+    } else if (slug === 'tickets') {
+      this.saveStep(null, null, true, this.gotoNextStep);
+    } else if (slug === 'when') {
+      const blockReset = await this.props.resetBlock('article', 'when');
+      if (blockReset) {
+        const data = {
+          when: util.getValue(fields, 'when.value'),
+          whenShowTime: util.getValue(fields, 'when.enableTime', false),
+          endsAt: null
+        };
+        this.saveStep(data, null, true, this.gotoNextStep);
+      }
+    } else if (slug === 'where') {
+      const where = util.getValue(fields, 'where.where', {});
+      const data = {
+        where
+      };
+      const block = util.getValue(blocks, 'where', {});
+      const blockObj = {
+        ...block,
+        content: {
+          where,
+          htmlTemplate: ''
+        }
+      };
+      this.saveStep(data, blockObj, true, this.gotoNextStep);
+    } else if (slug === 'sweepstakesEnds') {
+      const endsAt = util.getValue(fields, 'endsAt.value', null);
+      const data = {
+        endsAt: endsAt
+      };
+      const block = util.getValue(blocks, 'countdown', {});
+      const blockObj = {
+        ...block,
+        content: {
+          endsAt,
+          endsAtTime: false
+        }
+      };
+      this.saveStep(data, blockObj, true, this.gotoNextStep);
     } else {
       this.saveStep(null, null, false, this.gotoNextStep);
     }
@@ -172,6 +340,15 @@ class BasicBuilderStepsForm extends Component {
   }
 
   renderStep() {
+
+    const {
+      previewLoaded,
+      iframeHeight,
+      mediaType,
+      mediaTypeError,
+      defaultTheme
+    } = this.state;
+
     const {
       step,
       breakpoint,
@@ -180,6 +357,7 @@ class BasicBuilderStepsForm extends Component {
       data,
       blocks,
       isVolunteer,
+      isMobile,
       openAdmin: open
     } = this.props;
 
@@ -194,19 +372,159 @@ class BasicBuilderStepsForm extends Component {
     const stepConfig = util.getValue(this.props.config, step, {});
     const slug = util.getValue(stepConfig, 'slug');
     const stepNumber = +step + 1;
-    const completed = this.props.completed.includes(step) ? true : false;
+    const completed = this.props.completed.includes(slug) ? true : false;
     const firstStep = step === 0 ? true : false;
     const lastStep = step === this.props.steps ? true : false;
+    const nextStepName = this.props.getNextStep();
+    const nextStepNumber = this.props.nextStep(step) + 1;
+
     const item = {
       title: '',
       icon: stepConfig.icon,
-      desc: '',
+      customIcon: stepConfig.customIcon,
+      desc: stepConfig.desc,
       component: null,
       className: '',
-      saveButtonLabel: 'Save & Continue to Next Step'
+      defaultButtonGroup: true,
+      saveButtonLabel: <span className='buttonAlignText'>Save & Continue</span>
     };
 
+    const mediaBlock = util.getValue(blocks, 'media', {});
+    const mediaURL = util.getValue(mediaBlock, 'content.image.URL', util.getValue(data, 'imageURL', '')).replace(/medium$/i, 'original');
+    const imageURL = (!util.checkImage(mediaURL) || !mediaURL) ? '' : mediaURL;
+    const videoURL = util.getValue(mediaBlock, 'content.video.URL', util.getValue(data, 'videoURL', ''));
+
+    const leftSide =
+      <div className='leftSide' style={{ width: 150 }}>
+        { !firstStep ? <GBLink className={`link`} disabled={firstStep} onClick={() => this.props.previousStep()}><span style={{ marginRight: '5px' }} className='icon icon-chevron-left'></span> {isMobile ? 'Back' : 'Previous Step'}</GBLink> : <span>&nbsp;</span> }
+      </div>
+    ;
+
+    const rightSide =
+      <div className='rightSide' style={{ width: 150 }}>
+        <Image className='pulsate' url={isMobile ? 'https://cdn.givebox.com/givebox/public/gb-logo5.png' : 'https://cdn.givebox.com/givebox/public/givebox-logo_white.png'} alt='Givebox Logo' maxHeight={30} />
+      </div>
+    ;
+
     switch (slug) {
+
+      case 'tickets': {
+        item.className = 'stepAmounts';
+        item.defaultButtonGroup = false;
+        item.component =
+          <Tickets
+            {...this.props}
+            leftSide={leftSide}
+            rightSide={rightSide}
+            saveStep={this.saveStep}
+            gotoNextStep={this.gotoNextStep}
+            updateData={this.props.updateData}
+            processForm={this.processForm}
+            processCallback={this.processCallback}
+          />
+        ;
+        break;
+      }
+
+      case 'where': {
+        item.component =
+          <Where
+            {...this.props}
+          />
+        ;
+        break;
+      }
+
+      case 'when': {
+        item.component =
+          <When
+            {...this.props}
+          />
+        ;
+        break;
+      }
+
+      case 'sweepstakesEnds': {
+        item.component =
+          <SweepstakesEnds
+            {...this.props}
+          />
+        ;
+        break;
+      }
+
+      case 'title': {
+        const title = this.props.checkHelperIfHasDefaultValue('article', { field: 'title', defaultCheck: 'text' }) ? '' : util.getValue(data, 'title');
+
+        item.component =
+          <div className='fieldGroup'>
+            <MediaLibrary
+              image={imageURL}
+              preview={imageURL}
+              quickUpload={true}
+              singlePreview={true}
+              handleSaveCallback={(url) => {
+                this.setState({ mediaTypeError: null });
+                this.handleImageSaveCallback(url, 'imageURL', 'media');
+              }}
+              handleSave={util.handleFile}
+              library={library}
+              showBtns={'hide'}
+              saveLabel={'close'}
+              mobile={isMobile ? true : false }
+              uploadOnly={true}
+              imageEditorOpenCallback={(editorOpen) => {
+                this.setState({ editorOpen });
+              }}
+              editorResizerStyle={{ marginTop: -150 }}
+              formError={mediaTypeError === 'image' ? true : false}
+            />
+            {this.props.textField('title', {
+              group: 'title',
+              style: { paddingTop: 20 },
+              fixedLabel: false,
+              label: 'Title',
+              placeholder: 'Click Here and Enter a Title',
+              maxLength: 128,
+              count: true,
+              required: false,
+              value: title,
+              leftBar: true,
+              onBlur: (name, value) => {
+                if (value && value !== title) {
+                  const block = util.getValue(blocks, 'title', {});
+                  const defaultFormat = util.getValue(block, 'options.defaultFormat', '');
+                  const saveValue = defaultFormat.replace('{{TOKEN}}', value);
+                  const blockObj = {
+                    ...block,
+                    content: {
+                      html: saveValue
+                    }
+                  };
+                  this.saveStep({ title: value }, blockObj, true, (res, err) => {
+                    if (!util.isEmpty(res) && !err) {
+                      const isVolunteer = util.getValue(res, 'volunteer');
+                      const volunteerID = util.getValue(res, 'volunteerID');
+                      if (isVolunteer && volunteerID) {
+                        this.props.sendResource('volunteerNotify', {
+                          orgID,
+                          id: [volunteerID],
+                          method: 'POST',
+                          data: {
+                            articleID
+                          }
+                        })
+                      };
+                    }
+                  });
+                }
+              }
+            })}
+          </div>
+        ;
+        break;
+      }
+
       case 'themeColor': {
         const style = {
           default: {
@@ -222,203 +540,138 @@ class BasicBuilderStepsForm extends Component {
             },
           }
         };
-        item.title = 'Choose a Theme Color';
-        item.desc = 'Choose a color that compliments your fundraising form or nonprofit logo.';
+
         item.component =
-          <div className='flexCenter'>
-            <PhotoshopPicker
-              styles={style}
-              header={''}
-              color={this.state.themeColor}
-              onChangeComplete={(color) => {
-                this.setState({ themeColor: color.hex })
+          <div className='fieldGroup'>
+            <div className='column50'>
+              <Dropdown
+                name='defaultTheme'
+                portalID={`category-dropdown-portal-${slug}`}
+                portalClass={'gbx3 articleCardDropdown gbx3Steps'}
+                portalLeftOffset={10}
+                className='articleCard'
+                contentWidth={400}
+                label={'Theme Style'}
+                selectLabel='Choose Theme'
+                fixedLabel={false}
+                required={true}
+                onChange={(name, value) => {
+                  this.updateTheme(value);
+                }}
+                options={[
+                  { primaryText: 'Light', value: 'light' },
+                  { primaryText: 'Dark', value: 'dark' }
+                ]}
+                showCloseBtn={true}
+                value={defaultTheme || 'light'}
+                style={{ paddingBottom: 20 }}
+                leftBar={true}
+                hideIcons={true}
+              />
+              <div className='input-group'>
+                <div className='fieldFauxInput'>
+                  <div className='inputLeftBar'></div>
+                  <div className='placeholder'>Choose Accent Color</div>
+                  <div className='fieldContext'>
+                    Button and link color.
+                  </div>
+                </div>
+                <div className='flexCenter'>
+                  <PhotoshopPicker
+                    styles={style}
+                    header={''}
+                    color={this.state.themeColor}
+                    onChangeComplete={(color) => {
+                      this.setState({ themeColor: color.hex })
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className='column50'>
+              <EditVideo
+                videoURL={videoURL}
+                onChange={() => {
+                  this.setState({ mediaTypeError: null });
+                }}
+                onBlur={(url, validated) => {
+                  if (url && validated) {
+                    this.setState({ mediaType: 'video'}, () => {
+                      this.handleVideoSaveCallback(url, 'videoURL', 'media');
+                    });
+                  } else if (!url) {
+                    this.setState({ mediaType: 'image'}, () => {
+                      this.handleVideoSaveCallback('', 'videoURL', 'media');
+                    });
+                  }
+                }}
+                error={mediaTypeError === 'video' ? true : false}
+                leftBar={true}
+              />
+            </div>
+          </div>
+        ;
+        break;
+      }
+
+      case 'previewShare': {
+        item.saveButtonLabel = <span className='buttonAlignText'>Finished! Take Me to My Form</span>;
+        item.className = 'preview';
+        item.component =
+          <div className='stagePreview flexCenter flexColumn'>
+            <Share
+              hideList={['web']}
+              showHelper={false}
+              modalWrapperStyle={{
+                paddingTop: 0,
+                paddingBottom: 0
               }}
             />
+            { !previewLoaded ?
+            <div className='previewTitleContainer'>
+              <div className='previewTitleText'>
+                Generating preview we appreciate your patience while it loads...
+              </div>
+            </div>
+            : null }
+            { !previewLoaded ?
+              <div className='imageLoader'>
+                <img src='https://cdn.givebox.com/givebox/public/universal.png' alt='Loading Preview' />
+              </div>
+            : null }
+            <iframe style={{ height: iframeHeight }} id='previewIframe' src={`${GBX3_URL}/${articleID}/?public&preview`} title={`Preview`} />
           </div>
         ;
         break;
       }
 
-      case 'preview': {
-        item.saveButtonLabel = 'Looks Good! Continue to Next Step';
-        item.className = 'preview';
-        item.title = 'Preview your Form';
-        item.desc = !this.state.previewLoaded ?
-          'Please wait while the preview loads...'
-          :
-          <div>
-            <span>This is how the form will look to your supporters.</span>
-            <span style={{ marginTop: 10, display: 'block' }}>If you really want to roll up your sleeves, try the Givebox <GBLink style={{ fontSize: 14, display: 'inline' }} onClick={() => this.props.toggleBuilder()}>Advanced Builder</GBLink>, where you can customize pretty much everything!</span>
-          </div>
-        ;
-        item.component =
-          <div className='stagePreview flexCenter'>
-            <iframe src={`${GBX3_URL}/${articleID}/?public&preview`} title={`Preview`} />
-          </div>
-        ;
-        break;
-      }
-
-      case 'share': {
-        item.saveButtonLabel = 'All Finished! Take Me to My Dashboard';
-        item.title = 'Share Your Form';
-        item.desc = 'Copy and paste your custom link into an email, or click a social media icon below to share your fundraising form and start raising money!';
-        item.component =
-          <Share
-            hideList={['web']}
-          />
-        ;
-        break;
-      }
-
-      case 'image': {
-        const mediaBlock = util.getValue(blocks, 'media', {});
-        const mediaURL = util.getValue(mediaBlock, 'content.image.URL', '').replace(/medium$/i, 'original');
-        const imageURL = (!util.checkImage(mediaURL) || !mediaURL) ? '' : mediaURL;
-
-        item.saveButtonLabel = 'Continue to Next Step';
-        item.title = 'Add an Image';
-        item.desc = 'A picture speaks a thousand words. Upload an image that inspires people to support your fundraiser.';
-        item.component =
-          <MediaLibrary
-            blockType={'article'}
-            image={imageURL}
-            preview={imageURL}
-            handleSaveCallback={(url) => this.handleSaveCallback(url, 'imageURL', 'media')}
-            handleSave={util.handleFile}
-            library={library}
-            showBtns={'hide'}
-            saveLabel={'close'}
-            mobile={breakpoint === 'mobile' ? true : false }
-            uploadOnly={true}
-            uploadEditorSaveStyle={{ width: 250 }}
-            uploadEditorSaveLabel={'Click Here to Save Image'}
-            imageEditorOpenCallback={(editorOpen) => {
-              this.setState({ editorOpen })
-            }}
-          />
-        ;
-        break;
-      }
-
-      case 'logo': {
-        const logoBlock = util.getValue(blocks, 'logo', {});
-        const logoURL = util.getValue(logoBlock, 'content.image.URL', util.getValue(data, 'orgImageURL')).replace(/small$/i, 'original');
-        const orgImageURL = (!util.checkImage(logoURL) || !logoURL) ? '' : logoURL;
-        item.saveButtonLabel = 'Continue to Next Step';
-        item.title = 'Upload a Logo';
-        item.desc = 'Please upload an image of your logo.';
-        item.component =
-          <MediaLibrary
-            blockType={'article'}
-            image={orgImageURL}
-            preview={orgImageURL}
-            handleSaveCallback={(url) => this.handleSaveCallback(url, 'orgImageURL', 'logo')}
-            handleSave={util.handleFile}
-            library={library}
-            showBtns={'hide'}
-            saveLabel={'close'}
-            mobile={breakpoint === 'mobile' ? true : false }
-            uploadOnly={true}
-            uploadEditorSaveStyle={{ width: 250 }}
-            uploadEditorSaveLabel={'Click Here to Save Logo'}
-            imageEditorOpenCallback={(editorOpen) => {
-              this.setState({ editorOpen })
-            }}
-          />
-        ;
-        break;
-      }
-
-      case 'title':
-      default: {
-        const title = this.props.checkHelperIfHasDefaultValue('article', { field: 'title', defaultCheck: 'text' }) ? '' : util.getValue(data, 'title');
-
-        item.title = 'What are you raising money for?';
-        item.desc = 'Please enter a captivating title below to let your supporters know what you are raising money for.';
-        item.component =
-          this.props.textField('title', {
-            group: 'title',
-            fixedLabel: false,
-            label: 'Title',
-            placeholder: 'Click Here and Enter a Title',
-            maxLength: 128,
-            count: true,
-            required: false,
-            value: title,
-            onBlur: (name, value) => {
-              if (value && value !== title) {
-                const block = util.getValue(blocks, 'title', {});
-                const defaultFormat = util.getValue(block, 'options.defaultFormat', '');
-                const saveValue = defaultFormat.replace('{{TOKEN}}', value);
-                const blockObj = {
-                  ...block,
-                  content: {
-                    html: saveValue
-                  }
-                };
-                this.saveStep({ title: value }, blockObj, true, (res, err) => {
-                  if (!util.isEmpty(res) && !err) {
-                    const isVolunteer = util.getValue(res, 'volunteer');
-                    const volunteerID = util.getValue(res, 'volunteerID');
-
-                    if (isVolunteer && volunteerID) {
-                      this.props.sendResource('volunteerNotify', {
-                        orgID,
-                        id: [volunteerID],
-                        method: 'POST',
-                        data: {
-                          articleID
-                        }
-                      })
-                    };
-                  }
-                });
-              }
-            }
-          })
-        ;
-        break;
-      }
+      // no default
     }
     return (
       <div className='stepContainer'>
-        <div className='stepStatus'>
-          <GBLink onClick={() => this.processForm()}>
-            <span style={{ marginLeft: 20 }}>{item.saveButtonLabel} <span className='icon icon-chevron-right'></span></span>
-          </GBLink>
-        </div>
         <div className={`step ${item.className} ${open ? 'open' : ''}`}>
           <div className='stepTitleContainer'>
-            <span className={`icon icon-${item.icon}`}></span>
-            <div className='stepTitle'>
-              <div className='numberContainer'>
-                <span className='number'>Step {stepNumber}{ completed ? ':' : null}</span>
-                {completed ?
-                  <div className='completed'>
-                    <span className='icon icon-check'></span>Completed
-                  </div>
-                : null }
+            {completed ?
+              <div className='completed'>
+                <Icon><MdCheckCircle /></Icon> <span className='completedText'>Step {stepNumber} Completed</span>
               </div>
-              {item.title}
+            :
+            <div className='stepTitle'>
+              {item.desc}
             </div>
+            }
           </div>
-          <div className='stepsSubText'>{item.desc}</div>
           <div className={`stepComponent`}>
             {item.component}
           </div>
         </div>
-        { !this.state.editorOpen ?
+        { !this.state.editorOpen  && item.defaultButtonGroup ?
         <div className='button-group'>
-          <div className='button-item' style={{ width: 150 }}>
-            { !firstStep ? <GBLink className={`link`} disabled={firstStep} onClick={() => this.props.previousStep()}><span style={{ marginRight: '5px' }} className='icon icon-chevron-left'></span> Previous Step</GBLink> : <span>&nbsp;</span> }
-          </div>
+          {leftSide}
           <div className='button-item'>
             {this.props.saveButton(this.processForm, { label: item.saveButtonLabel })}
           </div>
-          <div className='button-item' style={{ width: 150 }}>
-            &nbsp;
-          </div>
+          {rightSide}
         </div> : null }
       </div>
     );
@@ -455,13 +708,11 @@ class BasicBuilderSteps extends Component {
   render() {
 
     return (
-      <div className='gbx3Steps'>
-        <Form id={`stepsForm`} name={`stepsForm`}>
-          <BasicBuilderStepsForm
-            {...this.props}
-          />
-        </Form>
-      </div>
+      <Form id={`stepsForm`} name={`stepsForm`}>
+        <BasicBuilderStepsForm
+          {...this.props}
+        />
+      </Form>
     )
   }
 }
@@ -474,6 +725,8 @@ function mapStateToProps(state, props) {
   const helperSteps = util.getValue(state, 'gbx3.helperSteps', {});
   const isVolunteer = util.getValue(state, 'gbx3.admin.isVolunteer');
   const volunteerID = util.getValue(state, 'gbx3.admin.volunteerID');
+  const breakpoint = util.getValue(state, 'gbx3.info.breakpoint');
+  const isMobile = breakpoint === 'mobile' ? true : false;
 
   return {
     isVolunteer,
@@ -484,9 +737,11 @@ function mapStateToProps(state, props) {
     orgID: util.getValue(state, 'gbx3.info.orgID'),
     data: util.getValue(state, 'gbx3.data', {}),
     kind: util.getValue(state, 'gbx3.info.kind', 'fundraiser'),
+    globals: util.getValue(state, 'gbx3.globals', {}),
     gbxStyle: util.getValue(state, 'gbx3.globals.gbxStyle', {}),
     button: util.getValue(state, 'gbx3.globals.button', {}),
-    blocks: util.getValue(state, 'gbx3.blocks.article', {})
+    blocks: util.getValue(state, 'gbx3.blocks.article', {}),
+    isMobile
   }
 }
 
@@ -498,5 +753,7 @@ export default connect(mapStateToProps, {
   saveGBX3,
   updateData,
   updateGlobals,
-  updateBlock
+  updateBlock,
+  setStyle,
+  resetBlock
 })(BasicBuilderSteps)
