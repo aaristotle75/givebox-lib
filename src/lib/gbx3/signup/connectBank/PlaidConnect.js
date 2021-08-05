@@ -73,6 +73,7 @@ class PlaidConnect extends React.Component {
 
   async exitPlaid(token, metaData, test = false) {
     const status = util.getValue(metaData, 'status');
+    console.log('execute -> ', status, metaData);
     if (status === 'institution_not_found' || test) {
       const updated = await this.props.updateOrgSignup({ signupPhase: 'manualConnect' });
       if (updated) {

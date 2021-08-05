@@ -50,7 +50,11 @@ class AdminMenu extends React.Component {
       default: {
         return (
           <>
-            { (signupPhase && completedPhases.length < phases.length) ? <SignupMenu stepsOnly={true} /> : null }
+            { (signupPhase && completedPhases.length < phases.length) ?
+              <SignupMenu stepsOnly={true} />
+            :
+              null
+            }
             { signupPhase !== 'signup' && signupPhase !== 'postSignup' ? <AdminMenuLayout blockType={blockType} /> : null }
           </>
         )

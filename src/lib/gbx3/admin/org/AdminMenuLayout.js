@@ -8,6 +8,9 @@ import {
 import {
   saveOrg
 } from '../../redux/gbx3actions';
+import {
+  openLaunchpad
+} from '../../../api/actions';
 
 
 class AdminMenuLayout extends React.Component {
@@ -79,6 +82,21 @@ class AdminMenuLayout extends React.Component {
           >
             Edit Page
           </li>
+          <li className='listHeader'>Quick Links</li>
+          <li
+            onClick={() => {
+              this.props.openLaunchpad();
+            }}
+          >
+            Open Dashboard
+          </li>
+          <li
+            onClick={() => {
+              this.props.openLaunchpad({ autoOpenSlug: 'money' });
+            }}
+          >
+            Manage Money
+          </li>
         </ul>
       </div>
     )
@@ -97,5 +115,6 @@ function mapStateToProps(state, props) {
 export default connect(mapStateToProps, {
   toggleModal,
   openOrgAdminMenu,
-  saveOrg
+  saveOrg,
+  openLaunchpad
 })(AdminMenuLayout);
