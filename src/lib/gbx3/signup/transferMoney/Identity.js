@@ -65,7 +65,8 @@ class Identity extends React.Component {
       loading,
       orgID,
       underwritingDocsLoading,
-      doc
+      doc,
+      signedURL
     } = this.props;
 
     if (loading || underwritingDocsLoading) return <Loader msg='Loading Principal...' />
@@ -87,7 +88,7 @@ class Identity extends React.Component {
             resourceType={'principal'}
             resourceID={util.getValue(principal, 'ID', null)}
             tag={'proof_of_id'}
-            previewURL={util.getValue(doc, 'URL')}
+            previewURL={signedURL}
             docID={util.getValue(doc, 'ID')}
             showPreview={true}
             orgID={orgID}
@@ -105,14 +106,18 @@ function mapStateToProps(state, props) {
   const principal = util.getValue(orgPrincipalsData, 0, {});
   const loading = util.getValue(state, 'merchantApp.principalLoading', false);
   const underwritingDocs = util.getValue(state, 'resource.underwritingDocs', {});
-  const underwritingDocsData = util.getValue(underwritingDocs, 'data');
+  const underwritingDocsData = util.getValue(underwritingDocs, 'data', []);
   const doc = util.getValue(underwritingDocsData, 0, {});
+  const presignedRequestList = util.getValue(underwritingDocs, 'meta.presignedRequests', []);
+  const presignedRequestData = util.getValue(presignedRequestList, 0, {});
+  const signedURL = util.getValue(presignedRequestData, 'signedURL');
   const underwritingDocsLoading = util.getValue(state, 'merchantApp.underwritingDocsLoading', false);
 
   return {
     principal,
     loading,
     doc,
+    signedURL,
     underwritingDocsLoading
   }
 }

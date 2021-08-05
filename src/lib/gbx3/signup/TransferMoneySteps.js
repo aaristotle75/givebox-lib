@@ -465,20 +465,20 @@ class TransferMoneyStepsForm extends React.Component {
 
         if (approvedForTransfers) {
           item.desc =
-            <div>
+            <div className='primaryGradientText'>
               <span style={{ fontWeight: 400, color: '#29eee6' }}>Congratulations, you are approved to transfer money!</span><br /><br />
               Click the Manage Money button below to view your available balance and transfer money.
             </div>
           ;
         } else if (isCompleted) {
           item.desc =
-            <div>
+            <div className='primaryGradientText'>
               We are reviewing your account. You should have approval status in the next 3-5 business days.
             </div>
           ;
         } else {
           item.desc =
-            <div>
+            <div className='primaryGradientText'>
               You must complete all the previous steps to get approved to transfer money.
             </div>
           ;

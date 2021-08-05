@@ -53,11 +53,11 @@ class TransferStatus extends React.Component {
       desc =
         <div style={{ marginLeft: 0, marginRight: 0 }} className='stepsSubText'>
           { contactRequestDate ?
-            <div>
+            <div className='primaryGradientText'>
               Your contact request has been received and you will receive an email from a Customer Service Representative in 1-2 business days.
             </div>
           :
-            <div>
+            <div className='primaryGradientText'>
               If you have questions about your approval status, click the link below to have a Givebox Customer Support representative contact you by email.
               <br /><br />
               <GBLink onClick={this.contactRequest}>
