@@ -43,6 +43,8 @@ import SignupShare from './SignupShare';
 const defaultReceiptTemplate = require('html-loader!../admin/receipt/receiptEmailDefaultContent.html');
 const GBX3_URL = process.env.REACT_APP_ENV === 'local' ? process.env.REACT_APP_GBX_SHARE : process.env.REACT_APP_GBX_URL;
 
+const ENTRY_URL = process.env.REACT_APP_ENTRY_URL;
+
 class SignupStepsForm extends React.Component {
 
   constructor(props) {
@@ -1174,6 +1176,12 @@ class SignupStepsForm extends React.Component {
           <div className='rightSide'>
             <Image className='pulsate' url={isMobile ? 'https://cdn.givebox.com/givebox/public/gb-logo5.png' : 'https://cdn.givebox.com/givebox/public/givebox-logo_white.png'} alt='Givebox Logo' maxHeight={30} />
           </div>
+        </div> : null }
+        { slug === 'orgName' ?
+        <div className='flexCenter'>
+          <GBLink onClick={() => window.location.replace(ENTRY_URL)}>
+            Already have an account, click here to login.
+          </GBLink>
         </div> : null }
       </div>
     );
