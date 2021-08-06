@@ -167,9 +167,18 @@ class Dashboard extends Component {
             )
           }}
         />
+        <Form
+          name='testForm'
+          options={{
+            color: '#ecab1f'
+          }}>
+          <TestForm {...this.props} />
+        </Form>
+        {/*
         <Lottie
           animationData={coverPlaceholder.default}
         />
+        */}
         {/* <Plaid /> */}
         {/*
         <Compress />
@@ -211,13 +220,6 @@ class Dashboard extends Component {
           progressColor2={'#29eee6'}
           gradient={true}
         />
-        <Form
-          name='testForm'
-          options={{
-            color: '#ecab1f'
-          }}>
-          <TestForm {...this.props} />
-        </Form>
 
         <Editor
           orgID={185}

@@ -52,7 +52,7 @@ class TextField extends Component {
 
   onChange(e) {
     e.preventDefault();
-    const value = this.props.trim ? e.target.value.trim() : e.target.value;
+    const value = e.target.value;
     if (this.state.status !== 'active') this.setState({status: 'active'});
     this.setState({ value });
     if (this.props.onChange) this.props.onChange(e);
