@@ -45,14 +45,14 @@ class TextField extends Component {
 
   onBlur(e) {
     e.preventDefault();
-    const value = e.target.value;
+    const value = this.props.trim ? e.target.value.trim() : e.target.value;
     this.setState({status: 'idle'});
     if (this.props.onBlur) this.props.onBlur(e);
   }
 
   onChange(e) {
     e.preventDefault();
-    const value = e.target.value;
+    const value = this.props.trim ? e.target.value.trim() : e.target.value;
     if (this.state.status !== 'active') this.setState({status: 'active'});
     this.setState({ value });
     if (this.props.onChange) this.props.onChange(e);
@@ -159,7 +159,8 @@ TextField.defaultProps = {
   inputStyle: {},
   moneyStyle: {},
   autoComplete: 'nope',
-  errorType: 'tooltip'
+  errorType: 'tooltip',
+  trim: false
 }
 
 export default TextField;

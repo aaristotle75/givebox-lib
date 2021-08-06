@@ -320,7 +320,6 @@ class Form extends Component {
     const field = has(this.state.fields, name) ? this.state.fields[name] : null;
     if (field) {
       let value = e.target.value;
-      if (field.trim) value.trim();
       if (field.validate === 'taxID') value = _v.formatTaxID(value);
       if (field.validate === 'ssn') value = _v.formatSSN(value);
       if (field.validate === 'phone') value = _v.formatPhone(value);
