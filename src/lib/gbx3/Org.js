@@ -165,18 +165,27 @@ class Org extends React.Component {
       pagesEnabled,
       pageSlug,
       pages,
-      stage
+      stage,
+      orgSlug
     } = this.props;
 
     const isAdmin = stage === 'admin' ? true : false;
     const options = [];
 
     Object.entries(pages).forEach(([key, value]) => {
+      const pageURL = `${GBX_URL}/${orgSlug}?page=${util.getValue(value, 'customSlug', value.slug)}`;
       const enabled = pagesEnabled.includes(key) ? true : false;
       if (enabled || isAdmin) {
         const primaryText = util.getValue(value, 'name', key);
-        const secondaryText = !enabled ? <span className='gray'>Disabled</span> : null;
-        const rightText = value.slug === pageSlug ? <span className='icon icon-check'></span> : null;
+        const secondaryText =
+          <div>
+            <span>{pageURL}</span>
+            {!enabled ? <span style={{ display: 'block' }} className='gray'>Disabled</span> : null}
+          </div>
+        ;
+        const rightText = value.slug === pageSlug ?
+          <span className='icon icon-check'></span>
+        : null;
         options.push({ key, rightText, secondaryText, primaryText, value: value.slug });
       }
     });
@@ -413,7 +422,8 @@ function mapStateToProps(state, props) {
     title,
     pageState,
     pageSearch,
-    cameFromNonprofitAdmin
+    cameFromNonprofitAdmin,
+    orgSlug: util.getValue(state, 'resource.gbx3Org.data.slug')
   }
 }
 
