@@ -399,10 +399,10 @@ class GBX3 extends React.Component {
 
     if (!preview && articleID) {
       const data = {
-        type: 'details',
         articleID,
-        ebToken,
-        ebEmail
+        type: 'details',
+        emailBlastToken: ebToken,
+        emailBlastEmail: ebEmail
       };
       this.props.sendResource('articleView', {
         data,
