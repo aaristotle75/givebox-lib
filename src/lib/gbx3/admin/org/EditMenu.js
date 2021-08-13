@@ -136,10 +136,10 @@ class EditMenu extends React.Component {
             desc: `DELETE ${name} Page`,
             subDesc: 'Please confirm you want to delete this page.',
             confirmText: 'Yes, Delete Page',
-            callback: () => {
-              this.deletePage(slug, () => {
-                this.props.toggleModal('orgRemove', false);
-              });
+            useConfirmCallback: true,
+            successMsg: 'Page deleted successfully.',
+            callback: (confirmCallback) => {
+              this.deletePage(slug, confirmCallback);
             }
           });
         }}

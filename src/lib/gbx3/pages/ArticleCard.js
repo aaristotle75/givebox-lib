@@ -70,10 +70,11 @@ class ArticleCard extends Component {
       case 'removeCard': {
         this.props.toggleModal('orgRemove', true, {
           desc: `REMOVE ${title} From Page`,
-          subDesc: 'Please confirm you want to remove this card from the page.',
-          confirmText: 'Yes, Remove Card',
-          callback: () => {
-            this.props.removeCard(articleID, kind, kindID, () => this.props.toggleModal('orgRemove', false));
+          subDesc: 'Please confirm you want to remove this form from the page.',
+          confirmText: 'Yes, Remove Form',
+          useConfirmCallback: true,
+          callback: (confirmCallback) => {
+            this.props.removeCard(articleID, kind, kindID, confirmCallback);
           }
         });
         break;
@@ -84,7 +85,8 @@ class ArticleCard extends Component {
           desc: `MAKE PRIVATE ${title}`,
           subDesc: `Please confirm you want to make this ${types.kind(kind).name.toLowerCase()} private. Making private will hide it from public view and remove it from this page.`,
           confirmText: 'Yes, Make Private',
-          callback: () => {
+          useConfirmCallback: true,
+          callback: (confirmCallback) => {
             this.props.sendResource(types.kind(kind).api.publish, {
               orgID,
               id: [kindID],
@@ -96,9 +98,7 @@ class ArticleCard extends Component {
                 landing: false
               },
               callback: (res, err) => {
-                this.props.removeCard(articleID, kind, kindID, () => {
-                  this.props.toggleModal('orgRemove', false);
-                });
+                this.props.removeCard(articleID, kind, kindID, confirmCallback);
               }
             });
           }

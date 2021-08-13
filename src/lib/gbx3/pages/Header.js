@@ -83,8 +83,8 @@ class Header extends React.Component {
                       this.props.toggleModal('orgRemove', true, {
                         desc: 'Remove Cover Photo',
                         subDesc: 'Are you sure you want to remove your cover photo?',
-                        callback: () => {
-                          this.props.saveGlobal('coverPhoto', { url: '' }, () => this.props.toggleModal('orgRemove', false));
+                        callback: (confirmCallback) => {
+                          this.props.saveGlobal('coverPhoto', { url: '' }, confirmCallback);
                         }
                       })
                     }

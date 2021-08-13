@@ -232,7 +232,7 @@ class Org extends React.Component {
               isSending: true,
               orgUpdated: true,
               callback: (res, err) => {
-                if (callback) callback();
+                if (callback) callback(res, err);
                 this.props.reloadGetArticles();
               }
             });
@@ -248,6 +248,7 @@ class Org extends React.Component {
             landing: false
           },
           callback: (res, err) => {
+            if (callback) callback(res, err);
             this.props.reloadGetArticles();
           }
         });

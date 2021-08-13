@@ -109,9 +109,9 @@ class SignupPage extends React.Component {
                         this.props.toggleModal('orgRemove', true, {
                           desc: 'Remove Cover Photo',
                           subDesc: 'Are you sure you want to remove your cover photo?',
-                          callback: async () => {
+                          callback: async (confirmCallback) => {
                             const updated = await this.props.updateOrgSignupField('org', { coverPhotoURL: '' });
-                            if (updated) this.props.toggleModal('orgRemove', false);
+                            if (updated) confirmCallback();
                           }
                         })
                       }
