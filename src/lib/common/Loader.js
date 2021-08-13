@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import Portal from './Portal';
 import * as util from './utility';
+import Lottie from 'lottie-react';
+import * as universalLoader from './loader.json';
 
 export default class Loader extends Component {
 
@@ -54,8 +56,17 @@ export default class Loader extends Component {
           <div className={`loader ${className}`} />
           <div className='loaderContent'>
             <div className='loadingText'>
-               <div>
+               <div className='flexCenter'>
+                 <Lottie
+                  style={{
+                    width: 45,
+                    height: 45
+                  }}
+                   animationData={universalLoader.default}
+                 />
+                {/*
                 <img src='https://cdn.givebox.com/givebox/public/universal-loader-60fps.png' alt='Loading' />
+                */}
                </div>
               <span className={`${showMsg ? '' : 'displayNone'}`} style={{color: `${textColor ? textColor : '#fff'}` }}>{msg}</span>
             </div>
