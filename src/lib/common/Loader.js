@@ -56,18 +56,16 @@ export default class Loader extends Component {
           <div className={`loader ${className}`} />
           <div className='loaderContent'>
             <div className='loadingText'>
-               <div className='flexCenter'>
-                 <Lottie
-                  style={{
-                    width: 45,
-                    height: 45
-                  }}
-                   animationData={universalLoader.default}
-                 />
-                {/*
-                <img src='https://cdn.givebox.com/givebox/public/universal-loader-60fps.png' alt='Loading' />
-                */}
-               </div>
+              <Lottie
+               style={{
+                 width: 45,
+                 height: 45
+               }}
+                animationData={universalLoader.default}
+              />
+              {/*
+              <img src='https://cdn.givebox.com/givebox/public/universal-loader-60fps.png' alt='Loading' />
+              */}
               <span className={`${showMsg ? '' : 'displayNone'}`} style={{color: `${textColor ? textColor : '#fff'}` }}>{msg}</span>
             </div>
           </div>

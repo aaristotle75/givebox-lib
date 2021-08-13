@@ -44,7 +44,6 @@
 }
 
 .loaderContent {
-  display: table;
   position: absolute;
   left: 50%;
   top: 0%;
@@ -58,11 +57,16 @@
   margin: 0 auto;
   overflow: hidden;
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .loadingText {
-  display: table-cell;
-  vertical-align: middle;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   color: #000;
   font-size: 14px;
   z-index: 10000035;
