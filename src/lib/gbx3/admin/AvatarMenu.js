@@ -123,7 +123,7 @@ class AvatarMenu extends React.Component {
       )
     }
 
-    const orgImage = util.checkImage(access.orgImage) ? access.orgImage : null;
+    const orgImage = util.checkImage(util.getValue(access, 'orgImage')) ? access.orgImage : null;
 
     return (
       <div className='modalWrapper'>
