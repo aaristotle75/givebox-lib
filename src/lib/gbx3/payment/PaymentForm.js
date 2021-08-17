@@ -573,9 +573,39 @@ class PaymentFormClass extends Component {
 
     fields.city = this.props.textField('city', { group: 'address', required: address.required, label: 'City', fixedLabel: true, placeholder: 'City', onBlur: this.onCustomerChange, value: util.getValue(cartCustomer, 'city') });
 
-    fields.state = this.props.dropdown('state', { group: 'address', label: 'State', fixedLabel: true, selectLabel: 'State', options: selectOptions.states, required: address.required, onBlur: this.onCustomerChange, value: util.getValue(cartCustomer, 'state') })
+    fields.state = this.props.dropdown('state', {
+      group: 'address',
+      label: 'State',
+      fixedLabel: true,
+      selectLabel: 'State',
+      options: selectOptions.states,
+      required: address.required,
+      onBlur: this.onCustomerChange,
+      value: util.getValue(cartCustomer, 'state'),
+      onChange: (name, value, field, fields) => {
+        if (value === 'NON_USA') {
+          this.props.fieldProp('zip', { value: '00000', readOnly: true, readOnlyText: 'Outside USA: ZIP cannot be edited.' });
+        } else {
+          const zipValue = util.getValue(fields, 'zip.value');
+          this.props.fieldProp('zip', { readOnly: false, value: zipValue === '00000' ? '' : null });
+        }
+      },
+    });
 
-    fields.zip = this.props.textField('zip', { group: 'address', required: true, label: 'Zip Code', fixedLabel: true, placeholder: 'Zip Code', maxLength: 5, inputMode: 'numeric', onBlur: this.onCustomerChange, value: util.getValue(cartCustomer, 'zip') });
+    fields.zip = this.props.textField('zip', {
+      group: 'address',
+      required: true,
+      label: 'Zip Code',
+      fixedLabel: true,
+      placeholder: 'Zip Code',
+      maxLength: 5,
+      inputMode: 'numeric',
+      onBlur: this.onCustomerChange,
+      value: util.getValue(cartCustomer, 'zip'),
+      tooltipTopStyle: {
+        minWidth: 100
+      }
+    });
 
     fields.employer = this.props.textField('employer', { group: 'customer', required: work.required, label: 'Employer', fixedLabel: true, placeholder: 'Employer', onBlur: this.onCustomerChange, value: util.getValue(cartCustomer, 'employer') });
 

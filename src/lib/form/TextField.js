@@ -84,7 +84,8 @@ class TextField extends Component {
       moneyStyle,
       autoComplete,
       required,
-      leftBar
+      leftBar,
+      tooltipTopStyle
     } = this.props;
 
     const {
@@ -139,7 +140,7 @@ class TextField extends Component {
               </Fade>
             }
           </div>
-          <div className={`tooltipTop ${(errorType !=='tooltip' || strength) && 'displayNone'}`}>
+          <div style={tooltipTopStyle} className={`tooltipTop ${(errorType !=='tooltip' || strength) && 'displayNone'}`}>
             {error}{readOnly ? readOnlyText : ''}
             <i></i>
           </div>
@@ -160,7 +161,8 @@ TextField.defaultProps = {
   moneyStyle: {},
   autoComplete: 'nope',
   errorType: 'tooltip',
-  trim: false
+  trim: false,
+  tooltipTopStyle: {}
 }
 
 export default TextField;

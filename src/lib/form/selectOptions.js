@@ -1,4 +1,5 @@
 export const states = [
+{ value: 'NON_USA', primaryText: 'Outside USA' },
 { value: 'AL', primaryText: 'Alabama' },
 { value: 'AK', primaryText: 'Alaska' },
 { value: 'AZ', primaryText: 'Arizona' },
@@ -60,19 +61,19 @@ export const states = [
 ];
 
 export const legalTypes = [
-	//{ value: 'INDIVIDUAL_SOLE_PROPRIETORSHIP', primaryText: 'Sole Proprietor' },
-	{ value: 'CORPORATION', primaryText: 'Corporation' },
-	{ value: 'LIMITED_LIABILITY_COMPANY', primaryText: 'Limited Liability Company' },
-	//{ value: 'PARTNERSHIP', primaryText: 'Partnership' },
-	{ value: 'TAX_EXEMPT_ORGANIZATION', primaryText: 'Tax Exempt Organization' },
-	//{ value: 'GOVERNMENT_AGENCY', primaryText: 'Government Agency' }
+  //{ value: 'INDIVIDUAL_SOLE_PROPRIETORSHIP', primaryText: 'Sole Proprietor' },
+  { value: 'CORPORATION', primaryText: 'Corporation' },
+  { value: 'LIMITED_LIABILITY_COMPANY', primaryText: 'Limited Liability Company' },
+  //{ value: 'PARTNERSHIP', primaryText: 'Partnership' },
+  { value: 'TAX_EXEMPT_ORGANIZATION', primaryText: 'Tax Exempt Organization' },
+  //{ value: 'GOVERNMENT_AGENCY', primaryText: 'Government Agency' }
 ];
 
 
 export const articleKinds = [
-	{ value: 'fundraiser', primaryText: 'Fundraiser' },
-	{ value: 'event', primaryText: 'Event' },
-	{ value: 'invoice', primaryText: 'Invoice' },
-	{ value: 'membership', primaryText: 'Membership' },
-	{ value: 'sweepstake', primaryText: 'Sweepstake' },
+  { value: 'fundraiser', primaryText: 'Fundraiser' },
+  { value: 'event', primaryText: 'Event' },
+  { value: 'invoice', primaryText: 'Invoice' },
+  { value: 'membership', primaryText: 'Membership' },
+  { value: 'sweepstake', primaryText: 'Sweepstake' },
 ];

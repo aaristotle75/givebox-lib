@@ -1841,7 +1841,7 @@
 
     .dropdown button .selected.label,
     .dropdown .label:not(button) {
-      font-size: $med-text-size;
+      font-size: 14px;
       @media (max-width: $breakpoint) {
         font-size: $normal-text-size;
       }
@@ -2301,6 +2301,10 @@
   padding: 20px 0;
   @media (max-width: $breakpoint) {
     margin-top: 50px;
+  }
+
+  button.button {
+    background: $white;
   }
 
   .paymentFormHeaderTitle {

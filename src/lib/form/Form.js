@@ -758,6 +758,7 @@ class Form extends Component {
         color={params.color || this.props.primaryColor}
         leftBar={params.leftBar}
         trim={params.trim}
+        tooltipTopStyle={params.tooltipTopStyle}
       />
     )
   }
@@ -1079,7 +1080,7 @@ class Form extends Component {
             }
           }
         }
-        if (!returnCode) this.formProp({ error: true, errorMsg: `Error saving: ${error}` });
+        if (!returnCode) this.formProp({ error: true, errorMsg: `Error: ${error}` });
       }
     }
 
