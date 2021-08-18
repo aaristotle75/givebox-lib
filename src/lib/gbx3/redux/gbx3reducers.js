@@ -52,12 +52,14 @@ export function gbx3(state = {
     card: {},
     org: {},
     article: {},
-    receipt: {}
+    receipt: {},
+    emailBlast: {}
   },
   layouts: {
     org: {},
     article: {},
-    receipt: {}
+    receipt: {},
+    emailBlast: {}
   },
   globals: {
     gbxStyle: {
@@ -103,6 +105,10 @@ export function gbx3(state = {
         'campaignsBlock'
       ],
       receipt: [
+        'contentBlock',
+        'imageBlock'
+      ],
+      emailBlast: [
         'contentBlock',
         'imageBlock'
       ]

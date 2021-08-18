@@ -129,6 +129,10 @@ import {
 } from './gbx3/redux/merchantReducers';
 
 import GBX3 from './gbx3/GBX3';
+import Block from './gbx3/blocks/Block';
+import Text from './gbx3/blocks/Text';
+import Media from './gbx3/blocks/Media';
+import { blockTemplates, defaultBlocks } from './gbx3/blocks/blockTemplates';
 
 import * as launchpadConfig from './gbx3/admin/launchpad/launchpadConfig';
 
@@ -202,6 +206,11 @@ export {
   GBX3,
   gbx3reducer,
   launchpadConfig,
+  blockTemplates,
+  defaultBlocks,
+  Block,
+  Text,
+  Media,
 
 // gbx3 actions
   loadGBX3,

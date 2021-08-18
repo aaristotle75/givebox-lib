@@ -605,6 +605,60 @@ const invoice = {
   }
 };
 
+const emailBlockTemplate = {
+  contentBlock,
+  orgName: {
+    ...orgName,
+    order: 2,
+    options: {
+      defaultFormat: '<p style="text-align:center;font-size:12px">{{TOKEN}}</p>'
+    },
+  },
+  title: {
+    ...title,
+    order: 1,
+    updateOptions: null,
+    options: {
+      defaultFormat: '<p style="text-align:center;font-size:16px">{{TOKEN}}</p>'
+    },
+  },
+  media: {
+    ...media,
+    disallowRadius: true,
+    updateOptions: null,
+    ...{
+    options: {
+      ...media.options,
+      image: {
+        ...media.options.image,
+        borderRadius: 0
+      },
+      video: null
+    }}
+  },
+  description: {
+    ...description,
+    updateOptions: null,
+    options: {
+      button: {}
+    },
+  },
+  imageBlock: {
+    ...imageBlock,
+    disallowRadius: true,
+    updateOptions: null,
+    ...{
+    options: {
+      ...media.options,
+      image: {
+        ...media.options.image,
+        borderRadius: 0
+      },
+      video: null
+    }}
+  }
+};
+
 export const blockTemplates = {
   article: {
     fundraiser,
@@ -614,57 +668,10 @@ export const blockTemplates = {
     sweepstake
   },
   receipt: {
-    contentBlock,
-    orgName: {
-      ...orgName,
-      order: 2,
-      options: {
-        defaultFormat: '<p style="text-align:center;font-size:12px">{{TOKEN}}</p>'
-      },
-    },
-    title: {
-      ...title,
-      order: 1,
-      updateOptions: null,
-      options: {
-        defaultFormat: '<p style="text-align:center;font-size:16px">{{TOKEN}}</p>'
-      },
-    },
-    media: {
-      ...media,
-      disallowRadius: true,
-      updateOptions: null,
-      ...{
-      options: {
-        ...media.options,
-        image: {
-          ...media.options.image,
-          borderRadius: 0
-        },
-        video: null
-      }}
-    },
-    description: {
-      ...description,
-      updateOptions: null,
-      options: {
-        button: {}
-      },
-    },
-    imageBlock: {
-      ...imageBlock,
-      disallowRadius: true,
-      updateOptions: null,
-      ...{
-      options: {
-        ...media.options,
-        image: {
-          ...media.options.image,
-          borderRadius: 0
-        },
-        video: null
-      }}
-    }
+    ...emailBlockTemplate
+  },
+  emailBlast: {
+    ...emailBlockTemplate
   },
   org: {
     logo: {
@@ -740,6 +747,12 @@ export const defaultBlocks = {
     membership: [ ...articleDefaults ]
   },
   receipt: [
+    'title',
+    'orgName',
+    'media',
+    'description'
+  ],
+  emailBlast: [
     'title',
     'orgName',
     'media',

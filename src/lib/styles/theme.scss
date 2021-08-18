@@ -891,9 +891,9 @@ ul.selectable {
   }
 
   li:hover {
-    background: $mainColor;
     color: $white;
-    @include default-transition(.25s);
+    @include purpleToSalmonOnly;
+    @include transition(background .25s);
     .gray {
       color: $white !important;
     }
@@ -1606,7 +1606,7 @@ button.supportLink {
       font-size: $normal-text-size;
       margin-left: 5px;
     }
-    
+
     .dropdown .label {
       color: $mainColor;
       font-weight: 300;
