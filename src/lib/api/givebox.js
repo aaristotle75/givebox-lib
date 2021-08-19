@@ -752,6 +752,10 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       endpoint = `orgs/${getIndex(id, 0, orgID)}/transactions`;
       break;
     }
+    case 'orgTransactionMove': {
+      endpoint = `orgs/${orgID}/transactions/${id[0]}/move`;
+      break;
+    }
     case 'orgFinanceStats': {
       endpoint = `orgs/${getIndex(id, 0, orgID)}/finance-stats`;
       break;

@@ -20,6 +20,7 @@ import { toggleModal } from '../lib/api/actions';
 import ModalRoute from '../lib/modal/ModalRoute';
 import Lottie from 'lottie-react';
 import * as coverPlaceholder from '../lib/gbx3/pages/coverPlaceholder.json';
+import Paginate from '../lib/table/Paginate';
 
 class Dashboard extends Component {
 
@@ -41,6 +42,12 @@ class Dashboard extends Component {
     console.log('execute coverPlaceholder -> ', coverPlaceholder);
     //this.getVideo();
     //this.props.toggleModal('testModal2', true);
+    this.props.getResource('orgCustomers', {
+      search: {
+        sort: 'firstName'
+      },
+      reload: true
+    });
   }
 
   componentWillUnmount() {
@@ -48,6 +55,24 @@ class Dashboard extends Component {
       clearTimeout(this.timeout);
       this.timeout = null;
     }
+  }
+
+  listCustomers() {
+    const items = [];
+    const customers = util.getValue(this.props.customers, 'data', {});
+    if (!util.isEmpty(customers)) {
+      Object.entries(customers).forEach(([key, value]) => {
+        items.push(
+          <li onClick={() => console.log('execute customer -> ', value.ID)} style={{padding: '15px'}} className='ripple' key={key}>
+            <div className='liContent'>
+              <span style={{fontWeight: 300 }} className='smallText gray'>Customer Since {util.getDate(value.createdAt, 'MM/DD/YYYY')}</span>
+              <span className='normalText'>{value.firstName}{value.lastName ? ` ${value.lastName},` : ','} {value.email}</span>
+            </div>
+          </li>
+        );
+      });
+    }
+    return items;
   }
 
   makeQueryStr(obj) {
@@ -154,6 +179,13 @@ class Dashboard extends Component {
     return (
       <div>
         <h2>Dashboard</h2>
+        <div style={{ position: 'relative', overflow: 'scroll' }}>
+          <ul className='selectable selectArticle left'>
+            {this.listCustomers()}
+          </ul>
+          <Paginate name={'orgCustomers'} />
+        </div>
+        {/*
         <ModalRoute
           id='testModal2'
           component={() => {
@@ -174,6 +206,7 @@ class Dashboard extends Component {
           }}>
           <TestForm {...this.props} />
         </Form>
+        */}
         {/*
         <Lottie
           animationData={coverPlaceholder.default}
@@ -244,6 +277,7 @@ class Dashboard extends Component {
 function mapStateToProps(state, props) {
 
   return {
+    customers: state.resource.orgCustomers ? state.resource.orgCustomers : {}
   }
 }
 

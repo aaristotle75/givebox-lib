@@ -903,6 +903,10 @@ ul.selectable {
     .date {
       color: $white;
     }
+
+    .liContentRightSide {
+      opacity: 1;
+    }
   }
 
   .imgWrapper {
@@ -945,6 +949,14 @@ ul.selectable {
 
   .liContent {
     margin-left: 10px;
+  }
+
+  .liContentRightSide {
+    vertical-align: middle;
+    text-align: right;
+    display: inline-block;
+    opacity: 0;
+    @include transition(opacity .25s);
   }
 
 }
