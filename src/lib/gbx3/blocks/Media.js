@@ -365,7 +365,7 @@ class Media extends Component {
                       </div>
                     </div>
                   </Collapse>
-                  { blockType === 'receipt' ?
+                  { blockType === 'receipt' || blockType === 'emailBlast' ?
                   <Collapse
                     label={'Link Image'}
                     iconPrimary='link'

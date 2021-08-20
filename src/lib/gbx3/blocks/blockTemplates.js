@@ -320,6 +320,26 @@ export const textBlock = {
   }
 };
 
+export const buttonBlock = {
+  order: 5,
+  name: 'buttonBlock',
+  title: 'Button',
+  type: 'ButtonLink',
+  multiple: true,
+  mobileRelativeBlock: 10,
+  content: {
+    text: 'Click Button',
+    link: null,
+    style: {}
+  },
+  options: {
+  },
+  grid: {
+    desktop: { i: 'buttonBlock', x: 1, y: 0, w: 12, h: 2, enabled: true },
+    mobile: { i: 'buttonBlock', x: 1, y: 0, w: 6, h: 2, enabled: true }
+  }
+};
+
 export const contentBlock = {
   order: 6,
   name: 'contentBlock',
@@ -606,6 +626,7 @@ const invoice = {
 };
 
 const emailBlockTemplate = {
+  buttonBlock,
   contentBlock,
   orgName: {
     ...orgName,
