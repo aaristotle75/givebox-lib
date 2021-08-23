@@ -18,6 +18,8 @@ import LZString from 'lz-string';
 import has from 'has';
 const merge = require('deepmerge');
 
+const GBX_URL = process.env.REACT_APP_GBX_SHARE;
+
 export function updateGBX3(name, value) {
   return {
     type: types.UPDATE_GBX3,
@@ -1147,9 +1149,12 @@ export function saveReceipt(options = {}) {
     const articleData = util.getValue(gbx3, 'data', {});
     const receiptConfig = util.getValue(gbx3, 'data.receiptConfig', {});
     const apiName = util.getValue(gbx3, 'info.apiName');
+    const articleID = util.getValue(gbx3, 'info.articleID');
+    const kind = util.getValue(gbx3, 'info.kind', 'fundraiser');
     const kindID = util.getValue(gbx3, 'info.kindID');
     const orgID = util.getValue(gbx3, 'info.orgID');
     const blocks = util.getValue(gbx3, `blocks.receipt`, {});
+    const primaryColor = util.getValue(gbx3, 'globals.gbxStyle.primaryColor', '#698df4');
 
     let receiptHTML = '';
     const orderedBlocks = [];
@@ -1168,15 +1173,23 @@ export function saveReceipt(options = {}) {
         }
 
         case 'ButtonLink': {
-          const link = util.getValue(value, 'content.link');
-          const text = util.getValue(value, 'content.text');
-          const styleObj = util.getValue(value, 'content.style', {});
+          const link = util.getValue(value, 'content.link', `${GBX_URL}/${articleID}`);
+          const text = util.getValue(value, 'content.text', types2.kind(kind).cta);
+          const styleObj = !util.isEmpty(util.getValue(value, 'content.style')) ? util.getValue(value, 'content.style', {}) : {
+            textColor: '#ffffff',
+            backgroundColor: primaryColor,
+            fontSize: 16,
+            borderRadius: 15,
+            width: 200,
+            display: 'inline-block',
+            align: 'center'
+          };
           const color = util.getValue(styleObj, 'textColor');
           const backgroundColor = util.getValue(styleObj, 'backgroundColor');
           const fontSize = `${util.getValue(styleObj, 'fontSize')}px`;
           const borderRadius = `${util.getValue(styleObj, 'borderRadius')}px`;
           const width = `${util.getValue(styleObj, 'width')}px`;
-          const style = `display:inline-block;color:${color};background-color:${backgroundColor};font-size:${fontSize};border-radius:${borderRadius};width:${width};font-weight:400;white-space:nowrap;padding:10px 25px;line-height:17px;text-decoration:none;`;
+          const style = `display:inline-block;color:${color};background-color:${backgroundColor};font-size:${fontSize};border-radius:${borderRadius};width:${width};font-weight:400;white-space:nowrap;padding:10px 0px;line-height:17px;text-decoration:none;`;
 
           receiptHTML = receiptHTML + `<p style="margin: 10px 0px;text-align:${util.getValue(styleObj, 'align', 'center')};"><a href="${link}" style="${style}">${text}</a></p>`;
           break;

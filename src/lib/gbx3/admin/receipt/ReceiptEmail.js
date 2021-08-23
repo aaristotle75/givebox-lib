@@ -4,6 +4,9 @@ import { connect } from 'react-redux';
 import * as util from '../../../common/utility';
 import Moment from 'moment';
 import ReceiptEmailLayout from './ReceiptEmailLayout';
+import {
+  saveReceipt
+} from '../../redux/gbx3actions';
 
 const emailTemplate = require('html-loader!./receiptEmailTemplate.html');
 const defaultContent = require('html-loader!./receiptEmailDefaultContent.html');
@@ -19,6 +22,8 @@ class ReceiptEmailEdit extends React.Component {
   }
 
   componentDidMount() {
+    this.props.saveReceipt();
+    
     if (this.props.previewMode) {
       this.setPreviewHTML();
     }
@@ -100,4 +105,5 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
+  saveReceipt
 })(ReceiptEmailEdit);

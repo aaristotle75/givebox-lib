@@ -26,7 +26,7 @@ class ButtonLink extends Component {
       width: 200,
       display: 'inline-block',
       align: 'center',
-      padding: '10px 25px',
+      padding: '10px 0px',
       ...util.getValue(props.blockContent, 'style', {})
     };
 
