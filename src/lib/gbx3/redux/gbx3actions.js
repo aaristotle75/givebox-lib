@@ -1167,6 +1167,21 @@ export function saveReceipt(options = {}) {
           break;
         }
 
+        case 'ButtonLink': {
+          const link = util.getValue(value, 'content.link');
+          const text = util.getValue(value, 'content.text');
+          const styleObj = util.getValue(value, 'content.style', {});
+          const color = util.getValue(styleObj, 'textColor');
+          const backgroundColor = util.getValue(styleObj, 'backgroundColor');
+          const fontSize = `${util.getValue(styleObj, 'fontSize')}px`;
+          const borderRadius = `${util.getValue(styleObj, 'borderRadius')}px`;
+          const width = `${util.getValue(styleObj, 'width')}px`;
+          const style = `display:inline-block;color:${color};background-color:${backgroundColor};font-size:${fontSize};border-radius:${borderRadius};width:${width};font-weight:400;white-space:nowrap;padding:10px 25px;line-height:17px;text-decoration:none;`;
+
+          receiptHTML = receiptHTML + `<p style="margin: 10px 0px;text-align:${util.getValue(styleObj, 'align', 'center')};"><a href="${link}" style="${style}">${text}</a></p>`;
+          break;
+        }
+
         case 'Text':
         default: {
           const fieldValue =  util.getValue(articleData, `${util.getValue(value, 'field')}`);

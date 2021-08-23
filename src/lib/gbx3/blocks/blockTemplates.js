@@ -328,7 +328,8 @@ export const buttonBlock = {
   multiple: true,
   mobileRelativeBlock: 10,
   content: {
-    text: 'Click Button',
+    type: 'button',
+    text: '',
     link: null,
     style: {}
   },
@@ -628,6 +629,27 @@ const invoice = {
 const emailBlockTemplate = {
   buttonBlock,
   contentBlock,
+  mainButton: {
+    ...buttonBlock,
+    order: 5,
+    name: 'mainButton',
+    title: 'CTA Button',
+    type: 'ButtonLink',
+    multiple: false,
+    mobileRelativeBlock: 10,
+    content: {
+      type: 'button',
+      text: '',
+      link: null,
+      style: {}
+    },
+    options: {
+    },
+    grid: {
+      desktop: { i: 'mainButton', x: 1, y: 0, w: 12, h: 2, enabled: true },
+      mobile: { i: 'mainButton', x: 1, y: 0, w: 6, h: 2, enabled: true }
+    }
+  },
   orgName: {
     ...orgName,
     order: 2,
@@ -771,13 +793,15 @@ export const defaultBlocks = {
     'title',
     'orgName',
     'media',
-    'description'
+    'description',
+    'mainButton'
   ],
   emailBlast: [
     'title',
     'orgName',
     'media',
-    'description'
+    'description',
+    'mainButton'
   ],
   org: [
     'logo',

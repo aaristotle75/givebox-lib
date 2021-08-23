@@ -106,11 +106,13 @@ export function gbx3(state = {
       ],
       receipt: [
         'contentBlock',
-        'imageBlock'
+        'imageBlock',
+        'buttonBlock'
       ],
       emailBlast: [
         'contentBlock',
-        'imageBlock'
+        'imageBlock',
+        'buttonBlock'
       ]
     },
   },

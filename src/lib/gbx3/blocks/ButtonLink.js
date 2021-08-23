@@ -1,41 +1,45 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as util from '../../common/utility';
-import Collapse from '../../common/Collapse';
+import * as types from '../../common/types';
 import GBLink from '../../common/GBLink';
-import Tabs, { Tab } from '../../common/Tabs';
 import ModalRoute from '../../modal/ModalRoute';
-import Editor from './Editor';
-import Button from './Button';
-import ButtonEdit from './ButtonEdit';
 import { toggleModal } from '../../api/actions';
-import { blockTemplates } from './blockTemplates';
+import ButtonLinkEdit from './ButtonLinkEdit';
+
+const GBX_URL = process.env.REACT_APP_GBX_SHARE;
 
 class ButtonLink extends Component {
 
   constructor(props) {
     super(props);
-    this.onBlur = this.onBlur.bind(this);
-    this.onChange = this.onChange.bind(this);
     this.closeEditModal = this.closeEditModal.bind(this);
-    this.optionsUpdated = this.optionsUpdated.bind(this);
+    this.buttonUpdated = this.buttonUpdated.bind(this);
 
-    const options = props.options;
+    const text = util.getValue(props.blockContent, 'text', types.kind(props.kind).cta);
+    const link = util.getValue(props.blockContent, 'link', `${GBX_URL}/${props.articleID}`);
+    const style = {
+      textColor: '#ffffff',
+      backgroundColor: props.primaryColor,
+      fontSize: 16,
+      borderRadius: 15,
+      width: 200,
+      display: 'inline-block',
+      align: 'center',
+      padding: '10px 25px',
+      ...util.getValue(props.blockContent, 'style', {})
+    };
 
-    let defaultContent = options.defaultFormat && props.fieldValue ? options.defaultFormat.replace('{{TOKEN}}', props.fieldValue) : props.fieldValue ? `<p>${props.fieldValue}</p>` : `<p>${options.defaultFormat || `Please add ${props.title}`}</p>`;
-
-    if (props.name === 'description' && !props.fieldValue) {
-      defaultContent = props.mission;
-    }
-
-    const button = util.getValue(options, 'button', {});
-    const content = util.getValue(props.blockContent, 'html', defaultContent);
+    const type = util.getValue(props.blockContent, 'type', 'button');
 
     this.state = {
-      content,
-      button,
-      defaultButton: util.deepClone(button),
-      defaultContent: content,
+      type,
+      text,
+      defaultText: text,
+      link,
+      defaultLink: link,
+      style,
+      defaultStyle: util.deepClone(style),
       hasBeenUpdated: false
     };
     this.editor = null;
@@ -57,16 +61,6 @@ class ButtonLink extends Component {
     this.props.setDisplayHeight(this.displayRef);
   }
 
-  onBlur(content) {
-    this.setState({ content });
-    if (this.props.onBlur) this.props.onBlur(this.props.name, content);
-  }
-
-  onChange(content) {
-    this.setState({ content, hasBeenUpdated: true });
-    if (this.props.onChange) this.props.onChange(this.props.name, content);
-  }
-
   closeEditModal(type = 'save') {
     const {
       name,
@@ -76,90 +70,91 @@ class ButtonLink extends Component {
     } = this.props;
 
     const {
-      content,
-      defaultContent,
-      button,
-      defaultButton,
+      text,
+      link,
+      style,
+      defaultText,
+      defaultLink,
+      defaultStyle,
       hasBeenUpdated
     } = this.state;
-    if (type !== 'cancel') {
-      const blockTemplateConfig = util.getValue(blockTemplates, `${blockType}.${kind}.${name}`, {});
-      const blockTemplate = !util.isEmpty(blockTemplateConfig) ? blockTemplateConfig : block;
 
-      const data = {};
-      const updateOptions = util.getValue(blockTemplate, 'updateOptions');
-      const updateMax = util.getValue(blockTemplate, 'updateMax');
-      if (updateOptions) data[block.field] = updateOptions === 'string' ? util.remove_non_ascii(util.stripHtml(content)) : content;
-      if (updateOptions && updateMax) {
-        data[block.field] = data[block.field].replace(/\r?\n|\r/g, '').trim().substring(0, updateMax);
-      }
+    if (type !== 'cancel') {
       this.props.saveBlock({
-        data,
         hasBeenUpdated,
         content: {
-          html: content
-        },
-        options: {
-          button
+          text,
+          link,
+          style
         }
       });
     } else {
       this.setState({
-        content: defaultContent,
-        button: util.deepClone(defaultButton),
-      }, () => this.props.closeEditModal(false, defaultContent));
+        text: defaultText,
+        link: defaultLink,
+        style: defaultStyle
+      }, () => this.props.closeEditModal(false));
     }
   }
 
-  optionsUpdated(name, obj) {
-    this.setState({ [name]: { ...obj }, hasBeenUpdated: true });
+  buttonUpdated(name, value) {
+    this.setState({ [name]: value, hasBeenUpdated: true });
   }
 
   render() {
 
     const {
+      name,
       modalID,
       onClick,
       button,
-      globalButtonStyle
+      globalButtonStyle,
+      block,
+      primaryColor
     } = this.props;
 
-    const type = util.getValue(button, 'type', 'button');
-    const style = { ...globalButtonStyle, ...util.getValue(button, 'style', {}) };
+    const {
+      text,
+      link,
+      type
+    } = this.state;
+
+    const nonremovable = util.getValue(block, 'nonremovable', false);
+    const style = { ...this.state.style };
 
     const fontSize = parseInt(util.getValue(style, 'fontSize', 16));
-    const paddingTopBottom = fontSize >= 20 ? 15 : 10;
-
-
     style.width = util.getValue(style, 'width', 150);
     style.fontSize = fontSize;
-    style.padding = `${paddingTopBottom}px 25px`;
     style.minWidth = 150;
 
     return (
       <div className={`orgCustomElements`}>
         <ModalRoute
           className='gbx3'
-          optsProps={{ closeCallback: this.onCloseUploadEditor }}
+          optsProps={{
+            closeCallback: this.closeEditModal
+          }}
           id={modalID}
           effect='3DFlipVert' style={{ width: '70%' }}
           draggable={true}
-          draggableTitle={`Editing ${title}`}
-          closeCallback={this.closeEditModal}
+          draggableTitle={`Editing Button`}
           disallowBgClose={true}
           component={() =>
             <div className='modalWrapper'>
+              <div style={{ margin: '20px 0' }} className='flexCenter'>
+                <h2>Edit Button</h2>
+              </div>
               <div className='formSectionContainer'>
                 <div className='formSection'>
-                  Edit Button
-                  {/*
-                  <ButtonEdit
-                    label={`Use a Button Instead of Showing ${title} on the Form`}
-                    button={button}
-                    optionsUpdated={this.optionsUpdated}
+                  <ButtonLinkEdit
+                    link={link}
+                    style={style}
+                    text={text}
+                    type={type}
+                    primaryColor={primaryColor}
+                    buttonUpdated={this.buttonUpdated}
                     modalID={`${name}-overlay`}
                   />
-                  */}
                 </div>
               </div>
             </div>
@@ -174,9 +169,11 @@ class ButtonLink extends Component {
             </div>
           }
         />
-        <GBLink style={style} customColor={util.getValue(style, 'bgColor', null)} solidColor={type === 'button' ? true : false} allowCustom={true} solidTextColor={util.getValue(style, 'textColor', null)} className={`${type}`} onClick={onClick}>
-          {util.getValue(button, 'text', 'Button Text')}
-        </GBLink>
+        <div style={{ margin: '5px 0', textAlign: util.getValue(style, 'align', 'center') }}>
+          <GBLink style={style} customColor={util.getValue(style, 'backgroundColor', null)} solidColor={type === 'button' ? true : false} allowCustom={true} solidTextColor={util.getValue(style, 'textColor', null)} className={`${type}`} onClick={() => window.open(link)}>
+            {text}
+          </GBLink>
+        </div>
       </div>
     )
   }
@@ -185,19 +182,14 @@ class ButtonLink extends Component {
 function mapStateToProps(state, props) {
 
   const gbx3 = util.getValue(state, 'gbx3', {});
-  const stage = util.getValue(gbx3, 'info.stage');
-  const globals = util.getValue(gbx3, 'globals', {});
-  const gbxStyle = util.getValue(globals, 'gbxStyle', {});
-  const gbxPrimaryColor = util.getValue(gbxStyle, 'primaryColor');
-  const globalButton = util.getValue(globals, 'button', {});
-  const globalButtonStyle = util.getValue(globalButton, 'style', {});
-  const primaryColor = util.getValue(globalButton, 'bgColor', gbxPrimaryColor);
+  const kind = util.getValue(gbx3, 'info.kind', 'fundraiser');
+  const articleID = util.getValue(gbx3, 'info.articleID');
+  const primaryColor = util.getValue(gbx3, 'globals.gbxStyle.primaryColor', '#698df4');
 
   return {
-    stage,
-    primaryColor,
-    globalButton,
-    globalButtonStyle
+    kind,
+    articleID,
+    primaryColor
   }
 }
 
