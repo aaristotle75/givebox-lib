@@ -261,6 +261,8 @@ class Modal extends Component {
         />
         {(closeBtn) && <button style={closeBtnStyle} className='modalCloseBtn' onClick={() => this.closeModal('ok')}>{iconClose}</button>}
         <div className='modalTop'>
+          <img width="100%" height='50px' src='https://cdn.givebox.com/givebox/public/images/modalTop.svg' />
+          {/*
           <svg
             height="100%"
             width="100%"
@@ -284,6 +286,7 @@ class Modal extends Component {
             <path d="M 0,400 C 0,400 0,200 0,200 C 91.39712918660285,171.08133971291866 182.7942583732057,142.16267942583733 272,130 C 361.2057416267943,117.83732057416269 448.22009569377997,122.43062200956939 544,156 C 639.77990430622,189.5693779904306 744.3253588516748,252.11483253588517 851,273 C 957.6746411483252,293.88516746411483 1066.4784688995214,273.11004784689 1165,254 C 1263.5215311004786,234.88995215311002 1351.7607655502393,217.444976076555 1440,200 C 1440,200 1440,400 1440,400 Z" stroke="none" strokeWidth="0" fill="url(#gradient)" className="transition-all duration-300 ease-in-out delay-150" transform="rotate(-180 720 200)">
             </path>
           </svg>
+          */}
         </div>
         {draggable ?
           <div className='handle'>
@@ -308,6 +311,8 @@ class Modal extends Component {
           <GBLink onClick={this.toTop} className={`modalToTop ${this.state.scrolled ? '' : 'displayNone'}`}><span className='icon icon-chevron-up'></span></GBLink>
         </Fade>
         <div className='modalBottom'>
+          <img width="100%" height='50px' src='https://cdn.givebox.com/givebox/public/images/modalBottom.svg' />
+          {/*
           <svg
             height="100%"
             width="100%"
@@ -331,6 +336,7 @@ class Modal extends Component {
             <path d="M 0,400 C 0,400 0,200 0,200 C 91.39712918660285,171.08133971291866 182.7942583732057,142.16267942583733 272,130 C 361.2057416267943,117.83732057416269 448.22009569377997,122.43062200956939 544,156 C 639.77990430622,189.5693779904306 744.3253588516748,252.11483253588517 851,273 C 957.6746411483252,293.88516746411483 1066.4784688995214,273.11004784689 1165,254 C 1263.5215311004786,234.88995215311002 1351.7607655502393,217.444976076555 1440,200 C 1440,200 1440,400 1440,400 Z" stroke="none" strokeWidth="0" fill="url(#gradient)" className="transition-all duration-300 ease-in-out delay-150">
             </path>
           </svg>
+          */}
         </div>
       </div>
     ;

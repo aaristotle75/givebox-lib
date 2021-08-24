@@ -137,6 +137,7 @@ class ButtonLink extends Component {
           }}
           id={modalID}
           effect='3DFlipVert' style={{ width: '70%' }}
+          forceShowModalGraphic={true}
           draggable={true}
           draggableTitle={`Editing Button`}
           disallowBgClose={true}

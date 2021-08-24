@@ -630,27 +630,6 @@ const invoice = {
 const emailBlockTemplate = {
   buttonBlock,
   contentBlock,
-  mainButton: {
-    ...buttonBlock,
-    order: 5,
-    name: 'mainButton',
-    title: 'CTA Button',
-    type: 'ButtonLink',
-    multiple: false,
-    mobileRelativeBlock: 10,
-    content: {
-      type: 'button',
-      text: '',
-      link: null,
-      style: {}
-    },
-    options: {
-    },
-    grid: {
-      desktop: { i: 'mainButton', x: 1, y: 0, w: 12, h: 2, enabled: true },
-      mobile: { i: 'mainButton', x: 1, y: 0, w: 6, h: 2, enabled: true }
-    }
-  },
   orgName: {
     ...orgName,
     order: 2,
@@ -715,7 +694,28 @@ export const blockTemplates = {
     ...emailBlockTemplate
   },
   emailBlast: {
-    ...emailBlockTemplate
+    ...emailBlockTemplate,
+    mainButton: {
+      ...buttonBlock,
+      order: 5,
+      name: 'mainButton',
+      title: 'Primary Button',
+      type: 'ButtonLink',
+      multiple: false,
+      mobileRelativeBlock: 10,
+      content: {
+        type: 'button',
+        text: '',
+        link: null,
+        style: {}
+      },
+      options: {
+      },
+      grid: {
+        desktop: { i: 'mainButton', x: 1, y: 0, w: 12, h: 2, enabled: true },
+        mobile: { i: 'mainButton', x: 1, y: 0, w: 6, h: 2, enabled: true }
+      }
+    }
   },
   org: {
     logo: {

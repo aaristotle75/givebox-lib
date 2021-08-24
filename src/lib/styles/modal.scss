@@ -21,6 +21,42 @@
   }
 }
 
+.modalPreview {
+  .modalTop,
+  .modalBottom {
+    display: none;
+  }
+  .modalWrapper {
+    padding-top: 20px;
+  }
+}
+
+.modalTop {
+  position: fixed;
+  top: -1px;
+  height: 50px;
+  width: 100%;
+  overflow: hidden;
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;
+  z-index: 999999;
+  opacity: 1;
+}
+
+.modalBottom {
+  clear: both;
+  position: relative;
+  display: block;
+  bottom: -1px;
+  height: 50px;
+  width: 100%;
+  overflow: hidden;
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  z-index: 999999;
+  opacity: 1;
+}
+
 .modal {
 
   .bottomContainer2,
