@@ -66,7 +66,8 @@ class ButtonLink extends Component {
       name,
       block,
       blockType,
-      kind
+      kind,
+      editBlockJustAdded
     } = this.props;
 
     const {
@@ -81,7 +82,7 @@ class ButtonLink extends Component {
 
     if (type !== 'cancel') {
       this.props.saveBlock({
-        hasBeenUpdated,
+        hasBeenUpdated: editBlockJustAdded ? true : hasBeenUpdated,
         content: {
           text,
           link,

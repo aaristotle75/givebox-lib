@@ -70,7 +70,7 @@ class Block extends React.Component {
       block
     } = this.props;
 
-    if (editBlockJustAdded && !hasBeenUpdated && util.getValue(block, 'multiple')) {
+    if (editBlockJustAdded && !hasBeenUpdated && util.getValue(block, 'multiple') && !util.getValue(block, 'allowBlankAdd')) {
       this.onClickRemove();
     } else {
       this.props.toggleModal(this.props.modalID, false);
@@ -148,7 +148,9 @@ class Block extends React.Component {
       previewMode,
       stage,
       backToOrg,
-      editable
+      editable,
+      allowBlankAdd,
+      editBlockJustAdded
     } = this.props;
 
     const childrenWithProps = React.Children.map(this.props.children,
@@ -178,6 +180,8 @@ class Block extends React.Component {
         stage,
         backToOrg,
         editable,
+        allowBlankAdd,
+        editBlockJustAdded,
         blockContent: this.getBlockContent(),
         saveBlock: this.saveBlock,
         closeEditModal: this.closeEditModal,

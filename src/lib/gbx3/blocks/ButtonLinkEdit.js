@@ -16,6 +16,9 @@ class ButtonEdit extends Component {
   constructor(props) {
     super(props);
     this.setRadius = this.setRadius.bind(this);
+    this.state = {
+      linkError: false
+    };
   }
 
   setRadius(borderRadius) {
@@ -66,9 +69,27 @@ class ButtonEdit extends Component {
           fixedLabel={true}
           placeholder='Enter Button Text'
           value={text}
-          onChange={(e) => {
+          onBlur={(e) => {
             const value = e.currentTarget.value;
             this.props.buttonUpdated('text', value);
+          }}
+          leftBar={true}
+          style={{ margin: '0 15px'}}
+        />
+        <TextField
+          name='text'
+          label='Link URL'
+          fixedLabel={true}
+          placeholder='Enter Link URL'
+          value={link}
+          onBlur={(e) => {
+            const value = e.currentTarget.value;
+            if (_v.validateURL(value)) {
+              this.props.buttonUpdated('link', value);
+              if (this.state.linkError) this.setState({ linkError: false });
+            } else {
+              if (!this.state.linkError) this.setState({ linkError: true });
+            }
           }}
           leftBar={true}
           style={{ margin: '0 15px'}}
@@ -114,7 +135,7 @@ class ButtonEdit extends Component {
         <TextField
           name='width'
           value={width}
-          onChange={(e) => {
+          onBlur={(e) => {
             e.preventDefault();
             const value = parseInt(_v.formatNumber(e.target.value));
             this.props.buttonUpdated('style', {

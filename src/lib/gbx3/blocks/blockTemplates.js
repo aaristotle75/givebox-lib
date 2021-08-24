@@ -326,6 +326,7 @@ export const buttonBlock = {
   title: 'Button',
   type: 'ButtonLink',
   multiple: true,
+  allowBlankAdd: true,
   mobileRelativeBlock: 10,
   content: {
     type: 'button',

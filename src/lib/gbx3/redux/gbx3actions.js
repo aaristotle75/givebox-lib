@@ -1191,7 +1191,7 @@ export function saveReceipt(options = {}) {
           const width = `${util.getValue(styleObj, 'width')}px`;
           const style = `display:inline-block;color:${color};background-color:${backgroundColor};font-size:${fontSize};border-radius:${borderRadius};width:${width};font-weight:400;white-space:nowrap;padding:10px 0px;line-height:17px;text-decoration:none;`;
 
-          receiptHTML = receiptHTML + `<p style="margin: 10px 0px;text-align:${util.getValue(styleObj, 'align', 'center')};"><a href="${link}" style="${style}">${text}</a></p>`;
+          receiptHTML = receiptHTML + `<p style="margin: 10px 0px;text-align:${util.getValue(styleObj, 'align', 'center')};"><a href="${link}" target="_blank" style="${style}">${text}</a></p>`;
           break;
         }
 
