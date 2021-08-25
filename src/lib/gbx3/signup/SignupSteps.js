@@ -292,6 +292,7 @@ class SignupStepsForm extends React.Component {
     const password = util.getValue(this.props.formState, 'fields.password.value', util.randomPassword(8));
 
     const owner = {
+      affiliateID,
       ...fields.owner,
       password,
       orgTaxID: validTaxID

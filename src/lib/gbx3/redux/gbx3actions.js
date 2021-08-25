@@ -252,7 +252,8 @@ export function loadOrgSignup(options = {}) {
   const forceStep = options.forceStep || null;
   const openModal = options.openModal || true;
   const bookDemo = options.bookDemo || false;
-  const affiliateID = +util.getCookie('promo', null);
+  const promo = util.getCookie('promo', null);
+  const affiliateID = promo ? +promo : null;
 
   return async (dispatch, getState) => {
     const signupFromCookie = LZString.decompressFromUTF16(localStorage.getItem('signup'));

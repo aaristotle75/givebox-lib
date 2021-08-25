@@ -295,8 +295,11 @@ export function setCookie(cname, cvalue, exdays) {
 }
 
 export function deleteCookie(cname) {
+  if (getCookie(cname, null)) {
     const expires = 'expires=Thu, 01 Jan 1970 00:00:00 UTC';
     document.cookie = cname + '=' + expires + ';path=/';
+  }
+  return null;
 }
 
 export function read_cookie(name) {
