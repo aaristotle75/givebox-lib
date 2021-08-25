@@ -241,7 +241,6 @@ class SignupStepsForm extends React.Component {
                             orgUpdated: true,
                             callback: async (res, err) => {
                               localStorage.removeItem('signup');
-                              util.deleteCookie('promo');
                               this.props.loadOrg(orgID, (res, err) => {
                                 //this.props.savingSignup(false);
                                 this.props.saveLegalEntity({

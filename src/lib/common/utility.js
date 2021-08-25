@@ -294,10 +294,10 @@ export function setCookie(cname, cvalue, exdays) {
     document.cookie = cname + '=' + cvalue + ';' + expires + ';path=/';
 }
 
-export function deleteCookie(cname) {
+export function deleteCookie(cname, path = '/') {
   if (getCookie(cname, null)) {
     const expires = 'expires=Thu, 01 Jan 1970 00:00:00 UTC';
-    document.cookie = cname + '=' + expires + ';path=/';
+    document.cookie = cname + '=' + expires + ';path=' + path;
   }
   return null;
 }
