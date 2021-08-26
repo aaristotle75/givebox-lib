@@ -314,8 +314,15 @@ $green: $puppa_green;
   font-size: 14px;
   font-weight: 400;
   margin: 10px 0;
+
+  .icon {
+    color: $white;
+  }
 }
 
 .secondaryButton:hover {
   opacity: .8;
+  .icon {
+    color: $white !important;
+  }
 }

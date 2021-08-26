@@ -79,7 +79,8 @@ class ActionsMenu extends Component {
       iconClosed,
       overlay,
       overlayDuration,
-      className
+      className,
+      buttonClass
     } = this.props;
 
     const {
@@ -91,7 +92,7 @@ class ActionsMenu extends Component {
     return (
       <div className={`actionsMenu ${className || ''}`} style={style}>
         <Fade in={open && overlay} duration={overlayDuration}><div onClick={this.closeMenu} className={`dropdown-cover ${display ? '' : 'displayNone'}`}></div></Fade>
-        <button disabled={!!util.isEmpty(this.props.options)} className='menuLabel' type='button' onClick={open ? this.closeMenu : this.openMenu}>{!util.isEmpty(this.props.options) ? label : 'No Actions'}<span className={`${util.isEmpty(this.props.options) && 'displayNone'}`}>{open ? iconOpened : iconClosed}</span></button>
+        <button disabled={!!util.isEmpty(this.props.options)} className={buttonClass} type='button' onClick={open ? this.closeMenu : this.openMenu}>{!util.isEmpty(this.props.options) ? label : 'No Actions'}<span className={`${util.isEmpty(this.props.options) && 'displayNone'}`}>{open ? iconOpened : iconClosed}</span></button>
         <div ref={this.dropdownRef} className={`${open ? 'opened' : ''} actionsMenu-content ${this.props.direction || direction}`}>
           <AnimateHeight
             duration={200}
@@ -116,7 +117,8 @@ ActionsMenu.defaultProps = {
   iconClosed: <span className='icon icon-chevron-right'></span>,
   overlayDuration: 200,
   overlay: true,
-  direction: ''
+  direction: '',
+  buttonClass: 'menuLabel'
 }
 
 export default ActionsMenu;
