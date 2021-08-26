@@ -1462,6 +1462,11 @@ button.tooltip.sortable:hover {
     background: transparent;
   }
 
+  button.link.label,
+  button.link.label:hover {
+    border: 0 !important;
+  }
+
 }
 
 /*------ Dropzone -------*/
