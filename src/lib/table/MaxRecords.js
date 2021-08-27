@@ -64,7 +64,7 @@ class MaxRecords extends Component {
       <div style={style} className={`maxRecords ${align}`}>
         <Dropdown
           name='maxRecords'
-          label='Per page'
+          label='Records per Page'
           defaultValue={parseInt(max)}
           onChange={this.onChange}
           options={this.setOptions()}

@@ -2103,8 +2103,8 @@ ul.share {
 
 .selectedCount {
   font-size: 14px;
-  color: $med-gray;
-  font-weight: 300;
+  font-weight: 500;
+  @include primaryGradientText;
 }
 
 button.importGmail {

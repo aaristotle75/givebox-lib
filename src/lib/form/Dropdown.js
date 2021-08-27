@@ -97,11 +97,12 @@ class Dropdown extends Component {
       }
     }
 
-    if (this.state.selected) {
+    if (this.state.selected && this.props.allowSelectedToChange) {
       let init = lookup(this.props.options, 'value', this.props.value);
-      if (this.state.selected && this.state.selected !== util.getValue(init, 'primaryText')) {
+      const primaryText = util.getValue(init, 'primaryText');
+      if (this.state.selected && this.state.selected !== primaryText) {
         this.setState({
-          selected: util.getValue(init, 'primaryText')
+          selected: primaryText
         });
       }
     }

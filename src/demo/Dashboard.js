@@ -22,6 +22,7 @@ import ModalRoute from '../lib/modal/ModalRoute';
 import Lottie from 'lottie-react';
 import * as coverPlaceholder from '../lib/gbx3/pages/coverPlaceholder.json';
 import Paginate from '../lib/table/Paginate';
+import MaxRecords from '../lib/table/MaxRecords';
 
 class Dashboard extends Component {
 
@@ -231,16 +232,16 @@ class Dashboard extends Component {
           value={this.state.testValue}
           style={{ paddingBottom: 5 }}
           leftBar={true}
+          allowSelectedToChange={true}
         />
         <GBLink onClick={this.changeOptions}>Change Options</GBLink>
-        {/*
         <div style={{ position: 'relative', overflow: 'scroll' }}>
           <ul className='selectable selectArticle left'>
             {this.listCustomers()}
           </ul>
           <Paginate name={'orgCustomers'} />
+          <MaxRecords name={'orgCustomers'} />
         </div>
-        */}
         {/*
         <ModalRoute
           id='testModal2'
