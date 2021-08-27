@@ -96,6 +96,15 @@ class Dropdown extends Component {
         });
       }
     }
+
+    if (this.state.selected) {
+      let init = lookup(this.props.options, 'value', this.props.value);
+      if (this.state.selected && this.state.selected !== util.getValue(init, 'primaryText')) {
+        this.setState({
+          selected: util.getValue(init, 'primaryText')
+        });
+      }
+    }
   }
 
   componentWillUnmount() {

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import TestForm from './TestForm';
 import Form from '../lib/form/Form';
+import Dropdown from '../lib/form/Dropdown';
 import MediaLibrary from '../lib/form/MediaLibrary';
 import { setCustomProp } from '../lib/api/actions';
 import { getResource, sendResource } from '../lib/api/helpers';
@@ -28,7 +29,15 @@ class Dashboard extends Component {
     super(props);
     this.getVideo = this.getVideo.bind(this);
     this.makeCineObj = this.makeCineObj.bind(this);
+    this.listOptions = this.listOptions.bind(this);
+    this.changeOptions = this.changeOptions.bind(this);
     this.state = {
+      testValue: 1,
+      options: [
+        { ID: 1, text: 'Kitty Cat'},
+        { ID: 2, text: 'Doggy Dog'},
+        { ID: 3, text: 'Horse Horse'}
+      ]
     };
     this.cineObj = {
       apiKey: '14388ca1-65a3-4a32-8dbc-dd001087dbcf'
@@ -55,6 +64,27 @@ class Dashboard extends Component {
       clearTimeout(this.timeout);
       this.timeout = null;
     }
+  }
+
+  changeOptions() {
+    this.setState({
+      options: [
+        { ID: 1, text: 'Kitty Cat is cute'},
+        { ID: 2, text: 'Doggy Dog are cool'},
+        { ID: 3, text: 'Donkey Horse Mule'}
+      ]
+    })
+  }
+
+  listOptions() {
+    const options = [];
+    Object.entries(this.state.options).forEach(([key, value]) => {
+      options.push({
+        value: +value.ID,
+        primaryText: value.text
+      });
+    });
+    return options;
   }
 
   listCustomers() {
@@ -179,12 +209,38 @@ class Dashboard extends Component {
     return (
       <div>
         <h2>Dashboard</h2>
+        <Dropdown
+          name='emailListID'
+          portalID={`dropdown-portal-emailListID`}
+          portalClass={'gbx3 articleCardDropdown gbx3Steps'}
+          portalLeftOffset={50}
+          className='articleCard'
+          contentWidth={400}
+          label={'Contact List'}
+          selectLabel='Select the List of Contacts Who Will Receive the Email'
+          fixedLabel={false}
+          fixedLabelHasValue={true}
+          required={false}
+          onChange={(name, value) => {
+            this.setState({
+              testValue: +value
+            })
+          }}
+          options={this.listOptions()}
+          showCloseBtn={true}
+          value={this.state.testValue}
+          style={{ paddingBottom: 5 }}
+          leftBar={true}
+        />
+        <GBLink onClick={this.changeOptions}>Change Options</GBLink>
+        {/*
         <div style={{ position: 'relative', overflow: 'scroll' }}>
           <ul className='selectable selectArticle left'>
             {this.listCustomers()}
           </ul>
           <Paginate name={'orgCustomers'} />
         </div>
+        */}
         {/*
         <ModalRoute
           id='testModal2'
