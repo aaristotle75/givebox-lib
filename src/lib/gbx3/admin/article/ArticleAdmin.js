@@ -27,11 +27,12 @@ class ArticleAdmin extends React.Component {
     const {
       completed,
       share,
-      kind
+      kind,
+      previewMode
     } = this.props;
 
     const minStepNotCompleted = this.getMinStepNotCompleted();
-    if (!this.props.advancedBuilder && this.props.step !== 'create' && (minStepNotCompleted || minStepNotCompleted === 0) && !share) {
+    if (!this.props.advancedBuilder && this.props.step !== 'create' && (minStepNotCompleted || minStepNotCompleted === 0) && !share && !previewMode) {
       const updated = await this.props.updateHelperSteps({ step: minStepNotCompleted });
       if (updated) this.props.toggleModal('gbx3Builder', true);
     }
@@ -125,6 +126,7 @@ function mapStateToProps(state, props) {
   const step = util.getValue(state, 'gbx3.admin.step');
   const share = util.getValue(state, 'gbx3.info.share');
   const kind = util.getValue(state, 'gbx3.info.kind', 'fundraiser');
+  const previewMode = util.getValue(state, 'gbx3.admin.previewMode');
   //const advancedBuilder = kind === 'fundraiser' ? util.getValue(state, 'gbx3.helperSteps.advancedBuilder', false) : true;
   const advancedBuilder = util.getValue(state, 'gbx3.helperSteps.advancedBuilder', false);
 
@@ -132,6 +134,7 @@ function mapStateToProps(state, props) {
     step,
     share,
     kind,
+    previewMode,
     advancedBuilder,
     completed: util.getValue(state, 'gbx3.helperSteps.completed', [])
   }
