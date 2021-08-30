@@ -1165,46 +1165,48 @@ export function saveReceipt(options = {}) {
     util.sortByField(orderedBlocks, 'order', 'ASC');
 
     Object.entries(orderedBlocks).forEach(([key, value]) => {
-      switch (value.type) {
-        case 'Media': {
-          const imageLink = util.getValue(value, 'content.image.link');
-          const imageURL = util.getValue(value, 'content.image.URL', util.getValue(articleData, `${util.getValue(value, 'field')}`));
-          if (imageURL) receiptHTML = receiptHTML + `${imageLink ? `<a href="${imageLink}">` : ''}<p style="text-align:center"><img style="max-width:500px;" src="${util.imageUrlWithStyle(imageURL, util.getValue(value, 'content.image.size', util.getValue(value, 'options.image.size', 'medium')))}" alt="Media" /></p>${imageLink ? '</a>' : ''}`;
-          break;
-        }
-
-        case 'ButtonLink': {
-          const link = util.getValue(value, 'content.link', `${GBX_URL}/${articleID}`);
-          const text = util.getValue(value, 'content.text', types2.kind(kind).cta);
-          const styleObj = !util.isEmpty(util.getValue(value, 'content.style')) ? util.getValue(value, 'content.style', {}) : {
-            textColor: '#ffffff',
-            backgroundColor: primaryColor,
-            fontSize: 16,
-            borderRadius: 15,
-            width: 200,
-            display: 'inline-block',
-            align: 'center'
-          };
-          const color = util.getValue(styleObj, 'textColor');
-          const backgroundColor = util.getValue(styleObj, 'backgroundColor');
-          const fontSize = `${util.getValue(styleObj, 'fontSize')}px`;
-          const borderRadius = `${util.getValue(styleObj, 'borderRadius')}px`;
-          const width = `${util.getValue(styleObj, 'width')}px`;
-          const style = `display:inline-block;color:${color};background-color:${backgroundColor};font-size:${fontSize};border-radius:${borderRadius};width:${width};font-weight:400;white-space:nowrap;padding:10px 0px;line-height:17px;text-decoration:none;`;
-
-          receiptHTML = receiptHTML + `<p style="margin: 10px 0px;text-align:${util.getValue(styleObj, 'align', 'center')};"><a href="${link}" target="_blank" style="${style}">${text}</a></p>`;
-          break;
-        }
-
-        case 'Text':
-        default: {
-          const fieldValue =  util.getValue(articleData, `${util.getValue(value, 'field')}`);
-          const defaultContent = util.getValue(value, 'options.defaultFormat') && fieldValue ? value.options.defaultFormat.replace('{{TOKEN}}', fieldValue) : fieldValue || '';
-          const content = util.getValue(value, 'content.html', defaultContent);
-          if (content) {
-            receiptHTML = receiptHTML + content;
+      if (!util.isEmpty(value)) {
+        switch (value.type) {
+          case 'Media': {
+            const imageLink = util.getValue(value, 'content.image.link');
+            const imageURL = util.getValue(value, 'content.image.URL', util.getValue(articleData, `${util.getValue(value, 'field')}`));
+            if (imageURL) receiptHTML = receiptHTML + `${imageLink ? `<a href="${imageLink}">` : ''}<p style="text-align:center"><img style="max-width:500px;" src="${util.imageUrlWithStyle(imageURL, util.getValue(value, 'content.image.size', util.getValue(value, 'options.image.size', 'medium')))}" alt="Media" /></p>${imageLink ? '</a>' : ''}`;
+            break;
           }
-          break;
+
+          case 'ButtonLink': {
+            const link = util.getValue(value, 'content.link', `${GBX_URL}/${articleID}`);
+            const text = util.getValue(value, 'content.text', types2.kind(kind).cta);
+            const styleObj = !util.isEmpty(util.getValue(value, 'content.style')) ? util.getValue(value, 'content.style', {}) : {
+              textColor: '#ffffff',
+              backgroundColor: primaryColor,
+              fontSize: 16,
+              borderRadius: 15,
+              width: 200,
+              display: 'inline-block',
+              align: 'center'
+            };
+            const color = util.getValue(styleObj, 'textColor');
+            const backgroundColor = util.getValue(styleObj, 'backgroundColor');
+            const fontSize = `${util.getValue(styleObj, 'fontSize')}px`;
+            const borderRadius = `${util.getValue(styleObj, 'borderRadius')}px`;
+            const width = `${util.getValue(styleObj, 'width')}px`;
+            const style = `display:inline-block;color:${color};background-color:${backgroundColor};font-size:${fontSize};border-radius:${borderRadius};width:${width};font-weight:400;white-space:nowrap;padding:10px 0px;line-height:17px;text-decoration:none;`;
+
+            receiptHTML = receiptHTML + `<p style="margin: 10px 0px;text-align:${util.getValue(styleObj, 'align', 'center')};"><a href="${link}" target="_blank" style="${style}">${text}</a></p>`;
+            break;
+          }
+
+          case 'Text':
+          default: {
+            const fieldValue =  util.getValue(articleData, `${util.getValue(value, 'field')}`);
+            const defaultContent = util.getValue(value, 'options.defaultFormat') && fieldValue ? value.options.defaultFormat.replace('{{TOKEN}}', fieldValue) : fieldValue || '';
+            const content = util.getValue(value, 'content.html', defaultContent);
+            if (content) {
+              receiptHTML = receiptHTML + content;
+            }
+            break;
+          }
         }
       }
     });

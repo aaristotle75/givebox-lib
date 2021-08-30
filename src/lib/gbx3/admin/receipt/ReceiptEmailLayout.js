@@ -191,7 +191,9 @@ class ReceiptEmailLayout extends React.Component {
     const items = [];
     const orderedBlocks = [];
     Object.entries(blocks).forEach(([key, value]) => {
-      orderedBlocks.push(value);
+      if (!util.isEmpty(value)) {
+        orderedBlocks.push(value);
+      }
     });
     util.sortByField(orderedBlocks, 'order', 'ASC');
 
