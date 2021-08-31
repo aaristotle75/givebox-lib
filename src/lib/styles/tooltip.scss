@@ -34,11 +34,19 @@
   visibility: hidden;
   opacity: 0;
   transition: opacity .1s;
+
+  img {
+    display: none;
+  }
 }
 
 .tooltip:hover .tooltipTop {
   visibility: visible;
   opacity: 1;
+
+  img {
+    display: block;
+  }
 }
 
 .tooltip .tooltipTop i {
