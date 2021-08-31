@@ -24,5 +24,5 @@ export default class NoRecords extends Component {
 NoRecords.defaultProps = {
   align: 'center',
   label: 'Reload',
-  text: 'No records found'
+  text: 'No Results'
 }
