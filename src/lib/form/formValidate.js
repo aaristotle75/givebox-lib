@@ -120,7 +120,7 @@ export function validateCardTypes(value) {
   } else if (/^3[47][0-9]{13}$/.test(ccnumber)) {
     return true
   // Check Discover
-  } else if (/ ^6(?:011|5[0-9]{2})[0-9]{12}$ /.test(ccnumber)) {
+  } else if (/^(?:6011\d{12})|(?:65\d{14})$/.test(ccnumber)) {
     return true
   // Default to no checkmark
   } else {
