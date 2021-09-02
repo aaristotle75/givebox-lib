@@ -338,7 +338,7 @@ export function checkSubmitMerchantApp(options = {}) {
 /****
 * Plaid Actions
 */
-export function getLinkToken() {
+export function getLinkToken(preventInfiniteLoop) {
   return (dispatch) => {
     dispatch(sendResource('plaidLink', {
       method: 'POST',
@@ -346,6 +346,15 @@ export function getLinkToken() {
         if (!util.isEmpty(res) && !err) {
           const linkToken = util.getValue(res, 'linkToken');
           dispatch(updateMerchantApp('plaid', { linkToken }));
+        } else {
+          if (!preventInfiniteLoop) {
+            dispatch(sendResource('plaidAccess', {
+              method: 'delete',
+              callback: (res, err) => {
+                dispatch(getLinkToken(true));
+              }
+            }));
+          }
         }
       }
     }));
