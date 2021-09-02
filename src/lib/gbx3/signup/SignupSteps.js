@@ -777,7 +777,8 @@ class SignupStepsForm extends React.Component {
       acceptedTerms,
       stepsTodo,
       createdArticleID,
-      signupPhase
+      signupPhase,
+      affiliateID
     } = this.props;
 
     const {
@@ -829,6 +830,12 @@ class SignupStepsForm extends React.Component {
     switch (slug) {
 
       case 'orgName': {
+        item.desc = affiliateID ?
+          <div className='center'>
+            Thank you for using the promo link and welcome to Givebox! <br />Raise more money in a few short steps.
+          </div>
+        : item.desc;
+
         item.component =
           <div className='fieldGroup'>
             <div className='column50'>
