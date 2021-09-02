@@ -328,7 +328,7 @@ export const msgs = {
   phone: 'Please enter a valid Phone Number. It should be in the format (xxx) xxx-xxxx and have 10 digits.',
   descriptor: 'Please enter a valid Descriptor. It should be between 3 - 21 characters long and contain only letters, numbers, commas, periods or dashes.',
   url: 'Please enter a valid URL. It should begin with either http:// or https:// and end in .com, .co or any other valid Top Level Domain (TLD).',
-  success: 'Saved successfully.',
+  success: 'Saved Successfully.',
   error: 'Please fix the following errors to continue.',
   savingError: 'There was a system error trying to save. Please contact support@givebox.com if this error persists.',
   calendarRange: 'Start date must be equal to or less than End date.',
