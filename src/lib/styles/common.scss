@@ -217,6 +217,7 @@ button.button:hover {
 button.button:disabled {
   cursor: not-allowed;
   background: $light-gray;
+  box-shadow: none;
 }
 
 button.button:hover:disabled {
