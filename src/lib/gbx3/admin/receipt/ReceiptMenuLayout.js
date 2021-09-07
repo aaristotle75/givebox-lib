@@ -46,10 +46,19 @@ class ReceiptMenuLayout extends React.Component {
 
     Object.entries(orderedBlocks).forEach(([key, value]) => {
       if (!util.isEmpty(value)) {
+        const name = util.getValue(value, 'name');
         items.push(
           <li
             key={key}
-            onClick={() => this.editBlock(value.name)}
+            onClick={() => this.editBlock(name)}
+            onMouseEnter={() => {
+              const el = document.getElementById(`blockOption-${name}`);
+              if (el) el.setAttribute('style', 'display: flex;');
+            }}
+            onMouseLeave={() => {
+              const el = document.getElementById(`blockOption-${name}`);
+              if (el) el.style.display = null;
+            }}
           >
             {value.title}
           </li>

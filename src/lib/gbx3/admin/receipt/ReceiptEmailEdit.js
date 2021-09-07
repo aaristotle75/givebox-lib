@@ -133,7 +133,7 @@ class ReceiptEmailEdit extends React.Component {
             <CustomCKEditor4
               orgID={util.getValue(info, 'orgID', null)}
               articleID={util.getValue(info, 'articleID', null)}
-               onChange={this.onChange}
+              onChange={this.onChange}
               onBlur={this.onBlur}
               content={content}
               width={breakpoint === 'mobile' ? 'auto' : 600}
