@@ -234,7 +234,7 @@ export function updateOrgSignupField(name, fields) {
   }
 }
 
-function getMinStepNotCompleted(array, haystack) {
+export function getMinStepNotCompleted(array, haystack) {
   // Get the minimum not completed step
   const numOfSteps = array.length - 1;
   const uncompletedSteps = [];

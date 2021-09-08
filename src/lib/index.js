@@ -111,7 +111,8 @@ import {
   setLoading,
   setStyle,
   resetStyle,
-  processTransaction
+  processTransaction,
+  getMinStepNotCompleted
 } from './gbx3/redux/gbx3actions';
 
 import {
@@ -247,6 +248,7 @@ export {
   setStyle,
   resetStyle,
   processTransaction,
+  getMinStepNotCompleted,
 
   // Merchant Actions
   getLinkToken,
