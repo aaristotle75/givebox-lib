@@ -875,9 +875,9 @@ ul.selectable {
 
   li {
     display: flex;
-    background: $white;
+    background: transparent;
     border: 0;
-    border-top: 1px solid $light;
+    //border-top: 1px solid $light;
     margin: 0;
     border-radius: 20px;
   }
@@ -887,7 +887,7 @@ ul.selectable {
   }
 
   li:nth-child(even) {
-    background: $white;
+    background: transparent;
   }
 
   li:hover {
