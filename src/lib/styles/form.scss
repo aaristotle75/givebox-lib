@@ -1393,6 +1393,10 @@ button.tooltip.sortable:hover {
   border-radius: 20px;
 }
 
+.formSection.transparent {
+  background: transparent;
+}
+
 .formSectionHeader {
   @include primaryGradientText;
   font-size: 12px;
