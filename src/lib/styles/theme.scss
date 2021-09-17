@@ -1872,8 +1872,13 @@ button.supportLink {
     font-size: 22px;
     font-weight: 400;
     margin-top: 0px;
+    //@include primaryGradientText;
     color: $puppa_blue;
     display: block;
+    @include browser(safari) {
+      color: $puppa_blue;
+      background: transparent;
+    }
   }
 
   .modalCloseBtn {
@@ -1899,9 +1904,6 @@ button.supportLink {
   padding: 0px 40px;
 
   h2 {
-    font-size: 1.5em;
-    color: $dark-blue-gray;
-    font-weight: 300;
     margin-top: 0px;
   }
 

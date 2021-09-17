@@ -2027,7 +2027,7 @@ button.productLink:hover {
 .riskFormSection {
 
   h3 {
-    @include primaryGradientText;
+    color: $puppa_blue;
     font-weight: 400;
     .gray {
       font-weight: 300;
