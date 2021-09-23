@@ -55,6 +55,7 @@ class Dashboard extends Component {
     //this.props.toggleModal('testModal2', true);
     this.props.getResource('orgCustomers', {
       search: {
+        max: 5,
         sort: 'firstName'
       },
       reload: true

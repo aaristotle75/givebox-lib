@@ -116,13 +116,16 @@ class DownloadFile extends Component {
         </div>
         <GBLink style={{ fontSize: 14 }} onClick={() => this.setState({ showHelp: showHelp ? false : true })}>Click here if you can't find your downloaded file.</GBLink>
         <AnimateHeight height={showHelp ? 'auto' : 0 }>
-          <div style={{ paddingTop: 20 }}>
+          <div style={{ margin: '20px 0' }}>
             Your browser may be blocking the download.<br />
           Click a link below to see how to allow downloads from a specific browser.
-            <div style={{ padding: '10px 0' }} className='flexColumn'>
+            <div style={{ marginTop: 20 }} className='flexColumn'>
               <GBLink style={{ margin: '5px 0' }} onClick={() => window.open('https://www.idownloadblog.com/2020/01/22/always-allow-downloads-safari-mac/')}>Safari</GBLink>
               <GBLink style={{ margin: '5px 0' }} onClick={() => window.open('https://techwiser.com/stop-google-chrome-from-blocking-downloads/')}>Chrome</GBLink>
               <GBLink style={{ margin: '5px 0' }} onClick={() => window.open('https://support.mozilla.org/en-US/kb/cant-download-or-save-files')}>Firefox</GBLink>
+            </div>
+            <div style={{ marginTop: 20 }} className='date'>
+              If you continue to have issues, please try a different browser. If you can't download in any browser please email support@givebox.com for further help.
             </div>
           </div>
         </AnimateHeight>
