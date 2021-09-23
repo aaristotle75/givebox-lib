@@ -9,6 +9,7 @@ import { toggleModal } from '../api/actions';
 import { getResource } from '../api/helpers';
 import FileSaver from 'file-saver';
 import has from 'has';
+import AnimateHeight from 'react-animate-height';
 const { detect } = require('detect-browser');
 const browser = detect();
 
@@ -24,7 +25,8 @@ class DownloadFile extends Component {
     this.state = {
       downloading: false,
       error: '',
-      success: ''
+      success: '',
+      showHelp: false
     };
   }
 
@@ -49,8 +51,11 @@ class DownloadFile extends Component {
 
   onClick() {
     const browserName = util.getValue(browser, 'name');
+    window.open(this.makeLink(true), '_self');
+    /*
     if (browserName === 'chrome') window.open(this.makeLink(true), '_self');
     else this.setState({ downloading: true }, this.download);
+    */
   }
 
   download() {
@@ -89,7 +94,8 @@ class DownloadFile extends Component {
     } = this.props;
 
     const {
-      success
+      success,
+      showHelp
     } = this.state;
 
     if (util.isLoading(resource)) {
@@ -108,6 +114,18 @@ class DownloadFile extends Component {
           <GBLink className='link' onClick={() => this.props.toggleModal(this.props.modalID, false)}>{success ? 'Close' : 'Cancel'}</GBLink>
           <GBLink className="button" onClick={this.onClick}>Download Report {success ? 'Again' : ''}</GBLink>
         </div>
+        <GBLink style={{ fontSize: 14 }} onClick={() => this.setState({ showHelp: showHelp ? false : true })}>Click here if you can't find your downloaded file.</GBLink>
+        <AnimateHeight height={showHelp ? 'auto' : 0 }>
+          <div style={{ paddingTop: 20 }}>
+            Your browser may be blocking the download.<br />
+          Click a link below to see how to allow downloads from a specific browser.
+            <div style={{ padding: '10px 0' }} className='flexColumn'>
+              <GBLink style={{ margin: '5px 0' }} onClick={() => window.open('https://www.idownloadblog.com/2020/01/22/always-allow-downloads-safari-mac/')}>Safari</GBLink>
+              <GBLink style={{ margin: '5px 0' }} onClick={() => window.open('https://techwiser.com/stop-google-chrome-from-blocking-downloads/')}>Chrome</GBLink>
+              <GBLink style={{ margin: '5px 0' }} onClick={() => window.open('https://support.mozilla.org/en-US/kb/cant-download-or-save-files')}>Firefox</GBLink>
+            </div>
+          </div>
+        </AnimateHeight>
       </div>
     );
   }

@@ -23,6 +23,7 @@ import Lottie from 'lottie-react';
 import * as coverPlaceholder from '../lib/gbx3/pages/coverPlaceholder.json';
 import Paginate from '../lib/table/Paginate';
 import MaxRecords from '../lib/table/MaxRecords';
+import Export from '../lib/table/Export';
 
 class Dashboard extends Component {
 
@@ -241,6 +242,10 @@ class Dashboard extends Component {
           </ul>
           <Paginate name={'orgCustomers'} />
           <MaxRecords name={'orgCustomers'} />
+          <Export
+              name='orgCustomers'
+              desc='Download Customers'
+          />
         </div>
         {/*
         <ModalRoute

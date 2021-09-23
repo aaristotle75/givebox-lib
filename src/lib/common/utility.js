@@ -7,6 +7,7 @@ import get from 'get-value';
 import sanitizeHtml from 'sanitize-html';
 
 const API_URL = process.env.REACT_APP_API_URL;
+const ENV = process.env.REACT_APP_ENV;
 
 export const imageUrlWithStyle = function(imageURL, style) {
   if (imageURL) {
@@ -960,6 +961,7 @@ export function blob2S3(
       return;
     }
     if (callback) {
+      //console.log('execute location -> ', x.getResponseHeader('Location'));
       callback(x.getResponseHeader('Location'));
     }
   }

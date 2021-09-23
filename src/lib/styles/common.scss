@@ -97,6 +97,11 @@ p { margin: 10px 0; font-size: $normal-text-size; font-weight: $font-weight; }
   align-items: center;
 }
 
+.flexColumn {
+  display: flex;
+  flex-direction: column;
+}
+
 .flexCenter {
   display: flex;
   justify-content: center;
