@@ -212,6 +212,7 @@ class Dashboard extends Component {
     return (
       <div>
         <h2>Dashboard</h2>
+        {/*
         <Dropdown
           name='emailListID'
           portalID={`dropdown-portal-emailListID`}
@@ -248,7 +249,7 @@ class Dashboard extends Component {
               desc='Download Customers'
           />
         </div>
-        {/*
+
         <ModalRoute
           id='testModal2'
           component={() => {
@@ -262,6 +263,7 @@ class Dashboard extends Component {
             )
           }}
         />
+        */}
         <Form
           name='testForm'
           options={{
@@ -269,7 +271,6 @@ class Dashboard extends Component {
           }}>
           <TestForm {...this.props} />
         </Form>
-        */}
         {/*
         <Lottie
           animationData={coverPlaceholder.default}
