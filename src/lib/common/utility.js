@@ -961,7 +961,7 @@ export function blob2S3(
       return;
     }
     if (callback) {
-      //console.log('execute location -> ', x.getResponseHeader('Location'));
+      console.log('execute location -> ', x.getResponseHeader('Location'));
       callback(x.getResponseHeader('Location'));
     }
   }
