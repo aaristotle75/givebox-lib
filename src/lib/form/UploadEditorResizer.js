@@ -91,7 +91,8 @@ class UploadEditorResizer extends Component {
 
     const ctx = canvas.getContext('2d');
     ctx.globalCompositeOperation = 'destination-over';
-    ctx.fillStyle = '#ffffff';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0)';
+
     ctx.fillRect(0, 0, w, h);
 
     const fileType = util.getValue(this.props.file, 'type');
@@ -281,6 +282,7 @@ class UploadEditorResizer extends Component {
                 color={[37, 54, 85, 0]}
                 border={[0, 0]}
                 disableBoundaryChecks={true}
+                backgroundColor={`rgba(255, 255, 255, 0)`}
               />
             </ResizableBox>
           </div>

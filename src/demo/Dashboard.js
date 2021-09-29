@@ -212,6 +212,18 @@ class Dashboard extends Component {
     return (
       <div>
         <h2>Dashboard</h2>
+          <MediaLibrary
+            blockType={'article'}
+            image={null}
+            preview={null}
+            handleSaveCallback={this.handleSaveCallback}
+            handleSave={util.handleFile}
+            library={library}
+            showBtns={'hide'}
+            saveLabel={'close'}
+            mobile={false}
+            uploadOnly={false}
+          />
         {/*
         <Dropdown
           name='emailListID'
@@ -263,7 +275,6 @@ class Dashboard extends Component {
             )
           }}
         />
-        */}
         <Form
           name='testForm'
           options={{
@@ -271,6 +282,8 @@ class Dashboard extends Component {
           }}>
           <TestForm {...this.props} />
         </Form>
+        */}
+
         {/*
         <Lottie
           animationData={coverPlaceholder.default}
@@ -289,18 +302,6 @@ class Dashboard extends Component {
           url={'https://cdn.givebox.com/givebox/public/videos/filmfestivals.mp4'}
           width='100%'
           controls={true}
-        />
-        <MediaLibrary
-          blockType={'article'}
-          image={null}
-          preview={null}
-          handleSaveCallback={this.handleSaveCallback}
-          handleSave={util.handleFile}
-          library={library}
-          showBtns={'hide'}
-          saveLabel={'close'}
-          mobile={false}
-          uploadOnly={true}
         />
         */}
         {/*
