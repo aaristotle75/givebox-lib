@@ -961,8 +961,12 @@ export function blob2S3(
       return;
     }
     if (callback) {
-      console.log('execute location -> ', x.getResponseHeader('Location'));
-      callback(x.getResponseHeader('Location'));
+      const location = x.getResponseHeader('Location');
+      const fullUrl = new URL(location);
+      const pathName = fullUrl.pathname;
+      const cdn = ENV === 'production' ? `https://cdn.givebox.com/givebox` : `https://staging-cdn.givebox.com/givebox-staging`;
+      const url = `${cdn}${pathName}`;
+      callback(url);
     }
   }
   x.open(s3.method, s3.action);

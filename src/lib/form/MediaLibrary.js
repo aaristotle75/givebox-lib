@@ -42,6 +42,7 @@ class MediaLibrary extends Component {
     this.setPreview = this.setPreview.bind(this);
     this.closeModalAndCancel = this.closeModalAndCancel.bind(this);
     this.removeImage = this.removeImage.bind(this);
+    this.deleteImage = this.deleteImage.bind(this);
     this.state = {
       image: this.props.image || '',
       preview: this.props.preview || '',
@@ -102,6 +103,22 @@ class MediaLibrary extends Component {
   removeImage() {
     this.setState({ preview: '' });
     if (this.props.removePreview) this.props.removePreview();
+  }
+
+  deleteImage(ID) {
+    const {
+      orgID
+    } = this.props;
+
+    this.props.sendResource('orgMediaItem', {
+      orgID,
+      id: [ID],
+      method: 'delete',
+      resourcesToLoad: ['orgMediaItems', 'articleMediaItems'],
+      callback: (res, err) => {
+        this.props.toggleModal('imageDisplay', false);
+      }
+    });
   }
 
   toggleEditor(bool) {
@@ -259,7 +276,12 @@ class MediaLibrary extends Component {
         );
 
         actions.push(
+          <GBLink className='button' onClick={() => this.deleteImage(value.ID)}>
+            Delete
+          </GBLink>
+          /*
           <ModalLink className='button' id='delete' opts={{ callback: () => this.props.toggleModal('imageDisplay', false), id: value.ID, resource: 'orgMediaItem', resourcesToLoad: ['orgMediaItems', 'articleMediaItems'], desc: <div style={{display: 'inline-block', width: 'auto', textAlign: 'center', margin: '10px 0'}}><Image url={value.URL} size='small' maxSize='75px' alt='Media Item' /></div>, showLoader: 'no'  }}>Delete</ModalLink>
+          */
         );
 
         items.push(
