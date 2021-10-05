@@ -938,6 +938,7 @@ export function blob2S3(
   progressCallback
 ) {
   const formData = new FormData();
+  const key = s3.fields.key;
   for (var name in s3.fields) {
     formData.append(name, s3.fields[name]);
   }
@@ -961,11 +962,8 @@ export function blob2S3(
       return;
     }
     if (callback) {
-      const location = x.getResponseHeader('Location');
-      const fullUrl = new URL(location);
-      const pathName = fullUrl.pathname;
-      const cdn = ENV === 'production' ? `https://cdn.givebox.com/givebox` : `https://staging-cdn.givebox.com/givebox-staging`;
-      const url = `${cdn}${pathName}`;
+      const cdn = ENV === 'production' ? `https://cdn.givebox.com/` : `https://staging-cdn.givebox.com/`;
+      const url = `${cdn}${key}`;
       callback(url);
     }
   }
