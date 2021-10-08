@@ -555,3 +555,11 @@ ul.selectable {
   height: 0 !important;
   color: $white !important;
 }
+
+
+.demoPageWrapper {
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  overflow: auto;
+}

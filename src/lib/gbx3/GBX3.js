@@ -340,6 +340,8 @@ class GBX3 extends React.Component {
     info.signup = has(queryParams, 'signup') ? true : false;
     info.share = has(queryParams, 'share') ? true : false;
     info.bookDemo = has(queryParams, 'bookDemo') ? true : false;
+    info.connectBankSteps = has(queryParams, 'connectBankSteps') ? true : false;
+    info.transferSteps = has(queryParams, 'transferSteps') ? true : false;
     info.locked = has(queryParams, 'locked') ? true : false;
     info.noFocus = has(queryParams, 'noFocus') ? true : false;
     info.receipt = has(queryParams, 'receipt') ? true : false;
@@ -591,6 +593,8 @@ function mapStateToProps(state, props) {
   const browse = has(queryParams, 'browse') ? true : props.browse;
   const signup = has(queryParams, 'signup') ? true : props.signup;
   const bookDemo = has(queryParams, 'bookDemo') ? true : props.bookDemo;
+  const connectBankSteps = has(queryParams, 'connectBankSteps') ? true : props.connectBankSteps;
+  const transferSteps = has(queryParams, 'transferSteps') ? true : props.transferSteps;
 
   return {
     globals,
@@ -613,6 +617,8 @@ function mapStateToProps(state, props) {
     browse,
     signup,
     bookDemo,
+    connectBankSteps,
+    transferSteps,
     access: util.getValue(state.resource, 'access', {})
   }
 }

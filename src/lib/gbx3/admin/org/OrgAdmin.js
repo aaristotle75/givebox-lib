@@ -7,9 +7,11 @@ import Loader from '../../../common/Loader';
 import Icon from '../../../common/Icon';
 import {
   toggleAdminLeftPanel,
-  checkSignupPhase
+  checkSignupPhase,
+  setSignupStep
 } from '../../redux/gbx3actions';
 import {
+  toggleModal,
   openLaunchpad
 } from '../../../api/actions';
 import ModalLink from '../../../modal/ModalLink';
@@ -25,11 +27,17 @@ class OrgAdmin extends React.Component {
 
   constructor(props) {
     super(props);
+    this.openStep = this.openStep.bind(this);
     this.state = {
     };
   }
 
   componentDidMount() {
+    const {
+      connectBankSteps,
+      transferSteps
+    } = this.props;
+
     const testConfig = {
       /*
       forceStep: 2,
@@ -38,7 +46,20 @@ class OrgAdmin extends React.Component {
       */
     };
 
-    this.props.checkSignupPhase(ENV !== 'production' ? testConfig : {});
+    console.log('execute -> ', connectBankSteps);
+    if (connectBankSteps) {
+      this.openStep('connectBank', 'orgConnectBankSteps');
+    } else if (transferSteps) {
+      this.openStep('identity', 'orgTransferSteps');
+    } else {
+      //this.props.checkSignupPhase(ENV !== 'production' ? testConfig : {});
+    }
+  }
+
+  openStep(value, modalName) {
+    this.props.setSignupStep(value, () => {
+      this.props.toggleModal(modalName, true);
+    });
   }
 
   render() {
@@ -96,16 +117,22 @@ function mapStateToProps(state, props) {
   const admin = util.getValue(gbx3, 'admin', {});
   const openAdmin = util.getValue(admin, 'open');
   const launchpad = util.getValue(admin, 'launchpad');
+  const connectBankSteps = util.getValue(gbx3, 'info.connectBankSteps');
+  const transferSteps = util.getValue(gbx3, 'info.transferSteps');
 
   return {
     orgID,
     openAdmin,
-    launchpad
+    launchpad,
+    connectBankSteps,
+    transferSteps
   }
 }
 
 export default connect(mapStateToProps, {
   toggleAdminLeftPanel,
   checkSignupPhase,
-  openLaunchpad
+  openLaunchpad,
+  toggleModal,
+  setSignupStep
 })(OrgAdmin);
