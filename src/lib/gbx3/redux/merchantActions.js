@@ -7,7 +7,8 @@ import {
   reloadResource
 } from '../../api/helpers';
 import {
-  setSignupStep
+  setSignupStep,
+  updateOrgSignup
 } from './gbx3actions';
 import Moment from 'moment';
 
@@ -354,6 +355,8 @@ export function getLinkToken(preventInfiniteLoop) {
                 dispatch(getLinkToken(true));
               }
             }));
+          } else {
+            dispatch(updateOrgSignup({ signupPhase: 'manualConnect' }));
           }
         }
       }

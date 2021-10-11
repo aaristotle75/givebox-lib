@@ -8,7 +8,8 @@ import Icon from '../../../common/Icon';
 import {
   toggleAdminLeftPanel,
   checkSignupPhase,
-  setSignupStep
+  setSignupStep,
+  updateOrgSignup
 } from '../../redux/gbx3actions';
 import {
   toggleModal,
@@ -32,8 +33,9 @@ class OrgAdmin extends React.Component {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const {
+      signupPhase,
       connectBankSteps,
       transferSteps
     } = this.props;
@@ -46,13 +48,22 @@ class OrgAdmin extends React.Component {
       */
     };
 
-    console.log('execute -> ', connectBankSteps);
     if (connectBankSteps) {
-      this.openStep('connectBank', 'orgConnectBankSteps');
+      if (signupPhase !== 'connectBank') {
+        const phaseUpdated = await this.props.updateOrgSignup({ signupPhase: 'connectBank' }, 'postSignup');
+        if (phaseUpdated) this.openStep('connectBank', 'orgConnectBankSteps');
+      } else {
+        this.openStep('connectBank', 'orgConnectBankSteps');
+      }
     } else if (transferSteps) {
-      this.openStep('identity', 'orgTransferSteps');
+      if (signupPhase !== 'transferMoney') {
+        const phaseUpdated = await this.props.updateOrgSignup({ signupPhase: 'transferMoney' }, 'connectBank');
+        if (phaseUpdated) this.openStep('identity', 'orgTransferSteps');
+      } else {
+        this.openStep('identity', 'orgTransferSteps');
+      }
     } else {
-      //this.props.checkSignupPhase(ENV !== 'production' ? testConfig : {});
+      this.props.checkSignupPhase(ENV !== 'production' ? testConfig : {});
     }
   }
 
@@ -117,6 +128,7 @@ function mapStateToProps(state, props) {
   const admin = util.getValue(gbx3, 'admin', {});
   const openAdmin = util.getValue(admin, 'open');
   const launchpad = util.getValue(admin, 'launchpad');
+  const signupPhase = util.getValue(gbx3, 'orgSignup.signupPhase');
   const connectBankSteps = util.getValue(gbx3, 'info.connectBankSteps');
   const transferSteps = util.getValue(gbx3, 'info.transferSteps');
 
@@ -124,6 +136,7 @@ function mapStateToProps(state, props) {
     orgID,
     openAdmin,
     launchpad,
+    signupPhase,
     connectBankSteps,
     transferSteps
   }
@@ -134,5 +147,6 @@ export default connect(mapStateToProps, {
   checkSignupPhase,
   openLaunchpad,
   toggleModal,
-  setSignupStep
+  setSignupStep,
+  updateOrgSignup
 })(OrgAdmin);

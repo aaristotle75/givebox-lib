@@ -5,7 +5,8 @@ import { getResource, sendResource } from '../lib/api/helpers';
 import Loader from '../lib/common/Loader';
 import {
   util,
-  GBLink
+  GBLink,
+  types
 } from '../lib/'
 import { prodPerms } from './prodPerms';
 
@@ -27,6 +28,7 @@ class UpdateImages extends Component {
     super(props);
     this.dfsTraverse = this.dfsTraverse.bind(this);
     this.filterURLs = this.filterURLs.bind(this);
+    this.saveArticle = this.saveArticle.bind(this);
     this.state = {
       items: []
     };
@@ -42,7 +44,9 @@ class UpdateImages extends Component {
       callback: (res, err) => {
         const data = util.getValue(res, 'data', {});
         if (!util.isEmpty(data)) {
-          this.dfsTraverse(data, this.filterURLs);
+          Object.entries(data).forEach(([key, value]) => {
+            this.dfsTraverse(value, this.filterURLs, value, '/', this.saveArticle);
+          });
         }
       }
     });
@@ -55,21 +59,38 @@ class UpdateImages extends Component {
     }
   }
 
-  dfsTraverse(obj, filter) {
+  saveArticle(rootObj, data) {
+    const endpoint = `org${types.kind(util.getValue(rootObj, 'kind')).api.item}`;
+    const articleID = util.getValue(rootObj, 'ID');
+    const orgID = util.getValue(rootObj, 'orgID');
+    const id = util.getValue(rootObj, 'kindID');
+    console.log('execute -> ', articleID, orgID, id, endpoint, data);
+    /*
+    this.props.sendResource(``, {
+
+    });
+    */
+  }
+
+  dfsTraverse(obj, filter, rootObj = {}, path = '', saveCallback) {
     if (typeof obj !== 'object' || obj === null) return;
 
     Object.entries(obj).forEach(([key, value]) => {
-      if (filter(key, value)) this.dfsTraverse(value, filter);
+      path = `${path}${path === '/' ? '' : '/'}${key}`;
+      if (filter(key, value, rootObj, path, saveCallback)) this.dfsTraverse(value, filter, rootObj, path, saveCallback);
     });
   }
 
-  filterURLs(key, value) {
+  filterURLs(key, value, rootObj, path, saveCallback) {
     //console.log('execute filterURLs -> ', key, value);
     const oldValue = value;
     if (typeof value === 'string') {
       if (value.includes(AWS_SEARCH_URL[ENV])) {
         const newValue = value.replace(AWS_SEARCH_URL[ENV], REPLACE_URL[ENV]);
-        console.log('execute replace ', oldValue, ' -> ', newValue);
+        console.log('execute filterURLs path -> ', path);
+        saveCallback(rootObj, {
+          [key]: newValue
+        });
       }
     }
     /*

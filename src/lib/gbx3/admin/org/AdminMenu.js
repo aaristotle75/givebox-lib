@@ -50,7 +50,7 @@ class AdminMenu extends React.Component {
       default: {
         return (
           <>
-            { (signupPhase && completedPhases.length < phases.length) ?
+            { (signupPhase && completedPhases.length < phases.length && !completedPhases.includes('transferMoney') ) ?
               <SignupMenu stepsOnly={true} />
             :
               null
