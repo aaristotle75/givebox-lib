@@ -4,7 +4,7 @@ export function bankStatus(status, voidCheck) {
   const obj = {};
   switch(status) {
     case 'approved': {
-      obj.name = 'Verified';
+      obj.name = 'Approved';
       obj.color = 'green';
       break;
     }
