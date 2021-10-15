@@ -233,7 +233,7 @@ CustomCKEditor4.defaultProps = {
   toolbar: [
     [ 'Bold', 'Italic', '-', 'Font', '-', 'FontSize', 'TextColor', 'Styles', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', '-', 'Link', 'Unlink', '-', 'Image']
   ],
-  contentCss: 'https://givebox.s3-us-west-1.amazonaws.com/public/css/contents.css',
+  contentCss: 'https://cdn.givebox.com/givebox/public/css/contents.css',
   removePlugins: 'image,elementspath,resize',
   removeButtons: '',
   loaderClass: '',

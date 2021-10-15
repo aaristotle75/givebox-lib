@@ -77,7 +77,7 @@ class Create extends React.Component {
       if (isVolunteer && (value === 'invoice' || value === 'membership')) return;
       items.push(
         <div key={value} className='createKindItem' onClick={() => this.createFundraiser(value)}>
-          <Image url={`https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/raise-${value}-lg.png`} maxSize={130} alt={types.kind(value).namePlural} />
+          <Image url={`https://cdn.givebox.com/givebox/public/images/backgrounds/raise-${value}-lg.png`} maxSize={130} alt={types.kind(value).namePlural} />
           <span className='createKindItemText'>
             {types.kind(value).name}
           </span>

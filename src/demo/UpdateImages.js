@@ -64,7 +64,7 @@ class UpdateImages extends Component {
     const articleID = util.getValue(rootObj, 'ID');
     const orgID = util.getValue(rootObj, 'orgID');
     const id = util.getValue(rootObj, 'kindID');
-    console.log('execute -> ', articleID, orgID, id, endpoint, data);
+    //console.log('execute -> ', articleID, orgID, id, endpoint, data);
     /*
     this.props.sendResource(``, {
 
@@ -76,8 +76,15 @@ class UpdateImages extends Component {
     if (typeof obj !== 'object' || obj === null) return;
 
     Object.entries(obj).forEach(([key, value]) => {
-      path = `${path}${path === '/' ? '' : '/'}${key}`;
-      if (filter(key, value, rootObj, path, saveCallback)) this.dfsTraverse(value, filter, rootObj, path, saveCallback);
+      if (filter(key, value, rootObj, path, saveCallback)) {
+        if (typeof value === 'object') {
+          path = `${path}${path === '/' ? '' : '/'}${key}`;
+        } else {
+          path = path.substring(0, path.lastIndexOf('/'));
+        }
+        console.log('execute path -> ', path);
+        this.dfsTraverse(value, filter, rootObj, path, saveCallback);
+      }
     });
   }
 
@@ -87,30 +94,12 @@ class UpdateImages extends Component {
     if (typeof value === 'string') {
       if (value.includes(AWS_SEARCH_URL[ENV])) {
         const newValue = value.replace(AWS_SEARCH_URL[ENV], REPLACE_URL[ENV]);
-        console.log('execute filterURLs path -> ', path);
+        //console.log('execute filterURLs path -> ', path);
         saveCallback(rootObj, {
           [key]: newValue
         });
       }
     }
-    /*
-    if (value.includes(AWS_SEARCH_URL[ENV])) {
-      const items = this.state.items.push(
-        <div
-          key={key}
-          style={{
-            display: 'block',
-            margin: '5px 0',
-            fontSize: 12
-          }}
-        >
-          {value}
-        </div>
-      );
-      this.setState({ items });
-      return false;
-    }
-    */
     return true;
   }
 

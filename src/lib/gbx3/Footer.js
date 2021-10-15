@@ -50,7 +50,7 @@ class Footer extends React.Component {
               Support {orgName}<br /> by starting a Peer-2-Peer Fundraiser
             </GBLink> : ''}
           </div> : ''}
-          <Image url='https://s3-us-west-1.amazonaws.com/givebox/public/gb-logo5.svg' maxSize={'30px'} style={{ minHeight: 30 }} />
+          <Image url='https://cdn.givebox.com/givebox/public/gb-logo5.svg' maxSize={'30px'} style={{ minHeight: 30 }} />
           <div className="copyright">
             <span>&copy; {Moment().format('YYYY')} Givebox</span>
             <GBLink allowCustom={true} customColor={primaryColor} onClick={() => window.open('https://givebox.com')}>www.givebox.com</GBLink>

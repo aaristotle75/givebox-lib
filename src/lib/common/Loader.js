@@ -37,7 +37,7 @@ export default class Loader extends Component {
   }
 
   createSVG() {
-    const svg = <img alt='Givebox loader' className={`loaderSVG ${this.state.end ? 'fadeOut' : ''}`} src='https://s3-us-west-1.amazonaws.com/givebox/public/gb-logo3.svg' type='image/svg+xml' />
+    const svg = <img alt='Givebox loader' className={`loaderSVG ${this.state.end ? 'fadeOut' : ''}`} src='https://cdn.givebox.com/givebox/public/gb-logo3.svg' type='image/svg+xml' />
     return svg;
   }
 

@@ -55,7 +55,7 @@ class Terms extends Component {
     return (
       <div className='modalWrapper orgCustomElements'>
         <div className='center'>
-          <img className='pciImage' src='https://s3-us-west-1.amazonaws.com/givebox/public/images/logo-box.svg' alt='Givebox' height='70px' width='135px' />
+          <img className='pciImage' src='https://cdn.givebox.com/givebox/public/images/logo-box.svg' alt='Givebox' height='70px' width='135px' />
         </div>
         <Collapse
           label={'Givebox Terms and Conditions'}
@@ -99,7 +99,7 @@ class Terms extends Component {
         {this.renderKindSpecific()}
         <div style={{ paddingBottom: 100 }} className='sectionContent center'>
           <h4>Payment will be processed by:</h4>
-          <img style={{paddingTop: 10 }} src='https://s3-us-west-1.amazonaws.com/givebox/public/gb-logo5.svg' height='40px' width='40px' alt='Givebox, Inc.' />
+          <img style={{paddingTop: 10 }} src='https://cdn.givebox.com/givebox/public/gb-logo5.svg' height='40px' width='40px' alt='Givebox, Inc.' />
           <div className='address'>
             <span className='line'><strong>Givebox</strong></span>
             <span className='line'>1730 E. Holly Ave</span>

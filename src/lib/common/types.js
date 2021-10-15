@@ -286,7 +286,7 @@ export const accountType = (type) => {
 }
 
 export const socialIcons = (type, size = 50) => {
-  return <img style={{ height: size, width: size }} src={`https://givebox.s3-us-west-1.amazonaws.com/public/images/social-${type}.png`} alt={`${type}`} />;
+  return <img style={{ height: size, width: size }} src={`https://cdn.givebox.com/givebox/public/images/social-${type}.png`} alt={`${type}`} />;
 }
 
 
@@ -431,7 +431,7 @@ export function translatePaymentForm(formKind) {
   return `${kindName} ${formKind !== 'fundraiser' ? 'Form' : ''} Details`;
 }
 
-export const defaultArticleImageURL = 'https://s3-us-west-1.amazonaws.com/givebox/assets/img/fundraiser-cover/original';
+export const defaultArticleImageURL = 'https://cdn.givebox.com/givebox/assets/img/fundraiser-cover/original';
 
 export const defaultArticleTitles = {
   fundraiser: 'New Donation Form',

@@ -98,7 +98,7 @@ const GBXEntry = (function() {
     var loaderGraphic = document.createElement('img');
     loaderGraphic.setAttribute('class', 'loaderSVG');
     loaderGraphic.setAttribute('type', 'image/svg+xml');
-    loaderGraphic.src = 'https://s3-us-west-1.amazonaws.com/givebox/public/gb-logo3.svg';
+    loaderGraphic.src = 'https://cdn.givebox.com/givebox/public/gb-logo3.svg';
 
 
     innerDiv.appendChild(loaderGraphic);

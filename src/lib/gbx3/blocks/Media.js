@@ -260,7 +260,7 @@ class Media extends Component {
 
     const disallowRadius = util.getValue(block, 'disallowRadius');
     const url = util.getValue(image, 'URL');
-    const defaultURL = 'https://s3-us-west-1.amazonaws.com/givebox/assets/img/fundraiser-cover/original';
+    const defaultURL = 'https://cdn.givebox.com/givebox/assets/img/fundraiser-cover/original';
 
     if (url || stage === 'public') {
       return (

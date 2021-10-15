@@ -7,15 +7,15 @@ a[href^="https://maps.google.com/maps"]{display:none !important}
   /*the desired background for the map*/
 #map_canvas{background-color:#fff !important}
 
-img[src="https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/map-marker.png"] {
+img[src="https://cdn.givebox.com/givebox/public/images/backgrounds/map-marker.png"] {
   @include animation(pulsateBrighter 1s ease-out infinite);
 }
 
-img[src="https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/map-marker.png"]:hover {
+img[src="https://cdn.givebox.com/givebox/public/images/backgrounds/map-marker.png"]:hover {
   @include animation(pulsateDimmer 1s ease-out infinite);
 }
 
-img[src="https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/map-marker-blue.png"] {
+img[src="https://cdn.givebox.com/givebox/public/images/backgrounds/map-marker-blue.png"] {
   //@include animation(pulsateBrighter 2s ease-out infinite);
 }
 
@@ -485,7 +485,7 @@ $ad-min: 200px;
     width: 100%;
     height: 40px;
     opacity: .3;
-    background: url('https://s3-us-west-1.amazonaws.com/givebox/public/images/backgrounds/curved-line.png') no-repeat center;
+    background: url('https://cdn.givebox.com/givebox/public/images/backgrounds/curved-line.png') no-repeat center;
   }
 }
 

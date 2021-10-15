@@ -23,7 +23,7 @@ class AboutFee extends Component {
     return (
       <div className='modalWrapper orgCustomElements'>
         <div className='center'>
-          <img className='pciImage' src='https://s3-us-west-1.amazonaws.com/givebox/public/images/logo-box.svg' alt='Givebox' height='70px' width='135px' />
+          <img className='pciImage' src='https://cdn.givebox.com/givebox/public/images/logo-box.svg' alt='Givebox' height='70px' width='135px' />
         </div>
         <div style={{ paddingBottom: 100 }} className='sectionContent'>
           <h3 style={{ marginBottom: 0 }}>Credit Card and Platform Fees</h3>

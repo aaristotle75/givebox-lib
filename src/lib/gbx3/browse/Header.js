@@ -48,7 +48,7 @@ class Header extends React.Component {
 
   renderSlider() {
 
-    const coverPhotoUrl = 'https://s3-us-west-1.amazonaws.com/givebox-marketing/images/2020/03/27060433/13-Jimmy-Miller-option-1.jpg';
+    const coverPhotoUrl = 'https://cdn.givebox.com/images/2020/03/27060433/13-Jimmy-Miller-option-1.jpg';
 
     const images = [
       {
