@@ -678,6 +678,19 @@ export function getValue(obj, prop, returnIfEmpty = '', debug) {
   return (returnObj || typeof(returnObj) === 'boolean') || returnObj === 0 || returnObj === false ? returnObj : returnIfEmpty;
 }
 
+export function mutateObject(obj, path, value) {
+  let schema = obj;  // a moving reference to internal objects within obj
+  const pList = path.split('.');
+  const len = pList.length;
+  for (let i = 0; i < len-1; i++) {
+      const elem = pList[i];
+      if( !schema[elem] ) schema[elem] = {}
+      schema = schema[elem];
+  }
+  schema[pList[len-1]] = value;
+  return schema;
+}
+
 export function getIndex(array, index, returnIfEmpty = '') {
   if (typeof array === 'undefined') {
     return returnIfEmpty;
@@ -1188,4 +1201,23 @@ export function getFileInfo(url) {
     type,
     name
   };
+}
+
+export function isObject(val) {
+  if (typeof val === 'object' && val !== null && !Array.isArray(val)) return true;
+  return false;
+}
+
+export function addDelimiter(a, b, delimiter = '.') {
+  return a ? `${a}${delimiter}${b}` : b;
+}
+
+export function propertiesToArray(obj) {
+  const paths = (obj = {}, head = '') => {
+    return Object.entries(obj || {}).reduce((product, [key, value]) => {
+      let fullPath = addDelimiter(head, key)
+      return isObject(value) ? product.concat(paths(value, fullPath)) : `${product.concat(fullPath)}: ${obj[key]}<br />`;
+    }, []);
+  }
+  return paths(obj);
 }

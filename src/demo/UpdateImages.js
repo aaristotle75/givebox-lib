@@ -9,6 +9,7 @@ import {
   types
 } from '../lib/'
 import { prodPerms } from './prodPerms';
+import has from 'has';
 
 const AWS_SEARCH_URL = {
   staging: 'https://givebox-staging.s3.amazonaws.com',
@@ -26,7 +27,7 @@ class UpdateImages extends Component {
 
   constructor(props) {
     super(props);
-    this.dfsTraverse = this.dfsTraverse.bind(this);
+    this.traverseAndSearch = this.traverseAndSearch.bind(this);
     this.filterURLs = this.filterURLs.bind(this);
     this.saveArticle = this.saveArticle.bind(this);
     this.state = {
@@ -45,7 +46,7 @@ class UpdateImages extends Component {
         const data = util.getValue(res, 'data', {});
         if (!util.isEmpty(data)) {
           Object.entries(data).forEach(([key, value]) => {
-            this.dfsTraverse(value, this.filterURLs, value, '/', this.saveArticle);
+            this.traverseAndSearch(value, '', value);
           });
         }
       }
@@ -64,7 +65,7 @@ class UpdateImages extends Component {
     const articleID = util.getValue(rootObj, 'ID');
     const orgID = util.getValue(rootObj, 'orgID');
     const id = util.getValue(rootObj, 'kindID');
-    //console.log('execute -> ', articleID, orgID, id, endpoint, data);
+    console.log('execute -> ', articleID, orgID, id, endpoint, data);
     /*
     this.props.sendResource(``, {
 
@@ -72,35 +73,65 @@ class UpdateImages extends Component {
     */
   }
 
-  dfsTraverse(obj, filter, rootObj = {}, path = '', saveCallback) {
-    if (typeof obj !== 'object' || obj === null) return;
-
-    Object.entries(obj).forEach(([key, value]) => {
-      if (filter(key, value, rootObj, path, saveCallback)) {
-        if (typeof value === 'object') {
-          path = `${path}${path === '/' ? '' : '/'}${key}`;
-        } else {
-          path = path.substring(0, path.lastIndexOf('/'));
-        }
-        console.log('execute path -> ', path);
-        this.dfsTraverse(value, filter, rootObj, path, saveCallback);
-      }
-    });
-  }
-
-  filterURLs(key, value, rootObj, path, saveCallback) {
+  filterURLs(key, value, rootObj, saveCallback, pathArr) {
     //console.log('execute filterURLs -> ', key, value);
     const oldValue = value;
     if (typeof value === 'string') {
       if (value.includes(AWS_SEARCH_URL[ENV])) {
         const newValue = value.replace(AWS_SEARCH_URL[ENV], REPLACE_URL[ENV]);
-        //console.log('execute filterURLs path -> ', path);
+        //console.log('execute filterURLs pathArr -> ', pathArr);
         saveCallback(rootObj, {
           [key]: newValue
         });
       }
     }
     return true;
+  }
+
+  traverseAndSearch(obj = {}, head = '', rootObj = {}) {
+    Object.entries(obj || {}).forEach(([key, value]) => {
+      const fullPath = util.addDelimiter(head, key);
+      if (util.isObject(value)) {
+        this.traverseAndSearch(value, fullPath, rootObj);
+      } else {
+        const needle = obj[key];
+        if (typeof needle === 'string') {
+          if (needle.includes(AWS_SEARCH_URL[ENV])) {
+            const newValue = value.replace(AWS_SEARCH_URL[ENV], REPLACE_URL[ENV]);
+            util.mutateObject(rootObj, fullPath, newValue);
+            const endpoint = `org${types.kind(util.getValue(rootObj, 'kind')).api.item}`;
+            const articleID = util.getValue(rootObj, 'ID');
+            const orgID = util.getValue(rootObj, 'orgID');
+            const id = util.getValue(rootObj, 'kindID');
+            console.log(fullPath, needle, rootObj);
+            return `${fullPath}: ${needle}`;
+          }
+        }
+      }
+    });
+  }
+
+  traverseAndSearch2(obj = {}, head = '', rootObj = {}) {
+    Object.entries(obj || {}).reduce((product, [key, value]) => {
+      const fullPath = util.addDelimiter(head, key);
+      if (util.isObject(value)) {
+        this.traverseAndSearch(value, fullPath, rootObj);
+      } else {
+        const needle = obj[key];
+        if (typeof needle === 'string') {
+          if (needle.includes(AWS_SEARCH_URL[ENV])) {
+            const newValue = value.replace(AWS_SEARCH_URL[ENV], REPLACE_URL[ENV]);
+            rootObj[`${fullPath}`] = newValue;
+            const endpoint = `org${types.kind(util.getValue(rootObj, 'kind')).api.item}`;
+            const articleID = util.getValue(rootObj, 'ID');
+            const orgID = util.getValue(rootObj, 'orgID');
+            const id = util.getValue(rootObj, 'kindID');
+            console.log(fullPath, needle, rootObj);
+            return `${fullPath}: ${needle}`;
+          }
+        }
+      }
+    }, []);
   }
 
   render() {
@@ -119,7 +150,6 @@ class UpdateImages extends Component {
             <GBLink onClick={() => console.log('execute update URLs')}>
               Update URLs
             </GBLink>
-            {items}
           </div>
         </div>
       </div>
