@@ -8,6 +8,9 @@ import ModalLink from '../../modal/ModalLink';
 import {
   getResource
 } from '../../api/helpers';
+import {
+  toggleModal
+} from '../../api/actions';
 import AnimateHeight from 'react-animate-height';
 import CheckoutDonationSelect from './CheckoutDonationSelect';
 
@@ -23,6 +26,18 @@ class CheckoutDonationEdit extends Component{
       customName: 'donationForms',
       orgID: this.props.orgID
     });
+  }
+
+  componentDidUpdate(prevProps) {
+
+    const {
+      checkoutDonation,
+      checkoutDonationFormID
+    } = this.props;
+
+    if (prevProps.checkoutDonation !== this.props.checkoutDonation && checkoutDonation && !checkoutDonationFormID) {
+      this.props.toggleModal('checkoutDonationSelect', true, { checkoutDonationFormID });
+    }
   }
 
   render() {
@@ -67,7 +82,7 @@ class CheckoutDonationEdit extends Component{
             <div className='inputLeftBar'></div>
             <div className='label'>Donation Form</div>
             <ModalLink id='checkoutDonationSelect' opts={{ checkoutDonationFormID }}>
-              {checkoutDonationFormID ? 'Change Donation Form' : 'Select a Donation Form' }
+              {checkoutDonationFormID ? 'Click Here to Change Donation Form' : 'Click Here to Select a Donation Form' }
             </ModalLink>
             <div style={{ padding: '5px 0' }} className='fieldContext'>{ checkoutDonationFormTitle ? <span className='green'><span style={{ fontStyle: 'italic' }}>Current:</span> {checkoutDonationFormTitle}</span> : 'You must select a donation form for this feature to display to the user.' }</div>
           </div>
@@ -119,5 +134,6 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
-  getResource
+  getResource,
+  toggleModal
 })(CheckoutDonationEdit);
