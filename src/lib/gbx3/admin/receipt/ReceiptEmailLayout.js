@@ -12,6 +12,8 @@ import {
   updateBlocks,
   saveReceipt
 } from '../../redux/gbx3actions';
+import Moment from 'moment';
+
 const orderConfirmationTemplate = require('html-loader!./receiptConfirmationTemplate.html');
 const receiptSweepstakesTemplate = require('html-loader!./receiptSweepstakesTemplate.html');
 
@@ -163,8 +165,10 @@ class ReceiptEmailLayout extends React.Component {
 
   renderOrderConfirmation() {
 
-    const descriptor = 'BillingDescription';
+    const descriptor = util.getValue(this.props.org, 'billingDescriptor', 'BillingDescription');
     const orderConfirmation = util.replaceAll(orderConfirmationTemplate, {
+      '{{ordername}}': `Customer Name`,
+      '{{orderdate}}' : Moment().format('MMMM Do, YYYY'),
       '{{descriptor}}' : `GBX*${descriptor}`
     });
 
@@ -296,6 +300,7 @@ function mapStateToProps(state, props) {
   const editable = util.getValue(admin, 'editable');
   const hasAccessToEdit = util.getValue(admin, 'hasAccessToEdit');
   const receiptHTML = util.getValue(gbx3, 'data.receiptHTML');
+  const org = util.getValue(state, 'resource.gbx3Org.data', {});
 
   return {
     breakpoint,
@@ -304,6 +309,7 @@ function mapStateToProps(state, props) {
     editable,
     hasAccessToEdit,
     receiptHTML,
+    org,
     globals: util.getValue(gbx3, 'globals', {})
   }
 }

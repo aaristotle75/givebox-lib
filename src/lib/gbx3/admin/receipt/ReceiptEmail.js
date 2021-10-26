@@ -23,7 +23,7 @@ class ReceiptEmailEdit extends React.Component {
 
   componentDidMount() {
     this.props.saveReceipt();
-    
+
     if (this.props.previewMode) {
       this.setPreviewHTML();
     }
@@ -44,6 +44,8 @@ class ReceiptEmailEdit extends React.Component {
 
     const descriptor = util.getValue(org, 'billingDescriptor', 'BillingDescription');
     const orderConfirmation = util.replaceAll(orderConfirmationTemplate, {
+      '{{ordername}}': `Customer Name`,
+      '{{orderdate}}' : Moment().format('MMMM Do, YYYY'),
       '{{descriptor}}' : `GBX*${descriptor}`
     });
 
@@ -95,7 +97,7 @@ function mapStateToProps(state, props) {
   const admin = util.getValue(gbx3, 'admin', {});
   const previewMode = util.getValue(admin, 'previewMode');
   const receiptHTML = util.getValue(gbx3, 'data.receiptHTML');
-  const org = util.getValue(state, 'resource.org.data', {});
+  const org = util.getValue(state, 'resource.gbx3Org.data', {});
 
   return {
     previewMode,
