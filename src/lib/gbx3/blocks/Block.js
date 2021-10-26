@@ -225,12 +225,12 @@ class Block extends React.Component {
           <div className='blockEdit'>
             {!nonremovable && !editFormOnly && showRemovable ?
               <GBLink className='tooltip blockRemoveButton' onClick={() => this.onClickRemove()}>
-                <span className='tooltipTop'><i />Click Icon to REMOVE {title}</span>
+                <span className='tooltipTop'><i />Click to REMOVE {title}</span>
                 <span className='icon icon-trash-2'></span>
               </GBLink>
             : <></>}
             <GBLink className='tooltip blockEditButton' onClick={this.onClickEdit}>
-              <span className='tooltipTop'><i />Click Icon to EDIT {title}</span>
+              <span className='tooltipTop'><i />Click to EDIT {title}</span>
               <span className='icon icon-edit'></span>
             </GBLink>
           </div> : '' }
