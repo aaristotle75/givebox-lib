@@ -169,7 +169,8 @@ class ReceiptEmailLayout extends React.Component {
     const orderConfirmation = util.replaceAll(orderConfirmationTemplate, {
       '{{ordername}}': `Customer Name`,
       '{{orderdate}}' : Moment().format('MMMM Do, YYYY'),
-      '{{descriptor}}' : `GBX*${descriptor}`
+      '{{descriptor}}' : `GBX*${descriptor}`,
+      '{{lastfour}}' : '0000'
     });
 
     return orderConfirmation;
