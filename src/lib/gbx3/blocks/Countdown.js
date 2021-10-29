@@ -436,7 +436,6 @@ class Countdown extends Component {
     var size = 80;
     var corners = 2;
 
-    console.log('execute countdown -> ', stage, editable);
     const nonremovable = util.getValue(block, 'nonremovable', false);
 
     return (
