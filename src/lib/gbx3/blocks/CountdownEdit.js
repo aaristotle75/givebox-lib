@@ -80,11 +80,10 @@ class CoundownEditForm extends Component {
       endsAt
     } = content;
 
+    /*
     const dateFormat = 'MMMM Do, YYYY h:mmA z';
     const timezone = util.getValue(content, 'timezone', 'utc');
     const dateDisplay = Moment(Moment.unix(endsAt)).tz(timezone).format(dateFormat);
-
-    /*
     const local = Moment.unix(endsAt).local().format(dateFormat);
     const utc = Moment.unix(endsAt).utc().format(dateFormat);
     */
