@@ -54,7 +54,7 @@ const sweepstake = {
     thumbnail: { label: '', width: 12 },
     price: { label: 'Price', placeholder: '0.00', width: priceWidth },
     name: { label: 'Ticket | Prize Name', placeholder: 'Add a Short Description', width: nameWidth, customFieldDefault: '' },
-    entries: { label: 'Entries Per Ticket', placeholder: 0, width: 10 }
+    entries: { label: 'Entries per Ticket', placeholder: 0, width: 10 },
   },
   buttonGroup: { width: 10 },
   hasDefaultField: false,

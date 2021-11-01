@@ -547,7 +547,9 @@ const sweepstake = {
         extras: {
           maxQuantity: '',
           showInStock: false,
-          allowPerTicketWinner: null
+          allowPerTicketWinner: null,
+          maxEntriesPerPrizeEnabled: true,
+          maxEntriesPerPrize: 500
         },
         recurring: {}
       },

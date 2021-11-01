@@ -77,13 +77,17 @@ class CoundownEditForm extends Component {
     } = this.props;
 
     const {
-      endsAt,
-      endsAtTime
+      endsAt
     } = content;
 
     const dateFormat = 'MMMM Do, YYYY h:mmA z';
     const timezone = util.getValue(content, 'timezone', 'utc');
     const dateDisplay = Moment(Moment.unix(endsAt)).tz(timezone).format(dateFormat);
+
+    /*
+    const local = Moment.unix(endsAt).local().format(dateFormat);
+    const utc = Moment.unix(endsAt).utc().format(dateFormat);
+    */
 
     return (
       <div className='modalWrapper'>
@@ -93,6 +97,7 @@ class CoundownEditForm extends Component {
       >
         <div className='formSectionContainer'>
           <div className='formSection'>
+            {/*
             <div style={{ fontWeight: 300, margin: '20px 0' }}>
               The Date/Time is in the UTC timezone. Change the timezone below to see the Date/Time in a specific timezone.
             </div>
@@ -117,8 +122,9 @@ class CoundownEditForm extends Component {
               }}
               options={this.timezoneOptions()}
             />
+            */}
             {this.props.calendarField('endsAt', {
-              label: 'Sweepstakes End Date/Time in UTC',
+              label: 'Sweepstakes End Date/Time',
               fixedLabel: true,
               enableTime: true,
               enableTimeOption: false,
@@ -126,11 +132,13 @@ class CoundownEditForm extends Component {
               onChange: this.onChange,
               value: endsAt,
               validate: 'date',
-              utc: true
+              utc: false
             })}
+            {/*
             <div className='fieldContext'>
               The Date/Time is based on UTC (Coordinated Universal Time). Adjust the Date/Time accordingly to match your timezone.
             </div>
+            */}
           </div>
         </div>
       </Collapse>

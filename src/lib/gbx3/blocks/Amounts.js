@@ -27,6 +27,7 @@ import {
   saveGBX3,
   updateCart
 } from '../redux/gbx3actions';
+import { blockTemplates } from './blockTemplates';
 import has from 'has';
 
 class Amounts extends Component {
@@ -48,11 +49,18 @@ class Amounts extends Component {
     this.callbackAfterStep = this.callbackAfterStep.bind(this);
     this.setTab = this.setTab.bind(this);
 
+    const blockTemplate = util.getValue(blockTemplates, `article.${props.kind}`, {});
+    const amountOptions = util.getValue(blockTemplate, 'amounts.options', {});
+    const amountExtras = util.getValue(amountOptions, 'extras', {});
+
     const primaryColor = this.props.primaryColor;
     const options = props.options;
 
     const recurring = util.getValue(options, 'recurring', {});
-    const extras = util.getValue(options, 'extras', {});
+    const extras = {
+      ...amountExtras,
+      ...util.getValue(options, 'extras', {})
+    };
     const button = util.getValue(options, 'button', {});
 
     this.state = {
@@ -416,6 +424,9 @@ class Amounts extends Component {
     if (gettingAmounts) return <Loader msg='Getting Amounts...' />
 
     const allowPerTicketWinner = util.getValue(extras, 'allowPerTicketWinner') || util.getValue(data, 'allowPerTicketWinner');
+    const maxEntriesPerPrizeEnabled = util.getValue(extras, 'maxEntriesPerPrizeEnabled', false);
+    const maxEntriesPerPrize = util.getValue(extras, 'maxEntriesPerPrize');
+
     const maxQuantity = util.getValue(extras, 'maxQuantity') || util.getValue(data, 'maxQuantity');
     const showCart = true;
     const shopTitle = util.getValue(form, 'shopTitle', 'Browse More Items');
@@ -528,7 +539,48 @@ class Amounts extends Component {
                             If toggled off, only one winner will be selected per Sweepstakes form.
                           </div>
                         </div>
-                        : ''}
+                        : null }
+                        {has(extras, 'maxEntriesPerPrizeEnabled') && 1===2 ?
+                          <div style={{ margin: '10px 0' }}>
+                            <Choice
+                              type='checkbox'
+                              name='maxEntriesPerPrizeEnabled'
+                              label={'Set a Limit for the Number of Entries that can be Purchased Per Prize'}
+                              onChange={(name, value) => {
+                                const extras = this.state.extras;
+                                const maxEntriesPerPrizeEnabled = extras.maxEntriesPerPrizeEnabled ? false : true;
+                                extras.maxEntriesPerPrizeEnabled = maxEntriesPerPrizeEnabled;
+                                this.setState({ extras }, () => {
+                                  this.optionsUpdated('extras', extras);
+                                });
+                              }}
+                              checked={maxEntriesPerPrizeEnabled}
+                              value={maxEntriesPerPrizeEnabled}
+                              toggle={true}
+                            />
+                            <AnimateHeight height={extras.maxEntriesPerPrizeEnabled ? 'auto' : 0 }>
+                              <TextField
+                                name='maxQuantity'
+                                label={`Max Entries Allowed Per Prize`}
+                                fixedLabel={true}
+                                placeholder={500}
+                                value={maxEntriesPerPrize || ''}
+                                maxLength={8}
+                                onChange={(e) => {
+                                  const value = +e.currentTarget.value;
+                                  const maxEntriesPerPrize = value && value !== 0 ? value : '';
+                                  const extras = this.state.extras;
+                                  extras.maxEntriesPerPrize = maxEntriesPerPrize;
+                                  this.setState({ extras }, () => {
+                                    this.optionsUpdated('extras', extras);
+                                  });
+                                }}
+                                leftBar={true}
+                                style={{ margin: '0 15px'}}
+                              />
+                            </AnimateHeight>
+                          </div>
+                        : null }
                         <Choice
                           type='checkbox'
                           name='showInStock'

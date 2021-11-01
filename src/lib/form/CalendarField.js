@@ -34,7 +34,7 @@ class CalendarField extends Component {
   componentDidMount() {
     if (this.props.defaultValue) {
       const dateFormat = this.props.enableTime ? 'MM/DD/YYYY H:mm' : 'MM/DD/YYYY';
-      const dateStr =  util.getDate(this.props.defaultValue, dateFormat, { tz: false } );
+      const dateStr =  util.getDate(this.props.defaultValue, dateFormat, { utc: this.props.utc, tz: false } );
       this.setState({ value: dateStr, date: dateStr });
     }
     if (this.props.createField) this.props.createField(this.props.name, this.props.params);
@@ -43,7 +43,7 @@ class CalendarField extends Component {
   componentDidUpdate(prevProps) {
     if (prevProps.defaultValue !== this.props.defaultValue) {
       const dateFormat = this.props.enableTime ? 'MM/DD/YYYY H:mm' : 'MM/DD/YYYY';
-      const dateStr =  util.getDate(this.props.defaultValue, dateFormat, { tz: false } );
+      const dateStr =  util.getDate(this.props.defaultValue, dateFormat, { utc: this.props.utc, tz: false } );
       this.setState({ value: dateStr, date: dateStr });
     }
   }

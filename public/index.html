@@ -1,51 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-		<link rel="apple-touch-icon" sizes="180x180" href="https://s3-us-west-1.amazonaws.com/givebox/public/favicons/apple-touch-icon.png?v=3e8Xzke92o">
-		<link rel="icon" type="image/png" sizes="32x32" href="https://s3-us-west-1.amazonaws.com/givebox/public/favicons/favicon-32x32.png?v=3e8Xzke92o">
-		<link rel="icon" type="image/png" sizes="16x16" href="https://s3-us-west-1.amazonaws.com/givebox/public/favicons/favicon-16x16.png?v=3e8Xzke92o">
-		<link rel="manifest" href="https://s3-us-west-1.amazonaws.com/givebox/public/favicons/site.webmanifest?v=3e8Xzke92o">
-		<link rel="mask-icon" href="https://s3-us-west-1.amazonaws.com/givebox/public/favicons/safari-pinned-tab.svg?v=3e8Xzke92o" color="#32dbec">
-		<link rel="shortcut icon" href="https://s3-us-west-1.amazonaws.com/givebox/public/favicons/favicon.ico?v=3e8Xzke92o">
-		<meta name="apple-mobile-web-app-title" content="Givebox">
-		<meta name="application-name" content="Givebox">
-		<meta name="msapplication-TileColor" content="#32dbec">
-		<meta name="theme-color" content="#32dbec">
-		<!--
-			manifest.json provides metadata used when your web app is added to the
-			homescreen on Android. See https://developers.google.com/web/fundamentals/web-app-manifest/
-		-->
-		<!--
-			Notice the use of %PUBLIC_URL% in the tags above.
-			It will be replaced with the URL of the `public` folder during the build.
-			Only files inside the `public` folder can be referenced from the HTML.
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://cdn.givebox.com/givebox/public/favicons/apple-touch-icon.png?v=3e8Xzke92o">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://cdn.givebox.com/givebox/public/favicons/favicon-32x32.png?v=3e8Xzke92o">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://cdn.givebox.com/givebox/public/favicons/favicon-16x16.png?v=3e8Xzke92o">
+    <link rel="manifest" href="https://cdn.givebox.com/givebox/public/favicons/site.webmanifest?v=3e8Xzke92o">
+    <link rel="mask-icon" href="https://cdn.givebox.com/givebox/public/favicons/safari-pinned-tab.svg?v=3e8Xzke92o" color="#32dbec">
+    <link rel="shortcut icon" href="https://cdn.givebox.com/givebox/public/favicons/favicon.ico?v=3e8Xzke92o">
+    <meta name="apple-mobile-web-app-title" content="Givebox">
+    <meta name="application-name" content="Givebox">
+    <meta name="msapplication-TileColor" content="#32dbec">
+    <meta name="theme-color" content="#32dbec">
+    <!--
+      manifest.json provides metadata used when your web app is added to the
+      homescreen on Android. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+    <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
 
-			Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-			work correctly both with client-side routing and a non-root public URL.
-			Learn how to configure a non-root public URL by running `npm run build`.
-		-->
-		<title>Givebox Shared Library</title>
-		<script src="https://s3-us-west-1.amazonaws.com/givebox/public/js/canvas-to-blob.min.js"></script>
-		<script src="%REACT_APP_GBX_WIDGET%"></script>
-		<script src="https://maps.googleapis.com/maps/api/js?key=%REACT_APP_GOOGLE_API_KEY%&libraries=places" async defer></script>
-	</head>
-	<body>
-		<noscript>
-			You need to enable JavaScript to run this app.
-		</noscript>
-		<input id="givebox_csrf_token" type="hidden" value="{{ .CSRFToken }}">
-		<div id="root"></div>
-		<!--
-			This HTML file is a template.
-			If you open it directly in the browser, you will see an empty page.
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+    <title>Givebox Shared Library</title>
+    <script src="https://cdn.givebox.com/givebox/public/js/canvas-to-blob.min.js"></script>
+    <script src="%REACT_APP_GBX_WIDGET%"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=%REACT_APP_GOOGLE_API_KEY%&libraries=places" async defer></script>
+  </head>
+  <body>
+    <noscript>
+      You need to enable JavaScript to run this app.
+    </noscript>
+    <input id="givebox_csrf_token" type="hidden" value="{{ .CSRFToken }}">
+    <div id="root"></div>
+    <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
 
-			You can add webfonts, meta tags, or analytics to this file.
-			The build step will place the bundled scripts into the <body> tag.
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
 
-			To begin the development, run `npm start` or `yarn start`.
-			To create a production bundle, use `npm run build` or `yarn build`.
-		-->
-	</body>
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+  </body>
 </html>
