@@ -545,10 +545,10 @@ const sweepstake = {
           text: 'Select Tickets'
         },
         extras: {
-          maxQuantity: '',
+          maxQuantity: 99,
           showInStock: false,
           allowPerTicketWinner: null,
-          maxEntriesPerPrizeEnabled: true,
+          maxEntriesPerPrizeEnabled: false,
           maxEntriesPerPrize: 500
         },
         recurring: {}

@@ -55,9 +55,8 @@ class TicketsList extends Component {
     } = this.props;
 
     const articleTitle = util.getValue(article, 'title');
-    const maxQuantity = util.getValue(article, 'maxQuantity', 99);
+    const maxQuantity = this.props.maxQuantity || util.getValue(article, 'maxQuantity', 99);
     const articleImageURL = util.getValue(article, 'imageURL');
-    const hasMax = has(article, 'maxQuantity') ? true : false;
     const allowQtyChange = true;
     const allowMultiItems = true;
 
@@ -75,14 +74,13 @@ class TicketsList extends Component {
     const customData = util.getValue(selectedItem, 'customData', {});
     const thumbnailURL = util.getValue(customData, 'thumbnailURL');
     const inStock = max - sold
-    const availableQty = inStock < maxQuantity && hasMax ? inStock : maxQuantity;
+    const availableQty = inStock < maxQuantity ? inStock : maxQuantity;
 
     const item = {
       unitID,
       articleTitle,
       articleImageURL,
       name,
-      hasMax,
       quantity,
       availableQty,
       maxQuantity,
@@ -139,15 +137,20 @@ class TicketsList extends Component {
       article,
       amountsList,
       color,
-      showInStock,
       kind,
       breakpoint,
-      numAvailableTickets
+      numAvailableTickets,
+      maxEntriesPerPrize,
+      maxEntriesPerPrizeEnabled,
+      allowPerTicketWinner,
+      soldEntries
     } = this.props;
 
     const {
       showDetails
     } = this.state;
+
+    let showInStock = this.props.showInStock;
 
     const recurringIntervals = util.getValue(article, 'recurringIntervals');
     const recurringOptions = [];
@@ -165,12 +168,11 @@ class TicketsList extends Component {
       });
     }
 
-    const maxQuantity = util.getValue(article, 'maxQuantity', 99);
-    const hasMax = has(article, 'maxQuantity') ? true : false;
+    const maxQuantity = this.props.maxQuantity || util.getValue(article, 'maxQuantity', 99);
     const cartItems = this.getCartItems();
     const items = [];
     const defaultOptions = this.quantityOptions(maxQuantity);
-    const canbeSoldout = kind === 'sweepstake' ? false : true;
+    const canbeSoldout = (kind === 'sweepstake' && (!maxEntriesPerPrizeEnabled || !maxEntriesPerPrize) ) ? false : true;
     const soldout = numAvailableTickets > 0 || !canbeSoldout ? false : true;
 
     if (!util.isEmpty(amountsList)) {
@@ -181,16 +183,32 @@ class TicketsList extends Component {
 
         let name = value.name;
         let priceDesc = '';
+        let inStock = 0;
+
         if (kind === 'sweepstake') {
           const entries = +value.entries || 1;
           if (!value.name) {
             name = <span>{entries} {entries > 1 ? 'Entries' : 'Entry'} for {price}</span>;
           }
-          priceDesc = `per ${entries} ${entries > 1 ? 'Entries' : 'Entry'}`
+          priceDesc = `per ${entries} ${entries > 1 ? 'Entries' : 'Entry'}`;
+
+          const maxTickets = Math.floor(maxEntriesPerPrize / entries);
+          if (maxEntriesPerPrizeEnabled && maxEntriesPerPrize) {
+            if (allowPerTicketWinner) {
+              inStock = parseInt(maxTickets - Math.ceil(util.getValue(value, 'soldEntries', 0) / entries));
+            } else {
+              inStock = parseInt(maxTickets - Math.ceil(soldEntries / entries));
+            }
+          } else {
+            inStock = 9999999999;
+            showInStock = false;
+          }
+        } else {
+          inStock = parseInt(util.getValue(value, 'max', 0) - util.getValue(value, 'sold', 0));
         }
-        const inStock = util.getValue(value, 'max', 0) - util.getValue(value, 'sold', 0);
-        if (value.price > 0 && value.enabled && ( inStock > 0 || !hasMax || showInStock )) {
-          const options = inStock < maxQuantity && hasMax ? this.quantityOptions(inStock) : defaultOptions;
+
+        if (value.price > 0 && value.enabled && ( inStock > 0 || showInStock )) {
+          const options = inStock < maxQuantity ? this.quantityOptions(inStock) : defaultOptions;
           const selected = cartItems.find(x => x.unitID === value.ID);
           const qty = util.getValue(selected, 'quantity', 0);
           const recurringIntervalValue = util.getValue(selected, 'interval', util.getValue(article, 'recurringDefaultInterval', 'once'));
@@ -205,7 +223,7 @@ class TicketsList extends Component {
                 <div style={{ width: thumbnailURL && breakpoint !== 'mobile' ? '75%' : '85%' }} className='ticketDesc'>
                   {name}
                   <span className='ticketDescAmount'>{price} {priceDesc}</span>
-                  {showInStock ? <span className='ticketDescInStock'>{inStock ? `${inStock} Available` : ''}</span> : <></> }
+                  {showInStock ? <span className='ticketDescInStock'>{inStock > 0 ? `${inStock} Available` : ''}</span> : <></> }
                   {value.description ? <GBLink allowCustom={true} customColor={color} className='link ticketShowDetailsLink' onClick={() => this.toggleShowDetails(value.ID)}>{showDetails.includes(value.ID) ? 'Hide Info' : 'More Info'}</GBLink> : <></>}
                 </div>
                 { inStock < 1 && canbeSoldout ?
@@ -344,7 +362,10 @@ function mapStateToProps(state, props) {
     cartItems,
     numCartItems,
     editable,
-    numAvailableTickets
+    numAvailableTickets,
+    maxEntriesPerPrize: util.getValue(gbx3, 'data.maxEntriesPerPrize', 0),
+    soldEntries: util.getValue(gbx3, 'data.soldEntries', 0),
+    allowPerTicketWinner: util.getValue(gbx3, 'data.allowPerTicketWinner', false)
   }
 }
 

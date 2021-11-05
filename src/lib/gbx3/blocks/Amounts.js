@@ -340,6 +340,8 @@ class Amounts extends Component {
             buttonEnabled={util.getValue(button, 'enabled', false)}
             article={data}
             showInStock={util.getValue(options, 'extras.showInStock')}
+            maxEntriesPerPrizeEnabled={util.getValue(options, 'extras.maxEntriesPerPrizeEnabled')}
+            maxQuantity={util.getValue(options, 'extras.maxQuantity', null)}
           />
         )
       }
@@ -425,8 +427,7 @@ class Amounts extends Component {
 
     const allowPerTicketWinner = util.getValue(extras, 'allowPerTicketWinner') || util.getValue(data, 'allowPerTicketWinner');
     const maxEntriesPerPrizeEnabled = util.getValue(extras, 'maxEntriesPerPrizeEnabled', false);
-    const maxEntriesPerPrize = util.getValue(extras, 'maxEntriesPerPrize');
-
+    const maxEntriesPerPrize = util.getValue(extras, 'maxEntriesPerPrize') || util.getValue(data, 'maxEntriesPerPrize');
     const maxQuantity = util.getValue(extras, 'maxQuantity') || util.getValue(data, 'maxQuantity');
     const showCart = true;
     const shopTitle = util.getValue(form, 'shopTitle', 'Browse More Items');
@@ -540,7 +541,7 @@ class Amounts extends Component {
                           </div>
                         </div>
                         : null }
-                        {has(extras, 'maxEntriesPerPrizeEnabled') && 1===2 ?
+                        {has(extras, 'maxEntriesPerPrizeEnabled') ?
                           <div style={{ margin: '10px 0' }}>
                             <Choice
                               type='checkbox'
@@ -551,7 +552,14 @@ class Amounts extends Component {
                                 const maxEntriesPerPrizeEnabled = extras.maxEntriesPerPrizeEnabled ? false : true;
                                 extras.maxEntriesPerPrizeEnabled = maxEntriesPerPrizeEnabled;
                                 this.setState({ extras }, () => {
+                                  const data = {};
                                   this.optionsUpdated('extras', extras);
+                                  if (!maxEntriesPerPrizeEnabled) {
+                                    data.maxEntriesPerPrize = null;
+                                  } else {
+                                    data.maxEntriesPerPrize = extras.maxEntriesPerPrize;
+                                  }
+                                  this.props.updateData(data);
                                 });
                               }}
                               checked={maxEntriesPerPrizeEnabled}
@@ -563,16 +571,20 @@ class Amounts extends Component {
                                 name='maxQuantity'
                                 label={`Max Entries Allowed Per Prize`}
                                 fixedLabel={true}
-                                placeholder={500}
+                                placeholder={'Leave Blank for No Limit'}
                                 value={maxEntriesPerPrize || ''}
                                 maxLength={8}
                                 onChange={(e) => {
                                   const value = +e.currentTarget.value;
                                   const maxEntriesPerPrize = value && value !== 0 ? value : '';
+                                  const data = {
+                                    maxEntriesPerPrize: maxEntriesPerPrize || null
+                                  };
                                   const extras = this.state.extras;
                                   extras.maxEntriesPerPrize = maxEntriesPerPrize;
                                   this.setState({ extras }, () => {
                                     this.optionsUpdated('extras', extras);
+                                    this.props.updateData(data);
                                   });
                                 }}
                                 leftBar={true}
