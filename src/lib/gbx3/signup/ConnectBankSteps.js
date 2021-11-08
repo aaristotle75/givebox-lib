@@ -54,7 +54,7 @@ class ConnectBankStepsForm extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.signupPhase === 'manualConnect' && this.props.isVantivReady) this.checkConnectStatus();
+    //if (this.props.signupPhase === 'manualConnect' && this.props.isVantivReady) this.checkConnectStatus();
   }
 
   connectBankPlaid() {
@@ -92,6 +92,11 @@ class ConnectBankStepsForm extends React.Component {
 
   checkConnectStatus() {
 
+    const {
+      signupStep,
+      signupPhase
+    } = this.props;
+
     this.setState({ checkingStatus: true }, () => {
 
       this.props.checkSubmitMerchantApp({
@@ -101,8 +106,8 @@ class ConnectBankStepsForm extends React.Component {
           } else if (message === 'has_mid') {
             this.submerchantCreated(0);
           } else if (err || message === 'cannot_submit_to_vantiv' || message === 'mid_notcreated') {
-            this.switchToManualBank();
-            this.props.formProp({ error: true, errorMsg: 'We are unable to connect your bank account. Please check that all your information is correct and try again in a few minutes.' });
+            if (signupPhase !== 'manualConnect') this.switchToManualBank();
+            if (signupStep === 4) this.props.formProp({ error: true, errorMsg: 'We are unable to connect your bank account. Please check that all your information is correct and try again in a few minutes.' });
             this.setState({ checkingStatus: false });
           } else {
             this.setState({ checkingStatus: false });
@@ -497,6 +502,7 @@ function mapStateToProps(state, props) {
   const merchantIdentString = util.getValue(state, 'resource.gbx3Org.data.vantiv.merchantIdentString');
   const hasReceivedTransaction = util.getValue(state, 'resource.gbx3Org.data.hasReceivedTransaction');
   const signupPhase = util.getValue(state, 'gbx3.orgSignup.signupPhase');
+  const signupStep = util.getValue(state, 'gbx3.orgSignup.step', 0);
   const instant = util.getValue(state, 'resource.gbx3Org.data.instantFundraising', {});
   const instantPhase = util.getValue(instant, 'phase');
   const instantStatus = instantPhase === 1 ? util.getValue(instant, 'status', null) : null;
@@ -508,6 +514,7 @@ function mapStateToProps(state, props) {
     isVantivReady,
     merchantIdentString,
     signupPhase,
+    signupStep,
     hasReceivedTransaction,
     instantStatus,
     phaseEndsAt

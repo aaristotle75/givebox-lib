@@ -276,7 +276,7 @@ export function checkSubmitMerchantApp(options = {}) {
           let query = null;
 
           if (isVantivReady) {
-            dispatch(setSignupStep('connectStatus'));
+            //dispatch(setSignupStep('connectStatus'));
           }
 
           if (isVantivReady && !legalEntityID) {
