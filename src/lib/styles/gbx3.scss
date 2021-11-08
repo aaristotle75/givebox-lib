@@ -1099,7 +1099,8 @@
     .gbx3ReceiptContainer {
       margin-top: 20px;
       max-width: 600px;
-      width: 550px;
+      width: 100%;
+      min-width: 600px;
       background: $white;
       img {
         margin: 10px 0;
