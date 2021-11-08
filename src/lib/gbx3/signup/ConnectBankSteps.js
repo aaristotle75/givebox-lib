@@ -102,7 +102,7 @@ class ConnectBankStepsForm extends React.Component {
       this.props.checkSubmitMerchantApp({
         callback: (message, err) => {
           if (message === 'submerchant_created') {
-            this.submerchantCreated();
+            this.props.setSignupStep('connectStatus', this.submerchantCreated);
           } else if (message === 'has_mid') {
             this.submerchantCreated(0);
           } else if (err || message === 'cannot_submit_to_vantiv' || message === 'mid_notcreated') {

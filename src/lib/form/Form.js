@@ -717,6 +717,10 @@ class Form extends Component {
         maxLength = field ? field.maxLength : params.maxLength;
         break;
       }
+      case 'phone': {
+        maxLength = 19;
+      }
+
       // no default
     }
     maxLength =  maxLength || params.maxLength;
