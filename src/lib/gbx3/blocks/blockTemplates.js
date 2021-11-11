@@ -209,7 +209,7 @@ export const where = {
 export const paymentForm = {
   order: 7,
   name: 'paymentForm',
-  title: 'Payment Form Details',
+  title: 'Payment Form Options',
   type: 'Form',
   nonremovable: true,
   noGrid: true,

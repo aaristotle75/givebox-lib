@@ -112,7 +112,7 @@ export const defaultStyle = {
     pageOpacity: 1,
     backgroundColor: '#4385f5',
     backgroundOpacity: .6,
-    placeholderColor: 'B0BEC5',
+    placeholderColor: '#B0BEC5',
     backgroundBlur: 0
   },
   dark: {

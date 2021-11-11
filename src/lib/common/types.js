@@ -428,7 +428,7 @@ export const factorTypes = [
 
 export function translatePaymentForm(formKind) {
   const kindName = kind(formKind).name;
-  return `${kindName} ${formKind !== 'fundraiser' ? 'Form' : ''} Details`;
+  return `${kindName} ${formKind !== 'fundraiser' ? 'Form' : ''} Options`;
 }
 
 export const defaultArticleImageURL = 'https://cdn.givebox.com/givebox/assets/img/fundraiser-cover/original';
