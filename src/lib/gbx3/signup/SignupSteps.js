@@ -6,6 +6,7 @@ import Form from '../../form/Form';
 import Dropdown from '../../form/Dropdown';
 import TextField from '../../form/TextField';
 import MediaLibrary from '../../form/MediaLibrary';
+import { Alert } from '../../common/Alert';
 import Video from '../../common/Video';
 import EditVideo from '../admin/common/EditVideo';
 import { createData } from '../admin/article/createTemplates';
@@ -83,6 +84,23 @@ class SignupStepsForm extends React.Component {
   componentDidMount() {
     window.addEventListener('message', this.gbx3message, false);
     new Image().src = 'https://cdn.givebox.com/givebox/public/images/step-loader.png';
+
+    const stepConfig = util.getValue(this.props.stepsTodo, this.props.step, {});
+    const slug = util.getValue(stepConfig, 'slug');
+
+    if (!this.props.signupConfirmed && this.props.signupPhase === 'postSignup' && slug === 'previewShare') {
+      this.props.toggleModal('signupConfirmation', true, {
+        closeCallback: async () => {
+          const updated = await this.props.updateOrgSignup({ signupConfirmed: true });
+          if (updated) {
+            this.props.saveOrg({ orgUpdated: true });
+          }
+        }
+      });
+    }
+  }
+
+  componentDidUpdate(prevProps) {
   }
 
   gbx3message(e) {
@@ -1117,6 +1135,7 @@ class SignupStepsForm extends React.Component {
 
           item.component =
             <div className='stagePreview flexCenter flexColumn'>
+              <Alert alert='success' display={true} msg='You can now accept donations. Share your fundraiser on social media and/or copy the share link and email it to your constituents to continue.' />
               <SignupShare showHelper={false} />
               <div className='previewTitleContainer'>
                 { !previewLoaded ?

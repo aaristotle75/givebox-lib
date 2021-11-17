@@ -39,6 +39,7 @@ export function gbx3(state = {
     completedPhases: [],
     signupPhase: null, // Phases: signup, postSignup, connectBank, transferMoney,
     signupPhaseOptions: {},
+    signupConfirmed: false,
     saveCookie: true,
     hideStepMenu: false,
     affiliateID: null

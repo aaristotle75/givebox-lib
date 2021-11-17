@@ -93,7 +93,7 @@ class SavingSignup extends React.Component {
                   <div className={`step`}>
                     <div className='stepTitleContainer'>
                       <div className='stepTitle'>
-                        You are seconds away from sharing your fundraiser!
+                        You are seconds away from accepting donations!
                       </div>
                     </div>
                     <div className={`stepComponent`}>

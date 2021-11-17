@@ -131,7 +131,8 @@ class StepsWrapper extends React.Component {
       fields,
       createdArticleID,
       signupPhase,
-      completedPhases
+      completedPhases,
+      signupConfirmed
     } = this.props;
 
     const {
@@ -184,7 +185,8 @@ class StepsWrapper extends React.Component {
         fields,
         createdArticleID,
         signupPhase,
-        completedPhases
+        completedPhases,
+        signupConfirmed
       })
     );
     return childrenWithProps;
@@ -277,6 +279,7 @@ function mapStateToProps(state, props) {
   const createdArticleID = util.getValue(orgSignup, 'createdArticleID');
   const signupPhase = util.getValue(orgSignup, 'signupPhase');
   const completedPhases = util.getValue(orgSignup, 'completedPhases', []);
+  const signupConfirmed = util.getValue(orgSignup, 'signupConfirmed', false);
 
   return {
     open,
@@ -289,7 +292,8 @@ function mapStateToProps(state, props) {
     fields,
     createdArticleID,
     signupPhase,
-    completedPhases
+    completedPhases,
+    signupConfirmed
   }
 }
 

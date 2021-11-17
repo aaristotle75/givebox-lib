@@ -118,6 +118,10 @@ p { margin: 10px 0; font-size: $normal-text-size; font-weight: $font-weight; }
   align-items: flex-start !important;
 }
 
+.alignCenter {
+  align-items: center;
+}
+
 .flexEnd {
   display: flex;
   justify-content: flex-end;
