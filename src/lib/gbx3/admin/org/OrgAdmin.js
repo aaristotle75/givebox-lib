@@ -37,7 +37,9 @@ class OrgAdmin extends React.Component {
     const {
       signupPhase,
       connectBankSteps,
-      transferSteps
+      transferSteps,
+      underwritingStatus,
+      completedPhases
     } = this.props;
 
     const testConfig = {
@@ -62,6 +64,8 @@ class OrgAdmin extends React.Component {
       } else {
         this.openStep('identity', 'orgTransferSteps');
       }
+    } else if ( underwritingStatus === 'approved') {
+      if (!completedPhases.includes('transferMoney')) this.props.updateOrgSignup({}, 'transferMoney');
     } else {
       this.props.checkSignupPhase(ENV !== 'production' ? testConfig : {});
     }
@@ -131,6 +135,8 @@ function mapStateToProps(state, props) {
   const signupPhase = util.getValue(gbx3, 'orgSignup.signupPhase');
   const connectBankSteps = util.getValue(gbx3, 'info.connectBankSteps');
   const transferSteps = util.getValue(gbx3, 'info.transferSteps');
+  const underwritingStatus = util.getValue(state, 'resource.gbx3Org.data.underwritingStatus');
+  const completedPhases = util.getValue(state, 'gbx3.orgSignup.completedPhases', []);
 
   return {
     orgID,
@@ -138,7 +144,9 @@ function mapStateToProps(state, props) {
     launchpad,
     signupPhase,
     connectBankSteps,
-    transferSteps
+    transferSteps,
+    underwritingStatus,
+    completedPhases
   }
 }
 

@@ -30,7 +30,8 @@ class AdminMenu extends React.Component {
     const {
       blockType,
       completedPhases,
-      signupPhase
+      signupPhase,
+      underwritingStatus
     } = this.props;
 
     switch (this.state.panelType) {
@@ -50,7 +51,7 @@ class AdminMenu extends React.Component {
       default: {
         return (
           <>
-            { (signupPhase && completedPhases.length < phases.length && !completedPhases.includes('transferMoney') ) ?
+            { ( signupPhase && completedPhases.length < phases.length && !completedPhases.includes('transferMoney') && ( underwritingStatus !== 'approved') ) ?
               <SignupMenu stepsOnly={true} />
             :
               null
@@ -99,12 +100,14 @@ function mapStateToProps(state, props) {
   const breakpoint = util.getValue(gbx3, 'info.breakpoint');
   const signupPhase = util.getValue(gbx3, 'orgSignup.signupPhase');
   const completedPhases = util.getValue(gbx3, 'orgSignup.completedPhases', []);
+  const underwritingStatus = util.getValue(state, 'resource.gbx3Org.data.underwritingStatus');
 
   return {
     openAdmin,
     breakpoint,
     signupPhase,
-    completedPhases
+    completedPhases,
+    underwritingStatus
   }
 }
 
