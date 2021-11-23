@@ -143,7 +143,7 @@ export default class TestForm extends Component {
               checked={passFees}
               value={passFees}
             />
-            <Image url={'https://givebox-staging.s3.amazonaws.com/gbx%2F693a664e591131ad047eea8a3bc3e128%2F2020-04-09%2Fimage-png%2Foriginal'} alt={'test image aspect'}  maxSize={'500px'}  />
+            <Image url={'https://cdn.givebox.com/givebox/gbx%2F693a664e591131ad047eea8a3bc3e128%2F2020-04-09%2Fimage-png%2Foriginal'} alt={'test image aspect'}  maxSize={'500px'}  />
 
             {this.props.dropdown('bankAccounts', {
               options: list,

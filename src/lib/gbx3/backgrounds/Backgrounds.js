@@ -94,7 +94,7 @@ class Backgrounds extends Component {
   }
 
   setStyle() {
-    //https://givebox-staging.s3.amazonaws.com/gbx%2F049ecc3320aac6393cbca43f01c3a85b%2F2017-03-31%2Fdefault%2Fmedium
+    //https://cdn.givebox.com/givebox/gbx%2F049ecc3320aac6393cbca43f01c3a85b%2F2017-03-31%2Fdefault%2Fmedium
     const {
       primaryColor
     } = this.props;

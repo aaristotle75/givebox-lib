@@ -12,7 +12,7 @@ import { prodPerms } from './prodPerms';
 import has from 'has';
 
 const AWS_SEARCH_URL = {
-  staging: 'https://givebox-staging.s3.amazonaws.com',
+  staging: 'https://cdn.givebox.com/givebox',
   prod: 'https://givebox.s3.amazonaws.com'
 }
 

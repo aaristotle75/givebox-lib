@@ -11,7 +11,7 @@ export default class UploadEditorTest extends Component {
     this.closeModalAndSave = this.closeModalAndSave.bind(this);
     this.handleSaveCallback = this.handleSaveCallback.bind(this);
     this.state = {
-      url: 'https://givebox-staging.s3.amazonaws.com/gbx%2F9b28b33157275cf5c8fa036633a3b33d%2F2018-11-09%2Fwesome1-jpg-original-jpg%2Foriginal'
+      url: 'https://cdn.givebox.com/givebox/gbx%2F9b28b33157275cf5c8fa036633a3b33d%2F2018-11-09%2Fwesome1-jpg-original-jpg%2Foriginal'
     };
   }
 
