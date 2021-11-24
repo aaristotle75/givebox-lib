@@ -37,7 +37,8 @@ class Button extends PureComponent {
       modalID,
       onClick,
       button,
-      globalButtonStyle
+      globalButtonStyle,
+      forceButtonTitle
     } = this.props;
 
     const type = util.getValue(button, 'type', 'button');
@@ -56,11 +57,11 @@ class Button extends PureComponent {
       <div className='orgCustomElements'>
       {modalID ?
         <ModalLink opts={this.props.opts} style={style} customColor={util.getValue(style, 'bgColor', null)} solidColor={type === 'button' ? true : false} allowCustom={true} solidTextColor={util.getValue(style, 'textColor', null)} className={`${type}`} id={modalID}>
-          {util.getValue(button, 'text', 'Button Text')}
+          {forceButtonTitle || util.getValue(button, 'text', 'Button Text')}
         </ModalLink>
         :
         <GBLink style={style} customColor={util.getValue(style, 'bgColor', null)} solidColor={type === 'button' ? true : false} allowCustom={true} solidTextColor={util.getValue(style, 'textColor', null)} className={`${type}`} onClick={onClick}>
-          {util.getValue(button, 'text', 'Button Text')}
+          {forceButtonTitle || util.getValue(button, 'text', 'Button Text')}
         </GBLink>
       }
       </div>
@@ -69,7 +70,8 @@ class Button extends PureComponent {
 }
 
 Button.defaultProps = {
-  opts: {}
+  opts: {},
+  forceButtonTitle: ''
 };
 
 function mapStateToProps(state, props) {

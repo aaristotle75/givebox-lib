@@ -167,7 +167,8 @@ class Cart extends Component {
       shopLinkAsButton,
       browseItems,
       browsePage,
-      primaryColor
+      primaryColor,
+      forceHideShopMoreItems
     } = this.props;
 
     return (
@@ -175,7 +176,7 @@ class Cart extends Component {
           <div className='gbx3Cart'>
             <div className='paymentFormHeaderTitle'>
               {cartTitle || 'Your Cart'}
-              {browseItems ?
+              {browseItems && !forceHideShopMoreItems?
                 <GBLink
                   style={{ right: '60px' }}
                   className={`${shopLinkAsButton ? 'button' : 'link'} closeCart`}
@@ -187,7 +188,9 @@ class Cart extends Component {
                   {shopTitle}
                 </GBLink>
               : null}
-              <GBLink className='link closeCart' onClick={() => this.props.updateCart({ open: false })}><span className='icon icon-x'></span></GBLink>
+              { !forceHideShopMoreItems ?
+                <GBLink className='link closeCart' onClick={() => this.props.updateCart({ open: false })}><span className='icon icon-x'></span></GBLink>
+              : null }
             </div>
             {this.renderItemsInCart()}
           </div>
@@ -197,6 +200,7 @@ class Cart extends Component {
 }
 
 Cart.defaultProps = {
+  forceHideShopMoreItems: false
 };
 
 function mapStateToProps(state, props) {

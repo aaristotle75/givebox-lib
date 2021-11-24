@@ -9,6 +9,7 @@ import Choice from '../../form/Choice';
 import ModalRoute from '../../modal/ModalRoute';
 import ModalLink from '../../modal/ModalLink';
 import PaymentForm from '../payment/PaymentForm';
+import CartOrderConfirmation from '../payment/CartOrderConfirmation';
 import FormEdit from './FormEdit';
 import ButtonEdit from './ButtonEdit';
 import Button from './Button';
@@ -238,6 +239,41 @@ class Form extends Component {
               </div>
             </div>
           }
+        />
+        <ModalRoute
+          className='gbx3'
+          id='cartOrderConfirmation'
+          effect='3DFlipVert'
+          style={{ width: '60%' }}
+          disallowBgClose={true}
+          draggable={false}
+          draggableTitle={``}
+          component={(props) => {
+            return (
+              <CartOrderConfirmation
+                cart={this.props.cart}
+                setCart={this.setCart}
+                primaryColor={primaryColor}
+                toggleModal={this.props.toggleModal}
+                block={this.props.block}
+                reloadGBX3={reloadGBX3}
+                cartTitle={util.getValue(form, 'cartTitle', null)}
+                shopTitle={util.getValue(form, 'shopTitle', null)}
+                shopLinkOpensOrgPage={util.getValue(form, 'shopLinkOpensOrgPage', null)}
+                shopLinkAsButton={shopLinkAsButton}
+                browseItems={browseItems}
+                browsePage={browsePage}
+                backToOrg={this.props.backToOrg}
+                form={form}
+                button={button}
+                acceptedTerms={acceptedTerms}
+                checkoutDonation={util.getValue(form, 'checkoutDonation')}
+                checkoutDonationFormID={util.getValue(form, 'checkoutDonationFormID')}
+                kind={kind}
+                saveButton={this.saveButton}
+              />
+            )
+          }}
         />
         <Cart
           primaryColor={primaryColor}

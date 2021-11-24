@@ -95,6 +95,7 @@ class PaymentFormClass extends Component {
   }
 
   async processForm(fields) {
+
     const {
       isDebit,
       cardType,
@@ -233,7 +234,10 @@ class PaymentFormClass extends Component {
         }
       }
 
-      if (!error) {
+      this.props.toggleModal('cartOrderConfirmation', true);
+      console.log('execute processForm');
+
+      if (!error && 1 === 2) {
         const confirmationUpdated = await this.props.updateConfirmation({
           email,
           firstname,

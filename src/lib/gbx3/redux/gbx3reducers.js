@@ -490,7 +490,8 @@ export function gbx3(state = {
     case types.UPDATE_CART: {
       const cart = {
         ...state.cart,
-        ...action.cart
+        ...action.cart,
+        lastModified: + new Date()
       };
       /*
       const compressed = LZString.compressToUTF16(JSON.stringify(cart));
