@@ -101,6 +101,7 @@ class PaymentFormClass extends Component {
       cardType,
       paymethod,
       cartTotal,
+      cartConfirmed,
       cartItems: items,
       amount,
       zeroAmountAllowed,
@@ -234,10 +235,15 @@ class PaymentFormClass extends Component {
         }
       }
 
-      this.props.toggleModal('cartOrderConfirmation', true);
-      console.log('execute processForm');
+      let proceedToProcess = false;
 
-      if (!error && 1 === 2) {
+      if (items.length > 1 && ( cartConfirmed !== items.length) )  {
+        this.props.toggleModal('cartOrderConfirmation', true);
+      } else {
+        proceedToProcess = true;
+      }
+
+      if (!error && proceedToProcess) {
         const confirmationUpdated = await this.props.updateConfirmation({
           email,
           firstname,
@@ -772,6 +778,7 @@ function mapStateToProps(state, props) {
   const cartTotal = util.getValue(cart, 'total', 0);
   const zeroAmountAllowed = util.getValue(cart, 'zeroAmountAllowed', false);
   const cartCustomer = util.getValue(cart, 'customer', {});
+  const cartConfirmed = util.getValue(cart, 'cartConfirmed', false);
   const cartItems = util.getValue(cart, 'items', []);
   const numCartItems = cartItems.length;
   const openCart = util.getValue(cart, 'open');
@@ -788,6 +795,7 @@ function mapStateToProps(state, props) {
     emailBlastEmail,
     zeroAmountAllowed,
     cartCustomer,
+    cartConfirmed,
     cartItems,
     numCartItems,
     cartTotal,

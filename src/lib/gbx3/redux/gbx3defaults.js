@@ -76,6 +76,7 @@ export const defaultOrgPages = {
 };
 
 export const defaultCart = {
+  cartConfirmed: false,
   lastModified: null,
   processing: false,
   open: false,

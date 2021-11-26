@@ -760,7 +760,7 @@ export function shopMoreItems() {
   console.log('execute shopMoreItems');
 }
 
-function saveCart(cart) {
+export function saveCart(cart) {
   return {
     type: types.UPDATE_CART,
     cart

@@ -7,11 +7,13 @@ import Totals from './Totals';
 import Choice from '../../form/Choice';
 import Button from '../blocks/Button';
 import CheckoutDonation from '../blocks/CheckoutDonation';
+import { saveCart } from '../redux/gbx3actions';
 
 class CartOrderConfirmation extends Component {
 
   constructor(props) {
     super(props);
+    this.onClickConfirm = this.onClickConfirm.bind(this);
     this.state = {
     };
   }
@@ -19,6 +21,14 @@ class CartOrderConfirmation extends Component {
   componentDidUpdate(prevProps) {
     if (prevProps.cart.lastModified !== this.props.cart.lastModified && this.props.cart.items.length === 0) {
       this.props.toggleModal('cartOrderConfirmation', false);
+    }
+  }
+
+  async onClickConfirm() {
+    const cartSaved = await this.props.saveCart({ cartConfirmed: this.props.cart.items.length });
+    if (cartSaved) {
+      this.props.toggleModal('cartOrderConfirmation', false);
+      this.props.saveButton();
     }
   }
 
@@ -56,7 +66,7 @@ class CartOrderConfirmation extends Component {
               </div>
               <div style={{ margin: '20px 0' }}>
                 <Button
-                  onClick={this.props.saveButton}
+                  onClick={this.onClickConfirm}
                   button={button}
                   forceButtonTitle={'Confirm Order'}
                 />
@@ -92,4 +102,5 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
+  saveCart
 })(CartOrderConfirmation);
