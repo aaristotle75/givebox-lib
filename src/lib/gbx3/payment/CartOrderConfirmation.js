@@ -25,10 +25,12 @@ class CartOrderConfirmation extends Component {
   }
 
   async onClickConfirm() {
-    const cartSaved = await this.props.saveCart({ cartConfirmed: this.props.cart.items.length });
-    if (cartSaved) {
-      this.props.toggleModal('cartOrderConfirmation', false);
-      this.props.saveButton();
+    if (this.props.acceptedTerms) {
+      const cartSaved = await this.props.saveCart({ cartConfirmed: this.props.cart.items.length });
+      if (cartSaved) {
+        this.props.toggleModal('cartOrderConfirmation', false);
+        this.props.saveButton();
+      }
     }
   }
 
