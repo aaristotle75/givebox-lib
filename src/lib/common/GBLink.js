@@ -94,12 +94,14 @@ function mapStateToProps(state, props) {
   if (props.allowCustom && primaryColor) {
     customStyle.color = props.solidColor ? props.solidTextColor || '#ffffff' : primaryColor;
     customStyle.backgroundColor = props.solidColor ? primaryColor : null;
+    customStyle.background = props.solidColor ? primaryColor : null;
   }
 
   const style = { ...customStyle, ...props.style };
 
   if (className.includes('button') && props.allowCustom ) {
     hoverStyle.backgroundColor = rgbColor;
+    hoverStyle.background = rgbColor;
     hoverStyle.color = props.solidTextColor ? rgbTextColor : '#ffffff';
     style.border = `1px solid ${rgbColor}`;
   }
