@@ -48,13 +48,20 @@ class ConnectBankStepsForm extends React.Component {
       editorOpen: false,
       error: false,
       saving: false,
-      checkingStatus: false,
       loading: true
     };
   }
 
   componentDidMount() {
-    //if (this.props.signupPhase === 'manualConnect' && this.props.isVantivReady) this.checkConnectStatus();
+    if (!this.props.merchantIdentString && this.props.signupPhase === 'manualConnect' && this.props.isVantivReady && this.props.signupStep === 4) this.checkConnectStatus();
+
+    if (this.props.merchantIdentString) this.submerchantCreated();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.merchantIdentString !== prevProps.merchantIdentString) {
+      this.submerchantCreated();
+    }
   }
 
   connectBankPlaid() {
@@ -97,20 +104,17 @@ class ConnectBankStepsForm extends React.Component {
       signupPhase
     } = this.props;
 
-    this.setState({ checkingStatus: true }, () => {
-
+    this.setState({ saving: false }, () => {
       this.props.checkSubmitMerchantApp({
         callback: (message, err) => {
           if (message === 'submerchant_created') {
-            this.props.setSignupStep('connectStatus', this.submerchantCreated);
+            if (signupStep !== 4) this.props.setSignupStep('connectStatus');
           } else if (message === 'has_mid') {
-            this.submerchantCreated(0);
+            if (signupStep !== 4) this.props.setSignupStep('connectStatus');
+            //this.submerchantCreated(0);
           } else if (err || message === 'cannot_submit_to_vantiv' || message === 'mid_notcreated') {
             if (signupPhase !== 'manualConnect') this.switchToManualBank();
-            if (signupStep === 4) this.props.formProp({ error: true, errorMsg: 'We are unable to connect your bank account. Please check that all your information is correct and try again in a few minutes.' });
-            this.setState({ checkingStatus: false });
-          } else {
-            this.setState({ checkingStatus: false });
+            this.props.formProp({ error: true, errorMsg: <span>We are unable to connect your bank account. Please check that all your information is correct and try again in a few minutes.<br />{util.getValue(err, 'data.message', '')}</span> });
           }
         }
       });
@@ -120,7 +124,6 @@ class ConnectBankStepsForm extends React.Component {
   async submerchantCreated(delay = 5000) {
     const completed = await this.props.stepCompleted('connectStatus', false);
     if (completed) {
-      this.setState({ checkingStatus: false });
       setTimeout(async () => {
         const updated = await this.props.updateOrgSignup({ signupPhase: 'transferMoney' }, 'connectBank');
         if (updated) {
@@ -142,22 +145,19 @@ class ConnectBankStepsForm extends React.Component {
   }
 
   async saveStep(slug, delay = 1000, error = false) {
-
+    this.setState({ saving: false });
     if (error) {
-      this.setState({ saving: false });
       return false;
     }
 
     const completedStep = await this.props.stepCompleted(slug);
     if (completedStep) {
       setTimeout(() => {
-        this.setState({ saving: false }, this.props.gotoNextStep);
+        this.props.gotoNextStep();
       }, delay);
     } else {
-      this.setState({ saving: false }, this.props.gotoNextStep);
+      this.props.gotoNextStep();
     }
-
-    this.checkConnectStatus();
   }
 
   saveCallback(res, err, group) {
@@ -168,6 +168,7 @@ class ConnectBankStepsForm extends React.Component {
     const hasBeenUpdated = util.getValue(formState, 'updated');
 
     if (!err) {
+      this.checkConnectStatus();
       this.saveStep(group, hasBeenUpdated ? 1000 : 0);
     } else {
       if (!this.props.getErrors(err)) this.props.formProp({error: this.props.savingErrorMsg});
@@ -373,7 +374,7 @@ class ConnectBankStepsForm extends React.Component {
       }
 
       case 'connectStatus': {
-        item.saveButtonLabel = <span className='buttonAlignText'>{merchantIdentString ? 'All Finished! Take Me to My Profile' : isVantivReady ? 'Check Status' : 'Complete Previous Steps' }</span>;
+        item.saveButtonLabel = <span className='buttonAlignText'>{merchantIdentString ? 'All Finished! Take Me to My Profile' : isVantivReady ? 'Check Connection Status' : 'Complete Previous Steps' }</span>;
         item.desc = '';
         item.component =
           <div className='fieldGroup'>
@@ -390,7 +391,7 @@ class ConnectBankStepsForm extends React.Component {
 
     return (
       <div className='stepContainer'>
-        { this.state.saving || this.state.checkingStatus ? <Loader msg='Saving...' /> : null }
+        { this.state.saving ? <Loader msg='Saving step checking...' /> : null }
         <div className={`step ${item.className} ${open ? 'open' : ''}`}>
           <div className='stepTitleContainer'>
             {completed ?

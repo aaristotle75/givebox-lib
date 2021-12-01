@@ -35,6 +35,7 @@ class LegalEntity extends React.Component {
         data: {
           websiteURL: value
         },
+        resourcesToLoad: ['gbx3Org'],
         isSending: false
       });
     } else {

@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import * as util from '../../../common/utility';
+import { Alert } from '../../../common/Alert';
 
 class ConnectStatus extends React.Component {
 
@@ -29,9 +30,9 @@ class ConnectStatus extends React.Component {
       isVantivReady
     } = this.props;
 
-    let message = 'Please complete the previous steps to connect a bank account.';
+    let message = isVantivReady ? 'Please click "Check Connection Status" below to finish connecting your bank account.' : 'Please complete the previous steps to connect a bank account.';
     if (merchantIdentString) {
-      message = 'Congratulations, your bank account is connected to Givebox.';
+      message = 'Success! Your bank account is connected to Givebox.';
     }
 
     return message;
@@ -48,6 +49,9 @@ class ConnectStatus extends React.Component {
 
     return (
       <div className='stepTitle'>
+        { merchantIdentString ?
+          <Alert alert='success' display={true} msg='Congratulations, you can continue to accept donations. Share your fundraiser to raise money!' />
+        : null }
         {this.getStatus()}
       </div>
     )

@@ -248,7 +248,7 @@ export function saveAddress(options = {}) {
 export function checkSubmitMerchantApp(options = {}) {
   const opts = {
     callback: null,
-    isSending: false,
+    isSending: true,
     sendData: false,
     ...options
   }
@@ -256,6 +256,7 @@ export function checkSubmitMerchantApp(options = {}) {
   return (dispatch, getState) => {
 
     const merchantIdentString = util.getValue(getState(), 'resource.gbx3Org.data.vantiv.merchantIdentString');
+    const isAlreadySendingToVantiv = util.getValue(getState(), 'send.orgSubmitToVantiv.isSending');
 
     if (!merchantIdentString) {
 
@@ -294,7 +295,7 @@ export function checkSubmitMerchantApp(options = {}) {
             message = 'cannot_submit_to_vantiv';
           }
 
-          if (submitToVantiv) {
+          if (submitToVantiv && !isAlreadySendingToVantiv) {
             dispatch(sendResource('orgSubmitToVantiv', {
               query,
               isSending: opts.isSending,
