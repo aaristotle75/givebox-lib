@@ -100,12 +100,14 @@ class CKEditor4Upload extends Component {
   setImage(url, width, height) {
     const CKEDITOR = this.CKEDITOR;
     const dialog = CKEDITOR.dialog.getCurrent();
-    const width_field = dialog.getContentElement('info', 'width');
-    const height_field = dialog.getContentElement('info', 'height');
-    const url_field = dialog.getContentElement('info', 'src');
-    width_field.setValue(width);
-    height_field.setValue(height);
-    url_field.setValue(url);
+    if (dialog) {
+      const width_field = dialog.getContentElement('info', 'width');
+      const height_field = dialog.getContentElement('info', 'height');
+      const url_field = dialog.getContentElement('info', 'src');
+      width_field.setValue(width);
+      height_field.setValue(height);
+      url_field.setValue(url);
+    }
   }
 
   render() {

@@ -135,6 +135,7 @@ import Block from './gbx3/blocks/Block';
 import Text from './gbx3/blocks/Text';
 import Media from './gbx3/blocks/Media';
 import ButtonLink from './gbx3/blocks/ButtonLink';
+import GBX3Editor from './gbx3/blocks/Editor';
 import { blockTemplates, defaultBlocks } from './gbx3/blocks/blockTemplates';
 
 import * as launchpadConfig from './gbx3/admin/launchpad/launchpadConfig';
@@ -215,6 +216,7 @@ export {
   Text,
   Media,
   ButtonLink,
+  GBX3Editor,
 
 // gbx3 actions
   loadGBX3,

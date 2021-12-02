@@ -180,7 +180,7 @@ class Text extends Component {
                           type={breakpoint === 'mobile' ? 'classic' : 'classic'}
                           acceptedMimes={['image']}
                           isVolunteer={isVolunteer}
-                          allowLinking={blockType === 'receipt' ? true : false}
+                          allowLinking={blockType === 'receipt' || blockType === 'emailBlast' ? true : false}
                         />
                       </div>
                     </div>
