@@ -54,8 +54,11 @@ class Text extends Component {
     }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     this.props.setDisplayHeight(this.displayRef);
+    if (util.getValue(prevProps.blockContent, 'html') !== util.getValue(this.props.blockContent, 'html')) {
+      this.setState({ content: util.getValue(this.props.blockContent, 'html') });
+    }
   }
 
   onBlur(content) {
