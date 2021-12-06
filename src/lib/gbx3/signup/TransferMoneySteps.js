@@ -472,14 +472,20 @@ class TransferMoneyStepsForm extends React.Component {
           ;
         } else if (isCompleted) {
           item.desc =
-            <div className='primaryGradientText'>
-              We are reviewing your account. You should have approval status in the next 3-5 business days.
+            <div>
+              <div className='primaryGradientText'>
+                We are reviewing your account. You should have transfer money approval status in the next 3-5 business days.
+              </div>
+              <p style={{ fontWeight: 400, color: '#29eee6' }}>Don't worry you are approved for processing and can continue to accept donations as you wait.</p>
             </div>
           ;
         } else {
           item.desc =
-            <div className='primaryGradientText'>
-              You must complete all the previous steps to get approved to transfer money.
+            <div>
+              <div className='primaryGradientText'>
+                You must complete all the previous steps to get approved to transfer money.
+              </div>
+              <p style={{ fontWeight: 400, color: '#29eee6' }}>Don't worry you are approved for processing and can continue to accept donations while you complete the transfer money steps.</p>
             </div>
           ;
         }

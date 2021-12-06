@@ -184,7 +184,7 @@ const transferStatus = {
   type: 'merchant',
   slug: 'transferStatus',
   name: 'Approval Status',
-  title: 'Approval Status',
+  title: 'Transfer Approval Status',
   customIcon: <Icon><FaConnectdevelop /></Icon>,
   desc: ''
 }
