@@ -212,6 +212,21 @@ class Dashboard extends Component {
     return (
       <div>
         <h2>Dashboard</h2>
+          <Editor
+            orgID={185}
+            articleID={null}
+            content={''}
+            onBlur={(content) => console.log('onBlur -> ', content)}
+            onChange={(content) => {
+              //console.log('execute onChange -> ', content);
+            }}
+            type={'classic'}
+            subType={'content'}
+            acceptedMimes={['image']}
+            autoFocus={false}
+            allowLinking={false}
+          />
+        {/*
           <MediaLibrary
             blockType={'article'}
             image={null}
@@ -224,7 +239,6 @@ class Dashboard extends Component {
             mobile={false}
             uploadOnly={false}
           />
-        {/*
         <Dropdown
           name='emailListID'
           portalID={`dropdown-portal-emailListID`}
@@ -317,21 +331,6 @@ class Dashboard extends Component {
           progressColor={'#e83b2e'}
           progressColor2={'#29eee6'}
           gradient={true}
-        />
-
-        <Editor
-          orgID={185}
-          articleID={null}
-          content={this.state.content}
-          onBlur={(content) => console.log('onBlur -> ', content)}
-          onChange={(content) => {
-            this.setState({ content });
-          }}
-          type={'classic'}
-          subType={'content'}
-          acceptedMimes={['image']}
-          autoFocus={false}
-          allowLinking={false}
         />
         */}
       </div>
