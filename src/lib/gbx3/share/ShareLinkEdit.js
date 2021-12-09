@@ -63,6 +63,8 @@ class ShareLinkEdit extends Component {
 
     this.setState({ errorUpdating: false, saving: true });
 
+    const resourcesToLoad = orgDisplay ? ['gbx3Org'] : [];
+
     if (!hasCustomSlug && newSlug === articleID || (hasCustomSlug && newSlug === slug)) {
       this.setState({ success: true, saving: false });
       this.timeout = setTimeout(() => {
@@ -75,6 +77,7 @@ class ShareLinkEdit extends Component {
       if (!error) {
         this.props.sendResource(apiName, {
           orgID,
+          resourcesToLoad,
           id: [orgDisplay ? orgID : kindID],
           method: 'patch',
           data: {
