@@ -777,6 +777,19 @@ label.active {
   }
 }
 
+.suspeneded {
+  display: block;
+  padding: 10px;
+  background: $red;
+  vertical-align: middle;
+
+  .msgText {
+    display: inline-block;
+    vertical-align: middle;
+    color: $white;
+  }
+}
+
 .warning {
   display: block;
   padding: 10px;

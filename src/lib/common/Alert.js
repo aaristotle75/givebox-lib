@@ -39,6 +39,8 @@ export class Alert extends Component {
     } = this.props;
 
     switch (alert) {
+      case 'suspeneded':
+        return <Suspended msg={msg} icon={hideIcon ? '' : this.props.iconSuspended} />
       case 'error':
         return <Error msg={msg} icon={hideIcon ? '' : this.props.iconError} />
       case 'success':
@@ -90,10 +92,19 @@ export class Alert extends Component {
 Alert.defaultProps = {
   style: {},
   iconClose: <span className='icon icon-x'></span>,
+  iconSuspended: <span className='icon icon-alert-circle'></span>,
   iconError: <span className='icon icon-alert-circle'></span>,
   iconSuccess: <span className='icon icon-check-circle'></span>,
   iconWarning: <span className='icon icon-alert-circle'></span>,
   iconPassive: <span className='icon icon-alert-circle'></span>
+}
+
+export const Suspended = ({msg, icon}) => {
+  return (
+    <div className={`suspeneded`}>
+      <span className='msgText'>{icon} {msg || msgs.error}</span>
+    </div>
+  )
 }
 
 export const Error = ({msg, icon}) => {
