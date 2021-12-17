@@ -28,7 +28,19 @@ class Admin extends React.Component {
   }
 
   componentDidMount() {
-    this.props.updateInfo({ stage: 'admin' });
+    const {
+      access
+    } = this.props;
+
+    const status = util.getValue(access, 'status');
+    const role = util.getValue(access, 'role');
+    const suspendedPerms = status === 'suspended' && role === 'admin' ? true : false;
+
+    if (suspendedPerms) {
+      return window.location.replace(process.env.REACT_APP_LAUNCHPAD_URL);
+    } else {
+      this.props.updateInfo({ stage: 'admin' });
+    }
   }
 
   goBack(articleID) {

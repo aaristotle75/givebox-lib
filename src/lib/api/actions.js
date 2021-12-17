@@ -196,9 +196,11 @@ export function setAccess(res, callback) {
     // Check if this is a masquerade
     let user;
     if (has(res, 'masker')) user = res.masker;
-    else user = res.user;
+    else user = util.getValue(res, 'user', {});
 
     if (user.ID) dispatch(resourceProp('userID', user.ID));
+    const firstName = util.getValue(user, 'firstName');
+    const lastName = util.getValue(user, 'lastName');
 
     // set access
     const access = {
@@ -209,10 +211,10 @@ export function setAccess(res, callback) {
       type: 'organization',
       is2FAVerified: util.getValue(user, 'is2FAVerified'),
       userID: user.ID,
-      initial: user.firstName.charAt(0).toUpperCase() + user.lastName.charAt(0).toUpperCase(),
-      firstName: user.firstName,
-      lastName: user.lastName,
-      fullName: user.firstName + ' ' + user.lastName,
+      initial: firstName.charAt(0).toUpperCase() + lastName.charAt(0).toUpperCase(),
+      firstName,
+      lastName,
+      fullName: firstName + ' ' + lastName,
       email: user.email,
       phone: user.phone,
       userImage: user.imageURL,
