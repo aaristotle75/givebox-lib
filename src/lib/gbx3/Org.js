@@ -325,6 +325,7 @@ class Org extends React.Component {
 
   renderOrgPage() {
     const {
+      isVolunteer,
       editable,
       hasAccessToEdit,
       breakpoint,
@@ -336,8 +337,8 @@ class Org extends React.Component {
       cameFromNonprofitAdmin
     } = this.props;
 
-    const isEditable = hasAccessToEdit && editable ? true : false;
-    const isAdmin = stage === 'admin' ? true : false;
+    const isEditable = hasAccessToEdit && editable && !isVolunteer ? true : false;
+    const isAdmin = stage === 'admin' && hasAccessToEdit && !isVolunteer ? true : false;
 
     const morePageOptions = this.morePageOptions();
     const adminPageOptions = this.adminPageOptions();
@@ -391,6 +392,7 @@ function mapStateToProps(state, props) {
   const pageSlug = util.getValue(info, 'activePageSlug');
   const activePage = util.getValue(pages, pageSlug, {});
   const pagesEnabled = util.getValue(gbx3, 'orgGlobals.pagesEnabled', []);
+  const isVolunteer = util.getValue(admin, 'isVolunteer');
   const hasAccessToEdit = util.getValue(admin, 'hasAccessToEdit');
   const editable = util.getValue(admin, 'editable');
   const breakpoint = util.getValue(info, 'breakpoint');
@@ -417,6 +419,7 @@ function mapStateToProps(state, props) {
     customList,
     useCustomList,
     hasAccessToEdit,
+    isVolunteer,
     editable,
     breakpoint,
     isMobile,

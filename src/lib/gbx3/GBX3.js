@@ -211,7 +211,7 @@ class GBX3 extends React.Component {
 
     const display = !articleID || originTemplate === 'org' ? 'org' : this.props.display;
     let backToOrgAdmin = false;
-    if (originTemplate === 'org' && stage === 'admin') {
+    if (originTemplate === 'org' && stage === 'admin' && !isVolunteer) {
       backToOrgAdmin = true;
     }
 
@@ -219,7 +219,7 @@ class GBX3 extends React.Component {
       const infoUpdated = await this.props.updateInfo({ display, stage: 'public' });
       if (infoUpdated) this.props.updateAdmin({ project: 'share', publicView: true });
     } else {
-      const infoUpdated = await this.props.updateInfo({ display });
+      const infoUpdated = await this.props.updateInfo({ display, stage: isVolunteer ? 'public' : stage });
     }
 
     if (originTemplate === 'browse') {
@@ -428,7 +428,8 @@ class GBX3 extends React.Component {
   async loadOrg(orgID, page) {
     const {
       queryParams,
-      stage
+      stage,
+      isVolunteer
     } = this.props;
 
     const share = has(queryParams, 'share') ? true : false;
@@ -439,7 +440,7 @@ class GBX3 extends React.Component {
       this.props.loadOrg(orgID, (res, err) => {
         if (!err && !util.isEmpty(res)) {
           this.props.setOrgStyle();
-          if (stage === 'admin') this.props.updateInfo({ stage });
+          this.props.updateInfo({ stage: isVolunteer ? 'public' : stage });
           if (share) this.props.toggleModal('share', true);
           if (previewMode) this.props.updateAdmin({ previewDevice: 'desktop', previewMode: true });
         }
