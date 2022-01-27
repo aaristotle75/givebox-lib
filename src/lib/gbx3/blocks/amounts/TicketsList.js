@@ -207,7 +207,7 @@ class TicketsList extends Component {
           inStock = parseInt(util.getValue(value, 'max', 0) - util.getValue(value, 'sold', 0));
         }
 
-        if (value.price > 0 && value.enabled && ( inStock > 0 || showInStock )) {
+        if (value.price > 0 && value.enabled && ( inStock > 0 || showInStock || canbeSoldout )) {
           const options = inStock < maxQuantity ? this.quantityOptions(inStock) : defaultOptions;
           const selected = cartItems.find(x => x.unitID === value.ID);
           const qty = util.getValue(selected, 'quantity', 0);

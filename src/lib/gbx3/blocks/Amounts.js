@@ -596,7 +596,7 @@ class Amounts extends Component {
                         <Choice
                           type='checkbox'
                           name='showInStock'
-                          label={`Show How Many ${types.kind(kind).amountLabel} Are Available and Sold Out ${types.kind(kind).amountLabel}`}
+                          label={`Show How Many ${types.kind(kind).amountLabel} Are Available`}
                           onChange={(name, value) => {
                             const extras = this.state.extras;
                             extras.showInStock = extras.showInStock ? false : true;
