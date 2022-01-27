@@ -127,6 +127,7 @@
     "react-transition-group": "^2.9.0",
     "redux": "^4.1.2",
     "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.4.1"
+    "redux-thunk": "^2.4.1",
+    "three": "^0.137.1"
   }
 }
