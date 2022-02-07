@@ -235,7 +235,7 @@ class GBX3 extends React.Component {
 
         case 'article':
         default: {
-          const gbx3Cleared = await this.props.clearGBX3();
+          const gbx3Cleared = true; //await this.props.clearGBX3();
           if (gbx3Cleared) {
             history.push(`${GBX_URL}/${articleID}`);
             this.loadGBX3(articleID);
