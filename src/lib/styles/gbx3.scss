@@ -1257,6 +1257,10 @@
   }
 
   .gbx3Layout {
+    .error .dropdown button .label.idle {
+      color: $red !important;
+    }
+
     .dropdown button {
       .label.idle {
         color: $placeholder-gray !important;
@@ -1831,9 +1835,9 @@
       border-bottom: 1px solid $light-gray;
     }
 
-    .error .dropdown button {
+    .error .dropdown button:not(.link.label) {
       padding: 12px 0;
-      border-bottom: 2px solid $red;
+      border-bottom: 2px solid $red !important;
     }
 
     .dropdown button:not(.link):hover {
