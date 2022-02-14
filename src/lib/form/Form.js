@@ -1142,13 +1142,26 @@ class Form extends Component {
   }
 
   checkForErrors(fields, group) {
+    const errorFields = [];
     let error = false;
     Object.entries(fields).forEach(([key, value]) => {
       if (value.group === group || value.group === 'all' || group === 'submitAll') {
-        if (value.error) error = true;
-      }
+        if (value.error) {
+          errorFields.push(value.label);
+          error = true;
+        }
+       }
     });
-    this.formProp({error: error, errorMsg: 'Please fix errors below in red.'});
+    let errorString = '';
+    if (!isEmpty(errorFields)) {
+      errorFields.forEach((value) => {
+        errorString = errorString + ` ${value},`; 
+      })
+    }
+    this.formProp({
+      error: error, 
+      errorMsg: `Please Fix Errors: ${errorString.slice(0, -1)}`
+    });
     return error;
   }
 

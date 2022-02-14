@@ -707,7 +707,7 @@ label.active {
 
   input {
     color: $red;
-    background: rgba($red, .2);
+    background: rgba($red, .1);
     border: none;
   }
 
@@ -737,7 +737,7 @@ label.active {
     }
 
     button:not(.label) {
-      background: rgba($red, .2);      
+      background: rgba($red, .1);      
     }
 
     button.label {
