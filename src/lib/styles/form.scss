@@ -707,17 +707,21 @@ label.active {
 
   input {
     color: $red;
+    background: rgba($red, .2);
     border: none;
   }
 
   input::-webkit-input-placeholder {
     color: $red !important;
+    font-weight: 500;
   }
   input::-moz-placeholder {
     color: $red !important;
+    font-weight: 500;
   }
   input::-ms-input-placeholder {
     color: $red !important;
+    font-weight: 500;
   }
 
   .checkbox {
@@ -732,17 +736,23 @@ label.active {
       color: $red;
     }
 
+    button:not(.label) {
+      background: rgba($red, .2);      
+    }
+
     button.label {
       border-bottom: none;
     }
 
     button .label.idle {
+      font-weight: 500;
       color: $red !important;
     }
 
     .label .idle,
     label .idle,
-    .label {
+    .label:not(.link) {
+      font-weight: 500;      
       color: $red !important;
     }
   }
