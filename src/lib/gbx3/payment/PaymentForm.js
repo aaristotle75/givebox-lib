@@ -605,7 +605,7 @@ class PaymentFormClass extends Component {
           this.props.fieldProp('zip', { value: '00000', readOnly: true, readOnlyText: 'Outside USA: ZIP cannot be edited.' });
         } else {
           const zipValue = util.getValue(fields, 'zip.value');
-          this.props.fieldProp('zip', { readOnly: false, value: zipValue === '00000' ? '' : null });
+          this.props.fieldProp('zip', { readOnly: false, value: zipValue === '00000' ? '' : zipValue || null });
         }
       },
     });
