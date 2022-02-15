@@ -92,7 +92,7 @@ class RealTime extends Component {
 
   checkForLatest() {
     this.checkProcessed();
-    if (process.env.NODE_ENV !== 'development') this.timer(this.checkForLatest);
+    if (process.env.NODE_ENV !== 'development!') this.timer(this.checkForLatest);
   }
 
   checkProcessed() {
