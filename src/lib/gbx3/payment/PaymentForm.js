@@ -380,7 +380,7 @@ class PaymentFormClass extends Component {
     const creditCard = this.props.creditCardGroup({
       group: 'paymethod',
       ccnumberLabel: 'Credit Card Number',
-      required: false,
+      required: true,
       placeholder: 'xxxx xxxx xxxx xxxx',
       debug: false,
       cvvModalRootClass: 'gbxModal',
@@ -390,7 +390,7 @@ class PaymentFormClass extends Component {
     const debitCard = this.props.creditCardGroup({
       group: 'paymethod',
       ccnumberLabel: 'Debit Card Number',
-      required: false,
+      required: true,
       placeholder: 'xxxx xxxx xxxx xxxx',
       debug: false,
       cvvModalRootClass: 'gbxModal',
