@@ -1,6 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import NetworkError from './NetworkError';
+import * as util from './utility';
 
-export default class ErrorBoundary extends React.Component {
+class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
     this.state = { error: null, errorInfo: null };
@@ -16,6 +19,12 @@ export default class ErrorBoundary extends React.Component {
   }
 
   render() {
+    if (this.props.hasNetworkError) {
+      return (
+        <NetworkError />
+      )
+    }
+
     if (this.state.errorInfo) {
       // Error path
       return (
@@ -33,3 +42,14 @@ export default class ErrorBoundary extends React.Component {
     return this.props.children;
   }
 }
+
+
+function mapStateToProps(state, props) {
+  return {
+    hasNetworkError: util.getValue(state, 'resource.networkError', false)
+  }
+}
+
+
+export default connect(mapStateToProps, {
+})(ErrorBoundary)

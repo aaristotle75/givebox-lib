@@ -22,9 +22,8 @@ export default class NetworkError extends React.Component {
         <h2 className='center'>
           <span style={{ fontSize: 30, display: 'block', marginBottom: 5 }} className='icon icon-alert-circle'></span>
           <strong>A Network Error Occurred</strong>
-          <span style={{ fontSize: 16, display: 'block' }}>Please check your internet connection.</span>
+          <span style={{ fontSize: 16, display: 'block' }}>Please check your internet connection and reload the page.</span>
         </h2>
-        <GBLink style={{ fontSize: 16, display: 'block' }} onClick={() => window.location.reload(true)}>Click Here to Reload Page</GBLink> 
       </div>
     )
   }

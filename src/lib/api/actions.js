@@ -320,9 +320,12 @@ export function receiveResource(resource, endpoint, data, error, search, returnD
 export function networkError(error) {
   return(dispatch, getState) => {
     const modalOpen = util.getValue(getState(), 'modal.networkError.open', false);
+    const hasNetworkError = util.getValue(getState(), 'resource.networkError', false);
     if (error) {
+      if (!hasNetworkError) dispatch(resourceProp('networkError', true));
       if (!modalOpen) dispatch(toggleModal('networkError', true));
     } else {
+      if (hasNetworkError) dispatch(resourceProp('networkError', false));      
       if (modalOpen) dispatch(toggleModal('networkError', false));
     }
   }
