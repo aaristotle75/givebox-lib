@@ -17,6 +17,8 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
+    background: transparent;
+    box-shadow: 0 0 0 30px white inset !important;    
     -webkit-box-shadow: 0 0 0 30px white inset !important;
     -webkit-transition-delay: 9999s;
     transition-delay: 9999s;
@@ -791,7 +793,6 @@ label.active {
   display: block;
   padding: 10px;
   background: $red;
-  vertical-align: middle;
 
   .msgText {
     display: inline-block;
@@ -804,7 +805,6 @@ label.active {
   display: block;
   padding: 10px;
   background: $orange;
-  vertical-align: middle;
 
   .msgText {
     display: inline-block;
@@ -817,7 +817,6 @@ label.active {
   display: block;
   padding: 10px;
   background: $green;
-  vertical-align: middle;
 
   .msgText {
     display: inline-block;
@@ -1026,6 +1025,8 @@ label.active {
   height: 3px;
   -webkit-animation: progressBarAnimation 1s ease-out;
   -webkit-animation-iteration-count: infinite;
+  animation: progressBarAnimation 1s ease-out;  
+  animation-iteration-count: infinite;
   z-index: 10;
   background: #75e8d3;
   transition: all .5s ease-in;
@@ -1186,9 +1187,6 @@ label.active {
   box-shadow: none !important;
 }
 
-.photoshop-picker div:first-of-type {
-}
-
 .extraColorsContainer {
   margin-top: 20px;
 }
@@ -1226,7 +1224,6 @@ label.active {
 
 .editMode {
   padding: 10px 0 15px 0;
-  vertical-align: top;
   font-size: 50%;
   color: $mainColor;
   white-space: nowrap;
@@ -1673,9 +1670,6 @@ $ie-bottom-track-color: darken($track-color, $contrast) !default;
       @include disabled;
     }
   }
-}
-
-.react-toggle {
 }
 
 .react-toggle-track {
