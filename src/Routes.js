@@ -34,7 +34,15 @@ class Routes extends Component {
         <ModalRoute id='bankDelete' component={(props) => loadComponent('modal/lib/common/Delete', { useProjectRoot: false, props: props })} effect='3DFlipVert' style={{ width: '50%' }} />
         <ModalRoute id='delete' optsProps={{ customOverlay: { zIndex: 10000001 } }} component={(props) => loadComponent('modal/lib/common/Delete', { useProjectRoot: false, props: props })} effect='3DFlipVert' style={{ width: '50%' }} />
         <ModalRoute  id='testModal' component={() => this.props.loadComponent('modal/demo/ModalForm', { useProjectRoot: false })} effect='3DFlipVert' style={{ width: '50%' }} />
-        <ModalRoute  id='networkError' component={() => this.props.loadComponent('modal/lib/common/NetworkError', { useProjectRoot: false })} className='modalPreview' effect='3DFlipVert' style={{ width: '50%' }} />
+        <ModalRoute 
+          closeBtnShow={false}
+          disallowBgClose={true}
+          id='networkError' 
+          component={() => this.props.loadComponent('modal/lib/common/NetworkError', { useProjectRoot: false })} 
+          className='modalPreview' 
+          effect='3DFlipVert' 
+          style={{ width: '50%' }} 
+        />
         <ModalRoute  id='downloadReport' component={(props) => this.props.loadComponent('modal/lib/common/Export', { useProjectRoot: false, props: props })} effect='3DFlipVert' style={{ width: '50%' }} />
         <Router>
           <Route

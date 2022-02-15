@@ -21,7 +21,9 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.props.hasNetworkError) {
       return (
-        <NetworkError />
+        <div style={{ margin: '20px 0' }}>
+          <NetworkError />
+        </div>
       )
     }
 
