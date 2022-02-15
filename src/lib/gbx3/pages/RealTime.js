@@ -96,7 +96,12 @@ class RealTime extends Component {
   }
 
   checkProcessed() {
+    const {
+      orgID
+    } = this.props;
+
     this.props.getResource('orgFinanceStats', {
+      orgID,
       reload: true,
       isSending: false,
       callback: (res, err) => {
@@ -110,12 +115,18 @@ class RealTime extends Component {
   }
 
   getData() {
+    const {
+      orgID
+    } = this.props;
+
     this.props.getResource('orgFinanceStats', {
+      orgID,
       reload: true,
       isSending: false
     });
-    this.props.getResource('orgStats', { reload: true, isSending: false });
+    this.props.getResource('orgStats', { orgID, reload: true, isSending: false });
     this.props.getResource('orgTransactions', {
+      orgID,
       customName: 'latestTransactions',
       search: {
         sort: 'createdAt',
@@ -225,7 +236,8 @@ function mapStateToProps(state, props) {
     transactions,
     orgFinanceStats,
     orgStats,
-    stage
+    stage,
+    orgID: util.getValue(state, 'gbx3.info.orgID')
   }
 }
 
