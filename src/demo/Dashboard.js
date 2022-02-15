@@ -221,6 +221,10 @@ class Dashboard extends Component {
         <GBLink onClick={this.getCustomers}>
           Get Customers
         </GBLink>
+        <br />
+        <GBLink onClick={() => this.props.toggleModal('networkError', true)}>
+          Network Error
+        </GBLink>
         {/*          
           <Editor
             orgID={185}

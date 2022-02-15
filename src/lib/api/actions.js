@@ -317,6 +317,17 @@ export function receiveResource(resource, endpoint, data, error, search, returnD
   }
 }
 
+export function networkError(error) {
+  return(dispatch, getState) => {
+    const modalOpen = util.getValue(getState(), 'modal.networkError.open', false);
+    if (error) {
+      if (!modalOpen) dispatch(toggleModal('networkError', true));
+    } else {
+      if (modalOpen) dispatch(toggleModal('networkError', false));
+    }
+  }
+}
+
 export function getAPI(
   resource,
   endpoint,
@@ -343,7 +354,7 @@ export function getAPI(
         }
       })
       .then(function (response) {
-        console.log('execute response -> ', response.status, response);
+        dispatch(networkError(false));
         switch (response.status) {
           case 200:
             dispatch(receiveResource(customName || resource, endpoint, response.data, null, search));
@@ -362,19 +373,10 @@ export function getAPI(
         const message = util.getValue(error, 'message');
         const response = util.getValue(error, 'response', {});
         const status = util.getValue(response, 'status');
-        const networkError = util.getValue(getState(), 'resource.networkError', false);
         if (message === 'Network Error') {
-          dispatch(toggleModal('networkError', true,  {
-            closeCallback: () => {
-              dispatch(resourceProp('networkError', false));
-            }
-          }));
-          if (!networkError) dispatch(resourceProp('networkError', true,));
+          dispatch(networkError(true));
         } else {
-          if (networkError) dispatch(resourceProp('networkError', true));
-          if (util.getValue(getState(), 'modal.networkError')) {
-            dispatch(toggleModal('networkError', false));
-          }
+          dispatch(networkError(false));
         }
           //dispatch(resourceCatchError(customName || resource, error));
         dispatch(receiveResource(customName || resource, endpoint, {}, null, search));
