@@ -390,7 +390,6 @@ function shouldGetAPI(state, resource, reload) {
     if (state.resource[resource].isFetching) shouldGet = false;
     if (!reload) shouldGet = false;
   }
-  if (util.getValue(state, 'resource.networkError', false)) shouldGet = false;
   return shouldGet;
 }
 
