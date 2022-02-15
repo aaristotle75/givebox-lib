@@ -81,6 +81,7 @@ export function custom(state = {
 }
 
 export function resource(state = {
+  networkError: false,
   isFetching: false
 }, action) {
   switch (action.type) {

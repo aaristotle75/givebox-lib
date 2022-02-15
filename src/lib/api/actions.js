@@ -343,6 +343,7 @@ export function getAPI(
         }
       })
       .then(function (response) {
+        console.log('execute response -> ', response.status, response);
         switch (response.status) {
           case 200:
             dispatch(receiveResource(customName || resource, endpoint, response.data, null, search));
@@ -358,7 +359,24 @@ export function getAPI(
         }
       })
       .catch(function (error) {
-        //dispatch(resourceCatchError(customName || resource, error));
+        const message = util.getValue(error, 'message');
+        const response = util.getValue(error, 'response', {});
+        const status = util.getValue(response, 'status');
+        const networkError = util.getValue(getState(), 'resource.networkError', false);
+        if (message === 'Network Error') {
+          dispatch(toggleModal('networkError', true,  {
+            closeCallback: () => {
+              dispatch(resourceProp('networkError', false));
+            }
+          }));
+          if (!networkError) dispatch(resourceProp('networkError', true,));
+        } else {
+          if (networkError) dispatch(resourceProp('networkError', true));
+          if (util.getValue(getState(), 'modal.networkError')) {
+            dispatch(toggleModal('networkError', false));
+          }
+        }
+          //dispatch(resourceCatchError(customName || resource, error));
         dispatch(receiveResource(customName || resource, endpoint, {}, null, search));
         if (callback) callback(null, error);
       })
@@ -372,6 +390,7 @@ function shouldGetAPI(state, resource, reload) {
     if (state.resource[resource].isFetching) shouldGet = false;
     if (!reload) shouldGet = false;
   }
+  if (util.getValue(state, 'resource.networkError', false)) shouldGet = false;
   return shouldGet;
 }
 

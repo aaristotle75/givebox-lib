@@ -29,6 +29,7 @@ class Dashboard extends Component {
 
   constructor(props) {
     super(props);
+    this.getCustomers = this.getCustomers.bind(this);
     this.getVideo = this.getVideo.bind(this);
     this.makeCineObj = this.makeCineObj.bind(this);
     this.listOptions = this.listOptions.bind(this);
@@ -53,13 +54,7 @@ class Dashboard extends Component {
     console.log('execute coverPlaceholder -> ', coverPlaceholder);
     //this.getVideo();
     //this.props.toggleModal('testModal2', true);
-    this.props.getResource('orgCustomers', {
-      search: {
-        max: 5,
-        sort: 'firstName'
-      },
-      reload: true
-    });
+    this.getCustomers();
   }
 
   componentWillUnmount() {
@@ -67,6 +62,17 @@ class Dashboard extends Component {
       clearTimeout(this.timeout);
       this.timeout = null;
     }
+  }
+
+  getCustomers(orgID = null) {
+    this.props.getResource('orgCustomers', {
+      orgID,
+      search: {
+        max: 5,
+        sort: 'firstName'
+      },
+      reload: true
+    });
   }
 
   changeOptions() {
@@ -212,6 +218,10 @@ class Dashboard extends Component {
     return (
       <div>
         <h2>Dashboard</h2>
+        <GBLink onClick={this.getCustomers}>
+          Get Customers
+        </GBLink>
+        {/*          
           <Editor
             orgID={185}
             articleID={null}
@@ -226,7 +236,6 @@ class Dashboard extends Component {
             autoFocus={false}
             allowLinking={false}
           />
-        {/*
           <MediaLibrary
             blockType={'article'}
             image={null}
