@@ -82,7 +82,8 @@ class VerifyBank extends React.Component {
         <div className='flexCenter'>
           <div className='stepsSubText' style={{ marginLeft: 0, marginRight: 0 }}>
             <span><span className='label'>Bank Account:</span> {name} xxxxxx{last4}</span>
-            <ModalLink style={{ marginLeft: 0, marginRight: 0, marginTop: 5 }} className='link' id='voidCheckExample'>Click Here to See an Example of a Voided Check.</ModalLink>
+            <span style={{ marginTop: 5, display: 'block' }}>Please upload non blurry photos of the bank statements. Scanned copies will not be accepted.</span>
+            {/* <ModalLink style={{ marginLeft: 0, marginRight: 0, marginTop: 5 }} className='link' id='voidCheckExample'>Click Here to See an Example of a Voided Check.</ModalLink> */}
           </div>
         </div>
         <div className='flexCenter'>
@@ -90,7 +91,7 @@ class VerifyBank extends React.Component {
             id={orgID}
             alt={false}
             fileUploadSuccess={this.fileUploadSuccess}
-            uploadLabel={`Add Bank Statement or VOID Check`}
+            uploadLabel={`Add Bank Statements`}
             resourceType={'bank_account'}
             resourceID={util.getValue(bankAccount, 'ID', null)}
             tag={'bank_account'}
