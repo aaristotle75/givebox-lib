@@ -177,7 +177,7 @@ class PaymentFormClass extends Component {
 
       data.customer = {
         firstname,
-        lastname,
+        lastname: lastname || null,
         email,
         occupation: util.getValue(fields.occupation, 'value', null),
         employer: util.getValue(fields.employer, 'value', null),
