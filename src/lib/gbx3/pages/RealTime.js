@@ -131,7 +131,7 @@ class RealTime extends Component {
       search: {
         sort: 'createdAt',
         order: 'desc',
-        filter: '(state:"approved"%2Cstate:"if_batch")%3BtxType:"credit"',
+        filter: '(state:"approved"%2Cstate:"in_queue")%3BtxType:"credit"',
         max: 10
       },
       reload: true,
