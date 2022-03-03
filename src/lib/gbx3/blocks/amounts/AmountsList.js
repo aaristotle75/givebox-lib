@@ -184,6 +184,11 @@ class AmountsList extends Component {
     } = this.props;
 
     const {
+      maxDonationEnabled,
+      maxDonationAmount
+    } = this.props.formOptions;
+
+    const {
       amountForAPI: priceper,
       unitID,
       customAmount,
@@ -222,6 +227,10 @@ class AmountsList extends Component {
       maxQuantity,
       allowQtyChange,
       allowMultiItems,
+      maxDonationEnabled,
+      maxDonationAmount,
+      error: false,
+      errorMsg: '',
       ...recurring,
       ...obj
     };
@@ -466,13 +475,15 @@ function mapStateToProps(state, props) {
   const noFocus = util.getValue(info, 'noFocus');
   const admin = util.getValue(gbx3, 'admin', {});
   const editable = util.getValue(admin, 'editable');
+  const formOptions = util.getValue(gbx3, 'blocks.article.paymentForm.options.form', {});
 
   return {
     noFocus,
     cart,
     cartItems,
     numCartItems,
-    editable
+    editable,
+    formOptions
   }
 }
 

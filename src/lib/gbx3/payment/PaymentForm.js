@@ -19,7 +19,8 @@ import {
   resetCart,
   updateConfirmation,
   updateInfo,
-  updateCart
+  updateCart,
+  updateCartItem
 } from '../redux/gbx3actions';
 
 const ENV = process.env.REACT_APP_ENV;
@@ -130,6 +131,7 @@ class PaymentFormClass extends Component {
     };
 
     let error = false;
+    let cartError = false;
 
     if ( util.isEmpty(items) || ( !zeroAmountAllowed && (!amount || parseInt(amount) === 0) ) ) {
       this.props.formProp({ error: true, errorMsg: <span>The amount to process cannot be {util.money(0)}. Please select an amount.</span> });
@@ -150,6 +152,22 @@ class PaymentFormClass extends Component {
       const [lastItem] = items.slice(-1);
 
       Object.entries(items).forEach(([key, value]) => {
+        if (value.error) cartError = true;        
+        /*
+        if (util.getValue(value, 'maxDonationEnabled')) {
+          const maxDonationAmount = util.getValue(value, 'maxDonationAmount', 0);
+          if (value.amount > maxDonationAmount) {
+            cartError = true;
+            const errorMsg = `exceeds the max donation amount of $${util.numberWithCommas((maxDonationAmount/100).toFixed(2))}.`;
+            this.props.updateCartItem(value.unitID, {
+              ...value,
+              errorMsg,
+              error: true
+            });
+          }
+        }
+        */
+
         data.items.push({
           unitID: value.unitID,
           articleID: value.articleID,
@@ -167,6 +185,10 @@ class PaymentFormClass extends Component {
           isPublic: value.isPublic
         });
       });
+
+      if (cartError) {
+        this.props.formProp({ error: true, errorMsg: 'Please fix an error in your cart.' });
+      }
 
       const nameField = util.getValue(fields, 'name');
       const name = util.splitName(util.getValue(nameField, 'value'));
@@ -251,7 +273,7 @@ class PaymentFormClass extends Component {
         proceedToProcess = true;
       }
 
-      if (!error && proceedToProcess) {
+      if (!error && proceedToProcess && !cartError) {
         const confirmationUpdated = await this.props.updateConfirmation({
           email,
           firstname,
@@ -822,5 +844,6 @@ export default connect(mapStateToProps, {
   processTransaction,
   resetCart,
   updateConfirmation,
-  updateInfo
+  updateInfo,
+  updateCartItem
 })(PaymentForm)

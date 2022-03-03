@@ -99,9 +99,7 @@ export const amounts = {
       embedAllowed: true,
       enabled: false,
       text: 'Select Amount',
-      style: {
-
-      }
+      style: {}
     },
     recurring: {
       allowed: true,
@@ -255,7 +253,9 @@ export const paymentForm = {
       checkoutDonationArticleID: null,
       checkoutDonationFormTitle: '',
       checkoutDonationImageURL: '',
-      checkoutAmountID: null
+      checkoutAmountID: null,
+      maxDonationEnabled: false,
+      maxDonationAmount: 580000
     }
   }
 };

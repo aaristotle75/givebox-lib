@@ -98,7 +98,9 @@ class FormEdit extends Component {
       checkoutDonationAmount,
       checkoutDonationFormID,
       checkoutDonationFormTitle,
-      tag
+      tag,
+      maxDonationEnabled,
+      maxDonationAmount
     } = this.props.form;
 
     const {
@@ -472,7 +474,6 @@ class FormEdit extends Component {
                 </AnimateHeight>
                 */}
               </div>
-              { kind !== 'fundraiser' ?
               <div className='formSubSection'>
                 <div className='formSectionHeader'>Donation at Checkout Option</div>
                 <CheckoutDonationEdit
@@ -485,7 +486,39 @@ class FormEdit extends Component {
                   checkoutDonationFormID={checkoutDonationFormID}
                   checkoutDonationFormTitle={checkoutDonationFormTitle}
                 />
-              </div>: '' }
+              </div>
+              { kind === 'fundraiser' ?
+              <div className='formSubSection'>
+                <div className='formSectionHeader'>Max Donation (e.g. For Political Donations)</div>
+                <Choice
+                  type='checkbox'
+                  name='maxDonationEnabled'
+                  label={'Enable a Max Donation Amount'}
+                  onChange={(name, value) => {
+                    this.updateForm('maxDonationEnabled', maxDonationEnabled ? false : true);
+                  }}
+                  checked={maxDonationEnabled}
+                  value={maxDonationEnabled}
+                  toggle={true}
+                />
+                <AnimateHeight height={maxDonationEnabled ? 'auto' : 0}>
+                  <TextField
+                    name='maxDonationAmount'
+                    label='Max Donation Amount'
+                    fixedLabel={true}
+                    placeholder='Enter the Max Donation Amount'
+                    money={true}
+                    value={maxDonationAmount ? maxDonationAmount/100 : ''}
+                    maxLength={7}
+                    onChange={(e) => {
+                      const value = +(e.currentTarget.value * 100);
+                      this.updateForm('maxDonationAmount', value);
+                    }}
+                    leftBar={true}
+                    style={{ margin: '0 15px' }}
+                  />
+                </AnimateHeight>                
+              </div> : null }
               <div className='formSubSection'>
                 <Cinesend
                   form={this.props.form}

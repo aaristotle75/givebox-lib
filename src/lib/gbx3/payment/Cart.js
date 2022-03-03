@@ -73,6 +73,7 @@ class Cart extends Component {
 
   renderItemsInCart() {
     const {
+      articleID,
       cartItems,
       primaryColor,
       reloadGBX3
@@ -86,15 +87,17 @@ class Cart extends Component {
 
     if (!util.isEmpty(cartItems)) {
       Object.entries(cartItems).forEach(([key, value]) => {
+        const changeAmount = articleID !== value.articleID ? true : value.changeAmount;
+
         items.push(
-          <div key={key} className='cartItemRow'>
+          <div key={key} className={`cartItemRow ${value.error ? 'error' : ''}`}>
             <div style={{ width: '10%', verticalAlign: 'middle', paddingRight: 10, whiteSpace: 'nowrap'  }} className='col'>
               <GBLink onClick={() => reloadGBX3(value.articleID)}>
                 <Image url={value.thumbnailURL || value.articleImageURL} maxSize={50} size='small' minHeight={50} />
               </GBLink>
             </div>
             <div style={{ width: '60%' }} className='col'>
-              <div className='itemName'>{value.name}</div>
+              <div className='itemName'>{value.name} { value.errorMsg ? <span style={{ fontWeight: 500, textDecoration: 'underline' }}>{value.errorMsg}</span> : null }</div>
               <div className='itemSubTitle'><strong>{value.articleTitle}</strong></div>
               <div className='itemSubTitle'>{value.orgName}</div>
               <div className='itemActions'>
@@ -125,7 +128,7 @@ class Cart extends Component {
             <div style={{ width: '30%', verticalAlign: 'middle', paddingRight: 10, whiteSpace: 'nowrap' }} className='col right'>
               {util.money(value.amountFormatted)}
               { value.interval ? <span style={{ display: 'block', fontSize: 12 }}>{types.renderRecurringName(value.articleKind, value.interval, value.paymentMax).text}</span> : <></> }
-              { value.changeAmount ?
+              { changeAmount ?
                 <GBLink allowCustom={true} customColor={primaryColor} onClick={() => reloadGBX3(value.articleID)}>
                   Change Amount
                 </GBLink>
@@ -206,6 +209,7 @@ Cart.defaultProps = {
 function mapStateToProps(state, props) {
   const gbx3 = util.getValue(state, 'gbx3', {});
   const info = util.getValue(gbx3, 'info', {});
+  const articleID = util.getValue(info, 'articleID');
   const stage = util.getValue(info, 'stage', {});
   const preview = util.getValue(info, 'preview', {});
   const cart = stage !== 'admin' && !preview ? util.getValue(gbx3, 'cart', {}) : {};
@@ -216,6 +220,7 @@ function mapStateToProps(state, props) {
   const isPublic = util.getValue(gbx3, 'blocks.article.paymentForm.options.form.isPublic', true);
 
   return {
+    articleID,
     cart,
     cartItems,
     cartHasItems,

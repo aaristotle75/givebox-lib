@@ -829,6 +829,12 @@ export function updateCartItem(unitID, item = {}, opts = {}, openCart = true) {
     item.fees = fees;
     item.amountFormatted = amount/100;
 
+    const maxDonationAmount = util.getValue(item, 'maxDonationAmount', 0);
+    if (util.getValue(item, 'maxDonationEnabled') && maxDonationAmount < amount) {
+      item.error = true;
+      item.errorMsg = `exceeds the max donation amount of $${util.numberWithCommas((maxDonationAmount/100).toFixed(2))}.`;
+    }
+
     cart.open = cart.open || openCart ? true : false;
     cart.zeroAmountAllowed = util.getValue(item, 'zeroAmountAllowed', false);
     let addedOrRemoved = '';

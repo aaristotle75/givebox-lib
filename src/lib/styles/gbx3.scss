@@ -2361,6 +2361,10 @@
       padding: 0;
     }
 
+    .cartItemRow.error {
+      background: transparentize(red, .9);
+    }
+
     .cartItemRow {
       display: table;
       width: 100%;
