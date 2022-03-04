@@ -1,10 +1,14 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
 import * as util from '../../../common/utility';
 import * as types from '../../../common/types';
 import GBLink from '../../../common/GBLink';
 import Dropdown from '../../../form/Dropdown';
 import TextField from '../../../form/TextField';
 import AnimateHeight from 'react-animate-height';
+import {
+  updateCartItem
+} from '../../redux/gbx3actions';
 import Moment from 'moment';
 
 class Recurring extends Component {
@@ -12,6 +16,7 @@ class Recurring extends Component {
     super(props);
     this.onChangeRecurring = this.onChangeRecurring.bind(this);
     this.getEndDate = this.getEndDate.bind(this);
+    this.checkOptions = this.checkOptions.bind(this);
     this.state = {
       interval: this.props.interval,
       paymentMax: this.props.paymentMax,
@@ -21,6 +26,44 @@ class Recurring extends Component {
   }
 
   componentDidMount() {
+    this.checkOptions();
+  }
+
+  checkOptions() {
+    const {
+      cartItems,
+      articleID
+    } = this.props;
+
+    const {
+      paymentMax,
+      paymentMaxError
+    } = this.state;
+
+    const item = cartItems.find(i => i.articleID === articleID);
+    const maxDonationAmount = util.getValue(item, 'maxDonationAmount', 0);
+    const maxDonationEnabled = util.getValue(item, 'maxDonationEnabled');
+    const futureAmount = util.getValue(item, 'amount', 0) * paymentMax;
+    if ( futureAmount > maxDonationAmount && maxDonationEnabled) {
+      const errorMsg = `Total recurring donations would exceed the max donation amount of $${util.numberWithCommas((maxDonationAmount/100).toFixed(2))}.`;
+      this.setState({ paymentMaxError: errorMsg });
+      this.props.updateCartItem(item.unitID, {
+        ...item,
+        errorMsg,
+        error: true
+      });
+    } else {
+      if (item.error) {
+        this.props.updateCartItem(item.unitID, {
+          ...item,
+          errorMsg: '',
+          error: false
+        });
+      }
+      if (paymentMaxError) {
+        this.setState({ paymentMaxError: false });
+      }
+    }
   }
 
   onChangeRecurring(name, interval) {
@@ -55,12 +98,15 @@ class Recurring extends Component {
     const {
       amount,
       recurringText,
-      typeText
+      typeText,
+      cartItems,
+      articleID
     } = this.props;
 
     const {
       interval,
-      paymentMax
+      paymentMax,
+      paymentMaxError
     } = this.state;
 
     return (
@@ -117,11 +163,12 @@ class Recurring extends Component {
                 onChange={(e) => {
                   const value = isNaN(e.currentTarget.value) ? '' : parseInt(e.currentTarget.value);
                   const paymentMax = value || null;
-                  this.setState({ paymentMax, forever: value ? false : true });
+                  this.setState({ paymentMax, forever: value ? false : true }, this.checkOptions);
                   this.props.setRecurring({ paymentMax });
                 }}
                 maxLength={2}
                 color={this.props.color}
+                error={paymentMaxError || false}
               />
               <AnimateHeight
                 duration={500}
@@ -164,4 +211,21 @@ class Recurring extends Component {
   }
 }
 
-export default Recurring;
+function mapStateToProps(state, props) {
+
+  const gbx3 = util.getValue(state, 'gbx3', {});
+  const articleID = util.getValue(gbx3, 'info.articleID');
+  const formOptions = util.getValue(gbx3, 'blocks.article.paymentForm.options.form', {});
+  const cart = util.getValue(gbx3, 'cart', {});
+  const cartItems = util.getValue(cart, 'items', []);
+
+  return {
+    articleID,
+    formOptions,
+    cartItems
+  }
+}
+
+export default connect(mapStateToProps, {
+  updateCartItem
+})(Recurring);

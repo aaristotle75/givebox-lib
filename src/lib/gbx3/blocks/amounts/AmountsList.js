@@ -229,8 +229,6 @@ class AmountsList extends Component {
       allowMultiItems,
       maxDonationEnabled,
       maxDonationAmount,
-      error: false,
-      errorMsg: '',
       ...recurring,
       ...obj
     };

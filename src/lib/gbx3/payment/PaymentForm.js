@@ -186,10 +186,6 @@ class PaymentFormClass extends Component {
         });
       });
 
-      if (cartError) {
-        this.props.formProp({ error: true, errorMsg: 'Please fix an error in your cart.' });
-      }
-
       const nameField = util.getValue(fields, 'name');
       const name = util.splitName(util.getValue(nameField, 'value'));
       const firstname = name.first;

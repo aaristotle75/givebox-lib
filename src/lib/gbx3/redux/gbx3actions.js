@@ -828,11 +828,21 @@ export function updateCartItem(unitID, item = {}, opts = {}, openCart = true) {
     item.amount = amount;
     item.fees = fees;
     item.amountFormatted = amount/100;
+    item.error = item.error || false;
+    item.errorMsg = item.errorMsg || '';
 
     const maxDonationAmount = util.getValue(item, 'maxDonationAmount', 0);
-    if (util.getValue(item, 'maxDonationEnabled') && maxDonationAmount < amount) {
-      item.error = true;
-      item.errorMsg = `exceeds the max donation amount of $${util.numberWithCommas((maxDonationAmount/100).toFixed(2))}.`;
+    const maxDonationEnabled = util.getValue(item, 'maxDonationEnabled');
+    const paymentMax = util.getValue(item, 'paymentMax', 0);
+    if (maxDonationEnabled) {
+      if (maxDonationAmount < amount) {
+        item.error = true;
+        item.errorMsg = `exceeds the max donation amount of $${util.numberWithCommas((maxDonationAmount/100).toFixed(2))}.`;
+      }
+      if (paymentMax && (maxDonationAmount < (amount * paymentMax))) {
+        item.error = true;
+        item.errorMsg = `Total recurring donations would exceed the max donation amount of $${util.numberWithCommas((maxDonationAmount/100).toFixed(2))}.`;
+      }
     }
 
     cart.open = cart.open || openCart ? true : false;
