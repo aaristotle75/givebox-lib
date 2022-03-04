@@ -45,7 +45,7 @@ class Recurring extends Component {
     const maxDonationEnabled = util.getValue(item, 'maxDonationEnabled');
     const futureAmount = util.getValue(item, 'amount', 0) * paymentMax;
     if ( futureAmount > maxDonationAmount && maxDonationEnabled) {
-      const errorMsg = `Total recurring donations would exceed the max donation amount of $${util.numberWithCommas((maxDonationAmount/100).toFixed(2))}.`;
+      const errorMsg = `Error: Total recurring donations of $${util.numberWithCommas((futureAmount/100).toFixed(2))} would exceed the max donation amount of $${util.numberWithCommas((maxDonationAmount/100).toFixed(2))}`;
       this.setState({ paymentMaxError: errorMsg });
       this.props.updateCartItem(item.unitID, {
         ...item,

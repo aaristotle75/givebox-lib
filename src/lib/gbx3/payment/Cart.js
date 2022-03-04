@@ -85,9 +85,13 @@ class Cart extends Component {
 
     const items = [];
 
+    let cartError = false;
+
     if (!util.isEmpty(cartItems)) {
       Object.entries(cartItems).forEach(([key, value]) => {
         const changeAmount = articleID !== value.articleID ? true : value.changeAmount;
+        
+        if (value.error) cartError = true;
 
         items.push(
           <div key={key} className={`cartItemRow ${value.error ? 'error' : ''}`}>
@@ -97,7 +101,10 @@ class Cart extends Component {
               </GBLink>
             </div>
             <div style={{ width: '60%' }} className='col'>
-              <div className='itemName'>{value.name} { value.errorMsg ? <span style={{ fontWeight: 500, textDecoration: 'underline' }}>{value.errorMsg}</span> : null }</div>
+              <div className='itemName'>
+              { value.error && value.errorMsg ? <div className='error' style={{ display: 'block', fontWeight: 500 }}>{value.errorMsg}</div> : null }
+                {value.name}
+              </div>
               <div className='itemSubTitle'><strong>{value.articleTitle}</strong></div>
               <div className='itemSubTitle'>{value.orgName}</div>
               <div className='itemActions'>
@@ -156,6 +163,7 @@ class Cart extends Component {
     return (
       <div className='itemsInCart'>
         { !util.isEmpty(items) ? items : <span className='flexCenter noRecords'>No Items in Cart</span> }
+        { cartError ? <div style={{ fontSize: 14, marginTop: 20 }} className='flexCenter error'>Please Fix Errors in Your Cart</div> : null }
       </div>
     );
   }

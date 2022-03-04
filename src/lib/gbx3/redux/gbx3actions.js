@@ -834,14 +834,15 @@ export function updateCartItem(unitID, item = {}, opts = {}, openCart = true) {
     const maxDonationAmount = util.getValue(item, 'maxDonationAmount', 0);
     const maxDonationEnabled = util.getValue(item, 'maxDonationEnabled');
     const paymentMax = util.getValue(item, 'paymentMax', 0);
+    const futureAmount = amount * paymentMax;
     if (maxDonationEnabled) {
       if (maxDonationAmount < amount) {
         item.error = true;
-        item.errorMsg = `exceeds the max donation amount of $${util.numberWithCommas((maxDonationAmount/100).toFixed(2))}.`;
+        item.errorMsg = `Error: exceeds the max donation amount of $${util.numberWithCommas((maxDonationAmount/100).toFixed(2))}`;
       }
-      if (paymentMax && (maxDonationAmount < (amount * paymentMax))) {
+      if (paymentMax && (maxDonationAmount < futureAmount)) {
         item.error = true;
-        item.errorMsg = `Total recurring donations would exceed the max donation amount of $${util.numberWithCommas((maxDonationAmount/100).toFixed(2))}.`;
+        item.errorMsg = `Error: Total recurring donations of $${util.numberWithCommas((futureAmount/100).toFixed(2))} would exceed the max donation amount of $${util.numberWithCommas((maxDonationAmount/100).toFixed(2))}`;
       }
     }
 

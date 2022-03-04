@@ -2363,6 +2363,7 @@
 
     .cartItemRow.error {
       background: transparentize(red, .9);
+      color: $white;
     }
 
     .cartItemRow {
