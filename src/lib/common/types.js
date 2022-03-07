@@ -440,3 +440,25 @@ export const defaultArticleTitles = {
   membership: 'New Membership',
   sweepstake: 'New Sweepstakes'
 };
+
+export function emailStatus(status) {
+  const style = {
+    fontSize: 12,
+    fontStyle: 'italic',
+    display: 'block'
+  };
+
+  switch (status) {
+    case 'valid': {
+      return <span style={style} className='green'>Valid Email</span>
+    }
+
+    case 'rejected': {
+      return <span style={style} className='red'>Rejected Email</span>
+    }
+
+    default: {
+      return <span style={style} className='orange'>Pending Validation</span>
+    }
+  }
+}
