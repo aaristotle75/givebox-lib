@@ -53,7 +53,7 @@ class Recurring extends Component {
         error: true
       });
     } else {
-      if (item.error) {
+      if (util.getValue(item, 'error')) {
         this.props.updateCartItem(item.unitID, {
           ...item,
           errorMsg: '',
