@@ -92,14 +92,11 @@ class PaymentFormClass extends Component {
     if (!err) {
       this.formSavedCallback();
     } else {
-      this.props.formProp({error: true, errorMsg });
-      /*
       if (util.getValue(err, 'data.code') === 'no_authorization' && util.getValue(err, 'data.message') === 'declined') {
-        //console.log('execute no_authorization and declined');
+        this.props.formProp({error: true, errorMsg});
       } else {
-        if (!this.props.getErrors(err)) this.props.formProp({error: this.props.savingErrorMsg});
+        if (!this.props.getErrors(err)) this.props.formProp({error: true, errorMsg});
       }
-      */
     }
   }
 
