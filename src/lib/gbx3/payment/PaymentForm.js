@@ -149,21 +149,7 @@ class PaymentFormClass extends Component {
       const [lastItem] = items.slice(-1);
 
       Object.entries(items).forEach(([key, value]) => {
-        if (value.error) cartError = true;        
-        /*
-        if (util.getValue(value, 'maxDonationEnabled')) {
-          const maxDonationAmount = util.getValue(value, 'maxDonationAmount', 0);
-          if (value.amount > maxDonationAmount) {
-            cartError = true;
-            const errorMsg = `exceeds the max donation amount of $${util.numberWithCommas((maxDonationAmount/100).toFixed(2))}.`;
-            this.props.updateCartItem(value.unitID, {
-              ...value,
-              errorMsg,
-              error: true
-            });
-          }
-        }
-        */
+        if (value.error) cartError = true;
 
         data.items.push({
           unitID: value.unitID,
@@ -189,6 +175,7 @@ class PaymentFormClass extends Component {
       const lastname = name.last;
       const fullName = `${firstname} ${lastname}`;
       const email = util.getValue(fields.email, 'value', null);
+      const phone = util.getValue(fields.phone, 'value', null);
 
       data.customer = {
         firstname,
@@ -196,7 +183,7 @@ class PaymentFormClass extends Component {
         email,
         occupation: util.getValue(fields.occupation, 'value', null),
         employer: util.getValue(fields.employer, 'value', null),
-        phone: util.getValue(fields.phone, 'value', null),
+        phone: phone === null ? null : util.prunePhone(phone),
         address: {
           line1: util.getValue(fields.line1, 'value', null),
           city: util.getValue(fields.city, 'value', null),
