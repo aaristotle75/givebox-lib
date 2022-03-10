@@ -16,7 +16,8 @@ import {
   updateBlock,
   updateData,
   updateInfo,
-  saveGBX3
+  saveGBX3,
+  saveReceipt
 } from './redux/gbx3actions';
 import Footer from './Footer';
 
@@ -109,6 +110,7 @@ class Article extends React.Component {
           this.props.saveGBX3(blockType, {
             callback: () => {
               callback(hasBeenUpdated, content);
+              this.props.saveReceipt();
             },
             updateLayout: !util.isEmpty(grid) ? true : false
           });
@@ -425,6 +427,7 @@ export default connect(mapStateToProps, {
   updateData,
   updateInfo,
   saveGBX3,
+  saveReceipt,
   addBlock,
   setStyle,
   updateAdmin
