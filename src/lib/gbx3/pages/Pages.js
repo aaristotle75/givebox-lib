@@ -27,6 +27,7 @@ class Pages extends Component {
 
   constructor(props) {
     super(props);
+    this.checkPublishStatus = this.checkPublishStatus.bind(this);
     this.renderList = this.renderList.bind(this);
     this.onMouseOverArticle = this.onMouseOverArticle.bind(this);
     this.onMouseLeaveArticle = this.onMouseLeaveArticle.bind(this);
@@ -80,6 +81,16 @@ class Pages extends Component {
     }
   }
 
+  checkPublishStatus(value) {
+    let shouldDisplay = true;
+    const webApp = util.getValue(value, 'publishedStatus.webApp');
+    const publishStatus = util.getPublishStatus(value.kind, webApp);
+    if (publishStatus === 'private') {
+      shouldDisplay = false;
+    }
+    return shouldDisplay;
+  }
+
   renderList() {
     const {
       orgID,
@@ -98,32 +109,34 @@ class Pages extends Component {
 
     if (!util.isEmpty(pageList)) {
       Object.entries(pageList).forEach(([key, value]) => {
-        const kind = value.kind;
-        const ID = value.ID ;
-        items.push(
-          <div
-            className='listItem'
-            key={key}
-            onClick={() => this.props.onClickArticle(ID)}
-            onMouseEnter={() => this.onMouseOverArticle(ID)}
-            onMouseLeave={() => this.onMouseLeaveArticle(ID)}
-          >
-            <ArticleCard
-              item={value}
-              kind={kind}
-              ID={ID}
-              activePage={activePage}
-              pageSlug={pageSlug}
-              resourcesToLoad={[resourceName]}
-              sendResource={this.props.sendResource}
-              removeCard={this.props.removeCard}
-              onClickArticle={this.props.onClickArticle}
-              reloadGetArticles={this.props.reloadGetArticles}
-              playPreview={this.state.playPreview === ID ? true : false}
-              toggleModal={this.props.toggleModal}
-            />
-          </div>
-        );
+        if (this.checkPublishStatus(value)) {
+          const kind = value.kind;
+          const ID = value.ID ;
+          items.push(
+            <div
+              className='listItem'
+              key={key}
+              onClick={() => this.props.onClickArticle(ID)}
+              onMouseEnter={() => this.onMouseOverArticle(ID)}
+              onMouseLeave={() => this.onMouseLeaveArticle(ID)}
+            >
+              <ArticleCard
+                item={value}
+                kind={kind}
+                ID={ID}
+                activePage={activePage}
+                pageSlug={pageSlug}
+                resourcesToLoad={[resourceName]}
+                sendResource={this.props.sendResource}
+                removeCard={this.props.removeCard}
+                onClickArticle={this.props.onClickArticle}
+                reloadGetArticles={this.props.reloadGetArticles}
+                playPreview={this.state.playPreview === ID ? true : false}
+                toggleModal={this.props.toggleModal}
+              />
+            </div>
+          );
+        }
       })
     }
 
