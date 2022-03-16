@@ -1221,3 +1221,19 @@ export function propertiesToArray(obj) {
   }
   return paths(obj);
 }
+
+export function allImagesLoaded() {
+  let loaded = false;
+  let counter = 0;
+  const imgs = document.images;
+  const len = imgs.length;
+  if (!isEmpty(imgs)) {
+    imgs.forEach((value) => {
+      counter++;
+      if (counter === len) loaded = true;
+    });
+  } else {
+    loaded = true;
+  }
+  return loaded;
+}

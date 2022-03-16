@@ -49,8 +49,15 @@ class Form extends Component {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     if (this.props.receipt) this.props.toggleModal('paymentConfirmation', true);
+    const imagesLoaded = await util.allImagesLoaded();
+    if (imagesLoaded) {
+      const screenshotReady = document.createElement('div');
+      screenshotReady.setAttribute('id', 'screenshotReady');
+      const gbx3MainWrapper = document.getElementById('gbx3MainWrapper');
+      if (gbx3MainWrapper) gbx3MainWrapper.append(screenshotReady);
+    }
   }
 
   closeEditModal(type = 'save') {

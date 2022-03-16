@@ -46,10 +46,6 @@ class Layout extends React.Component {
   componentDidMount() {
     if (this.gbx3Container.current) {
       window.parent.postMessage(`gbx3Height-${this.gbx3Container.current.clientHeight}`, '*');
-      const screenshotReady = document.createElement('div');
-      screenshotReady.setAttribute('id', 'screenshotReady');
-      const gbx3MainWrapper = document.getElementById('gbx3MainWrapper');
-      if (gbx3MainWrapper) gbx3MainWrapper.append(screenshotReady);
     }
   }
 
