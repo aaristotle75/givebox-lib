@@ -33,8 +33,9 @@ class SignupShare extends React.Component {
 
   componentDidMount() {
     this.getArticle();
+    const articleID = this.props.articleID;
     this.props.sendResource('gbxPreview', {
-      id: [this.props.articleID],
+      id: [articleID],
       reload: true,
       callback: (res, err) => {
         console.log('execute gbxPreview -> ', res, err);

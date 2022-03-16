@@ -338,6 +338,7 @@ class Layout extends React.Component {
             style={{
               ...style
             }}
+            id='gbx3ScreenshotContainer'
             className={`gbx3Container`}
             ref={this.gbx3Container}
           >
