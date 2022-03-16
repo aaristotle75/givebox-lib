@@ -18,8 +18,8 @@ class ShareLinkEdit extends Component {
     this.updateSlug = this.updateSlug.bind(this);
     const slug = props.slug;
     const hasCustomSlug = props.hasCustomSlug;
-    const articleID = props.articleID;
-    const newSlug = hasCustomSlug ? slug : articleID;
+    //const articleID = props.articleID;
+    const newSlug = hasCustomSlug ? slug : '';
 
     this.state = {
       saving: false,
@@ -140,7 +140,7 @@ class ShareLinkEdit extends Component {
           {saving ? <Loader msg='Saving Custom Share Link...' /> : <></> }
           <div className='flexCenter flexColumn'>
             <div className='shareLinkEditable'>
-              <Alert alert='error' display={errorUpdating} msg={`Unable to update: ${errorMsg}.`} />
+              <Alert alert='error' display={errorUpdating} msg={`Unable to update: ${errorMsg}`} />
               <Alert alert='success' display={success} msg={`${successMsg}.`} />
               <div className='subText'>
                 {subText}
@@ -150,7 +150,7 @@ class ShareLinkEdit extends Component {
                 fixedLabel={true}
                 label=''
                 placeholder='enter-your-custom-url'
-                style={{ width: '100%', paddingBottom: 0, marginBottom: 5 }}
+                style={{ width: '100%', paddingTop: 0, paddingBottom: 0, marginBottom: 5 }}
                 value={newSlug}
                 error={error ? 'Share link name can only contain alphanumeric and !@#%*_+- characters.' : false}
                 errorType={'tooltip'}

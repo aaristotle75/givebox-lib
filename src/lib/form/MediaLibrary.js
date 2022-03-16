@@ -170,8 +170,8 @@ class MediaLibrary extends Component {
     this.setState({ percent: progress });
   }
 
-  handleDrop(files) {
-    console.log('drop');
+  handleDrop(files, error) {
+    console.log('MediaLibrary drop', files, error);
   }
 
   newUploadProgressCallback(url, file) {

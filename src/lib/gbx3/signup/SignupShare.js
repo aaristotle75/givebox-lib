@@ -26,12 +26,20 @@ class SignupShare extends React.Component {
     this.setShareTypeSelected = this.setShareTypeSelected.bind(this);
     this.getArticle = this.getArticle.bind(this);
     this.state = {
-      shareTypeSelected: props.defaultSelected || 'social'
+      shareTypeSelected: props.defaultSelected || 'copy',
+      previewURL: null
     };
   }
 
   componentDidMount() {
     this.getArticle();
+    this.props.sendResource('gbxPreview', {
+      id: [this.props.articleID],
+      reload: true,
+      callback: (res, err) => {
+        console.log('execute gbxPreview -> ', res, err);
+      }
+    });
   }
 
   getArticle() {
@@ -213,7 +221,7 @@ class SignupShare extends React.Component {
 
     return (
       <div className='createStep'>
-        <div style={{ paddingTop: 0 }} className={`modalWrapper`}>
+        <div style={{ paddingTop: 0, ...this.props.style }} className={`modalWrapper`}>
           {this.renderShareList()}
           {this.renderShareType()}
         </div>
@@ -224,7 +232,8 @@ class SignupShare extends React.Component {
 
 SignupShare.defaultProps = {
   hideList: [],
-  showHelper: true
+  showHelper: true,
+  style: {}
 }
 
 function mapStateToProps(state, props) {

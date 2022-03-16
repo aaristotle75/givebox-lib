@@ -17,6 +17,7 @@ import * as _v from '../../form/formValidate';
 import GBLink from '../../common/GBLink';
 import Image from '../../common/Image';
 import Icon from '../../common/Icon';
+import AnimateHeight from 'react-animate-height';
 import {
   setOrgStyle,
   loadOrg,
@@ -77,27 +78,14 @@ class SignupStepsForm extends React.Component {
       requirePassword: false,
       previewLoaded: false,
       editPreview: false,
-      iframeHeight: 0
+      iframeHeight: 0,
+      previewShareOpen: true
     };
   }
 
   componentDidMount() {
     window.addEventListener('message', this.gbx3message, false);
     new Image().src = 'https://cdn.givebox.com/givebox/public/images/step-loader.png';
-
-    const stepConfig = util.getValue(this.props.stepsTodo, this.props.step, {});
-    const slug = util.getValue(stepConfig, 'slug');
-
-    if (!this.props.signupConfirmed && this.props.signupPhase === 'postSignup' && slug === 'previewShare') {
-      this.props.toggleModal('signupConfirmation', true, {
-        closeCallback: async () => {
-          const updated = await this.props.updateOrgSignup({ signupConfirmed: true });
-          if (updated) {
-            this.props.saveOrg({ orgUpdated: true });
-          }
-        }
-      });
-    }
   }
 
   componentDidUpdate(prevProps) {
@@ -785,7 +773,8 @@ class SignupStepsForm extends React.Component {
       requirePassword,
       editPreview,
       previewLoaded,
-      iframeHeight
+      iframeHeight,
+      previewShareOpen
     } = this.state;
 
     const {
@@ -829,6 +818,7 @@ class SignupStepsForm extends React.Component {
     const lastStep = step === this.props.steps ? true : false;
     const nextStepName = this.props.getNextStep();
     const nextStepNumber = this.props.nextStep(step) + 1;
+    const shareUrl = `${GBX3_URL}/${createdArticleID}`;
 
     const item = {
       title: stepConfig.title,
@@ -837,7 +827,8 @@ class SignupStepsForm extends React.Component {
       desc: stepConfig.desc,
       component: <div></div>,
       className: '',
-      saveButtonLabel: <span className='buttonAlignText'>Save & Continue</span>
+      saveButtonLabel: <span className='buttonAlignText'>Save & Continue</span>,
+      customSaveButton: null
     };
 
     const library = {
@@ -1116,7 +1107,7 @@ class SignupStepsForm extends React.Component {
             />
           ;
         } else {
-          item.saveButtonLabel = <span className='buttonAlignText'>Continue to Preview & Share</span>;
+          item.saveButtonLabel = <span className='buttonAlignText'>Continue to Accept Donations</span>;
           item.desc = 'Congratulations, you have created a FREE Givebox Account!';
           item.component = null;
         }
@@ -1126,40 +1117,32 @@ class SignupStepsForm extends React.Component {
       case 'previewShare': {
         if (signupPhase === 'signup') {
           item.saveButtonLabel = <span className='buttonAlignText'>Complete Previous Steps</span>;
-          item.desc = 'You must complete the previous steps to generate a preview of your fundraiser.';
+          item.desc = 'Please complete the previous steps to continue.';
           item.component = null;
         } else {
-          item.saveButtonLabel = <span className='buttonAlignText'>All Finished! Take Me to My Page</span>;
+          item.saveButtonLabel = <span className='buttonAlignText'>Continue to Connect a Bank</span>;
           item.className = 'preview';
-          item.desc = '';
-
+          item.desc = 'Congratulations, you have just opened a Merchant Processing Account! You can now accept donations.';
+          
           item.component =
-            <div className='stagePreview flexCenter flexColumn'>
-              <Alert alert='success' display={true} msg='You can now accept donations. Share your fundraiser on social media and/or copy the share link and email it to your constituents to continue.' />
-              <SignupShare showHelper={false} />
-              <div className='previewTitleContainer'>
-                { !previewLoaded ?
-                  <div className='previewTitleText'>
-                    {`${editPreview ? 'Loading editable fundraiser,' : 'Generating preview,'} we appreciate your patience while it loads...`}
-                  </div>
-                :
-                <div>
-                  <GBLink
-                    style={{ display: 'inline' }}
-                    onClick={() => {
-                      this.setState({ editPreview: editPreview ? false : true, previewLoaded: false, iframeHeight: 0 })
+            <div style={{ marginTop: 20 }} className='flexCenter flexColumn'>
+              The next step is to connect your bank account where you will receive your money.
+              <GBLink style={{ marginTop: 20, marginBottom: 20 }} onClick={() => this.setState({ previewShareOpen: previewShareOpen ? false : true })}>Or click here to preview and share your fundraiser now and connect a bank later.</GBLink>
+              <AnimateHeight height={previewShareOpen ? 'auto' : 0 }>
+                <div className='flexCenter flexColumn'>
+                  <SignupShare 
+                    style={{
+                      marginBottom: 0,
+                      paddingBottom: 0
                     }}
-                  >
-                    <span className='buttonAlignText'>{editPreview ? 'Click Here for Public Preview' : 'Click Here to Edit Your Fundraiser'} <span className='icon icon-chevron-right'></span></span>
-                  </GBLink>
-                </div> }
-              </div>
-              { !previewLoaded ?
-                <div className='imageLoader'>
-                  <img src='https://cdn.givebox.com/givebox/public/universal.png' alt='Loading Preview' />
+                    showHelper={false} 
+                  />             
+                  <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                    <GBLink style={{ marginRight: 10 }} onClick={() => window.open(shareUrl)}>View Public Page</GBLink>    
+                    <GBLink style={{ marginLeft: 10 }} onClick={() => window.open(`${shareUrl}?admin`)}>Edit Fundraiser</GBLink> 
+                  </div>
                 </div>
-              : null }
-              <iframe style={{ height: iframeHeight }} id='previewIframe' src={`${GBX3_URL}/${createdArticleID}${this.state.editPreview ? '?admin&editFormOnly' : '?public&preview'}`} title={`Preview`} />
+              </AnimateHeight> 
             </div>
           ;
         }
@@ -1197,7 +1180,7 @@ class SignupStepsForm extends React.Component {
             }}><span style={{ marginRight: '5px' }} className='icon icon-chevron-left'></span> {isMobile ? 'Back' : 'Previous Step' }</GBLink> : <span>&nbsp;</span> }
           </div>
           <div className='button-item'>
-            {this.props.saveButton(this.processForm, { group: slug, label: item.saveButtonLabel })}
+            {item.customSaveButton || this.props.saveButton(this.processForm, { group: slug, label: item.saveButtonLabel })}
           </div>
           <div className='rightSide'>
             <Image className='pulsate' url={isMobile ? 'https://cdn.givebox.com/givebox/public/gb-logo5.png' : 'https://cdn.givebox.com/givebox/public/givebox-logo_white.png'} alt='Givebox Logo' maxHeight={30} />

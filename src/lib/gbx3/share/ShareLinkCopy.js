@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as util from '../../common/utility';
 import CodeBlock from '../../block/CodeBlock';
+import GBLink from '../../common/GBLink';
 
 class ShareLinkCopy extends Component {
 

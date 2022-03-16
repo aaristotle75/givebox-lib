@@ -64,9 +64,9 @@ const createSuccess = {
 const previewShare = {
   type: 'previewShare',
   slug: 'previewShare',
-  name: 'Preview & Share',
-  icon: 'eye',
-  title: 'Preview & Share',
+  name: 'Accept Donations',
+  icon: 'check-circle',
+  title: 'Accept Donations',
   desc: ''
 }
 

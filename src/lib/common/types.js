@@ -30,7 +30,8 @@ export const imageTypes = [
   'jpeg',
   'gif',
   'bmp',
-  'png'
+  'png',
+  'webp'
 ];
 
 export const allMimes = {
@@ -246,6 +247,11 @@ export function source(source) {
 
     case 'app': {
       str = 'Givebox Donor App';
+      break;
+    }
+
+    case 'api': {
+      str = 'Givebox Public API';
       break;
     }
 

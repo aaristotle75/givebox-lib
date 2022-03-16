@@ -292,7 +292,7 @@ class Layout extends React.Component {
 
 
     return (
-      <div className={`gbx3PageWrapper ${displayClass} ${stage}`}>
+      <div id='screenshotReady' className={`gbx3PageWrapper ${displayClass} ${stage}`}>
         { done ?
           <div className='noAccessToGBX'>
             <Icon><AiOutlineTrophy /></Icon>
