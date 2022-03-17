@@ -279,7 +279,7 @@ class SignupShare extends React.Component {
                     <Image url={previewURL} alt='Preview' maxSize='250px' />
                   </div>
                   <div style={{ right: '20px' }} className={`previewMenu ${!previewLoading ? 'previewLoaded' : '' }`}>
-                    <GBLink onClick={() => window.open(`${shareUrl}?admin`)}>
+                    <GBLink onClick={() => window.open(`${shareUrl}?admin&hideSteps=true`)}>
                       <span className='avatarLink editGraphic'>
                         <span className='icon icon-edit'></span>
                       </span>

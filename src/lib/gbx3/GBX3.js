@@ -219,7 +219,8 @@ class GBX3 extends React.Component {
       const infoUpdated = await this.props.updateInfo({ display, stage: 'public' });
       if (infoUpdated) this.props.updateAdmin({ project: 'share', publicView: true });
     } else {
-      const infoUpdated = await this.props.updateInfo({ display, stage: isVolunteer ? 'public' : stage });
+      const infoUpdated = await this.props.updateInfo({ display, stage: (isVolunteer || (display === 'article')) ? 'public' : stage });
+      if (display === 'article' && infoUpdated) this.props.updateAdmin({ publicView: true });
     }
 
     if (originTemplate === 'browse') {
@@ -237,7 +238,7 @@ class GBX3 extends React.Component {
         default: {
           const gbx3Cleared = true; //await this.props.clearGBX3();
           if (gbx3Cleared) {
-            history.push(`${GBX_URL}/${articleID}`);
+            history.push(`${GBX_URL}/${articleID}?public`);
             this.loadGBX3(articleID);
           }
         }
