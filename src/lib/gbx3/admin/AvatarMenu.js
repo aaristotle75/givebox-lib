@@ -75,8 +75,12 @@ class AvatarMenu extends React.Component {
 
     menuList.push(
       <li key='dashboard' onClick={async () => {
-        this.props.toggleModal('avatarMenu', false);
-        this.props.openLaunchpad();
+        if (display === 'org') {
+          this.props.toggleModal('avatarMenu', false);
+          this.props.openLaunchpad();
+        } else {
+          window.location.replace(CLOUD_URL);
+        }
       }}>
         <Icon><CgMenuGridO /></Icon>
         <span className='text'>Dashboard</span>

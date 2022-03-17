@@ -479,6 +479,59 @@ $gbx3StepsBreakpoint: 600px;
     padding: 0;
   }
 
+  .previewWrapper:hover {
+    .previewMenu.previewLoaded {
+      display: block;
+      opacity: 1;
+    }
+  }
+
+  .previewWrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    height: 250px;
+    width: 500px;
+    margin-top: 20px;
+  
+    .previewMenu {
+      display: block;
+      position: absolute;
+      top: 70px;
+      opacity: 0;
+      @include transition(opacity .25s);
+
+      button.link {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        .editGraphic {
+          margin-bottom: 10px;
+          @include purpleToSalmonOnly;
+        }
+        .editGraphic:hover {
+          opacity: .8;
+        }
+      }
+    }
+
+    .generatingPreview {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .previewImageOverlay {
+      position: relative;
+      height: 250px;
+      width: 250px;
+      overflow-x: hidden;
+      overflow-y: scroll;
+    }
+  
+  }
+
   .previewTitleContainer {
     margin: 20px 0;
 

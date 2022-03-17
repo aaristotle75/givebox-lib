@@ -4,6 +4,8 @@ import * as util from '../../common/utility';
 import * as types from '../../common/types';
 import Icon from '../../common/Icon';
 import Loader from '../../common/Loader';
+import Image from '../../common/Image';
+import GBLink from '../../common/GBLink';
 import HelpfulTip from '../../common/HelpfulTip';
 import {
   sendResource,
@@ -16,6 +18,9 @@ import { VscMegaphone } from 'react-icons/vsc';
 import ShareLinkCopy from '../share/ShareLinkCopy';
 import ShareLinkEdit from '../share/ShareLinkEdit';
 import Social from '../blocks/Social';
+import AnimateHeight from 'react-animate-height';
+
+const GBX3_URL = process.env.REACT_APP_ENV === 'local' ? process.env.REACT_APP_GBX_SHARE : process.env.REACT_APP_GBX_URL;
 
 class SignupShare extends React.Component {
 
@@ -27,19 +32,25 @@ class SignupShare extends React.Component {
     this.getArticle = this.getArticle.bind(this);
     this.state = {
       shareTypeSelected: props.defaultSelected || 'copy',
-      previewURL: null
+      previewURL: null,
+      previewLoading: false,
+      previewShareOpen: true
     };
   }
 
   componentDidMount() {
     this.getArticle();
     const articleID = this.props.articleID;
-    this.props.sendResource('gbxPreview', {
-      id: [articleID],
-      reload: true,
-      callback: (res, err) => {
-        console.log('execute gbxPreview -> ', res, err);
-      }
+    this.setState({ previewLoading: true }, () => {
+      this.props.sendResource('gbxPreview', {
+        id: [articleID],
+        reload: true,
+        isSending: false,
+        callback: (res, err) => {
+          const previewURL = util.getValue(res, 'imageURL');
+          this.setState({ previewURL, previewLoading: false })
+        }
+      });
     });
   }
 
@@ -218,14 +229,68 @@ class SignupShare extends React.Component {
 
   render() {
 
+    const {
+      previewURL,
+      previewLoading,
+      previewShareOpen
+    } = this.state;
+
     if (util.isLoading(this.props.article)) return <Loader msg='Loading Share...' />
 
+    const shareUrl = `${GBX3_URL}/${this.props.articleID}`;
+
     return (
-      <div className='createStep'>
-        <div style={{ paddingTop: 0, ...this.props.style }} className={`modalWrapper`}>
-          {this.renderShareList()}
-          {this.renderShareType()}
-        </div>
+      <div className='signupShareWrapper flexCenter flexColumn'>
+        <GBLink 
+          style={{ marginTop: 20, marginBottom: 20 }} 
+          onClick={() => this.setState({ previewShareOpen: previewShareOpen ? false : true })}
+        >
+          {previewShareOpen ?
+            previewLoading ?
+              <span>Generating preview we appreciate your patience while it loads...</span>
+            :
+              <span>You might as well share your fundraiser and get your first donation!</span>
+          :
+            <span>Click Here to Preview Your Fundraiser</span>
+          }
+        </GBLink>
+        <AnimateHeight height={previewShareOpen ? 'auto' : 0 }>
+          <div className='flexCenter flexColumn'>
+            <div className='createStep'>
+              <div style={{ paddingTop: 0, ...this.props.style }} className={`modalWrapper`}>
+                {this.renderShareList()}
+                {this.renderShareType()}
+                <div 
+                  className='previewWrapper' 
+                  style={{ 
+                    textAlign: 'center',
+                    height: 250,
+                    width: 500
+                }}>
+                  <div style={{ left: '-20px' }} className={`previewMenu ${!previewLoading ? 'previewLoaded' : '' }`}>
+                    <GBLink onClick={() => window.open(shareUrl)}>
+                      <span className='avatarLink editGraphic'>
+                        <span className='icon icon-eye'></span>
+                      </span>
+                      View Public Page
+                    </GBLink>
+                  </div>
+                  <div className='previewImageOverlay'>
+                    <Image url={previewURL} alt='Preview' maxSize='250px' />
+                  </div>
+                  <div style={{ right: '20px' }} className={`previewMenu ${!previewLoading ? 'previewLoaded' : '' }`}>
+                    <GBLink onClick={() => window.open(`${shareUrl}?admin`)}>
+                      <span className='avatarLink editGraphic'>
+                        <span className='icon icon-edit'></span>
+                      </span>
+                      Edit Form
+                    </GBLink>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </AnimateHeight>
       </div>
     )
   }

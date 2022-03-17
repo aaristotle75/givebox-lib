@@ -17,7 +17,6 @@ import * as _v from '../../form/formValidate';
 import GBLink from '../../common/GBLink';
 import Image from '../../common/Image';
 import Icon from '../../common/Icon';
-import AnimateHeight from 'react-animate-height';
 import {
   setOrgStyle,
   loadOrg,
@@ -78,8 +77,7 @@ class SignupStepsForm extends React.Component {
       requirePassword: false,
       previewLoaded: false,
       editPreview: false,
-      iframeHeight: 0,
-      previewShareOpen: true
+      iframeHeight: 0
     };
   }
 
@@ -818,7 +816,6 @@ class SignupStepsForm extends React.Component {
     const lastStep = step === this.props.steps ? true : false;
     const nextStepName = this.props.getNextStep();
     const nextStepNumber = this.props.nextStep(step) + 1;
-    const shareUrl = `${GBX3_URL}/${createdArticleID}`;
 
     const item = {
       title: stepConfig.title,
@@ -1127,22 +1124,13 @@ class SignupStepsForm extends React.Component {
           item.component =
             <div style={{ marginTop: 20 }} className='flexCenter flexColumn'>
               The next step is to connect your bank account where you will receive your money.
-              <GBLink style={{ marginTop: 20, marginBottom: 20 }} onClick={() => this.setState({ previewShareOpen: previewShareOpen ? false : true })}>Or click here to preview and share your fundraiser now and connect a bank later.</GBLink>
-              <AnimateHeight height={previewShareOpen ? 'auto' : 0 }>
-                <div className='flexCenter flexColumn'>
-                  <SignupShare 
-                    style={{
-                      marginBottom: 0,
-                      paddingBottom: 0
-                    }}
-                    showHelper={false} 
-                  />             
-                  <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                    <GBLink style={{ marginRight: 10 }} onClick={() => window.open(shareUrl)}>View Public Page</GBLink>    
-                    <GBLink style={{ marginLeft: 10 }} onClick={() => window.open(`${shareUrl}?admin`)}>Edit Fundraiser</GBLink> 
-                  </div>
-                </div>
-              </AnimateHeight> 
+              <SignupShare 
+                style={{
+                  marginBottom: 0,
+                  paddingBottom: 0
+                }}
+                showHelper={false} 
+              />              
             </div>
           ;
         }
