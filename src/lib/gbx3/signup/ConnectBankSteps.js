@@ -7,6 +7,8 @@ import * as _v from '../../form/formValidate';
 import GBLink from '../../common/GBLink';
 import Image from '../../common/Image';
 import Icon from '../../common/Icon';
+import Iframe from '../../common/Iframe';
+import ModalLink from '../../modal/ModalLink';
 import {
   setSignupStep,
   checkSignupPhase
@@ -28,6 +30,7 @@ import PlaidConnect from './connectBank/PlaidConnect';
 import ConnectStatus from './connectBank/ConnectStatus';
 import Moment from 'moment';
 import { MdCheckCircle } from 'react-icons/md';
+import AnimateHeight from 'react-animate-height';
 
 class ConnectBankStepsForm extends React.Component {
 
@@ -43,12 +46,14 @@ class ConnectBankStepsForm extends React.Component {
     this.checkConnectStatus = this.checkConnectStatus.bind(this);
     this.switchToConnectBank = this.switchToConnectBank.bind(this);
     this.switchToManualBank = this.switchToManualBank.bind(this);
+    this.plaidOverlayLink = this.plaidOverlayLink.bind(this);
 
     this.state = {
       editorOpen: false,
       error: false,
       saving: false,
-      loading: true
+      loading: true,
+      whyConnect: true
     };
   }
 
@@ -83,7 +88,6 @@ class ConnectBankStepsForm extends React.Component {
       });
     }
   }
-
 
   async switchToConnectBank() {
     const updated = await this.props.updateOrgSignup({ signupPhase: 'connectBank' });
@@ -266,9 +270,41 @@ class ConnectBankStepsForm extends React.Component {
     }
   }
 
+  plaidOverlayLink(options) {
+    const {
+      src,
+      title
+    } = options;
+
+    return (
+      <ModalLink
+        id='genericOverlay'
+        opts={{
+          content: () => {
+            return (
+              <Iframe
+                id={'plaidOverlayLink'}
+                src={src}
+                title={title}
+                scrolling={'yes'}
+                iframeStyle={{
+                  width: '100%',
+                  height: '700px'
+                }}
+              />            
+            )}
+        }}
+      >
+        {title}
+      </ModalLink>
+    )
+
+  }
+
   renderStep() {
     const {
-      loading
+      loading,
+      whyConnect
     } = this.state;
 
     const {
@@ -302,7 +338,8 @@ class ConnectBankStepsForm extends React.Component {
       component: <div></div>,
       className: '',
       saveButtonLabel: <span className='buttonAlignText'>Save & Continue</span>,
-      saveButtonDisabled: false
+      saveButtonDisabled: false,
+      customSaveButton: null
     };
 
     const phaseEnds = phaseEndsAt; // 1622719816
@@ -317,11 +354,76 @@ class ConnectBankStepsForm extends React.Component {
     switch (slug) {
       case 'connectBank': {
         item.saveButtonLabel = <span className='buttonAlignText'>Connect Bank Account</span>;
-        item.desc = 'Connect your bank account to continue to process and transfer money.';
+        item.desc = 'Your Merchant Processing Account Requires a Bank Account to Receive Money.';
         item.component =
-          <div className='fieldGroup'>
-            { hasReceivedTransaction ? <p>Congratulations, you have received your first transactions with Givebox!</p> : null }
-            { hasReceivedTransaction && phaseEndsAt ? <p style={{ fontWeight: 500, color: lastDay ? 'red' : null }}>{daysLeftDisplay}</p> : null }
+          <div>
+            <div className='fieldGroup'>
+              We highly recommend you connect with Plaid. 
+              Plaid is a secure service where you simply login to your bank account and connect it to Givebox. 
+              If you cannot find your bank account with Plaid then you will need to manually connect.
+            </div>
+            {hasReceivedTransaction ?
+              <div className='fieldGroup'>
+                { hasReceivedTransaction ? <span style={{ display: 'block' }}>Congratulations, you have received your first transactions with Givebox!</span> : null }
+                { hasReceivedTransaction && phaseEndsAt ? <span style={{ fontWeight: 500, color: lastDay ? 'red' : null }}>{daysLeftDisplay}</span> : null }
+              </div>
+            : null }
+            <div style={{ marginTop: 20 }} className='flexCenter'>
+              <GBLink onClick={() => this.setState({ whyConnect: whyConnect ? false : true })}>
+                { whyConnect ?
+                  <span>Why Do I have to Connect My Bank Account?</span>
+                :
+                  <span>Click Here to Find Out Why You Have to Connect Your Bank Account</span>
+                }
+              </GBLink>
+            </div>
+            <AnimateHeight height={whyConnect ? 'auto' : 0 }>
+              <div style={{ fontSize: 14, marginTop: 20 }}>
+                <div style={{ display: 'block', marginBottom: 20 }}>
+                  <span style={{ display: 'block', fontWeight: 500, fontSize: 16 }}>We Need to Know Where to Send Your Money</span>
+                  You need to connect a bank account to Givebox to be able to receive money.
+                </div>
+                <div style={{ display: 'block', marginBottom: 20 }}>
+                  <span style={{ display: 'block', fontWeight: 500, fontSize: 16 }}>Givebox's Legal Obligation to Verify Your Identity</span>
+                  <span>
+                    All US financial institutions such as banks, credit card issuers and transaction processors such as Givebox are required by law to verify the identity of the person 
+                    behind any and all Accounts into which money is collected.
+                  </span>
+                  <span style={{ display: 'block', marginTop: 5 }}>
+                    Verification mitigates money laundering and terrorist financing.  Givebox takes advantage of the fact that you had to prove to the bank you are who you say you are.  
+                    Therefore, by linking and confirming your bank account, the background work has already been done and Givebox has now met the legal requirements to protect you and themselves.
+                  </span>
+                </div> 
+                <div style={{ display: 'block',  marginBottom: 20 }}>
+                  <span style={{ display: 'block', fontWeight: 500, fontSize: 16 }}>Faster Verification using Plaid</span>
+                    When you connect with Plaid, we can verify you immediately, usually within minutes as long as the name on your bank account matches you Organization's name. 
+                    <ul style={{ marginTop: 10 }}>
+                      <li style={{ marginBottom: 2 }}>
+                        {this.plaidOverlayLink({ 
+                          src: 'https://plaid.com/trouble-connecting/',
+                          title: 'Click Here if You Are Having Trouble Connecting to Plaid.'
+                        })}
+                      </li>
+                      <li style={{ marginBottom: 2 }}>
+                        {this.plaidOverlayLink({ 
+                          src: 'https://plaid.com/why-is-plaid-involved/',
+                          title: 'Why Does Givebox Use Plaid?'
+                        })}
+                      </li>
+                      <li style={{ marginBottom: 2 }}>
+                        {this.plaidOverlayLink({ 
+                          src: 'https://plaid.com/how-it-works-for-consumers/',
+                          title: 'How Does Plaid Work?'
+                        })}
+                      </li>
+                    </ul>
+                </div>
+                <span style={{ display: 'block',  marginBottom: 0  }}>
+                  <span style={{ display: 'block', fontWeight: 500, fontSize: 16 }}>Manually Connecting a Bank Account</span>
+                  When you manually connect a bank account, you will need to provide additional documentation to verify your identity and the process can take a few days. 
+                </span>
+              </div>
+            </AnimateHeight>
           </div>
         ;
         break;
@@ -418,10 +520,15 @@ class ConnectBankStepsForm extends React.Component {
           </div>
           <div className='button-item'>
             { slug === 'connectBank' ?
-              <PlaidConnect
-                {...this.props}
-                checkConnectStatus={this.checkConnectStatus}
-              />
+              <div style={{ marginTop: 0, paddingTop: 0 }} className='button-group'>
+                <PlaidConnect
+                  {...this.props}
+                  checkConnectStatus={this.checkConnectStatus}
+                />
+                <GBLink className='button' onClick={this.switchToManualBank}>
+                  Manually Connect Bank Account
+                </GBLink>
+              </div>
             :
               this.props.saveButton(this.processForm, { group: slug, label: item.saveButtonLabel, disabled: item.saveButtonDisabled })
             }

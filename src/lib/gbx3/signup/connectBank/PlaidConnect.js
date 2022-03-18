@@ -99,7 +99,7 @@ class PlaidConnect extends React.Component {
     if (!linkToken && !hasPlaidToken) return <Loader msg='Getting Plaid Token...' />;
 
     const plaidButtonText =
-      <span className='buttonAlignText'>Add Bank Account</span>
+      <span className='buttonAlignText'>Expedite by Connecting with Plaid</span>
     ;
 
     return (

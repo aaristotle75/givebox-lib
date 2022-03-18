@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import ModalRoute from '../modal/ModalRoute';
 import Loadable from 'react-loadable';
 import Delete from '../common/Delete';
+import GenericOverlay from '../common/GenericOverlay';
 import StepsWrapper from './signup/StepsWrapper';
 
 export default class GBX3ModalRoutes extends Component {
@@ -196,6 +197,12 @@ export default class GBX3ModalRoutes extends Component {
           effect='scaleUp' style={{ width: '100%' }}
           component={(props) => this.loadComponent('./Launchpad', props)}
         />
+        <ModalRoute
+          className='gbx3'
+          id={'genericOverlay'}
+          effect='3DFlipVert' style={{ width: '80%' }}
+          component={(props) => <GenericOverlay {...props} /> }
+        />     
       </div>
     )
   }
