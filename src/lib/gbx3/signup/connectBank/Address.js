@@ -68,7 +68,7 @@ class Address extends React.Component {
           })}
           {this.props.textField('line1', {
             group,
-            fixedLabel: false,
+            fixedLabel: true,
             label: 'Street Address',
             placeholder: 'Type Street Address',
             value: line1,
@@ -84,7 +84,7 @@ class Address extends React.Component {
             <div className='part city'>
               {this.props.textField('city', {
                 group,
-                fixedLabel: false,
+                fixedLabel: true,
                 label: 'City',
                 placeholder: 'Type City',
                 value: city,
@@ -97,7 +97,7 @@ class Address extends React.Component {
                 dropdownClass: 'articleCardDropdown selectCategory',
                 direction: 'top',
                 fixedLabelHasValue: true,
-                fixedLabel: false,
+                fixedLabel: true,
                 label: 'State',
                 selectLabel: 'Choose State',
                 options: selectOptions.states,
@@ -111,7 +111,7 @@ class Address extends React.Component {
             <div className='part zip'>
               {this.props.textField('zip', {
                 group,
-                fixedLabel: false,
+                fixedLabel: true,
                 label: 'Zip',
                 placeholder: 'Type Zip',
                 maxLength: 5,

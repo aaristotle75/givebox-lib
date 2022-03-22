@@ -771,8 +771,7 @@ class SignupStepsForm extends React.Component {
       requirePassword,
       editPreview,
       previewLoaded,
-      iframeHeight,
-      previewShareOpen
+      iframeHeight
     } = this.state;
 
     const {

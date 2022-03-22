@@ -104,10 +104,10 @@ class MoneyRaised extends React.Component {
           const readyToCheckApproval = requiredSteps.every(c => completed.includes(c));
           const stepToOpen = readyToCheckApproval ? 'transferStatus' : 'identity';
           content.headerIcon = <Icon><AiOutlineBank /></Icon>;
-          content.headerText = 'Transfer Money Steps';
+          content.headerText = 'Enable Money Transfers';
           content.text =
             <div className='moneyRaisedTooltipContent'>
-              To transfer money we must verify identity and banking information.
+              To enable money transfers you must secure your account. We must verify your identity and banking information.
               <span style={{ marginTop: 10, display: 'block' }}>
                 After you verify your identity and banking information you will not have to do this again unless you add a new bank account.
               </span>
@@ -115,7 +115,7 @@ class MoneyRaised extends React.Component {
                 <GBLink className='button' onClick={() => {
                   this.openStep(stepToOpen, 'orgTransferSteps');
                 }}>
-                  Transfer Money Steps
+                  Secure Your Account Steps
                 </GBLink>
               </div>
             </div>

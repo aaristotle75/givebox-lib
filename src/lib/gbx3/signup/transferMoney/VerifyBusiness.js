@@ -45,7 +45,18 @@ class VerifyBusiness extends React.Component {
     return (
       <div className='fieldGroup'>
         <div className='flexCenter'>
-          <div className='stepsSubText' style={{ marginLeft: 0, marginRight: 0 }}><span className=''><span className='label'>Business/Nonprofit:</span> {name} {taxID}</span></div>
+          <div style={{ marginLeft: 0, marginRight: 0 }}>
+            <span><span className='gray'>Organization/Nonprofit:</span> {name} {taxID}</span>
+            <div className='gray' style={{ fontSize: 14, fontStyle: 'italic', marginLeft: 20, marginTop: 20, display: 'block' }}>
+              Please upload one of the following documents:
+            </div>
+            <div style={{ marginTop: 5, display: 'block' }}>
+              <span className='icon icon-check'></span> A non blurry photo of the IRS Letter issuing your Employer Identification Number (EIN/TaxID).
+            </div>
+            <div style={{ marginTop: 5, display: 'block' }}>
+              <span className='icon icon-check'></span> A non blurry photo of an IRS Tax Document showing your Organization Name and EIN/Tax ID.
+            </div>
+          </div>
         </div>
         <div className='flexCenter'>
           <UploadPrivate

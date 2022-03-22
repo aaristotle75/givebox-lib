@@ -80,10 +80,14 @@ class VerifyBank extends React.Component {
     return (
       <div className='fieldGroup'>
         <div className='flexCenter'>
-          <div className='stepsSubText' style={{ marginLeft: 0, marginRight: 0 }}>
-            <span><span className='label'>Bank Account:</span> {name} xxxxxx{last4}</span>
-            <span style={{ marginTop: 5, display: 'block' }}>Please upload non blurry photos of the bank statements. Scanned copies will not be accepted.</span>
-            {/* <ModalLink style={{ marginLeft: 0, marginRight: 0, marginTop: 5 }} className='link' id='voidCheckExample'>Click Here to See an Example of a Voided Check.</ModalLink> */}
+          <div style={{ marginLeft: 0, marginRight: 0 }}>
+            <span><span className='gray'>Connected Bank Account:</span> {name} xxxxxx{last4}</span>
+            <div style={{ marginTop: 20, display: 'block' }}>
+              <span className='icon icon-check'></span> Please upload non blurry photos of the bank statements. Scanned copies will not be accepted.
+            </div>
+            <div style={{ marginTop: 5, display: 'block' }}>
+              <span className='icon icon-check'></span> The name on the account, account number and address must be clearly displayed.
+            </div>
           </div>
         </div>
         <div className='flexCenter'>

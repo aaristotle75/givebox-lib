@@ -330,8 +330,8 @@ export function checkSignupPhase(options = {}) {
           dispatch(loadSignupPhase({
             phase: signupPhase,
             modalName: 'orgTransferSteps',
-            openAdmin: hasReceivedTransaction ? true : false,
-            openModal: hasReceivedTransaction ? true : false,
+            openAdmin: true,
+            openModal: true,
             ...options
           }));
         }

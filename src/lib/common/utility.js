@@ -3,6 +3,7 @@ import Moment from 'moment-timezone';
 import has from 'has';
 import animateScrollTo from 'animated-scroll-to';
 import ModalLink from '../modal/ModalLink';
+import Iframe from '../common/Iframe';
 import get from 'get-value';
 import sanitizeHtml from 'sanitize-html';
 
@@ -1236,4 +1237,38 @@ export function allImagesLoaded() {
     loaded = true;
   }
   return loaded;
+}
+
+overlayLink(options) {
+  const {
+    src,
+    title
+  } = options;
+
+  const style = {
+    width: '100%',
+    height: '700px',
+    ...util.getValue(options, 'style', {})
+  };
+
+  return (
+    <ModalLink
+      id='genericOverlay'
+      opts={{
+        content: () => {
+          return (
+            <Iframe
+              id={'overlayLink'}
+              src={src}
+              title={title}
+              scrolling={'yes'}
+              iframeStyle={style}
+            />            
+          )}
+      }}
+    >
+      {title}
+    </ModalLink>
+  )
+
 }

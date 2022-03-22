@@ -72,7 +72,7 @@ class Principal extends React.Component {
           {this.props.textField('firstName', {
             group,
             required: true,
-            fixedLabel: false,
+            fixedLabel: true,
             label: 'First Name',
             placeholder: 'Type First Name',
             value: firstName
@@ -82,7 +82,7 @@ class Principal extends React.Component {
           {this.props.textField('lastName', {
             group,
             required: true,
-            fixedLabel: false,
+            fixedLabel: true,
             label: 'Last Name',
             placeholder: 'Type Last Name',
             value: lastName
@@ -92,7 +92,7 @@ class Principal extends React.Component {
           {this.props.textField('emailAddress', {
             group,
             required: true,
-            fixedLabel: false,
+            fixedLabel: true,
             validate: 'email',
             label: 'Email',
             placeholder: 'Type Email',
@@ -103,7 +103,7 @@ class Principal extends React.Component {
           {this.props.textField('contactPhone', {
             group,
             placeholder: `Type Contact Phone Number`,
-            fixedLabel: false,
+            fixedLabel: true,
             label: 'Contact Phone',
             validate: 'phone',
             required: true,
@@ -114,7 +114,7 @@ class Principal extends React.Component {
           {this.props.textField('title', {
             group,
             placeholder: `Type Title (e.g. Executive Director)`,
-            fixedLabel: false,
+            fixedLabel: true,
             label: 'Title',
             value: title
           })}

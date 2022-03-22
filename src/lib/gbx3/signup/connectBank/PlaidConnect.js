@@ -53,6 +53,7 @@ class PlaidConnect extends React.Component {
           });
           this.props.formProp({ error: true, errorMsg: 'We are unable to connect your bank account. Please manually enter your information in the following steps.' });
         }
+        this.props.setMerchantApp('connectLoader', false);
         break;
       }
 
@@ -63,8 +64,6 @@ class PlaidConnect extends React.Component {
 
       // no default
     }
-    this.props.setMerchantApp('gettingInfoFromPlaid', false);
-    this.props.setMerchantApp('savingInfoFromPlaid', false);
   }
 
   alreadyHasPlaidToken() {
@@ -73,7 +72,6 @@ class PlaidConnect extends React.Component {
 
   async exitPlaid(token, metaData, test = false) {
     const status = util.getValue(metaData, 'status');
-    console.log('execute -> ', status, metaData);
     if (status === 'institution_not_found' || test) {
       const updated = await this.props.updateOrgSignup({ signupPhase: 'manualConnect' });
       if (updated) {
@@ -92,8 +90,7 @@ class PlaidConnect extends React.Component {
     const {
       linkToken,
       hasPlaidToken,
-      gettingInfoFromPlaid,
-      savingInfoFromPlaid
+      connectLoader
     } = this.props;
 
     if (!linkToken && !hasPlaidToken) return <Loader msg='Getting Plaid Token...' />;
@@ -105,7 +102,6 @@ class PlaidConnect extends React.Component {
     return (
       <div>
         {/* <GBLink onClick={() => this.exitPlaid(null, null, true)}>Test Manual</GBLink> */}
-        { gettingInfoFromPlaid || savingInfoFromPlaid ? <Loader msg={`${savingInfoFromPlaid ? 'Saving' : 'Getting'} info from Plaid`} /> : null }
         { hasPlaidToken ?
           <GBLink
             onClick={this.alreadyHasPlaidToken}
@@ -145,8 +141,7 @@ function mapStateToProps(state, props) {
 
   const hasPlaidToken = util.getValue(state, 'resource.gbx3Org.data.hasPlaidToken');
   const linkToken = util.getValue(state, 'merchantApp.plaid.linkToken', null);
-  const gettingInfoFromPlaid = util.getValue(state, 'merchantApp.gettingInfoFromPlaid', false);
-  const savingInfoFromPlaid = util.getValue(state, 'merchantApp.savingInfoFromPlaid', false);
+  const connectLoader = util.getValue(state, 'merchantApp.connectLoader', false);
   const merchantApp = util.getValue(state, 'merchantApp', {});
   const extractAuth = util.getValue(merchantApp, 'extractAuth', {});
   const extractIdentity = util.getValue(merchantApp, 'extractIdentity', {});
@@ -154,8 +149,7 @@ function mapStateToProps(state, props) {
   return {
     hasPlaidToken,
     linkToken,
-    gettingInfoFromPlaid,
-    savingInfoFromPlaid,
+    connectLoader,
     extractAuth,
     extractIdentity
   }

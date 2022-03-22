@@ -121,9 +121,9 @@ class BankAccount extends React.Component {
           {this.props.textField('name', {
             group,
             readOnly,
-            fixedLabel: false,
-            label: 'Name on Account',
-            placeholder: 'Type Name on Account',
+            fixedLabel: true,
+            label: 'Name on Bank Account',
+            placeholder: 'Type the Name on Bank Account',
             required: true,
             value: name
           })}
@@ -134,9 +134,9 @@ class BankAccount extends React.Component {
             readOnly,
             required: true,
             dropdownClass: 'articleCardDropdown',
-            fixedLabel: false,
-            label: `Account Type`,
-            selectLabel: `Choose Account Type`,
+            fixedLabel: true,
+            label: `Bank Account Type`,
+            selectLabel: `Choose Bank Account Type`,
             value: accountType,
             defaultValue: 'checking',
             options: [
@@ -150,9 +150,9 @@ class BankAccount extends React.Component {
           {this.props.textField('number', {
             group,
             readOnly,
-            fixedLabel: false,
-            label: 'Account Number',
-            placeholder: last4 ? `********${last4}` : 'Type Account Number',
+            fixedLabel: true,
+            label: 'Bank Account Number',
+            placeholder: last4 ? `********${last4}` : 'Type Bank Account Number',
             required: last4 ? false : true,
             meta: { last4 },
             maxLength: 32,
@@ -163,9 +163,9 @@ class BankAccount extends React.Component {
           {bankName ? <span className='green date'>{bankName}</span> : null}
           {this.props.textField('routingNumber', {
             group,
-            fixedLabel: false,
-            label: 'Routing Number',
-            placeholder: 'Type Routing Number',
+            fixedLabel: true,
+            label: 'Bank Routing Number',
+            placeholder: 'Type Bank Routing Number',
             required: true,
             value: routingNumber,
             maxLength: 9,

@@ -34,7 +34,7 @@ class SignupShare extends React.Component {
       shareTypeSelected: props.defaultSelected || 'copy',
       previewURL: null,
       previewLoading: false,
-      previewShareOpen: true
+      previewShareOpen: false
     };
   }
 

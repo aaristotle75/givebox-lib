@@ -101,8 +101,8 @@ const principal = {
 const legalEntity = {
   type: 'merchant',
   slug: 'legalEntity',
-  name: 'Business Info',
-  title: `Nonprofit/Business Information`,
+  name: 'Organization Info',
+  title: `Organization/Nonprofit Information`,
   customIcon: <Icon><MdBusiness /></Icon>,
   desc: ''
 };
@@ -111,7 +111,7 @@ const address = {
   type: 'merchant',
   slug: 'address',
   name: 'Address',
-  title: `Nonprofit/Business Address`,
+  title: `Organization/Nonprofit Address`,
   customIcon: <Icon><GoLocation /></Icon>,
   //customIcon: <Icon><TiBusinessCard /></Icon>,
   desc: ''
@@ -120,7 +120,7 @@ const address = {
 const connectStatus = {
   type: 'merchant',
   slug: 'connectStatus',
-  name: 'Bank Status',
+  name: 'Bank Connect Status',
   title: `Bank Account Connect Status`,
   customIcon: <Icon><FaConnectdevelop /></Icon>,
   desc: ''
@@ -147,10 +147,10 @@ const verifyBank = {
 const verifyBusiness = {
   type: 'merchant',
   slug: 'verifyBusiness',
-  name: 'Verify Business',
-  title: 'Verify Your Business',
+  name: 'Verify Organization',
+  title: 'Verify Your Organization',
   customIcon: <Icon><MdBusiness /></Icon>,
-  desc: 'We need to verify your Business.'
+  desc: 'We need to verify your Organization.'
 }
 
 const verifyWeb = {
@@ -158,8 +158,8 @@ const verifyWeb = {
   slug: 'verifyWeb',
   name: 'Website Address',
   icon: 'at-sign',
-  title: 'Business/Nonprofit Website Address',
-  desc: 'Add Your Website, Facebook, or Social Media Address'
+  title: 'Organization/Nonprofit Website Address',
+  desc: 'Add Your Website, Facebook, or Social Media URL (Link)'
 };
 
 const missionCountries = {
@@ -183,8 +183,8 @@ const protect = {
 const transferStatus = {
   type: 'merchant',
   slug: 'transferStatus',
-  name: 'Approval Status',
-  title: 'Transfer Approval Status',
+  name: 'Secure Account Status',
+  title: 'Secure Your Account Status',
   customIcon: <Icon><FaConnectdevelop /></Icon>,
   desc: ''
 }
@@ -274,12 +274,12 @@ export const signupPhase = {
     ]
   },
   transferMoney: {
-    menuHeader: 'Transfer Money Steps',
+    menuHeader: 'Secure Account Steps',
     modalName: 'orgTransferSteps',
     showStepNumber: true,
     stepsTodo: [
+      verifyBank,      
       identity,
-      verifyBank,
       verifyBusiness,
       verifyWeb,
       missionCountries,
@@ -287,8 +287,8 @@ export const signupPhase = {
       transferStatus
     ],
     requiredSteps: [
-      'identity',
       'verifyBank',
+      'identity',
       'verifyBusiness',
       'verifyWeb',
       'missionCountries',

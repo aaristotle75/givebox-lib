@@ -77,7 +77,18 @@ class Identity extends React.Component {
     return (
       <div className='fieldGroup'>
         <div className='flexCenter'>
-          <div className='stepsSubText' style={{ marginLeft: 0, marginRight: 0 }}><span className=''><span className='label'>Account Holder:</span> {firstName} {lastName}</span></div>
+          <div style={{ marginLeft: 0, marginRight: 0 }}>
+            <span><span className='gray'>Account Holder:</span> {firstName} {lastName}</span>
+            <div style={{ marginTop: 20, display: 'block' }}>
+              <span className='icon icon-check'></span> Please upload a non blurry photo of the ID. Scanned copies will not be accepted.
+            </div>
+            <div style={{ marginTop: 5, display: 'block' }}>
+              <span className='icon icon-check'></span>The ID can be either a Driver's License or U.S. Passport.
+            </div>
+            <div style={{ marginTop: 5, display: 'block' }}>
+              <span className='icon icon-check'></span>The persons full name, ID number and information must be clearly displayed.
+            </div>
+          </div> 
         </div>
         <div className='flexCenter'>
           <UploadPrivate

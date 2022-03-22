@@ -160,16 +160,17 @@ class TransferMoneyStepsForm extends React.Component {
           const underwritingStatus = util.getValue(res, 'underwritingStatus');
           const hasBankInfo = util.getValue(res, 'hasBankInfo');
           if (underwritingStatus === 'approved' && hasBankInfo) {
-            const updated = await this.props.updateOrgSignup({}, 'transferMoney');
-            this.setState({ checkingStatusDisableButton: false });
-            if (updated) this.saveStep('transferStatus');
+            if (!this.props.completedPhases.includes('transferMoney')) {
+              const updated = await this.props.updateOrgSignup({}, 'transferMoney');
+              this.setState({ checkingStatusDisableButton: false });
+              if (updated) this.saveStep('transferStatus');
+            }
+            this.setState({ saving: false, checkingStatusDisableButton: false });
           } else {
-            this.props.formProp({ error: true, errorMsg: 'Approval Status is under review. Please check back in the next 1-3 business days.' });
+            this.setState({ saving: false });
             setTimeout(() => {
-              this.props.formProp({ error: false });
               this.setState({ checkingStatusDisableButton: false });
             }, 10000)
-            this.setState({ saving: false });
           }
         }
       });
@@ -200,7 +201,7 @@ class TransferMoneyStepsForm extends React.Component {
       if (continueCallback) continueCallback();
       else this.saveStep(group, hasBeenUpdated ? 1000 : 0);
     } else {
-      if (!this.props.getErrors(err)) this.props.formProp({error: this.props.savingErrorMsg});
+      if (!this.props.getErrors(err)) this.props.formProp({error: true, errorMsg: this.props.savingErrorMsg});
       this.setState({ saving: false });
     }
     this.props.formProp({ updated: false });
@@ -337,7 +338,7 @@ class TransferMoneyStepsForm extends React.Component {
     switch (slug) {
       case 'identity': {
         item.saveButtonDisabled = !identityUploaded ? true : false;
-        item.desc = `Please upload a photo ID of the account holder. The ID can be either a Driver's License or U.S. Passport and must clearly display the persons full name, ID number and information.`;
+        item.desc = `Please upload a photo ID of the account holder.`;
 
         item.component =
           <Identity
@@ -350,7 +351,7 @@ class TransferMoneyStepsForm extends React.Component {
 
       case 'verifyBank': {
         item.saveButtonDisabled = !verifyBankUploaded ? true : false;
-        item.desc = 'Please upload a bank statement or voided check for your bank account. The name on the account, account number and address must be clearly displayed.';
+        item.desc = 'Please upload a bank statement of the account you connected to Givebox.';
         item.component =
           <VerifyBank
             {...this.props}
@@ -362,7 +363,7 @@ class TransferMoneyStepsForm extends React.Component {
 
       case 'verifyBusiness': {
         item.saveButtonDisabled = !verifyBusinessUploaded ? true : false;
-        item.desc = 'Please upload a copy of the IRS Letter issuing your Employer Identification Number (EIN/TaxID) or an IRS Tax Document showing your Business Name and EIN/Tax ID.';
+        item.desc = 'Please upload proof of the formation of your Organization.';
         item.component =
           <VerifyBusiness
             {...this.props}
@@ -392,7 +393,7 @@ class TransferMoneyStepsForm extends React.Component {
 
       case 'missionCountries': {
 
-        item.desc = 'Does your Business/Nonprofit service countries outside of the USA/Canada.';
+        item.desc = 'Does your Organization/Nonprofit service countries outside of the USA?';
 
         item.component =
           <div className='fieldGroup'>
@@ -436,16 +437,17 @@ class TransferMoneyStepsForm extends React.Component {
       case 'protect': {
         item.saveButtonDisabled = !is2FAVerified ? true : false;
         item.saveButtonLabel = <span className='buttonAlignText'>Continue to Next Step</span>;
-        item.desc = 'To protect your account we use two-factor authentication. Please enter a mobile number below and a verify code will be sent by text message.';
+        item.desc = 'To protect your account we use two-factor authentication.';
 
         item.component =
+          !is2FAVerified ?
           <TwoFA
             hideRadio={true}
             set2FAVerified={this.set2FAVerified}
             successCallback={() => {
               this.saveStep('protect', 1000);
             }}
-          />
+          /> : null
         ;
         break;
       }
@@ -458,45 +460,34 @@ class TransferMoneyStepsForm extends React.Component {
           'protect'
         ];
         const isCompleted = check.every((val) => this.props.completed.includes(val));
+        console.log('execute isCompleted -> ', isCompleted);
 
         item.saveButtonDisabled = isCompleted ? false : true;
         item.saveButtonDisabled = checkingStatusDisableButton ? true : item.saveButtonDisabled;
         item.saveButtonLabel = <span className='buttonAlignText'>{approvedForTransfers ? 'Manage Money' : 'Check Status'}</span>;
+        let secondaryDesc = 'You can still collect donations and raise money while you wait.';
 
         if (approvedForTransfers) {
-          item.desc =
-            <div className='primaryGradientText'>
-              <span style={{ fontWeight: 400, color: '#29eee6' }}>Congratulations, you are approved to transfer money!</span><br /><br />
-              Click the Manage Money button below to view your available balance and transfer money.
-            </div>
-          ;
+          item.desc = 'Your account is secure and you are enabled to transfer money!';
+          secondaryDesc = 'Click the Manage Money button below to view your available balance and transfer money.';
         } else if (isCompleted) {
-          item.desc =
-            <div>
-              <div className='primaryGradientText'>
-                We are reviewing your account. You should have transfer money approval status in the next 3-5 business days.
-              </div>
-              <p style={{ fontWeight: 400, color: '#29eee6' }}>Don't worry you are approved for processing and can continue to accept donations as you wait.</p>
-            </div>
-          ;
+          item.desc = 'We are reviewing your account. You should be enabled for money transfers in the next 3-5 business days.';
         } else {
-          item.desc =
-            <div>
-              <div className='primaryGradientText'>
-                You must complete all the previous steps to get approved to transfer money.
-              </div>
-              <p style={{ fontWeight: 400, color: '#29eee6' }}>Don't worry you are approved for processing and can continue to accept donations while you complete the transfer money steps.</p>
-            </div>
-          ;
+          item.desc = 'You must complete all the previous steps to secure your account and enable money transfers.';
         }
 
         item.component =
-          <TransferStatus
-            {...this.props}
-            isCompleted={isCompleted}
-            approvedForTransfers={approvedForTransfers}
-            completedPhases={completedPhases}
-          />
+          <div>
+            <div className='flexCenter'>
+              {secondaryDesc}
+            </div>
+            <TransferStatus
+              {...this.props}
+              isCompleted={isCompleted}
+              approvedForTransfers={approvedForTransfers}
+              completedPhases={completedPhases}
+            />
+          </div>
         ;
         break;
       }

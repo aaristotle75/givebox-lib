@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as util from '../../../common/utility';
 import { Alert } from '../../../common/Alert';
+import ConnectBankHelp from '../ConnectBankHelp';
+import SecureAccountHelp from '../SecureAccountHelp';
 
 class ConnectStatus extends React.Component {
 
@@ -30,29 +32,50 @@ class ConnectStatus extends React.Component {
       isVantivReady
     } = this.props;
 
-    let message = isVantivReady ? 'Please click "Check Connection Status" below to finish connecting your bank account.' : 'Please complete the previous steps to connect a bank account.';
-    if (merchantIdentString) {
-      message = 'Success! Your bank account is connected to Givebox.';
+    let message = 'Please complete the previous steps to connect a bank account.';
+    let componentMessage = '';
+    if (isVantivReady) {
+      message = 'Please click "Check Connection Status" below to finish connecting your bank account.'
+      componentMessage = '';
     }
 
-    return message;
+    if (merchantIdentString) {
+      message = 'Success! Your bank account is connected to Givebox.';
+      componentMessage = 'Your next step is to secure your account and prevent fraudulent access excaliber.';
+    }
+
+    return (
+      <div className='flexCenter flexColumn'>
+        <div className='stepTitle'>
+          {message}
+        </div>
+        { componentMessage ?
+          <div style={{ marginBottom: 0 }} className={`stepComponent`}>
+            <div className='flexCenter flexColumn'>
+              {componentMessage}
+            </div>
+          </div>
+        : null }
+      </div>
+    )
   }
 
   render() {
 
     const {
-      merchantIdentString,
-      legalEntityStatus,
-      legalEntityID,
-      isVantivReady
+      merchantIdentString
     } = this.props;
 
     return (
-      <div className='stepTitle'>
-        { merchantIdentString ?
-          <Alert alert='success' display={true} msg='Congratulations, you can continue to accept donations. Share your fundraiser to raise money!' />
-        : null }
+      <div>
         {this.getStatus()}
+        <div>
+          { merchantIdentString ? 
+            <SecureAccountHelp />
+          :
+            <ConnectBankHelp />
+          }
+        </div>        
       </div>
     )
   }

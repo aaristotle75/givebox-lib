@@ -375,7 +375,7 @@ export function accessToken(publicToken, metaData, options = {}) {
   };
 
   return async (dispatch) => {
-    dispatch(setMerchantApp('gettingInfoFromPlaid', true));
+    dispatch(setMerchantApp('connectLoader', true));
     const account_id = util.getValue(metaData, 'account_id');
     const bankName = util.getValue(metaData, 'institution.name');
     if (localStorage.getItem('account_id')) {
@@ -415,15 +415,15 @@ export function accessToken(publicToken, metaData, options = {}) {
       }
     } else {
       // Throw error stop checking
-      dispatch(setMerchantApp('gettingInfoFromPlaid', false));
+      dispatch(setMerchantApp('connectLoader', false));
     }
   }
 }
 
 export function getPlaidInfo(callback, bankAccountOnly = false) {
   return (dispatch, getState) => {
-    const gettingInfoFromPlaid = util.getValue(getState(), 'merchantApp.gettingInfoFromPlaid');
-    if (!gettingInfoFromPlaid) dispatch(setMerchantApp('gettingInfoFromPlaid', true));
+    const connectLoader = util.getValue(getState(), 'merchantApp.connectLoader');
+    if (!connectLoader) dispatch(setMerchantApp('connectLoader', true));
 
     const account_id = util.getValue(getState(), 'merchantApp.plaid.account_id', localStorage.getItem('account_id'));
     if (account_id) {
@@ -439,7 +439,7 @@ export function getPlaidInfo(callback, bankAccountOnly = false) {
                 if (!util.isEmpty(res)) {
                   const data = util.getValue(res, 'data', {});
                   dispatch(extractFromPlaidIdentity(account_id, data, callback, bankAccountOnly));
-                  dispatch(setMerchantApp('gettingInfoFromPlaid', false));
+                  //dispatch(setMerchantApp('connectLoader', false));
                 } else {
                   if (callback) callback('error');
                 }
@@ -452,7 +452,7 @@ export function getPlaidInfo(callback, bankAccountOnly = false) {
       }));
     } else {
       // Throw error stop checking
-      dispatch(setMerchantApp('gettingInfoFromPlaid', false));
+      dispatch(setMerchantApp('connectLoader', false));
       if (callback) callback('error');
     }
   }
@@ -565,9 +565,7 @@ function extractFromPlaidIdentity(account_id, data, callback, bankAccountOnly) {
 
 function savePlaidInfo(callback, bankAccountOnly) {
   return (dispatch, getState) => {
-    dispatch(setMerchantApp('gettingInfoFromPlaid', false));
-    dispatch(setMerchantApp('savingInfoFromPlaid', true));
-
+    //dispatch(setMerchantApp('connectLoader', true));
     const state = getState();
     const bankAccount = util.getValue(state, 'merchantApp.extractAuth.bankAccount', {});
     const nickname = util.getValue(state, 'merchantApp.extractIdentity.nickname');

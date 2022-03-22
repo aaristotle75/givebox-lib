@@ -92,7 +92,7 @@ class TwoFAClass extends Component {
 
     return (
       <div className='column'>
-        {this.props.textField('code', { required: true, maxLength: 6, placeholder: 'Type Verification Code', label: '', style: { paddingTop: 0, paddingBottom: 0 } })}
+        {this.props.textField('code', { required: true, maxLength: 6, placeholder: 'Type Verification Code', label: '', leftBar: true, style: { paddingTop: 0, paddingBottom: 0 } })}
         <div className='fieldContext' style={{ marginTop: 5 }}>
           Verification code is valid for up to 60 minutes.
         </div>
@@ -237,7 +237,10 @@ class TwoFA extends Component {
         {this.state.sending && this.props.loader('Sending Code...')}
         {this.state.codeSent ?
           <div>
-            <div className='stepsSubText' style={{ marginLeft: 0, marginRight: 0 }}>
+            <div style={{ marginBottom: 20 }} className='flexCenter'>
+              A verify code was sent to your mobile number. Please enter the code from the text message below.
+            </div>            
+            <div className='gray' style={{ marginLeft: 0, marginRight: 0 }}>
               <span style={{ display: 'block' }}>
                 Verification code was sent to: <span className='strong'>{mode === 'email' ? obfuscateEmail : obfuscatePhone }</span>
               </span>
@@ -254,6 +257,9 @@ class TwoFA extends Component {
           </div>
           :
           <div>
+            <div className='flexCenter'>
+              Please enter a mobile number below and a verify code will be sent by text message.
+            </div>
             <div className='modeSelection flexColumn'>
               { !hideRadio ?
                 <div className='2fa-radio-group'>
@@ -285,7 +291,7 @@ class TwoFA extends Component {
                 <TextField
                   name='phone'
                   label='Mobile Number'
-                  fixedLabel={false}
+                  fixedLabel={true}
                   placeholder='Type Mobile Number'
                   value={phone}
                   onChange={(e) => {

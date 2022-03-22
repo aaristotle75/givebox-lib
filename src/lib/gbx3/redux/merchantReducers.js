@@ -10,8 +10,7 @@ export function merchantApp(state = {
   principalLoading: false,
   addressLoading: false,
   underwritingDocsLoading: false,
-  gettingInfoFromPlaid: false,
-  savingInfoFromPlaid: false,
+  connectLoader: false,
   errorSavingPlaidInfo: false,
   plaid: {
     hasBeenUpdated: false,

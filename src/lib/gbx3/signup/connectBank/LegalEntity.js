@@ -69,7 +69,7 @@ class LegalEntity extends React.Component {
         })}
         {this.props.textField('websiteURL', {
           group,
-          fixedLabel: false,
+          fixedLabel: true,
           label: 'Website URL',
           placeholder: 'Type Website or Social Media URL',
           alidate: 'url',
@@ -80,7 +80,7 @@ class LegalEntity extends React.Component {
         })}
         {this.props.textField('annualCreditCardSalesVolume', {
           group,
-          fixedLabel: false,
+          fixedLabel: true,
           label: 'Estimated Annual Online Donations or Sales',
           placeholder: 'Type a Number',
           validate: 'money',
@@ -95,8 +95,8 @@ class LegalEntity extends React.Component {
         {this.props.textField('yearsInBusiness', {
           group,
           placeholder: 'Type a Number',
-          fixedLabel: false,
-          label: 'Age of Nonprofit/Business (In Years, Round Up)',
+          fixedLabel: true,
+          label: 'Age of Organization/Nonprofit (In Years, Round Up)',
           maxLength: 3,
           validate: 'number',
           validateOpts: {
@@ -109,8 +109,8 @@ class LegalEntity extends React.Component {
         {this.props.textField('contactPhone', {
           group,
           placeholder: `Type Phone Number`,
-          fixedLabel: false,
-          label: 'Business Contact Phone',
+          fixedLabel: true,
+          label: 'Organization Contact Phone',
           validate: 'phone',
           required: true,
           value: contactPhone ? _v.formatPhone(contactPhone) : ''
