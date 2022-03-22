@@ -37,7 +37,7 @@ class ConnectBankHelp extends React.Component {
              }
            </GBLink>
          </div>
-         <AnimateHeight height={whyConnect ? 'auto' : 0 }>
+         <AnimateHeight height={display ? 'auto' : 0 }>
            <div style={{ fontSize: 14, marginTop: 20 }}>
              <div style={{ display: 'block', marginBottom: 20 }}>
                <span style={{ display: 'block', fontWeight: 500, fontSize: 16 }}>We Need to Know Where to Send Your Money</span>

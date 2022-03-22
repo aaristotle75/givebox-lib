@@ -1239,7 +1239,7 @@ export function allImagesLoaded() {
   return loaded;
 }
 
-overlayLink(options) {
+export function overlayLink(options) {
   const {
     src,
     title
@@ -1248,7 +1248,7 @@ overlayLink(options) {
   const style = {
     width: '100%',
     height: '700px',
-    ...util.getValue(options, 'style', {})
+    ...getValue(options, 'style', {})
   };
 
   return (

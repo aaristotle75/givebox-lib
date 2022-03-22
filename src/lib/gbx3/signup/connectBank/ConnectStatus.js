@@ -41,7 +41,7 @@ class ConnectStatus extends React.Component {
 
     if (merchantIdentString) {
       message = 'Success! Your bank account is connected to Givebox.';
-      componentMessage = 'Your next step is to secure your account and prevent fraudulent access excaliber.';
+      componentMessage = 'Your next step is to secure your account and prevent fraudulent access.';
     }
 
     return (

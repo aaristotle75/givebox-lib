@@ -32,6 +32,7 @@ import {
 } from '../../api/actions';
 import AnimateHeight from 'react-animate-height';
 import { MdCheckCircle } from 'react-icons/md';
+import SecureAccountHelp from './SecureAccountHelp';
 
 class TransferMoneyStepsForm extends React.Component {
 
@@ -339,12 +340,28 @@ class TransferMoneyStepsForm extends React.Component {
       case 'identity': {
         item.saveButtonDisabled = !identityUploaded ? true : false;
         item.desc = `Please upload a photo ID of the account holder.`;
-
         item.component =
-          <Identity
-            {...this.props}
-            getDocument={this.getDocument}
-          />
+          <div>
+            <div style={{ marginBottom: 20 }} className='fieldGroup'>
+              <Identity
+                {...this.props}
+                getDocument={this.getDocument}
+              />
+            </div>
+            <SecureAccountHelp 
+              content={{
+                linkText: 'Why Do I have to Upload a Photo ID?',
+                title: 'A Photo ID Protects You Against Identity Theft',
+                text: 
+                  <span>
+                    When you upload a photo identification and the information matches the primary account holder, this protects you against identity theft.
+                    <span style={{ display: 'block', marginTop: 5 }}>
+                      We want to make sure you and not someone else created your Givebox account. 
+                    </span>
+                  </span>
+              }}
+            />           
+          </div>
         ;
         break;
       }
@@ -353,10 +370,27 @@ class TransferMoneyStepsForm extends React.Component {
         item.saveButtonDisabled = !verifyBankUploaded ? true : false;
         item.desc = 'Please upload a bank statement of the account you connected to Givebox.';
         item.component =
-          <VerifyBank
-            {...this.props}
-            getDocument={this.getDocument}
-          />
+          <div>
+            <div style={{ marginBottom: 20 }} className='fieldGroup'>
+              <VerifyBank
+                {...this.props}
+                getDocument={this.getDocument}
+              />
+            </div>
+            <SecureAccountHelp 
+              content={{
+                linkText: 'Why Do I have to Upload a Bank Statement?',
+                title: 'Your Bank Statement Verifies the Bank Account You Connected',
+                text: 
+                  <span>
+                    When you upload a photo of your bank statement and the information matches the bank account you connected to Givebox, this verifies a fraudulent account has not been added.
+                    <span style={{ display: 'block', marginTop: 5 }}>
+                      We want to make sure you receive the money you collected and not transferred to a fraudulent account. 
+                    </span>             
+                  </span>
+              }}
+            />           
+          </div>
         ;
         break;
       }
@@ -365,27 +399,56 @@ class TransferMoneyStepsForm extends React.Component {
         item.saveButtonDisabled = !verifyBusinessUploaded ? true : false;
         item.desc = 'Please upload proof of the formation of your Organization.';
         item.component =
-          <VerifyBusiness
-            {...this.props}
-            getDocument={this.getDocument}
-          />
+          <div>
+            <div style={{ marginBottom: 20 }} className='fieldGroup'>
+              <VerifyBusiness
+                {...this.props}
+                getDocument={this.getDocument}
+              />
+            </div>
+            <SecureAccountHelp 
+              content={{
+                linkText: 'Why Do I have to Upload Proof of Organization?',
+                title: 'Proof of Formation Protects Against Tax ID Highjacking',
+                text: 
+                  <span>
+                    Uploading proof of formation of your Organization protects you against someone else using your Tax ID to collect money.
+                    <span style={{ display: 'block', marginTop: 5 }}>
+                      We want to make sure your Tax ID was not highjacked by someone else for fraud.
+                    </span>
+                  </span>
+              }}
+            />           
+          </div>
         ;
         break;
       }
 
       case 'verifyWeb': {
         item.component =
-          <div className='fieldGroup'>
-            {this.props.textField('websiteURL', {
-              group: 'verifyWeb',
-              label: 'Website URL',
-              placeholder: 'Type Website or Social Media URL',
-              validate: 'url',
-              maxLength: 128,
-              value: websiteURL || '',
-              required: true,
-              leftBar: true
-            })}
+          <div>
+            <div style={{ marginBottom: 20 }} className='fieldGroup'>
+              {this.props.textField('websiteURL', {
+                group: 'verifyWeb',
+                label: 'Website URL',
+                placeholder: 'Type Website or Social Media URL',
+                validate: 'url',
+                maxLength: 128,
+                value: websiteURL || '',
+                required: true,
+                leftBar: true
+              })}
+            </div>
+            <SecureAccountHelp 
+              content={{
+                linkText: 'Why Do I have to Add a Website Link?',
+                title: 'Most Valid Organizations Have a Web Presence',
+                text: 
+                  <span>
+                    Having a public web presence can help verify the legitimacy of your Organization.
+                  </span>
+              }}
+            />           
           </div>
         ;
         break;
@@ -394,41 +457,53 @@ class TransferMoneyStepsForm extends React.Component {
       case 'missionCountries': {
 
         item.desc = 'Does your Organization/Nonprofit service countries outside of the USA?';
-
         item.component =
-          <div className='fieldGroup'>
-            <Dropdown
-              name='missionCountriesShow'
-              className='articleCard'
-              label={'Service countries outside the USA/Canada'}
-              fixedLabel={false}
-              fixedLabelHasValue={true}
-              defaultValue={missionCountriesShow}
-              onChange={(name, value) => {
-                const missionCountriesShow = parseInt(value);
-                if (missionCountriesShow === 2) this.props.fieldProp('missionCountries', { required: true, error: false });
-                else this.props.fieldProp('missionCountries', { required: false, error: false });
-                this.setState({ missionCountriesShow });
+          <div>
+            <div style={{ marginBottom: 20 }} className='fieldGroup'>
+              <Dropdown
+                name='missionCountriesShow'
+                className='articleCard'
+                label={'Service countries outside the USA/Canada'}
+                fixedLabel={false}
+                fixedLabelHasValue={true}
+                defaultValue={missionCountriesShow}
+                onChange={(name, value) => {
+                  const missionCountriesShow = parseInt(value);
+                  if (missionCountriesShow === 2) this.props.fieldProp('missionCountries', { required: true, error: false });
+                  else this.props.fieldProp('missionCountries', { required: false, error: false });
+                  this.setState({ missionCountriesShow });
+                }}
+                options={[
+                  { primaryText: 'No', value: 1 },
+                  { primaryText: 'Yes', value: 2 }
+                ]}
+                showCloseBtn={false}
+                leftBar={true}
+              />
+              <AnimateHeight height={missionCountriesShow === 2 || missionCountries ? 'auto' : 0}>
+                {this.props.richText('missionCountries', {
+                  group: 'missionCountries',
+                  required: missionCountriesShow === 2 ? true : false,
+                  fixedLabel: false,
+                  label: 'Countries Serviced Outside USA/Canada',
+                  placeholder: 'Type the countries your Business/Nonprofit services that are outside the USA/Canada.',
+                  wysiwyg: false,
+                  autoFocus: false,
+                  value: missionCountries
+                })}
+              </AnimateHeight>
+            </div>
+            <SecureAccountHelp 
+              content={{
+                linkText: 'Why Are You Asking Me About Using Funds Outside the USA?',
+                title: `Givebox's Legal Obligation To Protect Against the Funding of Terrorist Organizations`,
+                text: 
+                  <span>
+                    All US financial institutions such as banks, credit card issuers and transaction processors such as Givebox are required by law to 
+                    know where funds are being used outside the USA behind any and all Accounts into which money is collected.      
+                 </span>
               }}
-              options={[
-                { primaryText: 'No', value: 1 },
-                { primaryText: 'Yes', value: 2 }
-              ]}
-              showCloseBtn={false}
-              leftBar={true}
             />
-            <AnimateHeight height={missionCountriesShow === 2 || missionCountries ? 'auto' : 0}>
-              {this.props.richText('missionCountries', {
-                group: 'missionCountries',
-                required: missionCountriesShow === 2 ? true : false,
-                fixedLabel: false,
-                label: 'Countries Serviced Outside USA/Canada',
-                placeholder: 'Type the countries your Business/Nonprofit services that are outside the USA/Canada.',
-                wysiwyg: false,
-                autoFocus: false,
-                value: missionCountries
-              })}
-            </AnimateHeight>
           </div>
         ;
         break;
@@ -438,16 +513,32 @@ class TransferMoneyStepsForm extends React.Component {
         item.saveButtonDisabled = !is2FAVerified ? true : false;
         item.saveButtonLabel = <span className='buttonAlignText'>Continue to Next Step</span>;
         item.desc = 'To protect your account we use two-factor authentication.';
-
         item.component =
           !is2FAVerified ?
-          <TwoFA
-            hideRadio={true}
-            set2FAVerified={this.set2FAVerified}
-            successCallback={() => {
-              this.saveStep('protect', 1000);
-            }}
-          /> : null
+          <div>
+            <div style={{ marginBottom: 0 }} className='fieldGroup'>
+              <TwoFA
+                hideRadio={true}
+                set2FAVerified={this.set2FAVerified}
+                successCallback={() => {
+                  this.saveStep('protect', 1000);
+                }}
+              />
+            </div>
+            <div style={{ marginTop: 30 }}>
+              <SecureAccountHelp 
+                content={{
+                  linkText: 'Why Do I Need Two Factor Authentication?',
+                  title: 'Two Factor Authentication Protects Your Account From Fraudulent Access',
+                  text: 
+                    <span>
+                      Using two factor authentication with your mobile number prevents a fraudulent user from accessing your account.
+                    </span>
+                }}
+              />
+            </div>          
+          </div>
+          : null 
         ;
         break;
       }
