@@ -102,8 +102,12 @@ class ConnectBankStepsForm extends React.Component {
     const {
       signupStep,
       signupPhase,
-      completed
+      completed,
+      isVantivReady,
+      connectLoader
     } = this.props;
+
+    if (!connectLoader && isVantivReady) this.props.setMerchantApp('connectLoader', true);
 
     this.setState({ saving: false }, () => {
       this.props.checkSubmitMerchantApp({
@@ -115,7 +119,7 @@ class ConnectBankStepsForm extends React.Component {
             if (signupPhase !== 'manualConnect') this.switchToManualBank();
             this.props.formProp({ error: true, errorMsg: <span>We are unable to connect your bank account. Please manually connect a bank account and check that all your information is correct and try again in a few minutes.<br />{util.getValue(err, 'data.message', '')}</span> });
           }
-          this.props.setMerchantApp('connectLoader', false);     
+          this.props.setMerchantApp('connectLoader', false);
         }
       });
     });
@@ -518,7 +522,7 @@ class ConnectBankStepsForm extends React.Component {
           <div className='rightSide' style={{ width: 150 }}>
             { signupPhase === 'manualConnect' && !this.props.completed.includes('connectStatus') ?
               <GBLink onClick={this.switchToConnectBank}>
-                <span className='buttonAlignText'>Expedite by Connecting with Plaid<span className='icon icon-chevron-right'></span></span>
+                <span className='buttonAlignText'>Quick Connect with Plaid<span className='icon icon-chevron-right'></span></span>
               </GBLink>
             : null }
           </div>

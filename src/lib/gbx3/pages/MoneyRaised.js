@@ -107,15 +107,12 @@ class MoneyRaised extends React.Component {
           content.headerText = 'Enable Money Transfers';
           content.text =
             <div className='moneyRaisedTooltipContent'>
-              To enable money transfers you must secure your account. We must verify your identity and banking information.
-              <span style={{ marginTop: 10, display: 'block' }}>
-                After you verify your identity and banking information you will not have to do this again unless you add a new bank account.
-              </span>
+              To enable money transfers you must secure your account.
               <div className='button-group flexCenter'>
                 <GBLink className='button' onClick={() => {
                   this.openStep(stepToOpen, 'orgTransferSteps');
                 }}>
-                  Secure Your Account Steps
+                  Secure Your Account
                 </GBLink>
               </div>
             </div>

@@ -121,7 +121,10 @@ class Form extends Component {
       clearTimeout(this.formSavedTimeout);
       this.formSavedTimeout = null;
     }
-    window.removeEventListener('keyup', this.onEnterKeypress);
+    window.removeEventListener('keyup', this.onEnterKeypress);    
+    this.setState = (state, callback) => {
+      return;
+    }
   }
 
   focusInput(ref) {

@@ -20,12 +20,11 @@ class TransferStatus extends React.Component {
   async componentDidMount() {
     const {
       approvedForTransfers,
-      completedPhases
+      completed
     } = this.props;
 
-    if (approvedForTransfers && !completedPhases.includes('transferMoney')) {
-      const updated = await this.props.updateOrgSignup({}, 'transferMoney');
-      if (updated) this.props.stepCompleted('transferStatus', true);
+    if (approvedForTransfers && !completed.includes('transferStatus')) {
+      this.props.stepCompleted('transferStatus');
     }
   }
 

@@ -34,11 +34,7 @@ class SecureAccountHelp extends React.Component {
       <>
          <div style={{ marginTop: 20 }} className='flexCenter'>
            <GBLink onClick={() => this.setState({ display: display ? false : true })}>
-             { display ?
-               <span>{util.getValue(content, 'linkText', 'Why Do I have to Secure My Account?')}</span>
-             :
-               <span>{util.getValue(content, 'linkText', 'Click Here to Find Out Why You Have to Secure Your Account to Prevent Fraud')}</span>
-             }
+              <span>{util.getValue(content, 'linkText', 'Why Do I have to Secure My Account?')}</span>
            </GBLink>
          </div>
          <AnimateHeight height={display ? 'auto' : 0 }>
@@ -65,14 +61,14 @@ class SecureAccountHelp extends React.Component {
                </span>
               </div>
               <div style={{ display: 'block', marginBottom: 20 }}>
-                <span style={{ display: 'block', fontWeight: 500, fontSize: 16 }}>Other Sites Do Not Make Me Do This</span>
+                <span style={{ display: 'block', fontWeight: 500, fontSize: 16 }}>Beware of Other Sites That Do Not Make You Do This</span>
                 <span>
                   If you use other websites that do not require you to secure your account,
                   you are being exposed to an extremely high risk of fraud and inevitable identity theft.
                </span>
                <span style={{ display: 'block', marginTop: 5 }}>
                  Any legimiate service used to collect and transfer money, whether it is Stripe, Paypal, Square, or Givebox, 
-                 you are going to be required to secure your account and provide verifying information and documented proof.
+                 is going to be require you to secure your account and provide verifying information and documented proof.
                  In short, If you want to raise money online and avoid being scammed, you are going to need to do the same steps anywhere. 
                </span>
               </div>            

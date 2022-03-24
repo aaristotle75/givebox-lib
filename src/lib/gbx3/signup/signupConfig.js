@@ -10,10 +10,10 @@ import { RiExchangeFundsLine } from 'react-icons/ri';
 const orgName = {
   type: 'org',
   slug: 'orgName',
-  name: 'Organization Details',
-  title: 'Organization Details',
+  name: 'Start Here',
+  title: 'Start Here',
   icon: 'star',
-  desc: 'Welcome to Givebox! Raise money in a few short steps.'
+  desc: 'Welcome to Givebox! Start a fundraiser and raise money in a few short steps.'
 };
 
 const mission = {
@@ -221,7 +221,7 @@ export const orgSignupFields = {
 
 export const signupPhase = {
   signup: {
-    menuHeader: 'Create Fundraiser Steps',
+    menuHeader: 'Start a Fundraiser',
     modalName: 'orgSignupSteps',
     showStepNumber: true,
     stepsTodo: [
@@ -240,7 +240,7 @@ export const signupPhase = {
    ]
   },
   postSignup: {
-    menuHeader: 'Raise Money Steps',
+    menuHeader: 'Raise Money',
     modalName: 'orgPostSignupSteps',
     showStepNumber: true,
     stepsTodo: [
@@ -253,7 +253,7 @@ export const signupPhase = {
    ],
   },
   connectBank: {
-    menuHeader: 'Connect Bank Steps',
+    menuHeader: 'Connect a Bank',
     modalName: 'orgConnectBankSteps',
     showStepNumber: true,
     stepsTodo: [
@@ -262,7 +262,7 @@ export const signupPhase = {
     ]
   },
   manualConnect: {
-    menuHeader: 'Add Bank Steps',
+    menuHeader: 'Connect a Bank',
     modalName: 'orgConnectBankSteps',
     showStepNumber: true,
     stepsTodo: [
@@ -274,7 +274,7 @@ export const signupPhase = {
     ]
   },
   transferMoney: {
-    menuHeader: 'Secure Account Steps',
+    menuHeader: 'Secure Your Account',
     modalName: 'orgTransferSteps',
     showStepNumber: true,
     stepsTodo: [

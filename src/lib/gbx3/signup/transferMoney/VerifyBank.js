@@ -7,6 +7,7 @@ import GBLink from '../../../common/GBLink';
 import HelpfulTip from '../../../common/HelpfulTip';
 import UploadPrivate from '../../../form/UploadPrivate';
 import ModalLink from '../../../modal/ModalLink';
+import SecureAccountHelp from '../SecureAccountHelp';
 
 class VerifyBank extends React.Component {
 
@@ -53,7 +54,7 @@ class VerifyBank extends React.Component {
       callback: (res, err) => {
         if (err) this.props.formProp({error: 'Error updating bank account.'});
         else {
-          this.props.getDocument('verifyBank', false);
+          this.props.getDocument('verifyBank', false, true);
         }
       },
       reload: true,

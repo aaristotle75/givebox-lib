@@ -62,7 +62,7 @@ class CreateAccount extends React.Component {
           {this.props.textField('firstName', {
             group,
             required: true,
-            fixedLabel: false,
+            fixedLabel: true,
             label: 'First Name',
             placeholder: 'Type First Name',
             value: firstName,
@@ -77,7 +77,7 @@ class CreateAccount extends React.Component {
           {this.props.textField('lastName', {
             group,
             required: true,
-            fixedLabel: false,
+            fixedLabel: true,
             label: 'Last Name',
             placeholder: 'Type Last Name',
             value: lastName,
@@ -92,7 +92,7 @@ class CreateAccount extends React.Component {
           {this.props.textField('email', {
             group,
             required: true,
-            fixedLabel: false,
+            fixedLabel: true,
             validate: 'email',
             label: 'Email',
             placeholder: 'Type Email Address',
@@ -127,7 +127,7 @@ class CreateAccount extends React.Component {
               contentWidth={400}
               label={'Givebox'}
               selectLabel='Select Free Account'
-              fixedLabel={false}
+              fixedLabel={true}
               fixedLabelHasValue={true}
               required={false}
               onChange={(name, value) => {

@@ -21,7 +21,7 @@ class ModalRoute extends Component {
   componentDidMount() {
     window.addEventListener('message', this.receiveMessage, false);
   }
-
+  
   async receiveMessage(e) {
     if (e.data === this.props.id) {
       if (this.props.opened) {

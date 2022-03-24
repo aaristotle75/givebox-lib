@@ -40,6 +40,7 @@ import {
 } from '../redux/gbx3defaults';
 import { MdCheckCircle } from 'react-icons/md';
 import SignupShare from './SignupShare';
+import SignupStepsHelp from './SignupStepsHelp';
 
 const defaultReceiptTemplate = require('html-loader!../admin/receipt/receiptEmailDefaultContent.html');
 const GBX3_URL = process.env.REACT_APP_ENV === 'local' ? process.env.REACT_APP_GBX_SHARE : process.env.REACT_APP_GBX_URL;
@@ -837,164 +838,216 @@ class SignupStepsForm extends React.Component {
       case 'orgName': {
         item.desc = affiliateID ?
           <div className='center'>
-            Thank you for using the promo link and welcome to Givebox! <br />Raise more money in a few short steps.
+            Thank you for using the promo link and welcome to Givebox! <br />Start a fundraiser and raise money in a few short steps.
           </div>
         : item.desc;
 
         item.component =
-          <div className='fieldGroup'>
-            <div className='column50'>
-              {this.props.textField('orgName', {
-                group: slug,
-                fixedLabel: false,
-                label: 'Organization Name',
-                placeholder: `Type Organization Name`,
-                maxLength: 128,
-                count: true,
-                required: true,
-                value: orgName,
-                onBlur: (name, value) => {
-                  if (value) {
-                    this.props.updateOrgSignupField('org', { name: value });
-                  }
-                }
-              })}
+          <>
+            <div className='flexCenter flexColumn'>
+              Starting a fundraiser and using Givebox is FREE. We will not ask you for a credit card.
             </div>
-            <div className='column50'>
-              {this.props.textField('taxID', {
-                group: slug,
-                fixedLabel: false,
-                label: 'U.S. Federal Tax ID',
-                placeholder: `Type Tax ID`,
-                required: true,
-                value: taxID,
-                validate: 'taxID',
-                onBlur: (name, value) => {
-                  if (value) {
-                    this.props.updateOrgSignupField('org', { taxID: value });
-                  }
-                }
-              })}
-            </div>
-            <div className='column50'>
-              <Dropdown
-                name='categoryID'
-                portalID={`category-dropdown-portal-${slug}`}
-                portalClass={'gbx3 articleCardDropdown selectCategory gbx3Steps'}
-                portalLeftOffset={10}
-                className='articleCard'
-                contentWidth={400}
-                label={'Organization Category'}
-                selectLabel='Choose an Organization Category'
-                fixedLabel={false}
-                fixedLabelHasValue={true}
-                required={true}
-                onChange={(name, value) => {
-                  this.setState({ categoryIDError: false });
-                  this.props.updateOrgSignupField('org', { categoryID: +value });
+            <div style={{ marginBottom: 20 }} className='fieldGroup'>
+              <SignupStepsHelp
+                content={{
+                  linkText: 'Why Do I Have to Enter a Tax ID?',
+                  title: 'You Need a Tax ID to Collect Money',
+                  text: 
+                    <span>
+                      To be able to accept donations and collect money from others you are required by law to have a federally issued tax ID.
+                      If you are a 501c_ Organization you may be tax exempt, however you still need to declare money raised on your 990.
+                      <span style={{ display: 'block', marginTop: 5 }}>
+                        Currently Givebox only supports a U.S. Federal Tax ID. We plan to expand to Canada, Mexico and internationally in the near future.
+                      </span>
+                    </span>
                 }}
-                options={this.categories()}
-                showCloseBtn={true}
-                error={this.state.categoryIDError}
-                value={categoryID}
-                leftBar={true}
               />
             </div>
-          </div>
+            <div className='fieldGroup'>
+              <div className='column50'>
+                {this.props.textField('orgName', {
+                  group: slug,
+                  fixedLabel: true,
+                  label: 'Organization Name',
+                  placeholder: `Type Organization Name`,
+                  maxLength: 128,
+                  count: true,
+                  required: true,
+                  value: orgName,
+                  onBlur: (name, value) => {
+                    if (value) {
+                      this.props.updateOrgSignupField('org', { name: value });
+                    }
+                  }
+                })}
+              </div>
+              <div className='column50'>
+                {this.props.textField('taxID', {
+                  group: slug,
+                  fixedLabel: true,
+                  label: 'U.S. Federal Tax ID',
+                  placeholder: `Type Tax ID`,
+                  required: true,
+                  value: taxID,
+                  validate: 'taxID',
+                  onBlur: (name, value) => {
+                    if (value) {
+                      this.props.updateOrgSignupField('org', { taxID: value });
+                    }
+                  }
+                })}
+              </div>
+              <div className='column50'>
+                <Dropdown
+                  name='categoryID'
+                  portalID={`category-dropdown-portal-${slug}`}
+                  portalClass={'gbx3 articleCardDropdown selectCategory gbx3Steps'}
+                  portalLeftOffset={10}
+                  className='articleCard'
+                  contentWidth={400}
+                  label={'Organization Category'}
+                  selectLabel='Choose an Organization Category'
+                  fixedLabel={true}
+                  fixedLabelHasValue={true}
+                  required={true}
+                  onChange={(name, value) => {
+                    this.setState({ categoryIDError: false });
+                    this.props.updateOrgSignupField('org', { categoryID: +value });
+                  }}
+                  options={this.categories()}
+                  showCloseBtn={true}
+                  error={this.state.categoryIDError}
+                  value={categoryID}
+                  leftBar={true}
+                />
+              </div>
+            </div>
+          </>
         break;
       }
 
       case 'mission': {
         item.className = 'missionStep';
         item.component =
-          <div className='fieldGroup'>
-            <MediaLibrary
-              image={orgLogo}
-              preview={orgLogo}
-              quickUpload={true}
-              singlePreview={true}
-              removePreview={() => {
-                console.log('execute removePreview');
-              }}
-              handleSaveCallback={(url) => this.handleMediaSaveCallback(url, 'org', 'imageURL', slug)}
-              handleSave={util.handleFile}
-              library={library}
-              showBtns={'hide'}
-              saveLabel={'close'}
-              mobile={isMobile ? true : false }
-              uploadOnly={true}
-              uploadEditorSaveStyle={{ width: 250 }}
-              uploadEditorSaveLabel={'Click Here to Use Image'}
-              imageEditorOpenCallback={(editorOpen) => {
-                this.setState({ editorOpen })
-              }}
-              editorResizerStyle={{ marginTop: -150 }}
-            />
-            {this.props.richText('mission', {
-              name: 'mission',
-              group: slug,
-              style: { paddingTop: 20 },
-              placeholder:
-              <div>
-                Type About Your Organization, Mission or Purpose
-              </div>,
-              fixedLabel: false,
-              label: 'About Your Organization, Mission or Purpose',
-              wysiwyg: false,
-              autoFocus: false,
-              value: mission,
-              required: true,
-              onBlur: (name, content, hasText) => {
-                if (hasText) {
-                  this.props.updateOrgSignupField('org', { mission: content });
+          <>
+            <div style={{ marginBottom: 20 }} className='fieldGroup'>
+              <SignupStepsHelp
+                content={{
+                  linkText: 'Why Do I Have to Upload a Logo?',
+                  title: 'A Logo Identifies the Fundraiser as Belonging to Your Organization',
+                  text: 
+                    <span>
+                      You can skip uploading a logo and add one later. However, we strongly encourage you to upload a logo 
+                      now because it gives confidence to your audience that the fundraiser belongs to your Organization.
+                    </span>
+                }}
+              />
+            </div>
+            <div className='fieldGroup'>
+              <MediaLibrary
+                image={orgLogo}
+                preview={orgLogo}
+                quickUpload={true}
+                singlePreview={true}
+                removePreview={() => {
+                  console.log('execute removePreview');
+                }}
+                handleSaveCallback={(url) => this.handleMediaSaveCallback(url, 'org', 'imageURL', slug)}
+                handleSave={util.handleFile}
+                library={library}
+                showBtns={'hide'}
+                saveLabel={'close'}
+                mobile={isMobile ? true : false }
+                uploadOnly={true}
+                uploadEditorSaveStyle={{ width: 250 }}
+                uploadEditorSaveLabel={'Click Here to Use Image'}
+                imageEditorOpenCallback={(editorOpen) => {
+                  this.setState({ editorOpen })
+                }}
+                editorResizerStyle={{ marginTop: -150 }}
+              />
+              {this.props.richText('mission', {
+                name: 'mission',
+                group: slug,
+                style: { paddingTop: 20 },
+                placeholder:
+                <div>
+                  Type About Your Organization, Mission or Purpose
+                </div>,
+                fixedLabel: false,
+                label: 'About Your Organization, Mission or Purpose',
+                wysiwyg: false,
+                autoFocus: false,
+                value: mission,
+                required: true,
+                onBlur: (name, content, hasText) => {
+                  if (hasText) {
+                    this.props.updateOrgSignupField('org', { mission: content });
+                  }
                 }
-              }
-            })}
-          </div>
+              })}
+            </div>
+          </>
         ;
         break;
       }
 
       case 'title': {
         item.component =
-          <div className='fieldGroup'>
-            <MediaLibrary
-              image={imageURL}
-              preview={imageURL}
-              quickUpload={true}
-              singlePreview={true}
-              handleSaveCallback={(url) => {
-                this.setState({ mediaTypeError: null });
-                this.handleMediaSaveCallback(url, 'gbx3', 'imageURL', slug);
-              }}
-              handleSave={util.handleFile}
-              library={library}
-              showBtns={'hide'}
-              saveLabel={'close'}
-              mobile={isMobile ? true : false }
-              uploadOnly={true}
-              imageEditorOpenCallback={(editorOpen) => {
-                this.setState({ editorOpen })
-              }}
-              formError={mediaTypeError === 'image' ? true : false}
-              editorResizerStyle={{ marginTop: -150 }}
-            />
-            {this.props.textField('title', {
-              group: slug,
-              style: { paddingTop: 20 },
-              label: 'Fundraiser Title',
-              placeholder: 'Type Fundraiser Title',
-              maxLength: 128,
-              count: true,
-              required: true,
-              value: title,
-              onBlur: (name, value) => {
-                if (value) {
-                  this.props.updateOrgSignupField('gbx3', { title: value });
+          <>
+            <div style={{ marginBottom: 20 }} className='fieldGroup'>
+              <SignupStepsHelp
+                content={{
+                  linkText: 'Why Do I Have to Upload an Image?',
+                  title: 'An Image Greatly Enhances Your Fundraisers Appeal',
+                  text: 
+                    <span>
+                      You can skip uploading an image and add one later. However, we strongly encourage you to upload an image 
+                      now because it greatly enhances your fundraisers appeal.
+                    </span>
+                }}
+              />
+            </div>          
+            <div className='fieldGroup'>
+              <MediaLibrary
+                image={imageURL}
+                preview={imageURL}
+                quickUpload={true}
+                singlePreview={true}
+                handleSaveCallback={(url) => {
+                  this.setState({ mediaTypeError: null });
+                  this.handleMediaSaveCallback(url, 'gbx3', 'imageURL', slug);
+                }}
+                handleSave={util.handleFile}
+                library={library}
+                showBtns={'hide'}
+                saveLabel={'close'}
+                mobile={isMobile ? true : false }
+                uploadOnly={true}
+                imageEditorOpenCallback={(editorOpen) => {
+                  this.setState({ editorOpen })
+                }}
+                formError={mediaTypeError === 'image' ? true : false}
+                editorResizerStyle={{ marginTop: -150 }}
+              />
+              {this.props.textField('title', {
+                group: slug,
+                style: { paddingTop: 20 },
+                fixedLabel: true,
+                label: 'Fundraiser Title',
+                placeholder: 'Type Fundraiser Title',
+                maxLength: 128,
+                count: true,
+                required: true,
+                value: title,
+                onBlur: (name, value) => {
+                  if (value) {
+                    this.props.updateOrgSignupField('gbx3', { title: value });
+                  }
                 }
-              }
-            })}
-          </div>
+              })}
+          </div>     
+          </>
         ;
         break;
       }
@@ -1091,16 +1144,36 @@ class SignupStepsForm extends React.Component {
           item.saveButtonLabel = <span className='buttonAlignText'>Create Account & Continue <span className='icon icon-chevron-right'></span></span>;
           item.saveButtonLabelTop = item.saveButtonLabel;
           item.component =
-            <CreateAccount
-              {...this.props}
-              group={slug}
-              owner={owner}
-              setRequirePassword={this.setRequirePassword}
-              requirePassword={requirePassword}
-              acceptedTerms={acceptedTerms}
-              updateOrgSignupField={this.props.updateOrgSignupField}
-              updateOrgSignup={this.props.updateOrgSignup}
-            />
+            <>
+              <div className='flexCenter'>
+                After you create your free account you will be able to share your fundraiser.
+              </div>
+              <div style={{ marginBottom: 20 }} className='fieldGroup'>
+                <SignupStepsHelp
+                  content={{
+                    linkText: 'Why Do I Have to Create a Free Account?',
+                    title: 'Your Free Givebox Account is How You Manage Your Fundraiser and Money',
+                    text: 
+                      <span>
+                        Your free Givebox account is where you can view your fundraisers, manage the money you receive, and view your donors and customers.
+                        <span style={{ display: 'block', marginTop: 5 }}>
+                          You can also do a ton more with your free Givebox account like sending email blasts, selling event tickets, offering membership subscriptions, and even running sweepstakes.
+                        </span>
+                      </span>
+                  }}
+                />
+              </div>
+              <CreateAccount
+                  {...this.props}
+                  group={slug}
+                  owner={owner}
+                  setRequirePassword={this.setRequirePassword}
+                  requirePassword={requirePassword}
+                  acceptedTerms={acceptedTerms}
+                  updateOrgSignupField={this.props.updateOrgSignupField}
+                  updateOrgSignup={this.props.updateOrgSignup}
+                />
+            </>
           ;
         } else {
           item.saveButtonLabel = <span className='buttonAlignText'>Continue to Accept Donations</span>;
@@ -1114,7 +1187,26 @@ class SignupStepsForm extends React.Component {
         if (signupPhase === 'signup') {
           item.saveButtonLabel = <span className='buttonAlignText'>Complete Previous Steps</span>;
           item.desc = 'Please complete the previous steps to continue.';
-          item.component = null;
+          item.component = 
+            <>
+              <div className='flexCenter'>
+                The previous steps are required to start a fundraiser and accept donations.
+              </div>
+              <div style={{ marginBottom: 20 }} className='fieldGroup'>
+                <SignupStepsHelp
+                  content={{
+                    linkText: 'Why Do I Have to Complete the Previous Steps?',
+                    title: 'Starting a Fundraiser Requires You to Enter a Few Details',
+                    text: 
+                      <span>
+                        Starting a fundraiser and raising money requires you to enter a few details about your Organization and fundraiser. 
+                        We try to keep the steps minimal and you can always add more details and customizations to your fundraiser later.
+                      </span>
+                  }}
+                />
+              </div>              
+            </>
+          ;
         } else {
           item.saveButtonLabel = <span className='buttonAlignText'>Continue to Connect a Bank</span>;
           item.className = 'preview';

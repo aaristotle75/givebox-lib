@@ -41,7 +41,6 @@ class TransferMoneyStepsForm extends React.Component {
     this.renderStep = this.renderStep.bind(this);
     this.processForm = this.processForm.bind(this);
     this.saveStep = this.saveStep.bind(this);
-    this.saveCallback = this.saveCallback.bind(this);
     this.callbackAfter = this.callbackAfter.bind(this);
     this.getDocument = this.getDocument.bind(this);
     this.getDcoumentCallback = this.getDcoumentCallback.bind(this);
@@ -68,8 +67,14 @@ class TransferMoneyStepsForm extends React.Component {
     } = this.props;
 
     const readyToCheckApproval = this.props.requiredSteps.every(c => completed.includes(c));
-    if (readyToCheckApproval) {
+    if (readyToCheckApproval && !completed.includes('transferStatus')) {
       this.checkApprovalStatus();
+    }
+  }
+
+  componentWillUnmount() {
+    this.setState = (state, callback) => {
+      return;
     }
   }
 
@@ -83,25 +88,34 @@ class TransferMoneyStepsForm extends React.Component {
     });
   }
 
-  getDcoumentCallback(slug, value) {
+  getDcoumentCallback(slug, value, gotoNextStep) {
     switch (slug) {
       case 'identity': {
-        this.setState({ identityUploaded: value }, () => {
-          if (value) this.props.stepCompleted('identity');
+        this.setState({ identityUploaded: value }, async () => {
+          if (value) {
+           const updated = await this.props.stepCompleted(slug);
+           if (updated && gotoNextStep) this.props.gotoNextStep();
+          }
         });
         break;
       }
 
       case 'verifyBank': {
-        this.setState({ verifyBankUploaded: value }, () => {
-          if (value) this.props.stepCompleted('verifyBank');
+        this.setState({ verifyBankUploaded: value }, async () => {
+          if (value) {
+            const updated = await this.props.stepCompleted(slug);
+            if (updated && gotoNextStep) this.props.gotoNextStep();
+           }
         });
         break;
       }
 
       case 'verifyBusiness': {
-        this.setState({ verifyBusinessUploaded: value }, () => {
-          if (value) this.props.stepCompleted('verifyBusiness');
+        this.setState({ verifyBusinessUploaded: value }, async () => {
+          if (value) {
+            const updated = await this.props.stepCompleted(slug);
+            if (updated && gotoNextStep) this.props.gotoNextStep();
+           }
         });
         break;
       }
@@ -110,7 +124,7 @@ class TransferMoneyStepsForm extends React.Component {
     }
   }
 
-  async getDocument(slug, showLoading = true) {
+  async getDocument(slug, showLoading = true, gotoNextStep = false) {
     let filter = '';
     switch (slug) {
       case 'identity': {
@@ -142,7 +156,7 @@ class TransferMoneyStepsForm extends React.Component {
           const data = util.getValue(res, 'data', []);
           const item = util.getValue(data, 0, {});
           if (!util.isEmpty(item) && !err) {
-            if (this.getDcoumentCallback) this.getDcoumentCallback(slug, true);
+            if (this.getDcoumentCallback) this.getDcoumentCallback(slug, true, gotoNextStep);
           } else {
             if (this.getDcoumentCallback) this.getDcoumentCallback(slug, false);
           }
@@ -161,10 +175,8 @@ class TransferMoneyStepsForm extends React.Component {
           const underwritingStatus = util.getValue(res, 'underwritingStatus');
           const hasBankInfo = util.getValue(res, 'hasBankInfo');
           if (underwritingStatus === 'approved' && hasBankInfo) {
-            if (!this.props.completedPhases.includes('transferMoney')) {
-              const updated = await this.props.updateOrgSignup({}, 'transferMoney');
-              this.setState({ checkingStatusDisableButton: false });
-              if (updated) this.saveStep('transferStatus');
+            if (!this.props.completed.includes('transferStatus')) {
+              this.props.stepsCompleted('transferStatus');
             }
             this.setState({ saving: false, checkingStatusDisableButton: false });
           } else {
@@ -178,34 +190,17 @@ class TransferMoneyStepsForm extends React.Component {
     });
   }
 
-  async saveStep(slug, delay = 1000) {
-
-    const completedStep = await this.props.stepCompleted(slug);
+  async saveStep(slug, delay = 1000, data, test) {
+    const completedStep = await this.props.stepCompleted(slug, true, data, test);
     if (completedStep) {
       setTimeout(() => {
-        this.setState({ saving: false }, this.props.gotoNextStep);
+        this.setState({ saving: false }, () => {
+          this.props.gotoNextStep();
+        });
       }, delay);
     } else {
       this.setState({ saving: false }, this.props.gotoNextStep);
     }
-  }
-
-  saveCallback(res, err, group, continueCallback) {
-
-    const {
-      formState
-    } = this.props;
-
-    const hasBeenUpdated = util.getValue(formState, 'updated');
-
-    if (!err) {
-      if (continueCallback) continueCallback();
-      else this.saveStep(group, hasBeenUpdated ? 1000 : 0);
-    } else {
-      if (!this.props.getErrors(err)) this.props.formProp({error: true, errorMsg: this.props.savingErrorMsg});
-      this.setState({ saving: false });
-    }
-    this.props.formProp({ updated: false });
   }
 
   async processForm(fields, callback, group) {
@@ -234,8 +229,13 @@ class TransferMoneyStepsForm extends React.Component {
 
       case 'transferStatus': {
         if (approvedForTransfers) {
-          this.setState({ saving: false }, () => {
-            this.props.openLaunchpad({ autoOpenSlug: 'money' });
+          this.setState({ saving: false }, async () => {
+            const updated = await this.props.updateOrgSignup({}, 'transferMoney');
+            if (updated) {
+              this.props.stepCompleted('transferMoney');
+              this.props.toggleModal('orgTransferSteps', false);
+              this.props.openLaunchpad({ autoOpenSlug: 'money' });
+            }
           });
         } else {
           this.checkApprovalStatus();
@@ -244,40 +244,46 @@ class TransferMoneyStepsForm extends React.Component {
       }
 
       case 'verifyWeb': {
-        this.props.sendResource('org', {
-          data,
-          method: 'patch',
-          isSending: false,
-          callback: (res, err) => this.saveCallback(res, err, group, () => {
-            this.props.getResource('org', {
-              orgID,
-              reload: true,
-              customName: 'gbx3Org',
-              callback: (res, err) => this.saveCallback(res, err, group)
-            });
-          }),
+        this.setState({ saving: true }, () => {
+          this.props.sendResource('org', {
+            data,
+            method: 'patch',
+            isSending: false,
+            callback: async (res, err) => {
+              const updated = await this.props.stepCompleted(slug, true, data);
+              if (updated) {
+                this.props.gotoNextStep();
+                this.props.getResource('org', {
+                  orgID,
+                  reload: true,
+                  customName: 'gbx3Org'
+                });
+              }
+            }
+          });
         });
         break;
       }
 
       case 'missionCountries': {
-        if (this.state.missionCountriesShow === 2) {
+        this.setState({ saving: true }, () => {
           this.props.sendResource('org', {
             data,
             method: 'patch',
             isSending: false,
-            callback: (res, err) => this.saveCallback(res, err, group, () => {
-              this.props.getResource('org', {
-                orgID,
-                reload: true,
-                customName: 'gbx3Org',
-                callback: (res, err) => this.saveCallback(res, err, group)
-              });
-            }),
+            callback: async (res, err) => {
+              const updated = await this.props.stepCompleted(slug, true, data);
+              if (updated) {
+                this.props.gotoNextStep();
+                this.props.getResource('org', {
+                  orgID,
+                  reload: true,
+                  customName: 'gbx3Org'
+                });
+              }
+            }
           });
-        } else {
-          this.saveStep(group);
-        }
+        });
 
         break;
       }
@@ -386,10 +392,10 @@ class TransferMoneyStepsForm extends React.Component {
                     When you upload a photo of your bank statement and the information matches the bank account you connected to Givebox, this verifies a fraudulent account has not been added.
                     <span style={{ display: 'block', marginTop: 5 }}>
                       We want to make sure you receive the money you collected and not transferred to a fraudulent account. 
-                    </span>             
+                    </span>
                   </span>
               }}
-            />           
+            />
           </div>
         ;
         break;
@@ -418,7 +424,7 @@ class TransferMoneyStepsForm extends React.Component {
                     </span>
                   </span>
               }}
-            />           
+            />
           </div>
         ;
         break;
@@ -430,6 +436,7 @@ class TransferMoneyStepsForm extends React.Component {
             <div style={{ marginBottom: 20 }} className='fieldGroup'>
               {this.props.textField('websiteURL', {
                 group: 'verifyWeb',
+                fixedLabel: true,
                 label: 'Website URL',
                 placeholder: 'Type Website or Social Media URL',
                 validate: 'url',
@@ -520,8 +527,9 @@ class TransferMoneyStepsForm extends React.Component {
               <TwoFA
                 hideRadio={true}
                 set2FAVerified={this.set2FAVerified}
-                successCallback={() => {
-                  this.saveStep('protect', 1000);
+                successCallback={async () => {
+                  const updated = await this.props.stepCompleted(slug);
+                  if (updated) this.props.gotoNextStep();                
                 }}
               />
             </div>
@@ -536,7 +544,7 @@ class TransferMoneyStepsForm extends React.Component {
                     </span>
                 }}
               />
-            </div>          
+            </div>
           </div>
           : null 
         ;
@@ -551,7 +559,6 @@ class TransferMoneyStepsForm extends React.Component {
           'protect'
         ];
         const isCompleted = check.every((val) => this.props.completed.includes(val));
-        console.log('execute isCompleted -> ', isCompleted);
 
         item.saveButtonDisabled = isCompleted ? false : true;
         item.saveButtonDisabled = checkingStatusDisableButton ? true : item.saveButtonDisabled;
@@ -585,13 +592,12 @@ class TransferMoneyStepsForm extends React.Component {
 
       // no default
     }
-
     return (
       <div className='stepContainer'>
         { this.state.saving ? <Loader msg='Saving...' /> : null }
         <div className={`step ${item.className} ${open ? 'open' : ''}`}>
           <div className='stepTitleContainer'>
-            {completed ?
+            {completed && !this.props.completed.includes('transferStatus') ?
               <div className='completed'>
                 <Icon><MdCheckCircle /></Icon> <span className='completedText'>Step {stepNumber} Completed</span>
               </div>

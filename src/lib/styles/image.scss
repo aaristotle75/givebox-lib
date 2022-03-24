@@ -186,6 +186,12 @@ button.imageCover {
   }
 }
 
+.dropzone.tooltip {
+  .tooltipTop {
+    top: -10px;
+  }
+}
+
 .dropzone {
   display: flex;
   justify-content: center;
@@ -616,6 +622,22 @@ button.imageCover {
     min-height: 200px;
   }
 
+  .labelIcon {
+    position: relative;
+
+    .orText {
+      position: absolute;
+      top: 38px;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      color: $puppa_deep_purple;
+      font-weight: 400;
+      font-size: 16px;
+      z-index: 1;
+    }
+  }
+
   .dropzone {
     @include dropzoneButton();
     height: 140px;
@@ -628,15 +650,16 @@ button.imageCover {
       height: 125px;
     }
 
-    .dropzone-icon {
-      font-size: 30px;
+    .icon {
       color: $white;
+      font-size: 80px;
+      opacity: .9;
     }
 
-   .text {
-      font-size: 16px;
-      color: $white;
-      padding: 5px;
+    .text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
 
       span { margin: 5px 0 }
     }

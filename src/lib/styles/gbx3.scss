@@ -962,6 +962,7 @@
         cursor: default;
         padding: 10px;
         color: $light-gray;
+        margin-top: 5px;
         //background: transparentize($puppa_blue, .2);
         @include purpleToBlue(.4);
         text-transform: uppercase;

@@ -64,8 +64,6 @@ class OrgAdmin extends React.Component {
       } else {
         this.openStep('identity', 'orgTransferSteps');
       }
-    } else if ( underwritingStatus === 'approved') {
-      if (!completedPhases.includes('transferMoney')) this.props.updateOrgSignup({}, 'transferMoney');
     } else {
       this.props.checkSignupPhase(ENV !== 'production' ? testConfig : {});
     }

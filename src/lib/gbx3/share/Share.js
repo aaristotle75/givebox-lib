@@ -31,7 +31,7 @@ class Share extends React.Component {
     this.renderShareList = this.renderShareList.bind(this);
     this.setShareTypeSelected = this.setShareTypeSelected.bind(this);
     this.state = {
-      shareTypeSelected: props.defaultSelected || 'social'
+      shareTypeSelected: props.defaultSelected || 'copy'
     };
   }
 

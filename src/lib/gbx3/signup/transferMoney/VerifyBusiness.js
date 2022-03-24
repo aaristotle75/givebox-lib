@@ -24,7 +24,7 @@ class VerifyBusiness extends React.Component {
   }
 
   fileUploadSuccess(fileName, ID) {
-    this.props.getDocument('verifyBusiness', false);
+    this.props.getDocument('verifyBusiness', false, true);
   }
 
   render() {

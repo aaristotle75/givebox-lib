@@ -50,7 +50,7 @@ class Identity extends React.Component {
       callback: (res, err) => {
         if (err) this.props.formProp({error: 'Error updating account holder.'});
         else {
-          this.props.getDocument('identity', false);
+          this.props.getDocument('identity', false, true);
         }
       },
       reload: true,

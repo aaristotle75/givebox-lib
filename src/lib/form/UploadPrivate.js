@@ -12,6 +12,8 @@ import ModalRoute from '../modal/ModalRoute';
 import ModalLink from '../modal/ModalLink';
 import UploadPrivateViewer from './UploadPrivateViewer';
 import LinearBar from '../common/LinearBar';
+import Icon from '../common/Icon';
+import { ImCamera } from 'react-icons/im';
 
 class UploadPrivate extends Component {
 
@@ -182,7 +184,11 @@ class UploadPrivate extends Component {
       className,
       style,
       showPreview,
-      orgID
+      orgID,
+      topLabel,
+      bottomLabel,
+      labelIcon,
+      mobile
     } = this.props;
 
     const {
@@ -227,14 +233,22 @@ class UploadPrivate extends Component {
             }
             {this.props.customLink || '' }
             <Dropzone
-              className='dropzone'
+              className='dropzone tooltip'
               onDrop={this.handleDrop}
               onDropAccepted={this.handleDropAccepted}
               onDropRejected={this.handleDropRejected}
               accept={mimes}
             >
-              <span className={`icon dropzone-icon icon-${this.props.icon}`}></span>
-              <span className='text'>{uploadLabel}</span>
+              <span className='tooltipTop'><i></i>{uploadLabel}</span>
+              <span className='text'>
+                {!mobile ? <span>{topLabel}</span> : null}
+                {labelIcon}
+                {!mobile ? <span>{bottomLabel}</span> : <span>Add File(s)</span>}
+                {/*
+                <span className={`icon dropzone-icon icon-${this.props.icon}`}></span>
+                <span className='text'>{uploadLabel}</span>
+                */}
+              </span>
             </Dropzone>
             { showPreview && previewURL ?
             <ModalLink id='uploadPrivateViewer' type='div' className='previewURLContainer'>
@@ -268,7 +282,15 @@ UploadPrivate.defaultProps = {
   icon: 'file-plus',
   maxSize: '175px',
   alt: false,
-  showPreview: false
+  showPreview: false,
+  topLabel: 'Drag File Here',
+  bottomLabel: 'Click to Add File',
+  mobile: false,
+  labelIcon:
+    <div className='labelIcon'>
+      <div className='orText'>or</div>
+      <Icon><ImCamera /></Icon>
+    </div>
 }
 
 function mapStateToProps(state, props) {

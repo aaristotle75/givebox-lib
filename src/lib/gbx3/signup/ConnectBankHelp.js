@@ -30,11 +30,7 @@ class ConnectBankHelp extends React.Component {
       <>
          <div style={{ marginTop: 20 }} className='flexCenter'>
            <GBLink onClick={() => this.setState({ display: display ? false : true })}>
-             { display ?
-               <span>Why Do I have to Connect My Bank Account?</span>
-             :
-               <span>Click Here to Find Out Why You Have to Connect Your Bank Account</span>
-             }
+              <span>Why Do I have to Connect My Bank Account?</span>
            </GBLink>
          </div>
          <AnimateHeight height={display ? 'auto' : 0 }>
