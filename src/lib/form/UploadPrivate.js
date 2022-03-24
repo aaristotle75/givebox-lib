@@ -13,6 +13,7 @@ import ModalLink from '../modal/ModalLink';
 import UploadPrivateViewer from './UploadPrivateViewer';
 import LinearBar from '../common/LinearBar';
 import Icon from '../common/Icon';
+import Image from '../common/Image';
 import { ImCamera } from 'react-icons/im';
 
 class UploadPrivate extends Component {
@@ -261,7 +262,17 @@ class UploadPrivate extends Component {
                   onError={(e) => console.error('error in file-viewer')}
                 />
               :
-                <img key={`preview-${type}`} src={previewURL} alt={previewURL} style={{ maxWidth: '150px', height: 'auto', maxHeight: '150px' }} />
+                <div className='singleImagePreview'>
+                  <Image 
+                    key={`preview-${type}`}
+                    url={previewURL} 
+                    alt={previewURL}
+                    maxSize={150}
+                    style={{ 
+                      height: 'auto'
+                    }}
+                  />
+                </div>
               }
             </ModalLink>
             : null }

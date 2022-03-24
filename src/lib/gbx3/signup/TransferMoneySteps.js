@@ -176,7 +176,7 @@ class TransferMoneyStepsForm extends React.Component {
           const hasBankInfo = util.getValue(res, 'hasBankInfo');
           if (underwritingStatus === 'approved' && hasBankInfo) {
             if (!this.props.completed.includes('transferStatus')) {
-              this.props.stepsCompleted('transferStatus');
+              this.props.stepCompleted('transferStatus');
             }
             this.setState({ saving: false, checkingStatusDisableButton: false });
           } else {
