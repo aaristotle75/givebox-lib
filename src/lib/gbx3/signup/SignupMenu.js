@@ -46,7 +46,9 @@ class SignupMenu extends React.Component {
   renderSteps() {
     const {
       step,
-      completed
+      completed,
+      formBuilderSpecific,
+      signupPhase
     } = this.props;
 
     const {
@@ -60,29 +62,48 @@ class SignupMenu extends React.Component {
     Object.entries(stepsTodo).forEach(([key, value]) => {
       const currentStep = +key === +step ? true : false;
       const completedStep = completed.includes(value.slug) ? true : false;
-      const stepNumber = <span className='number'>Step {+key + 1}</span>;
-      items.push(
-        <li
-          onClick={() => {
-            this.props.setSignupStep(+key, () => {
-              this.props.toggleModal(modalName, true);
-            });
-          }}
-          key={key}
-          className={`stepButton ${currentStep ? 'currentStep' : ''}`}
-        >
-          <div className='stepTitleContainer'>
-            { value.icon ? <span className={`icon icon-${value.icon}`}></span> : value.customIcon }
-            <div className='stepTitle'>{showStepNumber ? stepNumber : null}{value.name}</div>
-          </div>
-          <span className={`icon icon-${completedStep ? 'check green' : 'chevron-right'}`}></span>
-        </li>
-      );
+
+      let stepNumber = <span className='number'>Step {+key + 1}</span>;
+      let hideStep = false;
+
+      if (signupPhase === 'postSignup') {
+        if (formBuilderSpecific && value.slug === 'previewShare') {
+          stepNumber = <span className='number'>Next Step</span>;
+        }
+        if (formBuilderSpecific && value.slug !== 'previewShare') {
+          hideStep = true;
+        }
+      }
+
+      if (!hideStep) {
+        items.push(
+          <li
+            onClick={() => {
+              this.props.setSignupStep(+key, () => {
+                this.props.toggleModal(modalName, true);
+              });
+            }}
+            key={key}
+            className={`stepButton ${currentStep ? 'currentStep' : ''}`}
+          >
+            <div className='stepTitleContainer'>
+              { value.icon ? <span className={`icon icon-${value.icon}`}></span> : value.customIcon }
+              <div className='stepTitle'>{showStepNumber ? stepNumber : null}{value.name}</div>
+            </div>
+            <span className={`icon icon-${completedStep ? 'check green' : 'chevron-right'}`}></span>
+          </li>
+        );
+      }
     });
 
     return (
       <ul className='builderMenuSteps'>
-        <li className='listHeader'>{menuHeader}</li>
+        <li 
+          style={{ marginTop: formBuilderSpecific ? 0 : null }} 
+          className='listHeader'
+        >
+          {menuHeader}
+        </li>
         {items}
       </ul>
     )

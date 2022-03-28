@@ -364,6 +364,7 @@ export function loadSignupPhase(options = {}) {
 
     if (!orgSignup.completed.includes('createSuccess')) orgSignup.completed.push('createSuccess');
 
+    console.log('execute -> ', orgSignup);
     const updated = await dispatch(updateOrgSignup(orgSignup));
     if (updated) {
       if (opts.openAdmin) dispatch(updateAdmin({ open: true }));
@@ -1427,6 +1428,8 @@ export function loadGBX3(articleID, callback) {
     const availableBlocks = util.deepClone(util.getValue(admin, `availableBlocks.article`, []));
     const receiptAvailableBlocks = util.deepClone(util.getValue(admin, `availableBlocks.receipt`, []));
 
+    let orgSignup = {};
+
     dispatch(getResource('article', {
       id: [articleID],
       reload: true,
@@ -1437,18 +1440,16 @@ export function loadGBX3(articleID, callback) {
           const orgID = util.getValue(res, 'orgID');
           const orgName = util.getValue(res, 'orgName');
 
-          // If orgData orgID doesn't equal orgID get the orgData
-          if (orgID !== util.getValue(orgData, 'ID')) {
-            dispatch(getResource('orgPublic', {
-              customName: 'gbx3Org',
-              id: [orgID],
-              reload: true,
-              callback: (res, err) => {
-                if (!util.isEmpty(res) && !err) {
-                }
+          dispatch(getResource('orgPublic', {
+            customName: 'gbx3Org',
+            id: [orgID],
+            reload: true,
+            callback: (res, err) => {
+              if (!util.isEmpty(res) && !err) {
+                 orgSignup = util.getValue(res, 'customTemplate.orgSignup', {});     
               }
-            }));
-          }
+            }
+          }));
 
           if (kindID) {
             const apiName = `org${types2.kind(kind).api.item}`;
@@ -1658,6 +1659,7 @@ export function loadGBX3(articleID, callback) {
                     admin.volunteerID = volunteerID;
                   }
 
+                  dispatch(updateOrgSignup(orgSignup));
                   dispatch(updateLayouts(blockType, layouts));
                   dispatch(updateBlocks(blockType, blocks));
                   dispatch(updateGlobals(globals));

@@ -8,6 +8,7 @@ import AdminMenuTools from './AdminMenuTools';
 import {
   toggleAdminLeftPanel
 } from '../redux/gbx3actions';
+import SignupMenu from '../signup/SignupMenu';
 
 class AdminMenu extends React.Component {
 
@@ -26,7 +27,8 @@ class AdminMenu extends React.Component {
 
   renderPanel() {
     const {
-      blockType
+      blockType,
+      signupStepsDisplay
     } = this.props;
 
     switch (this.state.panelType) {
@@ -45,7 +47,10 @@ class AdminMenu extends React.Component {
       case 'layout':
       default: {
         return (
-          <AdminMenuLayout blockType={blockType} />
+          <AdminMenuLayout 
+            signupStepsDisplay={signupStepsDisplay}
+            blockType={blockType} 
+          />
         )
       }
     }
@@ -59,14 +64,20 @@ class AdminMenu extends React.Component {
     } = this.state;
 
     const {
-      advancedBuilder
+      signupStepsDisplay
     } = this.props;
 
     const mobile = breakpoint === 'mobile' ? true : false;
 
     return (
-      <div className='leftPanelContainer'>
-        <div className='leftPanelTop'>
+      <div className={`leftPanelContainer ${signupStepsDisplay ? 'signupSteps' : ''}`}>
+        { signupStepsDisplay ?
+          <SignupMenu 
+            stepsOnly={true}
+            formBuilderSpecific={true}
+          />
+        : null }
+        <div className={`leftPanelTop`}>
           <GBLink className='leftPanelClose link' onClick={() => this.props.toggleAdminLeftPanel()}>
             <span className='icon icon-x'></span>
           </GBLink>

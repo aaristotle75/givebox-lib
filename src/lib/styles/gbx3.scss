@@ -997,6 +997,18 @@
     -webkit-overflow-scrolling: auto;
   }
 
+  .leftPanelContainer.signupSteps {
+
+    .leftPanelTop {
+      position: relative;
+      margin-top: 10px;
+    }
+  
+    .leftPanelScroller {
+      margin-top: 0;
+    }
+  }
+
   .leftPanelTop {
     position: absolute;
     top: 0;

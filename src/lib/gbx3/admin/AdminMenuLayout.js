@@ -9,6 +9,7 @@ import {
 } from '../redux/gbx3actions';
 import { toggleModal } from '../../api/actions';
 import BasicBuilderMenu from './article/BasicBuilderMenu';
+import SignupMenu from '../signup/SignupMenu';
 
 class AdminMenuLayout extends React.Component {
 
@@ -136,12 +137,15 @@ class AdminMenuLayout extends React.Component {
   render() {
 
     const {
-      advancedBuilder
+      advancedBuilder,
+      signupStepsDisplay
     } = this.props;
 
     return (
       <div className='layoutMenu'>
-        {!advancedBuilder ? <BasicBuilderMenu /> : null}
+        {!advancedBuilder ? 
+         <BasicBuilderMenu />
+        : null}
         {this.renderActiveBlocks()}
         {this.renderAvailableBlocks()}
       </div>

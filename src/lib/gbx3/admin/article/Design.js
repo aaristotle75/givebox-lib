@@ -60,6 +60,7 @@ class Design extends React.Component {
       previewMode,
       previewDevice,
       advancedBuilder,
+      signupStepsDisplay,
       kind,
       openAdmin: open
     } = this.props;
@@ -69,7 +70,7 @@ class Design extends React.Component {
     const middle = [];
     const rightSide = [];
 
-    if (!previewMode && !mobile) {
+    if (!previewMode && !mobile && !signupStepsDisplay) {
       leftSide.push(
         <div
           className='leftSide'
@@ -256,6 +257,7 @@ class Design extends React.Component {
 
     const {
       createType,
+      signupStepsDisplay,
       openAdmin: open
     } = this.props;
 
@@ -270,6 +272,7 @@ class Design extends React.Component {
             <AdminMenu
               blockType={'article'}
               contentObj={this.contentObj}
+              signupStepsDisplay={signupStepsDisplay}
             />
           :
             <ReceiptMenu
