@@ -19,3 +19,24 @@
     border-radius: 0 !important;
   }
 }
+
+.iframeShield {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1;
+  margin: 0 auto;
+  background: transparent;
+  cursor: pointer;
+}
+
+.iframeScaledWrapper {
+  overflow: hidden;
+  padding: 0;
+
+  iframe {
+    zoom: 1;
+    border: 0px;
+  }
+}

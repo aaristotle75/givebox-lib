@@ -65,7 +65,9 @@ class Signup extends React.Component {
 
     return (
       <div className='gbx3AdminLayout orgDisplay editable gbx3OrgSignup'>
-        <OrgModalRoutes />
+        <OrgModalRoutes 
+          loadGBX3={this.props.loadGBX3}
+        />
         <SignupMenu />
         <div id='GBX3StageAligner' className='stageAligner'>
           <div id='stageContainer' className={`stageContainer ${open ? 'open' : ''}`}>

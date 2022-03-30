@@ -145,9 +145,12 @@ class AdminMenuLayout extends React.Component {
       <div className='layoutMenu'>
         {!advancedBuilder ? 
          <BasicBuilderMenu />
-        : null}
-        {this.renderActiveBlocks()}
-        {this.renderAvailableBlocks()}
+        :
+          <>
+          {this.renderActiveBlocks()}
+          {this.renderAvailableBlocks()}          
+          </>
+        }
       </div>
     )
   }

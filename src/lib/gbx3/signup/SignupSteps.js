@@ -76,7 +76,6 @@ class SignupStepsForm extends React.Component {
       mediaType: util.getValue(props.fields, 'gbx3.mediaType', 'image'),
       mediaTypeError: null,
       requirePassword: false,
-      previewLoaded: false,
       editPreview: false,
       iframeHeight: 0
     };
@@ -90,27 +89,16 @@ class SignupStepsForm extends React.Component {
   componentDidUpdate(prevProps) {
   }
 
+  componentWillUnmount() {
+    this.setState = (state, callback) => {
+      return;
+    }
+  }
+
   gbx3message(e) {
     const {
       step
     } = this.props;
-
-    const stepConfig = util.getValue(this.props.stepsTodo, step, {});
-    const slug = util.getValue(stepConfig, 'slug');
-
-    if (e.data === 'gbx3Initialized') {
-      if (slug === 'previewShare') {
-        this.setState({ previewLoaded: true });
-      }
-    }
-
-    /*
-    if (e.data === 'gbx3Shared') {
-      if (slug === 'preview') {
-        this.props.stepCompleted(slug);
-      }
-    }
-    */
 
     const str = e.data.toString();
     const strArr = str.split('-');
@@ -196,6 +184,14 @@ class SignupStepsForm extends React.Component {
                   orgID,
                   orgUpdated: true,
                   callback: (res, err) => {
+                    this.props.saveLegalEntity({
+                      isSending: false,
+                      hasBeenUpdated: true,
+                      data: {
+                        name: util.getValue(res, 'name', null),
+                        taxID: util.getValue(res, 'taxID', null)
+                      }
+                    });                    
                     this.props.savingSignup(true, () => {
 
                       const gbx3Data = this.props.signupGBX3Data();
@@ -246,19 +242,16 @@ class SignupStepsForm extends React.Component {
                             orgUpdated: true,
                             callback: async (res, err) => {
                               localStorage.removeItem('signup');
+                              this.props.loadGBX3(createdArticleID, () => {
+                                this.props.savingSignup(false);
+                              });
+                              /*
                               this.props.loadOrg(orgID, (res, err) => {
                                 //this.props.savingSignup(false);
-                                this.props.saveLegalEntity({
-                                  isSending: false,
-                                  hasBeenUpdated: true,
-                                  data: {
-                                    name: util.getValue(res, 'name', null),
-                                    taxID: util.getValue(res, 'taxID', null)
-                                  }
-                                });
                                 this.props.setOrgStyle();
                                 this.props.savingSignup(false);
                               }, true);
+                              */
                             }
                           });
                         }
@@ -771,7 +764,6 @@ class SignupStepsForm extends React.Component {
       mediaTypeError,
       requirePassword,
       editPreview,
-      previewLoaded,
       iframeHeight
     } = this.state;
 

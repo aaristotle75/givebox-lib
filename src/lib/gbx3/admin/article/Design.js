@@ -70,7 +70,7 @@ class Design extends React.Component {
     const middle = [];
     const rightSide = [];
 
-    if (!previewMode && !mobile && !signupStepsDisplay) {
+    if (!previewMode && !mobile) {
       leftSide.push(
         <div
           className='leftSide'

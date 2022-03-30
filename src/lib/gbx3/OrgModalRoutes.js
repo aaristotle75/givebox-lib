@@ -116,7 +116,10 @@ export default class GBX3ModalRoutes extends Component {
           component={(props) => {
             return (
               <StepsWrapper>
-                {this.loadComponent('./signup/SignupSteps', props)}
+                {this.loadComponent('./signup/SignupSteps', {
+                  ...props,
+                  loadGBX3: this.props.loadGBX3
+                })}
               </StepsWrapper>
             )
           }}

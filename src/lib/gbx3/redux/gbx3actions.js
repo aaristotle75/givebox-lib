@@ -364,7 +364,6 @@ export function loadSignupPhase(options = {}) {
 
     if (!orgSignup.completed.includes('createSuccess')) orgSignup.completed.push('createSuccess');
 
-    console.log('execute -> ', orgSignup);
     const updated = await dispatch(updateOrgSignup(orgSignup));
     if (updated) {
       if (opts.openAdmin) dispatch(updateAdmin({ open: true }));
@@ -1428,8 +1427,6 @@ export function loadGBX3(articleID, callback) {
     const availableBlocks = util.deepClone(util.getValue(admin, `availableBlocks.article`, []));
     const receiptAvailableBlocks = util.deepClone(util.getValue(admin, `availableBlocks.receipt`, []));
 
-    let orgSignup = {};
-
     dispatch(getResource('article', {
       id: [articleID],
       reload: true,
@@ -1446,7 +1443,8 @@ export function loadGBX3(articleID, callback) {
             reload: true,
             callback: (res, err) => {
               if (!util.isEmpty(res) && !err) {
-                 orgSignup = util.getValue(res, 'customTemplate.orgSignup', {});     
+                 const orgSignup = util.getValue(res, 'customTemplate.orgSignup', {});     
+                 dispatch(updateOrgSignup(orgSignup));
               }
             }
           }));
@@ -1602,8 +1600,8 @@ export function loadGBX3(articleID, callback) {
                         // no default
                       }
 
-                      if (!helperSteps.completed.includes(key) && !isDefault) {
-                        helperSteps.completed.push(key);
+                      if (!helperSteps.completed.includes(value.slug) && !isDefault) {
+                        helperSteps.completed.push(value.slug);
                       }
                   });
                   const uncompletedSteps = stepsArray.filter(item => !helperSteps.completed.includes(item));
@@ -1659,7 +1657,6 @@ export function loadGBX3(articleID, callback) {
                     admin.volunteerID = volunteerID;
                   }
 
-                  dispatch(updateOrgSignup(orgSignup));
                   dispatch(updateLayouts(blockType, layouts));
                   dispatch(updateBlocks(blockType, blocks));
                   dispatch(updateGlobals(globals));

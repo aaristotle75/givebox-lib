@@ -534,7 +534,7 @@ class TransferMoneyStepsForm extends React.Component {
               />
             </div>
             <div style={{ marginTop: 30 }}>
-              <SecureAccountHelp 
+              <SecureAccountHelp
                 content={{
                   linkText: 'Why Do I Need Two Factor Authentication?',
                   title: 'Two Factor Authentication Protects Your Account From Fraudulent Access',

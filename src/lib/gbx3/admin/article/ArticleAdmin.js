@@ -44,7 +44,9 @@ class ArticleAdmin extends React.Component {
       hideSteps,
       signupPhase,
       connectBankSteps,
-      transferSteps
+      transferSteps,
+      builderStep,
+      signupStepsDisplay
     } = this.props;
 
     const testConfig = {
@@ -70,16 +72,16 @@ class ArticleAdmin extends React.Component {
         this.openStep('identity', 'orgTransferSteps');
       }
     } else {
-      this.props.checkSignupPhase(ENV !== 'production' ? testConfig : {});
+      if (signupStepsDisplay && !previewMode && !share) {
+        this.props.checkSignupPhase(ENV !== 'production' ? testConfig : {});
+      } else {
+        const minStepNotCompleted = this.getMinStepNotCompleted();
+        if (!this.props.advancedBuilder && this.props.step !== 'create' && (minStepNotCompleted || minStepNotCompleted === 0) && !share && !previewMode && builderStep === 0) {
+          const updated = await this.props.updateHelperSteps({ step: minStepNotCompleted });
+          if (updated && !hideSteps) this.props.toggleModal('gbx3Builder', true);
+        }
+      }
     }
-
-    /*
-    const minStepNotCompleted = this.getMinStepNotCompleted();
-    if (!this.props.advancedBuilder && this.props.step !== 'create' && (minStepNotCompleted || minStepNotCompleted === 0) && !share && !previewMode) {
-      const updated = await this.props.updateHelperSteps({ step: minStepNotCompleted });
-      if (updated && !hideSteps) this.props.toggleModal('gbx3Builder', true);
-    }
-    */
   }
 
   componentDidUpdate(prevProps) {
@@ -113,7 +115,7 @@ class ArticleAdmin extends React.Component {
 
   async toggleBuilder() {
     const advancedBuilder = this.props.advancedBuilder ? false : true;
-    this.props.toggleModal('gbx3Builder', advancedBuilder ? false : true);
+    this.props.toggleModal('gbx3Builder', advancedBuilder ? false : this.props.builderStep === 0 ? true : false);
     const helperUpdated = await this.props.updateHelperSteps({ advancedBuilder });
     if (helperUpdated) {
       this.props.saveGBX3('article', {
@@ -140,12 +142,15 @@ class ArticleAdmin extends React.Component {
 
       case 'design':
       default: {
+        console.log('execute admin loadGBX3 -> ', this.props.loadGBX3);
         return (
           <>
             <HelpDeskButton
               showKB={false}
             />
-            <OrgModalRoutes />  
+            <OrgModalRoutes
+              loadGBX3={this.props.loadGBX3}
+            />
             <ModalRoute
               className='gbx3'
               id={'gbx3Builder'}
@@ -198,6 +203,7 @@ function mapStateToProps(state, props) {
   const kind = util.getValue(gbx3, 'info.kind', 'fundraiser');
   const hideSteps = util.getValue(gbx3, 'info.hideSteps', false);
   const previewMode = util.getValue(gbx3, 'admin.previewMode');
+  const builderStep = util.getValue(gbx3, 'helperSteps.step');
   const advancedBuilder = util.getValue(gbx3, 'helperSteps.advancedBuilder', false);
 
   return {
@@ -214,6 +220,7 @@ function mapStateToProps(state, props) {
     kind,
     hideSteps,
     previewMode,
+    builderStep,
     advancedBuilder,
     completed: util.getValue(state, 'gbx3.helperSteps.completed', [])
   }

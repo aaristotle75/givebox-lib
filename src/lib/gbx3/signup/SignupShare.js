@@ -7,10 +7,14 @@ import Loader from '../../common/Loader';
 import Image from '../../common/Image';
 import GBLink from '../../common/GBLink';
 import HelpfulTip from '../../common/HelpfulTip';
+import IframeScaled from '../../common/IframeScaled';
 import {
   sendResource,
   getResource
 } from '../../api/helpers';
+import {
+  toggleModal
+} from '../../api/actions';
 import { FiCopy } from 'react-icons/fi';
 import { TiSocialFacebook } from 'react-icons/ti';
 import { FiPenTool } from 'react-icons/fi';
@@ -19,6 +23,7 @@ import ShareLinkCopy from '../share/ShareLinkCopy';
 import ShareLinkEdit from '../share/ShareLinkEdit';
 import Social from '../blocks/Social';
 import AnimateHeight from 'react-animate-height';
+import { signupPhase as phase } from './signupConfig';
 
 const GBX3_URL = process.env.REACT_APP_ENV === 'local' ? process.env.REACT_APP_GBX_SHARE : process.env.REACT_APP_GBX_URL;
 
@@ -34,13 +39,14 @@ class SignupShare extends React.Component {
       shareTypeSelected: props.defaultSelected || 'copy',
       previewURL: null,
       previewLoading: false,
-      previewShareOpen: false
+      previewShareOpen: props.previewShareOpen
     };
   }
 
   componentDidMount() {
     this.getArticle();
     const articleID = this.props.articleID;
+    /*
     this.setState({ previewLoading: true }, () => {
       this.props.sendResource('gbxPreview', {
         id: [articleID],
@@ -52,6 +58,13 @@ class SignupShare extends React.Component {
         }
       });
     });
+    */
+  }
+
+  componentWillUnmount() {
+    this.setState = (state, callback) => {
+      return;
+    }
   }
 
   getArticle() {
@@ -230,6 +243,12 @@ class SignupShare extends React.Component {
   render() {
 
     const {
+      isArticleForm,
+      signupPhase,
+      allowToggle
+    } = this.props;
+
+    const {
       previewURL,
       previewLoading,
       previewShareOpen
@@ -243,7 +262,7 @@ class SignupShare extends React.Component {
       <div className='signupShareWrapper flexCenter flexColumn'>
         <GBLink 
           style={{ marginTop: 20, marginBottom: 20 }} 
-          onClick={() => this.setState({ previewShareOpen: previewShareOpen ? false : true })}
+          onClick={() => this.setState({ previewShareOpen: previewShareOpen && allowToggle ? false : true })}
         >
           {previewShareOpen ?
             previewLoading ?
@@ -268,18 +287,46 @@ class SignupShare extends React.Component {
                     width: 500
                 }}>
                   <div style={{ left: '-20px' }} className={`previewMenu ${!previewLoading ? 'previewLoaded' : '' }`}>
-                    <GBLink onClick={() => window.open(shareUrl)}>
+                    <GBLink 
+                      onClick={() => {
+                        if (isArticleForm) {
+                          window.location.href = `${shareUrl}?public`;
+                        } else {
+                          window.open(shareUrl);
+                        }
+                      }}>
                       <span className='avatarLink editGraphic'>
                         <span className='icon icon-eye'></span>
                       </span>
                       View Public Page
                     </GBLink>
                   </div>
+                  <IframeScaled
+                    src={`${shareUrl}?preview`}
+                    alt='Preview'
+                    shieldOnClick={() => {
+                      if (isArticleForm) {
+                        window.location.href = `${shareUrl}?public`;
+                      } else {
+                        window.open(shareUrl);
+                      }
+                    }}
+                  />
+                  {/*
                   <div className='previewImageOverlay'>
                     <Image url={previewURL} alt='Preview' maxSize='250px' />
                   </div>
+                  */}
                   <div style={{ right: '20px' }} className={`previewMenu ${!previewLoading ? 'previewLoaded' : '' }`}>
-                    <GBLink onClick={() => window.open(`${shareUrl}?admin&hideSteps=true`)}>
+                    <GBLink 
+                      onClick={() => {
+                        if (isArticleForm) {
+                          const modalName = this.props.modalName || util.getValue(phase, `${signupPhase}.modalName`);
+                          if (modalName) this.props.toggleModal(modalName, false);
+                        } else {
+                          window.open(`${shareUrl}?admin&hideSteps=true`);
+                        }
+                      }}>
                       <span className='avatarLink editGraphic'>
                         <span className='icon icon-edit'></span>
                       </span>
@@ -299,15 +346,21 @@ class SignupShare extends React.Component {
 SignupShare.defaultProps = {
   hideList: [],
   showHelper: true,
-  style: {}
+  previewShareOpen: false,
+  allowToggle: true,
+  style: {},
+  modalName: null
 }
 
 function mapStateToProps(state, props) {
 
   const gbx3 = util.getValue(state, 'gbx3', {});
   const info = util.getValue(gbx3, 'info', {});
+  const display = util.getValue(info, 'display');
+  const isArticleForm = display === 'article' ? true : false;
   const kind = 'fundraiser';
   const articleID = util.getValue(gbx3, 'orgSignup.createdArticleID');
+  const signupPhase = util.getValue(gbx3, 'orgSignup.signupPhase');
   const article = util.getValue(state, 'resource.createdArticle', {});
   const kindID = util.getValue(article, 'data.kindID');
   const orgID = util.getValue(article, 'data.orgID');
@@ -317,9 +370,11 @@ function mapStateToProps(state, props) {
   const apiName = `org${types.kind(kind).api.item}`;
 
   return {
+    isArticleForm,
     kind,
     kindID,
     articleID,
+    signupPhase,
     article,
     orgID,
     slug,
@@ -331,5 +386,6 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
   getResource,
-  sendResource
+  sendResource,
+  toggleModal
 })(SignupShare);

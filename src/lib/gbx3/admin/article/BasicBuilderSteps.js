@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { toggleModal } from '../../../api/actions';
 import {
-  savePrefs,
   sendResource
 } from '../../../api/helpers';
 import Form from '../../../form/Form';
@@ -10,7 +9,6 @@ import {
   util,
   types,
   GBLink,
-  Fade,
   Icon,
   Image
 } from '../../../';
@@ -29,11 +27,8 @@ import {
 } from '../../redux/gbx3defaults';
 import MediaLibrary from '../../../form/MediaLibrary';
 import Share from '../../share/Share';
-import LinearBar from '../../../common/LinearBar';
-import Tabs, { Tab } from '../../../common/Tabs';
-import Video from '../../../common/Video';
+import SignupShare from '../../signup/SignupShare';
 import Dropdown from '../../../form/Dropdown';
-import HelpfulTip from '../../../common/HelpfulTip';
 import EditVideo from '../../admin/common/EditVideo';
 import { PhotoshopPicker } from 'react-color-aaristotle';
 import { MdCheckCircle } from 'react-icons/md';
@@ -79,6 +74,12 @@ class BasicBuilderStepsForm extends Component {
   componentDidMount() {
     //this.props.updateHelperSteps({ step: 2 });
     window.addEventListener('message', this.gbx3message, false);
+  }
+
+  componentWillUnmount() {
+    this.setState = (state, callback) => {
+      return;
+    }
   }
 
   callbackAfter(tab) {
@@ -632,27 +633,16 @@ class BasicBuilderStepsForm extends Component {
         item.className = 'preview';
         item.component =
           <div className='stagePreview flexCenter flexColumn'>
-            <Share
-              hideList={['web']}
-              showHelper={false}
-              modalWrapperStyle={{
-                paddingTop: 0,
+            <SignupShare 
+              style={{
+                marginBottom: 0,
                 paddingBottom: 0
               }}
+              showHelper={false}
+              previewShareOpen={true}
+              allowToggle={false}
+              modalName={'gbx3Builder'}
             />
-            { !previewLoaded ?
-            <div className='previewTitleContainer'>
-              <div className='previewTitleText'>
-                Generating preview we appreciate your patience while it loads...
-              </div>
-            </div>
-            : null }
-            { !previewLoaded ?
-              <div className='imageLoader'>
-                <img src='https://cdn.givebox.com/givebox/public/universal.png' alt='Loading Preview' />
-              </div>
-            : null }
-            <iframe style={{ height: iframeHeight }} id='previewIframe' src={`${GBX3_URL}/${articleID}/?public&preview`} title={`Preview`} />
           </div>
         ;
         break;
