@@ -239,7 +239,18 @@ class StepsWrapper extends React.Component {
           <div className='stepsTopTitle'>
             { stepConfig.icon ? <span className={`icon icon-${stepConfig.icon}`}></span> : stepConfig.customIcon } {stepConfig.title}
           </div>
-          <GBLink className='stepsTopClose link buttonAlignText' onClick={() => this.props.toggleModal(stepModalName, false)}>{isMobile ? 'Close' : 'Close and Do Later'} <span className='icon icon-x'></span></GBLink>
+          <GBLink 
+            className='stepsTopClose link buttonAlignText' 
+            onClick={() => {
+              this.props.toggleModal(stepModalName, false, {
+                closeCallback: () => {
+                  window.parent.postMessage('closeGivebox', '*');
+                } 
+              });
+            }}
+          >
+            {isMobile ? 'Close' : 'Close and Do Later'} <span className='icon icon-x'></span>
+          </GBLink>
         </div>
         <div className='progressWrapper'>
           <div className='progressBarArchetype'>

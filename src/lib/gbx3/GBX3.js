@@ -96,13 +96,16 @@ class GBX3 extends React.Component {
     const blockType = template || this.props.blockType;
     const orgID = this.props.orgID || util.getValue(access, 'orgID');
     const setInfo = await this.setInfo();
-
+    console.log('execute gbx3 -> ', browse, step, orgID, blockType);
     if (setInfo) {
       if (browse) {
         this.loadBrowse();
       } else if (signup) {
         if (!orgID) this.loadSignup();
-        else this.loadOrg(orgID);
+        else {
+          if (articleID) this.loadGBX3(articleID);
+          else this.loadOrg(orgID);
+        }
       } else {
         switch (blockType) {
           case 'org': {
@@ -185,6 +188,7 @@ class GBX3 extends React.Component {
       history.push(`${ENTRY_URL}`);
     } else {
       this.props.loadOrgSignup({
+        openModal: true,
         bookDemo,
         //forceStep: 3
       });

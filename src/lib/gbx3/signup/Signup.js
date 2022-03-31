@@ -56,7 +56,8 @@ class Signup extends React.Component {
   render() {
 
     const {
-      open
+      open,
+      modal
     } = this.props;
 
     const {
@@ -64,11 +65,12 @@ class Signup extends React.Component {
     } = this.state;
 
     return (
-      <div className='gbx3AdminLayout orgDisplay editable gbx3OrgSignup'>
+      <div className={`gbx3AdminLayout orgDisplay editable gbx3OrgSignup`}>
         <OrgModalRoutes 
           loadGBX3={this.props.loadGBX3}
         />
-        <SignupMenu />
+        { !modal ? <SignupMenu /> : null }
+        { !modal ? 
         <div id='GBX3StageAligner' className='stageAligner'>
           <div id='stageContainer' className={`stageContainer ${open ? 'open' : ''}`}>
             <div className='gbx3PageWrapper org admin'>
@@ -125,6 +127,7 @@ class Signup extends React.Component {
             </div>
           </div>
         </div>
+        : null }
       </div>
     )
   }
@@ -133,9 +136,11 @@ class Signup extends React.Component {
 function mapStateToProps(state, props) {
 
   const open = util.getValue(state, 'gbx3.admin.open', true);
+  const modal = util.getValue(state, 'gbx3.info.modal', false);
 
   return {
-    open
+    open,
+    modal
   }
 }
 

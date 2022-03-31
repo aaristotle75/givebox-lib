@@ -85,7 +85,7 @@ export function gbx3(state = {
     createType: 'layout',
     previewDevice: 'desktop',
     previewMode: false,
-    publicView: false,
+    publicView: true,
     editable: false,
     editFormOnly: false,
     hasAccessToCreate: false,

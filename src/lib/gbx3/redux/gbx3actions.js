@@ -250,14 +250,19 @@ export function getMinStepNotCompleted(array, haystack) {
 export function loadOrgSignup(options = {}) {
 
   const forceStep = options.forceStep || null;
-  const openModal = options.openModal || true;
-  const bookDemo = options.bookDemo || false;
+  const openModal = options.openModal === 'undefined' ? true : options.openModal;
+  const bookDemo = options.bookDemo === 'undefined' ? false : options.bookDemo;
   const promo = util.getCookie('promo', null);
   const affiliateID = promo ? +promo : null;
 
   return async (dispatch, getState) => {
     const signupFromCookie = LZString.decompressFromUTF16(localStorage.getItem('signup'));
-    const signupJSON = signupFromCookie ? JSON.parse(signupFromCookie) : {};
+    const signupJSON = signupFromCookie ? 
+      {
+        ...JSON.parse(signupFromCookie),
+        completedPhases: []
+      }
+    : {} ;
     const orgSignup = {
       ...util.getValue(getState(), 'gbx3.orgSignup', {}),
       ...signupJSON,
@@ -275,8 +280,8 @@ export function loadOrgSignup(options = {}) {
       }));
       dispatch(setLoading(false));
       dispatch(updateInfo({ display: 'signup', originTemplate: 'signup' }));
-      if (openModal && !bookDemo) dispatch(toggleModal('orgSignupSteps', true));
-      if (bookDemo) dispatch(toggleModal('bookDemo', true));
+      if (openModal && !bookDemo) dispatch(toggleModal('orgSignupSteps', true, { }));
+      if (bookDemo) dispatch(toggleModal('bookDemo', true, { }));
     }
   }
 }

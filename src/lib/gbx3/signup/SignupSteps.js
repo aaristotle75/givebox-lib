@@ -157,6 +157,11 @@ class SignupStepsForm extends React.Component {
 
   async createOrgCallback(res, err, orgData = {}) {
     if (!err) {
+
+      const name = util.getValue(res, 'name', null);
+      const taxID = util.getValue(res, 'taxID', null);
+      const orgID = util.getValue(res, 'ID', null);
+
       // Authenticate and open Org profile page with next Steps Preview, Share
       // This also sets session access, loads the org, and creates the fundraiser...
       this.props.getResource('session', {
@@ -167,10 +172,7 @@ class SignupStepsForm extends React.Component {
             this.setState({ saving: false });
           } else {
             this.props.setAccess(res, async (access) => {
-              const {
-                orgID
-              } = access;
-
+ 
               const completedStep = await this.props.stepCompleted('account', false);
               const stepUpdated = await this.props.updateOrgSignup({
                   saveCookie: false,
@@ -180,87 +182,73 @@ class SignupStepsForm extends React.Component {
               );
               if (stepUpdated && completedStep) {
 
-                this.props.saveOrg({
-                  orgID,
-                  orgUpdated: true,
-                  callback: (res, err) => {
-                    this.props.saveLegalEntity({
+                this.props.savingSignup(true, () => {
+
+                  const gbx3Data = this.props.signupGBX3Data();
+
+                  this.props.createFundraiser('fundraiser', async (res, err) => {
+                    const fundraiserID = util.getValue(res, 'ID');
+                    const createdArticleID = util.getValue(res, 'articleID');
+
+                    const {
+                      fields
+                    } = this.props;
+
+                    const {
+                      org,
+                      gbx3
+                    } = fields;
+
+                    const tokens = {
+                      '<<color>>': util.getValue(org, 'themeColor'),
+                      '{{link}}': `${GBX3_URL}/${createdArticleID}`,
+                      '{{orgname}}': util.getValue(org, 'name'),
+                      '{{orgimage}}': util.getValue(org, 'imageURL'),
+                      '{{articletitle}}': util.getValue(gbx3, 'title'),
+                      '{{articleimage}}': util.getValue(gbx3, 'imageURL'),
+                      '{{message}}': ''
+                    };
+
+                    const receiptHTML = util.replaceAll(defaultReceiptTemplate, tokens);
+                    this.props.sendResource(`orgFundraiser`, {
+                      orgID,
+                      id: [fundraiserID],
                       isSending: false,
-                      hasBeenUpdated: true,
+                      method: 'patch',
                       data: {
-                        name: util.getValue(res, 'name', null),
-                        taxID: util.getValue(res, 'taxID', null)
+                        receiptHTML
                       }
-                    });                    
-                    this.props.savingSignup(true, () => {
+                    });
 
-                      const gbx3Data = this.props.signupGBX3Data();
-
-                      this.props.createFundraiser('fundraiser', async (res, err) => {
-                        const fundraiserID = util.getValue(res, 'ID');
-                        const createdArticleID = util.getValue(res, 'articleID');
-                        const orgID = util.getValue(res, 'orgID');
-
-                        const {
-                          fields
-                        } = this.props;
-
-                        const {
-                          org,
-                          gbx3
-                        } = fields;
-
-                        const tokens = {
-                          '<<color>>': util.getValue(org, 'themeColor'),
-                          '{{link}}': `${GBX3_URL}/${createdArticleID}`,
-                          '{{orgname}}': util.getValue(org, 'name'),
-                          '{{orgimage}}': util.getValue(org, 'imageURL'),
-                          '{{articletitle}}': util.getValue(gbx3, 'title'),
-                          '{{articleimage}}': util.getValue(gbx3, 'imageURL'),
-                          '{{message}}': ''
-                        };
-
-                        const receiptHTML = util.replaceAll(defaultReceiptTemplate, tokens);
-                        this.props.sendResource(`orgFundraiser`, {
-                          orgID,
-                          id: [fundraiserID],
-                          isSending: false,
-                          method: 'patch',
-                          data: {
-                            receiptHTML
-                          }
-                        });
-
-                        const updated = await this.props.updateOrgSignup({
-                          createdArticleID,
-                          step: 5
-                        });
-                        if (updated) {
-                          this.props.saveOrg({
-                            orgID,
-                            data: orgData,
-                            orgUpdated: true,
-                            callback: async (res, err) => {
-                              localStorage.removeItem('signup');
-                              this.props.loadGBX3(createdArticleID, () => {
-                                this.props.savingSignup(false);
-                              });
-                              /*
-                              this.props.loadOrg(orgID, (res, err) => {
-                                //this.props.savingSignup(false);
-                                this.props.setOrgStyle();
-                                this.props.savingSignup(false);
-                              }, true);
-                              */
+                    const updated = await this.props.updateOrgSignup({
+                      createdArticleID,
+                      step: 5
+                    });
+                    if (updated) {
+                      this.props.saveOrg({
+                        orgID,
+                        data: orgData,
+                        orgUpdated: true,
+                        callback: async (res, err) => {
+                          this.props.saveLegalEntity({
+                            isSending: false,
+                            hasBeenUpdated: true,
+                            data: {
+                              name,
+                              taxID
                             }
                           });
+                          localStorage.removeItem('signup');
+                          this.props.loadGBX3(createdArticleID, () => {
+                            this.props.savingSignup(false);
+                          });
                         }
-                      }, null, {
-                        showNewArticle: false,
-                        data: gbx3Data
                       });
-                    });
-                  }
+                    }
+                  }, null, {
+                    showNewArticle: false,
+                    data: gbx3Data
+                  });
                 });
               }
             })

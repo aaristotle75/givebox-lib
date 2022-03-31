@@ -883,6 +883,7 @@ $contentHeaderPadding: 35%;
     height: 100vh;
     border-radius: 0px !important;
     padding: 0;
+    background: transparent;
     @include box-shadow(none);
     @media (max-width: $breakpoint) {
       border-radius: 0px !important;
@@ -927,10 +928,6 @@ $contentHeaderPadding: 35%;
 
   .hasAccessToEditPublic {
     display: none;
-  }
-
-  .gbx3Container {
-    background: transparent;
   }
 
   .gbx3OrgContentContainer {

@@ -148,7 +148,8 @@ class Modal extends Component {
   closeModal(type = 'ok', allowClose = true) {
     const {
       modals,
-      identifier
+      identifier,
+      closeGivebox
     } = this.props;
     const bindthis = this;
     const transitionTimeMS = this.getTransitionDuration();
@@ -156,6 +157,7 @@ class Modal extends Component {
     const appRoot = document.getElementById('app-root');
     const blurClass = bindthis.props.blurClass;
     let openModals = [];
+
     if (!util.isEmpty(modals)) {
       const filtered = util.filterObj(modals, 'open', true);
       openModals = Object.keys(filtered);
@@ -164,6 +166,7 @@ class Modal extends Component {
         openModals.splice(index, 1);
       }
     }
+
     if (appRoot.classList.contains(blurClass) && util.isEmpty(openModals)) {
       const classRemoved = appRoot.classList.remove(blurClass);
     }
