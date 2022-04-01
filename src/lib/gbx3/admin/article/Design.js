@@ -60,8 +60,6 @@ class Design extends React.Component {
       previewMode,
       previewDevice,
       advancedBuilder,
-      signupStepsDisplay,
-      kind,
       openAdmin: open
     } = this.props;
 
@@ -257,7 +255,6 @@ class Design extends React.Component {
 
     const {
       createType,
-      signupStepsDisplay,
       openAdmin: open
     } = this.props;
 
@@ -272,7 +269,6 @@ class Design extends React.Component {
             <AdminMenu
               blockType={'article'}
               contentObj={this.contentObj}
-              signupStepsDisplay={signupStepsDisplay}
             />
           :
             <ReceiptMenu

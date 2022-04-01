@@ -86,9 +86,7 @@ class ArticleAdmin extends React.Component {
 
     const {
       step,
-      advancedBuilder,
-      signupStepsDisplay,
-      kind
+      advancedBuilder
     } = this.props;
 
     switch (step) {
@@ -127,7 +125,6 @@ class ArticleAdmin extends React.Component {
               loadGBX3={this.props.loadGBX3}
               toggleBuilder={this.toggleBuilder}
               advancedBuilder={advancedBuilder}
-              signupStepsDisplay={signupStepsDisplay}
             />
           </>
         )
@@ -139,7 +136,6 @@ class ArticleAdmin extends React.Component {
 function mapStateToProps(state, props) {
 
   const gbx3 = util.getValue(state, 'gbx3', {});
-  const signupStepsDisplay = util.getValue(gbx3, 'admin.signupStepsDisplay');
   const step = util.getValue(gbx3, 'admin.step');
   const share = util.getValue(gbx3, 'info.share');
   const kind = util.getValue(gbx3, 'info.kind', 'fundraiser');
@@ -148,7 +144,6 @@ function mapStateToProps(state, props) {
   const advancedBuilder = util.getValue(gbx3, 'helperSteps.advancedBuilder', false);
 
   return {
-    signupStepsDisplay,
     step,
     share,
     kind,

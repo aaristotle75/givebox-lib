@@ -19,6 +19,7 @@ import {
   saveGBX3,
   saveReceipt
 } from './redux/gbx3actions';
+import OrgModalRoutes from './OrgModalRoutes';
 import Footer from './Footer';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
@@ -319,6 +320,7 @@ class Article extends React.Component {
 
     return (
       <div>
+        <OrgModalRoutes loadGBX3={this.props.loadGBX3} />
         <div className='layout-column'>
           <div
             id='gbx3DropArea'

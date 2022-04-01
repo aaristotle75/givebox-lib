@@ -18,6 +18,7 @@ import {
 import SignupMenu from './SignupMenu';
 import SignupPage from './SignupPage';
 import HelpfulTip from '../../common/HelpfulTip';
+import OrgModalRoutes from '../OrgModalRoutes';
 
 class Signup extends React.Component {
 
@@ -58,6 +59,7 @@ class Signup extends React.Component {
 
     return (
       <div className={`gbx3AdminLayout orgDisplay editable gbx3OrgSignup`}>
+        <OrgModalRoutes loadGBX3={this.props.loadGBX3} />
         { !modal ? <SignupMenu /> : null }
         { !modal ? 
         <div id='GBX3StageAligner' className='stageAligner'>

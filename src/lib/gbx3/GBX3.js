@@ -30,7 +30,7 @@ import {
   setOrgStyle,
   setCartOnLoad,
   loadOrgSignup,
-  checkSignupPhase
+  shouldCheckSignupPhase
 } from './redux/gbx3actions';
 import {
   setCustomProp,
@@ -41,7 +41,6 @@ import AvatarMenu from './admin/AvatarMenu';
 import Share from './share/Share';
 import history from '../common/history';
 import SavingSignup from './signup/SavingSignup';
-import OrgModalRoutes from './OrgModalRoutes'
 
 const RECAPTCHA_KEY = process.env.REACT_APP_RECAPTCHA_KEY;
 const ENV = process.env.REACT_APP_ENV;
@@ -482,8 +481,8 @@ class GBX3 extends React.Component {
         const signupStepsDisplay = util.getValue(admin, 'signupStepsDisplay');
         const preview = util.getValue(info, 'preview');
         const share = util.getValue(info, 'share');
-        if (signupStepsDisplay && !preview && !share && !previewMode) {
-          this.props.checkSignupPhase();
+        if (signupStepsDisplay && !preview && !share) {
+          this.props.shouldCheckSignupPhase();
         }
         if (callback) callback();
       }
@@ -556,9 +555,6 @@ class GBX3 extends React.Component {
     return (
       <div id='gbx3MainWrapper' className={`gbx3 ${browse ? 'isBrowsePage' : ''}`}>
         {this.renderStage()}
-        <OrgModalRoutes
-          loadGBX3={this.loadGBX3}
-        />
         <ModalRoute
           className='gbx3'
           id='avatarMenu'
@@ -661,5 +657,5 @@ export default connect(mapStateToProps, {
   setOrgStyle,
   setCartOnLoad,
   loadOrgSignup,
-  checkSignupPhase
+  shouldCheckSignupPhase
 })(GBX3);

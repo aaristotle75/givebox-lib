@@ -16,6 +16,7 @@ import {
 } from './gbx3defaults';
 import LZString from 'lz-string';
 import has from 'has';
+import Moment from 'moment';
 const merge = require('deepmerge');
 
 const GBX_URL = process.env.REACT_APP_GBX_SHARE;
@@ -290,6 +291,21 @@ export function loadOrgSignup(options = {}) {
       dispatch(updateInfo({ display: 'signup', originTemplate: 'signup' }));
       if (openModal && !bookDemo) dispatch(toggleModal('orgSignupSteps', true, { }));
       if (bookDemo) dispatch(toggleModal('bookDemo', true, { }));
+    }
+  }
+}
+
+export function shouldCheckSignupPhase(options = {}) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const lastSignupCheck = localStorage.getItem('lastSignupCheck');
+    const now = Moment().unix();
+    const timeBeforeNow = Moment().subtract(1, 'hours').unix();
+    if (lastSignupCheck && lastSignupCheck > timeBeforeNow) {
+      console.log('execute lastSignupCheck -> ', lastSignupCheck);
+    } else {
+      localStorage.setItem('lastSignupCheck', now);
+      dispatch(checkSignupPhase());
     }
   }
 }

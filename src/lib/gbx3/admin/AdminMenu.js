@@ -101,10 +101,12 @@ function mapStateToProps(state, props) {
   const admin = util.getValue(gbx3, 'admin', {});
   const openAdmin = util.getValue(admin, 'open');
   const breakpoint = util.getValue(gbx3, 'info.breakpoint');
+  const signupStepsDisplay = util.getValue(gbx3, 'admin.signupStepsDisplay');
 
   return {
     openAdmin,
-    breakpoint
+    breakpoint,
+    signupStepsDisplay
   }
 }
 

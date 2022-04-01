@@ -137,8 +137,7 @@ class AdminMenuLayout extends React.Component {
   render() {
 
     const {
-      advancedBuilder,
-      signupStepsDisplay
+      advancedBuilder
     } = this.props;
 
     return (
