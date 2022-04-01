@@ -43,7 +43,7 @@ import SignupShare from './SignupShare';
 import SignupStepsHelp from './SignupStepsHelp';
 
 const defaultReceiptTemplate = require('html-loader!../admin/receipt/receiptEmailDefaultContent.html');
-const GBX3_URL = process.env.REACT_APP_ENV === 'local' ? process.env.REACT_APP_GBX_SHARE : process.env.REACT_APP_GBX_URL;
+const GBX3_URL = process.env.REACT_APP_ENV === 'local' ? process.env.REACT_APP_GBX_URL : process.env.REACT_APP_GBX_URL;
 
 const ENTRY_URL = process.env.REACT_APP_ENTRY_URL;
 
@@ -84,7 +84,6 @@ class SignupStepsForm extends React.Component {
   componentDidMount() {
     window.addEventListener('message', this.gbx3message, false);
     new Image().src = 'https://cdn.givebox.com/givebox/public/images/step-loader.png';
-    console.log('execute signup steps mounted');
   }
 
   componentDidUpdate(prevProps) {
@@ -157,6 +156,11 @@ class SignupStepsForm extends React.Component {
   }
 
   async createOrgCallback(res, err, orgData = {}) {
+
+    const {
+      modal
+    } = this.props;
+          
     if (!err) {
 
       const name = util.getValue(res, 'name', null);
@@ -240,9 +244,13 @@ class SignupStepsForm extends React.Component {
                             }
                           });
                           localStorage.removeItem('signup');
-                          this.props.loadGBX3(createdArticleID, () => {
-                            this.props.savingSignup(false);
-                          });
+                          if (modal) {
+                            window.location.replace(`${GBX3_URL}/${createdArticleID}`);
+                          } else {
+                            this.props.loadGBX3(createdArticleID, () => {
+                              this.props.savingSignup(false);
+                            });
+                          }
                         }
                       });
                     }
@@ -427,7 +435,7 @@ class SignupStepsForm extends React.Component {
           step: 0
         }, 'postSignup');
         if (updated) {
-          this.props.checkSignupPhase();
+          //this.props.checkSignupPhase();
           this.props.saveOrg({
             orgUpdated: true,
             isSending: false,
@@ -1189,20 +1197,22 @@ class SignupStepsForm extends React.Component {
             </>
           ;
         } else {
-          item.saveButtonLabel = <span className='buttonAlignText'>Continue to Connect a Bank</span>;
+          item.saveButtonLabel = <span className='buttonAlignText'>Take Me to My Fundraiser Page</span>;
           item.className = 'preview';
-          item.desc = 'Congratulations, you have just opened a Merchant Processing Account! You can now accept donations.';
+          item.desc = 'Congratulations, you have just opened a Merchant Processing Account!';
           
           item.component =
             <div style={{ marginTop: 20 }} className='flexCenter flexColumn'>
-              The next step is to connect your bank account where you will receive your money.
+              You can now accept donations. Go to your fundraiser page, share it and start raising money.
+              {/*
               <SignupShare 
                 style={{
                   marginBottom: 0,
                   paddingBottom: 0
                 }}
                 showHelper={false} 
-              />              
+              />
+              */}              
             </div>
           ;
         }
@@ -1327,12 +1337,14 @@ function mapStateToProps(state, props) {
   const categories = util.getValue(state, 'resource.categories', {});
   const createdArticle = util.getValue(state, 'resource.createdArticle.data', {});
   const hasCreatedArticle = !util.isEmpty(createdArticle) ? true : false;
+  const modal = util.getValue(state, 'gbx3.info.modal', false);
 
   return {
     orgGlobals,
     categories,
     createdArticle,
-    hasCreatedArticle
+    hasCreatedArticle,
+    modal
   }
 }
 

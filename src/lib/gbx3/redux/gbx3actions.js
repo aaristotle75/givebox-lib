@@ -300,7 +300,7 @@ export function shouldCheckSignupPhase(options = {}) {
     const state = getState();
     const lastSignupCheck = localStorage.getItem('lastSignupCheck');
     const now = Moment().unix();
-    const timeBeforeNow = Moment().subtract(1, 'hours').unix();
+    const timeBeforeNow = Moment().subtract(1, 'seconds').unix();
     if (lastSignupCheck && lastSignupCheck > timeBeforeNow) {
       console.log('execute lastSignupCheck -> ', lastSignupCheck);
     } else {

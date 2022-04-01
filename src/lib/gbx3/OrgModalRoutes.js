@@ -110,7 +110,7 @@ export default class GBX3ModalRoutes extends Component {
         <ModalRoute
           className='gbx3'
           id={'orgSignupSteps'}
-          effect='3DFlipVert' style={{ width: '80%' }}
+          effect='3DFlipVert' style={{ width: '75%' }}
           disallowBgClose={true}
           closeBtnShow={false}
           component={(props) => {
@@ -127,14 +127,14 @@ export default class GBX3ModalRoutes extends Component {
         <ModalRoute
           className='gbx3'
           id={'bookDemo'}
-          effect='3DFlipVert' style={{ width: '70%' }}
+          effect='3DFlipVert' style={{ width: '75%' }}
           disallowBgClose={false}
           component={(props) => this.loadComponent('./signup/BookDemo', props)}
         />
         <ModalRoute
           className='gbx3'
           id={'orgPostSignupSteps'}
-          effect='3DFlipVert' style={{ width: '85%' }}
+          effect='3DFlipVert' style={{ width: '75%' }}
           disallowBgClose={true}
           closeBtnShow={false}
           component={(props) => {
@@ -148,7 +148,7 @@ export default class GBX3ModalRoutes extends Component {
         <ModalRoute
           className='gbx3'
           id={'orgConnectBankSteps'}
-          effect='3DFlipVert' style={{ width: '85%' }}
+          effect='3DFlipVert' style={{ width: '75%' }}
           disallowBgClose={true}
           closeBtnShow={false}
           component={(props) => {
@@ -162,7 +162,7 @@ export default class GBX3ModalRoutes extends Component {
         <ModalRoute
           className='gbx3'
           id={'orgTransferSteps'}
-          effect='3DFlipVert' style={{ width: '85%' }}
+          effect='3DFlipVert' style={{ width: '75%' }}
           disallowBgClose={true}
           closeBtnShow={false}
           component={(props) => {

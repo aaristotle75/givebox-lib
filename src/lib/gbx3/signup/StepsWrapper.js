@@ -230,6 +230,18 @@ class StepsWrapper extends React.Component {
     const oneStep = parseInt(100 / numStepsTodo);
     const leftPercent = parseInt(stepProgress - oneStep);
     const stepConfig = util.getValue(stepsTodo, step, {});
+    const slug = util.getValue(stepConfig, 'slug');
+
+    let hideCloseBtn = false;
+
+    switch (slug) {
+      case 'previewShare': {
+        hideCloseBtn = true;
+        break;
+      }
+
+      // no default
+    }
 
     return (
       <div className='gbx3Steps modalWrapper'>
@@ -242,6 +254,7 @@ class StepsWrapper extends React.Component {
           <div className='stepsTopTitle'>
             { stepConfig.icon ? <span className={`icon icon-${stepConfig.icon}`}></span> : stepConfig.customIcon } {stepConfig.title}
           </div>
+          { !hideCloseBtn ?
           <GBLink 
             className='stepsTopClose link buttonAlignText' 
             onClick={() => {
@@ -254,6 +267,7 @@ class StepsWrapper extends React.Component {
           >
             {isMobile ? 'Close' : 'Close and Do Later'} <span className='icon icon-x'></span>
           </GBLink>
+          : null }
         </div>
         <div className='progressWrapper'>
           <div className='progressBarArchetype'>

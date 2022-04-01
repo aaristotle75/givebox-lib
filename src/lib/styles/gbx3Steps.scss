@@ -401,6 +401,8 @@ $gbx3StepsBreakpoint: 600px;
     .stepTitle {
       display: flex;
       flex-direction: column;
+      align-items: center;
+      justify-content: center;
       font-size: 22px;
       margin-left: 20px;
       font-weight: 400;
