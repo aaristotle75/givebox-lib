@@ -856,7 +856,7 @@ class SignupStepsForm extends React.Component {
                   value: orgName,
                   onBlur: (name, value) => {
                     if (value) {
-                      this.props.updateOrgSignupField('org', { name: value });
+                     this.props.updateOrgSignupField('org', { name: value });
                     }
                   }
                 })}

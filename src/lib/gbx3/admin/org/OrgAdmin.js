@@ -9,7 +9,8 @@ import {
   toggleAdminLeftPanel,
   checkSignupPhase,
   setSignupStep,
-  updateOrgSignup
+  updateOrgSignup,
+  openStep
 } from '../../redux/gbx3actions';
 import {
   toggleModal,
@@ -28,7 +29,6 @@ class OrgAdmin extends React.Component {
 
   constructor(props) {
     super(props);
-    this.openStep = this.openStep.bind(this);
     this.state = {
     };
   }
@@ -53,26 +53,20 @@ class OrgAdmin extends React.Component {
     if (connectBankSteps) {
       if (signupPhase !== 'connectBank') {
         const phaseUpdated = await this.props.updateOrgSignup({ signupPhase: 'connectBank' }, 'postSignup');
-        if (phaseUpdated) this.openStep('connectBank', 'orgConnectBankSteps');
+        if (phaseUpdated) this.props.openStep('connectBank', 'orgConnectBankSteps');
       } else {
-        this.openStep('connectBank', 'orgConnectBankSteps');
+        this.props.openStep('connectBank', 'orgConnectBankSteps');
       }
     } else if (transferSteps) {
       if (signupPhase !== 'transferMoney') {
         const phaseUpdated = await this.props.updateOrgSignup({ signupPhase: 'transferMoney' }, 'connectBank');
-        if (phaseUpdated) this.openStep('identity', 'orgTransferSteps');
+        if (phaseUpdated) this.props.openStep('identity', 'orgTransferSteps');
       } else {
-        this.openStep('identity', 'orgTransferSteps');
+        this.props.openStep('identity', 'orgTransferSteps');
       }
     } else {
       this.props.checkSignupPhase(ENV !== 'production' ? testConfig : {});
     }
-  }
-
-  openStep(value, modalName) {
-    this.props.setSignupStep(value, () => {
-      this.props.toggleModal(modalName, true);
-    });
   }
 
   render() {
@@ -154,5 +148,6 @@ export default connect(mapStateToProps, {
   openLaunchpad,
   toggleModal,
   setSignupStep,
-  updateOrgSignup
+  updateOrgSignup,
+  openStep
 })(OrgAdmin);

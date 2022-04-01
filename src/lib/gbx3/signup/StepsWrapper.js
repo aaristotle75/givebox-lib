@@ -51,6 +51,10 @@ class StepsWrapper extends React.Component {
     };
   }
 
+  componentDidMount() {
+    console.log('execute stepswrapper mounted');
+  }
+
   componentDidUpdate(prevProps) {
     if (prevProps.signupPhase !== this.props.signupPhase) {
       const configStep = config.signupPhase[this.props.signupPhase];

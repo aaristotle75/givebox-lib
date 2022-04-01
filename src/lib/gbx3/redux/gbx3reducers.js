@@ -75,6 +75,7 @@ export function gbx3(state = {
   },
   data: {},
   admin: {
+    signupStepsDisplay: false,
     allowLayoutSave: false,
     loadingLayout: true,
     editBlock: '',

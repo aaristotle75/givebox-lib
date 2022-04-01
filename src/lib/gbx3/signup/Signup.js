@@ -9,22 +9,20 @@ import {
   loadOrgSignup,
   setOrgStyle,
   updateOrgSignup,
-  setSignupStep
+  setSignupStep,
+  openStep
 } from '../redux/gbx3actions';
 import {
   toggleModal
 } from '../../api/actions';
 import SignupMenu from './SignupMenu';
 import SignupPage from './SignupPage';
-import { signupSteps } from './signupConfig';
 import HelpfulTip from '../../common/HelpfulTip';
-import OrgModalRoutes from '../OrgModalRoutes';
 
 class Signup extends React.Component {
 
   constructor(props) {
     super(props);
-    this.openStep = this.openStep.bind(this);
     this.resizer = this.resizer.bind(this);
     this.state = {
       isMobile: window.innerWidth <= 736 ? true : false
@@ -47,12 +45,6 @@ class Signup extends React.Component {
     }
   }
 
-  openStep(value) {
-    this.props.setSignupStep(value, () => {
-      this.props.toggleModal('orgSignupSteps', true);
-    });
-  }
-
   render() {
 
     const {
@@ -66,9 +58,6 @@ class Signup extends React.Component {
 
     return (
       <div className={`gbx3AdminLayout orgDisplay editable gbx3OrgSignup`}>
-        <OrgModalRoutes 
-          loadGBX3={this.props.loadGBX3}
-        />
         { !modal ? <SignupMenu /> : null }
         { !modal ? 
         <div id='GBX3StageAligner' className='stageAligner'>
@@ -88,7 +77,7 @@ class Signup extends React.Component {
                     <GBLink style={{ marginRight: 10 }} className='button' onClick={() => this.props.loadOrgSignup({ bookDemo: true })}>
                       <span className='buttonAlignText'>Book Demo</span>
                     </GBLink>
-                    <GBLink className='button' onClick={() => this.openStep('account')} style={{ marginRight: 10 }}>
+                    <GBLink className='button' onClick={() => this.props.openStep('account')} style={{ marginRight: 10 }}>
                       <span className='buttonAlignText'>Save Progress</span>
                     </GBLink>
                     <div className='tooltip moneyRaised'>
@@ -103,7 +92,7 @@ class Signup extends React.Component {
                                 After you get your first transaction you can connect a bank account to transfer your money.
                               </span>
                               <div className='flexCenter button-group'>
-                                <GBLink className='button' onClick={() => this.openStep('orgName')}>
+                                <GBLink className='button' onClick={() => this.props.openStep('orgName')}>
                                   Create Fundraiser Steps
                                 </GBLink>
                               </div>
@@ -120,7 +109,7 @@ class Signup extends React.Component {
                   </div>
                 </div>
                 <SignupPage
-                  openStep={this.openStep}
+                  openStep={this.props.openStep}
                 />
                 {isMobile ? <div className='bottomOffset'>&nbsp;</div> : <></>}
               </div>
@@ -149,5 +138,6 @@ export default connect(mapStateToProps, {
   setOrgStyle,
   updateOrgSignup,
   setSignupStep,
-  toggleModal
+  toggleModal,
+  openStep
 })(Signup);

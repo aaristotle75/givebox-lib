@@ -48,19 +48,21 @@ class GBXTest extends Component {
     const blockType = 'org';
     const browse = true;
 
+    /*
     console.log('execute blockType -> ', blockType);
     console.log('execute orgID -> ', orgID);
     console.log('execute articleID -> ', articleID, isNaN(articleID), !isNaN(articleID));
     console.log('execute browse -> ', browse);
+    */
 
     if ( (orgID && blockType === 'org' && !isNaN(articleID)) || (articleID && blockType === 'article' && !isNaN(articleID)) || (browse && !isNaN(articleID)) ) {
 
       return (
         <div>
           <GBX3
-            signup={true}
+            signup={false}
             browse={false}
-            blockType={'org'}
+            blockType={'article'}
             orgID={orgID}
             articleID={articleID}
             saveCallback={this.saveCallback}

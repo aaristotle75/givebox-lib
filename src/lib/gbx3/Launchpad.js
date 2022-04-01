@@ -13,7 +13,8 @@ import {
   endMasquerade
 } from '../api/actions';
 import {
-  setSignupStep
+  setSignupStep,
+  openStep
 } from './redux/gbx3actions';
 import { phases, signupPhase as signupPhases } from './signup/signupConfig';
 
@@ -28,7 +29,6 @@ class Launchpad extends React.Component {
     this.onClickApp = this.onClickApp.bind(this);
     this.appLoadedMessage = this.appLoadedMessage.bind(this);
     this.launchpadActions = this.launchpadActions.bind(this);
-    this.openStep = this.openStep.bind(this);
     this.state = {
     };
   }
@@ -48,12 +48,6 @@ class Launchpad extends React.Component {
     window.addEventListener('message', this.appLoadedMessage, false);
   }
 
-  openStep(value, modalName) {
-    this.props.setSignupStep(value, () => {
-      this.props.toggleModal(modalName, true);
-    });
-  }
-
   appLoadedMessage(e) {
 
     const {
@@ -69,7 +63,7 @@ class Launchpad extends React.Component {
     }
 
     if (e.data === 'connectBankSteps') {
-      this.openStep('connectBank', 'orgConnectBankSteps');
+      this.props.openStep('connectBank', 'orgConnectBankSteps');
       this.props.toggleModal('launchpad', false);
     }
 
@@ -77,7 +71,7 @@ class Launchpad extends React.Component {
       const requiredSteps = signupPhases.transferMoney.requiredSteps;
       const readyToCheckApproval = requiredSteps.every(c => completed.includes(c));
       const stepToOpen = readyToCheckApproval ? 'transferStatus' : 'identity';
-      this.openStep(stepToOpen, 'orgTransferSteps');
+      this.props.openStep(stepToOpen, 'orgTransferSteps');
       this.props.toggleModal('launchpad', false);
     }
   }
@@ -261,5 +255,6 @@ export default connect(mapStateToProps, {
   setAppProps,
   startMasquerade,
   endMasquerade,
-  setSignupStep
+  setSignupStep,
+  openStep
 })(Launchpad);

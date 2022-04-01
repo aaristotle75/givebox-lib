@@ -29,7 +29,8 @@ import {
   setStyle,
   setOrgStyle,
   setCartOnLoad,
-  loadOrgSignup
+  loadOrgSignup,
+  checkSignupPhase
 } from './redux/gbx3actions';
 import {
   setCustomProp,
@@ -40,6 +41,7 @@ import AvatarMenu from './admin/AvatarMenu';
 import Share from './share/Share';
 import history from '../common/history';
 import SavingSignup from './signup/SavingSignup';
+import OrgModalRoutes from './OrgModalRoutes'
 
 const RECAPTCHA_KEY = process.env.REACT_APP_RECAPTCHA_KEY;
 const ENV = process.env.REACT_APP_ENV;
@@ -96,7 +98,6 @@ class GBX3 extends React.Component {
     const blockType = template || this.props.blockType;
     const orgID = this.props.orgID || util.getValue(access, 'orgID');
     const setInfo = await this.setInfo();
-    console.log('execute gbx3 -> ', browse, step, orgID, blockType);
     if (setInfo) {
       if (browse) {
         this.loadBrowse();
@@ -466,7 +467,7 @@ class GBX3 extends React.Component {
     const previewMode = has(queryParams, 'previewMode') ? true : false;
 
     var loaded = false;
-    this.props.loadGBX3(articleID, (res, err) => {
+    this.props.loadGBX3(articleID, (res, err, args) => {
       if (!err && !util.isEmpty(res)) {
         this.props.setStyle();
         this.setRecaptcha();
@@ -474,6 +475,16 @@ class GBX3 extends React.Component {
         if (steps) this.props.toggleModal('stepsForm', true);
         if (share) this.props.toggleModal('share', true);
         if (previewMode) this.props.updateAdmin({ previewDevice: 'desktop', previewMode: true });
+        const {
+          admin,
+          info
+        } = args;
+        const signupStepsDisplay = util.getValue(admin, 'signupStepsDisplay');
+        const preview = util.getValue(info, 'preview');
+        const share = util.getValue(info, 'share');
+        if (signupStepsDisplay && !preview && !share && !previewMode) {
+          this.props.checkSignupPhase();
+        }
         if (callback) callback();
       }
       loaded = true;
@@ -545,6 +556,9 @@ class GBX3 extends React.Component {
     return (
       <div id='gbx3MainWrapper' className={`gbx3 ${browse ? 'isBrowsePage' : ''}`}>
         {this.renderStage()}
+        <OrgModalRoutes
+          loadGBX3={this.loadGBX3}
+        />
         <ModalRoute
           className='gbx3'
           id='avatarMenu'
@@ -646,5 +660,6 @@ export default connect(mapStateToProps, {
   toggleModal,
   setOrgStyle,
   setCartOnLoad,
-  loadOrgSignup
+  loadOrgSignup,
+  checkSignupPhase
 })(GBX3);

@@ -7,9 +7,9 @@ import ModalRoute from '../modal/ModalRoute';
 import ModalLink from '../modal/ModalLink';
 import Shop from './Shop';
 import Article from './Article';
+import Signup from './signup/Signup';
 import Org from './Org';
 import Browse from './browse/Browse';
-import Signup from './signup/Signup';
 import Confirmation from './payment/Confirmation';
 import {
   updateAdmin,

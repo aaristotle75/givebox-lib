@@ -7,7 +7,7 @@ import { defaultAmountHeight } from '../blocks/amounts/amountsStyle';
 import { blockTemplates, defaultBlocks } from '../blocks/blockTemplates';
 import { createData } from '../admin/article/createTemplates';
 import { builderStepsConfig } from '../admin/article/builderStepsConfig';
-import { signupPhase as signupPhaseConfig } from '../signup/signupConfig';
+import { signupPhase as signupPhaseConfig, phases as signupPhases } from '../signup/signupConfig';
 import {
   primaryColor as defaultPrimaryColor,
   defaultStyle,
@@ -218,6 +218,14 @@ export function setSignupStep(value, callback) {
   }
 }
 
+export function openStep(value, modalName = 'orgSignupSteps') {
+  return (dispatch, getState) => {
+    dispatch(setSignupStep(value, () => {
+      dispatch(toggleModal(modalName, true));
+    }));
+  }
+}
+
 export function updateOrgSignup(orgSignup = {}, phaseCompleted = null) {
   return {
     type: types.UPDATE_ORG_SIGNUP,
@@ -289,61 +297,81 @@ export function loadOrgSignup(options = {}) {
 export function checkSignupPhase(options = {}) {
   return async (dispatch, getState) => {
     const state = getState();
+    const connectBankSteps = util.getValue(state, 'gbx3.info.connectBankSteps');
+    const transferSteps = util.getValue(state, 'gbx3.info.transferSteps');
     const signupPhase = util.getValue(state, 'gbx3.orgSignup.signupPhase');
     const completedPhases = util.getValue(state, 'gbx3.orgSignup.completedPhases', []);
     const hasReceivedTransaction = util.getValue(state, 'resource.gbx3Org.data.hasReceivedTransaction');
 
-    switch (signupPhase) {
-      case 'postSignup': {
-        if (hasReceivedTransaction) {
-          const updated = await dispatch(updateOrgSignup({
-            step: 0,
-            signupPhase: 'connectBank'
-          }, 'postSignup'));
-          if (updated) {
+    if (connectBankSteps) {
+      if (signupPhase !== 'connectBank') {
+        const phaseUpdated = await dispatch(updateOrgSignup({ signupPhase: 'connectBank' }, 'postSignup'));
+        if (phaseUpdated) dispatch(openStep('connectBank', 'orgConnectBankSteps'));
+      } else {
+        dispatch(openStep('connectBank', 'orgConnectBankSteps'));
+      }
+      dispatch(updateInfo({ connectBankSteps: false }));
+    } else if (transferSteps) {
+      if (signupPhase !== 'transferMoney') {
+        const phaseUpdated = await dispatch(updateOrgSignup({ signupPhase: 'transferMoney' }, 'connectBank'));
+        if (phaseUpdated) dispatch(openStep('identity', 'orgTransferSteps'));
+      } else {
+        dispatch(openStep('identity', 'orgTransferSteps'));
+      }
+      dispatch(updateInfo({ transferMoney: false })); 
+    } else {
+      switch (signupPhase) {
+        case 'postSignup': {
+          if (hasReceivedTransaction) {
+            const updated = await dispatch(updateOrgSignup({
+              step: 0,
+              signupPhase: 'connectBank'
+            }, 'postSignup'));
+            if (updated) {
+              dispatch(loadSignupPhase({
+                phase:  'connectBank',
+                modalName: 'orgConnectBankSteps',
+                openAdmin: true,
+                openModal: true
+              }));
+            }
+          } else {
             dispatch(loadSignupPhase({
-              phase:  'connectBank',
-              modalName: 'orgConnectBankSteps',
-              openAdmin: true,
-              openModal: true
+              phase:  'postSignup',
+              modalName: 'orgPostSignupSteps',
+              ...options
             }));
           }
-        } else {
-          dispatch(loadSignupPhase({
-            phase:  'postSignup',
-            modalName: 'orgPostSignupSteps',
-            ...options
-          }));
+          break;
         }
-        break;
-      }
-
-      case 'manualConnect':
-      case 'connectBank': {
-        dispatch(loadSignupPhase({
-          phase: signupPhase,
-          modalName: 'orgConnectBankSteps',
-          openAdmin: true,
-          openModal: true,
-          ...options
-        }));
-        break;
-      }
-
-      case 'transferMoney': {
-        if (!completedPhases.includes('transferMoney')) {
+  
+        case 'manualConnect':
+        case 'connectBank': {
           dispatch(loadSignupPhase({
             phase: signupPhase,
-            modalName: 'orgTransferSteps',
+            modalName: 'orgConnectBankSteps',
             openAdmin: true,
             openModal: true,
             ...options
           }));
+          break;
         }
-        break;
+  
+        case 'transferMoney': {
+          if (!completedPhases.includes('transferMoney')) {
+            dispatch(loadSignupPhase({
+              phase: signupPhase,
+              modalName: 'orgTransferSteps',
+              openAdmin: true,
+              openModal: true,
+              ...options
+            }));
+          }
+          break;
+        }
+  
+        // no default
       }
-
-      // no default
     }
   }
 }
@@ -1427,10 +1455,13 @@ export function loadGBX3(articleID, callback) {
     const globalsState = util.getValue(gbx3, 'globals', {});
     const orgData = util.getValue(getState(), 'resource.gbx3Org.data', {});
     const admin = util.getValue(gbx3, 'admin', {});
+    const info = util.getValue(gbx3, 'info', {});
     const editFormOnly = util.getValue(admin, 'editFormOnly');
     const blockType = 'article';
     const availableBlocks = util.deepClone(util.getValue(admin, `availableBlocks.article`, []));
     const receiptAvailableBlocks = util.deepClone(util.getValue(admin, `availableBlocks.receipt`, []));
+
+    let signupStepsNotComplete = false;
 
     dispatch(getResource('article', {
       id: [articleID],
@@ -1448,8 +1479,11 @@ export function loadGBX3(articleID, callback) {
             reload: true,
             callback: (res, err) => {
               if (!util.isEmpty(res) && !err) {
-                 const orgSignup = util.getValue(res, 'customTemplate.orgSignup', {});     
-                 dispatch(updateOrgSignup(orgSignup));
+                const orgSignup = util.getValue(res, 'customTemplate.orgSignup', {});
+                const signupPhase = util.getValue(orgSignup, 'signupPhase');   
+                const completedPhases = util.getValue(orgSignup, 'completedPhases', []);
+                signupStepsNotComplete = ( signupPhase && completedPhases.length < signupPhases.length && !completedPhases.includes('transferMoney') ) ? true : false;
+                dispatch(updateOrgSignup(orgSignup));
               }
             }
           }));
@@ -1470,7 +1504,7 @@ export function loadGBX3(articleID, callback) {
               id: [kindID],
               reload: true,
               orgID: orgID,
-              callback: (res, err) => {
+              callback: async (res, err) => {
                 if (!err && !util.isEmpty(res)) {
                   const settings = util.getValue(res, 'giveboxSettings', {});
                   const primaryColor = util.getValue(settings, 'primaryColor', '#4775f8');
@@ -1652,6 +1686,7 @@ export function loadGBX3(articleID, callback) {
 
                   const admin = {
                     hasAccessToEdit,
+                    signupStepsDisplay: hasAccessToEdit && signupStepsNotComplete ? true : false,
                     editable: hasAccessToEdit ? true : false,
                     step: 'design',
                     open: editFormOnly ? false : true
@@ -1661,15 +1696,6 @@ export function loadGBX3(articleID, callback) {
                     admin.isVolunteer = true;
                     admin.volunteerID = volunteerID;
                   }
-
-                  dispatch(updateLayouts(blockType, layouts));
-                  dispatch(updateBlocks(blockType, blocks));
-                  dispatch(updateGlobals(globals));
-                  dispatch(updateHelperSteps(helperSteps));
-                  dispatch(updateData(res));
-                  dispatch(updateAvailableBlocks(blockType, availableBlocks));
-                  dispatch(updateAdmin(admin));
-                  dispatch(updateGBX3('browse', false));
 
                   // Get and Set Thank You Email Receipt
                   const receiptCustom = util.getValue(res, 'receiptConfig.blocks', {});
@@ -1694,11 +1720,22 @@ export function loadGBX3(articleID, callback) {
                     })
                   }
 
+                  dispatch(updateLayouts(blockType, layouts));
+                  dispatch(updateBlocks(blockType, blocks));
+                  dispatch(updateGlobals(globals));
+                  dispatch(updateHelperSteps(helperSteps));
+                  dispatch(updateData(res));
+                  dispatch(updateAvailableBlocks(blockType, availableBlocks));
+                  dispatch(updateGBX3('browse', false));
                   dispatch(updateBlocks('receipt', receiptBlocks));
                   dispatch(updateAvailableBlocks('receipt', receiptAvailableBlocks));
-
                   dispatch(GBX3Loaded());
-                  callback(res, err)
+                  dispatch(updateAdmin(admin));
+                  
+                  callback(res, err, {
+                   admin,
+                   info
+                  });
                 }
                 dispatch(setLoading(false));
               }

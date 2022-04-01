@@ -5,7 +5,8 @@ import HelpfulTip from '../../common/HelpfulTip';
 import GBLink from '../../common/GBLink';
 import Loader from '../../common/Loader';
 import {
-  setSignupStep
+  setSignupStep,
+  openStep
 } from '../redux/gbx3actions';
 import {
   toggleModal,
@@ -19,18 +20,11 @@ class MoneyRaised extends React.Component {
 
   constructor(props) {
     super(props);
-    this.openStep = this.openStep.bind(this);
     this.state = {
     };
   }
 
   componentDidMount() {
-  }
-
-  openStep(value, modalName) {
-    this.props.setSignupStep(value, () => {
-      this.props.toggleModal(modalName, true);
-    });
   }
 
   render() {
@@ -72,7 +66,7 @@ class MoneyRaised extends React.Component {
             Bonus Step) Add a video to your form. Donors LOVE videos.
           </span>
           <div className='button-group flexCenter'>
-            <GBLink className='button' onClick={() => this.openStep('previewShare', 'orgPostSignupSteps')}>
+            <GBLink className='button' onClick={() => this.props.openStep('previewShare', 'orgPostSignupSteps')}>
               Share Fundraiser
             </GBLink>
           </div>
@@ -90,7 +84,7 @@ class MoneyRaised extends React.Component {
                 Givebox uses Plaid to connect to your bank account. Simply select your bank and login using your bank account credentials. You will then be able to choose the account to associate to Givebox.
               </span>
               <div className='button-group flexCenter'>
-                <GBLink className='button' onClick={() => this.openStep('connectBank', 'orgConnectBankSteps')}>
+                <GBLink className='button' onClick={() => this.props.openStep('connectBank', 'orgConnectBankSteps')}>
                   Connect Bank
                 </GBLink>
               </div>
@@ -110,7 +104,7 @@ class MoneyRaised extends React.Component {
               To enable money transfers you must secure your account.
               <div className='button-group flexCenter'>
                 <GBLink className='button' onClick={() => {
-                  this.openStep(stepToOpen, 'orgTransferSteps');
+                  this.props.openStep(stepToOpen, 'orgTransferSteps');
                 }}>
                   Secure Your Account
                 </GBLink>
@@ -174,5 +168,6 @@ function mapStateToProps(state, props) {
 export default connect(mapStateToProps, {
   setSignupStep,
   toggleModal,
-  openLaunchpad
+  openLaunchpad,
+  openStep
 })(MoneyRaised);
