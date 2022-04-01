@@ -52,7 +52,6 @@ class StepsWrapper extends React.Component {
   }
 
   componentDidMount() {
-    console.log('execute stepswrapper mounted');
   }
 
   componentDidUpdate(prevProps) {
