@@ -29,10 +29,11 @@ class ConnectStatus extends React.Component {
       merchantIdentString,
       legalEntityStatus,
       legalEntityID,
-      isVantivReady
+      isVantivReady,
+      previousStepMessage
     } = this.props;
 
-    let message = 'Please complete the previous steps to connect a bank account.';
+    let message = previousStepMessage || 'Please complete the previous steps to connect a bank account.';
     let componentMessage = '';
     if (isVantivReady) {
       message = 'Please click "Check Connection Status" below to finish connecting your bank account.'

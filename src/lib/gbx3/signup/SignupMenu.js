@@ -22,6 +22,7 @@ class SignupMenu extends React.Component {
       configStep,
       stepsTodo: configStep.stepsTodo,
       showStepNumber: configStep.showStepNumber,
+      customStepNumber: configStep.customStepNumber,
       menuHeader: configStep.menuHeader,
       modalName: configStep.modalName
     };
@@ -55,6 +56,7 @@ class SignupMenu extends React.Component {
       stepsTodo,
       modalName,
       showStepNumber,
+      customStepNumber,
       menuHeader
     } = this.state;
 
@@ -63,7 +65,7 @@ class SignupMenu extends React.Component {
       const currentStep = +key === +step ? true : false;
       const completedStep = completed.includes(value.slug) ? true : false;
 
-      let stepNumber = <span className='number'>Step {+key + 1}</span>;
+      let stepNumber = <span className='number'>{ customStepNumber || `Step ${+key + 1}`}</span>;
       let hideStep = false;
 
       if (signupPhase === 'postSignup') {

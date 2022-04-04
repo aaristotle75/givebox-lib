@@ -44,6 +44,7 @@ class ConnectBankStepsForm extends React.Component {
     this.checkConnectStatus = this.checkConnectStatus.bind(this);
     this.switchToConnectBank = this.switchToConnectBank.bind(this);
     this.switchToManualBank = this.switchToManualBank.bind(this);
+    this.hasMerchantIdentStringSave = this.hasMerchantIdentStringSave.bind(this);
 
     this.state = {
       editorOpen: false,
@@ -114,7 +115,7 @@ class ConnectBankStepsForm extends React.Component {
         callback: (message, err) => {
           if (message === 'submerchant_created' || message === 'has_mid') {
             if (!completed.includes('connectBank')) this.props.stepCompleted('connectBank');
-            if (signupStep !== 4) this.props.setSignupStep('connectStatus');
+            if (signupStep !== 4 && signupPhase === 'manualConnect') this.props.setSignupStep('connectStatus');
           } else if (err || message === 'cannot_submit_to_vantiv' || message === 'mid_notcreated') {
             if (signupPhase !== 'manualConnect') this.switchToManualBank();
             this.props.formProp({ error: true, errorMsg: <span>We are unable to connect your bank account. Please manually connect a bank account and check that all your information is correct and try again in a few minutes.<br />{util.getValue(err, 'data.message', '')}</span> });
@@ -150,6 +151,28 @@ class ConnectBankStepsForm extends React.Component {
         }
         */
       }, delay);
+    }
+  }
+
+  async hasMerchantIdentStringSave(stepCompleted = 'connectStatus', openModal = true) {
+    this.setState({ saving: false });
+    const completed = await this.props.stepCompleted(stepCompleted, false);
+    if (completed) {
+      const updated = await this.props.updateOrgSignup({ signupPhase: 'transferMoney' }, 'connectBank');
+      if (updated) {
+        this.props.toggleModal('orgConnectBankSteps', false);
+        this.props.checkSignupPhase({
+          forceStep: 0,
+          openAdmin: true,
+          openModal
+        });
+        this.props.saveOrg({
+          orgUpdated: true,
+          isSending: true,
+          callback: () => {
+          }
+        });
+      }
     }
   }
 
@@ -254,25 +277,7 @@ class ConnectBankStepsForm extends React.Component {
           return this.setState({ saving: false });
         } else {
           if (merchantIdentString) {
-            this.setState({ saving: false });
-            const completed = await this.props.stepCompleted('connectStatus', false);
-            if (completed) {
-              const updated = await this.props.updateOrgSignup({ signupPhase: 'transferMoney' }, 'connectBank');
-              if (updated) {
-                this.props.toggleModal('orgConnectBankSteps', false);
-                this.props.checkSignupPhase({
-                  forceStep: 0,
-                  openAdmin: true,
-                  openModal: true
-                });
-                this.props.saveOrg({
-                  orgUpdated: true,
-                  isSending: true,
-                  callback: () => {
-                  }
-                });
-              }
-            }
+            this.hasMerchantIdentStringSave();
           } else {
             this.checkConnectStatus();
           }
@@ -305,7 +310,8 @@ class ConnectBankStepsForm extends React.Component {
       signupPhase,
       hasReceivedTransaction,
       instantStatus,
-      phaseEndsAt
+      phaseEndsAt,
+      completed: completedSteps
     } = this.props;
 
     const connectLoader = this.props.connectLoader;
@@ -317,8 +323,6 @@ class ConnectBankStepsForm extends React.Component {
     const lastStep = step === this.props.steps ? true : false;
     const nextStepName = this.props.getNextStep();
     const nextStepNumber = this.props.nextStep(step) + 1;
-
-    console.log('execute -> ', hasReceivedTransaction, phaseEndsAt, lastDay);
 
     const item = {
       title: stepConfig.title,
@@ -337,59 +341,98 @@ class ConnectBankStepsForm extends React.Component {
     const endsAt = Moment.unix(phaseEnds).utc();
     const now = Moment.utc();
     const diff = endsAt.diff(now, 'days');
+    const numberDaysLeft = diff > 5 ? 5 :diff;
     const lastDay = diff === 0 ? true : false;
-    const diffDisplay = lastDay ? 'This is the Last Day' : `You Have ${diff} Day${diff > 1 ? 's' : ''}`;
+    const diffDisplay = lastDay ? 'This is the Last Day' : `You Have ${numberDaysLeft} Day${numberDaysLeft > 1 ? 's' : ''}`;
     const daysLeftDisplay = `${diffDisplay} to Connect a Bank Account or the Money You Received will be Refunded.`;
-    console.log('execute -> ', hasReceivedTransaction, phaseEndsAt, lastDay, daysLeftDisplay);
-    
     const hasTransacitons = 
-      hasReceivedTransaction ?
-        <div className='fieldGroup'>
-          { hasReceivedTransaction ? <span style={{ display: 'block' }}>Congratulations, you have received your first transactions with Givebox!</span> : null }
-          { hasReceivedTransaction && phaseEndsAt ? <span style={{ fontWeight: 500, color: lastDay ? 'red' : null }}>{daysLeftDisplay}</span> : null }
+      hasReceivedTransaction
+      && ( instantStatus === 'enabled' || instantStatus === 'on_hold' ) ?
+        <div style={{ marginTop: 20 }} className='flexCenter flexColumn'>
+          <span style={{ display: 'block' }}>Congratulations, you have received your first transactions with Givebox!</span>
+          { phaseEndsAt ? <span style={{ fontWeight: 500, color: lastDay ? 'red' : null }}>{daysLeftDisplay}</span> : null }
         </div>
       : null
     ;
 
+    const connectBankCompleted = this.props.completed.includes('connectBank') ? true : false;    
 
     switch (slug) {
       case 'connectBank': {
-        if (connectLoader) {
-          item.desc = 'Please wait while we connect your bank account to Givebox...';    
-          item.component = 
-            <div className='flexCenter flexColumn'>
+        if (connectBankCompleted) {
+          if (isVantivReady && !merchantIdentString) {
+            item.saveButton =
+              <GBLink 
+                className='button' 
+                onClick={() => {
+                  this.props.setMerchantApp('connectLoader', true);
+                  this.checkConnectStatus();
+                }}
+              >
+                Check Your Bank Account Connection to Givebox
+              </GBLink>
+            ;
+          } else if (merchantIdentString) {
+            item.saveButton =
+              <GBLink 
+                className='button' 
+                onClick={() => {
+                  this.hasMerchantIdentStringSave('connectBank', false);
+                }}
+              >
+                Take Me to My Fundraiser Page
+              </GBLink>
+            ;
+          }
+          item.desc = '';
+          item.component =
+            <div>
               <div className='fieldGroup'>
-                Please do not close this overlay, navigate away from the page, or close the browser while it connects. 
-              </div>
-              <Image
-                url={'https://cdn.givebox.com/givebox/public/images/step-loader.png'}
-                maxSize={250}
-                alt='Saving Progress'
-                className='stepLoader'
-              />              
+                <ConnectStatus
+                  {...this.props}
+                  previousStepMessage={' '}
+                />
+              </div>         
             </div>
           ;
         } else {
-          item.desc = 'Your Merchant Processing Account Requires a Bank Account to Receive Money.';    
-          item.component =
-            <div>
-              { !this.props.completed.includes('connectBank') ?              
+          if (connectLoader) {
+            item.desc = 'Please wait while we connect your bank account to Givebox...';    
+            item.component = 
+              <div className='flexCenter flexColumn'>
                 <div className='fieldGroup'>
-                  We highly recommend you connect with Plaid. 
-                  Plaid is a secure service where you simply login to your bank account and connect it to Givebox. 
-                  If you cannot find your bank account with Plaid then you will need to manually connect one.
+                  Please do not close this overlay, navigate away from the page, or close the browser while it connects. 
                 </div>
-              :
-                <div className='fieldGroup flexCenter'>
-                  You have successfully connected a bank account! 
-                  Please continue to check the status of it being connected to Givebox.
-                </div>
-              }
-              {hasTransacitons}
-              <ConnectBankHelp />
-            </div>
+                <Image
+                  url={'https://cdn.givebox.com/givebox/public/images/step-loader.png'}
+                  maxSize={250}
+                  alt='Saving Progress'
+                  className='stepLoader'
+                />              
+              </div>
+            ;
+          } else {
+            item.desc = 'Your Merchant Processing Account Requires a Bank Account to Receive Money.';    
+            item.component =
+              <div>
+                { !this.props.completed.includes('connectBank') ?              
+                  <div className='fieldGroup'>
+                    We highly recommend you connect with Plaid. 
+                    Plaid is a secure service where you simply login to your bank account and connect it to Givebox. 
+                    If you cannot find your bank account with Plaid then you will need to manually connect one.
+                  </div>
+                :
+                  <div className='fieldGroup flexCenter'>
+                    You have successfully connected a bank account! 
+                    Please continue to check the status of it being connected to Givebox.
+                  </div>
+                }
+                {hasTransacitons}
+                <ConnectBankHelp />
+              </div>
+          }
+          ;
         }
-        ;
         break;
       }
 
@@ -397,10 +440,9 @@ class ConnectBankStepsForm extends React.Component {
         item.desc = 'Please enter your Organizations bank account information.';
         item.component =
           <div>
+            {hasTransacitons}
             <ConnectBankHelp />
             <div style={{ marginTop: 20 }} className='fieldGroup'>
-              { hasReceivedTransaction ? <p>Congratulations, you have received your first transactions with Givebox!</p> : null }
-              { hasReceivedTransaction && phaseEndsAt ? <p style={{ fontWeight: 500, color: lastDay ? 'red' : null }}>{daysLeftDisplay}</p> : null }
               <BankAccount
                 {...this.props}
               />
@@ -508,21 +550,20 @@ class ConnectBankStepsForm extends React.Component {
           </div>
           <div className='button-item'>
             { slug === 'connectBank' ?
-              !connectLoader && !this.props.completed.includes('connectBank') ?
-              <div style={{ marginTop: 0, paddingTop: 0 }} className='button-group'>
-                <PlaidConnect
-                  {...this.props}
-                  checkConnectStatus={this.checkConnectStatus}
-                />
-                <GBLink className='button' onClick={this.switchToManualBank}>
-                  Manually Connect Bank Account
-                </GBLink>
-              </div> :
-                this.props.completed.includes('connectBank') ?
-                  <GBLink className='button' onClick={() => this.props.gotoNextStep()}>
-                    Continue to Check Status
+              !connectLoader && !connectBankCompleted ?
+                <div style={{ marginTop: 0, paddingTop: 0 }} className='button-group'>
+                  <PlaidConnect
+                    {...this.props}
+                    checkConnectStatus={this.checkConnectStatus}
+                  />
+                  <GBLink className='button' onClick={this.switchToManualBank}>
+                    Manually Connect Bank Account
                   </GBLink>
-                : null
+                </div> 
+              :
+                !connectLoader && connectBankCompleted ?
+                  item.saveButton
+                :  null
             :
               this.props.saveButton(this.processForm, { group: slug, label: item.saveButtonLabel, disabled: item.saveButtonDisabled })
             }

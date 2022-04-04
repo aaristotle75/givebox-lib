@@ -51,7 +51,7 @@ class PlaidConnect extends React.Component {
             openAdmin: true,
             openModal: true
           });
-          this.props.formProp({ error: true, errorMsg: 'We are unable to connect your bank account. Please manually enter your information in the following steps.' });
+          this.props.formProp({ error: true, errorMsg: 'We are unable to connect your bank account through Plaid. Please manually connect your bank account.' });
         }
         this.props.setMerchantApp('connectLoader', false);
         break;
@@ -89,8 +89,7 @@ class PlaidConnect extends React.Component {
 
     const {
       linkToken,
-      hasPlaidToken,
-      connectLoader
+      hasPlaidToken
     } = this.props;
 
     if (!linkToken && !hasPlaidToken) return <Loader msg='Getting Plaid Token...' />;

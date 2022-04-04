@@ -120,8 +120,8 @@ const address = {
 const connectStatus = {
   type: 'merchant',
   slug: 'connectStatus',
-  name: 'Confirmation',
-  title: `Connect Confirmation`,
+  name: 'Bank Review',
+  title: `Bank Account Review`,
   customIcon: <Icon><FaConnectdevelop /></Icon>,
   desc: ''
 };
@@ -256,9 +256,9 @@ export const signupPhase = {
     menuHeader: 'Connect a Bank',
     modalName: 'orgConnectBankSteps',
     showStepNumber: true,
+    customStepNumber: 'Required Step', // Signup Menu Only
     stepsTodo: [
-      connectBank,
-      connectStatus
+      connectBank
     ]
   },
   manualConnect: {
