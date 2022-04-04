@@ -296,11 +296,16 @@ export function loadOrgSignup(options = {}) {
 }
 
 export function shouldCheckSignupPhase(options = {}) {
+  const opts = {
+    timeBefore: 'seconds',
+    ...options
+  };
+  
   return (dispatch, getState) => {
     const state = getState();
     const lastSignupCheck = localStorage.getItem('lastSignupCheck');
     const now = Moment().unix();
-    const timeBeforeNow = Moment().subtract(1, 'seconds').unix();
+    const timeBeforeNow = Moment().subtract(1, opts.timeBefore).unix();
     if (lastSignupCheck && lastSignupCheck > timeBeforeNow) {
       console.log('execute lastSignupCheck -> ', lastSignupCheck);
     } else {
@@ -1477,8 +1482,6 @@ export function loadGBX3(articleID, callback) {
     const availableBlocks = util.deepClone(util.getValue(admin, `availableBlocks.article`, []));
     const receiptAvailableBlocks = util.deepClone(util.getValue(admin, `availableBlocks.receipt`, []));
 
-    let signupStepsNotComplete = false;
-
     dispatch(getResource('article', {
       id: [articleID],
       reload: true,
@@ -1489,7 +1492,11 @@ export function loadGBX3(articleID, callback) {
           const orgID = util.getValue(res, 'orgID');
           const orgName = util.getValue(res, 'orgName');
 
-          dispatch(getResource('orgPublic', {
+          let signupStepsNotComplete = false;
+          let hasAccessToEdit = util.getAuthorizedAccess(access, orgID, null);
+          const orgEndpoint = util.getValue(hasAccessToEdit, 'userRole') === 'admin' ? 'org' : 'orgPublic';
+
+          dispatch(getResource(orgEndpoint, {
             customName: 'gbx3Org',
             id: [orgID],
             reload: true,
@@ -1500,265 +1507,270 @@ export function loadGBX3(articleID, callback) {
                 const completedPhases = util.getValue(orgSignup, 'completedPhases', []);
                 signupStepsNotComplete = ( signupPhase && completedPhases.length < signupPhases.length && !completedPhases.includes('transferMoney') ) ? true : false;
                 dispatch(updateOrgSignup(orgSignup));
+
+                if (kindID) {
+                  const apiName = `org${types2.kind(kind).api.item}`;
+                  dispatch(getResource('articleFeeSettings', {
+                    id: [articleID],
+                    reload: true,
+                    callback: (res, err) => {
+                      if (!err && !util.isEmpty(res)) {
+                        dispatch(updateFees(res));
+                      }
+                    }
+                  }));
+      
+                  dispatch(getResource(apiName, {
+                    id: [kindID],
+                    reload: true,
+                    orgID: orgID,
+                    callback: async (res, err) => {
+                      if (!err && !util.isEmpty(res)) {
+                        const settings = util.getValue(res, 'giveboxSettings', {});
+                        const primaryColor = util.getValue(settings, 'primaryColor', '#4775f8');
+                        const customTemplate = util.getValue(settings, 'customTemplate', {});
+                        const passFees = util.getValue(res, 'passFees');
+                        const publishStatus = util.getPublishStatus(kind, util.getValue(res, 'publishedStatus.webApp'));
+                        const volunteerID = util.getValue(res, 'volunteerID');
+                        if (volunteerID) {
+                          hasAccessToEdit = util.getAuthorizedAccess(access, orgID,  util.getValue(res, 'volunteer') ? volunteerID : null);
+                        }
+      
+                        dispatch(setCartOnLoad({ passFees }));
+                        dispatch(updateInfo({
+                          orgID,
+                          orgName,
+                          articleID,
+                          kindID,
+                          kind,
+                          apiName,
+                          publishStatus,
+                          display: 'article',
+                          orgImage: util.getValue(access, 'orgImage')
+                        }));
+      
+                        const blocksCustom = util.getValue(customTemplate, 'blocks', {});
+                        const articleBlocks = util.getValue(blockTemplates, `article.${kind}`, {});
+                        const blocksDefault = {};
+                        defaultBlocks.article[kind].forEach((value) => {
+                          if (!util.isEmpty(blocksCustom)) {
+                            if (has(blocksCustom, value)) {
+                              blocksDefault[value] = articleBlocks[value];
+                            }
+                          } else {
+                            blocksDefault[value] = articleBlocks[value];
+                          }
+                        });
+      
+                        const globalsCustom = util.getValue(customTemplate, 'globals', {});
+                        const gbxStyleCustom = util.getValue(globalsCustom, 'gbxStyle', {});
+                        const embedButtonCustom = util.getValue(globalsCustom, 'embedButton', {});
+      
+                        //const blocks = !util.isEmpty(blocksCustom) ? blocksCustom : blocksDefault;
+                        const blocks = merge(blocksDefault, blocksCustom);
+      
+                        const globals = {
+                          ...globalsState,
+                          ...{
+                            gbxStyle: {
+                              ...defaultStyle.gbxStyle,
+                              ...util.getValue(globalsState, 'gbxStyle', {}),
+                              ...gbxStyleCustom,
+                              primaryColor
+                            },
+                            button: {
+                              ...defaultStyle.button,
+                              ...util.getValue(globalsState, 'button', {}),
+                              style: {
+                                ...defaultStyle.button.style,
+                                ...util.getValue(util.getValue(globalsState, 'button', {}), 'style', {}),
+                                bgColor: primaryColor
+                              }
+                            },
+                            embedButton: {
+                              ...defaultStyle.embedButton,
+                              ...util.getValue(globalsState, 'embedButton', {}),
+                              text: types2.kind(kind).cta,
+                              ...embedButtonCustom
+                            }
+                          },
+                          ...util.getValue(customTemplate, 'globals', {})
+                        };
+      
+                        const helperStepsCustom = util.getValue(customTemplate, `helperSteps`, {});
+                        const helperSteps = !util.isEmpty(helperStepsCustom) ?
+                          {
+                            ...helperStepsCustom
+                          }
+                        :
+                          {
+                            step: 0,
+                            completed: [],
+                            advancedBuilder: false
+                          }
+                        ;
+      
+                        if (editFormOnly) helperSteps.advancedBuilder = true;
+      
+                        // Get Step Values
+                        const title = util.getValue(res, 'title');
+                        const logoBlock = util.getValue(blocks, 'logo', {});
+                        const logoURL = util.getValue(logoBlock, 'content.image.URL', util.getValue(res, 'orgImageURL')).replace(/small$/i, 'original');
+                        const mediaBlock = util.getValue(blocks, 'media', {});
+                        const mediaURL = util.getValue(mediaBlock, 'content.image.URL', '').replace(/medium$/i, 'original');
+      
+                        // Get the minimum not completed step
+                        const stepsArray = [];
+                        const stepConfig = util.getValue(builderStepsConfig, kind, []);
+                        const numOfSteps = stepConfig.length - 1;
+      
+                        stepConfig.forEach((value, key) => {
+                            let isDefault = true;
+                            stepsArray.push(key);
+      
+                            // Check if step values are completed by checking defaultStyle
+                            switch (value.slug) {
+                              case 'title': {
+                                if (title && !title.includes(`New ${types2.kind(kind).name}`)) {
+                                  isDefault = false;
+                                }
+                                break;
+                              }
+      
+                              case 'logo': {
+                                if (logoURL && util.checkImage(logoURL)) {
+                                  isDefault = false;
+                                }
+                                break;
+                              }
+      
+                              case 'image': {
+                                if (mediaURL && util.checkImage(mediaURL)) {
+                                  isDefault = false;
+                                }
+                                break;
+                              }
+      
+                              case 'themeColor': {
+                                if (primaryColor && !primaryColor.includes('#4385f5') && !primaryColor.includes('#4775f8')) {
+                                  isDefault = false;
+                                }
+                                break;
+                              }
+      
+                              // no default
+                            }
+      
+                            if (!helperSteps.completed.includes(value.slug) && !isDefault) {
+                              helperSteps.completed.push(value.slug);
+                            }
+                        });
+                        const uncompletedSteps = stepsArray.filter(item => !helperSteps.completed.includes(item));
+                        const minStepNotCompleted = !util.isEmpty(uncompletedSteps) ? Math.min(...uncompletedSteps) : numOfSteps;
+      
+                        helperSteps.step = minStepNotCompleted < 4 ? minStepNotCompleted : 5;
+      
+                        const builderPref = util.getValue(getState(), 'preferences.builderPref');
+                        helperSteps.advancedBuilder = builderPref === 'advanced' ? true : helperSteps.advancedBuilder;
+      
+                        if (!util.isEmpty(blocksCustom)) {
+                          // Check if not all default blocks are present
+                          // If not, add them to the availableBlocks array
+                          // which are blocks available but not used
+                          Object.keys(articleBlocks).forEach((key) => {
+                            if (!(key in blocks) && !availableBlocks.includes(key)) {
+                              availableBlocks.push(key);
+                            }
+                          })
+                        } else {
+                          // Check how many amounts and set amounts grid height only for fundraisers or invoices
+                          if (kind === 'fundraiser' || kind === 'invoice') {
+                            const amountsObj = util.getValue(res, types2.kind(kind).amountField, {});
+                            const amountsList = util.getValue(amountsObj, 'list', []);
+                            const amountsListEnabled = amountsList.filter(a => a.enabled === true);
+                            const amountsSectionHeight = defaultAmountHeight(amountsListEnabled.length);
+                            blocks.amounts.grid.desktop.h = amountsSectionHeight;
+                          }
+                        }
+      
+                        const layouts = {
+                          desktop: [],
+                          mobile: []
+                        };
+      
+                        Object.entries(blocks).forEach(([key, value]) => {
+                          const grid = util.getValue(value, 'grid', {});
+                          if (!util.isEmpty(grid)) {
+                            if (!util.isEmpty(util.getValue(grid, 'desktop'))) layouts.desktop.push(value.grid.desktop);
+                            if (!util.isEmpty(util.getValue(grid, 'mobile'))) layouts.mobile.push(value.grid.mobile);
+                          }
+                        });
+                        
+                        console.log('execute hasAccessToEdit -> ', hasAccessToEdit, util.getValue(hasAccessToEdit, 'userRole'), signupStepsNotComplete);
+                        const admin = {
+                          hasAccessToEdit,
+                          signupStepsDisplay: util.getValue(hasAccessToEdit, 'userRole') === 'admin' && signupStepsNotComplete ? true : false,
+                          editable: hasAccessToEdit ? true : false,
+                          step: 'design',
+                          open: editFormOnly ? false : true
+                        };
+      
+                        if (util.getValue(hasAccessToEdit, 'isVolunteer')) {
+                          admin.isVolunteer = true;
+                          admin.volunteerID = volunteerID;
+                        }
+      
+                        // Get and Set Thank You Email Receipt
+                        const receiptCustom = util.getValue(res, 'receiptConfig.blocks', {});
+                        const receiptTemplateBlocks = util.getValue(blockTemplates, `receipt`, {});
+                        const receiptDefault = {};
+                        defaultBlocks.receipt.forEach((value) => {
+                          if (!util.isEmpty(receiptCustom)) {
+                            if (has(receiptCustom, value)) {
+                              receiptDefault[value] = receiptTemplateBlocks[value];
+                            }
+                          } else {
+                          receiptDefault[value] = receiptTemplateBlocks[value];
+                          }
+                        });
+                        const receiptBlocks = merge(receiptDefault, receiptCustom);
+      
+                        if (!util.isEmpty(receiptCustom)) {
+                          Object.keys(receiptTemplateBlocks).forEach((key) => {
+                            if (!(key in receiptBlocks) && !receiptAvailableBlocks.includes(key)) {
+                              receiptAvailableBlocks.push(key);
+                            }
+                          })
+                        }
+      
+                        dispatch(updateLayouts(blockType, layouts));
+                        dispatch(updateBlocks(blockType, blocks));
+                        dispatch(updateGlobals(globals));
+                        dispatch(updateHelperSteps(helperSteps));
+                        dispatch(updateData(res));
+                        dispatch(updateAvailableBlocks(blockType, availableBlocks));
+                        dispatch(updateGBX3('browse', false));
+                        dispatch(updateBlocks('receipt', receiptBlocks));
+                        dispatch(updateAvailableBlocks('receipt', receiptAvailableBlocks));
+                        dispatch(GBX3Loaded());
+                        dispatch(updateAdmin(admin));
+                        
+                        callback(res, err, {
+                         admin,
+                         info
+                        });
+                      }
+                      dispatch(setLoading(false));
+                    }
+                  }));
+                } else {
+                  dispatch(setLoading(false));
+                }
+              } else {
+                dispatch(setLoading(false));
               }
             }
           }));
-
-          if (kindID) {
-            const apiName = `org${types2.kind(kind).api.item}`;
-            dispatch(getResource('articleFeeSettings', {
-              id: [articleID],
-              reload: true,
-              callback: (res, err) => {
-                if (!err && !util.isEmpty(res)) {
-                  dispatch(updateFees(res));
-                }
-              }
-            }));
-
-            dispatch(getResource(apiName, {
-              id: [kindID],
-              reload: true,
-              orgID: orgID,
-              callback: async (res, err) => {
-                if (!err && !util.isEmpty(res)) {
-                  const settings = util.getValue(res, 'giveboxSettings', {});
-                  const primaryColor = util.getValue(settings, 'primaryColor', '#4775f8');
-                  const customTemplate = util.getValue(settings, 'customTemplate', {});
-                  const passFees = util.getValue(res, 'passFees');
-                  const publishStatus = util.getPublishStatus(kind, util.getValue(res, 'publishedStatus.webApp'));
-                  const volunteerID = util.getValue(res, 'volunteerID');
-                  const hasAccessToEdit = util.getAuthorizedAccess(access, orgID,  util.getValue(res, 'volunteer') ? volunteerID : null);
-
-                  dispatch(setCartOnLoad({ passFees }));
-                  dispatch(updateInfo({
-                    orgID,
-                    orgName,
-                    articleID,
-                    kindID,
-                    kind,
-                    apiName,
-                    publishStatus,
-                    display: 'article',
-                    orgImage: util.getValue(access, 'orgImage')
-                  }));
-
-                  const blocksCustom = util.getValue(customTemplate, 'blocks', {});
-                  const articleBlocks = util.getValue(blockTemplates, `article.${kind}`, {});
-                  const blocksDefault = {};
-                  defaultBlocks.article[kind].forEach((value) => {
-                    if (!util.isEmpty(blocksCustom)) {
-                      if (has(blocksCustom, value)) {
-                        blocksDefault[value] = articleBlocks[value];
-                      }
-                    } else {
-                      blocksDefault[value] = articleBlocks[value];
-                    }
-                  });
-
-                  const globalsCustom = util.getValue(customTemplate, 'globals', {});
-                  const gbxStyleCustom = util.getValue(globalsCustom, 'gbxStyle', {});
-                  const embedButtonCustom = util.getValue(globalsCustom, 'embedButton', {});
-
-                  //const blocks = !util.isEmpty(blocksCustom) ? blocksCustom : blocksDefault;
-                  const blocks = merge(blocksDefault, blocksCustom);
-
-                  const globals = {
-                    ...globalsState,
-                    ...{
-                      gbxStyle: {
-                        ...defaultStyle.gbxStyle,
-                        ...util.getValue(globalsState, 'gbxStyle', {}),
-                        ...gbxStyleCustom,
-                        primaryColor
-                      },
-                      button: {
-                        ...defaultStyle.button,
-                        ...util.getValue(globalsState, 'button', {}),
-                        style: {
-                          ...defaultStyle.button.style,
-                          ...util.getValue(util.getValue(globalsState, 'button', {}), 'style', {}),
-                          bgColor: primaryColor
-                        }
-                      },
-                      embedButton: {
-                        ...defaultStyle.embedButton,
-                        ...util.getValue(globalsState, 'embedButton', {}),
-                        text: types2.kind(kind).cta,
-                        ...embedButtonCustom
-                      }
-                    },
-                    ...util.getValue(customTemplate, 'globals', {})
-                  };
-
-                  const helperStepsCustom = util.getValue(customTemplate, `helperSteps`, {});
-                  const helperSteps = !util.isEmpty(helperStepsCustom) ?
-                    {
-                      ...helperStepsCustom
-                    }
-                  :
-                    {
-                      step: 0,
-                      completed: [],
-                      advancedBuilder: false
-                    }
-                  ;
-
-                  if (editFormOnly) helperSteps.advancedBuilder = true;
-
-                  // Get Step Values
-                  const title = util.getValue(res, 'title');
-                  const logoBlock = util.getValue(blocks, 'logo', {});
-                  const logoURL = util.getValue(logoBlock, 'content.image.URL', util.getValue(res, 'orgImageURL')).replace(/small$/i, 'original');
-                  const mediaBlock = util.getValue(blocks, 'media', {});
-                  const mediaURL = util.getValue(mediaBlock, 'content.image.URL', '').replace(/medium$/i, 'original');
-
-                  // Get the minimum not completed step
-                  const stepsArray = [];
-                  const stepConfig = util.getValue(builderStepsConfig, kind, []);
-                  const numOfSteps = stepConfig.length - 1;
-
-                  stepConfig.forEach((value, key) => {
-                      let isDefault = true;
-                      stepsArray.push(key);
-
-                      // Check if step values are completed by checking defaultStyle
-                      switch (value.slug) {
-                        case 'title': {
-                          if (title && !title.includes(`New ${types2.kind(kind).name}`)) {
-                            isDefault = false;
-                          }
-                          break;
-                        }
-
-                        case 'logo': {
-                          if (logoURL && util.checkImage(logoURL)) {
-                            isDefault = false;
-                          }
-                          break;
-                        }
-
-                        case 'image': {
-                          if (mediaURL && util.checkImage(mediaURL)) {
-                            isDefault = false;
-                          }
-                          break;
-                        }
-
-                        case 'themeColor': {
-                          if (primaryColor && !primaryColor.includes('#4385f5') && !primaryColor.includes('#4775f8')) {
-                            isDefault = false;
-                          }
-                          break;
-                        }
-
-                        // no default
-                      }
-
-                      if (!helperSteps.completed.includes(value.slug) && !isDefault) {
-                        helperSteps.completed.push(value.slug);
-                      }
-                  });
-                  const uncompletedSteps = stepsArray.filter(item => !helperSteps.completed.includes(item));
-                  const minStepNotCompleted = !util.isEmpty(uncompletedSteps) ? Math.min(...uncompletedSteps) : numOfSteps;
-
-                  helperSteps.step = minStepNotCompleted < 4 ? minStepNotCompleted : 5;
-
-                  const builderPref = util.getValue(getState(), 'preferences.builderPref');
-                  helperSteps.advancedBuilder = builderPref === 'advanced' ? true : helperSteps.advancedBuilder;
-
-                  if (!util.isEmpty(blocksCustom)) {
-                    // Check if not all default blocks are present
-                    // If not, add them to the availableBlocks array
-                    // which are blocks available but not used
-                    Object.keys(articleBlocks).forEach((key) => {
-                      if (!(key in blocks) && !availableBlocks.includes(key)) {
-                        availableBlocks.push(key);
-                      }
-                    })
-                  } else {
-                    // Check how many amounts and set amounts grid height only for fundraisers or invoices
-                    if (kind === 'fundraiser' || kind === 'invoice') {
-                      const amountsObj = util.getValue(res, types2.kind(kind).amountField, {});
-                      const amountsList = util.getValue(amountsObj, 'list', []);
-                      const amountsListEnabled = amountsList.filter(a => a.enabled === true);
-                      const amountsSectionHeight = defaultAmountHeight(amountsListEnabled.length);
-                      blocks.amounts.grid.desktop.h = amountsSectionHeight;
-                    }
-                  }
-
-                  const layouts = {
-                    desktop: [],
-                    mobile: []
-                  };
-
-                  Object.entries(blocks).forEach(([key, value]) => {
-                    const grid = util.getValue(value, 'grid', {});
-                    if (!util.isEmpty(grid)) {
-                      if (!util.isEmpty(util.getValue(grid, 'desktop'))) layouts.desktop.push(value.grid.desktop);
-                      if (!util.isEmpty(util.getValue(grid, 'mobile'))) layouts.mobile.push(value.grid.mobile);
-                    }
-                  });
-
-                  const admin = {
-                    hasAccessToEdit,
-                    signupStepsDisplay: hasAccessToEdit && signupStepsNotComplete ? true : false,
-                    editable: hasAccessToEdit ? true : false,
-                    step: 'design',
-                    open: editFormOnly ? false : true
-                  };
-
-                  if (util.getValue(hasAccessToEdit, 'isVolunteer')) {
-                    admin.isVolunteer = true;
-                    admin.volunteerID = volunteerID;
-                  }
-
-                  // Get and Set Thank You Email Receipt
-                  const receiptCustom = util.getValue(res, 'receiptConfig.blocks', {});
-                  const receiptTemplateBlocks = util.getValue(blockTemplates, `receipt`, {});
-                  const receiptDefault = {};
-                  defaultBlocks.receipt.forEach((value) => {
-                    if (!util.isEmpty(receiptCustom)) {
-                      if (has(receiptCustom, value)) {
-                        receiptDefault[value] = receiptTemplateBlocks[value];
-                      }
-                    } else {
-                    receiptDefault[value] = receiptTemplateBlocks[value];
-                    }
-                  });
-                  const receiptBlocks = merge(receiptDefault, receiptCustom);
-
-                  if (!util.isEmpty(receiptCustom)) {
-                    Object.keys(receiptTemplateBlocks).forEach((key) => {
-                      if (!(key in receiptBlocks) && !receiptAvailableBlocks.includes(key)) {
-                        receiptAvailableBlocks.push(key);
-                      }
-                    })
-                  }
-
-                  dispatch(updateLayouts(blockType, layouts));
-                  dispatch(updateBlocks(blockType, blocks));
-                  dispatch(updateGlobals(globals));
-                  dispatch(updateHelperSteps(helperSteps));
-                  dispatch(updateData(res));
-                  dispatch(updateAvailableBlocks(blockType, availableBlocks));
-                  dispatch(updateGBX3('browse', false));
-                  dispatch(updateBlocks('receipt', receiptBlocks));
-                  dispatch(updateAvailableBlocks('receipt', receiptAvailableBlocks));
-                  dispatch(GBX3Loaded());
-                  dispatch(updateAdmin(admin));
-                  
-                  callback(res, err, {
-                   admin,
-                   info
-                  });
-                }
-                dispatch(setLoading(false));
-              }
-            }));
-          } else {
-            dispatch(setLoading(false));
-          }
         } else {
           dispatch(setLoading(false));
         }

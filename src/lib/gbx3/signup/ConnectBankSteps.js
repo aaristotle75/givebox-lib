@@ -318,6 +318,8 @@ class ConnectBankStepsForm extends React.Component {
     const nextStepName = this.props.getNextStep();
     const nextStepNumber = this.props.nextStep(step) + 1;
 
+    console.log('execute -> ', hasReceivedTransaction, phaseEndsAt, lastDay);
+
     const item = {
       title: stepConfig.title,
       icon: stepConfig.icon,
@@ -338,6 +340,17 @@ class ConnectBankStepsForm extends React.Component {
     const lastDay = diff === 0 ? true : false;
     const diffDisplay = lastDay ? 'This is the Last Day' : `You Have ${diff} Day${diff > 1 ? 's' : ''}`;
     const daysLeftDisplay = `${diffDisplay} to Connect a Bank Account or the Money You Received will be Refunded.`;
+    console.log('execute -> ', hasReceivedTransaction, phaseEndsAt, lastDay, daysLeftDisplay);
+    
+    const hasTransacitons = 
+      hasReceivedTransaction ?
+        <div className='fieldGroup'>
+          { hasReceivedTransaction ? <span style={{ display: 'block' }}>Congratulations, you have received your first transactions with Givebox!</span> : null }
+          { hasReceivedTransaction && phaseEndsAt ? <span style={{ fontWeight: 500, color: lastDay ? 'red' : null }}>{daysLeftDisplay}</span> : null }
+        </div>
+      : null
+    ;
+
 
     switch (slug) {
       case 'connectBank': {
@@ -372,12 +385,7 @@ class ConnectBankStepsForm extends React.Component {
                   Please continue to check the status of it being connected to Givebox.
                 </div>
               }
-              {hasReceivedTransaction ?
-                <div className='fieldGroup'>
-                  { hasReceivedTransaction ? <span style={{ display: 'block' }}>Congratulations, you have received your first transactions with Givebox!</span> : null }
-                  { hasReceivedTransaction && phaseEndsAt ? <span style={{ fontWeight: 500, color: lastDay ? 'red' : null }}>{daysLeftDisplay}</span> : null }
-                </div>
-              : null }
+              {hasTransacitons}
               <ConnectBankHelp />
             </div>
         }

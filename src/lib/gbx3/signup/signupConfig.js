@@ -120,8 +120,8 @@ const address = {
 const connectStatus = {
   type: 'merchant',
   slug: 'connectStatus',
-  name: 'Bank Connect Status',
-  title: `Bank Account Connect Status`,
+  name: 'Confirmation',
+  title: `Connect Confirmation`,
   customIcon: <Icon><FaConnectdevelop /></Icon>,
   desc: ''
 };
