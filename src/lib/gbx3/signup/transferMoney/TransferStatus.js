@@ -17,15 +17,7 @@ class TransferStatus extends React.Component {
     };
   }
 
-  async componentDidMount() {
-    const {
-      approvedForTransfers,
-      completed
-    } = this.props;
-
-    if (approvedForTransfers && !completed.includes('transferStatus')) {
-      this.props.stepCompleted('transferStatus');
-    }
+  componentDidMount() {
   }
 
   contactRequest() {
@@ -44,26 +36,24 @@ class TransferStatus extends React.Component {
   render() {
 
     const {
-      contactRequestDate,
-      isCompleted,
-      approvedForTransfers
+      contactRequestDate
     } = this.props;
 
     const {
       showHelp
     } = this.state;
 
-    let desc = null;
-    if (isCompleted && !approvedForTransfers) {
-      desc =
+    return (
+      <div className='fieldGroup'>
+        { this.state.saving ? <Loader msg='Saving' /> : null }
         <div style={{ marginLeft: 0, marginRight: 0 }}>
           <div style={{ marginTop: 20 }} className='flexCenter'>
-            <GBLink onClick={() => this.setState({ showHelp: showHelp ? false : true })}>Why does the account review take so long?</GBLink>
+            <GBLink onClick={() => this.setState({ showHelp: showHelp ? false : true })}>Why does it take so long to verify my identity?</GBLink>
           </div>
           <AnimateHeight height={showHelp ? 'auto' : 0 }>
             <div style={{ fontSize: 14, marginTop: 20 }}>
               <div style={{ display: 'block', marginBottom: 20 }}>
-                <span style={{ display: 'block', fontWeight: 500, fontSize: 16 }}>We Need to Make Sure Your Account is Secure</span>
+                <span style={{ display: 'block', fontWeight: 500, fontSize: 16 }}>We Need to Make Sure It's You and Not Someone Else</span>
                   We thoroughly review everything you submitted to make sure someone else is not using your identity to create a fraudulent account. 
                 <span style={{ display: 'block', marginTop: 5 }}>
                   Verifying your Organization and Identity and banking information takes time to get confirmation from the institutions to verify it's actually you. 
@@ -85,13 +75,6 @@ class TransferStatus extends React.Component {
             </div>
           </AnimateHeight>
         </div>
-      ;
-    }
-
-    return (
-      <div className='fieldGroup'>
-        { this.state.saving ? <Loader msg='Saving' /> : null }
-        {desc}
       </div>
     )
   }

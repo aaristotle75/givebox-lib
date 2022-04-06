@@ -297,20 +297,62 @@ export function loadOrgSignup(options = {}) {
 
 export function shouldCheckSignupPhase(options = {}) {
   const opts = {
-    timeBefore: 'seconds',
+    timeBefore: 'hours',
+    timeBeforeValue: 20,
     ...options
   };
   
   return (dispatch, getState) => {
     const state = getState();
     const lastSignupCheck = localStorage.getItem('lastSignupCheck');
-    const now = Moment().unix();
-    const timeBeforeNow = Moment().subtract(1, opts.timeBefore).unix();
+    const now = Moment.utc().unix();
+    const timeBeforeNow = Moment().subtract(opts.timeBeforeValue, opts.timeBefore).unix();
+    const connectBankSteps = util.getValue(state, 'gbx3.info.connectBankSteps');
+    const transferSteps = util.getValue(state, 'gbx3.info.transferSteps');
+    const signupPhase = util.getValue(state, 'gbx3.orgSignup.signupPhase');
+    const completedPhases = util.getValue(state, 'gbx3.orgSignup.completedPhases', []);
+    const hasReceivedTransaction = util.getValue(state, 'resource.gbx3Org.data.hasReceivedTransaction');
+    const instant = util.getValue(state, 'resource.gbx3Org.data.instantFundraising', {});
+    const instantPhase = util.getValue(instant, 'phase');
+    const instantStatus = instantPhase === 1 ? util.getValue(instant, 'status', null) : null;
+    const phaseEndsAt = instantPhase === 1 && instantStatus === 'enabled' ? util.getValue(instant, 'phaseEndsAt', null) : null;
+    const underwritingStatus = util.getValue(state, 'resource.gbx3Org.data.underwritingStatus');
+    const hasBankInfo = util.getValue(state, 'resource.gbx3Org.data.hasBankInfo');
+    const approvedForTransfers = underwritingStatus === 'approved' && hasBankInfo ? true : false;
+    const diff = Moment.unix(phaseEndsAt).utc().diff(Moment.utc(), 'days');
+    const numberDaysLeft = diff > 5 ? 5 : diff < 0 ? 0 : diff;
+    const lastDay = diff === 0 ? true : false;
+
+    let checkSignup = false;
+
     if (lastSignupCheck && lastSignupCheck > timeBeforeNow) {
-      console.log('execute lastSignupCheck -> ', lastSignupCheck);
+      switch (signupPhase) {
+        case 'postSignup': {
+          checkSignup = true;
+          break;
+        }
+
+        case 'connectBank': {
+          if (hasReceivedTransaction) {
+            checkSignup = true;
+          }
+          break;
+        }
+
+        case 'transferMoney': {
+          if (approvedForTransfers) checkSignup = true;
+          break;
+        }
+
+        // no default
+      }
     } else {
+      checkSignup = true;
+    }
+    
+    if (checkSignup) {
       localStorage.setItem('lastSignupCheck', now);
-      dispatch(checkSignupPhase());
+      dispatch(checkSignupPhase());      
     }
   }
 }
@@ -1705,8 +1747,7 @@ export function loadGBX3(articleID, callback) {
                             if (!util.isEmpty(util.getValue(grid, 'mobile'))) layouts.mobile.push(value.grid.mobile);
                           }
                         });
-                        
-                        console.log('execute hasAccessToEdit -> ', hasAccessToEdit, util.getValue(hasAccessToEdit, 'userRole'), signupStepsNotComplete);
+
                         const admin = {
                           hasAccessToEdit,
                           signupStepsDisplay: util.getValue(hasAccessToEdit, 'userRole') === 'admin' && signupStepsNotComplete ? true : false,

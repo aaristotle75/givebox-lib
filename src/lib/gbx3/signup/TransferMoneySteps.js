@@ -2,15 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Form from '../../form/Form';
 import Dropdown from '../../form/Dropdown';
-import TextField from '../../form/TextField';
 import * as util from '../../common/utility';
-import Tabs, { Tab } from '../../common/Tabs';
 import Loader from '../../common/Loader';
 import * as _v from '../../form/formValidate';
 import GBLink from '../../common/GBLink';
 import Image from '../../common/Image';
 import Icon from '../../common/Icon';
-import HelpfulTip from '../../common/HelpfulTip';
 import Identity from './transferMoney/Identity';
 import VerifyBank from './transferMoney/VerifyBank';
 import VerifyBusiness from './transferMoney/VerifyBusiness';
@@ -46,6 +43,8 @@ class TransferMoneyStepsForm extends React.Component {
     this.getDcoumentCallback = this.getDcoumentCallback.bind(this);
     this.set2FAVerified = this.set2FAVerified.bind(this);
     this.checkApprovalStatus = this.checkApprovalStatus.bind(this);
+    this.approvedForTransfersFinish = this.approvedForTransfersFinish.bind(this);
+    this.gotoLastStep = this.gotoLastStep.bind(this);
 
     this.state = {
       editorOpen: false,
@@ -57,7 +56,10 @@ class TransferMoneyStepsForm extends React.Component {
       verifyBusinessUploaded: false,
       is2FAVerified: false,
       checkingStatusDisableButton: false,
-      missionCountriesShow: props.missionCountries ? 2 : 1
+      checkingStatusNotApprovedYetMessage: false,
+      missionCountriesShow: props.missionCountries ? 2 : 1,
+      readyToCheckApproval: props.readyToCheckApproval,
+      approvedForTransfers: props.approvedForTransfers
     };
   }
 
@@ -66,8 +68,27 @@ class TransferMoneyStepsForm extends React.Component {
       completed
     } = this.props;
 
-    const readyToCheckApproval = this.props.requiredSteps.every(c => completed.includes(c));
-    if (readyToCheckApproval && !completed.includes('transferStatus')) {
+    const {
+      readyToCheckApproval,
+      approvedForTransfers
+    } = this.state;
+
+    if (readyToCheckApproval && !approvedForTransfers) {
+      this.props.setHideCloseBtn(true);
+      this.gotoLastStep();
+      this.checkApprovalStatus();
+    } else if (approvedForTransfers) {
+      this.props.setHideCloseBtn(true);
+      this.gotoLastStep();
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!this.props.requiredSteps.every(c => prevProps.completed.includes(c))
+    && this.props.requiredSteps.every(c => this.props.completed.includes(c))) {
+      this.setState({ readyToCheckApproval: true });
+      this.props.setHideCloseBtn(true);
+      this.gotoLastStep();
       this.checkApprovalStatus();
     }
   }
@@ -80,6 +101,10 @@ class TransferMoneyStepsForm extends React.Component {
 
   callbackAfter(tab) {
     this.props.formProp({ error: false });
+  }
+
+  gotoLastStep() {
+    this.props.updateOrgSignup({ step: this.props.numStepsTodo - 1 });
   }
 
   set2FAVerified(is2FAVerified) {
@@ -175,19 +200,41 @@ class TransferMoneyStepsForm extends React.Component {
           const underwritingStatus = util.getValue(res, 'underwritingStatus');
           const hasBankInfo = util.getValue(res, 'hasBankInfo');
           if (underwritingStatus === 'approved' && hasBankInfo) {
-            if (!this.props.completed.includes('transferStatus')) {
-              this.props.stepCompleted('transferStatus');
-            }
-            this.setState({ saving: false, checkingStatusDisableButton: false });
+            this.setState({ saving: false, checkingStatusDisableButton: false, approvedForTransfers: true });
           } else {
             this.setState({ saving: false });
             setTimeout(() => {
-              this.setState({ checkingStatusDisableButton: false });
-            }, 10000)
+              this.setState({ checkingStatusDisableButton: false }, () => {
+                this.setState({ checkingStatusNotApprovedYetMessage: true }, () => {
+                  setTimeout(() => {
+                    this.setState({ checkingStatusNotApprovedYetMessage: false });
+                  }, 10000);                  
+                });
+              });
+            }, 15000);
           }
         }
       });
     });
+  }
+
+  async approvedForTransfersFinish(manageMoney = false) {
+    const {
+      approvedForTransfers
+    } = this.state;
+
+    if (approvedForTransfers) {
+      this.setState({ saving: false }, async () => {
+        const updated = await this.props.updateOrgSignup({}, 'transferMoney');
+        if (updated) {
+          this.props.stepCompleted('transferMoney');
+          this.props.toggleModal('orgTransferSteps', false);
+          if (manageMoney) this.props.openLaunchpad({ autoOpenSlug: 'money' });
+        }
+      });
+    } else {
+      this.checkApprovalStatus();
+    }
   }
 
   async saveStep(slug, delay = 1000, data, test) {
@@ -228,18 +275,6 @@ class TransferMoneyStepsForm extends React.Component {
     switch (group) {
 
       case 'transferStatus': {
-        if (approvedForTransfers) {
-          this.setState({ saving: false }, async () => {
-            const updated = await this.props.updateOrgSignup({}, 'transferMoney');
-            if (updated) {
-              this.props.stepCompleted('transferMoney');
-              this.props.toggleModal('orgTransferSteps', false);
-              this.props.openLaunchpad({ autoOpenSlug: 'money' });
-            }
-          });
-        } else {
-          this.checkApprovalStatus();
-        }
         break;
       }
 
@@ -302,7 +337,10 @@ class TransferMoneyStepsForm extends React.Component {
       verifyBusinessUploaded,
       is2FAVerified,
       checkingStatusDisableButton,
-      missionCountriesShow
+      checkingStatusNotApprovedYetMessage,
+      missionCountriesShow,
+      readyToCheckApproval,
+      approvedForTransfers
     } = this.state;
 
     const {
@@ -310,14 +348,12 @@ class TransferMoneyStepsForm extends React.Component {
       open,
       isMobile,
       stepsTodo,
-      approvedForTransfers,
       completedPhases,
       websiteURL,
       missionCountries
     } = this.props;
 
     const stepConfig = util.getValue(stepsTodo, step, {});
-    const stepsForApprovalCompleted = this.props.completed.length >= stepsTodo.length - 1 ? true : false;
     const slug = util.getValue(stepConfig, 'slug');
     const stepNumber = +step + 1;
     const completed = this.props.completed.includes(slug) ? true : false;
@@ -348,12 +384,6 @@ class TransferMoneyStepsForm extends React.Component {
         item.desc = `Please upload a photo ID of the account holder.`;
         item.component =
           <div>
-            <div style={{ marginBottom: 20 }} className='fieldGroup'>
-              <Identity
-                {...this.props}
-                getDocument={this.getDocument}
-              />
-            </div>
             <SecureAccountHelp 
               content={{
                 linkText: 'Why Do I have to Upload a Photo ID?',
@@ -366,7 +396,13 @@ class TransferMoneyStepsForm extends React.Component {
                     </span>
                   </span>
               }}
-            />           
+            />              
+            <div style={{ marginTop: 20 }} className='fieldGroup'>
+              <Identity
+                {...this.props}
+                getDocument={this.getDocument}
+              />
+            </div>         
           </div>
         ;
         break;
@@ -377,12 +413,6 @@ class TransferMoneyStepsForm extends React.Component {
         item.desc = 'Please upload a bank statement of the account you connected to Givebox.';
         item.component =
           <div>
-            <div style={{ marginBottom: 20 }} className='fieldGroup'>
-              <VerifyBank
-                {...this.props}
-                getDocument={this.getDocument}
-              />
-            </div>
             <SecureAccountHelp 
               content={{
                 linkText: 'Why Do I have to Upload a Bank Statement?',
@@ -396,6 +426,12 @@ class TransferMoneyStepsForm extends React.Component {
                   </span>
               }}
             />
+            <div style={{ marginTop: 20 }} className='fieldGroup'>
+              <VerifyBank
+                {...this.props}
+                getDocument={this.getDocument}
+              />
+            </div>
           </div>
         ;
         break;
@@ -518,22 +554,11 @@ class TransferMoneyStepsForm extends React.Component {
 
       case 'protect': {
         item.saveButtonDisabled = !is2FAVerified ? true : false;
-        item.saveButtonLabel = <span className='buttonAlignText'>Continue to Next Step</span>;
+        item.saveButtonLabel = null;
         item.desc = 'To protect your account we use two-factor authentication.';
         item.component =
-          !is2FAVerified ?
           <div>
-            <div style={{ marginBottom: 0 }} className='fieldGroup'>
-              <TwoFA
-                hideRadio={true}
-                set2FAVerified={this.set2FAVerified}
-                successCallback={async () => {
-                  const updated = await this.props.stepCompleted(slug);
-                  if (updated) this.props.gotoNextStep();                
-                }}
-              />
-            </div>
-            <div style={{ marginTop: 30 }}>
+            <div style={{ marginBottom: 20 }}>
               <SecureAccountHelp
                 content={{
                   linkText: 'Why Do I Need Two Factor Authentication?',
@@ -545,46 +570,39 @@ class TransferMoneyStepsForm extends React.Component {
                 }}
               />
             </div>
-          </div>
-          : null 
-        ;
-        break;
-      }
-
-      case 'transferStatus': {
-        const check = [
-          'identity',
-          'verifyBank',
-          'verifyBusiness',
-          'protect'
-        ];
-        const isCompleted = check.every((val) => this.props.completed.includes(val));
-
-        item.saveButtonDisabled = isCompleted ? false : true;
-        item.saveButtonDisabled = checkingStatusDisableButton ? true : item.saveButtonDisabled;
-        item.saveButtonLabel = <span className='buttonAlignText'>{approvedForTransfers ? 'Manage Money' : 'Check Status'}</span>;
-        let secondaryDesc = 'You can still collect donations and raise money while you wait.';
-
-        if (approvedForTransfers) {
-          item.desc = 'Your account is secure and you are enabled to transfer money!';
-          secondaryDesc = 'Click the Manage Money button below to view your available balance and transfer money.';
-        } else if (isCompleted) {
-          item.desc = 'We are reviewing your account. You should be enabled for money transfers in the next 3-5 business days.';
-        } else {
-          item.desc = 'You must complete all the previous steps to secure your account and enable money transfers.';
-        }
-
-        item.component =
-          <div>
-            <div className='flexCenter'>
-              {secondaryDesc}
+            <div style={{ marginBottom: 0 }} className='flexCenter flexColumn'>
+              { !is2FAVerified ?
+                <TwoFA
+                  hideRadio={true}
+                  set2FAVerified={this.set2FAVerified}
+                  successCallback={async () => {
+                    const updated = await this.props.stepCompleted(slug);
+                    //if (updated) this.props.gotoNextStep();                
+                  }}
+                />
+              :
+                <span>
+                  Your account is protected with two-factor authentication.
+                </span>
+              }
+              <div style={{ position: 'relative', marginTop: 0, paddingTop: 0 }} className='button-group'>
+                <GBLink
+                  style={{
+                    position: 'absolute',
+                    top: '30px'
+                  }}
+                  disabled={checkingStatusDisableButton} 
+                  className={`button ${checkingStatusDisableButton ? 'readOnly tooltip' : ''}`} 
+                  onClick={() => {
+                    this.setState({ saving: true }, () => {
+                      this.checkApprovalStatus();
+                    });
+                  }}>
+                  {checkingStatusDisableButton ? <div className='tooltipTop'><i></i>Please wait while we check status for you...</div> : null }
+                  Check Review Status
+                </GBLink>
+              </div>              
             </div>
-            <TransferStatus
-              {...this.props}
-              isCompleted={isCompleted}
-              approvedForTransfers={approvedForTransfers}
-              completedPhases={completedPhases}
-            />
           </div>
         ;
         break;
@@ -592,12 +610,54 @@ class TransferMoneyStepsForm extends React.Component {
 
       // no default
     }
+
+    if (readyToCheckApproval) {
+      item.desc = 'We are reviewing everything you submitted.';
+      item.component = 
+        <div>
+          <div className='flexCenter'>
+            { checkingStatusDisableButton ?
+              <div className='flexCenter flexColumn'>
+                <span className='green'>Please wait while we check your status...</span>
+                <Image
+                  url={'https://cdn.givebox.com/givebox/public/images/step-loader.png'}
+                  maxSize={250}
+                  alt='Checking Status...'
+                  className='stepLoader'
+                  style={{ marginTop: 10 }}
+                />  
+              </div>
+            :
+              checkingStatusNotApprovedYetMessage ? 
+                <span>We apologize but your account is still under review. In the meantime you can still share your fundraiser and raise money.</span> 
+              :            
+                'We appreciate your patience while we verify your identity. The process can take up to 5 business days.'
+            }
+          </div>
+          <TransferStatus
+            {...this.props}
+          />
+        </div>
+      ;      
+    }
+
+    if (approvedForTransfers) {
+      item.desc = 'Congratulations your identity has been verified!';
+      item.component = 
+        <div>
+          <div className='flexCenter'>
+            You are now enabled to transfer money and your Givebox merchant processing account is fully approved.
+          </div>
+        </div>
+      ;
+    }
+
     return (
       <div className='stepContainer'>
         { this.state.saving ? <Loader msg='Saving...' /> : null }
         <div className={`step ${item.className} ${open ? 'open' : ''}`}>
           <div className='stepTitleContainer'>
-            {completed && !this.props.completed.includes('transferStatus') ?
+            {completed && !readyToCheckApproval && !approvedForTransfers ?
               <div className='completed'>
                 <Icon><MdCheckCircle /></Icon> <span className='completedText'>Step {stepNumber} Completed</span>
               </div>
@@ -614,27 +674,45 @@ class TransferMoneyStepsForm extends React.Component {
         { !this.state.editorOpen ?
         <div className='button-group'>
           <div className='leftSide' style={{ width: 150 }}>
-            { !firstStep ? <GBLink className={`link`} disabled={firstStep} onClick={() => {
+            { !firstStep && !readyToCheckApproval && !approvedForTransfers ? <GBLink className={`link`} disabled={firstStep} onClick={() => {
               this.props.formProp({ error: false });
               this.props.previousStep(step);
             }}><span style={{ marginRight: '5px' }} className='icon icon-chevron-left'></span> {isMobile ? 'Back' : 'Previous Step' }</GBLink> : <span>&nbsp;</span> }
           </div>
           <div className='button-item'>
-            {this.props.saveButton(this.processForm, { group: slug, label: item.saveButtonLabel, disabled: item.saveButtonDisabled })}
+            { !approvedForTransfers && !readyToCheckApproval && item.saveButtonLabel ? 
+              this.props.saveButton(this.processForm, { group: slug, label: item.saveButtonLabel, disabled: item.saveButtonDisabled })
+            : null }
+            { readyToCheckApproval && !approvedForTransfers ?
+              <div style={{ marginTop: 0, paddingTop: 0 }} className='button-group'>
+                <GBLink 
+                  disabled={checkingStatusDisableButton} 
+                  className={`button ${checkingStatusDisableButton ? 'readOnly tooltip' : ''}`} 
+                  onClick={() => {
+                    this.setState({ saving: true }, () => {
+                      this.checkApprovalStatus();
+                    });
+                  }}>
+                  {checkingStatusDisableButton ? <div className='tooltipTop'><i></i>Please wait while we check status for you...</div> : null }
+                  Check Review Status
+                </GBLink>
+                <GBLink className='button' onClick={() => this.props.toggleModal('orgTransferSteps', false)}>
+                  Take Me to My Fundraiser Page
+                </GBLink>
+              </div>
+            : null }
+            { approvedForTransfers ?
+              <div style={{ marginTop: 0, paddingTop: 0 }} className='button-group'>
+                <GBLink className='button' onClick={() => this.approvedForTransfersFinish(true)}>
+                  Manage Money
+                </GBLink>
+                <GBLink className='button' onClick={this.approvedForTransfersFinish}>
+                  Take Me to My Fundraiser Page
+                </GBLink>
+              </div>  
+            : null }            
           </div>
           <div className='rightSide' style={{ width: 150 }}>
-            { slug !== 'transferStatus' && stepsForApprovalCompleted ?
-              <GBLink
-                className='link'
-                onClick={() => {
-                  const step = stepsTodo.findIndex(s => s.slug === 'transferStatus');
-                  this.props.updateOrgSignup({ step });
-                  this.props.formProp({ error: false });
-                }}
-              >
-                <span className='buttonAlignText'>Skip to Approval Status <span className='icon icon-chevron-right'></span></span>
-              </GBLink>
-            : null }
           </div>
         </div> : null }
       </div>
@@ -694,17 +772,19 @@ function mapStateToProps(state, props) {
   const missionCountries = util.getValue(state, 'resource.gbx3Org.data.missionCountries');
   const underwritingStatus = util.getValue(state, 'resource.gbx3Org.data.underwritingStatus');
   const hasBankInfo = util.getValue(state, 'resource.gbx3Org.data.hasBankInfo');
-  const approvedForTransfers = underwritingStatus === 'approved' && hasBankInfo ? true : false;
   const completedPhases = util.getValue(state, 'gbx3.orgSignup.completedPhases', []);
   const completed = util.getValue(state, 'gbx3.orgSignup.completed', []);
+  const approvedForTransfers = underwritingStatus === 'approved' && hasBankInfo ? true : false;
+  const readyToCheckApproval = props.requiredSteps.every(c => completed.includes(c));
 
   return {
     orgID,
     websiteURL,
     missionCountries,
-    approvedForTransfers,
     completedPhases,
-    completed
+    completed,
+    approvedForTransfers,    
+    readyToCheckApproval
   }
 }
 

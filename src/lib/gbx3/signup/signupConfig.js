@@ -1,9 +1,8 @@
 import React from 'react';
 import Icon from '../../common/Icon';
 import { AiOutlineBank } from 'react-icons/ai';
-import { MdBusiness } from 'react-icons/md';
+import { MdBusiness, MdFingerprint } from 'react-icons/md';
 import { FaConnectdevelop, FaMoneyCheck } from 'react-icons/fa';
-import { TiBusinessCard } from 'react-icons/ti';
 import { GoLocation } from 'react-icons/go'
 import { RiExchangeFundsLine } from 'react-icons/ri';
 
@@ -130,8 +129,8 @@ const identity = {
   type: 'merchant',
   slug: 'identity',
   name: 'Verify Identity',
-  title: 'Account Holder Identity',
-  customIcon: <Icon><TiBusinessCard /></Icon>,
+  title: 'Verify Account Holder Identity',
+  customIcon: <Icon><MdFingerprint /></Icon>,
   desc: ''
 }
 
@@ -274,24 +273,17 @@ export const signupPhase = {
     ]
   },
   transferMoney: {
-    menuHeader: 'Secure Your Account',
+    menuHeader: 'Verify Identity',
     modalName: 'orgTransferSteps',
     showStepNumber: true,
     stepsTodo: [
-      verifyBank,      
-      identity,
-      verifyBusiness,
-      verifyWeb,
-      missionCountries,
-      protect,
-      transferStatus
+      identity,      
+      verifyBank,
+      protect
     ],
     requiredSteps: [
       'verifyBank',
       'identity',
-      'verifyBusiness',
-      'verifyWeb',
-      'missionCountries',
       'protect'
     ]
   }

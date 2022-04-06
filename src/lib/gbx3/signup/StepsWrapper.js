@@ -2,9 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as config from './signupConfig';
 import * as util from '../../common/utility';
-import Loader from '../../common/Loader';
 import GBLink from '../../common/GBLink';
-import Image from '../../common/Image';
+import Icon from '../../common/Icon';
 import {
   updateOrgSignup,
   updateOrgSignupField,
@@ -20,6 +19,7 @@ import {
   reloadResource
 } from '../../api/helpers';
 import LinearBar from '../../common/LinearBar';
+import { MdFingerprint } from 'react-icons/md';
 
 const GBX3_URL = process.env.REACT_APP_ENV === 'local' ? process.env.REACT_APP_GBX_SHARE : process.env.REACT_APP_GBX_URL;
 
@@ -35,6 +35,7 @@ class StepsWrapper extends React.Component {
     this.stepCompleted = this.stepCompleted.bind(this);
     this.getNumStepsCompleted = this.getNumStepsCompleted.bind(this);
     this.resizer = this.resizer.bind(this);
+    this.setHideCloseBtn = this.setHideCloseBtn.bind(this);
 
     const configStep = config.signupPhase[props.signupPhase];
 
@@ -47,7 +48,8 @@ class StepsWrapper extends React.Component {
       stepModalName: configStep.modalName,
       showStepNumber: configStep.showStepNumber,
       menuHeader: configStep.menuHeader,
-      isMobile: window.innerWidth <= props.breakpoint ? true : false
+      isMobile: window.innerWidth <= props.breakpoint ? true : false,
+      hideCloseBtn: false
     };
   }
 
@@ -71,6 +73,13 @@ class StepsWrapper extends React.Component {
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.resizer);
+    this.setState = (state, callback) => {
+      return;
+    }
+  }
+
+  setHideCloseBtn(hideCloseBtn) {
+    this.setState({ hideCloseBtn });
   }
 
   resizer(e) {
@@ -166,6 +175,7 @@ class StepsWrapper extends React.Component {
         previousStep: this.previousStep,
         nextStep: this.nextStep,
         stepCompleted: this.stepCompleted,
+        setHideCloseBtn: this.setHideCloseBtn,
 
         // Dispatch actions
         updateOrgSignup: this.props.updateOrgSignup,
@@ -213,13 +223,13 @@ class StepsWrapper extends React.Component {
   render() {
 
     const {
-      step
+      step,
+      completed
     } = this.props;
 
     const {
       stepsTodo,
       numStepsTodo,
-      menuHeader,
       isMobile,
       stepModalName
     } = this.state;
@@ -232,11 +242,23 @@ class StepsWrapper extends React.Component {
     const stepConfig = util.getValue(stepsTodo, step, {});
     const slug = util.getValue(stepConfig, 'slug');
 
-    let hideCloseBtn = false;
+    let hideCloseBtn = this.state.hideCloseBtn;
+    let icon = stepConfig.icon;
+    let title = stepConfig.title;
+    let customIcon = stepConfig.customIcon;
 
     switch (slug) {
       case 'previewShare': {
         hideCloseBtn = true;
+        break;
+      }
+
+      case 'protect': {
+        if (completed.includes('protect')) {
+          title = 'Verifying Your Identity';
+          icon = null;
+          customIcon = <Icon><MdFingerprint /></Icon>;
+        }
         break;
       }
 
@@ -252,7 +274,7 @@ class StepsWrapper extends React.Component {
           </div>
           */}
           <div className='stepsTopTitle'>
-            { stepConfig.icon ? <span className={`icon icon-${stepConfig.icon}`}></span> : stepConfig.customIcon } {stepConfig.title}
+            { icon ? <span className={`icon icon-${icon}`}></span> : customIcon } {title}
           </div>
           { !hideCloseBtn ?
           <GBLink 

@@ -81,8 +81,8 @@ class VerifyBank extends React.Component {
     return (
       <div className='fieldGroup'>
         <div className='flexCenter'>
-          <div style={{ marginLeft: 0, marginRight: 0 }}>
-            <span><span className='gray'>Connected Bank Account:</span> {name} xxxxxx{last4}</span>
+          <div style={{ marginLeft: 0, marginRight: 0, fontSize: 14 }}>
+            <span style={{ fontSize: 16 }}><span className='gray'>Connected Bank Account:</span> {name} xxxxxx{last4}</span>
             <div style={{ marginTop: 20, display: 'block' }}>
               <span className='icon icon-check'></span> Please upload non blurry photos of the bank statements. Scanned copies will not be accepted.
             </div>

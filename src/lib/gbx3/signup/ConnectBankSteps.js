@@ -336,12 +336,8 @@ class ConnectBankStepsForm extends React.Component {
       customSaveButton: null
     };
 
-    const phaseEnds = phaseEndsAt; // 1622719816
-    //const now = Math.floor(Date.now() /1000);
-    const endsAt = Moment.unix(phaseEnds).utc();
-    const now = Moment.utc();
-    const diff = endsAt.diff(now, 'days');
-    const numberDaysLeft = diff > 5 ? 5 :diff;
+    const diff = Moment.unix(phaseEndsAt).utc().diff(Moment.utc(), 'days');
+    const numberDaysLeft = diff > 5 ? 5 : diff < 0 ? 0 : diff;
     const lastDay = diff === 0 ? true : false;
     const diffDisplay = lastDay ? 'This is the Last Day' : `You Have ${numberDaysLeft} Day${numberDaysLeft > 1 ? 's' : ''}`;
     const daysLeftDisplay = `${diffDisplay} to Connect a Bank Account or the Money You Received will be Refunded.`;
@@ -408,7 +404,7 @@ class ConnectBankStepsForm extends React.Component {
                   maxSize={250}
                   alt='Saving Progress'
                   className='stepLoader'
-                />              
+                />
               </div>
             ;
           } else {
@@ -649,7 +645,7 @@ function mapStateToProps(state, props) {
   const instant = util.getValue(state, 'resource.gbx3Org.data.instantFundraising', {});
   const instantPhase = util.getValue(instant, 'phase');
   const instantStatus = instantPhase === 1 ? util.getValue(instant, 'status', null) : null;
-  const phaseEndsAt = instantPhase == 1 && instantStatus === 'enabled' ? util.getValue(instant, 'phaseEndsAt', null) : null;
+  const phaseEndsAt = instantPhase === 1 && instantStatus === 'enabled' ? util.getValue(instant, 'phaseEndsAt', null) : null;
   const connectLoader = util.getValue(state, 'merchantApp.connectLoader', false);
 
   return {
