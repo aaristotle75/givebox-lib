@@ -87,6 +87,7 @@ class ConnectBankStepsForm extends React.Component {
   }
 
   async switchToConnectBank() {
+    this.props.formProp({ error: false });
     const updated = await this.props.updateOrgSignup({ signupPhase: 'connectBank' });
     if (updated) {
       this.props.saveOrg({ orgUpdated: true });
@@ -118,7 +119,7 @@ class ConnectBankStepsForm extends React.Component {
             if (signupStep !== 4 && signupPhase === 'manualConnect') this.props.setSignupStep('connectStatus');
           } else if (err || message === 'cannot_submit_to_vantiv' || message === 'mid_notcreated') {
             if (signupPhase !== 'manualConnect') this.switchToManualBank();
-            this.props.formProp({ error: true, errorMsg: <span>We are unable to connect your bank account. Please manually connect a bank account and check that all your information is correct and try again in a few minutes.<br />{util.getValue(err, 'data.message', '')}</span> });
+            this.props.formProp({ error: true, errorMsg: <span>We are unable to connect your bank account with Plaid. Please manually connect a bank account and check that all your information is correct and try again in a few minutes.<br />{util.getValue(err, 'data.message', '')}</span> });
           }
           this.props.setMerchantApp('connectLoader', false);
         }
@@ -343,9 +344,9 @@ class ConnectBankStepsForm extends React.Component {
     const daysLeftDisplay = `${diffDisplay} to Connect a Bank Account or the Money You Received will be Refunded.`;
     const hasTransacitons = 
       hasReceivedTransaction
-      && ( instantStatus === 'enabled' || instantStatus === 'on_hold' ) ?
-        <div style={{ marginTop: 20 }} className='flexCenter flexColumn'>
-          <span style={{ display: 'block' }}>Congratulations, you have received your first transactions with Givebox!</span>
+      && diff >= 0
+      && ( instantStatus === 'enabled' ) ?
+        <div style={{ marginBottom: 20 }} className='flexCenter flexColumn'>
           { phaseEndsAt ? <span style={{ fontWeight: 500, color: lastDay ? 'red' : null }}>{daysLeftDisplay}</span> : null }
         </div>
       : null
@@ -356,30 +357,6 @@ class ConnectBankStepsForm extends React.Component {
     switch (slug) {
       case 'connectBank': {
         if (connectBankCompleted) {
-          if (isVantivReady && !merchantIdentString) {
-            item.saveButton =
-              <GBLink 
-                className='button' 
-                onClick={() => {
-                  this.props.setMerchantApp('connectLoader', true);
-                  this.checkConnectStatus();
-                }}
-              >
-                Check Your Bank Account Connection to Givebox
-              </GBLink>
-            ;
-          } else if (merchantIdentString) {
-            item.saveButton =
-              <GBLink 
-                className='button' 
-                onClick={() => {
-                  this.hasMerchantIdentStringSave('connectBank', false);
-                }}
-              >
-                Take Me to My Fundraiser Page
-              </GBLink>
-            ;
-          }
           item.desc = '';
           item.component =
             <div>
@@ -392,41 +369,24 @@ class ConnectBankStepsForm extends React.Component {
             </div>
           ;
         } else {
-          if (connectLoader) {
-            item.desc = 'Please wait while we connect your bank account to Givebox...';    
-            item.component = 
-              <div className='flexCenter flexColumn'>
+          item.desc = hasTransacitons ? 'Congratulations, you have received your first donations with Givebox!' : 'Your Merchant Processing Account Requires a Bank Account to Receive Money.';    
+          item.component =
+            <div>
+              { !this.props.completed.includes('connectBank') ?            
                 <div className='fieldGroup'>
-                  Please do not close this overlay, navigate away from the page, or close the browser while it connects. 
+                  {hasTransacitons}
+                  We highly recommend you connect with Plaid. 
+                  Plaid is a secure service where you simply login to your bank account and connect it to Givebox. 
+                  If you cannot find your bank account with Plaid then you will need to manually connect one.
                 </div>
-                <Image
-                  url={'https://cdn.givebox.com/givebox/public/images/step-loader.png'}
-                  maxSize={250}
-                  alt='Saving Progress'
-                  className='stepLoader'
-                />
-              </div>
-            ;
-          } else {
-            item.desc = 'Your Merchant Processing Account Requires a Bank Account to Receive Money.';    
-            item.component =
-              <div>
-                { !this.props.completed.includes('connectBank') ?              
-                  <div className='fieldGroup'>
-                    We highly recommend you connect with Plaid. 
-                    Plaid is a secure service where you simply login to your bank account and connect it to Givebox. 
-                    If you cannot find your bank account with Plaid then you will need to manually connect one.
-                  </div>
-                :
-                  <div className='fieldGroup flexCenter'>
-                    You have successfully connected a bank account! 
-                    Please continue to check the status of it being connected to Givebox.
-                  </div>
-                }
-                {hasTransacitons}
-                <ConnectBankHelp />
-              </div>
-          }
+              :
+                <div className='fieldGroup flexCenter'>
+                  You have successfully connected a bank account! 
+                  Please continue to check the status of it being connected to Givebox.
+                </div>
+              }
+              <ConnectBankHelp />
+            </div>
           ;
         }
         break;
@@ -517,6 +477,56 @@ class ConnectBankStepsForm extends React.Component {
       // no default
     }
 
+    if (isVantivReady && !merchantIdentString && connectBankCompleted && !connectLoader) {
+      item.saveButton =
+        <GBLink 
+          className='button' 
+          onClick={() => {
+            this.props.setMerchantApp('connectLoader', true);
+            this.checkConnectStatus();
+          }}
+        >
+          Check Your Bank Account Connection to Givebox
+        </GBLink>
+      ;
+    } else if (merchantIdentString && connectBankCompleted && !connectLoader) {
+      item.saveButton =
+        <div style={{ marginTop: 0 }} className='button-group'>
+          <GBLink 
+            className='button' 
+            onClick={() => {
+              this.hasMerchantIdentStringSave('connectBank', false);
+            }}
+          >
+            Close
+          </GBLink>
+          <GBLink 
+            className='button' 
+            onClick={() => {
+              this.hasMerchantIdentStringSave('connectBank', false);
+            }}
+          >
+            Take Me to My Fundraiser Page
+          </GBLink>
+        </div>
+      ;
+    } else if (connectLoader) {
+      item.desc = 'Please wait while we connect your bank account to Givebox...';    
+      item.component = 
+        <div className='flexCenter flexColumn'>
+          <div className='fieldGroup'>
+            Please do not close this overlay, navigate away from the page, or close the browser while it connects. 
+          </div>
+          <Image
+            url={'https://cdn.givebox.com/givebox/public/images/step-loader.png'}
+            maxSize={250}
+            alt='Saving Progress'
+            className='stepLoader'
+          />
+        </div>
+      ;
+    }
+
     return (
       <div className='stepContainer'>
         { this.state.saving ? <Loader msg='Saving step checking...' /> : null }
@@ -539,13 +549,13 @@ class ConnectBankStepsForm extends React.Component {
         { !this.state.editorOpen ?
         <div className='button-group'>
           <div className='leftSide' style={{ width: 150 }}>
-            { !firstStep ? <GBLink className={`link`} disabled={firstStep} onClick={() => {
+            { !firstStep && !connectBankCompleted ? <GBLink className={`link`} disabled={firstStep} onClick={() => {
               this.props.formProp({ error: false });
               this.props.previousStep(step);
             }}><span style={{ marginRight: '5px' }} className='icon icon-chevron-left'></span> {isMobile ? 'Back' : 'Previous Step' }</GBLink> : <span>&nbsp;</span> }
           </div>
           <div className='button-item'>
-            { slug === 'connectBank' ?
+            { slug === 'connectBank'  || slug === 'connectStatus' ?
               !connectLoader && !connectBankCompleted ?
                 <div style={{ marginTop: 0, paddingTop: 0 }} className='button-group'>
                   <PlaidConnect

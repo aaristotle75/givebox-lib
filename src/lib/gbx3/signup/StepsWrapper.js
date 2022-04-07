@@ -253,6 +253,10 @@ class StepsWrapper extends React.Component {
         break;
       }
 
+      case 'connectStatus': {
+        hideCloseBtn = true;
+      }
+
       case 'protect': {
         if (completed.includes('protect')) {
           title = 'Verifying Your Identity';

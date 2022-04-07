@@ -76,7 +76,7 @@ class ConnectBankHelp extends React.Component {
              </div>
              <span style={{ display: 'block',  marginBottom: 0  }}>
                <span style={{ display: 'block', fontWeight: 500, fontSize: 16 }}>Manually Connecting a Bank Account</span>
-               When you manually connect a bank account, you will need to provide additional documentation to verify your identity and the process can take a few days. 
+               When you manually connect a bank account, you will need to do additional steps and the process can take a few days. 
              </span>
            </div>
          </AnimateHeight>      

@@ -297,13 +297,14 @@ export function loadOrgSignup(options = {}) {
 
 export function shouldCheckSignupPhase(options = {}) {
   const opts = {
-    timeBefore: 'hours',
+    timeBefore: 'minutes',
     timeBeforeValue: 20,
     ...options
   };
   
   return (dispatch, getState) => {
     const state = getState();
+    const hideSteps = util.getValue(state, 'gbx3.info.hideSteps');
     const lastSignupCheck = localStorage.getItem('lastSignupCheck');
     const now = Moment.utc().unix();
     const timeBeforeNow = Moment().subtract(opts.timeBeforeValue, opts.timeBefore).unix();
@@ -311,6 +312,7 @@ export function shouldCheckSignupPhase(options = {}) {
     const transferSteps = util.getValue(state, 'gbx3.info.transferSteps');
     const signupPhase = util.getValue(state, 'gbx3.orgSignup.signupPhase');
     const completedPhases = util.getValue(state, 'gbx3.orgSignup.completedPhases', []);
+    const completedSteps = util.getValue(state, 'gbx3.orgSignup.completed', []);
     const hasReceivedTransaction = util.getValue(state, 'resource.gbx3Org.data.hasReceivedTransaction');
     const instant = util.getValue(state, 'resource.gbx3Org.data.instantFundraising', {});
     const instantPhase = util.getValue(instant, 'phase');
@@ -332,8 +334,10 @@ export function shouldCheckSignupPhase(options = {}) {
           break;
         }
 
+        case 'manualConnect':
         case 'connectBank': {
-          if (hasReceivedTransaction) {
+          const connectBankCompleted = completedSteps.includes('connectBank') ? true : false;
+          if (hasReceivedTransaction || connectBankCompleted) {
             checkSignup = true;
           }
           break;
@@ -349,8 +353,8 @@ export function shouldCheckSignupPhase(options = {}) {
     } else {
       checkSignup = true;
     }
-    
-    if (checkSignup) {
+    console.log('execute hideSteps -> ', hideSteps);
+    if (checkSignup && !hideSteps) {
       localStorage.setItem('lastSignupCheck', now);
       dispatch(checkSignupPhase());      
     }
@@ -1519,6 +1523,7 @@ export function loadGBX3(articleID, callback) {
     const orgData = util.getValue(getState(), 'resource.gbx3Org.data', {});
     const admin = util.getValue(gbx3, 'admin', {});
     const info = util.getValue(gbx3, 'info', {});
+    const showEditForm = util.getValue(info, 'showEditForm');
     const editFormOnly = util.getValue(admin, 'editFormOnly');
     const blockType = 'article';
     const availableBlocks = util.deepClone(util.getValue(admin, `availableBlocks.article`, []));
@@ -1753,7 +1758,8 @@ export function loadGBX3(articleID, callback) {
                           signupStepsDisplay: util.getValue(hasAccessToEdit, 'userRole') === 'admin' && signupStepsNotComplete ? true : false,
                           editable: hasAccessToEdit ? true : false,
                           step: 'design',
-                          open: editFormOnly ? false : true
+                          open: editFormOnly ? false : true,
+                          publicView: showEditForm && hasAccessToEdit ? false : true
                         };
       
                         if (util.getValue(hasAccessToEdit, 'isVolunteer')) {

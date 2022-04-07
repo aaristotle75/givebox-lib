@@ -42,7 +42,7 @@ class ConnectStatus extends React.Component {
 
     if (merchantIdentString) {
       message = 'Success! Your bank account is connected to Givebox.';
-      componentMessage = 'Your next step is to secure your account and prevent fraudulent access.';
+      componentMessage = 'Please continue to share your fundraiser and raise money.';
     }
 
     return (

@@ -340,6 +340,7 @@ class GBX3 extends React.Component {
     info.template = template;
     info.articleID = articleID;
     info.orgID = orgID;
+    info.showEditForm = has(queryParams, 'admin') ? true : false;
     info.modal = has(queryParams, 'modal') || modal ? true : false;
     info.preview = has(queryParams, 'preview') ? true : false;
     info.signup = has(queryParams, 'signup') ? true : false;
@@ -357,7 +358,7 @@ class GBX3 extends React.Component {
     info.autoCreate = util.getValue(queryParams, 'autoCreate');
     info.clone = util.getValue(queryParams, 'clone');
     info.cameFromNonprofitAdmin = has(queryParams, 'nonprofitAdmin') ? true : false;
-    info.hideSteps = util.getValue(queryParams, 'hideSteps') ? true : false;
+    info.hideSteps = has(queryParams, 'hideSteps') ? true : false;
 
     const loc = util.getValue(queryParams, 'loc', reactReferer.referer());
     const sourceLocation = loc || window.location.href;
@@ -457,30 +458,27 @@ class GBX3 extends React.Component {
 
   async loadGBX3(articleID, callback) {
 
-    const {
-      queryParams
-    } = this.props;
-
-    const share = has(queryParams, 'share') ? true : false;
-    const steps = has(queryParams, 'steps') ? true : false;
-    const previewMode = has(queryParams, 'previewMode') ? true : false;
-
     var loaded = false;
     this.props.loadGBX3(articleID, (res, err, args) => {
       if (!err && !util.isEmpty(res)) {
         this.props.setStyle();
         this.setRecaptcha();
         this.setTracking();
-        if (steps) this.props.toggleModal('stepsForm', true);
-        if (share) this.props.toggleModal('share', true);
-        if (previewMode) this.props.updateAdmin({ previewDevice: 'desktop', previewMode: true });
+        
         const {
           admin,
           info
         } = args;
+        
         const signupStepsDisplay = util.getValue(admin, 'signupStepsDisplay');
+        const previewMode = util.getValue(admin, 'previewMode');
         const preview = util.getValue(info, 'preview');
         const share = util.getValue(info, 'share');
+
+        if (share) this.props.toggleModal('share', true);
+        
+        if (previewMode) this.props.updateAdmin({ previewDevice: 'desktop', previewMode: true });
+
         if (signupStepsDisplay && !preview && !share) {
           this.props.shouldCheckSignupPhase();
         }
