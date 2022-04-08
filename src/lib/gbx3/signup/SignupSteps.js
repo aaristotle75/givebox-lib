@@ -245,7 +245,7 @@ class SignupStepsForm extends React.Component {
                           });
                           localStorage.removeItem('signup');
                           if (modal) {
-                            window.location.replace(`${GBX3_URL}/${createdArticleID}`);
+                            window.parent.location.replace(`${GBX3_URL}/${createdArticleID}`);
                           } else {
                             this.props.loadGBX3(createdArticleID, () => {
                               this.props.savingSignup(false);
