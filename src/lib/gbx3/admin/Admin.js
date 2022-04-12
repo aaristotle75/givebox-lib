@@ -14,7 +14,7 @@ import {
   updateInfo,
   updateAdmin
 } from '../redux/gbx3actions';
-import AvatarMenuButton from './AvatarMenuButton';
+import AvatarMenu from '../avatar/AvatarMenu';
 import ArticleList from './article/ArticleList';
 
 class Admin extends React.Component {
@@ -55,11 +55,11 @@ class Admin extends React.Component {
       articleID,
       step,
       breakpoint,
-      access
+      access,
+      project
     } = this.props;
 
     const isMobile = breakpoint === 'mobile' ? true : false;
-    const orgDisplay = display === 'org' ? true : false;
     const header = [];
 
     switch (display) {
@@ -93,7 +93,24 @@ class Admin extends React.Component {
         style.marginRight = 10;
       }
       header.push(
-        <GBLink key={'exit'} style={{ fontSize: '14px', ...style }} className='link' onClick={() => this.props.exitAdmin()}>{ isMobile ? 'Exit Form Builder' : `Exit Form Builder` }</GBLink>
+        <GBLink 
+          key={'exit'} 
+          style={{ fontSize: '14px', ...style }} 
+          className='link' 
+          onClick={() => {
+            if (project === 'share') {
+              this.props.updateAdmin({ publicView: true });
+              this.props.updateInfo({ stage: 'public' });
+            } else {
+              this.props.exitAdmin();
+            }
+          }}>
+            { project === 'share' ?
+              `View Public Page`
+            :
+              `Exit ${display === 'org' ? 'Page Editor' : 'Form Editor'}`
+            }
+        </GBLink>
       )
     }
 
@@ -157,7 +174,9 @@ class Admin extends React.Component {
                   </div>
                   {this.renderHeaderMiddle()}
                   <div className='headerRightSide'>
-                    <AvatarMenuButton />
+                    <AvatarMenu 
+                      exitAdmin={this.props.exitAdmin}
+                    />
                   </div>
                 </div>
                 <div className='headerMiddle'>

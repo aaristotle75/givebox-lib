@@ -3,12 +3,22 @@ import * as types from './actionTypes';
 import * as util from '../common/utility';
 import has from 'has';
 import { trackActivity } from './activity';
-import { sendResource, savePrefs } from './helpers';
+import { getResource, sendResource, savePrefs } from './helpers';
 
 const ENTRY_URL = process.env.REACT_APP_ENTRY_URL;
 const CLOUD_URL = process.env.REACT_APP_CLOUD_URL;
 const SUPER_URL = process.env.REACT_APP_SUPER_URL;
 const ENV = process.env.REACT_APP_ENV;
+
+export function getDefaultArticle(org) {
+  return (dispatch, getState) => {
+    const orgID = util.getValue(org, 'orgID');
+    const createdArticleID = util.getValue(org, 'customTemplate.orgSignup.createdArticleID');
+    let defaultArticleID = createdArticleID;
+    //console.log('execute default ID => ', orgID, defaultArticleID);
+    return defaultArticleID;
+  }
+}
 
 export function toggleLeftMenu(open) {
   return (dispatch, getState) => {

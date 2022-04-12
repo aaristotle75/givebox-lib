@@ -30,14 +30,15 @@ import {
   setOrgStyle,
   setCartOnLoad,
   loadOrgSignup,
-  shouldCheckSignupPhase
+  shouldCheckSignupPhase,
+  checkSignupPhase
 } from './redux/gbx3actions';
 import {
   setCustomProp,
   toggleModal
 } from '../api/actions';
 import GBXEntry from '../common/GBXEntry';
-import AvatarMenu from './admin/AvatarMenu';
+import AvatarOverlay from './avatar/AvatarOverlay';
 import Share from './share/Share';
 import history from '../common/history';
 import SavingSignup from './signup/SavingSignup';
@@ -456,7 +457,11 @@ class GBX3 extends React.Component {
   }
 
 
-  async loadGBX3(articleID, callback) {
+  async loadGBX3(articleID, callback, opts = {}) {
+
+    const {
+      checkSignup
+    } = opts;
 
     var loaded = false;
     this.props.loadGBX3(articleID, (res, err, args) => {
@@ -479,8 +484,12 @@ class GBX3 extends React.Component {
         
         if (previewMode) this.props.updateAdmin({ previewDevice: 'desktop', previewMode: true });
 
-        if (signupStepsDisplay && !preview && !share) {
+        if (signupStepsDisplay && !preview && !share && !checkSignup) {
           this.props.shouldCheckSignupPhase();
+        }
+        if (checkSignup) {
+          console.log('execute force checkSignup');
+          this.props.checkSignupPhase();
         }
         if (callback) callback();
       }
@@ -555,11 +564,18 @@ class GBX3 extends React.Component {
         {this.renderStage()}
         <ModalRoute
           className='gbx3'
-          id='avatarMenu'
+          id='avatarOverlay'
           effect='3DFlipVert'
           style={{ width: '40%' }}
           disallowBgClose={false}
-          component={(props) => <AvatarMenu exitAdmin={this.exitAdmin} reloadGBX3={this.reloadGBX3} />}
+          component={(props) => 
+            <AvatarOverlay 
+              exitAdmin={this.exitAdmin} 
+              reloadGBX3={this.reloadGBX3} 
+              loadGBX3={this.loadGBX3}
+              history={history}
+            />
+          }
           forceShowModalGraphic={true}
         />
         <ModalRoute
@@ -655,5 +671,6 @@ export default connect(mapStateToProps, {
   setOrgStyle,
   setCartOnLoad,
   loadOrgSignup,
-  shouldCheckSignupPhase
+  shouldCheckSignupPhase,
+  checkSignupPhase
 })(GBX3);

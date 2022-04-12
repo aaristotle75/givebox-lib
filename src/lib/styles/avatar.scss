@@ -6,6 +6,25 @@ button.link:hover .avatarImage {
 }
 
 .avatarLink {
+  button.link.alert {
+    @include animation(pulsateSlightlyBrighter 1s ease-out infinite);
+  }
+
+  .avatarAlert {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    z-index: 2;
+    .icon,
+    svg {
+      @include animation(bell 3s ease-out infinite);
+      color: $red;
+      font-size: 25px;
+    }
+  }
+}
+
+.avatarLink {
   position: relative;
 
   button.link {
@@ -45,8 +64,8 @@ button.link:hover .avatarImage {
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    width: 45px;
-    height: 45px;
+    width: 48px;
+    height: 48px;
     text-align: center;
     overflow: hidden;
     margin: 0 10px;
@@ -93,11 +112,11 @@ button.link:hover .avatarImage {
 }
 
 ul.selectable li:hover,
-.avatarMenu li:hover {
+.avatarOverlay li:hover {
   @include purpleToSalmonOnly;
 }
 
-.avatarMenu {
+.avatarOverlay {
 
   padding: 0 20px;
 
@@ -269,7 +288,7 @@ ul.selectable li:hover,
       display: inline-block;
       width: 20px;
       margin-right: 10px;
-      color: $mainColor;
+      color: $med-gray;
       font-weight: 700;
       text-align: center;
       vertical-align: middle;
@@ -277,12 +296,48 @@ ul.selectable li:hover,
 
     .text {
       display: inline-block;
-      text-align: left;
-      vertical-align: middle;
+      display: flex;
+      align-items: center;
     }
+
+    .text:hover {
+      opacity: .8;
+      @include transition(opacity .25s);      
+    }
+
+    .secondaryText {
+      display: inline-block;
+      display: flex;
+      align-items: center;
+      color: $med-blue-gray;
+      svg,
+      .icon {
+        margin-left: 10px;
+        font-size: 20px;
+      }
+    }
+
+    .secondaryText.completed {
+      color: $green;
+      svg,
+      .icon {
+        color: $green;
+      }
+    }
+
+    .secondaryText.alert {
+      color: $red;
+      svg,
+      .icon {
+        color: $red;
+      }
+    }
+    
   }
 
   .bottomSection {
+    display: flex;
+    justify-content: space-between;
     margin-left: 5px;
     padding: 20px 0;
   }
@@ -294,6 +349,9 @@ ul.selectable li:hover,
   }
 
   li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     text-align: left;
     padding: 15px 10px;
     color: $med-gray;
@@ -303,11 +361,12 @@ ul.selectable li:hover,
   }
 
   li:hover {
-    @include purpleToSalmonOnly;
-    color: $white;
+    //@include purpleToSalmonOnly;
+    background: transparent;
+    color: $mainColor;
     @include default-transition(.25s);
     svg,
-    .icon { color: $white; }
+    .icon { color: $mainColor; }
   }
 
   .close {

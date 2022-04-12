@@ -143,11 +143,13 @@ export function gbx3(state = {
         savingSignupCallback: action.savingSignupCallback
       });
     case types.UPDATE_ORG_SIGNUP: {
+      const orgSignupState = action.reset ? {} : util.getValue(state, 'orgSignup', {});
+      const orgSignupAction = util.getValue(action, 'orgSignup', {});
 
       const completedPhases = [
         ...new Set([
-          ...util.getValue(state, 'orgSignup.completedPhases', []),
-          ...util.getValue(action.orgSignup, 'completedPhases', [])
+          ...util.getValue(orgSignupState, 'completedPhases', []),
+          ...util.getValue(orgSignupAction, 'completedPhases', [])
         ])
       ];
 
@@ -156,8 +158,8 @@ export function gbx3(state = {
       };
 
       const orgSignup = {
-        ...state.orgSignup,
-        ...action.orgSignup,
+        ...orgSignupState,
+        ...orgSignupAction,
         completedPhases
       };
 

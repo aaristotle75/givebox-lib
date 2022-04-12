@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as util from '../../common/utility';
 import Icon from '../../common/Icon';
+import GBLink from '../../common/GBLink';
 import {
   updateInfo,
   updateCart
@@ -96,7 +97,11 @@ class CartButton extends React.Component {
 
       case 'avatarMenu': {
         return (
-          <li onClick={() => this.gotoCart()}><Icon><FiShoppingCart /></Icon> <span className='text'>My Cart ({cartItems.length})</span></li>
+          <GBLink 
+            className='link' 
+            onClick={() => this.gotoCart()}>
+              My Cart ({cartItems.length})
+          </GBLink>
         )
       }
 

@@ -2,7 +2,7 @@ import * as types from './gbx3actionTypes';
 import * as util from '../../common/utility';
 import * as types2 from '../../common/types';
 import { getResource, sendResource } from '../../api/helpers';
-import { toggleModal } from '../../api/actions';
+import { toggleModal, getDefaultArticle } from '../../api/actions';
 import { defaultAmountHeight } from '../blocks/amounts/amountsStyle';
 import { blockTemplates, defaultBlocks } from '../blocks/blockTemplates';
 import { createData } from '../admin/article/createTemplates';
@@ -227,11 +227,12 @@ export function openStep(value, modalName = 'orgSignupSteps') {
   }
 }
 
-export function updateOrgSignup(orgSignup = {}, phaseCompleted = null) {
+export function updateOrgSignup(orgSignup = {}, phaseCompleted = null, reset) {
   return {
     type: types.UPDATE_ORG_SIGNUP,
     orgSignup,
-    phaseCompleted
+    phaseCompleted,
+    reset
   }
 }
 
@@ -295,6 +296,37 @@ export function loadOrgSignup(options = {}) {
   }
 }
 
+export function getSignupState() {
+  return (dispatch, getState) => {
+    const state = getState();
+    const access = util.getValue(state.resource, 'access');    
+    const hasAccessToEdit = util.getValue(state, 'gbx3.admin.hasAccessToEdit');
+    const org = hasAccessToEdit ? util.getValue(state, 'resource.gbx3Org.data', {}) : util.getValue(state, 'resource.session.data.organization', {});
+    const orgSignup = hasAccessToEdit ? util.getValue(state, 'gbx3.orgSignup', {}) : util.getValue(org, 'customTemplate.orgSignup', {});        
+    const connectBankCompleted = util.getValue(orgSignup, 'completedPhases', []).includes('connectBank');
+    const transferMoneyCompleted = util.getValue(orgSignup, 'completedPhases', []).includes('transferMoney');
+    const bankConnected = ( connectBankCompleted || util.getValue(org, 'vantiv.merchantIdentString')) ? true : false;
+    const connectBankAlert = !connectBankCompleted && !bankConnected ? true : false;
+    const identityVerified = ( transferMoneyCompleted || 
+      (util.getValue(org, 'underwritingStatus') === 'approved'
+      && util.getValue(org, 'hasBankInfo')) ) ? true : false;
+    const verifyIdentityAlert = !identityVerified && !transferMoneyCompleted ? true : false;
+    const defaultArticleID = dispatch(getDefaultArticle(org));
+    const orgSlug = util.getValue(org, 'slug');
+
+    return {
+      connectBankCompleted,
+      bankConnected,
+      connectBankAlert,
+      transferMoneyCompleted,
+      identityVerified,
+      verifyIdentityAlert,
+      defaultArticleID,
+      orgSlug
+    };
+  }
+}
+
 export function shouldCheckSignupPhase(options = {}) {
   const opts = {
     timeBefore: 'minutes',
@@ -353,7 +385,7 @@ export function shouldCheckSignupPhase(options = {}) {
     } else {
       checkSignup = true;
     }
-    console.log('execute hideSteps -> ', hideSteps);
+
     if (checkSignup && !hideSteps) {
       localStorage.setItem('lastSignupCheck', now);
       dispatch(checkSignupPhase());      
@@ -1553,7 +1585,7 @@ export function loadGBX3(articleID, callback) {
                 const signupPhase = util.getValue(orgSignup, 'signupPhase');   
                 const completedPhases = util.getValue(orgSignup, 'completedPhases', []);
                 signupStepsNotComplete = ( signupPhase && completedPhases.length < signupPhases.length && !completedPhases.includes('transferMoney') ) ? true : false;
-                dispatch(updateOrgSignup(orgSignup));
+                dispatch(updateOrgSignup(orgSignup, null, true));
 
                 if (kindID) {
                   const apiName = `org${types2.kind(kind).api.item}`;

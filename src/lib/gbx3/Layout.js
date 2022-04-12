@@ -15,14 +15,12 @@ import {
   updateAdmin,
   updateInfo
 } from './redux/gbx3actions';
-import AvatarMenuButton from './admin/AvatarMenuButton';
-import CartButton from './payment/CartButton';
+import AvatarMenu from './avatar/AvatarMenu';
 import { AiOutlineNotification, AiOutlineTrophy } from 'react-icons/ai';
 import ReactGA from 'react-ga';
 import Scroll from 'react-scroll';
 import history from '../common/history';
 
-const ENTRY_URL = process.env.REACT_APP_ENTRY_URL;
 const GBX_URL = process.env.REACT_APP_GBX_URL;
 const SHARE_URL = process.env.REACT_APP_GBX_SHARE;
 const ENV = process.env.REACT_APP_ENV;
@@ -230,50 +228,6 @@ class Layout extends React.Component {
       gbx3BackgroundHeight = `${height}px`;
     }
 
-    const startFundraiserLink = ENV === 'local' ? `${SHARE_URL}/4?template=signup&orgID=null` : `${GBX_URL}/signup`;
-
-    const avatarMenu =
-      <div className='hasAccessToEditPublic'>
-        { display !== 'signup' ? <AvatarMenuButton /> : null }
-        { !browse && display !== 'signup' ?
-        <ModalLink type='div' id={'share'} className='avatarLink tooltip hideOnMobile'>
-          <span className='tooltipTop'><i />Share</span>
-          <div className='editGraphic'>
-            <span className='icon icon-share'></span>
-          </div>
-        </ModalLink> : null}
-        { hasAccessToEdit && stage !== 'admin' && !browse ?
-        <div onClick={() => this.props.updateAdmin({ publicView: false })} className='avatarLink tooltip hideOnMobile'>
-          <span className='tooltipTop'><i />{ display === 'org' ? 'Edit Page' : 'Edit Form' }</span>
-          <div className='editGraphic'>
-            <span className='icon icon-edit'></span>
-          </div>
-        </div> : null}
-        { hasAccessToEdit && stage === 'admin' && display === 'org' && !browse ?
-        <div
-          className='avatarLink tooltip hideOnMobile'
-          onClick={() => {
-            this.props.updateAdmin({ publicView: true });
-            this.props.updateInfo({ stage: 'public' });
-          }}
-        >
-          <span className='tooltipTop'><i />Public View</span>
-          <div className='editGraphic'>
-            <span className='icon icon-eye'></span>
-          </div>
-        </div> : null}
-        <CartButton reloadGBX3={this.props.reloadGBX3} type='avatarLink' />
-        { (display === 'org' || display === 'browse') && stage !== 'admin' && !preview && !hasAccessToEdit ?
-        <div className='avatarLoginActions'>
-          <GBLink className='button' onClick={() => window.location.replace(startFundraiserLink)}>Start a Fundraiser</GBLink>
-          <GBLink className='button' onClick={() => window.location.replace(ENTRY_URL)}>Login</GBLink>
-        </div>
-        : null }
-      </div>
-    ;
-
-    const showAvatarMenu = (stage !== 'admin' || (stage === 'admin' && display === 'org')) && !preview ? true : false;
-
     // This is article display specific
     const noAccess = (!hasAccessToEdit || (hasAccessToEdit && !preview && stage === 'public' )) && (publishStatus === 'private') && (display === 'article') ? true : false;
 
@@ -281,6 +235,7 @@ class Layout extends React.Component {
     const done = kind === 'sweepstake' && status === 'done' && display !== 'org' && display !== 'signup' ? true : false;
 
     const publicOnly = (stage !== 'admin') && !preview ? true : false;
+
     let displayClass = display;
     switch (display) {
       case 'signup': {
@@ -289,7 +244,6 @@ class Layout extends React.Component {
 
       // no default
     }
-
 
     return (
       <div className={`gbx3PageWrapper ${displayClass} ${stage}`}>
@@ -323,16 +277,20 @@ class Layout extends React.Component {
           </div>
         : ''}
 
-        { publicOnly && display !== 'org' && display !== 'signup' ?
+        {/* publicOnly && display !== 'org' && display !== 'signup' ?
           <div onClick={() => this.backToOrg(null, true)} className='backToOrgPage avatarLink'>
             <div className='editGraphic'>
               <span className='icon icon-chevron-left'></span>
             </div>
           </div>
-        :'' }
+          :'' */}
 
         <div style={{ height: gbx3BackgroundHeight }} className='gbx3LayoutBackground'></div>
-        {showAvatarMenu ? avatarMenu : '' }
+        <AvatarMenu
+          reloadGBX3={this.props.reloadGBX3}
+          hideMenu={stage === 'admin' && display !== 'org' ? true : false}
+          exitAdmin={this.props.exitAdmin}
+        />
         <div ref={this.gbx3LayoutRef} id='gbx3Layout' className={`gbx3Layout ${displayClass} ${stage} ${noAccess ? 'noAccess' : ''}`}>
           <div
             style={{
