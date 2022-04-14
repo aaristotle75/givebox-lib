@@ -197,7 +197,7 @@ export function setAccess(res, callback) {
     const orgSlug = util.getValue(org, 'slug', null);
     const underwritingStatus = util.getValue(org, 'underwritingStatus', null);
     const status = util.getValue(org, 'status', null);
-
+    const defaultArticleID = dispatch(getDefaultArticle(org));
     // Set the selected org
     if (orgID) dispatch(resourceProp('orgID', orgID));
 
@@ -229,12 +229,14 @@ export function setAccess(res, callback) {
       masker: has(res, 'masker') ? true : false,
       theme: user.preferences ? user.preferences.cloudTheme : 'light',
       animations: user.preferences ? user.preferences.animations : false,
+      loginRedirectURL: util.getValue(user, 'preferences.cloudUI.loginRedirectURL'),
       orgName,
       orgImage,
       orgID,
       orgSlug,
       underwritingStatus,
-      status
+      status,
+      defaultArticleID
     };
 
     // Check member for access

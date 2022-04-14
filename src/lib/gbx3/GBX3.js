@@ -84,7 +84,8 @@ class GBX3 extends React.Component {
       step,
       browse,
       signup,
-      template
+      template,
+      queryParams
     } = this.props;
 
     this.props.setLoading(true);
@@ -95,17 +96,30 @@ class GBX3 extends React.Component {
       this.props.updateAdmin({ editable: false });
     }
 
+    const modal = has(queryParams, 'modal') || this.props.modal ? true : false;
     const blockType = template || this.props.blockType;
     const orgID = this.props.orgID || util.getValue(access, 'orgID');
+    const orgSlug = util.getValue(access, 'orgSlug');
     const setInfo = await this.setInfo();
+
     if (setInfo) {
       if (browse) {
         this.loadBrowse();
       } else if (signup) {
         if (!orgID) this.loadSignup();
         else {
-          if (articleID) this.loadGBX3(articleID);
-          else this.loadOrg(orgID);
+          if (modal) {
+            const loginRedirectURL = util.getValue(access, 'loginRedirectURL');
+            const defaultArticleID = util.getValue(access, 'defaultArticleID');
+            if (loginRedirectURL) window.top.location.replace(loginRedirectURL);
+            else if (defaultArticleID) window.top.location.replace(`${GBX_URL}/${defaultArticleID}`);
+            else window.top.location.replace(`${GBX_URL}/${orgSlug}`);
+          } else {
+            if (articleID) this.loadGBX3(articleID);
+            else {
+              this.loadOrg(orgID);
+            }
+          }
         }
       } else {
         switch (blockType) {
