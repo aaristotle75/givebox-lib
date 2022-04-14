@@ -26,7 +26,11 @@ import CartButton from '../payment/CartButton';
 import { AiOutlineBank } from 'react-icons/ai';
 import { MdFingerprint } from 'react-icons/md';
 import { BiTransferAlt } from 'react-icons/bi';
+import { GoSettings } from 'react-icons/go';
 import { ShieldExclamation, ExclamationLg, ArrowLeft } from 'react-bootstrap-icons';
+import AvatarSettings from './AvatarSettings';
+import ModalRoute from '../../modal/ModalRoute';
+import RedirectPref from '../../login/RedirectPref';
 
 const ENTRY_URL = process.env.REACT_APP_ENTRY_URL;
 const GBX_URL = process.env.REACT_APP_GBX_URL;
@@ -107,6 +111,7 @@ class AvatarOverlay extends React.Component {
 
     const isWallet = util.getValue(access, 'role') === 'user' ? true : false;
     const isSuper = util.getValue(access, 'role') === 'super' ? true : false;
+    const isAdmin = util.getValue(access, 'role') === 'admin' ? true : false;
     const role = util.getValue(access, 'role');
     const masquerade = util.getValue(access, 'masker', null) ? true : false;
     const baseURL = isWallet ? WALLET_URL : CLOUD_URL;
@@ -126,7 +131,7 @@ class AvatarOverlay extends React.Component {
     } = this.props.getAvatarState(); 
     
     // If an admin user show go to homepage
-    if (role === 'admin' && !hasAccessToEdit) {
+    if (isAdmin && !hasAccessToEdit) {
       // Home Page
       menuList.push(
         <li 
@@ -150,7 +155,7 @@ class AvatarOverlay extends React.Component {
     // Dashboard
     menuList.push(
       <li key='dashboard' onClick={async () => {
-        if (role === 'admin' || role === 'super') {
+        if (isAdmin || isSuper) {
           this.props.toggleModal('avatarOverlay', false);
           this.props.openLaunchpad();
         } else {
@@ -162,6 +167,20 @@ class AvatarOverlay extends React.Component {
         </div>
       </li>
     );
+
+    if (isAdmin) {
+      menuList.push(
+        <RedirectPref
+          type='li'
+          key='settings'
+          content={
+            <div className='text'>
+              <Icon><GoSettings /></Icon> User Settings
+            </div>
+          }
+        />
+      )
+    }
 
     // Share
     menuList.push(
@@ -342,16 +361,18 @@ class AvatarOverlay extends React.Component {
               <div className='text'>
                 <Icon style={{ fontSize: '20px' }}><BiTransferAlt /></Icon> Transfer Money
               </div>
+              { projectedBalance > 0 ?
               <div className='secondaryText'>
                 <div className='moneyRaisedContainer'>
                   <div className='moneyRaised'>
-                    <span className='moneyRaisedLabel'>Projected Balance</span>
+                    <span className='moneyRaisedLabel'>Balance</span>
                     <span className='moneyRaisedText moneyAmount'>
                       <span className='symbol'>$</span>{dollarAmount}<span className='centAmount'><span className='centSymbol'></span>{centAmount}</span>
                     </span>
                   </div>
-                </div>               
+                </div>            
               </div>
+              : null }
           </li>
         );
         break;
@@ -362,12 +383,19 @@ class AvatarOverlay extends React.Component {
       }
 
       // default
-    }
+    }   
 
     return (
       <div className='modalWrapper'>
+        <ModalRoute
+          id='avatarSettings'
+          className='gbx3'
+          forceShowModalGraphic={false}
+          effect='3DFlipVert' style={{ width: '30%' }}
+          component={(props) => <AvatarSettings {...props} /> }
+        />
         <div className='avatarOverlay'>
-          {access.role === 'admin' ?
+          { isAdmin ?
           <div className='logoSection'>
             <h3 style={{ marginTop: 0, paddingTop: 0 }}>{access.orgName}</h3>
             <GBLink className='tooltip' onClick={() => this.directLink(`${baseURL}/settings/details`)}>
@@ -383,7 +411,7 @@ class AvatarOverlay extends React.Component {
               <span className='tooltipTop'><i />Click Icon to {orgImage ? 'Edit' : 'Add'} Logo</span>
             </GBLink>
           </div> : '' }
-          <div style={{ borderTop: access.role !== 'admin' ? 0 : null }} className='topSection'>
+          <div style={{ borderTop: isAdmin ? 0 : null }} className='topSection'>
             <div className='leftSide'>
               <GBLink className='tooltip' onClick={() => this.directLink(`${baseURL}/settings/myaccount`)}>
                 { access.userImage ?
@@ -404,7 +432,7 @@ class AvatarOverlay extends React.Component {
               { isSuper ? <span className='gray smallText line'>Super User</span> : null }
               <span className='line' style={{fontWeight: 400}}>{access.fullName}</span>
               <span className='line' style={{fontWeight: 300}}>{access.email}</span>
-            </div>      
+            </div>
           </div>
           <div className='listSection'>
             <ul>
@@ -412,13 +440,13 @@ class AvatarOverlay extends React.Component {
           </ul>
           </div>
           <div className='bottomSection'>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-              { isSuper && !masquerade ? <GBLink style={{ marginBottom: 10 }} onClick={() => window.location.href = SUPER_URL}>Go Back to Super Admin</GBLink> : null }
-              <GBLink onClick={() => this.props.userLogout()}>{masquerade ? 'End Masquerade' : 'Logout' }</GBLink>
-            </div>
             { stage !== 'admin' ?
             <CartButton key='cart' reloadGBX3={this.props.reloadGBX3} type='avatarMenu' callback={() => this.props.toggleModal('avatarOverlay', false)} />
             : null }
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+              { isSuper && !masquerade ? <GBLink style={{ marginBottom: 10 }} onClick={() => window.location.href = SUPER_URL}>Go Back to Super Admin</GBLink> : null }
+              <GBLink onClick={() => this.props.userLogout()}>{masquerade ? 'End Masquerade' : 'Logout' }</GBLink>
+            </div>            
           </div>
         </div>
       </div>

@@ -7,6 +7,7 @@ import {
 import * as giveboxAPI from './givebox';
 import * as util from '../common/utility';
 import has from 'has';
+import { is } from 'immutable';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -236,7 +237,12 @@ export function sendResource(resource, opts = {}) {
   }
 }
 
-export function savePrefs(pref, callback, reset = false) {
+export function savePrefs(pref, callback, opts = {}) {
+  const {
+    reset,
+    isSending
+  } = opts;
+
   return (dispatch, getState) => {
     const preferences = !reset && has(getState(), 'preferences') ? getState().preferences : {};
     const updatedPrefs = { ...preferences, ...pref };
@@ -247,7 +253,10 @@ export function savePrefs(pref, callback, reset = false) {
         cloudUI: updatedPrefs
       },
       reload: reset ? true : false,
-      isSending: false
+      isSending: isSending ? true : false,
+      callback: (res, err) => {
+        if (callback) callback(res, err);
+      }
     }));
   }
 }

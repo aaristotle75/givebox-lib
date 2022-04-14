@@ -13,9 +13,7 @@ const ENV = process.env.REACT_APP_ENV;
 export function getDefaultArticle(org) {
   return (dispatch, getState) => {
     const orgID = util.getValue(org, 'orgID');
-    const createdArticleID = util.getValue(org, 'customTemplate.orgSignup.createdArticleID');
-    let defaultArticleID = createdArticleID;
-    //console.log('execute default ID => ', orgID, defaultArticleID);
+    const defaultArticleID = util.getValue(org, 'customTemplate.orgSignup.createdArticleID', util.getValue(org, 'defaultArticleID'));
     return defaultArticleID;
   }
 }

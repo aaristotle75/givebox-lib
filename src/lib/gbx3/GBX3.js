@@ -568,6 +568,7 @@ class GBX3 extends React.Component {
           effect='3DFlipVert'
           style={{ width: '40%' }}
           disallowBgClose={false}
+          forceShowModalGraphic={true}
           component={(props) => 
             <AvatarOverlay 
               exitAdmin={this.exitAdmin} 
@@ -576,7 +577,6 @@ class GBX3 extends React.Component {
               history={history}
             />
           }
-          forceShowModalGraphic={true}
         />
         <ModalRoute
           className='gbx3'
