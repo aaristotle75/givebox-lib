@@ -506,16 +506,16 @@ class ConnectBankStepsForm extends React.Component {
               this.hasMerchantIdentStringSave('connectBank', false);
             }}
           >
-            Take Me to My Fundraiser Page
+            Take Me to My Fundraiser
           </GBLink>
         </div>
       ;
     } else if (connectLoader) {
-      item.desc = 'Please wait while we connect your bank account to Givebox...';    
+      item.desc = 'Encyryption Sequence in Progress...';
       item.component = 
         <div className='flexCenter flexColumn'>
           <div className='fieldGroup'>
-            Please do not close this overlay, navigate away from the page, or close the browser while it connects. 
+            Please do not close this overlay, navigate away from this page, or close the browser while in progress. 
           </div>
           <Image
             url={'https://cdn.givebox.com/givebox/public/images/step-loader.png'}

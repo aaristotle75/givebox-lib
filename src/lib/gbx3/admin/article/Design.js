@@ -39,7 +39,7 @@ class Design extends React.Component {
     const mobile = props.breakpoint === 'mobile' ? true : false;
     this.contentObj = {
       layout: {
-        menuText: !mobile ? 'Design Form' : 'Design',
+        menuText: !mobile ? `Design ${props.kindName}` : 'Design',
         icon: <Icon><FaPalette /></Icon>
       },
       receipt: {
@@ -47,7 +47,7 @@ class Design extends React.Component {
         icon: <Icon><FiPenTool /></Icon>
       },
       share: {
-        menuText: !mobile ? 'Share Form' : 'Share',
+        menuText: !mobile ? `Share ${props.kindName}` : 'Share',
         icon: <Icon><AiOutlineNotification /></Icon>
       }
     };
@@ -310,7 +310,8 @@ function mapStateToProps(state, props) {
     previewDevice,
     openAdmin,
     createType,
-    kind: util.getValue(state, 'gbx3.info.kind', 'fundraiser')
+    kind: util.getValue(state, 'gbx3.info.kind', 'fundraiser'),
+    kindName: util.getValue(state, 'gbx3.info.kindName')
   }
 }
 

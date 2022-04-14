@@ -54,8 +54,8 @@ class TransferMoneyStepsForm extends React.Component {
       identityUploaded: false,
       verifyBankUploaded: false,
       verifyBusinessUploaded: false,
-      is2FAVerified: false,
-      checkingStatusDisableButton: false,
+      is2FAVerified: props.is2FAVerified,
+      isCheckingStatus: false,
       checkingStatusNotApprovedYetMessage: false,
       missionCountriesShow: props.missionCountries ? 2 : 1,
       readyToCheckApproval: props.readyToCheckApproval,
@@ -192,7 +192,7 @@ class TransferMoneyStepsForm extends React.Component {
   }
 
   checkApprovalStatus() {
-    this.setState({ checkingStatusDisableButton: true }, () => {
+    this.setState({ isCheckingStatus: true }, () => {
       this.props.getResource('org', {
         customName: 'gbx3Org',
         reload: true,
@@ -200,18 +200,18 @@ class TransferMoneyStepsForm extends React.Component {
           const underwritingStatus = util.getValue(res, 'underwritingStatus');
           const hasBankInfo = util.getValue(res, 'hasBankInfo');
           if (underwritingStatus === 'approved' && hasBankInfo) {
-            this.setState({ saving: false, checkingStatusDisableButton: false, approvedForTransfers: true });
+            this.setState({ saving: false, isCheckingStatus: false, approvedForTransfers: true });
           } else {
             this.setState({ saving: false });
             setTimeout(() => {
-              this.setState({ checkingStatusDisableButton: false }, () => {
+              this.setState({ isCheckingStatus: false }, () => {
                 this.setState({ checkingStatusNotApprovedYetMessage: true }, () => {
                   setTimeout(() => {
                     this.setState({ checkingStatusNotApprovedYetMessage: false });
-                  }, 10000);                  
+                  }, 8000);                  
                 });
               });
-            }, 15000);
+            }, 10000);
           }
         }
       });
@@ -336,7 +336,7 @@ class TransferMoneyStepsForm extends React.Component {
       verifyBankUploaded,
       verifyBusinessUploaded,
       is2FAVerified,
-      checkingStatusDisableButton,
+      isCheckingStatus,
       checkingStatusNotApprovedYetMessage,
       missionCountriesShow,
       readyToCheckApproval,
@@ -584,24 +584,7 @@ class TransferMoneyStepsForm extends React.Component {
                 <span>
                   Your account is protected with two-factor authentication.
                 </span>
-              }
-              <div style={{ position: 'relative', marginTop: 0, paddingTop: 0 }} className='button-group'>
-                <GBLink
-                  style={{
-                    position: 'absolute',
-                    top: '30px'
-                  }}
-                  disabled={checkingStatusDisableButton} 
-                  className={`button ${checkingStatusDisableButton ? 'readOnly tooltip' : ''}`} 
-                  onClick={() => {
-                    this.setState({ saving: true }, () => {
-                      this.checkApprovalStatus();
-                    });
-                  }}>
-                  {checkingStatusDisableButton ? <div className='tooltipTop'><i></i>Please wait while we check status for you...</div> : null }
-                  Check Review Status
-                </GBLink>
-              </div>              
+              }  
             </div>
           </div>
         ;
@@ -612,13 +595,20 @@ class TransferMoneyStepsForm extends React.Component {
     }
 
     if (readyToCheckApproval) {
-      item.desc = 'We are reviewing everything you submitted.';
+      item.desc = isCheckingStatus ? 
+        'We are verifying everything you submitted.' 
+      : 
+        checkingStatusNotApprovedYetMessage ?
+          'We apologize but your identity is still being verified...'
+        :
+          'Your identity is being verified and can take up to 5 business days.'
+      ;
       item.component = 
         <div>
           <div className='flexCenter'>
-            { checkingStatusDisableButton ?
+            { isCheckingStatus ?
               <div className='flexCenter flexColumn'>
-                <span className='green'>Please wait while we check your status...</span>
+                <span className='green'>Please wait while we check verification status...</span>
                 <Image
                   url={'https://cdn.givebox.com/givebox/public/images/step-loader.png'}
                   maxSize={250}
@@ -628,10 +618,10 @@ class TransferMoneyStepsForm extends React.Component {
                 />  
               </div>
             :
-              checkingStatusNotApprovedYetMessage ? 
-                <span>We apologize but your account is still under review. In the meantime you can still share your fundraiser and raise money.</span> 
-              :            
-                'We appreciate your patience while we verify your identity. The process can take up to 5 business days.'
+              !checkingStatusNotApprovedYetMessage ? 
+                <span>In the meantime we suggest you share your fundraiser and raise money.</span>
+              : 
+                <span>You will recevie an email notification when verification is complete.</span>
             }
           </div>
           <TransferStatus
@@ -646,7 +636,7 @@ class TransferMoneyStepsForm extends React.Component {
       item.component = 
         <div>
           <div className='flexCenter'>
-            You are now enabled to transfer money and your Givebox merchant processing account is fully approved.
+            You are enabled to transfer money and your Givebox merchant processing account is fully approved.
           </div>
         </div>
       ;
@@ -683,31 +673,30 @@ class TransferMoneyStepsForm extends React.Component {
             { !approvedForTransfers && !readyToCheckApproval && item.saveButtonLabel ? 
               this.props.saveButton(this.processForm, { group: slug, label: item.saveButtonLabel, disabled: item.saveButtonDisabled })
             : null }
-            { readyToCheckApproval && !approvedForTransfers ?
+            { readyToCheckApproval && !approvedForTransfers && is2FAVerified ?
               <div style={{ marginTop: 0, paddingTop: 0 }} className='button-group'>
+                {/*
                 <GBLink 
-                  disabled={checkingStatusDisableButton} 
-                  className={`button ${checkingStatusDisableButton ? 'readOnly tooltip' : ''}`} 
+                  disabled={isCheckingStatus} 
+                  className={`button ${isCheckingStatus ? 'readOnly tooltip' : ''}`} 
                   onClick={() => {
                     this.setState({ saving: true }, () => {
                       this.checkApprovalStatus();
                     });
                   }}>
-                  {checkingStatusDisableButton ? <div className='tooltipTop'><i></i>Please wait while we check status for you...</div> : null }
+                  {isCheckingStatus ? <div className='tooltipTop'><i></i>Please wait while we check status for you...</div> : null }
                   Check Review Status
                 </GBLink>
+                */}
                 <GBLink className='button' onClick={() => this.props.toggleModal('orgTransferSteps', false)}>
-                  Take Me to My Fundraiser Page
+                  Take Me to My Fundraiser
                 </GBLink>
               </div>
             : null }
             { approvedForTransfers ?
               <div style={{ marginTop: 0, paddingTop: 0 }} className='button-group'>
-                <GBLink className='button' onClick={() => this.approvedForTransfersFinish(true)}>
-                  Manage Money
-                </GBLink>
                 <GBLink className='button' onClick={this.approvedForTransfersFinish}>
-                  Take Me to My Fundraiser Page
+                  Take Me to My Fundraiser
                 </GBLink>
               </div>  
             : null }            
@@ -776,6 +765,7 @@ function mapStateToProps(state, props) {
   const completed = util.getValue(state, 'gbx3.orgSignup.completed', []);
   const approvedForTransfers = underwritingStatus === 'approved' && hasBankInfo ? true : false;
   const readyToCheckApproval = props.requiredSteps.every(c => completed.includes(c));
+  const is2FAVerified = util.getValue(state, 'resource.session.data.user.is2FAVerified');
 
   return {
     orgID,
@@ -784,7 +774,8 @@ function mapStateToProps(state, props) {
     completedPhases,
     completed,
     approvedForTransfers,    
-    readyToCheckApproval
+    readyToCheckApproval,
+    is2FAVerified
   }
 }
 

@@ -8,7 +8,7 @@ import { toggleModal } from '../../api/actions';
 import {
   updateAdmin,
   updateInfo,
-  getSignupState
+  getAvatarState
 } from '../redux/gbx3actions';
 import CartButton from '../payment/CartButton';
 import { ExclamationLg, ShieldFillExclamation, ShieldExclamation } from 'react-bootstrap-icons';
@@ -43,7 +43,8 @@ class AvatarMenu extends React.Component {
       browse,
       hasAccessToEdit,
       hideMenu,
-      preview
+      preview,
+      kindName
     } = this.props;
 
     if (util.isEmpty(access) || preview) return <></>;
@@ -51,14 +52,15 @@ class AvatarMenu extends React.Component {
     const startFundraiserLink = ENV === 'local' ? `${SHARE_URL}/4?template=signup&orgID=null` : `${GBX_URL}/signup`;
     const {
       connectBankAlert,
-      verifyIdentityAlert
-    } = this.props.getSignupState();
+      verifyIdentityAlert,
+      shareAlert
+    } = this.props.getAvatarState();
 
     const avatarAlert = connectBankAlert || verifyIdentityAlert ? true : false;
     const avatarButton =
       <div className={`avatarLink`}>
         <ModalLink id='avatarOverlay' className={`link ${avatarAlert ? 'alert' : ''}`}>
-          { avatarAlert ?
+          { avatarAlert || shareAlert ?
             <div className='avatarAlert'><Icon><MdNotificationsActive /></Icon></div>
           : null }
           {stage === 'admin' && access.role === 'admin' && display !== 'org' ? <span className='orgName'>{util.getValue(access, 'orgName')}</span> : null}
@@ -82,7 +84,7 @@ class AvatarMenu extends React.Component {
                 {avatarButton}
                 { !browse ?
                 <ModalLink type='div' id={'share'} className='avatarLink tooltip hideOnMobile'>
-                  <span className='tooltipTop'><i />Share</span>
+                  <span className='tooltipTop'><i />Share Page</span>
                   <div className='editGraphic'>
                     <span className='icon icon-share'></span>
                   </div>
@@ -96,7 +98,7 @@ class AvatarMenu extends React.Component {
                     this.props.updateInfo({ stage: 'public' });
                   }}
                 >
-                  <span className='tooltipTop'><i />Public View</span>
+                  <span className='tooltipTop'><i />View Public Page</span>
                   <div className='editGraphic'>
                     <span className='icon icon-eye'></span>
                   </div>
@@ -118,23 +120,25 @@ class AvatarMenu extends React.Component {
               avatarButton
             : null }
             { !browse && display !== 'signup' ?
-            <ModalLink type='div' id={'share'} className='avatarLink tooltip hideOnMobile'>
-              <span className='tooltipTop'><i />Share</span>
+            <ModalLink type='div' id={'share'} className={`avatarLink tooltip hideOnMobile`}>
+              <span className='tooltipTop'><i />Share {kindName}</span>
               <div className='editGraphic'>
                 <span className='icon icon-share'></span>
               </div>
             </ModalLink> : null}
             { hasAccessToEdit && !browse && display !== 'signup' ?
             <div onClick={() => this.props.updateAdmin({ publicView: false })} className='avatarLink tooltip hideOnMobile'>
-              <span className='tooltipTop'><i />{ display === 'org' ? 'Edit Page' : 'Edit Form' }</span>
+              <span className='tooltipTop'><i />{ display === 'org' ? 'Edit Page' : `Edit ${kindName}` }</span>
               <div className='editGraphic'>
                 <span className='icon icon-edit'></span>
               </div>
             </div> : null}
+            { !hasAccessToEdit ?
             <CartButton 
               reloadGBX3={this.props.reloadGBX3} 
               type='avatarLink' 
             />
+            : null }
             { (display === 'org' || display === 'browse') && !hasAccessToEdit ?
             <div className='avatarLoginActions'>
               <GBLink className='button' onClick={() => window.location.replace(startFundraiserLink)}>Start a Fundraiser</GBLink>
@@ -158,6 +162,7 @@ function mapStateToProps(state, props) {
   const browse = util.getValue(state, 'gbx3.browse');
   const stage = util.getValue(state, 'gbx3.info.stage');
   const display = util.getValue(state, `gbx3.info.display`);
+  const kindName = util.getValue(state, 'gbx3.info.kindName');
   const hasAccessToEdit = util.getValue(state, 'gbx3.admin.hasAccessToEdit');
   const preview = util.getValue(state, 'gbx3.info.preview');
 
@@ -166,6 +171,7 @@ function mapStateToProps(state, props) {
     browse,
     stage,
     display,
+    kindName,
     hasAccessToEdit,
     preview
   }
@@ -175,5 +181,5 @@ export default connect(mapStateToProps, {
   updateAdmin,
   updateInfo,  
   toggleModal,
-  getSignupState
+  getAvatarState
 })(AvatarMenu);

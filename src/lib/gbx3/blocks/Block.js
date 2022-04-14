@@ -126,6 +126,7 @@ class Block extends React.Component {
     const {
       data,
       kind,
+      kindName,
       breakpoint,
       articleID,
       orgID,
@@ -157,6 +158,7 @@ class Block extends React.Component {
       (child) => React.cloneElement(child, {
         data,
         kind,
+        kindName,
         articleID,
         orgID,
         name,
@@ -271,6 +273,7 @@ function mapStateToProps(state, props) {
   const primaryColor = util.getValue(globalButtonStyle, 'bgColor', gbxPrimaryColor);
   const info = util.getValue(gbx3, 'info', {});
   const kind = util.getValue(info, 'kind');
+  const kindName = util.getValue(info, 'kindName');
   const articleID = util.getValue(info, 'articleID');
   const orgID = util.getValue(info, 'orgID');
   const blockType = props.blockType;
@@ -296,6 +299,7 @@ function mapStateToProps(state, props) {
     isVolunteer,
     editBlockJustAdded,
     kind,
+    kindName,
     articleID,
     orgID,
     modalID,

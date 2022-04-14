@@ -109,8 +109,8 @@ export function kind(kind, allName = 'All Money Sources') {
 
     case 'fundraisers':
     case 'fundraiser': {
-      obj.name = 'Donation Form';
-      obj.namePlural = 'Donation Forms';
+      obj.name = 'Fundraiser';
+      obj.namePlural = 'Fundraisers';
       obj.amountLabel = 'Donation Amounts';
       obj.btnName = 'Donate';
       obj.cta = 'Donate Now';
@@ -119,7 +119,7 @@ export function kind(kind, allName = 'All Money Sources') {
       obj.txType = 'donation';
       obj.kind = 'fundraiser';
       obj.kindPlural = 'fundraisers';
-      obj.header = 'Donation Forms';
+      obj.header = 'Fundraisers';
       obj.defaultTag = 'Donate';
       obj.amountField = 'amounts';
       obj.amountDesc = 'Amount';

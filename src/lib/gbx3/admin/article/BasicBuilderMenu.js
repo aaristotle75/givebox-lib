@@ -31,7 +31,8 @@ class AdminMenu extends React.Component {
   renderSteps() {
     const {
       step,
-      completed
+      completed,
+      kindName
     } = this.props;
 
     const items = [];
@@ -56,7 +57,7 @@ class AdminMenu extends React.Component {
 
     return (
       <ul className='builderMenuSteps'>
-        <li className='listHeader'>Form Builder</li>
+        <li className='listHeader'>{kindName} Steps</li>
         {items}
       </ul>
     )
@@ -87,7 +88,8 @@ function mapStateToProps(state, props) {
     openAdmin,
     completed: util.getValue(state, 'gbx3.helperSteps.completed', []),
     step: util.getValue(state, 'gbx3.helperSteps.step', 0),
-    kind: util.getValue(state, 'gbx3.info.kind', 'fundraiser')
+    kind: util.getValue(state, 'gbx3.info.kind', 'fundraiser'),
+    kindName: util.getValue(state, 'gbx3.info.kindName')
   }
 }
 

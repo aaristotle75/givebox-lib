@@ -48,14 +48,15 @@ class ShareIframe extends React.Component {
   render() {
 
     const {
-      orgDisplay
+      orgDisplay,
+      kindName
     } = this.props;
 
     return (
       <div className='shareWeb'>
         <div style={{ width: '100%' }} className='column'>
           <div className='subText'>Embed iFrame Code</div>
-          <p>Copy and paste this code anywhere in your website's HTML where you want the { orgDisplay ? 'page' : 'form' } to show.</p>
+          <p>Copy and paste this code anywhere in your website's HTML where you want the { orgDisplay ? 'page' : `${kindName.toLowerCase()}` } to show.</p>
           <CodeBlock showCopied={true} style={{ fontSize: '1em' }} className='flexCenter flexColumn' type='javascript' regularText={''} text={this.iframeScript()} name={<div style={{ margin: '20px 0' }} className='copyButton'>Click Here to Copy Code</div>} nameIcon={false} nameStyle={{}} />
         </div>
       </div>
@@ -64,6 +65,7 @@ class ShareIframe extends React.Component {
 }
 
 ShareIframe.defaultProps = {
+  kindName: ''
 }
 
 function mapStateToProps(state, props) {
@@ -79,7 +81,8 @@ function mapStateToProps(state, props) {
     kind,
     articleID,
     primaryColor,
-    orgData
+    orgData,
+    kindName: util.getValue(gbx3, 'info.kindName')
   }
 }
 

@@ -296,13 +296,14 @@ export function loadOrgSignup(options = {}) {
   }
 }
 
-export function getSignupState() {
+export function getAvatarState() {
   return (dispatch, getState) => {
     const state = getState();
     const access = util.getValue(state.resource, 'access');    
     const hasAccessToEdit = util.getValue(state, 'gbx3.admin.hasAccessToEdit');
     const org = hasAccessToEdit ? util.getValue(state, 'resource.gbx3Org.data', {}) : util.getValue(state, 'resource.session.data.organization', {});
     const orgSignup = hasAccessToEdit ? util.getValue(state, 'gbx3.orgSignup', {}) : util.getValue(org, 'customTemplate.orgSignup', {});        
+    const stepsCompleted = util.getValue(orgSignup, 'completed', []);
     const connectBankCompleted = util.getValue(orgSignup, 'completedPhases', []).includes('connectBank');
     const transferMoneyCompleted = util.getValue(orgSignup, 'completedPhases', []).includes('transferMoney');
     const bankConnected = ( connectBankCompleted || util.getValue(org, 'vantiv.merchantIdentString')) ? true : false;
@@ -310,9 +311,34 @@ export function getSignupState() {
     const identityVerified = ( transferMoneyCompleted || 
       (util.getValue(org, 'underwritingStatus') === 'approved'
       && util.getValue(org, 'hasBankInfo')) ) ? true : false;
-    const verifyIdentityAlert = !identityVerified && !transferMoneyCompleted ? true : false;
+    const identityReview = (
+      bankConnected 
+      && !identityVerified
+      &&  ['identity', 'protect', 'verifyBank'].some(step => stepsCompleted.includes(step))
+      && util.getValue(org, 'underwritingStatus') === 'ready_for_review'
+    ) ? true : false;
+    const verifyIdentityAlert = 
+      bankConnected 
+      && !identityVerified 
+      && !transferMoneyCompleted 
+      && !identityReview
+    ? true : false;    
     const defaultArticleID = dispatch(getDefaultArticle(org));
     const orgSlug = util.getValue(org, 'slug');
+    const transferMoneyEnabled = (
+      bankConnected 
+      && identityVerified 
+      && util.getValue(org, 'canTransferMoney')
+      && util.getValue(org, 'underwritingStatus') === 'approved'
+      && util.getValue(org, 'hasBankInfo') 
+    ) ? true : false;
+    const hasReceivedTransaction = util.getValue(org, 'hasReceivedTransaction');
+    const shareAlert = (
+      bankConnected
+      && identityVerified
+      && !hasReceivedTransaction
+      && hasAccessToEdit
+    ) ? true : false;
 
     return {
       connectBankCompleted,
@@ -322,7 +348,11 @@ export function getSignupState() {
       identityVerified,
       verifyIdentityAlert,
       defaultArticleID,
-      orgSlug
+      orgSlug,
+      identityReview,
+      transferMoneyEnabled,
+      shareAlert,
+      hasReceivedTransaction
     };
   }
 }
@@ -946,6 +976,7 @@ export function updateCartItem(unitID, item = {}, opts = {}, openCart = true) {
 
     const gbx3 = util.getValue(getState(), 'gbx3', {});
     const isPublic = util.getValue(gbx3, 'blocks.article.paymentForm.options.form.isPublic', true);
+    const hasAccessToEdit = util.getValue(gbx3, 'admin.hasAccessToEdit');
     const fees = util.getValue(gbx3, 'fees', {});
     const info = util.getValue(gbx3, 'info', {});
     const cart = util.getValue(gbx3, 'cart', {});
@@ -978,7 +1009,7 @@ export function updateCartItem(unitID, item = {}, opts = {}, openCart = true) {
       }
     }
 
-    cart.open = cart.open || openCart ? true : false;
+    cart.open = cart.open || ( openCart && !hasAccessToEdit ) ? true : false;
     cart.zeroAmountAllowed = util.getValue(item, 'zeroAmountAllowed', false);
     let addedOrRemoved = '';
     if (index === -1) {
@@ -1615,13 +1646,14 @@ export function loadGBX3(articleID, callback) {
                           hasAccessToEdit = util.getAuthorizedAccess(access, orgID,  util.getValue(res, 'volunteer') ? volunteerID : null);
                         }
       
-                        dispatch(setCartOnLoad({ passFees }));
+                        dispatch(setCartOnLoad({ passFees, open: hasAccessToEdit ? false : null }));
                         dispatch(updateInfo({
                           orgID,
                           orgName,
                           articleID,
                           kindID,
                           kind,
+                          kindName: types2.kind(kind).name,
                           apiName,
                           publishStatus,
                           display: 'article',

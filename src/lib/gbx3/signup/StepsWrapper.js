@@ -259,7 +259,7 @@ class StepsWrapper extends React.Component {
 
       case 'protect': {
         if (completed.includes('protect')) {
-          title = 'Verifying Your Identity';
+          title = 'Verify Identity';
           icon = null;
           customIcon = <Icon><MdFingerprint /></Icon>;
         }

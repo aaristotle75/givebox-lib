@@ -6,7 +6,7 @@ button.link:hover .avatarImage {
 }
 
 .avatarLink {
-  button.link.alert {
+  .alert {
     @include animation(pulsateSlightlyBrighter 1s ease-out infinite);
   }
 
@@ -19,7 +19,7 @@ button.link:hover .avatarImage {
     svg {
       @include animation(bell 3s ease-out infinite);
       color: $red;
-      font-size: 25px;
+      font-size: 20px;
     }
   }
 }
@@ -119,6 +119,18 @@ ul.selectable li:hover,
 .avatarOverlay {
 
   padding: 0 20px;
+
+  .moneyRaisedContainer {
+    right: 5px;
+    left: initial;
+    top: -15px;
+    width: 300px;
+    display: inline;
+  }
+
+  .moneyRaised {
+    align-items: flex-end;
+  }
 
   .validate button.link {
     color: $orange;
@@ -256,6 +268,7 @@ ul.selectable li:hover,
 
 
   .topSection {
+    position: relative;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -306,30 +319,37 @@ ul.selectable li:hover,
     }
 
     .secondaryText {
-      display: inline-block;
+      position: relative;
       display: flex;
       align-items: center;
       color: $med-blue-gray;
+      font-size: 14px;
+      font-weight: 400;
+      margin-right: 10px;
       svg,
       .icon {
-        margin-left: 10px;
-        font-size: 20px;
+        font-size: 20px;   
       }
     }
 
     .secondaryText.completed {
       color: $green;
+      margin-right: 0px; 
       svg,
       .icon {
         color: $green;
+        margin-left: 10px; 
       }
     }
 
     .secondaryText.alert {
       color: $red;
+      margin-right: 10px;  
       svg,
       .icon {
+        @include animation(shake 3s ease-out infinite);        
         color: $red;
+        margin-left: 10px;      
       }
     }
     

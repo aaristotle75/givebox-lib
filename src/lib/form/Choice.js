@@ -65,6 +65,7 @@ class Choice extends Component {
 
     let isChecked = checked;
     if (type === 'radio') isChecked = checked === value ? true : false;
+    isChecked = isChecked ? true : false;
 
     return (
       <div style={style} className={`choice-group ${className || ''} ${type}-group  ${error ? 'error tooltip' : ''}`}>

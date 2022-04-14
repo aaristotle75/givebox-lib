@@ -277,12 +277,10 @@ export const signupPhase = {
     modalName: 'orgTransferSteps',
     showStepNumber: true,
     stepsTodo: [
-      identity,      
-      verifyBank,
+      identity,
       protect
     ],
     requiredSteps: [
-      'verifyBank',
       'identity',
       'protect'
     ]

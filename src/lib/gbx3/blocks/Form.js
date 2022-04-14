@@ -181,6 +181,7 @@ class Form extends Component {
       acceptedTerms,
       reloadGBX3,
       kind,
+      kindName,
       orgID
     } = this.props;
 
@@ -213,7 +214,7 @@ class Form extends Component {
                 default={'edit'}
                 className='statsTab'
               >
-                <Tab id='edit' label={<span className='stepLabel'>Form Options</span>}>
+                <Tab id='edit' label={<span className='stepLabel'>{kindName} Options</span>}>
                   <FormEdit
                     kind={kind}
                     orgID={orgID}

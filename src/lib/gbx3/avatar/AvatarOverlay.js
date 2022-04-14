@@ -15,15 +15,18 @@ import {
   updateInfo,
   updateHelperSteps,
   checkSignupPhase,
-  getSignupState
+  getAvatarState
 } from '../redux/gbx3actions';
-import { savePrefs } from '../../api/helpers';
+import { 
+  savePrefs,
+  getResource 
+} from '../../api/helpers';
 import { CgMenuGridO } from 'react-icons/cg';
 import CartButton from '../payment/CartButton';
 import { AiOutlineBank } from 'react-icons/ai';
 import { MdFingerprint } from 'react-icons/md';
 import { BiTransferAlt } from 'react-icons/bi';
-import { ShieldExclamation, ExclamationLg } from 'react-bootstrap-icons';
+import { ShieldExclamation, ExclamationLg, ArrowLeft } from 'react-bootstrap-icons';
 
 const ENTRY_URL = process.env.REACT_APP_ENTRY_URL;
 const GBX_URL = process.env.REACT_APP_GBX_URL;
@@ -40,6 +43,34 @@ class AvatarOverlay extends React.Component {
     this.adminLink = this.adminLink.bind(this);
     this.state = {
     };
+  }
+
+  componentDidMount() {
+    const {
+      hasAccessToEdit,
+      access,
+      orgStats
+    } = this.props;
+
+    const {
+      transferMoneyEnabled,
+      hasReceivedTransaction
+    } = this.props.getAvatarState();
+
+    const role = util.getValue(access, 'role');
+    const orgID = util.getValue(access, 'orgID'); 
+
+    if (
+      ( role === 'admin' || role === 'super')
+      && hasAccessToEdit
+      && hasReceivedTransaction
+    ) {
+      this.props.getResource('orgFinanceStats', {
+        orgID,
+        reload: true,
+        isSending: false
+      });
+    }
   }
 
   myAccountLink() {
@@ -69,7 +100,9 @@ class AvatarOverlay extends React.Component {
       step,
       stage,
       display,
-      project
+      project,
+      kindName,
+      orgStats
     } = this.props;
 
     const isWallet = util.getValue(access, 'role') === 'user' ? true : false;
@@ -86,9 +119,12 @@ class AvatarOverlay extends React.Component {
       identityVerified,
       verifyIdentityAlert,
       defaultArticleID,
-      orgSlug
-    } = this.props.getSignupState();
-
+      orgSlug,
+      identityReview,
+      transferMoneyEnabled,
+      shareAlert
+    } = this.props.getAvatarState(); 
+    
     // If an admin user show go to homepage
     if (role === 'admin' && !hasAccessToEdit) {
       // Home Page
@@ -105,7 +141,7 @@ class AvatarOverlay extends React.Component {
           }}
         >
           <div className='text'>
-            <span className='icon icon-home'></span> Your Fundraiser Page
+            <span className='icon icon-home'></span> My Fundraiser
           </div>
         </li>
       );
@@ -131,8 +167,17 @@ class AvatarOverlay extends React.Component {
     menuList.push(
       <ModalLink type='li' id={'share'} key={'share'}>
         <div className='text'>
-          <span className='icon icon-share'></span> Share Page
+          <span className='icon icon-share'></span> 
+          Share {`${display === 'org' ? 'Page' : kindName}`}
+          { shareAlert ?
+            <div className='secondaryText alert'>
+              <Icon><ArrowLeft /></Icon>
+            </div>
+          : null }
         </div>
+        <div className={`secondaryText ${shareAlert ? 'alert' : ''}`}>
+          {shareAlert ? 'Share and Raise Money' : null}
+        </div>        
       </ModalLink>
     );
 
@@ -152,9 +197,9 @@ class AvatarOverlay extends React.Component {
             <div className='text'>
               <span className='icon icon-eye'></span>
               { project === 'share' ?
-                `Public Page`
+                `${display === 'org' ? 'View Public Page' : `View ${kindName}`}`
               :
-                `Exit ${display === 'org' ? 'Page Editor' : 'Form Editor' }`       
+                `Exit ${display === 'org' ? 'Page Editor' : `${kindName} Editor` }`       
               }
             </div>
           </li>
@@ -163,7 +208,7 @@ class AvatarOverlay extends React.Component {
         menuList.push(
           <li key='edit' onClick={() => this.adminLink({ publicView: false })}>
             <div className='text'>
-              <span className='icon icon-edit'></span> Edit Page
+              <span className='icon icon-edit'></span> {display === 'org' ? 'Edit Page' : `Edit ${kindName}`}
             </div>
           </li>
         );
@@ -202,14 +247,19 @@ class AvatarOverlay extends React.Component {
                 this.props.checkSignupPhase();
               }
             }}>
-              <div className='text'> <Icon style={{ fontSize: '20px' }}><AiOutlineBank /></Icon> Connect Bank</div>
+              <div className='text'>
+                <Icon style={{ fontSize: '20px' }}><AiOutlineBank /></Icon> 
+                Connect Bank
+                { connectBankAlert ?
+                  <div className='secondaryText alert'>
+                    <Icon><ArrowLeft /></Icon>
+                  </div>
+                : null }
+              </div>
               <div className={`secondaryText ${bankConnected ? 'completed': ''} ${connectBankAlert ? 'alert' : ''}`}>
                 {bankConnected ? 'Connected' : 'Please Connect a Bank Account'}
-                { bankConnected ? 
-                  <span className={`icon icon-${bankConnected ? 'check' : ''}`}></span>
-                : null }
-                { connectBankAlert ?
-                  <Icon><ExclamationLg /></Icon>
+                {bankConnected ?
+                  <span className='icon icon-check'></span>
                 : null }
               </div>
           </li>
@@ -236,26 +286,71 @@ class AvatarOverlay extends React.Component {
             }}>
               <div className='text'>
                 <Icon style={{ fontSize: '25px' }}><MdFingerprint /></Icon> Verify Identity
-              </div>
-              <div className={`secondaryText ${bankConnected ? 'completed': ''} ${verifyIdentityAlert ? 'alert' : ''}`}>
-                {identityVerified ? 'Verified' : 'Please Verify Your Identity'}
-                { identityVerified ? 
-                  <span className={`icon icon-check`}></span>
-                : null }
                 { verifyIdentityAlert ?
-                  <Icon><ExclamationLg /></Icon>
+                  <div className='secondaryText alert'>
+                    <Icon><ArrowLeft /></Icon>
+                  </div>
+                : null }
+              </div>
+              <div className={`secondaryText ${identityVerified ? 'completed': ''} ${verifyIdentityAlert ? 'alert' : ''}`}>          
+                {identityVerified ? 
+                  'Verified' 
+                : verifyIdentityAlert ? 
+                  'Please Verify Your Identity' 
+                  : identityReview ?
+                    'Verification in Progress'
+                  : null
+                }
+                {identityVerified ?
+                  <span className='icon icon-check'></span>
                 : null }
               </div>              
           </li>
         );
+
+        const projectedBalance = util.getValue(orgStats, 'balance', 0) + util.getValue(orgStats, 'pendingDeposits', 0);
+        const balance = util.numberWithCommas(parseFloat(projectedBalance/100).toFixed(2)).split('.');
+        const balance0 = util.getValue(balance, 0, 0);
+        const balance1 = util.getValue(balance, 1, 0);
+        let dollarAmount = <span className='dollarAmount'>{balance0}</span>;
+        let centAmount = `.${balance1}`;
+    
+        if (balance0.includes(',')) {
+          let dollarArr = balance0.split(',');
+          const dollarArr0 = util.getValue(dollarArr, 0, 0);
+          const dollarArr1 = util.getValue(dollarArr, 1, 0);
+          const dollarArr2 = util.getValue(dollarArr, 2, 0);      
+          dollarAmount =
+            <span className='dollarAmount'>
+              {dollarArr0}
+              <span><span className='dollarComma'>,</span>{dollarArr1}</span>
+              {dollarArr2 && <span><span className='dollarComma'>,</span>{dollarArr2}</span>}
+            </span>
+        }
+
         menuList.push(
           <li
             key={'transferMoney'}
             onClick={() => {
-              console.log('Transfer Money');
+              this.props.toggleModal('avatarOverlay', false);              
+              if (transferMoneyEnabled) {
+                this.props.openLaunchpad({ autoOpenSlug: 'money' });
+              } else {
+                this.props.checkSignupPhase();
+              }
             }}>
               <div className='text'>
                 <Icon style={{ fontSize: '20px' }}><BiTransferAlt /></Icon> Transfer Money
+              </div>
+              <div className='secondaryText'>
+                <div className='moneyRaisedContainer'>
+                  <div className='moneyRaised'>
+                    <span className='moneyRaisedLabel'>Projected Balance</span>
+                    <span className='moneyRaisedText moneyAmount'>
+                      <span className='symbol'>$</span>{dollarAmount}<span className='centAmount'><span className='centSymbol'></span>{centAmount}</span>
+                    </span>
+                  </div>
+                </div>               
               </div>
           </li>
         );
@@ -309,7 +404,7 @@ class AvatarOverlay extends React.Component {
               { isSuper ? <span className='gray smallText line'>Super User</span> : null }
               <span className='line' style={{fontWeight: 400}}>{access.fullName}</span>
               <span className='line' style={{fontWeight: 300}}>{access.email}</span>
-            </div>
+            </div>      
           </div>
           <div className='listSection'>
             <ul>
@@ -346,6 +441,8 @@ function mapStateToProps(state, props) {
   const stage = util.getValue(state, 'gbx3.info.stage');
   const display = util.getValue(state, `gbx3.info.display`);
   const project = util.getValue(state, 'gbx3.info.project');
+  const kindName = util.getValue(state, 'gbx3.info.kindName');
+  const orgStats = util.getValue(state, 'resource.orgFinanceStats.data.aggregate', {});
 
   return {
     access,
@@ -357,6 +454,8 @@ function mapStateToProps(state, props) {
     stage,
     display,
     project,
+    kindName,
+    orgStats,
     advancedBuilder: util.getValue(state, 'gbx3.helperSteps.advancedBuilder', false)
   }
 }
@@ -371,5 +470,6 @@ export default connect(mapStateToProps, {
   openLaunchpad,
   checkSignupPhase,
   getDefaultArticle,
-  getSignupState
+  getAvatarState,
+  getResource
 })(AvatarOverlay);

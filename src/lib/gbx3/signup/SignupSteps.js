@@ -1197,13 +1197,13 @@ class SignupStepsForm extends React.Component {
             </>
           ;
         } else {
-          item.saveButtonLabel = <span className='buttonAlignText'>Take Me to My Fundraiser Page</span>;
+          item.saveButtonLabel = <span className='buttonAlignText'>Take Me to My Fundraiser</span>;
           item.className = 'preview';
           item.desc = 'Congratulations, you have just opened a Merchant Processing Account!';
           
           item.component =
             <div style={{ marginTop: 20 }} className='flexCenter flexColumn'>
-              You can now accept donations. Go to your fundraiser page, share it and start raising money.
+              You can now accept donations. Go to your fundraiser, share it and start raising money.
               {/*
               <SignupShare 
                 style={{

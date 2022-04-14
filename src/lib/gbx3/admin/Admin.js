@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import * as util from '../../common/utility';
+import * as types from '../../common/types';
 import GBLink from '../../common/GBLink';
 import Loader from '../../common/Loader';
 import ModalRoute from '../../modal/ModalRoute';
@@ -56,7 +57,8 @@ class Admin extends React.Component {
       step,
       breakpoint,
       access,
-      project
+      project,
+      kindName
     } = this.props;
 
     const isMobile = breakpoint === 'mobile' ? true : false;
@@ -106,9 +108,9 @@ class Admin extends React.Component {
             }
           }}>
             { project === 'share' ?
-              `View Public Page`
+              `${display === 'org' ? 'View Public Page' : `View ${kindName}`}`
             :
-              `Exit ${display === 'org' ? 'Page Editor' : 'Form Editor'}`
+              `Exit ${display === 'org' ? 'Page Editor' : `${kindName} Editor`}`
             }
         </GBLink>
       )
@@ -207,6 +209,8 @@ function mapStateToProps(state, props) {
   const display = util.getValue(info, 'display');
   const articleID = util.getValue(info, 'articleID');
   const orgID = util.getValue(info, 'orgID');
+  const kind = util.getValue(info, 'kind');
+  const kindName = util.getValue(info, 'kindName');
   const project = util.getValue(info, 'project');
   const admin = util.getValue(gbx3, 'admin', {});
   const step = util.getValue(admin, 'step');
@@ -226,6 +230,8 @@ function mapStateToProps(state, props) {
     display,
     articleID,
     orgID,
+    kind,
+    kindName,
     openAdmin,
     step,
     isVolunteer,

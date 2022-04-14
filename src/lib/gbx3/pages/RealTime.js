@@ -92,7 +92,7 @@ class RealTime extends Component {
 
   checkForLatest() {
     this.checkProcessed();
-    if (process.env.NODE_ENV !== 'development!') this.timer(this.checkForLatest);
+    //if (process.env.NODE_ENV !== 'development!') this.timer(this.checkForLatest);
   }
 
   checkProcessed() {
@@ -192,6 +192,12 @@ class RealTimeDisplay extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.setState = (state, callback) => {
+      return;
+    }
+  }
+
   toggleDisplay() {
     const display = this.state.display ? false : true;
     this.setState({ display });
@@ -201,14 +207,15 @@ class RealTimeDisplay extends Component {
   render() {
 
     const {
-      stage
+      stage,
+      hasAccessToEdit
     } = this.props;
 
     const {
       display
     } = this.state;
 
-    if (!display || stage !== 'admin') {
+    if (!display || !hasAccessToEdit ) {
       return <></>;
     }
 
@@ -230,6 +237,7 @@ function mapStateToProps(state, props) {
   const orgFinanceStats = state.resource.orgFinanceStats ? state.resource.orgFinanceStats : {};
   const orgStats = state.resource.orgStats ? state.resource.orgStats : {};
   const stage = util.getValue(state, 'gbx3.info.stage');
+  const hasAccessToEdit = util.getValue(state, 'gbx3.admin.hasAccessToEdit');
 
   return {
     open,
@@ -237,6 +245,7 @@ function mapStateToProps(state, props) {
     orgFinanceStats,
     orgStats,
     stage,
+    hasAccessToEdit,
     orgID: util.getValue(state, 'gbx3.info.orgID')
   }
 }

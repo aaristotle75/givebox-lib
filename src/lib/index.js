@@ -63,6 +63,7 @@ import Video from './common/Video';
 import FeesGlossary from './glossary/Fees';
 
 import {
+  getDefaultArticle,
   toggleLeftMenu,
   openLaunchpad,
   toggleModal,
@@ -190,6 +191,7 @@ export {
   MediaLibrary,
 
   // actions
+  getDefaultArticle,
   toggleLeftMenu,
   openLaunchpad,
   toggleModal,
