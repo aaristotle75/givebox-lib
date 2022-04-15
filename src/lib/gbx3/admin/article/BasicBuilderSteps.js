@@ -641,6 +641,7 @@ class BasicBuilderStepsForm extends Component {
               showHelper={false}
               previewShareOpen={true}
               allowToggle={false}
+              hidePreview={true}
               modalName={'gbx3Builder'}
             />
           </div>

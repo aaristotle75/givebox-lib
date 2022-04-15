@@ -1,8 +1,20 @@
 @import 'variables.scss';
 
-/*------- AVATAR --------*/
-button.link:hover .avatarImage {
-  //border: 1px solid $secondColor;
+
+.avatarLink {
+  cursor: pointer;
+  //overflow: hidden;
+
+  button.link {
+    font-size: 1em;
+    font-weight: 400;
+  }
+}
+
+.avatarMenu {
+  .orgImage {
+    border-radius: 50%;
+  }
 }
 
 .avatarSelectList {
@@ -92,6 +104,26 @@ button.link:hover .avatarImage {
       padding: 0;
     }
   }
+}
+
+.avatarLink {
+  //overflow: hidden;
+
+  button.link {
+    font-size: 1em;
+    font-weight: 400;
+  }
+}
+
+.avatarLink .editGraphic {
+  background: transparentize($light-med-gray, .5);
+  color: $white;
+}
+
+.avatarLink .editGraphic:hover {
+  background: transparentize($light-med-gray, .5);
+  color: $white;
+  opacity: .7;
 }
 
 .avatarLink {

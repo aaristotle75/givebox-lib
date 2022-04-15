@@ -244,12 +244,14 @@ export function updateOrgSignupField(name, fields) {
   }
 }
 
-export function getMinStepNotCompleted(array, haystack) {
+export function getMinStepNotCompleted(array, haystack, required = false) {
   // Get the minimum not completed step
   const numOfSteps = array.length - 1;
   const uncompletedSteps = [];
   array.forEach((value, key) => {
-    if (!haystack.completed.includes(value.slug)) {
+    if (!haystack.completed.includes(value.slug)
+    && (!required || ( required && value.required))
+    ) {
       uncompletedSteps.push(key);
     }
   });
@@ -1737,7 +1739,7 @@ export function loadGBX3(articleID, callback) {
       
                         stepConfig.forEach((value, key) => {
                             let isDefault = true;
-                            stepsArray.push(key);
+                            stepsArray.push(value.slug);
       
                             // Check if step values are completed by checking defaultStyle
                             switch (value.slug) {
@@ -1777,9 +1779,9 @@ export function loadGBX3(articleID, callback) {
                             }
                         });
                         const uncompletedSteps = stepsArray.filter(item => !helperSteps.completed.includes(item));
-                        const minStepNotCompleted = !util.isEmpty(uncompletedSteps) ? Math.min(...uncompletedSteps) : numOfSteps;
-      
-                        helperSteps.step = minStepNotCompleted < 4 ? minStepNotCompleted : 5;
+                        const minStepNotCompleted = !util.isEmpty(uncompletedSteps) ? parseInt(Math.min(...uncompletedSteps)) : numOfSteps;
+
+                        //helperSteps.step = minStepNotCompleted < 4 ? minStepNotCompleted : 5;
       
                         const builderPref = util.getValue(getState(), 'preferences.builderPref');
                         helperSteps.advancedBuilder = builderPref === 'advanced' ? true : helperSteps.advancedBuilder;

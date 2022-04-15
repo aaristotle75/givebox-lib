@@ -245,7 +245,8 @@ class SignupShare extends React.Component {
     const {
       isArticleForm,
       signupPhase,
-      allowToggle
+      allowToggle,
+      hidePreview
     } = this.props;
 
     const {
@@ -279,6 +280,7 @@ class SignupShare extends React.Component {
               <div style={{ paddingTop: 0, ...this.props.style }} className={`modalWrapper`}>
                 {this.renderShareList()}
                 {this.renderShareType()}
+                { !hidePreview ?
                 <div 
                   className='previewWrapper' 
                   style={{ 
@@ -334,6 +336,7 @@ class SignupShare extends React.Component {
                     </GBLink>
                   </div>
                 </div>
+                : null }
               </div>
             </div>
           </div>
@@ -347,6 +350,7 @@ SignupShare.defaultProps = {
   hideList: [],
   showHelper: true,
   previewShareOpen: false,
+  hidePreview: false,
   allowToggle: true,
   style: {},
   modalName: null

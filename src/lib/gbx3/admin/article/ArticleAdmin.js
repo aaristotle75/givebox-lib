@@ -18,6 +18,9 @@ import {
   updateOrgSignup,
   openStep
 } from '../../redux/gbx3actions';
+import {
+  savePrefs
+} from '../../../api/helpers';
 import { builderStepsConfig } from './builderStepsConfig';
 import HelpDeskButton from '../../../helpdesk/HelpDeskButton';
 import { phases } from '../../signup/signupConfig';
@@ -38,13 +41,14 @@ class ArticleAdmin extends React.Component {
     const {
       share,
       previewMode,
-      hideSteps
+      step,
+      completed,
+      advancedBuilder
     } = this.props;
 
-    const minStepNotCompleted = this.getMinStepNotCompleted();
-    if (!this.props.advancedBuilder && this.props.step !== 'create' && (minStepNotCompleted || minStepNotCompleted === 0) && !share && !previewMode) {
-      const updated = await this.props.updateHelperSteps({ step: minStepNotCompleted });
-      if (updated && !hideSteps && minStepNotCompleted === 0) this.props.toggleModal('gbx3Builder', true);
+    if ( !advancedBuilder && !share && !previewMode && ( step === 'create' || util.isEmpty(completed) ) ) {
+      const updated = await this.props.updateHelperSteps({ step: 0 });
+      if (updated) this.props.toggleModal('gbx3Builder', true);
     }
   }
 
@@ -54,32 +58,18 @@ class ArticleAdmin extends React.Component {
     }
   }
 
-  getMinStepNotCompleted(forceStep = null) {
-    const {
-      kind,
-      completed
-    } = this.props;
-
-    if (forceStep) return forceStep;
-    const config = util.getValue(builderStepsConfig, kind, []);
-    const notCompleted = [];
-    Object.entries(config).forEach(([key, value]) => {
-      if (!completed.includes(value.slug) && value.required) {
-        notCompleted.push(+key);
-      }
-    });
-    return !util.isEmpty(notCompleted) ? Math.min(...notCompleted) : null;
-  }
-
   async toggleBuilder() {
     const advancedBuilder = this.props.advancedBuilder ? false : true;
     this.props.toggleModal('gbx3Builder', advancedBuilder ? false : this.props.builderStep === 0 ? true : false);
     const helperUpdated = await this.props.updateHelperSteps({ advancedBuilder });
+    this.props.savePrefs({ builderPref: advancedBuilder ? 'advanced' : 'helperSteps' });
+    /*
     if (helperUpdated) {
       this.props.saveGBX3('article', {
         updateLayout: false
       });
     }
+    */
   }
 
   render() {
@@ -163,5 +153,6 @@ export default connect(mapStateToProps, {
   toggleAdminLeftPanel,
   checkSignupPhase,
   openLaunchpad,
-  openStep
+  openStep,
+  savePrefs
 })(ArticleAdmin);

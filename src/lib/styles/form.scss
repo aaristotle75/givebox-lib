@@ -1,5 +1,28 @@
 @import 'variables.scss';
 
+.editGraphic {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 10px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  color: $white;
+  //background: linear-gradient(to right, $mainColor 0%, $green 100%);
+  background: $mainColor;
+  @include default-transition(.5s);
+  .icon {
+    font-size: 22px !important;
+  }
+}
+
+.editGraphic:hover {
+  background: transparentize($mainColor, .1);
+  //background: linear-gradient(to left, $mainColor 0%, $green 100%);
+}
+
 form {
   position: relative;
 }

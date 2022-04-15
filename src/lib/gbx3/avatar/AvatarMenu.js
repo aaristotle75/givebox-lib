@@ -58,8 +58,9 @@ class AvatarMenu extends React.Component {
 
     const avatarAlert = connectBankAlert || verifyIdentityAlert ? true : false;
     const avatarButton =
-      <div className={`avatarLink`}>
+      <div className={`avatarLink ${stage === 'public' ? 'tooltip' : ''}`}>
         <ModalLink id='avatarOverlay' className={`link ${avatarAlert ? 'alert' : ''}`}>
+          { stage === 'public' ? <span className='tooltipTop'><i />Avatar Menu</span> : null }
           { avatarAlert || shareAlert ?
             <div className='avatarAlert'><Icon><MdNotificationsActive /></Icon></div>
           : null }

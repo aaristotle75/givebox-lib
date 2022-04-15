@@ -290,55 +290,6 @@
 
 .gbx3 {
 
-  .avatarLink {
-    //overflow: hidden;
-
-    button.link {
-      font-size: 1em;
-      font-weight: 400;
-    }
-  }
-
-  .avatarLink .editGraphic {
-    background: transparentize($light-med-gray, .5);
-    color: $white;
-  }
-
-  .avatarLink .editGraphic:hover {
-    background: transparentize($light-med-gray, .5);
-    color: $white;
-    opacity: .7;
-  }
-
-  .hasAccessToEditPublic {
-
-    button.link {
-    }
-  }
-
-  .editGraphic {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    padding: 10px;
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    color: $white;
-    //background: linear-gradient(to right, $mainColor 0%, $green 100%);
-    background: $mainColor;
-    @include default-transition(.5s);
-    .icon {
-      font-size: 22px !important;
-    }
-  }
-
-  .editGraphic:hover {
-    background: transparentize($mainColor, .1);
-    //background: linear-gradient(to left, $mainColor 0%, $green 100%);
-  }
-
   .flatpickr input,
   .dropdown button:not(.label) {
     font-size: 14px;

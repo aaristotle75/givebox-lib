@@ -47,6 +47,12 @@ class Create extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    this.setState = (state, callback) => {
+      return;
+    }
+  }
+
   onChangeKind(name, value) {
     this.props.updateInfo({ kind: value });
   }

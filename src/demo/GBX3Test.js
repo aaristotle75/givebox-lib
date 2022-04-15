@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as util from '../lib/common/utility';
 import GBX3 from '../lib/gbx3/GBX3';
+import has from 'has';
 
 class GBXTest extends Component {
 
@@ -47,7 +48,9 @@ class GBXTest extends Component {
     const orgID = util.getValue(queryParams, 'orgID', null); //185; //391217; //185;
     const blockType = 'org';
     const browse = true;
-
+    const autoCreate = util.getValue(queryParams, 'autoCreate', null);
+    const step = autoCreate ? 'create' : null;
+    const admin = has(queryParams, 'admin') ? true : false;
     /*
     console.log('execute blockType -> ', blockType);
     console.log('execute orgID -> ', orgID);
@@ -60,6 +63,7 @@ class GBXTest extends Component {
       return (
         <div>
           <GBX3
+            step={step}
             signup={false}
             browse={false}
             blockType={'article'}
@@ -68,7 +72,7 @@ class GBXTest extends Component {
             saveCallback={this.saveCallback}
             queryParams={queryParams}
             public={false}
-            project={'share'}
+            project={admin ? 'admin' : 'share'}
             exitCallback={() => console.log('exit callback')}
             isVolunteer={false}
           />
@@ -83,7 +87,6 @@ class GBXTest extends Component {
 }
 
 function mapStateToProps(state, props) {
-
   return {
   }
 }
