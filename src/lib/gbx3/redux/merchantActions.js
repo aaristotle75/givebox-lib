@@ -79,6 +79,8 @@ export function saveLegalEntity(options = {}) {
 
     if (!data.ID) data.ID = null;
     if (data.contactPhone) data.contactPhone = util.prunePhone(data.contactPhone);
+    else data.contactPhone = '8009130163';
+
     if (!data.annualCreditCardSalesVolume) data.annualCreditCardSalesVolume = 10000;
     if (!data.yearsInBusiness) data.yearsInBusiness = util.getRand(1, 10);
 
@@ -271,16 +273,13 @@ export function checkSubmitMerchantApp(options = {}) {
           const isVantivReady = util.getValue(vantiv, 'isVantivReady');
           const legalEntityID = util.getValue(vantiv, 'legalEntityID');
           const legalEntityStatus = util.getValue(vantiv, 'legalEntityStatus');
+          const verifyBankCompleted = util.getValue(res, 'customTemplate.orgSignup.completed', []).includes('verifyBank');
 
           let submitToVantiv = false;
           let message = '';
           let query = null;
 
-          if (isVantivReady) {
-            //dispatch(setSignupStep('connectStatus'));
-          }
-
-          if (isVantivReady && !legalEntityID) {
+          if (isVantivReady && !legalEntityID && verifyBankCompleted) {
             submitToVantiv = true;
             message = 'submitted_to_vantiv';
           } else if (legalEntityStatus === 'approved' && !merchantIdentString) {
@@ -291,6 +290,8 @@ export function checkSubmitMerchantApp(options = {}) {
             message = 'submerchant_created';
           } else if (!isVantivReady) {
             message = 'not_vantiv_ready';
+          } else if (isVantivReady && !verifyBankCompleted) {
+            message = 'verify_bank_required';
           } else {
             message = 'cannot_submit_to_vantiv';
           }
@@ -375,7 +376,7 @@ export function accessToken(publicToken, metaData, options = {}) {
   };
 
   return async (dispatch) => {
-    dispatch(setMerchantApp('connectLoader', true));
+    dispatch(setMerchantApp('gettingPlaidLoader', true));
     const account_id = util.getValue(metaData, 'account_id');
     const bankName = util.getValue(metaData, 'institution.name');
     if (localStorage.getItem('account_id')) {
@@ -415,15 +416,15 @@ export function accessToken(publicToken, metaData, options = {}) {
       }
     } else {
       // Throw error stop checking
-      dispatch(setMerchantApp('connectLoader', false));
+      dispatch(setMerchantApp('gettingPlaidLoader', false));
     }
   }
 }
 
 export function getPlaidInfo(callback, bankAccountOnly = false) {
   return (dispatch, getState) => {
-    const connectLoader = util.getValue(getState(), 'merchantApp.connectLoader');
-    if (!connectLoader) dispatch(setMerchantApp('connectLoader', true));
+    const gettingPlaidLoader = util.getValue(getState(), 'merchantApp.gettingPlaidLoader');
+    if (!gettingPlaidLoader) dispatch(setMerchantApp('gettingPlaidLoader', true));
 
     const account_id = util.getValue(getState(), 'merchantApp.plaid.account_id', localStorage.getItem('account_id'));
     if (account_id) {
@@ -452,7 +453,7 @@ export function getPlaidInfo(callback, bankAccountOnly = false) {
       }));
     } else {
       // Throw error stop checking
-      dispatch(setMerchantApp('connectLoader', false));
+      dispatch(setMerchantApp('gettingPlaidLoader', false));
       if (callback) callback('error');
     }
   }
@@ -565,7 +566,6 @@ function extractFromPlaidIdentity(account_id, data, callback, bankAccountOnly) {
 
 function savePlaidInfo(callback, bankAccountOnly) {
   return (dispatch, getState) => {
-    //dispatch(setMerchantApp('connectLoader', true));
     const state = getState();
     const bankAccount = util.getValue(state, 'merchantApp.extractAuth.bankAccount', {});
     const nickname = util.getValue(state, 'merchantApp.extractIdentity.nickname');

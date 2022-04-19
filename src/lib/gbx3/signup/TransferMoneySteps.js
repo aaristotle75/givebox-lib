@@ -9,11 +9,11 @@ import GBLink from '../../common/GBLink';
 import Image from '../../common/Image';
 import Icon from '../../common/Icon';
 import Identity from './transferMoney/Identity';
-import VerifyBank from './transferMoney/VerifyBank';
 import VerifyBusiness from './transferMoney/VerifyBusiness';
 import TwoFA from '../../common/TwoFA';
 import TransferStatus from './transferMoney/TransferStatus';
 import {
+  setSignupStep,
   updateOrgSignup
 } from '../redux/gbx3actions';
 import {
@@ -65,13 +65,24 @@ class TransferMoneyStepsForm extends React.Component {
 
   componentDidMount() {
     const {
-      completed
+      completed,
+      step,
+      stepsTodo
     } = this.props;
 
     const {
       readyToCheckApproval,
       approvedForTransfers
     } = this.state;
+
+    const stepConfig = util.getValue(stepsTodo, step, {});
+    const slug = util.getValue(stepConfig, 'slug');
+
+    if (slug === 'protect'
+    && completed.includes('protect')
+    && !completed.includes('identity')) {
+      this.props.setSignupStep('identity');
+    }
 
     if (readyToCheckApproval && !approvedForTransfers) {
       this.props.setHideCloseBtn(true);
@@ -350,7 +361,8 @@ class TransferMoneyStepsForm extends React.Component {
       stepsTodo,
       completedPhases,
       websiteURL,
-      missionCountries
+      missionCountries,
+      completed: completedSteps
     } = this.props;
 
     const stepConfig = util.getValue(stepsTodo, step, {});
@@ -427,10 +439,7 @@ class TransferMoneyStepsForm extends React.Component {
               }}
             />
             <div style={{ marginTop: 20 }} className='fieldGroup'>
-              <VerifyBank
-                {...this.props}
-                getDocument={this.getDocument}
-              />
+              Verify Bank Step (Deprecated)
             </div>
           </div>
         ;
@@ -576,8 +585,10 @@ class TransferMoneyStepsForm extends React.Component {
                   hideRadio={true}
                   set2FAVerified={this.set2FAVerified}
                   successCallback={async () => {
-                    const updated = await this.props.stepCompleted(slug);
-                    //if (updated) this.props.gotoNextStep();                
+                    this.setState({ is2FAVerified: true }, async () => {
+                      const updated = await this.props.stepCompleted(slug);
+                      if (updated && !completedSteps.includes('identity')) this.props.setSignupStep('identity');
+                    });      
                   }}
                 />
               :
@@ -780,6 +791,7 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
+  setSignupStep,
   updateOrgSignup,
   setMerchantApp,
   getResource,

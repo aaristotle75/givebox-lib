@@ -311,7 +311,7 @@ class AvatarOverlay extends React.Component {
                   </div>
                 : null }
               </div>
-              <div className={`secondaryText ${identityVerified ? 'completed': ''} ${verifyIdentityAlert ? 'alert' : ''}`}>          
+              <div className={`secondaryText ${identityVerified ? 'completed': ''} ${identityReview ? 'review': ''} ${verifyIdentityAlert ? 'alert' : ''}`}>          
                 {identityVerified ? 
                   'Verified' 
                 : verifyIdentityAlert ? 
@@ -322,7 +322,11 @@ class AvatarOverlay extends React.Component {
                 }
                 {identityVerified ?
                   <span className='icon icon-check'></span>
-                : null }
+                : 
+                  identityReview ?
+                  <span className='icon icon-clock'></span>
+                  : null
+                }
               </div>              
           </li>
         );

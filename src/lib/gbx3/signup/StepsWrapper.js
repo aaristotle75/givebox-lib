@@ -224,7 +224,9 @@ class StepsWrapper extends React.Component {
 
     const {
       step,
-      completed
+      completed,
+      merchantIdentString,
+      signupPhase
     } = this.props;
 
     const {
@@ -264,6 +266,18 @@ class StepsWrapper extends React.Component {
           customIcon = <Icon><MdFingerprint /></Icon>;
         }
         break;
+      }
+
+      // no default
+    }
+
+
+    switch (signupPhase) {
+      case 'connectBank': {
+        if (merchantIdentString && completed.includes('verifyBank')) {
+          hideCloseBtn = true;
+          break;
+        }
       }
 
       // no default
@@ -335,6 +349,7 @@ function mapStateToProps(state, props) {
   const signupPhase = util.getValue(orgSignup, 'signupPhase');
   const completedPhases = util.getValue(orgSignup, 'completedPhases', []);
   const signupConfirmed = util.getValue(orgSignup, 'signupConfirmed', false);
+  const merchantIdentString = util.getValue(state, 'resource.gbx3Org.data.vantiv.merchantIdentString');
 
   return {
     open,
@@ -348,7 +363,8 @@ function mapStateToProps(state, props) {
     createdArticleID,
     signupPhase,
     completedPhases,
-    signupConfirmed
+    signupConfirmed,
+    merchantIdentString
   }
 }
 

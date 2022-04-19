@@ -53,12 +53,14 @@ class PlaidConnect extends React.Component {
           });
           this.props.formProp({ error: true, errorMsg: 'We are unable to connect your bank account through Plaid. Please manually connect your bank account.' });
         }
-        this.props.setMerchantApp('connectLoader', false);
+        this.props.setMerchantApp('gettingPlaidLoader', false);
         break;
       }
 
       case 'success': {
-        this.props.checkConnectStatus();
+        //this.props.checkConnectStatus();
+        this.props.saveStep('connectBank');
+        this.props.setMerchantApp('gettingPlaidLoader', false);
         break;
       }
 
@@ -89,7 +91,8 @@ class PlaidConnect extends React.Component {
 
     const {
       linkToken,
-      hasPlaidToken
+      hasPlaidToken,
+      gettingPlaidLoader
     } = this.props;
 
     if (!linkToken && !hasPlaidToken) return <Loader msg='Getting Plaid Token...' />;
@@ -100,6 +103,7 @@ class PlaidConnect extends React.Component {
 
     return (
       <div>
+        { gettingPlaidLoader ? <Loader msg='Plaid Connect...' /> : null }
         {/* <GBLink onClick={() => this.exitPlaid(null, null, true)}>Test Manual</GBLink> */}
         { hasPlaidToken ?
           <GBLink
@@ -141,6 +145,7 @@ function mapStateToProps(state, props) {
   const hasPlaidToken = util.getValue(state, 'resource.gbx3Org.data.hasPlaidToken');
   const linkToken = util.getValue(state, 'merchantApp.plaid.linkToken', null);
   const connectLoader = util.getValue(state, 'merchantApp.connectLoader', false);
+  const gettingPlaidLoader = util.getValue(state, 'merchantApp.gettingPlaidLoader', false);
   const merchantApp = util.getValue(state, 'merchantApp', {});
   const extractAuth = util.getValue(merchantApp, 'extractAuth', {});
   const extractIdentity = util.getValue(merchantApp, 'extractIdentity', {});
@@ -149,6 +154,7 @@ function mapStateToProps(state, props) {
     hasPlaidToken,
     linkToken,
     connectLoader,
+    gettingPlaidLoader,
     extractAuth,
     extractIdentity
   }

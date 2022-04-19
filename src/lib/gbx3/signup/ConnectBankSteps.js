@@ -8,6 +8,7 @@ import GBLink from '../../common/GBLink';
 import Image from '../../common/Image';
 import Icon from '../../common/Icon';
 import {
+  getSignupStep,
   setSignupStep,
   checkSignupPhase
 } from '../redux/gbx3actions';
@@ -20,11 +21,15 @@ import {
   saveBankAccount,
   checkSubmitMerchantApp
 } from '../redux/merchantActions';
+import {
+  removeResource
+} from '../../api/actions';
 import BankAccount from './connectBank/BankAccount';
 import Principal from './connectBank/Principal';
 import LegalEntity from './connectBank/LegalEntity';
 import Address from './connectBank/Address';
 import PlaidConnect from './connectBank/PlaidConnect';
+import VerifyBank from './connectBank/VerifyBank';
 import ConnectStatus from './connectBank/ConnectStatus';
 import Moment from 'moment';
 import { MdCheckCircle } from 'react-icons/md';
@@ -45,17 +50,53 @@ class ConnectBankStepsForm extends React.Component {
     this.switchToConnectBank = this.switchToConnectBank.bind(this);
     this.switchToManualBank = this.switchToManualBank.bind(this);
     this.hasMerchantIdentStringSave = this.hasMerchantIdentStringSave.bind(this);
+    this.getDocument = this.getDocument.bind(this);
+    this.getDcoumentCallback = this.getDcoumentCallback.bind(this);
 
     this.state = {
       editorOpen: false,
       error: false,
       saving: false,
-      loading: true
+      loading: true,
+      verifyBankUploaded: false
     };
   }
 
   componentDidMount() {
-    if (!this.props.merchantIdentString && this.props.signupPhase === 'manualConnect' && this.props.isVantivReady && this.props.signupStep === 4) this.checkConnectStatus();
+    const {
+      signupStep,
+      signupPhase,
+      stepsTodo,
+      step,
+      completed,
+      isVantivReady,
+      readyToSubmitNoMID
+    } = this.props;
+
+    const stepConfig = util.getValue(stepsTodo, step, {});
+    const slug = util.getValue(stepConfig, 'slug');
+
+    switch (signupPhase) {
+      case 'manualConnect': {
+        if (readyToSubmitNoMID 
+          && signupStep === 4
+        ) this.checkConnectStatus();
+        if (isVantivReady && !completed.includes('verifyBank')) {
+          this.props.setSignupStep('verifyBank');
+        }
+        break;
+      }
+
+      case 'connectBank': {
+        if (readyToSubmitNoMID) this.checkConnectStatus();
+        if (!completed.includes('connectBank') && slug === 'verifyBank') {
+          this.props.previousStep();
+        }
+        break;
+      }
+
+      // no default
+    }
 
     if (this.props.merchantIdentString) this.submerchantCreated();
   }
@@ -66,12 +107,68 @@ class ConnectBankStepsForm extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    this.setState = (state, callback) => {
+      return;
+    }
+  }
+
   connectBankPlaid() {
     this.setState({ saving: false });
   }
 
   callbackAfter(tab) {
     this.props.formProp({ error: false });
+  }
+
+  getDcoumentCallback(slug, value, gotoNextStep) {
+    switch (slug) {
+      case 'verifyBank': {
+        this.setState({ verifyBankUploaded: value }, async () => {
+          if (value) {
+            const updated = await this.props.stepCompleted(slug);
+            if (updated) {
+              this.checkConnectStatus();
+            }
+           }
+        });
+        break;
+      }
+
+      // no default
+    }
+  }
+
+  async getDocument(slug, showLoading = true, gotoNextStep = false) {
+    let filter = '';
+    switch (slug) {
+      case 'verifyBank': {
+        filter = 'tag:"bank_account"';
+        break;
+      }
+    }
+    const initLoading = showLoading ? await this.props.setMerchantApp('underwritingDocsLoading', true) : true;
+    if (initLoading) {
+      this.props.getResource('underwritingDocs', {
+        id: [this.props.orgID],
+        reload: true,
+        search: {
+          filter,
+          sort: 'createdAt',
+          order: 'desc'
+        },
+        callback: (res, err) => {
+          const data = util.getValue(res, 'data', []);
+          const item = util.getValue(data, 0, {});
+          if (!util.isEmpty(item) && !err) {
+            if (this.getDcoumentCallback) this.getDcoumentCallback(slug, true, gotoNextStep);
+          } else {
+            if (this.getDcoumentCallback) this.getDcoumentCallback(slug, false);
+          }
+          this.props.setMerchantApp('underwritingDocsLoading', false);
+        }
+      });
+    }
   }
 
   async switchToManualBank() {
@@ -106,20 +203,23 @@ class ConnectBankStepsForm extends React.Component {
       signupPhase,
       completed,
       isVantivReady,
-      connectLoader
+      connectLoader,
+      readyToSubmitNoMID
     } = this.props;
 
-    if (!connectLoader && isVantivReady) this.props.setMerchantApp('connectLoader', true);
+    if (!connectLoader && readyToSubmitNoMID) this.props.setMerchantApp('connectLoader', true);
 
     this.setState({ saving: false }, () => {
       this.props.checkSubmitMerchantApp({
         callback: (message, err) => {
           if (message === 'submerchant_created' || message === 'has_mid') {
             if (!completed.includes('connectBank')) this.props.stepCompleted('connectBank');
-            if (signupStep !== 4 && signupPhase === 'manualConnect') this.props.setSignupStep('connectStatus');
+            if (signupStep !== 4 && signupPhase === 'manualConnect') this.props.setSignupStep('verifyBank');
           } else if (err || message === 'cannot_submit_to_vantiv' || message === 'mid_notcreated') {
             if (signupPhase !== 'manualConnect') this.switchToManualBank();
             this.props.formProp({ error: true, errorMsg: <span>We are unable to connect your bank account with Plaid. Please manually connect a bank account and check that all your information is correct and try again in a few minutes.<br />{util.getValue(err, 'data.message', '')}</span> });
+          } else if (message === 'verify_bank_required') {
+            this.props.setSignupStep('verifyBank');
           }
           this.props.setMerchantApp('connectLoader', false);
         }
@@ -130,28 +230,6 @@ class ConnectBankStepsForm extends React.Component {
   async submerchantCreated(delay = 5000) {
     if (!this.props.completed.includes('connectBank') && this.props.merchantIdentString) {
       this.props.stepCompleted('connectBank');
-    }
-    const completed = await this.props.stepCompleted('connectStatus', false);
-    if (completed) {
-      setTimeout(async () => {
-        /*
-        const updated = await this.props.updateOrgSignup({ signupPhase: 'transferMoney' }, 'connectBank');
-        if (updated) {
-          this.props.toggleModal('orgConnectBankSteps', false);
-          this.props.checkSignupPhase({
-            forceStep: 0,
-            openAdmin: true,
-            openModal: true
-          });
-          this.props.saveOrg({
-            orgUpdated: true,
-            isSending: true,
-            callback: () => {
-            }
-          });
-        }
-        */
-      }, delay);
     }
   }
 
@@ -272,32 +350,13 @@ class ConnectBankStepsForm extends React.Component {
         break;
       }
 
-      case 'connectStatus': {
-        if (!isVantivReady) {
-          this.props.previousStep(step);
-          return this.setState({ saving: false });
-        } else {
-          if (merchantIdentString) {
-            this.hasMerchantIdentStringSave();
-          } else {
-            this.checkConnectStatus();
-          }
-        }
-        break;
-      }
-
-      /*
-      default: {
-        return this.saveStep(group);
-      }
-      */
       // no default
     }
   }
 
   renderStep() {
     const {
-      loading
+      verifyBankUploaded
     } = this.state;
 
     const {
@@ -312,18 +371,16 @@ class ConnectBankStepsForm extends React.Component {
       hasReceivedTransaction,
       instantStatus,
       phaseEndsAt,
-      completed: completedSteps
+      completed: completedSteps,
+      connectBankCompleted
     } = this.props;
 
     const connectLoader = this.props.connectLoader;
     const stepConfig = util.getValue(stepsTodo, step, {});
     const slug = util.getValue(stepConfig, 'slug');
     const stepNumber = +step + 1;
-    const completed = this.props.completed.includes(slug) ? true : false;
+    const isStepCompleted = completedSteps.includes(slug) ? true : false;
     const firstStep = step === 0 ? true : false;
-    const lastStep = step === this.props.steps ? true : false;
-    const nextStepName = this.props.getNextStep();
-    const nextStepNumber = this.props.nextStep(step) + 1;
 
     const item = {
       title: stepConfig.title,
@@ -352,27 +409,15 @@ class ConnectBankStepsForm extends React.Component {
       : null
     ;
 
-    const connectBankCompleted = this.props.completed.includes('connectBank') ? true : false;    
-
     switch (slug) {
       case 'connectBank': {
         if (connectBankCompleted) {
           item.desc = '';
-          item.component =
-            <div>
-              <div className='fieldGroup'>
-                <ConnectStatus
-                  {...this.props}
-                  previousStepMessage={' '}
-                />
-              </div>         
-            </div>
-          ;
         } else {
           item.desc = hasTransacitons ? 'Congratulations, you have received your first donations with Givebox!' : 'Your Merchant Processing Account Requires a Bank Account to Receive Money.';    
           item.component =
             <div>
-              { !this.props.completed.includes('connectBank') ?            
+              { !completedSteps.includes('connectBank') ?            
                 <div className='fieldGroup'>
                   {hasTransacitons}
                   We highly recommend you connect with Plaid. 
@@ -382,13 +427,55 @@ class ConnectBankStepsForm extends React.Component {
               :
                 <div className='fieldGroup flexCenter'>
                   You have successfully connected a bank account! 
-                  Please continue to check the status of it being connected to Givebox.
+                  Next step is to upload a photo of your bank statement.
                 </div>
               }
               <ConnectBankHelp />
             </div>
           ;
         }
+        break;
+      }
+
+      case 'verifyBank': {
+        item.saveButtonDisabled = !verifyBankUploaded ? true : false;
+        item.saveButton =
+          <div style={{ marginTop: 0 }} className='button-group'>
+            <GBLink
+              className='button'
+              disabled={item.saveButtonDisabled}
+              onClick={() => {
+                console.log('Complete verify');
+              }}
+            >
+              Finished
+            </GBLink>
+          </div>
+        ;
+        item.desc = 'Please upload a bank statement of the account you connected to Givebox.';
+        item.component =
+          <div>
+            <ConnectBankHelp
+              content={{
+                linkText: 'Why Do I have to Upload a Bank Statement?',
+                title: 'Your Bank Statement Verifies the Bank Account You Connected',
+                text: 
+                  <span>
+                    When you upload a photo of your bank statement and the information matches the bank account you connected to Givebox, this verifies a fraudulent account has not been added.
+                    <span style={{ display: 'block', marginTop: 5 }}>
+                      We want to make sure you receive the money you collected and not transferred to a fraudulent account. 
+                    </span>
+                  </span>
+              }}
+            />
+            <div style={{ marginTop: 20 }} className='fieldGroup'>
+              <VerifyBank
+                {...this.props}
+                getDocument={this.getDocument}
+              />
+            </div>
+          </div>
+        ;
         break;
       }
 
@@ -459,24 +546,23 @@ class ConnectBankStepsForm extends React.Component {
         break;
       }
 
-      case 'connectStatus': {
-        item.saveButtonLabel = <span className='buttonAlignText'>{merchantIdentString ? 'Continue to Secure Your Account' : isVantivReady ? 'Check Connection Status' : 'Complete Previous Steps' }</span>;
-        item.desc = '';
-        item.component =
-          <div>
-            <div className='fieldGroup'>
-              <ConnectStatus
-                {...this.props}
-              />
-            </div>         
-          </div>
-        ;
-        break;
-      }
-
       // no default
     }
 
+    if (connectBankCompleted) {
+      item.component =
+      <div>
+        <div className='fieldGroup'>
+          <ConnectStatus
+            {...this.props}
+            previousStepMessage={' '}
+          />
+        </div>         
+      </div>
+      ;      
+    }
+
+    // All steps completed and ready to submit to Vantiv
     if (isVantivReady && !merchantIdentString && connectBankCompleted && !connectLoader) {
       item.saveButton =
         <GBLink 
@@ -489,6 +575,7 @@ class ConnectBankStepsForm extends React.Component {
           Check Your Bank Account Connection to Givebox
         </GBLink>
       ;
+    // Has MID and just needs to complete connectBank phase
     } else if (merchantIdentString && connectBankCompleted && !connectLoader) {
       item.saveButton =
         <div style={{ marginTop: 0 }} className='button-group'>
@@ -532,7 +619,7 @@ class ConnectBankStepsForm extends React.Component {
         { this.state.saving ? <Loader msg='Saving step checking...' /> : null }
         <div className={`step ${item.className} ${open ? 'open' : ''}`}>
           <div className='stepTitleContainer'>
-            {completed ?
+            {isStepCompleted ?
               <div className='completed'>
                 <Icon><MdCheckCircle /></Icon> <span className='completedText'>Step {stepNumber} Completed</span>
               </div>
@@ -555,11 +642,12 @@ class ConnectBankStepsForm extends React.Component {
             }}><span style={{ marginRight: '5px' }} className='icon icon-chevron-left'></span> {isMobile ? 'Back' : 'Previous Step' }</GBLink> : <span>&nbsp;</span> }
           </div>
           <div className='button-item'>
-            { slug === 'connectBank'  || slug === 'connectStatus' ?
-              !connectLoader && !connectBankCompleted ?
+            { slug === 'connectBank' ?
+              !connectLoader && !completedSteps.includes('connectBank') ?
                 <div style={{ marginTop: 0, paddingTop: 0 }} className='button-group'>
                   <PlaidConnect
                     {...this.props}
+                    saveStep={this.saveStep}
                     checkConnectStatus={this.checkConnectStatus}
                   />
                   <GBLink className='button' onClick={this.switchToManualBank}>
@@ -569,13 +657,21 @@ class ConnectBankStepsForm extends React.Component {
               :
                 !connectLoader && connectBankCompleted ?
                   item.saveButton
-                :  null
+                :
+                <GBLink 
+                  className='button' 
+                  onClick={() => {
+                    this.props.gotoNextStep();
+                  }}
+                >
+                  Continue to Upload Bank Statement
+                </GBLink>
             :
-              this.props.saveButton(this.processForm, { group: slug, label: item.saveButtonLabel, disabled: item.saveButtonDisabled })
+              item.saveButton || this.props.saveButton(this.processForm, { group: slug, label: item.saveButtonLabel, disabled: item.saveButtonDisabled })
             }
           </div>
           <div className='rightSide' style={{ width: 150 }}>
-            { signupPhase === 'manualConnect' && !this.props.completed.includes('connectStatus') ?
+            { signupPhase === 'manualConnect' ?
               <GBLink onClick={this.switchToConnectBank}>
                 <span className='buttonAlignText'>Quick Connect with Plaid<span className='icon icon-chevron-right'></span></span>
               </GBLink>
@@ -644,6 +740,7 @@ class ConnectBankSteps extends React.Component {
 
 function mapStateToProps(state, props) {
 
+  const orgID = util.getValue(state, 'gbx3.info.orgID');
   const merchantApp = util.getValue(state, 'merchantApp', {});
   const plaidAccountID = util.getValue(merchantApp, 'plaid.accountID', null);
   const legalEntity = util.getValue(state, 'resource.orgLegalEntity', {});
@@ -657,8 +754,14 @@ function mapStateToProps(state, props) {
   const instantStatus = instantPhase === 1 ? util.getValue(instant, 'status', null) : null;
   const phaseEndsAt = instantPhase === 1 && instantStatus === 'enabled' ? util.getValue(instant, 'phaseEndsAt', null) : null;
   const connectLoader = util.getValue(state, 'merchantApp.connectLoader', false);
+  const readyToSubmitNoMID = isVantivReady && !merchantIdentString && util.getValue(props, 'completed', []).includes('verifyBank') ? true : false;
+  const connectBankCompleted = 
+  props.completed.includes('connectBank')
+  && props.completed.includes('verifyBank') ? true : false;
+
 
   return {
+    orgID,
     plaidAccountID,
     legalEntity,
     isVantivReady,
@@ -668,11 +771,14 @@ function mapStateToProps(state, props) {
     hasReceivedTransaction,
     instantStatus,
     phaseEndsAt,
-    connectLoader
+    connectLoader,
+    readyToSubmitNoMID,
+    connectBankCompleted
   }
 }
 
 export default connect(mapStateToProps, {
+  getSignupStep,
   setSignupStep,
   checkSignupPhase,
   setMerchantApp,
@@ -681,5 +787,6 @@ export default connect(mapStateToProps, {
   saveLegalEntity,
   saveAddress,
   saveBankAccount,
-  checkSubmitMerchantApp
+  checkSubmitMerchantApp,
+  removeResource
 })(ConnectBankSteps);

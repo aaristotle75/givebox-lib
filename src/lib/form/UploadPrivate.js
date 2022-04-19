@@ -46,10 +46,10 @@ class UploadPrivate extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.error !== this.props.error && prevProps.error !== this.props.error) {
-      this.setState({ error: this.props.error });
+      this.setState({ loading: false, error: this.props.error });
     }
     if (prevState.success !== this.props.success && prevProps.success !== this.props.success) {
-      this.setState({ success: this.props.success });
+      this.setState({ loading: false, success: this.props.success });
     }
     if (prevProps.previewURL !== this.props.previewURL) {
       this.setState({ previewURL: this.props.previewURL });
@@ -72,7 +72,7 @@ class UploadPrivate extends Component {
 
   fileUploadError(filename, ID) {
     if (this.props.fileUploadError) this.props.fileUploadError(filename, ID);
-    this.setState({ error : this.props.errorMsg || `Error uploading ${filename} to s3 bucket` });
+    this.setState({ loading: false, error : this.props.errorMsg || `Error uploading ${filename} to s3 bucket` });
     this.timeout = setTimeout(() => {
       this.setState({ error: false });
       this.timeout = null;
@@ -100,7 +100,7 @@ class UploadPrivate extends Component {
     x.onload = function() {
       let isUploaded = false;
       if (this.status !== 200) {
-        bindthis.setState({ error: 'Error uploading file to s3 bucket' });
+        bindthis.setState({ loading: false, error: 'Error uploading file to s3 bucket' });
       } else {
         isUploaded = true
       }
@@ -158,7 +158,10 @@ class UploadPrivate extends Component {
             this.saveToS3(request, files[key], docs[key].ID);
           });
         } else {
-          this.setState({ error: 'Error uploading file...' });
+          this.setState({ loading: false, error: 'Error uploading file. Wrong file type.' });
+          setTimeout(() => {
+            this.setState({ error: false });
+          }, 3000);
         }
       },
       sendResponse: false

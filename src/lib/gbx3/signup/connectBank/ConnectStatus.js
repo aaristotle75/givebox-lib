@@ -71,10 +71,9 @@ class ConnectStatus extends React.Component {
       <div>
         {this.getStatus()}
         <div>
-          { merchantIdentString ? 
-            <SecureAccountHelp />
-          :
+          { !merchantIdentString ? 
             <ConnectBankHelp />
+          : null
           }
         </div>        
       </div>

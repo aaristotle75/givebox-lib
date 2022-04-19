@@ -467,6 +467,16 @@ ul.selectable li:hover,
       }
     }
 
+    .secondaryText.review {
+      color: $med-blue-gray;
+      margin-right: 0px; 
+      svg,
+      .icon {
+        color: $med-blue-gray;
+        margin-left: 10px; 
+      }
+    }
+
     .secondaryText.alert {
       color: $red;
       margin-right: 10px;  

@@ -316,7 +316,7 @@ export function getAvatarState() {
     const identityReview = (
       bankConnected 
       && !identityVerified
-      &&  ['identity', 'protect', 'verifyBank'].some(step => stepsCompleted.includes(step))
+      &&  ['identity', 'protect'].some(step => stepsCompleted.includes(step))
       && util.getValue(org, 'underwritingStatus') === 'ready_for_review'
     ) ? true : false;
     const verifyIdentityAlert = 

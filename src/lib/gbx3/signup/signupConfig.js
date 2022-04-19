@@ -78,7 +78,6 @@ const connectBank = {
   desc: ''
 };
 
-
 const addBank = {
   type: 'merchant',
   slug: 'addBank',
@@ -255,9 +254,9 @@ export const signupPhase = {
     menuHeader: 'Connect a Bank',
     modalName: 'orgConnectBankSteps',
     showStepNumber: true,
-    customStepNumber: 'Required Step', // Signup Menu Only
     stepsTodo: [
-      connectBank
+      connectBank,
+      verifyBank
     ]
   },
   manualConnect: {
@@ -269,7 +268,7 @@ export const signupPhase = {
       principal,
       legalEntity,
       address,
-      connectStatus
+      verifyBank
     ]
   },
   transferMoney: {

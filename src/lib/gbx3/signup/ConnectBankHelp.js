@@ -26,16 +26,26 @@ class ConnectBankHelp extends React.Component {
       display
     } = this.state;
 
+    const {
+      content 
+    } = this.props;
+
     return (
       <>
          <div style={{ marginTop: 20 }} className='flexCenter'>
            <GBLink onClick={() => this.setState({ display: display ? false : true })}>
-              <span>Why Do I have to Connect My Bank Account?</span>
+              <span>{util.getValue(content, 'linkText', 'Why Do I have to Connect a Bank Account?')}</span>
            </GBLink>
          </div>
          <AnimateHeight height={display ? 'auto' : 0 }>
            <div style={{ fontSize: 14, marginTop: 20 }}>
-             <div style={{ display: 'block', marginBottom: 20 }}>
+            { !util.isEmpty(content) ?
+              <div style={{ display: 'block', marginBottom: 20 }}>
+                <span style={{ display: 'block', fontWeight: 500, fontSize: 16 }}>{util.getValue(content, 'title')}</span>
+                {util.getValue(content, 'text')}
+              </div>
+            : null }             
+            <div style={{ display: 'block', marginBottom: 20 }}>
                <span style={{ display: 'block', fontWeight: 500, fontSize: 16 }}>We Need to Know Where to Send Your Money</span>
                You need to connect a bank account to Givebox to be able to receive money.
              </div>
@@ -83,6 +93,10 @@ class ConnectBankHelp extends React.Component {
       </>
     )
   }
+}
+
+ConnectBankHelp.defaultProps = {
+  content: null
 }
 
 function mapStateToProps(state, props) {

@@ -11,6 +11,7 @@ export function merchantApp(state = {
   addressLoading: false,
   underwritingDocsLoading: false,
   connectLoader: false,
+  gettingPlaidLoader: false,
   errorSavingPlaidInfo: false,
   plaid: {
     hasBeenUpdated: false,

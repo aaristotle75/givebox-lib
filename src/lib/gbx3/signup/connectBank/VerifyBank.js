@@ -7,7 +7,6 @@ import GBLink from '../../../common/GBLink';
 import HelpfulTip from '../../../common/HelpfulTip';
 import UploadPrivate from '../../../form/UploadPrivate';
 import ModalLink from '../../../modal/ModalLink';
-import SecureAccountHelp from '../SecureAccountHelp';
 
 class VerifyBank extends React.Component {
 
