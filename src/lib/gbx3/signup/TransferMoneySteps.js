@@ -588,7 +588,7 @@ class TransferMoneyStepsForm extends React.Component {
                     this.setState({ is2FAVerified: true }, async () => {
                       const updated = await this.props.stepCompleted(slug);
                       if (updated && !completedSteps.includes('identity')) this.props.setSignupStep('identity');
-                    });      
+                    });
                   }}
                 />
               :

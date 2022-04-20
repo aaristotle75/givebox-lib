@@ -48,7 +48,10 @@ class Principal extends React.Component {
       principal,
       loading,
       principalPlaid,
-      contactPhone
+      contactPhone,
+      ownerFirstName,
+      ownerLastName,
+      ownerEmail      
     } = this.props;
 
     if (loading) return <Loader msg='Loading Principal...' />
@@ -57,8 +60,8 @@ class Principal extends React.Component {
     const emailAddress = util.getValue(principal, 'emailAddress', util.getValue(principalPlaid, 'emailAddress'));
     const firstName = util.getValue(principal, 'firstName', util.getValue(principalPlaid, 'firstName'));
     const lastName = util.getValue(principal, 'lastName', util.getValue(principalPlaid, 'lastName'));
-    const dataOfBirth = util.getValue(principal, 'dateOfBirth');
-    const title = util.getValue(principal, 'title');
+    //const dataOfBirth = util.getValue(principal, 'dateOfBirth');
+    //const title = util.getValue(principal, 'title');
 
     return (
       <div className='fieldGroup'>
@@ -75,7 +78,7 @@ class Principal extends React.Component {
             fixedLabel: true,
             label: 'First Name',
             placeholder: 'Type First Name',
-            value: firstName
+            value: firstName || ownerFirstName
           })}
         </div>
         <div className='column50'>
@@ -85,7 +88,7 @@ class Principal extends React.Component {
             fixedLabel: true,
             label: 'Last Name',
             placeholder: 'Type Last Name',
-            value: lastName
+            value: lastName || ownerLastName
           })}
         </div>
         <div className='column50'>
@@ -96,7 +99,7 @@ class Principal extends React.Component {
             validate: 'email',
             label: 'Email',
             placeholder: 'Type Email',
-            value: emailAddress
+            value: emailAddress || ownerEmail
           })}
         </div>
         <div className='column50'>
@@ -110,6 +113,7 @@ class Principal extends React.Component {
             value: contactPhone ? _v.formatPhone(contactPhone) : ''
           })}
         </div>
+        {/*
         <div className='column50'>
           {this.props.textField('title', {
             group,
@@ -119,6 +123,7 @@ class Principal extends React.Component {
             value: title
           })}
         </div>
+        */}
 
         {/* this.props.calendarField('dateOfBirth', {
           group,
@@ -156,13 +161,20 @@ function mapStateToProps(state, props) {
   const extractIdentity = util.getValue(state, 'merchantApp.extractIdentity', {});
   const principalPlaid = util.getValue(extractIdentity, 'principal', {});
   const contactPhone = util.getValue(principal, 'contactPhone', util.getValue(principalPlaid, 'contactPhone'));
+  const org = util.getValue(state, 'resource.gbx3Org.data', {});
+  const ownerFirstName = util.getValue(org, 'ownerFirstName');
+  const ownerLastName = util.getValue(org, 'ownerLastName');
+  const ownerEmail = util.getValue(org, 'ownerEmail');
 
   return {
     principal,
     loading,
     principalPlaid,
     legalEntityID,
-    contactPhone
+    contactPhone,
+    ownerFirstName,
+    ownerLastName,
+    ownerEmail
   }
 }
 

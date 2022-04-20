@@ -266,7 +266,6 @@ export const signupPhase = {
     stepsTodo: [
       addBank,
       principal,
-      legalEntity,
       address,
       verifyBank
     ]

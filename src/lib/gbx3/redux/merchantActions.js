@@ -67,7 +67,7 @@ export function saveLegalEntity(options = {}) {
     data: {},
     orgID: null,
     callback: null,
-    isSending: true,
+    isSending: false,
     ...options
   };
   return (dispatch, getState) => {
@@ -113,6 +113,7 @@ export function saveBankAccount(options = {}) {
     data: {},
     orgID: null,
     callback: null,
+    isSending: false,
     ...options
   };
   return (dispatch, getState) => {
@@ -133,6 +134,7 @@ export function saveBankAccount(options = {}) {
         id: data.ID ? [data.ID] : null,
         orgID,
         data,
+        isSending: opts.isSending,
         method: data.ID ? 'patch' : 'post',
         callback: (res, err) => {
           if (opts.callback) opts.callback(res, err);
@@ -151,6 +153,7 @@ export function savePrincipal(options = {}) {
     data: {},
     orgID: null,
     callback: null,
+    isSending: false,
     updateLegalPhone: true,
     ...options
   };
@@ -188,6 +191,7 @@ export function savePrincipal(options = {}) {
         id: data.ID ? [data.ID] : null,
         orgID,
         data,
+        isSending: opts.isSending,
         method: data.ID ? 'patch' : 'post',
         callback: (res, err) => {
           if (opts.callback) opts.callback(res, err);
@@ -217,6 +221,7 @@ export function saveAddress(options = {}) {
     data: {},
     orgID: null,
     callback: null,
+    isSending: false,
     ...options
   };
   return (dispatch, getState) => {
@@ -236,6 +241,7 @@ export function saveAddress(options = {}) {
         id: data.ID ? [data.ID] : null,
         orgID,
         data,
+        isSending: opts.isSending,
         method: data.ID ? 'patch' : 'post',
         callback: (res, err) => {
           if (opts.callback) opts.callback(res, err);
@@ -250,7 +256,7 @@ export function saveAddress(options = {}) {
 export function checkSubmitMerchantApp(options = {}) {
   const opts = {
     callback: null,
-    isSending: true,
+    isSending: false,
     sendData: false,
     ...options
   }

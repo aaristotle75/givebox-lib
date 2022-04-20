@@ -814,7 +814,8 @@ class SignupStepsForm extends React.Component {
       component: <div></div>,
       className: '',
       saveButtonLabel: <span className='buttonAlignText'>Save & Continue</span>,
-      customSaveButton: null
+      customSaveButton: null,
+      hidePrevious: false
     };
 
     const library = {
@@ -1197,10 +1198,30 @@ class SignupStepsForm extends React.Component {
             </>
           ;
         } else {
-          item.saveButtonLabel = <span className='buttonAlignText'>Take Me to My Fundraiser</span>;
+          item.hidePrevious = true;
+          //item.saveButtonLabel = <span className='buttonAlignText'>Take Me to My Fundraiser</span>;
           item.className = 'preview';
           item.desc = 'Congratulations, you have just opened a Merchant Processing Account!';
-          
+          item.customSaveButton =
+            <div style={{ marginTop: 0 }} className='button-group'>
+              <GBLink 
+                className='button' 
+                onClick={() => {
+                  this.finishedSteps();
+                }}
+              >
+                Close
+              </GBLink>
+              <GBLink 
+                className='button' 
+                onClick={() => {
+                  this.finishedSteps();
+                }}
+              >
+                Take Me to My Fundraiser
+              </GBLink>
+            </div>
+          ;
           item.component =
             <div style={{ marginTop: 20 }} className='flexCenter flexColumn'>
               You can now accept donations. Go to your fundraiser, share it and start raising money.
@@ -1244,7 +1265,7 @@ class SignupStepsForm extends React.Component {
         { !this.state.editorOpen ?
         <div className='button-group'>
           <div className='leftSide' style={{ width: 150 }}>
-            { !firstStep ? <GBLink className={`link`} disabled={firstStep} onClick={() => {
+            { !firstStep && !item.hidePrevious ? <GBLink className={`link`} disabled={firstStep} onClick={() => {
               this.props.formProp({ error: false });
               this.props.previousStep(step);
             }}><span style={{ marginRight: '5px' }} className='icon icon-chevron-left'></span> {isMobile ? 'Back' : 'Previous Step' }</GBLink> : <span>&nbsp;</span> }

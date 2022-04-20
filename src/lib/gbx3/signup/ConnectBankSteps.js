@@ -78,9 +78,7 @@ class ConnectBankStepsForm extends React.Component {
 
     switch (signupPhase) {
       case 'manualConnect': {
-        if (readyToSubmitNoMID 
-          && signupStep === 4
-        ) this.checkConnectStatus();
+        if (readyToSubmitNoMID) this.checkConnectStatus();
         if (isVantivReady && !completed.includes('verifyBank')) {
           this.props.setSignupStep('verifyBank');
         }
@@ -440,6 +438,7 @@ class ConnectBankStepsForm extends React.Component {
       case 'verifyBank': {
         item.saveButtonDisabled = !verifyBankUploaded ? true : false;
         item.saveButton =
+          !connectLoader ?
           <div style={{ marginTop: 0 }} className='button-group'>
             <GBLink
               className='button'
@@ -451,6 +450,7 @@ class ConnectBankStepsForm extends React.Component {
               Finished
             </GBLink>
           </div>
+          : null 
         ;
         item.desc = 'Please upload a bank statement of the account you connected to Givebox.';
         item.component =
@@ -636,7 +636,7 @@ class ConnectBankStepsForm extends React.Component {
         { !this.state.editorOpen ?
         <div className='button-group'>
           <div className='leftSide' style={{ width: 150 }}>
-            { !firstStep && !connectBankCompleted ? <GBLink className={`link`} disabled={firstStep} onClick={() => {
+            { !firstStep && !connectBankCompleted && !connectLoader ? <GBLink className={`link`} disabled={firstStep} onClick={() => {
               this.props.formProp({ error: false });
               this.props.previousStep(step);
             }}><span style={{ marginRight: '5px' }} className='icon icon-chevron-left'></span> {isMobile ? 'Back' : 'Previous Step' }</GBLink> : <span>&nbsp;</span> }
@@ -667,11 +667,13 @@ class ConnectBankStepsForm extends React.Component {
                   Continue to Upload Bank Statement
                 </GBLink>
             :
-              item.saveButton || this.props.saveButton(this.processForm, { group: slug, label: item.saveButtonLabel, disabled: item.saveButtonDisabled })
+              !connectLoader ?
+                item.saveButton || this.props.saveButton(this.processForm, { group: slug, label: item.saveButtonLabel, disabled: item.saveButtonDisabled })
+              : null
             }
           </div>
           <div className='rightSide' style={{ width: 150 }}>
-            { signupPhase === 'manualConnect' ?
+            { signupPhase === 'manualConnect' && !completedSteps.includes('verifyBank') ?
               <GBLink onClick={this.switchToConnectBank}>
                 <span className='buttonAlignText'>Quick Connect with Plaid<span className='icon icon-chevron-right'></span></span>
               </GBLink>
