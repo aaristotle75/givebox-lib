@@ -391,6 +391,10 @@ export function shouldCheckSignupPhase(options = {}) {
 
     let checkSignup = false;
 
+    if (connectBankSteps || transferSteps) {
+      checkSignup = true;
+    }
+
     if (lastSignupCheck && lastSignupCheck > timeBeforeNow) {
       switch (signupPhase) {
         case 'postSignup': {
@@ -434,15 +438,7 @@ export function checkSignupPhase(options = {}) {
     const completedPhases = util.getValue(state, 'gbx3.orgSignup.completedPhases', []);
     const hasReceivedTransaction = util.getValue(state, 'resource.gbx3Org.data.hasReceivedTransaction');
 
-    if (connectBankSteps) {
-      if (signupPhase !== 'connectBank') {
-        const phaseUpdated = await dispatch(updateOrgSignup({ signupPhase: 'connectBank' }, 'postSignup'));
-        if (phaseUpdated) dispatch(openStep('connectBank', 'orgConnectBankSteps'));
-      } else {
-        dispatch(openStep('connectBank', 'orgConnectBankSteps'));
-      }
-      dispatch(updateInfo({ connectBankSteps: false }));
-    } else if (transferSteps) {
+    if (transferSteps && completedPhases.includes('connectBank')) {
       if (signupPhase !== 'transferMoney') {
         const phaseUpdated = await dispatch(updateOrgSignup({ signupPhase: 'transferMoney' }, 'connectBank'));
         if (phaseUpdated) dispatch(openStep('identity', 'orgTransferSteps'));
@@ -450,6 +446,14 @@ export function checkSignupPhase(options = {}) {
         dispatch(openStep('identity', 'orgTransferSteps'));
       }
       dispatch(updateInfo({ transferMoney: false })); 
+    } else if (connectBankSteps || (transferSteps && !completedPhases.includes('connectBank'))) {
+      if (signupPhase !== 'connectBank') {
+        const phaseUpdated = await dispatch(updateOrgSignup({ signupPhase: 'connectBank' }, 'postSignup'));
+        if (phaseUpdated) dispatch(openStep('connectBank', 'orgConnectBankSteps'));
+      } else {
+        dispatch(openStep('connectBank', 'orgConnectBankSteps'));
+      }
+      dispatch(updateInfo({ connectBankSteps: false }));
     } else {
       switch (signupPhase) {
         case 'postSignup': {
