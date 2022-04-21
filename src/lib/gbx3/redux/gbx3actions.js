@@ -340,6 +340,7 @@ export function getAvatarState() {
       && identityVerified
       && !hasReceivedTransaction
       && hasAccessToEdit
+      || ( identityReview && !hasReceivedTransaction && hasAccessToEdit )
     ) ? true : false;
 
     return {
