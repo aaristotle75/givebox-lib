@@ -36,7 +36,7 @@ class ConnectStatus extends React.Component {
     let message = previousStepMessage || 'Please complete the previous steps to connect a bank account.';
     let componentMessage = '';
     if (isVantivReady) {
-      message = 'Please click "Check Connection Status" below to finish connecting your bank account.'
+      message = 'Please click "Complete Bank Verification" below to finish connecting your bank account.'
       componentMessage = '';
     }
 

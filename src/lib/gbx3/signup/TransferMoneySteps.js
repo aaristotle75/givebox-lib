@@ -686,26 +686,23 @@ class TransferMoneyStepsForm extends React.Component {
             : null }
             { readyToCheckApproval && !approvedForTransfers && is2FAVerified ?
               <div style={{ marginTop: 0, paddingTop: 0 }} className='button-group'>
-                {/*
                 <GBLink 
-                  disabled={isCheckingStatus} 
-                  className={`button ${isCheckingStatus ? 'readOnly tooltip' : ''}`} 
-                  onClick={() => {
-                    this.setState({ saving: true }, () => {
-                      this.checkApprovalStatus();
-                    });
-                  }}>
-                  {isCheckingStatus ? <div className='tooltipTop'><i></i>Please wait while we check status for you...</div> : null }
-                  Check Review Status
+                  className='button' 
+                  onClick={() => this.props.toggleModal('orgTransferSteps', false)}>
+                  Close
                 </GBLink>
-                */}
-                <GBLink className='button' onClick={() => this.props.toggleModal('orgTransferSteps', false)}>
+                <GBLink 
+                  className='button' 
+                  onClick={() => this.props.toggleModal('orgTransferSteps', false)}>
                   Take Me to My Fundraiser
                 </GBLink>
               </div>
             : null }
             { approvedForTransfers ?
               <div style={{ marginTop: 0, paddingTop: 0 }} className='button-group'>
+                <GBLink className='button' onClick={this.approvedForTransfersFinish}>
+                  Close
+                </GBLink>
                 <GBLink className='button' onClick={this.approvedForTransfersFinish}>
                   Take Me to My Fundraiser
                 </GBLink>

@@ -36,8 +36,7 @@ class PlaidConnect extends React.Component {
   async savePlaidInfoCallback(message, slug = 'addBank') {
 
     const {
-      extractAuth,
-      extractIdentity
+      orgID
     } = this.props;
 
     switch (message) {
@@ -59,8 +58,16 @@ class PlaidConnect extends React.Component {
 
       case 'success': {
         //this.props.checkConnectStatus();
-        this.props.saveStep('connectBank');
-        this.props.setMerchantApp('gettingPlaidLoader', false);
+        this.props.getResource('org', {
+          id: [orgID],
+          customName: 'gbx3Org',
+          reload: true,
+          isSending: false,
+          callback: (res, err) => {
+            this.props.saveStep('connectBank');
+            this.props.setMerchantApp('gettingPlaidLoader', false);
+          }
+        })
         break;
       }
 
@@ -103,7 +110,7 @@ class PlaidConnect extends React.Component {
 
     return (
       <div>
-        { gettingPlaidLoader ? <Loader msg='Plaid Connect...' /> : null }
+        { gettingPlaidLoader ? <Loader msg='Plaid Connecting...' /> : null }
         {/* <GBLink onClick={() => this.exitPlaid(null, null, true)}>Test Manual</GBLink> */}
         { hasPlaidToken ?
           <GBLink

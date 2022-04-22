@@ -318,6 +318,8 @@ class AvatarOverlay extends React.Component {
                   'Please Verify Your Identity' 
                   : identityReview ?
                     'Verification in Progress'
+                  : bankConnected && !identityVerified ?
+                    'Please Verify Your Identity'
                   : null
                 }
                 {identityVerified ?

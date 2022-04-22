@@ -304,29 +304,41 @@ export function getAvatarState() {
     const access = util.getValue(state.resource, 'access');    
     const hasAccessToEdit = util.getValue(state, 'gbx3.admin.hasAccessToEdit');
     const org = hasAccessToEdit ? util.getValue(state, 'resource.gbx3Org.data', {}) : util.getValue(state, 'resource.session.data.organization', {});
+    const hasReceivedTransaction = util.getValue(org, 'hasReceivedTransaction');
     const orgSignup = hasAccessToEdit ? util.getValue(state, 'gbx3.orgSignup', {}) : util.getValue(org, 'customTemplate.orgSignup', {});        
     const stepsCompleted = util.getValue(orgSignup, 'completed', []);
     const connectBankCompleted = util.getValue(orgSignup, 'completedPhases', []).includes('connectBank');
     const transferMoneyCompleted = util.getValue(orgSignup, 'completedPhases', []).includes('transferMoney');
     const bankConnected = ( connectBankCompleted || util.getValue(org, 'vantiv.merchantIdentString')) ? true : false;
-    const connectBankAlert = !connectBankCompleted && !bankConnected ? true : false;
+    const connectBankAlert = 
+      !connectBankCompleted 
+      && !bankConnected 
+      && hasReceivedTransaction 
+    ? true : false;
+
     const identityVerified = ( transferMoneyCompleted || 
       (util.getValue(org, 'underwritingStatus') === 'approved'
-      && util.getValue(org, 'hasBankInfo')) ) ? true : false;
-    const identityReview = (
+      && util.getValue(org, 'hasBankInfo')) 
+    ) ? true : false;
+    
+      const identityReview = (
       bankConnected 
       && !identityVerified
       &&  ['identity', 'protect'].some(step => stepsCompleted.includes(step))
       && util.getValue(org, 'underwritingStatus') === 'ready_for_review'
     ) ? true : false;
+    
     const verifyIdentityAlert = 
       bankConnected 
       && !identityVerified 
       && !transferMoneyCompleted 
       && !identityReview
+      && hasReceivedTransaction
     ? true : false;    
+    
     const defaultArticleID = dispatch(getDefaultArticle(org));
     const orgSlug = util.getValue(org, 'slug');
+    
     const transferMoneyEnabled = (
       bankConnected 
       && identityVerified 
@@ -334,13 +346,14 @@ export function getAvatarState() {
       && util.getValue(org, 'underwritingStatus') === 'approved'
       && util.getValue(org, 'hasBankInfo') 
     ) ? true : false;
-    const hasReceivedTransaction = util.getValue(org, 'hasReceivedTransaction');
+
     const shareAlert = (
       bankConnected
       && identityVerified
       && !hasReceivedTransaction
       && hasAccessToEdit
       || ( identityReview && !hasReceivedTransaction && hasAccessToEdit )
+      || ( !hasReceivedTransaction && hasAccessToEdit )
     ) ? true : false;
 
     return {
