@@ -110,7 +110,8 @@ export default class GBX3ModalRoutes extends Component {
         <ModalRoute
           className='gbx3'
           id={'orgSignupSteps'}
-          effect='3DFlipVert' style={{ width: '75%' }}
+          effect='3DFlipVert' 
+          style={{ width: '75%' }}
           disallowBgClose={true}
           closeBtnShow={false}
           component={(props) => {
