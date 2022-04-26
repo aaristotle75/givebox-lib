@@ -141,7 +141,7 @@ class Confirmation extends Component {
         </div>
         {this.renderPaymethodText()}
         { confirmationContent ?
-          <div style={{ margin: '10px 0' }} dangerouslySetInnerHTML={{ __html: confirmationContent }} />
+          <div style={{ margin: '20px 0' }} dangerouslySetInnerHTML={{ __html: confirmationContent }} />
         :
           null
         }
