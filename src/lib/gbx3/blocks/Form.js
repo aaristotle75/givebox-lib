@@ -7,7 +7,6 @@ import Collapse from '../../common/Collapse';
 import Tabs, { Tab } from '../../common/Tabs';
 import Choice from '../../form/Choice';
 import ModalRoute from '../../modal/ModalRoute';
-import ModalLink from '../../modal/ModalLink';
 import PaymentForm from '../payment/PaymentForm';
 import CartOrderConfirmation from '../payment/CartOrderConfirmation';
 import FormEdit from './FormEdit';
@@ -22,6 +21,7 @@ import {
   updateData,
   updateCart
 } from '../redux/gbx3actions';
+import ConfirmationPageEdit from './ConfirmationPageEdit';
 
 class Form extends Component {
 
@@ -30,6 +30,7 @@ class Form extends Component {
     this.saveButton = this.saveButton.bind(this);
     this.closeEditModal = this.closeEditModal.bind(this);
     this.optionsUpdated = this.optionsUpdated.bind(this);
+    this.setHasBeenUpdated = this.setHasBeenUpdated.bind(this);
     this.getInfo = this.getInfo.bind(this);
     this.setCart = this.setCart.bind(this);
     const options = props.options;
@@ -58,6 +59,10 @@ class Form extends Component {
       const gbx3MainWrapper = document.getElementById('gbx3MainWrapper');
       if (gbx3MainWrapper) gbx3MainWrapper.append(screenshotReady);
     }
+  }
+
+  setHasBeenUpdated(hasBeenUpdated) {
+    this.setState({ hasBeenUpdated });
   }
 
   closeEditModal(type = 'save') {
@@ -220,6 +225,13 @@ class Form extends Component {
                     orgID={orgID}
                     form={form}
                     optionsUpdated={this.optionsUpdated}
+                  />
+                </Tab>
+                <Tab id='confirmationPage' label={<span className='stepLabel'>Confirmation Page</span>}>
+                  <ConfirmationPageEdit
+                    optionsUpdated={this.optionsUpdated}
+                    setHasBeenUpdated={this.setHasBeenUpdated}
+                    form={form}
                   />
                 </Tab>
                 <Tab id='buttonOption' label={<span className='stepLabel'>Customize Button</span>}>

@@ -79,10 +79,15 @@ class PaymentFormClass extends Component {
   }
 
   formSavedCallback() {
+    const {
+      confirmationLink
+    } = this.props;
+
     this.props.toggleModal('paymentConfirmation', true, { closeCallback: async () => {
       const cartReset = await this.props.resetCart();
       if (cartReset) {
-        this.props.backToOrg(null, true);
+        if (confirmationLink) window.location.replace(confirmationLink);
+        else this.props.backToOrg(null, true);
       }
     }});
   }
@@ -797,6 +802,11 @@ function mapStateToProps(state, props) {
   const isDebit = util.getValue(cart, 'isDebit');
   const amount = util.getValue(cart, 'subTotal', 0);
   const org = util.getValue(state, 'resource.gbx3Org.data', {});
+  const blocks = util.getValue(gbx3, `blocks.article`, {});
+  const paymentFormBlock = util.getValue(blocks, 'paymentForm', {});
+  const paymentFormOptions = util.getValue(paymentFormBlock, 'options', {});
+  const form = util.getValue(paymentFormOptions, 'form', {});
+  const confirmationLink = util.getValue(form, 'confirmationLink');
 
   return {
     sourceLocation,
@@ -814,7 +824,8 @@ function mapStateToProps(state, props) {
     cardType,
     isDebit,
     amount,
-    org
+    org,
+    confirmationLink
   }
 }
 

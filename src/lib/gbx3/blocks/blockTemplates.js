@@ -255,7 +255,9 @@ export const paymentForm = {
       checkoutDonationImageURL: '',
       checkoutAmountID: null,
       maxDonationEnabled: false,
-      maxDonationAmount: 580000
+      maxDonationAmount: 580000,
+      confirmationLink: null,
+      confirmationContent: null
     }
   }
 };

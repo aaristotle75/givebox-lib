@@ -124,6 +124,8 @@ class Confirmation extends Component {
   render() {
 
     const {
+      confirmationContent,
+      confirmationLink,
       allowSharing,
       primaryColor,
       firstname
@@ -138,6 +140,24 @@ class Confirmation extends Component {
           </span>
         </div>
         {this.renderPaymethodText()}
+        { confirmationContent ?
+          <div style={{ margin: '10px 0' }} dangerouslySetInnerHTML={{ __html: confirmationContent }} />
+        :
+          <div className='successfulText'>
+            <div className='subText'>
+              <span style={{ marginBottom: 20 }} className='line'>Have a Nonprofit or know someone who does?</span>
+              <GBLink
+                className='button'
+                customColor={primaryColor}
+                allowCustom={true}
+                solidColor={true}
+                onClick={() => window.open('https://www.givebox.com')}
+              >
+                Learn About Givebox
+              </GBLink>
+            </div>
+          </div>
+        }
         { allowSharing ?
           <Social
             subText={
@@ -146,21 +166,7 @@ class Confirmation extends Component {
               </div>
             }
           />
-        : <></> }
-        <div className='successfulText'>
-          <div className='subText'>
-            <span style={{ marginBottom: 20 }} className='line'>Have a Nonprofit or know someone who does?</span>
-            <GBLink
-              className='button'
-              customColor={primaryColor}
-              allowCustom={true}
-              solidColor={true}
-              onClick={() => window.open('https://www.givebox.com')}
-            >
-              Learn About Givebox
-            </GBLink>
-          </div>
-        </div>
+        : <></> }        
       </div>
     )
   }
@@ -174,6 +180,7 @@ function mapStateToProps(state, props) {
   const paymentFormBlock = util.getValue(blocks, 'paymentForm', {});
   const paymentFormOptions = util.getValue(paymentFormBlock, 'options', {});
   const form = util.getValue(paymentFormOptions, 'form', {});
+  const confirmationContent = util.getValue(form, 'confirmationContent');
   const allowSharing = util.getValue(form, 'allowSharing');
   const firstname = util.getValue(confirmation, 'firstname');
   const email = util.getValue(confirmation, 'email');
@@ -198,6 +205,7 @@ function mapStateToProps(state, props) {
     paymethod,
     cartTotal,
     descriptor,
+    confirmationContent,
     allowSharing,
     preview,
     receipt
