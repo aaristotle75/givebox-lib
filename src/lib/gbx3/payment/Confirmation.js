@@ -143,6 +143,18 @@ class Confirmation extends Component {
         { confirmationContent ?
           <div style={{ margin: '10px 0' }} dangerouslySetInnerHTML={{ __html: confirmationContent }} />
         :
+          null
+        }
+        { allowSharing ?
+          <Social
+            subText={
+              <div className='subText'>
+                {firstname}, please help us grow our community by sharing below.
+              </div>
+            }
+          />
+        : null }
+        { !confirmationContent ?
           <div className='successfulText'>
             <div className='subText'>
               <span style={{ marginBottom: 20 }} className='line'>Have a Nonprofit or know someone who does?</span>
@@ -156,17 +168,8 @@ class Confirmation extends Component {
                 Learn About Givebox
               </GBLink>
             </div>
-          </div>
-        }
-        { allowSharing ?
-          <Social
-            subText={
-              <div className='subText'>
-                {firstname}, please help us grow our community by sharing below.
-              </div>
-            }
-          />
-        : <></> }        
+          </div>        
+        : null }     
       </div>
     )
   }
