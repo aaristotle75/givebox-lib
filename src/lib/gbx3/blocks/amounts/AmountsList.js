@@ -252,7 +252,9 @@ class AmountsList extends Component {
   setCustomSelected(ID) {
     const amountInputRef = this.amountInputRef.current;
     const customSelected = parseInt(this.props.customID) === parseInt(ID) ? true : false;
-    if (amountInputRef && this.props.breakpoint !== 'mobile' && customSelected && !this.props.editable) amountInputRef.focus();
+    if (amountInputRef && this.props.breakpoint !== 'mobile' && customSelected && this.props.stage === 'public') {
+      amountInputRef.focus();
+    }
     return customSelected;
   }
 
@@ -476,6 +478,7 @@ function mapStateToProps(state, props) {
   const formOptions = util.getValue(gbx3, 'blocks.article.paymentForm.options.form', {});
 
   return {
+    stage,
     noFocus,
     cart,
     cartItems,
