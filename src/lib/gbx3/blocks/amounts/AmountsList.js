@@ -416,7 +416,7 @@ class AmountsList extends Component {
           moneyStyle={style.moneyStyle}
           value={amountEntered}
           readOnly={amountRadioSelected === customID ? false : true}
-          readOnlyText={'The Selected Amount is Not Editable'}
+          readOnlyText={'To Change Amount Select an Option Below'}
           autoComplete={'new-password'}
         />
       </div>
