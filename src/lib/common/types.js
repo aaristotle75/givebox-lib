@@ -66,7 +66,7 @@ export function kinds() {
   return kinds;
 }
 
-export function kindOptions(all = true, allName = 'All Payment Forms') {
+export function kindOptions(all = true, allName = 'All') {
   const options = [];
   if (all) options.push({ primaryText: allName, value: 'all' });
   kinds().forEach((key) => {
