@@ -23,7 +23,7 @@ import {
 } from '../../api/helpers';
 import { CgMenuGridO } from 'react-icons/cg';
 import CartButton from '../payment/CartButton';
-import { AiOutlineBank } from 'react-icons/ai';
+import { AiOutlineBank, AiOutlineLogin } from 'react-icons/ai';
 import { MdFingerprint } from 'react-icons/md';
 import { BiTransferAlt } from 'react-icons/bi';
 import { GoSettings } from 'react-icons/go';
@@ -175,11 +175,19 @@ class AvatarOverlay extends React.Component {
           key='settings'
           content={
             <div className='text'>
-              <Icon><GoSettings /></Icon> Login Preference
+              <Icon><AiOutlineLogin /></Icon> Login Preference
             </div>
           }
         />
       )
+      menuList.push(
+        <ModalLink type='li' id={'viewArticleList'} key={'fundraisingList'}>
+          <div className='text'>
+            <span className='icon icon-list'></span> 
+            Fundraise List
+          </div>
+        </ModalLink>
+      );
     }
 
     // Share

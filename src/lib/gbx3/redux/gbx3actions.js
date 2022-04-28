@@ -1596,6 +1596,12 @@ function GBX3Loaded() {
 
 export function loadGBX3(articleID, callback) {
 
+  // Clear any blur effect from modals
+  const appRoot = document.getElementById('app-root');  
+  if (appRoot.classList.contains('blur')) {
+    appRoot.classList.remove('blur');
+  }
+
   return async (dispatch, getState) => {
 
     dispatch(setLoading(true));

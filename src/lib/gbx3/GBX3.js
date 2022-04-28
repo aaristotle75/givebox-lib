@@ -42,6 +42,8 @@ import AvatarOverlay from './avatar/AvatarOverlay';
 import Share from './share/Share';
 import history from '../common/history';
 import SavingSignup from './signup/SavingSignup';
+import ArticleList from './admin/article/ArticleList';
+import Article from './Article';
 
 const RECAPTCHA_KEY = process.env.REACT_APP_RECAPTCHA_KEY;
 const ENV = process.env.REACT_APP_ENV;
@@ -592,6 +594,30 @@ class GBX3 extends React.Component {
             />
           }
         />
+        <ModalRoute
+          className='gbx3'
+          id='viewArticleList'
+          effect='3DFlipVert'
+          style={{ width: '50%' }}
+          disallowBgClose={false}
+          forceShowModalGraphic={true}
+          component={(props) => 
+            <ArticleList 
+              exitAdmin={this.exitAdmin} 
+              reloadGBX3={this.reloadGBX3} 
+              loadGBX3={this.loadGBX3}
+              history={history}
+              orgID={orgID}
+              title={'Fundraise List'}
+              selectText={'View Page'}
+              selectedText={'Loading...'}
+              callback={(article) => {
+                this.props.toggleModal('viewArticleList', false);
+                this.loadGBX3(util.getValue(article, 'ID'));
+              }}
+            />
+          }
+        />        
         <ModalRoute
           className='gbx3'
           id='share'
