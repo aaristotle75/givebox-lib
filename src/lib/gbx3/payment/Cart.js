@@ -136,7 +136,7 @@ class Cart extends Component {
               {util.money(value.amountFormatted)}
               { value.interval ? <span style={{ display: 'block', fontSize: 12 }}>{types.renderRecurringName(value.articleKind, value.interval, value.paymentMax).text}</span> : <></> }
               { changeAmount ?
-                <GBLink style={{ display: 'block' }} allowCustom={true} customColor={primaryColor} onClick={() => reloadGBX3(value.articleID)}>
+                <GBLink allowCustom={true} customColor={primaryColor} onClick={() => reloadGBX3(value.articleID)}>
                   Change Amount
                 </GBLink>
               : '' }
@@ -211,6 +211,7 @@ class Cart extends Component {
 }
 
 Cart.defaultProps = {
+  forceShowItems: false,
   forceHideShopMoreItems: false
 };
 
@@ -224,7 +225,7 @@ function mapStateToProps(state, props) {
   const cartItems = util.getValue(cart, 'items', []);
   const cartHasItems = !util.isEmpty(cartItems) ? true : false;
   const total = util.getValue(cart, 'total');
-  const open = !cartHasItems ? false : util.getValue(cart, 'open');
+  const open = props.forceShowItems ? true : !cartHasItems ? false : util.getValue(cart, 'open');
   const isPublic = util.getValue(gbx3, 'blocks.article.paymentForm.options.form.isPublic', true);
 
   return {

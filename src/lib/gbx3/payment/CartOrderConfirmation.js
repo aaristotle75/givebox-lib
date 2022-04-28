@@ -53,6 +53,7 @@ class CartOrderConfirmation extends Component {
           <div style={{ width: '100%'}}>
             <Cart
               {...this.props}
+              forceShowItems={true}
               forceHideShopMoreItems={true}
             />
           </div>
