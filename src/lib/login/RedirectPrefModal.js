@@ -158,7 +158,8 @@ class RedirectPrefModal extends React.Component {
 
     return (
       <div className='modalWrapper avatarSettings'>
-        <h2 style={{ display: 'flex' }} className='flexCenter'>Select the Page You Go After Login</h2>
+        <h2 style={{ marginBottom: 5, display: 'flex' }} className='flexCenter'>Choose Homepage</h2>
+        <div style={{ display: 'flex' }} className='flexCenter'>Select below the page you want to load after you login.</div>
         <Alert alert='success' display={this.state.success} msg='Saved' />
         {this.renderDashboardList()}
         <div style={{ marginTop: 30 }}>

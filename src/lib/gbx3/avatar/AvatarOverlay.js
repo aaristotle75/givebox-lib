@@ -152,9 +152,9 @@ class AvatarOverlay extends React.Component {
       );
     }
 
-    // Dashboard
+    // Launchpad
     menuList.push(
-      <li key='dashboard' onClick={async () => {
+      <li key='launchpad' onClick={async () => {
         if (isAdmin || isSuper) {
           this.props.toggleModal('avatarOverlay', false);
           this.props.openLaunchpad();
@@ -163,7 +163,7 @@ class AvatarOverlay extends React.Component {
         }
       }}>
         <div className='text'>
-          <Icon><CgMenuGridO /></Icon> Dashboard
+          <Icon><CgMenuGridO /></Icon> Launchpad
         </div>
       </li>
     );
@@ -175,7 +175,7 @@ class AvatarOverlay extends React.Component {
           key='settings'
           content={
             <div className='text'>
-              <Icon><GoSettings /></Icon> User Settings
+              <Icon><GoSettings /></Icon> Login Preference
             </div>
           }
         />
