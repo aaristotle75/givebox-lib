@@ -131,6 +131,9 @@ export default class GBX3ModalRoutes extends Component {
           effect='3DFlipVert' style={{ width: '75%' }}
           disallowBgClose={false}
           component={(props) => this.loadComponent('./signup/BookDemo', props)}
+          closeCallback={() => {
+            window.parent.postMessage('closeGivebox', '*');
+          }}
         />
         <ModalRoute
           className='gbx3'
