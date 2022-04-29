@@ -233,7 +233,7 @@ class MediaLibrary extends Component {
               <Image
                 onLoad={this.props.previewOnLoad}
                 url={this.state.preview}
-                size='small'
+                size='medium'
                 maxWidth='120px'
                 maxHeight='auto'
                 alt='Media Item'
