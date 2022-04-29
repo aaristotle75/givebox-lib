@@ -83,6 +83,9 @@ class Media extends Component {
 
   componentWillUnmount() {
     //console.log('execute componentWillUnmount Media');
+    this.setState = (state, callback) => {
+      return;
+    }
   }
 
   closeModalAndSave() {

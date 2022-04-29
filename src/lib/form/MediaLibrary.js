@@ -171,14 +171,14 @@ class MediaLibrary extends Component {
   }
 
   handleDrop(files, error) {
-    console.log('MediaLibrary drop', files, error);
+    //console.log('MediaLibrary drop', files, error);
   }
 
   newUploadProgressCallback(url, file) {
     this.editPhoto(url, file);
   }
 
-  newUploadProgress(url, file, callback = this.newUploadProgressCallback) {
+  newUploadProgress(url, file, callback = this.newUploadProgressCallback) { 
     const xhr = new XMLHttpRequest();
     xhr.upload.onprogress = function(e) {
       if (e.lengthComputable) {

@@ -32,8 +32,9 @@ export default class Image extends Component {
       url,
       size
     } = this.props;
+    let src = null;
     if (!this.state.error) {
-      const src = url.replace(size, 'original');;
+      src = url.replace(size, 'original');;
       e.target.src = src;
     }
     this.setState({ imageLoading: false, error: true });

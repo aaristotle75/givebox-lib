@@ -929,6 +929,7 @@ export function getAuthorizedAccess(access, orgID, volunteerID) {
 }
 
 export function handleFile(file, callback, progressCallback) {
+  const fileName = getValue(file, 'name').replace(/[^0-9a-zA-Z_.-]/gi, '');
   const x = new XMLHttpRequest();
   x.onload = function() {
     if (this.status !== 200 || !this.response) {
@@ -936,9 +937,9 @@ export function handleFile(file, callback, progressCallback) {
       return;
     }
     const s3 = JSON.parse(this.response);
-    blob2S3(file, s3, file.name, callback, progressCallback);
+    blob2S3(file, s3, fileName, callback, progressCallback);
   }
-  const endpoint = `${API_URL}s3/upload-form?name=${file.name}&mime=${file.type}`
+  const endpoint = `${API_URL}s3/upload-form?name=${fileName}&mime=${file.type}`
   x.open('GET', endpoint);
   x.withCredentials = true;
   x.send();
