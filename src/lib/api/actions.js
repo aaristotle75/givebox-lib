@@ -202,9 +202,7 @@ export function setAccess(res, callback) {
     if (orgID) dispatch(resourceProp('orgID', orgID));
 
     // Check if this is a masquerade
-    let user;
-    if (has(res, 'masker')) user = res.masker;
-    else user = util.getValue(res, 'user', {});
+    const user = util.getValue(res, 'masker', util.getValue(res, 'user', {}));
 
     if (user.ID) dispatch(resourceProp('userID', user.ID));
     const firstName = util.getValue(user, 'firstName');

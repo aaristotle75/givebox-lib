@@ -117,7 +117,7 @@ class AvatarOverlay extends React.Component {
     const baseURL = isWallet ? WALLET_URL : CLOUD_URL;
     const orgImage = util.checkImage(util.getValue(access, 'orgImage')) ? access.orgImage : null;
     const menuList = [];
-    
+
     const {
       bankConnected,
       connectBankAlert,
@@ -163,7 +163,7 @@ class AvatarOverlay extends React.Component {
         }
       }}>
         <div className='text'>
-          <Icon><CgMenuGridO /></Icon> Launchpad
+          <Icon><CgMenuGridO /></Icon> { isWallet ? 'My Wallet' : 'Launchpad' }
         </div>
       </li>
     );
@@ -259,144 +259,134 @@ class AvatarOverlay extends React.Component {
     }
 
     // Show Admin/Super Roles
-    switch (role) {
-      case 'super': 
-      case 'admin': {
+    if (role === 'admin') {
 
-        menuList.push(
-          <li
-            key={'connectBank'}
-            onClick={() => {
-              this.props.toggleModal('avatarOverlay', false);           
-              if (bankConnected) {
-                this.props.openLaunchpad({ autoOpenSlug: 'money' });
-              } else {
-                this.props.checkSignupPhase();
-              }
-            }}>
-              <div className='text'>
-                <Icon style={{ fontSize: '20px' }}><AiOutlineBank /></Icon> 
-                Connect Bank
-                { connectBankAlert ?
-                  <div className='secondaryText alert'>
-                    <Icon><ArrowLeft /></Icon>
-                  </div>
-                : null }
-              </div>
-              <div className={`secondaryText ${bankConnected ? 'completed': ''} ${connectBankAlert ? 'alert' : ''}`}>
-                {bankConnected ? 'Connected' : 'Please Connect a Bank Account'}
-                {bankConnected ?
-                  <span className='icon icon-check'></span>
-                : null }
-              </div>
-          </li>
-        );
-        menuList.push(
-          <li
-            key={'verifyIdentity'}
-            onClick={() => {
-              this.props.toggleModal('avatarOverlay', false);           
-              if (identityVerified) {
-                this.props.openLaunchpad({ autoOpenSlug: 'money' });
-              } else {
-                if (hasAccessToEdit) {
-                  this.props.checkSignupPhase();
-                } else {
-                  if (defaultArticleID) {
-                    this.props.history.push(`/${defaultArticleID}`);
-                    this.props.loadGBX3(defaultArticleID, null, { checkSignup: true });
-                  } else {
-                    window.location.replace(`${GBX_URL}/${orgSlug}`);
-                  }
-                }
-              }
-            }}>
-              <div className='text'>
-                <Icon style={{ fontSize: '25px' }}><MdFingerprint /></Icon> Verify Identity
-                { verifyIdentityAlert ?
-                  <div className='secondaryText alert'>
-                    <Icon><ArrowLeft /></Icon>
-                  </div>
-                : null }
-              </div>
-              <div className={`secondaryText ${identityVerified ? 'completed': ''} ${identityReview ? 'review': ''} ${verifyIdentityAlert ? 'alert' : ''}`}>          
-                {identityVerified ? 
-                  'Verified' 
-                : verifyIdentityAlert ? 
-                  'Please Verify Your Identity' 
-                  : identityReview ?
-                    'Verification in Progress'
-                  : bankConnected && !identityVerified ?
-                    'Please Verify Your Identity'
-                  : null
-                }
-                {identityVerified ?
-                  <span className='icon icon-check'></span>
-                : 
-                  identityReview ?
-                  <span className='icon icon-clock'></span>
-                  : null
-                }
-              </div>              
-          </li>
-        );
-
-        const projectedBalance = util.getValue(orgStats, 'balance', 0) + util.getValue(orgStats, 'pendingDeposits', 0);
-        const balance = util.numberWithCommas(parseFloat(projectedBalance/100).toFixed(2)).split('.');
-        const balance0 = util.getValue(balance, 0, 0);
-        const balance1 = util.getValue(balance, 1, 0);
-        let dollarAmount = <span className='dollarAmount'>{balance0}</span>;
-        let centAmount = `.${balance1}`;
-    
-        if (balance0.includes(',')) {
-          let dollarArr = balance0.split(',');
-          const dollarArr0 = util.getValue(dollarArr, 0, 0);
-          const dollarArr1 = util.getValue(dollarArr, 1, 0);
-          const dollarArr2 = util.getValue(dollarArr, 2, 0);      
-          dollarAmount =
-            <span className='dollarAmount'>
-              {dollarArr0}
-              <span><span className='dollarComma'>,</span>{dollarArr1}</span>
-              {dollarArr2 && <span><span className='dollarComma'>,</span>{dollarArr2}</span>}
-            </span>
-        }
-
-        menuList.push(
-          <li
-            key={'transferMoney'}
-            onClick={() => {
-              this.props.toggleModal('avatarOverlay', false);              
-              if (transferMoneyEnabled) {
-                this.props.openLaunchpad({ autoOpenSlug: 'money' });
-              } else {
-                this.props.checkSignupPhase();
-              }
-            }}>
-              <div className='text'>
-                <Icon style={{ fontSize: '20px' }}><BiTransferAlt /></Icon> Transfer Money
-              </div>
-              { projectedBalance > 0 ?
-              <div className='secondaryText'>
-                <div className='moneyRaisedContainer'>
-                  <div className='moneyRaised'>
-                    <span className='moneyRaisedLabel'>Balance</span>
-                    <span className='moneyRaisedText moneyAmount'>
-                      <span className='symbol'>$</span>{dollarAmount}<span className='centAmount'><span className='centSymbol'></span>{centAmount}</span>
-                    </span>
-                  </div>
-                </div>            
-              </div>
+      menuList.push(
+        <li
+          key={'connectBank'}
+          onClick={() => {
+            this.props.toggleModal('avatarOverlay', false);           
+            if (bankConnected) {
+              this.props.openLaunchpad({ autoOpenSlug: 'money' });
+            } else {
+              this.props.checkSignupPhase();
+            }
+          }}>
+            <div className='text'>
+              <Icon style={{ fontSize: '20px' }}><AiOutlineBank /></Icon> 
+              Connect Bank
+              { connectBankAlert ?
+                <div className='secondaryText alert'>
+                  <Icon><ArrowLeft /></Icon>
+                </div>
               : null }
-          </li>
-        );
-        break;
+            </div>
+            <div className={`secondaryText ${bankConnected ? 'completed': ''} ${connectBankAlert ? 'alert' : ''}`}>
+              {bankConnected ? 'Connected' : 'Please Connect a Bank Account'}
+              {bankConnected ?
+                <span className='icon icon-check'></span>
+              : null }
+            </div>
+        </li>
+      );
+      menuList.push(
+        <li
+          key={'verifyIdentity'}
+          onClick={() => {
+            this.props.toggleModal('avatarOverlay', false);           
+            if (identityVerified) {
+              this.props.openLaunchpad({ autoOpenSlug: 'money' });
+            } else {
+              if (hasAccessToEdit) {
+                this.props.checkSignupPhase();
+              } else {
+                if (defaultArticleID) {
+                  this.props.history.push(`/${defaultArticleID}`);
+                  this.props.loadGBX3(defaultArticleID, null, { checkSignup: true });
+                } else {
+                  window.location.replace(`${GBX_URL}/${orgSlug}`);
+                }
+              }
+            }
+          }}>
+            <div className='text'>
+              <Icon style={{ fontSize: '25px' }}><MdFingerprint /></Icon> Verify Identity
+              { verifyIdentityAlert ?
+                <div className='secondaryText alert'>
+                  <Icon><ArrowLeft /></Icon>
+                </div>
+              : null }
+            </div>
+            <div className={`secondaryText ${identityVerified ? 'completed': ''} ${identityReview ? 'review': ''} ${verifyIdentityAlert ? 'alert' : ''}`}>          
+              {identityVerified ? 
+                'Verified' 
+              : verifyIdentityAlert ? 
+                'Please Verify Your Identity' 
+                : identityReview ?
+                  'Verification in Progress'
+                : bankConnected && !identityVerified ?
+                  'Please Verify Your Identity'
+                : null
+              }
+              {identityVerified ?
+                <span className='icon icon-check'></span>
+              : 
+                identityReview ?
+                <span className='icon icon-clock'></span>
+                : null
+              }
+            </div>              
+        </li>
+      );
+
+      const projectedBalance = util.getValue(orgStats, 'balance', 0) + util.getValue(orgStats, 'pendingDeposits', 0);
+      const balance = util.numberWithCommas(parseFloat(projectedBalance/100).toFixed(2)).split('.');
+      const balance0 = util.getValue(balance, 0, 0);
+      const balance1 = util.getValue(balance, 1, 0);
+      let dollarAmount = <span className='dollarAmount'>{balance0}</span>;
+      let centAmount = `.${balance1}`;
+    
+      if (balance0.includes(',')) {
+        let dollarArr = balance0.split(',');
+        const dollarArr0 = util.getValue(dollarArr, 0, 0);
+        const dollarArr1 = util.getValue(dollarArr, 1, 0);
+        const dollarArr2 = util.getValue(dollarArr, 2, 0);      
+        dollarAmount =
+          <span className='dollarAmount'>
+            {dollarArr0}
+            <span><span className='dollarComma'>,</span>{dollarArr1}</span>
+            {dollarArr2 && <span><span className='dollarComma'>,</span>{dollarArr2}</span>}
+          </span>
       }
 
-      case 'user': {
-        break;
-      }
-
-      // default
+      menuList.push(
+        <li
+          key={'transferMoney'}
+          onClick={() => {
+            this.props.toggleModal('avatarOverlay', false);              
+            if (transferMoneyEnabled) {
+              this.props.openLaunchpad({ autoOpenSlug: 'money' });
+            } else {
+              this.props.checkSignupPhase();
+            }
+          }}>
+            <div className='text'>
+              <Icon style={{ fontSize: '20px' }}><BiTransferAlt /></Icon> Transfer Money
+            </div>
+            { projectedBalance > 0 ?
+            <div className='secondaryText'>
+              <div className='moneyRaisedContainer'>
+                <div className='moneyRaised'>
+                  <span className='moneyRaisedLabel'>Balance</span>
+                  <span className='moneyRaisedText moneyAmount'>
+                    <span className='symbol'>$</span>{dollarAmount}<span className='centAmount'><span className='centSymbol'></span>{centAmount}</span>
+                  </span>
+                </div>
+              </div>            
+            </div>
+            : null }
+        </li>
+      );
     }   
 
     return (
@@ -454,7 +444,7 @@ class AvatarOverlay extends React.Component {
           </ul>
           </div>
           <div className='bottomSection'>
-            { stage !== 'admin' ?
+            { stage !== 'admin' && !isSuper ?
             <CartButton key='cart' reloadGBX3={this.props.reloadGBX3} type='avatarMenu' callback={() => this.props.toggleModal('avatarOverlay', false)} />
             : null }
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>

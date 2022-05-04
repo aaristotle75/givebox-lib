@@ -301,7 +301,8 @@ export function loadOrgSignup(options = {}) {
 export function getAvatarState() {
   return (dispatch, getState) => {
     const state = getState();
-    const access = util.getValue(state.resource, 'access');    
+    const access = util.getValue(state.resource, 'access');
+    const isSuper = util.getValue(access, 'role') === 'super' ? true : false;
     const hasAccessToEdit = util.getValue(state, 'gbx3.admin.hasAccessToEdit');
     const org = hasAccessToEdit ? util.getValue(state, 'resource.gbx3Org.data', {}) : util.getValue(state, 'resource.session.data.organization', {});
     const hasReceivedTransaction = util.getValue(org, 'hasReceivedTransaction');
@@ -313,7 +314,8 @@ export function getAvatarState() {
     const connectBankAlert = 
       !connectBankCompleted 
       && !bankConnected 
-      && hasReceivedTransaction 
+      && hasReceivedTransaction
+      && !isSuper
     ? true : false;
 
     const identityVerified = ( transferMoneyCompleted || 
@@ -334,6 +336,7 @@ export function getAvatarState() {
       && !transferMoneyCompleted 
       && !identityReview
       && hasReceivedTransaction
+      && !isSuper
     ? true : false;    
     
     const defaultArticleID = dispatch(getDefaultArticle(org));
@@ -352,8 +355,9 @@ export function getAvatarState() {
       && identityVerified
       && !hasReceivedTransaction
       && hasAccessToEdit
-      || ( identityReview && !hasReceivedTransaction && hasAccessToEdit )
-      || ( !hasReceivedTransaction && hasAccessToEdit )
+      && !isSuper
+      || ( identityReview && !hasReceivedTransaction && hasAccessToEdit && !isSuper)
+      || ( !hasReceivedTransaction && hasAccessToEdit && !isSuper )
     ) ? true : false;
 
     return {
