@@ -85,6 +85,8 @@ class Launchpad extends React.Component {
       openAppSlug
     } = this.props;
 
+    const fromURL = window.location.href;
+
     if (path === 'backgroundClick') {
       this.props.toggleModal('launchpad', false);
     } else {
@@ -93,29 +95,26 @@ class Launchpad extends React.Component {
         if (!modalEl.classList.contains('appLoaded')) modalEl.classList.add('appLoaded');
       }
       this.props.setProp('appLoading', true);
-      const openAppURL = `${APP_URL}${path}?hasParentOverlay=true`;
+      const openAppURL = `${APP_URL}${path}?hasParentOverlay=true&fromURL=${fromURL}`;
+      const maskerURL = `${APP_URL}${path}?fromURL=${fromURL}`;
       if (isSuper && !masker) {
         this.props.startMasquerade({
           callback: () => {
-            this.props.setAppProps({
-              openAppURL,
-              openAppSlug: slug,
-              openApp: true
-            });
+            window.location.href = maskerURL;
           }
         });
-      } else if (isSuper && masker && accessOrgID && (accessOrgID !== currentOrgID)) {
-        this.props.endMasquerade(() => {
-          this.props.startMasquerade({
-            callback: () => {
-              this.props.setAppProps({
-                openAppURL,
-                openAppSlug: slug,
-                openApp: true
-              });
-            }
+      } else if (isSuper && masker && accessOrgID) {
+        if (accessOrgID !== currentOrgID) {
+          this.props.endMasquerade(() => {
+            this.props.startMasquerade({
+              callback: () => {
+                window.location.href = maskerURL
+              }
+            });
           });
-        })
+        } else {
+          window.location.href = maskerURL;
+        }
       } else {
         this.props.setAppProps({
           openAppURL,

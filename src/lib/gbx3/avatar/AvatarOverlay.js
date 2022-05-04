@@ -153,6 +153,10 @@ class AvatarOverlay extends React.Component {
     }
 
     // Launchpad
+    let launchpadText = 'Launchpad';
+    if (isWallet) launchpadText = 'My Wallet';
+    if (isSuper) launchpadText = 'Merchant Launchpad';
+
     menuList.push(
       <li key='launchpad' onClick={async () => {
         if (isAdmin || isSuper) {
@@ -163,7 +167,7 @@ class AvatarOverlay extends React.Component {
         }
       }}>
         <div className='text'>
-          <Icon><CgMenuGridO /></Icon> { isWallet ? 'My Wallet' : 'Launchpad' }
+          <Icon><CgMenuGridO /></Icon> {launchpadText}
         </div>
       </li>
     );
