@@ -305,14 +305,16 @@ export function getAvatarState() {
     const isSuper = util.getValue(access, 'role') === 'super' ? true : false;
     const hasAccessToEdit = util.getValue(state, 'gbx3.admin.hasAccessToEdit');
     const org = hasAccessToEdit ? util.getValue(state, 'resource.gbx3Org.data', {}) : util.getValue(state, 'resource.session.data.organization', {});
+    const customTemplate = util.getValue(org, 'customTemplate', {});
     const hasReceivedTransaction = util.getValue(org, 'hasReceivedTransaction');
-    const orgSignup = hasAccessToEdit ? util.getValue(state, 'gbx3.orgSignup', {}) : util.getValue(org, 'customTemplate.orgSignup', {});        
+    const orgSignup = hasAccessToEdit ? util.getValue(state, 'gbx3.orgSignup', {}) : util.getValue(customTemplate, 'orgSignup', {});        
     const stepsCompleted = util.getValue(orgSignup, 'completed', []);
     const connectBankCompleted = util.getValue(orgSignup, 'completedPhases', []).includes('connectBank');
     const transferMoneyCompleted = util.getValue(orgSignup, 'completedPhases', []).includes('transferMoney');
     const bankConnected = ( connectBankCompleted || util.getValue(org, 'vantiv.merchantIdentString')) ? true : false;
     const connectBankAlert = 
-      !connectBankCompleted 
+      !util.isEmpty(customTemplate)
+      && !connectBankCompleted 
       && !bankConnected 
       && hasReceivedTransaction
       && !isSuper
@@ -329,15 +331,16 @@ export function getAvatarState() {
       &&  ['identity', 'protect'].some(step => stepsCompleted.includes(step))
       && util.getValue(org, 'underwritingStatus') === 'ready_for_review'
     ) ? true : false;
-    
+
     const verifyIdentityAlert = 
-      bankConnected 
+      !util.isEmpty(customTemplate)
+      && bankConnected
       && !identityVerified 
       && !transferMoneyCompleted 
       && !identityReview
       && hasReceivedTransaction
       && !isSuper
-    ? true : false;    
+    ? true : false;
     
     const defaultArticleID = dispatch(getDefaultArticle(org));
     const orgSlug = util.getValue(org, 'slug');
@@ -372,7 +375,8 @@ export function getAvatarState() {
       identityReview,
       transferMoneyEnabled,
       shareAlert,
-      hasReceivedTransaction
+      hasReceivedTransaction,
+      hasCustomTemplate: !util.isEmpty(customTemplate) ? true : false
     };
   }
 }

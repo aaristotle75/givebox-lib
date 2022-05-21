@@ -127,7 +127,8 @@ class AvatarOverlay extends React.Component {
       orgSlug,
       identityReview,
       transferMoneyEnabled,
-      shareAlert
+      shareAlert,
+      hasCustomTemplate
     } = this.props.getAvatarState(); 
     
     // If an admin user show go to homepage
@@ -293,55 +294,58 @@ class AvatarOverlay extends React.Component {
             </div>
         </li>
       );
-      menuList.push(
-        <li
-          key={'verifyIdentity'}
-          onClick={() => {
-            this.props.toggleModal('avatarOverlay', false);           
-            if (identityVerified) {
-              this.props.openLaunchpad({ autoOpenSlug: 'money' });
-            } else {
-              if (hasAccessToEdit) {
-                this.props.checkSignupPhase();
+
+      if (hasCustomTemplate) {
+        menuList.push(
+          <li
+            key={'verifyIdentity'}
+            onClick={() => {
+              this.props.toggleModal('avatarOverlay', false);           
+              if (identityVerified) {
+                this.props.openLaunchpad({ autoOpenSlug: 'money' });
               } else {
-                if (defaultArticleID) {
-                  this.props.history.push(`/${defaultArticleID}`);
-                  this.props.loadGBX3(defaultArticleID, null, { checkSignup: true });
+                if (hasAccessToEdit) {
+                  this.props.checkSignupPhase();
                 } else {
-                  window.location.replace(`${GBX_URL}/${orgSlug}`);
+                  if (defaultArticleID) {
+                    this.props.history.push(`/${defaultArticleID}`);
+                    this.props.loadGBX3(defaultArticleID, null, { checkSignup: true });
+                  } else {
+                    window.location.replace(`${GBX_URL}/${orgSlug}`);
+                  }
                 }
               }
-            }
-          }}>
-            <div className='text'>
-              <Icon style={{ fontSize: '25px' }}><MdFingerprint /></Icon> Verify Identity
-              { verifyIdentityAlert ?
-                <div className='secondaryText alert'>
-                  <Icon><ArrowLeft /></Icon>
-                </div>
-              : null }
-            </div>
-            <div className={`secondaryText ${identityVerified ? 'completed': ''} ${identityReview ? 'review': ''} ${verifyIdentityAlert ? 'alert' : ''}`}>          
-              {identityVerified ? 
-                'Verified' 
-              : verifyIdentityAlert ? 
-                'Please Verify Your Identity' 
-                : identityReview ?
-                  'Verification in Progress'
-                : bankConnected && !identityVerified ?
-                  'Please Verify Your Identity'
-                : null
-              }
-              {identityVerified ?
-                <span className='icon icon-check'></span>
-              : 
-                identityReview ?
-                <span className='icon icon-clock'></span>
-                : null
-              }
-            </div>              
-        </li>
-      );
+            }}>
+              <div className='text'>
+                <Icon style={{ fontSize: '25px' }}><MdFingerprint /></Icon> Verify Identity
+                { verifyIdentityAlert ?
+                  <div className='secondaryText alert'>
+                    <Icon><ArrowLeft /></Icon>
+                  </div>
+                : null }
+              </div>
+              <div className={`secondaryText ${identityVerified ? 'completed': ''} ${identityReview ? 'review': ''} ${verifyIdentityAlert ? 'alert' : ''}`}>          
+                {identityVerified ? 
+                  'Verified' 
+                : verifyIdentityAlert ? 
+                  'Please Verify Your Identity' 
+                  : identityReview ?
+                    'Verification in Progress'
+                  : bankConnected && !identityVerified ?
+                    'Please Verify Your Identity'
+                  : null
+                }
+                {identityVerified ?
+                  <span className='icon icon-check'></span>
+                : 
+                  identityReview ?
+                  <span className='icon icon-clock'></span>
+                  : null
+                }
+              </div>              
+          </li>
+        );        
+      }
 
       const projectedBalance = util.getValue(orgStats, 'balance', 0) + util.getValue(orgStats, 'pendingDeposits', 0);
       const balance = util.numberWithCommas(parseFloat(projectedBalance/100).toFixed(2)).split('.');
@@ -368,7 +372,7 @@ class AvatarOverlay extends React.Component {
           key={'transferMoney'}
           onClick={() => {
             this.props.toggleModal('avatarOverlay', false);              
-            if (transferMoneyEnabled) {
+            if (transferMoneyEnabled || !hasCustomTemplate) {
               this.props.openLaunchpad({ autoOpenSlug: 'money' });
             } else {
               this.props.checkSignupPhase();
