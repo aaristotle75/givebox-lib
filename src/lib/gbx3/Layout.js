@@ -4,7 +4,6 @@ import * as util from '../common/utility';
 import GBLink from '../common/GBLink';
 import Icon from '../common/Icon';
 import ModalRoute from '../modal/ModalRoute';
-import ModalLink from '../modal/ModalLink';
 import Shop from './Shop';
 import Article from './Article';
 import Signup from './signup/Signup';
@@ -16,7 +15,7 @@ import {
   updateInfo
 } from './redux/gbx3actions';
 import AvatarMenu from './avatar/AvatarMenu';
-import { AiOutlineNotification, AiOutlineTrophy } from 'react-icons/ai';
+import { AiOutlineTrophy } from 'react-icons/ai';
 import ReactGA from 'react-ga';
 import Scroll from 'react-scroll';
 import history from '../common/history';
