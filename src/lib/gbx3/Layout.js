@@ -45,13 +45,8 @@ class Layout extends React.Component {
     if (this.gbx3Container.current) {
       window.parent.postMessage(`gbx3Height-${this.gbx3Container.current.clientHeight}`, '*');
     }
-  }
-
-  componentDidUpdate(prevProps) {
-    if (util.isEmpty(prevProps.orgData) && !util.isEmpty(this.props.orgData)) {
-      this.gaInitialize();
-      this.gaPageTracking();
-    }
+    this.gaInitialize();
+    this.gaPageTracking();
   }
 
   scrollTo(name, containerId = 'gbx3Layout') {
