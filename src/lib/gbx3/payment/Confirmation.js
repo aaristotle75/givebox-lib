@@ -22,6 +22,9 @@ class Confirmation extends Component {
 
   componentDidMount() {
     const {
+      articleTitle,
+      articleID,
+      kindName,
       cartTotal,
       orgName,
       orgID,
@@ -31,23 +34,36 @@ class Confirmation extends Component {
 
     localStorage.removeItem('cart');
 
-    if (ENV === 'production' && !preview && !receipt) {
-      ReactGA.modalview('/confirmation', ['orgTracker']);
+    const ms = Date.now();
+    const txID = `${articleID}${ms}`;
+
+    if ((ENV === 'production') && !preview && !receipt) {
+      ReactGA.modalview('/confirmation');
       ReactGA.event({
         category: 'Purchase',
         action: 'Approved Transaction'
       });
 
       ReactGA.plugin.require('ecommerce');
+      ReactGA.plugin.execute("ecommerce", "addItem", {
+        id: txID,
+        name: articleTitle,
+        price: cartTotal,
+        category: kindName,
+        quantity: "1"
+      });
+
       ReactGA.plugin.execute('ecommerce', 'addTransaction', {
-        id: orgID,
-        name: orgName,
+        id: txID,
         revenue: cartTotal
       });
+    
+      ReactGA.plugin.execute("ecommerce", "send", null);
     }
   }
 
   componentWillUnmount() {
+    ReactGA.plugin.execute("ecommerce", "clear", null);
     this.props.resetConfirmation();
   }
 
@@ -192,14 +208,20 @@ function mapStateToProps(state, props) {
   const paymethod = util.getValue(confirmation, 'paymethod');
   const cartTotal = util.getValue(confirmation, 'cartTotal', 0);
   const data = util.getValue(gbx3, 'data', {});
+  const articleTitle = util.getValue(data, 'title');
   const orgName = util.getValue(data, 'orgName');
   const orgID = util.getValue(data, 'orgID');
   const descriptor = util.getValue(data, 'orgBillingDescriptor');
+  const articleID = util.getValue(gbx3, 'info.articleID');
+  const kindName = util.getValue(gbx3, 'info.kindName', 'Transaction');
   const preview = util.getValue(gbx3, 'info.preview');
   const receipt = util.getValue(gbx3, 'info.receipt', false);
 
   return {
+    articleTitle,
     orgID,
+    articleID,
+    kindName,
     orgName,
     firstname,
     email,

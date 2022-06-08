@@ -64,19 +64,15 @@ class Layout extends React.Component {
     } = this.props;
 
     const gaPropertyID = util.getValue(orgData, 'gaPropertyID', null);
-    ReactGA.initialize('UA-75269457-5', {
-      debug: true
-    });
 
     if (gaPropertyID) {
-      ReactGA.initialize([
-        {
-          trackingId: gaPropertyID,
-          gaOptions: {
-            name: 'orgTracker'
-          }
-        },
-      ]);
+      ReactGA.initialize(gaPropertyID, {
+        debug: true
+      });
+    } else {
+      ReactGA.initialize('UA-75269457-5', {
+        debug: true
+      });      
     }
   }
 
@@ -86,8 +82,8 @@ class Layout extends React.Component {
     } = this.props;
 
     const pageView = page || window.location.pathname + window.location.search;
-    if (!preview && ENV === 'production') {
-      ReactGA.pageview(pageView, ['orgTracker']);
+    if (!preview && (ENV === 'production')) {
+      ReactGA.pageview(pageView);
     }
   }
 
