@@ -567,6 +567,11 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
       break;
     }
 
+    case 'plaidEvent': {
+      endpoint = `plaid/link-event`;
+      break;
+    }
+
     case 'plaidLink': {
       endpoint = `plaid/link-token`;
       break;

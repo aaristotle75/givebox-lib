@@ -79,7 +79,21 @@ class PlaidConnect extends React.Component {
     this.props.getPlaidInfo(this.savePlaidInfoCallback);
   }
 
-  async exitPlaid(token, metaData, test = false) {
+  async exitPlaid(error, metaData, test = false) {
+    if (error) {
+      this.props.sendResource('plaidEvent', {
+        method: 'post',
+        data: {
+          name: 'Error',
+          metadata: {
+            error,
+            metaData
+          }
+        },
+        isSending: false
+      });
+    }
+
     const status = util.getValue(metaData, 'status');
     if (status === 'institution_not_found' || test) {
       const updated = await this.props.updateOrgSignup({ signupPhase: 'manualConnect' });
