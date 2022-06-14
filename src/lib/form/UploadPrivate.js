@@ -220,7 +220,7 @@ class UploadPrivate extends Component {
           }
         />
         {label && <label className={labelClass}>{label}</label>}
-        <div className={`privateUpload ${this.props.alt ? 'alt' : ''}`}>
+        <div className={`privateUpload ${this.props.alt ? '' : ''}`}>
           <div className='dropzoneImageContainer'>
             { this.state.loading &&
             <div className='loadImage'>

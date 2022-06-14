@@ -24,6 +24,7 @@ import * as coverPlaceholder from '../lib/gbx3/pages/coverPlaceholder.json';
 import Paginate from '../lib/table/Paginate';
 import MaxRecords from '../lib/table/MaxRecords';
 import Export from '../lib/table/Export';
+import UploadPrivate from '../lib/form/UploadPrivate';
 
 class Dashboard extends Component {
 
@@ -218,14 +219,23 @@ class Dashboard extends Component {
     return (
       <div>
         <h2>Dashboard</h2>
+        <UploadPrivate
+           id={185}
+           alt={true}
+           fileUploadSuccess={() => console.log('execute fileupload success')}
+           uploadLabel={`Add a Driver's License or U.S. Passport`}
+           resourceType={'principal'}
+           resourceID={''}
+           tag={'proof_of_id'}
+         />
+          {/*   
         <GBLink onClick={this.getCustomers}>
           Get Customers
         </GBLink>
         <br />
         <GBLink onClick={() => this.props.toggleModal('networkError', true)}>
           Network Error
-        </GBLink>
-        {/*          
+        </GBLink>       
           <Editor
             orgID={185}
             articleID={null}
