@@ -24,6 +24,7 @@ import {
 } from '../redux/gbx3actions';
 
 const ENV = process.env.REACT_APP_ENV;
+const GBX3_URL = process.env.REACT_APP_GBX_URL;
 
 class PaymentFormClass extends Component {
 
@@ -80,14 +81,15 @@ class PaymentFormClass extends Component {
 
   formSavedCallback() {
     const {
-      confirmationLink
+      confirmationLink,
+      articleID
     } = this.props;
 
     this.props.toggleModal('paymentConfirmation', true, { closeCallback: async () => {
       const cartReset = await this.props.resetCart();
       if (cartReset) {
         if (confirmationLink) window.location.replace(confirmationLink);
-        else this.props.backToOrg(null, true);
+        else window.location.replace(`${GBX3_URL}/${articleID}`); //this.props.backToOrg(null, true);
       }
     }});
   }
@@ -783,6 +785,7 @@ function mapStateToProps(state, props) {
 
   const gbx3 = util.getValue(state, 'gbx3', {});
   const info = util.getValue(gbx3, 'info', {});
+  const articleID = util.getValue(info, 'articleID');
   const stage = util.getValue(info, 'stage', {});
   const preview = util.getValue(info, 'preview', {});
   const sourceLocation = util.getValue(info, 'sourceLocation');
@@ -809,6 +812,7 @@ function mapStateToProps(state, props) {
   const confirmationLink = util.getValue(form, 'confirmationLink');
 
   return {
+    articleID,
     sourceLocation,
     sourceType,
     emailBlastToken,
