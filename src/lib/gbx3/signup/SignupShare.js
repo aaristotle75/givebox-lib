@@ -68,11 +68,13 @@ class SignupShare extends React.Component {
   }
 
   getArticle() {
-    this.props.getResource('article', {
-      customName: 'createdArticle',
-      id: [this.props.articleID],
-      reload: true
-    });
+    if (this.props.articleID) {
+      this.props.getResource('article', {
+        customName: 'createdArticle',
+        id: [this.props.articleID],
+        reload: true
+      });
+    }
   }
 
   setShareTypeSelected(shareTypeSelected) {
@@ -363,7 +365,7 @@ function mapStateToProps(state, props) {
   const display = util.getValue(info, 'display');
   const isArticleForm = display === 'article' ? true : false;
   const kind = 'fundraiser';
-  const articleID = util.getValue(gbx3, 'orgSignup.createdArticleID');
+  const articleID = props.articleID || util.getValue(gbx3, 'orgSignup.createdArticleID');
   const signupPhase = util.getValue(gbx3, 'orgSignup.signupPhase');
   const article = util.getValue(state, 'resource.createdArticle', {});
   const kindID = util.getValue(article, 'data.kindID');

@@ -385,6 +385,7 @@ export function getAPI(
         const response = util.getValue(error, 'response', {});
         const status = util.getValue(response, 'status');
         if (message === 'Network Error') {
+          console.log('execute network error -> ', status, error);
           dispatch(networkError(true));
         } else {
           dispatch(networkError(false));

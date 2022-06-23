@@ -166,7 +166,9 @@ class BasicBuilderStepsForm extends Component {
     if (blockUpdated) updated.push('blockUpdated');
     if (updated.length === 3) {
       this.props.saveGBX3('article', {
-        callback,
+        callback: () => {
+          if (callback) callback();
+        },
         updateLayout: false
       });
     }
@@ -276,7 +278,9 @@ class BasicBuilderStepsForm extends Component {
         }
       };
       const globalsUpdated = await this.props.updateGlobals(globals);
-      if (globalsUpdated) this.saveStep({ giveboxSettings: { primaryColor: themeColor }}, null, true, this.gotoNextStep);
+      if (globalsUpdated) this.saveStep({ giveboxSettings: { primaryColor: themeColor }}, null, true, () => {
+        this.gotoNextStep();
+      });
     } else if (slug === 'previewShare') {
       this.saveStep(null, null, true, () => {
         this.props.toggleModal('gbx3Builder', false);
@@ -643,6 +647,7 @@ class BasicBuilderStepsForm extends Component {
               allowToggle={false}
               hidePreview={true}
               modalName={'gbx3Builder'}
+              articleID={articleID}
             />
           </div>
         ;
