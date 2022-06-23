@@ -31,6 +31,7 @@ import {
   openOrgAdminMenu
 } from './redux/orgActions';
 import OrgPage from './pages/OrgPage';
+import OrgModalRoutes from './OrgModalRoutes';
 
 const GBX_URL = process.env.REACT_APP_GBX_URL;
 
@@ -372,6 +373,7 @@ class Org extends React.Component {
     return (
       <>
         {this.state.loading ? <Loader msg='Creating...' /> : null }
+        <OrgModalRoutes />
         {this.renderOrgPage()}
       </>
     )
