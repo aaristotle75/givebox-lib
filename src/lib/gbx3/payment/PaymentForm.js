@@ -70,6 +70,10 @@ class PaymentFormClass extends Component {
     if (itemsChange || amountChange) {
       if (this.props.formState.error) this.props.formProp({ error: false });
     }
+
+    if (prevProps.acceptedTerms !== this.props.acceptedTerms && this.props.acceptedTerms && this.props.formState.error) {
+      this.props.formProp({ error: false });
+    }
   }
 
   componentWillUnmount() {
@@ -120,7 +124,8 @@ class PaymentFormClass extends Component {
       zeroAmountAllowed,
       emailBlastToken,
       emailBlastEmail,
-      sourceLocation
+      sourceLocation,
+      acceptedTerms
     } = this.props;
 
     const {
@@ -139,6 +144,8 @@ class PaymentFormClass extends Component {
 
     if ( util.isEmpty(items) || ( !zeroAmountAllowed && (!amount || parseInt(amount) === 0) ) ) {
       this.props.formProp({ error: true, errorMsg: <span>The amount to process cannot be {util.money(0)}. Please select an amount.</span> });
+    } else if (!acceptedTerms) {
+      this.props.formProp({ error: true, errorMsg: <span>You must accept the terms & conditions to continue.</span> });
     } else {
 
       // Get notes and sendemail
@@ -793,6 +800,7 @@ function mapStateToProps(state, props) {
   const emailBlastToken = util.getValue(info, 'ebToken', null);
   const emailBlastEmail = util.getValue(info, 'ebEmail', null);
   const cart = stage !== 'admin' && !preview ? util.getValue(gbx3, 'cart', {}) : {};
+  const acceptedTerms = util.getValue(util.getValue(gbx3, 'cart', {}), 'acceptedTerms');
   const cartTotal = util.getValue(cart, 'total', 0);
   const zeroAmountAllowed = util.getValue(cart, 'zeroAmountAllowed', false);
   const cartCustomer = util.getValue(cart, 'customer', {});
@@ -818,6 +826,7 @@ function mapStateToProps(state, props) {
     emailBlastToken,
     emailBlastEmail,
     zeroAmountAllowed,
+    acceptedTerms,
     cartCustomer,
     cartConfirmed,
     cartItems,
