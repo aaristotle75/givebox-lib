@@ -373,7 +373,6 @@ class Org extends React.Component {
     return (
       <>
         {this.state.loading ? <Loader msg='Creating...' /> : null }
-        <OrgModalRoutes />
         {this.renderOrgPage()}
       </>
     )

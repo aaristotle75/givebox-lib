@@ -19,6 +19,7 @@ import { AiOutlineTrophy } from 'react-icons/ai';
 import ReactGA from 'react-ga';
 import Scroll from 'react-scroll';
 import history from '../common/history';
+import OrgModalRoutes from './OrgModalRoutes';
 
 const GBX_URL = process.env.REACT_APP_GBX_URL;
 const SHARE_URL = process.env.REACT_APP_GBX_SHARE;
@@ -143,15 +144,19 @@ class Layout extends React.Component {
 
         case 'org': {
           items.push(
-            <Org
+            <div
               key={'org'}
-              reloadGBX3={this.props.reloadGBX3}
-              loadGBX3={this.props.loadGBX3}
-              primaryColor={this.props.primaryColor}
-              onClickVolunteerFundraiser={this.props.onClickVolunteerFundraiser}
-              scrollTo={this.scrollTo}
-              exitAdmin={this.props.exitAdmin}
-            />
+            >
+              <OrgModalRoutes />
+              <Org
+                reloadGBX3={this.props.reloadGBX3}
+                loadGBX3={this.props.loadGBX3}
+                primaryColor={this.props.primaryColor}
+                onClickVolunteerFundraiser={this.props.onClickVolunteerFundraiser}
+                scrollTo={this.scrollTo}
+                exitAdmin={this.props.exitAdmin}
+              />
+            </div>
           )
           break;
         }
