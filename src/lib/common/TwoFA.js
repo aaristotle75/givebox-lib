@@ -149,7 +149,7 @@ class TwoFA extends Component {
     if (mode === 'sms') {
       if (!_v.validatePhone(phone)) {
         error = 'Please enter a valid mobile number.';
-      } else if (!util.getValue(access, 'phone')) {
+      } else if (util.getValue(access, 'phone') !== phone) {
         sendCode = false;
         this.props.sendResource('singleUser', {
           id: [util.getValue(access, 'userID', null)],
@@ -287,19 +287,20 @@ class TwoFA extends Component {
                   />
                 </div>
               : null }
-              <AnimateHeight height={!hasPhone && mode === 'sms' ? 'auto' : 0}>
+              <AnimateHeight height={mode === 'sms' ? 'auto' : 0}>
                 <TextField
                   name='phone'
                   label='Mobile Number'
                   fixedLabel={true}
                   placeholder='Type Mobile Number'
-                  value={phone}
+                  value={phone ? _v.formatPhone(phone) : ''}
                   onChange={(e) => {
                     const phone = _v.formatPhone(e.currentTarget.value);
                     this.setState({ phone, error: false })
                   }}
                   error={error}
                   leftBar={true}
+                  maxLength={20}
                 />
               </AnimateHeight>
             </div>

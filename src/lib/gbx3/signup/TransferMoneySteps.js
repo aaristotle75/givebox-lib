@@ -595,7 +595,7 @@ class TransferMoneyStepsForm extends React.Component {
                 <span>
                   Your account is protected with two-factor authentication.
                 </span>
-              }  
+              }
             </div>
           </div>
         ;
