@@ -205,13 +205,18 @@ class TransferMoneyStepsForm extends React.Component {
   checkApprovalStatus() {
     this.setState({ isCheckingStatus: true }, () => {
       this.props.getResource('org', {
-        customName: 'gbx3Org',
+        customName: 'orgCheckStatus',
         reload: true,
         callback: async (res, err) => {
           const underwritingStatus = util.getValue(res, 'underwritingStatus');
           const hasBankInfo = util.getValue(res, 'hasBankInfo');
           if (underwritingStatus === 'approved' && hasBankInfo) {
-            this.setState({ saving: false, isCheckingStatus: false, approvedForTransfers: true });
+            this.setState({ saving: false, isCheckingStatus: false, approvedForTransfers: true }, () => {
+              this.props.getResource('org', {
+                customName: 'gbx3Org',
+                reload: true
+              });
+            });
           } else {
             this.setState({ saving: false });
             setTimeout(() => {

@@ -273,7 +273,6 @@ export function checkSubmitMerchantApp(options = {}) {
         reload: true,
         isSending: false,
         callback: async (res, err) => {
-
           const vantiv = util.getValue(res, 'vantiv', {});
           const merchantIdentString = util.getValue(vantiv, 'merchantIdentString');
           const isVantivReady = util.getValue(vantiv, 'isVantivReady');

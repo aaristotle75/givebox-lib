@@ -66,7 +66,7 @@ class GBXTest extends Component {
             step={step}
             signup={false}
             browse={false}
-            blockType={'org'}
+            blockType={'article'}
             orgID={orgID}
             articleID={articleID}
             saveCallback={this.saveCallback}

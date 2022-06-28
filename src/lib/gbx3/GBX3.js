@@ -44,6 +44,7 @@ import history from '../common/history';
 import SavingSignup from './signup/SavingSignup';
 import ArticleList from './admin/article/ArticleList';
 import Article from './Article';
+import OrgModalRoutes from './OrgModalRoutes';
 
 const RECAPTCHA_KEY = process.env.REACT_APP_RECAPTCHA_KEY;
 const ENV = process.env.REACT_APP_ENV;

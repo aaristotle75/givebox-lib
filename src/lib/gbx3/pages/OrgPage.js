@@ -26,7 +26,7 @@ export default class OrgDisplay extends React.Component {
     } = this.props;
 
     return (
-      <div className='gbx3Org'>
+      <div className='gbx3Org'>   
         <ScrollTop elementID={isAdmin ? 'stageContainer' : 'gbx3Layout'} />
         <div className='gbx3OrgHeader'>
           <div className={'gbx3OrgLogoContainer'} onClick={() => console.log('logo clicked!')}>

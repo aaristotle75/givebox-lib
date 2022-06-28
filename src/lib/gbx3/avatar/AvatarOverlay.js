@@ -257,7 +257,7 @@ class AvatarOverlay extends React.Component {
           }}
         >
           <div className='text'>
-            <span className='icon icon-activity'></span>`${this.props.tickerDisplay ? 'Hide Ticker' : 'Show Ticker'}`
+            <span className='icon icon-activity'></span>{this.props.tickerDisplay ? 'Hide Ticker' : 'Show Ticker'}
           </div>
         </li>
       )
