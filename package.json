@@ -42,7 +42,7 @@
     "js-cookie": "^2.2.1",
     "jszip": "^3.7.1",
     "lottie-react": "^2.2.1",
-    "moment": "^2.27.0",
+    "moment": "^2.29.4",
     "moment-timezone": "^0.5.34",
     "query-string": "^6.14.1",
     "quill-image-resize-module-react": "^3.0.0",
