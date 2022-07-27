@@ -224,7 +224,7 @@ export function setAccess(res, callback) {
       email: user.email,
       phone: user.phone,
       userImage: user.imageURL,
-      masker: has(res, 'masker') ? true : false,
+      masker: util.getValue(res, 'masker', null) ? true : false,
       theme: user.preferences ? user.preferences.cloudTheme : 'light',
       animations: user.preferences ? user.preferences.animations : false,
       loginRedirectURL: util.getValue(user, 'preferences.cloudUI.loginRedirectURL'),
@@ -238,7 +238,7 @@ export function setAccess(res, callback) {
     };
 
     // Check member for access
-    if (has(res, 'member')) {
+    if (util.getValue(res, 'member', null)) {
       access.isOwner = util.getValue(res.member, 'isOwner');
       access.permissions = util.getValue(res.member, 'permissions');
     }

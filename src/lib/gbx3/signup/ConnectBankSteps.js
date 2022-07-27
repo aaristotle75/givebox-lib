@@ -215,7 +215,7 @@ class ConnectBankStepsForm extends React.Component {
             if (signupStep !== 4 && signupPhase === 'manualConnect') this.props.setSignupStep('verifyBank');
           } else if (err || message === 'cannot_submit_to_vantiv' || message === 'mid_notcreated') {
             if (signupPhase !== 'manualConnect') this.switchToManualBank();
-            this.props.formProp({ error: true, errorMsg: <span>We are unable to connect your bank account with Plaid. Please manually connect a bank account and check that all your information is correct and try again in a few minutes.<br />{util.getValue(err, 'data.message', '')}</span> });
+            this.props.formProp({ error: true, errorMsg: <span>We are unable to connect your bank account, please check that all your information is correct and try again in a few minutes.<br />{util.getValue(err, 'data.message', '')}</span> });
           } else if (message === 'verify_bank_required') {
             this.props.setSignupStep('verifyBank');
           }
