@@ -26,7 +26,8 @@ class Dropdown extends Component {
       direction: '',
       status: 'idle',
       buttonStyle: {
-        color: props.color || ''
+        color: props.color || '',
+        ...util.getValue(props, 'buttonStyle', {})      
       },
       contentStyle: {},
       mounted: false
