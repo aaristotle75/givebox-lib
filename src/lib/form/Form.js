@@ -642,6 +642,7 @@ class Form extends Component {
         leftBar={params.leftBar}
         hideIcons={params.hideIcons}
         fixedLabelHasValue={params.fixedLabelHasValue}
+        buttonStyle={params.buttonStyle}
       />
     )
   }
