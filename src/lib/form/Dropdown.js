@@ -26,8 +26,7 @@ class Dropdown extends Component {
       direction: '',
       status: 'idle',
       buttonStyle: {
-        color: props.color || '',
-        ...util.getValue(props, 'buttonStyle', {})      
+        color: props.color || '' 
       },
       contentStyle: {},
       mounted: false
@@ -274,10 +273,13 @@ class Dropdown extends Component {
       selected,
       display,
       direction,
-      status,
-      buttonStyle
+      status
     } = this.state;
 
+    const buttonStyle = {
+      ...this.state.buttonStyle,
+      ...util.getValue(this.props, 'buttonStyle', {})
+    };
     const selectedValue = multi ? open ? multiCloseLabel : selectLabel : selected && ( (value || value === 0) || (defaultValue || defaultValue === 0) ) ? selected : selectLabel;
     const idleLabel = selectedValue === multiCloseLabel || selectedValue === selectLabel;
     const readOnlyText = this.props.readOnlyText || `${label} is not editable`;
