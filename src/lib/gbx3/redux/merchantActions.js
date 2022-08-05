@@ -287,7 +287,7 @@ export function checkSubmitMerchantApp(options = {}) {
           if (isVantivReady && !legalEntityID && verifyBankCompleted) {
             submitToVantiv = true;
             message = 'submitted_to_vantiv';
-          } else if (legalEntityStatus === 'approved' && !merchantIdentString) {
+          } else if (isVantivReady && legalEntityID && !merchantIdentString) {
             submitToVantiv = true;
             message = 'submerchant_only';
             query = 'submerchant_only=true';
