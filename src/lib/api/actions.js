@@ -195,6 +195,7 @@ export function setAccess(res, callback) {
     const orgName = util.getValue(org, 'name', null);
     const orgImage = util.getValue(org, 'imageURL', null);
     const orgSlug = util.getValue(org, 'slug', null);
+    const allowSubOrgs = util.getValue(org, 'allowSubOrgs');
     const underwritingStatus = util.getValue(org, 'underwritingStatus', null);
     const status = util.getValue(org, 'status', null);
     const defaultArticleID = dispatch(getDefaultArticle(org));
@@ -207,6 +208,8 @@ export function setAccess(res, callback) {
     if (user.ID) dispatch(resourceProp('userID', user.ID));
     const firstName = util.getValue(user, 'firstName');
     const lastName = util.getValue(user, 'lastName');
+    const navArrayPermission = [];
+    if (allowSubOrgs) navArrayPermission.push('merchants');
 
     // set access
     const access = {
@@ -234,7 +237,9 @@ export function setAccess(res, callback) {
       orgSlug,
       underwritingStatus,
       status,
-      defaultArticleID
+      defaultArticleID,
+      allowSubOrgs,
+      navArrayPermission
     };
 
     // Check member for access
