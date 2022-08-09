@@ -7,6 +7,7 @@ import { getResource, sendResource, savePrefs } from './helpers';
 
 const ENTRY_URL = process.env.REACT_APP_ENTRY_URL;
 const CLOUD_URL = process.env.REACT_APP_CLOUD_URL;
+const ADMIN_URL = process.env.REACT_APP_LAUNCHPAD_URL;
 const SUPER_URL = process.env.REACT_APP_SUPER_URL;
 const ENV = process.env.REACT_APP_ENV;
 
@@ -105,12 +106,13 @@ export function userLogout() {
     const access = util.getValue(state, 'resource.access', {});
     const role = util.getValue(access, 'role');
     const masker = util.getValue(access, 'masker', false);
+    const isSuper = role === 'super' ? true : false;
     const endpoint = masker ? 'masquerade' : 'session';
 
     dispatch(sendResource(endpoint, {
       method: 'delete',
       callback: (res, err) => {
-        const redirect = masker ? SUPER_URL : ENTRY_URL;
+        const redirect = masker ? isSuper ? SUPER_URL : ADMIN_URL : ENTRY_URL;
         const path = role === 'user' ? '/login/wallet' : util.getValue(access, 'redirect');
         dispatch(setUserLogout());
         window.location.replace(`${redirect}${path}`);
