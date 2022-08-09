@@ -62,7 +62,7 @@ export function startMasquerade(opts = {}) {
     const access = util.getValue(state, 'resource.access', {});
     const role = util.getValue(access, 'role');
     const userID = util.getValue(access, 'userID');
-    if (role === 'super' && orgID && userID) {
+    if (orgID && userID) {
       dispatch(sendResource('masquerade', {
         data: {
           staffType: 'organization',
@@ -80,8 +80,9 @@ export function endMasquerade(callback) {
   return (dispatch, getState) => {
     const state = getState();
     const access = util.getValue(state, 'resource.access', {});
+    const isMasker = util.getValue(access, 'masker');
     const role = util.getValue(access, 'role');
-    if (role === 'super') {
+    if (isMasker) {
       dispatch(sendResource('masquerade', {
           method: 'delete',
           callback: (res, err) => {
