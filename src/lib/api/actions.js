@@ -83,7 +83,7 @@ export function endMasquerade(callback) {
     const access = util.getValue(state, 'resource.access', {});
     const isMasker = util.getValue(access, 'masker');
     const role = util.getValue(access, 'role');
-    if (isMasker) {
+    if (isMasker || 1===1) {
       dispatch(sendResource('masquerade', {
           method: 'delete',
           callback: (res, err) => {
