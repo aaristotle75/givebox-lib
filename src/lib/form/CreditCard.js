@@ -1,8 +1,11 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
 import Fade from '../common/Fade';
 import * as _v from './formValidate';
 import * as util from '../common/utility';
-const lookup = require('binlookup')('8e161ba2-5874-40d0-834c-b63cf8468c9f');
+import {
+  getResource
+} from '../api/helpers';
 
 class CreditCard extends Component {
 
@@ -50,24 +53,27 @@ class CreditCard extends Component {
       || ( (cardType !== 'amex' || cardType === 'default') && length === 16) ) doBinLookup = true;
 
     if (doBinLookup) {
-      lookup(obj.apiValue.slice(0, 9), (err, data) => {
-        if (data) {
-          const cardType = util.getValue(data, 'scheme', 'default');
-          const type = util.getValue(data, 'type');
-          const isDebit = type === 'debit' ? true : false;
-          this.setState({ cardType }, () => {
-            this.props.onChange(name, obj.value, cardType, isDebit);
-            this.props.fieldProp('ccnumber', { binData: data, isDebit });
-          });
-        } else {
-          const cardType = _v.identifyCardTypes(obj.apiValue.slice(0, 4));
-          const isDebit = false;
-          this.setState({ cardType }, () => {
-            this.props.onChange(name, obj.value, cardType, isDebit);
-            this.props.fieldProp('ccnumber', { binData: data, isDebit });
-          });
+      this.props.getResource('binlookup', {
+        id: [obj.apiValue],
+        callback: (res, err) => {
+          if (!err) {
+            const cardType = util.getValue(res, 'card-brand', 'default').toLowerCase();
+            const type = util.getValue(res, 'card-type');
+            const isDebit = type === 'DEBIT' ? true : false;
+            this.setState({ cardType }, () => {
+              this.props.onChange(name, obj.value, cardType, isDebit);
+              this.props.fieldProp('ccnumber', { binData: res, isDebit });
+            });
+          } else {
+            const cardType = _v.identifyCardTypes(obj.apiValue.slice(0, 4));
+            const isDebit = false;
+            this.setState({ cardType }, () => {
+              this.props.onChange(name, obj.value, cardType, isDebit);
+              this.props.fieldProp('ccnumber', { binData: {}, isDebit });
+            });
+          }
         }
-      });
+      })
     } else {
       this.setState({ cardType }, this.props.onChange(name, obj.value, cardType));
     }
@@ -152,4 +158,11 @@ CreditCard.defaultProps = {
   paybyDebitCard: false
 }
 
-export default CreditCard;
+function mapStateToProps(state, props) {
+  return {
+  }
+}
+
+export default connect(mapStateToProps, {
+  getResource
+})(CreditCard);

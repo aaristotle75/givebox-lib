@@ -29,6 +29,12 @@ export const endpoint = function getAPIEndpoint(resource, id = [], opts = {}) {
 
   switch (resource) {
 
+    // Neutrino
+    case 'binlookup': {
+      endpoint = `neutrino/bin/${getIndex(id, 0, null)}`;
+      break;
+    }
+
     // CreditLine
 
     case 'creditlineInfo': {
