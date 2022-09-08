@@ -54,6 +54,7 @@ class CreditCard extends Component {
 
     if (doBinLookup) {
       this.props.getResource('binlookup', {
+        reload: true,
         id: [obj.apiValue],
         callback: (res, err) => {
           if (!err) {
