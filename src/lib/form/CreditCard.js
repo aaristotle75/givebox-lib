@@ -57,7 +57,8 @@ class CreditCard extends Component {
         id: [obj.apiValue],
         callback: (res, err) => {
           if (!err) {
-            const cardType = util.getValue(res, 'card-brand', 'default').toLowerCase();
+            let cardType = util.getValue(res, 'card-brand', 'default').toLowerCase();
+            if (cardType === 'american express') cardType = 'amex';
             const type = util.getValue(res, 'card-type');
             const isDebit = type === 'DEBIT' ? true : false;
             this.setState({ cardType }, () => {
