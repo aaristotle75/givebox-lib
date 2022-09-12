@@ -21,8 +21,8 @@ import {
 import {
   savePrefs
 } from '../../../api/helpers';
+import Helmet from 'react-helmet';
 
-const helpDesk = process.env.REACT_APP_HELP_DESK;
 const ENV = process.env.REACT_APP_ENV;
 
 class ArticleAdmin extends React.Component {
@@ -110,6 +110,11 @@ class ArticleAdmin extends React.Component {
               toggleBuilder={this.toggleBuilder}
               advancedBuilder={advancedBuilder}
             />
+            <Helmet>
+                <script
+                  src="https://cdn.givebox.com/givebox/public/js/freshdesk-chatbot.js"
+                ></script>
+            </Helmet>
           </>
         )
       }

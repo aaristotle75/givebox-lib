@@ -16,8 +16,8 @@ import {
   openLaunchpad
 } from '../../../api/actions';
 import { CgMenuGridO } from 'react-icons/cg';
+import Helmet from 'react-helmet';
 
-const helpDesk = process.env.REACT_APP_HELP_DESK;
 const ENV = process.env.REACT_APP_ENV;
 
 class OrgAdmin extends React.Component {
@@ -102,6 +102,11 @@ class OrgAdmin extends React.Component {
               exitAdmin={this.props.exitAdmin}
             />
           </div>
+          <Helmet>
+            <script
+              src="https://cdn.givebox.com/givebox/public/js/freshdesk-chatbot.js"
+            ></script>
+          </Helmet>       
         </div>
       </>
     )
