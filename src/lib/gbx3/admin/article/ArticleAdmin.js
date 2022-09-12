@@ -21,9 +21,6 @@ import {
 import {
   savePrefs
 } from '../../../api/helpers';
-import { builderStepsConfig } from './builderStepsConfig';
-import HelpDeskButton from '../../../helpdesk/HelpDeskButton';
-import { phases } from '../../signup/signupConfig';
 
 const helpDesk = process.env.REACT_APP_HELP_DESK;
 const ENV = process.env.REACT_APP_ENV;
@@ -90,9 +87,6 @@ class ArticleAdmin extends React.Component {
       default: {
         return (
           <>
-            <HelpDeskButton
-              showKB={false}
-            />
             <ModalRoute
               className='gbx3'
               id={'gbx3Builder'}
