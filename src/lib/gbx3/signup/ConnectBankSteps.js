@@ -78,7 +78,9 @@ class ConnectBankStepsForm extends React.Component {
 
     switch (signupPhase) {
       case 'manualConnect': {
-        if (readyToSubmitNoMID) this.checkConnectStatus();
+        if (readyToSubmitNoMID) {
+          this.checkConnectStatus();
+        }
         if (isVantivReady && !completed.includes('verifyBank')) {
           this.props.setSignupStep('verifyBank');
         }
@@ -205,21 +207,27 @@ class ConnectBankStepsForm extends React.Component {
       readyToSubmitNoMID
     } = this.props;
 
-    if (!connectLoader && readyToSubmitNoMID) this.props.setMerchantApp('connectLoader', true);
+    if (!connectLoader && readyToSubmitNoMID) {
+      this.props.setMerchantApp('connectLoader', true);
+    }
 
     this.setState({ saving: false }, () => {
       this.props.checkSubmitMerchantApp({
         callback: (message, err) => {
+          let hasError = false;
           if (message === 'submerchant_created' || message === 'has_mid') {
             if (!completed.includes('connectBank')) this.props.stepCompleted('connectBank');
             if (signupStep !== 4 && signupPhase === 'manualConnect') this.props.setSignupStep('verifyBank');
           } else if (err || message === 'cannot_submit_to_vantiv' || message === 'mid_notcreated') {
             if (signupPhase !== 'manualConnect') this.switchToManualBank();
+            hasError = true;
             this.props.formProp({ error: true, errorMsg: <span>We are unable to connect your bank account, please check that all your information is correct and try again in a few minutes.<br />{util.getValue(err, 'data.message', '')}</span> });
+            this.props.setSignupStep('addBank');
+            this.props.setMerchantApp('connectLoader', false);
           } else if (message === 'verify_bank_required') {
             this.props.setSignupStep('verifyBank');
           }
-          this.props.setMerchantApp('connectLoader', false);
+          if (!hasError) this.props.setMerchantApp('connectLoader', false);
         }
       });
     });
