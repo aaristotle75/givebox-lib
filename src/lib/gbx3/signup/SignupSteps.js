@@ -425,7 +425,7 @@ class SignupStepsForm extends React.Component {
     }
   }
 
-  async finishedSteps() {
+  async finishedSteps(modal) {
     this.setState({ saving: true });
     const completedStep = await this.props.stepCompleted('previewShare');
     if (completedStep) {
@@ -445,6 +445,14 @@ class SignupStepsForm extends React.Component {
             }
           });
           this.props.toggleModal('orgPostSignupSteps', false);
+          if (modal === 'share') this.props.toggleModal('share', true);
+          if (modal === 'connect') {
+            this.props.checkSignupPhase({
+              forceStep: 0,
+              openAdmin: true,
+              openModal: true
+            });
+          }     
         }
       }, 1000);
     } else {
@@ -1207,25 +1215,26 @@ class SignupStepsForm extends React.Component {
               <GBLink 
                 className='button' 
                 onClick={() => {
-                  this.finishedSteps();
+                  this.finishedSteps('share');
                 }}
               >
-                Close
+                Share My Fundraiser
               </GBLink>
               <GBLink 
                 className='button' 
                 onClick={() => {
-                  this.finishedSteps();
+                  this.finishedSteps('connect');
                 }}
               >
-                Take Me to My Fundraiser
+                Continue to Next Step
               </GBLink>
             </div>
           ;
           item.component =
             <div style={{ marginTop: 20 }} className='flexCenter flexColumn'>
-              You can now accept donations. Go to your fundraiser, share it and start raising money.
+              Please continue to the next step and connect a bank account to receive money.
               {/*
+              You can now accept donations. Go to your fundraiser, share it and start raising money.              
               <SignupShare 
                 style={{
                   marginBottom: 0,

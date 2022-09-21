@@ -234,7 +234,7 @@ class TransferMoneyStepsForm extends React.Component {
     });
   }
 
-  async approvedForTransfersFinish(manageMoney = false) {
+  async approvedForTransfersFinish(manageMoney = false, openModal) {
     const {
       approvedForTransfers
     } = this.state;
@@ -693,23 +693,38 @@ class TransferMoneyStepsForm extends React.Component {
               <div style={{ marginTop: 0, paddingTop: 0 }} className='button-group'>
                 <GBLink 
                   className='button' 
-                  onClick={() => this.props.toggleModal('orgTransferSteps', false)}>
-                  Close
+                  onClick={() => {
+                    this.props.toggleModal('orgTransferSteps', false);
+                    this.props.toggleModal('share', true);
+                  }}>
+                    Share My Fundraiser
                 </GBLink>
                 <GBLink 
                   className='button' 
                   onClick={() => this.props.toggleModal('orgTransferSteps', false)}>
-                  Take Me to My Fundraiser
+                  View My Fundraiser
+                </GBLink>
+                <GBLink
+                  className='button'
+                  onClick={() => {
+                    this.props.toggleModal('orgTransferSteps', false);
+                    this.props.openLaunchpad({ autoOpenSlug: 'fundraisers' });
+                  }}
+                >
+                  Go to Merchant Portal
                 </GBLink>
               </div>
             : null }
             { approvedForTransfers ?
               <div style={{ marginTop: 0, paddingTop: 0 }} className='button-group'>
-                <GBLink className='button' onClick={this.approvedForTransfersFinish}>
-                  Close
+                <GBLink className='button' onClick={this.approvedForTransfersFinish(false, 'share')}>
+                  Share My Fundraiser
                 </GBLink>
                 <GBLink className='button' onClick={this.approvedForTransfersFinish}>
-                  Take Me to My Fundraiser
+                  View Fundraiser
+                </GBLink>                
+                <GBLink className='button' onClick={this.approvedForTransfersFinish(true)}>
+                  Go to Merchant Portal
                 </GBLink>
               </div>  
             : null }            

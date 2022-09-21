@@ -316,7 +316,6 @@ export function getAvatarState() {
       !util.isEmpty(customTemplate)
       && !connectBankCompleted 
       && !bankConnected 
-      && hasReceivedTransaction
       && !isSuper
     ? true : false;
 
@@ -338,7 +337,6 @@ export function getAvatarState() {
       && !identityVerified 
       && !transferMoneyCompleted 
       && !identityReview
-      && hasReceivedTransaction
       && !isSuper
     ? true : false;
     
@@ -359,8 +357,6 @@ export function getAvatarState() {
       && !hasReceivedTransaction
       && hasAccessToEdit
       && !isSuper
-      || ( identityReview && !hasReceivedTransaction && hasAccessToEdit && !isSuper)
-      || ( !hasReceivedTransaction && hasAccessToEdit && !isSuper )
     ) ? true : false;
 
     return {

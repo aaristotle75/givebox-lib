@@ -239,24 +239,27 @@ class ConnectBankStepsForm extends React.Component {
     }
   }
 
-  async hasMerchantIdentStringSave(stepCompleted = 'connectStatus', openModal = true) {
+  async hasMerchantIdentStringSave(stepCompleted = 'connectStatus', openModal) {
     this.setState({ saving: false });
     const completed = await this.props.stepCompleted(stepCompleted, false);
     if (completed) {
       const updated = await this.props.updateOrgSignup({ signupPhase: 'transferMoney' }, 'connectBank');
       if (updated) {
         this.props.toggleModal('orgConnectBankSteps', false);
-        this.props.checkSignupPhase({
-          forceStep: 0,
-          openAdmin: true,
-          openModal
-        });
+        if (openModal === 'verify') {
+          this.props.checkSignupPhase({
+            forceStep: 0,
+            openAdmin: true,
+            openModal: true
+          });      
+        }
+        if (openModal === 'share') this.props.toggleModal('share', true);
         this.props.saveOrg({
           orgUpdated: true,
           isSending: true,
           callback: () => {
           }
-        });
+        });      
       }
     }
   }
@@ -452,10 +455,15 @@ class ConnectBankStepsForm extends React.Component {
               className='button'
               disabled={item.saveButtonDisabled}
               onClick={() => {
-                console.log('Complete verify');
+                this.props.toggleModal('orgConnectBankSteps', false);
+                this.props.checkSignupPhase({
+                  forceStep: 0,
+                  openAdmin: true,
+                  openModal: true
+                });
               }}
             >
-              Finished
+              Oops, something went wrong - please retry
             </GBLink>
           </div>
           : null 
@@ -590,18 +598,18 @@ class ConnectBankStepsForm extends React.Component {
           <GBLink 
             className='button' 
             onClick={() => {
-              this.hasMerchantIdentStringSave('connectBank', false);
+              this.hasMerchantIdentStringSave('connectBank', 'share');
             }}
           >
-            Close
+            Share My Fundraiser
           </GBLink>
           <GBLink 
             className='button' 
             onClick={() => {
-              this.hasMerchantIdentStringSave('connectBank', false);
+              this.hasMerchantIdentStringSave('connectBank', 'verfiy');
             }}
           >
-            Take Me to My Fundraiser
+            Continue to Next Step
           </GBLink>
         </div>
       ;
