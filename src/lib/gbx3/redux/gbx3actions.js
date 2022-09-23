@@ -423,14 +423,14 @@ export function shouldCheckSignupPhase(options = {}) {
         case 'manualConnect':
         case 'connectBank': {
           const connectBankCompleted = completedSteps.includes('connectBank') ? true : false;
-          if (hasReceivedTransaction || connectBankCompleted) {
+          if (!hasReceivedTransaction || hasReceivedTransaction || connectBankCompleted) {
             checkSignup = true;
           }
           break;
         }
 
         case 'transferMoney': {
-          if (approvedForTransfers) checkSignup = true;
+          if (!approvedForTransfers || approvedForTransfers) checkSignup = true;
           break;
         }
 

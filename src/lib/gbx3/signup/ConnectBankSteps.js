@@ -606,7 +606,7 @@ class ConnectBankStepsForm extends React.Component {
           <GBLink 
             className='button' 
             onClick={() => {
-              this.hasMerchantIdentStringSave('connectBank', 'verfiy');
+              this.hasMerchantIdentStringSave('connectBank', 'verify');
             }}
           >
             Continue to Next Step
