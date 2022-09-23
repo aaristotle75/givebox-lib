@@ -538,7 +538,7 @@ export function loadSignupPhase(options = {}) {
     openAdmin: true,
     ...options
   }
-
+  
   if (!opts.phase || !opts.modalName) return console.error('No signup phase');
 
   return async (dispatch, getState) => {

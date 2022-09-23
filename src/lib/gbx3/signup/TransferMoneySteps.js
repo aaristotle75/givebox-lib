@@ -717,16 +717,16 @@ class TransferMoneyStepsForm extends React.Component {
             : null }
             { approvedForTransfers ?
               <div style={{ marginTop: 0, paddingTop: 0 }} className='button-group'>
-                <GBLink className='button' onClick={this.approvedForTransfersFinish(false, 'share')}>
+                <GBLink className='button' onClick={() => this.approvedForTransfersFinish(false, 'share')}>
                   Share My Fundraiser
                 </GBLink>
                 <GBLink className='button' onClick={this.approvedForTransfersFinish}>
                   View Fundraiser
-                </GBLink>                
-                <GBLink className='button' onClick={this.approvedForTransfersFinish(true)}>
-                  Go to Merchant Portal
                 </GBLink>
-              </div>  
+                <GBLink className='button' onClick={() => this.approvedForTransfersFinish(true)}>
+                  Go to Merchant Portal
+                </GBLink>                
+              </div>
             : null }            
           </div>
           <div className='rightSide' style={{ width: 150 }}>
