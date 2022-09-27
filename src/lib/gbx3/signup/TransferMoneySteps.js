@@ -246,6 +246,7 @@ class TransferMoneyStepsForm extends React.Component {
           this.props.stepCompleted('transferMoney');
           this.props.toggleModal('orgTransferSteps', false);
           if (manageMoney) this.props.openLaunchpad({ autoOpenSlug: 'money' });
+          if (openModal === 'share') this.props.toggleModal('share', true);
         }
       });
     } else {
@@ -725,7 +726,7 @@ class TransferMoneyStepsForm extends React.Component {
                 </GBLink>
                 <GBLink className='button' onClick={() => this.approvedForTransfersFinish(true)}>
                   Go to Merchant Portal
-                </GBLink>                
+                </GBLink>            
               </div>
             : null }            
           </div>
