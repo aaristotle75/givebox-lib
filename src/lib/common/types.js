@@ -447,7 +447,7 @@ export const defaultArticleTitles = {
   sweepstake: 'New Sweepstakes'
 };
 
-export function emailStatus(status) {
+export function emailStatus(status, launchpad = false) {
   const style = {
     fontSize: 12,
     fontStyle: 'italic',
@@ -460,11 +460,11 @@ export function emailStatus(status) {
     }
 
     case 'rejected': {
-      return <span style={style} className='red'>Rejected Email</span>
+      return <span style={style} className='red'>{launchpad ? 'Bad' : 'Rejected'} Email</span>
     }
 
     default: {
-      return <span style={style} className='orange'>Pending Validation</span>
+      return launchpad ? null : <span style={style} className='orange'>Pending Validation</span>
     }
   }
 }
