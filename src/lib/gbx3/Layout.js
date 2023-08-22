@@ -68,12 +68,14 @@ class Layout extends React.Component {
 
     if (gaPropertyID) {
       ReactGA.initialize(gaPropertyID, {
-        debug: true
+        debug: true,
+        gaOptions: { cookieFlags: 'secure;samesite=none' }        
       });
     } else {
       ReactGA.initialize('UA-75269457-5', {
-        debug: true
-      });      
+        debug: true,
+        gaOptions: { cookieFlags: 'secure;samesite=none' }
+      });
     }
   }
 
